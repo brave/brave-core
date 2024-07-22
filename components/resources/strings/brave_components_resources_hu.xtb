@@ -26,9 +26,6 @@
 <translation id="8776285424728638733">GB</translation>
 <translation id="8427933533533814946">Fényképezte</translation>
 <translation id="7108338896283013870">Elrejtés</translation>
-<translation id="7115515527894388910">Beállítások szerkesztése</translation>
-<translation id="7606029853066610626">Könyvjelzők megtekintése és kezelése</translation>
-<translation id="5550994254534676787">Nézze meg a böngészési előzményeit</translation>
 <translation id="985862351129593673">Irányítópult testreszabása</translation>
 <translation id="7180865173735832675">Testreszabás</translation>
 <translation id="8522669544471808198">Háttérképek megjelenítése</translation>
@@ -57,11 +54,21 @@
 <translation id="430556192781857057">A legnépszerűbb oldalakat az általad gyakran látogatott oldalak alapján ajánljuk.</translation>
 <translation id="1773147648972887693">Gyakran látogatottak mutatása</translation>
 <translation id="4546260624932151782">Kedvencek mutatása</translation>
+<translation id="8975314993825375476">Lista testreszabása</translation>
+<translation id="5525668735313040116">Privát keresés az interneten</translation>
+<translation id="1629390138158333592">Keresés a weben</translation>
+<translation id="4016940744851230999">Keresési modul megjelenítése az Új lap oldalon</translation>
+<translation id="7092560902264458951">Keresőmotorok engedélyezése az Új lap oldalon</translation>
+<translation id="6849526088357652209">Elérhető motorok testreszabása</translation>
+<translation id="5131747739868436035">Keresés elrejtése</translation>
+<translation id="423209533815462685">Engedélyezi a keresési javaslatokat?</translation>
+<translation id="2086952631598737687">Kereséskor a beírt adatokat elküldi a rendszer a keresőmotornak a jobb javaslatok érdekében.</translation>
+<translation id="3435896845095436175">Engedélyezés</translation>
+<translation id="780301667611848630">Köszönöm, nem</translation>
 <translation id="1230746063445072175">Még fejlettebb adatvédelemre vágyik?</translation>
 <translation id="6699628638740071563">Itt az ideje váltani a Google-ről.</translation>
 <translation id="2045455461902775806">A Brave kereső nem befolyásolja vagy cenzúrázza a találatokat, és nem követi nyomon Önt, a kereséseit vagy a kattintásait.</translation>
 <translation id="6811221529729056895">Próbálja ki a Brave keresőt most!</translation>
-<translation id="5525668735313040116">Privát keresés az interneten</translation>
 <translation id="3446024864193919737">Brave Rewards mutatása</translation>
 <translation id="5585019845078534178">Kártyák</translation>
 <translation id="3870475560794762985">Szponzorált képek megjelenítése</translation>
@@ -83,7 +90,6 @@
 <translation id="7610541582755894669">Színátmenetek</translation>
 <translation id="1606851618930975029">Frissítés minden új lapon</translation>
 <translation id="7040134046053881468">Jutalmak panel megnyitása</translation>
-<translation id="9024104284526126630">A Brave-ben privát hívásokat kezdeményezhetsz.</translation>
 <translation id="370665806235115550">Betöltés...</translation>
 <translation id="4634933166298842522">Követések kezelése</translation>
 <translation id="4108314971463891922">Követés</translation>
@@ -449,6 +455,7 @@
 <translation id="1109729143147368573">Költsd el kripto és egyéb javaidat a közel 50 millió kereskedőnél és bankautomatánál világszerte. Költs kriptót, és szerezz kriptót!</translation>
 <translation id="3787061634640932557">Kártyák szerkesztése</translation>
 <translation id="2070991379950719711">Használja a Brave Rewardsot</translation>
+<translation id="6297791103122079275">Beszéd</translation>
 <translation id="5977237145327845546">Indíts videóhívást barátaiddal és munkatársaiddal.</translation>
 <translation id="8863928195533744356">Hívás indítása</translation>
 <translation id="3651550649176056334">Az adataidról</translation>
@@ -592,7 +599,7 @@
 <translation id="3026978804849658576">Kimutatás megtekintése</translation>
 <translation id="1848737374354350807">Egyenleg</translation>
 <translation id="6516984207843289176">Fiók csatlakoztatása</translation>
-<translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Készen áll pénzt keresni?<ph name="BOLD_END"/> Csatlakoztasson vagy hozzon létre egy partnerünk által kezelt fiókot.</translation>
+<translation id="1150455801874605865"><ph name="BOLD_BEGIN"/>Készen áll a bevételszerzésre?<ph name="BOLD_END"/> Csatlakoztasson egy fiókot, ahová elküldhetjük a bevételeit.</translation>
 <translation id="902298128239575729">Hozzájárulások küldése a Brave-jutalmakkal</translation>
 <translation id="6276721355724491595">A Brave jutalmak egyenlegével igény szerinti hozzájárulásokat küldhet kedvenc alkotóinak, amint csatlakoztatott egy letéti számlát.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
@@ -600,6 +607,7 @@
       other {Ebben a hónapban #, Brave Jutalmak által támogatott alkotót látogatott meg}
     }</translation>
 <translation id="6067959437127691361">A Brave Jutalmak használata segít Önnek támogatni a tartalomkészítőket, és lehetővé teszi, hogy BAT-t kereshessen.</translation>
+<translation id="944736176598169208">Jutalmak</translation>
 <translation id="2359808026110333948">Folytatás</translation>
 <translation id="885805571521218129">Megmutatja a becsült bevételek tartományát a Brave hirdetéseknél.</translation>
 <translation id="3863981251715594911">Hogyan működik?</translation>
@@ -744,7 +752,6 @@
 <translation id="6180576227145734714">A 'to' tranzakciós adat, ha meg van adva, érvényes cím kell, hogy legyen</translation>
 <translation id="6688162556547723415">A kért módszert és/vagy fiókot a felhasználó nem engedélyezte.</translation>
 <translation id="8767749833522980474">Kripto</translation>
-<translation id="944736176598169208">Jutalmak</translation>
 <translation id="6122742277607781713">Portfólió</translation>
 <translation id="7020503656406658141">Árak</translation>
 <translation id="3586775666459823714">NFT-k</translation>
@@ -783,7 +790,7 @@
 <translation id="2329227154184107678">Kifizetés áttekintése</translation>
 <translation id="3220443877821207794">Küldés áttekintése</translation>
 <translation id="8530071505111489657">Nincsenek elérhető tokenek</translation>
-<translation id="615791330696335475">Tokenek keresése név alapján</translation>
+<translation id="9021834401351805394">Keresés név alapján vagy cím beillesztése</translation>
 <translation id="5009335307032488349">NFT keresése név, azonosító alapján</translation>
 <translation id="8667560635828712526">Eszköz választása</translation>
 <translation id="4853960199138416955">A Brave pénztárca jelenleg nem támogatja a Bitcoin NFT-ket (ordinalsokat). Ha BTC-t küld egy olyan címről, ami ordinalsokkal rendelkezik, akkor az az ordinalsok véletlen átruházásához vezethet.</translation>
@@ -792,6 +799,11 @@
 <translation id="4504682768625050939">Nyilvános cím vagy tartomány megadása.</translation>
 <translation id="5292796745632149097">Küldés a következőre:</translation>
 <translation id="7022684620581223496">Érvénytelen tartománykiterjesztés.</translation>
+<translation id="7620616707541471029">Válasszon egy fiókot a folytatáshoz</translation>
+<translation id="7099260104593926742">Piaci ár</translation>
+<translation id="6954838107964168963">Birtokolt</translation>
+<translation id="1976851706319678835">Nem birtokolt</translation>
+<translation id="7372882109707907136">Összeg/24ó</translation>
 <translation id="9209024278910716955">A vásárlás nem támogatott a kiválasztott hálózatnál</translation>
 <translation id="4982630604810554641">Domén keresése...</translation>
 <translation id="5467044307473123584">A Brave támogatja a blokkláncon kívüli átjárók használatát a .eth-domének feloldásához.</translation>
@@ -894,7 +906,7 @@
 <translation id="8275038454117074363">Importálás</translation>
 <translation id="232925166623833246">Importálás hardveres pénztárcából</translation>
 <translation id="4324198334837993695">Hardver</translation>
-<translation id="3067168166931605141">Számla neve</translation>
+<translation id="9079725315195697532">Nevezze el a fiókot</translation>
 <translation id="1011614786846182272">Ezeket a számlákat Web3 decentralizált applikációkkal lehet használni és megjeleníteni a portfóliójában, viszont nem lehet őket helyreállítani a helyreállítási kifejezéssel az elsődleges számlájának a biztonsági mentéséről.</translation>
 <translation id="1136772623587250243">Illessze be a privát kulcsot a vágólapról</translation>
 <translation id="7978412674231730200">Privát kulcs</translation>
@@ -946,6 +958,7 @@
 <translation id="453788800165937690">FIGYELMEZTETÉS: Senkivel ne ossza meg a privát kulcsot. A privát kulcs birtokában bárki örökre eltulajdoníthatja az eszközeit.</translation>
 <translation id="2416098547200943834">MEGJEGYZÉS: a privát kulcs hexadecimális kódolású JSON-fájlként lesz elérhető az Ön számára, amely tartalmazza a privát kulcsot és a protokollra vonatkozó adatokat. <ph name="LINK_START"/>További információk<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">MEGJEGYZÉS: a privát kulcsot hexadecimális kódolású JSON-fájlként kell megadni, amely tartalmazza a privát kulcsot és a protokollra vonatkozó adatokat. <ph name="LINK_START"/>További információk<ph name="LINK_END"/>.</translation>
+<translation id="1505724566145200403">MEGJEGYZÉS: Csak a zprv (vagy a Testnet esetén vprv) kiterjesztett kulcsok támogatottak.</translation>
 <translation id="42126664696688958">Exportálás</translation>
 <translation id="1366855498335432549">Befizetés</translation>
 <translation id="790104325876206743">Fiókbeállítások</translation>
@@ -1510,6 +1523,7 @@
 <translation id="5709875713144853427">Válasszon cserélni kívánt tokent</translation>
 <translation id="720404198240859011">Nulla egyenlegű tokenek megjelenítése</translation>
 <translation id="4886690455791686940">Nulla egyenlegű tokenek elrejtése</translation>
+<translation id="615791330696335475">Tokenek keresése név alapján</translation>
 <translation id="381485723922188688">Opció</translation>
 <translation id="6680650203439190394">Értékelés</translation>
 <translation id="2538996898605796431">Árhatás</translation>
@@ -1621,8 +1635,6 @@
 <translation id="1215089823252478557">Becsült egyenlegváltozás megtekintése</translation>
 <translation id="2761574758015819991">Potenciálisan csalárd tranzakciók azonosítása</translation>
 <translation id="168533464844528463">Segítség az adathalász-kísérletek felismerésében</translation>
-<translation id="780301667611848630">Köszönöm, nem</translation>
-<translation id="3435896845095436175">Engedélyezés</translation>
 <translation id="7269757150305059881">A Brave egy partnerrel dolgozik együtt a szolgálatás nyújtása során. Az engedélyezésével Ön beleegyezik az aláíratlan tranzakciók és a DApp-hivatkozásaik partnerünkkel való megosztásába.</translation>
 <translation id="7790932700072432983">Bármikor megváltoztathatja a <ph name="TAG_BEFORE"/>Beállításokban<ph name="TAG_AFTER"/>.</translation>
 <translation id="8688672835843460752">Rendelkezésre áll</translation>
@@ -1637,6 +1649,10 @@
 <translation id="6405354572620970908">Ez a kérés ártalmasnak tűnik, és kiteheti Önt az adatlopás veszélyének. Ne folytassa, ha csak nem bízik meg ebben az alkalmazásban.</translation>
 <translation id="786261184916565476"><ph name="VALUE"/> problémát találtunk.</translation>
 <translation id="2826600321627372011">Nem található útvonal</translation>
+<translation id="2451778499022193433">A fióknév nem lehet hosszabb, mint <ph name="VALUE"/> karakter</translation>
+<translation id="8488138412489236285">Adja meg a jelszót (ha alkalmazandó)</translation>
+<translation id="9166422618242592074">Import típusa</translation>
+<translation id="1913853014470037784">Nem birtokolt NFT-k elrejtése</translation>
 <translation id="3155170474926428993">Tor indítóprogram</translation>
 <translation id="3745016858329272300">Általános információk</translation>
 <translation id="4045404575593562245">Tor vezérlési események</translation>
@@ -1870,9 +1886,11 @@
 <translation id="712598284361781729">Új osztott nézet</translation>
 <translation id="1130188644637295274">Megnyitás osztott nézetben</translation>
 <translation id="6459036216700972269">Lapok felosztásának visszavonása</translation>
+<translation id="4235382917338421035">Lappozíciók cseréje</translation>
 <translation id="3617523374417810198">Új osztott nézet</translation>
 <translation id="8571323456914890254">Megnyitás osztott nézetben</translation>
 <translation id="5329136173514538969">Lapok felosztásának visszavonása</translation>
+<translation id="7595612919377246359">Lappozíciók cseréje</translation>
 <translation id="8591883849678260674">Eredeti megtekintése</translation>
 <translation id="1969654232209826429">perces olvasmány</translation>
 <translation id="4101707289420716287">Speedreader kikapcsolása</translation>
@@ -1917,7 +1935,7 @@
 <translation id="7921782882718083488">Lap összefoglalása</translation>
 <translation id="7932221068776853847">Ha szeretné leállítani a tartalmak küldését a Leo számára, és új beszélgetést indítani, bontsa a kapcsolatot.</translation>
 <translation id="1167803637855350748">Hálózati probléma lépett fel a Leo rendszeréhez való kapcsolódás során. Ellenőrizze a hálózati kapcsolatot, és próbálja újra.</translation>
-<translation id="1996126325390835277">A Leo jelenleg túlságosan foglalt. Néhány perc múlva próbálja újra.</translation>
+<translation id="1996126325390835277">Elérte a prémium gyakorisági korlátot. Néhány óra múlva próbálja újra.</translation>
 <translation id="7144878232160441200">Újra</translation>
 <translation id="8570488829560315702">Üdvözlöm, Leo vagyok, a Brave MI-asszisztense. Llama 3 8B motorral működöm, amely egy, a Meta által kifejlesztett nagy teljesítményű modell számos használati eset kezelésére. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Üdvözlöm, Leo vagyok, a Brave MI-asszisztense. Mixtral 8x7B motorral működöm, amely egy, a Mistral AI által az összetett feladatok végrehajtására kifejlesztett modell. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
@@ -1925,6 +1943,7 @@
 <translation id="8583558415545871403">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem pedig a Claude 3 Haiku modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetési és szövegfeldolgozási feladatok elvégzésére.</translation>
 <translation id="4147243042852964992">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem pedig a Claude 3 Sonnet modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetési és szövegfeldolgozási feladatok elvégzésére.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/>, a(z) <ph name="COMPANY_NAME"/> által</translation>
+<translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Csevegés</translation>
 <translation id="2961040541145689181">Új csevegés</translation>
 <translation id="7557539689487606886">Váltás Premiumra</translation>
@@ -1934,7 +1953,7 @@
 <translation id="6637015365469044269">Fejlesztés most</translation>
 <translation id="5543505256451301851">Ingyenes kipróbálás 7 napig</translation>
 <translation id="849535826888024304">Elérte a válaszgyakorisági korlátot</translation>
-<translation id="2252128900328632803">Oldja fel a magasabb válaszadási arányt a Prémium-előfizetéssel! A folytatáshoz válthat a kevésbé hatékony, Llama2 13b ingyenes modellünkre is.</translation>
+<translation id="2252128900328632803">Elérte a Leo gyakorisági korlátját. Oldja fel a magasabb válaszadási arányt a Prémium-előfizetéssel, vagy hamarosan próbálja újra.</translation>
 <translation id="4173478269537830374">Különböző MI-modellek felfedezése</translation>
 <translation id="3245401959451976966">Engedje szabadon kreativitását</translation>
 <translation id="4165928407303989823">Maradjon a témánál</translation>
@@ -1986,7 +2005,7 @@
 <translation id="5642775487085641191">Csak csevegni szeretne?</translation>
 <translation id="8857222718794549840">Bármit kérdezhet! Az Ön által választott bármilyen témáról beszélgethetünk. Folyamatosan tanulok és fejlődöm, hogy jobb válaszokat adhassak.</translation>
 <translation id="9051226419897869406">Csevegjen privátban a Brave Leóval</translation>
-<translation id="1173570303649278801">Oldalkontextus használata a válasznál</translation>
+<translation id="637548538907281147">Alakítsa a válaszokat az oldal tartalma alapján</translation>
 <translation id="8599503173207256429">Kapcsolja be az oldallal kapcsolatos kérdésekhez. A tartalom továbbítva lesz a Brave Leónak az Ön üzeneteivel együtt.</translation>
 <translation id="318819763888864209">Minden előfizetés automatikus megújul, de a megújulás előtt bármikor lemondható.</translation>
 <translation id="5091223967610958">Az éppen felkeresett oldal kiszolgálónevének megosztása (<ph name="HOST_NAME"/>) a Leo továbbfejlesztéséhez.</translation>

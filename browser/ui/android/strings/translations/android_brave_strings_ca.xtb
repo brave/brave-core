@@ -417,9 +417,7 @@ Segur que vols continuar?</translation>
 <translation id="7275773481201277457">Mostra estadístiques de Brave</translation>
 <translation id="8297488609722895137">Foto de <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Si toqueu Començar a utilitzar Recompenses Brave, esteu acceptant els <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Guanya diners per veure aquesta imatge de fons.</translation>
 <translation id="7136586167396205364">Amaga imatges patrocinades</translation>
-<translation id="2927095357213611519">Pots donar suport als creadors web amb tokens.\nEarn token visualitzant anuncis que respectin la privacitat.</translation>
 <translation id="2898634658146274982">Obre els enllaços externs a Brave</translation>
 <translation id="5616508928556767259">Obre enllaços des d'altres aplicacions en una vista web de Brave. Nota: Cal establir Brave com a navegador predeterminat.</translation>
 <translation id="2394961582378297792">Sessió tancada</translation>
@@ -477,6 +475,10 @@ Segur que vols continuar?</translation>
 <translation id="8912304686498704084">AMUNT</translation>
 <translation id="4963218453264888510">AVALL</translation>
 <translation id="7474113515179313724">Navegues per aquest lloc sense les proteccions de privacitat de Brave. No funciona correctament amb Escuts?</translation>
+<translation id="4226543734057230801">Xarxes Ethereum</translation>
+<translation id="3504157706952484145">Xarxes Filecoin</translation>
+<translation id="1561541094377237745">Xarxes Solana</translation>
+<translation id="7141438739990875547">Xarxes Bitcoin</translation>
 <translation id="9055546041146396417">Si aquest lloc sembla que estigui trencat, prova de desactivar Escuts.</translation>
 <translation id="1209739344687072997">Informa d'una pàgina web inexistent</translation>
 <translation id="8510478288840333677">Fes saber als desenvolupadors de Brave que aquesta web no funciona de forma adequada amb Escuts:</translation>
@@ -575,8 +577,6 @@ Segur que vols continuar?</translation>
 <translation id="2422627462367776805">Portal web i cerca de Corea del Sud</translation>
 <translation id="177282784098234156">privat, independent, primer l'usuari</translation>
 <translation id="1410130669636877548">Alguns motors de recerca protegeixen la teva privacitat millor que altres quan navegues per la xarxa.</translation>
-<translation id="5187052478998910855">Necessites un recordatori sobre Recompenses?</translation>
-<translation id="8622329973403382303">Fes un tour ràpid per a repassar com pots passar a la història com una superestrella de Recompenses!</translation>
 <translation id="3479552764303398839">Ara no</translation>
 <translation id="7138272885617540195">Permet que els enllaços d'aplicacions s'obrin en aplicacions fora de Brave</translation>
 <translation id="4954512758656527938">Cartera predeterminada d'Ethereum</translation>
@@ -702,9 +702,11 @@ Segur que vols continuar?</translation>
 <translation id="6748319398471481216">Es renova mensualment</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> /mes.</translation>
 <translation id="1163809943099641131">Un any</translation>
-<translation id="7574007394522199115">Si renoveu anualment, us estalviareu <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">Renova anualment <ph name="DISCOUNT_TEXT_START"/> i estalvia un <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> /any.</translation>
-<translation id="2655185358771731232">Prova-ho de franc durant 7 dies. Passats aquests 7 dies, se't cobrarà el preu del pla. Totes les subscripcions es renoven automàticament, però es poden cancel·lar abans de la renovació.</translation>
+<translation id="5125233570742276182">Les subscripcions es carregaran mitjançant el teu compte de Google. Qualsevol part no utilitzada de la prova gratuïta, si s'ofereix, es perd en comprar una subscripció. La teva subscripció es renovarà automàticament tret que es cancel·li almenys 24 hores abans del final del període actual.\n\nPots gestionar les teves subscripcions a Configuració.\nEn utilitzar Brave, acceptes les Condicions d'ús i la Política de privacitat.</translation>
+<translation id="5035172357624830412">Ja has comprat a brave.com?</translation>
+<translation id="713136183174551885">Actualitza les teves credencials</translation>
 <translation id="6053992191006521518">Proveu-lo GRATIS</translation>
 <translation id="5903391101107992067">Prova 7 dies gratis</translation>
 <translation id="721747358270435486">Instal·la la VPN</translation>
@@ -850,7 +852,7 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="7791543448312431591">Afegeix</translation>
 <translation id="6889920539620318793">Estableix com a actiu</translation>
 <translation id="2653659639078652383">Envia</translation>
-<translation id="4556601961751528347">Canvia el compte connectat</translation>
+<translation id="4945690646623486292">Selecciona una xarxa</translation>
 <translation id="5233638681132016545">Pestanya nova</translation>
 <translation id="8006088103295786154">Accés a la Cartera de Brave</translation>
 <translation id="8030169304546394654">Sense connexió</translation>
@@ -907,7 +909,7 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="2322227405137827074">Vols importar aquest token?</translation>
 <translation id="1324417023773393937">Navegador de Brave</translation>
 <translation id="6044189892950611565">Canal de notificacions per al navegador de Brave</translation>
-<translation id="1173919438868967364">Selecciona un compte</translation>
+<translation id="4556601961751528347">Canvia el compte connectat</translation>
 <translation id="8922793255489232731">No s'ha pogut obtenir la zona horària corresponent per a: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Connectat amb <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Prova</translation>
@@ -1063,7 +1065,6 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="4932733599132424254">Data</translation>
 <translation id="346505172740911461">Preu de mercat</translation>
 <translation id="5494920125229734069">Selecciona-ho tot</translation>
-<translation id="5972844218283131174">Desselecciona-ho tot</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Inicia la sessió amb la cartera de Brave</translation>
 <translation id="3696514931437952995">Estàs iniciant la sessió a <ph name="ORIGIN"/>. La cartera de Brave compartirà l'adreça de la teva cartera amb <ph name="ORIGIN"/>.</translation>

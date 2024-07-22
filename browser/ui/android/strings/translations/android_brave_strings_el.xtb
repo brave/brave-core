@@ -417,9 +417,7 @@
 <translation id="7275773481201277457">Εμφάνιση στατιστικών Brave</translation>
 <translation id="8297488609722895137">Φωτογραφία από <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Πατώντας την επιλογή "Έναρξη χρήσης των Ανταμοιβών Brave", συμφωνείτε με τους<ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Πληρωθείτε για να δείτε αυτήν την εικόνα φόντου.</translation>
 <translation id="7136586167396205364">Απόκρυψη επιχορηγούμενων εικόνων</translation>
-<translation id="2927095357213611519">Μπορείτε να υποστηρίξετε δημιουργούς ιστού με token.\nΚερδίστε token βλέποντας διαφημίσεις που σέβονται την ιδιωτικότητα.</translation>
 <translation id="2898634658146274982">Ανοίξτε εξωτερικούς συνδέσμους στον Brave</translation>
 <translation id="5616508928556767259">Ανοίξτε εξωτερικούς συνδέσμους από άλλες εφαρμογές σε μια προβολή web του Brave. Σημείωση: Ο Brave πρέπει να είανι το προεπιλεγμένο πρόγραμμα περιήγησης web.</translation>
 <translation id="2394961582378297792">Αποσυνδέθηκε</translation>
@@ -477,6 +475,10 @@
 <translation id="8912304686498704084">ΕΝΕΡΓΟΠΟΙΗΜΕΝΟ</translation>
 <translation id="4963218453264888510">ΑΠΕΝΕΡΓΟΠΟΙΗΜΕΝΟ</translation>
 <translation id="7474113515179313724">Περιηγείστε σε αυτήν την ιστοσελίδα χωρίς την προστασία απορρήτου του Brave. Δεν λειτουργεί σωστά με τις Ασπίδες ενεργές;</translation>
+<translation id="4226543734057230801">Δίκτυα Ethereum</translation>
+<translation id="3504157706952484145">Δίκτυα Filecoin</translation>
+<translation id="1561541094377237745">Δίκτυα Solana</translation>
+<translation id="7141438739990875547">Δίκτυα Bitcoin</translation>
 <translation id="9055546041146396417">Εάν η ιστοσελίδα φαίνεται κατεστραμμένη, δοκιμάστε να κλείσετε τις Ασπίδες.</translation>
 <translation id="1209739344687072997">Αναφέρετε μη λειτουργούντα ιστότοπο</translation>
 <translation id="8510478288840333677">Ενημερώστε τους προγραμματιστές του Brave ότι ο ιστότοπος αυτός δεν λειτουργεί σωστά με τις Ασπίδες:</translation>
@@ -575,8 +577,6 @@
 <translation id="2422627462367776805">Διαδικτυακή πύλη Νότιας Κορέας &amp; αναζήτηση</translation>
 <translation id="177282784098234156">Ιδιωτική λειτουργία και ανεξαρτησία, με προτεραιότητα τον χρήστη</translation>
 <translation id="1410130669636877548">Ορισμένες μηχανές αναζήτησης προστατεύουν το απόρρητό σας καλύτερα από άλλες όταν κάνετε αναζήτηση στο διαδίκτυο.</translation>
-<translation id="5187052478998910855">Χρειάζεστε μια ανανέωση για τις Ανταμοιβές;</translation>
-<translation id="8622329973403382303">Κάντε μια γρήγορη περιήγηση για να εξασκηθείτε στη λειτουργία του και να καταγραφείτε στην ιστορία ως Ροκ Σταρ των Ανταμοιβών!</translation>
 <translation id="3479552764303398839">Όχι τώρα</translation>
 <translation id="7138272885617540195">Να επιτρέπεται το άνοιγμα συνδέσμων εφαρμογών εκτός του Brave</translation>
 <translation id="4954512758656527938">Προεπιλεγμένο πορτοφόλι Ethereum</translation>
@@ -702,9 +702,11 @@
 <translation id="6748319398471481216">Μηνιαία ανανέωση</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / μήνα</translation>
 <translation id="1163809943099641131">Ένα έτος</translation>
-<translation id="7574007394522199115">Κάντε ετήσια ανανέωση και εξοικονομήστε <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">Εξοικονομήστε <ph name="DISCOUNT_TEXT_START"/><ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/> με ετήσια ανανέωση</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / έτος</translation>
-<translation id="2655185358771731232">Δοκιμάστε δωρεάν για 7 ημέρες. Μετά από 7 ημέρες, θα χρεωθείτε την τιμή του προγράμματος. Όλες οι συνδρομές ανανεώνονται αυτόματα, αλλά μπορούν να ακυρωθούν πριν από την ανανέωση.</translation>
+<translation id="5125233570742276182">Οι συνδρομές θα χρεώνονται μέσω του λογαριασμού σας Google. Οποιοδήποτε αχρησιμοποίητο τμήμα της δωρεάν δοκιμής, εάν προσφέρεται, χάνεται όταν αγοράζετε μια συνδρομή.\n\nΗ συνδρομή σας θα ανανεώνεται αυτόματα, εκτός εάν ακυρωθεί τουλάχιστον 24 ώρες πριν από το τέλος της τρέχουσας περιόδου.\n\nΜπορείτε να διαχειρίζεστε τις συνδρομές σας στις Ρυθμίσεις.\nΧρησιμοποιώντας το Brave, συμφωνείτε με τους Όρους χρήσης και την Πολιτική απορρήτου.</translation>
+<translation id="5035172357624830412">Έχετε ήδη κάνει αγορές στο brave.com;</translation>
+<translation id="713136183174551885">Ανανεώστε τα διαπιστευτήριά σας</translation>
 <translation id="6053992191006521518">Δοκιμάστε ΔΩΡΕΑΝ</translation>
 <translation id="5903391101107992067">Δοκιμάστε 7 ημέρες δωρεάν</translation>
 <translation id="721747358270435486">Εγκατάσταση VPN</translation>
@@ -850,7 +852,7 @@
 <translation id="7791543448312431591">Προσθήκη</translation>
 <translation id="6889920539620318793">Ορισμός ως ενεργό</translation>
 <translation id="2653659639078652383">Υποβολή</translation>
-<translation id="4556601961751528347">Αλλαγή συνδεδεμένου λογαριασμού</translation>
+<translation id="4945690646623486292">Επιλογή δικτύου</translation>
 <translation id="5233638681132016545">Νέα καρτέλα</translation>
 <translation id="8006088103295786154">Πρόσβαση στο Πορτοφόλι Brave</translation>
 <translation id="8030169304546394654">Αποσυνδέθηκε</translation>
@@ -907,7 +909,7 @@
 <translation id="2322227405137827074">Θέλετε να εισαγάγετε αυτό το token;</translation>
 <translation id="1324417023773393937">πρόγραμμα περιήγησης Brave</translation>
 <translation id="6044189892950611565">Κανάλι ειδοποιήσεων για το πρόγραμμα περιήγησης Brave</translation>
-<translation id="1173919438868967364">Επιλέξτε λογαριασμό</translation>
+<translation id="4556601961751528347">Αλλαγή συνδεδεμένου λογαριασμού</translation>
 <translation id="8922793255489232731">Δεν ήταν δυνατή η αντιστοίχιση ζώνης ώρας για : <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Με σύνδεση σε <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Δοκιμή</translation>
@@ -1063,7 +1065,6 @@
 <translation id="4932733599132424254">Ημερομηνία</translation>
 <translation id="346505172740911461">Τιμή αγοράς</translation>
 <translation id="5494920125229734069">Επιλογή όλων</translation>
-<translation id="5972844218283131174">Κατάργηση επιλογής όλων</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Σύνδεση με το Πορτοφόλι Brave</translation>
 <translation id="3696514931437952995">Συνδέεστε στο<ph name="ORIGIN"/>. Το Πορτοφόλι Brave θα κοινοποιήσει τη διεύθυνση του πορτοφολιού σας με <ph name="ORIGIN"/>.</translation>

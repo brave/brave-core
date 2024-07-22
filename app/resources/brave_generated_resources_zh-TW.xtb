@@ -43,6 +43,7 @@
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">這是 Tor 的私人視窗</translation>
 <translation id="1037341607922068025">用 Tor 開啟私人視窗</translation>
+<translation id="607982085107926247">在 Tor 中開啟：<ph name="ADDRESS"/></translation>
 <translation id="496896260395129787">此 Brave Sync 帳戶已從其他裝置刪除。如果您不是要停用 Sync，請<ph name="LINK_TEXT"/>。</translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>重新建立帳戶</translation>
 <translation id="6965382102122355670">確定</translation>
@@ -53,7 +54,7 @@
 <translation id="3094628781200061820">在 IPFS 發佈並擷取檔案</translation>
 <translation id="9220923434129933852">閱讀並修改 IPFS 設定</translation>
 <translation id="7398397225367092613">.onion</translation>
-<translation id="406832631167785034">使用 .onion 位址開啟</translation>
+<translation id="2269780537090240241">使用 .onion 位址開啟： <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">強制貼上</translation>
 <translation id="4901618511712685702">匯入至 IPFS</translation>
 <translation id="6794469945030154569">此頁面</translation>
@@ -119,8 +120,16 @@
 <translation id="45040495135337202">Brave 不會追蹤你、你的查詢內容或點擊紀錄，而且 100% 獨立於大型科技公司。</translation>
 <translation id="42032117189492785">AI 智慧搜尋，搭配獨一無二的索引方式。</translation>
 <translation id="8606416238399082160">完全隱私、100% 獨立，還具有強大的 AI 功能。</translation>
+<translation id="7706528608480893054">DDG 只是 Bing 的偽裝。實現真正隱私、更好的結果和獨立的索引的時候到了。使用 Brave 搜尋的時候到了。</translation>
+<translation id="3818133234428578803">別再使用 DuckDuckGo 了</translation>
+<translation id="14817360483752259">Brave Search 不會追蹤您、您的查詢或您的點擊。並且（與 DDG 不同之處）這不僅是 Bing 的偽裝。</translation>
+<translation id="4381193110021038941">獲得更好的結果</translation>
+<translation id="3846545273704969734">Brave Search 已被獨立驗證，結果優於 Bing（或 DuckDuckGo 等的 Bing 克隆產品）。</translation>
+<translation id="2841164160723712537">改善搜尋結果</translation>
+<translation id="4639001639513524869">Brave 搜尋在大多數查詢中比 DuckDuckGo 更好，並且是真正隱私的。</translation>
 <translation id="5240031343741051161">尝试Brave搜索</translation>
 <translation id="5234764350956374838">關閉</translation>
+<translation id="9218430445555521422">設定為預設</translation>
 <translation id="2370739752330685659">稍後再說</translation>
 <translation id="5100490448228945668">關閉 Brave 搜尋轉換功能，按 Enter 鍵即可移除此建議</translation>
 <translation id="9194637241566114638">匿名傳送使用情況的相關資料，協助改善 <ph name="SEARCH_NAME"/>。<ph name="MORE_INFO"/></translation>
@@ -130,6 +139,9 @@
 <translation id="1162706247109707219">按一下「確定」，即表示您瞭解在更新到 Windows 10 以上版本之前，您安裝的 Brave 不會收到重要的安全性修正。此警告不會再次顯示。</translation>
 <translation id="9164786361657554526">按一下「確定」，即表示您瞭解在更新到 macOS 10.15 以上版本之前，您安裝的 Brave 不會收到重要的安全性修正。此警告不會再次顯示。</translation>
 <translation id="2770465223704140727">從清單中移除</translation>
+<translation id="6020553119523541665">此分頁在另一個視窗中使用中</translation>
+<translation id="4987392683074136770">點擊此分頁會將其內容帶到此窗口</translation>
+<translation id="8355523213948477234">分割畫面功能表按鈕</translation>
 <translation id="2515126961943087659">BAT 廣告服務</translation>
 <translation id="2104347391516032700">Bat 獎勵服務</translation>
 <translation id="6040143037577758943">關閉</translation>
@@ -166,8 +178,7 @@
 <translation id="6959315322491671328">右鍵點擊以移除</translation>
 <translation id="495046168593986294">向上捲動</translation>
 <translation id="4021716437419160885">向下捲動</translation>
-<translation id="1907157509746585817">書籤</translation>
-<translation id="4840597165888262798">閱讀清單</translation>
+<translation id="2702801445560668637">閱讀清單</translation>
 <translation id="2533715613366623756">書籤管理器</translation>
 <translation id="3405021928725149239">書籤管理器</translation>
 <translation id="6284218950354553099">自動傳送每日使用 ping 到 Brave</translation>
@@ -251,7 +262,6 @@
 <translation id="796831669370432378">要新增書籤，點擊網址列旁的書籤按鈕</translation>
 <translation id="8487693399751278191">正在匯入書籤……</translation>
 <translation id="2557899542277210112">為了快速存取，請將您的書籤置於書籤列上。</translation>
-<translation id="2702801445560668637">閱讀清單</translation>
 <translation id="1968543937259008435">準備好迎接最佳網路隱私防護了嗎？</translation>
 <translation id="6817415381278637662">快將 Brave 設為預設瀏覽器，在開啟每個網頁時享有 Brave 提供的隱私防護。</translation>
 <translation id="8722651357687610395">將 Brave 設為預設值</translation>
@@ -348,6 +358,7 @@
 <translation id="2113977810652731515">信用卡</translation>
 <translation id="4096343215397759358">顯示預覽的圖卡</translation>
 <translation id="5297085818601043899">工具提示</translation>
+<translation id="5219886318310413094">在所有視窗中顯示已釘選的分頁</translation>
 <translation id="2396127686705429331">顯示書籤按鈕</translation>
 <translation id="2814998458708016836">使用寬網址列</translation>
 <translation id="4109670531935487117">在網址列顯示自動完成建議</translation>
@@ -462,10 +473,6 @@
 <translation id="2808630562319398131">重設 Brave 獎勵資料…</translation>
 <translation id="6438096877646138757">關閉時清除 cookie 的網站</translation>
 <translation id="2988792685798128092">網站關閉時清除</translation>
-<translation id="4663317021223369617">Cookie 及網站資料</translation>
-<translation id="7050661313034564003">顯示此網站的所有 Cookie 和儲存於本機的資料</translation>
-<translation id="8339059274628563283"><ph name="SITE"/> 儲存在本機的資料</translation>
-<translation id="1963227389609234879">全部移除</translation>
 <translation id="7702907602086592255">網域</translation>
 <translation id="3202131003361292969">路徑</translation>
 <translation id="5390743329570580756">傳送連線類型</translation>

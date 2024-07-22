@@ -45,6 +45,7 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">To je zasebno okno s Tor-om</translation>
 <translation id="1037341607922068025">Odprite zasebno okno s Tor-om</translation>
+<translation id="607982085107926247">Odprite v Tor: <ph name="ADDRESS"/></translation>
 <translation id="496896260395129787">Ta račun za sinhronizacijo Brave je bil izbrisan z druge naprave. Če funkcije Sync niste nameravali onemogočiti, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>ponovno ustvarite račun</translation>
 <translation id="6965382102122355670">V redu</translation>
@@ -55,7 +56,7 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="3094628781200061820">Objavite in pridobite datoteke iz IPFS</translation>
 <translation id="9220923434129933852">Preberite in spremenite nastavitve IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
-<translation id="406832631167785034">Odpri z uporabo naslova .onion</translation>
+<translation id="2269780537090240241">Odpiranje s pomočjo naslova .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Vseeno prilepi</translation>
 <translation id="4901618511712685702">Uvozi v IPFS</translation>
 <translation id="6794469945030154569">Ta stran</translation>
@@ -121,8 +122,16 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="45040495135337202">Brave ne sledi vam, vašim poizvedbam ali vašim klikom. In je 100-odstotno neodvisen od velikanov tehnologije.</translation>
 <translation id="42032117189492785">Iskanje s pomočjo umetne inteligence in z edinstvenim indeksom.</translation>
 <translation id="8606416238399082160">Popolnoma zasebno, 100-odstotno neodvisno in z odličnimi funkcijami umetne inteligence.</translation>
+<translation id="7706528608480893054">DDG je zgolj Bing pod krinko. Čas je za resnično zasebnost, boljše rezultate in neodvisen indeks. Čas je za iskanje z Brave.</translation>
+<translation id="3818133234428578803">Z račko je konec</translation>
+<translation id="14817360483752259">Iskanje z Brave ne beleži vašega vedenja, vaših poizvedb ali vaših klikov. In (za razliko od DDG) ni zgolj Bing pod krinko.</translation>
+<translation id="4381193110021038941">Zagotovite si boljše rezultate</translation>
+<translation id="3846545273704969734">Iskanje z Brave je neodvisno preverjeno in zagotavlja boljše rezultate kot Bing (ali kloni Binga, kot je DuckDuckGo).</translation>
+<translation id="2841164160723712537">Izboljšajte rezultate iskanja</translation>
+<translation id="4639001639513524869">Iskanje z Brave za večino poizvedb nudi boljše rezultate kot DuckDuckGo. In iskanje je resnično zasebno.</translation>
 <translation id="5240031343741051161">Preizkusite iskanje Brave</translation>
 <translation id="5234764350956374838">Opusti</translation>
+<translation id="9218430445555521422">Nastavi kot privzeto</translation>
 <translation id="2370739752330685659">Morda pozneje</translation>
 <translation id="5100490448228945668">Zavrnite pretvorbo iskanja Brave, pritisnite tipko Enter, da odstranite ta predlog</translation>
 <translation id="9194637241566114638">Pomagajte izboljšati <ph name="SEARCH_NAME"/> s pošiljanjem anonimnih podatkov o uporabi.  <ph name="MORE_INFO"/></translation>
@@ -132,6 +141,9 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="1162706247109707219">S klikom na V redu potrjujete, da na vaši namestitev Brave NE bo prihajalo do kritičnih varnostnih popravkov, dokler ne preidete na Windows 10 ali novejšo različico. To opozorilo NE bo več prikazano.</translation>
 <translation id="9164786361657554526">S klikom na V redu potrjujete, da na vaši namestitev Brave NE bo prihajalo do kritičnih varnostnih popravkov, dokler ne preidete na macOS 10.15 ali novejšo različico. To opozorilo NE bo več prikazano.</translation>
 <translation id="2770465223704140727">Odstrani s seznama</translation>
+<translation id="6020553119523541665">Ta zavihek je dejaven v drugem oknu</translation>
+<translation id="4987392683074136770">S klikom na ta zavihek boste njegovo vsebino prenesli na to okno</translation>
+<translation id="8355523213948477234">Gumb za razdeljen pogled menija</translation>
 <translation id="2515126961943087659">Storitev oglasov Bat Ads</translation>
 <translation id="2104347391516032700">Storitev nagrajevanja Bat rewards</translation>
 <translation id="6040143037577758943">Zapri</translation>
@@ -168,8 +180,7 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="6959315322491671328">Za odstranitev kliknite desno miškino tipko</translation>
 <translation id="495046168593986294">Pomaknite se navzgor</translation>
 <translation id="4021716437419160885">Pomaknite se navzdol</translation>
-<translation id="1907157509746585817">zaznamki</translation>
-<translation id="4840597165888262798">bralni seznam</translation>
+<translation id="2702801445560668637">Bralni seznam</translation>
 <translation id="2533715613366623756">Upravitelj zaznamkov</translation>
 <translation id="3405021928725149239">Upravitelj zaznamkov</translation>
 <translation id="6284218950354553099">Samodejno pošlji ping o dnevni uporabi Braveu</translation>
@@ -253,7 +264,6 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="796831669370432378">Če želite strani dodati med zaznamke, kliknite gumb za zaznamke v naslovni vrstici</translation>
 <translation id="8487693399751278191">Uvozi zaznamke zdaj ...</translation>
 <translation id="2557899542277210112">Za hitrejši dostop zaznamke shranite tukaj, v vrstici za zaznamke.</translation>
-<translation id="2702801445560668637">Bralni seznam</translation>
 <translation id="1968543937259008435">Ste pripravljeni na najboljšo zasebnost na spletu?</translation>
 <translation id="6817415381278637662">Brave nastavite kot privzeti brskalnik, da se na vsaki odprti spletni strani prikaže Brave zaščita zasebnosti.</translation>
 <translation id="8722651357687610395">Privzeto nastavite Brave</translation>
@@ -351,6 +361,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="2113977810652731515">Kartica</translation>
 <translation id="4096343215397759358">Kartica s predogledom</translation>
 <translation id="5297085818601043899">Opis orodja</translation>
+<translation id="5219886318310413094">Pripete zavihke prikaži v vseh oknih</translation>
 <translation id="2396127686705429331">Prikaži gumb za zaznamke</translation>
 <translation id="2814998458708016836">Uporabi široko naslovno vrstico</translation>
 <translation id="4109670531935487117">Prikaz predlogov za samodejno dokončanje v naslovni vrstici</translation>
@@ -465,10 +476,6 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="2808630562319398131">Ponastavi podatke Brave Rewards ...</translation>
 <translation id="6438096877646138757">Spletna mesta, ki izbrišejo piškotke, ko jih zaprete</translation>
 <translation id="2988792685798128092">Počisti po zaprtju spletnega mesta</translation>
-<translation id="4663317021223369617">Piškotki in podatki o spletnih mestih</translation>
-<translation id="7050661313034564003">Pokaži vse piškotke in lokalno shranjene podatke za to spletno mesto</translation>
-<translation id="8339059274628563283">Lokalno shranjeni podatki za <ph name="SITE"/></translation>
-<translation id="1963227389609234879">Odstrani vse</translation>
 <translation id="7702907602086592255">Domena</translation>
 <translation id="3202131003361292969">Pot</translation>
 <translation id="5390743329570580756">Pošlji po</translation>

@@ -43,6 +43,7 @@
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">นี่เป็นหน้าต่างส่วนตัวที่เชื่อมต่อผ่าน Tor</translation>
 <translation id="1037341607922068025">เปิดหน้าต่างส่วนตัวด้วย Tor</translation>
+<translation id="607982085107926247">เปิดใน Tor: <ph name="ADDRESS"/></translation>
 <translation id="496896260395129787">บัญชี Brave Sync นี้ถูกลบจากอุปกรณ์อื่น ถ้าคุณไม่ตั้งใจที่จะปิดการซิงค์ ให้<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>สร้างบัญชีใหม่อีกครั้ง</translation>
 <translation id="6965382102122355670">ตกลง</translation>
@@ -53,7 +54,7 @@
 <translation id="3094628781200061820">เผยแพร่และเรียกดูไฟล์จาก IPFS</translation>
 <translation id="9220923434129933852">อ่านและแก้ไขการตั้งค่า IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
-<translation id="406832631167785034">เปิดโดยใช้ที่อยู่ .onion</translation>
+<translation id="2269780537090240241">เปิดโดยใช้ที่อยู่ .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">บังคับวาง</translation>
 <translation id="4901618511712685702">นำเข้าไปยัง IPFS</translation>
 <translation id="6794469945030154569">หน้านี้</translation>
@@ -119,8 +120,16 @@
 <translation id="45040495135337202">Brave ไม่ได้ติดตามคุณ คำค้นหา หรือการคลิกของคุณ และเป็นอิสระจาก Big Tech 100%</translation>
 <translation id="42032117189492785">การค้นหาแบบ AI พร้อมดัชนีที่ไม่ซ้ำใคร</translation>
 <translation id="8606416238399082160">เป็นส่วนตัวโดยสมบูรณ์แบบ เป็นอิสระ 100% และมีคุณสมบัติ AI ที่ยอดเยี่ยม</translation>
+<translation id="7706528608480893054">DDG คือ Bing ที่ปลอมตัวมา ถึงเวลาสำหรับความเป็นส่วนตัวที่แท้จริง ผลลัพธ์ที่ดีกว่า และดัชนีแบบอิสระ ถึงเวลาใช้งาน Brave Search แล้ว</translation>
+<translation id="3818133234428578803">ทิ้งเจ้าเป็ดนั่นไปได้แล้ว</translation>
+<translation id="14817360483752259">Brave Search จะไม่ติดตามคำค้นหาหรือการคลิกของคุณ (ไม่เหมือนกับ DDG) Brave Search นั้นไม่ได้เป็นเพียง Bing ที่ปลอมตัวมา</translation>
+<translation id="4381193110021038941">ได้ผลลัพธ์ที่ดีกว่า</translation>
+<translation id="3846545273704969734">Brave Search ได้ทำการตรวจสอบแบบอิสระเพื่อให้ได้ผลลัพธ์ที่ดีกว่า Bing (หรือของเลียนแบบ Bing อย่าง DuckDuckGo)</translation>
+<translation id="2841164160723712537">ปรับปรุงผลการค้นหา</translation>
+<translation id="4639001639513524869">Brave Search ให้ผลลัพธ์ที่ดีกว่า DuckDuckGo สำหรับคำค้นหาส่วนใหญ่ และมีความเป็นส่วนตัวอย่างแท้จริง</translation>
 <translation id="5240031343741051161">ลอง Brave Search</translation>
 <translation id="5234764350956374838">ปิด</translation>
+<translation id="9218430445555521422">ตั้งเป็นค่าเริ่มต้น</translation>
 <translation id="2370739752330685659">ภายหลัง</translation>
 <translation id="5100490448228945668">เปลี่ยนคอนเวอร์ชันการค้นหา Brave กด Enter เพื่อลบคำแนะนำนี้</translation>
 <translation id="9194637241566114638">ช่วยปรับปรุง <ph name="SEARCH_NAME"/> ด้วยการส่งข้อมูลการใช้งานแบบไม่ระบุชื่อ  <ph name="MORE_INFO"/></translation>
@@ -130,6 +139,9 @@
 <translation id="1162706247109707219">ด้วยการกด "ตกลง" คุณได้รับทราบว่า Brave ที่ติดตั้งในเครื่องของคุณจะไม่ได้รับการแก้ไขความปลอดภัยสำคัญจนกว่าคุณจะอัปเดตเป็น Windows 10 หรือใหม่กว่า คำเตือนนี้จะไม่มีการแสดงอีก</translation>
 <translation id="9164786361657554526">ด้วยการกด "ตกลง" คุณได้รับทราบว่า Brave ที่ติดตั้งในเครื่องของคุณจะไม่ได้รับการแก้ไขความปลอดภัยสำคัญจนกว่าคุณจะอัปเดตเป็น macOS 10.15 หรือใหม่กว่า คำเตือนนี้จะไม่มีการแสดงอีก</translation>
 <translation id="2770465223704140727">ลบจากรายการ</translation>
+<translation id="6020553119523541665">แท็บนี้จะทำงานในอีกหน้าต่าง</translation>
+<translation id="4987392683074136770">การคลิกแท็บนี้จะเป็นการนำเนื้อหาของแท็บมาที่หน้าต่างนี้</translation>
+<translation id="8355523213948477234">ปุ่มเมนูแบบแยก</translation>
 <translation id="2515126961943087659">บริการโฆษณา BAT</translation>
 <translation id="2104347391516032700">บริการ Bat Rewards</translation>
 <translation id="6040143037577758943">ปิด</translation>
@@ -166,8 +178,7 @@
 <translation id="6959315322491671328">คลิกขวาเพื่อลบ</translation>
 <translation id="495046168593986294">เลื่อนขึ้น</translation>
 <translation id="4021716437419160885">เลื่อนลง</translation>
-<translation id="1907157509746585817">บุ๊กมาร์ก</translation>
-<translation id="4840597165888262798">รายการรออ่าน</translation>
+<translation id="2702801445560668637">รายการรออ่าน</translation>
 <translation id="2533715613366623756">ตัวจัดการบุ๊กมาร์ก</translation>
 <translation id="3405021928725149239">ตัวจัดการบุ๊กมาร์ก</translation>
 <translation id="6284218950354553099">ส่งปิงการใช้งานรายวันไปยัง Brave โดยอัตโนมัติ</translation>
@@ -251,7 +262,6 @@
 <translation id="796831669370432378">หากต้องการเพิ่มบุ๊กมาร์ก ให้คลิกปุ่มบุ๊กมาร์กที่อยู่ถัดจากแถบที่อยู่</translation>
 <translation id="8487693399751278191">นำเข้าบุ๊กมาร์กเดี๋ยวนี้...</translation>
 <translation id="2557899542277210112">สำหรับการเข้าถึงแบบด่วน วางบุ๊กมาร์กไว้ที่นี่บนแถบบุ๊กมาร์ก</translation>
-<translation id="2702801445560668637">รายการรออ่าน</translation>
 <translation id="1968543937259008435">พร้อมท่องโลกออนไลน์แบบส่วนตัวที่สุดแล้วหรือยัง</translation>
 <translation id="6817415381278637662">ตั้งค่าให้ Brave เป็นเบราว์เซอร์เริ่มต้นของคุณเพื่อรับการป้องกันความเป็นส่วนตัวของ Brave ในทุกหน้าเว็บที่คุณเปิด</translation>
 <translation id="8722651357687610395">ตั้งค่า Brave เป็นค่าเริ่มต้น</translation>
@@ -348,6 +358,7 @@
 <translation id="2113977810652731515">การ์ด</translation>
 <translation id="4096343215397759358">การ์ดพร้อมตัวอย่าง</translation>
 <translation id="5297085818601043899">เคล็ดลับเครื่องมือ</translation>
+<translation id="5219886318310413094">แสดงแท็บที่ปักหมุดในหน้าต่างทั้งหมด</translation>
 <translation id="2396127686705429331">แสดงปุ่มบุ๊กมาร์ก</translation>
 <translation id="2814998458708016836">ใช้แถบที่อยู่แบบกว้าง</translation>
 <translation id="4109670531935487117">แสดงคำแนะนำการเติมข้อความอัตโนมัติในแถบที่อยู่</translation>
@@ -462,10 +473,6 @@
 <translation id="2808630562319398131">รีเซ็ตข้อมูล Brave Rewards...</translation>
 <translation id="6438096877646138757">เว็บไซต์ที่จะล้างคุกกี้เมื่อคุณปิด</translation>
 <translation id="2988792685798128092">ล้างเมื่อปิดเว็บไซต์</translation>
-<translation id="4663317021223369617">คุกกี้และข้อมูลเว็บไซต์</translation>
-<translation id="7050661313034564003">แสดงคุกกี้ทั้งหมดและข้อมูลสำหรับเว็บไซต์นี้ที่เก็บอยู่ในเครื่อง</translation>
-<translation id="8339059274628563283">ข้อมูล <ph name="SITE"/> ที่เก็บไว้ในเครื่อง</translation>
-<translation id="1963227389609234879">นำออกทั้งหมด</translation>
 <translation id="7702907602086592255">โดเมน</translation>
 <translation id="3202131003361292969">เส้นทาง</translation>
 <translation id="5390743329570580756">ส่งสำหรับ</translation>

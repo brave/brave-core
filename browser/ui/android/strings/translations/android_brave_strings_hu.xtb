@@ -417,9 +417,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="7275773481201277457">Brave statisztikák mutatása</translation>
 <translation id="8297488609722895137">A fénykép készítője: <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">A Brave Rewards használatára kattintva elfogadja a <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Pénzt kaphat a háttérkép megtekintéséért.</translation>
 <translation id="7136586167396205364">Szponzorált képek elrejtése</translation>
-<translation id="2927095357213611519">A webes tartalomkészítőket tokenekkel támogathatja. \nTokeneket magánszférát tiszteletben tartó hirdetések megtekintésével szerezhet.</translation>
 <translation id="2898634658146274982">Külső hivatkozások megnyitása a Brave-ben</translation>
 <translation id="5616508928556767259">A más alkalmazásból származó hivatkozásokat Brave webes nézetben nyitja meg. Megjegyzés: ehhez a Brave-nek kell lennie az alapértelmezett böngészőnek.</translation>
 <translation id="2394961582378297792">Kijelentkezett</translation>
@@ -477,6 +475,10 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="8912304686498704084">FEL</translation>
 <translation id="4963218453264888510">LE</translation>
 <translation id="7474113515179313724">A Brave adatvédelmi rendszere nélkül böngészel. Nem működik megfelelően ha be van kapcsolva Shields?</translation>
+<translation id="4226543734057230801">Ethereum-hálózatok</translation>
+<translation id="3504157706952484145">Filecoin-hálózatok</translation>
+<translation id="1561541094377237745">Solana-hálózatok</translation>
+<translation id="7141438739990875547">Bitcoin-hálózatok</translation>
 <translation id="9055546041146396417">Ha ez az oldal nem működik, próbáld meg a Shields nélkül.</translation>
 <translation id="1209739344687072997">Nem működő oldal jelentése</translation>
 <translation id="8510478288840333677">Hívja fel a Brave fejlesztőinek figyelmét arra, hogy ez az oldal nem működik megfelelően a Shieldsel:</translation>
@@ -575,8 +577,6 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="2422627462367776805">Dél-koreai internetes portál &amp; amp; keresés</translation>
 <translation id="177282784098234156">Privát, független, felhasználóbarát</translation>
 <translation id="1410130669636877548">Egyes keresőmotorok jobban védik adataidat internetes keresés közben.</translation>
-<translation id="5187052478998910855">Kell egy kis frissítés a Rewardsot illetően?</translation>
-<translation id="8622329973403382303">Nézz meg egy gyors bemutatót, hogy tisztázódjon, hogyan működik, és Rewards rocksztárként jegyezhessen fel a történelem!</translation>
 <translation id="3479552764303398839">Ne most</translation>
 <translation id="7138272885617540195">Alkalmazás-hivatkozások megnyitásának engedélyezése Brave-en kívüli alkalmazásokban</translation>
 <translation id="4954512758656527938">Alapértelmezett Ethereum pénztárca</translation>
@@ -702,9 +702,11 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="6748319398471481216">Havonta megújul</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / hó.</translation>
 <translation id="1163809943099641131">Egy év</translation>
-<translation id="7574007394522199115"><ph name="PERCENTAGE_AMOUNT"/>%% megtakarítás az éves megújítással</translation>
+<translation id="172859718096975160">Újítsa meg évente <ph name="DISCOUNT_TEXT_START"/> <ph name="PERCENTAGE_AMOUNT"/>%% megtakarítás<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / év.</translation>
-<translation id="2655185358771731232">Próbálja ki 7 napig ingyenesen. A 7 nap lejártával levonjuk az előfizetés összegét. Minden előfizetést automatikusan megújítunk, de megújítás előtt le lehet mondani.</translation>
+<translation id="5125233570742276182">Az előfizetési díjak kiszabása a Google-fiókján keresztül történik. Az esetleges ingyenes próbaidőszak fel nem használt hányada elveszik az előfizetés megvásárlásakor.\n\nElőfizetése automatikusan megújul, hacsak nem mondja le legalább 24 órával az aktuális időszak vége előtt.\n\nElőfizetéseit a Beállításokban kezelheti.\nA Brave használatával Ön elfogadja a használati feltételeket és az adatvédelmi szabályzatot.</translation>
+<translation id="5035172357624830412">Már vásárolt a brave.com-on?</translation>
+<translation id="713136183174551885">Frissítse hitelesítő adatait</translation>
 <translation id="6053992191006521518">Próbálja ki INGYENESEN</translation>
 <translation id="5903391101107992067">Próbálja ki 7 napig ingyen!</translation>
 <translation id="721747358270435486">VPN telepítése</translation>
@@ -850,7 +852,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="7791543448312431591">Hozzáadás</translation>
 <translation id="6889920539620318793">Beállítás aktívként</translation>
 <translation id="2653659639078652383">Elküldés</translation>
-<translation id="4556601961751528347">Csatlakoztatott fiókok megváltoztatása</translation>
+<translation id="4945690646623486292">Hálózat kiválasztása</translation>
 <translation id="5233638681132016545">Új lap</translation>
 <translation id="8006088103295786154">Hozzáférés a Brave pénztárcához</translation>
 <translation id="8030169304546394654">Nincs kapcsolat</translation>
@@ -907,7 +909,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="2322227405137827074">Szeretné importálni ezt a tokent?</translation>
 <translation id="1324417023773393937">Brave böngésző</translation>
 <translation id="6044189892950611565">A Brave böngésző értesítési csatornája</translation>
-<translation id="1173919438868967364">Számla kiválasztása</translation>
+<translation id="4556601961751528347">Csatlakoztatott fiókok megváltoztatása</translation>
 <translation id="8922793255489232731">Nem sikerült időzónát találni a következőhöz: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Kapcsolódva a következőhöz: <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Próbaverzió</translation>
@@ -1063,7 +1065,6 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="4932733599132424254">Dátum</translation>
 <translation id="346505172740911461">Piaci ár</translation>
 <translation id="5494920125229734069">Összes kiválasztása</translation>
-<translation id="5972844218283131174">Összes kiválasztás megszüntetése</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Bejelentkezés a Brave pénztárcával</translation>
 <translation id="3696514931437952995">A következőbe jelentkezik be: <ph name="ORIGIN"/>. A Brave pénztárca meg fogja osztani a pénztárcája címét a következővel: <ph name="ORIGIN"/>.</translation>

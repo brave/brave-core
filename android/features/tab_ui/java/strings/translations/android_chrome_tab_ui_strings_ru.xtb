@@ -5,14 +5,13 @@
 <translation id="1063300264396686489">Автоматически открывать группы вкладок с других устройств</translation>
 <translation id="1075622780330595106">Вы давно не использовали некоторые вкладки (всего: <ph name="NUMBER_OF_TABS"/>). Закрыть их?</translation>
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{Создано <ph name="NUM_YEARS_ONE"/> год назад}one{Создано <ph name="NUM_YEARS_MANY"/> год назад}few{Создано <ph name="NUM_YEARS_MANY"/> года назад}many{Создано <ph name="NUM_YEARS_MANY"/> лет назад}other{Создано <ph name="NUM_YEARS_MANY"/> года назад}}</translation>
-<translation id="1155815720264022949">Закрыть старые вкладки?</translation>
 <translation id="1173894706177603556">Переименовать</translation>
 <translation id="1197088940767939838">Оранжевый</translation>
-<translation id="1215127405478249895">Посмотреть вкладки</translation>
 <translation id="125153950246128346">Нажмите, чтобы перейти на другую вкладку</translation>
+<translation id="1273910660700874265">Настройки группы вкладок "<ph name="TITLE_OF_GROUP"/>"</translation>
 <translation id="1322824555808364080">Пригласить пользователей</translation>
-<translation id="1326271443836399892">Проверить настройки упорядочивания.</translation>
 <translation id="1419023007528516122">Группа будет навсегда удалена с устройства.</translation>
+<translation id="1486715732399361704">Здесь вы найдете все группы вкладок</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{Создано <ph name="NUM_MINS_ONE"/> минуту назад}one{Создано <ph name="NUM_MINS_MANY"/> минуту назад}few{Создано <ph name="NUM_MINS_MANY"/> минуты назад}many{Создано <ph name="NUM_MINS_MANY"/> минут назад}other{Создано <ph name="NUM_MINS_MANY"/> минуты назад}}</translation>
 <translation id="1501480321619201731">Удалить группу</translation>
 <translation id="1555130319947370107">Синий</translation>
@@ -41,9 +40,9 @@
 <translation id="4691798003247738043">Brave | О магазине</translation>
 <translation id="2977480621796371840">Удалить из группы</translation>
 <translation id="3008554597174452548">Не отслеживать товар</translation>
+<translation id="3026391124054406831">Создавайте группы, чтобы упорядочивать вкладки.</translation>
 <translation id="3052964831964880138"><ph name="PRODUCT_NAME"/>: скидка <ph name="PRICE_DROP"/></translation>
 <translation id="3078350928901129212">Цвет значка палитры для группы вкладок: <ph name="COLOR_NAME"/></translation>
-<translation id="313819129451406482">{TABS_COUNT,plural, =1{В архиве <ph name="TABS_COUNT_ONE"/> вкладка}one{В архиве <ph name="TABS_COUNT_MANY"/> вкладка}few{В архиве <ph name="TABS_COUNT_MANY"/> вкладки}many{В архиве <ph name="TABS_COUNT_MANY"/> вкладок}other{В архиве <ph name="TABS_COUNT_MANY"/> вкладки}}</translation>
 <translation id="3194464645767632461">оценка</translation>
 <translation id="3291470810748040983">Если цена на открытой вкладке снизится, вы получите оповещение.</translation>
 <translation id="3322827343001922122">Открыть меню действий для группы вкладок "<ph name="TITLE_OF_GROUP"/>"</translation>
@@ -55,13 +54,14 @@
 <translation id="3882834874697329510">Чтобы получать оповещения о снижении цены на открытой вкладке, включите уведомления в настройках.</translation>
 <translation id="3940195383040445971">Отслеживать цены на вкладках</translation>
 <translation id="3954615705217314756">{TABS_COUNT,plural, =1{Добавить вкладку в группу}one{Добавить вкладки в группу}few{Добавить вкладки в группу}many{Добавить вкладки в группу}other{Добавить вкладки в группу}}</translation>
+<translation id="395587619114760247">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> неактивная вкладка}one{<ph name="TABS_COUNT_MANY"/> неактивная вкладка}few{<ph name="TABS_COUNT_MANY"/> неактивные вкладки}many{<ph name="TABS_COUNT_MANY"/> неактивных вкладок}other{<ph name="TABS_COUNT_MANY"/> неактивной вкладки}}</translation>
+<translation id="3969565576924904454">Открыть "<ph name="TITLE_OF_GROUP"/>"</translation>
 <translation id="3996880007329611795">Получать уведомления</translation>
 <translation id="4009732926939031387">{NUM_DAYS,plural, =1{Создано <ph name="NUM_DAYS_ONE"/> день назад}one{Создано <ph name="NUM_DAYS_MANY"/> день назад}few{Создано <ph name="NUM_DAYS_MANY"/> дня назад}many{Создано <ph name="NUM_DAYS_MANY"/> дней назад}other{Создано <ph name="NUM_DAYS_MANY"/> дня назад}}</translation>
 <translation id="4133493477912226187">Обнаружены похожие вкладки (<ph name="NUMBER_OF_TABS"/>). Сгруппировать их?</translation>
 <translation id="4139634748112164403">Вкладки на устройстве останутся открытыми, но группа будет навсегда удалена.</translation>
 <translation id="4156086991340739772">{NUMBER_OF_TABS,plural, =1{Закрыть группу вкладок "<ph name="TITLE_OF_GROUP"/>". Группе присвоен <ph name="COLOR_NAME"/> цвет, и в ней <ph name="TABS_COUNT_ONE"/> вкладка.}one{Закрыть группу вкладок "<ph name="TITLE_OF_GROUP"/>". Группе присвоен <ph name="COLOR_NAME"/> цвет, и в ней <ph name="TABS_COUNT_MANY"/> вкладка.}few{Закрыть группу вкладок "<ph name="TITLE_OF_GROUP"/>". Группе присвоен <ph name="COLOR_NAME"/> цвет, и в ней <ph name="TABS_COUNT_MANY"/> вкладки.}many{Закрыть группу вкладок "<ph name="TITLE_OF_GROUP"/>". Группе присвоен <ph name="COLOR_NAME"/> цвет, и в ней <ph name="TABS_COUNT_MANY"/> вкладок.}other{Закрыть группу вкладок "<ph name="TITLE_OF_GROUP"/>". Группе присвоен <ph name="COLOR_NAME"/> цвет, и в ней <ph name="TABS_COUNT_MANY"/> вкладки.}}</translation>
 <translation id="4159784952369912983">Фиолетовый</translation>
-<translation id="4212246570487010370">Продолжить просмотр</translation>
 <translation id="4220650239473304853">{NUMBER_OF_TABS,plural, =1{Развернуть группу вкладок "<ph name="TITLE_OF_GROUP"/>". В ней <ph name="TABS_COUNT_ONE"/> вкладка.}one{Развернуть группу вкладок "<ph name="TITLE_OF_GROUP"/>". В ней <ph name="TABS_COUNT_MANY"/> вкладка.}few{Развернуть группу вкладок "<ph name="TITLE_OF_GROUP"/>". В ней <ph name="TABS_COUNT_MANY"/> вкладки.}many{Развернуть группу вкладок "<ph name="TITLE_OF_GROUP"/>". В ней <ph name="TABS_COUNT_MANY"/> вкладок.}other{Развернуть группу вкладок "<ph name="TITLE_OF_GROUP"/>". В ней <ph name="TABS_COUNT_MANY"/> вкладки.}}</translation>
 <translation id="427987768447457592">Новая группа вкладок</translation>
 <translation id="4460014764210899310">Отменить создание группы</translation>
@@ -81,13 +81,11 @@
 <translation id="5082793167783849073">Сравнивайте страницы быстрее, объединяя их в группы. Чтобы начать, нажмите на ссылку и удерживайте ее.</translation>
 <translation id="5094423602314093681">Убрать вкладки и удалить группу?</translation>
 <translation id="5161254044473106830">Введите название</translation>
-<translation id="5303274951032363933">{TABS_COUNT,plural, =1{Вы давно не открывали <ph name="TABS_COUNT_ONE"/> вкладку.}one{Вы давно не открывали <ph name="TABS_COUNT_MANY"/> вкладку.}few{Вы давно не открывали <ph name="TABS_COUNT_MANY"/> вкладки.}many{Вы давно не открывали <ph name="TABS_COUNT_MANY"/> вкладок.}other{Вы давно не открывали <ph name="TABS_COUNT_MANY"/> вкладки.}}</translation>
 <translation id="5338401825260744482">{NUMBER_OF_TABS,plural, =1{Закрыть группу вкладок. В ней <ph name="TABS_COUNT_ONE"/> вкладка.}one{Закрыть группу вкладок. В ней <ph name="TABS_COUNT_MANY"/> вкладка.}few{Закрыть группу вкладок. В ней <ph name="TABS_COUNT_MANY"/> вкладки.}many{Закрыть группу вкладок. В ней <ph name="TABS_COUNT_MANY"/> вкладок.}other{Закрыть группу вкладок. В ней <ph name="TABS_COUNT_MANY"/> вкладки.}}</translation>
 <translation id="5339733443032484186">Ваша последняя вкладка</translation>
 <translation id="5400836586163650660">Серый</translation>
 <translation id="5490235265819901748">Группа вкладок развернута</translation>
 <translation id="5494920125229734069">Выделить все</translation>
-<translation id="5545379293264651575">Закрыть без проверки</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{Закрыть группу вкладок, которой присвоен <ph name="COLOR_NAME"/> цвет. В ней <ph name="TABS_COUNT_ONE"/> вкладка.}one{Закрыть группу вкладок, которой присвоен <ph name="COLOR_NAME"/> цвет. В ней <ph name="TABS_COUNT_MANY"/> вкладка.}few{Закрыть группу вкладок, которой присвоен <ph name="COLOR_NAME"/> цвет. В ней <ph name="TABS_COUNT_MANY"/> вкладки.}many{Закрыть группу вкладок, которой присвоен <ph name="COLOR_NAME"/> цвет. В ней <ph name="TABS_COUNT_MANY"/> вкладок.}other{Закрыть группу вкладок, которой присвоен <ph name="COLOR_NAME"/> цвет. В ней <ph name="TABS_COUNT_MANY"/> вкладки.}}</translation>
 <translation id="5556417849629758491">Просмотр сведений о магазине, параметр вверху экрана</translation>
 <translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ссылка из Brave}one{<ph name="TABS_COUNT_MANY"/> ссылка из Brave}few{<ph name="TABS_COUNT_MANY"/> ссылки из Brave}many{<ph name="TABS_COUNT_MANY"/> ссылок из Brave}other{<ph name="TABS_COUNT_MANY"/> ссылки из Brave}}</translation>
@@ -100,6 +98,7 @@
 <translation id="6054741997831917303">Цена на этот товар недавно снизилась с <ph name="PREVIOUS_PRICE"/> до <ph name="NEW_PRICE"/></translation>
 <translation id="6193448654517602979">Выбрать вкладки</translation>
 <translation id="6228793724645064692">(оценка магазина)</translation>
+<translation id="6271513594716432922">Закрыть все неактивные вкладки</translation>
 <translation id="6333260925957816943">Информация об этом магазине</translation>
 <translation id="6381032505162537930">Здесь хранятся группы вкладок</translation>
 <translation id="639823877092900621">{TABS_COUNT,plural, =1{Отменить группировку для <ph name="TABS_COUNT_ONE"/> выбранной вкладки}one{Отменить группировку для <ph name="TABS_COUNT_MANY"/> выбранной вкладки}few{Отменить группировку для <ph name="TABS_COUNT_MANY"/> выбранных вкладок}many{Отменить группировку для <ph name="TABS_COUNT_MANY"/> выбранных вкладок}other{Отменить группировку для <ph name="TABS_COUNT_MANY"/> выбранной вкладки}}</translation>
@@ -108,7 +107,6 @@
 <translation id="6557858706263317126">+<ph name="HIDDEN_TABS_COUNT"/></translation>
 <translation id="6562820390860419811">Переместить вкладку влево</translation>
 <translation id="6615455863669487791">Показать</translation>
-<translation id="6398241160085205003">Закрытые вкладки можно будет найти в разделе "Недавние вкладки" главного меню Brave.</translation>
 <translation id="6744956528665271406">Изменить цвет группы</translation>
 <translation id="6840760312327750441">Чтобы сгруппировать вкладки: нажмите и удерживайте одну вкладку, затем перетащите ее на другую.</translation>
 <translation id="6856809498882026482">Выйти из режима выбора вкладок</translation>
@@ -144,7 +142,6 @@
 <translation id="8338427544764842461">Здесь хранятся группы вкладок. Они обновляются на всех устройствах, на которых выполнен вход в аккаунт.</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{Закрыть <ph name="TABS_COUNT_ONE"/> выбранную вкладку}one{Закрыть <ph name="TABS_COUNT_MANY"/> выбранную вкладку}few{Закрыть <ph name="TABS_COUNT_MANY"/> выбранные вкладки}many{Закрыть <ph name="TABS_COUNT_MANY"/> выбранных вкладок}other{Закрыть <ph name="TABS_COUNT_MANY"/> выбранной вкладки}}</translation>
 <translation id="8398929769197326728">Новая папка – <ph name="CURRENT_TIMESTAMP_MS"/></translation>
-<translation id="870736955561925754">Закрыть вкладку и удалить группу?</translation>
 <translation id="8714939927607906138">Более низкая цена</translation>
 <translation id="8730621377337864115">Готово</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{Создано <ph name="NUM_MONTHS_ONE"/> месяц назад}one{Создано <ph name="NUM_MONTHS_MANY"/> месяц назад}few{Создано <ph name="NUM_MONTHS_MANY"/> месяца назад}many{Создано <ph name="NUM_MONTHS_MANY"/> месяцев назад}other{Создано <ph name="NUM_MONTHS_MANY"/> месяца назад}}</translation>
@@ -157,12 +154,11 @@
 <translation id="9169594135889675189">Добавить новую вкладку в группу</translation>
 <translation id="9216898458513705996">Хотя здесь вкладки останутся открытыми, группа будет удалена на всех устройствах, на которых выполнен вход в аккаунт <ph name="USER_EMAIL"/>.</translation>
 <translation id="927441551066996669">{NUMBER_OF_TABS,plural, =1{Развернуть группу вкладок, которой присвоен <ph name="COLOR_NAME"/> цвет. В ней <ph name="TABS_COUNT_ONE"/> вкладка.}one{Развернуть группу вкладок, которой присвоен <ph name="COLOR_NAME"/> цвет. В ней <ph name="TABS_COUNT_MANY"/> вкладка.}few{Развернуть группу вкладок, которой присвоен <ph name="COLOR_NAME"/> цвет. В ней <ph name="TABS_COUNT_MANY"/> вкладки.}many{Развернуть группу вкладок, которой присвоен <ph name="COLOR_NAME"/> цвет. В ней <ph name="TABS_COUNT_MANY"/> вкладок.}other{Развернуть группу вкладок, которой присвоен <ph name="COLOR_NAME"/> цвет. В ней <ph name="TABS_COUNT_MANY"/> вкладки.}}</translation>
-<translation id="955558140275419384">Откройте этот редактор, чтобы упорядочить все вкладки, отправленные в архив.</translation>
 <translation id="959682366969460160">Организация работы</translation>
 <translation id="992256792861109788">Розовый</translation>
-<translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
-        =1 {Последние посещенные сайты можно найти в разделе «Недавние вкладки» главного меню Brave. Информация о вкладке инкогнито недоступна.}
-        other {Последние посещенные сайты можно найти в разделе «Недавние вкладки» главного меню Brave. Информация о вкладках инкогнито (#) недоступна.}}</translation>
 <translation id="3228718275011575753">Закрыть все приватные вкладки?</translation>
 <translation id="6687920250729800417">История действий на вкладках инкогнито будет удалена с устройства.</translation>
+<translation id="6086127758480584723">{INCOGNITO_TABS_COUNT, plural,
+        =1 {Закрытые вкладки и их группы можно восстановить в разделах главного меню Brave «Недавние вкладки» и «Группы вкладок». Вкладка инкогнито будет недоступна.}
+        other {Закрытые вкладки и их группы можно восстановить в разделах главного меню Brave «Недавние вкладки» и «Группы вкладок». Вкладки инкогнито (#) будут недоступны.}}</translation>
 </translationbundle>

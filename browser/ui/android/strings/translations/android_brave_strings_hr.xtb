@@ -417,9 +417,7 @@ Sigurno želite to napraviti?</translation>
 <translation id="7275773481201277457">Prikaži stanja Brave</translation>
 <translation id="8297488609722895137">Autor fotografije <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Ako dodirnete Počni upotrebljavati uslugu Nagrade Brave, slažete se s dokumentom <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Zaradite pregledavanjem ove pozadinske slike.</translation>
 <translation id="7136586167396205364">Sakrij sponzorirane slike</translation>
-<translation id="2927095357213611519">Podržavajte stvaratelje na internetu tokenima.\nZarađuje tokene gledanjem oglasa kojima se poštuje privatnost.</translation>
 <translation id="2898634658146274982">Otvorite vanjske poveznice u pregledniku Brave</translation>
 <translation id="5616508928556767259">Otvorite poveznice iz drugih aplikacija u mrežnom prikazu Brave. Napomena: preglednik Brave mora biti postavljen kao vaš zadani preglednik.</translation>
 <translation id="2394961582378297792">Odjavljeni ste</translation>
@@ -477,6 +475,10 @@ Sigurno želite to napraviti?</translation>
 <translation id="8912304686498704084">GORE</translation>
 <translation id="4963218453264888510">DOLJE</translation>
 <translation id="7474113515179313724">Pregledavate ovo mrežno mjesto bez sigurnosne zaštite i zaštite privatnosti preglednika Brave. Radi li ispravno s uključenom značajkom Štitnika?</translation>
+<translation id="4226543734057230801">Mreže Ethereum</translation>
+<translation id="3504157706952484145">Mreže Filecoin</translation>
+<translation id="1561541094377237745">Mreže Solana</translation>
+<translation id="7141438739990875547">Mreže Bitcoin</translation>
 <translation id="9055546041146396417">Ako se mrežno mjesto čini neispravno, pokušajte isključiti štitove.</translation>
 <translation id="1209739344687072997">Prijavi nevaljano mrežno mjesto</translation>
 <translation id="8510478288840333677">Javite razvojnim inženjerima preglednika Brave da ovo mrežno mjesto ne radi ispravno pri uporabi značajke Štitovi:</translation>
@@ -575,8 +577,6 @@ Sigurno želite to napraviti?</translation>
 <translation id="2422627462367776805">Južnokorejski mrežni portal i pretraživanje</translation>
 <translation id="177282784098234156">Privatnost, neovisnost i korisnik na prvom mjestu</translation>
 <translation id="1410130669636877548">Nekim se tražilicama štiti vaša privatnost bolje od drugih kada se pretražuje internet.</translation>
-<translation id="5187052478998910855">Trebate podsjetnik na Rewards?</translation>
-<translation id="8622329973403382303">Krenite u kratki obilazak kako biste razjasnili kako se ulazi u povijest kao zvijezda Rewards!</translation>
 <translation id="3479552764303398839">Ne sada</translation>
 <translation id="7138272885617540195">Dopustite poveznicama aplikacije da otvaraju aplikacije izvan preglednika Brave</translation>
 <translation id="4954512758656527938">Zadani novčanik za platformu Ethereum</translation>
@@ -704,9 +704,11 @@ Račun
 <translation id="6748319398471481216">Mjesečno obnavljanje</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / m.</translation>
 <translation id="1163809943099641131">Jedna godina</translation>
-<translation id="7574007394522199115">Godišnje obnovi i uštedi <ph name="PERCENTAGE_AMOUNT"/> %%</translation>
+<translation id="172859718096975160">Obnavljate svake godine<ph name="DISCOUNT_TEXT_START"/>uštedite<ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / g.</translation>
-<translation id="2655185358771731232">Isprobajte besplatno na 7 dana. Nakon 7 dana naplaćuje vam se cijena plana. Sve pretplate automatski se obnavljaju, no mogu se otkazati prije obnavljanja.</translation>
+<translation id="5125233570742276182">Pretplate se naplaćuju ​​putem vašeg računa za Google. Svaki neupotrijebljeni dio besplatnog probnog razdoblja, ako je ponuđen, gubi se kada kupite pretplatu. Vaša se pretplata automatski obnavlja osim ako se ne otkaže najmanje 24 sata prije kraja tekućeg razdoblja. Svojim pretplatama možete upravljati u Postavkama. Upotrebom preglednika Brave slažete se s Odredbama upotrebe i Pravilnikom o zaštiti privatnosti.</translation>
+<translation id="5035172357624830412">Već ste kupili putem mrežnog mjesta brave.com?</translation>
+<translation id="713136183174551885">Osvježi vjerodajnice</translation>
 <translation id="6053992191006521518">Isprobaj BESPLATNO</translation>
 <translation id="5903391101107992067">Probajte besplatno 7 dana</translation>
 <translation id="721747358270435486">Instaliraj mrežu VPN</translation>
@@ -852,7 +854,7 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="7791543448312431591">Dodaj</translation>
 <translation id="6889920539620318793">Postavi kao aktivno</translation>
 <translation id="2653659639078652383">Pošalji</translation>
-<translation id="4556601961751528347">Mijenjanje povezanog računa</translation>
+<translation id="4945690646623486292">Odaberi mrežu</translation>
 <translation id="5233638681132016545">Nova kartica</translation>
 <translation id="8006088103295786154">Pristupi novčaniku Brave</translation>
 <translation id="8030169304546394654">Prekinuta veza</translation>
@@ -910,7 +912,7 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="2322227405137827074">Želite li uvesti ovaj token?</translation>
 <translation id="1324417023773393937">Preglednik Brave</translation>
 <translation id="6044189892950611565">Kanal obavijesti preglednika Brave</translation>
-<translation id="1173919438868967364">Odabir računa</translation>
+<translation id="4556601961751528347">Mijenjanje povezanog računa</translation>
 <translation id="8922793255489232731">Nije bilo moguće pronaći odgovarajuću vremensku zonu za : <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Povezano s <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Probna verzija</translation>
@@ -1068,7 +1070,6 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="4932733599132424254">Datum</translation>
 <translation id="346505172740911461">Tržišna cijena</translation>
 <translation id="5494920125229734069">Odaberi sve</translation>
-<translation id="5972844218283131174">Poništite sve</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Prijava Novčanikom Brave</translation>
 <translation id="3696514931437952995">Prijavljujete se u <ph name="ORIGIN"/>. Novčanikom Brave dijeli se adresa vašeg novčanika sa sljedećim: <ph name="ORIGIN"/>.</translation>

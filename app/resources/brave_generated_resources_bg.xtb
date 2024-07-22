@@ -43,6 +43,7 @@
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Това е поверителен прозорец с Tor</translation>
 <translation id="1037341607922068025">Отворете поверителен прозорец с Tor</translation>
+<translation id="607982085107926247">Отваряне в Tor: <ph name="ADDRESS"/></translation>
 <translation id="496896260395129787">Този акаунт в Brave Синхронизиране беше изтрит от друго устройство. Ако не сте искали да деактивирате Синхронизиране,<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> създайте отново акаунта</translation>
 <translation id="6965382102122355670">Добре</translation>
@@ -53,7 +54,7 @@
 <translation id="3094628781200061820">Публикувайте и извличайте файлове от IPFS</translation>
 <translation id="9220923434129933852">Четене и промяна на настройките на IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
-<translation id="406832631167785034">Отваряне с .onion адрес</translation>
+<translation id="2269780537090240241">Отваряне чрез .onion адрес: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Принудително поставяне</translation>
 <translation id="4901618511712685702">Импортирай в IPFS</translation>
 <translation id="6794469945030154569">Тази страница</translation>
@@ -119,8 +120,16 @@
 <translation id="45040495135337202">Brave не проследява активността, заявките или кликванията ви. И е 100% независим от големите технологични компании.</translation>
 <translation id="42032117189492785">Търсене с помощта на изкуствен интелект и уникален индекс.</translation>
 <translation id="8606416238399082160">Напълно поверителен, 100% независим и със страхотни функции на изкуствен интелект.</translation>
+<translation id="7706528608480893054">DDG е просто прикрит Bing. Време е за истинска поверителност, по-добри резултати и независим индекс. Време е за Brave Търсене.</translation>
+<translation id="3818133234428578803">Забравете за прикриването</translation>
+<translation id="14817360483752259">Brave Търсене не следи Вас, Вашите заявки или щракания. И (за разлика от DDG) не е просто Bing под прикритие.</translation>
+<translation id="4381193110021038941">Насладете се на по-добри резултати</translation>
+<translation id="3846545273704969734">Независима проверка показва, че Brave Търсене има по-добри резултати от Bing (или клонинги на Bing като DuckDuckGo).</translation>
+<translation id="2841164160723712537">Подобрете резултатите от търсене</translation>
+<translation id="4639001639513524869">Brave Търсене има по-добри резултати от DuckDuckGo за повечето заявки. И е наистина поверителен.</translation>
 <translation id="5240031343741051161">Опитайте Brave Търсене</translation>
 <translation id="5234764350956374838">Отхвърляне</translation>
+<translation id="9218430445555521422">Задаване по подразбиране</translation>
 <translation id="2370739752330685659">Може би по-късно</translation>
 <translation id="5100490448228945668">Отхвълете преминаването към Brave Търсене, натиснете Enter, за да премахнете това предпожение.</translation>
 <translation id="9194637241566114638">Помогнете за подобравяне на <ph name="SEARCH_NAME"/>, като изпращате анонимни данни за употреба. <ph name="MORE_INFO"/></translation>
@@ -130,6 +139,9 @@
 <translation id="1162706247109707219">Като кликнете върху OK, потвърждавате, че вашата инсталация на Brave НЯМА да получи критични поправки за сигурност, докато не актуализирате до Windows 10 или по-нова версия. Това предупреждение НЯМА да се покаже отново.</translation>
 <translation id="9164786361657554526">Като кликнете върху OK, потвърждавате, че вашата инсталация на Brave НЯМА да получи критични поправки за сигурност, докато не актуализирате до macOS 10.15 или по-нова версия. Това предупреждение НЯМА да се покаже отново.</translation>
 <translation id="2770465223704140727">Премахване от списъка</translation>
+<translation id="6020553119523541665">Този раздел е активен в друг прозорец</translation>
+<translation id="4987392683074136770">Щракнете върху този раздел, за да изведете съдържанието му в този прозорец</translation>
+<translation id="8355523213948477234">Бутон за меню за разделен изглед</translation>
 <translation id="2515126961943087659">Услуга за BAT реклами</translation>
 <translation id="2104347391516032700">Услуга Bat Rewards</translation>
 <translation id="6040143037577758943">Затваряне</translation>
@@ -166,8 +178,7 @@
 <translation id="6959315322491671328">Кликнете с десния бутон, за да премахнете</translation>
 <translation id="495046168593986294">Превъртане нагоре</translation>
 <translation id="4021716437419160885">Превъртане надолу</translation>
-<translation id="1907157509746585817">отметки</translation>
-<translation id="4840597165888262798">списък за четене</translation>
+<translation id="2702801445560668637">Списък за четене</translation>
 <translation id="2533715613366623756">Мениджър на отметки</translation>
 <translation id="3405021928725149239">Мениджър на отметки</translation>
 <translation id="6284218950354553099">Автоматично изпращане на ping за ежедневното използване до Brave</translation>
@@ -251,7 +262,6 @@
 <translation id="796831669370432378">За да добавите отметка, щракнете върху бутона за отметка до адресната лента</translation>
 <translation id="8487693399751278191">Импортиране на отметките сега...</translation>
 <translation id="2557899542277210112">За бърз достъп поставете отметките си тук на лентата с отметки.</translation>
-<translation id="2702801445560668637">Списък за четене</translation>
 <translation id="1968543937259008435">Готови ли сте за най-добрата поверителност онлайн?</translation>
 <translation id="6817415381278637662">Задайте Brave като браузър по подразбиране, за да получите защитата на поверителността на Brave на всяка уеб страница, която отваряте.</translation>
 <translation id="8722651357687610395">Задайте Brave по подразбиране</translation>
@@ -348,6 +358,7 @@
 <translation id="2113977810652731515">Карта</translation>
 <translation id="4096343215397759358">Карта с преглед</translation>
 <translation id="5297085818601043899">Пояснение</translation>
+<translation id="5219886318310413094">Показване на закачени раздели във всички прозорци</translation>
 <translation id="2396127686705429331">Показване на бутона за отметки</translation>
 <translation id="2814998458708016836">Използвайте широка адресна лента</translation>
 <translation id="4109670531935487117">Показване на предложенията за автоматично попълване в адресната лента</translation>
@@ -462,10 +473,6 @@
 <translation id="2808630562319398131">Нулиране на данните за Brave награди...</translation>
 <translation id="6438096877646138757">Сайтове, които изчистват бисквитките, когато ги затворите</translation>
 <translation id="2988792685798128092">Изчистване при затваряне на сайта</translation>
-<translation id="4663317021223369617">Бисквитки и данни за сайта</translation>
-<translation id="7050661313034564003">Показване на всички бисквитки и локално съхранени данни за този сайт</translation>
-<translation id="8339059274628563283">Локално съхранявани данни от <ph name="SITE"/></translation>
-<translation id="1963227389609234879">Премахване на всички</translation>
 <translation id="7702907602086592255">Домейн</translation>
 <translation id="3202131003361292969">Път</translation>
 <translation id="5390743329570580756">Изпращане за</translation>

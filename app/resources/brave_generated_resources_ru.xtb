@@ -43,6 +43,7 @@
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Это приватное окно для Tor</translation>
 <translation id="1037341607922068025">Открыть приватное окно с Tor</translation>
+<translation id="607982085107926247">Открыть адрес <ph name="ADDRESS"/> в Tor</translation>
 <translation id="496896260395129787">Этот аккаунт Brave Синхронизации удален с другого устройства. Если вы не хотели отключать Синхронизацию,<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>создайте аккаунт заново.</translation>
 <translation id="6965382102122355670">ОК</translation>
@@ -53,7 +54,7 @@
 <translation id="3094628781200061820">Публиковать и скачивать файлы из IPFS</translation>
 <translation id="9220923434129933852">Просматривать и изменять настройки IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
-<translation id="406832631167785034">Открыть в домене .onion</translation>
+<translation id="2269780537090240241">Открыть с помощью адреса .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Вставить принудительно</translation>
 <translation id="4901618511712685702">Импортировать в IPFS</translation>
 <translation id="6794469945030154569">Страницу</translation>
@@ -119,8 +120,16 @@
 <translation id="45040495135337202">Brave не отслеживает ваши действия и запросы. Наша поисковая система не зависит от технологических гигантов.</translation>
 <translation id="42032117189492785">Поиск с поддержкой ИИ и уникальным индексом</translation>
 <translation id="8606416238399082160">Brave — это конфиденциальный и независимый браузер с полезными функциями ИИ.</translation>
+<translation id="7706528608480893054">DuckDuckGo — просто замаскированная система Bing. Brave Поиск — это реальная конфиденциальность, более точные результаты и независимый индекс.</translation>
+<translation id="3818133234428578803">Сделайте правильный выбор</translation>
+<translation id="14817360483752259">Brave Поиск не отслеживает ваши действия и запросы. В отличие от DuckDuckGo, мы — не замаскированный аналог Bing.</translation>
+<translation id="4381193110021038941">Находите нужную информацию быстрее</translation>
+<translation id="3846545273704969734">Независимые проверки показывают, что Brave Поиск предлагает результаты точнее, чем Bing или аналоги, такие как DuckDuckGo.</translation>
+<translation id="2841164160723712537">Получайте точные результаты</translation>
+<translation id="4639001639513524869">Brave Поиск лучше справляется с большинством запросов по сравнению с DuckDuckGo и обеспечивает реальную конфиденциальность.</translation>
 <translation id="5240031343741051161">Попробовать Brave Поиск</translation>
 <translation id="5234764350956374838">Dismiss</translation>
+<translation id="9218430445555521422">Установить по умолчанию</translation>
 <translation id="2370739752330685659">Не сейчас</translation>
 <translation id="5100490448228945668">Отменить конверсию в Brave Поиске. Чтобы убрать эту подсказку, нажмите Enter.</translation>
 <translation id="9194637241566114638">Помогайте улучшать <ph name="SEARCH_NAME"/> — отправляйте анонимные сведения об использовании продукта. <ph name="MORE_INFO"/></translation>
@@ -130,6 +139,9 @@
 <translation id="1162706247109707219">Нажимая кнопку «ОК», вы подтверждаете, что браузер Brave НЕ будет получать исправления критических ошибок безопасности, пока вы не обновите систему до Windows 10 или более поздней версии. Мы больше НЕ будем показывать это предупреждение.</translation>
 <translation id="9164786361657554526">Нажимая кнопку «ОК», вы подтверждаете, что браузер Brave НЕ будет получать исправления критических ошибок безопасности, пока вы не обновите систему до macOS 10.15 или более поздней версии. Мы больше НЕ будем показывать это предупреждение.</translation>
 <translation id="2770465223704140727">Удалить из списка</translation>
+<translation id="6020553119523541665">Вкладка открыта в другом окне</translation>
+<translation id="4987392683074136770">Чтобы перенести содержимое вкладки в это окно, нажмите на нее.</translation>
+<translation id="8355523213948477234">Кнопка «Режим разделенного экрана»</translation>
 <translation id="2515126961943087659">Рекламный сервис BAT</translation>
 <translation id="2104347391516032700">Сервис наград BAT</translation>
 <translation id="6040143037577758943">Закрыть</translation>
@@ -166,8 +178,7 @@
 <translation id="6959315322491671328">Щелкните правой кнопкой мыши для удаления</translation>
 <translation id="495046168593986294">Прокрутите вверх</translation>
 <translation id="4021716437419160885">Прокрутите вниз</translation>
-<translation id="1907157509746585817">закладки</translation>
-<translation id="4840597165888262798">список для чтения</translation>
+<translation id="2702801445560668637">Список для чтения</translation>
 <translation id="2533715613366623756">Диспетчер закладок</translation>
 <translation id="3405021928725149239">Диспетчер закладок</translation>
 <translation id="6284218950354553099">Автоматически отправлять ежедневные данные PING в Brave</translation>
@@ -251,7 +262,6 @@
 <translation id="796831669370432378">Для добавления закладки нажмите кнопку закладки рядом с адресной строкой.</translation>
 <translation id="8487693399751278191">Импортировать закладки...</translation>
 <translation id="2557899542277210112">Разместите свои закладки на панели закладок для быстрого доступа.</translation>
-<translation id="2702801445560668637">Список для чтения</translation>
 <translation id="1968543937259008435">Представляем самый конфиденциальный браузер</translation>
 <translation id="6817415381278637662">Сделайте Brave браузером по умолчанию, чтобы на каждой открытой странице ваша конфиденциальность была под защитой.</translation>
 <translation id="8722651357687610395">Установить Brave по умолчанию</translation>
@@ -348,6 +358,7 @@
 <translation id="2113977810652731515">Карта</translation>
 <translation id="4096343215397759358">Карточка с предварительным просмотром</translation>
 <translation id="5297085818601043899">Всплывающая подсказка</translation>
+<translation id="5219886318310413094">Показывать закрепленные вкладки во всех окнах</translation>
 <translation id="2396127686705429331">Показывать кнопку закладок</translation>
 <translation id="2814998458708016836">Использовать широкую адресную строку</translation>
 <translation id="4109670531935487117">Показывать предложения для автозаполнения в адресной строке</translation>
@@ -462,10 +473,6 @@
 <translation id="2808630562319398131">Сбросить данные Вознаграждений Brave...</translation>
 <translation id="6438096877646138757">Сайты, которые удаляют файлы cookie при закрытии</translation>
 <translation id="2988792685798128092">Удаление файлов cookie при закрытии сайта</translation>
-<translation id="4663317021223369617">Файлы cookie и данные сайтов</translation>
-<translation id="7050661313034564003">Показать все файлы cookie и локальные данные для этого сайта</translation>
-<translation id="8339059274628563283">Локальные данные сайта <ph name="SITE"/></translation>
-<translation id="1963227389609234879">Удалить все</translation>
 <translation id="7702907602086592255">Домен</translation>
 <translation id="3202131003361292969">Путь</translation>
 <translation id="5390743329570580756">Отправка</translation>

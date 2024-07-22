@@ -417,9 +417,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="7275773481201277457">Näytä Brave-tilastot</translation>
 <translation id="8297488609722895137">Valokuvan ottanut <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Aloita Brave-palkintojen käyttäminen -painiketta napauttamalla ilmaiset hyväksyväsi <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Vastaanota maksu tämän taustakuvan näkemisestä.</translation>
 <translation id="7136586167396205364">Piilota sponsoroidut kuvat</translation>
-<translation id="2927095357213611519">Voit tukea verkkotekijöitä poleteilla.\nAnsaitse poletteja katsomalla yksityisyyttä kunnioittavia mainoksia.</translation>
 <translation id="2898634658146274982">Avaa ulkoiset linkit Bravessa</translation>
 <translation id="5616508928556767259">Avaa linkit muista sovelluksista Brave-verkkonäkymässä. Huomaa: Brave on asetettava oletusselaimeksi.</translation>
 <translation id="2394961582378297792">Kirjautunut ulos</translation>
@@ -477,6 +475,10 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="8912304686498704084">YLÖS</translation>
 <translation id="4963218453264888510">ALAS</translation>
 <translation id="7474113515179313724">Selaat tätä sivustoa ilman Braven tietosuojaa. Eikö se toimi kunnolla, kun Shields on käytössä?</translation>
+<translation id="4226543734057230801">Ethereum-verkot</translation>
+<translation id="3504157706952484145">Filecoin-verkot</translation>
+<translation id="1561541094377237745">Solana-verkot</translation>
+<translation id="7141438739990875547">Bitcoin-verkot</translation>
 <translation id="9055546041146396417">Kokeile käyttöä ilman Shieldsiä, jos sivusto vaikuttaa olevan rikkinäinen.</translation>
 <translation id="1209739344687072997">Ilmoita toimimattomasta sivustosta</translation>
 <translation id="8510478288840333677">Tuo Braven kehittäjien tietoon, ettei tämä sivusto toimi kunnolla kilpien kanssa:</translation>
@@ -575,8 +577,6 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="2422627462367776805">Etelä-korealainen verkkoportaali ja hakukone</translation>
 <translation id="177282784098234156">Yksityinen, riippumaton, käyttäjä ensin</translation>
 <translation id="1410130669636877548">Jotkin hakukoneet suojaavat yksityisyyttäsi muita paremmin tehdessäsi verkkohakuja.</translation>
-<translation id="5187052478998910855">Tarvitsetko kertausta Rewardsin toiminnasta?</translation>
-<translation id="8622329973403382303">Käy pikakierroksella kerrataksesi, kuinka voit siirtyä historiassa alaspäin Rewards-ammattilaisen tavoin!</translation>
 <translation id="3479552764303398839">Ei nyt</translation>
 <translation id="7138272885617540195">Salli sovelluslinkkien avautuminen Braven ulkopuolisissa sovelluksissa</translation>
 <translation id="4954512758656527938">Oletusarvoinen Ethereum-lompakko</translation>
@@ -702,9 +702,11 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="6748319398471481216">Uusiutuu kuukausittain</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/>/kk.</translation>
 <translation id="1163809943099641131">Yksi vuosi</translation>
-<translation id="7574007394522199115">Uusi vuosittain ja säästä <ph name="PERCENTAGE_AMOUNT"/> %%</translation>
+<translation id="172859718096975160">Uusi vuosittain <ph name="DISCOUNT_TEXT_START"/>tallenna <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/>/vuosi.</translation>
-<translation id="2655185358771731232">Kokeile ilmaiseksi 7 päivän ajan. 7 päivän kuluttua sinulta veloitetaan tilauksen hinta. Kaikki tilaukset uusitaan automaattisesti, mutta ne voidaan peruuttaa ennen uusimista.</translation>
+<translation id="5125233570742276182">Tilaukset veloitetaan Google-tilisi kautta. Kaikki käyttämättömät ilmaisen kokeilujakson osat, jos sellainen on tarjottu, menetetään, kun ostat tilauksen.\n\nTilauksesi uusitaan automaattisesti, ellei sitä peruuteta vähintään 24 tuntia ennen nykyisen jakson päättymistä.\n\nVoit hallita tilauksiasi asetuksissa.\nKäyttämällä Bravea hyväksyt käyttöehdot ja tietosuojakäytännön.</translation>
+<translation id="5035172357624830412">Oletko jo ostanut brave.comista?</translation>
+<translation id="713136183174551885">Päivitä tunnuksesi</translation>
 <translation id="6053992191006521518">Kokeile ILMAISEKSI</translation>
 <translation id="5903391101107992067">Kokeile 7 päivän ajan ilmaiseksi</translation>
 <translation id="721747358270435486">Asenna VPN</translation>
@@ -850,7 +852,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="7791543448312431591">Lisää</translation>
 <translation id="6889920539620318793">Aseta aktiiviseksi</translation>
 <translation id="2653659639078652383">Lähetä</translation>
-<translation id="4556601961751528347">Vaihda yhdistettyä tiliä</translation>
+<translation id="4945690646623486292">Valitse verkko</translation>
 <translation id="5233638681132016545">Uusi välilehti</translation>
 <translation id="8006088103295786154">Käytä Brave-lompakkoa</translation>
 <translation id="8030169304546394654">Yhteys katkaistu</translation>
@@ -907,7 +909,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="2322227405137827074">Haluatko tuoda tämän tokenin?</translation>
 <translation id="1324417023773393937">Brave-selain</translation>
 <translation id="6044189892950611565">Brave-selaimen ilmoituskanava</translation>
-<translation id="1173919438868967364">Valitse tili</translation>
+<translation id="4556601961751528347">Vaihda yhdistettyä tiliä</translation>
 <translation id="8922793255489232731">Vastaavaa aikavyöhykettä ei löytynyt kohteelle: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Yhteys muodostettu kohteeseen <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Kokeilujakso</translation>
@@ -1063,7 +1065,6 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="4932733599132424254">Päivämäärä</translation>
 <translation id="346505172740911461">Markkinahinta</translation>
 <translation id="5494920125229734069">Valitse kaikki</translation>
-<translation id="5972844218283131174">Poista kaikki valinnat</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Kirjaudu sisään Brave-lompakon kautta</translation>
 <translation id="3696514931437952995">Olet kirjautumassa sisään kohteeseen <ph name="ORIGIN"/>. Brave-lompakko jakaa lompakkosi osoitteen kohteen <ph name="ORIGIN"/> kanssa.</translation>

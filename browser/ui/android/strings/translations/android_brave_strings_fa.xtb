@@ -419,9 +419,7 @@
 <translation id="7275773481201277457">نمایش آمار Brave</translation>
 <translation id="8297488609722895137">عکس از <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">با ضربه زدن روی «شروع استفاده از Brave Rewards»، با <ph name="TERMS_OF_SERVICE"/> موافقت می‌کنید.</translation>
-<translation id="3794079107601824147">برای مشاهده این تصویر پس‌زمینه، پول دریافت کنید.</translation>
 <translation id="7136586167396205364">تصاویر حمایت‌شده را پنهان کنید</translation>
-<translation id="2927095357213611519">شما می‌توانید با توکن‌ها از سازندگان وب حمایت کنید.\nبا مشاهده آگهی‌های رعایت‌کننده حریم خصوصی، توکن دریافت کنید.</translation>
 <translation id="2898634658146274982">پیوندهای خارجی را در Brave باز کنید</translation>
 <translation id="5616508928556767259">پیوندهای برنامه‌های دیگر را در نمای وب Brave باز می‌کند. توجه: Brave باید به‌عنوان مرورگر پیش‌فرض شما تنظیم شود.</translation>
 <translation id="2394961582378297792">خارج شد</translation>
@@ -479,6 +477,10 @@
 <translation id="8912304686498704084">فعال</translation>
 <translation id="4963218453264888510">غیرفعال</translation>
 <translation id="7474113515179313724">بدون محافظ حریم خصوصی Brave این سایت را مرور می‌کنید. آیا این سایت با فعال بودن «سپر امنیتی» درست کار نمی‌کند؟</translation>
+<translation id="4226543734057230801">شبکه‌های Ethereum</translation>
+<translation id="3504157706952484145">شبکه‌های Filecoin</translation>
+<translation id="1561541094377237745">شبکه‌های Solana</translation>
+<translation id="7141438739990875547">شبکه‌های بیت‌کوین</translation>
 <translation id="9055546041146396417">اگر این سایت خراب به نظر می‌رسد، سپر ایمنی را غیرفعال کنید.</translation>
 <translation id="1209739344687072997">گزارش خرابی سایت</translation>
 <translation id="8510478288840333677">به توسعه‌دهندگان Brave اطلاع دهید که «سپرهای ایمنی» در این سایت به‌خوبی کار نمی‌کند.</translation>
@@ -577,8 +579,6 @@
 <translation id="2422627462367776805">جستجو و درگاه وب کره جنوبی</translation>
 <translation id="177282784098234156">خصوصی، مستقل، با اولویت کاربر</translation>
 <translation id="1410130669636877548">وقتی وب را جستجو می‌کنید، برخی از موتورهای جستجو بهتر از موارد دیگر از حریم خصوصی شما محافظت می‌کند.</translation>
-<translation id="5187052478998910855">به مرور اطلاعات مربوط به Rewards نیاز دارید؟</translation>
-<translation id="8622329973403382303">گشت سریعی بزنید تا نحوه عملکرد برای پیوستن به تاریخ به‌عنوان ستاره راک Rewards را مرور کنید!</translation>
 <translation id="3479552764303398839">اکنون نه</translation>
 <translation id="7138272885617540195">به پیوندهای برنامه اجازه دهید در برنامه‌های خارج از Brave باز شوند</translation>
 <translation id="4954512758656527938">کیف پول پیش‌فرض اتریوم</translation>
@@ -704,9 +704,11 @@
 <translation id="6748319398471481216">ماهانه تمدید می‌شود</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / ماه.</translation>
 <translation id="1163809943099641131">یک سال</translation>
-<translation id="7574007394522199115">تمدید سالانه پس‌انداز <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">با تمدید سالانه <ph name="DISCOUNT_TEXT_START"/><ph name="PERCENTAGE_AMOUNT"/>%% صرفه‌جویی کنید<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / سال.</translation>
-<translation id="2655185358771731232">7 روز رایگان استفاده کنید. بعد از 7 روز، قیمت طرح از شما دریافت خواهد شد. همه اشتراک‌ها به‌طور خودکار تمدید می‌شوند اما ممکن است قبل از تمدید لغو شوند.</translation>
+<translation id="5125233570742276182">هزینه اشتراک‌ها از طریق حساب Google شما کسر می‌شود. هر بخش استفاده‌نشده از دوره آزمایشی رایگان، در صورت ارائه، هنگام خرید اشتراک از بین می‌رود.\n\nاشتراک شما به‌طور خودکار تمدید می‌شود، مگر اینکه حداقل 24 ساعت قبل از پایان دوره فعلی لغو شود.\n\nمی‌توانید اشتراک‌های خود را در «تنظیمات» مدیریت کنید.\nبا استفاده از Brave، با «شرایط استفاده» و «خط مشی حفظ حریم خصوصی» موافقت می‌کنید.</translation>
+<translation id="5035172357624830412">قبلاً در brave.com خریدی انجام داده‌اید؟</translation>
+<translation id="713136183174551885">تازه‌سازی اطلاعات شناسایی شما</translation>
 <translation id="6053992191006521518">به‌صورت رایگان امتحان کنید</translation>
 <translation id="5903391101107992067">به مدت 7 روز به‌صورت رایگان امتحان کنید</translation>
 <translation id="721747358270435486">نصب VPN</translation>
@@ -852,7 +854,7 @@
 <translation id="7791543448312431591">افزودن</translation>
 <translation id="6889920539620318793">تنظیم به‌عنوان فعال</translation>
 <translation id="2653659639078652383">ارسال</translation>
-<translation id="4556601961751528347">تغییر حساب متصل</translation>
+<translation id="4945690646623486292">انتخاب شبکه</translation>
 <translation id="5233638681132016545">برگه جدید</translation>
 <translation id="8006088103295786154">دسترسی به کیف پول Brave</translation>
 <translation id="8030169304546394654">ارتباط قطع شد</translation>
@@ -909,7 +911,7 @@
 <translation id="2322227405137827074">آیا می‌خواهید این توکن را وارد کنید؟</translation>
 <translation id="1324417023773393937">مرورگر Brave</translation>
 <translation id="6044189892950611565">کانال اعلان برای «مرورگر Brave»</translation>
-<translation id="1173919438868967364">انتخاب حساب</translation>
+<translation id="4556601961751528347">تغییر حساب متصل</translation>
 <translation id="8922793255489232731">منطقه زمانی منطبق برای این مورد دریافت نشد: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">به <ph name="VALUE"/> متصل شد</translation>
 <translation id="1968852757206592413">آزمایشی</translation>
@@ -1065,7 +1067,6 @@
 <translation id="4932733599132424254">تاریخ</translation>
 <translation id="346505172740911461">قیمت بازار</translation>
 <translation id="5494920125229734069">انتخاب همه</translation>
-<translation id="5972844218283131174">لغو انتخاب همه</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">ورورد از طریق کیف پول Brave</translation>
 <translation id="3696514931437952995">شما در حال وارد شدن به <ph name="ORIGIN"/> هستید. کیف پول Brave آدرس کیف پول شما را از طریق <ph name="ORIGIN"/> به اشتراک می‌گذارد.</translation>

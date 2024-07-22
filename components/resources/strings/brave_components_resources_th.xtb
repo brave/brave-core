@@ -26,9 +26,6 @@
 <translation id="8776285424728638733">GB</translation>
 <translation id="8427933533533814946">ภาพถ่ายโดย</translation>
 <translation id="7108338896283013870">ซ่อน</translation>
-<translation id="7115515527894388910">แก้ไขตามความชอบ</translation>
-<translation id="7606029853066610626">ดูและจัดการคั่นหน้า</translation>
-<translation id="5550994254534676787">ดูประวัติการค้นข้อมูลบนเบราเซอร์ของคุณ</translation>
 <translation id="985862351129593673">ปรับแต่งแดชบอร์ด</translation>
 <translation id="7180865173735832675">ปรับแต่ง</translation>
 <translation id="8522669544471808198">แสดงรูปภาพพื้นหลัง</translation>
@@ -57,11 +54,21 @@
 <translation id="430556192781857057">แนะนำเว็บไซต์เด่นโดยอิงตามเว็บไซต์ที่คุณเข้าชมบ่อย</translation>
 <translation id="1773147648972887693">แสดงรายการที่เข้าชมบ่อย</translation>
 <translation id="4546260624932151782">แสดงรายการโปรด</translation>
+<translation id="8975314993825375476">กำหนดรายการเอง</translation>
+<translation id="5525668735313040116">ค้นหาเว็บแบบส่วนตัว</translation>
+<translation id="1629390138158333592">ค้นหาบนเว็บ</translation>
+<translation id="4016940744851230999">แสดงวิดเจ็ตบนหน้าแท็บใหม่</translation>
+<translation id="7092560902264458951">เปิดใช้งานเครื่องมือค้นหาบนหน้าแท็บใหม่</translation>
+<translation id="6849526088357652209">ปรับแต่งเครื่องมือที่สามารถใช้งานได้</translation>
+<translation id="5131747739868436035">ซ่อนการค้นหา</translation>
+<translation id="423209533815462685">ต้องการเปิดใช้งานคำแนะนำในการค้นหาหรือไม่</translation>
+<translation id="2086952631598737687">เมื่อคุณทำการค้นหา สิ่งที่คุณพิมพ์จะถูกส่งไปที่เครื่องมือค้นหาเพื่อให้ได้คำแนะนำในการค้นหาที่ดีกว่า</translation>
+<translation id="3435896845095436175">เปิดการใช้งาน</translation>
+<translation id="780301667611848630">ไม่ ขอบคุณ</translation>
 <translation id="1230746063445072175">ต้องการความเป็นส่วนตัวยิ่งขึ้นใช่ไหม</translation>
 <translation id="6699628638740071563">ถึงเวลาเลิกใช้ Google แล้ว</translation>
 <translation id="2045455461902775806">เครื่องมือค้นหา Brave จะไม่ปิดกั้นหรือเซ็นเซอร์ผลลัพธ์ และจะไม่ติดตามคุณ คำค้นหา หรือการคลิกของคุณ</translation>
 <translation id="6811221529729056895">ลองใช้เครื่องมือค้นหา Brave ตอนนี้</translation>
-<translation id="5525668735313040116">ค้นหาเว็บแบบส่วนตัว</translation>
 <translation id="3446024864193919737">แสดง Brave Rewards</translation>
 <translation id="5585019845078534178">บัตร</translation>
 <translation id="3870475560794762985">แสดงรูปที่ได้รับการสนับสนุน</translation>
@@ -83,7 +90,6 @@
 <translation id="7610541582755894669">การเลือกภาพพื้นหลังแบบไล่โทนสี</translation>
 <translation id="1606851618930975029">รีเฟรชทุกแท็บใหม่</translation>
 <translation id="7040134046053881468">เปิดแผง Rewards</translation>
-<translation id="9024104284526126630">คุณสามารถเริ่มโทรแบบส่วนตัวใน Brave</translation>
 <translation id="370665806235115550">กำลังโหลด...</translation>
 <translation id="4634933166298842522">จัดการการสมัครสมาชิก</translation>
 <translation id="4108314971463891922">ติดตาม</translation>
@@ -450,6 +456,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1109729143147368573">ใช้เงินคริปโตและสินทรัพย์อื่น ๆ กับพ่อค้าและตู้เอทีเอ็มกว่า 50 ล้านแห่งทั่วโลก ใช้เงินคริปโตเพื่อรับเงินคริปโต!</translation>
 <translation id="3787061634640932557">แก้ไขบัตร</translation>
 <translation id="2070991379950719711">เริ่มต้นใช้ Brave Reward</translation>
+<translation id="6297791103122079275">พูดคุย</translation>
 <translation id="5977237145327845546">เริ่มวิดีโอคอลส่วนตัวกับเพื่อนและคนรู้จักของคุณ</translation>
 <translation id="8863928195533744356">เริ่มโทร</translation>
 <translation id="3651550649176056334">เกี่ยวกับข้อมูลของคุณ</translation>
@@ -593,7 +600,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3026978804849658576">ดูรายการชําระ</translation>
 <translation id="1848737374354350807">ยอดคงเหลือ:</translation>
 <translation id="6516984207843289176">เชื่อมต่อบัญชี</translation>
-<translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>พร้อมที่จะรับรายได้แล้วหรือยัง?<ph name="BOLD_END"/> เชื่อมต่อหรือสร้างบัญชีกับหนึ่งในพันธมิตรของเรา</translation>
+<translation id="1150455801874605865"><ph name="BOLD_BEGIN"/>พร้อมที่จะรับรายได้แล้วหรือยัง<ph name="BOLD_END"/>เชื่อมต่อบัญชีเพื่อให้เรามีที่สำหรับส่งรายได้ของคุณ</translation>
 <translation id="902298128239575729">ส่งเงินสนับสนุนด้วย Brave Rewards</translation>
 <translation id="6276721355724491595">คุณจะสามารถส่งเงินสนับสนุนตามความต้องการให้แก่ครีเอเตอร์คนโปรดของคุณได้ด้วยยอด Brave Rewards ของคุณ หลังจากที่คุณเชื่อมต่อบัญชีดูแลรักษาสินทรัพย์แล้ว</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
@@ -601,6 +608,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
       other {เดือนนี้คุณได้เยี่ยมชมครีเอเตอร์ที่สนับสนุนโดย Brave Rewards # คน}
     }</translation>
 <translation id="6067959437127691361">การใช้ Brave Rewards จะช่วยสนับสนุนคอนเทนต์ครีเอเตอร์และช่วยให้คุณได้รับ BAT ด้วย</translation>
+<translation id="944736176598169208">รีวอร์ด</translation>
 <translation id="2359808026110333948">ดำเนินการต่อ</translation>
 <translation id="885805571521218129">สิ่งนี้แสดงถึงช่วงรายได้โดยประมาณของคุณสำหรับ Brave Ads ในเดือนนี้</translation>
 <translation id="3863981251715594911">มันทำงานอย่างไร?</translation>
@@ -745,7 +753,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6180576227145734714">เมื่อมีการระบุ ข้อมูลธุรกรรม 'to' ต้องเป็นแอดเดรสที่ถูกต้อง</translation>
 <translation id="6688162556547723415">ผู้ใช้อนุญาตวิธีการและหรือบัญชีที่ร้องขอ</translation>
 <translation id="8767749833522980474">คริปโต</translation>
-<translation id="944736176598169208">รีวอร์ด</translation>
 <translation id="6122742277607781713">พอร์ตโฟลิโอ</translation>
 <translation id="7020503656406658141">ราคา</translation>
 <translation id="3586775666459823714">NFT</translation>
@@ -784,7 +791,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2329227154184107678">ตรวจสอบคำสั่ง</translation>
 <translation id="3220443877821207794">ตรวจสอบการส่ง</translation>
 <translation id="8530071505111489657">ไม่มีโทเค็นที่พร้อมใช้งาน</translation>
-<translation id="615791330696335475">ค้นหาโทเค็นด้วยชื่อ</translation>
+<translation id="9021834401351805394">ค้นหาด้วยชื่อหรือวางที่อยู่</translation>
 <translation id="5009335307032488349">ค้นหา NFT ด้วยชื่อ, id</translation>
 <translation id="8667560635828712526">เลือกแอทเซส</translation>
 <translation id="4853960199138416955">ขณะนี้ Brave วอลเล็ทไม่รองรับ Bitcoin NFT (Ordinals) การส่ง BTC จากที่อยู่ที่มีหมายเลขลำดับอาจส่งผลให้มีการโอนหมายเลขนั้นไปโดยไม่ได้ตั้งใจ</translation>
@@ -793,6 +800,11 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4504682768625050939">ป้อนที่อยู่สาธารณะหรือโดเมน</translation>
 <translation id="5292796745632149097">ส่งไปที่</translation>
 <translation id="7022684620581223496">ส่วนขยายโดเมนไม่ถูกต้อง</translation>
+<translation id="7620616707541471029">สร้างบัญชีเพื่อดำเนินการต่อ</translation>
+<translation id="7099260104593926742">ราคาตลาด</translation>
+<translation id="6954838107964168963">มีเจ้าของแล้ว</translation>
+<translation id="1976851706319678835">ไม่ได้เป็นเจ้าของ</translation>
+<translation id="7372882109707907136">จำนวน/24 ชม.</translation>
 <translation id="9209024278910716955">ไม่รองรับการซื้อสำหรับเครือข่ายที่เลือก</translation>
 <translation id="4982630604810554641">กำลังค้นหาโดเมน...</translation>
 <translation id="5467044307473123584">Brave รองรับการใช้เกตเวย์นอกเครือข่ายบล็อกเชนเพื่อแปลงโดเมน .eth</translation>
@@ -895,7 +907,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8275038454117074363">นำเข้า</translation>
 <translation id="232925166623833246">นำเข้าจาก Hardware Wallet</translation>
 <translation id="4324198334837993695">ฮาร์ดแวร์</translation>
-<translation id="3067168166931605141">ชื่อบัญชี</translation>
+<translation id="9079725315195697532">ตั้งชื่อบัญชีนี้</translation>
 <translation id="1011614786846182272">บัญชีเหล่านี้ใช้ได้กับ Web3 DApps และแสดงในพอร์ตโฟลิโอของคุณได้ อย่างไรก็ตามโปรดทราบว่าบัญชีรองจะไม่สามารถกู้คืนได้โดยใช้กลุ่มคำสำหรับการกู้คืนจากการเก็บสำรองข้อมูลบัญชีหลักของคุณ</translation>
 <translation id="1136772623587250243">วางไพรเวทคีย์จากคลิปบอร์ด</translation>
 <translation id="7978412674231730200">กุญแจส่วนตัว</translation>
@@ -947,6 +959,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="453788800165937690">คำเตือน: อย่าเปิดเผยคีย์ส่วนตัวของคุณ ใครก็ตามที่มีคีย์ส่วนตัวนี้สามารถนำสินทรัพย์ของคุณไปใช้ได้ตลอดไป</translation>
 <translation id="2416098547200943834">หมายเหตุ: ระบุคีย์ส่วนตัวเป็น JSON ที่เข้ารหัสด้วยเลขฐานสิบหกซึ่งประกอบด้วยคีย์ส่วนตัวและข้อมูลโปรโตคอล <ph name="LINK_START"/>เรียนรู้เพิ่มเติม<ph name="LINK_END"/></translation>
 <translation id="7657130382217527063">หมายเหตุ: ต้องระบุคีย์ส่วนตัวเป็น JSON ที่เข้ารหัสด้วยเลขฐานสิบหกซึ่งประกอบด้วยคีย์ส่วนตัวและข้อมูลโปรโตคอล <ph name="LINK_START"/>เรียนรู้เพิ่มเติม<ph name="LINK_END"/></translation>
+<translation id="1505724566145200403">หมายเหตุ: รองรับเฉพาะคีย์แม่แบบ zprv(หรือ vprv สำหรับ Testnet)</translation>
 <translation id="42126664696688958">ส่งออก</translation>
 <translation id="1366855498335432549">ฝาก</translation>
 <translation id="790104325876206743">การตั้งค่าบัญชี</translation>
@@ -1511,6 +1524,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5709875713144853427">เลือกโทเค็นที่จะสวอป</translation>
 <translation id="720404198240859011">แสดงโทเค็นที่ไม่มียอดคงเหลือ</translation>
 <translation id="4886690455791686940">ซ่อนโทเค็นที่มียอดคงเหลือเป็นศูนย์</translation>
+<translation id="615791330696335475">ค้นหาโทเค็นด้วยชื่อ</translation>
 <translation id="381485723922188688">ตัวเลือก</translation>
 <translation id="6680650203439190394">อัตรา</translation>
 <translation id="2538996898605796431">เรทราคาที่มีผลกระทบ</translation>
@@ -1622,8 +1636,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1215089823252478557">ดูการเปลี่ยนแปลงของยอดคงเหลือโดยประมาณ</translation>
 <translation id="2761574758015819991">ระบุธุรกรรมที่อาจก่อให้เกิดอันตราย</translation>
 <translation id="168533464844528463">ช่วยตรวจจับฟิชชิ่ง</translation>
-<translation id="780301667611848630">ไม่ ขอบคุณ</translation>
-<translation id="3435896845095436175">เปิดการใช้งาน</translation>
 <translation id="7269757150305059881">Brave ทำงานร่วมกับพันธมิตรเพื่อให้บริการนี้ ซึ่งการเปิดใช้งานแสดงว่าคุณตกลงที่จะแบ่งปันธุรกรรมที่ยังไม่ได้เซ็นอนุมัติและ URL DApp กับพันธมิตรของเรา</translation>
 <translation id="7790932700072432983">เปลี่ยนแปลงได้ทุกเมื่อใน <ph name="TAG_BEFORE"/>การตั้งค่า<ph name="TAG_AFTER"/></translation>
 <translation id="8688672835843460752">มีอยู่</translation>
@@ -1638,6 +1650,10 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6405354572620970908">คำขอนี้ดูเป็ยอันตราย และอาจทำให้คุณเสี่ยงต่อการถูกขโมย อย่าดำเนินการต่อเว้นแต่คุณจะเชื่อถือแอป</translation>
 <translation id="786261184916565476">เราพบปัญหา <ph name="VALUE"/> รายการ</translation>
 <translation id="2826600321627372011">ไม่พบเส้นทาง</translation>
+<translation id="2451778499022193433">ชื่อบัญชีต้องมีอักขระไม่เกิน <ph name="VALUE"/> ตัว</translation>
+<translation id="8488138412489236285">ป้อนรหัสผ่าน (ถ้ามี)</translation>
+<translation id="9166422618242592074">ประเภทการนำเข้า</translation>
+<translation id="1913853014470037784">ซ่อน NFT ที่ไม่ได้เป็นเจ้าของ</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">ข้อมูลทั่วไป</translation>
 <translation id="4045404575593562245">เหตุการณ์การควบคุม Tor</translation>
@@ -1871,9 +1887,11 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="712598284361781729">มุมมองแบบแยกใหม่</translation>
 <translation id="1130188644637295274">เปิดในมุมมองแบบแยก</translation>
 <translation id="6459036216700972269">เลิกแยกแท็บ</translation>
+<translation id="4235382917338421035">สลับตำแหน่งแท็บ</translation>
 <translation id="3617523374417810198">มุมมองแบบแยกใหม่</translation>
 <translation id="8571323456914890254">เปิดในมุมมองแบบแยก</translation>
 <translation id="5329136173514538969">เลิกแยกแท็บ</translation>
+<translation id="7595612919377246359">สลับตำแหน่งแท็บ</translation>
 <translation id="8591883849678260674">ดูต้นฉบับ</translation>
 <translation id="1969654232209826429">นาทีในการอ่าน</translation>
 <translation id="4101707289420716287">ปิด Speedreader</translation>
@@ -1918,7 +1936,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7921782882718083488">สรุปหน้านี้</translation>
 <translation id="7932221068776853847">ยกเลิกการเชื่อมต่อเพื่อหยุดส่งเนื้อหาของเพจนี้ให้ Leo และเริ่มการสนทนาใหม่</translation>
 <translation id="1167803637855350748">เกิดปัญหาในการเชื่อมต่อเครือข่ายกับ Leo โปรดตรวจสอบการเชื่อมต่อของคุณแล้วลองอีกครั้ง</translation>
-<translation id="1996126325390835277">ตอนนี้ Leo กำลังวุ่นวายมาก โปรดลองอีกครั้งในอีกสักครู่</translation>
+<translation id="1996126325390835277">คุณได้ถึงขีดจำกัดอัตราแบบ Premium แล้วโปรดลองอีกครั้งใน 2-3 ชั่วโมง</translation>
 <translation id="7144878232160441200">ลองใหม่</translation>
 <translation id="8570488829560315702">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Llama 3 8B ซึ่งเป็นโมเดลที่สร้างโดย Meta เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีต้องการใช้ <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Mixtral 8x7B ซึ่งเป็นโมเดลที่สร้างโดย Mistral AI เพื่อจัดการงานขั้นสูง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
@@ -1926,6 +1944,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8583558415545871403">สวัสดี ผมชื่อ Leo ผมเป็นตัวแทนของ Brave และได้รับการสนับสนุนจาก Claude 3 Haiku ซึ่งเป็นโมเดลที่สร้างโดย Anthropic เพื่อขับเคลื่อนงานด้านการสนทนาและการประมวลผลข้อความ</translation>
 <translation id="4147243042852964992">สวัสดี ผมชื่อ Leo ผมเป็นตัวแทนของ Brave และได้รับการสนับสนุนจาก Claude 3 Sonnet ซึ่งเป็นโมเดลที่สร้างโดย Anthropic เพื่อขับเคลื่อนงานด้านการสนทนาและการประมวลผลข้อความ</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> โดย <ph name="COMPANY_NAME"/></translation>
+<translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">แชท</translation>
 <translation id="2961040541145689181">แชทใหม่</translation>
 <translation id="7557539689487606886">ใช้งาน Premium</translation>
@@ -1935,7 +1954,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6637015365469044269">อัปเกรดตอนนี้</translation>
 <translation id="5543505256451301851">ทดลองใช้ฟรี 7 วัน</translation>
 <translation id="849535826888024304">ถึงขีดจำกัดอัตราการตอบสนองแล้ว</translation>
-<translation id="2252128900328632803">ปลดล็อกอัตราการตอบกลับที่สูงขึ้นโดยสมัครใช้งาน Premium คุณยังสามารถเปลี่ยนไปใช้โมเดล Llama2 13b ฟรีที่มีประสิทธิภาพน้อยกว่าเพื่อดำเนินการต่อได้</translation>
+<translation id="2252128900328632803">คุณได้ถึงขีดจำกัดอัตราสำหรับ Leo แล้วปลดล็อกอัตราการตอบสนองที่สูงกว่าได้โดยการสมัครสมาชิกแบบ Premium หรือลองอีกครั้งในเร็วๆ นี้</translation>
 <translation id="4173478269537830374">สำรวจโมเดล AI อื่นๆ</translation>
 <translation id="3245401959451976966">ปลดล็อกความคิดสร้างสรรค์ของคุณ</translation>
 <translation id="4165928407303989823">ไม่หลุดประเด็น</translation>
@@ -1987,7 +2006,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5642775487085641191">แค่อยากจะพูดคุยอย่างนั้นเหรอ</translation>
 <translation id="8857222718794549840">ถามผมมาได้ทุกอย่างเลย! เราสามารถคุยกันในหัวข้ออะไรก็ได้ที่คุณต้องการ ผมเรียนรู้และพัฒนาตัวเองอยู่ตลอดเวลาเพื่อให้คำตอบที่ดียิ่งขึ้น</translation>
 <translation id="9051226419897869406">แชทส่วนตัวกับ Brave Leo</translation>
-<translation id="1173570303649278801">ใช้บริบทของหน้าเพื่อโต้ตอบ</translation>
+<translation id="637548538907281147">กำหนดคำตอบโดยอิงตามเนื้อหาของหน้า</translation>
 <translation id="8599503173207256429">เปิดเพื่อถามเกี่ยวกับหน้านี้ เนื้อหาของหน้านี้จะถูกส่งไปให้ Brave Leo พร้อมกับข้อความของคุณ</translation>
 <translation id="318819763888864209">การสมัครสมาชิกทั้งหมดจะได้รับการต่ออายุโดยอัตโนมัติ แต่สามารถยกเลิกได้ทุกเมื่อก่อนต่ออายุ</translation>
 <translation id="5091223967610958">แชร์ชื่อโฮสต์ของหน้าที่คุณเปิดอยู่ (<ph name="HOST_NAME"/>) เพื่อช่วยเราทำให้ Leo ดีขึ้น</translation>

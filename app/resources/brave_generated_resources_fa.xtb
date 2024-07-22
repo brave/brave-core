@@ -42,6 +42,7 @@
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">این پنجره‌ای خصوصی با Tor است</translation>
 <translation id="1037341607922068025">باز کردن پنجره خصوصی با Tor</translation>
+<translation id="607982085107926247">باز کردن در Tor: <ph name="ADDRESS"/></translation>
 <translation id="496896260395129787">این حساب «همگام‌سازی Brave» از طریق دستگاه دیگری حذف شده است. اگر شما قصد غیرفعال کردن Sync را نداشتید،<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>حساب را مجدداً بسازید</translation>
 <translation id="6965382102122355670">قبول</translation>
@@ -52,7 +53,7 @@
 <translation id="3094628781200061820">انتشار و دریافت فایل‌ها از IPFS</translation>
 <translation id="9220923434129933852">خواندن و اصلاح تنظیمات IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
-<translation id="406832631167785034">باز کردن استفاده از آدرس ‎.onion</translation>
+<translation id="2269780537090240241">باز کردن با استفاده از آدرس ‎.onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">جای‌گذاری اجباری</translation>
 <translation id="4901618511712685702">وارد کردن به IPFS</translation>
 <translation id="6794469945030154569">این صفحه</translation>
@@ -118,8 +119,16 @@
 <translation id="45040495135337202">Brave درخواست‌ها یا کلیک‌های شما را ردیابی نمی‌کند. و 100% مستقل از شرکت‌های بزرگ فناوری است.</translation>
 <translation id="42032117189492785">جستجوی مبتنی بر هوش مصنوعی با یک شاخص منحصر به فرد.</translation>
 <translation id="8606416238399082160">کاملاً خصوصی، 100% مستقل، و همراه با مشخصه‌های هوش مصنوعی عالی.</translation>
+<translation id="7706528608480893054">DDG فقط Bing با لباسی مبدل است. وقت آن رسیده که به حریم خصوصی واقعی، نتایج بهتر و یک موتور جستجوی مستقل دست پیدا کنید. زمان جستجوی Brave است.</translation>
+<translation id="3818133234428578803">با آن اردک خداحافظی کنید</translation>
+<translation id="14817360483752259">«جستجوی Brave» شما، جستارها یا کلیک‌هایتان را ردیابی نمی‌کند. و (برخلاف DDG) فقط Bing در لباس مبدل نیست.</translation>
+<translation id="4381193110021038941">دریافت نتایج بهتر</translation>
+<translation id="3846545273704969734">«جستجوی Brave» به‌طور مستقل تأیید شده است که نتایج بهتری نسبت به Bing (یا موتورهای جستجوی مشابه Bing مانند DuckDuckGo) ارائه می‌دهد.</translation>
+<translation id="2841164160723712537">بهبود نتایج جستجو</translation>
+<translation id="4639001639513524869">«جستجوی Brave» برای بیشتر جستارها، نتایجی بهتر از DuckDuckGo دارد. و کاملاً خصوصی است.</translation>
 <translation id="5240031343741051161">جستجوی Brave را امتحان کنید</translation>
 <translation id="5234764350956374838">لغو کردن</translation>
+<translation id="9218430445555521422">تنظیم به‌عنوان پیش‌فرض</translation>
 <translation id="2370739752330685659">شاید بعداً</translation>
 <translation id="5100490448228945668">تبدیل جستجوی Brave را ببندید، کلید Enter را فشار دهید تا این پیشنهاد حذف شود</translation>
 <translation id="9194637241566114638">با ارسال داده‌های استفاده ناشناس، به بهبود <ph name="SEARCH_NAME"/> کمک کنید. <ph name="MORE_INFO"/></translation>
@@ -129,6 +138,9 @@
 <translation id="1162706247109707219">با کلیک کردن روی گزینه «تأیید»، شما می‌پذیرید که تا زمانی که به Windows 10 یا بعد از آن به روزرسانی انجام نداده‌اید، مرورگر Brave نصب‌شده شما قادر به دریافت اصلاحات امنیتی مهم نخواهد بود. این هشدار مجدداً نشان داده نمی‌شود.</translation>
 <translation id="9164786361657554526">با کلیک کردن روی گزینه «تأیید»، شما می‌پذیرید که تا زمانی که به macOS 10.15 یا بعد از آن به روزرسانی انجام نداده‌اید، مرورگر Brave نصب‌شده شما قادر به دریافت اصلاحات امنیتی مهم نخواهد بود. این هشدار مجدداً نشان داده نمی‌شود.</translation>
 <translation id="2770465223704140727">حذف از فهرست</translation>
+<translation id="6020553119523541665">این زبانه در پنجره دیگری فعال است</translation>
+<translation id="4987392683074136770">کلیک کردن روی این زبانه، محتواهایش را به این پنجره انتقال می‌دهد</translation>
+<translation id="8355523213948477234">دکمه منوی نمای تقسیم</translation>
 <translation id="2515126961943087659">سرویس آگهی‌های Bat</translation>
 <translation id="2104347391516032700">سرویس پاداش توکن توجه اولیه</translation>
 <translation id="6040143037577758943">بستن</translation>
@@ -165,8 +177,7 @@
 <translation id="6959315322491671328">برای حذف کردن کلیک راست کنید</translation>
 <translation id="495046168593986294">پیمایش به بالا</translation>
 <translation id="4021716437419160885">پیمایش به پایین</translation>
-<translation id="1907157509746585817">نشانک‌ها</translation>
-<translation id="4840597165888262798">فهرست خواندن</translation>
+<translation id="2702801445560668637">لیست خواندن</translation>
 <translation id="2533715613366623756">مدیریت نشانک‌ها</translation>
 <translation id="3405021928725149239">مدیریت نشانک‌ها</translation>
 <translation id="6284218950354553099">ارسال خودکار پینگ مصرف روزانه به Brave</translation>
@@ -250,7 +261,6 @@
 <translation id="796831669370432378">برای افزودن نشانک، روی دکمه نشانک در کنار نوار نشانی کلیک کنید</translation>
 <translation id="8487693399751278191">اکنون نشانک‌ها را وارد کنید...</translation>
 <translation id="2557899542277210112">برای دسترسی سریع، نشانک‌های خود را در اینجا روی نوار نشانک‌ها قرار دهید.</translation>
-<translation id="2702801445560668637">لیست خواندن</translation>
 <translation id="1968543937259008435">برای بهترین حریم خصوصی آنلاین آماده‌اید؟</translation>
 <translation id="6817415381278637662">Brave را به‌عنوان مرورگر پیش‌فرضتان تنظیم کنید تا در هر صفحه وبی که باز می‌کنید از قابلیت‌های حفاظت حریم خصوصی Brave بهره‌مند شوید.</translation>
 <translation id="8722651357687610395">Brave را به‌عنوان پیش فرض تنظیم کنید</translation>
@@ -347,6 +357,7 @@
 <translation id="2113977810652731515">کارت</translation>
 <translation id="4096343215397759358">کارت با پیش نمایش</translation>
 <translation id="5297085818601043899">راهنمای ابزار</translation>
+<translation id="5219886318310413094">نمایش زبانه‌های پین‌شده در همه پنجره‌ها</translation>
 <translation id="2396127686705429331">نمایش دکمه نشانک‌ها</translation>
 <translation id="2814998458708016836">استفاده از نوار نشانی عریض</translation>
 <translation id="4109670531935487117">نشان دادن پیشنهادهای تکمیل خودکار در نوار نشانی</translation>
@@ -461,10 +472,6 @@
 <translation id="2808630562319398131">بازنشانی داده‌های Brave Rewards…</translation>
 <translation id="6438096877646138757">سایت‌هایی که با بسته شدن، کوکی‌ها را پاک می‌کنند</translation>
 <translation id="2988792685798128092">پاک کردن موقع بسته شدن سایت</translation>
-<translation id="4663317021223369617">کوکی‌ها و داده‌های سایت</translation>
-<translation id="7050661313034564003">نمایش همه کوکی‌ها و داده‌های ذخیره‌شده محلی برای این سایت</translation>
-<translation id="8339059274628563283">داده‌های ذخیره‌شده محلی <ph name="SITE"/></translation>
-<translation id="1963227389609234879">حذف همه</translation>
 <translation id="7702907602086592255">دامنه</translation>
 <translation id="3202131003361292969">مسیر</translation>
 <translation id="5390743329570580756">ارسال برای</translation>
