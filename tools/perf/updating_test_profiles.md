@@ -11,7 +11,7 @@ The recommended update interval is once a month.
 
 ## Launching update CI jobs
 
-* To generate an updated profile, launch the job it with `EXTRA_ARGS` = `--mode update_profile --upload-branch=<branch>`.
+* To generate an updated profile, launch the job with `EXTRA_ARGS` = `--mode update-profile --upload-branch <branch>`.
 * Chromium and Brave use different profiles, so two builds for each platforms `win`/`mac-arm64`/`android` should be launched. For details, check the configurations in `configs/ci/`.
 * For CI URLS check [README.md](./README.md)
 * CI builds will upload the updated profiles to the cloud storage and make a PR from the branch.

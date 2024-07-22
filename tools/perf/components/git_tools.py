@@ -14,8 +14,6 @@ import components.path_util as path_util
 from components.perf_test_utils import GetProcessOutput
 
 GH_BRAVE_PERF_TEAM = 'brave/perf-team'
-_GH_EMAIL = '"brave-builds+devops@brave.com"'
-_GH_USERNAME = '"brave-builds"'
 
 
 def DoesPrOpen(branch: str, target: Optional[str] = None):
@@ -43,14 +41,6 @@ def MakeGithubPR(branch: str, target: str, title: str, body: str,
 
 def PushChangesToBranch(files: Dict[str, str], branch: str,
                         commit_message: str):
-
-  GetProcessOutput(['git', 'config', 'user.email', _GH_EMAIL],
-                   cwd=path_util.GetBraveDir(),
-                   check=True)
-  GetProcessOutput(['git', 'config', 'user.name', _GH_USERNAME],
-                   cwd=path_util.GetBraveDir(),
-                   check=True)
-
   # Make a few attempts to rebase if non fast-forward
   for attempt in range(3):
     logging.info('Pushing changes to branch %s #%d', branch, attempt)
@@ -74,8 +64,10 @@ def PushChangesToBranch(files: Dict[str, str], branch: str,
     GetProcessOutput(['git', 'commit', '-m', f'{commit_message}'],
                      cwd=path_util.GetBraveDir(),
                      check=True)
-    if GetProcessOutput(['git', 'push', 'origin', f'{branch}:{branch}'],
-                        cwd=path_util.GetBraveDir()):
+    success, _ = GetProcessOutput(
+        ['git', 'push', 'origin', f'{branch}:{branch}'],
+        cwd=path_util.GetBraveDir())
+    if success:
       return
 
   raise RuntimeError(f'Can\'t push changes to branch {branch}')
