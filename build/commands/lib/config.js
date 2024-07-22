@@ -288,11 +288,6 @@ Config.prototype.enableCDMHostVerification = function () {
     this.sign_widevine_key !== "" &&
     this.sign_widevine_passwd !== "" &&
     fs.existsSync(this.signature_generator)
-  if (enable) {
-    console.log('Widevine cdm host verification is enabled')
-  } else {
-    console.log('Widevine cdm host verification is disabled')
-  }
   return enable
 }
 

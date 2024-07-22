@@ -261,7 +261,6 @@ const util = {
   },
 
   updateBranding: () => {
-    Log.progressStart('update branding')
     const chromeComponentsDir = path.join(config.srcDir, 'components')
     const braveComponentsDir = path.join(config.braveCoreDir, 'components')
     const chromeAppDir = path.join(config.srcDir, 'chrome', 'app')
@@ -504,12 +503,9 @@ const util = {
       })
       removeUnlistedAndroidResources(braveOverwrittenFiles)
     }
-    Log.progressFinish('update branding')
   },
 
   touchOverriddenChromiumSrcFiles: () => {
-    Log.progressStart('touch original files overridden by chromium_src')
-
     // Return true when original file of |file| should be touched.
     const applyFileFilter = (file) => {
       // Only include overridable files.
@@ -553,12 +549,9 @@ const util = {
         }
       }
     }
-    Log.progressFinish('touch original files overridden by chromium_src')
   },
 
   touchOverriddenVectorIconFiles: () => {
-    Log.progressStart('touch original vector icon files overridden by brave/vector_icons')
-
     // Return true when original file of |file| should be touched.
     const applyFileFilter = (file) => {
       // Only includes icon files.
@@ -579,14 +572,11 @@ const util = {
         updateFileUTimesIfOverrideIsNewer(overriddenFile, braveVectorIconFile)
       }
     })
-    Log.progressFinish('touch original vector icon files overridden by brave/vector_icons')
   },
 
   touchOverriddenFiles: () => {
-    Log.progressScope('touch overridden files', () => {
-      util.touchOverriddenChromiumSrcFiles()
-      util.touchOverriddenVectorIconFiles()
-    })
+    util.touchOverriddenChromiumSrcFiles()
+    util.touchOverriddenVectorIconFiles()
   },
 
   touchGsutilChangeLogFile: () => {
@@ -715,20 +705,16 @@ const util = {
   },
 
   generateNinjaFiles: async (options = config.defaultOptions) => {
-    await Log.progressScopeAsync('generate ninja files', async () => {
-      await util.buildNativeRedirectCC()
+    await util.buildNativeRedirectCC()
 
-      const extraGnGenOpts = config.extraGnGenOpts ? [config.extraGnGenOpts] : []
-      util.runGnGen(config.outputDir, config.buildArgs(), extraGnGenOpts, options)
-    })
+    const extraGnGenOpts = config.extraGnGenOpts ? [config.extraGnGenOpts] : []
+    util.runGnGen(config.outputDir, config.buildArgs(), extraGnGenOpts, options)
   },
 
   buildTargets: async (targets = config.buildTargets, options = config.defaultOptions) => {
     assert(Array.isArray(targets))
     const buildId = crypto.randomUUID()
     const outputDir = options.outputDir || config.outputDir
-    const progressMessage = `build ${targets} (${path.basename(outputDir)}, id=${buildId})`
-    Log.progressStart(progressMessage)
 
     let num_compile_failure = 1
     if (config.ignore_compile_failure)
@@ -771,8 +757,6 @@ const util = {
     }
 
     await util.runAsync('autoninja', ninjaOpts, options)
-
-    Log.progressFinish(progressMessage)
   },
 
   generateXcodeWorkspace: () => {

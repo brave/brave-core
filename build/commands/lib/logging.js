@@ -118,9 +118,6 @@ function updateStatus (projectUpdateStatus) {
 }
 
 function command (dir, cmd, args) {
-  console.log(divider)
-  if (dir)
-    console.log(cmdDirStyle(dir))
   status(`${cmdArrowStyle('>')} ${cmdCmdStyle(cmd)} ${args.join(' ')}`, true)
 }
 
