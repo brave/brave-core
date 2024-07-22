@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Brave chce získať prístup k vašim fotografiám";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Pridať záložku";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Pridať záložku";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Pridať zoznam vlastných filtrov";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Pridajte ďalšie zoznamy vytvorené a spravované vašou dôveryhodnou komunitou.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Prihlásiť sa na odber zoznamov iba od subjektov, ktorým dôverujete**. Váš prehliadač bude pravidelne kontrolovať aktualizácie zoznamu z adresy URL, ktorú zadáte.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Pridať do obľúbených";
@@ -114,9 +102,6 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Monitor blokovania";
-
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Blokovať upozornenia ‚Prejsť na aplikáciu‘";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blokovať kontextové okná";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Zavrieť";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Ste si istí, že chcete zatvoriť všetky ostatné otvorené karty?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Zatvoriť všetky ostatné karty";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Naozaj chcete zatvoriť všetky otvorené karty?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Potvrdiť";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Filtrovanie obsahu";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Zapnite vlastné filtre, ktoré blokujú regionálne a jazykovo špecifické nástroje na sledovanie a obťažujúce prvky";
 
 /* Cookie settings option title */
 "CookieControl" = "Nastavenie cookies";
@@ -528,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Aktuálne používané vyhľadávače";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Zoznam vlastných filtrov";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Zoznamy vlastných filtrov";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "Adresa URL vlastného zoznamu filtrov";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Pridať";
@@ -631,9 +607,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Zavrieť callout predvoleného prehliadača";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Predvolené zoznamy filtrov";
-
 /* Name for default Brave theme. */
 "defaultThemeName" = "Predvolené nastavenia Brave";
 
@@ -666,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Zariadenie %1$ @ (%2$ @)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Zamietnuť zmeny";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Ste si istí, že chcete tieto zmeny zamietnuť? Všetky zmeny sa stratia.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Zamietnuť zmeny?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Bezpečnostný certifikát";
@@ -801,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Funkcie";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "Zadaná adresa URL nie je platná";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Pre zoznamy vlastných filtrov sú povolené iba zabezpečené adresy URL (https).";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Pridať";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Ďalšie populárne zoznamy komunity. Upozorňujeme, že zapnutie príliš veľkého počtu filtrov zníži rýchlosť prehliadania.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Stiahnutie zlyhalo";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Čaká na stiahnutie";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Upravit";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Zadajte adresu URL zoznamu filtrov";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Naposledy aktualizovaná %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Tu zadajte adresu URL zoznamu filtrov ";
 
 /* Share action title */
 "FindInPage" = "Nájsť na stránke";
@@ -2524,6 +2476,9 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Uložiť";
 
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Uložiť zmeny";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Uložené prihlasovacie údaje";
 
@@ -3090,6 +3045,12 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Vyberte typ zariadenia, s ktorým chcete vykonať synchronizáciu.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Kód vypršal. Vytvorte si nový kliknutím na tlačidlo nižšie.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Tento dočasný kód je platný na %@";
 
 /* Computer device button title */
 "SyncComputerDevice" = "Počítač";

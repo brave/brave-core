@@ -1,11 +1,17 @@
+/* The description for the error message when the user's session has expired */
+"aichat.accountSessionExpiredDescription" = "Istekla je sesija vašeg računa Brave. Posjetite stranicu računa za osvježavanje, a zatim se vratite za upotrebu značajki pretplate Premium.";
+
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "Dodaj povratne informacije";
 
+/* The description for the settings to show search suggestions from Leo in url-address bar */
+"aichat.advancedSettingsAutocompleteDescription" = "Uključite za pokazivanje prečaca za pokretanje pomoćnika Lea iz adresne trake.";
+
 /* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "Prikaži prijedloge automatskog završavanja u adresnoj traci";
+"aichat.advancedSettingsAutocompleteTitle" = "Prikaz u adresnoj traci";
 
 /* The title for the settings to change default model for conversations */
-"aichat.advancedSettingsDefaultModelTitle" = "Zadani model za nove razgovore";
+"aichat.advancedSettingsDefaultModelTitle" = "Zadani model";
 
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo je pametan pomoćnik potpomognut umjetnom inteligencijom (AI) ugrađen izravno u preglednik";
@@ -33,6 +39,9 @@
 
 /* The title of the search bar suggestion when prompting to Ask Leo */
 "aichat.askLeoSearchSuggestionTitle" = "Pitaj pomoćnika Leo";
+
+/* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
+"aichat.busyErrorDescription" = "Pomoćnik Leo trenutačno je prezaposlen. Pokušajte ponovno za nekoliko minuta.";
 
 /* The subtitle for intro view which triggers just chat */
 "aichat.chatIntroJustTalkSubTitle" = "Pitajte me bilo što! Možemo razgovarati o bilo kojoj temi koju želite. Uvijek učim i usavršavam se kako bih dao bolje odgovore.";
@@ -116,19 +125,34 @@
 "aichat.infoAboutPageContext" = "Oblikujte odgovore na osnovi sadržaja stranice";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Pozdrav, ja sam Leo. Dostupan sam u sklopu preglednika Brave i pokreće me model Claude Instant društva Anthropic izrađen za zadatke obavljanja razgovora i obrade teksta.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Pozdrav, ja sam Leo. Dostupan sam u sklopu preglednika Brave i pokreće me model Claude 3 Haiku društva Anthropic stvoren za zadatke obavljanja razgovora i obrađivanja teksta.";
 
-/* The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator */
-"aichat.introMessageClaudeInstantModelDescription" = "Claude Instant stvaratelja: Anthropic";
+/* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku stvaratelja Anthropic";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeHaikuModelPurposeDescription" = "Iznimno brzo čavrljanje";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "Pozdrav, ja sam Leo. Dostupan sam u sklopu preglednika Brave i pokreće me model Claude 3 Sonnet društva Anthropic stvoren za zadatke obavljanja razgovora i obrađivanja teksta.";
+
+/* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet stvaratelja Anthropic";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeSonnetModelPurposeDescription" = "Ravnoteža brzine i inteligencije";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Bok, ja sam Leo. Ja sam pomoćnik potpomognut umjetnom inteligencijom (AI) kojeg je osmislilo društvo Brave. Pokreće me model %@. Pitajte me bilo što, a ja ću se potruditi odgovoriti.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Pozdrav, ja sam Leo. Pomoćnik sam preglednika Brave potpuno potpomognut umjetnom inteligencijom (AI). Pokreće me model Llama 13B društva Meta izrađen za izvedbu i primjenu u raznim vrstama upotrebe.";
+"aichat.introMessageLlamaMessageDescription" = "Pozdrav, ja sam Leo. Pomoćnik sam preglednika Brave potpuno potpomognut umjetnom inteligencijom (AI). Pokreće me model Llama 3 8B društva Meta izrađen za izvedbu i primjenu u raznim vrstama upotrebe.";
 
 /* The model and creator for intro message - Llama 3 8b is the model name -- Meta is the creator */
 "aichat.introMessageLlamaModelDescription" = "Llama 3 8b stvaratelja: Meta";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageLlamaModelPurposeDescription" = "Opće čavrljanje";
 
 /* The model intro message when you first enter the chat assistant */
 "aichat.introMessageMixtralMessageDescription" = "Bok, ja sam Leo. U potpunosti sam hostirana umjetna inteligencija i pomoćnik od strane Brave. Pokreće me Mixtral 8x7B, model koji je stvorio Mistral AI za rješavanje naprednih zadataka.";
@@ -136,17 +160,38 @@
 /* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
 "aichat.introMessageMixtralModelDescription" = "Mixtral stvaratelja: Mistral AI";
 
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageMixtralModelPurposeDescription" = "Napredni zadaci čavrljanja";
+
 /* The title for intro message */
 "aichat.introMessageTitle" = "Čavrljanje";
 
+/* The name of the AI-Assistant that's responsing to the user */
+"aichat.leoAssistantNameTitle" = "Leo";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovedAnswerBraveSearch" = "Unaprjeđeno traženje odgovora za";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovingAnswerBraveSearch" = "Unapređivanje odgovora pretraživanjem Brave…";
+
 /* The title of the advanced settings view */
-"aichat.leoNavigationTitle" = "Leo";
+"aichat.leoNavigationTitle" = "Pomoćnik Leo potpomognut umjetnom inteligencijom (AI)";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "Uključite da biste pitali o ovoj stranici. Njezin sadržaj bit će poslan Leu društva Brave zajedno s vašim porukama.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "Informacije o kontekstu stranice";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Slash Tools button */
+"aichat.leoSlashToolsButtonAccessibilityTitle" = "Alati za upotrebu kose crte";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionNull" = "Nema";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionUnknown" = "Nepoznato";
 
 /* The title to display when the duration of the subscription is unknown */
 "aichat.leoSubscriptionUnknownDateTitle" = "Nije primjenjivo";
@@ -192,9 +237,6 @@
 
 /* The error description when in app purcahse is erroneous. */
 "aichat.paywallPurchaseErrorDescription" = "Nije moguće dovršiti kupnju. Pokušajte ponovno ili provjerite pojedinosti o plaćanju na Appleu i pokušajte ponovno.";
-
-/* The title for dismiss button when rate limit is shown after sending a message */
-"aichat.paywallRateLimitDismissActionTitle" = "Nastavi s osnovnim modelom";
 
 /* The subtitle for premium upseel when rate limit is shown after sending a message */
 "aichat.paywallRateLimitSubTitle" = "Otključajte višu stopu odgovora pretplatom na Premium ili pokušajte ponovno poslije.";
@@ -265,6 +307,9 @@
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "Pogreška ocjenjivanja odgovora";
 
+/* The title for button that refreshes user credentials */
+"aichat.refreshCredentialsActionTitle" = "Osvježi";
+
 /* The title for the button where it triggers reset leo data */
 "aichat.resetLeoDataActionTitle" = "Poništi i očisti podatke pomoćnika Lea";
 
@@ -308,7 +353,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Razumijem";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Leo preglednika Brave privatni je pametan pomoćnik potpomognut umjetnom inteligencijom (AI) kojim se poboljšava vaša upotreba interneta. Pomoćnik Leo besplatan je za upotrebu, ali ima ograničen pristup. Pomoćnikom Leo Premium preglednika Brave nudi se veći broj modela, veća ograničenja i daje pretplatnicima rani pristup novim značajkama. Zadani model za sve korisnike trenutačno je Mixtral 8x7B. Pogledajte **[Brave wiki] (%1$ @)** za više pojedinosti.\n\nKada pomoćniku Leu postavite pitanje, njime se može upotrijebiti mrežna stranica koju gledate ili tekst koji označite za pružanje odgovora. Točnost odgovora nije zajamčena i njime se mogu uključivati ​​netočne, obmanjujuće ili lažne informacije. Pomoćnikom Leo upotrebljavaju se podatci dobiveni tražilicom Brave Search za poboljšavanje kvalitete odgovora. Ne šaljite osjetljive ili privatne informacije i budite oprezni s odgovorima koji se odnose na zdravlje, financije, osobnu sigurnost ili slično. Možete namjestiti mogućnosti pomoćnika Lea u postavkama u bilo kojem trenutku.\n\nPomoćnikom Leom ne prikupljaju se identifikatori kao što je vaša adresa IP koja se može povezati s vama. Model umjetne inteligencije (AI) ili pružatelji modela trećih strana ne zadržavaju nikakve osobne podatke. Pogledajte **[pravilnik o zaštiti privatnosti] (%2$ @)** za više informacija.";
+"aichat.termsConditionsDescription" = "Leo preglednika Brave privatni je pametan pomoćnik potpomognut umjetnom inteligencijom (AI) kojim se poboljšava vaša upotreba interneta. Pomoćnik Leo besplatan je za upotrebu, ali ima ograničen pristup. Pomoćnikom Leo Premium preglednika Brave nudi se veći broj modela, veća ograničenja i daje pretplatnicima rani pristup novim značajkama. Zadani model za sve korisnike trenutačno je Mixtral 8x7B. Pogledajte [Help Center](%1$@)** preglednika Brave za više pojedinosti.\n\nKada pomoćniku Leu postavite pitanje, njime se može poslati i upotrijebiti sadržaj mrežne stranice koju prikazujete ili tekst koji označite za pružanje odgovora. U nekim slučajevima pomoćnik Leo šalje upite na osnovi vašeg upisa u pretraživanje Brave i služi se rezultatima pretraživanja za pružanje boljeg odgovora na vaše pitanje. Točnost odgovorā nije zajamčena i mogu se uključivati ​​netočne, obmanjujuće ili lažne informacije. Ne šaljite osjetljive ili privatne informacije i budite oprezni s odgovorima koji se odnose na zdravlje, financije, osobnu sigurnost ili slično. Možete namjestiti mogućnosti pomoćnika Lea u postavkama u bilo kojem trenutku. Idite na: Postavke > Leo.\n\nPomoćnikom Leom ne prikupljaju se identifikatori kao što je vaša adresa IP koja se može povezati s vama. Nikakvi se podatci ne upotrebljavaju za učenje modelā umjetne inteligencije i nikakvi se osobni podatci ne zadržavaju putem modelā umjetne inteligencije (osim modela Anthropic koji zadržava podatke 30 dana prije brisanja). Pogledajte **[privacy policy](%2$@)** za više informacija.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Privatno čavrljajte s Brave Leo";
@@ -321,4 +366,7 @@
 
 /* Title showing yearly subscription - annual */
 "aichat.yearlySubscriptionTitle" = "Godišnja pretplata";
+
+/* The word 'You' as in 'Me', 'Myself', 'I' (the user). */
+"aichat.youMessageTitle" = "Vi";
 

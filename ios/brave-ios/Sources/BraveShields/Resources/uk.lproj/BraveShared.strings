@@ -1,3 +1,12 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Додайте інші списки, створені довіреною спільнотою та які підтримуються нею.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Підписуйтеся лише на списки від тих компаній, яким довіряєте**. Ваш браузер час від часу перевірятиме наявність оновлень списків з указаної вами URL-адреси.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Додати фільтрування за URL";
+
 /* A discription of the Brave Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "**Програвач Brave** — це можливість переглядати відео без зупинок і реклами.";
 
@@ -28,6 +37,9 @@
 /* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
 "BlockAdsAndTrackingStandard" = "Стандартно";
 
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Блокувати сповіщення «Перемкнути програму»";
+
 /* Title for the brave player feature */
 "BravePlayer" = "Програвач Brave";
 
@@ -45,6 +57,36 @@
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Краще дивіться у програвачі Brave";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Фільтрація вмісту";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Увімкніть користувацькі фільтри, які блокують стеження й надокучливі елементи для певного регіону чи мови";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Список користувацьких фільтрів";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "URL-адреса списку користувацьких фільтрів";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Фільтри споживача";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Додайте користувацькі фільтри. Використайте синтаксис фільтрування Adblock.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Недійсне правило «%1$@» у рядку %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Додайте користувацькі фільтри, один на рядок.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Користувацькі фільтри не підтримують більше %i рядків";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Списки фільтрів за замовчуванням";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "Повернутися";
@@ -70,6 +112,54 @@
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Увімкнути глобальні налаштування конфіденційності ";
 
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Списки зовнішніх фільтрів";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "Недійсна URL-адреса";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Для списків користувацьких фільтрів можна використовувати лише захищені (https) URL-адреси";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Додати";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Додаткові популярні списки від спільнот. Зауважте, що увімкнення великої кількості фільтрів може вплинути на швидкість завантаження вебсторінок.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Збій завантаження";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Очікує на завантаження";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Редагувати";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Уведіть URL-адресу списку фільтрів";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Останнє оновлення: %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Уведіть URL-адресу списку фільтрів";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Обов’‎язково";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Сайт незахищений";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "З’єднання з %@ незахищене.";
+
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Трекери й блокування реклами";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Оновити під’єднання до HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Ви бачите це попередження, тому що цей сайт не підтримує HTTPS.";
 

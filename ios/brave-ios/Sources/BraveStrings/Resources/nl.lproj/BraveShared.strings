@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Brave wil graag toegang tot je foto's";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Voeg bladwijzer toe";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Voeg bladwijzer toe";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Voeg lijst met aangepaste filters toe";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Voeg extra lijsten toe die door je vertrouwde community zijn gemaakt en worden onderhouden.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Meld je alleen aan voor lijsten van entiteiten die je vertrouwt**. Je browser zal de ingevoerde URL gebruiken om regelmatig te zoeken naar updates voor lijsten.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Voeg toe aan Favorieten";
@@ -114,9 +102,6 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Blokkeringmonitor";
-
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Blokkeer meldingen om apps te openen";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blokkeer pop-ups";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Sluit";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Weet je zeker dat je alle andere open tabbladen wilt sluiten?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Sluit alle andere tabbladen";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Weet je zeker dat je alle geopende tabbladen wilt sluiten?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Bevestig";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Contentfilter";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Schakel aangepaste filters in die regionale en taalspecifieke trackers en storende elementen blokkeren";
 
 /* Cookie settings option title */
 "CookieControl" = "Cookiebeheer";
@@ -528,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Momenteel gebruikte zoekmachines";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Aangepaste filterlijst";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Aangepaste filterlijsten";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "URL van aangepaste filterlijst";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Voeg toe";
@@ -631,9 +607,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Sluit toelichting over standaardbrowser";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Standaard filterlijsten";
-
 /* Name for default Brave theme. */
 "defaultThemeName" = "Standaard Brave";
 
@@ -666,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Apparaat %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Negeer wijzigingen";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Weet je zeker dat je deze wijzigingen wilt negeren? Alle wijzigingen gaan dan veloren.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Wijzigingen negeren?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Beveiligingscertificaat";
@@ -801,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Functies";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "De ingevoerde URL is ongeldig";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Alleen beveiligde URL's (https) zijn toegestaan voor aangepaste filterlijsten";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Voeg toe";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Aanvullende veelgebruikte communitylijsten. Als je te veel filters inschakelt, browse je trager.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Download mislukt";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Download in afwachting";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Wijzig";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Voer de URL van de filterlijst in";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Laatst bijgewerkt op %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Voer de URL van de filterlijst hier in";
 
 /* Share action title */
 "FindInPage" = "Zoek op pagina";
@@ -2524,6 +2476,9 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Bewaar";
 
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Wijzigingen opslaan";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Bewaarde logins";
 
@@ -3071,13 +3026,13 @@
 "SyncAddDeviceScan" = "QR-code voor synchronisatieketen";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "Ga op je tweede mobiele apparaat naar 'Instellingen', kies 'Synchronisatie' en tik op de knop 'Scan synchronisatiecode'. Gebruik de camera om de QR-code hieronder te scannen.\n\n Behandel deze code als een wachtwoord. Als iemand de code bemachtigt, kan die jouw gesynchroniseerde gegevens lezen en wijzigen.";
+"SyncAddDeviceScanDescription" = "Ga op je tweede mobiele apparaat naar 'Synchronisatie' in instellingen en tik op de knop 'Scan synchronisatiecode'. Gebruik je camera om de QR-code hieronder te scannen.\n\nBehandel deze code als een wachtwoord. Als iemand deze in handen krijgt, kan die persoon je gesynchroniseerde gegevens lezen en wijzigen.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Voer de synchronisatiecode in";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Ga op je apparaat naar 'Instellingen', kies 'Synchronisatie' en tik op de knop '%@'. Voer de codewoorden voor de synchronisatieketen in die je hieronder ziet.\n\n Behandel deze code als een wachtwoord. Als iemand de code bemachtigt, kan die jouw gesynchroniseerde gegevens lezen en wijzigen..";
+"SyncAddDeviceWordsDescription" = "Ga op je apparaat naar 'Synchronisatie' in Instellingen en tik op de knop '%@'. Voer de onderstaande codewoorden van de synchronisatieketen in.\n\nBehandel deze code als een wachtwoord. Als iemand deze in handen krijgt, kan die persoon je gesynchroniseerde gegevens lezen en wijzigen.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Voer de codewoorden in";
@@ -3090,6 +3045,12 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Kies het type apparaat dat je wilt synchroniseren.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Code is verlopen. Maak een nieuwe aan door op de knop hieronder te tikken.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Deze tijdelijke code is geldig voor de komende %@";
 
 /* Computer device button title */
 "SyncComputerDevice" = "Computer";

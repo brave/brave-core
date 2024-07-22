@@ -10,8 +10,8 @@
 /* The title displayed on the account details screen */
 "wallet.accountDetailsTitle" = "Detalii cont";
 
-/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters. */
-"wallet.accountNameLengthError" = "Numele de cont trebuie să conțină cel mult 30 de caractere";
+/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than max characters. '%lld' refers to a number (for example \"Account name must be at 30 characters or less\") */
+"wallet.accountNameLengthError" = "Numele de cont trebuie sa aibă %lld caractere sau mai puțin";
 
 /* A button title for displaying their accounts private key */
 "wallet.accountPrivateKey" = "Cheie privată";
@@ -93,6 +93,9 @@
 
 /* The title of the view shown over a dapps website that requests the user add a new network. */
 "wallet.addNetworkTitle" = "Adaugă rețea";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the address. */
+"wallet.addressLabel" = "Adresă";
 
 /* The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does. */
 "wallet.addSuggestedTokenSubtitle" = "Vrei să imporți acest token?";
@@ -226,6 +229,9 @@
 /* Type of biometrics. This will be used in Biometric setup screen. */
 "wallet.biometricsSetupTouchId" = "Touch ID";
 
+/* The label displayed in Add Account above the private key box when adding or importing a Bitcoin account. The '%@' is the standard supported for the selected network (for example \"Only zprv extended keys are supported.\") */
+"wallet.bitcoinImportExtendedKeyWarning" = "Doar %@ chei extinse sunt suportate.";
+
 /* The title for Brave Fee label in Swap. The fee percentage is displayed beside the label. */
 "wallet.braveFeeLabel" = "Taxa Brave: %@";
 
@@ -239,13 +245,16 @@
 "wallet.btcAccountDescription" = "Bitcoin";
 
 /* Description displayed in row beside users available balance. */
-"wallet.btcAvailableBalanceDesc" = "Fonduri disponibile pe care le puteți folosi";
+"wallet.btcAvailableBalanceDesc" = "Fonduri disponibile pe care le poți folosi.";
 
 /* Title displayed in row beside users available BTC balance. */
 "wallet.btcAvailableBalanceTitle" = "Disponibil";
 
+/* A warning displayed in row before the Send button in Send Crypto view when a Bitcoin asset is selected. */
+"wallet.btcOrdinalsUnsupportedWarning" = "Portofelul Brave nu suportă momentan NFT-uri Bitcoin (ordinals). Trimiterea de BTC de la o adresă care are ordinals poate avea ca rezultat transferarea fără intenție a acestora.";
+
 /* Description displayed in row beside users pending balance. */
-"wallet.btcPendingBalanceDesc" = "O modificare în așteptare în soldul portofelului dvs.";
+"wallet.btcPendingBalanceDesc" = "O modificare în așteptare în soldul portofelului tău.";
 
 /* Banner description displayed below BTC rows displaying balance when there is a pending BTC balance. */
 "wallet.btcPendingBalancesBannerDesc" = "Anumite solduri ar putea fi indisponibile";
@@ -254,7 +263,7 @@
 "wallet.btcPendingBalanceTitle" = "În așteptare";
 
 /* Description displayed in row beside users total balance. */
-"wallet.btcTotalBalanceDesc" = "Fondurile disponibile alături de tranzacțiile neconfirmate încă.";
+"wallet.btcTotalBalanceDesc" = "Fonduri disponibile alături de tranzacțiile încă neconfirmate.";
 
 /* Title displayed in row beside users total BTC balance. */
 "wallet.btcTotalBalanceTitle" = "Total";
@@ -266,7 +275,7 @@
 "wallet.buyDescription" = "Cumpără criptomonede folosind Apple Pay, un card de credit ori un card de debit.";
 
 /* The title for the button to cancel a submitted transaction. */
-"wallet.cancelTransactionButtonTitle" = "Anulați tranzacția";
+"wallet.cancelTransactionButtonTitle" = "Anulează tranzacția";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "Data";
@@ -299,7 +308,7 @@
 "wallet.coinTypeBitcoin" = "Bitcoin";
 
 /* A description for Bitcoin coin type. */
-"wallet.coinTypeBitcoinDescription" = "Stocați activul BTC";
+"wallet.coinTypeBitcoinDescription" = "Stochează activul BTC";
 
 /* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
 "wallet.coinTypeEthereum" = "Ethereum";
@@ -457,9 +466,6 @@
 /* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
 "wallet.customNetworkRpcUrlsTitle" = "Adrese URL RPC";
 
-/* The title of custom network list screen */
-"wallet.customNetworksTitle" = "Rețele personalizate";
-
 /* The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen. */
 "wallet.customNetworkSymbolNamePlaceholder" = "Introdu numele monedei";
 
@@ -568,26 +574,11 @@
 /* A title of the view shown over a dapps website that requests the user decrypt a message. */
 "wallet.decryptRequestTitle" = "Cerere de decriptare";
 
-/* The default Bitcoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Bitcoin Account 3\") */
-"wallet.defaultBitcoinAccountName" = "Cont Bitcoin %lld";
+/* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Ethereum Account 2\") */
+"wallet.defaultAccountName" = "%1$@ cont %2$lld";
 
-/* The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\") */
-"wallet.defaultEthAccountName" = "Cont ethereum %lld";
-
-/* The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\") */
-"wallet.defaultFilAccountName" = "Cont filecoin %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Ethereum Account 3\") */
-"wallet.defaultSecondaryEthAccountName" = "Cont secundar Ethereum %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\") */
-"wallet.defaultSecondaryFilAccountName" = "Cont secundar Filecoin %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Solana Account 3\") */
-"wallet.defaultSecondarySolAccountName" = "Cont secundar Solana %lld";
-
-/* The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Solana Account 3\") */
-"wallet.defaultSolAccountName" = "Cont Solana %lld";
+/* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Filecoin Testnet Account 2\") */
+"wallet.defaultTestnetAccountName" = "%1$@ Cont testnet %2$lld";
 
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "Șterge";
@@ -602,7 +593,7 @@
 "wallet.depositDescription" = "Depune active";
 
 /* The disclosure at the bottom of the deposit view for ETH address indicates ETH wallet supports Ethereum Mainnet as well as the level 2 EVM. `%@` will be replaced with current supported level 2 EVM network names. */
-"wallet.depositEthDisclosure" = "Aceste este un portofel Ethereum ce suportă rețeaua Ethereum si rețele de nivel 2 precum %@";
+"wallet.depositEthDisclosure" = "Acesta este un portofel Ethereum ce suportă rețeaua Ethereum si rețele de nivel 2 precum %@";
 
 /* The title of a button that Deselects all visible options. */
 "wallet.deselectAllButtonTitle" = "Deselectează tot";
@@ -898,6 +889,9 @@
 /* A label shown inside of a box when there is no input data for a given Solana transaction */
 "wallet.inputDataPlaceholderSolana" = "Tip de funcție: %d";
 
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Input index. */
+"wallet.inputLabel" = "Input";
+
 /* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
 "wallet.insufficientBalance" = "Sold insuficient";
 
@@ -1165,9 +1159,6 @@
 /* The empty state displayed when the user has no assets associated with an account */
 "wallet.noAssets" = "Nu există active";
 
-/* The empty state displayed when the user has not yet added any custom networks. */
-"wallet.noNetworks" = "Nu au fost adăugate rețele";
-
 /* The empty state shown when you have no imported accounts */
 "wallet.noSecondaryAccounts" = "Nu există conturi secundare.";
 
@@ -1185,6 +1176,9 @@
 
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "Alte acțiuni de portofel";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Output index. */
+"wallet.outputLabel" = "Output";
 
 /* The error message displayed when a user enters a password that does not meet the requirements */
 "wallet.passwordDoesNotMeetRequirementsError" = "Parolele trebuie să conțină cel puțin 8 caractere.";
@@ -1286,7 +1280,7 @@
 "wallet.repeatedPasswordPlaceholder" = "Reintrodu parola";
 
 /* A label for toggle for user to use to indicate importing a legacy brave wallet or not */
-"wallet.restoreLegacyBraveWalletToggleTitle" = "Importați din vechile portofele de criptomonede Brave?";
+"wallet.restoreLegacyBraveWalletToggleTitle" = "Importă din portofele vechi de criptomonede Brave?";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "Restabilește portofelul";
@@ -1319,7 +1313,7 @@
 "wallet.restoreWalletTitle" = "Importă un portofel existent";
 
 /* The title for the button to retry a failed transaction. */
-"wallet.retryTransactionButtonTitle" = "Reîncercați tranzacția";
+"wallet.retryTransactionButtonTitle" = "Reîncearcă tranzacția";
 
 /* The description of one of the 'Sardine' provider. */
 "wallet.sardineProviderDescription" = "Cumpără instant cu contul tău bancar. Taxe mai mici.";
@@ -1411,6 +1405,9 @@
 /* The description of a send button on the buy/send/swap/deposit modal */
 "wallet.sendDescription" = "Trimite criptomonede sau transferă dintr-un cont în altul.";
 
+/* An error that appears below the send crypto address text field, when the input `To` address is not a valid Bitcoin address. */
+"wallet.sendErrorBtcAddressNotValid" = "Nu este o adresă validă BTC";
+
 /* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address` */
 "wallet.sendErrorDomainNotRegistered" = "Domeniul nu are o adresă %@ legată ";
 
@@ -1440,6 +1437,9 @@
 
 /* As in sent cryptocurrency from one asset to another */
 "wallet.sent" = "Trimis";
+
+/* One of the context menu option for user to tap to set a default network in wallet settings. */
+"wallet.setDefaultNetwork" = "Setează ca implicit";
 
 /* Title of the set IPFS gateway button */
 "wallet.setGatewayButtonTitle" = "Setează";
@@ -1521,9 +1521,6 @@
 
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "Afișează cheia privată";
-
-/* A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings */
-"wallet.showTestNetworksTitle" = "Afișează rețelele de test";
 
 /* The title of a button that updates the filter to show tokens with zero balances. */
 "wallet.showZeroBalances" = "Afișează soldurile zero";
@@ -1766,7 +1763,7 @@
 "wallet.solanaUpgradeNonceAccountInstructionName" = "Actualizează cont nonce";
 
 /* The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details. */
-"wallet.solanaWithdrawNonceAccountInstructionName" = "Retrageți din contul Nonce";
+"wallet.solanaWithdrawNonceAccountInstructionName" = "Retrage din contul Nonce";
 
 /* The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsDescription" = "Sortează în funcție de valoarea sau denumirea fiat";
@@ -1775,7 +1772,7 @@
 "wallet.sortAssetsTitle" = "Sortează activele";
 
 /* The title for the button to speed up a submitted transaction. */
-"wallet.speedUpTransactionButtonTitle" = "Accelerați";
+"wallet.speedUpTransactionButtonTitle" = "Accelerează";
 
 /* The description of one of the 'Stripe' provider. */
 "wallet.stripeNetworkProviderDescription" = "Plătește cu credit, debit sau cont bancar.";
@@ -2031,6 +2028,9 @@
 
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%1$@ pe %2$@";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the value. */
+"wallet.valueLabel" = "Valoare";
 
 /* The error message when input phrase does not match the correct one. */
 "wallet.verifyRecoveryPhraseError" = "Fraza de recuperare nu se potrivește.";
