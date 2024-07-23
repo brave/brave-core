@@ -1782,6 +1782,7 @@
 -FirstPartySets/*
 -FirstPartySetsPolicyBrowsertest.*
 -FirstPartySetsWebSocketBrowserTest.*
+-FirstRunInternalPosixTest.*
 -FlagAndSettings/SamePartyIsFirstPartyCookiePolicyBrowserTest.*
 -FlocIdProviderAutoDenyRemotePermissionBrowserTest.*
 -FlocIdProviderBrowserTest.*
