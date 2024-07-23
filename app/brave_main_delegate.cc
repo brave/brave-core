@@ -106,10 +106,12 @@ base::LazyInstance<BraveContentBrowserClient>::DestructorAtExit
     g_brave_content_browser_client = LAZY_INSTANCE_INITIALIZER;
 #endif
 
+#if BUILDFLAG(IS_ANDROID)
 BraveMainDelegate::BraveMainDelegate() : ChromeMainDelegate() {}
+#endif
 
-BraveMainDelegate::BraveMainDelegate(base::TimeTicks exe_entry_point_ticks)
-    : ChromeMainDelegate(exe_entry_point_ticks) {}
+BraveMainDelegate::BraveMainDelegate(const StartupTimestamps& timestamps)
+    : ChromeMainDelegate(timestamps) {}
 
 BraveMainDelegate::~BraveMainDelegate() {}
 
