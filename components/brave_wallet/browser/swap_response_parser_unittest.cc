@@ -859,10 +859,6 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
               "integrator": "jumper.exchange"
             }
           ],
-          "insurance": {
-            "state": "NOT_INSURABLE",
-            "feeAmountUsd": "0"
-          },
           "tags": [
             "RECOMMENDED",
             "CHEAPEST",
@@ -1073,8 +1069,6 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
     EXPECT_EQ(included_step_2_gas_cost->token->logo, "eth.png");
     EXPECT_FALSE(included_step_2->included_steps);
 
-    EXPECT_EQ(route->insurance->state, "NOT_INSURABLE");
-    EXPECT_EQ(route->insurance->fee_amount_usd, "0");
     ASSERT_EQ(route->tags.size(), 3u);
     EXPECT_EQ(route->tags.at(0), "RECOMMENDED");
     EXPECT_EQ(route->tags.at(1), "CHEAPEST");

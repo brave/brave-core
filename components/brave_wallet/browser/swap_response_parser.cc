@@ -555,11 +555,6 @@ mojom::LiFiQuotePtr ParseQuoteResponse(const base::Value& json_value) {
     route->to_amount_min = route_value.to_amount_min;
     route->to_address = route_value.to_address;
 
-    auto insurance = mojom::LiFiInsurance::New();
-    insurance->state = route_value.insurance.state;
-    insurance->fee_amount_usd = route_value.insurance.fee_amount_usd;
-    route->insurance = std::move(insurance);
-
     for (const auto& step_value : route_value.steps) {
       auto step = ParseStep(step_value);
       if (!step) {

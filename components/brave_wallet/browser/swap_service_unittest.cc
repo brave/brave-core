@@ -288,9 +288,6 @@ mojom::LiFiQuotePtr GetCannedLiFiQuote() {
       ->included_steps->at(0)
       ->estimate->gas_costs.push_back(gas_cost.Clone());
 
-  quote->routes[0]->insurance = mojom::LiFiInsurance::New();
-  quote->routes[0]->insurance->state = "NOT_INSURABLE";
-  quote->routes[0]->insurance->fee_amount_usd = "0";
   quote->routes[0]->tags = {"RECOMMENDED", "CHEAPEST", "FASTEST"};
 
   return quote;
@@ -1388,11 +1385,7 @@ TEST_F(SwapServiceUnitTest, GetLiFiQuote) {
             "RECOMMENDED",
             "CHEAPEST",
             "FASTEST"
-          ],
-          "insurance": {
-            "state": "NOT_INSURABLE",
-            "feeAmountUsd": "0"
-          }
+          ]
         }
       ],
       "unavailableRoutes": {

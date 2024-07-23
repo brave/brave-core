@@ -714,7 +714,6 @@ extension BraveWallet.LiFiQuote {
             includedSteps: nil
           )
         ],
-        insurance: .init(state: "", feeAmountUsd: "0"),
         tags: []
       )
     ]
