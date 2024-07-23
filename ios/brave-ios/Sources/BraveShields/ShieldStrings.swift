@@ -283,29 +283,29 @@ extension Strings.Shields {
 
 extension Strings.Shields {
   /// A list row label for accessing the shred settings screen
-  public static let shredSitesData = NSLocalizedString(
-    "ShredSitesData",
+  public static let shredSiteData = NSLocalizedString(
+    "ShredSiteData",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Shred Site's Data",
+    value: "Shred Site Data",
     comment: "A list row label for accessing the shred settings screen"
   )
 
   /// A button title that shreds site data immediately
-  public static let shredSitesDataNow = NSLocalizedString(
-    "ShredSitesDataNow",
+  public static let shredSiteDataNow = NSLocalizedString(
+    "ShredSiteDataNow",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Shred Site's Data Now",
+    value: "Shred Site Data Now",
     comment: "A button title that shreds site data immediately"
   )
 
   /// A picker title for selecting a automatic shred setting option
-  public static let automaticallyShred = NSLocalizedString(
-    "AutomaticallyShred",
+  public static let autoShred = NSLocalizedString(
+    "AutoShred",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Automatically Shred",
+    value: "Auto Shred",
     comment: "A picker title for selecting a automatic shred setting option"
   )
 
@@ -319,42 +319,41 @@ extension Strings.Shields {
   )
 
   /// An option setting for shredding when the site is closed
-  public static let shredWhenSiteClosed = NSLocalizedString(
-    "ShredWhenSiteClosed",
+  public static let shredOnSiteTabsClosed = NSLocalizedString(
+    "ShredOnSiteTabsClosed",
     tableName: "BraveShared",
     bundle: .module,
-    value: "When Site Closed",
+    value: "Site Tabs Closed",
     comment: "An option setting for automatically shredding when the site is closed"
   )
 
-  /// An option setting for shredding only when the app is closed
-  public static let shredOnAppExitOnly = NSLocalizedString(
-    "ShredOnAppExitOnly",
+  /// An option setting for shredding when the app is closed
+  public static let shredOnAppClose = NSLocalizedString(
+    "ShredOnAppClose",
     tableName: "BraveShared",
     bundle: .module,
-    value: "App Exit Only",
+    value: "App Close",
     comment: "An option setting for automatically shredding only when the app is closed"
   )
 
   /// A title for a confirmation window that appears when a user clicks on 'Shred Data'
-  public static let shredThisSitesDataConfirmationTitle = NSLocalizedString(
-    "ShredThisSitesDataConfirmationTitle",
+  public static let shredSiteDataConfirmationTitle = NSLocalizedString(
+    "ShredSiteDataConfirmationTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Shred This Site's Data?",
+    value: "Shred Site Data?",
     comment: "A title for a confirmation window that appears when a user clicks on 'Shred Data'"
   )
 
   /// A message for a confirmation window that appears when a user clicks on 'Shred Data'.
-  /// The placeholder should be replaced with a website domain.
-  public static let shredThisSitesDataConfirmationMessage = NSLocalizedString(
-    "ShredThisSitesDataConfirmationMessage",
+  public static let shredSiteDataConfirmationMessage = NSLocalizedString(
+    "ShredSiteDataConfirmationMessage",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Are you sure you want to delete %@ data? This action cannot be undone.",
+    value:
+      "Shredding will close all tabs open to this site, and delete all site data. This cannot be undone.",
     comment: """
-      A message for a confirmation window that appears when a user clicks on 'Shred Data'. 
-      The placeholder will be replaced with a website domain.
+      A message for a confirmation window that appears when a user clicks on 'Shred Data'.
       """
   )
 
