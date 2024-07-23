@@ -309,7 +309,12 @@ public class SearchEngines {
         withRootObject: customEngines,
         requiringSecureCoding: true
       )
-      try data.write(to: URL(fileURLWithPath: customEngineFilePath()))
+      let filePath = URL(fileURLWithPath: customEngineFilePath())
+      try await AsyncFileManager.default.createDirectory(
+        at: filePath.deletingLastPathComponent(),
+        withIntermediateDirectories: true
+      )
+      try data.write(to: filePath)
     } catch {
       Logger.module.error(
         "Failed to save custom engines: \(error.localizedDescription, privacy: .public)"

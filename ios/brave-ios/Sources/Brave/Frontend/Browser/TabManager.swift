@@ -1170,23 +1170,6 @@ class TabManager: NSObject {
     configuration.processPool = WKProcessPool()
   }
 
-  static fileprivate func tabsStateArchivePath() -> String {
-    guard
-      let profilePath = FileManager.default.containerURL(
-        forSecurityApplicationGroupIdentifier: AppInfo.sharedContainerIdentifier
-      )?.appendingPathComponent("profile.profile").path
-    else {
-      let documentsPath = NSSearchPathForDirectoriesInDomains(
-        .documentDirectory,
-        .userDomainMask,
-        true
-      )[0]
-      return URL(fileURLWithPath: documentsPath).appendingPathComponent("tabsState.archive").path
-    }
-
-    return URL(fileURLWithPath: profilePath).appendingPathComponent("tabsState.archive").path
-  }
-
   private func preserveScreenshot(for tab: Tab) {
     assert(Thread.isMainThread)
     if isRestoring { return }
