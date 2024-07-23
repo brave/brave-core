@@ -110,7 +110,6 @@ export const AddNftForm = (props: Props) => {
   // queries
   const {
     tokenInfo: matchedTokenInfo,
-    isVisible: tokenAlreadyExists,
     isLoading: isTokenInfoLoading,
     isError: hasGetTokenInfoError
   } = useGetTokenInfo(
@@ -285,7 +284,8 @@ export const AddNftForm = (props: Props) => {
       return
     }
 
-    if (tokenAlreadyExists && selectedAsset) {
+    if (selectedAsset) {
+      // remove existing token and add new one
       await updateUserToken({
         existingToken: selectedAsset,
         updatedToken
@@ -303,7 +303,6 @@ export const AddNftForm = (props: Props) => {
   }, [
     metadataAsset,
     tokenInfo,
-    tokenAlreadyExists,
     selectedAsset,
     updateUserToken,
     onHideForm,
