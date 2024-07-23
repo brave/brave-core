@@ -17,7 +17,7 @@ import Amount from './amount'
 import { getRampNetworkPrefix } from './string-utils'
 import { getNetworkLogo, makeNativeAssetLogo } from '../options/asset-options'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
-import { getBalance, getIsTokenInRegistry } from './balance-utils'
+import { getBalance } from './balance-utils'
 
 export const getUniqueAssets = (assets: BraveWallet.BlockchainToken[]) => {
   return assets.filter((asset, index) => {
@@ -405,28 +405,6 @@ export function isTokenWatchOnly(
   tokenBalancesRegistry: TokenBalancesRegistry | null | undefined,
   spamTokenBalancesRegistry: TokenBalancesRegistry | null | undefined
 ) {
-  if (!tokenBalancesRegistry && !spamTokenBalancesRegistry) {
-    // skip until registries are ready
-    return false
-  }
-
-  // check if the asset has an entry in a balances registry
-  if (
-    !allAccounts.some((account) => {
-      return (
-        getIsTokenInRegistry(account.accountId, token, tokenBalancesRegistry) ||
-        getIsTokenInRegistry(
-          account.accountId,
-          token,
-          spamTokenBalancesRegistry
-        )
-      )
-    })
-  ) {
-    // skip until token is in registry
-    return false
-  }
-
   return !allAccounts.some((account) => {
     const balance = getBalance(account.accountId, token, tokenBalancesRegistry)
     const spamBalance = getBalance(

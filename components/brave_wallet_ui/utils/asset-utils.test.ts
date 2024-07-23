@@ -53,7 +53,7 @@ const mockUserTokenBalancesRegistry: TokenBalancesRegistry = {
       chains: {
         [mockMoonCatNFT.chainId]: {
           tokenBalances: {
-            [mockMoonCatNFT.contractAddress.toLowerCase()]: '1'
+            [getAssetIdKey(mockMoonCatNFT)]: '1'
           }
         }
       }
