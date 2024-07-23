@@ -376,4 +376,7 @@
   <message name="IDS_AI_CHAT_MENU_TITLE_CUSTOM_MODELS" desc="The menu section label for custom models added by the user">
     Custom models
   </message>
+  <message name="IDS_AI_CHAT_START_CONVERSATION_LABEL" desc="A label for when user starts a new conversation">
+    Start new conversation
+  </message>
 </grit-part>
