@@ -123,8 +123,14 @@ struct PurchasedInfo {
 // struct. Ex, IsValidRegion() or IsValidRegionValue(). It should also check
 // new member.
 struct Region {
-  string continent;
   string name;
   string name_pretty;
+  string continent;
   string country_iso_code;
+  string region_precision;
+  double latitude;
+  double longitude;
+  int32 server_count;
 };
+
+

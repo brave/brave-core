@@ -19,6 +19,7 @@ preprocess_if_expr("preprocess_mojo") {
 }
 
 mojom("mojom") {
+  generate_java = true
   sources = [ "brave_vpn.mojom" ]
 
   deps = [
