@@ -53,8 +53,10 @@ bool IsBraveSearchPromotionMatch(const AutocompleteMatch& match) {
 }
 
 ConversionType GetConversionTypeFromMatch(const AutocompleteMatch& match) {
+  // TODO: `GetAdditionalInfoForDebugging()` shouldn't be used for non-debugging
+  // purposes.
   const std::string type_string =
-      match.GetAdditionalInfo(kBraveSearchPromotionTypeProperty);
+      match.GetAdditionalInfoForDebugging(kBraveSearchPromotionTypeProperty);
   // |match| doesn't have type info.
   if (type_string.empty())
     return ConversionType::kNone;
