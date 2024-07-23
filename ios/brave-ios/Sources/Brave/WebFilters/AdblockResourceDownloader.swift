@@ -53,6 +53,24 @@ public actor AdblockResourceDownloader: Sendable {
     }
   }
 
+  /// Perform a one time force update of all the resources
+  public func updateResources() async {
+    await Self.handledResources.asyncConcurrentForEach { resource in
+      do {
+        let result = try await self.resourceDownloader.download(resource: resource, force: true)
+        await self.handle(
+          downloadResult: result,
+          for: resource,
+          allowedModes: Set(ContentBlockerManager.BlockingMode.allCases)
+        )
+      } catch {
+        ContentBlockerManager.log.error(
+          "Failed to fetch resource `\(resource.cacheFileName)`: \(error.localizedDescription)"
+        )
+      }
+    }
+  }
+
   /// Start fetching the given resource at regular intervals
   private func startFetching(resource: BraveS3Resource, every fetchInterval: TimeInterval) {
     Task { @MainActor in

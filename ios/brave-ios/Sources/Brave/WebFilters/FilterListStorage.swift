@@ -54,6 +54,27 @@ import Preferences
     }
   }
 
+  func updateFilterLists() async -> Bool {
+    return await withCheckedContinuation { continuation in
+      guard let adBlockService else {
+        continuation.resume(returning: false)
+        return
+      }
+
+      adBlockService.updateFilterLists({ updated in
+        guard updated else {
+          continuation.resume(returning: updated)
+          return
+        }
+        for engineType in GroupedAdBlockEngine.EngineType.allCases {
+          let fileInfos = adBlockService.fileInfos(for: engineType)
+          AdBlockGroupsManager.shared.update(fileInfos: fileInfos)
+        }
+        continuation.resume(returning: updated)
+      })
+    }
+  }
+
   /// Load the filter list settings
   private func loadFilterListSettings() {
     allFilterListSettings = FilterListSetting.loadAllSettings(fromMemory: !persistChanges)
@@ -332,6 +353,27 @@ extension AdblockService {
       registerFilterListChanges({ isDefaultFilterList in
         continuation.yield(isDefaultFilterList ? .standard : .aggressive)
       })
+    }
+  }
+
+  /// Get a list of files for the given engine type if the path exists
+  @MainActor func fileInfos(
+    for engineType: GroupedAdBlockEngine.EngineType
+  ) -> [AdBlockEngineManager.FileInfo] {
+    return filterListCatalogEntries.compactMap { entry in
+      let source = entry.engineSource
+      guard entry.engineType == engineType || source.onlyExceptions(for: engineType) else {
+        return nil
+      }
+
+      guard
+        let localFileURL = installPath(forFilterListUUID: entry.uuid),
+        FileManager.default.fileExists(atPath: localFileURL.relativePath)
+      else {
+        return nil
+      }
+
+      return entry.fileInfo(for: localFileURL)
     }
   }
 }

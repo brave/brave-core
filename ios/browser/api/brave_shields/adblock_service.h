@@ -39,6 +39,9 @@ OBJC_EXPORT
 /// Listen to downloaded version changes of resources
 - (void)registerResourcesChanges:(void (^)(NSString* resourcesJSON))callback;
 
+/// Update the filter lists
+- (void)updateFilterLists:(void (^)(bool))callback;
+
 - (instancetype)init NS_UNAVAILABLE;
 
 @end

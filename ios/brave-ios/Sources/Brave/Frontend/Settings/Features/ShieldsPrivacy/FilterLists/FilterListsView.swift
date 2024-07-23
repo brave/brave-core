@@ -14,6 +14,42 @@ import SwiftUI
 /// A view showing enabled and disabled community filter lists
 struct FilterListsView: View {
   private static let dateFormatter = RelativeDateTimeFormatter()
+  enum FilterListUpdateStatus: Equatable {
+    case unknown
+    case updating
+    case updated
+
+    var label: String {
+      switch self {
+      case .unknown: Strings.Shields.updateLists
+      case .updated: Strings.Shields.listsUpdated
+      case .updating: Strings.Shields.updatingLists
+      }
+    }
+
+    var braveImageName: String {
+      switch self {
+      case .unknown, .updating: "leo.refresh"
+      case .updated: "leo.check.circle-outline"
+      }
+    }
+
+    var forgroundColor: Color {
+      switch self {
+      case .unknown: Color(.braveBlurpleTint)
+      case .updated: Color(.braveSuccessLabel)
+      case .updating: Color(.braveDisabled)
+      }
+    }
+
+    var isUpdating: Bool {
+      return self == .updating
+    }
+
+    var isUpdated: Bool {
+      return self == .updated
+    }
+  }
 
   @ObservedObject private var filterListStorage = FilterListStorage.shared
   @ObservedObject private var customFilterListStorage = CustomFilterListStorage.shared
@@ -22,10 +58,25 @@ struct FilterListsView: View {
   @State private var showingCustomFiltersSheet = false
   @State private var customRules: String?
   @State private var rulesError: Error?
+  @State private var filterListsUpdateStatus = FilterListUpdateStatus.unknown
+  @State private var customFilterListsUpdateStatus = FilterListUpdateStatus.unknown
 
   var body: some View {
     List {
       Section {
+        if !customFilterListStorage.filterListsURLs.isEmpty {
+          updateFilterListsButton(status: customFilterListsUpdateStatus) {
+            customFilterListsUpdateStatus = .updating
+            Task {
+              await updateCustomFilterLists()
+              #if DEBUG
+              // Add a delay so we can see and test the different states
+              try await Task.sleep(seconds: 2)
+              #endif
+              customFilterListsUpdateStatus = .updated
+            }
+          }
+        }
         externalFilterListRows
       } header: {
         VStack(alignment: .leading, spacing: 4) {
@@ -51,6 +102,17 @@ struct FilterListsView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
       Section {
+        updateFilterListsButton(status: filterListsUpdateStatus) {
+          filterListsUpdateStatus = .updating
+          Task {
+            await updateFilterLists()
+            #if DEBUG
+            // Add a delay so we can see and test the different states
+            try await Task.sleep(seconds: 2)
+            #endif
+            filterListsUpdateStatus = .updated
+          }
+        }
         defaultFilterListRows
       } header: {
         VStack(alignment: .leading, spacing: 4) {
@@ -71,7 +133,8 @@ struct FilterListsView: View {
     )
     .toggleStyle(SwitchToggleStyle(tint: .accentColor))
     .animation(.default, value: customFilterListStorage.filterListsURLs)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .listStyle(.insetGrouped)
     .navigationTitle(Strings.Shields.contentFiltering)
     .toolbar {
@@ -82,6 +145,24 @@ struct FilterListsView: View {
     .task {
       await loadCustomRules()
     }
+  }
+
+  private func updateFilterListsButton(
+    status: FilterListUpdateStatus,
+    action: @escaping () -> Void
+  ) -> some View {
+    Button(
+      action: action,
+      label: {
+        Label(
+          status.label,
+          braveSystemImage: status.braveImageName
+        )
+      }
+    )
+    .labelStyle(.titleAndIcon)
+    .foregroundStyle(status.forgroundColor)
+    .disabled(status.isUpdating)
   }
 
   private var customFiltersAccessibilityLabel: Text {
@@ -263,6 +344,20 @@ struct FilterListsView: View {
     } catch {
       rulesError = error
       customRules = nil
+    }
+  }
+
+  private func updateFilterLists() async {
+    _ = await FilterListStorage.shared.updateFilterLists()
+    await AdblockResourceDownloader.shared.updateResources()
+    await AdBlockGroupsManager.shared.compileEngines()
+  }
+
+  private func updateCustomFilterLists() async {
+    do {
+      try await FilterListCustomURLDownloader.shared.updateFilterLists()
+    } catch {
+      // Handle the error
     }
   }
 }
