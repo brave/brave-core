@@ -23,6 +23,7 @@
 #include "brave/browser/ntp_background/ntp_tab_helper.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -58,6 +59,10 @@
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
 #include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
+#endif
+
+#if BUILDFLAG(IS_WIN)
+#include "brave/browser/new_tab/background_color_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -122,6 +127,12 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   brave_shields::BraveShieldsTabHelper::CreateForWebContents(web_contents);
   ThumbnailTabHelper::CreateForWebContents(web_contents);
   BraveGeolocationPermissionTabHelper::CreateForWebContents(web_contents);
+#endif
+
+#if BUILDFLAG(IS_WIN)
+  if (base::FeatureList::IsEnabled(features::kBraveWorkaroundNewWindowFlash)) {
+    BackgroundColorTabHelper::CreateForWebContents(web_contents);
+  }
 #endif
 
   brave_rewards::RewardsTabHelper::CreateForWebContents(web_contents);
