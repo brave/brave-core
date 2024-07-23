@@ -1385,7 +1385,7 @@ TEST_F(SwapServiceUnitTest, GetLiFiQuote) {
             "RECOMMENDED",
             "CHEAPEST",
             "FASTEST"
-          ],
+          ]
         }
       ],
       "unavailableRoutes": {
