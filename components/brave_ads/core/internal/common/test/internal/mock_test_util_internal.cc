@@ -56,7 +56,7 @@ void MockFlags() {
   GlobalState::GetInstance()->Flags() = *BuildFlags();
 
   if (!DidAppendCommandLineSwitches()) {
-    // Force the test environment to staging if we did not include command-line
+    // Force the test environment to staging if we did not append command-line
     // switches in `SetUpMocks`, or if the test environment does not support
     // passing command-line switches.
     GlobalState::GetInstance()->Flags().environment_type =
@@ -162,14 +162,16 @@ void MockSave(AdsClientMock& mock) {
       }));
 }
 
-void MockLoad(AdsClientMock& mock, const base::ScopedTempDir& temp_dir) {
+void MockLoad(AdsClientMock& mock,
+              const base::ScopedTempDir& temp_profile_dir) {
   ON_CALL(mock, Load)
       .WillByDefault(::testing::Invoke(
-          [&temp_dir](const std::string& name, LoadCallback callback) {
-            base::FilePath path = temp_dir.GetPath().AppendASCII(name);
+          [&temp_profile_dir](const std::string& name, LoadCallback callback) {
+            base::FilePath path = temp_profile_dir.GetPath().AppendASCII(name);
             if (!base::PathExists(path)) {
-              // If path does not exist load the file from the test path.
-              path = RootDataPath().AppendASCII(name);
+              // If path does not exist attempt to load the file from the test
+              // data path.
+              path = DataPath().AppendASCII(name);
             }
 
             std::string value;
@@ -182,22 +184,23 @@ void MockLoad(AdsClientMock& mock, const base::ScopedTempDir& temp_dir) {
 }
 
 void MockLoadComponentResource(AdsClientMock& mock,
-                               const base::ScopedTempDir& temp_dir) {
+                               const base::ScopedTempDir& temp_profile_dir) {
   ON_CALL(mock, LoadComponentResource)
-      .WillByDefault(::testing::Invoke([&temp_dir](const std::string& id,
-                                                   const int /*version*/,
-                                                   LoadFileCallback callback) {
-        base::FilePath path = temp_dir.GetPath().AppendASCII(id);
+      .WillByDefault(::testing::Invoke(
+          [&temp_profile_dir](const std::string& id, const int /*version*/,
+                              LoadFileCallback callback) {
+            base::FilePath path = temp_profile_dir.GetPath().AppendASCII(id);
 
-        if (!base::PathExists(path)) {
-          // If path does not exist load the file from the test path.
-          path = ComponentResourcesDataPath().AppendASCII(id);
-        }
+            if (!base::PathExists(path)) {
+              // If path does not exist attempt to load the file from the test
+              // component resources data path.
+              path = ComponentResourcesDataPath().AppendASCII(id);
+            }
 
-        base::File file(
-            path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
-        std::move(callback).Run(std::move(file));
-      }));
+            base::File file(path, base::File::Flags::FLAG_OPEN |
+                                      base::File::Flags::FLAG_READ);
+            std::move(callback).Run(std::move(file));
+          }));
 }
 
 void MockLoadDataResource(AdsClientMock& mock) {

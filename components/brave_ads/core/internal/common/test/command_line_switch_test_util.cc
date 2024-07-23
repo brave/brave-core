@@ -19,27 +19,13 @@ namespace {
 constexpr char kNoCommandLineSwitchKey[] = "WithNoCommandLineSwitch";
 constexpr char kNoCommandLineSwitchValue[] = "WithEmptyValue";
 
-std::string ToString(const CommandLineSwitchInfo& command_line_switch) {
-  const std::string switch_value = command_line_switch.value.empty()
-                                       ? kNoCommandLineSwitchValue
-                                       : command_line_switch.value;
-
-  return base::StrCat({command_line_switch.key, "=", switch_value});
-}
-
-std::string SanitizeCommandLineSwitchFromString(
-    const std::string& command_line_switch) {
-  return CapitalizeFirstCharacterOfEachWordAndTrimWhitespace(
-      StripNonAlphaNumericCharacters(command_line_switch));
-}
-
 }  // namespace
 
-void InitializeCommandLineSwitches() {
+void SimulateCommandLineSwitches() {
   brave_rewards::RewardsFlags::SetForceParsingForTesting(true);
 }
 
-void ShutdownCommandLineSwitches() {
+void ResetCommandLineSwitches() {
   brave_rewards::RewardsFlags::SetForceParsingForTesting(false);
 }
 
@@ -68,13 +54,20 @@ void AppendCommandLineSwitches(
   DidAppendCommandLineSwitches() = true;
 }
 
-std::string SanitizeCommandLineSwitch(
-    const CommandLineSwitchInfo& command_line_switch) {
+std::string ToString(const CommandLineSwitchInfo& command_line_switch) {
   if (command_line_switch.key.empty()) {
     return kNoCommandLineSwitchKey;
   }
 
-  return SanitizeCommandLineSwitchFromString(ToString(command_line_switch));
+  const std::string command_line_switch_value =
+      command_line_switch.value.empty() ? kNoCommandLineSwitchValue
+                                        : command_line_switch.value;
+
+  const std::string command_line_switch_as_string =
+      base::StrCat({command_line_switch.key, "=", command_line_switch_value});
+
+  return CapitalizeFirstCharacterOfEachWordAndTrimWhitespace(
+      StripNonAlphaNumericCharacters(command_line_switch_as_string));
 }
 
 }  // namespace brave_ads::test

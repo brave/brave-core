@@ -9,8 +9,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_util.h"

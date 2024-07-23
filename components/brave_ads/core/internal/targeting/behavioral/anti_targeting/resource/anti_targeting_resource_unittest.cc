@@ -53,9 +53,9 @@ TEST_F(BraveAdsAntiTargetingResourceTest, LoadResource) {
 
 TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadMalformedResource) {
   // Arrange
-  ASSERT_TRUE(
-      CopyFileFromTestPathToTempPath(/*from_path=*/test::kMalformedResourceId,
-                                     /*to_path=*/kAntiTargetingResourceId));
+  ASSERT_TRUE(CopyFileFromTestDataPathToTempProfilePath(
+      /*from_path=*/test::kMalformedResourceId,
+      /*to_path=*/kAntiTargetingResourceId));
 
   NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);

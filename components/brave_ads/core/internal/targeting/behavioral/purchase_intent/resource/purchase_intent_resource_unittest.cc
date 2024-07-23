@@ -53,9 +53,9 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, LoadResource) {
 
 TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadMalformedResource) {
   // Arrange
-  ASSERT_TRUE(
-      CopyFileFromTestPathToTempPath(/*from_path=*/test::kMalformedResourceId,
-                                     /*to_path=*/kPurchaseIntentResourceId));
+  ASSERT_TRUE(CopyFileFromTestDataPathToTempProfilePath(
+      /*from_path=*/test::kMalformedResourceId,
+      /*to_path=*/kPurchaseIntentResourceId));
 
   NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);

@@ -15,186 +15,14 @@ namespace brave_ads {
 
 class BraveAdsIssuersUtilTest : public test::TestBase {};
 
-TEST_F(BraveAdsIssuersUtilTest, HasIssuersChanged) {
-  // Arrange
-  test::BuildAndSetIssuers();
-
-  const IssuersInfo issuers = test::BuildIssuers(
-      /*ping=*/3'600'000,
-      /*confirmations_issuer_public_keys=*/
-      {{"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=", 0.0},
-       {"TFQCiRJocOh0A8+qHQvdu3V/lDpGsZHJOnZzqny6rFg=", 0.0}},
-      /*payments_issuer_public_keys=*/
-      {{"PmXS59VTEVIPZckOqGdpjisDidUbhLGbhAhN5tmfhhs=", 0.1},
-       {"Bgk5gT+b96iSr3nD5nuTM/yGQ5klrIe6VC6DDdM6sFs=", 0.0}});
-
-  // Act & Assert
-  EXPECT_TRUE(HasIssuersChanged(issuers));
-}
-
-TEST_F(BraveAdsIssuersUtilTest, HasIssuersChangedOnInitialFetch) {
-  // Arrange
-  const IssuersInfo issuers = test::BuildIssuers(
-      /*ping=*/3'600'000,
-      /*confirmations_issuer_public_keys=*/
-      {{"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=", 0.0},
-       {"TFQCiRJocOh0A8+qHQvdu3V/lDpGsZHJOnZzqny6rFg=", 0.0}},
-      /*payments_issuer_public_keys=*/
-      {{"PmXS59VTEVIPZckOqGdpjisDidUbhLGbhAhN5tmfhhs=", 0.1},
-       {"Bgk5gT+b96iSr3nD5nuTM/yGQ5klrIe6VC6DDdM6sFs=", 0.0}});
-
-  // Act & Assert
-  EXPECT_TRUE(HasIssuersChanged(issuers));
-}
-
-TEST_F(BraveAdsIssuersUtilTest, HasIssuersNotChanged) {
-  // Arrange
-  test::BuildAndSetIssuers();
-
-  const IssuersInfo issuers = test::BuildIssuers(
-      /*ping=*/7'200'000,
-      /*confirmations_issuer_public_keys=*/
-      {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
-       {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
-      /*payments_issuer_public_keys=*/
-      {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
-
-  // Act & Assert
-  EXPECT_FALSE(HasIssuersChanged(issuers));
-}
-
-TEST_F(BraveAdsIssuersUtilTest, IssuerDoesExistForConfirmationsType) {
-  // Arrange
-  test::BuildAndSetIssuers();
-
-  // Act & Assert
-  EXPECT_TRUE(IssuerExistsForType(IssuerType::kConfirmations));
-}
-
-TEST_F(BraveAdsIssuersUtilTest, IssuerDoesNotExistForConfirmationsType) {
-  // Arrange
-  const IssuersInfo issuers = test::BuildIssuers(
-      /*ping=*/7'200'000, /*confirmations_issuer_public_keys=*/{},
-      /*payments_issuer_public_keys=*/
-      {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
-
-  SetIssuers(issuers);
-
-  // Act & Assert
-  EXPECT_FALSE(IssuerExistsForType(IssuerType::kConfirmations));
-}
-
-TEST_F(BraveAdsIssuersUtilTest, IssuerDoesExistForPaymentsType) {
-  // Arrange
-  test::BuildAndSetIssuers();
-
-  // Act & Assert
-  EXPECT_TRUE(IssuerExistsForType(IssuerType::kPayments));
-}
-
-TEST_F(BraveAdsIssuersUtilTest, IssuerDoesNotExistForPaymentsType) {
-  // Arrange
-  const IssuersInfo issuers = test::BuildIssuers(
-      /*ping=*/7'200'000,
-      /*confirmations_issuer_public_keys=*/
-      {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
-       {"cKo0rk1iS8Obgyni0X3RRoydDIGHsivTkfX/TM1Xl24=", 0.0}},
-      /*payments_issuer_public_keys=*/{});
-
-  SetIssuers(issuers);
-
-  // Act & Assert
-  EXPECT_FALSE(IssuerExistsForType(IssuerType::kPayments));
-}
-
-TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesExistForConfirmationsType) {
-  // Arrange
-  test::BuildAndSetIssuers();
-
-  // Act & Assert
-  EXPECT_TRUE(PublicKeyExistsForIssuerType(
-      IssuerType::kConfirmations,
-      cbr::PublicKey("QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=")));
-}
-
-TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesNotExistForConfirmationsType) {
-  // Arrange
-  test::BuildAndSetIssuers();
-
-  // Act & Assert
-  EXPECT_FALSE(PublicKeyExistsForIssuerType(
-      IssuerType::kConfirmations,
-      cbr::PublicKey("Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=")));
-}
-
-TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesExistForPaymentsType) {
-  // Arrange
-  test::BuildAndSetIssuers();
-
-  // Act & Assert
-  EXPECT_TRUE(PublicKeyExistsForIssuerType(
-      IssuerType::kPayments,
-      cbr::PublicKey("bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=")));
-}
-
-TEST_F(BraveAdsIssuersUtilTest, PublicKeyDoesNotExistForPaymentsType) {
-  // Arrange
-  test::BuildAndSetIssuers();
-
-  // Act & Assert
-  EXPECT_FALSE(PublicKeyExistsForIssuerType(
-      IssuerType::kPayments,
-      cbr::PublicKey("zNWjpwIbghgXvTol3XPLKV3NJoEFtvUoPMiKstiWm3A=")));
-}
-
-TEST_F(BraveAdsIssuersUtilTest, GetIssuersForType) {
-  // Arrange
-  const IssuersInfo issuers = test::BuildIssuers(
-      /*ping=*/7'200'000,
-      /*confirmations_issuer_public_keys=*/
-      {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
-       {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
-      /*payments_issuer_public_keys=*/
-      {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
-
-  // Act
-  const std::optional<IssuerInfo> issuer =
-      GetIssuerForType(issuers, IssuerType::kPayments);
-  ASSERT_TRUE(issuer);
-
-  // Assert
-  EXPECT_THAT(*issuer,
-              ::testing::FieldsAre(
-                  IssuerType::kPayments,
-                  IssuerPublicKeyMap{
-                      {"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-                      {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}}));
-}
-
-TEST_F(BraveAdsIssuersUtilTest, DoNotGetIssuersForMissingType) {
-  // Arrange
-  const IssuersInfo issuers = test::BuildIssuers(
-      /*ping=*/7'200'000,
-      /*confirmations_issuer_public_keys=*/
-      {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
-       {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
-      /*payments_issuer_public_keys=*/{});
-
-  // Act & Assert
-  EXPECT_FALSE(GetIssuerForType(issuers, IssuerType::kPayments));
-}
-
 TEST_F(BraveAdsIssuersUtilTest, IsIssuersValid) {
   // Arrange
   const IssuersInfo issuers = test::BuildIssuers(
       /*ping=*/7'200'000,
-      /*confirmations_issuer_public_keys=*/
+      /*confirmation_token_issuer_public_keys=*/
       {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
        {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
-      /*payments_issuer_public_keys=*/
+      /*payment_token_issuer_public_keys=*/
       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
        {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1},
        {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
@@ -211,10 +39,10 @@ TEST_F(BraveAdsIssuersUtilTest, IsIssuersInvalid) {
   // Arrange
   const IssuersInfo issuers = test::BuildIssuers(
       /*ping=*/7'200'000,
-      /*confirmations_issuer_public_keys=*/
+      /*confirmation_token_issuer_public_keys=*/
       {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
        {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
-      /*payments_issuer_public_keys=*/
+      /*payment_token_issuer_public_keys=*/
       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
        {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1},
        {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
@@ -227,6 +55,68 @@ TEST_F(BraveAdsIssuersUtilTest, IsIssuersInvalid) {
 
   // Act & Assert
   EXPECT_FALSE(IsIssuersValid(issuers));
+}
+
+TEST_F(BraveAdsIssuersUtilTest, HasIssuers) {
+  // Arrange
+  test::BuildAndSetIssuers();
+
+  // Act & Assert
+  EXPECT_TRUE(HasIssuers());
+}
+
+TEST_F(BraveAdsIssuersUtilTest, DoesNotHaveIssuers) {
+  // Act & Assert
+  EXPECT_FALSE(HasIssuers());
+}
+
+TEST_F(BraveAdsIssuersUtilTest, HasIssuersChanged) {
+  // Arrange
+  test::BuildAndSetIssuers();
+
+  const IssuersInfo issuers = test::BuildIssuers(
+      /*ping=*/3'600'000,
+      /*confirmation_token_issuer_public_keys=*/
+      {{"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=", 0.0},
+       {"TFQCiRJocOh0A8+qHQvdu3V/lDpGsZHJOnZzqny6rFg=", 0.0}},
+      /*payment_token_issuer_public_keys=*/
+      {{"PmXS59VTEVIPZckOqGdpjisDidUbhLGbhAhN5tmfhhs=", 0.1},
+       {"Bgk5gT+b96iSr3nD5nuTM/yGQ5klrIe6VC6DDdM6sFs=", 0.0}});
+
+  // Act & Assert
+  EXPECT_TRUE(HasIssuersChanged(issuers));
+}
+
+TEST_F(BraveAdsIssuersUtilTest, HasIssuersChangedOnInitialFetch) {
+  // Arrange
+  const IssuersInfo issuers = test::BuildIssuers(
+      /*ping=*/3'600'000,
+      /*confirmation_token_issuer_public_keys=*/
+      {{"Nj2NZ6nJUsK5MJ9ga9tfyctxzpT+GlvENF2TRHU4kBg=", 0.0},
+       {"TFQCiRJocOh0A8+qHQvdu3V/lDpGsZHJOnZzqny6rFg=", 0.0}},
+      /*payment_token_issuer_public_keys=*/
+      {{"PmXS59VTEVIPZckOqGdpjisDidUbhLGbhAhN5tmfhhs=", 0.1},
+       {"Bgk5gT+b96iSr3nD5nuTM/yGQ5klrIe6VC6DDdM6sFs=", 0.0}});
+
+  // Act & Assert
+  EXPECT_TRUE(HasIssuersChanged(issuers));
+}
+
+TEST_F(BraveAdsIssuersUtilTest, HasIssuersNotChanged) {
+  // Arrange
+  test::BuildAndSetIssuers();
+
+  const IssuersInfo issuers = test::BuildIssuers(
+      /*ping=*/7'200'000,
+      /*confirmation_token_issuer_public_keys=*/
+      {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
+       {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
+      /*payment_token_issuer_public_keys=*/
+      {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
+       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
+
+  // Act & Assert
+  EXPECT_FALSE(HasIssuersChanged(issuers));
 }
 
 }  // namespace brave_ads

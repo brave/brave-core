@@ -5,13 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_json_reader_util.h"
 
+#include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::json::reader {
 
-TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest, ParseValidJson) {
+TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest, ParseJson) {
   // Act & Assert
   EXPECT_EQ("US-CA", ParseSubdivision(
                          R"(
@@ -21,9 +22,9 @@ TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest, ParseValidJson) {
                             })"));
 }
 
-TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest, DoNotParseInvalidJson) {
+TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest, DoNotParseMalformedJson) {
   // Act & Assert
-  EXPECT_FALSE(ParseSubdivision("{INVALID}"));
+  EXPECT_FALSE(ParseSubdivision(test::kMalformedJson));
 }
 
 TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest,

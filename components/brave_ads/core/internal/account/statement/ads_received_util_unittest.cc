@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/statement/ads_received_util.h"
 
+#include <cstddef>
+
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"

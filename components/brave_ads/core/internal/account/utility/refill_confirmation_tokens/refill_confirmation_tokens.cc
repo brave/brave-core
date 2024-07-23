@@ -13,8 +13,9 @@
 #include "base/strings/strcat.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuer_types.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_types.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens_util.h"
@@ -245,7 +246,8 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
                                             /*should_retry=*/false));
   }
 
-  if (!PublicKeyExistsForIssuerType(IssuerType::kConfirmations, *public_key)) {
+  if (!TokenIssuerPublicKeyExistsForType(TokenIssuerType::kConfirmations,
+                                         *public_key)) {
     return base::unexpected(
         std::make_tuple("Confirmations public key does not exist",
                         /*should_retry=*/true));
