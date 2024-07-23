@@ -1983,7 +1983,7 @@ TEST_F(JsonRpcServiceUnitTest, SetNetwork) {
     EXPECT_EQ(network->chain_id, network_manager_->GetCurrentChainId(
                                      mojom::CoinType::ETH, std::nullopt));
     EXPECT_EQ(mojom::kSepoliaChainId, network_manager_->GetCurrentChainId(
-                                         mojom::CoinType::ETH, origin_a));
+                                          mojom::CoinType::ETH, origin_a));
     EXPECT_EQ(network->chain_id, network_manager_->GetCurrentChainId(
                                      mojom::CoinType::ETH, origin_b));
 
@@ -1996,9 +1996,10 @@ TEST_F(JsonRpcServiceUnitTest, SetNetwork) {
     EXPECT_EQ(url::Origin::Create(network_manager_->GetNetworkURL(
                   mojom::CoinType::ETH, std::nullopt)),
               url::Origin::Create(GetActiveEndpointUrl(*network)));
-    EXPECT_EQ(url::Origin::Create(network_manager_->GetNetworkURL(
-                  mojom::CoinType::ETH, origin_a)),
-              url::Origin::Create(GURL("https://ethereum-sepolia.wallet.brave.com")));
+    EXPECT_EQ(
+        url::Origin::Create(
+            network_manager_->GetNetworkURL(mojom::CoinType::ETH, origin_a)),
+        url::Origin::Create(GURL("https://ethereum-sepolia.wallet.brave.com")));
     EXPECT_EQ(url::Origin::Create(network_manager_->GetNetworkURL(
                   mojom::CoinType::ETH, origin_b)),
               url::Origin::Create(GetActiveEndpointUrl(*network)));

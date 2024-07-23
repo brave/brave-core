@@ -785,7 +785,7 @@ TEST(BraveWalletUtilsUnitTest, EnsureNativeTokenForNetwork) {
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
 
-  EXPECT_EQ(24u, GetAllUserAssets(&prefs).size());
+  EXPECT_EQ(23u, GetAllUserAssets(&prefs).size());
 
   auto network_info = GetTestNetworkInfo1("0x98765");
   EnsureNativeTokenForNetwork(&prefs, network_info);
@@ -810,7 +810,7 @@ TEST(BraveWalletUtilsUnitTest, RemoveUserAsset) {
   auto asset = GetAllUserAssets(&prefs)[4]->Clone();
 
   EXPECT_TRUE(RemoveUserAsset(&prefs, asset));
-  EXPECT_EQ(23u, GetAllUserAssets(&prefs).size());
+  EXPECT_EQ(22u, GetAllUserAssets(&prefs).size());
   EXPECT_THAT(GetAllUserAssets(&prefs), Not(Contains(Eq(std::ref(asset)))));
 
   asset->chain_id = "0x98765";

@@ -808,10 +808,13 @@ void BraveWalletService::MigrateGoerliNetwork(PrefService* prefs) {
     return;
   }
 
+  NetworkManager network_manager(prefs);
+
   // Migrate current chain id to Sepolia for default origin.
-  if (GetCurrentChainId(prefs, mojom::CoinType::ETH, std::nullopt) == "0x5") {
-    SetCurrentChainId(prefs, mojom::CoinType::ETH, std::nullopt,
-                      mojom::kSepoliaChainId);
+  if (network_manager.GetCurrentChainId(mojom::CoinType::ETH, std::nullopt) ==
+      "0x5") {
+    network_manager.SetCurrentChainId(mojom::CoinType::ETH, std::nullopt,
+                                      mojom::kSepoliaChainId);
   }
 
   // Migrate current chain id to Sepolia for all origins.
@@ -832,9 +835,9 @@ void BraveWalletService::MigrateGoerliNetwork(PrefService* prefs) {
     }
 
     if (base::ToLowerASCII(*chain_id_each) == "0x5") {
-      SetCurrentChainId(prefs, mojom::CoinType::ETH,
-                        url::Origin::Create(GURL(origin.first)),
-                        mojom::kSepoliaChainId);
+      network_manager.SetCurrentChainId(mojom::CoinType::ETH,
+                                        url::Origin::Create(GURL(origin.first)),
+                                        mojom::kSepoliaChainId);
     }
   }
 

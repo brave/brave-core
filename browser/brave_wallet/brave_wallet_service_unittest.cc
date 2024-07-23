@@ -1677,12 +1677,12 @@ TEST_F(BraveWalletServiceUnitTest, AddCustomNetworkTwice) {
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
 
   auto assets = GetAllUserAssets(GetPrefs());
-  EXPECT_EQ(24u, assets.size());
+  EXPECT_EQ(23u, assets.size());
 
   json_rpc_service_->AddChain(chain1.Clone(), base::DoNothing());
 
   assets = GetAllUserAssets(GetPrefs());
-  EXPECT_EQ(25u, assets.size());
+  EXPECT_EQ(24u, assets.size());
 
   EXPECT_EQ(assets.back()->name, chain1.symbol_name);
   EXPECT_TRUE(assets.back()->visible);
@@ -1696,14 +1696,14 @@ TEST_F(BraveWalletServiceUnitTest, AddCustomNetworkTwice) {
                                  base::DoNothing());
   // TODO(apaymyshev): Maybe we should remove such assets.
   assets = GetAllUserAssets(GetPrefs());
-  EXPECT_EQ(25u, assets.size());
+  EXPECT_EQ(24u, assets.size());
   EXPECT_EQ(assets.back()->name, chain1.symbol_name);
   EXPECT_FALSE(assets.back()->visible);
 
   // Network added again. No duplicate assets.
   json_rpc_service_->AddChain(chain1.Clone(), base::DoNothing());
   assets = GetAllUserAssets(GetPrefs());
-  EXPECT_EQ(25u, assets.size());
+  EXPECT_EQ(24u, assets.size());
   EXPECT_EQ(assets.back()->name, chain1.symbol_name);
   EXPECT_TRUE(assets.back()->visible);
 }
@@ -2109,23 +2109,23 @@ TEST_F(BraveWalletServiceUnitTest, MigrateGoerliNetwork) {
 
   auto selected_networks = base::JSONReader::Read(R"({
     "ethereum": {
-      "https://app.uniswap.org": "0x5"
+      "https://app.uniswap.org": "0xaa36a7"
     }
   })");
   GetPrefs()->Set(kBraveWalletSelectedNetworksPerOrigin, *selected_networks);
 
   auto default_networks = base::JSONReader::Read(R"({
-    "ethereum": "0x5"
+    "ethereum": "0xaa36a7"
   })");
   GetPrefs()->Set(kBraveWalletSelectedNetworks, *default_networks);
 
   // CASE 1: Goerli is the selected network of some origin
   ASSERT_FALSE(GetPrefs()->GetBoolean(kBraveWalletGoerliNetworkMigrated));
   BraveWalletService::MigrateGoerliNetwork(GetPrefs());
-  EXPECT_EQ(
-      GetCurrentChainId(GetPrefs(), mojom::CoinType::ETH,
-                        url::Origin::Create(GURL("https://app.uniswap.org"))),
-      mojom::kSepoliaChainId);
+  EXPECT_EQ(network_manager_->GetCurrentChainId(
+                mojom::CoinType::ETH,
+                url::Origin::Create(GURL("https://app.uniswap.org"))),
+            mojom::kSepoliaChainId);
   EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletGoerliNetworkMigrated));
 
   // CASE 2: Goerli is the default ETH network
