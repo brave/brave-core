@@ -1534,8 +1534,6 @@
 -All/BrowsingDataRemoverBrowserTestP.*
 -All/ChromeBackForwardCacheBrowserWithEmbedPdfTest.*/*
 -All/ChromeBackForwardCacheBrowserWithEmbedTest.*/*
--All/ChromeBrowsingDataLifetimeManagerScheduledRemovalTest.*
--All/ChromeBrowsingDataLifetimeManagerShutdownTest.*/*
 -All/ChromeMultiProfileStartupBrowserTestBase.*
 -All/ClickToCallPolicyTest.*
 -All/ClientHintsAllowThirdPartyBrowserTest.*
@@ -1784,9 +1782,6 @@
 -FirstPartySets/*
 -FirstPartySetsPolicyBrowsertest.*
 -FirstPartySetsWebSocketBrowserTest.*
--FirstRunInternalPosixTest.*
--FirstRunMasterPrefsImportNothing.*
--FirstRunMasterPrefsVariationsSeedTests/FirstRunMasterPrefsVariationsSeedTest.*
 -FlagAndSettings/SamePartyIsFirstPartyCookiePolicyBrowserTest.*
 -FlocIdProviderAutoDenyRemotePermissionBrowserTest.*
 -FlocIdProviderBrowserTest.*
@@ -2254,8 +2249,6 @@
 -VariationsHttpHeadersBrowserTest.*
 -VariationsHttpHeadersBrowserTest/VariationsHttpHeadersBrowserTestWithRestrictedVisibility.*
 -VariationsHttpHeadersBrowserTestWithOptimizationGuide.*
--VariationsSafeModeBrowserTest.*
--VariationsSafeModeEndToEndBrowserTest.*
 -WakeEventPageTest.*
 -WebAppBrowserTest_ShortcutMenu.*
 -WebAppBrowserTest.*
