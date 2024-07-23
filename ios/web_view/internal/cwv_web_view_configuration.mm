@@ -8,14 +8,27 @@
 
 #import "base/threading/thread_restrictions.h"
 #import "components/keyed_service/core/service_access_type.h"
-#import "ios/web_view/internal/cwv_preferences_internal.h"
-#import "ios/web_view/internal/cwv_user_content_controller_internal.h"
-#import "ios/web_view/internal/cwv_web_view_internal.h"
-#import "ios/web_view/internal/web_view_global_state_util.h"
-
+#import "components/password_manager/core/browser/leak_detection/bulk_leak_check_service_interface.h"
+#import "components/password_manager/core/browser/password_store/password_store_interface.h"
+#import "components/sync/service/sync_service.h"
 #import "ios/chrome/browser/shared/model/application_context/application_context.h"
 #import "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #import "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
+#import "ios/web_view/internal/app/application_context.h"
+#import "ios/web_view/internal/autofill/cwv_autofill_data_manager_internal.h"
+#import "ios/web_view/internal/autofill/web_view_personal_data_manager_factory.h"
+#import "ios/web_view/internal/cwv_preferences_internal.h"
+#import "ios/web_view/internal/cwv_user_content_controller_internal.h"
+#import "ios/web_view/internal/cwv_web_view_internal.h"
+#import "ios/web_view/internal/passwords/cwv_leak_check_service_internal.h"
+#import "ios/web_view/internal/passwords/cwv_reuse_check_service_internal.h"
+#import "ios/web_view/internal/passwords/web_view_account_password_store_factory.h"
+#import "ios/web_view/internal/passwords/web_view_bulk_leak_check_service_factory.h"
+#import "ios/web_view/internal/signin/web_view_identity_manager_factory.h"
+#import "ios/web_view/internal/sync/cwv_sync_controller_internal.h"
+#import "ios/web_view/internal/sync/web_view_sync_service_factory.h"
+#import "ios/web_view/internal/web_view_browser_state.h"
+#import "ios/web_view/internal/web_view_global_state_util.h"
 
 namespace {
 CWVWebViewConfiguration* gDefaultConfiguration = nil;
@@ -25,7 +38,7 @@ NSHashTable<CWVWebViewConfiguration*>* gNonPersistentConfigurations = nil;
 
 @interface CWVWebViewConfiguration () {
   // The BrowserState for this configuration.
-  ChromeBrowserState* _browserState;
+  ios_web_view::WebViewBrowserState* _browserState;
 
   // Holds all CWVWebViews created with this class. Weak references.
   NSHashTable* _webViews;
@@ -68,8 +81,9 @@ NSHashTable<CWVWebViewConfiguration*>* gNonPersistentConfigurations = nil;
         GetApplicationContext()->GetChromeBrowserStateManager();
     ChromeBrowserState* browserState =
         browserStateManager->GetLastUsedBrowserStateDeprecatedDoNotUse();
-    gDefaultConfiguration =
-        [[CWVWebViewConfiguration alloc] initWithBrowserState:browserState];
+    gDefaultConfiguration = [[CWVWebViewConfiguration alloc]
+        initWithBrowserState:ios_web_view::WebViewBrowserState::
+                                 FromBrowserState(browserState)];
   });
   return gDefaultConfiguration;
 }
@@ -89,7 +103,9 @@ NSHashTable<CWVWebViewConfiguration*>* gNonPersistentConfigurations = nil;
       browserStateManager->GetLastUsedBrowserStateDeprecatedDoNotUse()
           ->GetOffTheRecordChromeBrowserState();
   CWVWebViewConfiguration* nonPersistentConfiguration =
-      [[CWVWebViewConfiguration alloc] initWithBrowserState:browserState];
+      [[CWVWebViewConfiguration alloc]
+          initWithBrowserState:ios_web_view::WebViewBrowserState::
+                                   FromBrowserState(browserState)];
 
   // Save a weak pointer to nonpersistent configurations so they may be shut
   // down later.
@@ -102,7 +118,8 @@ NSHashTable<CWVWebViewConfiguration*>* gNonPersistentConfigurations = nil;
   return nonPersistentConfiguration;
 }
 
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)browserState {
+- (instancetype)initWithBrowserState:
+    (ios_web_view::WebViewBrowserState*)browserState {
   self = [super init];
   if (self) {
     _browserState = browserState;
@@ -121,48 +138,48 @@ NSHashTable<CWVWebViewConfiguration*>* gNonPersistentConfigurations = nil;
 #pragma mark - Autofill
 
 - (CWVAutofillDataManager*)autofillDataManager {
-  // if (!_autofillDataManager && self.persistent) {
-  //   autofill::PersonalDataManager* personalDataManager =
-  //       ios_web_view::WebViewPersonalDataManagerFactory::GetForBrowserState(
-  //           self.browserState);
-  //   scoped_refptr<password_manager::PasswordStoreInterface> passwordStore =
-  //       ios_web_view::WebViewAccountPasswordStoreFactory::GetForBrowserState(
-  //           self.browserState, ServiceAccessType::EXPLICIT_ACCESS);
-  //   _autofillDataManager = [[CWVAutofillDataManager alloc]
-  //       initWithPersonalDataManager:personalDataManager
-  //                     passwordStore:passwordStore.get()];
-  // }
+  if (!_autofillDataManager && self.persistent) {
+    autofill::PersonalDataManager* personalDataManager =
+        ios_web_view::WebViewPersonalDataManagerFactory::GetForBrowserState(
+            self.browserState);
+    scoped_refptr<password_manager::PasswordStoreInterface> passwordStore =
+        ios_web_view::WebViewAccountPasswordStoreFactory::GetForBrowserState(
+            self.browserState, ServiceAccessType::EXPLICIT_ACCESS);
+    _autofillDataManager = [[CWVAutofillDataManager alloc]
+        initWithPersonalDataManager:personalDataManager
+                      passwordStore:passwordStore.get()];
+  }
   return _autofillDataManager;
 }
 
 #pragma mark - Sync
 
 - (CWVSyncController*)syncController {
-  // if (!_syncController && self.persistent) {
-  //   syncer::SyncService* syncService =
-  //       ios_web_view::WebViewSyncServiceFactory::GetForBrowserState(
-  //           self.browserState);
-  //   signin::IdentityManager* identityManager =
-  //       ios_web_view::WebViewIdentityManagerFactory::GetForBrowserState(
-  //           self.browserState);
-  //   _syncController = [[CWVSyncController alloc]
-  //       initWithSyncService:syncService
-  //           identityManager:identityManager
-  //               prefService:_browserState->GetPrefs()];
-  // }
+  if (!_syncController && self.persistent) {
+    syncer::SyncService* syncService =
+        ios_web_view::WebViewSyncServiceFactory::GetForBrowserState(
+            self.browserState);
+    signin::IdentityManager* identityManager =
+        ios_web_view::WebViewIdentityManagerFactory::GetForBrowserState(
+            self.browserState);
+    _syncController = [[CWVSyncController alloc]
+        initWithSyncService:syncService
+            identityManager:identityManager
+                prefService:_browserState->GetPrefs()];
+  }
   return _syncController;
 }
 
 #pragma mark - LeakCheckService
 
 - (CWVLeakCheckService*)leakCheckService {
-  // if (!_leakCheckService && self.persistent) {
-  //   password_manager::BulkLeakCheckServiceInterface* bulkLeakCheckService =
-  //       ios_web_view::WebViewBulkLeakCheckServiceFactory::GetForBrowserState(
-  //           self.browserState);
-  //   _leakCheckService = [[CWVLeakCheckService alloc]
-  //       initWithBulkLeakCheckService:bulkLeakCheckService];
-  // }
+  if (!_leakCheckService && self.persistent) {
+    password_manager::BulkLeakCheckServiceInterface* bulkLeakCheckService =
+        ios_web_view::WebViewBulkLeakCheckServiceFactory::GetForBrowserState(
+            self.browserState);
+    _leakCheckService = [[CWVLeakCheckService alloc]
+        initWithBulkLeakCheckService:bulkLeakCheckService];
+  }
   return _leakCheckService;
 }
 
@@ -172,7 +189,7 @@ NSHashTable<CWVWebViewConfiguration*>* gNonPersistentConfigurations = nil;
   // if (!_reuseCheckService && self.persistent) {
   //   affiliations::AffiliationService* affiliation_service =
   //       ios_web_view::WebViewAffiliationServiceFactory::GetForBrowserState(
-  //           static_cast<ChromeBrowserState*>(self.browserState));
+  //           static_cast<ios_web_view::WebViewBrowserState*>(self.browserState));
 
   //   _reuseCheckService = [[CWVReuseCheckService alloc]
   //       initWithAffiliationService:affiliation_service];
@@ -188,7 +205,7 @@ NSHashTable<CWVWebViewConfiguration*>* gNonPersistentConfigurations = nil;
 
 #pragma mark - Private Methods
 
-- (ChromeBrowserState*)browserState {
+- (ios_web_view::WebViewBrowserState*)browserState {
   return _browserState;
 }
 
@@ -197,7 +214,7 @@ NSHashTable<CWVWebViewConfiguration*>* gNonPersistentConfigurations = nil;
 }
 
 - (void)shutDown {
-  // [_autofillDataManager shutDown];
+  [_autofillDataManager shutDown];
   for (CWVWebView* webView in _webViews) {
     [webView shutDown];
   }

@@ -1,0 +1,11 @@
+
+#ifndef BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_TRANSLATE_WEB_VIEW_TRANSLATE_RANKER_FACTORY_H_
+#define BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_TRANSLATE_WEB_VIEW_TRANSLATE_RANKER_FACTORY_H_
+
+#include "ios/chrome/browser/translate/model/translate_ranker_factory.h"
+
+namespace ios_web_view {
+typedef translate::TranslateRankerFactory WebViewTranslateRankerFactory;
+}
+
+#endif

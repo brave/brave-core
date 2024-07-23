@@ -1,0 +1,10 @@
+#ifndef BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_SAFE_BROWSING_WEB_VIEW_SAFE_BROWSING_CLIENT_FACTORY_H_
+#define BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_SAFE_BROWSING_WEB_VIEW_SAFE_BROWSING_CLIENT_FACTORY_H_
+
+#include "ios/chrome/browser/safe_browsing/model/safe_browsing_client_factory.h"
+
+namespace ios_web_view {
+typedef SafeBrowsingClientFactory WebViewSafeBrowsingClientFactory;
+}
+
+#endif

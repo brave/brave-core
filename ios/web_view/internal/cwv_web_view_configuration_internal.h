@@ -15,22 +15,20 @@ namespace ios_web_view {
 class WebViewBrowserState;
 }  // namespace ios_web_view
 
-class ChromeBrowserState;
-
 @class CWVWebView;
 
 @interface CWVWebViewConfiguration ()
 
 // The browser state associated with this configuration.
-@property(nonatomic, readonly) ChromeBrowserState* browserState;
+@property(nonatomic, readonly) ios_web_view::WebViewBrowserState* browserState;
 
 // Calls |shutDown| on the singletons returned by |defaultConfiguration| and
 // |incognitoConfiguration|.
 + (void)shutDown;
 
 // Initializes with |browserState| that this instance is to be associated with.
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)browserState
-    NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBrowserState:
+    (ios_web_view::WebViewBrowserState*)browserState NS_DESIGNATED_INITIALIZER;
 
 // Registers a |webView| so that this class can call |shutDown| on it later on.
 // Only weak references are held, so no need for de-register method.
