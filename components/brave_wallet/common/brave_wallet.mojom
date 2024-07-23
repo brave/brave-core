@@ -558,11 +558,6 @@ struct LiFiToolDetails {
   string logo;
 };
 
-struct LiFiInsurance {
-  string state;
-  string fee_amount_usd;
-};
-
 struct LiFiAction {
   BlockchainToken from_token;
   string from_amount;
@@ -625,7 +620,6 @@ struct LiFiRoute {
   string to_amount_min;
   string to_address;
   array<LiFiStep> steps;
-  LiFiInsurance insurance;
   array<string> tags;
 };
 
