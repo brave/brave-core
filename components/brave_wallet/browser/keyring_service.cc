@@ -2040,7 +2040,6 @@ KeyringService::GetOrchardRawBytes(const mojom::AccountIdPtr& account_id,
 
   return zcash_keyring->GetOrchardRawBytes(*key_id);
 }
-#endif
 
 std::optional<std::array<uint8_t, kOrchardFullViewKeySize>>
 KeyringService::GetOrchardFullViewKey(const mojom::AccountIdPtr& account_id) {
@@ -2051,6 +2050,7 @@ KeyringService::GetOrchardFullViewKey(const mojom::AccountIdPtr& account_id) {
 
   return zcash_keyring->GetOrchardFullViewKey(account_id->account_index);
 }
+#endif
 
 void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
     const mojom::AccountIdPtr& account_id,
