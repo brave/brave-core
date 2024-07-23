@@ -25,6 +25,10 @@ export default function FeatureMenu() {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
   }
 
+  const handleSearchAndHistoryClick = () => {
+    context.setIsConversationListOpen(true)
+  }
+
   const customModels = context.allModels.filter(model => model.options.customModelOptions !== undefined)
   const leoModels = context.allModels.filter(model => model.options.leoModelOptions !== undefined)
 
@@ -38,7 +42,7 @@ export default function FeatureMenu() {
         fab
         kind="plain-faint"
       >
-        <Icon name='settings' />
+        <Icon name='more-vertical' />
       </Button>
       <div className={styles.menuSectionTitle}>
         {getLocale('menuTitleModels')}
@@ -124,6 +128,20 @@ export default function FeatureMenu() {
         </div>
       </leo-menu-item>
       }
+
+      <leo-menu-item onClick={handleSearchAndHistoryClick}>
+        <div className={classnames(styles.menuItemWithIcon, styles.menuItemMainItem)}>
+          <Icon name='history' />
+          <span className={styles.menuText}>Search and history</span>
+        </div>
+      </leo-menu-item>
+
+      <leo-menu-item onClick={() => {}}>
+        <div className={classnames(styles.menuItemWithIcon, styles.menuItemMainItem)}>
+          <Icon name='launch' />
+          <span className={styles.menuText}>Open full page</span>
+        </div>
+      </leo-menu-item>
 
       <leo-menu-item onClick={handleSettingsClick}>
         <div className={classnames(styles.menuItemWithIcon, styles.menuItemMainItem)}>

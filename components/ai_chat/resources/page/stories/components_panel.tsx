@@ -12,6 +12,7 @@ import '@brave/leo/tokens/css/variables.css'
 import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import Main from '../components/main'
+import FullScreen from '../components/full_screen'
 import * as mojom from '../api/page_handler'
 import { useArgs } from '@storybook/preview-api'
 import FeedbackForm from '../components/feedback_form'
@@ -379,6 +380,16 @@ export const _FeedbackForm = {
     return (
       <div className={styles.container}>
         <FeedbackForm />
+      </div>
+    )
+  }
+}
+
+export const _Fullscreen = {
+  render: () => {
+    return (
+      <div className={styles.containerFull}>
+        <FullScreen />
       </div>
     )
   }

@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
@@ -16,7 +15,6 @@ import PrivacyMessage from '../privacy_message'
 import ErrorConnection from '../alerts/error_connection'
 import ErrorRateLimit from '../alerts/error_rate_limit'
 import InputBox from '../input_box'
-import FeatureButtonMenu from '../feature_button_menu'
 import ModelIntro from '../model_intro'
 import PremiumSuggestion from '../premium_suggestion'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
@@ -26,6 +24,8 @@ import WelcomeGuide from '../welcome_guide'
 import PageContextToggle from '../page_context_toggle'
 import styles from './style.module.scss'
 import ToolsButtonMenu from '../tools_button_menu'
+import SidebarNav from '../sidebar_nav'
+import { PageTitleHeader } from '../header'
 
 const SCROLL_BOTTOM_THRESHOLD = 10.0
 
@@ -37,10 +37,6 @@ function Main() {
     currentError,
     apiHasError
   } = context
-
-  const handleEraseClick = () => {
-    getPageHandlerInstance().pageHandler.clearConversationHistory()
-  }
 
   const shouldShowPremiumSuggestionForModel =
     hasAcceptedAgreement &&
@@ -57,7 +53,6 @@ function Main() {
     siteInfo === null && // SiteInfo request has finished and this is a standalone conversation
     !context.isPremiumUser
 
-  const shouldDisplayEraseAction = context.conversationHistory.length >= 1
   const showContextToggle = context.conversationHistory.length === 0 && siteInfo?.isContentAssociationPossible
 
   let currentErrorElement = null
@@ -106,42 +101,13 @@ function Main() {
 
   return (
     <main className={styles.main}>
+      {context.isConversationListOpen && (
+        <div className={styles.conversationList}>
+          <SidebarNav enableBackButton={true} />
+        </div>
+      )}
       {context.showAgreementModal && <PrivacyMessage />}
-      <div className={styles.header}>
-        <div className={styles.logo}>
-          <Icon name='product-brave-leo' />
-          <div className={styles.logoTitle}>Leo AI</div>
-          {context.isPremiumUser && <div className={styles.badgePremium}>PREMIUM</div>}
-        </div>
-        <div className={styles.actions}>
-          {hasAcceptedAgreement && (
-            <>
-            {shouldDisplayEraseAction && (
-              <Button
-                fab
-                kind='plain-faint'
-                aria-label='Erase conversation history'
-                title='Erase conversation history'
-                onClick={handleEraseClick}
-              >
-                <Icon name='erase' />
-              </Button>
-            )}
-            <FeatureButtonMenu />
-            <Button
-              fab
-              kind='plain-faint'
-              aria-label='Close'
-              title='Close'
-              className={styles.closeButton}
-              onClick={() => getPageHandlerInstance().pageHandler.closePanel()}
-            >
-              <Icon name='close' />
-            </Button>
-            </>
-          )}
-        </div>
-      </div>
+      <PageTitleHeader />
       <div className={classnames({
         [styles.scroller]: true,
         [styles.flushBottom]: !hasAcceptedAgreement
