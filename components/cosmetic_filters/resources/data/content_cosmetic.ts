@@ -281,7 +281,7 @@ const onMutations = (mutations: MutationRecord[], observer: MutationObserver) =>
     }
   }
 
-  if (!ShouldThrottleFetchNewClassIdsRules()) {
+  if (!CC.generichide && !ShouldThrottleFetchNewClassIdsRules()) {
     fetchNewClassIdRules()
   }
 
@@ -626,22 +626,24 @@ const queryAttrsFromDocument = (switchToMutationObserverAtTime?: number) => {
   // @ts-expect-error
   const eventId: number | undefined = cf_worker.onQuerySelectorsBegin?.()
 
-  const elmWithClassOrId = document.querySelectorAll(classIdWithoutHtmlOrBody)
-  for (const elm of elmWithClassOrId) {
-    for (const aClassName of elm.classList.values()) {
-      if (aClassName && !queriedClasses.has(aClassName)) {
-        notYetQueriedClasses.push(aClassName)
-        queriedClasses.add(aClassName)
+  if (!CC.generichide) {
+    const elmWithClassOrId = document.querySelectorAll(classIdWithoutHtmlOrBody)
+    for (const elm of elmWithClassOrId) {
+      for (const aClassName of elm.classList.values()) {
+        if (aClassName && !queriedClasses.has(aClassName)) {
+          notYetQueriedClasses.push(aClassName)
+          queriedClasses.add(aClassName)
+        }
+      }
+      const elmId = elm.getAttribute('id')
+      if (elmId && !queriedIds.has(elmId)) {
+        notYetQueriedIds.push(elmId)
+        queriedIds.add(elmId)
       }
     }
-    const elmId = elm.getAttribute('id')
-    if (elmId && !queriedIds.has(elmId)) {
-      notYetQueriedIds.push(elmId)
-      queriedIds.add(elmId)
-    }
-  }
 
-  fetchNewClassIdRules()
+    fetchNewClassIdRules()
+  }
 
   if (CC.hasRemovals) executeRemovals();
 
@@ -683,7 +685,7 @@ const scheduleQueuePump = (hide1pContent: boolean, genericHide: boolean) => {
   // called, in which case set up a timer and quit
   CC._startCheckingId = window.requestIdleCallback(_ => {
     CC._hasDelayOcurred = true
-    if (!genericHide) {
+    if (!genericHide || CC.hasRemovals) {
       if (CC.firstSelectorsPollingDelayMs === undefined) {
         startObserving()
       } else {
