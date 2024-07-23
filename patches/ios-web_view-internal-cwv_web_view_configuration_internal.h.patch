@@ -1,0 +1,14 @@
+diff --git a/ios/web_view/internal/cwv_web_view_configuration_internal.h b/ios/web_view/internal/cwv_web_view_configuration_internal.h
+index 19d86a6881933e78d1d50a98f161dc1836a322ad..1d19d73869b89f01388b3727dbd4bebfe844299b 100644
+--- a/ios/web_view/internal/cwv_web_view_configuration_internal.h
++++ b/ios/web_view/internal/cwv_web_view_configuration_internal.h
+@@ -28,8 +28,7 @@ class WebViewBrowserState;
+ 
+ // Initializes with |browserState| that this instance is to be associated with.
+ - (instancetype)initWithBrowserState:
+-    (std::unique_ptr<ios_web_view::WebViewBrowserState>)browserState
+-    NS_DESIGNATED_INITIALIZER;
++    (ios_web_view::WebViewBrowserState*)browserState NS_DESIGNATED_INITIALIZER;
+ 
+ // Registers a |webView| so that this class can call |shutDown| on it later on.
+ // Only weak references are held, so no need for de-register method.

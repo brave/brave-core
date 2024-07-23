@@ -170,9 +170,9 @@ source_set("web_view") {
     "//ios/web_view/internal/web_view_web_state_policy_decider.h",
     "//ios/web_view/internal/web_view_web_state_policy_decider.mm",
     "//ios/web_view/internal/webdata_services/web_view_web_data_service_wrapper_factory.h",
-    "internal/cwv_web_view.mm",
-    "internal/cwv_web_view_configuration.mm",
-    "internal/cwv_web_view_configuration_internal.h",
+    "//ios/web_view/internal/cwv_web_view.mm",
+    "//ios/web_view/internal/cwv_web_view_configuration.mm",
+    "//ios/web_view/internal/cwv_web_view_configuration_internal.h",
   ]
   public_deps = [
     "//base",
@@ -237,6 +237,7 @@ source_set("web_view") {
     "//ios/chrome/browser/signin/model",
     "//ios/chrome/browser/safe_browsing/model",
     "//ios/chrome/browser/sync/model",
+    "//ios/chrome/browser/tabs/model/",
     "//ios/chrome/browser/translate/model",
     "//ios/chrome/browser/webdata_services/model",
     "//ios/components/credential_provider_extension:password_spec_fetcher",
