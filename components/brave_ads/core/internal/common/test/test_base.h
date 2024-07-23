@@ -57,27 +57,27 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
   // like from start to finish.
   void SetUp(bool is_integration_test);
 
-  // Override `SetUpMocks` to mock command-line switches, file system, prefs,
-  // and `AdsClient` before initialization.
+  // Override `SetUpMocks` to mock command-line switches, the file system,
+  // preferences, and `AdsClient` before initialization.
   virtual void SetUpMocks() {}
 
   // Convenience function for accessing AdsImpl from integration tests.
   AdsImpl& GetAds() const;
 
-  // Copies a single file from "data/test" to the temp path. Use
-  // `CopyDirectoryFromTestPathToTempPath` to copy directories.
-  [[nodiscard]] bool CopyFileFromTestPathToTempPath(
+  // Copies a single file from "test/data" to the temp profile path. Use
+  // `CopyDirectoryFromTestDataPathToTempProfilePath` to copy directories.
+  [[nodiscard]] bool CopyFileFromTestDataPathToTempProfilePath(
       const std::string& from_path,
       const std::string& to_path) const;
-  [[nodiscard]] bool CopyFileFromTestPathToTempPath(
+  [[nodiscard]] bool CopyFileFromTestDataPathToTempProfilePath(
       const std::string& path) const;
 
-  // Copies the given path from "data/test", and all subdirectories and their
+  // Copies the given path from "test/data", and all subdirectories and their
   // contents as well to the temp directory.
-  [[nodiscard]] bool CopyDirectoryFromTestPathToTempPath(
+  [[nodiscard]] bool CopyDirectoryFromTestDataPathToTempProfilePath(
       const std::string& from_path,
       const std::string& to_path) const;
-  [[nodiscard]] bool CopyDirectoryFromTestPathToTempPath(
+  [[nodiscard]] bool CopyDirectoryFromTestDataPathToTempProfilePath(
       const std::string& path) const;
 
   // Fast-forwards virtual time by `time_delta`, causing all tasks on the main
@@ -138,21 +138,21 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
   void MockAdsClientNotifier();
   void MockAdsClient();
   void Mock();
-
-  void LoadState() const;
+  void MockDefaultAdsServiceState() const;
 
   void SetUpIntegrationTest();
   void SetUpIntegrationTestCallback(bool success);
+
   void SetUpUnitTest();
 
-  base::ScopedTempDir temp_dir_;
+  base::ScopedTempDir temp_profile_dir_;
 
   bool setup_called_ = false;
   bool teardown_called_ = false;
 
   brave_l10n::test::ScopedDefaultLocale scoped_default_locale_;
 
-  ScopedBrowserVersionSetterForTesting scoped_browser_version_setter_;
+  ScopedBrowserVersionNumberForTesting scoped_browser_version_number_;
 
   std::unique_ptr<Database> database_;
 

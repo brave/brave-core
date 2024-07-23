@@ -26,10 +26,10 @@ void MockGetCachedAdEvents(const AdsClientMock& mock);
 void MockResetAdEventCacheForInstanceId(const AdsClientMock& mock);
 
 void MockSave(AdsClientMock& mock);
-void MockLoad(AdsClientMock& mock, const base::ScopedTempDir& temp_dir);
+void MockLoad(AdsClientMock& mock, const base::ScopedTempDir& temp_profile_dir);
 
 void MockLoadComponentResource(AdsClientMock& mock,
-                               const base::ScopedTempDir& temp_dir);
+                               const base::ScopedTempDir& temp_profile_dir);
 
 void MockLoadDataResource(AdsClientMock& mock);
 

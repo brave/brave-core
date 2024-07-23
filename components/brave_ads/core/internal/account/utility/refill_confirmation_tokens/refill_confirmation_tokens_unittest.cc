@@ -24,6 +24,7 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -238,7 +239,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, GetSignedTokensInvalidResponse) {
        {{net::HTTP_CREATED, test::BuildRequestSignedTokensUrlResponseBody()}}},
       {BuildGetSignedTokensUrlPath(test::kWalletPaymentId,
                                    test::kRequestSignedTokensNonce),
-       {{net::HTTP_OK, /*response_body=*/"{INVALID}"}}}};
+       {{net::HTTP_OK, /*response_body=*/test::kMalformedJson}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const WalletInfo wallet = test::Wallet();

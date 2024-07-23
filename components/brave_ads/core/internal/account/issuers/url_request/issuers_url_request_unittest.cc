@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request_delegate_mock.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -51,7 +52,8 @@ TEST_F(BraveAdsIssuersUrlRequestTest, FetchIssuers) {
 TEST_F(BraveAdsIssuersUrlRequestTest, DoNotFetchIssuersIfInvalidResponseBody) {
   // Arrange
   const test::URLResponseMap url_responses = {
-      {BuildIssuersUrlPath(), {{net::HTTP_OK, /*response_body=*/"{INVALID}"}}}};
+      {BuildIssuersUrlPath(),
+       {{net::HTTP_OK, /*response_body=*/test::kMalformedJson}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act & Assert

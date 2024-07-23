@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TEST_MOCK_TEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TEST_MOCK_TEST_UTIL_H_
 
-#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -15,7 +14,6 @@
 #include "brave/components/brave_ads/core/internal/client/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_mock.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_types.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 class GURL;
 

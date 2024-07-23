@@ -28,9 +28,10 @@ class BraveAdsInvalidDatabaseMigrationTest
       public DatabaseManagerObserver {
  protected:
   void SetUpMocks() override {
-    MaybeMockDatabase();
-
     DatabaseManager::GetInstance().AddObserver(this);
+
+    ASSERT_TRUE(CopyFileFromTestDataPathToTempProfilePath(
+        DatabasePathForSchemaVersion(), kDatabaseFilename));
   }
 
   void TearDown() override {
@@ -41,12 +42,10 @@ class BraveAdsInvalidDatabaseMigrationTest
 
   static int GetSchemaVersion() { return GetParam(); }
 
-  void MaybeMockDatabase() {
-    const std::string database_filename = base::StringPrintf(
+  static std::string DatabasePathForSchemaVersion() {
+    return base::StringPrintf(
         "database_migration/invalid_database_schema_%d.sqlite",
         GetSchemaVersion());
-    ASSERT_TRUE(
-        CopyFileFromTestPathToTempPath(database_filename, kDatabaseFilename));
   }
 
   // DatabaseManagerObserver:
@@ -71,7 +70,11 @@ class BraveAdsInvalidDatabaseMigrationTest
 };
 
 TEST_P(BraveAdsInvalidDatabaseMigrationTest, MigrateFromSchema) {
-  // Act & Assert
+  // Database migration occurs after invoking `Setup` and `SetUpMocks` during
+  // the initialization of `AdsImpl` in `test::TestBase`. Consequently,
+  // `EXPECT_CALL` cannot be used with the mocks.
+
+  // Assert
   EXPECT_TRUE(did_create_database_);
   EXPECT_FALSE(did_migrate_database_);
   EXPECT_FALSE(failed_to_migrate_database_);
@@ -80,7 +83,7 @@ TEST_P(BraveAdsInvalidDatabaseMigrationTest, MigrateFromSchema) {
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsInvalidDatabaseMigrationTest,
-                         ::testing::Range(1, database::kVersion + 1),
+                         ::testing::Range(1, database::kVersion),
                          TestParamToString);
 
 }  // namespace brave_ads

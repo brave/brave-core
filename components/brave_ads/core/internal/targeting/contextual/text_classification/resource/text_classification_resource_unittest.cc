@@ -53,7 +53,7 @@ TEST_F(BraveAdsTextClassificationResourceTest, LoadResource) {
 
 TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMalformedResource) {
   // Arrange
-  ASSERT_TRUE(CopyFileFromTestPathToTempPath(
+  ASSERT_TRUE(CopyFileFromTestDataPathToTempProfilePath(
       /*from_path=*/test::kMalformedResourceId,
       /*to_path=*/kTextClassificationResourceId));
 

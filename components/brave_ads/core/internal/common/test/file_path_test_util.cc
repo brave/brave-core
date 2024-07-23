@@ -10,6 +10,8 @@
 
 namespace brave_ads::test {
 
+namespace {
+
 base::FilePath RootPath() {
   return base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
       .AppendASCII("brave")
@@ -17,20 +19,22 @@ base::FilePath RootPath() {
       .AppendASCII("brave_ads");
 }
 
+}  // namespace
+
 base::FilePath DataResourcesPath() {
   return RootPath().AppendASCII("resources");
 }
 
-base::FilePath RootDataPath() {
+base::FilePath DataPath() {
   return RootPath().AppendASCII("core").AppendASCII("test").AppendASCII("data");
 }
 
 base::FilePath ComponentResourcesDataPath() {
-  return RootDataPath().AppendASCII("component_resources");
+  return DataPath().AppendASCII("component_resources");
 }
 
 base::FilePath UrlResponsesDataPath() {
-  return RootDataPath().AppendASCII("url_responses");
+  return DataPath().AppendASCII("url_responses");
 }
 
 }  // namespace brave_ads::test

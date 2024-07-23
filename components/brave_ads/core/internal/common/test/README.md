@@ -25,15 +25,21 @@ You can fast-forward virtual time using the `FastForwardClockBy`, `SuspendedFast
 
 Alternatively, you can advance the clock using the `AdvanceClockBy`, `AdvanceClockTo`, `AdvanceClockToLocalMidnight`, and `AdvanceClockToUTCMidnight` helpers, which do not run tasks.
 
-For more information, refer to the usage of [task_environment_](../../../../../../../base/test/task_environment.h).
+See [task_environment_](../../../../../../../base/test/task_environment.h).
 
 ## Mocking Command-Line Switches
 
-Refer to [command_line_switch_test_util.h](command_line_switch_test_util.h) for more information.
+To mock command-line switches, invoke `test::AppendCommandLineSwitches` within `test::TestBase::SetUpMocks`, i.e.,
+
+    void SetUpMocks() override {
+        test::AppendCommandLineSwitches({{"foo", "bar"}, {"baz", "qux"}});
+    }
+
+See [command_line_switch_test_util.h](command_line_switch_test_util.h).
 
 ## Mocking Prefs
 
-Preferences **MUST** be registered in [pref_registry_test_util.cc](./pref_registry_test_util.cc). To set a preference and notify listeners, use `SetProfile*Pref` or `SetLocalState*Pref`. To set a preference without notifying listeners, use `SetProfile*PrefValue` or `SetLocalState*PrefValue`. Refer to [profile_pref_value_test_util.h](./profile_pref_value_test_util.h) and [local_state_pref_value_test_util.h](./local_state_pref_value_test_util.h) for more information.
+Preferences **MUST** be registered in [pref_registry_test_util.cc](./pref_registry_test_util.cc). To set a preference and notify listeners, use `SetProfile*Pref` or `SetLocalState*Pref`. To set a preference without notifying listeners, use `SetProfile*PrefValue` or `SetLocalState*PrefValue`. See [profile_pref_value_test_util.h](./profile_pref_value_test_util.h) and [local_state_pref_value_test_util.h](./local_state_pref_value_test_util.h).
 
 ## Mocking Files
 
@@ -44,7 +50,8 @@ To mock files loaded with `Load`, place your mocked files in the following direc
         └── test/
             └── data
 
-To simulate a user profile, use `CopyFileFromTestPathToTempPath` or `CopyDirectoryFromTestPathToTempPath` in `SetUpMocks` for copying files or directories, respectively.
+To simulate a profile, use `CopyFileFromTestDataPathToTempProfilePath` or
+`CopyDirectoryFromTestDataPathToTempProfilePath` in `SetUpMocks` for copying files or directories, respectively.
 
 See [file_path_test_util.h](file_path_test_util.h) and [file_test_util.h](file_test_util.h).
 
@@ -56,13 +63,23 @@ To mock component resources loaded with `LoadComponentResource`, place your mock
     └── brave/components/brave_ads/core/
         └── test/
             └── data/
-                └── resources
+                └── component_resources
 
 See [file_path_test_util.h](file_path_test_util.h).
 
 ## Mocking URL Responses
 
-Mocked responses for URL requests can be defined inline or read from a text file. Store test data files in `brave/components/brave_ads/core/test/data/url_responses`. Inline filenames should begin with a forward slash, i.e.,
+Mocked responses for URL requests can be defined inline or read from a text file.
+
+To mock component resources, place your mocked files in the following directory:
+
+    .
+    └── brave/components/brave_ads/core/
+        └── test/
+            └── data/
+                └── url_responses
+
+Inline filenames should begin with a forward slash, i.e.,
 
     const test::URLResponseMap url_responses = {
       "/foo/bar", {

@@ -13,16 +13,15 @@
 
 namespace brave_ads::test {
 
-void InitializeCommandLineSwitches();
-void ShutdownCommandLineSwitches();
+void SimulateCommandLineSwitches();
+void ResetCommandLineSwitches();
 
 std::optional<bool>& DidAppendCommandLineSwitches();
 
 void AppendCommandLineSwitches(
     const CommandLineSwitchList& command_line_switches);
 
-std::string SanitizeCommandLineSwitch(
-    const CommandLineSwitchInfo& command_line_switch);
+std::string ToString(const CommandLineSwitchInfo& command_line_switch);
 
 }  // namespace brave_ads::test
 

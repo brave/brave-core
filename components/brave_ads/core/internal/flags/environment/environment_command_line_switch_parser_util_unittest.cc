@@ -55,7 +55,7 @@ std::string TestParamToString(
       test::ToString(test_param.param.expected_environment_type);
 
   const std::string sanitized_command_line_switch =
-      test::SanitizeCommandLineSwitch(test_param.param.command_line_switch);
+      test::ToString(test_param.param.command_line_switch);
 
   return base::ReplaceStringPlaceholders(
       "$1EnvironmentFor$2",

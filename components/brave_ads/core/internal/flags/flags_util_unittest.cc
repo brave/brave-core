@@ -122,7 +122,7 @@ std::string TestParamToString(
       }
 
       sanitized_command_line_switches.push_back(
-          test::SanitizeCommandLineSwitch(command_line_switch));
+          test::ToString(command_line_switch));
     }
 
     with = base::StrCat(

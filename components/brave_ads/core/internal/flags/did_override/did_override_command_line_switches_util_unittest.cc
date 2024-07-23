@@ -65,7 +65,7 @@ std::string TestParamToString(
           : "DidNotOverride";
 
   const std::string sanitized_command_line_switch =
-      test::SanitizeCommandLineSwitch(test_param.param.command_line_switch);
+      test::ToString(test_param.param.command_line_switch);
 
   return base::ReplaceStringPlaceholders(
       "Set$1CommandLineSwitchesFor$2",

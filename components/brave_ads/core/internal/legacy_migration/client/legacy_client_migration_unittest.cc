@@ -29,7 +29,7 @@ class BraveAdsLegacyClientMigrationTest : public test::TestBase {
 
 TEST_F(BraveAdsLegacyClientMigrationTest, Migrate) {
   // Arrange
-  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kClientJsonFilename));
+  ASSERT_TRUE(CopyFileFromTestDataPathToTempProfilePath(kClientJsonFilename));
 
   // Act & Assert
   base::MockCallback<InitializeCallback> callback;
@@ -41,8 +41,8 @@ TEST_F(BraveAdsLegacyClientMigrationTest, Migrate) {
 
 TEST_F(BraveAdsLegacyClientMigrationTest, ResetMalformedState) {
   // Arrange
-  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kMalformedJsonFilename,
-                                             kClientJsonFilename));
+  ASSERT_TRUE(CopyFileFromTestDataPathToTempProfilePath(kMalformedJsonFilename,
+                                                        kClientJsonFilename));
 
   // Act & Assert
   base::MockCallback<InitializeCallback> callback;
