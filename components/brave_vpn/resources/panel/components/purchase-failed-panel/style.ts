@@ -1,7 +1,7 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
 import Alert from '@brave/leo/react/alert'
@@ -13,18 +13,17 @@ export const Box = styled.div`
   height: 100%;
   background: ${color.container.background};
   overflow: hidden;
+  min-height: 260px;
+`
+
+export const EmptyPanelHeader = styled.div`
+  height: 50px;
+  align-self: stretch;
 `
 
 export const PanelContent = styled.section`
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  align-self: stretch;
-`
-
-export const TopContent = styled.div`
-  display: flex;
-  padding: 0 ${spacing.xl} ${spacing.xl} ${spacing.xl};
+  padding: ${spacing.xl};
   flex-direction: column;
   align-items: center;
   gap: ${spacing.m};

@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
-import { getLocale } from '../../../../../common/locale'
+import { getLocale } from '$web-common/locale'
 import { useSelector } from '../../state/hooks'
 import * as S from './style'
 import Button from '$web-components/button'

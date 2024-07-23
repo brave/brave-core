@@ -4,6 +4,10 @@
     Brave Firewall + VPN
   </message>
 
+  <message name="IDS_BRAVE_VPN_MAIN_PANEL_TITLE" translateable="false" desc="Title for VPN the product">
+    Firewall + VPN
+  </message>
+
   <message name="IDS_BRAVE_VPN_CONNECTED_TOOLTIP" desc="Status tooltip label when VPN has connected to a region">
     Brave Firewall + VPN: Connected
   </message>
@@ -21,7 +25,7 @@
   </message>
 
   <message name="IDS_BRAVE_VPN_CONNECTING" desc="Status label when VPN is in progress to connect">
-    Connecting…
+    Connecting
   </message>
 
   <message name="IDS_BRAVE_VPN_CONNECTED" desc="Status label when VPN has connected to a region">
@@ -29,7 +33,7 @@
   </message>
 
   <message name="IDS_BRAVE_VPN_DISCONNECTING" desc="Status label when VPN is in progress to disconnect">
-    Disconnecting…
+    Disconnecting
   </message>
 
   <message name="IDS_BRAVE_VPN_DISCONNECTED" desc="Status label when VPN has disconnected from a region">
@@ -52,7 +56,9 @@
     Choose another server
   </message>
 
-  <message name="IDS_BRAVE_VPN_UNABLE_CONNECT_INFO" desc="Description of which region VPN couldn't connect to"><ph name="PRODUCT_NAME">$1<ex>Brave Firewall + VPN</ex></ph> couldn't connect to the <ph name="REGION_NAME">$2<ex>Tokyo</ex></ph> server. You can try again, or choose another.</message>
+  <message name="IDS_BRAVE_VPN_UNABLE_CONNECT_INFO" desc="Description of which region VPN couldn't connect to">
+    <ph name="PRODUCT_NAME">$1<ex>Brave Firewall + VPN</ex></ph> couldn't connect to the <ph name="REGION_NAME">$2<ex>Tokyo</ex></ph> server. Please try again or choose another country.
+  </message>
 
   <message name="IDS_BRAVE_VPN_BUY" desc="Button title to purchase vpn">
     Start 7-day free trial
@@ -68,8 +74,16 @@
     Settings
   </message>
 
+  <message name="IDS_BRAVE_VPN_SETTINGS_PANEL_BACK_BUTTON_ARIA_LABEL" desc="Text for back button in settings panel">
+    Close settings
+  </message>
+
   <message name="IDS_BRAVE_VPN_ERROR_PANEL_HEADER" desc="Text shown in header for error panel">
-    Brave VPN
+    Firewall + VPN
+  </message>
+
+  <message name="IDS_BRAVE_VPN_PANEL_GO_TO_MAIN_BUTTON_ARIA_LABEL" desc="Text for go to main button in panels">
+    Go to main
   </message>
 
   <message name="IDS_BRAVE_VPN_STATUS" desc="Label to show the status of the user's subscription">
@@ -118,11 +132,15 @@
   <message name="IDS_BRAVE_VPN_SUPPORT_TICKET_FAILED" desc="Label to show failed response from support ticket creation request">
     Failed to create support ticket, check your connection.
   </message>
+  <message name="IDS_BRAVE_VPN_SELECT_YOUR_SERVER" desc="Label to header text of server selection panel">
+    Select your server
+  </message>
+
   <message name="IDS_BRAVE_VPN_LOADING" desc="Label to show below loader icon">
     One moment while loading…
   </message>
   <message name="IDS_BRAVE_VPN_PURCHASE_FAILED " desc="Label to show when purchase status failed">
-    Unable to check the status of your purchase. This could be caused by a network problem.
+    Unable to check the status of your purchase. This is probably a network problem. Try again or contact support.
   </message>
   <message name="IDS_BRAVE_VPN_EDIT_PAYMENT" desc="Button title to update payment information">
     Edit payment method
@@ -148,12 +166,24 @@
     Looks like your most recent payment for <ph name="VALUE">$1<ex>VPN Subscription</ex></ph> did not go through. Access to this subscription will pause until the payment issue is resolved. Try to edit your payment method, or contact Brave support.
   </message>
 
+  <message name="IDS_BRAVE_VPN_SUPPORT_PANEL_BACK_BUTTON_ARIA_LABEL" desc="Text for back button in support panel">
+    Close support form
+  </message>
+
   <message name="IDS_BRAVE_VPN_SUPPORT_EMAIL" desc="Label above email input on VPN support">
     Your email address
   </message>
 
+  <message name="IDS_BRAVE_VPN_SUPPORT_EMAIL_PLACEHOLDER" desc="Place holder text to email input on VPN support">
+    Enter your email address
+  </message>
+
   <message name="IDS_BRAVE_VPN_SUPPORT_EMAIL_NOT_VALID" desc="Error label for email input on VPN support when text is not a valid email address">
     Please enter a valid email address
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_FIELD_IS_REQUIRED" desc="Error label for empty input on VPN support">
+    This field is required
   </message>
 
   <message name="IDS_BRAVE_VPN_SUPPORT_SUBJECT" desc="Label above subject drop down on VPN support">
@@ -186,6 +216,10 @@
 
   <message name="IDS_BRAVE_VPN_SUPPORT_BODY" desc="Label for free-form problem description on VPN support">
     Describe your issue
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SUPPORT_BODY_PLACEHOLDER" desc="Placeholder text to free-form problem description on VPN support">
+    Describe your issue here
   </message>
 
   <message name="IDS_BRAVE_VPN_SUPPORT_OPTIONAL_HEADER" desc="Label for free-form problem description on VPN support">
@@ -228,7 +262,7 @@
 
   <if expr="is_macosx">
     <message name="IDS_BRAVE_VPN_CONNECT_NOT_ALLOWED" desc="A highlited note on the main panel when permission from the user is not allowed to create a VPN profile on OS-level">
-      VPN connection failed. Please try connecting again, and be sure to click Allow to enable Brave's VPN configuration.
+      VPN connection failed. Please try connecting again and be sure to click "Allow" to enable Brave's VPN configuration.
     </message>
   </if>
 

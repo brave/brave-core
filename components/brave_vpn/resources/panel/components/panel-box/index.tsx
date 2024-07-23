@@ -13,7 +13,9 @@ function PanelBox (props: Props) {
   return (
     <S.Box>
       {props.children}
-      <S.Waves />
+      <S.WavesContainer>
+        <S.Waves />
+      </S.WavesContainer>
     </S.Box>
   )
 }
