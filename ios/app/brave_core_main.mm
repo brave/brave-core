@@ -269,6 +269,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 }
 
 - (void)dealloc {
+  _backgroundImagesService = nil;
+  _adblockService = nil;
   _bookmarksAPI = nil;
   _historyAPI = nil;
   _openTabsAPI = nil;

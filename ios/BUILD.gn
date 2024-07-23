@@ -24,6 +24,7 @@ import("//brave/ios/browser/api/features/headers.gni")
 import("//brave/ios/browser/api/https_upgrade_exceptions/headers.gni")
 import("//brave/ios/browser/api/ipfs/headers.gni")
 import("//brave/ios/browser/api/ntp_background_images/headers.gni")
+import("//brave/ios/browser/api/omnibox/headers.gni")
 import("//brave/ios/browser/api/opentabs/headers.gni")
 import("//brave/ios/browser/api/p3a/headers.gni")
 import("//brave/ios/browser/api/qr_code/headers.gni")
@@ -102,6 +103,7 @@ brave_core_public_headers += brave_wallet_public_headers
 brave_core_public_headers += browser_api_certificate_public_headers
 brave_core_public_headers += browser_api_favicon_public_headers
 brave_core_public_headers += rewards_public_headers
+brave_core_public_headers += browser_api_omnibox_public_headers
 brave_core_public_headers += browser_api_opentabs_public_headers
 brave_core_public_headers += browser_api_qr_code_public_headers
 brave_core_public_headers += browser_api_session_restore_public_headers
