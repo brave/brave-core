@@ -12,7 +12,7 @@
 
 namespace brave_ads::json::reader {
 
-TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest, ParseValidJson) {
+TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest, ParseJson) {
   // Act & Assert
   EXPECT_EQ("US-CA", ParseSubdivision(
                          R"(
@@ -22,7 +22,7 @@ TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest, ParseValidJson) {
                             })"));
 }
 
-TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest, DoNotParseInvalidJson) {
+TEST(BraveAdsSubdivisionUrlRequestJsonReaderUtilTest, DoNotParseMalformedJson) {
   // Act & Assert
   EXPECT_FALSE(ParseSubdivision(test::kMalformedJson));
 }

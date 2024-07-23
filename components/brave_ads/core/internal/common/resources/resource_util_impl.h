@@ -44,7 +44,7 @@ base::expected<T, std::string> LoadAndParseResourceComponentOnBackgroundThread(
 
     dict = base::JSONReader::ReadDict(content);
     if (!dict) {
-      return base::unexpected("Invalid JSON");
+      return base::unexpected("Malformed JSON");
     }
   }
 
