@@ -14,22 +14,23 @@ import { useLocaleContext } from '../lib/locale_strings'
 import { useBreakpoint } from '../lib/breakpoint'
 import { RouterContext, useRoute } from '../lib/router'
 import * as urls from '../../shared/lib/rewards_urls'
+import * as routes from '../lib/app_routes'
 
 import { style } from './app_frame.style'
 
-export const navRoutes = {
-  home: '/',
-  explore: '/explore',
-  creators: '/creators'
-}
+const navRoutes = [
+  routes.home,
+  routes.explore,
+  routes.creators
+]
 
 function getCurrentNavRoute(route: string) {
-  for (const value of Object.values(navRoutes)) {
+  for (const value of navRoutes) {
     if (value === route) {
       return value
     }
   }
-  return navRoutes.home
+  return routes.home
 }
 
 function NavList() {
@@ -57,7 +58,7 @@ function NavList() {
       <li>
         {
           renderLink(
-            navRoutes.home,
+            routes.home,
             'browser-home',
             getString('navigationHomeLabel'))
         }
@@ -65,7 +66,7 @@ function NavList() {
       <li>
         {
           renderLink(
-            navRoutes.explore,
+            routes.explore,
             'discover',
             getString('navigationExploreLabel'))
         }
@@ -73,7 +74,7 @@ function NavList() {
       <li>
         {
           renderLink(
-            navRoutes.creators,
+            routes.creators,
             'star-outline',
             getString('navigationCreatorsLabel'))
         }
@@ -156,7 +157,7 @@ function PageFrame(props: Props) {
     <div className='page-frame' {...style}>
       <div className='sidebar'>
         <header>
-          <div className='logo' />
+          <div className='brave-rewards-logo' />
         </header>
         <nav>
           <NavList />

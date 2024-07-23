@@ -4,7 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <optional>
 #include <string>
+#include <utility>
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -25,6 +27,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/navigation_handle.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 
@@ -74,11 +77,59 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
 
   void GivenRewardsIsEnabled() {
     auto& prefs = GetPrefs();
+
     prefs.SetBoolean(prefs::kEnabled, true);
     prefs.SetString(prefs::kDeclaredGeo, "US");
     prefs.SetString(prefs::kWalletBrave, R"(
         {"payment_id":"2b6e71a6-f3c7-5999-9235-11605a60ec93",
          "recovery_seed":"QgcQHdg6fo53/bGKVwZlL1UkLiql8X7U68jaWgz6FWQ="})");
+
+    auto params = base::JSONReader::Read(R"(
+        {
+          "ac": {
+            "choice": 1.0,
+            "choices": [1.0, 2.0, 3.0, 5.0, 7.0, 10.0, 20.0]
+          },
+          "payout_status": {
+            "bitflyer": "",
+            "gemini": "",
+            "solana": "",
+            "uphold": "",
+            "zebpay": ""
+          },
+          "rate": 0.25,
+          "tip": {
+            "choices": [1.25, 5.0, 10.5],
+            "monthly_choices": [1.25, 5.0, 10.5]
+          },
+          "tos_version": 1,
+          "vbat_deadline": "13343184000000000",
+          "vbat_expired": true,
+          "wallet_provider_regions": {
+            "bitflyer": {
+              "allow": ["JP"],
+              "block": []
+            },
+            "gemini": {
+              "allow": ["US", "SG", "GB", "CA"],
+              "block": []
+            },
+            "solana": {
+              "allow": [],
+              "block": ["KP", "ES"]
+            },
+            "uphold": {
+              "allow": ["US", "SG", "GB", "CA"],
+              "block": []
+            },
+            "zebpay": {
+              "allow": ["IN"],
+              "block": []
+            }
+          }
+        })");
+
+    prefs.SetDict(prefs::kParameters, std::move(*params).TakeDict());
   }
 
   void StartRewardsEngine() {
@@ -120,6 +171,43 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
     LoadScript("test_setup.js");
   }
 
+  using RequestHandlerResult = std::optional<std::pair<int, std::string>>;
+  using RequestHandler =
+      base::RepeatingCallback<RequestHandlerResult(const GURL&,
+                                                   const std::string&)>;
+
+  void SetRequestHandler(RequestHandler handler) {
+    request_handler_ = std::move(handler);
+  }
+
+  static RequestHandlerResult HandleEnableRewardsRequest(
+      const GURL& url,
+      const std::string& method) {
+    if (url.path_piece() == "/v4/wallets" && method == "POST") {
+      return std::pair{201, R"({
+            "paymentId": "33fe956b-ed15-515b-bccd-b6cc63a80e0e"
+          })"};
+    }
+    return std::nullopt;
+  }
+
+  template <typename F>
+  void WaitForFinishNavigation(F pred) {
+    if (pred(page_contents_->GetLastCommittedURL())) {
+      return;
+    }
+    base::RunLoop run_loop;
+    content::DidFinishNavigationObserver url_observer(
+        page_contents_.get(),
+        base::BindLambdaForTesting(
+            [&run_loop, &pred](content::NavigationHandle* navigation_handle) {
+              if (pred(navigation_handle->GetURL())) {
+                run_loop.Quit();
+              }
+            }));
+    run_loop.Run();
+  }
+
  private:
   std::string GetMethodString(int32_t method) {
     return RewardsServiceImpl::UrlMethodToRequestType(
@@ -131,15 +219,16 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
                      int* response_status_code,
                      std::string* response,
                      base::flat_map<std::string, std::string>* headers) {
-    if (page_contents_) {
-      auto result =
-          content::EvalJs(page_contents_.get(),
-                          content::JsReplace("testing.handleRequest($1, $2)",
-                                             url, GetMethodString(method)));
-      auto result_value = result.ExtractList();
-      auto& results = result_value.GetList();
-      *response_status_code = results[0].GetInt();
-      *response = results[1].GetString();
+    if (request_handler_) {
+      std::string method_string = GetMethodString(method);
+      auto result = request_handler_.Run(GURL(url), method_string);
+      if (!result) {
+        LOG(ERROR) << "Request <" << method_string << " " << url
+                   << "> not handled";
+        result = {404, ""};
+      }
+      *response_status_code = std::get<0>(*result);
+      *response = std::get<1>(*result);
     } else {
       LOG(ERROR) << "Rewards page request handler not available";
       *response_status_code = 404;
@@ -150,6 +239,7 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
   base::FilePath test_data_dir_;
   base::WeakPtr<content::WebContents> page_contents_;
+  RequestHandler request_handler_;
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, EnableRewards) {
@@ -159,6 +249,9 @@ IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, EnableRewards) {
   // and starting the Rewards engine, and possibly calling methods on the
   // Rewards service.
   //
+  // If necessary, set up a handler for Rewards engine API requests.
+  SetRequestHandler(base::BindRepeating(HandleEnableRewardsRequest));
+
   // Next, navigate to the Rewards page (or open the Rewards panel). This will
   // also load the test setup script into the JS global object.
   NavigateToRewardsPage("/");
@@ -177,6 +270,7 @@ IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, EnableRewards) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, EnableRewardsFromPanel) {
+  SetRequestHandler(base::BindRepeating(HandleEnableRewardsRequest));
   OpenRewardsPanel();
   LoadScript("enable_rewards_test.js");
   RunTests();
@@ -190,6 +284,67 @@ IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, ResetRewards) {
   LoadScript("reset_rewards_test.js");
   RunTests();
   ASSERT_TRUE(GetPrefs().GetString(prefs::kWalletBrave).empty());
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsPageBrowserTest, ConnectAccount) {
+  GivenRewardsIsEnabled();
+  StartRewardsEngine();
+
+  NavigateToRewardsPage("/");
+  LoadScript("connect_account_test.js");
+  RunTests();
+
+  // The rewards page should redirect the user to the external wallet provider's
+  // login page. Wait for the redirection to occur and pull out the "state"
+  // querystring parameter.
+  std::string state;
+  WaitForFinishNavigation([&state](const GURL& url) {
+    std::string url_spec = url.spec();
+    if (url_spec.find("/authorize/") == std::string::npos) {
+      return false;
+    }
+    if (auto pos = url_spec.find("&state="); pos != std::string::npos) {
+      state = url_spec.substr(pos);
+    }
+    return true;
+  });
+
+  SetRequestHandler(base::BindLambdaForTesting(
+      [](const GURL& url, const std::string& method) -> RequestHandlerResult {
+        if (url.path_piece() == "/oauth2/token" && method == "POST") {
+          return std::pair{200, R"({ "access_token": "abc123" })"};
+        }
+        if (url.path_piece() == "/v0/me" && method == "GET") {
+          return std::pair{200, R"({
+                "firstName": "Test",
+                "id": "abc123",
+                "identityCountry": "US",
+                "currencies": ["BAT"]
+              })"};
+        }
+        if (url.path_piece() == "/v0/me/capabilities" && method == "GET") {
+          return std::pair{200, R"([
+                { "key": "sends", "enabled": true, "requirements": [] },
+                { "key": "receives", "enabled": true, "requirements": [] }
+              ])"};
+        }
+        if (url.path_piece() == "/v0/me/cards" && method == "POST") {
+          return std::pair{200, R"({ "id": "abc123" })"};
+        }
+        if (url.path_piece() == "/v0/me/cards/abc123" && method == "PATCH") {
+          return std::pair{200, ""};
+        }
+        std::string claim_path =
+            "/v3/wallet/uphold/2b6e71a6-f3c7-5999-9235-11605a60ec93/claim";
+        if (url.path_piece() == claim_path && method == "POST") {
+          return std::pair{200, R"({ "geoCountry": "US" })"};
+        }
+        return std::nullopt;
+      }));
+
+  NavigateToRewardsPage("/uphold/authorization/?code=123456&state=" + state);
+  LoadScript("connect_account_auth_test.js");
+  RunTests();
 }
 
 }  // namespace brave_rewards

@@ -15,6 +15,7 @@ export const modalStyle = scopedCSS('app-modal', css`
     border-radius: 16px;
     padding: 32px;
     background: ${color.container.background};
+    outline: none;
 
     animation-name: modal-content-fade-in;
     animation-timing-function: ease-out;
@@ -134,6 +135,14 @@ export const actionsStyle = scopedCSS('app-modal-actions', css`
     display: flex;
     gap: 16px;
     margin-top: 32px;
+    justify-content: flex-end;
+
+    @container style(--is-wide-view) {
+      leo-button:only-of-type {
+        flex-grow: 0;
+        min-width: 134px;
+      }
+    }
 
     @container style(--is-narrow-view) {
       margin-top: 16px;

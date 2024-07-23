@@ -67,23 +67,21 @@ export function ResetModal (props: Props) {
             </div>
           </Checkbox>
         </div>
-        <div className='action'>
-          <ModalActions
-            actions={[
-              {
-                text: getString('cancelButtonLabel'),
-                onClick: props.onClose
-              },
-              {
-                className: 'reset-button',
-                text: getString('resetButtonLabel'),
-                onClick: props.onReset,
-                isDisabled: !consented,
-                isPrimary: true
-              }
-            ]}
-          />
-        </div>
+        <ModalActions
+          actions={[
+            {
+              text: getString('cancelButtonLabel'),
+              onClick: props.onClose
+            },
+            {
+              className: 'reset-button',
+              text: getString('resetButtonLabel'),
+              onClick: props.onReset,
+              isDisabled: !consented,
+              isPrimary: true
+            }
+          ]}
+        />
       </div>
     </Modal>
   )

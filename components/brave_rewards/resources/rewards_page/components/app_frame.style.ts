@@ -7,9 +7,6 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 
 import { scopedCSS, css } from '../lib/scoped_css'
 
-import rewardsLogoImage from '../assets/rewards_logo.svg'
-import rewardsLogoImageDark from '../assets/rewards_logo_dark.svg'
-
 export const style = scopedCSS('app-frame', css`
   & {
     --leo-icon-color: ${color.icon.default};
@@ -51,9 +48,6 @@ export const style = scopedCSS('app-frame', css`
     }
 
     ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
       display: flex;
       align-content: stretch;
       gap: 4px;
@@ -105,20 +99,6 @@ export const style = scopedCSS('app-frame', css`
 
     header {
       padding: 40px 24px 16px;
-
-      .logo {
-        display: inline-block;
-        block-size: 28px;
-        inline-size: 107px;
-        background-image: url(${rewardsLogoImage});
-        background-repeat: no-repeat;
-        background-position: left top;
-        background-size: contain;
-
-        @media (prefers-color-scheme: dark) {
-          background-image: url(${rewardsLogoImageDark});
-        }
-      }
     }
 
     nav {

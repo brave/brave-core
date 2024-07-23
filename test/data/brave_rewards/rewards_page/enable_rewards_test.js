@@ -4,14 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 testing.addTest(async () => {
-  let { addRequestHandler, waitForElement, waitForShadowElement } = testing
-
-  addRequestHandler((url, method) => {
-    if (url.pathname === '/v4/wallets' && method === 'POST') {
-      return [201, { paymentId: '33fe956b-ed15-515b-bccd-b6cc63a80e0e' }]
-    }
-    return null
-  })
+  let { waitForElement, waitForShadowElement } = testing
 
   let startButton = await waitForShadowElement([
     '.onboarding-button',

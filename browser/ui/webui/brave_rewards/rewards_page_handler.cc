@@ -51,8 +51,26 @@ class RewardsPageHandler::UpdateObserver
   void OnRewardsInitialized(RewardsService*) override {
     OnUpdate(UpdateSource::kRewards);
   }
+
   void OnRewardsWalletCreated() override { OnUpdate(UpdateSource::kRewards); }
+
   void OnCompleteReset(bool success) override {
+    OnUpdate(UpdateSource::kRewards);
+  }
+
+  void OnExternalWalletConnected() override {
+    OnUpdate(UpdateSource::kRewards);
+  }
+
+  void OnExternalWalletLoggedOut() override {
+    OnUpdate(UpdateSource::kRewards);
+  }
+
+  void OnExternalWalletReconnected() override {
+    OnUpdate(UpdateSource::kRewards);
+  }
+
+  void OnExternalWalletDisconnected() override {
     OnUpdate(UpdateSource::kRewards);
   }
 
@@ -115,6 +133,11 @@ void RewardsPageHandler::GetPluralString(const std::string& key,
   std::move(callback).Run(l10n_util::GetPluralStringFUTF8(iter->second, count));
 }
 
+void RewardsPageHandler::GetRewardsParameters(
+    GetRewardsParametersCallback callback) {
+  rewards_service_->GetRewardsParameters(std::move(callback));
+}
+
 void RewardsPageHandler::GetAvailableCountries(
     GetAvailableCountriesCallback callback) {
   auto get_countries_callback = [](decltype(callback) callback,
@@ -146,8 +169,17 @@ void RewardsPageHandler::GetRewardsPaymentId(
       base::BindOnce(get_wallet_callback, std::move(callback)));
 }
 
+void RewardsPageHandler::GetCountryCode(GetCountryCodeCallback callback) {
+  std::move(callback).Run(rewards_service_->GetCountryCode());
+}
+
 void RewardsPageHandler::GetExternalWallet(GetExternalWalletCallback callback) {
   rewards_service_->GetExternalWallet(std::move(callback));
+}
+
+void RewardsPageHandler::GetExternalWalletProviders(
+    GetExternalWalletProvidersCallback callback) {
+  std::move(callback).Run(rewards_service_->GetExternalWalletProviders());
 }
 
 void RewardsPageHandler::GetAdsStatement(GetAdsStatementCallback callback) {
@@ -157,6 +189,19 @@ void RewardsPageHandler::GetAdsStatement(GetAdsStatementCallback callback) {
 void RewardsPageHandler::EnableRewards(const std::string& country_code,
                                        EnableRewardsCallback callback) {
   rewards_service_->CreateRewardsWallet(country_code, std::move(callback));
+}
+
+void RewardsPageHandler::BeginExternalWalletLogin(
+    const std::string& provider,
+    BeginExternalWalletLoginCallback callback) {
+  rewards_service_->BeginExternalWalletLogin(provider, std::move(callback));
+}
+
+void RewardsPageHandler::ConnectExternalWallet(
+    const std::string& provider,
+    const base::flat_map<std::string, std::string>& args,
+    ConnectExternalWalletCallback callback) {
+  rewards_service_->ConnectExternalWallet(provider, args, std::move(callback));
 }
 
 void RewardsPageHandler::ResetRewards(ResetRewardsCallback callback) {
