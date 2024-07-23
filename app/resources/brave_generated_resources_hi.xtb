@@ -44,6 +44,7 @@
 <translation id="7897433216002294926">टोर <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">यह टोर के साथ एक निजी विंडो है</translation>
 <translation id="1037341607922068025">टोर के साथ निजी विंडो खोलें</translation>
+<translation id="607982085107926247">Tor में खोलें: <ph name="ADDRESS"/></translation>
 <translation id="496896260395129787">यह Brave सिंक अकाउंट दूसरे डिवाइस से मिट चुका है. अगर आप सिंक को बंद करना नहीं चाहते थे, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/> तो फिर से अकाउंट बनाएँ</translation>
 <translation id="6965382102122355670">ठीक</translation>
@@ -54,7 +55,7 @@
 <translation id="3094628781200061820">IPFS से फ़ाइलें प्रकाशित और पुनर्प्राप्त करें</translation>
 <translation id="9220923434129933852">IPFS सेटिंग को पढ़ें और बदलाव करें</translation>
 <translation id="7398397225367092613">.onion</translation>
-<translation id="406832631167785034">.onion पते का इस्तेमाल कर खोलें</translation>
+<translation id="2269780537090240241">.onion एड्रेस के साथ खोलें: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">फ़ोर्स पेस्ट करें</translation>
 <translation id="4901618511712685702">IPFS में इम्पोर्ट करें</translation>
 <translation id="6794469945030154569">यह पेज</translation>
@@ -120,8 +121,16 @@
 <translation id="45040495135337202">Brave आपको, आपके सवालों को या आपकी क्लिक को ट्रैक नहीं करता. यह टेक दिग्गजों से 100% आज़ाद है.</translation>
 <translation id="42032117189492785">यूनीक इंडेक्स के साथ AI समर्थित सर्च</translation>
 <translation id="8606416238399082160">पूरी तरह प्राइवेट, 100% आज़ाद और AI के शानदार फ़ीचर के साथ.</translation>
+<translation id="7706528608480893054">पर्दे के पीछे DDG भी Bing ही है. समय आ गया है असली प्राइवेसी, बेहतर नतीजे और स्वतंत्र इंडेक्स का. समय है Brave सर्च का.</translation>
+<translation id="3818133234428578803">Duck से पीछा छुड़ाएँ</translation>
+<translation id="14817360483752259">Brave सर्च आपको, आपके सवालों को, आपकी क्लिक को ट्रैक नहीं करता. और यह छिपकर (जैसे कि DDG) Bing की तरह काम नहीं करता.</translation>
+<translation id="4381193110021038941">बेहतर नतीजे पाएँ</translation>
+<translation id="3846545273704969734">यह स्वतंत्र तौर पर वेरिफ़ाई किया गया है कि Brave सर्च में Bing (या Bing की तरह काम करने वाले DDG) से बेहतर नतीजे मिलते हैं.</translation>
+<translation id="2841164160723712537">सर्च के नतीजों में सुधार करें</translation>
+<translation id="4639001639513524869">ज़्यादातर खोज के लिए Brave सर्च के नतीजे DuckDuckGo से बेहतर हैं. और यह वाकई में प्राइवेट है.</translation>
 <translation id="5240031343741051161">Brave सर्च को आज़माएँ</translation>
 <translation id="5234764350956374838">खारिज करें</translation>
+<translation id="9218430445555521422">डिफ़ॉल्ट के रूप में सेट करें</translation>
 <translation id="2370739752330685659">शायद बाद में</translation>
 <translation id="5100490448228945668">Brave सर्च में होने वाले कन्वर्ज़न को नामंज़ूर करें, इस सुझाव को हटाने के लिए एन्टर दबाएँ</translation>
 <translation id="9194637241566114638">इस्तेमाल से जुड़े गुमनाम डेटा को भेज कर <ph name="SEARCH_NAME"/> को बेहतर बनाने में मदद करें. <ph name="MORE_INFO"/></translation>
@@ -131,6 +140,9 @@
 <translation id="1162706247109707219">'ठीक है' पर क्लिक करने का मतलब है कि आप समझते हैं कि जब तक आप Windows 10 या उसके बाद के वर्ज़न पर अपडेट नहीं करेंगे, आपको Brave इंस्टॉल करने के बाद ज़रूरी सिक्योरिटी फ़िक्स नहीं मिलेंगे. यह चेतावनी दोबारा नहीं दिखाई जाएगी.</translation>
 <translation id="9164786361657554526">'ठीक है' पर क्लिक करने का मतलब है कि आप समझते हैं कि जब तक आप macOS 10.15 या उसके बाद के वर्ज़न पर अपडेट नहीं करेंगे, आपको Brave इंस्टॉल करने के बाद ज़रूरी सिक्योरिटी फ़िक्स नहीं मिलेंगे. यह चेतावनी दोबारा नहीं दिखाई जाएगी.</translation>
 <translation id="2770465223704140727">सूची से निकालें</translation>
+<translation id="6020553119523541665">यह टैब किसी अन्य विंडो में एक्टिव है</translation>
+<translation id="4987392683074136770">इस टैब पर क्लिक करने से इसका कंटेंट इस विंडो में आ जाएगा.</translation>
+<translation id="8355523213948477234">स्प्लिट व्यू मेन्यू बटन</translation>
 <translation id="2515126961943087659">Bat विज्ञापन सेवा</translation>
 <translation id="2104347391516032700">BAT रिवॉर्ड सर्विस</translation>
 <translation id="6040143037577758943">बंद करें</translation>
@@ -167,8 +179,7 @@
 <translation id="6959315322491671328">हटाने के लिए राइट क्लिक करें</translation>
 <translation id="495046168593986294">ऊपर स्क्रॉल करें</translation>
 <translation id="4021716437419160885">नीचे स्क्रॉल करें</translation>
-<translation id="1907157509746585817">बुकमार्क</translation>
-<translation id="4840597165888262798">रीडिंग लिस्ट</translation>
+<translation id="2702801445560668637">रीडिंग लिस्ट</translation>
 <translation id="2533715613366623756">बुकमार्क मैनेजर</translation>
 <translation id="3405021928725149239">बुकमार्क मैनेजर</translation>
 <translation id="6284218950354553099">हर दिन के उपयोग पिंग Brave को अपने आप भेजें</translation>
@@ -252,7 +263,6 @@
 <translation id="796831669370432378">बुकमार्क जोड़ने के लिए, एड्रेस बार के आगे बुकमार्क बटन पर क्लिक करें</translation>
 <translation id="8487693399751278191">अब बुकमार्क्स को इम्पोर्ट करें...</translation>
 <translation id="2557899542277210112">त्वरित पहुँच के लिए, अपने बुकमार्क को यहाँ बुकमार्क बार पर रखें।</translation>
-<translation id="2702801445560668637">रीडिंग लिस्ट</translation>
 <translation id="1968543937259008435">बेहतरीन ऑनलाइन गोपनीयता के लिए तैयार हैं?</translation>
 <translation id="6817415381278637662">Brave को अपने डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें ताकि आपको सभी वेब पेज पर Brave की गोपनीयता सुरक्षा मिले.</translation>
 <translation id="8722651357687610395">Brave को डिफ़ॉल्ट के रूप में सेट करें</translation>
@@ -382,6 +392,7 @@ Binance
 <translation id="2113977810652731515">कार्ड</translation>
 <translation id="4096343215397759358">प्रीव्यू के साथ कार्ड</translation>
 <translation id="5297085818601043899">टूलटिप</translation>
+<translation id="5219886318310413094">पिन किए गए टैब सभी विंडो में दिखाएँ</translation>
 <translation id="2396127686705429331">बुकमार्क आइकन दिखाएँ</translation>
 <translation id="2814998458708016836">विस्तृत एड्रेस बार का उपयोग करें</translation>
 <translation id="4109670531935487117">एड्रेस बार में ऑटोकंप्लीट के सुझाव दिखाएँ</translation>
@@ -496,10 +507,6 @@ Binance
 <translation id="2808630562319398131">Brave रिवॉर्ड डेटा रीसेट करें ...</translation>
 <translation id="6438096877646138757">साइटें जो बंद करने पर कुकीज़ को साफ़ करती हैं</translation>
 <translation id="2988792685798128092">साइट बंद करने पर साफ़ करें</translation>
-<translation id="4663317021223369617">कूकीज़ और साइट का डेटा</translation>
-<translation id="7050661313034564003">इस साइट के लिए सभी कूकीज़ और स्थानीय स्तर पर स्टोर किए गए डेटा दिखाएँ</translation>
-<translation id="8339059274628563283"><ph name="SITE"/> स्थानीय रूप से संग्रहित डेटा</translation>
-<translation id="1963227389609234879">सभी को निकालें</translation>
 <translation id="7702907602086592255">डोमेन</translation>
 <translation id="3202131003361292969">पथ</translation>
 <translation id="5390743329570580756">इसके लिए भेजें</translation>

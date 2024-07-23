@@ -417,9 +417,7 @@
 <translation id="7275773481201277457">Показать статистику Brave</translation>
 <translation id="8297488609722895137">Фото <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Кликнув на Начать использовать Brave Rewards, вы соглашаетесь с <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Получите деньги за просмотр этого фонового изображения.</translation>
 <translation id="7136586167396205364">Скрыть спонсорские изображения</translation>
-<translation id="2927095357213611519">Вы можете поддержать создателей веб-контента токенами.\nЗарабатывайте токены, просматривая рекламу, которая уважает вашу конфиденциальность.</translation>
 <translation id="2898634658146274982">Открывать внешние ссылки в Brave</translation>
 <translation id="5616508928556767259">Ссылки из других приложений будут открываться в Brave. Примечание: Brave должен быть назначен браузером по умолчанию.</translation>
 <translation id="2394961582378297792">Вы вышли</translation>
@@ -477,6 +475,10 @@
 <translation id="8912304686498704084">ВКЛ</translation>
 <translation id="4963218453264888510">ВЫКЛ</translation>
 <translation id="7474113515179313724">Вы просматриваете этот сайт без защиты конфиденциальности Brave. Он работает неправильно с включенной защитой?</translation>
+<translation id="4226543734057230801">Сети Ethereum</translation>
+<translation id="3504157706952484145">Сети Filecoin</translation>
+<translation id="1561541094377237745">Сети Solana</translation>
+<translation id="7141438739990875547">Биткойн-сети</translation>
 <translation id="9055546041146396417">Если сайт работает неправильно, попробуйте выключить Защиту.</translation>
 <translation id="1209739344687072997">Сообщить о неработающем сайте</translation>
 <translation id="8510478288840333677">Сообщите разработчикам Brave, что этот сайт некорректно работает с Защитой:</translation>
@@ -575,8 +577,6 @@
 <translation id="2422627462367776805">Южнокорейский веб-портал и поисковая система</translation>
 <translation id="177282784098234156">Автономный и удобный приватный браузер</translation>
 <translation id="1410130669636877548">При поиске в Интернете некоторые поисковые системы защищают вашу конфиденциальность лучше, чем другие.</translation>
-<translation id="5187052478998910855">Хотите освежить в памяти, как работает Rewards?</translation>
-<translation id="8622329973403382303">Пройдите быстрый тур, чтобы закрепить в памяти, как работает Rewards, и стать настоящей рок-звездой платформы!</translation>
 <translation id="3479552764303398839">Не сейчас</translation>
 <translation id="7138272885617540195">Разрешить открывать ссылки на приложения в других приложениях.</translation>
 <translation id="4954512758656527938">Кошелек Ethereum по умолчанию</translation>
@@ -702,9 +702,11 @@
 <translation id="6748319398471481216">Ежемесячное продление</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> в месяц</translation>
 <translation id="1163809943099641131">Один год</translation>
-<translation id="7574007394522199115">Экономия до <ph name="PERCENTAGE_AMOUNT"/> %% с ежегодной подпиской</translation>
+<translation id="172859718096975160">При ежегодной оплате <ph name="DISCOUNT_TEXT_START"/>экономия <ph name="PERCENTAGE_AMOUNT"/> %%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> в год</translation>
-<translation id="2655185358771731232">Первые 7 дней бесплатно. Затем с вашего счета будет списана стоимость тарифного плана. Подписки продлеваются автоматически. Возможна отмена до даты их возобновления.</translation>
+<translation id="5125233570742276182">Плата за подписку будет взиматься с аккаунта Google. При покупке тарифного плана неиспользованный остаток бесплатного пробного периода будет аннулирован.\n\nПодписка будет продлена автоматически, если не отменить ее как минимум за 24 часа до окончания текущего периода.\n\nУправлять подписками можно в настройках.\nИспользуя Brave, вы соглашаетесь с Условиями использования и Политикой конфиденциальности.</translation>
+<translation id="5035172357624830412">Уже купили подписку на сайте brave.com?</translation>
+<translation id="713136183174551885">Обновить учетные данные</translation>
 <translation id="6053992191006521518">Попробуйте БЕСПЛАТНО</translation>
 <translation id="5903391101107992067">Попробовать бесплатно 7 дней</translation>
 <translation id="721747358270435486">Установите VPN</translation>
@@ -850,7 +852,7 @@
 <translation id="7791543448312431591">Добавить</translation>
 <translation id="6889920539620318793">Установить как действующую</translation>
 <translation id="2653659639078652383">Отправить</translation>
-<translation id="4556601961751528347">Сменить подключенный аккаунт</translation>
+<translation id="4945690646623486292">Выбор сети</translation>
 <translation id="5233638681132016545">Новая вкладка</translation>
 <translation id="8006088103295786154">Доступ к Brave Кошельку</translation>
 <translation id="8030169304546394654">Отключен</translation>
@@ -907,7 +909,7 @@
 <translation id="2322227405137827074">Вы хотите импортировать этот балл?</translation>
 <translation id="1324417023773393937">Браузер Brave</translation>
 <translation id="6044189892950611565">Канал уведомлений для браузера Brave</translation>
-<translation id="1173919438868967364">Выберите счет</translation>
+<translation id="4556601961751528347">Сменить подключенный аккаунт</translation>
 <translation id="8922793255489232731"><ph name="VALUE"/>: не удалось найти подходящий часовой пояс.</translation>
 <translation id="6471216025161697462">Подключено к <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">(пробная версия)</translation>
@@ -1063,7 +1065,6 @@
 <translation id="4932733599132424254">Дата</translation>
 <translation id="346505172740911461">Рыночная цена</translation>
 <translation id="5494920125229734069">Выделить все</translation>
-<translation id="5972844218283131174">Отменить выбор</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Войдите с помощью Brave Кошелька</translation>
 <translation id="3696514931437952995">Выполняется вход в аккаунт <ph name="ORIGIN"/>. Сайту <ph name="ORIGIN"/> будет предоставлен адрес вашего Brave Кошелька.</translation>

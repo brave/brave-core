@@ -43,6 +43,7 @@
 <translation id="7897433216002294926">Tor <ph name="COUNT"/>件</translation>
 <translation id="1970435562892104727">これはTorを備えたプライベートウィンドウです</translation>
 <translation id="1037341607922068025">Torを備えたプライベートウィンドウを開く</translation>
+<translation id="607982085107926247">Torで開く: <ph name="ADDRESS"/></translation>
 <translation id="496896260395129787">このBrave同期アカウントは、同期先のデバイスから削除されました。同期を無効にする必要がない場合は、<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>アカウントを作成し直してください</translation>
 <translation id="6965382102122355670">はい</translation>
@@ -53,7 +54,7 @@
 <translation id="3094628781200061820">公開してファイルをIPFSから取得</translation>
 <translation id="9220923434129933852">IPFS設定を確認・変更</translation>
 <translation id="7398397225367092613">.onion</translation>
-<translation id="406832631167785034">.onionアドレスを使用して開く</translation>
+<translation id="2269780537090240241">.onionアドレスで開く: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">強制ペースト</translation>
 <translation id="4901618511712685702">IPFSにインポート</translation>
 <translation id="6794469945030154569">このページ</translation>
@@ -119,8 +120,16 @@
 <translation id="45040495135337202">Braveは、あなた自身の情報やクエリ、またはクリックを追跡しません。大手テック企業からは100％独立した独自のシステムです。</translation>
 <translation id="42032117189492785">独自のインデックスでAIを取り入れた検索を。</translation>
 <translation id="8606416238399082160">完全プライベート、100％独立型、優れたAI機能も搭載。</translation>
+<translation id="7706528608480893054">個人情報を収集しないことで知られるDDGですが、本質的にはこれまでと何ら変わりはありません。Brave検索は、本当の意味でのプライバシーとより良い検索結果、独立したインデックスをすべての方に提供します。</translation>
+<translation id="3818133234428578803">その検索、本当に安全？</translation>
+<translation id="14817360483752259">Brave検索は個人情報、クエリ、クリックを追跡しない真にプライベートな検索エンジンです。DDGやBing...今お使いのものはいかがですか？</translation>
+<translation id="4381193110021038941">欲しい検索結果がここに</translation>
+<translation id="3846545273704969734">Brave検索は独自に情報を検証し、ニーズに合ったより細やかな検索結果を提供します。これは、他社製品にはないBraveならではの強みです。</translation>
+<translation id="2841164160723712537">検索精度がはるかに向上</translation>
+<translation id="4639001639513524869">Brave検索はほとんどのクエリで他社エンジンよりも優れた結果を提供します。しかも、完全プライベート。</translation>
 <translation id="5240031343741051161">Brave Searchを試してみる</translation>
 <translation id="5234764350956374838">表示しない</translation>
+<translation id="9218430445555521422">デフォルトとして設定</translation>
 <translation id="2370739752330685659">あとで</translation>
 <translation id="5100490448228945668">Brave 検索への切り替えを無効にします。[Enter] キーを押してこの提案を消します。</translation>
 <translation id="9194637241566114638"><ph name="SEARCH_NAME"/>を改善するために、匿名の使用データを送信してください。 <ph name="MORE_INFO"/></translation>
@@ -130,6 +139,9 @@
 <translation id="1162706247109707219">OKをクリックすることで、お客様はWindows 10以降にアップデートするまで、インストールしたBraveブラウザに重要なセキュリティの修正が適用されないことを了承したものとみなされます。この警告は今後表示されません。</translation>
 <translation id="9164786361657554526">OKをクリックすることで、お客様はmacOS 10.15以降にアップデートするまで、インストールしたBraveブラウザに重要なセキュリティの修正が適用されないことを了承したものとみなされます。この警告は今後表示されません。</translation>
 <translation id="2770465223704140727">リストから削除</translation>
+<translation id="6020553119523541665">このタブは別のウィンドウで有効になっています</translation>
+<translation id="4987392683074136770">このタブをクリックすると、コンテンツがこのウィンドウに表示されます</translation>
+<translation id="8355523213948477234">「スプリットビュー」メニューボタン</translation>
 <translation id="2515126961943087659">BAT 広告サービス</translation>
 <translation id="2104347391516032700">BATリワードサービス</translation>
 <translation id="6040143037577758943">閉じる</translation>
@@ -166,8 +178,7 @@
 <translation id="6959315322491671328">右クリックして削除</translation>
 <translation id="495046168593986294">上へスクロール</translation>
 <translation id="4021716437419160885">下へスクロール</translation>
-<translation id="1907157509746585817">ブックマーク</translation>
-<translation id="4840597165888262798">リーディングリスト</translation>
+<translation id="2702801445560668637">リーディングリスト</translation>
 <translation id="2533715613366623756">ブックマークマネージャー</translation>
 <translation id="3405021928725149239">ブックマークマネージャー</translation>
 <translation id="6284218950354553099">毎日の使用状況のpingをBraveに自動送信する</translation>
@@ -251,7 +262,6 @@
 <translation id="796831669370432378">ブックマークを追加するには、アドレスバーの横にあるブックマークボタンをクリックしてください</translation>
 <translation id="8487693399751278191">今すぐブックマークをインポート...</translation>
 <translation id="2557899542277210112">クイックアクセスするには、このページをブックマークバーにブックマークしてください。</translation>
-<translation id="2702801445560668637">リーディングリスト</translation>
 <translation id="1968543937259008435">オンライン上のプライバシーを確保しましょう</translation>
 <translation id="6817415381278637662">Braveをデフォルトのブラウザに設定すると、訪問するすべてのウェブページでBraveプライバシー保護を利用できます。</translation>
 <translation id="8722651357687610395">Braveをデフォルトに設定</translation>
@@ -348,6 +358,7 @@
 <translation id="2113977810652731515">カード</translation>
 <translation id="4096343215397759358">プレビュー付きカード</translation>
 <translation id="5297085818601043899">ツールヒント</translation>
+<translation id="5219886318310413094">すべてのウィンドウでピン留めされたタブを表示</translation>
 <translation id="2396127686705429331">ブックマークボタンを表示する</translation>
 <translation id="2814998458708016836">ワイドアドレスバーを使用する</translation>
 <translation id="4109670531935487117">アドレスバー入力中に自動でサイト候補を表示</translation>
@@ -462,10 +473,6 @@
 <translation id="2808630562319398131">Brave Rewardsデータをリセット...</translation>
 <translation id="6438096877646138757">閉じたときにCookiesを消去するサイト</translation>
 <translation id="2988792685798128092">サイトを閉じたときに消去</translation>
-<translation id="4663317021223369617">クッキーとサイトのデータ</translation>
-<translation id="7050661313034564003">このサイトのすべてのCookieとローカルに保存されたデータを表示</translation>
-<translation id="8339059274628563283"><ph name="SITE"/> によりデータがローカルに保存されました</translation>
-<translation id="1963227389609234879">すべて削除</translation>
 <translation id="7702907602086592255">ドメイン</translation>
 <translation id="3202131003361292969">パス</translation>
 <translation id="5390743329570580756">送信先</translation>

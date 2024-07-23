@@ -5,14 +5,13 @@
 <translation id="1063300264396686489">အခြားစက်များမှ တဘ်အုပ်စုများကို အလိုအလျောက်ဖွင့်ရန်</translation>
 <translation id="1075622780330595106">သင်၏တဘ် <ph name="NUMBER_OF_TABS"/> ခုကို နောက်ပိုင်းတွင် အသုံးပြုမထားပါ။ ၎င်းတို့ကို ပိတ်မလား။</translation>
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{ပြီးခဲ့သော <ph name="NUM_YEARS_ONE"/> လက ပြုလုပ်ထားသည်}other{ပြီးခဲ့သော <ph name="NUM_YEARS_MANY"/> လက ပြုလုပ်ထားသည်}}</translation>
-<translation id="1155815720264022949">တဘ်အဟောင်းများ ပိတ်လိုပါသလား။</translation>
 <translation id="1173894706177603556">အမည်ပြောင်းရန်</translation>
 <translation id="1197088940767939838">လိမ္မော်ရောင်</translation>
-<translation id="1215127405478249895">တဘ်များ ကြည့်ခြင်း</translation>
 <translation id="125153950246128346">နောက်တဘ်တစ်ခုကြည့်ရန် တို့ပါ</translation>
+<translation id="1273910660700874265"><ph name="TITLE_OF_GROUP"/> တဘ်အုပ်စု ရွေးစရာများ</translation>
 <translation id="1322824555808364080">လူများကို ဖိတ်ကြားရန်</translation>
-<translation id="1326271443836399892">မလိုသည်များ ဖယ်ရှားသော လက်ရှိဆက်တင်များကို စိစစ်ပါ။</translation>
 <translation id="1419023007528516122">၎င်းသည် သင့်စက်မှအဖွဲ့ကို အပြီးဖျက်ပါမည်</translation>
+<translation id="1486715732399361704">သင့်တဘ်အုပ်စုအားလုံးကို ဤနေရာတွင် တွေ့နိုင်သည်</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{ပြီးခဲ့သော <ph name="NUM_MINS_ONE"/> မိနစ်က ပြုလုပ်ထားသည်}other{ပြီးခဲ့သော <ph name="NUM_MINS_MANY"/> မိနစ်က ပြုလုပ်ထားသည်}}</translation>
 <translation id="3228718275011575753">ရုပ်ဖျက်တဘ်အားလုံး ပိတ်မလား။</translation>
 <translation id="1501480321619201731">အဖွဲ့ကို ဖျက်ရန်</translation>
@@ -25,6 +24,7 @@
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{တဘ် <ph name="TABS_COUNT_ONE"/> ခု}other{တဘ် <ph name="TABS_COUNT_MANY"/> ခု}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{ရွေးထားသောတဘ် <ph name="TABS_COUNT_ONE"/> ခုကို လိပ်စာမှတ်ရန်}other{ရွေးထားသောတဘ် <ph name="TABS_COUNT_MANY"/> ခုကို လိပ်စာမှတ်ရန်}}</translation>
 <translation id="2118649612461486615">ဆိုင်အချက်အလက်</translation>
+<translation id="6086127758480584723">{INCOGNITO_TABS_COUNT,plural, =1{ပိတ်ထားသောတဘ်နှင့် အုပ်စုများကို ‘လတ်တလောတဘ်’ နှင့် ‘တဘ်အုပ်စု’ ကဏ္ဍများမှ ပြန်ဖွင့်နိုင်သည်။ ‘ရုပ်ဖျက်တဘ်’ ကို အသုံးပြုနိုင်မည် မဟုတ်ပါ။}other{ပိတ်ထားသောတဘ်နှင့် အုပ်စုများကို ‘လတ်တလောတဘ်’ နှင့် ‘တဘ်အုပ်စု’ ကဏ္ဍများမှ ပြန်ဖွင့်နိုင်သည်။ ‘ရုပ်ဖျက်တဘ်’ # ခုကို အသုံးပြုနိုင်မည် မဟုတ်ပါ။}}</translation>
 <translation id="2162620598375156287"><ph name="SOURCE_WEBSITE"/> တွင်ယခု <ph name="CURRENT_PRICE"/> ဖြစ်သည်</translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{တဘ် အုပ်စုဖြုတ်ရန်}other{တဘ်များ အုပ်စုဖြုတ်ရန်}}</translation>
 <translation id="2271452184061378400">တဘ်အုပ်စုများကို ဤနေရာတွင် သိမ်းထားသည်</translation>
@@ -42,9 +42,9 @@
 <translation id="4691798003247738043">Brave | ဤဆိုင်အကြောင်း</translation>
 <translation id="2977480621796371840">အဖွဲ့မှ ဖယ်ရှားပါ</translation>
 <translation id="3008554597174452548">ထုတ်ကုန်စောင့်ကြည့်ခြင်း ရပ်ရန်</translation>
+<translation id="3026391124054406831">သင့်တဘ်များကို စီမံရန် အုပ်စုဖွဲ့ပါ။</translation>
 <translation id="3052964831964880138"><ph name="PRODUCT_NAME"/> သည် <ph name="PRICE_DROP"/> ဈေးကျသွားသည်</translation>
 <translation id="3078350928901129212"><ph name="COLOR_NAME"/> တဘ်အုပ်စု အရောင်သင်္ကေတ</translation>
-<translation id="313819129451406482">{TABS_COUNT,plural, =1{သင့်တွင် သိမ်းထားသောတဘ် <ph name="TABS_COUNT_ONE"/> ခုရှိသည်}other{သင့်တွင် သိမ်းထားသောတဘ် <ph name="TABS_COUNT_MANY"/> ခုရှိသည်}}</translation>
 <translation id="3194464645767632461">အဆင့်သတ်မှတ်ခြင်း</translation>
 <translation id="3291470810748040983">ဖွင့်ထားသောတဘ်တွင် ဈေးကျသွားသည့်အခါ သတိပေးချက် ရရှိပါမည်</translation>
 <translation id="3322827343001922122">တဘ်အုပ်စု လုပ်ဆောင်ချက် မီနူးကို <ph name="TITLE_OF_GROUP"/> တဘ်အုပ်စုအတွက် ဖွင့်ရန်</translation>
@@ -56,13 +56,14 @@
 <translation id="3882834874697329510">ဖွင့်ထားသောတဘ်တွင် ဈေးကျသွားသည့်အခါ သတိပေးချက်ရရှိရန် ‘ဆက်တင်များ’ တွင် အကြောင်းကြားချက်များကို ဖွင့်ပါ။</translation>
 <translation id="3940195383040445971">တဘ်များတွင် ဈေးနှုန်းများစောင့်ကြည့်ရန်</translation>
 <translation id="3954615705217314756">{TABS_COUNT,plural, =1{တဘ် အုပ်စုဖွဲ့ရန်}other{တဘ်များ အုပ်စုဖွဲ့ရန်}}</translation>
+<translation id="395587619114760247">{TABS_COUNT,plural, =1{အသုံးမပြုသောတဘ် <ph name="TABS_COUNT_ONE"/> ခု}other{အသုံးမပြုသောတဘ် <ph name="TABS_COUNT_MANY"/> ခု}}</translation>
+<translation id="3969565576924904454"><ph name="TITLE_OF_GROUP"/> ဖွင့်ရန်</translation>
 <translation id="3996880007329611795">အကြောင်းကြားချက် ရယူရန်</translation>
 <translation id="4009732926939031387">{NUM_DAYS,plural, =1{ပြီးခဲ့သော <ph name="NUM_DAYS_ONE"/> ရက်က ပြုလုပ်ထားသည်}other{ပြီးခဲ့သော <ph name="NUM_DAYS_MANY"/> ရက်က ပြုလုပ်ထားသည်}}</translation>
 <translation id="4133493477912226187">တဘ် <ph name="NUMBER_OF_TABS"/> ခုက ဆက်စပ်ပုံပေါ်သည်။ ၎င်းတို့ကို အုပ်စုဖွဲ့မလား။</translation>
 <translation id="4139634748112164403">တဘ်များကို ဤစက်တွင် ဆက်ဖွင့်ထားမည်ဖြစ်သော်လည်း အဖွဲ့ကို အပြီးဖျက်ပါမည်</translation>
 <translation id="4156086991340739772">{NUMBER_OF_TABS,plural, =1{တဘ် <ph name="TABS_COUNT_ONE"/> ခု၊ <ph name="COLOR_NAME"/> ရောင်ဖြင့် <ph name="TITLE_OF_GROUP"/> အုပ်စုကို ပိတ်ပါ။}other{တဘ် <ph name="TABS_COUNT_MANY"/> ခု၊ <ph name="COLOR_NAME"/> ရောင်ဖြင့် <ph name="TITLE_OF_GROUP"/> အုပ်စုကို ပိတ်ပါ။}}</translation>
 <translation id="4159784952369912983">ခရမ်း</translation>
-<translation id="4212246570487010370">ဆက်တိုက် ရှာကြည့်ခြင်း</translation>
 <translation id="4220650239473304853">{NUMBER_OF_TABS,plural, =1{တဘ် <ph name="TABS_COUNT_ONE"/> ခုပါသော <ph name="TITLE_OF_GROUP"/> တဘ်အုပ်စုကို ပိုပြပါ။}other{တဘ် <ph name="TABS_COUNT_MANY"/> ခုပါသော <ph name="TITLE_OF_GROUP"/> တဘ်အုပ်စုကို ပိုပြပါ။}}</translation>
 <translation id="427987768447457592">တဘ်အုပ်စုအသစ်</translation>
 <translation id="4460014764210899310">အုပ်စု ဖွဲ့မထားပါ</translation>
@@ -82,13 +83,11 @@
 <translation id="5082793167783849073">အဖွဲ့ဖွဲ့ခြင်းဖြင့် စာမျက်နှာများကို အမြန်နှိုင်းယှဉ်ပါ။ စတင်ရန် လင့်ခ်ကို ထိပြီး ဖိထားပါ။</translation>
 <translation id="5094423602314093681">တဘ်(များ)ဖယ်ရှားပြီး အုပ်စုကို ဖျက်မလား။</translation>
 <translation id="5161254044473106830">ခေါင်းစီးလိုအပ်သည်</translation>
-<translation id="5303274951032363933">{TABS_COUNT,plural, =1{လတ်တလော သုံးထားခြင်းမရှိသော တဘ် <ph name="TABS_COUNT_ONE"/> ခုရှိသည်}other{လတ်တလော သုံးထားခြင်းမရှိသော တဘ် <ph name="TABS_COUNT_MANY"/> ခုရှိသည်}}</translation>
 <translation id="5338401825260744482">{NUMBER_OF_TABS,plural, =1{တဘ် <ph name="TABS_COUNT_ONE"/> ခုပါသော တဘ်အုပ်စုကို ပိတ်ရန်။}other{တဘ် <ph name="TABS_COUNT_MANY"/> ခုပါသော တဘ်အုပ်စုကို ပိတ်ရန်။}}</translation>
 <translation id="5339733443032484186">သင့်နောက်ဆုံးတဘ်</translation>
 <translation id="5400836586163650660">မီးခိုး</translation>
 <translation id="5490235265819901748">တဘ်အုပ်စုကို ချဲ့ထားသည်</translation>
 <translation id="5494920125229734069">အားလုံး ရွေးရန်</translation>
-<translation id="5545379293264651575">သုံးသပ်ချက်မပေးဘဲ ပိတ်ရန်</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{တဘ် <ph name="TABS_COUNT_ONE"/> ခု၊ <ph name="COLOR_NAME"/> ရောင်ဖြင့် တဘ်အုပ်စုကို ပိတ်ပါ။}other{တဘ် <ph name="TABS_COUNT_MANY"/> ခု၊ <ph name="COLOR_NAME"/> ရောင်ဖြင့် တဘ်အုပ်စုကို ပိတ်ပါ။}}</translation>
 <translation id="5556417849629758491">ဆိုင်အချက်အလက် ကြည့်ရန် ရွေးချယ်စရာကို ဖန်သားပြင်ထိပ်ပိုင်းအနီးတွင် ရနိုင်သည်</translation>
 <translation id="3225229609960545342">{TABS_COUNT,plural, =1{Brave ထံမှ လင့်ခ် <ph name="TABS_COUNT_ONE"/> ခု}other{Brave ထံမှ လင့်ခ် <ph name="TABS_COUNT_MANY"/> ခု}}</translation>
@@ -101,16 +100,15 @@
 <translation id="6054741997831917303">ဤပစ္စည်းမှာ မကြာမီက <ph name="PREVIOUS_PRICE"/> မှ <ph name="NEW_PRICE"/> သို့ ဈေးကျသွားသည်</translation>
 <translation id="6193448654517602979">တဘ်ရွေးရန်</translation>
 <translation id="6228793724645064692">(ဆိုင်အဆင့်)</translation>
+<translation id="6271513594716432922">အသုံးမပြုသောတဘ်အားလုံး ပိတ်ရန်</translation>
 <translation id="6333260925957816943">ဤဆိုင်အကြောင်း</translation>
 <translation id="6381032505162537930">တဘ်အုပ်စုများကို ဤနေရာတွင် မြင်ရမည်</translation>
 <translation id="639823877092900621">{TABS_COUNT,plural, =1{ရွေးထားသည့်တဘ် <ph name="TABS_COUNT_ONE"/> ခုကို အုပ်စုဖြုတ်ရန်}other{ရွေးထားသည့်တဘ် <ph name="TABS_COUNT_MANY"/> ခုကို အုပ်စုဖြုတ်ရန်}}</translation>
-<translation id="6057673771413791768">{INCOGNITO_TABS_COUNT,plural, =1{Brave ပင်မမီနူးရှိ ‘မကြာသေးမီက တဘ်များ’ တွင် သင်ပိတ်ထားသော တဘ်များကို ရှာတွေ့နိုင်သည်။ ‘ရုပ်ဖျက်တဘ်’ ကို မရနိုင်ပါ။}other{Brave ပင်မမီနူးရှိ ‘မကြာသေးမီက တဘ်များ’ တွင် သင်ပိတ်ထားသော တဘ်များကို ရှာတွေ့နိုင်သည်။ ‘ရုပ်ဖျက်တဘ်’ # ခုကို မရနိုင်ပါ။}}</translation>
 <translation id="6422650314852876533">{TABS_COUNT,plural, =1{တဘ် <ph name="TABS_COUNT_ONE"/> ခု}other{တဘ် <ph name="TABS_COUNT_MANY"/> ခု}}</translation>
 <translation id="6549021453810473782">ဆိုင်အချက်အလက် ကြည့်ရန်</translation>
 <translation id="6557858706263317126">+<ph name="HIDDEN_TABS_COUNT"/></translation>
 <translation id="6562820390860419811">တဘ်ကို ဘယ်ဘက်သို့ ရွှေ့ရန်</translation>
 <translation id="6615455863669487791">ပြရန်</translation>
-<translation id="6398241160085205003">Brave ပင်မမီနူးရှိ ‘မကြာသေးမီက တဘ်များ’ တွင် သင်ပိတ်ထားသော တဘ်များကို ရှာတွေ့နိုင်သည်။</translation>
 <translation id="6744956528665271406">အုပ်စုအရောင် တည်းဖြတ်ရန်</translation>
 <translation id="6840760312327750441">တဘ်များကို အုပ်စုဖွဲ့ရန် တဘ်တစ်ခုကို တို့ထိ၍ ဖိထားပါ။ ထို့နောက် ၎င်းကို နောက်တဘ်တစ်ခုပေါ်သို့ ဖိဆွဲပါ။</translation>
 <translation id="6856809498882026482">မျိုးစုံရွေးမုဒ်ကို ဝှက်ရန်</translation>
@@ -146,7 +144,6 @@
 <translation id="8338427544764842461">တဘ်အုပ်စုများကို ဤနေရာတွင် သိမ်းထားပြီး လက်မှတ်ထိုးဝင်ထားသည့် သင့်စက်အားလုံးတွင် အပ်ဒိတ်လုပ်ပါသည်</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{ရွေးထားသည့် တဘ် <ph name="TABS_COUNT_ONE"/> ခုကို ပိတ်ရန်}other{ရွေးထားသည့် တဘ် <ph name="TABS_COUNT_MANY"/> ခုကို ပိတ်ရန်}}</translation>
 <translation id="8398929769197326728">ဖိုင်တွဲအသစ် - <ph name="CURRENT_TIMESTAMP_MS"/></translation>
-<translation id="870736955561925754">တဘ်ပိတ်ပြီး အုပ်စုကို ဖျက်မလား။</translation>
 <translation id="8714939927607906138">ကျသွားသော ဈေးနှုန်း</translation>
 <translation id="8730621377337864115">ပြီးပါပြီ</translation>
 <translation id="6687920250729800417">ဤ ‘ရုပ်ဖျက်တဘ်များ’ ရှိ သင့်လုပ်ဆောင်ချက်ကို ဤစက်မှ ဖယ်ရှားပါမည်</translation>
@@ -160,7 +157,6 @@
 <translation id="9169594135889675189">တဘ်အသစ်ကို အုပ်စုသို့ ထည့်ရန်</translation>
 <translation id="9216898458513705996">တဘ်များကို ဤစက်တွင် ဆက်ဖွင့်ထားမည်ဖြစ်သော်လည်း <ph name="USER_EMAIL"/> သို့ လက်မှတ်ထိုးဝင်ထားသည့် စက်အားလုံးတွင် အုပ်စုကို ဖျက်လိုက်ပါမည်</translation>
 <translation id="927441551066996669">{NUMBER_OF_TABS,plural, =1{တဘ် <ph name="TABS_COUNT_ONE"/> ခု၊ <ph name="COLOR_NAME"/> ရောင်ဖြင့် တဘ်အုပ်စုကို ဖြန့်ပါ။}other{တဘ် <ph name="TABS_COUNT_MANY"/> ခု၊ <ph name="COLOR_NAME"/> ရောင်ဖြင့် တဘ်အုပ်စုကို ဖြန့်ပါ။}}</translation>
-<translation id="955558140275419384">ဤတည်းဖြတ်စနစ်သို့ ဝင်ခြင်းဖြင့် မလိုသည်များ ဖယ်ရှားရန် သိမ်းထားသောတဘ်အားလုံးကို စိစစ်ပါ။</translation>
 <translation id="959682366969460160">စုစုစည်းစည်းဖြစ်အောင် ပြုလုပ်ပါ</translation>
 <translation id="992256792861109788">ပန်းရောင်</translation>
 </translationbundle>

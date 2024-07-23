@@ -43,6 +43,7 @@
 <translation id="7897433216002294926">টর <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">এটি টর সহ একটি ব্যক্তিগত উইন্ডো</translation>
 <translation id="1037341607922068025">টর দিয়ে প্রাইভেট উইন্ডো খুলুন</translation>
+<translation id="607982085107926247">Tor-এ খুলুন: <ph name="ADDRESS"/></translation>
 <translation id="496896260395129787">এই Brave সিঙ্ক অ্যাকাউন্টটি অন্য ডিভাইস থেকে মোছা হয়েছে। আপনি সিঙ্ক বন্ধ করতে না চাইলে, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>আবার অ্যাকাউন্ট তৈরি করুন</translation>
 <translation id="6965382102122355670">ঠিক আছে</translation>
@@ -53,7 +54,7 @@
 <translation id="3094628781200061820">IPFS থেকে ফাইলগুলো প্রকাশ এবং পুনরুদ্ধার করুন</translation>
 <translation id="9220923434129933852">IPFS সেটিংস পড়ুন এবং কিছুটা পরিবর্তন করুন</translation>
 <translation id="7398397225367092613">.onion</translation>
-<translation id="406832631167785034">.onion ঠিকানা ব্যবহার করে খুলুন</translation>
+<translation id="2269780537090240241">.onion ঠিকানা ব্যবহার করে খুলুন: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">জোর করে পেস্ট করুন</translation>
 <translation id="4901618511712685702">IPFS-এ আমদানি করুন</translation>
 <translation id="6794469945030154569">এই পৃষ্ঠা</translation>
@@ -119,8 +120,16 @@
 <translation id="45040495135337202">Brave আপনাকে, আপনার প্রশ্নগুলি বা আপনার ক্লিকগুলিকে অনুসরণ করে না। এবং এটি বড় প্রযুক্তি থেকে 100% স্বতন্ত্র।</translation>
 <translation id="42032117189492785">একটি অনন্য ইনডেক্স দিয়ে AI-ইনফিউজড অনুসন্ধান।</translation>
 <translation id="8606416238399082160">সম্পূর্ণভাবে ব্যক্তিগত, 100% স্বতন্ত্র এবং দুর্দান্ত AI বৈশিষ্ট্য সহ।</translation>
+<translation id="7706528608480893054">DDG হল ছদ্মবেশে Bing মাত্র। প্রকৃত গোপনীয়তা, আরও ভালো ফলাফল এবং একটি স্বাধীন সূচকের সময় এসেছে। Brave সার্চ ব্যবহার করার সময় এসেছে।</translation>
+<translation id="3818133234428578803">ডিচ দা ডাক</translation>
+<translation id="14817360483752259">Brave সার্চ আপনাকে, আপনার প্রশ্ন বা ক্লিকগুলিকে ট্র্যাক করে না। এবং (DDG-র মতো নয) এটি কেবল ছদ্মবেশে Bing নয়।</translation>
+<translation id="4381193110021038941">আরও ভালো ফলাফল পান</translation>
+<translation id="3846545273704969734">Bing-এর (বা DuckDuckGo এর মত Bing ক্লোন) চেয়ে ভাল ফলাফলের জন্য Brave সার্চ স্বাধীনভাবে যাচাই করা হয়েছে।</translation>
+<translation id="2841164160723712537">আরও সার্চ ফলাফল পান</translation>
+<translation id="4639001639513524869">Brave সার্চ অধিকাংশ প্রশ্নের জন্য DuckDuckGo-র থেকে ভাল ফলাফল দেয়। এবং এটি সত্যিই ব্যক্তিগত রাখে।</translation>
 <translation id="5240031343741051161">Brave সার্চ ব্যবহার করুন</translation>
 <translation id="5234764350956374838">খারিজ</translation>
+<translation id="9218430445555521422">ডিফল্ট হিসেবে সেট করুন</translation>
 <translation id="2370739752330685659">সম্ভবত পরে</translation>
 <translation id="5100490448228945668">Brave অনুসন্ধান রূপান্তর বাতিল করুন, এই পরামর্শটি সরাতে এন্টার টিপুন</translation>
 <translation id="9194637241566114638">বেনামী ব্যবহারের ডেটা পাঠিয়ে <ph name="SEARCH_NAME"/> উন্নত করতে সহায়তা করুন।  <ph name="MORE_INFO"/></translation>
@@ -130,6 +139,9 @@
 <translation id="1162706247109707219">‘ঠিক আছে’ ক্লিক করার মাধ্যমে, আপনি স্বীকার করেন যে, আপনি Windows 10 বা পরবর্তীতে ভার্সনে আপডেট না করা পর্যন্ত আপনার Brave-এর ইনস্টলেশন গুরুত্বপূর্ণ নিরাপত্তা সংক্রান্ত সমাধান পাবেন না। এই সতর্কতা আর দেখানো হবে না।</translation>
 <translation id="9164786361657554526">‘ঠিক আছে’ ক্লিক করার মাধ্যমে, আপনি স্বীকার করেন যে, আপনি macOS 10.15 বা পরবর্তীতে ভার্সনে আপডেট না করা পর্যন্ত আপনার Brave-এর ইনস্টলেশন গুরুত্বপূর্ণ নিরাপত্তা সংক্রান্ত সমাধান পাবেন না। এই সতর্কতা আর দেখানো হবে না।</translation>
 <translation id="2770465223704140727">তালিকা থেকে সরান</translation>
+<translation id="6020553119523541665">এই ট্যাবটি অন্য উইন্ডোতে সক্রিয় আছে</translation>
+<translation id="4987392683074136770">এই ট্যাবে ক্লিক করলে এর কন্টেন্ট এই উইন্ডোতে আসবে</translation>
+<translation id="8355523213948477234">স্প্লিট ভিউ মেনু বোতাম</translation>
 <translation id="2515126961943087659">Bat বিজ্ঞাপন পরিষেবা</translation>
 <translation id="2104347391516032700">Bat পুরষ্কার পরিষেবা</translation>
 <translation id="6040143037577758943">বন্ধ</translation>
@@ -166,8 +178,7 @@
 <translation id="6959315322491671328">সরাতে বাম-ক্লিক করুন</translation>
 <translation id="495046168593986294">উপরের দিকে স্ক্রোল করুন</translation>
 <translation id="4021716437419160885">নীচের দিকে স্ক্রোল করুন</translation>
-<translation id="1907157509746585817">বুকমার্কস</translation>
-<translation id="4840597165888262798">পড়ার তালিকা</translation>
+<translation id="2702801445560668637">পড়ার তালিকা</translation>
 <translation id="2533715613366623756">বুকমার্ক ম্যানেজার</translation>
 <translation id="3405021928725149239">বুকমার্ক ম্যানেজার</translation>
 <translation id="6284218950354553099">স্বয়ংক্রিয়ভাবে Brave-এ প্রতিদিনের ব্যবহারের পিং পাঠান</translation>
@@ -251,7 +262,6 @@
 <translation id="796831669370432378">একটি বুকমার্ক যোগ করতে, ঠিকানার বারের ঠিক পরে বুকমার্ক বোতামটি ক্লিক করুন</translation>
 <translation id="8487693399751278191">বুকমার্কগুলি এখনই আমদানি করুন...</translation>
 <translation id="2557899542277210112">দ্রুত ব্যবহারের জন্য, আপনার বুকমার্কগুলি এখানে বুকমার্ক বারে রাখুন।</translation>
-<translation id="2702801445560668637">পড়ার তালিকা</translation>
 <translation id="1968543937259008435">অনলাইন সেরা গোপনীয়তার জন্য প্রস্তুত?</translation>
 <translation id="6817415381278637662">আপনার খোলা প্রতিটি ওয়েব পৃষ্ঠাতে Brave-এর গোপনীয়তা সুরক্ষা পেতে, Brave-কে আপনার ডিফল্ট ব্রাউজার হিসাবে সেট করুন।</translation>
 <translation id="8722651357687610395">Brave কে ডিফল্ট হিসাবে সেট করুন</translation>
@@ -348,6 +358,7 @@
 <translation id="2113977810652731515">কার্ড</translation>
 <translation id="4096343215397759358">পূর্বরূপ সহ কার্ড</translation>
 <translation id="5297085818601043899">টুলটিপ</translation>
+<translation id="5219886318310413094">সমস্ত উইন্ডোতে পিন করা ট্যাব দেখান</translation>
 <translation id="2396127686705429331">বুকমার্ক বোতাম দেখান</translation>
 <translation id="2814998458708016836">ওয়াইড অ্যাড্রেস বার ব্যবহার করুন</translation>
 <translation id="4109670531935487117">ঠিকানা বারে স্বয়ংসম্পূর্ণ পরামর্শ দেখান</translation>
@@ -462,10 +473,6 @@
 <translation id="2808630562319398131">Brave Rewards এর ডেটা রিসেট করুন...</translation>
 <translation id="6438096877646138757">আপনি সাইট বন্ধ করে দিলে সেগুলো কুকি সাফ করে</translation>
 <translation id="2988792685798128092">সাইট বন্ধ করে সাফ করুন</translation>
-<translation id="4663317021223369617">কুকিজ ও সাইট ডেটা</translation>
-<translation id="7050661313034564003">এই সাইটের জন্য সমস্ত কুকি এবং স্থানীয়ভাবে সঞ্চয় করা ডেটা দেখান</translation>
-<translation id="8339059274628563283"><ph name="SITE"/> স্থানীয়ভাবে ডেটা সংরক্ষণ করেছে</translation>
-<translation id="1963227389609234879">সকল সরান</translation>
 <translation id="7702907602086592255">ডোমেন</translation>
 <translation id="3202131003361292969">পাথ</translation>
 <translation id="5390743329570580756">এর জন্য পাঠান</translation>

@@ -417,9 +417,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="7275773481201277457">Tunjukkan Statistik Brave</translation>
 <translation id="8297488609722895137">Gambar oleh <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Dengan mengetik Mula Menggunakan Ganjaran Brave, anda bersetuju dengan <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Dapatkan bayaran untuk melihat imej latar belakang ini.</translation>
 <translation id="7136586167396205364">Sembunyikan Imej Yang Ditaja</translation>
-<translation id="2927095357213611519">Anda boleh menyokong pencipta laman dengan token. \nDapatkan token dengan menonton iklan yang menghormati privasi.</translation>
 <translation id="2898634658146274982">Buka pautan luaran dalam Brave</translation>
 <translation id="5616508928556767259">Buka pautan daripada apl lain dalam paparan web Brave. Nota: Brave mesti ditetapkan sebagai penyemak imbas lalai anda.</translation>
 <translation id="2394961582378297792">Dilog keluar</translation>
@@ -477,6 +475,10 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="8912304686498704084">ATAS</translation>
 <translation id="4963218453264888510">BAWAH</translation>
 <translation id="7474113515179313724">Anda sedang melayari laman ini tanpa perlindungan privasi Brave. Adakah ia berfungsi dengan Shields diaktifkan?</translation>
+<translation id="4226543734057230801">Rangkaian Ethereum</translation>
+<translation id="3504157706952484145">Rangkaian Filecoin</translation>
+<translation id="1561541094377237745">Rangkaian Solana</translation>
+<translation id="7141438739990875547">Rangkaian Bitcoin</translation>
 <translation id="9055546041146396417">Sekiranya laman ini nampaknya rosak, cuba Shields.</translation>
 <translation id="1209739344687072997">Laporkan laman yang  terputus-putus</translation>
 <translation id="8510478288840333677">Beritahu pembangun Brave yang laman ini tidak berfungsi dengan baik dengan Shields:</translation>
@@ -575,8 +577,6 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="2422627462367776805">Carian &amp; portal web Korea Selatan</translation>
 <translation id="177282784098234156">Peribadi, bebas, pengguna dahulu</translation>
 <translation id="1410130669636877548">Sesetengah enjin carian melindungi privasi anda lebih baik daripada yang lain apabila anda melayari web.</translation>
-<translation id="5187052478998910855">Perlukan penerangan semula tentang Ganjaran?</translation>
-<translation id="8622329973403382303">Teroka untuk mempelajari bagaimana caranya untuk mencatat nama dalam sejarah sebagai bintang rock Ganjaran!</translation>
 <translation id="3479552764303398839">Bukan sekarang</translation>
 <translation id="7138272885617540195">Benarkan pautan apl dibuka dalam apl di luar Brave</translation>
 <translation id="4954512758656527938">Dompet Ethereum lalai</translation>
@@ -702,9 +702,11 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="6748319398471481216">Diperbaharui secara bulanan</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / bulan.</translation>
 <translation id="1163809943099641131">Satu Tahun</translation>
-<translation id="7574007394522199115">Perbaharu setiap tahun menjimatkan <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">Baharui setiap tahun <ph name="DISCOUNT_TEXT_START"/>jimat <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / thn.</translation>
-<translation id="2655185358771731232">Cuba secara percuma untuk 7 hari. Selepas 7 hari, anda akan dikenakan caj harga pelan. Semua langganan diperbaharui secara automatik tetapi boleh dibatalkan sebelum pembaharuan.</translation>
+<translation id="5125233570742276182">Langganan akan dicaj melalui akaun Google anda. Mana-mana bahagian percubaan percuma yang tidak digunakan, jika ditawarkan, akan hilang apabila anda membeli langganan.\n\nLangganan anda akan dibaharui secara automatik melainkan ia dibatalkan sekurang-kurangnya 24 jam sebelum tamat tempoh semasa.\n\nAnda boleh mengurus langganan anda dalam Tetapan.\nDengan menggunakan Brave, maksudnya anda bersetuju menerima Syarat Penggunaan dan Dasar Privasi.</translation>
+<translation id="5035172357624830412">Sudah membeli melalui brave.com?</translation>
+<translation id="713136183174551885">Muatkan semula bukti kelayakan anda</translation>
 <translation id="6053992191006521518">Cuba secara PERCUMA</translation>
 <translation id="5903391101107992067">Cuba gunakan selama 7 Hari secara Percuma</translation>
 <translation id="721747358270435486">Pasang VPN</translation>
@@ -850,7 +852,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="7791543448312431591">Tambah</translation>
 <translation id="6889920539620318793">Tetapkan sebagai aktif</translation>
 <translation id="2653659639078652383">Serah</translation>
-<translation id="4556601961751528347">Tukar Akaun Bersambung</translation>
+<translation id="4945690646623486292">Pilih Rangkaian</translation>
 <translation id="5233638681132016545">Tab baharu</translation>
 <translation id="8006088103295786154">Akses Dompet Brave</translation>
 <translation id="8030169304546394654">Sambungan Terputus</translation>
@@ -907,7 +909,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="2322227405137827074">Adakah anda ingin mengimport token ini?</translation>
 <translation id="1324417023773393937">Pelayar Brave</translation>
 <translation id="6044189892950611565">Saluran pemberitahuan untuk Penyemak Imbas Brave</translation>
-<translation id="1173919438868967364">Pilih Akaun</translation>
+<translation id="4556601961751528347">Tukar Akaun Bersambung</translation>
 <translation id="8922793255489232731">Tidak berjaya mendapatkan zon waktu yang sepadan untuk : <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Bersambung dengan <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Percubaan</translation>
@@ -1063,7 +1065,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="4932733599132424254">Tarikh</translation>
 <translation id="346505172740911461">Harga Pasaran</translation>
 <translation id="5494920125229734069">Pilih semua</translation>
-<translation id="5972844218283131174">Nyahpilih semua</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Log masuk dengan Brave Wallet</translation>
 <translation id="3696514931437952995">Anda sedang log masuk ke <ph name="ORIGIN"/>. Brave Wallet akan berkongsi alamat dompet anda dengan <ph name="ORIGIN"/>.</translation>
