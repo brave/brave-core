@@ -98,10 +98,13 @@ TEST_P(BraveAdsDatabaseMigrationTest, MigrateFromSchema) {
   EXPECT_TRUE(database_is_ready_);
 }
 
-INSTANTIATE_TEST_SUITE_P(,
-                         BraveAdsDatabaseMigrationTest,
-                         ::testing::Range(kFreshInstallDatabaseVersion,
-                                          database::kVersion),
-                         TestParamToString);
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    BraveAdsDatabaseMigrationTest,
+    ::testing::Range(
+        kFreshInstallDatabaseVersion,
+        database::kVersion +
+            1),  // We add 1 because `::testing::Range` end is exclusive.
+    TestParamToString);
 
 }  // namespace brave_ads
