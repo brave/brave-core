@@ -120,8 +120,8 @@ function Main() {
               <Button
                 fab
                 kind='plain-faint'
-                aria-label='Start new conversation'
-                title='Start new conversation'
+                aria-label={getLocale('startConversationLabel')}
+                title={getLocale('startConversationLabel')}
                 onClick={handleNewConversation}
               >
                 <Icon name='edit-box' />
