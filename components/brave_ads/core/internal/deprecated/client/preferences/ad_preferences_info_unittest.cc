@@ -14,7 +14,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kJson[] = R"(
+constexpr char kAdPreferencesAsJson[] = R"(
 {
   "filtered_advertisers": [
     {
@@ -95,7 +95,7 @@ TEST_F(BraveAdsAdPreferencesInfoTest, SerializeSampleAdPreferencesInfo) {
 
 TEST_F(BraveAdsAdPreferencesInfoTest, ParseSampleAdPreferencesInfoJson) {
   // Act & Assert
-  ParseJsonAndCompareWithSampleAdPreferencesInfo(kJson);
+  ParseJsonAndCompareWithSampleAdPreferencesInfo(kAdPreferencesAsJson);
 }
 
 TEST_F(BraveAdsAdPreferencesInfoTest, ParseEmptyJson) {

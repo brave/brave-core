@@ -3,13 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { color, font } from '@brave/leo/tokens/css/variables'
+import { color } from '@brave/leo/tokens/css/variables'
 import { css, scopedCSS } from '../lib/scoped_css'
 
 export const style = scopedCSS('reset-modal', css`
   & {
-    max-width: 536px;
-    font: ${font.default.regular};
+    max-width: 600px;
     color: ${color.text.secondary};
 
     a {
@@ -32,11 +31,6 @@ export const style = scopedCSS('reset-modal', css`
 
   .text {
     padding-bottom: 16px;
-  }
-
-  .action {
-    margin-top: 8px;
-    align-self: center;
   }
 `)
 

@@ -156,6 +156,7 @@ test("brave_unit_tests") {
     "//brave/app:command_ids",
     "//brave/app:unit_tests",
     "//brave/base:base_unittests",
+    "//brave/base/test:test_vendor_is_brave",
     "//brave/brave_domains:unit_tests",
     "//brave/browser",
     "//brave/browser:unit_tests",
@@ -599,6 +600,7 @@ if (!is_android) {
     deps = [
       "//base/test:run_all_unittests",
       "//base/test:test_support",
+      "//brave/base/test:test_vendor_is_brave",
     ]
 
     if (is_mac) {
@@ -689,6 +691,7 @@ if (!is_android) {
 
     deps = [
       "//base",
+      "//brave/base/test:test_vendor_is_brave",
       "//brave/components/brave_rewards/browser",
       "//chrome/browser",
       "//chrome/browser/profiles:profile",
@@ -814,7 +817,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_rewards/browser/test/rewards_state_browsertest.cc",
     "//brave/components/content_settings/renderer/brave_content_settings_agent_impl_autoplay_browsertest.cc",
     "//brave/components/content_settings/renderer/brave_content_settings_agent_impl_browsertest.cc",
-    "//brave/components/webcompat/webcompat_exceptions_browsertest.cc",
+    "//brave/components/webcompat/content/test/webcompat_exceptions_browsertest.cc",
     "//brave/third_party/blink/renderer/modules/brave/navigator_browsertest.cc",
     "//chrome/browser/extensions/browsertest_util.cc",
     "//chrome/browser/extensions/browsertest_util.h",
@@ -832,6 +835,7 @@ test("brave_browser_tests") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/app:browser_tests",
     "//brave/app:command_ids",
+    "//brave/base/test:test_vendor_is_brave",
     "//brave/browser",
     "//brave/browser/autoplay:browser_tests",
     "//brave/browser/brave_ads:browser_tests",
@@ -847,6 +851,7 @@ test("brave_browser_tests") {
     "//brave/browser/extensions",
     "//brave/browser/extensions:test_support",
     "//brave/browser/farbling:browser_tests",
+    "//brave/browser/metrics:browser_tests",
     "//brave/browser/metrics/buildflags",
     "//brave/browser/misc_metrics:browser_tests",
     "//brave/browser/net:browser_tests",
@@ -915,7 +920,8 @@ test("brave_browser_tests") {
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
     "//brave/components/url_sanitizer/browser",
-    "//brave/components/webcompat:core",
+    "//brave/components/webcompat/content/browser",
+    "//brave/components/webcompat/core/common",
     "//brave/renderer/skus:browser_tests",
     "//brave/renderer/test:browser_tests",
     "//brave/third_party/blink/renderer:renderer",

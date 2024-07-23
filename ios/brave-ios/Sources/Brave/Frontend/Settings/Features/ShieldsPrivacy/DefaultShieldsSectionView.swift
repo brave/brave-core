@@ -138,7 +138,7 @@ struct DefaultShieldsSectionView: View {
           }
         } label: {
           LabelView(
-            title: Strings.Shields.automaticallyShred,
+            title: Strings.Shields.autoShred,
             subtitle: nil
           )
         }

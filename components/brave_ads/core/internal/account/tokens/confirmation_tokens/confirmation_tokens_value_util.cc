@@ -52,9 +52,9 @@ ConfirmationTokenList ConfirmationTokensFromValue(
   ConfirmationTokenList confirmation_tokens;
   confirmation_tokens.reserve(list.size());
 
-  for (const auto& item : list) {
-    const auto* const item_dict = item.GetIfDict();
-    if (!item_dict) {
+  for (const auto& value : list) {
+    const auto* const dict = value.GetIfDict();
+    if (!dict) {
       BLOG(0, "Confirmation token should be a dictionary");
       continue;
     }
@@ -62,8 +62,10 @@ ConfirmationTokenList ConfirmationTokensFromValue(
     ConfirmationTokenInfo confirmation_token;
 
     // Unblinded token
-    if (const auto* const value = item_dict->FindString(kUnblindedTokenKey)) {
-      confirmation_token.unblinded_token = cbr::UnblindedToken(*value);
+    if (const auto* const unblinded_token =
+            dict->FindString(kUnblindedTokenKey)) {
+      confirmation_token.unblinded_token =
+          cbr::UnblindedToken(*unblinded_token);
       if (!confirmation_token.unblinded_token.has_value()) {
         BLOG(0, "Invalid confirmation unblinded token");
         continue;
@@ -74,8 +76,8 @@ ConfirmationTokenList ConfirmationTokensFromValue(
     }
 
     // Public key
-    if (const auto* const value = item_dict->FindString(kPublicKey)) {
-      confirmation_token.public_key = cbr::PublicKey(*value);
+    if (const auto* const public_key = dict->FindString(kPublicKey)) {
+      confirmation_token.public_key = cbr::PublicKey(*public_key);
       if (!confirmation_token.public_key.has_value()) {
         BLOG(0, "Invalid confirmation token public key");
         continue;
@@ -86,8 +88,8 @@ ConfirmationTokenList ConfirmationTokensFromValue(
     }
 
     // Signature
-    if (const auto* const value = item_dict->FindString(kSignature)) {
-      confirmation_token.signature = *value;
+    if (const auto* const signature = dict->FindString(kSignature)) {
+      confirmation_token.signature = *signature;
     } else {
       BLOG(0, "Missing confirmation token signature");
       continue;

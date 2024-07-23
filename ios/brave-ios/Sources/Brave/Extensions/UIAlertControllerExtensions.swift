@@ -207,11 +207,8 @@ extension UIAlertController {
     confirmationHandler: @escaping (UIAlertAction) -> Void
   ) -> UIAlertController {
     let alert = UIAlertController(
-      title: Strings.Shields.shredThisSitesDataConfirmationTitle,
-      message: String(
-        format: Strings.Shields.shredThisSitesDataConfirmationMessage,
-        url.baseDomain ?? url.host ?? url.absoluteString
-      ),
+      title: Strings.Shields.shredSiteDataConfirmationTitle,
+      message: Strings.Shields.shredSiteDataConfirmationMessage,
       preferredStyle: .alert
     )
     alert.addAction(

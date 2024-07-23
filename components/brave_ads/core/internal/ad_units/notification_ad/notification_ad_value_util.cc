@@ -91,9 +91,9 @@ base::circular_deque<NotificationAdInfo> NotificationAdsFromValue(
     const base::Value::List& list) {
   base::circular_deque<NotificationAdInfo> ads;
 
-  for (const auto& item : list) {
-    if (const auto* const item_dict = item.GetIfDict()) {
-      ads.push_back(NotificationAdFromValue(*item_dict));
+  for (const auto& value : list) {
+    if (const auto* const dict = value.GetIfDict()) {
+      ads.push_back(NotificationAdFromValue(*dict));
     }
   }
 

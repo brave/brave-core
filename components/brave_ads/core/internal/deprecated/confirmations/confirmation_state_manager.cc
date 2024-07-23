@@ -20,8 +20,8 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 
 namespace brave_ads {
 
@@ -41,7 +41,7 @@ void ConfirmationStateManager::LoadState(
 
   wallet_ = wallet;
 
-  Load(kConfirmationStateFilename,
+  Load(kConfirmationsJsonFilename,
        base::BindOnce(&ConfirmationStateManager::LoadCallback,
                       weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -83,7 +83,7 @@ void ConfirmationStateManager::SaveState() {
 
   BLOG(9, "Saving confirmation state");
 
-  Save(kConfirmationStateFilename, ToJson(),
+  Save(kConfirmationsJsonFilename, ToJson(),
        base::BindOnce([](const bool success) {
          if (!success) {
            // TODO(https://github.com/brave/brave-browser/issues/32066): Detect

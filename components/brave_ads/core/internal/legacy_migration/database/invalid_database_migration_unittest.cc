@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
-#include "brave/components/brave_ads/core/public/database/database_constants.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -43,7 +43,8 @@ class BraveAdsInvalidDatabaseMigrationTest
 
   void MaybeMockDatabase() {
     const std::string database_filename = base::StringPrintf(
-        "database/invalid_database_schema_%d.sqlite", GetSchemaVersion());
+        "database_migration/invalid_database_schema_%d.sqlite",
+        GetSchemaVersion());
     ASSERT_TRUE(
         CopyFileFromTestPathToTempPath(database_filename, kDatabaseFilename));
   }

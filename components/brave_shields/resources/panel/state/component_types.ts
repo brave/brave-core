@@ -5,6 +5,7 @@
 
 export enum ViewType {
   ScriptsList,
+  FingerprintList,
   AdsList,
   HttpsList,
   Main

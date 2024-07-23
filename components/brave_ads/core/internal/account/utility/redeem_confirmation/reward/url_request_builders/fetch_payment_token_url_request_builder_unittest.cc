@@ -27,7 +27,6 @@ class BraveAdsFetchPaymentTokenUrlRequestBuilderTest : public test::TestBase {
 TEST_F(BraveAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
@@ -44,8 +43,7 @@ TEST_F(BraveAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   const mojom::UrlRequestInfoPtr expected_url_request =
       mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(
-      "https://anonymous.ads.bravesoftware.com/v3/confirmation/"
-      "8b742869-6e4a-490c-ac31-31b49130098a/paymentToken");
+      R"(https://anonymous.ads.bravesoftware.com/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/paymentToken)");
   expected_url_request->method = mojom::UrlRequestMethodType::kGet;
   EXPECT_EQ(expected_url_request, url_request);
 }

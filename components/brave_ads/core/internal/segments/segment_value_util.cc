@@ -26,12 +26,12 @@ SegmentList SegmentsFromValue(const base::Value::List& list) {
   SegmentList segments;
   segments.reserve(list.size());
 
-  for (const auto& item : list) {
-    if (!item.is_string()) {
+  for (const auto& value : list) {
+    if (!value.is_string()) {
       return {};
     }
 
-    const std::string& segment = item.GetString();
+    const std::string& segment = value.GetString();
     if (segment.empty()) {
       return {};
     }

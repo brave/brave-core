@@ -12,13 +12,22 @@ import { AppModelContext } from './lib/app_model_context'
 import { createModel } from './lib/webui_model'
 import { TabOpenerContext } from '../shared/components/new_tab_link'
 import { App } from './components/app'
+import * as routes from './lib/app_routes'
 
 setIconBasePath('chrome://resources/brave-icons')
 
 function handleLegacyURLs() {
-  const hash = location.hash.toLocaleLowerCase().replace(/^#/, '')
-  if (hash === 'reset') {
-    history.replaceState(null, '', '/reset')
+  switch (location.hash.toLocaleLowerCase().replace(/^#/, '')) {
+    case 'reset':
+      history.replaceState(null, '', routes.reset)
+      return
+    case 'verify':
+      history.replaceState(null, '', routes.connectAccount)
+      return
+  }
+
+  if (location.pathname === '/reconnect') {
+    history.replaceState(null, '', routes.connectAccount)
   }
 }
 

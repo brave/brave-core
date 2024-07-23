@@ -8,7 +8,6 @@
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/public/history/ad_content_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -33,10 +32,10 @@ TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldExclude) {
   CreativeAdInfo creative_ad;
   creative_ad.advertiser_id = test::kAdvertiserId;
 
-  AdContentInfo ad_content;
-  ad_content.advertiser_id = test::kAdvertiserId;
-  ad_content.user_reaction_type = mojom::UserReactionType::kNeutral;
-  ClientStateManager::GetInstance().ToggleDislikeAd(ad_content);
+  AdHistoryItemInfo ad_history_item;
+  ad_history_item.advertiser_id = test::kAdvertiserId;
+  ad_history_item.ad_user_reaction_type = mojom::UserReactionType::kNeutral;
+  ClientStateManager::GetInstance().ToggleDislikeAd(ad_history_item);
 
   // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());

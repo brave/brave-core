@@ -9,6 +9,8 @@
 #include <cstddef>
 #include <vector>
 
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+
 namespace base {
 class Time;
 class TimeDelta;
@@ -23,6 +25,10 @@ bool DoesHistoryRespectRollingTimeConstraint(
     const std::vector<base::Time>& history,
     base::TimeDelta time_constraint,
     size_t cap);
+
+bool DoesHistoryRespectRollingTimeConstraint(AdType type,
+                                             base::TimeDelta time_constraint,
+                                             size_t cap);
 
 }  // namespace brave_ads
 

@@ -23,7 +23,7 @@
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_feature.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_feature.h"
-#include "brave/components/brave_ads/core/internal/history/history_feature.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_feature.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
@@ -61,7 +61,7 @@ const base::Feature* const kFeatures[] = {
     &kCreativeNotificationAdModelBasedPredictorFeature,
     &kEligibleAdFeature,
     &kExclusionRulesFeature,
-    &kHistoryFeature,
+    &kAdHistoryFeature,
     &kInlineContentAdFeature,
     &kInlineContentAdServingFeature,
     &kIssuersFeature,

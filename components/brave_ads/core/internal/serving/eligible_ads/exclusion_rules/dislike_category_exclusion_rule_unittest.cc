@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/history/category_content_info.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -34,10 +34,11 @@ TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, ShouldExclude) {
   CreativeAdInfo creative_ad;
   creative_ad.segment = test::kSegment;
 
-  CategoryContentInfo category_content;
-  category_content.category = creative_ad.segment;
-  category_content.user_reaction_type = mojom::UserReactionType::kNeutral;
-  ClientStateManager::GetInstance().ToggleDislikeCategory(category_content);
+  AdHistoryItemInfo ad_history_item;
+  ad_history_item.segment = creative_ad.segment;
+  ad_history_item.category_user_reaction_type =
+      mojom::UserReactionType::kNeutral;
+  ClientStateManager::GetInstance().ToggleDislikeCategory(ad_history_item);
 
   // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());

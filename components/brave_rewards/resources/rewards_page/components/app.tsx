@@ -11,11 +11,14 @@ import { EventHubContext } from '../lib/event_hub'
 import { useRoute } from '../lib/router'
 import { useBreakpoint } from '../lib/breakpoint'
 import { AppErrorBoundary } from './app_error_boundary'
-import { AppFrame, navRoutes } from './app_frame'
+import { AppFrame } from './app_frame'
 import { HomeView } from './home/home_view'
 import { Onboarding } from './onboarding/onboarding'
 import { OnboardingSuccessModal } from './onboarding/onboarding_success_modal'
+import { ConnectAccount } from './connect_account'
+import { AuthorizationModal } from './authorization_modal'
 import { ResetModal } from './reset_modal'
+import * as routes from '../lib/app_routes'
 
 import { style } from './app.style'
 
@@ -39,7 +42,7 @@ export function App() {
     = React.useState(false)
 
   const route = useRoute((route, router) => {
-    if (route === '/reset') {
+    if (route === routes.reset) {
       setShowResetModal(true)
       router.replaceRoute('/')
     }
@@ -66,6 +69,8 @@ export function App() {
     }
     if (viewType === 'narrow') {
       list.push('is-narrow-view')
+    } else {
+      list.push('is-wide-view')
     }
     if (embedder.animatedBackgroundEnabled) {
       list.push('animated-background')
@@ -74,6 +79,10 @@ export function App() {
   }
 
   function renderModal() {
+    if (route.endsWith(routes.authorization)) {
+      return <AuthorizationModal />
+    }
+
     if (showOnboardingSuccess) {
       const onClose = () => setShowOnboardingSuccess(false)
       return <OnboardingSuccessModal onClose={onClose} />
@@ -95,9 +104,9 @@ export function App() {
 
   function renderMainView() {
     switch (route) {
-      case navRoutes.creators:
+      case routes.creators:
         return <></>
-      case navRoutes.explore:
+      case routes.explore:
         return <></>
       default:
         return <HomeView />
@@ -116,6 +125,10 @@ export function App() {
     if (!paymentId) {
       const showOnboardingCompleted = () => setShowOnboardingSuccess(true)
       return <Onboarding onOnboardingCompleted={showOnboardingCompleted} />
+    }
+
+    if (route === routes.connectAccount) {
+      return <ConnectAccount />
     }
 
     return (

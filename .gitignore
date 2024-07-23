@@ -31,6 +31,7 @@ patches/**/*.patchinfo
 /third_party/rust/futures_retry/v0_5/crate
 /third_party/cryptography
 /third_party/macholib
+/third_party/libdmg-hfsplus/
 *.xcodeproj
 !/ios/brave-ios/App/*.xcodeproj
 *.swp

@@ -21,3 +21,7 @@ export const selfCustodyLearnMoreURL = 'https://brave.com/web3/self-custody-wall
 export const walletCreationDisabledURL = 'https://support.brave.com/hc/en-us/articles/9312922941069'
 export const resetSupportURL = 'https://support.brave.com/hc/en-us/articles/10007969237901'
 export const helpURL = 'https://support.brave.com/hc/en-us/categories/360001053052-Rewards'
+export const flaggedWalletURL = 'https://support.brave.com/hc/en-us/articles/4494596374925'
+export const mismatchedCountriesURL = 'https://support.brave.com/hc/en-us/articles/9809690466061'
+export const mismatchedProviderAccountsURL = 'https://support.brave.com/hc/en-us/articles/360034841711-What-is-a-verified-wallet-'
+export const braveStatusURL = 'https://status.brave.com/'

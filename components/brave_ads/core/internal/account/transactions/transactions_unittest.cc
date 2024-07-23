@@ -44,7 +44,7 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
   // Arrange
   TransactionList transactions;
 
-  AdvanceClockTo(test::TimeFromString("31 August 2019"));  //
+  AdvanceClockTo(test::TimeFromString("31 August 2019"));
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,

@@ -6,9 +6,6 @@
 import { color, font } from '@brave/leo/tokens/css/variables'
 import { css, scopedCSS } from '../../lib/scoped_css'
 
-import rewardsLogoImage from '../../assets/rewards_logo.svg'
-import rewardsLogoImageDark from '../../assets/rewards_logo_dark.svg'
-
 export const style = scopedCSS('onboarding', css`
   & {
     max-width: var(--onboarding-max-width);
@@ -19,24 +16,16 @@ export const style = scopedCSS('onboarding', css`
     align-items: center;
   }
 
-  .logo {
-    height: 34px;
-    width: 100%;
-    background-image: url(${rewardsLogoImage});
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: auto 34px;
-
-    @media (prefers-color-scheme: dark) {
-      background-image: url(${rewardsLogoImageDark});
-    }
+  .brave-rewards-logo {
+    block-size: 34px;
+    inline-size: 128px;
   }
 
   .bat-image {
-    margin: 40px 0;
+    margin: 40px 0 24px;
 
     img {
-      height: 98px;
+      height: 110px;
     }
   }
 

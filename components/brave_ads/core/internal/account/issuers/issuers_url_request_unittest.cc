@@ -41,10 +41,10 @@ TEST_F(BraveAdsIssuersUrlRequestTest, FetchIssuers) {
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnDidFetchIssuers(test::BuildIssuers()));
   EXPECT_CALL(delegate_mock_, OnFailedToFetchIssuers).Times(0);
   EXPECT_CALL(delegate_mock_, OnWillRetryFetchingIssuers).Times(0);
   EXPECT_CALL(delegate_mock_, OnDidRetryFetchingIssuers).Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidFetchIssuers(test::BuildIssuers()));
   issuers_url_request_->PeriodicallyFetch();
 }
 
@@ -55,10 +55,10 @@ TEST_F(BraveAdsIssuersUrlRequestTest, DoNotFetchIssuersIfInvalidResponseBody) {
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnDidFetchIssuers).Times(0);
   EXPECT_CALL(delegate_mock_, OnFailedToFetchIssuers);
   EXPECT_CALL(delegate_mock_, OnWillRetryFetchingIssuers);
   EXPECT_CALL(delegate_mock_, OnDidRetryFetchingIssuers).Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidFetchIssuers).Times(0);
   issuers_url_request_->PeriodicallyFetch();
 
   EXPECT_FALSE(GetIssuers());
@@ -75,14 +75,16 @@ TEST_F(BraveAdsIssuersUrlRequestTest, RetryFetchingIssuersIfNonHttpOkResponse) {
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   ON_CALL(delegate_mock_, OnDidFetchIssuers)
-      .WillByDefault(::testing::Invoke(
-          [](const IssuersInfo& issuers) { SetIssuers(issuers); }));
+      .WillByDefault(::testing::Invoke([](const IssuersInfo& issuers) {
+        // Set issuers to prevent further retries.
+        SetIssuers(issuers);
+      }));
 
   // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnDidFetchIssuers);
   EXPECT_CALL(delegate_mock_, OnFailedToFetchIssuers);
   EXPECT_CALL(delegate_mock_, OnWillRetryFetchingIssuers);
   EXPECT_CALL(delegate_mock_, OnDidRetryFetchingIssuers);
+  EXPECT_CALL(delegate_mock_, OnDidFetchIssuers);
   issuers_url_request_->PeriodicallyFetch();
   FastForwardClockToNextPendingTask();
 

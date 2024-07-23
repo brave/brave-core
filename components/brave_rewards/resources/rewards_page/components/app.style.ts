@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { color } from '@brave/leo/tokens/css/variables'
+import { color, font } from '@brave/leo/tokens/css/variables'
 
 import { scopedCSS, css } from '../lib/scoped_css'
 import { addStyles } from '../lib/style_injector'
@@ -16,9 +16,12 @@ import backgroundStaticDark from '../assets/background_static_dark.svg'
 import panelBackground from '../assets/panel_background.svg'
 import panelBackgroundDark from '../assets/panel_background_dark.svg'
 
+import rewardsLogoImage from '../assets/rewards_logo.svg'
+import rewardsLogoImageDark from '../assets/rewards_logo_dark.svg'
+
 export const style = scopedCSS('app', css`
   & {
-    --onboarding-max-width: 360px;
+    --onboarding-max-width: 392px;
     container: app/normal;
   }
 
@@ -29,6 +32,10 @@ export const style = scopedCSS('app', css`
 
   &.is-narrow-view {
     --is-narrow-view: 1;
+  }
+
+  &.is-wide-view {
+    --is-wide-view: 1;
   }
 
   .background {
@@ -89,8 +96,52 @@ export const style = scopedCSS('app', css`
 
 addStyles('app-global-styles', css`
   @scope (${style.selector}) {
+    & {
+      font: ${font.default.regular};
+    }
+
     a {
       color: ${color.text.interactive};
+    }
+
+    button {
+      margin: 0;
+      padding: 0;
+      background: 0;
+      border: none;
+      font-size: inherit;
+      line-height: inherit;
+      cursor: pointer;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font: ${font.heading.h1};
+      margin: 0;
+    }
+
+    h2 {
+      font: ${font.heading.h2};
+      margin: 0;
+    }
+
+    h3 {
+      font: ${font.heading.h3};
+      margin: 0;
+    }
+
+    h4 {
+      font: ${font.heading.h4};
+      margin: 0;
     }
 
     .content-card {
@@ -109,14 +160,17 @@ addStyles('app-global-styles', css`
       }
     }
 
-    button {
-      margin: 0;
-      padding: 0;
-      background: 0;
-      border: none;
-      font-size: inherit;
-      line-height: inherit;
-      cursor: pointer;
+    .brave-rewards-logo {
+      display: inline-block;
+      block-size: 28px;
+      inline-size: 107px;
+      background-image: url(${rewardsLogoImage});
+      background-repeat: no-repeat;
+      background-size: contain;
+
+      @media (prefers-color-scheme: dark) {
+        background-image: url(${rewardsLogoImageDark});
+      }
     }
   }
 `)

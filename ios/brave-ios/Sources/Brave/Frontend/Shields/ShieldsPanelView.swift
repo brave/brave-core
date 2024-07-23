@@ -239,7 +239,7 @@ struct ShieldsPanelView: View {
           }
         } label: {
           ShieldSettingsNavigationWrapper {
-            Text(Strings.Shields.shredSitesData)
+            Text(Strings.Shields.shredSiteData)
               .frame(maxWidth: .infinity, alignment: .leading)
               .multilineTextAlignment(.leading)
           }

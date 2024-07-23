@@ -159,6 +159,11 @@ std::vector<GURL> BraveShieldsTabHelper::GetFingerprintsList() {
   return fingerprints_list;
 }
 
+const base::flat_set<ContentSettingsType>&
+BraveShieldsTabHelper::GetInvokedWebcompatFeatures() {
+  return webcompat_features_invoked_;
+}
+
 bool BraveShieldsTabHelper::GetBraveShieldsEnabled() {
   return brave_shields::GetBraveShieldsEnabled(
       GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
@@ -473,6 +478,43 @@ void BraveShieldsTabHelper::HandleItemAllowedOnce(
   for (Observer& obs : observer_list_) {
     obs.OnResourcesChanged();
   }
+}
+
+void BraveShieldsTabHelper::HandleWebcompatFeatureInvoked(
+    ContentSettingsType webcompat_content_settings) {
+  if (webcompat_content_settings > ContentSettingsType::BRAVE_WEBCOMPAT_NONE &&
+      webcompat_content_settings < ContentSettingsType::BRAVE_WEBCOMPAT_ALL) {
+    webcompat_features_invoked_.insert(webcompat_content_settings);
+  }
+
+  for (Observer& obs : observer_list_) {
+    obs.OnResourcesChanged();
+  }
+}
+
+void BraveShieldsTabHelper::SetWebcompatEnabled(
+    ContentSettingsType webcompat_settings_type,
+    bool enabled) {
+  brave_shields::SetWebcompatEnabled(
+      GetHostContentSettingsMap(web_contents()), webcompat_settings_type,
+      enabled, GetCurrentSiteURL(), g_browser_process->local_state());
+  ReloadWebContents();
+}
+
+base::flat_map<ContentSettingsType, bool>
+BraveShieldsTabHelper::GetWebcompatSettings() {
+  auto* map = GetHostContentSettingsMap(web_contents());
+  const GURL& current_site_url = GetCurrentSiteURL();
+  base::flat_map<ContentSettingsType, bool> result;
+  for (auto webcompat_settings_type = ContentSettingsType::BRAVE_WEBCOMPAT_NONE;
+       webcompat_settings_type != ContentSettingsType::BRAVE_WEBCOMPAT_ALL;
+       webcompat_settings_type = static_cast<ContentSettingsType>(
+           static_cast<int32_t>(webcompat_settings_type) + 1)) {
+    const bool enabled = brave_shields::IsWebcompatEnabled(
+        map, webcompat_settings_type, current_site_url);
+    result[webcompat_settings_type] = enabled;
+  }
+  return result;
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveShieldsTabHelper);

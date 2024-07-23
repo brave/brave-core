@@ -18,7 +18,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kJson[] =
+constexpr char kInlineContentAdAsJson[] =
     R"(
         {
           "advertiserId": "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2",
@@ -40,9 +40,10 @@ constexpr char kJson[] =
 
 class BraveAdsInlineContentAdValueUtilTest : public test::TestBase {};
 
-TEST_F(BraveAdsInlineContentAdValueUtilTest, FromValue) {
+TEST_F(BraveAdsInlineContentAdValueUtilTest, InlineContentAdFromValue) {
   // Arrange
-  const base::Value::Dict dict = base::test::ParseJsonDict(kJson);
+  const base::Value::Dict dict =
+      base::test::ParseJsonDict(kInlineContentAdAsJson);
 
   // Act
   const InlineContentAdInfo ad = InlineContentAdFromValue(dict);
@@ -54,7 +55,7 @@ TEST_F(BraveAdsInlineContentAdValueUtilTest, FromValue) {
   EXPECT_EQ(BuildInlineContentAd(creative_ad, test::kPlacementId), ad);
 }
 
-TEST_F(BraveAdsInlineContentAdValueUtilTest, ToValue) {
+TEST_F(BraveAdsInlineContentAdValueUtilTest, InlineContentAdToValue) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad =
       test::BuildCreativeInlineContentAd(
@@ -66,7 +67,7 @@ TEST_F(BraveAdsInlineContentAdValueUtilTest, ToValue) {
   const base::Value::Dict dict = InlineContentAdToValue(ad);
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(kJson), dict);
+  EXPECT_EQ(base::test::ParseJsonDict(kInlineContentAdAsJson), dict);
 }
 
 }  // namespace brave_ads

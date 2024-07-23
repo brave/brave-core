@@ -11,13 +11,9 @@ import { font, spacing } from '@brave/leo/tokens/css/variables'
 
 const breakpointLargeBlocks = '980px'
 const breakpointEveryBlock = '870px'
-export const CLASSNAME_PAGE_STUCK = 'page-stuck'
+const breakpointShortHeight = '700px'
 
-const singleColumnSmallViewport = css`
- @media screen and (max-width: ${breakpointEveryBlock}) {
-   text-align: center;
- }
-`
+export const CLASSNAME_PAGE_STUCK = 'page-stuck'
 
 interface HasImageProps {
   hasImage: boolean
@@ -106,7 +102,7 @@ const StyledPage = styled('div') <PageProps>`
   @media screen and (max-width: ${breakpointEveryBlock}) {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
   }
 `
 
@@ -169,13 +165,17 @@ export const Page: React.FunctionComponent<React.PropsWithChildren<PageProps>> =
 
 export const GridItemStats = styled('section')`
   grid-column: 1 / span 2;
-  ${singleColumnSmallViewport}
+  @media screen and (max-height: ${breakpointShortHeight}) {
+    display: none;
+  }
 `
 
 export const GridItemClock = styled('section')`
   grid-column: 3;
   justify-self: center;
-  ${singleColumnSmallViewport}
+  @media screen and (max-width: ${breakpointEveryBlock}) {
+    display: none;
+  }
 `
 
 export const GridItemWidgetStack = styled('section')`
@@ -184,11 +184,16 @@ export const GridItemWidgetStack = styled('section')`
   @media screen and (max-width: ${breakpointLargeBlocks}) {
     max-width: 284px;
   }
+  @media screen and (max-width: ${breakpointEveryBlock}) {
+    display: none;
+  }
+  @media screen and (max-height: ${breakpointShortHeight}) {
+    display: none;
+  }
 `
 
 export const GridItemTopSites = styled('section')`
   grid-column: 1;
-  ${singleColumnSmallViewport}
 `
 
 export const GridItemSponsoredImageClickArea = styled.section<{ otherWidgetsHidden: boolean }>`
@@ -220,7 +225,6 @@ export const GridItemNotification = styled('section')`
 export const GridItemCredits = styled('section')`
   /* Variables for easy inherited override without splitting css rules definition */
   --ntp-grid-item-credits-bottom-margin-wide: 36px;
-  --ntp-grid-item-credits-left-margin-narrow: 10px;
   --ntp-grid-item-credits-left-margin-wide: var(--ntp-grid-item-credits-bottom-margin-wide);
   grid-column: 1 / span 1;
   grid-row: calc(-2 - var(--ntp-extra-footer-rows)) / span calc(1 + var(--ntp-extra-footer-rows));
@@ -228,8 +232,7 @@ export const GridItemCredits = styled('section')`
 
   margin: 0 0 var(--ntp-grid-item-credits-bottom-margin-wide) var(--ntp-grid-item-credits-left-margin-wide);
   @media screen and (max-width: ${breakpointEveryBlock}) {
-    /* Display on left, keeping Navigation on right even on wrapped row. */
-    margin: 0 auto 0 var(--ntp-grid-item-credits-left-margin-narrow);
+    margin: 0 auto;
     align-self: unset;
   }
 `
@@ -264,8 +267,7 @@ export const GridItemNavigation = styled('section')`
   align-self: end;
   margin: 0 24px 24px 0;
   @media screen and (max-width: ${breakpointEveryBlock}) {
-    margin: 0;
-    align-self: flex-end;
+    display: none;
   }
 `
 
@@ -283,6 +285,11 @@ export const GridItemPageFooter = styled('div') <{}>`
   display: flex;
   flex-direction: column;
   gap: ${spacing.l};
+
+  @media screen and (max-width: ${breakpointEveryBlock}) {
+    position: static;
+    transform: none;
+  }
 `
 
 export const Footer = styled('footer') <{}>`
@@ -297,6 +304,7 @@ export const Footer = styled('footer') <{}>`
     display: flex;
     flex-direction: row;
     align-items: flex-end;
+    justify-content: center;
   }
 `
 
@@ -304,7 +312,6 @@ export const FooterContent = styled('div')`
   display: contents;
 
   @media screen and (max-width: ${breakpointEveryBlock}) {
-    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -412,6 +419,10 @@ export const PhotoName = styled('div') <{}>`
   font: ${font.small.regular};
   color: white;
   white-space: nowrap;
+
+  @media screen and (max-width: ${breakpointEveryBlock}) {
+    padding-bottom: 24px;
+  }
 `
 
 export const Navigation = styled('nav') <{}>`

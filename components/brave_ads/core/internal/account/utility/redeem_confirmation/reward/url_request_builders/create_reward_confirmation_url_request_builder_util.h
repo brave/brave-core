@@ -12,7 +12,7 @@ namespace brave_ads {
 
 std::string BuildCreateRewardConfirmationUrlPath(
     const std::string& transaction_id,
-    const std::string& credential_base64_url);
+    const std::string& credential_base64url);
 
 }  // namespace brave_ads
 

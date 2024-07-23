@@ -133,7 +133,7 @@ TEST_F(BraveAdsTextProcessingTest, TestLoadFromValue) {
                                                  "junk"};
 
   const base::FilePath path =
-      test::DataPath().AppendASCII(kValidSpamClassificationPipeline);
+      test::RootDataPath().AppendASCII(kValidSpamClassificationPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -164,7 +164,7 @@ TEST_F(BraveAdsTextProcessingTest, TestLoadFromValue) {
 TEST_F(BraveAdsTextProcessingTest, InitValidLinearModelTest) {
   // Arrange
   const base::FilePath path =
-      test::DataPath().AppendASCII(kValidSegmentClassificationPipeline);
+      test::RootDataPath().AppendASCII(kValidSegmentClassificationPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -177,7 +177,7 @@ TEST_F(BraveAdsTextProcessingTest, InitValidLinearModelTest) {
 TEST_F(BraveAdsTextProcessingTest, InitValidNeuralModelTest) {
   // Arrange
   const base::FilePath path =
-      test::DataPath().AppendASCII(kOnlyRequiredFieldsNeuralModelPipeline);
+      test::RootDataPath().AppendASCII(kOnlyRequiredFieldsNeuralModelPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -192,7 +192,7 @@ TEST_F(BraveAdsTextProcessingTest, EmptySegmentModelTest) {
   const std::string input_text = "This is a spam email.";
 
   const base::FilePath path =
-      test::DataPath().AppendASCII(kEmptySegmentClassificationPipeline);
+      test::RootDataPath().AppendASCII(kEmptySegmentClassificationPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -213,7 +213,7 @@ TEST_F(BraveAdsTextProcessingTest, EmptyTransformationsModelTest) {
   const std::string input_text = "This is a spam email.";
 
   const base::FilePath path =
-      test::DataPath().AppendASCII(kEmptyTransformationsPipeline);
+      test::RootDataPath().AppendASCII(kEmptyTransformationsPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -237,7 +237,7 @@ TEST_F(BraveAdsTextProcessingTest, WrongTransformationsOrderModelTest) {
       "Another messase from mom with no real subject", "Yadayada"};
 
   const base::FilePath path =
-      test::DataPath().AppendASCII(kWrongTransformationOrderPipeline);
+      test::RootDataPath().AppendASCII(kWrongTransformationOrderPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -255,8 +255,8 @@ TEST_F(BraveAdsTextProcessingTest, WrongTransformationsOrderModelTest) {
 
 TEST_F(BraveAdsTextProcessingTest, MissingRequiredFieldModelTest) {
   // Arrange
-  const base::FilePath path =
-      test::DataPath().AppendASCII(kMissingRequiredFieldClassificationPipeline);
+  const base::FilePath path = test::RootDataPath().AppendASCII(
+      kMissingRequiredFieldClassificationPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -268,7 +268,7 @@ TEST_F(BraveAdsTextProcessingTest, MissingRequiredFieldModelTest) {
 
 TEST_F(BraveAdsTextProcessingTest, InvalidModelTest) {
   // Arrange
-  const base::FilePath path = test::DataPath().AppendASCII(kInvalidModel);
+  const base::FilePath path = test::RootDataPath().AppendASCII(kInvalidModel);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -280,7 +280,8 @@ TEST_F(BraveAdsTextProcessingTest, InvalidModelTest) {
 
 TEST_F(BraveAdsTextProcessingTest, kNotExistingFile) {
   // Arrange
-  const base::FilePath path = test::DataPath().AppendASCII(kNotExistingFile);
+  const base::FilePath path =
+      test::RootDataPath().AppendASCII(kNotExistingFile);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -303,7 +304,7 @@ TEST_F(BraveAdsTextProcessingTest, WrongLanguageModelTest) {
   brave_l10n::test::ScopedDefaultLocale default_locale("es");
 
   const base::FilePath path =
-      test::DataPath().AppendASCII(kValidSegmentClassificationPipeline);
+      test::RootDataPath().AppendASCII(kValidSegmentClassificationPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -319,7 +320,7 @@ TEST_F(BraveAdsTextProcessingTest, TopPredUnitTest) {
   constexpr char kTestPage[] = "ethereum bitcoin bat zcash crypto tokens!";
 
   const base::FilePath path =
-      test::DataPath().AppendASCII(kValidSegmentClassificationPipeline);
+      test::RootDataPath().AppendASCII(kValidSegmentClassificationPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 
@@ -346,7 +347,7 @@ TEST_F(BraveAdsTextProcessingTest, TextCMCCrashTest) {
   constexpr size_t kMaxPredictionsSize = 100;
 
   const base::FilePath path =
-      test::DataPath().AppendASCII(kValidSegmentClassificationPipeline);
+      test::RootDataPath().AppendASCII(kValidSegmentClassificationPipeline);
   base::File file(path,
                   base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
 

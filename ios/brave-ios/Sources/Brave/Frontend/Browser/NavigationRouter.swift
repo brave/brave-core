@@ -166,6 +166,9 @@ public enum NavigationPath: Equatable {
         return
       }
       newTabPageController.scrollToBraveNews()
+    case .braveLeo:
+      bvc.popToBVC()
+      bvc.openBraveLeo()
     @unknown default:
       assertionFailure()
       break

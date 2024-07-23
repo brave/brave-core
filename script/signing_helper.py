@@ -95,20 +95,22 @@ def BraveModifyPartsForSigning(parts, config):
                                    | CodeSignOptions.KILL
                                    | CodeSignOptions.HARDENED_RUNTIME)
 
-    # The privileged helper is com.brave.Browser.UpdaterPrivilegedHelper. But
-    # the value here is com.brave.Browser.<channel>.UpdaterPrivilegedHelper.
-    # This is because our current branding logic treats each channel as a
-    # separate product. We should instead use upstream's channel_customize
-    # mechanism. See https://github.com/brave/brave-browser/issues/39347.
-    privileged_helper = parts['privileged-helper']
-    channel_re = 'com.brave.Browser(.*).UpdaterPrivilegedHelper'
-    replacement = 'com.brave.Browser.UpdaterPrivilegedHelper'
-    privileged_helper.path = re.sub(channel_re, replacement,
-                                    privileged_helper.path)
-    privileged_helper.identifier = re.sub(channel_re, replacement,
-                                          privileged_helper.identifier)
+    if config.enable_updater:
+        # The privileged helper is com.brave.Browser.UpdaterPrivilegedHelper.
+        # But the value here is
+        # com.brave.Browser.<channel>.UpdaterPrivilegedHelper. This is because
+        # our current branding logic treats each channel as a separate product.
+        # We should instead use upstream's channel_customize mechanism.
+        # See https://github.com/brave/brave-browser/issues/39347.
+        privileged_helper = parts['privileged-helper']
+        channel_re = 'com.brave.Browser(.*).UpdaterPrivilegedHelper'
+        replacement = 'com.brave.Browser.UpdaterPrivilegedHelper'
+        privileged_helper.path = re.sub(channel_re, replacement,
+                                        privileged_helper.path)
+        privileged_helper.identifier = re.sub(channel_re, replacement,
+                                              privileged_helper.identifier)
 
-    parts.update(GetUpdaterSigningParts(config))
+        parts.update(GetUpdaterSigningParts(config))
 
     return parts
 

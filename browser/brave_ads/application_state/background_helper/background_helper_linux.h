@@ -33,7 +33,7 @@ class BackgroundHelperLinux final : public BackgroundHelper,
   void OnBrowserSetLastActive(Browser* browser) override;
   void OnBrowserNoLongerActive(Browser* browser) override;
 
-  // BackgroundHelper impl
+  // BackgroundHelper:
   bool IsForeground() const override;
 
   base::WeakPtr<BackgroundHelperLinux> AsWeakPtr();

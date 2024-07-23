@@ -37,7 +37,7 @@ class BraveAdsCountryCodeTest : public test::TestBase {
 
     country_code_ = std::make_unique<CountryCode>();
     subdivision_ = std::make_unique<Subdivision>();
-    subdivision_->AddObserver(country_code_.get());
+    subdivision_->AddObserver(&*country_code_);
   }
 
   void MockHttpOkUrlResponse(const std::string& country_code,

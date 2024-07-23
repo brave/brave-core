@@ -5,7 +5,7 @@
 
 import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
 
-import { externalWalletFromExtensionData } from '../../shared/lib/external_wallet'
+import { externalWalletFromExtensionData, ExternalWalletProvider, externalWalletProviderFromString } from '../../shared/lib/external_wallet'
 import { AppModel, AppState, defaultState } from './app_model'
 import { RewardsPageProxy } from './rewards_page_proxy'
 import { createStateManager } from '../../shared/lib/state_manager'
@@ -25,6 +25,7 @@ export function createModel(): AppModel {
   const browserProxy = RewardsPageProxy.getInstance()
   const pageHandler = browserProxy.handler
   const stateManager = createStateManager<AppState>(defaultState())
+  const isBubble = loadTimeData.getBoolean('isBubble')
 
   // Expose the state manager for devtools diagnostic purposes.
   Object.assign(self, {
@@ -33,7 +34,7 @@ export function createModel(): AppModel {
 
   stateManager.update({
     embedder: {
-      isBubble: loadTimeData.getBoolean('isBubble'),
+      isBubble,
       platform: normalizePlatform(loadTimeData.getString('platform')),
       animatedBackgroundEnabled:
         loadTimeData.getBoolean('animatedBackgroundEnabled')
@@ -45,7 +46,12 @@ export function createModel(): AppModel {
     stateManager.update({ paymentId })
   }
 
-  async function updatePayoutAccount() {
+  async function updateCountryCode() {
+    const { countryCode } = await pageHandler.getCountryCode()
+    stateManager.update({ countryCode })
+  }
+
+  async function updateExternalWallet() {
     const { externalWallet } = await pageHandler.getExternalWallet()
     stateManager.update({
       externalWallet: externalWalletFromExtensionData(externalWallet)
@@ -65,11 +71,18 @@ export function createModel(): AppModel {
     }
   }
 
+  async function updateRewardsParameters() {
+    const { rewardsParameters } = await pageHandler.getRewardsParameters()
+    stateManager.update({ rewardsParameters })
+  }
+
   async function loadData() {
     await Promise.all([
       updatePaymentId(),
-      updatePayoutAccount(),
-      updateAdsInfo()
+      updateCountryCode(),
+      updateExternalWallet(),
+      updateAdsInfo(),
+      updateRewardsParameters()
     ])
 
     stateManager.update({ loading: false })
@@ -79,13 +92,18 @@ export function createModel(): AppModel {
     loadData()
   })
 
-  document.addEventListener('visibilitychange', () => {
-    const now = Date.now()
-    const { openTime } = stateManager.getState()
-    if (now - openTime > 100) {
-      stateManager.update({ openTime: now })
-    }
-  })
+  // When displayed in a bubble, this page may be cached. In order to reset the
+  // view state when the bubble is re-opened with cached contents, we update the
+  // "openTime" state when the document visibility changes.
+  if (isBubble) {
+    document.addEventListener('visibilitychange', () => {
+      const now = Date.now()
+      const { openTime } = stateManager.getState()
+      if (now - openTime > 100) {
+        stateManager.update({ openTime: now })
+      }
+    })
+  }
 
   loadData()
 
@@ -99,7 +117,7 @@ export function createModel(): AppModel {
     },
 
     openTab(url) {
-      if (stateManager.getState().embedder.isBubble) {
+      if (isBubble) {
         pageHandler.openTab(url)
         return
       }
@@ -136,6 +154,68 @@ export function createModel(): AppModel {
     async getAvailableCountries() {
       const { availableCountries } = await pageHandler.getAvailableCountries()
       return availableCountries
+    },
+
+    async getExternalWalletProviders() {
+      const providers: ExternalWalletProvider[] = []
+      const result = await pageHandler.getExternalWalletProviders()
+      for (const key of result.providers) {
+        const provider = externalWalletProviderFromString(key)
+        if (provider) {
+          providers.push(provider)
+        }
+      }
+      return providers
+    },
+
+    async beginExternalWalletLogin(provider) {
+      const { params } = await pageHandler.beginExternalWalletLogin(provider)
+      if (!params) {
+        return false
+      }
+      if (isBubble) {
+        pageHandler.openTab(params.url)
+      } else {
+        window.open(params.url, '_self', 'noreferrer')
+      }
+      return true
+    },
+
+    async connectExternalWallet(provider, args) {
+      const { result } = await pageHandler.connectExternalWallet(provider, args)
+      switch (result) {
+        case mojom.ConnectExternalWalletResult.kSuccess:
+          return 'success'
+        case mojom.ConnectExternalWalletResult.kDeviceLimitReached:
+          return 'device-limit-reached'
+        case mojom.ConnectExternalWalletResult.kFlaggedWallet:
+          return 'flagged-wallet'
+        case mojom.ConnectExternalWalletResult.kKYCRequired:
+          return 'kyc-required'
+        case mojom.ConnectExternalWalletResult.kMismatchedCountries:
+          return 'mismatched-countries'
+        case mojom.ConnectExternalWalletResult.kMismatchedProviderAccounts:
+          return 'mismatched-provider-accounts'
+        case mojom.ConnectExternalWalletResult.kProviderUnavailable:
+          return 'provider-unavailable'
+        case mojom.ConnectExternalWalletResult.kRegionNotSupported:
+          return 'region-not-supported'
+        case mojom.ConnectExternalWalletResult
+                  .kRequestSignatureVerificationFailure:
+          return 'request-signature-verification-error'
+        case mojom.ConnectExternalWalletResult.kUnexpected:
+          return 'unexpected-error'
+        case mojom.ConnectExternalWalletResult.kUpholdBATNotAllowed:
+          return 'uphold-bat-not-allowed'
+        case mojom.ConnectExternalWalletResult.kUpholdInsufficientCapabilities:
+          return 'uphold-insufficient-capabilities'
+        case mojom.ConnectExternalWalletResult
+                  .kUpholdTransactionVerificationFailure:
+          return 'uphold-transaction-verification-failure'
+        default:
+          console.error('Unrecognized result value ' + result)
+          return 'unexpected-error'
+      }
     },
 
     async resetRewards() {

@@ -391,11 +391,18 @@ action("sign_pkg") {
 }
 
 action("create_dmg") {
-  script = "//build/gn_run_binary.py"
-  shell_script = "//chrome/installer/mac/pkg-dmg"
+  if (host_os == "mac") {
+    script = "//build/gn_run_binary.py"
+    shell_script = "//chrome/installer/mac/pkg-dmg"
+    args = [ rebase_path(shell_script, root_build_dir) ]
+    inputs = [ shell_script ]
+  } else {
+    script = "cross-compile/pkg-dmg-linux.py"
+    args = []
+    inputs = []
+  }
 
-  args = [
-    rebase_path(shell_script, root_build_dir),
+  args += [
     "--source",
     "/var/empty",
     "--target",
@@ -422,9 +429,8 @@ action("create_dmg") {
     "/Applications",
   ]
 
-  inputs = [
+  inputs += [
     script,
-    shell_script,
     app_path,
   ]
 

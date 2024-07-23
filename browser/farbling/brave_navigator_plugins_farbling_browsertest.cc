@@ -13,6 +13,7 @@
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
@@ -37,6 +38,11 @@ const char kNavigatorPdfViewerEnabledCrashTest[] =
 
 class BraveNavigatorPluginsFarblingBrowserTest : public InProcessBrowserTest {
  public:
+  BraveNavigatorPluginsFarblingBrowserTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        webcompat::features::kBraveWebcompatExceptionsService);
+  }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
@@ -81,6 +87,7 @@ class BraveNavigatorPluginsFarblingBrowserTest : public InProcessBrowserTest {
  private:
   GURL top_level_page_url_;
   GURL farbling_url_;
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 // Tests that access to navigator.pdfViewerEnabled attribute does not crash.
@@ -140,9 +147,9 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
   // Farbling level: default, but webcompat exception enabled
   // get real length of navigator.plugins
   SetFingerprintingDefault();
-  brave_shields::SetWebcompatFeatureSetting(
-      content_settings(), ContentSettingsType::BRAVE_WEBCOMPAT_PLUGINS,
-      ControlType::ALLOW, farbling_url(), nullptr);
+  brave_shields::SetWebcompatEnabled(
+      content_settings(), ContentSettingsType::BRAVE_WEBCOMPAT_PLUGINS, true,
+      farbling_url(), nullptr);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int off_length2 =
       content::EvalJs(contents(), kPluginsLengthScript).ExtractInt();

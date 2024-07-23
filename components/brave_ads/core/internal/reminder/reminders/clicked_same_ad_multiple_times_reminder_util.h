@@ -8,9 +8,10 @@
 
 namespace brave_ads {
 
-struct HistoryItemInfo;
+struct AdHistoryItemInfo;
 
-bool DidUserClickTheSameAdMultipleTimes(const HistoryItemInfo& history_item);
+bool DidUserClickTheSameAdMultipleTimes(
+    const AdHistoryItemInfo& ad_history_item);
 
 void RemindUserTheyDoNotNeedToClickToEarnRewards();
 

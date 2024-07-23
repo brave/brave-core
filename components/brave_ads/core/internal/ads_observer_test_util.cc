@@ -16,7 +16,7 @@ AdsObserverMock* AddAdsObserverMock() {
   std::unique_ptr<AdsObserverMock> ads_observer_mock =
       std::make_unique<AdsObserverMock>();
 
-  AdsObserverMock* const value = ads_observer_mock.get();
+  AdsObserverMock* const value = &*ads_observer_mock;
 
   // `AdsNotifierManager` takes ownership of `ads_observer_mock`.
   AdsNotifierManager::GetInstance().AddObserver(std::move(ads_observer_mock));

@@ -11,8 +11,8 @@ namespace brave_ads::test {
 // See `test/data/resources/nnqccijfhvzwyrxpxwjrpmynaiazctqb` for conversion
 // resource test data.
 
-// Also, see `conversions_test_util.h` for test helpers that construct redirect
-// chains.
+// Also, see `conversions_test_util.h` for test helpers to construct redirect
+// chains and URL patterns.
 
 // Default conversion.
 inline constexpr char kMatchingUrlPattern[] = "https://foo.com/*";

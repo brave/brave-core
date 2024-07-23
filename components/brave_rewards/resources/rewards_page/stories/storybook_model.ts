@@ -19,21 +19,55 @@ export function createModel(): AppModel {
   const stateManager = createStateManager<AppState>({
     ...defaultState(),
     loading: false,
-    paymentId: '123'
+    paymentId: 'abc123',
+    countryCode: 'US',
+    adsInfo: {
+      adsReceivedThisMonth: 4
+    },
+    rewardsParameters: {
+      walletProviderRegions: {
+        bitflyer: { allow: [], block: [] },
+        gemini: { allow: [], block: ['US'] },
+        uphold: { allow: [], block: [] }
+      }
+    }
   })
 
   return {
     ...defaultModel(),
+
     getString: locale.getString,
     getPluralString: locale.getPluralString,
     getState: stateManager.getState,
     addListener: stateManager.addListener,
+
+    async getAvailableCountries() {
+      return {
+        countryCodes: ['US'],
+        defaultCountryCode: 'US'
+      }
+    },
+
+    async getExternalWalletProviders() {
+      return ['uphold', 'gemini', 'solana']
+    },
+
     async enableRewards(countryCode) {
       await delay(500)
       setTimeout(() => {
         stateManager.update({ paymentId: 'abc123' })
       }, 20)
       return 'success'
+    },
+
+    async beginExternalWalletLogin(provider) {
+      await delay(500)
+      return false
+    },
+
+    async connectExternalWallet(provider, args) {
+      await delay(2000)
+      return 'unexpected-error'
     }
   }
 }

@@ -26,8 +26,8 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
-#include "brave/components/brave_ads/core/public/database/database_constants.h"
 
 namespace brave_ads::test {
 
@@ -101,7 +101,7 @@ bool TestBase::CopyFileFromTestPathToTempPath(
   CHECK(setup_called_)
       << "CopyFileFromTestPathToTempPath should be called after SetUp";
 
-  const base::FilePath from_test_path = DataPath().AppendASCII(from_path);
+  const base::FilePath from_test_path = RootDataPath().AppendASCII(from_path);
   const base::FilePath to_temp_path = temp_dir_.GetPath().AppendASCII(to_path);
 
   return base::CopyFile(from_test_path, to_temp_path);
@@ -117,7 +117,7 @@ bool TestBase::CopyDirectoryFromTestPathToTempPath(
   CHECK(setup_called_)
       << "CopyDirectoryFromTestPathToTempPath should be called after SetUp";
 
-  const base::FilePath from_test_path = DataPath().AppendASCII(from_path);
+  const base::FilePath from_test_path = RootDataPath().AppendASCII(from_path);
   const base::FilePath to_temp_path = temp_dir_.GetPath().AppendASCII(to_path);
 
   return base::CopyDirectory(from_test_path, to_temp_path,

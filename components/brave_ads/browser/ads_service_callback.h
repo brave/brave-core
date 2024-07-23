@@ -28,20 +28,21 @@ using MaybeServeInlineContentAdAsDictCallback =
 using PurgeOrphanedAdEventsForTypeCallback =
     base::OnceCallback<void(bool success)>;
 
-using GetHistoryCallback = base::OnceCallback<void(base::Value::List history)>;
+using GetAdHistoryCallback =
+    base::OnceCallback<void(base::Value::List history)>;
 
 using ToggleLikeAdCallback =
-    base::OnceCallback<void(base::Value::Dict ad_content)>;
+    base::OnceCallback<void(base::Value::Dict ad_history_item)>;
 using ToggleDislikeAdCallback =
-    base::OnceCallback<void(base::Value::Dict ad_content)>;
+    base::OnceCallback<void(base::Value::Dict ad_history_item)>;
 using ToggleLikeCategoryCallback =
-    base::OnceCallback<void(base::Value::Dict category_content)>;
+    base::OnceCallback<void(base::Value::Dict ad_history_item)>;
 using ToggleDislikeCategoryCallback =
-    base::OnceCallback<void(base::Value::Dict category_content)>;
+    base::OnceCallback<void(base::Value::Dict ad_history_item)>;
 using ToggleSaveAdCallback =
-    base::OnceCallback<void(base::Value::Dict ad_content)>;
+    base::OnceCallback<void(base::Value::Dict ad_history_item)>;
 using ToggleMarkAdAsInappropriateCallback =
-    base::OnceCallback<void(base::Value::Dict ad_content)>;
+    base::OnceCallback<void(base::Value::Dict ad_history_item)>;
 
 }  // namespace brave_ads
 

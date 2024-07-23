@@ -15,15 +15,21 @@ namespace brave_ads {
 class BraveAdsTimeConstraintUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsTimeConstraintUtilTest, DoesRespectIfNoHistory) {
+  // Arrange
+  const std::vector<base::Time> history;
+
   // Act & Assert
   EXPECT_TRUE(DoesHistoryRespectRollingTimeConstraint(
-      /*history=*/{}, /*time_constraint=*/base::Days(1), /*cap=*/1));
+      history, /*time_constraint=*/base::Days(1), /*cap=*/1));
 }
 
 TEST_F(BraveAdsTimeConstraintUtilTest, DoNotRespectTimeConstraintIfCapIsZero) {
+  // Arrange
+  const std::vector<base::Time> history;
+
   // Act & Assert
-  EXPECT_FALSE(DoesHistoryRespectRollingTimeConstraint(
-      /*history=*/{}, /*time_constraint=*/base::Days(1), /*cap=*/0));
+  EXPECT_TRUE(DoesHistoryRespectRollingTimeConstraint(
+      history, /*time_constraint=*/base::Days(1), /*cap=*/0));
 }
 
 TEST_F(BraveAdsTimeConstraintUtilTest,

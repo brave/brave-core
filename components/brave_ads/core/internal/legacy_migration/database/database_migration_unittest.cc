@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
-#include "brave/components/brave_ads/core/public/database/database_constants.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -56,7 +56,7 @@ class BraveAdsDatabaseMigrationTest : public test::TestBase,
     }
 
     const std::string database_filename = base::StringPrintf(
-        "database/database_schema_%d.sqlite", GetSchemaVersion());
+        "database_migration/database_schema_%d.sqlite", GetSchemaVersion());
     ASSERT_TRUE(
         CopyFileFromTestPathToTempPath(database_filename, kDatabaseFilename));
   }

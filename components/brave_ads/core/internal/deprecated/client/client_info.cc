@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_value_util.h"
-#include "brave/components/brave_ads/core/public/history/history_item_value_util.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_value_util.h"
 #include "build/build_config.h"  // IWYU pragma: keep
 
 namespace brave_ads {
@@ -38,7 +38,7 @@ base::Value::Dict ClientInfo::ToValue() const {
   base::Value::Dict dict =
       base::Value::Dict()
           .Set("adPreferences", ad_preferences.ToValue())
-          .Set("adsShownHistory", HistoryItemsToValue(history_items));
+          .Set("adsShownHistory", AdHistoryToValue(ad_history));
 
   const base::TimeDelta time_window = kPurchaseIntentTimeWindow.Get();
 
@@ -89,7 +89,7 @@ bool ClientInfo::FromValue(const base::Value::Dict& dict) {
 
 #if !BUILDFLAG(IS_IOS)
   if (const auto* const value = dict.FindList("adsShownHistory")) {
-    history_items = HistoryItemsFromValue(*value);
+    ad_history = AdHistoryFromValue(*value);
   }
 #endif
 

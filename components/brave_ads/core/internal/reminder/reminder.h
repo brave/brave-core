@@ -7,13 +7,13 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_REMINDER_REMINDER_H_
 
 #include "base/timer/timer.h"
-#include "brave/components/brave_ads/core/internal/history/history_manager_observer.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_manager_observer.h"
 
 namespace brave_ads {
 
-struct HistoryItemInfo;
+struct AdHistoryItemInfo;
 
-class Reminder : public HistoryManagerObserver {
+class Reminder : public AdHistoryManagerObserver {
  public:
   Reminder();
 
@@ -26,10 +26,11 @@ class Reminder : public HistoryManagerObserver {
   ~Reminder() override;
 
  private:
-  void MaybeShowReminderAfterDelay(const HistoryItemInfo& history_item);
+  void MaybeShowReminderAfterDelay(const AdHistoryItemInfo& ad_history_item);
 
-  // HistoryManagerObserver:
-  void OnDidAddHistory(const HistoryItemInfo& history_item) override;
+  // AdHistoryManagerObserver:
+  void OnDidAppendAdHistoryItem(
+      const AdHistoryItemInfo& ad_history_item) override;
 
   base::OneShotTimer timer_;
 };

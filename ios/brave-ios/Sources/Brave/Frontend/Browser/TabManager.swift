@@ -866,6 +866,7 @@ class TabManager: NSObject {
   }
 
   @MainActor private func forgetData(for url: URL, in tab: Tab) async {
+    await FaviconFetcher.deleteCache(for: url)
     guard let etldP1 = url.baseDomain else { return }
 
     // Start a task to delete all data for this etldP1

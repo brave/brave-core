@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/promoted_content_ads/promoted_content_ad_permission_rules.h"
 
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/catalog_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/promoted_content_ads/promoted_content_ads_per_day_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/promoted_content_ads/promoted_content_ads_per_hour_permission_rule.h"
 
 namespace brave_ads {
 

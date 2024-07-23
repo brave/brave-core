@@ -553,7 +553,6 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, RefillIfBelowTheMinimumThreshold) {
   test::BuildAndSetIssuers();
 
   test::MockTokenGenerator(token_generator_mock_, /*count=*/31);
-
   test::RefillConfirmationTokens(/*count=*/19);
 
   const test::URLResponseMap url_responses = {

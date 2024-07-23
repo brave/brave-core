@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 import MainPanel from './components/main-panel'
-import TreeList from './components/tree-list'
+import TreeList, { ToggleList } from './components/tree-list'
 import {
   ViewType
 } from './state/component_types'
@@ -18,7 +18,7 @@ const Box = styled.div`
 `
 
 function Container () {
-  const { siteBlockInfo, viewType } = React.useContext(DataContext)
+  const { siteBlockInfo, viewType, siteSettings } = React.useContext(DataContext)
   const shouldShowDetailView = viewType !== ViewType.Main && siteBlockInfo
 
   let treeListElement = null
@@ -44,6 +44,13 @@ function Container () {
           totalAllowedTitle={getLocale('braveShieldsAllowedScriptsLabel')}
           totalBlockedTitle={getLocale('braveShieldsBlockedScriptsLabel')}
         />
+    }
+
+    if (viewType === ViewType.FingerprintList) {
+      treeListElement = <ToggleList
+          webcompatSettings={ siteSettings?.webcompatSettings }
+          totalBlockedTitle={getLocale('braveShieldsFingerprintingProtectionsAppliedLabel')}
+      />
     }
   }
 

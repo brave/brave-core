@@ -38,11 +38,20 @@ interface RewardsPageHandler {
   // Returns a plural UI string for the specified number.
   GetPluralString(string key, int32 count) => (string plural_string);
 
+  // Returns the server-side Rewards system parameters.
+  GetRewardsParameters() => (RewardsParameters? rewards_parameters);
+
   // Returns the user's Rewards payment ID.
   GetRewardsPaymentId() => (string payment_id);
 
+  // Returns the user's declared country code.
+  GetCountryCode() => (string country_code);
+
   // Returns the user's external wallet information, if available.
   GetExternalWallet() => (ExternalWallet? external_wallet);
+
+  // Returns the available wallet providers for the user's region.
+  GetExternalWalletProviders() => (array<string> providers);
 
   // Returns information about the current state of ad views.
   GetAdsStatement() => (brave_ads.mojom.StatementInfo? statement);
@@ -52,6 +61,14 @@ interface RewardsPageHandler {
 
   // Creates a new Rewards user for the current profile.
   EnableRewards(string country_code) => (CreateRewardsWalletResult result);
+
+  // Begins an external wallet login flow.
+  BeginExternalWalletLogin(string provider)
+      => (ExternalWalletLoginParams? params);
+
+  // Completes an external wallet login flow.
+  ConnectExternalWallet(string provider, map<string, string> args)
+      => (ConnectExternalWalletResult result);
 
   // Clears all Rewards-related user state.
   ResetRewards() => (bool success);

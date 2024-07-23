@@ -102,7 +102,7 @@ constexpr int kMaximumNumberOfTimesToRetryNetworkRequests = 1;
 constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
 
 int GetDataResourceId(const std::string& name) {
-  if (name == data::resource::kCatalogJsonSchemaFilename) {
+  if (name == kCatalogJsonSchemaDataResourceName) {
     return IDR_ADS_CATALOG_SCHEMA;
   }
 
@@ -1292,12 +1292,12 @@ void AdsServiceImpl::PurgeOrphanedAdEventsForType(
   }
 }
 
-void AdsServiceImpl::GetHistory(const base::Time from_time,
-                                const base::Time to_time,
-                                GetHistoryCallback callback) {
+void AdsServiceImpl::GetAdHistory(const base::Time from_time,
+                                  const base::Time to_time,
+                                  GetAdHistoryCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
-    bat_ads_associated_remote_->GetHistory(from_time, to_time,
-                                           std::move(callback));
+    bat_ads_associated_remote_->GetAdHistory(from_time, to_time,
+                                             std::move(callback));
   }
 }
 

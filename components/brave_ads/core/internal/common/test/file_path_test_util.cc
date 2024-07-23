@@ -10,28 +10,27 @@
 
 namespace brave_ads::test {
 
-namespace {
-
-base::FilePath DataRootPath() {
+base::FilePath RootPath() {
   return base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
       .AppendASCII("brave")
       .AppendASCII("components")
       .AppendASCII("brave_ads");
 }
 
-}  // namespace
+base::FilePath DataResourcesPath() {
+  return RootPath().AppendASCII("resources");
+}
 
-base::FilePath DataPath() {
-  return DataRootPath().AppendASCII("core").AppendASCII("test").AppendASCII(
-      "data");
+base::FilePath RootDataPath() {
+  return RootPath().AppendASCII("core").AppendASCII("test").AppendASCII("data");
 }
 
 base::FilePath ComponentResourcesDataPath() {
-  return DataPath().AppendASCII("resources");
+  return RootDataPath().AppendASCII("component_resources");
 }
 
-base::FilePath DataResourcesPath() {
-  return DataRootPath().AppendASCII("resources");
+base::FilePath UrlResponsesDataPath() {
+  return RootDataPath().AppendASCII("url_responses");
 }
 
 }  // namespace brave_ads::test
