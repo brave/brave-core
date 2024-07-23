@@ -8,10 +8,10 @@ import re
 import json
 
 from typing import List, Optional
-
 import components.path_util as path_util
 
-from components.perf_test_utils import GetProcessOutput, GetFileAtRevision
+from components.git_tools import GetFileAtRevision
+from components.perf_test_utils import GetProcessOutput
 
 
 class ChromiumVersion:

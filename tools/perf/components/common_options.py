@@ -42,6 +42,8 @@ class CommonOptions:
   target_arch: str = ''
 
   do_report: bool = False
+  upload: bool = True
+  upload_branch: Optional[str] = None
   report_on_failure: bool = False
   local_run: bool = False
   retry_count = 2
@@ -69,11 +71,11 @@ class CommonOptions:
     parser.add_argument(
         '--mode',
         type=str,
-        choices=['run', 'compare', 'update_profile'],
+        choices=['run', 'compare', 'update-profile'],
         help='The operating mode.' +
         '"run" is run the tests and report to the backend (the default).' +
         '"compare" is evaluate a few configurations with a local HTML output.' +
-        '"update_profile" is a tool to make an updated profile archive.')
+        '"update-profile" is a tool to update and upload profile archives.')
     parser.add_argument(
         '--working-directory',
         type=str,
@@ -118,6 +120,18 @@ class CommonOptions:
         '--report-on-failure',
         action='store_true',
         help='[ci-mode] Report to the dashboard despite test failures')
+    parser.add_argument(
+        '--upload',
+        action='store_true',
+        default=True,
+        help=(
+            '[For profile updating] Upload the updated profile to cloud storage'
+            + 'and push the changes to brave-core'))
+    parser.add_argument(
+        '--upload-branch',
+        type=str,
+        help=('[For profile updating] A target brave-core branch to push the ' +
+              'changes. update-profiles-<version> is used by default'))
 
     parser.add_argument('--more-help',
                         action='help',
@@ -138,7 +152,7 @@ class CommonOptions:
       options.mode = PerfMode.RUN
     elif args.mode == 'compare' or (args.mode is None and empty_target):
       options.mode = PerfMode.COMPARE
-    elif args.mode == 'update_profile':
+    elif args.mode == 'update-profile':
       options.mode = PerfMode.UPDATE_PROFILE
 
     options.verbose = args.verbose
@@ -169,5 +183,7 @@ class CommonOptions:
 
     options.do_report = (not args.no_report and not args.local_run
                          and options.mode == PerfMode.RUN)
+    options.upload = args.upload
+    options.upload_branch = args.upload_branch
 
     return options

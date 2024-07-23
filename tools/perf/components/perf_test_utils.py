@@ -4,18 +4,24 @@
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 import logging
 import os
+import re
+import shutil
 import subprocess
 import tempfile
 import platform
 
 from threading import Timer
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 from urllib.request import urlopen
 
 import components.path_util as path_util
 
 with path_util.SysPath(path_util.GetBraveScriptDir(), 0):
   from lib.util import extract_zip
+
+
+def IsSha1Hash(s: str) -> bool:
+  return re.match(r'[a-f0-9]{40}', s) is not None
 
 
 def ToChromiumPlatformName(target_os: str) -> str:
@@ -120,14 +126,3 @@ def DownloadArchiveAndUnpack(output_directory: str, url: str):
   _, f = tempfile.mkstemp(dir=output_directory)
   DownloadFile(url, f)
   extract_zip(f, output_directory)
-
-
-def GetFileAtRevision(filepath: str, revision: str) -> Optional[str]:
-  if os.path.isabs(filepath):
-    filepath = os.path.relpath(filepath, path_util.GetBraveDir())
-  normalized_path = filepath.replace('\\', '/')
-  success, content = GetProcessOutput(
-      ['git', 'show', f'{revision}:{normalized_path}'],
-      cwd=path_util.GetBraveDir(),
-      output_to_debug=False)
-  return content if success else None
