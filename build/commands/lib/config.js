@@ -366,6 +366,7 @@ Config.prototype.buildArgs = function () {
     branding_path_product: "brave",
     enable_nacl: false,
     enable_widevine: true,
+    enable_feed_v2: true,
     // Our copy of signature_generator.py doesn't support --ignore_missing_cert:
     ignore_missing_widevine_signing_cert: false,
     target_cpu: this.targetArch,
