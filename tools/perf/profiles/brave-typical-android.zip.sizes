@@ -1,11 +1,11 @@
-Total size 95360K
+Total size 95918K
 
-GROUP Adblock [8286K total]
+GROUP Adblock [8288K total]
    113K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.185 [adcocjohghhfpidemphmcmlmhnfgikei]
-    46K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.7554 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1315K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.8064 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+    46K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.7563 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1316K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.8073 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
    139K Brave Ad Block Updater (Regional Catalog) 1.0.60 [gkboaolpopklhgplhaaiboijnklogmbc]
-  5674K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.6996 [iodkpdagapdfkphljnddpjlldadblomo]
+  5676K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.7004 [iodkpdagapdfkphljnddpjlldadblomo]
      7K Brave Ad Block Updater (Brave Experimental Adblock Rules (plaintext)) 1.0.29 [jcfckfokjmopfomnoebdkdhbhcgjfnbi]
    988K Brave Ad Block Updater (Resources) 1.0.93 [mfddibmblmbccpadfndgakiopmmhebop]
 
@@ -13,22 +13,22 @@ GROUP Ads [22975K total]
     72K Brave Ads Resources 1.0.102 [iblokdlgekdjophgeonmanpnjihcjkjj]
  22903K Brave Ads Resources 1.0.67 [ocilmpijebaopmdifcomolmpigakocmo]
 
-GROUP Ntp [13091K total]
+GROUP Ntp [13583K total]
  12803K Brave NTP background images 1.0.14 [aoojcmojmmcbpfgoecoadbdpnagfchel]
-   287K Brave NTP sponsored images 1.0.1007 [pciohbjgmbejokmghgjkobeionibheai]
+   779K Brave NTP sponsored images 1.0.1008 [pciohbjgmbejokmghgjkobeionibheai]
 
 GROUP Other [158K total]
    158K Brave Local Data Files Updater 1.0.825 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
 GROUP chromium [598K total]
-    24K crl-set-9799723294735007843.data 8959 [CertificateRevocation]
+    24K crl-set-9417196801431903709.data 8961 [CertificateRevocation]
     31K chromeCommerceHeuristics 2023.3.30.1305 [CommerceHeuristics]
    103K Crowd Deny 2023.11.29.1201 [Crowd Deny]
      9K fileTypePolicies 66 [FileTypePolicies]
    203K pkiMetadata 1019 [PKIMetadata]
     32K real_time_url_checks_allowlist 9 [RealTimeUrlChecksAllowlist]
      4K sslErrorAssistant 7 [SSLErrorAssistant]
-   154K safetyTips 3035 [SafetyTips]
+   154K safetyTips 3036 [SafetyTips]
     32K Third-Party Cookie Deprecation Metadata 2024.7.19.1 [TpcdMetadata]
 
 GROUP large_files [44192K total]
