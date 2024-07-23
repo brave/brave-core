@@ -7,11 +7,15 @@
 #define BRAVE_BROWSER_UI_BRAVE_UI_FEATURES_H_
 
 #include "base/feature_list.h"
+#include "build/build_config.h"
 
 namespace features {
 
 BASE_DECLARE_FEATURE(kBraveNtpSearchWidget);
+#if BUILDFLAG(IS_WIN)
+BASE_DECLARE_FEATURE(kBraveWorkaroundNewWindowFlash);
+#endif  // BUILDFLAG(IS_WIN)
 
-}
+}  // namespace features
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_UI_FEATURES_H_
