@@ -6,6 +6,7 @@ import * as React from 'react'
 import { useHistory } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/dist/query'
 import Alert from '@brave/leo/react/alert'
+import Tooltip from '@brave/leo/react/tooltip'
 
 // types
 import { BraveWallet, AccountPageTabs } from '../../../constants/types'
@@ -29,6 +30,7 @@ import { isTokenWatchOnly } from '../../../utils/asset-utils'
 // queries & mutations
 import {
   useGetNftMetadataQuery,
+  useGetNftOwnerQuery,
   useUpdateUserTokenMutation
 } from '../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
@@ -74,7 +76,6 @@ import { Row, VerticalSpace } from '../../../components/shared/style'
 interface Props {
   selectedAsset: BraveWallet.BlockchainToken
   tokenNetwork?: BraveWallet.NetworkInfo
-  ownerAccount?: BraveWallet.AccountInfo
 }
 
 const createSkeletonProps = (
@@ -90,9 +91,7 @@ const createSkeletonProps = (
 
 const isStorybook = isComponentInStorybook()
 
-export const NftScreen = (props: Props) => {
-  const { selectedAsset, tokenNetwork, ownerAccount } = props
-
+export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
   // state
   const nftDetailsRef = React.useRef<HTMLIFrameElement>(null)
 
@@ -104,6 +103,16 @@ export const NftScreen = (props: Props) => {
   } = useGetNftMetadataQuery(selectedAsset, {
     skip: !selectedAsset
   })
+
+  const { data: ownerAddress } = useGetNftOwnerQuery(
+    tokenNetwork
+      ? {
+          contract: selectedAsset.contractAddress,
+          tokenId: selectedAsset.tokenId,
+          chainId: tokenNetwork.chainId
+        }
+      : skipToken
+  )
 
   const { accounts } = useAccountsQuery()
 
@@ -135,6 +144,15 @@ export const NftScreen = (props: Props) => {
   const onClickViewOnBlockExplorer = useExplorer(
     tokenNetwork || new BraveWallet.NetworkInfo()
   )
+
+  // memos
+  const ownerAccount = React.useMemo(() => {
+    if (!ownerAddress) return
+
+    return accounts.find(
+      (account) => account.address.toLowerCase() === ownerAddress.toLowerCase()
+    )
+  }, [accounts, ownerAddress])
 
   const tokenId = React.useMemo(
     () =>
@@ -257,7 +275,7 @@ export const NftScreen = (props: Props) => {
         </NftName>
       </TopWrapper>
       <SectionTitle>{getLocale('braveWalletNFTDetailsOverview')}</SectionTitle>
-      {ownerAccount && (
+      {ownerAddress && (
         <SectionWrapper>
           <InfoBox>
             <InfoTitle>{getLocale('braveWalletNFTDetailsOwnedBy')}</InfoTitle>
@@ -265,20 +283,30 @@ export const NftScreen = (props: Props) => {
               justifyContent='flex-start'
               gap='4px'
             >
-              <AccountName>{ownerAccount.name}</AccountName>
-              <AccountAddress>
-                {reduceAddress(ownerAccount.address, '...')}
-              </AccountAddress>
+              {ownerAccount && <AccountName>{ownerAccount.name}</AccountName>}
+              <Tooltip text={ownerAddress}>
+                <AccountAddress>
+                  {reduceAddress(ownerAddress, '...')}
+                </AccountAddress>
+              </Tooltip>
               <CopyTooltip
-                text={selectedAsset.contractAddress}
+                text={ownerAddress}
                 verticalPosition='above'
               >
                 <CopyIcon name='copy' />
               </CopyTooltip>
             </Row>
-            <ViewAccount onClick={() => onClickViewAccount(ownerAccount)}>
-              {getLocale('braveWalletNFTDetailsViewAccount')}
-            </ViewAccount>
+            {ownerAccount ? (
+              <ViewAccount onClick={() => onClickViewAccount(ownerAccount)}>
+                {getLocale('braveWalletNFTDetailsViewAccount')}
+              </ViewAccount>
+            ) : (
+              <ViewAccount
+                onClick={onClickViewOnBlockExplorer('address', ownerAddress)}
+              >
+                {getLocale('braveWalletPortfolioViewOnExplorerMenuLabel')}
+              </ViewAccount>
+            )}
           </InfoBox>
         </SectionWrapper>
       )}

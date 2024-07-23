@@ -284,6 +284,38 @@ export const nftsEndpoints = ({
         }
       },
       providesTags: ['SimpleHashSpamNFTs']
+    }),
+
+    getNftOwner: query<
+      string, // owner address
+      { contract: string; tokenId: string; chainId: string }
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { jsonRpcService } = api
+          const { errorMessage, ownerAddress } =
+            await jsonRpcService.getERC721OwnerOf(
+              arg.contract,
+              arg.tokenId,
+              arg.chainId
+            )
+          if (errorMessage) {
+            throw new Error(errorMessage)
+          }
+          return {
+            data: ownerAddress
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Unable to fetch owner address for NFT(${
+              arg.contract //
+            }-${arg.tokenId}) on chain(${arg.chainId})`,
+            error
+          )
+        }
+      }
     })
   }
 }
