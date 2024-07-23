@@ -56,11 +56,11 @@ export const primaryButton = `
   }
 
   &[disabled]:not(.pressed) {
-    --self-background-color: var(--leo-color-gray-30);
+    --self-background-color: var(--leo-color-neutral-30);
     --self-lighten-opacity: 0.5;
 
     @media (prefers-color-scheme: dark) {
-      --self-background-color: var(--leo-color-gray-20);
+      --self-background-color: var(--leo-color-neutral-20);
       --self-lighten-opacity: 0;
     }
   }
