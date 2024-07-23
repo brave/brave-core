@@ -256,11 +256,11 @@ void RemoteCompletionClient::OnQueryCompleted(
   mojom::APIError error;
 
   if (net::HTTP_TOO_MANY_REQUESTS == result.response_code()) {
-    error = mojom::APIError::RateLimitReached;
+    error.type = mojom::APIErrorType::RateLimitReached;
   } else if (net::HTTP_REQUEST_ENTITY_TOO_LARGE == result.response_code()) {
-    error = mojom::APIError::ContextLimitReached;
+    error.type = mojom::APIErrorType::ContextLimitReached;
   } else {
-    error = mojom::APIError::ConnectionIssue;
+    error.type = mojom::APIErrorType::ConnectionIssue;
   }
 
   std::move(callback).Run(base::unexpected(std::move(error)));

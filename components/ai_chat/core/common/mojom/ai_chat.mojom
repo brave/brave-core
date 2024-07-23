@@ -18,7 +18,12 @@ enum ConversationTurnVisibility {
   HIDDEN // does not get added to chat history, used as a flag internally
 };
 
-enum APIError {
+struct APIError {
+  APIErrorType type;
+  string? message;
+};
+
+enum APIErrorType {
   None,
   ConnectionIssue,
   RateLimitReached,

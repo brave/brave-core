@@ -78,7 +78,7 @@ export const defaultContext: AIChatContext = {
   isPremiumUserDisconnected: false,
   siteInfo: new mojom.SiteInfo(),
   favIconUrl: undefined,
-  currentError: mojom.APIError.None,
+  currentError: undefined,
   canShowPremiumPrompt: undefined,
   shouldShowLongPageWarning: false,
   shouldShowLongConversationInfo: false,

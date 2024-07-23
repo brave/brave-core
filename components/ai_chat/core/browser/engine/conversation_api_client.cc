@@ -220,7 +220,9 @@ void ConversationAPIClient::PerformRequestWithCredentials(
     GenerationCompletedCallback completed_callback,
     std::optional<CredentialCacheEntry> credential) {
   if (conversation.empty()) {
-    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
+    std::move(completed_callback)
+        .Run(base::unexpected(
+            mojom::APIError(mojom::APIErrorType::None, std::nullopt)));
     return;
   }
 
@@ -228,7 +230,9 @@ void ConversationAPIClient::PerformRequestWithCredentials(
   const GURL api_url = GetEndpointUrl(premium_enabled, kRemotePath);
 
   if (!api_url.is_valid()) {
-    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
+    std::move(completed_callback)
+        .Run(base::unexpected(
+            mojom::APIError(mojom::APIErrorType::None, std::nullopt)));
     return;
   }
 
@@ -317,11 +321,11 @@ void ConversationAPIClient::OnQueryCompleted(
   mojom::APIError error;
 
   if (net::HTTP_TOO_MANY_REQUESTS == result.response_code()) {
-    error = mojom::APIError::RateLimitReached;
+    error.type = mojom::APIErrorType::RateLimitReached;
   } else if (net::HTTP_REQUEST_ENTITY_TOO_LARGE == result.response_code()) {
-    error = mojom::APIError::ContextLimitReached;
+    error.type = mojom::APIErrorType::ContextLimitReached;
   } else {
-    error = mojom::APIError::ConnectionIssue;
+    error.type = mojom::APIErrorType::ConnectionIssue;
   }
 
   std::move(callback).Run(base::unexpected(std::move(error)));

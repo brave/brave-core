@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
 
 #include "base/functional/bind.h"
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/strcat.h"
@@ -86,7 +87,9 @@ void OAIAPIClient::PerformRequest(
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   if (!model_options.endpoint.is_valid()) {
-    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
+    std::move(completed_callback)
+        .Run(base::unexpected(
+            mojom::APIError(mojom::APIErrorType::None, std::nullopt)));
     return;
   }
 
@@ -122,6 +125,22 @@ void OAIAPIClient::PerformRequest(
   }
 }
 
+std::optional<std::string> OAIAPIClient::ExtractErrorMessage(
+    const std::string& result) {
+  auto value = base::JSONReader::Read(result);
+
+  if (!value.has_value() && !value->is_dict()) {
+    return std::nullopt;
+  }
+
+  auto* error = value->GetDict().FindDict("error");
+  if (error) {
+    auto* message = error->FindString("message");
+    return *message;
+  }
+  return std::nullopt;
+}
+
 void OAIAPIClient::OnQueryCompleted(GenerationCompletedCallback callback,
                                     APIRequestResult result) {
   const bool success = result.Is2XXResponseCode();
@@ -151,13 +170,26 @@ void OAIAPIClient::OnQueryCompleted(GenerationCompletedCallback callback,
     return;
   }
 
+  if (last_error_.has_value()) {
+    std::move(callback).Run(base::unexpected(last_error_.value()));
+    last_error_.reset();
+    return;
+  }
+
   // Handle error
-  std::move(callback).Run(base::unexpected(mojom::APIError::ConnectionIssue));
+  std::move(callback).Run(base::unexpected(
+      mojom::APIError(mojom::APIErrorType::ConnectionIssue, std::nullopt)));
 }
 
 void OAIAPIClient::OnQueryDataReceived(
     GenerationDataCallback callback,
     base::expected<base::Value, std::string> result) {
+  if (result->is_string()) {
+    last_error_ = mojom::APIError(mojom::APIErrorType::ConnectionIssue,
+                                  ExtractErrorMessage(result->GetString()));
+    return;
+  }
+
   if (!result.has_value() || !result->is_dict()) {
     return;
   }

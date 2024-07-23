@@ -303,7 +303,8 @@ class ConversationDriver : public ModelService::Observer {
   // documents.
   int64_t current_navigation_id_;
 
-  mojom::APIError current_error_ = mojom::APIError::None;
+  mojom::APIError current_error_ =
+      mojom::APIError(mojom::APIErrorType::None, std::nullopt);
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Unknown;
 
   mojom::ConversationTurnPtr pending_conversation_entry_;

@@ -689,7 +689,7 @@ void ConversationDriver::CleanUp() {
   suggestion_generation_status_ = mojom::SuggestionGenerationStatus::None;
   should_send_page_contents_ = true;
   OnSuggestedQuestionsChanged();
-  SetAPIError(mojom::APIError::None);
+  SetAPIError(mojom::APIError(mojom::APIErrorType::None, std::nullopt));
   engine_->ClearAllQueries();
 
   MaybeSeedOrClearSuggestions();
@@ -749,7 +749,7 @@ bool ConversationDriver::GetShouldSendPageContents() {
 void ConversationDriver::ClearConversationHistory() {
   chat_history_.clear();
   engine_->ClearAllQueries();
-  current_error_ = mojom::APIError::None;
+  current_error_.type = mojom::APIErrorType::None;
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
@@ -765,7 +765,7 @@ mojom::APIError ConversationDriver::GetCurrentAPIError() {
 mojom::ConversationTurnPtr ConversationDriver::ClearErrorAndGetFailedMessage() {
   DCHECK(!chat_history_.empty());
 
-  SetAPIError(mojom::APIError::None);
+  SetAPIError(mojom::APIError(mojom::APIErrorType::None, std::nullopt));
   mojom::ConversationTurnPtr turn = chat_history_.back().Clone();
   chat_history_.pop_back();
 
@@ -864,7 +864,7 @@ void ConversationDriver::AddSubmitSelectedTextError(
     const std::string& selected_text,
     mojom::ActionType action_type,
     mojom::APIError error) {
-  if (error == mojom::APIError::None) {
+  if (error.type == mojom::APIErrorType::None) {
     return;
   }
   const std::string& question = GetActionTypeQuestion(action_type);
@@ -1058,7 +1058,7 @@ void ConversationDriver::PerformAssistantGeneration(
 }
 
 void ConversationDriver::RetryAPIRequest() {
-  SetAPIError(mojom::APIError::None);
+  SetAPIError(mojom::APIError(mojom::APIErrorType::None, std::nullopt));
   DCHECK(!chat_history_.empty());
 
   // We're using a reverse iterator here to find the latest human turn

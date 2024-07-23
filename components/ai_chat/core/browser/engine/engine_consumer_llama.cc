@@ -435,12 +435,16 @@ void EngineConsumerLlamaRemote::GenerateAssistantResponse(
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   if (conversation_history.empty()) {
-    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
+    std::move(completed_callback)
+        .Run(base::unexpected(
+            mojom::APIError(mojom::APIErrorType::None, std::nullopt)));
     return;
   }
   const mojom::ConversationTurnPtr& last_turn = conversation_history.back();
   if (last_turn->character_type != mojom::CharacterType::HUMAN) {
-    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
+    std::move(completed_callback)
+        .Run(base::unexpected(
+            mojom::APIError(mojom::APIErrorType::None, std::nullopt)));
     return;
   }
   std::optional<std::string> selected_text = std::nullopt;

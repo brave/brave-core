@@ -311,10 +311,12 @@ void AIChatUIPageHandler::RetryAPIRequest() {
 void AIChatUIPageHandler::GetAPIResponseError(
     GetAPIResponseErrorCallback callback) {
   if (!active_chat_tab_helper_) {
-    std::move(callback).Run(mojom::APIError::None);
+    std::move(callback).Run(
+        mojom::APIError::New(mojom::APIErrorType::None, std::nullopt));
     return;
   }
-  std::move(callback).Run(active_chat_tab_helper_->GetCurrentAPIError());
+  std::move(callback).Run(
+      active_chat_tab_helper_->GetCurrentAPIError().Clone());
 }
 
 void AIChatUIPageHandler::ClearErrorAndGetFailedMessage(
@@ -375,7 +377,7 @@ void AIChatUIPageHandler::OnAPIRequestInProgress(bool in_progress) {
 
 void AIChatUIPageHandler::OnAPIResponseError(mojom::APIError error) {
   if (page_.is_bound()) {
-    page_->OnAPIResponseError(error);
+    page_->OnAPIResponseError(error.Clone());
   }
 }
 

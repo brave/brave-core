@@ -69,21 +69,22 @@ function Main() {
   const scrollPos = React.useRef({ isAtBottom: true })
 
   if (hasAcceptedAgreement) {
-    if (apiHasError && currentError === mojom.APIError.ConnectionIssue) {
+    if (apiHasError && currentError?.type === mojom.APIErrorType.ConnectionIssue) {
       currentErrorElement = (
         <ErrorConnection
           onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
+          errorMessage={currentError.message}
         />
       )
     }
 
-    if (apiHasError && currentError === mojom.APIError.RateLimitReached) {
+    if (apiHasError && currentError?.type === mojom.APIErrorType.RateLimitReached) {
       currentErrorElement = (
         <ErrorRateLimit />
       )
     }
 
-    if (apiHasError && currentError === mojom.APIError.ContextLimitReached) {
+    if (apiHasError && currentError?.type === mojom.APIErrorType.ContextLimitReached) {
       currentErrorElement = (
         <ErrorConversationEnd />
       )
