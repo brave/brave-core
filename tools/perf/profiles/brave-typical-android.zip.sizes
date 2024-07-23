@@ -1,11 +1,11 @@
-Total size 95948K
+Total size 95952K
 
-GROUP Adblock [8289K total]
+GROUP Adblock [8290K total]
    113K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.185 [adcocjohghhfpidemphmcmlmhnfgikei]
-    46K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.7566 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1316K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.8076 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+    46K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.7568 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1316K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.8077 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
    139K Brave Ad Block Updater (Regional Catalog) 1.0.60 [gkboaolpopklhgplhaaiboijnklogmbc]
-  5677K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.7005 [iodkpdagapdfkphljnddpjlldadblomo]
+  5677K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.7006 [iodkpdagapdfkphljnddpjlldadblomo]
      7K Brave Ad Block Updater (Brave Experimental Adblock Rules (plaintext)) 1.0.29 [jcfckfokjmopfomnoebdkdhbhcgjfnbi]
    988K Brave Ad Block Updater (Resources) 1.0.93 [mfddibmblmbccpadfndgakiopmmhebop]
 
@@ -21,7 +21,7 @@ GROUP Other [158K total]
    158K Brave Local Data Files Updater 1.0.825 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
 GROUP chromium [598K total]
-    24K crl-set-9417196801431903709.data 8961 [CertificateRevocation]
+    24K crl-set-3757880836365895970.data 8962 [CertificateRevocation]
     31K chromeCommerceHeuristics 2023.3.30.1305 [CommerceHeuristics]
    103K Crowd Deny 2023.11.29.1201 [Crowd Deny]
      9K fileTypePolicies 66 [FileTypePolicies]
