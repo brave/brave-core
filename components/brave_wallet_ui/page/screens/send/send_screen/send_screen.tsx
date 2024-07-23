@@ -117,7 +117,9 @@ export const SendScreen = React.memo((props: Props) => {
   )
 
   // State
-  const [sendAmount, setSendAmount] = React.useState<string>('')
+  const [sendAmount, setSendAmount] = React.useState<string>(
+    selectedSendOption === '#nft' ? '1' : ''
+  )
   const [sendingMaxAmount, setSendingMaxAmount] = React.useState<boolean>(false)
   const [toAddressOrUrl, setToAddressOrUrl] = React.useState<string>('')
   const [resolvedDomainAddress, setResolvedDomainAddress] =
