@@ -2,22 +2,25 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 
-import { getLocale } from '../../../../../common/locale'
 import * as S from './style'
-import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
+import { PanelHeader } from '../select-region-list'
 import getPanelBrowserAPI from '../../api/panel_browser_api'
-import Toggle from '$web-components/toggle'
+import { getLocale } from '$web-common/locale'
+import Toggle from '@brave/leo/react/toggle'
 
 interface Props {
-  closeSettingsPanel: React.MouseEventHandler<HTMLButtonElement>
+  closeSettingsPanel: () => void
   showContactSupport: () => void
 }
 
-function SettingsPanel (props: Props) {
-  const [onDemand, setOnDemand] =
-    React.useState({ available: false, enabled: false})
+function SettingsPanel(props: Props) {
+  const [onDemand, setOnDemand] = React.useState({
+    available: false,
+    enabled: false
+  })
 
   React.useEffect(() => {
     getPanelBrowserAPI().serviceHandler.getOnDemandState().then(setOnDemand)
@@ -26,64 +29,84 @@ function SettingsPanel (props: Props) {
   const handleClick = (entry: string) => {
     getPanelBrowserAPI().panelHandler.openVpnUI(entry)
   }
-  const handleKeyDown = (entry: string, event: React.KeyboardEvent<HTMLAnchorElement>) => {
-    if (event.keyCode !== 32) { return }
+
+  function handleKeyDown(
+    entry: string,
+    event: React.KeyboardEvent<HTMLDivElement>
+  ) {
+    if (event.code !== 'Enter') {
+      return
+    }
     if (entry === 'support') {
       props.showContactSupport()
       return
     }
     handleClick(entry)
   }
-  const handleToggleChange = (isOn: boolean) => {
-    getPanelBrowserAPI().serviceHandler.enableOnDemand(isOn)
+
+  const handleToggleChange = ({ checked }: { checked: boolean }) => {
+    setOnDemand({ ...onDemand, enabled: checked })
+    getPanelBrowserAPI().serviceHandler.enableOnDemand(checked)
   }
 
   return (
     <S.Box>
       <S.PanelContent>
-        <S.PanelHeader>
-          <S.BackButton
-            type='button'
-            onClick={props.closeSettingsPanel}
-            aria-label='Close settings'
+        <PanelHeader
+          title={getLocale('braveVpnSettingsPanelHeader')}
+          buttonAriaLabel={
+            getLocale('braveVpnSettingsPanelBackButtonAriaLabel')
+          }
+          onClick={props.closeSettingsPanel}
+        />
+        <S.SettingsList>
+          {onDemand.available && (
+            <>
+              <S.Setting
+                onClick={
+                  e => handleToggleChange({ checked: !onDemand.enabled })
+                }
+              >
+                <S.SettingLabel>
+                  {getLocale('braveVpnReconnectAutomatically')}
+                </S.SettingLabel>
+                <Toggle
+                  checked={onDemand.enabled}
+                  onChange={handleToggleChange}
+                  size='small'
+                  aria-label='Reconnect automatically'
+                />
+              </S.Setting>
+              <S.Divider />
+            </>
+          )}
+          <S.Setting tabIndex={0} onClick={e => handleClick('manage')}
+            onKeyDown={e => handleKeyDown('manage', e)}
           >
-            <i><CaratStrongLeftIcon /></i>
-            <span>{getLocale('braveVpnSettingsPanelHeader')}</span>
-          </S.BackButton>
-        </S.PanelHeader>
-        <S.List>
-          {onDemand.available && <li>
-            <S.ReconnectBox>
-              <span>
-                {getLocale('braveVpnReconnectAutomatically')}
-              </span>
-              <Toggle
-                isOn={onDemand.enabled}
-                onChange={handleToggleChange}
-                brand='vpn'
-                size='sm'
-                aria-label='Reconnect automatically'
-              />
-            </S.ReconnectBox>
-          </li>}
-          <li>
-            <a href="#" onClick={handleClick.bind(this, 'manage')} onKeyDown={handleKeyDown.bind(this, 'manage')}>
+            <S.SettingLabel>
               {getLocale('braveVpnManageSubscription')}
-            </a>
-          </li>
-          <li>
-            <a href="#" onClick={props.showContactSupport} onKeyDown={handleKeyDown.bind(this, 'support')}>
+            </S.SettingLabel>
+            <S.StyledIcon name='launch'></S.StyledIcon>
+          </S.Setting>
+          <S.Divider />
+          <S.Setting tabIndex={0} onClick={props.showContactSupport}
+            onKeyDown={e => handleKeyDown('support', e)}
+          >
+            <S.SettingLabel>
               {getLocale('braveVpnContactSupport')}
-            </a>
-          </li>
-          <li>
-            <a href="#" onClick={handleClick.bind(this, 'about')} onKeyDown={handleKeyDown.bind(this, 'about')}>
-              {getLocale('braveVpnAbout')}
-              {' '}
-              {getLocale('braveVpn')}
-            </a>
-          </li>
-        </S.List>
+            </S.SettingLabel>
+            <S.StyledIcon name='carat-right'></S.StyledIcon>
+          </S.Setting>
+          <S.Divider />
+          <S.Setting tabIndex={0} onClick={e => handleClick('about')}
+            onKeyDown={e => handleKeyDown('about', e)}
+          >
+            <S.SettingLabel>
+              {getLocale('braveVpnAbout')} {getLocale('braveVpn')}
+            </S.SettingLabel>
+            <S.StyledIcon name='launch'></S.StyledIcon>
+          </S.Setting>
+        </S.SettingsList>
       </S.PanelContent>
     </S.Box>
   )
