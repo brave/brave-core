@@ -41,7 +41,7 @@ extension NetworkManager {
   static func mockData(for resource: BraveS3Resource) async throws -> Data {
     try await Task<Data, Error>.detached(priority: .background) {
       switch resource {
-      case .adBlockRules:
+      case .slimList:
         let bundle = Bundle.module
         let resourceURL = bundle.url(
           forResource: "iodkpdagapdfkphljnddpjlldadblomo",

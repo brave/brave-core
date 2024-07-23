@@ -91,7 +91,7 @@ import os.log
       delayTasks.removeValue(forKey: engineType)
       let fileInfos = adBlockService.fileInfos(for: engineType)
       AdBlockGroupsManager.shared.update(fileInfos: fileInfos)
-      AdBlockGroupsManager.shared.compileEngineIfFilesAreReady(for: engineType)
+      AdBlockGroupsManager.shared.compileIfFilesAreReady(for: engineType)
     }
   }
 
@@ -106,7 +106,7 @@ import os.log
   ) {
     let fileInfos = adBlockService.fileInfos(for: engineType)
     AdBlockGroupsManager.shared.update(fileInfos: fileInfos)
-    AdBlockGroupsManager.shared.compileEngineIfFilesAreReady(for: engineType)
+    AdBlockGroupsManager.shared.compileIfFilesAreReady(for: engineType)
   }
 }
 
@@ -145,8 +145,10 @@ extension AdblockService {
     for engineType: GroupedAdBlockEngine.EngineType
   ) -> [AdBlockEngineManager.FileInfo] {
     return filterListCatalogEntries.compactMap { entry in
-      guard entry.engineType == engineType else { return nil }
       let source = entry.engineSource
+      guard entry.engineType == engineType || source.onlyExceptions(for: engineType) else {
+        return nil
+      }
 
       guard
         let localFileURL = installPath(forFilterListUUID: entry.uuid),
@@ -155,15 +157,22 @@ extension AdblockService {
         return nil
       }
 
-      let version = localFileURL.deletingLastPathComponent().lastPathComponent
-
-      return AdBlockEngineManager.FileInfo(
-        filterListInfo: GroupedAdBlockEngine.FilterListInfo(
-          source: source,
-          version: version
-        ),
-        localFileURL: localFileURL
-      )
+      return entry.fileInfo(for: localFileURL)
     }
+  }
+}
+
+extension AdblockFilterListCatalogEntry {
+  /// Create file info for this entry
+  func fileInfo(for localFileURL: URL) -> AdBlockEngineManager.FileInfo {
+    let version = localFileURL.deletingLastPathComponent().lastPathComponent
+
+    return AdBlockEngineManager.FileInfo(
+      filterListInfo: GroupedAdBlockEngine.FilterListInfo(
+        source: engineSource,
+        version: version
+      ),
+      localFileURL: localFileURL
+    )
   }
 }

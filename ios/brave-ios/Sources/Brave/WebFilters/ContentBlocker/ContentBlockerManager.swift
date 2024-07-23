@@ -101,6 +101,7 @@ import os.log
 
     case generic(GenericBlocklistType)
     case engineSource(GroupedAdBlockEngine.Source, engineType: GroupedAdBlockEngine.EngineType)
+    case engineGroup(id: String, engineType: GroupedAdBlockEngine.EngineType)
 
     private var identifier: String {
       switch self {
@@ -114,7 +115,11 @@ import os.log
           return [Self.filterListPrefix, "url", uuid].joined(separator: "-")
         case .filterListText:
           return [Self.filterListPrefix, "text"].joined(separator: "-")
+        case .slimList:
+          return [Self.filterListPrefix, "slim-list"].joined(separator: "-")
         }
+      case .engineGroup(let id, _):
+        return [Self.filterListPrefix, "group", id].joined(separator: "-")
       }
     }
 
@@ -122,7 +127,7 @@ import os.log
       switch self {
       case .generic(let genericType):
         return genericType.mode(isAggressiveMode: isAggressiveMode)
-      case .engineSource(_, let engineType):
+      case .engineSource(_, let engineType), .engineGroup(_, let engineType):
         switch engineType {
         case .standard:
           return isAggressiveMode ? .aggressive : .standard
@@ -280,7 +285,7 @@ import os.log
     for blocklistType: BlocklistType,
     version: String,
     modes: [BlockingMode]
-  ) async {
+  ) async throws {
     guard !modes.isEmpty else { return }
 
     let result: ContentBlockingRulesResult
@@ -310,10 +315,16 @@ import os.log
         modes: modes
       )
     } catch {
-      ContentBlockerManager.log.error(
-        "Failed to compile rule list for `\(blocklistType.debugDescription)`"
-      )
+      Self.signpost.endInterval("convertRules", state, "\(error.localizedDescription)")
+      throw error
     }
+
+    try await compile(
+      encodedContentRuleList: result.rulesJSON,
+      for: blocklistType,
+      version: version,
+      modes: modes
+    )
   }
 
   /// Compile the given resource and store it in cache for the given blocklist type and specified modes
@@ -449,10 +460,6 @@ import os.log
         if let existingVersion = versions.value[identifier], existingVersion < version {
           return true
         } else {
-          ContentBlockerManager.log.debug(
-            "Rule list already compiled for `\(type.makeIdentifier(for: mode))` v\(version)"
-          )
-
           return false
         }
       } else {

@@ -105,7 +105,7 @@ class ContentBlockerManagerTests: XCTestCase {
     }
     let manager = await makeManager()
 
-    await manager.compileRuleList(
+    try await manager.compileRuleList(
       at: filterListURL,
       for: .engineSource(
         .filterListURL(uuid: "iodkpdagapdfkphljnddpjlldadblomo"),

@@ -12,7 +12,7 @@ class ResourceDownloaderStreamTests: XCTestCase {
     // Given
     let expectation = XCTestExpectation(description: "Test downloading resources")
     expectation.expectedFulfillmentCount = 2
-    let resource = BraveS3Resource.adBlockRules
+    let resource = BraveS3Resource.slimList
     let downloader = ResourceDownloader<BraveS3Resource>(
       networkManager: NetworkManager.makeNetworkManager(
         for: [resource],
@@ -41,7 +41,7 @@ class ResourceDownloaderStreamTests: XCTestCase {
   func testSequenceWithErrorDownload() throws {
     // Given
     let expectation = XCTestExpectation(description: "Test downloading resources")
-    let resource = BraveS3Resource.adBlockRules
+    let resource = BraveS3Resource.slimList
     let downloader = ResourceDownloader<BraveS3Resource>(
       networkManager: NetworkManager.makeNetworkManager(
         for: [resource],
