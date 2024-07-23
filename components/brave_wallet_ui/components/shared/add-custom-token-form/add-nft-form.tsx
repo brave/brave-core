@@ -179,7 +179,14 @@ export const AddNftForm = (props: Props) => {
   } = useGetNftMetadataQuery(
     tokenInfo &&
       (tokenInfo.coin === BraveWallet.CoinType.SOL || tokenInfo.tokenId)
-      ? tokenInfo
+      ? {
+          chainId: tokenInfo.chainId,
+          contractAddress: tokenInfo.contractAddress,
+          tokenId: tokenInfo.tokenId,
+          coin: tokenInfo.coin,
+          isErc721: tokenInfo.isErc721,
+          isNft: tokenInfo.isNft
+        }
       : skipToken
   )
 
@@ -288,14 +295,20 @@ export const AddNftForm = (props: Props) => {
       // remove existing token and add new one
       await updateUserToken({
         existingToken: selectedAsset,
-        updatedToken
+        updatedToken: {
+          ...updatedToken,
+          name: customTokenName || updatedToken.name
+        }
       }).unwrap()
       onHideForm()
       return
     }
 
     try {
-      await addUserToken(updatedToken).unwrap()
+      await addUserToken({
+        ...updatedToken,
+        name: customTokenName || updatedToken.name
+      }).unwrap()
       onHideForm()
     } catch (error) {
       setHasError(true)
@@ -305,6 +318,7 @@ export const AddNftForm = (props: Props) => {
     tokenInfo,
     selectedAsset,
     updateUserToken,
+    customTokenName,
     onHideForm,
     addUserToken
   ])
@@ -336,11 +350,19 @@ export const AddNftForm = (props: Props) => {
     }
 
     // sync form fields with found token info
-    if (!hasGetTokenInfoError && matchedTokenInfo?.name) {
+    if (
+      !hasGetTokenInfoError &&
+      matchedTokenInfo?.name &&
+      !selectedAsset?.name
+    ) {
       setCustomTokenName(matchedTokenInfo.name)
     }
 
-    if (!hasNftMetadataError && nftMetadata?.contractInformation.name) {
+    if (
+      !hasNftMetadataError &&
+      nftMetadata?.contractInformation.name &&
+      !selectedAsset?.name
+    ) {
       setCustomTokenName(nftMetadata.contractInformation.name)
     }
 
@@ -348,6 +370,7 @@ export const AddNftForm = (props: Props) => {
       setCustomTokenSymbol(matchedTokenInfo.symbol)
     }
   }, [
+    selectedAsset?.name,
     hasGetTokenInfoError,
     hasNftMetadataError,
     isFetchingNftMetadata,
@@ -471,6 +494,10 @@ export const AddNftForm = (props: Props) => {
           <Input
             value={customTokenSymbol}
             onInput={handleTokenSymbolChanged}
+            disabled={
+              // prevent edits when data has been found on-chain
+              !hasGetTokenInfoError && !!matchedTokenInfo?.symbol
+            }
             type='text'
             placeholder={getLocale('braveWalletExempliGratia').replace(
               '$1',
@@ -590,7 +617,7 @@ export const AddNftForm = (props: Props) => {
                             </PreviewImageContainer>
 
                             <TokenNamePreviewText>
-                              {metadataAsset.name}
+                              {customTokenName}
                             </TokenNamePreviewText>
                             <TokenTickerPreviewText>
                               {metadataAsset.symbol}
