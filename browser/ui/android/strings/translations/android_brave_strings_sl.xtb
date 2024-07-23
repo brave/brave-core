@@ -419,9 +419,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="7275773481201277457">Pokaži Braveove statistike</translation>
 <translation id="8297488609722895137">Fotografija avtorja <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Če tapnete Začni uporabljati Brave reward, se strinjate s <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Prejmite plačilo za ogled te slike ozadja.</translation>
 <translation id="7136586167396205364">Skrij sponzorirane slike</translation>
-<translation id="2927095357213611519">Spletne ustvarjalce lahko podprete z žetoni.\nZaslužite žetone z ogledom oglasov, ki spoštujejo vašo zasebnost.</translation>
 <translation id="2898634658146274982">Odprite zunanje povezave v Brave</translation>
 <translation id="5616508928556767259">Odpre povezave iz drugih aplikacij v spletnem pogledu Brave. Opomba: Brave mora biti nastavljen kot privzeti brskalnik.</translation>
 <translation id="2394961582378297792">Odjavljeni</translation>
@@ -482,6 +480,10 @@ je v teku.
 <translation id="8912304686498704084">GOR</translation>
 <translation id="4963218453264888510">DOL</translation>
 <translation id="7474113515179313724">Na tej spletni strani brskate brez brez zaščite zasebnosti Brave. Ali stan ne deluje pravilno z zaščito Shields?</translation>
+<translation id="4226543734057230801">Omrežja Ethereum</translation>
+<translation id="3504157706952484145">Omrežja Filecoin</translation>
+<translation id="1561541094377237745">Omrežja Solana</translation>
+<translation id="7141438739990875547">Omrežja Bitcoin</translation>
 <translation id="9055546041146396417">Če se spletno mesto zdi kot okvarjeno, poskusite dostop brez zaščite Shields.</translation>
 <translation id="1209739344687072997">Prijavite nedelujočo spletno stran</translation>
 <translation id="8510478288840333677">Obvestite razvijalce Brave o tem, da spletna stran ne deluje pravilno s ščiti:</translation>
@@ -582,8 +584,6 @@ je v teku.
 <translation id="2422627462367776805">Južnokorejski spletni portal &amp; iskanje</translation>
 <translation id="177282784098234156">Zaseben, neodvisen, uporabnik je na prvem mestu</translation>
 <translation id="1410130669636877548">Nekateri iskalniki varujejo vašo zasebnost bolje kot drugi, ko iščete po spletu.</translation>
-<translation id="5187052478998910855">Potrebujete kratko osvežitev o Rewards?</translation>
-<translation id="8622329973403382303">Na hitro si oglejte, kako vse skupaj deluje, da se boste zapisali v zgodovino kot zvezda Rewards!</translation>
 <translation id="3479552764303398839">Ne zdaj</translation>
 <translation id="7138272885617540195">Dovoli odpiranje povezav aplikacij v aplikacijah izven Brave</translation>
 <translation id="4954512758656527938">Privzeta denarnica Ethereum</translation>
@@ -709,9 +709,11 @@ je v teku.
 <translation id="6748319398471481216">Obnavlja se mesečno</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/>/ mesec</translation>
 <translation id="1163809943099641131">Eno leto</translation>
-<translation id="7574007394522199115">Obnovite vsako leto in prihranite<ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">Letna obnovitev<ph name="DISCOUNT_TEXT_START"/> prihranek<ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / leto</translation>
-<translation id="2655185358771731232">Poskusite brezplačno 7 dni. Po 7 dneh vam bomo zaračunali ceno paketa. Vse naročnine se samodejno obnovijo, vendar jih je mogoče preklicati pred podaljšanjem.</translation>
+<translation id="5125233570742276182">Naročnine bodo zaračunane prek vašega Google računa. Vsak morebitni neizkoriščen del brezplačnega preizkusa se ob nakupu naročnine izgubi.\n\nVaša naročnina se bo samodejno obnovila, razen če je preklicana vsaj 24 ur pred koncem trenutnega obdobja.\n\nNaročnine lahko upravljate v nastavitvah.\nZ uporabo brskalnika Brave se strinjate s pogoji uporabe in politiko zasebnosti.</translation>
+<translation id="5035172357624830412">Ste že nakupovali na brave.com?</translation>
+<translation id="713136183174551885">Osvežite svoje poverilnice</translation>
 <translation id="6053992191006521518">Poskusite BREZPLAČNO</translation>
 <translation id="5903391101107992067">Poskusite 7 dni brezplačno</translation>
 <translation id="721747358270435486">Namesti VPN</translation>
@@ -857,7 +859,7 @@ je v teku.
 <translation id="7791543448312431591">Dodaj</translation>
 <translation id="6889920539620318793">Nastavi kot aktivno</translation>
 <translation id="2653659639078652383">Pošlji</translation>
-<translation id="4556601961751528347">Spremeni povezan račun</translation>
+<translation id="4945690646623486292">Izberite omrežje</translation>
 <translation id="5233638681132016545">Nov zavihek</translation>
 <translation id="8006088103295786154">Dostop do denarnice Brave</translation>
 <translation id="8030169304546394654">Prekinjeno</translation>
@@ -914,7 +916,7 @@ je v teku.
 <translation id="2322227405137827074">Ali želite ta element uvoziti?</translation>
 <translation id="1324417023773393937">Brskalnik Brave</translation>
 <translation id="6044189892950611565">Kanal za obvestila za Brave Browser</translation>
-<translation id="1173919438868967364">Izberite račun</translation>
+<translation id="4556601961751528347">Spremeni povezan račun</translation>
 <translation id="8922793255489232731">Ni bilo mogoče dobiti ustreznega časovnega pasu za: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Povezani z <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Poskusna doba</translation>
@@ -1070,7 +1072,6 @@ je v teku.
 <translation id="4932733599132424254">Datum</translation>
 <translation id="346505172740911461">Tržna cena</translation>
 <translation id="5494920125229734069">Izberi vse</translation>
-<translation id="5972844218283131174">Prekliči izbiro vseh</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Prijavite se s Brave Wallet</translation>
 <translation id="3696514931437952995">Vpisujete se v<ph name="ORIGIN"/>. Brave denarnica bo naslov vaše denarnice delil z<ph name="ORIGIN"/>.</translation>

@@ -421,9 +421,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="7275773481201277457">Rodyti „Brave“ statistiką</translation>
 <translation id="8297488609722895137">Nuotraukos autorius <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Bakstelėdami „Pradėti naudotis „Brave Rewards“ sutinkate su <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Gaukite užmokestį už šio foninio vaizdo peržiūrą.</translation>
 <translation id="7136586167396205364">Slėpti remiamus vaizdus</translation>
-<translation id="2927095357213611519">Žetonais galite paremti interneto turinio kūrėjus.\nUžsidirbkite žetonų žiūrėdami privatumo nepažeidžiančias reklamas.</translation>
 <translation id="2898634658146274982">Atidaryti išorines nuorodas naudojant „Brave“</translation>
 <translation id="5616508928556767259">„Brave“ žiniatinklio rodinyje atidaro nuorodas iš kitų programų. Pastaba: „Brave“ turi būti nustatyta kaip jūsų numatytoji naršyklė.</translation>
 <translation id="2394961582378297792">Atsijungta</translation>
@@ -481,6 +479,10 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="8912304686498704084">AUKŠTYN</translation>
 <translation id="4963218453264888510">ŽEMYN</translation>
 <translation id="7474113515179313724">Šioje svetainėje naršote be „Brave“ privatumo apsaugos. Ar ji tinkamai veikia padidinus skydų apsaugą?</translation>
+<translation id="4226543734057230801">„Ethereum“ tinklai</translation>
+<translation id="3504157706952484145">„Filecoin“ tinklai</translation>
+<translation id="1561541094377237745">„Solana“ tinklai</translation>
+<translation id="7141438739990875547">„Bitcoin“ tinklai</translation>
 <translation id="9055546041146396417">Jei ši svetainė atrodo neveikianti, pabandykite nuleisti skydus.</translation>
 <translation id="1209739344687072997">Pranešti apie neveikiančią svetainę</translation>
 <translation id="8510478288840333677">Praneškite „Brave“ kūrėjams, kad ši svetainė neveikia tinkamai su skydais:</translation>
@@ -579,8 +581,6 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="2422627462367776805">Pietų Korėjos interneto portalas ir &amp; paieškos sistema</translation>
 <translation id="177282784098234156">Privati, nepriklausoma, pritaikyta pirmiausia naudotojui</translation>
 <translation id="1410130669636877548">Kai naršote internete, vienos paieškos sistemos jūsų privatumą saugo geriau nei kitos.</translation>
-<translation id="5187052478998910855">Galbūt jums reikia prisiminti, kaip veikia „Rewards“?</translation>
-<translation id="8622329973403382303">Žinioms apie veikimą atnaujinti peržiūrėkite trumpą apžvalgą ir tapkite „Rewards“ žvaigžde!</translation>
 <translation id="3479552764303398839">Ne dabar</translation>
 <translation id="7138272885617540195">Leisti programėlių nuorodoms atsidaryti kitose programėlėse, o ne „Brave“</translation>
 <translation id="4954512758656527938">Numatytoji „Ethereum“ piniginė</translation>
@@ -706,9 +706,11 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="6748319398471481216">Atnaujinama kas mėnesį</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / mėn.</translation>
 <translation id="1163809943099641131">Vieneri metai</translation>
-<translation id="7574007394522199115">Atnaujindami kasmet sutaupykite <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">Atnaujinkite kasmet <ph name="DISCOUNT_TEXT_START"/>sutaupykite <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / m.</translation>
-<translation id="2655185358771731232">Išbandykite nemokamai 7 dienas. Vėliau būsite apmokestinti pagal atitinkamo plano kainą. Visos prenumeratos atnaujinamos automatiškai, tačiau prieš atnaujinant galima atšaukti.</translation>
+<translation id="5125233570742276182">Už prenumeratą bus mokama per jūsų „Google“ paskyrą. Bet kokia nepanaudota nemokamos bandomosios versijos dalis, jei ji buvo siūloma, prarandama, kai įsigyjate prenumeratą.\n\nJūsų prenumerata bus atnaujinta automatiškai, nebent ji bus atšaukta likus bent 24 valandoms iki einamojo laikotarpio pabaigos.\n\nSavo prenumeratas galite tvarkyti nustatymų dalyje.\nNaudodami Brave“, jūs sutinkate su naudojimo sąlygomis ir privatumo politika.</translation>
+<translation id="5035172357624830412">Jau pirkote iš brave.com?</translation>
+<translation id="713136183174551885">Atnaujinkite savo kredencialus</translation>
 <translation id="6053992191006521518">Išbandykite NEMOKAMAI</translation>
 <translation id="5903391101107992067">7 dienas bandykite nemokamai</translation>
 <translation id="721747358270435486">Įdiegti VPN</translation>
@@ -854,7 +856,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="7791543448312431591">Pridėti</translation>
 <translation id="6889920539620318793">Nustatyti kaip aktyvų</translation>
 <translation id="2653659639078652383">Pateikti</translation>
-<translation id="4556601961751528347">Keisti prijungtą paskyrą</translation>
+<translation id="4945690646623486292">Pasirinkti tinklą</translation>
 <translation id="5233638681132016545">Naujas skirtukas</translation>
 <translation id="8006088103295786154">Eiti į „Brave“ piniginę</translation>
 <translation id="8030169304546394654">Atsijungta</translation>
@@ -911,7 +913,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="2322227405137827074">Ar norėtumėte importuoti šį žetoną?</translation>
 <translation id="1324417023773393937">„Brave“ naršyklė</translation>
 <translation id="6044189892950611565">„Brave“ naršyklės pranešimų kanalas</translation>
-<translation id="1173919438868967364">Pasirinkti sąskaitą</translation>
+<translation id="4556601961751528347">Keisti prijungtą paskyrą</translation>
 <translation id="8922793255489232731">Nepavyko gauti laiko zonos, sutampančios su: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Prisijungta prie <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Bandomoji versija</translation>
@@ -1067,7 +1069,6 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="4932733599132424254">Data</translation>
 <translation id="346505172740911461">Rinkos kaina</translation>
 <translation id="5494920125229734069">Pasirinkti viską</translation>
-<translation id="5972844218283131174">Atžymėti viską</translation>
 <translation id="6129027151000961048">„Leo“</translation>
 <translation id="8613144770663526433">Prisijunkite naudodami „Brave“ piniginę</translation>
 <translation id="3696514931437952995">Jungiatės prie <ph name="ORIGIN"/>. „Brave“ piniginė pasidalins jūsų piniginės adresu su<ph name="ORIGIN"/>.</translation>

@@ -417,9 +417,7 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="7275773481201277457">Mostrar Estatísticas do Brave</translation>
 <translation id="8297488609722895137">Foto de <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Ao tocar em Começar a usar as Recompensas do Brave, você concorda com os <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Seja pago para ver esta imagem de plano de fundo.</translation>
 <translation id="7136586167396205364">Ocultar imagens patrocinadas</translation>
-<translation id="2927095357213611519">Você pode apoiar os desenvolvedores web com tokens.\nGanhe tokens visualizando anúncios que respeitam sua privacidade.</translation>
 <translation id="2898634658146274982">Abrir links externos no Brave</translation>
 <translation id="5616508928556767259">Abre links de outros aplicativos em um webview do Brave. Observação: o Brave deve ser definido como seu navegador padrão.</translation>
 <translation id="2394961582378297792">Sessão encerrada</translation>
@@ -477,6 +475,10 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="8912304686498704084">ATIVADO</translation>
 <translation id="4963218453264888510">DESATIVADO</translation>
 <translation id="7474113515179313724">Você está navegando neste site sem as proteções de privacidade do Brave. Não está funcionando direito com o Shields ativado?</translation>
+<translation id="4226543734057230801">Redes Ethereum</translation>
+<translation id="3504157706952484145">Redes Filecoin</translation>
+<translation id="1561541094377237745">Redes Solana</translation>
+<translation id="7141438739990875547">Redes Bitcoin</translation>
 <translation id="9055546041146396417">Se o site parecer não estar funcionando, tente desativar o Shields.</translation>
 <translation id="1209739344687072997">Relate um site quebrado</translation>
 <translation id="8510478288840333677">Informe aos desenvolvedores do Brave que este site não funciona corretamente com o Shields:</translation>
@@ -575,8 +577,6 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="2422627462367776805">portal da web sul-coreano - procurar</translation>
 <translation id="177282784098234156">Privado, independente e com foco no usuário</translation>
 <translation id="1410130669636877548">Alguns mecanismos de busca protegem sua privacidade melhor do que outros quando você faz pesquisas na web.</translation>
-<translation id="5187052478998910855">Precisando de uma atualização sobre as Recompensas?</translation>
-<translation id="8622329973403382303">Faça um tour rápido para relembrar como isso funciona e entre para a história como um astro do rock das Recompensas!</translation>
 <translation id="3479552764303398839">Não agora</translation>
 <translation id="7138272885617540195">Permitir que links de aplicativos sejam abertos em aplicativos fora do Brave</translation>
 <translation id="4954512758656527938">Carteira Ethereum padrão</translation>
@@ -702,9 +702,11 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="6748319398471481216">Renova mensalmente</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/>/mês</translation>
 <translation id="1163809943099641131">Um ano</translation>
-<translation id="7574007394522199115">Renove anualmente e economize <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">Renove anualmente <ph name="DISCOUNT_TEXT_START"/>economize <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/>/ano</translation>
-<translation id="2655185358771731232">Teste gratuitamente por 7 dias. Depois desse período, o preço do plano será cobrado. Todas as assinaturas são renovadas automaticamente, mas podem ser canceladas antes da renovação.</translation>
+<translation id="5125233570742276182">As assinaturas serão cobradas por meio de sua conta do Google. Qualquer parte não utilizada do teste gratuito, se oferecido, será perdida quando você comprar uma assinatura.\n\nSua assinatura será renovada automaticamente, a menos que seja cancelada pelo menos 24 horas antes do final do período atual.\n\nVocê pode gerenciar seu assinaturas em Configurações.\nAo usar o Brave, você concorda com os Termos de Uso e a Política de Privacidade.</translation>
+<translation id="5035172357624830412">Já comprou em Brave.com?</translation>
+<translation id="713136183174551885">Atualize suas credenciais</translation>
 <translation id="6053992191006521518">Testar GRATUITAMENTE</translation>
 <translation id="5903391101107992067">Experimente 7 dias grátis</translation>
 <translation id="721747358270435486">Instalar VPN</translation>
@@ -850,7 +852,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="7791543448312431591">Adicionar</translation>
 <translation id="6889920539620318793">Definir como ativa</translation>
 <translation id="2653659639078652383">Enviar</translation>
-<translation id="4556601961751528347">Alterar conta conectada</translation>
+<translation id="4945690646623486292">Selecionar rede</translation>
 <translation id="5233638681132016545">Nova guia</translation>
 <translation id="8006088103295786154">Acessar a Carteira Brave</translation>
 <translation id="8030169304546394654">Desconectado</translation>
@@ -907,7 +909,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="2322227405137827074">Você deseja importar este token?</translation>
 <translation id="1324417023773393937">Navegador Brave</translation>
 <translation id="6044189892950611565">Canal de notificações do navegador Brave</translation>
-<translation id="1173919438868967364">Selecionar conta</translation>
+<translation id="4556601961751528347">Alterar conta conectada</translation>
 <translation id="8922793255489232731">Não foi possível obter o fuso horário correspondente para: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Conectado a <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Teste</translation>
@@ -1063,7 +1065,6 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="4932733599132424254">Data</translation>
 <translation id="346505172740911461">Preço de mercado</translation>
 <translation id="5494920125229734069">Selecionar tudo</translation>
-<translation id="5972844218283131174">Desmarcar tudo</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Iniciar sessão com a Carteira Brave</translation>
 <translation id="3696514931437952995">Você iniciou sessão em  <ph name="ORIGIN"/>. A carteira Brave compartilhará o endereço da sua carteira com  <ph name="ORIGIN"/>.</translation>

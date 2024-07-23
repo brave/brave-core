@@ -417,9 +417,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="7275773481201277457">Vis Brave Stats</translation>
 <translation id="8297488609722895137">Billede af <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Ved at trykke på Begynd at bruge Brave Rewards, accepterer du <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Bliv betalt for at se dette baggrundsbillede.</translation>
 <translation id="7136586167396205364">Skjul sponsorerede billeder</translation>
-<translation id="2927095357213611519">Du kan støtte web-udviklere med tokens.\Tjen tokens ved at se reklamer som respekterer dit privatliv.</translation>
 <translation id="2898634658146274982">Åbn eksterne links i Brave</translation>
 <translation id="5616508928556767259">Åbner links fra andre apps i Brave. Bemærk: Brave skal være din standard browser.</translation>
 <translation id="2394961582378297792">Logget ud</translation>
@@ -477,6 +475,10 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="8912304686498704084">Op</translation>
 <translation id="4963218453264888510">NED</translation>
 <translation id="7474113515179313724">Du ser denne side uden Braves privatlivsbeskyttelse. Fungerer den ikke korrekt med Shields slået til?</translation>
+<translation id="4226543734057230801">Ethereum-netværker</translation>
+<translation id="3504157706952484145">Filecoin-netværker</translation>
+<translation id="1561541094377237745">Solana-netværker</translation>
+<translation id="7141438739990875547">Bitcoin-netværker</translation>
 <translation id="9055546041146396417">Hvis denne side ser forkert ud så prøv uden Shields.</translation>
 <translation id="1209739344687072997">Rapporter en side der ikke virker</translation>
 <translation id="8510478288840333677">Fortæl Braves udviklere at denne side ikke fungerer ordentligt med Shields</translation>
@@ -575,8 +577,6 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="2422627462367776805">Sydkoreansk webportal &amp; søgning</translation>
 <translation id="177282784098234156">Privat, uafhængigt, brugerfokuseret</translation>
 <translation id="1410130669636877548">Nogle søgemaskiner beskytter dine data bedre end andre, når du søger på nettet.</translation>
-<translation id="5187052478998910855">Har du brug for en opfriskning omkring Rewards?</translation>
-<translation id="8622329973403382303">Tag en hurtig rundvisning for at få et overblik over, hvordan det er at være en del af historien som en Rewards-rockstjerne!</translation>
 <translation id="3479552764303398839">Ikke nu</translation>
 <translation id="7138272885617540195">Tillad applinks at åbne i apps udenfor Brave</translation>
 <translation id="4954512758656527938">Standard Ethereum-wallet</translation>
@@ -702,9 +702,11 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="6748319398471481216">Forny månedlig</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / md.</translation>
 <translation id="1163809943099641131">Et år</translation>
-<translation id="7574007394522199115">Forny årlig besparelse <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">Forny årligt <ph name="DISCOUNT_TEXT_START"/>spar<ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / år.</translation>
-<translation id="2655185358771731232">Prøv gratis i 7 dage. Efter 7 dage vil du blive opkrævet abonnementsprisen. Alle abonnementer fornyes automatisk, men kan annulleres inden fornyelse.</translation>
+<translation id="5125233570742276182">Abonnementer vil blive opkrævet via din Google-konto. Enhver ubrugt del af den gratis prøveperiode, hvis den tilbydes, fortabes, når du køber et abonnement.\n\nDit abonnement fornyes automatisk, medmindre det annulleres mindst 24 timer før udgangen af ​​den aktuelle periode.\n\nDu kan administrere dine abonnementer i Indstillinger.\nVed at bruge Brave accepterer du vilkårene for brug og privatlivspolitikken.</translation>
+<translation id="5035172357624830412">Har du allerede købt hos brave.com?</translation>
+<translation id="713136183174551885">Opdater dine legitimationsoplysninger</translation>
 <translation id="6053992191006521518">Prøv GRATIS</translation>
 <translation id="5903391101107992067">Prøv gratis i 7 dage</translation>
 <translation id="721747358270435486">Installér VPN</translation>
@@ -850,7 +852,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="7791543448312431591">Tilføj</translation>
 <translation id="6889920539620318793">Markér som aktiv</translation>
 <translation id="2653659639078652383">Indsend</translation>
-<translation id="4556601961751528347">Skift tilsluttet konto</translation>
+<translation id="4945690646623486292">Vælg netværk</translation>
 <translation id="5233638681132016545">Ny fane</translation>
 <translation id="8006088103295786154">Tilgå Brave Wallet</translation>
 <translation id="8030169304546394654">Afbrudt</translation>
@@ -907,7 +909,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="2322227405137827074">Ønsker du at tilføje dette token?</translation>
 <translation id="1324417023773393937">Brave Browser</translation>
 <translation id="6044189892950611565">Notifikationskanal for Brave Browser</translation>
-<translation id="1173919438868967364">Vælg konto</translation>
+<translation id="4556601961751528347">Skift tilsluttet konto</translation>
 <translation id="8922793255489232731">Kunne ikke lokalisere en matchende tidszone til : <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Forbundet til <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Prøveperiode</translation>
@@ -1063,7 +1065,6 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="4932733599132424254">Dato</translation>
 <translation id="346505172740911461">Markedspris</translation>
 <translation id="5494920125229734069">Vælg alle</translation>
-<translation id="5972844218283131174">Fravælg alle</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Log ind med Brave Wallet</translation>
 <translation id="3696514931437952995">Du er ved at logge ind på <ph name="ORIGIN"/>. Brave Wallet deler din wallet-adresse med <ph name="ORIGIN"/>.</translation>

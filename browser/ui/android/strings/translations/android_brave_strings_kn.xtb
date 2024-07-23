@@ -417,9 +417,7 @@
 <translation id="7275773481201277457">Brave ಅಂಕಿಅಂಶಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="8297488609722895137"><ph name="PHOTO_BY"/> ಮೂಲಕ ಫೋಟೋ</translation>
 <translation id="4761229094276239865">Brave Rewards ಬಳಸುವುದನ್ನು ಪ್ರಾರಂಭಿಸು ಕ್ಲಿಕ್ ಮಾಡುವ ಮೂಲಕ, <ph name="TERMS_OF_SERVICE"/> ಗೆ ನೀವು ಸಮ್ಮತಿಸುತ್ತೀರಿ.</translation>
-<translation id="3794079107601824147">ಈ ಹಿನ್ನೆಲೆ ಚಿತ್ರವನ್ನು ವೀಕ್ಷಿಸಲು ಪಾವತಿ ಪಡೆಯಿರಿ.</translation>
 <translation id="7136586167396205364">ಪ್ರಾಯೋಜಿತ ಚಿತ್ರಗಳನ್ನು ಮರೆಮಾಡಿ</translation>
-<translation id="2927095357213611519">ನೀವು ಟೋಕನ್‌ಗಳೊಂದಿಗೆ ವೆಬ್ ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸಿ.\nಗೌಪ್ಯತೆ-ಗೌರವಿಸುವ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಿ.</translation>
 <translation id="2898634658146274982">Brave ನಲ್ಲಿ ಬಾಹ್ಯ ಲಿಂಕ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ</translation>
 <translation id="5616508928556767259">Brave ವೆಬ್‌ವ್ಯೂನಲ್ಲಿ ಇತರ ಆ್ಯಪ್‌ಗಳಿಂದ ಲಿಂಕ್‌ಗಳನ್ನು ತೆರೆಯುತ್ತದೆ. ಗಮನಿಸಿ: Brave ಅನ್ನು ನಿಮ್ಮ ಡೀಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಆಗಿ ಹೊಂದಿಸಬೇಕು.</translation>
 <translation id="2394961582378297792">ಲಾಗ್ ಔಟ್ ಮಾಡಲಾಗಿದೆ</translation>
@@ -477,6 +475,10 @@
 <translation id="8912304686498704084">ಮೇಲಕ್ಕೆ</translation>
 <translation id="4963218453264888510">ಕೆಳಗೆ</translation>
 <translation id="7474113515179313724">Brave ನ ಗೌಪ್ಯತೆ ರಕ್ಷಣೆಗಳಿಲ್ಲದೆ ನೀವು ಈ ಸೈಟ್‌ ಅನ್ನು ಬ್ರೌಸ್ ಮಾಡುತ್ತಿದ್ದೀರಿ. ಇದು ಶಿಲ್ಡ್ಸ್ಅಪ್ ಜೊತೆಗೆ ಸರಿಯಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸುವುದಿಲ್ಲವೇ?</translation>
+<translation id="4226543734057230801">Ethereum ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
+<translation id="3504157706952484145">Filecoin ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
+<translation id="1561541094377237745">Solana ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
+<translation id="7141438739990875547">Bitcoin ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
 <translation id="9055546041146396417">ಈ ಸೈಟ್‌ಗೆ ಹಾನಿಯಾದರೆ, ಶೀಲ್ಡ್‌ಗಳನ್ನು ಕೆಳಕ್ಕೆ ಮಾಡಲು ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="1209739344687072997">ಬ್ರೋಕನ್ ಸೈಟ್ ಅನ್ನು ವರದಿ ಮಾಡಿ</translation>
 <translation id="8510478288840333677">ಶೀಲ್ಡ್ ನೊಂದಿಗೆ ಈ ಸೈಟ್ ಸರಿಯಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸುವುದಿಲ್ಲ ಎಂದು Brave ನ ಡೆವಲಪರ್ಗಳಿಗೆ ತಿಳಿಸಿ:</translation>
@@ -575,8 +577,6 @@
 <translation id="2422627462367776805">ದಕ್ಷಿಣ ಕೊರಿಯನ್ ವೆಬ್ ಪೋರ್ಟಲ್ &amp; ಹುಡುಕಾಟ</translation>
 <translation id="177282784098234156">ಖಾಸಗಿ, ಸ್ವತಂತ್ರ, ಬಳಕೆದಾರ-ಮೊದಲು</translation>
 <translation id="1410130669636877548">ನೀವು ವೆಬ್ ಅನ್ನು ಹುಡುಕಿದಾಗ ಕೆಲವು ಹುಡುಕಾಟ ಇಂಜಿನ್‌ಗಳು ನಿಮ್ಮ ಗೌಪ್ಯತೆಯನ್ನು ಇತರವುಗಳಿಗಿಂತ ಉತ್ತಮವಾಗಿ ರಕ್ಷಿಸುತ್ತವೆ.</translation>
-<translation id="5187052478998910855">ರಿವಾರ್ಡ್‌ಗಳಲ್ಲಿ ಹೊಸತನ ಬೇಕಾಗಿದೆಯೇ?</translation>
-<translation id="8622329973403382303">ರಿವಾರ್ಡ್‌ಗಳ ರಾಕ್‌ಸ್ಟಾರ್ ಆಗಿ ಇತಿಹಾಸವನ್ನು ಸೇರಲು ಅದು ಹೇಗೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ ಎಂಬ ಕುರಿತು ತಿಳಿದುಕೊಳ್ಳಲು ತ್ವರಿತ ಪರಿಚಯಾತ್ಮಕ ಪ್ರಯಾಣ ಕೈಗೊಳ್ಳಿ!</translation>
 <translation id="3479552764303398839">ಈಗ ಬೇಡ</translation>
 <translation id="7138272885617540195">Braveನ ಹೊರಗಿನ ಅಪ್ಲಿಕೇಶನ್ ಗಳಲ್ಲಿ ಅಪ್ಲಿಕೇಶನ್ ಲಿಂಕ್ ಗಳನ್ನು ತೆರೆಯಲು ಅನುಮತಿಸುತ್ತದೆ</translation>
 <translation id="4954512758656527938">ಡೀಫಾಲ್ಟ್ ಈಥೇರಿಯಮ್ ವ್ಯಾಲೆಟ್</translation>
@@ -702,9 +702,11 @@
 <translation id="6748319398471481216">ಮಾಸಿಕವಾಗಿ ನವೀಕರಿಸುತ್ತದೆ</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / ತಿಂ.</translation>
 <translation id="1163809943099641131">ಒಂದು ವರ್ಷ</translation>
-<translation id="7574007394522199115">ವಾರ್ಷಿಕವಾಗಿ ನವೀಕರಿಸಿ ಮತ್ತು ಉಳಿಸಿ <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">ವಾರ್ಷಿಕವಾಗಿ ನವೀಕರಿಸಿ <ph name="DISCOUNT_TEXT_START"/><ph name="PERCENTAGE_AMOUNT"/>%% ಉಳಿಸಿ<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / ವರ್ಷಕ್ಕೆ.</translation>
-<translation id="2655185358771731232">7 ದಿನಗಳವರೆಗೆ ಉಚಿತವಾಗಿ ಪ್ರಯತ್ನಿಸಿ. 7 ದಿನಗಳ ನಂತರ, ನಿಮಗೆ ಯೋಜನೆಯ ದರವನ್ನು ವಿಧಿಸಲಾಗುತ್ತದೆ. ಎಲ್ಲಾ ಚಂದಾದಾರಿಕೆಗಳನ್ನು ಸ್ವಯಂ-ನವೀಕರಿಸಲಾಗುತ್ತದೆ ಆದರೆ ಅವುಗಳನ್ನು ನವೀಕರಣಕ್ಕೂ ಮೊದಲು ರದ್ದುಗೊಳಿಸಬಹುದು.</translation>
+<translation id="5125233570742276182">ಚಂದಾದಾರಿಕೆಗಳಿಗೆ ನಿಮ್ಮ Google ಖಾತೆ ಮೂಲಕ ಶುಲ್ಕ ವಿಧಿಸಲಾಗುತ್ತದೆ. ಉಚಿತ ಪ್ರಯೋಗದ ಯಾವುದೇ ಬಳಸದೇ ಇರುವ ಭಾಗವನ್ನು, ಒಂದು ವೇಳೆ ನೀಡಿದರೆ ನೀವು ಚಂದಾದಾರಿಕೆಯನ್ನು ಖರೀದಿಸಿದಾಗ ಅದನ್ನು ಮುಟ್ಟುಗೋಲು ಹಾಕಿಕೊಳ್ಳಲಾಗುತ್ತದೆ.\n\nನಿಮ್ಮ ಚಂದಾದಾರಿಕೆಯನ್ನು ಪ್ರಸ್ತುತ ಅವಧಿಯ ಮುಕ್ತಾಯಕ್ಕೂ ಕನಿಷ್ಠ 24 ಗಂಟೆಗಳ ಮೊದಲು ರದ್ದುಗೊಳಿಸದ ಹೊರತು ಅದು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ನವೀಕರಣಗೊಳ್ಳುತ್ತದೆ.\n\nಸೆಟ್ಟಿಂಗ್‌ಗಳು ಎಂಬಲ್ಲಿ ನಿಮ್ಮ ಚಂದಾದಾರಿಕೆಯನ್ನು ನೀವು ನಿರ್ವಹಿಸಬಹುದು.\nBrave ಬಳಸುವ ಮೂಲಕ, ನೀವು ಬಳಕೆಯ ನಿಯಮಗಳು ಮತ್ತು ಗೌಪ್ಯತೆ ನೀತಿಗೆ ಒಪ್ಪುತ್ತೀರಿ.</translation>
+<translation id="5035172357624830412">ಈಗಾಗಲೇ brave.com ನಲ್ಲಿ ಖರೀದಿ ಮಾಡಿರುವಿರಾ?</translation>
+<translation id="713136183174551885">ನಿಮ್ಮ ರುಜುವಾತುಗಳನ್ನು ರಿಫ್ರೆಶ್ ಮಾಡಿ</translation>
 <translation id="6053992191006521518">ಉಚಿತವಾಗಿ ಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="5903391101107992067">7 ದಿನಗಳ ತನಕ ಉಚಿತವಾಗಿ ಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="721747358270435486">VPN ಸ್ಥಾಪಿಸಿ</translation>
@@ -850,7 +852,7 @@
 <translation id="7791543448312431591">ಸೇರಿಸು</translation>
 <translation id="6889920539620318793">ಸಕ್ರಿಯ ಎಂಬುದಾಗಿ ಹೊಂದಿಸಿ</translation>
 <translation id="2653659639078652383">ಸಲ್ಲಿಸಿ</translation>
-<translation id="4556601961751528347">ಸಂಪರ್ಕಿತ ಖಾತೆಯನ್ನು ಬದಲಾಯಿಸಿ</translation>
+<translation id="4945690646623486292">ನೆಟ್‌ವರ್ಕ್ ಆಯ್ಕೆಮಾಡಿ</translation>
 <translation id="5233638681132016545">ಹೊಸ ಟ್ಯಾಬ್</translation>
 <translation id="8006088103295786154">Brave ವ್ಯಾಲೆಟ್ ಎಕ್ಸೆಸ್ ಮಾಡಿ</translation>
 <translation id="8030169304546394654">ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಲಾಗಿದೆ</translation>
@@ -907,7 +909,7 @@
 <translation id="2322227405137827074">ನೀವು ಈ ಟೋಕನ್‌ ಅನ್ನು ಇಂಪೋರ್ಟ್ ಮಾಡಲು ಬಯಸುತ್ತೀರಾ?</translation>
 <translation id="1324417023773393937">Brave ಬ್ರೌಸರ್</translation>
 <translation id="6044189892950611565">Brave ಬ್ರೌಸರ್‌ಗಾಗಿ ಅಧಿಸೂಚನೆ ಚಾನಲ್</translation>
-<translation id="1173919438868967364">ಖಾತೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ</translation>
+<translation id="4556601961751528347">ಸಂಪರ್ಕಿತ ಖಾತೆಯನ್ನು ಬದಲಾಯಿಸಿ</translation>
 <translation id="8922793255489232731">ಇದಕ್ಕಾಗಿ ಹೊಂದಾಣಿಕೆಯ ಸಮಯ ವಲಯವನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462"><ph name="VALUE"/> ಗೆ ಸಂಪರ್ಕಿತವಾಗಿದೆ</translation>
 <translation id="1968852757206592413">ಪ್ರಯೋಗ</translation>
@@ -1063,7 +1065,6 @@
 <translation id="4932733599132424254">ದಿನಾಂಕ</translation>
 <translation id="346505172740911461">ಮಾರುಕಟ್ಟೆ ಬೆಲೆ</translation>
 <translation id="5494920125229734069">ಎಲ್ಲವನ್ನೂ ಆಯ್ಕೆ ಮಾಡಿ</translation>
-<translation id="5972844218283131174">ಎಲ್ಲವನ್ನೂ ಆಯ್ಕೆ ಮಾಡಿ</translation>
 <translation id="6129027151000961048">ಲಿಯೋ</translation>
 <translation id="8613144770663526433">Brave ವ್ಯಾಲೆಟ್‍ ಮೂಲಕ ಸೈನ್ ಇನ್ ಮಾಡಿ</translation>
 <translation id="3696514931437952995">ನೀವು <ph name="ORIGIN"/> ಗೆ ಸೈನ್ ಇನ್ ಆಗುತ್ತಿರುವಿರಿ. <ph name="ORIGIN"/> ನೊಂದಿಗೆ ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ವಿಳಾಸವನ್ನು Brave ವ್ಯಾಲೆಟ್ ಹಂಚಿಕೊಳ್ಳುತ್ತದೆ.</translation>

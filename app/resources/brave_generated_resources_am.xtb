@@ -53,7 +53,6 @@
 <translation id="3094628781200061820">ፋይሎችን ከ IPFS ያትሙ እና ሰርስሮ ያውጡ</translation>
 <translation id="9220923434129933852">የIPFS ቅንብሮችን ያንብቡ እና ያሻሽሉ</translation>
 <translation id="7398397225367092613">.onion</translation>
-<translation id="406832631167785034">የ using .onion ኣድራሻ ይክፈቱ</translation>
 <translation id="4759098689276706664">በግድ ለጥፍ</translation>
 <translation id="4901618511712685702">ወደ IPFS ያስመጡ</translation>
 <translation id="6794469945030154569">ይህ ገጽ</translation>
@@ -121,6 +120,7 @@
 <translation id="8606416238399082160">ሙሉ በሙሉ ግላዊ፣ 100% ገለልተኛ እና ከምርጥ AI ባህሪያት ጋር።</translation>
 <translation id="5240031343741051161">ብሬቭ ፍለጋን ይሞክሩ</translation>
 <translation id="5234764350956374838">አሰናብት</translation>
+<translation id="9218430445555521422">እንደወረደ አዘጋጀው</translation>
 <translation id="2370739752330685659">ምናልባት በኋላ</translation>
 <translation id="5100490448228945668">የ Brave ፍለጋ ልወጣን አሰናብት፣ ይህን ጥቆማ ለማስወገድ Enter የሚለውን ተጫን</translation>
 <translation id="9194637241566114638">ስም-አልባ የአጠቃቀም ዳታዎችን በመላክ <ph name="MORE_INFO"/><ph name="SEARCH_NAME"/> በማሻሻል ላይ ድጋፍ ያድርጉ።</translation>
@@ -166,6 +166,7 @@
 <translation id="6959315322491671328">ለማስወገድ የቀኝ-ጠቅ ያድርጉ</translation>
 <translation id="495046168593986294">ወደ ላይ ሸብልል</translation>
 <translation id="4021716437419160885">ወደ ታች ሸብልል</translation>
+<translation id="2702801445560668637">የንባብ ዝርዝር</translation>
 <translation id="2533715613366623756">የእልባቶች አስተዳዳሪ</translation>
 <translation id="3405021928725149239">የእልባቶች አስተዳዳሪ</translation>
 <translation id="6284218950354553099">የእለታዊ ፒንጅ ኣጠቃቀም በራስ-ሰር ወደ Brave  ላክ</translation>
@@ -246,7 +247,6 @@
 <translation id="796831669370432378">ዕልባት ለማከል፣ ከአድራሻ አሞሌው አጠገብ ያለውን ቁልፍ ጠቅ ያድርጉ</translation>
 <translation id="8487693399751278191">ዕልባቶችን አሁን አስመጣ...</translation>
 <translation id="2557899542277210112">ለፈጣን ተደራሽነት፣ ዕልባቶችዎን እዚህ የዕልባቶች ትር አሞሌ ላይ ያስቀምጡ።</translation>
-<translation id="2702801445560668637">የንባብ ዝርዝር</translation>
 <translation id="1968543937259008435">በኦንላይን ላይ ያለ ለምርጥ ግላዊነት ዝግጁ ነዎት?</translation>
 <translation id="6817415381278637662">በከፈቱት በእያንዳንዱ ድረ-ገጽ ላይ የ Brave ን ግላዊነት ጥበቃ ለማግኘት Brave ን እንደ ነባሪ አሳሽዎ አድርገው ያቀናብሩ።</translation>
 <translation id="8722651357687610395">Braveን እንደ ነባሪ አድርገው ያቀናብሩት</translation>
@@ -450,10 +450,6 @@
 <translation id="2808630562319398131">የ Brave ሽልማቶች ውሂብን ዳግም ያስጀምሩ...</translation>
 <translation id="6438096877646138757">ኩኪዎችን ሲዘጉ የሚያጸዱ ጣቢያዎች</translation>
 <translation id="2988792685798128092">ቅርበት ያለውን ጣቢያ አጽዳ</translation>
-<translation id="4663317021223369617">ኩኪዎች እና የጣቢያ ውሂብ</translation>
-<translation id="7050661313034564003">ለዚህ ጣቢያ ሁሉንም ኩኪዎች እና በአካባቢው የተቀመጡ ውሂቦችን ያሳዩ</translation>
-<translation id="8339059274628563283">በአካባቢው የተከማቸ የ<ph name="SITE"/> ውሂብ</translation>
-<translation id="1963227389609234879">ሁሉንም አስወግድ</translation>
 <translation id="7702907602086592255">ጎራ</translation>
 <translation id="3202131003361292969">ዱካ</translation>
 <translation id="5390743329570580756">ላክ ለ</translation>

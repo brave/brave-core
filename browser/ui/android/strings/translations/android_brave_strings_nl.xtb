@@ -417,9 +417,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="7275773481201277457">Brave Statistieken Weergeven</translation>
 <translation id="8297488609722895137">Foto gemaakt door <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Door te tikken op 'Starten met het gebruik van Brave Rewards', gaat u akkoord met de <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Krijg betaald om deze achtergrondafbeelding te zien.</translation>
 <translation id="7136586167396205364">Gesponsorde afbeeldingen verbergen</translation>
-<translation id="2927095357213611519">Je kunt webontwikkelaars ondersteunen met tokens.\nVerdien tokens door privacy-respecterende advertenties te bekijken.</translation>
 <translation id="2898634658146274982">Externe links in Brave openen</translation>
 <translation id="5616508928556767259">Opent links van andere apps in een Brave-webweergave. Let op: Brave moet ingesteld zijn als uw standaardbrowser.</translation>
 <translation id="2394961582378297792">Uitgelogd</translation>
@@ -477,6 +475,10 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="8912304686498704084">BOVEN</translation>
 <translation id="4963218453264888510">BENEDEN</translation>
 <translation id="7474113515179313724">Je surft op deze site zonder de privacybescherming van Brave. Werkt het niet goed als Shields aan staat?</translation>
+<translation id="4226543734057230801">Ethereum-netwerken</translation>
+<translation id="3504157706952484145">Filecoin-netwerken</translation>
+<translation id="1561541094377237745">Solana-netwerken</translation>
+<translation id="7141438739990875547">Bitcoin-netwerken</translation>
 <translation id="9055546041146396417">Als deze site niet lijkt te werken, probeer dan Shields uit te zetten.</translation>
 <translation id="1209739344687072997">Meld een gebroken site</translation>
 <translation id="8510478288840333677">Laat de ontwikkelaars van Brave weten dat deze site niet goed werkt met Shields:</translation>
@@ -575,8 +577,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="2422627462367776805">Zuid-Koreaanse webportal en Zoeken</translation>
 <translation id="177282784098234156">Privé, onafhankelijk, klantgericht</translation>
 <translation id="1410130669636877548">Sommige zoekmachines beschermen uw privacy beter dan anderen wanneer u op het web zoekt.</translation>
-<translation id="5187052478998910855">Heeft u een opfrisser nodig over Rewards?</translation>
-<translation id="8622329973403382303">Neem een snelle tour om erachter te komen hoe het werkt om de geschiedenis in te gaan als een Rewards rockster!</translation>
 <translation id="3479552764303398839">Niet nu</translation>
 <translation id="7138272885617540195">Sta app-links toe om apps buiten Brave te openen</translation>
 <translation id="4954512758656527938">Standaard Ethereum-wallet</translation>
@@ -702,9 +702,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="6748319398471481216">Wordt maandelijks verlengd</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> per maand.</translation>
 <translation id="1163809943099641131">Eén jaar</translation>
-<translation id="7574007394522199115">Met een jaarlijks abonnement bespaart u <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
-<translation id="2655185358771731232">Probeer 7 dagen gratis uit. Na 7 dagen wordt de abonnementsprijs in rekening gebracht. Alle abonnementen worden automatisch verlengd, maar kunnen voor verlenging worden geannuleerd.</translation>
 <translation id="6053992191006521518">Probeer GRATIS uit</translation>
 <translation id="5903391101107992067">Probeer 7 dagen gratis</translation>
 <translation id="721747358270435486">VPN installeren</translation>
@@ -850,7 +848,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="7791543448312431591">Voeg toe</translation>
 <translation id="6889920539620318793">Instellen als actief</translation>
 <translation id="2653659639078652383">Verzenden</translation>
-<translation id="4556601961751528347">Gekoppeld account wijzigen</translation>
+<translation id="4945690646623486292">Netwerk selecteren</translation>
 <translation id="5233638681132016545">Nieuw tabblad</translation>
 <translation id="8006088103295786154">Toegang tot Brave Wallet</translation>
 <translation id="8030169304546394654">Verbinding verbroken</translation>
@@ -907,7 +905,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="2322227405137827074">Wil je deze token importeren?</translation>
 <translation id="1324417023773393937">Brave-browser</translation>
 <translation id="6044189892950611565">Meldingkanaal voor Brave Browser</translation>
-<translation id="1173919438868967364">Rekening selecteren</translation>
+<translation id="4556601961751528347">Gekoppeld account wijzigen</translation>
 <translation id="8922793255489232731">Geen overeenkomstige tijdzone gevonden voor: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Verbonden met <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Proefperiode</translation>
@@ -1063,7 +1061,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="4932733599132424254">Datum</translation>
 <translation id="346505172740911461">Marktprijs</translation>
 <translation id="5494920125229734069">Alles selecteren</translation>
-<translation id="5972844218283131174">Alles selecties ongedaan maken</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Inloggen bij Brave Wallet</translation>
 <translation id="3696514931437952995">U logt in bij <ph name="ORIGIN"/>. Brave-wallet deelt uw wallet-adres met <ph name="ORIGIN"/>.</translation>

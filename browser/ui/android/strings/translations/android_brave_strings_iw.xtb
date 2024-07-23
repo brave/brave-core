@@ -418,9 +418,7 @@
 <translation id="7275773481201277457">הצג סטטיסטיקות Brave</translation>
 <translation id="8297488609722895137">תמונה מאת <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">על ידי לחיצה על התחל להשתמש ב-Brave Rewards, הנך מסכימ/ה ל<ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">קבל/י תשלום כדי לצפות בתמונת רקע זו.</translation>
 <translation id="7136586167396205364">הסתר תמונות ממומנות</translation>
-<translation id="2927095357213611519">באפשרותך לתמוך ביוצרי רשת באמצעות טוקנים.\n הרווח/י טוקנים על ידי צפייה בפרסומות השומרות על הפרטיות.</translation>
 <translation id="2898634658146274982">פתח קישורים חיצוניים ב- Brave</translation>
 <translation id="5616508928556767259">פותח קישורים מיישומים אחרים בBrave webview. הערה: יש להגדיר את Brave כדפדפן ברירת המחדל שלך.</translation>
 <translation id="2394961582378297792">התנתק</translation>
@@ -478,6 +476,10 @@
 <translation id="8912304686498704084">למעלה</translation>
 <translation id="4963218453264888510">למטה</translation>
 <translation id="7474113515179313724">הנך גולש/ת באתר זה ללא הגנת הפרטיות של Brave. האם זה לא עובד כמו שצריך עם Shields?</translation>
+<translation id="4226543734057230801">רשתות Ethereum</translation>
+<translation id="3504157706952484145">רשתות Filecoin</translation>
+<translation id="1561541094377237745">רשתות Solana</translation>
+<translation id="7141438739990875547">רשתות ביטקוין</translation>
 <translation id="9055546041146396417">אם נראה שאתר זה שבור, נסה/י לכבות את Shields.</translation>
 <translation id="1209739344687072997">דווח/י על אתר לא תקין</translation>
 <translation id="8510478288840333677">הודע/י למפתחים של Brave כי אתר זה אינו עובד בצורה תקינה עם Shields:</translation>
@@ -576,8 +578,6 @@
 <translation id="2422627462367776805">חיפוש ופורטל אינטרנט דרום קוריאני</translation>
 <translation id="177282784098234156">פרטי, בלתי תלוי, המשתמש קודם</translation>
 <translation id="1410130669636877548">מנועי חיפוש מסוימים מגנים על פרטיותכם טוב יותר מאחרים בעת חיפוש באינטרנט.</translation>
-<translation id="5187052478998910855">זקוקים לרענון לגבי Rewards?</translation>
-<translation id="8622329973403382303">ערכו סיור מהיר כדי לרענן ידיעתכם לגבי איך זה עובד להיכנס להיסטוריה בתור כוכב רוק של Rewards!</translation>
 <translation id="3479552764303398839">לא עכשיו</translation>
 <translation id="7138272885617540195">אפשר קישורי אפליקציות להיפתח באפליקציות מחוץ ל-Brave</translation>
 <translation id="4954512758656527938">ארנק ברירת המחדל של Ethereum</translation>
@@ -703,9 +703,11 @@
 <translation id="6748319398471481216">מתחדש מדי חודש</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / mo.</translation>
 <translation id="1163809943099641131">שנה אחת</translation>
-<translation id="7574007394522199115">חיסכון מדי שנה <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">סקרו שנתית <ph name="DISCOUNT_TEXT_START"/>save <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
-<translation id="2655185358771731232">נסה בחינם במשך 7 ימים. לאחר 7 ימים, תחויב במחיר התוכנית. כל המנויים מתחדשים אוטומטית אך ניתן לבטל אותם לפני חידושם.</translation>
+<translation id="5125233570742276182">המינויים יחויבו דרך חשבון Google שלכם. כל חלק שלא נעשה בו שימוש בתקופת הניסיון בחינם, אם מוצע, יתבטל בעת רכישת מנוי.\n\nהמינוי שלכם יתחדש אוטומטית אלא אם כן יבוטל לפחות 24 שעות לפני תום התקופה הנוכחית.\n\nתוכלו לנהל את מינויים בהגדרות.\nבשימוש ב-Brave, אתם מסכימים לתנאי השימוש ולמדיניות הפרטיות</translation>
+<translation id="5035172357624830412">האם כבר קניתם ב- brave.com?</translation>
+<translation id="713136183174551885">חדשו את שם המשתמש וסיסמה שלכם</translation>
 <translation id="6053992191006521518">נסה בחינם</translation>
 <translation id="5903391101107992067">נסו למשך 7 ימים ללא עלות</translation>
 <translation id="721747358270435486">התקן VPN</translation>
@@ -851,7 +853,7 @@
 <translation id="7791543448312431591">הוסף</translation>
 <translation id="6889920539620318793">הגדר כפעיל</translation>
 <translation id="2653659639078652383">שלח</translation>
-<translation id="4556601961751528347">שנה חשבון מחובר</translation>
+<translation id="4945690646623486292">בחירת רשת</translation>
 <translation id="5233638681132016545">כרטיסייה חדשה</translation>
 <translation id="8006088103295786154">כניסה לארנק Brave</translation>
 <translation id="8030169304546394654">מנותק</translation>
@@ -908,7 +910,7 @@
 <translation id="2322227405137827074">האם תהיה מעוניין לייבא אסימון זה?</translation>
 <translation id="1324417023773393937">דפדפן Brave</translation>
 <translation id="6044189892950611565">ערוץ התראות עבור Brave Browser</translation>
-<translation id="1173919438868967364">בחירת חשבון</translation>
+<translation id="4556601961751528347">שנה חשבון מחובר</translation>
 <translation id="8922793255489232731">לא ניתן היה להשיג אזור זמן תואם עבור: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">מחובר אל <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">ניסיון</translation>
@@ -1064,7 +1066,6 @@
 <translation id="4932733599132424254">תאריך</translation>
 <translation id="346505172740911461">מחיר שוק</translation>
 <translation id="5494920125229734069">בחר הכל</translation>
-<translation id="5972844218283131174">הסר סימון מהכל</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">היכנס עם Brave Wallet</translation>
 <translation id="3696514931437952995">אתה נכנס לחשבון<ph name="ORIGIN"/>.ארנק אמיץ ישתף את כתובת הארנק שלך<ph name="ORIGIN"/>.</translation>

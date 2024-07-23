@@ -414,9 +414,7 @@
 <translation id="7275773481201277457">إظهار إحصائيات Brave</translation>
 <translation id="8297488609722895137">الصورة بعدسة <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">من خلال النقر على "البدء في استخدام Brave Rewards"، فإنك توافق على <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">تقاضَ أجراً لرؤية صورة الخلفية هذه.</translation>
 <translation id="7136586167396205364">إخفاء صور الرعاة الدعائية</translation>
-<translation id="2927095357213611519">يمكنك دعم منشئي الويب باستخدام الرموز المميزة.\nاكسب رموزاً مميزة من خلال مشاهدة إعلانات مراعية للخصوصية.</translation>
 <translation id="2898634658146274982">فتح الروابط الخارجية في Brave</translation>
 <translation id="5616508928556767259">يفتح روابط من تطبيقات أخرى في عرض الويب بمتصفح Brave. ملاحظة: يجب تعيين Brave كمتصفحك الافتراضي.</translation>
 <translation id="2394961582378297792">تم تسجيل الخروج</translation>
@@ -474,6 +472,10 @@
 <translation id="8912304686498704084">قيد التشغيل</translation>
 <translation id="4963218453264888510">معطل</translation>
 <translation id="7474113515179313724">إنك تتصفح هذا الموقع دون حماية الخصوصية من Brave. ألا يعمل بشكل صحيح أثناء تشغيل Shields؟</translation>
+<translation id="4226543734057230801">شبكات الإيثيريوم</translation>
+<translation id="3504157706952484145">شبكات Filecoin</translation>
+<translation id="1561541094377237745">شبكات Solana</translation>
+<translation id="7141438739990875547">شبكات بيتكوين</translation>
 <translation id="9055546041146396417">إذا كان هذا الموقع يبدو معطلاً فجرّب إيقاف تشغيل Shields.</translation>
 <translation id="1209739344687072997">الإبلاغ عن موقع إلكتروني معطل</translation>
 <translation id="8510478288840333677">إخطار مطوري Brave بأن هذا الموقع لا يعمل بشكلٍ سليم مع Shields:</translation>
@@ -572,8 +574,6 @@
 <translation id="2422627462367776805">مدخل الويب في كوريا الجنوبية &amp; بحث</translation>
 <translation id="177282784098234156">خاص، مستقل، المستخدم أولاً</translation>
 <translation id="1410130669636877548">تحمي بعض محركات البحث خصوصيتك بشكل أفضل من غيرها عند البحث في الويب.</translation>
-<translation id="5187052478998910855">هل تحتاج إلى تذكير بـ Rewards؟</translation>
-<translation id="8622329973403382303">قم بجولة سريعة للتعرف على الطريقة التي تعمل بها لتدخل التاريخ كنجم Rewards لامع!</translation>
 <translation id="3479552764303398839">ليس الآن</translation>
 <translation id="7138272885617540195">يتم السماح لروابط التطبيقات بالفتح في التطبيقات خارج موقع Brave</translation>
 <translation id="4954512758656527938">محفظة Ethereum الافتراضية</translation>
@@ -699,9 +699,11 @@
 <translation id="6748319398471481216">يتجدد شهريًا</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / mo.</translation>
 <translation id="1163809943099641131">ٍسنة واحدة</translation>
-<translation id="7574007394522199115">التجديد سنويًا يوفر <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">تجديد سنوي<ph name="DISCOUNT_TEXT_START"/>وفّر <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
-<translation id="2655185358771731232">جربه مجانًا لمدة 7 أيام. بعد 7 أيام، سيتم تحصيل سعر الخطة منك. يتم تجديد جميع الاشتراكات تلقائيًا ولكن يمكن إلغاؤها قبل التجديد.</translation>
+<translation id="5125233570742276182">سيتم تحصيل الاشتراكات عبر حسابك على Google. وسيتم مصادرة أي جزء غير مستخدم من النسخة التجريبية المجانية، إذا تم عرضه، عند شراء اشتراك.\n\nسيتم تجديد اشتراكك تلقائيًا ما لم يتم إلغاؤه قبل 24 ساعة على الأقل من نهاية الفترة الحالية.\n\nيمكنك إدارة اشتراكاتك في الإعدادات.\باستخدام Brave، توافق على شروط الاستخدام وسياسة الخصوصية.</translation>
+<translation id="5035172357624830412">هل اشتريت بالفعل عبر الموقع الإلكتروني Brave.com؟</translation>
+<translation id="713136183174551885">قم بتحديث بيانات الاعتماد الخاصة بك</translation>
 <translation id="6053992191006521518">المحاولة مجانًا</translation>
 <translation id="5903391101107992067">جرب مجانًا لمدة 7 أيام</translation>
 <translation id="721747358270435486">تثبيت VPN</translation>
@@ -847,7 +849,7 @@
 <translation id="7791543448312431591">إضافة</translation>
 <translation id="6889920539620318793">تعيين كنشط</translation>
 <translation id="2653659639078652383">إرسال</translation>
-<translation id="4556601961751528347">تغيير الحساب المتصل</translation>
+<translation id="4945690646623486292">تحديد شبكة</translation>
 <translation id="5233638681132016545">علامة تبويب جديدة</translation>
 <translation id="8006088103295786154">الدخول إلى محفظة Brave</translation>
 <translation id="8030169304546394654">قُطع الاتصال</translation>
@@ -904,7 +906,7 @@
 <translation id="2322227405137827074">هل ترغب في استيراد هذه العملة الرمزية؟</translation>
 <translation id="1324417023773393937">متصفح Brave</translation>
 <translation id="6044189892950611565">قناة الإشعار لمتصفح Brave</translation>
-<translation id="1173919438868967364">تحديد حساب</translation>
+<translation id="4556601961751528347">تغيير الحساب المتصل</translation>
 <translation id="8922793255489232731">تعذّر الحصول على المنطقة الزمنية المطابقة لـ: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">متصل بـ <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">إصدار تجريبي</translation>
@@ -1060,7 +1062,6 @@
 <translation id="4932733599132424254">التاريخ</translation>
 <translation id="346505172740911461">سعر السوق</translation>
 <translation id="5494920125229734069">تحديد الكل</translation>
-<translation id="5972844218283131174">إلغاء تحديد الكل</translation>
 <translation id="6129027151000961048">ليو</translation>
 <translation id="8613144770663526433">تسجيل الدخول إلى Brave Wallet</translation>
 <translation id="3696514931437952995">أنت الآن تقوم بتسجيل الدخول في <ph name="ORIGIN"/>. سوف تشارك Brave wallet عنوان محفظتك مع <ph name="ORIGIN"/>.</translation>
