@@ -24,18 +24,26 @@ namespace {
 
 base::Value::Dict GetValueFromRegion(const mojom::Region& region) {
   base::Value::Dict region_dict;
-  region_dict.Set(kRegionContinentKey, region.continent);
   region_dict.Set(kRegionNameKey, region.name);
   region_dict.Set(kRegionNamePrettyKey, region.name_pretty);
+  region_dict.Set(kRegionContinentKey, region.continent);
   region_dict.Set(kRegionCountryIsoCodeKey, region.country_iso_code);
+  region_dict.Set(kRegionPrecisionKey, region.region_precision);
+  region_dict.Set(kRegionLatitudeKey, region.latitude);
+  region_dict.Set(kRegionLongitudeKey, region.longitude);
+  region_dict.Set(kRegionServerCountKey, region.server_count);
   return region_dict;
 }
 
 bool IsValidRegionValue(const base::Value::Dict& value) {
-  if (!value.FindString(kRegionContinentKey) ||
-      !value.FindString(kRegionNameKey) ||
+  if (!value.FindString(kRegionNameKey) ||
       !value.FindString(kRegionNamePrettyKey) ||
-      !value.FindString(kRegionCountryIsoCodeKey)) {
+      !value.FindString(kRegionContinentKey) ||
+      !value.FindString(kRegionCountryIsoCodeKey) ||
+      !value.FindString(kRegionPrecisionKey) ||
+      !value.FindString(kRegionLatitudeKey) ||
+      !value.FindString(kRegionLongitudeKey) ||
+      !value.FindString(kRegionServerCountKey)) {
     return false;
   }
 
@@ -44,18 +52,34 @@ bool IsValidRegionValue(const base::Value::Dict& value) {
 
 mojom::Region GetRegionFromValue(const base::Value::Dict& value) {
   mojom::Region region;
-  if (auto* continent = value.FindString(brave_vpn::kRegionContinentKey)) {
-    region.continent = *continent;
-  }
   if (auto* name = value.FindString(brave_vpn::kRegionNameKey)) {
     region.name = *name;
   }
   if (auto* name_pretty = value.FindString(brave_vpn::kRegionNamePrettyKey)) {
     region.name_pretty = *name_pretty;
   }
+  if (auto* continent = value.FindString(brave_vpn::kRegionContinentKey)) {
+    region.continent = *continent;
+  }
   if (auto* country_iso_code =
           value.FindString(brave_vpn::kRegionCountryIsoCodeKey)) {
     region.country_iso_code = *country_iso_code;
+  }
+  if (auto* region_precision =
+          value.FindString(brave_vpn::kRegionPrecisionKey)) {
+    region.region_precision = *region_precision;
+  }
+  if (auto latitude =
+          value.FindDouble(brave_vpn::kRegionLatitudeKey)) {
+    region.latitude = *latitude;
+  }
+  if (auto longitude =
+          value.FindDouble(brave_vpn::kRegionLongitudeKey)) {
+    region.longitude = *longitude;
+  }
+  if (auto server_count =
+          value.FindInt(brave_vpn::kRegionServerCountKey)) {
+    region.server_count = *server_count;
   }
   return region;
 }

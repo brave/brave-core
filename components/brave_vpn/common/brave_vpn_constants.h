@@ -20,10 +20,15 @@ inline constexpr char kManageUrlDev[] =
 inline constexpr char kFeedbackUrl[] = "https://support.brave.com/";
 inline constexpr char kAboutUrl[] = "https://brave.com/firewall-vpn/";
 
-inline constexpr char kRegionContinentKey[] = "continent";
 inline constexpr char kRegionNameKey[] = "name";
 inline constexpr char kRegionNamePrettyKey[] = "name-pretty";
+inline constexpr char kRegionContinentKey[] = "continent";
 inline constexpr char kRegionCountryIsoCodeKey[] = "country-iso-code";
+inline constexpr char kRegionPrecisionKey[] = "region-precision";
+inline constexpr char kRegionLatitudeKey[] = "latitude";
+inline constexpr char kRegionLongitudeKey[] = "longitude";
+inline constexpr char kRegionServerCountKey[] = "server-count";
+
 inline constexpr char kCreateSupportTicket[] =
     "api/v1.2/partners/support-ticket";
 inline constexpr char kSupportTicketEmailKey[] = "email";
