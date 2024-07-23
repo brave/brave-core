@@ -23,11 +23,21 @@ export const style = scopedCSS('app', css`
   & {
     --onboarding-max-width: 392px;
     container: app/normal;
+    max-height: 100vh;
+    overflow: auto;
+
+    scrollbar-color: #00000040 #0000;
+    scrollbar-width: thin;
+
+    @media (prefers-color-scheme: dark) {
+      scrollbar-color: #FFFFFF40 #0000;
+    }
   }
 
   &.is-bubble {
     width: 392px;
     min-height: 550px;
+    max-height: calc(var(--app-screen-height, 950px) - 80px);
   }
 
   &.is-narrow-view {

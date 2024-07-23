@@ -39,11 +39,15 @@ export const modalStyle = scopedCSS('app-modal', css`
   }
 
   @keyframes modal-content-slide-in {
-    from {
+    0% {
       max-height: 0;
       overflow: clip;
     }
-    to {
+    99% {
+      max-height: calc(100% - 12px);
+      overflow: clip;
+    }
+    100% {
       max-height: calc(100% - 12px);
       overflow: auto;
     }
