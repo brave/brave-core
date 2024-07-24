@@ -517,9 +517,17 @@ Config.prototype.buildArgs = function () {
     args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
   }
 
-  if (this.getTargetOS() === 'linux' && this.targetArch === 'x86') {
-    // Minimal symbols to work around size restrictions:
-    // On Linux x86, ELF32 cannot be > 4GiB.
+  // Adjust symbol_level in Linux builds:
+  // 1. Set minimal symbol level to workaround size restrictions: on Linux x86,
+  //    ELF32 cannot be > 4GiB.
+  // 2. Enable symbols in Static builds. By default symbol_level is 0 in this
+  //    configuration. symbol_level = 2 cannot be used because of "relocation
+  //    R_X86_64_32 out of range" errors.
+  if (
+    this.getTargetOS() === 'linux' &&
+    (this.targetArch === 'x86' ||
+      (!this.isDebug() && !this.isComponentBuild() && !this.isReleaseBuild()))
+  ) {
     args.symbol_level = 1
   }
 
