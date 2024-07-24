@@ -324,7 +324,6 @@
   <message name="IDS_BRAVE_WALLET_NETWORK_E_T_H" desc="Network Ethereum title">Ethereum</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_MAIN" desc="Network Main title">Mainnet</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_TEST" desc="Network Test Network title">Test Network</message>
-  <message name="IDS_BRAVE_WALLET_NETWORK_GOERLI" desc="Network Goerli title">Goerli</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_SEPOLIA" desc="Network Sepolia title">Sepolia</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_LOCALHOST" desc="Network Localhost title">Localhost</message>
   <message name="IDS_BRAVE_WALLET_SELECT_ACCOUNT" desc="Select Account tab title">Select account</message>

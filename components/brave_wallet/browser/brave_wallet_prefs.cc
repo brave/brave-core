@@ -88,7 +88,6 @@ base::Value::Dict GetDefaultHiddenNetworks() {
   base::Value::Dict hidden_networks;
 
   base::Value::List eth_hidden;
-  eth_hidden.Append(mojom::kGoerliChainId);
   eth_hidden.Append(mojom::kSepoliaChainId);
   eth_hidden.Append(mojom::kLocalhostChainId);
   eth_hidden.Append(mojom::kFilecoinEthereumTestnetChainId);
@@ -292,6 +291,9 @@ void RegisterProfilePrefsForMigration(
                                 false);
   // Added 06/2024
   registry->RegisterBooleanPref(kBraveWalletIsCompressedNftMigrated, false);
+
+  // Added 07/2024
+  registry->RegisterBooleanPref(kBraveWalletGoerliNetworkMigrated, false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -351,6 +353,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 05/2024
   ClearDeprecatedIpfsPrefs(prefs);
+
+  // Added 07/2024 to set active ETH chain to Sepolia if Goerli is selected.
+  BraveWalletService::MigrateGoerliNetwork(prefs);
 }
 
 }  // namespace brave_wallet

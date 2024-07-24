@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
-import android.annotation.SuppressLint;
-
 import androidx.annotation.NonNull;
 
 import org.chromium.base.Callbacks;
@@ -104,62 +102,64 @@ public class TokenUtils {
         return tokenStream.toArray(BlockchainToken[] ::new);
     }
 
-    public static void getVisibleUserAssetsFiltered(BraveWalletService braveWalletService,
-            NetworkInfo selectedNetwork, int coinType, TokenType tokenType,
+    public static void getVisibleUserAssetsFiltered(
+            BraveWalletService braveWalletService,
+            NetworkInfo selectedNetwork,
+            int coinType,
+            TokenType tokenType,
             Callbacks.Callback1<BlockchainToken[]> callback) {
         braveWalletService.getUserAssets(
-                selectedNetwork.chainId, coinType, (BlockchainToken[] tokens) -> {
+                selectedNetwork.chainId,
+                coinType,
+                (BlockchainToken[] tokens) -> {
                     BlockchainToken[] filteredTokens =
                             filterTokens(selectedNetwork, tokens, tokenType, true);
                     callback.call(filteredTokens);
                 });
     }
 
-    @SuppressLint("WrongCommentType")
-    /*
-     * Wrapper for {@link BlockchainRegistry#getAllTokens} with Goerli contract address
-     * modifications.
-     *
-     * <b>Note:</b>: all calls to {@link BlockchainRegistry#getAllTokens} should be intercepted by
-     * this method.
-     */
-    public static void getAllTokens(
-            @NonNull BlockchainRegistry blockchainRegistry,
-            String chainId,
-            int coinType,
-            BlockchainRegistry.GetAllTokens_Response callback) {
-        blockchainRegistry.getAllTokens(
-                chainId,
-                coinType,
-                tokens -> callback.call(Utils.fixupTokensRegistry(tokens, chainId)));
-    }
-
     /**
      * Gets all tokens from a given single network, includes user assets and filters out tokens
      * different from a given type.
+     *
      * @param braveWalletService BraveWalletService to retrieve user asset from core.
      * @param blockchainRegistry BraveChainRegistry to retrieve all tokens from core.
      * @param selectedNetwork Selected network whose tokens will be retrieved.
      * @param tokenType Token type used for filtering.
      * @param callback Callback containing a filtered array of tokens for the given network.
      */
-    public static void getAllTokensFiltered(BraveWalletService braveWalletService,
-            BlockchainRegistry blockchainRegistry, NetworkInfo selectedNetwork, TokenType tokenType,
+    public static void getAllTokensFiltered(
+            BraveWalletService braveWalletService,
+            BlockchainRegistry blockchainRegistry,
+            NetworkInfo selectedNetwork,
+            TokenType tokenType,
             Callbacks.Callback1<BlockchainToken[]> callback) {
-        getAllTokens(blockchainRegistry, selectedNetwork.chainId, selectedNetwork.coin,
-                tokens
-                -> braveWalletService.getUserAssets(
-                        selectedNetwork.chainId, selectedNetwork.coin, userTokens -> {
-                            BlockchainToken[] filteredTokens = filterTokens(selectedNetwork,
-                                    distinctiveConcatenatedArrays(tokens, userTokens), tokenType,
-                                    false);
-                            callback.call(filteredTokens);
-                        }));
+        blockchainRegistry.getAllTokens(
+                selectedNetwork.chainId,
+                selectedNetwork.coin,
+                tokens ->
+                        braveWalletService.getUserAssets(
+                                selectedNetwork.chainId,
+                                selectedNetwork.coin,
+                                userTokens -> {
+                                    BlockchainToken[] filteredTokens =
+                                            filterTokens(
+                                                    selectedNetwork,
+                                                    distinctiveConcatenatedArrays(
+                                                            tokens, userTokens),
+                                                    tokenType,
+                                                    false);
+                                    callback.call(filteredTokens);
+                                }));
     }
 
-    public static void getUserOrAllTokensFiltered(BraveWalletService braveWalletService,
-            BlockchainRegistry blockchainRegistry, NetworkInfo selectedNetwork, int coinType,
-            TokenType tokenType, boolean userAssetsOnly,
+    public static void getUserOrAllTokensFiltered(
+            BraveWalletService braveWalletService,
+            BlockchainRegistry blockchainRegistry,
+            NetworkInfo selectedNetwork,
+            int coinType,
+            TokenType tokenType,
+            boolean userAssetsOnly,
             Callbacks.Callback1<BlockchainToken[]> callback) {
         if (JavaUtils.anyNull(braveWalletService, blockchainRegistry)) return;
         if (userAssetsOnly)

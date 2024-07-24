@@ -115,5 +115,8 @@ inline constexpr char kBraveWalletUserAssetsDeprecated[] =
 // 06/2024 migrated to kBraveWalletEip1559CustomChains.
 inline constexpr char kSupportEip1559OnLocalhostChainDeprecated[] =
     "brave.wallet.support_eip1559_on_localhost_chain";
+// Added 07/2024 to remove Goerli mainnet, previously a preloaded network.
+inline constexpr char kBraveWalletGoerliNetworkMigrated[] =
+    "brave.wallet.custom_networks.goerli_migrated";
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_

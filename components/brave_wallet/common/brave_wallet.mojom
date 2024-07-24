@@ -1193,7 +1193,6 @@ const string kSolanaComputeBudgetProgramId = "ComputeBudget111111111111111111111
 
 // It is required to keep these chain IDs lowercase ASCII
 const string kMainnetChainId = "0x1";
-const string kGoerliChainId = "0x5";
 const string kSepoliaChainId = "0xaa36a7";
 const string kLocalhostChainId = "0x539";
 const string kPolygonMainnetChainId = "0x89";
