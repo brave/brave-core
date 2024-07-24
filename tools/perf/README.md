@@ -9,7 +9,7 @@
 ## S3 migration
 
 Perf data is currently moving to AWS S3 `brave-perf-data` bucket.
-The data is accessible via <https://brave-perf-data.s3.brave.com/{path}>.
+The data is accessible via <https://perf-data.s3.brave.com/{path}>.
 The current structure:
 .`/perf-profiles/`: test perf profiles
 
@@ -18,13 +18,13 @@ The current structure:
 Make sure that you setup aws cli tools.
 
 1. Calculate SHA1 hash
-2. Upload to `s3://brave-perf-data/<folder>/<sha1>`
+2. Upload to `s3://perf-data/<folder>/<sha1>`
 3. Store the hash as `<filename>.sha1`
 
 A sh command to run all 3 steps:
 `FILE=<filename>; \
 SHA1=$(shasum -a 1 BUILD.gn | head -c 40); \
-  aws s3 cp $FILE s3://brave-perf-data/<folder>/$SHA1 \
+  aws s3 cp $FILE s3://perf-data/<folder>/$SHA1 \
     --profile go-translate-dev --acl bucket-owner-full-control \
   echo $SHA1 > $FILE.sha1;`
 
