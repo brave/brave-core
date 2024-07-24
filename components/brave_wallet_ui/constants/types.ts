@@ -531,7 +531,6 @@ export enum WalletRoutes {
 
   // Web3
   Web3 = '/crypto/explore/web3',
-  Web3DappDetails = '/crypto/explore/web3/:dappId',
 
   // accounts
   Accounts = '/crypto/accounts',

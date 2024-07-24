@@ -17,5 +17,6 @@ export const StyledWrapper = styled.div`
 
 export const SegmentedControl = styled(LeoSegmentedControl)`
   --leo-control-item-padding: 16px 50px;
+  --control-height: 60px;
   margin: 24px 32px;
 `

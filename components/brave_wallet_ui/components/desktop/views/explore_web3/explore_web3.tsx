@@ -15,7 +15,6 @@ import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
-import { makeDappDetailsRoute } from '../../../../utils/routes-utils'
 import {
   useLocalStorage, //
   useSyncedLocalStorage
@@ -53,6 +52,7 @@ import { DappFilter } from './dapp_filter'
 import { Column, Row, Text } from '../../../shared/style'
 import { ControlsRow } from '../portfolio/style'
 import { CategoryHeader, DappsGrid, PlainButton } from './explore_web3.style'
+import { DappDetails } from './web3_dapp_details'
 
 export const ExploreWeb3View = () => {
   // routing
@@ -63,6 +63,11 @@ export const ExploreWeb3View = () => {
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
   const [showFilters, setShowFilters] = React.useState<boolean>(false)
+  const [selectedDapp, setSelectedDapp] = React.useState<
+    BraveWallet.Dapp | undefined
+  >(undefined)
+  const [isDappDetailsOpen, setIsDappDetailsOpen] =
+    React.useState<boolean>(false)
 
   // local storage
   const [filteredOutNetworkKeys, setFilteredOutNetworkKeys] =
@@ -170,12 +175,10 @@ export const ExploreWeb3View = () => {
     selectedCategory === null
 
   // methods
-  const onDappClick = React.useCallback(
-    (dappId: number) => {
-      history.push(makeDappDetailsRoute(dappId.toString()))
-    },
-    [history]
-  )
+  const onDappClick = React.useCallback((dapp: BraveWallet.Dapp) => {
+    setSelectedDapp(dapp)
+    setIsDappDetailsOpen(true)
+  }, [])
 
   const onSelectCategory = React.useCallback(
     (category: string) => {
@@ -317,7 +320,7 @@ export const ExploreWeb3View = () => {
                 <DappListItem
                   key={dapp.id}
                   dapp={dapp}
-                  onClick={() => onDappClick(dapp.id)}
+                  onClick={() => onDappClick(dapp)}
                 />
               ))}
             </DappsGrid>
@@ -335,7 +338,7 @@ export const ExploreWeb3View = () => {
                       <DappListItem
                         key={dapp.id}
                         dapp={dapp}
-                        onClick={() => onDappClick(dapp.id)}
+                        onClick={() => onDappClick(dapp)}
                       />
                     ))}
                   </Column>
@@ -354,6 +357,17 @@ export const ExploreWeb3View = () => {
           </Row>
         )}
       </Column>
+
+      {selectedDapp ? (
+        <DappDetails
+          isOpen={isDappDetailsOpen}
+          dapp={selectedDapp}
+          onClose={() => {
+            setIsDappDetailsOpen(false)
+            setSelectedDapp(undefined)
+          }}
+        />
+      ) : null}
 
       {showFilters && (
         <Web3DappFilters

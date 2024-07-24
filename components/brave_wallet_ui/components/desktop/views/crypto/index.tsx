@@ -64,7 +64,6 @@ import {
 import {
   PortfolioOverviewHeader //
 } from '../../card-headers/portfolio-overview-header'
-import { PageTitleHeader } from '../../card-headers/page-title-header'
 import { MarketAsset } from '../market/market_asset'
 import { ExploreWeb3View } from '../explore_web3/explore_web3'
 import { DappDetails } from '../explore_web3/web3_dapp_details'
@@ -220,25 +219,22 @@ export const CryptoView = ({ sessionRoute }: Props) => {
     ]
   )
 
-  const exploreWeb3Header = React.useMemo(
-    () => (
-      <SegmentedControl
-        value={selectedExploreSegment}
-        onChange={({ value }) => {
-          if (!value) return
-          setSelectedExploreSegment(value)
-          history.push(value)
-        }}
-      >
-        <SegmentedControlItem value={WalletRoutes.Market}>
-          Market
-        </SegmentedControlItem>
-        <SegmentedControlItem value={WalletRoutes.Web3}>
-          Web3
-        </SegmentedControlItem>
-      </SegmentedControl>
-    ),
-    [history, selectedExploreSegment]
+  const exploreWeb3Header = (
+    <SegmentedControl
+      value={selectedExploreSegment}
+      onChange={({ value }) => {
+        if (!value) return
+        setSelectedExploreSegment(value)
+        history.push(value)
+      }}
+    >
+      <SegmentedControlItem value={WalletRoutes.Market}>
+        Market
+      </SegmentedControlItem>
+      <SegmentedControlItem value={WalletRoutes.Web3}>
+        Web3
+      </SegmentedControlItem>
+    </SegmentedControl>
   )
 
   // render
@@ -373,27 +369,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
             <StyledWrapper>
               {banners}
               <ExploreWeb3View />
-            </StyledWrapper>
-          </WalletPageWrapper>
-        </Route>
-
-        <Route
-          path={WalletRoutes.Web3DappDetails}
-          exact={true}
-        >
-          <WalletPageWrapper
-            // wrapContentInBox
-            cardHeader={
-              <PageTitleHeader
-                title={getLocale('braveWalletAccountSettingsDetails')}
-                showBackButton
-                onBack={() => history.push(WalletRoutes.Web3)}
-              />
-            }
-          >
-            <StyledWrapper>
-              {banners}
-              <DappDetails />
             </StyledWrapper>
           </WalletPageWrapper>
         </Route>
