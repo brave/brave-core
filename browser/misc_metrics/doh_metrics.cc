@@ -26,7 +26,7 @@ using net::features::kBraveFallbackDoHProviderEndpoint;
 
 namespace {
 
-const int kAutoSecureRequestsBuckets[] = {5, 50, 90};
+const int kAutoSecureRequestsBuckets[] = {0, 5, 50, 90};
 
 const char kDohModeAutomatic[] = "automatic";
 const char kDohModeSecure[] = "secure";
@@ -108,7 +108,7 @@ DohMetrics::DohMetrics(PrefService* local_state) : local_state_(local_state) {
 
   for (const char* disabled_histogram_name :
        GetDisabledAutoSecureRequestsHistogramNames()) {
-    base::UmaHistogramExactLinear(disabled_histogram_name, INT_MAX - 1, 4);
+    base::UmaHistogramExactLinear(disabled_histogram_name, INT_MAX - 1, 5);
   }
 }
 
@@ -155,14 +155,13 @@ void DohMetrics::OnDnsRequestCounts(
   double percentage =
       static_cast<double>(upgraded_request_storage_->GetWeeklySum()) /
       std::max(total_request_storage_->GetWeeklySum(), uint64_t(1u)) * 100.0;
-  if (percentage == 0.0) {
-    base::UmaHistogramExactLinear(histogram_name, INT_MAX - 1, 4);
-    return;
+  int percentage_int = 0;
+  if (percentage > 0.0) {
+    percentage_int = static_cast<int>(percentage);
   }
 
-  p3a_utils::RecordToHistogramBucket(histogram_name.c_str(),
-                                     kAutoSecureRequestsBuckets,
-                                     static_cast<int>(percentage));
+  p3a_utils::RecordToHistogramBucket(
+      histogram_name.c_str(), kAutoSecureRequestsBuckets, percentage_int);
 }
 
 void DohMetrics::StartAutoUpgradeInitTimer() {
@@ -188,8 +187,8 @@ void DohMetrics::OnAutoUpgradeReportTimer() {
 void DohMetrics::StopListeningToDnsRequests() {
   init_timer_.Stop();
   report_interval_timer_.Stop();
-  UMA_HISTOGRAM_EXACT_LINEAR(GetAutoSecureRequestsHistogramName(), INT_MAX - 1,
-                             4);
+  base::UmaHistogramExactLinear(GetAutoSecureRequestsHistogramName(),
+                                INT_MAX - 1, 5);
 }
 
 }  // namespace misc_metrics
