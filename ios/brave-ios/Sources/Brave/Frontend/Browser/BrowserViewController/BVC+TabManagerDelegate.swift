@@ -295,8 +295,10 @@ extension BrowserViewController: TabManagerDelegate {
     var bookmarkMenuChildren: [UIAction] = []
 
     let containsWebPage = tabManager.selectedTab?.containsWebPage == true
+    let containsBookmarkablePage = tabManager.openedWebsitesCount > 1
 
-    if tabManager.openedWebsitesCount > 0, containsWebPage {
+    // Show bookmark actions if current page is a webpage
+    if containsWebPage {
       let bookmarkActiveTab = UIAction(
         title: Strings.addToMenuItem,
         image: UIImage(systemName: "book"),
@@ -304,33 +306,32 @@ extension BrowserViewController: TabManagerDelegate {
           self.openAddBookmark()
         }
       )
-
       bookmarkMenuChildren.append(bookmarkActiveTab)
-    }
 
-    if tabManager.tabsForCurrentMode.count > 1, containsWebPage {
-      let bookmarkAllTabs = UIAction(
-        title: String.localizedStringWithFormat(
-          Strings.bookmarkAllTabsTitle,
-          tabManager.tabsForCurrentMode.count
-        ),
-        image: UIImage(systemName: "book"),
-        handler: UIAction.deferredActionHandler { [unowned self] _ in
-          let mode = BookmarkEditMode.addFolderUsingTabs(
-            title: Strings.savedTabsFolderTitle,
-            tabList: tabManager.tabsForCurrentMode
-          )
-          let addBookMarkController = AddEditBookmarkTableViewController(
-            bookmarkManager: bookmarkManager,
-            mode: mode,
-            isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
-          )
+      // To show bookmark all there should be more than 1 bookmarkable tab
+      if containsBookmarkablePage {
+        let bookmarkAllTabs = UIAction(
+          title: String.localizedStringWithFormat(
+            Strings.bookmarkAllTabsTitle,
+            tabManager.openedWebsitesCount
+          ),
+          image: UIImage(systemName: "book"),
+          handler: UIAction.deferredActionHandler { [unowned self] _ in
+            let mode = BookmarkEditMode.addFolderUsingTabs(
+              title: Strings.savedTabsFolderTitle,
+              tabList: tabManager.tabsForCurrentMode
+            )
+            let addBookMarkController = AddEditBookmarkTableViewController(
+              bookmarkManager: bookmarkManager,
+              mode: mode,
+              isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+            )
 
-          presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
-        }
-      )
-
-      bookmarkMenuChildren.append(bookmarkAllTabs)
+            presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
+          }
+        )
+        bookmarkMenuChildren.append(bookmarkAllTabs)
+      }
     }
 
     var duplicateTabMenuChildren: [UIAction] = []
