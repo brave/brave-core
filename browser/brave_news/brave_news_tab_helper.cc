@@ -64,7 +64,6 @@ const std::vector<GURL> BraveNewsTabHelper::GetAvailableFeedUrls() {
   std::vector<GURL> feeds;
   base::flat_set<GURL> seen_feeds;
 
-  auto current_url = GetWebContents().GetLastCommittedURL();
   if (default_feed_) {
     seen_feeds.insert(default_feed_->feed_source);
     feeds.push_back(default_feed_->feed_source);

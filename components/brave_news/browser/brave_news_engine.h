@@ -38,6 +38,9 @@ class SubscriptionsSnapshot;
 using HashCallback = base::OnceCallback<void(const std::string&)>;
 using GetPublisherCallback = base::OnceCallback<void(mojom::PublisherPtr)>;
 
+// This class lives on a background thread. It exists so that we can do heavy
+// lifting such as building a feed or generating suggestions without blocking
+// the UI thread. Its essentially the backend for the BraveNewsController.
 class BraveNewsEngine {
  public:
   // Alias so its easier to reuse the callbacks from the mojom interface.

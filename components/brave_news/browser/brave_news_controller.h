@@ -152,6 +152,7 @@ class BraveNewsController
   void OnChannelsChanged() override;
 
  private:
+  void ResetEngine();
   void ConditionallyStartOrStopTimer();
   void CheckForFeedsUpdate();
   void CheckForPublishersUpdate();

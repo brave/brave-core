@@ -128,8 +128,7 @@ BraveNewsController::BraveNewsController(
               // Unretained is safe here because |initialization_promise_| is
               // owned by BraveNewsController.
               base::Unretained(this))) {
-  engine_.reset(
-      new BraveNewsEngine(url_loader_factory_->Clone(), MakeHistoryQuerier()));
+  ResetEngine();
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 
   prefs_observation_.Observe(&pref_manager_);
@@ -755,6 +754,11 @@ void BraveNewsController::Prefetch() {
   IN_ENGINE_FF(PrefetchFeed);
 }
 
+void BraveNewsController::ResetEngine() {
+  engine_.reset(
+      new BraveNewsEngine(url_loader_factory_->Clone(), MakeHistoryQuerier()));
+}
+
 void BraveNewsController::ConditionallyStartOrStopTimer() {
   DVLOG(1) << __FUNCTION__;
   // If the user has just enabled the feature for the first time,
@@ -814,8 +818,7 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
     VLOG(1) << "REMOVING DATA FROM MEMORY";
 
     // Reset our engine so all the caches are deleted.
-    engine_.reset(new BraveNewsEngine(url_loader_factory_->Clone(),
-                                      MakeHistoryQuerier()));
+    ResetEngine();
   }
 }
 
@@ -954,7 +957,7 @@ BackgroundHistoryQuerier BraveNewsController::MakeHistoryQuerier() {
           weak_ptr_factory_.GetWeakPtr()));
 }
 
-#undef IN_ENGINE
 #undef IN_ENGINE_FF
+#undef IN_ENGINE
 
 }  // namespace brave_news
