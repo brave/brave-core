@@ -185,14 +185,14 @@ class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
  private:
   // ui::EventObserver overrides:
   void OnEvent(const ui::Event& event) override {
-    if (event.type() == ui::ET_KEY_RELEASED &&
+    if (event.type() == ui::EventType::kKeyReleased &&
         event.AsKeyEvent()->key_code() == ui::VKEY_CONTROL) {
       // Ctrl key was released, stop the tab cycling
       Stop();
       return;
     }
 
-    if (event.type() == ui::ET_MOUSE_PRESSED) {
+    if (event.type() == ui::EventType::kMousePressed) {
       Stop();
     }
   }
@@ -214,7 +214,7 @@ class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
     if (widget->GetNativeWindow()) {
       monitor_ = views::EventMonitor::CreateWindowMonitor(
           this, widget->GetNativeWindow(),
-          {ui::ET_MOUSE_PRESSED, ui::ET_KEY_RELEASED});
+          {ui::EventType::kMousePressed, ui::EventType::kKeyReleased});
     }
 
     widget->AddObserver(this);

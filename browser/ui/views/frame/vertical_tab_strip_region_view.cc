@@ -555,19 +555,19 @@ class VerticalTabStripRegionView::MouseWatcher : public ui::EventObserver {
         event_monitor_(views::EventMonitor::CreateWindowMonitor(
             this,
             region_view_->GetWidget()->GetNativeWindow(),
-            {ui::ET_MOUSE_PRESSED, ui::ET_MOUSE_ENTERED,
-             ui::ET_MOUSE_EXITED})) {}
+            {ui::EventType::kMousePressed, ui::EventType::kMouseEntered,
+             ui::EventType::kMouseExited})) {}
 
   // ui::EventObserver:
   void OnEvent(const ui::Event& event) override {
     switch (event.type()) {
-      case ui::ET_MOUSE_ENTERED:
+      case ui::EventType::kMouseEntered:
         region_view_->OnMouseEntered();
         break;
-      case ui::ET_MOUSE_PRESSED:
+      case ui::EventType::kMousePressed:
         region_view_->OnMousePressedInTree();
         break;
-      case ui::ET_MOUSE_EXITED:
+      case ui::EventType::kMouseExited:
         region_view_->OnMouseExited();
         break;
       default:

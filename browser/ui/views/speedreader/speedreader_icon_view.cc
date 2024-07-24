@@ -69,7 +69,8 @@ void SpeedreaderIconView::UpdateImpl() {
 }
 
 bool SpeedreaderIconView::OnMousePressed(const ui::MouseEvent& event) {
-  if (event.IsOnlyRightMouseButton() && event.type() == ui::ET_MOUSE_PRESSED) {
+  if (event.IsOnlyRightMouseButton() &&
+      event.type() == ui::EventType::kMousePressed) {
     auto* web_contents = GetWebContents();
     if (!web_contents) {
       return PageActionIconView::OnMousePressed(event);
