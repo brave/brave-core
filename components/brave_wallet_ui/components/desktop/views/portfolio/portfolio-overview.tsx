@@ -643,7 +643,6 @@ export const PortfolioOverview = () => {
           <NftCollection
             networks={visiblePortfolioNetworks}
             accounts={usersFilteredAccounts}
-            tokenBalancesRegistry={tokenBalancesRegistry}
           />
         </Route>
 
@@ -655,7 +654,6 @@ export const PortfolioOverview = () => {
             networks={visiblePortfolioNetworks}
             accounts={usersFilteredAccounts}
             onShowPortfolioSettings={() => setShowPortfolioSettings(true)}
-            tokenBalancesRegistry={tokenBalancesRegistry}
           />
         </Route>
 
