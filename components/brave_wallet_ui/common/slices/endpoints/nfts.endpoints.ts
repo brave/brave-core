@@ -16,12 +16,11 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 // utils
 import {
   getAssetIdKey,
+  GetBlockchainTokenIdArg,
   tokenNameToNftCollectionName
 } from '../../../utils/asset-utils'
 import { handleEndpointError } from '../../../utils/api-utils'
-import {
-  baseQueryFunction
-} from '../../async/base-query-cache'
+import { baseQueryFunction } from '../../async/base-query-cache'
 import {
   getPersistedNftCollectionNamesRegistry,
   setPersistedNftCollectionNamesRegistry
@@ -72,7 +71,7 @@ export const nftsEndpoints = ({
       },
       invalidatesTags: ['NftDiscoveryEnabledStatus']
     }),
-    getNftMetadata: query<NFTMetadataReturnType, BraveWallet.BlockchainToken>({
+    getNftMetadata: query<NFTMetadataReturnType, GetBlockchainTokenIdArg>({
       queryFn: async (arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
           const { cache } = baseQuery(undefined)
