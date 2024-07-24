@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Brave vorrebbe accedere alle tue foto";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Aggiungi segnalibro";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Aggiungi segnalibro";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Aggiungi lista di filtri personalizzati";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Aggiungi delle liste aggiuntive create e tenute in ordine dalla tua community di fiducia.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Iscriviti solo a liste di soggetti di cui ti fidi**. Dall’URL che inserisci, Il tuo browser cercherà periodicamente degli aggiornamenti alle liste.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Aggiungi ai preferiti";
@@ -114,9 +102,6 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Monitoraggio blocchi";
-
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Blocca gli avvisi “Passa all’app”";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blocca popup";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Chiudi";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Confermi di voler chiudere tutte le altre schede aperte?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Chiudi tutte le altre schede";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Vuoi davvero chiudere tutte le schede aperte?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Conferma";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Applicazione di filtri ai contenuti";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Attiva i filtri personalizzati che bloccano i tracker e gli elementi indesiderati specifici dell’area geografica o della lingua";
 
 /* Cookie settings option title */
 "CookieControl" = "Gestione dei cookie";
@@ -528,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Motori di ricerca utilizzati attualmente";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Lista di filtri personalizzati";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Liste di filtri personalizzati";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "URL della lista di filtri personalizzati";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Aggiungi";
@@ -631,9 +607,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Chiudi la finestra del browser predefinito";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Liste di filtri predefiniti";
-
 /* Name for default Brave theme. */
 "defaultThemeName" = "Predefinito di Brave";
 
@@ -666,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Dispositivo %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Rifiuta modifiche";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Confermi di voler rifiutare queste modifiche? Tutti i cambiamenti apportati andranno persi.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Rifiutare modifiche?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Certificato di sicurezza";
@@ -801,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Funzioni";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "L’URL inserito non è valido";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Per le liste di filtri personalizzati sono consentiti soltanto gli URL sicuri (https)";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Aggiungi";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Altre liste popolari della community. Tieni presente che l’attivazione di troppi filtri ridurrà la velocità di navigazione.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Download non riuscito";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Download in sospeso";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Modifica";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Inserisci l’URL della lista di filtri";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Ultimo aggiornamento %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Inserisci l’URL della lista di filtri qui";
 
 /* Share action title */
 "FindInPage" = "Trova nella pagina";
@@ -2524,6 +2476,9 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Salva";
 
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Salva modifiche";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Accessi salvati";
 
@@ -3071,13 +3026,13 @@
 "SyncAddDeviceScan" = "Sincronizza codice QR";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "Sul tuo secondo dispositivo mobile, vai a Sincronizza nel pannello Impostazioni e premi il pulsante “Scansiona codice di sincronizzazione”. Usa la fotocamera per scansionare il codice QR sottostante. \n\nTratta questo codice come una password. Se qualcuno ne entra in possesso, può leggere e modificare i tuoi dati sincronizzati.";
+"SyncAddDeviceScanDescription" = "Sul tuo secondo dispositivo mobile, vai su Sincronizzazione nel pannello delle Impostazioni e tocca il pulsante “Scansiona codice di sincronizzazione”. Usa la fotocamera per scansionare il codice QR qui sotto.\n\nTratta questo codice come una password. Se qualcuno ne viene in possesso, può leggere e modificare i tuoi dati sincronizzati.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Inserisci il codice di sincronizzazione";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Sul tuo dispositivo, vai a Sincronizza nel pannello Impostazioni e premi il pulsante “%@”. Inserisci le parole mostrate qui sotto per il codice della catena di sincronizzazione. \n\nTratta questo codice come una password. Se qualcuno ne entra in possesso, può leggere e modificare i tuoi dati sincronizzati.";
+"SyncAddDeviceWordsDescription" = "Sul tuo dispositivo, vai su Sincronizzazione nel pannello delle Impostazioni e tocca il pulsante “%@”. Inserisci le parole mostrate qui sotto per il codice della catena di sincronizzazione.\n\nTratta questo codice come una password. Se qualcuno ne viene in possesso, può leggere e modificare i tuoi dati sincronizzati.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Inserisci le parole in codice";
@@ -3090,6 +3045,12 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Scegli il tipo di dispositivo che desideri sincronizzare.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Codice scaduto. Puoi generarne uno nuovo cliccando sul pulsante in basso.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Questo codice temporaneo sarà ancora valido per %@";
 
 /* Computer device button title */
 "SyncComputerDevice" = "Computer";

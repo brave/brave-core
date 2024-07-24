@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Brave хоче отримати доступ до «Фотографій»";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Додати закладку";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Додати закладку";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Додавання списку користувацьких фільтрів";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Додавайте окремі списки, що створені довіреною спільнотою та які підтримуються нею.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Підписуйтеся лише на списки від тих компаній, яким довіряєте**. Ваш браузер час від часу перевірятиме наявність оновлень списків з указаної вами URL-адреси.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Додати до обраного";
@@ -114,9 +102,6 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Блокування програм відстеження";
-
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Блокувати сповіщення «Перемкнути програму»";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Блокування спливаючих вікон";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Закрити";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Дійсно закрити всі інші відкриті вкладки?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Закрити інші вкладки";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Дійсно закрити всі відкриті вкладки?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Підтвердити";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Фільтрація вмісту";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Увімкніть користувацькі фільтри, які блокують трекери й дратівні елементи, специфічні для регіону чи мови";
 
 /* Cookie settings option title */
 "CookieControl" = "Керування файлами cookie";
@@ -528,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Нещодавно використані пошукові системи";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Список користувацьких фільтрів";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Списки користувацьких фільтрів";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "URL-адреса списку користувацьких фільтрів";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Додати";
@@ -631,9 +607,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Закрити запит на встановлення браузера за замовчуванням";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Списки фільтрів за замовчуванням";
-
 /* Name for default Brave theme. */
 "defaultThemeName" = "Стандартна тема Brave";
 
@@ -666,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Пристрій %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Скасувати зміни";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Дійсно скасувати ці зміни? Всі правки буде втрачено.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Скасувати зміни?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Сертифікат безпеки";
@@ -801,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Функції";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "Недійсна URL-адреса";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Для списків користувацьких фільтрів можна використовувати лише захищені (https) URL-адреси";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Додати";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Додаткові популярні списки спільноти. Зауважте, що через увімкнення надто багатьох фільтрів може зменшитися швидкість завантаження даних.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Не вдалося завантажити";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Очікує на завантаження";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Редагувати";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Уведіть URL-адресу списку фільтрів";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Останнє оновлення: %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Уведіть URL-адресу списку фільтрів";
 
 /* Share action title */
 "FindInPage" = "Знайти на сторінці";
@@ -2524,6 +2476,9 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Зберегти";
 
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Зберегти зміни";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Збережені імена для входу";
 
@@ -3090,6 +3045,12 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Виберіть тип пристрою, що ви бажаєте синхронізувати.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Термін коду сплив. Згенеруйте новий, натиснувши кнопку нижче.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Цей тимчасовий код діє наступні %@";
 
 /* Computer device button title */
 "SyncComputerDevice" = "Комп’ютер";

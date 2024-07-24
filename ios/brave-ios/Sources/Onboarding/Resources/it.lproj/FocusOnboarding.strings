@@ -41,7 +41,7 @@
 "focusOnboarding.systemSettingsButtonTitle" = "Vai alle impostazioni di sistema";
 
 /* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Inserisci un URL per usufruire di Meno annunci e tracker";
+"focusOnboarding.urlBarIndicatorDescription" = "Inserisci un URL per ridurre gli annunci e i tracker";
 
 /* The title of the popup which points to URL Bar after onboarding */
 "focusOnboarding.urlBarIndicatorTitle" = "In cosa si distingue Brave";

@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Brave želi pristupiti vašim fotografijama";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Dodaj oznaku";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Dodaj oznaku";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Dodaj popis prilagođenog filtra";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Dodaj dodatne popise koje stvara i održava pouzdana zajednica.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Pretplatite se samo na pouzdane popise subjekata**. Vašim preglednikom povremeno se provjeravaju ažuriranja popisa s upisanog URL-a.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Dodaj u omiljene stavke";
@@ -114,9 +102,6 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Nadzornik blokiranja";
-
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Blokiraj obavijesti „Prebaci se na aplikaciju”";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blokiraj skočne prozore";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Zatvori";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Jeste li sigurni da želite zatvoriti sve ostale otvorene kartice?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Zatvaranje svih ostalih kartica";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Jeste li sigurni da želite zatvoriti sve otvorene kartice?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Potvrdi";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Filtriranje sadržaja";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Omogućite prilagođene filtre kojima se blokiraju sustavi za praćenje prema regiji i jeziku, kao i smetnje.";
 
 /* Cookie settings option title */
 "CookieControl" = "Upravljanje kolačićima";
@@ -528,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Trenutačno upotrebljavane tražilice";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Popis prilagođenih filtara";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Popisi prilagođenih filtara";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "URL popisa prilagođenog filtra";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Dodaj";
@@ -631,9 +607,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Zatvori zadani element za privlačenje pažnje preglednika";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Zadani popisi filtara";
-
 /* Name for default Brave theme. */
 "defaultThemeName" = "Zadani Brave";
 
@@ -666,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Uređaj %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Odbaci promjene";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Jeste li sigurni da želite odbaciti ove promjene? Gube se sve izmjene.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Odbaciti promjene?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Sigurnosni certifikat";
@@ -801,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Značajke";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "Upisani URL nevaljan je";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Samo sigurni (https) URL-ovi dopušteni su za popise prilagođenog filtra";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Dodaj";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Dodatni popisi popularnih zajednica. Imajte na umu da omogućavanje previše filtra smanjuje brzine pregledavanja.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Preuzimanje nije uspjelo";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Preuzimanje na čekanju";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Uredi";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Dodaj URL popisa filtra";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Posljednje ažuriranje: %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Ovdje upišite URL popisa filtra";
 
 /* Share action title */
 "FindInPage" = "Pronađite na stranici";
@@ -2524,6 +2476,9 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Spremi";
 
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Spremi izmjene";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Spremljene prijave";
 
@@ -3077,7 +3032,7 @@
 "SyncAddDeviceWords" = "Upis koda za sinkronizaciju";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Na svom uređaju idite na stavku Sinkronizacija na ploči Postavke i dodirnite gumb „%@”. Upišite šifru lanca sinkronizacije prikazane u nastavku.\n\nSmatrajte šifru lozinkom. Ako joj tko pristupi, može čitati i izmjenjivati vaše sinkronizirane podatke.";
+"SyncAddDeviceWordsDescription" = "Na svom uređaju idite na stavku Sinkronizacija na ploči Postavke i dodirnite gumb „%@”. Upišite kôd lanca sinkronizacije prikazan u nastavku.\n\nSmatrajte kôd lozinkom. Ako mu tko pristupi, može čitati i izmjenjivati vaše sinkronizirane podatke.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Upis šifre";
@@ -3090,6 +3045,12 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Odabrati tip uređaja s kojim biste se htjeli sinkronizirati.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Kôd je istekao. Generirajte novi klikom na gumb u nastavku.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Ovaj privremeni kôd valjan je tijekom sljedećeg razdoblja: %@";
 
 /* Computer device button title */
 "SyncComputerDevice" = "Računalo";

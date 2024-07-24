@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Aplikacja Brave chce uzyskać dostęp do Twoich zdjęć";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Dodaj zakładkę";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Dodaj zakładkę";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Dodaj listę filtrów niestandardowych";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Dodaje dodatkowe listy utworzone i utrzymywane przez Twoją zaufaną społeczność.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Subskrybuj tylko listy pochodzące od podmiotów, którym ufasz**. Twoja przeglądarka będzie regularnie sprawdzać podany adres URL pod kątem aktualizacji.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Dodaj do ulubionych";
@@ -114,9 +102,6 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Monitor blokowania";
-
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Zablokuj powiadomienia „Przełącz na aplikację”";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blokuj wyskakujące okienka";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Zamknij ";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Czy na pewno chcesz zamknąć wszystkie inne otwarte karty?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Zamknij wszystkie inne karty";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Czy na pewno chcesz zamknąć wszystkie otwarte karty?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Potwierdź";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Filtrowanie treści";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Włącz filtry niestandardowe, które blokują oprogramowanie śledzące i przeszkadzające, konkretne dla danego regionu oraz języka";
 
 /* Cookie settings option title */
 "CookieControl" = "Kontrola plików cookie";
@@ -528,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Obecnie używane silniki wyszukiwania";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Lista filtrów niestandardowych";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Listy filtrów niestandardowych";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "Adres URL listy filtrów niestandardowych";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Dodaj";
@@ -631,9 +607,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Zamknij domyślne wywołanie przeglądarki";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Listy filtrów domyślnych";
-
 /* Name for default Brave theme. */
 "defaultThemeName" = "Domyślne ustawienia Brave";
 
@@ -666,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Urządzenie %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Odrzuć zmiany";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Czy na pewno chcesz odrzucić te zmiany? Wszelkie modyfikacje zostaną utracone.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Odrzucić zmiany?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Certyfikat bezpieczeństwa";
@@ -801,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Funkcje";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "Wprowadzony adres URL jest nieprawidłowy";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "W przypadku list filtrów niestandardowych dozwolone są tylko bezpieczne adresy URL (https)";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Dodaj";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Dodatkowe, popularne listy społeczności. Pamiętaj, że włącznie zbyt dużej liczby filtrów spowolni prędkość przeglądania.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Nie udało się pobrać";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Oczekiwanie na pobranie";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Edytuj";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Wprowadź adres URL listy filtrów";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Ostatnia aktualizacja %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Wprowadź tutaj adres URL listy filtrów";
 
 /* Share action title */
 "FindInPage" = "Znajdź na stronie";
@@ -2524,6 +2476,9 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Zapisz";
 
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Zapisz zmiany";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Zapisane loginy";
 
@@ -3090,6 +3045,12 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Wybierz typ urządzenia, z którym chcesz zsynchronizować.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Kod wygasł. Wygeneruj nowy, klikając poniższy przycisk.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Ten tymczasowy kod jest ważny przez następne %@";
 
 /* Computer device button title */
 "SyncComputerDevice" = "Komputer";

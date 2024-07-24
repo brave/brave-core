@@ -1,11 +1,17 @@
+/* The description for the error message when the user's session has expired */
+"aichat.accountSessionExpiredDescription" = "Sesi akaun Brave anda telah tamat tempoh. Sila lawati halaman akaun anda untuk memuatkan semula, kemudian kembali untuk menggunakan ciri premium.";
+
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "Tambah Maklum Balas";
 
+/* The description for the settings to show search suggestions from Leo in url-address bar */
+"aichat.advancedSettingsAutocompleteDescription" = "Hidupkan untuk menunjukkan pintasan bagi melancarkan Leo daripada bar alamat.";
+
 /* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "Tunjukkan cadangan autolengkap dalam bar alamat";
+"aichat.advancedSettingsAutocompleteTitle" = "Tunjukkan Dalam Bar Alamat";
 
 /* The title for the settings to change default model for conversations */
-"aichat.advancedSettingsDefaultModelTitle" = "Model lalai untuk perbualan baharu";
+"aichat.advancedSettingsDefaultModelTitle" = "Model Lalai";
 
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo ialah pembantu pintar yang dikuasakan oleh AI. Terbina terus dalam pelayar.";
@@ -33,6 +39,9 @@
 
 /* The title of the search bar suggestion when prompting to Ask Leo */
 "aichat.askLeoSearchSuggestionTitle" = "Tanya Leo";
+
+/* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
+"aichat.busyErrorDescription" = "Leo terlalu sibuk sekarang. Sila cuba lagi dalam beberapa minit.";
 
 /* The subtitle for intro view which triggers just chat */
 "aichat.chatIntroJustTalkSubTitle" = "Tanya apa-apa sahaja! Kita boleh bercakap tentang sebarang topik yang anda mahukan. Saya sentiasa belajar dan menambah baik untuk memberikan jawapan yang lebih baik.";
@@ -116,19 +125,34 @@
 "aichat.infoAboutPageContext" = "Bentukkan jawapan berdasarkan kandungan halaman";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Hai, saya Leo. Saya diproksi oleh Brave dan dikuasakan oleh Claude Instant, iaitu model yang dicipta oleh Anthropic untuk menggerakkan tugas perbualan dan pemprosesan teks.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hai, saya Leo. Saya diproksi oleh Brave dan dikuasakan oleh Claude 3 Haiku, model yang dicipta oleh Anthropic untuk menggerakkan tugas pemprosesan teks dan perbualan.";
 
-/* The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator */
-"aichat.introMessageClaudeInstantModelDescription" = "Claude Instant oleh Anthropic";
+/* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku oleh Anthropic";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeHaikuModelPurposeDescription" = "Sembang sepantas kilat";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hai, saya Leo. Saya diproksi oleh Brave dan dikuasakan oleh Claude 3 Sonnet, model yang dicipta oleh Anthropic untuk menggerakkan tugas pemprosesan teks dan perbualan.";
+
+/* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet oleh Anthropic";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeSonnetModelPurposeDescription" = "Kepantasan dan kecerdasan yang seimbang";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Hai, saya Leo. Saya ialah pembantu AI oleh Brave. Saya dikuasakan oleh %@. Tanya apa sahaja, dan saya akan cuba sedaya upaya untuk menjawabnya.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Llama 13B, iaitu model yang dicipta oleh Meta untuk berfungsi dan boleh digunakan untuk banyak kes penggunaan.";
+"aichat.introMessageLlamaMessageDescription" = "Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Llama 3 8B, iaitu model yang dicipta oleh Meta untuk mencapai prestasi tinggi dan boleh digunakan untuk banyak kes penggunaan.";
 
 /* The model and creator for intro message - Llama 3 8b is the model name -- Meta is the creator */
 "aichat.introMessageLlamaModelDescription" = "Llama 3 8b oleh Meta";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageLlamaModelPurposeDescription" = "Sembang tujuan umum";
 
 /* The model intro message when you first enter the chat assistant */
 "aichat.introMessageMixtralMessageDescription" = "Hai, saya Leo. Saya ialah pembantu AI dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Mixtral 8x7B, iaitu model yang dicipta oleh Mistral AI untuk mengendalikan tugasan lanjutan.";
@@ -136,17 +160,38 @@
 /* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
 "aichat.introMessageMixtralModelDescription" = "Mixtral oleh Mistral AI";
 
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageMixtralModelPurposeDescription" = "Tugasan sembang lanjutan";
+
 /* The title for intro message */
 "aichat.introMessageTitle" = "Sembang";
 
+/* The name of the AI-Assistant that's responsing to the user */
+"aichat.leoAssistantNameTitle" = "Leo";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovedAnswerBraveSearch" = "Pencarian jawapan yang ditingkatkan untuk";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovingAnswerBraveSearch" = "Meningkatkan jawapan dengan Carian Brave…";
+
 /* The title of the advanced settings view */
-"aichat.leoNavigationTitle" = "Leo";
+"aichat.leoNavigationTitle" = "AI Leo";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "Togol untuk bertanya tentang halaman ini. Kandungannya akan dihantar kepada Brave Leo bersama-sama dengan mesej anda.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "Maklumat Konteks Halaman";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Slash Tools button */
+"aichat.leoSlashToolsButtonAccessibilityTitle" = "Alat Slash";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionNull" = "Tiada";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionUnknown" = "Tidak diketahui";
 
 /* The title to display when the duration of the subscription is unknown */
 "aichat.leoSubscriptionUnknownDateTitle" = "T/B";
@@ -192,9 +237,6 @@
 
 /* The error description when in app purcahse is erroneous. */
 "aichat.paywallPurchaseErrorDescription" = "Tidak dapat menghabiskan pembelian. Sila cuba lagi, atau periksa maklumat pembayaran anda di Apple dan cuba lagi.";
-
-/* The title for dismiss button when rate limit is shown after sending a message */
-"aichat.paywallRateLimitDismissActionTitle" = "Teruskan dengan Model Asas";
 
 /* The subtitle for premium upseel when rate limit is shown after sending a message */
 "aichat.paywallRateLimitSubTitle" = "Buka kunci kadar tindak balas yang lebih tinggi dengan melanggan Premium, atau cuba lagi kemudian.";
@@ -265,6 +307,9 @@
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "Ralat Menilai Jawapan";
 
+/* The title for button that refreshes user credentials */
+"aichat.refreshCredentialsActionTitle" = "Segar semula";
+
 /* The title for the button where it triggers reset leo data */
 "aichat.resetLeoDataActionTitle" = "Tetapkan Semula Dan Kosongkan Data Leo";
 
@@ -308,7 +353,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Saya Faham";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo ialah pembantu pintar AI peribadi yang meningkatkan penggunaan Internet anda. Leo boleh digunakan secara percuma dengan akses terhad. Brave Leo Premium menawarkan lebih banyak model, had lebih tinggi dan memberi pelanggan akses awal kepada ciri baharu. Model lalai untuk semua pengguna ialah Mixtral 8x7B buat masa ini. Lihat **[Brave wiki](%1$@)** untuk mendapatkan butiran lanjut.\n\nSecara lalai, jika anda mengajukan soalan kepada Leo, ia boleh menghantar dan menggunakan kandungan laman web yang sedang anda layari atau sebarang teks yang anda serlahkan pada suatu halaman kepada Brave Leo untuk memberikan jawapan. Ketepatan jawapan tidak dapat dijamin, dan mungkin termasuk maklumat tidak tepat, mengelirukan atau palsu. Leo menggunakan data daripada Brave Search untuk meningkatkan kualiti jawapan. Jangan serahkan maklumat sensitif atau peribadi, dan berhati-hati dengan sebarang jawapan yang berkaitan dengan kesihatan, kewangan, keselamatan diri, atau seumpamanya. Anda boleh melaraskan pilihan Leo dalam Tetapan pada bila-bila masa. Layari Tetapan Leo.\n\nLeo tidak mengumpulkan pengecam seperti alamat IP anda yang boleh dikaitkan dengan anda. Tiada data digunakan untuk melatih model AI dan tiada data peribadi disimpan oleh model AI (kecuali untuk Anthropic yang menyimpan data selama 30 hari sebelum memadamnya). Lihat **[dasar privasi](%2$@)** untuk mendapatkan maklumat lanjut.";
+"aichat.termsConditionsDescription" = "Brave Leo ialah pembantu pintar AI peribadi yang meningkatkan penggunaan web oleh anda. Leo boleh digunakan secara percuma dengan akses terhad. Brave Leo Premium menawarkan lagi model, had lebih tinggi serta akses awal kepada ciri baharu untuk pelanggan. Model lalai untuk semua pengguna pada masa ini ialah Mixtral 8x7B. Lihat  **[Pusat Bantuan](%1$@)** Brave untuk mendapatkan butiran lanjut.\n\nSecara lalai, apabila anda bertanya soalan kepada Leo, Leo mungkin menghantar dan menggunakan kandungan laman web yang anda lihat atau mana-mana teks yang anda serlahkan pada halaman untuk kepada Brave Leo untuk memberikan respons. Dalam sesetengah kes, Leo akan menghantar pertanyaan yang diterbitkan daripada input anda dalam Carian Brave dan menggunakan hasil carian untuk memberikan jawapan lebih baik. Ketepatan jawapan tidak dijamin dan mungkin mengandungi maklumat tidak tepat, mengelirukan atau palsu. Jangan serahkan maklumat sensitif atau peribadi atau maklumat yang serupa. Anda boleh melaraskan pilihan Leo dalam Tetapan pada bila-bila masa. Pergi ke Tetapan > Leo.\n\nLeo tidak mengumpulkan pengecam seperti alamat IP anda yang boleh dikaitkan dengan anda. Tiada data digunakan untuk melatih model AI dan tiada data peribadi dikekalkan oleh model AI (selain Anthropic yang mengekalkan data selama 30 hari sebelum dipadamkan). Lihat **[dasar privasi](%2$@)** untuk mendapatkan maklumat lanjut.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Bersembang secara Tertutup dengan Brave Leo";
@@ -321,4 +366,7 @@
 
 /* Title showing yearly subscription - annual */
 "aichat.yearlySubscriptionTitle" = "Langganan Tahunan";
+
+/* The word 'You' as in 'Me', 'Myself', 'I' (the user). */
+"aichat.youMessageTitle" = "Anda";
 
