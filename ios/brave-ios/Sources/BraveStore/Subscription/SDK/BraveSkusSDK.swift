@@ -89,22 +89,12 @@ public enum BraveSkusEnvironment {
       return .release
     }
 
-    #if DEBUG
-    switch Bundle.main.bundleIdentifier {
-    case "com.brave.ios.browser.beta": return .beta
-    case "com.brave.ios.BrowserBeta": return .nightly
-    case "com.brave.ios.browser": return .release
-    default:
-      fatalError("[BraveSkusSDK] - BraveSkusEnvironment - Unknown Bundle-ID")
-    }
-    #else
     switch BraveCoreVersionInfo.channel {
     case .beta: return .beta
     case .development, .nightly: return .nightly
     case .stable, .unknown: fallthrough
     default: return .release
     }
-    #endif
   }
 }
 
