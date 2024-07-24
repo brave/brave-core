@@ -26,10 +26,10 @@
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "打开选定的标签";
 
 /* Title label text for refreshing credentials from brave site. */
-"paywall.alreadyPurchasedTitle" = "已在 brave.com 上購買嗎？";
+"paywall.alreadyPurchasedTitle" = "已在 brave.com 上都买吗？";
 
 /* Button action text for refreshing credentials from brave site. */
-"paywall.refreshCredentialsButtonTitle" = "重新整理您的憑證";
+"paywall.refreshCredentialsButtonTitle" = "重新整理您的凭证";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts used for opening recently closed tab. */
 "RecentlyClosedTabTitle" = "重新开启已关闭的标签";

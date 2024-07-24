@@ -446,10 +446,10 @@
 "Close" = "关闭";
 
 /* We ask users this prompt before attempting to close all tabs except active one via context menu */
-"closeAllOtherTabsPrompt" = "確定要關閉所有其他開啟的分頁嗎？";
+"closeAllOtherTabsPrompt" = "确定要关闭所有其他开启的分页吗？";
 
 /* Title for asking user to close all tabs except the active tab. */
-"closeAllOtherTabsTitle" = "關閉其他所有分頁";
+"closeAllOtherTabsTitle" = "关闭其他所有分页";
 
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "确定要关闭所有开启的选项卡吗？";
@@ -641,13 +641,13 @@
 "DeviceTemplate" = "设备 %1$@ （%2$@）";
 
 /* A confirmation button title for a alert option to dismiss changes in a form or text input */
-"DismissChangesButtonTitle" = "忽略變更";
+"DismissChangesButtonTitle" = "忽略变更";
 
 /* A confirmation message that appears in an alert to dismiss changes in a form or text input */
-"DismissChangesConfirmationMessage" = "確定要忽略這些變更嗎？任何修改內容將會遺失。";
+"DismissChangesConfirmationMessage" = "确定要忽略这些变更吗？任何修改內容将会遗失。";
 
 /* A confirmation title that appears in an alert to dismiss changes in a form or text input */
-"DismissChangesConfirmationTitle" = "是否忽略變更？";
+"DismissChangesConfirmationTitle" = "是否忽略变更？";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "安全认证";
@@ -2477,7 +2477,7 @@
 "SaveButtonTitle" = "保存";
 
 /* Label for the button used to save changes in some text input. */
-"SaveChangesButtonTitle" = "儲存變更";
+"SaveChangesButtonTitle" = "储存变更";
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "保存的登录";
@@ -3026,13 +3026,13 @@
 "SyncAddDeviceScan" = "同步链二维码";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "在另一部行動裝置上，瀏覽到「設定」面板中的「同步」，並點選「掃描同步代碼」按鈕。使用相機掃描下方的 QR 碼。\n\n請將此代碼視為密碼。如果他人取得此代碼，將能讀取及修改您同步的資料。";
+"SyncAddDeviceScanDescription" = "在另一部行动装置上，浏览到「设定」面板中的「同步」，并点选「扫描同步代码」按钮。使用相机扫描下方的二维码。\n\n请将此代码视为密码。如果他人取得此代码，将能读取及修改您同步的资料。";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "输入新的同步代码";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "在您的裝置上，瀏覽到「設定」面板中的「同步」，並點選「%@」按鈕。輸入下方顯示的同步鏈代碼字組。\n\n請將此代碼視為密碼。如果他人取得此代碼，將能讀取及修改您同步的資料。";
+"SyncAddDeviceWordsDescription" = "\"在您的裝置上，浏览到「设定」面板中的「同步」，并点选「%@」按钮。输入下方显示的同步链代码字组。\n\n请将此代码视为密码。如果他人取得此代码，将能读取及修改您同步的资料。";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "输入密语";
@@ -3047,10 +3047,10 @@
 "SyncChooseDeviceHeader" = "选择要同步到的设备类型。";
 
 /* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "代碼已過期。請點選下方按鈕來產生新代碼。";
+"SyncCodeExpirationTitleLabel" = "代码已过期。请点选下方按钮来生成新代码。";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
-"SyncCodeTimeRemainingTitleLabel" = "這個暫時代碼於接下來 %@內有效。";
+"SyncCodeTimeRemainingTitleLabel" = "这个零时代码于接下来 %@內有效。";
 
 /* Computer device button title */
 "SyncComputerDevice" = "计算机";

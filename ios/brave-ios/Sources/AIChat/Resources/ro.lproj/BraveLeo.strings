@@ -1,5 +1,5 @@
 /* The description for the error message when the user's session has expired */
-"aichat.accountSessionExpiredDescription" = "Sesiunea ta de Brave a expirat. Accesează pagina contului pentru a reîmprospăta, apoi revino pentru a folosi funcțiile premium.";
+"aichat.accountSessionExpiredDescription" = "Sesiunea ta de Brave a expirat. Accesează pagina contului pentru a actualiza apoi revino pentru a folosi funcțiile premium.";
 
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "Adaugă feedback";

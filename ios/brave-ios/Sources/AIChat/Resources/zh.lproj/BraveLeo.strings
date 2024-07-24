@@ -8,7 +8,7 @@
 "aichat.advancedSettingsAutocompleteDescription" = "開啟以顯示從網址列啟動 Leo 的捷徑";
 
 /* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "顯示在網址列中";
+"aichat.advancedSettingsAutocompleteTitle" = "显示在网址列中";
 
 /* The title for the settings to change default model for conversations */
 "aichat.advancedSettingsDefaultModelTitle" = "默认模型";
@@ -41,7 +41,7 @@
 "aichat.askLeoSearchSuggestionTitle" = "询问 Leo";
 
 /* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
-"aichat.busyErrorDescription" = "Leo 目前忙碌中，請稍候片刻再試。";
+"aichat.busyErrorDescription" = "Leo 目前忙碌中，请稍后再试。";
 
 /* The subtitle for intro view which triggers just chat */
 "aichat.chatIntroJustTalkSubTitle" = "您可以问我任何问题！我们可以讨论任何您想讨论的话题。我一直在学习和进步，以提供更好的答案。";
@@ -146,7 +146,7 @@
 "aichat.introMessageGenericMessageDescription" = "你好，我是 Leo，Brave 的智能助手。我由 %@ 研发支持。问我问题，我会尽力解答。";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "您好，我是Leo。我是 Brave 的完全託管型人工智慧助理。我由 Llama 3 8B 提供技術支援，Llama 3 8B 是由 Meta 建立的模型，效能卓越且適用於許多使用案例。";
+"aichat.introMessageLlamaMessageDescription" = "您好，我是Leo。我是 Brave 的完全托管型人工智慧助理。我由 Llama 3 8B 提供技术支援，Llama 3 8B 是由 Meta 建立的模型，效能卓越且适用于许多使用案例。";
 
 /* The model and creator for intro message - Llama 3 8b is the model name -- Meta is the creator */
 "aichat.introMessageLlamaModelDescription" = "Llama 3 8b by Meta";
@@ -185,7 +185,7 @@
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "页面上下文信息";
 
 /* The text that's read aloud to the user when accessibility is enabled for the Slash Tools button */
-"aichat.leoSlashToolsButtonAccessibilityTitle" = "斜線工具";
+"aichat.leoSlashToolsButtonAccessibilityTitle" = "斜线工具";
 
 /* The text that's displayed when the user selects an invalid slash tools option */
 "aichat.leoSlashToolsOptionNull" = "无";
@@ -353,7 +353,7 @@
 "aichat.termsConditionsApproveActionTitle" = "我理解";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo 是私人 AI 智慧助理，可提升您的網路使用體驗。您可以免費使用 Leo，但存取權限會受到限制。Brave Leo Premium 提供更多模型、提高上限，訂閱者還能搶先使用新功能。目前所有使用者的預設模型為 Mixtral 8x7B。如需瞭解詳細資訊，請瀏覽 Brave **[說明中心](%1$@)**。\n\n根據預設，當您向 Leo 提問，系統可能會傳送並使用您正在瀏覽的網頁內容，或將您在頁面上醒目標示的任何文字傳送給 Brave Leo，以便為您提供回應。某些情況下，Leo 會將您輸入內容所衍生的查詢傳送到 Brave Search，並使用搜尋結果為您提供更好的答案。我們無法保證回應的準確度，且其中可能含有不準確、誤導或錯誤的資訊。請勿送出敏感資料或私人資訊，並請審慎使用任何有關健康、財務、個人安全或類似主題的答案。您可以隨時前往「設定」調整 Leo 的選項。如要調整，請依序前往「設定」和「Leo」。\n\nLeo 不會收集識別碼，例如可連結到您所在位置的 IP 位址等。我們不會使用資料來訓練 AI 模型，AI 模型也不會保留任何個人資料 (除了 Anthropic 會保留資料 30 天後再刪除)。如需瞭解詳細資訊，請參閱**[隱私權政策](%2$@)**。";
+"aichat.termsConditionsDescription" = "Brave Leo 是私人 AI 智慧助理，可提升您的网络使用体验。您可以免费使用 Leo，但存取权限会受到限制。Brave Leo Premium 提供更多模型、提高上限，订阅者还能抢先使用新功能。目前所有使用者的预设模型为 Mixtral 8x7B。如需了解详细资讯，请浏览 Brave **[说明中心](%1$@)**。\n\n根据预设，当您向 Leo 提问，系統可能会传送并使用您正在浏览的网页內容，或将您在页面上醒目标示的任何文字传送給 Brave Leo，以便为您提供回应。某些情況下，Leo 会将您输入內容所衍生的查询传送到 Brave Search，並使用搜寻结果为您提供更好的答案。我們无法保证回应的准确度，且其中可能含有不准确、误导或错误的咨询。请勿送出敏感资料或私人信息，并请谨慎使用任何有关健康、财务、个人安全或类似主题的答案。您可以随时前往「设定」调整 Leo 的选项。如要调整，请依序前往「设定」和「Leo」。\n\nLeo 不会收集识别码，例如可连接到您所在位置的 IP 位址等。我們不会使用资料來训练 AI 模型，AI 模型也不会保留任何个人资料 (除了 Anthropic 会保留资料 30 天后再刪除)。如需了解详细资讯，请参阅**[隐私权政策](%2$@)**。";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "与 Brave Leo 私密聊天";

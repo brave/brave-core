@@ -146,7 +146,7 @@
 "aichat.introMessageGenericMessageDescription" = "Merhaba, ben Leo. Brave tarafından geliştirilmiş bir Yapay Zeka asistanıyım. %@ tarafından destekleniyorum. Bana istediğinizi sorun, yanıtlamak için elimden geleni yapacağım.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Merhaba, ben Leo. Ben Brave tarafından geliştirilen, tamamen ana makinede bulunan bir YZ asistanıyım. Meta tarafından pek çok kullanım alanında iyi performans vermesi ve uygulanabilir olması için geliştirilen bir model olan Llama 3 8B ile destekleniyorum.";
+"aichat.introMessageLlamaMessageDescription" = "Merhaba, ben Leo. Ben Brave tarafından geliştirilen, tamamen ana makinede bulunan bir Yapay Zeka asistanıyım. Meta tarafından pek çok kullanım alanında iyi performans vermesi ve uygulanabilir olması için geliştirilen bir model olan Llama 3 8B ile destekleniyorum.";
 
 /* The model and creator for intro message - Llama 3 8b is the model name -- Meta is the creator */
 "aichat.introMessageLlamaModelDescription" = "Meta tarafından geliştirilen Llama 3 8b";
@@ -176,7 +176,7 @@
 "aichat.leoImprovingAnswerBraveSearch" = "Brave Arama ile yanıt geliştiriliyor...";
 
 /* The title of the advanced settings view */
-"aichat.leoNavigationTitle" = "Leo YZ";
+"aichat.leoNavigationTitle" = "Leo Yapay Zeka";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "Bu sayfa hakkında soru sormak için bu ayarı açın. Sayfanın içerikleri mesajlarınızla birlikte Brave Leo'ya gönderilecektir.";
@@ -353,7 +353,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Anladım";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo, web kullanımınızı geliştiren özel bir YZ asistanıdır. Leo'yu kullanmak, sınırlı erişimle ücretsizdir. Brave Leo Premium ise daha fazla model ve daha yüksek limitler sunar, ayrıca abonelerin yeni özellikleri erkenden deneyimlemesine olanak tanır. Şu anda tüm kullanıcılar için varsayılan model Mixtral 8x7B'dir. Daha fazla bilgi için Brave **[Yardım Merkezi](%1$@)**'ne bakın.\n\nVarsayılan olarak, Leo'ya bir soru sorduğunuzda Leo görüntülediğiniz web sayfasının içeriğini veya sayfada, Brave Leo'nun yanıt vermesini istediğiniz için vurguladığınız metinleri gönderebilir ve kullanabilir. Bazı durumlarda, Leo Brave Arama'ya girdiğiniz sözcükler kullanılarak türetilen sorgular gönderir ve sorunuzu daha iyi yanıtlayabilmek için arama sonuçlarını kullanır. Yanıtların doğruluğu garanti edilmez ve hatalı, yanlış yönlendiren veya yanlış bilgiler içerebilir. Hassas ve gizli bilgiler göndermeyin ve sağlık, finans, kişisel güvenlik veya benzeri cevapları kullanırken dikkatli olun. Leo'nun seçeneklerini Ayarlar menüsünden istediğiniz zaman değiştirebilirsiniz. Ayarlar > Leo bölümüne gidin.\n\nLeo, IP adresi gibi, sizinle ilişkilendirilebilecek tanımlayıcı bilgileri toplamaz. YZ modellerini eğitmek için hiçbir veri kullanılmaz ve YZ modelleri (verileri silmeden önce 30 gün boyunca tutan Anthropic dışında) hiçbir kişisel veriyi tutmaz. Daha fazla bilgi için **[gizlilik politikasına](%2$@)** bakın.";
+"aichat.termsConditionsDescription" = "Brave Leo, web kullanımınızı geliştiren özel bir Yapay Zeka asistanıdır. Leo'yu kullanmak, sınırlı erişimle ücretsizdir. Brave Leo Premium ise daha fazla model ve daha yüksek limitler sunar, ayrıca abonelerin yeni özellikleri erkenden deneyimlemesine olanak tanır. Şu anda tüm kullanıcılar için varsayılan model Mixtral 8x7B'dir. Daha fazla bilgi için Brave **[Yardım Merkezi](%1$@)**'ne bakın.\n\nVarsayılan olarak, Leo'ya bir soru sorduğunuzda Leo görüntülediğiniz web sayfasının içeriğini veya sayfada, Brave Leo'nun yanıt vermesini istediğiniz için vurguladığınız metinleri gönderebilir ve kullanabilir. Bazı durumlarda, Leo Brave Arama'ya girdiğiniz sözcükler kullanılarak türetilen sorgular gönderir ve sorunuzu daha iyi yanıtlayabilmek için arama sonuçlarını kullanır. Yanıtların doğruluğu garanti edilmez ve hatalı, yanlış yönlendiren veya yanlış bilgiler içerebilir. Hassas ve gizli bilgiler göndermeyin ve sağlık, finans, kişisel güvenlik veya benzeri cevapları kullanırken dikkatli olun. Leo'nun seçeneklerini Ayarlar menüsünden istediğiniz zaman değiştirebilirsiniz. Ayarlar > Leo bölümüne gidin.\n\nLeo, IP adresi gibi, sizinle ilişkilendirilebilecek tanımlayıcı bilgileri toplamaz. Yapay Zeka modellerini eğitmek için hiçbir veri kullanılmaz ve Yapay Zeka modelleri (verileri silmeden önce 30 gün boyunca tutan Anthropic dışında) hiçbir kişisel veriyi tutmaz. Daha fazla bilgi için **[gizlilik politikasına](%2$@)** bakın.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Brave Leo ile Gizli Şekilde Sohbet Edin";
