@@ -96,6 +96,7 @@ public enum BraveStoreProduct: String, AppStoreProduct, CaseIterable {
     }
   }
 
+  /// The AppStore Product Subscription Group
   public var group: BraveStoreProductGroup {
     switch self {
     case .vpnMonthly, .vpnYearly: return .vpn
@@ -103,6 +104,13 @@ public enum BraveStoreProduct: String, AppStoreProduct, CaseIterable {
     }
   }
 
+  /// The AppStore Product Subscription ID
+  /// For release, there is no prefix.
+  /// For nightly & beta, there is a prefix
+  ///  - [beta | nightly].bravevpn.monthly
+  ///  - [beta | nightly]].bravevpn.yearly
+  ///  - [beta | nightly].braveleo.monthly
+  ///  - [beta | nightly]].braveleo.yearly
   public var rawValue: String {
     var prefix: String {
       switch BraveSkusEnvironment.current {
@@ -112,9 +120,16 @@ public enum BraveStoreProduct: String, AppStoreProduct, CaseIterable {
       }
     }
 
+    var productId: String {
+      switch self {
+      case .vpnMonthly, .vpnYearly: return "bravevpn"
+      case .leoMonthly, .leoYearly: return "braveleo"
+      }
+    }
+
     switch self {
-    case .vpnMonthly, .leoMonthly: return "\(prefix)bravevpn.monthly"
-    case .vpnYearly, .leoYearly: return "\(prefix)yearly"
+    case .vpnMonthly, .leoMonthly: return "\(prefix)\(productId).monthly"
+    case .vpnYearly, .leoYearly: return "\(prefix)\(productId).yearly"
     }
   }
 }
