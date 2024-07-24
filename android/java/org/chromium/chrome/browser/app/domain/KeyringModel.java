@@ -217,7 +217,15 @@ public class KeyringModel implements KeyringServiceObserver {
             @NonNull final JsonRpcService jsonRpcService,
             @NonNull final Callbacks.Callback1<Boolean> callback) {
         assertOnUiThread();
-        generateWallet(password, recoveryPhrase, legacyRestoreEnabled, availableNetworks, selectedNetworks, jsonRpcService, null, callback);
+        generateWallet(
+                password,
+                recoveryPhrase,
+                legacyRestoreEnabled,
+                availableNetworks,
+                selectedNetworks,
+                jsonRpcService,
+                null,
+                callback);
     }
 
     /**
@@ -243,17 +251,26 @@ public class KeyringModel implements KeyringServiceObserver {
             @NonNull final JsonRpcService jsonRpcService,
             @NonNull final Callbacks.Callback1<String> callback) {
         assertOnUiThread();
-        generateWallet(password, null, false, availableNetworks, selectedNetworks, jsonRpcService, callback, null);
+        generateWallet(
+                password,
+                null,
+                false,
+                availableNetworks,
+                selectedNetworks,
+                jsonRpcService,
+                callback,
+                null);
     }
 
-    private <T> void generateWallet(@NonNull final String password,
-                                @Nullable final String recoveryPhrase,
-                                final boolean legacyRestoreEnabled,
-                                @NonNull final Set<NetworkInfo> availableNetworks,
-                                @NonNull final Set<NetworkInfo> selectedNetworks,
-                                @NonNull final JsonRpcService jsonRpcService,
-                                @Nullable final Callbacks.Callback1<String> createCallback,
-                                @Nullable final Callbacks.Callback1<Boolean> restoreCallback) {
+    private <T> void generateWallet(
+            @NonNull final String password,
+            @Nullable final String recoveryPhrase,
+            final boolean legacyRestoreEnabled,
+            @NonNull final Set<NetworkInfo> availableNetworks,
+            @NonNull final Set<NetworkInfo> selectedNetworks,
+            @NonNull final JsonRpcService jsonRpcService,
+            @Nullable final Callbacks.Callback1<String> createCallback,
+            @Nullable final Callbacks.Callback1<Boolean> restoreCallback) {
         final Set<NetworkInfo> removeHiddenNetworks = new HashSet<>();
         final Set<NetworkInfo> addHiddenNetworks = new HashSet<>();
 
@@ -289,9 +306,8 @@ public class KeyringModel implements KeyringServiceObserver {
                                                 selectedNetworks,
                                                 restoreCallback);
                                     } else if (createCallback != null) {
-                                        finalizeWalletCreation(password,
-                                                selectedNetworks,
-                                                createCallback);
+                                        finalizeWalletCreation(
+                                                password, selectedNetworks, createCallback);
                                     }
                                 }
                             }
@@ -320,9 +336,8 @@ public class KeyringModel implements KeyringServiceObserver {
                                                 selectedNetworks,
                                                 restoreCallback);
                                     } else if (createCallback != null) {
-                                        finalizeWalletCreation(password,
-                                                selectedNetworks,
-                                                createCallback);
+                                        finalizeWalletCreation(
+                                                password, selectedNetworks, createCallback);
                                     }
                                 }
                             }
@@ -389,9 +404,10 @@ public class KeyringModel implements KeyringServiceObserver {
                 recoveryPhrase -> createAccounts(recoveryPhrase, selectedNetworks, callback));
     }
 
-    private <T> void createAccounts(final T result,
-                                @NonNull final Set<NetworkInfo> selectedNetworks,
-                                @NonNull final Callbacks.Callback1<T> callback) {
+    private <T> void createAccounts(
+            final T result,
+            @NonNull final Set<NetworkInfo> selectedNetworks,
+            @NonNull final Callbacks.Callback1<T> callback) {
         final Set<NetworkInfo> createAccounts = new HashSet<>();
 
         for (NetworkInfo networkInfo : selectedNetworks) {
@@ -404,8 +420,7 @@ public class KeyringModel implements KeyringServiceObserver {
         if (createAccounts.isEmpty()) {
             callback.call(result);
         } else {
-            final MutableLiveData<Boolean> createAccountsLiveData =
-                    new MutableLiveData<>();
+            final MutableLiveData<Boolean> createAccountsLiveData = new MutableLiveData<>();
 
             createAccountsLiveData.observeForever(
                     new Observer<>() {
@@ -428,24 +443,19 @@ public class KeyringModel implements KeyringServiceObserver {
                         for (NetworkInfo networkInfo : createAccounts) {
                             String accountName =
                                     WalletUtils.generateUniqueAccountName(
-                                            networkInfo.coin,
-                                            accounts.toArray(new AccountInfo[0]));
+                                            networkInfo.coin, accounts.toArray(new AccountInfo[0]));
                             mKeyringService.addAccount(
                                     networkInfo.coin,
-                                    AssetUtils.getKeyring(
-                                            networkInfo.coin, networkInfo.chainId),
+                                    AssetUtils.getKeyring(networkInfo.coin, networkInfo.chainId),
                                     accountName,
-                                    accountInfo ->
-                                            createAccountsLiveData.setValue(true));
+                                    accountInfo -> createAccountsLiveData.setValue(true));
                         }
                     });
-
         }
     }
 
     private <T> void selectEthAccount(
-            final T result,
-            @NonNull final Callbacks.Callback1<T> callback) {
+            final T result, @NonNull final Callbacks.Callback1<T> callback) {
         mKeyringService.getAllAccounts(
                 allAccounts ->
                         mKeyringService.setSelectedAccount(
