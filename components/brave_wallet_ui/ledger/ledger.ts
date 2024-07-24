@@ -12,6 +12,7 @@ import { LedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/l
 import { SolanaLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/sol-ledger-untrusted-transport'
 import { EthereumLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/eth-ledger-untrusted-transport'
 import { FilecoinLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/fil-ledger-untrusted-transport'
+import { BitcoinLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/btc_ledger_untrusted_transport'
 
 const setUpAuthorizeButtonListener = (
   targetUrl: string,
@@ -57,6 +58,11 @@ const getUntrustedMessagingTransport = (
         window.parent,
         targetUrl
       )
+    case BraveWallet.CoinType.BTC:
+      return new BitcoinLedgerUntrustedMessagingTransport(
+        window.parent,
+        targetUrl
+      )
     default:
       throw new Error('Invalid coinType.')
   }
@@ -64,7 +70,7 @@ const getUntrustedMessagingTransport = (
 
 const params = new URLSearchParams(window.location.search)
 const targetUrl = params.get('targetUrl')
-const coinType = Number(params.get('coinType'))
+const coinType = params.get('coinType')
 if (targetUrl && coinType) {
-  setUpAuthorizeButtonListener(targetUrl, coinType)
+  setUpAuthorizeButtonListener(targetUrl, Number(coinType))
 }

@@ -58,6 +58,14 @@ class AccountsChangedWaiter : public KeyringServiceObserverBase {
   base::RunLoop run_loop_;
 };
 
+bool EqualsNoBalance(const DiscoveredBitcoinAccount& left,
+                     const DiscoveredBitcoinAccount& right) {
+  return std::tie(left.next_unused_receive_index,
+                  left.next_unused_change_index) ==
+         std::tie(right.next_unused_receive_index,
+                  right.next_unused_change_index);
+}
+
 }  // namespace
 
 namespace bitcoin_rpc {
@@ -459,26 +467,26 @@ TEST_F(BitcoinWalletServiceUnitTest, SignAndPostTransaction) {
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, DiscoverAccount) {
-  base::MockCallback<BitcoinWalletService::DiscoverAccountCallback> callback;
+  base::MockCallback<BitcoinWalletService::DiscoverWalletAccountCallback>
+      callback;
   bitcoin_test_rpc_server_->SetUpBitcoinRpc(std::nullopt, std::nullopt);
 
   // By default discovered receive and change indexes are zero.
   EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
                 DiscoveredBitcoinAccount expected;
-                return arg.value() == expected;
+                return EqualsNoBalance(arg.value(), expected);
               })));
-  bitcoin_wallet_service_->DiscoverAccount(mojom::KeyringId::kBitcoin84, 0,
-                                           callback.Get());
+  bitcoin_wallet_service_->DiscoverWalletAccount(mojom::KeyringId::kBitcoin84,
+                                                 0, callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
                 DiscoveredBitcoinAccount expected;
-                expected.account_index = 1;
-                return arg.value() == expected;
+                return EqualsNoBalance(arg.value(), expected);
               })));
-  bitcoin_wallet_service_->DiscoverAccount(mojom::KeyringId::kBitcoin84, 1,
-                                           callback.Get());
+  bitcoin_wallet_service_->DiscoverWalletAccount(mojom::KeyringId::kBitcoin84,
+                                                 1, callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
@@ -494,21 +502,20 @@ TEST_F(BitcoinWalletServiceUnitTest, DiscoverAccount) {
   EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
                 DiscoveredBitcoinAccount expected;
                 expected.next_unused_receive_index = 6;
-                return arg.value() == expected;
+                return EqualsNoBalance(arg.value(), expected);
               })));
-  bitcoin_wallet_service_->DiscoverAccount(mojom::KeyringId::kBitcoin84, 0,
-                                           callback.Get());
+  bitcoin_wallet_service_->DiscoverWalletAccount(mojom::KeyringId::kBitcoin84,
+                                                 0, callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // For acc 1 nothing is still discovered.
   EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
                 DiscoveredBitcoinAccount expected;
-                expected.account_index = 1;
-                return arg.value() == expected;
+                return EqualsNoBalance(arg.value(), expected);
               })));
-  bitcoin_wallet_service_->DiscoverAccount(mojom::KeyringId::kBitcoin84, 1,
-                                           callback.Get());
+  bitcoin_wallet_service_->DiscoverWalletAccount(mojom::KeyringId::kBitcoin84,
+                                                 1, callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
@@ -529,22 +536,21 @@ TEST_F(BitcoinWalletServiceUnitTest, DiscoverAccount) {
                 DiscoveredBitcoinAccount expected;
                 expected.next_unused_receive_index = 31;
                 expected.next_unused_change_index = 18;
-                return arg.value() == expected;
+                return EqualsNoBalance(arg.value(), expected);
               })));
-  bitcoin_wallet_service_->DiscoverAccount(mojom::KeyringId::kBitcoin84, 0,
-                                           callback.Get());
+  bitcoin_wallet_service_->DiscoverWalletAccount(mojom::KeyringId::kBitcoin84,
+                                                 0, callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Discovered 9 and 0.
   EXPECT_CALL(callback, Run(Truly([&](auto& arg) {
                 DiscoveredBitcoinAccount expected;
-                expected.account_index = 1;
                 expected.next_unused_receive_index = 9;
-                return arg.value() == expected;
+                return EqualsNoBalance(arg.value(), expected);
               })));
-  bitcoin_wallet_service_->DiscoverAccount(mojom::KeyringId::kBitcoin84, 1,
-                                           callback.Get());
+  bitcoin_wallet_service_->DiscoverWalletAccount(mojom::KeyringId::kBitcoin84,
+                                                 1, callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }

@@ -20,10 +20,6 @@ export type NftDropdownOptionId = 'collected' | 'hidden'
 
 export type DAppConnectionOptionsType = 'networks' | 'accounts' | 'main'
 
-export type HardwareVendor =
-  | typeof BraveWallet.TREZOR_HARDWARE_VENDOR
-  | typeof BraveWallet.LEDGER_HARDWARE_VENDOR
-
 export { Origin } from 'gen/url/mojom/origin.mojom.m.js'
 export { TimeDelta }
 
@@ -195,6 +191,7 @@ export interface WalletState {
   hasInitialized: boolean
   isBitcoinEnabled: boolean
   isBitcoinImportEnabled: boolean
+  isBitcoinLedgerEnabled: boolean
   isZCashEnabled: boolean
   isWalletCreated: boolean
   isWalletLocked: boolean
@@ -375,10 +372,6 @@ export type SerializableTransactionInfo = Omit<
 export type TransactionInfo =
   | BraveWallet.TransactionInfo
   | SerializableTransactionInfo
-
-export interface GetTransactionMessageToSignReturnInfo {
-  message: string
-}
 
 export interface ProcessHardwareSignatureReturnInfo {
   status: boolean

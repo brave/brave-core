@@ -8,8 +8,9 @@ import { getLocale } from '../../../../common/locale'
 import { LedgerEthereumKeyring } from '../interfaces'
 import {
   GetAccountsHardwareOperationResult,
-  LedgerDerivationPaths,
-  SignHardwareOperationResult
+  SignHardwareOperationResult,
+  HardwareImportScheme,
+  AccountFromDevice
 } from '../types'
 import {
   LedgerCommand,
@@ -25,9 +26,7 @@ import {
   EthSignEip712MessageResponsePayload
 } from './ledger-messages'
 
-import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 import LedgerBridgeKeyring from './ledger_bridge_keyring'
-import { getPathForEthLedgerIndex } from '../../../utils/derivation_path_utils'
 
 export default class EthereumLedgerBridgeKeyring
   extends LedgerBridgeKeyring
@@ -41,30 +40,20 @@ export default class EthereumLedgerBridgeKeyring
     return BraveWallet.CoinType.ETH
   }
 
-  keyringId = (): BraveWallet.KeyringId => {
-    return BraveWallet.KeyringId.kDefault
-  }
-
   getAccounts = async (
     from: number,
-    to: number,
-    scheme: LedgerDerivationPaths
+    count: number,
+    scheme: HardwareImportScheme
   ): Promise<GetAccountsHardwareOperationResult> => {
     const result = await this.unlock()
     if (!result.success) {
       return result
     }
-    from = from >= 0 ? from : 0
     const paths = []
-    const addZeroPath = from > 0 || to < 0
-    if (addZeroPath) {
-      // Add zero address to calculate device id.
-      paths.push(this.getPathForIndex(0, scheme))
+    for (let i = 0; i < count; i++) {
+      paths.push(scheme.pathTemplate(from + i))
     }
-    for (let i = from; i <= to; i++) {
-      paths.push(this.getPathForIndex(i, scheme))
-    }
-    return this.getAccountsFromDevice(paths, addZeroPath, scheme)
+    return this.getAccountsFromDevice(paths)
   }
 
   signTransaction = async (
@@ -215,12 +204,9 @@ export default class EthereumLedgerBridgeKeyring
   }
 
   private readonly getAccountsFromDevice = async (
-    paths: string[],
-    skipZeroPath: boolean,
-    scheme: LedgerDerivationPaths
+    paths: string[]
   ): Promise<GetAccountsHardwareOperationResult> => {
-    let accounts = []
-    const zeroPath = this.getPathForIndex(0, scheme)
+    let accounts: AccountFromDevice[] = []
     for (const path of paths) {
       const data = await this.sendCommand<EthGetAccountResponse>({
         command: LedgerCommand.GetAccount,
@@ -245,30 +231,11 @@ export default class EthereumLedgerBridgeKeyring
       }
       const responsePayload = data.payload as EthGetAccountResponsePayload
 
-      if (path === zeroPath) {
-        this.deviceId = await hardwareDeviceIdFromAddress(
-          responsePayload.address
-        )
-        if (skipZeroPath) {
-          // If requested addresses do not have zero indexed adress we add it
-          // intentionally to calculate device id and should not add it to
-          // returned accounts
-          continue
-        }
-      }
-
       accounts.push({
         address: responsePayload.address,
-        derivationPath: path,
-        name: this.type(),
-        hardwareVendor: this.type(),
-        deviceId: this.deviceId,
-        coin: this.coin(),
-        keyringId: this.keyringId()
+        derivationPath: path
       })
     }
     return { success: true, payload: accounts }
   }
-
-  private readonly getPathForIndex = getPathForEthLedgerIndex
 }

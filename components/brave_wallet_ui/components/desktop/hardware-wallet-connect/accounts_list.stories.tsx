@@ -4,9 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { BraveWallet } from '../../../constants/types'
 import {
-  mockHardwareAccounts //
+  mockAccountsFromDevice //
 } from '../../../stories/mock-data/mock-wallet-accounts'
 
 import {
@@ -14,34 +13,24 @@ import {
 } from '../../../stories/wrappers/wallet-page-story-wrapper'
 import { HardwareWalletAccountsList } from './accounts_list'
 import { Meta } from '@storybook/react'
+import {
+  AllHardwareImportSchemes,
+  DerivationScheme
+} from '../../../common/hardware/types'
 
 export const HardwareAccountsList = {
-  render: () => <WalletPageStory>
-    <HardwareWalletAccountsList
-      hardwareWallet={'Ledger'}
-      accounts={mockHardwareAccounts}
-      preAddedHardwareWalletAccounts={[]}
-      onLoadMore={function (): void {
-        throw new Error('Function not implemented.')
-      }}
-      selectedDerivationPaths={[]}
-      setSelectedDerivationPaths={function (paths: string[]): void {
-        throw new Error('Function not implemented.')
-      }}
-      selectedDerivationScheme={''}
-      setSelectedDerivationScheme={function (scheme: string): void {
-        throw new Error('Function not implemented.')
-      }}
-      onAddAccounts={function (): void {
-        throw new Error('Function not implemented.')
-      }}
-      filecoinNetwork={'f'}
-      onChangeFilecoinNetwork={function (network: 'f' | 't'): void {
-        throw new Error('Function not implemented.')
-      }}
-      coin={BraveWallet.CoinType.ETH}
-    />
-  </WalletPageStory>
+  render: () => (
+    <WalletPageStory>
+      <HardwareWalletAccountsList
+        accounts={mockAccountsFromDevice}
+        onLoadMore={function (): void {}}
+        currentHardwareImportScheme={AllHardwareImportSchemes[0]}
+        setHardwareImportScheme={function (scheme: DerivationScheme): void {}}
+        onAddAccounts={function (): void {}}
+        onAccountChecked={function (path: string, checked: boolean): void {}}
+      />
+    </WalletPageStory>
+  )
 }
 
 export default {

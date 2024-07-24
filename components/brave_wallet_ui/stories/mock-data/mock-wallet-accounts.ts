@@ -3,14 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import {
-  LedgerDerivationPaths,
-  SolDerivationPaths
+  AccountFromDevice,
+  AllHardwareImportSchemes
 } from '../../common/hardware/types'
 import { BraveWallet } from '../../constants/types'
-import {
-  getPathForEthLedgerIndex,
-  getPathForSolLedgerIndex
-} from '../../utils/derivation_path_utils'
 
 export const mockEthAccount = {
   name: 'Account 1',
@@ -92,27 +88,18 @@ export const mockAccounts: BraveWallet.AccountInfo[] = [
   mockBitcoinAccount
 ]
 
-export const mockHardwareAccounts: BraveWallet.HardwareWalletAccount[] = [
+export const mockAccountsFromDevice: Array<Required<AccountFromDevice>> = [
   {
-    address: mockAccounts[0].address + 'h',
-    coin: BraveWallet.CoinType.ETH,
-    derivationPath: getPathForEthLedgerIndex(
-      1,
-      LedgerDerivationPaths.LedgerLive
-    ),
-    deviceId: 'ledger',
-    hardwareVendor: 'ledger',
-    keyringId: BraveWallet.KeyringId.kDefault,
-    name: 'Eth Ledger 1'
+    address: mockAccounts[0].address,
+    derivationPath: AllHardwareImportSchemes[0].pathTemplate(0),
+    alreadyInWallet: false,
+    shouldAddToWallet: true
   },
   {
-    address: mockAccounts[3].address + 's',
-    coin: BraveWallet.CoinType.ETH,
-    derivationPath: getPathForSolLedgerIndex(1, SolDerivationPaths.Bip44Root),
-    deviceId: 'ledger',
-    hardwareVendor: 'ledger',
-    keyringId: BraveWallet.KeyringId.kDefault,
-    name: 'Sol Ledger 1'
+    address: mockAccounts[0].address + 'h',
+    derivationPath: AllHardwareImportSchemes[0].pathTemplate(1),
+    alreadyInWallet: true,
+    shouldAddToWallet: true
   }
 ]
 

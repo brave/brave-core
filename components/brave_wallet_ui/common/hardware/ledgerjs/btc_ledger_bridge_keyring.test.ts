@@ -1,26 +1,25 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import SolanaLedgerBridgeKeyring from './sol_ledger_bridge_keyring'
+import BitcoinLedgerBridgeKeyring from './btc_ledger_bridge_keyring'
 import { MockLedgerTransport } from './ledger_bridge_keyring.test'
 import {
+  BtcLedgerMainnetHardwareImportScheme,
   GetAccountsHardwareOperationResult,
-  SignHardwareOperationResult,
-  SolLedgerDefaultHardwareImportScheme
+  SignHardwareOperationResult
 } from '../types'
 import {
   LedgerCommand,
   LedgerError,
   UnlockResponse,
-  SolGetAccountResponse,
-  SolGetAccountResponsePayload,
-  SolSignTransactionResponse
+  BtcGetAccountResponse,
+  BtcSignTransactionResponse
 } from './ledger-messages'
 
 const createKeyring = () => {
-  let keyring = new SolanaLedgerBridgeKeyring()
+  let keyring = new BitcoinLedgerBridgeKeyring()
   const transport = new MockLedgerTransport(window, window.origin)
   keyring.setTransportForTesting(transport)
   const iframe = document.createElement('iframe')
@@ -54,7 +53,7 @@ test('getAccounts unlock error', async () => {
   const result: GetAccountsHardwareOperationResult = await keyring.getAccounts(
     0,
     1,
-    SolLedgerDefaultHardwareImportScheme
+    BtcLedgerMainnetHardwareImportScheme
   )
   const expectedResult: GetAccountsHardwareOperationResult =
     unlockErrorResponse.payload
@@ -63,45 +62,45 @@ test('getAccounts unlock error', async () => {
 
 test('getAccounts success', async () => {
   const { keyring, transport } = createKeyring()
-
   transport.addSendCommandResponse(unlockSuccessResponse)
 
-  const getAccountsResponsePayload1: SolGetAccountResponsePayload = {
-    success: true,
-    address: Buffer.from("address for 44'/501'/0'/0'")
-  }
-  transport.addSendCommandResponse({
+  const getAccountsResponse1: BtcGetAccountResponse = {
     id: LedgerCommand.GetAccount,
     origin: window.origin,
     command: LedgerCommand.GetAccount,
-    payload: getAccountsResponsePayload1
-  })
-  const getAccountsResponsePayload2: SolGetAccountResponsePayload = {
-    success: true,
-    address: Buffer.from("address for 44'/501'/1'/0'")
+    payload: {
+      success: true,
+      xpub: 'xpub1'
+    }
   }
-  transport.addSendCommandResponse({
+  transport.addSendCommandResponse(getAccountsResponse1)
+
+  const getAccountsResponse2: BtcGetAccountResponse = {
     id: LedgerCommand.GetAccount,
     origin: window.origin,
     command: LedgerCommand.GetAccount,
-    payload: getAccountsResponsePayload2
-  })
+    payload: {
+      success: true,
+      xpub: 'xpub2'
+    }
+  }
+  transport.addSendCommandResponse(getAccountsResponse2)
 
   const result = await keyring.getAccounts(
     0,
     2,
-    SolLedgerDefaultHardwareImportScheme
+    BtcLedgerMainnetHardwareImportScheme
   )
   expect(result).toEqual({
     success: true,
     payload: [
       {
-        address: '3yyGpgRsxQWmrP8UZUjC87APcNdwPLuNEdLr',
-        derivationPath: "44'/501'/0'/0'"
+        address: 'xpub1',
+        derivationPath: "84'/0'/0'"
       },
       {
-        address: '3yyGpgRsxQWmrP8UZUjC87APcNdwPM1umTV8',
-        derivationPath: "44'/501'/1'/0'"
+        address: 'xpub2',
+        derivationPath: "84'/0'/1'"
       }
     ]
   })
@@ -111,7 +110,7 @@ test('getAccounts ledger error after successful unlock', async () => {
   const { keyring, transport } = createKeyring()
 
   transport.addSendCommandResponse(unlockSuccessResponse)
-  const getAccountResponseLedgerError: SolGetAccountResponse = {
+  const getAccountResponseLedgerError: BtcGetAccountResponse = {
     id: LedgerCommand.GetAccount,
     origin: window.origin,
     command: LedgerCommand.GetAccount,
@@ -126,24 +125,22 @@ test('getAccounts ledger error after successful unlock', async () => {
   const result: GetAccountsHardwareOperationResult = await keyring.getAccounts(
     0,
     1,
-    SolLedgerDefaultHardwareImportScheme
+    BtcLedgerMainnetHardwareImportScheme
   )
 
-  // TODO why is this different from the eth counterpart test
   expect(result).toEqual({
+    code: 101,
     success: false,
     error: {
       success: false,
       message: 'LedgerError',
       statusCode: 101
-    },
-    code: 101
+    }
   })
 })
 
 test('signTransaction unlock error', async () => {
   const { keyring, transport } = createKeyring()
-
   transport.addSendCommandResponse(unlockErrorResponse)
   const result = await keyring.signTransaction(
     "44'/501'/1'/0'",
@@ -156,9 +153,8 @@ test('signTransaction unlock error', async () => {
 
 test('signTransaction success', async () => {
   const { keyring, transport } = createKeyring()
-
   transport.addSendCommandResponse(unlockSuccessResponse)
-  const signTransactionResponse: SolSignTransactionResponse = {
+  const signTransactionResponse: BtcSignTransactionResponse = {
     id: LedgerCommand.SignTransaction,
     origin: window.origin,
     command: LedgerCommand.SignTransaction,
@@ -175,21 +171,21 @@ test('signTransaction success', async () => {
 
   const expectedResult: SignHardwareOperationResult = {
     success: true,
-    payload: Buffer.from('signature')
+    // TODO(apaymyshev): implement signing
+    payload: undefined // Buffer.from('signature')
   }
   expect(result).toEqual(expectedResult)
 })
 
 test('signTransaction ledger error after successful unlock', async () => {
   const { keyring, transport } = createKeyring()
-
   transport.addSendCommandResponse(unlockSuccessResponse)
   const ledgerError: LedgerError = {
     success: false,
     message: 'LedgerError',
     statusCode: 101
   }
-  const signTransactionResponseLedgerError: SolSignTransactionResponse = {
+  const signTransactionResponseLedgerError: BtcSignTransactionResponse = {
     id: LedgerCommand.SignTransaction,
     origin: window.origin,
     command: LedgerCommand.SignTransaction,
@@ -202,9 +198,12 @@ test('signTransaction ledger error after successful unlock', async () => {
   )
 
   const expectedResult: SignHardwareOperationResult = {
-    success: false,
-    error: 'LedgerError',
-    code: 101
+    payload: undefined,
+    success: true
+    // TODO(apaymyshev): implement signing
+    // success: false,
+    // error: 'LedgerError',
+    // code: 101
   }
   expect(result).toEqual(expectedResult)
 })

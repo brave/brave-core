@@ -189,25 +189,10 @@ mojom::TxData1559Ptr ParseEthTransaction1559Params(const std::string& json,
   return tx_data;
 }
 
-bool ShouldCreate1559Tx(brave_wallet::mojom::TxData1559Ptr tx_data_1559,
-                        bool network_supports_eip1559,
-                        const std::vector<mojom::AccountInfoPtr>& account_infos,
-                        const mojom::AccountIdPtr& account_id) {
-  bool keyring_supports_eip1559 = true;
-  auto account_it = base::ranges::find_if(
-      account_infos, [&](const mojom::AccountInfoPtr& account) {
-        return account->account_id == account_id;
-      });
-
-  // Only ledger and trezor hardware keyrings support EIP-1559 at the moment.
-  if (account_it != account_infos.end() && (*account_it)->hardware &&
-      ((*account_it)->hardware->vendor != mojom::kLedgerHardwareVendor &&
-       (*account_it)->hardware->vendor != mojom::kTrezorHardwareVendor)) {
-    keyring_supports_eip1559 = false;
-  }
-
+bool ShouldCreate1559Tx(const mojom::TxData1559Ptr& tx_data_1559,
+                        bool network_supports_eip1559) {
   // Network or keyring without EIP1559 support.
-  if (!network_supports_eip1559 || !keyring_supports_eip1559) {
+  if (!network_supports_eip1559) {
     return false;
   }
 
