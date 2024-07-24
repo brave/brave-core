@@ -432,7 +432,6 @@ Config.prototype.buildArgs = function () {
     enable_dangling_raw_ptr_feature_flag: false,
     brave_services_key_id: this.brave_services_key_id,
     service_key_aichat: this.service_key_aichat,
-    ...this.extraGnArgs,
   }
 
   if (!this.isBraveReleaseBuild()) {
@@ -732,6 +731,7 @@ Config.prototype.buildArgs = function () {
     delete args.v8_enable_verify_heap
   }
 
+  args = Object.assign(args, this.extraGnArgs)
   return args
 }
 
