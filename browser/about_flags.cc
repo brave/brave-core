@@ -189,6 +189,18 @@
           FEATURE_VALUE_TYPE(sandbox::policy::features::kModuleFileNamePatch), \
       }))
 
+#define BRAVE_WORKAROUND_NEW_WINDOW_FLASH                                  \
+  IF_BUILDFLAG(                                                            \
+      IS_WIN,                                                              \
+      EXPAND_FEATURE_ENTRIES({                                             \
+          "brave-workaround-new-window-flash",                             \
+          "Workaround a white flash on new window creation",               \
+          "Enable workaround to prevent new windows being created with a " \
+          "white background",                                              \
+          kOsWin,                                                          \
+          FEATURE_VALUE_TYPE(::features::kBraveWorkaroundNewWindowFlash),  \
+      }))
+
 #define BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                               \
   IF_BUILDFLAG(                                                            \
       ENABLE_GEMINI_WALLET,                                                \
@@ -1029,6 +1041,7 @@
   BRAVE_PLAYER_FEATURE_ENTRIES                                                 \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
   BRAVE_EXTENSIONS_MANIFEST_V2                                                 \
+  BRAVE_WORKAROUND_NEW_WINDOW_FLASH                                            \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {
