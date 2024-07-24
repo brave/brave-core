@@ -33,6 +33,8 @@ struct AIChatPromptInputView: View {
 
   var onSubmit: (String) -> Void
 
+  @Environment(\.isEnabled) private var isEnabled
+
   init(
     prompt: Binding<String>,
     speechRecognizer: SpeechRecognizer,
@@ -67,9 +69,11 @@ struct AIChatPromptInputView: View {
       AIChatPaddedTextView(
         Strings.AIChat.promptPlaceHolderDescription,
         text: $prompt,
-        textColor: UIColor(braveSystemName: .textPrimary),
+        textColor: isEnabled
+          ? UIColor(braveSystemName: .textPrimary) : UIColor(braveSystemName: .textDisabled),
         prompt: Strings.AIChat.promptPlaceHolderDescription,
-        promptColor: UIColor(braveSystemName: .textTertiary),
+        promptColor: isEnabled
+          ? UIColor(braveSystemName: .textTertiary) : UIColor(braveSystemName: .textDisabled),
         font: .preferredFont(forTextStyle: .subheadline),
         submitLabel: .default,
         onBackspace: { wasEmpty in
@@ -106,7 +110,10 @@ struct AIChatPromptInputView: View {
                 .foregroundStyle(Color(braveSystemName: .textPrimary))
             } icon: {
               Image(braveSystemName: "leo.slash")
-                .foregroundStyle(Color(braveSystemName: .iconDefault))
+                .foregroundStyle(
+                  isEnabled
+                    ? Color(braveSystemName: .iconDefault) : Color(braveSystemName: .iconDisabled)
+                )
                 .padding(.horizontal, 8.0)
                 .padding(.vertical, 4.0)
                 .padding(.bottom, 16.0)
@@ -125,7 +132,10 @@ struct AIChatPromptInputView: View {
               .foregroundStyle(Color(braveSystemName: .textPrimary))
           } icon: {
             Image(braveSystemName: "leo.microphone")
-              .foregroundStyle(Color(braveSystemName: .iconDefault))
+              .foregroundStyle(
+                isEnabled
+                  ? Color(braveSystemName: .iconDefault) : Color(braveSystemName: .iconDisabled)
+              )
               .padding(.horizontal, 8.0)
               .padding(.vertical, 4.0)
               .padding(.bottom, 16.0)
@@ -144,7 +154,9 @@ struct AIChatPromptInputView: View {
         } label: {
           Image(braveSystemName: prompt.isEmpty ? "leo.send" : "leo.send.filled")
             .foregroundStyle(
-              Color(braveSystemName: prompt.isEmpty ? .iconDisabled : .iconInteractive)
+              Color(
+                braveSystemName: (prompt.isEmpty || !isEnabled) ? .iconDisabled : .iconInteractive
+              )
             )
             .padding(.horizontal, 8.0)
             .padding(.vertical, 4.0)

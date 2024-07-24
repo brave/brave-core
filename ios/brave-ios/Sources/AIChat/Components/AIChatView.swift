@@ -294,9 +294,7 @@ public struct AIChatView: View {
         }
       }
 
-      if (model.isAgreementAccepted || (!hasSeenIntro.value && !model.isAgreementAccepted))
-        && !isEditingFieldFocused
-      {
+      if model.isAgreementAccepted || (!hasSeenIntro.value && !model.isAgreementAccepted) {
         AIChatPromptInputView(
           prompt: $prompt,
           speechRecognizer: speechRecognizer,
@@ -321,7 +319,7 @@ public struct AIChatView: View {
         }
         .disabled(
           model.requestInProgress || model.suggestionsStatus == .isGenerating
-            || model.apiError == .contextLimitReached
+            || model.apiError == .contextLimitReached || isEditingFieldFocused
         )
       }
     }
