@@ -191,9 +191,9 @@ public class KeyringModel implements KeyringServiceObserver {
 
     /**
      * Restore a Brave Wallet with a given password, showing only the collection of selected
-     * networks. Ethereum and Solana accounts will be restored using the recovery phrase; Bitcoin account and
-     * Filecoin account will be created only if selected among available networks. Once the restoration
-     * process finishes the callback is notified with a boolean.
+     * networks. Ethereum and Solana accounts will be restored using the recovery phrase; Bitcoin
+     * account and Filecoin account will be created only if selected among available networks. Once
+     * the restoration process finishes the callback is notified with a boolean.
      *
      * <p><b>Note:</b> This method must be always called from main UI thread.
      *
@@ -243,7 +243,12 @@ public class KeyringModel implements KeyringServiceObserver {
                                 removeHiddenNetworksLiveData.removeObserver(this);
 
                                 if (!addHiddenNetworksLiveData.hasActiveObservers()) {
-                                    finalizeWalletRestoration(password, recoveryPhrase, legacyRestoreEnabled, selectedNetworks, callback);
+                                    finalizeWalletRestoration(
+                                            password,
+                                            recoveryPhrase,
+                                            legacyRestoreEnabled,
+                                            selectedNetworks,
+                                            callback);
                                 }
                             }
                         }
@@ -263,7 +268,12 @@ public class KeyringModel implements KeyringServiceObserver {
                                 addHiddenNetworksLiveData.removeObserver(this);
 
                                 if (!removeHiddenNetworksLiveData.hasActiveObservers()) {
-                                    finalizeWalletRestoration(password, recoveryPhrase, legacyRestoreEnabled, selectedNetworks, callback);
+                                    finalizeWalletRestoration(
+                                            password,
+                                            recoveryPhrase,
+                                            legacyRestoreEnabled,
+                                            selectedNetworks,
+                                            callback);
                                 }
                             }
                         }
@@ -540,8 +550,7 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     private void selectEthAccount(
-            final boolean result,
-            @NonNull final Callbacks.Callback1<Boolean> callback) {
+            final boolean result, @NonNull final Callbacks.Callback1<Boolean> callback) {
         mKeyringService.getAllAccounts(
                 allAccounts ->
                         mKeyringService.setSelectedAccount(
