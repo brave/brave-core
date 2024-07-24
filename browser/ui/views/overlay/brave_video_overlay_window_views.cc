@@ -421,7 +421,7 @@ int BraveVideoOverlayWindowViews::GetNonClientComponent(
 }
 
 void BraveVideoOverlayWindowViews::OnKeyEvent(ui::KeyEvent* event) {
-  if (event->type() == ui::ET_KEY_PRESSED && media_position_) {
+  if (event->type() == ui::EventType::kKeyPressed && media_position_) {
     if (event->key_code() == ui::VKEY_LEFT) {
       controller_->SeekTo(media_position_->GetPosition() - base::Seconds(10));
     } else if (event->key_code() == ui::VKEY_RIGHT) {
