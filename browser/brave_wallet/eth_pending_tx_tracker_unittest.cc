@@ -131,7 +131,7 @@ TEST_F(EthPendingTxTrackerUnitTest, IsNonceTaken) {
 
   EXPECT_TRUE(pending_tx_tracker.IsNonceTaken(meta));
 
-  meta.set_chain_id(mojom::kGoerliChainId);
+  meta.set_chain_id(mojom::kSepoliaChainId);
   EXPECT_FALSE(pending_tx_tracker.IsNonceTaken(meta));
 }
 
@@ -184,7 +184,7 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
   base::RunLoop().RunUntilIdle();
 
   for (const std::string& chain_id :
-       {mojom::kMainnetChainId, mojom::kGoerliChainId,
+       {mojom::kMainnetChainId, mojom::kSepoliaChainId,
         mojom::kSepoliaChainId}) {
     EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
     meta.set_id(base::StrCat({chain_id, "001"}));
@@ -236,8 +236,7 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
       }));
 
   for (const std::string& chain_id :
-       {mojom::kMainnetChainId, mojom::kGoerliChainId,
-        mojom::kSepoliaChainId}) {
+       {mojom::kMainnetChainId, mojom::kSepoliaChainId}) {
     std::set<std::string> pending_chain_ids;
     EXPECT_TRUE(pending_tx_tracker.UpdatePendingTransactions(
         chain_id, &pending_chain_ids));

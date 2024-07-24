@@ -43,7 +43,6 @@ std::optional<bool> GetEip1559ForKnownChain(const std::string& chain_id_lwr) {
         {mojom::kPolygonMainnetChainId, true},
         {mojom::kAvalancheMainnetChainId, true},
         {mojom::kOptimismMainnetChainId, true},  //
-        {mojom::kGoerliChainId, true},           //
         {mojom::kSepoliaChainId, true},          //
         {mojom::kFilecoinEthereumMainnetChainId, true},
         {mojom::kFilecoinEthereumTestnetChainId, true},
@@ -234,25 +233,6 @@ const mojom::NetworkInfo* GetNeonEVMMainnet() {
   return network_info.get();
 }
 
-const mojom::NetworkInfo* GetGoerliTestNetwork() {
-  const auto coin = mojom::CoinType::ETH;
-  const auto* chain_id = mojom::kGoerliChainId;
-
-  static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {chain_id,
-       "Goerli Test Network",
-       {"https://goerli.etherscan.io"},
-       {},
-       0,
-       {GURL("https://goerli-infura.brave.com")},
-       "ETH",
-       "Ethereum",
-       18,
-       coin,
-       GetSupportedKeyringsForNetwork(coin, chain_id)});
-  return network_info.get();
-}
-
 const mojom::NetworkInfo* GetSepoliaTestNetwork() {
   const auto coin = mojom::CoinType::ETH;
   const auto* chain_id = mojom::kSepoliaChainId;
@@ -341,7 +321,6 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownEthNetworks() {
       GetAvalancheMainnet(),
       GetFilecoinEthereumMainnet(),
       GetNeonEVMMainnet(),
-      GetGoerliTestNetwork(),
       GetSepoliaTestNetwork(),
       GetFilecoinEthereumTestnet(),
       GetEthLocalhost()
@@ -626,7 +605,7 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownBitcoinNetworks() {
 // DEPRECATED 01/2024.
 const base::flat_map<std::string, std::string> kInfuraSubdomains = {
     {brave_wallet::mojom::kMainnetChainId, "mainnet"},
-    {brave_wallet::mojom::kGoerliChainId, "goerli"},
+    {"0x5", "goerli"},
     {brave_wallet::mojom::kSepoliaChainId, "sepolia"}};
 
 // DEPRECATED 01/2024. For migration only.

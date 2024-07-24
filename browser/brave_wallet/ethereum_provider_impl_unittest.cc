@@ -2133,8 +2133,8 @@ TEST_F(EthereumProviderImplUnitTest, ChainChangedEvent) {
   GURL url("https://brave.com");
   Navigate(url);
 
-  EXPECT_CALL(*observer_, ChainChangedEvent(mojom::kGoerliChainId)).Times(1);
-  SetNetwork(mojom::kGoerliChainId, std::nullopt);
+  EXPECT_CALL(*observer_, ChainChangedEvent(mojom::kSepoliaChainId)).Times(1);
+  SetNetwork(mojom::kSepoliaChainId, std::nullopt);
   browser_task_environment_.RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(observer_.get()));
 
@@ -2679,9 +2679,9 @@ TEST_F(EthereumProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
 
   // AddEthereumChain switches for already added networks
   std::string params = R"({"params": [{
-        "chainId": "0x5",
-        "chainName": "Goerli",
-        "rpcUrls": ["https://goerli-infura.brave.com/"]
+        "chainId": "0xaa36a7",
+        "chainName": "Sepolia",
+        "rpcUrls": ["https://ethereum-sepolia.wallet.brave.com"]
       }]})";
   base::RunLoop run_loop;
   provider()->AddEthereumChain(
@@ -2707,7 +2707,7 @@ TEST_F(EthereumProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
   EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
   EXPECT_EQ(
       json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, GetOrigin()),
-      "0x5");
+      "0xaa36a7");
 }
 
 TEST_F(EthereumProviderImplUnitTest, AddSuggestToken) {

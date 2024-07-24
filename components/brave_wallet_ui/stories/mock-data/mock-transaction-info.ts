@@ -23,7 +23,7 @@ import { mockEthAccount } from './mock-wallet-accounts'
 export const mockTransactionInfo: SerializableTransactionInfo = {
   fromAccountId: mockAccount.accountId,
   fromAddress: mockAccount.address,
-  chainId: BraveWallet.GOERLI_CHAIN_ID,
+  chainId: BraveWallet.SEPOLIA_CHAIN_ID,
   id: '465a4d6646-kjlwf665',
   txArgs: ['0x0d8775f648430679a709e98d2b0cb6250d2887ef', '0x15ddf09c97b0000'],
   txDataUnion: {
@@ -176,7 +176,7 @@ export const mockEthSendTransaction = {
         signOnly: false,
         signedTransaction: 'mockSignedTx'
       },
-      chainId: '0x5',
+      chainId: '0xaa36a7',
       maxPriorityFeePerGas: '0x2faf080',
       maxFeePerGas: '0x2faf092',
       gasEstimation: {

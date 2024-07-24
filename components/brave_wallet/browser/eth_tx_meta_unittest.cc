@@ -237,7 +237,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                                    "0x3535353535353535353535353535353535353535",
                                    "0x0de0b6b3a7640000", encoded_data, false,
                                    std::nullopt),
-                mojom::kGoerliChainId, "0x1E", "0x32",
+                mojom::kSepoliaChainId, "0x1E", "0x32",
                 mojom::GasEstimation1559::New(
                     "0x3b9aca00" /* Hex of 1 * 1e9 */,
                     "0xaf16b1600" /* Hex of 47 * 1e9 */,
@@ -268,7 +268,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                                    "0x3535353535353535353535353535353535353535",
                                    "0x0de0b6b3a7640000", encoded_data, false,
                                    std::nullopt),
-                mojom::kGoerliChainId, "0x1E", "0x32",
+                mojom::kSepoliaChainId, "0x1E", "0x32",
                 mojom::GasEstimation1559::New(
                     "0x3b9aca00" /* Hex of 1 * 1e9 */,
                     "0xaf16b1600" /* Hex of 47 * 1e9 */,
@@ -299,7 +299,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                                    "0x3535353535353535353535353535353535353535",
                                    "0x0de0b6b3a7640000", encoded_data, false,
                                    std::nullopt),
-                mojom::kGoerliChainId, "0x1E", "0x32",
+                mojom::kSepoliaChainId, "0x1E", "0x32",
                 mojom::GasEstimation1559::New(
                     "0x3b9aca00" /* Hex of 1 * 1e9 */,
                     "0xaf16b1600" /* Hex of 47 * 1e9 */,
@@ -323,7 +323,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
                                    "0x3535353535353535353535353535353535353535",
                                    "0x0de0b6b3a7640000", std::vector<uint8_t>(),
                                    false, std::nullopt),
-                mojom::kGoerliChainId, "0x1E", "0x32",
+                mojom::kSepoliaChainId, "0x1E", "0x32",
                 mojom::GasEstimation1559::New(
                     "0x3b9aca00" /* Hex of 1 * 1e9 */,
                     "0xaf16b1600" /* Hex of 47 * 1e9 */,

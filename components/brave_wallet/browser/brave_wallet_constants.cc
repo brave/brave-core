@@ -95,8 +95,7 @@ const base::flat_map<std::string, std::string>& GetAnkrBlockchains() {
                    {mojom::kPolygonZKEVMChainId, "polygon_zkevm"},
                    {mojom::kRolluxMainnetChainId, "rollux"},
                    {mojom::kSyscoinMainnetChainId, "syscoin"},
-                   {mojom::kZkSyncEraChainId, "zksync_era"},
-                   {mojom::kGoerliChainId, "eth_goerli"}});
+                   {mojom::kZkSyncEraChainId, "zksync_era"}});
 
   return *blockchains;
 }
