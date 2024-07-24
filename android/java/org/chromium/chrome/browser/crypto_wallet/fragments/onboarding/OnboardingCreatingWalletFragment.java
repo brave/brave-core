@@ -105,6 +105,40 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
         }
     }
 
+    private void restoreWallet(@NonNull final KeyringModel keyringModel) {
+        JsonRpcService jsonRpcService = getJsonRpcService();
+        KeyringService keyringService = getKeyringService();
+
+        if (jsonRpcService != null) {
+            Set<NetworkInfo> availableNetworks = mOnboardingViewModel.getAvailableNetworks();
+            Set<NetworkInfo> selectedNetworks = mOnboardingViewModel.getSelectedNetworks();
+
+            keyringModel.restoreWallet(
+                mOnboardingViewModel.getPassword(),
+                mOnboardingViewModel.requireRecoveryPhrase(),
+                mOnboardingViewModel.isLegacyRestoreEnabled(),
+                    availableNetworks,
+                    selectedNetworks,
+                    jsonRpcService,
+                    result -> {
+                        if (result) {
+                            if (keyringService != null) {
+                                keyringService.notifyWalletBackupComplete();
+                            }
+                            Utils.setCryptoOnboarding(false);
+                            goToNextPage();
+                        } else {
+                            Toast.makeText(requireActivity(),
+                                            R.string.account_recovery_failed,
+                                            Toast.LENGTH_SHORT)
+                                .show();
+                            requireActivity().finish();
+                        }
+                    });
+                }
+
+    }
+
     private void createWallet(@NonNull final KeyringModel keyringModel) {
         BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
         JsonRpcService jsonRpcService = getJsonRpcService();
