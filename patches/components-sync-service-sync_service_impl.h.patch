@@ -1,9 +1,9 @@
 diff --git a/components/sync/service/sync_service_impl.h b/components/sync/service/sync_service_impl.h
-index 5d136e2afcfaa38c26397595ccd26b5ad83399e8..2fae96660da21bec3045527e75936da5d401a972 100644
+index 6d6ff4136f6f163cfdc4dd7eaffc627572359a67..2d248c97bd00406e58eb11fb441332e98dc6fff1 100644
 --- a/components/sync/service/sync_service_impl.h
 +++ b/components/sync/service/sync_service_impl.h
 @@ -258,6 +258,7 @@ class SyncServiceImpl : public SyncService,
-   void ReportDataTypeErrorForTest(ModelType type);
+   void ReportDataTypeErrorForTest(DataType type);
  
   private:
 +  BRAVE_SYNC_SERVICE_IMPL_H_

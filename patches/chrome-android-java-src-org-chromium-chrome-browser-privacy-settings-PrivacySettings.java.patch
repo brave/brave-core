@@ -1,17 +1,17 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-index 147443ec7a77fa715dca47d450bf04eb6ba7dd40..46c412ffe4852de5799c49974db9a6676f586ec1 100644
+index 60a8df3c3ab596ebda781ed30d86f6b12fc9b6e0..28aad2b67623a8223319b63b30bc137e4d04fa8c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-@@ -52,7 +52,7 @@ import org.chromium.ui.text.NoUnderlineClickableSpan;
+@@ -51,7 +51,7 @@ import org.chromium.ui.text.NoUnderlineClickableSpan;
  import org.chromium.ui.text.SpanApplier;
  
  /** Fragment to keep track of the all the privacy related preferences. */
 -public class PrivacySettings extends ChromeBaseSettingsFragment
 +public class PrivacySettings extends org.chromium.chrome.browser.settings.BravePreferenceFragment
-         implements Preference.OnPreferenceChangeListener, FragmentSettingsLauncher {
+         implements Preference.OnPreferenceChangeListener {
      private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
      private static final String PREF_PRELOAD_PAGES = "preload_pages";
-@@ -409,6 +409,7 @@ public class PrivacySettings extends ChromeBaseSettingsFragment
+@@ -402,6 +402,7 @@ public class PrivacySettings extends ChromeBaseSettingsFragment
      @Override
      public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
          menu.clear();
@@ -19,7 +19,7 @@ index 147443ec7a77fa715dca47d450bf04eb6ba7dd40..46c412ffe4852de5799c49974db9a667
          MenuItem help =
                  menu.add(Menu.NONE, R.id.menu_id_targeted_help, Menu.NONE, R.string.menu_help);
          help.setIcon(
-@@ -423,7 +424,7 @@ public class PrivacySettings extends ChromeBaseSettingsFragment
+@@ -416,7 +417,7 @@ public class PrivacySettings extends ChromeBaseSettingsFragment
                      .show(getActivity(), getString(R.string.help_context_privacy), null);
              return true;
          }

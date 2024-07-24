@@ -1,0 +1,21 @@
+diff --git a/content/browser/loader/reconnectable_url_loader_factory.cc b/content/browser/loader/reconnectable_url_loader_factory.cc
+index b82384b549b8a9a8c33d5b0d6d5f6409492db599..115fc81b67e1dc0b5bc416fdf086ee2f756ec142 100644
+--- a/content/browser/loader/reconnectable_url_loader_factory.cc
++++ b/content/browser/loader/reconnectable_url_loader_factory.cc
+@@ -10,6 +10,7 @@
+ #include "content/browser/loader/url_loader_factory_utils.h"
+ #include "services/network/public/cpp/cross_thread_pending_shared_url_loader_factory.h"
+ #include "services/network/public/cpp/shared_url_loader_factory.h"
++#include "brave/services/network/public/cpp/system_request_handler.h"
+ 
+ namespace content {
+ 
+@@ -136,7 +137,7 @@ class ReconnectableURLLoaderFactoryForIOThread::URLLoaderFactoryForIOThread
+       override {
+     DCHECK(BrowserThread::CurrentlyOn(BrowserThread::IO));
+     factory_getter_->GetURLLoaderFactory()->CreateLoaderAndStart(
+-        std::move(receiver), request_id, options, url_request,
++        std::move(receiver), request_id, options, network::SystemRequestHandler::GetInstance()->OnBeforeSystemRequest(url_request),
+         std::move(client), traffic_annotation);
+   }
+ 

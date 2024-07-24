@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-index 8da67fba572caa82a0c89b9b24f12b567d3522ce..511f084003bf3870b6ca412a394730119ad6b55b 100644
+index e4a446320466bf1d5553ed1436f26907bcd2f358..568a3f3406af2aa2e5ea3a103d841c923c27c5f0 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-@@ -127,6 +127,7 @@ class AvatarToolbarButton : public ToolbarButton {
-   void NotifyShowSigninPausedDelayEnded() const;
+@@ -149,6 +149,7 @@ class AvatarToolbarButton : public ToolbarButton {
+   CreateScopedZeroDelayOverrideSigninPendingTextForTesting();
  
   private:
 +  BRAVE_AVATAR_BUTTON_H

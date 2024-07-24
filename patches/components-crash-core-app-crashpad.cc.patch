@@ -1,11 +1,11 @@
 diff --git a/components/crash/core/app/crashpad.cc b/components/crash/core/app/crashpad.cc
-index 3e96d2562b6cb7a6163c38bc969a6b8021aea083..102197a6bd4313e2e3b60d0f728f196a9dded7eb 100644
+index 641c9cdba501164c5307c28a596924432ff9083c..4f6fa8aecfdc76934c1932e43460fb97f68153f6 100644
 --- a/components/crash/core/app/crashpad.cc
 +++ b/components/crash/core/app/crashpad.cc
-@@ -92,6 +92,7 @@ bool InitializeCrashpadImpl(bool initial_client,
-     DCHECK(browser_process || process_type == "Chrome Installer" ||
-            process_type == "notification-helper" ||
+@@ -96,6 +96,7 @@ bool InitializeCrashpadImpl(bool initial_client,
+            process_type == "os-update-handler" ||
             process_type == "platform-experience-helper" ||
+ #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 +           BRAVE_INITIALIZE_CRASHPAD_IMPL_PROCESS_TYPE
             process_type == "GCPW Installer" || process_type == "GCPW DLL");
  #elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)

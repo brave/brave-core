@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
+index fd4c6fd187a8e9e09530f92a9350e62a0d1044c0..df03fc8458fcd6115bfaf16184560fc28fce06aa 100644
+--- a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
++++ b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
+@@ -25,7 +25,7 @@ export function getHtml(this: ProfilePickerMainViewElement) {
+             data-index="${index}">
+         </profile-card>
+       `)}
+-      <cr-button id="addProfile" class="profile-item"
++      <cr-button id="addProfile" class="profile-item plain"
+           @click="${this.onAddProfileClick_}"
+           aria-labelledby="addProfileButtonLabel">
+         <div id="addProfileButtonLabel"
