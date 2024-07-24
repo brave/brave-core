@@ -161,6 +161,8 @@ source_set("ui") {
       "brave_layout_constants.h",
       "brave_pages.cc",
       "brave_pages.h",
+      "brave_scheme_utils.cc",
+      "brave_scheme_utils.h",
       "brave_tab_strip_model_delegate.cc",
       "brave_tab_strip_model_delegate.h",
       "brave_view_ids.h",
@@ -1343,6 +1345,7 @@ source_set("unit_tests") {
     sources = [
       "brave_file_select_utils_unittest.cc",
       "brave_layout_constants_unittest.cc",
+      "brave_scheme_utils_unittest.cc",
     ]
     deps = [
       "//brave/components/l10n/common:test_support",
@@ -1364,7 +1367,6 @@ source_set("unit_tests") {
         "//chrome/browser/themes",
         "//chrome/test:test_support",
         "//skia",
-        "//testing/gtest",
         "//third_party/abseil-cpp:absl",
       ]
     }
