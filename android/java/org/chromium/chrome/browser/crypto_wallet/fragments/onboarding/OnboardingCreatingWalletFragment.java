@@ -128,15 +128,15 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
                             Utils.setCryptoOnboarding(false);
                             goToNextPage();
                         } else {
-                            Toast.makeText(requireActivity(),
+                            Toast.makeText(
+                                            requireActivity(),
                                             R.string.account_recovery_failed,
                                             Toast.LENGTH_SHORT)
-                                .show();
+                                    .show();
                             requireActivity().finish();
                         }
                     });
-                }
-
+        }
     }
 
     private void createWallet(@NonNull final KeyringModel keyringModel) {
