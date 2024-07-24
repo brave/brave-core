@@ -127,7 +127,7 @@ private struct ItemToggle: View {
       .overlay {
         if isSelected {
           ContainerRelativeShape()
-            .strokeBorder(Color(braveSystemName: .primitivePrimary60), lineWidth: 2)
+            .strokeBorder(Color(braveSystemName: .primitivePrimary40), lineWidth: 2)
         }
       }
       .containerShape(.rect(cornerRadius: 8, style: .continuous))

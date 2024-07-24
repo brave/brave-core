@@ -231,7 +231,7 @@ private struct TokenRow: View {
         Circle()
           .stroke(Color(.braveSeparator))
           .frame(width: assetIconSize, height: assetIconSize)
-          .background(Color(braveSystemName: .iconActive).clipShape(Circle()))
+          .background(Color(braveSystemName: .iconInteractive).clipShape(Circle()))
       }
       VStack(alignment: .leading) {
         Text(title)

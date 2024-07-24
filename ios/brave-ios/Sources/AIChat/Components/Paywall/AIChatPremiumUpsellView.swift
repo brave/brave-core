@@ -165,7 +165,7 @@ struct PremiumUpsellDetailView: View {
       )
       .padding()
 
-      Color(braveSystemName: isPaywallPresented ? .primitivePrimary70 : .primary20)
+      Color(braveSystemName: isPaywallPresented ? .primitivePrimary25 : .primary20)
         .frame(height: 1.0)
 
       PremiumUpsellTopicView(
@@ -174,7 +174,7 @@ struct PremiumUpsellDetailView: View {
       )
       .padding()
 
-      Color(braveSystemName: isPaywallPresented ? .primitivePrimary70 : .primary20)
+      Color(braveSystemName: isPaywallPresented ? .primitivePrimary25 : .primary20)
         .frame(height: 1.0)
 
       PremiumUpsellTopicView(
@@ -183,7 +183,7 @@ struct PremiumUpsellDetailView: View {
       )
       .padding()
 
-      Color(braveSystemName: isPaywallPresented ? .primitivePrimary70 : .primary20)
+      Color(braveSystemName: isPaywallPresented ? .primitivePrimary25 : .primary20)
         .frame(height: 1.0)
 
       PremiumUpsellTopicView(
@@ -196,7 +196,7 @@ struct PremiumUpsellDetailView: View {
     .overlay(
       ContainerRelativeShape()
         .strokeBorder(
-          Color(braveSystemName: isPaywallPresented ? .primitivePrimary70 : .primary20),
+          Color(braveSystemName: isPaywallPresented ? .primitivePrimary25 : .primary20),
           lineWidth: 1.0
         )
     )
@@ -214,9 +214,9 @@ private struct PremiumUpsellTopicView: View {
     HStack {
       Image(braveSystemName: topicType.icon)
         .padding(8.0)
-        .background(Color(braveSystemName: isPaywallPresented ? .primitivePrimary30 : .primary20))
+        .background(Color(braveSystemName: isPaywallPresented ? .primitivePrimary80 : .primary20))
         .foregroundColor(
-          Color(braveSystemName: isPaywallPresented ? .primitivePrimary80 : .primary60)
+          Color(braveSystemName: isPaywallPresented ? .primitivePrimary20 : .primary60)
         )
         .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
 
@@ -236,7 +236,7 @@ private struct PremiumUpsellTopicView: View {
         Text(topicType.subTitle)
           .font(.footnote)
           .foregroundStyle(
-            Color(braveSystemName: isPaywallPresented ? .primitivePrimary30 : .textSecondary)
+            Color(braveSystemName: isPaywallPresented ? .primitivePrimary80 : .textSecondary)
           )
       }
       .lineLimit(2)

@@ -148,7 +148,7 @@ class BuyVPNView: UIView {
     let refreshTitle = UILabel().then {
       $0.font = .systemFont(ofSize: 16, weight: .semibold)
       $0.textAlignment = .center
-      $0.textColor = UIColor(braveSystemName: .primitivePrimary20)
+      $0.textColor = UIColor(braveSystemName: .primitivePrimary90)
       $0.minimumScaleFactor = 0.5
       $0.adjustsFontSizeToFitWidth = true
 
