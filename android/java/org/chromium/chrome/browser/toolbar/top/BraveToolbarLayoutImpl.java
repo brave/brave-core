@@ -924,6 +924,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         // TODO: show wallet panel
     }
 
+    public void sendWebcontents() {
+        if (mPlaylistService != null) {
+            Log.e("audio_focus", "sendWebcontents");
+        }
+    }
+
     private void showBraveRewardsOnboardingModal() {
         Context context = getContext();
         final Dialog dialog = new Dialog(context);

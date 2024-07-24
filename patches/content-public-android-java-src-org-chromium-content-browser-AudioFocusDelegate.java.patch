@@ -1,0 +1,49 @@
+diff --git a/content/public/android/java/src/org/chromium/content/browser/AudioFocusDelegate.java b/content/public/android/java/src/org/chromium/content/browser/AudioFocusDelegate.java
+index dc7440de5cab46df540b9a12b82e0a402b624d42..858afcb937e21ee298c1bd891a133ac6ab50367b 100644
+--- a/content/public/android/java/src/org/chromium/content/browser/AudioFocusDelegate.java
++++ b/content/public/android/java/src/org/chromium/content/browser/AudioFocusDelegate.java
+@@ -18,6 +18,7 @@ import org.jni_zero.NativeMethods;
+ import org.chromium.base.ContextUtils;
+ import org.chromium.base.Log;
+ import org.chromium.base.ThreadUtils;
++import org.chromium.chrome.browser.app.BraveActivity;
+ 
+ /**
+  * AudioFocusDelegate is the Java counterpart of content::AudioFocusDelegateAndroid.
+@@ -129,6 +130,7 @@ public class AudioFocusDelegate implements AudioManager.OnAudioFocusChangeListen
+ 
+         switch (focusChange) {
+             case AudioManager.AUDIOFOCUS_GAIN:
++                Log.e("audio_focus", "AudioManager.AUDIOFOCUS_GAIN");
+                 if (mIsDucking) {
+                     AudioFocusDelegateJni.get()
+                             .onStopDucking(
+@@ -138,12 +140,20 @@ public class AudioFocusDelegate implements AudioManager.OnAudioFocusChangeListen
+                     AudioFocusDelegateJni.get()
+                             .onResume(mNativeAudioFocusDelegateAndroid, AudioFocusDelegate.this);
+                 }
++                try {
++                BraveActivity braveActivity = BraveActivity.getBraveActivity();
++                    braveActivity.sendWebcontents();
++                } catch (BraveActivity.BraveActivityNotFoundException e) {
++                    Log.e(TAG, "onViewCreated btnVideos click " + e);
++                }
+                 break;
+             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
++                Log.e("audio_focus", "AudioManager.AUDIOFOCUS_LOSS_TRANSIENT");
+                 AudioFocusDelegateJni.get()
+                         .onSuspend(mNativeAudioFocusDelegateAndroid, AudioFocusDelegate.this);
+                 break;
+             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
++                Log.e("audio_focus", "AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK");
+                 mIsDucking = true;
+                 AudioFocusDelegateJni.get()
+                         .recordSessionDuck(
+@@ -152,6 +162,7 @@ public class AudioFocusDelegate implements AudioManager.OnAudioFocusChangeListen
+                         .onStartDucking(mNativeAudioFocusDelegateAndroid, AudioFocusDelegate.this);
+                 break;
+             case AudioManager.AUDIOFOCUS_LOSS:
++                Log.e("audio_focus", "AudioManager.AUDIOFOCUS_LOSS");
+                 abandonAudioFocus();
+                 AudioFocusDelegateJni.get()
+                         .onSuspend(mNativeAudioFocusDelegateAndroid, AudioFocusDelegate.this);

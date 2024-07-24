@@ -1720,6 +1720,13 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
+    public void sendWebcontents() {
+        BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
+        if (layout != null) {
+            layout.sendWebcontents();
+        }
+    }
+
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
