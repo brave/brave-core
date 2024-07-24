@@ -24,12 +24,13 @@ OBJC_EXPORT
 @interface BraveDomains : NSObject
 @property(class, nonatomic, readonly) BraveServicesEnvironmentIOS environment;
 
-+ (BraveServicesEnvironmentIOS)environmentForPrefix:(NSString* _Nonnull)prefix
-    NS_SWIFT_NAME(enviroment(for:));
-+ (NSString*)serviceDomain:(NSString*)prefix NS_SWIFT_NAME(serviceDomain(for:));
-+ (NSString*)serviceDomain:(NSString*)prefix
-               environment:(BraveServicesEnvironmentIOS)environment
-    NS_SWIFT_NAME(serviceDomain(for:environment:));
++ (BraveServicesEnvironmentIOS)environmentWithPrefix:(NSString* _Nonnull)prefix
+    NS_SWIFT_NAME(enviroment(prefix:));
++ (NSString*)serviceDomainWithPrefix:(NSString*)prefix
+    NS_SWIFT_NAME(serviceDomain(prefix:));
++ (NSString*)serviceDomainWithPrefix:(NSString*)prefix
+                         environment:(BraveServicesEnvironmentIOS)environment
+    NS_SWIFT_NAME(serviceDomain(prefix:environment:));
 
 - (instancetype)init NS_UNAVAILABLE;
 @end

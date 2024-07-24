@@ -28,7 +28,7 @@ BraveServicesEnvironmentIOS const BraveServicesEnvironmentIOSProduction =
   return [BraveDomains environmentForPrefix:@""];
 }
 
-+ (BraveServicesEnvironmentIOS)environmentForPrefix:(NSString*)prefix {
++ (BraveServicesEnvironmentIOS)environmentWithPrefix:(NSString*)prefix {
   base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
   DCHECK(command_line);
 
@@ -52,13 +52,13 @@ BraveServicesEnvironmentIOS const BraveServicesEnvironmentIOSProduction =
   return BraveServicesEnvironmentIOSProduction;
 }
 
-+ (NSString*)serviceDomain:(NSString*)prefix {
++ (NSString*)serviceDomainWithPrefix:(NSString*)prefix {
   return base::SysUTF8ToNSString(
       brave_domains::GetServicesDomain(base::SysNSStringToUTF8(prefix)));
 }
 
-+ (NSString*)serviceDomain:(NSString*)prefix
-               environment:(BraveServicesEnvironmentIOS)environment {
++ (NSString*)serviceDomainWithPrefix:(NSString*)prefix
+                         environment:(BraveServicesEnvironmentIOS)environment {
   return base::SysUTF8ToNSString(brave_domains::GetServicesDomain(
       base::SysNSStringToUTF8(prefix),
       static_cast<brave_domains::ServicesEnvironment>(environment)));

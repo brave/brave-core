@@ -56,8 +56,8 @@ public enum BraveStoreProductGroup: String, CaseIterable {
   /// The SKU's associated environment domain
   public var skusDomain: String {
     switch self {
-    case .vpn: return BraveDomains.serviceDomain(for: "vpn")
-    case .leo: return BraveDomains.serviceDomain(for: "leo")
+    case .vpn: return BraveDomains.serviceDomain(prefix: "vpn")
+    case .leo: return BraveDomains.serviceDomain(prefix: "leo")
     }
   }
 }
