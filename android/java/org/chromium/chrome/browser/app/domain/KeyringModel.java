@@ -9,6 +9,7 @@ import static org.chromium.base.ThreadUtils.assertOnUiThread;
 
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringDef;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -216,6 +217,43 @@ public class KeyringModel implements KeyringServiceObserver {
             @NonNull final JsonRpcService jsonRpcService,
             @NonNull final Callbacks.Callback1<Boolean> callback) {
         assertOnUiThread();
+        generateWallet(password, recoveryPhrase, legacyRestoreEnabled, availableNetworks, selectedNetworks, jsonRpcService, null, callback);
+    }
+
+    /**
+     * Creates a new Brave Wallet with a given password, showing only the collection of selected
+     * networks. One Ethereum and one Solana account will be created by default; Bitcoin account and
+     * Filecoin account will be created only if selected among available networks. Once the creation
+     * finishes the callback is notified with a string containing the recovery phrases.
+     *
+     * <p><b>Note:</b> This method must be always called from main UI thread.
+     *
+     * @param password Given password used to create the new Brave Wallet.
+     * @param availableNetworks All available networks.
+     * @param selectedNetworks Collection of selected networks that will be shown.
+     * @param jsonRpcService JSON RPC service used to add and hide the networks.
+     * @param callback Callback fired once creation terminates passing a string containing the
+     *     recovery phrases.
+     */
+    @MainThread
+    public void createWallet(
+            @NonNull final String password,
+            @NonNull final Set<NetworkInfo> availableNetworks,
+            @NonNull final Set<NetworkInfo> selectedNetworks,
+            @NonNull final JsonRpcService jsonRpcService,
+            @NonNull final Callbacks.Callback1<String> callback) {
+        assertOnUiThread();
+        generateWallet(password, null, false, availableNetworks, selectedNetworks, jsonRpcService, callback, null);
+    }
+
+    private <T> void generateWallet(@NonNull final String password,
+                                @Nullable final String recoveryPhrase,
+                                final boolean legacyRestoreEnabled,
+                                @NonNull final Set<NetworkInfo> availableNetworks,
+                                @NonNull final Set<NetworkInfo> selectedNetworks,
+                                @NonNull final JsonRpcService jsonRpcService,
+                                @Nullable final Callbacks.Callback1<String> createCallback,
+                                @Nullable final Callbacks.Callback1<Boolean> restoreCallback) {
         final Set<NetworkInfo> removeHiddenNetworks = new HashSet<>();
         final Set<NetworkInfo> addHiddenNetworks = new HashSet<>();
 
@@ -243,12 +281,18 @@ public class KeyringModel implements KeyringServiceObserver {
                                 removeHiddenNetworksLiveData.removeObserver(this);
 
                                 if (!addHiddenNetworksLiveData.hasActiveObservers()) {
-                                    finalizeWalletRestoration(
-                                            password,
-                                            recoveryPhrase,
-                                            legacyRestoreEnabled,
-                                            selectedNetworks,
-                                            callback);
+                                    if (recoveryPhrase != null && restoreCallback != null) {
+                                        finalizeWalletRestoration(
+                                                password,
+                                                recoveryPhrase,
+                                                legacyRestoreEnabled,
+                                                selectedNetworks,
+                                                restoreCallback);
+                                    } else if (createCallback != null) {
+                                        finalizeWalletCreation(password,
+                                                selectedNetworks,
+                                                createCallback);
+                                    }
                                 }
                             }
                         }
@@ -268,12 +312,18 @@ public class KeyringModel implements KeyringServiceObserver {
                                 addHiddenNetworksLiveData.removeObserver(this);
 
                                 if (!removeHiddenNetworksLiveData.hasActiveObservers()) {
-                                    finalizeWalletRestoration(
-                                            password,
-                                            recoveryPhrase,
-                                            legacyRestoreEnabled,
-                                            selectedNetworks,
-                                            callback);
+                                    if (recoveryPhrase != null && restoreCallback != null) {
+                                        finalizeWalletRestoration(
+                                                password,
+                                                recoveryPhrase,
+                                                legacyRestoreEnabled,
+                                                selectedNetworks,
+                                                restoreCallback);
+                                    } else if (createCallback != null) {
+                                        finalizeWalletCreation(password,
+                                                selectedNetworks,
+                                                createCallback);
+                                    }
                                 }
                             }
                         }
@@ -326,168 +376,7 @@ public class KeyringModel implements KeyringServiceObserver {
                 recoveryPhrase,
                 password,
                 legacyRestoreEnabled,
-                result -> {
-                    final Set<NetworkInfo> createAccounts = new HashSet<>();
-
-                    for (NetworkInfo networkInfo : selectedNetworks) {
-                        // Create Bitcoin and Filecoin accounts if they have been selected.
-                        if (networkInfo.coin == CoinType.BTC || networkInfo.coin == CoinType.FIL) {
-                            createAccounts.add(networkInfo);
-                        }
-                    }
-
-                    if (createAccounts.isEmpty()) {
-                        callback.call(result);
-                    } else {
-                        final MutableLiveData<Boolean> createAccountsLiveData =
-                                new MutableLiveData<>();
-
-                        createAccountsLiveData.observeForever(
-                                new Observer<>() {
-                                    int countCreatedAccounts;
-
-                                    @Override
-                                    public void onChanged(Boolean success) {
-                                        countCreatedAccounts++;
-                                        if (countCreatedAccounts == createAccounts.size()) {
-                                            createAccountsLiveData.removeObserver(this);
-                                            // Set ETH account by default as initial state.
-                                            selectEthAccount(result, callback);
-                                        }
-                                    }
-                                });
-
-                        LiveDataUtil.observeOnce(
-                                mAccountInfos,
-                                accounts -> {
-                                    for (NetworkInfo networkInfo : createAccounts) {
-                                        String accountName =
-                                                WalletUtils.generateUniqueAccountName(
-                                                        networkInfo.coin,
-                                                        accounts.toArray(new AccountInfo[0]));
-                                        mKeyringService.addAccount(
-                                                networkInfo.coin,
-                                                AssetUtils.getKeyring(
-                                                        networkInfo.coin, networkInfo.chainId),
-                                                accountName,
-                                                accountInfo ->
-                                                        createAccountsLiveData.setValue(true));
-                                    }
-                                });
-                    }
-                });
-    }
-
-    /**
-     * Creates a new Brave Wallet with a given password, showing only the collection of selected
-     * networks. One Ethereum and one Solana account will be created by default; Bitcoin account and
-     * Filecoin account will be created only if selected among available networks. Once the creation
-     * finishes the callback is notified with a string containing the recovery phrases.
-     *
-     * <p><b>Note:</b> This method must be always called from main UI thread.
-     *
-     * @param password Given password used to create the new Brave Wallet.
-     * @param availableNetworks All available networks.
-     * @param selectedNetworks Collection of selected networks that will be shown.
-     * @param jsonRpcService JSON RPC service used to add and hide the networks.
-     * @param callback Callback fired once creation terminates passing a string containing the
-     *     recovery phrases.
-     */
-    @MainThread
-    public void createWallet(
-            @NonNull final String password,
-            @NonNull final Set<NetworkInfo> availableNetworks,
-            @NonNull final Set<NetworkInfo> selectedNetworks,
-            @NonNull final JsonRpcService jsonRpcService,
-            @NonNull final Callbacks.Callback1<String> callback) {
-        assertOnUiThread();
-        final Set<NetworkInfo> removeHiddenNetworks = new HashSet<>();
-        final Set<NetworkInfo> addHiddenNetworks = new HashSet<>();
-
-        MutableLiveData<Boolean> removeHiddenNetworksLiveData = new MutableLiveData<>();
-        MutableLiveData<Boolean> addHiddenNetworksLiveData = new MutableLiveData<>();
-
-        for (NetworkInfo networkInfo : availableNetworks) {
-            if (selectedNetworks.contains(networkInfo)) {
-                removeHiddenNetworks.add(networkInfo);
-            } else {
-                addHiddenNetworks.add(networkInfo);
-            }
-        }
-
-        // Subscribe observer only if are present hidden networks to remove.
-        if (!removeHiddenNetworks.isEmpty()) {
-            removeHiddenNetworksLiveData.observeForever(
-                    new Observer<>() {
-                        int countRemovedHiddenNetworks;
-
-                        @Override
-                        public void onChanged(Boolean success) {
-                            countRemovedHiddenNetworks++;
-                            if (countRemovedHiddenNetworks == removeHiddenNetworks.size()) {
-                                removeHiddenNetworksLiveData.removeObserver(this);
-
-                                if (!addHiddenNetworksLiveData.hasActiveObservers()) {
-                                    finalizeWalletCreation(password, selectedNetworks, callback);
-                                }
-                            }
-                        }
-                    });
-        }
-
-        // Subscribe observer only if are present hidden networks to add.
-        if (!addHiddenNetworks.isEmpty()) {
-            addHiddenNetworksLiveData.observeForever(
-                    new Observer<>() {
-                        int countAddedHiddenNetworks;
-
-                        @Override
-                        public void onChanged(Boolean success) {
-                            countAddedHiddenNetworks++;
-                            if (countAddedHiddenNetworks == addHiddenNetworks.size()) {
-                                addHiddenNetworksLiveData.removeObserver(this);
-
-                                if (!removeHiddenNetworksLiveData.hasActiveObservers()) {
-                                    finalizeWalletCreation(password, selectedNetworks, callback);
-                                }
-                            }
-                        }
-                    });
-        }
-
-        for (NetworkInfo networkInfo : removeHiddenNetworks) {
-            jsonRpcService.removeHiddenNetwork(
-                    networkInfo.coin,
-                    networkInfo.chainId,
-                    success -> {
-                        if (!success) {
-                            Log.w(
-                                    TAG,
-                                    String.format(
-                                            Locale.ENGLISH,
-                                            "Unable to remove network %s from hidden networks.",
-                                            networkInfo.chainName));
-                        }
-                        removeHiddenNetworksLiveData.setValue(success);
-                    });
-        }
-
-        for (NetworkInfo networkInfo : addHiddenNetworks) {
-            jsonRpcService.addHiddenNetwork(
-                    networkInfo.coin,
-                    networkInfo.chainId,
-                    success -> {
-                        if (!success) {
-                            Log.w(
-                                    TAG,
-                                    String.format(
-                                            Locale.ENGLISH,
-                                            "Unable to add network %s to hidden networks.",
-                                            networkInfo.chainName));
-                        }
-                        addHiddenNetworksLiveData.setValue(success);
-                    });
-        }
+                result -> createAccounts(result, selectedNetworks, callback));
     }
 
     private void finalizeWalletCreation(
@@ -497,75 +386,71 @@ public class KeyringModel implements KeyringServiceObserver {
         assertOnUiThread();
         mKeyringService.createWallet(
                 password,
-                recoveryPhrases -> {
-                    final Set<NetworkInfo> createAccounts = new HashSet<>();
-
-                    for (NetworkInfo networkInfo : selectedNetworks) {
-                        // Create Bitcoin and Filecoin accounts if they have been selected.
-                        if (networkInfo.coin == CoinType.BTC || networkInfo.coin == CoinType.FIL) {
-                            createAccounts.add(networkInfo);
-                        }
-                    }
-
-                    if (createAccounts.isEmpty()) {
-                        callback.call(recoveryPhrases);
-                    } else {
-                        final MutableLiveData<Boolean> createAccountsLiveData =
-                                new MutableLiveData<>();
-
-                        createAccountsLiveData.observeForever(
-                                new Observer<>() {
-                                    int countCreatedAccounts;
-
-                                    @Override
-                                    public void onChanged(Boolean success) {
-                                        countCreatedAccounts++;
-                                        if (countCreatedAccounts == createAccounts.size()) {
-                                            createAccountsLiveData.removeObserver(this);
-                                            // Set ETH account by default as initial state.
-                                            selectEthAccount(recoveryPhrases, callback);
-                                        }
-                                    }
-                                });
-
-                        LiveDataUtil.observeOnce(
-                                mAccountInfos,
-                                accounts -> {
-                                    for (NetworkInfo networkInfo : createAccounts) {
-                                        String accountName =
-                                                WalletUtils.generateUniqueAccountName(
-                                                        networkInfo.coin,
-                                                        accounts.toArray(new AccountInfo[0]));
-                                        mKeyringService.addAccount(
-                                                networkInfo.coin,
-                                                AssetUtils.getKeyring(
-                                                        networkInfo.coin, networkInfo.chainId),
-                                                accountName,
-                                                accountInfo ->
-                                                        createAccountsLiveData.setValue(true));
-                                    }
-                                });
-                    }
-                });
+                recoveryPhrase -> createAccounts(recoveryPhrase, selectedNetworks, callback));
     }
 
-    private void selectEthAccount(
-            final boolean result, @NonNull final Callbacks.Callback1<Boolean> callback) {
+    private <T> void createAccounts(final T result,
+                                @NonNull final Set<NetworkInfo> selectedNetworks,
+                                @NonNull final Callbacks.Callback1<T> callback) {
+        final Set<NetworkInfo> createAccounts = new HashSet<>();
+
+        for (NetworkInfo networkInfo : selectedNetworks) {
+            // Create Bitcoin and Filecoin accounts if they have been selected.
+            if (networkInfo.coin == CoinType.BTC || networkInfo.coin == CoinType.FIL) {
+                createAccounts.add(networkInfo);
+            }
+        }
+
+        if (createAccounts.isEmpty()) {
+            callback.call(result);
+        } else {
+            final MutableLiveData<Boolean> createAccountsLiveData =
+                    new MutableLiveData<>();
+
+            createAccountsLiveData.observeForever(
+                    new Observer<>() {
+                        int countCreatedAccounts;
+
+                        @Override
+                        public void onChanged(Boolean success) {
+                            countCreatedAccounts++;
+                            if (countCreatedAccounts == createAccounts.size()) {
+                                createAccountsLiveData.removeObserver(this);
+                                // Set ETH account by default as initial state.
+                                selectEthAccount(result, callback);
+                            }
+                        }
+                    });
+
+            LiveDataUtil.observeOnce(
+                    mAccountInfos,
+                    accounts -> {
+                        for (NetworkInfo networkInfo : createAccounts) {
+                            String accountName =
+                                    WalletUtils.generateUniqueAccountName(
+                                            networkInfo.coin,
+                                            accounts.toArray(new AccountInfo[0]));
+                            mKeyringService.addAccount(
+                                    networkInfo.coin,
+                                    AssetUtils.getKeyring(
+                                            networkInfo.coin, networkInfo.chainId),
+                                    accountName,
+                                    accountInfo ->
+                                            createAccountsLiveData.setValue(true));
+                        }
+                    });
+
+        }
+    }
+
+    private <T> void selectEthAccount(
+            final T result,
+            @NonNull final Callbacks.Callback1<T> callback) {
         mKeyringService.getAllAccounts(
                 allAccounts ->
                         mKeyringService.setSelectedAccount(
                                 allAccounts.ethDappSelectedAccount.accountId,
                                 success -> callback.call(result)));
-    }
-
-    private void selectEthAccount(
-            @NonNull final String recoveryPhrases,
-            @NonNull final Callbacks.Callback1<String> callback) {
-        mKeyringService.getAllAccounts(
-                allAccounts ->
-                        mKeyringService.setSelectedAccount(
-                                allAccounts.ethDappSelectedAccount.accountId,
-                                success -> callback.call(recoveryPhrases)));
     }
 
     @Override
