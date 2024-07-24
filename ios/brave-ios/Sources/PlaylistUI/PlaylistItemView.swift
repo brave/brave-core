@@ -34,7 +34,7 @@ struct PlaylistItemView: View {
             MediaThumbnail(assetURL: assetURL, pageURL: pageURL)
           }
         }
-        .background(Color(braveSystemName: .gray20))
+        .background(Color(braveSystemName: .neutral20))
         .clipShape(ContainerRelativeShape())
         .containerShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
       VStack(alignment: .leading, spacing: 4) {

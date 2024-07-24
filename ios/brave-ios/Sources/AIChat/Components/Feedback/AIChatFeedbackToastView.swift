@@ -83,7 +83,7 @@ struct AIChatFeedbackToastView: View {
     HStack(spacing: 0.0) {
       Text(title)
         .font(.subheadline)
-        .foregroundStyle(Color(braveSystemName: .gray10))
+        .foregroundStyle(Color(braveSystemName: .neutral10))
         .fixedSize(horizontal: false, vertical: true)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.trailing)
@@ -142,7 +142,7 @@ struct AIChatFeedbackToastView: View {
         } label: {
           Text(Strings.AIChat.addFeedbackActionTitle)
             .font(.subheadline)
-            .foregroundStyle(Color(braveSystemName: .gray10))
+            .foregroundStyle(Color(braveSystemName: .neutral10))
         }
       }
     case .error, .submitted:

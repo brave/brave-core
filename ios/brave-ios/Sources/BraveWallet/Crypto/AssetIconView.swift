@@ -235,7 +235,7 @@ struct StackedAssetIconsView: View {
           )
         } else {  // nil token possible for Solana Swaps
           GenericAssetIconView(
-            backgroundColor: Color(braveSystemName: .gray40),
+            backgroundColor: Color(braveSystemName: .neutral40),
             iconColor: Color.white,
             length: assetIconLength,
             maxLength: maxAssetIconLength
@@ -257,7 +257,7 @@ struct StackedAssetIconsView: View {
           )
         } else {  // nil token possible for Solana Swaps
           GenericAssetIconView(
-            backgroundColor: Color(braveSystemName: .gray20),
+            backgroundColor: Color(braveSystemName: .neutral20),
             iconColor: Color.black,
             length: assetIconLength,
             maxLength: maxAssetIconLength
@@ -314,7 +314,7 @@ struct GenericAssetIconView: View {
   let maxLength: CGFloat?
 
   init(
-    backgroundColor: Color = Color(braveSystemName: .gray20),
+    backgroundColor: Color = Color(braveSystemName: .neutral20),
     iconColor: Color = Color.black,
     length: CGFloat = 40,
     maxLength: CGFloat? = nil
