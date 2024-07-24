@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -22,15 +21,11 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.ui.widget.Toast;
 
 public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragment {
     private EditText mRecoveryPhraseText;
-    private EditText mPasswordEdittext;
-    private EditText mRetypePasswordEdittext;
     private CheckBox mShowRecoveryPhraseCheckbox;
     private CheckBox mRestoreLegacyWalletCheckbox;
     private boolean mIsLegacyWalletRestoreEnable;
@@ -50,8 +45,6 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRecoveryPhraseText = view.findViewById(R.id.recovery_phrase_text);
-        mPasswordEdittext = view.findViewById(R.id.restore_wallet_password);
-        mRetypePasswordEdittext = view.findViewById(R.id.restore_wallet_retype_password);
         mShowRecoveryPhraseCheckbox = view.findViewById(R.id.restore_wallet_checkbox);
         mRestoreLegacyWalletCheckbox = view.findViewById(R.id.restore_legacy_wallet_checkbox);
 
@@ -105,67 +98,20 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
         Button secureCryptoButton = view.findViewById(R.id.btn_restore_wallet);
         secureCryptoButton.setOnClickListener(
                 v -> {
-                    String passwordInput = mPasswordEdittext.getText().toString();
-                    String retypePasswordInput = mRetypePasswordEdittext.getText().toString();
                     String recoverPhrase = mRecoveryPhraseText.getText().toString().trim();
-                    if (TextUtils.isEmpty(passwordInput) || passwordInput.length() < 8) {
-                        mPasswordEdittext.setError(
-                                getResources().getString(R.string.password_text));
-                    } else if (!passwordInput.equals(retypePasswordInput)) {
-                        mRetypePasswordEdittext.setError(
-                                getResources().getString(R.string.retype_password_error));
-                    } else {
-                        goToTheNextPage(passwordInput, recoverPhrase);
-                    }
+                    goToTheNextPage(recoverPhrase);
                 });
     }
 
-    private void goToTheNextPage(
-            @NonNull final String password, @NonNull final String recoveryPhrase) {
-        KeyringService keyringService = getKeyringService();
-        assert keyringService != null;
-        keyringService.restoreWallet(
-                recoveryPhrase,
-                password,
-                mIsLegacyWalletRestoreEnable,
-                result -> {
-                    if (result) {
-                        Utils.hideKeyboard(requireActivity());
-                        keyringService.notifyWalletBackupComplete();
+    private void goToTheNextPage(@NonNull final String recoveryPhrase) {
+        mOnboardingViewModel.setRecoveryPhrase(recoveryPhrase);
+        mOnboardingViewModel.setLegacyRestoreEnabled(mIsLegacyWalletRestoreEnable);
 
-                        Utils.setCryptoOnboarding(false);
-                        Utils.clearClipboard(recoveryPhrase);
-                        Utils.clearClipboard(password);
+        Utils.clearClipboard(recoveryPhrase);
+        mRecoveryPhraseText.getText().clear();
 
-                        mRecoveryPhraseText.getText().clear();
-                        mPasswordEdittext.getText().clear();
-                        mRetypePasswordEdittext.getText().clear();
-                        mShowRecoveryPhraseCheckbox.setChecked(false);
-                        mRestoreLegacyWalletCheckbox.setChecked(false);
-
-                        // Set ETH account by default as initial state.
-                        keyringService.getAllAccounts(
-                                allAccounts ->
-                                        keyringService.setSelectedAccount(
-                                                allAccounts.ethDappSelectedAccount.accountId,
-                                                success -> {
-                                                    if (mOnNextPage != null) {
-                                                        // If biometric is not supported we
-                                                        // skip the fingerprint setup screen.
-                                                        mOnNextPage.incrementPages(
-                                                                Utils.isBiometricSupported(
-                                                                                requireContext())
-                                                                        ? 1
-                                                                        : 2);
-                                                    }
-                                                }));
-                    } else {
-                        Toast.makeText(
-                                        requireActivity(),
-                                        R.string.account_recovery_failed,
-                                        Toast.LENGTH_SHORT)
-                                .show();
-                    }
-                });
+        if (mOnNextPage != null) {
+            mOnNextPage.incrementPages(1);
+        }
     }
 }

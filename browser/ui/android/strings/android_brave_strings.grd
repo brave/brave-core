@@ -1978,12 +1978,6 @@ Are you sure you want to do this?
     <message name="IDS_ENTER_PASSWORD" desc="Brave wallet password hint text">
       Enter Password
     </message>
-    <message name="IDS_RETYPE_PASSWORD" desc="Brave wallet password hint text">
-      Verify password
-    </message>
-    <message name="IDS_RETYPE_PASSWORD_ERROR" desc="Brave Wallet password error text">
-      Verified password did not match
-    </message>
     <message name="IDS_CREATING_WALLET_ONBOARDING_TEXT" desc="Text displayed along with a spinner during Brave Wallet creation or restoring.">
       Creating your wallet…
     </message>
@@ -2046,9 +2040,6 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_ACCESSIBILITY_RESTORE_WALLET_COPY_IMAGE" desc="Brave Wallet onboarding past image accessibility text">
       Paste
-    </message>
-    <message name="IDS_RESTORE_WALLET_NEW_PASSWORD_PHRASE" desc="Brave Wallet onboarding past image accessibility text">
-      New Password
     </message>
     <message name="IDS_RESTORE_LEGACY_WALLET_RECOVERY_PHRASE" desc="Brave Wallet onboarding past image accessibility text">
       Import from legacy Brave crypto wallets?
@@ -2127,9 +2118,6 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_UNLOCK_WALLET_SUBTITLE" desc="Brave Wallet onboarding subtitle">
       Enter password to unlock wallet
-    </message>
-    <message name="IDS_PASSWORD_TEXT" desc="Brave Wallet onboarding text">
-      Passwords must be at least 8 characters.
     </message>
     <message name="IDS_BRAVE_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for Safe Browsing no protection mode.">
       Does not protect you against dangerous websites, downloads, and extensions.

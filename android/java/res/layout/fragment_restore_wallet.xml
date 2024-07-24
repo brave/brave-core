@@ -105,59 +105,6 @@
                 android:focusable="true"/>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
-            android:text="@string/restore_wallet_new_password_phrase"
-            android:textColor="@color/wallet_text_color"
-            android:textSize="18sp"/>
-
-        <EditText
-            android:id="@+id/restore_wallet_password"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="48dp"
-            android:layout_marginEnd="48dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/rounded_wallet_edittext"
-            android:hint="@string/password"
-            android:importantForAutofill="no"
-            android:inputType="textPassword"
-            android:paddingEnd="18dp"
-            android:paddingStart="18dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:textCursorDrawable="@null"
-            android:textSize="14sp"
-            android:textColor="@color/wallet_text_color"
-            android:textColorHint="@color/brave_theme_hint_text" />
-
-        <EditText
-            android:id="@+id/restore_wallet_retype_password"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="48dp"
-            android:layout_marginEnd="48dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/rounded_wallet_edittext"
-            android:hint="@string/retype_password"
-            android:importantForAutofill="no"
-            android:inputType="textPassword"
-            android:paddingEnd="18dp"
-            android:paddingStart="18dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:textCursorDrawable="@null"
-            android:textSize="14sp"
-            android:textColor="@color/wallet_text_color"
-            android:textColorHint="@color/brave_theme_hint_text" />
-
-
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_restore_wallet"
             android:layout_width="wrap_content"

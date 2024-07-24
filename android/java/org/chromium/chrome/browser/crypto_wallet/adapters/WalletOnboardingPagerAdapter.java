@@ -168,10 +168,12 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
                 } else if (position == 3) {
                     return OnboardingRestoreWalletFragment.newInstance();
                 } else if (position == 4) {
-                    return new OnboardingFingerprintUnlockFragment();
+                    return new OnboardingSecurePasswordFragment();
                 } else if (position == 5) {
-                    return new OnboardingCreatingWalletFragment();
+                    return new OnboardingFingerprintUnlockFragment();
                 } else if (position == 6) {
+                    return new OnboardingCreatingWalletFragment();
+                } else if (position == 7) {
                     return new OnboardingConfirmationFragment();
                 } else {
                     throw new IllegalStateException(
@@ -190,10 +192,12 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
                 } else if (position == 1) {
                     return OnboardingRestoreWalletFragment.newInstance();
                 } else if (position == 2) {
-                    return new OnboardingFingerprintUnlockFragment();
+                    return new OnboardingSecurePasswordFragment();
                 } else if (position == 3) {
-                    return new OnboardingCreatingWalletFragment();
+                    return new OnboardingFingerprintUnlockFragment();
                 } else if (position == 4) {
+                    return new OnboardingCreatingWalletFragment();
+                } else if (position == 5) {
                     return new OnboardingConfirmationFragment();
                 } else {
                     throw new IllegalStateException(
@@ -233,11 +237,11 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
         } else if (mWalletAction == WalletAction.PASSWORD_CREATION) {
             return 11;
         } else if (mWalletAction == WalletAction.ONBOARDING_RESTORE) {
-            return 7;
+            return 8;
         } else if (mWalletAction == WalletAction.UNLOCK) {
             return 1;
         } else if (mWalletAction == WalletAction.RESTORE) {
-            return 5;
+            return 6;
         } else if (mWalletAction == WalletAction.BACKUP) {
             return 5;
         }

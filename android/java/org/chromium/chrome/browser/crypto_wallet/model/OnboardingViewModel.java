@@ -22,11 +22,39 @@ import java.util.Random;
 import java.util.Set;
 
 public class OnboardingViewModel extends ViewModel {
+    boolean mLegacyRestoreEnabled;
+
     @Nullable private String mPassword;
+    @Nullable private String mRecoveryPhrase;
 
     @NonNull final Set<NetworkInfo> mSelectedNetworks = new HashSet<>();
     @NonNull final Set<NetworkInfo> mAvailableNetworks = new HashSet<>();
     @NonNull final SparseArray<String> mVerificationWords = new SparseArray<>(3);
+
+    public void setLegacyRestoreEnabled(final boolean legacyRestoreEnabled) {
+        mLegacyRestoreEnabled = legacyRestoreEnabled;
+    }
+
+    public boolean isLegacyRestoreEnabled() {
+        return mLegacyRestoreEnabled;
+    }
+
+    public void setRecoveryPhrase(@NonNull final String recoveryPhrase) {
+        mRecoveryPhrase = recoveryPhrase;
+    }
+
+    @Nullable
+    public String getRecoveryPhrase() {
+        return mRecoveryPhrase;
+    }
+
+    @NonNull
+    public String requireRecoveryPhrase() {
+        if (mRecoveryPhrase == null) {
+            throw new IllegalStateException("Wallet recovery phrase must not be null.");
+        }
+        return mRecoveryPhrase;
+    }
 
     public void setPassword(@NonNull final String password) {
         mPassword = password;
