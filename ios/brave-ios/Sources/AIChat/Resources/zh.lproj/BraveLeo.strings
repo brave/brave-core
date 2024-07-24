@@ -5,7 +5,7 @@
 "aichat.addFeedbackActionTitle" = "添加反馈";
 
 /* The description for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteDescription" = "開啟以顯示從網址列啟動 Leo 的捷徑";
+"aichat.advancedSettingsAutocompleteDescription" = "开启以显示从网址列启动 Leo 的捷径";
 
 /* The title for the settings to show search suggestions from Leo in url-address bar */
 "aichat.advancedSettingsAutocompleteTitle" = "显示在网址列中";
