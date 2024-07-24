@@ -716,7 +716,7 @@ void SidebarContainerView::StartBrowserWindowEventMonitoring() {
   DVLOG(1) << __func__;
   browser_window_event_monitor_ = views::EventMonitor::CreateWindowMonitor(
       browser_window_event_observer_.get(), GetWidget()->GetNativeWindow(),
-      {ui::ET_MOUSE_MOVED});
+      {ui::EventType::kMouseMoved});
 }
 
 void SidebarContainerView::StopBrowserWindowEventMonitoring() {

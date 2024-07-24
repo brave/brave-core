@@ -348,8 +348,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
   // Check if mouse hover triggers floating mode.
   {
     base::AutoReset resetter(&region_view->mouse_events_for_test_, true);
-    ui::MouseEvent event(ui::ET_MOUSE_ENTERED, gfx::PointF(), gfx::PointF(), {},
-                         {}, {});
+    ui::MouseEvent event(ui::EventType::kMouseEntered, gfx::PointF(),
+                         gfx::PointF(), {}, {}, {});
     region_view->OnMouseEntered(event);
     EXPECT_EQ(State::kFloating, region_view->state());
   }
@@ -357,8 +357,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
   // Check if mouse exiting make tab strip collapsed.
   {
     base::AutoReset resetter(&region_view->mouse_events_for_test_, true);
-    ui::MouseEvent event(ui::ET_MOUSE_EXITED, gfx::PointF(), gfx::PointF(), {},
-                         {}, {});
+    ui::MouseEvent event(ui::EventType::kMouseExited, gfx::PointF(),
+                         gfx::PointF(), {}, {}, {});
     region_view->OnMouseExited(event);
     EXPECT_EQ(State::kCollapsed, region_view->state());
   }
@@ -367,8 +367,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
   prefs->SetBoolean(brave_tabs::kVerticalTabsFloatingEnabled, false);
   {
     base::AutoReset resetter(&region_view->mouse_events_for_test_, true);
-    ui::MouseEvent event(ui::ET_MOUSE_ENTERED, gfx::PointF(), gfx::PointF(), {},
-                         {}, {});
+    ui::MouseEvent event(ui::EventType::kMouseEntered, gfx::PointF(),
+                         gfx::PointF(), {}, {}, {});
     region_view->OnMouseEntered(event);
     EXPECT_NE(State::kFloating, region_view->state());
   }

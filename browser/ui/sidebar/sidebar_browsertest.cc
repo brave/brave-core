@@ -150,7 +150,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     DCHECK(item);
 
     const gfx::Point origin(0, 0);
-    ui::MouseEvent event(ui::ET_MOUSE_PRESSED, origin, origin,
+    ui::MouseEvent event(ui::EventType::kMousePressed, origin, origin,
                          ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON, 0);
     sidebar_items_contents_view->OnItemPressed(item, event);
 

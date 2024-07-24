@@ -89,8 +89,8 @@ bool BraveOmniboxViewViews::AcceleratorPressed(
 
   ui::KeyEvent event(
       accelerator.key_state() == ui::Accelerator::KeyState::PRESSED
-          ? ui::ET_KEY_PRESSED
-          : ui::ET_KEY_RELEASED,
+          ? ui::EventType::kKeyPressed
+          : ui::EventType::kKeyReleased,
       accelerator.key_code(), accelerator.modifiers());
   auto command = GetCommandForKeyEvent(event);
   auto url_to_copy = GetURLToCopy();
