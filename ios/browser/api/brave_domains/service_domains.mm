@@ -25,7 +25,7 @@ BraveServicesEnvironmentIOS const BraveServicesEnvironmentIOSProduction =
 
 @implementation BraveDomains
 + (BraveServicesEnvironmentIOS)environment {
-  return [BraveDomains environmentForPrefix:@""];
+  return [BraveDomains environmentWithPrefix:@""];
 }
 
 + (BraveServicesEnvironmentIOS)environmentWithPrefix:(NSString*)prefix {
