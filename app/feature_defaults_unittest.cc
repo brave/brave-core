@@ -136,7 +136,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &extensions_features::kExtensionsManifestV3Only,
       &features::kToolbarPinning,
 #endif
-      &features::kAttributionReportingCrossAppWebOverride,
       &features::kBookmarkTriggerForPrerender2,
       &features::kChromeLabs,
       &features::kChromeStructuredMetrics,
