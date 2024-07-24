@@ -160,12 +160,7 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLDivElement, Props>(
                 )}
             </IconsWrapper>
             <NameColumn>
-              <AssetName>
-                {token.name}{' '}
-                {token.isErc721 && token.tokenId
-                  ? '#' + new Amount(token.tokenId).toNumber()
-                  : ''}
-              </AssetName>
+              <AssetName>{token.name}</AssetName>
               <NetworkDescriptionText>
                 {networkDescription}
               </NetworkDescriptionText>

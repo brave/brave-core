@@ -188,3 +188,14 @@ export const capitalizeFirstLetter = (input: string) => {
   if (input.length === 0) return input
   return input.charAt(0).toUpperCase() + input.slice(1)
 }
+
+export const reduceInt = (integerString: string) => {
+  if (integerString.length < 7) {
+    return integerString
+  }
+
+  const firstHalf = integerString.slice(0, 3)
+  const secondHalf = integerString.slice(-3)
+  const reduced = firstHalf.concat('...', secondHalf)
+  return reduced
+}

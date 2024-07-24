@@ -17,6 +17,7 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery
 } from '../../../../common/slices/api.slice'
+import { reduceInt } from '../../../../utils/string-utils'
 
 // Components
 import {
@@ -93,6 +94,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
     const { data: defaultFiatCurrency = 'usd' } =
       useGetDefaultFiatCurrencyQuery()
 
+    // Memos
     const fiatBalance = React.useMemo(() => {
       return balance && spotPrice
         ? new Amount(balance)
@@ -101,17 +103,18 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
         : Amount.empty()
     }, [balance, spotPrice, token])
 
-    const formattedFiatBalance = fiatBalance.formatAsFiat(defaultFiatCurrency)
-
     const tokenDisplayName = React.useMemo(() => {
       if (token.isNft) {
         const id = token.tokenId
-          ? `#${new Amount(token.tokenId).toNumber()}`
+          ? `#${reduceInt(new Amount(token.tokenId).format())}`
           : ''
-        return `${token.name} ${id}`
+        return `${token.name || token.symbol} ${id}`
       }
-      return token.name
+      return token.name || token.symbol
     }, [token])
+
+    // Computed
+    const formattedFiatBalance = fiatBalance.formatAsFiat(defaultFiatCurrency)
 
     const tokenHasBalance = balance && new Amount(balance).gt(0)
 
@@ -119,6 +122,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
       ? Number(spotPrice.assetTimeframeChange) < 0
       : false
 
+    // Render
     return (
       <Column
         fullWidth={true}

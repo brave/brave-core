@@ -435,7 +435,11 @@ export const AddNftForm = (props: Props) => {
           customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL && (
             <FullWidthFormColumn>
               <Input
-                value={customTokenID ? new Amount(customTokenID).format() : ''}
+                value={
+                  customTokenID
+                    ? new Amount(customTokenID).format(undefined, false)
+                    : ''
+                }
                 onInput={handleTokenIDChanged}
                 type='number'
                 placeholder={getLocale('braveWalletExempliGratia').replace(

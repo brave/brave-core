@@ -12,6 +12,7 @@ import { BraveWallet, SendPageTabHashes } from '../../../../constants/types'
 // Utils
 import { checkIfTokenNeedsNetworkIcon } from '../../../../utils/asset-utils'
 import Amount from '../../../../utils/amount'
+import { reduceInt } from '../../../../utils/string-utils'
 
 // Hooks
 import { useGetNetworkQuery } from '../../../../common/slices/api.slice'
@@ -58,9 +59,11 @@ export const SelectButton = (props: Props) => {
   const buttonText = React.useMemo(() => {
     if (selectedSendOption === SendPageTabHashes.nft) {
       const id = token?.tokenId
-        ? `#${new Amount(token?.tokenId).toNumber()}`
+        ? `#${reduceInt(new Amount(token?.tokenId).format())}`
         : ''
-      return token !== undefined ? `${token.name} ${id}` : placeholderText
+      return token !== undefined
+        ? `${token.name || token.symbol} ${id}`
+        : placeholderText
     }
     return token !== undefined ? token.symbol : placeholderText
   }, [selectedSendOption, token, placeholderText])
