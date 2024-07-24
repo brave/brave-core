@@ -397,8 +397,8 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
 TEST_F(ConversationAPIUnitTest, FailNoConversationEvents) {
   // Tests handling invalid request parameters
   std::vector<ConversationAPIClient::ConversationEvent> events;
-  EngineConsumer::GenerationResult expected_result =
-      base::unexpected(mojom::APIError::None);
+  EngineConsumer::GenerationResult expected_result = base::unexpected(
+      mojom::APIError(mojom::APIErrorType::None, std::nullopt));
 
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();

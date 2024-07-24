@@ -22,6 +22,8 @@ import { MockPageHandlerAPI } from '../api/mock_page_handler'
 const mockAPIHandler = new MockPageHandlerAPI()
 setPageHandlerAPIForTesting(mockAPIHandler as any)
 
+type ErrorTypes = keyof typeof mojom.APIErrorType
+
 function getCompletionEvent(text: string): mojom.ConversationEntryEvent {
   return {
     completionEvent: { completion: text },
@@ -282,7 +284,7 @@ export default {
   },
   argTypes: {
     currentErrorState: {
-      options: getKeysForMojomEnum(mojom.APIError),
+      options: getKeysForMojomEnum(mojom.APIErrorType),
       control: { type: 'select' }
     },
     suggestionStatus: {
@@ -303,7 +305,7 @@ export default {
     isPremiumModel: false,
     isPremiumUser: true,
     isPremiumUserDisconnected: false,
-    currentErrorState: 'ConnectionIssue' satisfies keyof typeof mojom.APIError,
+    currentErrorState: 'ConnectionIssue' as ErrorTypes,
     suggestionStatus: 'None' satisfies keyof typeof mojom.SuggestionGenerationStatus,
     model: MODELS[0].key,
     showAgreementModal: false,
@@ -321,8 +323,11 @@ export default {
           ? [SAMPLE_QUESTIONS[0]]
           : []
 
-      const currentError = mojom.APIError[options.args.currentErrorState]
-      const apiHasError = currentError !== mojom.APIError.None
+      const currentError = {
+        type: mojom.APIErrorType[options.args.currentErrorState as ErrorTypes],
+        message: undefined
+      }
+      const apiHasError = currentError.type !== mojom.APIErrorType.None
       const currentModel = MODELS.find(m => m.displayName === options.args.model)
 
       const switchToBasicModel = () => {

@@ -230,14 +230,18 @@ IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest, RewriteInPlace) {
   // 1) Get error in completed callback immediately.
   EXPECT_FALSE(IsAIChatSidebarActive());
   TestRewriteInPlace(contents, mock_engine, "textarea", "OK2", {},
-                     base::unexpected(mojom::APIError::ConnectionIssue), "OK2");
+                     base::unexpected(mojom::APIError(
+                         mojom::APIErrorType::ConnectionIssue, std::nullopt)),
+                     "OK2");
   EXPECT_TRUE(IsAIChatSidebarActive());
   GetSidebarController()->DeactivateCurrentPanel();
 
   EXPECT_FALSE(IsAIChatSidebarActive());
   // 2) Get partial streaming responses then error in completed callback.
   TestRewriteInPlace(contents, mock_engine, "textarea", "OK2", {"N", "O"},
-                     base::unexpected(mojom::APIError::ConnectionIssue), "OK2");
+                     base::unexpected(mojom::APIError(
+                         mojom::APIErrorType::ConnectionIssue, std::nullopt)),
+                     "OK2");
   EXPECT_TRUE(IsAIChatSidebarActive());
 }
 

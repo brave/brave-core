@@ -21,9 +21,11 @@ function ErrorConnection(props: PromptAutoSuggestionProps) {
         mode='full'
         type='error'
       >
+        <div className={styles.errorText}>
         {props.errorMessage
           ? props.errorMessage
           : getLocale('errorNetworkLabel')}
+        </div>
         <Button
           slot='actions'
           kind='filled'

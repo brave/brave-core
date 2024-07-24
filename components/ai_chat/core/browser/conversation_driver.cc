@@ -749,7 +749,7 @@ bool ConversationDriver::GetShouldSendPageContents() {
 void ConversationDriver::ClearConversationHistory() {
   chat_history_.clear();
   engine_->ClearAllQueries();
-  current_error_.type = mojom::APIErrorType::None;
+  SetAPIError(mojom::APIError(mojom::APIErrorType::None, std::nullopt));
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {

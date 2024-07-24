@@ -56,14 +56,13 @@ class OAIAPIClient {
   }
 
  private:
-  std::optional<std::string> ExtractErrorMessage(const std::string& value);
   void OnQueryCompleted(GenerationCompletedCallback callback,
                         APIRequestResult result);
   void OnQueryDataReceived(GenerationDataCallback callback,
                            base::expected<base::Value, std::string> result);
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
-  std::optional<mojom::APIError> last_error_;
+  std::optional<std::string> last_error_message_;
 
   base::WeakPtrFactory<OAIAPIClient> weak_ptr_factory_{this};
 };

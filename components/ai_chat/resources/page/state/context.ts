@@ -28,7 +28,7 @@ export interface AIChatContext extends CharCountContext {
   hasAcceptedAgreement: boolean
   siteInfo: mojom.SiteInfo
   favIconUrl: string | undefined
-  currentError: mojom.APIError | undefined
+  currentError: mojom.APIError
   apiHasError: boolean
   shouldDisableUserInput: boolean
   isPremiumStatusFetching: boolean
@@ -78,7 +78,7 @@ export const defaultContext: AIChatContext = {
   isPremiumUserDisconnected: false,
   siteInfo: new mojom.SiteInfo(),
   favIconUrl: undefined,
-  currentError: undefined,
+  currentError: { type: mojom.APIErrorType.None, message: undefined },
   canShowPremiumPrompt: undefined,
   shouldShowLongPageWarning: false,
   shouldShowLongConversationInfo: false,

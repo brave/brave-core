@@ -191,4 +191,59 @@ TEST_F(OAIAPIUnitTest, PerformRequest) {
   testing::Mock::VerifyAndClearExpectations(mock_request_helper);
 }
 
+TEST_F(OAIAPIUnitTest, APIError) {
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  // Intercept API Request Helper call and verify the request is as expected
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        data_received_callback.Run(base::ok(base::Value(
+            R"({"error": {"message": "The model `gpt-4-turbo-preview` does not exist or you do not have access to it.", "type": "invalid_request_error", "param": null, "code": "model_not_found"}})")));
+
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(400, base::Value(), {},
+                                                      net::OK, GURL()));
+
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([&](GenerationResult result) {
+        EXPECT_FALSE(result.has_value());
+        EXPECT_EQ(mojom::APIErrorType::ConnectionIssue, result.error().type);
+        EXPECT_EQ(
+            "The model `gpt-4-turbo-preview` does not exist or you do not have "
+            "access to it.",
+            result.error().message);
+      });
+
+  // Begin request
+  auto messages = base::JSONReader::Read(R"([
+    {"role": "user", "content": "Where was it played?"}
+  ])");
+  EXPECT_TRUE(messages.has_value());
+
+  mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
+      "test_api_key", GURL("https://test.com"), "test_model");
+  client_->PerformRequest(
+      *model_options, std::move(messages.value().GetList()),
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(client_.get());
+  testing::Mock::VerifyAndClearExpectations(mock_request_helper);
+}
+
 }  // namespace ai_chat
