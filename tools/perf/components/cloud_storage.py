@@ -11,7 +11,7 @@ import components.perf_test_utils as perf_test_utils
 from download_from_google_storage import get_sha1
 
 _CLOUD_BUCKET = 'brave-perf-data'
-_CLOUD_HTTPS_URL = f'https://perf-data.s3.brave.com'
+_CLOUD_HTTPS_URL = 'https://perf-data.s3.brave.com'
 
 
 class CloudFolder(str, Enum):
