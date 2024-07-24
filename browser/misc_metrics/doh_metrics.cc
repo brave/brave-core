@@ -71,6 +71,7 @@ DohMetrics::DohMetrics(PrefService* local_state) : local_state_(local_state) {
   if (current_fallback_int != last_fallback_int) {
     local_state->SetInteger(kMiscMetricsLastDohFallback, current_fallback_int);
     if (last_fallback_int != -1) {
+      LOG(ERROR) << "clear";
       // New users, and users that upgraded to a client version
       // that introduced this pref should not clear the collected stats.
       // Only users that we're suddenly included in a DoH fallback study should
@@ -137,10 +138,12 @@ void DohMetrics::OnDnsRequestCounts(
       static_cast<double>(upgraded_request_storage_->GetWeeklySum()) /
       std::max(total_request_storage_->GetWeeklySum(), uint64_t(1u)) * 100.0;
   if (percentage == 0.0) {
+    LOG(ERROR) << "wiped out";
     UMA_HISTOGRAM_EXACT_LINEAR(histogram_name, INT_MAX - 1, 4);
     return;
   }
 
+  LOG(ERROR) << "report percent " << percentage;
   p3a_utils::RecordToHistogramBucket(histogram_name.c_str(),
                                      kAutoSecureRequestsBuckets,
                                      static_cast<int>(percentage));
@@ -169,6 +172,7 @@ void DohMetrics::OnAutoUpgradeReportTimer() {
 void DohMetrics::StopListeningToDnsRequests() {
   init_timer_.Stop();
   report_interval_timer_.Stop();
+  LOG(ERROR) << "stop listening";
   UMA_HISTOGRAM_EXACT_LINEAR(GetAutoSecureRequestsHistogramName(), INT_MAX - 1,
                              4);
 }
