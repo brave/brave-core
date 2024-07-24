@@ -428,55 +428,94 @@ extension SearchSettingsTableViewController {
 
   override func tableView(
     _ tableView: UITableView,
-    commit editingStyle: UITableViewCell.EditingStyle,
-    forRowAt indexPath: IndexPath
-  ) {
-    if editingStyle == .delete {
-      guard let engine = customSearchEngines[safe: indexPath.row] else { return }
+    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+  ) -> UISwipeActionsConfiguration? {
+    guard let engine = customSearchEngines[safe: indexPath.row] else {
+      return nil
+    }
 
-      func deleteCustomEngine() async {
-        do {
-          try await searchEngines.deleteCustomEngine(engine)
-          tableView.deleteRows(at: [indexPath], with: .right)
-          tableView.reloadData()
-          updateTableEditModeVisibility()
-        } catch {
-          Logger.module.error("Search Engine Error while deleting")
-        }
+    let deleteAction = UIContextualAction(style: .destructive, title: Strings.delete) {
+      [weak self] action, view, completion in
+      guard let self = self else {
+        completion(false)
+        return
       }
 
-      if engine == searchEngines.defaultEngine(forType: .standard) {
-        let alert = UIAlertController(
-          title: String(
-            format: Strings.CustomSearchEngine.deleteEngineAlertTitle,
-            engine.displayName
-          ),
-          message: Strings.CustomSearchEngine.deleteEngineAlertDescription,
-          preferredStyle: .alert
-        )
+      self.deleteCustomSearchEngine(engine, using: tableView, at: indexPath) { status in
+        completion(status)
+      }
+    }
 
-        alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel))
+    let editAction = UIContextualAction(style: .normal, title: Strings.edit) {
+      [weak self] action, view, completion in
 
-        alert.addAction(
-          UIAlertAction(title: Strings.delete, style: .destructive) { [weak self] _ in
-            guard let self = self else { return }
+      guard let self = self else {
+        completion(false)
+        return
+      }
 
-            if let engine = self.searchEngines.defaultEngine(forType: .privateMode) {
-              self.searchEngines.updateDefaultEngine(engine.shortName, forType: .standard)
-            }
+      print("Edit")
+      completion(true)
+    }
 
-            Task {
-              await deleteCustomEngine()
-            }
-          }
-        )
+    return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+  }
 
-        UIImpactFeedbackGenerator(style: .medium).vibrate()
-        present(alert, animated: true, completion: nil)
-      } else {
-        Task {
-          await deleteCustomEngine()
+  private func deleteCustomSearchEngine(
+    _ engine: OpenSearchEngine,
+    using: UITableView,
+    at indexPath: IndexPath,
+    completion: @escaping (Bool) -> Void
+  ) {
+    func deleteCustomEngine() async {
+      do {
+        try await searchEngines.deleteCustomEngine(engine)
+        tableView.deleteRows(at: [indexPath], with: .right)
+        tableView.reloadData()
+        updateTableEditModeVisibility()
+
+        completion(true)
+      } catch {
+        Logger.module.error("Search Engine Error while deleting")
+
+        completion(false)
+      }
+    }
+
+    if engine == searchEngines.defaultEngine(forType: .standard) {
+      let alert = UIAlertController(
+        title: String(
+          format: Strings.CustomSearchEngine.deleteEngineAlertTitle,
+          engine.displayName
+        ),
+        message: Strings.CustomSearchEngine.deleteEngineAlertDescription,
+        preferredStyle: .alert
+      )
+
+      alert.addAction(
+        UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel) { _ in
+          completion(false)
         }
+      )
+
+      alert.addAction(
+        UIAlertAction(title: Strings.delete, style: .destructive) { [weak self] _ in
+          guard let self = self else { return }
+
+          if let engine = self.searchEngines.defaultEngine(forType: .privateMode) {
+            self.searchEngines.updateDefaultEngine(engine.shortName, forType: .standard)
+          }
+          Task {
+            await deleteCustomEngine()
+          }
+        }
+      )
+
+      UIImpactFeedbackGenerator(style: .medium).vibrate()
+      present(alert, animated: true, completion: nil)
+    } else {
+      Task {
+        await deleteCustomEngine()
       }
     }
   }
