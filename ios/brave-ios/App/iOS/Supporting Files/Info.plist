@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LEO_PRODUCT_ID_PREFIX</key>
-	<string>$(LEO_PRODUCT_ID_PREFIX)</string>
-	<key>VPN_PRODUCT_ID_PREFIX</key>
-	<string>$(VPN_PRODUCT_ID_PREFIX)</string>
 	<key>AppIdentifierPrefix</key>
 	<string>$(APP_IDENTIFIER_PREFIX)</string>
 	<key>BRAVE_URL_SCHEME</key>

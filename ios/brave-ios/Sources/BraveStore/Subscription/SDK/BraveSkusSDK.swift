@@ -5,6 +5,7 @@
 
 import BraveCore
 import Foundation
+import Shared
 import os.log
 
 // https://github.com/brave/brave-core/blob/master/components/skus/browser/rs/lib/src/models.rs#L137
@@ -71,6 +72,39 @@ public struct SkusOrder: Codable {
       case timeLimited = "time-limited"
       case timeLimitedv2 = "time-limited-v2"
     }
+  }
+}
+
+/// An enum representing the Skus SDK Environment
+public enum BraveSkusEnvironment {
+  case beta
+  case nightly
+  case release
+
+  /// Returns the current Skus SDK Environment
+  /// When DEBUG is defined, uses the Bundle-ID to determine the environment
+  /// Otherwise uses Brave-Core's version info.
+  public static var current: BraveSkusEnvironment {
+    if AppConstants.buildChannel == .release {
+      return .release
+    }
+
+    #if DEBUG
+    switch Bundle.main.bundleIdentifier {
+    case "com.brave.ios.browser.beta": return .beta
+    case "com.brave.ios.BrowserBeta": return .nightly
+    case "com.brave.ios.browser": return .release
+    default:
+      fatalError("[BraveSkusSDK] - BraveSkusEnvironment - Unknown Bundle-ID")
+    }
+    #else
+    switch BraveCoreVersionInfo.channel {
+    case .beta: return .beta
+    case .development, .nightly: return .nightly
+    case .stable, .unknown: fallthrough
+    default: return .release
+    }
+    #endif
   }
 }
 

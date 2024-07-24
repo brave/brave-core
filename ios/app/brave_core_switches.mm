@@ -62,6 +62,8 @@ const BraveCoreSwitchKey BraveCoreSwitchKeyP3AIgnoreServerErrors =
     base::SysUTF8ToNSString(p3a::switches::kP3AIgnoreServerErrors);
 const BraveCoreSwitchKey BraveCoreSwitchKeyUseDevGoUpdater =
     base::SysUTF8ToNSString(brave_component_updater::kUseGoUpdateDev);
+const BraveCoreSwitchKey BraveCoreSwitchKeyServicesEnvironment =
+    @"brave-services-env";
 
 @implementation BraveCoreSwitch
 - (instancetype)initWithKey:(BraveCoreSwitchKey)key {
