@@ -19,13 +19,14 @@ class BraveOnDemandUpdater;
 #define BRAVE_COMPONENT_UPDATER_SERVICE_H_ \
   friend class ::chrome::android::BraveComponentUpdaterAndroid;
 
-#define BRAVE_COMPONENT_UPDATER_SERVICE_H_ON_DEMAND_UPDATER          \
- private:                                                            \
-  friend class brave_component_updater::BraveOnDemandUpdater;        \
-                                                                     \
-  virtual void OnDemandUpdate(const std::vector<std::string>& ids,   \
-                              Priority priority, Callback callback); \
-                                                                     \
+#define BRAVE_COMPONENT_UPDATER_SERVICE_H_ON_DEMAND_UPDATER               \
+ private:                                                                 \
+  friend class brave_component_updater::BraveOnDemandUpdater;             \
+                                                                          \
+  virtual void EnsureInstalled(const std::string& id, Callback callback); \
+  virtual void OnDemandUpdate(const std::vector<std::string>& ids,        \
+                              Priority priority, Callback callback);      \
+                                                                          \
  public:
 
 #include "src/components/component_updater/component_updater_service.h"  // IWYU pragma: export

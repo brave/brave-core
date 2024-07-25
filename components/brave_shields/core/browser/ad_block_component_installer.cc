@@ -136,7 +136,11 @@ bool AdBlockComponentInstallerPolicy::IsBraveComponent() const {
 }
 
 void OnRegistered(const std::string& component_id) {
-  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(component_id);
+  // Unlike other components, which are only installed but not updated in
+  // `OnRegistered`, we do always want to update the ad block component upon
+  // registration.
+  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
+      component_id, component_updater::OnDemandUpdater::Priority::FOREGROUND);
 }
 
 }  // namespace
