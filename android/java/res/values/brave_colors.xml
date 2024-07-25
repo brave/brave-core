@@ -412,4 +412,5 @@
     <color name="divider_interactive">#545ff8</color>
 
     <color name="location_bar_background_color_for_ntp">#f2f2f2</color>
+    <color name="toolbar_background_color_for_ntp">@android:color/white</color>
 </resources>

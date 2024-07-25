@@ -271,4 +271,5 @@
     <color name="systemfeedback_error_text">#ffb1b0</color>
 
     <color name="location_bar_background_color_for_ntp">#383839</color>
+    <color name="toolbar_background_color_for_ntp">#1f1f1f</color>
 </resources>

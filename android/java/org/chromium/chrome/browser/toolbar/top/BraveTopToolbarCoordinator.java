@@ -41,6 +41,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.desktop_windowing.DesktopWindowStateProvider;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.ui.resources.ResourceManager;
+import org.chromium.ui.util.ColorUtils;
 
 import java.util.List;
 import java.util.function.BooleanSupplier;
@@ -143,6 +144,22 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                     "mLocationBarBackgroundColorForNtp",
                     mBraveToolbarLayout,
                     locationBarBackgroundColorForNtp);
+
+            // We need to set toolbar background color which in upstream is calculated
+            // at ToolbarPhone.updateLocationBarLayoutForExpansionAnimation with
+            // ColorUtils.blendColorsMultiply(...), which otherwise will be a bit
+            // more gray than white and will have poor contrast with address bar area.
+            @ColorInt
+            int toolbarBackgroundColorForNtp =
+                    ((Context) toolbarContext).getColor(R.color.toolbar_background_color_for_ntp);
+
+            if (!ColorUtils.inNightMode((Context) toolbarContext)) {
+                BraveReflectionUtil.setIntField(
+                        ToolbarPhone.class,
+                        "mToolbarBackgroundColorForNtp",
+                        mBraveToolbarLayout,
+                        toolbarBackgroundColorForNtp);
+            }
         }
     }
 
