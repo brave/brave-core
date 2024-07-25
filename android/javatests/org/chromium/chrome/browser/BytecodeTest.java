@@ -17,6 +17,7 @@ import android.view.ActionMode;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.Window;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
@@ -1658,6 +1659,19 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/password_manager/settings/ExportFlow",
                         "org/chromium/chrome/browser/password_manager/settings/BraveExportFlow"));
+
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/ui/system/StatusBarColorController",
+                        "org/chromium/chrome/browser/ui/system/BraveStatusBarColorController",
+                        Window.class,
+                        boolean.class,
+                        Context.class,
+                        StatusBarColorProvider.class,
+                        ObservableSupplier.class,
+                        ActivityLifecycleDispatcher.class,
+                        ActivityTabProvider.class,
+                        TopUiThemeColorProvider.class));
     }
 
     @Test
@@ -1996,6 +2010,10 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/top/ToolbarPhone",
                         "mLocationBarBackgroundColorForNtp"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/ui/system/StatusBarColorController",
+                        "mBackgroundColorForNtp"));
     }
 
     @Test

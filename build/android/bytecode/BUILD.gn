@@ -95,6 +95,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveSiteSettingsCategoryClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveSiteSettingsDelegateClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveSiteSettingsPreferencesBaseClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveStatusBarColorControllerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveStatusMediatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveStrictPreferenceKeyCheckerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveSwipeRefreshHandlerClassAdapter.java",

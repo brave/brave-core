@@ -433,6 +433,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveToolbarLayoutImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/ui/messages/infobar/BraveSimpleConfirmInfoBarBuilder.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ui/system/BraveStatusBarColorController.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/BravePackageReplacedBroadcastReceiver.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentServiceImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/NotificationIntent.java",
