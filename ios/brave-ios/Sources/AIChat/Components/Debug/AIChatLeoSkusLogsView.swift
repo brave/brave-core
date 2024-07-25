@@ -67,11 +67,40 @@ public struct AIChatLeoSkusLogsView: View {
 
     do {
       let credentials = try await BraveSkusSDK.shared.credentialsSummary(for: .leo)
-      result += "Credentials: \(credentials)\n"
+      if let jsonData = try? jsonEncoder.encode(credentials),
+        let credentialsJSON = String(data: jsonData, encoding: .utf8)
+      {
+        result += "Credentials: \(credentialsJSON)\n"
+      } else {
+        result += "Credentials: \(credentials)\n"
+      }
     } catch {
       result += "Credentials Error: \(error)\n"
     }
 
     return result
   }
+
+  /// A custom JSON Encoder that handles encoding Skus Object dates as ISO-8601
+  /// with optional milli-seconds
+  private let jsonEncoder: JSONEncoder = {
+    let formatter = ISO8601DateFormatter()
+    formatter.formatOptions = [
+      .withYear,
+      .withMonth,
+      .withDay,
+      .withTime,
+      .withDashSeparatorInDate,
+      .withColonSeparatorInTime,
+    ]
+
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = [.prettyPrinted, .withoutEscapingSlashes, .sortedKeys]
+    encoder.keyEncodingStrategy = .convertToSnakeCase
+    encoder.dateEncodingStrategy = .custom({ date, encoder in
+      var container = encoder.singleValueContainer()
+      try container.encode(formatter.string(from: date))
+    })
+    return encoder
+  }()
 }
