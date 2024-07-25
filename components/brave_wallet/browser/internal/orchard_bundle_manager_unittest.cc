@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
 
+#include <utility>
 #include <vector>
 
 #include "brave/components/brave_wallet/common/buildflags.h"
