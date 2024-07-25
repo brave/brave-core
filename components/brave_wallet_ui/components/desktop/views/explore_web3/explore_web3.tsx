@@ -10,9 +10,6 @@ import ProgressRing from '@brave/leo/react/progressRing'
 // Types
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
-// Constants & Options
-// import { ExploreNavOptions } from '../../../../options/nav-options'
-
 // Utils
 import { getLocale } from '../../../../../common/locale'
 import {
@@ -36,8 +33,6 @@ import {
 import { useQuery } from '../../../../common/hooks/use-query'
 
 // Components
-import // SegmentedControl //
-'../../../shared/segmented_control/segmented_control'
 import {
   HeaderControlBar //
 } from '../../../header_control_bar/header_control_bar'
@@ -45,14 +40,12 @@ import {
   Web3DappFilters //
 } from '../../popup-modals/filter-modals/web3_dapp_filters_modal'
 import { DappListItem } from './dapp_list_item'
-// import { VirtualizedDappsList } from './virtualized_dapps_list'
 import { DappFilter } from './dapp_filter'
+import { DappDetails } from './web3_dapp_details'
 
 // Styles
 import { Column, Row, Text } from '../../../shared/style'
-import { ControlsRow } from '../portfolio/style'
 import { CategoryHeader, DappsGrid, PlainButton } from './explore_web3.style'
-import { DappDetails } from './web3_dapp_details'
 
 export const ExploreWeb3View = () => {
   // routing
@@ -242,13 +235,8 @@ export const ExploreWeb3View = () => {
         fullHeight
         fullWidth
         justifyContent='flex-start'
+        padding='10px 20px'
       >
-        <ControlsRow>
-          {/* <SegmentedControl
-            navOptions={ExploreNavOptions}
-            width={384}
-          /> */}
-        </ControlsRow>
         <HeaderControlBar
           actions={controls}
           onSearchValueChange={setSearchValue}
@@ -310,11 +298,6 @@ export const ExploreWeb3View = () => {
         {!isDappMapEmpty(visibleDappsMap) ||
         selectedCategoryDapps?.length === 0 ? (
           selectedCategory ? (
-            // <VirtualizedDappsList
-            //   dappsList={selectedCategoryDapps || []}
-            //   onClickDapp={onDappClick}
-            // />
-
             <DappsGrid>
               {(selectedCategoryDapps || []).map((dapp) => (
                 <DappListItem

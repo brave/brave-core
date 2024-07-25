@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 import LeoSegmentedControl from '@brave/leo/react/segmentedControl'
+import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -16,7 +17,12 @@ export const StyledWrapper = styled.div`
 `
 
 export const SegmentedControl = styled(LeoSegmentedControl)`
-  --leo-control-item-padding: 16px 50px;
   --control-height: 60px;
-  margin: 24px 32px;
+  margin: 24px 0 10px 0;
+`
+
+export const ControlItemWrapper = styled.div`
+  @media screen and (min-width: ${layoutPanelWidth}px) {
+    padding: 0 55px;
+  }
 `

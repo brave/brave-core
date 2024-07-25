@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Dialog, { DialogProps } from '@brave/leo/react/dialog'
+import { DialogProps } from '@brave/leo/react/dialog'
 
 // Hooks
 import { useGetMainnetsQuery } from '../../../../common/slices/api.slice'
@@ -23,8 +23,10 @@ import { ExternalLink } from '../../../shared/external_link/external_link'
 // Styles
 import { Column, Row, Text } from '../../../shared/style'
 import {
+  DappDetailDialog,
   DappCategoryLabel,
-  DappMetricContainer
+  DappMetricContainer,
+  Title
 } from './web3_dapp_details.styles'
 import { PlaceholderImage } from './dapp_list_item.styles'
 
@@ -36,11 +38,16 @@ export const DappDetails = ({ dapp, ...rest }: DappDetailsProps) => {
   const { data: networks } = useGetMainnetsQuery()
 
   return (
-    <Dialog {...rest}>
+    <DappDetailDialog
+      {...rest}
+      showClose={true}
+    >
+      <Title slot='title'>Details</Title>
       <Column
         fullHeight
         fullWidth
         justifyContent='flex-start'
+        slot='default'
       >
         <Column
           gap={'8px'}
@@ -134,7 +141,7 @@ export const DappDetails = ({ dapp, ...rest }: DappDetailsProps) => {
           />
         ) : null}
       </Column>
-    </Dialog>
+    </DappDetailDialog>
   )
 }
 

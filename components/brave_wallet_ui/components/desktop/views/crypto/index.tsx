@@ -20,6 +20,7 @@ import {
   useGetIsMetaMaskInstalledQuery,
   useGetIsWalletBackedUpQuery //
 } from '../../../../common/slices/api.slice'
+import { ExploreNavOptions } from '../../../../options/nav-options'
 
 // types
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
@@ -37,7 +38,7 @@ import {
 } from '../../../../common/hooks/use_portfolio_accounts'
 
 // style
-import { StyledWrapper, SegmentedControl } from './style'
+import { StyledWrapper, SegmentedControl, ControlItemWrapper } from './style'
 import { Column } from '../../../shared/style'
 
 // components
@@ -108,7 +109,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
   const [isDefaultWalletBannerDismissed, setDismissDefaultWalletBanner] =
     React.useState<boolean>(false)
   const [selectedExploreSegment, setSelectedExploreSegment] =
-    React.useState<string>(WalletRoutes.MarketSub)
+    React.useState<string>(WalletRoutes.Market)
 
   // routing
   const history = useHistory()
@@ -228,12 +229,14 @@ export const CryptoView = ({ sessionRoute }: Props) => {
         history.push(value)
       }}
     >
-      <SegmentedControlItem value={WalletRoutes.Market}>
-        Market
-      </SegmentedControlItem>
-      <SegmentedControlItem value={WalletRoutes.Web3}>
-        Web3
-      </SegmentedControlItem>
+      {ExploreNavOptions.map((option) => (
+        <SegmentedControlItem
+          key={option.name}
+          value={option.route}
+        >
+          <ControlItemWrapper>{getLocale(option.name)}</ControlItemWrapper>
+        </SegmentedControlItem>
+      ))}
     </SegmentedControl>
   )
 
@@ -337,6 +340,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           <WalletPageWrapper
             wrapContentInBox
             cardHeader={exploreWeb3Header}
+            hideDivider
           >
             <StyledWrapper>
               {banners}
@@ -365,6 +369,8 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           <WalletPageWrapper
             wrapContentInBox
             cardHeader={exploreWeb3Header}
+            hideDivider
+            noCardPadding
           >
             <StyledWrapper>
               {banners}
