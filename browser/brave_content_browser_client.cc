@@ -20,6 +20,7 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/brave_farbling_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
@@ -895,14 +896,18 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
       Profile* profile =
           process ? Profile::FromBrowserContext(process->GetBrowserContext())
                   : nullptr;
-      session_token =
-          g_brave_browser_process->brave_farbling_service()->session_token(
-              profile && !profile->IsOffTheRecord());
-
+      if (profile) {
+        auto* brave_farbling_service =
+            brave::BraveFarblingServiceFactory::GetForProfile(profile);
+        if (brave_farbling_service) {
+          session_token = brave_farbling_service->session_token();
+        }
+      }
       if (command_line->HasSwitch(switches::kEnableIsolatedWebAppsInRenderer)) {
         command_line->RemoveSwitch(switches::kEnableIsolatedWebAppsInRenderer);
       }
     }
+
     command_line->AppendSwitchASCII("brave_session_token",
                                     base::NumberToString(session_token));
 

@@ -3,19 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
+
 #include <memory>
 #include <tuple>
 
-#include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/random/random.h"
 #include "url/gurl.h"
 
 namespace {
 const uint64_t kTestSessionToken = 123456789;
-const uint64_t kTestIncognitoSessionToken = 234567890;
 const uint64_t kAnotherTestSessionToken = 45678;
-const uint64_t kAnotherTestIncognitoSessionToken = 56789;
 }  // namespace
 
 class BraveFarblingServiceTest : public testing::Test {
@@ -27,8 +26,7 @@ class BraveFarblingServiceTest : public testing::Test {
 
   void SetUp() override {
     farbling_service_ = std::make_unique<brave::BraveFarblingService>();
-    farbling_service_->set_session_tokens_for_testing(
-        kTestSessionToken, kTestIncognitoSessionToken);
+    farbling_service_->set_session_tokens_for_testing(kTestSessionToken);
   }
 
   brave::BraveFarblingService* farbling_service() {
@@ -40,41 +38,33 @@ class BraveFarblingServiceTest : public testing::Test {
 };
 
 TEST_F(BraveFarblingServiceTest, SessionTokens) {
-  EXPECT_EQ(farbling_service()->session_token(false /* is_off_the_record */),
-            kTestSessionToken);
-  EXPECT_EQ(farbling_service()->session_token(true /* is_off_the_record */),
-            kTestIncognitoSessionToken);
+  EXPECT_EQ(farbling_service()->session_token(), kTestSessionToken);
 }
 
 TEST_F(BraveFarblingServiceTest, PRNGKnownValues) {
-  const std::array<std::tuple<GURL, bool, uint64_t>, 4> test_cases = {
-      std::make_tuple<>(GURL("http://a.com"), false, 16188622623906601575UL),
-      std::make_tuple<>(GURL("http://a.com"), true, 8942885125771927068UL),
-      std::make_tuple<>(GURL("http://b.com"), false, 10059331952077172763UL),
-      std::make_tuple<>(GURL("http://b.com"), true, 6702825749149599294UL),
+  const std::array<std::tuple<GURL, uint64_t>, 2> test_cases = {
+      std::make_tuple<>(GURL("http://a.com"), 16188622623906601575UL),
+      std::make_tuple<>(GURL("http://b.com"), 10059331952077172763UL),
   };
   for (const auto& c : test_cases) {
     brave::FarblingPRNG prng;
     ASSERT_TRUE(farbling_service()->MakePseudoRandomGeneratorForURL(
-        std::get<0>(c), std::get<1>(c), &prng));
-    EXPECT_EQ(prng(), std::get<2>(c));
+        std::get<0>(c), &prng));
+    EXPECT_EQ(prng(), std::get<1>(c));
   }
 }
 
 TEST_F(BraveFarblingServiceTest, PRNGKnownValuesDifferentSeeds) {
-  farbling_service()->set_session_tokens_for_testing(
-      kAnotherTestSessionToken, kAnotherTestIncognitoSessionToken);
-  const std::array<std::tuple<GURL, bool, uint64_t>, 4> test_cases = {
-      std::make_tuple<>(GURL("http://a.com"), false, 6565599272117158152UL),
-      std::make_tuple<>(GURL("http://a.com"), true, 18152828989207203999UL),
-      std::make_tuple<>(GURL("http://b.com"), false, 10499595974068024348UL),
-      std::make_tuple<>(GURL("http://b.com"), true, 7485037097853289552UL),
+  farbling_service()->set_session_tokens_for_testing(kAnotherTestSessionToken);
+  const std::array<std::tuple<GURL, uint64_t>, 2> test_cases = {
+      std::make_tuple<>(GURL("http://a.com"), 6565599272117158152UL),
+      std::make_tuple<>(GURL("http://b.com"), 10499595974068024348UL),
   };
   for (const auto& c : test_cases) {
     brave::FarblingPRNG prng;
     ASSERT_TRUE(farbling_service()->MakePseudoRandomGeneratorForURL(
-        std::get<0>(c), std::get<1>(c), &prng));
-    EXPECT_EQ(prng(), std::get<2>(c));
+        std::get<0>(c), &prng));
+    EXPECT_EQ(prng(), std::get<1>(c));
   }
 }
 
@@ -92,8 +82,8 @@ TEST_F(BraveFarblingServiceTest, InvalidDomains) {
   for (const auto& url : test_cases) {
     brave::FarblingPRNG prng;
     EXPECT_FALSE(
-        farbling_service()->MakePseudoRandomGeneratorForURL(url, false, &prng));
+        farbling_service()->MakePseudoRandomGeneratorForURL(url, &prng));
     EXPECT_FALSE(
-        farbling_service()->MakePseudoRandomGeneratorForURL(url, true, &prng));
+        farbling_service()->MakePseudoRandomGeneratorForURL(url, &prng));
   }
 }

@@ -9,6 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/brave_farbling_service_factory.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
@@ -73,9 +74,8 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    g_brave_browser_process->brave_farbling_service()
-        ->set_session_tokens_for_testing(kTestingSessionToken,
-                                         kTestingSessionToken);
+    brave::BraveFarblingServiceFactory::GetForProfile(browser()->profile())
+        ->set_session_tokens_for_testing(kTestingSessionToken);
 
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);

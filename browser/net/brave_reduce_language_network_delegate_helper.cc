@@ -13,6 +13,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/strings/string_split.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/brave_farbling_service_factory.h"
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -63,11 +64,15 @@ std::string FarbleAcceptLanguageHeader(
   }
   // Add a fake q value after the language code.
   brave::FarblingPRNG prng;
-  if (g_brave_browser_process->brave_farbling_service()
-          ->MakePseudoRandomGeneratorForURL(
-              origin_url, profile && profile->IsOffTheRecord(), &prng)) {
+
+  auto* brave_farbling_service =
+      BraveFarblingServiceFactory::GetForProfile(profile);
+  if (brave_farbling_service &&
+      brave_farbling_service->MakePseudoRandomGeneratorForURL(origin_url,
+                                                              &prng)) {
     accept_language_string += kFakeQValues[prng() % kFakeQValues.size()];
   }
+
   return accept_language_string;
 }
 

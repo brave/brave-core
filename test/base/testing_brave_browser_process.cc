@@ -143,11 +143,6 @@ brave_ads::ResourceComponent* TestingBraveBrowserProcess::resource_component() {
   return nullptr;
 }
 
-brave::BraveFarblingService*
-TestingBraveBrowserProcess::brave_farbling_service() {
-  return nullptr;
-}
-
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 brave_vpn::BraveVPNConnectionManager*
 TestingBraveBrowserProcess::brave_vpn_connection_manager() {

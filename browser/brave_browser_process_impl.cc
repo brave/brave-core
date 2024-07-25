@@ -29,7 +29,6 @@
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
-#include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
@@ -496,13 +495,6 @@ BraveBrowserProcessImpl::brave_vpn_connection_manager() {
   return brave_vpn_connection_manager_.get();
 }
 #endif
-
-brave::BraveFarblingService* BraveBrowserProcessImpl::brave_farbling_service() {
-  if (!brave_farbling_service_) {
-    brave_farbling_service_ = std::make_unique<brave::BraveFarblingService>();
-  }
-  return brave_farbling_service_.get();
-}
 
 misc_metrics::ProcessMiscMetrics*
 BraveBrowserProcessImpl::process_misc_metrics() {

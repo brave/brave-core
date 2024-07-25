@@ -82,7 +82,6 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
       override;
 #endif
   brave_ads::ResourceComponent* resource_component() override;
-  brave::BraveFarblingService* brave_farbling_service() override;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::BraveVPNConnectionManager* brave_vpn_connection_manager() override;
   void SetBraveVPNConnectionManagerForTesting(

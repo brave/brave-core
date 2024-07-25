@@ -21,7 +21,6 @@
 
 namespace brave {
 class BraveReferralsService;
-class BraveFarblingService;
 class URLSanitizerComponentInstaller;
 }  // namespace brave
 
@@ -137,7 +136,6 @@ class BraveBrowserProcess {
   brave_vpn_connection_manager() = 0;
 #endif
   virtual brave_ads::ResourceComponent* resource_component() = 0;
-  virtual brave::BraveFarblingService* brave_farbling_service() = 0;
   virtual misc_metrics::ProcessMiscMetrics* process_misc_metrics() = 0;
 };
 
