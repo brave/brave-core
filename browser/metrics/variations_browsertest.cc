@@ -25,7 +25,7 @@ BASE_FEATURE(kVariationsTestFeature,
 
 // The seed is signed with the private key of the Brave variations server.
 const SignedSeedData& GetBraveSignedSeedData() {
-  const char* study_names[] = {"VariationsTestStudy"};
+  static const char* study_names[] = {"VariationsTestStudy"};
 
   constexpr char kBase64UncompressedData[] =
       "CiA5NDIyMDlmNWEwYzRkOTFiYThiZDk4N2ZlOGU5NTcxMBJMChNWYXJpYXRpb25zVGVzdFN0"
