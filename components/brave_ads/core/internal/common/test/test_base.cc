@@ -211,7 +211,7 @@ void TestBase::MockAdsClient() {
   MockGetCachedAdEvents(ads_client_mock_);
   MockResetAdEventCacheForInstanceId(ads_client_mock_);
 
-  MockGetBrowsingHistory(ads_client_mock_, /*history=*/{});
+  MockGetSiteHistory(ads_client_mock_, /*site_history=*/{});
 
   MockSave(ads_client_mock_);
   MockLoad(ads_client_mock_, temp_profile_dir_);

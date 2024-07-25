@@ -14,8 +14,7 @@
 #include "brave/components/brave_ads/core/internal/client/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_mock.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_types.h"
-
-class GURL;
+#include "brave/components/brave_ads/core/public/history/site_history.h"
 
 namespace brave_ads::test {
 
@@ -42,8 +41,8 @@ void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
     const AdsClientMock& mock,
     bool can_show);
 
-void MockGetBrowsingHistory(AdsClientMock& mock,
-                            const std::vector<GURL>& history);
+void MockGetSiteHistory(AdsClientMock& mock,
+                        const SiteHistoryList& site_history);
 
 void MockUrlResponses(AdsClientMock& mock, const URLResponseMap& url_responses);
 

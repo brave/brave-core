@@ -63,10 +63,10 @@ class AdsClientMock : public AdsClient {
               (const));
 
   MOCK_METHOD(void,
-              GetBrowsingHistory,
+              GetSiteHistory,
               (const int max_count,
                const int recent_day_range,
-               GetBrowsingHistoryCallback callback));
+               GetSiteHistoryCallback callback));
 
   MOCK_METHOD(void,
               UrlRequest,

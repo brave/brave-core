@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/history/browsing_history_test_util.h"
+#include "brave/components/brave_ads/core/internal/history/site_history_test_util.h"
 
 namespace brave_ads::test {
 
-BrowsingHistoryList BuildBrowsingHistory() {
+SiteHistoryList BuildSiteHistory() {
   return {GURL("https://www.foobar.com"), GURL("https://www.foo.com"),
           GURL("https://www.bar.com"),    GURL("https://www.baz.com"),
           GURL("https://www.qux.com"),    GURL("https://www.quux.com"),

@@ -10,11 +10,10 @@
 
 namespace brave_ads {
 
-bool HasVisitedAntiTargetedSites(const BrowsingHistoryList& browsing_history,
+bool HasVisitedAntiTargetedSites(const SiteHistoryList& site_history,
                                  const AntiTargetingSiteList& sites) {
-  return base::ranges::find_first_of(browsing_history, sites,
-                                     SameDomainOrHost) !=
-         browsing_history.cend();
+  return base::ranges::find_first_of(site_history, sites, SameDomainOrHost) !=
+         site_history.cend();
 }
 
 }  // namespace brave_ads

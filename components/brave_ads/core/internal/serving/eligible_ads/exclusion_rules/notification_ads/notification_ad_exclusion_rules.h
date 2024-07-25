@@ -19,7 +19,7 @@ class NotificationAdExclusionRules final : public ExclusionRulesBase {
       const AdEventList& ad_events,
       const SubdivisionTargeting& subdivision_targeting,
       const AntiTargetingResource& anti_targeting_resource,
-      const BrowsingHistoryList& browsing_history);
+      const SiteHistoryList& site_history);
 
   NotificationAdExclusionRules(const NotificationAdExclusionRules&) = delete;
   NotificationAdExclusionRules& operator=(const NotificationAdExclusionRules&) =

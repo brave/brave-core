@@ -8,12 +8,11 @@
 
 #include <optional>
 #include <string>
-#include <vector>
 
 #include "base/files/file.h"
 #include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-#include "url/gurl.h"
+#include "brave/components/brave_ads/core/public/history/site_history.h"
 
 namespace brave_ads {
 
@@ -32,8 +31,8 @@ using UrlRequestCallback =
 using RunDBTransactionCallback =
     base::OnceCallback<void(mojom::DBCommandResponseInfoPtr command_response)>;
 
-using GetBrowsingHistoryCallback =
-    base::OnceCallback<void(const std::vector<GURL>& browsing_history)>;
+using GetSiteHistoryCallback =
+    base::OnceCallback<void(const SiteHistoryList& site_history)>;
 
 using GetScheduledCaptchaCallback =
     base::OnceCallback<void(const std::string& captcha_id)>;

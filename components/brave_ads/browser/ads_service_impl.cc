@@ -37,7 +37,6 @@
 #include "brave/components/brave_ads/browser/device_id/device_id.h"
 #include "brave/components/brave_ads/browser/reminder/reminder_util.h"
 #include "brave/components/brave_ads/browser/user_engagement/ad_events/ad_event_cache_helper.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
@@ -46,6 +45,7 @@
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
+#include "brave/components/brave_ads/core/public/history/site_history.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/user_attention/user_idle_detection/user_idle_detection_feature.h"
 #include "brave/components/brave_ads/resources/grit/bat_ads_resources.h"
@@ -1553,9 +1553,9 @@ void AdsServiceImpl::ResetAdEventCacheForInstanceId(const std::string& id) {
   return AdEventCacheHelper::GetInstance()->ResetAdEventCacheForInstanceId(id);
 }
 
-void AdsServiceImpl::GetBrowsingHistory(const int max_count,
-                                        const int recent_day_range,
-                                        GetBrowsingHistoryCallback callback) {
+void AdsServiceImpl::GetSiteHistory(const int max_count,
+                                    const int recent_day_range,
+                                    GetSiteHistoryCallback callback) {
   const std::u16string search_text;
   history::QueryOptions options;
   options.SetRecentDayRange(recent_day_range);
@@ -1564,16 +1564,16 @@ void AdsServiceImpl::GetBrowsingHistory(const int max_count,
   history_service_->QueryHistory(
       search_text, options,
       base::BindOnce(
-          [](GetBrowsingHistoryCallback callback,
-             history::QueryResults results) {
-            std::vector<GURL> history;
+          [](GetSiteHistoryCallback callback, history::QueryResults results) {
+            SiteHistoryList site_history;
             for (const auto& result : results) {
-              history.push_back(result.url().GetWithEmptyPath());
+              site_history.push_back(result.url().GetWithEmptyPath());
             }
 
-            base::ranges::sort(history);
-            history.erase(base::ranges::unique(history), history.cend());
-            std::move(callback).Run(history);
+            base::ranges::sort(site_history);
+            site_history.erase(base::ranges::unique(site_history),
+                               site_history.cend());
+            std::move(callback).Run(site_history);
           },
           std::move(callback)),
       &history_service_task_tracker_);

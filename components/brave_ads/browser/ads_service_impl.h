@@ -317,9 +317,9 @@ class AdsServiceImpl final : public AdsService,
                          GetCachedAdEventsCallback callback) override;
   void ResetAdEventCacheForInstanceId(const std::string& id) override;
 
-  void GetBrowsingHistory(int max_count,
-                          int recent_day_range,
-                          GetBrowsingHistoryCallback callback) override;
+  void GetSiteHistory(int max_count,
+                      int recent_day_range,
+                      GetSiteHistoryCallback callback) override;
 
   // TODO(https://github.com/brave/brave-browser/issues/14676) Decouple URL
   // request business logic.
