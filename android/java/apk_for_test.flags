@@ -871,3 +871,12 @@
 -keep class org.chromium.chrome.browser.hub.HubManagerImpl {
     *** ensureHubCoordinatorIsInitialized(...);
 }
+
+-keep class org.chromium.chrome.browser.ui.system.StatusBarColorController {
+    public <init>(...);
+    *** mBackgroundColorForNtp;
+}
+
+-keep class org.chromium.chrome.browser.ui.system.BraveStatusBarColorController {
+    public <init>(...);
+}
