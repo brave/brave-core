@@ -580,6 +580,7 @@ source_set("ui") {
 
     deps += [
       "//chrome/browser/devtools",
+      "//chrome/browser/ui/exclusive_access",
       "//chrome/browser/ui/views/bubble",
       "//components/bookmarks/browser",
     ]
@@ -1123,6 +1124,7 @@ source_set("ui") {
       "//brave/components/resources:static_resources",
       "//brave/components/resources:strings_grit",
       "//chrome/browser/extensions",
+      "//chrome/browser/ui/exclusive_access",
       "//components/sessions",
       "//extensions/browser",
       "//extensions/common:common_constants",
@@ -1311,6 +1313,7 @@ source_set("ui") {
     deps += [
       "//brave/components/playlist/browser",
       "//brave/components/playlist/browser/resources:generated_resources",
+      "//chrome/browser/ui/exclusive_access",
       "//components/user_prefs",
     ]
   }
