@@ -9,7 +9,7 @@ import DesignSystem
 import SwiftUI
 
 struct NetworkSelectionView: View {
-  
+
   enum NetworkSelectionType {
     case addCustomAsset
     case other
