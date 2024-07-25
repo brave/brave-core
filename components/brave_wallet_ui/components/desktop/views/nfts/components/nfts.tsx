@@ -12,9 +12,6 @@ import {
   BraveWallet,
   NftDropdownOptionId
 } from '../../../../../constants/types'
-import {
-  TokenBalancesRegistry //
-} from '../../../../../common/slices/entities/token-balance.entity'
 
 // hooks
 import { useNftPin } from '../../../../../common/hooks/nft-pin'
@@ -50,7 +47,10 @@ import {
   useSetNftDiscoveryEnabledMutation
 } from '../../../../../common/slices/api.slice'
 import { useApiProxy } from '../../../../../common/hooks/use-api-proxy'
-import { getAssetIdKey } from '../../../../../utils/asset-utils'
+import {
+  getAssetIdKey,
+  getTokensWithBalanceForAccounts
+} from '../../../../../utils/asset-utils'
 import { useQuery } from '../../../../../common/hooks/use-query'
 import {
   makePortfolioAssetRoute,
@@ -60,7 +60,6 @@ import {
   selectAllVisibleUserNFTsFromQueryResult,
   selectHiddenNftsFromQueryResult //
 } from '../../../../../common/slices/entities/blockchain-token.entity'
-import { getBalance } from '../../../../../utils/balance-utils'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
@@ -93,7 +92,6 @@ import {
 interface Props {
   onShowPortfolioSettings?: () => void
   accounts: BraveWallet.AccountInfo[]
-  tokenBalancesRegistry: TokenBalancesRegistry | null | undefined
   networks: BraveWallet.NetworkInfo[]
 }
 
@@ -130,8 +128,7 @@ const emptyTokenIdsList: string[] = []
 export const Nfts = ({
   networks,
   accounts,
-  onShowPortfolioSettings,
-  tokenBalancesRegistry
+  onShowPortfolioSettings
 }: Props) => {
   // routing
   const history = useHistory()
@@ -186,9 +183,10 @@ export const Nfts = ({
       selectedTab === 'collected' || !accounts.length ? skipToken : { accounts }
     )
   const { accounts: allAccounts } = useAccountsQuery()
-  const { userTokensRegistry, hiddenNfts, visibleNfts } =
+  const { userTokensRegistry, hiddenNfts, visibleNfts, isFetchingTokens } =
     useGetUserTokensRegistryQuery(undefined, {
       selectFromResult: (result) => ({
+        isFetchingTokens: result.isFetching,
         userTokensRegistry: result.data,
         visibleNfts: selectAllVisibleUserNFTsFromQueryResult(result),
         hiddenNfts: selectHiddenNftsFromQueryResult(result)
@@ -211,6 +209,17 @@ export const Nfts = ({
         }
       : skipToken
   )
+
+  const { data: tokenBalancesRegistry } =
+    // will fetch balances for all accounts so we can filter NFTs by accounts
+    useBalancesFetcher(
+      isFetchingTokens || networks.length === 0 || allAccounts.length === 0
+        ? skipToken
+        : {
+            accounts: allAccounts,
+            networks
+          }
+    )
 
   // mutations
   const [setNftDiscovery] = useSetNftDiscoveryEnabledMutation()
@@ -293,73 +302,22 @@ export const Nfts = ({
 
   // apply accounts filter to selected nfts list
   const sortedSelectedNftListForChainsAndAccounts = React.useMemo(() => {
-    if (hideUnownedNfts) {
-      return sortedSelectedNftListForChains.filter((token) => {
-        return accounts.some((account) => {
-          const balance = getBalance(
-            account.accountId,
-            token,
-            tokenBalancesRegistry
-          )
-          const spamBalance = getBalance(
-            account.accountId,
-            token,
-            spamTokenBalancesRegistry
-          )
-          return (
-            (balance && balance !== '0') || (spamBalance && spamBalance !== '0')
-          )
-        })
-      })
-    }
-
-    // skip balance checks if all accounts are selected
-    if (accounts.length === allAccounts.length) {
-      return sortedSelectedNftListForChains
-    }
-
-    return sortedSelectedNftListForChains.filter((token) => {
-      return (
-        accounts.some((account) => {
-          const balance = getBalance(
-            account.accountId,
-            token,
-            tokenBalancesRegistry
-          )
-          const spamBalance = getBalance(
-            account.accountId,
-            token,
-            spamTokenBalancesRegistry
-          )
-          return (
-            (balance && balance !== '0') || (spamBalance && spamBalance !== '0')
-          )
-        }) ||
-        // not owned by any account
-        !allAccounts.some((account) => {
-          const balance = getBalance(
-            account.accountId,
-            token,
-            tokenBalancesRegistry
-          )
-          const spamBalance = getBalance(
-            account.accountId,
-            token,
-            spamTokenBalancesRegistry
-          )
-          return (
-            (balance && balance !== '0') || (spamBalance && spamBalance !== '0')
-          )
-        })
-      )
-    })
+    return getTokensWithBalanceForAccounts(
+      sortedSelectedNftListForChains,
+      accounts,
+      allAccounts,
+      tokenBalancesRegistry,
+      selectedTab === 'collected' ? null : spamTokenBalancesRegistry,
+      hideUnownedNfts
+    )
   }, [
     accounts,
     allAccounts,
     hideUnownedNfts,
     sortedSelectedNftListForChains,
     spamTokenBalancesRegistry,
-    tokenBalancesRegistry
+    tokenBalancesRegistry,
+    selectedTab
   ])
 
   const { searchResults, totalNftsFound } = React.useMemo(() => {
