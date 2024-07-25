@@ -14,10 +14,11 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 
-class BackgroundColorTabHelper : public InProcessBrowserTest,
-                                 public testing::WithParamInterface<bool> {
+class BackgroundColorTabHelperBrowserTest
+    : public InProcessBrowserTest,
+      public testing::WithParamInterface<bool> {
  public:
-  BackgroundColorTabHelper() {
+  BackgroundColorTabHelperBrowserTest() {
     dark_mode::SetUseSystemDarkModeEnabledForTest(false);
     scoped_feature_list_.InitAndEnableFeature(
         features::kBraveWorkaroundNewWindowFlash);
@@ -41,7 +42,8 @@ class BackgroundColorTabHelper : public InProcessBrowserTest,
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_P(BackgroundColorTabHelper, BackgroundColorIsSet) {
+IN_PROC_BROWSER_TEST_P(BackgroundColorTabHelperBrowserTest,
+                       BackgroundColorIsSet) {
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL(chrome::kChromeUINewTabPageURL),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
@@ -57,4 +59,6 @@ IN_PROC_BROWSER_TEST_P(BackgroundColorTabHelper, BackgroundColorIsSet) {
   }
 }
 
-INSTANTIATE_TEST_SUITE_P(, BackgroundColorTabHelper, testing::Bool());
+INSTANTIATE_TEST_SUITE_P(,
+                         BackgroundColorTabHelperBrowserTest,
+                         testing::Bool());
