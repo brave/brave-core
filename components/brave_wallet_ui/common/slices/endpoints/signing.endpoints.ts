@@ -12,7 +12,7 @@ import {
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // actions
-import { PanelActions } from '../../../panel/actions'
+import { PanelActions } from '../panel.slice'
 
 // utils
 import {

@@ -11,7 +11,7 @@ import { useHistory } from 'react-router'
 import { getLocale } from '../../../../common/locale'
 import { isHardwareAccount } from '../../../utils/account-utils'
 import { UISelectors } from '../../../common/selectors'
-import { PanelActions } from '../../../panel/actions'
+import { PanelActions } from '../../../common/slices/panel.slice'
 
 // types
 import {

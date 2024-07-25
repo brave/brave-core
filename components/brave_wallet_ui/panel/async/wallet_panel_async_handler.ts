@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
-import * as PanelActions from '../actions/wallet_panel_actions'
+import { PanelActions } from '../../common/slices/panel.slice'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import {
   BraveWallet,

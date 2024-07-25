@@ -35,7 +35,7 @@ import {
 } from '../../../../constants/types'
 
 // actions
-import { PanelActions } from '../../../../panel/actions'
+import { PanelActions } from '../../../../common/slices/panel.slice'
 
 // components
 import { DividerLine } from '../../../extension/divider/index'

@@ -16,7 +16,7 @@ import { createWalletApi } from '../common/slices/api.slice'
 import { createWalletReducer } from '../common/slices/wallet.slice'
 import { createPageReducer } from '../page/reducers/page_reducer'
 import { createUIReducer } from '../common/slices/ui.slice'
-import { createPanelReducer } from '../panel/reducers/panel_reducer'
+import { createPanelReducer } from '../common/slices/panel.slice'
 
 // mocks
 import { mockPageState } from '../stories/mock-data/mock-page-state'
