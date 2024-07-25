@@ -6,9 +6,11 @@
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 
 #include <optional>
+#include <string>
 #include <vector>
 
 #include "base/command_line.h"
+#include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
@@ -36,7 +38,7 @@
 namespace {
 class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
  public:
-  explicit WaitForFeedsChanged(BraveNewsTabHelper* tab_helper, size_t feeds)
+  WaitForFeedsChanged(BraveNewsTabHelper* tab_helper, size_t feeds)
       : feeds_(feeds), tab_helper_(tab_helper) {
     news_observer_.Observe(tab_helper_);
   }
@@ -73,6 +75,31 @@ class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
                           BraveNewsTabHelper::PageFeedsObserver>
       news_observer_{this};
 };
+
+class WaitForFeedTitle {
+ public:
+  explicit WaitForFeedTitle(BraveNewsTabHelper* tab_helper)
+      : tab_helper_(tab_helper) {}
+
+  ~WaitForFeedTitle() = default;
+
+  bool WaitForTitle(std::string title) {
+    bool found_title = false;
+    do {
+      WaitForFeedsChanged waiter(tab_helper_.get(), 0);
+      auto urls = waiter.WaitForFeeds();
+      found_title = base::ranges::any_of(urls, [&title, this](const auto& url) {
+        return title == tab_helper_->GetTitleForFeedUrl(url);
+      });
+    } while (!found_title);
+    return true;
+  }
+
+ private:
+  raw_ptr<BraveNewsTabHelper> tab_helper_;
+  std::string title_;
+};
+
 }  // namespace
 
 class BraveNewsTabHelperTest : public InProcessBrowserTest {
@@ -212,12 +239,12 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreFoundWhenTheyExist) {
   // url). Requesting the title should trigger fetching and parsing the feed to
   // get the title.
   {
-    WaitForFeedsChanged waiter(tab_helper, 1);
+    WaitForFeedTitle waiter(tab_helper);
     EXPECT_EQ(feed_url.spec(), tab_helper->GetTitleForFeedUrl(feed_url));
+    EXPECT_TRUE(waiter.WaitForTitle("Channel Title"));
 
     // Once the feed has been parsed, we should be notified that we have
     // changes.
-    waiter.WaitForFeeds();
     EXPECT_EQ("Channel Title", tab_helper->GetTitleForFeedUrl(feed_url));
   }
 }
