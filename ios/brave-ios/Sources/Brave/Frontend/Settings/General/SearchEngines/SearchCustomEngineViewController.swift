@@ -38,6 +38,13 @@ class SearchCustomEngineViewController: UIViewController {
     static let titleEntryMaxCharacterCount = 50
   }
 
+  // MARK: CustomEngineType
+
+  private enum CustomEngineActionType {
+    case add
+    case edit
+  }
+
   // MARK: Properties
 
   private var profile: Profile
@@ -64,6 +71,7 @@ class SearchCustomEngineViewController: UIViewController {
   }
 
   private var engineToBeEdited: OpenSearchEngine?
+  private var customEngineActionType: CustomEngineActionType = .add
 
   private var isAutoAddEnabled = false
 
@@ -94,7 +102,11 @@ class SearchCustomEngineViewController: UIViewController {
   ) {
     self.profile = profile
     self.privateBrowsingManager = privateBrowsingManager
+
     self.engineToBeEdited = engineToBeEdited
+    if engineToBeEdited != nil {
+      self.customEngineActionType = .edit
+    }
 
     super.init(nibName: nil, bundle: nil)
   }
@@ -111,7 +123,7 @@ class SearchCustomEngineViewController: UIViewController {
     setup()
     doLayout()
 
-    changeAddButton(for: engineToBeEdited != nil ? .enabled : .disabled)
+    changeAddEditButton(for: customEngineActionType == .add ? .enabled : .disabled)
   }
 
   // MARK: Internal
@@ -134,21 +146,19 @@ class SearchCustomEngineViewController: UIViewController {
     }
   }
 
-  private func changeAddButton(for type: AddButtonType) {
+  private func changeAddEditButton(for type: AddButtonType) {
     ensureMainThread {
       switch type {
       case .enabled:
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-          title: Strings.CustomSearchEngine.customEngineAddButtonTitle,
-          style: .done,
+          barButtonSystemItem: self.customEngineActionType == .add ? .done : .edit,
           target: self,
           action: #selector(self.checkAddEngineType)
         )
         self.spinnerView.stopAnimating()
       case .disabled:
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-          title: Strings.CustomSearchEngine.customEngineAddButtonTitle,
-          style: .done,
+          barButtonSystemItem: self.customEngineActionType == .add ? .done : .edit,
           target: self,
           action: #selector(self.checkAddEngineType)
         )
@@ -212,7 +222,7 @@ class SearchCustomEngineViewController: UIViewController {
       return
     }
 
-    changeAddButton(for: .disabled)
+    changeAddEditButton(for: .disabled)
     addSearchEngine(with: urlQuery, title: title)
   }
 
@@ -321,7 +331,7 @@ extension SearchCustomEngineViewController {
   }
 
   func downloadOpenSearchXML(_ url: URL, referenceURL: String, title: String, iconImage: UIImage) {
-    changeAddButton(for: .loading)
+    changeAddEditButton(for: .loading)
     view.endEditing(true)
 
     NetworkManager().downloadResource(with: url) { [weak self] response in
@@ -341,7 +351,7 @@ extension SearchCustomEngineViewController {
             let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
 
             self.present(alert, animated: true) {
-              self.changeAddButton(for: .disabled)
+              self.changeAddEditButton(for: .disabled)
             }
           }
         }
@@ -350,7 +360,7 @@ extension SearchCustomEngineViewController {
 
         let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
         self.present(alert, animated: true) {
-          self.changeAddButton(for: .disabled)
+          self.changeAddEditButton(for: .disabled)
         }
       }
     }
@@ -362,7 +372,7 @@ extension SearchCustomEngineViewController {
       guard let self = self else { return }
 
       if alertAction.style == .cancel {
-        self.changeAddButton(for: .enabled)
+        self.changeAddEditButton(for: .enabled)
         return
       }
 
@@ -373,7 +383,7 @@ extension SearchCustomEngineViewController {
         } catch {
           self.handleError(error: SearchEngineError.failedToSave)
 
-          self.changeAddButton(for: .disabled)
+          self.changeAddEditButton(for: .disabled)
         }
       }
     }
@@ -388,9 +398,8 @@ extension SearchCustomEngineViewController {
 
   func checkSupportAutoAddSearchEngine() {
     guard let openSearchEngine = openSearchReference else {
-      changeAddButton(for: .disabled)
+      changeAddEditButton(for: .disabled)
       checkManualAddExists()
-
       faviconImage = nil
 
       return
@@ -407,16 +416,21 @@ extension SearchCustomEngineViewController {
     })
 
     if searchEngineExists {
-      changeAddButton(for: .disabled)
+      changeAddEditButton(for: .disabled)
       checkManualAddExists()
     } else {
-      changeAddButton(for: .enabled)
+      changeAddEditButton(for: .enabled)
       isAutoAddEnabled = true
     }
   }
 
-  func fetchSearchEngineSupportForHost(_ host: URL) {
-    changeAddButton(for: .disabled)
+  private func fetchSearchEngineSupportForHost(_ host: URL) {
+    // Do not perform (Open Search) search engine support for engine edit
+    guard customEngineActionType == .add else {
+      return
+    }
+
+    changeAddEditButton(for: .disabled)
 
     dataTask = URLSession.shared.dataTask(with: host) { [weak self] data, _, error in
       guard let data = data, error == nil else {
@@ -432,7 +446,7 @@ extension SearchCustomEngineViewController {
     dataTask?.resume()
   }
 
-  func loadSearchEngineMetaData(from data: Data, url: URL) {
+  private func loadSearchEngineMetaData(from data: Data, url: URL) {
     guard let root = try? HTMLDocument(data: data as Data),
       let searchEngineDetails = fetchOpenSearchReference(document: root)
     else {
@@ -456,7 +470,7 @@ extension SearchCustomEngineViewController {
     }
   }
 
-  func fetchOpenSearchReference(document: HTMLDocument) -> OpenSearchReference? {
+  private func fetchOpenSearchReference(document: HTMLDocument) -> OpenSearchReference? {
     let documentXpath = "//head//link[contains(@type, 'application/opensearchdescription+xml')]"
 
     for link in document.xpath(documentXpath) {
@@ -474,7 +488,7 @@ extension SearchCustomEngineViewController {
 extension SearchCustomEngineViewController {
 
   fileprivate func addSearchEngine(with urlQuery: String, title: String) {
-    changeAddButton(for: .loading)
+    changeAddEditButton(for: .loading)
 
     let safeURLQuery = urlQuery.trimmingCharacters(in: .whitespacesAndNewlines)
     let safeTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -485,16 +499,25 @@ extension SearchCustomEngineViewController {
       if let error = error {
         self.handleError(error: error)
 
-        self.changeAddButton(for: .disabled)
+        self.changeAddEditButton(for: .disabled)
       } else if let engine = engine {
         Task { @MainActor in
           do {
-            try await self.profile.searchEngines.addSearchEngine(engine)
+            switch self.customEngineActionType {
+            case .add:
+              try await self.profile.searchEngines.addSearchEngine(engine)
+            case .edit:
+              if let engineToBeEdited = self.engineToBeEdited {
+                try await self.profile.searchEngines.editSearchEngine(
+                  engineToBeEdited,
+                  with: engine
+                )
+              }
+            }
             self.cancel()
           } catch {
             self.handleError(error: SearchEngineError.failedToSave)
-
-            self.changeAddButton(for: .enabled)
+            self.changeAddEditButton(for: .enabled)
           }
         }
       }
@@ -517,8 +540,8 @@ extension SearchCustomEngineViewController {
       return
     }
 
-    // Check Engine Exists
-    guard
+    // Check Engine Exists only for add mode
+    guard customEngineActionType == .add,
       profile.searchEngines.orderedEngines.filter({
         $0.shortName == name || $0.searchTemplate.contains(template)
       }).isEmpty
@@ -592,9 +615,9 @@ extension SearchCustomEngineViewController {
     }
 
     if !url.isEmpty, !title.isEmpty {
-      changeAddButton(for: .enabled)
+      changeAddEditButton(for: .enabled)
     } else {
-      changeAddButton(for: .disabled)
+      changeAddEditButton(for: .disabled)
     }
   }
 }
@@ -620,7 +643,7 @@ extension SearchCustomEngineViewController: UITextViewDelegate {
   }
 
   func textViewDidChange(_ textView: UITextView) {
-    changeAddButton(for: .disabled)
+    changeAddEditButton(for: .disabled)
 
     // The withSecureUrlScheme is used in order to force user to use secure url scheme
     // Instead of checking paste-board with every character entry, the textView text is analyzed
