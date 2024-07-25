@@ -94,16 +94,15 @@ void VPNPanelUI::CreatePanelHandler(
   }
 }
 
-std::unique_ptr<content::WebUIController>
-UntrustedVPNPanelUIConfig::CreateWebUIController(content::WebUI* web_ui,
-                                                 const GURL& url) {
-  return std::make_unique<VPNPanelUI>(web_ui);
-}
-
 bool UntrustedVPNPanelUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
   return brave_vpn::IsBraveVPNEnabled(browser_context);
 }
 
+bool UntrustedVPNPanelUIConfig::ShouldAutoResizeHost() {
+  return true;
+}
+
 UntrustedVPNPanelUIConfig::UntrustedVPNPanelUIConfig()
-    : WebUIConfig(content::kChromeUIUntrustedScheme, kVPNPanelHost) {}
+    : DefaultTopChromeWebUIConfig(content::kChromeUIUntrustedScheme,
+                                  kVPNPanelHost) {}

@@ -26,7 +26,6 @@ class PlaylistContentsWrapper
   PlaylistContentsWrapper(const GURL& webui_url,
                           content::BrowserContext* browser_context,
                           int task_manager_string_id,
-                          bool webui_resizes_host,
                           bool esc_closes_ui,
                           BrowserView* browser_view,
                           PlaylistSidePanelCoordinator* coordinator);
