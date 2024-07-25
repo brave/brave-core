@@ -20,7 +20,6 @@
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
-#include "content/public/browser/notification_types.h"
 #include "extensions/common/url_pattern_set.h"
 #include "url/gurl.h"
 
