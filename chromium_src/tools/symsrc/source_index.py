@@ -4,12 +4,17 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import os
+import re
 
 from pathlib import Path
 
 import override_utils
 
 GIT_BAT = 'git.bat'
+
+
+def ReplaceGitHubSshWithHttps(value):
+    return re.sub(r'^git@(github\.com):(.*?\.git)$', r'https://\1/\2', value)
 
 
 def IsGitIgnored(local_file_dir, local_filename):
@@ -29,12 +34,12 @@ def GetCasedFilePath(_orig_func, filename):
 
 @override_utils.override_function(globals())
 def RunCommand(orig_func, *cmd, **kwargs):
-    # Git output is actually UTF-8, so handle it properly. Assert is added to
-    # ensure this won't fail silently if `git.bat` will be replaced.
-    assert cmd[0] in ('cmd', GIT_BAT), cmd[0]
-    if cmd[0] == GIT_BAT:
-        kwargs.setdefault('encoding', 'utf-8')
-    return orig_func(*cmd, **kwargs)
+    ret = orig_func(*cmd, **kwargs)
+    if ret and 'remote.origin.url' in cmd:
+        # Replace SSH-based GitHub URLs with HTTPS-based URLs.
+        ret = ReplaceGitHubSshWithHttps(ret)
+
+    return ret
 
 
 @override_utils.override_function(globals())
