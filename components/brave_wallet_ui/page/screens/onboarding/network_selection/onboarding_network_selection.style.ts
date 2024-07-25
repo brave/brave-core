@@ -37,7 +37,7 @@ export const ScrollableColumn = styled(ScrollableCol)`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: ${leo.color.gray[20]};
+    background-color: ${leo.color.neutral[20]};
     border-radius: 100px;
   }
 

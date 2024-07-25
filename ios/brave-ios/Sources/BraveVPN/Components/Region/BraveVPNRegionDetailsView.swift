@@ -43,7 +43,7 @@ struct BraveRegionDetailsView: View {
           cityRegionItem(region: server)
         }
       }
-      .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
+      .listRowBackground(Color(braveSystemName: .iosBrowserElevatedIos))
     }
     .opacity(isLoading ? 0.5 : 1.0)
     .overlay {

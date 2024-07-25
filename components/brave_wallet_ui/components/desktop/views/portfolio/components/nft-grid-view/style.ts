@@ -142,8 +142,8 @@ export const JunkMarker = styled.div`
 `
 
 export const WatchOnlyMarker = styled(JunkMarker)`
-  background-color: ${leo.color.gray[20]};
-  color: ${leo.color.gray[60]};
+  background-color: ${leo.color.neutral[20]};
+  color: ${leo.color.neutral[60]};
   left: unset;
   right: 12px;
 `

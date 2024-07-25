@@ -53,7 +53,7 @@ public struct BraveVPNRegionConfirmationView: View {
     }
     .padding(48)
     .frame(maxWidth: 350)
-    .background(Color(braveSystemName: .containerBackgroundMobile))
+    .background(Color(braveSystemName: .iosBrowserElevatedIos))
   }
 }
 

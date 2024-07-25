@@ -17,11 +17,11 @@ export const enableRewardsButton = `
   cursor: pointer;
 
   &[disabled] {
-    background: ${leo.color.primitive.gray[40]};
+    background: ${leo.color.primitive.neutral[70]};
     cursor: default;
 
     .brave-theme-dark & {
-      background: ${leo.color.primitive.gray[60]};
+      background: ${leo.color.primitive.neutral[70]};
     }
   }
 `

@@ -8,7 +8,7 @@ import * as leo from '@brave/leo/tokens/css/variables'
 
 export const DappCategoryLabel = styled.div`
   display: inline-flex;
-  color: ${leo.color.gray[50]};
+  color: ${leo.color.neutral[50]};
   font-family: Inter, 'Poppins';
   font-size: 10px;
   font-style: normal;
@@ -21,7 +21,7 @@ export const DappCategoryLabel = styled.div`
   justify-content: center;
   gap: ${leo.spacing.xs};
   border-radius: ${leo.radius.s};
-  background: ${leo.color.gray[20]};
+  background: ${leo.color.neutral[20]};
   vertical-align: middle;
 `
 

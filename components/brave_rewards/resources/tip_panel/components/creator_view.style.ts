@@ -95,7 +95,7 @@ export const background = styled.div`
   z-index: -1;
   background:
     no-repeat top center/cover var(--creator-background-image-url),
-    ${leo.color.gray['10']};
+    ${leo.color.neutral['10']};
 
   &::before {
     content: '';

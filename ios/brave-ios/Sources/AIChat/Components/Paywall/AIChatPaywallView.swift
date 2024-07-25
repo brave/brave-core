@@ -108,7 +108,7 @@ struct AIChatPaywallView: View {
           vc.navigationItem.do {
             let appearance = UINavigationBarAppearance().then {
               $0.configureWithDefaultBackground()
-              $0.backgroundColor = UIColor(braveSystemName: .primitivePrimary90)
+              $0.backgroundColor = UIColor(braveSystemName: .primitivePrimary10)
               $0.titleTextAttributes = [.foregroundColor: UIColor.white]
               $0.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
             }
@@ -121,7 +121,7 @@ struct AIChatPaywallView: View {
           .padding(.bottom, 16.0)
       }
       .background(
-        Color(braveSystemName: .primitivePrimary90)
+        Color(braveSystemName: .primitivePrimary10)
           .edgesIgnoringSafeArea(.all)
           .overlay(
             Image("leo-product", bundle: .module),
@@ -177,7 +177,7 @@ struct AIChatPaywallView: View {
         .font(.footnote)
         .frame(maxWidth: .infinity, alignment: .leading)
         .fixedSize(horizontal: false, vertical: true)
-        .foregroundStyle(Color(braveSystemName: .primitivePrimary20))
+        .foregroundStyle(Color(braveSystemName: .primitivePrimary90))
         .padding([.horizontal], 16.0)
         .padding([.vertical], 12.0)
     }
@@ -187,7 +187,7 @@ struct AIChatPaywallView: View {
     VStack(spacing: 16.0) {
       Rectangle()
         .frame(height: 1.0)
-        .foregroundColor(Color(braveSystemName: .primitivePrimary70))
+        .foregroundColor(Color(braveSystemName: .primitivePrimary25))
 
       Button(
         action: {
@@ -317,7 +317,7 @@ private struct AIChatPremiumTierSelectionView: View {
                 "\(product.priceFormatStyle.locale.currencyCode ?? "")\(product.priceFormatStyle.locale.currencySymbol ?? "")"
               )
               .font(.subheadline)
-              .foregroundColor(Color(braveSystemName: .primitivePrimary30))
+              .foregroundColor(Color(braveSystemName: .primitivePrimary80))
 
               Text(
                 product.price.frontSymbolCurrencyFormatted(
@@ -332,7 +332,7 @@ private struct AIChatPremiumTierSelectionView: View {
                 " / \(type == .monthly ? Strings.AIChat.paywallMonthlyPriceDividend : Strings.AIChat.paywallYearlyPriceDividend)"
               )
               .font(.subheadline)
-              .foregroundColor(Color(braveSystemName: .primitivePrimary30))
+              .foregroundColor(Color(braveSystemName: .primitivePrimary80))
             }
           } else {
             ProgressView()
@@ -342,7 +342,7 @@ private struct AIChatPremiumTierSelectionView: View {
         .padding()
         .background(
           Color(
-            braveSystemName: selectedTierType == type ? .primitivePrimary60 : .primitivePrimary80
+            braveSystemName: selectedTierType == type ? .primitivePrimary40 : .primitivePrimary20
           )
         )
         .overlay(
@@ -367,7 +367,7 @@ private struct AIChatRefreshCredentialsView: View {
     VStack(spacing: 8) {
       Text(Strings.Paywall.alreadyPurchasedTitle)
         .font(.callout.weight(.semibold))
-        .foregroundColor(Color(braveSystemName: .primitivePrimary20))
+        .foregroundColor(Color(braveSystemName: .primitivePrimary90))
 
       Button(
         action: {

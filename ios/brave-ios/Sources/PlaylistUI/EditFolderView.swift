@@ -64,7 +64,7 @@ struct EditFolderView: View {
       .listStyle(.plain)
       .environment(\.editMode, .constant(.active))
       .scrollContentBackground(.hidden)
-      .background(Color(braveSystemName: .gray10))
+      .background(Color(braveSystemName: .neutral10))
       .toolbarBackground(
         Color(braveSystemName: .containerBackground),
         for: .navigationBar,

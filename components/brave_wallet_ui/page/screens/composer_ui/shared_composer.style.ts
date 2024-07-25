@@ -84,7 +84,7 @@ export const AmountInput = styled(Input)<{
 export const PresetButton = styled(WalletButton)`
   outline: none;
   border: none;
-  background-color: ${leo.color.gray[10]};
+  background-color: ${leo.color.neutral[10]};
   border-radius: 4px;
   font-family: Poppins;
   font-size: 10px;
@@ -92,7 +92,7 @@ export const PresetButton = styled(WalletButton)`
   font-weight: 700;
   line-height: normal;
   padding: 4px 6px;
-  color: ${leo.color.gray[50]};
+  color: ${leo.color.neutral[50]};
   text-transform: uppercase;
   cursor: pointer;
 `

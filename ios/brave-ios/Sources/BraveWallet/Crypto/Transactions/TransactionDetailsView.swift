@@ -522,14 +522,14 @@ private struct TransactionDetailsSwapContent: View {
         if isSolanaSwap {
           HStack {
             GenericAssetIconView(
-              backgroundColor: Color(braveSystemName: .gray40),
+              backgroundColor: Color(braveSystemName: .neutral40),
               iconColor: Color.white,
               length: assetIconLength,
               maxLength: maxAssetIconLength
             )
             Image(braveSystemName: "leo.arrow.right")
             GenericAssetIconView(
-              backgroundColor: Color(braveSystemName: .gray20),
+              backgroundColor: Color(braveSystemName: .neutral20),
               iconColor: Color.black,
               length: assetIconLength,
               maxLength: maxAssetIconLength

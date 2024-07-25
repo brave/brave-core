@@ -59,7 +59,7 @@ public struct BraveVPNRegionListView: View {
             countryRegionItem(at: index, region: region)
           }
         }
-        .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
+        .listRowBackground(Color(braveSystemName: .iosBrowserElevatedIos))
       }
     }
     .opacity(isLoading ? 0.5 : 1.0)
@@ -191,7 +191,7 @@ public struct BraveVPNRegionListView: View {
     .disabled(isLoading)
     .foregroundStyle(Color(braveSystemName: .textPrimary))
     .tint(.accentColor)
-    .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
+    .listRowBackground(Color(braveSystemName: .iosBrowserElevatedIos))
   }
 
   private func generateServerCountDetails(for region: GRDRegion) -> String {

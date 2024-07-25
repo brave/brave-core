@@ -169,7 +169,7 @@ class TabTrayController: AuthenticationController {
     $0.accessibilityLabel = Strings.done
     $0.accessibilityIdentifier = "TabTrayController.privateButton"
     $0.tintColor = .braveLabel
-    $0.selectedBackgroundColor = UIColor(braveSystemName: .primitivePrivateWindow70)
+    $0.selectedBackgroundColor = UIColor(braveSystemName: .primitivePrivateWindow25)
 
     if Preferences.Privacy.privateBrowsingOnly.value {
       $0.alpha = 0
