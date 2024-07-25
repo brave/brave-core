@@ -448,14 +448,20 @@ extension SearchSettingsTableViewController {
 
     let editAction = UIContextualAction(style: .normal, title: Strings.edit) {
       [weak self] action, view, completion in
-
       guard let self = self else {
         completion(false)
         return
       }
 
-      print("Edit")
       completion(true)
+
+      let customEngineViewController = SearchCustomEngineViewController(
+        profile: self.profile,
+        privateBrowsingManager: self.privateBrowsingManager,
+        engineToBeEdited: engine
+      )
+
+      navigationController?.pushViewController(customEngineViewController, animated: true)
     }
 
     return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
@@ -518,6 +524,15 @@ extension SearchSettingsTableViewController {
         await deleteCustomEngine()
       }
     }
+  }
+
+  private func editCustomSearchEngine(_ engine: OpenSearchEngine) {
+
+    let customEngineViewController = SearchCustomEngineViewController(
+      profile: self.profile,
+      privateBrowsingManager: self.privateBrowsingManager
+    )
+    navigationController?.pushViewController(customEngineViewController, animated: true)
   }
 
   override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
