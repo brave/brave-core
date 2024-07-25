@@ -8,10 +8,12 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/ios/ns_error_util.h"
+#include "base/strings/sys_string_conversions.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/ios/browser/brave_web_main_parts.h"
 #import "components/translate/ios/browser/translate_java_script_feature.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
+#include "ios/chrome/browser/web/model/chrome_web_client.h"
 #import "ios/components/security_interstitials/ios_security_interstitial_java_script_feature.h"
 #import "ios/components/security_interstitials/lookalikes/lookalike_url_error.h"
 #import "ios/components/security_interstitials/safe_browsing/safe_browsing_error.h"
@@ -38,15 +40,17 @@ std::unique_ptr<web::WebMainParts> BraveWebClient::CreateWebMainParts() {
       *base::CommandLine::ForCurrentProcess());
 }
 
-void BraveWebClient::SetUserAgent(const std::string& user_agent) {
-  user_agent_ = user_agent;
+std::string BraveWebClient::GetUserAgent(web::UserAgentType type) const {
+  // FIXME: Decide on whether or not to adjust the product type (defaults to
+  // CriOS/<version>)
+  return ChromeWebClient::GetUserAgent(type);
 }
 
-std::string BraveWebClient::GetUserAgent(web::UserAgentType type) const {
-  if (user_agent_.empty()) {
-    return ChromeWebClient::GetUserAgent(type);
-  }
-  return user_agent_;
+web::UserAgentType BraveWebClient::GetDefaultUserAgent(web::WebState* web_state,
+                                                       const GURL& url) const {
+  // FIXME: Add a way to force desktop mode always via prefs
+  // FIXME: Possibly handle desktop by default on iPad here?
+  return ChromeWebClient::GetDefaultUserAgent(web_state, url);
 }
 
 void BraveWebClient::AddAdditionalSchemes(Schemes* schemes) const {
@@ -60,8 +64,7 @@ bool BraveWebClient::IsAppSpecificURL(const GURL& url) const {
   // temporarily add `internal://` scheme handling until those pages can be
   // ported to WebUI
   return ChromeWebClient::IsAppSpecificURL(url) ||
-         url.SchemeIs(kBraveUIScheme) ||
-         url.SchemeIs("internal");
+         url.SchemeIs(kBraveUIScheme) || url.SchemeIs("internal");
 }
 
 bool WillHandleBraveURLRedirect(GURL* url, web::BrowserState* browser_state) {

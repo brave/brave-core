@@ -1,6 +1,14 @@
-#include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
-#include "ios/chrome/browser/tabs/model/tab_helper_util.h"
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/ios/web_view/public/cwv_web_view_extras.h"
+#include "ios/chrome/browser/tabs/model/tab_helper_util.h"
+#include "ios/web/common/user_agent.h"
+#include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+
+// Comment here to stop formatter form moving it up
 #include "src/ios/web_view/internal/cwv_web_view.mm"
 
 @implementation CWVWebView (Extras)
@@ -23,6 +31,16 @@
 - (void)takeSnapshotWithRect:(CGRect)rect
            completionHandler:(void (^)(UIImage* _Nullable))completionHandler {
   _webState->TakeSnapshot(rect, base::BindRepeating(completionHandler));
+}
+
+- (CWVUserAgentType)currentItemUserAgentType {
+  return static_cast<CWVUserAgentType>(
+      _webState->GetNavigationManager()->GetVisibleItem()->GetUserAgentType());
+}
+
+- (void)reloadWithUserAgentType:(CWVUserAgentType)userAgentType {
+  _webState->GetNavigationManager()->ReloadWithUserAgentType(
+      static_cast<web::UserAgentType>(userAgentType));
 }
 
 @end

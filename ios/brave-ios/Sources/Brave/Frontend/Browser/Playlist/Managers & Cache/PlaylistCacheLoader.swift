@@ -381,10 +381,6 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
     }
 
     if ["http", "https", "data", "blob", "file"].contains(url.scheme) {
-      if navigationAction.targetFrame?.isMainFrame == true {
-        tab.updateUserAgent(webView, newURL: url)
-      }
-
       pendingRequests[url.absoluteString] = navigationAction.request
 
       if let mainDocumentURL = navigationAction.request.mainDocumentURL,

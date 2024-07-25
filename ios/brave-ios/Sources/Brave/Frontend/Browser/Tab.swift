@@ -339,7 +339,7 @@ class Tab: NSObject {
   var lastTitle: String?
 
   var isDesktopSite: Bool {
-    webView?.underlyingWebView?.customUserAgent?.lowercased().contains("mobile") == false
+    webView?.currentItemUserAgentType() == .desktop
   }
 
   var containsWebPage: Bool {
@@ -350,11 +350,6 @@ class Tab: NSObject {
 
     return false
   }
-
-  /// In-memory dictionary of websites that were explicitly set to use either desktop or mobile user agent.
-  /// Key is url's base domain, value is desktop mode on or off.
-  /// Each tab has separate list of website overrides.
-  private var userAgentOverrides: [String: Bool] = [:]
 
   var readerModeAvailableOrActive: Bool {
     if let readerMode = self.getContentScript(name: ReaderModeScriptHandler.scriptName)
@@ -458,7 +453,7 @@ class Tab: NSObject {
   var braveSearchResultAdManager: BraveSearchResultAdManager?
 
   private lazy var refreshControl = UIRefreshControl().then {
-    $0.addTarget(self, action: #selector(reload), for: .valueChanged)
+    $0.addTarget(self, action: #selector(reloadFromRefreshControl), for: .valueChanged)
   }
 
   func createWebview() {
@@ -811,13 +806,11 @@ class Tab: NSObject {
     webView?.stopLoading()
   }
 
-  @objc func reload() {
-    // Clear the user agent before further navigation.
-    // Proper User Agent setting happens in BVC's WKNavigationDelegate.
-    // This prevents a bug with back-forward list, going back or forward and reloading the tab
-    // loaded wrong user agent.
-    webView?.underlyingWebView?.customUserAgent = nil
+  @objc private func reloadFromRefreshControl() {
+    reload()
+  }
 
+  func reload(userAgentType: CWVUserAgentType? = nil) {
     defer {
       if let refreshControl = webView?.scrollView.refreshControl,
         refreshControl.isRefreshing
@@ -836,32 +829,15 @@ class Tab: NSObject {
       return
     }
 
-    if let _ = webView?.reload() {
+    if let webView {
+      if let userAgentType {
+        webView.reload(withUserAgentType: userAgentType)
+      } else {
+        webView.reload()
+      }
       nightMode = Preferences.General.nightModeEnabled.value
-      Logger.module.debug("reloaded zombified tab from origin")
       return
     }
-
-    if let webView = self.webView {
-      Logger.module.debug("restoring webView from scratch")
-      restore(webView, restorationData: sessionData)
-    }
-  }
-
-  func updateUserAgent(_ webView: WKWebView, newURL: URL) {
-    guard let baseDomain = newURL.baseDomain else { return }
-
-    let screenWidth = webView.currentScene?.screen.bounds.width ?? webView.bounds.size.width
-    if webView.traitCollection.horizontalSizeClass == .compact
-      && (webView.bounds.size.width < screenWidth / 2.0)
-    {
-      let desktopMode = userAgentOverrides[baseDomain] == true
-      webView.customUserAgent = desktopMode ? UserAgent.desktop : UserAgent.mobile
-      return
-    }
-
-    let desktopMode = userAgentOverrides[baseDomain] ?? UserAgent.shouldUseDesktopMode
-    webView.customUserAgent = desktopMode ? UserAgent.desktop : UserAgent.mobile
   }
 
   func addContentScript(_ helper: TabContentScript, name: String, contentWorld: WKContentWorld) {
@@ -942,17 +918,11 @@ class Tab: NSObject {
 
   /// Switches user agent Desktop -> Mobile or Mobile -> Desktop.
   func switchUserAgent() {
-    if let urlString = webView?.lastCommittedURL?.baseDomain {
-      // The website was changed once already, need to flip the override.onScreenshotUpdated
-      if let siteOverride = userAgentOverrides[urlString] {
-        userAgentOverrides[urlString] = !siteOverride
-      } else {
-        // First time switch, adding the basedomain to dictionary with flipped value.
-        userAgentOverrides[urlString] = !UserAgent.shouldUseDesktopMode
-      }
-    }
-
-    reload()
+    guard let webView else { return }
+    let userAgentType: CWVUserAgentType =
+      UserAgent.shouldUseDesktopMode
+      ? .desktop : webView.currentItemUserAgentType() == .desktop ? .mobile : .desktop
+    reload(userAgentType: userAgentType)
   }
 
   func queueJavascriptAlertPrompt(_ alert: JSAlertInfo) {

@@ -37,7 +37,6 @@ class BraveWebView: CWVWebView {
       configuration.websiteDataStore = WKWebsiteDataStore.default()
     }
     CWVWebView.webInspectorEnabled = true
-    CWVWebView.customUserAgent = UserAgent.userAgentForDesktopMode
     CWVWebView.chromeContextMenuEnabled = false
     CWVWebView.skipAccountStorageCheckEnabled = true
 

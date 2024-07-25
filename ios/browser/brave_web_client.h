@@ -19,11 +19,11 @@ class BraveWebClient : public ChromeWebClient {
   BraveWebClient& operator=(const BraveWebClient&) = delete;
   ~BraveWebClient() override;
 
-  void SetUserAgent(const std::string& user_agent);
-
   // WebClient implementation.
   std::unique_ptr<web::WebMainParts> CreateWebMainParts() override;
   std::string GetUserAgent(web::UserAgentType type) const override;
+  web::UserAgentType GetDefaultUserAgent(web::WebState* web_state,
+                                         const GURL& url) const override;
 
   void AddAdditionalSchemes(Schemes* schemes) const override;
   bool IsAppSpecificURL(const GURL& url) const override;
@@ -44,9 +44,6 @@ class BraveWebClient : public ChromeWebClient {
 
   void PostBrowserURLRewriterCreation(
       web::BrowserURLRewriter* rewriter) override;
-
- private:
-  std::string user_agent_;
 };
 
 #endif  // BRAVE_IOS_BROWSER_BRAVE_WEB_CLIENT_H_

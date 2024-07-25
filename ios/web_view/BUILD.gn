@@ -18,6 +18,9 @@ config("config") {
     "MobileCoreServices.framework",
     "UIKit.framework",
   ]
+
+  # For our own public headers to be able to import the official public headers
+  include_dirs = [ "//ios/web_view/public" ]
 }
 
 source_set("web_view") {
@@ -83,6 +86,9 @@ source_set("web_view") {
     "//ios/web_view/internal/cwv_user_content_controller.mm",
     "//ios/web_view/internal/cwv_user_content_controller_internal.h",
     "//ios/web_view/internal/cwv_user_script.mm",
+    "//ios/web_view/internal/cwv_web_view.mm",
+    "//ios/web_view/internal/cwv_web_view_configuration.mm",
+    "//ios/web_view/internal/cwv_web_view_configuration_internal.h",
     "//ios/web_view/internal/cwv_web_view_internal.h",
     "//ios/web_view/internal/cwv_x509_certificate.mm",
     "//ios/web_view/internal/cwv_x509_certificate_internal.h",
@@ -170,9 +176,7 @@ source_set("web_view") {
     "//ios/web_view/internal/web_view_web_state_policy_decider.h",
     "//ios/web_view/internal/web_view_web_state_policy_decider.mm",
     "//ios/web_view/internal/webdata_services/web_view_web_data_service_wrapper_factory.h",
-    "//ios/web_view/internal/cwv_web_view.mm",
-    "//ios/web_view/internal/cwv_web_view_configuration.mm",
-    "//ios/web_view/internal/cwv_web_view_configuration_internal.h",
+    "internal/cwv_web_view_extras.mm",
   ]
   public_deps = [
     "//base",
@@ -234,8 +238,8 @@ source_set("web_view") {
     "//ios/chrome/browser/invalidation/model",
     "//ios/chrome/browser/language/model",
     "//ios/chrome/browser/passwords/model",
-    "//ios/chrome/browser/signin/model",
     "//ios/chrome/browser/safe_browsing/model",
+    "//ios/chrome/browser/signin/model",
     "//ios/chrome/browser/sync/model",
     "//ios/chrome/browser/tabs/model/",
     "//ios/chrome/browser/translate/model",

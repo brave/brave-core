@@ -346,7 +346,6 @@ var package = Package(
       name: "CredentialProviderUI",
       dependencies: ["BraveCore", "DesignSystem", "BraveShared", "Strings", "BraveUI"]
     ),
-    .testTarget(name: "UserAgentTests", dependencies: ["UserAgent", "Brave"]),
     .testTarget(name: "SharedTests", dependencies: ["Shared"]),
     .testTarget(
       name: "BraveSharedTests",
