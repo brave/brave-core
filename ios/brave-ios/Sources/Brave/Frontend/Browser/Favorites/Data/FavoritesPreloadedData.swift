@@ -9,7 +9,7 @@ import os.log
 
 typealias FavoriteSite = (url: URL, title: String)
 
-struct PreloadedFavorites {
+struct FavoritesPreloadedData {
   /// Returns a list of websites that should be preloaded for specific region. Currently all users get the same websites.
   static func getList() -> [FavoriteSite] {
     func appendPopularEnglishWebsites() -> [FavoriteSite] {

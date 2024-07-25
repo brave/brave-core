@@ -571,7 +571,7 @@ public class BrowserViewController: UIViewController {
       guard let sites = sites, !sites.isEmpty else { return }
 
       DispatchQueue.main.async {
-        let defaultFavorites = PreloadedFavorites.getList()
+        let defaultFavorites = FavoritesPreloadedData.getList()
         let currentFavorites = Favorite.allFavorites
 
         if defaultFavorites.count != currentFavorites.count {
