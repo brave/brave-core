@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+        with:
+          fetch-depth: 0
 
       - name: Setup Git
         run: |
@@ -44,9 +46,9 @@ jobs:
           git fetch --no-tags contributor +"$headRefName":"$contribHeadRefName"
 
           # Rebase the branch with the latest targeting branch HEAD
-          git fetch origin "$baseRefName"
           git checkout "$contribHeadRefName"
-          if ! git rebase origin/"$baseRefName"; then
+          git fetch origin "$baseRefName"
+          if ! git rebase FETCH_HEAD; then
             echo "Rebase conflict detected. Please resolve the conflicts and push the changes to your fork. Exiting!"
             exit 1
           fi
