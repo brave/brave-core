@@ -90,6 +90,7 @@ const LPMetadata: LPMetadataType = {
   'KyberDMM': KyberDMMIcon,
   'Lido': LidoIcon,
   'Li.Fi': LiFiIcon,
+  'LI.FI Dex Aggregator': LiFiIcon,
   'Lifinity': LifinityIcon,
   // LiquidityProvider info unknown
   'LiquidityProvider': '',

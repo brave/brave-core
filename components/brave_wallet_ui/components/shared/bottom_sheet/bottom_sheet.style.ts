@@ -22,7 +22,7 @@ export const Background = styled(Column)<{ isOpen: boolean }>`
 
 export const BottomCard = styled(Column)<{ isOpen: boolean }>`
   position: fixed;
-  bottom: ${(p) => (p.isOpen ? 0 : -500)}px;
+  bottom: ${(p) => (p.isOpen ? 0 : -600)}px;
   transition: all 0.3s ease-in-out;
   border-radius: 16px 16px 0px 0px;
   background-color: ${leo.color.container.background};

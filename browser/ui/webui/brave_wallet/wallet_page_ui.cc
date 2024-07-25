@@ -31,6 +31,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
@@ -55,6 +56,11 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
         brave_l10n::GetLocalizedResourceUTF16String(str.id);
     source->AddString(str.name, l10n_str);
   }
+  auto plural_string_handler = std::make_unique<PluralStringHandler>();
+  plural_string_handler->AddLocalizedString(
+      "braveWalletExchangeNamePlusSteps",
+      IDS_BRAVE_WALLET_EXCHANGE_NAME_PLUS_STEPS);
+  web_ui->AddMessageHandler(std::move(plural_string_handler));
   NavigationBarDataProvider::Initialize(source, profile);
   webui::SetupWebUIDataSource(
       source,

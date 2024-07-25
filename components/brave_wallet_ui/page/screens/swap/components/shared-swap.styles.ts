@@ -250,3 +250,20 @@ export const StyledLabel = styled.label`
   line-height: 18px;
   color: ${(p) => p.theme.color.text01};
 `
+
+export const LPIcon = styled.div<{ icon: string; size?: string }>`
+  background-image: url(${(p) => p.icon});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: ${(p) => p.size ?? '20px'};
+  width: ${(p) => p.size ?? '20px'};
+  border-radius: ${leo.radius.full};
+`
+
+export const BankIcon = styled(LeoIcon).attrs({
+  name: 'bank'
+})<{ size?: string }>`
+  --leo-icon-size: ${(p) => p.size ?? '20px'};
+  color: ${leo.color.icon.default};
+`

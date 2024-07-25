@@ -132,6 +132,20 @@
   <message name="IDS_BRAVE_WALLET_OTHERS" desc="Swap max slippage others label">Others: <ph name="SLIPPAGE_PERCENT"><ex>1</ex>$1</ph>%</message>
   <message name="IDS_BRAVE_WALLET_SUGGESTED" desc="Swap max slippage suggested option">Suggested</message>
   <message name="IDS_BRAVE_WALLET_CUSTOM" desc="Swap max slippage custom option">Custom</message>
+  <message name="IDS_BRAVE_WALLET_CHEAPEST" desc="Swap route option cheapest label">Cheapest</message>
+  <message name="IDS_BRAVE_WALLET_FASTEST" desc="Swap route option fastest label">Fastest</message>
+  <message name="IDS_BRAVE_WALLET_ON_NETWORK" desc="Swap token on a specific network">on <ph name="NETWORK_NAME"><ex>Ethereum Mainnet</ex>$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_ROUTES" desc="Swap routes title">Routes</message>
+  <message name="IDS_BRAVE_WALLET_SWAP_ON_NETWORK_VIA_EXCHANGE" desc="Swap on network via an exchange">Swap on <ph name="NETWORK_NAME"><ex>Ethereum Mainnet</ex>$1</ph> via <ph name="EXCHANGE_NAME"><ex>0x</ex>$2</ph></message>
+  <message name="IDS_BRAVE_WALLET_BRIDGE_FROM_NETWORK_TO_NETWORK" desc="Bridge from network name to network name">Bridge from <ph name="FRIST_NETWORK_NAME"><ex>Ethereum Mainnet</ex>$1</ph> to <ph name="SECOND_NETWORK_NAME"><ex>Polygon Mainnet</ex>$2</ph></message>
+  <message name="IDS_BRAVE_WALLET_EXCHANGE_NAME_PLUS_STEPS" desc="Name of exchange plust steps to complete a swap">
+    {SWAP_EXCHANGE_STEPS, plural,
+      =1 {<ph name="EXCHANGE_NAME"><ex>0X</ex>$1</ph> + {SWAP_EXCHANGE_STEPS} step}
+      other {<ph name="EXCHANGE_NAME"><ex>0X</ex>$1</ph> + {SWAP_EXCHANGE_STEPS} steps}
+    }
+  </message>
+  <message name="IDS_BRAVE_WALLET_EXCHANGE_VIA_PROVIDER" desc="Exchange being used via API provider"><ph name="EXCHANGE_BEFORE">$1</ph><ph name="EXCHANGE_NAME"><ex>0x</ex>$5</ph><ph name="EXCHANGE_AFTER">$2</ph> via <ph name="PROVIDER_BEFORE">$3</ph><ph name="PROVIDER_NAME"><ex>Li.Fi</ex>$6</ph><ph name="PROVIDER_AFTER">$4</ph></message>
+  <message name="IDS_BRAVE_WALLET_SORT_BY" desc="Sort by button label">Sort by</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_BRIDGE" desc="Review bridge button">Review bridge</message>
   <message name="IDS_BRAVE_WALLET_EST_TIME" desc="Bridge and Swap estimated time label">Est time</message>
   <message name="IDS_BRAVE_WALLET_EXCHANGE_RATE" desc="Bridge and Swap exchange rate label">Exchange rate</message>
