@@ -83,10 +83,6 @@ public enum BraveSkusEnvironment {
 
   /// Returns the current Skus SDK Environment
   public static var current: BraveSkusEnvironment {
-    if AppConstants.isOfficialBuild {
-      return .release
-    }
-
     switch AppConstants.buildChannel {
     case .beta: return .beta
     case .debug, .nightly: return .nightly
