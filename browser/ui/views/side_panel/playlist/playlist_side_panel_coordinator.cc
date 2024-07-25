@@ -81,7 +81,6 @@ std::unique_ptr<views::View> PlaylistSidePanelCoordinator::CreateWebView() {
     contents_wrapper_ = std::make_unique<PlaylistContentsWrapper>(
         GURL(kPlaylistURL), GetBrowser().profile(),
         IDS_SIDEBAR_PLAYLIST_ITEM_TITLE,
-        /*webui_resizes_host=*/false,
         /*esc_closes_ui=*/false,
         static_cast<BrowserView*>(GetBrowser().window()), this);
     contents_wrapper_->ReloadWebContents();
