@@ -21,7 +21,13 @@ class PrefService;
 namespace misc_metrics {
 
 inline constexpr char kAutoSecureRequestsHistogramName[] =
-    "Brave.DNS.AutoSecureRequests";
+    "Brave.DNS.AutoSecureRequests.2";
+inline constexpr char kQuad9AutoSecureRequestsHistogramName[] =
+    "Brave.DNS.AutoSecureRequests.Quad9.2";
+inline constexpr char kWikimediaAutoSecureRequestsHistogramName[] =
+    "Brave.DNS.AutoSecureRequests.Wikimedia.2";
+inline constexpr char kCloudflareAutoSecureRequestsHistogramName[] =
+    "Brave.DNS.AutoSecureRequests.Cloudflare.2";
 inline constexpr char kSecureDnsSettingHistogramName[] =
     "Brave.DNS.SecureSetting";
 

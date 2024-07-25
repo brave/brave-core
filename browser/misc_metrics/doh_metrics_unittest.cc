@@ -55,26 +55,25 @@ TEST_F(DohMetricsTest, AutoSecureRequests) {
 
   // Should not record if percentage is 0%
   doh_metrics_->OnDnsRequestCounts(network::mojom::DnsRequestCounts::New(1, 0));
-  histogram_tester_.ExpectUniqueSample(kAutoSecureRequestsHistogramName,
-                                       INT_MAX - 1, 1);
+  histogram_tester_.ExpectUniqueSample(kAutoSecureRequestsHistogramName, 0, 1);
 
   doh_metrics_->OnDnsRequestCounts(
       network::mojom::DnsRequestCounts::New(11, 11));
-  histogram_tester_.ExpectBucketCount(kAutoSecureRequestsHistogramName, 3, 1);
+  histogram_tester_.ExpectBucketCount(kAutoSecureRequestsHistogramName, 4, 1);
 
   doh_metrics_->OnDnsRequestCounts(network::mojom::DnsRequestCounts::New(6, 1));
-  histogram_tester_.ExpectBucketCount(kAutoSecureRequestsHistogramName, 2, 1);
+  histogram_tester_.ExpectBucketCount(kAutoSecureRequestsHistogramName, 3, 1);
 
   doh_metrics_->OnDnsRequestCounts(network::mojom::DnsRequestCounts::New(7, 0));
-  histogram_tester_.ExpectBucketCount(kAutoSecureRequestsHistogramName, 1, 1);
+  histogram_tester_.ExpectBucketCount(kAutoSecureRequestsHistogramName, 2, 1);
 
   doh_metrics_->OnDnsRequestCounts(
       network::mojom::DnsRequestCounts::New(250, 0));
-  histogram_tester_.ExpectBucketCount(kAutoSecureRequestsHistogramName, 0, 1);
+  histogram_tester_.ExpectBucketCount(kAutoSecureRequestsHistogramName, 1, 1);
 
   local_state_.SetString(prefs::kDnsOverHttpsMode, "secure");
   histogram_tester_.ExpectBucketCount(kAutoSecureRequestsHistogramName,
-                                      INT_MAX - 1, 2);
+                                      INT_MAX - 1, 1);
   histogram_tester_.ExpectTotalCount(kAutoSecureRequestsHistogramName, 6);
 }
 
