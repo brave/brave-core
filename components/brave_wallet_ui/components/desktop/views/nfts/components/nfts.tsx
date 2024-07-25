@@ -12,9 +12,6 @@ import {
   BraveWallet,
   NftDropdownOptionId
 } from '../../../../../constants/types'
-import {
-  TokenBalancesRegistry //
-} from '../../../../../common/slices/entities/token-balance.entity'
 
 // hooks
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
@@ -110,7 +107,6 @@ import {
 interface Props {
   onShowPortfolioSettings?: () => void
   accounts: BraveWallet.AccountInfo[]
-  tokenBalancesRegistry: TokenBalancesRegistry | null | undefined
   networks: BraveWallet.NetworkInfo[]
 }
 
@@ -123,8 +119,7 @@ const emptyTokenIdsList: string[] = []
 export const Nfts = ({
   networks,
   accounts,
-  onShowPortfolioSettings,
-  tokenBalancesRegistry
+  onShowPortfolioSettings
 }: Props) => {
   // routing
   const history = useHistory()
@@ -180,9 +175,10 @@ export const Nfts = ({
       selectedTab === 'collected' || !accounts.length ? skipToken : { accounts }
     )
   const { accounts: allAccounts } = useAccountsQuery()
-  const { userTokensRegistry, hiddenNfts, visibleNfts } =
+  const { userTokensRegistry, hiddenNfts, visibleNfts, isFetchingTokens } =
     useGetUserTokensRegistryQuery(undefined, {
       selectFromResult: (result) => ({
+        isFetchingTokens: result.isFetching,
         userTokensRegistry: result.data,
         visibleNfts: selectAllVisibleUserNFTsFromQueryResult(result),
         hiddenNfts: selectHiddenNftsFromQueryResult(result)
@@ -198,6 +194,17 @@ export const Nfts = ({
     networks,
     isSpamRegistry: true
   })
+
+  const { data: tokenBalancesRegistry } =
+    // will fetch balances for all accounts so we can filter NFTs by accounts
+    useBalancesFetcher(
+      isFetchingTokens || networks.length === 0 || allAccounts.length === 0
+        ? skipToken
+        : {
+            accounts: allAccounts,
+            networks
+          }
+    )
 
   // mutations
   const [setNftDiscovery] = useSetNftDiscoveryEnabledMutation()
@@ -248,7 +255,7 @@ export const Nfts = ({
       accounts,
       allAccounts,
       tokenBalancesRegistry,
-      spamTokenBalancesRegistry,
+      selectedTab === 'collected' ? null : spamTokenBalancesRegistry,
       hideUnownedNfts
     )
   }, [
@@ -257,7 +264,8 @@ export const Nfts = ({
     hideUnownedNfts,
     sortedSelectedNftListForChains,
     spamTokenBalancesRegistry,
-    tokenBalancesRegistry
+    tokenBalancesRegistry,
+    selectedTab
   ])
 
   // differed queries
