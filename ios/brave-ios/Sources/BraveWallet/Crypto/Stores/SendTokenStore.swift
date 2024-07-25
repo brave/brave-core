@@ -349,7 +349,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       var network = await rpcService.network(coin: selectedAccount.coin, origin: nil)
       await validatePrefilledToken(on: &network)  // network may change
       // fetch user visible assets
-      let userVisibleAssets = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(
+      let userVisibleAssets = await assetManager.getUserAssets(
         networks: [network],
         visible: true
       ).flatMap { $0.tokens }
@@ -393,7 +393,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         }
         self.btcBalances[selectedAccount.id] = btcBalances
       } else {
-        if let assetBalance = self.assetManager.getBalances(
+        if let assetBalance = self.assetManager.getAssetBalances(
           for: selectedSendToken,
           account: selectedAccount.id
         )?.first {

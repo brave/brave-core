@@ -183,7 +183,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
           accounts: btcAccountInfos
         )
       }
-      let allNetworkAssets = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(
+      let allNetworkAssets = await assetManager.getUserAssets(
         networks: allNetworks,
         visible: true
       )
@@ -249,7 +249,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
         of: TokenBalanceCache.self,
         body: { group in
           for account in allAccounts where account.coin != .btc {
-            if let allTokenBalance = assetManager.getBalances(for: nil, account: account.id) {
+            if let allTokenBalance = assetManager.getAssetBalances(for: nil, account: account.id) {
               var result: [String: Double] = [:]
               for balancePerToken in allTokenBalance {
                 let tokenId =
@@ -450,7 +450,7 @@ extension SelectAccountTokenStore: WalletUserAssetDataObserver {
   func cachedBalanceRefreshed() {
     Task { @MainActor in
       let allNetworks = await rpcService.allNetworksForSupportedCoins()
-      let allNetworkAssets = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(
+      let allNetworkAssets = await assetManager.getUserAssets(
         networks: allNetworks,
         visible: true
       )

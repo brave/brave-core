@@ -181,7 +181,7 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
         body: { @MainActor [assetManager, rpcService, nft] group in
           for account in accounts where account.coin == nft.coin {
             group.addTask { @MainActor in
-              if let assetBalance = assetManager.getBalances(
+              if let assetBalance = assetManager.getAssetBalances(
                 for: nft,
                 account: account.id
               )?.first {

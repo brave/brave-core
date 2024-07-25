@@ -469,7 +469,7 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
         )
       }
       // delete local stored user assets' balances that in this custom network
-      await assetManager.removeUserAssetsAndBalance(for: network)
+      await assetManager.removeUserAssetsAndBalances(for: network)
       await updateChainList()
     }
     return success
@@ -483,7 +483,8 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
     _ network: BraveWallet.NetworkInfo
   ) async {
     await assetManager.addUserAsset(
-      network.nativeToken
+      network.nativeToken,
+      isAutoDiscovery: false
     )
   }
 

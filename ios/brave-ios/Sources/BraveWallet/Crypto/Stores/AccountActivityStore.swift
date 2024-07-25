@@ -195,10 +195,11 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       self.isBuySupported = !buyTokenOptions.isEmpty
       // Include user deleted for case user sent an NFT
       // then deleted it, we need it for display in transaction list
-      let allUserNetworkAssets = assetManager.getAllUserAssetsInNetworkAssets(
-        networks: networksForAccount,
-        includingUserDeleted: true
-      )
+      let allUserNetworkAssets =
+        await assetManager.getAllUserAssetsInNetworkAssets(
+          networks: networksForAccount,
+          includingUserDeleted: true
+        )
       let allUserAssets = allUserNetworkAssets.flatMap(\.tokens)
       let allTokens = await blockchainRegistry.allTokens(in: networksForAccountCoin).flatMap(
         \.tokens
@@ -236,7 +237,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
           tokenBalances = [btcToken.id: btcTotalBalance]
         }
       } else {
-        if let accountBalances = self.assetManager.getBalances(for: nil, account: account.id) {
+        if let accountBalances = self.assetManager.getAssetBalances(for: nil, account: account.id) {
           tokenBalances = accountBalances.reduce(into: [String: Double]()) {
             let tokenId =
               $1.contractAddress + $1.chainId

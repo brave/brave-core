@@ -151,6 +151,12 @@ extension Preferences {
       key: "wallet.migrate-show-test-networks-completed",
       default: false
     )
+
+    /// Used to track whether to migrate user assets stored in CoreData to BraveCore
+    static let migrateWalletUserAssetToCoreCompleted = Option<Bool>(
+      key: "wallet.wallet-user-asset-to-core",
+      default: false
+    )
   }
 }
 

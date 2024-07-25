@@ -265,7 +265,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     let transactionNetworks: [BraveWallet.NetworkInfo] = Set(allTxs.map(\.chainId))
       .compactMap { chainId in allNetworks.first(where: { $0.chainId == chainId }) }
     for network in transactionNetworks {
-      let userAssets = assetManager.getAllUserAssetsInNetworkAssets(
+      let userAssets = await assetManager.getAllUserAssetsInNetworkAssets(
         networks: [network],
         includingUserDeleted: true
       ).flatMap { $0.tokens }
@@ -303,7 +303,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       }
       let allTokens =
         await blockchainRegistry.allTokens(chainId: network.chainId, coin: coin) + tokenInfoCache
-      let userAssets = assetManager.getAllUserAssetsInNetworkAssets(
+      let userAssets = await assetManager.getAllUserAssetsInNetworkAssets(
         networks: [network],
         includingUserDeleted: true
       ).flatMap { $0.tokens }
@@ -464,7 +464,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasBalancesForChain[account.id] = availableBTCBalance
       }
     } else {
-      if let assetBalance = assetManager.getBalances(
+      if let assetBalance = assetManager.getAssetBalances(
         for: token,
         account: account.id
       )?.first(where: { $0.chainId == network.chainId }) {
@@ -492,7 +492,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     guard !ethTransactions.isEmpty else { return }  // we can only fetch unknown Ethereum tokens
     let coin: BraveWallet.CoinType = .eth
     let allNetworks = await rpcService.allNetworks().filter({ $0.coin == coin })
-    let userAssets = assetManager.getAllUserAssetsInNetworkAssets(
+    let userAssets = await assetManager.getAllUserAssetsInNetworkAssets(
       networks: allNetworks,
       includingUserDeleted: true
     ).flatMap(\.tokens)

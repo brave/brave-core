@@ -53,7 +53,7 @@ class TransactionDetailsStoreTests: XCTestCase {
     txService._addObserver = { _ in }
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     let userAssetManager = TestableWalletUserAssetManager()
-    userAssetManager._getAllUserAssetsInNetworkAssetsByVisibility = { _, _ in
+    userAssetManager._getUserAssets = { _, _ in
       return [
         NetworkAssets(
           network: .mockSepolia,

@@ -100,7 +100,7 @@ class AccountsStore: ObservableObject, WalletObserverStore {
       defer { self.isLoading = false }
 
       let allNetworks = await rpcService.allNetworksForSupportedCoins()
-      let allTokensPerNetwork = userAssetManager.getAllUserAssetsInNetworkAssets(
+      let allTokensPerNetwork = await userAssetManager.getAllUserAssetsInNetworkAssets(
         networks: allNetworks,
         includingUserDeleted: false
       ).map { networkAssets in  // filter out NFTs
@@ -174,7 +174,7 @@ class AccountsStore: ObservableObject, WalletObserverStore {
       of: TokenBalanceCache.self,
       body: { group in
         for account in accounts where account.coin != .btc {
-          if let allTokenBalance = self.userAssetManager.getBalances(
+          if let allTokenBalance = self.userAssetManager.getAssetBalances(
             for: nil,
             account: account.id
           ) {

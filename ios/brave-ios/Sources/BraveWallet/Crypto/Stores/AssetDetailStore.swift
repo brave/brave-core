@@ -255,7 +255,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.nonZeroBalanceAccounts = await fetchAccountBalances(updatedAccounts, network: network)
 
         // fetch transactions
-        let userAssets = assetManager.getAllUserAssetsInNetworkAssets(
+        let userAssets = await assetManager.getAllUserAssetsInNetworkAssets(
           networks: [network],
           includingUserDeleted: true
         ).flatMap { $0.tokens }
@@ -347,7 +347,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         )
 
         let allNetworks = await rpcService.allNetworksForSupportedCoins()
-        let allUserAssets = assetManager.getAllUserAssetsInNetworkAssets(
+        let allUserAssets = await assetManager.getAllUserAssetsInNetworkAssets(
           networks: allNetworks,
           includingUserDeleted: false
         )
@@ -465,7 +465,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
               type: .total
             )
           } else {
-            if let assetBalancePerAccount = self.assetManager.getBalances(
+            if let assetBalancePerAccount = self.assetManager.getAssetBalances(
               for: token,
               account: accountAssetViewModel.account.id
             )?.first {

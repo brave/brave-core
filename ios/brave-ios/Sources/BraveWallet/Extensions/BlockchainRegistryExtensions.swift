@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import Data
 import Foundation
 
 extension BraveWalletBlockchainRegistry {
@@ -20,6 +21,47 @@ extension BraveWalletBlockchainRegistry {
               NetworkAssets(
                 network: network,
                 tokens: allTokens + [network.nativeToken],
+                sortOrder: index
+              )
+            ]
+          }
+        }
+        return await group.reduce([NetworkAssets](), { $0 + $1 })
+          .sorted(by: { $0.sortOrder < $1.sortOrder })  // maintain sort order of networks
+      }
+    )
+  }
+
+  /// Returns all the `BlockchainToken`s for each of the given networks
+  @MainActor func allTokens(
+    in networks: [BraveWallet.NetworkInfo],
+    includingUserDeleted: Bool
+  ) async -> [NetworkAssets] {
+    await withTaskGroup(
+      of: [NetworkAssets].self,
+      body: { @MainActor group -> [NetworkAssets] in
+        for (index, network) in networks.enumerated() {
+          group.addTask { @MainActor in
+            let allTokensFromRegistry =
+              await self.allTokens(
+                chainId: network.chainId,
+                coin: network.coin
+              )
+            var allTokens = allTokensFromRegistry + [network.nativeToken]
+            if !includingUserDeleted {
+              let locallyDeletedTokens: [BraveWallet.BlockchainToken] =
+                WalletUserAsset.getAllUserDeletedUserAssets()?
+                .map { $0.blockchainToken } ?? []
+              allTokens = allTokens.filter({ token in
+                !locallyDeletedTokens.contains {
+                  $0.id.caseInsensitiveCompare(token.id) == .orderedSame
+                }
+              })
+            }
+            return [
+              NetworkAssets(
+                network: network,
+                tokens: allTokens,
                 sortOrder: index
               )
             ]
