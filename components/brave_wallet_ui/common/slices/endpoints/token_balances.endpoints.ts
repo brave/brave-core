@@ -35,7 +35,7 @@ import {
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import { networkSupportsAccount } from '../../../utils/network-utils'
 import { cacher } from '../../../utils/query-cache-utils'
-import { networkEntityAdapter } from '../entities/network.entity'
+import { getNetworkId, networkEntityAdapter } from '../entities/network.entity'
 import { TokenBalancesRegistry } from '../entities/token-balance.entity'
 import {
   type BaseQueryCache, //
@@ -282,9 +282,36 @@ export const tokenBalancesEndpoints = ({
           ? getPersistedPortfolioSpamTokenBalances()
           : getPersistedPortfolioTokenBalances()
 
+        // return a subset of the registry for
+        // the accounts and networks passed as args
+        const registrySubset: TokenBalancesRegistry = {
+          accounts: {}
+        }
+
+        for (const accountId of arg.accountIds) {
+          // only return info for accounts that have been passed as args
+          if (persistedBalances.accounts[accountId.uniqueKey]) {
+            registrySubset.accounts[accountId.uniqueKey] =
+              persistedBalances.accounts[accountId.uniqueKey]
+            // filter account balances to just
+            // the chains that have been passed as args
+            const accountNetworkIds = Object.keys(
+              registrySubset.accounts[accountId.uniqueKey].chains
+            )
+            for (const network of arg.networks) {
+              const networkId = getNetworkId(network)
+              if (!accountNetworkIds.includes(networkId)) {
+                delete registrySubset.accounts[accountId.uniqueKey].chains[
+                  networkId
+                ]
+              }
+            }
+          }
+        }
+
         // return null so we can tell if we have data or not to start with
         return {
-          data: Object.keys(persistedBalances).length ? persistedBalances : null
+          data: Object.keys(registrySubset).length ? registrySubset : null
         }
       },
       async onCacheEntryAdded(
