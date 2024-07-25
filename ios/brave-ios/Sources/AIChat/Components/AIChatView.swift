@@ -77,7 +77,7 @@ public struct AIChatView: View {
 
           dismiss()
         },
-        onErase: {
+        onNewChat: {
           model.clearConversationHistory()
         },
         menuContent: {
@@ -605,7 +605,7 @@ struct AIChatView_Preview: PreviewProvider {
         onClose: {
           print("Closed Chat")
         },
-        onErase: {
+        onNewChat: {
           print("Erased Chat History")
         },
         menuContent: {

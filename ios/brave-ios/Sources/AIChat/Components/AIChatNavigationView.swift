@@ -41,7 +41,7 @@ struct AIChatNavigationView<Content>: View where Content: View {
   var isMenusAvailable: Bool
   var premiumStatus: AiChat.PremiumStatus
   var onClose: (() -> Void)
-  var onErase: (() -> Void)
+  var onNewChat: (() -> Void)
 
   @ViewBuilder
   var menuContent: (() -> Content)
@@ -82,9 +82,9 @@ struct AIChatNavigationView<Content>: View where Content: View {
       if isMenusAvailable {
         HStack(spacing: 0.0) {
           Button {
-            onErase()
+            onNewChat()
           } label: {
-            Image(braveSystemName: "leo.erase")
+            Image(braveSystemName: "leo.edit.box")
               .tint(Color(braveSystemName: .textInteractive))
               .padding([.leading, .top, .bottom])
               .padding(.trailing, 8.0)
@@ -122,7 +122,7 @@ struct AIChatNavigationView_Preview: PreviewProvider {
       onClose: {
         print("Closed Chat")
       },
-      onErase: {
+      onNewChat: {
         print("Erased Chat History")
       },
       menuContent: {

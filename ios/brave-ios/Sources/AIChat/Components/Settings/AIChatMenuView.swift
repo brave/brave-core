@@ -93,7 +93,7 @@ enum AIChatMenuOptionTypes {
   var imageName: String {
     switch self {
     case .newChat:
-      return "leo.erase"
+      return "leo.edit.box"
     case .goPremium, .managePremium:
       return "leo.lock.open"
     case .advancedSettings:
