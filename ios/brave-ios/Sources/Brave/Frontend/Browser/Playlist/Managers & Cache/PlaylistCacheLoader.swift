@@ -442,20 +442,6 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
       request = pendingRequests.removeValue(forKey: url.absoluteString)
     }
 
-    // TODO: REFACTOR to support Multiple Windows Better
-    if let browserController = webView.currentScene?.browserViewController {
-      // Check if this response should be handed off to Passbook.
-      if OpenPassBookHelper(
-        request: request,
-        response: response,
-        canShowInWebView: false,
-        forceDownload: false,
-        browserViewController: browserController
-      ) != nil {
-        return .cancel
-      }
-    }
-
     if navigationResponse.isForMainFrame {
       if response.mimeType?.isKindOfHTML == false, request != nil {
         return .cancel

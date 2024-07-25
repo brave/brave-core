@@ -73,7 +73,6 @@ class DownloadContentScriptHandler: TabContentScript {
       }
 
       defer {
-        browserViewController?.pendingDownloadWebView = nil
         Self.blobUrlForDownload = nil
       }
 

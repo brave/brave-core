@@ -604,12 +604,7 @@ extension BrowserViewController: CWVNavigationDelegate {
         self.tabManager.selectedTab?.alertShownCount = 0
         self.tabManager.selectedTab?.blockAllAlerts = false
       }
-
-      // FIXME: Find a way to do this with CWVWebView
-      //      if navigationAction.shouldPerformDownload {
-      //        self.shouldDownloadNavigationResponse = true
-      //      }
-
+      
       ContentBlockerManager.signpost.endInterval("decidePolicyFor", state)
       return .allow
     }
@@ -742,12 +737,6 @@ extension BrowserViewController: CWVNavigationDelegate {
       request = pendingRequests.removeValue(forKey: url.absoluteString)
     }
 
-    // We can only show this content in the web view if this web view is not pending
-    // download via the context menu.
-    let canShowInWebView = /*navigationResponse.canShowMIMEType &&*/
-      (webView != pendingDownloadWebView)
-    let forceDownload = webView == pendingDownloadWebView
-
     let mimeTypesThatRequireSFSafariViewControllerHandling: [UTType] = [
       .textCalendar,
       .mobileConfiguration,
@@ -764,17 +753,6 @@ extension BrowserViewController: CWVNavigationDelegate {
       return .cancel
     }
 
-    // If the response has the attachment content-disposition, download it
-    let mimeType = response.mimeType ?? MIMEType.octetStream
-    let isAttachment =
-      (response as? HTTPURLResponse)?.value(
-        forHTTPHeaderField: "Content-Disposition"
-      )?.starts(with: "attachment") ?? (mimeType == MIMEType.octetStream)
-
-    if isAttachment {
-      return .download
-    }
-
     // If the content type is not HTML, create a temporary document so it can be downloaded and
     // shared to external applications later. Otherwise, clear the old temporary document.
     if let tab = tab, navigationResponse.isForMainFrame {
@@ -789,50 +767,6 @@ extension BrowserViewController: CWVNavigationDelegate {
       }
 
       tab.mimeType = response.mimeType
-    }
-
-    if canShowInWebView {
-      return .allow
-    }
-
-    // Check if this response should be handed off to Passbook.
-
-    // FIXME: Chromium policy deciders dont allow .download
-    //    if shouldDownloadNavigationResponse {
-    //      shouldDownloadNavigationResponse = false
-    //      if response.mimeType == MIMEType.passbook {
-    //        return .download
-    //      }
-    //    }
-
-    // Check if this response should be downloaded.
-    // FIXME: Find a way to get this out of CWVWebView
-    if let cookieStore = tab?.webView?.underlyingWebView?.configuration.websiteDataStore
-      .httpCookieStore,
-      let downloadHelper = DownloadHelper(
-        request: request,
-        response: response,
-        cookieStore: cookieStore,
-        canShowInWebView: canShowInWebView,
-        forceDownload: forceDownload
-      )
-    {
-      // Clear the pending download web view so that subsequent navigations from the same
-      // web view don't invoke another download.
-      pendingDownloadWebView = nil
-
-      let downloadAlertAction: (HTTPDownload) -> Void = { [weak self] download in
-        self?.downloadQueue.enqueue(download)
-      }
-
-      // Open our helper and cancel this response from the webview.
-      if tab === tabManager.selectedTab,
-        let downloadAlert = downloadHelper.downloadAlert(from: view, okAction: downloadAlertAction)
-      {
-        present(downloadAlert, animated: true, completion: nil)
-      }
-
-      return .cancel
     }
 
     // If none of our helpers are responsible for handling this response,
@@ -980,11 +914,73 @@ extension BrowserViewController: CWVNavigationDelegate {
   }
 
   public func webView(_ webView: CWVWebView, didRequestDownloadWith task: CWVDownloadTask) {
+    guard let tab = tabManager[webView] else { return }
+
+    let mimeTypesThatRequireSFSafariViewControllerHandling: [UTType] = [
+      .textCalendar,
+      .mobileConfiguration,
+    ]
+
+    if case let url = task.originalURL, url.isWebPage(includeDataURIs: false),
+      tab === tabManager.selectedTab,
+      let mimeType = UTType(mimeType: task.mimeType),
+      mimeTypesThatRequireSFSafariViewControllerHandling.contains(mimeType)
+    {
+      handleLinkWithSafariViewController(task.originalURL, tab: tab)
+      task.cancel()
+      return
+    }
+
     task.delegate = self
-    let temporaryDir = FileManager.default.temporaryDirectory.appending(
-      path: task.suggestedFileName
-    )
-    task.startDownloadToLocalFile(atPath: temporaryDir.path())
+
+    let downloadHelper = DownloadHelper(task: task)
+
+    let downloadAlertAction: () -> Void = { [weak self] in
+      guard let self else { return }
+      let downloadPath = FileManager.default.temporaryDirectory.appending(
+        path: task.suggestedFileName
+      )
+      task.startDownloadToLocalFile(atPath: downloadPath.path())
+
+      // If no other download toast is shown, create a new download toast and show it.
+      // FIXME: We need new UI here to handle multiple downloads at once
+      guard let downloadToast = self.downloadToast else {
+        let downloadToast = DownloadToast(
+          download: task,
+          completion: { buttonPressed in
+            // When this toast is dismissed, be sure to clear this so that any
+            // subsequent downloads cause a new toast to be created.
+            self.downloadToast = nil
+
+            // Handle download cancellation
+            if buttonPressed {
+              task.cancel()
+
+              let downloadCancelledToast = ButtonToast(
+                labelText: Strings.downloadCancelledToastLabelText,
+                backgroundColor: UIColor.braveLabel,
+                textAlignment: .center
+              )
+
+              self.show(toast: downloadCancelledToast)
+            }
+          }
+        )
+
+        self.show(toast: downloadToast, duration: nil)
+        return
+      }
+
+      // Otherwise, just add this download to the existing download toast.
+      downloadToast.addDownload(task)
+    }
+
+    // Open our helper and cancel this response from the webview.
+    if tab === tabManager.selectedTab,
+      let downloadAlert = downloadHelper.downloadAlert(from: view, okAction: downloadAlertAction)
+    {
+      present(downloadAlert, animated: true, completion: nil)
+    }
   }
 }
 

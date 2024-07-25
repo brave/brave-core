@@ -228,12 +228,6 @@ public class BrowserViewController: UIViewController {
   // allow us to re-trigger the `URLRequest` if the user requests a file to be downloaded.
   var pendingRequests = [String: URLRequest]()
 
-  // This is set when the user taps "Download Link" from the context menu. We then force a
-  // download of the next request through the `WKNavigationDelegate` that matches this web view.
-  weak var pendingDownloadWebView: WKWebView?
-
-  let downloadQueue = DownloadQueue()
-
   private var cancellables: Set<AnyCancellable> = []
 
   let rewards: BraveRewards
@@ -470,7 +464,6 @@ public class BrowserViewController: UIViewController {
     tabManager.addDelegate(self)
     tabManager.addNavigationDelegate(self)
     UserScriptManager.shared.fetchWalletScripts(from: braveCore.braveWalletAPI)
-    downloadQueue.delegate = self
 
     // Observe some user preferences
     Preferences.Privacy.privateBrowsingOnly.observe(from: self)
