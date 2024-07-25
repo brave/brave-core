@@ -20,8 +20,10 @@ import { Panel } from '../panel/index'
 import Amount from '../../../utils/amount'
 import { parseTransactionFeesWithoutPrices } from '../../../utils/tx-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
-import { getPriceIdForToken } from '../../../utils/api-utils'
-import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
+import {
+  getTokenPriceAmountFromRegistry,
+  getPriceIdForToken
+} from '../../../utils/pricing-utils'
 
 // Queries
 import {

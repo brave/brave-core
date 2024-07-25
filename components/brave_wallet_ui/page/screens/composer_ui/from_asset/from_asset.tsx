@@ -14,8 +14,10 @@ import {
   getPercentAmount
 } from '../../../../utils/balance-utils'
 import { getLocale } from '../../../../../common/locale'
-import { computeFiatAmount } from '../../../../utils/pricing-utils'
-import { getPriceIdForToken } from '../../../../utils/api-utils'
+import {
+  computeFiatAmount,
+  getPriceIdForToken
+} from '../../../../utils/pricing-utils'
 import Amount from '../../../../utils/amount'
 
 // Hooks

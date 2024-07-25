@@ -18,7 +18,7 @@ import {
 } from '../../assets/network_token_icons/network_token_icons'
 
 // utils
-import { getPriceIdForToken } from '../../utils/api-utils'
+import { getPriceIdForToken } from '../../utils/pricing-utils'
 
 // mocks
 import {

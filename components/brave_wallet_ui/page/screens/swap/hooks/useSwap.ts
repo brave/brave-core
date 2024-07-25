@@ -34,11 +34,13 @@ import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 // Utils
 import { getLocale } from '$web-common/locale'
 import Amount from '../../../../utils/amount'
-import { getPriceIdForToken } from '../../../../utils/api-utils'
 // FIXME(onyb): move makeNetworkAsset to utils/assets-utils
 import { isNativeAsset } from '../../../../utils/asset-utils'
 import { makeNetworkAsset } from '../../../../options/asset-options'
-import { getTokenPriceAmountFromRegistry } from '../../../../utils/pricing-utils'
+import {
+  getPriceIdForToken,
+  getTokenPriceAmountFromRegistry
+} from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import { networkSupportsAccount } from '../../../../utils/network-utils'
 import {
@@ -397,12 +399,15 @@ export const useSwap = () => {
     [quoteOptions, toToken]
   )
 
-  const fromAssetBalance = useMemo(() =>
-    fromToken && getAssetBalance(fromToken, fromAccount, tokenBalancesRegistry),
+  const fromAssetBalance = useMemo(
+    () =>
+      fromToken &&
+      getAssetBalance(fromToken, fromAccount, tokenBalancesRegistry),
     [fromToken, fromAccount, tokenBalancesRegistry]
   )
-  const nativeAssetBalance = useMemo(() =>
-    nativeAsset &&
+  const nativeAssetBalance = useMemo(
+    () =>
+      nativeAsset &&
       getAssetBalance(nativeAsset, fromAccount, tokenBalancesRegistry),
     [nativeAsset, fromAccount, tokenBalancesRegistry]
   )

@@ -16,8 +16,10 @@ import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import Amount from '../../../utils/amount'
-import { getPriceIdForToken } from '../../../utils/api-utils'
-import { computeFiatAmount } from '../../../utils/pricing-utils'
+import {
+  computeFiatAmount,
+  getPriceIdForToken
+} from '../../../utils/pricing-utils'
 import { makeAccountRoute } from '../../../utils/routes-utils'
 import { getIsRewardsAccount } from '../../../utils/rewards_utils'
 import {

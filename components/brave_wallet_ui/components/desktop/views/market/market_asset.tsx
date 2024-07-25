@@ -20,7 +20,6 @@ import {
 } from '../../../../common/constants/local-storage-keys'
 
 // Utils
-import { getPriceIdForToken } from '../../../../utils/api-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
 import {
@@ -34,7 +33,10 @@ import {
 import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
 import { networkSupportsAccount } from '../../../../utils/network-utils'
-import { computeFiatAmount } from '../../../../utils/pricing-utils'
+import {
+  computeFiatAmount,
+  getPriceIdForToken
+} from '../../../../utils/pricing-utils'
 import {
   querySubscriptionOptions60s //
 } from '../../../../common/slices/constants'

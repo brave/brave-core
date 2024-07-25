@@ -37,11 +37,11 @@ import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
 import Amount from '../../../../utils/amount'
 import {
   computeFiatAmount,
-  getTokenPriceAmountFromRegistry
+  getTokenPriceAmountFromRegistry,
+  getPriceIdForToken
 } from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
-import { getPriceIdForToken } from '../../../../utils/api-utils'
 import {
   networkEntityAdapter //
 } from '../../../../common/slices/entities/network.entity'

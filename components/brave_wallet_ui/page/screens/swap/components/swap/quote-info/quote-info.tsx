@@ -48,11 +48,9 @@ import {
 import { getBalance } from '../../../../../../utils/balance-utils'
 import {
   getTokenPriceAmountFromRegistry,
-  getTokenPriceFromRegistry //
+  getTokenPriceFromRegistry,
+  getPriceIdForToken
 } from '../../../../../../utils/pricing-utils'
-import {
-  getPriceIdForToken //
-} from '../../../../../../utils/api-utils'
 
 // Components
 import {

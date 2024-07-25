@@ -18,7 +18,7 @@ import {
   getTransactionGasFee,
   isSolanaTransaction
 } from '../../../utils/tx-utils'
-import { getPriceIdForToken } from '../../../utils/api-utils'
+import { getPriceIdForToken } from '../../../utils/pricing-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
 
 // components

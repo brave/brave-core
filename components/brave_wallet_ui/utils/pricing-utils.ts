@@ -4,11 +4,16 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Types/constants
-import { SpotPriceRegistry, BraveWallet } from '../constants/types'
+import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../common/constants/magics'
+import {
+  SpotPriceRegistry,
+  BraveWallet,
+  externalWalletProviders,
+  SupportedTestNetworks
+} from '../constants/types'
 
 // Utils
 import Amount from './amount'
-import { getPriceIdForToken } from './api-utils'
 
 export const getTokenPriceFromRegistry = (
   spotPriceRegistry: SpotPriceRegistry,
@@ -93,4 +98,30 @@ export const computeFiatAmountToAssetValue = ({
   }
 
   return new Amount(value).div(priceInfo.price).times(1)
+}
+
+export const getPriceIdForToken = (
+  token: Pick<
+    BraveWallet.BlockchainToken,
+    'contractAddress' | 'symbol' | 'coingeckoId' | 'chainId'
+  >
+) => {
+  if (token?.coingeckoId) {
+    return token.coingeckoId.toLowerCase()
+  }
+
+  // Skip price of testnet tokens
+  if (SupportedTestNetworks.includes(token.chainId)) {
+    return SKIP_PRICE_LOOKUP_COINGECKO_ID
+  }
+
+  const isEthereumNetwork = token.chainId === BraveWallet.MAINNET_CHAIN_ID
+  if (
+    (isEthereumNetwork || externalWalletProviders.includes(token.chainId)) &&
+    token.contractAddress
+  ) {
+    return token.contractAddress.toLowerCase()
+  }
+
+  return token.symbol.toLowerCase()
 }
