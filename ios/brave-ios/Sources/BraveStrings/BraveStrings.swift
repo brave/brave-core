@@ -1650,14 +1650,6 @@ extension Strings {
       comment: "Button title for Auto Add in header"
     )
 
-    public static let customEngineAddButtonTitle = NSLocalizedString(
-      "customSearchEngine.addButtonTitle",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Add",
-      comment: "Button title for Adding Engine in navigation Bar"
-    )
-
     public static let thirdPartySearchEngineAddErrorTitle = NSLocalizedString(
       "customSearchEngine.thirdPartySearchEngineAddErrorTitle",
       tableName: "BraveShared",

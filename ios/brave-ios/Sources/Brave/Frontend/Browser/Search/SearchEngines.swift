@@ -251,13 +251,20 @@ public class SearchEngines {
   }
 
   /// Edits an engine which was already in the list
-  func editSearchEngine(_ engine: OpenSearchEngine) async throws {
-    //    guard orderedEngines.contains(where: { $0.searchTemplate != engine.searchTemplate }) else {
-    //      throw SearchEngineError.duplicate
-    //    }
-    //
-    //    customEngines.append(engine)
-    //    orderedEngines.insert(engine, at: 1)
+  func editSearchEngine(_ engine: OpenSearchEngine, with newEngine: OpenSearchEngine) async throws {
+    guard
+      let customEngineIndex = customEngines.firstIndex(where: {
+        $0.shortName.lowercased() == engine.shortName.lowercased()
+      }),
+      let orderedEngineIndex = orderedEngines.firstIndex(where: {
+        $0.shortName.lowercased() == engine.shortName.lowercased()
+      })
+    else {
+      return
+    }
+
+    customEngines[customEngineIndex] = newEngine
+    orderedEngines[orderedEngineIndex] = newEngine
 
     do {
       try await saveCustomEngines()
