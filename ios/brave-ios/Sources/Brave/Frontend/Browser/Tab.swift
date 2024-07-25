@@ -422,10 +422,8 @@ class Tab: NSObject {
     self.id = id
     rewardsId = UInt32.random(in: 1...UInt32.max)
     nightMode = Preferences.General.nightModeEnabled.value
-    // FIXME: Delete sync tab code entirely
-    _syncTab = nil  //tabGeneratorAPI?.createBraveSyncTab(isOffTheRecord: type == .private)
+    _syncTab = tabGeneratorAPI?.createBraveSyncTab(isOffTheRecord: type == .private)
 
-    // FIXME: Do we need favicon driver anymore with CWVWebView?
     if let syncTab = _syncTab {
       _faviconDriver = FaviconDriver(webState: syncTab.webState).then {
         $0.setMaximumFaviconImageSize(CGSize(width: 1024, height: 1024))
