@@ -465,7 +465,7 @@ export const Nfts = ({
   }, [hideNftDiscoveryModal, setNftDiscovery])
 
   const onRefresh = React.useCallback(() => {
-    dispatch(WalletActions.refreshNetworksAndTokens({}))
+    dispatch(WalletActions.refreshNetworksAndTokens())
   }, [dispatch])
 
   const onSelectOption = React.useCallback(

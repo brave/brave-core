@@ -50,7 +50,7 @@ export function AndroidSwapApp() {
 
 function initialize() {
   initLocale(loadTimeData.data_)
-  store.dispatch(WalletActions.initialize({}))
+  store.dispatch(WalletActions.initialize())
   const root = createRoot(document.getElementById('root')!)
   root.render(<AndroidSwapApp />)
 }
