@@ -38,7 +38,6 @@
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/policy_constants.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 #include "ui/views/view.h"
