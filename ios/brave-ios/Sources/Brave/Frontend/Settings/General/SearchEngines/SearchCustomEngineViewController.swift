@@ -57,11 +57,13 @@ class SearchCustomEngineViewController: UIViewController {
     }
   }
 
-  private var openSearchEngine: OpenSearchReference? {
+  private var openSearchReference: OpenSearchReference? {
     didSet {
       checkSupportAutoAddSearchEngine()
     }
   }
+
+  private var engineToBeEdited: OpenSearchEngine?
 
   private var isAutoAddEnabled = false
 
@@ -85,9 +87,14 @@ class SearchCustomEngineViewController: UIViewController {
 
   // MARK: Lifecycle
 
-  init(profile: Profile, privateBrowsingManager: PrivateBrowsingManager) {
+  init(
+    profile: Profile,
+    privateBrowsingManager: PrivateBrowsingManager,
+    engineToBeEdited: OpenSearchEngine? = nil
+  ) {
     self.profile = profile
     self.privateBrowsingManager = privateBrowsingManager
+    self.engineToBeEdited = engineToBeEdited
 
     super.init(nibName: nil, bundle: nil)
   }
@@ -103,7 +110,8 @@ class SearchCustomEngineViewController: UIViewController {
 
     setup()
     doLayout()
-    changeAddButton(for: .disabled)
+
+    changeAddButton(for: engineToBeEdited != nil ? .enabled : .disabled)
   }
 
   // MARK: Internal
@@ -233,12 +241,24 @@ extension SearchCustomEngineViewController: UITableViewDelegate, UITableViewData
         $0.delegate = self
         $0.selectionStyle = .none
       }
+
+      if let engineToBeEdited = engineToBeEdited {
+        let searchQuery = getSearchQuery(from: engineToBeEdited.searchTemplate)
+        cell.textview.text = searchQuery
+        urlText = searchQuery
+      }
       return cell
     default:
       let cell = tableView.dequeueReusableCell(for: indexPath) as TitleInputTableViewCell
       cell.do {
         $0.delegate = self
         $0.selectionStyle = .none
+      }
+
+      if let engineToBeEdited = engineToBeEdited {
+        let engineName = engineToBeEdited.shortName
+        cell.textfield.text = engineName
+        titleText = engineName
       }
       return cell
     }
@@ -269,8 +289,8 @@ extension SearchCustomEngineViewController: UITableViewDelegate, UITableViewData
 extension SearchCustomEngineViewController {
 
   fileprivate func addOpenSearchEngine() {
-    guard var referenceURLString = openSearchEngine?.reference,
-      let title = openSearchEngine?.title,
+    guard var referenceURLString = openSearchReference?.reference,
+      let title = openSearchReference?.title,
       var referenceURL = URL(string: referenceURLString),
       let faviconImage = faviconImage,
       let hostURLString = host?.absoluteString
@@ -367,7 +387,7 @@ extension SearchCustomEngineViewController {
 extension SearchCustomEngineViewController {
 
   func checkSupportAutoAddSearchEngine() {
-    guard let openSearchEngine = openSearchEngine else {
+    guard let openSearchEngine = openSearchReference else {
       changeAddButton(for: .disabled)
       checkManualAddExists()
 
@@ -400,7 +420,7 @@ extension SearchCustomEngineViewController {
 
     dataTask = URLSession.shared.dataTask(with: host) { [weak self] data, _, error in
       guard let data = data, error == nil else {
-        self?.openSearchEngine = nil
+        self?.openSearchReference = nil
         return
       }
 
@@ -416,7 +436,7 @@ extension SearchCustomEngineViewController {
     guard let root = try? HTMLDocument(data: data as Data),
       let searchEngineDetails = fetchOpenSearchReference(document: root)
     else {
-      openSearchEngine = nil
+      openSearchReference = nil
       return
     }
 
@@ -432,7 +452,7 @@ extension SearchCustomEngineViewController {
         self.faviconImage = Favicon.defaultImage
       }
 
-      self.openSearchEngine = searchEngineDetails
+      self.openSearchReference = searchEngineDetails
     }
   }
 
@@ -547,6 +567,20 @@ extension SearchCustomEngineViewController {
 
     if query.contains(searchTermPlaceholder) {
       return query.replacingOccurrences(of: searchTermPlaceholder, with: searchTemplatePlaceholder)
+    }
+
+    return nil
+  }
+
+  private func getSearchQuery(from template: String) -> String? {
+    let searchTermPlaceholder = "%s"
+    let searchTemplatePlaceholder = "{searchTerms}"
+
+    if template.contains(searchTemplatePlaceholder) {
+      return template.replacingOccurrences(
+        of: searchTemplatePlaceholder,
+        with: searchTermPlaceholder
+      )
     }
 
     return nil

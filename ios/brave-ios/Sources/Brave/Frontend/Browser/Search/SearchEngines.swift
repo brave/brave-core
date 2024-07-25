@@ -250,6 +250,22 @@ public class SearchEngines {
     }
   }
 
+  /// Edits an engine which was already in the list
+  func editSearchEngine(_ engine: OpenSearchEngine) async throws {
+    //    guard orderedEngines.contains(where: { $0.searchTemplate != engine.searchTemplate }) else {
+    //      throw SearchEngineError.duplicate
+    //    }
+    //
+    //    customEngines.append(engine)
+    //    orderedEngines.insert(engine, at: 1)
+
+    do {
+      try await saveCustomEngines()
+    } catch {
+      throw SearchEngineError.failedToSave
+    }
+  }
+
   func queryForSearchURL(_ url: URL?, forType engineType: DefaultEngineType) -> String? {
     return defaultEngine(forType: engineType)?.queryForSearchURL(url)
   }
