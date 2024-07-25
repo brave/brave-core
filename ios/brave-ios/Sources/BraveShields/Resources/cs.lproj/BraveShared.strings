@@ -1,3 +1,12 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Přidá další seznamy vytvořené a spravované komunitou, které věříte.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Přihlaste se pouze k odběru seznamů od subjektů, kterým důvěřuje**. Váš prohlížeč bude pravidelně kontrolovat aktualizace seznamu z adresy URL, kterou zadáte.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Přidat filtr podle adresy URL";
+
 /* A discription of the Brave Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "**Přehrávač Brave** je vaše vstupenka na video bez reklam a nepřerušované zážitky z videa.";
 
@@ -28,6 +37,9 @@
 /* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
 "BlockAdsAndTrackingStandard" = "Standardně";
 
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Oznámení bloku „Přepnout na aplikaci";
+
 /* Title for the brave player feature */
 "BravePlayer" = "Přehrávač Brave";
 
@@ -45,6 +57,36 @@
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Místo toho sledujte v přehrávači Brave";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Filtrování obsahu";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Aktivujte vlastní filtry blokující regionální a jazykově specifické sledovací prvky a nepříjemnosti";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Vlastní seznam filtrů";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "Adresa URL vlastního seznamu filtrů";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Vlastní filtry";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Zde přidejte vlastní filtry. Nezapomeňte použít syntaxi filtru Adblock.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Neplatné pravidlo „%1$@` na řádku %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Sem přidejte vlastní filtry, a to po jednom na řádek.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Vlastní filtry nelze přidat na více než %i řádků.";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Výchozí seznamy filtrů";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "Přejít zpět";
@@ -70,6 +112,54 @@
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Povolit globální kontrolu soukromí";
 
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Seznamy externích filtrů";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "Zadaná adresa URL je neplatná";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Pro vlastní seznamy filtrů jsou povoleny pouze zabezpečené adresy URL (https)";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Přidat";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Další oblíbené komunitní seznamy. Zapnutí příliš mnoha filtrů sníží rychlost procházení.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Stažení se nezdařilo";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Čeká na stažení";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Edit";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Zadejte odkaz na seznam filtrů";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Naposledy aktualizováno %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Zde zadejte adresu URL seznamu filtrů ";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Přísné";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Stránka není bezpečná.";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "Připojení k %@ není bezpečné";
+
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Trackery a blokování reklam";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Upgradujte připojení na HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Tohle varování se vám zobrazuje, protože tento web nepodporuje HTTPS.";
 

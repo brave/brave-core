@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Brave vil ha tilgang til bildene dine";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Legg til bokmerke";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Legg til bokmerke";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Legg til egendefinert filterliste";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Legg til ytterligere lister som er laget og oppdatert av brukerfellesskapet.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Abonner bare på lister fra kilder du stoler på**. Nettleseren din ser jevnlig etter listeoppdateringer fra nettadressen du skriver inn.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Legg til i favoritter";
@@ -114,9 +102,6 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Blokkeringsoversikt";
-
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Blokker varsler om å bytte til app";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blokker sprettoppvinduer";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Lukk";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Er du sikker på at du vil lukke alle de andre åpne fanene?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Lukk alle de andre fanene";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Er du sikker på at du vil lukke alle de åpne fanene?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Bekreft";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Innholdsfiltrering";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Slå på egendefinerte filtre som blokkerer regionale og språkspesifikke sporere og andre plagsomme ting";
 
 /* Cookie settings option title */
 "CookieControl" = "Informasjonskapsel-kontroll";
@@ -528,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Søkemotorer som for tiden er i bruk";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Egendefinert filterliste";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Egendefinerte filterlister";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "Nettadresse til egendefinert filterliste";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Legg til";
@@ -631,9 +607,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Lukk infomelding om standard nettleser";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Standard filterlister";
-
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave standard";
 
@@ -666,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Enhet %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Forkast endringer";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Er du sikker på at du vil forkaste disse endringene? Alle endringer går tapt.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Forkast endringer?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Sikkerhetssertifikat";
@@ -801,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Funksjoner";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "Nettadressen er ugyldig";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Bare sikre (https) nettadresser er tillatt for egendefinerte filterlister";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Legg til";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Øvrige populære fellesskapslister. Merk at det å slå på for mange filtre vil ha en negativ innvirkning på nettleserhastigheten.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Nedlastingen mislyktes";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Nedlasting venter";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Endre";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Skriv inn filterliste-URL";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Sist oppdatert %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Skriv inn filterliste-URL-en her";
 
 /* Share action title */
 "FindInPage" = "Finn på siden";
@@ -2524,6 +2476,9 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Lagre";
 
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Lagre endringer";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Lagrede pålogginger";
 
@@ -3071,13 +3026,13 @@
 "SyncAddDeviceScan" = "QR-kode for synkkjede";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "Gå til Sync i innstillingene på den andre mobilenheten din, og trykk på knappen for «Skann synkkode». Bruk kameraet ditt til å skanne QR-koden nedenfor.\n\n Behandle denne koden som et passord. Hvis noen får tak i det, kan de lese og endre de synkroniserte dataene dine.";
+"SyncAddDeviceScanDescription" = "Gå til Sync i innstillingene på den andre mobilenheten din, og trykk på knappen for «Skann synkkode». Bruk kameraet ditt til å skanne QR-koden nedenfor.\n\nBehandle denne koden som et passord. Hvis noen får tak i den, kan de lese og endre de synkroniserte dataene dine.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Angi synkkoden";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Gå til Sync i innstillingene på mobilenheten din, og trykk på knappen for «%@». Legg inn synklenke-kodeordene som vises nedenfor\n\n Behandle denne koden som et passord. Hvis noen får tak i det, kan de lese og endre de synkroniserte dataene dine.";
+"SyncAddDeviceWordsDescription" = "Gå til Sync i innstillingene på mobilenheten din, og trykk på knappen for «%@». Legg inn sync chain-kodeordene som vises nedenfor\n\nBehandle denne koden som et passord. Hvis noen får tak i det, kan de lese og endre de synkroniserte dataene dine.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Skriv inn kodeord";
@@ -3090,6 +3045,12 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Velg hva slags enhet du vil synkronisere med.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Koden har utløpt. Generer en ny ved å klikke på knappen nedenfor.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Denne midlertidige koden er gyldig i de neste %@";
 
 /* Computer device button title */
 "SyncComputerDevice" = "Datamaskin";

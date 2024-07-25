@@ -25,6 +25,12 @@
 /* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "Åpne valgt fane";
 
+/* Title label text for refreshing credentials from brave site. */
+"paywall.alreadyPurchasedTitle" = "har du allerede kjøpt på Brave.com?";
+
+/* Button action text for refreshing credentials from brave site. */
+"paywall.refreshCredentialsButtonTitle" = "Oppdater påloggingsinformasjonen din";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts used for opening recently closed tab. */
 "RecentlyClosedTabTitle" = "Gjenåpne lukket fane";
 

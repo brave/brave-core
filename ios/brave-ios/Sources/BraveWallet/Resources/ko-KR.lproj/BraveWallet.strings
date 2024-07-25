@@ -10,8 +10,8 @@
 /* The title displayed on the account details screen */
 "wallet.accountDetailsTitle" = "계정 세부정보";
 
-/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters. */
-"wallet.accountNameLengthError" = "계정 이름은 최대 30자 이내여야 함";
+/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than max characters. '%lld' refers to a number (for example \"Account name must be at 30 characters or less\") */
+"wallet.accountNameLengthError" = "계정 이름은 %lld자 이내여야 함";
 
 /* A button title for displaying their accounts private key */
 "wallet.accountPrivateKey" = "비공개 키";
@@ -93,6 +93,9 @@
 
 /* The title of the view shown over a dapps website that requests the user add a new network. */
 "wallet.addNetworkTitle" = "네트워크 추가";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the address. */
+"wallet.addressLabel" = "주소";
 
 /* The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does. */
 "wallet.addSuggestedTokenSubtitle" = "이 토큰을 가져오시겠습니까?";
@@ -226,6 +229,9 @@
 /* Type of biometrics. This will be used in Biometric setup screen. */
 "wallet.biometricsSetupTouchId" = "Touch ID";
 
+/* The label displayed in Add Account above the private key box when adding or importing a Bitcoin account. The '%@' is the standard supported for the selected network (for example \"Only zprv extended keys are supported.\") */
+"wallet.bitcoinImportExtendedKeyWarning" = "%@ 확장 키만 지원됩니다.";
+
 /* The title for Brave Fee label in Swap. The fee percentage is displayed beside the label. */
 "wallet.braveFeeLabel" = "Brave 수수료: %@";
 
@@ -243,6 +249,9 @@
 
 /* Title displayed in row beside users available BTC balance. */
 "wallet.btcAvailableBalanceTitle" = "유효";
+
+/* A warning displayed in row before the Send button in Send Crypto view when a Bitcoin asset is selected. */
+"wallet.btcOrdinalsUnsupportedWarning" = "Brave 월렛은 현재 비트코인 NFT(오디널스)를 지원하지 않습니다. 오디널스를 보유한 주소에서 BTC를 보내면 해당 오디널스가 의도치 않게 이전될 수 있습니다.";
 
 /* Description displayed in row beside users pending balance. */
 "wallet.btcPendingBalanceDesc" = "월렛 잔액의 예상 변화량입니다.";
@@ -457,9 +466,6 @@
 /* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
 "wallet.customNetworkRpcUrlsTitle" = "RPC URL";
 
-/* The title of custom network list screen */
-"wallet.customNetworksTitle" = "맞춤 네트워크";
-
 /* The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen. */
 "wallet.customNetworkSymbolNamePlaceholder" = "통화 코드 입력";
 
@@ -568,26 +574,11 @@
 /* A title of the view shown over a dapps website that requests the user decrypt a message. */
 "wallet.decryptRequestTitle" = "해독 요청";
 
-/* The default Bitcoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Bitcoin Account 3\") */
-"wallet.defaultBitcoinAccountName" = "비트코인 계정 %lld";
+/* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Ethereum Account 2\") */
+"wallet.defaultAccountName" = "%1$@ 계정 %2$lld";
 
-/* The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\") */
-"wallet.defaultEthAccountName" = "이더리움 계정 %lld";
-
-/* The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\") */
-"wallet.defaultFilAccountName" = "Filecoin 계정 %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Ethereum Account 3\") */
-"wallet.defaultSecondaryEthAccountName" = "보조 이더리움 계정 %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\") */
-"wallet.defaultSecondaryFilAccountName" = "보조 Filecoin 계정 %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Solana Account 3\") */
-"wallet.defaultSecondarySolAccountName" = "보조 Solana 계정 %lld";
-
-/* The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Solana Account 3\") */
-"wallet.defaultSolAccountName" = "Solana 계정 %lld";
+/* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Filecoin Testnet Account 2\") */
+"wallet.defaultTestnetAccountName" = "%1$@ 테스트넷 계정 %2$lld";
 
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "삭제";
@@ -898,6 +889,9 @@
 /* A label shown inside of a box when there is no input data for a given Solana transaction */
 "wallet.inputDataPlaceholderSolana" = "기능 유형: %d";
 
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Input index. */
+"wallet.inputLabel" = "입력";
+
 /* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
 "wallet.insufficientBalance" = "잔고 부족";
 
@@ -1165,9 +1159,6 @@
 /* The empty state displayed when the user has no assets associated with an account */
 "wallet.noAssets" = "자산 없음";
 
-/* The empty state displayed when the user has not yet added any custom networks. */
-"wallet.noNetworks" = "추가된 네트워크 없음";
-
 /* The empty state shown when you have no imported accounts */
 "wallet.noSecondaryAccounts" = "보조 계정 없음.";
 
@@ -1185,6 +1176,9 @@
 
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "기타 월렛 관련 액션";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Output index. */
+"wallet.outputLabel" = "출력";
 
 /* The error message displayed when a user enters a password that does not meet the requirements */
 "wallet.passwordDoesNotMeetRequirementsError" = "비밀번호는 8자 이상이어야 합니다.";
@@ -1411,6 +1405,9 @@
 /* The description of a send button on the buy/send/swap/deposit modal */
 "wallet.sendDescription" = "한 계정에서 다른 계정으로 암호화폐를 보내거나 이전합니다.";
 
+/* An error that appears below the send crypto address text field, when the input `To` address is not a valid Bitcoin address. */
+"wallet.sendErrorBtcAddressNotValid" = "유효한 BTC 주소 아님";
+
 /* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address` */
 "wallet.sendErrorDomainNotRegistered" = "도메인에 연결된 %@ 주소가 없습니다";
 
@@ -1440,6 +1437,9 @@
 
 /* As in sent cryptocurrency from one asset to another */
 "wallet.sent" = "송금됨";
+
+/* One of the context menu option for user to tap to set a default network in wallet settings. */
+"wallet.setDefaultNetwork" = "기본으로 설정";
 
 /* Title of the set IPFS gateway button */
 "wallet.setGatewayButtonTitle" = "설정";
@@ -1521,9 +1521,6 @@
 
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "비공개 키 표시";
-
-/* A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings */
-"wallet.showTestNetworksTitle" = "테스트 네트워크 표시";
 
 /* The title of a button that updates the filter to show tokens with zero balances. */
 "wallet.showZeroBalances" = "무잔액 표시";
@@ -2031,6 +2028,9 @@
 
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%2$@의 %1$@";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the value. */
+"wallet.valueLabel" = "값";
 
 /* The error message when input phrase does not match the correct one. */
 "wallet.verifyRecoveryPhraseError" = "복구 문구가 일치하지 않습니다.";
