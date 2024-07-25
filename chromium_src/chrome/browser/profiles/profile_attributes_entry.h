@@ -13,6 +13,11 @@
 #undef GetUserName
 #endif
 
+#define MigrateObsoleteProfileAttributes   \
+  BraveMigrateObsoleteProfileAttributes(); \
+  void MigrateObsoleteProfileAttributes
+
 #include "src/chrome/browser/profiles/profile_attributes_entry.h"  // IWYU pragma: export
+#undef MigrateObsoleteProfileAttributes
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_ATTRIBUTES_ENTRY_H_
