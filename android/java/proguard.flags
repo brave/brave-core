@@ -70,6 +70,7 @@
 
 -keep class org.chromium.chrome.browser.toolbar.top.ToolbarPhone {
     *** mLocationBarBackgroundColorForNtp;
+    *** mToolbarBackgroundColorForNtp;
 }
 
 -keep class org.chromium.chrome.browser.hub.HubManagerImpl {
