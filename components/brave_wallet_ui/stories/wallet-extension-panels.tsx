@@ -10,8 +10,7 @@ import './locale'
 import {
   BraveWallet,
   SerializableTransactionInfo,
-  UIState,
-  WalletState
+  UIState
 } from '../constants/types'
 
 // Components
@@ -377,10 +376,6 @@ const transactionList = [
   ...transactionDummyData[1]
 ]
 
-const mockCustomStoreState: Partial<WalletState> = {
-  activeOrigin: originInfo
-}
-
 const mockCustomUiState: Partial<UIState> = {
   selectedPendingTransactionId: mockTransactionInfo.id,
   transactionProviderErrorRegistry: {}
@@ -396,7 +391,6 @@ export const _ConfirmTransaction = {
       <Provider
         store={createMockStore(
           {
-            walletStateOverride: mockCustomStoreState,
             uiStateOverride: mockCustomUiState
           },
           mockApiData

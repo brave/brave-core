@@ -27,4 +27,3 @@ export const isRefreshingNetworksAndTokens = ({ wallet }: State) =>
 // and lists)
 export const allowedNewWalletAccountTypeNetworkIds = ({ wallet }: State) =>
   wallet.allowedNewWalletAccountTypeNetworkIds
-export const activeOrigin = ({ wallet }: State) => wallet.activeOrigin

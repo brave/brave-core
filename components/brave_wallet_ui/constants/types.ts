@@ -203,7 +203,6 @@ export interface WalletState {
   isWalletCreated: boolean
   isWalletLocked: boolean
   addUserAssetError: boolean
-  activeOrigin: BraveWallet.OriginInfo
   allowedNewWalletAccountTypeNetworkIds: EntityId[]
   passwordAttempts: number
   assetAutoDiscoveryCompleted: boolean

@@ -30,10 +30,6 @@ const defaultState: WalletState = {
   isWalletCreated: false,
   isWalletLocked: true,
   addUserAssetError: false,
-  activeOrigin: {
-    eTldPlusOne: '',
-    originSpec: ''
-  },
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: true,
   isAnkrBalancesFeatureEnabled: false,
@@ -74,13 +70,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
     name: 'wallet',
     initialState,
     reducers: {
-      activeOriginChanged(
-        state: WalletState,
-        { payload }: PayloadAction<BraveWallet.OriginInfo>
-      ) {
-        state.activeOrigin = payload
-      },
-
       initialized(
         state: WalletState,
         { payload }: PayloadAction<WalletInitializedPayload>

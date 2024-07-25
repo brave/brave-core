@@ -10,7 +10,6 @@ import { skipToken } from '@reduxjs/toolkit/query'
 import { reduceAddress } from '../../../utils/reduce-address'
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
-import { WalletSelectors } from '../../../common/selectors'
 import {
   openAssociatedTokenAccountSupportArticleTab //
 } from '../../../utils/routes-utils'
@@ -19,12 +18,10 @@ import {
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
 import { useExplorer } from '../../../common/hooks/explorer'
 import {
+  useGetActiveOriginQuery,
   useGetAddressByteCodeQuery,
   useGetDefaultFiatCurrencyQuery
 } from '../../../common/slices/api.slice'
-import {
-  useUnsafeWalletSelector //
-} from '../../../common/hooks/use-safe-selector'
 
 // Components
 import CreateSiteOrigin from '../../shared/create-site-origin/index'
@@ -85,10 +82,9 @@ const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 0 } as const
 const NftAssetIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
 export const ConfirmTransactionPanel = () => {
-  // redux
-  const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
-
   // queries
+  const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
+    useGetActiveOriginQuery()
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
 
   // custom hooks

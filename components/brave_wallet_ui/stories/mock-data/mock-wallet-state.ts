@@ -10,10 +10,6 @@ import { BraveWallet, WalletState } from '../../constants/types'
 import { networkEntityAdapter } from '../../common/slices/entities/network.entity'
 
 export const mockWalletState: WalletState = {
-  activeOrigin: {
-    originSpec: 'https://app.uniswap.org',
-    eTldPlusOne: 'uniswap.org'
-  },
   addUserAssetError: false,
   hasInitialized: true,
   isBitcoinEnabled: true,

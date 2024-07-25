@@ -6,7 +6,6 @@
 import * as WalletActions from './actions/wallet_actions'
 import { Store } from './async/types'
 import { BraveWallet } from '../constants/types'
-import { objectEquals } from '../utils/object-utils'
 import { makeSerializableTransaction } from '../utils/model-serialization-utils'
 import { walletApi } from './slices/api.slice'
 import { getCoinFromTxDataUnion } from '../utils/network-utils'
@@ -162,18 +161,21 @@ export function makeTxServiceObserver(store: Store) {
 }
 
 export function makeBraveWalletServiceObserver(store: Store) {
+  let lastKnownActiveOrigin: BraveWallet.OriginInfo
   const braveWalletServiceObserverReceiver =
     new BraveWallet.BraveWalletServiceObserverReceiver({
       onActiveOriginChanged: function (originInfo) {
-        const state = store.getState().wallet
-
         // check that the origin has changed from the stored values
         // in any way before dispatching the update action
-        if (objectEquals(state.activeOrigin, originInfo)) {
+        if (
+          lastKnownActiveOrigin &&
+          lastKnownActiveOrigin.eTldPlusOne === originInfo.eTldPlusOne &&
+          lastKnownActiveOrigin.originSpec === originInfo.originSpec
+        ) {
           return
         }
-
-        store.dispatch(WalletActions.activeOriginChanged(originInfo))
+        lastKnownActiveOrigin = originInfo
+        store.dispatch(walletApi.util.invalidateTags(['ActiveOrigin']))
       },
       onDefaultEthereumWalletChanged: function (defaultWallet) {
         store.dispatch(
