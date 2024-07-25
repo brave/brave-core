@@ -82,18 +82,15 @@ public enum BraveSkusEnvironment {
   case release
 
   /// Returns the current Skus SDK Environment
-  /// When DEBUG is defined, uses the Bundle-ID to determine the environment
-  /// Otherwise uses Brave-Core's version info.
   public static var current: BraveSkusEnvironment {
-    if AppConstants.buildChannel == .release {
+    if AppConstants.isOfficialBuild {
       return .release
     }
 
-    switch BraveCoreVersionInfo.channel {
+    switch AppConstants.buildChannel {
     case .beta: return .beta
-    case .development, .nightly: return .nightly
-    case .stable, .unknown: fallthrough
-    default: return .release
+    case .debug, .nightly: return .nightly
+    case .release: return .release
     }
   }
 }
