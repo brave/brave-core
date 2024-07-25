@@ -1,11 +1,17 @@
+/* The description for the error message when the user's session has expired */
+"aichat.accountSessionExpiredDescription" = "Brave-tilisi istunto on vanhentunut. Käy tilisivullasi päivittääksesi ja palaa sitten käyttämään premium-ominaisuuksia.";
+
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "Lisää palautetta";
 
+/* The description for the settings to show search suggestions from Leo in url-address bar */
+"aichat.advancedSettingsAutocompleteDescription" = "Ota käyttöön näyttääksesi osoitepalkissa pikakuvakkeen Leon käynnistämiseen.";
+
 /* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "Näytä automaattisia ehdotuksia osoitepalkissa";
+"aichat.advancedSettingsAutocompleteTitle" = "Näytä osoitepalkissa";
 
 /* The title for the settings to change default model for conversations */
-"aichat.advancedSettingsDefaultModelTitle" = "Uusien keskustelujen oletusmalli";
+"aichat.advancedSettingsDefaultModelTitle" = "Oletusmalli";
 
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo on suoraan selaimeen integroitu tekoälyperusteinen älyavustaja.";
@@ -33,6 +39,9 @@
 
 /* The title of the search bar suggestion when prompting to Ask Leo */
 "aichat.askLeoSearchSuggestionTitle" = "Kysy Leolta";
+
+/* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
+"aichat.busyErrorDescription" = "Leo on liian kiireinen juuri nyt. Yritä muutaman minuutin kuluttua uudelleen.";
 
 /* The subtitle for intro view which triggers just chat */
 "aichat.chatIntroJustTalkSubTitle" = "Kysy minulta mitä vaan! Voimme puhua mistä tahansa haluamastasi aiheesta. Opiskelen ja kehityn koko ajan, jotta voisin antaa parempia vastauksia.";
@@ -116,19 +125,34 @@
 "aichat.infoAboutPageContext" = "Muotoile vastauksia sivun sisällön perusteella";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude Instant, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude 3 Haiku, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä.";
 
-/* The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator */
-"aichat.introMessageClaudeInstantModelDescription" = "Anthropicin Claude Instant";
+/* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeHaikuModelDescription" = "Anthropicin Claude Haiku";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeHaikuModelPurposeDescription" = "Salamannopea chatti";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude 3 Sonnet, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä.";
+
+/* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeSonnetModelDescription" = "Anthropicin Claude Sonnet";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeSonnetModelPurposeDescription" = "Tasapainotettu nopeus ja älykkyys";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Hei, olen Leo. Olen Braven tekoälyavustaja. Palvelun tarjoaa %@. Kysy minulta mitä tahansa, niin yritän vastata parhaani mukaan.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Hei, olen Leo. Olen Braven täysin ylläpitämä tekoälyassistentti. Palvelun tarjoaa Llama 13B, Metan luoma malli, joka on suorituskykyinen ja soveltuva moniin käyttötapauksiin.";
+"aichat.introMessageLlamaMessageDescription" = "Hei, olen Leo. Olen Braven kokonaan isännöimä tekoälyavustaja. Minua pyörittää Llama 3 8B, joka on Metan luoma tehokas ja moneen käyttöön soveltuva malli.";
 
 /* The model and creator for intro message - Llama 3 8b is the model name -- Meta is the creator */
 "aichat.introMessageLlamaModelDescription" = "Metan Llama 3 8b";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageLlamaModelPurposeDescription" = "Yleiskäyttöinen chat";
 
 /* The model intro message when you first enter the chat assistant */
 "aichat.introMessageMixtralMessageDescription" = "Hei, olen Leo. Olen Braven kokonaisuudessaan isännöimä tekoälyavustaja. Minua pyörittää Mixtral 8x7B, joka on Mistral AI:n edistyneiden tehtävien hoitamiseen luoma malli.";
@@ -136,17 +160,38 @@
 /* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
 "aichat.introMessageMixtralModelDescription" = "Mistral AI:n Mixtral";
 
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageMixtralModelPurposeDescription" = "Kehittyneet chat-tehtävät";
+
 /* The title for intro message */
 "aichat.introMessageTitle" = "Chat";
 
+/* The name of the AI-Assistant that's responsing to the user */
+"aichat.leoAssistantNameTitle" = "Leo";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovedAnswerBraveSearch" = "Paranneltu vastaus haulle";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovingAnswerBraveSearch" = "Parannellaan vastausta Brave-haun avulla...";
+
 /* The title of the advanced settings view */
-"aichat.leoNavigationTitle" = "Leo";
+"aichat.leoNavigationTitle" = "Leo-tekoäly";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "Siirry kysymään tietoa tästä verkkosivusta. Sen sisältö lähetetään Brave Leolle yhdessä viestisi kanssa.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "Sivun kontekstitiedot";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Slash Tools button */
+"aichat.leoSlashToolsButtonAccessibilityTitle" = "Vinoviivatyökalut";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionNull" = "Ei mitään";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionUnknown" = "Tuntematon";
 
 /* The title to display when the duration of the subscription is unknown */
 "aichat.leoSubscriptionUnknownDateTitle" = "–";
@@ -192,9 +237,6 @@
 
 /* The error description when in app purcahse is erroneous. */
 "aichat.paywallPurchaseErrorDescription" = "Ostoa ei voi suorittaa loppuun. Yritä uudelleen tai tarkista Apple-palveluun tallennetut maksutietosi ja yritä uudelleen.";
-
-/* The title for dismiss button when rate limit is shown after sending a message */
-"aichat.paywallRateLimitDismissActionTitle" = "Jatka perusmallilla";
 
 /* The subtitle for premium upseel when rate limit is shown after sending a message */
 "aichat.paywallRateLimitSubTitle" = "Hanki käyttöösi korkeampi vastausaste liittymällä Premiumiin tai yritä uudelleen myöhemmin.";
@@ -265,6 +307,9 @@
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "Virheluokituksen vastaus";
 
+/* The title for button that refreshes user credentials */
+"aichat.refreshCredentialsActionTitle" = "Päivitä";
+
 /* The title for the button where it triggers reset leo data */
 "aichat.resetLeoDataActionTitle" = "Nollaa ja tyhjennä Leon tiedot";
 
@@ -308,7 +353,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Ymmärrän";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Braven Leo on yksityinen tekoälyavustaja, joka tehostaa Internetin käyttöä. Leon ilmaisversion käyttö on rajoitettua. Braven Leo Premium tarjoaa enemmän malleja, korkeammat rajat ja antaa tilaajien käyttää aikaisin uusia ominaisuuksia. Oletusmalli kaikille käyttäjille on tällä hetkellä Mixtral 8x7B. Katso lisätietoja **[Brave-wikistä] (%1$ @)**.\n\n Kun esität Leolle kysymyksen, se voi käyttää tarkastelemasi verkkosivun kontekstia tai korostamaasi tekstiä vastauksen antamiseen. Vastausten tarkkuus ei ole taattavissa, ja ne voivat sisältää epätarkkoja, harhaanjohtavia tai vääriä tietoja. Leo käyttää Brave-haun tietoja parantaakseen vastausten laatua. Älä lähetä arkaluonteisia tai yksityisiä tietoja ja ole varovainen terveyteen, talouteen, henkilökohtaiseen turvallisuuteen tai vastaaviin liittyviin vastauksiin. Voit muuttaa Leon asetuksia milloin tahansa Asetukset-osiossa.\n\n Leo ei kerää tunnisteita, kuten IP-osoitettasi, jotka voidaan yhdistää sinuun. Tekoälymalli tai kolmannen osapuolen mallintoimittajat eivät säilytä henkilötietoja. Katso lisätietoja **[tietosuojakäytännöstä] (%2$ @)**.";
+"aichat.termsConditionsDescription" = "Brave Leo on yksityinen tekoälyavustaja, joka kehittää verkon käyttöäsi. Leon käyttö on ilmaista rajoitetulla käyttöoikeudella. Brave Leo Premium tarjoaa enemmän malleja, laajemmat käyttöoikeudet ja antaa tilaajille pääsyn uusiin ominaisuuksiin muita aikaisemmin. Tällä hetkellä oletusmalli kaikille käyttäjille on Mixtral 8x7B. Katso lisätiedot Braven **[Ohjekeskuksesta](%1$@)**.\n\nOletuksena, kun kysyt Leolta kysymyksen, se voi käyttää katselemasi verkkosivun tietoja tai sivulla korostamaasi tekstiä tai lähettää niitä Brave Leolle tarjotakseen vastauksen. Joissakin tapauksissa Leo voi lähettää kysymyksestäsi johdettuja hakuja Brave-hakuun ja käyttää hakutuloksia vastauksen parantamiseen. Vastausten tarkkuudesta ei anneta takeita, ja vastaukset voivat sisältää epätarkkoja, harhaanjohtavia tai vääriä tietoja. Älä lähetä arkaluontoisa tai yksityisiä tietoja, ja ole varovainen vastausten kanssa, jotka liittyvät terveyteen, talouteen, henkilökohtaiseen turvallisuuteen tai muuhun vastaavaan. Voit mukauttaa Leon asetuksia milloin tahansa Asetuksissa. Siirry kohtaan Asetukset > Leo.\n\nLeo ei kerää yksilöiviä tietoja, kuten IP-osoitettasi, jotka voidaan liittää sinuun. Mitään tietoja ei käytetä tekoälymallien kouluttamiseen, eivätkä tekoälymallit säilytä henkilötietoja (paitsi Anthropic, joka säilyttää tietoja 30 päivää ennen niiden poistamista). Katso lisätiedot **[tietosuojakäytännöstä](%2$@)**.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Juttele Brave Leon kanssa yksityisesti ";
@@ -321,4 +366,7 @@
 
 /* Title showing yearly subscription - annual */
 "aichat.yearlySubscriptionTitle" = "Vuositilaus";
+
+/* The word 'You' as in 'Me', 'Myself', 'I' (the user). */
+"aichat.youMessageTitle" = "Sinä";
 

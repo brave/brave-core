@@ -1,3 +1,12 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Tambah senarai tambahan yang dicipta dan disenggara oleh komuniti yang anda percayai.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Langgan senarai dari entiti yang anda percayai sahaja.** Pelayar anda secara berkala akan menyemak kemaskinian senarai daripada URL yang anda masukkan.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Tambah Penapis Melalui URL";
+
 /* A discription of the Brave Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** ialah tiket anda untuk pengalaman video yang bebas iklan dan tanpa gangguan.";
 
@@ -28,6 +37,9 @@
 /* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
 "BlockAdsAndTrackingStandard" = "Standard";
 
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Sekat Notis 'Tukar kepada Aplikasi'";
+
 /* Title for the brave player feature */
 "BravePlayer" = "Pemain Brave";
 
@@ -45,6 +57,36 @@
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Tonton Dalam Pemain Brave";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Penapisan Kandungan";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Dayakan penapis tersuai yang menyekat penjejak khusus rantau dan Gangguan.";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Senarai Penapis Tersuai";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "URL Senarai Penapis Tersuai";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Penapis Tersuai";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Tambah penapis tersuai di sini. Pastikan anda menggunakan sintaks penapis Adblock.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Peraturan tidak sah `%1$@` pada baris %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Tambah penapis tersuai anda di sini, satu bagi setiap baris.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Penapis tersuai tidak menyokong lebih daripada %i baris";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Senarai Penapis Lalai";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "Kembali";
@@ -70,6 +112,54 @@
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Dayakan Kawalan Privasi Global";
 
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Senarai Penapis Luaran";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "URL yang dimasukkan tidak sah";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Hanya URL selamat (https) dibenarkan untuk senarai penapis tersuai";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Tambah";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Senarai komuniti terkenal tambahan. Ambil perhatian bahawa tindakan mendayakan terlalu banyak penapis akan mengurangkan kelajuan penyemakan imbas.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Muat turun gagal";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Muat turun belum selesai";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Edit";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Masukkan URL senarai penapis";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Kemaskinian terakhir %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Masukkan URL senarai penapis di sini";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Terbatas";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Laman tidak selamat";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "Sambungan ke %@ tidak selamat";
+
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Penjejak & Penyekatan Iklan";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Naik Taraf Sambungan ke HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Anda melihat amaran ini kerana laman ini tidak menyokong HTTPS.";
 

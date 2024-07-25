@@ -1,3 +1,12 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Добавьте дополнительные списки, создаваемые и управляемые сообществом, которому вы доверяете.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Подписывайтесь только на списки компаний, которым доверяете**. Периодически ваш браузер будет проверять список на обновления по указанному вами адресу.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Добавить фильтр по URL";
+
 /* A discription of the Brave Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "Смотрите видео без рекламы и помех с **Brave Проигрывателем**.";
 
@@ -28,6 +37,9 @@
 /* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
 "BlockAdsAndTrackingStandard" = "Стандартный";
 
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Блокировать всплывающие окна и не переходить в приложения";
+
 /* Title for the brave player feature */
 "BravePlayer" = "Brave Проигрыватель";
 
@@ -45,6 +57,36 @@
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Перейдите в Brave Проигрыватель";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Фильтры контента";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Настройте фильтры, чтобы блокировать навязчивую рекламу, а также трекеры, отслеживающие пользователей по региону и языку.";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Список пользовательских фильтров";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "URL-адрес списка пользовательских фильтров";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Пользовательские фильтры";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Добавьте пользовательские фильтры сюда, используя синтаксис фильтра Adblock.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Неверное правило «`%1$@`» в строке %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Добавьте сюда свои пользовательские фильтры по одному на строку.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Лимит строк для пользовательских фильтров: %i";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Списки фильтров по умолчанию";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "Назад";
@@ -70,6 +112,54 @@
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Включить общий контроль конфиденциальности";
 
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Список внешних фильтров";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "Недействительный URL-адрес";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Для списков пользовательских фильтров разрешается использовать только безопасные (https) URL-адреса";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Добавить";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Дополнительные популярные списки сообщества. Если включить слишком много фильтров, браузер будет работать медленнее.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Ошибка скачивания";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Ожидание загрузки";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Изменить";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Введите URL списка фильтров";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Последнее обновление: %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Введите URL-адрес списка фильтров";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Строгое соответствие";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Небезопасный сайт";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "Подключение к сайту %@ уязвимо";
+
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Блокировка трекеров и рекламы";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Переведите подключения на HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Вы видите это предупреждение, потому что сайт не поддерживает HTTPS.";
 

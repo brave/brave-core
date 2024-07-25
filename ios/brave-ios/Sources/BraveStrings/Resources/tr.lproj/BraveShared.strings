@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Brave Fotoğraflarınıza erişmek istiyor";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Yer İşareti Ekle";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Yer İşareti Ekle";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Özel Filtre Listesi Ekle";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Güvenilir topluluğunuz tarafından oluşturulan ve sürdürülen ilave listeler ekleyin.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Yalnızca güvendiğiniz işletmelerin listelerine abone olun**. Tarayıcınız, girdiğiniz URL'deki liste güncellemelerini düzenli olarak kontrol edecektir.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Sık Kullanılanlara Ekle";
@@ -114,9 +102,6 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Engelleme İzleyicisi";
-
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "\"Uygulamaya Git\" Bildirimlerini engelle";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Açılır Pencereleri Engelle";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Kapat";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Diğer tüm açık sekmeleri kapatmak istediğinizden emin misiniz?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Diğer Tüm Sekmeleri Kapat";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Tüm açık sekmeleri kapatmak istediğinizden emin misiniz?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Onayla";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "İçerik Filtreleme";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Bölge ve dile özgü izleyicileri ve Rahatsızlık verici şeyleri engelleyen özel filtreleri etkinleştirin";
 
 /* Cookie settings option title */
 "CookieControl" = "Çerez Denetimi";
@@ -528,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Şu anda kullanılan arama motorları";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Özel Filtre Listesi";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Özel Filtre Listeleri";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "Özel Filtre Listesi URL'si";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Ekle";
@@ -631,9 +607,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Varsayılan tarayıcı belirtecini kapat";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Varsayılan Filtre Listeleri";
-
 /* Name for default Brave theme. */
 "defaultThemeName" = "Varsayılan Brave";
 
@@ -666,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Aygıt %1$@ ( %2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Değişikliklerden Vazgeç";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Bu değişikliklerden vazgeçmek istediğinizden emin misiniz? Yaptığınız düzenlemeler kaybolacaktır.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Değişikliklerden Vazgeçilsin mi?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Güvenlik Sertifikası";
@@ -801,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Özellik";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "Girdiğiniz URL geçersiz";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Özel filtre listeleri için yalnızca güvenli (https) URL'lere izin verilir";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Ekle";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Ek popüler topluluklar listeleri. Çok fazla filtre etkinleştirmenin tarama hızını düşürebileceğini unutmayın.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "İndirilemedi";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Bekleyen indirme işlemi";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Düzenle";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Filtre listesi URL'sini girin";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Son güncelleme %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Filtre listesi URL'sini buraya girin";
 
 /* Share action title */
 "FindInPage" = "Sayfada Bul";
@@ -2524,6 +2476,9 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Kaydet";
 
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Değişiklikleri kaydet";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Kaydedilen Girişler";
 
@@ -3090,6 +3045,12 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Eşitlemek istediğiniz aygıt türünü seçin.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Kodun süresi doldu. Aşağıdaki butona tıklayarak yeni bir tane oluşturun.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Bu geçici kod, %@ boyunca geçerlidir";
 
 /* Computer device button title */
 "SyncComputerDevice" = "Bilgisayar";

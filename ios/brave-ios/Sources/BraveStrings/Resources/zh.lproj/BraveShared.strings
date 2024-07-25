@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Brave 想访问您的相册";
 
-/* Button to add a bookmark */
-"AddBookmark" = "添加书签";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "添加书签";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "新增自定义筛选器列表";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "新增由您信任的社群所建立及維護的額外清單。";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**仅订阅来自您信任的实体的列表**。您的浏览器将定期检查您输入的网址的列表更新。";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "添加到收藏夹";
@@ -114,9 +102,6 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "正在拦截监视器";
-
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "屏蔽“切换到应用程序”通知";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "拦截弹出窗口";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "关闭";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "确定要关闭所有其他开启的分页吗？";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "关闭其他所有分页";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "确定要关闭所有开启的选项卡吗？";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "确认";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "內容過濾";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "启用自定义过滤器来屏蔽特定区域和语言的追踪器和烦人的内容。";
 
 /* Cookie settings option title */
 "CookieControl" = "Cookie 控制";
@@ -528,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "当前使用的搜索引擎";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "自定义筛选器列表";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "自定义筛选器列表";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "输入过滤器列表网址";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "添加";
@@ -631,9 +607,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "关闭默认浏览器标注";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "默认筛选器列表";
-
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave 默认";
 
@@ -666,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "设备 %1$@ （%2$@）";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "忽略变更";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "确定要忽略这些变更吗？任何修改內容将会遗失。";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "是否忽略变更？";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "安全认证";
@@ -801,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "功能";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "输入的网址无效";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "自定义筛选器列表只允许使用安全（https）网址";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "添加";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "其他熱門社群清單。請注意，啟用太多過濾器可能會導致瀏覽速度變慢。";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "下載失敗";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "等待下载";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "编辑";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "輸入過濾器清單 URL";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "上次更新时间 %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "在此处输入筛选器清单网址";
 
 /* Share action title */
 "FindInPage" = "在页面中查找";
@@ -2524,6 +2476,9 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "保存";
 
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "储存变更";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "保存的登录";
 
@@ -3071,13 +3026,13 @@
 "SyncAddDeviceScan" = "同步链二维码";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "在您的第二个移动设备上，导航到“设置”面板中的“同步”，点击“扫描同步代码”按钮。用您的摄像头扫描下面的二维码。\n\n 将此代码视作密码。如果有人得到它，他们可以读取和修改您的同步数据。";
+"SyncAddDeviceScanDescription" = "在另一部行动装置上，浏览到「设定」面板中的「同步」，并点选「扫描同步代码」按钮。使用相机扫描下方的二维码。\n\n请将此代码视为密码。如果他人取得此代码，将能读取及修改您同步的资料。";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "输入新的同步代码";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "在设备上，导航至“设置面板”的“同步”，然后点击按钮“%@”。输入下方显示的同步链密语。\n\n将此代码视作密码。如果有人得到它，他们可以读取和修改您的同步数据。";
+"SyncAddDeviceWordsDescription" = "\"在您的裝置上，浏览到「设定」面板中的「同步」，并点选「%@」按钮。输入下方显示的同步链代码字组。\n\n请将此代码视为密码。如果他人取得此代码，将能读取及修改您同步的资料。";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "输入密语";
@@ -3090,6 +3045,12 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "选择要同步到的设备类型。";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "代码已过期。请点选下方按钮来生成新代码。";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "这个零时代码于接下来 %@內有效。";
 
 /* Computer device button title */
 "SyncComputerDevice" = "计算机";

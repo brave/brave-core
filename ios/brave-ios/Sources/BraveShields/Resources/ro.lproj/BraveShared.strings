@@ -1,3 +1,12 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Adaugă liste suplimentare, create și întreținute de comunitatea în care ai încredere.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Abonează-te doar la liste alcătuite de entități în care ai încredere**. Browser-ul va verifica periodic actualizările listelor din URL-ul introdus.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Adaugă filtru prin URL";
+
 /* A discription of the Brave Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** este biletul tău către o experiență video fără reclame și întreruperi.";
 
@@ -28,6 +37,9 @@
 /* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
 "BlockAdsAndTrackingStandard" = "Standard";
 
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Blochează anunțurile de tip \"Deschide în aplicație\"";
+
 /* Title for the brave player feature */
 "BravePlayer" = "Brave Player";
 
@@ -45,6 +57,36 @@
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Vizionează în Brave Player";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Filtrarea conținutului";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Activează filtre personalizate care blochează urmăritori si elemente deranjante specifice regiunii sau limbii";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Listă de filtre personalizate";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "URL listă de filtre personalizate";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Filtre personalizate";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Adaugă filtre personalizate aici. Asigură-te că folosești sintaxa de filtre Adblock.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Regulă invalidă `%1$@` pe linia %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Adaugă-ți filtrele personalizate aici, câte unul pe rând.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Filtrele personalizate nu permit mai mult de %i rânduri";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Liste de filtre implicite";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "Înapoi";
@@ -70,6 +112,54 @@
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Activează Global Privacy Control";
 
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Liste de filtre externe";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "Adresa URL introdusă nu este validă";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Numai URL-urile securizate (HTTPS) sunt permise pentru listele de filtre personalizate";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Adaugă";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Liste comunitare suplimentare. Reține că activarea prea multor filtre va reduce viteza de navigare.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Descărcare eșuată";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Descărcare în așteptare";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Editează";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Introdu adresa URL a listei de filtre";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Ultima actualizare %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Introdu URL pentru lista de filtre aici";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Strict";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Site-ul nu este sigur";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "Conexiunea către %@ nu este sigură";
+
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Blocarea reclamelor și a urmăritorilor";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Actualizează conexiunile la HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Vezi acest avertisment pentru că acest site nu suportă HTTPS.";
 

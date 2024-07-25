@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Brave が写真にアクセスしようとしています";
 
-/* Button to add a bookmark */
-"AddBookmark" = "ブックマークに追加";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "ブックマークに追加";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "カスタムフィルターのリストを追加";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "信頼できるコミュニティにより作成および管理されているリストを追加します。";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "信頼する機関のリストにのみ登録してください**。ブラウザでは入力されたURLを用いて定期的にリストの更新があるかチェックを行います。";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "お気に入りに追加";
@@ -114,9 +102,6 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "ブロックモニター";
-
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "「アプリに切り替える」通知をブロック";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "ポップアップをブロック";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "閉じる";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "開いているすべての他のタブを閉じますか？";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "他のタブをすべて閉じる";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "開いているすべてのタブを閉じますか？";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "確認する";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "コンテンツフィルター";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "カスタムフィルターを有効にすると、地域や言語に応じたトラッカーや不快な表示をブロックできます";
 
 /* Cookie settings option title */
 "CookieControl" = "Cookie コントロール";
@@ -528,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "現在使用中の検索エンジン";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "カスタムフィルターリスト";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "カスタムフィルターリスト";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "カスタムフィルターリストのURL";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "追加する";
@@ -631,9 +607,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "デフォルトブラウザの設定メッセージを閉じる";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "デフォルトフィルターリスト";
-
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave デフォルト";
 
@@ -666,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "デバイス %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "変更内容を破棄";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "これらの変更を破棄してよろしいですか？すべての変更内容が失われます。";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "変更内容を破棄しますか？";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "セキュリティ証明書";
@@ -801,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "機能";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "入力されたURLが無効です";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "カスタムフィルターリストでは安全な (https) URLのみが許可されます";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "追加する";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "その他の人気コミュニティリスト。フィルターが多すぎると、ブラウジング速度が遅くなる場合があります。";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "ダウンロード エラー";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "ダウンロード待ち";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "編集";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "フィルターリストのURLを入力";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "最終更新 %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "フィルターリストのURLをここに入力してください";
 
 /* Share action title */
 "FindInPage" = "ページを検索";
@@ -2051,10 +2003,10 @@
 "privacyHub.vpnAlertRegularTrackerTypeSingular" = "トラッカーまたは広告";
 
 /* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
-"privacyHub.vpnAlertsHeader" = "Braveファイアウォール + VPNアラート";
+"privacyHub.vpnAlertsHeader" = "Brave Firewall + VPNアラート";
 
 /* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
-"privacyHub.vpnLabel" = "ファイアウォール + VPN";
+"privacyHub.vpnLabel" = "Firewall + VPN";
 
 /* It shows a total count of items blocked by our VPN shields */
 "privacyHub.vpvnAlertsTotalCount" = "総数";
@@ -2523,6 +2475,9 @@
 
 /* Label for the button used to save data */
 "SaveButtonTitle" = "保存する";
+
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "変更を保存";
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "保存されたログイン情報";
@@ -3071,13 +3026,13 @@
 "SyncAddDeviceScan" = "同期チェーン追加用QRコード";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "2番目のモバイルデバイスで、「設定」から「同期」に移動し、「同期コードのスキャンまたは入力」をタップしてください。その後、カメラで下のQRコードをスキャンします。\n\nこのコードはパスワードのように大切に保管してください。第三者が手に入れると同期中のデータを閲覧・修正することが可能になります。";
+"SyncAddDeviceScanDescription" = "2つ目のモバイルデバイスで、「設定」から「同期」を開き、「同期コードのスキャンまたは入力」をタップしてください。その後、カメラで下のQRコードをスキャンします。\n\nこのコードはパスワードと同様に大切に保管してください。データの閲覧・修正が可能となるため、第三者に共有しないようご注意ください。";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "同期コードを入力";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "あなたのデバイスで、「設定」パネルの「同期」に移動し、「%@」ボタンをタップしてください。以下の同期チェーンコードワードを入力してください。\n\nこのコードはパスワードのように大事に保存してください。第三者が手に入れると、同期されたデータを閲覧したり修正したりすることが可能になります。";
+"SyncAddDeviceWordsDescription" = "お使いのデバイスで、「設定」パネルの「同期」に移動し、「%@」ボタンをタップして以下の同期チェーンコードワードを入力してください。\n\nこのコードはパスワードと同様に大切に保管してください。データの閲覧・修正が可能となるため、第三者に共有しないようご注意ください。";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "コードを入力";
@@ -3090,6 +3045,12 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "同期するデバイスの種類を選択してください。";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "コードの有効期限が切れています。下のボタンをクリックして新しいコードを作成してください。";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "この一時コードはあと%@有効です";
 
 /* Computer device button title */
 "SyncComputerDevice" = "コンピュータ";
@@ -3590,7 +3551,7 @@
 "vpn.buyButton" = "購入する";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave ファイアーウォール+VPN";
+"vpn.buyVPNTitle" = "Brave Firewall + VPN";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxDevicesProtect" = "1つのサブスクリプションで5台のデバイスを保護";
@@ -3677,7 +3638,7 @@
 "vpn.contactFormTimezone" = "タイムゾーン";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave ファイアーウォール+VPNに関わる問題";
+"vpn.contactFormTitle" = "Brave Firewall + VPNに関わる問題";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "有効にする";
@@ -3701,7 +3662,7 @@
 "vpn.iapDisclaimer" = "すべての定期購読は自動更新ですが、更新前に解約することができます。";
 
 /* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "このプロファイルにより、VPNは自動的に接続され、デバイス全体のすべてのアプリにおいて常にトラフィックが保護されます。このVPN接続は暗号化され、Braveのインテリジェントファイアウォールを介してルーティングされ、広告やトラッカーをブロックします。";
+"vpn.installProfileBody" = "このプロファイルにより、VPNは自動的に接続され、デバイス上のすべてのアプリにおいて常にトラフィックが保護されます。VPN接続は暗号化され、Braveのインテリジェントファイアウォールを介してルーティングされ、広告やトラッカーをブロックします。";
 
 /* Text for 'install vpn profile' button */
 "vpn.installProfileButtonText" = "VPNプロファイルをインストール";
@@ -3914,7 +3875,7 @@
 "vpn.vpnBackgroundNotificationBody" = "バックグラウンドでもBraveはあなたを保護します";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave ファイアウォール+VPNは有効です";
+"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPNは有効です";
 
 /* Message for an alert when the VPN can't be configured. */
 "vpn.vpnConfigGenericErrorBody" = "VPNの初期化に問題がありました。再度お試しいただくか、VPN設定画面で設定をリセットしてみてください。";
@@ -3923,7 +3884,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "エラー";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave ファイアウォール+VPNは、動作するためには、お使いのデバイスにVPNプロファイルをインストールする必要があります。";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave Firewall + VPNを使用するには、お使いのデバイスにVPNプロファイルをインストールする必要があります。";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "パーミッションが拒否されました";
@@ -3950,7 +3911,7 @@
 "vpn.vpnRegionSelectorButtonTitle" = "VPNのリージョン";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "この操作を実行するとBrave ファイアウォール+ VPNの構成はリセットされ、すべてのエラーが修正されます。このプロセスには1分かかる場合があります。";
+"vpn.vpnResetAlertBody" = "この操作を実行するとBrave Firewall + VPNの構成はリセットされ、発生しているエラーが修正されます。プロセス完了までに約1分かかる場合があります。";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "設定リセット";

@@ -1,11 +1,17 @@
+/* The description for the error message when the user's session has expired */
+"aichat.accountSessionExpiredDescription" = "Platnosť relácie vášho účtu Brave vypršala. Navštívte stránku svojho účtu, aby ste ju obnovili a potom sa vráťte, aby ste mohli využívať prémiové funkcie.";
+
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "Pridať spätnú väzbu";
 
+/* The description for the settings to show search suggestions from Leo in url-address bar */
+"aichat.advancedSettingsAutocompleteDescription" = "Zapnutím zobrazíte skratku na spustenie nástroja Leo z riadka adresy.";
+
 /* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "Zobraziť návrhy automatického dokončovania na paneli s adresou";
+"aichat.advancedSettingsAutocompleteTitle" = "Zobraziť v riadku adresy";
 
 /* The title for the settings to change default model for conversations */
-"aichat.advancedSettingsDefaultModelTitle" = "Predvolený model pre nové konverzácie";
+"aichat.advancedSettingsDefaultModelTitle" = "Predvolený model";
 
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo je inteligentný asistent poháňaný AI. Zabudované priamo do prehliadača.";
@@ -33,6 +39,9 @@
 
 /* The title of the search bar suggestion when prompting to Ask Leo */
 "aichat.askLeoSearchSuggestionTitle" = "Opýtajte sa Lea";
+
+/* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
+"aichat.busyErrorDescription" = "Leo je teraz príliš zaneprázdnený. Skúste to znova o niekoľko minút.";
 
 /* The subtitle for intro view which triggers just chat */
 "aichat.chatIntroJustTalkSubTitle" = "Spýtajte sa ma na čokoľvek! Môžeme sa porozprávať na akúkoľvek tému. Stále sa učím a zdokonaľujem, aby som vám mohol poskytnúť lepšie odpovede.";
@@ -116,19 +125,34 @@
 "aichat.infoAboutPageContext" = "Tvarujte odpovede na základe obsahu stránky";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Ahoj, ja som Leo. Som sprostredkovaný spoločnosťou Brave a poháňa ma model Claude Instant vytvorený spoločnosťou Anthropic na podporu úloh konverzácie a spracovania textu.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Ahoj, ja som Leo. Môj poskytovateľ je Brave a poháňa ma Claude 3 Haiku, model vytvorený spoločnosťou Anthropic na podporu úloh konverzácie a spracovania textu.";
 
-/* The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator */
-"aichat.introMessageClaudeInstantModelDescription" = "Claude Instant od Anthropic";
+/* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku od Anthropic";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeHaikuModelPurposeDescription" = "Chat s bleskovou rýchlosťou";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "Ahoj, ja som Leo. Môj poskytovateľ je Brave a poháňa ma Claude 3 Sonnet, model vytvorený spoločnosťou Anthropic na podporu úloh konverzácie a spracovania textu.";
+
+/* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonet od Anthropic";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeSonnetModelPurposeDescription" = "Vyvážená rýchlosť a inteligencia";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Ahoj, ja som Leo. Som asistent AI od Brave. Používam %@. Opýtajte sa ma na čokoľvek a ja sa pokúsim odpovedať.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Ahoj, ja som Leo, asistent AI plne prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Llama 13B vytvoreným spoločnosťou Meta, aby som bol výkonný a použiteľný v mnohých prípadoch použitia.";
+"aichat.introMessageLlamaMessageDescription" = "Ahoj, ja som Leo, asistent AI plne prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Llama 3 8B vytvoreným spoločnosťou Meta, aby som bol výkonný a použiteľný v mnohých prípadoch použitia.";
 
 /* The model and creator for intro message - Llama 3 8b is the model name -- Meta is the creator */
 "aichat.introMessageLlamaModelDescription" = "Llama 3 8b by Meta";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageLlamaModelPurposeDescription" = "Všeobecný chat";
 
 /* The model intro message when you first enter the chat assistant */
 "aichat.introMessageMixtralMessageDescription" = "Ahoj, ja som Leo. Som asistent s umelou inteligenciou od spoločnosti Brave. Poháňa ma model Mixtral 8x7B, ktorý vytvorila spoločnosť Mistral AI na zvládanie pokročilých úloh.";
@@ -136,17 +160,38 @@
 /* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
 "aichat.introMessageMixtralModelDescription" = "Mixtral od Mistral AI";
 
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageMixtralModelPurposeDescription" = "Rozšírené úlohy chatu";
+
 /* The title for intro message */
 "aichat.introMessageTitle" = "Chat";
 
+/* The name of the AI-Assistant that's responsing to the user */
+"aichat.leoAssistantNameTitle" = "Leo";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovedAnswerBraveSearch" = "Vylepšené vyhľadávanie odpovedí na";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovingAnswerBraveSearch" = "Zlepšite svoju odpoveď s vyhľadávaním Brave...";
+
 /* The title of the advanced settings view */
-"aichat.leoNavigationTitle" = "Leo";
+"aichat.leoNavigationTitle" = "Leo AI";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "Prepnutím do polohy „Povolené“ sa opýtate na túto stránku. Jej obsah bude odoslaný spoločnosti Brave Leo spolu s vašimi správami.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "Informácie o kontexte stránky";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Slash Tools button */
+"aichat.leoSlashToolsButtonAccessibilityTitle" = "Nástroje Slash";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionNull" = "Žiadne";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionUnknown" = "Neznámy";
 
 /* The title to display when the duration of the subscription is unknown */
 "aichat.leoSubscriptionUnknownDateTitle" = "Neuplatňuje sa";
@@ -192,9 +237,6 @@
 
 /* The error description when in app purcahse is erroneous. */
 "aichat.paywallPurchaseErrorDescription" = "Nákup nie je možné dokončiť. Skúste to znova alebo skontrolujte svoje platobné informácie Apple a skúste to znova.";
-
-/* The title for dismiss button when rate limit is shown after sending a message */
-"aichat.paywallRateLimitDismissActionTitle" = "Pokračujte základným modelom";
 
 /* The subtitle for premium upseel when rate limit is shown after sending a message */
 "aichat.paywallRateLimitSubTitle" = "Získajte vyššiu mieru odozvy prihlásením sa na odber Premium alebo to skúste znova neskôr.";
@@ -265,6 +307,9 @@
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "Odpoveď na hodnotenie chýb";
 
+/* The title for button that refreshes user credentials */
+"aichat.refreshCredentialsActionTitle" = "Obnoviť";
+
 /* The title for the button where it triggers reset leo data */
 "aichat.resetLeoDataActionTitle" = "Obnoviť a vymazať údaje Leo";
 
@@ -308,7 +353,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Rozumiem";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo je súkromný inteligentný asistent AI, ktorý zlepšuje vaše používanie internetu. Leo je zadarmo na použitie s obmedzeným prístupom. Brave Leo Premium ponúka viac modelov, vyššie limity a poskytuje predplatiteľom skorý prístup k novým funkciám. Predvolený model pre všetkých používateľov je momentálne Mixtral 8x7B. Pozrite si **[Brave wiki](%1$ @)** pre viac detailov.\n\nKeď Leovi položíte otázku, môže na poskytnutie odpovede použiť kontext webovej stránky, ktorú si prezeráte, alebo text, ktorý zvýrazníte. Presnosť odpovedí nie je zaručená a môže obsahovať nepresné, zavádzajúce alebo nepravdivé informácie. Leo používa údaje z Brave Search na zlepšenie kvality odozvy. Neodosielajte citlivé ani súkromné ​​informácie a buďte opatrní pri akýchkoľvek odpovediach týkajúcich sa zdravia, financií, osobnej bezpečnosti a podobne. Možnosti Lea môžete kedykoľvek upraviť v Nastaveniach.\n\nLeo nezhromažďuje identifikátory, ako je vaša IP adresa, ktoré môžu byť s vami spojené. Model AI ani žiadni poskytovatelia modelov tretích strán neuchovávajú žiadne osobné údaje. Pozrite si **[zásady ochrany osobných údajov ](%2$ @)** pre viac informácií.";
+"aichat.termsConditionsDescription" = "Brave Leo je súkromný inteligentný asistent s umelou inteligenciou, ktorý zlepšuje vaše používanie internetu. Leo je bezplatný s obmedzeným prístupom. Brave Leo Premium ponúka viac modelov, vyššie limity a poskytuje predplatiteľom skorý prístup k novým funkciám. Predvolený model pre všetkých používateľov je v súčasnosti Mixtral 8x7B. Viac informácií nájdete v **[Brave wiki](%1$@)** vyhľadávača Brave.\n\nV predvolenom nastavení, keď položíte Leovi otázku, môže odoslať a použiť obsah internetovej stránky, ktorú si prezeráte, alebo akýkoľvek text, ktorý na stránke zvýrazníte, aby Brave Leovi poskytol odpoveď. V niektorých prípadoch Leo odošle dopyty odvodené z vášho vstupu na adresu vyhľadávania Brave a použije výsledky z adresy na lepšiu odpoveď na vašu otázku. Presnosť odpovedí nie je zaručená a môžu obsahovať nepresné, zavádzajúce alebo nepravdivé informácie. Nezasielajte citlivé alebo súkromné informácie a buďte opatrní pri odpovediach týkajúcich sa zdravia, financií, osobnej bezpečnosti a podobne. Možnosti Lea môžete kedykoľvek upraviť v Nastaveniach. Prejdite do časti Nastavenia > Leo.\n\nLeo nezhromažďuje identifikátory, ako je vaša IP adresa, ktoré by sa dali spojiť s vami. Na trénovanie modelov umelej inteligencie sa nepoužívajú žiadne údaje a modely umelej inteligencie neuchovávajú žiadne osobné údaje (okrem modelu Anthropic, ktorý uchováva údaje 30 dní pred ich vymazaním). Viac informácií nájdete v **[zásady ochrany osobných údajov](%2$@)**.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Chatovať súkromne s Brave Leo";
@@ -321,4 +366,7 @@
 
 /* Title showing yearly subscription - annual */
 "aichat.yearlySubscriptionTitle" = "Ročné predplatné";
+
+/* The word 'You' as in 'Me', 'Myself', 'I' (the user). */
+"aichat.youMessageTitle" = "Vy";
 

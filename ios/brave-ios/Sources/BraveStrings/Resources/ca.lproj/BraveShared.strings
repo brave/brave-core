@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Brave voldria accedir a les teves fotos";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Afegeix adreça d'interès";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Afegeix adreça d'interès";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Afegeix una llista personalitzada de filtres";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Afegeix llistes addicionals creades i mantingudes per la teva comunitat de confiança.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Subscriu-te només a llistes d'entitats de confiança**. El teu navegador comprovarà periòdicament si hi ha actualitzacions de la llista de l'URL que introdueixis.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Afegeix a preferits";
@@ -114,9 +102,6 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Control de bloqueig";
-
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Bloqueja els avisos «Canviar a l'app»";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Bloqueja les finestres emergents";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Tanca";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Esteu segur que voleu tancar totes les altres pestanyes obertes?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Tanqueu totes les altres pestanyes";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Estàs segur que vols tancar totes les pestanyes obertes?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Confirma";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Filtració del contingut";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Habilita filtres personalitzats que bloquegin elements molestos i rastrejadors regionals i específics de la llengua";
 
 /* Cookie settings option title */
 "CookieControl" = "Control de galetes";
@@ -528,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Motors de cerca utilitzats actualment";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Llista de filtres personalitzats";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Llistes de filtres personalitzats";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "URL de la llista de filtres personalitzats";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Afegeix";
@@ -631,9 +607,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Tanca les crides del navegador predeterminat";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Llistes de filtres per defecte";
-
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave predeterminat";
 
@@ -666,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Dispositiu %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Descartar els canvis";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Esteu segur que voleu descartar aquests canvis? Qualsevol modificació es perdrà.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Ignorar els canvis?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Certificat de seguretat";
@@ -801,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Funcions";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "L'URL introduït no és vàlid";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Només es permeten els URL segurs (https) per a les llistes de filtres personalitzades";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Afegeix";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Llistes comunitàries populars addicionals. Tingues en compte que habilitar massa filtres reduirà la velocitat de navegació.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Error de descàrrega";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Descàrrega pendent";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Edita";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Introdueix l'URL de la llista de filtres";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Última actualització %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Introdueix l'URL de la llista de filtres aquí";
 
 /* Share action title */
 "FindInPage" = "Troba a la pàgina";
@@ -2524,6 +2476,9 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Desa";
 
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Desa els canvis";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Registres desats";
 
@@ -3071,13 +3026,13 @@
 "SyncAddDeviceScan" = "Codi QR de la cadena de sincronització";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "Al segon dispositiu mòbil, ves a Sincronització al Tauler de configuració i prem el botó \"Escaneja el codi de sincronització\". A continuació, utilitza la teva càmera per escanejar el codi QR.\n\nTracta aquest codi com una contrasenya. Si algú s'apodera d'ell, pot llegir i modificar les teves dades sincronitzades.";
+"SyncAddDeviceScanDescription" = "Al segon dispositiu mòbil, aneu a Sincronització al tauler de configuració i toqueu el botó \"Escaneja el codi de sincronització\". Utilitzeu la vostra càmera per escanejar el codi QR a continuació.\n\nTracta aquest codi com una contrasenya. Si algú s'apodera d'ell, pot llegir i modificar les teves dades sincronitzades.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Introdueix el codi de sincronització";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Al dispositiu, ves a Sincronització al Tauler de configuració i prem el botó \"%@\". Introdueix les paraules del codi de la cadena de sincronització que es mostren a continuació.\n\nTracta aquest codi com una contrasenya. Si algú s'apodera d'ell, pot llegir i modificar les teves dades sincronitzades.";
+"SyncAddDeviceWordsDescription" = "Al dispositiu, aneu a Sincronització al tauler de configuració i toqueu el botó \"%@\". Introduïu les paraules del codi de la cadena de sincronització que es mostren a continuació.\n\nTracta aquest codi com una contrasenya. Si algú s'apodera d'ell, pot llegir i modificar les teves dades sincronitzades.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Introdueix paraules de codi";
@@ -3090,6 +3045,12 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Tria el tipus de dispositiu amb què et vols sincronitzar.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "El codi ha caducat. Genereu-ne un de nou fent clic al botó següent.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Aquest codi temporal és vàlid per al proper %\nAquest codi temporal és vàlid durant les properes %@";
 
 /* Computer device button title */
 "SyncComputerDevice" = "Ordinador";
