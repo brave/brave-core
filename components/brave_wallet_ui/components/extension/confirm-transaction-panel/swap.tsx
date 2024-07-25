@@ -6,7 +6,6 @@
 import * as React from 'react'
 
 // Utils
-import { WalletSelectors } from '../../../common/selectors'
 import { getLocale } from '../../../../common/locale'
 
 // Styled components
@@ -28,15 +27,10 @@ import { SwapBase } from '../swap'
 
 // Hooks
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
-import {
-  useUnsafeWalletSelector //
-} from '../../../common/hooks/use-safe-selector'
 import { useSwapTransactionParser } from '../../../common/hooks/use-swap-tx-parser'
+import { useGetActiveOriginQuery } from '../../../common/slices/api.slice'
 
 export function ConfirmSwapTransaction() {
-  // redux
-  const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
-
   // state
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
     React.useState<boolean>(false)
@@ -60,6 +54,10 @@ export function ConfirmSwapTransaction() {
     insufficientFundsError,
     insufficientFundsForGasError
   } = usePendingTransactions()
+
+  // queries
+  const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
+    useGetActiveOriginQuery()
 
   // computed
   const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin

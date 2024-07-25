@@ -119,6 +119,27 @@ export const walletEndpoints = ({
       providesTags: ['IsMetaMaskInstalled']
     }),
 
+    getActiveOrigin: query<BraveWallet.OriginInfo, void>({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { braveWalletService } = api
+
+          const { originInfo } = await braveWalletService.getActiveOrigin()
+          return {
+            data: originInfo
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'unable to get active origin',
+            error
+          )
+        }
+      },
+      providesTags: ['ActiveOrigin']
+    }),
+
     createWallet: mutation<true, { password: string }>({
       queryFn: async (
         arg,

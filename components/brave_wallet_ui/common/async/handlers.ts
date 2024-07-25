@@ -62,10 +62,7 @@ handler.on(
 handler.on(
   WalletActions.initialize.type,
   async (store, payload: RefreshOpts) => {
-    // Initialize active origin state.
-    const { braveWalletService, walletHandler, keyringService } = getAPIProxy()
-    const { originInfo } = await braveWalletService.getActiveOrigin()
-    store.dispatch(WalletActions.activeOriginChanged(originInfo))
+    const { walletHandler, keyringService } = getAPIProxy()
     const { walletInfo } = await walletHandler.getWalletInfo()
     const { allAccounts } = await keyringService.getAllAccounts()
     store.dispatch(WalletActions.initialized({ walletInfo, allAccounts }))

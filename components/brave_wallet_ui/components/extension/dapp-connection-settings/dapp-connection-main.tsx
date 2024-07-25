@@ -6,18 +6,13 @@
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
-// Selectors
-import {
-  useUnsafeWalletSelector //
-} from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
-
 // Types
 import { DAppConnectionOptionsType } from 'components/brave_wallet_ui/constants/types'
 import { BraveWallet, DAppSupportedCoinTypes } from '../../../constants/types'
 
 // Queries
 import {
+  useGetActiveOriginQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetSelectedChainQuery,
   useRemoveSitePermissionMutation,
@@ -71,10 +66,9 @@ export const DAppConnectionMain = (props: Props) => {
     onSelectOption,
     getAccountsFiatValue
   } = props
-  // Selectors
-  const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
-
   // Queries
+  const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
+    useGetActiveOriginQuery()
   const { data: selectedNetwork } = useGetSelectedChainQuery()
   const { data: selectedAccount } = useSelectedAccountQuery()
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()

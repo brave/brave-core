@@ -191,6 +191,7 @@ export const {
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
   useGetActiveOriginConnectedAccountIdsQuery,
+  useGetActiveOriginQuery,
   useGetAddressByteCodeQuery,
   useGetAddressFromNameServiceUrlQuery,
   useGetAllKnownNetworksQuery,
