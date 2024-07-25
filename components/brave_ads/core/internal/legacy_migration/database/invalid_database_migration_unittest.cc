@@ -3,11 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
-#include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -15,11 +13,8 @@
 namespace brave_ads {
 
 namespace {
-
-std::string TestParamToString(::testing::TestParamInfo<int> test_param) {
-  return base::StringPrintf("%d_to_%d", test_param.param, database::kVersion);
-}
-
+constexpr char kInvalidDatabaseSchemaFilename[] =
+    "database_migration/invalid_database_schema.sqlite";
 }  // namespace
 
 class BraveAdsInvalidDatabaseMigrationTest
@@ -31,21 +26,13 @@ class BraveAdsInvalidDatabaseMigrationTest
     DatabaseManager::GetInstance().AddObserver(this);
 
     ASSERT_TRUE(CopyFileFromTestDataPathToTempProfilePath(
-        DatabasePathForSchemaVersion(), kDatabaseFilename));
+        kInvalidDatabaseSchemaFilename, kDatabaseFilename));
   }
 
   void TearDown() override {
     DatabaseManager::GetInstance().RemoveObserver(this);
 
     test::TestBase::TearDown();
-  }
-
-  static int GetSchemaVersion() { return GetParam(); }
-
-  static std::string DatabasePathForSchemaVersion() {
-    return base::StringPrintf(
-        "database_migration/invalid_database_schema_%d.sqlite",
-        GetSchemaVersion());
   }
 
   // DatabaseManagerObserver:
@@ -69,7 +56,7 @@ class BraveAdsInvalidDatabaseMigrationTest
   bool database_is_ready_ = false;
 };
 
-TEST_P(BraveAdsInvalidDatabaseMigrationTest, MigrateFromSchema) {
+TEST_F(BraveAdsInvalidDatabaseMigrationTest, MigrateFromInvalidDatabaseSchema) {
   // Database migration occurs after invoking `Setup` and `SetUpMocks` during
   // the initialization of `AdsImpl` in `test::TestBase`. Consequently,
   // `EXPECT_CALL` cannot be used with the mocks.
@@ -80,10 +67,5 @@ TEST_P(BraveAdsInvalidDatabaseMigrationTest, MigrateFromSchema) {
   EXPECT_FALSE(failed_to_migrate_database_);
   EXPECT_TRUE(database_is_ready_);
 }
-
-INSTANTIATE_TEST_SUITE_P(,
-                         BraveAdsInvalidDatabaseMigrationTest,
-                         ::testing::Range(1, database::kVersion),
-                         TestParamToString);
 
 }  // namespace brave_ads
