@@ -5,10 +5,12 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
+import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
+import usePromise from '$web-common/usePromise'
 
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
-import { LiquiditySource, QuoteOption } from '../../../constants/types'
+import { QuoteOption } from '../../../constants/types'
 
 // Queries
 import {
@@ -36,9 +38,6 @@ import {
   useBalancesFetcher //
 } from '../../../../../../common/hooks/use-balances-fetcher'
 
-// Constants
-import LPMetadata from '../../../constants/LpMetadata'
-
 // Utils
 import Amount from '../../../../../../utils/amount'
 import { getLocale } from '../../../../../../../common/locale'
@@ -51,6 +50,7 @@ import {
   getTokenPriceFromRegistry,
   getPriceIdForToken
 } from '../../../../../../utils/pricing-utils'
+import { getLPIcon } from '../../../swap.utils'
 
 // Components
 import {
@@ -66,15 +66,14 @@ import { MaxSlippage } from '../max_slippage/max_slippage'
 import {
   InfoIconTooltip //
 } from '../../../../../../components/shared/info_icon_tooltip/info_icon_tooltip'
+import { Routes } from '../routes/routes'
 
 // Styled Components
 import {
   BraveFeeDiscounted,
   Bubble,
   Button,
-  LPIcon,
-  LPSeparator,
-  LPRow,
+  LiquidityProviderIcon,
   Section,
   CaratDownIcon,
   FreeText,
@@ -88,20 +87,16 @@ import {
   Column,
   HorizontalSpace
 } from '../../../../../../components/shared/style'
-
-const getLPIcon = (source: LiquiditySource) => {
-  if (source.icon) {
-    return `chrome://image?${source.icon}`
-  }
-  return LPMetadata[source.name] ?? ''
-}
+import { BankIcon } from '../../shared-swap.styles'
 
 interface Props {
-  selectedQuoteOption: QuoteOption | undefined
   fromToken: BraveWallet.BlockchainToken | undefined
   toToken: BraveWallet.BlockchainToken | undefined
   isBridge: boolean
   slippageTolerance: string
+  quoteOptions: QuoteOption[]
+  selectedQuoteOptionId: string
+  onSelectQuoteOption: (id: string) => void
   onChangeRecipient: (address: string) => void
   onChangeSlippageTolerance: (slippage: string) => void
   toAccount?: BraveWallet.AccountInfo
@@ -110,24 +105,26 @@ interface Props {
 
 export const QuoteInfo = (props: Props) => {
   const {
-    selectedQuoteOption,
     fromToken,
     toToken,
     swapFees,
     isBridge,
     toAccount,
     slippageTolerance,
+    quoteOptions,
+    selectedQuoteOptionId,
+    onSelectQuoteOption,
     onChangeSlippageTolerance,
     onChangeRecipient
   } = props
 
   // State
-  const [showProviders, setShowProviders] = React.useState<boolean>(false)
   const [showAccountSelector, setShowAccountSelector] =
     React.useState<boolean>(false)
   const [showAdvancedInformation, setShowAdvancedInformation] =
     React.useState<boolean>(false)
   const [showMaxSlippage, setShowMaxSlippage] = React.useState<boolean>(false)
+  const [showRoutes, setShowRoutes] = React.useState<boolean>(false)
 
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
@@ -181,7 +178,18 @@ export const QuoteInfo = (props: Props) => {
     [onChangeSlippageTolerance]
   )
 
+  const handleOnChangeRoute = React.useCallback(
+    (id: string) => {
+      onSelectQuoteOption(id)
+      setShowRoutes(false)
+    },
+    [onSelectQuoteOption]
+  )
+
   // Memos & Computed
+  const selectedQuoteOption = quoteOptions.find(
+    (option) => option.id === selectedQuoteOptionId
+  )
   const toTokenPriceAmount =
     spotPriceRegistry &&
     toToken &&
@@ -359,6 +367,26 @@ export const QuoteInfo = (props: Props) => {
   ])
 
   const effectiveFeeAmount = braveFee && new Amount(braveFee.effectiveFeePct)
+  const firstStep =
+    selectedQuoteOption?.sources.find((source) =>
+      source.includedSteps?.some(
+        (step) => step.type === BraveWallet.LiFiStepType.kCross
+      )
+    ) || selectedQuoteOption?.sources[0]
+  const firstStepName = firstStep?.name ?? ''
+  const firstStepIcon = firstStep ? getLPIcon(firstStep) : ''
+  const additionalRoutesLength = selectedQuoteOption
+    ? selectedQuoteOption.sources.length - 1
+    : 0
+
+  const { result: exchangeStepsLocale } = usePromise(
+    async () =>
+      PluralStringProxyImpl.getInstance().getPluralString(
+        'braveWalletExchangeNamePlusSteps',
+        additionalRoutesLength
+      ),
+    [additionalRoutesLength]
+  )
 
   return (
     <Column fullWidth={true}>
@@ -421,14 +449,27 @@ export const QuoteInfo = (props: Props) => {
       >
         {!showAdvancedInformation && selectedQuoteOption && (
           <Row justifyContent='space-between'>
-            <Row width='unset'>
-              <LPIcon icon={LPMetadata[selectedQuoteOption.provider]} />
+            <Row
+              width='unset'
+              gap='8px'
+            >
+              {firstStepIcon ? (
+                <LiquidityProviderIcon
+                  icon={firstStepIcon}
+                  size='16px'
+                />
+              ) : (
+                <BankIcon size='16px' />
+              )}
               <Text
                 textSize='12px'
                 isBold={true}
                 textColor='primary'
               >
-                {selectedQuoteOption.provider}
+                {firstStepName}{' '}
+                {additionalRoutesLength !== 0
+                  ? `+ ${additionalRoutesLength}`
+                  : ''}
               </Text>
             </Row>
             {txNetwork && (
@@ -469,57 +510,32 @@ export const QuoteInfo = (props: Props) => {
                   >
                     {getLocale('braveWalletRoute')}
                   </Text>
-                  <Row width='unset'>
-                    <LPIcon icon={LPMetadata[selectedQuoteOption.provider]} />
+                  <Row
+                    width='unset'
+                    gap='8px'
+                  >
+                    {firstStepIcon ? (
+                      <LiquidityProviderIcon
+                        icon={firstStepIcon}
+                        size='16px'
+                      />
+                    ) : (
+                      <BankIcon size='16px' />
+                    )}
                     <Text
                       textSize='12px'
                       isBold={true}
                       textColor='primary'
                     >
-                      {selectedQuoteOption.provider}
+                      {additionalRoutesLength !== 0 && exchangeStepsLocale
+                        ? exchangeStepsLocale.replace('$1', firstStepName)
+                        : firstStepName}
                     </Text>
-                    <HorizontalSpace space='8px' />
-                    <Button onClick={() => setShowProviders((prev) => !prev)}>
-                      <CaratDownIcon isOpen={showProviders} />
+                    <Button onClick={() => setShowRoutes((prev) => !prev)}>
+                      <CaratDownIcon isOpen={showRoutes} />
                     </Button>
                   </Row>
                 </Row>
-                {showProviders && (
-                  <LPRow
-                    justifyContent='flex-start'
-                    padding='8px 0px 0px 0px'
-                  >
-                    {selectedQuoteOption.sources.map((source, idx) => {
-                      const lpIcon = getLPIcon(source)
-                      return (
-                        <Row
-                          key={source.name}
-                          width='unset'
-                        >
-                          {lpIcon !== '' ? <LPIcon icon={lpIcon} /> : null}
-                          <Text
-                            isBold={true}
-                            textSize='12px'
-                            textColor='primary'
-                          >
-                            {source.name.split('_').join(' ')}
-                          </Text>
-
-                          {idx !== selectedQuoteOption.sources.length - 1 && (
-                            <LPSeparator
-                              textSize='12px'
-                              textColor='secondary'
-                            >
-                              {selectedQuoteOption.routing === 'split'
-                                ? '+'
-                                : '×'}
-                            </LPSeparator>
-                          )}
-                        </Row>
-                      )
-                    })}
-                  </LPRow>
-                )}
               </Column>
             )}
 
@@ -704,6 +720,16 @@ export const QuoteInfo = (props: Props) => {
       {isPanel && (
         <>
           <BottomSheet
+            onClose={() => setShowRoutes(false)}
+            isOpen={showRoutes}
+          >
+            <Routes
+              quoteOptions={quoteOptions}
+              onSelectQuoteOption={handleOnChangeRoute}
+              selectedQuoteOptionId={selectedQuoteOptionId}
+            />
+          </BottomSheet>
+          <BottomSheet
             onClose={() => setShowAccountSelector(false)}
             isOpen={showAccountSelector}
           >
@@ -722,6 +748,20 @@ export const QuoteInfo = (props: Props) => {
       )}
       {!isPanel && (
         <>
+          {showRoutes && (
+            <PopupModal
+              title=''
+              onClose={() => setShowRoutes(false)}
+              width='560px'
+              showDivider={false}
+            >
+              <Routes
+                quoteOptions={quoteOptions}
+                onSelectQuoteOption={handleOnChangeRoute}
+                selectedQuoteOptionId={selectedQuoteOptionId}
+              />
+            </PopupModal>
+          )}
           {showAccountSelector && (
             <PopupModal
               title=''

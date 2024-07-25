@@ -14,6 +14,7 @@ import {
   Row,
   Text //
 } from '../../../../../../components/shared/style'
+import { LPIcon } from '../../shared-swap.styles'
 
 export const Bubble = styled(Row)`
   border-radius: 4px;
@@ -27,18 +28,8 @@ export const FreeText = styled(Text)`
   font-weight: 700;
 `
 
-export const LPIcon = styled.div<{ icon: string }>`
-  background-image: url(${(p) => p.icon});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 16px;
-  width: 16px;
-  margin-right: 8px;
-`
-
-export const LPSeparator = styled(Text)`
-  padding: 0 6px;
+export const LiquidityProviderIcon = styled(LPIcon)`
+  border-radius: none;
 `
 
 export const BraveFeeDiscounted = styled(Text)`
@@ -64,10 +55,6 @@ export const ExpandButton = styled(Button)`
   background-color: ${leo.color.container.background};
   border-radius: 100%;
   padding: 1px;
-`
-
-export const LPRow = styled(Row)`
-  flex-wrap: wrap;
 `
 
 export const Section = styled(Column)`

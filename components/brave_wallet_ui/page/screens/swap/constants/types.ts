@@ -10,8 +10,13 @@ import Amount from '../../../../utils/amount'
 export type LiquiditySource = {
   name: string
   proportion: Amount
-  icon?: string
+  includedSteps?: BraveWallet.LiFiStep[]
+  tool?: string
+  logo?: string
 }
+
+export type RouteTagsType = 'CHEAPEST' | 'FASTEST'
+export type Providers = 'Jupiter' | '0x' | 'Li.Fi'
 
 export type QuoteOption = {
   fromAmount: Amount
@@ -36,8 +41,10 @@ export type QuoteOption = {
   networkFee: Amount
 
   networkFeeFiat: string
-  provider: string
+  provider: Providers
   executionDuration?: string
+  tags: RouteTagsType[]
+  id: string
 }
 
 export type SwapAndSend = {
@@ -94,4 +101,5 @@ export type SwapParamsOverrides = {
   toToken?: BraveWallet.BlockchainToken
   provider?: BraveWallet.SwapProvider
   slippage?: string
+  quoteOptionId?: string
 }
