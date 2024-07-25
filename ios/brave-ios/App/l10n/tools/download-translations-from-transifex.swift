@@ -26,37 +26,60 @@ struct LanguageMapping {
     self.additionalTargets = additionalTargets
   }
 
-  static let allMappings: [LanguageMapping] = [
-    LanguageMapping(source: "fr"),
-    LanguageMapping(source: "pl"),
-    LanguageMapping(source: "ru"),
-    LanguageMapping(source: "de", additionalTargets: ["gsw"]),
-    LanguageMapping(source: "zh"),
-    LanguageMapping(source: "zh_TW"),
-    LanguageMapping(source: "id_ID"),
-    LanguageMapping(source: "it"),
-    LanguageMapping(source: "ja"),
-    LanguageMapping(source: "ko_KR"),
-    LanguageMapping(source: "ms"),
-    LanguageMapping(source: "pt_BR"),
-    LanguageMapping(source: "pt_PT"),
-    LanguageMapping(source: "pt"),
-    LanguageMapping(source: "es"),
-    LanguageMapping(source: "uk"),
-    LanguageMapping(source: "nb"),
-    LanguageMapping(source: "sv"),
-    LanguageMapping(source: "tr"),
-    LanguageMapping(source: "ca"),
-    LanguageMapping(source: "nl"),
-    LanguageMapping(source: "cs"),
-    LanguageMapping(source: "da"),
-    LanguageMapping(source: "el"),
-    LanguageMapping(source: "fi"),
-    LanguageMapping(source: "hr", additionalTargets: ["bs"]),
-    LanguageMapping(source: "hu"),
-    LanguageMapping(source: "sk"),
-    LanguageMapping(source: "ro"),
-  ]
+  static var mappingsToDownload: [LanguageMapping] = {
+    let arguments = CommandLine.arguments.dropFirst()  // First argument is the script name
+    let providedLocales = Array(arguments)
+
+    let mappings: [LanguageMapping] = [
+      LanguageMapping(source: "fr"),
+      LanguageMapping(source: "pl"),
+      LanguageMapping(source: "ru"),
+      LanguageMapping(source: "de", additionalTargets: ["gsw"]),
+      LanguageMapping(source: "zh"),
+      LanguageMapping(source: "zh_TW"),
+      LanguageMapping(source: "id_ID"),
+      LanguageMapping(source: "it"),
+      LanguageMapping(source: "ja"),
+      LanguageMapping(source: "ko_KR"),
+      LanguageMapping(source: "ms"),
+      LanguageMapping(source: "pt_BR"),
+      LanguageMapping(source: "pt_PT"),
+      LanguageMapping(source: "pt"),
+      LanguageMapping(source: "es"),
+      LanguageMapping(source: "uk"),
+      LanguageMapping(source: "nb"),
+      LanguageMapping(source: "sv"),
+      LanguageMapping(source: "tr"),
+      LanguageMapping(source: "ca"),
+      LanguageMapping(source: "nl"),
+      LanguageMapping(source: "cs"),
+      LanguageMapping(source: "da"),
+      LanguageMapping(source: "el"),
+      LanguageMapping(source: "fi"),
+      LanguageMapping(source: "hr", additionalTargets: ["bs"]),
+      LanguageMapping(source: "hu"),
+      LanguageMapping(source: "sk"),
+      LanguageMapping(source: "ro"),
+    ]
+
+    if providedLocales.isEmpty {
+      return mappings
+    } else {
+      let foundMappings = mappings.filter { providedLocales.contains($0.source) }
+      let foundLocales = Set(foundMappings.map { $0.source })
+      let notFoundLocales = providedLocales.filter { !foundLocales.contains($0) }
+
+      notFoundLocales.forEach {
+        printYellowWarning("WARNING: Locale '\($0)' not found in mappings")
+      }
+
+      return foundMappings
+    }
+  }()
+}
+
+func printYellowWarning(_ message: String) {
+  print("\u{001B}[0;33m\(message)\u{001B}[0m")
 }
 
 @Sendable func validateResponse(_ response: HTTPURLResponse) {
@@ -206,7 +229,7 @@ struct LanguageMapping {
 let resourceURLs: [String: URL] = await {
   var urls: [String: URL] = [:]
   // Prepare files for each language first
-  for mapping in LanguageMapping.allMappings {
+  for mapping in LanguageMapping.mappingsToDownload {
     if Task.isCancelled {
       exit(EXIT_FAILURE)
     }
@@ -218,7 +241,7 @@ let resourceURLs: [String: URL] = await {
 
 // Then attempt to download each one
 try await withThrowingTaskGroup(of: Void.self) { group in
-  for code in LanguageMapping.allMappings.map(\.source) {
+  for code in LanguageMapping.mappingsToDownload.map(\.source) {
     guard let resourceURL = resourceURLs[code] else {
       return
     }
@@ -239,7 +262,8 @@ try await withThrowingTaskGroup(of: Void.self) { group in
           try await Task.sleep(nanoseconds: NSEC_PER_SEC * 5)
         } catch {
           // One language on the sever may may to multiple languages/dialects on the client.
-          let targets = LanguageMapping.allMappings.first { $0.source == code }?.targets ?? [code]
+          let targets =
+            LanguageMapping.mappingsToDownload.first { $0.source == code }?.targets ?? [code]
           await cleanupAndWriteResourceToDisk(xliffData: xliffData, languageCodes: targets)
           print("Downloaded translations for \(code)")
           break
