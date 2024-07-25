@@ -10,7 +10,7 @@
 #include "ios/chrome/browser/tabs/model/ios_chrome_synced_tab_delegate.h"
 #import "ios/chrome/browser/web/model/session_state/web_session_state_tab_helper.h"
 
-void AttachTabHelpers(web::WebState* web_state, bool for_prerender) {
+void AttachTabHelpers(web::WebState* web_state, TabHelperFilter filter_flags) {
   IOSChromeSessionTabHelper::CreateForWebState(web_state);
   IOSChromeSyncedTabDelegate::CreateForWebState(web_state);
   WebSessionStateTabHelper::CreateForWebState(web_state);
