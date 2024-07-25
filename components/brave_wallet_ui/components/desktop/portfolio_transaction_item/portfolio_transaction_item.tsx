@@ -17,7 +17,6 @@ import {
   formatDateAsRelative,
   serializedTimeDeltaToJSDate
 } from '../../../utils/datetime-utils'
-import { getPriceIdForToken } from '../../../utils/api-utils'
 import { getLocale } from '../../../../common/locale'
 import {
   getTransactionFormattedSendCurrencyTotal,
@@ -35,7 +34,10 @@ import {
 import { makeNetworkAsset } from '../../../options/asset-options'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { getAddressLabel, getAccountLabel } from '../../../utils/account-utils'
-import { computeFiatAmount } from '../../../utils/pricing-utils'
+import {
+  computeFiatAmount,
+  getPriceIdForToken
+} from '../../../utils/pricing-utils'
 import { isNativeAsset } from '../../../utils/asset-utils'
 
 // Hooks

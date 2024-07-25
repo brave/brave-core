@@ -7,10 +7,12 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Utils
-import { getPriceIdForToken } from '../../../utils/api-utils'
 import Amount from '../../../utils/amount'
 import { getBalance } from '../../../utils/balance-utils'
-import { computeFiatAmount } from '../../../utils/pricing-utils'
+import {
+  computeFiatAmount,
+  getPriceIdForToken
+} from '../../../utils/pricing-utils'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import {
   networkEntityAdapter //

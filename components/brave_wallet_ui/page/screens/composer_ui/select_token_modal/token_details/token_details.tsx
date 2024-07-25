@@ -26,8 +26,10 @@ import Amount from '../../../../../utils/amount'
 import { reduceAddress } from '../../../../../utils/reduce-address'
 import { isNativeAsset } from '../../../../../utils/asset-utils'
 import { getLocale } from '../../../../../../common/locale'
-import { getPriceIdForToken } from '../../../../../utils/api-utils'
-import { getTokenPriceFromRegistry } from '../../../../../utils/pricing-utils'
+import {
+  getPriceIdForToken,
+  getTokenPriceFromRegistry
+} from '../../../../../utils/pricing-utils'
 import { getNFTTokenStandard } from '../../../../../utils/string-utils'
 
 // Components

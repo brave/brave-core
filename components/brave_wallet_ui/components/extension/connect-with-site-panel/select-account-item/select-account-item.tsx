@@ -31,10 +31,12 @@ import {
   reduceAccountDisplayName //
 } from '../../../../utils/reduce-account-name'
 import { reduceAddress } from '../../../../utils/reduce-address'
-import { computeFiatAmount } from '../../../../utils/pricing-utils'
+import {
+  computeFiatAmount,
+  getPriceIdForToken
+} from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import Amount from '../../../../utils/amount'
-import { getPriceIdForToken } from '../../../../utils/api-utils'
 import {
   selectAllVisibleFungibleUserAssetsFromQueryResult //
 } from '../../../../common/slices/entities/blockchain-token.entity'

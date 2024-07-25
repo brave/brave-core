@@ -13,8 +13,10 @@ import { UISelectors } from '../../../common/selectors'
 // Utils
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
-import { getPriceIdForToken } from '../../../utils/api-utils'
-import { getTokenPriceFromRegistry } from '../../../utils/pricing-utils'
+import {
+  getPriceIdForToken,
+  getTokenPriceFromRegistry
+} from '../../../utils/pricing-utils'
 import { BraveWallet } from '../../../constants/types'
 import {
   getIsRewardsToken,

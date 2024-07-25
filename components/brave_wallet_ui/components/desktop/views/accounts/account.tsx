@@ -38,9 +38,9 @@ import {
 import Amount from '../../../../utils/amount'
 import {
   getTokenPriceAmountFromRegistry,
-  computeFiatAmount
+  computeFiatAmount,
+  getPriceIdForToken
 } from '../../../../utils/pricing-utils'
-import { getPriceIdForToken } from '../../../../utils/api-utils'
 import {
   selectAllVisibleUserAssetsFromQueryResult //
 } from '../../../../common/slices/entities/blockchain-token.entity'

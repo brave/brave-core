@@ -15,7 +15,7 @@ import { PanelActions } from '../../panel/actions'
 
 // utils
 import Amount from '../../utils/amount'
-import { getPriceIdForToken } from '../../utils/api-utils'
+import { getPriceIdForToken } from '../../utils/pricing-utils'
 import { isHardwareAccount } from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'

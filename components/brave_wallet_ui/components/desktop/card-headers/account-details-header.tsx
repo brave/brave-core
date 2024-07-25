@@ -26,9 +26,11 @@ import { UISelectors } from '../../../common/selectors'
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
-import { getPriceIdForToken } from '../../../utils/api-utils'
 import { getBalance } from '../../../utils/balance-utils'
-import { computeFiatAmount } from '../../../utils/pricing-utils'
+import {
+  computeFiatAmount,
+  getPriceIdForToken
+} from '../../../utils/pricing-utils'
 import { getAccountTypeDescription } from '../../../utils/account-utils'
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'

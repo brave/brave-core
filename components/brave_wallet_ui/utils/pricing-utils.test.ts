@@ -12,7 +12,8 @@ import {
   computeFiatAmount,
   getTokenPriceFromRegistry,
   getTokenPriceAmountFromRegistry,
-  computeFiatAmountToAssetValue
+  computeFiatAmountToAssetValue,
+  getPriceIdForToken
 } from './pricing-utils'
 
 describe('getTokenPriceFromRegistry', () => {
@@ -56,5 +57,31 @@ describe('computeFiatAmountToAssetValue', () => {
         token: mockBasicAttentionToken
       }).format(6)
     ).toBe('227.273')
+  })
+})
+
+describe('Check getPriceIdForToken()', () => {
+  test('Value should return contract address', () => {
+    expect(getPriceIdForToken(mockBasicAttentionToken)).toEqual(
+      '0x0d8775f648430679a709e98d2b0cb6250d2887ef'
+    )
+  })
+
+  test('Value should return symbol', () => {
+    expect(
+      getPriceIdForToken({
+        ...mockBasicAttentionToken,
+        contractAddress: ''
+      })
+    ).toEqual('bat')
+  })
+
+  test('Value should return coingeckoId', () => {
+    expect(
+      getPriceIdForToken({
+        ...mockBasicAttentionToken,
+        coingeckoId: 'mockCoingeckoId'
+      })
+    ).toEqual('mockcoingeckoid')
   })
 })

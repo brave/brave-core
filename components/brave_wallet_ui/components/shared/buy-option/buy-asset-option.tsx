@@ -22,8 +22,10 @@ import {
   checkIfTokenNeedsNetworkIcon,
   getAssetIdKey
 } from '../../../utils/asset-utils'
-import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
-import { getPriceIdForToken } from '../../../utils/api-utils'
+import {
+  getTokenPriceAmountFromRegistry,
+  getPriceIdForToken
+} from '../../../utils/pricing-utils'
 
 // hooks
 import {

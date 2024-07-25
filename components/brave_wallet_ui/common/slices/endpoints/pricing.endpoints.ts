@@ -22,7 +22,7 @@ import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../../constants/magics'
 
 // Utils
 import { makeSerializableTimeDelta } from '../../../utils/model-serialization-utils'
-import { getPriceIdForToken } from '../../../utils/api-utils'
+import { getPriceIdForToken } from '../../../utils/pricing-utils'
 import Amount from '../../../utils/amount'
 import { findTokenByAssetId } from '../../../utils/asset-utils'
 

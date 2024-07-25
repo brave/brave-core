@@ -21,7 +21,7 @@ import {
   sortAccountsByName
 } from '../../../../utils/account-utils'
 import { makeAccountRoute } from '../../../../utils/routes-utils'
-import { getPriceIdForToken } from '../../../../utils/api-utils'
+import { getPriceIdForToken } from '../../../../utils/pricing-utils'
 
 // Styled Components
 import { SectionTitle, AccountsListWrapper } from './style'

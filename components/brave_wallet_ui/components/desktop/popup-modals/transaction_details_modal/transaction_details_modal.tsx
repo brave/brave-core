@@ -55,13 +55,15 @@ import {
 import { serializedTimeDeltaToJSDate } from '../../../../utils/datetime-utils'
 import { getCoinFromTxDataUnion } from '../../../../utils/network-utils'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
-import { computeFiatAmount } from '../../../../utils/pricing-utils'
+import {
+  computeFiatAmount,
+  getPriceIdForToken
+} from '../../../../utils/pricing-utils'
 import Amount from '../../../../utils/amount'
 import {
   getAddressLabel,
   getAccountLabel
 } from '../../../../utils/account-utils'
-import { getPriceIdForToken } from '../../../../utils/api-utils'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 
 // Components
