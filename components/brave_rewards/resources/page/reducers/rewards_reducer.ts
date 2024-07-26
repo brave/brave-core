@@ -255,7 +255,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.TOGGLE_AD_THUMB_UP: {
-      chrome.send('brave_rewards.toggleAdThumbUp', [action.payload.adContent])
+      chrome.send('brave_rewards.toggleAdThumbUp', [action.payload.adHistory])
       break
     }
     case types.ON_TOGGLE_AD_THUMB_UP: {
@@ -263,7 +263,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.TOGGLE_AD_THUMB_DOWN: {
-      chrome.send('brave_rewards.toggleAdThumbDown', [action.payload.adContent])
+      chrome.send('brave_rewards.toggleAdThumbDown', [action.payload.adHistory])
       break
     }
     case types.ON_TOGGLE_AD_THUMB_DOWN: {
@@ -271,7 +271,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.TOGGLE_AD_OPT_IN: {
-      chrome.send('brave_rewards.toggleAdOptIn', [action.payload.categoryContent])
+      chrome.send('brave_rewards.toggleAdOptIn', [action.payload.adHistory])
       break
     }
     case types.ON_TOGGLE_AD_OPT_IN: {
@@ -279,7 +279,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.TOGGLE_AD_OPT_OUT: {
-      chrome.send('brave_rewards.toggleAdOptOut', [action.payload.categoryContent])
+      chrome.send('brave_rewards.toggleAdOptOut', [action.payload.adHistory])
       break
     }
     case types.ON_TOGGLE_AD_OPT_OUT: {
@@ -287,7 +287,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.TOGGLE_SAVED_AD: {
-      chrome.send('brave_rewards.toggleSavedAd', [action.payload.adContent])
+      chrome.send('brave_rewards.toggleSavedAd', [action.payload.adHistory])
       break
     }
     case types.ON_TOGGLE_SAVED_AD: {
@@ -295,7 +295,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.TOGGLE_FLAGGED_AD: {
-      chrome.send('brave_rewards.toggleFlaggedAd', [action.payload.adContent])
+      chrome.send('brave_rewards.toggleFlaggedAd', [action.payload.adHistory])
       break
     }
     case types.ON_TOGGLE_FLAGGED_AD: {

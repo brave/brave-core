@@ -165,6 +165,7 @@ export interface AdsHistory {
 
 export interface AdHistory {
   uuid: string
+  createdAt: string
   adContent: AdContent
   categoryContent: CategoryContent
 }

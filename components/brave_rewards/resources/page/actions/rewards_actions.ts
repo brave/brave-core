@@ -146,48 +146,48 @@ export const onAdsHistory = (adsHistory: Rewards.AdsHistory[]) => action(types.O
   adsHistory
 })
 
-export const toggleAdThumbUp = (adContent: Rewards.AdContent) => action(types.TOGGLE_AD_THUMB_UP, {
-  adContent
+export const toggleAdThumbUp = (adHistory: Rewards.AdHistory) => action(types.TOGGLE_AD_THUMB_UP, {
+  adHistory
 })
 
 export const onToggleAdThumbUp = (result: Rewards.ToggleLikeAction) => action(types.ON_TOGGLE_AD_THUMB_UP, {
   result
 })
 
-export const toggleAdThumbDown = (adContent: Rewards.AdContent) => action(types.TOGGLE_AD_THUMB_DOWN, {
-  adContent
+export const toggleAdThumbDown = (adHistory: Rewards.AdHistory) => action(types.TOGGLE_AD_THUMB_DOWN, {
+  adHistory
 })
 
 export const onToggleAdThumbDown = (result: Rewards.ToggleLikeAction) => action(types.ON_TOGGLE_AD_THUMB_DOWN, {
   result
 })
 
-export const toggleAdOptIn = (categoryContent: Rewards.CategoryContent) => action(types.TOGGLE_AD_OPT_IN, {
-  categoryContent
+export const toggleAdOptIn = (adHistory: Rewards.AdHistory) => action(types.TOGGLE_AD_OPT_IN, {
+  adHistory
 })
 
 export const onToggleAdOptIn = (result: Rewards.ToggleOptAction) => action(types.ON_TOGGLE_AD_OPT_IN, {
   result
 })
 
-export const toggleAdOptOut = (categoryContent: Rewards.CategoryContent) => action(types.TOGGLE_AD_OPT_OUT, {
-  categoryContent
+export const toggleAdOptOut = (adHistory: Rewards.AdHistory) => action(types.TOGGLE_AD_OPT_OUT, {
+  adHistory
 })
 
 export const onToggleAdOptOut = (result: Rewards.ToggleOptAction) => action(types.ON_TOGGLE_AD_OPT_OUT, {
   result
 })
 
-export const toggleSavedAd = (adContent: Rewards.AdContent) => action(types.TOGGLE_SAVED_AD, {
-  adContent
+export const toggleSavedAd = (adHistory: Rewards.AdHistory) => action(types.TOGGLE_SAVED_AD, {
+  adHistory
 })
 
 export const onToggleSavedAd = (result: Rewards.ToggleSavedAd) => action(types.ON_TOGGLE_SAVED_AD, {
   result
 })
 
-export const toggleFlaggedAd = (adContent: Rewards.AdContent) => action(types.TOGGLE_FLAGGED_AD, {
-  adContent
+export const toggleFlaggedAd = (adHistory: Rewards.AdHistory) => action(types.TOGGLE_FLAGGED_AD, {
+  adHistory
 })
 
 export const onToggleFlaggedAd = (result: Rewards.ToggleFlaggedAd) => action(types.ON_TOGGLE_FLAGGED_AD, {
