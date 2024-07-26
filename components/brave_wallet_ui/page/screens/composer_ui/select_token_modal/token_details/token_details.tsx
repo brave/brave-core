@@ -30,7 +30,10 @@ import {
   getPriceIdForToken,
   getTokenPriceFromRegistry
 } from '../../../../../utils/pricing-utils'
-import { getNFTTokenStandard } from '../../../../../utils/string-utils'
+import {
+  getNFTTokenStandard,
+  reduceInt
+} from '../../../../../utils/string-utils'
 
 // Components
 import {
@@ -78,6 +81,13 @@ export const TokenDetails = (props: Props) => {
 
   // Hooks
   const onClickViewOnBlockExplorer = useExplorer(tokensNetwork)
+
+  // Memos
+  const formattedTokenId = React.useMemo(() => {
+    return token.tokenId
+      ? new Amount(token.tokenId).format(undefined, false)
+      : ''
+  }, [token.tokenId])
 
   // Computed
   const spotPrice = spotPriceRegistry
@@ -195,13 +205,21 @@ export const TokenDetails = (props: Props) => {
             >
               {getLocale('braveWalletNFTDetailTokenID')}
             </Text>
-            <Text
-              textSize='14px'
-              textColor='primary'
-              isBold={true}
-            >
-              {'#' + new Amount(token.tokenId).toNumber()}
-            </Text>
+            <CopyTooltip text={formattedTokenId}>
+              <Row
+                width='unset'
+                gap='4px'
+              >
+                <Text
+                  textSize='14px'
+                  textColor='primary'
+                  isBold={true}
+                >
+                  {'#' + reduceInt(formattedTokenId)}
+                </Text>
+                <CopyIcon />
+              </Row>
+            </CopyTooltip>
           </Row>
         )}
         {isNFT && (

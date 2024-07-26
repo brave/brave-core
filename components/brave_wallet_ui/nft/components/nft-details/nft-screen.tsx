@@ -154,11 +154,14 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
     )
   }, [accounts, ownerAddress])
 
-  const tokenId = React.useMemo(
+  const tokenIdAsNumberString = React.useMemo(
     () =>
-      selectedAsset.tokenId ? new Amount(selectedAsset.tokenId).toNumber() : '',
+      selectedAsset.tokenId ? new Amount(selectedAsset.tokenId).format() : '',
     [selectedAsset.tokenId]
   )
+  const reducedTokenId = tokenIdAsNumberString
+    ? reduceAddress(tokenIdAsNumberString, '...')
+    : ''
 
   const nftIFrameUrl = React.useMemo(() => {
     const params = new URLSearchParams({
@@ -270,9 +273,7 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
             </IconWrapper>
           )}
         </NftMultimediaWrapper>
-        <NftName>
-          {selectedAsset.name} {tokenId ? `#${tokenId}` : ''}
-        </NftName>
+        <NftName>{selectedAsset.name}</NftName>
       </TopWrapper>
       <SectionTitle>{getLocale('braveWalletNFTDetailsOverview')}</SectionTitle>
       {ownerAddress && (
@@ -314,7 +315,20 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
         {selectedAsset.tokenId !== '' && (
           <InfoBox>
             <InfoTitle>{getLocale('braveWalletNFTDetailTokenID')}</InfoTitle>
-            <InfoText>{tokenId || ''}</InfoText>
+            <Row
+              justifyContent='flex-start'
+              gap='4px'
+            >
+              <Tooltip text={tokenIdAsNumberString}>
+                <InfoText>{reducedTokenId}</InfoText>
+              </Tooltip>
+              <CopyTooltip
+                text={tokenIdAsNumberString}
+                verticalPosition='above'
+              >
+                <CopyIcon name='copy' />
+              </CopyTooltip>
+            </Row>
           </InfoBox>
         )}
         {tokenNetwork && (

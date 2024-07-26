@@ -10,7 +10,6 @@ import { BraveWallet } from '../../../constants/types'
 
 // Utils
 import { CurrencySymbols } from '../../../utils/currency-symbols'
-import Amount from '../../../utils/amount'
 
 // Components
 import {
@@ -95,9 +94,6 @@ export function BuyAmountInput({
             <AssetIconWithPlaceholder asset={selectedAsset} />
             <AssetTicker role='symbol'>
               {getAssetSymbol(selectedAsset?.symbol)}{' '}
-              {selectedAsset?.isErc721 && selectedAsset?.tokenId
-                ? '#' + new Amount(selectedAsset.tokenId).toNumber()
-                : ''}
             </AssetTicker>
           </Row>
         </AssetButton>

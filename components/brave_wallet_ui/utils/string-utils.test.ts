@@ -15,7 +15,8 @@ import {
   padWithLeadingZeros,
   unicodeCharEscape,
   removeDoubleSpaces,
-  getIsBraveWalletOrigin
+  getIsBraveWalletOrigin,
+  reduceInt
 } from './string-utils'
 
 describe('Checking URL is remote image or not', () => {
@@ -127,5 +128,16 @@ describe('getIsBraveWalletOrigin', () => {
   })
   it('should return `true` if it is a Brave Wallet origin', () => {
     expect(getIsBraveWalletOrigin(mockBraveWalletOrigin)).toBe(true)
+  })
+})
+
+describe('reduceInt', () => {
+  it('should not shorten numbers with less than 7 digits', () => {
+    expect(reduceInt('1')).toBe('1')
+    expect(reduceInt('123456')).toBe('123456')
+  })
+  it('should shorten numbers with more than 7 digits', () => {
+    expect(reduceInt('12345678')).toBe('123...678')
+    expect(reduceInt('1234567890')).toBe('123...890')
   })
 })
