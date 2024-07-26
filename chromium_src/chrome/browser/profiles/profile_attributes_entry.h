@@ -13,6 +13,17 @@
 #undef GetUserName
 #endif
 
+#define MigrateObsoleteProfileAttributes   \
+  BraveMigrateObsoleteProfileAttributes(); \
+  void MigrateObsoleteProfileAttributes
+
+#define RecordAccountNamesMetric              \
+  RecordAccountNamesMetric_UnUsed() {}        \
+  friend class ProfileAttributeMigrationTest; \
+  void RecordAccountNamesMetric
+
 #include "src/chrome/browser/profiles/profile_attributes_entry.h"  // IWYU pragma: export
+#undef MigrateObsoleteProfileAttributes
+#undef RecordAccountNamesMetric
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_ATTRIBUTES_ENTRY_H_
