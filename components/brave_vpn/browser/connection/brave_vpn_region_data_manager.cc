@@ -69,16 +69,13 @@ mojom::Region GetRegionFromValue(const base::Value::Dict& value) {
           value.FindString(brave_vpn::kRegionPrecisionKey)) {
     region.region_precision = *region_precision;
   }
-  if (auto latitude =
-          value.FindDouble(brave_vpn::kRegionLatitudeKey)) {
+  if (auto latitude = value.FindDouble(brave_vpn::kRegionLatitudeKey)) {
     region.latitude = *latitude;
   }
-  if (auto longitude =
-          value.FindDouble(brave_vpn::kRegionLongitudeKey)) {
+  if (auto longitude = value.FindDouble(brave_vpn::kRegionLongitudeKey)) {
     region.longitude = *longitude;
   }
-  if (auto server_count =
-          value.FindInt(brave_vpn::kRegionServerCountKey)) {
+  if (auto server_count = value.FindInt(brave_vpn::kRegionServerCountKey)) {
     region.server_count = *server_count;
   }
   return region;
@@ -287,7 +284,7 @@ void BraveVPNRegionDataManager::FetchRegionDataIfNeeded() {
   VLOG(2) << __func__ << " : Start fetching region data";
 
   // Unretained is safe here becasue this class owns |api_request_|.
-  api_request_->GetAllServerRegions(base::BindOnce(
+  api_request_->GetServerRegionsWithCities(base::BindOnce(
       &BraveVPNRegionDataManager::OnFetchRegionList, base::Unretained(this)));
 }
 
