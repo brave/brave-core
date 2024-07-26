@@ -15,10 +15,6 @@
 #include "base/timer/timer.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
 #include "brave/components/ephemeral_storage/url_storage_checker.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_window.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/user_prefs/user_prefs.h"
@@ -37,14 +33,6 @@ namespace {
 
 GURL GetFirstPartyStorageURL(const std::string& ephemeral_domain) {
   return GURL(base::StrCat({url::kHttpsScheme, "://", ephemeral_domain}));
-}
-
-bool DoesProfileHaveAnyBrowserWindow(Profile* profile) {
-  for (Browser* browser : chrome::FindAllBrowsersWithProfile(profile)) {
-      if (browser->window())
-          return true;
-  }
-  return false;
 }
 
 }  // namespace
@@ -340,7 +328,10 @@ void EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup() {
 void EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup() {
   DCHECK(!context_->IsOffTheRecord());
   Profile* profile = Profile::FromBrowserContext(context_);
-  if (!DoesProfileHaveAnyBrowserWindow(profile)) {
+
+  bool have_window{false};
+  delegate_->DoesProfileHaveAnyBrowserWindow(profile, &have_window);
+  if (!have_window) {
     first_party_storage_areas_to_cleanup_on_startup_.clear();
     return;
   }
