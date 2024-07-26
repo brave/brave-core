@@ -33,9 +33,6 @@ import { useSwapTransactionParser } from '../../../common/hooks/use-swap-tx-pars
 import { useGetActiveOriginQuery } from '../../../common/slices/api.slice'
 
 export function ConfirmSwapTransaction() {
-  // redux
-  const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
-
   // state
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
     React.useState<boolean>(false)

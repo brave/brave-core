@@ -13,7 +13,6 @@ import { BraveWallet } from '../../../constants/types'
 // Utils
 import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
-import { WalletSelectors } from '../../../common/selectors'
 import {
   isUrlWarning,
   translateSimulationResultError
@@ -27,12 +26,10 @@ import {
   usePendingTransactions //
 } from '../../../common/hooks/use-pending-transaction'
 import {
-  useGetAddressByteCodeQuery //
+  useGetActiveOriginQuery,
+  useGetAddressByteCodeQuery
 } from '../../../common/slices/api.slice'
 import { useAccountQuery } from '../../../common/slices/api.slice.extra'
-import {
-  useUnsafeWalletSelector //
-} from '../../../common/hooks/use-safe-selector'
 
 // Components
 import { AdvancedTransactionSettings } from '../advanced-transaction-settings'
@@ -87,9 +84,6 @@ export const ConfirmSimulatedTransactionPanel = ({
   txSimulation,
   simulationType
 }: Props) => {
-  // redux
-  const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
-
   // custom hooks
   const {
     isSolanaTransaction,
@@ -111,6 +105,9 @@ export const ConfirmSimulatedTransactionPanel = ({
   } = usePendingTransactions()
 
   // queries
+  const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
+    useGetActiveOriginQuery()
+
   const { data: byteCode, isLoading } = useGetAddressByteCodeQuery(
     transactionDetails && simulationType === 'EVM'
       ? {
