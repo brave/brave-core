@@ -315,6 +315,11 @@ GURL SwapService::GetLiFiTransactionURL() {
   return GURL(kLiFiBaseAPIURL).Resolve("/v1/advanced/stepTransaction");
 }
 
+// static
+GURL SwapService::GetLiFiStatusURL(const std::string& tx_hash) {
+  return GURL(kLiFiBaseAPIURL).Resolve("/v1/status?txHash=" + tx_hash);
+}
+
 void SwapService::IsSwapSupported(const std::string& chain_id,
                                   IsSwapSupportedCallback callback) {
   std::move(callback).Run(IsNetworkSupportedByZeroEx(chain_id) ||
@@ -655,6 +660,42 @@ void SwapService::OnGetLiFiTransaction(GetTransactionCallback callback,
     std::move(callback).Run(
         mojom::SwapTransactionUnion::NewLifiTransaction(std::move(transaction)),
         nullptr, "");
+  } else {
+    std::move(callback).Run(nullptr, nullptr,
+                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+  }
+}
+
+void SwapService::GetLiFiStatus(const std::string& tx_hash,
+                                GetLiFiStatusCallback callback) {
+  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
+  auto internal_callback =
+      base::BindOnce(&SwapService::OnGetLiFiStatus,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  api_request_helper_.Request(net::HttpRequestHeaders::kGetMethod,
+                              GetLiFiStatusURL(tx_hash), "", "",
+                              std::move(internal_callback), GetHeaders(), {},
+                              std::move(conversion_callback));
+}
+
+void SwapService::OnGetLiFiStatus(GetLiFiStatusCallback callback,
+                                  APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    if (auto error_response =
+            lifi::ParseErrorResponse(api_request_result.value_body())) {
+      std::move(callback).Run(nullptr, std::move(error_response), "");
+    } else {
+      std::move(callback).Run(
+          nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    }
+
+    return;
+  }
+
+  if (auto status =
+          lifi::ParseStatusResponse(api_request_result.value_body())) {
+    std::move(callback).Run(std::move(status), nullptr, "");
   } else {
     std::move(callback).Run(nullptr, nullptr,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));

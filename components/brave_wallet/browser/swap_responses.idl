@@ -108,6 +108,52 @@ namespace swap_responses {
 
   // LiFi response types
 
+  dictionary LiFiStepStatusToken {
+    DOMString address;
+  };
+
+  dictionary LiFiStepStatus {
+    DOMString chainId;
+
+    // The following fields are temporarily undefined in case of a pending
+    // receiving step.
+    DOMString? txHash;
+    DOMString? txLink;
+    DOMString? amount;
+    LiFiStepStatusToken? token;
+  };
+
+  enum LiFiStatus {
+    NOT_FOUND,
+    INVALID,
+    PENDING,
+    DONE,
+    FAILED
+  };
+
+  enum LiFiSubstatus {
+    // substatuses for PENDING
+    WAIT_SOURCE_CONFIRMATIONS,
+    WAIT_DESTINATION_TRANSACTION,
+    BRIDGE_NOT_AVAILABLE,
+    CHAIN_NOT_AVAILABLE,
+    REFUND_IN_PROGRESS,
+    UNKNOWN_ERROR,
+
+    // substatuses for DONE
+    COMPLETED,
+    PARTIAL,
+    REFUNDED,
+
+    // substatuses for FAILED
+    NOT_PROCESSABLE_REFUND_NEEDED,
+    OUT_OF_GAS,
+    SLIPPAGE_EXCEEDED,
+    INSUFFICIENT_ALLOWANCE,
+    INSUFFICIENT_BALANCE,
+    EXPIRED,
+  };
+
   dictionary LiFiTransactionRequest {
     // In case of SOL -> EVM transfers, only the data field is required which
     // is a base64 encoded Solana transaction.
@@ -215,6 +261,19 @@ namespace swap_responses {
   // Docs: https://apidocs.li.fi/reference/post_advanced-steptransaction
   dictionary LiFiTransactionResponse {
     LiFiTransactionRequest transactionRequest;
+  };
+
+  dictionary LiFiStatusResponse {
+    DOMString transactionId;
+    LiFiStepStatus sending;
+    LiFiStepStatus receiving;
+    DOMString lifiExplorerLink;
+    DOMString fromAddress;
+    DOMString toAddress;
+    DOMString tool;
+    LiFiStatus status;
+    LiFiSubstatus substatus;
+    DOMString substatusMessage;
   };
 
   dictionary LiFiErrorResponse {
