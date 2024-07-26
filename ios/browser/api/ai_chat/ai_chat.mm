@@ -28,6 +28,8 @@
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/common/channel_info.h"
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 @interface AIChat () {
@@ -45,9 +47,6 @@
 
     PrefService* local_state_prefs = GetApplicationContext()->GetLocalState();
 
-    ai_chat_metrics_ =
-        std::make_unique<ai_chat::AIChatMetrics>(local_state_prefs);
-
     ai_chat::ModelService* model_service =
         ai_chat::ModelServiceFactory::GetForBrowserState(browser_state_);
 
@@ -57,6 +56,9 @@
         },
         base::Unretained(browser_state_));
 
+    ai_chat_metrics_ =
+        std::make_unique<ai_chat::AIChatMetrics>(local_state_prefs);
+
     driver_ = std::make_unique<ai_chat::ConversationDriverIOS>(
         user_prefs::UserPrefs::Get(browser_state_), local_state_prefs,
         model_service, ai_chat_metrics_.get(), skus_service_getter,
@@ -64,6 +66,17 @@
         version_info::GetChannelString(::GetChannel()), delegate);
   }
   return self;
+}
+
+- (void)dealloc {
+  web::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          ^(decltype(driver_) driver, decltype(ai_chat_metrics_) metrics) {
+            driver.reset();
+            metrics.reset();
+          },
+          std::move(driver_), std::move(ai_chat_metrics_)));
 }
 
 - (bool)isAgreementAccepted {
