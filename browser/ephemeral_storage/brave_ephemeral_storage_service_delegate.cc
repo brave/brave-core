@@ -9,6 +9,8 @@
 
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browsing_data_filter_builder.h"
@@ -109,6 +111,18 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
   content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
   remover->RemoveWithFilter(base::Time(), base::Time::Max(), data_to_remove,
                             origin_type, std::move(filter_builder));
+}
+
+void BraveEphemeralStorageServiceDelegate::DoesProfileHaveAnyBrowserWindow(
+    Profile* profile,
+    bool* have_window) {
+  for (Browser* browser : chrome::FindAllBrowsersWithProfile(profile)) {
+    if (browser->window()) {
+      *have_window = true;
+      return;
+    }
+  }
+  *have_window = false;
 }
 
 }  // namespace ephemeral_storage
