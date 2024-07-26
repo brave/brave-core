@@ -253,44 +253,64 @@ AdHistoryList AdsImpl::GetAdHistory(const AdHistoryFilterType filter_type,
              : AdHistoryList{};
 }
 
-mojom::UserReactionType AdsImpl::ToggleLikeAd(const base::Value::Dict& value) {
-  return is_initialized_ ? AdHistoryManager::GetInstance().LikeAd(
-                               AdHistoryItemFromValue(value))
-                         : mojom::UserReactionType::kNeutral;
+void AdsImpl::ToggleLikeAd(const base::Value::Dict& value,
+                           ToggleUserReactionCallback callback) {
+  if (!is_initialized_) {
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  AdHistoryManager::GetInstance().LikeAd(AdHistoryItemFromValue(value),
+                                         std::move(callback));
 }
 
-mojom::UserReactionType AdsImpl::ToggleDislikeAd(
-    const base::Value::Dict& value) {
-  return is_initialized_ ? AdHistoryManager::GetInstance().DislikeAd(
-                               AdHistoryItemFromValue(value))
-                         : mojom::UserReactionType::kNeutral;
+void AdsImpl::ToggleDislikeAd(const base::Value::Dict& value,
+                              ToggleUserReactionCallback callback) {
+  if (!is_initialized_) {
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  AdHistoryManager::GetInstance().DislikeAd(AdHistoryItemFromValue(value),
+                                            std::move(callback));
 }
 
-mojom::UserReactionType AdsImpl::ToggleLikeCategory(
-    const base::Value::Dict& value) {
-  return is_initialized_ ? AdHistoryManager::GetInstance().LikeCategory(
-                               AdHistoryItemFromValue(value))
-                         : mojom::UserReactionType::kNeutral;
+void AdsImpl::ToggleLikeCategory(const base::Value::Dict& value,
+                                 ToggleUserReactionCallback callback) {
+  if (!is_initialized_) {
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  AdHistoryManager::GetInstance().LikeCategory(AdHistoryItemFromValue(value),
+                                               std::move(callback));
 }
 
-mojom::UserReactionType AdsImpl::ToggleDislikeCategory(
-    const base::Value::Dict& value) {
-  return is_initialized_ ? AdHistoryManager::GetInstance().DislikeCategory(
-                               AdHistoryItemFromValue(value))
-                         : mojom::UserReactionType::kNeutral;
+void AdsImpl::ToggleDislikeCategory(const base::Value::Dict& value,
+                                    ToggleUserReactionCallback callback) {
+  if (!is_initialized_) {
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  AdHistoryManager::GetInstance().DislikeCategory(AdHistoryItemFromValue(value),
+                                                  std::move(callback));
 }
 
-bool AdsImpl::ToggleSaveAd(const base::Value::Dict& value) {
-  return is_initialized_ ? AdHistoryManager::GetInstance().ToggleSaveAd(
-                               AdHistoryItemFromValue(value))
-                         : false;
+void AdsImpl::ToggleSaveAd(const base::Value::Dict& value,
+                           ToggleUserReactionCallback callback) {
+  if (!is_initialized_) {
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  AdHistoryManager::GetInstance().ToggleSaveAd(AdHistoryItemFromValue(value),
+                                               std::move(callback));
 }
 
-bool AdsImpl::ToggleMarkAdAsInappropriate(const base::Value::Dict& value) {
-  return is_initialized_
-             ? AdHistoryManager::GetInstance().ToggleMarkAdAsInappropriate(
-                   AdHistoryItemFromValue(value))
-             : false;
+void AdsImpl::ToggleMarkAdAsInappropriate(const base::Value::Dict& value,
+                                          ToggleUserReactionCallback callback) {
+  if (!is_initialized_) {
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  AdHistoryManager::GetInstance().ToggleMarkAdAsInappropriate(
+      AdHistoryItemFromValue(value), std::move(callback));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

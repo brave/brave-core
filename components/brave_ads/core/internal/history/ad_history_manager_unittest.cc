@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 
+#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
@@ -203,18 +204,21 @@ TEST_F(BraveAdsAdHistoryManagerTest, LikeAd) {
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
-
-  const AdHistoryItemInfo ad_history_item = BuildAdHistoryItem(
-      ad, ConfirmationType::kViewedImpression, ad.title, ad.body);
+  const std::optional<AdHistoryItemInfo> ad_history_item =
+      AdHistoryManager::GetInstance().Add(ad,
+                                          ConfirmationType::kViewedImpression);
+  ASSERT_TRUE(ad_history_item);
 
   // Act & Assert
-  AdHistoryItemInfo expected_ad_history_item = ad_history_item;
+  AdHistoryItemInfo expected_ad_history_item = *ad_history_item;
   expected_ad_history_item.ad_user_reaction_type =
       mojom::UserReactionType::kLike;
   EXPECT_CALL(history_manager_observer_mock_,
               OnDidLikeAd(expected_ad_history_item));
-  AdHistoryManager::GetInstance().LikeAd(ad_history_item);
+
+  base::MockCallback<ToggleUserReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  AdHistoryManager::GetInstance().LikeAd(*ad_history_item, callback.Get());
 }
 
 TEST_F(BraveAdsAdHistoryManagerTest, DislikeAd) {
@@ -222,18 +226,21 @@ TEST_F(BraveAdsAdHistoryManagerTest, DislikeAd) {
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
-
-  const AdHistoryItemInfo ad_history_item = BuildAdHistoryItem(
-      ad, ConfirmationType::kViewedImpression, ad.title, ad.body);
+  const std::optional<AdHistoryItemInfo> ad_history_item =
+      AdHistoryManager::GetInstance().Add(ad,
+                                          ConfirmationType::kViewedImpression);
+  ASSERT_TRUE(ad_history_item);
 
   // Act & Assert
-  AdHistoryItemInfo expected_ad_history_item = ad_history_item;
+  AdHistoryItemInfo expected_ad_history_item = *ad_history_item;
   expected_ad_history_item.ad_user_reaction_type =
       mojom::UserReactionType::kDislike;
   EXPECT_CALL(history_manager_observer_mock_,
               OnDidDislikeAd(expected_ad_history_item));
-  AdHistoryManager::GetInstance().DislikeAd(ad_history_item);
+
+  base::MockCallback<ToggleUserReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  AdHistoryManager::GetInstance().DislikeAd(*ad_history_item, callback.Get());
 }
 
 TEST_F(BraveAdsAdHistoryManagerTest, LikeCategory) {
@@ -241,15 +248,19 @@ TEST_F(BraveAdsAdHistoryManagerTest, LikeCategory) {
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
-
-  const AdHistoryItemInfo ad_history_item = BuildAdHistoryItem(
-      ad, ConfirmationType::kViewedImpression, ad.title, ad.body);
+  const std::optional<AdHistoryItemInfo> ad_history_item =
+      AdHistoryManager::GetInstance().Add(ad,
+                                          ConfirmationType::kViewedImpression);
+  ASSERT_TRUE(ad_history_item);
 
   // Act & Assert
   EXPECT_CALL(history_manager_observer_mock_,
-              OnDidLikeCategory(ad_history_item));
-  AdHistoryManager::GetInstance().LikeCategory(ad_history_item);
+              OnDidLikeCategory(*ad_history_item));
+
+  base::MockCallback<ToggleUserReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  AdHistoryManager::GetInstance().LikeCategory(*ad_history_item,
+                                               callback.Get());
 }
 
 TEST_F(BraveAdsAdHistoryManagerTest, DislikeCategory) {
@@ -257,15 +268,19 @@ TEST_F(BraveAdsAdHistoryManagerTest, DislikeCategory) {
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
-
-  const AdHistoryItemInfo ad_history_item = BuildAdHistoryItem(
-      ad, ConfirmationType::kViewedImpression, ad.title, ad.body);
+  const std::optional<AdHistoryItemInfo> ad_history_item =
+      AdHistoryManager::GetInstance().Add(ad,
+                                          ConfirmationType::kViewedImpression);
+  ASSERT_TRUE(ad_history_item);
 
   // Act & Assert
   EXPECT_CALL(history_manager_observer_mock_,
-              OnDidDislikeCategory(ad_history_item));
-  AdHistoryManager::GetInstance().DislikeCategory(ad_history_item);
+              OnDidDislikeCategory(*ad_history_item));
+
+  base::MockCallback<ToggleUserReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  AdHistoryManager::GetInstance().DislikeCategory(*ad_history_item,
+                                                  callback.Get());
 }
 
 TEST_F(BraveAdsAdHistoryManagerTest, SaveAd) {
@@ -284,7 +299,10 @@ TEST_F(BraveAdsAdHistoryManagerTest, SaveAd) {
   expected_ad_history_item.is_saved = true;
   EXPECT_CALL(history_manager_observer_mock_,
               OnDidSaveAd(expected_ad_history_item));
-  AdHistoryManager::GetInstance().ToggleSaveAd(ad_history_item);
+
+  base::MockCallback<ToggleUserReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  AdHistoryManager::GetInstance().ToggleSaveAd(ad_history_item, callback.Get());
 }
 
 TEST_F(BraveAdsAdHistoryManagerTest, UnsaveAd) {
@@ -303,7 +321,10 @@ TEST_F(BraveAdsAdHistoryManagerTest, UnsaveAd) {
   expected_ad_history_item.is_saved = false;
   EXPECT_CALL(history_manager_observer_mock_,
               OnDidUnsaveAd(expected_ad_history_item));
-  AdHistoryManager::GetInstance().ToggleSaveAd(ad_history_item);
+
+  base::MockCallback<ToggleUserReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  AdHistoryManager::GetInstance().ToggleSaveAd(ad_history_item, callback.Get());
 }
 
 TEST_F(BraveAdsAdHistoryManagerTest, MarkAdAsInappropriate) {
@@ -322,7 +343,11 @@ TEST_F(BraveAdsAdHistoryManagerTest, MarkAdAsInappropriate) {
   expected_ad_history_item.is_marked_as_inappropriate = true;
   EXPECT_CALL(history_manager_observer_mock_,
               OnDidMarkAdAsInappropriate(expected_ad_history_item));
-  AdHistoryManager::GetInstance().ToggleMarkAdAsInappropriate(ad_history_item);
+
+  base::MockCallback<ToggleUserReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  AdHistoryManager::GetInstance().ToggleMarkAdAsInappropriate(ad_history_item,
+                                                              callback.Get());
 }
 
 TEST_F(BraveAdsAdHistoryManagerTest, MarkAdAsAppropriate) {
@@ -341,7 +366,11 @@ TEST_F(BraveAdsAdHistoryManagerTest, MarkAdAsAppropriate) {
   expected_ad_history_item.is_marked_as_inappropriate = false;
   EXPECT_CALL(history_manager_observer_mock_,
               OnDidMarkAdAsAppropriate(expected_ad_history_item));
-  AdHistoryManager::GetInstance().ToggleMarkAdAsInappropriate(ad_history_item);
+
+  base::MockCallback<ToggleUserReactionCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  AdHistoryManager::GetInstance().ToggleMarkAdAsInappropriate(ad_history_item,
+                                                              callback.Get());
 }
 
 }  // namespace brave_ads

@@ -132,17 +132,17 @@ class RewardsDOMHandler
   void GetAdsHistory(const base::Value::List& args);
   void OnGetAdsHistory(base::Value::List history);
   void ToggleAdThumbUp(const base::Value::List& args);
-  void OnToggleAdThumbUp(base::Value::Dict dict);
+  void OnToggleAdThumbUp(const bool success);
   void ToggleAdThumbDown(const base::Value::List& args);
-  void OnToggleAdThumbDown(base::Value::Dict dict);
+  void OnToggleAdThumbDown(const bool success);
   void ToggleAdOptIn(const base::Value::List& args);
-  void OnToggleAdOptIn(base::Value::Dict dict);
+  void OnToggleAdOptIn(const bool success);
   void ToggleAdOptOut(const base::Value::List& args);
-  void OnToggleAdOptOut(base::Value::Dict dict);
+  void OnToggleAdOptOut(const bool success);
   void ToggleSavedAd(const base::Value::List& args);
-  void OnToggleSavedAd(base::Value::Dict dict);
+  void OnToggleSavedAd(const bool success);
   void ToggleFlaggedAd(const base::Value::List& args);
-  void OnToggleFlaggedAd(base::Value::Dict dict);
+  void OnToggleFlaggedAd(const bool success);
   void SaveAdsSetting(const base::Value::List& args);
   void OnGetContributionAmount(double amount);
   void OnIsAutoContributeSupported(bool is_ac_supported);
@@ -1155,12 +1155,12 @@ void RewardsDOMHandler::ToggleAdThumbUp(const base::Value::List& args) {
                                     weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleAdThumbUp(base::Value::Dict dict) {
+void RewardsDOMHandler::OnToggleAdThumbUp(const bool success) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  CallJavascriptFunction("brave_rewards.onToggleAdThumbUp", dict);
+  CallJavascriptFunction("brave_rewards.onToggleAdThumbUp", success);
 }
 
 void RewardsDOMHandler::ToggleAdThumbDown(const base::Value::List& args) {
@@ -1183,12 +1183,12 @@ void RewardsDOMHandler::ToggleAdThumbDown(const base::Value::List& args) {
                                     weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleAdThumbDown(base::Value::Dict dict) {
+void RewardsDOMHandler::OnToggleAdThumbDown(const bool success) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  CallJavascriptFunction("brave_rewards.onToggleAdThumbDown", dict);
+  CallJavascriptFunction("brave_rewards.onToggleAdThumbDown", success);
 }
 
 void RewardsDOMHandler::ToggleAdOptIn(const base::Value::List& args) {
@@ -1211,12 +1211,12 @@ void RewardsDOMHandler::ToggleAdOptIn(const base::Value::List& args) {
                                     weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleAdOptIn(base::Value::Dict dict) {
+void RewardsDOMHandler::OnToggleAdOptIn(const bool success) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  CallJavascriptFunction("brave_rewards.onToggleAdOptIn", dict);
+  CallJavascriptFunction("brave_rewards.onToggleAdOptIn", success);
 }
 
 void RewardsDOMHandler::ToggleAdOptOut(const base::Value::List& args) {
@@ -1239,12 +1239,12 @@ void RewardsDOMHandler::ToggleAdOptOut(const base::Value::List& args) {
                                     weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleAdOptOut(base::Value::Dict dict) {
+void RewardsDOMHandler::OnToggleAdOptOut(const bool success) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  CallJavascriptFunction("brave_rewards.onToggleAdOptOut", dict);
+  CallJavascriptFunction("brave_rewards.onToggleAdOptOut", success);
 }
 
 void RewardsDOMHandler::ToggleSavedAd(const base::Value::List& args) {
@@ -1267,12 +1267,12 @@ void RewardsDOMHandler::ToggleSavedAd(const base::Value::List& args) {
                                             weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleSavedAd(base::Value::Dict dict) {
+void RewardsDOMHandler::OnToggleSavedAd(const bool success) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  CallJavascriptFunction("brave_rewards.onToggleSavedAd", dict);
+  CallJavascriptFunction("brave_rewards.onToggleSavedAd", success);
 }
 
 void RewardsDOMHandler::ToggleFlaggedAd(const base::Value::List& args) {
@@ -1295,12 +1295,12 @@ void RewardsDOMHandler::ToggleFlaggedAd(const base::Value::List& args) {
                                     weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleFlaggedAd(base::Value::Dict dict) {
+void RewardsDOMHandler::OnToggleFlaggedAd(const bool success) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  CallJavascriptFunction("brave_rewards.onToggleFlaggedAd", dict);
+  CallJavascriptFunction("brave_rewards.onToggleFlaggedAd", success);
 }
 
 void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {

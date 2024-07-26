@@ -120,28 +120,28 @@ function adsHistory (adsHistory: Rewards.AdsHistory[]) {
   actions.onAdsHistory(adsHistory)
 }
 
-function onToggleAdThumbUp (result: Rewards.ToggleLikeAction) {
-  actions.onToggleAdThumbUp(result)
+function onToggleAdThumbUp(success: boolean) {
+  actions.onToggleAdThumbUp(success)
 }
 
-function onToggleAdThumbDown (result: Rewards.ToggleLikeAction) {
-  actions.onToggleAdThumbDown(result)
+function onToggleAdThumbDown(success: boolean) {
+  actions.onToggleAdThumbDown(success)
 }
 
-function onToggleAdOptIn (result: Rewards.ToggleOptAction) {
-  actions.onToggleAdOptIn(result)
+function onToggleAdOptIn(success: boolean) {
+  actions.onToggleAdOptIn(success)
 }
 
-function onToggleAdOptOut (result: Rewards.ToggleOptAction) {
-  actions.onToggleAdOptOut(result)
+function onToggleAdOptOut(success: boolean) {
+  actions.onToggleAdOptOut(success)
 }
 
-function onToggleSavedAd (result: Rewards.ToggleSavedAd) {
-  actions.onToggleSavedAd(result)
+function onToggleSavedAd(success: boolean) {
+  actions.onToggleSavedAd(success)
 }
 
-function onToggleFlaggedAd (result: Rewards.ToggleFlaggedAd) {
-  actions.onToggleFlaggedAd(result)
+function onToggleFlaggedAd(success: boolean) {
+  actions.onToggleFlaggedAd(success)
 }
 
 function statement (data: any) {

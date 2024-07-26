@@ -150,48 +150,48 @@ export const toggleAdThumbUp = (adHistory: Rewards.AdHistory) => action(types.TO
   adHistory
 })
 
-export const onToggleAdThumbUp = (result: Rewards.ToggleLikeAction) => action(types.ON_TOGGLE_AD_THUMB_UP, {
-  result
+export const onToggleAdThumbUp = (success: boolean) => action(types.ON_TOGGLE_AD_THUMB_UP, {
+  success
 })
 
 export const toggleAdThumbDown = (adHistory: Rewards.AdHistory) => action(types.TOGGLE_AD_THUMB_DOWN, {
   adHistory
 })
 
-export const onToggleAdThumbDown = (result: Rewards.ToggleLikeAction) => action(types.ON_TOGGLE_AD_THUMB_DOWN, {
-  result
+export const onToggleAdThumbDown = (success: boolean) => action(types.ON_TOGGLE_AD_THUMB_DOWN, {
+  success
 })
 
 export const toggleAdOptIn = (adHistory: Rewards.AdHistory) => action(types.TOGGLE_AD_OPT_IN, {
   adHistory
 })
 
-export const onToggleAdOptIn = (result: Rewards.ToggleOptAction) => action(types.ON_TOGGLE_AD_OPT_IN, {
-  result
+export const onToggleAdOptIn = (success: boolean) => action(types.ON_TOGGLE_AD_OPT_IN, {
+  success
 })
 
 export const toggleAdOptOut = (adHistory: Rewards.AdHistory) => action(types.TOGGLE_AD_OPT_OUT, {
   adHistory
 })
 
-export const onToggleAdOptOut = (result: Rewards.ToggleOptAction) => action(types.ON_TOGGLE_AD_OPT_OUT, {
-  result
+export const onToggleAdOptOut = (success: boolean) => action(types.ON_TOGGLE_AD_OPT_OUT, {
+  success
 })
 
 export const toggleSavedAd = (adHistory: Rewards.AdHistory) => action(types.TOGGLE_SAVED_AD, {
   adHistory
 })
 
-export const onToggleSavedAd = (result: Rewards.ToggleSavedAd) => action(types.ON_TOGGLE_SAVED_AD, {
-  result
+export const onToggleSavedAd = (success: boolean) => action(types.ON_TOGGLE_SAVED_AD, {
+  success
 })
 
 export const toggleFlaggedAd = (adHistory: Rewards.AdHistory) => action(types.TOGGLE_FLAGGED_AD, {
   adHistory
 })
 
-export const onToggleFlaggedAd = (result: Rewards.ToggleFlaggedAd) => action(types.ON_TOGGLE_FLAGGED_AD, {
-  result
+export const onToggleFlaggedAd = (success: boolean) => action(types.ON_TOGGLE_FLAGGED_AD, {
+  success
 })
 
 export const onAdsSettingSave = (key: string, value: any) => action(types.ON_ADS_SETTING_SAVE, {

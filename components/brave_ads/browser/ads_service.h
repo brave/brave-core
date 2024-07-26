@@ -154,42 +154,41 @@ class AdsService : public KeyedService {
                             GetAdHistoryCallback callback) = 0;
 
   // Called to like an ad. This is a toggle, so calling it again returns the
-  // setting to the neutral state. The callback takes one argument -
-  // `base::Value::Dict` containing the current state.
+  // setting to the neutral state. The callback takes one argument - `bool` is
+  // set to `true` if successful otherwise `false`
   virtual void ToggleLikeAd(base::Value::Dict value,
-                            ToggleLikeAdCallback callback) = 0;
+                            ToggleUserReactionCallback callback) = 0;
 
   // Called to dislike an ad. This is a toggle, so calling it again returns the
-  // setting to the neutral state. The callback takes one argument -
-  // `base::Value::Dict` containing the current state.
+  // setting to the neutral state. The callback takes one argument - `bool` is
+  // set to `true` if successful otherwise `false`
   virtual void ToggleDislikeAd(base::Value::Dict value,
-                               ToggleDislikeAdCallback callback) = 0;
+                               ToggleUserReactionCallback callback) = 0;
 
   // Called to like a category. This is a toggle, so calling it again returns
-  // the setting to the neutral state. The callback takes one argument -
-  // `base::Value::Dict` containing the current state.
+  // the setting to the neutral state. The callback takes one argument - `bool`
+  // is set to `true` if successful otherwise `false`
   virtual void ToggleLikeCategory(base::Value::Dict value,
-                                  ToggleLikeCategoryCallback callback) = 0;
+                                  ToggleUserReactionCallback callback) = 0;
 
   // Called to dislike a category. This is a toggle, so calling it again
   // returns the setting to the neutral state. The callback takes one argument -
-  // `base::Value::Dict` containing the current state.
-  virtual void ToggleDislikeCategory(
-      base::Value::Dict value,
-      ToggleDislikeCategoryCallback callback) = 0;
+  // `bool` is set to `true` if successful otherwise `false`
+  virtual void ToggleDislikeCategory(base::Value::Dict value,
+                                     ToggleUserReactionCallback callback) = 0;
 
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. The callback takes one argument -
-  // `base::Value::Dict` containing the current state.
+  // `bool` is set to `true` if successful otherwise `false`
   virtual void ToggleSaveAd(base::Value::Dict value,
-                            ToggleSaveAdCallback callback) = 0;
+                            ToggleUserReactionCallback callback) = 0;
 
   // Called to mark an ad as inappropriate. This is a toggle, so calling it
-  // again unmarks the ad. The callback takes one argument - `base::Value::Dict`
-  // containing the current state.
+  // again unmarks the ad. The callback takes one argument - `bool` is
+  // set to `true` if successful otherwise `false`
   virtual void ToggleMarkAdAsInappropriate(
       base::Value::Dict value,
-      ToggleMarkAdAsInappropriateCallback callback) = 0;
+      ToggleUserReactionCallback callback) = 0;
 
   // Invoked when the page for `tab_id` has loaded and the content is available
   // for analysis. `redirect_chain` containing a list of redirect URLs that
