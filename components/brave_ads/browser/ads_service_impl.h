@@ -257,18 +257,18 @@ class AdsServiceImpl final : public AdsService,
                     GetAdHistoryCallback callback) override;
 
   void ToggleLikeAd(base::Value::Dict value,
-                    ToggleLikeAdCallback callback) override;
+                    ToggleUserReactionCallback callback) override;
   void ToggleDislikeAd(base::Value::Dict value,
-                       ToggleDislikeAdCallback callback) override;
+                       ToggleUserReactionCallback callback) override;
   void ToggleLikeCategory(base::Value::Dict value,
-                          ToggleLikeCategoryCallback callback) override;
+                          ToggleUserReactionCallback callback) override;
   void ToggleDislikeCategory(base::Value::Dict value,
-                             ToggleDislikeCategoryCallback callback) override;
+                             ToggleUserReactionCallback callback) override;
   void ToggleSaveAd(base::Value::Dict value,
-                    ToggleSaveAdCallback callback) override;
+                    ToggleUserReactionCallback callback) override;
   void ToggleMarkAdAsInappropriate(
       base::Value::Dict value,
-      ToggleMarkAdAsInappropriateCallback callback) override;
+      ToggleUserReactionCallback callback) override;
 
   void NotifyTabTextContentDidChange(int32_t tab_id,
                                      const std::vector<GURL>& redirect_chain,

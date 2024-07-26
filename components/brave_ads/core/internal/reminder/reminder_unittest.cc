@@ -27,9 +27,10 @@ namespace brave_ads {
 
 namespace {
 
-void AppendAdHistoryItem(const size_t count) {
-  const NotificationAdInfo ad = BuildNotificationAd(
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true));
+void AddAdHistoryForClickedEvent(const size_t count) {
+  const NotificationAdInfo ad =
+      BuildNotificationAd(test::BuildCreativeNotificationAd(
+          /*should_generate_random_uuids=*/false));
 
   for (size_t i = 0; i < count; ++i) {
     AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
@@ -57,7 +58,8 @@ TEST_F(BraveAdsReminderTest, ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_,
               OnRemindUser(mojom::ReminderType::kClickedSameAdMultipleTimes));
-  AppendAdHistoryItem(/*count=*/kRemindUserIfClickingTheSameAdAfter.Get());
+  AddAdHistoryForClickedEvent(
+      /*count=*/kRemindUserIfClickingTheSameAdAfter.Get());
   FastForwardClockBy(base::Seconds(1));
 }
 
@@ -65,19 +67,22 @@ TEST_F(BraveAdsReminderTest,
        DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimes) {
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_, OnRemindUser).Times(0);
-  AppendAdHistoryItem(/*count=*/kRemindUserIfClickingTheSameAdAfter.Get() - 1);
+  AddAdHistoryForClickedEvent(
+      /*count=*/kRemindUserIfClickingTheSameAdAfter.Get() - 1);
   FastForwardClockBy(base::Seconds(1));
 }
 
-TEST_F(BraveAdsReminderTest,
-       DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimesWhenDisabled) {
+TEST_F(
+    BraveAdsReminderTest,
+    DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimesWhenDisabledAddAdHistoryForClickedAdEvent) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kReminderFeature);
 
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_, OnRemindUser).Times(0);
-  AppendAdHistoryItem(/*count=*/kRemindUserIfClickingTheSameAdAfter.Get());
+  AddAdHistoryForClickedEvent(
+      /*count=*/kRemindUserIfClickingTheSameAdAfter.Get());
   FastForwardClockBy(base::Seconds(1));
 }
 

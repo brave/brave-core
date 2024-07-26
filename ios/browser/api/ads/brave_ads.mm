@@ -14,6 +14,7 @@
 #include "base/containers/flat_map.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
@@ -1765,7 +1766,8 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   ad_history_item.advertiser_id = base::SysNSStringToUTF8(advertiserId);
   ad_history_item.segment = base::SysNSStringToUTF8(segment);
 
-  ads->ToggleLikeAd(brave_ads::AdHistoryItemToValue(ad_history_item));
+  ads->ToggleLikeAd(brave_ads::AdHistoryItemToValue(ad_history_item),
+                    /*intentional*/ base::DoNothing());
 }
 
 - (void)toggleDislikeAd:(NSString*)creativeInstanceId
@@ -1782,7 +1784,8 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   ad_history_item.advertiser_id = base::SysNSStringToUTF8(advertiserId);
   ad_history_item.segment = base::SysNSStringToUTF8(segment);
 
-  ads->ToggleDislikeAd(brave_ads::AdHistoryItemToValue(ad_history_item));
+  ads->ToggleDislikeAd(brave_ads::AdHistoryItemToValue(ad_history_item),
+                       /*intentional*/ base::DoNothing());
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/33788): Unify Brave Ads

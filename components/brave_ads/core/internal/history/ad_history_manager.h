@@ -6,9 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_AD_HISTORY_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_AD_HISTORY_MANAGER_H_
 
+#include <optional>
+
 #include "base/observer_list.h"
+#include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager_observer.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_filter_types.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
@@ -49,31 +51,37 @@ class AdHistoryManager final {
                            base::Time from_time,
                            base::Time to_time);
 
-  void Add(const InlineContentAdInfo& ad,
-           ConfirmationType confirmation_type) const;
-  void Add(const NewTabPageAdInfo& ad,
-           ConfirmationType confirmation_type) const;
-  void Add(const NotificationAdInfo& ad,
-           ConfirmationType confirmation_type) const;
-  void Add(const PromotedContentAdInfo& ad,
-           ConfirmationType confirmation_type) const;
-  void Add(const SearchResultAdInfo& ad,
-           ConfirmationType confirmation_type) const;
+  std::optional<AdHistoryItemInfo> Add(
+      const InlineContentAdInfo& ad,
+      ConfirmationType confirmation_type) const;
+  std::optional<AdHistoryItemInfo> Add(
+      const NewTabPageAdInfo& ad,
+      ConfirmationType confirmation_type) const;
+  std::optional<AdHistoryItemInfo> Add(
+      const NotificationAdInfo& ad,
+      ConfirmationType confirmation_type) const;
+  std::optional<AdHistoryItemInfo> Add(
+      const PromotedContentAdInfo& ad,
+      ConfirmationType confirmation_type) const;
+  std::optional<AdHistoryItemInfo> Add(
+      const SearchResultAdInfo& ad,
+      ConfirmationType confirmation_type) const;
 
-  mojom::UserReactionType LikeAd(
-      const AdHistoryItemInfo& ad_history_item) const;
-  mojom::UserReactionType DislikeAd(
-      const AdHistoryItemInfo& ad_history_item) const;
+  void LikeAd(const AdHistoryItemInfo& ad_history_item,
+              ToggleUserReactionCallback callback) const;
+  void DislikeAd(const AdHistoryItemInfo& ad_history_item,
+                 ToggleUserReactionCallback callback) const;
 
-  mojom::UserReactionType LikeCategory(
-      const AdHistoryItemInfo& ad_history_item) const;
-  mojom::UserReactionType DislikeCategory(
-      const AdHistoryItemInfo& ad_history_item) const;
+  void LikeCategory(const AdHistoryItemInfo& ad_history_item,
+                    ToggleUserReactionCallback callback) const;
+  void DislikeCategory(const AdHistoryItemInfo& ad_history_item,
+                       ToggleUserReactionCallback callback) const;
 
-  bool ToggleSaveAd(const AdHistoryItemInfo& ad_history_item) const;
+  void ToggleSaveAd(const AdHistoryItemInfo& ad_history_item,
+                    ToggleUserReactionCallback callback) const;
 
-  bool ToggleMarkAdAsInappropriate(
-      const AdHistoryItemInfo& ad_history_item) const;
+  void ToggleMarkAdAsInappropriate(const AdHistoryItemInfo& ad_history_item,
+                                   ToggleUserReactionCallback callback) const;
 
  private:
   void NotifyDidAppendAdHistoryItem(
