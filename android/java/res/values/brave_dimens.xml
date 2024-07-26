@@ -53,4 +53,6 @@
     <dimen name="heading_h4">16sp</dimen>
     <dimen name="small_semibold">12sp</dimen>
     <dimen name="monospace_small">12sp</dimen>
+
+    <dimen name="brave_toolbar_edge_padding_ntp">8dp</dimen>
 </resources>
