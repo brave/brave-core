@@ -144,7 +144,7 @@ You can add one or more responses per request. These will be returned in the giv
 | Is browser in full-screen mode  | boolean  | `false`  | `test::MockIsBrowserInFullScreenMode(ads_client_mock_, true);`  |
 | Can show notification ads  | boolean  | `true`  | `MockCanShowNotificationAds(ads_client_mock_, false);`  |
 | Can show notification ads while browser is backgrounded  | boolean  | `true`  | `test::MockCanShowNotificationAdsWhileBrowserIsBackgrounded(ads_client_mock_, false);`  |
-| Browsing history  | vector\<GURL>  |  | `test::MockGetBrowsingHistory(ads_client_mock_, {GURL("https://foo.com"), GURL("https://bar.com")});`  |
+| Site history  | vector\<GURL>  |  | `test::MockGetSiteHistory(ads_client_mock_, {GURL("https://foo.com"), GURL("https://bar.com")});`  |
 | URL response  | URLResponseMap  |  | See [mocking server responses](#mocking-server-responses).  |
 
 See [mock_test_util.h](./mock_test_util.h), [test_constants.h](./test_constants.h), and [test_types.h](./test_types.h).

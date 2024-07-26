@@ -51,10 +51,9 @@ class AdsClientIOS : public brave_ads::AdsClient {
   void LoadComponentResource(const std::string& id,
                              const int version,
                              brave_ads::LoadFileCallback callback) override;
-  void GetBrowsingHistory(
-      const int max_count,
-      const int days_ago,
-      brave_ads::GetBrowsingHistoryCallback callback) override;
+  void GetSiteHistory(const int max_count,
+                      const int days_ago,
+                      brave_ads::GetSiteHistoryCallback callback) override;
   std::string LoadDataResource(const std::string& name) override;
   void ShowScheduledCaptcha(const std::string& payment_id,
                             const std::string& captcha_id) override;

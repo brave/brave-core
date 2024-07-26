@@ -90,8 +90,8 @@ interface BatAdsClient {
       (array<mojo_base.mojom.Time> ad_events);
   ResetAdEventCacheForInstanceId(string id);
 
-  GetBrowsingHistory(int32 max_count, int32 days_ago) =>
-      (array<url.mojom.Url> history);
+  GetSiteHistory(int32 max_count, int32 days_ago) =>
+      (array<url.mojom.Url> site_history);
 
   UrlRequest(brave_ads.mojom.UrlRequestInfo request) =>
       (brave_ads.mojom.UrlResponseInfo response);

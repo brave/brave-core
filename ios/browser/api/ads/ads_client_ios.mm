@@ -102,13 +102,12 @@ void AdsClientIOS::LoadComponentResource(const std::string& id,
                         callback:std::move(callback)];
 }
 
-void AdsClientIOS::GetBrowsingHistory(
-    const int max_count,
-    const int days_ago,
-    brave_ads::GetBrowsingHistoryCallback callback) {
-  [bridge_ getBrowsingHistory:max_count
-                      forDays:days_ago
-                     callback:std::move(callback)];
+void AdsClientIOS::GetSiteHistory(const int max_count,
+                                  const int days_ago,
+                                  brave_ads::GetSiteHistoryCallback callback) {
+  [bridge_ getSiteHistory:max_count
+                  forDays:days_ago
+                 callback:std::move(callback)];
 }
 
 void AdsClientIOS::Load(const std::string& name,

@@ -11,11 +11,11 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
-#include "brave/components/brave_ads/core/internal/history/browsing_history.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_callback.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_base.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
+#include "brave/components/brave_ads/core/public/history/site_history.h"
 
 namespace brave_ads {
 
@@ -46,11 +46,11 @@ class EligibleInlineContentAdsV2 final : public EligibleInlineContentAdsBase {
                       const AdEventList& ad_events,
                       const std::string& dimensions,
                       EligibleAdsCallback<CreativeInlineContentAdList> callback,
-                      const BrowsingHistoryList& browsing_history);
+                      const SiteHistoryList& site_history);
   void GetEligibleAdsCallback(
       const UserModelInfo& user_model,
       const AdEventList& ad_events,
-      const BrowsingHistoryList& browsing_history,
+      const SiteHistoryList& site_history,
       EligibleAdsCallback<CreativeInlineContentAdList> callback,
       bool success,
       const CreativeInlineContentAdList& creative_ads);
@@ -59,11 +59,11 @@ class EligibleInlineContentAdsV2 final : public EligibleInlineContentAdsBase {
       const UserModelInfo& user_model,
       const CreativeInlineContentAdList& creative_ads,
       const AdEventList& ad_events,
-      const BrowsingHistoryList& browsing_history,
+      const SiteHistoryList& site_history,
       EligibleAdsCallback<CreativeInlineContentAdList> callback);
   void FilterIneligibleCreativeAds(CreativeInlineContentAdList& creative_ads,
                                    const AdEventList& ad_events,
-                                   const BrowsingHistoryList& browsing_history);
+                                   const SiteHistoryList& site_history);
 
   const database::table::CreativeInlineContentAds creative_ads_database_table_;
 

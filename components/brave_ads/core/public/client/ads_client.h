@@ -72,12 +72,11 @@ class ADS_EXPORT AdsClient {
   // Reset ad event cache for the specified instance `id`.
   virtual void ResetAdEventCacheForInstanceId(const std::string& id) const = 0;
 
-  // Get browsing history from `recent_day_range` limited to `max_count` items.
-  // The callback takes one argument - `std::vector<GURL>` containing a list of
-  // URLs.
-  virtual void GetBrowsingHistory(int max_count,
-                                  int recent_day_range,
-                                  GetBrowsingHistoryCallback callback) = 0;
+  // Get site history from `recent_day_range` limited to `max_count` items. The
+  // callback takes one argument - `SiteHistoryList` containing a list of URLs.
+  virtual void GetSiteHistory(int max_count,
+                              int recent_day_range,
+                              GetSiteHistoryCallback callback) = 0;
 
   // Fetch and return data for the `url_request`. Loading should be performed
   // asynchronously, so that the app remains responsive and should handle

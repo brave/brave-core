@@ -18,11 +18,11 @@ NotificationAdExclusionRules::NotificationAdExclusionRules(
     const AdEventList& ad_events,
     const SubdivisionTargeting& subdivision_targeting,
     const AntiTargetingResource& anti_targeting_resource,
-    const BrowsingHistoryList& browsing_history)
+    const SiteHistoryList& site_history)
     : ExclusionRulesBase(ad_events,
                          subdivision_targeting,
                          anti_targeting_resource,
-                         browsing_history) {
+                         site_history) {
   exclusion_rules_.push_back(
       std::make_unique<CreativeInstanceExclusionRule>(ad_events));
 

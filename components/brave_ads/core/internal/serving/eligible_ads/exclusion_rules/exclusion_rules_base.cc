@@ -31,9 +31,9 @@ ExclusionRulesBase::ExclusionRulesBase(
     const AdEventList& ad_events,
     const SubdivisionTargeting& subdivision_targeting,
     const AntiTargetingResource& anti_targeting_resource,
-    const BrowsingHistoryList& browsing_history) {
+    const SiteHistoryList& site_history) {
   exclusion_rules_.push_back(std::make_unique<AntiTargetingExclusionRule>(
-      anti_targeting_resource, browsing_history));
+      anti_targeting_resource, site_history));
 
   exclusion_rules_.push_back(
       std::make_unique<ConversionExclusionRule>(ad_events));

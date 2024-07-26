@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "url/gurl.h"
+#include "brave/components/brave_ads/core/public/history/site_history.h"
 
 namespace brave_ads::test {
 
@@ -144,15 +144,16 @@ void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
       .WillByDefault(::testing::Return(can_show));
 }
 
-void MockGetBrowsingHistory(AdsClientMock& mock,
-                            const std::vector<GURL>& history) {
-  ON_CALL(mock, GetBrowsingHistory)
-      .WillByDefault(::testing::Invoke(
-          [history](const size_t max_count, const size_t /*recent_day_range*/,
-                    GetBrowsingHistoryCallback callback) {
-            CHECK_LE(history.size(), max_count);
+void MockGetSiteHistory(AdsClientMock& mock,
+                        const SiteHistoryList& site_history) {
+  ON_CALL(mock, GetSiteHistory)
+      .WillByDefault(
+          ::testing::Invoke([site_history](const size_t max_count,
+                                           const size_t /*recent_day_range*/,
+                                           GetSiteHistoryCallback callback) {
+            CHECK_LE(site_history.size(), max_count);
 
-            std::move(callback).Run(history);
+            std::move(callback).Run(site_history);
           }));
 }
 

@@ -1409,11 +1409,11 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   }
 }
 
-- (void)getBrowsingHistory:(const int)max_count
-                   forDays:(const int)days_ago
-                  callback:(brave_ads::GetBrowsingHistoryCallback)callback {
+- (void)getSiteHistory:(const int)max_count
+               forDays:(const int)days_ago
+              callback:(brave_ads::GetSiteHistoryCallback)callback {
   // TODO(https://github.com/brave/brave-browser/issues/33681): Unify Brave Ads
-  // browsing history.
+  // site history.
   std::move(callback).Run({});
 }
 

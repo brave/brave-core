@@ -69,10 +69,9 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
       const std::string& confirmation_type) const override;
   void ResetAdEventCacheForInstanceId(const std::string& id) const override;
 
-  void GetBrowsingHistory(
-      int max_count,
-      int days_ago,
-      brave_ads::GetBrowsingHistoryCallback callback) override;
+  void GetSiteHistory(int max_count,
+                      int days_ago,
+                      brave_ads::GetSiteHistoryCallback callback) override;
 
   void UrlRequest(brave_ads::mojom::UrlRequestInfoPtr url_request,
                   brave_ads::UrlRequestCallback callback) override;
