@@ -908,7 +908,9 @@ bool CanOpenNewSplitViewForTab(Browser* browser,
   return !split_view_data->IsTabTiled(*tab);
 }
 
-void NewSplitViewForTab(Browser* browser, std::optional<tabs::TabHandle> tab) {
+void NewSplitViewForTab(Browser* browser,
+                        std::optional<tabs::TabHandle> tab,
+                        const GURL& url) {
   auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
   if (!split_view_data) {
     return;
@@ -928,8 +930,14 @@ void NewSplitViewForTab(Browser* browser, std::optional<tabs::TabHandle> tab) {
                                 ? model->IndexOfFirstNonPinnedTab()
                                 : tab_index + 1;
 
-  chrome::AddTabAt(browser, GURL("chrome://newtab"), new_tab_index,
-                   /*foreground*/ true);
+  if (!url.is_valid()) {
+    chrome::AddTabAt(browser, GURL("chrome://newtab"), new_tab_index,
+                     /*foreground*/ true);
+  } else {
+    chrome::AddTabAt(browser, url, new_tab_index,
+                     /*foreground*/ true);
+  }
+
   split_view_data->TileTabs({.first = model->GetTabHandleAt(tab_index),
                              .second = model->GetTabHandleAt(new_tab_index)});
 }
