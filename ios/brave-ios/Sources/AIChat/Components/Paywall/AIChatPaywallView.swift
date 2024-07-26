@@ -148,6 +148,9 @@ struct AIChatPaywallView: View {
       }
     }
     .navigationViewStyle(.stack)
+    .onDisappear {
+      iapRestoreTimer?.cancel()
+    }
   }
 
   private var tierSelection: some View {
@@ -271,6 +274,8 @@ struct AIChatPaywallView: View {
 
     // Adding 30 seconds time-out for restore
     iapRestoreTimer = Task.delayed(bySeconds: 30.0) { @MainActor in
+      try Task.checkCancellation()
+
       paymentStatus = .failure
 
       // Show Alert for failure of restore

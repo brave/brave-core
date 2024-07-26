@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import Combine
 import Foundation
@@ -33,32 +34,31 @@ public enum BraveStoreProductGroup: String, CaseIterable {
 
   /// The subscription group ID on App Store Connect
   public var groupID: String {
-    #if DEBUG
-    switch self {
-    case .vpn: return "20625393"
-    case .leo: return "21451390"
+    switch BraveSkusEnvironment.current {
+    case .beta:
+      switch self {
+      case .vpn: return "21497512"
+      case .leo: return "21497453"
+      }
+    case .nightly:
+      switch self {
+      case .vpn: return "21497623"
+      case .leo: return "21497565"
+      }
+    case .release:
+      switch self {
+      case .vpn: return "20621968"
+      case .leo: return "21439231"
+      }
     }
-    #else
-    switch self {
-    case .vpn: return "20621968"
-    case .leo: return "21439231"
-    }
-    #endif
   }
 
   /// The SKU's associated environment domain
   public var skusDomain: String {
-    #if DEBUG
     switch self {
-    case .vpn: return "vpn.bravesoftware.com"
-    case .leo: return "leo.bravesoftware.com"
+    case .vpn: return BraveDomains.serviceDomain(prefix: "vpn")
+    case .leo: return BraveDomains.serviceDomain(prefix: "leo")
     }
-    #else
-    switch self {
-    case .vpn: return "vpn.brave.com"
-    case .leo: return "leo.brave.com"
-    }
-    #endif
   }
 }
 
@@ -96,6 +96,7 @@ public enum BraveStoreProduct: String, AppStoreProduct, CaseIterable {
     }
   }
 
+  /// The AppStore Product Subscription Group
   public var group: BraveStoreProductGroup {
     switch self {
     case .vpnMonthly, .vpnYearly: return .vpn
@@ -103,19 +104,32 @@ public enum BraveStoreProduct: String, AppStoreProduct, CaseIterable {
     }
   }
 
+  /// The AppStore Product Subscription ID
+  /// For release, there is no prefix.
+  /// For nightly & beta, there is a prefix
+  ///  - [beta | nightly].bravevpn.monthly
+  ///  - [beta | nightly]].bravevpn.yearly
+  ///  - [beta | nightly].braveleo.monthly
+  ///  - [beta | nightly]].braveleo.yearly
   public var rawValue: String {
+    var prefix: String {
+      switch BraveSkusEnvironment.current {
+      case .beta: return "beta."
+      case .nightly: return "nightly."
+      case .release: return ""
+      }
+    }
+
     var productId: String {
       switch self {
-      case .vpnMonthly, .vpnYearly:
-        return Bundle.main.getPlistString(for: "VPN_PRODUCT_ID_PREFIX") ?? "bravevpn"
-      case .leoMonthly, .leoYearly:
-        return Bundle.main.getPlistString(for: "LEO_PRODUCT_ID_PREFIX") ?? "braveleo"
+      case .vpnMonthly, .vpnYearly: return "bravevpn"
+      case .leoMonthly, .leoYearly: return "braveleo"
       }
     }
 
     switch self {
-    case .vpnMonthly, .leoMonthly: return "\(productId).monthly"
-    case .vpnYearly, .leoYearly: return "\(productId).yearly"
+    case .vpnMonthly, .leoMonthly: return "\(prefix)\(productId).monthly"
+    case .vpnYearly, .leoYearly: return "\(prefix)\(productId).yearly"
     }
   }
 }

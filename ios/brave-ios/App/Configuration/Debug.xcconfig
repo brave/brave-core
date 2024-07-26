@@ -25,6 +25,3 @@ OTHER_SWIFT_FLAGS=$(brave_ios_debug_prefix_map_flag)
 ENABLE_TESTABILITY = YES
 
 GCC_PREPROCESSOR_DEFINITIONS= DEBUG=1
-
-VPN_PRODUCT_ID_PREFIX = nightly.bravevpn
-LEO_PRODUCT_ID_PREFIX = nightly.braveleo
