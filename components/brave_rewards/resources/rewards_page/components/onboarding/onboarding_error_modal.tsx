@@ -10,7 +10,7 @@ import Button from '@brave/leo/react/button'
 import { EnableRewardsResult } from '../../lib/app_model'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { formatMessage } from '../../../shared/lib/locale_context'
-import { Modal, ModalHeader } from '../modal'
+import { Modal } from '../modal'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 import * as urls from '../../../shared/lib/rewards_urls'
 
@@ -59,8 +59,8 @@ export function OnboardingErrorModal(props: Props) {
   const messages = getResultMessages()
 
   return (
-    <Modal onClose={props.onClose}>
-      <ModalHeader onClose={props.onClose} />
+    <Modal onEscape={props.onClose}>
+      <Modal.Header onClose={props.onClose} />
       <div {...style}>
         <div className='icon'>
           <Icon name='warning-circle-filled' />

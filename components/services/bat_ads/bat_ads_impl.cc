@@ -248,14 +248,12 @@ void BatAdsImpl::ToggleDislikeCategory(base::Value::Dict value,
 void BatAdsImpl::ToggleSaveAd(base::Value::Dict value,
                               ToggleSaveAdCallback callback) {
   GetAds()->ToggleSaveAd(value, std::move(callback));
-  std::move(callback).Run(/*success=*/true);
 }
 
 void BatAdsImpl::ToggleMarkAdAsInappropriate(
     base::Value::Dict value,
     ToggleMarkAdAsInappropriateCallback callback) {
   GetAds()->ToggleMarkAdAsInappropriate(value, std::move(callback));
-  std::move(callback).Run(/*success=*/true);
 }
 
 brave_ads::Ads* BatAdsImpl::GetAds() {

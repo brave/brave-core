@@ -6,7 +6,6 @@
 import { color, font } from '@brave/leo/tokens/css/variables'
 import { css, scopedCSS } from '../../lib/scoped_css'
 
-import selectCaret from '../../assets/select_caret.svg'
 import selectCountry from '../../assets/select_country.svg'
 
 export const style = scopedCSS('country-select-modal', css`
@@ -23,7 +22,7 @@ export const style = scopedCSS('country-select-modal', css`
   }
 
   .graphic {
-    height: 145px;
+    flex: 0 0 145px;
     background-image: url(${selectCountry});
     background-position: center;
     background-size: auto 100%;
@@ -48,24 +47,12 @@ export const style = scopedCSS('country-select-modal', css`
     margin-bottom: 16px;
 
     select {
-      appearance: none;
-      background:
-        url(${selectCaret}) calc(100% - 12px) center no-repeat,
-        ${color.container.highlight};
-      background-size: 12px;
       width: 100%;
-      border-radius: 8px;
       color: ${color.text.primary};
       font: ${font.default.regular};
-      padding: 8px 36px 8px 11px;
 
       &.empty {
         color: ${color.text.secondary};
-      }
-
-      > option {
-        color: ${color.text.primary};
-        background: ${color.container.background};
       }
     }
   }

@@ -5,10 +5,16 @@
 
 import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
 
-import { externalWalletFromExtensionData, ExternalWalletProvider, externalWalletProviderFromString } from '../../shared/lib/external_wallet'
-import { AppModel, AppState, defaultState } from './app_model'
+import {
+  externalWalletFromExtensionData,
+  ExternalWalletProvider,
+  externalWalletProviderFromString
+} from '../../shared/lib/external_wallet'
+
+import { AppModel, AppState, AdType, defaultState } from './app_model'
 import { RewardsPageProxy } from './rewards_page_proxy'
 import { createStateManager } from '../../shared/lib/state_manager'
+import { createAdsHistoryAdapter } from './ads_history_adapter'
 import * as mojom from './mojom'
 
 function normalizePlatform(name: string) {
@@ -21,9 +27,23 @@ function normalizePlatform(name: string) {
   return 'desktop'
 }
 
+function convertAdType(adType: AdType) {
+  switch (adType) {
+    case 'new-tab-page': return mojom.AdType.kNewTabPageAd
+    case 'notification': return mojom.AdType.kNotificationAd
+    case 'search-result': return mojom.AdType.kSearchResultAd
+    case 'inline-content': return mojom.AdType.kInlineContentAd
+  }
+}
+
+function convertMojoTime(time: any) {
+  return (Number(time?.internalValue) / 1000 - Date.UTC(1601, 0, 1)) || 0
+}
+
 export function createModel(): AppModel {
   const browserProxy = RewardsPageProxy.getInstance()
   const pageHandler = browserProxy.handler
+  const adsHistoryAdapter = createAdsHistoryAdapter()
   const stateManager = createStateManager<AppState>(defaultState())
   const isBubble = loadTimeData.getBoolean('isBubble')
 
@@ -59,11 +79,40 @@ export function createModel(): AppModel {
   }
 
   async function updateAdsInfo() {
-    const { statement } = await pageHandler.getAdsStatement()
-    if (statement) {
+    const [{ statement }, { settings }] = await Promise.all([
+      await pageHandler.getAdsStatement(),
+      await pageHandler.getAdsSettings()
+    ])
+
+    if (statement && settings) {
       stateManager.update({
         adsInfo: {
-          adsReceivedThisMonth: statement.adsReceivedThisMonth
+          adsEnabled: {
+            'new-tab-page': settings.newTabPageAdsEnabled,
+            'notification': settings.notificationAdsEnabled,
+            'search-result': settings.searchAdsEnabled,
+            'inline-content': settings.inlineContentAdsEnabled
+          },
+          adsReceivedThisMonth: statement.adsReceivedThisMonth,
+          adTypesReceivedThisMonth: {
+            'new-tab-page':
+              Number(statement.adsSummaryThisMonth.new_tab_page_ad) || 0,
+            'notification':
+              Number(statement.adsSummaryThisMonth.ad_notification) || 0,
+            'search-result':
+              Number(statement.adsSummaryThisMonth.search_result_ad) || 0,
+            'inline-content':
+              Number(statement.adsSummaryThisMonth.inline_content_ad) || 0,
+          },
+          minEarningsThisMonth: statement.minEarningsThisMonth,
+          maxEarningsThisMonth: statement.maxEarningsThisMonth,
+          nextPaymentDate: convertMojoTime(statement.nextPaymentDate),
+          notificationAdsPerHour: settings.notificationAdsPerHour,
+          shouldAllowSubdivisionTargeting:
+            settings.shouldAllowSubdivisionTargeting,
+          currentSubdivision: settings.currentSubdivision,
+          availableSubdivisions: settings.availableSubdivisions,
+          autoDetectedSubdivision: settings.autoDetectedSubdivision
         }
       })
     } else {
@@ -182,35 +231,34 @@ export function createModel(): AppModel {
     },
 
     async connectExternalWallet(provider, args) {
+      const ResultType = mojom.ConnectExternalWalletResult
       const { result } = await pageHandler.connectExternalWallet(provider, args)
       switch (result) {
-        case mojom.ConnectExternalWalletResult.kSuccess:
+        case ResultType.kSuccess:
           return 'success'
-        case mojom.ConnectExternalWalletResult.kDeviceLimitReached:
+        case ResultType.kDeviceLimitReached:
           return 'device-limit-reached'
-        case mojom.ConnectExternalWalletResult.kFlaggedWallet:
+        case ResultType.kFlaggedWallet:
           return 'flagged-wallet'
-        case mojom.ConnectExternalWalletResult.kKYCRequired:
+        case ResultType.kKYCRequired:
           return 'kyc-required'
-        case mojom.ConnectExternalWalletResult.kMismatchedCountries:
+        case ResultType.kMismatchedCountries:
           return 'mismatched-countries'
-        case mojom.ConnectExternalWalletResult.kMismatchedProviderAccounts:
+        case ResultType.kMismatchedProviderAccounts:
           return 'mismatched-provider-accounts'
-        case mojom.ConnectExternalWalletResult.kProviderUnavailable:
+        case ResultType.kProviderUnavailable:
           return 'provider-unavailable'
-        case mojom.ConnectExternalWalletResult.kRegionNotSupported:
+        case ResultType.kRegionNotSupported:
           return 'region-not-supported'
-        case mojom.ConnectExternalWalletResult
-                  .kRequestSignatureVerificationFailure:
+        case ResultType.kRequestSignatureVerificationFailure:
           return 'request-signature-verification-error'
-        case mojom.ConnectExternalWalletResult.kUnexpected:
+        case ResultType.kUnexpected:
           return 'unexpected-error'
-        case mojom.ConnectExternalWalletResult.kUpholdBATNotAllowed:
+        case ResultType.kUpholdBATNotAllowed:
           return 'uphold-bat-not-allowed'
-        case mojom.ConnectExternalWalletResult.kUpholdInsufficientCapabilities:
+        case ResultType.kUpholdInsufficientCapabilities:
           return 'uphold-insufficient-capabilities'
-        case mojom.ConnectExternalWalletResult
-                  .kUpholdTransactionVerificationFailure:
+        case ResultType.kUpholdTransactionVerificationFailure:
           return 'uphold-transaction-verification-failure'
         default:
           console.error('Unrecognized result value ' + result)
@@ -220,6 +268,50 @@ export function createModel(): AppModel {
 
     async resetRewards() {
       await pageHandler.resetRewards()
+    },
+
+    async setAdTypeEnabled(adType, enabled) {
+      // Before sending the update request to the browser, update the local app
+      // state in order to avoid any jitter with nala toggles.
+      const { adsInfo } = stateManager.getState()
+      if (adsInfo) {
+        adsInfo.adsEnabled[adType] = enabled
+        stateManager.update({ adsInfo })
+      }
+      await pageHandler.setAdTypeEnabled(convertAdType(adType), enabled);
+    },
+
+    async setNotificationAdsPerHour(adsPerHour) {
+      await pageHandler.setNotificationAdsPerHour(adsPerHour);
+    },
+
+    async setAdsSubdivision(subdivision) {
+      await pageHandler.setAdsSubdivision(subdivision);
+    },
+
+    async getAdsHistory() {
+      const { history } = await pageHandler.getAdsHistory()
+      adsHistoryAdapter.parseData(history)
+      return adsHistoryAdapter.getItems()
+    },
+
+    async setAdLikeStatus(id, status) {
+      const detail = adsHistoryAdapter.getRawDetail(id)
+      const previous = adsHistoryAdapter.setAdLikeStatus(id, status)
+      switch (status || previous) {
+        case 'liked':
+          await pageHandler.toggleAdLike(detail)
+          break
+        case 'disliked':
+          await pageHandler.toggleAdDislike(detail)
+          break
+      }
+    },
+
+    async setAdInappropriate(id, value) {
+      const detail = adsHistoryAdapter.getRawDetail(id)
+      adsHistoryAdapter.setInappropriate(id, value)
+      await pageHandler.toggleAdInappropriate(detail)
     }
   }
 }

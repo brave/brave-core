@@ -22,7 +22,36 @@ export function createModel(): AppModel {
     paymentId: 'abc123',
     countryCode: 'US',
     adsInfo: {
-      adsReceivedThisMonth: 4
+      adsEnabled: {
+        'new-tab-page': true,
+        'notification': false,
+        'search-result': true,
+        'inline-content': false
+      },
+      adsReceivedThisMonth: 97,
+      adTypesReceivedThisMonth: {
+        'new-tab-page': 92,
+        'notification': 4,
+        'search-result': 1,
+        'inline-content': 0
+      },
+      minEarningsThisMonth: 21.244,
+      maxEarningsThisMonth: 32.980,
+      nextPaymentDate: Date.now(),
+      notificationAdsPerHour: 5,
+      shouldAllowSubdivisionTargeting: true,
+      currentSubdivision: 'US-NY',
+      availableSubdivisions: [
+        { code: 'US-NY', name: 'New York' },
+        { code: 'US-CA', name: 'California' }
+      ],
+      autoDetectedSubdivision: 'US-NY'
+    },
+    externalWallet: {
+      provider: 'uphold',
+      name: 'Test Account',
+      authenticated: true,
+      url: ''
     },
     rewardsParameters: {
       walletProviderRegions: {
@@ -68,6 +97,56 @@ export function createModel(): AppModel {
     async connectExternalWallet(provider, args) {
       await delay(2000)
       return 'unexpected-error'
+    },
+
+    async setAdTypeEnabled(adType, enabled) {
+      const { adsInfo } = stateManager.getState()
+      if (adsInfo) {
+        adsInfo.adsEnabled[adType] = enabled
+        stateManager.update({ adsInfo })
+      }
+    },
+
+    async setNotificationAdsPerHour(adsPerHour) {
+      const { adsInfo } = stateManager.getState()
+      if (adsInfo) {
+        adsInfo.notificationAdsPerHour = adsPerHour
+        stateManager.update({ adsInfo })
+      }
+    },
+
+    async setAdsSubdivision(subdivision) {
+      const { adsInfo } = stateManager.getState()
+      if (adsInfo) {
+        adsInfo.currentSubdivision = subdivision
+        stateManager.update({ adsInfo })
+      }
+    },
+
+    async getAdsHistory() {
+      return [
+        {
+          createdAt: Date.now(),
+          id: '123',
+          name: 'Brave',
+          text: 'Data Regulation & GDPR...',
+          domain: 'kite.lnk',
+          url: 'https://brave.com',
+          likeStatus: '',
+          inappropriate: false
+        },
+        {
+          createdAt: Date.now(),
+          id: '124',
+          name: 'Brave',
+          text: 'Data Regulation & GDPR...',
+          domain: 'kite.lnk',
+          url: 'https://brave.com',
+          likeStatus: 'liked',
+          inappropriate: false
+        }
+      ]
     }
+
   }
 }
