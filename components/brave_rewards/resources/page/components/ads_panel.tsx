@@ -325,7 +325,7 @@ export function AdsPanel () {
       flooredDate.setHours(0, 0, 0, 0)
       const flooredDateString = flooredDate.toLocaleDateString()
 
-      for (const { uuid, adContent, categoryContent } of history.adDetailRows) {
+      for (const { uuid, createdAt, adContent, categoryContent } of history.adDetailRows) {
         let { brand } = adContent
         if (brand.length > 50) {
           brand = brand.substring(0, 50) + '...'
@@ -338,19 +338,20 @@ export function AdsPanel () {
 
         const detailRow = {
           uuid,
+          createdAt,
           adContent: {
             ...adContent,
             brand,
             brandInfo,
-            onThumbUpPress: () => actions.toggleAdThumbUp(adContent),
-            onThumbDownPress: () => actions.toggleAdThumbDown(adContent),
-            onMenuSave: () => actions.toggleSavedAd(adContent),
-            onMenuFlag: () => actions.toggleFlaggedAd(adContent)
+            onThumbUpPress: () => actions.toggleAdThumbUp(detailRow),
+            onThumbDownPress: () => actions.toggleAdThumbDown(detailRow),
+            onMenuSave: () => actions.toggleSavedAd(detailRow),
+            onMenuFlag: () => actions.toggleFlaggedAd(detailRow)
           },
           categoryContent: {
             ...categoryContent,
-            onOptIn: () => actions.toggleAdOptIn(categoryContent),
-            onOptOut: () => actions.toggleAdOptOut(categoryContent)
+            onOptIn: () => actions.toggleAdOptIn(detailRow),
+            onOptOut: () => actions.toggleAdOptOut(detailRow)
           }
         }
 

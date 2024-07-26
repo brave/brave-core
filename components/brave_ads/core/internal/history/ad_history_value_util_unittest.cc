@@ -48,7 +48,7 @@ constexpr char kAdHistoryAsJson[] =
               "category": "untargeted",
               "optAction": 0
             },
-            "created_at": "12993327900000000"
+            "createdAt": "12993327900000000"
           },
           {
             "adContent": {
@@ -72,7 +72,7 @@ constexpr char kAdHistoryAsJson[] =
               "category": "untargeted",
               "optAction": 0
             },
-            "created_at": "12993327900000000"
+            "createdAt": "12993327900000000"
           }
         ])";
 
@@ -101,7 +101,7 @@ constexpr char kLegacyAdHistoryAsJson[] =
               "category": "untargeted",
               "optAction": 0
             },
-            "created_at": "12993327900000000"
+            "createdAt": "12993327900000000"
           },
           {
             "ad_content": {
@@ -125,7 +125,7 @@ constexpr char kLegacyAdHistoryAsJson[] =
               "category": "untargeted",
               "optAction": 0
             },
-            "created_at": "12993327900000000"
+            "createdAt": "12993327900000000"
           }
         ])";
 

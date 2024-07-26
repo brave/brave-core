@@ -13,8 +13,11 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kCreatedAtKey[] = "created_at";
+// Created at.
+constexpr char kCreatedAtKey[] = "createdAt";
+constexpr char kLegacyCreatedAtKey[] = "created_at";
 
+// Ad content.
 constexpr char kAdContentKey[] = "adContent";
 constexpr char kLegacyAdContentKey[] = "ad_content";
 constexpr char kType[] = "adType";
@@ -34,19 +37,30 @@ constexpr char kCategoryUserReactionTypeKey[] = "optAction";
 constexpr char kIsSaved[] = "savedAd";
 constexpr char kIsMarkedAsInappropriate[] = "flaggedAd";
 
+// Category content.
 constexpr char kCategoryContentKey[] = "categoryContent";
 constexpr char kLegacyCategoryContentKey[] = "category_content";
 constexpr char kCategoryKey[] = "category";
 
+// UI
 constexpr char kUIUuidKey[] = "uuid";
 constexpr char kUICreatedAtKey[] = "timestampInMilliseconds";
 constexpr char kUIRowKey[] = "adDetailRows";
 
+void ParseCreatedAt(const base::Value::Dict& dict,
+                    AdHistoryItemInfo& ad_history_item) {
+  const base::Value* value = dict.Find(kCreatedAtKey);
+  if (!value) {
+    // Migration from legacy key.
+    value = dict.Find(kLegacyCreatedAtKey);
+  }
+
+  ad_history_item.created_at = base::ValueToTime(value).value_or(base::Time());
+}
+
 void ParseAdContent(const base::Value::Dict& dict,
                     AdHistoryItemInfo& ad_history_item) {
-  const base::Value::Dict* content_dict = nullptr;
-
-  content_dict = dict.FindDict(kAdContentKey);
+  const base::Value::Dict* content_dict = dict.FindDict(kAdContentKey);
   if (!content_dict) {
     // Migration from legacy key.
     content_dict = dict.FindDict(kLegacyAdContentKey);
@@ -190,13 +204,8 @@ base::Value::Dict AdHistoryItemToValue(
 AdHistoryItemInfo AdHistoryItemFromValue(const base::Value::Dict& dict) {
   AdHistoryItemInfo ad_history_item;
 
-  if (const auto* const value = dict.Find(kCreatedAtKey)) {
-    ad_history_item.created_at =
-        base::ValueToTime(value).value_or(base::Time());
-  }
-
+  ParseCreatedAt(dict, ad_history_item);
   ParseAdContent(dict, ad_history_item);
-
   ParseCategoryContent(dict, ad_history_item);
 
   return ad_history_item;
