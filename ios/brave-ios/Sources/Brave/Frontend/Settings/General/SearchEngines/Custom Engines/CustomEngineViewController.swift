@@ -15,11 +15,11 @@ import Storage
 import WebKit
 import os.log
 
-class SearchCustomEngineViewController: UIViewController {
+class CustomEngineViewController: UIViewController {
 
   // MARK: AddButtonType
 
-  private enum AddButtonType {
+  enum AddButtonType {
     case enabled
     case disabled
     case loading
@@ -40,21 +40,20 @@ class SearchCustomEngineViewController: UIViewController {
 
   // MARK: CustomEngineType
 
-  private enum CustomEngineActionType {
+  enum CustomEngineActionType {
     case add
     case edit
   }
 
   // MARK: Properties
 
-  private var profile: Profile
-  private var privateBrowsingManager: PrivateBrowsingManager
+  var profile: Profile
+  var privateBrowsingManager: PrivateBrowsingManager
 
   private var urlText: String?
-
   private var titleText: String?
 
-  private var host: URL? {
+  var host: URL? {
     didSet {
       if let host = host, oldValue != host {
         fetchSearchEngineSupportForHost(host)
@@ -64,26 +63,25 @@ class SearchCustomEngineViewController: UIViewController {
     }
   }
 
-  private var openSearchReference: OpenSearchReference? {
+  var openSearchReference: OpenSearchReference? {
     didSet {
       checkSupportAutoAddSearchEngine()
     }
   }
 
   private var engineToBeEdited: OpenSearchEngine?
-  private var customEngineActionType: CustomEngineActionType = .add
+  var customEngineActionType: CustomEngineActionType = .add
 
-  private var isAutoAddEnabled = false
+  var isAutoAddEnabled = false
 
-  private var dataTask: URLSessionDataTask? {
+  var dataTask: URLSessionDataTask? {
     didSet {
       oldValue?.cancel()
     }
   }
 
-  private var faviconTask: Task<Void, Error>?
-
-  fileprivate var faviconImage: UIImage?
+  var faviconTask: Task<Void, Error>?
+  var faviconImage: UIImage?
 
   private lazy var spinnerView = UIActivityIndicatorView(style: .medium).then {
     $0.hidesWhenStopped = true
@@ -130,8 +128,8 @@ class SearchCustomEngineViewController: UIViewController {
 
   private func setup() {
     tableView.do {
-      $0.register(URLInputTableViewCell.self)
-      $0.register(TitleInputTableViewCell.self)
+      $0.register(CustomEngineURLInputTableViewCell.self)
+      $0.register(CustomEngineTitleInputTableViewCell.self)
       $0.registerHeaderFooter(SearchEngineTableViewHeader.self)
       $0.dataSource = self
       $0.delegate = self
@@ -146,7 +144,7 @@ class SearchCustomEngineViewController: UIViewController {
     }
   }
 
-  private func changeAddEditButton(for type: AddButtonType) {
+  func changeAddEditButton(for type: AddButtonType) {
     ensureMainThread {
       switch type {
       case .enabled:
@@ -172,7 +170,7 @@ class SearchCustomEngineViewController: UIViewController {
     }
   }
 
-  private func handleError(error: Error) {
+  func handleError(error: Error) {
     let alert: UIAlertController
 
     if let searchError = error as? SearchEngineError {
@@ -233,7 +231,7 @@ class SearchCustomEngineViewController: UIViewController {
 
 // MARK: - UITableViewDelegate UITableViewDataSource
 
-extension SearchCustomEngineViewController: UITableViewDelegate, UITableViewDataSource {
+extension CustomEngineViewController: UITableViewDelegate, UITableViewDataSource {
 
   func numberOfSections(in tableView: UITableView) -> Int {
     return Section.allCases.count
@@ -246,7 +244,7 @@ extension SearchCustomEngineViewController: UITableViewDelegate, UITableViewData
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     switch indexPath.section {
     case Section.url.rawValue:
-      let cell = tableView.dequeueReusableCell(for: indexPath) as URLInputTableViewCell
+      let cell = tableView.dequeueReusableCell(for: indexPath) as CustomEngineURLInputTableViewCell
       cell.do {
         $0.delegate = self
         $0.selectionStyle = .none
@@ -259,7 +257,7 @@ extension SearchCustomEngineViewController: UITableViewDelegate, UITableViewData
       }
       return cell
     default:
-      let cell = tableView.dequeueReusableCell(for: indexPath) as TitleInputTableViewCell
+      let cell = tableView.dequeueReusableCell(for: indexPath) as CustomEngineTitleInputTableViewCell
       cell.do {
         $0.delegate = self
         $0.selectionStyle = .none
@@ -294,198 +292,9 @@ extension SearchCustomEngineViewController: UITableViewDelegate, UITableViewData
   }
 }
 
-// MARK: Auto Add Engine
-
-extension SearchCustomEngineViewController {
-
-  fileprivate func addOpenSearchEngine() {
-    guard var referenceURLString = openSearchReference?.reference,
-      let title = openSearchReference?.title,
-      var referenceURL = URL(string: referenceURLString),
-      let faviconImage = faviconImage,
-      let hostURLString = host?.absoluteString
-    else {
-      let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
-      present(alert, animated: true, completion: nil)
-      return
-    }
-
-    while referenceURLString.hasPrefix("/") {
-      referenceURLString.remove(at: referenceURLString.startIndex)
-    }
-
-    let constructedReferenceURLString = "\(hostURLString)/\(referenceURLString)"
-
-    if referenceURL.host == nil,
-      let constructedReferenceURL = URL(string: constructedReferenceURLString)
-    {
-      referenceURL = constructedReferenceURL
-    }
-
-    downloadOpenSearchXML(
-      referenceURL,
-      referenceURL: referenceURLString,
-      title: title,
-      iconImage: faviconImage
-    )
-  }
-
-  func downloadOpenSearchXML(_ url: URL, referenceURL: String, title: String, iconImage: UIImage) {
-    changeAddEditButton(for: .loading)
-    view.endEditing(true)
-
-    NetworkManager().downloadResource(with: url) { [weak self] response in
-      guard let self = self else { return }
-
-      switch response {
-      case .success(let response):
-        Task { @MainActor in
-          if let openSearchEngine = await OpenSearchParser(pluginMode: true).parse(
-            response.data,
-            referenceURL: referenceURL,
-            image: iconImage,
-            isCustomEngine: true
-          ) {
-            self.addSearchEngine(openSearchEngine)
-          } else {
-            let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
-
-            self.present(alert, animated: true) {
-              self.changeAddEditButton(for: .disabled)
-            }
-          }
-        }
-      case .failure(let error):
-        Logger.module.error("\(error.localizedDescription)")
-
-        let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
-        self.present(alert, animated: true) {
-          self.changeAddEditButton(for: .disabled)
-        }
-      }
-    }
-  }
-
-  func addSearchEngine(_ engine: OpenSearchEngine) {
-    let alert = ThirdPartySearchAlerts.addThirdPartySearchEngine(engine) {
-      [weak self] alertAction in
-      guard let self = self else { return }
-
-      if alertAction.style == .cancel {
-        self.changeAddEditButton(for: .enabled)
-        return
-      }
-
-      Task { @MainActor in
-        do {
-          try await self.profile.searchEngines.addSearchEngine(engine)
-          self.cancel()
-        } catch {
-          self.handleError(error: SearchEngineError.failedToSave)
-
-          self.changeAddEditButton(for: .disabled)
-        }
-      }
-    }
-
-    self.present(alert, animated: true, completion: {})
-  }
-}
-
-// MARK: Auto Add Meta Data
-
-extension SearchCustomEngineViewController {
-
-  func checkSupportAutoAddSearchEngine() {
-    guard let openSearchEngine = openSearchReference else {
-      changeAddEditButton(for: .disabled)
-      checkManualAddExists()
-      faviconImage = nil
-
-      return
-    }
-
-    let searchEngineExists = profile.searchEngines.orderedEngines.contains(where: {
-      let nameExists = $0.shortName.lowercased() == openSearchEngine.title?.lowercased() ?? ""
-
-      if let referenceURL = $0.referenceURL {
-        return openSearchEngine.reference.contains(referenceURL) || nameExists
-      }
-
-      return nameExists
-    })
-
-    if searchEngineExists {
-      changeAddEditButton(for: .disabled)
-      checkManualAddExists()
-    } else {
-      changeAddEditButton(for: .enabled)
-      isAutoAddEnabled = true
-    }
-  }
-
-  private func fetchSearchEngineSupportForHost(_ host: URL) {
-    // Do not perform (Open Search) search engine support for engine edit
-    guard customEngineActionType == .add else {
-      return
-    }
-
-    changeAddEditButton(for: .disabled)
-
-    dataTask = URLSession.shared.dataTask(with: host) { [weak self] data, _, error in
-      guard let data = data, error == nil else {
-        self?.openSearchReference = nil
-        return
-      }
-
-      ensureMainThread {
-        self?.loadSearchEngineMetaData(from: data, url: host)
-      }
-    }
-
-    dataTask?.resume()
-  }
-
-  private func loadSearchEngineMetaData(from data: Data, url: URL) {
-    guard let root = try? HTMLDocument(data: data as Data),
-      let searchEngineDetails = fetchOpenSearchReference(document: root)
-    else {
-      openSearchReference = nil
-      return
-    }
-
-    faviconTask?.cancel()
-    faviconTask = Task { @MainActor in
-      do {
-        let icon = try await FaviconFetcher.loadIcon(
-          url: url,
-          persistent: !privateBrowsingManager.isPrivateBrowsing
-        )
-        self.faviconImage = icon.image ?? Favicon.defaultImage
-      } catch {
-        self.faviconImage = Favicon.defaultImage
-      }
-
-      self.openSearchReference = searchEngineDetails
-    }
-  }
-
-  private func fetchOpenSearchReference(document: HTMLDocument) -> OpenSearchReference? {
-    let documentXpath = "//head//link[contains(@type, 'application/opensearchdescription+xml')]"
-
-    for link in document.xpath(documentXpath) {
-      if let referenceLink = link["href"], let title = link["title"] {
-        return OpenSearchReference(reference: referenceLink, title: title)
-      }
-    }
-
-    return nil
-  }
-}
-
 // MARK: Manual Add Engine
 
-extension SearchCustomEngineViewController {
+extension CustomEngineViewController {
 
   fileprivate func addSearchEngine(with urlQuery: String, title: String) {
     changeAddEditButton(for: .loading)
@@ -609,7 +418,7 @@ extension SearchCustomEngineViewController {
     return nil
   }
 
-  private func checkManualAddExists() {
+  func checkManualAddExists() {
     guard let url = urlText, let title = titleText else {
       return
     }
@@ -624,7 +433,7 @@ extension SearchCustomEngineViewController {
 
 // MARK: - UITextViewDelegate
 
-extension SearchCustomEngineViewController: UITextViewDelegate {
+extension CustomEngineViewController: UITextViewDelegate {
 
   func textView(
     _ textView: UITextView,
@@ -691,7 +500,7 @@ extension SearchCustomEngineViewController: UITextViewDelegate {
 
 // MARK: - UITextFieldDelegate
 
-extension SearchCustomEngineViewController: UITextFieldDelegate {
+extension CustomEngineViewController: UITextFieldDelegate {
 
   func textField(
     _ textField: UITextField,
@@ -723,175 +532,5 @@ extension SearchCustomEngineViewController: UITextFieldDelegate {
     textField.endEditing(true)
 
     return true
-  }
-}
-
-// MARK: - SearchEngineTableViewHeader
-
-private class SearchEngineTableViewHeader: UITableViewHeaderFooterView, TableViewReusable {
-
-  // MARK: UX
-
-  struct UX {
-    static let addButtonInset: CGFloat = 10
-  }
-
-  // MARK: Properties
-
-  var titleLabel = UILabel().then {
-    $0.font = UIFont.preferredFont(forTextStyle: .footnote)
-    $0.textColor = .secondaryBraveLabel
-  }
-
-  lazy var addEngineButton = OpenSearchEngineButton(
-    title: Strings.CustomSearchEngine.customEngineAutoAddTitle,
-    hidesWhenDisabled: false
-  ).then {
-    $0.addTarget(self, action: #selector(addEngineAuto), for: .touchUpInside)
-    $0.isHidden = true
-  }
-
-  var actionHandler: (() -> Void)?
-
-  // MARK: Lifecycle
-
-  override init(reuseIdentifier: String?) {
-    super.init(reuseIdentifier: reuseIdentifier)
-
-    addSubview(titleLabel)
-    addSubview(addEngineButton)
-
-    setConstraints()
-  }
-
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  // MARK: Internal
-
-  func setConstraints() {
-    titleLabel.snp.makeConstraints { make in
-      make.leading.equalTo(readableContentGuide)
-      make.bottom.equalToSuperview().inset(4)
-    }
-
-    addEngineButton.snp.makeConstraints { make in
-      make.trailing.equalTo(readableContentGuide)
-      make.centerY.equalToSuperview()
-      make.height.equalTo(snp.height)
-    }
-  }
-
-  // MARK: Actions
-
-  @objc private func addEngineAuto() {
-    actionHandler?()
-  }
-}
-
-// MARK: URLInputTableViewCell
-
-private class URLInputTableViewCell: UITableViewCell, TableViewReusable {
-
-  // MARK: UX
-
-  struct UX {
-    static let textViewHeight: CGFloat = 88
-    static let textViewInset: CGFloat = 16
-  }
-
-  // MARK: Properties
-
-  var textview = UITextView(frame: .zero)
-
-  weak var delegate: UITextViewDelegate? {
-    didSet {
-      textview.delegate = delegate
-    }
-  }
-  // MARK: Lifecycle
-
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-    setup()
-  }
-
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  // MARK: Internal
-
-  private func setup() {
-    textview = UITextView(
-      frame: CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.height)
-    ).then {
-      $0.text = "https://"
-      $0.backgroundColor = .clear
-      $0.font = UIFont.preferredFont(forTextStyle: .body)
-      $0.autocapitalizationType = .none
-      $0.autocorrectionType = .no
-      $0.spellCheckingType = .no
-      $0.keyboardType = .URL
-      $0.textColor = .braveLabel
-    }
-
-    contentView.addSubview(textview)
-
-    textview.snp.makeConstraints({ make in
-      make.leading.trailing.equalToSuperview().inset(UX.textViewInset)
-      make.bottom.top.equalToSuperview()
-      make.height.equalTo(UX.textViewHeight)
-    })
-  }
-}
-
-// MARK: TitleInputTableViewCell
-
-private class TitleInputTableViewCell: UITableViewCell, TableViewReusable {
-
-  // MARK: UX
-
-  struct UX {
-    static let textFieldInset: CGFloat = 16
-  }
-
-  // MARK: Properties
-
-  var textfield: UITextField = UITextField(frame: .zero)
-
-  weak var delegate: UITextFieldDelegate? {
-    didSet {
-      textfield.delegate = delegate
-    }
-  }
-
-  // MARK: Lifecycle
-
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-    setup()
-  }
-
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  // MARK: Internal
-
-  private func setup() {
-    textfield = UITextField(
-      frame: CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.height)
-    )
-
-    contentView.addSubview(textfield)
-
-    textfield.snp.makeConstraints({ make in
-      make.leading.trailing.equalToSuperview().inset(UX.textFieldInset)
-      make.bottom.top.equalToSuperview().inset(UX.textFieldInset)
-    })
   }
 }
