@@ -194,16 +194,12 @@ function TreeList (props: Props) {
 }
 
 export function ToggleList (props: { webcompatSettings: Map<ContentSettingsType, boolean>, totalBlockedTitle: string }) {
-  const { siteBlockInfo } = React.useContext(DataContext)
+  const { siteBlockInfo, getSiteSettings } = React.useContext(DataContext)
   const invokedWebcompatList = siteBlockInfo?.invokedWebcompatList;
-  const activeProtectionCountSpan = document.getElementById("active-protection-count");
-  const [count, setCount] = React.useState(countActiveProtections(props.webcompatSettings, invokedWebcompatList));
+  const count = countActiveProtections(props.webcompatSettings, invokedWebcompatList);
   const handleWebcompatToggle = (feature: ContentSettingsType, isEnabled: boolean) => {
     getPanelBrowserAPI().dataHandler.setWebcompatEnabled(feature, !isEnabled);
-    setCount(count + (isEnabled ? 1 : -1));
-    if (activeProtectionCountSpan) {
-      activeProtectionCountSpan.innerText = count.toString();
-    }
+    if (getSiteSettings) getSiteSettings()
   };
   const entries = generateWebcompatEntries(invokedWebcompatList);
   return (<SidePanel>
