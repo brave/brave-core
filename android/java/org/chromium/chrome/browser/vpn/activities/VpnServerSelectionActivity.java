@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.adapters.BraveVpnServerSelectionAdapter;
@@ -119,13 +120,14 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity {
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        BraveVpnNativeWorker.getInstance().getAllServerRegions();
+        BraveVpnNativeWorker.getInstance().getServerRegionsWithCities();
         showProgress();
     }
 
     @Override
-    public void onGetAllServerRegions(String jsonResponse, boolean isSuccess) {
+    public void onGetServerRegionsWithCities(String jsonResponse, boolean isSuccess) {
         if (isSuccess) {
+            Log.e("brave_vpn", jsonResponse);
             List<BraveVpnServerRegion> braveVpnServerRegions =
                     BraveVpnUtils.getServerLocations(jsonResponse);
             Collections.sort(

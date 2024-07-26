@@ -863,6 +863,10 @@ void BraveVpnService::GetAllServerRegions(ResponseCallback callback) {
   api_request_->GetAllServerRegions(std::move(callback));
 }
 
+void BraveVpnService::GetServerRegionsWithCities(ResponseCallback callback) {
+  api_request_->GetServerRegionsWithCities(std::move(callback));
+}
+
 void BraveVpnService::GetTimezonesForRegions(ResponseCallback callback) {
   api_request_->GetTimezonesForRegions(std::move(callback));
 }

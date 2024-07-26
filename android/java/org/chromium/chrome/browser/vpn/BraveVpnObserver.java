@@ -9,6 +9,9 @@ public interface BraveVpnObserver {
     public default void onGetAllServerRegions(String jsonServerRegions, boolean isSuccess) {}
     ;
 
+    public default void onGetServerRegionsWithCities(String jsonServerRegions, boolean isSuccess) {}
+    ;
+
     public default void onGetTimezonesForRegions(String jsonTimezones, boolean isSuccess) {}
     ;
 

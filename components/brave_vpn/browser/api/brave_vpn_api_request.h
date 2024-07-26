@@ -34,6 +34,7 @@ class BraveVpnAPIRequest {
   using APIRequestResult = api_request_helper::APIRequestResult;
 
   void GetAllServerRegions(ResponseCallback callback);
+  void GetServerRegionsWithCities(ResponseCallback callback);
   void GetTimezonesForRegions(ResponseCallback callback);
   void GetHostnamesForRegion(ResponseCallback callback,
                              const std::string& region);
