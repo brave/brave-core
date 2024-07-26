@@ -784,6 +784,14 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         true,
                         void.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/omnibox/styles/OmniboxResourceProvider",
+                        "getToolbarSidePaddingForNtp",
+                        MethodModifier.STATIC,
+                        true,
+                        int.class,
+                        Context.class));
     }
 
     @Test

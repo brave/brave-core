@@ -274,6 +274,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/omnibox/BraveLocationBarLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/omnibox/BraveLocationBarMediator.java",
   "../../brave/android/java/org/chromium/chrome/browser/omnibox/BraveLocationBarQRDialogFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/omnibox/styles/BraveOmniboxResourceProvider.java",
   "../../brave/android/java/org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediator.java",
   "../../brave/android/java/org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediatorBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveRewardsOnboardingFragment.java",
