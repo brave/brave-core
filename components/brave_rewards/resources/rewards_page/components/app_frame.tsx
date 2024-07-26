@@ -132,16 +132,16 @@ function PanelFrame(props: Props) {
 
   return (
     <div className='panel-frame' {...style}>
-      <header>
-        <button className='expand-button' onClick={onExpand}>
-          <Icon name='expand' />
-        </button>
-        <h4>{getString('rewardsPageTitle')}</h4>
-        <MoreMenu>
-          <Icon name='more-vertical' />
-        </MoreMenu>
-      </header>
       <main>
+        <header>
+          <button className='expand-button' onClick={onExpand}>
+            <Icon name='expand' />
+          </button>
+          <h4>{getString('rewardsPageTitle')}</h4>
+          <MoreMenu>
+            <Icon name='more-vertical' />
+          </MoreMenu>
+        </header>
         {props.children}
       </main>
       <footer>

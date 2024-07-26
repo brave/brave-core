@@ -17,6 +17,10 @@ export const modalStyle = scopedCSS('app-modal', css`
     background: ${color.container.background};
     outline: none;
 
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
     animation-name: modal-content-fade-in;
     animation-timing-function: ease-out;
     animation-duration: var(--self-animation-duration);
@@ -27,6 +31,7 @@ export const modalStyle = scopedCSS('app-modal', css`
       animation-name: modal-content-slide-in;
       width: 100%;
       max-width: 100%;
+      max-height: calc(100% - 12px);
       border-radius: 16px 16px 0 0;
       padding: 16px;
       margin: auto 0 0 0;
@@ -39,18 +44,8 @@ export const modalStyle = scopedCSS('app-modal', css`
   }
 
   @keyframes modal-content-slide-in {
-    0% {
-      max-height: 0;
-      overflow: clip;
-    }
-    99% {
-      max-height: calc(100% - 12px);
-      overflow: clip;
-    }
-    100% {
-      max-height: calc(100% - 12px);
-      overflow: auto;
-    }
+    from { transform: translate(0, 100%); }
+    to { transform: translate(0, 0); }
   }
 
   &::backdrop {
@@ -138,7 +133,7 @@ export const actionsStyle = scopedCSS('app-modal-actions', css`
   & {
     display: flex;
     gap: 16px;
-    margin-top: 32px;
+    margin-top: 24px;
     justify-content: flex-end;
 
     @container style(--is-wide-view) {

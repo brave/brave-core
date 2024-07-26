@@ -7,7 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
 import { useLocaleContext } from '../../lib/locale_strings'
-import { Modal, ModalHeader } from '../modal'
+import { Modal } from '../modal'
 import { CountrySelect } from './country_select'
 
 import { style } from './country_select_modal.style'
@@ -31,9 +31,12 @@ export function CountrySelectModal(props: Props) {
   }
 
   return (
-    <Modal onClose={props.onClose}>
-      <ModalHeader closeDisabled={props.loading} onClose={props.onClose} />
-      <div className='country-select-modal' {...style}>
+    <Modal
+      className='country-select-modal'
+      onEscape={props.loading ? undefined : props.onClose}
+    >
+      <Modal.Header onClose={props.onClose} closeDisabled={props.loading} />
+      <div {...style}>
         <div className='graphic' />
         <div className='title'>
           {getString('countrySelectTitle')}

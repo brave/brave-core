@@ -14,7 +14,7 @@ import { formatMessage } from '../../shared/lib/locale_context'
 import { useLocaleContext } from '../lib/locale_strings'
 import { useCallbackWrapper } from '../lib/callback_wrapper'
 import { NewTabLink } from '../../shared/components/new_tab_link'
-import { Modal, ModalHeader, ModalActions } from './modal'
+import { Modal } from './modal'
 import * as routes from '../lib/app_routes'
 import * as urls from '../../shared/lib/rewards_urls'
 
@@ -264,23 +264,23 @@ export function AuthorizationModal() {
   }
 
   return (
-    <Modal onClose={onClose}>
-      <ModalHeader title={getString('authorizeErrorTitle')} onClose={onClose} />
-      <div className='authorization-modal' {...style}>
+    <Modal className='authorization-modal' onEscape={onClose}>
+      <Modal.Header
+        title={getString('authorizeErrorTitle')}
+        onClose={onClose}
+      />
+      <div {...style}>
         <div className='status-icon'>
           <Icon name='warning-triangle-filled' />
         </div>
         <h3>{errorTitle()}</h3>
         <div className='error-text'>{errorText()}</div>
-        <ModalActions
-          actions={[
-            {
-              text: getString('closeButtonLabel'),
-              onClick: onClose
-            }
-          ]}
-        />
       </div>
+      <Modal.Actions
+        actions={[
+          { text: getString('closeButtonLabel'), onClick: onClose }
+        ]}
+      />
     </Modal>
   )
 }

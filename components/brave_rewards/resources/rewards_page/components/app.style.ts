@@ -19,6 +19,8 @@ import panelBackgroundDark from '../assets/panel_background_dark.svg'
 import rewardsLogoImage from '../assets/rewards_logo.svg'
 import rewardsLogoImageDark from '../assets/rewards_logo_dark.svg'
 
+import selectCaret from '../assets/select_caret.svg'
+
 export const style = scopedCSS('app', css`
   & {
     --onboarding-max-width: 392px;
@@ -119,9 +121,31 @@ addStyles('app-global-styles', css`
       padding: 0;
       background: 0;
       border: none;
-      font-size: inherit;
-      line-height: inherit;
+      text-align: unset;
+      width: unset;
+      font: inherit;
       cursor: pointer;
+
+      &:disabled {
+        cursor: default;
+      }
+    }
+
+    select {
+      appearance: none;
+      background:
+        url(${selectCaret}) calc(100% - 12px) center no-repeat,
+        ${color.container.highlight};
+      background-size: 12px;
+      border-radius: 8px;
+      border: 1px solid color-mix(in srgb, #fff, #1b1b1f 25%);
+      color: inherit;
+      font: inherit;
+      padding: 8px 36px 8px 11px;
+    }
+
+    leo-toggle:disabled {
+      cursor: default;
     }
 
     ul {
@@ -167,6 +191,7 @@ addStyles('app-global-styles', css`
         border-radius: 12px;
         padding: 8px 12px;
         background: ${color.container.background};
+        width: 100%;
       }
     }
 

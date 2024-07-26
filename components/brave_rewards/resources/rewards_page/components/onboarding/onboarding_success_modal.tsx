@@ -8,7 +8,7 @@ import Button from '@brave/leo/react/button'
 
 import { TabOpenerContext , NewTabLink } from '../../../shared/components/new_tab_link'
 import { useLocaleContext } from '../../lib/locale_strings'
-import { Modal, ModalHeader } from '../modal'
+import { Modal } from '../modal'
 import * as urls from '../../../shared/lib/rewards_urls'
 
 import { style } from './onboarding_success_modal.style'
@@ -27,9 +27,9 @@ export function OnboardingSuccessModal(props: Props) {
   }
 
   return (
-    <Modal onClose={props.onClose}>
-      <ModalHeader onClose={props.onClose} />
-      <div className='onboarding-success' {...style}>
+    <Modal className='onboarding-success' onEscape={props.onClose}>
+      <Modal.Header onClose={props.onClose} />
+      <div {...style}>
         <div className='success-icon' />
         <div className='title'>
           {getString('onboardingSuccessTitle')}

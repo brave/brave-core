@@ -9,11 +9,6 @@ import Button from '@brave/leo/react/button'
 
 import { modalStyle, headerStyle, actionsStyle } from './modal.style'
 
-interface ModalProps {
-  onClose?: () => void
-  children: React.ReactNode
-}
-
 // When switching between modals, we don't want the fade-in or slide-in
 // animations to appear. When a modal is closed, we add a class to the document
 // body for a short period of time which is used to disable animations in CSS.
@@ -57,6 +52,12 @@ function createResizeObserver() {
   }
 }
 
+interface ModalProps {
+  className?: string
+  onEscape?: () => void
+  children: React.ReactNode
+}
+
 export function Modal(props: ModalProps) {
   const resizeObserver = React.useMemo(createResizeObserver, [])
 
@@ -73,14 +74,29 @@ export function Modal(props: ModalProps) {
   function onKeyDown(event: React.KeyboardEvent) {
     if (event.key === 'Escape') {
       event.preventDefault()
-      if (props.onClose) {
-        props.onClose()
+      if (props.onEscape) {
+        props.onEscape()
       }
     }
   }
 
+  function onAnimationStart(event: React.AnimationEvent<HTMLDialogElement>) {
+    event.currentTarget.classList.add('app-modal-animating')
+  }
+
+  function onAnimationEnd(event: React.AnimationEvent<HTMLDialogElement>) {
+    event.currentTarget.classList.remove('app-modal-animating')
+  }
+
   return (
-    <dialog ref={onDialogElement} onKeyDown={onKeyDown} {...modalStyle}>
+    <dialog
+      ref={onDialogElement}
+      className={props.className}
+      onKeyDown={onKeyDown}
+      onAnimationStart={onAnimationStart}
+      onAnimationEnd={onAnimationEnd}
+      {...modalStyle}
+    >
       {props.children}
     </dialog>
   )
@@ -92,7 +108,7 @@ interface ModalHeaderProps {
   closeDisabled?: boolean
 }
 
-export function ModalHeader(props: ModalHeaderProps) {
+function ModalHeader(props: ModalHeaderProps) {
   return (
     <div {...headerStyle}>
       <div className='title'>{props.title || <>&nbsp;</>}</div>
@@ -120,7 +136,7 @@ interface ModalActionsProps {
   actions: ModalAction[]
 }
 
-export function ModalActions(props: ModalActionsProps) {
+function ModalActions(props: ModalActionsProps) {
   return (
     <div {...actionsStyle}>
       {
@@ -148,3 +164,6 @@ export function ModalActions(props: ModalActionsProps) {
     </div>
   )
 }
+
+Modal.Header = ModalHeader
+Modal.Actions = ModalActions

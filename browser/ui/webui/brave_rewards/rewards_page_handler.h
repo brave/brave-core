@@ -16,6 +16,7 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
+class PrefService;
 class Profile;
 
 namespace brave_ads {
@@ -58,7 +59,23 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
   void GetExternalWallet(GetExternalWalletCallback callback) override;
   void GetExternalWalletProviders(
       GetExternalWalletProvidersCallback callback) override;
+  void GetAdsSettings(GetAdsSettingsCallback callback) override;
   void GetAdsStatement(GetAdsStatementCallback callback) override;
+  void GetAdsHistory(GetAdsHistoryCallback callback) override;
+  void SetAdTypeEnabled(brave_ads::mojom::AdType ad_type,
+                        bool enabled,
+                        SetAdTypeEnabledCallback callback) override;
+  void SetNotificationAdsPerHour(
+      int32_t ads_per_hour,
+      SetNotificationAdsPerHourCallback callback) override;
+  void SetAdsSubdivision(const std::string& subdivision,
+                         SetAdsSubdivisionCallback callback) override;
+  void ToggleAdLike(const std::string& history_item,
+                    ToggleAdLikeCallback callback) override;
+  void ToggleAdDislike(const std::string& history_item,
+                       ToggleAdDislikeCallback callback) override;
+  void ToggleAdInappropriate(const std::string& history_item,
+                             ToggleAdInappropriateCallback callback) override;
   void EnableRewards(const std::string& country_code,
                      EnableRewardsCallback callback) override;
   void BeginExternalWalletLogin(
@@ -81,6 +98,7 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
   std::unique_ptr<UpdateObserver> update_observer_;
   raw_ptr<RewardsService> rewards_service_ = nullptr;
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
+  raw_ptr<PrefService> prefs_ = nullptr;
 };
 
 }  // namespace brave_rewards

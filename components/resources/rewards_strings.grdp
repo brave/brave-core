@@ -686,4 +686,105 @@
     Your request is still being processed, please wait.
   </message>
 
+  <!-- Ads History -->
+  <message name="IDS_REWARDS_ADS_HISTORY_BUTTON_LABEL" desc="">
+    30-day Ads History
+  </message>
+  <message name="IDS_REWARDS_ADS_HISTORY_MARK_INAPPROPRIATE_LABEL" desc="">
+    Mark as inappropriate
+  </message>
+  <message name="IDS_REWARDS_ADS_HISTORY_EMPTY_TEXT" desc="">
+    There is currently no Brave Ads history.
+  </message>
+  <message name="IDS_REWARDS_ADS_HISTORY_TITLE" desc="">
+    Ads history
+  </message>
+  <message name="IDS_REWARDS_ADS_HISTORY_TEXT" desc="">
+    Ads you've received in the past 30 days
+  </message>
+
+  <!-- Ads Settings -->
+  <message name="IDS_REWARDS_ADS_SETTINGS_ADS_PER_HOUR_NONE_TEXT" desc="">
+    None
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_ADS_PER_HOUR_TEXT" desc="">
+    Max <ph name="NUM">$1</ph>/hr
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_AD_TYPE_TITLE" desc="">
+    Ad type
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_AD_VIEWS_TITLE" desc="">
+    Views this month
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_BUTTON_LABEL" desc="">
+    Ads Settings
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_EARNINGS_LABEL" desc="">
+    Earnings so far this month
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_PAYOUT_DATE_LABEL" desc="">
+    Next earnings payout date
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_TOTAL_ADS_LABEL" desc="">
+    Total ads received this month
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_NEWS_OFF_TOOLTIP" desc="">
+    Brave News is currently disabled.
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_NEWS_ON_TOOLTIP" desc="">
+    Brave News contains ads that cannot be independently disabled.
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_SEARCH_CONNECTED_TOOLTIP" desc="">
+    You cannot earn BAT from Brave Search Ads yet, but you help support Brave by having them on.
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_SEARCH_TOOLTIP" desc="">
+    Brave Search Ads appear on <ph name="LINK_BEGIN">$1</ph>Brave Search<ph name="LINK_END">$2</ph>.
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_SUBDIVISION_LABEL" desc="">
+    Regional ad relevance
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_SUBDIVISION_TEXT" desc="">
+    This allows Brave to show you ads meant specifically for your region.
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_SUBDIVISION_DISABLED_LABEL" desc="">
+    Disabled
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_SUBDIVISION_AUTO_LABEL" desc="">
+    Auto-detect
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_TITLE" desc="">
+    Ads settings
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_TEXT" desc="">
+    Control what kinds of Brave Ads you see, and how often. The more you see, the more you can earn.
+  </message>
+  <message name="IDS_REWARDS_AD_TYPE_INLINE_CONTENT_LABEL" desc="">
+    Brave News ads
+  </message>
+  <message name="IDS_REWARDS_AD_TYPE_NEW_TAB_PAGE_LABEL" desc="">
+    New tab page ads
+  </message>
+  <message name="IDS_REWARDS_AD_TYPE_NOTIFICATION_LABEL" desc="">
+    Notification ads
+  </message>
+  <message name="IDS_REWARDS_AD_TYPE_OFF_LABEL" desc="">
+    Off
+  </message>
+  <message name="IDS_REWARDS_AD_TYPE_ON_LABEL" desc="">
+    On
+  </message>
+  <message name="IDS_REWARDS_AD_TYPE_SEARCH_RESULT_LABEL" desc="">
+    Search ads
+  </message>
+
+  <message name="IDS_REWARDS_EARNINGS_ADS_RECEIVED_TEXT" desc="">
+    <ph name="NUM">$1</ph> ads received this month
+  </message>
+  <message name="IDS_REWARDS_EARNINGS_ESTIMATE_TEXT" desc="">
+    You've earned <ph name="NUM">$1</ph> so far this month
+  </message>
+  <message name="IDS_REWARDS_EARNINGS_RANGE_TOOLTIP" desc="">
+    You're estimated to earn between: <ph name="RANGE">$1</ph>
+  </message>
+
 </grit-part>
