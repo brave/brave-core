@@ -1571,7 +1571,7 @@ extension Strings {
     )
 }
 
-// MARK: -  SearchSettingsTableViewController
+// MARK: -  SearchSettingsViewController
 
 extension Strings {
   public static let searchSettingNavTitle = NSLocalizedString(
@@ -1621,7 +1621,7 @@ extension Strings {
     )
 }
 
-// MARK: - SearchCustomEngineViewController
+// MARK: - CustomEngineViewController
 
 extension Strings {
   public struct CustomSearchEngine {

@@ -10,15 +10,15 @@ import os.log
 
 protocol SearchEnginePickerDelegate: AnyObject {
   func searchEnginePicker(
-    _ searchEnginePicker: SearchEnginePicker?,
+    _ searchEnginePicker: SearchEnginePickerViewController?,
     didSelectSearchEngine engine: OpenSearchEngine?,
     forType: DefaultEngineType?
   )
 }
 
-// MARK: - SearchSettingsTableViewController
+// MARK: - SearchSettingsViewController
 
-class SearchSettingsTableViewController: UITableViewController {
+class SearchSettingsViewController: UITableViewController {
 
   // MARK: UX
 
@@ -170,8 +170,8 @@ class SearchSettingsTableViewController: UITableViewController {
 
   // MARK: Internal
 
-  private func configureSearchEnginePicker(_ type: DefaultEngineType) -> SearchEnginePicker {
-    return SearchEnginePicker(type: type, showCancel: false).then {
+  private func configureSearchEnginePicker(_ type: DefaultEngineType) -> SearchEnginePickerViewController {
+    return SearchEnginePickerViewController(type: type, showCancel: false).then {
       // Order alphabetically, so that picker is always consistently ordered.
       // Every engine is a valid choice for the default engine, even the current default engine.
       $0.engines = searchPickerEngines(type: type)
@@ -363,7 +363,7 @@ class SearchSettingsTableViewController: UITableViewController {
 
 // MARK: - Edit Table Data
 
-extension SearchSettingsTableViewController {
+extension SearchSettingsViewController {
   override func tableView(
     _ tableView: UITableView,
     willSelectRowAt indexPath: IndexPath
@@ -393,7 +393,7 @@ extension SearchSettingsTableViewController {
     } else if indexPath.section == Section.customSearch.rawValue
       && indexPath.item == customSearchEngines.count
     {
-      let customEngineViewController = SearchCustomEngineViewController(
+      let customEngineViewController = CustomEngineViewController(
         profile: profile,
         privateBrowsingManager: privateBrowsingManager
       )
@@ -455,7 +455,7 @@ extension SearchSettingsTableViewController {
 
       completion(true)
 
-      let customEngineViewController = SearchCustomEngineViewController(
+      let customEngineViewController = CustomEngineViewController(
         profile: self.profile,
         privateBrowsingManager: self.privateBrowsingManager,
         engineToBeEdited: engine
@@ -528,7 +528,7 @@ extension SearchSettingsTableViewController {
 
   private func editCustomSearchEngine(_ engine: OpenSearchEngine) {
 
-    let customEngineViewController = SearchCustomEngineViewController(
+    let customEngineViewController = CustomEngineViewController(
       profile: self.profile,
       privateBrowsingManager: self.privateBrowsingManager
     )
@@ -552,7 +552,7 @@ extension SearchSettingsTableViewController {
 
 // MARK: - Actions
 
-extension SearchSettingsTableViewController {
+extension SearchSettingsViewController {
 
   @objc func didToggleSearchSuggestions(_ toggle: UISwitch) {
     // Setting the value in settings dismisses any opt-in.
@@ -578,10 +578,10 @@ extension SearchSettingsTableViewController {
 
 // MARK: SearchEnginePickerDelegate
 
-extension SearchSettingsTableViewController: SearchEnginePickerDelegate {
+extension SearchSettingsViewController: SearchEnginePickerDelegate {
 
   func searchEnginePicker(
-    _ searchEnginePicker: SearchEnginePicker?,
+    _ searchEnginePicker: SearchEnginePickerViewController?,
     didSelectSearchEngine searchEngine: OpenSearchEngine?,
     forType: DefaultEngineType?
   ) {
