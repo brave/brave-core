@@ -7,13 +7,19 @@
 
 #include "base/containers/contains.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
+
+#define BRAVE_PERMISSION_REQUEST_MANAGER_GET_REQUESTING_ORIGIN \
+  if (!ShouldBeGrouppedInRequests(request))
+
 #include "src/components/permissions/permission_request_manager.cc"
+#undef BRAVE_PERMISSION_REQUEST_MANAGER_GET_REQUESTING_ORIGIN
+
 #include "url/origin.h"
 
 namespace permissions {
 
 bool PermissionRequestManager::ShouldGroupRequests(PermissionRequest* a,
-                                                   PermissionRequest* b) {
+                                                   PermissionRequest* b) const {
   url::Origin origin_a;
   url::Origin origin_b;
   if (a->request_type() == RequestType::kBraveEthereum ||
@@ -31,6 +37,17 @@ bool PermissionRequestManager::ShouldGroupRequests(PermissionRequest* a,
   }
 
   return ::permissions::ShouldGroupRequests(a, b);
+}
+
+bool PermissionRequestManager::ShouldBeGrouppedInRequests(
+    PermissionRequest* a) const {
+  // Called from PermissionRequestManager::GetRequestingOrigin when DCHECK IS ON
+  // to adjust the check for grouped requests. |requests_| is cheked by the
+  // caller to not be empty.
+  if (requests_[0] == a) {
+    return true;
+  }
+  return ShouldGroupRequests(requests_[0], a);
 }
 
 // Accept/Deny/Cancel each sub-request, total size of all passed in requests

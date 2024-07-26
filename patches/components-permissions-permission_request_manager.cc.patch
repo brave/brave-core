@@ -1,0 +1,12 @@
+diff --git a/components/permissions/permission_request_manager.cc b/components/permissions/permission_request_manager.cc
+index 74dea705d8da9bd7270db46f14c5fc422b6181b2..49441c902c8dea06b9a8e66b90b5f8edf48bf43a 100644
+--- a/components/permissions/permission_request_manager.cc
++++ b/components/permissions/permission_request_manager.cc
+@@ -591,6 +591,7 @@ GURL PermissionRequestManager::GetRequestingOrigin() const {
+   GURL origin = requests_.front()->requesting_origin();
+   if (DCHECK_IS_ON()) {
+     for (permissions::PermissionRequest* request : requests_) {
++      BRAVE_PERMISSION_REQUEST_MANAGER_GET_REQUESTING_ORIGIN
+       DCHECK_EQ(origin, request->requesting_origin());
+     }
+   }
