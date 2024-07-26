@@ -71,8 +71,8 @@ gfx::Insets TabGroupStyle::GetInsetsForHeaderChip(
     return insets;
   }
   if (!ShouldShowVerticalTabs()) {
-    return gfx::Insets::VH(brave_tabs::kTabGroupTitleVerticalInset,
-                           brave_tabs::kTabGroupTitleHorizontalInset);
+    return gfx::Insets::VH(brave_tabs::GetTabGroupTitleVerticalInset(),
+                           brave_tabs::GetTabGroupTitleHorizontalInset());
   }
   return insets;
 }
@@ -94,7 +94,7 @@ float TabGroupStyle::GetEmptyChipSize() const {
   if (!tabs::features::HorizontalTabsUpdateEnabled()) {
     return TabGroupStyle_ChromiumImpl::GetEmptyChipSize();
   }
-  return brave_tabs::kEmptyGroupTitleSize;
+  return brave_tabs::GetHorizontalTabHeight();
 }
 
 int TabGroupStyle::GetChipCornerRadius() const {

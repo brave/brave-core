@@ -370,35 +370,42 @@
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
-#define BRAVE_TABS_FEATURE_ENTRIES                                        \
-  EXPAND_FEATURE_ENTRIES(                                                 \
-      {                                                                   \
-          "brave-shared-pinned-tabs",                                     \
-          "Shared pinned tab",                                            \
-          "Pinned tabs are shared across windows",                        \
-          kOsWin | kOsMac | kOsLinux,                                     \
-          FEATURE_VALUE_TYPE(tabs::features::kBraveSharedPinnedTabs),     \
-      },                                                                  \
-      {                                                                   \
-          "brave-horizontal-tabs-update",                                 \
-          "Updated horizontal tabs design",                               \
-          "Updates the look and feel or horizontal tabs",                 \
-          kOsWin | kOsMac | kOsLinux,                                     \
-          FEATURE_VALUE_TYPE(tabs::features::kBraveHorizontalTabsUpdate), \
-      },                                                                  \
-      {                                                                   \
-          "brave-vertical-tab-scroll-bar",                                \
-          "Show scroll bar on vertical tab strip",                        \
-          "Shows scroll bar on vertical tab strip when it overflows",     \
-          kOsWin | kOsMac | kOsLinux,                                     \
-          FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabScrollBar), \
-      },                                                                  \
-      {                                                                   \
-          kSplitViewFeatureInternalName,                                  \
-          "Enable split view",                                            \
-          "Enables split view",                                           \
-          kOsWin | kOsMac | kOsLinux,                                     \
-          FEATURE_VALUE_TYPE(tabs::features::kBraveSplitView),            \
+#define BRAVE_TABS_FEATURE_ENTRIES                                         \
+  EXPAND_FEATURE_ENTRIES(                                                  \
+      {                                                                    \
+          "brave-shared-pinned-tabs",                                      \
+          "Shared pinned tab",                                             \
+          "Pinned tabs are shared across windows",                         \
+          kOsWin | kOsMac | kOsLinux,                                      \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveSharedPinnedTabs),      \
+      },                                                                   \
+      {                                                                    \
+          "brave-horizontal-tabs-update",                                  \
+          "Updated horizontal tabs design",                                \
+          "Updates the look and feel or horizontal tabs",                  \
+          kOsWin | kOsMac | kOsLinux,                                      \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveHorizontalTabsUpdate),  \
+      },                                                                   \
+      {                                                                    \
+          "brave-compact-horizontal-tabs",                                 \
+          "Compact horizontal tabs design",                                \
+          "Reduces the height of horizontal tabs",                         \
+          kOsWin | kOsMac | kOsLinux,                                      \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveCompactHorizontalTabs), \
+      },                                                                   \
+      {                                                                    \
+          "brave-vertical-tab-scroll-bar",                                 \
+          "Show scroll bar on vertical tab strip",                         \
+          "Shows scroll bar on vertical tab strip when it overflows",      \
+          kOsWin | kOsMac | kOsLinux,                                      \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabScrollBar),  \
+      },                                                                   \
+      {                                                                    \
+          kSplitViewFeatureInternalName,                                   \
+          "Enable split view",                                             \
+          "Enables split view",                                            \
+          kOsWin | kOsMac | kOsLinux,                                      \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveSplitView),             \
       })
 #else
 #define BRAVE_TABS_FEATURE_ENTRIES
