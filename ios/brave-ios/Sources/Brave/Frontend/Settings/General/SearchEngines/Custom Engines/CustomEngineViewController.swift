@@ -55,7 +55,7 @@ class CustomEngineViewController: UIViewController {
 
   var host: URL? {
     didSet {
-      if let host = host, oldValue != host {
+      if let host = host, oldValue != host, customEngineActionType == .add {
         fetchSearchEngineSupportForHost(host)
       } else {
         checkManualAddExists()
@@ -350,13 +350,14 @@ extension CustomEngineViewController {
     }
 
     // Check Engine Exists only for add mode
-    guard customEngineActionType == .add,
-      profile.searchEngines.orderedEngines.filter({
+    if customEngineActionType == .add {
+      guard profile.searchEngines.orderedEngines.filter({
         $0.shortName == name || $0.searchTemplate.contains(template)
       }).isEmpty
-    else {
-      completion(nil, SearchEngineError.duplicate)
-      return
+      else {
+        completion(nil, SearchEngineError.duplicate)
+        return
+      }
     }
 
     var engineImage = Favicon.defaultImage
@@ -447,7 +448,7 @@ extension CustomEngineViewController: UITextViewDelegate {
 
     let textLengthInRange = textView.text.count + (text.count - range.length)
 
-    // The default text "https://" cant ne deleted or changed so nothing without a secure scheme can be added
+    // The default text "https://" cant be deleted or changed so nothing without a secure scheme can be added
     return textLengthInRange >= 8
   }
 
