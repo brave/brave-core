@@ -34,7 +34,7 @@ export const CopyLabel = ({
         }
       }}
     >
-      <Label color={isCopied ? 'green' : 'gray'}>
+      <Label color={isCopied ? 'green' : 'neutral'}>
         <div slot='icon-after'>
           <Icon name={isCopied ? 'check-normal' : 'copy'} />
         </div>
