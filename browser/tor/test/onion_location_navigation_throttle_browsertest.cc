@@ -40,7 +40,10 @@
 namespace {
 
 constexpr char kTestOnionPath[] = "/onion";
-constexpr char kTestOnionURL[] = "https://brave.onion";
+// URLs inside the Location or Onion-Location headers are allowed to
+// include commas and it's not a special character.
+constexpr char kTestOnionURL[] = "https://brave.onion/,https://brave2.onion";
+constexpr char kTestOnionURL2[] = "https://brave3.onion/";
 constexpr char kTestInvalidScheme[] = "/invalid_scheme";
 constexpr char kTestInvalidSchemeURL[] = "brave://brave.onion";
 constexpr char kTestNotOnion[] = "/not_onion";
@@ -57,6 +60,8 @@ std::unique_ptr<net::test_server::HttpResponse> HandleOnionLocation(
   http_response->set_content("<html><head></head></html>");
   if (request.GetURL().path_piece() == kTestOnionPath) {
     http_response->AddCustomHeader("onion-location", kTestOnionURL);
+    // Subsequent headers should be ignored.
+    http_response->AddCustomHeader("onion-location", kTestOnionURL2);
   } else if (request.GetURL().path_piece() == kTestInvalidScheme) {
     http_response->AddCustomHeader("onion-location", kTestInvalidSchemeURL);
   } else if (request.GetURL().path_piece() == kTestNotOnion) {
