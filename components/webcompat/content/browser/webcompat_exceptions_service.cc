@@ -45,6 +45,7 @@ constexpr std::vector<ContentSettingsPattern> kEmptyPatternVector;
 
 constexpr auto kWebcompatNamesToType =
     base::MakeFixedFlatMap<std::string_view, ContentSettingsType>({
+        {"all-fingerprinting", BRAVE_FINGERPRINTING_V2},
         {"audio", BRAVE_WEBCOMPAT_AUDIO},
         {"canvas", BRAVE_WEBCOMPAT_CANVAS},
         {"device-memory", BRAVE_WEBCOMPAT_DEVICE_MEMORY},

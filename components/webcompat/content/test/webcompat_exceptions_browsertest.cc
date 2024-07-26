@@ -51,6 +51,7 @@ struct TestCase {
 };
 
 constexpr TestCase kTestCases[] = {
+    {"all-fingerprinting", BRAVE_FINGERPRINTING_V2},
     {"audio", BRAVE_WEBCOMPAT_AUDIO},
     {"canvas", BRAVE_WEBCOMPAT_CANVAS},
     {"device-memory", BRAVE_WEBCOMPAT_DEVICE_MEMORY},
@@ -147,7 +148,7 @@ IN_PROC_BROWSER_TEST_F(WebcompatExceptionsBrowserTest, RemoteSettingsTest) {
     // Check the default setting
     const auto observed_setting_default =
         map->GetContentSetting(GURL("https://a.test"), GURL(), test_case.type);
-    EXPECT_EQ(observed_setting_default, CONTENT_SETTING_BLOCK);
+    EXPECT_NE(observed_setting_default, CONTENT_SETTING_ALLOW);
 
     // Create a rule and then reload the page.
     webcompat::PatternsByWebcompatTypeMap rule_map;
@@ -163,7 +164,7 @@ IN_PROC_BROWSER_TEST_F(WebcompatExceptionsBrowserTest, RemoteSettingsTest) {
     // Check that the remote setting doesn't leak to another domain
     const auto observed_setting_cross_site =
         map->GetContentSetting(GURL("https://b.test"), GURL(), test_case.type);
-    EXPECT_EQ(observed_setting_cross_site, CONTENT_SETTING_BLOCK);
+    EXPECT_NE(observed_setting_cross_site, CONTENT_SETTING_ALLOW);
 
     // Check that manual setting can override the remote setting
     brave_shields::SetWebcompatEnabled(map, test_case.type, false,
