@@ -251,6 +251,11 @@ extension Preferences {
       key: "chromium.last.bookmark.folder.node.id",
       default: nil
     )
+    /// The sync type open tabs enabled the device in sync chain
+    public static let syncAutofillEnabled = Option<Bool>(
+      key: "chromium.sync.syncAutofillEnabled",
+      default: false
+    )
   }
 
   public final class Debug {
