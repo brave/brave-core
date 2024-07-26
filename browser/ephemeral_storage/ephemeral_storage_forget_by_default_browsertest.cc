@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
-
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -609,7 +608,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIncognitoBrowserTest,
   EXPECT_EQ(0u, GetAllCookies().size());
 
   EXPECT_TRUE(LoadURLInNewTab(a_site_set_cookie_url));
-  
+
   // Cookies SHOULD exist for a.com.
   EXPECT_EQ(1u, GetAllCookies().size());
 }
