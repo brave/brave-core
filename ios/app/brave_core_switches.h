@@ -122,6 +122,9 @@ OBJC_EXPORT const BraveCoreSwitchKey
 /// Fetch CRX components from staging instead of production
 OBJC_EXPORT const BraveCoreSwitchKey
     BraveCoreSwitchKeyUseDevGoUpdater NS_SWIFT_NAME(useDevGoUpdater);  // NOLINT
+/// Expected value: A string {dev, staging, prod}
+OBJC_EXPORT const BraveCoreSwitchKey
+    BraveCoreSwitchKeyServicesEnvironment NS_SWIFT_NAME(servicesEnvironment);
 
 /// Defines a switch that may be overriden on launch.
 ///

@@ -11,5 +11,8 @@ source_set("version_info") {
   deps = [
     "//base",
     "//brave/components/version_info",
+    "//components/version_info:version_info",
+    "//components/version_info:version_string",
+    "//ios/chrome/common:common",
   ]
 }

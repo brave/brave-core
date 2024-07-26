@@ -459,7 +459,7 @@ public class AppStoreSDK: ObservableObject {
 
   /// - Parameter productId: The ID of the product that is currently being purchased
   public func processPurchase(of productId: Product.ID) async throws {
-    fatalError("[AppStoreSDK] - ProcessTransaction Not Implemented")
+    fatalError("[AppStoreSDK] - ProcessPurchase Not Implemented")
   }
 
   // MARK: - Private
