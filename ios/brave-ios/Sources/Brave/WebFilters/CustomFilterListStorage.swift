@@ -216,9 +216,14 @@ extension CustomFilterListStorage {
     return sources
   }
 
-  /// Gives us source representations of all the custom filter lists
-  @MainActor var allSources: [GroupedAdBlockEngine.Source] {
-    var sources = filterListsURLs.map(\.setting.engineSource)
+  /// Return all the sources available for the given engine type based on the available filter lists
+  @MainActor func sources(
+    for engineType: GroupedAdBlockEngine.EngineType
+  ) -> [GroupedAdBlockEngine.Source] {
+    var sources: [GroupedAdBlockEngine.Source] = []
+    if engineType == .aggressive {
+      sources.append(contentsOf: filterListsURLs.map(\.setting.engineSource))
+    }
     if (try? self.savedCustomRulesFileURL()) == nil { return sources }
     sources.append(.filterListText)
     return sources

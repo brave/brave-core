@@ -478,6 +478,13 @@ import os
       version: fileInfo.filterListInfo.version
     )
 
+    guard !modes.isEmpty else {
+      ContentBlockerManager.log.debug(
+        "Rule lists already compiled for \(fileInfo.filterListInfo.debugDescription)"
+      )
+      return
+    }
+
     do {
       try await contentBlockerManager.compileRuleList(
         at: fileInfo.localFileURL,
@@ -490,7 +497,7 @@ import os
       )
     } catch {
       ContentBlockerManager.log.error(
-        "Failed to compile rule lists for `\(blocklistType.debugDescription)`"
+        "Failed to compile rule lists for \(fileInfo.filterListInfo.debugDescription)"
       )
     }
   }
@@ -683,22 +690,23 @@ extension AdBlockEngineManager.FileInfo {
     return enabledSources
   }
 
-  /// Return an array of all sources that are enabled according to user's settings and for the given engine type
-  /// - Note: This does not take into account the domain or global adblock toggle
+  /// Return an array of all sources for the given engine type regardless of settings
   func sources(
     for engineType: GroupedAdBlockEngine.EngineType
   ) -> [GroupedAdBlockEngine.Source] {
-    switch engineType {
-    case .aggressive:
-      var sources = FilterListStorage.shared.sources(for: engineType)
-      sources.append(contentsOf: CustomFilterListStorage.shared.allSources)
-      return sources
-    case .standard:
-      var sources = [GroupedAdBlockEngine.Source.slimList]
-      sources.append(contentsOf: FilterListStorage.shared.sources(for: engineType))
-      sources.append(contentsOf: CustomFilterListStorage.shared.allSources)
-      return sources
+    var sources: [GroupedAdBlockEngine.Source] = []
+    if engineType == .standard {
+      // We add this type to the list
+      // so the file info can be put it to the appropriate engine manager.
+      // But it's never added to an engine because it's never in enabledSources.
+      // In a later step we replace the default filterList with this slimList
+      // And since the file info is available now it can use
+      // it to add it to the grouped engine manager.
+      sources.append(GroupedAdBlockEngine.Source.slimList)
     }
+    sources.append(contentsOf: FilterListStorage.shared.sources(for: engineType))
+    sources.append(contentsOf: CustomFilterListStorage.shared.sources(for: engineType))
+    return sources
   }
 
   func legacyCacheFiles(
@@ -753,8 +761,8 @@ extension GroupedAdBlockEngine.Source {
       return false
     case .standard:
       switch self {
-      case .filterList, .slimList, .filterListURL: return false
-      case .filterListText: return true
+      case .filterList, .slimList: return false
+      case .filterListText, .filterListURL: return true
       }
     }
   }
