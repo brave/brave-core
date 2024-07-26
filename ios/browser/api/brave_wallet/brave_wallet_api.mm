@@ -20,6 +20,7 @@
 #include "ios/chrome/browser/content_settings/model/host_content_settings_map_factory.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
+#include "ios/web/public/thread/web_thread.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "ui/base/resource/resource_bundle.h"
 
@@ -63,6 +64,7 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
 - (nullable id<BraveWalletEthereumProvider>)
     ethereumProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
                isPrivateBrowsing:(bool)isPrivateBrowsing {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* browserState = _mainBrowserState;
   if (isPrivateBrowsing) {
     browserState = browserState->GetOffTheRecordChromeBrowserState();
@@ -80,13 +82,14 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
       std::make_unique<brave_wallet::BraveWalletProviderDelegateBridge>(
           delegate),
       browserState->GetPrefs());
-  return [[BraveWalletEthereumProviderOwnedImpl alloc]
-      initWithEthereumProvider:std::move(provider)];
+  return [[BraveWalletEthereumProviderMojoImpl alloc]
+      initWithEthereumProviderImpl:std::move(provider)];
 }
 
 - (nullable id<BraveWalletSolanaProvider>)
     solanaProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
              isPrivateBrowsing:(bool)isPrivateBrowsing {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* browserState = _mainBrowserState;
   if (isPrivateBrowsing) {
     browserState = browserState->GetOffTheRecordChromeBrowserState();
@@ -108,8 +111,8 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
       *host_content_settings_map, brave_wallet_service,
       std::make_unique<brave_wallet::BraveWalletProviderDelegateBridge>(
           delegate));
-  return [[BraveWalletSolanaProviderOwnedImpl alloc]
-      initWithSolanaProvider:std::move(provider)];
+  return [[BraveWalletSolanaProviderMojoImpl alloc]
+      initWithSolanaProviderImpl:std::move(provider)];
 }
 
 - (NSString*)resourceForID:(int)resource_id {

@@ -40,11 +40,11 @@ OBJC_EXPORT
 
 - (nullable id<BraveWalletEthereumProvider>)
     ethereumProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
-               isPrivateBrowsing:(bool)isPrivateBrowsing;
+               isPrivateBrowsing:(bool)isPrivateBrowsing NS_SWIFT_UI_ACTOR;
 
 - (nullable id<BraveWalletSolanaProvider>)
     solanaProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
-             isPrivateBrowsing:(bool)isPrivateBrowsing;
+             isPrivateBrowsing:(bool)isPrivateBrowsing NS_SWIFT_UI_ACTOR;
 
 - (NSDictionary<BraveWalletProviderScriptKey, NSString*>*)
     providerScriptsForCoinType:(BraveWalletCoinType)coinType;
