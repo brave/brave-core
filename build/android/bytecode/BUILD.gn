@@ -76,6 +76,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveNotificationBuilderClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveNotificationManagerProxyImplClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveNotificationPermissionRationaleDialogControllerClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveOmniboxResourceProviderClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BravePartialCustomTabBottomSheetStrategyClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BravePasswordAccessReauthenticationHelperClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BravePasswordSettingsBaseClassAdapter.java",

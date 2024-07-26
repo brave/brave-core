@@ -881,3 +881,7 @@
 -keep class org.chromium.chrome.browser.ui.system.BraveStatusBarColorController {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider {
+    *** getToolbarSidePaddingForNtp(...);
+}
