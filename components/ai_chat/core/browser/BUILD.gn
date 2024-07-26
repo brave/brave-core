@@ -109,6 +109,7 @@ if (!is_ios) {
       "//brave/components/ai_chat/core/common",
       "//brave/components/ai_chat/core/common/mojom",
       "//brave/components/api_request_helper",
+      "//brave/components/l10n/common:test_support",
       "//brave/components/resources:strings_grit",
       "//brave/components/skus/browser",
       "//brave/components/skus/common",

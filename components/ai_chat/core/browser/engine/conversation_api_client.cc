@@ -27,6 +27,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/brave_service_keys/brave_service_key_utils.h"
 #include "brave/components/constants/brave_services_key.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -203,6 +204,9 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
 
   dict.Set("events", ConversationEventsToList(conversation));
   dict.Set("model", model_name_);
+  dict.Set("language",
+           base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
+                         brave_l10n::GetDefaultISOCountryCodeString()}));
   dict.Set("stream", is_sse_enabled);
 
   std::string json;
