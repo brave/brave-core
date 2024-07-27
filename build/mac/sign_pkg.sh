@@ -29,4 +29,4 @@ if [[ -f $DEST ]]; then
   rm -f "$DEST"
 fi
 
-/usr/bin/productsign --sign "$MAC_INSTALLER_SIGNING_IDENTIFIER" --keychain "$MAC_SIGNING_KEYCHAIN" "$SOURCE" "$DEST"
+productsign --sign "$MAC_INSTALLER_SIGNING_IDENTIFIER" --keychain "$MAC_SIGNING_KEYCHAIN" "$SOURCE" "$DEST"

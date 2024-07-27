@@ -14,6 +14,7 @@ import Icon from '@brave/leo/react/icon';
 import ButtonMenu from '@brave/leo/react/buttonMenu';
 import { spacing } from '@brave/leo/tokens/css/variables';
 import { getLocale } from '$web-common/locale';
+import getNTPBrowserAPI from '../../api/background';
 
 const MenuContainer = styled(ButtonMenu).attrs({
   'data-theme': 'light'
@@ -42,11 +43,11 @@ const MenuButton = styled(Button)`
 
 const PlaceholderContainer = styled.div`
   position: relative;
-  
+
   border-radius: ${searchBoxRadius};
-  
+
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.05);
-  
+
   &:hover ${MenuContainer} {
     transition-delay: 0s;
     opacity: 1;
@@ -57,16 +58,20 @@ function Swapper() {
   const { open, setOpen } = useSearchContext()
   const [boxPos, setBoxPos] = React.useState(0)
   const [, setShowSearchBox] = useNewTabPref('showSearchBox')
+
   return <>
-    {!open && <PlaceholderContainer onClick={e => {
-      // If we were clicking a button inside the SearchBox, don't open the box.
-      if (e.nativeEvent.composedPath().some(el => (el as HTMLElement).tagName === 'LEO-BUTTON')) {
-        e.preventDefault()
-        return
-      }
-      setOpen(true)
-      setBoxPos(e.currentTarget.getBoundingClientRect().y)
-    }}>
+    <PlaceholderContainer
+      style={{visibility: open ? 'hidden' : 'visible'}}
+      onClick={e => {
+        // If we were clicking a button inside the SearchBox, don't open the box.
+        if (e.nativeEvent.composedPath().some(el => (el as HTMLElement).tagName === 'LEO-BUTTON')) {
+          e.preventDefault()
+          return
+        }
+        setOpen(true)
+        setBoxPos(e.currentTarget.getBoundingClientRect().y)
+      }}
+    >
       <Backdrop />
       <SearchBox />
       <div data-theme="light">
@@ -82,13 +87,20 @@ function Swapper() {
           </leo-menu-item>
         </MenuContainer>
       </div>
-    </PlaceholderContainer>}
+    </PlaceholderContainer>
     {open && <SearchDialog offsetY={boxPos} onClose={() => setOpen(false)} />}
   </>
 }
 
 export default function SearchPlaceholder() {
   const [showSearchBox] = useNewTabPref('showSearchBox')
+
+  React.useEffect(() => {
+    if (!showSearchBox) {
+      getNTPBrowserAPI().newTabMetrics.reportNTPSearchDefaultEngine(null)
+    }
+  }, [showSearchBox]);
+
   if (!showSearchBox) return null
   return <SearchContext>
     <Swapper />

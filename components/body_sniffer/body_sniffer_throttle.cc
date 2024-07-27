@@ -75,7 +75,8 @@ void BodySnifferThrottle::WillProcessResponse(
   mojo::ScopedDataPipeConsumerHandle body;
 
   std::tie(new_remote, new_receiver, url_loader, body) =
-      BodySnifferURLLoader::CreateLoader(AsWeakPtr(), response_head->Clone(),
+      BodySnifferURLLoader::CreateLoader(weak_factory_.GetWeakPtr(),
+                                         response_head->Clone(),
                                          std::move(handler), task_runner_);
   InterceptAndStartLoader(std::move(new_remote), std::move(new_receiver),
                           url_loader, std::move(body));

@@ -555,11 +555,10 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
                     )
                   }
                   tokenBalances.merge(with: [account.id: balanceForToken ?? 0])
-                  assetManager.updateBalance(
+                  await assetManager.updateBalance(
                     for: token,
                     account: account.id,
-                    balance: "\(balanceForToken ?? 0)",
-                    completion: nil
+                    balance: "\(balanceForToken ?? 0)"
                   )
                 }
                 return [token.id: tokenBalances]

@@ -32,6 +32,7 @@
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
@@ -98,13 +99,9 @@ void MakeERC721TransferFromDataCallback(base::RunLoop* run_loop,
 
   // Verify tx type.
   if (success) {
-    mojom::TransactionType tx_type;
-    std::vector<std::string> tx_params;
-    std::vector<std::string> tx_args;
     auto tx_info = GetTransactionInfoFromData(data);
     ASSERT_NE(tx_info, std::nullopt);
-    std::tie(tx_type, tx_params, tx_args) = *tx_info;
-    EXPECT_EQ(expected_type, tx_type);
+    EXPECT_EQ(expected_type, std::get<0>(*tx_info));
   }
 
   run_loop->Quit();
@@ -255,8 +252,10 @@ class EthTxManagerUnitTest : public testing::Test {
     RegisterProfilePrefs(profile_prefs_.registry());
     RegisterLocalStatePrefs(local_state_.registry());
     RegisterProfilePrefsForMigration(profile_prefs_.registry());
+    network_manager_ = std::make_unique<NetworkManager>(&profile_prefs_);
     json_rpc_service_ = std::make_unique<JsonRpcService>(
-        shared_url_loader_factory_, &profile_prefs_);
+        shared_url_loader_factory_, network_manager_.get(), &profile_prefs_,
+        nullptr);
     keyring_service_ = std::make_unique<KeyringService>(
         json_rpc_service_.get(), &profile_prefs_, &local_state_);
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
@@ -444,10 +443,12 @@ class EthTxManagerUnitTest : public testing::Test {
                 mojom::TransactionType tx_type;
                 std::vector<std::string> tx_params;
                 std::vector<std::string> tx_args;
+                mojom::SwapInfoPtr swap_info;
 
                 auto tx_info = GetTransactionInfoFromData(data);
                 ASSERT_NE(tx_info, std::nullopt);
-                std::tie(tx_type, tx_params, tx_args) = *tx_info;
+                std::tie(tx_type, tx_params, tx_args, swap_info) =
+                    std::move(*tx_info);
 
                 EXPECT_EQ(expected_type, tx_type);
                 EXPECT_EQ(tx_args[0], from);
@@ -460,6 +461,7 @@ class EthTxManagerUnitTest : public testing::Test {
                 EXPECT_EQ(tx_params[2], "uint256");
                 EXPECT_EQ(tx_params[3], "uint256");
                 EXPECT_EQ(tx_params[4], "bytes");
+                EXPECT_FALSE(swap_info);
               }
               run_loop.Quit();
             }));
@@ -475,6 +477,7 @@ class EthTxManagerUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
+  std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<TxService> tx_service_;
@@ -517,7 +520,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedEvmTransaction) {
         mojom::kMainnetChainId, from(),
         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
         "0x0974", data_);
-    EXPECT_TRUE(*IsEip1559Chain(GetPrefs(), params->chain_id));
+    EXPECT_TRUE(*network_manager_->IsEip1559Chain(params->chain_id));
 
     bool callback_called = false;
     std::string tx_meta_id;
@@ -541,7 +544,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedEvmTransaction) {
         mojom::kAuroraMainnetChainId, from(),
         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
         "0x0974", data_);
-    EXPECT_FALSE(*IsEip1559Chain(GetPrefs(), params->chain_id));
+    EXPECT_FALSE(*network_manager_->IsEip1559Chain(params->chain_id));
 
     bool callback_called = false;
     std::string tx_meta_id;
@@ -564,7 +567,8 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedEvmTransaction) {
     auto params = mojom::NewEvmTransactionParams::New(
         "0x1234", from(), "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
         "0x016345785d8a0000", "0x0974", data_);
-    EXPECT_FALSE(IsEip1559Chain(GetPrefs(), params->chain_id).has_value());
+    EXPECT_FALSE(
+        network_manager_->IsEip1559Chain(params->chain_id).has_value());
 
     bool callback_called = false;
     std::string tx_meta_id;

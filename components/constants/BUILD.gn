@@ -37,10 +37,7 @@ source_set("constants") {
   ]
 
   public_deps = [ ":brave_services_key" ]
-  deps = [
-    "//base",
-    "//brave/components/ipfs/buildflags",
-  ]
+  deps = [ "//base" ]
 }
 
 source_set("brave_service_key_helper") {

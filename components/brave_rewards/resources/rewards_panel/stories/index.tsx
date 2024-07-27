@@ -16,7 +16,6 @@ import { NotificationCard } from '../components/notification_card'
 
 import { App } from '../components/app'
 
-import * as mojom from '../../shared/lib/mojom'
 import { optional } from '../../shared/lib/optional'
 
 export default {
@@ -84,9 +83,9 @@ function createHost(): Host {
     publisherRefreshing: false,
     externalWallet: {
       provider: 'uphold',
-      username: 'brave123',
-      status: mojom.WalletStatus.kConnected,
-      links: {}
+      authenticated: true,
+      name: 'brave123',
+      url: ''
     },
     summaryData: {
       adEarnings: 10,

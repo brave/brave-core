@@ -7,8 +7,8 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 
@@ -16,7 +16,7 @@
 
 namespace brave_ads {
 
-class BraveAdsAdEventBuilderTest : public UnitTestBase {};
+class BraveAdsAdEventBuilderTest : public test::TestBase {};
 
 TEST_F(BraveAdsAdEventBuilderTest, BuildAdEvent) {
   // Arrange
@@ -26,14 +26,15 @@ TEST_F(BraveAdsAdEventBuilderTest, BuildAdEvent) {
   // Act
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kViewedImpression,
-                   /*created_at=*/Now());
+                   /*created_at=*/test::Now());
 
   // Assert
   EXPECT_THAT(ad_event,
               ::testing::FieldsAre(
                   AdType::kNotificationAd, ConfirmationType::kViewedImpression,
-                  kPlacementId, kCreativeInstanceId, kCreativeSetId,
-                  kCampaignId, kAdvertiserId, kSegment, /*created_at*/ Now()));
+                  test::kPlacementId, test::kCreativeInstanceId,
+                  test::kCreativeSetId, test::kCampaignId, test::kAdvertiserId,
+                  test::kSegment, /*created_at*/ test::Now()));
 }
 
 TEST_F(BraveAdsAdEventBuilderTest, RebuildAdEvent) {
@@ -42,20 +43,21 @@ TEST_F(BraveAdsAdEventBuilderTest, RebuildAdEvent) {
                                   /*should_generate_random_uuids=*/false);
 
   const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
 
   // Act
   const AdEventInfo rebuilt_ad_event =
       RebuildAdEvent(ad_event, ConfirmationType::kConversion,
-                     /*created_at=*/DistantFuture());
+                     /*created_at=*/test::DistantFuture());
 
   // Assert
-  EXPECT_THAT(rebuilt_ad_event,
-              ::testing::FieldsAre(AdType::kNotificationAd,
-                                   ConfirmationType::kConversion, kPlacementId,
-                                   kCreativeInstanceId, kCreativeSetId,
-                                   kCampaignId, kAdvertiserId, kSegment,
-                                   /*created_at*/ DistantFuture()));
+  EXPECT_THAT(
+      rebuilt_ad_event,
+      ::testing::FieldsAre(
+          AdType::kNotificationAd, ConfirmationType::kConversion,
+          test::kPlacementId, test::kCreativeInstanceId, test::kCreativeSetId,
+          test::kCampaignId, test::kAdvertiserId, test::kSegment,
+          /*created_at*/ test::DistantFuture()));
 }
 
 }  // namespace brave_ads

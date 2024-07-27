@@ -26,7 +26,6 @@ import {
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
-import { getPriceIdForToken } from '../../../../utils/api-utils'
 import {
   filterNetworksForAccount,
   networkSupportsAccount
@@ -35,7 +34,8 @@ import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
 import {
   computeFiatAmount,
-  getTokenPriceFromRegistry
+  getTokenPriceFromRegistry,
+  getPriceIdForToken
 } from '../../../../utils/pricing-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
 import {
@@ -189,11 +189,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     } = props
 
     // State
-    const [searchValue, setSearchValue] = React.useState<string>(
-      modalType === 'bridge' && selectingFromOrTo === 'to' && selectedFromToken
-        ? selectedFromToken.symbol
-        : ''
-    )
+    const [searchValue, setSearchValue] = React.useState<string>('')
     const [selectedNetworkFilter, setSelectedNetworkFilter] =
       React.useState<BraveWallet.NetworkInfo>(
         selectedNetwork || AllNetworksOption

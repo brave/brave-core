@@ -21,7 +21,6 @@
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/common/pref_names.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
@@ -49,10 +48,6 @@
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #include "brave/browser/ethereum_remote_client/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -242,11 +237,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kShowFullscreenReminder] =
       settings_api::PrefType::kBoolean;
-  // Hangouts pref
-  (*s_brave_allowlist)[kHangoutsEnabled] = settings_api::PrefType::kBoolean;
-  // IPFS Companion pref
-  (*s_brave_allowlist)[kIPFSCompanionEnabled] =
-      settings_api::PrefType::kBoolean;
 
   // Brave Wallet pref
   (*s_brave_allowlist)[kBraveWalletSelectedNetworks] =
@@ -267,21 +257,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kBraveWalletPrivateWindowsEnabled] =
       settings_api::PrefType::kBoolean;
-
-  // IPFS pref
-#if BUILDFLAG(ENABLE_IPFS)
-  (*s_brave_allowlist)[kIPFSResolveMethod] = settings_api::PrefType::kNumber;
-  (*s_brave_allowlist)[kIPFSAutoFallbackToGateway] =
-      settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kIPFSPublicGatewayAddress] =
-      settings_api::PrefType::kString;
-  (*s_brave_allowlist)[kIPFSPublicNFTGatewayAddress] =
-      settings_api::PrefType::kString;
-  (*s_brave_allowlist)[kIPFSAutoRedirectToConfiguredGateway] =
-      settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kIPFSAlwaysStartMode] = settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kIpfsStorageMax] = settings_api::PrefType::kNumber;
-#endif
 
 // Leo Assistant pref
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -323,9 +298,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   // Media router pref
   (*s_brave_allowlist)[kEnableMediaRouterOnRestart] =
       settings_api::PrefType::kBoolean;
-
-  // NFT pinning pref
-  (*s_brave_allowlist)[kAutoPinEnabled] = settings_api::PrefType::kBoolean;
 
 #if defined(TOOLKIT_VIEWS)
   // Vertical tab strip prefs

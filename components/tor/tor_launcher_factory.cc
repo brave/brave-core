@@ -66,10 +66,10 @@ TorLauncherFactory::TorLauncherFactory()
     : is_starting_(false),
       is_connected_(false),
       tor_pid_(-1),
-      control_(new tor::TorControl(this->AsWeakPtr(),
-                                   content::GetIOThreadTaskRunner({})),
-               base::OnTaskRunnerDeleter(content::GetIOThreadTaskRunner({}))),
-      weak_ptr_factory_(this) {
+      control_(nullptr,
+               base::OnTaskRunnerDeleter(content::GetIOThreadTaskRunner({}))) {
+  control_.reset(new tor::TorControl(this->AsWeakPtr(),
+                                     content::GetIOThreadTaskRunner({})));
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 }
 
@@ -470,4 +470,8 @@ void TorLauncherFactory::OnTorRawEnd(const std::string& status,
                                      const std::string& line) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(3) << "TOR CONTROL: end " << status << " " << line;
+}
+
+base::WeakPtr<tor::TorControl::Delegate> TorLauncherFactory::AsWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
 }

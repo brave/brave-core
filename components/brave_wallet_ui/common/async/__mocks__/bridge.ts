@@ -44,6 +44,7 @@ import {
   mockBasicAttentionToken,
   mockErc20TokensList,
   mockErc721Token,
+  mockMoonCatNFT,
   mockSplBat,
   mockSplNft,
   mockSplUSDC,
@@ -70,6 +71,7 @@ import {
   mockSignMessageRequest,
   mockSwitchChainRequest
 } from '../../../stories/mock-data/mock-eth-requests'
+import { mockDappsListMap } from '../../../mocks/mock-dapps-list'
 
 export const makeMockedStoreWithSpy = () => {
   const store = createStore(
@@ -332,6 +334,28 @@ export class MockedWalletApiProxy {
     getOnRampCurrencies: async () => {
       return {
         currencies: mockOnRampCurrencies
+      }
+    },
+
+    getTopDapps: async (chainId, coin) => {
+      switch (chainId) {
+        // supporting only ethereum mainnet and solana in this mock
+        case BraveWallet.MAINNET_CHAIN_ID: {
+          const parser = createDappParserForRange(
+            mockDappsListMap.ethereum.range
+          )
+          return {
+            dapps: mockDappsListMap.ethereum.results.map(parser)
+          }
+        }
+        case BraveWallet.SOLANA_MAINNET: {
+          const parser = createDappParserForRange(mockDappsListMap.solana.range)
+          return {
+            dapps: mockDappsListMap.solana.results.map(parser)
+          }
+        }
+        default:
+          return { dapps: [] }
       }
     }
   }
@@ -1059,6 +1083,16 @@ export class MockedWalletApiProxy {
         error: 0,
         errorMessage: ''
       }
+    },
+    getERC721OwnerOf: async (contract, tokenId, chainId) => {
+      if (contract === mockMoonCatNFT.contractAddress) {
+        return { ownerAddress: mockAccount.address, error: 0, errorMessage: '' }
+      }
+      return {
+        error: 0,
+        errorMessage: '',
+        ownerAddress: '0xDeadBeef'
+      }
     }
   }
 
@@ -1092,7 +1126,6 @@ export class MockedWalletApiProxy {
           isWalletBackedUp: true,
           isWalletCreated: true,
           isWalletLocked: false,
-          isNftPinningFeatureEnabled: false,
           isAnkrBalancesFeatureEnabled: false,
           isTransactionSimulationsFeatureEnabled: false
         }
@@ -1176,14 +1209,6 @@ export class MockedWalletApiProxy {
   braveWalletIpfsService: Partial<
     InstanceType<typeof BraveWallet.IpfsServiceInterface>
   > = {
-    extractIPFSUrlFromGatewayLikeUrl: async function (url: string) {
-      return { ipfsUrl: url }
-    },
-    translateToNFTGatewayURL: async function (url: string) {
-      return {
-        translatedUrl: url
-      }
-    },
     translateToGatewayURL: async function (url: string) {
       return {
         translatedUrl: url
@@ -1205,6 +1230,28 @@ export class MockedWalletApiProxy {
 }
 
 let apiProxy: Partial<WalletApiProxy> | undefined
+
+type DappListResult =
+  (typeof mockDappsListMap)[keyof typeof mockDappsListMap]['results'][number]
+
+function createDappParserForRange(
+  range: string
+): (value: DappListResult) => BraveWallet.Dapp {
+  return (d) => ({
+    balance: d.metrics.balance ?? 0,
+    categories: d.categories,
+    chains: d.chains,
+    description: d.description,
+    id: d.dappId,
+    logo: d.logo,
+    name: d.name,
+    range: range,
+    transactions: d.metrics.transactions,
+    uaw: d.metrics.uaw,
+    volume: d.metrics.volume,
+    website: d.website
+  })
+}
 
 export function getAPIProxy(): Partial<WalletApiProxy> {
   if (!apiProxy) {

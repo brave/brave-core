@@ -24,6 +24,7 @@
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/simulation_response_parser.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
@@ -53,8 +54,10 @@ class SimulationServiceUnitTest : public testing::Test {
                 &url_loader_factory_)) {
     RegisterProfilePrefs(prefs_.registry());
     RegisterProfilePrefsForMigration(prefs_.registry());
+    network_manager_ = std::make_unique<NetworkManager>(GetPrefs());
     json_rpc_service_ = std::make_unique<JsonRpcService>(
-        shared_url_loader_factory_, GetPrefs());
+        shared_url_loader_factory_, network_manager_.get(), GetPrefs(),
+        nullptr);
     simulation_service_ = std::make_unique<SimulationService>(
         shared_url_loader_factory_, json_rpc_service_.get());
   }
@@ -68,7 +71,7 @@ class SimulationServiceUnitTest : public testing::Test {
   PrefService* GetPrefs() { return &prefs_; }
 
   GURL GetNetwork(const std::string& chain_id, mojom::CoinType coin) {
-    return brave_wallet::GetNetworkURL(GetPrefs(), chain_id, coin);
+    return network_manager_->GetNetworkURL(chain_id, coin);
   }
 
   void SetInterceptor(const std::string& content) {
@@ -191,6 +194,7 @@ class SimulationServiceUnitTest : public testing::Test {
 
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<SimulationService> simulation_service_;
   base::test::ScopedFeatureList feature_list_{
@@ -519,50 +523,51 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionValid) {
 
   simulation_service_->ScanSolanaTransaction(
       std::move(request), "en-US",
-      base::BindLambdaForTesting([&](mojom::SolanaSimulationResponsePtr
-                                         response,
-                                     const std::string& error_response,
-                                     const std::string& error_string) {
-        ASSERT_TRUE(response);
+      base::BindLambdaForTesting(
+          [&](mojom::SolanaSimulationResponsePtr response,
+              const std::string& error_response,
+              const std::string& error_string) {
+            ASSERT_TRUE(response);
 
-        EXPECT_EQ(response->action, mojom::BlowfishSuggestedAction::kNone);
-        EXPECT_EQ(response->warnings.size(), 0u);
-        EXPECT_FALSE(response->error);
-        ASSERT_EQ(response->expected_state_changes.size(), 1u);
+            EXPECT_EQ(response->action, mojom::BlowfishSuggestedAction::kNone);
+            EXPECT_EQ(response->warnings.size(), 0u);
+            EXPECT_FALSE(response->error);
+            ASSERT_EQ(response->expected_state_changes.size(), 1u);
 
-        const auto& state_change = response->expected_state_changes.at(0);
-        EXPECT_EQ(state_change->human_readable_diff, "Send 2 USDT");
-        EXPECT_EQ(state_change->suggested_color,
-                  mojom::BlowfishSuggestedColor::kDebit);
-        EXPECT_EQ(state_change->raw_info->kind,
-                  mojom::BlowfishSolanaRawInfoKind::kSplTransfer);
-        ASSERT_TRUE(state_change->raw_info->data->is_spl_transfer_data());
-        const auto& state_change_raw_info =
-            state_change->raw_info->data->get_spl_transfer_data();
-        EXPECT_EQ(state_change_raw_info->asset->symbol, "USDT");
-        EXPECT_EQ(state_change_raw_info->asset->name, "USDT");
-        EXPECT_EQ(state_change_raw_info->asset->mint,
-                  "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB");
-        EXPECT_EQ(state_change_raw_info->asset->decimals, 6);
-        EXPECT_EQ(state_change_raw_info->asset->metaplex_token_standard,
-                  mojom::BlowfishMetaplexTokenStandardKind::kUnknown);
-        ASSERT_TRUE(state_change_raw_info->asset->price);
-        EXPECT_EQ(state_change_raw_info->asset->price->source,
-                  mojom::BlowfishAssetPriceSource::kCoingecko);
-        EXPECT_EQ(state_change_raw_info->asset->price->last_updated_at,
-                  "1679331222");
-        EXPECT_EQ(state_change_raw_info->asset->price->dollar_value_per_token,
-                  "0.99");
-        EXPECT_EQ(state_change_raw_info->diff->sign,
-                  mojom::BlowfishDiffSign::kMinus);
-        EXPECT_EQ(state_change_raw_info->diff->digits, 2000000ULL);
-        EXPECT_EQ(state_change_raw_info->counterparty,
-                  "5wytVPbjLb2VCXbynhUQabEZZD2B6Wxrkvwm6v6Cuy5X");
+            const auto& state_change = response->expected_state_changes.at(0);
+            EXPECT_EQ(state_change->human_readable_diff, "Send 2 USDT");
+            EXPECT_EQ(state_change->suggested_color,
+                      mojom::BlowfishSuggestedColor::kDebit);
+            EXPECT_EQ(state_change->raw_info->kind,
+                      mojom::BlowfishSolanaRawInfoKind::kSplTransfer);
+            ASSERT_TRUE(state_change->raw_info->data->is_spl_transfer_data());
+            const auto& state_change_raw_info =
+                state_change->raw_info->data->get_spl_transfer_data();
+            EXPECT_EQ(state_change_raw_info->asset->symbol, "USDT");
+            EXPECT_EQ(state_change_raw_info->asset->name, "USDT");
+            EXPECT_EQ(state_change_raw_info->asset->mint,
+                      "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB");
+            EXPECT_EQ(state_change_raw_info->asset->decimals, 6);
+            EXPECT_EQ(state_change_raw_info->asset->metaplex_token_standard,
+                      mojom::BlowfishMetaplexTokenStandardKind::kUnknown);
+            ASSERT_TRUE(state_change_raw_info->asset->price);
+            EXPECT_EQ(state_change_raw_info->asset->price->source,
+                      mojom::BlowfishAssetPriceSource::kCoingecko);
+            EXPECT_EQ(state_change_raw_info->asset->price->last_updated_at,
+                      "1679331222");
+            EXPECT_EQ(
+                state_change_raw_info->asset->price->dollar_value_per_token,
+                "0.99");
+            EXPECT_EQ(state_change_raw_info->diff->sign,
+                      mojom::BlowfishDiffSign::kMinus);
+            EXPECT_EQ(state_change_raw_info->diff->digits, 2000000ULL);
+            EXPECT_EQ(state_change_raw_info->counterparty,
+                      "5wytVPbjLb2VCXbynhUQabEZZD2B6Wxrkvwm6v6Cuy5X");
 
-        EXPECT_EQ(error_response, "");
-        EXPECT_EQ(error_string, "");
-        run_loop.Quit();
-      }));
+            EXPECT_EQ(error_response, "");
+            EXPECT_EQ(error_string, "");
+            run_loop.Quit();
+          }));
   run_loop.Run();
 }
 

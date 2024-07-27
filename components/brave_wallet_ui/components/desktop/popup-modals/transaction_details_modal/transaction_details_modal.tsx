@@ -29,6 +29,7 @@ import {
 
 // Hooks
 import { useExplorer } from '../../../../common/hooks/explorer'
+import { useSwapTransactionParser } from '../../../../common/hooks/use-swap-tx-parser'
 
 // Types
 import {
@@ -49,19 +50,20 @@ import {
   getTransactionApprovalTargetAddress,
   getTransactionTransferredValue,
   getTransactionFormattedSendCurrencyTotal,
-  findTransactionToken,
-  getETHSwapTransactionBuyAndSellTokens
+  findTransactionToken
 } from '../../../../utils/tx-utils'
 import { serializedTimeDeltaToJSDate } from '../../../../utils/datetime-utils'
 import { getCoinFromTxDataUnion } from '../../../../utils/network-utils'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
-import { computeFiatAmount } from '../../../../utils/pricing-utils'
+import {
+  computeFiatAmount,
+  getPriceIdForToken
+} from '../../../../utils/pricing-utils'
 import Amount from '../../../../utils/amount'
 import {
   getAddressLabel,
   getAccountLabel
 } from '../../../../utils/account-utils'
-import { getPriceIdForToken } from '../../../../utils/api-utils'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 
 // Components
@@ -201,22 +203,8 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
 
   const txToken = findTransactionToken(transaction, combinedTokensList)
 
-  const { buyToken, sellToken, buyAmount, sellAmount, buyAmountWei } =
-    React.useMemo(() => {
-      return transaction.txType === BraveWallet.TransactionType.ETHSwap
-        ? getETHSwapTransactionBuyAndSellTokens({
-            nativeAsset: networkAsset,
-            tokensList: combinedTokensList,
-            tx: transaction
-          })
-        : {
-            buyToken: undefined,
-            sellToken: txToken,
-            buyAmount: new Amount(''),
-            sellAmount: new Amount(''),
-            buyAmountWei: new Amount('')
-          }
-    }, [transaction, networkAsset, combinedTokensList, txToken])
+  const { buyToken, sellToken, buyAmountWei, sellAmountWei } =
+    useSwapTransactionParser(transaction)
 
   const networkAssetPriceId = networkAsset
     ? getPriceIdForToken(networkAsset)
@@ -331,8 +319,17 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
       ? 'braveWalletSwap'
       : 'braveWalletTransactionSent'
 
-  const formattedSellAmount = sellAmount?.formatAsAsset(6, sellToken?.symbol)
-  const formattedBuyAmount = buyAmount?.formatAsAsset(6, buyToken?.symbol)
+  const formattedSellAmount = sellToken
+    ? sellAmountWei
+        .divideByDecimals(sellToken.decimals)
+        .formatAsAsset(6, sellToken.symbol)
+    : ''
+  const formattedBuyAmount = buyToken
+    ? buyAmountWei
+        .divideByDecimals(buyToken.decimals)
+        .formatAsAsset(6, buyToken.symbol)
+    : ''
+
   const gasFee =
     txCoinType === BraveWallet.CoinType.SOL
       ? solFeeEstimates ?? ''

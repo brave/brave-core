@@ -58,6 +58,7 @@
 #include "chrome/browser/app_mode/app_mode_utils.h"
 #include "chrome/browser/devtools/devtools_window.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
@@ -322,6 +323,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 
     auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
         contents_container()->GetLayoutManager());
+    contents_layout_manager->set_browser_view(this);
     contents_layout_manager->set_secondary_contents_view(
         secondary_contents_web_view_);
     contents_layout_manager->set_secondary_devtools_view(
@@ -594,7 +596,7 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
 }
 
 void BraveBrowserView::ToggleSidebar() {
-  SidePanelUI::GetSidePanelUIForBrowser(browser_.get())->Toggle();
+  browser_->GetFeatures().side_panel_ui()->Toggle();
 }
 
 void BraveBrowserView::ShowBraveVPNBubble() {
@@ -771,6 +773,10 @@ void BraveBrowserView::ShowWaybackMachineBubble() {
 
 WalletButton* BraveBrowserView::GetWalletButton() {
   return static_cast<BraveToolbarView*>(toolbar())->wallet_button();
+}
+
+void BraveBrowserView::NotifyDialogPositionRequiresUpdate() {
+  GetBrowserViewLayout()->NotifyDialogPositionRequiresUpdate();
 }
 
 views::View* BraveBrowserView::GetWalletButtonAnchorView() {

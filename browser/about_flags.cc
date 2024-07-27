@@ -31,14 +31,13 @@
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
-#include "brave/components/webcompat/features.h"
+#include "brave/components/webcompat/core/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "components/content_settings/core/common/features.h"
@@ -65,10 +64,6 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -194,6 +189,18 @@
           FEATURE_VALUE_TYPE(sandbox::policy::features::kModuleFileNamePatch), \
       }))
 
+#define BRAVE_WORKAROUND_NEW_WINDOW_FLASH                                  \
+  IF_BUILDFLAG(                                                            \
+      IS_WIN,                                                              \
+      EXPAND_FEATURE_ENTRIES({                                             \
+          "brave-workaround-new-window-flash",                             \
+          "Workaround a white flash on new window creation",               \
+          "Enable workaround to prevent new windows being created with a " \
+          "white background",                                              \
+          kOsWin,                                                          \
+          FEATURE_VALUE_TYPE(::features::kBraveWorkaroundNewWindowFlash),  \
+      }))
+
 #define BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                               \
   IF_BUILDFLAG(                                                            \
       ENABLE_GEMINI_WALLET,                                                \
@@ -206,26 +213,8 @@
           FEATURE_VALUE_TYPE(brave_rewards::features::kGeminiFeature),     \
       }))
 
-#define BRAVE_IPFS_FEATURE_ENTRIES                                   \
-  IF_BUILDFLAG(ENABLE_IPFS,                                          \
-               EXPAND_FEATURE_ENTRIES({                              \
-                   "brave-ipfs",                                     \
-                   "Enable IPFS",                                    \
-                   "Enable native support of IPFS.",                 \
-                   kOsDesktop | kOsAndroid,                          \
-                   FEATURE_VALUE_TYPE(ipfs::features::kIpfsFeature), \
-               }))
-
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                   \
   EXPAND_FEATURE_ENTRIES(                                                     \
-      {                                                                       \
-          "enable-nft-pinning",                                               \
-          "Enable NFT pinning",                                               \
-          "Enable NFT pinning for Brave Wallet",                              \
-          kOsDesktop,                                                         \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletNftPinningFeature),         \
-      },                                                                      \
       {                                                                       \
           "native-brave-wallet",                                              \
           "Enable Brave Wallet",                                              \
@@ -381,35 +370,42 @@
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
-#define BRAVE_TABS_FEATURE_ENTRIES                                        \
-  EXPAND_FEATURE_ENTRIES(                                                 \
-      {                                                                   \
-          "brave-shared-pinned-tabs",                                     \
-          "Shared pinned tab",                                            \
-          "Pinned tabs are shared across windows",                        \
-          kOsWin | kOsMac | kOsLinux,                                     \
-          FEATURE_VALUE_TYPE(tabs::features::kBraveSharedPinnedTabs),     \
-      },                                                                  \
-      {                                                                   \
-          "brave-horizontal-tabs-update",                                 \
-          "Updated horizontal tabs design",                               \
-          "Updates the look and feel or horizontal tabs",                 \
-          kOsWin | kOsMac | kOsLinux,                                     \
-          FEATURE_VALUE_TYPE(tabs::features::kBraveHorizontalTabsUpdate), \
-      },                                                                  \
-      {                                                                   \
-          "brave-vertical-tab-scroll-bar",                                \
-          "Show scroll bar on vertical tab strip",                        \
-          "Shows scroll bar on vertical tab strip when it overflows",     \
-          kOsWin | kOsMac | kOsLinux,                                     \
-          FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabScrollBar), \
-      },                                                                  \
-      {                                                                   \
-          kSplitViewFeatureInternalName,                                  \
-          "Enable split view",                                            \
-          "Enables split view",                                           \
-          kOsWin | kOsMac | kOsLinux,                                     \
-          FEATURE_VALUE_TYPE(tabs::features::kBraveSplitView),            \
+#define BRAVE_TABS_FEATURE_ENTRIES                                         \
+  EXPAND_FEATURE_ENTRIES(                                                  \
+      {                                                                    \
+          "brave-shared-pinned-tabs",                                      \
+          "Shared pinned tab",                                             \
+          "Pinned tabs are shared across windows",                         \
+          kOsWin | kOsMac | kOsLinux,                                      \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveSharedPinnedTabs),      \
+      },                                                                   \
+      {                                                                    \
+          "brave-horizontal-tabs-update",                                  \
+          "Updated horizontal tabs design",                                \
+          "Updates the look and feel or horizontal tabs",                  \
+          kOsWin | kOsMac | kOsLinux,                                      \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveHorizontalTabsUpdate),  \
+      },                                                                   \
+      {                                                                    \
+          "brave-compact-horizontal-tabs",                                 \
+          "Compact horizontal tabs design",                                \
+          "Reduces the height of horizontal tabs",                         \
+          kOsWin | kOsMac | kOsLinux,                                      \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveCompactHorizontalTabs), \
+      },                                                                   \
+      {                                                                    \
+          "brave-vertical-tab-scroll-bar",                                 \
+          "Show scroll bar on vertical tab strip",                         \
+          "Shows scroll bar on vertical tab strip when it overflows",      \
+          kOsWin | kOsMac | kOsLinux,                                      \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabScrollBar),  \
+      },                                                                   \
+      {                                                                    \
+          kSplitViewFeatureInternalName,                                   \
+          "Enable split view",                                             \
+          "Enables split view",                                            \
+          kOsWin | kOsMac | kOsLinux,                                      \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveSplitView),             \
       })
 #else
 #define BRAVE_TABS_FEATURE_ENTRIES
@@ -789,6 +785,21 @@
               brave_rewards::features::kAllowSelfCustodyProvidersFeature),     \
       },                                                                       \
       {                                                                        \
+          "brave-rewards-new-rewards-ui",                                      \
+          "Show the new Rewards UI",                                           \
+          "Displays the new Rewards UI.",                                      \
+          kOsDesktop | kOsAndroid,                                             \
+          FEATURE_VALUE_TYPE(brave_rewards::features::kNewRewardsUIFeature),   \
+      },                                                                       \
+      {                                                                        \
+          "brave-rewards-animated-background",                                 \
+          "Show an animated background on the Rewards UI",                     \
+          "Shows an animated background on the Rewards panel and page.",       \
+          kOsDesktop | kOsAndroid,                                             \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_rewards::features::kAnimatedBackgroundFeature),            \
+      },                                                                       \
+      {                                                                        \
           "brave-ads-should-launch-brave-ads-as-an-in-process-service",        \
           "Launch Brave Ads as an in-process service",                         \
           "Launch Brave Ads as an in-process service removing the utility "    \
@@ -1012,7 +1023,6 @@
           kOsWin | kOsLinux | kOsMac,                                          \
           FEATURE_VALUE_TYPE(features::kBraveWebViewRoundedCorners),           \
       })                                                                       \
-  BRAVE_IPFS_FEATURE_ENTRIES                                                   \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
   CRYPTO_WALLETS_FEATURE_ENTRIES                                               \
@@ -1038,6 +1048,7 @@
   BRAVE_PLAYER_FEATURE_ENTRIES                                                 \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
   BRAVE_EXTENSIONS_MANIFEST_V2                                                 \
+  BRAVE_WORKAROUND_NEW_WINDOW_FLASH                                            \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {

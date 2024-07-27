@@ -32,13 +32,15 @@ import {
 describe('getBalance', () => {
   it('gets a balance of a token for a given account', () => {
     const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
-    setBalance(
-      mockAccount.accountId,
-      mockBasicAttentionToken.chainId,
-      mockBasicAttentionToken.contractAddress.toLowerCase(),
-      '123',
-      tokenBalancesRegistry
-    )
+    setBalance({
+      accountId: mockAccount.accountId,
+      chainId: mockBasicAttentionToken.chainId,
+      contractAddress: mockBasicAttentionToken.contractAddress.toLowerCase(),
+      balance: '123',
+      tokenBalancesRegistry,
+      coinType: mockBasicAttentionToken.coin,
+      tokenId: ''
+    })
 
     expect(
       getBalance(
@@ -51,13 +53,15 @@ describe('getBalance', () => {
 
   it('returns zero balance if address is unknown', () => {
     const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
-    setBalance(
-      { uniqueKey: '0xdeadbeef' },
-      mockBasicAttentionToken.chainId,
-      mockBasicAttentionToken.contractAddress.toLowerCase(),
-      '123',
-      tokenBalancesRegistry
-    )
+    setBalance({
+      accountId: { uniqueKey: '0xdeadbeef' },
+      chainId: mockBasicAttentionToken.chainId,
+      contractAddress: mockBasicAttentionToken.contractAddress.toLowerCase(),
+      balance: '123',
+      tokenBalancesRegistry,
+      coinType: mockBasicAttentionToken.coin,
+      tokenId: ''
+    })
 
     expect(
       getBalance(
@@ -70,13 +74,15 @@ describe('getBalance', () => {
 
   it('returns zero balance if chainId is unknown', () => {
     const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
-    setBalance(
-      mockAccount.accountId,
-      '0xdeadbeef',
-      mockBasicAttentionToken.contractAddress.toLowerCase(),
-      '123',
-      tokenBalancesRegistry
-    )
+    setBalance({
+      accountId: mockAccount.accountId,
+      chainId: '0xdeadbeef',
+      contractAddress: mockBasicAttentionToken.contractAddress.toLowerCase(),
+      balance: '123',
+      tokenBalancesRegistry,
+      coinType: mockBasicAttentionToken.coin,
+      tokenId: ''
+    })
 
     expect(
       getBalance(
@@ -89,13 +95,15 @@ describe('getBalance', () => {
 
   it('returns zero balance if token contract is unknown', () => {
     const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
-    setBalance(
-      mockAccount.accountId,
-      mockBasicAttentionToken.chainId,
-      '0xdeadbeef',
-      '123',
-      tokenBalancesRegistry
-    )
+    setBalance({
+      accountId: mockAccount.accountId,
+      chainId: mockBasicAttentionToken.chainId,
+      contractAddress: '0xdeadbeef',
+      balance: '123',
+      tokenBalancesRegistry,
+      coinType: mockBasicAttentionToken.coin,
+      tokenId: ''
+    })
 
     expect(
       getBalance(
@@ -131,13 +139,15 @@ describe('getPercentAmount', () => {
     'should compute %s correctly',
     (_, balance: string, percent, expected: string) => {
       const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
-      setBalance(
-        mockAccount.accountId,
-        mockERC20Token.chainId,
-        mockERC20Token.contractAddress,
+      setBalance({
+        accountId: mockAccount.accountId,
+        chainId: mockERC20Token.chainId,
+        contractAddress: mockERC20Token.contractAddress,
         balance,
-        tokenBalancesRegistry
-      )
+        tokenBalancesRegistry,
+        coinType: mockERC20Token.coin,
+        tokenId: ''
+      })
 
       expect(
         getPercentAmount(
@@ -161,70 +171,89 @@ const mockAccounts = [
 ]
 
 const createMockRegistry = (balance: string) => {
-  const registry = createEmptyTokenBalancesRegistry()
-  setBalance(
-    mockEthAccountInfo.accountId,
-    BraveWallet.MAINNET_CHAIN_ID,
-    '',
-    balance,
-    registry
-  )
-  setBalance(
-    mockEthAccountInfo.accountId,
-    BraveWallet.POLYGON_MAINNET_CHAIN_ID,
-    '',
-    balance,
-    registry
-  )
-  setBalance(
-    mockEthAccountInfo.accountId,
-    BraveWallet.GOERLI_CHAIN_ID,
-    '',
-    balance,
-    registry
-  )
+  const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
 
-  setBalance(
-    mockSolanaAccount.accountId,
-    BraveWallet.SOLANA_MAINNET,
-    '',
+  // Native ETH
+  setBalance({
+    accountId: mockEthAccountInfo.accountId,
+    chainId: BraveWallet.MAINNET_CHAIN_ID,
+    contractAddress: '',
     balance,
-    registry
-  )
+    tokenBalancesRegistry,
+    coinType: BraveWallet.CoinType.ETH,
+    tokenId: ''
+  })
 
-  setBalance(
-    mockFilecoinAccount.accountId,
-    BraveWallet.FILECOIN_MAINNET,
-    '',
+  // Native MATIC
+  setBalance({
+    accountId: mockEthAccountInfo.accountId,
+    chainId: BraveWallet.POLYGON_MAINNET_CHAIN_ID,
+    contractAddress: '',
     balance,
-    registry
-  )
+    tokenBalancesRegistry,
+    coinType: BraveWallet.CoinType.ETH,
+    tokenId: ''
+  })
 
-  setBalance(
-    mockBitcoinAccount.accountId,
-    BraveWallet.BITCOIN_MAINNET,
-    '',
+  // Native SOL
+  setBalance({
+    accountId: mockSolanaAccount.accountId,
+    chainId: BraveWallet.SOLANA_MAINNET,
+    contractAddress: '',
     balance,
-    registry
-  )
-  setBalance(
-    mockBitcoinTestAccount.accountId,
-    BraveWallet.BITCOIN_TESTNET,
-    '',
-    balance,
-    registry
-  )
+    tokenBalancesRegistry,
+    coinType: BraveWallet.CoinType.SOL,
+    tokenId: ''
+  })
 
-  setBalance(
-    mockZecAccount.accountId,
-    BraveWallet.Z_CASH_MAINNET,
-    '',
+  // NATIVE FIL
+  setBalance({
+    accountId: mockFilecoinAccount.accountId,
+    chainId: BraveWallet.FILECOIN_MAINNET,
+    contractAddress: '',
     balance,
-    registry
-  )
+    tokenBalancesRegistry,
+    coinType: BraveWallet.CoinType.FIL,
+    tokenId: ''
+  })
 
-  return registry
+  // NATIVE BTC
+  setBalance({
+    accountId: mockBitcoinAccount.accountId,
+    chainId: BraveWallet.BITCOIN_MAINNET,
+    contractAddress: '',
+    balance,
+    tokenBalancesRegistry,
+    coinType: BraveWallet.CoinType.BTC,
+    tokenId: ''
+  })
+
+  // NATIVE TESTNET BTC
+  setBalance({
+    accountId: mockBitcoinTestAccount.accountId,
+    chainId: BraveWallet.BITCOIN_TESTNET,
+    contractAddress: '',
+    balance,
+    tokenBalancesRegistry,
+    coinType: BraveWallet.CoinType.BTC,
+    tokenId: ''
+  })
+
+  // NATIVE ZEC
+  setBalance({
+    accountId: mockZecAccount.accountId,
+    chainId: BraveWallet.Z_CASH_MAINNET,
+    contractAddress: '',
+    balance,
+    tokenBalancesRegistry,
+    coinType: BraveWallet.CoinType.ZEC,
+    tokenId: ''
+  })
+
+  return tokenBalancesRegistry
 }
+
+const mockAccountIds = mockAccounts.map((account) => account.accountId)
 
 describe('getActiveWalletCount', () => {
   it('should return nothing with empty input', () => {
@@ -235,7 +264,13 @@ describe('getActiveWalletCount', () => {
   it('should return no active accounts when zero balance', () => {
     const registry = createMockRegistry('0')
 
-    expect(getActiveWalletCount(mockAccounts, registry, false)).toStrictEqual({
+    expect(
+      getActiveWalletCount(
+        mockAccountIds,
+        registry,
+        false //
+      )
+    ).toStrictEqual({
       [BraveWallet.CoinType.BTC]: 0,
       [BraveWallet.CoinType.ETH]: 0,
       [BraveWallet.CoinType.FIL]: 0,
@@ -245,24 +280,33 @@ describe('getActiveWalletCount', () => {
   })
 
   it('should skip testnets with balance by default', () => {
-    const registry = createMockRegistry('0')
+    const tokenBalancesRegistry = createMockRegistry('0')
 
-    setBalance(
-      mockEthAccountInfo.accountId,
-      BraveWallet.GOERLI_CHAIN_ID,
-      '',
-      '1',
-      registry
-    )
-    setBalance(
-      mockBitcoinTestAccount.accountId,
-      BraveWallet.BITCOIN_TESTNET,
-      '',
-      '1',
-      registry
-    )
+    // SEPOLIA ETH
+    setBalance({
+      accountId: mockEthAccountInfo.accountId,
+      chainId: BraveWallet.SEPOLIA_CHAIN_ID,
+      contractAddress: '',
+      balance: '1',
+      tokenBalancesRegistry,
+      coinType: BraveWallet.CoinType.ETH,
+      tokenId: ''
+    })
 
-    expect(getActiveWalletCount(mockAccounts, registry, false)).toStrictEqual({
+    // TESTNET BTC
+    setBalance({
+      accountId: mockBitcoinTestAccount.accountId,
+      chainId: BraveWallet.BITCOIN_TESTNET,
+      contractAddress: '',
+      balance: '1',
+      tokenBalancesRegistry,
+      coinType: BraveWallet.CoinType.BTC,
+      tokenId: ''
+    })
+
+    expect(
+      getActiveWalletCount(mockAccountIds, tokenBalancesRegistry, false)
+    ).toStrictEqual({
       [BraveWallet.CoinType.ETH]: 0,
       [BraveWallet.CoinType.SOL]: 0,
       [BraveWallet.CoinType.FIL]: 0,
@@ -272,24 +316,33 @@ describe('getActiveWalletCount', () => {
   })
 
   it('should include testnets with flag', () => {
-    const registry = createMockRegistry('0')
+    const tokenBalancesRegistry = createMockRegistry('0')
 
-    setBalance(
-      mockEthAccountInfo.accountId,
-      BraveWallet.GOERLI_CHAIN_ID,
-      '',
-      '1',
-      registry
-    )
-    setBalance(
-      mockBitcoinTestAccount.accountId,
-      BraveWallet.BITCOIN_TESTNET,
-      '',
-      '1',
-      registry
-    )
+    // SEPOLIA ETH
+    setBalance({
+      accountId: mockEthAccountInfo.accountId,
+      chainId: BraveWallet.SEPOLIA_CHAIN_ID,
+      contractAddress: '',
+      balance: '1',
+      tokenBalancesRegistry,
+      coinType: BraveWallet.CoinType.ETH,
+      tokenId: ''
+    })
 
-    expect(getActiveWalletCount(mockAccounts, registry, true)).toStrictEqual({
+    // TESTNET BTC
+    setBalance({
+      accountId: mockBitcoinTestAccount.accountId,
+      chainId: BraveWallet.BITCOIN_TESTNET,
+      contractAddress: '',
+      balance: '1',
+      tokenBalancesRegistry,
+      coinType: BraveWallet.CoinType.BTC,
+      tokenId: ''
+    })
+
+    expect(
+      getActiveWalletCount(mockAccountIds, tokenBalancesRegistry, true)
+    ).toStrictEqual({
       [BraveWallet.CoinType.ETH]: 1,
       [BraveWallet.CoinType.SOL]: 0,
       [BraveWallet.CoinType.FIL]: 0,
@@ -301,7 +354,7 @@ describe('getActiveWalletCount', () => {
   it('should report active accounts', () => {
     const registry = createMockRegistry('1')
 
-    expect(getActiveWalletCount(mockAccounts, registry, true)).toStrictEqual({
+    expect(getActiveWalletCount(mockAccountIds, registry, true)).toStrictEqual({
       [BraveWallet.CoinType.ETH]: 1,
       [BraveWallet.CoinType.SOL]: 1,
       [BraveWallet.CoinType.FIL]: 1,
@@ -311,32 +364,44 @@ describe('getActiveWalletCount', () => {
   })
 
   it('should report many active accounts', () => {
-    const registry = createMockRegistry('1')
+    const tokenBalancesRegistry = createMockRegistry('1')
 
     const mockEthAccountInfo2 = { ...mockEthAccountInfo }
     mockEthAccountInfo2.accountId.uniqueKey = 'mockEthAccountInfo2'
-    setBalance(
-      mockEthAccountInfo2.accountId,
-      BraveWallet.MAINNET_CHAIN_ID,
-      '0x1234contract',
-      '1',
-      registry
-    )
+
+    // MOCK ETH ERC TOKEN
+    setBalance({
+      accountId: mockEthAccountInfo2.accountId,
+      chainId: BraveWallet.MAINNET_CHAIN_ID,
+      contractAddress: '0x1234contract',
+      balance: '1',
+      tokenBalancesRegistry,
+      coinType: BraveWallet.CoinType.ETH,
+      tokenId: ''
+    })
 
     const mockZecAccount2 = { ...mockZecAccount }
     mockZecAccount2.accountId.uniqueKey = 'mockZecAccount2'
-    setBalance(
-      mockZecAccount2.accountId,
-      BraveWallet.Z_CASH_MAINNET,
-      '',
-      '1',
-      registry
-    )
+
+    // NATIVE ZEC
+    setBalance({
+      accountId: mockZecAccount2.accountId,
+      chainId: BraveWallet.Z_CASH_MAINNET,
+      contractAddress: '',
+      balance: '1',
+      tokenBalancesRegistry,
+      coinType: BraveWallet.CoinType.ZEC,
+      tokenId: ''
+    })
 
     expect(
       getActiveWalletCount(
-        [...mockAccounts, mockEthAccountInfo2, mockZecAccount2],
-        registry,
+        [
+          ...mockAccountIds,
+          mockEthAccountInfo2.accountId,
+          mockZecAccount2.accountId
+        ],
+        tokenBalancesRegistry,
         true
       )
     ).toStrictEqual({

@@ -3,15 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { ThunkAction } from '@reduxjs/toolkit'
 import * as WalletActions from './actions/wallet_actions'
 import { Store } from './async/types'
 import { BraveWallet } from '../constants/types'
-import { objectEquals } from '../utils/object-utils'
 import { makeSerializableTransaction } from '../utils/model-serialization-utils'
 import { walletApi } from './slices/api.slice'
 import { getCoinFromTxDataUnion } from '../utils/network-utils'
-import { getAssetIdKey } from '../utils/asset-utils'
 
 export function makeBraveWalletServiceTokenObserver(store: Store) {
   const braveWalletServiceTokenObserverReceiver =
@@ -164,18 +161,21 @@ export function makeTxServiceObserver(store: Store) {
 }
 
 export function makeBraveWalletServiceObserver(store: Store) {
+  let lastKnownActiveOrigin: BraveWallet.OriginInfo
   const braveWalletServiceObserverReceiver =
     new BraveWallet.BraveWalletServiceObserverReceiver({
       onActiveOriginChanged: function (originInfo) {
-        const state = store.getState().wallet
-
         // check that the origin has changed from the stored values
         // in any way before dispatching the update action
-        if (objectEquals(state.activeOrigin, originInfo)) {
+        if (
+          lastKnownActiveOrigin &&
+          lastKnownActiveOrigin.eTldPlusOne === originInfo.eTldPlusOne &&
+          lastKnownActiveOrigin.originSpec === originInfo.originSpec
+        ) {
           return
         }
-
-        store.dispatch(WalletActions.activeOriginChanged(originInfo))
+        lastKnownActiveOrigin = originInfo
+        store.dispatch(walletApi.util.invalidateTags(['ActiveOrigin']))
       },
       onDefaultEthereumWalletChanged: function (defaultWallet) {
         store.dispatch(
@@ -219,38 +219,4 @@ export function makeBraveWalletServiceObserver(store: Store) {
       onResetWallet: function () {}
     })
   return braveWalletServiceObserverReceiver
-}
-
-export function makeBraveWalletPinServiceObserver(store: Store) {
-  const braveWalletServiceObserverReceiver =
-    new BraveWallet.BraveWalletPinServiceObserverReceiver({
-      onTokenStatusChanged: function (_service, token, status) {
-        const action: ThunkAction<any, any, any, any> =
-          walletApi.util.updateQueryData(
-            'getNftsPinningStatus',
-            undefined,
-            (nftsPinningStatus) => {
-              nftsPinningStatus[getAssetIdKey(token)] = {
-                code: status.code,
-                error: status?.error
-              }
-            }
-          )
-        store.dispatch(action)
-      },
-      onLocalNodeStatusChanged: function (_status) {
-        store.dispatch(walletApi.util.invalidateTags(['LocalIPFSNodeStatus']))
-      }
-    })
-  return braveWalletServiceObserverReceiver
-}
-
-export function makeBraveWalletAutoPinServiceObserver(store: Store) {
-  const braveWalletAutoPinServiceObserverReceiver =
-    new BraveWallet.WalletAutoPinServiceObserverReceiver({
-      onAutoPinStatusChanged: function (enabled) {
-        store.dispatch(walletApi.endpoints.setAutopinEnabled.initiate(enabled))
-      }
-    })
-  return braveWalletAutoPinServiceObserverReceiver
 }

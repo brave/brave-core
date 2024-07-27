@@ -51,7 +51,7 @@ BraveComponentLoader::BraveComponentLoader(ExtensionSystem* extension_system,
 BraveComponentLoader::~BraveComponentLoader() = default;
 
 void BraveComponentLoader::OnComponentRegistered(std::string extension_id) {
-  brave_component_updater::BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
+  brave_component_updater::BraveOnDemandUpdater::GetInstance()->EnsureInstalled(
       extension_id);
 }
 
@@ -97,17 +97,6 @@ void BraveComponentLoader::AddExtension(const std::string& extension_id,
                      base::Unretained(this), extension_id),
       base::BindRepeating(&BraveComponentLoader::OnComponentReady,
                           base::Unretained(this), extension_id, true));
-}
-
-void BraveComponentLoader::AddHangoutServicesExtension() {
-  if (!profile_prefs_->FindPreference(kHangoutsEnabled) ||
-      profile_prefs_->GetBoolean(kHangoutsEnabled)) {
-    ForceAddHangoutServicesExtension();
-  }
-}
-
-void BraveComponentLoader::ForceAddHangoutServicesExtension() {
-  ComponentLoader::AddHangoutServicesExtension();
 }
 
 void BraveComponentLoader::AddDefaultComponentExtensions(

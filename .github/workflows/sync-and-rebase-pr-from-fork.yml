@@ -1,0 +1,70 @@
+name: Sync and rebase PR from fork
+
+on:
+  workflow_dispatch:
+    inputs:
+      PR_NUMBER:
+        required: true
+        description: "Number of the PR from the fork"
+
+jobs:
+  sync-and-rebase-pr-from-fork:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Git
+        run: |
+          git config user.name brave-builds
+          git config user.email devops@brave.com
+          git config push.default simple
+
+      - name: Sync and rebase PR from fork
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          PR_NUMBER: ${{ inputs.PR_NUMBER }}
+        run: |
+          set -x
+          JQ="jq -e -r"
+
+          gh_pr_view=$(gh pr view "$PR_NUMBER" --json baseRefName,headRefName,headRepository,headRepositoryOwner,id,isCrossRepository,url)
+
+          baseRefName=$($JQ ".baseRefName" <<<"$gh_pr_view")
+          headRefName=$($JQ ".headRefName" <<<"$gh_pr_view")
+          headRepositoryName=$($JQ ".headRepository.name" <<<"$gh_pr_view")
+          headRepositoryOwnerLogin=$($JQ ".headRepositoryOwner.login" <<<"$gh_pr_view")
+          isCrossRepository=$($JQ ".isCrossRepository" <<<"$gh_pr_view")
+          url=$($JQ ".url" <<<"$gh_pr_view")
+
+          [[ "$isCrossRepository" = "true" ]] || { echo "PR is not cross repo. Exiting!"; exit 1; }
+
+          git remote add contributor "https://github.com/$headRepositoryOwnerLogin/$headRepositoryName.git" || :
+          contribHeadRefName="contributor-$headRepositoryOwnerLogin-$headRefName"
+          git fetch --no-tags contributor +"$headRefName":"$contribHeadRefName"
+
+          # Rebase the branch with the latest targeting branch HEAD
+          git checkout "$contribHeadRefName"
+          git fetch origin "$baseRefName"
+          if ! git rebase FETCH_HEAD; then
+            echo "Rebase conflict detected. Please resolve the conflicts and push the changes to your fork. Exiting!"
+            exit 1
+          fi
+          git push -f origin "$contribHeadRefName"
+
+          existing_prs=$(gh pr list -H "$contribHeadRefName" --json number)
+          if [[ "$existing_prs" = "[]" ]]; then
+            gh pr create
+              --draft \
+              --base "$baseRefName" \
+              --head "$contribHeadRefName" \
+              --assignee "$headRepositoryOwnerLogin" \
+              --title "CI run for contributor PR #$PR_NUMBER" \
+              --body \
+          "## Description
+          This PR is created to run CI on the changes proposed in PR #$PR_NUMBER by @$headRepositoryOwnerLogin.
+
+          **This PR should not be merged.**"
+          fi

@@ -18,8 +18,6 @@ export const isWalletLocked = ({ wallet }: State) => wallet.isWalletLocked
 export const passwordAttempts = ({ wallet }: State) => wallet.passwordAttempts
 export const assetAutoDiscoveryCompleted = ({ wallet }: State) =>
   wallet.assetAutoDiscoveryCompleted
-export const isNftPinningFeatureEnabled = ({ wallet }: State) =>
-  wallet.isNftPinningFeatureEnabled
 export const isAnkrBalancesFeatureEnabled = ({ wallet }: State) =>
   wallet.isAnkrBalancesFeatureEnabled
 export const isRefreshingNetworksAndTokens = ({ wallet }: State) =>
@@ -29,4 +27,3 @@ export const isRefreshingNetworksAndTokens = ({ wallet }: State) =>
 // and lists)
 export const allowedNewWalletAccountTypeNetworkIds = ({ wallet }: State) =>
   wallet.allowedNewWalletAccountTypeNetworkIds
-export const activeOrigin = ({ wallet }: State) => wallet.activeOrigin

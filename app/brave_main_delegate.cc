@@ -22,7 +22,7 @@
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/update_client/buildflags.h"
-#include "brave/components/variations/buildflags.h"
+#include "brave/components/variations/command_line_utils.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
 #include "build/build_config.h"
@@ -35,7 +35,6 @@
 #include "components/dom_distiller/core/dom_distiller_switches.h"
 #include "components/embedder_support/switches.h"
 #include "components/sync/base/command_line_switches.h"
-#include "components/variations/variations_switches.h"
 #include "google_apis/gaia/gaia_switches.h"
 
 #if BUILDFLAG(IS_LINUX)
@@ -169,21 +168,7 @@ void BraveMainDelegate::AppendCommandLineOptions() {
                                     brave_sync_service_url.c_str());
   }
 
-  // Brave variations
-  if (!command_line->HasSwitch(variations::switches::kVariationsServerURL)) {
-    command_line->AppendSwitchASCII(variations::switches::kVariationsServerURL,
-                                    BUILDFLAG(BRAVE_VARIATIONS_SERVER_URL));
-  }
-  // Insecure fall-back for variations is set to the same (secure) URL. This is
-  // done so that if VariationsService tries to fall back to insecure url the
-  // check for kHttpScheme in VariationsService::MaybeRetryOverHTTP would
-  // prevent it from doing so as we don't want to use an insecure fall-back.
-  if (!command_line->HasSwitch(
-          variations::switches::kVariationsInsecureServerURL)) {
-    command_line->AppendSwitchASCII(
-        variations::switches::kVariationsInsecureServerURL,
-        BUILDFLAG(BRAVE_VARIATIONS_SERVER_URL));
-  }
+  variations::AppendBraveCommandLineOptions(*command_line);
 }
 
 std::optional<int> BraveMainDelegate::BasicStartupComplete() {

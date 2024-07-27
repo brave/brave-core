@@ -18,7 +18,7 @@ namespace brave_rewards {
 // This class provides access to a diagnostic log file. If the file
 // size ever exceeds the provided maximum file size, it is trimmed to
 // keep only the last n lines.
-class DiagnosticLog : public base::SupportsWeakPtr<DiagnosticLog> {
+class DiagnosticLog {
  public:
   DiagnosticLog(const base::FilePath& path,
                 int64_t max_file_size,
@@ -48,6 +48,8 @@ class DiagnosticLog : public base::SupportsWeakPtr<DiagnosticLog> {
   // Deletes the file.
   void Delete(StatusCallback callback);
 
+  base::WeakPtr<DiagnosticLog> AsWeakPtr();
+
  private:
   void OnReadLastNLines(ReadCallback callback, const std::string& data);
   void OnWrite(StatusCallback callback, bool result);
@@ -60,6 +62,7 @@ class DiagnosticLog : public base::SupportsWeakPtr<DiagnosticLog> {
   bool first_write_;
 
   SEQUENCE_CHECKER(sequence_checker_);
+  base::WeakPtrFactory<DiagnosticLog> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_rewards

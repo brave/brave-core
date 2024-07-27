@@ -48,6 +48,7 @@ import { transactionEndpoints } from './endpoints/transaction.endpoints'
 import { swapEndpoints } from './endpoints/swap.endpoints'
 import { encryptionEndpoints } from './endpoints/encryption.endpoints'
 import { signingEndpoints } from './endpoints/signing.endpoints'
+import { dappRadarEndpoints } from './endpoints/dapp_radar.endpoints'
 
 export function createWalletApi() {
   // base to add endpoints to
@@ -154,6 +155,8 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: encryptionEndpoints })
       // Message Signing endpoints
       .injectEndpoints({ endpoints: signingEndpoints })
+      // dApp Radar Endpoints
+      .injectEndpoints({ endpoints: dappRadarEndpoints })
   )
 }
 
@@ -188,10 +191,10 @@ export const {
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
   useGetActiveOriginConnectedAccountIdsQuery,
+  useGetActiveOriginQuery,
   useGetAddressByteCodeQuery,
   useGetAddressFromNameServiceUrlQuery,
   useGetAllKnownNetworksQuery,
-  useGetAutopinEnabledQuery,
   useGetBitcoinBalancesQuery,
   useGetBuyUrlQuery,
   useGetCoingeckoIdQuery,
@@ -206,21 +209,17 @@ export const {
   useGetGasEstimation1559Query,
   useGetHardwareAccountDiscoveryBalanceQuery,
   useGetIpfsGatewayTranslatedNftUrlQuery,
-  useGetIPFSUrlFromGatewayLikeUrlQuery,
   useGetIsBase58EncodedSolPubkeyQuery,
-  useGetIsImagePinnableQuery,
   useGetIsMetaMaskInstalledQuery,
   useGetIsPrivateWindowQuery,
   useGetIsTokenOwnedByUserQuery,
   useGetIsTxSimulationOptInStatusQuery,
   useGetIsWalletBackedUpQuery,
-  useGetLocalIpfsNodeStatusQuery,
   useGetNetworksRegistryQuery,
   useGetNftAssetIdsByCollectionRegistryQuery,
   useGetNftDiscoveryEnabledStatusQuery,
   useGetNftMetadataQuery,
-  useGetNftPinningStatusQuery,
-  useGetNftsPinningStatusQuery,
+  useGetNftOwnerQuery,
   useGetOffRampAssetsQuery,
   useGetOnRampAssetsQuery,
   useGetOnRampFiatCurrenciesQuery,
@@ -233,7 +232,6 @@ export const {
   useGetPendingSignTransactionRequestsQuery,
   useGetPendingSwitchChainRequestQuery,
   useGetPendingTokenSuggestionRequestsQuery,
-  useGetPinnableVisibleNftIdsQuery,
   useGetPriceHistoryQuery,
   useGetPricesHistoryQuery,
   useGetQrCodeImageQuery,
@@ -249,6 +247,7 @@ export const {
   useGetTokenInfoQuery,
   useGetTokenSpotPricesQuery,
   useGetTokensRegistryQuery,
+  useGetTopDappsQuery,
   useGetTransactionQuery,
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
@@ -274,8 +273,6 @@ export const {
   useLazyGetERC20AllowanceQuery,
   useLazyGetEVMTransactionSimulationQuery,
   useLazyGetGasEstimation1559Query,
-  useLazyGetIpfsGatewayTranslatedNftUrlQuery,
-  useLazyGetIPFSUrlFromGatewayLikeUrlQuery,
   useLazyGetIsTxSimulationOptInStatusQuery,
   useLazyGetNetworksRegistryQuery,
   useLazyGetNftDiscoveryEnabledStatusQuery,
@@ -309,7 +306,6 @@ export const {
   useRemoveAccountMutation,
   useRemoveSitePermissionMutation,
   useRemoveUserTokenMutation,
-  useReportActiveWalletsToP3AMutation,
   useReportOnboardingActionMutation,
   useRequestSitePermissionMutation,
   useRestoreNetworksMutation,
@@ -326,7 +322,6 @@ export const {
   useSendSPLTransferMutation,
   useSendZecTransactionMutation,
   useSetAutoLockMinutesMutation,
-  useSetAutopinEnabledMutation,
   useSetDefaultFiatCurrencyMutation,
   useSetIsTxSimulationOptInStatusMutation,
   useSetNetworkMutation,
@@ -403,7 +398,7 @@ export const useGetOnRampNetworksQuery = (opts?: { skip?: boolean }) => {
 }
 
 export const useGetVisibleNetworksQuery = (
-  arg?: undefined,
+  arg?: undefined | typeof skipToken,
   opts?: { skip?: boolean }
 ) => {
   const queryResults = useGetNetworksRegistryQuery(arg, {

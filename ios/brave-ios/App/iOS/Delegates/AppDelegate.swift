@@ -128,8 +128,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       Preferences.BraveNews.isShowingOptIn.value = languageShouldShowOptIn
     }
 
-    SystemUtils.onFirstRun()
-
     // Clean Logger for Secure content state
     DebugLogger.cleanLogger(for: .secureState)
 
@@ -141,6 +139,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     AppState.shared.state = .launching(options: launchOptions ?? [:], active: true)
+
+    // Run migrations that need access to Data
+    Migration.postDataLoadMigration()
 
     // IAPs can trigger on the app as soon as it launches,
     // for example when a previous transaction was not finished and is in pending state.
@@ -224,11 +225,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     Preferences.General.isFirstLaunch.value = false
 
-    // Search engine setup must be checked outside of 'firstLaunch' loop because of #2770.
-    // There was a bug that when you skipped onboarding, default search engine preference
-    // was not set.
-    if Preferences.Search.defaultEngineName.value == nil {
-      AppState.shared.profile.searchEngines.searchEngineSetup()
+    Task {
+      await AppState.shared.profile.searchEngines.loadSearchEngines()
+      // Search engine setup must be checked outside of 'firstLaunch' loop because of #2770.
+      // There was a bug that when you skipped onboarding, default search engine preference
+      // was not set.
+      if Preferences.Search.defaultEngineName.value == nil {
+        AppState.shared.profile.searchEngines.searchEngineSetup()
+      }
     }
 
     if isFirstLaunch {

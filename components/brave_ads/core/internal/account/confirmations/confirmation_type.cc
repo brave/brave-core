@@ -70,21 +70,19 @@ constexpr auto kConfirmationTypeToStringMap =
 ConfirmationType ToConfirmationType(const std::string_view value) {
   const auto iter = kToConfirmationTypeMap.find(value);
   if (iter != kToConfirmationTypeMap.cend()) {
-    return iter->second;
+    const auto [_, confirmation_type] = *iter;
+    return confirmation_type;
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-  // potential defects using `NOTREACHED`.
-  SCOPED_CRASH_KEY_STRING32("Issue32066", "confirmation_type", value);
-  NOTREACHED_IN_MIGRATION()
-      << "Unexpected value for ConfirmationType: " << value;
-  return ConfirmationType::kUndefined;
+  SCOPED_CRASH_KEY_STRING32("BraveAds", "unexpected_confirmation_type", value);
+  NOTREACHED_NORETURN() << "Unexpected value for ConfirmationType: " << value;
 }
 
 const char* ToString(const ConfirmationType type) {
   const auto iter = kConfirmationTypeToStringMap.find(type);
   if (iter != kConfirmationTypeToStringMap.cend()) {
-    return iter->second.data();
+    const auto [_, confirmation_type] = *iter;
+    return confirmation_type.data();
   }
 
   NOTREACHED_NORETURN() << "Unexpected value for ConfirmationType: "

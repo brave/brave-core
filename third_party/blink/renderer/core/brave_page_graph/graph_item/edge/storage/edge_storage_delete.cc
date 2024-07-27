@@ -5,17 +5,20 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/storage/edge_storage_delete.h"
 
-#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script.h"
+#include "base/check.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_actor.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/storage/node_storage.h"
 
 namespace brave_page_graph {
 
 EdgeStorageDelete::EdgeStorageDelete(GraphItemContext* context,
-                                     NodeScript* out_node,
+                                     NodeActor* out_node,
                                      NodeStorage* in_node,
                                      const FrameId& frame_id,
                                      const String& key)
-    : EdgeStorage(context, out_node, in_node, frame_id, key) {}
+    : EdgeStorage(context, out_node, in_node, frame_id, key) {
+  CHECK(!out_node->IsNodeParser());
+}
 
 EdgeStorageDelete::~EdgeStorageDelete() = default;
 

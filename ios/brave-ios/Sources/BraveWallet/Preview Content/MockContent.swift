@@ -245,7 +245,8 @@ extension BraveWallet.TransactionInfo {
       originInfo: .init(),
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: "0x3f2116ef98fcab1a9c3c2d8988e0064ab59acfca",
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: nil
     )
   }
   static var previewConfirmedSwap: BraveWallet.TransactionInfo {
@@ -285,7 +286,19 @@ extension BraveWallet.TransactionInfo {
       originInfo: .init(),
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: "0xdef1c0ded9bec7f1a1670819833240f027b25eff",
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: .init(
+        from: .eth,
+        fromChainId: BraveWallet.MainnetChainId,
+        fromAsset: BraveWallet.ethSwapAddress,
+        fromAmount: "0x1b6951ef585a000",
+        to: .eth,
+        toChainId: BraveWallet.MainnetChainId,
+        toAsset: "0xad6d458402f60fd3bd25163575031acdce07538d",
+        toAmount: "0x5c6f2d76e910358b",
+        receiver: "0x099140a37d5e1da04ce05294594d27a90a4cbc06",
+        provider: "zeroex"
+      )
     )
   }
   /// Approved Unlimited DAI
@@ -328,7 +341,8 @@ extension BraveWallet.TransactionInfo {
       originInfo: .init(),
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: nil
     )
   }
   /// Sent `mockERC721NFTToken` NFT
@@ -372,7 +386,8 @@ extension BraveWallet.TransactionInfo {
       originInfo: .init(),
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: "0x3f2116ef98fcab1a9c3c2d8988e0064ab59acfca",
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: nil
     )
   }
   /// Solana System Transfer
@@ -413,7 +428,8 @@ extension BraveWallet.TransactionInfo {
       originInfo: .init(),
       chainId: BraveWallet.SolanaMainnet,
       effectiveRecipient: nil,  // Currently only available for ETH and FIL
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: nil
     )
   }
   /// Solana Token Transfer
@@ -453,7 +469,8 @@ extension BraveWallet.TransactionInfo {
       originInfo: .init(),
       chainId: BraveWallet.SolanaMainnet,
       effectiveRecipient: nil,  // Currently only available for ETH and FIL
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: nil
     )
   }
   /// Filecoin Unapproved Send
@@ -485,7 +502,8 @@ extension BraveWallet.TransactionInfo {
     originInfo: nil,
     chainId: BraveWallet.FilecoinMainnet,
     effectiveRecipient: nil,
-    isRetriable: false
+    isRetriable: false,
+    swapInfo: nil
   )
   /// Bitcoin Unapproved Send
   static let mockBTCUnapprovedSend = BraveWallet.TransactionInfo(
@@ -515,7 +533,8 @@ extension BraveWallet.TransactionInfo {
     originInfo: nil,
     chainId: BraveWallet.BitcoinMainnet,
     effectiveRecipient: nil,
-    isRetriable: false
+    isRetriable: false,
+    swapInfo: nil
   )
   static private func _transactionBase64ToData(_ base64String: String) -> [NSNumber] {
     guard let data = Data(base64Encoded: base64String) else { return [] }
@@ -555,7 +574,7 @@ extension ParsedTransaction {
   static func previewParsedTransaction(from txInfo: BraveWallet.TransactionInfo) -> Self? {
     TransactionParser.parseTransaction(
       transaction: txInfo,
-      network: .mockMainnet,
+      allNetworks: [.mockMainnet],
       accountInfos: [.previewAccount],
       userAssets: [.previewToken, .previewDaiToken],
       allTokens: [],
@@ -695,7 +714,6 @@ extension BraveWallet.LiFiQuote {
             includedSteps: nil
           )
         ],
-        insurance: .init(state: "", feeAmountUsd: "0"),
         tags: []
       )
     ]

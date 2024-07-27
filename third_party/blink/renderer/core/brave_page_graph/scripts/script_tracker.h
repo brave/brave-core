@@ -14,7 +14,7 @@ class Isolate;
 
 namespace brave_page_graph {
 
-class NodeScript;
+class NodeScriptLocal;
 class PageGraphContext;
 
 class ScriptTracker {
@@ -22,10 +22,13 @@ class ScriptTracker {
   explicit ScriptTracker(PageGraphContext* page_graph_context);
   ~ScriptTracker();
 
-  NodeScript* AddScriptNode(v8::Isolate* isolate,
-                            ScriptId script_id,
-                            const ScriptData& script_data);
-  NodeScript* GetScriptNode(v8::Isolate* isolate, ScriptId script_id) const;
+  NodeScriptLocal* AddScriptNode(v8::Isolate* isolate,
+                                 ScriptId script_id,
+                                 const ScriptData& script_data);
+  NodeScriptLocal* GetScriptNode(v8::Isolate* isolate,
+                                 ScriptId script_id) const;
+  NodeScriptLocal* GetPossibleScriptNode(v8::Isolate* isolate,
+                                         ScriptId script_id) const;
 
  private:
   PageGraphContext* page_graph_context_;

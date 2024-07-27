@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_into_new_tab_page_ads_diagnostic_entry.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 
@@ -13,8 +13,8 @@
 
 namespace brave_ads {
 
-class BraveAdsOptedInToNewTabPageAdsDiagnosticEntryTest : public UnitTestBase {
-};
+class BraveAdsOptedInToNewTabPageAdsDiagnosticEntryTest
+    : public test::TestBase {};
 
 TEST_F(BraveAdsOptedInToNewTabPageAdsDiagnosticEntryTest, IsOptedIn) {
   // Arrange

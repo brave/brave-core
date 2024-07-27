@@ -223,7 +223,9 @@ class PlaylistSettingsViewController: TableViewController {
                   style: .default,
                   handler: { _ in
                     PlaylistCoordinator.shared.destroyPiP()
-                    PlaylistManager.shared.deleteAllItems(cacheOnly: false)
+                    Task {
+                      await PlaylistManager.shared.deleteAllItems(cacheOnly: false)
+                    }
                   }
                 )
               )

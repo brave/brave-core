@@ -190,6 +190,15 @@
   <message name="IDS_CHAT_UI_CANCEL_BUTTON_LABEL" desc="Button label to cancel action">
     Cancel
   </message>
+  <message name="IDS_CHAT_UI_SAVE_BUTTON_LABEL" desc="Button label to save data/form">
+    Save
+  </message>
+  <message name="IDS_CHAT_UI_EDITED_LABEL" desc="Text for indicating the content is edited">
+    Edited
+  </message>
+  <message name="IDS_CHAT_UI_EDIT_BUTTON_LABEL" desc="Button title to edit content">
+    Edit
+  </message>
   <message name="IDS_CHAT_UI_OPTION_NOT_HELPFUL" desc="Select option for feedback form if the answer is not helpful">
     Not helpful
   </message>
@@ -366,5 +375,8 @@
   </message>
   <message name="IDS_AI_CHAT_MENU_TITLE_CUSTOM_MODELS" desc="The menu section label for custom models added by the user">
     Custom models
+  </message>
+  <message name="IDS_AI_CHAT_START_CONVERSATION_LABEL" desc="A label for when user starts a new conversation">
+    Start new conversation
   </message>
 </grit-part>

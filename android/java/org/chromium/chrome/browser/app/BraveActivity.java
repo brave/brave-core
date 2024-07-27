@@ -188,6 +188,7 @@ import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.util.UsageMonitor;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
@@ -1812,6 +1813,19 @@ public abstract class BraveActivity extends ChromeActivity
             return tab;
         } else { // Open a new tab
             return getTabCreator(false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
+        }
+    }
+
+    public void updateDayZeroChanges() {
+        Tab currentTab = getActivityTab();
+        BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
+        if (currentTab != null) {
+            if (layout != null) {
+                layout.updateBraveShieldsButtonState(currentTab);
+            }
+            if (UrlUtilities.isNtpUrl(currentTab.getUrl().getSpec())) {
+                TabUtils.openNewTab();
+            }
         }
     }
 

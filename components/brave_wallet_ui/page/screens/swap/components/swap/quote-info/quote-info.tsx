@@ -13,6 +13,7 @@ import { LiquiditySource, QuoteOption } from '../../../constants/types'
 // Queries
 import {
   useGetDefaultFiatCurrencyQuery,
+  useGetNetworkQuery,
   useGetSwapSupportedNetworksQuery,
   useGetTokenSpotPricesQuery
 } from '../../../../../../common/slices/api.slice'
@@ -47,11 +48,9 @@ import {
 import { getBalance } from '../../../../../../utils/balance-utils'
 import {
   getTokenPriceAmountFromRegistry,
-  getTokenPriceFromRegistry //
+  getTokenPriceFromRegistry,
+  getPriceIdForToken
 } from '../../../../../../utils/pricing-utils'
-import {
-  getPriceIdForToken //
-} from '../../../../../../utils/api-utils'
 
 // Components
 import {
@@ -63,6 +62,10 @@ import {
 import {
   BottomSheet //
 } from '../../../../../../components/shared/bottom_sheet/bottom_sheet'
+import { MaxSlippage } from '../max_slippage/max_slippage'
+import {
+  InfoIconTooltip //
+} from '../../../../../../components/shared/info_icon_tooltip/info_icon_tooltip'
 
 // Styled Components
 import {
@@ -98,8 +101,9 @@ interface Props {
   fromToken: BraveWallet.BlockchainToken | undefined
   toToken: BraveWallet.BlockchainToken | undefined
   isBridge: boolean
+  slippageTolerance: string
   onChangeRecipient: (address: string) => void
-
+  onChangeSlippageTolerance: (slippage: string) => void
   toAccount?: BraveWallet.AccountInfo
   swapFees?: BraveWallet.SwapFees
 }
@@ -112,6 +116,8 @@ export const QuoteInfo = (props: Props) => {
     swapFees,
     isBridge,
     toAccount,
+    slippageTolerance,
+    onChangeSlippageTolerance,
     onChangeRecipient
   } = props
 
@@ -121,6 +127,7 @@ export const QuoteInfo = (props: Props) => {
     React.useState<boolean>(false)
   const [showAdvancedInformation, setShowAdvancedInformation] =
     React.useState<boolean>(false)
+  const [showMaxSlippage, setShowMaxSlippage] = React.useState<boolean>(false)
 
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
@@ -148,6 +155,15 @@ export const QuoteInfo = (props: Props) => {
     querySubscriptionOptions60s
   )
 
+  const { data: txNetwork } = useGetNetworkQuery(
+    fromToken
+      ? {
+          chainId: fromToken.chainId,
+          coin: fromToken.coin
+        }
+      : skipToken
+  )
+
   // Methods
   const handleSelectAccount = React.useCallback(
     (account: BraveWallet.AccountInfo) => {
@@ -155,6 +171,14 @@ export const QuoteInfo = (props: Props) => {
       setShowAccountSelector(false)
     },
     [onChangeRecipient]
+  )
+
+  const handleOnChangeSlippageTolerance = React.useCallback(
+    (slippage: string) => {
+      onChangeSlippageTolerance(slippage)
+      setShowMaxSlippage(false)
+    },
+    [onChangeSlippageTolerance]
   )
 
   // Memos & Computed
@@ -344,140 +368,179 @@ export const QuoteInfo = (props: Props) => {
         padding='10px 16px'
         gap='8px'
       >
-        {!isBridge && (
+        {minimumReceived !== '' && (
           <Row justifyContent='space-between'>
             <Text
               textSize='12px'
               textColor='secondary'
+              textAlign='left'
             >
-              {getLocale('braveWalletExchangeRate')}
+              {getLocale('braveSwapMinimumReceivedAfterSlippage')}
             </Text>
             <Text
               textSize='12px'
               isBold={true}
               textColor='primary'
+              textAlign='right'
             >
-              {swapRate}
+              {minimumReceived}
             </Text>
           </Row>
         )}
 
-        {(isBridge || showAdvancedInformation) &&
-          selectedQuoteOption &&
-          selectedQuoteOption.sources.length > 0 && (
-            <Column fullWidth={true}>
-              <Row justifyContent='space-between'>
+        <Row justifyContent='space-between'>
+          <Text
+            textSize='12px'
+            textColor='secondary'
+            textAlign='left'
+          >
+            {getLocale('braveWalletMaxSlippage')}
+          </Text>
+          <Row width='unset'>
+            <Text
+              textSize='12px'
+              isBold={true}
+              textColor='primary'
+              textAlign='right'
+            >
+              {slippageTolerance}%
+            </Text>
+            <HorizontalSpace space='8px' />
+            <Button onClick={() => setShowMaxSlippage((prev) => !prev)}>
+              <CaratDownIcon isOpen={showMaxSlippage} />
+            </Button>
+          </Row>
+        </Row>
+      </Section>
+
+      <Section
+        fullWidth={true}
+        margin='0px 0px 16px 0px'
+        padding='10px 16px'
+        gap='8px'
+      >
+        {!showAdvancedInformation && selectedQuoteOption && (
+          <Row justifyContent='space-between'>
+            <Row width='unset'>
+              <LPIcon icon={LPMetadata[selectedQuoteOption.provider]} />
+              <Text
+                textSize='12px'
+                isBold={true}
+                textColor='primary'
+              >
+                {selectedQuoteOption.provider}
+              </Text>
+            </Row>
+            {txNetwork && (
+              <Row
+                width='unset'
+                gap='8px'
+              >
                 <Text
                   textSize='12px'
                   textColor='secondary'
-                  textAlign='left'
                 >
-                  {isBridge
-                    ? getLocale('braveWalletBridgingVia')
-                    : getLocale('braveWalletSwappingVia')}
+                  {getLocale('braveSwapNetworkFee')}
                 </Text>
-                <Row width='unset'>
-                  <LPIcon icon={LPMetadata[selectedQuoteOption.provider]} />
-                  <Text
-                    textSize='12px'
-                    isBold={true}
-                    textColor='primary'
-                  >
-                    {selectedQuoteOption.provider}
-                  </Text>
-                  <HorizontalSpace space='8px' />
-                  <Button onClick={() => setShowProviders((prev) => !prev)}>
-                    <CaratDownIcon isOpen={showProviders} />
-                  </Button>
-                </Row>
-              </Row>
-              {showProviders && (
-                <LPRow
-                  justifyContent='flex-start'
-                  padding='8px 0px 0px 0px'
+                <Text
+                  textSize='12px'
+                  isBold={true}
+                  textColor='primary'
                 >
-                  {selectedQuoteOption.sources.map((source, idx) => (
-                    <Row
-                      key={source.name}
-                      width='unset'
-                    >
-                      {getLPIcon(source) !== '' ? (
-                        <LPIcon icon={getLPIcon(source)} />
-                      ) : null}
-                      <Text
-                        isBold={true}
-                        textSize='12px'
-                        textColor='primary'
-                      >
-                        {source.name.split('_').join(' ')}
-                      </Text>
-
-                      {idx !== selectedQuoteOption.sources.length - 1 && (
-                        <LPSeparator
-                          textSize='12px'
-                          textColor='secondary'
-                        >
-                          {selectedQuoteOption.routing === 'split' ? '+' : '×'}
-                        </LPSeparator>
-                      )}
-                    </Row>
-                  ))}
-                </LPRow>
-              )}
-            </Column>
-          )}
-
-        {braveFee && (
-          <Row justifyContent='space-between'>
-            <Text
-              textSize='12px'
-              textColor='secondary'
-            >
-              {getLocale('braveSwapBraveFee')}
-            </Text>
-            <Row
-              width='unset'
-              gap='4px'
-            >
-              {effectiveFeeAmount && effectiveFeeAmount.isZero() ? (
-                <Bubble padding='5px 6px'>
-                  <FreeText
-                    textSize='10px'
-                    isBold={true}
-                  >
-                    {getLocale('braveSwapFree')}
-                  </FreeText>
-                </Bubble>
-              ) : (
-                <Text textSize='14px'>{braveFee.effectiveFeePct}%</Text>
-              )}
-
-              {braveFee.discountCode !== BraveWallet.SwapDiscountCode.kNone && (
-                <>
-                  <BraveFeeDiscounted
-                    textSize='12px'
-                    isBold={true}
-                    textColor='primary'
-                  >
-                    {braveFee.feePct}%
-                  </BraveFeeDiscounted>
-
-                  {effectiveFeeAmount && effectiveFeeAmount.gt(0) && (
-                    <Text
-                      textSize='12px'
-                      textColor='primary'
-                    >
-                      (-{braveFee.discountPct}%)
-                    </Text>
+                  {selectedQuoteOption.networkFee.formatAsAsset(
+                    6,
+                    txNetwork.symbol
                   )}
-                </>
-              )}
-            </Row>
+                </Text>
+              </Row>
+            )}
           </Row>
         )}
 
         {showAdvancedInformation && (
           <>
+            {selectedQuoteOption && selectedQuoteOption.sources.length > 0 && (
+              <Column fullWidth={true}>
+                <Row justifyContent='space-between'>
+                  <Text
+                    textSize='12px'
+                    textColor='secondary'
+                    textAlign='left'
+                  >
+                    {getLocale('braveWalletRoute')}
+                  </Text>
+                  <Row width='unset'>
+                    <LPIcon icon={LPMetadata[selectedQuoteOption.provider]} />
+                    <Text
+                      textSize='12px'
+                      isBold={true}
+                      textColor='primary'
+                    >
+                      {selectedQuoteOption.provider}
+                    </Text>
+                    <HorizontalSpace space='8px' />
+                    <Button onClick={() => setShowProviders((prev) => !prev)}>
+                      <CaratDownIcon isOpen={showProviders} />
+                    </Button>
+                  </Row>
+                </Row>
+                {showProviders && (
+                  <LPRow
+                    justifyContent='flex-start'
+                    padding='8px 0px 0px 0px'
+                  >
+                    {selectedQuoteOption.sources.map((source, idx) => {
+                      const lpIcon = getLPIcon(source)
+                      return (
+                        <Row
+                          key={source.name}
+                          width='unset'
+                        >
+                          {lpIcon !== '' ? <LPIcon icon={lpIcon} /> : null}
+                          <Text
+                            isBold={true}
+                            textSize='12px'
+                            textColor='primary'
+                          >
+                            {source.name.split('_').join(' ')}
+                          </Text>
+
+                          {idx !== selectedQuoteOption.sources.length - 1 && (
+                            <LPSeparator
+                              textSize='12px'
+                              textColor='secondary'
+                            >
+                              {selectedQuoteOption.routing === 'split'
+                                ? '+'
+                                : '×'}
+                            </LPSeparator>
+                          )}
+                        </Row>
+                      )
+                    })}
+                  </LPRow>
+                )}
+              </Column>
+            )}
+
+            {!isBridge && (
+              <Row justifyContent='space-between'>
+                <Text
+                  textSize='12px'
+                  textColor='secondary'
+                >
+                  {getLocale('braveWalletExchangeRate')}
+                </Text>
+                <Text
+                  textSize='12px'
+                  isBold={true}
+                  textColor='primary'
+                >
+                  {swapRate}
+                </Text>
+              </Row>
+            )}
+
             {estimatedDuration !== '' && (
               <Row justifyContent='space-between'>
                 <Text
@@ -496,34 +559,24 @@ export const QuoteInfo = (props: Props) => {
               </Row>
             )}
 
-            {minimumReceived !== '' && (
-              <Row justifyContent='space-between'>
+            <Row justifyContent='space-between'>
+              <Row
+                width='unset'
+                gap='4px'
+              >
                 <Text
                   textSize='12px'
                   textColor='secondary'
                   textAlign='left'
                 >
-                  {getLocale('braveSwapMinimumReceivedAfterSlippage')}
+                  {getLocale('braveSwapPriceImpact')}
                 </Text>
-                <Text
-                  textSize='12px'
-                  isBold={true}
-                  textColor='primary'
-                  textAlign='right'
-                >
-                  {minimumReceived}
-                </Text>
+                <InfoIconTooltip
+                  placement='right'
+                  text={getLocale('braveWalletPriceImpactDescription')}
+                  maxContentWidth={isPanel ? '200px' : undefined}
+                />
               </Row>
-            )}
-
-            <Row justifyContent='space-between'>
-              <Text
-                textSize='12px'
-                textColor='secondary'
-                textAlign='left'
-              >
-                {getLocale('braveSwapPriceImpact')}
-              </Text>
               <Text
                 textSize='12px'
                 isBold={true}
@@ -565,6 +618,77 @@ export const QuoteInfo = (props: Props) => {
                 </Button>
               </Row>
             )}
+
+            {braveFee && (
+              <Row justifyContent='space-between'>
+                <Text
+                  textSize='12px'
+                  textColor='secondary'
+                >
+                  {getLocale('braveSwapBraveFee')}
+                </Text>
+                <Row
+                  width='unset'
+                  gap='4px'
+                >
+                  {effectiveFeeAmount && effectiveFeeAmount.isZero() ? (
+                    <Bubble padding='5px 6px'>
+                      <FreeText
+                        textSize='10px'
+                        isBold={true}
+                      >
+                        {getLocale('braveSwapFree')}
+                      </FreeText>
+                    </Bubble>
+                  ) : (
+                    <Text textSize='14px'>{braveFee.effectiveFeePct}%</Text>
+                  )}
+
+                  {braveFee.discountCode !==
+                    BraveWallet.SwapDiscountCode.kNone && (
+                    <>
+                      <BraveFeeDiscounted
+                        textSize='12px'
+                        isBold={true}
+                        textColor='primary'
+                      >
+                        {braveFee.feePct}%
+                      </BraveFeeDiscounted>
+
+                      {effectiveFeeAmount?.gt(0) && (
+                        <Text
+                          textSize='12px'
+                          textColor='primary'
+                        >
+                          (-{braveFee.discountPct}%)
+                        </Text>
+                      )}
+                    </>
+                  )}
+                </Row>
+              </Row>
+            )}
+
+            {selectedQuoteOption && txNetwork && (
+              <Row justifyContent='space-between'>
+                <Text
+                  textSize='12px'
+                  textColor='secondary'
+                >
+                  {getLocale('braveSwapNetworkFee')}
+                </Text>
+                <Text
+                  textSize='12px'
+                  isBold={true}
+                  textColor='primary'
+                >
+                  {selectedQuoteOption.networkFee.formatAsAsset(
+                    6,
+                    txNetwork.symbol
+                  )}
+                </Text>
+              </Row>
+            )}
           </>
         )}
 
@@ -577,47 +701,51 @@ export const QuoteInfo = (props: Props) => {
         </ExpandRow>
       </Section>
 
-      {selectedQuoteOption && (
-        <Section
-          fullWidth={true}
-          margin='0px 0px 16px 0px'
-          padding='10px 16px'
-        >
-          <Row justifyContent='space-between'>
-            <Text
-              textSize='12px'
-              textColor='secondary'
-            >
-              {getLocale('braveWalletEstFees')}
-            </Text>
-            <Text
-              textSize='12px'
-              isBold={true}
-              textColor='primary'
-            >
-              ~{selectedQuoteOption.networkFeeFiat}
-            </Text>
-          </Row>
-        </Section>
-      )}
       {isPanel && (
-        <BottomSheet
-          onClose={() => setShowAccountSelector(false)}
-          isOpen={showAccountSelector}
-        >
-          {AccountSelector}
-        </BottomSheet>
+        <>
+          <BottomSheet
+            onClose={() => setShowAccountSelector(false)}
+            isOpen={showAccountSelector}
+          >
+            {AccountSelector}
+          </BottomSheet>
+          <BottomSheet
+            onClose={() => setShowMaxSlippage(false)}
+            isOpen={showMaxSlippage}
+          >
+            <MaxSlippage
+              slippageTolerance={slippageTolerance}
+              onChangeSlippageTolerance={handleOnChangeSlippageTolerance}
+            />
+          </BottomSheet>
+        </>
       )}
-
-      {!isPanel && showAccountSelector && (
-        <PopupModal
-          title=''
-          onClose={() => setShowAccountSelector(false)}
-          width='560px'
-          showDivider={false}
-        >
-          {AccountSelector}
-        </PopupModal>
+      {!isPanel && (
+        <>
+          {showAccountSelector && (
+            <PopupModal
+              title=''
+              onClose={() => setShowAccountSelector(false)}
+              width='560px'
+              showDivider={false}
+            >
+              {AccountSelector}
+            </PopupModal>
+          )}
+          {showMaxSlippage && (
+            <PopupModal
+              title=''
+              onClose={() => setShowMaxSlippage(false)}
+              width='560px'
+              showDivider={false}
+            >
+              <MaxSlippage
+                slippageTolerance={slippageTolerance}
+                onChangeSlippageTolerance={handleOnChangeSlippageTolerance}
+              />
+            </PopupModal>
+          )}
+        </>
       )}
     </Column>
   )

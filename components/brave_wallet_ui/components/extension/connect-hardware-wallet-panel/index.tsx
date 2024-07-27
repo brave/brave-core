@@ -14,8 +14,10 @@ import { UISelectors } from '../../../common/selectors'
 import { PanelActions } from '../../../panel/actions'
 
 // types
-import { BraveWallet } from '../../../constants/types'
-import { HardwareWalletResponseCodeType } from '../../../common/hardware/types'
+import {
+  BraveWallet,
+  HardwareWalletResponseCodeType
+} from '../../../constants/types'
 
 // hooks
 import useInterval from '../../../common/hooks/interval'

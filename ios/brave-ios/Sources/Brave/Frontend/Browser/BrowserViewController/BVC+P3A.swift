@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveShields
 import Data
 import Foundation
@@ -132,14 +133,9 @@ extension BrowserViewController {
     UmaHistogramEnumeration("Brave.IOS.IsLikelyDefault", sample: answer)
   }
 
-  func maybeRecordInitialShieldsP3A() {
+  @MainActor func maybeRecordInitialShieldsP3A() {
     if Preferences.Shields.initialP3AStateReported.value { return }
     defer { Preferences.Shields.initialP3AStateReported.value = true }
-    recordShieldsUpdateP3A(shield: .adblockAndTp)
-    recordShieldsUpdateP3A(shield: .fpProtection)
-  }
-
-  func recordShieldsUpdateP3A(shield: BraveShield) {
     let buckets: [Bucket] = [
       0,
       .r(1...5),
@@ -148,42 +144,44 @@ extension BrowserViewController {
       .r(21...30),
       .r(31...),
     ]
-    switch shield {
-    case .adblockAndTp:
-      // Q51 On how many domains has the user set the adblock setting to be lower (block less) than the default?
-      let adsBelowGlobalCount = Domain.totalDomainsWithAdblockShieldsLoweredFromGlobal()
-      UmaHistogramRecordValueToBucket(
-        "Brave.Shields.DomainAdsSettingsBelowGlobal",
-        buckets: buckets,
-        value: adsBelowGlobalCount
-      )
-      // Q52 On how many domains has the user set the adblock setting to be higher (block more) than the default?
-      let adsAboveGlobalCount = Domain.totalDomainsWithAdblockShieldsIncreasedFromGlobal()
-      UmaHistogramRecordValueToBucket(
-        "Brave.Shields.DomainAdsSettingsAboveGlobal",
-        buckets: buckets,
-        value: adsAboveGlobalCount
-      )
-    case .fpProtection:
-      // Q53 On how many domains has the user set the FP setting to be lower (block less) than the default?
-      let fingerprintingBelowGlobalCount =
-        Domain.totalDomainsWithFingerprintingProtectionLoweredFromGlobal()
-      UmaHistogramRecordValueToBucket(
-        "Brave.Shields.DomainFingerprintSettingsBelowGlobal",
-        buckets: buckets,
-        value: fingerprintingBelowGlobalCount
-      )
-      // Q54 On how many domains has the user set the FP setting to be higher (block more) than the default?
-      let fingerprintingAboveGlobalCount =
-        Domain.totalDomainsWithFingerprintingProtectionIncreasedFromGlobal()
-      UmaHistogramRecordValueToBucket(
-        "Brave.Shields.DomainFingerprintSettingsAboveGlobal",
-        buckets: buckets,
-        value: fingerprintingAboveGlobalCount
-      )
-    case .allOff, .noScript:
-      break
-    }
+    recordShieldsLevelUpdateP3A(buckets: buckets)
+    recordFinterprintProtectionP3A(buckets: buckets)
+  }
+
+  @MainActor private func recordShieldsLevelUpdateP3A(buckets: [Bucket]) {
+    // Q51 On how many domains has the user set the adblock setting to be lower (block less) than the default?
+    let adsBelowGlobalCount = Domain.totalDomainsWithAdblockShieldsLoweredFromGlobal()
+    UmaHistogramRecordValueToBucket(
+      "Brave.Shields.DomainAdsSettingsBelowGlobal",
+      buckets: buckets,
+      value: adsBelowGlobalCount
+    )
+    // Q52 On how many domains has the user set the adblock setting to be higher (block more) than the default?
+    let adsAboveGlobalCount = Domain.totalDomainsWithAdblockShieldsIncreasedFromGlobal()
+    UmaHistogramRecordValueToBucket(
+      "Brave.Shields.DomainAdsSettingsAboveGlobal",
+      buckets: buckets,
+      value: adsAboveGlobalCount
+    )
+  }
+
+  func recordFinterprintProtectionP3A(buckets: [Bucket]) {
+    // Q53 On how many domains has the user set the FP setting to be lower (block less) than the default?
+    let fingerprintingBelowGlobalCount =
+      Domain.totalDomainsWithFingerprintingProtectionLoweredFromGlobal()
+    UmaHistogramRecordValueToBucket(
+      "Brave.Shields.DomainFingerprintSettingsBelowGlobal",
+      buckets: buckets,
+      value: fingerprintingBelowGlobalCount
+    )
+    // Q54 On how many domains has the user set the FP setting to be higher (block more) than the default?
+    let fingerprintingAboveGlobalCount =
+      Domain.totalDomainsWithFingerprintingProtectionIncreasedFromGlobal()
+    UmaHistogramRecordValueToBucket(
+      "Brave.Shields.DomainFingerprintSettingsAboveGlobal",
+      buckets: buckets,
+      value: fingerprintingAboveGlobalCount
+    )
   }
 
   func recordDataSavedP3A(change: Int) {
@@ -246,31 +244,25 @@ extension BrowserViewController {
   }
 
   func recordAccessibilityDocumentsDirectorySizeP3A() {
-    func fetchDocumentsAndDataSize() -> Int? {
-      let fileManager = FileManager.default
+    @Sendable func fetchDocumentsAndDataSize() async -> Int? {
+      let fileManager = AsyncFileManager.default
 
       var directorySize = 0
 
-      if let documentsDirectory = FileManager.default.urls(
-        for: .documentDirectory,
-        in: .userDomainMask
-      ).first {
-        do {
-          if let documentsDirectorySize = try fileManager.directorySize(at: documentsDirectory) {
-            directorySize += Int(documentsDirectorySize / 1024 / 1024)
-          }
-        } catch {
-          Logger.module.error("Cant fetch document directory size")
-          return nil
-        }
+      do {
+        let documentsDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectorySize = try await fileManager.sizeOfDirectory(at: documentsDirectory)
+        directorySize += Int(documentsDirectorySize / 1024 / 1024)
+      } catch {
+        Logger.module.error("Cant fetch document directory size")
+        return nil
       }
 
       let temporaryDirectory = FileManager.default.temporaryDirectory
 
       do {
-        if let temporaryDirectorySize = try fileManager.directorySize(at: temporaryDirectory) {
-          directorySize += Int(temporaryDirectorySize / 1024 / 1024)
-        }
+        let temporaryDirectorySize = try await fileManager.sizeOfDirectory(at: temporaryDirectory)
+        directorySize += Int(temporaryDirectorySize / 1024 / 1024)
       } catch {
         Logger.module.error("Cant fetch temporary directory size")
         return nil
@@ -288,12 +280,14 @@ extension BrowserViewController {
     ]
 
     // Q103 What is the document directory size in MB?
-    if let documentsSize = fetchDocumentsAndDataSize() {
-      UmaHistogramRecordValueToBucket(
-        "Brave.Core.DocumentsDirectorySizeMB",
-        buckets: buckets,
-        value: documentsSize
-      )
+    Task { @MainActor in
+      if let documentsSize = await fetchDocumentsAndDataSize() {
+        UmaHistogramRecordValueToBucket(
+          "Brave.Core.DocumentsDirectorySizeMB",
+          buckets: buckets,
+          value: documentsSize
+        )
+      }
     }
   }
 

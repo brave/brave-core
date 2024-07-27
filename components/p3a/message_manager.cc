@@ -71,7 +71,7 @@ void MessageManager::RegisterPrefs(PrefRegistrySimple* registry) {
   RotationScheduler::RegisterPrefs(registry);
 }
 
-void MessageManager::Init(
+void MessageManager::Start(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   // Init other components.
   uploader_ = std::make_unique<Uploader>(
@@ -120,6 +120,15 @@ void MessageManager::Init(
       constellation_helper_->UpdateRandomnessServerInfo(log_type);
     }
   }
+}
+
+void MessageManager::Stop() {
+  uploader_ = nullptr;
+  constellation_helper_ = nullptr;
+  rotation_scheduler_ = nullptr;
+  json_upload_schedulers_.clear();
+  constellation_prep_schedulers_.clear();
+  constellation_upload_schedulers_.clear();
 }
 
 void MessageManager::UpdateMetricValue(
@@ -254,10 +263,7 @@ void MessageManager::OnRandomnessServerInfoReady(
 
 void MessageManager::StartScheduledUpload(bool is_constellation,
                                           MetricLogType log_type) {
-  bool p3a_enabled = local_state_->GetBoolean(p3a::kP3AEnabled);
-  if (!p3a_enabled) {
-    return;
-  }
+  CHECK(local_state_->GetBoolean(p3a::kP3AEnabled));
   metrics::LogStore* log_store;
   Scheduler* scheduler;
   std::string logging_prefix =
@@ -317,10 +323,9 @@ void MessageManager::StartScheduledUpload(bool is_constellation,
 
 void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
   CHECK(features::IsConstellationEnabled());
-  bool p3a_enabled = local_state_->GetBoolean(p3a::kP3AEnabled);
-  if (!p3a_enabled) {
-    return;
-  }
+  CHECK(local_state_->GetBoolean(p3a::kP3AEnabled));
+  auto* scheduler = constellation_prep_schedulers_[log_type].get();
+  auto* log_store = constellation_prep_log_stores_[log_type].get();
   std::string logging_prefix =
       base::StrCat({"MessageManager::StartScheduledConstellationPrep (",
                     MetricLogTypeToString(log_type), ") - "});
@@ -329,24 +334,22 @@ void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
       kPostRotationUploadDelay) {
     // We should delay Constellation preparations right after a rotation to give
     // rotation callbacks a chance to record relevant metrics.
-    constellation_upload_schedulers_[log_type]->UploadFinished(true);
+    scheduler->UploadFinished(true);
     return;
   }
   VLOG(2) << "MessageManager::StartScheduledConstellationPrep - starting";
-  if (!constellation_prep_log_stores_[log_type]->has_unsent_logs()) {
-    constellation_prep_schedulers_[log_type]->UploadFinished(true);
+  if (!log_store->has_unsent_logs()) {
+    scheduler->UploadFinished(true);
     VLOG(2) << "MessageManager::StartScheduledConstellationPrep - Nothing to "
                "stage.";
     return;
   }
-  if (!constellation_prep_log_stores_[log_type]->has_staged_log()) {
-    constellation_prep_log_stores_[log_type]->StageNextLog();
+  if (!log_store->has_staged_log()) {
+    log_store->StageNextLog();
   }
 
-  const std::string log =
-      constellation_prep_log_stores_[log_type]->staged_log();
-  const std::string log_key =
-      constellation_prep_log_stores_[log_type]->staged_log_key();
+  const std::string log = log_store->staged_log();
+  const std::string log_key = log_store->staged_log_key();
   VLOG(2) << "MessageManager::StartScheduledConstellationPrep - Requesting "
              "randomness for histogram: "
           << log_key;
@@ -355,15 +358,15 @@ void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
   if (is_nebula && !features::IsNebulaEnabled()) {
     // Do not report if Nebula feature is not enabled,
     // mark request as successful to avoid transmission.
-    constellation_prep_log_stores_[log_type]->DiscardStagedLog();
-    constellation_prep_schedulers_[log_type]->UploadFinished(true);
+    log_store->DiscardStagedLog();
+    scheduler->UploadFinished(true);
     delegate_->OnMetricCycled(log_key, true);
     return;
   }
 
   if (!constellation_helper_->StartMessagePreparation(log_key.c_str(), log_type,
                                                       log, is_nebula)) {
-    constellation_upload_schedulers_[log_type]->UploadFinished(false);
+    scheduler->UploadFinished(false);
   }
 }
 

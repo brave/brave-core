@@ -217,6 +217,18 @@ export const findTokenBySymbol = (
   )
 }
 
+export const findTokenByAssetId = <
+  T extends Pick<
+    BraveWallet.BlockchainToken,
+    'contractAddress' | 'chainId' | 'tokenId' | 'coin'
+  >
+>(
+  assetId: string,
+  tokensList: T[]
+) => {
+  return tokensList.find((t) => getAssetIdKey(t) === assetId)
+}
+
 export const isNativeAsset = (
   token: Pick<BraveWallet.BlockchainToken, 'contractAddress'>
 ) => token.contractAddress === ''
@@ -387,6 +399,23 @@ export const compareTokensByName = (
   b: Pick<BraveWallet.BlockchainToken, 'name'>
 ) => a.name.localeCompare(b.name)
 
+export function isTokenWatchOnly(
+  token: BraveWallet.BlockchainToken,
+  allAccounts: BraveWallet.AccountInfo[],
+  tokenBalancesRegistry: TokenBalancesRegistry | null | undefined,
+  spamTokenBalancesRegistry: TokenBalancesRegistry | null | undefined
+) {
+  return !allAccounts.some((account) => {
+    const balance = getBalance(account.accountId, token, tokenBalancesRegistry)
+    const spamBalance = getBalance(
+      account.accountId,
+      token,
+      spamTokenBalancesRegistry
+    )
+    return (balance && balance !== '0') || (spamBalance && spamBalance !== '0')
+  })
+}
+
 export function getTokensWithBalanceForAccounts(
   tokens: BraveWallet.BlockchainToken[],
   filteredAccounts: BraveWallet.AccountInfo[],
@@ -544,4 +573,20 @@ export function getTokenCollectionName(
       )
     }) || tokenNameToNftCollectionName(token)
   )
+}
+
+export function getCoinTypeName(coin: BraveWallet.CoinType) {
+  switch (coin) {
+    case BraveWallet.CoinType.FIL:
+      return 'Filecoin'
+    case BraveWallet.CoinType.ETH:
+      return 'Ethereum'
+    case BraveWallet.CoinType.SOL:
+      return 'Solana'
+    case BraveWallet.CoinType.BTC:
+      return 'Bitcoin'
+    case BraveWallet.CoinType.ZEC:
+      return 'ZCash'
+  }
+  return ''
 }

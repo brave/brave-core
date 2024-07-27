@@ -2330,6 +2330,30 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringRemoveClass) {
   EXPECT_EQ(true, EvalJs(contents, "check('.ad.jkl', classes(['ad', 'jkl']))"));
 }
 
+// `:remove` filters should still function correctly if `$generichide` is active
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringGenerichideRemove) {
+  UpdateAdBlockInstanceWithRules(
+      "||b.com^$generichide\n"
+      "b.com###ad-banner:remove()\n"
+      "b.com##.whatever:remove()\n"
+      "b.com##.blockme:remove()");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  EXPECT_EQ(true, EvalJs(contents, "check('#ad-banner', existence(false))"));
+
+  auto result = EvalJs(contents,
+                       "addElementsDynamically();\n"
+                       "wait('.dontblockme', existence(true)).then(() =>"
+                       "wait('.blockme', existence(false)))");
+  ASSERT_TRUE(result.error.empty());
+  EXPECT_EQ(base::Value(true), result.value);
+}
+
 // Test rules overridden by hostname-specific exception rules
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringUnhide) {
   UpdateAdBlockInstanceWithRules(

@@ -9,7 +9,7 @@
 
 #include "base/debug/alias.h"
 #include "base/no_destructor.h"
-#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script_local.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph_context.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
@@ -21,8 +21,8 @@ namespace {
 using ScriptKey = std::pair<v8::Isolate*, ScriptId>;
 
 // Script nodes should be accessible from multiple PageGraph instances.
-HashMap<ScriptKey, NodeScript*>& GetScriptNodes() {
-  static base::NoDestructor<HashMap<ScriptKey, NodeScript*>> script_nodes;
+HashMap<ScriptKey, NodeScriptLocal*>& GetScriptNodes() {
+  static base::NoDestructor<HashMap<ScriptKey, NodeScriptLocal*>> script_nodes;
   return *script_nodes;
 }
 
@@ -33,9 +33,9 @@ ScriptTracker::ScriptTracker(PageGraphContext* page_graph_context)
 
 ScriptTracker::~ScriptTracker() = default;
 
-NodeScript* ScriptTracker::AddScriptNode(v8::Isolate* isolate,
-                                         ScriptId script_id,
-                                         const ScriptData& script_data) {
+NodeScriptLocal* ScriptTracker::AddScriptNode(v8::Isolate* isolate,
+                                              ScriptId script_id,
+                                              const ScriptData& script_data) {
   const ScriptKey script_key{isolate, script_id};
   auto it = GetScriptNodes().find(script_key);
   if (it != GetScriptNodes().end()) {
@@ -73,18 +73,29 @@ NodeScript* ScriptTracker::AddScriptNode(v8::Isolate* isolate,
     return it->value;
   }
   auto* script_node =
-      page_graph_context_->AddNode<NodeScript>(script_id, script_data);
+      page_graph_context_->AddNode<NodeScriptLocal>(script_id, script_data);
   GetScriptNodes().insert(script_key, script_node);
   return script_node;
 }
 
-NodeScript* ScriptTracker::GetScriptNode(v8::Isolate* isolate,
-                                         ScriptId script_id) const {
+NodeScriptLocal* ScriptTracker::GetScriptNode(v8::Isolate* isolate,
+                                              ScriptId script_id) const {
   const ScriptKey script_key{isolate, script_id};
   auto it = GetScriptNodes().find(script_key);
   CHECK(it != GetScriptNodes().end())
       << "isolate: " << script_key.first << " script id: " << script_key.second;
   return it->value;
+}
+
+NodeScriptLocal* ScriptTracker::GetPossibleScriptNode(
+    v8::Isolate* isolate,
+    ScriptId script_id) const {
+  const ScriptKey script_key{isolate, script_id};
+  auto it = GetScriptNodes().find(script_key);
+  if (it != GetScriptNodes().end()) {
+    return it->value;
+  }
+  return nullptr;
 }
 
 }  // namespace brave_page_graph

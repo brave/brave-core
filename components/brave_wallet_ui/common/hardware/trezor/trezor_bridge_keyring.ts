@@ -11,6 +11,7 @@ import {
 } from 'ethereumjs-util'
 import {
   BraveWallet,
+  HardwareVendor,
   SerializableTransactionInfo
 } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
@@ -40,7 +41,6 @@ import {
 } from '../types'
 import { Unsuccessful } from './trezor-connect-types'
 import { TrezorKeyring } from '../interfaces'
-import { HardwareVendor } from '../../api/hardware_keyrings'
 import { getPathForTrezorIndex } from '../../../utils/derivation_path_utils'
 
 export default class TrezorBridgeKeyring implements TrezorKeyring {

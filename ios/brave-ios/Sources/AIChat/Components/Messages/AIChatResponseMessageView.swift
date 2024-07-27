@@ -97,8 +97,8 @@ struct AIChatResponseMessageView: View {
       }
 
       if let searchQueriesEvent = searchQueriesEvent, !isEntryInProgress {
-        HStack {
-          Image(braveSystemName: "leo.search")
+        HStack(alignment: .top) {
+          Image("brave-icon-search", bundle: .module)
 
           generateSearchQueriesView(queries: searchQueriesEvent.searchQueries)
             .tint(Color(braveSystemName: .textPrimary))
@@ -122,17 +122,7 @@ struct AIChatResponseMessageView: View {
       ForEach(textBlocks, id: \.self) { block in
         // Render Code Block
         if let codeBlock = block.codeBlock {
-          Text(block.string)
-            .font(.subheadline)
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
-            .multilineTextAlignment(.leading)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
-            .background(
-              RoundedRectangle(cornerRadius: 8.0, style: .continuous)
-                .fill(codeBlock.backgroundColor)
-            )
-            .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+          CodeBlockView(block: block, codeBlock: codeBlock)
         } else {
           // Render Text Block
           Text(block.string)
@@ -206,6 +196,86 @@ struct AIChatResponseMessageView: View {
 
     return Text(text + period + space + learnMoreLink)
   }
+
+  /// View for displaying a Code Block with a header displaying language hint & copy button,
+  /// line numbers and the highlighted code.
+  struct CodeBlockView: View {
+
+    let block: MarkdownParser.StringBlock
+    let codeBlock: MarkdownParser.CodeBlock
+
+    var body: some View {
+      VStack(spacing: 0) {
+        headerSection
+          .background(Color(braveSystemName: .pageBackground))
+        codeBlockSection
+          .background(codeBlock.backgroundColor)
+      }
+      .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+      .overlay(
+        RoundedRectangle(cornerRadius: 8)
+          .inset(by: 0.5)
+          .stroke(Color(braveSystemName: .dividerSubtle), lineWidth: 1)
+      )
+    }
+
+    private var headerSection: some View {
+      HStack {
+        Text(
+          codeBlock.languageHint?.capitalizeFirstLetter ?? Strings.AIChat.leoCodeExampleDefaultTitle
+        )
+        .foregroundStyle(Color(braveSystemName: .textPrimary))
+        Spacer()
+        Button(
+          action: {
+            UIPasteboard.general.string = String(block.string.characters)
+          },
+          label: {
+            HStack(spacing: 8) {
+              Image(braveSystemName: "leo.copy")
+              Text(Strings.AIChat.responseContextMenuCopyTitle)
+                .fontWeight(.semibold)
+            }
+            .foregroundStyle(Color(braveSystemName: .textSecondary))
+          }
+        )
+      }
+      .padding(16)
+    }
+
+    struct CodeLine: Identifiable {
+      let lineNumber: Int
+      let codeLine: AttributedString
+
+      var id: String {
+        "\(lineNumber)\(codeLine)"
+      }
+    }
+
+    private var codeLines: [CodeLine] {
+      block.string.split(separator: "\n").enumerated().map { index, line in
+        .init(lineNumber: index + 1, codeLine: line)
+      }
+    }
+
+    private var codeBlockSection: some View {
+      Grid(alignment: .leading, horizontalSpacing: nil, verticalSpacing: nil) {
+        ForEach(codeLines) { line in
+          GridRow(alignment: .firstTextBaseline) {
+            Text("\(line.lineNumber).")
+              .font(.caption)
+              .monospaced()
+            Text(line.codeLine)
+              .font(.subheadline)
+              .multilineTextAlignment(.leading)
+          }
+        }
+      }
+      .foregroundStyle(Color(braveSystemName: .textTertiary))
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .padding(16)
+    }
+  }
 }
 
 #if DEBUG
@@ -231,7 +301,9 @@ struct AIChatResponseMessageView_Previews: PreviewProvider {
           text:
             "After months of leaks and some recent coordinated teases from the company itself, Sonos is finally officially announcing the Era 300 and Era 100 speakers. Both devices go up for preorder today — the Era 300 costs $449 and the Era 100 is $249 — and they’ll be available to purchase in stores beginning March 28th.\n\nAs its unique design makes clear, the Era 300 represents a completely new type of speaker for the company; it’s designed from the ground up to make the most of spatial audio music and challenge competitors like the HomePod and Echo Studio.",
           selectedText: nil,
-          events: nil
+          events: nil,
+          createdTime: Date.now,
+          edits: nil
         ),
       isEntryInProgress: false
     )

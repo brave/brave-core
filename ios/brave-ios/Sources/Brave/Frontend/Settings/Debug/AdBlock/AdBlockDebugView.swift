@@ -19,40 +19,19 @@ struct AdBlockDebugView: View {
 }
 
 private struct CompileContentBlockersSectionView: View {
-  enum Selection: Identifiable, Hashable, CustomDebugStringConvertible {
-    case fileInfo(AdBlockEngineManager.FileInfo)
-    case slimList(URL, version: String)
-
-    var id: String {
-      switch self {
-      case .fileInfo(let fileInfo):
-        return fileInfo.filterListInfo.source.debugDescription
-      case .slimList:
-        return "slim-list"
-      }
-    }
-
-    var debugDescription: String {
-      switch self {
-      case .fileInfo(let info):
-        return info.filterListInfo.debugDescription
-      case .slimList:
-        return ContentBlockerManager.BlocklistType.generic(.blockAds).debugDescription
-      }
-    }
-  }
-
   @AppStorage("numberOfRuns") private var numberOfRuns: Int = 10
   @AppStorage("selectionId") private var selectionId: String = ""
   @State private var currentRun = 0
   @State private var currentAverage = 0
   @State private var result: Result<Duration, Error>?
-  @State private var availableSelections: [Selection] = []
+  @State private var availableSelections: [AdBlockEngineManager.FileInfo] = []
   @State private var task: Task<Void, Never>?
   @State private var stopping = false
 
-  var selection: Selection? {
-    return availableSelections.first(where: { $0.id == selectionId })
+  var selection: AdBlockEngineManager.FileInfo? {
+    return availableSelections.first(where: {
+      $0.filterListInfo.source.debugDescription == selectionId
+    })
   }
 
   var body: some View {
@@ -70,10 +49,10 @@ private struct CompileContentBlockersSectionView: View {
       }
 
       Picker("Filter List", selection: $selectionId) {
-        ForEach(availableSelections) { selection in
+        ForEach(availableSelections, id: \.filterListInfo.source) { selection in
           Group {
-            Text(getTitle(for: selection)) + Text(verbatim: " v") + Text(getVersion(for: selection))
-          }.tag(selection.id)
+            Text(getTitle(for: selection)) + Text(verbatim: " v\(selection.filterListInfo.version)")
+          }.tag(selection.filterListInfo.source.debugDescription)
         }
       }
 
@@ -100,7 +79,7 @@ private struct CompileContentBlockersSectionView: View {
               .disabled(stopping)
           }
           if let selection = selection {
-            Text("Compiling \(selection.debugDescription)")
+            Text("Compiling \(selection.filterListInfo.debugDescription)")
               .foregroundStyle(.tertiary)
               .font(.caption)
           }
@@ -118,29 +97,25 @@ private struct CompileContentBlockersSectionView: View {
         This process may take a long time depending on the number of runs set and the filter list selected.
         """
       )
-    }.onAppear(perform: {
-      var availableSelections = GroupedAdBlockEngine.EngineType.allCases.flatMap({
-        engineType -> [Selection] in
-        let sources = AdBlockGroupsManager.shared.sourceProvider.sources(for: engineType)
-        return AdBlockGroupsManager.shared.getManager(for: engineType).compilableFiles(for: sources)
-          .map { fileInfo -> Selection in
-            return .fileInfo(fileInfo)
-          }
+    }
+    .task {
+      self.availableSelections = GroupedAdBlockEngine.EngineType.allCases.flatMap({
+        engineType -> [AdBlockEngineManager.FileInfo] in
+        var sources = AdBlockGroupsManager.shared.sourceProvider.sources(for: engineType)
+        for source in sources {
+          guard source.contentBlockerSource != source else { continue }
+          sources.append(source.contentBlockerSource)
+        }
+
+        return AdBlockGroupsManager.shared.getManager(for: engineType).compilableFiles(
+          for: sources
+        )
       })
 
-      let resource = BraveS3Resource.adBlockRules
-      if let slimListURL = resource.downloadedFileURL,
-        let version = try? resource.cachedResult()?.version
-      {
-        availableSelections.insert(.slimList(slimListURL, version: version), at: 0)
-      }
-
-      self.availableSelections = availableSelections
-
       if selectionId.isEmpty, let selection = availableSelections.first {
-        self.selectionId = selection.id
+        self.selectionId = selection.filterListInfo.source.debugDescription
       }
-    })
+    }
   }
 
   @MainActor private func stopCompiling() {
@@ -162,25 +137,14 @@ private struct CompileContentBlockersSectionView: View {
         for _ in 0..<numberOfRuns {
           try Task.checkCancellation()
           let start = clock.now
+          let source = selection.filterListInfo.source
 
-          switch selection {
-          case .fileInfo(let fileInfo):
-            let source = fileInfo.filterListInfo.source
-
-            await AdBlockGroupsManager.shared.contentBlockerManager.compileRuleList(
-              at: fileInfo.localFileURL,
-              for: .engineSource(source, engineType: .standard),
-              version: fileInfo.filterListInfo.version,
-              modes: [.standard, .aggressive]
-            )
-          case .slimList(let url, let version):
-            await AdBlockGroupsManager.shared.contentBlockerManager.compileRuleList(
-              at: url,
-              for: .generic(.blockAds),
-              version: version,
-              modes: [.standard, .aggressive]
-            )
-          }
+          try await AdBlockGroupsManager.shared.contentBlockerManager.compileRuleList(
+            at: selection.localFileURL,
+            for: .engineSource(source, engineType: .standard),
+            version: selection.filterListInfo.version,
+            modes: [.standard, .aggressive]
+          )
 
           durations.append(clock.now - start)
           currentRun += 1
@@ -202,32 +166,20 @@ private struct CompileContentBlockersSectionView: View {
     }
   }
 
-  @MainActor private func getTitle(for selection: Selection) -> String {
-    switch selection {
+  @MainActor private func getTitle(for fileInfo: AdBlockEngineManager.FileInfo) -> String {
+    switch fileInfo.filterListInfo.source {
     case .slimList:
       return "Slim List"
-    case .fileInfo(let fileInfo):
-      switch fileInfo.filterListInfo.source {
-      case .filterList(let componentId):
-        return FilterListStorage.shared.filterLists.first(
-          where: { $0.entry.componentId == componentId }
-        )?.entry.title ?? componentId
-      case .filterListText:
-        return "filterListText"
-      case .filterListURL(let uuid):
-        return CustomFilterListStorage.shared.filterListsURLs.first(
-          where: { $0.setting.uuid == uuid }
-        )?.setting.externalURL.lastPathComponent ?? uuid
-      }
-    }
-  }
-
-  @MainActor private func getVersion(for selection: Selection) -> String {
-    switch selection {
-    case .slimList(_, let version):
-      return version
-    case .fileInfo(let fileInfo):
-      return fileInfo.filterListInfo.version
+    case .filterList(let componentId):
+      return FilterListStorage.shared.filterLists.first(
+        where: { $0.entry.componentId == componentId }
+      )?.entry.title ?? componentId
+    case .filterListText:
+      return "filterListText"
+    case .filterListURL(let uuid):
+      return CustomFilterListStorage.shared.filterListsURLs.first(
+        where: { $0.setting.uuid == uuid }
+      )?.setting.externalURL.lastPathComponent ?? uuid
     }
   }
 }

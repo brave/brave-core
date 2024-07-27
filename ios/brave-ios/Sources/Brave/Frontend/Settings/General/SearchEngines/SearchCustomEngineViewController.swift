@@ -309,18 +309,20 @@ extension SearchCustomEngineViewController {
 
       switch response {
       case .success(let response):
-        if let openSearchEngine = OpenSearchParser(pluginMode: true).parse(
-          response.data,
-          referenceURL: referenceURL,
-          image: iconImage,
-          isCustomEngine: true
-        ) {
-          self.addSearchEngine(openSearchEngine)
-        } else {
-          let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
+        Task { @MainActor in
+          if let openSearchEngine = await OpenSearchParser(pluginMode: true).parse(
+            response.data,
+            referenceURL: referenceURL,
+            image: iconImage,
+            isCustomEngine: true
+          ) {
+            self.addSearchEngine(openSearchEngine)
+          } else {
+            let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
 
-          self.present(alert, animated: true) {
-            self.changeAddButton(for: .disabled)
+            self.present(alert, animated: true) {
+              self.changeAddButton(for: .disabled)
+            }
           }
         }
       case .failure(let error):
@@ -344,13 +346,15 @@ extension SearchCustomEngineViewController {
         return
       }
 
-      do {
-        try self.profile.searchEngines.addSearchEngine(engine)
-        self.cancel()
-      } catch {
-        self.handleError(error: SearchEngineError.failedToSave)
+      Task { @MainActor in
+        do {
+          try await self.profile.searchEngines.addSearchEngine(engine)
+          self.cancel()
+        } catch {
+          self.handleError(error: SearchEngineError.failedToSave)
 
-        self.changeAddButton(for: .disabled)
+          self.changeAddButton(for: .disabled)
+        }
       }
     }
 
@@ -463,13 +467,15 @@ extension SearchCustomEngineViewController {
 
         self.changeAddButton(for: .disabled)
       } else if let engine = engine {
-        do {
-          try self.profile.searchEngines.addSearchEngine(engine)
-          self.cancel()
-        } catch {
-          self.handleError(error: SearchEngineError.failedToSave)
+        Task { @MainActor in
+          do {
+            try await self.profile.searchEngines.addSearchEngine(engine)
+            self.cancel()
+          } catch {
+            self.handleError(error: SearchEngineError.failedToSave)
 
-          self.changeAddButton(for: .enabled)
+            self.changeAddButton(for: .enabled)
+          }
         }
       }
 

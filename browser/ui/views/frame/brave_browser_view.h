@@ -81,6 +81,9 @@ class BraveBrowserView : public BrowserView,
   WalletButton* GetWalletButton();
   views::View* GetWalletButtonAnchorView();
 
+  // Triggers layout of web modal dialogs
+  void NotifyDialogPositionRequiresUpdate();
+
   // BrowserView overrides:
   void Layout(PassKey) override;
   void StartTabCycling() override;
@@ -127,6 +130,10 @@ class BraveBrowserView : public BrowserView,
   void OnTileTabs(const SplitViewBrowserData::Tile& tile) override;
   void OnWillBreakTile(const SplitViewBrowserData::Tile& tile) override;
   void OnSwapTabsInTile(const SplitViewBrowserData::Tile& tile) override;
+
+  views::WebView* secondary_contents_web_view() {
+    return secondary_contents_web_view_.get();
+  }
 
  private:
   class TabCyclingEventHandler;

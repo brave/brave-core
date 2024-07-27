@@ -20,6 +20,7 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database::table {
@@ -309,6 +310,25 @@ void MigrateToV35(mojom::DBTransactionInfo* const transaction) {
                    /*columns=*/{"type", "created_at"});
 }
 
+void MigrateToV41(mojom::DBTransactionInfo* const transaction) {
+  CHECK(transaction);
+
+  // Remove non-clicked search result ad events for users who have not joined
+  // Brave Rewards.
+  if (!UserHasJoinedBraveRewards()) {
+    mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+    command->type = mojom::DBCommandInfo::Type::EXECUTE;
+    command->sql =
+        R"(
+            DELETE FROM
+              ad_events
+            WHERE
+              type == 'search_result_ad'
+              AND confirmation_type != 'click';)";
+    transaction->commands.push_back(std::move(command));
+  }
+}
+
 }  // namespace
 
 void AdEvents::RecordEvent(const AdEventInfo& ad_event,
@@ -461,10 +481,11 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
             ) <= DATETIME(
               ($2 / 1000000) - 11644473600,
               'unixepoch',
-              '-3 months'
+              '$3'
             );)",
       {GetTableName(),
-       base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
+       base::NumberToString(ToChromeTimestampFromTime(base::Time::Now())),
+       UserHasJoinedBraveRewards() ? "-3 months" : "-30 days"},
       nullptr);
   transaction->commands.push_back(std::move(command));
 
@@ -638,6 +659,11 @@ void AdEvents::Migrate(mojom::DBTransactionInfo* transaction,
 
     case 35: {
       MigrateToV35(transaction);
+      break;
+    }
+
+    case 41: {
+      MigrateToV41(transaction);
       break;
     }
   }

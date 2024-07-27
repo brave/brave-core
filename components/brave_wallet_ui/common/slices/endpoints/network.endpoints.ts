@@ -9,12 +9,15 @@ import { mapLimit } from 'async'
 import { BraveWallet } from '../../../constants/types'
 
 // types
-import { WalletApiEndpointBuilderParams } from '../api-base.slice'
+import {
+  ACCOUNT_TAG_IDS,
+  NETWORK_TAG_IDS,
+  WalletApiEndpointBuilderParams
+} from '../api-base.slice'
 
 // utils
 import { handleEndpointError } from '../../../utils/api-utils'
 import { NetworksRegistry, getNetworkId } from '../entities/network.entity'
-import { ACCOUNT_TAG_IDS } from './account.endpoints'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import { LOCAL_STORAGE_KEYS } from '../../constants/local-storage-keys'
 import {
@@ -22,13 +25,6 @@ import {
   parseJSONFromLocalStorage,
   setLocalStorageItem
 } from '../../../utils/local-storage-utils'
-
-export const NETWORK_TAG_IDS = {
-  REGISTRY: 'REGISTRY',
-  SELECTED: 'SELECTED',
-  SWAP_SUPPORTED: 'SWAP_SUPPORTED',
-  CUSTOM_ASSET_SUPPORTED: 'CUSTOM_ASSET_SUPPORTED'
-} as const
 
 export const networkEndpoints = ({
   mutation,

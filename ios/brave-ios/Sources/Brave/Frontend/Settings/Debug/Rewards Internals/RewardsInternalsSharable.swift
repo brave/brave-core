@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import Foundation
 import Shared
 
@@ -16,7 +17,7 @@ struct RewardsInternalsSharableBuilder {
   /// A formatter to use when adding dates and times to a file
   var dateAndTimeFormatter: DateFormatter
   /// Writes a JSON object to `path` with a given name.
-  func writeJSON(from object: Any, named: String, at path: String) throws {
+  func writeJSON(from object: Any, named: String, at path: String) async throws {
     let data = try JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted])
     try data.write(to: URL(fileURLWithPath: "\(path)/\(named).json"))
   }
@@ -27,9 +28,8 @@ protocol RewardsInternalsFileGenerator {
   /// Generate or move files to a given path using a builder. Call `completion` when the tasks are done
   func generateFiles(
     at path: String,
-    using builder: RewardsInternalsSharableBuilder,
-    completion: @escaping (Error?) -> Void
-  )
+    using builder: RewardsInternalsSharableBuilder
+  ) async throws
 }
 
 struct RewardsInternalsSharable: Equatable {
@@ -104,17 +104,11 @@ enum RewardsInternalsSharableError: Error {
 private struct RewardsInternalsDatabaseGenerator: RewardsInternalsFileGenerator {
   func generateFiles(
     at path: String,
-    using builder: RewardsInternalsSharableBuilder,
-    completion: @escaping (Error?) -> Void
-  ) {
+    using builder: RewardsInternalsSharableBuilder
+  ) async throws {
     // Move Rewards database to path
-    do {
-      let dbPath = URL(fileURLWithPath: builder.rewardsAPI.rewardsDatabasePath)
-      let newPath = URL(fileURLWithPath: path).appendingPathComponent(dbPath.lastPathComponent)
-      try FileManager.default.copyItem(atPath: dbPath.path, toPath: newPath.path)
-      completion(nil)
-    } catch {
-      completion(error)
-    }
+    let dbPath = URL(fileURLWithPath: builder.rewardsAPI.rewardsDatabasePath)
+    let newPath = URL(fileURLWithPath: path).appendingPathComponent(dbPath.lastPathComponent)
+    try await AsyncFileManager.default.copyItem(atPath: dbPath.path, toPath: newPath.path)
   }
 }

@@ -25,8 +25,7 @@ void RegisterComponentsForUpdate() {
   brave_wallet::WalletDataFilesInstaller::GetInstance()
       .MaybeRegisterWalletDataFilesComponent(cus,
                                              g_browser_process->local_state());
-  psst::RegisterPsstComponent(
-      cus, base::BindOnce(&component_updater::BraveOnDemandUpdate));
+  psst::RegisterPsstComponent(cus);
 }
 
 }  // namespace component_updater

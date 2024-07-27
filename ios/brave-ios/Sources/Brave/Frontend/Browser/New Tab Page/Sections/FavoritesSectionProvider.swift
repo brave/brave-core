@@ -51,8 +51,8 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     }
   }
 
-  static var defaultIconSize = CGSize(width: 82, height: FavoriteCell.height(forWidth: 82))
-  static var largerIconSize = CGSize(width: 100, height: FavoriteCell.height(forWidth: 100))
+  static var defaultIconSize = CGSize(width: 82, height: FavoritesCell.height(forWidth: 82))
+  static var largerIconSize = CGSize(width: 100, height: FavoritesCell.height(forWidth: 100))
 
   /// The number of times that each row contains
   static func numberOfItems(in collectionView: UICollectionView, availableWidth: CGFloat) -> Int {
@@ -78,7 +78,10 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
   }
 
   func registerCells(to collectionView: UICollectionView) {
-    collectionView.register(FavoriteCell.self, forCellWithReuseIdentifier: FavoriteCell.identifier)
+    collectionView.register(
+      FavoritesCell.self,
+      forCellWithReuseIdentifier: FavoritesCell.identifier
+    )
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -108,7 +111,7 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     cellForItemAt indexPath: IndexPath
   ) -> UICollectionViewCell {
     return collectionView.dequeueReusableCell(
-      withReuseIdentifier: FavoriteCell.identifier,
+      withReuseIdentifier: FavoritesCell.identifier,
       for: indexPath
     )
   }
@@ -119,7 +122,7 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     forItemAt indexPath: IndexPath
   ) {
 
-    guard let cell = cell as? FavoriteCell else {
+    guard let cell = cell as? FavoritesCell else {
       return
     }
 
@@ -147,7 +150,7 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
       // to fit at least 4 icons
       size = CGSize(
         width: floor(width / 4.0),
-        height: FavoriteCell.height(forWidth: floor(width / 4.0))
+        height: FavoritesCell.height(forWidth: floor(width / 4.0))
       )
     } else if collectionView.traitCollection.horizontalSizeClass == .regular {
       // If we're on regular horizontal size class and the computed size
@@ -244,7 +247,7 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
   ) -> UITargetedPreview? {
     guard let indexPath = configuration.identifier as? IndexPath,
-      let cell = collectionView.cellForItem(at: indexPath) as? FavoriteCell
+      let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCell
     else {
       return nil
     }
@@ -256,7 +259,7 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
   ) -> UITargetedPreview? {
     guard let indexPath = configuration.identifier as? IndexPath,
-      let cell = collectionView.cellForItem(at: indexPath) as? FavoriteCell
+      let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCell
     else {
       return nil
     }

@@ -9,11 +9,11 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
-#include "brave/components/brave_ads/core/internal/history/browsing_history.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_base.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
+#include "brave/components/brave_ads/core/public/history/site_history.h"
 
 namespace brave_ads {
 
@@ -41,11 +41,11 @@ class EligibleNotificationAdsV2 final : public EligibleNotificationAdsBase {
   void GetEligibleAds(UserModelInfo user_model,
                       const AdEventList& ad_events,
                       EligibleAdsCallback<CreativeNotificationAdList> callback,
-                      const BrowsingHistoryList& browsing_history);
+                      const SiteHistoryList& site_history);
   void GetEligibleAdsCallback(
       const UserModelInfo& user_model,
       const AdEventList& ad_events,
-      const BrowsingHistoryList& browsing_history,
+      const SiteHistoryList& site_history,
       EligibleAdsCallback<CreativeNotificationAdList> callback,
       bool success,
       const SegmentList& segments,
@@ -55,11 +55,11 @@ class EligibleNotificationAdsV2 final : public EligibleNotificationAdsBase {
       const UserModelInfo& user_model,
       const CreativeNotificationAdList& creative_ads,
       const AdEventList& ad_events,
-      const BrowsingHistoryList& browsing_history,
+      const SiteHistoryList& site_history,
       EligibleAdsCallback<CreativeNotificationAdList> callback);
   void FilterIneligibleCreativeAds(CreativeNotificationAdList& creative_ads,
                                    const AdEventList& ad_events,
-                                   const BrowsingHistoryList& browsing_history);
+                                   const SiteHistoryList& site_history);
 
   const database::table::CreativeNotificationAds creative_ads_database_table_;
 

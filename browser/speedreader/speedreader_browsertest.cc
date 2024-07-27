@@ -38,6 +38,7 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
@@ -331,9 +332,14 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   const std::string kCheckReferrer =
       R"js(document.querySelector('meta[name="referrer"]')
              .getAttribute('content') === 'no-referrer')js";
+  const std::string kCheckResources =
+      "JSON.stringify(speedreaderData) == '{\"minutesText\":\"min. "
+      "read\",\"playButtonTitle\":\"Play/"
+      "Pause\",\"showOriginalLinkText\":\"View "
+      "original\",\"ttsEnabled\":true}'";
 
-  // Check that the document became much smaller and that non-empty speedreader
-  // style is injected.
+  // Check that the document became much smaller and that non-empty
+  // speedreader style is injected.
   EXPECT_LT(0, content::EvalJs(ActiveWebContents(), kGetStyleLength,
                                content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                ISOLATED_WORLD_ID_BRAVE_INTERNAL)
@@ -343,6 +349,10 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                   .ExtractBool());
   EXPECT_TRUE(content::EvalJs(ActiveWebContents(), kCheckReferrer,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+                  .ExtractBool());
+  EXPECT_TRUE(content::EvalJs(ActiveWebContents(), kCheckResources,
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                   .ExtractBool());
@@ -766,7 +776,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   Click(toolbar, "ai");
-  auto* side_panel = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  auto* side_panel = browser()->GetFeatures().side_panel_ui();
   while (side_panel->GetCurrentEntryId() != SidePanelEntryId::kChatUI) {
     NonBlockingDelay(base::Milliseconds(10));
   }

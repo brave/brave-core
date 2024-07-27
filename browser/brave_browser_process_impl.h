@@ -13,7 +13,6 @@
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -24,7 +23,6 @@
 
 namespace brave {
 class BraveReferralsService;
-class BraveFarblingService;
 }  // namespace brave
 
 namespace brave_component_updater {
@@ -81,10 +79,6 @@ class BraveTorClientUpdater;
 class BraveTorPluggableTransportUpdater;
 }  // namespace tor
 
-namespace ipfs {
-class BraveIpfsClientUpdater;
-}
-
 namespace speedreader {
 class SpeedreaderRewriterService;
 }
@@ -93,6 +87,10 @@ namespace brave_ads {
 class BraveStatsHelper;
 class ResourceComponent;
 }  // namespace brave_ads
+
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
+class DayZeroBrowserUIExptManager;
+#endif
 
 class BraveBrowserProcessImpl : public BraveBrowserProcess,
                                 public BrowserProcessImpl {
@@ -132,9 +130,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   tor::BraveTorPluggableTransportUpdater* tor_pluggable_transport_updater()
       override;
 #endif
-#if BUILDFLAG(ENABLE_IPFS)
-  ipfs::BraveIpfsClientUpdater* ipfs_client_updater() override;
-#endif
   p3a::P3AService* p3a_service() override;
   brave::BraveReferralsService* brave_referrals_service() override;
   brave_stats::BraveStatsUpdater* brave_stats_updater() override;
@@ -149,7 +144,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::BraveVPNConnectionManager* brave_vpn_connection_manager() override;
 #endif
-  brave::BraveFarblingService* brave_farbling_service() override;
   misc_metrics::ProcessMiscMetrics* process_misc_metrics() override;
 
  private:
@@ -208,9 +202,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<tor::BraveTorPluggableTransportUpdater>
       tor_pluggable_transport_updater_;
 #endif
-#if BUILDFLAG(ENABLE_IPFS)
-  std::unique_ptr<ipfs::BraveIpfsClientUpdater> ipfs_client_updater_;
-#endif
   scoped_refptr<p3a::P3AService> p3a_service_;
   scoped_refptr<p3a::HistogramsBraveizer> histogram_braveizer_;
   std::unique_ptr<ntp_background_images::NTPBackgroundImagesService>
@@ -227,9 +218,13 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
       brave_vpn_connection_manager_;
 #endif
 
-  std::unique_ptr<brave::BraveFarblingService> brave_farbling_service_;
   std::unique_ptr<misc_metrics::ProcessMiscMetrics> process_misc_metrics_;
   std::unique_ptr<brave_ads::BraveStatsHelper> brave_stats_helper_;
+
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
+  std::unique_ptr<DayZeroBrowserUIExptManager>
+      day_zero_browser_ui_expt_manager_;
+#endif
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_IMPL_H_

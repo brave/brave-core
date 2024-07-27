@@ -1,5 +1,5 @@
 # History
 
-Recently viewed ads.
+Advertisement and site history.
 
 Please add to it!

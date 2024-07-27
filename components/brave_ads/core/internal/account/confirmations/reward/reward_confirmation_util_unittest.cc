@@ -18,9 +18,8 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/user_data_info.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
@@ -28,14 +27,14 @@
 
 namespace brave_ads {
 
-class BraveAdsRewardConfirmationUtilTest : public UnitTestBase {
+class BraveAdsRewardConfirmationUtilTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
-    MockConfirmationUserData();
+    test::MockConfirmationUserData();
 
-    AdvanceClockTo(TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
+    AdvanceClockTo(test::TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
   }
 
   TokenGeneratorMock token_generator_mock_;
@@ -44,7 +43,6 @@ class BraveAdsRewardConfirmationUtilTest : public UnitTestBase {
 TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
@@ -59,14 +57,13 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {
 
   // Assert
   EXPECT_EQ(
-      R"(eyJzaWduYXR1cmUiOiJoS1BFbHdTaXMwMjR1bnRTRm8wQVB6T3pGM09mM0dKYlQ5NnYvWHVtcWhrUUlkL3g3OHBWWVpKWk51OXRpNVYzeFRhQUFmYXg5VzVEblp5UkRVOERzdz09IiwidCI6IlBMb3d6MldGMmVHRDV6Zndaams5cDc2SFhCTERLTXEvM0VBWkhlRy9mRTJYR1E0OGp5dGUrVmU1MFpsYXNPdVlMNW13QThDVTJhRk1sSnJ0M0REZ0N3PT0ifQ==)",
+      R"(eyJzaWduYXR1cmUiOiJNem1obU8zak5rbDVNOHBGNG96ejJaVlMycVdKblJwaWJSR1B0UmJNMWY4NHhPZWhmQmVBdkxsbkpJSlVObStvNmtQMkxXYTF0TkFIT2VjRGF6dUlGUT09IiwidCI6IlBMb3d6MldGMmVHRDV6Zndaams5cDc2SFhCTERLTXEvM0VBWkhlRy9mRTJYR1E0OGp5dGUrVmU1MFpsYXNPdVlMNW13QThDVTJhRk1sSnJ0M0REZ0N3PT0ifQ==)",
       reward_credential);
 }
 
 TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
@@ -85,10 +82,10 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
   UserDataInfo expected_user_data;
   expected_user_data.dynamic = base::test::ParseJsonDict(
       R"(
-            {
-              "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
-              "systemTimestamp": "1996-07-08T09:00:00.000Z"
-            })");
+          {
+            "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
+            "systemTimestamp": "1996-07-08T09:00:00.000Z"
+          })");
   expected_user_data.fixed = base::test::ParseJsonDict(
       R"(
           {
@@ -98,21 +95,20 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
                 "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
               }
             ],
-            "countryCode": "US",
             "createdAtTimestamp": "1996-07-08T09:00:00.000Z",
             "platform": "windows",
             "rotatingHash": "jBdiJH7Hu3wj31WWNLjKV5nVxFxWSDWkYh5zXCS3rXY=",
             "segment": "untargeted",
             "studies": [],
-            "topSegment": [],
             "versionNumber": "1.2.3.4"
           })");
 
-  EXPECT_THAT(*confirmation,
-              ::testing::FieldsAre(
-                  kTransactionId, kCreativeInstanceId,
-                  ConfirmationType::kViewedImpression, AdType::kNotificationAd,
-                  /*created_at*/ Now(), expected_reward, expected_user_data));
+  EXPECT_THAT(
+      *confirmation,
+      ::testing::FieldsAre(
+          test::kTransactionId, test::kCreativeInstanceId,
+          ConfirmationType::kViewedImpression, AdType::kNotificationAd,
+          /*created_at*/ test::Now(), expected_reward, expected_user_data));
 }
 
 TEST_F(BraveAdsRewardConfirmationUtilTest,

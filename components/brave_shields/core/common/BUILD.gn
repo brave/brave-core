@@ -24,6 +24,7 @@ static_library("common") {
   deps = [
     "//base",
     "//brave/components/brave_shields/adblock:rust_lib",
+    "//brave/components/webcompat/core/common",
     "//components/content_settings/core/common",
     "//net",
     "//ui/base",
@@ -39,6 +40,8 @@ mojom("mojom") {
     "cookie_list_opt_in.mojom",
     "filter_list.mojom",
   ]
+
+  deps = [ "//components/content_settings/core/common:content_settings_types" ]
 
   public_deps = [
     "//mojo/public/mojom/base",

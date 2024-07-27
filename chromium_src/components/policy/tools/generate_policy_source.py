@@ -9,9 +9,9 @@ CHROMIUM_POLICY_KEY = 'SOFTWARE\\\\Policies\\\\BraveSoftware\\\\Brave'
 
 @override_utils.override_function(globals())
 def _LoadJSONFile(orig_func, json_file):
-  json = orig_func(json_file)
-  AddBravePolicies(json)
-  return json
+    json = orig_func(json_file)
+    AddBravePolicies(json)
+    return json
 
 def AddBravePolicies(template_file_contents):
     highest_id = template_file_contents['highest_id_currently_used']
@@ -37,27 +37,6 @@ def AddBravePolicies(template_file_contents):
             'tags': [],
             'desc': ('''This policy allows an admin to specify that tor '''
                      '''must be disabled at startup.'''),
-        },
-        {
-            'name': 'IPFSEnabled',
-            'type': 'main',
-            'schema': {
-                'type': 'boolean'
-            },
-            'supported_on': ['chrome.*:87-'],
-            'future_on': ['android'],
-            'features': {
-                'dynamic_refresh': False,
-                'per_profile': True,
-                'can_be_recommended': False,
-                'can_be_mandatory': True
-            },
-            'example_value': True,
-            'id': 1,
-            'caption': '''Enable IPFS feature''',
-            'tags': [],
-            'desc': ('''This policy allows an admin to specify whether IPFS '''
-                     '''feature can be enabled.'''),
         },
         {
             'name': 'BraveRewardsDisabled',

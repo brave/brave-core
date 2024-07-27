@@ -24,10 +24,10 @@ base::TimeDelta Months(const int n) {
   for (int i = 0; i < n; ++i) {
     days += DaysPerMonth(year, month);
 
-    month++;
+    ++month;
     if (month > 12) {
       month = 1;
-      year++;
+      ++year;
     }
   }
 

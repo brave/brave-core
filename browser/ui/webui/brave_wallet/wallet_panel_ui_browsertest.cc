@@ -145,21 +145,24 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
-    BraveWalletServiceFactory::GetServiceForContext(profile)
-        ->json_rpc_service()
-        ->SetAPIRequestHelperForTesting(shared_url_loader_factory_);
+
+    brave_wallet_service_ =
+        BraveWalletServiceFactory::GetServiceForContext(profile);
+
+    brave_wallet_service_->json_rpc_service()->SetAPIRequestHelperForTesting(
+        shared_url_loader_factory_);
 
     AssetRatioServiceFactory::GetServiceForContext(profile)
         ->EnableDummyPricesForTesting();
 
-    BraveWalletServiceFactory::GetServiceForContext(profile)
-        ->keyring_service()
-        ->CreateWallet("password_123", base::DoNothing());
+    brave_wallet_service_->keyring_service()->CreateWallet("password_123",
+                                                           base::DoNothing());
 
     SetEthChainIdInterceptor(
-        {GURL(kSomeEndpoint),
-         GetKnownChain(mojom::kNeonEVMMainnetChainId, mojom::CoinType::ETH)
-             ->rpc_endpoints.front()},
+        {GURL(kSomeEndpoint), brave_wallet_service_->network_manager()
+                                  ->GetKnownChain(mojom::kNeonEVMMainnetChainId,
+                                                  mojom::CoinType::ETH)
+                                  ->rpc_endpoints.front()},
         mojom::kNeonEVMMainnetChainId);
 
     CreateWalletTab();
@@ -220,8 +223,8 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
   void WaitForNeonEVMNetworkUrl(const GURL& url) {
     auto* prefs = browser()->profile()->GetPrefs();
 
-    if (GetNetworkURL(prefs, mojom::kNeonEVMMainnetChainId,
-                      mojom::CoinType::ETH) == url) {
+    if (brave_wallet_service()->network_manager()->GetNetworkURL(
+            mojom::kNeonEVMMainnetChainId, mojom::CoinType::ETH) == url) {
       return;
     }
 
@@ -229,10 +232,9 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
     PrefChangeRegistrar pref_change_registrar;
     pref_change_registrar.Init(prefs);
     pref_change_registrar.Add(
-        kBraveWalletCustomNetworks,
-        base::BindLambdaForTesting([&run_loop, &prefs, &url] {
-          if (GetNetworkURL(prefs, mojom::kNeonEVMMainnetChainId,
-                            mojom::CoinType::ETH) == url) {
+        kBraveWalletCustomNetworks, base::BindLambdaForTesting([&] {
+          if (brave_wallet_service()->network_manager()->GetNetworkURL(
+                  mojom::kNeonEVMMainnetChainId, mojom::CoinType::ETH) == url) {
             run_loop.Quit();
           }
         }));
@@ -242,9 +244,14 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
   content::WebContents* wallet() { return wallet_; }
   content::WebContents* settings() { return settings_; }
 
+  brave_wallet::BraveWalletService* brave_wallet_service() {
+    return brave_wallet_service_;
+  }
+
  private:
   raw_ptr<content::WebContents> wallet_ = nullptr;
   raw_ptr<content::WebContents> settings_ = nullptr;
+  raw_ptr<brave_wallet::BraveWalletService> brave_wallet_service_ = nullptr;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 };
@@ -352,7 +359,9 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, CustomNetworkInSettings) {
 IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, SelectRpcEndpoint) {
   CreateSettingsTab();
   auto known_neon_evm_rpc =
-      GetKnownChain(mojom::kNeonEVMMainnetChainId, mojom::CoinType::ETH)
+      brave_wallet_service()
+          ->network_manager()
+          ->GetKnownChain(mojom::kNeonEVMMainnetChainId, mojom::CoinType::ETH)
           ->rpc_endpoints.front();
   // Neon EVM rpc is from known info.
   WaitForNeonEVMNetworkUrl(known_neon_evm_rpc);

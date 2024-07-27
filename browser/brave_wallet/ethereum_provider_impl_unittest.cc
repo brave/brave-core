@@ -1698,6 +1698,63 @@ TEST_F(EthereumProviderImplUnitTest, SignMessage) {
   }
 }
 
+TEST_F(EthereumProviderImplUnitTest, SignMessageWithTypedDataStructure) {
+  CreateWallet();
+  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  for (const auto& method : {"personal_sign", "eth_sign"}) {
+    std::string request_payload_json = base::StringPrintf(
+        R"({"id":1, "jsonrpc:": "2.0", "method": "%s",
+          "params": ["%s", "{
+            \"types\": {
+              \"EIP712Domain\": [
+                { \"name\": \"name\", \"type\": \"string\" },
+                { \"name\": \"version\", \"type\": \"string\" },
+                { \"name\": \"chainId\", \"type\": \"uint256\" },
+                { \"name\": \"verifyingContract\", \"type\": \"address\" }
+              ],
+              \"Person\": [
+                { \"name\": \"name\", \"type\": \"string\" },
+                { \"name\": \"wallet\", \"type\": \"address\" }
+              ],
+              \"Mail\": [
+                { \"name\": \"from\", \"type\": \"Person\" },
+                { \"name\": \"to\", \"type\": \"Person\" },
+                { \"name\": \"contents\", \"type\": \"string\" }
+              ]
+            },
+            \"primaryType\": \"Mail\",
+            \"domain\": {
+              \"name\": \"Ether Mail\",
+              \"version\": \"1\",
+              \"chainId\": 1,
+              \"verifyingContract\":
+                \"0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC\"
+            },
+            \"message\": {
+              \"from\": { \"name\": \"Cow\",
+                \"wallet\": \"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826\" },
+              \"to\": { \"name\": \"Bob\",
+                \"wallet\": \"0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB\" },
+              \"contents\": \"Hello, Bob!\"
+            }
+          }"]})",
+        method, account_0->address.c_str());
+    std::optional<base::Value> request_payload = base::JSONReader::Read(
+        request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                  base::JSONParserOptions::JSON_PARSE_RFC);
+    auto response = CommonRequestOrSendAsync(request_payload.value());
+
+    mojom::ProviderError error_code;
+    std::string error_message;
+    GetErrorCodeMessage(std::move(response.second), &error_code,
+                        &error_message);
+    EXPECT_EQ(response.first, true);
+    EXPECT_EQ(error_code, mojom::ProviderError::kInvalidParams);
+    EXPECT_EQ(error_message,
+              l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+  }
+}
+
 TEST_F(EthereumProviderImplUnitTest, SigninWithEthereumError) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
@@ -2076,8 +2133,8 @@ TEST_F(EthereumProviderImplUnitTest, ChainChangedEvent) {
   GURL url("https://brave.com");
   Navigate(url);
 
-  EXPECT_CALL(*observer_, ChainChangedEvent(mojom::kGoerliChainId)).Times(1);
-  SetNetwork(mojom::kGoerliChainId, std::nullopt);
+  EXPECT_CALL(*observer_, ChainChangedEvent(mojom::kSepoliaChainId)).Times(1);
+  SetNetwork(mojom::kSepoliaChainId, std::nullopt);
   browser_task_environment_.RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(observer_.get()));
 
@@ -2622,9 +2679,9 @@ TEST_F(EthereumProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
 
   // AddEthereumChain switches for already added networks
   std::string params = R"({"params": [{
-        "chainId": "0x5",
-        "chainName": "Goerli",
-        "rpcUrls": ["https://goerli-infura.brave.com/"]
+        "chainId": "0xaa36a7",
+        "chainName": "Sepolia",
+        "rpcUrls": ["https://ethereum-sepolia.wallet.brave.com"]
       }]})";
   base::RunLoop run_loop;
   provider()->AddEthereumChain(
@@ -2650,7 +2707,7 @@ TEST_F(EthereumProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
   EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
   EXPECT_EQ(
       json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, GetOrigin()),
-      "0x5");
+      "0xaa36a7");
 }
 
 TEST_F(EthereumProviderImplUnitTest, AddSuggestToken) {

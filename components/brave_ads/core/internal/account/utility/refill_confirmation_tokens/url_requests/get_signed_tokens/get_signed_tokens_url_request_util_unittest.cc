@@ -14,13 +14,13 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsGetSignedTokensUrlRequestUtilTest : public UnitTestBase {
+class BraveAdsGetSignedTokensUrlRequestUtilTest : public test::TestBase {
  protected:
   TokenGeneratorMock token_generator_mock_;
 };

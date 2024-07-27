@@ -14,7 +14,7 @@ public protocol AppStoreProduct: RawRepresentable<String>, CaseIterable {
 }
 
 /// A class that handles all AppStore Receipt related requests
-public class AppStoreReceipt {
+public actor AppStoreReceipt {
   private init() {}
 
   /// Retrieves the AppStore Purchase Receipt stored in the Application Bundle
@@ -459,7 +459,7 @@ public class AppStoreSDK: ObservableObject {
 
   /// - Parameter productId: The ID of the product that is currently being purchased
   public func processPurchase(of productId: Product.ID) async throws {
-    fatalError("[AppStoreSDK] - ProcessTransaction Not Implemented")
+    fatalError("[AppStoreSDK] - ProcessPurchase Not Implemented")
   }
 
   // MARK: - Private

@@ -13,6 +13,7 @@ import { BraveWallet, WalletRoutes } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'
+import { reduceInt } from '../../../utils/string-utils'
 
 // Components
 import {
@@ -81,9 +82,9 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
           )}
           <NameAndSymbol>
             <AssetName>
-              {token.name}{' '}
+              {token.name || token.symbol}{' '}
               {token.isErc721 && token.tokenId
-                ? '#' + new Amount(token.tokenId).toNumber()
+                ? '#' + reduceInt(new Amount(token.tokenId).format())
                 : ''}
             </AssetName>
             <AssetSymbol>

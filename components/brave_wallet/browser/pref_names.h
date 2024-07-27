@@ -76,8 +76,6 @@ inline constexpr char kBraveWalletNftDiscoveryEnabled[] =
     "brave.wallet.nft_discovery_enabled";
 inline constexpr char kBraveWalletLastDiscoveredAssetsAt[] =
     "brave.wallet.last_discovered_assets_at";
-inline constexpr char kPinnedNFTAssets[] = "brave.wallet.user_pin_data";
-inline constexpr char kAutoPinEnabled[] = "brave.wallet.auto_pin_enabled";
 inline constexpr char kBraveWalletPrivateWindowsEnabled[] =
     "brave.wallet.private_windows_enabled";
 inline constexpr char kBraveWalletTransactionSimulationOptInStatus[] =
@@ -91,13 +89,6 @@ inline constexpr char kBraveWalletLegacyEthSeedFormat[] =
 inline constexpr char kBraveWalletMnemonicBackedUp[] =
     "brave.wallet.mnemonic_backed_up";
 
-// Added 02/2023 to migrate transactions to contain the
-// chain_id for each one.
-inline constexpr char kBraveWalletTransactionsChainIdMigrated[] =
-    "brave.wallet.transactions.chain_id_migrated";
-// Added 04/2023 to migrate solana transactions for v0 transaction support.
-inline constexpr char kBraveWalletSolanaTransactionsV0SupportMigrated[] =
-    "brave.wallet.solana_transactions.v0_support_migrated";
 // Added 07/2023 to migrate transactions from prefs to DB.
 inline constexpr char kBraveWalletTransactionsFromPrefsToDBMigrated[] =
     "brave.wallet.transactions.from_prefs_to_db_migrated";
@@ -124,5 +115,8 @@ inline constexpr char kBraveWalletUserAssetsDeprecated[] =
 // 06/2024 migrated to kBraveWalletEip1559CustomChains.
 inline constexpr char kSupportEip1559OnLocalhostChainDeprecated[] =
     "brave.wallet.support_eip1559_on_localhost_chain";
+// Added 07/2024 to remove Goerli mainnet, previously a preloaded network.
+inline constexpr char kBraveWalletGoerliNetworkMigrated[] =
+    "brave.wallet.custom_networks.goerli_migrated";
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_

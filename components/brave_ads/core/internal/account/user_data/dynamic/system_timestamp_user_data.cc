@@ -16,11 +16,11 @@ constexpr char kSystemTimestampKey[] = "systemTimestamp";
 }  // namespace
 
 base::Value::Dict BuildSystemTimestampUserData() {
-  base::Value::Dict user_data;
-
   if (!UserHasJoinedBraveRewards()) {
-    return user_data;
+    return {};
   }
+
+  base::Value::Dict user_data;
 
   user_data.Set(kSystemTimestampKey,
                 TimeToPrivacyPreservingIso8601(base::Time::Now()));

@@ -6,11 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCE_TEST_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCE_TEST_CONSTANTS_H_
 
-namespace brave_ads {
+namespace brave_ads::test {
 
 inline constexpr char kMissingResourceId[] = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-inline constexpr char kMalformedResourceId[] = "resources/malformed_resource";
+inline constexpr char kMalformedResourceId[] =
+    "component_resources/malformed_resource";
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_RESOURCE_TEST_CONSTANTS_H_

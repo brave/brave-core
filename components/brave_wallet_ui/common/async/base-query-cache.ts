@@ -56,9 +56,7 @@ import {
   makeNetworkAsset
 } from '../../options/asset-options'
 import {
-  IPFS_PROTOCOL,
   isIpfs,
-  stripERC20TokenImageURL
 } from '../../utils/string-utils'
 import { getEnabledCoinTypes } from '../../utils/api-utils'
 import { getBraveRewardsProxy } from './brave_rewards_api_proxy'
@@ -84,7 +82,6 @@ export class BaseQueryCache {
   private _knownTokensRegistry?: BlockchainTokenEntityAdaptorState
   private _userTokensRegistry?: BlockchainTokenEntityAdaptorState
   private _nftImageIpfsGateWayUrlRegistry: Record<string, string | null> = {}
-  private _extractedIPFSUrlRegistry: Record<string, string | undefined> = {}
   private _enabledCoinTypes: number[]
   private _nftMetadataRegistry: Record<string, NFTMetadataReturnType> = {}
   public rewardsInfo: BraveRewardsInfo | undefined = undefined
@@ -311,58 +308,22 @@ export class BaseQueryCache {
     this._userTokensRegistry = undefined
   }
 
-  /** Extracts ipfs:// url from gateway-like url */
-  getExtractedIPFSUrlFromGatewayLikeUrl = async (urlArg: string) => {
-    const trimmedURL = urlArg ? urlArg.trim() : ''
-    if (!this._extractedIPFSUrlRegistry[trimmedURL]) {
-      if (isIpfs(trimmedURL)) {
-        this._extractedIPFSUrlRegistry[trimmedURL] = trimmedURL
-      } else {
-        const api = getAPIProxy()
-        const { ipfsUrl } =
-          await api.braveWalletIpfsService.extractIPFSUrlFromGatewayLikeUrl(
-            trimmedURL
-          )
-        this._extractedIPFSUrlRegistry[trimmedURL] = ipfsUrl || undefined
-      }
-    }
-
-    return this._extractedIPFSUrlRegistry[trimmedURL]
-  }
-
   /** Translates ipfs:// url or gateway-like url to the NFT gateway url */
   getIpfsGatewayTranslatedNftUrl = async (urlArg: string) => {
     const trimmedURL = urlArg.trim()
-
     if (!this._nftImageIpfsGateWayUrlRegistry[trimmedURL]) {
       const { braveWalletIpfsService } = getAPIProxy()
 
-      const testUrl = isIpfs(trimmedURL)
-        ? trimmedURL
-        : await this.getExtractedIPFSUrlFromGatewayLikeUrl(trimmedURL)
-
       const { translatedUrl } =
-        await braveWalletIpfsService.translateToNFTGatewayURL(testUrl || '')
+        isIpfs(trimmedURL)
+        ? await braveWalletIpfsService.translateToGatewayURL(trimmedURL || '')
+        : {translatedUrl : trimmedURL}
 
       this._nftImageIpfsGateWayUrlRegistry[trimmedURL] =
         translatedUrl || trimmedURL
     }
 
     return this._nftImageIpfsGateWayUrlRegistry[trimmedURL]
-  }
-
-  /** only caches ipfs translations since saving to a registry would require a
-   * long identifier */
-  getIsImagePinnable = async (imageUrl: string) => {
-    const result = await this.getExtractedIPFSUrlFromGatewayLikeUrl(
-      stripERC20TokenImageURL(imageUrl)
-    )
-
-    if (result) {
-      return result?.startsWith(IPFS_PROTOCOL)
-    }
-
-    return false
   }
 
   // TODO(apaymyshev): This function should not exist. Backend should be
@@ -382,7 +343,6 @@ export class BaseQueryCache {
       // nothing to change
       return token.logo
     }
-
     return token.logo.startsWith('ipfs://')
       ? (await this.getIpfsGatewayTranslatedNftUrl(token.logo)) || ''
       : `chrome://erc-token-images/${token.logo}`
@@ -425,7 +385,6 @@ export class BaseQueryCache {
       const result = await jsonRpcService.getNftMetadatas(tokenArg.coin, [
         lookupArg
       ])
-
       if (result.errorMessage) {
         throw new Error(result.errorMessage)
       }
@@ -522,7 +481,7 @@ export class BaseQueryCache {
         this.rewardsInfo = emptyRewardsInfo
         return this.rewardsInfo
       }
-      const { provider, status, links } =
+      const { provider, status, url } =
         (await getBraveRewardsProxy().getExternalWallet()) || {}
 
       if (!provider || provider === 'solana') {
@@ -536,7 +495,7 @@ export class BaseQueryCache {
         balance,
         provider,
         status: status || WalletStatus.kNotConnected,
-        accountLink: links?.account,
+        accountLink: url,
         rewardsToken: getRewardsBATToken(provider),
         rewardsAccount: getNormalizedExternalRewardsWallet(provider),
         rewardsNetwork: getNormalizedExternalRewardsNetwork(provider),

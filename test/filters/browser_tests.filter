@@ -1184,6 +1184,7 @@
 -MediaFoundationEncryptedMediaTest.Playback_ClearLeadEncryptedCencVideo_Success
 -PasswordGenerationPopupViewWithMinimizedStrengthIndicatorTest.*
 -PasswordGenerationPopupViewWithStrengthIndicatorTest.*
+-PersistentBackground/AutomationApiTestWithContextType.ForceLayout/*
 -ProfileNetworkContextServiceCache*.TestCacheResetParameter
 -ServiceWorker/AutomationApiTestWithContextType.ForceLayout/*
 -ShowPromoInPageBrowserTest.HelpBubbleParamsCanConfigureCloseButtonAltText
@@ -1213,7 +1214,10 @@
 
 # These tests fail because we provide our own override of the side panel which
 # does not enable this feature
+-All/LensOverlayControllerBrowserPDFTest.ContextMenuOpensOverlay/*
 -LensOverlayControllerBrowserTest.*
+-LensOverlayControllerBrowserFullscreenDisabled.*
+-LensOverlayControllerBrowserWithPixelsTest.*
 
 # This test fails because we don't implement an accent color for titlebars or
 # tabs on Windows
@@ -1530,8 +1534,6 @@
 -All/BrowsingDataRemoverBrowserTestP.*
 -All/ChromeBackForwardCacheBrowserWithEmbedPdfTest.*/*
 -All/ChromeBackForwardCacheBrowserWithEmbedTest.*/*
--All/ChromeBrowsingDataLifetimeManagerScheduledRemovalTest.*
--All/ChromeBrowsingDataLifetimeManagerShutdownTest.*/*
 -All/ChromeMultiProfileStartupBrowserTestBase.*
 -All/ClickToCallPolicyTest.*
 -All/ClientHintsAllowThirdPartyBrowserTest.*
@@ -1781,8 +1783,6 @@
 -FirstPartySetsPolicyBrowsertest.*
 -FirstPartySetsWebSocketBrowserTest.*
 -FirstRunInternalPosixTest.*
--FirstRunMasterPrefsImportNothing.*
--FirstRunMasterPrefsVariationsSeedTests/FirstRunMasterPrefsVariationsSeedTest.*
 -FlagAndSettings/SamePartyIsFirstPartyCookiePolicyBrowserTest.*
 -FlocIdProviderAutoDenyRemotePermissionBrowserTest.*
 -FlocIdProviderBrowserTest.*
@@ -2250,8 +2250,6 @@
 -VariationsHttpHeadersBrowserTest.*
 -VariationsHttpHeadersBrowserTest/VariationsHttpHeadersBrowserTestWithRestrictedVisibility.*
 -VariationsHttpHeadersBrowserTestWithOptimizationGuide.*
--VariationsSafeModeBrowserTest.*
--VariationsSafeModeEndToEndBrowserTest.*
 -WakeEventPageTest.*
 -WebAppBrowserTest_ShortcutMenu.*
 -WebAppBrowserTest.*

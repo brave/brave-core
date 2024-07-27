@@ -9,7 +9,7 @@
 #define InitializeBrowserActions    \
   UnUsed() {}                       \
   friend class BraveBrowserActions; \
-  void InitializeBrowserActions
+  virtual void InitializeBrowserActions
 
 #include "src/chrome/browser/ui/browser_actions.h"  // IWYU pragma: export
 

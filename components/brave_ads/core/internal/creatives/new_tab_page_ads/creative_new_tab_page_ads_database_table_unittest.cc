@@ -7,8 +7,8 @@
 
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 
@@ -16,7 +16,7 @@
 
 namespace brave_ads {
 
-class BraveAdsCreativeNewTabPageAdsDatabaseTableTest : public UnitTestBase {
+class BraveAdsCreativeNewTabPageAdsDatabaseTableTest : public test::TestBase {
  protected:
   database::table::CreativeNewTabPageAds database_table_;
 };
@@ -210,9 +210,9 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
 
   // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(/*success=*/false, kMissingCreativeInstanceId,
+  EXPECT_CALL(callback, Run(/*success=*/false, test::kMissingCreativeInstanceId,
                             CreativeNewTabPageAdInfo{}));
-  database_table_.GetForCreativeInstanceId(kMissingCreativeInstanceId,
+  database_table_.GetForCreativeInstanceId(test::kMissingCreativeInstanceId,
                                            callback.Get());
 }
 
@@ -222,14 +222,14 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest, GetNonExpired) {
 
   CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
-  creative_ad_1.start_at = DistantPast();
-  creative_ad_1.end_at = Now();
+  creative_ad_1.start_at = test::DistantPast();
+  creative_ad_1.end_at = test::Now();
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
-  creative_ad_2.start_at = DistantPast();
-  creative_ad_2.end_at = DistantFuture();
+  creative_ad_2.start_at = test::DistantPast();
+  creative_ad_2.end_at = test::DistantFuture();
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativeNewTabPageAds(creative_ads);

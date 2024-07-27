@@ -1,3 +1,12 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Ajoutez des listes supplémentaires créées et maintenues par une communauté de confiance.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Inscrivez-vous uniquement aux listes des entités auxquelles vous faites confiance**. Votre navigateur vérifiera régulièrement les mises à jour de liste à partir de l'URL que vous saisissez.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Ajouter un filtre par URL";
+
 /* A discription of the Brave Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "Le **lecteur Brave** est votre ticket pour une expérience vidéo sans publicité et sans interruption.";
 
@@ -28,6 +37,9 @@
 /* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
 "BlockAdsAndTrackingStandard" = "Standard";
 
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Bloquer les avis « Changer d'app »";
+
 /* Title for the brave player feature */
 "BravePlayer" = "Lecteur Brave";
 
@@ -45,6 +57,36 @@
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Regarder plutôt dans le lecteur Brave";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Filtrage du contenu";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Activez des filtres personnalisés pour bloquer des traceurs et des nuisances spécifiques à votre région ou votre langue";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Liste de filtres personnalisés";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "URL de la liste de filtres personnalisés";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Filtres Personnalisés";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Ajoutez des filtres personnalisés ici. Veillez à utiliser la syntaxe de filtre Adblock.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Règle non valide « %1$@ » sur la ligne %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Ajoutez vos filtres personnalisés ici, un par ligne.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Les filtres personnalisés prennent en charge %i lignes maximum";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Listes de filtres par défaut";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "Revenir en arrière ";
@@ -70,6 +112,54 @@
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Activer le contrôle global de la confidentialité";
 
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Listes de filtres externes";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "L'URL saisie n'est pas valide";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Seules les URL sécurisées (HTTPS) sont autorisées pour les listes de filtres personnalisés";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Ajouter";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Listes les plus populaires créées par la communauté. Notez que l'activation d'un trop grand nombre de filtres risque de ralentir le chargement des pages.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Échec du téléchargement";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Téléchargement en attente";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Modifier";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Saisissez l'URL de la liste de filtres";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Dernière mise à jour %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Saisissez l'URL de la liste de filtres ici";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Strict";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Le site n'est pas sécurisé";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "La connexion à %@ n'est pas sécurisée";
+
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Blocage des traqueurs et des publicités";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Mettre à niveau les connexions vers HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Vous voyez cet avertissement parce que ce site ne prend pas en charge le protocole HTTPS.";
 

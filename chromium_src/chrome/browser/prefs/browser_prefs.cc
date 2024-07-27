@@ -14,6 +14,8 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
+#include "brave/components/brave_news/common/p3a_pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
@@ -21,6 +23,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
+#include "brave/components/ipfs/ipfs_prefs.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
@@ -163,7 +166,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   profile_prefs->ClearPref(sidebar::kSidebarAlignmentChangedTemporarily);
 #endif
 
-  brave_news::p3a::NewsMetrics::MigrateObsoleteProfilePrefs(profile_prefs);
+  brave_news::p3a::prefs::MigrateObsoleteProfileNewsMetricsPrefs(profile_prefs);
 
   // Added 2023-09
   ntp_background_images::ViewCounterService::MigrateObsoleteProfilePrefs(
@@ -183,6 +186,12 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   // Added 2024-04
   ai_chat::ModelService::MigrateProfilePrefs(profile_prefs);
 #endif
+
+  // Added 2024-05
+  ipfs::ClearDeprecatedIpfsPrefs(profile_prefs);
+
+  // Added 2024-07
+  profile_prefs->ClearPref(kHangoutsEnabled);
 
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }

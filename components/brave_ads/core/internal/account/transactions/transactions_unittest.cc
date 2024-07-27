@@ -10,15 +10,14 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsTransactionsTest : public UnitTestBase {};
+class BraveAdsTransactionsTest : public test::TestBase {};
 
 TEST_F(BraveAdsTransactionsTest, Add) {
   // Arrange
@@ -28,22 +27,24 @@ TEST_F(BraveAdsTransactionsTest, Add) {
 
   // Act
   const TransactionInfo transaction = AddTransaction(
-      kCreativeInstanceId, kSegment, /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, add_transaction_callback.Get());
+      test::kCreativeInstanceId, test::kSegment, /*value=*/0.01,
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+      add_transaction_callback.Get());
 
   // Assert
   base::MockCallback<database::table::GetTransactionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true, TransactionList{transaction}));
   const database::table::Transactions database_table;
-  database_table.GetForDateRange(/*from_time=*/DistantPast(),
-                                 /*to_time=*/DistantFuture(), callback.Get());
+  database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
+                                 /*to_time=*/test::DistantFuture(),
+                                 callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
   // Arrange
   TransactionList transactions;
 
-  AdvanceClockTo(TimeFromString("31 August 2019"));  //
+  AdvanceClockTo(test::TimeFromString("31 August 2019"));
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
@@ -52,7 +53,7 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
   transactions.push_back(transaction_1);
 
   AdvanceClockTo(
-      TimeFromUTCString("11 September 2019"));  // A legendary moment.
+      test::TimeFromUTCString("11 September 2019"));  // A legendary moment.
 
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
       /*value=*/0.0, AdType::kNotificationAd, ConfirmationType::kDismissed,
@@ -70,7 +71,8 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
   base::MockCallback<GetTransactionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             TransactionList{transaction_2, transaction_3}));
-  GetTransactionsForDateRange(/*from_time=*/Now(), /*to_time=*/DistantFuture(),
+  GetTransactionsForDateRange(/*from_time=*/test::Now(),
+                              /*to_time=*/test::DistantFuture(),
                               callback.Get());
 }
 

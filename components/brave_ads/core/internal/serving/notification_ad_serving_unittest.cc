@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving.h"
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_delegate_mock.h"
@@ -19,10 +19,10 @@
 
 namespace brave_ads {
 
-class BraveAdsNotificationAdServingTest : public UnitTestBase {
+class BraveAdsNotificationAdServingTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     NotifyBrowserDidBecomeActive();
 

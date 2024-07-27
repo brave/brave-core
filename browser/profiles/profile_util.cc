@@ -37,25 +37,12 @@ using ntp_background_images::prefs::
 
 namespace brave {
 
-bool IsGuestProfile(content::BrowserContext* context) {
-  DCHECK(context);
-  return Profile::FromBrowserContext(context)
-      ->GetOriginalProfile()
-      ->IsGuestSession();
-}
-
 bool IsTorDisabledForProfile(Profile* profile) {
 #if BUILDFLAG(ENABLE_TOR)
   return TorProfileServiceFactory::IsTorDisabled(profile);
 #else
   return true;
 #endif
-}
-
-bool IsRegularProfile(content::BrowserContext* context) {
-  auto* profile = Profile::FromBrowserContext(context);
-  return !context->IsTor() && !profile->IsGuestSession() &&
-         profile->IsRegularProfile();
 }
 
 void RecordSponsoredImagesEnabledP3A(Profile* profile) {

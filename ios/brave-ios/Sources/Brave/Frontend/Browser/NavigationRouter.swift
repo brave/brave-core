@@ -25,8 +25,7 @@ public enum NavigationPath: Equatable {
 
   public init?(url: URL, isPrivateBrowsing: Bool) {
     let urlString = url.absoluteString
-    if url.scheme?.lowercased() == "http" || url.scheme?.lowercased() == "https" || url.isIPFSScheme
-    {
+    if url.scheme?.lowercased() == "http" || url.scheme?.lowercased() == "https" {
       self = .url(webURL: url, isPrivate: isPrivateBrowsing)
       return
     }
@@ -167,6 +166,9 @@ public enum NavigationPath: Equatable {
         return
       }
       newTabPageController.scrollToBraveNews()
+    case .braveLeo:
+      bvc.popToBVC()
+      bvc.openBraveLeo()
     @unknown default:
       assertionFailure()
       break

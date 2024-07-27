@@ -74,7 +74,8 @@ class MessageManager : public MetricLogStore::Delegate {
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
-  void Init(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  void Start(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  void Stop();
 
   // If only_update_for_constellation is null, the value will be updated for
   // both STAR and Constellation. If true, only the Constellation log store will

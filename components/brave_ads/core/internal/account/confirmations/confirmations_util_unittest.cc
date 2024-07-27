@@ -19,24 +19,23 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsConfirmationsUtilTest : public UnitTestBase {
+class BraveAdsConfirmationsUtilTest : public test::TestBase {
  protected:
   TokenGeneratorMock token_generator_mock_;
 
-  database::table::ConfirmationQueue queue_database_table_;
+  database::table::ConfirmationQueue confirmation_queue_database_table_;
 };
 
 TEST_F(BraveAdsConfirmationsUtilTest, IsRewardConfirmationValid) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
@@ -71,7 +70,6 @@ TEST_F(BraveAdsConfirmationsUtilTest, IsConfirmationNotValid) {
 TEST_F(BraveAdsConfirmationsUtilTest, ResetTokens) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
@@ -87,7 +85,7 @@ TEST_F(BraveAdsConfirmationsUtilTest, ResetTokens) {
   base::MockCallback<database::table::GetConfirmationQueueCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             /*confirmation_queue_items=*/::testing::IsEmpty()));
-  queue_database_table_.GetAll(callback.Get());
+  confirmation_queue_database_table_.GetAll(callback.Get());
 
   EXPECT_TRUE(ConfirmationTokensIsEmpty());
 
@@ -102,7 +100,7 @@ TEST_F(BraveAdsConfirmationsUtilTest, ResetIfNoTokens) {
   base::MockCallback<database::table::GetConfirmationQueueCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             /*confirmation_queue_items=*/::testing::IsEmpty()));
-  queue_database_table_.GetAll(callback.Get());
+  confirmation_queue_database_table_.GetAll(callback.Get());
 
   EXPECT_TRUE(ConfirmationTokensIsEmpty());
 

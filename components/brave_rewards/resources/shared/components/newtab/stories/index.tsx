@@ -11,7 +11,6 @@ import { LocaleContext, createLocaleContextForTesting } from '../../../lib/local
 import { RewardsCard } from '../rewards_card'
 
 import { localeStrings } from './locale_strings'
-import * as mojom from '../../../../shared/lib/mojom'
 import { optional } from '../../../../shared/lib/optional'
 
 const localeContext = createLocaleContextForTesting(localeStrings)
@@ -57,11 +56,9 @@ export function Card () {
           providerPayoutStatus={payoutStatus}
           externalWallet={{
             provider: 'uphold',
-            status: disconnectedWallet
-              ? mojom.WalletStatus.kLoggedOut
-              : mojom.WalletStatus.kConnected,
-            username: '',
-            links: {}
+            authenticated: !disconnectedWallet,
+            name: '',
+            url: ''
           }}
           nextPaymentDate={nextPaymentDate}
           minEarningsThisMonth={0.142}

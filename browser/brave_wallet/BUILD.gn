@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
@@ -27,19 +26,10 @@ source_set("brave_wallet") {
     "swap_service_factory.cc",
     "swap_service_factory.h",
   ]
-  if (enable_ipfs_local_node) {
-    sources += [
-      "brave_wallet_auto_pin_service_factory.cc",
-      "brave_wallet_auto_pin_service_factory.h",
-      "brave_wallet_pin_service_factory.cc",
-      "brave_wallet_pin_service_factory.h",
-    ]
-  }
   if (!is_android) {
     sources += [ "wallet_notification_helper.h" ]
   }
   deps = [
-    "//brave/browser/profiles:util",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:pref_names",
@@ -167,7 +157,6 @@ source_set("unit_tests") {
     "asset_discovery_manager_unittest.cc",
     "asset_discovery_task_unittest.cc",
     "blockchain_images_source_unittest.cc",
-    "brave_wallet_prefs_unittest.cc",
     "brave_wallet_service_unittest.cc",
     "eth_allowance_manager_unittest.cc",
     "eth_pending_tx_tracker_unittest.cc",
@@ -198,6 +187,7 @@ source_set("unit_tests") {
     "//chrome/browser",
     "//chrome/browser/permissions",
     "//chrome/test:test_support",
+    "//components/country_codes",
     "//testing/gtest",
   ]
   if (!is_android) {

@@ -10,6 +10,7 @@
 #include "base/check_op.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
+#include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_interface.h"
@@ -56,8 +57,9 @@ void Account::RemoveObserver(AccountObserver* const observer) {
 }
 
 void Account::SetWallet(const std::string& payment_id,
-                        const std::string& recovery_seed) {
-  const std::optional<WalletInfo> wallet = ToWallet(payment_id, recovery_seed);
+                        const std::string& recovery_seed_base64) {
+  const std::optional<WalletInfo> wallet =
+      ToWallet(payment_id, recovery_seed_base64);
   if (!wallet) {
     // TODO(https://github.com/brave/brave-browser/issues/32066):
     // Detect potential defects using `DumpWithoutCrashing`.
@@ -102,6 +104,10 @@ void Account::DepositWithUserData(const std::string& creative_instance_id,
   CHECK(!creative_instance_id.empty());
   CHECK_NE(AdType::kUndefined, ad_type);
   CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
+
+  if (!IsAllowedToDeposit(ad_type, confirmation_type)) {
+    return;
+  }
 
   const std::unique_ptr<DepositInterface> deposit =
       DepositsFactory::Build(confirmation_type);

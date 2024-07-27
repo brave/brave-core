@@ -5,6 +5,7 @@
 
 import BraveCore
 import Foundation
+import Shared
 import os.log
 
 // https://github.com/brave/brave-core/blob/master/components/skus/browser/rs/lib/src/models.rs#L137
@@ -70,6 +71,22 @@ public struct SkusOrder: Codable {
       case singleUse = "single-use"
       case timeLimited = "time-limited"
       case timeLimitedv2 = "time-limited-v2"
+    }
+  }
+}
+
+/// An enum representing the Skus SDK Environment
+public enum BraveSkusEnvironment {
+  case beta
+  case nightly
+  case release
+
+  /// Returns the current Skus SDK Environment
+  public static var current: BraveSkusEnvironment {
+    switch AppConstants.buildChannel {
+    case .beta: return .beta
+    case .debug, .nightly: return .nightly
+    case .release: return .release
     }
   }
 }

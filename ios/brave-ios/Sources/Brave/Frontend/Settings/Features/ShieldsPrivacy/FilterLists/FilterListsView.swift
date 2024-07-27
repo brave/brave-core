@@ -79,9 +79,9 @@ struct FilterListsView: View {
         customFilterListStorage.filterListsURLs.isEmpty && editMode?.wrappedValue.isEditing == false
       )
     }
-    .onAppear(perform: {
-      loadCustomRules()
-    })
+    .task {
+      await loadCustomRules()
+    }
   }
 
   private var customFiltersAccessibilityLabel: Text {
@@ -242,7 +242,7 @@ struct FilterListsView: View {
 
         // 3. Remove the files
         do {
-          try removedURL.setting.resource.removeCacheFolder()
+          try await removedURL.setting.resource.removeCacheFolder()
         } catch {
           ContentBlockerManager.log.error(
             "Failed to remove file for resource \(removedURL.setting.uuid)"
@@ -257,9 +257,9 @@ struct FilterListsView: View {
     }
   }
 
-  private func loadCustomRules() {
+  private func loadCustomRules() async {
     do {
-      self.customRules = try customFilterListStorage.loadCustomRules()
+      self.customRules = try await customFilterListStorage.loadCustomRules()
     } catch {
       rulesError = error
       customRules = nil

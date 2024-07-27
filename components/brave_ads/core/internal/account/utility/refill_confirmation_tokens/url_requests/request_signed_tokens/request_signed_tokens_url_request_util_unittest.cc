@@ -8,17 +8,17 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/get_signed_tokens/get_signed_tokens_url_request_builder_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsRequestSignedTokensUrlRequestUtilTest : public UnitTestBase {};
+class BraveAdsRequestSignedTokensUrlRequestUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsRequestSignedTokensUrlRequestUtilTest, ParseNonce) {
   // Act & Assert
-  EXPECT_EQ(kGetSignedTokensNonce,
+  EXPECT_EQ(test::kRequestSignedTokensNonce,
             ParseNonce(base::test::ParseJsonDict(
                 test::BuildRequestSignedTokensUrlResponseBody())));
 }

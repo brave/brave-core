@@ -9,7 +9,7 @@
 
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
@@ -26,7 +26,7 @@
 
 namespace brave_ads {
 
-class BraveAdsNewTabPageAdServingTest : public UnitTestBase {
+class BraveAdsNewTabPageAdServingTest : public test::TestBase {
  protected:
   void MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
     SubdivisionTargeting subdivision_targeting;

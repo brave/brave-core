@@ -16,6 +16,16 @@ module.exports = class CustomEnvironment extends JSDOMEnvironment {
     assert(this.dom.virtualConsole.listenerCount('jsdomError') === 1)
     this.dom.virtualConsole.removeAllListeners('jsdomError')
     this.dom.virtualConsole.addListener('jsdomError', (e) => {
+      // We use @container queries in Nala but they cause an error in jsdom so
+      // until https://github.com/jsdom/jsdom/issues/3597 is resolved, we
+      // suppress CSS parsing errors:
+      // Note: e.detail contains the CSS which fails to parse - we check it
+      // includes @container to make sure we aren't suppressing other CSS errors
+      if (e.type === 'css parsing' && e.detail.includes('@container')) {
+        console.error(e)
+        return;
+      }
+
       throw e
     })
 

@@ -15,11 +15,11 @@ constexpr char kVersionNumberKey[] = "versionNumber";
 }  // namespace
 
 base::Value::Dict BuildVersionNumberUserData() {
-  base::Value::Dict user_data;
-
   if (!UserHasJoinedBraveRewards()) {
-    return user_data;
+    return {};
   }
+
+  base::Value::Dict user_data;
 
   user_data.Set(kVersionNumberKey, GetBrowserVersionNumber());
 

@@ -8,7 +8,8 @@ import {
   BraveWallet,
   GetNonceForHardwareTransactionReturnInfo,
   GetTransactionMessageToSignReturnInfo,
-  ProcessHardwareSignatureReturnInfo
+  ProcessHardwareSignatureReturnInfo,
+  HardwareVendor
 } from '../../constants/types'
 import {
   signTrezorTransaction,
@@ -26,11 +27,11 @@ import {
   SignHardwareOperationResult,
   SignHardwareTransactionType
 } from '../hardware/types'
-import { HardwareVendor } from '../api/hardware_keyrings'
 import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
-import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
-import SolanaLedgerKeyring from '../hardware/ledgerjs/solana_ledger_keyring'
+import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
+import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
+import { FilSignedLotusMessage } from '../hardware/ledgerjs/ledger-messages'
 
 const getMockedLedgerEthKeyring = (
   expectedPath: string,
@@ -290,12 +291,12 @@ const signSolTransactionWithLedger = (
     expectedPath,
     txInfo,
     BraveWallet.CoinType.SOL,
-    mockedKeyring as unknown as SolanaLedgerKeyring
+    mockedKeyring as unknown as SolanaLedgerBridgeKeyring
   )
 }
 
 const signFilTransactionWithLedger = (
-  expectedSignature: SignedLotusMessage,
+  expectedSignature: FilSignedLotusMessage,
   signatureResponse?: boolean
 ): Promise<SignHardwareTransactionType> => {
   const txInfo = getMockedTransactionInfo()
@@ -321,7 +322,7 @@ const signFilTransactionWithLedger = (
     apiProxy as unknown as WalletApiProxy,
     txInfo,
     BraveWallet.CoinType.FIL,
-    mockedKeyring as unknown as FilecoinLedgerKeyring
+    mockedKeyring as unknown as FilecoinLedgerBridgeKeyring
   )
 }
 

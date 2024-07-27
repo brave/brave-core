@@ -21,14 +21,13 @@
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ntp_background/ntp_tab_helper.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/psst/browser/content/psst_tab_helper.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -36,6 +35,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/user_prefs/user_prefs.h"
@@ -61,6 +61,10 @@
 #include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
 #endif
 
+#if BUILDFLAG(IS_WIN)
+#include "brave/browser/new_tab/background_color_tab_helper.h"
+#endif
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -81,11 +85,6 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/components/tor/tor_tab_helper.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/browser/ipfs/ipfs_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -130,12 +129,18 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   BraveGeolocationPermissionTabHelper::CreateForWebContents(web_contents);
 #endif
 
+#if BUILDFLAG(IS_WIN)
+  if (base::FeatureList::IsEnabled(features::kBraveWorkaroundNewWindowFlash)) {
+    BackgroundColorTabHelper::CreateForWebContents(web_contents);
+  }
+#endif
+
   brave_rewards::RewardsTabHelper::CreateForWebContents(web_contents);
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   content::BrowserContext* context = web_contents->GetBrowserContext();
   if (ai_chat::IsAIChatEnabled(user_prefs::UserPrefs::Get(context)) &&
-      IsRegularProfile(context)) {
+      Profile::FromBrowserContext(context)->IsRegularProfile()) {
     auto skus_service_getter = base::BindRepeating(
         [](content::BrowserContext* context) {
           return skus::SkusServiceFactory::GetForContext(context);
@@ -177,10 +182,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   tor::TorTabHelper::MaybeCreateForWebContents(
       web_contents, web_contents->GetBrowserContext()->IsTor());
   tor::OnionLocationTabHelper::CreateForWebContents(web_contents);
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-  ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 
   BraveNewsTabHelper::MaybeCreateForWebContents(web_contents);

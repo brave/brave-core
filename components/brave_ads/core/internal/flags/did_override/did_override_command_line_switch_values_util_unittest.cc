@@ -11,9 +11,9 @@
 
 #include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_info.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_info.h"
+#include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "components/variations/variations_switches.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -25,7 +25,7 @@ namespace {
 constexpr char kFooBarSwitch[] = "foobar";
 
 struct ParamInfo final {
-  CommandLineSwitchInfo command_line_switch;
+  test::CommandLineSwitchInfo command_line_switch;
   bool expected_did_override_command_line_switch;
 } const kTests[] = {
     {{kFooBarSwitch, {}}, false},
@@ -37,13 +37,13 @@ struct ParamInfo final {
 }  // namespace
 
 class BraveAdsDidOverrideCommandLineSwitchValuesUtilTest
-    : public UnitTestBase,
+    : public test::TestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 
-    AppendCommandLineSwitches({param.command_line_switch});
+    test::AppendCommandLineSwitches({param.command_line_switch});
 
     std::unique_ptr<base::FeatureList> feature_list =
         std::make_unique<base::FeatureList>();
@@ -69,7 +69,7 @@ std::string TestParamToString(
           : "DidNotOverride";
 
   const std::string sanitized_command_line_switch =
-      SanitizeCommandLineSwitch(test_param.param.command_line_switch);
+      test::ToString(test_param.param.command_line_switch);
 
   return base::ReplaceStringPlaceholders(
       "Set$1CommandLineSwitchValuesFor$2",

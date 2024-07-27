@@ -79,6 +79,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   }
   /// Indicates Tx is being submitted. This value will be set to `true` after users click `Confirm` button
   @Published var isTxSubmitting: Bool = false
+  /// Indicates if the to address is a contract address that should link to block explorer
+  @Published var isContractAddress: Bool = false
 
   /// All transactions with any kind of status of all the accounts for all supported keyrings
   @Published var allTxs: [BraveWallet.TransactionInfo] = []
@@ -313,7 +315,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
 
       guard
         let parsedTransaction = transaction.parsedTransaction(
-          network: network,
+          allNetworks: allNetworks,
           accountInfos: allAccountsForCoin,
           userAssets: userAssets,
           allTokens: allTokens,
@@ -326,6 +328,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         return
       }
       activeParsedTransaction = parsedTransaction
+      updateIsContractAddress()
 
       await fetchActiveTransactionDetails(
         accounts: allAccountsForCoin,
@@ -378,6 +381,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     isBalanceSufficient = true
     isSolTokenTransferWithAssociatedTokenAccountCreation = false
     isUnlimitedApprovalRequested = false
+    isContractAddress = false
     // Filecoin Tx
     filTxGasPremium = nil
     filTxGasLimit = nil
@@ -394,6 +398,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
   /// Cache for storing the estimated transaction fee for each Solana transaction. The key is the transaction id.
   private var solEstimatedTxFeeCache: [String: UInt64] = [:]
+  /// Cache of byte code lookups. The outer key is address, inner key is chainId, ex. `[address: [chainId: byteCode]]`.
+  private var byteCodeCache: [String: [String: String]] = [:]
 
   @MainActor private func fetchAssetRatios(
     for userVisibleTokens: [BraveWallet.BlockchainToken]
@@ -518,6 +524,33 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       shouldFetchCurrentAllowance: false,
       shouldFetchGasTokenBalance: false
     )
+  }
+
+  /// Updates `isContractAddress` for the `activeParsedTransaction` without blocking display updates.
+  /// Will fetch the byte code for the transaction recipient only once per chain.
+  func updateIsContractAddress() {
+    Task { @MainActor in
+      if activeParsedTransaction.coin == .eth {
+        let toAddress = activeParsedTransaction.toAddress
+        let chainId = activeParsedTransaction.network.chainId
+        if byteCodeCache[toAddress]?[chainId] == nil {
+          let (byteCode, providerError, _) = await rpcService.code(
+            address: toAddress,
+            coin: activeParsedTransaction.coin,
+            chainId: chainId
+          )
+          if providerError == .success {
+            var toAddressCache = self.byteCodeCache[toAddress, default: [:]]
+            toAddressCache[chainId] = byteCode
+            self.byteCodeCache[toAddress] = toAddressCache
+          }
+        }
+        guard let byteCodeForAddress = byteCodeCache[toAddress]?[chainId] else { return }
+        self.isContractAddress = byteCodeForAddress != "0x"
+      } else {
+        self.isContractAddress = false
+      }
+    }
   }
 
   @MainActor func fetchActiveTransactionDetails(

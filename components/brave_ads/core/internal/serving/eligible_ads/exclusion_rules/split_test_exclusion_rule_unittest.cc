@@ -8,7 +8,7 @@
 #include "base/metrics/field_trial.h"
 #include "base/test/mock_entropy_provider.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -30,7 +30,7 @@ scoped_refptr<base::FieldTrial> CreateFieldTrial(
 
 }  // namespace
 
-class BraveAdsSplitTestExclusionRuleTest : public UnitTestBase {
+class BraveAdsSplitTestExclusionRuleTest : public test::TestBase {
  protected:
   const SplitTestExclusionRule exclusion_rule_;
 };
@@ -39,7 +39,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
        ShouldIncludeIfNoFieldTrialAndNoAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
 
   // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
@@ -49,7 +49,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
        ShouldExcludeIfNoFieldTrialAndAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.split_test_group = "GroupA";
 
   // Act & Assert
@@ -60,7 +60,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
        ShouldIncludeIfFieldTrialAndNoAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
 
   const scoped_refptr<base::FieldTrial> field_trial =
       CreateFieldTrial(kTrialName);
@@ -74,7 +74,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
        ShouldIncludeIfFieldTrialMatchesAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.split_test_group = "GroupA";
 
   const scoped_refptr<base::FieldTrial> field_trial =
@@ -89,7 +89,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
        ShouldExcludeIfFieldTrialDoesNotMatchAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.split_test_group = "GroupB";
 
   const scoped_refptr<base::FieldTrial> field_trial =

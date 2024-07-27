@@ -8,7 +8,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -53,19 +52,13 @@ void EligibleNewTabPageAdsV2::GetEligibleAdsForUserModelCallback(
     const bool success,
     const AdEventList& ad_events) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to get ad events");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Failed to get ad events");
 
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
-  GetBrowsingHistory(
-      kBrowsingHistoryMaxCount.Get(), kBrowsingHistoryRecentDayRange.Get(),
+  GetSiteHistory(
+      kSiteHistoryMaxCount.Get(), kSiteHistoryRecentDayRange.Get(),
       base::BindOnce(&EligibleNewTabPageAdsV2::GetEligibleAds,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      ad_events, std::move(callback)));
@@ -75,42 +68,36 @@ void EligibleNewTabPageAdsV2::GetEligibleAds(
     UserModelInfo user_model,
     const AdEventList& ad_events,
     EligibleAdsCallback<CreativeNewTabPageAdList> callback,
-    const BrowsingHistoryList& browsing_history) {
+    const SiteHistoryList& site_history) {
   creative_ads_database_table_.GetForActiveCampaigns(
       base::BindOnce(&EligibleNewTabPageAdsV2::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
-                     ad_events, browsing_history, std::move(callback)));
+                     ad_events, site_history, std::move(callback)));
 }
 
 void EligibleNewTabPageAdsV2::GetEligibleAdsCallback(
     const UserModelInfo& user_model,
     const AdEventList& ad_events,
-    const BrowsingHistoryList& browsing_history,
+    const SiteHistoryList& site_history,
     EligibleAdsCallback<CreativeNewTabPageAdList> callback,
     const bool success,
     const SegmentList& /*segments*/,
     const CreativeNewTabPageAdList& creative_ads) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to get ads");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Failed to get ads");
 
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
   FilterAndMaybePredictCreativeAd(user_model, creative_ads, ad_events,
-                                  browsing_history, std::move(callback));
+                                  site_history, std::move(callback));
 }
 
 void EligibleNewTabPageAdsV2::FilterAndMaybePredictCreativeAd(
     const UserModelInfo& user_model,
     const CreativeNewTabPageAdList& creative_ads,
     const AdEventList& ad_events,
-    const BrowsingHistoryList& browsing_history,
+    const SiteHistoryList& site_history,
     EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   if (creative_ads.empty()) {
     BLOG(1, "No eligible ads");
@@ -118,8 +105,7 @@ void EligibleNewTabPageAdsV2::FilterAndMaybePredictCreativeAd(
   }
 
   CreativeNewTabPageAdList eligible_creative_ads = creative_ads;
-  FilterIneligibleCreativeAds(eligible_creative_ads, ad_events,
-                              browsing_history);
+  FilterIneligibleCreativeAds(eligible_creative_ads, ad_events, site_history);
 
   const PrioritizedCreativeAdBuckets<CreativeNewTabPageAdList> buckets =
       SortCreativeAdsIntoBucketsByPriority(eligible_creative_ads);
@@ -153,14 +139,14 @@ void EligibleNewTabPageAdsV2::FilterAndMaybePredictCreativeAd(
 void EligibleNewTabPageAdsV2::FilterIneligibleCreativeAds(
     CreativeNewTabPageAdList& creative_ads,
     const AdEventList& ad_events,
-    const BrowsingHistoryList& browsing_history) {
+    const SiteHistoryList& site_history) {
   if (creative_ads.empty()) {
     return;
   }
 
   NewTabPageAdExclusionRules exclusion_rules(ad_events, *subdivision_targeting_,
                                              *anti_targeting_resource_,
-                                             browsing_history);
+                                             site_history);
   ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 
   PaceCreativeAds(creative_ads);

@@ -6,53 +6,12 @@
 import { mapLimit } from 'async'
 import { Store } from 'redux'
 
-// constants
-import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../common/constants/magics'
-
 // actions
 import { PanelActions } from '../panel/actions'
 
 // types
 import type WalletApiProxy from '../common/wallet_api_proxy'
-import {
-  BraveWallet,
-  SupportedCoinTypes,
-  SupportedTestNetworks,
-  externalWalletProviders
-} from '../constants/types'
-
-export const getPriceIdForToken = (
-  token: Pick<
-    BraveWallet.BlockchainToken,
-    'contractAddress' | 'symbol' | 'coingeckoId' | 'chainId'
-  >
-) => {
-  if (token?.coingeckoId) {
-    return token.coingeckoId.toLowerCase()
-  }
-
-  // Skip price of testnet tokens other than goerli-eth
-  if (SupportedTestNetworks.includes(token.chainId)) {
-    // Goerli ETH has a real-world value
-    if (
-      token.chainId === BraveWallet.GOERLI_CHAIN_ID &&
-      !token.contractAddress
-    ) {
-      return 'goerli-eth' // coingecko id
-    }
-    return SKIP_PRICE_LOOKUP_COINGECKO_ID
-  }
-
-  const isEthereumNetwork = token.chainId === BraveWallet.MAINNET_CHAIN_ID
-  if (
-    (isEthereumNetwork || externalWalletProviders.includes(token.chainId)) &&
-    token.contractAddress
-  ) {
-    return token.contractAddress.toLowerCase()
-  }
-
-  return token.symbol.toLowerCase()
-}
+import { BraveWallet, SupportedCoinTypes } from '../constants/types'
 
 export function handleEndpointError(
   endpointName: string,

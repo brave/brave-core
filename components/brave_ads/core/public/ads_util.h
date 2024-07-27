@@ -8,8 +8,8 @@
 
 namespace brave_ads {
 
-// Returns `true` if ads are supported for the user's current country otherwise
-// `false`.
+// Determines whether ads are supported in the user's region, returning `true`
+// if so, otherwise `false`.
 bool IsSupportedRegion();
 
 }  // namespace brave_ads

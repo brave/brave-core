@@ -38,7 +38,7 @@ function Main() {
     apiHasError
   } = context
 
-  const handleEraseClick = () => {
+  const handleNewConversation = () => {
     getPageHandlerInstance().pageHandler.clearConversationHistory()
   }
 
@@ -57,7 +57,7 @@ function Main() {
     siteInfo === null && // SiteInfo request has finished and this is a standalone conversation
     !context.isPremiumUser
 
-  const shouldDisplayEraseAction = context.conversationHistory.length >= 1
+  const shouldDisplayNewChatIcon = context.conversationHistory.length >= 1
   const showContextToggle = context.conversationHistory.length === 0 && siteInfo?.isContentAssociationPossible
 
   let currentErrorElement = null
@@ -116,18 +116,19 @@ function Main() {
         <div className={styles.actions}>
           {hasAcceptedAgreement && (
             <>
-            {shouldDisplayEraseAction && (
+            {shouldDisplayNewChatIcon && (
               <Button
                 fab
                 kind='plain-faint'
-                aria-label='Erase conversation history'
-                title='Erase conversation history'
-                onClick={handleEraseClick}
+                aria-label={getLocale('startConversationLabel')}
+                title={getLocale('startConversationLabel')}
+                onClick={handleNewConversation}
               >
-                <Icon name='erase' />
+                <Icon name='edit-box' />
               </Button>
             )}
             <FeatureButtonMenu />
+            <div className={styles.divider} />
             <Button
               fab
               kind='plain-faint'

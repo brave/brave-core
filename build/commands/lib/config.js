@@ -122,11 +122,24 @@ const getBraveVersion = (ignorePatchVersionNumber) => {
   return braveVersionParts.join('.')
 }
 
+const getHostOS = () => {
+  switch (process.platform) {
+    case 'darwin':
+      return 'mac'
+    case 'linux':
+      return 'linux'
+    case 'win32':
+      return 'win'
+    default:
+      throw new Error(`Unsupported process.platform: ${process.platform}`)
+  }
+}
+
 const Config = function () {
   this.isTeamcity = process.env.TEAMCITY_VERSION !== undefined
   this.isCI = process.env.BUILD_ID !== undefined || this.isTeamcity
   this.internalDepsUrl = 'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws'
-  this.defaultBuildConfig = 'Component'
+  this.defaultBuildConfig = getEnvConfig(['default_build_config']) || 'Component'
   this.buildConfig = this.defaultBuildConfig
   this.signTarget = 'sign_app'
   this.buildTargets = ['brave']
@@ -145,6 +158,7 @@ const Config = function () {
   this.defaultGClientFile = path.join(this.rootDir, '.gclient')
   this.gClientFile = process.env.BRAVE_GCLIENT_FILE || this.defaultGClientFile
   this.gClientVerbose = getEnvConfig(['gclient_verbose']) || false
+  this.hostOS = getHostOS()
   this.targetArch = getEnvConfig(['target_arch']) || process.arch
   this.targetOS = getEnvConfig(['target_os'])
   this.targetEnvironment = getEnvConfig(['target_environment'])
@@ -230,7 +244,7 @@ const Config = function () {
   this.braveStatsApiKey = getEnvConfig(['brave_stats_api_key']) || ''
   this.braveStatsUpdaterUrl = getEnvConfig(['brave_stats_updater_url']) || ''
   this.ignore_compile_failure = false
-  this.enable_hangout_services_extension = true
+  this.enable_hangout_services_extension = false
   this.enable_pseudolocales = false
   this.sign_widevine_cert = process.env.SIGN_WIDEVINE_CERT || ''
   this.sign_widevine_key = process.env.SIGN_WIDEVINE_KEY || ''
@@ -432,7 +446,6 @@ Config.prototype.buildArgs = function () {
     enable_dangling_raw_ptr_feature_flag: false,
     brave_services_key_id: this.brave_services_key_id,
     service_key_aichat: this.service_key_aichat,
-    ...this.extraGnArgs,
   }
 
   if (!this.isBraveReleaseBuild()) {
@@ -517,9 +530,17 @@ Config.prototype.buildArgs = function () {
     args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
   }
 
-  if (this.getTargetOS() === 'linux' && this.targetArch === 'x86') {
-    // Minimal symbols to work around size restrictions:
-    // On Linux x86, ELF32 cannot be > 4GiB.
+  // Adjust symbol_level in Linux builds:
+  // 1. Set minimal symbol level to workaround size restrictions: on Linux x86,
+  //    ELF32 cannot be > 4GiB.
+  // 2. Enable symbols in Static builds. By default symbol_level is 0 in this
+  //    configuration. symbol_level = 2 cannot be used because of "relocation
+  //    R_X86_64_32 out of range" errors.
+  if (
+    this.getTargetOS() === 'linux' &&
+    (this.targetArch === 'x86' ||
+      (!this.isDebug() && !this.isComponentBuild() && !this.isReleaseBuild()))
+  ) {
     args.symbol_level = 1
   }
 
@@ -732,6 +753,7 @@ Config.prototype.buildArgs = function () {
     delete args.v8_enable_verify_heap
   }
 
+  args = Object.assign(args, this.extraGnArgs)
   return args
 }
 
@@ -835,8 +857,23 @@ Config.prototype.update = function (options) {
     this.targetArch = options.target_arch
   }
 
-  if (options.target_os === 'android') {
-    this.targetOS = 'android'
+  if (options.target_os) {
+    // Handle non-standard target_os values as they are used on CI currently and
+    // it's easier to support them as is instead of rewriting the CI scripts.
+    if (options.target_os === 'macos') {
+      this.targetOS = 'mac';
+    } else if (options.target_os === 'windows') {
+      this.targetOS = 'win';
+    } else {
+      this.targetOS = options.target_os;
+    }
+    assert(
+      ['android', 'ios', 'linux', 'mac', 'win'].includes(this.targetOS),
+      `Unsupported target_os value: ${this.targetOS}`
+    )
+  }
+
+  if (this.targetOS === 'android') {
     if (options.target_android_base) {
       this.targetAndroidBase = options.target_android_base
     }
@@ -849,10 +886,6 @@ Config.prototype.update = function (options) {
     if (options.android_aab_to_apk) {
       this.androidAabToApk = options.android_aab_to_apk
     }
-  }
-
-  if (options.target_os) {
-    this.targetOS = options.target_os
   }
 
   if (options.target_environment) {
@@ -1190,12 +1223,7 @@ Config.prototype.update = function (options) {
 Config.prototype.getTargetOS = function() {
   if (this.targetOS)
     return this.targetOS
-  if (process.platform === 'darwin')
-    return 'mac'
-  if (process.platform === 'win32')
-    return 'win'
-  assert(process.platform === 'linux')
-  return 'linux'
+  return this.hostOS
 }
 
 Config.prototype.getCachePath = function () {
@@ -1212,6 +1240,11 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     env = this.addPathToEnv(env, path.join(this.srcDir, 'third_party',
                                            'rust-toolchain', 'bin'), true)
     env = this.addPathToEnv(env, this.depotToolsDir, true)
+    if (this.getTargetOS() === 'mac' && process.platform !== 'darwin') {
+      const crossCompilePath = path.join(this.srcDir, 'brave', 'build', 'mac',
+                                         'cross-compile', 'path')
+      env = this.addPathToEnv(env, crossCompilePath, true)
+    }
     const pythonPaths = [
       ['brave', 'script'],
       ['tools', 'grit', 'grit', 'extern'],
@@ -1339,8 +1372,8 @@ Object.defineProperty(Config.prototype, 'outputDir', {
     if (this.targetArch && this.targetArch != 'x64') {
       buildConfigDir = buildConfigDir + '_' + this.targetArch
     }
-    if (this.targetOS && (this.targetOS === 'android' || this.targetOS === 'ios')) {
-      buildConfigDir = this.targetOS + "_" + buildConfigDir
+    if (this.targetOS && this.targetOS !== this.hostOS) {
+      buildConfigDir = this.targetOS + '_' + buildConfigDir
     }
     if (this.targetEnvironment) {
       buildConfigDir = buildConfigDir + "_" + this.targetEnvironment

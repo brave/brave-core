@@ -705,12 +705,14 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
       return
     }
 
-    PlaylistManager.shared.delete(item: PlaylistInfo(item: item))
+    Task { @MainActor in
+      await PlaylistManager.shared.delete(item: PlaylistInfo(item: item))
 
-    if PlaylistCoordinator.shared.currentlyPlayingItemIndex == index
-      || PlaylistManager.shared.numberOfAssets == 0
-    {
-      stopPlaying()
+      if PlaylistCoordinator.shared.currentlyPlayingItemIndex == index
+        || PlaylistManager.shared.numberOfAssets == 0
+      {
+        stopPlaying()
+      }
     }
   }
 

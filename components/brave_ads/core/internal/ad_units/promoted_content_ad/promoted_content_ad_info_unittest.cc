@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/promoted_content_ad_builder.h"
@@ -14,7 +14,7 @@
 
 namespace brave_ads {
 
-class BraveAdsPromotedContentAdInfoTest : public UnitTestBase {};
+class BraveAdsPromotedContentAdInfoTest : public test::TestBase {};
 
 TEST_F(BraveAdsPromotedContentAdInfoTest, IsValid) {
   // Arrange

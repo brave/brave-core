@@ -141,7 +141,7 @@
 <translation id="8410806609595910352">ENSオフチェーン検索</translation>
 <translation id="2356070529366658676">確認する</translation>
 <translation id="4176463684765177261">無効</translation>
-<translation id="59174027418879706">有効化済み</translation>
+<translation id="59174027418879706">有効にする</translation>
 <translation id="6252490671914511928">Brave Newsは、読みたい記事が上がってくるプライベート・ニュースリーダー。</translation>
 <translation id="8300751939969131609">Braveニュースをオンにして、最新情報を見逃さないようにしましょう</translation>
 <translation id="7266075701303521777">Braveニュースは広告に支えられていますが、その広告はあなたのデバイス上でマッチングされており、あなたが完全に匿名化された状態でプライバシーを重視して配信されます。</translation>
@@ -417,9 +417,7 @@
 <translation id="7275773481201277457">Braveのデータを表示</translation>
 <translation id="8297488609722895137">Photo by <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">「Brave Rewardsの使用を開始」をタップすると、あなたは<ph name="TERMS_OF_SERVICE"/>に同意したことになります。</translation>
-<translation id="3794079107601824147">この背景画像を表示すると報酬が支払われます。</translation>
 <translation id="7136586167396205364">スポンサー付き画像を非表示にする</translation>
-<translation id="2927095357213611519">ポイントを使用してコンテンツクリエイターを応援できます。\nポイントはプライバシーを重視する広告を表示することで貯めることができます。</translation>
 <translation id="2898634658146274982">Braveで外部リンクを開く</translation>
 <translation id="5616508928556767259">他のアプリからのリンクをBraveのWebビューで開きます。注: Braveを既定のブラウザに設定する必要があります。</translation>
 <translation id="2394961582378297792">ログアウト済み</translation>
@@ -477,6 +475,10 @@
 <translation id="8912304686498704084">オン</translation>
 <translation id="4963218453264888510">オフ</translation>
 <translation id="7474113515179313724">現在、Braveのプライバシー保護機能なしでこのサイトを閲覧しています。Shieldsを有効にするとサイトに問題がありましたか？</translation>
+<translation id="4226543734057230801">Ethereumネットワーク</translation>
+<translation id="3504157706952484145">Filecoinネットワーク</translation>
+<translation id="1561541094377237745">Solanaネットワーク</translation>
+<translation id="7141438739990875547">Bitcoinネットワーク</translation>
 <translation id="9055546041146396417">ウェブサイトが正常に動作していないように見える場合は、Shieldをオフにしてみてください。</translation>
 <translation id="1209739344687072997">サイト表示の不具合を報告</translation>
 <translation id="8510478288840333677">Shieldを使うとこのサイトが適切に動作しないことをBraveの開発者に知らせましょう：</translation>
@@ -575,8 +577,6 @@
 <translation id="2422627462367776805">韓国のWebポータルを検索</translation>
 <translation id="177282784098234156">プライベート、独立型、ユーザーファースト</translation>
 <translation id="1410130669636877548">一部の検索エンジンは、ウェブを検索する際に、他の検索エンジンよりもうまくユーザーのプライバシーを保護します。</translation>
-<translation id="5187052478998910855">Rewardsについておさらいが必要ですか？</translation>
-<translation id="8622329973403382303">クイックツアーをご覧になり、Rewardsの達人として歴史に名を残すための仕組みをマスターしてください！</translation>
 <translation id="3479552764303398839">後で</translation>
 <translation id="7138272885617540195">Brave外のアプリでアプリのリンクを開くことを許可</translation>
 <translation id="4954512758656527938">デフォルトのイーサリアムウォレット</translation>
@@ -687,7 +687,7 @@
 <translation id="4647035642622555398">中断されません</translation>
 <translation id="4122515759479497554">動画を検索</translation>
 <translation id="4449475351935531438">Brave Firewall + VPN</translation>
-<translation id="719977489961414786">VPN にアップグレードして、接続を保護し、あらゆる場所で侵襲的なトラッカーをブロックします。</translation>
+<translation id="719977489961414786">VPN にアップグレードして通信を保護し、攻撃的なトラッカーをいつでもどこでもブロックしましょう。</translation>
 <translation id="8814357473522731680">提供元</translation>
 <translation id="5892534145504632332">すべてのアプリとデバイス全体を保護</translation>
 <translation id="7195416926059527505">ご自宅や公共Wi-Fiでの安全確保に</translation>
@@ -702,21 +702,23 @@
 <translation id="6748319398471481216">毎月更新</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / 月</translation>
 <translation id="1163809943099641131">1 年</translation>
-<translation id="7574007394522199115">年払いを選択すると<ph name="PERCENTAGE_AMOUNT"/>%%お得です</translation>
+<translation id="172859718096975160">年額支払いだと<ph name="DISCOUNT_TEXT_START"/><ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>お得になります</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / 年</translation>
-<translation id="2655185358771731232">7 日間無料でお試しいただけます。7 日後、プラン料金が請求されます。すべてのサブスクリプションは自動更新されますが、更新前にキャンセルできます。</translation>
+<translation id="5125233570742276182">サブスクリプションはGoogleアカウントを通じて課金されます。無料トライアルが提供されている場合、未使用の部分は、サブスクリプションを購入した時点で無効になります。\n\nサブスクリプションは、現在の期間終了の少なくとも24時間前にキャンセルされない限り、自動的に更新されます。\n\nサブスクリプションは「設定」で管理できます。\nBraveを使用することで、利用規約とプライバシーポリシーに同意したことになります。</translation>
+<translation id="5035172357624830412">brave.comで購入済みですか？</translation>
+<translation id="713136183174551885">認証情報を更新</translation>
 <translation id="6053992191006521518">無料で試す</translation>
 <translation id="5903391101107992067">7日間無料でお試し</translation>
 <translation id="721747358270435486">VPN をインストール</translation>
 <translation id="836074276610740314">VPN プロファイルをインストール</translation>
-<translation id="8021842065465097929">Brave は VPN プロファイルをインストールします。</translation>
-<translation id="229286271464650057">このプロファイルにより、VPN は、すべてのアプリで、デバイス全体のトラフィックを常に自動的に接続して保護できます。この VPN 接続は暗号化され、Guardian のインテリジェントファイアウォールを介してルーティングされ、広告とトラッカーをブロックします。</translation>
+<translation id="8021842065465097929">Brave は VPN プロファイルをインストールしています。</translation>
+<translation id="229286271464650057">このプロファイルにより、VPNは自動的にデバイスのすべてのアプリで通信をセキュアな接続で行います。VPNによる通信は暗号化され、Guardianのインテリジェント・ファイアウォールを介してルーティングされ、広告やトラッカーをブロックします。</translation>
 <translation id="9073255657908892407">テクニカルサポートに連絡する</translation>
 <translation id="1139934321138152517">VPN が有効になりました</translation>
 <translation id="7678718921266217759">コンテキスト...</translation>
-<translation id="7267573208549764106">以前の VPN 接続が切断されました。VPN に再接続するには、接続要求を受け入れる必要があります。
+<translation id="7267573208549764106">以前のVPN接続が切断されました。VPNに再接続するには、接続のリクエストを許可する必要があります。
 
-このリクエストを受け入れない場合、VPN は再接続せず、インターネット接続は保護されません。</translation>
+リクエストを許可しない場合VPN は再接続されず、通信の保護が無効になります。</translation>
 <translation id="2429299231491852747">接続要求を受け入れる</translation>
 <translation id="3428909627460825679">VPN プロファイルの作成に失敗しました。もう一度お試しください。</translation>
 <translation id="1264320790738638119">サブスクリプションの期限が終了しました。いつでも再登録できます。</translation>
@@ -746,7 +748,7 @@
 <translation id="21570240866965662">低速回線</translation>
 <translation id="1219475260382643267">ウェブサイトが機能しない</translation>
 <translation id="7138678301420049075">その他</translation>
-<translation id="4827315939627587219">VPN 構成をリセット</translation>
+<translation id="4827315939627587219">VPN構成をリセット</translation>
 <translation id="1705662265912724430">VPN構成をリセットしますか？</translation>
 <translation id="604124094241169006">自動設定</translation>
 <translation id="7475580600756356589">サーバーに接続しています。少々お待ちください...</translation>
@@ -850,7 +852,7 @@
 <translation id="7791543448312431591">追加する</translation>
 <translation id="6889920539620318793">アクティブに設定</translation>
 <translation id="2653659639078652383">送信</translation>
-<translation id="4556601961751528347">接続済みアカウントを変更</translation>
+<translation id="4945690646623486292">ネットワークを選択</translation>
 <translation id="5233638681132016545">新しいタブ</translation>
 <translation id="8006088103295786154">Braveウォレットにアクセス</translation>
 <translation id="8030169304546394654">切断されました</translation>
@@ -878,7 +880,7 @@
 <translation id="3355936511340229503">接続エラー</translation>
 <translation id="1531836666020185856">注目</translation>
 <translation id="4891604214809245310">ネットワークを<ph name="NETWORK_NAME"/>に設定できません</translation>
-<translation id="685345388423515592">この端末で他のVPNが「常にオン」に設定されているようです。Brave Firewall + VPNを有効にするには、まず他のVPNのこの「常にオン」の設定を無効にしてから再度接続してください。それでも問題が解決しない場合は、他のVPNのアンインストールをお試しください。</translation>
+<translation id="685345388423515592">この端末で他のVPNが「常に有効」に設定されているようです。Brave Firewall + VPNを有効にするには、まず他のVPNのこの「常に有効」の設定を無効にしてから再度接続してください。それでも問題が解決しない場合は、他のVPNのアンインストールをお試しください。</translation>
 <translation id="85136472535634474">VPN設定を開く</translation>
 <translation id="8352805003811526272">構成をリセットしています...</translation>
 <translation id="6809312301323611382">同じサーバーを既に選択済みです。</translation>
@@ -907,7 +909,7 @@
 <translation id="2322227405137827074">このトークンをインポートしますか?</translation>
 <translation id="1324417023773393937">Braveブラウザ</translation>
 <translation id="6044189892950611565">Braveブラウザへの通知チャンネル</translation>
-<translation id="1173919438868967364">アカウントを選択</translation>
+<translation id="4556601961751528347">接続済みアカウントを変更</translation>
 <translation id="8922793255489232731">以下に一致するタイムゾーンを取得できません : <ph name="VALUE"/></translation>
 <translation id="6471216025161697462"><ph name="VALUE"/>に接続済み</translation>
 <translation id="1968852757206592413">トライアル</translation>
@@ -916,7 +918,7 @@
 <translation id="803706420145725977">1時間停止する</translation>
 <translation id="4394049700291259645">無効にする</translation>
 <translation id="7733890291091968191">Web3の通知を表示</translation>
-<translation id="1371627247679035769">\n\n\n\n#### Braveはお客様を追跡したり、お客様がどのようにアプリを使用したかを把握していないため、現在のVPN設定についてお答えすることはできません。できるだけ早く解決できるよう、最善を尽くします。 ####\n\n</translation>
+<translation id="1371627247679035769">\n\n\n\n#### Braveはユーザーを追跡したり、ユーザーがどのようにアプリを使用したかを把握していないため、現在のVPN設定についてお答えすることはできません。お困りの点ついて詳細をお知らせください。できるだけ早く解決できるよう、最善を尽くします。 ####\n\n</translation>
 <translation id="3367162038532116157">\n\nVPNホスト名\n <ph name="VALUE"/></translation>
 <translation id="6173438324126027458">\n\nサブスクリプションタイプ\n <ph name="VALUE"/></translation>
 <translation id="1478875290576741766">\n\nPlaystoreトークン\n <ph name="VALUE"/></translation>
@@ -1063,7 +1065,6 @@
 <translation id="4932733599132424254">日付</translation>
 <translation id="346505172740911461">市場価格</translation>
 <translation id="5494920125229734069">すべて選択する</translation>
-<translation id="5972844218283131174">すべて選択解除</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Braveウォレットにサインイン</translation>
 <translation id="3696514931437952995"><ph name="ORIGIN"/>にサインインしています。Braveウォレットはあなたのウォレットのアドレスを<ph name="ORIGIN"/>に共有します。</translation>

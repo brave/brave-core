@@ -10,8 +10,8 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_notifier_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
+#include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
@@ -20,10 +20,10 @@
 namespace brave_ads {
 
 class BraveAdsUserRewardsUtilTest : public AdsClientNotifierObserverMock,
-                                    public UnitTestBase {
+                                    public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     AddAdsClientNotifierObserver(&ads_client_notifier_observer_mock_);
   }
@@ -31,7 +31,7 @@ class BraveAdsUserRewardsUtilTest : public AdsClientNotifierObserverMock,
   void TearDown() override {
     RemoveAdsClientNotifierObserver(&ads_client_notifier_observer_mock_);
 
-    UnitTestBase::TearDown();
+    test::TestBase::TearDown();
   }
 
   AdsClientNotifierObserverMock ads_client_notifier_observer_mock_;
@@ -39,7 +39,8 @@ class BraveAdsUserRewardsUtilTest : public AdsClientNotifierObserverMock,
 
 TEST_F(BraveAdsUserRewardsUtilTest, ShouldMigrateVerifiedRewardsUser) {
   // Arrange
-  SetProfileBooleanPrefValue(prefs::kShouldMigrateVerifiedRewardsUser, true);
+  test::SetProfileBooleanPrefValue(prefs::kShouldMigrateVerifiedRewardsUser,
+                                   true);
 
   // Act & Assert
   EXPECT_TRUE(ShouldMigrateVerifiedRewardsUser());
@@ -50,7 +51,8 @@ TEST_F(BraveAdsUserRewardsUtilTest,
   // Arrange
   test::DisableBraveRewards();
 
-  SetProfileBooleanPrefValue(prefs::kShouldMigrateVerifiedRewardsUser, false);
+  test::SetProfileBooleanPrefValue(prefs::kShouldMigrateVerifiedRewardsUser,
+                                   false);
 
   // Act & Assert
   EXPECT_FALSE(ShouldMigrateVerifiedRewardsUser());

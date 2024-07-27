@@ -38,7 +38,7 @@ export default function FeatureMenu() {
         fab
         kind="plain-faint"
       >
-        <Icon name='settings' />
+        <Icon name='more-vertical' />
       </Button>
       <div className={styles.menuSectionTitle}>
         {getLocale('menuTitleModels')}
@@ -102,7 +102,7 @@ export default function FeatureMenu() {
 
       <leo-menu-item onClick={handleNewConversationClick}>
         <div className={classnames(styles.menuItemWithIcon, styles.menuItemMainItem)}>
-          <Icon name='erase' />
+          <Icon name='edit-box' />
           <span className={styles.menuText}>{getLocale('menuNewChat')}</span>
         </div>
       </leo-menu-item>

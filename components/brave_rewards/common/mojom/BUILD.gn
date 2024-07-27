@@ -34,11 +34,15 @@ mojom("core") {
 
 mojom("webui") {
   sources = [
+    "rewards_page.mojom",
     "rewards_panel.mojom",
     "rewards_tip_panel.mojom",
   ]
 
   public_deps = [ "//mojo/public/mojom/base" ]
 
-  deps = [ ":mojom" ]
+  deps = [
+    ":mojom",
+    "//brave/components/services/bat_ads/public/interfaces",
+  ]
 }

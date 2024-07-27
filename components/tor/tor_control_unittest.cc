@@ -17,7 +17,7 @@
 
 namespace tor {
 namespace {
-class MockTorControlDelegate : public TorControl::Delegate {
+class MockTorControlDelegate final : public TorControl::Delegate {
  public:
   MOCK_METHOD0(OnTorControlReady, void());
   MOCK_METHOD1(OnTorControlClosed, void(bool));
@@ -29,6 +29,13 @@ class MockTorControlDelegate : public TorControl::Delegate {
   MOCK_METHOD2(OnTorRawAsync, void(const std::string&, const std::string&));
   MOCK_METHOD2(OnTorRawMid, void(const std::string&, const std::string&));
   MOCK_METHOD2(OnTorRawEnd, void(const std::string&, const std::string&));
+
+  base::WeakPtr<tor::TorControl::Delegate> AsWeakPtr() override {
+    return weak_ptr_factory_.GetWeakPtr();
+  }
+
+ private:
+  base::WeakPtrFactory<tor::TorControl::Delegate> weak_ptr_factory_{this};
 };
 }  // namespace
 

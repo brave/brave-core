@@ -111,8 +111,10 @@ function AdvancedControlsContent () {
 
   const adsListCount = siteBlockInfo?.adsList.length ?? 0
   const jsListCount = siteBlockInfo?.blockedJsList.length ?? 0
+  const invokedWebcompatListCount = siteBlockInfo?.invokedWebcompatList.length ?? 0
   const isHttpsByDefaultEnabled = loadTimeData.getBoolean('isHttpsByDefaultEnabled')
   const showStrictFingerprintingMode = loadTimeData.getBoolean('showStrictFingerprintingMode')
+  const isWebcompatExceptionsServiceEnabled = loadTimeData.getBoolean('isWebcompatExceptionsServiceEnabled')
   const isTorProfile = loadTimeData.getBoolean('isTorProfile')
   const isForgetFirstPartyStorageEnabled = loadTimeData.getBoolean(
     'isForgetFirstPartyStorageEnabled'
@@ -209,7 +211,16 @@ function AdvancedControlsContent () {
               disabled={siteBlockInfo?.isBraveShieldsManaged}
             />
             </label>}
-          </div>
+            </div>
+            <S.CountButton
+              title={invokedWebcompatListCount.toString()}
+              hidden={!isWebcompatExceptionsServiceEnabled}
+              aria-label={getLocale('braveShieldsFingerprintingBlockedStd')}
+              onClick={() => setViewType?.(ViewType.FingerprintList)}
+              disabled={invokedWebcompatListCount <= 0 || siteSettings?.fingerprintMode === FingerprintMode.ALLOW_MODE}
+            >
+              {invokedWebcompatListCount > 99 ? '99+' : invokedWebcompatListCount}
+            </S.CountButton>
         </S.ControlGroup>
         <S.ControlGroup>
           <div className="col-2">

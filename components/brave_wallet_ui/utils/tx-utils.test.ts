@@ -128,16 +128,6 @@ describe('getTransactionGas()', () => {
 
 describe('getETHSwapTransactionBuyAndSellTokens', () => {
   it('should detect the correct but/swap tokens of a transaction', () => {
-    const fillPath = `${
-      mockBasicAttentionToken.contractAddress //
-    }${
-      // only the first token has the "0x" prefix
-      mockBitcoinErc20Token.contractAddress.replace('0x', '') //
-    }`
-
-    const sellAmountArg = '1'
-    const minBuyAmountArg = '2'
-
     const { buyAmountWei, sellAmountWei, buyToken, sellToken } =
       getETHSwapTransactionBuyAndSellTokens({
         tokensList: mockErc20TokensList,
@@ -151,8 +141,7 @@ describe('getETHSwapTransactionBuyAndSellTokens', () => {
           id: 'swap',
           originInfo: undefined,
           submittedTime: { microseconds: Date.now() },
-          // (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
-          txArgs: [fillPath, sellAmountArg, minBuyAmountArg],
+          txArgs: [],
           txDataUnion: {
             ethTxData1559: {
               baseData: {
@@ -174,7 +163,18 @@ describe('getETHSwapTransactionBuyAndSellTokens', () => {
           txHash: '123',
           txParams: [],
           txStatus: BraveWallet.TransactionStatus.Unapproved,
-          txType: BraveWallet.TransactionType.ETHSwap
+          txType: BraveWallet.TransactionType.ETHSwap,
+          isRetriable: false,
+          swapInfo: {
+            fromCoin: mockBasicAttentionToken.coin,
+            fromChainId: mockBasicAttentionToken.chainId,
+            fromAsset: mockBasicAttentionToken.contractAddress,
+            fromAmount: '1',
+            toCoin: mockBitcoinErc20Token.coin,
+            toChainId: mockBitcoinErc20Token.chainId,
+            toAsset: mockBitcoinErc20Token.contractAddress,
+            toAmount: '2'
+          } as BraveWallet.SwapInfo
         },
         nativeAsset: makeNetworkAsset(mockNetwork)
       })
@@ -187,8 +187,8 @@ describe('getETHSwapTransactionBuyAndSellTokens', () => {
     expect(buyToken?.contractAddress).toBe(
       mockBitcoinErc20Token.contractAddress
     )
-    expect(buyAmountWei.value?.toString()).toEqual(minBuyAmountArg)
-    expect(sellAmountWei.value?.toString()).toEqual(sellAmountArg)
+    expect(buyAmountWei.format()).toEqual('2')
+    expect(sellAmountWei.format()).toEqual('1')
   })
 })
 

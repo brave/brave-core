@@ -4,12 +4,12 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveStore
 import BraveUI
 import OSLog
 import Preferences
 import SwiftUI
 import os.log
-import BraveStore
 
 public struct AIChatLeoSkusLogsView: View {
   @State
@@ -34,7 +34,7 @@ public struct AIChatLeoSkusLogsView: View {
     .navigationTitle("Leo Skus Logs")
     .toolbar {
       Button("Copy") {
-        UIPasteboard.general.setValue(text, forPasteboardType: "public.plain-text")
+        UIPasteboard.general.string = text
       }
     }
   }
@@ -67,11 +67,40 @@ public struct AIChatLeoSkusLogsView: View {
 
     do {
       let credentials = try await BraveSkusSDK.shared.credentialsSummary(for: .leo)
-      result += "Credentials: \(credentials)\n"
+      if let jsonData = try? jsonEncoder.encode(credentials),
+        let credentialsJSON = String(data: jsonData, encoding: .utf8)
+      {
+        result += "Credentials: \(credentialsJSON)\n"
+      } else {
+        result += "Credentials: \(credentials)\n"
+      }
     } catch {
       result += "Credentials Error: \(error)\n"
     }
 
     return result
   }
+
+  /// A custom JSON Encoder that handles encoding Skus Object dates as ISO-8601
+  /// with optional milli-seconds
+  private let jsonEncoder: JSONEncoder = {
+    let formatter = ISO8601DateFormatter()
+    formatter.formatOptions = [
+      .withYear,
+      .withMonth,
+      .withDay,
+      .withTime,
+      .withDashSeparatorInDate,
+      .withColonSeparatorInTime,
+    ]
+
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = [.prettyPrinted, .withoutEscapingSlashes, .sortedKeys]
+    encoder.keyEncodingStrategy = .convertToSnakeCase
+    encoder.dateEncodingStrategy = .custom({ date, encoder in
+      var container = encoder.singleValueContainer()
+      try container.encode(formatter.string(from: date))
+    })
+    return encoder
+  }()
 }

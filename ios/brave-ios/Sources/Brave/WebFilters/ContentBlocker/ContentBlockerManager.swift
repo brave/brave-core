@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveShields
 import Data
 import Foundation
@@ -100,6 +101,7 @@ import os.log
 
     case generic(GenericBlocklistType)
     case engineSource(GroupedAdBlockEngine.Source, engineType: GroupedAdBlockEngine.EngineType)
+    case engineGroup(id: String, engineType: GroupedAdBlockEngine.EngineType)
 
     private var identifier: String {
       switch self {
@@ -113,7 +115,11 @@ import os.log
           return [Self.filterListPrefix, "url", uuid].joined(separator: "-")
         case .filterListText:
           return [Self.filterListPrefix, "text"].joined(separator: "-")
+        case .slimList:
+          return [Self.filterListPrefix, "slim-list"].joined(separator: "-")
         }
+      case .engineGroup(let id, _):
+        return [Self.filterListPrefix, "group", id].joined(separator: "-")
       }
     }
 
@@ -121,7 +127,7 @@ import os.log
       switch self {
       case .generic(let genericType):
         return genericType.mode(isAggressiveMode: isAggressiveMode)
-      case .engineSource(_, let engineType):
+      case .engineSource(_, let engineType), .engineGroup(_, let engineType):
         switch engineType {
         case .standard:
           return isAggressiveMode ? .aggressive : .standard
@@ -279,7 +285,7 @@ import os.log
     for blocklistType: BlocklistType,
     version: String,
     modes: [BlockingMode]
-  ) async {
+  ) async throws {
     guard !modes.isEmpty else { return }
 
     let result: ContentBlockingRulesResult
@@ -292,9 +298,9 @@ import os.log
 
     do {
       do {
-        let filterSet = try String(contentsOf: localFileURL)
         result = try await Task.detached {
-          try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
+          let filterSet = try String(contentsOf: localFileURL)
+          return try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
         }.value
         Self.signpost.endInterval("convertRules", state)
       } catch {
@@ -309,10 +315,16 @@ import os.log
         modes: modes
       )
     } catch {
-      ContentBlockerManager.log.error(
-        "Failed to compile rule list for `\(blocklistType.debugDescription)`"
-      )
+      Self.signpost.endInterval("convertRules", state, "\(error.localizedDescription)")
+      throw error
     }
+
+    try await compile(
+      encodedContentRuleList: result.rulesJSON,
+      for: blocklistType,
+      version: version,
+      modes: modes
+    )
   }
 
   /// Compile the given resource and store it in cache for the given blocklist type and specified modes
@@ -448,10 +460,6 @@ import os.log
         if let existingVersion = versions.value[identifier], existingVersion < version {
           return true
         } else {
-          ContentBlockerManager.log.debug(
-            "Rule list already compiled for `\(type.makeIdentifier(for: mode))` v\(version)"
-          )
-
           return false
         }
       } else {
@@ -543,14 +551,15 @@ import os.log
       return
     }
 
-    let encodedContentRuleList = try String(contentsOf: fileURL)
-    let type = BlocklistType.generic(genericType)
-    try await compile(
-      encodedContentRuleList: encodedContentRuleList,
-      for: type,
-      version: genericType.version,
-      modes: modes
-    )
+    if let encodedContentRuleList = await AsyncFileManager.default.utf8Contents(at: fileURL) {
+      let type = BlocklistType.generic(genericType)
+      try await compile(
+        encodedContentRuleList: encodedContentRuleList,
+        for: type,
+        version: genericType.version,
+        modes: modes
+      )
+    }
   }
 
   /// Return the valid generic types for the given domain
@@ -559,7 +568,7 @@ import os.log
     var results = Set<GenericBlocklistType>()
 
     // Get domain specific rule types
-    if domain.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true) {
+    if domain.globalBlockAdsAndTrackingLevel.isEnabled {
       results = results.union([.blockAds, .blockTrackers])
     }
 

@@ -26,28 +26,29 @@ TEST(BraveAdsIssuersFeatureTest, IsDisabled) {
   EXPECT_FALSE(base::FeatureList::IsEnabled(kIssuersFeature));
 }
 
-TEST(BraveAdsIssuersFeatureTest, MaximumIssuerPublicKeys) {
+TEST(BraveAdsIssuersFeatureTest, MaximumTokenIssuerPublicKeys) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kIssuersFeature, {{"maximum_public_keys", "1"}});
+      kIssuersFeature, {{"maximum_token_issuer_public_keys", "1"}});
 
   // Act & Assert
-  EXPECT_EQ(1, kMaximumIssuerPublicKeys.Get());
+  EXPECT_EQ(1, kMaximumTokenIssuerPublicKeys.Get());
 }
 
-TEST(BraveAdsIssuersFeatureTest, DefaultMaximumIssuerPublicKeys) {
+TEST(BraveAdsIssuersFeatureTest, DefaultMaximumTokenIssuerPublicKeys) {
   // Act & Assert
-  EXPECT_EQ(6, kMaximumIssuerPublicKeys.Get());
+  EXPECT_EQ(6, kMaximumTokenIssuerPublicKeys.Get());
 }
 
-TEST(BraveAdsIssuersFeatureTest, DefaultMaximumIssuerPublicKeysWhenDisabled) {
+TEST(BraveAdsIssuersFeatureTest,
+     DefaultMaximumTokenIssuerPublicKeysWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kIssuersFeature);
 
   // Act & Assert
-  EXPECT_EQ(6, kMaximumIssuerPublicKeys.Get());
+  EXPECT_EQ(6, kMaximumTokenIssuerPublicKeys.Get());
 }
 
 }  // namespace brave_ads

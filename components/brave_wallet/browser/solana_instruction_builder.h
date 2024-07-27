@@ -61,6 +61,9 @@ SolanaInstruction SetComputeUnitPrice(uint64_t price);
 
 namespace bubblegum_program {
 
+const std::vector<uint8_t> kTransferInstructionDiscriminator = {
+    163, 52, 200, 231, 140, 3, 69, 186};
+
 // https://github.com/metaplex-foundation/mpl-bubblegum/blob/5b3cdfc6b236773be70dc1f0b0cb84badf881248/clients/js-solita/src/generated/instructions/transfer.ts#L81
 std::optional<SolanaInstruction> Transfer(
     uint32_t canopy_depth,

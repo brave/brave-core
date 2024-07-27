@@ -9,8 +9,8 @@
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
@@ -27,10 +27,10 @@ namespace {
 constexpr char kDimensions[] = "200x100";
 }  // namespace
 
-class BraveAdsInlineContentAdIntegrationTest : public UnitTestBase {
+class BraveAdsInlineContentAdIntegrationTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp(/*is_integration_test=*/true);
+    test::TestBase::SetUp(/*is_integration_test=*/true);
 
     NotifyTabDidChange(
         /*tab_id=*/1, /*redirect_chain=*/{GURL("brave://newtab")},
@@ -39,11 +39,11 @@ class BraveAdsInlineContentAdIntegrationTest : public UnitTestBase {
   }
 
   void SetUpMocks() override {
-    const URLResponseMap url_responses = {
+    const test::URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
          {{net::HTTP_OK,
            /*response_body=*/"/catalog_with_inline_content_ad.json"}}}};
-    MockUrlResponses(ads_client_mock_, url_responses);
+    test::MockUrlResponses(ads_client_mock_, url_responses);
   }
 
   void TriggerInlineContentAdEventAndVerifiyExpectations(
@@ -161,7 +161,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest,
 
         // Act & Assert
         TriggerInlineContentAdEventAndVerifiyExpectations(
-            ad->placement_id, kInvalidCreativeInstanceId,
+            ad->placement_id, test::kInvalidCreativeInstanceId,
             mojom::InlineContentAdEventType::kViewedImpression,
             /*should_fire_event=*/false);
       });

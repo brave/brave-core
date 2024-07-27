@@ -259,13 +259,13 @@ class OpenSearchParser {
     self.pluginMode = pluginMode
   }
 
-  func parse(_ file: String, engineID: String, referenceURL: String?) -> OpenSearchEngine? {
+  func parse(_ file: String, engineID: String, referenceURL: String?) async -> OpenSearchEngine? {
     guard let data = try? Data(contentsOf: URL(fileURLWithPath: file)) else {
       print("Invalid search file")
       return nil
     }
 
-    return parse(data, engineID: engineID, referenceURL: referenceURL)
+    return await parse(data, engineID: engineID, referenceURL: referenceURL)
   }
 
   func parse(
@@ -274,7 +274,7 @@ class OpenSearchParser {
     referenceURL: String? = nil,
     image: UIImage? = nil,
     isCustomEngine: Bool = false
-  ) -> OpenSearchEngine? {
+  ) async -> OpenSearchEngine? {
     guard let indexer = try? XMLDocument(data: data),
       let docIndexer = indexer.root
     else {

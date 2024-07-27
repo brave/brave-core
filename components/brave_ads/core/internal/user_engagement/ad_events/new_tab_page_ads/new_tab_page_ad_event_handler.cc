@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
@@ -45,15 +46,14 @@ void NewTabPageAdEventHandler::FireEvent(
 
   creative_ads_database_table_.GetForCreativeInstanceId(
       creative_instance_id,
-      base::BindOnce(
-          &NewTabPageAdEventHandler::GetForCreativeInstanceIdCallback,
-          weak_factory_.GetWeakPtr(), placement_id, event_type,
-          std::move(callback)));
+      base::BindOnce(&NewTabPageAdEventHandler::GetCreativeAdCallback,
+                     weak_factory_.GetWeakPtr(), placement_id, event_type,
+                     std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void NewTabPageAdEventHandler::GetForCreativeInstanceIdCallback(
+void NewTabPageAdEventHandler::GetCreativeAdCallback(
     const std::string& placement_id,
     const mojom::NewTabPageAdEventType event_type,
     FireNewTabPageAdEventHandlerCallback callback,
@@ -69,22 +69,35 @@ void NewTabPageAdEventHandler::GetForCreativeInstanceIdCallback(
                              std::move(callback));
   }
 
-  const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad, placement_id);
+  const NewTabPageAdInfo ad = BuildNewTabPageAd(placement_id, creative_ad);
+  if (!ad.IsValid()) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066):
+    // Detect potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Invalid new tab page ad");
+    base::debug::DumpWithoutCrashing();
+
+    BLOG(1, "Failed to fire new tab page ad event due to the ad being invalid");
+
+    return FailedToFireEvent(placement_id, creative_instance_id, event_type,
+                             std::move(callback));
+  }
 
   ad_events_database_table_.GetUnexpiredForType(
       mojom::AdType::kNewTabPageAd,
-      base::BindOnce(&NewTabPageAdEventHandler::GetForTypeCallback,
+      base::BindOnce(&NewTabPageAdEventHandler::GetAdEventsCallback,
                      weak_factory_.GetWeakPtr(), ad, event_type,
                      std::move(callback)));
 }
 
-void NewTabPageAdEventHandler::GetForTypeCallback(
+void NewTabPageAdEventHandler::GetAdEventsCallback(
     const NewTabPageAdInfo& ad,
     const mojom::NewTabPageAdEventType event_type,
     FireNewTabPageAdEventHandlerCallback callback,
     const bool success,
     const AdEventList& ad_events) {
   if (!success) {
+    BLOG(1, "New tab page ad: Failed to get ad events");
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
                              event_type, std::move(callback));
   }
@@ -105,6 +118,13 @@ void NewTabPageAdEventHandler::GetForTypeCallback(
                              event_type, std::move(callback));
   }
 
+  FireEvent(ad, event_type, std::move(callback));
+}
+
+void NewTabPageAdEventHandler::FireEvent(
+    const NewTabPageAdInfo& ad,
+    const mojom::NewTabPageAdEventType event_type,
+    FireNewTabPageAdEventHandlerCallback callback) const {
   const auto ad_event = NewTabPageAdEventFactory::Build(event_type);
   ad_event->FireEvent(
       ad, base::BindOnce(&NewTabPageAdEventHandler::FireEventCallback,

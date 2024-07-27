@@ -11,7 +11,7 @@ enum BraveS3Resource: Hashable, DownloadResourceInterface {
   /// The rules processed by slim-list which are filtered out for iOS usage
   ///
   /// Based on the following rules: https://github.com/brave/adblock-resources/blob/master/filter_lists/default.json
-  case adBlockRules
+  case slimList
 
   /// The name of the header value that contains the service key
   private static let servicesKeyHeaderValue = "BraveServiceKey"
@@ -28,7 +28,7 @@ enum BraveS3Resource: Hashable, DownloadResourceInterface {
   /// The folder name under which this data should be saved under
   var cacheFolderName: String {
     switch self {
-    case .adBlockRules:
+    case .slimList:
       return "abp-data"
     }
   }
@@ -36,7 +36,7 @@ enum BraveS3Resource: Hashable, DownloadResourceInterface {
   /// Get the file name that is stored on the device
   var cacheFileName: String {
     switch self {
-    case .adBlockRules:
+    case .slimList:
       return "latest.txt"
     }
   }
@@ -44,7 +44,7 @@ enum BraveS3Resource: Hashable, DownloadResourceInterface {
   /// Get the external path for the given filter list and this resource type
   var externalURL: URL {
     switch self {
-    case .adBlockRules:
+    case .slimList:
       return Self.baseResourceURL.appendingPathComponent("/ios/latest.txt")
     }
   }

@@ -1,7 +1,7 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_ACTOR_NODE_SCRIPT_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_ACTOR_NODE_SCRIPT_H_
@@ -14,18 +14,10 @@ namespace brave_page_graph {
 
 class NodeScript : public NodeActor {
  public:
-  NodeScript(GraphItemContext* context,
-             const ScriptId script_id,
-             const ScriptData& script_data);
-  ~NodeScript() override;
+  NodeScript(GraphItemContext* context, const ScriptId script_id);
 
   ScriptId GetScriptId() const { return script_id_; }
-  const ScriptData& GetScriptData() const { return script_data_; }
 
-  const String& GetURL() const { return url_; }
-  void SetURL(const String url) { url_ = url; }
-
-  ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
 
   void AddGraphMLAttributes(xmlDocPtr doc,
@@ -33,13 +25,8 @@ class NodeScript : public NodeActor {
 
   bool IsNodeScript() const override;
 
- protected:
-  void AddInEdge(const GraphEdge* in_edge) override;
-
  private:
   const ScriptId script_id_;
-  const ScriptData script_data_;
-  String url_;
 };
 
 }  // namespace brave_page_graph

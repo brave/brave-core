@@ -12,7 +12,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/resources/language_components_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
@@ -22,10 +22,10 @@
 
 namespace brave_ads {
 
-class BraveAdsUserModelBuilderTest : public UnitTestBase {
+class BraveAdsUserModelBuilderTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     scoped_feature_list_.InitWithFeatures(
         /*enabled_features=*/{kPurchaseIntentFeature,
@@ -35,11 +35,11 @@ class BraveAdsUserModelBuilderTest : public UnitTestBase {
     targeting_helper_ =
         std::make_unique<test::TargetingHelper>(task_environment_);
 
-    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                     kCountryComponentId);
+    NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                     test::kCountryComponentId);
 
-    NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
-                                     kLanguageComponentId);
+    NotifyDidUpdateResourceComponent(test::kLanguageComponentManifestVersion,
+                                     test::kLanguageComponentId);
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;

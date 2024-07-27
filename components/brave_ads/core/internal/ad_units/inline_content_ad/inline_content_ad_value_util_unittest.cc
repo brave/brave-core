@@ -7,7 +7,7 @@
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
@@ -18,7 +18,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kJson[] =
+constexpr char kInlineContentAdAsJson[] =
     R"(
         {
           "advertiserId": "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2",
@@ -38,11 +38,12 @@ constexpr char kJson[] =
 
 }  // namespace
 
-class BraveAdsInlineContentAdValueUtilTest : public UnitTestBase {};
+class BraveAdsInlineContentAdValueUtilTest : public test::TestBase {};
 
-TEST_F(BraveAdsInlineContentAdValueUtilTest, FromValue) {
+TEST_F(BraveAdsInlineContentAdValueUtilTest, InlineContentAdFromValue) {
   // Arrange
-  const base::Value::Dict dict = base::test::ParseJsonDict(kJson);
+  const base::Value::Dict dict =
+      base::test::ParseJsonDict(kInlineContentAdAsJson);
 
   // Act
   const InlineContentAdInfo ad = InlineContentAdFromValue(dict);
@@ -51,22 +52,22 @@ TEST_F(BraveAdsInlineContentAdValueUtilTest, FromValue) {
   const CreativeInlineContentAdInfo creative_ad =
       test::BuildCreativeInlineContentAd(
           /*should_generate_random_uuids=*/false);
-  EXPECT_EQ(BuildInlineContentAd(creative_ad, kPlacementId), ad);
+  EXPECT_EQ(BuildInlineContentAd(creative_ad, test::kPlacementId), ad);
 }
 
-TEST_F(BraveAdsInlineContentAdValueUtilTest, ToValue) {
+TEST_F(BraveAdsInlineContentAdValueUtilTest, InlineContentAdToValue) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad =
       test::BuildCreativeInlineContentAd(
           /*should_generate_random_uuids=*/false);
   const InlineContentAdInfo ad =
-      BuildInlineContentAd(creative_ad, kPlacementId);
+      BuildInlineContentAd(creative_ad, test::kPlacementId);
 
   // Act
   const base::Value::Dict dict = InlineContentAdToValue(ad);
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(kJson), dict);
+  EXPECT_EQ(base::test::ParseJsonDict(kInlineContentAdAsJson), dict);
 }
 
 }  // namespace brave_ads

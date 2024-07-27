@@ -11,9 +11,9 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_ads/core/internal/history/browsing_history.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_interface.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/public/history/site_history.h"
 
 namespace brave_ads {
 
@@ -37,7 +37,7 @@ class ExclusionRulesBase {
   ExclusionRulesBase(const AdEventList& ad_events,
                      const SubdivisionTargeting& subdivision_targeting,
                      const AntiTargetingResource& anti_targeting_resource,
-                     const BrowsingHistoryList& browsing_history);
+                     const SiteHistoryList& site_history);
 
   std::vector<std::unique_ptr<ExclusionRuleInterface<CreativeAdInfo>>>
       exclusion_rules_;

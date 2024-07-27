@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Foundation
 import Shared
 import WebKit
@@ -17,7 +18,7 @@ public class ReaderModeHandler: InternalSchemeResponse {
     self.profile = profile
   }
 
-  public func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
+  public func response(forRequest request: URLRequest) async -> (URLResponse, Data)? {
     guard let _url = request.url,
       let url = InternalURL(_url),
       let readerModeUrl = url.extractedUrlParam
@@ -105,7 +106,7 @@ public class ReaderModeHandler: InternalSchemeResponse {
     )
 
     if url.url.lastPathComponent == "page-exists" {
-      let statusCode = ReaderModeHandler.readerModeCache.contains(readerModeUrl) ? 200 : 400
+      let statusCode = await ReaderModeHandler.readerModeCache.contains(readerModeUrl) ? 200 : 400
       if let response = HTTPURLResponse(
         url: url.url,
         statusCode: statusCode,
@@ -131,7 +132,7 @@ public class ReaderModeHandler: InternalSchemeResponse {
     }
 
     do {
-      let readabilityResult = try ReaderModeHandler.readerModeCache.get(readerModeUrl)
+      let readabilityResult = try await ReaderModeHandler.readerModeCache.get(readerModeUrl)
       // We have this page in our cache, so we can display it. Just grab the correct style from the
       // profile and then generate HTML from the Readability results.
       var readerModeStyle = defaultReaderModeStyle
@@ -141,24 +142,24 @@ public class ReaderModeHandler: InternalSchemeResponse {
         }
       }
 
-      if let html = ReaderModeUtils.generateReaderContent(
+      if let html = await ReaderModeUtils.generateReaderContent(
         readabilityResult,
         initialStyle: readerModeStyle,
         titleNonce: setTitleNonce
-      ),
-        let data = html.data(using: .utf8)
-      {
+      ) {
         // Apply a Content Security Policy that disallows everything except images from anywhere and fonts and css from our internal server
-
-        if let response = HTTPURLResponse(
-          url: url.url,
-          statusCode: 200,
-          httpVersion: "HTTP/1.1",
-          headerFields: headers
-        ) {
-          return (response, data)
+        guard
+          let response = HTTPURLResponse(
+            url: url.url,
+            statusCode: 200,
+            httpVersion: "HTTP/1.1",
+            headerFields: headers
+          )
+        else {
+          return nil
         }
-        return nil
+        let data = Data(html.utf8)
+        return (response, data)
       }
     } catch {
       // This page has not been converted to reader mode yet. This happens when you for example add an
@@ -172,38 +173,34 @@ public class ReaderModeHandler: InternalSchemeResponse {
         readerModeUrl,
         cache: ReaderModeHandler.readerModeCache
       )
-      if let readerViewLoadingPath = Bundle.module.path(
-        forResource: "ReaderViewLoading",
-        ofType: "html"
-      ) {
-        do {
-          var contents = try String(contentsOfFile: readerViewLoadingPath)
-          let mapping = [
-            "%ORIGINAL-URL%": readerModeUrl.absoluteString,
-            "%READER-URL%": url.url.absoluteString,
-            "%LOADING-TEXT%": Strings.readerModeLoadingContentDisplayText,
-            "%LOADING-FAILED-TEXT%": Strings.readerModePageCantShowDisplayText,
-            "%LOAD-ORIGINAL-TEXT%": Strings.readerModeLoadOriginalLinkText,
-          ]
+      if let asset = Bundle.module.url(forResource: "ReaderViewLoading", withExtension: "html"),
+        var contents = await AsyncFileManager.default.utf8Contents(at: asset)
+      {
+        let mapping = [
+          "%ORIGINAL-URL%": readerModeUrl.absoluteString,
+          "%READER-URL%": url.url.absoluteString,
+          "%LOADING-TEXT%": Strings.readerModeLoadingContentDisplayText,
+          "%LOADING-FAILED-TEXT%": Strings.readerModePageCantShowDisplayText,
+          "%LOAD-ORIGINAL-TEXT%": Strings.readerModeLoadOriginalLinkText,
+        ]
 
-          mapping.forEach {
-            contents = contents.replacingOccurrences(of: $0.key, with: $0.value)
-          }
+        mapping.forEach {
+          contents = contents.replacingOccurrences(of: $0.key, with: $0.value)
+        }
 
-          if let response = HTTPURLResponse(
+        guard
+          let response = HTTPURLResponse(
             url: url.url,
             statusCode: 200,
             httpVersion: "HTTP/1.1",
             headerFields: ["Content-Type": "text/html; charset=UTF-8"]
-          ),
-            let data = contents.data(using: .utf8)
-          {
-            return (response, data)
-          }
+          )
+        else {
           return nil
-        } catch {
-          assertionFailure("CANNOT LOAD  ReaderViewLoading.html: \(error)")
         }
+
+        let data = Data(contents.utf8)
+        return (response, data)
       }
     }
 

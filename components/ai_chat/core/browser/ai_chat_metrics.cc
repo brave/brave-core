@@ -211,7 +211,7 @@ void AIChatMetrics::RecordReset() {
   UMA_HISTOGRAM_EXACT_LINEAR(kEnabledHistogramName,
                              std::numeric_limits<int>::max() - 1, 3);
   UMA_HISTOGRAM_EXACT_LINEAR(kAcquisitionSourceHistogramName,
-                             std::numeric_limits<int>::max() - 1, 2);
+                             std::numeric_limits<int>::max() - 1, 3);
 }
 
 void AIChatMetrics::OnPremiumStatusUpdated(bool is_new_user,

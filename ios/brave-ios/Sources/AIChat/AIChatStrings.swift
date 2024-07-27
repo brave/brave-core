@@ -432,13 +432,6 @@ extension Strings {
       value: "Maybe Later",
       comment: "The title for dismiss button when premium upsell when paywall is triggered"
     )
-    public static let paywallRateLimitDismissActionTitle = NSLocalizedString(
-      "aichat.paywallRateLimitDismissActionTitle",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value: "Continue with Basic Model",
-      comment: "The title for dismiss button when rate limit is shown after sending a message"
-    )
     public static let paywallUpsellModelTypeTopicTitle = NSLocalizedString(
       "aichat.paywallUpsellModelTypeTopicTitle",
       tableName: "BraveLeo",
@@ -556,14 +549,14 @@ extension Strings {
       "aichat.advancedSettingsDefaultModelTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Default model for new conversations",
+      value: "Default Model",
       comment: "The title for the settings to change default model for conversations"
     )
     public static let advancedSettingsHeaderTitle = NSLocalizedString(
       "aichat.advancedSettingsHeaderTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Leo is an AI-powered smart assistant. Built right into the browser.",
+      value: "Leo is an AI-powered smart assistant, built right into the browser.",
       comment: "The title for the header for adjusting leo ai settings"
     )
     public static let advancedSettingsSubscriptionStatusTitle = NSLocalizedString(
@@ -946,6 +939,15 @@ extension Strings {
         "Leo",
       comment:
         "The name of the AI-Assistant that's responsing to the user"
+    )
+    public static let leoCodeExampleDefaultTitle = NSLocalizedString(
+      "aichat.leoCodeExampleDefaultTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Code example",
+      comment:
+        "The default title displayed above a code block when the language of the code is not known."
     )
   }
 }

@@ -26,9 +26,6 @@
 <translation id="8776285424728638733">GB</translation>
 <translation id="8427933533533814946">ፎቶ በ</translation>
 <translation id="7108338896283013870">ደብቅ</translation>
-<translation id="7115515527894388910">ምርጫዎን ያስተካክሉ</translation>
-<translation id="7606029853066610626">እልባቶችዎን ይመልከቱ እንዲሁም ያስተዳድሩ</translation>
-<translation id="5550994254534676787">የጉብኝት ታሪኮን ይመልከቱ</translation>
 <translation id="985862351129593673">ዳሽቦርድን አብጅ</translation>
 <translation id="7180865173735832675">አብጅ</translation>
 <translation id="8522669544471808198">የዳራ ምስሎችን አሳይ</translation>
@@ -57,11 +54,13 @@
 <translation id="430556192781857057">ከፍተኛ ጣቢያዎች ብዙውን ጊዜ በሚጎበኟቸው ድር ጣቢያዎች ላይ በመመርኮዝ ነው የሚጠቆሙት</translation>
 <translation id="1773147648972887693">በተደጋጋሚ የተጎበኙን አሳይ</translation>
 <translation id="4546260624932151782">ተወዳጆችን አሳይ</translation>
+<translation id="5525668735313040116">ድሩን በግል ይፈልጉ</translation>
+<translation id="3435896845095436175">አንቃ</translation>
+<translation id="780301667611848630">አይ፣ አመሰግናለሁ</translation>
 <translation id="1230746063445072175">ከዚህ የተሻለ ግላዊነትን ይፈልጋሉ?</translation>
 <translation id="6699628638740071563">Googleን ለማስወገድ ጊዜው አሁን ነው።</translation>
 <translation id="2045455461902775806">የ Brave ፍለጋ አያዳላም ወይም ውጤቶችን አያጣራም፣ እንዲሁም እርስዎን፣ መጠይቆችዎን ወይም ጠቅታዎችዎን አይከታተልም።</translation>
 <translation id="6811221529729056895">ብሬቭ ፍለጋን አሁን ይሞክሩ</translation>
-<translation id="5525668735313040116">ድሩን በግል ይፈልጉ</translation>
 <translation id="3446024864193919737">የ Brave ሽልማቶችን አሳይ</translation>
 <translation id="5585019845078534178">ካርዶች</translation>
 <translation id="3870475560794762985">ስፖንሰር የተደረጉ ምስሎችን አሳይ</translation>
@@ -83,7 +82,6 @@
 <translation id="7610541582755894669">ግራዲየንቶች</translation>
 <translation id="1606851618930975029">በእያንዳንዱ አዲስ ትር ላይ ያድሱ</translation>
 <translation id="7040134046053881468">የ Rewards ፓነልን ይክፈቱ</translation>
-<translation id="9024104284526126630">በ Brave ውስጥ የግል ጥሪ መጀመር ይችላሉ።</translation>
 <translation id="370665806235115550">በመጫን ላይ…</translation>
 <translation id="4634933166298842522">የደንበኝነት ምዝገባዎችን ያስተዳድሩ</translation>
 <translation id="4108314971463891922">ተከተል</translation>
@@ -588,7 +586,6 @@
 <translation id="3026978804849658576">መግለጫውን ይመልከቱ</translation>
 <translation id="1848737374354350807">ቀሪ ሂሳብ</translation>
 <translation id="6516984207843289176">መለያ ያገናኙ</translation>
-<translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>ገንዘብ ለማግኘት ዝግጁ ነዎት?<ph name="BOLD_END"/>ከአጋሮቻችን ከአንዱ ጋር መለያ ያገናኙ ወይም ይፍጠሩ።</translation>
 <translation id="902298128239575729">ከBrave ሽልማቶች ጋር መዋጮዎችን ይላኩ</translation>
 <translation id="6276721355724491595">በሞግዚት የሚከፈት የህጻናት የባንክ ሂሳብ ካገናኙ በኋላ በትዕዛዝ አስተዋፅዎችን ለተወዳጅ ፈጣሪዎችዎ በBrave የሽልማቶች ቀሪ ሒሳብ መላክ ይችላሉ።</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
@@ -596,6 +593,7 @@
       other {በዚህ ወር, እርስዎ # ፈጣሪዎች የሆነውን በBrave ሽልማቶች የሚደገፈውን ጎብኝተዋል}
     }</translation>
 <translation id="6067959437127691361">የBrave ሽልማቶችን መጠቀም የድጋፍ ይዘት ፈጣሪዎችን ለመደገፍ ያግዛል እንዲሁም እርስዎ BAT እንዲያገኙ ያስችልዎታል።</translation>
+<translation id="944736176598169208">ሽልማቶች</translation>
 <translation id="2359808026110333948">ቀጥል</translation>
 <translation id="885805571521218129">ይህ በዚህ ወር ለBrave Ads የእርስዎን የተገመተው የገቢ መጠን ያንፀባርቃል።</translation>
 <translation id="3863981251715594911">እንዴት ይሰራል?</translation>
@@ -735,7 +733,6 @@
 <translation id="6180576227145734714">የግብይት መረጃ  'to' ሲገለጽ ልክ የሆነ አድራሻ መሆን አለበት</translation>
 <translation id="6688162556547723415">የተጠየቀው ዘዴ እና/ወይም መለያ በተጠቃሚው አልተፈቀደለትም።</translation>
 <translation id="8767749833522980474">ስወራ</translation>
-<translation id="944736176598169208">ሽልማቶች</translation>
 <translation id="6122742277607781713">ፖርትፎሊዮ</translation>
 <translation id="7020503656406658141">ዋጋዎች</translation>
 <translation id="3586775666459823714">NFT ዎች</translation>
@@ -774,7 +771,6 @@
 <translation id="2329227154184107678">ትዕዛዝን ይገምግሙ</translation>
 <translation id="3220443877821207794">መላክን ይገምግሙ</translation>
 <translation id="8530071505111489657">ተለዋጭ ስሞች የሉም</translation>
-<translation id="615791330696335475">ተለዋጭ ስም በስም ይፈልጉ</translation>
 <translation id="5009335307032488349">NFT በስም ፣ በመታወቂያ ይፈልጉ</translation>
 <translation id="8667560635828712526">ንብረት ይምረጡ</translation>
 <translation id="4853960199138416955">Brave የከፍያ አማራጭን በአሁኑ ጊዜ ቢትኮይን NFTs (ordinals) አይደግፍም። BTCን ከመደበኛው አድራሻ መላክ ሳይታሰብ ኦርዲናሎቹ እንዲተላለፉ ሊያደርግ ይችላል።</translation>
@@ -873,7 +869,6 @@
 <translation id="8275038454117074363">ያስመጡ</translation>
 <translation id="232925166623833246">ከሃርድዌር ዋሌት አስመጣ</translation>
 <translation id="4324198334837993695">ሃርድዌር</translation>
-<translation id="3067168166931605141">የመለያ ስም</translation>
 <translation id="1011614786846182272">እነዚህ መለያዎች ከWeb3 DApps ጋር ጥቅም ላይ ሊውሉ እና በእርስዎ ፖርትፎሊዮ ውስጥ ሊታዩ ይችላሉ። ነገር ግን፣ የሁለተኛ ደረጃ መለያዎችን ከዋናው መለያዎ ምትኬ በመልሶ ማግኛ ሐረግ በኩል ወደነበሩበት መመለስ እንደማይቻል ልብ ይበሉ።</translation>
 <translation id="1136772623587250243">ከቅንጥብ ሰሌዳ የግል ቁልፍን ለጥፍ</translation>
 <translation id="7978412674231730200">የግል ቁልፍ</translation>
@@ -1447,6 +1442,7 @@
 <translation id="5709875713144853427">ለመቀያየር ቶከን ይምረጡ</translation>
 <translation id="720404198240859011">ያለምንም ቀሪ ሂሳብ ቶከኖችን አሳይ</translation>
 <translation id="4886690455791686940">ዜሮ ቀሪ ሂሳብን ደብቅ</translation>
+<translation id="615791330696335475">ተለዋጭ ስም በስም ይፈልጉ</translation>
 <translation id="381485723922188688">አማራጭ</translation>
 <translation id="6680650203439190394">ደረጃ ይስጡ</translation>
 <translation id="2538996898605796431">የዋጋ ተጽዕኖ</translation>
@@ -1560,8 +1556,6 @@
 <translation id="1215089823252478557">የተገመተውን የሒሳብ ለውጥ ለመመልከት</translation>
 <translation id="2761574758015819991">ተንኮል-አዘል ሊሆኑ የሚችሉ ግብይቶችን ለመለየት</translation>
 <translation id="168533464844528463">የማታለል ሙከራዎችን ለመለየት</translation>
-<translation id="780301667611848630">አይ፣ አመሰግናለሁ</translation>
-<translation id="3435896845095436175">አንቃ</translation>
 <translation id="7269757150305059881">Brave የክፍያ አማራጭ ይህንን አገልግሎት ለመስጠት ከአጋር ጋር ይሰራል። ይህን በመፈቀድዎ፤ ከአጋራችን ጋር ያልተፈረሙ ግብይቶችን እና የእነርሱን DApp URL ለማጋራት ተስማምተዋል።</translation>
 <translation id="7790932700072432983">በማንኛውም ጊዜ ይቀይሩ በሚከተለው <ph name="TAG_BEFORE"/>ቅንብሮች<ph name="TAG_AFTER"/> ውስጥ ይቀይሩ።</translation>
 <translation id="8688672835843460752">ይገኛል</translation>
@@ -1844,7 +1838,6 @@
 <translation id="7921782882718083488">ይህንን ገጽ ያጠቃልሉ</translation>
 <translation id="7932221068776853847">የዚህን ገጽ ይዘት ለ Leo መላክ ለማቆም ግንኙነቱን ያቋርጡ እና አዲስ ውይይት ይጀምሩ</translation>
 <translation id="1167803637855350748">ከ Leo ጋር በመገናኘት የአውታረ መረብ ችግር ነበር፣ ግንኙነትዎን ያረጋግጡ እና እንደገና ይሞክሩ።</translation>
-<translation id="1996126325390835277">Leo አሁን በጣም ስራ በዝቶበታል። እባክዎ ከጥቂት ደቂቃዎች በኋላ እንደገና ይሞክሩ።</translation>
 <translation id="7144878232160441200">እንደገና ሞክር</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> በ <ph name="COMPANY_NAME"/></translation>
 <translation id="6187065185557150870">ጭውውት</translation>
@@ -1855,7 +1848,6 @@
 <translation id="3037594989275592390">የቋንቋ ሞዴሎች</translation>
 <translation id="6637015365469044269">አሁን አሻሽል</translation>
 <translation id="849535826888024304">የምላሽ ደረጃ ገደብ ላይ ደርሷል</translation>
-<translation id="2252128900328632803">ለPremium በመመዝገብ ከፍ ያለ የምላሽ መጠንን ይክፈቱ። በዚሁ ለመቀጠል ከፈለጉ ትንሽ ደካማ በሆነው Llama2 13b ነፃ ሞዴላችን መቀየር ይችላሉ።</translation>
 <translation id="4173478269537830374">የተለያዩ የ AI ሞዴሎችን ያስሱ</translation>
 <translation id="3245401959451976966">የእርስዎን የፈጠራ አቅምን ይክፈቱ</translation>
 <translation id="4165928407303989823">በርዕሰ ጉዳዩ ላይ ይቆዩ</translation>
@@ -1901,7 +1893,6 @@
 <translation id="5642775487085641191">ውይይት ብቻ ነው የፈለጉት?</translation>
 <translation id="8857222718794549840">የፈለጉትን ይጠይቁኝ! ስለፈለጉት ርዕስ ማውራት እንችላለን። የተሻሉ መልሶችን ለመስጠት ሁልጊዜ እየተማርኩ እና እያሻሻልኩ ነው።</translation>
 <translation id="9051226419897869406">ከBrave Leo ጋር በግል ይነጋገሩ</translation>
-<translation id="1173570303649278801">ምላሽ ለመስጠት የገጽ አውድን ይጠቀሙ</translation>
 <translation id="8599503173207256429">ስለዚህ ገጽ ለመጠየቅ ያብሩ። ይዘቱ ከመልእክቶችዎ ጋር ለ Brave Leo ይላካል።</translation>
 <translation id="318819763888864209">ሁሉም የደንበኝነት ምዝገባዎች በራስ-የታደሱ ናቸው ነገርግን ከመታደሳቸው በፊት በማንኛውም ጊዜ ሊሰረዙ ይችላሉ።</translation>
 <translation id="5091223967610958">Leo ን የተሻለ ለማድረግ እንዲረዳን አሁን ያሉበትን ገጽ አስተናጋጅ ስም (<ph name="HOST_NAME"/>) ያጋሩ።</translation>

@@ -417,9 +417,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="7275773481201277457">Rādīt Brave statistiku</translation>
 <translation id="8297488609722895137">Fotografēja <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Pieskaroties pie Sākt izmantot Brave Rewards, jūs piekrītat <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Nopelniet, apskatot šo fona attēlu.</translation>
 <translation id="7136586167396205364">Paslēpt sponsorētos attēlus</translation>
-<translation id="2927095357213611519">Jūs varat atbalstīt tīmekļa satura veidotājus ar marķieriem.\nPelniet marķierus, skatoties konfidencialitāti cienošas reklāmas.</translation>
 <translation id="2898634658146274982">Atvērt ārējās saites Brave pārlūkā</translation>
 <translation id="5616508928556767259">Atvērt saites no citām lietotnēm Brave tīmekļa skatā. Piezīme: Brave ir jābūt iestatītam kā noklusējuma pārlūkam.</translation>
 <translation id="2394961582378297792">Izrakstījies</translation>
@@ -477,6 +475,10 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="8912304686498704084">IESLĒGT</translation>
 <translation id="4963218453264888510">IZSLĒGT</translation>
 <translation id="7474113515179313724">Jūs pārlūkojat šo vietni bez Brave privātuma aizsardzības. Vai ar ieslēgtu aizsardzību tā nedarbojas pareizi?</translation>
+<translation id="4226543734057230801">Ethereum tīkli</translation>
+<translation id="3504157706952484145">Filecoin tīkli</translation>
+<translation id="1561541094377237745">Solana tīkli</translation>
+<translation id="7141438739990875547">Bitcoin tīkli</translation>
 <translation id="9055546041146396417">Ja šķiet, ka vietne nedarbojas, pamēģiniet izslēgt aizsargus.</translation>
 <translation id="1209739344687072997">Ziņot par bojātu vietni</translation>
 <translation id="8510478288840333677">Paziņojiet Brave izstrādātājiem, kad šī vietne ar aizsargiem nedarbojas pareizi:</translation>
@@ -576,8 +578,6 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="2422627462367776805">Dienvidkorejas portāls &amp; meklētājs</translation>
 <translation id="177282784098234156">Privāts, neitrāls, orientēts uz lietotāju</translation>
 <translation id="1410130669636877548">Veicot meklēšanu tīmeklī, dažas meklētājprogrammas jūsu konfidencialitāti aizsargā labāk nekā citas.</translation>
-<translation id="5187052478998910855">Vai vēlaties atsvaidzināt zināšanas par balvām?</translation>
-<translation id="8622329973403382303">Izejiet ātru tūri, lai atsvaidzinātu zināšanas par to, kā tas darbojas, un iekļūtu vēsturē kā balvu rokzvaigzne!</translation>
 <translation id="3479552764303398839">Vēlāk</translation>
 <translation id="7138272885617540195">Ļaut lietotņu saites atvērt lietotnēs ārpus Brave</translation>
 <translation id="4954512758656527938">Noklusējuma Ethereum maks</translation>
@@ -703,9 +703,11 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="6748319398471481216">Tiek atjaunots katru mēnesi.</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / mēn.</translation>
 <translation id="1163809943099641131">Viens gads</translation>
-<translation id="7574007394522199115">Atjauniet katru gadu, ietaupiet <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">Atjaunojot katru gadu, <ph name="DISCOUNT_TEXT_START"/> ietaupiet <ph name="PERCENTAGE_AMOUNT"/> %% <ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / gadā</translation>
-<translation id="2655185358771731232">Izmēģiniet 7 dienas bez maksas. Pēc 7 dienām jums tiks piemērota plāna cena. Visi abonementi tiek atjaunoti automātiski, bet tos iespējams atcelt pirms atjaunošanas.</translation>
+<translation id="5125233570742276182">Maksa par abonementu tiks iekasēta jūsu Google kontā. Iegādājoties abonementu, neizmantotais bezmaksas izmēģinājuma laiks, ja tāds ir bijis, tiek zaudēts.\n\nJūsu abonements tiks atjaunināts automātiski, ja vien netiks atcelts vismaz 24 stundas pirms pašreizējā termiņa.\n\nSavus abonementus varat pārvaldīt iestatījumos.\nIzmantojot Brave, jūs piekrītat lietošanas noteikumiem un privātuma politikai.</translation>
+<translation id="5035172357624830412">Jau iegādājāties vietnē brave.com?</translation>
+<translation id="713136183174551885">Atsvaidziniet savus akreditācijas datus</translation>
 <translation id="6053992191006521518">Izmēģiniet BEZ MAKSAS.</translation>
 <translation id="5903391101107992067">Izmēģiniet bez maksas 7 dienas</translation>
 <translation id="721747358270435486">Instalējiet VPN.</translation>
@@ -851,7 +853,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="7791543448312431591">Pievienot</translation>
 <translation id="6889920539620318793">Iestatīt kā aktīvu</translation>
 <translation id="2653659639078652383">Iesniegt</translation>
-<translation id="4556601961751528347">Mainīt pievienoto kontu</translation>
+<translation id="4945690646623486292">Atlasīt tīklu</translation>
 <translation id="5233638681132016545">Jauna cilne</translation>
 <translation id="8006088103295786154">Piekļūt Brave makam</translation>
 <translation id="8030169304546394654">Atvienots</translation>
@@ -908,7 +910,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="2322227405137827074">Vai vēlaties importēt šo marķieri?</translation>
 <translation id="1324417023773393937">Brave pārlūks</translation>
 <translation id="6044189892950611565">Brave pārlūkprogrammas paziņojumu kanāls</translation>
-<translation id="1173919438868967364">Atlasīt kontu</translation>
+<translation id="4556601961751528347">Mainīt pievienoto kontu</translation>
 <translation id="8922793255489232731">Nevarēja atrast atbilstošu laika joslu: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Savienots ar <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Izmēģinājums</translation>
@@ -1064,7 +1066,6 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="4932733599132424254">Datums</translation>
 <translation id="346505172740911461">Tirgus cena</translation>
 <translation id="5494920125229734069">Atlasīt visu</translation>
-<translation id="5972844218283131174">Atcelt visu atlasi</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Pierakstīties ar Brave maku</translation>
 <translation id="3696514931437952995">Jūs pierakstāties <ph name="ORIGIN"/>. Brave maks kopīgos jūsu maka adresi ar <ph name="ORIGIN"/>.</translation>

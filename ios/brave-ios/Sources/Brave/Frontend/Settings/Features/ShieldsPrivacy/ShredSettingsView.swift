@@ -12,12 +12,12 @@ import SwiftUI
 
 struct ShredSettingsView: View {
   @ObservedObject private var settings: DomainSettings
-  private let shredSitesDataNow: () -> Void
+  private let shredSiteDataNow: () -> Void
   @State private var showConfirmation = false
 
-  init(url: URL, isPersistent: Bool, shredSitesDataNow: @escaping () -> Void) {
+  init(url: URL, isPersistent: Bool, shredSiteDataNow: @escaping () -> Void) {
     self.settings = DomainSettings(url: url, isPersistent: isPersistent)
-    self.shredSitesDataNow = shredSitesDataNow
+    self.shredSiteDataNow = shredSiteDataNow
   }
 
   var body: some View {
@@ -31,7 +31,7 @@ struct ShredSettingsView: View {
           }
         } label: {
           LabelView(
-            title: Strings.Shields.automaticallyShred,
+            title: Strings.Shields.autoShred,
             subtitle: nil
           )
         }
@@ -42,7 +42,7 @@ struct ShredSettingsView: View {
           },
           label: {
             HStack(alignment: .center) {
-              Text(Strings.Shields.shredSitesDataNow)
+              Text(Strings.Shields.shredSiteDataNow)
                 .frame(maxWidth: .infinity, alignment: .leading)
               Image(braveSystemName: "leo.shred.data")
             }
@@ -59,17 +59,20 @@ struct ShredSettingsView: View {
     }
     .scrollContentBackground(.hidden)
     .background(Color(.braveGroupedBackground))
-    .navigationTitle(Strings.Shields.shredSitesData)
+    .navigationTitle(Strings.Shields.shredSiteData)
+    .toolbar(.visible)
   }
 
   private var confirmationAlert: Alert {
     Alert(
-      title: Text(Strings.Shields.shredThisSitesDataConfirmationTitle),
-      message: Text(Strings.Shields.shredThisSitesDataConfirmationMessage),
+      title: Text(Strings.Shields.shredSiteDataConfirmationTitle),
+      message: Text(
+        Strings.Shields.shredSiteDataConfirmationMessage
+      ),
       primaryButton: .destructive(
         Text(Strings.Shields.shredDataButtonTitle),
         action: {
-          shredSitesDataNow()
+          shredSiteDataNow()
         }
       ),
       secondaryButton: .cancel(Text(Strings.cancelButtonTitle))
@@ -96,9 +99,9 @@ extension SiteShredLevel: Identifiable {
     case .never:
       return Strings.Shields.shredNever
     case .whenSiteClosed:
-      return Strings.Shields.shredWhenSiteClosed
+      return Strings.Shields.shredOnSiteTabsClosed
     case .appExit:
-      return Strings.Shields.shredOnAppExitOnly
+      return Strings.Shields.shredOnAppClose
     }
   }
 }
@@ -126,20 +129,20 @@ class ShredSettingsHostingController: UIHostingController<ShredSettingsView> {
   init(
     url: URL,
     isPersistent: Bool,
-    shredSitesDataNow: @escaping () -> Void
+    shredSiteDataNow: @escaping () -> Void
   ) {
     super.init(
       rootView: ShredSettingsView(
         url: url,
         isPersistent: isPersistent,
-        shredSitesDataNow: shredSitesDataNow
+        shredSiteDataNow: shredSiteDataNow
       )
     )
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    navigationItem.title = Strings.Shields.shredSitesData
+    navigationItem.title = Strings.Shields.shredSiteData
   }
 
   override func viewWillAppear(_ animated: Bool) {

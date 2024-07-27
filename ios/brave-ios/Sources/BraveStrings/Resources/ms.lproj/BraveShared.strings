@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Brave ingin mengakses Foto anda";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Tambah Penanda Halaman";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Tambah Penanda Halaman";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Tambah Senarai Penapis Tersuai";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Tambah senarai tambahan yang dicipta dan disenggara oleh komuniti yang anda percayai.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Langgan senarai dari entiti yang anda percayai sahaja.** Pelayar anda secara berkala akan menyemak kemaskinian senarai daripada URL yang anda masukkan.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Tambahkan pada Kegemaran";
@@ -114,9 +102,6 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Pemantau Penyekatan";
-
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Sekat Notis 'Tukar kepada Aplikasi'";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Sekat Halaman Timbul";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Tutup";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Adakah anda pasti mahu menutup semua tab lain yang terbuka?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Tutup Semua Tab Lain";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Betulkah anda mahu menutup semua tab yang terbuka?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Sahkan";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Penapisan Kandungan";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Dayakan penapis tersuai yang menyekat penjejak khusus rantau dan Gangguan.";
 
 /* Cookie settings option title */
 "CookieControl" = "Kawalan Kuki";
@@ -528,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Enjin carian yang digunakan sekarang";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Senarai Penapis Tersuai";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Senarai Penapis Tersuai";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "URL Senarai Penapis Tersuai";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Tambah";
@@ -631,9 +607,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Tutup timbul penyemak imbas lalai";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Senarai Penapis Lalai";
-
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave gagal";
 
@@ -666,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Peranti %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Singkirkan Perubahan";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Adakah anda pasti mahu menyingkirkan perubahan ini? Apa-apa pengubahsuaian akan hilang.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Singkirkan Perubahan?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Sijil Keselamatan";
@@ -801,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Ciri";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "URL yang dimasukkan tidak sah";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Hanya URL selamat (https) dibenarkan untuk senarai penapis tersuai";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Tambah";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Senarai komuniti terkenal tambahan. Ambil perhatian bahawa tindakan mendayakan terlalu banyak penapis akan mengurangkan kelajuan penyemakan imbas.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Muat turun gagal";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Muat turun belum selesai";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Edit";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Masukkan URL senarai penapis";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Kemaskinian terakhir %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Masukkan URL senarai penapis di sini";
 
 /* Share action title */
 "FindInPage" = "Cari dalam Halaman";
@@ -2524,6 +2476,9 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Simpan";
 
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Simpan perubahan";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Log Masuk Disimpan";
 
@@ -3077,7 +3032,7 @@
 "SyncAddDeviceWords" = "Masukkan kod segerak";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Pada peranti anda, navigasi ke Segerak dalam panel Tetapan dan ketik butang \"%@\". Masukkan perkataan kod rantaian penyegerakan yang ditunjukkan di bawah.\n\n Anggapkan kod ini sebagai kata laluan. Jika orang lain mendapat kod ini, mereka boleh membaca dan mengubah suai data anda yang disegerakkan.";
+"SyncAddDeviceWordsDescription" = "Pada peranti anda, navigasi ke Segerak dalam panel Tetapan dan ketik butang \"%@\". Masukkan perkataan kod rantaian penyegerakan yang ditunjukkan di bawah.\n\nAnggapkan kod ini sebagai kata laluan. Jika orang lain mendapat kod ini, mereka boleh membaca dan mengubah suai data anda yang disegerakkan.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Masukkan Perkataan Kod";
@@ -3090,6 +3045,12 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Pilih jenis peranti azng anda ingin menyegerakkan.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Kod telah tamat tempoh. Jana kod baharu dengan mengklik butang di bawah.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Kod sementara ini sah selama %@ seterusnya";
 
 /* Computer device button title */
 "SyncComputerDevice" = "Komputer";

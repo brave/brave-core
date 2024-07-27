@@ -37,7 +37,7 @@ public class FavoritesWidgetData {
     return FileManager.default.fileExists(atPath: url.path)
   }
 
-  public static func loadWidgetData() -> [WidgetFavorite]? {
+  public static func loadWidgetData() async -> [WidgetFavorite]? {
     guard let dataPath = widgetDataPath else { return nil }
     do {
       let jsonData = try Data(contentsOf: dataPath)
@@ -48,7 +48,7 @@ public class FavoritesWidgetData {
     }
   }
 
-  public static func updateWidgetData(_ favs: [WidgetFavorite]) {
+  public static func updateWidgetData(_ favs: [WidgetFavorite]) async {
     guard let rootPath = widgetDataRoot, let dataPath = widgetDataPath else { return }
     do {
       let widgetData = try JSONEncoder().encode(favs)

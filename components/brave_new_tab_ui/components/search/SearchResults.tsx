@@ -15,7 +15,7 @@ import { handleOpenURLClick, validateScheme } from '$web-common/SecureLink';
 import MaybePromptEnableSuggestions from './MaybePromptEnableSuggestions';
 
 const Container = styled.div`
-  border-top: 1px solid ${color.divider.subtle};
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 
   background: rgba(255,255,255,0.1);
 
@@ -43,6 +43,7 @@ const openMatch = (match: AutocompleteMatch, line: number, event: React.MouseEve
   }
 
   const button = 'button' in event ? event.button : 0
+  getNTPBrowserAPI().newTabMetrics.reportNTPSearchUsage()
   omniboxController.openAutocompleteMatch(line, match.destinationUrl, true, button, event.altKey, event.ctrlKey, event.metaKey, event.shiftKey)
 }
 

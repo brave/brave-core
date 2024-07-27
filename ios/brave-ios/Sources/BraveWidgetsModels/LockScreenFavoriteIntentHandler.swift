@@ -12,7 +12,7 @@ public class LockScreenFavoriteIntentHandler: NSObject,
   public func provideFavoriteOptionsCollection(
     for intent: LockScreenFavoriteConfigurationIntent
   ) async throws -> INObjectCollection<FavoriteEntry> {
-    let favs = FavoritesWidgetData.loadWidgetData() ?? []
+    let favs = await FavoritesWidgetData.loadWidgetData() ?? []
     let entries: [FavoriteEntry] = favs.map { fav in
       let entry = FavoriteEntry(
         identifier: fav.url.absoluteString,

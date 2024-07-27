@@ -49,7 +49,7 @@ inline constexpr auto kUnM49Codes = base::MakeFixedFlatSet<std::string_view>(
         "155",  // Western Europe
         "202",  // Sub-Saharan Africa
         "419",  // Latin America and the Caribbean
-        "830",  // Channel Islands
+        "830"   // Channel Islands
     });
 
 }  // namespace brave_l10n

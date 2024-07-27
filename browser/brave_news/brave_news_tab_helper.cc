@@ -44,9 +44,8 @@ void BraveNewsTabHelper::MaybeCreateForWebContents(
 BraveNewsTabHelper::BraveNewsTabHelper(content::WebContents* contents)
     : content::WebContentsUserData<BraveNewsTabHelper>(*contents),
       content::WebContentsObserver(contents),
-      controller_(
-          brave_news::BraveNewsControllerFactory::GetControllerForContext(
-              contents->GetBrowserContext())) {
+      controller_(brave_news::BraveNewsControllerFactory::GetForBrowserContext(
+          contents->GetBrowserContext())) {
   CHECK(!contents->GetBrowserContext()->IsOffTheRecord());
 
   pref_observation_.Observe(&controller_->prefs());

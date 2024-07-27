@@ -34,7 +34,6 @@ void ShowBraveVPNBubble(Browser* browser);
 void ToggleBraveVPNButton(Browser* browser);
 void ToggleBraveVPNTrayIcon();
 void OpenBraveVPNUrls(Browser* browser, int command_id);
-void OpenIpfsFilesWebUI(Browser* browser);
 // Copies an url sanitized by URLSanitizerService.
 void CopySanitizedURL(Browser* browser, const GURL& url);
 // Copies an url cleared through:
@@ -117,7 +116,8 @@ bool CanOpenNewSplitViewForTab(
     Browser* browser,
     std::optional<tabs::TabHandle> tab = std::nullopt);
 void NewSplitViewForTab(Browser* browser,
-                        std::optional<tabs::TabHandle> tab = std::nullopt);
+                        std::optional<tabs::TabHandle> tab = std::nullopt,
+                        const GURL& url = GURL());
 // In case |indices| empty, selected tabs will be used.
 void TileTabs(Browser* browser, const std::vector<int>& indices = {});
 void BreakTiles(Browser* browser, const std::vector<int>& indices = {});

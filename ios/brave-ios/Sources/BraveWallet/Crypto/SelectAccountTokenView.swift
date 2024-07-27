@@ -74,6 +74,9 @@ struct SelectAccountTokenView: View {
           .font(.footnote.weight(.medium))
           .foregroundColor(Color(.braveBlurpleTint))
         }
+        .transaction {
+          $0.disablesAnimations = true
+        }
       }
     }
     .onDisappear {

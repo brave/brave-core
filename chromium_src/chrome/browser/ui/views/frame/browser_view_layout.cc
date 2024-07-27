@@ -26,3 +26,7 @@
 #undef SidePanel
 #undef BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST
 #undef SupportsWindowFeature
+
+void BrowserViewLayout::NotifyDialogPositionRequiresUpdate() {
+  dialog_host_->NotifyPositionRequiresUpdate();
+}

@@ -108,24 +108,6 @@ const std::set<std::string> kBitflyerCountries = {
     "JP"  // ID: 19024
 };
 
-std::string URLMethodToRequestType(mojom::UrlMethod method) {
-  switch (method) {
-    case mojom::UrlMethod::GET:
-      return "GET";
-    case mojom::UrlMethod::POST:
-      return "POST";
-    case mojom::UrlMethod::PUT:
-      return "PUT";
-    case mojom::UrlMethod::PATCH:
-      return "PATCH";
-    case mojom::UrlMethod::DEL:
-      return "DELETE";
-    default:
-      NOTREACHED_IN_MIGRATION();
-      return "GET";
-  }
-}
-
 bool DeleteFilesOnFileTaskRunner(
     const std::vector<base::FilePath>& file_paths) {
   bool result = true;
@@ -828,6 +810,25 @@ void RewardsServiceImpl::RestorePublishers() {
       base::BindOnce(&RewardsServiceImpl::OnRestorePublishers, AsWeakPtr()));
 }
 
+std::string RewardsServiceImpl::UrlMethodToRequestType(
+    mojom::UrlMethod method) {
+  switch (method) {
+    case mojom::UrlMethod::GET:
+      return "GET";
+    case mojom::UrlMethod::POST:
+      return "POST";
+    case mojom::UrlMethod::PUT:
+      return "PUT";
+    case mojom::UrlMethod::PATCH:
+      return "PATCH";
+    case mojom::UrlMethod::DEL:
+      return "DELETE";
+    default:
+      NOTREACHED_IN_MIGRATION();
+      return "GET";
+  }
+}
+
 void RewardsServiceImpl::Shutdown() {
   engine_.reset();
   receiver_.reset();
@@ -989,7 +990,7 @@ void RewardsServiceImpl::LoadURL(mojom::UrlRequestPtr request,
 
   auto net_request = std::make_unique<network::ResourceRequest>();
   net_request->url = parsed_url;
-  net_request->method = URLMethodToRequestType(request->method);
+  net_request->method = UrlMethodToRequestType(request->method);
   net_request->load_flags = request->load_flags;
 
   // Loading Twitter requires credentials
@@ -2160,24 +2161,10 @@ void RewardsServiceImpl::ConnectExternalWallet(
     const std::string& path,
     const std::string& query,
     ConnectExternalWalletCallback callback) {
-  auto inner_callback = base::BindOnce(
-      [](base::WeakPtr<RewardsServiceImpl> self,
-         ConnectExternalWalletCallback callback,
-         mojom::ConnectExternalWalletResult result) {
-        std::move(callback).Run(result);
-        self->RecordBackendP3AStats();
-      },
-      AsWeakPtr(), std::move(callback));
-
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(inner_callback),
-                         mojom::ConnectExternalWalletResult::kUnexpected);
-  }
-
   const auto path_items = base::SplitString(path, "/", base::TRIM_WHITESPACE,
                                             base::SPLIT_WANT_NONEMPTY);
   if (path_items.empty()) {
-    return DeferCallback(FROM_HERE, std::move(inner_callback),
+    return DeferCallback(FROM_HERE, std::move(callback),
                          mojom::ConnectExternalWalletResult::kUnexpected);
   }
 
@@ -2190,8 +2177,28 @@ void RewardsServiceImpl::ConnectExternalWallet(
         it.GetUnescapedValue();
   }
 
-  engine_->ConnectExternalWallet(wallet_type, query_parameters,
-                                 std::move(inner_callback));
+  ConnectExternalWallet(wallet_type, query_parameters, std::move(callback));
+}
+
+void RewardsServiceImpl::ConnectExternalWallet(
+    const std::string& provider,
+    const base::flat_map<std::string, std::string>& args,
+    ConnectExternalWalletCallback callback) {
+  if (!Connected()) {
+    return DeferCallback(FROM_HERE, std::move(callback),
+                         mojom::ConnectExternalWalletResult::kUnexpected);
+  }
+
+  auto inner_callback = base::BindOnce(
+      [](base::WeakPtr<RewardsServiceImpl> self,
+         ConnectExternalWalletCallback callback,
+         mojom::ConnectExternalWalletResult result) {
+        std::move(callback).Run(result);
+        self->RecordBackendP3AStats();
+      },
+      AsWeakPtr(), std::move(callback));
+
+  engine_->ConnectExternalWallet(provider, args, std::move(inner_callback));
 }
 
 void RewardsServiceImpl::ShowNotification(const std::string& type,
@@ -2489,6 +2496,10 @@ void RewardsServiceImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
   }
 
   engine_->GetRewardsWallet(std::move(callback));
+}
+
+base::WeakPtr<RewardsServiceImpl> RewardsServiceImpl::AsWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
 }
 
 bool RewardsServiceImpl::IsBitFlyerCountry() const {

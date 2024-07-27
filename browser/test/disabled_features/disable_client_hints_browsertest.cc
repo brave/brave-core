@@ -176,9 +176,17 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
   void PopulateAllowedClientHints() {
     const auto& hints_map = network::GetClientHintToNameMap();
     allowed_hints_.push_back(
+        hints_map.at(network::mojom::WebClientHintsType::kUAArch));
+    allowed_hints_.push_back(
+        hints_map.at(network::mojom::WebClientHintsType::kUABitness));
+    allowed_hints_.push_back(
+        hints_map.at(network::mojom::WebClientHintsType::kUAFullVersionList));
+    allowed_hints_.push_back(
         hints_map.at(network::mojom::WebClientHintsType::kUAModel));
     allowed_hints_.push_back(
         hints_map.at(network::mojom::WebClientHintsType::kUAPlatformVersion));
+    allowed_hints_.push_back(
+        hints_map.at(network::mojom::WebClientHintsType::kUAWoW64));
   }
 
   void MonitorResourceRequest(const net::test_server::HttpRequest& request) {
@@ -224,7 +232,7 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, ClientHintsDisabled) {
   }
 
   const size_t expected_default_client_hints_count = 3u;
-  const size_t expected_allowed_client_hints_count = 2u;
+  const size_t expected_allowed_client_hints_count = 6u;
 
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), no_client_hints_headers_url()));

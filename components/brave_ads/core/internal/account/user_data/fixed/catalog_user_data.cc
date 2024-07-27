@@ -18,11 +18,11 @@ constexpr char kIdKey[] = "id";
 }  // namespace
 
 base::Value::Dict BuildCatalogUserData() {
-  base::Value::Dict user_data;
-
   if (!UserHasJoinedBraveRewards()) {
-    return user_data;
+    return {};
   }
+
+  base::Value::Dict user_data;
 
   user_data.Set(kCatalogKey, base::Value::List().Append(base::Value::Dict().Set(
                                  kIdKey, GetCatalogId())));

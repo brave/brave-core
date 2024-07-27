@@ -14,8 +14,8 @@
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_info.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration_util.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
@@ -39,7 +39,7 @@ void MigrateClientState(InitializeCallback callback) {
     return std::move(callback).Run(/*success=*/true);
   }
 
-  Load(kClientStateFilename,
+  Load(kClientJsonFilename,
        base::BindOnce(
            [](InitializeCallback callback,
               const std::optional<std::string>& json) {
@@ -76,7 +76,7 @@ void MigrateClientState(InitializeCallback callback) {
 
              BLOG(1, "Migrating client state");
 
-             Save(kClientStateFilename, client.ToJson(),
+             Save(kClientJsonFilename, client.ToJson(),
                   base::BindOnce(
                       [](InitializeCallback callback, const bool success) {
                         if (!success) {
@@ -85,10 +85,10 @@ void MigrateClientState(InitializeCallback callback) {
                           // `DumpWithoutCrashing`.
                           SCOPED_CRASH_KEY_STRING64(
                               "Issue32066", "failure_reason",
-                              "Failed to migrated client state");
+                              "Failed to migrate client state");
                           base::debug::DumpWithoutCrashing();
 
-                          BLOG(0, "Failed to migrated client state");
+                          BLOG(0, "Failed to migrate client state");
 
                           return FailedToMigrate(std::move(callback));
                         }

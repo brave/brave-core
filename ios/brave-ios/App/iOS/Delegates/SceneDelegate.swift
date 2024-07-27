@@ -57,7 +57,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       braveCore: AppState.shared.braveCore,
       profile: AppState.shared.profile,
       attributionManager: attributionManager,
-      diskImageStore: AppState.shared.diskImageStore,
       migration: AppState.shared.migration,
       rewards: AppState.shared.rewards,
       newsFeedDataSource: AppState.shared.newsFeedDataSource,
@@ -505,7 +504,7 @@ extension SceneDelegate {
 
   private func switchToTabForIntentURL(_ scene: UIWindowScene, intentURL: String?) {
     if let browserViewController = scene.browserViewController {
-      guard let siteURL = intentURL, let url = URL(string: siteURL) else {
+      guard let siteURL = intentURL, let url = URL(string: siteURL), url.isWebPage() else {
         browserViewController.openBlankNewTab(
           attemptLocationFieldFocus: false,
           isPrivate: Preferences.Privacy.privateBrowsingOnly.value
@@ -559,7 +558,6 @@ extension SceneDelegate {
     braveCore: BraveCoreMain,
     profile: Profile,
     attributionManager: AttributionManager,
-    diskImageStore: DiskImageStore?,
     migration: Migration?,
     rewards: Brave.BraveRewards,
     newsFeedDataSource: BraveNews.FeedDataSource,
@@ -621,7 +619,6 @@ extension SceneDelegate {
       windowId: windowId,
       profile: profile,
       attributionManager: attributionManager,
-      diskImageStore: diskImageStore,
       braveCore: braveCore,
       rewards: rewards,
       migration: migration,

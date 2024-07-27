@@ -10,7 +10,11 @@ namespace brave_ads {
 
 class AdsObserverMock;
 
+namespace test {
+
 AdsObserverMock* AddAdsObserverMock();
+
+}  // namespace test
 
 }  // namespace brave_ads
 

@@ -7,10 +7,24 @@
 
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/version_info/version_info.h"
+#include "components/version_info/version_info.h"
+#include "components/version_info/version_string.h"
+#include "ios/chrome/common/channel_info.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
 #endif
+
+BraveCoreVersionInfoChannel const BraveCoreVersionInfoChannelStable =
+    static_cast<NSInteger>(version_info::Channel::STABLE);
+BraveCoreVersionInfoChannel const BraveCoreVersionInfoChannelBeta =
+    static_cast<NSInteger>(version_info::Channel::BETA);
+BraveCoreVersionInfoChannel const BraveCoreVersionInfoChannelDevelopment =
+    static_cast<NSInteger>(version_info::Channel::DEV);
+BraveCoreVersionInfoChannel const BraveCoreVersionInfoChannelNightly =
+    static_cast<NSInteger>(version_info::Channel::CANARY);
+BraveCoreVersionInfoChannel const BraveCoreVersionInfoChannelUnknown =
+    static_cast<NSInteger>(version_info::Channel::UNKNOWN);
 
 @implementation BraveCoreVersionInfo
 
@@ -23,4 +37,22 @@
   return base::SysUTF8ToNSString(version_info::GetBraveChromiumVersionNumber());
 }
 
++ (NSString*)channelString {
+  return base::SysUTF8ToNSString(GetChannelString());
+}
+
++ (BraveCoreVersionInfoChannel)channel {
+  switch (GetChannel()) {
+    case version_info::Channel::STABLE:
+      return BraveCoreVersionInfoChannelStable;
+    case version_info::Channel::BETA:
+      return BraveCoreVersionInfoChannelBeta;
+    case version_info::Channel::DEV:
+      return BraveCoreVersionInfoChannelDevelopment;
+    case version_info::Channel::CANARY:
+      return BraveCoreVersionInfoChannelNightly;
+    case version_info::Channel::UNKNOWN:
+      return BraveCoreVersionInfoChannelUnknown;
+  }
+}
 @end

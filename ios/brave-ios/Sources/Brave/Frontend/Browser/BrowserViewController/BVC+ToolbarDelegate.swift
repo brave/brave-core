@@ -63,11 +63,7 @@ extension BrowserViewController: TopToolbarDelegate {
 
   func topToolbarDidPressReload(_ topToolbar: TopToolbarView) {
     if let url = topToolbar.currentURL {
-      if url.isIPFSScheme {
-        if !handleIPFSSchemeURL(url) {
-          tabManager.selectedTab?.reload()
-        }
-      } else if let decentralizedDNSHelper = decentralizedDNSHelperFor(url: topToolbar.currentURL) {
+      if let decentralizedDNSHelper = decentralizedDNSHelperFor(url: topToolbar.currentURL) {
         topToolbarDidPressReloadTask?.cancel()
         topToolbarDidPressReloadTask = Task { @MainActor in
           topToolbar.locationView.loading = true
@@ -80,8 +76,10 @@ extension BrowserViewController: TopToolbarDelegate {
           case .loadInterstitial(let service):
             showWeb3ServiceInterstitialPage(service: service, originalURL: url)
           case .load(let resolvedURL):
-            if resolvedURL.isIPFSScheme {
-              handleIPFSSchemeURL(resolvedURL)
+            if resolvedURL.isIPFSScheme,
+              let resolvedIPFSURL = braveCore.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+            {
+              tabManager.selectedTab?.loadRequest(URLRequest(url: resolvedIPFSURL))
             } else {
               tabManager.selectedTab?.loadRequest(URLRequest(url: resolvedURL))
             }
@@ -182,8 +180,8 @@ extension BrowserViewController: TopToolbarDelegate {
         self.openPlaylist(tab: tab, item: info)
       }
     case .remove:
-      DispatchQueue.main.async {
-        if PlaylistManager.shared.delete(item: info) {
+      Task { @MainActor in
+        if await PlaylistManager.shared.delete(item: info) {
           self.updatePlaylistURLBar(tab: tab, state: .newItem, item: info)
         }
       }
@@ -256,11 +254,8 @@ extension BrowserViewController: TopToolbarDelegate {
     _ text: String,
     isUserDefinedURLNavigation: Bool
   ) async -> Bool {
-    if let url = URL(string: text), url.isIPFSScheme {
-      return handleIPFSSchemeURL(url)
-    }
 
-    if let url = URL(string: text), url.scheme == "brave" {
+    if let url = URL(string: text), url.scheme == "brave" || url.scheme == "chrome" {
       topToolbar.leaveOverlayMode()
       return handleChromiumWebUIURL(url)
     }
@@ -268,33 +263,37 @@ extension BrowserViewController: TopToolbarDelegate {
     guard let fixupURL = URIFixup.getURL(text) else {
       return false
     }
-    // Do not allow users to enter URLs with the following schemes.
-    // Instead, submit them to the search engine like Chrome-iOS does.
-    if !["file"].contains(fixupURL.scheme) {
-      // check text is decentralized DNS supported domain
-      if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: fixupURL) {
-        topToolbar.leaveOverlayMode()
-        updateToolbarCurrentURL(fixupURL)
-        topToolbar.locationView.loading = true
-        let result = await decentralizedDNSHelper.lookup(
-          domain: fixupURL.schemelessAbsoluteDisplayString
-        )
-        topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
-        guard !Task.isCancelled else { return true }  // user pressed stop, or typed new url
-        switch result {
-        case .loadInterstitial(let service):
-          showWeb3ServiceInterstitialPage(service: service, originalURL: fixupURL)
-          return true
-        case .load(let resolvedURL):
-          if resolvedURL.isIPFSScheme {
-            return handleIPFSSchemeURL(resolvedURL)
-          } else {
-            finishEditingAndSubmit(resolvedURL)
-            return true
-          }
-        case .none:
-          break
+
+    if fixupURL.scheme == "brave" || fixupURL.scheme == "chrome" {
+      topToolbar.leaveOverlayMode()
+      return handleChromiumWebUIURL(fixupURL)
+    }
+
+    // check text is decentralized DNS supported domain
+    if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: fixupURL) {
+      topToolbar.leaveOverlayMode()
+      updateToolbarCurrentURL(fixupURL)
+      topToolbar.locationView.loading = true
+      let result = await decentralizedDNSHelper.lookup(
+        domain: fixupURL.schemelessAbsoluteDisplayString
+      )
+      topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
+      guard !Task.isCancelled else { return true }  // user pressed stop, or typed new url
+      switch result {
+      case .loadInterstitial(let service):
+        showWeb3ServiceInterstitialPage(service: service, originalURL: fixupURL)
+        return true
+      case .load(let resolvedURL):
+        if resolvedURL.isIPFSScheme,
+          let resolvedIPFSURL = braveCore.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+        {
+          finishEditingAndSubmit(resolvedIPFSURL)
+        } else {
+          finishEditingAndSubmit(resolvedURL)
         }
+        return true
+      case .none:
+        break
       }
     }
 
@@ -319,7 +318,7 @@ extension BrowserViewController: TopToolbarDelegate {
     }
     let controller = ChromeWebViewController(privateBrowsing: false)
     controller.loadURL(url.absoluteString)
-    controller.title = url.host
+    controller.title = url.host?.capitalizeFirstLetter
     let webView = controller.webView
     webView.isFindInteractionEnabled = true
     controller.navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -345,56 +344,6 @@ extension BrowserViewController: TopToolbarDelegate {
     return true
   }
 
-  @discardableResult
-  func handleIPFSSchemeURL(_ url: URL) -> Bool {
-    guard !privateBrowsingManager.isPrivateBrowsing else {
-      topToolbar.leaveOverlayMode()
-      if let errorPageHelper = tabManager.selectedTab?.getContentScript(
-        name: ErrorPageHelper.scriptName
-      ) as? ErrorPageHelper, let webView = tabManager.selectedTab?.webView {
-        errorPageHelper.loadPage(
-          IPFSErrorPageHandler.privateModeError,
-          forUrl: url,
-          inWebView: webView
-        )
-      }
-      return true
-    }
-
-    guard
-      let ipfsPref = Preferences.Wallet.Web3IPFSOption(
-        rawValue: Preferences.Wallet.resolveIPFSResources.value
-      )
-    else {
-      return false
-    }
-
-    switch ipfsPref {
-    case .ask:
-      showIPFSInterstitialPage(originalURL: url)
-      return true
-    case .enabled:
-      if let resolvedUrl = braveCore.ipfsAPI.resolveGatewayUrl(for: url) {
-        finishEditingAndSubmit(resolvedUrl)
-        return true
-      }
-    case .disabled:
-      topToolbar.leaveOverlayMode()
-      if let errorPageHelper = tabManager.selectedTab?.getContentScript(
-        name: ErrorPageHelper.scriptName
-      ) as? ErrorPageHelper, let webView = tabManager.selectedTab?.webView {
-        errorPageHelper.loadPage(
-          IPFSErrorPageHandler.privateModeError,
-          forUrl: url,
-          inWebView: webView
-        )
-      }
-      return true
-    }
-
-    return false
-  }
-
   func topToolbarDidEnterOverlayMode(_ topToolbar: TopToolbarView) {
     updateTabsBarVisibility()
     displayFavoritesController()
@@ -416,138 +365,147 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func topToolbarDidTapBraveShieldsButton(_ topToolbar: TopToolbarView) {
-    presentBraveShieldsViewController()
+    presentBraveShieldsView()
   }
 
-  func presentBraveShieldsViewController() {
+  func presentBraveShieldsView() {
     guard let selectedTab = tabManager.selectedTab, var url = selectedTab.url else { return }
-    if let internalUrl = InternalURL(url), internalUrl.isErrorPage,
-      let originalURL = internalUrl.originalURLFromErrorPage
-    {
-      url = originalURL
+    if let internalURL = InternalURL(url) {
+      guard let orignalURL = internalURL.url.strippedInternalURL else { return }
+      url = orignalURL
     }
 
-    if url.isLocalUtility || InternalURL(url)?.isAboutURL == true
-      || InternalURL(url)?.isAboutHomeURL == true
-    {
-      return
-    }
-
-    // System components sit on top so we want to dismiss it
-    selectedTab.webView?.findInteraction?.dismissFindNavigator()
-
-    let shields = ShieldsViewController(tab: selectedTab)
-    shields.shieldsSettingsChanged = { [unowned self] _, shield in
-      let currentDomain = self.tabManager.selectedTab?.url?.baseDomain
-      let browsers = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene })
-        .compactMap({ $0.browserViewController })
-
-      browsers.forEach { browser in
-        // Update the shields status immediately
-        browser.topToolbar.refreshShieldsStatus()
-
-        // Reload the tabs. This will also trigger an update of the brave icon in `TabLocationView` if
-        // the setting changed is the global `.AllOff` shield
-        browser.tabManager.allTabs.forEach {
-          if $0.url?.baseDomain == currentDomain {
-            $0.reload()
+    weak var weakPopover: PopoverController?
+    let popover = PopoverController(
+      contentController: PopoverNavigationController(
+        rootViewController: ShieldsPanelViewController(
+          url: url,
+          tab: selectedTab,
+          domain: Domain.getOrCreate(forUrl: url, persistent: !selectedTab.isPrivate)
+        ) { [weak self, weak selectedTab] action in
+          switch action {
+          case .navigate(let target, let dismiss):
+            guard let self, let selectedTab else { return }
+            if dismiss {
+              weakPopover?.dismiss(animated: true) {
+                self.navigate(to: target, tab: selectedTab, url: url, on: nil)
+              }
+            } else {
+              navigate(to: target, tab: selectedTab, url: url, on: weakPopover)
+            }
+          case .changedShieldSettings:
+            self?.changedShieldSettings()
+          case .shredSiteData:
+            weakPopover?.dismiss(animated: true) {
+              guard let selectedTab = selectedTab else { return }
+              self?.shredData(for: url, in: selectedTab)
+            }
           }
         }
-      }
-
-      // Record P3A shield changes
-      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-        // Record shields & FP related hisotgrams, wait a sec for CoreData to sync contexts
-        self.recordShieldsUpdateP3A(shield: shield)
-      }
-
-      // In 1.6 we "reload" the whole web view state, dumping caches, etc. (reload():BraveWebView.swift:495)
-      // BRAVE TODO: Port over proper tab reloading with Shields
-    }
-
-    shields.shredTab = { [weak self] viewController, tab in
-      guard let url = tab.url else { return }
-
-      viewController.dismiss(animated: true) {
-        self?.shredData(for: url, in: tab)
-        self?.dismiss(animated: true)
-      }
-    }
-
-    shields.showGlobalShieldsSettings = { [unowned self] vc in
-      vc.dismiss(animated: true) {
-        weak var spinner: SpinnerView?
-        let controller = UIHostingController(
-          rootView: AdvancedShieldsSettingsView(
-            settings: AdvancedShieldsSettings(
-              profile: self.profile,
-              tabManager: self.tabManager,
-              feedDataSource: self.feedDataSource,
-              historyAPI: self.braveCore.historyAPI,
-              p3aUtilities: self.braveCore.p3aUtils,
-              deAmpPrefs: self.braveCore.deAmpPrefs,
-              debounceService: DebounceServiceFactory.get(privateMode: false),
-              clearDataCallback: { [weak self] isLoading, isHistoryCleared in
-                guard let self else { return }
-                guard let view = self.navigationController?.view, view.window != nil else {
-                  assertionFailure()
-                  return
-                }
-
-                if isLoading, spinner == nil {
-                  let newSpinner = SpinnerView()
-                  newSpinner.present(on: view)
-                  spinner = newSpinner
-                } else {
-                  spinner?.dismiss()
-                  spinner = nil
-                }
-
-                if isHistoryCleared {
-                  // Donate Clear Browser History for suggestions
-                  let clearBrowserHistoryActivity = ActivityShortcutManager.shared
-                    .createShortcutActivity(type: .clearBrowsingHistory)
-                  self.userActivity = clearBrowserHistoryActivity
-                  clearBrowserHistoryActivity.becomeCurrent()
-                }
-              }
-            )
-          )
-        )
-
-        controller.rootView.openURLAction = { [unowned self] url in
-          openDestinationURL(url)
-        }
-
-        let container = SettingsNavigationController(rootViewController: controller)
-        container.isModalInPresentation = true
-        container.modalPresentationStyle =
-          UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
-        controller.navigationItem.rightBarButtonItem = .init(
-          barButtonSystemItem: .done,
-          target: container,
-          action: #selector(SettingsNavigationController.done)
-        )
-        self.present(container, animated: true)
-      }
-    }
-
-    shields.showSubmitReportView = { [weak self] shieldsViewController in
-      shieldsViewController.dismiss(animated: true) {
-        if let internalURL = InternalURL(url), let displayURL = internalURL.displayURL {
-          self?.showSubmitReportView(for: displayURL)
-        } else {
-          self?.showSubmitReportView(for: url)
-        }
-      }
-    }
-
-    let container = PopoverNavigationController(rootViewController: shields)
-    let popover = PopoverController(
-      contentController: container,
+      ),
       contentSizeBehavior: .preferredContentSize
     )
+    weakPopover = popover
     popover.present(from: topToolbar.shieldsButton, on: self)
+  }
+
+  private func navigate(
+    to target: ShieldsPanelView.Action.NavigationTarget,
+    tab: Tab,
+    url: URL,
+    on viewController: UIViewController?
+  ) {
+    let presentingViewController = viewController ?? self
+    switch target {
+    case .shareStats:
+      let activityController =
+        ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController(
+          isPrivateBrowsing: tab.isPrivate
+        )
+      activityController.popoverPresentationController?.sourceView = topToolbar.shieldsButton
+      presentingViewController.present(activityController, animated: true, completion: nil)
+    case .globalShields:
+      showGlobalShieldsSettings()
+    case .reportBrokenSite:
+      if let internalURL = InternalURL(url), let displayURL = internalURL.displayURL {
+        showSubmitReportView(for: displayURL)
+      } else {
+        showSubmitReportView(for: url)
+      }
+    }
+  }
+
+  private func changedShieldSettings() {
+    let currentDomain = self.tabManager.selectedTab?.url?.baseDomain
+    let browsers = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene })
+      .compactMap({ $0.browserViewController })
+
+    browsers.forEach { browser in
+      // Update the shields status immediately
+      browser.topToolbar.refreshShieldsStatus()
+
+      // Reload the tabs. This will also trigger an update of the brave icon in `TabLocationView` if
+      // the setting changed is the global `.AllOff` shield
+      browser.tabManager.allTabs.forEach {
+        if $0.url?.baseDomain == currentDomain {
+          $0.reload()
+        }
+      }
+    }
+  }
+
+  private func showGlobalShieldsSettings() {
+    weak var spinner: SpinnerView?
+    let controller = UIHostingController(
+      rootView: AdvancedShieldsSettingsView(
+        settings: AdvancedShieldsSettings(
+          profile: self.profile,
+          tabManager: self.tabManager,
+          feedDataSource: self.feedDataSource,
+          debounceService: DebounceServiceFactory.get(privateMode: false),
+          braveCore: braveCore,
+          clearDataCallback: { [weak self] isLoading, isHistoryCleared in
+            guard let self else { return }
+            guard let view = self.navigationController?.view, view.window != nil else {
+              assertionFailure()
+              return
+            }
+
+            if isLoading, spinner == nil {
+              let newSpinner = SpinnerView()
+              newSpinner.present(on: view)
+              spinner = newSpinner
+            } else {
+              spinner?.dismiss()
+              spinner = nil
+            }
+
+            if isHistoryCleared {
+              // Donate Clear Browser History for suggestions
+              let clearBrowserHistoryActivity = ActivityShortcutManager.shared
+                .createShortcutActivity(type: .clearBrowsingHistory)
+              self.userActivity = clearBrowserHistoryActivity
+              clearBrowserHistoryActivity.becomeCurrent()
+            }
+          }
+        )
+      )
+    )
+
+    controller.rootView.openURLAction = { [unowned self] url in
+      openDestinationURL(url)
+    }
+
+    let container = SettingsNavigationController(rootViewController: controller)
+    container.isModalInPresentation = true
+    container.modalPresentationStyle =
+      UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
+    controller.navigationItem.rightBarButtonItem = .init(
+      barButtonSystemItem: .done,
+      target: container,
+      action: #selector(SettingsNavigationController.done)
+    )
+    self.present(container, animated: true)
   }
 
   func shredData(for url: URL, in tab: Tab) {
@@ -764,11 +722,9 @@ extension BrowserViewController: TopToolbarDelegate {
 
   private func displayFavoritesController() {
     if favoritesController == nil {
-      let tabType = TabType.of(tabManager.selectedTab)
       let favoritesController = FavoritesViewController(
-        tabType: tabType,
         privateBrowsingManager: privateBrowsingManager,
-        action: { [weak self] bookmark, action in
+        bookmarkAction: { [weak self] bookmark, action in
           self?.handleFavoriteAction(favorite: bookmark, action: action)
         },
         recentSearchAction: { [weak self] recentSearch, shouldSubmitSearch in
@@ -1129,7 +1085,7 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
   private func makePasteMenu() -> UIMenu? {
     guard UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs else { return nil }
 
-    var children: [UIAction] = [
+    let children: [UIAction] = [
       UIAction(
         identifier: .pasteAndGo,
         handler: UIAction.deferredActionHandler { _ in

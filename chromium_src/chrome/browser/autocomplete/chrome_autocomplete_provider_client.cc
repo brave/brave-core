@@ -5,10 +5,10 @@
 
 #include "src/chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc"
 
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "build/build_config.h"
+#include "chrome/browser/profiles/profile.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_browser_process.h"
@@ -47,7 +47,7 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
   // so active browser is unlikely to be changed
   // * Even if the active browser is changed, it'd be better to open the Leo in
   // the new active browser.
-  CHECK(brave::IsRegularProfile(profile_));
+  CHECK(profile_->IsRegularProfile());
   Browser* browser =
       chrome::FindTabbedBrowser(profile_,
                                 /*match_original_profiles=*/true);
@@ -72,12 +72,13 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
 
   // Send the query to the AIChat's backend.
   ai_chat::mojom::ConversationTurnPtr turn =
-      ai_chat::mojom::ConversationTurn::New();
-  turn->character_type = ai_chat::mojom::CharacterType::HUMAN;
-  turn->action_type = ai_chat::mojom::ActionType::QUERY;
-  turn->visibility = ai_chat::mojom::ConversationTurnVisibility::VISIBLE;
-  turn->text = base::UTF16ToUTF8(query);
-  turn->selected_text = std::nullopt;
+      ai_chat::mojom::ConversationTurn::New(
+          ai_chat::mojom::CharacterType::HUMAN,
+          ai_chat::mojom::ActionType::QUERY,
+          ai_chat::mojom::ConversationTurnVisibility::VISIBLE,
+          base::UTF16ToUTF8(query) /* text */, std::nullopt /* selected_text */,
+          std::nullopt /* events */, base::Time::Now(),
+          std::nullopt /* edits */);
 
   chat_tab_helper->SubmitHumanConversationEntry(std::move(turn));
 
@@ -92,7 +93,7 @@ bool ChromeAutocompleteProviderClient::IsLeoProviderEnabled() {
 #if BUILDFLAG(IS_ANDROID)
   return false;
 #else
-  return brave::IsRegularProfile(profile_) &&
+  return profile_->IsRegularProfile() &&
          GetPrefs()->GetBoolean(
              ai_chat::prefs::kBraveChatAutocompleteProviderEnabled);
 #endif

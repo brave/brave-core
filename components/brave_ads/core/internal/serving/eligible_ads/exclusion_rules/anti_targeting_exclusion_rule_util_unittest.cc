@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule_util.h"
 
-#include "brave/components/brave_ads/core/internal/history/browsing_history_test_util.h"
+#include "brave/components/brave_ads/core/internal/history/site_history_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -14,79 +14,74 @@ namespace brave_ads {
 
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest, HasVisitedAntiTargetedSites) {
   // Arrange
-  const BrowsingHistoryList browsing_history = test::BuildBrowsingHistory();
+  const SiteHistoryList site_history = test::BuildSiteHistory();
 
   const AntiTargetingSiteList anti_targeting_sites = {
       GURL("https://www.foo.com"), GURL("https://www.bar.com")};
 
   // Act & Assert
-  EXPECT_TRUE(
-      HasVisitedAntiTargetedSites(browsing_history, anti_targeting_sites));
+  EXPECT_TRUE(HasVisitedAntiTargetedSites(site_history, anti_targeting_sites));
 }
 
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
      HasVisitedCaseInsensitiveAntiTargetedSites) {
   // Arrange
-  const BrowsingHistoryList browsing_history = test::BuildBrowsingHistory();
+  const SiteHistoryList site_history = test::BuildSiteHistory();
 
   const AntiTargetingSiteList anti_targeting_sites = {
       GURL("HTTPS://WWW.FOO.COM"), GURL("HTTPS://WWW.BAR.COM")};
 
   // Act & Assert
-  EXPECT_TRUE(
-      HasVisitedAntiTargetedSites(browsing_history, anti_targeting_sites));
+  EXPECT_TRUE(HasVisitedAntiTargetedSites(site_history, anti_targeting_sites));
 }
 
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
      HasNotVisitedAntiTargetedSites) {
   // Arrange
-  const BrowsingHistoryList browsing_history = test::BuildBrowsingHistory();
+  const SiteHistoryList site_history = test::BuildSiteHistory();
 
   const AntiTargetingSiteList anti_targeting_sites = {
       GURL("https://www.brave.com"),
       GURL("https://www.basicattentiontoken.org")};
 
   // Act & Assert
-  EXPECT_FALSE(
-      HasVisitedAntiTargetedSites(browsing_history, anti_targeting_sites));
+  EXPECT_FALSE(HasVisitedAntiTargetedSites(site_history, anti_targeting_sites));
 }
 
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
      HasNotVisitedAntiTargetedInvalidSites) {
   // Arrange
-  const BrowsingHistoryList browsing_history = test::BuildBrowsingHistory();
+  const SiteHistoryList site_history = test::BuildSiteHistory();
 
   const AntiTargetingSiteList anti_targeting_sites = {GURL("INVALID")};
 
   // Act & Assert
-  EXPECT_FALSE(
-      HasVisitedAntiTargetedSites(browsing_history, anti_targeting_sites));
+  EXPECT_FALSE(HasVisitedAntiTargetedSites(site_history, anti_targeting_sites));
 }
 
-TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
-     HasNotVisitedIfNoBrowsingHistory) {
+TEST(BraveAdsAntiTargetingExclusionRuleUtilTest, HasNotVisitedIfNoSiteHistory) {
   // Arrange
   const AntiTargetingSiteList anti_targeting_sites = {GURL("INVALID")};
 
   // Act & Assert
-  EXPECT_FALSE(HasVisitedAntiTargetedSites(/*browsing_history*/ {},
-                                           anti_targeting_sites));
+  EXPECT_FALSE(
+      HasVisitedAntiTargetedSites(/*site_history*/ {}, anti_targeting_sites));
 }
 
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
      HasNotVisitedIfNoAntiTargetedSites) {
   // Arrange
-  const BrowsingHistoryList browsing_history = test::BuildBrowsingHistory();
+  const SiteHistoryList site_history = test::BuildSiteHistory();
 
   // Act & Assert
-  EXPECT_FALSE(HasVisitedAntiTargetedSites(browsing_history,
+  EXPECT_FALSE(HasVisitedAntiTargetedSites(site_history,
                                            /*anti_targeting_sites*/ {}));
 }
 
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
-     HasNotVisitedIfNoBrowsingHistoryAndAntiTargetedSites) {
+     HasNotVisitedIfNoSiteHistoryAndAntiTargetedSites) {
   // Act & Assert
-  EXPECT_FALSE(HasVisitedAntiTargetedSites(/*browsing_history*/ {},
+  EXPECT_FALSE(HasVisitedAntiTargetedSites(/*site_history*/ {},
                                            /*anti_targeting_sites*/ {}));
 }
 

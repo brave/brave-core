@@ -10,7 +10,6 @@
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
 #include "content/public/browser/browser_context.h"
@@ -23,9 +22,10 @@ std::unique_ptr<NewTabShowsNavigationThrottle>
 NewTabShowsNavigationThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle) {
   auto* context = navigation_handle->GetWebContents()->GetBrowserContext();
-  if (!brave::IsRegularProfile(context) ||
-      !NewTabUI::IsNewTab(navigation_handle->GetURL()))
+  if (!Profile::FromBrowserContext(context)->IsRegularProfile() ||
+      !NewTabUI::IsNewTab(navigation_handle->GetURL())) {
     return nullptr;
+  }
 
   return std::make_unique<NewTabShowsNavigationThrottle>(navigation_handle);
 }
@@ -58,8 +58,7 @@ const char* NewTabShowsNavigationThrottle::GetNameForLogging() {
 
 void NewTabShowsNavigationThrottle::LoadNewTabOptionsURL() {
   auto* web_contents = navigation_handle()->GetWebContents();
-  web_contents->GetController().LoadURL(new_tab_options_url_,
-                                        content::Referrer(),
-                                        ui::PAGE_TRANSITION_AUTO_TOPLEVEL,
-                                        std::string());
+  web_contents->GetController().LoadURL(
+      new_tab_options_url_, content::Referrer(),
+      ui::PAGE_TRANSITION_AUTO_TOPLEVEL, std::string());
 }

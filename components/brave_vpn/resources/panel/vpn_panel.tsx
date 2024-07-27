@@ -4,10 +4,11 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
 import { setIconBasePath } from '@brave/leo/react/icon'
+import '@brave/leo/tokens/css/variables.css'
 
 import '$web-components/app.global.scss'
 import { loadTimeData } from '../../../common/loadTimeData'
@@ -23,6 +24,8 @@ setIconBasePath('//resources/brave-icons')
 
 function App () {
   React.useEffect(() => {
+    getPanelBrowserAPI().panelHandler.showUI()
+
     const onVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
         getPanelBrowserAPI().panelHandler.showUI()
@@ -52,10 +55,8 @@ function App () {
 
 function initialize () {
   initLocale(loadTimeData.data_)
-  render(<App />, document.getElementById('mountPoint'),
-  () => {
-    getPanelBrowserAPI().panelHandler.showUI()
-  })
+  const root = createRoot(document.getElementById('mountPoint')!)
+  root.render(<App />)
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

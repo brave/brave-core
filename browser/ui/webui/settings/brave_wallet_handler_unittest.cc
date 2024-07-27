@@ -21,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -105,12 +106,12 @@ class TestBraveWalletHandler : public BraveWalletHandler {
   }
 
   std::vector<brave_wallet::mojom::NetworkInfoPtr> GetAllEthCustomChains() {
-    return brave_wallet::GetAllCustomChains(prefs(), CoinType::ETH);
+    return GetNetworkManager()->GetAllCustomChains(CoinType::ETH);
   }
 
   std::vector<brave_wallet::mojom::NetworkInfoPtr> GetAllCustomChains(
       brave_wallet::mojom::CoinType coin) {
-    return brave_wallet::GetAllCustomChains(prefs(), coin);
+    return GetNetworkManager()->GetAllCustomChains(coin);
   }
 
   void RegisterMessages() override {}
@@ -132,6 +133,12 @@ class TestBraveWalletHandler : public BraveWalletHandler {
   }
   content::TestWebUI* web_ui() { return &test_web_ui_; }
   PrefService* prefs() { return profile_->GetPrefs(); }
+
+  brave_wallet::NetworkManager* GetNetworkManager() {
+    return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+               profile_.get())
+        ->network_manager();
+  }
 
  private:
   ScopedTestingLocalState local_state_;
@@ -297,7 +304,8 @@ TEST(TestBraveWalletHandler, GetNetworkListEth) {
   const auto& networks = *data.arg3()->GetDict().FindList("networks");
 
   size_t index = 0u;
-  for (auto& known_chain : brave_wallet::GetAllKnownChains(CoinType::ETH)) {
+  for (auto& known_chain :
+       handler.GetNetworkManager()->GetAllKnownChains(CoinType::ETH)) {
     EXPECT_EQ(*brave_wallet::ValueToNetworkInfo(networks[index++]),
               *known_chain);
   }
@@ -321,7 +329,8 @@ TEST(TestBraveWalletHandler, GetNetworkListFilSol) {
     const auto& networks = *data.arg3()->GetDict().FindList("networks");
 
     size_t index = 0u;
-    for (auto& known_chain : brave_wallet::GetAllKnownChains(coin)) {
+    for (auto& known_chain :
+         handler.GetNetworkManager()->GetAllKnownChains(coin)) {
       EXPECT_EQ(*brave_wallet::ValueToNetworkInfo(networks[index++]),
                 *known_chain);
     }
@@ -353,8 +362,8 @@ TEST(TestBraveWalletHandler, SetDefaultNetwork) {
     ASSERT_TRUE(data.arg3()->is_bool());
     EXPECT_EQ(data.arg3()->GetBool(), true);
 
-    EXPECT_EQ(brave_wallet::GetCurrentChainId(handler.prefs(), CoinType::ETH,
-                                              std::nullopt),
+    EXPECT_EQ(handler.GetNetworkManager()->GetCurrentChainId(CoinType::ETH,
+                                                             std::nullopt),
               "chain_id2");
   }
   {
@@ -368,8 +377,8 @@ TEST(TestBraveWalletHandler, SetDefaultNetwork) {
     ASSERT_TRUE(data.arg3()->is_bool());
     EXPECT_EQ(data.arg3()->GetBool(), false);
 
-    EXPECT_EQ(brave_wallet::GetCurrentChainId(handler.prefs(), CoinType::ETH,
-                                              std::nullopt),
+    EXPECT_EQ(handler.GetNetworkManager()->GetCurrentChainId(CoinType::ETH,
+                                                             std::nullopt),
               "chain_id2");
   }
 }

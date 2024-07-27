@@ -9,18 +9,19 @@
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/feature_list.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
-#include "brave/browser/ipfs/import/ipfs_import_controller.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/browser_dialogs.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/common/channel_info.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
@@ -37,14 +38,6 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/browser/ipfs/ipfs_tab_helper.h"
-#include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_service.h"
-#include "brave/components/ipfs/ipfs_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -332,16 +325,37 @@ void OnRewriteSuggestionCompleted(
 }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
+bool CanOpenSplitViewForWebContents(
+    base::WeakPtr<content::WebContents> web_contents) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
+    return false;
+  }
+
+  if (!web_contents) {
+    return false;
+  }
+
+  Browser* browser = chrome::FindBrowserWithTab(web_contents.get());
+  return browser && browser->is_type_normal() &&
+         brave::CanOpenNewSplitViewForTab(browser);
+}
+
+void OpenLinkInSplitView(base::WeakPtr<content::WebContents> web_contents,
+                         const GURL& url) {
+  if (!web_contents) {
+    return;
+  }
+
+  Browser* browser = chrome::FindBrowserWithTab(web_contents.get());
+  brave::NewSplitViewForTab(browser, std::nullopt, url);
+}
+
 }  // namespace
 
 BraveRenderViewContextMenu::BraveRenderViewContextMenu(
     content::RenderFrameHost& render_frame_host,
     const content::ContextMenuParams& params)
     : RenderViewContextMenu_Chromium(render_frame_host, params)
-#if BUILDFLAG(ENABLE_IPFS)
-      ,
-      ipfs_submenu_model_(this)
-#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
       ,
       ai_chat_submenu_model_(this),
@@ -368,16 +382,6 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
       // IsPasteAndMatchStyleEnabled checks internally, but IsPasteEnabled
       // allows non text types
       return IsPasteAndMatchStyleEnabled();
-#if BUILDFLAG(ENABLE_IPFS)
-    case IDC_CONTENT_CONTEXT_IMPORT_IPFS:
-    case IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE:
-    case IDC_CONTENT_CONTEXT_IMPORT_IMAGE_IPFS:
-    case IDC_CONTENT_CONTEXT_IMPORT_VIDEO_IPFS:
-    case IDC_CONTENT_CONTEXT_IMPORT_AUDIO_IPFS:
-    case IDC_CONTENT_CONTEXT_IMPORT_LINK_IPFS:
-    case IDC_CONTENT_CONTEXT_IMPORT_SELECTED_TEXT_IPFS:
-      return IsIPFSCommandIdEnabled(id);
-#endif
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
 #if BUILDFLAG(ENABLE_TOR)
       if (brave::IsTorDisabledForProfile(GetProfile())) {
@@ -415,46 +419,12 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
     case IDC_AI_CHAT_CONTEXT_REWRITE:
       return ai_rewriter::features::IsAIRewriterEnabled();
 #endif
+    case IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW:
+      return CanOpenSplitViewForWebContents(source_web_contents_->GetWeakPtr());
     default:
       return RenderViewContextMenu_Chromium::IsCommandIdEnabled(id);
   }
 }
-#if BUILDFLAG(ENABLE_IPFS)
-void BraveRenderViewContextMenu::ExecuteIPFSCommand(int id, int event_flags) {
-  ipfs::IPFSTabHelper* helper =
-      ipfs::IPFSTabHelper::FromWebContents(source_web_contents_);
-  if (!helper) {
-    return;
-  }
-  auto* controller = helper->GetImportController();
-  if (!controller) {
-    return;
-  }
-  switch (id) {
-    case IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE:
-      helper->ImportCurrentPageToIpfs();
-      break;
-    case IDC_CONTENT_CONTEXT_IMPORT_IMAGE_IPFS:
-    case IDC_CONTENT_CONTEXT_IMPORT_VIDEO_IPFS:
-    case IDC_CONTENT_CONTEXT_IMPORT_AUDIO_IPFS: {
-      if (params_.src_url.SchemeIsFile()) {
-        base::FilePath path;
-        if (net::FileURLToFilePath(params_.src_url, &path) && !path.empty()) {
-          controller->ImportFileToIpfs(path, std::string());
-        }
-      } else {
-        controller->ImportLinkToIpfs(params_.src_url);
-      }
-    }; break;
-    case IDC_CONTENT_CONTEXT_IMPORT_LINK_IPFS:
-      controller->ImportLinkToIpfs(params_.link_url);
-      break;
-    case IDC_CONTENT_CONTEXT_IMPORT_SELECTED_TEXT_IPFS:
-      controller->ImportTextToIpfs(base::UTF16ToUTF8(params_.selection_text));
-      break;
-  }
-}
-#endif
 
 void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
   switch (id) {
@@ -479,16 +449,6 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       // Replace works just like Paste, but it doesn't trigger onpaste handlers
       source_web_contents_->Replace(result);
     }; break;
-#if BUILDFLAG(ENABLE_IPFS)
-    case IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE:
-    case IDC_CONTENT_CONTEXT_IMPORT_IMAGE_IPFS:
-    case IDC_CONTENT_CONTEXT_IMPORT_VIDEO_IPFS:
-    case IDC_CONTENT_CONTEXT_IMPORT_AUDIO_IPFS:
-    case IDC_CONTENT_CONTEXT_IMPORT_LINK_IPFS:
-    case IDC_CONTENT_CONTEXT_IMPORT_SELECTED_TEXT_IPFS:
-      ExecuteIPFSCommand(id, event_flags);
-      break;
-#endif
 #if BUILDFLAG(ENABLE_TOR)
     case IDC_CONTENT_CONTEXT_OPENLINKTOR: {
       const bool has_tor_window = HasAlreadyOpenedTorWindow(GetProfile());
@@ -528,6 +488,9 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
           source_web_contents_, base::UTF16ToUTF8(params_.selection_text));
       break;
 #endif
+    case IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW:
+      OpenLinkInSplitView(source_web_contents_->GetWeakPtr(), params_.link_url);
+      break;
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
   }
@@ -548,7 +511,7 @@ void BraveRenderViewContextMenu::CopyTextFromImage() {
 bool BraveRenderViewContextMenu::IsAIChatEnabled() const {
   return !params_.selection_text.empty() &&
          ai_chat::IsAIChatEnabled(GetProfile()->GetPrefs()) &&
-         brave::IsRegularProfile(GetProfile()) &&
+         GetProfile()->IsRegularProfile() &&
          GetProfile()->GetPrefs()->GetBoolean(
              ai_chat::prefs::kBraveAIChatContextMenuEnabled) &&
          !IsInProgressiveWebApp();
@@ -719,106 +682,6 @@ void BraveRenderViewContextMenu::AddAccessibilityLabelsServiceItem(
   // Suppress adding "Get image descriptions from Brave"
 }
 
-#if BUILDFLAG(ENABLE_IPFS)
-bool BraveRenderViewContextMenu::IsIPFSCommandIdEnabled(int command) const {
-  if (!ipfs::IsIpfsMenuEnabled(GetProfile()->GetPrefs())) {
-    return false;
-  }
-  switch (command) {
-    case IDC_CONTENT_CONTEXT_IMPORT_IPFS:
-      return true;
-    case IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE:
-      return source_web_contents_->GetURL().SchemeIsHTTPOrHTTPS() &&
-             source_web_contents_->IsSavable();
-    case IDC_CONTENT_CONTEXT_IMPORT_IMAGE_IPFS:
-      return params_.has_image_contents;
-    case IDC_CONTENT_CONTEXT_IMPORT_VIDEO_IPFS:
-      return content_type_->SupportsGroup(
-          ContextMenuContentType::ITEM_GROUP_MEDIA_VIDEO);
-    case IDC_CONTENT_CONTEXT_IMPORT_AUDIO_IPFS:
-      return content_type_->SupportsGroup(
-          ContextMenuContentType::ITEM_GROUP_MEDIA_AUDIO);
-    case IDC_CONTENT_CONTEXT_IMPORT_LINK_IPFS:
-      return !params_.link_url.is_empty();
-    case IDC_CONTENT_CONTEXT_IMPORT_SELECTED_TEXT_IPFS:
-      return !params_.selection_text.empty() &&
-             params_.media_type == ContextMenuDataMediaType::kNone;
-    default:
-      NOTREACHED_IN_MIGRATION();
-  }
-  return false;
-}
-
-void BraveRenderViewContextMenu::SeIpfsIconAt(int index) {
-  auto& bundle = ui::ResourceBundle::GetSharedInstance();
-  const auto& ipfs_logo = *bundle.GetImageSkiaNamed(IDR_BRAVE_IPFS_LOGO);
-  ui::ImageModel model = ui::ImageModel::FromImageSkia(ipfs_logo);
-  menu_model_.SetIcon(index, model);
-}
-
-void BraveRenderViewContextMenu::BuildIPFSMenu() {
-  if (!ipfs::IsIpfsMenuEnabled(GetProfile()->GetPrefs())) {
-    return;
-  }
-  std::optional<size_t> index =
-      menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);
-  if (!index.has_value()) {
-    return;
-  }
-  if (!params_.selection_text.empty() &&
-      params_.media_type == ContextMenuDataMediaType::kNone) {
-    menu_model_.InsertSeparatorAt(index.value(),
-                                  ui::MenuSeparatorType::NORMAL_SEPARATOR);
-
-    menu_model_.InsertItemWithStringIdAt(
-        index.value(), IDC_CONTENT_CONTEXT_IMPORT_SELECTED_TEXT_IPFS,
-        IDS_CONTENT_CONTEXT_IMPORT_IPFS_SELECTED_TEXT);
-    SeIpfsIconAt(index.value());
-    return;
-  }
-
-  auto page_url = source_web_contents_->GetURL();
-  url::Origin page_origin = url::Origin::Create(page_url);
-  if (page_url.SchemeIsHTTPOrHTTPS() &&
-      !ipfs::IsAPIGateway(page_origin.GetURL(), chrome::GetChannel())) {
-    ipfs_submenu_model_.AddItemWithStringId(
-        IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE,
-        IDS_CONTENT_CONTEXT_IMPORT_IPFS_PAGE);
-  }
-  if (params_.has_image_contents) {
-    ipfs_submenu_model_.AddItemWithStringId(
-        IDC_CONTENT_CONTEXT_IMPORT_IMAGE_IPFS,
-        IDS_CONTENT_CONTEXT_IMPORT_IPFS_IMAGE);
-  }
-  if (content_type_->SupportsGroup(
-          ContextMenuContentType::ITEM_GROUP_MEDIA_VIDEO)) {
-    ipfs_submenu_model_.AddItemWithStringId(
-        IDC_CONTENT_CONTEXT_IMPORT_VIDEO_IPFS,
-        IDS_CONTENT_CONTEXT_IMPORT_IPFS_VIDEO);
-  }
-  if (content_type_->SupportsGroup(
-          ContextMenuContentType::ITEM_GROUP_MEDIA_AUDIO)) {
-    ipfs_submenu_model_.AddItemWithStringId(
-        IDC_CONTENT_CONTEXT_IMPORT_AUDIO_IPFS,
-        IDS_CONTENT_CONTEXT_IMPORT_IPFS_AUDIO);
-  }
-  if (!params_.link_url.is_empty()) {
-    ipfs_submenu_model_.AddItemWithStringId(
-        IDC_CONTENT_CONTEXT_IMPORT_LINK_IPFS,
-        IDS_CONTENT_CONTEXT_IMPORT_IPFS_LINK);
-  }
-  if (!ipfs_submenu_model_.GetItemCount()) {
-    return;
-  }
-  menu_model_.InsertSeparatorAt(index.value(),
-                                ui::MenuSeparatorType::NORMAL_SEPARATOR);
-  menu_model_.InsertSubMenuWithStringIdAt(
-      index.value(), IDC_CONTENT_CONTEXT_IMPORT_IPFS,
-      IDS_CONTENT_CONTEXT_IMPORT_IPFS, &ipfs_submenu_model_);
-  SeIpfsIconAt(index.value());
-}
-#endif
-
 void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
 
@@ -877,13 +740,21 @@ void BraveRenderViewContextMenu::InitMenu() {
           copy_index.value() + 1, IDC_COPY_CLEAN_LINK, IDS_COPY_CLEAN_LINK);
     }
   }
-#if BUILDFLAG(ENABLE_IPFS)
-  BuildIPFSMenu();
-#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   BuildAIChatMenu();
 #endif
+
+  // Add Open Link in Split View
+  if (CanOpenSplitViewForWebContents(source_web_contents_->GetWeakPtr()) &&
+      params_.link_url.is_valid()) {
+    index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_OPENLINKNEWTAB);
+    CHECK(index.has_value());
+
+    menu_model_.InsertItemWithStringIdAt(
+        index.value() + 1, IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW,
+        IDS_CONTENT_CONTEXT_SPLIT_VIEW);
+  }
 }
 
 void BraveRenderViewContextMenu::NotifyMenuShown() {

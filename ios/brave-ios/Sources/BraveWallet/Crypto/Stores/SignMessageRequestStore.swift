@@ -155,10 +155,12 @@ class SignMessageRequestStore: ObservableObject {
 
         let details = EthSwapDetails(
           fromToken: fromToken,
+          fromNetwork: network,
           fromValue: cowSwapOrder.sellAmount,
           fromAmount: formattedSellAmount,
           fromFiat: nil,  // not required for display
           toToken: toToken,
+          toNetwork: network,
           minBuyValue: cowSwapOrder.buyToken,
           minBuyAmount: formattedMinBuyAmount,
           minBuyAmountFiat: nil,  // not required for display

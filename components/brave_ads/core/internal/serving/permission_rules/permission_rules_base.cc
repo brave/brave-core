@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_base.h"
 
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/command_line_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/confirmation_tokens_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/issuers_permission_rule.h"
 
 namespace brave_ads {
 
@@ -18,9 +20,11 @@ bool PermissionRulesBase::HasPermission() {
   if (!HasIssuersPermission()) {
     return false;
   }
+
   if (!HasConfirmationTokensPermission()) {
     return false;
   }
+
   if (!HasCommandLinePermission()) {
     return false;
   }

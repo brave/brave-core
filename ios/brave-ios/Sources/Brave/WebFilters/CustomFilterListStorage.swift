@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import BraveShields
 import BraveStrings
 import Data
@@ -57,12 +58,12 @@ import WebKit
     self.filterListsURLs = []
   }
 
-  func loadCachedFilterLists() {
+  func loadCachedFilterLists() async {
     let settings = CustomFilterListSetting.loadAllSettings(fromMemory: !persistChanges)
 
-    self.filterListsURLs = settings.map { setting in
+    self.filterListsURLs = await settings.asyncMap { setting in
       let resource = setting.resource
-      let date = try? resource.creationDate()
+      let date = try? await resource.creationDate()
 
       if let date = date {
         return FilterListCustomURL(setting: setting, downloadStatus: .downloaded(date))
@@ -73,7 +74,7 @@ import WebKit
 
     do {
       // Load the custom text filter list
-      if let fileInfo = try savedCustomRulesFileInfo() {
+      if let fileInfo = try await savedCustomRulesFileInfo() {
         AdBlockGroupsManager.shared.update(fileInfo: fileInfo)
       }
     } catch {
@@ -96,8 +97,11 @@ import WebKit
 
   /// Get the file URL to the custom filter list rules regardless if it is saved or not
   private func customRulesFileURL() throws -> URL {
-    let folderURL = try getOrCreateCustomRulesFolder()
-    return folderURL.appendingPathComponent("list.txt")
+    let folderURL = try AsyncFileManager.default.url(
+      for: .applicationSupportDirectory,
+      in: .userDomainMask
+    ).appending(path: "custom_rules")
+    return folderURL.appending(path: "list.txt")
   }
 
   /// Get the file URL to the custom filter list rules if it exists
@@ -111,7 +115,7 @@ import WebKit
     }
   }
 
-  public func savedCustomRulesFileInfo() throws -> AdBlockEngineManager.FileInfo? {
+  public func savedCustomRulesFileInfo() async throws -> AdBlockEngineManager.FileInfo? {
     guard let fileURL = try savedCustomRulesFileURL() else { return nil }
     let versionNumber = Self.customRuleListVersion.value
 
@@ -125,9 +129,11 @@ import WebKit
   }
 
   /// Load the custom filter list rules if they are saved
-  public func loadCustomRules() throws -> String? {
+  public func loadCustomRules() async throws -> String? {
     guard let url = try savedCustomRulesFileURL() else { return nil }
-    return try String(contentsOf: url)
+    return try await Task.detached {
+      try String(contentsOf: url)
+    }.value
   }
 
   /// Save the custom filter list rules
@@ -148,37 +154,33 @@ import WebKit
     }
 
     let fileURL = try customRulesFileURL()
-    if FileManager.default.fileExists(atPath: fileURL.path) {
-      try FileManager.default.removeItem(at: fileURL)
+    if await AsyncFileManager.default.fileExists(atPath: fileURL.path) {
+      try await AsyncFileManager.default.removeItem(at: fileURL)
     }
 
+    _ = try await getOrCreateCustomRulesFolder()
     try customRules.write(to: fileURL, atomically: true, encoding: .utf8)
     Self.customRuleListVersion.value += 1
-    guard let fileInfo = try savedCustomRulesFileInfo() else { return }
+    guard let fileInfo = try await savedCustomRulesFileInfo() else { return }
     await AdBlockGroupsManager.shared.updateImmediately(fileInfo: fileInfo)
   }
 
   /// Delete the saved custom filter list rules
   func deleteCustomRules() async throws {
     guard let fileURL = try savedCustomRulesFileURL() else { return }
-    try FileManager.default.removeItem(at: fileURL)
+    try await AsyncFileManager.default.removeItem(at: fileURL)
     await AdBlockGroupsManager.shared.removeFileInfoImmediately(for: .filterListText)
   }
 
   /// Get or create a cache folder for the given `Resource`
   ///
   /// - Note: This technically can't really return nil as the location and folder are hard coded
-  private func getOrCreateCustomRulesFolder() throws -> URL {
-    guard
-      let folderURL = FileManager.default.getOrCreateFolder(
-        name: "custom_rules",
-        location: .applicationSupportDirectory
-      )
-    else {
-      throw ResourceFileError.failedToCreateCacheFolder
-    }
-
-    return folderURL
+  private func getOrCreateCustomRulesFolder() async throws -> URL {
+    try await AsyncFileManager.default.url(
+      for: .applicationSupportDirectory,
+      appending: "custom_rules",
+      create: true
+    )
   }
 
   func update(filterListId id: ObjectIdentifier, with result: Result<Date, Error>) {

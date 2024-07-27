@@ -56,7 +56,7 @@ struct AIChatPageContextView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
       }
     )
-    .tint(Color(braveSystemName: isToggleOn ? .primitivePrimary60 : .primitiveGray30))
+    .tint(Color(braveSystemName: isToggleOn ? .primitivePrimary40 : .primitiveNeutral80))
     .padding([.vertical, .trailing], 8.0)
     .padding(.leading, 12.0)
     .background(

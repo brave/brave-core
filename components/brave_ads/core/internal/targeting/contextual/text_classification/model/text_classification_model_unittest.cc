@@ -10,17 +10,17 @@
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/common/resources/language_components_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_processor.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsTextClassificationModelTest : public UnitTestBase {
+class BraveAdsTextClassificationModelTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     resource_ = std::make_unique<TextClassificationResource>();
   }
@@ -45,8 +45,8 @@ TEST_F(BraveAdsTextClassificationModelTest,
 
 TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
-                                   kLanguageComponentId);
+  NotifyDidUpdateResourceComponent(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   TextClassificationProcessor processor(*resource_);
@@ -64,8 +64,8 @@ TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
 TEST_F(BraveAdsTextClassificationModelTest,
        GetSegmentsForPreviouslyClassifiedText) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
-                                   kLanguageComponentId);
+  NotifyDidUpdateResourceComponent(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   TextClassificationProcessor processor(*resource_);
@@ -141,8 +141,8 @@ TEST_F(BraveAdsTextClassificationModelTest,
 TEST_F(BraveAdsTextClassificationModelTest,
        GetSegmentsForPreviouslyClassifiedTexts) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
-                                   kLanguageComponentId);
+  NotifyDidUpdateResourceComponent(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   const std::vector<std::string> texts = {
@@ -266,8 +266,8 @@ TEST_F(BraveAdsTextClassificationModelTest,
 
 TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsIfNeverProcessed) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
-                                   kLanguageComponentId);
+  NotifyDidUpdateResourceComponent(test::kLanguageComponentManifestVersion,
+                                   test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   // Act

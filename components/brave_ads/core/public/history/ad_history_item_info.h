@@ -1,0 +1,66 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_HISTORY_AD_HISTORY_ITEM_INFO_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_HISTORY_AD_HISTORY_ITEM_INFO_H_
+
+#include <string>
+
+#include "base/containers/circular_deque.h"
+#include "base/time/time.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/public/export.h"
+#include "url/gurl.h"
+
+namespace brave_ads {
+
+struct ADS_EXPORT AdHistoryItemInfo final {
+  AdHistoryItemInfo();
+
+  AdHistoryItemInfo(const AdHistoryItemInfo&);
+  AdHistoryItemInfo& operator=(const AdHistoryItemInfo&);
+
+  AdHistoryItemInfo(AdHistoryItemInfo&&) noexcept;
+  AdHistoryItemInfo& operator=(AdHistoryItemInfo&&) noexcept;
+
+  ~AdHistoryItemInfo();
+
+  bool operator==(const AdHistoryItemInfo&) const = default;
+
+  base::Time created_at;
+
+  ConfirmationType confirmation_type = ConfirmationType::kUndefined;
+
+  // Ad.
+  AdType type = AdType::kUndefined;
+  std::string placement_id;
+  std::string creative_instance_id;
+  std::string creative_set_id;
+  std::string campaign_id;
+  std::string advertiser_id;
+  std::string segment;
+
+  // Brand.
+  std::string brand;
+  std::string brand_info;
+  std::string brand_display_url;
+  GURL brand_url;
+
+  // User reactions.
+  mojom::UserReactionType ad_user_reaction_type =
+      mojom::UserReactionType::kNeutral;
+  mojom::UserReactionType category_user_reaction_type =
+      mojom::UserReactionType::kNeutral;
+  bool is_saved = false;
+  bool is_marked_as_inappropriate = false;
+};
+
+using AdHistoryList = base::circular_deque<AdHistoryItemInfo>;
+
+}  // namespace brave_ads
+
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_HISTORY_AD_HISTORY_ITEM_INFO_H_

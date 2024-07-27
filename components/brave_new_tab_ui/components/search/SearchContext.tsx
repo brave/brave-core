@@ -94,6 +94,7 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
     if (!engine) return
 
     setDefaultSearchEngine(engine)
+    getNTPBrowserAPI().newTabMetrics.reportNTPSearchDefaultEngine(engine.prepopulateId)
     setSearchEngineInternal(engine)
   }, [searchEngines]);
 
@@ -103,6 +104,7 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
 
     const match = filteredSearchEngines.find(s => s.host === getDefaultSearchEngine())
       ?? searchEngines[0]
+    getNTPBrowserAPI().newTabMetrics.reportNTPSearchDefaultEngine(match.prepopulateId)
     setSearchEngine(match)
   }, [filteredSearchEngines])
 
@@ -116,13 +118,18 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
     }
   }, [query, searchEngine])
 
+  const setQueryExternal = React.useCallback((query: string) => {
+    setOpen(true)
+    setQuery(query)
+  }, [])
+
   const context = React.useMemo(() => ({
     open,
     setOpen,
     searchEngine,
     setSearchEngine,
     query,
-    setQuery,
+    setQuery: setQueryExternal,
     searchEngines,
     filteredSearchEngines
   }), [searchEngine, setSearchEngine, filteredSearchEngines, query, searchEngines, open])

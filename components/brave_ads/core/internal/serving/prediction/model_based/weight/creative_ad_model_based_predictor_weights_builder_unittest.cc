@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/weight/creative_ad_model_based_predictor_weights_builder.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
@@ -15,7 +15,7 @@
 namespace brave_ads {
 
 class BraveAdsCreativeAdModelBasedPredictorWeightsBuilderTest
-    : public UnitTestBase {};
+    : public test::TestBase {};
 
 TEST_F(BraveAdsCreativeAdModelBasedPredictorWeightsBuilderTest,
        BuildCreativeInlineContentAdModelBasedPredictorWeights) {

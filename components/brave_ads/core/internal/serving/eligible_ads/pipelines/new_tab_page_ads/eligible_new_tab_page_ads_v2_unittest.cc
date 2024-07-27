@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "base/test/mock_callback.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
@@ -20,10 +20,10 @@
 
 namespace brave_ads {
 
-class BraveAdsEligibleNewTabPageAdsV2Test : public UnitTestBase {
+class BraveAdsEligibleNewTabPageAdsV2Test : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
     anti_targeting_resource_ = std::make_unique<AntiTargetingResource>();
@@ -41,16 +41,16 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAds) {
   CreativeNewTabPageAdList creative_ads;
 
   const CreativeNewTabPageAdInfo creative_ad_1 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
   creative_ad_2.segment = "parent";
   creative_ads.push_back(creative_ad_2);
 
   CreativeNewTabPageAdInfo creative_ad_3 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
   creative_ad_3.segment = "parent-child";
   creative_ads.push_back(creative_ad_3);
 
@@ -70,12 +70,12 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAdsForNoMatchingSegments) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
   creative_ad_1.segment = "parent";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
   creative_ad_2.segment = "parent-child";
   creative_ads.push_back(creative_ad_2);
 

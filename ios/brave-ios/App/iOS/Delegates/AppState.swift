@@ -53,7 +53,6 @@ public class AppState {
           // initialization. This is because Database container may change. See bugs #3416, #3377.
           didBecomeActive = true
           DataController.shared.initializeOnce()
-          Migration.postCoreDataInitMigrations()
           Migration.migrateLostTabsActiveWindow()
         }
 
@@ -70,21 +69,6 @@ public class AppState {
       }
     }
   }
-
-  private(set) public lazy var diskImageStore = { () -> DiskImageStore? in
-    do {
-      return try DiskImageStore(
-        files: profile.files,
-        namespace: "TabManagerScreenshots",
-        quality: UIConstants.screenshotQuality
-      )
-    } catch {
-      log.error(
-        "Failed to create an image store for files: \(self.profile.files.rootPath) and namespace: \"TabManagerScreenshots\": \(error.localizedDescription)"
-      )
-    }
-    return nil
-  }()
 
   private init() {
     // Setup Constants
@@ -223,7 +207,6 @@ public class AppState {
       (SessionRestoreHandler.path, SessionRestoreHandler()),
       (ErrorPageHandler.path, ErrorPageHandler()),
       (ReaderModeHandler.path, ReaderModeHandler(profile: profile)),
-      (IPFSSchemeHandler.path, IPFSSchemeHandler()),
       (Web3DomainHandler.path, Web3DomainHandler()),
       (BlockedDomainHandler.path, BlockedDomainHandler()),
       (HTTPBlockedHandler.path, HTTPBlockedHandler()),

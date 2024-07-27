@@ -62,7 +62,7 @@ class DomainTests: CoreDataTestCase {
 
   @MainActor func testDefaultShieldSettings() {
     let domain = Domain.getOrCreate(forUrl: url, persistent: true)
-    XCTAssertTrue(domain.isShieldExpected(BraveShield.adblockAndTp, considerAllShieldsOption: true))
+    XCTAssertEqual(domain.globalBlockAdsAndTrackingLevel, .standard)
     XCTAssertFalse(domain.isShieldExpected(BraveShield.allOff, considerAllShieldsOption: true))
     XCTAssertFalse(domain.isShieldExpected(BraveShield.noScript, considerAllShieldsOption: true))
     XCTAssertTrue(domain.isShieldExpected(BraveShield.fpProtection, considerAllShieldsOption: true))
@@ -78,9 +78,7 @@ class DomainTests: CoreDataTestCase {
       Domain.setBraveShield(forUrl: url, shield: .allOff, isOn: true, isPrivateBrowsing: false)
     }
 
-    XCTAssertFalse(
-      domain.isShieldExpected(BraveShield.adblockAndTp, considerAllShieldsOption: true)
-    )
+    XCTAssertEqual(domain.globalBlockAdsAndTrackingLevel, .disabled)
     XCTAssertFalse(domain.isShieldExpected(BraveShield.allOff, considerAllShieldsOption: true))
     XCTAssertFalse(domain.isShieldExpected(BraveShield.noScript, considerAllShieldsOption: true))
     XCTAssertFalse(
@@ -91,7 +89,7 @@ class DomainTests: CoreDataTestCase {
       Domain.setBraveShield(forUrl: url, shield: .allOff, isOn: false, isPrivateBrowsing: false)
     }
 
-    XCTAssertTrue(domain.isShieldExpected(BraveShield.adblockAndTp, considerAllShieldsOption: true))
+    XCTAssertEqual(domain.globalBlockAdsAndTrackingLevel, .standard)
     XCTAssertFalse(domain.isShieldExpected(BraveShield.allOff, considerAllShieldsOption: true))
     XCTAssertFalse(domain.isShieldExpected(BraveShield.noScript, considerAllShieldsOption: true))
     XCTAssertTrue(domain.isShieldExpected(BraveShield.fpProtection, considerAllShieldsOption: true))
@@ -100,31 +98,30 @@ class DomainTests: CoreDataTestCase {
   /// Tests non-HTTPSE shields
   @MainActor func testNormalShieldSettings() {
     backgroundSaveAndWaitForExpectation {
-      Domain.setBraveShield(
-        forUrl: url2HTTPS,
-        shield: .adblockAndTp,
-        isOn: false,
+      Domain.performChangesOnDomain(
+        for: url2HTTPS,
         isPrivateBrowsing: false
-      )
+      ) { domain in
+        domain.domainBlockAdsAndTrackingLevel = .disabled
+      }
     }
 
     let domain = Domain.getOrCreate(forUrl: url2HTTPS, persistent: true)
     // These should be the same in this situation
-    XCTAssertFalse(
-      domain.isShieldExpected(BraveShield.adblockAndTp, considerAllShieldsOption: true)
-    )
+    XCTAssertEqual(domain.domainBlockAdsAndTrackingLevel, .disabled)
+    XCTAssertEqual(domain.globalBlockAdsAndTrackingLevel, .disabled)
 
     backgroundSaveAndWaitForExpectation {
-      Domain.setBraveShield(
-        forUrl: url2HTTPS,
-        shield: .adblockAndTp,
-        isOn: true,
+      Domain.performChangesOnDomain(
+        for: url2HTTPS,
         isPrivateBrowsing: false
-      )
+      ) { domain in
+        domain.domainBlockAdsAndTrackingLevel = .standard
+      }
     }
 
     domain.managedObjectContext?.refreshAllObjects()
-    XCTAssertTrue(domain.isShieldExpected(BraveShield.adblockAndTp, considerAllShieldsOption: true))
+    XCTAssertEqual(domain.globalBlockAdsAndTrackingLevel, .standard)
   }
 
   func testWalletEthDappPermission() {
@@ -239,5 +236,40 @@ class DomainTests: CoreDataTestCase {
       Domain.clearAllWalletPermissions(for: .sol)
     }
     XCTAssertFalse(raydiumDomain.walletPermissions(for: .sol, account: walletSolAccount))
+  }
+}
+
+extension Domain {
+  fileprivate class func setBraveShield(
+    forUrl url: URL,
+    shield: BraveShield,
+    isOn: Bool?,
+    isPrivateBrowsing: Bool
+  ) {
+    performChangesOnDomain(for: url, isPrivateBrowsing: isPrivateBrowsing) { domain in
+      let setting = (isOn == shield.globalPreference ? nil : isOn) as NSNumber?
+      switch shield {
+      case .allOff: domain.shield_allOff = setting
+      case .fpProtection: domain.shield_fpProtection = setting
+      case .noScript: domain.shield_noScript = setting
+      }
+    }
+  }
+
+  fileprivate class func performChangesOnDomain(
+    for url: URL,
+    isPrivateBrowsing: Bool,
+    changes: @escaping (Domain) -> Void
+  ) {
+    let context = WriteContext.new(inMemory: isPrivateBrowsing)
+    DataController.perform(context: context) { context in
+      // Not saving here, save happens in `perform` method.
+      let domain = Domain.getOrCreateInternal(
+        url,
+        context: context,
+        saveStrategy: .delayedPersistentStore
+      )
+      changes(domain)
+    }
   }
 }

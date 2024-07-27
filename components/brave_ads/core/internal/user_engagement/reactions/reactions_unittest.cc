@@ -11,25 +11,25 @@
 #include "brave/components/brave_ads/core/internal/account/account_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/history/history_item_util.h"
-#include "brave/components/brave_ads/core/internal/history/history_manager.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_builder_util.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_util.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
-#include "brave/components/brave_ads/core/public/history/ad_content_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsReactionsTest : public UnitTestBase {
+class BraveAdsReactionsTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
@@ -44,7 +44,7 @@ class BraveAdsReactionsTest : public UnitTestBase {
   void TearDown() override {
     account_->RemoveObserver(&account_observer_mock_);
 
-    UnitTestBase::TearDown();
+    test::TestBase::TearDown();
   }
 
   ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
@@ -60,16 +60,15 @@ TEST_F(BraveAdsReactionsTest, LikeAd) {
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
 
-  const HistoryItemInfo history_item = BuildHistoryItem(
+  const AdHistoryItemInfo ad_history_item = BuildAdHistoryItem(
       ad, ConfirmationType::kViewedImpression, ad.title, ad.body);
-  const AdContentInfo& ad_content = history_item.ad_content;
 
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
-  HistoryManager::GetInstance().LikeAd(ad_content);
+  AdHistoryManager::GetInstance().LikeAd(ad_history_item);
 }
 
 TEST_F(BraveAdsReactionsTest, DislikeAd) {
@@ -77,16 +76,15 @@ TEST_F(BraveAdsReactionsTest, DislikeAd) {
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
 
-  const HistoryItemInfo history_item = BuildHistoryItem(
+  const AdHistoryItemInfo ad_history_item = BuildAdHistoryItem(
       ad, ConfirmationType::kViewedImpression, ad.title, ad.body);
-  const AdContentInfo& ad_content = history_item.ad_content;
 
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
-  HistoryManager::GetInstance().DislikeAd(ad_content);
+  AdHistoryManager::GetInstance().DislikeAd(ad_history_item);
 }
 
 TEST_F(BraveAdsReactionsTest, MarkAdAsInappropriate) {
@@ -94,16 +92,15 @@ TEST_F(BraveAdsReactionsTest, MarkAdAsInappropriate) {
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
 
-  const HistoryItemInfo history_item = BuildHistoryItem(
+  const AdHistoryItemInfo ad_history_item = BuildAdHistoryItem(
       ad, ConfirmationType::kViewedImpression, ad.title, ad.body);
-  const AdContentInfo& ad_content = history_item.ad_content;
 
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
-  HistoryManager::GetInstance().ToggleMarkAdAsInappropriate(ad_content);
+  AdHistoryManager::GetInstance().ToggleMarkAdAsInappropriate(ad_history_item);
 }
 
 TEST_F(BraveAdsReactionsTest, SaveAd) {
@@ -111,16 +108,15 @@ TEST_F(BraveAdsReactionsTest, SaveAd) {
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
 
-  const HistoryItemInfo history_item = BuildHistoryItem(
+  const AdHistoryItemInfo ad_history_item = BuildAdHistoryItem(
       ad, ConfirmationType::kViewedImpression, ad.title, ad.body);
-  const AdContentInfo& ad_content = history_item.ad_content;
 
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
-  HistoryManager::GetInstance().ToggleSaveAd(ad_content);
+  AdHistoryManager::GetInstance().ToggleSaveAd(ad_history_item);
 }
 
 }  // namespace brave_ads

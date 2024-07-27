@@ -24,10 +24,8 @@ namespace brave_rewards {
 
 class ExtensionRewardsNotificationServiceObserver;
 
-class RewardsNotificationServiceImpl
-    : public RewardsNotificationService,
-      public RewardsServiceObserver,
-      public base::SupportsWeakPtr<RewardsNotificationServiceImpl> {
+class RewardsNotificationServiceImpl final : public RewardsNotificationService,
+                                             public RewardsServiceObserver {
  public:
   explicit RewardsNotificationServiceImpl(Profile* profile);
   RewardsNotificationServiceImpl(const RewardsNotificationServiceImpl&) =

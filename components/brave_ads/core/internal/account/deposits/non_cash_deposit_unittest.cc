@@ -7,13 +7,13 @@
 
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsNonCashDepositTest : public UnitTestBase {};
+class BraveAdsNonCashDepositTest : public test::TestBase {};
 
 TEST_F(BraveAdsNonCashDepositTest, GetValue) {
   // Arrange
@@ -22,7 +22,7 @@ TEST_F(BraveAdsNonCashDepositTest, GetValue) {
   // Act & Assert
   base::MockCallback<GetDepositCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true, /*value=*/0.0));
-  deposit.GetValue(kCreativeInstanceId, callback.Get());
+  deposit.GetValue(test::kCreativeInstanceId, callback.Get());
 }
 
 }  // namespace brave_ads

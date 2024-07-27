@@ -7,27 +7,6 @@
 #include "components/url_formatter/url_formatter.h"
 #include "url/gurl.h"
 
-#define BRAVE_LOOKUP_ERROR_MAP                             \
-  if (error_code == net::ERR_INCOGNITO_IPFS_NOT_ALLOWED) { \
-    static LocalizedErrorMap error({                       \
-        net::ERR_INCOGNITO_IPFS_NOT_ALLOWED,               \
-        IDS_ERRORPAGES_IPFS_INCOGNITO_HEADING,             \
-        IDS_ERRORPAGES_IPFS_INCOGNITO_SUMMARY,             \
-        SUGGEST_NONE,                                      \
-        SHOW_NO_BUTTONS,                                   \
-    });                                                    \
-    return &error;                                         \
-  } else if (error_code == net::ERR_IPFS_DISABLED) {       \
-    static LocalizedErrorMap error({                       \
-        net::ERR_IPFS_DISABLED,                            \
-        IDS_ERRORPAGES_IPFS_DISABLED_HEADING,              \
-        IDS_ERRORPAGES_IPFS_DISABLED_SUMMARY,              \
-        SUGGEST_NONE,                                      \
-        SHOW_BUTTON_RELOAD,                                \
-    });                                                    \
-    return &error;                                         \
-  }
-
 namespace error_page {
 std::u16string GetFailedUrlString(GURL failed_url);
 }  // namespace error_page
@@ -38,7 +17,6 @@ std::u16string GetFailedUrlString(GURL failed_url);
 #include "src/components/error_page/common/localized_error.cc"
 
 #undef failed_url_string
-#undef BRAVE_LOOKUP_ERROR_MAP
 
 namespace error_page {
 namespace {

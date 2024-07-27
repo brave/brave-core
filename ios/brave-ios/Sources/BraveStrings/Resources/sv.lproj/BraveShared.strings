@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Brave vill ha tillgång till dina foton";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Lägg till bokmärke";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Lägg till bokmärke";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Lägg till anpassad filterlista";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Lägg till ytterligare listor som skapas och underhålls av gemenskapen som du litar på.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Prenumerera bara på listor från entiteter som du litar på.** Din webbläsare söker regelbundet efter listuppdateringar från webbadressen du anger.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Lägg till i favoriter";
@@ -114,9 +102,6 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Blockeringsvisare";
-
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Blockera \"Växla till appen\"-aviseringar";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blockera popup-fönster";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Stäng";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Är du säker på att du vill stänga alla andra öppna flikar?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Stäng alla andra flikar";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Är du säker på att du vill stänga alla öppna flikar?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Bekräfta";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Innehållsfiltrering";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Aktivera anpassade filter som blockerar regionala och språkspecifika spårare och irritationsmoment.";
 
 /* Cookie settings option title */
 "CookieControl" = "Cookie-kontroll";
@@ -528,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Sökmotorer som används för närvarande";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Anpassa filterlista";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Anpassa filterlistor";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "Ange webbadress för filterlista";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Lägg till";
@@ -631,9 +607,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Stäng text om standardwebbläsare";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Filterlistor som standard";
-
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave standardinställningar";
 
@@ -666,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Enhet %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Ignorera ändringar";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Är du säker på att du vill ignorera dessa ändringar? Alla ändringar kommer att gå förlorade.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Ignorera ändringar?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Säkerhetscertifikat";
@@ -801,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Funktioner";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "Den webbadress du angav är ogiltig";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Endast säkra webbadresser (https) tillåts för anpassade filterlistor";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Lägg till";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Ytterligare populära listor från gemenskapen. Observera att webbläsarens hastighet försämras om för många filter aktiveras.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Nedladdningen misslyckades";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Väntande nedladdning";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Redigera";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Ange filterlistans URL";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Senast uppdaterad %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Ange filterlistans webbadress här";
 
 /* Share action title */
 "FindInPage" = "Sök på sidan";
@@ -2524,6 +2476,9 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Spara";
 
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Spara ändringar";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Sparade inloggningar";
 
@@ -3090,6 +3045,12 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Välj den enhetstyp du vill synkronisera med.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Koden har gått ut. Generera en ny genom att klicka på knappen nedan.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Denna tillfälliga kod är giltig under nästa %@";
 
 /* Computer device button title */
 "SyncComputerDevice" = "Dator";

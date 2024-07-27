@@ -20,7 +20,8 @@ TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
      SealVerifiableConversionEnvelope) {
   // Arrange
   const VerifiableConversionInfo verifiable_conversion{
-      kVerifiableConversionId, kVerifiableConversionAdvertiserPublicKey};
+      test::kVerifiableConversionId,
+      test::kVerifiableConversionAdvertiserPublicKeyBase64};
 
   // Act
   const std::optional<VerifiableConversionEnvelopeInfo>
@@ -32,7 +33,7 @@ TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
   EXPECT_EQ(verifiable_conversion.id,
             test::OpenVerifiableConversionEnvelope(
                 *sealed_verifiable_conversion_envelope,
-                kVerifiableConversionAdvertiserSecretKey));
+                test::kVerifiableConversionAdvertiserSecretKeyBase64));
 }
 
 TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
@@ -42,7 +43,7 @@ TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
   verifiable_conversion.id =
       std::string(kMinVerifiableConversionEnvelopeMessageLength - 1, '-');
   verifiable_conversion.advertiser_public_key_base64 =
-      kVerifiableConversionAdvertiserPublicKey;
+      test::kVerifiableConversionAdvertiserPublicKeyBase64;
 
   // Act & Assert
   EXPECT_FALSE(SealVerifiableConversionEnvelope(verifiable_conversion));
@@ -55,7 +56,7 @@ TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
   verifiable_conversion.id =
       std::string(kMaxVerifiableConversionEnvelopeMessageLength + 1, '-');
   verifiable_conversion.advertiser_public_key_base64 =
-      kVerifiableConversionAdvertiserPublicKey;
+      test::kVerifiableConversionAdvertiserPublicKeyBase64;
 
   // Act & Assert
   EXPECT_FALSE(SealVerifiableConversionEnvelope(verifiable_conversion));
@@ -64,17 +65,17 @@ TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
 TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
      DoNotSealEnvelopeWithInvalidMessage) {
   // Act & Assert
-  EXPECT_FALSE(SealVerifiableConversionEnvelope(
-      VerifiableConversionInfo{kInvalidVerifiableConversionId,
-                               kVerifiableConversionAdvertiserPublicKey}));
+  EXPECT_FALSE(SealVerifiableConversionEnvelope(VerifiableConversionInfo{
+      test::kInvalidVerifiableConversionId,
+      test::kVerifiableConversionAdvertiserPublicKeyBase64}));
 }
 
 TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
      DoNotSealEnvelopeWithInvalidPublicKey) {
   // Act & Assert
   EXPECT_FALSE(SealVerifiableConversionEnvelope(VerifiableConversionInfo{
-      kVerifiableConversionId,
-      kInvalidVerifiableConversionAdvertiserPublicKey}));
+      test::kVerifiableConversionId,
+      test::kInvalidVerifiableConversionAdvertiserPublicKeyBase64}));
 }
 
 }  // namespace brave_ads

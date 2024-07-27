@@ -75,6 +75,10 @@ struct BravePopoverView<Content: View & PopoverContentComponent>: UIViewControll
           DispatchQueue.main.async {
             controller.dismissPopover()
           }
+        } else if context.coordinator.presentedViewController != nil {
+          DispatchQueue.main.async {
+            isPresented = false
+          }
         }
         return
       }

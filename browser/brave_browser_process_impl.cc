@@ -29,7 +29,6 @@
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
-#include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
@@ -43,8 +42,8 @@
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_service.h"
-#include "brave/components/webcompat/features.h"
-#include "brave/components/webcompat/webcompat_exceptions_service.h"
+#include "brave/components/webcompat/content/browser/webcompat_exceptions_service.h"
+#include "brave/components/webcompat/core/common/features.h"
 #include "brave/services/network/public/cpp/system_request_handler.h"
 #include "build/build_config.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
@@ -72,11 +71,6 @@
 #include "brave/components/tor/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/brave_ipfs_client_updater.h"
-#include "brave/components/ipfs/ipfs_constants.h"
-#endif
-
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #endif
@@ -97,6 +91,10 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
+#endif
+
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
+#include "brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
 #endif
 
 using brave_component_updater::BraveComponent;
@@ -147,12 +145,6 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 
 void BraveBrowserProcessImpl::Init() {
   BrowserProcessImpl::Init();
-#if BUILDFLAG(ENABLE_IPFS)
-  content::ChildProcessSecurityPolicy::GetInstance()->RegisterWebSafeScheme(
-      ipfs::kIPFSScheme);
-  content::ChildProcessSecurityPolicy::GetInstance()->RegisterWebSafeScheme(
-      ipfs::kIPNSScheme);
-#endif
   UpdateBraveDarkMode();
   pref_change_registrar_.Add(
       kBraveDarkMode,
@@ -164,6 +156,11 @@ void BraveBrowserProcessImpl::Init() {
       tor::prefs::kTorDisabled,
       base::BindRepeating(&BraveBrowserProcessImpl::OnTorEnabledChanged,
                           base::Unretained(this)));
+#endif
+
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
+  day_zero_browser_ui_expt_manager_ =
+      DayZeroBrowserUIExptManager::Create(profile_manager());
 #endif
 
   InitSystemRequestHandlerCallback();
@@ -486,21 +483,6 @@ BraveBrowserProcessImpl::speedreader_rewriter_service() {
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
-#if BUILDFLAG(ENABLE_IPFS)
-ipfs::BraveIpfsClientUpdater* BraveBrowserProcessImpl::ipfs_client_updater() {
-  if (ipfs_client_updater_) {
-    return ipfs_client_updater_.get();
-  }
-
-  base::FilePath user_data_dir;
-  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
-
-  ipfs_client_updater_ = ipfs::BraveIpfsClientUpdaterFactory(
-      brave_component_updater_delegate(), user_data_dir);
-  return ipfs_client_updater_.get();
-}
-#endif  // BUILDFLAG(ENABLE_IPFS)
-
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 brave_vpn::BraveVPNConnectionManager*
 BraveBrowserProcessImpl::brave_vpn_connection_manager() {
@@ -513,13 +495,6 @@ BraveBrowserProcessImpl::brave_vpn_connection_manager() {
   return brave_vpn_connection_manager_.get();
 }
 #endif
-
-brave::BraveFarblingService* BraveBrowserProcessImpl::brave_farbling_service() {
-  if (!brave_farbling_service_) {
-    brave_farbling_service_ = std::make_unique<brave::BraveFarblingService>();
-  }
-  return brave_farbling_service_.get();
-}
 
 misc_metrics::ProcessMiscMetrics*
 BraveBrowserProcessImpl::process_misc_metrics() {

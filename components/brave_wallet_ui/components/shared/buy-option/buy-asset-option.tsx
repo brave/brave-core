@@ -22,8 +22,10 @@ import {
   checkIfTokenNeedsNetworkIcon,
   getAssetIdKey
 } from '../../../utils/asset-utils'
-import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
-import { getPriceIdForToken } from '../../../utils/api-utils'
+import {
+  getTokenPriceAmountFromRegistry,
+  getPriceIdForToken
+} from '../../../utils/pricing-utils'
 
 // hooks
 import {
@@ -158,12 +160,7 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLDivElement, Props>(
                 )}
             </IconsWrapper>
             <NameColumn>
-              <AssetName>
-                {token.name}{' '}
-                {token.isErc721 && token.tokenId
-                  ? '#' + new Amount(token.tokenId).toNumber()
-                  : ''}
-              </AssetName>
+              <AssetName>{token.name}</AssetName>
               <NetworkDescriptionText>
                 {networkDescription}
               </NetworkDescriptionText>

@@ -29,7 +29,6 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -59,6 +58,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+#include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/common/features.h"
 #endif
 
@@ -254,9 +254,6 @@ void BraveBrowserCommandController::InitBraveCommandState() {
     UpdateCommandEnabled(IDC_SPEEDREADER_ICON_ONCLICK, true);
   }
 #endif
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  UpdateCommandEnabled(IDC_APP_MENU_IPFS_OPEN_FILES, true);
-#endif
 
 #if BUILDFLAG(ENABLE_COMMANDER)
   UpdateCommandEnabled(IDC_COMMANDER, commander::IsEnabled());
@@ -372,7 +369,9 @@ void BraveBrowserCommandController::UpdateCommandForPlaylist() {
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     UpdateCommandEnabled(
         IDC_SHOW_PLAYLIST_BUBBLE,
-        browser_->is_type_normal() && !browser_->profile()->IsOffTheRecord());
+        browser_->is_type_normal() &&
+            playlist::PlaylistServiceFactory::GetForBrowserContext(
+                browser_->profile()));
   }
 #endif
 }
@@ -540,9 +539,6 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::CopySanitizedURL(
           &*browser_,
           browser_->tab_strip_model()->GetActiveWebContents()->GetVisibleURL());
-      break;
-    case IDC_APP_MENU_IPFS_OPEN_FILES:
-      brave::OpenIpfsFilesWebUI(&*browser_);
       break;
     case IDC_TOGGLE_TAB_MUTE:
       brave::ToggleActiveTabAudioMute(&*browser_);

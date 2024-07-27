@@ -82,6 +82,55 @@ class TransactionParserTests: XCTestCase {
     BraveWallet.BlockchainToken.mockBTCToken.assetRatioId.lowercased(): 62_117,
   ]
 
+  let mockGasEstimation = BraveWallet.GasEstimation1559(
+    slowMaxPriorityFeePerGas: "0x0",
+    slowMaxFeePerGas: "0x9",
+    avgMaxPriorityFeePerGas: "0x59672ead",
+    avgMaxFeePerGas: "0x59672eb6",
+    fastMaxPriorityFeePerGas: "0x59682f00",
+    fastMaxFeePerGas: "0x59682f09",
+    baseFeePerGas: "0x9"
+  )
+  let mockSwapGasEstimation = BraveWallet.GasEstimation1559(
+    slowMaxPriorityFeePerGas: "0x4ed3152b",
+    slowMaxFeePerGas: "0x4ed31534",
+    avgMaxPriorityFeePerGas: "0x59672ead",
+    avgMaxFeePerGas: "0x59672eb6",
+    fastMaxPriorityFeePerGas: "0x59682f00",
+    fastMaxFeePerGas: "0x59682f09",
+    baseFeePerGas: "0x9"
+  )
+
+  private func mockTransaction(
+    fromAccount: BraveWallet.AccountInfo,
+    txDataUnion: BraveWallet.TxDataUnion,
+    txType: BraveWallet.TransactionType,
+    txArgs: [String] = [],
+    chainId: String = BraveWallet.MainnetChainId,
+    effectiveRecipient: String,
+    swapInfo: BraveWallet.SwapInfo? = nil
+  ) -> BraveWallet.TransactionInfo {
+    BraveWallet.TransactionInfo(
+      id: "1",
+      fromAddress: fromAccount.address,
+      from: fromAccount.accountId,
+      txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
+      txDataUnion: txDataUnion,
+      txStatus: .unapproved,
+      txType: txType,
+      txParams: [],
+      txArgs: txArgs,
+      createdTime: Date(),
+      submittedTime: Date(),
+      confirmedTime: Date(),
+      originInfo: nil,
+      chainId: chainId,
+      effectiveRecipient: effectiveRecipient,
+      isRetriable: false,
+      swapInfo: swapInfo
+    )
+  }
+
   func testEthSendTransaction() {
     let network: BraveWallet.NetworkInfo = .mockMainnet
 
@@ -99,33 +148,14 @@ class TransactionParserTests: XCTestCase {
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59672ead",
       maxFeePerGas: "0x59672eb6",
-      gasEstimation: .init(
-        slowMaxPriorityFeePerGas: "0x0",
-        slowMaxFeePerGas: "0x9",
-        avgMaxPriorityFeePerGas: "0x59672ead",
-        avgMaxFeePerGas: "0x59672eb6",
-        fastMaxPriorityFeePerGas: "0x59682f00",
-        fastMaxFeePerGas: "0x59682f09",
-        baseFeePerGas: "0x9"
-      )
+      gasEstimation: mockGasEstimation
     )
-    let transaction = BraveWallet.TransactionInfo(
-      id: "1",
-      fromAddress: accountInfos[0].address,
-      from: accountInfos[0].accountId,
-      txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
+    let transaction = mockTransaction(
+      fromAccount: accountInfos[0],
       txDataUnion: .init(ethTxData1559: transactionData),
-      txStatus: .confirmed,
       txType: .ethSend,
-      txParams: [],
       txArgs: [],
-      createdTime: Date(),
-      submittedTime: Date(),
-      confirmedTime: Date(),
-      originInfo: nil,
-      chainId: BraveWallet.MainnetChainId,
-      effectiveRecipient: transactionData.baseData.to,
-      isRetriable: false
+      effectiveRecipient: transactionData.baseData.to
     )
 
     let expectedParsedTransaction = ParsedTransaction(
@@ -143,8 +173,8 @@ class TransactionParserTests: XCTestCase {
           fromFiat: "$0.123",
           fromTokenMetadata: nil,
           gasFee: .init(
-            fee: "0.000031",
-            fiat: "$0.000031"
+            fee: "0.0000314986",
+            fiat: "$0.0000315"
           )
         )
       )
@@ -153,7 +183,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        network: network,
+        allNetworks: [network, .mockPolygon],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -203,34 +233,14 @@ class TransactionParserTests: XCTestCase {
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59672ead",
       maxFeePerGas: "0x59672eb6",
-      gasEstimation: .init(
-        slowMaxPriorityFeePerGas: "0x0",
-        slowMaxFeePerGas: "0x9",
-        avgMaxPriorityFeePerGas: "0x59672ead",
-        avgMaxFeePerGas: "0x59672eb6",
-        fastMaxPriorityFeePerGas: "0x59682f00",
-        fastMaxFeePerGas: "0x59682f09",
-        baseFeePerGas: "0x9"
-      )
+      gasEstimation: mockGasEstimation
     )
-    let transaction = BraveWallet.TransactionInfo(
-      id: "2",
-      fromAddress: accountInfos[0].address,
-      from: accountInfos[0].accountId,
-      txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
+    let transaction = mockTransaction(
+      fromAccount: accountInfos[0],
       txDataUnion: .init(ethTxData1559: transactionData),
-      txStatus: .confirmed,
       txType: .erc20Transfer,
-      txParams: [],
-      // toAddress, 0.4321
       txArgs: ["0x0987654321098765432109876543210987654321", "0x5ff20a91f724000"],
-      createdTime: Date(),
-      submittedTime: Date(),
-      confirmedTime: Date(),
-      originInfo: nil,
-      chainId: BraveWallet.MainnetChainId,
-      effectiveRecipient: transactionData.baseData.to,
-      isRetriable: false
+      effectiveRecipient: transactionData.baseData.to
     )
 
     let expectedParsedTransaction = ParsedTransaction(
@@ -239,7 +249,7 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: accountInfos[0],
       namedToAddress: "Ethereum Account 2",
       toAddress: "0x0987654321098765432109876543210987654321",
-      network: .mockMainnet,
+      network: network,
       details: .erc20Transfer(
         .init(
           fromToken: .previewDaiToken,
@@ -248,8 +258,8 @@ class TransactionParserTests: XCTestCase {
           fromFiat: "$0.864",
           fromTokenMetadata: nil,
           gasFee: .init(
-            fee: "0.000078",
-            fiat: "$0.000078"
+            fee: "0.0000776726",
+            fiat: "$0.0000777"
           )
         )
       )
@@ -258,7 +268,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        network: network,
+        allNetworks: [network, .mockPolygon],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -271,7 +281,7 @@ class TransactionParserTests: XCTestCase {
       XCTFail("Failed to parse erc20Transfer transaction")
       return
     }
-    XCTAssertEqual(expectedParsedTransaction, parsedTransaction)
+    XCTAssertNoDifference(expectedParsedTransaction, parsedTransaction)
   }
 
   func testEthSwapTransaction() {
@@ -291,38 +301,26 @@ class TransactionParserTests: XCTestCase {
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
       maxFeePerGas: "0x59682f09",
-      gasEstimation: .init(
-        slowMaxPriorityFeePerGas: "0x4ed3152b",
-        slowMaxFeePerGas: "0x4ed31534",
-        avgMaxPriorityFeePerGas: "0x59672ead",
-        avgMaxFeePerGas: "0x59672eb6",
-        fastMaxPriorityFeePerGas: "0x59682f00",
-        fastMaxFeePerGas: "0x59682f09",
-        baseFeePerGas: "0x9"
-      )
+      gasEstimation: mockSwapGasEstimation
     )
-    let transaction = BraveWallet.TransactionInfo(
-      id: "3",
-      fromAddress: accountInfos[0].address,
-      from: accountInfos[0].accountId,
-      txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
+    let transaction = mockTransaction(
+      fromAccount: accountInfos[0],
       txDataUnion: .init(ethTxData1559: transactionData),
-      txStatus: .confirmed,
       txType: .ethSwap,
-      txParams: [],
-      txArgs: [
-        // eth -> dai
-        "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeead6d458402f60fd3bd25163575031acdce07538d",
-        "0x1b6951ef585a000",  // 0.12345 eth
-        "0x5c6f2d76e910358b",  // 6.660592362643797387 dai
-      ],
-      createdTime: Date(),
-      submittedTime: Date(),
-      confirmedTime: Date(),
-      originInfo: nil,
-      chainId: BraveWallet.MainnetChainId,
+      txArgs: [],
       effectiveRecipient: transactionData.baseData.to,
-      isRetriable: false
+      swapInfo: .init(
+        from: .eth,
+        fromChainId: BraveWallet.MainnetChainId,
+        fromAsset: BraveWallet.ethSwapAddress,
+        fromAmount: "0x1b6951ef585a000",  // 0.12345 eth
+        to: .eth,
+        toChainId: BraveWallet.MainnetChainId,
+        toAsset: "0xad6d458402f60fd3bd25163575031acdce07538d",
+        toAmount: "0x5c6f2d76e910358b",  // 6.660592362643797387 dai
+        receiver: "0x099140a37d5e1da04ce05294594d27a90a4cbc06",
+        provider: "zeroex"
+      )
     )
 
     let expectedParsedTransaction = ParsedTransaction(
@@ -331,19 +329,21 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: accountInfos[0],
       namedToAddress: "0x Exchange Proxy",
       toAddress: "0xDef1C0ded9bec7F1a1670819833240f027b25EfF",
-      network: .mockMainnet,
+      network: network,
       details: .ethSwap(
         .init(
           fromToken: .previewToken,
+          fromNetwork: network,
           fromValue: "0x1b6951ef585a000",
           fromAmount: "0.12345",
           fromFiat: "$0.123",
           toToken: .previewDaiToken,
+          toNetwork: network,
           minBuyValue: "0x5c6f2d76e910358b",
           minBuyAmount: "6.660592362643797387",
           minBuyAmountFiat: "$13.32",
           gasFee: .init(
-            fee: "0.000466",
+            fee: "0.0004663515",
             fiat: "$0.000466"
           )
         )
@@ -353,7 +353,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        network: network,
+        allNetworks: [network, .mockPolygon],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -366,7 +366,7 @@ class TransactionParserTests: XCTestCase {
       XCTFail("Failed to parse ethSwap transaction")
       return
     }
-    XCTAssertEqual(expectedParsedTransaction, parsedTransaction)
+    XCTAssertNoDifference(expectedParsedTransaction, parsedTransaction)
   }
 
   func testEthSwapTransactionUSDCToDAI() {
@@ -386,38 +386,26 @@ class TransactionParserTests: XCTestCase {
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
       maxFeePerGas: "0x59682f09",
-      gasEstimation: .init(
-        slowMaxPriorityFeePerGas: "0x4ed3152b",
-        slowMaxFeePerGas: "0x4ed31534",
-        avgMaxPriorityFeePerGas: "0x59672ead",
-        avgMaxFeePerGas: "0x59672eb6",
-        fastMaxPriorityFeePerGas: "0x59682f00",
-        fastMaxFeePerGas: "0x59682f09",
-        baseFeePerGas: "0x9"
-      )
+      gasEstimation: mockSwapGasEstimation
     )
-    let transaction = BraveWallet.TransactionInfo(
-      id: "3",
-      fromAddress: accountInfos[0].address,
-      from: accountInfos[0].accountId,
-      txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
+    let transaction = mockTransaction(
+      fromAccount: accountInfos[0],
       txDataUnion: .init(ethTxData1559: transactionData),
-      txStatus: .confirmed,
       txType: .ethSwap,
-      txParams: [],
-      txArgs: [
-        // usdc -> dai
-        "0x07865c6e87b9f70255377e024ace6630c1eaa37fad6d458402f60fd3bd25163575031acdce07538d",
-        "0x16e360",  // 1.5 USDC
-        "0x1bd02ca9a7c244e",  // ~0.1253 DAI
-      ],
-      createdTime: Date(),
-      submittedTime: Date(),
-      confirmedTime: Date(),
-      originInfo: nil,
-      chainId: BraveWallet.MainnetChainId,
+      txArgs: [],
       effectiveRecipient: transactionData.baseData.to,
-      isRetriable: false
+      swapInfo: .init(
+        from: .eth,
+        fromChainId: BraveWallet.MainnetChainId,
+        fromAsset: "0x07865c6e87b9f70255377e024ace6630c1eaa37f",
+        fromAmount: "0x16e360",  // 1.5 USDC
+        to: .eth,
+        toChainId: BraveWallet.MainnetChainId,
+        toAsset: "0xad6d458402f60fd3bd25163575031acdce07538d",
+        toAmount: "0x1bd02ca9a7c244e",  // ~0.1253 DAI
+        receiver: "0xDef1C0ded9bec7F1a1670819833240f027b25EfF",
+        provider: "zeroex"
+      )
     )
 
     let expectedParsedTransaction = ParsedTransaction(
@@ -426,19 +414,21 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: accountInfos[0],
       namedToAddress: "0x Exchange Proxy",
       toAddress: "0xDef1C0ded9bec7F1a1670819833240f027b25EfF",
-      network: .mockMainnet,
+      network: network,
       details: .ethSwap(
         .init(
           fromToken: .mockUSDCToken,
+          fromNetwork: network,
           fromValue: "0x16e360",
           fromAmount: "1.5",
           fromFiat: "$4.50",
           toToken: .previewDaiToken,
+          toNetwork: network,
           minBuyValue: "0x1bd02ca9a7c244e",
           minBuyAmount: "0.125259433834718286",
           minBuyAmountFiat: "$0.251",
           gasFee: .init(
-            fee: "0.000466",
+            fee: "0.0004663515",
             fiat: "$0.000466"
           )
         )
@@ -448,7 +438,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        network: network,
+        allNetworks: [network, .mockPolygon],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -461,7 +451,7 @@ class TransactionParserTests: XCTestCase {
       XCTFail("Failed to parse ethSwap transaction")
       return
     }
-    XCTAssertEqual(expectedParsedTransaction, parsedTransaction)
+    XCTAssertNoDifference(expectedParsedTransaction, parsedTransaction)
   }
 
   func testErc20ApproveTransaction() {
@@ -481,33 +471,14 @@ class TransactionParserTests: XCTestCase {
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
       maxFeePerGas: "0x59682f09",
-      gasEstimation: .init(
-        slowMaxPriorityFeePerGas: "0x0",
-        slowMaxFeePerGas: "0x9",
-        avgMaxPriorityFeePerGas: "0x59672ead",
-        avgMaxFeePerGas: "0x59672eb6",
-        fastMaxPriorityFeePerGas: "0x59682f00",
-        fastMaxFeePerGas: "0x59682f09",
-        baseFeePerGas: "0x9"
-      )
+      gasEstimation: mockGasEstimation
     )
-    let transaction = BraveWallet.TransactionInfo(
-      id: "4",
-      fromAddress: accountInfos[0].address,
-      from: accountInfos[0].accountId,
-      txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
+    let transaction = mockTransaction(
+      fromAccount: accountInfos[0],
       txDataUnion: .init(ethTxData1559: transactionData),
-      txStatus: .confirmed,
       txType: .erc20Approve,
-      txParams: [],
       txArgs: ["", "0x2386f26fc10000"],  // 0.01
-      createdTime: Date(),
-      submittedTime: Date(),
-      confirmedTime: Date(),
-      originInfo: nil,
-      chainId: BraveWallet.MainnetChainId,
-      effectiveRecipient: transactionData.baseData.to,
-      isRetriable: false
+      effectiveRecipient: transactionData.baseData.to
     )
 
     let expectedParsedTransaction = ParsedTransaction(
@@ -516,7 +487,7 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: accountInfos[0],
       namedToAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress.truncatedAddress,
       toAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
-      network: .mockMainnet,
+      network: network,
       details: .ethErc20Approve(
         .init(
           token: .previewDaiToken,
@@ -527,8 +498,8 @@ class TransactionParserTests: XCTestCase {
           isUnlimited: false,
           spenderAddress: "",
           gasFee: .init(
-            fee: "0.000061",
-            fiat: "$0.000061"
+            fee: "0.0000695985",
+            fiat: "$0.0000696"
           )
         )
       )
@@ -537,7 +508,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        network: network,
+        allNetworks: [network, .mockPolygon],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -550,7 +521,7 @@ class TransactionParserTests: XCTestCase {
       XCTFail("Failed to parse erc20Approve transaction")
       return
     }
-    XCTAssertEqual(expectedParsedTransaction, parsedTransaction)
+    XCTAssertNoDifference(expectedParsedTransaction, parsedTransaction)
   }
 
   func testErc20ApproveTransactionUnlimited() {
@@ -570,34 +541,15 @@ class TransactionParserTests: XCTestCase {
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
       maxFeePerGas: "0x59682f09",
-      gasEstimation: .init(
-        slowMaxPriorityFeePerGas: "0x0",
-        slowMaxFeePerGas: "0x9",
-        avgMaxPriorityFeePerGas: "0x59672ead",
-        avgMaxFeePerGas: "0x59672eb6",
-        fastMaxPriorityFeePerGas: "0x59682f00",
-        fastMaxFeePerGas: "0x59682f09",
-        baseFeePerGas: "0x9"
-      )
+      gasEstimation: mockGasEstimation
     )
-    let transaction = BraveWallet.TransactionInfo(
-      id: "5",
-      fromAddress: accountInfos[0].address,
-      from: accountInfos[0].accountId,
-      txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
+    let transaction = mockTransaction(
+      fromAccount: accountInfos[0],
       txDataUnion: .init(ethTxData1559: transactionData),
-      txStatus: .confirmed,
       txType: .erc20Approve,
-      txParams: [],
       // unlimited
       txArgs: ["", "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"],
-      createdTime: Date(),
-      submittedTime: Date(),
-      confirmedTime: Date(),
-      originInfo: nil,
-      chainId: BraveWallet.MainnetChainId,
-      effectiveRecipient: transactionData.baseData.to,
-      isRetriable: false
+      effectiveRecipient: transactionData.baseData.to
     )
 
     let expectedParsedTransaction = ParsedTransaction(
@@ -606,7 +558,7 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: accountInfos[0],
       namedToAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress.truncatedAddress,
       toAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
-      network: .mockMainnet,
+      network: network,
       details: .ethErc20Approve(
         .init(
           token: .previewDaiToken,
@@ -617,8 +569,8 @@ class TransactionParserTests: XCTestCase {
           isUnlimited: true,
           spenderAddress: "",
           gasFee: .init(
-            fee: "0.000061",
-            fiat: "$0.000061"
+            fee: "0.0000695985",
+            fiat: "$0.0000696"
           )
         )
       )
@@ -627,7 +579,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        network: network,
+        allNetworks: [network, .mockPolygon],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -640,7 +592,7 @@ class TransactionParserTests: XCTestCase {
       XCTFail("Failed to parse erc20Approve transaction")
       return
     }
-    XCTAssertEqual(expectedParsedTransaction, parsedTransaction)
+    XCTAssertNoDifference(expectedParsedTransaction, parsedTransaction)
   }
 
   func testErc721TransferFromTransaction() {
@@ -660,37 +612,18 @@ class TransactionParserTests: XCTestCase {
       chainId: network.chainId,
       maxPriorityFeePerGas: "0x59672ead",
       maxFeePerGas: "0x59672eb6",
-      gasEstimation: .init(
-        slowMaxPriorityFeePerGas: "0x0",
-        slowMaxFeePerGas: "0x9",
-        avgMaxPriorityFeePerGas: "0x59672ead",
-        avgMaxFeePerGas: "0x59672eb6",
-        fastMaxPriorityFeePerGas: "0x59682f00",
-        fastMaxFeePerGas: "0x59682f09",
-        baseFeePerGas: "0x9"
-      )
+      gasEstimation: mockGasEstimation
     )
-    let transaction = BraveWallet.TransactionInfo(
-      id: "6",
-      fromAddress: accountInfos[0].address,
-      from: accountInfos[0].accountId,
-      txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
+    let transaction = mockTransaction(
+      fromAccount: accountInfos[0],
       txDataUnion: .init(ethTxData1559: transactionData),
-      txStatus: .confirmed,
       txType: .erc721TransferFrom,
-      txParams: [],
       txArgs: [
         "0x1111111111aaaaaaaaaa2222222222bbbbbbbbbb",  // owner
         "0x0987654321098765432109876543210987654321",  // toAddress
         "token.id",
       ],
-      createdTime: Date(),
-      submittedTime: Date(),
-      confirmedTime: Date(),
-      originInfo: nil,
-      chainId: BraveWallet.MainnetChainId,
-      effectiveRecipient: transactionData.baseData.to,
-      isRetriable: false
+      effectiveRecipient: transactionData.baseData.to
     )
 
     let expectedParsedTransaction = ParsedTransaction(
@@ -699,7 +632,7 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: accountInfos[0],
       namedToAddress: "Ethereum Account 2",
       toAddress: "0x0987654321098765432109876543210987654321",
-      network: .mockMainnet,
+      network: network,
       details: .erc721Transfer(
         .init(
           fromToken: .previewDaiToken,
@@ -709,8 +642,8 @@ class TransactionParserTests: XCTestCase {
           owner: "0x1111111111aaaaaaaaaa2222222222bbbbbbbbbb",
           tokenId: "token.id",
           gasFee: .init(
-            fee: "0.000031",
-            fiat: "$0.000031"
+            fee: "0.0000314986",
+            fiat: "$0.0000315"
           )
         )
       )
@@ -719,7 +652,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        network: network,
+        allNetworks: [network, .mockPolygon],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -765,23 +698,13 @@ class TransactionParserTests: XCTestCase {
       signTransactionParam: nil,
       feeEstimation: nil
     )
-    let transaction = BraveWallet.TransactionInfo(
-      id: "7",
-      fromAddress: accountInfos[2].address,
-      from: accountInfos[2].accountId,
-      txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
+    let transaction = mockTransaction(
+      fromAccount: accountInfos[2],
       txDataUnion: .init(solanaTxData: transactionData),
-      txStatus: .confirmed,
       txType: .solanaSystemTransfer,
-      txParams: [],
       txArgs: [],
-      createdTime: Date(),
-      submittedTime: Date(),
-      confirmedTime: Date(),
-      originInfo: nil,
-      chainId: BraveWallet.SolanaMainnet,
-      effectiveRecipient: nil,
-      isRetriable: false
+      chainId: network.chainId,
+      effectiveRecipient: transactionData.toWalletAddress
     )
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
@@ -789,7 +712,7 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: accountInfos[2],
       namedToAddress: accountInfos[3].name,
       toAddress: accountInfos[3].address,
-      network: .mockSolana,
+      network: network,
       details: .solSystemTransfer(
         .init(
           fromToken: .mockSolToken,
@@ -808,7 +731,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        network: network,
+        allNetworks: [.mockMainnet, .mockPolygon, network],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -872,23 +795,13 @@ class TransactionParserTests: XCTestCase {
       signTransactionParam: nil,
       feeEstimation: nil
     )
-    let transaction = BraveWallet.TransactionInfo(
-      id: "7",
-      fromAddress: accountInfos[2].address,
-      from: accountInfos[2].accountId,
-      txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
+    let transaction = mockTransaction(
+      fromAccount: accountInfos[2],
       txDataUnion: .init(solanaTxData: transactionData),
-      txStatus: .confirmed,
       txType: .solanaSplTokenTransfer,
-      txParams: [],
       txArgs: [],
-      createdTime: Date(),
-      submittedTime: Date(),
-      confirmedTime: Date(),
-      originInfo: nil,
-      chainId: BraveWallet.SolanaMainnet,
-      effectiveRecipient: nil,
-      isRetriable: false
+      chainId: network.chainId,
+      effectiveRecipient: transactionData.toWalletAddress
     )
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
@@ -896,7 +809,7 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: accountInfos[2],
       namedToAddress: accountInfos[3].name,
       toAddress: accountInfos[3].address,
-      network: .mockSolana,
+      network: network,
       details: .solSplTokenTransfer(
         .init(
           fromToken: .mockSpdToken,
@@ -915,7 +828,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        network: network,
+        allNetworks: [.mockMainnet, .mockPolygon, network],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -962,23 +875,13 @@ class TransactionParserTests: XCTestCase {
       signTransactionParam: nil,
       feeEstimation: nil
     )
-    let transaction = BraveWallet.TransactionInfo(
-      id: "7",
-      fromAddress: accountInfos[2].address,
-      from: accountInfos[2].accountId,
-      txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
+    let transaction = mockTransaction(
+      fromAccount: accountInfos[2],
       txDataUnion: .init(solanaTxData: transactionData),
-      txStatus: .confirmed,
       txType: .solanaSplTokenTransfer,
-      txParams: [],
       txArgs: [],
-      createdTime: Date(),
-      submittedTime: Date(),
-      confirmedTime: Date(),
-      originInfo: nil,
-      chainId: BraveWallet.SolanaMainnet,
-      effectiveRecipient: nil,
-      isRetriable: false
+      chainId: network.chainId,
+      effectiveRecipient: transactionData.toWalletAddress
     )
     let expectedParsedTransaction = ParsedTransaction(
       transaction: transaction,
@@ -986,7 +889,7 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: accountInfos[2],
       namedToAddress: accountInfos[3].name,
       toAddress: accountInfos[3].address,
-      network: .mockSolana,
+      network: network,
       details: .solSplTokenTransfer(
         .init(
           fromToken: .mockSolanaNFTToken,
@@ -1005,7 +908,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        network: network,
+        allNetworks: [.mockMainnet, .mockPolygon, network],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -1224,23 +1127,12 @@ class TransactionParserTests: XCTestCase {
       to: accountInfos[5].address,
       value: "1000000000000000000"
     )
-    let transaction = BraveWallet.TransactionInfo(
-      id: "8",
-      fromAddress: accountInfos[4].address,
-      from: accountInfos[4].accountId,
-      txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffggggg1234",
+    let transaction = mockTransaction(
+      fromAccount: accountInfos[4],
       txDataUnion: .init(filTxData: transactionData),
-      txStatus: .unapproved,
       txType: .other,
-      txParams: [],
-      txArgs: [],
-      createdTime: Date(),
-      submittedTime: Date(),
-      confirmedTime: Date(),
-      originInfo: nil,
       chainId: BraveWallet.FilecoinTestnet,
-      effectiveRecipient: nil,
-      isRetriable: false
+      effectiveRecipient: transactionData.to
     )
 
     let expectedParsedTransaction = ParsedTransaction(
@@ -1270,7 +1162,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        network: network,
+        allNetworks: [.mockMainnet, .mockPolygon, .mockFilecoinMainnet, network],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -1320,23 +1212,12 @@ class TransactionParserTests: XCTestCase {
       inputs: [],
       outputs: []
     )
-    let transaction = BraveWallet.TransactionInfo(
-      id: "9",
-      fromAddress: mockFromAccount.address,
-      from: mockFromAccount.accountId,
-      txHash: "cc0b6ef00effdd4e4a1f29cd4a5e9c1f74ea6a9c3ef2f1f5929d344eee86b71b",
+    let transaction = mockTransaction(
+      fromAccount: mockFromAccount,
       txDataUnion: .init(btcTxData: transactionData),
-      txStatus: .unapproved,
       txType: .other,
-      txParams: [],
-      txArgs: [],
-      createdTime: Date(),
-      submittedTime: Date(),
-      confirmedTime: Date(),
-      originInfo: nil,
       chainId: network.chainId,
-      effectiveRecipient: mockToAccountAddress,
-      isRetriable: false
+      effectiveRecipient: mockToAccountAddress
     )
 
     let expectedParsedTransaction = ParsedTransaction(
@@ -1345,7 +1226,7 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: mockFromAccount,
       namedToAddress: "",
       toAddress: mockToAccountAddress,
-      network: .mockBitcoinMainnet,
+      network: network,
       details: .btcSend(
         .init(
           fromToken: .mockBTCToken,
@@ -1364,7 +1245,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        network: network,
+        allNetworks: [.mockMainnet, .mockPolygon, network],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,

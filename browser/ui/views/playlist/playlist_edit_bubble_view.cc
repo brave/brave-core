@@ -129,7 +129,7 @@ void PlaylistEditBubbleView::ResetChildViews() {
 
   const auto& saved_items = tab_helper_->saved_items();
 
-  if (saved_items.front()->parents.size()) {
+  if (!saved_items.empty() && saved_items.front()->parents.size()) {
     add_separator_if_needed();
     AddChildView(std::make_unique<Row>(
         l10n_util::GetStringUTF16(IDS_PLAYLIST_OPEN_IN_PLAYLIST),

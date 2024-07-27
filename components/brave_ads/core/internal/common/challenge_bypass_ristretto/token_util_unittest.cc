@@ -12,11 +12,11 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::cbr {
+namespace brave_ads {
 
 TEST(BraveAdsTokenUtilTest, TokensToRawTokens) {
   // Arrange
-  const std::vector<Token> tokens = test::GetTokens();
+  const std::vector<cbr::Token> tokens = cbr::test::GetTokens();
 
   // Act
   const std::vector<challenge_bypass_ristretto::Token> raw_tokens =
@@ -34,10 +34,10 @@ TEST(BraveAdsTokenUtilTest, TokensToRawTokens) {
 TEST(BraveAdsTokenUtilTest, EmptyTokensToRawTokens) {
   // Act
   const std::vector<challenge_bypass_ristretto::Token> raw_tokens =
-      ToRawTokens({});
+      cbr::ToRawTokens({});
 
   // Assert
   EXPECT_THAT(raw_tokens, ::testing::IsEmpty());
 }
 
-}  // namespace brave_ads::cbr
+}  // namespace brave_ads

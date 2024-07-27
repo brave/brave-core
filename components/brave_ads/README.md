@@ -43,13 +43,11 @@ You can enable diagnostic logging to the `Rewards.log` file stored on your devic
 View diagnostics at [rewards internals](brave://rewards-internals) on the `Ad diagnostics` tab.
 
 ## Browser Tests
-```
-npm run test -- brave_browser_tests --filter=BraveAds*
-```
+
+    npm run test -- brave_browser_tests --filter=BraveAds*
 
 ## Unit Tests
-```
-npm run test -- brave_unit_tests --filter=BraveAds*
-```
+
+    npm run test -- brave_unit_tests --filter=BraveAds*
 
 Please add to it!

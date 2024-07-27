@@ -1,0 +1,25 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("omnibox") {
+  sources = [
+    "autocomplete_classifier.h",
+    "autocomplete_classifier.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//components/omnibox/browser",
+    "//components/prefs",
+    "//ios/chrome/browser/autocomplete/model",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/browser_state",
+    "//ios/chrome/browser/shared/model/prefs:pref_names",
+    "//net",
+    "//url",
+  ]
+
+  frameworks = [ "Foundation.framework" ]
+}

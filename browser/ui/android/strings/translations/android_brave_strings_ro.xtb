@@ -417,9 +417,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="7275773481201277457">Afișare date statistice Brave</translation>
 <translation id="8297488609722895137">Fotografie de <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Dacă atingeți Începeți să folosiți Recompensele Brave, sunteți de acord cu <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Fiți plătit pentru a vedea această imagine de fundal.</translation>
 <translation id="7136586167396205364">Ascunde imaginile sponsorizate</translation>
-<translation id="2927095357213611519">Puteți folosi token-uri pentru a sprijini creatorii de materiale de pe internet.\nCâștigați token-uri vizualizând reclame care respectă confidențialitatea.</translation>
 <translation id="2898634658146274982">Deschideți linkurile externe în Brave</translation>
 <translation id="5616508928556767259">Deschide linkuri din alte aplicații într-o fereastră de vizualizare Brave. Notă: Brave trebuie să fie setat ca browser implicit.</translation>
 <translation id="2394961582378297792">Deconectat</translation>
@@ -477,6 +475,10 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="8912304686498704084">SUS</translation>
 <translation id="4963218453264888510">JOS</translation>
 <translation id="7474113515179313724">Navigați pe acest site fără protecția de confidențialitate oferită de Brave. Nu funcționează bine cu scuturile activate?</translation>
+<translation id="4226543734057230801">Rețele Ethereum</translation>
+<translation id="3504157706952484145">Rețele Filecoin</translation>
+<translation id="1561541094377237745">Rețele Solana</translation>
+<translation id="7141438739990875547">Rețele Bitcoin</translation>
 <translation id="9055546041146396417">Dacă site-ul pare nefuncțional, încercați să dezactivați Shields.</translation>
 <translation id="1209739344687072997">Raportați un site nefuncțional</translation>
 <translation id="8510478288840333677">Anunțați-i pe dezvoltatorii Brave că acest site nu funcționează corect cu Scuturi:</translation>
@@ -575,8 +577,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="2422627462367776805">Portal și căutare web sud-coreeană</translation>
 <translation id="177282784098234156">O soluție confidențială, independentă, cu utilizatorul pe primul plan</translation>
 <translation id="1410130669636877548">Atunci când cauți ceva pe web, unele motoare de căutare îți protejează confidențialitatea datelor mai bine decât altele.</translation>
-<translation id="5187052478998910855">Ai nevoie de o actualizare a Recompenselor?</translation>
-<translation id="8622329973403382303">Fă un tur rapid pentru a vedea cum funcționează, pentru a intra în istorie ca un campion al Recompenselor!</translation>
 <translation id="3479552764303398839">Nu acum</translation>
 <translation id="7138272885617540195">Permiteți deschiderea linkurilor de aplicații în aplicații distincte de Brave</translation>
 <translation id="4954512758656527938">Portofelul implicit pentru Ethereum</translation>
@@ -702,9 +702,11 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="6748319398471481216">Se prelungește lunar</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / lună.</translation>
 <translation id="1163809943099641131">Un an</translation>
-<translation id="7574007394522199115">Dacă reînnoiți anual, economisiți <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">Reînnoire anuală<ph name="DISCOUNT_TEXT_START"/>economisește<ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / an.</translation>
-<translation id="2655185358771731232">Încercați gratuit timp de 7 zile. După 7 zile, se va percepe valoarea abonamentului. Toate abonamentele se prelungesc automat, dar pot fi anulate înainte de prelungire.</translation>
+<translation id="5125233570742276182">Abonamentele vor fi achitate prin intermediul contului tău Google. Orice porțiune din perioada de încercare gratuită va fi pierdută în momentul achitării abonamentului. \n\nAbonamentul tău va fi reînnoit automat dacă nu este anulat cu cel puțin 24 de ore înainte de perioada curentă.\n\nÎți poți gestiona abonamentele din Setări.\nFolosind Brave, ești de acord cu Termenii de utilizare și Politica de confidențialitate.</translation>
+<translation id="5035172357624830412">Ai făcut deja achiziții pe brave.com?</translation>
+<translation id="713136183174551885">Actualizează-ți datele de conectare</translation>
 <translation id="6053992191006521518">Încercați GRATUIT</translation>
 <translation id="5903391101107992067">Încercați gratuit pentru 7 zile</translation>
 <translation id="721747358270435486">Instalați VPN-ul</translation>
@@ -850,7 +852,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="7791543448312431591">Adaugă</translation>
 <translation id="6889920539620318793">Setați ca activă</translation>
 <translation id="2653659639078652383">Trimiteți</translation>
-<translation id="4556601961751528347">Modificați contul conectat</translation>
+<translation id="4945690646623486292">Selectați rețeaua</translation>
 <translation id="5233638681132016545">Filă nouă</translation>
 <translation id="8006088103295786154">Accesați portofelul Brave</translation>
 <translation id="8030169304546394654">Deconectat</translation>
@@ -907,7 +909,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="2322227405137827074">Doriți să importați acest token?</translation>
 <translation id="1324417023773393937">Browserul Brave</translation>
 <translation id="6044189892950611565">Canal de notificare pentru browserul Brave</translation>
-<translation id="1173919438868967364">Selectați contul</translation>
+<translation id="4556601961751528347">Modificați contul conectat</translation>
 <translation id="8922793255489232731">Nu s-a putut obține fusul orar corespunzător pentru : <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Conectat la <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Versiune de încercare</translation>
@@ -1064,7 +1066,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="4932733599132424254">Data</translation>
 <translation id="346505172740911461">Prețul pieței</translation>
 <translation id="5494920125229734069">Selectează-le pe toate</translation>
-<translation id="5972844218283131174">Deselectați toate</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Conectați-vă cu Brave Wallet</translation>
 <translation id="3696514931437952995">Vă conectați la <ph name="ORIGIN"/>. Brave Wallet va partaja adresa portofelului dvs. cu <ph name="ORIGIN"/>.</translation>

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/tabs/tab_strip_prefs.cc b/chrome/browser/ui/tabs/tab_strip_prefs.cc
+index fc064dc9d2e8af791385c076bf55f00f2c5968b6..272708ac7d43724fcbafa93d6eb14878882c999a 100644
+--- a/chrome/browser/ui/tabs/tab_strip_prefs.cc
++++ b/chrome/browser/ui/tabs/tab_strip_prefs.cc
+@@ -19,6 +19,7 @@ std::optional<bool> g_tab_search_trailing_tabstrip_at_startup = std::nullopt;
+ namespace tabs {
+ 
+ bool GetDefaultTabSearchRightAligned() {
++  BRAVE_GET_DEFAULT_TAB_SEARCH_RIGHT_ALIGNED
+   // These platforms are all left aligned, the others should be right.
+ #if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
+   return false;

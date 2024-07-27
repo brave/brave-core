@@ -10,17 +10,18 @@
 #include "brave/components/brave_ads/core/internal/ads_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/ads_observer_test_util.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
 AdsObserverMock* AddAdsObserverMock() {
   std::unique_ptr<AdsObserverMock> ads_observer_mock =
       std::make_unique<AdsObserverMock>();
 
-  AdsObserverMock* const value = ads_observer_mock.get();
+  AdsObserverMock* const value = &*ads_observer_mock;
 
   // `AdsNotifierManager` takes ownership of `ads_observer_mock`.
   AdsNotifierManager::GetInstance().AddObserver(std::move(ads_observer_mock));
+
   return value;
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

@@ -33,10 +33,10 @@ struct EditFolderView: View {
     )
   }
 
-  private func deleteSelectedItems() {
+  private func deleteSelectedItems() async {
     let items = selectedItems.compactMap { id in self.items.first(where: { $0.id == id }) }
     for item in items {
-      PlaylistManager.shared.delete(item: .init(item: item))
+      await PlaylistManager.shared.delete(item: .init(item: item))
     }
     selectedItems = []
   }
@@ -47,7 +47,7 @@ struct EditFolderView: View {
         ForEach(items) { item in
           PlaylistItemView(
             title: item.name,
-            assetURL: item.assetURL,
+            assetURL: URL(string: item.mediaSrc),
             pageURL: URL(string: item.pageSrc),
             duration: .init(item.duration),
             isSelected: false,
@@ -64,7 +64,7 @@ struct EditFolderView: View {
       .listStyle(.plain)
       .environment(\.editMode, .constant(.active))
       .scrollContentBackground(.hidden)
-      .background(Color(braveSystemName: .gray10))
+      .background(Color(braveSystemName: .neutral10))
       .toolbarBackground(
         Color(braveSystemName: .containerBackground),
         for: .navigationBar,
@@ -126,7 +126,9 @@ struct EditFolderView: View {
           .disabled(selectedItems.isEmpty || folders.count < 2)
           Spacer()
           Button(role: .destructive) {
-            deleteSelectedItems()
+            Task {
+              await deleteSelectedItems()
+            }
           } label: {
             Text("Delete")
           }

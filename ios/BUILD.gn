@@ -9,6 +9,7 @@ import("//brave/build/ios/create_xcframework.gni")
 import("//brave/build/mac/tweak_info_plist.gni")
 import("//brave/ios/browser/api/ads/headers.gni")
 import("//brave/ios/browser/api/ai_chat/headers.gni")
+import("//brave/ios/browser/api/brave_domains/headers.gni")
 import("//brave/ios/browser/api/brave_rewards/headers.gni")
 import("//brave/ios/browser/api/brave_services_key/headers.gni")
 import("//brave/ios/browser/api/brave_shields/headers.gni")
@@ -24,6 +25,7 @@ import("//brave/ios/browser/api/features/headers.gni")
 import("//brave/ios/browser/api/https_upgrade_exceptions/headers.gni")
 import("//brave/ios/browser/api/ipfs/headers.gni")
 import("//brave/ios/browser/api/ntp_background_images/headers.gni")
+import("//brave/ios/browser/api/omnibox/headers.gni")
 import("//brave/ios/browser/api/opentabs/headers.gni")
 import("//brave/ios/browser/api/p3a/headers.gni")
 import("//brave/ios/browser/api/qr_code/headers.gni")
@@ -89,6 +91,7 @@ brave_core_public_headers = [
 
 brave_core_public_headers += ads_public_headers
 brave_core_public_headers += ai_chat_public_headers
+brave_core_public_headers += brave_domains_public_headers
 brave_core_public_headers += brave_shields_public_headers
 brave_core_public_headers += browser_api_url_sanitizer_public_headers
 brave_core_public_headers += browser_url_sanitizer_public_headers
@@ -102,6 +105,7 @@ brave_core_public_headers += brave_wallet_public_headers
 brave_core_public_headers += browser_api_certificate_public_headers
 brave_core_public_headers += browser_api_favicon_public_headers
 brave_core_public_headers += rewards_public_headers
+brave_core_public_headers += browser_api_omnibox_public_headers
 brave_core_public_headers += browser_api_opentabs_public_headers
 brave_core_public_headers += browser_api_qr_code_public_headers
 brave_core_public_headers += browser_api_session_restore_public_headers

@@ -108,6 +108,26 @@ void RejectMismatchError(base::Value id,
                           false);
 }
 
+bool IsTypedDataStructure(const std::string& normalized_json_request) {
+  std::string address;
+  std::string message;
+  base::Value::Dict domain;
+  std::vector<uint8_t> domain_hash_out;
+  std::vector<uint8_t> primary_hash_out;
+
+  mojom::EthSignTypedDataMetaPtr meta;
+
+  if (ParseEthSignTypedDataParams(normalized_json_request, &address, &message,
+                                  &domain, EthSignTypedDataHelper::Version::kV4,
+                                  &domain_hash_out, &primary_hash_out, &meta) ||
+      ParseEthSignTypedDataParams(normalized_json_request, &address, &message,
+                                  &domain, EthSignTypedDataHelper::Version::kV3,
+                                  &domain_hash_out, &primary_hash_out, &meta)) {
+    return true;
+  }
+  return false;
+}
+
 }  // namespace
 
 EthereumProviderImpl::EthereumProviderImpl(
@@ -179,7 +199,9 @@ void EthereumProviderImpl::AddEthereumChain(const std::string& json_payload,
   std::string chain_id_lower = base::ToLowerASCII(chain->chain_id);
 
   // Check if we already have the chain
-  if (GetNetworkURL(prefs_, chain_id_lower, mojom::CoinType::ETH).is_valid()) {
+  if (brave_wallet_service_->network_manager()
+          ->GetNetworkURL(chain_id_lower, mojom::CoinType::ETH)
+          .is_valid()) {
     if (base::CompareCaseInsensitiveASCII(
             json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH,
                                               delegate_->GetOrigin()),
@@ -284,10 +306,11 @@ void EthereumProviderImpl::SendOrSignTransactionInternal(
     return;
   }
 
-  if (ShouldCreate1559Tx(
-          tx_data_1559.Clone(),
-          IsEip1559Chain(prefs_, chain->chain_id).value_or(false),
-          keyring_service_->GetAllAccountInfos(), account_id)) {
+  if (ShouldCreate1559Tx(tx_data_1559.Clone(),
+                         brave_wallet_service_->network_manager()
+                             ->IsEip1559Chain(chain->chain_id)
+                             .value_or(false),
+                         keyring_service_->GetAllAccountInfos(), account_id)) {
     // Set chain_id to current chain_id.
     tx_data_1559->chain_id = chain->chain_id;
     tx_service_->AddUnapprovedTransactionWithOrigin(
@@ -948,6 +971,10 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
       SendErrorOnRequest(error, error_message, std::move(callback),
                          std::move(id));
       return;
+    }
+    // Typed data should only be signed by eth_signTypedData
+    if (IsTypedDataStructure(normalized_json_request)) {
+      return RejectInvalidParams(std::move(id), std::move(callback));
     }
     SignMessage(address, message, std::move(callback), std::move(id));
   } else if (method == kPersonalEcRecover) {

@@ -125,10 +125,10 @@ std::optional<std::string> Sign(const std::string& message,
 }
 
 bool Verify(const std::string& message,
-            const std::string& public_key,
+            const std::string& public_key_base64,
             const std::string& signature) {
   const std::optional<std::vector<uint8_t>> raw_public_key =
-      base::Base64Decode(public_key);
+      base::Base64Decode(public_key_base64);
   if (!raw_public_key) {
     return false;
   }

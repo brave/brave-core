@@ -16,8 +16,9 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuer_types.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_types.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation_feature.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation_util.h"
@@ -234,7 +235,8 @@ RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
                                             /*should_retry=*/false));
   }
 
-  if (!PublicKeyExistsForIssuerType(IssuerType::kPayments, *public_key)) {
+  if (!TokenIssuerPublicKeyExistsForType(TokenIssuerType::kPayments,
+                                         *public_key)) {
     return base::unexpected(
         std::make_tuple("Payments public key does not exist",
                         /*should_retry=*/true));

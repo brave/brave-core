@@ -25,7 +25,6 @@ import("//brave/browser/gcm_driver/sources.gni")
 import("//brave/browser/greaselion/sources.gni")
 import("//brave/browser/importer/sources.gni")
 import("//brave/browser/infobars/sources.gni")
-import("//brave/browser/ipfs/sources.gni")
 import("//brave/browser/misc_metrics/sources.gni")
 import("//brave/browser/net/sources.gni")
 import("//brave/browser/new_tab/sources.gni")
@@ -60,9 +59,6 @@ import("//extensions/buildflags/buildflags.gni")
 brave_chrome_browser_visibility = [
   "//brave/browser/*",
   "//brave/test:*",
-
-  # these are layering violation and need to be fixed
-  "//brave/components/ipfs/test:*",
 
   # Chrome does not yet define a visibility list by itself, meaning we can't
   # append our list to them and that what we have here will become law not just
@@ -184,7 +180,7 @@ brave_chrome_browser_deps = [
   "//brave/components/google_sign_in_permission",
   "//brave/components/greaselion/browser/buildflags",
   "//brave/components/https_upgrade_exceptions/browser",
-  "//brave/components/ipfs/buildflags",
+  "//brave/components/ipfs",
   "//brave/components/l10n/common",
   "//brave/components/localhost_permission",
   "//brave/components/ntp_background_images/browser",
@@ -204,7 +200,8 @@ brave_chrome_browser_deps = [
   "//brave/components/speedreader/common/buildflags",
   "//brave/components/tor/buildflags",
   "//brave/components/version_info",
-  "//brave/components/webcompat:core",
+  "//brave/components/webcompat/content/browser",
+  "//brave/components/webcompat/core/common",
   "//brave/services/network/public/cpp",
   "//brave/third_party/blink/renderer",
   "//chrome/browser:browser_process",
@@ -433,6 +430,14 @@ if (is_win) {
   ]
 }
 
+if (is_win || is_android) {
+  brave_chrome_browser_sources += [
+    "//brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.cc",
+    "//brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h",
+    "//brave/browser/day_zero_browser_ui_expt/pref_names.h",
+  ]
+}
+
 if (is_win && is_official_build) {
   brave_chrome_browser_sources += [
     "//chrome/browser/google/google_update_win.cc",
@@ -447,7 +452,7 @@ if (is_win && is_official_build) {
 brave_chrome_browser_public_deps = [
   "//brave/browser:browser_process",
   "//brave/components/brave_sync:constants",
-  "//brave/components/variations:constants",
+  "//brave/components/variations",
 ]
 
 if (is_mac) {
@@ -475,7 +480,6 @@ brave_chrome_browser_sources += brave_browser_gcm_driver_sources
 brave_chrome_browser_sources += brave_browser_greaselion_sources
 brave_chrome_browser_sources += brave_browser_importer_sources
 brave_chrome_browser_sources += brave_browser_infobar_sources
-brave_chrome_browser_sources += brave_browser_ipfs_sources
 brave_chrome_browser_sources += brave_browser_misc_metrics_sources
 brave_chrome_browser_sources += brave_browser_net_sources
 brave_chrome_browser_sources += brave_browser_new_tab_sources
@@ -513,7 +517,6 @@ brave_chrome_browser_deps += brave_browser_gcm_driver_deps
 brave_chrome_browser_deps += brave_browser_greaselion_deps
 brave_chrome_browser_deps += brave_browser_importer_deps
 brave_chrome_browser_deps += brave_browser_infobar_deps
-brave_chrome_browser_deps += brave_browser_ipfs_deps
 brave_chrome_browser_deps += brave_browser_misc_metrics_deps
 brave_chrome_browser_deps += brave_browser_net_deps
 brave_chrome_browser_deps += brave_browser_new_tab_deps

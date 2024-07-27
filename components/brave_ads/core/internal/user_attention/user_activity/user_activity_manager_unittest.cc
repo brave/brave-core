@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
 
@@ -21,7 +21,7 @@ void ExpectThatUserActivityEventsMatch(
   UserActivityEventList user_activity_events;
   UserActivityEventInfo user_activity_event;
   user_activity_event.type = user_activity_event_type;
-  user_activity_event.created_at = Now();
+  user_activity_event.created_at = test::Now();
   user_activity_events.push_back(user_activity_event);
 
   EXPECT_THAT(UserActivityManager::GetInstance().GetHistoryForTimeWindow(
@@ -31,7 +31,7 @@ void ExpectThatUserActivityEventsMatch(
 
 }  // namespace
 
-class BraveAdsUserActivityManagerTest : public UnitTestBase {};
+class BraveAdsUserActivityManagerTest : public test::TestBase {};
 
 TEST_F(BraveAdsUserActivityManagerTest, RecordInitializedAdsEvent) {
   // Arrange
@@ -379,7 +379,7 @@ TEST_F(BraveAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
 
   AdvanceClockBy(base::Hours(1));
 
-  const base::Time now = Now();
+  const base::Time now = test::Now();
 
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kTabUpdated);
@@ -445,12 +445,12 @@ TEST_F(BraveAdsUserActivityManagerTest, MaximumHistoryItems) {
 
   for (int i = 0; i < kMaximumUserActivityEvents.Get() - 1; ++i) {
     expected_user_activity_event.type = user_activity_event_type;
-    expected_user_activity_event.created_at = Now();
+    expected_user_activity_event.created_at = test::Now();
     expected_user_activity_events.push_back(expected_user_activity_event);
   }
 
   expected_user_activity_event.type = UserActivityEventType::kOpenedNewTab;
-  expected_user_activity_event.created_at = Now();
+  expected_user_activity_event.created_at = test::Now();
   expected_user_activity_events.push_back(expected_user_activity_event);
 
   EXPECT_THAT(expected_user_activity_events,

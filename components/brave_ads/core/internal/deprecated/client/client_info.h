@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/ad_preferences_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_alias.h"
-#include "brave/components/brave_ads/core/public/history/history_item_info.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 namespace brave_ads {
 
@@ -34,7 +34,7 @@ struct ClientInfo final {
   [[nodiscard]] bool FromJson(const std::string& json);
 
   AdPreferencesInfo ad_preferences;
-  HistoryItemList history_items;
+  AdHistoryList ad_history;
   TextClassificationProbabilityList text_classification_probabilities;
   PurchaseIntentSignalHistoryMap purchase_intent_signal_history;
 };

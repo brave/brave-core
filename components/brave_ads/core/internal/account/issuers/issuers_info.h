@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_INFO_H_
 
-#include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_info.h"
 
 namespace brave_ads {
 
@@ -24,7 +24,7 @@ struct IssuersInfo final {
   bool operator==(const IssuersInfo&) const = default;
 
   int ping = 0;
-  IssuerList issuers;
+  TokenIssuerList token_issuers;
 };
 
 }  // namespace brave_ads

@@ -237,110 +237,6 @@ interface SolanaProvider {
         mojo_base.mojom.DictionaryValue result);
 };
 
-enum WalletPinServiceErrorCode {
-  // Token not supported for pinning
-  ERR_WRONG_TOKEN = 1,
-  // Token metadata has non-ipfs url
-  ERR_NON_IPFS_TOKEN_URL = 2,
-  // Fetching metadata has failed
-  ERR_FETCH_METADATA_FAILED = 3,
-  ERR_WRONG_METADATA_FORMAT = 4,
-  ERR_ALREADY_PINNED = 5,
-  ERR_NOT_PINNED = 6,
-  ERR_PINNING_FAILED = 7,
-  ERR_MEDIA_TYPE_UNSUPPORTED = 8
-};
-
-enum TokenPinStatusCode {
-  STATUS_NOT_PINNED = 1,
-  STATUS_PINNED = 2,
-  STATUS_PINNING_IN_PROGRESS = 3,
-  STATUS_PINNING_FAILED = 4,
-  STATUS_UNPINNING_IN_PROGRESS = 5,
-  STATUS_UNPINNING_FAILED = 6,
-  STATUS_PINNING_PENDING = 7,
-  STATUS_UNPINNING_PENDING = 8
-};
-
-struct PinError {
-  WalletPinServiceErrorCode error_code;
-  string message;
-};
-
-struct TokenPinStatus {
-  // Actual token status
-  TokenPinStatusCode code;
-  // Token error related to the pin status. May be null.
-  PinError? error;
-  // Last time token was validated(checked that data is pinned correctly)
-  mojo_base.mojom.Time validate_time;
-};
-
-struct TokenPinOverview {
-  // Token status for the local pin backend.
-  TokenPinStatus? local;
-  // Token statuses for remote pin backends.
-  map<string, TokenPinStatus> remotes;
-};
-
-// Observers state of the BraveWalletPinService
-interface BraveWalletPinServiceObserver {
-  OnTokenStatusChanged(string? service, BlockchainToken token,
-                       TokenPinStatus status);
-  OnLocalNodeStatusChanged(bool running);
-};
-
-enum TokenValidationResult {
-  // All is ok
-  kValidationPassed,
-  // Token should be repinned
-  kValidationFailed,
-  // Should retry validation later
-  kValidationError,
-  // Token is unsupported
-  kValidationIgnored
-};
-
-// Low-level interface for token pinning.
-// String service argument is used to select on which pinning
-// service operation should be performed.
-// At the moment we have only local pinning, so use null.
-interface WalletPinService {
-  AddObserver(pending_remote<BraveWalletPinServiceObserver> observer);
-
-  // Launches pinning for provided token.
-  // At the moment only local pinning is supported so use null "service" argument.
-  AddPin(BlockchainToken token, string? service) =>(bool result,
-                                                    PinError? error);
-  // Unpins token.
-  RemovePin(BlockchainToken token, string? service) => (bool result,
-                                                        PinError? response);
-  // Returns overview for provided token.
-  GetTokenStatus(BlockchainToken token) => (TokenPinOverview? status,
-                                            PinError? error);
-  // Checks whether token is pinned correctly.
-  Validate(BlockchainToken token, string? service) => (TokenValidationResult result);
-  // Returns whether IPFS localnode is currently running.
-  IsLocalNodeRunning() => (bool result);
-
-  // Returns whether token is supported for pinning.
-  // Note: You should manually check token metadata url to have ipfs:// url.
-  IsTokenSupported(BlockchainToken token) => (bool result);
-};
-
-interface WalletAutoPinServiceObserver {
-  OnAutoPinStatusChanged(bool enabled);
-};
-
-// Listens for added user tokens and automatically pins them.
-interface WalletAutoPinService {
-  AddObserver(pending_remote<WalletAutoPinServiceObserver> observer);
-
-  // Enables autopinning, so old and new user tokens may be pinned.
-  SetAutoPinEnabled(bool enabled);
-  IsAutoPinEnabled() => (bool enabled);
-};
-
 // Used by the WebUI page to bootstrap bidirectional communication.
 interface PanelHandlerFactory {
   // The WebUI calls this method when the page is first initialized.
@@ -360,10 +256,6 @@ interface PanelHandlerFactory {
                      pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
                      pending_receiver<BraveWalletService> brave_wallet_service,
                      pending_receiver<BraveWalletP3A> brave_wallet_p3a,
-                     pending_receiver<WalletPinService>
-                         brave_wallet_pin_service,
-                     pending_receiver<WalletAutoPinService>
-                         brave_wallet_auto_pin_service,
                      pending_receiver<IpfsService>
                          brave_wallet_ipfs_service_receiver,
                      pending_receiver<MeldIntegrationService>
@@ -387,9 +279,6 @@ interface PageHandlerFactory {
                     pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
                     pending_receiver<BraveWalletService> brave_wallet_service,
                     pending_receiver<BraveWalletP3A> brave_wallet_p3a,
-                    pending_receiver<WalletPinService> brave_wallet_pin_service,
-                    pending_receiver<WalletAutoPinService>
-                        brave_wallet_auto_pin_service,
                     pending_receiver<IpfsService> brave_wallet_ipfs_service,
                     pending_receiver<MeldIntegrationService>
                         meld_integration_service);
@@ -669,11 +558,6 @@ struct LiFiToolDetails {
   string logo;
 };
 
-struct LiFiInsurance {
-  string state;
-  string fee_amount_usd;
-};
-
 struct LiFiAction {
   BlockchainToken from_token;
   string from_amount;
@@ -736,7 +620,6 @@ struct LiFiRoute {
   string to_amount_min;
   string to_address;
   array<LiFiStep> steps;
-  LiFiInsurance insurance;
   array<string> tags;
 };
 
@@ -924,7 +807,6 @@ struct WalletInfo {
   bool is_bitcoin_enabled;
   bool is_bitcoin_import_enabled;
   bool is_z_cash_enabled;
-  bool is_nft_pinning_feature_enabled;
   bool is_ankr_balances_feature_enabled;
   bool is_transaction_simulations_feature_enabled;
 };
@@ -1237,16 +1119,7 @@ interface SwapService {
 };
 
 interface IpfsService {
-  GetNFTGatewayURL() => (string? url);
-  GetGatewayURL() => (string? url);
-
-  SetGateway(string url) => (bool result);
-  SetNFTGateway(string url) => (bool result);
-
   TranslateToGatewayURL(string url) => (string? translated_url);
-  TranslateToNFTGatewayURL(string url) => (string? translated_url);
-  ExtractIPFSUrlFromGatewayLikeUrl(string url) => (string? ipfs_url);
-
   ContentHashToCIDv1URL(array<uint8> content_hash) => (string? url);
 };
 
@@ -1314,7 +1187,6 @@ const string kSolanaComputeBudgetProgramId = "ComputeBudget111111111111111111111
 
 // It is required to keep these chain IDs lowercase ASCII
 const string kMainnetChainId = "0x1";
-const string kGoerliChainId = "0x5";
 const string kSepoliaChainId = "0xaa36a7";
 const string kLocalhostChainId = "0x539";
 const string kPolygonMainnetChainId = "0x89";
@@ -1356,6 +1228,44 @@ const string kDegenChainId = "0x27bc86aa";
 const string kLineaChainId = "0xe708";
 const string kOptimismSepoliaChainId = "0xaa37dc";
 const string kZoraChainId = "0x76adf1";
+const string kAstarChainId = "0x250";
+const string kAstarZkEVMChainId = "0xec0";
+const string kBahamutChainId = "0x142d";
+const string kBitTorrentChainMainnetChainId = "0xc7";
+const string kCoreChainId = "0x45c";
+const string kCronosMainnetChainId = "0x19";
+const string kCyberMainnetChainId = "0x1d88";
+const string kElysiumMainnetChainId = "0x53b";
+const string kEOSEVMNetworkChainId = "0x4571";
+const string kHederaMainnetChainId = "0x127";
+const string kImmutableZkEVMChainId = "0x343b";
+const string kKlaytnMainnetCypressChainId = "0x2019";
+const string kKromaChainId = "0xff";
+const string kLightlinkPhoenixMainnetChainId = "0x762";
+const string kMoonbeamChainId = "0x504";
+const string kMoonriverChainId = "0x505";
+const string kNearMainnetChainId = "0x18d";
+const string kOasisEmeraldChainId = "0xa516";
+const string kOasisSapphireChainId = "0x5afe";
+const string kOasysMainnetChainId = "0xf8";
+const string kOntologyMainnetChainId = "0x3a";
+const string kOpBNBMainnetChainId = "0xcc";
+const string kRangersProtocolMainnetChainId = "0x7e9";
+const string kRoninChainId = "0x7e4";
+const string kShidenChainId = "0x150";
+const string kSkaleCalypsoHubChainId = "0x5d456c62";
+const string kSkaleEuropaHubChainId = "0x79f99296";
+const string kSkaleNebulaHubChainId = "0x585eb4b1";
+const string kSkaleTitanHubChainId = "0x507aaa2a";
+const string kTelosEVMMainnetChainId = "0x28";
+const string kThetaMainnetChainId = "0x169";
+const string kThunderCoreMainnetChainId = "0x6c";
+const string kWemixMainnetChainId = "0x457";
+const string kXaiMainnetChainId = "0xa1337";
+const string kZetaChainMainnetChainId = "0x1b58";
+const string kZilliqaEVMChainId = "0x8001";
+
+const string kBatTokenContractAddress = "0x0D8775F648430679A709E98d2b0Cb6250d2887EF";
 
 // https://github.com/satoshilabs/slips/blob/master/slip-0044.md
 enum CoinType {
@@ -1743,6 +1653,8 @@ interface ZCashWalletService {
       (ZCashAccountInfo? account_info);
   ValidateZCashAddress(string addr, bool testnet) =>
       (ZCashAddressValidationResult result);
+  ShieldFunds(string network_id, AccountId account_id) =>
+      (string? tx_id, string? error_message);
 };
 
 enum TransactionStatus {
@@ -1833,6 +1745,24 @@ union TxDataUnion {
   ZecTxData zec_tx_data;
 };
 
+struct SwapInfo {
+  CoinType from_coin;
+  string from_chain_id;
+  string from_asset;
+  string from_amount;
+
+  CoinType to_coin;
+  string to_chain_id;
+  // An empty string indicates that the asset could not be reliably determined.
+  string to_asset;
+  // An empty string indicates that the amount could not be reliably determined.
+  string to_amount;
+
+  // An empty string indicates that the recipient is not known.
+  string receiver;
+  string provider;
+};
+
 struct TransactionInfo {
   string id;
   string? from_address; // Filled with account address for ETH, SOL and FIL.
@@ -1857,6 +1787,8 @@ struct TransactionInfo {
   // TODO(cypt4): Add for SOL
   string? effective_recipient;
   bool is_retriable;
+
+  SwapInfo? swap_info;
 };
 
 interface TxServiceObserver {
@@ -2377,6 +2309,8 @@ interface BraveWalletService {
   GetTransactionSimulationOptInStatus() => (BlowfishOptInStatus status);
 
   SetTransactionSimulationOptInStatus(BlowfishOptInStatus status);
+
+  GetCountryCode() => (string country_code);
 };
 
 // For reporting wallet related P3A metrics.

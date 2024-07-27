@@ -92,7 +92,7 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View, Tool
         Divider()
       }
       .frame(maxWidth: .infinity)
-      .background(Color(braveSystemName: .gray10), ignoresSafeAreaEdges: .bottom)
+      .background(Color(braveSystemName: .neutral10), ignoresSafeAreaEdges: .bottom)
       .contentShape(.rect)
       // We still need a separate gesture for the header (which is always draggable) since
       // `safeAreaInset(edge:spacing:)` doesn't actually get placed inside of a custom UIScrollView
@@ -223,7 +223,7 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View, Tool
         sidebarContents
           .frame(width: 320)
           // FIXME: Would be nice to remove this explicit color and keyboard avoidance from the split view and into sidebar
-          .background(Color(braveSystemName: .gray10))
+          .background(Color(braveSystemName: .neutral10))
           // FIXME: Keyboard avoidance still seems oddly busted in landscape iPad
           // - when hardware keyboard is up the bottom safe are seems to shift up even with this
           // - when software keyboard is up the toolbar gets messed up
@@ -286,7 +286,7 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View, Tool
             ?? min(maxDetentHeight, selectedDetent.heightInContext(detentContext)),
           alignment: .top
         )
-        .background(Color(braveSystemName: .gray10), ignoresSafeAreaEdges: .bottom)
+        .background(Color(braveSystemName: .neutral10), ignoresSafeAreaEdges: .bottom)
         .containerShape(
           UnevenRoundedRectangle(
             cornerRadii: .init(

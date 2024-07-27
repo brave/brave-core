@@ -169,7 +169,7 @@ class TabTrayController: AuthenticationController {
     $0.accessibilityLabel = Strings.done
     $0.accessibilityIdentifier = "TabTrayController.privateButton"
     $0.tintColor = .braveLabel
-    $0.selectedBackgroundColor = UIColor(braveSystemName: .primitivePrivateWindow70)
+    $0.selectedBackgroundColor = UIColor(braveSystemName: .primitivePrivateWindow25)
 
     if Preferences.Privacy.privateBrowsingOnly.value {
       $0.alpha = 0
@@ -184,7 +184,7 @@ class TabTrayController: AuthenticationController {
     button.titleLabel?.adjustsFontForContentSizeCategory = true
     button.contentHorizontalAlignment = .right
     button.titleLabel?.adjustsFontSizeToFitWidth = true
-    button.accessibilityLabel = Strings.Shields.shredSitesData
+    button.accessibilityLabel = Strings.Shields.shredSiteData
     button.accessibilityIdentifier = "TabTrayController.shredButton"
     return button
   }()
@@ -704,9 +704,9 @@ class TabTrayController: AuthenticationController {
   }
 
   @objc func shredButtonPressed() {
-    let alert = UIAlertController.shredDataAlert { _ in
-      guard let tab = self.tabManager.selectedTab else { return }
-      guard let url = tab.url else { return }
+    guard let tab = self.tabManager.selectedTab, let url = tab.url else { return }
+
+    let alert = UIAlertController.shredDataAlert(url: url) { _ in
       LottieAnimationView.showShredAnimation(
         on: self.navigationController?.view ?? self.view
       ) { [weak self] in

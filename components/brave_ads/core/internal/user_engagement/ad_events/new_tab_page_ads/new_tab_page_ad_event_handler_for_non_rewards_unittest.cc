@@ -5,7 +5,7 @@
 
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
@@ -34,10 +34,10 @@ NewTabPageAdInfo BuildAndSaveAd() {
 }  // namespace
 
 class BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest
-    : public UnitTestBase {
+    : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     test::DisableBraveRewards();
 
@@ -175,10 +175,10 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
   // Act & Assert
   EXPECT_CALL(delegate_mock_,
               OnFailedToFireNewTabPageAdEvent(
-                  kInvalidPlacementId, kCreativeInstanceId,
+                  test::kInvalidPlacementId, test::kCreativeInstanceId,
                   mojom::NewTabPageAdEventType::kServedImpression));
   FireEventAndVerifyExpectations(
-      kInvalidPlacementId, kCreativeInstanceId,
+      test::kInvalidPlacementId, test::kCreativeInstanceId,
       mojom::NewTabPageAdEventType::kServedImpression,
       /*should_fire_event=*/false);
 }
@@ -188,10 +188,10 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
   // Act & Assert
   EXPECT_CALL(delegate_mock_,
               OnFailedToFireNewTabPageAdEvent(
-                  kPlacementId, kInvalidCreativeInstanceId,
+                  test::kPlacementId, test::kInvalidCreativeInstanceId,
                   mojom::NewTabPageAdEventType::kServedImpression));
   FireEventAndVerifyExpectations(
-      kPlacementId, kInvalidCreativeInstanceId,
+      test::kPlacementId, test::kInvalidCreativeInstanceId,
       mojom::NewTabPageAdEventType::kServedImpression,
       /*should_fire_event=*/false);
 }
@@ -204,10 +204,10 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
   // Act & Assert
   EXPECT_CALL(delegate_mock_,
               OnFailedToFireNewTabPageAdEvent(
-                  ad.placement_id, kMissingCreativeInstanceId,
+                  ad.placement_id, test::kMissingCreativeInstanceId,
                   mojom::NewTabPageAdEventType::kServedImpression));
   FireEventAndVerifyExpectations(
-      ad.placement_id, kMissingCreativeInstanceId,
+      ad.placement_id, test::kMissingCreativeInstanceId,
       mojom::NewTabPageAdEventType::kServedImpression,
       /*should_fire_event=*/false);
 }

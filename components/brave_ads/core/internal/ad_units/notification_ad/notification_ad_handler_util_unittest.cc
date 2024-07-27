@@ -5,15 +5,15 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler_util.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsNotificationAdUtilTest : public UnitTestBase {};
+class BraveAdsNotificationAdUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsNotificationAdUtilTest, CanServeIfUserIsActive) {
   // Act & Assert
@@ -22,7 +22,7 @@ TEST_F(BraveAdsNotificationAdUtilTest, CanServeIfUserIsActive) {
 
 TEST_F(BraveAdsNotificationAdUtilTest, CannotServeIfUserIsActive) {
   // Arrange
-  MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
   // Act & Assert
   EXPECT_FALSE(CanServeIfUserIsActive());
@@ -44,7 +44,7 @@ TEST_F(BraveAdsNotificationAdUtilTest,
 
 TEST_F(BraveAdsNotificationAdUtilTest, CanServeAtRegularIntervals) {
   // Arrange
-  MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
   // Act & Assert
   EXPECT_TRUE(CanServeAtRegularIntervals());

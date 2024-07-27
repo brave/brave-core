@@ -137,7 +137,7 @@ const base::flat_map<MdTextButtonStyleKey, ButtonStyle>& GetButtonThemes() {
              ButtonState::STATE_DISABLED},
             {.background_color = std::nullopt,
              .border_color = gfx::kColorButtonDisabled,
-             .text_color = gfx::kColorTextDisabled}},
+             .text_color = gfx::kColorTextDisabledDark}},
 
            {{ui::ButtonStyle::kTonal, ColorScheme::kLight,
              ButtonState::STATE_NORMAL},
@@ -205,7 +205,7 @@ const base::flat_map<MdTextButtonStyleKey, ButtonStyle>& GetButtonThemes() {
              ButtonState::STATE_DISABLED},
             {.background_color = std::nullopt,
              .border_color = std::nullopt,
-             .text_color = gfx::kColorTextDisabled}}});
+             .text_color = gfx::kColorTextDisabledDark}}});
 
   return *button_themes;
 }
@@ -284,8 +284,16 @@ void MdTextButton::UpdateTextColor() {
     return;
   }
 
-  auto colors = GetButtonColors();
-  SetTextColor(GetVisualState(), colors.text_color);
+  // Don't set MdTextButton's color as explicitly_set_color.
+  // As below LabelButton::SetTextColor() sets its color args as
+  // expliclity_set_color, we cache current explicitly_set_colors here
+  // back to original after calling SetTextColor().
+  // We(also upstream) uses it to check whether the client of MdTextButton
+  // sets another color.
+  const auto colors = explicitly_set_colors();
+  auto button_colors = GetButtonColors();
+  SetTextColor(GetVisualState(), button_colors.text_color);
+  set_explicitly_set_colors(colors);
 }
 
 void MdTextButton::UpdateBackgroundColor() {
@@ -305,7 +313,17 @@ void MdTextButton::UpdateColors() {
 
   // Update the icon color.
   if (icon_) {
+    // Usually, only set for normal state if we want to use same image for all
+    // state. However, upstream MdTextButton updates left-padding when it has
+    // image. As it uses HasImage(GetVisualState()) for checking image,
+    // different padding could be used if we don't set image for all state.
     SetImageModel(ButtonState::STATE_NORMAL,
+                  ui::ImageModel::FromVectorIcon(*icon_, GetCurrentTextColor(),
+                                                 icon_size_));
+    SetImageModel(ButtonState::STATE_HOVERED,
+                  ui::ImageModel::FromVectorIcon(*icon_, GetCurrentTextColor(),
+                                                 icon_size_));
+    SetImageModel(ButtonState::STATE_PRESSED,
                   ui::ImageModel::FromVectorIcon(*icon_, GetCurrentTextColor(),
                                                  icon_size_));
   }

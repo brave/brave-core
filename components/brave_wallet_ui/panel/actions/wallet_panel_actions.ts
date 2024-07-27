@@ -7,10 +7,10 @@ import { createAction } from '@reduxjs/toolkit'
 import { ShowConnectToSitePayload } from '../constants/action_types'
 import {
   BraveWallet,
+  HardwareWalletResponseCodeType,
   PanelTypes,
   TransactionInfoLookup
 } from '../../constants/types'
-import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
 export const visibilityChanged = createAction<boolean>('visibilityChanged')
 export const showConnectToSite =

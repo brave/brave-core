@@ -376,22 +376,24 @@ extension PlaylistListViewController: UITableViewDataSource {
         let deleteOfflineAction = UIAction(
           title: Strings.PlaylistFolderSharing.deleteOfflineDataMenuTitle,
           image: UIImage(braveSystemNamed: "leo.cloud.off")?.template
-        ) { [unowned self] _ in
-          folder.playlistItems?.forEach {
-            PlaylistManager.shared.deleteCache(item: PlaylistInfo(item: $0))
+        ) { [weak self] _ in
+          Task {
+            guard let self else { return }
+            for playlistItem in folder.playlistItems ?? [] {
+              await PlaylistManager.shared.deleteCache(item: PlaylistInfo(item: playlistItem))
+            }
+            self.tableView.reloadData()
           }
-
-          self.tableView.reloadData()
         }
 
         let deleteAction = UIAction(
           title: Strings.PlaylistFolderSharing.deletePlaylistMenuTitle,
           image: UIImage(braveSystemNamed: "leo.trash")?.template,
           attributes: .destructive
-        ) { [unowned self] _ in
-
-          PlaylistManager.shared.delete(folder: folder) { success in
-            if success {
+        ) { [weak self] _ in
+          Task {
+            guard let self else { return }
+            if await PlaylistManager.shared.delete(folder: folder) {
               self.navigationController?.popToRootViewController(animated: true)
             }
           }

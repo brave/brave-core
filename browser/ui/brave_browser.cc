@@ -14,6 +14,7 @@
 #include "base/functional/callback_helpers.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/brave_file_select_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/constants/pref_names.h"
@@ -27,7 +28,9 @@
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/file_select_listener.h"
 #include "content/public/common/url_constants.h"
+#include "third_party/blink/public/mojom/choosers/file_chooser.mojom.h"
 #include "url/gurl.h"
 
 #if defined(TOOLKIT_VIEWS)
@@ -126,6 +129,33 @@ void BraveBrowser::TabStripEmpty() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&chrome::AddTabAt, this, GetNewTabURL(), -1,
                                 true, std::nullopt));
+}
+
+void BraveBrowser::RunFileChooser(
+    content::RenderFrameHost* render_frame_host,
+    scoped_refptr<content::FileSelectListener> listener,
+    const blink::mojom::FileChooserParams& params) {
+#if BUILDFLAG(IS_ANDROID)
+  Browser::RunFileChooser(render_frame_host, listener, params);
+#else
+  auto new_params = params.Clone();
+  if (new_params->title.empty()) {
+    // Fill title of file chooser with origin of the frame.
+
+    // Note that save mode param is for PPAPI. 'Save As...' or downloading
+    // something doesn't reach here. They show 'select file dialog' from
+    // DownloadFilePicker::DownloadFilePicker directly.
+    // https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/public/mojom/choosers/file_chooser.mojom;l=27;drc=047c7dc4ee1ce908d7fea38ca063fa2f80f92c77
+
+    new_params->title = brave::GetFileSelectTitle(
+        content::WebContents::FromRenderFrameHost(render_frame_host),
+        render_frame_host->GetLastCommittedOrigin(),
+        params.mode == blink::mojom::FileChooserParams::Mode::kSave
+            ? brave::FileSelectTitleType::kSave
+            : brave::FileSelectTitleType::kOpen);
+  }
+  Browser::RunFileChooser(render_frame_host, listener, *new_params);
+#endif
 }
 
 bool BraveBrowser::ShouldDisplayFavicon(

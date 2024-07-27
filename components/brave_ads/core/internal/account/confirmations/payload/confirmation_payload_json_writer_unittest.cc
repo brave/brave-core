@@ -17,22 +17,22 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsConfirmationPayloadJsonWriterTest : public UnitTestBase {
+class BraveAdsConfirmationPayloadJsonWriterTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
-    MockConfirmationUserData();
+    test::MockConfirmationUserData();
 
-    AdvanceClockTo(TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
+    AdvanceClockTo(test::TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
   }
 
   TokenGeneratorMock token_generator_mock_;
@@ -42,7 +42,6 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
        WriteRewardConfirmationPayload) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
@@ -67,7 +66,6 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
                           "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
                         }
                       ],
-                      "countryCode": "US",
                       "createdAtTimestamp": "1996-07-08T09:00:00.000Z",
                       "creativeInstanceId": "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                       "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
@@ -77,7 +75,6 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
                       "segment": "untargeted",
                       "studies": [],
                       "systemTimestamp": "1996-07-08T09:00:00.000Z",
-                      "topSegment": [],
                       "transactionId": "8b742869-6e4a-490c-ac31-31b49130098a",
                       "type": "view",
                       "versionNumber": "1.2.3.4"

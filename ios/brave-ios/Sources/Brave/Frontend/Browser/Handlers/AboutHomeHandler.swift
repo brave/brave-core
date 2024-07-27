@@ -11,7 +11,7 @@ public class AboutHomeHandler: InternalSchemeResponse {
   public static let path = "about/home"
 
   // Return a blank page, the webview delegate will look at the current URL and load the home panel based on that
-  public func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
+  public func response(forRequest request: URLRequest) async -> (URLResponse, Data)? {
     guard let url = request.url else { return nil }
     let response = InternalSchemeHandler.response(forUrl: url)
     let bg = UIColor.braveBackground.toHexString()
@@ -22,9 +22,7 @@ public class AboutHomeHandler: InternalSchemeResponse {
             <body style='background-color:\(bg)'></body>
           </html>
       """
-    guard let data = html.data(using: .utf8) else {
-      return nil
-    }
+    let data = Data(html.utf8)
     return (response, data)
   }
 
@@ -34,15 +32,15 @@ public class AboutHomeHandler: InternalSchemeResponse {
 public class AboutLicenseHandler: InternalSchemeResponse {
   public static let path = "about/license"
 
-  public func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
+  public func response(forRequest request: URLRequest) async -> (URLResponse, Data)? {
     guard let url = request.url else { return nil }
     let response = InternalSchemeHandler.response(forUrl: url)
-    guard let path = Bundle.module.path(forResource: "Licenses", ofType: "html"),
-      let html = try? String(contentsOfFile: path, encoding: .utf8),
-      let data = html.data(using: .utf8)
+    guard let asset = Bundle.module.url(forResource: "Licenses", withExtension: "html"),
+      let html = await AsyncFileManager.default.utf8Contents(at: asset)
     else {
       return nil
     }
+    let data = Data(html.utf8)
     return (response, data)
   }
 

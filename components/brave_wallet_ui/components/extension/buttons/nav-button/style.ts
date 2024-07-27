@@ -5,9 +5,7 @@
 
 import styled, { css } from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
-
-// types
-import { PanelButtonTypes } from './index'
+import Icon from '@brave/leo/react/icon'
 
 // images
 import CloseIcon from '../../../../assets/svg-icons/close.svg'
@@ -17,6 +15,15 @@ import CheckIcon from '../../assets/filled-checkmark.svg'
 // styles
 import { walletButtonFocusMixin } from '../../../shared/style'
 import { Link } from 'react-router-dom'
+
+export type PanelButtonTypes =
+  | 'primary'
+  | 'secondary'
+  | 'danger'
+  | 'confirm'
+  | 'sign'
+  | 'reject'
+  | 'cancel'
 
 interface StyledButtonProps {
   buttonType: PanelButtonTypes
@@ -51,7 +58,7 @@ const StyledButtonCssMixin = (p: StyledButtonProps) => {
         : p.buttonType === 'primary' ||
           p.buttonType === 'confirm' ||
           p.buttonType === 'sign'
-        ? leo.color.primitive.primary[60]
+        ? leo.color.primitive.primary[40]
         : p.buttonType === 'danger'
         ? p.theme.color.errorBorder
         : 'transparent'};
@@ -124,4 +131,11 @@ export const ConfirmIcon = styled.div`
   mask-image: url(${CheckIcon});
   mask-size: 100%;
   margin-right: 10px;
+`
+
+export const LaunchIcon = styled(Icon).attrs({ name: 'launch' })`
+  --leo-icon-size: 20px;
+  --leo-icon-color: ${leo.color.white};
+  margin-left: 8px;
+  margin-bottom: 1px;
 `

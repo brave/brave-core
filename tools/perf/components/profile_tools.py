@@ -14,6 +14,10 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass, asdict
 
+import components.cloud_storage as cloud_storage
+import components.git_tools as git_tools
+
+from components.path_util import GetBravePerfProfileDir
 from components.perf_profile import GetProfilePath
 from components.perf_config import RunnerConfig
 from components.common_options import CommonOptions
@@ -26,6 +30,19 @@ _CACHE_DIRECTORIES = [
     os.path.join('Default', 'GPUCache'), 'cache', 'GrShaderCache',
     'GraphiteDawnCache', 'ShaderCache', 'component_crx_cache'
 ]
+
+_PR_SEE_DETAILS_LINK = ('https://github.com/brave/brave-core/blob/master/' +
+                        'tools/perf/updating_test_profiles.md')
+_PR_BODY = f"""Automated perf profile update via CI
+Pre-approval checklist:
+- Wait all expected profiles are update (currently 6 profiles).
+- Review the changes in .size files.
+
+Notes:
+* Multiple pushes are expected after the PR is created.
+* Until the PR is merged it has no effect, so CI/skip is added.
+
+[See details]({_PR_SEE_DETAILS_LINK})"""
 
 
 def _GetDirectorySize(path: str):
@@ -87,16 +104,44 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions):
 
   CleanProfileCaches(profile_dir)
 
+  zip_filename = cfg.profile + '.zip'
+  sizes_filename = cfg.profile + '.zip.sizes'
+
   profile_zip = os.path.join(options.working_directory, 'artifacts',
-                             cfg.profile + '.zip')
+                             zip_filename)
   profile_zip_sizes = os.path.join(options.working_directory, 'artifacts',
-                                   cfg.profile + '.zip.sizes')
+                                   sizes_filename)
   logging.info('Packing profile %s to %s', profile_dir, profile_zip)
   with scoped_cwd(profile_dir):
     make_zip(profile_zip, files=[], dirs=['.'])
 
   with open(profile_zip_sizes, 'w', encoding='utf-8') as f:
     f.write(GetProfileStats(profile_dir).toText())
+
+  if options.upload:
+    new_profile_sha1_path = cloud_storage.UploadFileToCloudStorage(
+        cloud_storage.CloudFolder.PROFILES, profile_zip)
+    files: Dict[str, str] = dict()
+    files[new_profile_sha1_path] = os.path.join(GetBravePerfProfileDir(),
+                                                zip_filename + '.sha1')
+    files[profile_zip_sizes] = os.path.join(GetBravePerfProfileDir(),
+                                            sizes_filename)
+    version_str = cfg.version.to_string()
+    commit_message = f'Update perf profile {cfg.profile} using {version_str}'
+    branch = options.upload_branch or f'update-perf-profiles-{version_str}'
+    git_tools.PushChangesToBranch(files, branch, commit_message)
+
+    if git_tools.DoesPrOpen(branch):
+      logging.info('The PR exists, skip making it')
+    else:
+      logging.info('Making a github PR from branch %s', branch)
+      git_tools.MakeGithubPR(branch=branch,
+                             target='master',
+                             title=f'Roll perf profiles update ({branch})',
+                             body=_PR_BODY,
+                             reviewers=[git_tools.GH_BRAVE_PERF_TEAM],
+                             extra_args=['--label', 'CI/skip'])
+
 
 
 def _sizeKB(size: int) -> int:

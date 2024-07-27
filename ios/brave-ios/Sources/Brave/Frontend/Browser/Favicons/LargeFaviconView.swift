@@ -22,22 +22,23 @@ class LargeFaviconView: UIView {
     monogramFallbackCharacter: Character? = nil
   ) {
     faviconTask?.cancel()
-    if let favicon = FaviconFetcher.getIconFromCache(for: siteURL) {
-      faviconTask = nil
-
-      self.imageView.image = favicon.image ?? Favicon.defaultImage
-      self.backgroundColor = favicon.backgroundColor
-      self.imageView.contentMode = .scaleAspectFit
-
-      if let image = favicon.image {
-        self.backgroundView.isHidden = !favicon.isMonogramImage && !image.hasTransparentEdges
-      } else {
-        self.backgroundView.isHidden = !favicon.hasTransparentBackground && !favicon.isMonogramImage
-      }
-      return
-    }
-
     faviconTask = Task { @MainActor in
+      if let favicon = await FaviconFetcher.getIconFromCache(for: siteURL) {
+        try Task.checkCancellation()
+
+        self.imageView.image = favicon.image ?? Favicon.defaultImage
+        self.backgroundColor = favicon.backgroundColor
+        self.imageView.contentMode = .scaleAspectFit
+
+        if let image = favicon.image {
+          self.backgroundView.isHidden = !favicon.isMonogramImage && !image.hasTransparentEdges
+        } else {
+          self.backgroundView.isHidden =
+            !favicon.hasTransparentBackground && !favicon.isMonogramImage
+        }
+        return
+      }
+
       let isPersistent = !isPrivateBrowsing
       do {
         let favicon = try await FaviconFetcher.loadIcon(
@@ -45,6 +46,8 @@ class LargeFaviconView: UIView {
           kind: .largeIcon,
           persistent: isPersistent
         )
+
+        try Task.checkCancellation()
 
         self.imageView.image = favicon.image
         self.backgroundColor = favicon.backgroundColor
@@ -119,9 +122,7 @@ class LargeFaviconView: UIView {
     }
 
     imageView.snp.makeConstraints {
-      $0.center.equalTo(self)
-      $0.leading.top.greaterThanOrEqualTo(layoutMarginsGuide)
-      $0.trailing.bottom.lessThanOrEqualTo(layoutMarginsGuide)
+      $0.edges.equalToSuperview()
     }
     monogramFallbackLabel.snp.makeConstraints {
       $0.center.equalTo(self)

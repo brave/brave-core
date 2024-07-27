@@ -10,9 +10,6 @@ import { skipToken } from '@reduxjs/toolkit/query'
 
 // types
 import { BraveWallet } from '../../../../../constants/types'
-import {
-  TokenBalancesRegistry //
-} from '../../../../../common/slices/entities/token-balance.entity'
 
 // hooks
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
@@ -52,7 +49,8 @@ import {
   getAssetIdKey,
   getTokenCollectionName,
   getTokensWithBalanceForAccounts,
-  groupSpamAndNonSpamNfts
+  groupSpamAndNonSpamNfts,
+  isTokenWatchOnly
 } from '../../../../../utils/asset-utils'
 import { useQuery } from '../../../../../common/hooks/use-query'
 import {
@@ -102,7 +100,6 @@ interface Params {
 
 interface Props {
   accounts: BraveWallet.AccountInfo[]
-  tokenBalancesRegistry: TokenBalancesRegistry | null | undefined
   networks: BraveWallet.NetworkInfo[]
 }
 
@@ -112,11 +109,7 @@ const scrollOptions: ScrollIntoViewOptions = { block: 'start' }
 
 const emptyTokenIdsList: string[] = []
 
-export const NftCollection = ({
-  networks,
-  accounts,
-  tokenBalancesRegistry
-}: Props) => {
+export const NftCollection = ({ networks, accounts }: Props) => {
   // routing
   const history = useHistory()
 
@@ -165,15 +158,27 @@ export const NftCollection = ({
           }
         : skipToken
     )
-  const { userTokensRegistry, hiddenNfts, visibleNfts, isLoadingUserTokens } =
+  const { userTokensRegistry, hiddenNfts, visibleNfts, isFetchingUserTokens } =
     useGetUserTokensRegistryQuery(undefined, {
       selectFromResult: (result) => ({
-        isLoadingUserTokens: result.isLoading,
+        isFetchingUserTokens: result.isFetching,
         userTokensRegistry: result.data,
         visibleNfts: selectAllVisibleUserNFTsFromQueryResult(result),
         hiddenNfts: selectHiddenNftsFromQueryResult(result)
       })
     })
+
+  const { data: tokenBalancesRegistry } =
+    // will fetch balances for all accounts so we can filter NFTs by accounts
+    useBalancesFetcher(
+      isFetchingUserTokens || networks.length === 0 || allAccounts.length === 0
+        ? skipToken
+        : {
+            accounts: allAccounts,
+            networks
+          }
+    )
+
   const hiddenNftsIds =
     userTokensRegistry?.nonFungibleHiddenTokenIds ?? emptyTokenIdsList
   const userNonSpamNftIds =
@@ -304,7 +309,7 @@ export const NftCollection = ({
 
   const isLoadingAssets =
     isLoadingSimpleHashNfts ||
-    isLoadingUserTokens ||
+    isFetchingUserTokens ||
     isLoadingAccounts ||
     !assetAutoDiscoveryCompleted ||
     !allSpamNfts ||
@@ -405,6 +410,12 @@ export const NftCollection = ({
                       onSelectAsset={onSelectAsset}
                       isTokenHidden={isHidden}
                       isTokenSpam={isSpam}
+                      isWatchOnly={isTokenWatchOnly(
+                        nft,
+                        allAccounts,
+                        tokenBalancesRegistry,
+                        spamTokenBalancesRegistry
+                      )}
                     />
                   )
                 })}

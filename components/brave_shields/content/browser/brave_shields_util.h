@@ -144,11 +144,15 @@ bool GetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
                                        const GURL& url);
 
 // Enables a webcompat exception for a specific URL.
-void SetWebcompatFeatureSetting(HostContentSettingsMap* map,
-                                ContentSettingsType webcompat_settings_type,
-                                ControlType type,
-                                const GURL& url,
-                                PrefService* local_state);
+void SetWebcompatEnabled(HostContentSettingsMap* map,
+                         ContentSettingsType webcompat_settings_type,
+                         bool enabled,
+                         const GURL& url,
+                         PrefService* local_state);
+
+bool IsWebcompatEnabled(HostContentSettingsMap* map,
+                        ContentSettingsType webcompat_settings_type,
+                        const GURL& url);
 
 bool IsSameOriginNavigation(const GURL& referrer, const GURL& target_url);
 

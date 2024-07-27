@@ -18,7 +18,7 @@ namespace brave_tabs {
 // The visual height of tabs in horizontal tabs mode. Note that the height of
 // the view may be greater than the visual height of the tab shape. See also
 // `kHorizontalTabVerticalSpacing`.
-inline constexpr int kHorizontalTabHeight = 32;
+int GetHorizontalTabHeight();
 
 // The amount of space before the first tab view.
 inline constexpr int kHorizontalTabStripLeftMargin = 3;
@@ -29,8 +29,7 @@ inline constexpr int kHorizontalTabStripLeftMargin = 3;
 inline constexpr int kHorizontalTabVerticalSpacing = 4;
 
 // The height of the tab strip in horizontal mode.
-inline constexpr int kHorizontalTabStripHeight =
-    kHorizontalTabHeight + (kHorizontalTabVerticalSpacing * 2);
+int GetHorizontalTabStripHeight();
 
 // The visual gap between tabs.
 inline constexpr int kHorizontalTabGap = 4;
@@ -46,7 +45,7 @@ inline constexpr int kHorizontalTabInset =
     (kHorizontalTabGap + kHorizontalTabOverlap) / 2;
 
 // The content padding within a tab.
-inline constexpr int kHorizontalTabPadding = 8;
+int GetHorizontalTabPadding();
 
 // The horizontal difference between the visual edge of a tab group and the
 // bounds of the group underline.
@@ -55,18 +54,15 @@ inline constexpr int kHorizontalGroupUnderlineInset = 2;
 // The tab border radius.
 inline constexpr int kTabBorderRadius = 8;
 
-// The size of the group header slot when the title is empty.
-inline constexpr int kEmptyGroupTitleSize = 32;
-
 // The line height of the tab group header text.
 inline constexpr int kTabGroupLineHeight = 24;
 
 // The amount of padding at the top and bottom of tab group header "chips"
 // (i.e. the rectangle enclosing the tab group title).
-inline constexpr int kTabGroupTitleVerticalInset = 4;
+int GetTabGroupTitleVerticalInset();
 
 // The amount of padding at sides of tab group header "chips".
-inline constexpr int kTabGroupTitleHorizontalInset = 10;
+int GetTabGroupTitleHorizontalInset();
 
 }  // namespace brave_tabs
 

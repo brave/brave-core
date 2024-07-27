@@ -169,7 +169,9 @@ public class FeedDataSource: ObservableObject {
     didSet {
       if oldValue == environment { return }
       Preferences.BraveNews.debugEnvironment.value = environment.rawValue
-      clearCachedFiles()
+      Task {
+        await clearCachedFiles()
+      }
     }
   }
 
@@ -270,8 +272,7 @@ public class FeedDataSource: ObservableObject {
     assert(!resource.isLocalized || localeIdentifier != nil)
     let fileManager = FileManager.default
     let filename = resourceFilename(for: resource, localeIdentifier: localeIdentifier)
-    let cachedPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName)?
-      .appendingPathComponent(filename).path
+    let cachedPath = cacheDirectoryURL?.appending(path: filename).path()
     if let cachedPath = cachedPath,
       let attributes = try? fileManager.attributesOfItem(atPath: cachedPath),
       let date = attributes[.modificationDate] as? Date
@@ -331,15 +332,18 @@ public class FeedDataSource: ObservableObject {
     loadExpiredData: Bool = false
   ) async -> Data? {
     let name = resourceFilename(for: resource, localeIdentifier: localeIdentifier)
-    let fileManager = FileManager.default
-    let cachedPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName)?
-      .appendingPathComponent(name).path
+    let fileManager = AsyncFileManager.default
+    let cachedPath = try? await fileManager.url(
+      for: .applicationSupportDirectory,
+      appending: Self.cacheFolderName,
+      create: true
+    ).appending(path: name).path()
     if loadExpiredData || !isResourceExpired(resource, localeIdentifier: localeIdentifier),
       let cachedPath = cachedPath,
-      fileManager.fileExists(atPath: cachedPath)
+      await fileManager.fileExists(atPath: cachedPath)
     {
       return await on(queue: todayQueue) {
-        return fileManager.contents(atPath: cachedPath)
+        return FileManager.default.contents(atPath: cachedPath)
       }
     }
     return nil
@@ -381,15 +385,25 @@ public class FeedDataSource: ObservableObject {
     let data = try await data(for: resource)
     let decodedResource = try self.decoder.decode(DataType.self, from: data)
     if !data.isEmpty {
-      if !FileManager.default.writeToDiskInFolder(
-        data,
-        fileName: filename,
-        folderName: Self.cacheFolderName
-      ) {
+      let cachePath = try await AsyncFileManager.default.url(
+        for: .applicationSupportDirectory,
+        appending: Self.cacheFolderName,
+        create: true
+      )
+      let createdFile = await AsyncFileManager.default.createFile(
+        atPath: cachePath.appending(path: filename).path(),
+        contents: data
+      )
+      if !createdFile {
         Logger.module.error("Failed to write sources to disk")
       }
     }
     return decodedResource
+  }
+
+  private var cacheDirectoryURL: URL? {
+    FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first?
+      .appending(path: Self.cacheFolderName)
   }
 
   private func restoreCachedSources() {
@@ -713,15 +727,14 @@ public class FeedDataSource: ObservableObject {
 
   /// Clears any cached files from the users device
   @discardableResult
-  public func clearCachedFiles() -> Bool {
+  public func clearCachedFiles() async -> Bool {
     do {
-      let fileManager = FileManager.default
-      if let braveNewsPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName) {
-        let filePaths = try fileManager.contentsOfDirectory(atPath: braveNewsPath.path)
-        try filePaths.forEach {
-          var fileUrl = braveNewsPath
-          fileUrl.appendPathComponent($0)
-          try fileManager.removeItem(atPath: fileUrl.path)
+      let fileManager = AsyncFileManager.default
+      if let braveNewsPath = cacheDirectoryURL {
+        let filePaths = try await fileManager.contentsOfDirectory(atPath: braveNewsPath.path)
+        for filePath in filePaths {
+          let fileUrl = braveNewsPath.appending(path: filePath)
+          try await fileManager.removeItem(atPath: fileUrl.path)
         }
       }
     } catch {
@@ -732,19 +745,17 @@ public class FeedDataSource: ObservableObject {
   }
 
   public func fetchCachedFiles(resourceKeys: [URLResourceKey] = []) async -> [URL] {
-    let fileManager = FileManager.default
-    guard let braveNewsPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName) else {
+    let fileManager = AsyncFileManager.default
+    guard let braveNewsPath = cacheDirectoryURL else {
       return []
     }
     var files: [URL] = []
-    guard
-      let enumerator = fileManager.enumerator(
-        at: braveNewsPath,
-        includingPropertiesForKeys: resourceKeys,
-        options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants]
-      )
-    else { return [] }
-    while let fileURL = enumerator.nextObject() as? URL {
+    let enumerator = fileManager.enumerator(
+      at: braveNewsPath,
+      includingPropertiesForKeys: resourceKeys,
+      options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants]
+    )
+    for await fileURL in enumerator {
       files.append(fileURL)
     }
     return files
@@ -929,7 +940,11 @@ public class FeedDataSource: ObservableObject {
 
   private func fetchHistory(completion: @escaping ([HistoryNode]) -> Void) {
     if let historyAPI {
-      historyAPI.search(withQuery: "", maxCount: 200) { historyNodeList in
+      let options = HistorySearchOptions(
+        maxCount: 200,
+        duplicateHandling: .removePerDay
+      )
+      historyAPI.search(withQuery: "", options: options) { historyNodeList in
         completion(historyNodeList)
       }
     } else {

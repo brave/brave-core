@@ -53,9 +53,6 @@ open class PopoverNavigationController: UINavigationController, PopoverContentCo
   open override func viewDidLoad() {
     super.viewDidLoad()
     activateFullscreenDismiss()
-    if let vc = viewControllers.first {
-      preferredContentSize = vc.preferredContentSize
-    }
   }
 
   func activateFullscreenDismiss() {
@@ -107,6 +104,9 @@ open class PopoverNavigationController: UINavigationController, PopoverContentCo
 
   open override func popViewController(animated: Bool) -> UIViewController? {
     let vc = super.popViewController(animated: animated)
+    if let vc {
+      self.preferredContentSize = vc.preferredContentSize
+    }
     lastPoppedController = vc
     return vc
   }

@@ -47,7 +47,7 @@ mojom::TransactionInfoPtr SolanaTxMeta::ToTransactionInfo() const {
       base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),
       base::Milliseconds(confirmed_time_.InMillisecondsSinceUnixEpoch()),
       origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, chain_id_,
-      std::nullopt, IsRetriable());
+      std::nullopt, IsRetriable(), nullptr);
 }
 
 mojom::CoinType SolanaTxMeta::GetCoinType() const {

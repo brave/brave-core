@@ -13,13 +13,13 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsRewardCredentialJsonWriterTest : public UnitTestBase {
+class BraveAdsRewardCredentialJsonWriterTest : public test::TestBase {
  protected:
   TokenGeneratorMock token_generator_mock_;
 };
@@ -27,7 +27,6 @@ class BraveAdsRewardCredentialJsonWriterTest : public UnitTestBase {
 TEST_F(BraveAdsRewardCredentialJsonWriterTest, WriteRewardCredential) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =

@@ -2,6 +2,7 @@ use_relative_paths = True
 
 vars = {
   'download_prebuilt_sparkle': True,
+  'checkout_dmg_tool': False,
 }
 
 deps = {
@@ -21,6 +22,10 @@ deps = {
   "third_party/ethash/src": "https://github.com/chfast/ethash.git@e4a15c3d76dc09392c7efd3e30d84ee3b871e9ce",
   "third_party/bitcoin-core/src": "https://github.com/bitcoin/bitcoin.git@8105bce5b384c72cf08b25b7c5343622754e7337", # v25.0
   "third_party/argon2/src": "https://github.com/P-H-C/phc-winner-argon2.git@62358ba2123abd17fccf2a108a301d4b52c01a7c",
+  "third_party/libdmg-hfsplus": {
+    "url": "https://github.com/fanquake/libdmg-hfsplus.git@1cc791e4173da9cb0b0cc16c5a1aaa25d5eb5efa",
+    "condition": 'checkout_mac and host_os != "mac" and checkout_dmg_tool',
+  },
   "third_party/rapidjson/src": "https://github.com/Tencent/rapidjson.git@06d58b9e848c650114556a23294d0b6440078c61",
   "third_party/reclient_configs/src": "https://github.com/EngFlow/reclient-configs.git@21c8fe69ff771956c179847b8c1d9fd216181967",
   'third_party/android_deps/libs/com_google_android_play_core': {
@@ -39,6 +44,7 @@ deps = {
     "url": "https://github.com/ronaldoussoren/macholib.git@36a6777ccd0891c5d1b44ba885573d7c90740015",
     "condition": "checkout_mac",
   },
+  "components/brave_wallet/browser/zcash/rust/librustzcash/src": "https://github.com/brave/librustzcash.git@4d44f5dc3429dce7df37359b8b3c4716807770ea",
 }
 
 recursedeps = [
@@ -149,6 +155,12 @@ hooks = [
     'pattern': '.',
     'condition': 'checkout_win',
     'action': ['python3', 'build/util/update_midl_files.py']
+  },
+  {
+    'name': 'build_libdmg_hfsplus',
+    'pattern': '.',
+    "condition": 'checkout_mac and host_os != "mac" and checkout_dmg_tool',
+    'action': ['build/mac/cross-compile/build-libdmg-hfsplus.py', 'third_party/libdmg-hfsplus']
   },
 ]
 

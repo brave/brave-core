@@ -14,9 +14,7 @@ import {
 import {
   LedgerCommand,
   LedgerBridgeErrorCodes,
-  LedgerError
-} from './ledger-messages'
-import {
+  LedgerError,
   EthGetAccountResponse,
   EthGetAccountResponsePayload,
   EthSignTransactionResponse,
@@ -25,7 +23,7 @@ import {
   EthSignPersonalMessageResponsePayload,
   EthSignEip712MessageResponse,
   EthSignEip712MessageResponsePayload
-} from './eth-ledger-messages'
+} from './ledger-messages'
 
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 import LedgerBridgeKeyring from './ledger_bridge_keyring'

@@ -19,6 +19,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
@@ -98,7 +99,7 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
   }
 
   void OpenAIChatSidePanel() {
-    auto* side_panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+    auto* side_panel_ui = browser()->GetFeatures().side_panel_ui();
     side_panel_ui->Show(SidePanelEntryId::kChatUI);
     auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
     auto* side_panel = browser_view->unified_side_panel();

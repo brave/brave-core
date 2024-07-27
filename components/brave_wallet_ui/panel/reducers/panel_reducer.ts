@@ -8,11 +8,11 @@ import { createReducer } from 'redux-act'
 // types
 import {
   BraveWallet,
+  HardwareWalletResponseCodeType,
   PanelState,
   PanelTypes,
   TransactionInfoLookup
 } from '../../constants/types'
-import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import { ShowConnectToSitePayload } from '../constants/action_types'
 

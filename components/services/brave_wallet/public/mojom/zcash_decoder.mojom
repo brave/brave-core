@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-module brave_wallet.mojom;
+module brave_wallet.zcash.mojom;
 
 struct ZCashUtxo {
   string address;
@@ -33,10 +33,20 @@ struct RawTransaction {
   uint64 height;
 };
 
+struct TreeState {
+  string network;
+  uint64 height;
+  string hash;
+  uint32 time;
+  string saplingTree;
+  string orchardTree;
+};
+
 interface ZCashDecoder {
   ParseBlockID(string data) => (BlockID? value);
   ParseGetAddressUtxos(string data) => (GetAddressUtxosResponse? value);
   ParseSendResponse(string data) => (SendResponse? value);
   ParseRawTransaction(string adata) => (RawTransaction? tx);
+  ParseTreeState(string data) => (TreeState? tree_state);
 };
 

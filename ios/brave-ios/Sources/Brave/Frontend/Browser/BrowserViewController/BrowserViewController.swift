@@ -239,7 +239,7 @@ public class BrowserViewController: UIViewController {
   let notificationsPresenter = BraveNotificationsPresenter()
   var publisher: BraveCore.BraveRewards.PublisherInfo?
 
-  let vpnProductInfo = VPNProductInfo()
+  let vpnProductInfo = BraveVPNProductInfo()
 
   /// Window Protection instance which will be used for controller requires biometric authentication
   public var windowProtection: WindowProtection?
@@ -297,7 +297,6 @@ public class BrowserViewController: UIViewController {
     windowId: UUID,
     profile: Profile,
     attributionManager: AttributionManager,
-    diskImageStore: DiskImageStore?,
     braveCore: BraveCoreMain,
     rewards: BraveRewards,
     migration: Migration?,
@@ -327,6 +326,7 @@ public class BrowserViewController: UIViewController {
       prefs: profile.prefs,
       rewards: rewards,
       tabGeneratorAPI: braveCore.tabGeneratorAPI,
+      historyAPI: braveCore.historyAPI,
       privateBrowsingManager: privateBrowsingManager
     )
 
@@ -571,7 +571,7 @@ public class BrowserViewController: UIViewController {
       guard let sites = sites, !sites.isEmpty else { return }
 
       DispatchQueue.main.async {
-        let defaultFavorites = PreloadedFavorites.getList()
+        let defaultFavorites = FavoritesPreloadedData.getList()
         let currentFavorites = Favorite.allFavorites
 
         if defaultFavorites.count != currentFavorites.count {
@@ -1847,26 +1847,6 @@ public class BrowserViewController: UIViewController {
     }
   }
 
-  func showIPFSInterstitialPage(originalURL: URL) {
-    topToolbar.leaveOverlayMode()
-
-    guard let tab = tabManager.selectedTab,
-      let encodedURL = originalURL.absoluteString.addingPercentEncoding(
-        withAllowedCharacters: .alphanumerics
-      ),
-      let internalUrl = URL(
-        string: "\(InternalURL.baseUrl)/\(IPFSSchemeHandler.path)?url=\(encodedURL)"
-      )
-    else {
-      return
-    }
-    let scriptHandler =
-      tab.getContentScript(name: Web3IPFSScriptHandler.scriptName) as? Web3IPFSScriptHandler
-    scriptHandler?.originalURL = originalURL
-
-    tab.webView?.load(PrivilegedRequest(url: internalUrl) as URLRequest)
-  }
-
   func showWeb3ServiceInterstitialPage(service: Web3Service, originalURL: URL) {
     topToolbar.leaveOverlayMode()
 
@@ -2694,7 +2674,6 @@ extension BrowserViewController: TabDelegate {
       URLPartinessScriptHandler(tab: tab),
       FaviconScriptHandler(tab: tab),
       Web3NameServiceScriptHandler(tab: tab),
-      Web3IPFSScriptHandler(tab: tab),
       YoutubeQualityScriptHandler(tab: tab),
       BraveLeoScriptHandler(tab: tab),
 
@@ -2750,8 +2729,6 @@ extension BrowserViewController: TabDelegate {
       as? PlaylistFolderSharingScriptHandler)?.delegate = self
     (tab.getContentScript(name: Web3NameServiceScriptHandler.scriptName)
       as? Web3NameServiceScriptHandler)?.delegate = self
-    (tab.getContentScript(name: Web3IPFSScriptHandler.scriptName) as? Web3IPFSScriptHandler)?
-      .delegate = self
   }
 
   func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
@@ -2808,7 +2785,7 @@ extension BrowserViewController: TabDelegate {
       forType: tab.isPrivate ? .privateMode : .standard
     )
 
-    guard let url = engine.searchURLForQuery(selectedText) else {
+    guard let url = engine?.searchURLForQuery(selectedText) else {
       assertionFailure("If this returns nil, investigate why and add proper handling or commenting")
       return
     }
@@ -2907,10 +2884,6 @@ extension BrowserViewController: TabDelegate {
     } else {
       topToolbar.updateWalletButtonState(.inactive)
     }
-  }
-
-  func reloadIPFSSchemeUrl(_ url: URL) {
-    handleIPFSSchemeURL(url)
   }
 
   func didReloadTab(_ tab: Tab) {
@@ -3325,13 +3298,11 @@ extension BrowserViewController: PreferencesObserver {
       // All `block all cookies` toggle requires a hard reset of Webkit configuration.
       tabManager.reset()
       if !Preferences.Privacy.blockAllCookies.value {
-        HTTPCookie.loadFromDisk { _ in
-          self.tabManager.reloadSelectedTab()
-          for tab in self.tabManager.allTabs where tab != self.tabManager.selectedTab {
-            tab.createWebview()
-            if let url = tab.webView?.url {
-              tab.loadRequest(PrivilegedRequest(url: url) as URLRequest)
-            }
+        self.tabManager.reloadSelectedTab()
+        for tab in self.tabManager.allTabs where tab != self.tabManager.selectedTab {
+          tab.createWebview()
+          if let url = tab.webView?.url {
+            tab.loadRequest(PrivilegedRequest(url: url) as URLRequest)
           }
         }
       } else {
@@ -3471,7 +3442,7 @@ extension BrowserViewController {
       }
     }
 
-    if let searchURL = engine.searchURLForQuery(
+    if let searchURL = engine?.searchURLForQuery(
       text,
       isBraveSearchPromotion: isBraveSearchPromotion
     ) {

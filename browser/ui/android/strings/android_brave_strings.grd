@@ -503,12 +503,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_MENU_EXIT" desc="Menu item for exit browser. [CHAR-LIMIT=27]">
         Exit
       </message>
-      <message name="IDS_IPFS_GATEWAY_TITLE" desc="Title for IPFS setting.">
-        IPFS Gateway
-      </message>
-      <message name="IDS_IPFS_GATEWAY_SUMMARY" desc="Summary for IPFS gateway setting.">
-        Allows for navigation to IPFS resources through an IPFS Gateway
-      </message>
       <message name="IDS_BLOCK_COOKIE_CONSENT_NOTICES_TITLE" desc="Title for Block cookie consent notices setting.">
         Block cookie consent notices
       </message>
@@ -1420,15 +1414,6 @@ Are you sure you want to do this?
       <message name="IDS_PHOTO_BY" desc="Text for image credit for background images on NTP">
         Photo by <ph name="PHOTO_BY">%1$s</ph>
       </message>
-      <message name="IDS_TURN_ON_EARN_AND_GIVE" desc="Text for turn on brave ads button">
-        Start using Brave Rewards
-      </message>
-      <message name="IDS_NTP_TOS_TEXT" desc="Text for term of service on NTP">
-        By tapping Start using Brave Rewards, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph>.
-      </message>
-      <message name="IDS_HIDE_SPONSORED_IMAGES" desc="Text for hide sponsored images button">
-        Hide Sponsored Images
-      </message>
       <message name="IDS_PREFS_USE_CUSTOM_TABS_TITLE" desc="Title for use custom tabs section">
         Open external links in Brave
       </message>
@@ -1492,17 +1477,8 @@ Are you sure you want to do this?
       <message name="IDS_EARN_TOKENS_FOR_VIEWING" desc="Text for brave rewards banner.">
         Earn tokens for viewing this image and pay it forward to creators. <ph name="LEARN_MORE">%1$s</ph>
       </message>
-      <message name="IDS_EARN_TOKENS_FOR_VIEWING_TITLE" desc="Title for brave rewards banner.">
-        Earn tokens for viewing this image. Tap Start using Brave Rewards to claim your share.
-      </message>
       <message name="IDS_YOU_ARE_EARNING_TOKENS" desc="Title for brave rewards banner.">
         You're earning tokens for viewing this image.\n<ph name="LEARN_MORE">%1$s</ph>
-      </message>
-      <message name="IDS_YOU_ARE_EARNING_TOKENS2" desc="Title for brave rewards banner.">
-        You're earning tokens for viewing this image.
-      </message>
-      <message name="IDS_LEARN_MORE_ABOUT_SPONSORED_IMAGES" desc="Title for brave rewards bottom sheet.">
-        Learn more about sponsored images
       </message>
       <message name="IDS_REWARDS_PANEL_PAYOUT_PENDING_TEXT" desc="Text for rewards panel payout pending text">
         The payout for <ph name="CURRENT_MONTH">%1$s</ph> rewards will begin processing by <ph name="PAYOUT_DATE">%2$s</ph>.
@@ -1515,12 +1491,6 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_REWARDS_PANEL_PAYOUT_CHECK_STATUS_TEXT" desc="Text for rewards panel payout check status text">
         Check status
-      </message>
-
-
-
-      <message name="IDS_SPONSORED_IMAGES_BOTTOM_SHEET_TEXT" desc="Text for SI bottom sheet.">
-        For every sponsored image you view, you receive 70% of the revenue in tokens. With Brave Ads, you're always in control of the ads you see.
       </message>
       <message name="IDS_BLOCK_TRACKERS_ADS_OPTION_1" desc="Text for block trackers and ads option.">
         Block trackers &amp; ads (Aggressive)

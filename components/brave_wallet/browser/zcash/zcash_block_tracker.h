@@ -44,7 +44,7 @@ class ZCashBlockTracker : public BlockTracker {
   void GetBlockHeight(const std::string& chain_id);
   void OnGetLatestBlockForHeight(
       const std::string& chain_id,
-      base::expected<mojom::BlockIDPtr, std::string> latest_height);
+      base::expected<zcash::mojom::BlockIDPtr, std::string> latest_height);
 
   // <chain_id, block_height>
   std::map<std::string, uint32_t> latest_height_map_;

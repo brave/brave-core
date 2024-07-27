@@ -35,7 +35,9 @@ class SearchResultAdHandler final : public SearchResultAdEventHandlerDelegate {
 
   ~SearchResultAdHandler() override;
 
-  static void DeferTriggeringOfAdViewedEventForTesting();
+  static void DeferTriggeringAdViewedEventForTesting();
+
+  // You must call this if `DeferTriggeringAdViewedEventForTesting` is called.
   static void TriggerDeferredAdViewedEventForTesting();
 
   void TriggerEvent(mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
@@ -50,7 +52,7 @@ class SearchResultAdHandler final : public SearchResultAdEventHandlerDelegate {
       const std::string& placement_id,
       mojom::SearchResultAdEventType event_type);
 
-  void MaybeTriggerAdViewedEventFromQueue(TriggerAdEventCallback callback);
+  void MaybeTriggerDeferredAdViewedEvent(TriggerAdEventCallback callback);
   void FireAdViewedEventCallback(TriggerAdEventCallback callback,
                                  bool success,
                                  const std::string& placement_id,

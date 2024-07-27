@@ -93,11 +93,11 @@ void ResetAdEventCacheForInstanceId(const std::string& id) {
   GetInstance()->ResetAdEventCacheForInstanceId(id);
 }
 
-void GetBrowsingHistory(int max_count,
-                        int recent_day_range,
-                        GetBrowsingHistoryCallback callback) {
-  GetInstance()->GetBrowsingHistory(max_count, recent_day_range,
-                                    std::move(callback));
+void GetSiteHistory(int max_count,
+                    int recent_day_range,
+                    GetSiteHistoryCallback callback) {
+  GetInstance()->GetSiteHistory(max_count, recent_day_range,
+                                std::move(callback));
 }
 
 void UrlRequest(mojom::UrlRequestInfoPtr url_request,

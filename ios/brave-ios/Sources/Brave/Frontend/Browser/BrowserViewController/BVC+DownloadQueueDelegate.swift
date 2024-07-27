@@ -73,7 +73,7 @@ extension BrowserViewController: DownloadQueueDelegate {
           completion: { buttonPressed in
             guard buttonPressed else { return }
 
-            FileManager.default.openBraveDownloadsFolder { [weak self] success in
+            UIApplication.shared.openBraveDownloadsFolder { [weak self] success in
               if !success {
                 self?.displayOpenDownloadsError()
               }

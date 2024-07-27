@@ -60,7 +60,7 @@ class FaviconScriptHandler: NSObject, TabContentScript {
       // The WebView has a valid URL
       // Attempt to fetch the favicon from cache
       let isPrivate = tab.isPrivate
-      tab.favicon = FaviconFetcher.getIconFromCache(for: url) ?? Favicon.default
+      tab.favicon = await FaviconFetcher.getIconFromCache(for: url) ?? Favicon.default
 
       // If this is an internal page, we don't fetch favicons for such pages from Brave-Core
       guard !InternalURL.isValid(url: url),
@@ -118,7 +118,7 @@ class FaviconScriptHandler: NSObject, TabContentScript {
         guard let tab = tab, let favicon = favicon else { return }
 
         // We can only cache favicons for non-private tabs
-        FaviconFetcher.updateCache(favicon, for: url, persistent: !isPrivate)
+        await FaviconFetcher.updateCache(favicon, for: url, persistent: !isPrivate)
 
         tab.favicon = favicon
         TabEvent.post(.didLoadFavicon(favicon), for: tab)
@@ -134,7 +134,7 @@ class FaviconScriptHandler: NSObject, TabContentScript {
 
       Task { @MainActor in
         let favicon = try await FaviconFetcher.monogramIcon(url: url, persistent: !isPrivate)
-        FaviconFetcher.updateCache(favicon, for: url, persistent: true)
+        await FaviconFetcher.updateCache(favicon, for: url, persistent: true)
 
         guard let tab = tab else { return }
         tab.favicon = favicon

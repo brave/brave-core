@@ -253,7 +253,7 @@ export const mockUSDCoin = {
   chainId: BraveWallet.MAINNET_CHAIN_ID
 }
 
-export const mockMoonCatNFT = {
+export const mockMoonCatNFT: BraveWallet.BlockchainToken = {
   contractAddress: '0xc3f733ca98E0daD0386979Eb96fb1722A1A05E69',
   name: 'MoonCats',
   symbol: 'AMC',
@@ -419,7 +419,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     tokenId: '',
     coingeckoId: '',
     coin: BraveWallet.CoinType.ETH,
-    chainId: '0x5'
+    chainId: '0xaa36a7'
   },
   {
     contractAddress: '4',

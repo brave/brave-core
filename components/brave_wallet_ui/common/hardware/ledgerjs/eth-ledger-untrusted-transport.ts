@@ -5,21 +5,22 @@
 
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import Eth from '@ledgerhq/hw-app-eth'
-import { LedgerCommand, UnlockResponse } from './ledger-messages'
 import {
   EthGetAccountCommand,
   EthGetAccountResponse,
   EthGetAccountResponsePayload,
-  EthSignTransactionCommand,
-  EthSignTransactionResponsePayload,
-  EthSignTransactionResponse,
-  EthSignPersonalMessageCommand,
-  EthSignPersonalMessageResponsePayload,
-  EthSignPersonalMessageResponse,
   EthSignEip712MessageCommand,
+  EthSignEip712MessageResponse,
   EthSignEip712MessageResponsePayload,
-  EthSignEip712MessageResponse
-} from './eth-ledger-messages'
+  EthSignPersonalMessageCommand,
+  EthSignPersonalMessageResponse,
+  EthSignPersonalMessageResponsePayload,
+  EthSignTransactionCommand,
+  EthSignTransactionResponse,
+  EthSignTransactionResponsePayload,
+  LedgerCommand,
+  UnlockResponse
+} from './ledger-messages'
 import { LedgerUntrustedMessagingTransport } from './ledger-untrusted-transport'
 
 /** makes calls to the Ethereum app on a Ledger device */

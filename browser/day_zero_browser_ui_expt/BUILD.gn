@@ -1,0 +1,46 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+assert(is_win)
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "day_zero_browser_ui_expt_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_news/common",
+    "//brave/components/brave_rewards/common",
+    "//brave/components/brave_wallet/browser:pref_names",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/ntp_background_images/common",
+    "//brave/components/p3a",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//components/prefs",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "day_zero_browser_ui_expt_browsertest.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_rewards/common",
+    "//chrome/browser",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support_ui",
+    "//components/prefs",
+    "//content/test:test_support",
+  ]
+}

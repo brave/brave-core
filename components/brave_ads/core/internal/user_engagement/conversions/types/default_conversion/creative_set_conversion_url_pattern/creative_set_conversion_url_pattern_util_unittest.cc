@@ -6,41 +6,42 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/default_conversion/creative_set_conversion_url_pattern/creative_set_conversion_url_pattern_util.h"
 
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_test_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_constants.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsCreativeConversionSetUrlPatternUtilTest : public UnitTestBase {};
+class BraveAdsCreativeConversionSetUrlPatternUtilTest : public test::TestBase {
+};
 
 TEST_F(BraveAdsCreativeConversionSetUrlPatternUtilTest,
        DoesCreativeSetConversionUrlPatternMatchRedirectChain) {
   // Arrange
   const CreativeSetConversionInfo creative_set_conversion =
-      test::BuildCreativeSetConversion(kCreativeSetId,
-                                       /*url_pattern=*/"https://foo.com/*",
+      test::BuildCreativeSetConversion(test::kCreativeSetId,
+                                       test::kMatchingUrlPattern,
                                        /*observation_window=*/base::Days(3));
 
   // Act & Assert
   EXPECT_TRUE(DoesCreativeSetConversionUrlPatternMatchRedirectChain(
-      creative_set_conversion,
-      /*redirect_chain=*/{GURL("https://foo.com/bar")}));
+      creative_set_conversion, test::BuildDefaultConversionRedirectChain()));
 }
 
 TEST_F(BraveAdsCreativeConversionSetUrlPatternUtilTest,
        DoesCreativeSetConversionUrlPatternNotMatchRedirectChain) {
   // Arrange
   const CreativeSetConversionInfo creative_set_conversion =
-      test::BuildCreativeSetConversion(kCreativeSetId,
-                                       /*url_pattern=*/"https://foo.com/*",
+      test::BuildCreativeSetConversion(test::kCreativeSetId,
+                                       test::kMismatchingUrlPattern,
                                        /*observation_window=*/base::Days(3));
 
   // Act & Assert
   EXPECT_FALSE(DoesCreativeSetConversionUrlPatternMatchRedirectChain(
-      creative_set_conversion,
-      /*redirect_chain=*/{GURL("https://bar.com/foo")}));
+      creative_set_conversion, test::BuildDefaultConversionRedirectChain()));
 }
 
 }  // namespace brave_ads

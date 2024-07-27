@@ -8,7 +8,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/debug/dump_without_crashing.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
@@ -49,12 +48,6 @@ void Confirmations::Confirm(const TransactionInfo& transaction,
                                     std::move(user_data))
           : BuildNonRewardConfirmation(transaction, std::move(user_data));
   if (!confirmation) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to build confirmation");
-    base::debug::DumpWithoutCrashing();
-
     return BLOG(0, "Failed to build confirmation");
   }
 

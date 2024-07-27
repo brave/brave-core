@@ -8,15 +8,15 @@
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::database::table {
 
-class BraveAdsTransactionsDatabaseTableTest : public UnitTestBase {};
+class BraveAdsTransactionsDatabaseTableTest : public test::TestBase {};
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
   // Act
@@ -27,8 +27,9 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
   EXPECT_CALL(callback, Run(/*success=*/true,
                             /*transactions=*/::testing::IsEmpty()));
   const Transactions database_table;
-  database_table.GetForDateRange(/*from_time=*/DistantPast(),
-                                 /*to_time=*/DistantFuture(), callback.Get());
+  database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
+                                 /*to_time=*/test::DistantFuture(),
+                                 callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
@@ -37,7 +38,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/DistantFuture(),
+      ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/test::DistantFuture(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
@@ -56,8 +58,9 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
   EXPECT_CALL(callback,
               Run(/*success=*/true, ::testing::ElementsAreArray(transactions)));
   const Transactions database_table;
-  database_table.GetForDateRange(/*from_time=*/DistantPast(),
-                                 /*to_time=*/DistantFuture(), callback.Get());
+  database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
+                                 /*to_time=*/test::DistantFuture(),
+                                 callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
@@ -66,7 +69,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
 
   const TransactionInfo transaction = test::BuildTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/Now(),
+      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction);
 
@@ -79,8 +82,9 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   base::MockCallback<GetTransactionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true, transactions));
   const Transactions database_table;
-  database_table.GetForDateRange(/*from_time=*/DistantPast(),
-                                 /*to_time=*/DistantFuture(), callback.Get());
+  database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
+                                 /*to_time=*/test::DistantFuture(),
+                                 callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
@@ -89,7 +93,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/DistantFuture(),
+      ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/test::DistantFuture(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
@@ -107,8 +112,9 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   // Act & Assert
   base::MockCallback<GetTransactionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true, TransactionList{transaction_2}));
-  database_table.GetForDateRange(/*from_time=*/Now(),
-                                 /*to_time=*/DistantFuture(), callback.Get());
+  database_table.GetForDateRange(/*from_time=*/test::Now(),
+                                 /*to_time=*/test::DistantFuture(),
+                                 callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, ReconcileTransactions) {
@@ -117,7 +123,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, ReconcileTransactions) {
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/DistantFuture(),
+      ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/test::DistantFuture(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
@@ -133,7 +140,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, ReconcileTransactions) {
   payment_token.transaction_id = transaction_2.id;
   payment_tokens.push_back(payment_token);
 
-  transaction_2.reconciled_at = Now();
+  transaction_2.reconciled_at = test::Now();
 
   base::MockCallback<ResultCallback> reconcile_callback;
   EXPECT_CALL(reconcile_callback, Run(/*success=*/true));
@@ -149,8 +156,9 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, ReconcileTransactions) {
               Run(/*success=*/true,
                   ::testing::UnorderedElementsAreArray(
                       TransactionList{transaction_1, transaction_2})));
-  database_table.GetForDateRange(/*from_time=*/DistantPast(),
-                                 /*to_time=*/DistantFuture(), callback.Get());
+  database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
+                                 /*to_time=*/test::DistantFuture(),
+                                 callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, DeleteTransactions) {
@@ -159,7 +167,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DeleteTransactions) {
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/DistantFuture(),
+      ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/test::DistantFuture(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
@@ -182,8 +191,9 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DeleteTransactions) {
   base::MockCallback<GetTransactionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             /*transactions=*/::testing::IsEmpty()));
-  database_table.GetForDateRange(/*from_time=*/DistantPast(),
-                                 /*to_time=*/DistantFuture(), callback.Get());
+  database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
+                                 /*to_time=*/test::DistantFuture(),
+                                 callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTableName) {

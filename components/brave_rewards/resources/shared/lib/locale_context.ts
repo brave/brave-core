@@ -4,8 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-// TODO(petemill): Refactor uses to call this directly.
-// This is re-exported because the function was moved from here.
+
 export { default as formatMessage } from '$web-common/formatMessage'
 
 export interface Locale<K extends string = string> {
@@ -26,7 +25,7 @@ export function createLocaleContextForTesting (strings: any) {
   return {
     getString,
     async getPluralString (key: string, count: number) {
-      return getString(key).replace('$1', String(count))
+      return getString(key).replace('#', String(count))
     }
   }
 }

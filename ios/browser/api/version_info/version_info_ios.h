@@ -10,10 +10,25 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NSInteger BraveCoreVersionInfoChannel
+    NS_TYPED_ENUM NS_SWIFT_NAME(BraveCoreVersionInfo.Channel);
+
+OBJC_EXPORT BraveCoreVersionInfoChannel const BraveCoreVersionInfoChannelStable;
+OBJC_EXPORT BraveCoreVersionInfoChannel const BraveCoreVersionInfoChannelBeta;
+OBJC_EXPORT BraveCoreVersionInfoChannel const
+    BraveCoreVersionInfoChannelDevelopment;
+OBJC_EXPORT BraveCoreVersionInfoChannel const
+    BraveCoreVersionInfoChannelNightly;
+OBJC_EXPORT BraveCoreVersionInfoChannel const
+    BraveCoreVersionInfoChannelUnknown;
+
 OBJC_EXPORT
 @interface BraveCoreVersionInfo : NSObject
 @property(class, readonly) NSString* braveCoreVersion;
 @property(class, readonly) NSString* chromiumVersion;
+@property(class, readonly) NSString* channelString;
+@property(class, readonly) BraveCoreVersionInfoChannel channel;
+
 - (instancetype)init NS_UNAVAILABLE;
 @end
 

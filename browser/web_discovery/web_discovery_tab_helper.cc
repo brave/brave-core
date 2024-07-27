@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "base/time/time.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/web_discovery/web_discovery_cta_util.h"
 #include "brave/browser/web_discovery/web_discovery_infobar_delegate.h"
 #include "brave/components/constants/url_constants.h"
@@ -28,8 +27,16 @@ std::unique_ptr<infobars::InfoBar> CreateWebDiscoveryInfoBar(
 // static
 void WebDiscoveryTabHelper::MaybeCreateForWebContents(
     content::WebContents* contents) {
-  if (contents && brave::IsRegularProfile(contents->GetBrowserContext()))
-    WebDiscoveryTabHelper::CreateForWebContents(contents);
+  if (!contents) {
+    return;
+  }
+
+  auto* profile = Profile::FromBrowserContext(contents->GetBrowserContext());
+  if (!profile || !profile->IsRegularProfile()) {
+    return;
+  }
+
+  WebDiscoveryTabHelper::CreateForWebContents(contents);
 }
 
 WebDiscoveryTabHelper::WebDiscoveryTabHelper(content::WebContents* contents)
@@ -41,25 +48,29 @@ WebDiscoveryTabHelper::~WebDiscoveryTabHelper() = default;
 void WebDiscoveryTabHelper::DidFinishLoad(
     content::RenderFrameHost* render_frame_host,
     const GURL& validated_url) {
-  if (validated_url.host() != kBraveSearchHost)
+  if (validated_url.host() != kBraveSearchHost) {
     return;
+  }
 
   // Only care about main frame.
-  if (render_frame_host->GetParent())
+  if (render_frame_host->GetParent()) {
     return;
+  }
 
   auto* profile =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
-  if (!profile)
+  if (!profile) {
     return;
+  }
 
   auto* prefs = profile->GetPrefs();
   WebDiscoveryCTAState state =
       GetWebDiscoveryCTAState(prefs, GetWebDiscoveryCurrentCTAId());
 
   auto* service = TemplateURLServiceFactory::GetForProfile(profile);
-  if (!ShouldShowWebDiscoveryInfoBar(service, prefs, state))
+  if (!ShouldShowWebDiscoveryInfoBar(service, prefs, state)) {
     return;
+  }
 
   state.count++;
   state.last_displayed = base::Time::Now();

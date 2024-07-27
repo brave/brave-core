@@ -21,9 +21,13 @@ extension BraveHistoryAPI {
   }
 
   func suffix(_ maxLength: Int, _ completion: @escaping ([HistoryNode]) -> Void) {
+    let options = HistorySearchOptions(
+      maxCount: UInt(max(20, maxLength)),
+      duplicateHandling: .removePerDay
+    )
     search(
       withQuery: nil,
-      maxCount: UInt(max(20, maxLength)),
+      options: options,
       completion: { historyResults in
         completion(historyResults.map { $0 })
       }
@@ -34,10 +38,13 @@ extension BraveHistoryAPI {
     guard !query.isEmpty else {
       return
     }
-
+    let options = HistorySearchOptions(
+      maxCount: 200,
+      duplicateHandling: query.isEmpty ? .removePerDay : .removeAll
+    )
     search(
       withQuery: query,
-      maxCount: 200,
+      options: options,
       completion: { historyResults in
         completion(historyResults.map { $0 })
       }

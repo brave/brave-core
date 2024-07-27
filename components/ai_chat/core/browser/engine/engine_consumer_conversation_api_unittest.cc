@@ -19,6 +19,7 @@
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
@@ -213,15 +214,17 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       mojom::ConversationTurnVisibility::VISIBLE,
-      "Which show is this catchphrase from?", "I have spoken.", std::nullopt));
+      "Which show is this catchphrase from?", "I have spoken.", std::nullopt,
+      base::Time::Now(), std::nullopt));
   history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       mojom::ConversationTurnVisibility::VISIBLE, "The Mandalorian.",
-      std::nullopt, std::nullopt));
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt));
   history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::HUMAN, mojom::ActionType::RESPONSE,
       mojom::ConversationTurnVisibility::VISIBLE,
-      "Is it related to a broader series?", std::nullopt, std::nullopt));
+      "Is it related to a broader series?", std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt));
   std::string expected_events = R"([
     {"role": "user", "type": "pageText", "content": "This is my page. I have spoken."},
     {"role": "user", "type": "pageExcerpt", "content": "I have spoken."},

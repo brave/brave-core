@@ -76,6 +76,8 @@ public final class BravePreferenceKeys {
 
     public static final String BRAVE_IN_APP_UPDATE_TIMING = "in_app_update_timing";
 
+    public static final String DAY_ZERO_EXPT_FLAG = "day_zero_expt_flag";
+
     /*
      * Checks if preference key is used in Brave.
      * It's no op currently. We might reconsider

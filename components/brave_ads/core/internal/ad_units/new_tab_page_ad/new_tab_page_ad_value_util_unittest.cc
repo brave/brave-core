@@ -7,7 +7,7 @@
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
@@ -19,7 +19,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kJson[] =
+constexpr char kNewTabPageAdAsJson[] =
     R"(
         {
           "advertiser_id": "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2",
@@ -46,11 +46,11 @@ constexpr char kJson[] =
 
 }  // namespace
 
-class BraveAdsNewTabPageAdValueUtilTest : public UnitTestBase {};
+class BraveAdsNewTabPageAdValueUtilTest : public test::TestBase {};
 
-TEST_F(BraveAdsNewTabPageAdValueUtilTest, FromValue) {
+TEST_F(BraveAdsNewTabPageAdValueUtilTest, NewTabPageAdFromValue) {
   // Arrange
-  const base::Value::Dict dict = base::test::ParseJsonDict(kJson);
+  const base::Value::Dict dict = base::test::ParseJsonDict(kNewTabPageAdAsJson);
 
   // Act
   const NewTabPageAdInfo ad = NewTabPageAdFromValue(dict);
@@ -58,20 +58,21 @@ TEST_F(BraveAdsNewTabPageAdValueUtilTest, FromValue) {
   // Assert
   const CreativeNewTabPageAdInfo creative_ad =
       test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/false);
-  EXPECT_EQ(BuildNewTabPageAd(creative_ad, kPlacementId), ad);
+  EXPECT_EQ(BuildNewTabPageAd(test::kPlacementId, creative_ad), ad);
 }
 
-TEST_F(BraveAdsNewTabPageAdValueUtilTest, ToValue) {
+TEST_F(BraveAdsNewTabPageAdValueUtilTest, NewTabPageAdToValue) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
       test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/false);
-  const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad, kPlacementId);
+  const NewTabPageAdInfo ad =
+      BuildNewTabPageAd(test::kPlacementId, creative_ad);
 
   // Act
   const base::Value::Dict dict = NewTabPageAdToValue(ad);
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(kJson), dict);
+  EXPECT_EQ(base::test::ParseJsonDict(kNewTabPageAdAsJson), dict);
 }
 
 }  // namespace brave_ads

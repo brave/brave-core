@@ -155,7 +155,7 @@ extension BrowserViewController {
   }
 
   @objc private func showShieldsKeyCommand() {
-    presentBraveShieldsViewController()
+    presentBraveShieldsView()
   }
 
   @objc private func showDownloadsKeyCommand() {

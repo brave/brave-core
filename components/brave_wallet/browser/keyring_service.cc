@@ -2003,6 +2003,23 @@ std::optional<std::vector<uint8_t>> KeyringService::GetZCashPubKey(
   return zcash_keyring->GetPubkey(*key_id);
 }
 
+#if BUILDFLAG(ENABLE_ORCHARD)
+std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
+KeyringService::GetOrchardRawBytes(const mojom::AccountIdPtr& account_id,
+                                   const mojom::ZCashKeyIdPtr& key_id) {
+  CHECK(account_id);
+  CHECK(key_id);
+  CHECK(IsZCashAccount(*account_id));
+
+  auto* zcash_keyring = GetZCashKeyringById(account_id->keyring_id);
+  if (!zcash_keyring) {
+    return std::nullopt;
+  }
+
+  return zcash_keyring->GetOrchardRawBytes(*key_id);
+}
+#endif
+
 void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
     const mojom::AccountIdPtr& account_id,
     std::optional<uint32_t> next_receive_index,

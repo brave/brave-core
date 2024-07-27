@@ -4,11 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -16,49 +16,53 @@ namespace brave_ads {
 
 namespace {
 
+constexpr int kFreshInstallDatabaseVersion = 0;
+
 std::string TestParamToString(::testing::TestParamInfo<int> test_param) {
   return base::StringPrintf("%d_to_%d", test_param.param, database::kVersion);
 }
 
 }  // namespace
 
-class BraveAdsDatabaseMigrationTest : public UnitTestBase,
+class BraveAdsDatabaseMigrationTest : public test::TestBase,
                                       public ::testing::WithParamInterface<int>,
                                       public DatabaseManagerObserver {
  protected:
   void SetUpMocks() override {
-    MaybeMockDatabase();
-
     DatabaseManager::GetInstance().AddObserver(this);
+
+    MaybeMockDatabase();
   }
 
   void TearDown() override {
     DatabaseManager::GetInstance().RemoveObserver(this);
 
-    UnitTestBase::TearDown();
+    test::TestBase::TearDown();
   }
 
   static int GetSchemaVersion() { return GetParam(); }
 
-  static bool ShouldCreateDatabase() { return GetSchemaVersion() == 0; }
-
-  static bool IsMostRecentSchemaVersion() {
-    return GetSchemaVersion() == database::kVersion;
+  static std::string DatabasePathForSchemaVersion() {
+    return base::StringPrintf("database_migration/database_schema_%d.sqlite",
+                              GetSchemaVersion());
   }
 
-  static bool ShouldMigrateDatabase() {
-    return !ShouldCreateDatabase() && !IsMostRecentSchemaVersion();
+  static bool IsTestingFreshInstall() {
+    return GetSchemaVersion() == kFreshInstallDatabaseVersion;
+  }
+
+  static bool IsTestingUpgrade() {
+    return !IsTestingFreshInstall() && GetSchemaVersion() < database::kVersion;
   }
 
   void MaybeMockDatabase() {
-    if (ShouldCreateDatabase()) {
+    if (IsTestingFreshInstall()) {
+      // No need to mock sqlite database for a fresh install.
       return;
     }
 
-    const std::string database_filename = base::StringPrintf(
-        "database/database_schema_%d.sqlite", GetSchemaVersion());
-    ASSERT_TRUE(
-        CopyFileFromTestPathToTempPath(database_filename, kDatabaseFilename));
+    ASSERT_TRUE(CopyFileFromTestDataPathToTempProfilePath(
+        DatabasePathForSchemaVersion(), kDatabaseFilename));
   }
 
   // DatabaseManagerObserver:
@@ -83,16 +87,24 @@ class BraveAdsDatabaseMigrationTest : public UnitTestBase,
 };
 
 TEST_P(BraveAdsDatabaseMigrationTest, MigrateFromSchema) {
-  // Act & Assert
-  EXPECT_EQ(ShouldCreateDatabase(), did_create_database_);
-  EXPECT_EQ(ShouldMigrateDatabase(), did_migrate_database_);
+  // Database migration occurs after invoking `Setup` and `SetUpMocks` during
+  // the initialization of `AdsImpl` in `test::TestBase`. Consequently,
+  // `EXPECT_CALL` cannot be used with the mocks.
+
+  // Assert
+  EXPECT_EQ(IsTestingFreshInstall(), did_create_database_);
+  EXPECT_EQ(IsTestingUpgrade(), did_migrate_database_);
   EXPECT_FALSE(failed_to_migrate_database_);
   EXPECT_TRUE(database_is_ready_);
 }
 
-INSTANTIATE_TEST_SUITE_P(,
-                         BraveAdsDatabaseMigrationTest,
-                         ::testing::Range(0, database::kVersion + 1),
-                         TestParamToString);
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    BraveAdsDatabaseMigrationTest,
+    ::testing::Range(
+        kFreshInstallDatabaseVersion,
+        database::kVersion +
+            1),  // We add 1 because `::testing::Range` end is exclusive.
+    TestParamToString);
 
 }  // namespace brave_ads

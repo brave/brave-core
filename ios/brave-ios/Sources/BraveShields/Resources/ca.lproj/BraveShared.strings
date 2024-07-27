@@ -1,3 +1,12 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Afegeix llistes addicionals creades i mantingudes per la teva comunitat de confiança.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Subscriu-te només a llistes d'entitats de confiança**. El teu navegador comprovarà periòdicament si hi ha actualitzacions de la llista de l'URL que introdueixis.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Afegeix un filtre per URL";
+
 /* A discription of the Brave Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** és el teu bitllet per a una experiència de vídeo sense anuncis i sense interrupcions.";
 
@@ -28,6 +37,9 @@
 /* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
 "BlockAdsAndTrackingStandard" = "Estàndard";
 
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Bloqueja els avisos «Canviar a l'app»";
+
 /* Title for the brave player feature */
 "BravePlayer" = "Brave Player";
 
@@ -45,6 +57,36 @@
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Mira-ho a Brave Player";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Filtració del contingut";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Habilita filtres personalitzats que bloquegin elements molestos i rastrejadors regionals i específics de la llengua";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Llista de filtres personalitzats";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "URL de la llista de filtres personalitzats";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Filtres personalitzats";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Afegeix aquí filtres personalitzats. Assegureu-vos d'utilitzar la sintaxi del filtre Adblock.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "`%1$@` regla no vàlida, a la línia %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Afegeix aquí els teus filtres personalitzats, un per línia.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Els filtres personalitzats no admeten més de %i línies";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Llistes de filtres per defecte";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "Torna";
@@ -70,6 +112,54 @@
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Activa el control de privacitat global";
 
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Llistes de filtres externs";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "L'URL introduït no és vàlid";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Només es permeten els URL segurs (https) per a les llistes de filtres personalitzades";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Afegeix";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Llistes comunitàries populars addicionals. Tingues en compte que habilitar massa filtres reduirà la velocitat de navegació.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Error de descàrrega";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Descàrrega pendent";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Edita";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Introdueix l'URL de la llista de filtres";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Última actualització %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Introdueix l'URL de la llista de filtres aquí";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Estricte";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "El lloc no és segur";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "La connexió a %@ no és segura";
+
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Rastrejadors i anuncis bloquejats";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Actualitza les connexions a HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Esteu veient aquest avís perquè aquest lloc no és compatible amb HTTPS.";
 

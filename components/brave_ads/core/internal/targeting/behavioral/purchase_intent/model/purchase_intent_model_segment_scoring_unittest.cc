@@ -5,9 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_model_segment_scoring.h"
 
-#include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_model.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_signal_info.h"
@@ -17,22 +16,22 @@
 
 namespace brave_ads {
 
-class BraveAdsPurchaseIntentModelSegmentScoringTest : public UnitTestBase {};
+class BraveAdsPurchaseIntentModelSegmentScoringTest : public test::TestBase {};
 
 TEST_F(BraveAdsPurchaseIntentModelSegmentScoringTest,
        ComputePurchaseIntentSignalHistorySegmentScores) {
   // Arrange
-  const base::Time decayed_at = Now() - kPurchaseIntentTimeWindow.Get();
+  const base::Time decayed_at = test::Now() - kPurchaseIntentTimeWindow.Get();
 
   const base::Time on_cusp_at =
-      Now() - (kPurchaseIntentTimeWindow.Get() - base::Milliseconds(1));
+      test::Now() - (kPurchaseIntentTimeWindow.Get() - base::Milliseconds(1));
 
   const PurchaseIntentSignalList purchase_intent_signals = {
       {decayed_at, {"segment 3"}, 1},
       {on_cusp_at, {"segment 4"}, 4},
-      {Now() - base::Minutes(2), {"segment 1", "segment 2"}, 3},
-      {Now() - base::Minutes(1), {"segment 1"}, 2},
-      {Now(), {"segment 5"}, 5}};
+      {test::Now() - base::Minutes(2), {"segment 1", "segment 2"}, 3},
+      {test::Now() - base::Minutes(1), {"segment 1"}, 2},
+      {test::Now(), {"segment 5"}, 5}};
 
   for (const auto& purchase_intent_signal : purchase_intent_signals) {
     BuyPurchaseIntentSignal(purchase_intent_signal);

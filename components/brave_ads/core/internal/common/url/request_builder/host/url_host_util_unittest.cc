@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
@@ -13,7 +13,7 @@
 
 namespace brave_ads {
 
-class BraveAdsUrlHostUtilTest : public UnitTestBase {};
+class BraveAdsUrlHostUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsUrlHostUtilTest, GetStaticUrlHost) {
   // Arrange

@@ -60,9 +60,9 @@ actor ResourceDownloader<Resource: DownloadResourceInterface>: Sendable {
     switch result {
     case .downloaded(let networkResource, let date):
       // Clear any old data
-      try resource.removeFile()
+      try await resource.removeFile()
       // Make a cache folder if needed
-      let cacheFolderURL = try resource.getOrCreateCacheFolder()
+      let cacheFolderURL = try await resource.getOrCreateCacheFolder()
       // Save the data to file
       let fileURL = cacheFolderURL.appendingPathComponent(resource.cacheFileName)
       try writeDataToDisk(data: networkResource.data, toFileURL: fileURL)
@@ -74,14 +74,14 @@ actor ResourceDownloader<Resource: DownloadResourceInterface>: Sendable {
         )
       }
       // Return the file URL
-      let creationDate = try? resource.creationDate()
+      let creationDate = try? await resource.creationDate()
       return DownloadResult(
         date: creationDate ?? date,
         fileURL: fileURL,
         isModified: true
       )
     case .notModified(let fileURL, let date):
-      let creationDate = try? resource.creationDate()
+      let creationDate = try? await resource.creationDate()
       return DownloadResult(
         date: creationDate ?? date,
         fileURL: fileURL,
@@ -91,7 +91,7 @@ actor ResourceDownloader<Resource: DownloadResourceInterface>: Sendable {
   }
 
   private func downloadInternal(resource: Resource) async throws -> DownloadResultStatus {
-    let etag = try? resource.createdEtag()
+    let etag = try? await resource.createdEtag()
 
     do {
       let networkResource = try await self.networkManager.downloadResource(
@@ -105,11 +105,11 @@ actor ResourceDownloader<Resource: DownloadResourceInterface>: Sendable {
         throw DownloadResultError.noData
       }
 
-      let date = try resource.creationDate()
+      let date = try await resource.creationDate()
       return .downloaded(networkResource, date ?? Date())
     } catch let error as NetworkManagerError {
       if error == .fileNotModified, let fileURL = resource.downloadedFileURL {
-        let date = try resource.creationDate()
+        let date = try await resource.creationDate()
         return .notModified(fileURL, date ?? Date())
       } else {
         throw error

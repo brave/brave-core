@@ -6,8 +6,6 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_COMPONENT_UPDATER_COMPONENT_UPDATER_SERVICE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_COMPONENT_UPDATER_COMPONENT_UPDATER_SERVICE_H_
 
-class IPFSDOMHandler;
-
 namespace chrome {
 namespace android {
 class BraveComponentUpdaterAndroid;
@@ -19,16 +17,16 @@ class BraveOnDemandUpdater;
 }
 
 #define BRAVE_COMPONENT_UPDATER_SERVICE_H_ \
-  friend class ::IPFSDOMHandler;           \
   friend class ::chrome::android::BraveComponentUpdaterAndroid;
 
-#define BRAVE_COMPONENT_UPDATER_SERVICE_H_ON_DEMAND_UPDATER          \
- private:                                                            \
-  friend class brave_component_updater::BraveOnDemandUpdater;        \
-                                                                     \
-  virtual void OnDemandUpdate(const std::vector<std::string>& ids,   \
-                              Priority priority, Callback callback); \
-                                                                     \
+#define BRAVE_COMPONENT_UPDATER_SERVICE_H_ON_DEMAND_UPDATER               \
+ private:                                                                 \
+  friend class brave_component_updater::BraveOnDemandUpdater;             \
+                                                                          \
+  virtual void EnsureInstalled(const std::string& id, Callback callback); \
+  virtual void OnDemandUpdate(const std::vector<std::string>& ids,        \
+                              Priority priority, Callback callback);      \
+                                                                          \
  public:
 
 #include "src/components/component_updater/component_updater_service.h"  // IWYU pragma: export

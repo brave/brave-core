@@ -15,7 +15,6 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/toolbar/app_menu_icons.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/media/router/media_router_feature.h"
@@ -29,19 +28,6 @@
 #include "ui/base/models/button_menu_item_model.h"
 #include "ui/base/models/menu_separator_types.h"
 #include "ui/base/ui_base_features.h"
-
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-#include "brave/browser/ipfs/import/ipfs_import_controller.h"
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/browser/ipfs/ipfs_tab_helper.h"
-#include "brave/components/ipfs/ipfs_utils.h"
-#include "brave/components/ipfs/keys/ipns_keys_manager.h"
-#include "brave/grit/brave_generated_resources.h"
-#include "brave/grit/brave_theme_resources.h"
-#include "ui/base/resource/resource_bundle.h"
-#include "ui/gfx/image/image_skia.h"
-#include "ui/gfx/paint_vector_icon.h"
-#endif
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -76,34 +62,6 @@ class BraveHelpMenuModel : public ui::SimpleMenuModel {
                         IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER);
   }
 };
-
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-// For convenience, we show the last part of the key in the context menu item.
-// The length of the key is divided to this constant and the last part is taken.
-int kKeyTrimRate = 5;
-
-bool IsIpfsServiceLaunched(content::BrowserContext* browser_context) {
-  auto* service = ipfs::IpfsServiceFactory::GetForContext(browser_context);
-  return service && service->IsDaemonLaunched();
-}
-
-ipfs::IpnsKeysManager* GetIpnsKeysManager(
-    content::BrowserContext* browser_context) {
-  DCHECK(browser_context);
-  auto* service = ipfs::IpfsServiceFactory::GetForContext(browser_context);
-  if (!service) {
-    return nullptr;
-  }
-  return service->GetIpnsKeysManager();
-}
-
-bool IpnsKeysAvailable(content::BrowserContext* browser_context) {
-  auto* keys_manager = GetIpnsKeysManager(browser_context);
-  return keys_manager && keys_manager->GetKeys().size();
-}
-
-#endif
-
 }  // namespace
 BraveAppMenuModel::BraveAppMenuModel(
     ui::AcceleratorProvider* provider,
@@ -111,11 +69,6 @@ BraveAppMenuModel::BraveAppMenuModel(
     AppMenuIconController* app_menu_icon_controller,
     AlertMenuItem alert_item)
     : AppMenuModel(provider, browser, app_menu_icon_controller, alert_item)
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-      ,
-      ipfs_submenu_model_(this),
-      ipns_submenu_model_(this)
-#endif
 {
 }
 
@@ -214,40 +167,6 @@ void BraveAppMenuModel::BuildBraveProductsSection() {
   }
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  if (IsCommandIdEnabled(IDC_APP_MENU_IPFS)) {
-    ipfs_submenu_model_.AddItemWithStringId(IDC_APP_MENU_IPFS_SHARE_LOCAL_FILE,
-                                            IDS_APP_MENU_IPFS_SHARE_LOCAL_FILE);
-    ipfs_submenu_model_.AddItemWithStringId(
-        IDC_APP_MENU_IPFS_SHARE_LOCAL_FOLDER,
-        IDS_APP_MENU_IPFS_SHARE_LOCAL_FOLDER);
-    ipfs_submenu_model_.AddItemWithStringId(IDC_APP_MENU_IPFS_OPEN_FILES,
-                                            IDS_APP_MENU_IPFS_OPEN_FILES);
-    if (IpnsKeysAvailable(browser()->profile())) {
-      ipfs_submenu_model_.InsertSubMenuWithStringIdAt(
-          ipfs_submenu_model_.GetItemCount(), IDC_APP_MENU_IPFS_UPDATE_IPNS,
-          IDS_APP_MENU_IPFS_UPDATE_IPNS, &ipns_submenu_model_);
-
-      int keys_command_index = IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START;
-      keys_command_index += AddIpfsImportMenuItem(
-          IDC_APP_MENU_IPFS_PUBLISH_LOCAL_FILE,
-          IDS_APP_MENU_IPFS_PUBLISH_LOCAL_FILE, keys_command_index);
-      AddIpfsImportMenuItem(IDC_APP_MENU_IPFS_PUBLISH_LOCAL_FOLDER,
-                            IDS_APP_MENU_IPFS_PUBLISH_LOCAL_FOLDER,
-                            keys_command_index);
-    }
-    const int index = GetNextIndexOfBraveProductsSection();
-    InsertSubMenuWithStringIdAt(index, IDC_APP_MENU_IPFS, IDS_APP_MENU_IPFS,
-                                &ipfs_submenu_model_);
-
-    auto& bundle = ui::ResourceBundle::GetSharedInstance();
-    const auto& ipfs_logo = *bundle.GetImageSkiaNamed(IDR_BRAVE_IPFS_LOGO);
-    ui::ImageModel image_model = ui::ImageModel::FromImageSkia(ipfs_logo);
-    SetIcon(index, image_model);
-    need_separator = true;
-  }
-#endif
-
 #if defined(TOOLKIT_VIEWS)
   if (sidebar::CanUseSidebar(browser())) {
     sidebar_show_option_model_ = std::make_unique<ui::ButtonMenuItemModel>(
@@ -271,7 +190,6 @@ void BraveAppMenuModel::BuildBraveProductsSection() {
     need_separator = false;
   }
 #endif
-
   if (need_separator) {
     InsertSeparatorAt(GetNextIndexOfBraveProductsSection(),
                       ui::NORMAL_SEPARATOR);
@@ -470,31 +388,6 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
 }
 
 void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  if (id >= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START &&
-      id <= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_END) {
-    int ipfs_command = GetSelectedIPFSCommandId(id);
-    if (ipfs_command == -1) {
-      return;
-    }
-    auto* submenu = ipns_keys_submenu_models_[ipfs_command].get();
-    std::optional<size_t> command_index = submenu->GetIndexOfCommandId(id);
-    if (!command_index.has_value()) {
-      return;
-    }
-    auto label = base::UTF16ToUTF8(submenu->GetLabelAt(command_index.value()));
-    auto key_name = (command_index.value() > 0) ? label : std::string();
-    ExecuteIPFSCommand(ipfs_command, key_name);
-    return;
-  }
-  switch (id) {
-    case IDC_APP_MENU_IPFS_SHARE_LOCAL_FILE:
-    case IDC_APP_MENU_IPFS_SHARE_LOCAL_FOLDER:
-      ExecuteIPFSCommand(id, std::string());
-      return;
-  }
-#endif  // BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-
 #if defined(TOOLKIT_VIEWS)
   if (id == IDC_SIDEBAR_SHOW_OPTION_ALWAYS ||
       id == IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER ||
@@ -510,28 +403,6 @@ void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {
 }
 
 bool BraveAppMenuModel::IsCommandIdEnabled(int id) const {
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  content::BrowserContext* browser_context =
-      static_cast<content::BrowserContext*>(browser()->profile());
-  if (id >= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START &&
-      id <= IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_END) {
-    if (!IpnsKeysAvailable(browser_context)) {
-      return false;
-    }
-    return true;
-  }
-  switch (id) {
-    case IDC_APP_MENU_IPFS_SHARE_LOCAL_FILE:
-    case IDC_APP_MENU_IPFS_SHARE_LOCAL_FOLDER:
-    case IDC_APP_MENU_IPFS_PUBLISH_LOCAL_FILE:
-    case IDC_APP_MENU_IPFS:
-    case IDC_APP_MENU_IPFS_PUBLISH_LOCAL_FOLDER:
-    case IDC_APP_MENU_IPFS_OPEN_FILES:
-    case IDC_APP_MENU_IPFS_UPDATE_IPNS:
-      return ipfs::IsIpfsMenuEnabled(browser()->profile()->GetPrefs()) &&
-             IsIpfsServiceLaunched(browser_context);
-  }
-#endif
   if (id == IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS) {
     // Always returns true as this command id is only added when it could be
     // used.
@@ -549,88 +420,11 @@ bool BraveAppMenuModel::IsCommandIdEnabled(int id) const {
   return AppMenuModel::IsCommandIdEnabled(id);
 }
 
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-int BraveAppMenuModel::AddIpnsKeysToSubMenu(ui::SimpleMenuModel* submenu,
-                                            ipfs::IpnsKeysManager* manager,
-                                            int key_command_id) {
-  if (!manager) {
-    return 0;
-  }
-  int command_id = key_command_id;
-
-  for (const auto& it : manager->GetKeys()) {
-    submenu->AddItem(command_id, base::ASCIIToUTF16(it.first));
-    int length = std::ceil(it.second.size() / kKeyTrimRate);
-    int size = it.second.size();
-    auto key_part = it.second.substr(size - length, length);
-    auto key_hash_title = std::string("...") + key_part;
-    submenu->SetMinorText(command_id - key_command_id,
-                          base::ASCIIToUTF16(key_hash_title));
-    command_id++;
-  }
-  return command_id - key_command_id;
-}
-
-void BraveAppMenuModel::ExecuteIPFSCommand(int id, const std::string& key) {
-  auto* active_content = browser()->tab_strip_model()->GetActiveWebContents();
-  ipfs::IPFSTabHelper* helper =
-      ipfs::IPFSTabHelper::FromWebContents(active_content);
-  if (!helper) {
-    return;
-  }
-  switch (id) {
-    case IDC_APP_MENU_IPFS_SHARE_LOCAL_FILE:
-    case IDC_APP_MENU_IPFS_PUBLISH_LOCAL_FILE:
-      helper->ShowImportDialog(ui::SelectFileDialog::SELECT_OPEN_FILE, key);
-      break;
-    case IDC_APP_MENU_IPFS_SHARE_LOCAL_FOLDER:
-    case IDC_APP_MENU_IPFS_PUBLISH_LOCAL_FOLDER:
-      helper->ShowImportDialog(ui::SelectFileDialog::SELECT_EXISTING_FOLDER,
-                               key);
-      break;
-  }
-}
-
-int BraveAppMenuModel::GetSelectedIPFSCommandId(int id) const {
-  for (const auto& it : ipns_keys_submenu_models_) {
-    std::optional<size_t> index = it.second->GetIndexOfCommandId(id);
-    if (!index.has_value()) {
-      continue;
-    }
-    return it.first;
-  }
-  return -1;
-}
-
-int BraveAppMenuModel::AddIpfsImportMenuItem(int action_command_id,
-                                             int string_id,
-                                             int keys_command_id) {
-  content::BrowserContext* browser_context =
-      static_cast<content::BrowserContext*>(browser()->profile());
-  if (!IpnsKeysAvailable(browser_context)) {
-    return 0;
-  }
-  DCHECK(!ipns_keys_submenu_models_.count(action_command_id));
-  ipns_keys_submenu_models_[action_command_id] =
-      std::make_unique<ui::SimpleMenuModel>(this);
-  auto* keys_submenu = ipns_keys_submenu_models_[action_command_id].get();
-  DCHECK(keys_submenu);
-  auto* keys_manager = GetIpnsKeysManager(browser_context);
-  DCHECK(keys_manager);
-  auto items_added =
-      AddIpnsKeysToSubMenu(keys_submenu, keys_manager, keys_command_id);
-  ipns_submenu_model_.AddSubMenuWithStringId(action_command_id, string_id,
-                                             keys_submenu);
-  return items_added;
-}
-#endif
-
 size_t BraveAppMenuModel::GetNextIndexOfBraveProductsSection() const {
   std::vector<int> commands_to_check = {
-      IDC_SIDEBAR_SHOW_OPTION_MENU, IDC_APP_MENU_IPFS,
-      IDC_SHOW_BRAVE_VPN_PANEL,     IDC_BRAVE_VPN_MENU,
-      IDC_SHOW_BRAVE_WALLET,        IDC_NEW_OFFTHERECORD_WINDOW_TOR,
-      IDC_NEW_INCOGNITO_WINDOW,     IDC_NEW_WINDOW};
+      IDC_SHOW_BRAVE_VPN_PANEL, IDC_BRAVE_VPN_MENU,
+      IDC_SHOW_BRAVE_WALLET,    IDC_NEW_OFFTHERECORD_WINDOW_TOR,
+      IDC_NEW_INCOGNITO_WINDOW, IDC_NEW_WINDOW};
   const auto last_index_of_second_section =
       GetProperItemIndex(commands_to_check, false).value();
   const auto last_cmd_id_of_second_section =

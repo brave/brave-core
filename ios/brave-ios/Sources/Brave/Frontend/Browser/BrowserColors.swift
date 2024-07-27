@@ -62,15 +62,15 @@ extension BrowserColors where Self == PrivateModeBrowserColors {
 /// The standard set of light & dark mode browser colors
 struct StandardBrowserColors: BrowserColors {
   var textPrimary: UIColor {
-    .init(light: .primitiveGray100, dark: .primitiveGray1)
+    .init(light: .primitiveNeutral5, dark: .primitiveNeutral98)
   }
 
   var textSecondary: UIColor {
-    .init(light: .primitiveGray70, dark: .primitiveGray30)
+    .init(light: .primitiveNeutral25, dark: .primitiveNeutral80)
   }
 
   var textTertiary: UIColor {
-    .init(light: .primitiveGray50, dark: .primitiveGray40)
+    .init(light: .primitiveNeutral50, dark: .primitiveNeutral70)
   }
 
   var textDisabled: UIColor {
@@ -78,11 +78,11 @@ struct StandardBrowserColors: BrowserColors {
   }
 
   var textInteractive: UIColor {
-    .init(light: .primitivePrimary60, dark: .primitivePrimary40)
+    .init(light: .primitivePrimary40, dark: .primitivePrimary70)
   }
 
   var iconDefault: UIColor {
-    .init(light: .primitiveGray50, dark: .primitiveGray40)
+    .init(light: .primitiveNeutral50, dark: .primitiveNeutral70)
   }
 
   var iconDisabled: UIColor {
@@ -90,31 +90,31 @@ struct StandardBrowserColors: BrowserColors {
   }
 
   var iconActive: UIColor {
-    .init(light: .primitivePrimary60, dark: .primitivePrimary40)
+    .init(light: .primitivePrimary40, dark: .primitivePrimary70)
   }
 
   var browserButtonBackgroundHover: UIColor {
-    .init(light: .primitiveGray10, dark: .primitiveGray80)
+    .init(light: .primitiveNeutral95, dark: .primitiveNeutral20)
   }
 
   var browserButtonBackgroundActive: UIColor {
-    .init(light: .primitiveGray20, dark: .primitiveGray100)
+    .init(light: .primitiveNeutral90, dark: .primitiveNeutral5)
   }
 
   var tabSwitcherButton: UIColor {
-    .init(lightColor: .white, darkColor: .init(braveSystemName: .primitiveGray90))
+    .init(lightColor: .white, darkColor: .init(braveSystemName: .primitiveNeutral10))
   }
 
   var tabSwitcherBackground: UIColor {
-    .init(light: .primitiveGray1, dark: .primitiveGray80)
+    .init(light: .primitiveNeutral98, dark: .primitiveNeutral20)
   }
 
   var containerBackground: UIColor {
-    .init(lightColor: .white, darkColor: .init(braveSystemName: .primitiveGray90))
+    .init(lightColor: .white, darkColor: .init(braveSystemName: .primitiveNeutral10))
   }
 
   var containerInteractive: UIColor {
-    .init(light: .primitivePrimary10, dark: .primitivePrimary80)
+    .init(light: .primitivePrimary95, dark: .primitivePrimary20)
   }
 
   var containerScrim: UIColor {
@@ -126,7 +126,7 @@ struct StandardBrowserColors: BrowserColors {
   }
 
   var chromeBackground: UIColor {
-    .init(light: .primitiveGray1, dark: .primitiveGray100)
+    .init(light: .primitiveNeutral98, dark: .primitiveNeutral5)
   }
 
   var dividerSubtle: UIColor {
@@ -138,26 +138,26 @@ struct StandardBrowserColors: BrowserColors {
   }
 
   var tabBarTabBackground: UIColor {
-    .init(light: .primitiveGray10, dark: .primitiveGray100)
+    .init(light: .primitiveNeutral95, dark: .primitiveNeutral5)
   }
 
   var tabBarTabActiveBackground: UIColor {
-    .init(light: .primitiveGray1, dark: .primitiveGray90)
+    .init(light: .primitiveNeutral98, dark: .primitiveNeutral10)
   }
 }
 
 /// The set of browser colors specific to private mode
 struct PrivateModeBrowserColors: BrowserColors {
   var textPrimary: UIColor {
-    .init(braveSystemName: .primitivePrivateWindow1)
+    .init(braveSystemName: .primitivePrivateWindow98)
   }
 
   var textSecondary: UIColor {
-    .init(braveSystemName: .primitivePrivateWindow30)
+    .init(braveSystemName: .primitivePrivateWindow80)
   }
 
   var textTertiary: UIColor {
-    .init(braveSystemName: .primitivePrivateWindow40)
+    .init(braveSystemName: .primitivePrivateWindow70)
   }
 
   var textDisabled: UIColor {
@@ -165,11 +165,11 @@ struct PrivateModeBrowserColors: BrowserColors {
   }
 
   var textInteractive: UIColor {
-    .init(braveSystemName: .primitivePrimary40)
+    .init(braveSystemName: .primitivePrimary70)
   }
 
   var iconDefault: UIColor {
-    .init(braveSystemName: .primitivePrivateWindow40)
+    .init(braveSystemName: .primitivePrivateWindow70)
   }
 
   var iconDisabled: UIColor {
@@ -177,31 +177,31 @@ struct PrivateModeBrowserColors: BrowserColors {
   }
 
   var iconActive: UIColor {
-    .init(braveSystemName: .primitivePrimary40)
+    .init(braveSystemName: .primitivePrimary70)
   }
 
   var browserButtonBackgroundHover: UIColor {
-    .init(braveSystemName: .primitivePrivateWindow80)
+    .init(braveSystemName: .primitivePrivateWindow20)
   }
 
   var browserButtonBackgroundActive: UIColor {
-    .init(braveSystemName: .primitivePrivateWindow100)
+    .init(braveSystemName: .primitivePrivateWindow5)
   }
 
   var tabSwitcherButton: UIColor {
-    .init(braveSystemName: .primitivePrimary90)
+    .init(braveSystemName: .primitivePrimary10)
   }
 
   var tabSwitcherBackground: UIColor {
-    .init(braveSystemName: .primitivePrimary80)
+    .init(braveSystemName: .primitivePrimary20)
   }
 
   var containerBackground: UIColor {
-    .init(braveSystemName: .primitivePrivateWindow90)
+    .init(braveSystemName: .primitivePrivateWindow10)
   }
 
   var containerInteractive: UIColor {
-    .init(braveSystemName: .primitivePrimary90)
+    .init(braveSystemName: .primitivePrimary10)
   }
 
   var containerScrim: UIColor {
@@ -213,7 +213,7 @@ struct PrivateModeBrowserColors: BrowserColors {
   }
 
   var chromeBackground: UIColor {
-    .init(braveSystemName: .primitivePrivateWindow100)
+    .init(braveSystemName: .primitivePrivateWindow5)
   }
 
   var dividerSubtle: UIColor {
@@ -225,11 +225,11 @@ struct PrivateModeBrowserColors: BrowserColors {
   }
 
   var tabBarTabBackground: UIColor {
-    .init(braveSystemName: .primitivePrivateWindow100)
+    .init(braveSystemName: .primitivePrivateWindow5)
   }
 
   var tabBarTabActiveBackground: UIColor {
-    .init(braveSystemName: .primitivePrivateWindow90)
+    .init(braveSystemName: .primitivePrivateWindow10)
   }
 }
 

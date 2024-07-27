@@ -33,11 +33,10 @@
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
-#include "brave/components/brave_ads/core/public/history/ad_content_info.h"
-#include "brave/components/brave_ads/core/public/history/ad_content_value_util.h"
-#include "brave/components/brave_ads/core/public/history/history_filter_types.h"
-#include "brave/components/brave_ads/core/public/history/history_item_info.h"
-#include "brave/components/brave_ads/core/public/history/history_sort_types.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_filter_types.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_sort_types.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_value_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/user_engagement/ad_events/ad_event_cache.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -215,6 +214,13 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 - (BOOL)isOptedInToSearchResultAds {
   return self.profilePrefService->GetBoolean(
       brave_ads::prefs::kOptedInToSearchResultAds);
+}
+
+- (void)notifyBraveNewsIsEnabledPreferenceDidChange:(BOOL)isEnabled {
+  [self setProfilePref:brave_news::prefs::kBraveNewsOptedIn
+                 value:base::Value(isEnabled)];
+  [self setProfilePref:brave_news::prefs::kNewTabPageShowToday
+                 value:base::Value(isEnabled)];
 }
 
 - (BOOL)isEnabled {
@@ -402,14 +408,15 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
     return @[];
   }
 
-  const auto history_items = ads->GetHistory(
-      brave_ads::HistoryFilterType::kNone, brave_ads::HistorySortType::kNone,
-      base::Time::Min(), base::Time::Max());
+  const auto ad_history =
+      ads->GetAdHistory(brave_ads::AdHistoryFilterType::kNone,
+                        brave_ads::AdHistorySortType::kNone, base::Time::Min(),
+                        base::Time::Max());
 
   const auto dates = [[NSMutableArray<NSDate*> alloc] init];
-  for (const auto& history_item : history_items) {
+  for (const auto& ad_history_item : ad_history) {
     const auto date =
-        [NSDate dateWithTimeIntervalSince1970:history_item.created_at
+        [NSDate dateWithTimeIntervalSince1970:ad_history_item.created_at
                                                   .InSecondsFSinceUnixEpoch()];
     [dates addObject:date];
   }
@@ -1402,11 +1409,11 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   }
 }
 
-- (void)getBrowsingHistory:(const int)max_count
-                   forDays:(const int)days_ago
-                  callback:(brave_ads::GetBrowsingHistoryCallback)callback {
+- (void)getSiteHistory:(const int)max_count
+               forDays:(const int)days_ago
+              callback:(brave_ads::GetSiteHistoryCallback)callback {
   // TODO(https://github.com/brave/brave-browser/issues/33681): Unify Brave Ads
-  // browsing history.
+  // site history.
   std::move(callback).Run({});
 }
 
@@ -1528,9 +1535,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 }
 
 - (std::optional<base::Value>)getProfilePref:(const std::string&)path {
-  if (path == brave_news::prefs::kBraveNewsOptedIn ||
-      path == brave_news::prefs::kNewTabPageShowToday ||
-      path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
+  if (path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
       path == ntp_background_images::prefs::
                   kNewTabPageShowSponsoredImagesBackgroundImage) {
     // TODO(https://github.com/brave/brave-browser/issues/33745): Decouple Brave
@@ -1753,13 +1758,14 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
     return;
   }
 
-  brave_ads::AdContentInfo ad_content;
-  ad_content.type = brave_ads::AdType::kNotificationAd;
-  ad_content.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
-  ad_content.advertiser_id = base::SysNSStringToUTF8(advertiserId);
-  ad_content.segment = base::SysNSStringToUTF8(segment);
+  brave_ads::AdHistoryItemInfo ad_history_item;
+  ad_history_item.type = brave_ads::AdType::kNotificationAd;
+  ad_history_item.creative_instance_id =
+      base::SysNSStringToUTF8(creativeInstanceId);
+  ad_history_item.advertiser_id = base::SysNSStringToUTF8(advertiserId);
+  ad_history_item.segment = base::SysNSStringToUTF8(segment);
 
-  ads->ToggleLikeAd(brave_ads::AdContentToValue(ad_content));
+  ads->ToggleLikeAd(brave_ads::AdHistoryItemToValue(ad_history_item));
 }
 
 - (void)toggleDislikeAd:(NSString*)creativeInstanceId
@@ -1769,13 +1775,14 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
     return;
   }
 
-  brave_ads::AdContentInfo ad_content;
-  ad_content.type = brave_ads::AdType::kNotificationAd;
-  ad_content.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
-  ad_content.advertiser_id = base::SysNSStringToUTF8(advertiserId);
-  ad_content.segment = base::SysNSStringToUTF8(segment);
+  brave_ads::AdHistoryItemInfo ad_history_item;
+  ad_history_item.type = brave_ads::AdType::kNotificationAd;
+  ad_history_item.creative_instance_id =
+      base::SysNSStringToUTF8(creativeInstanceId);
+  ad_history_item.advertiser_id = base::SysNSStringToUTF8(advertiserId);
+  ad_history_item.segment = base::SysNSStringToUTF8(segment);
 
-  ads->ToggleDislikeAd(brave_ads::AdContentToValue(ad_content));
+  ads->ToggleDislikeAd(brave_ads::AdHistoryItemToValue(ad_history_item));
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/33788): Unify Brave Ads

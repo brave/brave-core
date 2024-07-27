@@ -13,7 +13,7 @@ namespace brave_ads::test {
 
 NewTabPageAdInfo BuildNewTabPageAd(const bool should_generate_random_uuids) {
   const CreativeNewTabPageAdInfo creative_ad =
-      test::BuildCreativeNewTabPageAd(should_generate_random_uuids);
+      BuildCreativeNewTabPageAd(should_generate_random_uuids);
   return BuildNewTabPageAd(creative_ad);
 }
 

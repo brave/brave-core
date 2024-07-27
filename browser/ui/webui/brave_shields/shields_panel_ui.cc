@@ -15,6 +15,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -59,6 +60,11 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
   source->AddBoolean("isForgetFirstPartyStorageEnabled",
                      base::FeatureList::IsEnabled(
                          net::features::kBraveForgetFirstPartyStorage));
+
+  source->AddBoolean(
+      "isWebcompatExceptionsServiceEnabled",
+      base::FeatureList::IsEnabled(
+          webcompat::features::kBraveWebcompatExceptionsService));
 
   content::URLDataSource::Add(
       profile_, std::make_unique<FaviconSource>(

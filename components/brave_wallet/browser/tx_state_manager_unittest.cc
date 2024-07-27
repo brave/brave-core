@@ -249,7 +249,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
       if (i % 6 == 0) {
         meta.set_chain_id(mojom::kMainnetChainId);
       } else {
-        meta.set_chain_id(mojom::kGoerliChainId);
+        meta.set_chain_id(mojom::kSepoliaChainId);
       }
       meta.set_status(mojom::TransactionStatus::Confirmed);
     } else {
@@ -259,7 +259,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
       if (i % 7 == 0) {
         meta.set_chain_id(mojom::kMainnetChainId);
       } else {
-        meta.set_chain_id(mojom::kGoerliChainId);
+        meta.set_chain_id(mojom::kSepoliaChainId);
       }
       meta.set_status(mojom::TransactionStatus::Submitted);
     }
@@ -285,7 +285,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
                 .size(),
             4u);
   EXPECT_EQ(tx_state_manager_
-                ->GetTransactionsByStatus(mojom::kGoerliChainId,
+                ->GetTransactionsByStatus(mojom::kSepoliaChainId,
                                           mojom::TransactionStatus::Confirmed,
                                           std::nullopt)
                 .size(),
@@ -303,7 +303,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
                 .size(),
             1u);
   EXPECT_EQ(tx_state_manager_
-                ->GetTransactionsByStatus(mojom::kGoerliChainId,
+                ->GetTransactionsByStatus(mojom::kSepoliaChainId,
                                           mojom::TransactionStatus::Submitted,
                                           std::nullopt)
                 .size(),
@@ -331,7 +331,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
       2u);
   EXPECT_EQ(
       tx_state_manager_
-          ->GetTransactionsByStatus(mojom::kGoerliChainId, std::nullopt, acc1)
+          ->GetTransactionsByStatus(mojom::kSepoliaChainId, std::nullopt, acc1)
           .size(),
       3u);
   EXPECT_EQ(tx_state_manager_
@@ -345,7 +345,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
       0u);
   EXPECT_EQ(
       tx_state_manager_
-          ->GetTransactionsByStatus(mojom::kGoerliChainId, std::nullopt, acc2)
+          ->GetTransactionsByStatus(mojom::kSepoliaChainId, std::nullopt, acc2)
           .size(),
       2u);
 
@@ -483,7 +483,7 @@ TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
   // Other chain id doesn't matter
   EthTxMeta meta1003(eth_account_id_, std::make_unique<EthTransaction>());
   meta1003.set_id("1003");
-  meta1003.set_chain_id(mojom::kGoerliChainId);
+  meta1003.set_chain_id(mojom::kSepoliaChainId);
   meta1003.set_status(mojom::TransactionStatus::Confirmed);
   meta1003.set_created_time(base::Time::Now());
   ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta1003));
@@ -511,197 +511,6 @@ TEST_F(TxStateManagerUnitTest, Observer) {
       .Times(1);
   ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
-}
-
-TEST_F(TxStateManagerUnitTest,
-       MigrateSolanaTransactionsForV0TransactionsSupport) {
-  ASSERT_FALSE(
-      prefs_.GetBoolean(kBraveWalletSolanaTransactionsV0SupportMigrated));
-  base::Value txs_value = ParseJson(R"(
-    {
-      "solana": {
-        "devnet": {
-          "tx_id1": {
-            "tx": {
-              "message": {
-                "fee_payer": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
-                "instructions": [
-                  {
-                    "accounts": [],
-                    "data": "SGVsbG8sIGZyb20gdGhlIFNvbGFuYSBXYWxsZXQgQWRhcHRlciBleGFtcGxlIGFwcCE=",
-                    "program_id": "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"
-                  }
-                ],
-                "last_valid_block_height": "0",
-                "recent_blockhash":
-                    "GZH3GWCMxU9aZbai9L8pA3aTWsBVaCwYxiWfhtnMhUbb"
-              }
-            }
-          }
-        },
-        "mainnet": {
-          "tx_id2": {
-            "tx": {
-              "message": {
-                "fee_payer": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
-                "instructions": [
-                  {
-                    "accounts": [
-                      {
-                        "is_signer": true,
-                        "is_writable": true,
-                        "pubkey": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw"
-                      },
-                      {
-                        "is_signer": true,
-                        "is_writable": true,
-                        "pubkey": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw"
-                      }
-                    ],
-                    "data": "AgAAAGQAAAAAAAAA",
-                    "decoded_data": {
-                      "account_params": [
-                        {
-                          "localized_name": "From Account",
-                          "name": "from_account"
-                        },
-                        {
-                          "localized_name": "To Account",
-                          "name": "to_account"
-                        }
-                      ],
-                      "params": [
-                        {
-                          "localized_name": "Lamports",
-                          "name": "lamports",
-                          "type": 2,
-                          "value": "100"
-                        }
-                      ],
-                      "sys_ins_type": "2"
-                    },
-                    "program_id": "11111111111111111111111111111111"
-                  }
-                ],
-                "last_valid_block_height": "0",
-                "recent_blockhash":
-                    "AARGss1frfvBSKqYXLHuv3i4kzbQrHhabubcF2KFTE2S"
-              }
-            }
-          },
-          "tx_id3": {
-            "tx": {
-              "message": {
-                "fee_payer": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
-                "instructions": [
-                  {
-                    "accounts": [],
-                    "data": "SGVsbG8sIGZyb20gdGhlIFNvbGFuYSBXYWxsZXQgQWRhcHRlciBleGFtcGxlIGFwcCE=",
-                    "program_id": "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"
-                  }
-                ],
-                "last_valid_block_height": "0",
-                "recent_blockhash":
-                    "GZH3GWCMxU9aZbai9L8pA3aTWsBVaCwYxiWfhtnMhUbb"
-              }
-            }
-          }
-        }
-      }
-    })");
-
-  prefs_.Set(kBraveWalletTransactions, txs_value);
-  TxStateManager::MigrateSolanaTransactionsForV0TransactionsSupport(&prefs_);
-  base::Value::Dict msg1 = ParseJsonDict(R"({
-      "version": 0,
-      "fee_payer": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
-      "message_header": {
-        "num_readonly_signed_accounts": "0",
-        "num_readonly_unsigned_accounts": "1",
-        "num_required_signatures": "1"
-      },
-      "static_account_keys": [
-        "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
-        "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"
-      ],
-      "address_table_lookups": [],
-      "instructions": [
-        {
-          "accounts": [],
-          "data": "SGVsbG8sIGZyb20gdGhlIFNvbGFuYSBXYWxsZXQgQWRhcHRlciBleGFtcGxlIGFwcCE=",
-          "program_id": "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"
-        }
-      ],
-      "last_valid_block_height": "0",
-      "recent_blockhash": "GZH3GWCMxU9aZbai9L8pA3aTWsBVaCwYxiWfhtnMhUbb"
-  })");
-  base::Value::Dict msg2 = ParseJsonDict(R"({
-      "version": 0,
-      "fee_payer": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
-      "message_header": {
-        "num_readonly_signed_accounts": "0",
-        "num_readonly_unsigned_accounts": "1",
-        "num_required_signatures": "1"
-      },
-      "static_account_keys": [
-        "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
-        "11111111111111111111111111111111"
-      ],
-      "address_table_lookups": [],
-      "instructions": [
-        {
-          "accounts": [
-            {
-              "is_signer": true,
-              "is_writable": true,
-              "pubkey": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw"
-            },
-            {
-              "is_signer": true,
-              "is_writable": true,
-              "pubkey": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw"
-            }
-          ],
-          "data": "AgAAAGQAAAAAAAAA",
-          "decoded_data": {
-            "account_params": [
-              {
-                "localized_name": "From Account",
-                "name": "from_account"
-              },
-              {
-                "localized_name": "To Account",
-                "name": "to_account"
-              }
-            ],
-            "params": [
-              {
-                "localized_name": "Lamports",
-                "name": "lamports",
-                "type": 2,
-                "value": "100"
-              }
-            ],
-            "sys_ins_type": "2"
-          },
-          "program_id": "11111111111111111111111111111111"
-        }
-      ],
-      "last_valid_block_height": "0",
-      "recent_blockhash": "AARGss1frfvBSKqYXLHuv3i4kzbQrHhabubcF2KFTE2S"
-  })");
-  EXPECT_EQ(*prefs_.GetDict(kBraveWalletTransactions)
-                 .FindDictByDottedPath("solana.devnet.tx_id1.tx.message"),
-            msg1);
-  EXPECT_EQ(*prefs_.GetDict(kBraveWalletTransactions)
-                 .FindDictByDottedPath("solana.mainnet.tx_id2.tx.message"),
-            msg2);
-  EXPECT_EQ(*prefs_.GetDict(kBraveWalletTransactions)
-                 .FindDictByDottedPath("solana.mainnet.tx_id3.tx.message"),
-            msg1);
-
-  EXPECT_TRUE(
-      prefs_.GetBoolean(kBraveWalletSolanaTransactionsV0SupportMigrated));
 }
 
 }  // namespace brave_wallet

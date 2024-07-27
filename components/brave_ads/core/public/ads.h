@@ -14,9 +14,9 @@
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_observer_interface.h"
 #include "brave/components/brave_ads/core/public/export.h"
-#include "brave/components/brave_ads/core/public/history/history_filter_types.h"
-#include "brave/components/brave_ads/core/public/history/history_item_info.h"
-#include "brave/components/brave_ads/core/public/history/history_sort_types.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_filter_types.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_sort_types.h"
 
 namespace base {
 class Time;
@@ -158,23 +158,23 @@ class ADS_EXPORT Ads {
       mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) = 0;
 
-  // Called to get history filtered by `filter_type` and sorted by `sort_type`
-  // between `from_time` and `to_time` date range. Returns `HistoryItemList`
-  // containing info of the obtained history.
-  virtual HistoryItemList GetHistory(HistoryFilterType filter_type,
-                                     HistorySortType sort_type,
+  // Called to get ad history filtered by `filter_type` and sorted by
+  // `sort_type` between `from_time` and `to_time` date range. Returns
+  // `AdHistoryList` containing info of the obtained ad history.
+  virtual AdHistoryList GetAdHistory(AdHistoryFilterType filter_type,
+                                     AdHistorySortType sort_type,
                                      base::Time from_time,
                                      base::Time to_time) = 0;
 
-  // Called to like an advertiser. This is a toggle, so calling it again returns
-  // the setting to the neutral state. Returns `UserReactionType` containing the
+  // Called to like an ad. This is a toggle, so calling it again returns the
+  // setting to the neutral state. Returns `UserReactionType` containing the
   // current state.
   virtual mojom::UserReactionType ToggleLikeAd(
       const base::Value::Dict& value) = 0;
 
-  // Called to dislike an advertiser. This is a toggle, so calling it again
-  // returns the setting to the neutral state. Returns `UserReactionType`
-  // containing the current state.
+  // Called to dislike an ad. This is a toggle, so calling it again returns the
+  // setting to the neutral state. Returns `UserReactionType` containing the
+  // current state.
   virtual mojom::UserReactionType ToggleDislikeAd(
       const base::Value::Dict& value) = 0;
 

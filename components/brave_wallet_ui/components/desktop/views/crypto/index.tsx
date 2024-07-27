@@ -7,7 +7,6 @@ import * as React from 'react'
 import {
   Route,
   useHistory,
-  useLocation,
   Switch,
   Redirect
 } from 'react-router-dom'
@@ -17,10 +16,9 @@ import { useSelector } from 'react-redux'
 import { loadTimeData } from '../../../../../common/loadTimeData'
 import { getLocale } from '../../../../../common/locale'
 import {
-  useSafeWalletSelector,
   useSafeUISelector
 } from '../../../../common/hooks/use-safe-selector'
-import { WalletSelectors, UISelectors } from '../../../../common/selectors'
+import { UISelectors } from '../../../../common/selectors'
 import { openWalletSettings } from '../../../../utils/routes-utils'
 import {
   useGetDefaultEthereumWalletQuery,
@@ -34,6 +32,9 @@ import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 import {
   AccountsTabState //
 } from '../../../../page/reducers/accounts-tab-reducer'
+
+// hooks
+import { useQuery } from '../../../../common/hooks/use-query'
 
 // style
 import { StyledWrapper } from './style'
@@ -57,8 +58,6 @@ import {
 } from '../../popup-modals/confirm-password-modal/remove-account-modal'
 import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/account-settings-modal'
 import TransactionsScreen from '../../../../page/screens/transactions/transactions-screen'
-import { LocalIpfsNodeScreen } from '../../local-ipfs-node/local-ipfs-node'
-import { InspectNftsScreen } from '../../inspect-nfts/inspect-nfts'
 import {
   WalletPageWrapper //
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
@@ -67,6 +66,8 @@ import {
 } from '../../card-headers/portfolio-overview-header'
 import { PageTitleHeader } from '../../card-headers/page-title-header'
 import { MarketAsset } from '../market/market_asset'
+import { ExploreWeb3View } from '../explore_web3/explore_web3'
+import { DappDetails } from '../explore_web3/web3_dapp_details'
 
 export interface Props {
   sessionRoute: string | undefined
@@ -75,10 +76,6 @@ export interface Props {
 export const CryptoView = ({ sessionRoute }: Props) => {
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false
 
-  // redux
-  const isNftPinningFeatureEnabled = useSafeWalletSelector(
-    WalletSelectors.isNftPinningFeatureEnabled
-  )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   const { accountToRemove, showAccountModal, selectedAccount } = useSelector(
@@ -109,7 +106,8 @@ export const CryptoView = ({ sessionRoute }: Props) => {
 
   // routing
   const history = useHistory()
-  const location = useLocation()
+  const query = useQuery()
+  const selectedDappCategory = query.get('dappCategory')
 
   // methods
   const onShowBackup = React.useCallback(() => {
@@ -151,18 +149,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
     () => onShowVisibleAssetsModal(false),
     [onShowVisibleAssetsModal]
   )
-
-  const onClose = React.useCallback(() => {
-    history.push(WalletRoutes.PortfolioNFTs)
-  }, [history])
-
-  const onBack = React.useCallback(() => {
-    if (location.key) {
-      history.goBack()
-    } else {
-      history.push(WalletRoutes.PortfolioNFTs)
-    }
-  }, [history, location.key])
 
   // computed
   const isCheckingWallets =
@@ -344,6 +330,53 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           </WalletPageWrapper>
         </Route>
 
+        {/* Web3 */}
+        <Route
+          path={WalletRoutes.Web3}
+          exact={true}
+        >
+          <WalletPageWrapper
+            wrapContentInBox
+            cardHeader={
+              <PageTitleHeader title={getLocale('braveWalletTopNavExplore')} />
+            }
+            useFullHeight={selectedDappCategory !== null}
+          >
+            <StyledWrapper>
+              {banners}
+              <ExploreWeb3View />
+            </StyledWrapper>
+          </WalletPageWrapper>
+        </Route>
+
+        <Route
+          path={WalletRoutes.Web3DappDetails}
+          exact={true}
+        >
+          <WalletPageWrapper
+            wrapContentInBox
+            cardHeader={
+              <PageTitleHeader
+                title={getLocale('braveWalletAccountSettingsDetails')}
+                showBackButton
+                onBack={() => history.push(WalletRoutes.Web3)}
+              />
+            }
+          >
+            <StyledWrapper>
+              {banners}
+              <DappDetails />
+            </StyledWrapper>
+          </WalletPageWrapper>
+        </Route>
+
+        <Route
+          path={WalletRoutes.Explore}
+          exact={true}
+        >
+          <Redirect to={WalletRoutes.Market} />
+        </Route>
+
         {/* Transactions */}
         <Route
           path={WalletRoutes.Activity}
@@ -351,55 +384,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
         >
           <TransactionsScreen />
         </Route>
-
-        {/* NFT Pinning onboarding page */}
-        <Route
-          path={WalletRoutes.LocalIpfsNode}
-          exact={true}
-          render={(props) =>
-            isNftPinningFeatureEnabled ? (
-              <WalletPageWrapper
-                noPadding={true}
-                hideNav={true}
-                hideHeader={true}
-              >
-                <StyledWrapper>
-                  <LocalIpfsNodeScreen
-                    onClose={onClose}
-                    {...props}
-                  />
-                </StyledWrapper>
-              </WalletPageWrapper>
-            ) : (
-              <Redirect to={WalletRoutes.PortfolioAssets} />
-            )
-          }
-        />
-
-        {/* NFT Pinning inspect pinnable page */}
-        <Route
-          path={WalletRoutes.InspectNfts}
-          exact={true}
-          render={(props) =>
-            isNftPinningFeatureEnabled ? (
-              <WalletPageWrapper
-                noPadding={true}
-                hideNav={true}
-                hideHeader={true}
-              >
-                <StyledWrapper>
-                  <InspectNftsScreen
-                    onClose={onClose}
-                    onBack={onBack}
-                    {...props}
-                  />
-                </StyledWrapper>
-              </WalletPageWrapper>
-            ) : (
-              <Redirect to={WalletRoutes.PortfolioAssets} />
-            )
-          }
-        />
 
         <Redirect to={sessionRoute || WalletRoutes.PortfolioAssets} />
       </Switch>

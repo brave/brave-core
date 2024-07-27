@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_DATA_VECTOR_DATA_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_DATA_VECTOR_DATA_H_
 
+#include <cstddef>
 #include <cstdint>
 #include <map>
 #include <memory>

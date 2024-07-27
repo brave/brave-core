@@ -214,12 +214,9 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key_),
                sizeof session_key_));
   CHECK(h.Sign(domain, domain_key_, sizeof domain_key_));
-  const uint64_t* fudge = reinterpret_cast<const uint64_t*>(domain_key_);
-  double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
-  uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
-  if (blink::WebContentSettingsClient* settings =
-          GetContentSettingsClientFor(&context, true)) {
-    auto raw_farbling_level = settings->GetBraveFarblingLevel(
+  settings_client_ = GetContentSettingsClientFor(&context, true);
+  if (settings_client_ != nullptr) {
+    auto raw_farbling_level = settings_client_->GetBraveFarblingLevel(
         ContentSettingsType::BRAVE_WEBCOMPAT_NONE);
     farbling_level_ =
         base::FeatureList::IsEnabled(
@@ -228,21 +225,6 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
             : (raw_farbling_level == BraveFarblingLevel::OFF
                    ? BraveFarblingLevel::OFF
                    : BraveFarblingLevel::BALANCED);
-    for (auto webcompat_content_settings =
-             ContentSettingsType::BRAVE_WEBCOMPAT_NONE;
-         webcompat_content_settings != ContentSettingsType::BRAVE_WEBCOMPAT_ALL;
-         webcompat_content_settings = static_cast<ContentSettingsType>(
-             static_cast<int32_t>(webcompat_content_settings) + 1)) {
-      auto farbling_level =
-          settings->GetBraveFarblingLevel(webcompat_content_settings);
-      farbling_levels_.insert(webcompat_content_settings, farbling_level);
-    }
-    if (settings->GetBraveFarblingLevel(
-            ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO) !=
-        BraveFarblingLevel::OFF) {
-      audio_farbling_helper_.emplace(
-          fudge_factor, seed, farbling_level_ == BraveFarblingLevel::MAXIMUM);
-    }
   }
   farbling_enabled_ = true;
 }
@@ -263,8 +245,22 @@ void BraveSessionCache::Init() {
 }
 
 void BraveSessionCache::FarbleAudioChannel(float* dst, size_t count) {
-  if (audio_farbling_helper_)
-    audio_farbling_helper_->FarbleAudioChannel(dst, count);
+  if (!audio_farbling_helper_) {
+    // This call is only expensive the first time; afterwards it returns
+    // a cached value:
+    const auto audio_farbling_level =
+        GetBraveFarblingLevel(ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO);
+    if (audio_farbling_level == BraveFarblingLevel::OFF) {
+      return;
+    }
+    const uint64_t* fudge = reinterpret_cast<const uint64_t*>(domain_key_);
+    double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
+    uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
+    audio_farbling_helper_.emplace(
+        fudge_factor, seed,
+        audio_farbling_level == BraveFarblingLevel::MAXIMUM);
+  }
+  audio_farbling_helper_->FarbleAudioChannel(dst, count);
 }
 
 void BraveSessionCache::PerturbPixels(const unsigned char* data, size_t size) {
@@ -409,6 +405,16 @@ BraveFarblingLevel BraveSessionCache::GetBraveFarblingLevel(
   auto item = farbling_levels_.find(webcompat_content_settings);
   if (item != farbling_levels_.end()) {
     return item->value;
+  }
+  // The farbling level for webcompat_content_settings is not known yet,
+  // so we will make a more expensive call to learn what it is.
+  if (settings_client_ != nullptr &&
+      webcompat_content_settings > ContentSettingsType::BRAVE_WEBCOMPAT_NONE &&
+      webcompat_content_settings < ContentSettingsType::BRAVE_WEBCOMPAT_ALL) {
+    auto farbling_level =
+        settings_client_->GetBraveFarblingLevel(webcompat_content_settings);
+    farbling_levels_.insert(webcompat_content_settings, farbling_level);
+    return farbling_level;
   }
   return farbling_level_;
 }

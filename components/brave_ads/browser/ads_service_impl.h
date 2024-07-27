@@ -64,13 +64,12 @@ class Database;
 class DeviceId;
 struct NewTabPageAdInfo;
 
-class AdsServiceImpl : public AdsService,
-                       public bat_ads::mojom::BatAdsClient,
-                       public bat_ads::mojom::BatAdsObserver,
-                       BackgroundHelper::Observer,
-                       public ResourceComponentObserver,
-                       public brave_rewards::RewardsServiceObserver,
-                       public base::SupportsWeakPtr<AdsServiceImpl> {
+class AdsServiceImpl final : public AdsService,
+                             public bat_ads::mojom::BatAdsClient,
+                             public bat_ads::mojom::BatAdsObserver,
+                             BackgroundHelper::Observer,
+                             public ResourceComponentObserver,
+                             public brave_rewards::RewardsServiceObserver {
  public:
   explicit AdsServiceImpl(
       Profile* profile,
@@ -253,9 +252,9 @@ class AdsServiceImpl : public AdsService,
       mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) override;
 
-  void GetHistory(base::Time from_time,
-                  base::Time to_time,
-                  GetHistoryCallback callback) override;
+  void GetAdHistory(base::Time from_time,
+                    base::Time to_time,
+                    GetAdHistoryCallback callback) override;
 
   void ToggleLikeAd(base::Value::Dict value,
                     ToggleLikeAdCallback callback) override;
@@ -318,9 +317,9 @@ class AdsServiceImpl : public AdsService,
                          GetCachedAdEventsCallback callback) override;
   void ResetAdEventCacheForInstanceId(const std::string& id) override;
 
-  void GetBrowsingHistory(int max_count,
-                          int recent_day_range,
-                          GetBrowsingHistoryCallback callback) override;
+  void GetSiteHistory(int max_count,
+                      int recent_day_range,
+                      GetSiteHistoryCallback callback) override;
 
   // TODO(https://github.com/brave/brave-browser/issues/14676) Decouple URL
   // request business logic.
@@ -460,6 +459,10 @@ class AdsServiceImpl : public AdsService,
       bat_ads_client_notifier_remote_;
   mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier>
       bat_ads_client_notifier_pending_receiver_;
+
+  base::WeakPtr<AdsServiceImpl> AsWeakPtr();
+
+  base::WeakPtrFactory<AdsServiceImpl> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_ads

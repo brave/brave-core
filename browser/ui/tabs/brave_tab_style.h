@@ -45,15 +45,15 @@ class BraveTabStyle : public TabStyleBase {
     if (!tabs::features::HorizontalTabsUpdateEnabled()) {
       return TabStyleBase::GetContentsInsets();
     }
-    return gfx::Insets::VH(
-        0, brave_tabs::kHorizontalTabPadding + brave_tabs::kHorizontalTabInset);
+    return gfx::Insets::VH(0, brave_tabs::GetHorizontalTabPadding() +
+                                  brave_tabs::kHorizontalTabInset);
   }
 
   int GetPinnedWidth() const override {
     if (!tabs::features::HorizontalTabsUpdateEnabled()) {
       return TabStyleBase::GetPinnedWidth();
     }
-    return brave_tabs::kHorizontalTabHeight +
+    return brave_tabs::GetHorizontalTabHeight() +
            brave_tabs::kHorizontalTabInset * 2;
   }
 

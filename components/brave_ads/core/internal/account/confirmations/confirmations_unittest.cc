@@ -13,17 +13,17 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsConfirmationsTest : public UnitTestBase {
+class BraveAdsConfirmationsTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     confirmations_ = std::make_unique<Confirmations>(&token_generator_mock_);
   }
@@ -32,13 +32,12 @@ class BraveAdsConfirmationsTest : public UnitTestBase {
 
   std::unique_ptr<Confirmations> confirmations_;
 
-  database::table::ConfirmationQueue queue_database_table_;
+  database::table::ConfirmationQueue confirmation_queue_database_table_;
 };
 
 TEST_F(BraveAdsConfirmationsTest, ConfirmForRewardsUser) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
@@ -53,7 +52,7 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForRewardsUser) {
   base::MockCallback<database::table::GetConfirmationQueueCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             /*confirmation_queue_items=*/::testing::SizeIs(1)));
-  queue_database_table_.GetAll(callback.Get());
+  confirmation_queue_database_table_.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationsTest, ConfirmForNonRewardsUser) {
@@ -72,7 +71,7 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForNonRewardsUser) {
   base::MockCallback<database::table::GetConfirmationQueueCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             /*confirmation_queue_items=*/::testing::SizeIs(1)));
-  queue_database_table_.GetAll(callback.Get());
+  confirmation_queue_database_table_.GetAll(callback.Get());
 }
 
 }  // namespace brave_ads

@@ -37,10 +37,6 @@ bool IsNativeWalletEnabled() {
   return base::FeatureList::IsEnabled(features::kNativeBraveWalletFeature);
 }
 
-bool IsNftPinningEnabled() {
-  return base::FeatureList::IsEnabled(features::kBraveWalletNftPinningFeature);
-}
-
 bool IsBitcoinEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletBitcoinFeature);
 }

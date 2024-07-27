@@ -43,19 +43,21 @@ private struct LockScreenFavoriteProvider: IntentTimelineProvider {
   }
 
   func widgetFavorite(for url: URL?, completion: @escaping (WidgetFavorite?) -> Void) {
-    let favorites = FavoritesWidgetData.loadWidgetData() ?? []
-    var selectedFavorite = favorites.first(where: { $0.url == url }) ?? favorites.first
-    if let favicon = selectedFavorite?.favicon, let image = favicon.image {
-      image.prepareThumbnail(of: .init(width: 64, height: 64)) { image in
-        selectedFavorite?.favicon = .init(
-          image: image,
-          isMonogramImage: favicon.isMonogramImage,
-          backgroundColor: favicon.backgroundColor
-        )
+    Task {
+      let favorites = await FavoritesWidgetData.loadWidgetData() ?? []
+      var selectedFavorite = favorites.first(where: { $0.url == url }) ?? favorites.first
+      if let favicon = selectedFavorite?.favicon, let image = favicon.image {
+        image.prepareThumbnail(of: .init(width: 64, height: 64)) { image in
+          selectedFavorite?.favicon = .init(
+            image: image,
+            isMonogramImage: favicon.isMonogramImage,
+            backgroundColor: favicon.backgroundColor
+          )
+          completion(selectedFavorite)
+        }
+      } else {
         completion(selectedFavorite)
       }
-    } else {
-      completion(selectedFavorite)
     }
   }
   func getSnapshot(

@@ -28,6 +28,7 @@
 #include "components/history_clusters/core/on_device_clustering_features.h"
 #include "components/lens/lens_features.h"
 #include "components/manta/features.h"
+#include "components/metrics/metrics_features.h"
 #include "components/metrics/structured/structured_metrics_features.h"
 #include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
@@ -77,6 +78,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &aggregation_service::kAggregationServiceMultipleCloudProviders,
 #if BUILDFLAG(IS_ANDROID)
       &android_webview::features::kWebViewEnumerateDevicesCache,
+      &android_webview::features::kWebViewMediaIntegrityApiBlinkExtension,
 #endif
       &attribution_reporting::features::kConversionMeasurement,
       &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
@@ -202,6 +204,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &lens::features::kLensStandalone,
       &manta::features::kMantaService,
       &media::kLiveCaption,
+      &metrics::features::kMetricsServiceDeltaSnapshotInBg,
       &metrics::structured::kEnabledStructuredMetricsService,
       &metrics::structured::kPhoneHubStructuredMetrics,
       &net::features::kEnableWebTransportDraft07,
@@ -279,6 +282,9 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &blink::features::kReduceUserAgentMinorVersion,
       &blink::features::kUACHOverrideBlank,
       &features::kCertificateTransparencyAskBeforeEnabling,
+#if !BUILDFLAG(IS_ANDROID)
+      &features::kLocationProviderManager,
+#endif
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,
 #if !BUILDFLAG(IS_ANDROID)
@@ -289,4 +295,11 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
   for (const auto* feature : enabled_features) {
     EXPECT_TRUE(base::FeatureList::IsEnabled(*feature)) << feature->name;
   }
+}
+
+TEST(FeatureDefaultsTest, DefaultFeatureParameters) {
+#if !BUILDFLAG(IS_ANDROID)
+  EXPECT_EQ(features::kLocationProviderManagerParam.default_value,
+            device::mojom::LocationProviderManagerMode::kPlatformOnly);
+#endif
 }

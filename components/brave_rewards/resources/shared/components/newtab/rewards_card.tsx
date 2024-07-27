@@ -6,6 +6,7 @@
 import * as React from 'react'
 
 import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
 
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
@@ -28,7 +29,6 @@ import { Optional } from '../../../shared/lib/optional'
 
 import * as urls from '../../lib/rewards_urls'
 import * as style from './rewards_card.style'
-import * as mojom from '../../../shared/lib/mojom'
 
 const monthFormatter = new Intl.DateTimeFormat(undefined, {
   month: 'short'
@@ -99,7 +99,7 @@ export function RewardsCard (props: Props) {
 
   function renderBalance () {
     const { externalWallet } = props
-    if (externalWallet && externalWallet.status === mojom.WalletStatus.kLoggedOut) {
+    if (externalWallet && !externalWallet.authenticated) {
       const onClick = () => {
         window.open(urls.reconnectURL, '_blank', 'noreferrer')
       }
@@ -288,6 +288,11 @@ export function RewardsCard (props: Props) {
         <RewardsCardHeader />
         <style.selfCustodyInvite>
           <style.selfCustodyInviteHeader>
+            <style.selfCustodyInviteClose>
+              <button onClick={props.onSelfCustodyInviteDismissed}>
+                <Icon name='close' />
+              </button>
+            </style.selfCustodyInviteClose>
             {getString('rewardsSelfCustodyInviteHeader')}
           </style.selfCustodyInviteHeader>
           <style.selfCustodyInviteText>

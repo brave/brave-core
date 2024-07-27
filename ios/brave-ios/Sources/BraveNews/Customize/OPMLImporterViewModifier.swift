@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import BraveStrings
 import BraveUI
 import FeedKit
@@ -51,7 +52,9 @@ struct OPMLImporterViewModifier: ViewModifier {
         onCompletion: { result in
           switch result {
           case .success(let url):
-            importOPML(from: url)
+            Task {
+              await importOPML(from: url)
+            }
           case .failure:
             break
           }
@@ -92,28 +95,27 @@ struct OPMLImporterViewModifier: ViewModifier {
     return .init(title: outline.text, url: url)
   }
 
-  private func importOPML(from url: URL) {
-    guard url.isFileURL, let data = try? Data(contentsOf: url) else {
+  nonisolated private func importOPML(from url: URL) async {
+    guard url.isFileURL, let data = await AsyncFileManager.default.contents(atPath: url.path())
+    else {
       isPresented = false
       importError = .noFeedsFound
       return
     }
-    DispatchQueue.global(qos: .userInitiated).async {
-      let opml = OPMLParser.parse(data: data)
-      DispatchQueue.main.async {
-        guard let opml = opml else {
-          isPresented = false
-          importError = .invalidData
-          return
-        }
-        let locations = opml.outlines.compactMap(self.rssLocationFromOPMLOutline)
-        if locations.isEmpty {
-          isPresented = false
-          importError = .noFeedsFound
-          return
-        }
-        opmlParsedResult = .init(url: url, locations: locations)
+    let opml = OPMLParser.parse(data: data)
+    await MainActor.run {
+      guard let opml = opml else {
+        isPresented = false
+        importError = .invalidData
+        return
       }
+      let locations = opml.outlines.compactMap(self.rssLocationFromOPMLOutline)
+      if locations.isEmpty {
+        isPresented = false
+        importError = .noFeedsFound
+        return
+      }
+      opmlParsedResult = .init(url: url, locations: locations)
     }
   }
 }

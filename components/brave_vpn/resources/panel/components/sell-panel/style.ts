@@ -4,65 +4,73 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 import VPNSvgUrl from '../../assets/svg-icons/vpn-icon.svg'
-import checkIconUrl from '../../assets/svg-icons/check-gradient-icon.svg'
+import checkIconUrl from '../../assets/svg-icons/shield-done.svg'
 import sellGraphicUrl from '../../assets/svg-icons/sell-graphic.svg'
 import guardianLogoUrl from '../../assets/svg-icons/guardian-logo.svg'
 
 export const Box = styled.div`
   width: 100%;
   height: 100%;
-  background: #381E85;
+  background: #0F0663;
   position: relative;
 `
 
-export const ProductTitle = styled.h1`
-  color: #F0F2FF;
+export const ProductTitle = styled.h3`
+  color: #FFF;
   font-family: ${(p) => p.theme.fontFamily.heading};
   font-weight: 600;
-  font-size: 20px;
-  margin: 0 0 10px 0;
+  font-size: 22px;
+  font-style: normal;
+  margin: 0 0 var(--leo-spacing-xl) 0;
+  text-align: center;
+  line-height: var(--leo-typography-heading-h3-line-height, 28px);
+  letter-spacing: var(--Letter-spacing-Headings, -0.5px);
 `
 
 export const PoweredBy = styled.div`
-  margin-bottom: 16px;
   display: flex;
   align-items: center;
 
   span {
     font-family: ${(p) => p.theme.fontFamily.heading};
     font-style: normal;
-    font-weight: normal;
-    font-size: 12px;
-    color: #C2C4CF;
+    font-weight: 400;
+    font-size: 14px;
+    color: #FFF;
+    text-align: center;
   }
 `
 
 export const List = styled.ul`
+  align-self: start;
   list-style-type: none;
-  padding: 0 32px;
-  margin: 0 0 16px 0;
+  padding: 0;
+  margin: 0;
 
   li {
-    color: #F0F2FF;
+    color: #FFF;
     font-family: ${(p) => p.theme.fontFamily.heading};
-    font-weight: 600;
+    font-weight: 400;
     font-size: 12px;
+    font-style: normal;
     line-height: 18px;
-    margin-bottom: 8px;
-    padding-left: 26px;
-    text-indent: -26px;
+    margin-bottom: var(--leo-spacing-m);
+    padding-left: 28px;
+    text-indent: -28px;
+    vertical-align: -6px;
 
     &:before {
       content: '';
       display: inline-block;
-      width: 16px;
-      height: 12px;
+      width: var(--leo-icon-m);
+      height: var(--leo-icon-m);
       background-image: url(${checkIconUrl});
       background-repeat: no-repeat;
       background-size: cover;
       user-select: none;
       pointer-events: none;
-      margin-right: 10px;
+      margin-right: 8px;
+      vertical-align: inherit;
     }
 
     &:last-child {
@@ -73,10 +81,10 @@ export const List = styled.ul`
 
 export const PanelContent = styled.section`
   display: flex;
+  padding: var(--leo-spacing-3xl) var(--leo-spacing-2xl);
   flex-direction: column;
   align-items: center;
-  padding: 0 0 25px 0;
-  z-index: 2;
+  gap: var(--leo-spacing-2xl);
 `
 
 export const PanelHeader = styled.section`
@@ -85,8 +93,6 @@ export const PanelHeader = styled.section`
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  padding: 32px 32px 0 32px;
-  margin-bottom: 16px;
   box-sizing: border-box;
 `
 
@@ -103,38 +109,39 @@ export const SellGraphic = styled.div`
 `
 
 export const MainLogo = styled.div`
-  width: 41px;
-  height: 48px;
+  width: var(--leo-spacing-6xl);
+  height: var(--leo-spacing-6xl);
   background-image: url(${VPNSvgUrl});
   background-repeat: no-repeat;
   background-size: cover;
   user-select: none;
   pointer-events: none;
-  margin-bottom: 16px;
 `
 
 export const GuardianLogo = styled.i`
-  width: 75px;
-  height: 18px;
+  width: 91px;
+  height: 20px;
   background-image: url(${guardianLogoUrl});
   background-repeat: no-repeat;
   background-size: cover;
   user-select: none;
   pointer-events: none;
   display: inline-block;
-  margin-left: 5px;
+  margin-left: 8px;
 `
+
 export const ActionArea = styled.div`
-  padding: 0 18px;
   width: 100%;
   text-align: center;
   box-sizing: border-box;
 
   a {
-    --color: #F0F2FF;
-    color: var(--color);
+    color: #FFF;
     font-family: ${(p) => p.theme.fontFamily.heading};
     font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
     text-decoration-line: underline;
 
     &:focus {
@@ -145,7 +152,16 @@ export const ActionArea = styled.div`
 
   button {
     width: 100%;
-    margin-bottom: 10px;
+    min-height: 52px;
+    padding: --leo-spacing-l --leo-spacing-xl;
+    margin-bottom: var(--leo-spacing-xl);
+    border-radius: var(--leo-radius-xl);
+    color: #FFF;
+    font-size: var(--Size-Button-Large, 15px);
+    font-style: normal;
+    font-weight: 600;
+    line-height: 22px;
+    letter-spacing: 0.1px;
 
     &:first-child {
       backdrop-filter: blur(16px);

@@ -28,21 +28,6 @@ int LookupSuffixInReversedSet(const unsigned char* graph,
                               bool include_private,
                               std::string_view host,
                               size_t* suffix_length) {
-  constexpr char kIpfsLocalhost[] = ".ipfs.localhost";
-  constexpr char kIpnsLocalhost[] = ".ipns.localhost";
-
-  static_assert(sizeof(kIpfsLocalhost) == sizeof(kIpnsLocalhost),
-                "size should be equal");
-
-  // Special cases to be treated as public suffixes for security concern.
-  // With this, {CID}.ipfs.localhost with different CIDs cannot share cookies.
-  if (base::EndsWith(host, kIpfsLocalhost) ||
-      base::EndsWith(host, kIpnsLocalhost)) {
-    //  Don't count the leading dot.
-    *suffix_length = strlen(kIpfsLocalhost) - 1;
-    return kDafsaFound;
-  }
-
   // Recognize .crypto(and other ud suffixes) and .eth as known TLDs for
   // decentralized DNS support. With this, when users type *.crypto or *.eth in
   // omnibox, it will be parsed as OmniboxInputType::URL input type instead of

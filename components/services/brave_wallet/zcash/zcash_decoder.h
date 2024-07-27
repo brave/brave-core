@@ -16,7 +16,7 @@
 namespace brave_wallet {
 
 // Parses Zcash protobuf objects and translates them to mojo.
-class ZCashDecoder : public mojom::ZCashDecoder {
+class ZCashDecoder : public zcash::mojom::ZCashDecoder {
  public:
   ZCashDecoder();
   ~ZCashDecoder() override;
@@ -32,6 +32,8 @@ class ZCashDecoder : public mojom::ZCashDecoder {
                             ParseGetAddressUtxosCallback callback) override;
   void ParseSendResponse(const std::string& data,
                          ParseSendResponseCallback) override;
+  void ParseTreeState(const std::string& data,
+                      ParseTreeStateCallback callback) override;
 };
 
 }  // namespace brave_wallet

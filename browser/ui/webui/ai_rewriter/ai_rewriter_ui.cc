@@ -13,7 +13,6 @@
 #include "base/notimplemented.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/ai_rewriter/ai_rewriter_dialog_delegate.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
@@ -47,7 +46,7 @@ namespace ai_rewriter {
 AIRewriterUI::AIRewriterUI(content::WebUI* web_ui)
     : ConstrainedWebDialogUI(web_ui), profile_(Profile::FromWebUI(web_ui)) {
   DCHECK(profile_);
-  DCHECK(brave::IsRegularProfile(profile_));
+  DCHECK(profile_->IsRegularProfile());
   DCHECK(features::IsAIRewriterEnabled());
 
   auto* source = CreateAndAddWebUIDataSource(

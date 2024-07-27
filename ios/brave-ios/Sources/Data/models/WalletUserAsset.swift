@@ -137,25 +137,26 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
   }
 
   public static func migrateVisibleAssets(
-    _ assets: [String: [BraveWallet.BlockchainToken]],
-    completion: (() -> Void)? = nil
-  ) {
-    DataController.perform(context: .new(inMemory: false), save: false) { context in
-      for groupId in assets.keys {
-        guard let assetsInOneGroup = assets[groupId] else { return }
-        let group =
-          WalletUserAssetGroup.getGroup(groupId: groupId, context: context)
-          ?? WalletUserAssetGroup(context: context, groupId: groupId)
-        for asset in assetsInOneGroup
-        where WalletUserAsset.getUserAsset(asset: asset, context: context) == nil {
-          let visibleAsset = WalletUserAsset(context: context, asset: asset)
-          visibleAsset.walletUserAssetGroup = group
-        }
+    _ assets: [String: [BraveWallet.BlockchainToken]]
+  ) async {
+    await withCheckedContinuation { continuation in
+      DataController.perform(context: .new(inMemory: false), save: false) { context in
+        for groupId in assets.keys {
+          guard let assetsInOneGroup = assets[groupId] else { return }
+          let group =
+            WalletUserAssetGroup.getGroup(groupId: groupId, context: context)
+            ?? WalletUserAssetGroup(context: context, groupId: groupId)
+          for asset in assetsInOneGroup
+          where WalletUserAsset.getUserAsset(asset: asset, context: context) == nil {
+            let visibleAsset = WalletUserAsset(context: context, asset: asset)
+            visibleAsset.walletUserAssetGroup = group
+          }
 
-        WalletUserAsset.saveContext(context)
-      }
-      DispatchQueue.main.async {
-        completion?()
+          WalletUserAsset.saveContext(context)
+        }
+        DispatchQueue.main.async {
+          continuation.resume()
+        }
       }
     }
   }
@@ -164,78 +165,83 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
     for asset: BraveWallet.BlockchainToken,
     visible: Bool,
     isSpam: Bool,
-    isDeletedByUser: Bool,
-    completion: (() -> Void)? = nil
-  ) {
-    DataController.perform(context: .new(inMemory: false), save: false) { context in
-      if let asset = WalletUserAsset.first(
-        where: NSPredicate(
+    isDeletedByUser: Bool
+  ) async {
+    await withCheckedContinuation { continuation in
+      DataController.perform(context: .new(inMemory: false), save: false) { context in
+        if let asset = WalletUserAsset.first(
+          where: NSPredicate(
+            format: "contractAddress == %@ AND chainId == %@ AND symbol == %@ AND tokenId == %@",
+            asset.contractAddress,
+            asset.chainId,
+            asset.symbol,
+            asset.tokenId
+          ),
+          context: context
+        ) {
+          asset.visible = visible
+          asset.isSpam = isSpam
+          asset.isDeletedByUser = isDeletedByUser
+        } else {
+          let groupId = asset.walletUserAssetGroupId
+          let group =
+            WalletUserAssetGroup.getGroup(groupId: groupId, context: context)
+            ?? WalletUserAssetGroup(context: context, groupId: groupId)
+          let visibleAsset = WalletUserAsset(context: context, asset: asset)
+          visibleAsset.visible = visible
+          visibleAsset.isSpam = isSpam
+          visibleAsset.isDeletedByUser = isDeletedByUser
+          visibleAsset.walletUserAssetGroup = group
+        }
+
+        WalletUserAsset.saveContext(context)
+
+        DispatchQueue.main.async {
+          continuation.resume()
+        }
+      }
+    }
+  }
+
+  public static func addUserAsset(
+    asset: BraveWallet.BlockchainToken
+  ) async {
+    await withCheckedContinuation { continuation in
+      DataController.perform(context: .new(inMemory: false), save: false) { context in
+        let groupId = asset.walletUserAssetGroupId
+        let group =
+          WalletUserAssetGroup.getGroup(groupId: groupId, context: context)
+          ?? WalletUserAssetGroup(context: context, groupId: groupId)
+        let visibleAsset = WalletUserAsset(context: context, asset: asset)
+        visibleAsset.visible = true  // (`isSpam` and `isDeletedByUser` have a default value `NO`)
+        visibleAsset.walletUserAssetGroup = group
+
+        WalletUserAsset.saveContext(context)
+
+        DispatchQueue.main.async {
+          continuation.resume()
+        }
+      }
+    }
+  }
+
+  public static func removeUserAsset(
+    asset: BraveWallet.BlockchainToken
+  ) async {
+    await withCheckedContinuation { continuation in
+      WalletUserAsset.deleteAll(
+        predicate: NSPredicate(
           format: "contractAddress == %@ AND chainId == %@ AND symbol == %@ AND tokenId == %@",
           asset.contractAddress,
           asset.chainId,
           asset.symbol,
           asset.tokenId
         ),
-        context: context
-      ) {
-        asset.visible = visible
-        asset.isSpam = isSpam
-        asset.isDeletedByUser = isDeletedByUser
-      } else {
-        let groupId = asset.walletUserAssetGroupId
-        let group =
-          WalletUserAssetGroup.getGroup(groupId: groupId, context: context)
-          ?? WalletUserAssetGroup(context: context, groupId: groupId)
-        let visibleAsset = WalletUserAsset(context: context, asset: asset)
-        visibleAsset.visible = visible
-        visibleAsset.isSpam = isSpam
-        visibleAsset.isDeletedByUser = isDeletedByUser
-        visibleAsset.walletUserAssetGroup = group
-      }
-
-      WalletUserAsset.saveContext(context)
-
-      DispatchQueue.main.async {
-        completion?()
-      }
+        completion: {
+          continuation.resume()
+        }
+      )
     }
-  }
-
-  public static func addUserAsset(
-    asset: BraveWallet.BlockchainToken,
-    completion: (() -> Void)? = nil
-  ) {
-    DataController.perform(context: .new(inMemory: false), save: false) { context in
-      let groupId = asset.walletUserAssetGroupId
-      let group =
-        WalletUserAssetGroup.getGroup(groupId: groupId, context: context)
-        ?? WalletUserAssetGroup(context: context, groupId: groupId)
-      let visibleAsset = WalletUserAsset(context: context, asset: asset)
-      visibleAsset.visible = true  // (`isSpam` and `isDeletedByUser` have a default value `NO`)
-      visibleAsset.walletUserAssetGroup = group
-
-      WalletUserAsset.saveContext(context)
-
-      DispatchQueue.main.async {
-        completion?()
-      }
-    }
-  }
-
-  public static func removeUserAsset(
-    asset: BraveWallet.BlockchainToken,
-    completion: (() -> Void)? = nil
-  ) {
-    WalletUserAsset.deleteAll(
-      predicate: NSPredicate(
-        format: "contractAddress == %@ AND chainId == %@ AND symbol == %@ AND tokenId == %@",
-        asset.contractAddress,
-        asset.chainId,
-        asset.symbol,
-        asset.tokenId
-      ),
-      completion: completion
-    )
   }
 }
 

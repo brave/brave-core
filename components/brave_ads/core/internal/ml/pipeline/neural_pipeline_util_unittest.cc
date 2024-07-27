@@ -7,8 +7,8 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/file_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -20,12 +20,12 @@ constexpr char kOnlyRequiredFieldsNeuralModelPipeline[] =
     "ml/pipeline/text_processing/neural/only_required_fields_neural_model.fb";
 }  // namespace
 
-class BraveAdsNeuralPipelineUtilTest : public UnitTestBase {};
+class BraveAdsNeuralPipelineUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsNeuralPipelineUtilTest, LoadNeuralPipelineTest) {
   // Arrange
   const std::optional<std::string> contents =
-      MaybeReadFileToString(kOnlyRequiredFieldsNeuralModelPipeline);
+      test::MaybeReadFileToString(kOnlyRequiredFieldsNeuralModelPipeline);
   ASSERT_TRUE(contents);
 
   // Act

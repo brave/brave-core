@@ -68,11 +68,8 @@ class ReadabilityOperation: Operation {
         // Don't do anything on timeout
         break
       case .success(let readabilityResult):
-        do {
-          try readerModeCache.put(url, readabilityResult)
-        } catch let error as NSError {
-          print("Failed to store readability results in the cache: \(error.localizedDescription)")
-          // TODO Fail
+        Task {
+          try await readerModeCache.put(url, readabilityResult)
         }
       case .error(_):
         // TODO Not entitely sure what to do on error. Needs UX discussion and followup bug.

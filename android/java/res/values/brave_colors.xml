@@ -166,7 +166,6 @@
     <color name="user_wallet_status">#49CC69</color>
 
     <color name="qr_button_color">@android:color/white</color>
-    <color name="section_divider_color">#c8c7cc</color>
     <color name="shield_title_color">@android:color/black</color>
     <color name="shield_text_color">#212529</color>
     <color name="shields_tooltip_text_bg_color">#1A000000</color>

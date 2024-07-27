@@ -71,6 +71,8 @@ class NTPP3AHelperImplTest : public testing::Test {
         &local_state_, p3a_service_.get(), &prefs_, true);
   }
 
+  void TearDown() override { p3a_service_ = nullptr; }
+
   std::string GetExpectedHistogramName(const std::string& event_type) {
     return base::StrCat(
         {kHistogramPrefix, kTestCreativeMetricId, ".", event_type});

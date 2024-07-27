@@ -3,7 +3,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { externalWalletFromExtensionData } from './external_wallet'
-import * as mojom from '../../shared/lib/mojom'
 
 describe('external_wallet', () => {
   const convert = externalWalletFromExtensionData
@@ -17,11 +16,9 @@ describe('external_wallet', () => {
     it('returns an ExternalWallet for basic data', () => {
       expect(convert(basicObject)).toEqual({
         provider: 'uphold',
-        status: mojom.WalletStatus.kConnected,
-        username: '',
-        links: {
-          account: ''
-        }
+        authenticated: true,
+        name: '',
+        url: ''
       })
     })
 
@@ -38,33 +35,33 @@ describe('external_wallet', () => {
       expect(convert({ ...basicObject, type: 123 })).toStrictEqual(null)
     })
 
-    it('returns null if property "status" is invalid', () => {
-      expect(convert({ ...basicObject, status: undefined })).toStrictEqual(null)
-      expect(convert({ ...basicObject, status: -1 })).toStrictEqual(null)
-      expect(convert({ ...basicObject, status: 6 })).toStrictEqual(null)
-    })
-
     it('maps wallet status integers correctly', () => {
       expect(convert({ ...basicObject, status: 2 })).toMatchObject({
-        status: mojom.WalletStatus.kConnected
+        authenticated: true
       })
 
       expect(convert({ ...basicObject, status: 4 })).toMatchObject({
-        status: mojom.WalletStatus.kLoggedOut
+        authenticated: false
+      })
+
+      expect(convert({ ...basicObject, status: -1 })).toMatchObject({
+        authenticated: false
+      })
+
+      expect(convert({ ...basicObject, status: 6 })).toMatchObject({
+        authenticated: false
       })
     })
 
     it('returns the username', () => {
       expect(convert({ ...basicObject, userName: 'Bob' })).toMatchObject({
-        username: 'Bob'
+        name: 'Bob'
       })
     })
 
     it('returns links specified on input', () => {
       expect(convert({ ...basicObject, accountUrl: 'url' })).toMatchObject({
-        links: {
-          account: 'url'
-        }
+        url: 'url'
       })
     })
   })

@@ -17,11 +17,11 @@ constexpr char kBuildChannelKey[] = "buildChannel";
 }  // namespace
 
 base::Value::Dict BuildBuildChannelUserData() {
-  base::Value::Dict user_data;
-
   if (!UserHasJoinedBraveRewards()) {
-    return user_data;
+    return {};
   }
+
+  base::Value::Dict user_data;
 
   const auto& build_channel = GlobalState::GetInstance()->BuildChannel();
   CHECK(!build_channel.name.empty());

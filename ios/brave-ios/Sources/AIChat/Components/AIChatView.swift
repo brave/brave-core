@@ -77,7 +77,7 @@ public struct AIChatView: View {
 
           dismiss()
         },
-        onErase: {
+        onNewChat: {
           model.clearConversationHistory()
         },
         menuContent: {
@@ -107,14 +107,16 @@ public struct AIChatView: View {
                         },
                         dismissAction: {
                           if model.apiError == .rateLimitReached {
-                            if let basicModel = model.models.first(where: {
-                              $0.options.tag == .leoModelOptions
-                                && $0.options.leoModelOptions?.access == .basic
+                            if let nonPremiumModel = model.models.first(where: {
+                              guard let leoModelOptions = $0.options.leoModelOptions else {
+                                return false
+                              }
+                              return leoModelOptions.access != .premium
                             }) {
-                              model.changeModel(modelKey: basicModel.key)
+                              model.changeModel(modelKey: nonPremiumModel.key)
                               model.retryLastRequest()
                             } else {
-                              Logger.module.error("No basic models available")
+                              Logger.module.error("No non-premium models available")
                             }
                           } else {
                             model.shouldShowPremiumPrompt = false
@@ -295,7 +297,6 @@ public struct AIChatView: View {
           model.requestInProgress || model.suggestionsStatus == .isGenerating
             || model.apiError == .contextLimitReached
         )
-        .padding([.horizontal, .bottom], 8.0)
       }
     }
     .background(Color(braveSystemName: .containerBackground))
@@ -318,10 +319,9 @@ public struct AIChatView: View {
         isModallyPresented: true
       )
     }
-    .onAppear {
-      Task { @MainActor in
-        await model.refreshPremiumStatus()
-      }
+    .task {
+      await model.refreshPremiumStatus()
+      await MarkdownParser.prepareMarkdownParser(isDarkTheme: true)
 
       if let query = model.querySubmited {
         model.querySubmited = nil
@@ -409,7 +409,7 @@ public struct AIChatView: View {
       title: Strings.AIChat.responseContextMenuCopyTitle,
       icon: Image(braveSystemName: "leo.copy"),
       onSelected: {
-        UIPasteboard.general.setValue(turn.text, forPasteboardType: "public.plain-text")
+        UIPasteboard.general.string = turn.text
       }
     )
 
@@ -488,13 +488,14 @@ public struct AIChatView: View {
           Task { @MainActor in
             await model.refreshPremiumStatus()
 
-            if let basicModel = model.models.first(where: {
-              $0.options.tag == .leoModelOptions && $0.options.leoModelOptions?.access == .basic
+            if let nonPremiumModel = model.models.first(where: {
+              guard let leoModelOptions = $0.options.leoModelOptions else { return false }
+              return leoModelOptions.access != .premium
             }) {
-              model.changeModel(modelKey: basicModel.key)
+              model.changeModel(modelKey: nonPremiumModel.key)
               model.retryLastRequest()
             } else {
-              Logger.module.error("No basic models available")
+              Logger.module.error("No non-premium models available")
             }
           }
         }
@@ -519,13 +520,8 @@ public struct AIChatView: View {
             Task { @MainActor in
               await model.refreshPremiumStatus()
 
-              if let basicModel = model.models.first(where: {
-                $0.options.tag == .leoModelOptions && $0.options.leoModelOptions?.access == .basic
-              }) {
-                model.changeModel(modelKey: basicModel.key)
-                model.retryLastRequest()
-              } else {
-                Logger.module.error("No basic models available")
+              if let turn = model.clearErrorAndGetFailedMessage() {
+                prompt = turn.text
               }
             }
           }
@@ -609,7 +605,7 @@ struct AIChatView_Preview: PreviewProvider {
         onClose: {
           print("Closed Chat")
         },
-        onErase: {
+        onNewChat: {
           print("Erased Chat History")
         },
         menuContent: {
@@ -644,7 +640,9 @@ struct AIChatView_Preview: PreviewProvider {
                   text:
                     "After months of leaks and some recent coordinated teases from the company itself, Sonos is finally officially announcing the Era 300 and Era 100 speakers. Both devices go up for preorder today — the Era 300 costs $449 and the Era 100 is $249 — and they’ll be available to purchase in stores beginning March 28th.\n\nAs its unique design makes clear, the Era 300 represents a completely new type of speaker for the company; it’s designed from the ground up to make the most of spatial audio music and challenge competitors like the HomePod and Echo Studio.",
                   selectedText: nil,
-                  events: nil
+                  events: nil,
+                  createdTime: Date.now,
+                  edits: nil
                 ),
               isEntryInProgress: false
             )

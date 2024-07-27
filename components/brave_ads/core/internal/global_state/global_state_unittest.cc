@@ -5,13 +5,13 @@
 
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsGlobalStateTest : public UnitTestBase {};
+class BraveAdsGlobalStateTest : public test::TestBase {};
 
 TEST_F(BraveAdsGlobalStateTest, HasInstance) {
   // Act & Assert

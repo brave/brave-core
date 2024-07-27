@@ -46,6 +46,7 @@ private struct ShortcutProvider: IntentTimelineProvider {
         configuration.slot1,
         configuration.slot2,
         configuration.slot3,
+        configuration.slot4,
       ]
     )
     completion(entry)
@@ -69,6 +70,7 @@ private struct ShortcutProvider: IntentTimelineProvider {
         configuration.slot1,
         configuration.slot2,
         configuration.slot3,
+        configuration.slot4,
       ]
     )
     completion(.init(entries: [entry], policy: .never))
@@ -97,7 +99,7 @@ private struct ShortcutLink<Content: View>: View {
               .font(.system(size: 20))
               .frame(height: 24)
             Text(verbatim: text)
-              .font(.system(size: 13, weight: .medium))
+              .font(.system(size: 10, weight: .medium))
               .multilineTextAlignment(.center)
           }
           .padding(8)
@@ -144,6 +146,8 @@ extension WidgetShortcut {
       return Strings.Widgets.QRCode
     case .braveNews:
       return Strings.Widgets.braveNews
+    case .braveLeo:
+      return Strings.Widgets.braveLeo
     @unknown default:
       assertionFailure()
       return ""
@@ -175,6 +179,8 @@ extension WidgetShortcut {
       return Image(braveSystemName: "leo.qr.code")
     case .braveNews:
       return Image(braveSystemName: "leo.product.brave-news")
+    case .braveLeo:
+      return Image(braveSystemName: "leo.product.brave-leo")
     @unknown default:
       assertionFailure()
       return Image(systemName: "xmark.octagon")

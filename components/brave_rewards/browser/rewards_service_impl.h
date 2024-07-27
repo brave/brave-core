@@ -94,12 +94,11 @@ using GetTestResponseCallback = base::RepeatingCallback<void(
 
 using StopEngineCallback = base::OnceCallback<void(mojom::Result)>;
 
-class RewardsServiceImpl : public RewardsService,
-                           public mojom::RewardsEngineClient,
+class RewardsServiceImpl final : public RewardsService,
 #if BUILDFLAG(ENABLE_GREASELION)
-                           public greaselion::GreaselionService::Observer,
+                                 public greaselion::GreaselionService::Observer,
 #endif
-                           public base::SupportsWeakPtr<RewardsServiceImpl> {
+                                 public mojom::RewardsEngineClient {
  public:
   RewardsServiceImpl(Profile* profile,
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -110,6 +109,8 @@ class RewardsServiceImpl : public RewardsService,
   RewardsServiceImpl(const RewardsServiceImpl&) = delete;
   RewardsServiceImpl& operator=(const RewardsServiceImpl&) = delete;
   ~RewardsServiceImpl() override;
+
+  static std::string UrlMethodToRequestType(mojom::UrlMethod method);
 
   // KeyedService:
   void Shutdown() override;
@@ -272,6 +273,11 @@ class RewardsServiceImpl : public RewardsService,
                              const std::string& query,
                              ConnectExternalWalletCallback) override;
 
+  void ConnectExternalWallet(
+      const std::string& provider,
+      const base::flat_map<std::string, std::string>& args,
+      ConnectExternalWalletCallback callback) override;
+
   void SetAutoContributeEnabled(bool enabled) override;
 
   void GetAllContributions(GetAllContributionsCallback callback) override;
@@ -287,6 +293,8 @@ class RewardsServiceImpl : public RewardsService,
                      DecryptStringCallback callback) override;
 
   void GetRewardsWallet(GetRewardsWalletCallback callback) override;
+
+  base::WeakPtr<RewardsServiceImpl> AsWeakPtr();
 
   // Testing methods
   void SetEngineEnvForTesting();
@@ -581,6 +589,7 @@ class RewardsServiceImpl : public RewardsService,
   p3a::ConversionMonitor conversion_monitor_;
 
   SEQUENCE_CHECKER(sequence_checker_);
+  base::WeakPtrFactory<RewardsServiceImpl> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_rewards

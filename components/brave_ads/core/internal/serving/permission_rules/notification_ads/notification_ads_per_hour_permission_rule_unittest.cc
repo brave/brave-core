@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/notification_ads/notification_ads_per_hour_permission_rule.h"
+
+#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
@@ -17,7 +18,7 @@
 
 namespace brave_ads {
 
-class BraveAdsNotificationAdsPerHourPermissionRuleTest : public UnitTestBase {
+class BraveAdsNotificationAdsPerHourPermissionRuleTest : public test::TestBase {
 };
 
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
@@ -29,7 +30,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
        ShouldAlwaysAllowOnAndroid) {
   // Arrange
-  MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
   const int ads_per_hour = kDefaultNotificationAdsPerHour.Get();
 
@@ -48,7 +49,7 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
        ShouldAlwaysAllowOnIOS) {
   // Arrange
-  MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
+  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
   const int ads_per_hour = kDefaultNotificationAdsPerHour.Get();
 

@@ -73,7 +73,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
       Task { @MainActor in
         if let pageData = tab.currentPageData {
           let domain = pageData.domain(persistent: !tab.isPrivate)
-          guard domain.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true) else {
+          guard domain.globalBlockAdsAndTrackingLevel.isEnabled else {
             return
           }
 
@@ -83,7 +83,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
           )
           let setup = try self.makeSetup(
             from: models,
-            isAggressive: domain.blockAdsAndTrackingLevel.isAggressive
+            isAggressive: domain.globalBlockAdsAndTrackingLevel.isAggressive
           )
           let script = try ScriptFactory.shared.makeScript(for: .selectorsPoller(setup))
 

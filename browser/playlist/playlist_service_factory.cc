@@ -15,7 +15,6 @@
 #include "base/ranges/algorithm.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_stats/first_run_util.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
@@ -25,6 +24,7 @@
 #include "brave/components/playlist/common/features.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/image_fetcher/image_decoder_impl.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -44,6 +44,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #endif
 
@@ -112,7 +113,7 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
         continue;
       }
 
-      auto* side_panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser);
+      auto* side_panel_ui = browser->GetFeatures().side_panel_ui();
       if (!side_panel_ui ||
           side_panel_ui->GetCurrentEntryId() != SidePanelEntryId::kPlaylist) {
         continue;
@@ -206,14 +207,8 @@ PlaylistServiceFactory* PlaylistServiceFactory::GetInstance() {
 PlaylistService* PlaylistServiceFactory::GetForBrowserContext(
     content::BrowserContext* context) {
   DCHECK(context);
-  if (IsPlaylistEnabled(context)) {
-    GetInstance()->PrepareMediaDetectorComponentManager();
-
-    return static_cast<PlaylistService*>(
-        GetInstance()->GetServiceForBrowserContext(context, true));
-  }
-
-  return nullptr;
+  return static_cast<PlaylistService*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
 #if BUILDFLAG(IS_ANDROID)
@@ -225,13 +220,6 @@ PlaylistServiceFactory::GetForContext(content::BrowserContext* context) {
       ->MakeRemote();
 }
 #endif  // BUILDFLAG(IS_ANDROID)
-
-// static
-bool PlaylistServiceFactory::IsPlaylistEnabled(
-    content::BrowserContext* context) {
-  return base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
-         brave::IsRegularProfile(context);
-}
 
 // static
 void PlaylistServiceFactory::RegisterLocalStatePrefs(
@@ -273,18 +261,26 @@ PlaylistServiceFactory::~PlaylistServiceFactory() = default;
 
 KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  DCHECK(media_detector_component_manager_);
+  if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    return nullptr;
+  }
+
+  auto* profile = Profile::FromBrowserContext(context);
+  if (!profile->IsRegularProfile()) {
+    return nullptr;
+  }
+
+  GetInstance()->PrepareMediaDetectorComponentManager();
+
   PrefService* local_state = g_browser_process->local_state();
   auto* service = new PlaylistService(
       context, local_state, media_detector_component_manager_.get(),
-      std::make_unique<PlaylistServiceDelegateImpl>(
-          Profile::FromBrowserContext(context)),
+      std::make_unique<PlaylistServiceDelegateImpl>(profile),
       brave_stats::GetFirstRunTime(local_state));
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   content::URLDataSource::Add(
-      context, std::make_unique<PlaylistDataSource>(
-                   Profile::FromBrowserContext(context), service));
+      context, std::make_unique<PlaylistDataSource>(profile, service));
 #endif
 
   return service;

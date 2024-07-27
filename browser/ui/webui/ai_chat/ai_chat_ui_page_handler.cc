@@ -13,6 +13,7 @@
 
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/time/time.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
@@ -141,7 +142,8 @@ void AIChatUIPageHandler::SubmitHumanConversationEntry(
 
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
-      ConversationTurnVisibility::VISIBLE, input, std::nullopt, std::nullopt);
+      ConversationTurnVisibility::VISIBLE, input, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt);
   active_chat_tab_helper_->SubmitHumanConversationEntry(std::move(turn));
 }
 
@@ -513,6 +515,13 @@ void AIChatUIPageHandler::OnGetPremiumStatus(
     }
 #endif
     std::move(callback).Run(status, std::move(info));
+  }
+}
+
+void AIChatUIPageHandler::ModifyConversation(uint32_t turn_index,
+                                             const std::string& new_text) {
+  if (active_chat_tab_helper_) {
+    active_chat_tab_helper_->ModifyConversation(turn_index, new_text);
   }
 }
 

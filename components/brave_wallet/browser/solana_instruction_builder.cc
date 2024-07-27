@@ -227,7 +227,7 @@ std::optional<SolanaInstruction> Transfer(
   const std::string log_wrapper = "noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV";
 
   // Init instruction data with the instruction discriminator.
-  std::vector<uint8_t> instruction_data = {163, 52, 200, 231, 140, 3, 69, 186};
+  std::vector<uint8_t> instruction_data = kTransferInstructionDiscriminator;
 
   std::vector<uint8_t> root_bytes;
   if (!Base58Decode(proof.root, &root_bytes, kSolanaHashSize)) {

@@ -22,14 +22,18 @@ namespace brave_wallet {
 
 namespace {
 
-constexpr char kNativeEVMAssetContractAddress[] =
-    "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
-
 constexpr char kERC20TransferSelector[] = "0xa9059cbb";
 constexpr char kERC20ApproveSelector[] = "0x095ea7b3";
 constexpr char kERC721TransferFromSelector[] = "0x23b872dd";
 constexpr char kERC721SafeTransferFromSelector[] = "0x42842e0e";
 constexpr char kERC1155SafeTransferFromSelector[] = "0xf242432a";
+constexpr char kFilForwarderTransferSelector[] =
+    "0xd948d468";  // forward(bytes)
+
+// CowSwap function selectors
+constexpr char kCowOrderSellEthSelector[] = "0x322bba21";
+
+// 0x function selectors
 constexpr char kSellEthForTokenToUniswapV3Selector[] = "0x3598d8ab";
 constexpr char kSellTokenForEthToUniswapV3Selector[] = "0x803ba26d";
 constexpr char kSellTokenForTokenToUniswapV3Selector[] = "0x6af479b2";
@@ -38,13 +42,108 @@ constexpr char kTransformERC20Selector[] = "0x415565b0";
 constexpr char kFillOtcOrderForEthSelector[] = "0xa578efaf";
 constexpr char kFillOtcOrderWithEthSelector[] = "0x706394d5";
 constexpr char kFillOtcOrderSelector[] = "0xdac748d4";
-constexpr char kFilForwarderTransferSelector[] =
-    "0xd948d468";  // forward(bytes)
-constexpr char kCowOrderSellEthSelector[] = "0x322bba21";
+
+// LiFi function selectors
+// Ref: https://louper.dev/diamond/0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE
+
+// AcrossFacet
+constexpr char kLiFiStartBridgeTokensViaAcross[] = "0x1fd8010c";
+constexpr char kLiFiSwapAndStartBridgeTokensViaAcross[] = "0x3a3f7332";
+
+// AllBridgeFacet
+constexpr char kLiFiStartBridgeTokensViaAllBridge[] = "0xe40f2460";
+constexpr char kLiFiSwapAndStartBridgeTokensViaAllBridge[] = "0xa74ccb35";
+
+// AmarokFacet
+constexpr char kLiFiStartBridgeTokensViaAmarok[] = "0x8dc9932d";
+constexpr char kLiFiSwapAndStartBridgeTokensViaAmarok[] = "0x83f31917";
+
+// ArbitrumBridgeFacet
+constexpr char kLiFiStartBridgeTokensViaArbitrumBridge[] = "0xc9851d0b";
+constexpr char kLiFiSwapAndStartBridgeTokensViaArbitrumBridge[] = "0x3cc9517b";
+
+// CBridgeFacet
+constexpr char kLiFiStartBridgeTokensViaCBridge[] = "0xae0b91e5";
+constexpr char kLiFiSwapAndStartBridgeTokensViaCBridge[] = "0x482c6a85";
+
+// CelerCircleBridgeFacet
+constexpr char kLiFiStartBridgeTokensViaCelerCircleBridge[] = "0xbab657d8";
+constexpr char kLiFiSwapAndStartBridgeTokensViaCelerCircleBridge[] =
+    "0x8fab0663";
+
+// CelerIMFacetMutable
+constexpr char kLiFiStartBridgeTokensViaCelerIM[] = "0x05095ded";
+constexpr char kLiFiSwapAndStartBridgeTokensViaCelerIM[] = "0xb06c52da";
+
+// GenericSwapFacet
 constexpr char kLiFiSwapTokensGeneric[] = "0x4630a0d8";
 constexpr char kLiFiSwapTokensSingleErc20ToErc20[] = "0x878863a4";
 constexpr char kLiFiSwapTokensSingleErc20ToNative[] = "0xd5bc7be1";
 constexpr char kLiFiSwapTokensSingleNativeToErc20[] = "0x8f0af374";
+
+// GenericSwapFacetV3
+constexpr char kLiFiSwapTokensMultipleV3ERC20ToERC20[] = "0x5fd9ae2e";
+constexpr char kLiFiswapTokensMultipleV3ERC20ToNative[] = "0x2c57e884";
+constexpr char kLiFiSwapTokensMultipleV3NativeToERC20[] = "0x736eac0b";
+constexpr char kLiFiSwapTokensSingleV3ERC20ToERC20[] = "0x4666fc80";
+constexpr char kLiFiSwapTokensSingleV3ERC20ToNative[] = "0x733214a3";
+constexpr char kLiFiSwapTokensSingleV3NativeToERC20[] = "0xaf7060fd";
+
+// GnosisBridgeFacet
+constexpr char kLiFiStartBridgeTokensViaXDaiBridge[] = "0x02cba4a3";
+constexpr char kLiFiSwapAndStartBridgeTokensViaXDaiBridge[] = "0xa9d0550f";
+
+// HopFacet
+constexpr char kLiFiStartBridgeTokensViaHop[] = "0xb3b63587";
+constexpr char kLiFiSwapAndStartBridgeTokensViaHop[] = "0xa01fe784";
+
+// HyphenFacet
+constexpr char kLiFiStartBridgeTokensViaHyphen[] = "0x8bf6ef99";
+constexpr char kLiFiSwapAndStartBridgeTokensViaHyphen[] = "0x9feb6731";
+
+// LIFuelFacet
+constexpr char kLiFiStartBridgeTokensViaLIFuel[] = "0x9b6ee8e4";
+constexpr char kLiFiSwapAndStartBridgeTokensViaLIFuel[] = "0x55206216";
+
+// MayanFacet
+constexpr char kLiFiStartBridgeTokensViaMayan[] = "0xb621b032";
+constexpr char kLiFiSwapAndStartBridgeTokensViaMayan[] = "0x30c48952";
+
+// MultichainFacet
+constexpr char kLiFiStartBridgeTokensViaMultichain[] = "0xef55f6dd";
+constexpr char kLiFiSwapAndStartBridgeTokensViaMultichain[] = "0xa342d3ff";
+
+// OmniBridgeFacet
+constexpr char kLiFiStartBridgeTokensViaOmniBridge[] = "0x782621d8";
+constexpr char kLiFiSwapAndStartBridgeTokensViaOmniBridge[] = "0x95726782";
+
+// OptimismBridgeFacet
+constexpr char kLiFiStartBridgeTokensViaOptimismBridge[] = "0xce8a97a5";
+constexpr char kLiFiSwapAndStartBridgeTokensViaOptimismBridge[] = "0x5bb5d448";
+
+// PolygonBridgeFacet
+constexpr char kLiFiStartBridgeTokensViaPolygonBridge[] = "0xaf62c7d6";
+constexpr char kLiFiSwapAndStartBridgeTokensViaPolygonBridge[] = "0xb4f37581";
+
+// SquidFacet
+constexpr char kLiFiStartBridgeTokensViaSquid[] = "0x3f313808";
+constexpr char kLiFiSwapAndStartBridgeTokensViaSquid[] = "0xa8f66666";
+
+// StargateFacet
+constexpr char kLiFiStartBridgeTokensViaStargate[] = "0xbe1eace7";
+constexpr char kLiFiSwapAndStartBridgeTokensViaStargate[] = "0xed178619";
+
+// StargateFacetV2
+constexpr char kLiFiStartBridgeTokensViaStargateV2[] = "0x14d53077";
+constexpr char kLiFiSwapAndStartBridgeTokensViaStargateV2[] = "0xa6010a66";
+
+// SymbiosisFacet
+constexpr char kLiFiStartBridgeTokensViaSymbiosis[] = "0xb70fb9a5";
+constexpr char kLiFiSwapAndStartBridgeTokensViaSymbiosis[] = "0x6e067161";
+
+// ThorSwapFacet
+constexpr char kLiFiStartBridgeTokensViaThorSwap[] = "0x2541ec57";
+constexpr char kLiFiSwapAndStartBridgeTokensViaThorSwap[] = "0xad673d88";
 
 struct LiFiSwapData {
   std::string from_amount;
@@ -52,9 +151,27 @@ struct LiFiSwapData {
   std::string receiving_asset_id;
 };
 
-std::string TransformLiFiAddress(const std::string& address) {
-  if (address == kLiFiNativeEVMAssetContractAddress) {
+struct LiFiBridgeData {
+  std::string bridge;
+  std::string integrator;
+  std::string sending_asset_id;
+  std::string receiver;
+  std::string min_amount;
+  std::string destination_chain_id;
+  mojom::CoinType destination_coin;
+};
+
+std::string TransformContractAddress(const std::string& address) {
+  if (address == kLiFiNativeEVMAssetContractAddress || address.empty()) {
     return kNativeEVMAssetContractAddress;
+  }
+
+  return address;
+}
+
+std::string TransformEoaAddress(const std::string& address) {
+  if (address == kLiFiNativeEVMAssetContractAddress) {
+    return "";
   }
 
   return address;
@@ -90,8 +207,9 @@ std::optional<LiFiSwapData> LiFiSwapDataDecode(
     auto& swap_data = swap_data_list.front().GetList();
     return LiFiSwapData{
         .from_amount = swap_data[4].GetString(),
-        .sending_asset_id = TransformLiFiAddress(swap_data[2].GetString()),
-        .receiving_asset_id = TransformLiFiAddress(swap_data[3].GetString()),
+        .sending_asset_id = TransformContractAddress(swap_data[2].GetString()),
+        .receiving_asset_id =
+            TransformContractAddress(swap_data[3].GetString()),
     };
   } else if (swap_data_list.size() >= 2) {
     // Multi-hop swap.
@@ -104,9 +222,9 @@ std::optional<LiFiSwapData> LiFiSwapDataDecode(
     return LiFiSwapData{
         .from_amount = swap_data_front[4].GetString(),
         .sending_asset_id =
-            TransformLiFiAddress(swap_data_front[2].GetString()),
+            TransformContractAddress(swap_data_front[2].GetString()),
         .receiving_asset_id =
-            TransformLiFiAddress(swap_data_back[3].GetString()),
+            TransformContractAddress(swap_data_back[3].GetString()),
     };
   }
 
@@ -114,22 +232,74 @@ std::optional<LiFiSwapData> LiFiSwapDataDecode(
   return std::nullopt;
 }
 
+// ABI for BridgeData from ILiFi.sol in LiFi contracts:
+//
+//   (bytes32 transactionId,
+//    string bridge,
+//    string integrator,
+//    address referrer,
+//    address sendingAssetId,
+//    address receiver,
+//    uint256 minAmount,
+//    uint256 destinationChainId,
+//    bool hasSourceSwaps,
+//    bool hasDestinationCall)
+//
+// Ref:
+// https://github.com/lifinance/contracts/blob/7063b60785428daab2a2decde67f52a53d74532f/src/Interfaces/ILiFi.sol#L7-L18
+eth_abi::Type MakeLiFiBridgeDataType() {
+  return eth_abi::Tuple()
+      .AddTupleType(eth_abi::Bytes(32))
+      .AddTupleType(eth_abi::String())
+      .AddTupleType(eth_abi::String())
+      .AddTupleType(eth_abi::Address())
+      .AddTupleType(eth_abi::Address())
+      .AddTupleType(eth_abi::Address())
+      .AddTupleType(eth_abi::Uint(256))
+      .AddTupleType(eth_abi::Uint(256))
+      .AddTupleType(eth_abi::Bool())
+      .AddTupleType(eth_abi::Bool())
+      .build();
+}
+
+std::optional<LiFiBridgeData> LiFiBridgeDataDecode(
+    const base::Value::List& data) {
+  if (data.size() != 10) {
+    return std::nullopt;
+  }
+
+  auto destination_chain_id = data[7].GetString();
+
+  return LiFiBridgeData{
+      .bridge = data[1].GetString(),
+      .integrator = data[2].GetString(),
+      .sending_asset_id = TransformContractAddress(data[4].GetString()),
+      .receiver = TransformEoaAddress(data[5].GetString()),
+      .min_amount = data[6].GetString(),
+      .destination_chain_id = destination_chain_id,
+      .destination_coin = destination_chain_id == mojom::kSolanaMainnet
+                              ? mojom::CoinType::SOL
+                              : mojom::CoinType::ETH,
+  };
+}
+
 }  // namespace
 
-std::optional<std::tuple<mojom::TransactionType,     // tx_type
-                         std::vector<std::string>,   // tx_params
-                         std::vector<std::string>>>  // tx_args
+std::optional<std::tuple<mojom::TransactionType,    // tx_type
+                         std::vector<std::string>,  // tx_params
+                         std::vector<std::string>,  // tx_args
+                         mojom::SwapInfoPtr>>       // swap_info
 GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
   if (data.empty() || data == std::vector<uint8_t>{0x0}) {
     return std::make_tuple(mojom::TransactionType::ETHSend,
                            std::vector<std::string>(),
-                           std::vector<std::string>());
+                           std::vector<std::string>(), nullptr);
   }
 
   if (data.size() < 4) {
     return std::make_tuple(mojom::TransactionType::Other,
                            std::vector<std::string>(),
-                           std::vector<std::string>());
+                           std::vector<std::string>(), nullptr);
   }
 
   std::string selector = "0x" + HexEncodeLower(data.data(), 4);
@@ -144,7 +314,7 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     return std::make_tuple(
         mojom::TransactionType::ETHFilForwarderTransfer,
         std::vector<std::string>{"bytes"},  // recipient
-        std::vector<std::string>{decoded.value()[0].GetString()});
+        std::vector<std::string>{decoded.value()[0].GetString()}, nullptr);
 
   } else if (selector == kERC20TransferSelector) {
     auto type = eth_abi::Tuple()
@@ -161,7 +331,8 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
         std::vector<std::string>{"address",   // recipient
                                  "uint256"},  // amount
         std::vector<std::string>{decoded.value()[0].GetString(),
-                                 decoded.value()[1].GetString()});
+                                 decoded.value()[1].GetString()},
+        nullptr);
   } else if (selector == kERC20ApproveSelector) {
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Address())
@@ -177,7 +348,8 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
         std::vector<std::string>{"address",   // spender
                                  "uint256"},  // amount
         std::vector<std::string>{decoded.value()[0].GetString(),
-                                 decoded.value()[1].GetString()});
+                                 decoded.value()[1].GetString()},
+        nullptr);
   } else if (selector == kERC721TransferFromSelector) {
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Address())
@@ -196,7 +368,8 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
                                  "uint256"},  // tokenId
         std::vector<std::string>{decoded.value()[0].GetString(),
                                  decoded.value()[1].GetString(),
-                                 decoded.value()[2].GetString()});
+                                 decoded.value()[2].GetString()},
+        nullptr);
   } else if (selector == kERC721SafeTransferFromSelector) {
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Address())
@@ -215,7 +388,8 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
                                  "uint256"},  // tokenId
         std::vector<std::string>{decoded.value()[0].GetString(),
                                  decoded.value()[1].GetString(),
-                                 decoded.value()[2].GetString()});
+                                 decoded.value()[2].GetString()},
+        nullptr);
   } else if (selector == kSellEthForTokenToUniswapV3Selector) {
     // Function:
     // sellEthForTokenToUniswapV3(bytes encodedPath,
@@ -240,19 +414,28 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
       return std::nullopt;
     }
 
-    std::string fill_path = "0x";
-    for (const auto& path : *decoded_path) {
-      base::StrAppend(&fill_path, {path.substr(2)});
+    if (decoded_path->size() < 2) {
+      return std::nullopt;
     }
 
-    return std::make_tuple(
-        mojom::TransactionType::ETHSwap,
-        std::vector<std::string>{"bytes",     // fill path,
-                                 "uint256",   // maker amount
-                                 "uint256"},  // taker amount
-        std::vector<std::string>{fill_path,
-                                 "",  // maker asset is ETH, amount is txn value
-                                 decoded_calldata.value()[1].GetString()});
+    auto from_asset = decoded_path->front();
+    auto to_asset = decoded_path->back();
+
+    auto swap_info = mojom::SwapInfo::New();
+    swap_info->from_coin = mojom::CoinType::ETH;
+    // from_chain_id and to_chain_id are filled by caller.
+    swap_info->from_asset = kNativeEVMAssetContractAddress;
+    swap_info->from_amount = "";  // asset is ETH, amount is txn value
+    swap_info->to_coin = mojom::CoinType::ETH;
+    swap_info->to_asset = to_asset;
+    swap_info->to_amount = decoded_calldata.value()[1].GetString();
+    swap_info->receiver =
+        TransformEoaAddress(decoded_calldata.value()[2].GetString());
+    swap_info->provider = "zeroex";
+
+    return std::make_tuple(mojom::TransactionType::ETHSwap,
+                           std::vector<std::string>{},
+                           std::vector<std::string>{}, std::move(swap_info));
   } else if (selector == kSellTokenForEthToUniswapV3Selector ||
              selector == kSellTokenForTokenToUniswapV3Selector) {
     // Function: 0x803ba26d
@@ -289,19 +472,29 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     if (!decoded_path) {
       return std::nullopt;
     }
-    std::string fill_path = "0x";
-    for (const auto& path : *decoded_path) {
-      base::StrAppend(&fill_path, {path.substr(2)});
+
+    if (decoded_path->size() < 2) {
+      return std::nullopt;
     }
 
-    return std::make_tuple(
-        mojom::TransactionType::ETHSwap,
-        std::vector<std::string>{"bytes",     // fill path,
-                                 "uint256",   // maker amount
-                                 "uint256"},  // taker amount
-        std::vector<std::string>{fill_path,
-                                 decoded_calldata.value()[1].GetString(),
-                                 decoded_calldata.value()[2].GetString()});
+    auto from_asset = decoded_path->front();
+    auto to_asset = decoded_path->back();
+
+    auto swap_info = mojom::SwapInfo::New();
+    // from_chain_id and to_chain_id are filled by caller.
+    swap_info->from_coin = mojom::CoinType::ETH;
+    swap_info->from_asset = from_asset;
+    swap_info->from_amount = decoded_calldata.value()[1].GetString();
+    swap_info->to_coin = mojom::CoinType::ETH;
+    swap_info->to_asset = to_asset;
+    swap_info->to_amount = decoded_calldata.value()[2].GetString();
+    swap_info->receiver =
+        TransformEoaAddress(decoded_calldata.value()[3].GetString());
+    swap_info->provider = "zeroex";
+
+    return std::make_tuple(mojom::TransactionType::ETHSwap,
+                           std::vector<std::string>{},
+                           std::vector<std::string>{}, std::move(swap_info));
   } else if (selector == kSellToUniswapSelector) {
     // Function:
     // sellToUniswap(address[] tokens,
@@ -324,23 +517,34 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
       return std::nullopt;
     }
 
-    std::string fill_path = "0x";
-    for (const auto& address : decoded_calldata.value()[0].GetList()) {
-      if (!address.is_string()) {
-        return std::nullopt;
-      }
-
-      base::StrAppend(&fill_path, {address.GetString().substr(2)});
+    if (decoded_calldata.value()[0].GetList().size() < 2) {
+      return std::nullopt;
     }
 
-    return std::make_tuple(
-        mojom::TransactionType::ETHSwap,
-        std::vector<std::string>{"bytes",     // fill path,
-                                 "uint256",   // maker amount
-                                 "uint256"},  // taker amount
-        std::vector<std::string>{fill_path,
-                                 decoded_calldata.value()[1].GetString(),
-                                 decoded_calldata.value()[2].GetString()});
+    auto& from_asset = decoded_calldata.value()[0].GetList().front();
+    if (!from_asset.is_string()) {
+      return std::nullopt;
+    }
+
+    auto& to_asset = decoded_calldata.value()[0].GetList().back();
+    if (!to_asset.is_string()) {
+      return std::nullopt;
+    }
+
+    auto swap_info = mojom::SwapInfo::New();
+    // from_chain_id and to_chain_id are filled by caller.
+    swap_info->from_coin = mojom::CoinType::ETH;
+    swap_info->from_asset = from_asset.GetString();
+    swap_info->from_amount = decoded_calldata.value()[1].GetString();
+    swap_info->to_coin = mojom::CoinType::ETH;
+    swap_info->to_asset = to_asset.GetString();
+    swap_info->to_amount = decoded_calldata.value()[2].GetString();
+    swap_info->receiver = "";  // unknown receiver
+    swap_info->provider = "zeroex";
+
+    return std::make_tuple(mojom::TransactionType::ETHSwap,
+                           std::vector<std::string>{},
+                           std::vector<std::string>{}, std::move(swap_info));
   } else if (selector == kTransformERC20Selector) {
     // Function:
     // transformERC20(address inputToken,
@@ -369,16 +573,20 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
       return std::nullopt;
     }
 
-    return std::make_tuple(
-        mojom::TransactionType::ETHSwap,
-        std::vector<std::string>{"bytes",     // fill path,
-                                 "uint256",   // maker amount
-                                 "uint256"},  // taker amount
-        std::vector<std::string>{
-            decoded_calldata.value()[0].GetString() +
-                decoded_calldata.value()[1].GetString().substr(2),
-            decoded_calldata.value()[2].GetString(),
-            decoded_calldata.value()[3].GetString()});
+    auto swap_info = mojom::SwapInfo::New();
+    // from_chain_id and to_chain_id are filled by caller.
+    swap_info->from_coin = mojom::CoinType::ETH;
+    swap_info->from_asset = decoded_calldata.value()[0].GetString();
+    swap_info->from_amount = decoded_calldata.value()[2].GetString();
+    swap_info->to_coin = mojom::CoinType::ETH;
+    swap_info->to_asset = decoded_calldata.value()[1].GetString();
+    swap_info->to_amount = decoded_calldata.value()[3].GetString();
+    swap_info->receiver = "";  // unknown receiver
+    swap_info->provider = "zeroex";
+
+    return std::make_tuple(mojom::TransactionType::ETHSwap,
+                           std::vector<std::string>{},
+                           std::vector<std::string>{}, std::move(swap_info));
   } else if (selector == kFillOtcOrderForEthSelector ||
              selector == kFillOtcOrderWithEthSelector ||
              selector == kFillOtcOrderSelector) {
@@ -462,15 +670,14 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     }
 
     std::vector<std::string> tx_args;
+    auto swap_info = mojom::SwapInfo::New();
 
     if (selector == kFillOtcOrderForEthSelector) {
       // The output of the swap is actually WETH but fillOtcOrderForEth()
       // automatically unwraps it to ETH. The buyToken is therefore the
       // 0x native asset contract.
-      tx_args = {decoded_calldata.value()[1].GetString() +
-                     std::string(kNativeEVMAssetContractAddress).substr(2),
-                 decoded_calldata.value()[3].GetString(),
-                 decoded_calldata.value()[2].GetString()};
+      swap_info->from_asset = decoded_calldata.value()[1].GetString();
+      swap_info->to_asset = kNativeEVMAssetContractAddress;
     } else if (selector == kFillOtcOrderWithEthSelector) {
       // The input of the swap is actually ETH but fillOtcOrderWithEth()
       // automatically wraps it to WETH. The sellToken is therefore the 0x
@@ -480,22 +687,24 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
       // the value field of the swap transaction. The latter is more reliable
       // since OTC trades may include protocol fees payable in ETH that get
       // added to the sellAmount.
-      tx_args = {std::string(kNativeEVMAssetContractAddress) +
-                     decoded_calldata.value()[0].GetString().substr(2),
-                 decoded_calldata.value()[3].GetString(),
-                 decoded_calldata.value()[2].GetString()};
+      swap_info->from_asset = kNativeEVMAssetContractAddress;
+      swap_info->to_asset = decoded_calldata.value()[0].GetString();
     } else if (selector == kFillOtcOrderSelector) {
-      tx_args = {decoded_calldata.value()[1].GetString() +
-                     decoded_calldata.value()[0].GetString().substr(2),
-                 decoded_calldata.value()[3].GetString(),
-                 decoded_calldata.value()[2].GetString()};
+      swap_info->from_asset = decoded_calldata.value()[1].GetString();
+      swap_info->to_asset = decoded_calldata.value()[0].GetString();
     }
 
+    // from_chain_id and to_chain_id are filled by caller.
+    swap_info->from_coin = mojom::CoinType::ETH;
+    swap_info->from_amount = decoded_calldata.value()[3].GetString();
+    swap_info->to_coin = mojom::CoinType::ETH;
+    swap_info->to_amount = decoded_calldata.value()[2].GetString();
+    swap_info->receiver = "";  // unknown receiver
+    swap_info->provider = "zeroex";
+
     return std::make_tuple(mojom::TransactionType::ETHSwap,
-                           std::vector<std::string>{"bytes",     // fill path,
-                                                    "uint128",   // sell amount
-                                                    "uint128"},  // buy amount
-                           tx_args);
+                           std::vector<std::string>{},
+                           std::vector<std::string>{}, std::move(swap_info));
   } else if (selector == kCowOrderSellEthSelector) {
     // The following block handles decoding of calldata for CoW swap orders,
     // when the sell asset is the native asset (ETH, XDAI, etc).
@@ -535,36 +744,43 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
       return std::nullopt;
     }
 
-    return std::make_tuple(
-        mojom::TransactionType::ETHSwap,
-        std::vector<std::string>{"bytes",     // fill path,
-                                 "uint256",   // sell amount
-                                 "uint256"},  // buy amount
-        std::vector<std::string>{
-            std::string(kNativeEVMAssetContractAddress) +
-                decoded_calldata.value()[0].GetString().substr(2),
-            decoded_calldata.value()[2].GetString(),
-            decoded_calldata.value()[3].GetString()});
-  } else if (selector == kLiFiSwapTokensGeneric) {
+    auto swap_info = mojom::SwapInfo::New();
+    // from_chain_id and to_chain_id are filled by caller.
+    swap_info->from_coin = mojom::CoinType::ETH;
+    swap_info->from_asset = kNativeEVMAssetContractAddress;
+    swap_info->from_amount = decoded_calldata.value()[2].GetString();
+    swap_info->to_coin = mojom::CoinType::ETH;
+    swap_info->to_asset = decoded_calldata.value()[0].GetString();
+    swap_info->to_amount = decoded_calldata.value()[3].GetString();
+    swap_info->receiver =
+        TransformEoaAddress(decoded_calldata.value()[1].GetString());
+    swap_info->provider = "cowswap";
+
+    return std::make_tuple(mojom::TransactionType::ETHSwap,
+                           std::vector<std::string>{},
+                           std::vector<std::string>{}, std::move(swap_info));
+  } else if (selector == kLiFiSwapTokensGeneric ||
+             selector == kLiFiSwapTokensMultipleV3ERC20ToERC20 ||
+             selector == kLiFiswapTokensMultipleV3ERC20ToNative ||
+             selector == kLiFiSwapTokensMultipleV3NativeToERC20) {
     // The following block handles decoding of calldata for generic LiFi swap
-    // orders using GenericSwapFacet.
+    // orders of the following form.
     //
-    // TXN: token → token
     // Function:
-    // swapTokensGeneric(bytes32 transactionId,
-    //                   string integrator,
-    //                   string referrer,
-    //                   address receiver,
-    //                   uint256 minAmountOut,
-    //                   (address callTo,
-    //                    address approveTo,
-    //                    address sendingAssetId,
-    //                    address receivingAssetId,
-    //                    uint256 fromAmount,
-    //                    bytes callData,
-    //                    bool requiresDeposit)[] swapData)
+    // function(bytes32 transactionId,
+    //          string integrator,
+    //          string referrer,
+    //          address receiver,
+    //          uint256 minAmountOut,
+    //          (address callTo,
+    //           address approveTo,
+    //           address sendingAssetId,
+    //           address receivingAssetId,
+    //           uint256 fromAmount,
+    //           bytes callData,
+    //           bool requiresDeposit)[] swapData)
     //
-    // Ref:
+    // Ref (example):
     // https://github.com/lifinance/contracts/blob/fe89ad34a9d2bff4dbf27c2d09b71363c282cd0b/src/Facets/GenericSwapFacet.sol#L207-L221
     auto type =
         eth_abi::Tuple()
@@ -584,6 +800,7 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     CHECK_EQ(6u, decoded.value().size());
 
     auto min_amount_out = decoded.value()[4].GetString();
+    auto receiver = TransformEoaAddress(decoded.value()[3].GetString());
 
     // The swapData field is an array of tuples, each representing a swap fill
     // operation.
@@ -592,74 +809,46 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
       return std::nullopt;
     }
 
-    return std::make_tuple(
-        mojom::TransactionType::ETHSwap,
-        std::vector<std::string>{"bytes",     // fill path,
-                                 "uint256",   // sell amount
-                                 "uint256"},  // buy amount
-        std::vector<std::string>{swap_data->sending_asset_id +
-                                     swap_data->receiving_asset_id.substr(2),
-                                 swap_data->from_amount, min_amount_out});
+    auto swap_info = mojom::SwapInfo::New();
+    // from_chain_id and to_chain_id are filled by caller.
+    swap_info->from_coin = mojom::CoinType::ETH;
+    swap_info->from_asset = swap_data->sending_asset_id;
+    swap_info->from_amount = swap_data->from_amount;
+    swap_info->to_coin = mojom::CoinType::ETH;
+    swap_info->to_asset = swap_data->receiving_asset_id;
+    swap_info->to_amount = min_amount_out;
+    swap_info->receiver = receiver;
+    swap_info->provider = "lifi";
+
+    return std::make_tuple(mojom::TransactionType::ETHSwap,
+                           std::vector<std::string>{},
+                           std::vector<std::string>{}, std::move(swap_info));
   } else if (selector == kLiFiSwapTokensSingleErc20ToErc20 ||
              selector == kLiFiSwapTokensSingleErc20ToNative ||
-             selector == kLiFiSwapTokensSingleNativeToErc20) {
+             selector == kLiFiSwapTokensSingleNativeToErc20 ||
+             selector == kLiFiSwapTokensSingleV3NativeToERC20 ||
+             selector == kLiFiSwapTokensSingleV3ERC20ToNative ||
+             selector == kLiFiSwapTokensSingleV3ERC20ToERC20) {
     // The following block handles decoding of calldata for generic LiFi swap
-    // orders using GenericSwapFacetV3. The following cases are handled:
+    // orders of the following form.
     //
     // TXN: token → token
     // Function:
-    // swapTokensSingleV3ERC20ToERC20(bytes32 transactionId,
-    //                                string integrator,
-    //                                string referrer,
-    //                                address receiver,
-    //                                uint256 minAmountOut,
-    //                                (address callTo,
-    //                                 address approveTo,
-    //                                 address sendingAssetId,
-    //                                 address receivingAssetId,
-    //                                 uint256 fromAmount,
-    //                                 bytes callData,
-    //                                 bool requiresDeposit) swapData)
+    // function(bytes32 transactionId,
+    //          string integrator,
+    //          string referrer,
+    //          address receiver,
+    //          uint256 minAmountOut,
+    //          (address callTo,
+    //           address approveTo,
+    //           address sendingAssetId,
+    //           address receivingAssetId,
+    //           uint256 fromAmount,
+    //           bytes callData,
+    //           bool requiresDeposit) swapData)
     //
-    // Ref:
+    // Ref (example):
     // https://github.com/lifinance/contracts/blob/0becf25cb5983e88d58636b6215b5a7aa1b267e0/src/Facets/GenericSwapFacetV3.sol#L25-L39
-    //
-    // TXN: token → ETH
-    // Function:
-    // swapTokensSingleV3ERC20ToNative(bytes32 transactionId,
-    //                                 string integrator,
-    //                                 string referrer,
-    //                                 address receiver,
-    //                                 uint256 minAmountOut,
-    //                                 (address callTo,
-    //                                  address approveTo,
-    //                                  address sendingAssetId,
-    //                                  address receivingAssetId,
-    //                                  uint256 fromAmount,
-    //                                  bytes callData,
-    //                                  bool requiresDeposit) swapData)
-    //
-    // Ref:
-    // https://github.com/lifinance/contracts/blob/0becf25cb5983e88d58636b6215b5a7aa1b267e0/src/Facets/GenericSwapFacetV3.sol#L81-L95
-    //
-    // TXN: ETH → token
-    // Function:
-    // swapTokensSingleV3NativeToERC20(bytes32 transactionId,
-    //                                 string integrator,
-    //                                 string referrer,
-    //                                 address receiver,
-    //                                 uint256 minAmountOut,
-    //                                 (address callTo,
-    //                                  address approveTo,
-    //                                  address sendingAssetId,
-    //                                  address receivingAssetId,
-    //                                  uint256 fromAmount,
-    //                                  bytes callData,
-    //                                  bool requiresDeposit) swapData)
-    //
-    // Ref:
-    // https://github.com/lifinance/contracts/blob/0becf25cb5983e88d58636b6215b5a7aa1b267e0/src/Facets/GenericSwapFacetV3.sol#L135-L149
-
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Bytes(32))
                     .AddTupleType(eth_abi::String())
@@ -676,6 +865,7 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     CHECK_EQ(6u, decoded.value().size());
 
     auto min_amount_out = decoded.value()[4].GetString();
+    auto receiver = TransformEoaAddress(decoded.value()[3].GetString());
 
     auto swap_data_list = base::Value::List();
     swap_data_list.Append(std::move(decoded.value()[5]));
@@ -684,14 +874,163 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
       return std::nullopt;
     }
 
-    return std::make_tuple(
-        mojom::TransactionType::ETHSwap,
-        std::vector<std::string>{"bytes",     // fill path,
-                                 "uint256",   // sell amount
-                                 "uint256"},  // buy amount
-        std::vector<std::string>{swap_data->sending_asset_id +
-                                     swap_data->receiving_asset_id.substr(2),
-                                 swap_data->from_amount, min_amount_out});
+    auto swap_info = mojom::SwapInfo::New();
+    // from_chain_id and to_chain_id are filled by caller.
+    swap_info->from_coin = mojom::CoinType::ETH;
+    swap_info->from_asset = swap_data->sending_asset_id;
+    swap_info->from_amount = swap_data->from_amount;
+    swap_info->to_coin = mojom::CoinType::ETH;
+    swap_info->to_asset = swap_data->receiving_asset_id;
+    swap_info->to_amount = min_amount_out;
+    swap_info->receiver = receiver;
+    swap_info->provider = "lifi";
+
+    return std::make_tuple(mojom::TransactionType::ETHSwap,
+                           std::vector<std::string>{},
+                           std::vector<std::string>{}, std::move(swap_info));
+  } else if (selector == kLiFiSwapAndStartBridgeTokensViaAcross ||
+             selector == kLiFiSwapAndStartBridgeTokensViaAllBridge ||
+             selector == kLiFiSwapAndStartBridgeTokensViaAmarok ||
+             selector == kLiFiSwapAndStartBridgeTokensViaArbitrumBridge ||
+             selector == kLiFiSwapAndStartBridgeTokensViaCBridge ||
+             selector == kLiFiSwapAndStartBridgeTokensViaCelerCircleBridge ||
+             selector == kLiFiSwapAndStartBridgeTokensViaCelerIM ||
+             selector == kLiFiSwapAndStartBridgeTokensViaXDaiBridge ||
+             selector == kLiFiSwapAndStartBridgeTokensViaHop ||
+             selector == kLiFiSwapAndStartBridgeTokensViaHyphen ||
+             selector == kLiFiSwapAndStartBridgeTokensViaLIFuel ||
+             selector == kLiFiSwapAndStartBridgeTokensViaMayan ||
+             selector == kLiFiSwapAndStartBridgeTokensViaMultichain ||
+             selector == kLiFiSwapAndStartBridgeTokensViaOmniBridge ||
+             selector == kLiFiSwapAndStartBridgeTokensViaOptimismBridge ||
+             selector == kLiFiSwapAndStartBridgeTokensViaPolygonBridge ||
+             selector == kLiFiSwapAndStartBridgeTokensViaSquid ||
+             selector == kLiFiSwapAndStartBridgeTokensViaStargate ||
+             selector == kLiFiSwapAndStartBridgeTokensViaStargateV2 ||
+             selector == kLiFiSwapAndStartBridgeTokensViaSymbiosis ||
+             selector == kLiFiSwapAndStartBridgeTokensViaThorSwap) {
+    // The following block handles decoding of calldata for LiFi swap orders
+    // that involve bridging assets to other chains.
+    //
+    // Function:
+    // function((bytes32 transactionId,
+    //           string bridge,
+    //           string integrator,
+    //           address referrer,
+    //           address sendingAssetId,
+    //           address receiver,
+    //           uint256 minAmount,
+    //           uint256 destinationChainId,
+    //           bool hasSourceSwaps,
+    //           bool hasDestinationCall) bridgeData,
+    //          (address callTo,
+    //           address approveTo,
+    //           address sendingAssetId,
+    //           address receivingAssetId,
+    //           uint256 fromAmount,
+    //           bytes callData,
+    //           bool requiresDeposit)[] swapData)
+    auto type =
+        eth_abi::Tuple()
+            .AddTupleType(MakeLiFiBridgeDataType())
+            .AddTupleType(
+                eth_abi::Array().SetArrayType(MakeLiFiSwapDataType()).build())
+            .build();
+    auto decoded = ABIDecode(type, calldata);
+    if (!decoded) {
+      return std::nullopt;
+    }
+
+    CHECK_EQ(2u, decoded.value().size());
+
+    auto bridge_data = LiFiBridgeDataDecode(decoded.value()[0].GetList());
+    if (!bridge_data) {
+      return std::nullopt;
+    }
+
+    auto swap_data = LiFiSwapDataDecode(decoded.value()[1].GetList());
+    if (!swap_data) {
+      return std::nullopt;
+    }
+
+    auto swap_info = mojom::SwapInfo::New();
+    swap_info->from_coin = mojom::CoinType::ETH;
+    // from_chain_id is filled in by the caller.
+    swap_info->from_asset = swap_data->sending_asset_id;
+    swap_info->from_amount = swap_data->from_amount;
+    swap_info->to_coin = bridge_data->destination_coin;
+    swap_info->to_chain_id = bridge_data->destination_chain_id;
+    // to_asset and to_amount cannot be reliably determined.
+    swap_info->to_asset = "";
+    swap_info->to_amount = "";
+    swap_info->receiver = bridge_data->receiver;
+    swap_info->provider = "lifi";
+
+    return std::make_tuple(mojom::TransactionType::ETHSwap,
+                           std::vector<std::string>{},
+                           std::vector<std::string>{}, std::move(swap_info));
+  } else if (selector == kLiFiStartBridgeTokensViaAcross ||
+             selector == kLiFiStartBridgeTokensViaAllBridge ||
+             selector == kLiFiStartBridgeTokensViaAmarok ||
+             selector == kLiFiStartBridgeTokensViaArbitrumBridge ||
+             selector == kLiFiStartBridgeTokensViaCBridge ||
+             selector == kLiFiStartBridgeTokensViaCelerCircleBridge ||
+             selector == kLiFiStartBridgeTokensViaCelerIM ||
+             selector == kLiFiStartBridgeTokensViaXDaiBridge ||
+             selector == kLiFiStartBridgeTokensViaHop ||
+             selector == kLiFiStartBridgeTokensViaHyphen ||
+             selector == kLiFiStartBridgeTokensViaLIFuel ||
+             selector == kLiFiStartBridgeTokensViaMayan ||
+             selector == kLiFiStartBridgeTokensViaMultichain ||
+             selector == kLiFiStartBridgeTokensViaOmniBridge ||
+             selector == kLiFiStartBridgeTokensViaOptimismBridge ||
+             selector == kLiFiStartBridgeTokensViaPolygonBridge ||
+             selector == kLiFiStartBridgeTokensViaSquid ||
+             selector == kLiFiStartBridgeTokensViaStargate ||
+             selector == kLiFiStartBridgeTokensViaStargateV2 ||
+             selector == kLiFiStartBridgeTokensViaSymbiosis ||
+             selector == kLiFiStartBridgeTokensViaThorSwap) {
+    // The following block handles decoding of calldata for LiFi orders that
+    // involve bridging assets to other chains.
+    //
+    // Function:
+    // function((bytes32 transactionId,
+    //           string bridge,
+    //           string integrator,
+    //           address referrer,
+    //           address sendingAssetId,
+    //           address receiver,
+    //           uint256 minAmount,
+    //           uint256 destinationChainId,
+    //           bool hasSourceSwaps,
+    //           bool hasDestinationCall)) bridgeData)
+    auto type = eth_abi::Tuple().AddTupleType(MakeLiFiBridgeDataType()).build();
+    auto decoded = ABIDecode(type, calldata);
+    if (!decoded) {
+      return std::nullopt;
+    }
+
+    CHECK_EQ(decoded.value().size(), 1u);
+
+    auto bridge_data = LiFiBridgeDataDecode(decoded.value()[0].GetList());
+    if (!bridge_data) {
+      return std::nullopt;
+    }
+
+    auto swap_info = mojom::SwapInfo::New();
+    swap_info->from_coin = mojom::CoinType::ETH;
+    // from_chain_id is filled in by the caller.
+    swap_info->from_asset = bridge_data->sending_asset_id;
+    swap_info->from_amount = bridge_data->min_amount;
+    swap_info->to_coin = bridge_data->destination_coin;
+    swap_info->to_chain_id = bridge_data->destination_chain_id;
+    // to_asset and to_amount are unavailable.
+    swap_info->receiver = bridge_data->receiver;
+    swap_info->provider = "lifi";
+
+    return std::make_tuple(mojom::TransactionType::ETHSwap,
+                           std::vector<std::string>{},
+                           std::vector<std::string>{}, std::move(swap_info));
   } else if (selector == kERC1155SafeTransferFromSelector) {
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Address())
@@ -715,11 +1054,12 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
         std::vector<std::string>{
             decoded.value()[0].GetString(), decoded.value()[1].GetString(),
             decoded.value()[2].GetString(), decoded.value()[3].GetString(),
-            decoded.value()[4].GetString()});
+            decoded.value()[4].GetString()},
+        nullptr);
   } else {
     return std::make_tuple(mojom::TransactionType::Other,
                            std::vector<std::string>(),
-                           std::vector<std::string>());
+                           std::vector<std::string>(), nullptr);
   }
 }
 

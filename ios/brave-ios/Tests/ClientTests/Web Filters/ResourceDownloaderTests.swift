@@ -11,7 +11,7 @@ class ResourceDownloaderTests: XCTestCase {
   func testSuccessfulResourceDownload() throws {
     // Given
     let expectation = XCTestExpectation(description: "Test downloading resources")
-    let resource = BraveS3Resource.adBlockRules
+    let resource = BraveS3Resource.slimList
     let firstDownloader = ResourceDownloader<BraveS3Resource>(
       networkManager: NetworkManager.makeNetworkManager(
         for: [resource],
@@ -35,8 +35,10 @@ class ResourceDownloaderTests: XCTestCase {
 
         // Then
         // We get a download result
-        XCTAssertNotNil(try resource.downloadedData())
-        XCTAssertNotNil(try resource.createdEtag())
+        let downloadedData = try await resource.downloadedData()
+        let createdETag = try await resource.createdEtag()
+        XCTAssertNotNil(downloadedData)
+        XCTAssertNotNil(createdETag)
         XCTAssertTrue(result.isModified)
 
         // When
@@ -45,8 +47,10 @@ class ResourceDownloaderTests: XCTestCase {
 
         // Then
         // We get a non modified result
-        XCTAssertNotNil(try resource.downloadedData())
-        XCTAssertNotNil(try resource.createdEtag())
+        let downloadedData2 = try await resource.downloadedData()
+        let createdETag2 = try await resource.createdEtag()
+        XCTAssertNotNil(downloadedData2)
+        XCTAssertNotNil(createdETag2)
         XCTAssertFalse(result2.isModified)
         // Same download date
         XCTAssertEqual(result2.date, result.date)
@@ -63,7 +67,7 @@ class ResourceDownloaderTests: XCTestCase {
   func testFailedResourceDownload() throws {
     // Given
     let expectation = XCTestExpectation(description: "Test downloading resource")
-    let resource = BraveS3Resource.adBlockRules
+    let resource = BraveS3Resource.slimList
     let downloader = ResourceDownloader<BraveS3Resource>(
       networkManager: NetworkManager.makeNetworkManager(
         for: [resource],

@@ -107,8 +107,6 @@ public class BraveToolbarManager extends ToolbarManager {
     private IncognitoStateProvider mIncognitoStateProvider;
     private TabGroupUi mTabGroupUi;
     private BottomSheetController mBottomSheetController;
-    private ActivityLifecycleDispatcher mActivityLifecycleDispatcher;
-    private Supplier<Boolean> mIsWarmOnResumeSupplier;
     private TabContentManager mTabContentManager;
     private TabCreatorManager mTabCreatorManager;
     private SnackbarManager mSnackbarManager;
@@ -169,7 +167,6 @@ public class BraveToolbarManager extends ToolbarManager {
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             @NonNull Supplier<Tab> startSurfaceParentTabSupplier,
             @NonNull BottomSheetController bottomSheetController,
-            @NonNull Supplier<Boolean> isWarmOnResumeSupplier,
             @NonNull TabContentManager tabContentManager,
             @NonNull TabCreatorManager tabCreatorManager,
             @NonNull SnackbarManager snackbarManager,
@@ -221,7 +218,6 @@ public class BraveToolbarManager extends ToolbarManager {
                 activityLifecycleDispatcher,
                 startSurfaceParentTabSupplier,
                 bottomSheetController,
-                isWarmOnResumeSupplier,
                 tabContentManager,
                 tabCreatorManager,
                 snackbarManager,
@@ -287,8 +283,6 @@ public class BraveToolbarManager extends ToolbarManager {
                                     mScrimCoordinator,
                                     mOmniboxFocusStateSupplier,
                                     mBottomSheetController,
-                                    mActivityLifecycleDispatcher,
-                                    mIsWarmOnResumeSupplier,
                                     mTabModelSelector,
                                     mTabContentManager,
                                     mCompositorViewHolder,

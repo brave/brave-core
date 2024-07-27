@@ -21,7 +21,7 @@ import {
   DAppSupportedPrimaryChains,
   SupportedTestNetworks
 } from '../../../constants/types'
-import { DAppConnectionOptionsType } from './dapp-connection-settings'
+import { DAppConnectionOptionsType } from 'components/brave_wallet_ui/constants/types'
 
 // Components
 import { ChangeNetworkButton } from './change-network-button'

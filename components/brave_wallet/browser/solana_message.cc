@@ -704,6 +704,17 @@ bool SolanaMessage::UsesDurableNonce() const {
   return true;
 }
 
+bool SolanaMessage::ContainsCompressedNftTransfer() const {
+  for (const auto& instruction : instructions_) {
+    if (solana_ins_data_decoder::IsCompressedNftTransferInstruction(
+            instruction.data(), instruction.GetProgramId())) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 bool SolanaMessage::UsesPriorityFee() const {
   for (const auto& instruction : instructions_) {
     auto instruction_type =

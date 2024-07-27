@@ -62,7 +62,7 @@ export default function SearchBox() {
     : getLocale('searchNonBravePlaceholder')
   const searchInput = React.useRef<HTMLElement>()
   return <Container className={searchBoxClass}>
-    <SearchInput tabIndex={0} type="text" ref={searchInput} value={query} onInput={e => setQuery(e.value)} placeholder={placeholderText}>
+    <SearchInput tabIndex={1} type="text" ref={searchInput} value={query} onInput={e => setQuery(e.value)} placeholder={placeholderText}>
       <Flex slot="left-icon" align='center'>
         <EnginePicker />
       </Flex>

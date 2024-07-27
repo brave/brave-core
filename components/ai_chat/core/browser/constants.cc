@@ -81,6 +81,9 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"feedbackPremiumNote", IDS_CHAT_UI_FEEDBACK_PREMIUM_NOTE},
       {"submitButtonLabel", IDS_CHAT_UI_SUBMIT_BUTTON_LABEL},
       {"cancelButtonLabel", IDS_CHAT_UI_CANCEL_BUTTON_LABEL},
+      {"saveButtonLabel", IDS_CHAT_UI_SAVE_BUTTON_LABEL},
+      {"editedLabel", IDS_CHAT_UI_EDITED_LABEL},
+      {"editButtonLabel", IDS_CHAT_UI_EDIT_BUTTON_LABEL},
       {"optionNotHelpful", IDS_CHAT_UI_OPTION_NOT_HELPFUL},
       {"optionIncorrect", IDS_CHAT_UI_OPTION_INCORRECT},
       {"optionUnsafeHarmful", IDS_CHAT_UI_OPTION_UNSAFE_HARMFUL},
@@ -146,7 +149,8 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"maybeLaterLabel", IDS_AI_CHAT_MAYBE_LATER_LABEL},
       {"toolsMenuButtonLabel", IDS_AI_CHAT_LEO_TOOLS_BUTTON_LABEL},
       {"useMicButtonLabel", IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL},
-      {"menuTitleCustomModels", IDS_AI_CHAT_MENU_TITLE_CUSTOM_MODELS}};
+      {"menuTitleCustomModels", IDS_AI_CHAT_MENU_TITLE_CUSTOM_MODELS},
+      {"startConversationLabel", IDS_AI_CHAT_START_CONVERSATION_LABEL}};
 
   return kLocalizedStrings;
 }

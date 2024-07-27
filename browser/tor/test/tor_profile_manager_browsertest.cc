@@ -15,7 +15,6 @@
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/brave_switches.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/mock_tor_launcher_factory.h"
 #include "brave/components/tor/tor_constants.h"
 #include "brave/components/tor/tor_launcher_observer.h"
@@ -46,10 +45,6 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_util.h"
 #include "extensions/common/extension_id.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/browser/ipfs/ipfs_service_factory.h"
 #endif
 
 #include <algorithm>
@@ -201,9 +196,6 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
   EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(tor_profile),
             nullptr);
   EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(tor_profile), nullptr);
-#if BUILDFLAG(ENABLE_IPFS)
-  EXPECT_EQ(ipfs::IpfsServiceFactory::GetForContext(tor_profile), nullptr);
-#endif
   // Ambient Auth should be disabled
   EXPECT_FALSE(AmbientAuthenticationTestHelper::IsAmbientAuthAllowedForProfile(
       tor_profile));

@@ -196,7 +196,7 @@ class SettingsViewController: TableViewController {
     ]
 
     let shouldShowVPNSection = { () -> Bool in
-      if !VPNProductInfo.isComplete || Preferences.VPN.vpnSettingHeaderWasDismissed.value {
+      if !BraveVPNProductInfo.isComplete || Preferences.VPN.vpnSettingHeaderWasDismissed.value {
         return false
       }
 
@@ -223,7 +223,7 @@ class SettingsViewController: TableViewController {
   // MARK: - Sections
 
   private lazy var enableBraveVPNSection: Static.Section = {
-    let header = EnableVPNSettingHeader()
+    let header = BraveVPNEnableSettingsHeader()
     header.enableVPNTapped = { [weak self] in
       self?.enableVPNTapped()
     }
@@ -277,10 +277,8 @@ class SettingsViewController: TableViewController {
                   profile: self.profile,
                   tabManager: self.tabManager,
                   feedDataSource: self.feedDataSource,
-                  historyAPI: self.historyAPI,
-                  p3aUtilities: self.p3aUtilities,
-                  deAmpPrefs: deAmpPrefs,
                   debounceService: DebounceServiceFactory.get(privateMode: false),
+                  braveCore: braveCore,
                   clearDataCallback: { [weak self] isLoading, isHistoryCleared in
                     guard let view = self?.navigationController?.view, view.window != nil else {
                       assertionFailure()
@@ -766,7 +764,7 @@ class SettingsViewController: TableViewController {
 
         guard let vcToShow = vc else { return }
 
-        if VPNProductInfo.isComplete {
+        if BraveVPNProductInfo.isComplete {
           self.navigationController?.pushViewController(vcToShow, animated: true)
         } else {
           let alert = UIAlertController(

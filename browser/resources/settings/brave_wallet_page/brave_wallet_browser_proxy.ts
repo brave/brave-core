@@ -50,7 +50,6 @@ export interface BraveWalletBrowserProxy {
   getSolanaProviderOptions(): Promise<SolanaProvider[]>
   getTransactionSimulationOptInStatusOptions(): Promise<Option[]>
   isNativeWalletEnabled(): Promise<boolean>
-  isNftPinningEnabled(): Promise<boolean>
   isBitcoinEnabled(): Promise<boolean>
   getAutoLockMinutes(): Promise<number>
   getNetworksList(coin: number): Promise<NetworksList>
@@ -62,8 +61,6 @@ export interface BraveWalletBrowserProxy {
   removeHiddenNetwork(chainId: string, coin: number): Promise<boolean>
   setDefaultNetwork(chainId: string, coin: number): Promise<boolean>
   resetTransactionInfo (): void
-  getPinnedNftCount(): Promise<number>
-  clearPinnedNft(): Promise<boolean>
   isTransactionSimulationsFeatureEnabled(): Promise<boolean>
   getWalletInPrivateWindowsEnabled(): Promise<boolean>
   setWalletInPrivateWindowsEnabled(enabled: boolean): Promise<boolean>
@@ -130,9 +127,6 @@ export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
     return sendWithPromise('getSolanaProviderOptions')
   }
 
-  isNftPinningEnabled() {
-    return sendWithPromise('isNftPinningEnabled')
-  }
 
   isBitcoinEnabled() {
     return sendWithPromise('isBitcoinEnabled')
@@ -140,14 +134,6 @@ export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
 
   isZCashEnabled() {
     return sendWithPromise('isZCashEnabled')
-  }
-
-  getPinnedNftCount() {
-    return sendWithPromise('getPinnedNftCount')
-  }
-
-  clearPinnedNft() {
-    return sendWithPromise('clearPinnedNft')
   }
 
   getTransactionSimulationOptInStatusOptions() {

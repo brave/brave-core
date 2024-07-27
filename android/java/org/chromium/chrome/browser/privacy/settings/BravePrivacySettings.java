@@ -76,7 +76,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
 
     private static final String PREF_DE_AMP = "de_amp";
     private static final String PREF_DEBOUNCE = "debounce";
-    private static final String PREF_IPFS_GATEWAY = "ipfs_gateway";
     private static final String PREF_BLOCK_COOKIE_CONSENT_NOTICES = "block_cookie_consent_notices";
     private static final String PREF_BLOCK_SWITCH_TO_APP_NOTICES = "block_switch_to_app_notices";
     private static final String PREF_AD_BLOCK = "ad_block";
@@ -143,7 +142,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         PREF_ENS,
         PREF_SNS,
         PREF_REQUEST_OTR,
-        PREF_IPFS_GATEWAY,
         PREF_SECURE_DNS,
         PREF_BLOCK_COOKIE_CONSENT_NOTICES,
         PREF_BLOCK_SWITCH_TO_APP_NOTICES,
@@ -181,7 +179,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private ChromeSwitchPreference mSendP3A;
     private ChromeSwitchPreference mSendCrashReports;
     private ChromeSwitchPreference mBraveStatsUsagePing;
-    private ChromeSwitchPreference mIpfsGatewayPref;
     private ChromeSwitchPreference mBlockCookieConsentNoticesPref;
     private ChromeSwitchPreference mBlockSwitchToAppNoticesPref;
     private PreferenceCategory mSocialBlockingCategory;
@@ -258,9 +255,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
 
         mUstoppableDomains = (Preference) findPreference(PREF_UNSTOPPABLE_DOMAINS);
         mUstoppableDomains.setOnPreferenceChangeListener(this);
-
-        mIpfsGatewayPref = (ChromeSwitchPreference) findPreference(PREF_IPFS_GATEWAY);
-        mIpfsGatewayPref.setOnPreferenceChangeListener(this);
 
         mBlockCookieConsentNoticesPref =
                 (ChromeSwitchPreference) findPreference(PREF_BLOCK_COOKIE_CONSENT_NOTICES);
@@ -442,8 +436,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         } else if (PREF_DEBOUNCE.equals(key)) {
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(BravePref.DEBOUNCE_ENABLED, (boolean) newValue);
-        } else if (PREF_IPFS_GATEWAY.equals(key)) {
-            BravePrivacySettingsIPFSUtils.setIPFSGatewayPref((boolean) newValue);
         } else if (PREF_BLOCK_COOKIE_CONSENT_NOTICES.equals(key)) {
             if (mFilterListAndroidHandler != null) {
                 mFilterListAndroidHandler.enableFilter(
@@ -610,9 +602,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mHttpsFirstModePref.setChecked(
                 UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                         .getBoolean(Pref.HTTPS_ONLY_MODE_ENABLED));
-
-        // IPFS Gateway
-        mIpfsGatewayPref.setChecked(BravePrivacySettingsIPFSUtils.getIPFSGatewayPref());
 
         if (blockAdTrackersPref.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
             mAdsTrakersBlockPref.setCheckedIndex(0);

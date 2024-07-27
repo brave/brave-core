@@ -125,7 +125,12 @@ class HistoryModel: NSObject, ObservableObject {
         sectionDetails.updateValue([], forKey: key)
       }
 
-      await api?.search(withQuery: query, maxCount: maxFetchCount).forEach {
+      let options = HistorySearchOptions(
+        maxCount: maxFetchCount,
+        duplicateHandling: (query ?? "").isEmpty ? .removePerDay : .removeAll
+      )
+
+      await api?.search(withQuery: query, options: options).forEach {
         [weak self] historyItem in
         guard let self = self else {
           return
@@ -149,15 +154,19 @@ class HistoryModel: NSObject, ObservableObject {
     }
   }
 
-  func delete(item: HistoryNode, searchQuery: String?) {
-    api?.removeHistory(item)
+  func delete(nodes: [HistoryNode]) {
+    api?.removeHistory(for: nodes)
 
     // Removing a history item should remove its corresponded Recently Closed Item
-    RecentlyClosed.remove(with: item.url.absoluteString)
+    for node in nodes {
+      RecentlyClosed.remove(with: node.url.absoluteString)
+    }
 
     do {
       let screenTimeHistory = try STWebHistory(bundleIdentifier: Bundle.main.bundleIdentifier!)
-      screenTimeHistory.deleteHistory(for: item.url)
+      for node in nodes {
+        screenTimeHistory.deleteHistory(for: node.url)
+      }
     } catch {
       assertionFailure("STWebHistory could not be initialized: \(error)")
     }

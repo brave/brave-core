@@ -28,32 +28,39 @@ class SearchEnginesTests: XCTestCase {
     Preferences.Search.defaultPrivateEngineName.reset()
   }
 
-  func testIncludesExpectedEngines() {
+  func testIncludesExpectedEngines() async {
     // Verify that the set of shipped engines includes the expected subset.
-    let profile = MockProfile()
-    let engines = SearchEngines(files: profile.files).orderedEngines
-    XCTAssertTrue((engines?.count)! >= expectedEngineNames.count)
+    let engines = SearchEngines()
+    await engines.loadSearchEngines()
+    let orderedEngines = engines.orderedEngines
+    XCTAssertTrue(orderedEngines.count >= expectedEngineNames.count)
 
     for engineName in expectedEngineNames {
-      XCTAssertTrue(((engines?.filter { engine in engine.shortName == engineName })?.count)! > 0)
+      XCTAssertTrue(orderedEngines.filter { engine in engine.shortName == engineName }.count > 0)
     }
   }
 
-  func testDefaultEngineOnStartup() {
+  func testDefaultEngineOnStartup() async throws {
     // If this is our first run, Google should be first for the en locale.
-    let profile = MockProfile()
-    let engines = SearchEngines(files: profile.files, locale: Locale(identifier: "pl_PL"))
-    XCTAssertEqual(engines.defaultEngine(forType: .standard).shortName, defaultSearchEngineName)
+    let engines = SearchEngines(locale: Locale(identifier: "pl_PL"))
+    await engines.loadSearchEngines()
+    XCTAssertEqual(
+      try XCTUnwrap(engines.defaultEngine(forType: .standard)).shortName,
+      defaultSearchEngineName
+    )
     // The default is `DefaultSearchEngineName` for both regular and private browsing.
     // Different search engine options might apply to certain regions.
     // Default locale for running tests should be en_US.
-    XCTAssertEqual(engines.defaultEngine(forType: .privateMode).shortName, defaultSearchEngineName)
+    XCTAssertEqual(
+      try XCTUnwrap(engines.defaultEngine(forType: .privateMode)).shortName,
+      defaultSearchEngineName
+    )
 
     let orderedEngines = engines.orderedEngines.compactMap { $0.shortName }
     XCTAssert(orderedEngines.contains(defaultSearchEngineName))
   }
 
-  func testAddingAndDeletingCustomEngines() {
+  func testAddingAndDeletingCustomEngines() async throws {
     let testEngine = OpenSearchEngine(
       engineID: "ATester",
       shortName: "ATester",
@@ -62,45 +69,46 @@ class SearchEnginesTests: XCTestCase {
       suggestTemplate: nil,
       isCustomEngine: true
     )
-    let profile = MockProfile()
-    let engines = SearchEngines(files: profile.files)
-    try! engines.addSearchEngine(testEngine)
+    let engines = SearchEngines()
+    await engines.loadSearchEngines()
+    try await engines.addSearchEngine(testEngine)
 
     XCTAssertEqual(engines.orderedEngines[1].engineID, testEngine.engineID)
 
-    try! engines.deleteCustomEngine(testEngine)
+    try await engines.deleteCustomEngine(testEngine)
     let deleted = engines.orderedEngines.filter { $0 == testEngine }
     XCTAssertEqual(deleted, [])
   }
 
-  func testDefaultEngine() {
-    let profile = MockProfile()
-    let engines = SearchEngines(files: profile.files)
+  func testDefaultEngine() async {
+    let engines = SearchEngines()
+    await engines.loadSearchEngines()
     let engineSet = engines.orderedEngines
 
-    engines.updateDefaultEngine((engineSet?[0])!.shortName, forType: .standard)
-    XCTAssertTrue(engines.isEngineDefault((engineSet?[0])!, type: .standard))
-    XCTAssertFalse(engines.isEngineDefault((engineSet?[1])!, type: .standard))
+    engines.updateDefaultEngine(engineSet[0].shortName, forType: .standard)
+    XCTAssertTrue(engines.isEngineDefault(engineSet[0], type: .standard))
+    XCTAssertFalse(engines.isEngineDefault(engineSet[1], type: .standard))
     // The first ordered engine is the default.
-    XCTAssertEqual(engines.orderedEngines[0].shortName, engineSet?[0].shortName)
+    XCTAssertEqual(engines.orderedEngines[0].shortName, engineSet[0].shortName)
 
-    engines.updateDefaultEngine((engineSet?[1])!.shortName, forType: .standard)
-    XCTAssertFalse(engines.isEngineDefault((engineSet?[0])!, type: .standard))
-    XCTAssertTrue(engines.isEngineDefault((engineSet?[1])!, type: .standard))
+    engines.updateDefaultEngine(engineSet[1].shortName, forType: .standard)
+    XCTAssertFalse(engines.isEngineDefault(engineSet[0], type: .standard))
+    XCTAssertTrue(engines.isEngineDefault(engineSet[1], type: .standard))
     // The first ordered engine is the default.
-    XCTAssertEqual(engines.orderedEngines[0].shortName, engineSet?[1].shortName)
+    XCTAssertEqual(engines.orderedEngines[0].shortName, engineSet[1].shortName)
 
-    let engines2 = SearchEngines(files: profile.files)
+    let engines2 = SearchEngines()
+    await engines2.loadSearchEngines()
     // The default engine should have been persisted.
-    XCTAssertTrue(engines2.isEngineDefault((engineSet?[1])!, type: .standard))
+    XCTAssertTrue(engines2.isEngineDefault(engineSet[1], type: .standard))
     // The first ordered engine is the default.
-    XCTAssertEqual(engines.orderedEngines[0].shortName, engineSet?[1].shortName)
+    XCTAssertEqual(engines.orderedEngines[0].shortName, engineSet[1].shortName)
   }
 
-  func testSetPrivateDefaultEngine() {
-    let profile = MockProfile()
-    let engines = SearchEngines(files: profile.files)
-    let engineSet = engines.orderedEngines!
+  func testSetPrivateDefaultEngine() async {
+    let engines = SearchEngines()
+    await engines.loadSearchEngines()
+    let engineSet = engines.orderedEngines
 
     let firstEngine = engineSet[0]
     let secondEngine = engineSet[1]
@@ -110,9 +118,9 @@ class SearchEnginesTests: XCTestCase {
     XCTAssertFalse(engines.isEngineDefault(secondEngine, type: .privateMode))
   }
 
-  func testOrderedEngines() {
-    let profile = MockProfile()
-    let engines = SearchEngines(files: profile.files)
+  func testOrderedEngines() async {
+    let engines = SearchEngines()
+    await engines.loadSearchEngines()
 
     engines.orderedEngines = [
       expectedEngineNames[4], expectedEngineNames[2], expectedEngineNames[0],
@@ -129,69 +137,70 @@ class SearchEnginesTests: XCTestCase {
     XCTAssertEqual(engines.orderedEngines[1].shortName, expectedEngineNames[2])
     XCTAssertEqual(engines.orderedEngines[2].shortName, expectedEngineNames[0])
 
-    let engines2 = SearchEngines(files: profile.files)
+    let engines2 = SearchEngines()
+    await engines2.loadSearchEngines()
     // The ordering should have been persisted.
     XCTAssertEqual(engines2.orderedEngines[0].shortName, expectedEngineNames[4])
     XCTAssertEqual(engines2.orderedEngines[1].shortName, expectedEngineNames[2])
     XCTAssertEqual(engines2.orderedEngines[2].shortName, expectedEngineNames[0])
   }
 
-  func testQuickSearchEngines() {
-    let profile = MockProfile()
-    let engines = SearchEngines(files: profile.files)
+  func testQuickSearchEngines() async {
+    let engines = SearchEngines()
+    await engines.loadSearchEngines()
     let engineSet = engines.orderedEngines
 
     // You can't disable the default engine.
-    engines.updateDefaultEngine((engineSet?[1])!.shortName, forType: .standard)
-    engines.disableEngine((engineSet?[1])!, type: .standard)
-    XCTAssertTrue(engines.isEngineEnabled((engineSet?[1])!))
+    engines.updateDefaultEngine(engineSet[1].shortName, forType: .standard)
+    engines.disableEngine(engineSet[1], type: .standard)
+    XCTAssertTrue(engines.isEngineEnabled(engineSet[1]))
 
     // The default engine is included in the quick search engines.
     XCTAssertEqual(
       1,
-      engines.quickSearchEngines.filter { engine in engine.shortName == engineSet?[0].shortName }
+      engines.quickSearchEngines.filter { engine in engine.shortName == engineSet[0].shortName }
         .count
     )
 
     // Enable and disable work.
-    engines.enableEngine((engineSet?[0])!)
-    XCTAssertTrue(engines.isEngineEnabled((engineSet?[0])!))
+    engines.enableEngine(engineSet[0])
+    XCTAssertTrue(engines.isEngineEnabled(engineSet[0]))
     XCTAssertEqual(
       1,
-      engines.quickSearchEngines.filter { engine in engine.shortName == engineSet?[0].shortName }
+      engines.quickSearchEngines.filter { engine in engine.shortName == engineSet[0].shortName }
         .count
     )
 
-    engines.disableEngine((engineSet?[0])!, type: .standard)
-    XCTAssertFalse(engines.isEngineEnabled((engineSet?[0])!))
+    engines.disableEngine(engineSet[0], type: .standard)
+    XCTAssertFalse(engines.isEngineEnabled(engineSet[0]))
     XCTAssertEqual(
       0,
-      engines.quickSearchEngines.filter { engine in engine.shortName == engineSet?[0].shortName }
+      engines.quickSearchEngines.filter { engine in engine.shortName == engineSet[0].shortName }
         .count
     )
 
     // Setting the default engine enables it.
-    engines.updateDefaultEngine((engineSet?[0])!.shortName, forType: .standard)
-    XCTAssertTrue(engines.isEngineEnabled((engineSet?[1])!))
+    engines.updateDefaultEngine(engineSet[0].shortName, forType: .standard)
+    XCTAssertTrue(engines.isEngineEnabled(engineSet[1]))
 
     // Setting the order may change the default engine, which enables it.
-    engines.orderedEngines = [(engineSet?[2])!, (engineSet?[1])!, (engineSet?[0])!]
-    XCTAssertTrue(engines.isEngineEnabled((engineSet?[2])!))
+    engines.orderedEngines = [engineSet[2], engineSet[1], engineSet[0]]
+    XCTAssertTrue(engines.isEngineEnabled(engineSet[2]))
 
     // The enabling should be persisted.
-    engines.enableEngine((engineSet?[2])!)
-    engines.disableEngine((engineSet?[1])!, type: .standard)
-    engines.enableEngine((engineSet?[0])!)
+    engines.enableEngine(engineSet[2])
+    engines.disableEngine(engineSet[1], type: .standard)
+    engines.enableEngine(engineSet[0])
 
-    let engines2 = SearchEngines(files: profile.files)
-    XCTAssertTrue(engines2.isEngineEnabled((engineSet?[2])!))
-    XCTAssertFalse(engines2.isEngineEnabled((engineSet?[1])!))
-    XCTAssertTrue(engines2.isEngineEnabled((engineSet?[0])!))
+    let engines2 = SearchEngines()
+    await engines2.loadSearchEngines()
+    XCTAssertTrue(engines2.isEngineEnabled(engineSet[2]))
+    XCTAssertFalse(engines2.isEngineEnabled(engineSet[1]))
+    XCTAssertTrue(engines2.isEngineEnabled(engineSet[0]))
   }
 
   func testSearchSuggestionSettings() {
-    let profile = MockProfile()
-    let engines = SearchEngines(files: profile.files)
+    let engines = SearchEngines()
 
     // By default, you shouldnt see search suggestions as this sends all users searches to their selected search
     // engine
@@ -200,15 +209,16 @@ class SearchEnginesTests: XCTestCase {
     // Setting should be persisted.
     engines.shouldShowSearchSuggestions = true
 
-    let engines2 = SearchEngines(files: profile.files)
+    let engines2 = SearchEngines()
     XCTAssertTrue(engines2.shouldShowSearchSuggestions)
   }
 
-  func testGetOrderedEngines() {
-    // setup an existing search engine in the profile
+  func testGetOrderedEngines() async {
     let profile = MockProfile()
+    // setup an existing search engine in the profile
     profile.prefs.setObject(["Google"], forKey: "search.orderedEngineNames")
-    let engines = SearchEngines(files: profile.files, locale: Locale(identifier: "pl_PL"))
+    let engines = SearchEngines(locale: Locale(identifier: "pl_PL"))
+    await engines.loadSearchEngines()
     XCTAssert(engines.orderedEngines.count > 1, "There should be more than one search engine")
     // default engine should be on second place if a priority engine is present.
     XCTAssertEqual(
@@ -218,10 +228,11 @@ class SearchEnginesTests: XCTestCase {
     )
   }
 
-  func testSearchEngineParamsNewUser() {
+  func testSearchEngineParamsNewUser() async {
     Preferences.General.isFirstLaunch.value = true
 
     let profile = MockProfile()
+    await profile.searchEngines.loadSearchEngines()
 
     expectddgClientName(locales: ["de-DE"], expectedClientName: "bravened", profile: profile)
     expectddgClientName(
@@ -242,10 +253,11 @@ class SearchEnginesTests: XCTestCase {
     )
   }
 
-  func testSearchEngineParamsExistingUser() {
+  func testSearchEngineParamsExistingUser() async {
     Preferences.General.isFirstLaunch.value = false
 
     let profile = MockProfile()
+    await profile.searchEngines.loadSearchEngines()
     expectddgClientName(locales: ["de-DE"], expectedClientName: "bravened", profile: profile)
     expectddgClientName(
       locales: ["en-IE", "en-AU", "en-NZ"],

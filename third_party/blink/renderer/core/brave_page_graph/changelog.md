@@ -3,6 +3,29 @@
 This document shows all the changes and improvements made in each version of
 [Page Graph](https://github.com/brave/brave-browser/wiki/PageGraph).
 
+## Version 0.7.2
+
+Reworked how scripts are tracked in the graph. The actor type hierarchy
+now looks like this:
+
+```
+NodeActor (abstract class)
+  - NodeScript (abstract class)
+    * NodeScriptLocal: A script thats executing in this v8 Isolate (i.e., 99%
+                       of scripts).
+    * NodeScriptRemote: A script thats executing in a different v8 Isolate.
+                        PageGraph will only ever see these if a script
+                        in another isolate injecting a script into this
+                        document (e.g., Extension content scripts, puppeteer
+                        scripts).
+  - NodeParser: The parser node, one per document, no changes
+  - NodeUnknown: New type used for explicitly recording when we can't find
+                 a script that must be running. These are error cases,
+                 but we use this type to explicitly identify the error
+                 cases (instead of mixing them in among the correct
+                 attributions).
+```
+
 ## Version 0.7.1
 
 Add `EdgeAttributeSet` instances to capture attributes that were created

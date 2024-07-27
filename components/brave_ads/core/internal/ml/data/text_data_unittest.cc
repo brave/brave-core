@@ -5,13 +5,13 @@
 
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::ml {
 
-class BraveAdsTextDataTest : public UnitTestBase {};
+class BraveAdsTextDataTest : public test::TestBase {};
 
 TEST_F(BraveAdsTextDataTest, TextDataInitialization) {
   // Arrange

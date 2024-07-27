@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/fil_tx_meta.h"
 #include "brave/components/brave_wallet/browser/fil_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -40,6 +41,11 @@ class FilNonceTrackerUnitTest : public testing::Test {
   void SetUp() override {
     RegisterProfilePrefs(prefs_.registry());
     RegisterProfilePrefsForMigration(prefs_.registry());
+
+    network_manager_ = std::make_unique<NetworkManager>(GetPrefs());
+    json_rpc_service_ = std::make_unique<JsonRpcService>(
+        shared_url_loader_factory(), network_manager_.get(), GetPrefs(),
+        nullptr);
   }
 
   PrefService* GetPrefs() { return &prefs_; }
@@ -53,13 +59,13 @@ class FilNonceTrackerUnitTest : public testing::Test {
     url_loader_factory_.ClearResponses();
 
     url_loader_factory_.AddResponse(
-        brave_wallet::GetNetworkURL(GetPrefs(), mojom::kLocalhostChainId,
-                                    mojom::CoinType::FIL)
+        network_manager_
+            ->GetNetworkURL(mojom::kLocalhostChainId, mojom::CoinType::FIL)
             .spec(),
         GetResultString());
     url_loader_factory_.AddResponse(
-        brave_wallet::GetNetworkURL(GetPrefs(), mojom::kFilecoinMainnet,
-                                    mojom::CoinType::FIL)
+        network_manager_
+            ->GetNetworkURL(mojom::kFilecoinMainnet, mojom::CoinType::FIL)
             .spec(),
         GetResultString());
   }
@@ -82,6 +88,8 @@ class FilNonceTrackerUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  JsonRpcService* json_rpc_service() { return json_rpc_service_.get(); }
+
  private:
   std::string GetResultString() const {
     return "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":" +
@@ -92,13 +100,13 @@ class FilNonceTrackerUnitTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  std::unique_ptr<NetworkManager> network_manager_;
+  std::unique_ptr<JsonRpcService> json_rpc_service_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
 TEST_F(FilNonceTrackerUnitTest, GetNonce) {
-  JsonRpcService service(shared_url_loader_factory(), GetPrefs());
-
   base::ScopedTempDir temp_dir;
   scoped_refptr<value_store::TestValueStoreFactory> factory =
       GetTestValueStoreFactory(temp_dir);
@@ -108,7 +116,7 @@ TEST_F(FilNonceTrackerUnitTest, GetNonce) {
       std::make_unique<AccountResolverDelegateForTest>();
   FilTxStateManager tx_state_manager(GetPrefs(), delegate.get(),
                                      account_resolver_delegate.get());
-  FilNonceTracker nonce_tracker(&tx_state_manager, &service);
+  FilNonceTracker nonce_tracker(&tx_state_manager, json_rpc_service());
 
   SetTransactionCount(2);
 

@@ -30,13 +30,8 @@ const defaultState: WalletState = {
   isWalletCreated: false,
   isWalletLocked: true,
   addUserAssetError: false,
-  activeOrigin: {
-    eTldPlusOne: '',
-    originSpec: ''
-  },
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: true,
-  isNftPinningFeatureEnabled: false,
   isAnkrBalancesFeatureEnabled: false,
   isRefreshingNetworksAndTokens: false
 }
@@ -75,13 +70,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
     name: 'wallet',
     initialState,
     reducers: {
-      activeOriginChanged(
-        state: WalletState,
-        { payload }: PayloadAction<BraveWallet.OriginInfo>
-      ) {
-        state.activeOrigin = payload
-      },
-
       initialized(
         state: WalletState,
         { payload }: PayloadAction<WalletInitializedPayload>
@@ -92,8 +80,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isBitcoinImportEnabled = payload.walletInfo.isBitcoinImportEnabled
         state.isZCashEnabled = payload.walletInfo.isZCashEnabled
         state.isWalletLocked = payload.walletInfo.isWalletLocked
-        state.isNftPinningFeatureEnabled =
-          payload.walletInfo.isNftPinningFeatureEnabled
         state.isAnkrBalancesFeatureEnabled =
           payload.walletInfo.isAnkrBalancesFeatureEnabled
       },

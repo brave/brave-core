@@ -8,6 +8,7 @@
 /.clang-format
 /.idea/
 /components/brave_new_tab_ui/data/LICENSE
+/components/brave_wallet/browser/zcash/rust/librustzcash/src/
 /components/brave_webtorrent/extension/out/
 /components/brave_rewards/resources/extension/brave_rewards/out/
 /components/third_party/adblock/LICENSE
@@ -30,6 +31,7 @@ patches/**/*.patchinfo
 /third_party/rust/futures_retry/v0_5/crate
 /third_party/cryptography
 /third_party/macholib
+/third_party/libdmg-hfsplus/
 *.xcodeproj
 !/ios/brave-ios/App/*.xcodeproj
 *.swp

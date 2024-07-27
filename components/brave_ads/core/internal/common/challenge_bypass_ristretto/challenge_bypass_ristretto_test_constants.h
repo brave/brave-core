@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_CHALLENGE_BYPASS_RISTRETTO_TEST_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_CHALLENGE_BYPASS_RISTRETTO_TEST_CONSTANTS_H_
 
-namespace brave_ads::cbr {
+namespace brave_ads::cbr::test {
 
 inline constexpr char kInvalidBase64[] = "INVALID";
 
@@ -40,6 +40,6 @@ inline constexpr char kVerificationSignatureBase64[] =
 inline constexpr char kTokenPreimageBase64[] =
     R"(IXDCnZnVEJ0orkbZfr2ut2NQPQ0ofdervKBmQ2hyjcClGCjA3/ExbBumO0ua5cxwo//nN0uKQ60kknru8hRXxw==)";
 
-}  // namespace brave_ads::cbr
+}  // namespace brave_ads::cbr::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_CHALLENGE_BYPASS_RISTRETTO_TEST_CONSTANTS_H_

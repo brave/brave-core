@@ -45,11 +45,13 @@ extension BrowserViewController {
         return
       }
 
-      self.presentEducationalProductNotifications(selectedTab: selectedTab)
+      Task {
+        await self.presentEducationalProductNotifications(selectedTab: selectedTab)
+      }
     }
   }
 
-  private func presentEducationalProductNotifications(selectedTab: Tab) {
+  private func presentEducationalProductNotifications(selectedTab: Tab) async {
     // Data Saved Pop-Over only exist in JP locale
     guard Locale.current.region?.identifier == "JP",
       !Preferences.ProductNotificationBenchmarks.showingSpecificDataSavedEnabled.value
@@ -72,9 +74,10 @@ extension BrowserViewController {
       if !adblockProductNotificationPresented {
         guard let currentURL = selectedTab.url,
           DataSaved.get(with: currentURL.absoluteString) == nil,
-          let domainFetchedSiteSavings = benchmarkBlockingDataSource?.fetchDomainFetchedSiteSavings(
-            currentURL
-          )
+          let domainFetchedSiteSavings = await benchmarkBlockingDataSource?
+            .fetchDomainFetchedSiteSavings(
+              currentURL
+            )
         else {
           return
         }

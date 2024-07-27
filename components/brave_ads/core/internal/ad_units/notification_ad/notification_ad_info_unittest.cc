@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
@@ -14,7 +14,7 @@
 
 namespace brave_ads {
 
-class BraveAdsNotificationAdInfoTest : public UnitTestBase {};
+class BraveAdsNotificationAdInfoTest : public test::TestBase {};
 
 TEST_F(BraveAdsNotificationAdInfoTest, IsValid) {
   // Arrange

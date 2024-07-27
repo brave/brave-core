@@ -5,7 +5,6 @@
 
 import("//brave/build/config.gni")
 import("//brave/components/brave_wallet/common/config.gni")
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
 source_set("brave_wallet_unit_tests") {
@@ -64,6 +63,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/keyring_service_migrations_unittest.cc",
     "//brave/components/brave_wallet/browser/meld_integration_response_parser_unittest.cc",
     "//brave/components/brave_wallet/browser/meld_integration_service_unittest.cc",
+    "//brave/components/brave_wallet/browser/network_manager_unittest.cc",
     "//brave/components/brave_wallet/browser/nft_metadata_fetcher_unittest.cc",
     "//brave/components/brave_wallet/browser/password_encryptor_unittest.cc",
     "//brave/components/brave_wallet/browser/permission_utils_unittest.cc",
@@ -107,17 +107,6 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/zcash/zcash_wallet_service_unittest.cc",
   ]
 
-  if (enable_orchard) {
-    sources += [ "//brave/components/brave_wallet/browser/internal/hd_key_zip32_unittest.cc" ]
-  }
-
-  if (enable_ipfs_local_node) {
-    sources += [
-      "//brave/components/brave_wallet/browser/brave_wallet_auto_pin_service_unittest.cc",
-      "//brave/components/brave_wallet/browser/brave_wallet_pin_service_unittest.cc",
-    ]
-  }
-
   deps = [
     ":test_data",
     ":test_support",
@@ -159,6 +148,15 @@ source_set("brave_wallet_unit_tests") {
     "//ui/base:base",
     "//url",
   ]
+
+  if (enable_orchard) {
+    sources += [
+      "//brave/components/brave_wallet/browser/internal/hd_key_zip32_unittest.cc",
+      "//brave/components/brave_wallet/browser/internal/orchard_bundle_manager_unittest.cc",
+    ]
+    deps +=
+        [ "//brave/components/brave_wallet/browser/internal:orchard_bundle" ]
+  }
 
   if (!is_ios) {
     deps += [

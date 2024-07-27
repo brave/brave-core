@@ -275,6 +275,13 @@ class RewardsService : public KeyedService {
                                      const std::string& query,
                                      ConnectExternalWalletCallback) = 0;
 
+  // Completes an external wallet login flow for the specified wallet provider
+  // using a collection of parameters returned from the provider's login page.
+  virtual void ConnectExternalWallet(
+      const std::string& provider,
+      const base::flat_map<std::string, std::string>& args,
+      ConnectExternalWalletCallback) = 0;
+
   virtual void GetAllContributions(
       GetAllContributionsCallback callback) = 0;
 

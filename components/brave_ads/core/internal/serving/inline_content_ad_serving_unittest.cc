@@ -9,7 +9,7 @@
 
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
@@ -25,7 +25,7 @@
 
 namespace brave_ads {
 
-class BraveAdsInlineContentAdServingTest : public UnitTestBase {
+class BraveAdsInlineContentAdServingTest : public test::TestBase {
  protected:
   void MaybeServeAd(const std::string& dimensions,
                     MaybeServeInlineContentAdCallback callback) {

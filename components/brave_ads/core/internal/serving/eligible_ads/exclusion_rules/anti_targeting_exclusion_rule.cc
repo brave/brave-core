@@ -17,8 +17,8 @@ namespace brave_ads {
 
 AntiTargetingExclusionRule::AntiTargetingExclusionRule(
     const AntiTargetingResource& resource,
-    BrowsingHistoryList browsing_history)
-    : resource_(resource), browsing_history_(std::move(browsing_history)) {}
+    SiteHistoryList site_history)
+    : resource_(resource), site_history_(std::move(site_history)) {}
 
 AntiTargetingExclusionRule::~AntiTargetingExclusionRule() = default;
 
@@ -42,7 +42,7 @@ base::expected<void, std::string> AntiTargetingExclusionRule::ShouldInclude(
 
 bool AntiTargetingExclusionRule::DoesRespectCap(
     const CreativeAdInfo& creative_ad) const {
-  if (browsing_history_.empty()) {
+  if (site_history_.empty()) {
     return true;
   }
 
@@ -52,7 +52,7 @@ bool AntiTargetingExclusionRule::DoesRespectCap(
     return true;
   }
 
-  return !HasVisitedAntiTargetedSites(browsing_history_, sites);
+  return !HasVisitedAntiTargetedSites(site_history_, sites);
 }
 
 }  // namespace brave_ads

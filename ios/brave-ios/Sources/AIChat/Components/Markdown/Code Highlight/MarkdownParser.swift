@@ -17,6 +17,13 @@ public class MarkdownParser {
     public let codeBlock: CodeBlock?
   }
 
+  public static func prepareMarkdownParser(
+    isDarkTheme: Bool
+  ) async {
+    let highlighter = isDarkTheme ? HighlightJS.dark : HighlightJS.light
+    await highlighter.prepareHighlighter()
+  }
+
   public static func parse(
     string: String,
     preferredFont: UIFont,

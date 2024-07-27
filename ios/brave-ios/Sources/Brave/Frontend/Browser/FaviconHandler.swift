@@ -40,13 +40,12 @@ class FaviconHandler {
 extension FaviconHandler: TabEventHandler {
   func tab(_ tab: Tab, didLoadPageMetadata metadata: PageMetadata) {
     if let currentURL = tab.url {
-      if let favicon = FaviconFetcher.getIconFromCache(for: currentURL) {
-        tab.favicon = favicon
-      } else {
-        tab.favicon = Favicon.default
-      }
-
-      Task {
+      Task { @MainActor in
+        if let favicon = await FaviconFetcher.getIconFromCache(for: currentURL) {
+          tab.favicon = favicon
+        } else {
+          tab.favicon = Favicon.default
+        }
         let favicon = try await loadFaviconURL(currentURL, forTab: tab)
         TabEvent.post(.didLoadFavicon(favicon), for: tab)
       }

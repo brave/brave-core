@@ -30,7 +30,6 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/query_filter/utils.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -91,10 +90,6 @@
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
-
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-#include "brave/components/ipfs/ipfs_utils.h"
-#endif
 
 #if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/browser/ui/commander/commander_service.h"
@@ -199,19 +194,6 @@ void ToggleBraveVPNButton(Browser* browser) {
   auto* prefs = browser->profile()->GetPrefs();
   const bool show = prefs->GetBoolean(brave_vpn::prefs::kBraveVPNShowButton);
   prefs->SetBoolean(brave_vpn::prefs::kBraveVPNShowButton, !show);
-#endif
-}
-
-void OpenIpfsFilesWebUI(Browser* browser) {
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  auto* prefs = browser->profile()->GetPrefs();
-  DCHECK(ipfs::IsLocalGatewayConfigured(prefs));
-  GURL gateway = ipfs::GetAPIServer(chrome::GetChannel());
-  GURL::Replacements replacements;
-  replacements.SetPathStr("/webui/");
-  replacements.SetRefStr("/files");
-  auto target_url = gateway.ReplaceComponents(replacements);
-  chrome::AddTabAt(browser, GURL(target_url), -1, true);
 #endif
 }
 
@@ -926,7 +908,9 @@ bool CanOpenNewSplitViewForTab(Browser* browser,
   return !split_view_data->IsTabTiled(*tab);
 }
 
-void NewSplitViewForTab(Browser* browser, std::optional<tabs::TabHandle> tab) {
+void NewSplitViewForTab(Browser* browser,
+                        std::optional<tabs::TabHandle> tab,
+                        const GURL& url) {
   auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
   if (!split_view_data) {
     return;
@@ -946,8 +930,14 @@ void NewSplitViewForTab(Browser* browser, std::optional<tabs::TabHandle> tab) {
                                 ? model->IndexOfFirstNonPinnedTab()
                                 : tab_index + 1;
 
-  chrome::AddTabAt(browser, GURL("chrome://newtab"), new_tab_index,
-                   /*foreground*/ true);
+  if (!url.is_valid()) {
+    chrome::AddTabAt(browser, GURL("chrome://newtab"), new_tab_index,
+                     /*foreground*/ true);
+  } else {
+    chrome::AddTabAt(browser, url, new_tab_index,
+                     /*foreground*/ true);
+  }
+
   split_view_data->TileTabs({.first = model->GetTabHandleAt(tab_index),
                              .second = model->GetTabHandleAt(new_tab_index)});
 }

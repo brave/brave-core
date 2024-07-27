@@ -10,14 +10,14 @@ import {
   BraveWallet,
   WalletPanelState,
   PanelState,
-  PanelTypes
+  PanelTypes,
+  HardwareVendor
 } from '../../constants/types'
 import { ShowConnectToSitePayload } from '../constants/action_types'
 import { cancelHardwareOperation } from '../../common/async/hardware'
 
 import { Store } from '../../common/async/types'
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
-import { HardwareVendor } from 'components/brave_wallet_ui/common/api/hardware_keyrings'
 import { storeCurrentAndPreviousPanel } from '../../utils/local-storage-utils'
 
 const handler = new AsyncActionHandler()

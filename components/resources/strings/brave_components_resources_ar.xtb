@@ -26,9 +26,6 @@
 <translation id="8776285424728638733">غيغابايت</translation>
 <translation id="8427933533533814946">صورة بواسطة</translation>
 <translation id="7108338896283013870">إخفاء</translation>
-<translation id="7115515527894388910">تعديل التفضيلات</translation>
-<translation id="7606029853066610626">عرض وإدارة الإشارات المرجعية</translation>
-<translation id="5550994254534676787">اعرض سجل التصفح الخاص بك</translation>
 <translation id="985862351129593673">لوحة تحكم مخصصة</translation>
 <translation id="7180865173735832675">تخصيص</translation>
 <translation id="8522669544471808198">إظهار صور الخلفية</translation>
@@ -57,11 +54,21 @@
 <translation id="430556192781857057">يتم اقتراح أفضل المواقع بناءً على المواقع الإلكترونية التي تقوم بزبارتها كثيراً</translation>
 <translation id="1773147648972887693">عرض المواقع التي تمت زيارتها بشكل متكرر</translation>
 <translation id="4546260624932151782">عرض قائمة التفضيلات</translation>
+<translation id="8975314993825375476">قائمة مخصصة</translation>
+<translation id="5525668735313040116">ابحث في الويب بشكل خاص</translation>
+<translation id="1629390138158333592">البحث في الويب</translation>
+<translation id="4016940744851230999">إظهار أداة البحث في صفحة علامة التبويب الجديدة</translation>
+<translation id="7092560902264458951">تمكين محركات البحث في صفحة علامة التبويب الجديدة</translation>
+<translation id="6849526088357652209">تخصيص المحركات المتاحة</translation>
+<translation id="5131747739868436035">إخفاء البحث</translation>
+<translation id="423209533815462685">هل ترغب في تمكين اقتراحات البحث؟</translation>
+<translation id="2086952631598737687">عندما تقوم بالبحث، سيتم إرسال ما تكتبه إلى محرك البحث الخاص بك للحصول على اقتراحات أفضل.</translation>
+<translation id="3435896845095436175">تمكين</translation>
+<translation id="780301667611848630">لا، شكرًا</translation>
 <translation id="1230746063445072175">هل تريد خصوصية أفضل؟</translation>
 <translation id="6699628638740071563">حان وقت الاستغناء عن Google.</translation>
 <translation id="2045455461902775806">البحث في Brave لا يتحيز إلى بعض النتائج أو يراقبها كما أنه لا يتتبعك أو يتتبع استفساراتك أو نقراتك.</translation>
 <translation id="6811221529729056895">جرب البحث في Brave الآن</translation>
-<translation id="5525668735313040116">البحث في الويب بشكل خاص</translation>
 <translation id="3446024864193919737">عرض مكافآت Brave</translation>
 <translation id="5585019845078534178">البطاقات</translation>
 <translation id="3870475560794762985">عرض الصور الدعائية</translation>
@@ -83,7 +90,6 @@
 <translation id="7610541582755894669">تدرجات</translation>
 <translation id="1606851618930975029">تحديث في كل علامة تبويب جديدة</translation>
 <translation id="7040134046053881468">افتح لوحة المكافآت</translation>
-<translation id="9024104284526126630">يمكنك بدء مكالمة خاصة في Brave.</translation>
 <translation id="370665806235115550">جارٍ التحميل...</translation>
 <translation id="4634933166298842522">إدارة الاشتراكات</translation>
 <translation id="4108314971463891922">متابعة</translation>
@@ -449,6 +455,7 @@
 <translation id="1109729143147368573">أنفق عملاتك المشفرة وأصولك الأخرى لدى ما يقرب من 50 مليون تاجر وماكينات صراف آلي في جميع أنحاء العالم. أنفق عملات المشفرة للحصول على عملات المشفرة!</translation>
 <translation id="3787061634640932557">تعديل البطاقات</translation>
 <translation id="2070991379950719711">ابدأ في استخدام Brave Rewards</translation>
+<translation id="6297791103122079275">محادثة</translation>
 <translation id="5977237145327845546">ابدأ مكالمة مرئية خاصة مع أصدقائك وزملائك.</translation>
 <translation id="8863928195533744356">ابدأ الاتصال</translation>
 <translation id="3651550649176056334">حول بياناتك</translation>
@@ -592,7 +599,7 @@
 <translation id="3026978804849658576">عرض البيان</translation>
 <translation id="1848737374354350807">الرصيد</translation>
 <translation id="6516984207843289176">الاتصال بالحساب</translation>
-<translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>هل أنت مستعد لبدء الربح؟<ph name="BOLD_END"/> قم بربط أو إنشاء حساب مع أحد شركائنا.</translation>
+<translation id="1150455801874605865"><ph name="BOLD_BEGIN"/>هل أنت مستعد للبدء في تحقيق الربح؟<ph name="BOLD_END"/> قم بربط حساب حتى يكون لدينا مكان لإرسال أرباحك.</translation>
 <translation id="902298128239575729">إرسال المساهمات مع Brave Rewards</translation>
 <translation id="6276721355724491595">ستتمكن من إرسال مساهمات عند الطلب إلى منشئي المحتوى المفضلين لديك باستخدام رصيد Brave Rewards الخاص بك بمجرد أن يكون لديك حساب مُستضاف متصل.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
@@ -600,6 +607,7 @@
       other {لقد زرت هذا الشهر # من منشئي المحتوى المدعومين من Brave Rewards}
     }</translation>
 <translation id="6067959437127691361">يساعد استخدام Brave Rewards في دعم منشئي المحتوى ويتيح لك ربح BAT.</translation>
+<translation id="944736176598169208">Rewards</translation>
 <translation id="2359808026110333948">متابعة</translation>
 <translation id="885805571521218129">يمثل هذا نطاق أرباحك المقدرة للإعلانات التابعة لموقع Brave لهذا الشهر.</translation>
 <translation id="3863981251715594911">كيف يعمل؟</translation>
@@ -744,7 +752,6 @@
 <translation id="6180576227145734714">يجب أن تكون بيانات المعاملة "الجهة المرسل إليها" عنوانًا صالحًا عند تحديدها</translation>
 <translation id="6688162556547723415">الطريقة المطلوبة و/أو الحساب غير معتمد بواسطة المستخدم.</translation>
 <translation id="8767749833522980474">عملة مشفرة</translation>
-<translation id="944736176598169208">Rewards</translation>
 <translation id="6122742277607781713">ملف تعريف شخصي</translation>
 <translation id="7020503656406658141">الأسعار</translation>
 <translation id="3586775666459823714">الرموز المميزة غير القابلة للاستبدال (NFT)</translation>
@@ -783,7 +790,7 @@
 <translation id="2329227154184107678">مراجعة الطلب</translation>
 <translation id="3220443877821207794">مراجعة الإرسال</translation>
 <translation id="8530071505111489657">لا توجد رموز مميزة متاحة</translation>
-<translation id="615791330696335475">البحث عن الرمز المميز من خلال الاسم</translation>
+<translation id="9021834401351805394">البحث حسب الاسم أو لصق العنوان</translation>
 <translation id="5009335307032488349">البحث عن NFT بالاسم، بالمعرف</translation>
 <translation id="8667560635828712526">حدد قيمة المساهمة</translation>
 <translation id="4853960199138416955">لا تدعم Brave Wallet حاليًا Bitcoin NFTs (الأرقام الترتيبية). قد يؤدي إرسال BTC من عنوان يحتوي على أرقام ترتيبية إلى نقل الأرقام الترتيبية الخاصة به عن غير قصد.</translation>
@@ -792,6 +799,11 @@
 <translation id="4504682768625050939">ادخل نطاقًا  أو عنوانًا عامًا.</translation>
 <translation id="5292796745632149097">إرسال إلى</translation>
 <translation id="7022684620581223496">امتداد نطاق غير صالح</translation>
+<translation id="7620616707541471029">اختر حسابًا للمتابعة</translation>
+<translation id="7099260104593926742">سعر السوق</translation>
+<translation id="6954838107964168963">مملوك</translation>
+<translation id="1976851706319678835">ليست مملوكة</translation>
+<translation id="7372882109707907136">المبلغ/24 ساعة</translation>
 <translation id="9209024278910716955">الشراء غير مدعوم للشبكة المحددة</translation>
 <translation id="4982630604810554641">جارِ البحث عن النطاق...</translation>
 <translation id="5467044307473123584">تدعم منصة Brave استخدام بوابات خارج السلسلة لحل نطاقات .eth.</translation>
@@ -894,7 +906,7 @@
 <translation id="8275038454117074363">الاستيراد</translation>
 <translation id="232925166623833246">الاستيراد من محفظة الأجهزة</translation>
 <translation id="4324198334837993695">الأجهزة</translation>
-<translation id="3067168166931605141">اسم الحساب</translation>
+<translation id="9079725315195697532">قم بتسمية هذا الحساب</translation>
 <translation id="1011614786846182272">يمكن استخدام الحسابات من خلال Web3 DApps، ويمكن عرضها في الملف الشخصي الخاص بك. ومع ذلك، يُرجى العلم بأنه لا يمكن تخزين الحسابات الثانوية عبر العبارة الاستردادية في النسخة الاحتياطية من حسابك الأساسي.</translation>
 <translation id="1136772623587250243">لصق المفتاح الخاص من الحافظة</translation>
 <translation id="7978412674231730200">مفتاح خاص</translation>
@@ -946,6 +958,7 @@
 <translation id="453788800165937690">تحذير: لا تشارك مفتاح الخصوصية الخاص بك. أي شخص يحصل على مفتاح الخصوصية هذا يمكنه الاستيلاء على أصولك إلى الأبد.</translation>
 <translation id="2416098547200943834">ملاحظة: يتم توفير المفتاح الخاص كملف JSON مشفر سداسي يحتوي على معلومات البروتوكول والمفتاح الخاص.<ph name="LINK_START"/>تعرف على المزيد <ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">ملاحظة: يجب توفير المفتاح الخاص كملف JSON مشفر سداسي يحتوي على معلومات البروتوكول والمفتاح الخاص. <ph name="LINK_START"/>تعرف على المزيد <ph name="LINK_END"/>.</translation>
+<translation id="1505724566145200403">ملاحظة: يتم دعم المفاتيح الموسعة zprv (أو vprv لـ Testnet) فقط.</translation>
 <translation id="42126664696688958">تصدير</translation>
 <translation id="1366855498335432549">إيداع</translation>
 <translation id="790104325876206743">إعدادات الحساب</translation>
@@ -1511,6 +1524,7 @@
 <translation id="5709875713144853427">تحديد رمز مميز للتبديل</translation>
 <translation id="720404198240859011">إظهار الرموز المميزة بدون رصيد</translation>
 <translation id="4886690455791686940">إخفاء الرصيد الصفري</translation>
+<translation id="615791330696335475">البحث عن الرمز المميز من خلال الاسم</translation>
 <translation id="381485723922188688">خيار</translation>
 <translation id="6680650203439190394">المعدل</translation>
 <translation id="2538996898605796431">تأثير السعر</translation>
@@ -1622,8 +1636,6 @@
 <translation id="1215089823252478557">معرفة التغيير التقديري للرصيد</translation>
 <translation id="2761574758015819991">تحديد المعاملات الضارة المحتملة</translation>
 <translation id="168533464844528463">المساعدة في اكتشاف محاولات الاحتيال</translation>
-<translation id="780301667611848630">لا، شكرًا</translation>
-<translation id="3435896845095436175">تمكين</translation>
 <translation id="7269757150305059881">تعمل Brave مع شريك لتقديم هذه الخدمة. من خلال التمكين، فإنك توافق على مشاركة المعاملات غير الموقعة وعناوين DApp URLs مع شريكنا.</translation>
 <translation id="7790932700072432983">غَيِّرْ في أي وقت في<ph name="TAG_BEFORE"/> الإعدادات<ph name="TAG_AFTER"/>.</translation>
 <translation id="8688672835843460752">متوفِّر</translation>
@@ -1638,6 +1650,10 @@
 <translation id="6405354572620970908">يبدو هذا الطلب ضارًا، وقد يجعلك عرضة للسرقة. يُرجى عدم المتابعة إلا إذا كنت تثق بالتطبيق.</translation>
 <translation id="786261184916565476">لقد عثرنا على مشكلات <ph name="VALUE"/>.</translation>
 <translation id="2826600321627372011">لم يُعثر على مسارات</translation>
+<translation id="2451778499022193433">يجب أن يتكوّن اسم الحساب من <ph name="VALUE"/> أحرف أو أقل</translation>
+<translation id="8488138412489236285">أدخل كلمة المرور (إن وجدت)</translation>
+<translation id="9166422618242592074">نوع الاستيراد</translation>
+<translation id="1913853014470037784">إخفاء NFTs غير المملوكة</translation>
 <translation id="3155170474926428993">مشغِّل تور</translation>
 <translation id="3745016858329272300">معلومات عامة</translation>
 <translation id="4045404575593562245">أحداث تحكم تور</translation>
@@ -1871,9 +1887,11 @@
 <translation id="712598284361781729">عرض في مقسم جديد</translation>
 <translation id="1130188644637295274">فتح في عرض مقسم</translation>
 <translation id="6459036216700972269">علامات تبويب غير منفصلة</translation>
+<translation id="4235382917338421035">تبديل مواضع علامات التبويب</translation>
 <translation id="3617523374417810198">عرض في مقسم جديد</translation>
 <translation id="8571323456914890254">فتح في عرض مقسم</translation>
 <translation id="5329136173514538969">علامات تبويب غير منفصلة</translation>
+<translation id="7595612919377246359">تبديل مواضع علامات التبويب</translation>
 <translation id="8591883849678260674">عرض الصفحة الأصلية</translation>
 <translation id="1969654232209826429">دقائق للقراءة</translation>
 <translation id="4101707289420716287">إيقاف تشغيل قارئ السرعة</translation>
@@ -1918,7 +1936,7 @@
 <translation id="7921782882718083488">تلخيص هذه الصفحة</translation>
 <translation id="7932221068776853847">قم بإيقاف الاتصال لإيقاف إرسال محتوى هذه الصفحة إلى Leo، وابدأ محادثة جديدة</translation>
 <translation id="1167803637855350748">حدثت مشكلة في الشبكة أثناء الاتصال بـ Leo، تحقق من الاتصال بالإنترنت وحاول مرة أخرى.</translation>
-<translation id="1996126325390835277">Leo مشغول جدًا الآن. يرجى المحاولة مرة أخرى بعد بضع دقائق.</translation>
+<translation id="1996126325390835277">لقد وصلت إلى الحد الأقصى للسعر المميز. يُرجى المحاولة مرة أخرى في غضون ساعات قليلة.</translation>
 <translation id="7144878232160441200">إعادة المحاولة</translation>
 <translation id="8570488829560315702">مرحبًا، أنا Leo. مساعد ذكاء اصطناعي مستضاف بالكامل بواسطة Brave، ومدعوم بواسطة Llama 3 8B، وهو نموذج تم إنشاؤه بواسطة Meta لتقديم أداء قوي وقابل للتطبيق في العديد من حالات الاستخدام. <ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">مرحبًا، أنا Leo. مساعد ذكاء اصطناعي مستضاف بالكامل بواسطة Brave. أنا مدعوم بـ Mixtral 8x7B، وهو نموذج تم إنشاؤه بواسطة Mistral AI للتعامل مع المهام المتقدمة.<ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
@@ -1926,6 +1944,7 @@
 <translation id="8583558415545871403">مرحبًا بكم، معكم Leo، أتمتع بتوجيهي بواسطة متصفح Brave، كما أنني مدعوم بواسطة Claude 3 Haiku، وهو نموذج أنشأته Anthropic لتشغيل المهام المتعلقة بالدردشة ومعالجة النصوص.</translation>
 <translation id="4147243042852964992">مرحبًا بكم، معكم Leo، أتمتع بتوجيهي بواسطة متصفح Brave، كما أنني مدعوم بواسطة Claude 3 Sonnet، وهو نموذج أنشأته Anthropic لتشغيل المهام المتعلقة بالدردشة ومعالجة النصوص.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> بواسطة <ph name="COMPANY_NAME"/></translation>
+<translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">الدردشة</translation>
 <translation id="2961040541145689181">دردشة جديدة</translation>
 <translation id="7557539689487606886">الاشتراك الحصري (Premium)</translation>
@@ -1935,7 +1954,7 @@
 <translation id="6637015365469044269">تحديث الآن</translation>
 <translation id="5543505256451301851">المحاولة مجانًا لمدة 7 أيام</translation>
 <translation id="849535826888024304">تم بلوغ الحد الأقصى من معدل الاستجابة</translation>
-<translation id="2252128900328632803">احصل على معدل استجابة أعلى من خلال الاشتراك في Premium. يمكنك أيضًا التبديل إلى نموذج Llama2 13b المجاني الأقل قوة للمتابعة.</translation>
+<translation id="2252128900328632803">لقد وصلت إلى الحد الأقصى لسعر  Leo. احصل على معدل استجابة أعلى من خلال الاشتراك في Premium، أو حاول مرة أخرى قريبًا.</translation>
 <translation id="4173478269537830374">اكتشف نماذج الذكاء الاصطناعي المختلفة</translation>
 <translation id="3245401959451976966">أطلق العنان لإبداعك</translation>
 <translation id="4165928407303989823">البقاء على الموضوع</translation>
@@ -1987,7 +2006,7 @@
 <translation id="5642775487085641191">هل تريد إجراء محادثة فقط؟</translation>
 <translation id="8857222718794549840">اسألني على أي شيء! يمكننا التحدُّث حول أي موضوع تريده. أنا أتعلم دومًا وأحرص على التحسُّن لتقديم أفضل الإجابات.</translation>
 <translation id="9051226419897869406">الدردشة بخصوصية مع Brave Leo</translation>
-<translation id="1173570303649278801">استخدم سياق الصفحة للرد</translation>
+<translation id="637548538907281147">قم بصياغة الإجابات بناءً على محتويات الصفحة</translation>
 <translation id="8599503173207256429">قم بالتشغيل لطرح سؤال حول هذه الصفحة. سيتم إرسال محتواها إلى ليو في متصفح Brave إلى جانب رسائلك.</translation>
 <translation id="318819763888864209">تجدد جميع الاشتراكات تلقائيًا ولكن يمكن إلغاؤها في أي وقت قبل التجديد.</translation>
 <translation id="5091223967610958">شارك اسم المضيف للصفحة التي أنت فيها (<ph name="HOST_NAME"/>)  لمساعدتنا على تحسين مساعد Leo.</translation>

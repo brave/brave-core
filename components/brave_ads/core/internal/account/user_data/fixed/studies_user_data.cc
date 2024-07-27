@@ -21,11 +21,11 @@ constexpr char kGroupNameKey[] = "group";
 }  // namespace
 
 base::Value::Dict BuildStudiesUserData() {
-  base::Value::Dict user_data;
-
   if (!UserHasJoinedBraveRewards()) {
-    return user_data;
+    return {};
   }
+
+  base::Value::Dict user_data;
 
   base::Value::List list;
 

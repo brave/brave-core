@@ -251,10 +251,7 @@ export const PortfolioAssetItem = ({
                         isBold={true}
                         textAlign='left'
                       >
-                        {token.name}{' '}
-                        {token.isErc721 && token.tokenId
-                          ? '#' + new Amount(token.tokenId).toNumber()
-                          : ''}
+                        {token.name}
                       </AssetName>
                       <NetworkDescriptionText
                         textSize='12px'

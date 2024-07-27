@@ -86,7 +86,7 @@ export const statusIndicator = styled.div`
 
 export const verifiedIcon = styled.div`
   --leo-icon-size: 16px;
-  color: ${leo.color.gray['30']};
+  color: ${leo.color.neutral['30']};
 `
 
 export const refreshStatus = styled.div`

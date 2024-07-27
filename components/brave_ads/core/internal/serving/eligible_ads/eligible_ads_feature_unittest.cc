@@ -26,54 +26,53 @@ TEST(BraveAdsEligibleAdFeatureTest, IsDisabled) {
   EXPECT_FALSE(base::FeatureList::IsEnabled(kEligibleAdFeature));
 }
 
-TEST(BraveAdsEligibleAdFeatureTest, BrowsingHistoryMaxCount) {
+TEST(BraveAdsEligibleAdFeatureTest, SiteHistoryMaxCount) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kEligibleAdFeature, {{"browsing_history_max_count", "666"}});
+      kEligibleAdFeature, {{"site_history_max_count", "666"}});
 
   // Act & Assert
-  EXPECT_EQ(666, kBrowsingHistoryMaxCount.Get());
+  EXPECT_EQ(666, kSiteHistoryMaxCount.Get());
 }
 
-TEST(BraveAdsEligibleAdFeatureTest, DefaultBrowsingHistoryMaxCount) {
+TEST(BraveAdsEligibleAdFeatureTest, DefaultSiteHistoryMaxCount) {
   // Act & Assert
-  EXPECT_EQ(5'000, kBrowsingHistoryMaxCount.Get());
+  EXPECT_EQ(5'000, kSiteHistoryMaxCount.Get());
 }
 
-TEST(BraveAdsEligibleAdFeatureTest,
-     DefaultBrowsingHistoryMaxCountWhenDisabled) {
+TEST(BraveAdsEligibleAdFeatureTest, DefaultSiteHistoryMaxCountWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kEligibleAdFeature);
 
   // Act & Assert
-  EXPECT_EQ(5'000, kBrowsingHistoryMaxCount.Get());
+  EXPECT_EQ(5'000, kSiteHistoryMaxCount.Get());
 }
 
-TEST(BraveAdsEligibleAdFeatureTest, BrowsingHistoryRecentDayRange) {
+TEST(BraveAdsEligibleAdFeatureTest, SiteHistoryRecentDayRange) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kEligibleAdFeature, {{"browsing_history_recent_day_range", "7"}});
+      kEligibleAdFeature, {{"site_history_recent_day_range", "7"}});
 
   // Act & Assert
-  EXPECT_EQ(7, kBrowsingHistoryRecentDayRange.Get());
+  EXPECT_EQ(7, kSiteHistoryRecentDayRange.Get());
 }
 
-TEST(BraveAdsEligibleAdFeatureTest, DefaultBrowsingHistoryRecentDayRange) {
+TEST(BraveAdsEligibleAdFeatureTest, DefaultSiteHistoryRecentDayRange) {
   // Act & Assert
-  EXPECT_EQ(180, kBrowsingHistoryRecentDayRange.Get());
+  EXPECT_EQ(180, kSiteHistoryRecentDayRange.Get());
 }
 
 TEST(BraveAdsEligibleAdFeatureTest,
-     DefaultBrowsingHistoryRecentDayRangeWhenDisabled) {
+     DefaultSiteHistoryRecentDayRangeWhenDisabled) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kEligibleAdFeature);
 
   // Act & Assert
-  EXPECT_EQ(180, kBrowsingHistoryRecentDayRange.Get());
+  EXPECT_EQ(180, kSiteHistoryRecentDayRange.Get());
 }
 
 }  // namespace brave_ads

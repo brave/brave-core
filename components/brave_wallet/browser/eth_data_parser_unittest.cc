@@ -7,6 +7,7 @@
 
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -16,20 +17,24 @@
 namespace brave_wallet {
 
 namespace {
-void TestGetTransactionInfoFromData(const std::vector<uint8_t>& data,
-                                    mojom::TransactionType expected_tx_type,
-                                    std::vector<std::string> expected_tx_params,
-                                    std::vector<std::string> expected_tx_args) {
+void TestGetTransactionInfoFromData(
+    const std::vector<uint8_t>& data,
+    mojom::TransactionType expected_tx_type,
+    std::vector<std::string> expected_tx_params,
+    std::vector<std::string> expected_tx_args,
+    mojom::SwapInfoPtr expected_swap_info = nullptr) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
 
   auto result = GetTransactionInfoFromData(data);
   ASSERT_NE(result, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *result;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*result);
   ASSERT_EQ(tx_type, expected_tx_type);
   ASSERT_EQ(tx_params.size(), expected_tx_params.size());
   ASSERT_EQ(tx_args.size(), expected_tx_args.size());
+  ASSERT_EQ(swap_info, expected_swap_info);
 
   for (int i = 0; i < static_cast<int>(tx_params.size()); i++) {
     ASSERT_EQ(tx_params[i], expected_tx_params[i]);
@@ -45,6 +50,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataTransfer) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
   std::vector<uint8_t> data;
 
   // OK: well-formed ERC20Transfer
@@ -55,8 +61,9 @@ TEST(EthDataParser, GetTransactionInfoFromDataTransfer) {
       &data));
   auto tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC20Transfer);
+  EXPECT_FALSE(swap_info);
   ASSERT_EQ(tx_params.size(), 2UL);
   EXPECT_EQ(tx_params[0], "address");
   EXPECT_EQ(tx_params[1], "uint256");
@@ -92,8 +99,9 @@ TEST(EthDataParser, GetTransactionInfoFromDataTransfer) {
       &data));
   tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC20Transfer);
+  EXPECT_FALSE(swap_info);
   ASSERT_EQ(tx_params.size(), 2UL);
   EXPECT_EQ(tx_params[0], "address");
   EXPECT_EQ(tx_params[1], "uint256");
@@ -106,6 +114,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataApprove) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
   std::vector<uint8_t> data;
 
   // OK: well-formed ERC20Approve
@@ -116,8 +125,9 @@ TEST(EthDataParser, GetTransactionInfoFromDataApprove) {
       &data));
   auto tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC20Approve);
+  EXPECT_FALSE(swap_info);
   ASSERT_EQ(tx_params.size(), 2UL);
   EXPECT_EQ(tx_params[0], "address");
   EXPECT_EQ(tx_params[1], "uint256");
@@ -133,8 +143,9 @@ TEST(EthDataParser, GetTransactionInfoFromDataApprove) {
       &data));
   tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC20Approve);
+  EXPECT_FALSE(swap_info);
   ASSERT_EQ(tx_params.size(), 2UL);
   EXPECT_EQ(tx_params[0], "address");
   EXPECT_EQ(tx_params[1], "uint256");
@@ -170,8 +181,9 @@ TEST(EthDataParser, GetTransactionInfoFromDataApprove) {
       &data));
   tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC20Approve);
+  EXPECT_FALSE(swap_info);
   ASSERT_EQ(tx_params.size(), 2UL);
   EXPECT_EQ(tx_params[0], "address");
   EXPECT_EQ(tx_params[1], "uint256");
@@ -184,21 +196,24 @@ TEST(EthDataParser, GetTransactionInfoFromDataETHSend) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
 
   std::vector<uint8_t> data;
   ASSERT_TRUE(PrefixedHexStringToBytes("0x0", &data));
   auto tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSend);
+  EXPECT_FALSE(swap_info);
   ASSERT_EQ(tx_params.size(), 0UL);
   ASSERT_EQ(tx_args.size(), 0UL);
 
   tx_info = GetTransactionInfoFromData({});
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSend);
+  EXPECT_FALSE(swap_info);
   ASSERT_EQ(tx_params.size(), 0UL);
   ASSERT_EQ(tx_args.size(), 0UL);
 }
@@ -207,6 +222,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721TransferFrom) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
   std::vector<uint8_t> data;
 
   // OK: well-formed ERC721TransferFrom
@@ -218,8 +234,9 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721TransferFrom) {
       &data));
   auto tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC721TransferFrom);
+  EXPECT_FALSE(swap_info);
   ASSERT_EQ(tx_params.size(), 3UL);
   EXPECT_EQ(tx_params[0], "address");
   EXPECT_EQ(tx_params[1], "address");
@@ -238,8 +255,9 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721TransferFrom) {
       &data));
   tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SafeTransferFrom);
+  EXPECT_FALSE(swap_info);
   ASSERT_EQ(tx_params.size(), 3UL);
   EXPECT_EQ(tx_params[0], "address");
   EXPECT_EQ(tx_params[1], "address");
@@ -280,8 +298,9 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721TransferFrom) {
       &data));
   tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC721TransferFrom);
+  EXPECT_FALSE(swap_info);
   ASSERT_EQ(tx_params.size(), 3UL);
   EXPECT_EQ(tx_params[0], "address");
   EXPECT_EQ(tx_params[1], "address");
@@ -414,14 +433,16 @@ TEST(EthDataParser, GetTransactionInfoFromDataOther) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
 
   std::vector<uint8_t> data;
 
   // No function hash
   auto tx_info = GetTransactionInfoFromData(std::vector<uint8_t>{0x1});
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   EXPECT_EQ(tx_type, mojom::TransactionType::Other);
+  EXPECT_FALSE(swap_info);
 
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0xaa0ffceb"
@@ -429,14 +450,16 @@ TEST(EthDataParser, GetTransactionInfoFromDataOther) {
       &data));
   tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   EXPECT_EQ(tx_type, mojom::TransactionType::Other);
+  EXPECT_FALSE(swap_info);
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataSellEthForTokenToUniswapV3) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: WETH → STG
@@ -465,27 +488,33 @@ TEST(EthDataParser, GetTransactionInfoFromDataSellEthForTokenToUniswapV3) {
       &data));
   auto tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+  EXPECT_EQ(tx_params.size(), 0UL);
+  EXPECT_EQ(tx_args.size(), 0UL);
+  ASSERT_TRUE(swap_info);
 
-  ASSERT_EQ(tx_params.size(), 3UL);
-  EXPECT_EQ(tx_params[0], "bytes");
-  EXPECT_EQ(tx_params[1], "uint256");
-  EXPECT_EQ(tx_params[2], "uint256");
+  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->from_chain_id, "");
+  EXPECT_EQ(swap_info->from_asset,
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+  EXPECT_EQ(swap_info->from_amount, "");
 
-  ASSERT_EQ(tx_args.size(), 3UL);
-  EXPECT_EQ(tx_args[0],
-            "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
-            "af5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6");
-  EXPECT_EQ(tx_args[1], "");
-  EXPECT_EQ(tx_args[2], "0x30c1a39b13e25f498");
+  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->to_chain_id, "");
+  EXPECT_EQ(swap_info->to_asset, "0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6");
+  EXPECT_EQ(swap_info->to_amount, "0x30c1a39b13e25f498");
+
+  EXPECT_EQ(swap_info->receiver, "");
+  EXPECT_EQ(swap_info->provider, "zeroex");
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataSellTokenForEthToUniswapV3) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: RSS3 → USDC → WETH
@@ -518,28 +547,34 @@ TEST(EthDataParser, GetTransactionInfoFromDataSellTokenForEthToUniswapV3) {
       &data));
   auto tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+  EXPECT_EQ(tx_params.size(), 0UL);
+  EXPECT_EQ(tx_args.size(), 0UL);
+  ASSERT_TRUE(swap_info);
 
-  ASSERT_EQ(tx_params.size(), 3UL);
-  EXPECT_EQ(tx_params[0], "bytes");
-  EXPECT_EQ(tx_params[1], "uint256");
-  EXPECT_EQ(tx_params[2], "uint256");
+  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->from_chain_id, "");
+  EXPECT_EQ(swap_info->from_asset,
+            "0xc98d64da73a6616c42117b582e832812e7b8d57f");  // RSS3
+  EXPECT_EQ(swap_info->from_amount, "0x821ab0d44149800000");
 
-  ASSERT_EQ(tx_args.size(), 3UL);
-  EXPECT_EQ(tx_args[0],
-            "0xc98d64da73a6616c42117b582e832812e7b8d57f"  // RSS3
-            "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"    // USDC
-            "c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2");  // WETH
-  EXPECT_EQ(tx_args[1], "0x821ab0d44149800000");
-  EXPECT_EQ(tx_args[2], "0x248b3366b6ffd46");
+  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->to_chain_id, "");
+  EXPECT_EQ(swap_info->to_asset,
+            "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2");  // WETH
+  EXPECT_EQ(swap_info->to_amount, "0x248b3366b6ffd46");
+
+  EXPECT_EQ(swap_info->receiver, "");
+  EXPECT_EQ(swap_info->provider, "zeroex");
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataSellTokenForTokenToUniswapV3) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: COW → WETH → USDC
@@ -572,28 +607,34 @@ TEST(EthDataParser, GetTransactionInfoFromDataSellTokenForTokenToUniswapV3) {
       &data));
   auto tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+  EXPECT_EQ(tx_params.size(), 0UL);
+  EXPECT_EQ(tx_args.size(), 0UL);
+  ASSERT_TRUE(swap_info);
 
-  ASSERT_EQ(tx_params.size(), 3UL);
-  EXPECT_EQ(tx_params[0], "bytes");
-  EXPECT_EQ(tx_params[1], "uint256");
-  EXPECT_EQ(tx_params[2], "uint256");
+  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->from_chain_id, "");
+  EXPECT_EQ(swap_info->from_asset,
+            "0xdef1ca1fb7fbcdc777520aa7f396b4e015f497ab");  // COW
+  EXPECT_EQ(swap_info->from_amount, "0x4d12b6295c69ddebd5");
 
-  ASSERT_EQ(tx_args.size(), 3UL);
-  EXPECT_EQ(tx_args[0],
-            "0xdef1ca1fb7fbcdc777520aa7f396b4e015f497ab"  // COW
-            "c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"    // WETH
-            "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");  // USDC
-  EXPECT_EQ(tx_args[1], "0x4d12b6295c69ddebd5");
-  EXPECT_EQ(tx_args[2], "0x3b9aca00");
+  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->to_chain_id, "");
+  EXPECT_EQ(swap_info->to_asset,
+            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");  // USDC
+  EXPECT_EQ(swap_info->to_amount, "0x3b9aca00");
+
+  EXPECT_EQ(swap_info->receiver, "");
+  EXPECT_EQ(swap_info->provider, "zeroex");
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataSellToUniswap) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: USDC → WETH → LDO
@@ -625,28 +666,34 @@ TEST(EthDataParser, GetTransactionInfoFromDataSellToUniswap) {
       &data));
   auto tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+  EXPECT_EQ(tx_params.size(), 0UL);
+  EXPECT_EQ(tx_args.size(), 0UL);
+  ASSERT_TRUE(swap_info);
 
-  ASSERT_EQ(tx_params.size(), 3UL);
-  EXPECT_EQ(tx_params[0], "bytes");
-  EXPECT_EQ(tx_params[1], "uint256");
-  EXPECT_EQ(tx_params[2], "uint256");
+  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->from_chain_id, "");
+  EXPECT_EQ(swap_info->from_asset,
+            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");  // USDC
+  EXPECT_EQ(swap_info->from_amount, "0x77359400");
 
-  ASSERT_EQ(tx_args.size(), 3UL);
-  EXPECT_EQ(tx_args[0],
-            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"  // USDC
-            "c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"    // WETH
-            "5a98fcbea516cf06857215779fd812ca3bef1b32");  // LDO
-  EXPECT_EQ(tx_args[1], "0x77359400");
-  EXPECT_EQ(tx_args[2], "0x16b28ec6ba93b8bb17");
+  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->to_chain_id, "");
+  EXPECT_EQ(swap_info->to_asset,
+            "0x5a98fcbea516cf06857215779fd812ca3bef1b32");  // LDO
+  EXPECT_EQ(swap_info->to_amount, "0x16b28ec6ba93b8bb17");
+
+  EXPECT_EQ(swap_info->receiver, "");
+  EXPECT_EQ(swap_info->provider, "zeroex");
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataTransformERC20) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: ETH → DAI
@@ -740,27 +787,30 @@ TEST(EthDataParser, GetTransactionInfoFromDataTransformERC20) {
       &data));
   auto tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+  EXPECT_EQ(tx_params.size(), 0UL);
+  EXPECT_EQ(tx_args.size(), 0UL);
+  ASSERT_TRUE(swap_info);
 
-  ASSERT_EQ(tx_params.size(), 3UL);
-  EXPECT_EQ(tx_params[0], "bytes");
-  EXPECT_EQ(tx_params[1], "uint256");
-  EXPECT_EQ(tx_params[2], "uint256");
+  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->from_chain_id, "");
+  EXPECT_EQ(swap_info->from_asset,
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+  EXPECT_EQ(swap_info->from_amount, "0x902a721");
 
-  ASSERT_EQ(tx_args.size(), 3UL);
-  EXPECT_EQ(tx_args[0],
-            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-            "8f3cf7ad23cd3cadbd9735aff958023239c6a063");
-  EXPECT_EQ(tx_args[1], "0x902a721");
-  EXPECT_EQ(tx_args[2], "0x5f5e100");
+  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->to_chain_id, "");
+  EXPECT_EQ(swap_info->to_asset, "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063");
+  EXPECT_EQ(swap_info->to_amount, "0x5f5e100");
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrderForETH) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: USDC → ETH
@@ -822,27 +872,34 @@ TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrderForETH) {
 
   auto tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+  EXPECT_EQ(tx_params.size(), 0UL);
+  EXPECT_EQ(tx_args.size(), 0UL);
+  ASSERT_TRUE(swap_info);
 
-  ASSERT_EQ(tx_params.size(), 3UL);
-  EXPECT_EQ(tx_params[0], "bytes");
-  EXPECT_EQ(tx_params[1], "uint128");
-  EXPECT_EQ(tx_params[2], "uint128");
+  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->from_chain_id, "");
+  EXPECT_EQ(swap_info->from_asset,
+            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");  // USDC
+  EXPECT_EQ(swap_info->from_amount, "0x1c9c380");
 
-  ASSERT_EQ(tx_args.size(), 3UL);
-  EXPECT_EQ(tx_args[0],
-            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"  // USDC
-            "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // ETH
-  EXPECT_EQ(tx_args[1], "0x1c9c380");
-  EXPECT_EQ(tx_args[2], "0x3c11d06581812a");
+  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->to_chain_id, "");
+  EXPECT_EQ(swap_info->to_asset,
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // ETH
+  EXPECT_EQ(swap_info->to_amount, "0x3c11d06581812a");
+
+  EXPECT_EQ(swap_info->receiver, "");
+  EXPECT_EQ(swap_info->provider, "zeroex");
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrderWithETH) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: ETH → USDC
@@ -899,27 +956,34 @@ TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrderWithETH) {
 
   auto tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+  EXPECT_EQ(tx_params.size(), 0UL);
+  EXPECT_EQ(tx_args.size(), 0UL);
+  ASSERT_TRUE(swap_info);
 
-  ASSERT_EQ(tx_params.size(), 3UL);
-  EXPECT_EQ(tx_params[0], "bytes");
-  EXPECT_EQ(tx_params[1], "uint128");
-  EXPECT_EQ(tx_params[2], "uint128");
+  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->from_chain_id, "");
+  EXPECT_EQ(swap_info->from_asset,
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // ETH
+  EXPECT_EQ(swap_info->from_amount, "0x3d407736bd1262");
 
-  ASSERT_EQ(tx_args.size(), 3UL);
-  EXPECT_EQ(tx_args[0],
-            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"  // ETH
-            "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");  // USDC
-  EXPECT_EQ(tx_args[1], "0x3d407736bd1262");
-  EXPECT_EQ(tx_args[2], "0x1c9c380");
+  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->to_chain_id, "");
+  EXPECT_EQ(swap_info->to_asset,
+            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");  // USDC
+  EXPECT_EQ(swap_info->to_amount, "0x1c9c380");
+
+  EXPECT_EQ(swap_info->receiver, "");
+  EXPECT_EQ(swap_info->provider, "zeroex");
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrder) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: USDC → USDT
@@ -981,27 +1045,34 @@ TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrder) {
 
   auto tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+  EXPECT_EQ(tx_params.size(), 0UL);
+  EXPECT_EQ(tx_args.size(), 0UL);
+  ASSERT_TRUE(swap_info);
 
-  ASSERT_EQ(tx_params.size(), 3UL);
-  EXPECT_EQ(tx_params[0], "bytes");
-  EXPECT_EQ(tx_params[1], "uint128");
-  EXPECT_EQ(tx_params[2], "uint128");
+  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->from_chain_id, "");
+  EXPECT_EQ(swap_info->from_asset,
+            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");  // USDC
+  EXPECT_EQ(swap_info->from_amount, "0x1c9c380");
 
-  ASSERT_EQ(tx_args.size(), 3UL);
-  EXPECT_EQ(tx_args[0],
-            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"  // USDC
-            "dac17f958d2ee523a2206206994597c13d831ec7");  // USDT
-  EXPECT_EQ(tx_args[1], "0x1c9c380");
-  EXPECT_EQ(tx_args[2], "0x1c6bad5");
+  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->to_chain_id, "");
+  EXPECT_EQ(swap_info->to_asset,
+            "0xdac17f958d2ee523a2206206994597c13d831ec7");  // USDT
+  EXPECT_EQ(swap_info->to_amount, "0x1c6bad5");
+
+  EXPECT_EQ(swap_info->receiver, "");
+  EXPECT_EQ(swap_info->provider, "zeroex");
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataCowOrderSellEth) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: XDAI → USDC
@@ -1043,27 +1114,35 @@ TEST(EthDataParser, GetTransactionInfoFromDataCowOrderSellEth) {
 
   auto tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+  EXPECT_EQ(tx_params.size(), 0UL);
+  EXPECT_EQ(tx_args.size(), 0UL);
+  ASSERT_TRUE(swap_info);
 
-  ASSERT_EQ(tx_params.size(), 3UL);
-  EXPECT_EQ(tx_params[0], "bytes");
-  EXPECT_EQ(tx_params[1], "uint256");
-  EXPECT_EQ(tx_params[2], "uint256");
+  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->from_chain_id, "");
+  EXPECT_EQ(swap_info->from_asset,
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // XDAI
+  EXPECT_EQ(swap_info->from_amount,
+            "0x4967cb9ebd8176");  // 0.02066179753911948 XDAI
 
-  ASSERT_EQ(tx_args.size(), 3UL);
-  EXPECT_EQ(tx_args[0],
-            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"  // XDAI
-            "ddafbb505ad214d7b80b1f830fccc89b60fb7a83");  // USDC
-  EXPECT_EQ(tx_args[1], "0x4967cb9ebd8176");  // 0.02066179753911948 XDAI
-  EXPECT_EQ(tx_args[2], "0x4f1e");            // 0.020254 USDC
+  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->to_chain_id, "");
+  EXPECT_EQ(swap_info->to_asset,
+            "0xddafbb505ad214d7b80b1f830fccc89b60fb7a83");  // USDC
+  EXPECT_EQ(swap_info->to_amount, "0x4f1e");                // 0.020254 USDC
+
+  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, "cowswap");
 }
 
 TEST(EthDataParser, GetTransactionInfoFromFilForward) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
 
   std::vector<uint8_t> data;
   ASSERT_TRUE(
@@ -1077,19 +1156,21 @@ TEST(EthDataParser, GetTransactionInfoFromFilForward) {
                                &data));
   auto tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHFilForwarderTransfer);
+  EXPECT_FALSE(swap_info);
   ASSERT_EQ(tx_params.size(), 1UL);
   ASSERT_EQ(tx_args.size(), 1UL);
-  ASSERT_EQ(tx_params[0], "bytes");
-  ASSERT_EQ(tx_args[0], "0x01d15cf6d7364d8b4dab9d90dc5699d1a78cf729c1");
+  EXPECT_EQ(tx_params[0], "bytes");
+  EXPECT_EQ(tx_args[0], "0x01d15cf6d7364d8b4dab9d90dc5699d1a78cf729c1");
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataLiFiSwapTokensGeneric) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: token → token
@@ -1200,21 +1281,26 @@ TEST(EthDataParser, GetTransactionInfoFromDataLiFiSwapTokensGeneric) {
   auto tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
 
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+  ASSERT_TRUE(swap_info);
 
-  ASSERT_EQ(tx_params.size(), 3UL);
-  EXPECT_EQ(tx_params[0], "bytes");
-  EXPECT_EQ(tx_params[1], "uint256");
-  EXPECT_EQ(tx_params[2], "uint256");
+  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->from_chain_id, "");
+  EXPECT_EQ(swap_info->from_asset,
+            "0x2791bca1f2de4661ed88a30c99a7a9449aa84174");  // USDC.e
+  EXPECT_EQ(swap_info->from_amount, "0x7b451");             // 0.504913 USDC.e
 
-  ASSERT_EQ(tx_args.size(), 3UL);
-  EXPECT_EQ(tx_args[0],
-            "0x2791bca1f2de4661ed88a30c99a7a9449aa84174"  // USDC.e
-            "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // MATIC
-  EXPECT_EQ(tx_args[1], "0x7b451");                       // 0.504913 USDC.e
-  EXPECT_EQ(tx_args[2], "0x96eeba8455b6e35");  // 0.6797397017301765 MATIC
+  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->to_chain_id, "");
+  EXPECT_EQ(swap_info->to_asset,
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // MATIC
+  EXPECT_EQ(swap_info->to_amount,
+            "0x96eeba8455b6e35");  // 0.6797397017301765 MATIC
+
+  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, "lifi");
 
   // Swap 1 MATIC → Y USDC.e
   ASSERT_TRUE(PrefixedHexStringToBytes(
@@ -1282,21 +1368,25 @@ TEST(EthDataParser, GetTransactionInfoFromDataLiFiSwapTokensGeneric) {
   tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
 
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+  ASSERT_TRUE(swap_info);
 
-  ASSERT_EQ(tx_params.size(), 3UL);
-  EXPECT_EQ(tx_params[0], "bytes");
-  EXPECT_EQ(tx_params[1], "uint256");
-  EXPECT_EQ(tx_params[2], "uint256");
+  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->from_chain_id, "");
+  EXPECT_EQ(swap_info->from_asset,
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // MATIC
+  EXPECT_EQ(swap_info->from_amount, "0xde0b6b3a7640000");   // 1 MATIC
 
-  ASSERT_EQ(tx_args.size(), 3UL);
-  EXPECT_EQ(tx_args[0],
-            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"  // MATIC
-            "2791bca1f2de4661ed88a30c99a7a9449aa84174");  // USDC.e
-  EXPECT_EQ(tx_args[1], "0xde0b6b3a7640000");             // 1 MATIC
-  EXPECT_EQ(tx_args[2], "0x98647");                       // 0.624199 USDC.e
+  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->to_chain_id, "");
+  EXPECT_EQ(swap_info->to_asset,
+            "0x2791bca1f2de4661ed88a30c99a7a9449aa84174");  // USDC.e
+  EXPECT_EQ(swap_info->to_amount, "0x98647");               // 0.624199 USDC.e
+
+  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, "lifi");
 }
 
 TEST(EthDataParser,
@@ -1304,6 +1394,7 @@ TEST(EthDataParser,
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: ETH → token
@@ -1388,21 +1479,25 @@ TEST(EthDataParser,
   auto tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
 
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+  ASSERT_TRUE(swap_info);
 
-  ASSERT_EQ(tx_params.size(), 3UL);
-  EXPECT_EQ(tx_params[0], "bytes");
-  EXPECT_EQ(tx_params[1], "uint256");
-  EXPECT_EQ(tx_params[2], "uint256");
+  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->from_chain_id, "");
+  EXPECT_EQ(swap_info->from_asset,
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // ETH
+  EXPECT_EQ(swap_info->from_amount, "0x5af3107a4000");      // 0.0001 ETH
 
-  ASSERT_EQ(tx_args.size(), 3UL);
-  EXPECT_EQ(tx_args[0],
-            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"  // ETH
-            "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");  // USDC
-  EXPECT_EQ(tx_args[1], "0x5af3107a4000");                // 0.0001 ETH
-  EXPECT_EQ(tx_args[2], "0x52397");                       // 0.336791 USDC
+  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->to_chain_id, "");
+  EXPECT_EQ(swap_info->to_asset,
+            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");  // USDC
+  EXPECT_EQ(swap_info->to_amount, "0x52397");               // 0.336791 USDC
+
+  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, "lifi");
 }
 
 TEST(EthDataParser,
@@ -1410,6 +1505,7 @@ TEST(EthDataParser,
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: token → ETH
@@ -1489,21 +1585,26 @@ TEST(EthDataParser,
   auto tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
 
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+  ASSERT_TRUE(swap_info);
 
-  ASSERT_EQ(tx_params.size(), 3UL);
-  EXPECT_EQ(tx_params[0], "bytes");
-  EXPECT_EQ(tx_params[1], "uint256");
-  EXPECT_EQ(tx_params[2], "uint256");
+  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->from_chain_id, "");
+  EXPECT_EQ(swap_info->from_asset,
+            "0x6b175474e89094c44da98b954eedeac495271d0f");  // DAI
+  EXPECT_EQ(swap_info->from_amount, "0x96324f4223190000");  // 10.8228 DAI
 
-  ASSERT_EQ(tx_args.size(), 3UL);
-  EXPECT_EQ(tx_args[0],
-            "0x6b175474e89094c44da98b954eedeac495271d0f"  // DAI
-            "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // ETH
-  EXPECT_EQ(tx_args[1], "0x96324f4223190000");            // 10.8228 DAI
-  EXPECT_EQ(tx_args[2], "0xb4fb6da8128d1");  // 0.003183871512357073 ETH
+  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->to_chain_id, "");
+  EXPECT_EQ(swap_info->to_asset,
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // ETH
+  EXPECT_EQ(swap_info->to_amount,
+            "0xb4fb6da8128d1");  // 0.003183871512357073 ETH
+
+  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, "lifi");
 }
 
 TEST(EthDataParser,
@@ -1511,6 +1612,7 @@ TEST(EthDataParser,
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
   std::vector<uint8_t> data;
 
   // TXN: token → token
@@ -1592,21 +1694,468 @@ TEST(EthDataParser,
   auto tx_info = GetTransactionInfoFromData(data);
   ASSERT_NE(tx_info, std::nullopt);
 
-  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+  ASSERT_TRUE(swap_info);
 
-  ASSERT_EQ(tx_params.size(), 3UL);
-  EXPECT_EQ(tx_params[0], "bytes");
-  EXPECT_EQ(tx_params[1], "uint256");
-  EXPECT_EQ(tx_params[2], "uint256");
+  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->from_chain_id, "");
+  EXPECT_EQ(swap_info->from_asset,
+            "0x6b175474e89094c44da98b954eedeac495271d0f");  // DAI
+  EXPECT_EQ(swap_info->from_amount,
+            "0x12c64655a698c7e2b");  // 21.645537148041726 DAI
 
-  ASSERT_EQ(tx_args.size(), 3UL);
-  EXPECT_EQ(tx_args[0],
-            "0x6b175474e89094c44da98b954eedeac495271d0f"  // DAI
-            "0d8775f648430679a709e98d2b0cb6250d2887ef");  // BAT
-  EXPECT_EQ(tx_args[1], "0x12c64655a698c7e2b");  // 21.645537148041726 DAI
-  EXPECT_EQ(tx_args[2], "0x61dc2169221089f5c");  // 112.82476563171433 BAT
+  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->to_chain_id, "");
+  EXPECT_EQ(swap_info->to_asset,
+            "0x0d8775f648430679a709e98d2b0cb6250d2887ef");  // BAT
+  EXPECT_EQ(swap_info->to_amount,
+            "0x61dc2169221089f5c");  // 112.82476563171433 BAT
+
+  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, "lifi");
+}
+
+TEST(
+    EthDataParser,
+    GetTransactionInfoFromDataLiFiSwapAndStartBridgeTokensViaCelerCircleBridge) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
+  std::vector<uint8_t> data;
+
+  // Function:
+  // swapAndStartBridgeTokensViaCelerCircleBridge((bytes32 transactionId,
+  //                                               string bridge,
+  //                                               string integrator,
+  //                                               string referrer,
+  //                                               address sendingAssetId,
+  //                                               address receiver,
+  //                                               uint256 minAmount,
+  //                                               uint256 destinationChainId,
+  //                                               bool hasSourceSwaps,
+  //                                               bool hasDestinationCalls)
+  //                                               bridgeData),
+  //                                              (address callTo,
+  //                                               address approveTo,
+  //                                               address sendingAssetId,
+  //                                               address receivingAssetId,
+  //                                               uint256 fromAmount,
+  //                                               bytes callData,
+  //                                               bool requiresDeposit)[]
+  //                                               swapData)
+
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x8fab0663"  // function selector
+
+      /***************************** HEAD ****************************/
+      // offset to start data part of bridgeData
+      "0000000000000000000000000000000000000000000000000000000000000040"
+      // offset to start data part of swapData
+      "0000000000000000000000000000000000000000000000000000000000000200"
+
+      /************************** bridgeData *************************/
+      // transactionId
+      "3c3e3d8fed4c117a7f0491b597137f1951b94dde6079b9d1d9c810b881493373"
+      // bridge (offset)
+      "0000000000000000000000000000000000000000000000000000000000000140"
+      // integrator (offset)
+      "0000000000000000000000000000000000000000000000000000000000000180"
+      // referrer
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // sendingAssetId
+      "0000000000000000000000003c499c542cef5e3811e1192ce70d8cc03d5c3359"
+      // receiver
+      "000000000000000000000000a92d461a9a988a7f11ec285d39783a637fdd6ba4"
+      // minAmount
+      "0000000000000000000000000000000000000000000000000000000000098269"
+      // destinationChainId
+      "000000000000000000000000000000000000000000000000000000000000000a"
+      // hasSourceSwaps
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      // hasDestinationCalls
+      "0000000000000000000000000000000000000000000000000000000000000000"
+
+      // offset to start data part of bridge
+      // size of bridge string
+      "000000000000000000000000000000000000000000000000000000000000000b"
+      // bridge string
+      "63656c6572636972636c65000000000000000000000000000000000000000000"
+
+      // offset to start data part of integrator
+      // size of integrator string
+      "0000000000000000000000000000000000000000000000000000000000000005"
+      // integrator string
+      "6272617665000000000000000000000000000000000000000000000000000000"
+
+      // size(swapData) = 1
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      // swapData[0] offset
+      "0000000000000000000000000000000000000000000000000000000000000020"
+
+      /************************** swapData[0] *************************/
+      // callTo
+      "00000000000000000000000039e3e49c99834c9573c9fc7ff5a4b226cd7b0e63"
+      // approveTo
+      "0000000000000000000000006d310348d5c12009854dfcf72e0df9027e8cb4f4"
+      // sendingAssetId
+      "0000000000000000000000002791bca1f2de4661ed88a30c99a7a9449aa84174"
+      // receivingAssetId
+      "0000000000000000000000003c499c542cef5e3811e1192ce70d8cc03d5c3359"
+      // fromAmount
+      "00000000000000000000000000000000000000000000000000000000000989b3"
+      // callData
+      "00000000000000000000000000000000000000000000000000000000000000e0"
+      // requiresDeposit
+      "0000000000000000000000000000000000000000000000000000000000000001"
+
+      // extraneous calldata to be ignored
+      "00000000000000000000000000000000000000000000000000000000000005c4"
+      "301a37200000000000000000000000002791bca1f2de4661ed88a30c99a7a944"
+      "9aa841740000000000000000000000003c499c542cef5e3811e1192ce70d8cc0"
+      "3d5c335900000000000000000000000000000000000000000000000000000000"
+      "000989b300000000000000000000000000000000000000000000000000000000"
+      "0009826900000000000000000000000000000000000000000000000000000000"
+      "0000016000000000000000000000000000000000000000000000000000000000"
+      "000001e000000000000000000000000000000000000000000000000000000000"
+      "0000026000000000000000000000000000000000000000000000000000000000"
+      "0000000100000000000000000000000000000000000000000000000000000000"
+      "0000030000000000000000000000000000000000000000000000000000000000"
+      "0000056000000000000000000000000000000000000000000000000000000000"
+      "66690f2500000000000000000000000000000000000000000000000000000000"
+      "0000000300000000000000000000000026a0225e27227fa6b5ead5b029532ec5"
+      "99c0a02e00000000000000000000000026a0225e27227fa6b5ead5b029532ec5"
+      "99c0a02e0000000000000000000000006e7c5a418dd1395068e539514b8c4dc3"
+      "98a12e9e00000000000000000000000000000000000000000000000000000000"
+      "00000003000000000000000000000000ba12222222228d8ba445958a75a0704d"
+      "566bf2c8000000000000000000000000ba12222222228d8ba445958a75a0704d"
+      "566bf2c800000000000000000000000032fae204835e08b9374493d6b4628fd1"
+      "f87dd04500000000000000000000000000000000000000000000000000000000"
+      "0000000400000000000000000000000026a0225e27227fa6b5ead5b029532ec5"
+      "99c0a02e00000000000000000000000026a0225e27227fa6b5ead5b029532ec5"
+      "99c0a02e0000000000000000000000006e7c5a418dd1395068e539514b8c4dc3"
+      "98a12e9e00000000000000000000000039e3e49c99834c9573c9fc7ff5a4b226"
+      "cd7b0e6300000000000000000000000000000000000000000000000000000000"
+      "0000000300000000000000000000000000000000000000000000000000000000"
+      "0000006000000000000000000000000000000000000000000000000000000000"
+      "000000e000000000000000000000000000000000000000000000000000000000"
+      "0000016000000000000000000000000000000000000000000000000000000000"
+      "00000060d208168d2a512240eb82582205d94a0710bce4e70001000000000000"
+      "000000380000000000000000000000002791bca1f2de4661ed88a30c99a7a944"
+      "9aa841740000000000000000000000000d500b1d8e8ef31e21c99d1db9a6444d"
+      "3adf127000000000000000000000000000000000000000000000000000000000"
+      "00000060aa56a0854d98c3c1e32d624d5a8eb60cc090249c0001000000000000"
+      "000007cd0000000000000000000000000d500b1d8e8ef31e21c99d1db9a6444d"
+      "3adf12700000000000000000000000001bfd67037b42cf73acf2047067bd4f2c"
+      "47d9bfd600000000000000000000000000000000000000000000000000000000"
+      "000000c000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000004000000000000000000000000000000000000000000000000000000000"
+      "000000600000000000000000000000001bfd67037b42cf73acf2047067bd4f2c"
+      "47d9bfd60000000000000000000000003c499c542cef5e3811e1192ce70d8cc0"
+      "3d5c335900000000000000000000000000000000000000000000000000000000"
+      "000001f400000000000000000000000000000000000000000000000000000000"
+      "0000004000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      &data));
+
+  auto tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+
+  EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+  ASSERT_TRUE(swap_info);
+
+  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->from_chain_id, "");
+  EXPECT_EQ(swap_info->from_asset,
+            "0x2791bca1f2de4661ed88a30c99a7a9449aa84174");  // USDC.e
+  EXPECT_EQ(swap_info->from_amount, "0x989b3");             // 0.625075 USDC.e
+
+  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->to_chain_id, "0xa");
+  EXPECT_EQ(swap_info->to_asset,
+            "");  // cannot be reliably determined from the data
+  EXPECT_EQ(swap_info->to_amount,
+            "");  // cannot be reliably determined from the data
+
+  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, "lifi");
+}
+
+TEST(EthDataParser,
+     GetTransactionInfoFromDataLiFiSwapAndStartBridgeTokensViaAmarok) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
+  std::vector<uint8_t> data;
+
+  // Function:
+  // swapAndStartBridgeTokensViaAmarok((bytes32 transactionId,
+  //                                    string bridge,
+  //                                    string integrator,
+  //                                    string referrer,
+  //                                    address sendingAssetId,
+  //                                    address receiver,
+  //                                    uint256 minAmount,
+  //                                    uint256 destinationChainId,
+  //                                    bool hasSourceSwaps,
+  //                                    bool hasDestinationCalls) bridgeData),
+  //                                   (address callTo,
+  //                                    address approveTo,
+  //                                    address sendingAssetId,
+  //                                    address receivingAssetId,
+  //                                    uint256 fromAmount,
+  //                                    bytes callData,
+  //                                    bool requiresDeposit)[] swapData)
+
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x83f31917"  // function selector
+
+      /***************************** HEAD ****************************/
+      // offset to start data part of bridgeData
+      "0000000000000000000000000000000000000000000000000000000000000060"
+      // offset to start data part of swapData
+      "0000000000000000000000000000000000000000000000000000000000000220"
+      // offset to start data part of bridge specific data (ignored)
+      "0000000000000000000000000000000000000000000000000000000000000860"
+
+      /************************** bridgeData *************************/
+      // transactionId
+      "51ab364e57b0852ef6ac1b026e0062a5ded055416bc91a8a3de1dd8a1bc61bd2"
+      // bridge (offset)
+      "0000000000000000000000000000000000000000000000000000000000000140"
+      // integrator (offset)
+      "0000000000000000000000000000000000000000000000000000000000000180"
+      // referrer
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // sendingAssetId
+      "0000000000000000000000002170ed0880ac9a755fd29b2688956bd959f933f8"
+      // receiver
+      "000000000000000000000000a92d461a9a988a7f11ec285d39783a637fdd6ba4"
+      // minAmount
+      "000000000000000000000000000000000000000000000000000024e83b6de5bb"
+      // destinationChainId
+      "000000000000000000000000000000000000000000000000000000000000000a"
+      // hasSourceSwaps
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      // hasDestinationCalls
+      "0000000000000000000000000000000000000000000000000000000000000001"
+
+      // offset to start data part of bridge
+      // size of bridge string
+      "0000000000000000000000000000000000000000000000000000000000000006"
+      // bridge string
+      "616d61726f6b0000000000000000000000000000000000000000000000000000"
+
+      // offset to start data part of integrator
+      // size of integrator string
+      "0000000000000000000000000000000000000000000000000000000000000005"
+      "6272617665000000000000000000000000000000000000000000000000000000"
+
+      // size(swapData) = 1
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      // swapData[0] offset
+      "0000000000000000000000000000000000000000000000000000000000000020"
+
+      /************************** swapData[0] *************************/
+      // callTo
+      "0000000000000000000000000656fd85364d03b103ceeda192fb2d3906a6ac15"
+      // approveTo
+      "000000000000000000000000a128ba44b2738a558a1fdc06d6303d52d3cef8c1"
+      // sendingAssetId
+      "000000000000000000000000ad29abb318791d579433d831ed122afeaf29dcfe"
+      // receivingAssetId
+      "0000000000000000000000002170ed0880ac9a755fd29b2688956bd959f933f8"
+      // fromAmount
+      "0000000000000000000000000000000000000000000000000318632acb5ec3c1"
+      // callData
+      "00000000000000000000000000000000000000000000000000000000000000e0"
+      // requiresDeposit
+      "0000000000000000000000000000000000000000000000000000000000000001"
+
+      // extraneous calldata to be ignored (truncated)
+
+      "00000000000000000000000000000000000000000000000000000000000004e4"
+      "301a3720000000000000000000000000ad29abb318791d579433d831ed122afe"
+      "af29dcfe0000000000000000000000002170ed0880ac9a755fd29b2688956bd9"
+      "59f933f80000000000000000000000000000000000000000000000000318632a"
+      "cb5ec3c1000000000000000000000000000000000000000000000000000024e8"
+      "3b70dd6300000000000000000000000000000000000000000000000000000000"
+      "0000016000000000000000000000000000000000000000000000000000000000"
+      "000001e000000000000000000000000000000000000000000000000000000000"
+      "0000026000000000000000000000000000000000000000000000000000000000"
+      "0000000600000000000000000000000000000000000000000000000000000000"
+      "0000030000000000000000000000000000000000000000000000000000000000"
+      "0000048000000000000000000000000000000000000000000000000000000000"
+      "6686f06f00000000000000000000000000000000000000000000000000000000"
+      "000000030000000000000000000000008e95bce2a39eb72f231f301516441840"
+      "423bbb98000000000000000000000000165ba87e882208100672b6c56f477ee4"
+      "2502c8200000000000000000000000004c52f61212f9e36922ab78aab250f1a2"
+      "f000d93c00000000000000000000000000000000000000000000000000000000"
+      "00000003000000000000000000000000f753b7e59e1c010b5fd89737e874d4ca"
+      "51d9cc230000000000000000000000000f36544d0b1a107b98edfabb1d95538c"
+      "316c1dcd000000000000000000000000d9a0d1f5e02de2403f68bb71a15f8847"
+      "a854b49400000000000000000000000000000000000000000000000000000000"
+      "00000004000000000000000000000000f753b7e59e1c010b5fd89737e874d4ca"
+      "51d9cc230000000000000000000000000f36544d0b1a107b98edfabb1d95538c"
+      "316c1dcd000000000000000000000000d9a0d1f5e02de2403f68bb71a15f8847"
+      "a854b4940000000000000000000000000656fd85364d03b103ceeda192fb2d39"
+      "06a6ac1500000000000000000000000000000000000000000000000000000000"
+      "0000000300000000000000000000000000000000000000000000000000000000"
+      "0000006000000000000000000000000000000000000000000000000000000000"
+      "000000c000000000000000000000000000000000000000000000000000000000"
+      "0000010000000000000000000000000000000000000000000000000000000000"
+      "00000040000000000000000000000000ad29abb318791d579433d831ed122afe"
+      "af29dcfe000000000000000000000000bb4cdb9cbd36b01bd1cbaebf2de08d91"
+      "73bc095c00000000000000000000000000000000000000000000000000000000"
+      "0000000100000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000004000000000000000000000000000000000000000000000000000000000"
+      "0000001e00000000000000000000000000000000000000000000000000000000"
+      "0000271000000000000000000000000000000000000000000000000000000000"
+      "0000004000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000000000000000000000000000000000000000e0"
+      "000000000000000000000000050e198e36a73a1e32f15c3afc58c4506d82f657"
+      "0000000000000000000000000000000000000000000000000002d2c1c1a8bbbe"
+      "0000000000000000000000000000000000000000000000000000000000000032"
+      "000000000000000000000000a92d461a9a988a7f11ec285d39783a637fdd6ba4"
+      "000000000000000000000000000000000000000000000000000000006f707469"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000000000000000000000000000000000000001a0"
+      "0000000000000000000000000000000000000000000000000000000000000040"
+      "000000000000000000000000a92d461a9a988a7f11ec285d39783a637fdd6ba4"
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      "0000000000000000000000000000000000000000000000000000000000000020"
+      "0000000000000000000000005215e9fd223bc909083fbdb2860213873046e45d"
+      "0000000000000000000000005215e9fd223bc909083fbdb2860213873046e45d"
+      "0000000000000000000000004200000000000000000000000000000000000006"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000000000000000000000000000002484aa1eb76b"
+      "00000000000000000000000000000000000000000000000000000000000000e0"
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      "0000000000000000000000000000000000000000000000000000000000000004"
+      "3ccfd60b00000000000000000000000000000000000000000000000000000000",
+      &data));
+
+  auto tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+
+  EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+  ASSERT_TRUE(swap_info);
+
+  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->from_chain_id, "");
+  EXPECT_EQ(swap_info->from_asset,
+            "0xad29abb318791d579433d831ed122afeaf29dcfe");  // FTM
+  EXPECT_EQ(swap_info->from_amount,
+            "0x318632acb5ec3c1");  // 0.223037217006601150 FTM
+
+  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->to_chain_id, "0xa");  // Optimism
+  EXPECT_EQ(swap_info->to_asset,
+            "");  // cannot be reliably determined from the data
+  EXPECT_EQ(swap_info->to_amount,
+            "");  // cannot be reliably determined from the data
+
+  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, "lifi");
+}
+
+TEST(EthDataParser,
+     GetTransactionInfoFromDataLiFiStartBridgeTokensViaCelerCircleBridge) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
+  std::vector<uint8_t> data;
+
+  // Function:
+  // startBridgeTokensViaCelerCircleBridge((bytes32 transactionId,
+  //                                        string bridge,
+  //                                        string integrator,
+  //                                        string referrer,
+  //                                        address sendingAssetId,
+  //                                        address receiver,
+  //                                        uint256 minAmount,
+  //                                        uint256 destinationChainId,
+  //                                        bool hasSourceSwaps,
+  //                                        bool hasDestinationCalls)
+  //                                        bridgeData)
+
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xbab657d8"  // function selector
+
+      /***************************** HEAD ****************************/
+      // offset to start data part of bridgeData
+      "0000000000000000000000000000000000000000000000000000000000000020"
+
+      /************************** bridgeData *************************/
+      // transactionId
+      "098ba17b1ad0ba045e8da5786487a91e0f9ce74fb858715fc3cab5e554f47cef"
+
+      // bridge (offset)
+      "0000000000000000000000000000000000000000000000000000000000000140"
+      // integrator (offset)
+      "0000000000000000000000000000000000000000000000000000000000000180"
+      // referrer
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // sendingAssetId
+      "0000000000000000000000000b2c639c533813f4aa9d7837caf62653d097ff85"
+      // receiver
+      "000000000000000000000000a92d461a9a988a7f11ec285d39783a637fdd6ba4"
+      // minAmount
+      "00000000000000000000000000000000000000000000000000000000001e8480"
+      // destinationChainId
+      "000000000000000000000000000000000000000000000000000000000000a4b1"
+      // hasSourceSwaps
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // hasDestinationCalls
+      "0000000000000000000000000000000000000000000000000000000000000000"
+
+      // offset to start data part of bridge
+      // size of bridge string
+      "000000000000000000000000000000000000000000000000000000000000000b"
+      // bridge string
+      "63656c6572636972636c65000000000000000000000000000000000000000000"
+
+      // offset to start data part of integrator
+      // size of integrator string
+      "0000000000000000000000000000000000000000000000000000000000000005"
+      // integrator string
+      "6272617665000000000000000000000000000000000000000000000000000000",
+      &data));
+
+  auto tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+
+  EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+  ASSERT_TRUE(swap_info);
+
+  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->from_chain_id, "");
+  EXPECT_EQ(swap_info->from_asset,
+            "0x0b2c639c533813f4aa9d7837caf62653d097ff85");  // USDC
+  EXPECT_EQ(swap_info->from_amount, "0x1e8480");            // 0.2 USDC
+
+  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->to_chain_id, "0xa4b1");  // Arbitrum
+  EXPECT_EQ(swap_info->to_asset, "");
+  EXPECT_EQ(swap_info->to_amount, "");
+
+  EXPECT_EQ(swap_info->receiver, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
+  EXPECT_EQ(swap_info->provider, "lifi");
 }
 
 }  // namespace brave_wallet

@@ -5,6 +5,10 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# These tests crash because brave.search.p3a_default_switch pref is not
+# registered.
+-VideoStreamCoordinatorTest.ConnectToFrameHandlerAndReceiveNoFrames
+
 # These tests crash due to TestingBraveBrowserProcess::greaselion_download_service()
 # having NOTREACHED which causes an immediate crash
 # https://github.com/brave/brave-browser/issues/25726
@@ -241,6 +245,9 @@
 # This test crashes because we have kOptimizationHints feature disabled, which
 # causes OptimizationGuideKeyedServiceFactory::GetForProfile return a nullptr.
 -WallpaperSearchHandlerTest.*
+
+# These tests fail because we don't use upstream's material colors.
+-MaterialNewTabPageColorMixerTest.*
 
 # These tests fail because we disable kFirstPartySets.
 -RelatedWebsiteSetsSourceTest.RWS
@@ -690,6 +697,18 @@
 -ThemeColorPickerHandlerTest.GetChromeColors
 -ThemeColorPickerHandlerTest.GetChromeColorsExtended
 -ThemeColorPickerHandlerTest.SetSeedColor
+
+# These tests are disabled because we hide the password card in
+# brave://settings/safetyCheck which also involves always returning a "safe"
+# password card state
+-All/PasswordStatusCheckServiceParameterizedCardTest.PasswordCardState/*
+-PasswordStatusCheckServiceBaseTest.PasswordCardCheckTime
+-SafetyHubCardDataHelperTest.GetOverallState_Multi
+-SafetyHubCardDataHelperTest.GetOverallState_Password
+-SafetyHubHandlerTest.HandleGetSafetyHubEntryPointData_HasRecommendationsAndHeader
+-SafetyHubHandlerTest.HandleGetSafetyHubEntryPointData_Subheader_AllModules
+-SafetyHubHandlerTest.HandleGetSafetyHubEntryPointData_Subheader_OneModule
+-SafetyHubHandlerTest.HandleGetSafetyHubEntryPointData_Subheader_TwoModulesWithPassword
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*

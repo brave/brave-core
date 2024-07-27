@@ -30,8 +30,10 @@ import {
   sortTransactionByDate
 } from '../../../../utils/tx-utils'
 import { getBalance } from '../../../../utils/balance-utils'
-import { computeFiatAmount } from '../../../../utils/pricing-utils'
-import { getPriceIdForToken } from '../../../../utils/api-utils'
+import {
+  computeFiatAmount,
+  getPriceIdForToken
+} from '../../../../utils/pricing-utils'
 import { networkSupportsAccount } from '../../../../utils/network-utils'
 import {
   auroraSupportedContractAddresses,
@@ -484,7 +486,7 @@ export const PortfolioFungibleAsset = () => {
           src={`chrome-untrusted://line-chart-display${
             isLoadingGraphData ? '' : `?${encodedPriceData}`
           }`}
-          sandbox='allow-scripts'
+          sandbox='allow-scripts allow-same-origin'
         />
         <Row padding='0px 20px'>
           <ButtonRow>

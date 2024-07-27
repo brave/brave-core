@@ -22,7 +22,7 @@ struct AdvancedShieldsSettingsView: View {
 
   var body: some View {
     List {
-      DefaultShieldsViewView(settings: settings)
+      DefaultShieldsSectionView(settings: settings)
       ClearDataSectionView(settings: settings)
 
       Section {

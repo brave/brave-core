@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/ad_preferences_info.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -14,7 +14,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kJson[] = R"(
+constexpr char kAdPreferencesAsJson[] = R"(
 {
   "filtered_advertisers": [
     {
@@ -64,7 +64,7 @@ void ParseJsonAndCompareWithSampleAdPreferencesInfo(const std::string& json) {
 
 }  // namespace
 
-class BraveAdsAdPreferencesInfoTest : public UnitTestBase {};
+class BraveAdsAdPreferencesInfoTest : public test::TestBase {};
 
 TEST_F(BraveAdsAdPreferencesInfoTest, SerializeSampleAdPreferencesInfo) {
   // Arrange
@@ -95,7 +95,7 @@ TEST_F(BraveAdsAdPreferencesInfoTest, SerializeSampleAdPreferencesInfo) {
 
 TEST_F(BraveAdsAdPreferencesInfoTest, ParseSampleAdPreferencesInfoJson) {
   // Act & Assert
-  ParseJsonAndCompareWithSampleAdPreferencesInfo(kJson);
+  ParseJsonAndCompareWithSampleAdPreferencesInfo(kAdPreferencesAsJson);
 }
 
 TEST_F(BraveAdsAdPreferencesInfoTest, ParseEmptyJson) {

@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_linear_model_generated.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/linear_pipeline_test_util.h"
 
@@ -18,7 +18,7 @@
 
 namespace brave_ads::ml {
 
-class BraveAdsLinearTest : public UnitTestBase {
+class BraveAdsLinearTest : public test::TestBase {
  public:
   std::optional<LinearModel> BuildLinearModel(
       const std::map<std::string, VectorData>& raw_weights,

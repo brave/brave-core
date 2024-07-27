@@ -90,8 +90,8 @@ class WalletWatchAssetBrowserTest : public InProcessBrowserTest {
     base::RunLoop run_loop;
     std::vector<mojom::BlockchainTokenPtr> tokens_out;
     brave_wallet_service_->GetUserAssets(
-        GetCurrentChainId(browser()->profile()->GetPrefs(),
-                          mojom::CoinType::ETH, std::nullopt),
+        brave_wallet_service_->network_manager()->GetCurrentChainId(
+            mojom::CoinType::ETH, std::nullopt),
         mojom::CoinType::ETH,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::BlockchainTokenPtr> tokens) {

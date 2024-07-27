@@ -12,17 +12,11 @@ import {
   RejectIcon,
   SignIcon,
   ConfirmIcon,
-  StyledLink
+  StyledLink,
+  LaunchIcon,
+  PanelButtonTypes
 } from './style'
-
-export type PanelButtonTypes =
-  | 'primary'
-  | 'secondary'
-  | 'danger'
-  | 'confirm'
-  | 'sign'
-  | 'reject'
-  | 'cancel'
+import { Row } from '../../../shared/style'
 
 interface BaseProps {
   buttonType: PanelButtonTypes
@@ -32,6 +26,8 @@ interface BaseProps {
   maxHeight?: string
   minHeight?: string
   minWidth?: string
+  isV2?: boolean
+  isExternalLink?: boolean
 }
 
 type ClickProps =
@@ -55,19 +51,27 @@ export const NavButton: React.FC<Props> = ({
   needsTopMargin,
   onSubmit,
   text,
-  url
+  url,
+  isV2,
+  isExternalLink = false
 }) => {
   // memos
   const buttonContent = React.useMemo(() => {
     return (
-      <>
+      <Row padding={isExternalLink ? '0px 0px 0px 20px' : undefined}>
         {buttonType === 'reject' && <RejectIcon />}
         {buttonType === 'sign' && <SignIcon />}
         {buttonType === 'confirm' && <ConfirmIcon />}
-        <ButtonText buttonType={buttonType}>{text}</ButtonText>
-      </>
+        <ButtonText
+          buttonType={buttonType}
+          isV2={isV2}
+        >
+          {text}
+        </ButtonText>
+        {isExternalLink && <LaunchIcon />}
+      </Row>
     )
-  }, [buttonType, text])
+  }, [isExternalLink, buttonType, isV2, text])
 
   // render
   return url ? (

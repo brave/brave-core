@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/id_pattern/parsers/verifiable_conversion_id_html_parser_util.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_constants.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource_id_pattern_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource_id_pattern_search_in_types.h"
 
@@ -19,24 +20,23 @@ constexpr char kMatchingHtml[] =
     R"(<html><div style="foo" id="xyzzy-id" class="bar">waldo</div></html>)";
 constexpr char kMismatchingHtml[] =
     R"(<html><div style="foo" id="qux" class="bar">waldo</div></html>)";
-constexpr char kEmptyHtml[] = "";
 
-constexpr char kUrlPattern[] = "https://foo.com/bar";
-constexpr ConversionResourceIdPatternSearchInType kSearchInType =
-    ConversionResourceIdPatternSearchInType::kHtml;
 constexpr char kIdPattern[] = R"(<div.*id="xyzzy-id".*>(.*)</div>)";
 
 }  // namespace
 
-class BraveAdsVerifiableConversionIdHtmlParserUtilTest : public UnitTestBase {};
+class BraveAdsVerifiableConversionIdHtmlParserUtilTest : public test::TestBase {
+};
 
 TEST_F(BraveAdsVerifiableConversionIdHtmlParserUtilTest,
        ParseVerifableConversionIdFromHtml) {
   // Act & Assert
-  EXPECT_EQ("waldo",
-            MaybeParseVerifableConversionIdFromHtml(
-                kMatchingHtml, ConversionResourceIdPatternInfo{
-                                   kUrlPattern, kSearchInType, kIdPattern}));
+  EXPECT_EQ("waldo", MaybeParseVerifableConversionIdFromHtml(
+                         kMatchingHtml,
+                         ConversionResourceIdPatternInfo{
+                             test::kMatchingUrlPattern,
+                             ConversionResourceIdPatternSearchInType::kHtml,
+                             kIdPattern}));
 }
 
 TEST_F(BraveAdsVerifiableConversionIdHtmlParserUtilTest,
@@ -44,15 +44,19 @@ TEST_F(BraveAdsVerifiableConversionIdHtmlParserUtilTest,
   // Act & Assert
   EXPECT_FALSE(MaybeParseVerifableConversionIdFromHtml(
       kMismatchingHtml,
-      ConversionResourceIdPatternInfo{kUrlPattern, kSearchInType, kIdPattern}));
+      ConversionResourceIdPatternInfo{
+          test::kMatchingUrlPattern,
+          ConversionResourceIdPatternSearchInType::kHtml, kIdPattern}));
 }
 
 TEST_F(BraveAdsVerifiableConversionIdHtmlParserUtilTest,
        DoNotParseVerifableConversionIdFromEmptyHtml) {
   // Act & Assert
   EXPECT_FALSE(MaybeParseVerifableConversionIdFromHtml(
-      kEmptyHtml,
-      ConversionResourceIdPatternInfo{kUrlPattern, kSearchInType, kIdPattern}));
+      /*html=*/"",
+      ConversionResourceIdPatternInfo{
+          test::kMatchingUrlPattern,
+          ConversionResourceIdPatternSearchInType::kHtml, kIdPattern}));
 }
 
 }  // namespace brave_ads

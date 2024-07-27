@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_model_segment_predictor.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_model.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_model_segment_scoring.h"
@@ -18,7 +18,8 @@
 
 namespace brave_ads {
 
-class BraveAdsPurchaseIntentModelSegmentPredictorTest : public UnitTestBase {};
+class BraveAdsPurchaseIntentModelSegmentPredictorTest : public test::TestBase {
+};
 
 TEST_F(BraveAdsPurchaseIntentModelSegmentPredictorTest,
        PredictPurchaseIntentSegments) {
@@ -27,18 +28,18 @@ TEST_F(BraveAdsPurchaseIntentModelSegmentPredictorTest,
       kPurchaseIntentTimeWindow.Get();
 
   const PurchaseIntentSignalList purchase_intent_signals = {
-      {/*decayed_at*/ Now() - purchase_intent_time_window,
+      {/*decayed_at*/ test::Now() - purchase_intent_time_window,
        {"segment 3"},
        /*weight*/ 1},
-      {/*on_cusp_at*/ Now() -
+      {/*on_cusp_at*/ test::Now() -
            (purchase_intent_time_window - base::Milliseconds(1)),
        {"segment 4"},
        /*weight*/ 4},
-      {/*at*/ Now() - base::Minutes(2),
+      {/*at*/ test::Now() - base::Minutes(2),
        {"segment 1", "segment 2"},
        /*weight*/ 3},
-      {/*at*/ Now() - base::Minutes(1), {"segment 1"}, /*weight*/ 2},
-      {/*at*/ Now(), {"segment 5"}, /*weight*/ 5}};
+      {/*at*/ test::Now() - base::Minutes(1), {"segment 1"}, /*weight*/ 2},
+      {/*at*/ test::Now(), {"segment 5"}, /*weight*/ 5}};
 
   for (const auto& purchase_intent_signal : purchase_intent_signals) {
     BuyPurchaseIntentSignal(purchase_intent_signal);

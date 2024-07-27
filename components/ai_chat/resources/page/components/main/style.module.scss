@@ -37,7 +37,7 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: var(--leo-color-gray-20);
+    background: var(--leo-color-neutral-20);
     border-radius: var(--leo-spacing-m);
   }
 }
@@ -70,15 +70,12 @@
   position: relative;
   display: flex;
   align-items: center;
+}
 
-  &:before {
-    content: '';
-    width: 1px;
-    height: 50%;
-    background: var(--leo-color-divider-subtle);
-    position: absolute;
-    left: calc(var(--gap)/2 * -1);
-  }
+.divider {
+  height: 20px;
+  width: 1px;
+  background: var(--leo-color-divider-subtle);
 }
 
 .logo {
@@ -94,7 +91,7 @@
 .logoTitle {
   font: var(--leo-font-heading-h4);
   color: var(--leo-color-text-primary);
-  font-size: 19px;
+  font-size: 16px;
   line-height: 1;
 }
 

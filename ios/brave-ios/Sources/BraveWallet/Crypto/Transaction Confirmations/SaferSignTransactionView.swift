@@ -231,7 +231,7 @@ private struct TokenRow: View {
         Circle()
           .stroke(Color(.braveSeparator))
           .frame(width: assetIconSize, height: assetIconSize)
-          .background(Color(braveSystemName: .iconActive).clipShape(Circle()))
+          .background(Color(braveSystemName: .iconInteractive).clipShape(Circle()))
       }
       VStack(alignment: .leading) {
         Text(title)
@@ -278,10 +278,12 @@ struct SaferSignTransactionView_Previews: PreviewProvider {
       details: .ethSwap(
         .init(
           fromToken: .mockUSDCToken,
+          fromNetwork: .mockMainnet,
           fromValue: "1.000004",
           fromAmount: "1",
           fromFiat: "$1.04",
           toToken: .previewDaiToken,
+          toNetwork: .mockMainnet,
           minBuyValue: "0.994798",
           minBuyAmount: "0.994798",
           minBuyAmountFiat: "$0.99",

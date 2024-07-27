@@ -6,7 +6,6 @@
 import {
   SignHardwareTransactionType,
   SignHardwareOperationResult,
-  HardwareWalletResponseCodeType,
   LedgerDerivationPaths,
   SolDerivationPaths,
   TrezorDerivationPaths,
@@ -21,22 +20,27 @@ import {
   getLedgerEthereumHardwareKeyring,
   getLedgerFilecoinHardwareKeyring,
   getLedgerSolanaHardwareKeyring,
-  getTrezorHardwareKeyring,
-  HardwareVendor
+  getTrezorHardwareKeyring
 } from '../api/hardware_keyrings'
+
 import { TrezorErrorsCodes } from '../hardware/trezor/trezor-messages'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import EthereumLedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
-import { BraveWallet, SerializableTransactionInfo } from '../../constants/types'
+import {
+  BraveWallet,
+  HardwareVendor,
+  HardwareWalletResponseCodeType,
+  SerializableTransactionInfo
+} from '../../constants/types'
 import {
   LedgerEthereumKeyring,
   LedgerFilecoinKeyring,
   LedgerSolanaKeyring
 } from '../hardware/interfaces'
 import { EthereumSignedTx } from '../hardware/trezor/trezor-connect-types'
-import { FilSignedLotusMessage } from '../hardware/ledgerjs/fil-ledger-messages'
+import { FilSignedLotusMessage } from '../hardware/ledgerjs/ledger-messages'
 
 export function dialogErrorFromLedgerErrorCode(
   code: string | number

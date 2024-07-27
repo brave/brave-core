@@ -247,10 +247,18 @@ struct PendingTransactionView: View {
           fromAccountName: confirmationStore.activeParsedTransaction.namedFromAddress,
           toAccountAddress: confirmationStore.activeParsedTransaction.toAddress,
           toAccountName: confirmationStore.activeParsedTransaction.namedToAddress,
+          isContractAddress: confirmationStore.isContractAddress,
           originInfo: confirmationStore.originInfo,
           transactionType: transactionType,
           value: "\(confirmationStore.value) \(confirmationStore.symbol)",
-          fiat: confirmationStore.fiat
+          fiat: confirmationStore.fiat,
+          contractAddressTapped: { contractAddress in
+            let network = confirmationStore.activeParsedTransaction.network
+            guard let url = network.contractAddressURL(contractAddress) else {
+              return
+            }
+            openWalletURL(url)
+          }
         )
       }
 
@@ -346,6 +354,7 @@ struct PendingTransactionView: View {
                     .multilineTextAlignment(.trailing)
                   Text(confirmationStore.gasFiat)
                     .font(.footnote)
+                    .multilineTextAlignment(.trailing)
                 }
               }
               .font(.callout)

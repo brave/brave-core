@@ -56,7 +56,6 @@ export function createWalletApiBase() {
       'CoingeckoId',
       'AutoPinEnabled',
       'SimpleHashSpamNFTs',
-      'LocalIPFSNodeStatus',
       'TokenInfo',
       'EthTokenDecimals',
       'EthTokenSymbol',
@@ -76,7 +75,8 @@ export function createWalletApiBase() {
       'PendingSignAllTransactionsRequests',
       'PinnableNftIds',
       'PendingSignMessageRequests',
-      'PendingSignMessageErrors'
+      'PendingSignMessageErrors',
+      'ActiveOrigin'
     ],
     endpoints: ({ mutation, query }) => ({})
   })
@@ -85,7 +85,7 @@ export function createWalletApiBase() {
 export const ACCOUNT_TAG_IDS = {
   REGISTRY: 'REGISTRY',
   SELECTED: 'SELECTED'
-}
+} as const
 
 export const NETWORK_TAG_IDS = {
   HIDDEN: 'HIDDEN',

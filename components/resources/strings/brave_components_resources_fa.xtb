@@ -26,9 +26,6 @@
 <translation id="8776285424728638733">گیگابایت</translation>
 <translation id="8427933533533814946">عکس از</translation>
 <translation id="7108338896283013870">عدم نمایش</translation>
-<translation id="7115515527894388910">ویرایش اولویت‌ها</translation>
-<translation id="7606029853066610626">مشاهده و مدیریت نشانک‌ها</translation>
-<translation id="5550994254534676787">مشاهده سابقه مرورتان</translation>
 <translation id="985862351129593673">سفارشی کردن داشبورد</translation>
 <translation id="7180865173735832675">سفارشی کردن</translation>
 <translation id="8522669544471808198">نمایش تصاویر پس‌زمینه</translation>
@@ -57,11 +54,21 @@
 <translation id="430556192781857057">سایت‌های برتر براساس وب‌سایت‌هایی پیشنهاد می‌شوند که اغلب بازدید می‌کنید</translation>
 <translation id="1773147648972887693">نمایش اغلب بازدیدشده</translation>
 <translation id="4546260624932151782">نمایش موارد دلخواه</translation>
+<translation id="8975314993825375476">سفارشی‌سازی فهرست</translation>
+<translation id="5525668735313040116">به صورت خصوصی در وب جستجو کنید</translation>
+<translation id="1629390138158333592">جستجوی وب</translation>
+<translation id="4016940744851230999">نمایش ابزارک جستجو در صفحه زبانه جدید</translation>
+<translation id="7092560902264458951">فعال کردن موتورهای جستجو در «صفحه زبانه جدید»</translation>
+<translation id="6849526088357652209">سفارشی کردن موتورهای در دسترس</translation>
+<translation id="5131747739868436035">پنهان کردن جستجو</translation>
+<translation id="423209533815462685">پیشنهادهای جستجو فعال شود؟</translation>
+<translation id="2086952631598737687">وقتی جستجو می‌کنید، آنچه تایپ می‌کنید برای پیشنهادهای بهتر به موتور جستجویتان ارسال خواهد شد.</translation>
+<translation id="3435896845095436175">فعال کنید</translation>
+<translation id="780301667611848630">نه متشکرم</translation>
 <translation id="1230746063445072175">می‌خواهید حریم خصوصی بهتری داشته باشید؟</translation>
 <translation id="6699628638740071563">وقت آن است که Google را کنار بگذاریم.</translation>
 <translation id="2045455461902775806">«جستجوی Brave» نتایج را سوگیری یا سانسور نمی‌کند، و همچنین شما، جستارهای شما، یا کلیک‌های شما را ردیابی نمی‌کند.</translation>
 <translation id="6811221529729056895">«جستجوی Brave» را همین حالا امتحان کنید</translation>
-<translation id="5525668735313040116">به صورت خصوصی در وب جستجو کنید</translation>
 <translation id="3446024864193919737">نشان دادن «پاداش‌های Brave»</translation>
 <translation id="5585019845078534178">کارت‌ها</translation>
 <translation id="3870475560794762985">نمایش تصاویر حمایت‌شده</translation>
@@ -83,7 +90,6 @@
 <translation id="7610541582755894669">شیب تغییرات</translation>
 <translation id="1606851618930975029">اعمال بازآوری روی هر صفحه جدید</translation>
 <translation id="7040134046053881468">باز کردن پانل پاداش‌ها</translation>
-<translation id="9024104284526126630">می‌توانید در Brave تماس خصوصی شروع کنید.</translation>
 <translation id="370665806235115550">در حال بارگیری…</translation>
 <translation id="4634933166298842522">مدیریت اشتراک ها</translation>
 <translation id="4108314971463891922">دنبال کردن</translation>
@@ -449,6 +455,7 @@
 <translation id="1109729143147368573">رمزارز و سایر دارایی‌های خود را در تقریباً 50 میلیون سایت فروش کالا و ATM در سراسر دنیا خرج کنید. برای دریافت رمزارز، باید رمزارز هزینه کنید.</translation>
 <translation id="3787061634640932557">ویرایش کارت‌ها</translation>
 <translation id="2070991379950719711">شروع استفاده از Brave Rewards</translation>
+<translation id="6297791103122079275">صحبت کنید</translation>
 <translation id="5977237145327845546">یک تماس تصویری خصوصی با دوستان و همکاران خود شروع کنید.</translation>
 <translation id="8863928195533744356">شروع تماس</translation>
 <translation id="3651550649176056334">درباره داده‌های شما</translation>
@@ -592,7 +599,7 @@
 <translation id="3026978804849658576">مشاهده بیانیه</translation>
 <translation id="1848737374354350807">صورت‌حساب</translation>
 <translation id="6516984207843289176">متصل کردن حساب</translation>
-<translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>آماده شروع دریافت هستید؟<ph name="BOLD_END"/> حسابی را با یکی از شرکای من مرتبط کنید یا حسابی ایجاد کنید.</translation>
+<translation id="1150455801874605865"><ph name="BOLD_BEGIN"/>آماده شروع دریافت هستید؟<ph name="BOLD_END"/> حسابی را متصل کنید تا مکانی برای ارسال درآمدهایتان داشته باشیم.</translation>
 <translation id="902298128239575729">ارسال کمک‌ها با «پاداش‌های Brave»</translation>
 <translation id="6276721355724491595">پس از اتصال به حساب حضانتی، می‌توانید از پاداش‌های Brave خود برای کمک‌های درخواستی به سازندگان دلخواه خود استفاده کنید.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
@@ -600,6 +607,7 @@
       other {این ماه، از # پدیدآورنده Brave Rewards بازدید کرده‌اید}
     }</translation>
 <translation id="6067959437127691361">استفاده از پاداش‌های Brave، به حمایت از تولیدکنندگان محتوا کمک می‌کند و به شما اجازه دریافت توکن توجه اولیه را می‌دهد.</translation>
+<translation id="944736176598169208">پاداش‌ها</translation>
 <translation id="2359808026110333948">ادامه</translation>
 <translation id="885805571521218129">محدوده درآمد تخمینی شما را برای آگهی‌های Brave در این ماه نشان می‌دهد.</translation>
 <translation id="3863981251715594911">چطور کار می‌کند؟</translation>
@@ -744,7 +752,6 @@
 <translation id="6180576227145734714">«to» داده‌های تراکنش باید هنگام مشخص شدن آدرسی معتبر باشد</translation>
 <translation id="6688162556547723415">کاربر حساب و/یا روش درخواست‌شده را مجاز نکرده است.</translation>
 <translation id="8767749833522980474">مخفی</translation>
-<translation id="944736176598169208">پاداش‌ها</translation>
 <translation id="6122742277607781713">پرتفوی</translation>
 <translation id="7020503656406658141">قیمت‌ها</translation>
 <translation id="3586775666459823714">NFTها</translation>
@@ -783,7 +790,7 @@
 <translation id="2329227154184107678">سفارش بررسی</translation>
 <translation id="3220443877821207794">ارسال نظر</translation>
 <translation id="8530071505111489657">توکن‌های ناموجود</translation>
-<translation id="615791330696335475">جستجوی توکن بر اساس نام</translation>
+<translation id="9021834401351805394">جستجو بر اساس نام جای‌گذاری آدرس</translation>
 <translation id="5009335307032488349">جستجوی NFT بر اساس نام، شناسه</translation>
 <translation id="8667560635828712526">انتخاب دارایی</translation>
 <translation id="4853960199138416955">کیف پول Brave درحال‌حاضر از NFTهای بیت‌کوین (ordinals) پشتیبانی نمی‌کند. ارسال بیت‌کوین از آدرسی که دارای ارز ordinals است، ممکن است منجر به انتقال ناخواسته ارز ordinals آن شود.</translation>
@@ -792,6 +799,11 @@
 <translation id="4504682768625050939">دامنه یا آدرس عمومی را وارد کنید.</translation>
 <translation id="5292796745632149097">ارسال به</translation>
 <translation id="7022684620581223496">افزونه دامنه نامعتبر است.</translation>
+<translation id="7620616707541471029">انتخاب حساب برای ادامه دادن</translation>
+<translation id="7099260104593926742">قیمت بازار</translation>
+<translation id="6954838107964168963">تحت مالکیت</translation>
+<translation id="1976851706319678835">خارج از مالکیت</translation>
+<translation id="7372882109707907136">مبلغ/24ساعت</translation>
 <translation id="9209024278910716955">خرید برای شبکه انتخابی پشتیبانی نمی‌شود</translation>
 <translation id="4982630604810554641">جستجوی دامنه...</translation>
 <translation id="5467044307473123584">Brave استفاده از درگاه‌های خارج از زنجیره برای حل دامنه‌های ‎.eth را پشتیبانی می‌کند.</translation>
@@ -894,7 +906,7 @@
 <translation id="8275038454117074363">وارد کردن</translation>
 <translation id="232925166623833246">وارد کردن از کیف پول سخت‌افزاری</translation>
 <translation id="4324198334837993695">سخت‌افزار</translation>
-<translation id="3067168166931605141">نام حساب</translation>
+<translation id="9079725315195697532">نام‌گذاری این حساب</translation>
 <translation id="1011614786846182272">از این حساب‌ها می‌توان با Web3 DApps استفاده کرد و آن‌ها را در پرتفوی شما نمایش داد. با این حال، توجه داشته باشید که حساب‌های ثانویه را نمی‌توان با استفاده از عبارت بازیابی نسخه پشتیبان حساب اصلی شما بازیابی کرد.</translation>
 <translation id="1136772623587250243">کلید خصوصی را از کلیپ‌بورد جایگذاری کنید</translation>
 <translation id="7978412674231730200">کلید خصوصی</translation>
@@ -946,6 +958,7 @@
 <translation id="453788800165937690">هشدار: هرگز کلید خصوصی خود را به اشتراک نگذارید. هرکسی که این کلید خصوصی را داشته باشد، می‌تواند دارایی‌های شما را برای همیشه به دست آورد.</translation>
 <translation id="2416098547200943834">توجه: کلید خصوصی در قالب یک JSON با رمزنگاری هگز که شامل اطلاعات کلید خصوصی و پروتکل است ارائه می‌شود. <ph name="LINK_START"/>بیشتر بدانید<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">توجه: کلید خصوصی باید در قالب یک JSON با رمزنگاری هگز که شامل اطلاعات کلید خصوصی و پروتکل است ارائه شود. <ph name="LINK_START"/>بیشتر بدانید<ph name="LINK_END"/>.</translation>
+<translation id="1505724566145200403">توجه: فقط از کلیدهای گسترده zprv (یا vprv برای Testnet) پشتیبانی می‌شود.</translation>
 <translation id="42126664696688958">گرفتن خروجی</translation>
 <translation id="1366855498335432549">واریز</translation>
 <translation id="790104325876206743">تنظیمات حساب</translation>
@@ -1510,6 +1523,7 @@
 <translation id="5709875713144853427">یک توکن را برای مبادله انتخاب کنید</translation>
 <translation id="720404198240859011">نمایش توکن‌های بدون موجودی</translation>
 <translation id="4886690455791686940">مخفی کردن موجودی صفر</translation>
+<translation id="615791330696335475">جستجوی توکن بر اساس نام</translation>
 <translation id="381485723922188688">گزینه</translation>
 <translation id="6680650203439190394">رتبه‌بندی</translation>
 <translation id="2538996898605796431">تأثیر قیمت</translation>
@@ -1621,8 +1635,6 @@
 <translation id="1215089823252478557">دیدن تغییر موجودی تخمینی</translation>
 <translation id="2761574758015819991">شناسایی تراکنش‌های بالقوه مخرب</translation>
 <translation id="168533464844528463">به شناسایی تلاش‌های فیشینگ کمک کنید</translation>
-<translation id="780301667611848630">نه متشکرم</translation>
-<translation id="3435896845095436175">فعال کنید</translation>
 <translation id="7269757150305059881">Brave برای ارائه این خدمت با شریکی همکاری می‌کند. شما با فعال کردن آن موافقت می‌کنید که تراکنش‌های امضانشده و نشانی‌های اینترنتی DApp آن‌ها را با شریک ما به اشتراک بگذارید.</translation>
 <translation id="7790932700072432983">هرزمان خواستید در <ph name="TAG_BEFORE"/>تنظیمات<ph name="TAG_AFTER"/> تغییر دهید.</translation>
 <translation id="8688672835843460752">دردسترس</translation>
@@ -1637,6 +1649,10 @@
 <translation id="6405354572620970908">این درخواست مخرب به نظر می‌رسد و ممکن است شما را در معرض سرقت قرار دهد. فقط در صورتی ادامه دهید که به برنامه اعتماد دارید.</translation>
 <translation id="786261184916565476"><ph name="VALUE"/>مشکل یافتیم.</translation>
 <translation id="2826600321627372011">هیچ مسیری پیدا نشد</translation>
+<translation id="2451778499022193433">نام حساب باید <ph name="VALUE"/> نویسه یا کمتر باشد</translation>
+<translation id="8488138412489236285">وارد کردن گذرواژه (در صورت وجود)</translation>
+<translation id="9166422618242592074">نوع وارد کردن</translation>
+<translation id="1913853014470037784">پنهان کردن NFTهای خارج از مالکیت</translation>
 <translation id="3155170474926428993">راه‌انداز تور</translation>
 <translation id="3745016858329272300">اطلاعات عمومی</translation>
 <translation id="4045404575593562245">رویدادهای کنترل Tor</translation>
@@ -1870,9 +1886,11 @@
 <translation id="712598284361781729">نمای تقسیم جدید</translation>
 <translation id="1130188644637295274">باز کردن در نمای تقسیم</translation>
 <translation id="6459036216700972269">لغو جداسازی زبانه‌ها</translation>
+<translation id="4235382917338421035">جابه‌جایی موقعیت‌های زبانه</translation>
 <translation id="3617523374417810198">نمای تقسیم جدید</translation>
 <translation id="8571323456914890254">باز کردن در نمای تقسیم</translation>
 <translation id="5329136173514538969">لغو جداسازی زبانه‌ها</translation>
+<translation id="7595612919377246359">جابه‌جایی موقعیت‌های زبانه</translation>
 <translation id="8591883849678260674">مشاهده اصلی</translation>
 <translation id="1969654232209826429">حداقل بخوانید</translation>
 <translation id="4101707289420716287">خاموش کردن تندخوان</translation>
@@ -1917,7 +1935,7 @@
 <translation id="7921782882718083488">این صفحه را خلاصه کن</translation>
 <translation id="7932221068776853847">برای توقف ارسال محتوای این صفحه به Leo و شروع مکالمه‌ای جدید، اتصال را قطع کنید</translation>
 <translation id="1167803637855350748">هنگام اتصال به Leo خطای شبکه رخ داد، اتصالتان را بررسی کنید و دوباره امتحان کنید.</translation>
-<translation id="1996126325390835277">Leo در حال حاضر خیلی مشغول است. لطفاً چند دقیقه دیگر دوباره امتحان کنید.</translation>
+<translation id="1996126325390835277">به محدودیت نرخ پریمیوم رسیده‌اید. لطفاً چند ساعت دیگر دوباره امتحان کنید.</translation>
 <translation id="7144878232160441200">سعی مجدد</translation>
 <translation id="8570488829560315702">سلام، من Leo هستم؛ یک دستیار هوش مصنوعی که به‌طور کامل تحت میزبانی Brave است من با Llama 3 8B که یک مدل ساخته‌شده توسط Meta برای عملکرد بالا و کاربردهای متنوع است، کار می‌کنم.<ph name="LINK_BEFORE"/>بیشتر بدانید<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">سلام من Leo هستم؛ یک دستیار هوش مصنوعی که به‌طور کامل تحت میزبانی Brave است. من با Mixtral 8x7b که یک مدل ساخته‌شده توسط هوش مصنوعی Mistral برای انجام کارهای پیشرفته است، کار می‌کنم. <ph name="LINK_BEFORE"/>بیشتر بدانید<ph name="LINK_AFTER"/></translation>
@@ -1925,6 +1943,7 @@
 <translation id="8583558415545871403">سلام، من Leo هستم. من توسط Brave پراکسی شده‌ام و تحت پشتیبانی Claude 3 Haiku قرار دارم که نوعی مدل ساخته‌شده توسط شرکت Anthropic برای انجام وظایف مرتبط با مکالمه و پردازش متن است.</translation>
 <translation id="4147243042852964992">سلام، من Leo هستم. من توسط Brave پراکسی شده‌ام و تحت پشتیبانی Claude 3 Sonnet قرار دارم که نوعی مدل ساخته‌شده توسط شرکت Anthropic برای انجام وظایف مرتبط با مکالمه و پردازش متن است.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> توسط <ph name="COMPANY_NAME"/></translation>
+<translation id="963346402440669081">پریمیوم</translation>
 <translation id="6187065185557150870">چت</translation>
 <translation id="2961040541145689181">چت جدید</translation>
 <translation id="7557539689487606886">تبدیل عضویت به Premium</translation>
@@ -1934,7 +1953,7 @@
 <translation id="6637015365469044269">اکنون ارتقاء داده شود</translation>
 <translation id="5543505256451301851">۷ روز رایگان امتحان کنید</translation>
 <translation id="849535826888024304">به محدودیت تعداد پاسخ‌ها رسیدید</translation>
-<translation id="2252128900328632803">تعداد پاسخ بیشتری را از طریق ثبت‌نام در نسخه پرمیوم قفل‌گشایی کنید. برای ادامه، می‌توانید به مدل رایگان با قدرت کمتر Llama2 13b ما نیز بروید.</translation>
+<translation id="2252128900328632803">به محدودیت نرخ برای Leo رسیده‌اید. با مشترک شدن در «پریمیوم»، نرخ پاسخ بالاتر را قفل‌‌گشایی کنید یا کمی دیگر دوباره امتحان کنید.</translation>
 <translation id="4173478269537830374">مدل‌های مختلف هوش مصنوعی را کاوش کنید</translation>
 <translation id="3245401959451976966">قفل خلاقیت خود را باز کنید</translation>
 <translation id="4165928407303989823">در همین موضوع بمان</translation>
@@ -1986,7 +2005,7 @@
 <translation id="5642775487085641191">فقط می‌خواهید چت کنید؟</translation>
 <translation id="8857222718794549840">هر چیزی را از من بپرسید! ما می‌توانیم در مورد هر موضوعی که بخواهید صحبت کنیم. من همیشه در حال یادگیری و پیشرفت برای ارائه پاسخ‌های بهتر هستم.</translation>
 <translation id="9051226419897869406">با Brave Leo به‌طور خصوصی چت کنید</translation>
-<translation id="1173570303649278801">از زمینه صفحه برای پاسخ استفاده کنید</translation>
+<translation id="637548538907281147">شکل‌دهی به پاسخ‌ها بر اساس محتواهای صفحه</translation>
 <translation id="8599503173207256429">برای پرسیدن در مورد این صفحه آن را فعال کنید. محتوای آن به همراه پیام‌های شما برای Brave Leo ارسال می‌شود.</translation>
 <translation id="318819763888864209">همه اشتراک‌ها به‌طور خودکار تمدید می‌شوند، اما در هر زمان قبل از تمدید، می‌توان آنها را لغو کرد.</translation>
 <translation id="5091223967610958">نام میزبان صفحه‌ای را که در <ph name="HOST_NAME"/> هستید به اشتراک بگذارید تا به ما در بهتر کردن Leo کمک کنید.</translation>

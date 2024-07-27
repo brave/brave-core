@@ -417,9 +417,7 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="7275773481201277457">Onyesha Takwimu za Brave</translation>
 <translation id="8297488609722895137">Picha imepigwa na <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Kwa kugusa Anza kutumia Zawadi za Brave, unakubali <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Pokea malipo ili uone picha hii ya mandhari nyuma</translation>
 <translation id="7136586167396205364">Ficha Picha Zilizodhaminiwa</translation>
-<translation id="2927095357213611519">Unaweza kuwaunga mkono waundaji wa wavuti kwa kuponi.\nJipatie kuponi kwa kutazama matangazo yanayozingatia faragha</translation>
 <translation id="2898634658146274982">Fungua viungo vya nje kwenye Brave</translation>
 <translation id="5616508928556767259">Fungua viungo kutoka programu nyingine kwenye mwonekano wa wavuti wa Brave. Dokezo: Brave lazima iwe imewekwa kama programu yako chaguomsingi ya kuvinjari.</translation>
 <translation id="2394961582378297792">Umeondoka</translation>
@@ -477,6 +475,10 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="8912304686498704084">JUU</translation>
 <translation id="4963218453264888510">CHINI</translation>
 <translation id="7474113515179313724">Unavinjari tovuti hii bila ulinzi wa faragha wa Brave. Haifanyi kazi vizuri na Shields?</translation>
+<translation id="4226543734057230801">Mitandao ya Ethereum</translation>
+<translation id="3504157706952484145">Mitandao ya Filecoin</translation>
+<translation id="1561541094377237745">Mitandao ya Solana</translation>
+<translation id="7141438739990875547">Mitandao ya Bitcoin</translation>
 <translation id="9055546041146396417">Ikiwa tovuti inaonekana kuwa na kasoro, jaribu Shields hapa chini.</translation>
 <translation id="1209739344687072997">Ripoti tovuti yenye hitilafu</translation>
 <translation id="8510478288840333677">Wafahamishe wasanidi programu wa Brave kuwa tovuti hii haifanyi kazi vizuri kwa Shields:</translation>
@@ -575,8 +577,6 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="2422627462367776805">Tovuti ya South Korea na utafutaji</translation>
 <translation id="177282784098234156">Faragha, huru, mtumiaji kwanza</translation>
 <translation id="1410130669636877548">Injini nyingine za utafutaji hulinda faragha yako vizuri kuliko nyingine unapotafuta kwenye wavuti.</translation>
-<translation id="5187052478998910855">Unahitaji msasa kuhusu Zawadi?</translation>
-<translation id="8622329973403382303">Tazama onyesho la haraka ili ufahamu jinsi inavyofanya kazi ili ukumbukwe kama bingwa wa Zawadi!</translation>
 <translation id="3479552764303398839">Si sasa</translation>
 <translation id="7138272885617540195">Ruhusu viungo vya programu kufungua katika programu zilizo nje ya Brave</translation>
 <translation id="4954512758656527938">Pochi chaguomsingi ya Ethereum</translation>
@@ -702,9 +702,11 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="6748319398471481216">Uandikishaji upya kila mwezi</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> kwa mwezi.</translation>
 <translation id="1163809943099641131">Mwaka mmoja</translation>
-<translation id="7574007394522199115">Jiandikishe upya kila mwaka uokoe <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">Jisajili upya kila mwaka <ph name="DISCOUNT_TEXT_START"/>uokoe <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> kwa mwaka.</translation>
-<translation id="2655185358771731232">Jaribu bila malipo kwa siku 7. Baada ya siku 7, utatozwa bei ya mpango. Usajili wote ni kiotomatiki lakini unaweza kughairiwa kabla ya uandikishaji upya.</translation>
+<translation id="5125233570742276182">Usajili utatozwa kupitia akaunti yako ya Google. Sehemu yoyote ambayo haijatumika ya jaribio la bila malipo, ikiwa lilitolewa, hutupiliwa mbali unaponunua usajili.\n\nUsajili wako utawezeshwa upya kiotomatiki isipokuwa ukighairiwa angalau saa 24 kabla ya mwisho wa kipindi cha sasa.\n\nUnaweza kudhibiti usajili wako katika Mipangilio.\nKwa kutumia Brave, unakubali Masharti ya Matumizi na Sera ya Faragha.</translation>
+<translation id="5035172357624830412">Je, tayari umenunuliwa kwenye brave.com?</translation>
+<translation id="713136183174551885">Weka upya maelezo yako ya utambulisho</translation>
 <translation id="6053992191006521518">Jaribu BILA MALIPO</translation>
 <translation id="5903391101107992067">Jaribu Kwa Siku 7 Bila Malipo</translation>
 <translation id="721747358270435486">Sakinisha VPN</translation>
@@ -850,7 +852,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="7791543448312431591">Ongeza</translation>
 <translation id="6889920539620318793">Weka iwe amilifu</translation>
 <translation id="2653659639078652383">Wasilisha</translation>
-<translation id="4556601961751528347">Badilisha Akaunti Iliyounganishwa</translation>
+<translation id="4945690646623486292">Teua Mtandao</translation>
 <translation id="5233638681132016545">Kichupo kipya</translation>
 <translation id="8006088103295786154">Fikia Brave Wallet</translation>
 <translation id="8030169304546394654">Imeondolewa</translation>
@@ -907,7 +909,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="2322227405137827074">Je, ungependa kuhamisha kianzio hiki?</translation>
 <translation id="1324417023773393937">Kivinjari cha Brave</translation>
 <translation id="6044189892950611565">Kituo cha taarifa cha Kivinjari cha Brave</translation>
-<translation id="1173919438868967364">Teua Akaunti</translation>
+<translation id="4556601961751528347">Badilisha Akaunti Iliyounganishwa</translation>
 <translation id="8922793255489232731">Haikuweza kupata saa za eneo zinazolingana kwa: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Imeunganishwa kwa <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Jaribio</translation>
@@ -1063,7 +1065,6 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="4932733599132424254">Tarehe</translation>
 <translation id="346505172740911461">Bei ya soko</translation>
 <translation id="5494920125229734069">Chagua zote</translation>
-<translation id="5972844218283131174">Ondoa yote</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Ingia kwa Pochi ya Brave</translation>
 <translation id="3696514931437952995">Unaingia kwenye <ph name="ORIGIN"/>. Pochi ya Brave itashiriki anwani ya pochi yako na <ph name="ORIGIN"/>.</translation>

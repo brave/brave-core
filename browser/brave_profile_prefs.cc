@@ -23,6 +23,8 @@
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
+#include "brave/components/brave_news/common/p3a_pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -40,7 +42,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/ipfs/ipfs_prefs.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
@@ -81,10 +83,6 @@
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/browser/ethereum_remote_client/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/ipfs_service.h"
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
@@ -190,7 +188,7 @@ void RegisterProfilePrefsForMigration(
 
   brave_rewards::RegisterProfilePrefsForMigration(registry);
 
-  brave_news::p3a::NewsMetrics::RegisterProfilePrefsForMigration(registry);
+  brave_news::p3a::prefs::RegisterProfileNewsMetricsPrefsForMigration(registry);
 
   // Added May 2023
 #if defined(TOOLKIT_VIEWS)
@@ -213,6 +211,12 @@ void RegisterProfilePrefsForMigration(
   ai_chat::prefs::RegisterProfilePrefsForMigration(registry);
 #endif
   brave_shields::RegisterShieldsP3AProfilePrefsForMigration(registry);
+
+  // Added 2024-05
+  ipfs::RegisterDeprecatedIpfsPrefs(registry);
+
+  // Added 2024-07
+  registry->RegisterBooleanPref(kHangoutsEnabled, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -236,7 +240,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   brave_shields::RegisterShieldsP3AProfilePrefs(registry);
 
-  brave_news::BraveNewsPrefManager::RegisterProfilePrefs(registry);
+  brave_news::prefs::RegisterProfilePrefs(registry);
 
   // TODO(shong): Migrate this to local state also and guard in ENABLE_WIDEVINE.
   // We don't need to display "don't ask widevine prompt option" in settings
@@ -262,10 +266,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 true);
   registry->RegisterBooleanPref(brave_shields::prefs::kLinkedInEmbedControlType,
                                 false);
-
-#if BUILDFLAG(ENABLE_IPFS)
-  ipfs::IpfsService::RegisterProfilePrefs(registry);
-#endif
 
   // WebTorrent
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -307,9 +307,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(prefs::kSafeBrowsingScoutReportingEnabled,
                                 base::Value(false));
 #endif
-
-  // Hangouts
-  registry->RegisterBooleanPref(kHangoutsEnabled, true);
 
   // Restore last profile on restart
   registry->SetDefaultPrefValue(
@@ -367,11 +364,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kImportDialogExtensions, true);
   registry->RegisterBooleanPref(kImportDialogPayments, true);
 
-  // IPFS companion extension
-  registry->RegisterBooleanPref(kIPFSCompanionEnabled, false);
-
   // New Tab Page
-  registry->RegisterBooleanPref(kNewTabPageShowClock, true);
+  registry->RegisterBooleanPref(kNewTabPageShowClock, false);
   registry->RegisterStringPref(kNewTabPageClockFormat, "");
   registry->RegisterBooleanPref(kNewTabPageShowStats, true);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);

@@ -1,5 +1,6 @@
 include_rules = [
   "+brave/components/brave_ads/core/public",
+  "+brave/components/brave_news/common",
   "+brave/components/brave_rewards/common",
   "+brave/components/brave_sync",
   "+brave/components/brave_wallet/browser",
@@ -9,6 +10,7 @@ include_rules = [
   "+brave/components/ipfs",
   "+brave/components/l10n/common",
   "+brave/components/ntp_background_images/browser",
+  "+brave/components/omnibox/browser",
   "+brave/components/brave_shields/core/common",
   "+brave/components/p3a",
   "+brave/components/skus/browser",

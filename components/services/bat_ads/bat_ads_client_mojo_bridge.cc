@@ -196,17 +196,17 @@ void BatAdsClientMojoBridge::LoadComponentResource(
       id, version, std::move(callback));
 }
 
-void BatAdsClientMojoBridge::GetBrowsingHistory(
+void BatAdsClientMojoBridge::GetSiteHistory(
     const int max_count,
     const int days_ago,
-    brave_ads::GetBrowsingHistoryCallback callback) {
+    brave_ads::GetSiteHistoryCallback callback) {
   if (!bat_ads_client_associated_receiver_.is_bound()) {
     std::move(callback).Run({});
     return;
   }
 
-  bat_ads_client_associated_receiver_->GetBrowsingHistory(max_count, days_ago,
-                                                          std::move(callback));
+  bat_ads_client_associated_receiver_->GetSiteHistory(max_count, days_ago,
+                                                      std::move(callback));
 }
 
 void BatAdsClientMojoBridge::RecordP2AEvents(

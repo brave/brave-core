@@ -261,14 +261,6 @@ extension BrowserViewController: WKNavigationDelegate {
       return (shouldOpen ? .allow : .cancel, preferences)
     }
 
-    // handles IPFS URL schemes
-    if requestURL.isIPFSScheme {
-      if navigationAction.targetFrame?.isMainFrame == true {
-        handleIPFSSchemeURL(requestURL)
-      }
-      return (.cancel, preferences)
-    }
-
     // handles Decentralized DNS
     if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: requestURL),
       navigationAction.targetFrame?.isMainFrame == true
@@ -286,10 +278,11 @@ extension BrowserViewController: WKNavigationDelegate {
         showWeb3ServiceInterstitialPage(service: service, originalURL: requestURL)
         return (.cancel, preferences)
       case .load(let resolvedURL):
-        if resolvedURL.isIPFSScheme {
-          handleIPFSSchemeURL(resolvedURL)
-          return (.cancel, preferences)
-        } else {  // non-ipfs, treat as normal url / link tapped
+        if resolvedURL.isIPFSScheme,
+          let resolvedIPFSURL = braveCore.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+        {
+          requestURL = resolvedIPFSURL
+        } else {
           requestURL = resolvedURL
         }
       case .none:
@@ -386,12 +379,12 @@ extension BrowserViewController: WKNavigationDelegate {
           // Add request blocking script
           // This script will block certian `xhr` and `window.fetch()` requests
           .requestBlocking: requestURL.isWebPage(includeDataURIs: false)
-            && domainForMainFrame.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true),
+            && domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
 
           // The tracker protection script
           // This script will track what is blocked and increase stats
           .trackerProtectionStats: requestURL.isWebPage(includeDataURIs: false)
-            && domainForMainFrame.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true),
+            && domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
 
           // Add Brave search result ads processing script
           // This script will process search result ads on the Brave search page.
@@ -450,15 +443,12 @@ extension BrowserViewController: WKNavigationDelegate {
         }
 
         let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
-        let adsBlockingShieldUp = domain.isShieldExpected(
-          .adblockAndTp,
-          considerAllShieldsOption: true
-        )
+        let adsBlockingShieldUp = domain.globalBlockAdsAndTrackingLevel.isEnabled
         tab?.braveSearchResultAdManager = BraveSearchResultAdManager(
           url: requestURL,
           rewards: rewards,
           isPrivateBrowsing: isPrivateBrowsing,
-          isAggressiveAdsBlocking: domain.blockAdsAndTrackingLevel.isAggressive
+          isAggressiveAdsBlocking: domain.globalBlockAdsAndTrackingLevel.isAggressive
             && adsBlockingShieldUp
         )
       }
@@ -718,18 +708,13 @@ extension BrowserViewController: WKNavigationDelegate {
     {
       let internalUrl = InternalURL(responseURL)
 
-      tab.rewardsReportingState.isErrorPage = internalUrl?.isErrorPage == true
-      if !tab.rewardsReportingState.isErrorPage {
-        let kHttpClientErrorResponseCodeClass = 4
-        let kHttpServerErrorResponseCodeClass = 5
+      let kHttpClientErrorResponseCodeClass = 4
+      let kHttpServerErrorResponseCodeClass = 5
 
-        let responseCodeClass = response.statusCode / 100
-        if responseCodeClass == kHttpClientErrorResponseCodeClass
-          || responseCodeClass == kHttpServerErrorResponseCodeClass
-        {
-          tab.rewardsReportingState.isErrorPage = true
-        }
-      }
+      let responseCodeClass = response.statusCode / 100
+      tab.rewardsReportingState.isErrorPage =
+        (responseCodeClass == kHttpClientErrorResponseCodeClass
+          || responseCodeClass == kHttpServerErrorResponseCodeClass)
 
       if !tab.rewardsReportingState.wasRestored {
         tab.rewardsReportingState.wasRestored = internalUrl?.isSessionRestore == true
@@ -779,7 +764,9 @@ extension BrowserViewController: WKNavigationDelegate {
       browserViewController: self
     ) {
       // Open our helper and cancel this response from the webview.
-      passbookHelper.open()
+      Task {
+        await passbookHelper.open()
+      }
       return .cancel
     }
 
@@ -1775,7 +1762,7 @@ extension BrowserViewController: WKUIDelegate {
 
     // For main frame only and if shields are enabled
     guard requestURL.isWebPage(includeDataURIs: false),
-      domainForMainFrame.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true),
+      domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
       navigationAction.targetFrame?.isMainFrame == true
     else { return nil }
 

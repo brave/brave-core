@@ -7,7 +7,7 @@
 
 #include <vector>
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
@@ -18,7 +18,7 @@
 
 namespace brave_ads::ml {
 
-class BraveAdsNormalizationTransformationTest : public UnitTestBase {};
+class BraveAdsNormalizationTransformationTest : public test::TestBase {};
 
 TEST_F(BraveAdsNormalizationTransformationTest, WrongInputDataTest) {
   // Arrange

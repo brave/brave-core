@@ -37,11 +37,11 @@ import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
 import Amount from '../../../../utils/amount'
 import {
   computeFiatAmount,
-  getTokenPriceAmountFromRegistry
+  getTokenPriceAmountFromRegistry,
+  getPriceIdForToken
 } from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
-import { getPriceIdForToken } from '../../../../utils/api-utils'
 import {
   networkEntityAdapter //
 } from '../../../../common/slices/entities/network.entity'
@@ -98,7 +98,6 @@ import {
   useGetVisibleNetworksQuery,
   useGetPricesHistoryQuery,
   useGetTokenSpotPricesQuery,
-  useReportActiveWalletsToP3AMutation,
   useGetDefaultFiatCurrencyQuery,
   useGetRewardsInfoQuery,
   useGetUserTokensRegistryQuery
@@ -274,14 +273,6 @@ export const PortfolioOverview = () => {
             networks: visiblePortfolioNetworks
           }
     )
-
-  const [reportActiveWalletsToP3A] = useReportActiveWalletsToP3AMutation()
-  React.useEffect(() => {
-    ;(async () => {
-      tokenBalancesRegistry &&
-        (await reportActiveWalletsToP3A(tokenBalancesRegistry))
-    })()
-  }, [reportActiveWalletsToP3A, tokenBalancesRegistry])
 
   // This will scrape all the user's accounts and combine the asset balances
   // for a single asset
@@ -652,7 +643,6 @@ export const PortfolioOverview = () => {
           <NftCollection
             networks={visiblePortfolioNetworks}
             accounts={usersFilteredAccounts}
-            tokenBalancesRegistry={tokenBalancesRegistry}
           />
         </Route>
 
@@ -664,7 +654,6 @@ export const PortfolioOverview = () => {
             networks={visiblePortfolioNetworks}
             accounts={usersFilteredAccounts}
             onShowPortfolioSettings={() => setShowPortfolioSettings(true)}
-            tokenBalancesRegistry={tokenBalancesRegistry}
           />
         </Route>
 

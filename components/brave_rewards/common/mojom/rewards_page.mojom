@@ -1,0 +1,75 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_rewards.mojom;
+
+import "brave/components/brave_ads/core/mojom/brave_ads.mojom";
+import "brave/components/brave_rewards/common/mojom/rewards.mojom";
+
+// Initializes messaging between the browser and the page.
+interface RewardsPageHandlerFactory {
+  CreatePageHandler(pending_remote<RewardsPage> page,
+                    pending_receiver<RewardsPageHandler> receiver);
+};
+
+// Page-side handler for notifications from the browser.
+interface RewardsPage {
+  // Notifies the page that Rewards state has changed and updated information
+  // should be fetched.
+  OnRewardsStateUpdated();
+};
+
+struct AvailableCountryInfo {
+  array<string> country_codes;
+  string default_country_code;
+};
+
+// Browser-side handler for requests from WebUI page.
+interface RewardsPageHandler {
+  // Notifies the browser that that Rewards page has rendered and is ready to be
+  // displayed to the user.
+  OnPageReady();
+
+  // Opens a new tab with the specified URL.
+  OpenTab(string url);
+
+  // Returns a plural UI string for the specified number.
+  GetPluralString(string key, int32 count) => (string plural_string);
+
+  // Returns the server-side Rewards system parameters.
+  GetRewardsParameters() => (RewardsParameters? rewards_parameters);
+
+  // Returns the user's Rewards payment ID.
+  GetRewardsPaymentId() => (string payment_id);
+
+  // Returns the user's declared country code.
+  GetCountryCode() => (string country_code);
+
+  // Returns the user's external wallet information, if available.
+  GetExternalWallet() => (ExternalWallet? external_wallet);
+
+  // Returns the available wallet providers for the user's region.
+  GetExternalWalletProviders() => (array<string> providers);
+
+  // Returns information about the current state of ad views.
+  GetAdsStatement() => (brave_ads.mojom.StatementInfo? statement);
+
+  // Returns the list of available countries that the user can select from.
+  GetAvailableCountries() => (AvailableCountryInfo available_countries);
+
+  // Creates a new Rewards user for the current profile.
+  EnableRewards(string country_code) => (CreateRewardsWalletResult result);
+
+  // Begins an external wallet login flow.
+  BeginExternalWalletLogin(string provider)
+      => (ExternalWalletLoginParams? params);
+
+  // Completes an external wallet login flow.
+  ConnectExternalWallet(string provider, map<string, string> args)
+      => (ConnectExternalWalletResult result);
+
+  // Clears all Rewards-related user state.
+  ResetRewards() => (bool success);
+};

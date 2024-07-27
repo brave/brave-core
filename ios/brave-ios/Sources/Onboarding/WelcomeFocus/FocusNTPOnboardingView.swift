@@ -91,7 +91,7 @@ extension UIColor {
     if traits.userInterfaceStyle == .light {
       return .white
     } else {
-      return UIColor(braveSystemName: .primitiveGray100)
+      return UIColor(braveSystemName: .primitiveNeutral5)
     }
   })
 }

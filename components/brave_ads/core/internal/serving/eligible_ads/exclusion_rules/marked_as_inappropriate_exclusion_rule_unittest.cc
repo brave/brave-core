@@ -6,15 +6,14 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/marked_as_inappropriate_exclusion_rule.h"
 
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/public/history/ad_content_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsMarkedAsInappropriateExclusionRuleTest : public UnitTestBase {
+class BraveAdsMarkedAsInappropriateExclusionRuleTest : public test::TestBase {
  protected:
   const MarkedAsInappropriateExclusionRule exclusion_rule_;
 };
@@ -22,8 +21,8 @@ class BraveAdsMarkedAsInappropriateExclusionRuleTest : public UnitTestBase {
 TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, ShouldInclude) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_instance_id = kCreativeInstanceId;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_instance_id = test::kCreativeInstanceId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
 
   // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
@@ -32,13 +31,14 @@ TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, ShouldInclude) {
 TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, ShouldExclude) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_instance_id = kCreativeInstanceId;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_instance_id = test::kCreativeInstanceId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
 
-  AdContentInfo ad_content;
-  ad_content.creative_set_id = kCreativeSetId;
-  ad_content.is_flagged = false;
-  ClientStateManager::GetInstance().ToggleMarkAdAsInappropriate(ad_content);
+  AdHistoryItemInfo ad_history_item;
+  ad_history_item.creative_set_id = test::kCreativeSetId;
+  ad_history_item.is_marked_as_inappropriate = false;
+  ClientStateManager::GetInstance().ToggleMarkAdAsInappropriate(
+      ad_history_item);
 
   // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());

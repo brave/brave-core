@@ -13,6 +13,7 @@
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
@@ -52,6 +53,10 @@ bool SiteVisit::IsLandingPage(const int32_t tab_id) const {
 }
 
 void SiteVisit::MaybeLandOnPage(const TabInfo& tab) {
+  if (!UserHasJoinedBraveRewards()) {
+    return;
+  }
+
   if (!last_clicked_ad_) {
     // No ad interactions have occurred in the current browsing session.
     return;
@@ -89,8 +94,11 @@ void SiteVisit::MaybeLandOnPageAfterCallback(const TabInfo& tab) {
   CHECK(IsLandingPage(tab.id));
 
   const AdInfo ad = page_lands_[tab.id].ad;
-  DidLandOnPage(tab.id, ad.target_url) ? LandedOnPage(tab, ad)
-                                       : DidNotLandOnPage(tab, ad);
+  if (DidLandOnPage(tab.id, ad.target_url)) {
+    LandedOnPage(tab, ad);
+  } else {
+    DidNotLandOnPage(tab, ad);
+  }
 
   StopPageLand(tab.id);
 }
@@ -178,8 +186,11 @@ void SiteVisit::MaybeSuspendOrResumePageLand(const int32_t tab_id) {
   const bool should_resume = tab->is_visible &&
                              BrowserManager::GetInstance().IsActive() &&
                              BrowserManager::GetInstance().IsInForeground();
+  if (should_resume) {
+    return ResumePageLand(*tab);
+  }
 
-  should_resume ? ResumePageLand(*tab) : SuspendPageLand(*tab);
+  SuspendPageLand(*tab);
 }
 
 base::TimeDelta SiteVisit::CalculateRemainingTimeToLandOnPage(
@@ -187,7 +198,6 @@ base::TimeDelta SiteVisit::CalculateRemainingTimeToLandOnPage(
   CHECK(IsLandingPage(tab_id));
 
   const PageLandInfo& page_land = page_lands_[tab_id];
-
   return page_land.timer.desired_run_time() - base::TimeTicks::Now();
 }
 

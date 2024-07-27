@@ -33,6 +33,7 @@ export const randomColorBackground = (color: string): NewTab.BackgroundWallpaper
 interface API {
   pageCallbackRouter: BraveNewTabPage.PageCallbackRouter
   pageHandler: BraveNewTabPage.PageHandlerRemote
+  newTabMetrics: BraveNewTabPage.NewTabMetricsRemote
   addBackgroundUpdatedListener: (listener: BackgroundUpdated) => void
   addCustomImageBackgroundsUpdatedListener: (listener: CustomImageBackgroundsUpdated) => void
   addSearchPromotionDisabledListener: (listener: () => void) => void
@@ -46,12 +47,14 @@ let ntpBrowserAPIInstance: API
 class NTPBrowserAPI implements API {
   pageCallbackRouter = new BraveNewTabPage.PageCallbackRouter()
   pageHandler = new BraveNewTabPage.PageHandlerRemote()
+  newTabMetrics = new BraveNewTabPage.NewTabMetricsRemote()
 
   constructor () {
     const factory = BraveNewTabPage.PageHandlerFactory.getRemote()
     factory.createPageHandler(
       this.pageCallbackRouter.$.bindNewPipeAndPassRemote(),
-      this.pageHandler.$.bindNewPipeAndPassReceiver()
+      this.pageHandler.$.bindNewPipeAndPassReceiver(),
+      this.newTabMetrics.$.bindNewPipeAndPassReceiver()
     )
   }
 

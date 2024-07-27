@@ -379,4 +379,8 @@ void AdBlockEngine::RemoveObserverForTest() {
   test_observer_ = nullptr;
 }
 
+base::WeakPtr<AdBlockEngine> AdBlockEngine::AsWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
 }  // namespace brave_shields

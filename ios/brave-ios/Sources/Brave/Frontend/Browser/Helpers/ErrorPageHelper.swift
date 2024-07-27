@@ -58,15 +58,16 @@ public class ErrorPageHandler: InternalSchemeResponse {
   private let errorHandlers: [InterstitialPageHandler] = [
     CertificateErrorPageHandler(),
     NetworkErrorPageHandler(),
-    IPFSErrorPageHandler(),
     GenericErrorPageHandler(),
   ]
 
-  public func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
+  public func response(forRequest request: URLRequest) async -> (URLResponse, Data)? {
     guard let model = ErrorPageModel(request: request) else {
       return nil
     }
-    return errorHandlers.filter({ $0.canHandle(error: model.error) }).first?.response(for: model)
+    return await errorHandlers.filter({ $0.canHandle(error: model.error) }).first?.response(
+      for: model
+    )
   }
 
   public init() {}

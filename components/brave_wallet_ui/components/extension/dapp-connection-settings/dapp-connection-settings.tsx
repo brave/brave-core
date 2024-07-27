@@ -7,10 +7,12 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Utils
-import { getPriceIdForToken } from '../../../utils/api-utils'
 import Amount from '../../../utils/amount'
 import { getBalance } from '../../../utils/balance-utils'
-import { computeFiatAmount } from '../../../utils/pricing-utils'
+import {
+  computeFiatAmount,
+  getPriceIdForToken
+} from '../../../utils/pricing-utils'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import {
   networkEntityAdapter //
@@ -20,14 +22,11 @@ import {
 import getWalletPanelApiProxy from '../../../panel/wallet_panel_api_proxy'
 import { useApiProxy } from '../../../common/hooks/use-api-proxy'
 
-// Selectors
-import {
-  useUnsafeWalletSelector //
-} from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
-
 // Types
-import { BraveWallet } from '../../../constants/types'
+import {
+  BraveWallet,
+  DAppConnectionOptionsType
+} from '../../../constants/types'
 
 // Queries
 import {
@@ -37,7 +36,8 @@ import {
   useGetTokenSpotPricesQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetActiveOriginConnectedAccountIdsQuery,
-  useGetUserTokensRegistryQuery
+  useGetUserTokensRegistryQuery,
+  useGetActiveOriginQuery
 } from '../../../common/slices/api.slice'
 import {
   useSelectedAccountQuery //
@@ -71,13 +71,10 @@ import {
   OverlapForClick
 } from './dapp-connection-settings.style'
 
-export type DAppConnectionOptionsType = 'networks' | 'accounts' | 'main'
-
 export const DAppConnectionSettings = () => {
   // Selectors
   const { data: connectedAccounts = [] } =
     useGetActiveOriginConnectedAccountIdsQuery()
-  const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
 
   // State
   const [showSettings, setShowSettings] = React.useState<boolean>(false)
@@ -92,6 +89,8 @@ export const DAppConnectionSettings = () => {
   const settingsMenuRef = React.useRef<HTMLDivElement>(null)
 
   // Queries
+  const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
+    useGetActiveOriginQuery()
   const { currentData: selectedNetwork } = useGetSelectedChainQuery(undefined)
   const selectedCoin = selectedNetwork?.coin
   const { data: selectedAccount } = useSelectedAccountQuery()
@@ -139,11 +138,10 @@ export const DAppConnectionSettings = () => {
   // Hooks
   useOnClickOutside(settingsMenuRef, () => setShowSettings(false), showSettings)
 
-  // Memos
-  const isChromeOrigin = React.useMemo(() => {
-    return activeOrigin.originSpec.startsWith('chrome')
-  }, [activeOrigin.originSpec])
+  // Computed
+  const isChromeOrigin = activeOrigin?.originSpec.startsWith('chrome')
 
+  // Memos
   const isConnected = React.useMemo((): boolean => {
     if (!selectedAccount || isPermissionDenied) {
       return false

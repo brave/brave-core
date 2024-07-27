@@ -42,7 +42,7 @@ export function ProviderRedirectModal () {
       return (
         <ModalRedirect
           id={'redirect-modal-device-limit-reached'}
-          errorText={[getString('redirectModalDeviceLimitReachedText')]}
+          errorText={[getString('redirectModalDeviceLimitReachedText').replace('$1', providerName)]}
           titleText={getString('redirectModalDeviceLimitReachedTitle')}
           learnMore={'https://support.brave.com/hc/en-us/articles/360056508071'}
           buttonText={getString('redirectModalClose')}

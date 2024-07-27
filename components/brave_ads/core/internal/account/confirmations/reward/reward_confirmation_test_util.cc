@@ -23,7 +23,7 @@ std::optional<ConfirmationInfo> BuildRewardConfirmation(
   CHECK(token_generator);
   CHECK(UserHasJoinedBraveRewards());
 
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
+  const TransactionInfo transaction = BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, should_generate_random_uuids);
   return BuildRewardConfirmation(token_generator, transaction,

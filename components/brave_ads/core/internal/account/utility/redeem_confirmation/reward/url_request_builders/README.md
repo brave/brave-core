@@ -1,5 +1,5 @@
-# Redeem Reward Confirmation URL Request Builders
+# Brave Rewards User Confirmation Token Redemption URL Request Builders
 
-Reward confirmation redemption URL request builders are used to construct URLs programmatically for Brave Rewards users.
+Confirmation token redemption URL request builders are used to programmatically construct URLs.
 
 Please add to it!

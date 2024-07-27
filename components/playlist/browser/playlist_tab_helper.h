@@ -99,7 +99,8 @@ class PlaylistTabHelper
 
   PlaylistTabHelper(content::WebContents* contents, PlaylistService* service);
 
-  void ResetData();
+  void ResetSavedItems();
+  void ResetFoundItems();
   void UpdateSavedItemFromCurrentContents();
   void OnAddedItems(std::vector<mojom::PlaylistItemPtr> items);
 
@@ -117,7 +118,7 @@ class PlaylistTabHelper
   mojo::Receiver<mojom::PlaylistServiceObserver> playlist_observer_receiver_{
       this};
 
-  BooleanPrefMember playlist_enabled_pref_;
+  BooleanPrefMember playlist_enabled_;
 
   base::WeakPtrFactory<PlaylistTabHelper> weak_ptr_factory_{this};
 

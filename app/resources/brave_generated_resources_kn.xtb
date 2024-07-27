@@ -43,6 +43,7 @@
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">ಇದು Tor ನೊಂದಿಗಿನ ಖಾಸಗಿ ವಿಂಡೋ ಆಗಿದೆ</translation>
 <translation id="1037341607922068025">Tor ನೊಂದಿಗೆ ಖಾಸಗಿ ವಿಂಡೊ ತೆರೆಯಿರಿ</translation>
+<translation id="607982085107926247">Tor ನಲ್ಲಿ ತೆರೆಯಿರಿ: <ph name="ADDRESS"/></translation>
 <translation id="496896260395129787">ಈ Brave ಸಿಂಕ್ ಖಾತೆಯನ್ನು ಮತ್ತೊಂದು ಸಾಧನದಿಂದ ಅಳಿಸಲಾಗಿದೆ. ಸಿಂಕ್ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸುವ ಉದ್ದೇಶ ನಿಮಗಿಲ್ಲದಿದ್ದರೆ,<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>ಖಾತೆಯನ್ನು ಮರು-ರಚಿಸಿ</translation>
 <translation id="6965382102122355670">ಸರಿ</translation>
@@ -53,7 +54,7 @@
 <translation id="3094628781200061820">IPFS ನಿಂದ ಫೈಲ್‌ಗಳನ್ನು ಪ್ರಕಟಿಸಿ ಅಥವಾ ಪಡೆಯಿರಿ</translation>
 <translation id="9220923434129933852">IPFS ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಓದಿ ಮತ್ತು ಮಾರ್ಪಡಿಸಿ</translation>
 <translation id="7398397225367092613">.onion</translation>
-<translation id="406832631167785034">.onion ವಿಳಾಸ ಬಳಸಿಕೊಂಡು ತೆರೆಯಿರಿ</translation>
+<translation id="2269780537090240241">.onion ವಿಳಾಸ ಬಳಸಿಕೊಂಡು ತೆರೆಯಿರಿ: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">ಬಲವಂತವಾಗಿ ಪೇಸ್ಟ್ ಮಾಡಿ</translation>
 <translation id="4901618511712685702">IPFS ಗೆ ಆಮದು ಮಾಡಿ</translation>
 <translation id="6794469945030154569">ಈ ಪುಟ</translation>
@@ -119,8 +120,16 @@
 <translation id="45040495135337202">Brave ನಿಮ್ಮನ್ನು, ನಿಮ್ಮ ಪ್ರಶ್ನೆಗಳನ್ನು ಅಥವಾ ನಿಮ್ಮ ಕ್ಲಿಕ್‌ಗಳನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡುವುದಿಲ್ಲ. ಮತ್ತು ಅದು ಬಿಗ್ ಟೆಕ್‌ನಿಂದ 100% ಸ್ವತಂತ್ರವಾಗಿದೆ.</translation>
 <translation id="42032117189492785">ಅನನ್ಯ ಇಂಡೆಕ್ಸ್ ಮೂಲಕ AI-ಇನ್‌ಫ್ಯೂಸ್ ಮಾಡಲಾದ ಹುಡುಕಾಟ.</translation>
 <translation id="8606416238399082160">ಸಂಪೂರ್ಣವಾಗಿ ಖಾಸಗಿ, 100% ಸ್ವತಂತ್ರ ಮತ್ತು ಅತ್ಯುತ್ತಮ AI ವೈಶಿಷ್ಟ್ಯಗಳೊಂದಿಗೆ.</translation>
+<translation id="7706528608480893054">ಮರೆಮಾಚಿರುವಾಗ DDG ಎನ್ನುವುದು Bing ಆಗಿರುತ್ತದೆ. ನೈಜ ಗೌಪ್ಯತೆ, ಉತ್ತಮ ಫಲಿತಾಂಶಗಳು ಮತ್ತು ಸ್ವತಂತ್ರ ಇಂಡೆಕ್ಸ್‌ಗಾಗಿನ ಸಮಯವಾಗಿದೆ. Brave ಹುಡುಕಾಟದ ಸಮಯವಾಗಿದೆ.</translation>
+<translation id="3818133234428578803">ತೊಡೆದುಹಾಕಿ</translation>
+<translation id="14817360483752259">Brave ಹುಡುಕಾಟ ನಿಮ್ಮನ್ನು, ನಿಮ್ಮ ಪ್ರಶ್ನೆಗಳನ್ನು ಅಥವಾ ನಿಮ್ಮ ಕ್ಲಿಕ್‌ಗಳನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡುವುದಿಲ್ಲ. ಮತ್ತು (DDG ಗಿಂತ ಭಿನ್ನವಾಗಿ) ಅದು ಮರೆಮಾಚುವಿಕೆಯಲ್ಲಿ Bing ಅಲ್ಲ.</translation>
+<translation id="4381193110021038941">ಉತ್ತಮ ಫಲಿತಾಂಶಗಳನ್ನು ಪಡೆಯಿರಿ</translation>
+<translation id="3846545273704969734">Bing ಗಿಂತ (ಅಥವಾ DuckDuckGo ನಂತಹ Bing ಕ್ಲೋನ್‌ಗಳು) Brave ಉತ್ತಮ ಫಲಿತಾಂಶಗಳನ್ನು ಹೊಂದಿರುವುದಾಗಿ ಸ್ವತಂತ್ರವಾಗಿ ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಲಾಗಿದೆ.</translation>
+<translation id="2841164160723712537">ಹುಡುಕಾಟ ಫಲಿತಾಂಶಗಳನ್ನು ಸುಧಾರಿಸಿ</translation>
+<translation id="4639001639513524869">ಹೆಚ್ಚಿನ ಪ್ರಶ್ನೆಗಳಿಗೆ DuckDuckGo ಗಿಂತ Brave ಹುಡುಕಾಟ ಉತ್ತಮ ಫಲಿತಾಂಶಗಳನ್ನು ಹೊಂದಿದೆ. ಮತ್ತು ಅದು ನಿಜವಾಗಿಯೂ ಖಾಸಗಿಯಾಗಿದೆ.</translation>
 <translation id="5240031343741051161">Brave ಹುಡುಕಾಟ ಪ್ರಯತ್ನಿಸಿ ನೋಡಿ</translation>
 <translation id="5234764350956374838">ವಜಾಗೊಳಿಸಿ</translation>
+<translation id="9218430445555521422">ಡಿಫಾಲ್ಟ್ ಆಗಿ ಹೊಂದಿಸಿ</translation>
 <translation id="2370739752330685659">ಬಹುಶಃ ನಂತರ</translation>
 <translation id="5100490448228945668">Brave ಹುಡುಕಾಟ ಪರಿವರ್ತನೆಯನ್ನು ವಜಾಗೊಳಿಸಿ, ಈ ಸಲಹೆಯನ್ನು ತೆಗೆದುಹಾಕಲು ಎಂಟರ್ ಒತ್ತಿ</translation>
 <translation id="9194637241566114638">ಅನಾಮಧೇಯ ಬಳಕೆಯ ಡೇಟಾ ಕಳುಹಿಸುವ ಮೂಲಕ <ph name="SEARCH_NAME"/> ಸುಧಾರಿಸಲು ಸಹಾಯ ಮಾಡಿ.  <ph name="MORE_INFO"/></translation>
@@ -130,6 +139,9 @@
 <translation id="1162706247109707219">ಓಕೆ ಕ್ಲಿಕ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು Windows 10 ಅಥವಾ ನಂತರದ್ದಕ್ಕೆ ನೀವು ಅಪ್‌ಡೇಟ್ ಮಾಡುವ ತನಕ ಗಂಭೀರ ಭದ್ರತೆ ಸರಿಪಡಿಸುವಿಕೆಗಳನ್ನು Brave ನ ನಿಮ್ಮ ಸ್ಥಾಪನೆಯು ಸ್ವೀಕರಿಸುವುದಿಲ್ಲ. ಈ ಎಚ್ಚರಿಕೆಯನ್ನು ಮತ್ತೊಮ್ಮೆ ತೋರಿಸಲಾಗುವುದಿಲ್ಲ.</translation>
 <translation id="9164786361657554526">ಓಕೆ ಕ್ಲಿಕ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು macOS 10.15 ಅಥವಾ ನಂತರದ್ದಕ್ಕೆ ನೀವು ಅಪ್‌ಡೇಟ್ ಮಾಡುವ ತನಕ ಗಂಭೀರ ಭದ್ರತೆ ಸರಿಪಡಿಸುವಿಕೆಗಳನ್ನು Brave ನ ನಿಮ್ಮ ಸ್ಥಾಪನೆಯು ಸ್ವೀಕರಿಸುವುದಿಲ್ಲ. ಈ ಎಚ್ಚರಿಕೆಯನ್ನು ಮತ್ತೊಮ್ಮೆ ತೋರಿಸಲಾಗುವುದಿಲ್ಲ.</translation>
 <translation id="2770465223704140727">ಪಟ್ಟಿಯಿಂದ ತೆಗೆದುಹಾಕಿ</translation>
+<translation id="6020553119523541665">ಮತ್ತೊಂದು ವಿಂಡೋದಲ್ಲಿ ಈ ಟ್ಯಾಬ್ ಸಕ್ರಿಯವಾಗಿದೆ</translation>
+<translation id="4987392683074136770">ಈ ಟ್ಯಾಬ್ ಕ್ಲಿಕ್ ಮಾಡುವುದರಿಂದ ಅದರ ವಿಷಯಗಳು ಈ ವಿಂಡೋಗೆ ಬರುತ್ತವೆ</translation>
+<translation id="8355523213948477234">ಸ್ಪ್ಲಿಟ್ ವೀಕ್ಷಣೆ ಮೆನು ಬಟನ್</translation>
 <translation id="2515126961943087659">Bat ಜಾಹೀರಾತುಗಳ ಸೇವೆ</translation>
 <translation id="2104347391516032700">Bat ರಿವಾರ್ಡ್‌ಗಳ ಸೇವೆ</translation>
 <translation id="6040143037577758943">ಮುಚ್ಚಿ</translation>
@@ -166,8 +178,7 @@
 <translation id="6959315322491671328">ತೆಗೆದುಹಾಕಲು ರೈಟ್-ಕ್ಲಿಕ್ ಮಾಡಿ</translation>
 <translation id="495046168593986294">ಮೇಲಕ್ಕೆ ಸ್ಕ್ರಾಲ್ ಮಾಡಿ</translation>
 <translation id="4021716437419160885">ಕೆಳಕ್ಕೆ ಸ್ಕ್ರಾಲ್ ಮಾಡಿ</translation>
-<translation id="1907157509746585817">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳು</translation>
-<translation id="4840597165888262798">ಓದುವ ಪಟ್ಟಿ</translation>
+<translation id="2702801445560668637">ಓದುವ ಪಟ್ಟಿ</translation>
 <translation id="2533715613366623756">ಬುಕ್‌ಮಾರ್ಕ್ ಮ್ಯಾನೇಜರ್</translation>
 <translation id="3405021928725149239">ಬುಕ್‌ಮಾರ್ಕ್ ಮ್ಯಾನೇಜರ್</translation>
 <translation id="6284218950354553099">Brave ಗೆ ದೈನಂದಿನ ಬಳಕೆ ಪಿಂಗ್ ಅನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕಳುಹಿಸಿ</translation>
@@ -251,7 +262,6 @@
 <translation id="796831669370432378">ಬುಕ್‌ಮಾರ್ಕ್ ಅನ್ನು ಸೇರಿಸಲು, ವಿಳಾಸ ಪಟ್ಟಿಯ ಪಕ್ಕದಲ್ಲಿರುವ ಬುಕ್‌ಮಾರ್ಕ್ ಬಟನ್ ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ</translation>
 <translation id="8487693399751278191">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಈಗ ಆಮದು ಮಾಡಿ...</translation>
 <translation id="2557899542277210112">ತ್ವರಿತ ಪ್ರವೇಶಕ್ಕಾಗಿ, ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಪಟ್ಟಿಯಲ್ಲಿ ನಿಮ್ಮ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಇಲ್ಲಿ ಇರಿಸಿ.</translation>
-<translation id="2702801445560668637">ಓದುವ ಪಟ್ಟಿ</translation>
 <translation id="1968543937259008435">ಉತ್ತಮ ಆನ್‌ಲೈನ್‌ ಗೌಪ್ಯತೆಗೆ ಸಿದ್ಧವಾಗಿದ್ದೀರಾ?</translation>
 <translation id="6817415381278637662">ನೀವು ತೆರೆಯುವ ಪ್ರತಿ ವೆಬ್‌ ಪೇಜ್‌ನಲ್ಲಿ Brave ನ ಗೌಪ್ಯತೆ ರಕ್ಷಣೆಗಳನ್ನು ಪಡೆಯಲು ನಿಮ್ಮ ಡೀಫಾಲ್ಟ್‌ ಬ್ರೌಸರ್‌ ಆಗಿ Brave ಅನ್ನು ನಿಗದಿಸಿ.</translation>
 <translation id="8722651357687610395">Brave ಅನ್ನು ಡಿಫಾಲ್ಟ್ ಆಗಿ ಹೊಂದಿಸಿ</translation>
@@ -348,6 +358,7 @@
 <translation id="2113977810652731515">ಕಾರ್ಡ್</translation>
 <translation id="4096343215397759358">ಪೂರ್ವವೀಕ್ಷಣೆಯೊಂದಿಗೆ ಕಾರ್ಡ್</translation>
 <translation id="5297085818601043899">ಟೂಲ್‌ಟಿಪ್</translation>
+<translation id="5219886318310413094">ಎಲ್ಲ ವಿಂಡೋಗಳಲ್ಲಿ ಪಿನ್ ಮಾಡಲಾದ ಟ್ಯಾಬ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="2396127686705429331">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಬಟನ್ ಅನ್ನು ತೋರಿಸಿ</translation>
 <translation id="2814998458708016836">ವೈಡ್ ಅಡ್ರೆಸ್ ಬಾರ್ ಬಳಸಿ</translation>
 <translation id="4109670531935487117">ವಿಳಾಸ ಪಟ್ಟಿಯಲ್ಲಿ ಸ್ವಯಂಪೂರ್ಣಗೊಳಿಸಿದ ಸಲಹೆಗಳನ್ನು ತೋರಿಸಿ</translation>
@@ -462,10 +473,6 @@
 <translation id="2808630562319398131">Brave Rewards ಡೇಟಾ ಮರುಹೊಂದಿಸಿ...</translation>
 <translation id="6438096877646138757">ನೀವು ಅವುಗಳನ್ನು ಮುಚ್ಚಿದಾಗ ಕುಕೀಗಳನ್ನು ಕ್ಲಿಯರ್ ಮಾಡುವ ಸೈಟ್‌ಗಳು</translation>
 <translation id="2988792685798128092">ಸೈಟ್ ಮುಚ್ಚಿದಾಗ ಕ್ಲಿಯರ್ ಮಾಡಿ</translation>
-<translation id="4663317021223369617">ಕುಕೀಗಳು ಮತ್ತು ಸೈಟ್ ಡೇಟಾ</translation>
-<translation id="7050661313034564003">ಈ ಸೈಟ್‌ಗಾಗಿ ಎಲ್ಲಾ ಕುಕೀಗಳು ಮತ್ತು ಸ್ಥಳೀಯವಾಗಿ ಸಂಗ್ರಹಿಸಿದ ಡೇಟಾ ತೋರಿಸಿ</translation>
-<translation id="8339059274628563283"><ph name="SITE"/> ಸ್ಥಳೀಯವಾಗಿ ಸಂಗ್ರಹಿಸಲಾದ ಡೇಟಾ</translation>
-<translation id="1963227389609234879">ಎಲ್ಲವನ್ನೂ ತೆಗೆದುಹಾಕಿ</translation>
 <translation id="7702907602086592255">ಡೊಮೇನ್</translation>
 <translation id="3202131003361292969">ಪಾಥ್</translation>
 <translation id="5390743329570580756">ಇದಕ್ಕಾಗಿ ಕಳುಹಿಸಿ</translation>

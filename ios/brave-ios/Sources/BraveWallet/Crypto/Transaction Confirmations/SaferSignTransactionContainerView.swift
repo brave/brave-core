@@ -146,7 +146,7 @@ struct SaferSignTransactionContainerView: View {
           } else {
             Circle()
               .stroke(Color(.braveSeparator))
-              .background(Color(braveSystemName: .iconActive).clipShape(Circle()))
+              .background(Color(braveSystemName: .iconInteractive).clipShape(Circle()))
           }
         }
         .frame(

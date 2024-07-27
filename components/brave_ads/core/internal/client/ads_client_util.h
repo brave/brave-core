@@ -46,9 +46,9 @@ std::vector<base::Time> GetCachedAdEvents(AdType ad_type,
                                           ConfirmationType confirmation_type);
 void ResetAdEventCacheForInstanceId(const std::string& id);
 
-void GetBrowsingHistory(int max_count,
-                        int recent_day_range,
-                        GetBrowsingHistoryCallback callback);
+void GetSiteHistory(int max_count,
+                    int recent_day_range,
+                    GetSiteHistoryCallback callback);
 
 void UrlRequest(mojom::UrlRequestInfoPtr url_request,
                 UrlRequestCallback callback);

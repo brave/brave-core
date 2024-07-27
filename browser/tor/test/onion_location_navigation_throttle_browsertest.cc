@@ -31,6 +31,7 @@
 #include "content/public/test/test_navigation_observer.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event.h"
 #include "ui/gfx/geometry/point.h"
@@ -127,9 +128,14 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(onion_button);
     EXPECT_TRUE(onion_button->GetVisible());
     EXPECT_EQ(onion_button->GetText(),
-              brave_l10n::GetLocalizedResourceUTF16String(
-                  (is_tor ? IDS_LOCATION_BAR_ONION_AVAILABLE
-                          : IDS_LOCATION_BAR_OPEN_IN_TOR)));
+              is_tor ? brave_l10n::GetLocalizedResourceUTF16String(
+                           IDS_LOCATION_BAR_ONION_AVAILABLE)
+                     : u"");
+    EXPECT_TRUE(
+        onion_button->GetTooltipText().starts_with(l10n_util::GetStringFUTF16(
+            is_tor ? IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT
+                   : IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT,
+            u"")));
 
     ui_test_utils::BrowserChangeObserver browser_creation_observer(
         nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);

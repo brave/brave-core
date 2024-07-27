@@ -71,6 +71,8 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
   void UpdateColors() override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(MdTextButtonTest, ButtonColorsTest);
+
   ButtonColors GetButtonColors();
   ui::ButtonStyle GetBraveStyle() const;
 

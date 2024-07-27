@@ -43,7 +43,7 @@ extension BrowserViewController: NSFetchedResultsControllerDelegate {
             let title = fav.title
 
             group.addTask {
-              if let favicon = FaviconFetcher.getIconFromCache(for: url) {
+              if let favicon = await FaviconFetcher.getIconFromCache(for: url) {
                 return IndexedWidgetFavorite(
                   index: index,
                   favorite: .init(url: url, title: title, favicon: favicon)
@@ -69,7 +69,7 @@ extension BrowserViewController: NSFetchedResultsControllerDelegate {
           return results.sorted { $0.index < $1.index }.map { $0.favorite }
         }
 
-        FavoritesWidgetData.updateWidgetData(widgets)
+        await FavoritesWidgetData.updateWidgetData(widgets)
       }
     }
   }

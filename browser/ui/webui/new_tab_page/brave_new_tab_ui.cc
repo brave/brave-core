@@ -10,7 +10,9 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
@@ -22,6 +24,7 @@
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "brave/components/misc_metrics/new_tab_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -108,7 +111,7 @@ void BraveNewTabUI::BindInterface(
   DCHECK(profile);
   // Wire up JS mojom to service
   auto* brave_news_controller =
-      brave_news::BraveNewsControllerFactory::GetForContext(profile);
+      brave_news::BraveNewsControllerFactory::GetForBrowserContext(profile);
   if (brave_news_controller) {
     brave_news_controller->Bind(std::move(receiver));
   }
@@ -138,12 +141,16 @@ void BraveNewTabUI::BindInterface(
 void BraveNewTabUI::CreatePageHandler(
     mojo::PendingRemote<brave_new_tab_page::mojom::Page> pending_page,
     mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandler>
-        pending_page_handler) {
+        pending_page_handler,
+    mojo::PendingReceiver<brave_new_tab_page::mojom::NewTabMetrics>
+        pending_new_tab_metrics) {
   DCHECK(pending_page.is_valid());
   Profile* profile = Profile::FromWebUI(web_ui());
   page_handler_ = std::make_unique<BraveNewTabPageHandler>(
       std::move(pending_page_handler), std::move(pending_page), profile,
       web_ui()->GetWebContents());
+  g_brave_browser_process->process_misc_metrics()->new_tab_metrics()->Bind(
+      std::move(pending_new_tab_metrics));
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveNewTabUI)

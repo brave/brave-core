@@ -19,8 +19,6 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/ipfs/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/p3a/features.h"
 #include "brave/components/playlist/common/features.h"
@@ -221,11 +219,6 @@
       initWithFeature:&brave_wallet::features::kBraveWalletBitcoinFeature];
 }
 
-+ (Feature*)kBraveWalletNftPinningFeature {
-  return [[Feature alloc]
-      initWithFeature:&brave_wallet::features::kBraveWalletNftPinningFeature];
-}
-
 + (Feature*)kBraveWalletZCashFeature {
   return [[Feature alloc]
       initWithFeature:&brave_wallet::features::kBraveWalletZCashFeature];
@@ -265,10 +258,6 @@
   return nil;
 }
 #endif
-
-+ (Feature*)kIpfsFeature {
-  return [[Feature alloc] initWithFeature:&ipfs::features::kIpfsFeature];
-}
 
 + (Feature*)kNTP {
   return [[Feature alloc]

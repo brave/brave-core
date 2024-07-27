@@ -6,11 +6,11 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 
 #include "base/test/mock_callback.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
-#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
+#include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_util.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -21,16 +21,18 @@ namespace {
 constexpr char kMalformedJsonFilename[] = "malformed.json";
 }  // namespace
 
-class BraveAdsLegacyConfirmationMigrationTest : public UnitTestBase {
+class BraveAdsLegacyConfirmationMigrationTest : public test::TestBase {
  protected:
   void SetUpMocks() override {
-    SetProfileBooleanPrefValue(prefs::kHasMigratedConfirmationState, false);
+    test::SetProfileBooleanPrefValue(prefs::kHasMigratedConfirmationState,
+                                     false);
   }
 };
 
 TEST_F(BraveAdsLegacyConfirmationMigrationTest, Migrate) {
   // Arrange
-  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kConfirmationStateFilename));
+  ASSERT_TRUE(
+      CopyFileFromTestDataPathToTempProfilePath(kConfirmationsJsonFilename));
 
   // Act & Assert
   base::MockCallback<InitializeCallback> callback;
@@ -42,8 +44,8 @@ TEST_F(BraveAdsLegacyConfirmationMigrationTest, Migrate) {
 
 TEST_F(BraveAdsLegacyConfirmationMigrationTest, ResetMalformedState) {
   // Arrange
-  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kMalformedJsonFilename,
-                                             kConfirmationStateFilename));
+  ASSERT_TRUE(CopyFileFromTestDataPathToTempProfilePath(
+      kMalformedJsonFilename, kConfirmationsJsonFilename));
 
   // Act & Assert
   base::MockCallback<InitializeCallback> callback;

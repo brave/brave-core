@@ -67,7 +67,7 @@ var package = Package(
     .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
     .package(url: "https://github.com/devxoul/Then", from: "2.7.0"),
     .package(url: "https://github.com/mkrd/Swift-BigInt", from: "2.3.0"),
-    .package(url: "https://github.com/GuardianFirewall/GuardianConnect", exact: "1.9.1"),
+    .package(url: "https://github.com/GuardianFirewall/GuardianConnect", exact: "1.9.3"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.6.0"),
     .package(
       url: "https://github.com/venmo/Static",
@@ -186,6 +186,7 @@ var package = Package(
     ),
     .target(
       name: "BrowserIntentsModels",
+      dependencies: ["Shared"],
       sources: ["BrowserIntents.intentdefinition", "CustomIntentHandler.swift"],
       plugins: ["IntentBuilderPlugin"]
     ),
@@ -211,7 +212,7 @@ var package = Package(
         "BraveUI",
         .product(name: "Lottie", package: "lottie-spm"),
       ],
-      resources: [.copy("vpncheckmark.json")],
+      resources: [.copy("Resources/vpncheckmark.json")],
       plugins: ["LoggerPlugin"]
     ),
     .target(
@@ -377,7 +378,7 @@ var package = Package(
     .testTarget(name: "DataTests", dependencies: ["Data", "TestHelpers"]),
     .testTarget(
       name: "ClientTests",
-      dependencies: ["Brave", "BraveStrings"],
+      dependencies: ["Brave", "BraveStrings", "TestHelpers"],
       resources: [
         .copy("Resources/debouncing.json"),
         .copy("Resources/content-blocking.json"),
@@ -507,7 +508,6 @@ var braveTarget: PackageDescription.Target = .target(
     .copy("Assets/Interstitial Pages/Pages/GenericError.html"),
     .copy("Assets/Interstitial Pages/Pages/NetworkError.html"),
     .copy("Assets/Interstitial Pages/Pages/Web3Domain.html"),
-    .copy("Assets/Interstitial Pages/Pages/IPFSPreference.html"),
     .copy("Assets/Interstitial Pages/Images/Carret.png"),
     .copy("Assets/Interstitial Pages/Images/Clock.svg"),
     .copy("Assets/Interstitial Pages/Images/Cloud.svg"),
@@ -516,15 +516,12 @@ var braveTarget: PackageDescription.Target = .target(
     .copy("Assets/Interstitial Pages/Images/Globe.svg"),
     .copy("Assets/Interstitial Pages/Images/Info.svg"),
     .copy("Assets/Interstitial Pages/Images/Warning.svg"),
-    .copy("Assets/Interstitial Pages/Images/BraveIPFS.svg"),
-    .copy("Assets/Interstitial Pages/Images/IPFSBackground.svg"),
     .copy("Assets/Interstitial Pages/Images/warning-triangle-outline.svg"),
     .copy("Assets/Interstitial Pages/Styles/BlockedDomain.css"),
     .copy("Assets/Interstitial Pages/Styles/CertificateError.css"),
     .copy("Assets/Interstitial Pages/Styles/InterstitialStyles.css"),
     .copy("Assets/Interstitial Pages/Styles/NetworkError.css"),
     .copy("Assets/Interstitial Pages/Styles/Web3Domain.css"),
-    .copy("Assets/Interstitial Pages/Styles/IPFSPreference.css"),
     .copy("Assets/Lottie/shred.json"),
     .copy("Assets/SearchPlugins"),
     .copy("Frontend/Reader/Reader.css"),

@@ -17,6 +17,8 @@ extension BraveCoreSwitchKey {
       return "Component Updater"
     case .syncURL:
       return "Sync URL"
+    case .variationsPR:
+      return "Variations PR"
     case .variationsURL:
       return "Variations URL"
     case .p3aDoNotRandomizeUploadInterval:
@@ -37,6 +39,8 @@ extension BraveCoreSwitchKey {
       return "Brave Wallet Count Test Networks"
     case .useDevGoUpdater:
       return "Use staging CRX components"
+    case .servicesEnvironment:
+      return "Brave Services Environment"
     default:
       return ""
     }
@@ -60,7 +64,7 @@ extension BraveCoreSwitchKey {
   )
 }
 
-private enum SkusEnvironment: String, CaseIterable {
+private enum BraveServicesEnvironment: String, CaseIterable {
   case development
   case staging
   case production
@@ -317,14 +321,18 @@ struct BraveCoreDebugSwitchesView: View {
       }
       Section {
         Group {
-          // Sync URL
           NavigationLink {
             BasicStringInputView(coreSwitch: .syncURL)
               .keyboardType(.URL)
           } label: {
             SwitchContainer(.syncURL)
           }
-          // Variations URL
+          NavigationLink {
+            BasicStringInputView(coreSwitch: .variationsPR)
+              .keyboardType(.numberPad)
+          } label: {
+            SwitchContainer(.variationsPR)
+          }
           NavigationLink {
             BasicStringInputView(coreSwitch: .variationsURL)
               .keyboardType(.URL)
@@ -358,6 +366,15 @@ struct BraveCoreDebugSwitchesView: View {
             SwitchContainer(.enableFeatures)
           }
           SwitchContainer(.useDevGoUpdater)
+
+          NavigationLink {
+            BasicPickerInputView(
+              coreSwitch: .servicesEnvironment,
+              options: BraveServicesEnvironment.allCases.map({ $0.rawValue })
+            )
+          } label: {
+            SwitchContainer(.servicesEnvironment)
+          }
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }

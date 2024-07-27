@@ -8,7 +8,7 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -16,7 +16,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kJson[] =
+constexpr char kPaymentTokensAsJson[] =
     R"(
         [
           {
@@ -35,32 +35,31 @@ constexpr char kJson[] =
           }
         ])";
 
-constexpr char kEmptyJson[] = "[]";
-
 }  // namespace
 
-class BraveAdsPaymentTokenValueUtilTest : public UnitTestBase {};
+class BraveAdsPaymentTokenValueUtilTest : public test::TestBase {};
 
-TEST_F(BraveAdsPaymentTokenValueUtilTest, ToValue) {
+TEST_F(BraveAdsPaymentTokenValueUtilTest, PaymentTokensToValue) {
   // Act
   const base::Value::List list =
       PaymentTokensToValue(test::BuildPaymentTokens(/*count=*/2));
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonList(kJson), list);
+  EXPECT_EQ(base::test::ParseJsonList(kPaymentTokensAsJson), list);
 }
 
-TEST_F(BraveAdsPaymentTokenValueUtilTest, ToEmptyValue) {
+TEST_F(BraveAdsPaymentTokenValueUtilTest, EmptyPaymentTokensToValue) {
   // Act
   const base::Value::List list = PaymentTokensToValue({});
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonList(kEmptyJson), list);
+  EXPECT_EQ(base::test::ParseJsonList("[]"), list);
 }
 
-TEST_F(BraveAdsPaymentTokenValueUtilTest, FromValue) {
+TEST_F(BraveAdsPaymentTokenValueUtilTest, PaymentTokensFromValue) {
   // Arrange
-  const base::Value::List list = base::test::ParseJsonList(kJson);
+  const base::Value::List list =
+      base::test::ParseJsonList(kPaymentTokensAsJson);
 
   // Act
   const PaymentTokenList payment_tokens = PaymentTokensFromValue(list);
@@ -69,9 +68,9 @@ TEST_F(BraveAdsPaymentTokenValueUtilTest, FromValue) {
   EXPECT_EQ(test::BuildPaymentTokens(/*count=*/2), payment_tokens);
 }
 
-TEST_F(BraveAdsPaymentTokenValueUtilTest, FromEmptyValue) {
+TEST_F(BraveAdsPaymentTokenValueUtilTest, EmptyPaymentTokensFromValue) {
   // Arrange
-  const base::Value::List list = base::test::ParseJsonList(kEmptyJson);
+  const base::Value::List list = base::test::ParseJsonList("[]");
 
   // Act
   const PaymentTokenList payment_tokens = PaymentTokensFromValue(list);

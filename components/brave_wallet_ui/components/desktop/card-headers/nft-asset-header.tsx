@@ -14,7 +14,6 @@ import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../common/selectors'
 
 // utils
-import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
 
 // Styled Components
@@ -61,9 +60,7 @@ export const NftAssetHeader = ({
             name='arrow-left'
           />
         </MenuButton>
-        <HeaderTitle isPanel={isPanel}>
-          {assetName}&nbsp;{tokenId ? `#${new Amount(tokenId).toNumber()}` : ''}
-        </HeaderTitle>
+        <HeaderTitle isPanel={isPanel}>{assetName}</HeaderTitle>
       </Row>
       {onSend && (
         <SendButton onClick={onSend}>{getLocale('braveWalletSend')}</SendButton>

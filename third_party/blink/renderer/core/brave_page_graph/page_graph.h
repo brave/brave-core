@@ -50,6 +50,7 @@ class NodeHTML;
 class NodeHTMLElement;
 class NodeHTMLText;
 class NodeParser;
+class NodeScriptRemote;
 class NodeResource;
 class NodeShields;
 class NodeShield;
@@ -58,6 +59,7 @@ class NodeStorageLocalStorage;
 class NodeStorageRoot;
 class NodeStorageSessionStorage;
 class NodeTrackerFilter;
+class NodeUnknown;
 class NodeJSBuiltin;
 class NodeJSWebAPI;
 class RequestTracker;
@@ -267,6 +269,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   PAGE_GRAPH_USING_DECL(NodeList);
   PAGE_GRAPH_USING_DECL(NodeParser);
   PAGE_GRAPH_USING_DECL(NodeResource);
+  PAGE_GRAPH_USING_DECL(NodeScriptRemote);
   PAGE_GRAPH_USING_DECL(NodeShield);
   PAGE_GRAPH_USING_DECL(NodeShields);
   PAGE_GRAPH_USING_DECL(NodeStorageCookieJar);
@@ -274,6 +277,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   PAGE_GRAPH_USING_DECL(NodeStorageRoot);
   PAGE_GRAPH_USING_DECL(NodeStorageSessionStorage);
   PAGE_GRAPH_USING_DECL(NodeTrackerFilter);
+  PAGE_GRAPH_USING_DECL(NodeUnknown);
   PAGE_GRAPH_USING_DECL(RequestTracker);
   PAGE_GRAPH_USING_DECL(RequestURL);
   PAGE_GRAPH_USING_DECL(ScriptData);
@@ -432,6 +436,8 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
       blink::ExecutionContext* execution_context,
       ScriptPosition* out_script_position = nullptr) const;
 
+  NodeUnknown* GetUnknownActorNode();
+
   NodeResource* GetResourceNodeForUrl(const KURL& url);
   NodeAdFilter* GetAdFilterNodeForRule(const String& rule);
   NodeTrackerFilter* GetTrackerFilterNodeForHost(const String& host);
@@ -494,6 +500,10 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   // and makes some kinds of queries nicer).
   HashMap<RequestURL, NodeResource*> resource_nodes_;
 
+  // Similarly, make sure we only have one node for each script executed
+  // somewhere outside the document.
+  HashMap<ScriptId, NodeScriptRemote*> remote_scripts_;
+
   // Index structure for looking up binding nodes.
   // This map does not own the references.
   HashMap<Binding, NodeBinding*> binding_nodes_;
@@ -526,6 +536,8 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   NodeStorageCookieJar* cookie_jar_node_;
   NodeStorageLocalStorage* local_storage_node_;
   NodeStorageSessionStorage* session_storage_node_;
+
+  NodeUnknown* unknown_actor_node_;
 };
 
 }  // namespace blink

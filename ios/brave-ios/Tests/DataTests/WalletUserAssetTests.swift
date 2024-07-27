@@ -96,12 +96,14 @@ class WalletUserAssetTests: CoreDataTestCase {
     XCTAssertFalse(userAsset.isDeletedByUser)
 
     backgroundSaveAndWaitForExpectation {
-      WalletUserAsset.updateUserAsset(
-        for: asset,
-        visible: false,
-        isSpam: true,
-        isDeletedByUser: true
-      )
+      Task {
+        await WalletUserAsset.updateUserAsset(
+          for: asset,
+          visible: false,
+          isSpam: true,
+          isDeletedByUser: true
+        )
+      }
     }
 
     DataController.viewContext.refreshAllObjects()
@@ -119,12 +121,14 @@ class WalletUserAssetTests: CoreDataTestCase {
     createAndWait(asset: asset3)
 
     backgroundSaveAndWaitForExpectation {
-      WalletUserAsset.updateUserAsset(
-        for: asset2,
-        visible: false,
-        isSpam: false,
-        isDeletedByUser: false
-      )
+      Task {
+        await WalletUserAsset.updateUserAsset(
+          for: asset2,
+          visible: false,
+          isSpam: false,
+          isDeletedByUser: false
+        )
+      }
     }
 
     DataController.viewContext.refreshAllObjects()
@@ -138,12 +142,14 @@ class WalletUserAssetTests: CoreDataTestCase {
     createAndWait(asset: asset2)
 
     backgroundSaveAndWaitForExpectation {
-      WalletUserAsset.updateUserAsset(
-        for: asset2,
-        visible: false,
-        isSpam: false,
-        isDeletedByUser: true
-      )
+      Task {
+        await WalletUserAsset.updateUserAsset(
+          for: asset2,
+          visible: false,
+          isSpam: false,
+          isDeletedByUser: true
+        )
+      }
     }
 
     DataController.viewContext.refreshAllObjects()
@@ -158,7 +164,9 @@ class WalletUserAssetTests: CoreDataTestCase {
     createAndWait(asset: asset)
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
     backgroundSaveAndWaitForExpectation {
-      WalletUserAsset.removeUserAsset(asset: asset)
+      Task {
+        await WalletUserAsset.removeUserAsset(asset: asset)
+      }
     }
     XCTAssertEqual(try! DataController.viewContext.count(for: self.fetchRequest), 0)
   }
@@ -166,9 +174,13 @@ class WalletUserAssetTests: CoreDataTestCase {
   // MARK: - Utility
 
   @discardableResult
-  private func createAndWait(asset: BraveWallet.BlockchainToken) -> WalletUserAsset {
+  private func createAndWait(
+    asset: BraveWallet.BlockchainToken
+  ) -> WalletUserAsset {
     backgroundSaveAndWaitForExpectation {
-      WalletUserAsset.addUserAsset(asset: asset)
+      Task {
+        await WalletUserAsset.addUserAsset(asset: asset)
+      }
     }
     let userAsset = try! DataController.viewContext.fetch(fetchRequest).first!
     return userAsset
