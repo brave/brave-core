@@ -13,11 +13,6 @@
 #include "brave/components/ephemeral_storage/ephemeral_storage_service_delegate.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 
-class Profile;
-namespace content {
-class BrowserContext;
-}
-
 class HostContentSettingsMap;
 
 namespace ephemeral_storage {
@@ -34,8 +29,8 @@ class BraveEphemeralStorageServiceDelegate
   void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key) override;
   void CleanupFirstPartyStorageArea(
       const std::string& registerable_domain) override;
-  void DoesProfileHaveAnyBrowserWindow(Profile* profile,
-                                       bool* have_window) override;
+  void DoesProfileHaveAnyBrowserWindow(
+      std::optional<bool>& is_window_visible) override;
 
  private:
   raw_ptr<content::BrowserContext> context_ = nullptr;
