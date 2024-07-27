@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_EPHEMERAL_STORAGE_EPHEMERAL_STORAGE_SERVICE_DELEGATE_H_
 #define BRAVE_COMPONENTS_EPHEMERAL_STORAGE_EPHEMERAL_STORAGE_SERVICE_DELEGATE_H_
 
+#include <optional>
 #include <string>
 #include <utility>
 
 #include "brave/components/ephemeral_storage/ephemeral_storage_types.h"
 #include "url/origin.h"
 
-class Profile;
 namespace ephemeral_storage {
 
 // Delegate performs cleanup for all required parts (chrome, content, etc.).
@@ -25,8 +25,8 @@ class EphemeralStorageServiceDelegate {
   // Cleanups non-ephemeral first party storage areas (cache, dom storage).
   virtual void CleanupFirstPartyStorageArea(
       const std::string& registerable_domain) {}
-  virtual void DoesProfileHaveAnyBrowserWindow(Profile* profile,
-                                               bool* have_window) {}
+  virtual void DoesProfileHaveAnyBrowserWindow(
+      std::optional<bool>& is_window_visible) {}
 };
 
 }  // namespace ephemeral_storage
