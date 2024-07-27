@@ -13,6 +13,10 @@
 #include "brave/components/ephemeral_storage/ephemeral_storage_service_delegate.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 
+namespace content {
+class BrowserContext;
+}
+
 class HostContentSettingsMap;
 
 namespace ephemeral_storage {
