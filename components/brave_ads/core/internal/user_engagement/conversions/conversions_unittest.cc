@@ -270,7 +270,7 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        FallbackToDefaultConversionIfVerifiableAdvertiserPublicKeyIsEmpty) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
@@ -293,7 +293,7 @@ TEST_F(
     BraveAdsConversionsTest,
     FallbackToDefaultConversionIfResourceIdPatternDoesNotMatchRedirectChain) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
@@ -315,7 +315,7 @@ TEST_F(
 TEST_F(BraveAdsConversionsTest,
        FallbackToDefaultConversionIfVerifiableUrlConversionIdDoesNotExist) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
@@ -336,7 +336,7 @@ TEST_F(BraveAdsConversionsTest,
 
 TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
@@ -362,7 +362,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
 TEST_F(BraveAdsConversionsTest,
        FallbackToDefaultConversionIfVerifiableHtmlConversionIdDoesNotExist) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
@@ -383,7 +383,7 @@ TEST_F(BraveAdsConversionsTest,
 
 TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableHtmlConversionIdExists) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
@@ -411,7 +411,7 @@ TEST_F(
     BraveAdsConversionsTest,
     FallbackToDefaultConversionIfVerifiableHtmlMetaTagConversionIdDoesNotExist) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
@@ -433,7 +433,7 @@ TEST_F(
 TEST_F(BraveAdsConversionsTest,
        ConvertAdIfVerifiableHtmlMetaTagConversionIdExists) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
@@ -458,7 +458,7 @@ TEST_F(BraveAdsConversionsTest,
 
 TEST_F(BraveAdsConversionsTest, VerifiableConversion) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kSearchResultAd,
@@ -488,7 +488,7 @@ TEST_F(BraveAdsConversionsTest, FallbackToDefaultConversionForNonRewardsUser) {
 
   test::DisableBraveRewards();
 
-  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kSearchResultAd,

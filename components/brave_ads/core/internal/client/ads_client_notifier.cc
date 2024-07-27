@@ -86,17 +86,17 @@ void AdsClientNotifier::NotifyPrefDidChange(const std::string& path) {
   }
 }
 
-void AdsClientNotifier::NotifyDidUpdateResourceComponent(
+void AdsClientNotifier::NotifyResourceComponentDidChange(
     const std::string& manifest_version,
     const std::string& id) {
   if (should_queue_notifications_) {
     return pending_notifier_queue_->Add(
-        base::BindOnce(&AdsClientNotifier::NotifyDidUpdateResourceComponent,
+        base::BindOnce(&AdsClientNotifier::NotifyResourceComponentDidChange,
                        weak_factory_.GetWeakPtr(), manifest_version, id));
   }
 
   for (auto& observer : observers_) {
-    observer.OnNotifyDidUpdateResourceComponent(manifest_version, id);
+    observer.OnNotifyResourceComponentDidChange(manifest_version, id);
   }
 }
 

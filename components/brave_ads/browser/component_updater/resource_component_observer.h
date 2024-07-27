@@ -16,7 +16,7 @@ class ResourceComponentObserver : public base::CheckedObserver {
  public:
   // Invoked when the resource for the given `id` has updated to
   // `manifest_version`.
-  virtual void OnDidUpdateResourceComponent(const std::string& manifest_version,
+  virtual void OnResourceComponentDidChange(const std::string& manifest_version,
                                             const std::string& id) = 0;
 
   // Invoked when the resource for the given `id` has been unregistered.

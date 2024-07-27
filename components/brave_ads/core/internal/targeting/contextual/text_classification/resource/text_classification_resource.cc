@@ -132,7 +132,7 @@ void TextClassificationResource::OnNotifyPrefDidChange(
   }
 }
 
-void TextClassificationResource::OnNotifyDidUpdateResourceComponent(
+void TextClassificationResource::OnNotifyResourceComponentDidChange(
     const std::string& manifest_version,
     const std::string& id) {
   if (!IsValidLanguageComponentId(id)) {

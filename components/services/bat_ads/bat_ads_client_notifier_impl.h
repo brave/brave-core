@@ -50,7 +50,7 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
 
   // Invoked when a resource component with `id` has been updated to
   // `manifest_version`.
-  void NotifyDidUpdateResourceComponent(const std::string& manifest_version,
+  void NotifyResourceComponentDidChange(const std::string& manifest_version,
                                         const std::string& id) override;
 
   // Invoked when a resource component with `id` has been unregistered.

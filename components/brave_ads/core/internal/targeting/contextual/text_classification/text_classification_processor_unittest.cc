@@ -46,7 +46,7 @@ TEST_F(BraveAdsTextClassificationProcessorTest,
 
 TEST_F(BraveAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kLanguageComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
                                    test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
@@ -65,7 +65,7 @@ TEST_F(BraveAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
 
 TEST_F(BraveAdsTextClassificationProcessorTest, NeverProcessed) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kLanguageComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
                                    test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
@@ -78,7 +78,7 @@ TEST_F(BraveAdsTextClassificationProcessorTest, NeverProcessed) {
 
 TEST_F(BraveAdsTextClassificationProcessorTest, ProcessText) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kLanguageComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
                                    test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
@@ -97,7 +97,7 @@ TEST_F(BraveAdsTextClassificationProcessorTest, ProcessText) {
 
 TEST_F(BraveAdsTextClassificationProcessorTest, ProcessMultipleText) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kLanguageComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
                                    test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 

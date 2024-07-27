@@ -58,7 +58,7 @@ class AdsClientNotifier {
 
   // Invoked when a resource component with `id` has been updated to
   // `manifest_version`.
-  virtual void NotifyDidUpdateResourceComponent(
+  virtual void NotifyResourceComponentDidChange(
       const std::string& manifest_version,
       const std::string& id);
 

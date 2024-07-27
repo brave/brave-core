@@ -53,7 +53,7 @@ class ResourceComponent : public ResourceComponentRegistrarDelegate {
                             const base::FilePath& install_dir,
                             const std::string& json);
 
-  void NotifyDidUpdateResourceComponent(const std::string& manifest_version,
+  void NotifyResourceComponentDidChange(const std::string& manifest_version,
                                         const std::string& id);
   void NotifyDidUnregisterResourceComponent(const std::string& id);
 
@@ -64,10 +64,12 @@ class ResourceComponent : public ResourceComponentRegistrarDelegate {
   void OnResourceComponentUnregistered(
       const std::string& component_id) override;
 
+  base::ObserverList<ResourceComponentObserver> observers_;
+
   ResourceComponentRegistrar country_resource_component_registrar_;
   ResourceComponentRegistrar language_resource_component_registrar_;
-  std::map<std::string, ResourceInfo> resources_;
-  base::ObserverList<ResourceComponentObserver> observers_;
+  std::map</*resource_key*/ std::string, ResourceInfo> resources_;
+
   base::WeakPtrFactory<ResourceComponent> weak_factory_{this};
 };
 
