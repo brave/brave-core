@@ -1,11 +1,11 @@
-Total size 96280K
+Total size 96338K
 
-GROUP Adblock [8306K total]
+GROUP Adblock [8310K total]
    114K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.188 [adcocjohghhfpidemphmcmlmhnfgikei]
-    47K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.7637 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1316K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.8142 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+    47K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.7652 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1317K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.8158 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
    139K Brave Ad Block Updater (Regional Catalog) 1.0.60 [gkboaolpopklhgplhaaiboijnklogmbc]
-  5692K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.7072 [iodkpdagapdfkphljnddpjlldadblomo]
+  5695K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.7088 [iodkpdagapdfkphljnddpjlldadblomo]
      7K Brave Ad Block Updater (Brave Experimental Adblock Rules (plaintext)) 1.0.29 [jcfckfokjmopfomnoebdkdhbhcgjfnbi]
    988K Brave Ad Block Updater (Resources) 1.0.93 [mfddibmblmbccpadfndgakiopmmhebop]
 
@@ -13,23 +13,23 @@ GROUP Ads [22975K total]
     72K Brave Ads Resources 1.0.102 [iblokdlgekdjophgeonmanpnjihcjkjj]
  22903K Brave Ads Resources 1.0.67 [ocilmpijebaopmdifcomolmpigakocmo]
 
-GROUP Ntp [13999K total]
+GROUP Ntp [14048K total]
  12803K Brave NTP background images 1.0.14 [aoojcmojmmcbpfgoecoadbdpnagfchel]
-  1195K Brave NTP sponsored images 1.0.1012 [pciohbjgmbejokmghgjkobeionibheai]
+  1244K Brave NTP sponsored images 1.0.1013 [pciohbjgmbejokmghgjkobeionibheai]
 
 GROUP Other [158K total]
-   158K Brave Local Data Files Updater 1.0.830 [afalakplffnnnlkncjhbmahjfjhmlkal]
+   158K Brave Local Data Files Updater 1.0.832 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
-GROUP chromium [596K total]
-    24K crl-set-12963610513992438359.data 8971 [CertificateRevocation]
+GROUP chromium [598K total]
+    24K crl-set-5898210135049116448.data 8973 [CertificateRevocation]
     31K chromeCommerceHeuristics 2023.3.30.1305 [CommerceHeuristics]
-   102K Crowd Deny 2024.4.15.1148 [Crowd Deny]
+   103K Crowd Deny 2023.11.29.1201 [Crowd Deny]
      9K fileTypePolicies 66 [FileTypePolicies]
    203K pkiMetadata 1024 [PKIMetadata]
     32K real_time_url_checks_allowlist 9 [RealTimeUrlChecksAllowlist]
      4K sslErrorAssistant 7 [SSLErrorAssistant]
    154K safetyTips 3036 [SafetyTips]
-    32K Third-Party Cookie Deprecation Metadata 2024.7.24.2 [TpcdMetadata]
+    32K Third-Party Cookie Deprecation Metadata 2024.7.26.1 [TpcdMetadata]
 
 GROUP large_files [44192K total]
  44192K Default/publisher_info_db
