@@ -108,56 +108,20 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
   std::move(callback).Run(/*success=*/true);
 }
 
-std::optional<NotificationAdInfo> AdsImpl::MaybeGetNotificationAd(
-    const std::string& placement_id) {
-  return NotificationAdManager::GetInstance().MaybeGetForPlacementId(
-      placement_id);
-}
-
-void AdsImpl::TriggerNotificationAdEvent(
-    const std::string& placement_id,
-    const mojom::NotificationAdEventType event_type,
-    TriggerAdEventCallback callback) {
+void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*success=*/false);
+    return std::move(callback).Run(/*diagnostics=*/std::nullopt);
   }
 
-  ad_handler_.TriggerNotificationAdEvent(placement_id, event_type,
-                                         std::move(callback));
+  DiagnosticManager::GetInstance().GetDiagnostics(std::move(callback));
 }
 
-void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
+void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*ad=*/std::nullopt);
+    return std::move(callback).Run(/*statement=*/nullptr);
   }
 
-  ad_handler_.MaybeServeNewTabPageAd(std::move(callback));
-}
-
-void AdsImpl::TriggerNewTabPageAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    const mojom::NewTabPageAdEventType event_type,
-    TriggerAdEventCallback callback) {
-  if (!is_initialized_) {
-    return std::move(callback).Run(/*success=*/false);
-  }
-
-  ad_handler_.TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                       event_type, std::move(callback));
-}
-
-void AdsImpl::TriggerPromotedContentAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    const mojom::PromotedContentAdEventType event_type,
-    TriggerAdEventCallback callback) {
-  if (!is_initialized_) {
-    return std::move(callback).Run(/*success=*/false);
-  }
-
-  ad_handler_.TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
-                                            event_type, std::move(callback));
+  Account::GetStatement(std::move(callback));
 }
 
 void AdsImpl::MaybeServeInlineContentAd(
@@ -181,6 +145,58 @@ void AdsImpl::TriggerInlineContentAdEvent(
 
   ad_handler_.TriggerInlineContentAdEvent(placement_id, creative_instance_id,
                                           event_type, std::move(callback));
+}
+
+void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
+  if (!is_initialized_) {
+    return std::move(callback).Run(/*ad=*/std::nullopt);
+  }
+
+  ad_handler_.MaybeServeNewTabPageAd(std::move(callback));
+}
+
+void AdsImpl::TriggerNewTabPageAdEvent(
+    const std::string& placement_id,
+    const std::string& creative_instance_id,
+    const mojom::NewTabPageAdEventType event_type,
+    TriggerAdEventCallback callback) {
+  if (!is_initialized_) {
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  ad_handler_.TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
+                                       event_type, std::move(callback));
+}
+
+std::optional<NotificationAdInfo> AdsImpl::MaybeGetNotificationAd(
+    const std::string& placement_id) {
+  return NotificationAdManager::GetInstance().MaybeGetForPlacementId(
+      placement_id);
+}
+
+void AdsImpl::TriggerNotificationAdEvent(
+    const std::string& placement_id,
+    const mojom::NotificationAdEventType event_type,
+    TriggerAdEventCallback callback) {
+  if (!is_initialized_) {
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  ad_handler_.TriggerNotificationAdEvent(placement_id, event_type,
+                                         std::move(callback));
+}
+
+void AdsImpl::TriggerPromotedContentAdEvent(
+    const std::string& placement_id,
+    const std::string& creative_instance_id,
+    const mojom::PromotedContentAdEventType event_type,
+    TriggerAdEventCallback callback) {
+  if (!is_initialized_) {
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  ad_handler_.TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
+                                            event_type, std::move(callback));
 }
 
 void AdsImpl::TriggerSearchResultAdEvent(
@@ -235,22 +251,6 @@ AdHistoryList AdsImpl::GetAdHistory(const AdHistoryFilterType filter_type,
   return is_initialized_
              ? AdHistoryManager::Get(filter_type, sort_type, from_time, to_time)
              : AdHistoryList{};
-}
-
-void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
-  if (!is_initialized_) {
-    return std::move(callback).Run(/*statement=*/nullptr);
-  }
-
-  Account::GetStatement(std::move(callback));
-}
-
-void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
-  if (!is_initialized_) {
-    return std::move(callback).Run(/*diagnostics=*/std::nullopt);
-  }
-
-  DiagnosticManager::GetInstance().GetDiagnostics(std::move(callback));
 }
 
 mojom::UserReactionType AdsImpl::ToggleLikeAd(const base::Value::Dict& value) {
