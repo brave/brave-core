@@ -36,10 +36,10 @@ void AdsClientNotifierForTesting::NotifyPrefDidChange(const std::string& path) {
   RunTaskEnvironmentUntilIdle();
 }
 
-void AdsClientNotifierForTesting::NotifyDidUpdateResourceComponent(
+void AdsClientNotifierForTesting::NotifyResourceComponentDidChange(
     const std::string& manifest_version,
     const std::string& id) {
-  AdsClientNotifier::NotifyDidUpdateResourceComponent(manifest_version, id);
+  AdsClientNotifier::NotifyResourceComponentDidChange(manifest_version, id);
 
   RunTaskEnvironmentUntilIdle();
 }

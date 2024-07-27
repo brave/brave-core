@@ -1813,11 +1813,11 @@ void AdsServiceImpl::OnBrowserDidEnterBackground() {
   }
 }
 
-void AdsServiceImpl::OnDidUpdateResourceComponent(
+void AdsServiceImpl::OnResourceComponentDidChange(
     const std::string& manifest_version,
     const std::string& id) {
   if (bat_ads_client_notifier_remote_.is_bound()) {
-    bat_ads_client_notifier_remote_->NotifyDidUpdateResourceComponent(
+    bat_ads_client_notifier_remote_->NotifyResourceComponentDidChange(
         manifest_version, id);
   }
 

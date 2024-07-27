@@ -589,7 +589,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
                    }
                    if (success) {
                      [strongSelf
-                         notifyDidUpdateResourceComponent:@"1"
+                         notifyResourceComponentDidChange:@"1"
                                                        id:languageCodeAdsResourceId];
                    }
                  }];
@@ -626,7 +626,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
                    }
                    if (success) {
                      [strongSelf
-                         notifyDidUpdateResourceComponent:@"1"
+                         notifyResourceComponentDidChange:@"1"
                                                        id:countryCodeAdsResourceId];
                    }
                  }];
@@ -708,7 +708,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 
                      BLOG(1, @"Notifying ads resource observers");
 
-                     [strongSelf notifyDidUpdateResourceComponent:@"1" id:key];
+                     [strongSelf notifyResourceComponentDidChange:@"1" id:key];
                    }];
   }
 }
@@ -1829,10 +1829,10 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   }
 }
 
-- (void)notifyDidUpdateResourceComponent:(NSString*)manifest_version
+- (void)notifyResourceComponentDidChange:(NSString*)manifest_version
                                       id:(NSString*)id {
   if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyDidUpdateResourceComponent(
+    adsClientNotifier->NotifyResourceComponentDidChange(
         base::SysNSStringToUTF8(manifest_version), base::SysNSStringToUTF8(id));
   }
 }

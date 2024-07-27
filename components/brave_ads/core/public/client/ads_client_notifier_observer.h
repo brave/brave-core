@@ -44,7 +44,7 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
 
   // Invoked when a resource component with `id` has been updated to
   // `manifest_version`.
-  virtual void OnNotifyDidUpdateResourceComponent(
+  virtual void OnNotifyResourceComponentDidChange(
       const std::string& manifest_version,
       const std::string& id) {}
 

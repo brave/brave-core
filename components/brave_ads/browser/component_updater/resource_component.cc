@@ -17,7 +17,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr int kCurrentSchemaVersion = 1;
+constexpr int kSchemaVersion = 1;
 constexpr char kSchemaVersionKey[] = "schemaVersion";
 
 constexpr char kManifestVersionKey[] = "version";
@@ -27,10 +27,10 @@ constexpr char kResourceIdKey[] = "id";
 constexpr char kResourceFilenameKey[] = "filename";
 constexpr char kResourceVersionKey[] = "version";
 
-constexpr base::FilePath::CharType kManifestFile[] =
+constexpr base::FilePath::CharType kManifestJsonFile[] =
     FILE_PATH_LITERAL("manifest.json");
 
-constexpr base::FilePath::CharType kResourcesFile[] =
+constexpr base::FilePath::CharType kResourcesJsonFile[] =
     FILE_PATH_LITERAL("resources.json");
 
 std::string GetResourceKey(const std::string& id, int version) {
@@ -103,7 +103,7 @@ void ResourceComponent::OnResourceComponentRegistered(
     const base::FilePath& install_dir) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&LoadFile, install_dir.Append(kManifestFile)),
+      base::BindOnce(&LoadFile, install_dir.Append(kManifestJsonFile)),
       base::BindOnce(&ResourceComponent::LoadManifestCallback,
                      weak_factory_.GetWeakPtr(), component_id, install_dir));
 }
@@ -132,7 +132,7 @@ void ResourceComponent::LoadManifestCallback(const std::string& component_id,
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&LoadFile, install_dir.Append(kResourcesFile)),
+      base::BindOnce(&LoadFile, install_dir.Append(kResourcesJsonFile)),
       base::BindOnce(&ResourceComponent::LoadResourceCallback,
                      weak_factory_.GetWeakPtr(), *manifest_version,
                      component_id, install_dir));
@@ -156,7 +156,7 @@ void ResourceComponent::LoadResourceCallback(
     return VLOG(1) << "Resource schema version is missing";
   }
 
-  if (*schema_version != kCurrentSchemaVersion) {
+  if (*schema_version != kSchemaVersion) {
     return VLOG(1) << "Resource schema version mismatch";
   }
 
@@ -211,14 +211,14 @@ void ResourceComponent::LoadResourceCallback(
   }
 
   VLOG(1) << "Notifying resource component observers";
-  NotifyDidUpdateResourceComponent(manifest_version, component_id);
+  NotifyResourceComponentDidChange(manifest_version, component_id);
 }
 
-void ResourceComponent::NotifyDidUpdateResourceComponent(
+void ResourceComponent::NotifyResourceComponentDidChange(
     const std::string& manifest_version,
     const std::string& id) {
   for (auto& observer : observers_) {
-    observer.OnDidUpdateResourceComponent(manifest_version, id);
+    observer.OnResourceComponentDidChange(manifest_version, id);
   }
 }
 

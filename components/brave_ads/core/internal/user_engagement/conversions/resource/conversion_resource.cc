@@ -111,7 +111,7 @@ void ConversionResource::OnNotifyPrefDidChange(const std::string& path) {
   }
 }
 
-void ConversionResource::OnNotifyDidUpdateResourceComponent(
+void ConversionResource::OnNotifyResourceComponentDidChange(
     const std::string& manifest_version,
     const std::string& id) {
   if (!IsValidCountryComponentId(id)) {

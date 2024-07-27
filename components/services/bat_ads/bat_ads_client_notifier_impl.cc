@@ -45,10 +45,10 @@ void BatAdsClientNotifierImpl::NotifyPrefDidChange(const std::string& path) {
   notifier_.NotifyPrefDidChange(path);
 }
 
-void BatAdsClientNotifierImpl::NotifyDidUpdateResourceComponent(
+void BatAdsClientNotifierImpl::NotifyResourceComponentDidChange(
     const std::string& manifest_version,
     const std::string& id) {
-  notifier_.NotifyDidUpdateResourceComponent(manifest_version, id);
+  notifier_.NotifyResourceComponentDidChange(manifest_version, id);
 }
 
 void BatAdsClientNotifierImpl::NotifyDidUnregisterResourceComponent(

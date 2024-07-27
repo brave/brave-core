@@ -138,7 +138,7 @@ void AntiTargetingResource::OnNotifyPrefDidChange(const std::string& path) {
   }
 }
 
-void AntiTargetingResource::OnNotifyDidUpdateResourceComponent(
+void AntiTargetingResource::OnNotifyResourceComponentDidChange(
     const std::string& manifest_version,
     const std::string& id) {
   if (!IsValidCountryComponentId(id)) {

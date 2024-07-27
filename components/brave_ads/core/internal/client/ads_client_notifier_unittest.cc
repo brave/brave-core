@@ -56,7 +56,7 @@ class BraveAdsAdsClientNotifierTest : public ::testing::Test {
 
     ads_client_notifier_.NotifyPrefDidChange(kPrefPath);
 
-    ads_client_notifier_.NotifyDidUpdateResourceComponent(kManifestVersion,
+    ads_client_notifier_.NotifyResourceComponentDidChange(kManifestVersion,
                                                           kResourceId);
     ads_client_notifier_.NotifyDidUnregisterResourceComponent(kResourceId);
 
@@ -100,7 +100,7 @@ class BraveAdsAdsClientNotifierTest : public ::testing::Test {
 
     EXPECT_CALL(
         ads_client_notifier_observer_mock_,
-        OnNotifyDidUpdateResourceComponent(kManifestVersion, kResourceId))
+        OnNotifyResourceComponentDidChange(kManifestVersion, kResourceId))
         .Times(expected_call_count);
     EXPECT_CALL(ads_client_notifier_observer_mock_,
                 OnNotifyDidUnregisterResourceComponent(kResourceId))

@@ -49,7 +49,7 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
 TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
        ShouldIncludeIfNotVisitedAntiTargetedSiteForCreativeSet) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
@@ -66,7 +66,7 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
 TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
        ShouldIncludeIfNotVisitedAntiTargetedSite) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
@@ -83,7 +83,7 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
 TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
        ShouldExcludeIfVisitedAntiTargetedSite) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
