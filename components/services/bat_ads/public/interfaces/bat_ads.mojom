@@ -28,17 +28,16 @@ interface BatAdsClientNotifier {
   NotifyPrefDidChange(string path);
 
   NotifyDidUpdateResourceComponent(string manifest_version, string id);
-
   NotifyDidUnregisterResourceComponent(string id);
 
   NotifyRewardsWalletDidUpdate(string payment_id, string recovery_seed);
 
-  NotifyTabHtmlContentDidChange(int32 tab_id,
-                                array<url.mojom.Url> redirect_chain,
-                                mojo_base.mojom.BigString html);
   NotifyTabTextContentDidChange(int32 tab_id,
                                 array<url.mojom.Url> redirect_chain,
                                 mojo_base.mojom.BigString text);
+  NotifyTabHtmlContentDidChange(int32 tab_id,
+                                array<url.mojom.Url> redirect_chain,
+                                mojo_base.mojom.BigString html);
   NotifyTabDidStartPlayingMedia(int32 tab_id);
   NotifyTabDidStopPlayingMedia(int32 tab_id);
   NotifyTabDidChange(int32 tab_id,
