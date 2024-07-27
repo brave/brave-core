@@ -98,7 +98,6 @@
     <color name="systemfeedback_info_background">#e2f0ff</color>
     <color name="systemfeedback_info_icon">#0061aa</color>
     <color name="systemfeedback_info_text">#0061aa</color>
-    <color name="text_interactive">#3f39e8</color>
     <color name="container_background">#ffffff</color>
     <color name="primitive_private_window_5">#160041</color>
     <color name="primitive_private_window_10">#22005D</color>
