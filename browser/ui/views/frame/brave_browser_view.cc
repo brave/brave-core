@@ -482,7 +482,7 @@ void BraveBrowserView::UpdateContentsWebViewBorder() {
 
     if (auto* cp = GetColorProvider()) {
       contents_web_view_->SetBorder(
-          create_border(leo::kColorPrimitivePrimary40, 2));
+          create_border(leo::kColorPrimitivePrimary70, 2));
 
       secondary_contents_web_view_->SetBorder(create_border(
           cp->GetColor(kColorBraveSplitViewInactiveWebViewBorder), 1));

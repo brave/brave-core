@@ -771,7 +771,7 @@ void AddPrivateThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorNewTabPageBackground] = {kPrivateFrame};
   mixer[kColorTabBackgroundActiveFrameActive] = {
-      leo::kColorPrimitivePrivateWindow80};
+      leo::kColorPrimitivePrivateWindow20};
   mixer[kColorTabBackgroundActiveFrameInactive] = {
       kColorTabBackgroundActiveFrameActive};
   mixer[kColorTabBackgroundInactiveFrameActive] = {ui::kColorFrameActive};
@@ -784,8 +784,8 @@ void AddPrivateThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetRGB(0xCC, 0xBE, 0xFE)};
   mixer[kColorTabForegroundInactiveFrameActive] = {
       SkColorSetRGB(0xCC, 0xBE, 0xFE)};
-  mixer[kColorToolbar] = {leo::kColorPrimitivePrivateWindow90};
-  mixer[kColorToolbarButtonIcon] = {leo::kColorPrimitivePrivateWindow40};
+  mixer[kColorToolbar] = {leo::kColorPrimitivePrivateWindow10};
+  mixer[kColorToolbarButtonIcon] = {leo::kColorPrimitivePrivateWindow70};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
   mixer[kColorToolbarContentAreaSeparator] = {kColorToolbar};
@@ -804,7 +804,7 @@ void AddTorThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorNewTabPageBackground] = {kPrivateTorFrame};
   mixer[kColorTabBackgroundActiveFrameActive] = {
-      leo::kColorPrimitiveTorWindow80};
+      leo::kColorPrimitiveTorWindow20};
   mixer[kColorTabBackgroundActiveFrameInactive] = {
       kColorTabBackgroundActiveFrameActive};
   mixer[kColorTabBackgroundInactiveFrameActive] = {ui::kColorFrameActive};
@@ -817,8 +817,8 @@ void AddTorThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetRGB(0xE3, 0xB3, 0xFF)};
   mixer[kColorTabForegroundInactiveFrameActive] = {
       SkColorSetRGB(0xE3, 0xB3, 0xFF)};
-  mixer[kColorToolbar] = {leo::kColorPrimitiveTorWindow90};
-  mixer[kColorToolbarButtonIcon] = {leo::kColorPrimitiveTorWindow40};
+  mixer[kColorToolbar] = {leo::kColorPrimitiveTorWindow10};
+  mixer[kColorToolbarButtonIcon] = {leo::kColorPrimitiveTorWindow70};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
   mixer[kColorToolbarContentAreaSeparator] = {kColorToolbar};

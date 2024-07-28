@@ -85,7 +85,7 @@ class Seeker : public views::Slider,
     canvas->DrawRect(line_bounds, flags);
 
     // Paint the progress line
-    flags.setColor(leo::kColorPrimitivePrimary60);
+    flags.setColor(leo::kColorPrimitivePrimary40);
     line_bounds.set_width(line_bounds.width() * GetAnimatingValue());
     flags.setAlphaf(1.0f);
     canvas->DrawRect(line_bounds, flags);
