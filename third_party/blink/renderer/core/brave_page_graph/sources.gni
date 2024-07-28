@@ -171,6 +171,8 @@ if (enable_brave_page_graph) {
     "//brave/third_party/blink/renderer/core/brave_page_graph/page_graph.cc",
     "//brave/third_party/blink/renderer/core/brave_page_graph/page_graph.h",
     "//brave/third_party/blink/renderer/core/brave_page_graph/page_graph_context.h",
+    "//brave/third_party/blink/renderer/core/brave_page_graph/page_graph_proxy.cc",
+    "//brave/third_party/blink/renderer/core/brave_page_graph/page_graph_proxy.h",
     "//brave/third_party/blink/renderer/core/brave_page_graph/requests/request_tracker.cc",
     "//brave/third_party/blink/renderer/core/brave_page_graph/requests/request_tracker.h",
     "//brave/third_party/blink/renderer/core/brave_page_graph/requests/tracked_request.cc",

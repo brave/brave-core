@@ -26,6 +26,7 @@
 #include "third_party/blink/renderer/core/inspector/protocol/dom.h"
 #include "third_party/blink/renderer/core/inspector/protocol/protocol.h"
 #include "third_party/blink/renderer/platform/allow_discouraged_type.h"
+#include "third_party/blink/renderer/platform/heap/collection_support/heap_hash_set.h"
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/blink/renderer/platform/heap/member.h"
 #include "third_party/blink/renderer/platform/supplementable.h"
@@ -117,6 +118,11 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   static const char kSupplementName[];
   static PageGraph* From(LocalFrame&);
   static void ProvideTo(LocalFrame&);
+  static PageGraph* FromIsolate(v8::Isolate* isolate);
+
+  using PageGraphSet = HeapHashSet<WeakMember<PageGraph>>;
+  static PageGraphSet& AllPageGraphs();
+  static unsigned NumAttachedPageGraphs();
 
   explicit PageGraph(LocalFrame& local_frame);
   ~PageGraph() override;
@@ -174,6 +180,9 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
       blink::DocumentLoader* loader,
       const blink::ResourceError&,
       const base::UnguessableToken& devtools_frame_or_worker_token);
+
+  void DocumentDetached(Document*);
+
   // Script/module compilation tracking:
   void ApplyCompilationModeOverride(const blink::ClassicScript&,
                                     v8::ScriptCompiler::CachedData**,
@@ -241,6 +250,8 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   void GenerateReportForNode(const blink::DOMNodeId node_id,
                              blink::protocol::Array<String>& report);
   String ToGraphML() const;
+
+  bool IsDocumentDetached() const;
 
  private:
 #define PAGE_GRAPH_USING_DECL(type) using type = brave_page_graph::type
@@ -447,10 +458,6 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                               const BindingType binding_type);
   NodeJSWebAPI* GetJSWebAPINode(const MethodName& method);
   NodeJSBuiltin* GetJSBuiltinNode(const MethodName& method);
-
-  // Return true if this PageGraph instance is instrumenting the top level
-  // frame tree.
-  bool IsRootFrame() const;
 
   // The blink assigned frame id for the local root's frame.
   const brave_page_graph::FrameId frame_id_;

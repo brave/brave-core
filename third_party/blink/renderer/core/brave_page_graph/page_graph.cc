@@ -129,6 +129,7 @@
 #include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
+#include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
 #include "third_party/blink/renderer/platform/wtf/text/base64.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 #include "url/gurl.h"
@@ -191,7 +192,7 @@ namespace blink {
 
 namespace {
 
-constexpr char kPageGraphVersion[] = "0.7.2";
+constexpr char kPageGraphVersion[] = "0.7.3";
 constexpr char kPageGraphUrl[] =
     "https://github.com/brave/brave-browser/wiki/PageGraph";
 
@@ -328,6 +329,7 @@ const char PageGraph::kSupplementName[] = "PageGraph";
 
 // static
 PageGraph* PageGraph::From(LocalFrame& frame) {
+  CHECK(frame.GetPage()->IsOrdinary());
   return Supplement<LocalFrame>::From<PageGraph>(frame);
 }
 
@@ -345,22 +347,42 @@ void PageGraph::ProvideTo(LocalFrame& frame) {
                                     MakeGarbageCollected<PageGraph>(frame));
 }
 
+// static
+PageGraph* PageGraph::FromIsolate(v8::Isolate* isolate) {
+  return GetPageGraphFromIsolate(isolate);
+}
+
+// static
+PageGraph::PageGraphSet& PageGraph::AllPageGraphs() {
+  DEFINE_STATIC_LOCAL(Persistent<PageGraph::PageGraphSet>, pagegraphs,
+                      (MakeGarbageCollected<PageGraph::PageGraphSet>()));
+  return *pagegraphs;
+}
+
+// static
+unsigned PageGraph::NumAttachedPageGraphs() {
+  unsigned num_graphs = 0;
+  for (auto&& a_graph : PageGraph::AllPageGraphs()) {
+    if (!a_graph->IsDocumentDetached()) {
+      num_graphs += 1;
+    }
+  }
+  return num_graphs;
+}
+
 PageGraph::PageGraph(LocalFrame& local_frame)
     : Supplement<LocalFrame>(local_frame),
       frame_id_(GetFrameId(local_frame)),
       script_tracker_(this),
       request_tracker_(this),
       start_(base::TimeTicks::Now()) {
+  VLOG(2) << "PageGraph::PageGraph)";
   blink::Page* page = local_frame.GetPage();
   if (!page) {
     VLOG(1) << "No page";
     return;
   }
-  if (!page->IsOrdinary()) {
-    VLOG(1) << "Page type is not ordinary";
-    return;
-  }
-
+  DCHECK(page->IsOrdinary());
   DCHECK(local_frame.IsLocalRoot());
   local_frame.GetProbeSink()->AddPageGraph(this);
 
@@ -382,9 +404,12 @@ PageGraph::PageGraph(LocalFrame& local_frame)
   AddEdge<EdgeStorageBucket>(storage_node_, cookie_jar_node_);
   AddEdge<EdgeStorageBucket>(storage_node_, local_storage_node_);
   AddEdge<EdgeStorageBucket>(storage_node_, session_storage_node_);
+  PageGraph::AllPageGraphs().insert(this);
 }
 
-PageGraph::~PageGraph() = default;
+PageGraph::~PageGraph() {
+  PageGraph::AllPageGraphs().erase(this);
+}
 
 void PageGraph::Trace(blink::Visitor* visitor) const {
   Supplement<LocalFrame>::Trace(visitor);
@@ -464,6 +489,7 @@ void PageGraph::DidRemoveDOMAttr(blink::Element* element,
 
 void PageGraph::DidCommitLoad(blink::LocalFrame* local_frame,
                               blink::DocumentLoader* loader) {
+  VLOG(1) << "PageGraph::DidCommitLoad)";
   blink::Document* document = local_frame->GetDocument();
   DCHECK(document);
 
@@ -573,7 +599,8 @@ void PageGraph::WillSendRequest(
 
   LOG(ERROR) << "Unhandled request id: " << request.InspectorId()
              << " resource type: " << page_graph_resource_type
-             << " url: " << request.Url() << "\n"
+             << " url: " << request.Url()
+             << " initiator (name): " << options.initiator_info.name << "\n"
              << base::debug::StackTrace().ToString();
 }
 
@@ -1096,13 +1123,11 @@ String PageGraph::ToGraphML() const {
   xmlNewTextChild(desc_container_node, nullptr, BAD_CAST "about",
                   BAD_CAST kPageGraphUrl);
   xmlNewTextChild(desc_container_node, nullptr, BAD_CAST "is_root",
-                  BAD_CAST(IsRootFrame() ? "true" : "false"));
+                  BAD_CAST "true");
   xmlNewTextChild(desc_container_node, nullptr, BAD_CAST "frame_id",
                   XmlUtf8String(frame_id_).get());
-  if (IsRootFrame()) {
-    xmlNewTextChild(desc_container_node, NULL, BAD_CAST "url",
-                    XmlUtf8String(source_url_).get());
-  }
+  xmlNewTextChild(desc_container_node, NULL, BAD_CAST "url",
+                  XmlUtf8String(source_url_).get());
 
   xmlNodePtr time_container_node =
       xmlNewChild(desc_container_node, nullptr, BAD_CAST "time", nullptr);
@@ -1141,6 +1166,12 @@ String PageGraph::ToGraphML() const {
   xmlFree(graphml_doc);
 
   return graphml_string;
+}
+
+bool PageGraph::IsDocumentDetached() const {
+  blink::LocalFrame* frame = GetSupplementable();
+  blink::Document* document = frame->GetDocument();
+  return document->IsDetached();
 }
 
 NodeHTML* PageGraph::GetHTMLNode(const DOMNodeId node_id) const {
@@ -1193,9 +1224,12 @@ NodeHTMLElement* PageGraph::GetHTMLElementNode(
     }
   }
 
+  blink::Node* correct_node = blink::DOMNodeIds::NodeForId(node_id);
   // If a node is not found at this point, then something is wrong and there
   // might be another edge case we need to handle.
-  CHECK(false) << "HTMLElementNode not found: " << node_id;
+  CHECK(false) << "HTMLElementNode not found: node id: " << node_id
+               << ", tag name: " << correct_node->nodeName()
+               << ", is element?: " << correct_node->IsElementNode();
   return nullptr;
 }
 
@@ -1299,7 +1333,8 @@ void PageGraph::RegisterHTMLElementNodeCreated(blink::Node* node) {
   FrameId frame_id = GetFrameId(node);
 
   VLOG(1) << "RegisterHTMLElementNodeCreated) node id: " << node_id << " ("
-          << local_tag_name << ") " << ", frame id: " << frame_id;
+          << local_tag_name << ") " << ", frame id: " << frame_id
+          << ", is frame owner: " << node->IsFrameOwnerElement();
   NodeActor* const acting_node =
       GetCurrentActingNode(node->GetExecutionContext());
 
@@ -2108,10 +2143,6 @@ NodeBinding* PageGraph::GetBindingNode(const Binding binding,
     return binding_node_it->value;
   }
   return AddNode<NodeBinding>(binding, binding_type);
-}
-
-bool PageGraph::IsRootFrame() const {
-  return GetSupplementable()->IsLocalRoot();
 }
 
 }  // namespace blink
