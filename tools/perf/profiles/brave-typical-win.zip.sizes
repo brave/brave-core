@@ -1,31 +1,30 @@
-Total size 142514K
+Total size 135504K
 
-GROUP Adblock [8271K total]
-   112K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.182 [adcocjohghhfpidemphmcmlmhnfgikei]
-    46K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.7486 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1313K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.8000 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+GROUP Adblock [8315K total]
+   114K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.188 [adcocjohghhfpidemphmcmlmhnfgikei]
+    47K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.7673 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1317K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.8177 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
    139K Brave Ad Block Updater (Regional Catalog) 1.0.60 [gkboaolpopklhgplhaaiboijnklogmbc]
-  5662K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.6937 [iodkpdagapdfkphljnddpjlldadblomo]
+  5700K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.7105 [iodkpdagapdfkphljnddpjlldadblomo]
      7K Brave Ad Block Updater (Brave Experimental Adblock Rules (plaintext)) 1.0.29 [jcfckfokjmopfomnoebdkdhbhcgjfnbi]
    988K Brave Ad Block Updater (Resources) 1.0.93 [mfddibmblmbccpadfndgakiopmmhebop]
 
-GROUP Ads [22903K total]
+GROUP Ads [22975K total]
+    72K Brave Ads Resources 1.0.102 [iblokdlgekdjophgeonmanpnjihcjkjj]
  22903K Brave Ads Resources 1.0.67 [ocilmpijebaopmdifcomolmpigakocmo]
 
-GROUP Ntp [13214K total]
+GROUP Ntp [13579K total]
  12803K Brave NTP background images 1.0.14 [aoojcmojmmcbpfgoecoadbdpnagfchel]
-   410K Brave NTP sponsored images 1.0.1580 [pldjcdmpjcopmodlfjplijaacnccpggc]
+   775K Brave NTP sponsored images 1.0.1671 [gccbbckogglekeggclmmekihdgdpdgoe]
 
 GROUP Other [158K total]
-   158K Brave Local Data Files Updater 1.0.822 [afalakplffnnnlkncjhbmahjfjhmlkal]
+   158K Brave Local Data Files Updater 1.0.833 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
-GROUP large_files [87756K total]
-  3262K Default/Local Extension Settings/mnojpmjdmbbfmejpflffifhffcmidifd/000003.log
-  1022K Default/Local Storage/leveldb/000003.ldb
-  1010K Default/Session Storage/000003.ldb
-  2723K Default/Sessions/Session_13365866134116393
-  4763K Default/Sessions/Session_13365866136396208
- 44128K Default/publisher_info_db
-  1945K Safe Browsing/ChromeExtMalware.store.32_13357744536199942
-  1011K Safe Browsing/UrlMalBin.store.4_13357744536174233
- 27889K Safe Browsing/UrlSoceng.store.4_13357744535888997
+GROUP large_files [80269K total]
+  3262K Default\Local Extension Settings\mnojpmjdmbbfmejpflffifhffcmidifd\000003.log
+  1022K Default\Local Storage\leveldb\000003.ldb
+  1010K Default\Session Storage\000003.ldb
+ 44128K Default\publisher_info_db
+  1945K Safe Browsing\ChromeExtMalware.store.32_13357744536199942
+  1011K Safe Browsing\UrlMalBin.store.4_13357744536174233
+ 27889K Safe Browsing\UrlSoceng.store.4_13357744535888997
