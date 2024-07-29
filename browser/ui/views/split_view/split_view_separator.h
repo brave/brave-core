@@ -39,6 +39,7 @@ class SplitViewSeparator : public views::ResizeArea,
   void Layout(PassKey) override;
   void ViewHierarchyChanged(
       const views::ViewHierarchyChangedDetails& details) override;
+  void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
 
   // views::ResizeAreaDelegate:
   void OnResize(int resize_amount, bool done_resizing) override;
