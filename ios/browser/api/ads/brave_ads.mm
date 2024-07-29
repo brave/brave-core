@@ -1471,7 +1471,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   std::move(callback).Run(contents);
 }
 
-- (void)loadComponentResource:(const std::string&)id
+- (void)loadResourceComponent:(const std::string&)id
                       version:(const int)version
                      callback:(brave_ads::LoadFileCallback)callback {
   NSString* bridgedId = base::SysUTF8ToNSString(id);

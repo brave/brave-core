@@ -169,8 +169,7 @@ class BraveAdsAdsClientNotifierTest : public ::testing::Test {
 
 TEST_F(BraveAdsAdsClientNotifierTest, FireQueuedAdsClientNotifications) {
   // Arrange
-  ads_client_notifier_.set_should_queue_notifications_for_testing(
-      /*should_queue_notifications=*/true);
+  ads_client_notifier_.set_should_queue_notifications_for_testing(true);
 
   // Act & Assert
   ExpectAdsClientNotifierCallCount(0);
@@ -191,8 +190,7 @@ TEST_F(
     BraveAdsAdsClientNotifierTest,
     DoNotFireQueuedAdsClientNotificationsIfNotifyPendingObserversIsNotCalled) {
   // Arrange
-  ads_client_notifier_.set_should_queue_notifications_for_testing(
-      /*should_queue_notifications=*/true);
+  ads_client_notifier_.set_should_queue_notifications_for_testing(true);
 
   // Act & Assert
   ExpectAdsClientNotifierCallCount(0);
@@ -202,8 +200,7 @@ TEST_F(
 TEST_F(BraveAdsAdsClientNotifierTest,
        FireAdsClientNotificationsImmediatelyIfNotQueued) {
   // Arrange
-  ads_client_notifier_.set_should_queue_notifications_for_testing(
-      /*should_queue_notifications=*/false);
+  ads_client_notifier_.set_should_queue_notifications_for_testing(false);
 
   // Act & Assert
   ExpectAdsClientNotifierCallCount(1);

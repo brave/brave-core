@@ -183,7 +183,7 @@ void BatAdsClientMojoBridge::Save(const std::string& name,
   bat_ads_client_associated_receiver_->Save(name, value, std::move(callback));
 }
 
-void BatAdsClientMojoBridge::LoadComponentResource(
+void BatAdsClientMojoBridge::LoadResourceComponent(
     const std::string& id,
     const int version,
     brave_ads::LoadFileCallback callback) {
@@ -192,7 +192,7 @@ void BatAdsClientMojoBridge::LoadComponentResource(
     return;
   }
 
-  bat_ads_client_associated_receiver_->LoadComponentResource(
+  bat_ads_client_associated_receiver_->LoadResourceComponent(
       id, version, std::move(callback));
 }
 

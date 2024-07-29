@@ -49,7 +49,7 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
   void MaybeLoadOrUnload();
 
   void Load();
-  void LoadComponentResourceCallback(base::File file);
+  void LoadResourceComponentCallback(base::File file);
   void LoadCallback(base::expected<bool, std::string> result);
 
   void MaybeUnload();

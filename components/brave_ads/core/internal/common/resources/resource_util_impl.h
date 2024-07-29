@@ -52,7 +52,7 @@ base::expected<T, std::string> LoadAndParseResourceComponentOnBackgroundThread(
 }
 
 template <typename T>
-void LoadComponentResourceCallback(
+void LoadResourceComponentCallback(
     LoadAndParseResourceComponentCallback<T> callback,
     base::File file) {
   base::ThreadPool::PostTaskAndReplyWithResult(
@@ -67,9 +67,9 @@ void LoadAndParseResourceComponent(
     const std::string& id,
     const int version,
     LoadAndParseResourceComponentCallback<T> callback) {
-  LoadComponentResource(
+  LoadResourceComponent(
       id, version,
-      base::BindOnce(&LoadComponentResourceCallback<T>, std::move(callback)));
+      base::BindOnce(&LoadResourceComponentCallback<T>, std::move(callback)));
 }
 
 }  // namespace brave_ads
