@@ -12,18 +12,22 @@ class FilePath;
 
 namespace brave_ads::test {
 
-// Returns the path of `brave/components/brave_ads/resources`.
+// Returns the path to the `components/brave_ads/resources` directory, which
+// contains bundled .pak data resources.
 base::FilePath DataResourcesPath();
 
-// Returns the path of `brave/components/brave_ads/core/test/data`.
+// Returns the path to the `components/brave_ads/core/test/data` directory,
+// which contains all mocked data.
 base::FilePath DataPath();
 
-// Returns the path of
-// `brave/components/brave_ads/core/test/data/component_resources`.
-base::FilePath ComponentResourcesDataPath();
+// Returns the path to the
+// `components/brave_ads/core/test/data/resources/components` directory, which
+// contains mocked resource components.
+base::FilePath ResourceComponentsDataPath();
 
-// Returns the path of
-// `brave/components/brave_ads/core/test/data/url_responses`.
+// Provides the path to the `components/brave_ads/core/test/data/url_responses`
+// directory, which contains mocked URL responses for use with
+// `MockUrlResponses`.
 base::FilePath UrlResponsesDataPath();
 
 }  // namespace brave_ads::test

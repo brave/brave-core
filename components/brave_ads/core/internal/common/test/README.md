@@ -55,15 +55,16 @@ To simulate a profile, use `CopyFileFromTestDataPathToTempProfilePath` or
 
 See [file_path_test_util.h](file_path_test_util.h) and [file_test_util.h](file_test_util.h).
 
-## Mocking Component Resources
+## Mocking Resource Components
 
-To mock component resources loaded with `LoadComponentResource`, place your mocked files in the following directory:
+To mock resource components loaded with `LoadResourceComponent`, place your mocked files in the following directory:
 
     .
     └── brave/components/brave_ads/core/
         └── test/
             └── data/
-                └── component_resources
+                └── resources/
+                   └── components
 
 See [file_path_test_util.h](file_path_test_util.h).
 
@@ -71,7 +72,7 @@ See [file_path_test_util.h](file_path_test_util.h).
 
 Mocked responses for URL requests can be defined inline or read from a text file.
 
-To mock component resources, place your mocked files in the following directory:
+To mock resource components, place your mocked files in the following directory:
 
     .
     └── brave/components/brave_ads/core/

@@ -13,11 +13,11 @@
 namespace brave_ads {
 
 namespace {
-constexpr char kInvalidDatabaseSchemaFilename[] =
-    "database_migration/invalid_database_schema.sqlite";
+constexpr char kMalformedDatabaseSchemaFilename[] =
+    "database/migration/malformed_database_schema.sqlite";
 }  // namespace
 
-class BraveAdsInvalidDatabaseMigrationTest
+class BraveAdsMalformedDatabaseMigrationTest
     : public test::TestBase,
       public ::testing::WithParamInterface<int>,
       public DatabaseManagerObserver {
@@ -26,7 +26,7 @@ class BraveAdsInvalidDatabaseMigrationTest
     DatabaseManager::GetInstance().AddObserver(this);
 
     ASSERT_TRUE(CopyFileFromTestDataPathToTempProfilePath(
-        kInvalidDatabaseSchemaFilename, kDatabaseFilename));
+        kMalformedDatabaseSchemaFilename, kDatabaseFilename));
   }
 
   void TearDown() override {
@@ -56,7 +56,8 @@ class BraveAdsInvalidDatabaseMigrationTest
   bool database_is_ready_ = false;
 };
 
-TEST_F(BraveAdsInvalidDatabaseMigrationTest, MigrateFromInvalidDatabaseSchema) {
+TEST_F(BraveAdsMalformedDatabaseMigrationTest,
+       MigrateFromInvalidDatabaseSchema) {
   // Database migration occurs after invoking `Setup` and `SetUpMocks` during
   // the initialization of `AdsImpl` in `test::TestBase`. Consequently,
   // `EXPECT_CALL` cannot be used with the mocks.

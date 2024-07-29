@@ -29,8 +29,8 @@ base::FilePath DataPath() {
   return RootPath().AppendASCII("core").AppendASCII("test").AppendASCII("data");
 }
 
-base::FilePath ComponentResourcesDataPath() {
-  return DataPath().AppendASCII("component_resources");
+base::FilePath ResourceComponentsDataPath() {
+  return DataPath().AppendASCII("resources").AppendASCII("components");
 }
 
 base::FilePath UrlResponsesDataPath() {

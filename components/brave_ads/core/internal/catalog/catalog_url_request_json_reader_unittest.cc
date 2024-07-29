@@ -469,11 +469,11 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
                                                 BuildCatalogCampaign2()}));
 }
 
-TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseEmptyCatalog) {
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseCatalogWithNoCampaigns) {
   // Arrange
   const std::optional<std::string> contents =
       test::MaybeReadFileToStringAndReplaceTags(
-          test::kEmptyCatalogJsonFilename);
+          test::kCatalogWithNoCampaignsJsonFilename);
   ASSERT_TRUE(contents);
 
   // Act

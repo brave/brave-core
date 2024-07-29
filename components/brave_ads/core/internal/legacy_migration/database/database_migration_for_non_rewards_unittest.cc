@@ -47,7 +47,7 @@ class BraveAdsDatabaseMigrationForNonRewardsTest
   static int GetSchemaVersion() { return GetParam(); }
 
   static std::string DatabasePathForSchemaVersion() {
-    return base::StringPrintf("database_migration/database_schema_%d.sqlite",
+    return base::StringPrintf("database/migration/database_schema_%d.sqlite",
                               GetSchemaVersion());
   }
 
