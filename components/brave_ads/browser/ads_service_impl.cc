@@ -1301,7 +1301,7 @@ void AdsServiceImpl::GetAdHistory(const base::Time from_time,
 }
 
 void AdsServiceImpl::ToggleLikeAd(base::Value::Dict value,
-                                  ToggleLikeAdCallback callback) {
+                                  ToggleUserReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
     bat_ads_associated_remote_->ToggleLikeAd(std::move(value),
                                              std::move(callback));
@@ -1309,7 +1309,7 @@ void AdsServiceImpl::ToggleLikeAd(base::Value::Dict value,
 }
 
 void AdsServiceImpl::ToggleDislikeAd(base::Value::Dict value,
-                                     ToggleDislikeAdCallback callback) {
+                                     ToggleUserReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
     bat_ads_associated_remote_->ToggleDislikeAd(std::move(value),
                                                 std::move(callback));
@@ -1317,7 +1317,7 @@ void AdsServiceImpl::ToggleDislikeAd(base::Value::Dict value,
 }
 
 void AdsServiceImpl::ToggleLikeCategory(base::Value::Dict value,
-                                        ToggleLikeCategoryCallback callback) {
+                                        ToggleUserReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
     bat_ads_associated_remote_->ToggleLikeCategory(std::move(value),
                                                    std::move(callback));
@@ -1326,7 +1326,7 @@ void AdsServiceImpl::ToggleLikeCategory(base::Value::Dict value,
 
 void AdsServiceImpl::ToggleDislikeCategory(
     base::Value::Dict value,
-    ToggleDislikeCategoryCallback callback) {
+    ToggleUserReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
     bat_ads_associated_remote_->ToggleDislikeCategory(std::move(value),
                                                       std::move(callback));
@@ -1334,7 +1334,7 @@ void AdsServiceImpl::ToggleDislikeCategory(
 }
 
 void AdsServiceImpl::ToggleSaveAd(base::Value::Dict value,
-                                  ToggleSaveAdCallback callback) {
+                                  ToggleUserReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
     bat_ads_associated_remote_->ToggleSaveAd(std::move(value),
                                              std::move(callback));
@@ -1343,7 +1343,7 @@ void AdsServiceImpl::ToggleSaveAd(base::Value::Dict value,
 
 void AdsServiceImpl::ToggleMarkAdAsInappropriate(
     base::Value::Dict value,
-    ToggleMarkAdAsInappropriateCallback callback) {
+    ToggleUserReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
     bat_ads_associated_remote_->ToggleMarkAdAsInappropriate(
         std::move(value), std::move(callback));

@@ -6,10 +6,8 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_IMPL_H_
 
-#include <cstdint>
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
@@ -102,7 +100,7 @@ class BatAdsImpl : public mojom::BatAds {
   void ToggleLikeAd(base::Value::Dict value,
                     ToggleLikeAdCallback callback) override;
   void ToggleDislikeAd(base::Value::Dict value,
-                       ToggleLikeAdCallback callback) override;
+                       ToggleDislikeAdCallback callback) override;
   void ToggleLikeCategory(base::Value::Dict value,
                           ToggleLikeCategoryCallback callback) override;
   void ToggleDislikeCategory(base::Value::Dict value,

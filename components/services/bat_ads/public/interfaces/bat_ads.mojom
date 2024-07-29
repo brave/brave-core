@@ -192,16 +192,12 @@ interface BatAds {
   GetAdHistory(mojo_base.mojom.Time from_time, mojo_base.mojom.Time to_time) =>
       (mojo_base.mojom.ListValue value);
 
-  ToggleLikeAd(mojo_base.mojom.DictionaryValue value) =>
-      (mojo_base.mojom.DictionaryValue value);
-  ToggleDislikeAd(mojo_base.mojom.DictionaryValue value) =>
-      (mojo_base.mojom.DictionaryValue value);
-  ToggleLikeCategory(mojo_base.mojom.DictionaryValue value) =>
-      (mojo_base.mojom.DictionaryValue value);
+  ToggleLikeAd(mojo_base.mojom.DictionaryValue value) => (bool success);
+  ToggleDislikeAd(mojo_base.mojom.DictionaryValue value) => (bool success);
+  ToggleLikeCategory(mojo_base.mojom.DictionaryValue value) => (bool success);
   ToggleDislikeCategory(mojo_base.mojom.DictionaryValue value) =>
-      (mojo_base.mojom.DictionaryValue value);
-  ToggleSaveAd(mojo_base.mojom.DictionaryValue value) =>
-      (mojo_base.mojom.DictionaryValue value);
+      (bool success);
+  ToggleSaveAd(mojo_base.mojom.DictionaryValue value) => (bool success);
   ToggleMarkAdAsInappropriate(mojo_base.mojom.DictionaryValue value) =>
-      (mojo_base.mojom.DictionaryValue value);
+      (bool success);
 };

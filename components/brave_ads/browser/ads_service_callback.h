@@ -31,18 +31,7 @@ using PurgeOrphanedAdEventsForTypeCallback =
 using GetAdHistoryCallback =
     base::OnceCallback<void(base::Value::List history)>;
 
-using ToggleLikeAdCallback =
-    base::OnceCallback<void(base::Value::Dict ad_history_item)>;
-using ToggleDislikeAdCallback =
-    base::OnceCallback<void(base::Value::Dict ad_history_item)>;
-using ToggleLikeCategoryCallback =
-    base::OnceCallback<void(base::Value::Dict ad_history_item)>;
-using ToggleDislikeCategoryCallback =
-    base::OnceCallback<void(base::Value::Dict ad_history_item)>;
-using ToggleSaveAdCallback =
-    base::OnceCallback<void(base::Value::Dict ad_history_item)>;
-using ToggleMarkAdAsInappropriateCallback =
-    base::OnceCallback<void(base::Value::Dict ad_history_item)>;
+using ToggleUserReactionCallback = base::OnceCallback<void(bool success)>;
 
 }  // namespace brave_ads
 
