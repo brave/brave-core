@@ -33,8 +33,7 @@ class BraveEphemeralStorageServiceDelegate
   void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key) override;
   void CleanupFirstPartyStorageArea(
       const std::string& registerable_domain) override;
-  void DoesProfileHaveAnyBrowserWindow(
-      std::optional<bool>& is_window_visible) override;
+  bool DoesProfileHaveAnyBrowserWindow() const override;
 
  private:
   raw_ptr<content::BrowserContext> context_ = nullptr;

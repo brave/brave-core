@@ -115,16 +115,15 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
                             origin_type, std::move(filter_builder));
 }
 
-void BraveEphemeralStorageServiceDelegate::DoesProfileHaveAnyBrowserWindow(
-    std::optional<bool>& is_window_visible) {
+bool BraveEphemeralStorageServiceDelegate::DoesProfileHaveAnyBrowserWindow()
+    const {
   Profile* profile = Profile::FromBrowserContext(context_);
   for (Browser* browser : chrome::FindAllBrowsersWithProfile(profile)) {
     if (browser->window()) {
-      is_window_visible = true;
-      return;
+      return true;
     }
   }
-  is_window_visible = false;
+  return false;
 }
 
 }  // namespace ephemeral_storage
