@@ -12,6 +12,7 @@ import { getLocale } from '../../../../../common/locale'
 import { useLocationPathName } from '../../../../common/hooks/use-pathname'
 import { ExploreNavOptions } from '../../../../options/nav-options'
 
+// styles
 import {
   SegmentedControl,
   ControlItemWrapper
