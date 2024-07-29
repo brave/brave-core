@@ -574,7 +574,8 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
   base::Value web_setting = map->GetWebsiteSetting(
       url, GURL(), ContentSettingsType::BRAVE_FINGERPRINTING_V2, &setting_info);
   bool was_default =
-      web_setting.is_none() || setting_info.primary_pattern.MatchesAllHosts();
+      web_setting.is_none() || setting_info.primary_pattern.MatchesAllHosts() ||
+      setting_info.source == content_settings::SettingSource::kRemoteList;
 
   ContentSetting content_setting;
   if (type == ControlType::DEFAULT || type == ControlType::BLOCK_THIRD_PARTY) {
