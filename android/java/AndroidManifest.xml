@@ -155,13 +155,6 @@
     android:noHistory="true"
     android:launchMode="singleTask"/>
 
-<activity android:name="com.android.billingclient.api.ProxyBillingActivity"
-    android:theme="@style/BraveProxyBillingActivityTheme"
-    android:exported="false"
-    android:screenOrientation="sensorPortrait"
-    tools:ignore="LockedOrientationActivity,DiscouragedApi"
-    tools:node="replace" />
-
 <!-- Upgrade related -->
 <receiver android:name="org.chromium.chrome.browser.upgrade.BravePackageReplacedBroadcastReceiver"
     android:exported="false">
