@@ -52,7 +52,12 @@ if [ ! -d "translated-xliffs" ] ; then
 fi
 
 echo "Downloading translations from Transifex..."
-USERNAME="${USERNAME}" PASSWORD="${PASSWORD}" swift ./download-translations-from-transifex.swift
+# You can specify locales you want to pull. Otherwise all supported locales are pulled.
+# See 'download-transactions-from-transifex.swift' file for full list of locale codes we support.
+LOCALES_ARGS="$@"
+echo "Downloading only $@ locales..."
+
+USERNAME="${USERNAME}" PASSWORD="${PASSWORD}" swift ./download-translations-from-transifex.swift $LOCALES_ARGS
 if [ $? != 0 ] ; then
   report_error 4 "ERROR: Failed to download translations from Transifex, please see output.log"
 fi
