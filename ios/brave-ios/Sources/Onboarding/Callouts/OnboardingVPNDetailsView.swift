@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
+import BraveStrings
 import BraveUI
 import Shared
 import SwiftUI
@@ -11,22 +12,24 @@ import SwiftUI
 public struct OnboardingVPNDetailsView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
 
+  private let dynamicTypeRange = (...DynamicTypeSize.xLarge)
+
   public var learnMore: (() -> Void)?
 
   private let descriptionItems = [
-    Strings.VPN.popupCheckboxBlockAds,
-    Strings.VPN.popupCheckmarkSecureConnections,
-    Strings.VPN.popupCheckboxFast,
-    Strings.VPN.popupCheckmark247Support,
+    Strings.VPN.infoCheckPrivacy,
+    Strings.VPN.infoCheckLocation,
+    Strings.VPN.infoCheckServers,
+    Strings.VPN.infoCheckConnectionSpeed,
+    Strings.VPN.infoCheckLimitDevice
   ]
 
   public init() {}
 
   public var body: some View {
     VStack(spacing: 16) {
-      VStack(spacing: 12) {
+      VStack(spacing: 8) {
         Image("vpn_popup_shield", bundle: .module)
-          .padding(.bottom)
           .accessibilityHidden(true)
         Text(Strings.VPN.vpnName)
           .font(.title.weight(.heavy))
@@ -58,7 +61,6 @@ public struct OnboardingVPNDetailsView: View {
           }
         }
       }
-      .frame(maxWidth: .infinity)
       .padding(.bottom, 8)
       Button {
         learnMore?()
@@ -72,19 +74,20 @@ public struct OnboardingVPNDetailsView: View {
       .clipShape(Capsule())
     }
     .frame(maxWidth: BraveUX.baseDimensionValue)
-    .padding(EdgeInsets(top: 24, leading: 24, bottom: 36, trailing: 24))
+    .padding(EdgeInsets(top: 18, leading: 24, bottom: 36, trailing: 24))
     .background(Color(.braveBackground))
-    .accessibilityEmbedInScrollView()
+    .dynamicTypeSize(dynamicTypeRange)
     .overlay {
       Button {
         presentationMode.dismiss()
       } label: {
         Image(braveSystemName: "leo.close")
           .renderingMode(.template)
-          .foregroundColor(Color(braveSystemName: .textPrimary))
+          .foregroundColor(Color(.bravePrimary))
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
       .padding([.top, .trailing], 20)
+      .dynamicTypeSize(dynamicTypeRange)
     }
   }
 }
@@ -92,16 +95,8 @@ public struct OnboardingVPNDetailsView: View {
 #if DEBUG
 struct OnboardingVPNDetailsView_Previews: PreviewProvider {
   static var previews: some View {
-    Group {
-      BraveUI.PopupView {
-        OnboardingVPNDetailsView()
-      }
-      .previewDevice("iPhone 12 Pro")
-
-      BraveUI.PopupView {
-        OnboardingVPNDetailsView()
-      }
-      .previewDevice("iPad Pro (9.7-inch)")
+    BraveUI.PopupView {
+      OnboardingVPNDetailsView()
     }
   }
 }
