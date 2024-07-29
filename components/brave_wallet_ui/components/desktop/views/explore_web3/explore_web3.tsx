@@ -166,10 +166,6 @@ export const ExploreWeb3View = () => {
     selectedCategory === null
 
   // methods
-  const onDappClick = React.useCallback((dapp: BraveWallet.Dapp) => {
-    setSelectedDapp(dapp)
-  }, [])
-
   const onSelectCategory = React.useCallback(
     (category: string) => {
       history.push({
@@ -300,7 +296,7 @@ export const ExploreWeb3View = () => {
                 <DappListItem
                   key={dapp.id}
                   dapp={dapp}
-                  onClick={() => onDappClick(dapp)}
+                  onClick={() => setSelectedDapp(dapp)}
                 />
               ))}
             </DappsGrid>
@@ -318,7 +314,7 @@ export const ExploreWeb3View = () => {
                       <DappListItem
                         key={dapp.id}
                         dapp={dapp}
-                        onClick={() => onDappClick(dapp)}
+                        onClick={() => setSelectedDapp(dapp)}
                       />
                     ))}
                   </Column>
