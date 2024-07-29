@@ -581,12 +581,12 @@ class EphemeralStorageForgetByDefaultIncognitoBrowserTest
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     EphemeralStorageForgetByDefaultBrowserTest::SetUpCommandLine(command_line);
-    if (IsPreTest()) {
+    if (IsPreTestToEnableIncognito()) {
       command_line->AppendSwitch(switches::kIncognito);
     }
   }
 
-  static bool IsPreTest() {
+  static bool IsPreTestToEnableIncognito() {
     const testing::TestInfo* const test_info =
         testing::UnitTest::GetInstance()->current_test_info();
     return base::StartsWith(test_info->name(), "PRE_DontForgetFirstParty");
