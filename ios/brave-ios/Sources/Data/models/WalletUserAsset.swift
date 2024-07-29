@@ -9,6 +9,14 @@ import Foundation
 import Shared
 import os.log
 
+/// Model used for storing token visibility in CoreData to prevent brave-browser #28749.
+/// If a user hides/deletes a token they have balance for, it may be auto-discovered again and set to visible. As a result we need to know if a user previously hid/deleted a token so it's not re-marked visible.
+/// Notes:
+///  - Previously this model was used as source of truth for tokens, but Wallet Service is now source of truth.
+///  - 'Retired' properties:
+///    - These models were used to reflect `BlockchainToken`. When a user added a custom asset, it was only added to Core Data not Wallet Service.
+///      Because of this, these existing properties can't be removed so we can migrate existing custom assets from Core Data not Wallet Service.
+///  - New properties on `BlockchainToken` should not be added here anymore unless required for identifying a token for visibility.
 public final class WalletUserAsset: NSManagedObject, CRUD {
   @NSManaged public var contractAddress: String
   @NSManaged public var name: String

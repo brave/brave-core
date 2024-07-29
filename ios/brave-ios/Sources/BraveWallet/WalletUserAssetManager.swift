@@ -325,9 +325,17 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
         }
 
         return success
+      } else if isAutoDiscovery, !existedAsset.visible {
+        // an auto-discovered asset but was previously hidden by user
+        // we will need to update WalletService, since WebUI will only read from WalletService,
+        // it has no access to database
+        return await walletService.setUserAssetVisible(
+          token: token,
+          visible: false
+        )
       } else {
-        // 1. auto-discovered is either visible or hidden asset not marked as deleted by user
-        // 2. custom asset is either visible or hidden and not marked as deleted by user
+        // 1. auto-discovered is visible and is NOT marked as deleted by user
+        // 2. custom asset is either visible or hidden and NOT marked as deleted by user
         return false
       }
     } else {
