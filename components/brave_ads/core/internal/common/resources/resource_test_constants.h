@@ -10,7 +10,7 @@ namespace brave_ads::test {
 
 inline constexpr char kMissingResourceId[] = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 inline constexpr char kMalformedResourceId[] =
-    "component_resources/malformed_resource";
+    "resources/components/malformed_resource_component";
 
 }  // namespace brave_ads::test
 

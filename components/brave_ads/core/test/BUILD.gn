@@ -404,7 +404,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/legacy_migration/database/database_migration_for_non_rewards_unittest.cc",
     "//brave/components/brave_ads/core/internal/legacy_migration/database/database_migration_unittest.cc",
-    "//brave/components/brave_ads/core/internal/legacy_migration/database/invalid_database_migration_unittest.cc",
+    "//brave/components/brave_ads/core/internal/legacy_migration/database/malformed_database_migration_unittest.cc",
     "//brave/components/brave_ads/core/internal/ml/data/text_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/ml/data/vector_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/ml/ml_prediction_util_unittest.cc",

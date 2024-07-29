@@ -1,4 +1,4 @@
-# Component Resources Test Data
+# Resource Components Test Data
 
 ## Text Classification
 
