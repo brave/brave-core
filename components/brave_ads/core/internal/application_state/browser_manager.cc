@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 
 #include "base/check.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 

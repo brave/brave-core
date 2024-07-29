@@ -8,7 +8,7 @@
 
 #include <sstream>  // IWYU pragma: keep
 
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 

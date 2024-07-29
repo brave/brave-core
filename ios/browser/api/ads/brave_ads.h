@@ -147,7 +147,7 @@ OBJC_EXPORT
 
 #pragma mark - Ads client notifier
 
-// See `components/brave_ads/core/public/client/ads_client_notifier.h`.
+// See `components/brave_ads/core/public/ads_client/ads_client_notifier.h`.
 
 - (void)notifyRewardsWalletDidUpdate:(NSString*)paymentId
                           base64Seed:(NSString*)base64Seed;

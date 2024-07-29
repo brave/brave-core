@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
 
 #include <memory>
 
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_notifier_queue.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_queue.h"
 #include "url/gurl.h"
 
 namespace brave_ads {

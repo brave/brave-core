@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 
-#import "brave/components/brave_ads/core/public/client/ads_client.h"
+#import "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 @protocol AdsClientBridge;
 

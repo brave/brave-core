@@ -59,6 +59,8 @@ mojom::DBCommandResponseInfoPtr Database::RunTransaction(
   return command_response;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void Database::RunTransactionImpl(
     mojom::DBTransactionInfoPtr transaction,
     mojom::DBCommandResponseInfo* const command_response) {
