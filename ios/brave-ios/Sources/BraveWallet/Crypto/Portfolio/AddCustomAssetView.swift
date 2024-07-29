@@ -98,7 +98,7 @@ struct AddCustomAssetView: View {
               )
               .foregroundColor(
                 networkSelectionStore.networkSelectionInForm == nil
-                  ? .gray.opacity(0.6) : Color(.braveLabel)
+                  ? Color(braveSystemName: .textDisabled) : Color(.braveLabel)
               )
             }
             Spacer()
