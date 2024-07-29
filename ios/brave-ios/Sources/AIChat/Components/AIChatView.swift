@@ -55,6 +55,10 @@ public struct AIChatView: View {
 
   var openURL: ((URL) -> Void)
 
+  @FocusState private var isEditingFieldFocused: Bool
+
+  @State private var editingTurnIndex: Int?
+
   public init(
     model: AIChatViewModel,
     speechRecognizer: SpeechRecognizer,
@@ -133,9 +137,29 @@ public struct AIChatView: View {
                         index,
                         turn in
                         if turn.characterType == .human {
-                          AIChatUserMessageView(prompt: turn.text)
-                            .padding()
-                            .background(Color(braveSystemName: .containerBackground))
+                          AIChatUserMessageView(
+                            message: turn.edits?.last?.text ?? turn.text,
+                            lastEdited: turn.edits?.last?.createdTime,
+                            isEditingMessage: editingTurnIndex == index,
+                            isFieldFocused: $isEditingFieldFocused,
+                            cancelEditing: { self.editingTurnIndex = nil },
+                            submitEditedText: { editedText in
+                              self.model.modifyConversation(
+                                turnId: UInt(index),
+                                newText: editedText
+                              )
+                              self.editingTurnIndex = nil
+                            }
+                          )
+                          .padding()
+                          .background(Color(braveSystemName: .containerBackground))
+                          .contextMenu {
+                            responseContextMenuItems(for: index, turn: turn)
+                          }
+                          .disabled(
+                            model.requestInProgress || model.suggestionsStatus == .isGenerating
+                              || model.apiError == .contextLimitReached
+                          )
 
                           if index == 0, model.shouldSendPageContents,
                             let url = model.getLastCommittedURL()
@@ -295,7 +319,7 @@ public struct AIChatView: View {
         }
         .disabled(
           model.requestInProgress || model.suggestionsStatus == .isGenerating
-            || model.apiError == .contextLimitReached
+            || model.apiError == .contextLimitReached || isEditingFieldFocused
         )
       }
     }
@@ -393,60 +417,76 @@ public struct AIChatView: View {
     for turnIndex: Int,
     turn: AiChat.ConversationTurn
   ) -> some View {
-    AIChatResponseMessageViewContextMenuButton(
-      title: Strings.AIChat.responseContextMenuRegenerateTitle,
-      icon: Image(braveSystemName: "leo.refresh"),
-      onSelected: {
-        if turnIndex == model.conversationHistory.count - 1 {
-          model.retryLastRequest()
-        } else if let query = model.conversationHistory[safe: turnIndex - 1]?.text {
-          model.submitQuery(query)
-        }
+    if turn.characterType == .human {
+      if editingTurnIndex == nil {
+        AIChatResponseMessageViewContextMenuButton(
+          title: Strings.AIChat.responseContextMenuEditPromptTitle,
+          icon: Image(braveSystemName: "leo.edit.pencil"),
+          onSelected: {
+            editingTurnIndex = turnIndex
+            isEditingFieldFocused = true
+          }
+        )
       }
-    )
-
-    AIChatResponseMessageViewContextMenuButton(
-      title: Strings.AIChat.responseContextMenuCopyTitle,
-      icon: Image(braveSystemName: "leo.copy"),
-      onSelected: {
-        UIPasteboard.general.string = turn.text
-      }
-    )
-
-    AIChatResponseMessageViewContextMenuButton(
-      title: Strings.AIChat.responseContextMenuLikeAnswerTitle,
-      icon: Image(braveSystemName: "leo.thumb.up"),
-      onSelected: {
-        Task { @MainActor in
-          let ratingId = await model.rateConversation(isLiked: true, turnId: UInt(turnIndex))
-          if ratingId != nil {
-            feedbackToast = .success(isLiked: true)
-          } else {
-            feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
+    } else {
+      AIChatResponseMessageViewContextMenuButton(
+        title: Strings.AIChat.responseContextMenuRegenerateTitle,
+        icon: Image(braveSystemName: "leo.refresh"),
+        onSelected: {
+          if turnIndex == model.conversationHistory.count - 1 {
+            model.retryLastRequest()
+          } else if let query = model.conversationHistory[safe: turnIndex - 1]?.text {
+            model.submitQuery(query)
           }
         }
-      }
-    )
+      )
 
-    AIChatResponseMessageViewContextMenuButton(
-      title: Strings.AIChat.responseContextMenuDislikeAnswerTitle,
-      icon: Image(braveSystemName: "leo.thumb.down"),
-      onSelected: {
-        Task { @MainActor in
-          let ratingId = await model.rateConversation(isLiked: false, turnId: UInt(turnIndex))
-          if let ratingId = ratingId {
-            feedbackToast = .success(
-              isLiked: false,
-              onAddFeedback: {
-                customFeedbackInfo = AIChatFeedbackModelToast(turnId: turnIndex, ratingId: ratingId)
-              }
-            )
-          } else {
-            feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
+      AIChatResponseMessageViewContextMenuButton(
+        title: Strings.AIChat.responseContextMenuCopyTitle,
+        icon: Image(braveSystemName: "leo.copy"),
+        onSelected: {
+          UIPasteboard.general.string = turn.text
+        }
+      )
+
+      AIChatResponseMessageViewContextMenuButton(
+        title: Strings.AIChat.responseContextMenuLikeAnswerTitle,
+        icon: Image(braveSystemName: "leo.thumb.up"),
+        onSelected: {
+          Task { @MainActor in
+            let ratingId = await model.rateConversation(isLiked: true, turnId: UInt(turnIndex))
+            if ratingId != nil {
+              feedbackToast = .success(isLiked: true)
+            } else {
+              feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
+            }
           }
         }
-      }
-    )
+      )
+
+      AIChatResponseMessageViewContextMenuButton(
+        title: Strings.AIChat.responseContextMenuDislikeAnswerTitle,
+        icon: Image(braveSystemName: "leo.thumb.down"),
+        onSelected: {
+          Task { @MainActor in
+            let ratingId = await model.rateConversation(isLiked: false, turnId: UInt(turnIndex))
+            if let ratingId = ratingId {
+              feedbackToast = .success(
+                isLiked: false,
+                onAddFeedback: {
+                  customFeedbackInfo = AIChatFeedbackModelToast(
+                    turnId: turnIndex,
+                    ratingId: ratingId
+                  )
+                }
+              )
+            } else {
+              feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
+            }
+          }
+        }
+      )
+    }
   }
 
   @ViewBuilder
@@ -597,6 +637,9 @@ public struct AIChatView: View {
 
 #if DEBUG
 struct AIChatView_Preview: PreviewProvider {
+
+  @FocusState static var isPreviewFieldFocused: Bool
+
   static var previews: some View {
     return VStack(spacing: 0.0) {
       AIChatNavigationView(
@@ -619,9 +662,16 @@ struct AIChatView_Preview: PreviewProvider {
       GeometryReader { geometry in
         ScrollView {
           VStack(spacing: 0.0) {
-            AIChatUserMessageView(prompt: "Does it work with Apple devices?")
-              .padding()
-              .background(Color(braveSystemName: .pageBackground))
+            AIChatUserMessageView(
+              message: "Does it work with Apple devices?",
+              lastEdited: nil,
+              isEditingMessage: false,
+              isFieldFocused: $isPreviewFieldFocused,
+              cancelEditing: {},
+              submitEditedText: { _ in }
+            )
+            .padding()
+            .background(Color(braveSystemName: .pageBackground))
 
             AIChatPageInfoBanner(
               url: nil,

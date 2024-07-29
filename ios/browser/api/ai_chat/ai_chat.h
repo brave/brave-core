@@ -88,6 +88,8 @@ OBJC_EXPORT
          sendPageUrl:(bool)sendPageUrl
           completion:(void (^_Nullable)(bool))completion;
 
+- (void)modifyConversation:(NSUInteger)turnId newText:(NSString*)newText;
+
 - (void)dismissPremiumPrompt;
 @end
 

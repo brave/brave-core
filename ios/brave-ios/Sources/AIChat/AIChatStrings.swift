@@ -790,6 +790,13 @@ extension Strings {
       comment:
         "The accessibility description when pressing the microphone button to access voice entry."
     )
+    public static let responseContextMenuEditPromptTitle = NSLocalizedString(
+      "aichat.responseContextMenuEditPromptTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Edit Prompt",
+      comment: "The title for editing user prompt action from context menu"
+    )
     public static let responseContextMenuRegenerateTitle = NSLocalizedString(
       "aichat.responseContextMenuRegenerateTitle",
       tableName: "BraveLeo",
@@ -939,6 +946,13 @@ extension Strings {
         "Leo",
       comment:
         "The name of the AI-Assistant that's responsing to the user"
+    )
+    public static let editedMessageCaption = NSLocalizedString(
+      "aichat.editedMessageCaption",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Edited",
+      comment: "The text displayed under an edited user prompt/message beside a timestamp."
     )
     public static let leoCodeExampleDefaultTitle = NSLocalizedString(
       "aichat.leoCodeExampleDefaultTitle",

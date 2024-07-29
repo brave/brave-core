@@ -242,6 +242,11 @@ public class AIChatViewModel: NSObject, ObservableObject {
       sendPageUrl: false
     )
   }
+
+  @MainActor
+  func modifyConversation(turnId: UInt, newText: String) {
+    api.modifyConversation(turnId, newText: newText)
+  }
 }
 
 extension AIChatViewModel: AIChatDelegate {
