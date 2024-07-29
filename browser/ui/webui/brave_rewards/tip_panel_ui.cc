@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "brave/browser/ui/webui/brave_rewards/rewards_web_ui_utils.h"
 #include "brave/browser/ui/webui/brave_rewards/tip_panel_handler.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/brave_rewards/resources/grit/tip_panel_generated_map.h"
@@ -19,6 +20,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "content/public/common/url_constants.h"
 
 namespace brave_rewards {
 
@@ -104,6 +106,19 @@ void TipPanelUI::CreateHandler(
   handler_ = std::make_unique<TipPanelHandler>(std::move(panel),
                                                std::move(handler), embedder(),
                                                Profile::FromWebUI(web_ui()));
+}
+
+TipPanelUIConfig::TipPanelUIConfig()
+    : DefaultTopChromeWebUIConfig(content::kChromeUIScheme,
+                                  kBraveTipPanelHost) {}
+
+bool TipPanelUIConfig::IsWebUIEnabled(
+    content::BrowserContext* browser_context) {
+  return !ShouldBlockRewardsWebUI(browser_context, GURL(kBraveTipPanelURL));
+}
+
+bool TipPanelUIConfig::ShouldAutoResizeHost() {
+  return true;
 }
 
 }  // namespace brave_rewards

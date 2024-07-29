@@ -16,6 +16,7 @@
 #include "brave/browser/ui/webui/brave_adblock_internals_ui.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_web_ui_utils.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
@@ -44,7 +45,6 @@
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
-#include "brave/browser/ui/webui/brave_rewards/tip_panel_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
@@ -146,9 +146,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kBraveRewardsPanelHost &&
              brave_rewards::IsSupportedForProfile(profile)) {
     return new brave_rewards::RewardsPanelUI(web_ui);
-  } else if (host == kBraveTipPanelHost &&
-             brave_rewards::IsSupportedForProfile(profile)) {
-    return new brave_rewards::TipPanelUI(web_ui);
   } else if (base::FeatureList::IsEnabled(
                  brave_news::features::kBraveNewsFeedUpdate) &&
              host == kBraveNewsInternalsHost) {
@@ -213,7 +210,6 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
        brave_wallet::IsAllowedForContext(profile)) ||
       url.host_piece() == kBraveRewardsPanelHost ||
       url.host_piece() == kRewardsPageTopHost ||
-      url.host_piece() == kBraveTipPanelHost ||
       // On Android New Tab is a native page implemented in Java, so no need
       // in WebUI.
       url.host_piece() == chrome::kChromeUINewTabHost ||
@@ -235,36 +231,6 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
   }
 
   return nullptr;
-}
-
-bool ShouldBlockRewardsWebUI(content::BrowserContext* browser_context,
-                             const GURL& url) {
-  if (url.host_piece() != kRewardsPageHost &&
-#if !BUILDFLAG(IS_ANDROID)
-      url.host_piece() != kRewardsPageTopHost &&
-      url.host_piece() != kBraveRewardsPanelHost &&
-      url.host_piece() != kBraveTipPanelHost &&
-#endif  // !BUILDFLAG(IS_ANDROID)
-      url.host_piece() != kRewardsInternalsHost) {
-    return false;
-  }
-
-  Profile* profile = Profile::FromBrowserContext(browser_context);
-  if (profile) {
-    if (!brave_rewards::IsSupportedForProfile(
-            profile, url.host_piece() == kRewardsPageHost
-                         ? brave_rewards::IsSupportedOptions::kSkipRegionCheck
-                         : brave_rewards::IsSupportedOptions::kNone)) {
-      return true;
-    }
-#if BUILDFLAG(IS_ANDROID)
-    auto* prefs = profile->GetPrefs();
-    if (prefs && prefs->GetBoolean(kSafetynetCheckFailed)) {
-      return true;
-    }
-#endif  // BUILDFLAG(IS_ANDROID)
-  }
-  return false;
 }
 
 #if BUILDFLAG(IS_ANDROID)
@@ -293,7 +259,7 @@ bool ShouldBlockWalletWebUI(content::BrowserContext* browser_context,
 WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
     content::BrowserContext* browser_context,
     const GURL& url) {
-  if (ShouldBlockRewardsWebUI(browser_context, url)) {
+  if (brave_rewards::ShouldBlockRewardsWebUI(browser_context, url)) {
     return WebUI::kNoWebUI;
   }
 #if BUILDFLAG(IS_ANDROID)
