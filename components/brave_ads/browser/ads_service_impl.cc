@@ -101,7 +101,7 @@ constexpr int kMaximumNumberOfTimesToRetryNetworkRequests = 1;
 
 constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
 
-int GetDataResourceId(const std::string& name) {
+int ResourceBundleId(const std::string& name) {
   if (name == kCatalogJsonSchemaDataResourceName) {
     return IDR_ADS_CATALOG_SCHEMA;
   }
@@ -1674,16 +1674,16 @@ void AdsServiceImpl::LoadResourceComponent(
 
 void AdsServiceImpl::LoadDataResource(const std::string& name,
                                       LoadDataResourceCallback callback) {
-  const int id = GetDataResourceId(name);
+  const int resource_bundle_id = ResourceBundleId(name);
 
   std::string data_resource;
 
-  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
-  if (resource_bundle.IsGzipped(id)) {
-    data_resource = resource_bundle.LoadDataResourceString(id);
+  const auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
+  if (resource_bundle.IsGzipped(resource_bundle_id)) {
+    data_resource = resource_bundle.LoadDataResourceString(resource_bundle_id);
   } else {
-    data_resource =
-        static_cast<std::string>(resource_bundle.GetRawDataResource(id));
+    data_resource = static_cast<std::string>(
+        resource_bundle.GetRawDataResource(resource_bundle_id));
   }
 
   std::move(callback).Run(data_resource);
