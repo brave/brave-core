@@ -31,17 +31,22 @@ class AdsClientNotifierObserverMock : public AdsClientNotifierObserver {
   ~AdsClientNotifierObserverMock() override;
 
   MOCK_METHOD(void, OnNotifyDidInitializeAds, ());
+
   MOCK_METHOD(void, OnNotifyLocaleDidChange, (const std::string&));
+
   MOCK_METHOD(void, OnNotifyPrefDidChange, (const std::string&));
+
   MOCK_METHOD(void,
               OnNotifyResourceComponentDidChange,
               (const std::string&, const std::string&));
   MOCK_METHOD(void,
               OnNotifyDidUnregisterResourceComponent,
               (const std::string&));
+
   MOCK_METHOD(void,
               OnNotifyRewardsWalletDidUpdate,
               (const std::string&, const std::string&));
+
   MOCK_METHOD(void,
               OnNotifyTabTextContentDidChange,
               (int32_t, const std::vector<GURL>&, const std::string&));
@@ -54,13 +59,17 @@ class AdsClientNotifierObserverMock : public AdsClientNotifierObserver {
               OnNotifyTabDidChange,
               (int32_t, const std::vector<GURL>&, bool, bool, bool, bool));
   MOCK_METHOD(void, OnNotifyDidCloseTab, (int32_t));
+
   MOCK_METHOD(void, OnNotifyUserGestureEventTriggered, (int32_t));
+
   MOCK_METHOD(void, OnNotifyUserDidBecomeIdle, ());
   MOCK_METHOD(void, OnNotifyUserDidBecomeActive, (base::TimeDelta, bool));
+
   MOCK_METHOD(void, OnNotifyBrowserDidEnterForeground, ());
   MOCK_METHOD(void, OnNotifyBrowserDidEnterBackground, ());
   MOCK_METHOD(void, OnNotifyBrowserDidBecomeActive, ());
   MOCK_METHOD(void, OnNotifyBrowserDidResignActive, ());
+
   MOCK_METHOD(void, OnNotifyDidSolveAdaptiveCaptcha, ());
 };
 
