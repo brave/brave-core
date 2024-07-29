@@ -115,6 +115,7 @@
 #include "third_party/blink/renderer/core/loader/document_loader.h"
 #include "third_party/blink/renderer/core/loader/modulescript/module_script_creation_params.h"
 #include "third_party/blink/renderer/core/loader/resource/script_resource.h"
+#include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/core/script/classic_pending_script.h"
 #include "third_party/blink/renderer/core/script/classic_script.h"
@@ -191,7 +192,7 @@ namespace blink {
 
 namespace {
 
-constexpr char kPageGraphVersion[] = "0.7.2";
+constexpr char kPageGraphVersion[] = "0.7.3";
 constexpr char kPageGraphUrl[] =
     "https://github.com/brave/brave-browser/wiki/PageGraph";
 
@@ -341,6 +342,25 @@ void PageGraph::ProvideTo(LocalFrame& frame) {
   }
   DCHECK(!PageGraph::From(frame));
   DCHECK(frame.IsLocalRoot());
+
+  if (auto* page = frame.GetPage()) {
+    const DOMNodeId initiator_dom_node_id =
+        page->GetChromeClient().InitiatorDomNodeId();
+    if (initiator_dom_node_id != kInvalidDOMNodeId) {
+      blink::Node* initiator_node =
+          blink::DOMNodeIds::NodeForId(initiator_dom_node_id);
+      if (initiator_node) {
+        auto* initiator_tree_page_graph =
+            Supplement<LocalFrame>::From<PageGraph>(
+                *initiator_node->TreeRoot().GetDocument().GetFrame());
+        if (initiator_tree_page_graph) {
+          frame.GetProbeSink()->AddPageGraph(initiator_tree_page_graph);
+          return;
+        }
+      }
+    }
+  }
+
   Supplement<LocalFrame>::ProvideTo(frame,
                                     MakeGarbageCollected<PageGraph>(frame));
 }
