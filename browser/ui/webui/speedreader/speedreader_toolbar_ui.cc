@@ -28,8 +28,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #endif
 
-SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui,
-                                           const std::string& name)
+SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui)
     : TopChromeWebUIController(web_ui, true),
       profile_(Profile::FromWebUI(web_ui)) {
   content::HostZoomMap::Get(web_ui->GetWebContents()->GetSiteInstance())
@@ -39,7 +38,7 @@ SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui,
   browser_ = chrome::FindLastActiveWithProfile(profile_);
 
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
-      web_ui, name, kBraveSpeedreaderToolbarGenerated,
+      web_ui, kSpeedreaderPanelHost, kBraveSpeedreaderToolbarGenerated,
       kBraveSpeedreaderToolbarGeneratedSize, IDR_SPEEDREADER_UI_HTML);
 
   for (const auto& str : speedreader::kLocalizedStrings) {
@@ -79,4 +78,17 @@ void SpeedreaderToolbarUI::CreateInterfaces(
   toolbar_data_handler_ = std::make_unique<SpeedreaderToolbarDataHandlerImpl>(
       browser_, std::move(toolbar_data_handler),
       std::move(toolbar_events_handler));
+}
+
+SpeedreaderToolbarUIConfig::SpeedreaderToolbarUIConfig()
+    : DefaultTopChromeWebUIConfig(content::kChromeUIScheme,
+                                  kSpeedreaderPanelHost) {}
+
+bool SpeedreaderToolbarUIConfig::IsWebUIEnabled(
+    content::BrowserContext* browser_context) {
+  return true;
+}
+
+bool SpeedreaderToolbarUIConfig::ShouldAutoResizeHost() {
+  return true;
 }

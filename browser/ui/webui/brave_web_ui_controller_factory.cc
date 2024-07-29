@@ -50,7 +50,6 @@
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
-#include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_ui.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
 #include "brave/components/brave_news/common/features.h"
@@ -168,8 +167,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
       return new BravePrivateNewTabUI(web_ui, url.host());
     }
     return new BraveNewTabUI(web_ui, url.host());
-  } else if (host == kSpeedreaderPanelHost) {
-    return new SpeedreaderToolbarUI(web_ui, url.host());
 #endif  // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
   } else if (host == kTorInternalsHost) {
@@ -222,7 +219,6 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == kBraveRewardsPanelHost ||
       url.host_piece() == kRewardsPageTopHost ||
       url.host_piece() == kBraveTipPanelHost ||
-      url.host_piece() == kSpeedreaderPanelHost ||
       // On Android New Tab is a native page implemented in Java, so no need
       // in WebUI.
       url.host_piece() == chrome::kChromeUINewTabHost ||
