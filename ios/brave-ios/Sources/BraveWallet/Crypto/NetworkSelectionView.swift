@@ -10,6 +10,11 @@ import SwiftUI
 
 struct NetworkSelectionView: View {
 
+  enum NetworkSelectionType {
+    case addCustomAsset
+    case other
+  }
+
   var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var store: NetworkSelectionStore
@@ -18,11 +23,13 @@ struct NetworkSelectionView: View {
   init(
     keyringStore: KeyringStore,
     networkStore: NetworkStore,
-    networkSelectionStore: NetworkSelectionStore
+    networkSelectionStore: NetworkSelectionStore,
+    networkSelectionType: NetworkSelectionType = .other
   ) {
     self.keyringStore = keyringStore
     self.networkStore = networkStore
     self.store = networkSelectionStore
+    self.networkSelectionType = networkSelectionType
   }
 
   private var selectedNetwork: BraveWallet.NetworkInfo {
@@ -44,11 +51,24 @@ struct NetworkSelectionView: View {
     }
   }
 
+  private var networkSelectionType: NetworkSelectionType
+
+  private var allSelectableNetworks: [BraveWallet.NetworkInfo] {
+    switch networkSelectionType {
+    case .addCustomAsset:
+      return networkStore.visibleChains.filter {
+        $0.coin == .eth || $0.coin == .sol
+      }
+    case .other:
+      return networkStore.visibleChains
+    }
+  }
+
   var body: some View {
     NetworkSelectionRootView(
       navigationTitle: navigationTitle,
       selectedNetworks: [selectedNetwork],
-      allNetworks: networkStore.visibleChains,
+      allNetworks: allSelectableNetworks,
       selectNetwork: { network in
         selectNetwork(network)
       }
