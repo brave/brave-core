@@ -12,6 +12,7 @@ import SegmentedControlItem from '@brave/leo/react/controlItem'
 import { loadTimeData } from '../../../../../common/loadTimeData'
 import { getLocale } from '../../../../../common/locale'
 import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
+import { useLocationPathName } from '../../../../common/hooks/use-pathname'
 import { UISelectors } from '../../../../common/selectors'
 import { openWalletSettings } from '../../../../utils/routes-utils'
 import {
@@ -108,11 +109,10 @@ export const CryptoView = ({ sessionRoute }: Props) => {
     React.useState<boolean>(isWalletBackedUp)
   const [isDefaultWalletBannerDismissed, setDismissDefaultWalletBanner] =
     React.useState<boolean>(false)
-  const [selectedExploreSegment, setSelectedExploreSegment] =
-    React.useState<string>(WalletRoutes.Market)
 
   // routing
   const history = useHistory()
+  const walletLocation = useLocationPathName()
 
   // methods
   const onShowBackup = React.useCallback(() => {
@@ -222,10 +222,9 @@ export const CryptoView = ({ sessionRoute }: Props) => {
 
   const exploreWeb3Header = (
     <SegmentedControl
-      value={selectedExploreSegment}
+      value={walletLocation}
       onChange={({ value }) => {
         if (!value) return
-        setSelectedExploreSegment(value)
         history.push(value)
       }}
     >
