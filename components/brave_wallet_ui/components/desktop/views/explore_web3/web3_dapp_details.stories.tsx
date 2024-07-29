@@ -24,11 +24,7 @@ export const _DappDetails = () => {
     <WalletPageStory>
       <WalletPageWrapper
         wrapContentInBox
-        cardHeader={
-          <PageTitleHeader
-            title={getLocale('braveWalletAccountSettingsDetails')}
-          />
-        }
+        cardHeader={<PageTitleHeader title={getLocale('braveWalletDetails')} />}
       >
         {topDapps && <DappDetails dapp={topDapps[0]} />}
       </WalletPageWrapper>

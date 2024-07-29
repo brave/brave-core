@@ -258,7 +258,7 @@ export const SignPanel = (props: Props) => {
               isSelected={true}
               text={
                 ethSignTypedData
-                  ? getLocale('braveWalletSignTransactionEIP712MessageTitle')
+                  ? getLocale('braveWalletDetails')
                   : getLocale('braveWalletSignTransactionMessageTitle')
               }
             />
