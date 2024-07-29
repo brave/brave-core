@@ -18,7 +18,21 @@ import os.log
 ///      Because of this, these existing properties can't be removed so we can migrate existing custom assets from Core Data not Wallet Service.
 ///  - New properties on `BlockchainToken` should not be added here anymore unless required for identifying a token for visibility.
 public final class WalletUserAsset: NSManagedObject, CRUD {
+  // Following properties are used to identify tokens
   @NSManaged public var contractAddress: String
+  @NSManaged public var chainId: String
+  @NSManaged public var symbol: String
+  @NSManaged public var tokenId: String
+  // Following properties are the source of truth for
+  // determining the status of visibility and deletion
+  // respectfully
+  @NSManaged public var visible: Bool
+  @NSManaged public var isDeletedByUser: Bool
+  // This property is the source of truth for user makred
+  // spam assets
+  @NSManaged public var isSpam: Bool
+  // Following properties are `retired`. Values should be
+  // read from `WalletService`
   @NSManaged public var name: String
   @NSManaged public var logo: String
   @NSManaged public var isCompressed: Bool
@@ -27,15 +41,10 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
   @NSManaged public var isERC1155: Bool
   @NSManaged public var splTokenProgram: NSNumber?
   @NSManaged public var isNFT: Bool
-  @NSManaged public var isSpam: Bool
-  @NSManaged public var symbol: String
   @NSManaged public var decimals: Int32
-  @NSManaged public var visible: Bool
-  @NSManaged public var tokenId: String
   @NSManaged public var coingeckoId: String
-  @NSManaged public var chainId: String
   @NSManaged public var coin: Int16
-  @NSManaged public var isDeletedByUser: Bool
+  // Relationship property
   @NSManaged public var walletUserAssetGroup: WalletUserAssetGroup?
 
   /// Helper to get the enum value based on the stored optional Int16. If nil, infer value based on `coin`.
