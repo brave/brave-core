@@ -300,7 +300,12 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
       if isAutoDiscovery, existedAsset.isDeletedByUser {
         // Auto-discovered asset but deleted by user
         // do not update database or re-add it
-        // to WalletService
+        // to WalletService. And update the visibiliy to
+        // `false` in WalletService
+        await walletService.setUserAssetVisible(
+          token: token,
+          visible: false
+        )
         return false
       } else if !isAutoDiscovery
         && existedAsset.isDeletedByUser
@@ -329,10 +334,11 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
         // an auto-discovered asset but was previously hidden by user
         // we will need to update WalletService, since WebUI will only read from WalletService,
         // it has no access to database
-        return await walletService.setUserAssetVisible(
+        await walletService.setUserAssetVisible(
           token: token,
           visible: false
         )
+        return false
       } else {
         // 1. auto-discovered is visible and is NOT marked as deleted by user
         // 2. custom asset is either visible or hidden and NOT marked as deleted by user
