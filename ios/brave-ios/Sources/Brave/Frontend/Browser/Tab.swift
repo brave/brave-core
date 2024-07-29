@@ -663,17 +663,15 @@ class Tab: NSObject {
   }
 
   var displayTitle: String {
-    if let displayTabTitle = fetchDisplayTitle(using: url, title: title) {
-      syncTab?.setTitle(displayTabTitle)
-      return displayTabTitle
-    }
-
-    // When picking a display title. Tabs with sessionData are pending a restore so show their old title.
-    // To prevent flickering of the display title. If a tab is restoring make sure to use its lastTitle.
     if let url = self.url, InternalURL(url)?.isAboutHomeURL ?? false, sessionData == nil, !restoring
     {
       syncTab?.setTitle(Strings.Hotkey.newTabTitle)
       return Strings.Hotkey.newTabTitle
+    }
+
+    if let displayTabTitle = fetchDisplayTitle(using: url, title: title) {
+      syncTab?.setTitle(displayTabTitle)
+      return displayTabTitle
     }
 
     if let url = self.url, !InternalURL.isValid(url: url),
