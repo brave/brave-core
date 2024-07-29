@@ -123,8 +123,11 @@ class SettingsContentViewController: UIViewController, CWVNavigationDelegate {
     let configuration = WKWebViewConfiguration().then {
       $0.setURLSchemeHandler(InternalSchemeHandler(tab: nil), forURLScheme: InternalURL.scheme)
     }
-    let webView = BraveWebView(frame: frame, configuration: configuration)
-    webView.underlyingWebView?.allowsLinkPreview = false
+    let webView = BraveWebView(
+      frame: frame,
+      wkConfiguration: configuration,
+      configuration: .default()
+    )
     webView.navigationDelegate = self
     return webView
   }

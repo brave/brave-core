@@ -285,52 +285,48 @@ class UserScriptManager {
     }
   }
 
-  public func loadScripts(into webView: BraveWebView, scripts: Set<ScriptType>) {
-    guard let wkWebView = webView.underlyingWebView else { return }
+  public func loadScripts(into scriptController: WKUserContentController, scripts: Set<ScriptType>)
+  {
     if Preferences.UserScript.blockAllScripts.value {
       return
     }
 
     var scripts = scripts
 
-    wkWebView.configuration.userContentController.do { scriptController in
-      webView.updateScripts()
+    // Inject all base scripts
+    self.baseScripts.forEach {
+      scriptController.addUserScript($0)
+    }
 
-      // Inject all base scripts
-      self.baseScripts.forEach {
-        scriptController.addUserScript($0)
-      }
+    // Inject specifically trackerProtectionStats BEFORE request blocking
+    // this is because it needs to hook requests before requestBlocking
+    if scripts.contains(.trackerProtectionStats),
+      let script = self.dynamicScripts[.trackerProtectionStats]
+    {
+      scripts.remove(.trackerProtectionStats)
+      scriptController.addUserScript(script)
+    }
 
-      // Inject specifically trackerProtectionStats BEFORE request blocking
-      // this is because it needs to hook requests before requestBlocking
-      if scripts.contains(.trackerProtectionStats),
-        let script = self.dynamicScripts[.trackerProtectionStats]
-      {
-        scripts.remove(.trackerProtectionStats)
-        scriptController.addUserScript(script)
-      }
+    // Inject specifically RequestBlocking BEFORE other scripts
+    // this is because it needs to hook requests before RewardsReporting
+    if scripts.contains(.requestBlocking), let script = self.dynamicScripts[.requestBlocking] {
+      scripts.remove(.requestBlocking)
+      scriptController.addUserScript(script)
+    }
 
-      // Inject specifically RequestBlocking BEFORE other scripts
-      // this is because it needs to hook requests before RewardsReporting
-      if scripts.contains(.requestBlocking), let script = self.dynamicScripts[.requestBlocking] {
-        scripts.remove(.requestBlocking)
-        scriptController.addUserScript(script)
-      }
+    // Inject all static scripts
+    self.staticScripts.forEach {
+      scriptController.addUserScript($0)
+    }
 
-      // Inject all static scripts
-      self.staticScripts.forEach {
-        scriptController.addUserScript($0)
-      }
+    // Inject all scripts that are dynamic, but always enabled
+    self.dynamicScripts.filter({ self.alwaysEnabledScripts.contains($0.key) }).forEach {
+      scriptController.addUserScript($0.value)
+    }
 
-      // Inject all scripts that are dynamic, but always enabled
-      self.dynamicScripts.filter({ self.alwaysEnabledScripts.contains($0.key) }).forEach {
-        scriptController.addUserScript($0.value)
-      }
-
-      // Inject all optional scripts
-      self.dynamicScripts.filter({ scripts.contains($0.key) }).forEach {
-        scriptController.addUserScript($0.value)
-      }
+    // Inject all optional scripts
+    self.dynamicScripts.filter({ scripts.contains($0.key) }).forEach {
+      scriptController.addUserScript($0.value)
     }
   }
 
@@ -344,7 +340,7 @@ class UserScriptManager {
       return
     }
 
-    guard let webView = tab.webView, let wkWebView = webView.underlyingWebView else {
+    guard let webView = tab.webView else {
       Logger.module.info("Injecting Scripts into a Tab that has no WebView")
       return
     }
@@ -360,9 +356,10 @@ class UserScriptManager {
     ContentBlockerManager.log.debug(
       "Loaded \(userScripts.count + customScripts.count) script(s): \n\(logComponents.joined(separator: "\n"))"
     )
-    loadScripts(into: webView, scripts: userScripts)
+    webView.updateScripts()
+    loadScripts(into: webView.wkConfiguration.userContentController, scripts: userScripts)
 
-    wkWebView.configuration.userContentController.do { scriptController in
+    webView.wkConfiguration.userContentController.do { scriptController in
       // TODO: Somehow refactor wallet and get rid of this
       // Inject WALLET specific scripts
 

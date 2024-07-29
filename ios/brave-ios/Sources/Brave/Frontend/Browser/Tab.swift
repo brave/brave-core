@@ -17,6 +17,10 @@ import UserAgent
 import WebKit
 import os.log
 
+#if DEBUG
+import IsTesting
+#endif
+
 protocol TabContentScriptLoader {
   static func loadUserScript(named: String) -> String?
   static func secureScript(handlerName: String, securityToken: String, script: String) -> String
@@ -372,7 +376,8 @@ class Tab: NSObject {
   private var userScripts = Set<UserScriptManager.ScriptType>()
   private var customUserScripts = Set<UserScriptType>()
 
-  fileprivate var configuration: WKWebViewConfiguration?
+  fileprivate var wkConfiguration: WKWebViewConfiguration?
+  fileprivate var configuration: CWVWebViewConfiguration?
 
   /// Any time a tab tries to make requests to display a Javascript Alert and we are not the active
   /// tab instance, queue it for later until we become foregrounded.
@@ -412,11 +417,13 @@ class Tab: NSObject {
   }
 
   init(
-    configuration: WKWebViewConfiguration,
+    wkConfiguration: WKWebViewConfiguration?,
+    configuration: CWVWebViewConfiguration?,
     id: UUID = UUID(),
     type: TabType = .regular,
     tabGeneratorAPI: BraveTabGeneratorAPI? = nil
   ) {
+    self.wkConfiguration = wkConfiguration
     self.configuration = configuration
     self.favicon = Favicon.default
     self.id = id
@@ -434,6 +441,46 @@ class Tab: NSObject {
 
     super.init()
     self.type = type
+  }
+
+  init(
+    webView: TabWebView,
+    id: UUID = UUID(),
+    type: TabType = .regular,
+    tabGeneratorAPI: BraveTabGeneratorAPI? = nil
+  ) {
+    self.webView = webView
+    self.favicon = Favicon.default
+    self.id = id
+    self.type = type
+    rewardsId = UInt32.random(in: 1...UInt32.max)
+    nightMode = Preferences.General.nightModeEnabled.value
+    _syncTab = tabGeneratorAPI?.createBraveSyncTab(isOffTheRecord: type == .private)
+
+    if let syncTab = _syncTab {
+      _faviconDriver = FaviconDriver(webState: syncTab.webState).then {
+        $0.setMaximumFaviconImageSize(CGSize(width: 1024, height: 1024))
+      }
+    } else {
+      _faviconDriver = nil
+    }
+
+    super.init()
+
+    webView.delegate = self
+  }
+
+  func childPopupTab(
+    configuration: CWVWebViewConfiguration,
+    tabGeneratorAPI: BraveTabGeneratorAPI? = nil
+  ) -> Tab {
+    return Tab(
+      wkConfiguration: wkConfiguration!,
+      configuration: configuration,
+      id: UUID(),
+      type: type,
+      tabGeneratorAPI: tabGeneratorAPI
+    )
   }
 
   weak var navigationDelegate: CWVNavigationDelegate? {
@@ -455,21 +502,28 @@ class Tab: NSObject {
   }
 
   func createWebview() {
+    #if DEBUG
+    if isTesting {
+      // Tab now houses a `CWVWebView` which requires that global chromium state is created which
+      // currently cannot be done for Xcode tests, therefore we will never create an underlying
+      // `CWVWebView` if a tab is being referenced in a Xcode unit test.
+      return
+    }
+    #endif
     if webView == nil {
-      assert(configuration != nil, "Create webview can only be called once")
-      configuration!.userContentController = WKUserContentController()
-      configuration!.preferences = WKPreferences()
-      configuration!.preferences.javaScriptCanOpenWindowsAutomatically = false
-      configuration!.preferences.isFraudulentWebsiteWarningEnabled =
+      wkConfiguration!.userContentController = WKUserContentController()
+      wkConfiguration!.preferences = WKPreferences()
+      wkConfiguration!.preferences.javaScriptCanOpenWindowsAutomatically = false
+      wkConfiguration!.preferences.isFraudulentWebsiteWarningEnabled =
         Preferences.Shields.googleSafeBrowsing.value
-      configuration!.allowsInlineMediaPlayback = true
+      wkConfiguration!.allowsInlineMediaPlayback = true
       // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
-      configuration!.ignoresViewportScaleLimits = true
-      configuration!.upgradeKnownHostsToHTTPS = ShieldPreferences.httpsUpgradeLevel.isEnabled
-      configuration!.enablePageTopColorSampling()
+      wkConfiguration!.ignoresViewportScaleLimits = true
+      wkConfiguration!.upgradeKnownHostsToHTTPS = ShieldPreferences.httpsUpgradeLevel.isEnabled
+      wkConfiguration!.enablePageTopColorSampling()
 
-      if configuration!.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
-        configuration!.setURLSchemeHandler(
+      if wkConfiguration!.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
+        wkConfiguration!.setURLSchemeHandler(
           InternalSchemeHandler(tab: self),
           forURLScheme: InternalURL.scheme
         )
@@ -480,11 +534,21 @@ class Tab: NSObject {
         // first time.
         // https://source.chromium.org/chromium/chromium/src/+/main:ios/web/web_state/ui/crw_web_request_controller.mm;l=518;drc=df887034106ef438611326745a7cd276eedd4953
         frame: .init(width: 1.0, height: 1.0),
-        tab: self,
-        configuration: configuration!,
+        wkConfiguration: parent == nil ? wkConfiguration! : nil,
+        configuration: configuration ?? (isPrivate ? .incognito() : .default()),
         isPrivate: isPrivate
       )
+
       webView.delegate = self
+
+      if parent != nil {
+        let userContentController = webView.wkConfiguration.userContentController
+        // Usually the configuration would be reset entirely but when we're opening up a child tab
+        // the `wkConfiguraton` is ignored entirely
+        userContentController.removeAllScriptMessageHandlers()
+        userContentController.removeAllContentRuleLists()
+        userContentController.removeAllUserScripts()
+      }
 
       webView.accessibilityLabel = Strings.webContentAccessibilityLabel
       webView.allowsBackForwardNavigationGestures = true
@@ -501,7 +565,7 @@ class Tab: NSObject {
       self.webView = webView
       self.webView?.addObserver(
         self,
-        forKeyPath: KVOConstants.url.keyPath,
+        forKeyPath: KVOConstants.visibleURL.keyPath,
         options: .new,
         context: nil
       )
@@ -522,7 +586,7 @@ class Tab: NSObject {
   }
 
   func resetWebView(config: WKWebViewConfiguration) {
-    configuration = config
+    wkConfiguration = config
     deleteWebView()
     contentScriptManager.helpers.removeAll()
   }
@@ -607,7 +671,7 @@ class Tab: NSObject {
     contentScriptManager.uninstall(from: self)
 
     if let webView = webView {
-      webView.removeObserver(self, forKeyPath: KVOConstants.url.keyPath)
+      webView.removeObserver(self, forKeyPath: KVOConstants.visibleURL.keyPath)
       tabDelegate?.tab(self, willDeleteWebView: webView)
     }
     webView = nil
@@ -821,7 +885,7 @@ class Tab: NSObject {
     if let url = webView?.lastCommittedURL, let internalUrl = InternalURL(url),
       let page = internalUrl.originalURLFromErrorPage
     {
-      webView?.underlyingWebView?.replaceLocation(with: page)
+      webView?.replaceLocation(with: page)
       return
     }
 
@@ -1010,7 +1074,7 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
   func uninstall(from tab: Tab) {
     helpers.forEach {
       let name = type(of: $0.value).messageHandlerName
-      tab.webView?.underlyingWebView?.configuration.userContentController
+      tab.webView?.wkConfiguration.userContentController
         .removeScriptMessageHandler(forName: name)
     }
   }
@@ -1048,7 +1112,7 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
     // If this helper handles script messages, then get the handler name and register it. The Tab
     // receives all messages and then dispatches them to the right TabHelper.
     let scriptMessageHandlerName = type(of: helper).messageHandlerName
-    tab.webView?.underlyingWebView?.configuration.userContentController.addScriptMessageHandler(
+    tab.webView?.wkConfiguration.userContentController.addScriptMessageHandler(
       self,
       contentWorld: contentWorld,
       name: scriptMessageHandlerName
@@ -1058,7 +1122,7 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
   func removeContentScript(name: String, forTab tab: Tab, contentWorld: WKContentWorld) {
     if let helper = helpers[name] {
       let scriptMessageHandlerName = type(of: helper).messageHandlerName
-      tab.webView?.underlyingWebView?.configuration.userContentController
+      tab.webView?.wkConfiguration.userContentController
         .removeScriptMessageHandler(
           forName: scriptMessageHandlerName,
           contentWorld: contentWorld
@@ -1087,16 +1151,19 @@ private protocol TabWebViewDelegate: AnyObject {
 
 class TabWebView: BraveWebView, MenuHelperInterface {
   fileprivate weak var delegate: TabWebViewDelegate?
-  private(set) weak var tab: Tab?
 
-  init(
+  override init(
     frame: CGRect,
-    tab: Tab,
-    configuration: WKWebViewConfiguration = WKWebViewConfiguration(),
+    wkConfiguration: WKWebViewConfiguration?,
+    configuration: CWVWebViewConfiguration,
     isPrivate: Bool = true
   ) {
-    self.tab = tab
-    super.init(frame: frame, configuration: configuration, isPrivate: isPrivate)
+    super.init(
+      frame: frame,
+      wkConfiguration: wkConfiguration,
+      configuration: configuration,
+      isPrivate: isPrivate
+    )
   }
 
   override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
@@ -1110,7 +1177,7 @@ class TabWebView: BraveWebView, MenuHelperInterface {
 
   @objc func menuHelperForcePaste() {
     if let string = UIPasteboard.general.string {
-      underlyingWebView?.evaluateSafeJavaScript(
+      evaluateSafeJavaScript(
         functionName: "window.__firefox__.forcePaste",
         args: [string, UserScriptManager.securityToken],
         contentWorld: .defaultClient
@@ -1143,7 +1210,7 @@ class TabWebView: BraveWebView, MenuHelperInterface {
   }
 
   private func getCurrentSelectedText(callback: @escaping (String?) -> Void) {
-    underlyingWebView?.evaluateSafeJavaScript(
+    evaluateSafeJavaScript(
       functionName: "getSelection().toString",
       contentWorld: .defaultClient
     ) {
@@ -1167,7 +1234,7 @@ class TabWebView: BraveWebView, MenuHelperInterface {
 public class TabWebViewMenuHelper: UIView {
   @objc public func swizzledMenuHelperFindInPage() {
     if let tabWebView = superview?.superview as? TabWebView {
-      tabWebView.underlyingWebView?.evaluateSafeJavaScript(
+      tabWebView.evaluateSafeJavaScript(
         functionName: "getSelection().toString",
         contentWorld: .defaultClient
       ) { result, _ in
@@ -1191,49 +1258,52 @@ extension Tab {
       // The method we pass data to is undefined.
       // For such case we do not call that method or remove the search backup manager.
 
-      self.webView?.underlyingWebView?.evaluateJavaScript(
-        "window.onFetchedBackupResults === undefined"
-      ) {
-        result,
-        error in
+      self.webView?.evaluateSafeJavaScript(
+        functionName: "window.onFetchedBackupResults === undefined",
+        contentWorld: .page,
+        asFunction: false,
+        completion: { result, error in
 
-        if let error = error {
-          Logger.module.error(
-            "onFetchedBackupResults existence check error: \(error.localizedDescription, privacy: .public)"
+          if let error = error {
+            Logger.module.error(
+              "onFetchedBackupResults existence check error: \(error.localizedDescription, privacy: .public)"
+            )
+          }
+
+          guard let methodUndefined = result as? Bool else {
+            Logger.module.error(
+              "onFetchedBackupResults existence check, failed to unwrap bool result value"
+            )
+            return
+          }
+
+          if methodUndefined {
+            Logger.module.info(
+              "Search Backup results are ready but the page has not been loaded yet"
+            )
+            return
+          }
+
+          var queryResult = "null"
+
+          if let url = self.webView?.visibleURL,
+            BraveSearchManager.isValidURL(url),
+            let result = self.braveSearchManager?.fallbackQueryResult
+          {
+            queryResult = result
+          }
+
+          self.webView?.evaluateSafeJavaScript(
+            functionName: "window.onFetchedBackupResults",
+            args: [queryResult],
+            contentWorld: BraveSearchScriptHandler.scriptSandbox,
+            escapeArgs: false
           )
+
+          // Cleanup
+          self.braveSearchManager = nil
         }
-
-        guard let methodUndefined = result as? Bool else {
-          Logger.module.error(
-            "onFetchedBackupResults existence check, failed to unwrap bool result value"
-          )
-          return
-        }
-
-        if methodUndefined {
-          Logger.module.info("Search Backup results are ready but the page has not been loaded yet")
-          return
-        }
-
-        var queryResult = "null"
-
-        if let url = self.webView?.visibleURL,
-          BraveSearchManager.isValidURL(url),
-          let result = self.braveSearchManager?.fallbackQueryResult
-        {
-          queryResult = result
-        }
-
-        self.webView?.underlyingWebView?.evaluateSafeJavaScript(
-          functionName: "window.onFetchedBackupResults",
-          args: [queryResult],
-          contentWorld: BraveSearchScriptHandler.scriptSandbox,
-          escapeArgs: false
-        )
-
-        // Cleanup
-        self.braveSearchManager = nil
-      }
+      )
     }
   }
 }
@@ -1241,7 +1311,7 @@ extension Tab {
 // MARK: - Brave SKU
 extension Tab {
   func injectLocalStorageItem(key: String, value: String) {
-    self.webView?.underlyingWebView?.evaluateSafeJavaScript(
+    self.webView?.evaluateSafeJavaScript(
       functionName: "localStorage.setItem",
       args: [key, value],
       contentWorld: BraveSkusScriptHandler.scriptSandbox

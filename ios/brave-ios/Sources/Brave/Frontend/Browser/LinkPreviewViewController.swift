@@ -32,7 +32,8 @@ class LinkPreviewViewController: UIViewController {
     }
 
     currentTab = Tab(
-      configuration: tabWebView.configuration,
+      wkConfiguration: tabWebView.configuration,
+      configuration: parentTab.isPrivate ? .incognito() : .default(),
       type: parentTab.isPrivate ? .private : .regular,
       tabGeneratorAPI: nil
     ).then {
@@ -54,7 +55,7 @@ class LinkPreviewViewController: UIViewController {
     Task(priority: .userInitiated) {
       let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domain)
       for ruleList in ruleLists {
-        webView.underlyingWebView?.configuration.userContentController.add(ruleList)
+        webView.wkConfiguration.userContentController.add(ruleList)
       }
     }
 

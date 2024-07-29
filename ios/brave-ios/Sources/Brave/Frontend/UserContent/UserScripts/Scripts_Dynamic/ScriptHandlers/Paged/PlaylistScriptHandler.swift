@@ -243,7 +243,7 @@ extension PlaylistScriptHandler: UIGestureRecognizerDelegate {
 
       let touchPoint = gestureRecognizer.location(in: webView)
 
-      webView.underlyingWebView?.evaluateSafeJavaScript(
+      webView.evaluateSafeJavaScript(
         functionName: "window.__firefox__.\(PlaylistScriptHandler.playlistLongPressed)",
         args: [touchPoint.x, touchPoint.y, Self.scriptId],
         contentWorld: Self.scriptSandbox,
@@ -286,7 +286,7 @@ extension PlaylistScriptHandler {
       return
     }
 
-    webView.underlyingWebView?.evaluateSafeJavaScript(
+    webView.evaluateSafeJavaScript(
       functionName: "window.__firefox__.\(mediaCurrentTimeFromTag)",
       args: [nodeTag, Self.scriptId],
       contentWorld: Self.scriptSandbox,
@@ -312,7 +312,7 @@ extension PlaylistScriptHandler {
   static func stopPlayback(tab: Tab?) {
     guard let tab = tab else { return }
 
-    tab.webView?.underlyingWebView?.evaluateSafeJavaScript(
+    tab.webView?.evaluateSafeJavaScript(
       functionName: "window.__firefox__.\(stopMediaPlayback)",
       args: [Self.scriptId],
       contentWorld: Self.scriptSandbox,

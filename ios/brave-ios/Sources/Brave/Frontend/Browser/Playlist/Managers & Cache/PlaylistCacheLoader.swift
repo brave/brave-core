@@ -27,13 +27,14 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
   private var pendingRequests = [String: URLRequest]()
 
   private let tab = Tab(
-    configuration: WKWebViewConfiguration().then {
+    wkConfiguration: WKWebViewConfiguration().then {
       $0.processPool = WKProcessPool()
       $0.preferences = WKPreferences()
       $0.preferences.javaScriptCanOpenWindowsAutomatically = false
       $0.allowsInlineMediaPlayback = true
       $0.ignoresViewportScaleLimits = true
     },
+    configuration: .incognito(),
     type: .private
   ).then {
     $0.createWebview()

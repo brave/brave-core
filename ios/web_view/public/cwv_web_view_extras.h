@@ -30,6 +30,14 @@ CWV_EXPORT
            completionHandler:(void (^)(UIImage* _Nullable))completionHandler;
 - (CWVUserAgentType)currentItemUserAgentType;
 - (void)reloadWithUserAgentType:(CWVUserAgentType)userAgentType;
+- (void)evaluateJavaScript:(NSString*)javaScriptString
+              contentWorld:(WKContentWorld*)contentWorld
+         completionHandler:
+             (nullable void (^)(id _Nullable result,
+                                NSError* _Nullable error))completion;
+
+@property(readonly, nullable) WKWebView* underlyingWebView;
+@property(readonly) WKWebViewConfiguration* WKConfiguration;
 
 @end
 

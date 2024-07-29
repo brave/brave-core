@@ -35,7 +35,7 @@ class ReadabilityOperation: Operation {
 
     DispatchQueue.main.async {
       let configuration = WKWebViewConfiguration()
-      self.tab = Tab(configuration: configuration)
+      self.tab = Tab(wkConfiguration: configuration, configuration: .default())
       self.tab.createWebview()
       self.tab.navigationDelegate = self
 
@@ -87,7 +87,7 @@ extension ReadabilityOperation: CWVNavigationDelegate {
   }
 
   func webViewDidFinishNavigation(_ webView: CWVWebView) {
-    tab.webView?.underlyingWebView?.evaluateSafeJavaScript(
+    tab.webView?.evaluateSafeJavaScript(
       functionName: "\(readerModeNamespace).checkReadability",
       contentWorld: ReaderModeScriptHandler.scriptSandbox
     )

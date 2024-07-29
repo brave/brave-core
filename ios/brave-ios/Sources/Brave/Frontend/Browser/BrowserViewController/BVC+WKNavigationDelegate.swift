@@ -113,7 +113,7 @@ extension BrowserViewController: CWVNavigationDelegate {
 
     // check if web view is loading a different origin than the one currently loaded
     if let selectedTab = tabManager.selectedTab,
-      selectedTab.url?.origin != webView.visibleURL.origin
+      selectedTab.url?.origin != webView.visibleURL?.origin
     {
 
       // new site has a different origin, hide wallet icon.
@@ -133,7 +133,7 @@ extension BrowserViewController: CWVNavigationDelegate {
     // If we are going to navigate to a new page, hide the reader mode button. Unless we
     // are going to a about:reader page. Then we keep it on screen: it will change status
     // (orange color) as soon as the page has loaded.
-    if !webView.visibleURL.isInternalURL(for: .readermode) {
+    if let url = webView.visibleURL, !url.isInternalURL(for: .readermode) {
       topToolbar.updateReaderModeState(ReaderModeState.unavailable)
       hideReaderModeBar(animated: false)
     }
@@ -153,8 +153,8 @@ extension BrowserViewController: CWVNavigationDelegate {
   fileprivate func appendUrlToRedirectChain(_ webView: CWVWebView) {
     // The redirect chain MUST be sorted by the order of redirects with the
     // first URL being the source URL.
-    if let tab = tab(for: webView) {
-      tab.redirectChain.append(webView.visibleURL)
+    if let tab = tab(for: webView), let url = webView.visibleURL {
+      tab.redirectChain.append(url)
     }
   }
 
@@ -473,7 +473,7 @@ extension BrowserViewController: CWVNavigationDelegate {
       let profile = self.profile
       // FIXME: Find a way to get this out of CWVWebView
       let cookies =
-        await webView.underlyingWebView?.configuration.websiteDataStore.httpCookieStore.allCookies()
+        await webView.wkConfiguration.websiteDataStore.httpCookieStore.allCookies()
         ?? []
       tab?.braveSearchManager = BraveSearchManager(
         profile: profile,
@@ -598,13 +598,13 @@ extension BrowserViewController: CWVNavigationDelegate {
       }
 
       // Reset the block alert bool on new host.
-      if let newHost: String = requestURL.host, let oldHost: String = webView.visibleURL.host,  // webView.url?.host,
+      if let newHost: String = requestURL.host, let oldHost: String = webView.visibleURL?.host,  // webView.url?.host,
         newHost != oldHost
       {
         self.tabManager.selectedTab?.alertShownCount = 0
         self.tabManager.selectedTab?.blockAllAlerts = false
       }
-      
+
       ContentBlockerManager.signpost.endInterval("decidePolicyFor", state)
       return .allow
     }
@@ -814,7 +814,7 @@ extension BrowserViewController: CWVNavigationDelegate {
       await tab.updateSolanaProperties()
     }
 
-    if webView.visibleURL.isLocal == false {
+    if webView.visibleURL?.isLocal == false {
       // Set rewards inter site url as new page load url.
       tab.rewardsXHRLoadURL = webView.visibleURL
     }
@@ -1072,11 +1072,11 @@ extension BrowserViewController {
   }
 
   private func tab(for webView: BraveWebView) -> Tab? {
-    tabManager[webView] ?? (webView as? TabWebView)?.tab
+    tabManager[webView]
   }
 
   private func tab(for webView: CWVWebView) -> Tab? {
-    tabManager[webView] ?? (webView as? TabWebView)?.tab
+    tabManager[webView]
   }
 
   private func handleExternalURL(
@@ -1236,32 +1236,28 @@ extension BrowserViewController: CWVUIDelegate {
       screenshotHelper.takeScreenshot(currentTab)
     }
 
-    // FIXME: Will require refactoring Tab to take CWVWebViewConfiguration's
-
     // If the page uses `window.open()` or `[target="_blank"]`, open the page in a new tab.
     // IMPORTANT!!: WebKit will perform the `URLRequest` automatically!! Attempting to do
     // the request here manually leads to incorrect results!!
-    //    let newTab = tabManager.addPopupForParentTab(parentTab, configuration: configuration)
-    //
-    //    newTab.url = URL(string: "about:blank")
-    //
-    //    toolbarVisibilityViewModel.toolbarState = .expanded
-    //
-    //    // Wait until WebKit starts the request before selecting the new tab, otherwise the tab manager may
-    //    // restore it as if it was a dead tab.
-    //    var observation: NSKeyValueObservation?
-    //    observation = newTab.webView?.observe(
-    //      \.visibleURL,
-    //       changeHandler: { [weak self] webView, _ in
-    //         _ = observation  // Silence write but not read warning
-    //         observation = nil
-    //         guard let self = self, let tab = self.tabManager[webView] else { return }
-    //         self.tabManager.selectTab(tab)
-    //       }
-    //    )
-    //
-    //    return newTab.webView
-    return nil
+    let newTab = tabManager.addPopupForParentTab(parentTab, configuration: configuration)
+    newTab.url = URL(string: "about:blank")
+
+    toolbarVisibilityViewModel.toolbarState = .expanded
+
+    // Wait until WebKit starts the request before selecting the new tab, otherwise the tab manager may
+    // restore it as if it was a dead tab.
+    var observation: NSKeyValueObservation?
+    observation = newTab.webView?.observe(
+      \.visibleURL,
+      changeHandler: { [weak self] webView, _ in
+        _ = observation  // Silence write but not read warning
+        observation = nil
+        guard let self = self, let tab = self.tabManager[webView] else { return }
+        self.tabManager.selectTab(tab)
+      }
+    )
+
+    return newTab.webView
   }
 
   public func webViewDidClose(_ webView: CWVWebView) {
@@ -1288,7 +1284,7 @@ extension BrowserViewController: CWVUIDelegate {
       }
     }()
     // FIXME: Test
-    guard let host = webView.visibleURL.host else { return }
+    guard let host = webView.visibleURL?.host else { return }
     let title = String.localizedStringWithFormat(titleFormat, host)
     let alertController = BrowserAlertController(title: title, message: nil, preferredStyle: .alert)
     alertController.addAction(
@@ -1560,7 +1556,7 @@ extension BrowserViewController {
       window.alert=window.confirm=window.prompt=function(n){},
       [].slice.apply(document.querySelectorAll('iframe')).forEach(function(n){if(n.contentWindow != window){n.contentWindow.alert=n.contentWindow.confirm=n.contentWindow.prompt=function(n){}}})
       """
-    webView.underlyingWebView?.evaluateSafeJavaScript(
+    webView.evaluateSafeJavaScript(
       functionName: script,
       contentWorld: .defaultClient,
       asFunction: false

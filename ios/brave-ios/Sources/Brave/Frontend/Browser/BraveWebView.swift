@@ -13,8 +13,6 @@ class BraveWebView: CWVWebView {
   /// Stores last position when the webview was touched on.
   private(set) var lastHitPoint = CGPoint(x: 0, y: 0)
 
-  var underlyingWebView: WKWebView?
-
   private static var nonPersistentDataStore: WKWebsiteDataStore?
   static func sharedNonPersistentStore() -> WKWebsiteDataStore {
     if let dataStore = nonPersistentDataStore {
@@ -28,13 +26,14 @@ class BraveWebView: CWVWebView {
 
   init(
     frame: CGRect,
-    configuration: WKWebViewConfiguration = WKWebViewConfiguration(),
+    wkConfiguration: WKWebViewConfiguration?,
+    configuration: CWVWebViewConfiguration,
     isPrivate: Bool = true
   ) {
     if isPrivate {
-      configuration.websiteDataStore = BraveWebView.sharedNonPersistentStore()
+      wkConfiguration?.websiteDataStore = BraveWebView.sharedNonPersistentStore()
     } else {
-      configuration.websiteDataStore = WKWebsiteDataStore.default()
+      wkConfiguration?.websiteDataStore = WKWebsiteDataStore.default()
     }
     CWVWebView.webInspectorEnabled = true
     CWVWebView.chromeContextMenuEnabled = false
@@ -42,12 +41,10 @@ class BraveWebView: CWVWebView {
 
     super.init(
       frame: frame,
-      configuration: isPrivate ? .incognito() : .default(),
-      wkConfiguration: configuration,
-      createdWKWebView: &underlyingWebView
+      configuration: configuration,
+      wkConfiguration: wkConfiguration,
+      createdWKWebView: nil
     )
-
-    underlyingWebView?.isFindInteractionEnabled = true
   }
 
   static func removeNonPersistentStore() {

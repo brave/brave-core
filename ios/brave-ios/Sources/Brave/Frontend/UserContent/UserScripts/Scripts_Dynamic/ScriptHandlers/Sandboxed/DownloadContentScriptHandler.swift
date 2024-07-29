@@ -39,7 +39,7 @@ class DownloadContentScriptHandler: TabContentScript {
       return false
     }
 
-    tab.webView?.underlyingWebView?.evaluateSafeJavaScript(
+    tab.webView?.evaluateSafeJavaScript(
       functionName: "window.__firefox__.download",
       args: [safeUrl],
       contentWorld: scriptSandbox

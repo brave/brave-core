@@ -45,7 +45,7 @@ class WindowRenderScriptHandler: TabContentScript {
   }
 
   static func executeScript(for tab: Tab) {
-    tab.webView?.underlyingWebView?.evaluateSafeJavaScript(
+    tab.webView?.evaluateSafeJavaScript(
       functionName: "window.__firefox__.\(resizeWindowFunction).resizeWindow",
       contentWorld: scriptSandbox
     )

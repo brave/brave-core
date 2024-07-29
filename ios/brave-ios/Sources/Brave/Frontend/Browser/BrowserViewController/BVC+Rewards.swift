@@ -176,7 +176,7 @@ extension Tab {
 
     if rewards.isEnabled {
       group.enter()
-      webView.underlyingWebView?.evaluateSafeJavaScript(
+      webView.evaluateSafeJavaScript(
         functionName: "new XMLSerializer().serializeToString",
         args: ["document"],
         contentWorld: WKContentWorld.defaultClient,
@@ -187,7 +187,7 @@ extension Tab {
       }
 
       group.enter()
-      webView.underlyingWebView?.evaluateSafeJavaScript(
+      webView.evaluateSafeJavaScript(
         functionName: "document?.body?.innerText",
         contentWorld: .defaultClient,
         asFunction: false

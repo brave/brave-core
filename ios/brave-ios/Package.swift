@@ -416,6 +416,7 @@ var package = Package(
       dependencies: ["PlaylistUI", "Playlist", "Preferences", "Data", "TestHelpers"],
       resources: [.copy("Resources/Big_Buck_Bunny_360_10s_1MB.mp4")]
     ),
+    .target(name: "IsTesting"),
     .plugin(name: "IntentBuilderPlugin", capability: .buildTool()),
     .plugin(name: "LoggerPlugin", capability: .buildTool()),
     .plugin(
@@ -463,6 +464,7 @@ var braveTarget: PackageDescription.Target = .target(
     .product(name: "Lottie", package: "lottie-spm"),
     .product(name: "Collections", package: "swift-collections"),
     "PlaylistUI",
+    "IsTesting",
   ],
   exclude: [
     "Frontend/UserContent/UserScripts/AllFrames",

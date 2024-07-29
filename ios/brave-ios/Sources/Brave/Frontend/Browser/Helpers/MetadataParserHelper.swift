@@ -34,7 +34,7 @@ class MetadataParserHelper: TabEventHandler {
       return
     }
 
-    webView.underlyingWebView?.evaluateSafeJavaScript(
+    webView.evaluateSafeJavaScript(
       functionName: "__firefox__.metadata && __firefox__.metadata.getMetadata()",
       contentWorld: .defaultClient,
       asFunction: false

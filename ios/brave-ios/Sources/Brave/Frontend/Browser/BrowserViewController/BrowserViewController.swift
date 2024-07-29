@@ -1800,7 +1800,7 @@ public class BrowserViewController: UIViewController {
       if isUserDefinedURLNavigation, let webView = tab.webView,
         let code = url.bookmarkletCodeComponent
       {
-        webView.underlyingWebView?.evaluateSafeJavaScript(
+        webView.evaluateSafeJavaScript(
           functionName: code,
           contentWorld: .page,
           asFunction: false
@@ -1917,7 +1917,7 @@ public class BrowserViewController: UIViewController {
       // To prevent spoofing, only change the URL immediately if the new URL is on
       // the same origin as the current URL. Otherwise, do nothing and wait for
       // didCommitNavigation to confirm the page load.
-      if tab.url?.origin == webView.visibleURL.origin {
+      if tab.url?.origin == webView.visibleURL?.origin {
         tab.url = webView.visibleURL
 
         if tab === tabManager.selectedTab && !tab.restoring {
@@ -2349,7 +2349,7 @@ public class BrowserViewController: UIViewController {
         // because that event will not always fire due to unreliable page caching. This will either let us know that
         // the currently loaded page can be turned into reading mode or if the page already is in reading mode. We
         // ignore the result because we are being called back asynchronous when the readermode status changes.
-        webView.underlyingWebView?.evaluateSafeJavaScript(
+        webView.evaluateSafeJavaScript(
           functionName: "\(readerModeNamespace).checkReadability",
           contentWorld: ReaderModeScriptHandler.scriptSandbox
         )
@@ -2622,14 +2622,16 @@ extension BrowserViewController: TabDelegate {
 
     // Observers that live as long as the tab. Make sure these are all cleared in willDeleteWebView below!
     KVOs.forEach { webView.addObserver(self, forKeyPath: $0.keyPath, options: .new, context: nil) }
-    webViewKVOs.forEach {
-      webView.underlyingWebView?.addObserver(
-        self,
-        forKeyPath: $0.keyPath,
-        options: .new,
-        context: nil
-      )
-    }
+
+    // FIXME: Cant access the underlying web view here
+    //    webViewKVOs.forEach {
+    //      webView.underlyingWebView?.addObserver(
+    //        self,
+    //        forKeyPath: $0.keyPath,
+    //        options: .new,
+    //        context: nil
+    //      )
+    //    }
     webView.uiDelegate = self
 
     var injectedScripts: [TabContentScript] = [
@@ -3648,7 +3650,7 @@ extension BrowserViewController {
   }
 
   func openBraveLeo(with query: String? = nil) {
-    let webView = (query == nil) ? tabManager.selectedTab?.webView?.underlyingWebView : nil
+    let webView = (query == nil) ? tabManager.selectedTab?.webView : nil
 
     let model = AIChatViewModel(
       braveCore: braveCore,

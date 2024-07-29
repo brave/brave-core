@@ -33,7 +33,7 @@ class MockScriptsViewController: UIViewController {
     super.viewDidLoad()
 
     // Will load some base scripts into this webview
-    userScriptManager.loadScripts(into: webView, scripts: [])
+    userScriptManager.loadScripts(into: webView.configuration.userContentController, scripts: [])
 
     self.view.addSubview(webView)
     webView.snp.makeConstraints { make in

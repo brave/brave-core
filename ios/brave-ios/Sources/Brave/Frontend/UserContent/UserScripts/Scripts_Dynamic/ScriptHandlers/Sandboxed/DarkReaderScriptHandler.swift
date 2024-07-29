@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import Preferences
 import Shared
@@ -29,7 +30,7 @@ public class DarkReaderScriptHandler: TabContentScript {
   static let scriptName = "DarkReaderScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
-  static let scriptSandbox: WKContentWorld = .world(name: "DarkReaderContentWorld")
+  static let scriptSandbox: WKContentWorld = .defaultClient
   static let userScript: WKUserScript? = {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
@@ -55,7 +56,7 @@ public class DarkReaderScriptHandler: TabContentScript {
   }
 
   /// Enables DarkReader
-  static func enable(for webView: WKWebView) {
+  static func enable(for webView: CWVWebView) {
     webView.evaluateSafeJavaScript(
       functionName: "DarkReader.enable",
       args: configuration.isEmpty ? [] : [configuration],
@@ -64,7 +65,7 @@ public class DarkReaderScriptHandler: TabContentScript {
   }
 
   /// Disables DarkReader
-  static func disable(for webView: WKWebView) {
+  static func disable(for webView: CWVWebView) {
     webView.evaluateSafeJavaScript(
       functionName: "DarkReader.disable",
       args: [],
