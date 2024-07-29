@@ -3,16 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { BraveWallet, SerializableTransactionInfo } from '../../constants/types'
+import { SerializableTransactionInfo } from '../../constants/types'
 import {
   HardwareImportScheme,
   GetAccountsHardwareOperationResult,
   HardwareOperationResult,
   SignHardwareOperationResult
 } from './types'
+import { BridgeType } from './untrusted_shared_types'
 
 export abstract class HardwareKeyring {
-  abstract coin(): BraveWallet.CoinType
+  abstract bridgeType(): BridgeType
   abstract getAccounts(
     from: number,
     count: number,
@@ -67,3 +68,5 @@ export abstract class LedgerSolanaKeyring extends HardwareKeyring {
     rawTxBytes: Buffer
   ): Promise<SignHardwareOperationResult>
 }
+
+export abstract class LedgerBitcoinKeyring extends HardwareKeyring {}

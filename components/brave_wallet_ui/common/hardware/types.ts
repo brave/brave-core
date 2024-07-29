@@ -2,7 +2,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-
 import {
   BraveWallet,
   HardwareWalletResponseCodeType
@@ -34,20 +33,23 @@ export type SignHardwareOperationResult = HardwareOperationResult & {
   payload?: EthereumSignedTx | FilSignedLotusMessage | Buffer | string
 }
 
-export enum DerivationScheme {
-  EthLedgerLive = 'EthLedgerLive',
-  EthLedgerLegacy = 'EthLedgerLegacy',
-  EthLedgerDeprecated = 'EthLedgerDeprecated',
-  SolLedgerDefault = 'SolLedgerDefault',
-  SolLedgerLedgerLive = 'SolLedgerLedgerLive',
-  SolLedgerBip44Root = 'SolLedgerBip44Root',
-  FilLedgerMainnet = 'FilLedgerMainnet',
-  FilLedgerTestnet = 'FilLedgerTestnet',
-  BtcLedgerMainnet = 'BtcLedgerMainnet',
-  BtcLedgerTestnet = 'BtcLedgerTestnet',
+export const DerivationSchemes = {
+  EthLedgerLive: 'EthLedgerLive',
+  EthLedgerLegacy: 'EthLedgerLegacy',
+  EthLedgerDeprecated: 'EthLedgerDeprecated',
+  SolLedgerDefault: 'SolLedgerDefault',
+  SolLedgerLedgerLive: 'SolLedgerLedgerLive',
+  SolLedgerBip44Root: 'SolLedgerBip44Root',
+  FilLedgerMainnet: 'FilLedgerMainnet',
+  FilLedgerTestnet: 'FilLedgerTestnet',
+  BtcLedgerMainnet: 'BtcLedgerMainnet',
+  BtcLedgerTestnet: 'BtcLedgerTestnet',
 
-  EthTrezorDefault = 'EthTrezorDefault'
-}
+  EthTrezorDefault: 'EthTrezorDefault'
+} as const
+
+export type DerivationScheme =
+  (typeof DerivationSchemes)[keyof typeof DerivationSchemes]
 
 export interface HardwareImportScheme {
   derivationScheme: DerivationScheme
@@ -55,13 +57,17 @@ export interface HardwareImportScheme {
   keyringId: BraveWallet.KeyringId
   vendor: BraveWallet.HardwareVendor
   name: string
+  /** Some schemes are valid only for a single network for corresponding
+   * coin. */
   fixedNetwork?: string
+  /** For some schemes there is no indexing in template and only one account is
+   * supported. */
   singleAccount?: boolean
   pathTemplate: (index: number | 'x') => string
 }
 
 export const EthLedgerLiveHardwareImportScheme: HardwareImportScheme = {
-  derivationScheme: DerivationScheme.EthLedgerLive,
+  derivationScheme: DerivationSchemes.EthLedgerLive,
   coin: BraveWallet.CoinType.ETH,
   keyringId: BraveWallet.KeyringId.kDefault,
   vendor: BraveWallet.HardwareVendor.kLedger,
@@ -70,7 +76,7 @@ export const EthLedgerLiveHardwareImportScheme: HardwareImportScheme = {
 }
 
 export const EthLedgerLegacyHardwareImportScheme: HardwareImportScheme = {
-  derivationScheme: DerivationScheme.EthLedgerLegacy,
+  derivationScheme: DerivationSchemes.EthLedgerLegacy,
   coin: BraveWallet.CoinType.ETH,
   keyringId: BraveWallet.KeyringId.kDefault,
   vendor: BraveWallet.HardwareVendor.kLedger,
@@ -79,7 +85,7 @@ export const EthLedgerLegacyHardwareImportScheme: HardwareImportScheme = {
 }
 
 export const EthLedgerDeprecatedHardwareImportScheme: HardwareImportScheme = {
-  derivationScheme: DerivationScheme.EthLedgerDeprecated,
+  derivationScheme: DerivationSchemes.EthLedgerDeprecated,
   coin: BraveWallet.CoinType.ETH,
   keyringId: BraveWallet.KeyringId.kDefault,
   vendor: BraveWallet.HardwareVendor.kLedger,
@@ -88,7 +94,7 @@ export const EthLedgerDeprecatedHardwareImportScheme: HardwareImportScheme = {
 }
 
 export const SolLedgerDefaultHardwareImportScheme: HardwareImportScheme = {
-  derivationScheme: DerivationScheme.SolLedgerDefault,
+  derivationScheme: DerivationSchemes.SolLedgerDefault,
   coin: BraveWallet.CoinType.SOL,
   keyringId: BraveWallet.KeyringId.kSolana,
   vendor: BraveWallet.HardwareVendor.kLedger,
@@ -97,7 +103,7 @@ export const SolLedgerDefaultHardwareImportScheme: HardwareImportScheme = {
 }
 
 export const SolLedgerLiveHardwareImportScheme: HardwareImportScheme = {
-  derivationScheme: DerivationScheme.SolLedgerLedgerLive,
+  derivationScheme: DerivationSchemes.SolLedgerLedgerLive,
   coin: BraveWallet.CoinType.SOL,
   keyringId: BraveWallet.KeyringId.kSolana,
   vendor: BraveWallet.HardwareVendor.kLedger,
@@ -106,7 +112,7 @@ export const SolLedgerLiveHardwareImportScheme: HardwareImportScheme = {
 }
 
 export const SolLedgerBip44RootHardwareImportScheme: HardwareImportScheme = {
-  derivationScheme: DerivationScheme.SolLedgerBip44Root,
+  derivationScheme: DerivationSchemes.SolLedgerBip44Root,
   coin: BraveWallet.CoinType.SOL,
   keyringId: BraveWallet.KeyringId.kSolana,
   vendor: BraveWallet.HardwareVendor.kLedger,
@@ -116,7 +122,7 @@ export const SolLedgerBip44RootHardwareImportScheme: HardwareImportScheme = {
 }
 
 export const FilLedgerMainnetHardwareImportScheme: HardwareImportScheme = {
-  derivationScheme: DerivationScheme.FilLedgerMainnet,
+  derivationScheme: DerivationSchemes.FilLedgerMainnet,
   coin: BraveWallet.CoinType.FIL,
   keyringId: BraveWallet.KeyringId.kFilecoin,
   vendor: BraveWallet.HardwareVendor.kLedger,
@@ -126,7 +132,7 @@ export const FilLedgerMainnetHardwareImportScheme: HardwareImportScheme = {
 }
 
 export const FilLedgerTestnetHardwareImportScheme: HardwareImportScheme = {
-  derivationScheme: DerivationScheme.FilLedgerTestnet,
+  derivationScheme: DerivationSchemes.FilLedgerTestnet,
   coin: BraveWallet.CoinType.FIL,
   keyringId: BraveWallet.KeyringId.kFilecoinTestnet,
   vendor: BraveWallet.HardwareVendor.kLedger,
@@ -136,7 +142,7 @@ export const FilLedgerTestnetHardwareImportScheme: HardwareImportScheme = {
 }
 
 export const BtcLedgerMainnetHardwareImportScheme: HardwareImportScheme = {
-  derivationScheme: DerivationScheme.BtcLedgerMainnet,
+  derivationScheme: DerivationSchemes.BtcLedgerMainnet,
   coin: BraveWallet.CoinType.BTC,
   keyringId: BraveWallet.KeyringId.kBitcoinImport,
   vendor: BraveWallet.HardwareVendor.kLedger,
@@ -146,7 +152,7 @@ export const BtcLedgerMainnetHardwareImportScheme: HardwareImportScheme = {
 }
 
 export const BtcLedgerTestnetHardwareImportScheme: HardwareImportScheme = {
-  derivationScheme: DerivationScheme.BtcLedgerTestnet,
+  derivationScheme: DerivationSchemes.BtcLedgerTestnet,
   coin: BraveWallet.CoinType.BTC,
   keyringId: BraveWallet.KeyringId.kBitcoinImportTestnet,
   vendor: BraveWallet.HardwareVendor.kLedger,
@@ -156,7 +162,7 @@ export const BtcLedgerTestnetHardwareImportScheme: HardwareImportScheme = {
 }
 
 export const EthTrezorDefaultHardwareImportScheme: HardwareImportScheme = {
-  derivationScheme: DerivationScheme.EthTrezorDefault,
+  derivationScheme: DerivationSchemes.EthTrezorDefault,
   coin: BraveWallet.CoinType.ETH,
   keyringId: BraveWallet.KeyringId.kDefault,
   vendor: BraveWallet.HardwareVendor.kTrezor,

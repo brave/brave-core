@@ -41,7 +41,9 @@ void UpdateBalance(mojom::BitcoinBalancePtr& balance,
   uint64_t address_total =
       base::ClampSub(chain_balance.funded + mempool_balance.funded,
                      chain_balance.spent + mempool_balance.spent);
-  balance->balances[address_stats.address] = address_total;
+  if (address_total) {
+    balance->balances[address_stats.address] = address_total;
+  }
 
   balance->total_balance += address_total;
   balance->available_balance +=

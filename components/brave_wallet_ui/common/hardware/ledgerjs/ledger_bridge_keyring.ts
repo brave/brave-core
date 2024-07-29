@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { BraveWallet } from '../../../constants/types'
+import { BridgeType } from '../untrusted_shared_types'
 import { getLocale } from '../../../../common/locale'
 import { HardwareOperationResult } from '../types'
 import {
@@ -40,7 +40,7 @@ export default class LedgerBridgeKeyring {
     this.bridge = bridge
   }
 
-  coin = (): BraveWallet.CoinType => {
+  bridgeType = (): BridgeType => {
     throw new Error('Unimplemented.')
   }
 
@@ -89,8 +89,7 @@ export default class LedgerBridgeKeyring {
       element.src =
         new URL(targetUrl).origin +
         `?targetUrl=${encodeURIComponent(window.origin)}` +
-        '&coinType=' +
-        this.coin()
+        `&bridgeType=${this.bridgeType()}`
       element.style.display = 'none'
       element.allow = 'hid'
       element.setAttribute('sandbox', 'allow-scripts allow-same-origin')

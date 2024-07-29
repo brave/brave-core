@@ -7,15 +7,12 @@ import BitcoinLedgerBridgeKeyring from './btc_ledger_bridge_keyring'
 import { MockLedgerTransport } from './ledger_bridge_keyring.test'
 import {
   BtcLedgerMainnetHardwareImportScheme,
-  GetAccountsHardwareOperationResult,
-  SignHardwareOperationResult
+  GetAccountsHardwareOperationResult
 } from '../types'
 import {
   LedgerCommand,
-  LedgerError,
   UnlockResponse,
-  BtcGetAccountResponse,
-  BtcSignTransactionResponse
+  BtcGetAccountResponse
 } from './ledger-messages'
 
 const createKeyring = () => {
@@ -137,73 +134,4 @@ test('getAccounts ledger error after successful unlock', async () => {
       statusCode: 101
     }
   })
-})
-
-test('signTransaction unlock error', async () => {
-  const { keyring, transport } = createKeyring()
-  transport.addSendCommandResponse(unlockErrorResponse)
-  const result = await keyring.signTransaction(
-    "44'/501'/1'/0'",
-    Buffer.from('transaction')
-  )
-  const expectedResult: SignHardwareOperationResult =
-    unlockErrorResponse.payload
-  expect(result).toEqual(expectedResult)
-})
-
-test('signTransaction success', async () => {
-  const { keyring, transport } = createKeyring()
-  transport.addSendCommandResponse(unlockSuccessResponse)
-  const signTransactionResponse: BtcSignTransactionResponse = {
-    id: LedgerCommand.SignTransaction,
-    origin: window.origin,
-    command: LedgerCommand.SignTransaction,
-    payload: {
-      success: true,
-      signature: Buffer.from('signature')
-    }
-  }
-  transport.addSendCommandResponse(signTransactionResponse)
-  const result: SignHardwareOperationResult = await keyring.signTransaction(
-    "44'/501'/1'/0'",
-    Buffer.from('transaction')
-  )
-
-  const expectedResult: SignHardwareOperationResult = {
-    success: true,
-    // TODO(apaymyshev): implement signing
-    payload: undefined // Buffer.from('signature')
-  }
-  expect(result).toEqual(expectedResult)
-})
-
-test('signTransaction ledger error after successful unlock', async () => {
-  const { keyring, transport } = createKeyring()
-  transport.addSendCommandResponse(unlockSuccessResponse)
-  const ledgerError: LedgerError = {
-    success: false,
-    message: 'LedgerError',
-    statusCode: 101
-  }
-  const signTransactionResponseLedgerError: BtcSignTransactionResponse = {
-    id: LedgerCommand.SignTransaction,
-    origin: window.origin,
-    command: LedgerCommand.SignTransaction,
-    payload: ledgerError
-  }
-  transport.addSendCommandResponse(signTransactionResponseLedgerError)
-  const result: SignHardwareOperationResult = await keyring.signTransaction(
-    "44'/501'/1'/0'",
-    Buffer.from('transaction')
-  )
-
-  const expectedResult: SignHardwareOperationResult = {
-    payload: undefined,
-    success: true
-    // TODO(apaymyshev): implement signing
-    // success: false,
-    // error: 'LedgerError',
-    // code: 101
-  }
-  expect(result).toEqual(expectedResult)
 })

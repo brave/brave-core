@@ -29,11 +29,6 @@ export class BitcoinLedgerUntrustedMessagingTransport //
       LedgerCommand.GetAccount,
       this.handleGetAccount
     )
-    // TODO(apaymyshev): implement
-    // this.addCommandHandler<BtcSignTransactionResponse>(
-    //   LedgerCommand.SignTransaction,
-    //   this.handleSignTransaction
-    // )
   }
 
   private handleGetAccount = async (
@@ -72,41 +67,4 @@ export class BitcoinLedgerUntrustedMessagingTransport //
       }
     }
   }
-
-  // TODO(apaymyshev): implement
-  // private handleSignTransaction = async (
-  //   command: BtcSignTransactionCommand
-  // ): Promise<BtcSignTransactionResponse> => {
-  //   const transport = await TransportWebHID.create()
-  //   const app = new Btc({ transport })
-  //   try {
-  //     const result = await app.signTransaction(
-  //       command.path,
-  //       Buffer.from(command.rawTxBytes)
-  //     )
-  //     const signTransactionResponsePayload:
-  // BtcSignTransactionResponsePayload =
-  //       {
-  //         success: true,
-  //         signature: result.signature
-  //       }
-  //     const response: BtcSignTransactionResponse = {
-  //       id: command.id,
-  //       command: command.command,
-  //       payload: signTransactionResponsePayload,
-  //       origin: command.origin
-  //     }
-  //     return response
-  //   } catch (error) {
-  //     const response: BtcSignTransactionResponse = {
-  //       id: command.id,
-  //       command: command.command,
-  //       payload: error,
-  //       origin: command.origin
-  //     }
-  //     return response
-  //   } finally {
-  //     await transport.close()
-  //   }
-  // }
 }

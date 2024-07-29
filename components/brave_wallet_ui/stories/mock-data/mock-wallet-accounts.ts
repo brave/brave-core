@@ -99,7 +99,7 @@ export const mockAccountsFromDevice: Array<Required<AccountFromDevice>> = [
     address: mockAccounts[0].address + 'h',
     derivationPath: AllHardwareImportSchemes[0].pathTemplate(1),
     alreadyInWallet: true,
-    shouldAddToWallet: true
+    shouldAddToWallet: false
   }
 ]
 

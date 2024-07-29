@@ -9,10 +9,7 @@ import {
   toChecksumAddress,
   bufferToHex
 } from 'ethereumjs-util'
-import {
-  BraveWallet,
-  SerializableTransactionInfo
-} from '../../../constants/types'
+import { SerializableTransactionInfo } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import {
   TrezorCommand,
@@ -38,14 +35,15 @@ import {
   HardwareOperationResult,
   SignHardwareOperationResult
 } from '../types'
+import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import { Unsuccessful } from './trezor-connect-types'
 import { TrezorKeyring } from '../interfaces'
 
 export default class TrezorBridgeKeyring implements TrezorKeyring {
   private unlocked: boolean = false
 
-  coin = (): BraveWallet.CoinType => {
-    return BraveWallet.CoinType.ETH
+  bridgeType = (): BridgeType => {
+    return BridgeTypes.EthTrezor
   }
 
   isUnlocked = (): boolean => {

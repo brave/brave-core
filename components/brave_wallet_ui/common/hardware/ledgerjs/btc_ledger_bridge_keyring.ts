@@ -3,15 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { BraveWallet } from '../../../constants/types'
-import { LedgerSolanaKeyring } from '../interfaces'
+import { LedgerBitcoinKeyring } from '../interfaces'
 import {
   AccountFromDevice,
   HardwareImportScheme,
-  DerivationScheme,
-  GetAccountsHardwareOperationResult,
-  SignHardwareOperationResult
+  DerivationSchemes,
+  GetAccountsHardwareOperationResult
 } from '../types'
+import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import {
   LedgerCommand,
   LedgerBridgeErrorCodes,
@@ -24,14 +23,14 @@ import LedgerBridgeKeyring from './ledger_bridge_keyring'
 
 export default class BitcoinLedgerBridgeKeyring
   extends LedgerBridgeKeyring
-  implements LedgerSolanaKeyring
+  implements LedgerBitcoinKeyring
 {
   constructor(onAuthorized?: () => void) {
     super(onAuthorized)
   }
 
-  coin = (): BraveWallet.CoinType => {
-    return BraveWallet.CoinType.BTC
+  bridgeType = (): BridgeType => {
+    return BridgeTypes.BtcLedger
   }
 
   getAccounts = async (
@@ -50,19 +49,6 @@ export default class BitcoinLedgerBridgeKeyring
     return this.getAccountsFromDevice(paths, scheme)
   }
 
-  signTransaction = async (
-    path: string,
-    rawTxBytes: Buffer
-  ): Promise<SignHardwareOperationResult> => {
-    const result = await this.unlock()
-    if (!result.success) {
-      return result
-    }
-
-    // TODO(apaymyshev): implement
-    return { success: true, payload: undefined }
-  }
-
   private readonly getAccountsFromDevice = async (
     paths: string[],
     scheme: HardwareImportScheme
@@ -75,7 +61,7 @@ export default class BitcoinLedgerBridgeKeyring
         path: path,
         origin: window.origin,
         xpubVersion:
-          scheme.derivationScheme === DerivationScheme.BtcLedgerMainnet
+          scheme.derivationScheme === DerivationSchemes.BtcLedgerMainnet
             ? 0x0488b21e // xpub
             : 0x043587cf // tpub
       })

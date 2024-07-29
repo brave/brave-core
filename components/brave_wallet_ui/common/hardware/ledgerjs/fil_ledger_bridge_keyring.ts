@@ -2,15 +2,15 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
-import { BraveWallet } from '../../../constants/types'
 import { LedgerFilecoinKeyring } from '../interfaces'
 import {
   AccountFromDevice,
   HardwareImportScheme,
-  DerivationScheme,
+  DerivationSchemes,
   GetAccountsHardwareOperationResult,
   SignHardwareOperationResult
 } from '../types'
+import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import {
   FilGetAccountResponse,
   FilGetAccountResponsePayload,
@@ -30,8 +30,8 @@ export default class FilecoinLedgerBridgeKeyring
     super(onAuthorized)
   }
 
-  coin = (): BraveWallet.CoinType => {
-    return BraveWallet.CoinType.FIL
+  bridgeType = (): BridgeType => {
+    return BridgeTypes.FilLedger
   }
 
   getAccounts = async (
@@ -44,15 +44,15 @@ export default class FilecoinLedgerBridgeKeyring
       return result
     }
 
-    const testnet =
-      scheme.derivationScheme === DerivationScheme.FilLedgerTestnet
+    const isTestnet =
+      scheme.derivationScheme === DerivationSchemes.FilLedgerTestnet
 
     const data = await this.sendCommand<FilGetAccountResponse>({
       command: LedgerCommand.GetAccount,
       id: LedgerCommand.GetAccount,
       from: from,
       count: count,
-      testnet: testnet,
+      isTestnet,
       origin: window.origin
     })
 

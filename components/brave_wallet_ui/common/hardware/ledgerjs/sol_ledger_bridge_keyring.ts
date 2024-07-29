@@ -5,15 +5,15 @@
 
 // @ts-expect-error
 import * as bs58 from 'bs58'
-import { BraveWallet } from '../../../constants/types'
 import { LedgerSolanaKeyring } from '../interfaces'
 import {
   AccountFromDevice,
   HardwareImportScheme,
-  DerivationScheme,
+  DerivationSchemes,
   GetAccountsHardwareOperationResult,
   SignHardwareOperationResult
 } from '../types'
+import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import {
   LedgerCommand,
   LedgerBridgeErrorCodes,
@@ -34,8 +34,8 @@ export default class SolanaLedgerBridgeKeyring
     super(onAuthorized)
   }
 
-  coin = (): BraveWallet.CoinType => {
-    return BraveWallet.CoinType.SOL
+  bridgeType = (): BridgeType => {
+    return BridgeTypes.SolLedger
   }
 
   getAccounts = async (
@@ -48,7 +48,7 @@ export default class SolanaLedgerBridgeKeyring
       return result
     }
     // The root path does not support an index
-    if (scheme.derivationScheme === DerivationScheme.SolLedgerBip44Root) {
+    if (scheme.derivationScheme === DerivationSchemes.SolLedgerBip44Root) {
       return this.getAccountsFromDevice([scheme.pathTemplate(0)])
     }
 

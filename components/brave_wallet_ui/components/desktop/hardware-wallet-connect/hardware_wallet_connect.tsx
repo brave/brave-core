@@ -37,7 +37,8 @@ import {
   DerivationScheme,
   AllHardwareImportSchemes,
   HardwareImportScheme,
-  AccountFromDevice
+  AccountFromDevice,
+  DerivationSchemes
 } from '../../../common/hardware/types'
 import { BraveWallet, CreateAccountOptionsType } from '../../../constants/types'
 import { LedgerError } from '../../../common/hardware/ledgerjs/ledger-messages'
@@ -130,7 +131,7 @@ const defaultSchemeForCoinAndVendor = (
 const getDefaultAccountName = (scheme: HardwareImportScheme, index: number) => {
   let schemeString
   switch (scheme.derivationScheme) {
-    case DerivationScheme.EthLedgerLegacy:
+    case DerivationSchemes.EthLedgerLegacy:
       schemeString = ' (Legacy)'
       break
     default:
@@ -175,24 +176,22 @@ export const HardwareWalletConnect = ({
     ErrorMessage | undefined
   >(undefined)
   const [currentDerivationScheme, setCurrentDerivationScheme] =
-    React.useState<DerivationScheme>(DerivationScheme.EthLedgerLive)
+    React.useState<DerivationScheme>(DerivationSchemes.EthLedgerLive)
   const [showAccountsList, setShowAccountsList] = React.useState<boolean>(false)
   const [showAuthorizeDevice, setShowAuthorizeDevice] =
     React.useState<boolean>(false)
   const hideAuthorizeDevice = () => setShowAuthorizeDevice(false)
-  const [numberOfAccountsToLoad, setNumberOfAccountsToLoad] =
-    React.useState<number>(0)
+  const [totalNumberOfAccounts, setTotalNumberOfAccounts] = React.useState(0)
 
-  const currentHardwareImportScheme = findHardwareImportScheme(
-    currentDerivationScheme
-  )
+  const currentHardwareImportScheme: HardwareImportScheme =
+    findHardwareImportScheme(currentDerivationScheme)
 
   const setHardwareImportScheme = (scheme: DerivationScheme) => {
     if (currentDerivationScheme === scheme) {
       return
     }
     setAccounts([])
-    setNumberOfAccountsToLoad(DerivationBatchSize)
+    setTotalNumberOfAccounts(DerivationBatchSize)
     setCurrentDerivationScheme(scheme)
   }
 
@@ -207,14 +206,15 @@ export const HardwareWalletConnect = ({
   }
 
   const loadMoreAccounts = React.useCallback(async () => {
-    if (numberOfAccountsToLoad <= accounts.length) {
+    const numberOfAccountsToLoad = totalNumberOfAccounts - accounts.length
+    if (numberOfAccountsToLoad <= 0) {
       return
     }
 
     setIsConnecting(true)
     const result = await loadAccountsFromDevice({
       startIndex: accounts.length,
-      count: numberOfAccountsToLoad - accounts.length,
+      count: numberOfAccountsToLoad,
       scheme: currentHardwareImportScheme,
       onAuthorized: hideAuthorizeDevice
     })
@@ -247,7 +247,7 @@ export const HardwareWalletConnect = ({
     }
   }, [
     currentHardwareImportScheme,
-    numberOfAccountsToLoad,
+    totalNumberOfAccounts,
     savedAccounts,
     accounts,
     selectedAccountType.name
@@ -255,7 +255,7 @@ export const HardwareWalletConnect = ({
 
   React.useEffect(() => {
     loadMoreAccounts()
-  }, [currentHardwareImportScheme, numberOfAccountsToLoad, loadMoreAccounts])
+  }, [currentHardwareImportScheme, totalNumberOfAccounts, loadMoreAccounts])
 
   const onAddAccounts = React.useCallback(async () => {
     if (accounts.length === 0) {
@@ -311,10 +311,10 @@ export const HardwareWalletConnect = ({
 
   const increaseNumberOfAccounts = () => {
     if (currentHardwareImportScheme.singleAccount) {
-      setNumberOfAccountsToLoad(1)
+      setTotalNumberOfAccounts(1)
       return
     }
-    setNumberOfAccountsToLoad((curState) => curState + DerivationBatchSize)
+    setTotalNumberOfAccounts((curState) => curState + DerivationBatchSize)
   }
 
   const trezorEnabled = [BraveWallet.CoinType.ETH].includes(

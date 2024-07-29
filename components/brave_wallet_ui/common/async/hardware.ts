@@ -156,7 +156,6 @@ export async function signLedgerEthereumTransaction(
     txInfo.chainId,
     txInfo.id
   )
-
   if (!data || !data.message || !data.message.messageStr) {
     return {
       success: false,

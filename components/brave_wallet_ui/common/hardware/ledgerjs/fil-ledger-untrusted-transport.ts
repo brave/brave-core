@@ -62,7 +62,7 @@ export class FilecoinLedgerUntrustedMessagingTransport //
       const accounts = await this.provider!.getAccounts(
         command.from,
         command.from + command.count,
-        command.testnet ? CoinType.TEST : CoinType.MAIN
+        command.isTestnet ? CoinType.TEST : CoinType.MAIN
       )
 
       return {

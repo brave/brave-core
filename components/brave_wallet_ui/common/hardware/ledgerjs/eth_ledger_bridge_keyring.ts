@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { BraveWallet } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import { LedgerEthereumKeyring } from '../interfaces'
 import {
@@ -12,6 +11,7 @@ import {
   HardwareImportScheme,
   AccountFromDevice
 } from '../types'
+import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import {
   LedgerCommand,
   LedgerBridgeErrorCodes,
@@ -36,8 +36,8 @@ export default class EthereumLedgerBridgeKeyring
     super(onAuthorized)
   }
 
-  coin = (): BraveWallet.CoinType => {
-    return BraveWallet.CoinType.ETH
+  bridgeType = (): BridgeType => {
+    return BridgeTypes.EthLedger
   }
 
   getAccounts = async (

@@ -83,8 +83,7 @@ export const HardwareWalletAccountsList = ({
   onAccountChecked,
   onAddAccounts
 }: Props) => {
-  const coin = currentHardwareImportScheme.coin
-  const hardwareVendor = currentHardwareImportScheme.vendor
+  const { coin, vendor: hardwareVendor } = currentHardwareImportScheme
 
   // queries
   const { data: networksRegistry } = useGetNetworksRegistryQuery()
@@ -115,6 +114,10 @@ export const HardwareWalletAccountsList = ({
     )
   }, [networksRegistry, coin])
 
+  const supportedSchemes = AllHardwareImportSchemes.filter((scheme) => {
+    return scheme.coin === coin && scheme.vendor === hardwareVendor
+  })
+
   // methods
   const onSelectAccountCheckbox =
     (account: Required<AccountFromDevice>) => () => {
@@ -144,11 +147,13 @@ export const HardwareWalletAccountsList = ({
   const onSelectNetwork = React.useCallback(
     (n: BraveWallet.NetworkInfo): void => {
       setSelectedNetworkId(networkEntityAdapter.selectId(n))
-      AllHardwareImportSchemes.map((scheme) => {
-        if (scheme.coin === n.coin && scheme.fixedNetwork === n.chainId) {
-          setHardwareImportScheme(scheme.derivationScheme)
-        }
+      const schemeForNetwork = AllHardwareImportSchemes.find((scheme) => {
+        return scheme.coin === n.coin && scheme.fixedNetwork === n.chainId
       })
+
+      if (schemeForNetwork) {
+        setHardwareImportScheme(schemeForNetwork.derivationScheme)
+      }
     },
     [setSelectedNetworkId, setHardwareImportScheme]
   )
@@ -158,10 +163,6 @@ export const HardwareWalletAccountsList = ({
   ): string => {
     return `${scheme.name} "${scheme.pathTemplate('x')}"`
   }
-
-  const supportedSchemes = AllHardwareImportSchemes.filter((scheme) => {
-    return scheme.coin === coin && scheme.vendor === hardwareVendor
-  })
 
   const onChangeDerivationScheme = (value?: string) => {
     if (value) {
@@ -255,7 +256,7 @@ export const HardwareWalletAccountsList = ({
           ) : null}
         </SelectWrapper>
       </SelectRow>
-      {coin !== BraveWallet.CoinType.FIL && (
+      {[BraveWallet.CoinType.ETH, BraveWallet.CoinType.SOL].includes(coin) && (
         <DisclaimerWrapper>
           <DisclaimerText>
             {getLocale('braveWalletSwitchHDPathTextHardwareWallet')}

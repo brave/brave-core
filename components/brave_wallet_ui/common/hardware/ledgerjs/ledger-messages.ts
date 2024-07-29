@@ -137,7 +137,7 @@ export type FilGetAccountCommand = CommandMessage & {
   command: LedgerCommand.GetAccount
   from: number
   count: number
-  testnet: boolean
+  isTestnet: boolean
 }
 
 export interface FilLotusMessage {
