@@ -13,6 +13,7 @@ brave_app_billing_deps =
     [ "//brave/third_party/android_deps:com_android_billingclient_java" ]
 
 brave_java_base_module_billing_deps = [
+  "//brave/third_party/android_deps:com_android_billingclient_java",
   "//brave/third_party/android_deps:com_google_android_datatransport_transport_backend_cct_java",
   "//brave/third_party/android_deps:com_google_android_datatransport_transport_runtime_java",
 ]
