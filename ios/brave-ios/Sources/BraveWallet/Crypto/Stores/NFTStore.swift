@@ -746,7 +746,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
 
   func removeNFT(_ token: BraveWallet.BlockchainToken) {
     Task { @MainActor in
-      _ = await assetManager.removeUserAsset(token)
+      await assetManager.removeUserAsset(token)
 
       update()
     }

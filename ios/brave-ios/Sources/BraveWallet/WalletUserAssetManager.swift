@@ -42,14 +42,14 @@ public protocol WalletUserAssetManagerType: AnyObject {
   /// Add asset to `WalletService` as well as adding a
   /// `WalletUserAsset` representation in CoreData
   /// This should be only used when user manually adding a custom asset.
-  func addUserAsset(
+  @discardableResult func addUserAsset(
     _ token: BraveWallet.BlockchainToken,
     isAutoDiscovery: Bool
   ) async -> Bool
   /// Remove a `WalletUserAsset` representation of the given
   /// `BraveWallet.BlockchainToken` from CoreData.
   /// As well as update in `WalletService`.
-  func removeUserAsset(_ token: BraveWallet.BlockchainToken) async -> Bool
+  @discardableResult func removeUserAsset(_ token: BraveWallet.BlockchainToken) async -> Bool
   /// Remove an entire `WalletUserAssetGroup` with a given `groupId`
   func removeGroup(for groupId: String) async
   /// Update a `WalletUserAsset`'s `visible`, `isSpam`, and `isDeletedByUser` status
@@ -291,7 +291,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
     WalletUserAsset.getUserAsset(token: asset)
   }
 
-  @MainActor public func addUserAsset(
+  @discardableResult @MainActor public func addUserAsset(
     _ token: BraveWallet.BlockchainToken,
     isAutoDiscovery: Bool
   ) async -> Bool {
@@ -367,7 +367,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
     }
   }
 
-  @MainActor public func removeUserAsset(
+  @discardableResult @MainActor public func removeUserAsset(
     _ token: BraveWallet.BlockchainToken
   ) async -> Bool {
     // update database
