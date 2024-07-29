@@ -20,6 +20,8 @@
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/test/wait_for_callback.h"
 #include "brave/components/brave_news/browser/urls.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_news/common/locales_helper.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -126,6 +128,28 @@ class BraveNewsPublishersControllerTest : public testing::Test {
     return std::move(publishers);
   }
 
+  mojom::PublisherPtr GetPublisherForSite(const GURL& url) {
+    auto [publisher] = WaitForCallback(base::BindOnce(
+        [](BraveNewsPublishersControllerTest* test, const GURL& url,
+           GetPublisherCallback callback) {
+          test->publishers_controller_.GetPublisherForSite(
+              test->pref_manager_.GetSubscriptions(), url, std::move(callback));
+        },
+        base::Unretained(this), url));
+    return std::move(publisher);
+  }
+
+  mojom::PublisherPtr GetPublisherForFeed(const GURL& url) {
+    auto [publisher] = WaitForCallback(base::BindOnce(
+        [](BraveNewsPublishersControllerTest* test, const GURL& url,
+           GetPublisherCallback callback) {
+          test->publishers_controller_.GetPublisherForFeed(
+              test->pref_manager_.GetSubscriptions(), url, std::move(callback));
+        },
+        base::Unretained(this), url));
+    return std::move(publisher);
+  }
+
  protected:
   base::test::ScopedFeatureList scoped_features_;
   content::BrowserTaskEnvironment browser_task_environment_;
@@ -152,8 +176,7 @@ TEST_F(BraveNewsPublishersControllerTest, CanGetPublisherBySiteUrl) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
   GetPublishers();
-  auto* publisher = publishers_controller_.GetPublisherForSite(
-      GURL("https://tp5.example.com"));
+  auto publisher = GetPublisherForSite(GURL("https://tp5.example.com"));
   EXPECT_EQ("555", publisher->publisher_id);
 }
 
@@ -163,16 +186,14 @@ TEST_F(BraveNewsPublishersControllerTest,
                                        net::HTTP_OK);
   GetPublishers();
 
-  EXPECT_EQ(nullptr, publishers_controller_.GetPublisherForSite(
-                         GURL("https://not-a-site.com")));
+  EXPECT_FALSE(GetPublisherForSite(GURL("https://not-a-site.com")));
 }
 
 TEST_F(BraveNewsPublishersControllerTest, CanGetPublisherByFeedUrl) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
   GetPublishers();
-  auto* publisher = publishers_controller_.GetPublisherForFeed(
-      GURL("https://tp5.example.com/feed"));
+  auto publisher = GetPublisherForFeed(GURL("https://tp5.example.com/feed"));
   EXPECT_EQ("555", publisher->publisher_id);
 }
 
@@ -217,12 +238,10 @@ TEST_F(BraveNewsPublishersControllerTest,
 
   EXPECT_EQ("en_US", locale);
 
-  auto* publisher = publishers_controller_.GetPublisherForSite(
-      GURL("https://tp1.example.com/feed"));
+  auto publisher = GetPublisherForSite(GURL("https://tp1.example.com/feed"));
   EXPECT_EQ("111", publisher->publisher_id);
 
-  publisher = publishers_controller_.GetPublisherForFeed(
-      GURL("https://tp1.example.com/feed"));
+  publisher = GetPublisherForFeed(GURL("https://tp1.example.com/feed"));
   EXPECT_EQ("111", publisher->publisher_id);
 }
 
@@ -269,12 +288,10 @@ TEST_F(BraveNewsPublishersControllerTest,
 
   EXPECT_EQ("en_US", locale);
 
-  auto* publisher = publishers_controller_.GetPublisherForSite(
-      GURL("https://tp1.example.com/"));
+  auto publisher = GetPublisherForSite(GURL("https://tp1.example.com/"));
   EXPECT_EQ("222", publisher->publisher_id);
 
-  publisher = publishers_controller_.GetPublisherForFeed(
-      GURL("https://tp1.example.com/feed"));
+  publisher = GetPublisherForFeed(GURL("https://tp1.example.com/feed"));
   EXPECT_EQ("222", publisher->publisher_id);
 }
 
@@ -320,12 +337,10 @@ TEST_F(BraveNewsPublishersControllerTest, NoPreferredLocale_ReturnsFirstMatch) {
 
   EXPECT_EQ("en_US", locale);
 
-  auto* publisher = publishers_controller_.GetPublisherForSite(
-      GURL("https://tp1.example.com/"));
+  auto publisher = GetPublisherForSite(GURL("https://tp1.example.com/"));
   EXPECT_EQ("111", publisher->publisher_id);
 
-  publisher = publishers_controller_.GetPublisherForFeed(
-      GURL("https://tp1.example.com/feed"));
+  publisher = GetPublisherForFeed(GURL("https://tp1.example.com/feed"));
   EXPECT_EQ("111", publisher->publisher_id);
 }
 
@@ -335,8 +350,7 @@ TEST_F(BraveNewsPublishersControllerTest,
                                        net::HTTP_OK);
   GetPublishers();
 
-  EXPECT_EQ(nullptr, publishers_controller_.GetPublisherForFeed(
-                         GURL("https://tp5.example.com")));
+  EXPECT_FALSE(GetPublisherForFeed(GURL("https://tp5.example.com")));
 }
 
 TEST_F(BraveNewsPublishersControllerTest, CacheCanBeCleared) {
@@ -344,15 +358,13 @@ TEST_F(BraveNewsPublishersControllerTest, CacheCanBeCleared) {
                                        net::HTTP_OK);
   GetPublishers();
 
-  EXPECT_NE(nullptr, publishers_controller_.GetPublisherForFeed(
-                         GURL("https://tp5.example.com/feed")));
+  EXPECT_TRUE(GetPublisherForFeed(GURL("https://tp5.example.com/feed")));
 
   publishers_controller_.ClearCache();
 
   // When there's nothing in the cache, we shouldn't be able to look up a
   // publisher by feed.
-  EXPECT_EQ(nullptr, publishers_controller_.GetPublisherForFeed(
-                         GURL("https://tp5.example.com/feed")));
+  EXPECT_FALSE(GetPublisherForFeed(GURL("https://tp5.example.com/feed")));
 }
 
 TEST_F(BraveNewsPublishersControllerTest, LocaleDefaultsToENUS) {

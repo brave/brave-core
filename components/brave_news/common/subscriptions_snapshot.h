@@ -38,6 +38,8 @@ struct SubscriptionsDiff {
   SubscriptionsDiff(SubscriptionsDiff&&);
   SubscriptionsDiff& operator=(SubscriptionsDiff&&);
   ~SubscriptionsDiff();
+
+  bool IsEmpty() const;
 };
 
 // A snapshot of the Brave News subscriptions at a point in time. Useful for

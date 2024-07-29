@@ -26,12 +26,11 @@ namespace brave_news {
 constexpr int kBackoffs[] = {1, 5, 10};
 constexpr size_t kNumBackoffs = std::size(kBackoffs);
 
-InitializationPromise::InitializationPromise(
-    size_t max_retries,
-    BraveNewsPrefManager& pref_manager,
-    PublishersController& publishers_controller)
+InitializationPromise::InitializationPromise(size_t max_retries,
+                                             BraveNewsPrefManager& pref_manager,
+                                             GetLocale get_locale)
     : pref_manager_(pref_manager),
-      publishers_controller_(publishers_controller),
+      get_locale_(get_locale),
       max_retries_(max_retries) {}
 
 InitializationPromise::~InitializationPromise() = default;
@@ -68,9 +67,8 @@ void InitializationPromise::Initialize() {
     return;
   }
 
-  publishers_controller_->GetLocale(
-      subscriptions, base::BindOnce(&InitializationPromise::OnGotLocale,
-                                    weak_ptr_factory_.GetWeakPtr()));
+  get_locale_.Run(base::BindOnce(&InitializationPromise::OnGotLocale,
+                                 weak_ptr_factory_.GetWeakPtr()));
 }
 
 void InitializationPromise::OnGotLocale(const std::string& locale) {

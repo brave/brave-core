@@ -13,18 +13,16 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/timer/timer.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_news/browser/brave_news_engine.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
-#include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
-#include "brave/components/brave_news/browser/feed_controller.h"
-#include "brave/components/brave_news/browser/feed_v2_builder.h"
 #include "brave/components/brave_news/browser/initialization_promise.h"
-#include "brave/components/brave_news/browser/publishers_controller.h"
-#include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -79,13 +77,10 @@ class BraveNewsController
   // Remove any cache that would identify user browsing history
   void ClearHistory();
 
-  PublishersController* publisher_controller() {
-    return &publishers_controller_;
-  }
-
   BraveNewsPrefManager& prefs() { return pref_manager_; }
 
-  bool MaybeInitFeedV2();
+  void GetPublisherForSite(const GURL& site_url, GetPublisherCallback callback);
+  void GetPublisherForFeed(const GURL& feed_url, GetPublisherCallback callback);
 
   // mojom::BraveNewsController
   void GetLocale(GetLocaleCallback callback) override;
@@ -157,15 +152,23 @@ class BraveNewsController
   void OnChannelsChanged() override;
 
  private:
+  void ResetEngine();
   void ConditionallyStartOrStopTimer();
   void CheckForFeedsUpdate();
   void CheckForPublishersUpdate();
   void Prefetch();
   void MaybeInitPrefs();
   void OnInitializingPrefsComplete();
+  void OnVerifiedDirectFeedUrl(const GURL& feed_url,
+                               SubscribeToNewDirectFeedCallback callback,
+                               bool is_valid,
+                               const std::string& feed_title);
 
   void NotifyPublishersChanged(mojom::PublishersEventPtr event);
   void NotifyChannelsChanged(mojom::ChannelsEventPtr event);
+  void NotifyFeedChanged(const std::string& hash);
+
+  BackgroundHistoryQuerier MakeHistoryQuerier();
 
   raw_ptr<favicon::FaviconService> favicon_service_ = nullptr;
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
@@ -180,11 +183,10 @@ class BraveNewsController
   p3a::NewsMetrics news_metrics_;
 
   DirectFeedController direct_feed_controller_;
-  PublishersController publishers_controller_;
-  ChannelsController channels_controller_;
-  FeedController feed_controller_;
-  SuggestionsController suggestions_controller_;
-  std::unique_ptr<FeedV2Builder> feed_v2_builder_;
+
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
+  // Created on this sequence but lives on |task_runner_|.
+  std::unique_ptr<BraveNewsEngine, base::OnTaskRunnerDeleter> engine_;
 
   base::OneShotTimer timer_prefetch_;
   base::RepeatingTimer timer_feed_update_;
@@ -204,8 +206,9 @@ class BraveNewsController
   mojo::ReceiverSet<mojom::BraveNewsController> receivers_;
   mojo::RemoteSet<mojom::PublishersListener> publishers_listeners_;
   mojo::RemoteSet<mojom::ChannelsListener> channels_listeners_;
+  mojo::RemoteSet<mojom::FeedListener> feed_listeners_;
   mojo::RemoteSet<mojom::ConfigurationListener> configuration_listeners_;
-  base::WeakPtrFactory<BraveNewsController> weak_ptr_factory_;
+  base::WeakPtrFactory<BraveNewsController> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_news

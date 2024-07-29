@@ -9,17 +9,22 @@
 #include <memory>
 #include <string>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/one_shot_event.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/locales_helper.h"
 
 namespace brave_news {
 
 using GetPublishersCallback = mojom::BraveNewsController::GetPublishersCallback;
+using GetPublisherCallback = base::OnceCallback<void(mojom::PublisherPtr)>;
 
 class SubscriptionsSnapshot;
+
+bool IsSubscribed(const mojom::PublisherPtr& publisher);
 
 class PublishersController {
  public:
@@ -33,9 +38,12 @@ class PublishersController {
   // not safe to hold onto, as the object it points to will be destroyed when
   // the publishers are updated (which happens regularly). If you need it to
   // live longer, take a clone.
-  const mojom::Publisher* GetPublisherForSite(const GURL& site_url) const;
-  const mojom::Publisher* GetPublisherForFeed(const GURL& feed_url) const;
-  const Publishers& GetLastPublishers() const;
+  void GetPublisherForSite(const SubscriptionsSnapshot& subscriptions,
+                           const GURL& site_url,
+                           GetPublisherCallback callback);
+  void GetPublisherForFeed(const SubscriptionsSnapshot& subscriptions,
+                           const GURL& feed_url,
+                           GetPublisherCallback callback);
 
   void GetOrFetchPublishers(const SubscriptionsSnapshot& subscriptions,
                             GetPublishersCallback callback,
@@ -45,6 +53,8 @@ class PublishersController {
   const std::string& GetLastLocale() const;
   void EnsurePublishersIsUpdating(const SubscriptionsSnapshot& subscriptions);
   void ClearCache();
+
+  const Publishers& last_publishers() { return publishers_; }
 
  private:
   void GetOrFetchPublishers(const SubscriptionsSnapshot& subscriptions,
@@ -57,7 +67,6 @@ class PublishersController {
   std::unique_ptr<base::OneShotEvent> on_current_update_complete_;
   std::string default_locale_;
   Publishers publishers_;
-  bool is_update_in_progress_ = false;
 };
 
 }  // namespace brave_news
