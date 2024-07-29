@@ -303,6 +303,10 @@
                         base::BindOnce(completion));
 }
 
+- (void)modifyConversation:(NSUInteger)turnId newText:(NSString*)newText {
+  driver_->ModifyConversation(turnId, base::SysNSStringToUTF8(newText));
+}
+
 - (bool)canShowPremiumPrompt {
   return driver_->GetCanShowPremium();
 }
