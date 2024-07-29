@@ -26,6 +26,12 @@ int ClampSplitViewSizeDelta(views::View* contents_view, int size_delta) {
 
 }  // namespace
 
+BraveContentsLayoutManager::BraveContentsLayoutManager(
+    views::View* devtools_view,
+    views::View* contents_view,
+    views::View* watermark_view)
+    : ContentsLayoutManager(devtools_view, contents_view, watermark_view) {}
+
 BraveContentsLayoutManager::~BraveContentsLayoutManager() = default;
 
 void BraveContentsLayoutManager::SetSplitViewSeparator(
@@ -65,13 +71,6 @@ void BraveContentsLayoutManager::OnResize(int resize_amount,
 }
 
 void BraveContentsLayoutManager::LayoutImpl() {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) ||
-      !secondary_contents_view_ || !secondary_devtools_view_ ||
-      !secondary_contents_view_->GetVisible()) {
-    ContentsLayoutManager::LayoutImpl();
-    return;
-  }
-
   const bool is_host_empty = !host_view()->width();
   if (is_host_empty) {
     // When minimizing window, this can happen
@@ -80,7 +79,7 @@ void BraveContentsLayoutManager::LayoutImpl() {
 
   auto layout_web_contents_and_devtools =
       [](gfx::Rect bounds, views::View* contents_view,
-         views::View* devtools_view,
+         views::View* reader_mode_toolbar, views::View* devtools_view,
          const DevToolsContentsResizingStrategy& strategy) {
         gfx::Rect new_contents_bounds;
         gfx::Rect new_devtools_bounds;
@@ -90,6 +89,15 @@ void BraveContentsLayoutManager::LayoutImpl() {
         new_contents_bounds.set_x(bounds.x() + new_contents_bounds.x());
         new_devtools_bounds.set_x(bounds.x() + new_devtools_bounds.x());
 
+        if (reader_mode_toolbar && reader_mode_toolbar->GetVisible()) {
+          gfx::Rect toolbar_bounds = new_contents_bounds;
+          toolbar_bounds.set_height(
+              reader_mode_toolbar->GetPreferredSize().height());
+          reader_mode_toolbar->SetBoundsRect(toolbar_bounds);
+          new_contents_bounds.Inset(
+              gfx::Insets::TLBR(toolbar_bounds.height(), 0, 0, 0));
+        }
+
         // TODO(sko) We're ignoring dev tools specific position. Maybe we need
         // to revisit this. On the other hand, I think we shouldn't let devtools
         // on the side of split view as it's too confusing.
@@ -98,17 +106,29 @@ void BraveContentsLayoutManager::LayoutImpl() {
       };
 
   gfx::Rect bounds = host_view()->GetLocalBounds();
+
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) ||
+      !secondary_contents_view_ || !secondary_devtools_view_ ||
+      !secondary_contents_view_->GetVisible()) {
+    layout_web_contents_and_devtools(bounds, contents_view_,
+                                     contents_reader_mode_toolbar_,
+                                     devtools_view_, strategy_);
+    return;
+  }
+
   const auto size_delta = ClampSplitViewSizeDelta(
       host_view(), split_view_size_delta_ + ongoing_split_view_size_delta_);
   bounds.set_width((bounds.width() - kSpacingBetweenContentsWebViews) / 2 +
                    size_delta);
   if (show_main_web_contents_at_tail_) {
     layout_web_contents_and_devtools(bounds, secondary_contents_view_,
+                                     contents_reader_mode_toolbar_,
                                      secondary_devtools_view_,
                                      secondary_strategy_);
   } else {
-    layout_web_contents_and_devtools(bounds, contents_view_, devtools_view_,
-                                     strategy_);
+    layout_web_contents_and_devtools(bounds, contents_view_,
+                                     contents_reader_mode_toolbar_,
+                                     devtools_view_, strategy_);
   }
 
   bounds.set_x(bounds.right());
@@ -118,10 +138,12 @@ void BraveContentsLayoutManager::LayoutImpl() {
   bounds.set_x(bounds.right());
   bounds.set_width(host_view()->width() - bounds.x());
   if (show_main_web_contents_at_tail_) {
-    layout_web_contents_and_devtools(bounds, contents_view_, devtools_view_,
-                                     strategy_);
+    layout_web_contents_and_devtools(bounds, contents_view_,
+                                     secondary_contents_reader_mode_toolbar_,
+                                     devtools_view_, strategy_);
   } else {
     layout_web_contents_and_devtools(bounds, secondary_contents_view_,
+                                     secondary_contents_reader_mode_toolbar_,
                                      secondary_devtools_view_,
                                      secondary_strategy_);
   }

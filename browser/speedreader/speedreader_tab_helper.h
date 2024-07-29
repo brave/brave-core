@@ -105,6 +105,8 @@ class SpeedreaderTabHelper
 
   void OnToolbarStateChanged(mojom::MainButtonType button);
 
+  void ForceUIUpdate();
+
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;
   explicit SpeedreaderTabHelper(content::WebContents* web_contents,

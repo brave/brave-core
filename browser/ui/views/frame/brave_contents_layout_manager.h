@@ -19,7 +19,9 @@ class BraveContentsLayoutManager : public ContentsLayoutManager,
   // Spacing between |contents_web_view_| and |secondary_contents_web_view_|.
   static constexpr auto kSpacingBetweenContentsWebViews = 4;
 
-  using ContentsLayoutManager::ContentsLayoutManager;
+  BraveContentsLayoutManager(views::View* devtools_view,
+                             views::View* contents_view,
+                             views::View* watermark_view = nullptr);
   ~BraveContentsLayoutManager() override;
 
   void set_browser_view(BraveBrowserView* browser_view) {
@@ -32,6 +34,17 @@ class BraveContentsLayoutManager : public ContentsLayoutManager,
 
   void set_secondary_devtools_view(views::View* secondary_devtools_view) {
     secondary_devtools_view_ = secondary_devtools_view;
+  }
+
+  void set_contents_reader_mode_toolbar(
+      views::View* contents_reader_mode_toolbar) {
+    contents_reader_mode_toolbar_ = contents_reader_mode_toolbar;
+  }
+
+  void set_secondary_contents_reader_mode_toolbar(
+      views::View* secondary_contents_reader_mode_toolbar) {
+    secondary_contents_reader_mode_toolbar_ =
+        secondary_contents_reader_mode_toolbar;
   }
 
   void SetSplitViewSeparator(SplitViewSeparator* split_view_separator);
@@ -70,6 +83,8 @@ class BraveContentsLayoutManager : public ContentsLayoutManager,
   raw_ptr<SplitViewBrowserData> split_view_browser_data_ = nullptr;
   raw_ptr<views::View> secondary_contents_view_ = nullptr;
   raw_ptr<views::View> secondary_devtools_view_ = nullptr;
+  raw_ptr<views::View> contents_reader_mode_toolbar_ = nullptr;
+  raw_ptr<views::View> secondary_contents_reader_mode_toolbar_ = nullptr;
   raw_ptr<SplitViewSeparator> split_view_separator_ = nullptr;
 
   DevToolsContentsResizingStrategy secondary_strategy_;

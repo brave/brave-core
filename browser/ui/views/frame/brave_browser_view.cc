@@ -31,6 +31,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/browser/ui/tabs/split_view_utils.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
@@ -338,6 +339,24 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
         secondary_devtools_web_view_);
     contents_layout_manager->SetSplitViewSeparator(split_view_separator_);
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+    reader_mode_toolbar_view_ =
+        std::make_unique<ReaderModeToolbarView>(browser_.get());
+    secondary_reader_mode_toolbar_view_ =
+        std::make_unique<ReaderModeToolbarView>(browser_.get());
+
+    contents_container_->AddChildView(reader_mode_toolbar_view_.get());
+    contents_container_->AddChildView(
+        secondary_reader_mode_toolbar_view_.get());
+
+    contents_layout_manager->set_contents_reader_mode_toolbar(
+        reader_mode_toolbar_view_.get());
+    contents_layout_manager->set_secondary_contents_reader_mode_toolbar(
+        secondary_reader_mode_toolbar_view_.get());
+    reader_mode_toolbar_view_->AddObserver(this);
+    secondary_reader_mode_toolbar_view_->AddObserver(this);
+#endif
+
     auto* split_view_browser_data =
         SplitViewBrowserData::FromBrowser(browser_.get());
     contents_layout_manager->set_split_view_browser_data(
@@ -394,6 +413,11 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
 
 tabs::TabHandle BraveBrowserView::GetActiveTabHandle() {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
+
+  auto* active_web_contents = GetActiveWebContents();
+  if (!active_web_contents) {
+    return {};
+  }
 
   auto* model = browser()->tab_strip_model();
   return model->GetTabHandleAt(
@@ -559,6 +583,10 @@ void BraveBrowserView::UpdateSecondaryContentsWebViewVisibility() {
 
   split_view_separator_->SetVisible(secondary_contents_web_view_->GetVisible());
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  UpdateReaderModeToolbars();
+#endif
+
   contents_container()->DeprecatedLayoutImmediately();
 }
 
@@ -700,10 +728,16 @@ speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
       anchor = GetLocationBarView();
       arrow = views::BubbleBorder::TOP_RIGHT;
       break;
-    case speedreader::SpeedreaderBubbleLocation::kToolbar:
-      anchor = reader_mode_toolbar_view_->toolbar();
+    case speedreader::SpeedreaderBubbleLocation::kToolbar: {
+      auto tile_contents = SplitViewUtils::GetActiveTabTileContents(browser());
+      if (tile_contents.is_secondary_active) {
+        anchor = secondary_reader_mode_toolbar_view_->toolbar();
+      } else {
+        anchor = reader_mode_toolbar_view_->toolbar();
+      }
       arrow = views::BubbleBorder::TOP_LEFT;
       break;
+    }
   }
 
   auto* reader_mode_bubble =
@@ -714,35 +748,76 @@ speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
   return reader_mode_bubble;
 }
 
-void BraveBrowserView::ShowReaderModeToolbar() {
-  if (!reader_mode_toolbar_view_) {
-    reader_mode_toolbar_view_ =
-        std::make_unique<ReaderModeToolbarView>(GetProfile());
-    if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())) {
-      SetBorder(views::CreateThemedSolidSidedBorder(
-          gfx::Insets::TLBR(0, 0, 1, 0), kColorToolbarContentAreaSeparator));
-    }
-    AddChildView(reader_mode_toolbar_view_.get());
-
-    // See the comment of same code in ctor.
-    // TODO(simonhong): Find more better way instead of calling multiple
-    // times.
-    ReorderChildView(find_bar_host_view_, -1);
-    GetBrowserViewLayout()->set_reader_mode_toolbar(
-        reader_mode_toolbar_view_.get());
-  } else {
+void BraveBrowserView::ShowReaderModeToolbar(
+    content::WebContents* web_contents) {
+  auto tile_contents =
+      SplitViewUtils::GetTabTileContents(browser(), web_contents);
+  if (!tile_contents.main) {
+    reader_mode_toolbar_view_->SetVisible(false);
+    secondary_reader_mode_toolbar_view_->SetVisible(false);
+  }
+  if (!tile_contents.secondary) {
+    secondary_reader_mode_toolbar_view_->SetVisible(false);
+  }
+  if (tile_contents.main == web_contents) {
     reader_mode_toolbar_view_->SetVisible(true);
+  }
+  if (tile_contents.secondary == web_contents) {
+    secondary_reader_mode_toolbar_view_->SetVisible(true);
   }
 
   DeprecatedLayoutImmediately();
 }
 
-void BraveBrowserView::HideReaderModeToolbar() {
-  if (reader_mode_toolbar_view_ && reader_mode_toolbar_view_->GetVisible()) {
+void BraveBrowserView::HideReaderModeToolbar(
+    content::WebContents* web_contents) {
+  auto tile_contents =
+      SplitViewUtils::GetTabTileContents(browser(), web_contents);
+  if (!tile_contents.main) {
     reader_mode_toolbar_view_->SetVisible(false);
-    DeprecatedLayoutImmediately();
+    secondary_reader_mode_toolbar_view_->SetVisible(false);
+  }
+  if (!tile_contents.secondary) {
+    secondary_reader_mode_toolbar_view_->SetVisible(false);
+  }
+  if (tile_contents.main == web_contents) {
+    reader_mode_toolbar_view_->SetVisible(false);
+  }
+  if (tile_contents.secondary == web_contents) {
+    secondary_reader_mode_toolbar_view_->SetVisible(false);
+  }
+  DeprecatedLayoutImmediately();
+}
+
+void BraveBrowserView::OnReaderModeToolbarActive(
+    ReaderModeToolbarView* toolbar) {
+  auto tile_contents = SplitViewUtils::GetActiveTabTileContents(browser());
+
+  if (toolbar == reader_mode_toolbar_view_.get()) {
+    if (tile_contents.is_secondary_active) {
+      browser()->ActivateContents(tile_contents.main);
+    }
+  } else if (toolbar == secondary_reader_mode_toolbar_view_.get()) {
+    browser()->ActivateContents(tile_contents.secondary);
   }
 }
+
+void BraveBrowserView::UpdateReaderModeToolbars() {
+  auto force_ui_update = [](content::WebContents* web_contents) {
+    if (!web_contents) {
+      return;
+    }
+    if (auto* tab_helper =
+            speedreader::SpeedreaderTabHelper::FromWebContents(web_contents)) {
+      tab_helper->ForceUIUpdate();
+    }
+  };
+
+  auto tile_contents = SplitViewUtils::GetActiveTabTileContents(browser());
+  force_ui_update(tile_contents.main);
+  force_ui_update(tile_contents.secondary);
+}
+
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
 void BraveBrowserView::ShowUpdateChromeDialog() {

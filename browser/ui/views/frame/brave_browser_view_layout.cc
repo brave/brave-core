@@ -84,9 +84,6 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
     if (IsInfobarVisible()) {
       return infobar_container_->y();
     }
-    if (IsReaderModeToolbarVisible()) {
-      return reader_mode_toolbar_->y();
-    }
     return contents_container_->y() - GetContentsMargins().top();
   };
 
@@ -132,7 +129,6 @@ void BraveBrowserViewLayout::LayoutSidePanelView(
   }
 
   LayoutSideBar(contents_container_bounds);
-  LayoutReaderModeToolbar(contents_container_bounds);
 
   UpdateContentsContainerInsets(contents_container_bounds);
 }
@@ -318,19 +314,6 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
   contents_container_bounds.Inset(contents_margins);
 }
 
-void BraveBrowserViewLayout::LayoutReaderModeToolbar(
-    gfx::Rect& contents_bounds) {
-  if (!IsReaderModeToolbarVisible()) {
-    return;
-  }
-
-  gfx::Rect bounds = contents_bounds;
-  bounds.set_height(reader_mode_toolbar_->GetPreferredSize().height());
-  reader_mode_toolbar_->SetBoundsRect(bounds);
-
-  contents_bounds.Inset(gfx::Insets::TLBR(bounds.height(), 0, 0, 0));
-}
-
 gfx::Insets BraveBrowserViewLayout::GetContentsMargins() const {
   if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
           browser_view_->browser())) {
@@ -347,16 +330,11 @@ gfx::Insets BraveBrowserViewLayout::GetContentsMargins() const {
   // no need for a top margin.
   if (browser_view_->GetTabStripVisible() ||
       browser_view_->IsToolbarVisible() ||
-      browser_view_->IsBookmarkBarVisible() || IsInfobarVisible() ||
-      IsReaderModeToolbarVisible()) {
+      browser_view_->IsBookmarkBarVisible() || IsInfobarVisible()) {
     margins.set_top(0);
   }
 
   return margins;
-}
-
-bool BraveBrowserViewLayout::IsReaderModeToolbarVisible() const {
-  return reader_mode_toolbar_ && reader_mode_toolbar_->GetVisible();
 }
 
 bool BraveBrowserViewLayout::IsFullscreenForBrowser() const {
