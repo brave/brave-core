@@ -48,7 +48,6 @@
 #include "brave/browser/ui/webui/brave_rewards/tip_panel_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
-#include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
@@ -171,8 +170,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
       return new BravePrivateNewTabUI(web_ui, url.host());
     }
     return new BraveNewTabUI(web_ui, url.host());
-  } else if (host == kShieldsPanelHost) {
-    return new ShieldsPanelUI(web_ui);
   } else if (host == kSpeedreaderPanelHost) {
     return new SpeedreaderToolbarUI(web_ui, url.host());
   } else if (host == kCookieListOptInHost) {
@@ -240,7 +237,6 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       ((url.host_piece() == kWelcomeHost ||
         url.host_piece() == chrome::kChromeUIWelcomeURL) &&
        !profile->IsGuestSession()) ||
-      url.host_piece() == kShieldsPanelHost ||
       (url.host_piece() == kCookieListOptInHost &&
        base::FeatureList::IsEnabled(
            brave_shields::features::kBraveAdblockCookieListOptIn)) ||
