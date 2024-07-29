@@ -13,19 +13,22 @@
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
+#include "brave/components/brave_news/common/brave_news.mojom-params-data.h"
+#include "brave/components/brave_news/common/brave_news.mojom.h"
 
 namespace brave_news {
 
 class BraveNewsPrefManager;
-class PublishersController;
 
 class InitializationPromise {
  public:
+  using GetLocale = base::RepeatingCallback<void(
+      mojom::BraveNewsController::GetLocaleCallback)>;
   enum class State { kNone, kInitializing, kInitialized, kFailed };
 
   InitializationPromise(size_t max_retries,
                         BraveNewsPrefManager& pref_manager,
-                        PublishersController& publishers_controller);
+                        GetLocale get_locale);
   ~InitializationPromise();
 
   void OnceInitialized(base::OnceClosure on_initialized);
@@ -51,7 +54,7 @@ class InitializationPromise {
   void Notify();
 
   raw_ref<BraveNewsPrefManager> pref_manager_;
-  raw_ref<PublishersController> publishers_controller_;
+  GetLocale get_locale_;
 
   base::OneShotEvent on_initializing_prefs_complete_;
 

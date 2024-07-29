@@ -13,11 +13,15 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
+#include "base/location.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
+#include "brave/components/brave_news/browser/background_history_querier.h"
+#include "brave/components/brave_news/browser/brave_news_engine.h"
 #include "brave/components/brave_news/browser/feed_building.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
+#include "brave/components/brave_news/browser/feed_v2_builder.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
@@ -29,37 +33,14 @@ namespace brave_news {
 
 FeedController::FeedController(
     PublishersController* publishers_controller,
-    history::HistoryService* history_service,
+    BackgroundHistoryQuerier& history_querier,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : publishers_controller_(publishers_controller),
-      history_service_(history_service),
+      history_querier_(history_querier),
       feed_fetcher_(*publishers_controller, url_loader_factory),
       on_current_update_complete_(new base::OneShotEvent()) {}
 
 FeedController::~FeedController() = default;
-
-void FeedController::DoesFeedVersionDiffer(
-    const SubscriptionsSnapshot& subscriptions,
-    const std::string& matching_hash,
-    mojom::BraveNewsController::IsFeedUpdateAvailableCallback callback) {
-  GetOrFetchFeed(
-      subscriptions,
-      base::BindOnce(
-          [](FeedController* controller, std::string matching_hash,
-             mojom::BraveNewsController::IsFeedUpdateAvailableCallback
-                 callback) {
-            VLOG(1) << "DoesFeedVersionMatch? " << matching_hash << " "
-                    << controller->current_feed_.hash;
-            std::move(callback).Run(matching_hash !=
-                                    controller->current_feed_.hash);
-          },
-          base::Unretained(this), matching_hash, std::move(callback)));
-}
-
-void FeedController::AddListener(
-    mojo::PendingRemote<mojom::FeedListener> listener) {
-  listeners_.Add(std::move(listener));
-}
 
 void FeedController::GetOrFetchFeed(const SubscriptionsSnapshot& subscriptions,
                                     GetFeedCallback callback) {
@@ -148,6 +129,10 @@ void FeedController::EnsureFeedIsUpdating(
                                 << "history hosts # " << history_hosts.size();
                             // Parse directly to in-memory property
                             controller->ResetFeed();
+
+                            // Store the subscriptions we used to generate this
+                            // feed.
+                            controller->last_subscriptions_ = subscriptions;
                             std::vector<mojom::FeedItemPtr> feed_items;
                             if (!BuildFeed(items, history_hosts, &publishers,
                                            &controller->current_feed_,
@@ -161,12 +146,7 @@ void FeedController::EnsureFeedIsUpdating(
                           controller->weak_ptr_factory_.GetWeakPtr(),
                           subscriptions, std::move(items),
                           std::move(publishers));
-                      history::QueryOptions options;
-                      options.max_count = 2000;
-                      options.SetRecentDayRange(14);
-                      controller->history_service_->QueryHistory(
-                          std::u16string(), options, std::move(on_history),
-                          &controller->task_tracker_);
+                      controller->history_querier_->Run(std::move(on_history));
                     },
                     controller->weak_ptr_factory_.GetWeakPtr(), subscriptions,
                     std::move(publishers)));
@@ -183,12 +163,31 @@ void FeedController::EnsureFeedIsCached(
 }
 
 void FeedController::UpdateIfRemoteChanged(
-    const SubscriptionsSnapshot& subscriptions) {
-  // If already updating, nothing to do,
-  // we don't want to collide with an update
-  // which starts and completes before our HEAD
-  // request completes (which admittedly is very unlikely).
+    const SubscriptionsSnapshot& subscriptions,
+    HashCallback callback) {
+  auto hash_callback = base::BindOnce(
+      [](base::WeakPtr<FeedController> controller, HashCallback callback) {
+        if (!controller) {
+          return;
+        }
+
+        std::move(callback).Run(controller->current_feed_.hash);
+      },
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  // If already updating, update with the hash once the update is complete.
+  // We don't want to collide with an update which starts and completes before
+  // our HEAD request completes (which admittedly is very unlikely).
   if (is_update_in_progress_) {
+    on_current_update_complete_->Post(FROM_HERE, std::move(hash_callback));
+    return;
+  }
+
+  // If the subscriptions have changed, we don't need to check the remote to
+  // know we need to update the feed.
+  if (!subscriptions.DiffPublishers(last_subscriptions_).IsEmpty() ||
+      !subscriptions.DiffChannels(last_subscriptions_).IsEmpty()) {
+    EnsureFeedIsUpdating(subscriptions);
+    on_current_update_complete_->Post(FROM_HERE, std::move(hash_callback));
     return;
   }
 
@@ -196,16 +195,22 @@ void FeedController::UpdateIfRemoteChanged(
       subscriptions, locale_feed_etags_,
       base::BindOnce(
           [](FeedController* controller,
-             const SubscriptionsSnapshot& subscriptions, bool has_update) {
+             const SubscriptionsSnapshot& subscriptions,
+             base::OnceClosure callback, bool has_update) {
             if (!has_update) {
+              std::move(callback).Run();
               return;
             }
 
+            // If the remote feeds have changed, refetch/regenerate the feed and
+            // fire the callback with the new hash.
             controller->EnsureFeedIsUpdating(subscriptions);
+            controller->on_current_update_complete_->Post(FROM_HERE,
+                                                          std::move(callback));
           },
           // Note: Unretained is safe here because this class owns the
           // FeedFetcher, which uses WeakPtrs internally.
-          base::Unretained(this), subscriptions));
+          base::Unretained(this), subscriptions, std::move(hash_callback)));
 }
 
 void FeedController::ClearCache() {
@@ -233,6 +238,7 @@ void FeedController::ResetFeed() {
   current_feed_.featured_item = nullptr;
   current_feed_.hash = "";
   current_feed_.pages.clear();
+  last_subscriptions_ = {};
 }
 
 void FeedController::NotifyUpdateDone() {
@@ -242,11 +248,6 @@ void FeedController::NotifyUpdateDone() {
   // can be waited for.
   is_update_in_progress_ = false;
   on_current_update_complete_ = std::make_unique<base::OneShotEvent>();
-
-  // Notify listeners.
-  for (const auto& listener : listeners_) {
-    listener->OnUpdateAvailable(current_feed_.hash);
-  }
 }
 
 }  // namespace brave_news

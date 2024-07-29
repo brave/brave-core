@@ -16,6 +16,10 @@ SubscriptionsDiff::~SubscriptionsDiff() = default;
 SubscriptionsDiff& SubscriptionsDiff::operator=(SubscriptionsDiff&&) = default;
 SubscriptionsDiff::SubscriptionsDiff(SubscriptionsDiff&&) = default;
 
+bool SubscriptionsDiff::IsEmpty() const {
+  return changed.empty() && removed.empty();
+}
+
 SubscriptionsSnapshot::SubscriptionsSnapshot() = default;
 
 SubscriptionsSnapshot::SubscriptionsSnapshot(

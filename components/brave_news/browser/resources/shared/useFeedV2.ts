@@ -6,6 +6,7 @@
 import { useCallback, useEffect, useState } from "react";
 import getBraveNewsController, { FeedV2, FeedV2Type } from "./api";
 import { addFeedListener } from "./feedListener";
+import { loadTimeData } from "$web-common/loadTimeData";
 
 export type FeedView = 'all' | 'following' | `publishers/${string}` | `channels/${string}`
 
@@ -98,6 +99,7 @@ const maybeLoadFeedView = (feed?: FeedV2): FeedView => {
 }
 
 const fetchFeed = (feedView: FeedView) => {
+  if (!loadTimeData.getBoolean('featureFlagBraveNewsFeedV2Enabled')) return Promise.resolve(undefined)
   let promise: Promise<{ feed: FeedV2 }> | undefined
   if (feedView.startsWith('publishers/')) {
     promise = getBraveNewsController().getPublisherFeed(feedView.split('/')[1]);

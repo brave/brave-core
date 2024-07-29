@@ -9,8 +9,11 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -62,7 +65,7 @@ class BraveNewsSuggestionsControllerTest : public testing::Test {
         publishers_controller_(&api_request_helper_),
         suggestions_controller_(&publishers_controller_,
                                 &api_request_helper_,
-                                nullptr) {
+                                querier_) {
     profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
     profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
                                     true);
@@ -92,6 +95,7 @@ class BraveNewsSuggestionsControllerTest : public testing::Test {
   network::TestURLLoaderFactory test_url_loader_factory_;
   api_request_helper::APIRequestHelper api_request_helper_;
 
+  BackgroundHistoryQuerier querier_ = base::DoNothing();
   PublishersController publishers_controller_;
   SuggestionsController suggestions_controller_;
 };

@@ -23,6 +23,8 @@
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/browser/urls.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "brave/components/brave_private_cdn/headers.h"
@@ -32,7 +34,7 @@
 namespace brave_news {
 
 namespace {
-mojom::Publisher* FindMatchPreferringLocale(
+mojom::PublisherPtr FindMatchPreferringLocale(
     const Publishers& publishers,
     const std::string& preferred_locale,
     base::RepeatingCallback<bool(const mojom::Publisher&)> matcher) {
@@ -40,7 +42,7 @@ mojom::Publisher* FindMatchPreferringLocale(
     return nullptr;
   }
 
-  mojom::Publisher* match = nullptr;
+  mojom::PublisherPtr match = nullptr;
   for (const auto& [_, publisher] : publishers) {
     if (!matcher.Run(*publisher)) {
       continue;
@@ -50,13 +52,13 @@ mojom::Publisher* FindMatchPreferringLocale(
                                         &mojom::LocaleInfo::locale);
     // If the match is in our preferred locale, return it.
     if (locale_it != publisher->locales.end()) {
-      return publisher.get();
+      return publisher->Clone();
     }
 
     // Otherwise, if we don't have a match yet, make this our match (so we
     // prefer whatever we found first).
     if (!match) {
-      match = publisher.get();
+      match = publisher->Clone();
     }
   }
 
@@ -68,6 +70,7 @@ mojom::Publisher* FindMatchPreferringLocale(
 // Apart from fetching, we need to make sure the subscriptions are up to date.
 void ApplySubscriptions(Publishers& publishers,
                         const SubscriptionsSnapshot& subscriptions) {
+  DVLOG(1) << __FUNCTION__;
   // Remove all direct feeds - they'll get re-added.
   for (auto it = publishers.begin(); it != publishers.end();) {
     if (it->second->type == mojom::PublisherType::DIRECT_SOURCE) {
@@ -101,44 +104,58 @@ void ApplySubscriptions(Publishers& publishers,
 
 }  // namespace
 
+bool IsSubscribed(const mojom::PublisherPtr& publisher) {
+  return publisher->user_enabled_status == mojom::UserEnabled::ENABLED ||
+         publisher->type == mojom::PublisherType::DIRECT_SOURCE;
+}
+
 PublishersController::PublishersController(
     api_request_helper::APIRequestHelper* api_request_helper)
-    : api_request_helper_(api_request_helper),
-      on_current_update_complete_(new base::OneShotEvent()) {}
+    : api_request_helper_(api_request_helper) {}
 
 PublishersController::~PublishersController() = default;
 
-const mojom::Publisher* PublishersController::GetPublisherForSite(
-    const GURL& site_url) const {
-  const auto& site_host = site_url.host();
+void PublishersController::GetPublisherForSite(
+    const SubscriptionsSnapshot& subscriptions,
+    const GURL& site_url,
+    GetPublisherCallback callback) {
+  GetOrFetchPublishers(
+      subscriptions,
+      base::BindOnce(
+          [](PublishersController* controller, GURL site_url,
+             GetPublisherCallback callback, Publishers publishers) {
+            const auto& site_host = site_url.host();
 
-  // Can't match a Publisher from an empty host
-  if (site_host.empty()) {
-    return nullptr;
-  }
+            // Can't match a Publisher from an empty host
+            if (site_host.empty()) {
+              std::move(callback).Run(nullptr);
+              return;
+            }
 
-  return FindMatchPreferringLocale(
-      publishers_, default_locale_,
-      base::BindRepeating(
-          [](const std::string& site_host, const mojom::Publisher& publisher) {
-            return publisher.site_url.host() == site_host;
+            std::move(callback).Run(FindMatchPreferringLocale(
+                publishers, controller->default_locale_,
+                base::BindRepeating(
+                    [](const std::string& site_host,
+                       const mojom::Publisher& publisher) {
+                      return publisher.site_url.host() == site_host;
+                    },
+                    site_host)));
           },
-          site_host));
+          base::Unretained(this), site_url, std::move(callback)),
+      false);
 }
 
-const mojom::Publisher* PublishersController::GetPublisherForFeed(
-    const GURL& feed_url) const {
-  return FindMatchPreferringLocale(
+void PublishersController::GetPublisherForFeed(
+    const SubscriptionsSnapshot& subscriptions,
+    const GURL& feed_url,
+    GetPublisherCallback callback) {
+  std::move(callback).Run(FindMatchPreferringLocale(
       publishers_, default_locale_,
       base::BindRepeating(
           [](const GURL& feed_url, const mojom::Publisher& publisher) {
             return publisher.feed_source == feed_url;
           },
-          feed_url));
-}
-
-const Publishers& PublishersController::GetLastPublishers() const {
-  return publishers_;
+          feed_url)));
 }
 
 // To be consumed outside of the class - provides a clone
@@ -175,16 +192,18 @@ void PublishersController::GetOrFetchPublishers(
   // Also don't wait if there's an update in progress and this caller
   // wishes to wait.
   if (!publishers_.empty() &&
-      (!wait_for_current_update || !is_update_in_progress_)) {
+      (!wait_for_current_update || !on_current_update_complete_)) {
     // Make sure the subscriptions are up to date.
+    DVLOG(1) << "Not refetching publishers, responding from cache.";
     ApplySubscriptions(publishers_, subscriptions);
     std::move(callback).Run();
     return;
   }
+
   // Ensure data is currently being fetched and subscribe to know
   // when that is complete.
-  on_current_update_complete_->Post(FROM_HERE, std::move(callback));
   EnsurePublishersIsUpdating(subscriptions);
+  on_current_update_complete_->Post(FROM_HERE, std::move(callback));
 }
 
 void PublishersController::GetLocale(
@@ -196,6 +215,7 @@ void PublishersController::GetLocale(
           [](PublishersController* controller,
              mojom::BraveNewsController::GetLocaleCallback callback,
              Publishers _) {
+            VLOG(1) << "Got locale: " << controller->default_locale_;
             std::move(callback).Run(controller->default_locale_);
           },
           base::Unretained(this), std::move(callback)));
@@ -209,10 +229,10 @@ void PublishersController::EnsurePublishersIsUpdating(
     const SubscriptionsSnapshot& subscriptions) {
   // Only 1 update at a time, other calls for data will wait for
   // the current operation via the `on_current_update_complete_` OneShotEvent.
-  if (is_update_in_progress_) {
+  if (on_current_update_complete_) {
     return;
   }
-  is_update_in_progress_ = true;
+  on_current_update_complete_ = std::make_unique<base::OneShotEvent>();
 
   GURL sources_url(
       base::StrCat({"https://", brave_news::GetHostname(), "/sources.",
@@ -233,10 +253,9 @@ void PublishersController::EnsurePublishersIsUpdating(
 
         // Update failed, we'll just reuse whatever publishers we had before.
         if (!publisher_list) {
+          DVLOG(1) << "Failed to fetch publisher list";
           controller->on_current_update_complete_->Signal();
-          controller->is_update_in_progress_ = false;
-          controller->on_current_update_complete_ =
-              std::make_unique<base::OneShotEvent>();
+          controller->on_current_update_complete_.reset();
           return;
         }
 
@@ -249,9 +268,7 @@ void PublishersController::EnsurePublishersIsUpdating(
         VLOG(1) << "Notify subscribers to publishers data";
         // One-shot subscribers
         controller->on_current_update_complete_->Signal();
-        controller->is_update_in_progress_ = false;
-        controller->on_current_update_complete_ =
-            std::make_unique<base::OneShotEvent>();
+        controller->on_current_update_complete_.reset();
       },
       base::Unretained(this), subscriptions);
   api_request_helper_->Request("GET", sources_url, "", "",

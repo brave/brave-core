@@ -14,12 +14,11 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
+#include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
+#include "brave/components/brave_news/browser/feed_v2_builder.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "components/history/core/browser/history_service.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
-#include "mojo/public/cpp/bindings/remote_set.h"
 
 namespace history {
 class HistoryService;
@@ -37,19 +36,12 @@ class FeedController {
  public:
   FeedController(
       PublishersController* publishers_controller,
-      history::HistoryService* history_service,
+      BackgroundHistoryQuerier& history_querier,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~FeedController();
   FeedController(const FeedController&) = delete;
   FeedController& operator=(const FeedController&) = delete;
 
-  // Checks if latest cached (or in-progress fetched) feed matches incoming hash
-  void DoesFeedVersionDiffer(
-      const SubscriptionsSnapshot& subscriptions,
-      const std::string& matching_hash,
-      mojom::BraveNewsController::IsFeedUpdateAvailableCallback callback);
-  // Adds a listener which will be notified of feed updates.
-  void AddListener(mojo::PendingRemote<mojom::FeedListener> listener);
   // Provides a clone of data so that caller can take ownership or dispose
   void GetOrFetchFeed(const SubscriptionsSnapshot& subscriptions,
                       GetFeedCallback callback);
@@ -60,7 +52,8 @@ class FeedController {
   // occured and that we have data (if there was no problem fetching or
   // parsing).
   void EnsureFeedIsCached(const SubscriptionsSnapshot& subscriptions);
-  void UpdateIfRemoteChanged(const SubscriptionsSnapshot& subscriptions);
+  void UpdateIfRemoteChanged(const SubscriptionsSnapshot& subscriptions,
+                             HashCallback callback);
   void ClearCache();
 
  private:
@@ -70,7 +63,7 @@ class FeedController {
   void NotifyUpdateDone();
 
   raw_ptr<PublishersController> publishers_controller_ = nullptr;
-  raw_ptr<history::HistoryService> history_service_ = nullptr;
+  raw_ref<BackgroundHistoryQuerier> history_querier_;
 
   FeedFetcher feed_fetcher_;
 
@@ -79,10 +72,11 @@ class FeedController {
   // Internal callers subscribe to this to know when the current in-progress
   // fetch and parse is complete.
   std::unique_ptr<base::OneShotEvent> on_current_update_complete_;
-  mojo::RemoteSet<mojom::FeedListener> listeners_;
   // Store a copy of the feed in memory so we don't fetch new data from remote
   // every time the UI opens.
   mojom::Feed current_feed_;
+  // The set of subscriptions used to generate |current_feed_|
+  SubscriptionsSnapshot last_subscriptions_;
 
   // A map from feed locale to the last known etag for that feed. Used to
   // determine when we have available updates.

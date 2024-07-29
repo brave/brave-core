@@ -14,6 +14,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_sampling.h"
@@ -32,6 +33,7 @@ namespace brave_news {
 
 using BuildFeedCallback = mojom::BraveNewsController::GetFeedV2Callback;
 using GetSignalsCallback = mojom::BraveNewsController::GetSignalsCallback;
+using HashCallback = base::OnceCallback<void(const std::string&)>;
 
 class FeedGenerationInfo;
 
@@ -41,7 +43,7 @@ class FeedV2Builder {
       PublishersController& publishers_controller,
       ChannelsController& channels_controller,
       SuggestionsController& suggestions_controller,
-      history::HistoryService& history_service,
+      BackgroundHistoryQuerier& history_querier,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   FeedV2Builder(const FeedV2Builder&) = delete;
   FeedV2Builder& operator=(const FeedV2Builder&) = delete;
@@ -59,12 +61,13 @@ class FeedV2Builder {
                           BuildFeedCallback callback);
   void BuildAllFeed(const SubscriptionsSnapshot& subscriptions,
                     BuildFeedCallback callback);
-  void EnsureFeedIsUpdating(const SubscriptionsSnapshot& subscriptions);
 
   void GetSignals(const SubscriptionsSnapshot& subscriptions,
                   GetSignalsCallback callback);
 
-  void RecheckFeedHash(const SubscriptionsSnapshot& subscriptions);
+  void GetLatestHash(const SubscriptionsSnapshot& subscriptions,
+                     bool refetch_data,
+                     HashCallback callback);
 
  private:
   // FeedGenerator's will be called on a different thread. The data in

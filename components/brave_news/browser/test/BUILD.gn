@@ -9,6 +9,7 @@ import("//testing/test.gni")
 source_set("brave_news_unit_tests") {
   testonly = true
   sources = [
+    "//brave/components/brave_news/browser/background_history_querier_unittest.cc",
     "//brave/components/brave_news/browser/brave_news_p3a_unittest.cc",
     "//brave/components/brave_news/browser/brave_news_pref_manager_unittest.cc",
     "//brave/components/brave_news/browser/channels_controller_unittest.cc",

@@ -14,9 +14,11 @@
 #include "base/containers/flat_set.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "components/history/core/browser/history_service.h"
@@ -42,7 +44,7 @@ class SuggestionsController {
   explicit SuggestionsController(
       PublishersController* publishers_controller,
       api_request_helper::APIRequestHelper* api_request_helper,
-      history::HistoryService* history_service);
+      BackgroundHistoryQuerier& history_querier);
   SuggestionsController(const SuggestionsController&) = delete;
   SuggestionsController& operator=(const SuggestionsController&) = delete;
   ~SuggestionsController();
@@ -66,11 +68,13 @@ class SuggestionsController {
 
   raw_ptr<PublishersController> publishers_controller_;
   raw_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
-  raw_ptr<history::HistoryService> history_service_;
+  raw_ref<BackgroundHistoryQuerier> history_querier_;
   std::unique_ptr<base::OneShotEvent> on_current_update_complete_;
 
   std::string locale_;
   PublisherSimilarities similarities_;
+
+  base::WeakPtrFactory<SuggestionsController> weak_ptr_factory_{this};
 };
 }  // namespace brave_news
 
