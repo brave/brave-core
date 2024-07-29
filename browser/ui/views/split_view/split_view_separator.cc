@@ -178,6 +178,12 @@ void SplitViewSeparator::ViewHierarchyChanged(
   }
 }
 
+void SplitViewSeparator::OnBoundsChanged(const gfx::Rect& previous_bounds) {
+  ResizeArea::OnBoundsChanged(previous_bounds);
+
+  LayoutMenuButton();
+}
+
 void SplitViewSeparator::OnResize(int resize_amount, bool done_resizing) {
   // When mouse goes toward web contents area, the cursor could have been
   // changed to the normal cursor. Reset it resize cursor.
