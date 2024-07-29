@@ -11,6 +11,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_handler.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_web_ui_utils.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_panel_generated_map.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
@@ -27,6 +28,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "content/public/common/url_constants.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "ui/base/webui/web_ui_util.h"
 
@@ -208,6 +210,19 @@ void RewardsPanelUI::CreatePanelHandler(
   panel_handler_ = std::make_unique<RewardsPanelHandler>(
       std::move(panel), std::move(receiver), embedder(), rewards,
       panel_coordinator_);
+}
+
+RewardsPanelUIConfig::RewardsPanelUIConfig()
+    : DefaultTopChromeWebUIConfig(content::kChromeUIScheme,
+                                  kBraveRewardsPanelHost) {}
+
+bool RewardsPanelUIConfig::IsWebUIEnabled(
+    content::BrowserContext* browser_context) {
+  return !ShouldBlockRewardsWebUI(browser_context, GURL(kBraveRewardsPanelURL));
+}
+
+bool RewardsPanelUIConfig::ShouldAutoResizeHost() {
+  return true;
 }
 
 }  // namespace brave_rewards
