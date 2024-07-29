@@ -328,9 +328,7 @@ void EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup() {
 void EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup() {
   DCHECK(!context_->IsOffTheRecord());
 
-  std::optional<bool> is_window_visible = std::nullopt;
-  delegate_->DoesProfileHaveAnyBrowserWindow(is_window_visible);
-  if (is_window_visible.has_value() && !is_window_visible.value()) {
+  if (!delegate_->DoesProfileHaveAnyBrowserWindow()) {
     first_party_storage_areas_to_cleanup_on_startup_.clear();
     return;
   }
