@@ -34,6 +34,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
@@ -57,6 +58,11 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
         brave_l10n::GetLocalizedResourceUTF16String(str.id);
     source->AddString(str.name, l10n_str);
   }
+  auto plural_string_handler = std::make_unique<PluralStringHandler>();
+  plural_string_handler->AddLocalizedString(
+      "braveWalletExchangeNamePlusSteps",
+      IDS_BRAVE_WALLET_EXCHANGE_NAME_PLUS_STEPS);
+  web_ui->AddMessageHandler(std::move(plural_string_handler));
   webui::SetupWebUIDataSource(source,
                               base::make_span(kBraveWalletPanelGenerated,
                                               kBraveWalletPanelGeneratedSize),

@@ -620,6 +620,15 @@ provideStrings({
   braveWalletOthers: 'Others: $1%',
   braveWalletSuggested: 'Suggested',
   braveWalletCustom: 'Custom',
+  braveWalletCheapest: 'Cheapest',
+  braveWalletFastest: 'Fastest',
+  braveWalletOnNetwork: 'on $1',
+  braveWalletRoutes: 'Routes',
+  braveWalletSwapOnNetworkViaExchange: 'Swap on $1 via $2',
+  braveWalletBridgeFromNetworkToNetwork: 'Bridge from $1 to $2',
+  braveWalletExchangeNamePlusSteps: '$1 + $2 $3',
+  braveWalletExchangeViaProvider: '$1$5$2 via $3$6$4',
+  braveWalletSortBy: 'Sort by',
 
   // Buy
   braveWalletBuyTitle: 'Test faucet',

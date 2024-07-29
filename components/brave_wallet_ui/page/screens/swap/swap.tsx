@@ -64,7 +64,7 @@ export const Swap = () => {
     toAmount,
     isFetchingQuote,
     quoteOptions,
-    selectedQuoteOptionIndex,
+    selectedQuoteOptionId,
     selectingFromOrTo,
     slippageTolerance,
     onSelectFromToken,
@@ -78,6 +78,7 @@ export const Swap = () => {
     onSubmit,
     onChangeRecipient,
     onChangeSwapProvider,
+    onSelectQuoteOption,
     submitButtonText,
     isSubmitButtonDisabled,
     swapValidationError,
@@ -88,7 +89,8 @@ export const Swap = () => {
     toAccount,
     timeUntilNextQuote,
     selectedProvider,
-    availableProvidersForSwap
+    availableProvidersForSwap,
+    isSubmittingSwap
   } = swap
 
   // State
@@ -185,20 +187,11 @@ export const Swap = () => {
             fullHeight={true}
             justifyContent='space-between'
           >
-            {/* TODO: QuoteOptions is currently unused
-            {selectedNetwork?.coin === BraveWallet.CoinType.SOL &&
-              quoteOptions.length > 0 && (
-                <QuoteOptions
-                  options={quoteOptions}
-                  selectedQuoteOptionIndex={selectedQuoteOptionIndex}
-                  onSelectQuoteOption={onSelectQuoteOption}
-                  spotPrices={spotPrices}
-                />
-              )} */}
             {quoteOptions.length > 0 ? (
               <>
                 <QuoteInfo
-                  selectedQuoteOption={quoteOptions[selectedQuoteOptionIndex]}
+                  onSelectQuoteOption={onSelectQuoteOption}
+                  selectedQuoteOptionId={selectedQuoteOptionId}
                   fromToken={fromToken}
                   toToken={toToken}
                   swapFees={swapFees}
@@ -207,6 +200,7 @@ export const Swap = () => {
                   onChangeRecipient={onChangeRecipient}
                   slippageTolerance={slippageTolerance}
                   onChangeSlippageTolerance={onChangeSlippageTolerance}
+                  quoteOptions={quoteOptions}
                 />
                 <VerticalSpace space='12px' />
                 {/* TODO: Swap and Send is currently unavailable
@@ -255,7 +249,7 @@ export const Swap = () => {
                   onClick={onSubmit}
                   size='large'
                   isDisabled={isSubmitButtonDisabled}
-                  isLoading={isFetchingQuote}
+                  isLoading={isFetchingQuote || isSubmittingSwap}
                 >
                   {submitButtonText}
                 </LeoSquaredButton>
