@@ -15,6 +15,7 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
@@ -25,6 +26,7 @@ void RegisterChromeWebUIConfigs() {
   auto& map = content::WebUIConfigMap::GetInstance();
   map.AddWebUIConfig(std::make_unique<CookieListOptInUIConfig>());
   map.AddWebUIConfig(std::make_unique<ShieldsPanelUIConfig>());
+  map.AddWebUIConfig(std::make_unique<WalletPanelUIConfig>());
   map.AddWebUIConfig(std::make_unique<SpeedreaderToolbarUIConfig>());
   #endif  // !BUILDFLAG(IS_ANDROID)
 }

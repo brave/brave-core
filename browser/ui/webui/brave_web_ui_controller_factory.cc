@@ -47,7 +47,6 @@
 #include "brave/browser/ui/webui/brave_rewards/tip_panel_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
-#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_ui.h"
@@ -121,9 +120,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
     return new EthereumRemoteClientUI(web_ui, url.host());
 #endif
-  } else if (host == kWalletPanelHost &&
-             brave_wallet::IsAllowedForContext(profile)) {
-    return new WalletPanelUI(web_ui);
 #endif  // !BUILDFLAG(OS_ANDROID)
   } else if (host == kRewardsPageHost &&
              // We don't want to check for supported profile type here because
@@ -213,8 +209,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       (base::FeatureList::IsEnabled(
            brave_news::features::kBraveNewsFeedUpdate) &&
        url.host_piece() == kBraveNewsInternalsHost) ||
-      ((url.host_piece() == kWalletPanelHost ||
-        url.host_piece() == kWalletPageHost) &&
+      (url.host_piece() == kWalletPageHost &&
        brave_wallet::IsAllowedForContext(profile)) ||
       url.host_piece() == kBraveRewardsPanelHost ||
       url.host_piece() == kRewardsPageTopHost ||
