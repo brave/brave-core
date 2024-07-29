@@ -28,7 +28,7 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
   // respectfully
   @NSManaged public var visible: Bool
   @NSManaged public var isDeletedByUser: Bool
-  // This property is the source of truth for user makred
+  // This property is the source of truth for user marked
   // spam assets
   @NSManaged public var isSpam: Bool
   // Following properties are `retired`. Values should be
