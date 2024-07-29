@@ -44,7 +44,6 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
-#include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
@@ -143,9 +142,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kRewardsPageTopHost &&
              brave_rewards::IsSupportedForProfile(profile)) {
     return new brave_rewards::RewardsPageTopUI(web_ui, url.host());
-  } else if (host == kBraveRewardsPanelHost &&
-             brave_rewards::IsSupportedForProfile(profile)) {
-    return new brave_rewards::RewardsPanelUI(web_ui);
   } else if (base::FeatureList::IsEnabled(
                  brave_news::features::kBraveNewsFeedUpdate) &&
              host == kBraveNewsInternalsHost) {
@@ -208,7 +204,6 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
        url.host_piece() == kBraveNewsInternalsHost) ||
       (url.host_piece() == kWalletPageHost &&
        brave_wallet::IsAllowedForContext(profile)) ||
-      url.host_piece() == kBraveRewardsPanelHost ||
       url.host_piece() == kRewardsPageTopHost ||
       // On Android New Tab is a native page implemented in Java, so no need
       // in WebUI.
