@@ -13,7 +13,7 @@ import { useGetMainnetsQuery } from '../../../../common/slices/api.slice'
 import Amount from '../../../../utils/amount'
 import { CurrencySymbols } from '../../../../utils/currency-symbols'
 import { getLocale } from '../../../../../common/locale'
-import { BraveWallet } from '../../../../constants/types'
+import type { BraveWallet } from '../../../../constants/types'
 import { isHttpsUrl } from '../../../../utils/string-utils'
 
 // Components
