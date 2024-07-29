@@ -1107,4 +1107,5 @@
   <message name="IDS_BRAVE_WALLET_FILTERS" desc="Filters label">Filters</message>
   <message name="IDS_BRAVE_WALLET_CLEAR_FILTERS" desc="Clear filters label">Clear filters</message>
   <message name="IDS_BRAVE_WALLET_SHOW_MORE" desc="Show more label">Show more</message>
+  <message name="IDS_BRAVE_WALLET_DETAILS" desc="Details label">Details</message>
 </grit-part>

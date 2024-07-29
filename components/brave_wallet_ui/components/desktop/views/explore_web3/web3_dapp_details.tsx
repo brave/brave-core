@@ -42,7 +42,7 @@ export const DappDetails = ({ dapp, ...rest }: DappDetailsProps) => {
       {...rest}
       showClose={true}
     >
-      <Title slot='title'>Details</Title>
+      <Title slot='title'>{getLocale('braveWalletDetails')}</Title>
       <Column
         fullHeight
         fullWidth

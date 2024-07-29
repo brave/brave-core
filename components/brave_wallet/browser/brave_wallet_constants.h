@@ -1463,7 +1463,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletVisitDapp", IDS_BRAVE_WALLET_VISIT_DAPP},
     {"braveWalletFilters", IDS_BRAVE_WALLET_FILTERS},
     {"braveWalletClearFilters", IDS_BRAVE_WALLET_CLEAR_FILTERS},
-    {"braveWalletShowMore", IDS_BRAVE_WALLET_SHOW_MORE}};
+    {"braveWalletShowMore", IDS_BRAVE_WALLET_SHOW_MORE},
+    {"braveWalletDetails", IDS_BRAVE_WALLET_DETAILS}};
 
 // 0x swap constants
 inline constexpr char kZeroExSepoliaBaseAPIURL[] =

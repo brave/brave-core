@@ -1364,5 +1364,6 @@ provideStrings({
   braveWalletVisitDapp: 'Visit $1',
   braveWalletFilters: 'Filters',
   braveWalletClearFilters: 'Clear filters',
-  braveWalletShowMore: 'Show more'
+  braveWalletShowMore: 'Show more',
+  braveWalletDetails: 'Details'
 })

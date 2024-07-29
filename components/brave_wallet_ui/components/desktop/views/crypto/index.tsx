@@ -27,7 +27,6 @@ import {
 } from '../../../../page/reducers/accounts-tab-reducer'
 
 // hooks
-import { useQuery } from '../../../../common/hooks/use-query'
 import {
   usePortfolioVisibleNetworks //
 } from '../../../../common/hooks/use_portfolio_networks'
@@ -66,7 +65,6 @@ import {
 } from '../../card-headers/portfolio-overview-header'
 import { MarketAsset } from '../market/market_asset'
 import { ExploreWeb3View } from '../explore_web3/explore_web3'
-import { DappDetails } from '../explore_web3/web3_dapp_details'
 import { NftCollection } from '../nfts/components/nft_collection'
 
 export interface Props {
