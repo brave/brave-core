@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_feature.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_builder.h"

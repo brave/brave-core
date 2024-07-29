@@ -8,7 +8,7 @@
 #include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/hash/hash.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "url/gurl.h"

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_util.h"
 
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"

@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"

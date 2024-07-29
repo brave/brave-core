@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_mock.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_mock.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_types.h"
 #include "brave/components/brave_ads/core/public/history/site_history.h"

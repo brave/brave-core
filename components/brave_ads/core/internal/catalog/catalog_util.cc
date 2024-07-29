@@ -7,9 +7,9 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_feature.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_util.h"

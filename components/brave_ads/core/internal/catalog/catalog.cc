@@ -7,10 +7,10 @@
 
 #include "base/check.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"

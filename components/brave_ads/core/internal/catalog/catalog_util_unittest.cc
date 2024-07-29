@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_test_constants.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"

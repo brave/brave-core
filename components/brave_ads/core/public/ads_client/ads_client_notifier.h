@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_CLIENT_ADS_CLIENT_NOTIFIER_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_CLIENT_ADS_CLIENT_NOTIFIER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_CLIENT_ADS_CLIENT_NOTIFIER_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_CLIENT_ADS_CLIENT_NOTIFIER_H_
 
 #include <cstdint>
 #include <memory>
@@ -13,7 +13,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 class GURL;
 
@@ -162,4 +162,4 @@ class AdsClientNotifier {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_CLIENT_ADS_CLIENT_NOTIFIER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_CLIENT_ADS_CLIENT_NOTIFIER_H_

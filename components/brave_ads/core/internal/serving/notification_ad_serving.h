@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_delegate.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 namespace base {
 class Time;

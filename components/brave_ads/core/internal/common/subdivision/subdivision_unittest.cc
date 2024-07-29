@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision.h"
 
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_test_util.h"

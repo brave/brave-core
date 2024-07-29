@@ -10,7 +10,7 @@
 
 #include "base/files/file.h"
 #include "base/files/file_path.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/language_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/resources/resource_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"

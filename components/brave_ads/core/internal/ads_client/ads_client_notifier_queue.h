@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CLIENT_ADS_CLIENT_NOTIFIER_QUEUE_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CLIENT_ADS_CLIENT_NOTIFIER_QUEUE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CLIENT_ADS_CLIENT_NOTIFIER_QUEUE_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CLIENT_ADS_CLIENT_NOTIFIER_QUEUE_H_
 
 #include "base/containers/queue.h"
 #include "base/functional/callback.h"
@@ -32,4 +32,4 @@ class AdsClientNotifierQueue final {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CLIENT_ADS_CLIENT_NOTIFIER_QUEUE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CLIENT_ADS_CLIENT_NOTIFIER_QUEUE_H_

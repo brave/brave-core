@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler_util.h"
 
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 

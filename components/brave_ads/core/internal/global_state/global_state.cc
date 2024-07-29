@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
-#include "brave/components/brave_ads/core/public/client/ads_client.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
