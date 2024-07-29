@@ -51,6 +51,8 @@ source_set("ui") {
     "webui/brave_rewards/rewards_page_handler.h",
     "webui/brave_rewards/rewards_page_ui.cc",
     "webui/brave_rewards/rewards_page_ui.h",
+    "webui/brave_rewards/rewards_web_ui_utils.cc",
+    "webui/brave_rewards/rewards_web_ui_utils.h",
     "webui/brave_rewards_internals_ui.cc",
     "webui/brave_rewards_internals_ui.h",
     "webui/brave_rewards_page_ui.cc",
