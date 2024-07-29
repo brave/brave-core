@@ -36,8 +36,6 @@ class BackgroundHelperLinux final : public BackgroundHelper,
   // BackgroundHelper:
   bool IsForeground() const override;
 
-  base::WeakPtr<BackgroundHelperLinux> AsWeakPtr();
-
   base::WeakPtrFactory<BackgroundHelperLinux> weak_ptr_factory_{this};
 };
 

@@ -460,8 +460,6 @@ class AdsServiceImpl final : public AdsService,
   mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier>
       bat_ads_client_notifier_pending_receiver_;
 
-  base::WeakPtr<AdsServiceImpl> AsWeakPtr();
-
   base::WeakPtrFactory<AdsServiceImpl> weak_ptr_factory_{this};
 };
 

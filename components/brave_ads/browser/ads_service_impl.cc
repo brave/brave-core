@@ -262,10 +262,6 @@ AdsServiceImpl::~AdsServiceImpl() {
   rewards_service_->RemoveObserver(this);
 }
 
-base::WeakPtr<AdsServiceImpl> AdsServiceImpl::AsWeakPtr() {
-  return weak_ptr_factory_.GetWeakPtr();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 bool AdsServiceImpl::IsBatAdsServiceBound() const {
@@ -335,7 +331,7 @@ void AdsServiceImpl::InitializeNotificationsForCurrentProfile() {
 void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsService() {
   device_id_->GetDeviceId(base::BindOnce(
       &AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback,
-      AsWeakPtr()));
+      weak_ptr_factory_.GetWeakPtr()));
 }
 
 void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback(
@@ -367,8 +363,8 @@ void AdsServiceImpl::StartBatAdsService() {
   CHECK(!IsBatAdsServiceBound());
 
   bat_ads_service_remote_ = bat_ads_service_factory_->Launch();
-  bat_ads_service_remote_.set_disconnect_handler(
-      base::BindOnce(&AdsServiceImpl::DisconnectHandler, AsWeakPtr()));
+  bat_ads_service_remote_.set_disconnect_handler(base::BindOnce(
+      &AdsServiceImpl::DisconnectHandler, weak_ptr_factory_.GetWeakPtr()));
 
   CHECK(IsBatAdsServiceBound());
 
@@ -381,8 +377,8 @@ void AdsServiceImpl::StartBatAdsService() {
       bat_ads_client_associated_receiver_.BindNewEndpointAndPassRemote(),
       bat_ads_associated_remote_.BindNewEndpointAndPassReceiver(),
       std::move(bat_ads_client_notifier_pending_receiver_),
-      base::BindOnce(&AdsServiceImpl::BatAdsServiceCreatedCallback, AsWeakPtr(),
-                     ++service_starts_count_));
+      base::BindOnce(&AdsServiceImpl::BatAdsServiceCreatedCallback,
+                     weak_ptr_factory_.GetWeakPtr(), ++service_starts_count_));
 
   bat_ads_associated_remote_.reset_on_disconnect();
   bat_ads_client_notifier_remote_.reset_on_disconnect();
@@ -418,7 +414,7 @@ void AdsServiceImpl::BatAdsServiceCreatedCallback(
       FROM_HERE,
       base::BindOnce(&EnsureBaseDirectoryExistsOnFileTaskRunner, base_path_),
       base::BindOnce(&AdsServiceImpl::InitializeBasePathDirectoryCallback,
-                     AsWeakPtr(), current_start_number));
+                     weak_ptr_factory_.GetWeakPtr(), current_start_number));
 }
 
 void AdsServiceImpl::InitializeBasePathDirectoryCallback(
@@ -453,7 +449,7 @@ void AdsServiceImpl::InitializeRewardsWallet(
     const size_t current_start_number) {
   rewards_service_->GetRewardsWallet(
       base::BindOnce(&AdsServiceImpl::InitializeRewardsWalletCallback,
-                     AsWeakPtr(), current_start_number));
+                     weak_ptr_factory_.GetWeakPtr(), current_start_number));
 }
 
 void AdsServiceImpl::InitializeRewardsWalletCallback(
@@ -491,7 +487,8 @@ void AdsServiceImpl::InitializeBatAds(
 
   bat_ads_associated_remote_->Initialize(
       std::move(wallet),
-      base::BindOnce(&AdsServiceImpl::InitializeBatAdsCallback, AsWeakPtr()));
+      base::BindOnce(&AdsServiceImpl::InitializeBatAdsCallback,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void AdsServiceImpl::InitializeBatAdsCallback(const bool success) {
@@ -528,7 +525,7 @@ void AdsServiceImpl::ShutdownAndResetState() {
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&DeletePathOnFileTaskRunner, base_path_),
       base::BindOnce(&AdsServiceImpl::ShutdownAndResetStateCallback,
-                     AsWeakPtr()));
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void AdsServiceImpl::ShutdownAndResetStateCallback(const bool /*success*/) {
@@ -736,8 +733,9 @@ void AdsServiceImpl::NotifyPrefChanged(const std::string& path) const {
 }
 
 void AdsServiceImpl::GetRewardsWallet() {
-  rewards_service_->GetRewardsWallet(base::BindOnce(
-      &AdsServiceImpl::NotifyRewardsWalletDidUpdate, AsWeakPtr()));
+  rewards_service_->GetRewardsWallet(
+      base::BindOnce(&AdsServiceImpl::NotifyRewardsWalletDidUpdate,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void AdsServiceImpl::NotifyRewardsWalletDidUpdate(
@@ -858,8 +856,8 @@ void AdsServiceImpl::StartNotificationAdTimeOutTimer(
       std::make_unique<base::OneShotTimer>();
   notification_ad_timers_[placement_id]->Start(
       FROM_HERE, timeout,
-      base::BindOnce(&AdsServiceImpl::NotificationAdTimedOut, AsWeakPtr(),
-                     placement_id));
+      base::BindOnce(&AdsServiceImpl::NotificationAdTimedOut,
+                     weak_ptr_factory_.GetWeakPtr(), placement_id));
 
   VLOG(6) << "Timeout notification ad with placement id " << placement_id
           << " in " << timeout;
@@ -956,8 +954,8 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
   }
 
   bat_ads_associated_remote_->MaybeGetNotificationAd(
-      placement_id,
-      base::BindOnce(&AdsServiceImpl::OpenNewTabWithAdCallback, AsWeakPtr()));
+      placement_id, base::BindOnce(&AdsServiceImpl::OpenNewTabWithAdCallback,
+                                   weak_ptr_factory_.GetWeakPtr()));
 }
 
 void AdsServiceImpl::OpenNewTabWithAdCallback(
@@ -1210,8 +1208,9 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
   if (!prefetched_new_tab_page_ad_ && !is_prefetching_new_tab_page_ad_) {
     is_prefetching_new_tab_page_ad_ = true;
 
-    bat_ads_associated_remote_->MaybeServeNewTabPageAd(base::BindOnce(
-        &AdsServiceImpl::PrefetchNewTabPageAdCallback, AsWeakPtr()));
+    bat_ads_associated_remote_->MaybeServeNewTabPageAd(
+        base::BindOnce(&AdsServiceImpl::PrefetchNewTabPageAdCallback,
+                       weak_ptr_factory_.GetWeakPtr()));
   }
 }
 
@@ -1707,9 +1706,9 @@ void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
   ads_tooltips_delegate_->ShowCaptchaTooltip(
       payment_id, captcha_id, snooze_count == 0,
       base::BindOnce(&AdsServiceImpl::ShowScheduledCaptchaCallback,
-                     AsWeakPtr()),
+                     weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptchaCallback,
-                     AsWeakPtr()));
+                     weak_ptr_factory_.GetWeakPtr()));
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 
