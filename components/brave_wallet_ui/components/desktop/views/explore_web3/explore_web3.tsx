@@ -59,8 +59,6 @@ export const ExploreWeb3View = () => {
   const [selectedDapp, setSelectedDapp] = React.useState<
     BraveWallet.Dapp | undefined
   >(undefined)
-  const [isDappDetailsOpen, setIsDappDetailsOpen] =
-    React.useState<boolean>(false)
 
   // local storage
   const [filteredOutNetworkKeys, setFilteredOutNetworkKeys] =
@@ -170,7 +168,6 @@ export const ExploreWeb3View = () => {
   // methods
   const onDappClick = React.useCallback((dapp: BraveWallet.Dapp) => {
     setSelectedDapp(dapp)
-    setIsDappDetailsOpen(true)
   }, [])
 
   const onSelectCategory = React.useCallback(
@@ -343,10 +340,9 @@ export const ExploreWeb3View = () => {
 
       {selectedDapp ? (
         <DappDetails
-          isOpen={isDappDetailsOpen}
+          isOpen
           dapp={selectedDapp}
           onClose={() => {
-            setIsDappDetailsOpen(false)
             setSelectedDapp(undefined)
           }}
         />
