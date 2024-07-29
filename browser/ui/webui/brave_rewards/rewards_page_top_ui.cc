@@ -10,9 +10,12 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_data_source.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_web_ui_utils.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "content/public/common/url_constants.h"
 
 namespace brave_rewards {
 
@@ -48,10 +51,9 @@ class RewardsPageBubbleDelegate : public RewardsPageHandler::BubbleDelegate {
 
 }  // namespace
 
-RewardsPageTopUI::RewardsPageTopUI(content::WebUI* web_ui,
-                                   const std::string& host)
+RewardsPageTopUI::RewardsPageTopUI(content::WebUI* web_ui)
     : TopChromeWebUIController(web_ui) {
-  CreateAndAddRewardsPageDataSource(*web_ui, host);
+  CreateAndAddRewardsPageDataSource(*web_ui, kRewardsPageTopHost);
 }
 
 RewardsPageTopUI::~RewardsPageTopUI() = default;
@@ -78,5 +80,18 @@ void RewardsPageTopUI::CreatePageHandler(
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(RewardsPageTopUI)
+
+RewardsPageTopUIConfig::RewardsPageTopUIConfig()
+    : DefaultTopChromeWebUIConfig(content::kChromeUIScheme,
+                                  kRewardsPageTopHost) {}
+
+bool RewardsPageTopUIConfig::IsWebUIEnabled(
+    content::BrowserContext* browser_context) {
+  return !ShouldBlockRewardsWebUI(browser_context, GURL(kRewardsPageTopURL));
+}
+
+bool RewardsPageTopUIConfig::ShouldAutoResizeHost() {
+  return true;
+}
 
 }  // namespace brave_rewards
