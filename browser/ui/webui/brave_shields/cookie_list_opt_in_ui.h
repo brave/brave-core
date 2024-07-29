@@ -11,8 +11,13 @@
 
 #include "brave/components/brave_shields/core/common/cookie_list_opt_in.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+
+namespace content {
+class BrowserContext;
+}
 
 class CookieListOptInUI
     : public TopChromeWebUIController,
@@ -43,6 +48,18 @@ class CookieListOptInUI
       this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
+};
+
+class CookieListOptInUIConfig
+    : public DefaultTopChromeWebUIConfig<CookieListOptInUI> {
+ public:
+  CookieListOptInUIConfig();
+
+  // WebUIConfig::
+  bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
+
+  // TopChromeWebUIConfig::
+  bool ShouldAutoResizeHost() override;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SHIELDS_COOKIE_LIST_OPT_IN_UI_H_
