@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 
-#import "brave/components/brave_ads/core/public/client/ads_client.h"
+#import "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 @protocol AdsClientBridge
 @required
@@ -25,7 +25,7 @@
 - (void)notifyPendingObservers;
 - (bool)isNetworkConnectionAvailable;
 - (bool)canShowNotificationAds;
-- (void)loadComponentResource:(const std::string&)id
+- (void)loadResourceComponent:(const std::string&)id
                       version:(const int)version
                      callback:(brave_ads::LoadFileCallback)callback;
 - (void)showScheduledCaptcha:(const std::string&)payment_id

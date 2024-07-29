@@ -10,7 +10,7 @@
 
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager_observer.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 namespace brave_ads {
 

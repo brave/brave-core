@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 namespace bat_ads {
 
@@ -183,7 +183,7 @@ void BatAdsClientMojoBridge::Save(const std::string& name,
   bat_ads_client_associated_receiver_->Save(name, value, std::move(callback));
 }
 
-void BatAdsClientMojoBridge::LoadComponentResource(
+void BatAdsClientMojoBridge::LoadResourceComponent(
     const std::string& id,
     const int version,
     brave_ads::LoadFileCallback callback) {
@@ -192,7 +192,7 @@ void BatAdsClientMojoBridge::LoadComponentResource(
     return;
   }
 
-  bat_ads_client_associated_receiver_->LoadComponentResource(
+  bat_ads_client_associated_receiver_->LoadResourceComponent(
       id, version, std::move(callback));
 }
 

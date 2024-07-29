@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -50,7 +50,7 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
 
   // Invoked when a resource component with `id` has been updated to
   // `manifest_version`.
-  void NotifyDidUpdateResourceComponent(const std::string& manifest_version,
+  void NotifyResourceComponentDidChange(const std::string& manifest_version,
                                         const std::string& id) override;
 
   // Invoked when a resource component with `id` has been unregistered.
@@ -137,7 +137,7 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
   void NotifyDidSolveAdaptiveCaptcha() override;
 
  private:
-  brave_ads::AdsClientNotifier notifier_;
+  brave_ads::AdsClientNotifier ads_client_notifier_;
 
   mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier> pending_receiver_;
   mojo::Receiver<bat_ads::mojom::BatAdsClientNotifier> receiver_{this};

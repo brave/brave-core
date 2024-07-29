@@ -27,10 +27,10 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_filter_types.h"
@@ -589,7 +589,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
                    }
                    if (success) {
                      [strongSelf
-                         notifyDidUpdateResourceComponent:@"1"
+                         notifyResourceComponentDidChange:@"1"
                                                        id:languageCodeAdsResourceId];
                    }
                  }];
@@ -626,7 +626,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
                    }
                    if (success) {
                      [strongSelf
-                         notifyDidUpdateResourceComponent:@"1"
+                         notifyResourceComponentDidChange:@"1"
                                                        id:countryCodeAdsResourceId];
                    }
                  }];
@@ -708,7 +708,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 
                      BLOG(1, @"Notifying ads resource observers");
 
-                     [strongSelf notifyDidUpdateResourceComponent:@"1" id:key];
+                     [strongSelf notifyResourceComponentDidChange:@"1" id:key];
                    }];
   }
 }
@@ -1471,7 +1471,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   std::move(callback).Run(contents);
 }
 
-- (void)loadComponentResource:(const std::string&)id
+- (void)loadResourceComponent:(const std::string&)id
                       version:(const int)version
                      callback:(brave_ads::LoadFileCallback)callback {
   NSString* bridgedId = base::SysUTF8ToNSString(id);
@@ -1829,10 +1829,10 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   }
 }
 
-- (void)notifyDidUpdateResourceComponent:(NSString*)manifest_version
+- (void)notifyResourceComponentDidChange:(NSString*)manifest_version
                                       id:(NSString*)id {
   if (adsClientNotifier != nil) {
-    adsClientNotifier->NotifyDidUpdateResourceComponent(
+    adsClientNotifier->NotifyResourceComponentDidChange(
         base::SysNSStringToUTF8(manifest_version), base::SysNSStringToUTF8(id));
   }
 }

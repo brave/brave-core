@@ -9,7 +9,7 @@
 
 #include "base/functional/bind.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/language_components.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
@@ -65,13 +65,13 @@ void TextClassificationResource::MaybeLoadOrUnload() {
 }
 
 void TextClassificationResource::Load() {
-  LoadComponentResource(
+  LoadResourceComponent(
       kTextClassificationResourceId, kTextClassificationResourceVersion.Get(),
-      base::BindOnce(&TextClassificationResource::LoadComponentResourceCallback,
+      base::BindOnce(&TextClassificationResource::LoadResourceComponentCallback,
                      weak_factory_.GetWeakPtr()));
 }
 
-void TextClassificationResource::LoadComponentResourceCallback(
+void TextClassificationResource::LoadResourceComponentCallback(
     base::File file) {
   if (!file.IsValid()) {
     return BLOG(0, "Failed to load " << kTextClassificationResourceId
@@ -132,7 +132,7 @@ void TextClassificationResource::OnNotifyPrefDidChange(
   }
 }
 
-void TextClassificationResource::OnNotifyDidUpdateResourceComponent(
+void TextClassificationResource::OnNotifyResourceComponentDidChange(
     const std::string& manifest_version,
     const std::string& id) {
   if (!IsValidLanguageComponentId(id)) {

@@ -31,6 +31,8 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds
@@ -214,7 +216,12 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
-  EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
+  EXPECT_CALL(account_observer_mock_,
+              OnDidProcessDeposit(::testing::FieldsAre(
+                  /*id*/ ::testing::_, /*created_at*/ test::Now(),
+                  test::kCreativeInstanceId, test::kSegment, /*value*/ 1.0,
+                  AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+                  /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
   account_->Deposit(test::kCreativeInstanceId, test::kSegment,
@@ -243,7 +250,12 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
-  EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
+  EXPECT_CALL(account_observer_mock_,
+              OnDidProcessDeposit(::testing::FieldsAre(
+                  /*id*/ ::testing::_, /*created_at*/ test::Now(),
+                  test::kCreativeInstanceId, test::kSegment, /*value*/ 1.0,
+                  AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+                  /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
   account_->DepositWithUserData(test::kCreativeInstanceId, test::kSegment,
@@ -258,7 +270,12 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   // Act & Assert
-  EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
+  EXPECT_CALL(account_observer_mock_,
+              OnDidProcessDeposit(::testing::FieldsAre(
+                  /*id*/ ::testing::_, /*created_at*/ test::Now(),
+                  test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+                  AdType::kNotificationAd, ConfirmationType::kClicked,
+                  /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
   account_->Deposit(test::kCreativeInstanceId, test::kSegment,
@@ -271,7 +288,12 @@ TEST_F(BraveAdsAccountTest, DepositForNonCashWithUserData) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   // Act & Assert
-  EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
+  EXPECT_CALL(account_observer_mock_,
+              OnDidProcessDeposit(::testing::FieldsAre(
+                  /*id*/ ::testing::_, /*created_at*/ test::Now(),
+                  test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+                  AdType::kNotificationAd, ConfirmationType::kClicked,
+                  /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
   account_->DepositWithUserData(test::kCreativeInstanceId, test::kSegment,
@@ -305,7 +327,12 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingCashForRewardsUser) {
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
-  EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
+  EXPECT_CALL(account_observer_mock_,
+              OnDidProcessDeposit(::testing::FieldsAre(
+                  /*id*/ ::testing::_, /*created_at*/ test::Now(),
+                  test::kCreativeInstanceId, test::kSegment, /*value*/ 1.0,
+                  AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+                  /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
 
@@ -332,7 +359,12 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingNonCashForRewardsUser) {
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
-  EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
+  EXPECT_CALL(account_observer_mock_,
+              OnDidProcessDeposit(::testing::FieldsAre(
+                  /*id*/ ::testing::_, /*created_at*/ test::Now(),
+                  test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+                  AdType::kNotificationAd, ConfirmationType::kClicked,
+                  /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
 

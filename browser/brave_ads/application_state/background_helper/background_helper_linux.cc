@@ -56,18 +56,14 @@ bool BackgroundHelperLinux::IsForeground() const {
 
 void BackgroundHelperLinux::OnBrowserSetLastActive(Browser* browser) {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&BackgroundHelperLinux::TriggerOnForeground, AsWeakPtr()));
+      FROM_HERE, base::BindOnce(&BackgroundHelperLinux::TriggerOnForeground,
+                                weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BackgroundHelperLinux::OnBrowserNoLongerActive(Browser* browser) {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&BackgroundHelperLinux::TriggerOnBackground, AsWeakPtr()));
-}
-
-base::WeakPtr<BackgroundHelperLinux> BackgroundHelperLinux::AsWeakPtr() {
-  return weak_ptr_factory_.GetWeakPtr();
+      FROM_HERE, base::BindOnce(&BackgroundHelperLinux::TriggerOnBackground,
+                                weak_ptr_factory_.GetWeakPtr()));
 }
 
 }  // namespace brave_ads

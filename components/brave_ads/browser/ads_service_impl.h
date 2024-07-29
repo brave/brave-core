@@ -335,9 +335,9 @@ class AdsServiceImpl final : public AdsService,
 
   // TODO(https://github.com/brave/brave-browser/issues/26195) Decouple load
   // resources business logic.
-  void LoadComponentResource(const std::string& id,
+  void LoadResourceComponent(const std::string& id,
                              int version,
-                             LoadComponentResourceCallback callback) override;
+                             LoadResourceComponentCallback callback) override;
   void LoadDataResource(const std::string& name,
                         LoadDataResourceCallback callback) override;
 
@@ -381,7 +381,7 @@ class AdsServiceImpl final : public AdsService,
   void OnBrowserDidEnterBackground() override;
 
   // ResourceComponentObserver:
-  void OnDidUpdateResourceComponent(const std::string& manifest_version,
+  void OnResourceComponentDidChange(const std::string& manifest_version,
                                     const std::string& id) override;
   void OnDidUnregisterResourceComponent(const std::string& id) override;
 
@@ -459,8 +459,6 @@ class AdsServiceImpl final : public AdsService,
       bat_ads_client_notifier_remote_;
   mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier>
       bat_ads_client_notifier_pending_receiver_;
-
-  base::WeakPtr<AdsServiceImpl> AsWeakPtr();
 
   base::WeakPtrFactory<AdsServiceImpl> weak_ptr_factory_{this};
 };

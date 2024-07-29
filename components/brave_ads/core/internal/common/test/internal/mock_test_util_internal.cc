@@ -183,9 +183,9 @@ void MockLoad(AdsClientMock& mock,
           }));
 }
 
-void MockLoadComponentResource(AdsClientMock& mock,
+void MockLoadResourceComponent(AdsClientMock& mock,
                                const base::ScopedTempDir& temp_profile_dir) {
-  ON_CALL(mock, LoadComponentResource)
+  ON_CALL(mock, LoadResourceComponent)
       .WillByDefault(::testing::Invoke(
           [&temp_profile_dir](const std::string& id, const int /*version*/,
                               LoadFileCallback callback) {
@@ -193,8 +193,8 @@ void MockLoadComponentResource(AdsClientMock& mock,
 
             if (!base::PathExists(path)) {
               // If path does not exist attempt to load the file from the test
-              // component resources data path.
-              path = ComponentResourcesDataPath().AppendASCII(id);
+              // resource components data path.
+              path = ResourceComponentsDataPath().AppendASCII(id);
             }
 
             base::File file(path, base::File::Flags::FLAG_OPEN |

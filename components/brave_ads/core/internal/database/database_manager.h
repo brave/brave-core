@@ -9,7 +9,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 
 namespace brave_ads {
 

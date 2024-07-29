@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/client/ads_client_notifier_for_testing.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_for_testing.h"
 
 #include "url/gurl.h"
 
@@ -36,10 +36,10 @@ void AdsClientNotifierForTesting::NotifyPrefDidChange(const std::string& path) {
   RunTaskEnvironmentUntilIdle();
 }
 
-void AdsClientNotifierForTesting::NotifyDidUpdateResourceComponent(
+void AdsClientNotifierForTesting::NotifyResourceComponentDidChange(
     const std::string& manifest_version,
     const std::string& id) {
-  AdsClientNotifier::NotifyDidUpdateResourceComponent(manifest_version, id);
+  AdsClientNotifier::NotifyResourceComponentDidChange(manifest_version, id);
 
   RunTaskEnvironmentUntilIdle();
 }

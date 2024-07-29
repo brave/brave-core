@@ -104,7 +104,7 @@ void PurchaseIntentResource::OnNotifyPrefDidChange(const std::string& path) {
   }
 }
 
-void PurchaseIntentResource::OnNotifyDidUpdateResourceComponent(
+void PurchaseIntentResource::OnNotifyResourceComponentDidChange(
     const std::string& manifest_version,
     const std::string& id) {
   if (!IsValidCountryComponentId(id)) {

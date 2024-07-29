@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CLIENT_ADS_CLIENT_MOCK_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CLIENT_ADS_CLIENT_MOCK_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CLIENT_ADS_CLIENT_MOCK_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CLIENT_ADS_CLIENT_MOCK_H_
 
 #include <optional>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
-#include "brave/components/brave_ads/core/public/client/ads_client.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
@@ -80,7 +80,7 @@ class AdsClientMock : public AdsClient {
                SaveCallback callback));
   MOCK_METHOD(void, Load, (const std::string& name, LoadCallback callback));
   MOCK_METHOD(void,
-              LoadComponentResource,
+              LoadResourceComponent,
               (const std::string& id,
                const int version,
                LoadFileCallback callback));
@@ -124,4 +124,4 @@ class AdsClientMock : public AdsClient {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CLIENT_ADS_CLIENT_MOCK_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CLIENT_ADS_CLIENT_MOCK_H_

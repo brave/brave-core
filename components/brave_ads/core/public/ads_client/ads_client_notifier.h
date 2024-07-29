@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_CLIENT_ADS_CLIENT_NOTIFIER_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_CLIENT_ADS_CLIENT_NOTIFIER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_CLIENT_ADS_CLIENT_NOTIFIER_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_CLIENT_ADS_CLIENT_NOTIFIER_H_
 
 #include <cstdint>
 #include <memory>
@@ -13,7 +13,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 class GURL;
 
@@ -33,9 +33,8 @@ class AdsClientNotifier {
 
   virtual ~AdsClientNotifier();
 
-  void set_should_queue_notifications_for_testing(
-      bool should_queue_notifications) {
-    should_queue_notifications_ = should_queue_notifications;
+  void set_should_queue_notifications_for_testing(bool should_queue) {
+    should_queue_ = should_queue;
   }
 
   void AddObserver(AdsClientNotifierObserver* observer);
@@ -58,7 +57,7 @@ class AdsClientNotifier {
 
   // Invoked when a resource component with `id` has been updated to
   // `manifest_version`.
-  virtual void NotifyDidUpdateResourceComponent(
+  virtual void NotifyResourceComponentDidChange(
       const std::string& manifest_version,
       const std::string& id);
 
@@ -149,12 +148,12 @@ class AdsClientNotifier {
  private:
   base::ObserverList<AdsClientNotifierObserver> observers_;
 
-  std::unique_ptr<AdsClientNotifierQueue> pending_notifier_queue_;
+  std::unique_ptr<AdsClientNotifierQueue> queue_;
 
 #if BUILDFLAG(IS_IOS)
-  bool should_queue_notifications_ = true;
+  bool should_queue_ = true;
 #else
-  bool should_queue_notifications_ = false;
+  bool should_queue_ = false;
 #endif  // BUILDFLAG(IS_IOS)
 
   base::WeakPtrFactory<AdsClientNotifier> weak_factory_{this};
@@ -162,4 +161,4 @@ class AdsClientNotifier {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_CLIENT_ADS_CLIENT_NOTIFIER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_CLIENT_ADS_CLIENT_NOTIFIER_H_

@@ -15,7 +15,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 namespace brave_ads {
 
@@ -49,7 +49,7 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
   void MaybeLoadOrUnload();
 
   void Load();
-  void LoadComponentResourceCallback(base::File file);
+  void LoadResourceComponentCallback(base::File file);
   void LoadCallback(base::expected<bool, std::string> result);
 
   void MaybeUnload();
@@ -58,7 +58,7 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
   // AdsClientNotifierObserver:
   void OnNotifyLocaleDidChange(const std::string& locale) override;
   void OnNotifyPrefDidChange(const std::string& path) override;
-  void OnNotifyDidUpdateResourceComponent(const std::string& manifest_version,
+  void OnNotifyResourceComponentDidChange(const std::string& manifest_version,
                                           const std::string& id) override;
   void OnNotifyDidUnregisterResourceComponent(const std::string& id) override;
 

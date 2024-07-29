@@ -45,7 +45,7 @@ TEST_F(BraveAdsTextClassificationModelTest,
 
 TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kLanguageComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
                                    test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
@@ -64,7 +64,7 @@ TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
 TEST_F(BraveAdsTextClassificationModelTest,
        GetSegmentsForPreviouslyClassifiedText) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kLanguageComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
                                    test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
@@ -141,7 +141,7 @@ TEST_F(BraveAdsTextClassificationModelTest,
 TEST_F(BraveAdsTextClassificationModelTest,
        GetSegmentsForPreviouslyClassifiedTexts) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kLanguageComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
                                    test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
@@ -266,7 +266,7 @@ TEST_F(BraveAdsTextClassificationModelTest,
 
 TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsIfNeverProcessed) {
   // Arrange
-  NotifyDidUpdateResourceComponent(test::kLanguageComponentManifestVersion,
+  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
                                    test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 

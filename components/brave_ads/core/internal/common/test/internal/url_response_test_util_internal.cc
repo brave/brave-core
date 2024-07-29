@@ -34,8 +34,8 @@ base::flat_map<std::string, size_t>& UrlResponseIndexes() {
 
 URLResponseList GetUrlResponsesForRequestPath(
     const URLResponseMap& url_responses,
-    const std::string& request_path) {
-  const auto iter = url_responses.find(request_path);
+    const std::string& url_request_path) {
+  const auto iter = url_responses.find(url_request_path);
   if (iter == url_responses.cend()) {
     return {};
   }
@@ -49,10 +49,10 @@ std::optional<URLResponsePair> GetNextUrlResponseForUrl(
   CHECK(url.is_valid()) << "Invalid URL: " << url;
   CHECK(!url_responses.empty()) << "Missing mock for " << url << " responses";
 
-  const std::string request_path = url.PathForRequest();
+  const std::string url_request_path = url.PathForRequest();
 
   const URLResponseList url_responses_for_request_path =
-      GetUrlResponsesForRequestPath(url_responses, request_path);
+      GetUrlResponsesForRequestPath(url_responses, url_request_path);
   if (url_responses_for_request_path.empty()) {
     // URL responses not found for the given request path.
     return std::nullopt;
@@ -60,7 +60,7 @@ std::optional<URLResponsePair> GetNextUrlResponseForUrl(
 
   size_t index = 0;
 
-  const std::string uuid = GetUuidForCurrentTestAndValue(request_path);
+  const std::string uuid = GetUuidForCurrentTestAndValue(url_request_path);
 
   const auto iter = UrlResponseIndexes().find(uuid);
   if (iter == UrlResponseIndexes().cend()) {

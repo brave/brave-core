@@ -40,6 +40,7 @@ class BackgroundHelperAndroid final : public BackgroundHelper {
       app_status_listener_;
 
   base::android::ApplicationState last_state_;
+
   base::WeakPtrFactory<BackgroundHelperAndroid> weak_ptr_factory_{this};
 };
 
