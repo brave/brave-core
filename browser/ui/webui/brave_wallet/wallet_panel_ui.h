@@ -14,11 +14,15 @@
 #include "brave/browser/ui/webui/brave_wallet/panel_handler/wallet_panel_handler.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
-#include "content/public/browser/web_ui_controller.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+
+namespace content {
+class BrowserContext;
+}
 
 class WalletPanelUI : public TopChromeWebUIController,
                       public brave_wallet::mojom::PanelHandlerFactory {
@@ -85,6 +89,17 @@ class WalletPanelUI : public TopChromeWebUIController,
       panel_factory_receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
+};
+
+class WalletPanelUIConfig : public DefaultTopChromeWebUIConfig<WalletPanelUI> {
+ public:
+  WalletPanelUIConfig();
+
+  // WebUIConfig::
+  bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
+
+  // TopChromeWebUIConfig::
+  bool ShouldAutoResizeHost() override;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PANEL_UI_H_
