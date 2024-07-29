@@ -86,6 +86,28 @@ struct AddCustomAssetView: View {
           }
         }
         Section(
+          header: WalletListHeaderView(title: Text(Strings.Wallet.customTokenNetworkHeader))
+        ) {
+          HStack {
+            Button {
+              isPresentingNetworkSelection = true
+            } label: {
+              Text(
+                networkSelectionStore.networkSelectionInForm?.chainName
+                  ?? Strings.Wallet.customTokenNetworkButtonTitle
+              )
+              .foregroundColor(
+                networkSelectionStore.networkSelectionInForm == nil
+                  ? Color(braveSystemName: .textDisabled) : Color(.braveLabel)
+              )
+            }
+            Spacer()
+            Image(systemName: "chevron.down.circle")
+              .foregroundColor(Color(.braveBlurpleTint))
+          }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        }
+        Section(
           header: WalletListHeaderView(
             title: networkSelectionStore.networkSelectionInForm?.coin == .sol
               ? Text(Strings.Wallet.tokenMintAddress) : Text(Strings.Wallet.tokenAddress)
@@ -113,28 +135,6 @@ struct AddCustomAssetView: View {
             .autocorrectionDisabled()
             .disabled(userAssetStore.isSearchingToken)
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        }
-        Section(
-          header: WalletListHeaderView(title: Text(Strings.Wallet.customTokenNetworkHeader))
-        ) {
-          HStack {
-            Button {
-              isPresentingNetworkSelection = true
-            } label: {
-              Text(
-                networkSelectionStore.networkSelectionInForm?.chainName
-                  ?? Strings.Wallet.customTokenNetworkButtonTitle
-              )
-              .foregroundColor(
-                networkSelectionStore.networkSelectionInForm == nil
-                  ? .gray.opacity(0.6) : Color(.braveLabel)
-              )
-            }
-            Spacer()
-            Image(systemName: "chevron.down.circle")
-              .foregroundColor(Color(.braveBlurpleTint))
-          }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.tokenName))
@@ -298,7 +298,8 @@ struct AddCustomAssetView: View {
               NetworkSelectionView(
                 keyringStore: keyringStore,
                 networkStore: networkStore,
-                networkSelectionStore: networkSelectionStore
+                networkSelectionStore: networkSelectionStore,
+                networkSelectionType: .addCustomAsset
               )
             }
             .accentColor(Color(.braveBlurpleTint))
