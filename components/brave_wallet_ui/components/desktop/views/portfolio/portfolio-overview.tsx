@@ -20,6 +20,12 @@ import {
   useLocalStorage,
   useSyncedLocalStorage
 } from '../../../../common/hooks/use_local_storage'
+import {
+  usePortfolioVisibleNetworks //
+} from '../../../../common/hooks/use_portfolio_networks'
+import {
+  usePortfolioAccounts //
+} from '../../../../common/hooks/use_portfolio_accounts'
 
 // Constants
 import {
@@ -48,8 +54,7 @@ import {
 import { networkSupportsAccount } from '../../../../utils/network-utils'
 import { getIsRewardsToken } from '../../../../utils/rewards_utils'
 import {
-  getStoredPortfolioTimeframe, //
-  makeInitialFilteredOutNetworkKeys
+  getStoredPortfolioTimeframe //
 } from '../../../../utils/local-storage-utils'
 import { makePortfolioAssetRoute } from '../../../../utils/routes-utils'
 
@@ -78,7 +83,6 @@ import {
 import {
   PortfolioFiltersModal //
 } from '../../popup-modals/filter-modals/portfolio-filters-modal'
-import { NftCollection } from '../nfts/components/nft_collection'
 
 // Styled Components
 import {
@@ -102,7 +106,6 @@ import {
   useGetRewardsInfoQuery,
   useGetUserTokensRegistryQuery
 } from '../../../../common/slices/api.slice'
-import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 import {
   querySubscriptionOptions60s //
 } from '../../../../common/slices/constants'
@@ -118,15 +121,16 @@ export const PortfolioOverview = () => {
     WalletRoutes.PortfolioNFTCollection.replace(':collectionName', '')
   )
 
+  // custom hooks
+  const {
+    filteredOutPortfolioNetworkKeys,
+    visiblePortfolioNetworkIds,
+    visiblePortfolioNetworks
+  } = usePortfolioVisibleNetworks()
+
+  const { isLoadingAccounts, usersFilteredAccounts } = usePortfolioAccounts()
+
   // local-storage
-  const [filteredOutPortfolioNetworkKeys] = useLocalStorage(
-    LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_NETWORK_KEYS,
-    makeInitialFilteredOutNetworkKeys
-  )
-  const [filteredOutPortfolioAccountIds] = useLocalStorage<string[]>(
-    LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_ACCOUNT_IDS,
-    []
-  )
   const [selectedGroupAssetsByItem] = useLocalStorage<string>(
     LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY,
     NoneGroupByOption.id
@@ -152,7 +156,6 @@ export const PortfolioOverview = () => {
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // queries
-  const { accounts, isLoading: isLoadingAccounts } = useAccountsQuery()
   const { data: networks } = useGetVisibleNetworksQuery()
   const { userVisibleTokensInfo, isLoadingUserTokens } =
     useGetUserTokensRegistryQuery(undefined, {
@@ -209,13 +212,6 @@ export const PortfolioOverview = () => {
       networkEntityAdapter.selectId(externalRewardsNetwork).toString()
     )
 
-  const usersFilteredAccounts = React.useMemo(() => {
-    return accounts.filter(
-      (account) =>
-        !filteredOutPortfolioAccountIds.includes(account.accountId.uniqueKey)
-    )
-  }, [accounts, filteredOutPortfolioAccountIds])
-
   const accountsListWithRewards = React.useMemo(() => {
     if (isLoadingAccountsOrRewards) {
       // wait to render until we know which accounts to render
@@ -230,26 +226,6 @@ export const PortfolioOverview = () => {
     externalRewardsAccount,
     usersFilteredAccounts
   ])
-
-  const networksList = React.useMemo(() => {
-    return displayRewardsInPortfolio && externalRewardsNetwork
-      ? [externalRewardsNetwork].concat(networks)
-      : networks
-  }, [displayRewardsInPortfolio, externalRewardsNetwork, networks])
-
-  const [visiblePortfolioNetworks, visiblePortfolioNetworkIds] =
-    React.useMemo(() => {
-      const visibleNetworks = networksList.filter(
-        (network) =>
-          !filteredOutPortfolioNetworkKeys.includes(
-            networkEntityAdapter.selectId(network).toString()
-          )
-      )
-      return [
-        visibleNetworks,
-        visibleNetworks.map(networkEntityAdapter.selectId)
-      ]
-    }, [networksList, filteredOutPortfolioNetworkKeys])
 
   // Filters the user's tokens based on the users
   // filteredOutPortfolioNetworkKeys pref and visible networks.
@@ -634,16 +610,6 @@ export const PortfolioOverview = () => {
           exact
         >
           {tokenLists}
-        </Route>
-
-        <Route
-          path={WalletRoutes.PortfolioNFTCollection}
-          exact
-        >
-          <NftCollection
-            networks={visiblePortfolioNetworks}
-            accounts={usersFilteredAccounts}
-          />
         </Route>
 
         <Route
