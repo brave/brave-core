@@ -96,10 +96,10 @@ class ADS_EXPORT AdsClient {
   // takes one argument - optional containing the loaded `value`.
   virtual void Load(const std::string& name, LoadCallback callback) = 0;
 
-  // Load a component resource for the specified `id` and `version` from
+  // Load a resource component for the specified `id` and `version` from
   // persistent storage. The callback takes one argument - `base::File` will be
   // valid if successful otherwise invalid.
-  virtual void LoadComponentResource(const std::string& id,
+  virtual void LoadResourceComponent(const std::string& id,
                                      int version,
                                      LoadFileCallback callback) = 0;
 

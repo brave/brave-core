@@ -335,9 +335,9 @@ class AdsServiceImpl final : public AdsService,
 
   // TODO(https://github.com/brave/brave-browser/issues/26195) Decouple load
   // resources business logic.
-  void LoadComponentResource(const std::string& id,
+  void LoadResourceComponent(const std::string& id,
                              int version,
-                             LoadComponentResourceCallback callback) override;
+                             LoadResourceComponentCallback callback) override;
   void LoadDataResource(const std::string& name,
                         LoadDataResourceCallback callback) override;
 

@@ -66,14 +66,14 @@ TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMalformedResource) {
 
 TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  ON_CALL(ads_client_mock_, LoadComponentResource(kTextClassificationResourceId,
+  ON_CALL(ads_client_mock_, LoadResourceComponent(kTextClassificationResourceId,
                                                   /*version=*/::testing::_,
                                                   /*callback=*/::testing::_))
       .WillByDefault(::testing::Invoke([](const std::string& /*id*/,
                                           const int /*version*/,
                                           LoadFileCallback callback) {
         const base::FilePath path =
-            test::ComponentResourcesDataPath().AppendASCII(
+            test::ResourceComponentsDataPath().AppendASCII(
                 test::kMissingResourceId);
 
         base::File file(

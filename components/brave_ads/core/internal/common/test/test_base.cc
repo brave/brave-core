@@ -216,7 +216,7 @@ void TestBase::MockAdsClient() {
   MockSave(ads_client_mock_);
   MockLoad(ads_client_mock_, temp_profile_dir_);
 
-  MockLoadComponentResource(ads_client_mock_, temp_profile_dir_);
+  MockLoadResourceComponent(ads_client_mock_, temp_profile_dir_);
 
   MockLoadDataResource(ads_client_mock_);
 

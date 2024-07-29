@@ -58,7 +58,7 @@ void Save(const std::string& name,
           SaveCallback callback);
 void Load(const std::string& name, LoadCallback callback);
 
-void LoadComponentResource(const std::string& id,
+void LoadResourceComponent(const std::string& id,
                            int version,
                            LoadFileCallback callback);
 

@@ -94,10 +94,10 @@ void AdsClientIOS::Save(const std::string& name,
   [bridge_ save:name value:value callback:std::move(callback)];
 }
 
-void AdsClientIOS::LoadComponentResource(const std::string& id,
+void AdsClientIOS::LoadResourceComponent(const std::string& id,
                                          const int version,
                                          brave_ads::LoadFileCallback callback) {
-  [bridge_ loadComponentResource:id
+  [bridge_ loadResourceComponent:id
                          version:version
                         callback:std::move(callback)];
 }

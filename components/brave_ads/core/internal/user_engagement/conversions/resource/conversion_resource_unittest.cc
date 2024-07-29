@@ -67,14 +67,14 @@ TEST_F(BraveAdsConversionResourceTest, DoNotLoadMalformedResource) {
 
 TEST_F(BraveAdsConversionResourceTest, DoNotLoadMissingResource) {
   // Arrange
-  ON_CALL(ads_client_mock_, LoadComponentResource(kConversionResourceId,
+  ON_CALL(ads_client_mock_, LoadResourceComponent(kConversionResourceId,
                                                   /*version=*/::testing::_,
                                                   /*callback=*/::testing::_))
       .WillByDefault(::testing::Invoke([](const std::string& /*id*/,
                                           const int /*version*/,
                                           LoadFileCallback callback) {
         const base::FilePath path =
-            test::ComponentResourcesDataPath().AppendASCII(
+            test::ResourceComponentsDataPath().AppendASCII(
                 test::kMissingResourceId);
 
         base::File file(

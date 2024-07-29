@@ -65,13 +65,13 @@ void TextClassificationResource::MaybeLoadOrUnload() {
 }
 
 void TextClassificationResource::Load() {
-  LoadComponentResource(
+  LoadResourceComponent(
       kTextClassificationResourceId, kTextClassificationResourceVersion.Get(),
-      base::BindOnce(&TextClassificationResource::LoadComponentResourceCallback,
+      base::BindOnce(&TextClassificationResource::LoadResourceComponentCallback,
                      weak_factory_.GetWeakPtr()));
 }
 
-void TextClassificationResource::LoadComponentResourceCallback(
+void TextClassificationResource::LoadResourceComponentCallback(
     base::File file) {
   if (!file.IsValid()) {
     return BLOG(0, "Failed to load " << kTextClassificationResourceId

@@ -80,7 +80,7 @@ class AdsClientMock : public AdsClient {
                SaveCallback callback));
   MOCK_METHOD(void, Load, (const std::string& name, LoadCallback callback));
   MOCK_METHOD(void,
-              LoadComponentResource,
+              LoadResourceComponent,
               (const std::string& id,
                const int version,
                LoadFileCallback callback));
