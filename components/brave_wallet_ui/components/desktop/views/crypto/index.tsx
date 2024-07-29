@@ -6,13 +6,11 @@
 import * as React from 'react'
 import { Route, useHistory, Switch, Redirect } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import SegmentedControlItem from '@brave/leo/react/controlItem'
 
 // utils
 import { loadTimeData } from '../../../../../common/loadTimeData'
 import { getLocale } from '../../../../../common/locale'
 import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
-import { useLocationPathName } from '../../../../common/hooks/use-pathname'
 import { UISelectors } from '../../../../common/selectors'
 import { openWalletSettings } from '../../../../utils/routes-utils'
 import {
@@ -21,7 +19,6 @@ import {
   useGetIsMetaMaskInstalledQuery,
   useGetIsWalletBackedUpQuery //
 } from '../../../../common/slices/api.slice'
-import { ExploreNavOptions } from '../../../../options/nav-options'
 
 // types
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
@@ -39,12 +36,13 @@ import {
 } from '../../../../common/hooks/use_portfolio_accounts'
 
 // style
-import { StyledWrapper, SegmentedControl, ControlItemWrapper } from './style'
+import { StyledWrapper } from './style'
 import { Column } from '../../../shared/style'
 
 // components
 import getWalletPageApiProxy from '../../../../page/wallet_page_api_proxy'
 import { WalletBanner } from '../../wallet-banner/index'
+import { ExploreWeb3Header } from '../explore_web3/explore_web3_header'
 import {
   EditVisibleAssetsModal //
 } from '../../popup-modals/edit-visible-assets-modal/index'
@@ -112,7 +110,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
 
   // routing
   const history = useHistory()
-  const walletLocation = useLocationPathName()
 
   // methods
   const onShowBackup = React.useCallback(() => {
@@ -220,25 +217,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
     ]
   )
 
-  const exploreWeb3Header = (
-    <SegmentedControl
-      value={walletLocation}
-      onChange={({ value }) => {
-        if (!value) return
-        history.push(value)
-      }}
-    >
-      {ExploreNavOptions.map((option) => (
-        <SegmentedControlItem
-          key={option.name}
-          value={option.route}
-        >
-          <ControlItemWrapper>{getLocale(option.name)}</ControlItemWrapper>
-        </SegmentedControlItem>
-      ))}
-    </SegmentedControl>
-  )
-
   // render
   return (
     <>
@@ -338,7 +316,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
         >
           <WalletPageWrapper
             wrapContentInBox
-            cardHeader={exploreWeb3Header}
+            cardHeader={<ExploreWeb3Header />}
             hideDivider
           >
             <StyledWrapper>
@@ -367,7 +345,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
         >
           <WalletPageWrapper
             wrapContentInBox
-            cardHeader={exploreWeb3Header}
+            cardHeader={<ExploreWeb3Header />}
             hideDivider
             noCardPadding
           >
