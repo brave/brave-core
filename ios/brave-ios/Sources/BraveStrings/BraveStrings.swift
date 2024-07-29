@@ -954,7 +954,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Your Brave VPN subscription can protect up to 5 devices, across Android, iOS, and desktop. Just link your App Store subscription to your Brave account.",
+          "Your Brave VPN subscription can protect up to 10 devices, across Android, iOS, and desktop. Just link your App Store subscription to your Brave account.",
         comment: "Popup description to let users know they can use the vpn on all their devices"
       )
 
@@ -6858,7 +6858,52 @@ extension Strings {
         value: "24/7 support",
         comment: "Text for a checkbox to present the user benefits for using Brave VPN"
       )
+    
+    public static let infoCheckPrivacy =
+      NSLocalizedString(
+        "vpn.infoCheckPrivacy",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Extra privacy & security online",
+        comment: "Information text shown to users for using Brave VPN"
+      )
 
+    public static let infoCheckLocation =
+      NSLocalizedString(
+        "vpn.infoCheckLocation",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Hide your IP & change your location",
+        comment: "Information Text shown to users for using Brave VPN"
+      )
+
+    public static let infoCheckServers =
+      NSLocalizedString(
+        "vpn.infoCheckServers",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Hundreds of servers around the world",
+        comment: "Information Text shown to users for using Brave VPN"
+      )
+    
+    public static let infoCheckConnectionSpeed =
+      NSLocalizedString(
+        "vpn.infoCheckConnectionSpeed",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Lightning-fast connection speeds",
+        comment: "Information shown to users for using Brave VPN"
+      )
+    
+    public static let infoCheckLimitDevice =
+      NSLocalizedString(
+        "vpn.infoCheckLimitDevice",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Protect up to 10 devices with one plan",
+        comment: "Information shown to users for using Brave VPN"
+      )
+    
     public static let autoRenewSoonExpirePopOverTitle =
       NSLocalizedString(
         "vpn.autoRenewSoonExpireTitle",
