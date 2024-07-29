@@ -137,7 +137,7 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
   void NotifyDidSolveAdaptiveCaptcha() override;
 
  private:
-  brave_ads::AdsClientNotifier notifier_;
+  brave_ads::AdsClientNotifier ads_client_notifier_;
 
   mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier> pending_receiver_;
   mojo::Receiver<bat_ads::mojom::BatAdsClientNotifier> receiver_{this};

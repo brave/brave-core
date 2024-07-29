@@ -33,9 +33,8 @@ class AdsClientNotifier {
 
   virtual ~AdsClientNotifier();
 
-  void set_should_queue_notifications_for_testing(
-      bool should_queue_notifications) {
-    should_queue_notifications_ = should_queue_notifications;
+  void set_should_queue_notifications_for_testing(bool should_queue) {
+    should_queue_ = should_queue;
   }
 
   void AddObserver(AdsClientNotifierObserver* observer);
@@ -149,12 +148,12 @@ class AdsClientNotifier {
  private:
   base::ObserverList<AdsClientNotifierObserver> observers_;
 
-  std::unique_ptr<AdsClientNotifierQueue> pending_notifier_queue_;
+  std::unique_ptr<AdsClientNotifierQueue> queue_;
 
 #if BUILDFLAG(IS_IOS)
-  bool should_queue_notifications_ = true;
+  bool should_queue_ = true;
 #else
-  bool should_queue_notifications_ = false;
+  bool should_queue_ = false;
 #endif  // BUILDFLAG(IS_IOS)
 
   base::WeakPtrFactory<AdsClientNotifier> weak_factory_{this};
