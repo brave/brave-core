@@ -11,29 +11,26 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 
 #define HasRegisteredGroupName HasRegisteredGroupName_ChromiumImpl
-#define ContentSettingsTypeToGroupName \
-  ContentSettingsTypeToGroupName_ChromiumImpl
 #define GetVisiblePermissionCategories \
   GetVisiblePermissionCategories_ChromiumImpl
 
 // clang-format off
-#define BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST               \
-  {ContentSettingsType::BRAVE_ADS, nullptr},                       \
-  {ContentSettingsType::BRAVE_COSMETIC_FILTERING, nullptr},        \
-  {ContentSettingsType::BRAVE_TRACKERS, nullptr},                  \
-  {ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES, nullptr}, \
-  {ContentSettingsType::BRAVE_FINGERPRINTING_V2, nullptr},         \
-  {ContentSettingsType::BRAVE_SHIELDS, nullptr},                   \
-  {ContentSettingsType::BRAVE_REFERRERS, nullptr},                 \
-  {ContentSettingsType::BRAVE_COOKIES, nullptr},                   \
-  {ContentSettingsType::BRAVE_SPEEDREADER, nullptr},               \
-  {ContentSettingsType::BRAVE_ETHEREUM, nullptr},                  \
-  {ContentSettingsType::BRAVE_SOLANA, nullptr},                    \
-  {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, nullptr},            \
-  {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr},             \
-  {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, nullptr},       \
-  {ContentSettingsType::BRAVE_LOCALHOST_ACCESS, nullptr},          \
-                                                                   \
+#define BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST                  \
+  {ContentSettingsType::BRAVE_ADS, nullptr},                          \
+  {ContentSettingsType::BRAVE_COSMETIC_FILTERING, nullptr},           \
+  {ContentSettingsType::BRAVE_TRACKERS, nullptr},                     \
+  {ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES, nullptr},    \
+  {ContentSettingsType::BRAVE_FINGERPRINTING_V2, nullptr},            \
+  {ContentSettingsType::BRAVE_SHIELDS, brave_shields::kBraveShields}, \
+  {ContentSettingsType::BRAVE_REFERRERS, nullptr},                    \
+  {ContentSettingsType::BRAVE_COOKIES, nullptr},                      \
+  {ContentSettingsType::BRAVE_SPEEDREADER, nullptr},                  \
+  {ContentSettingsType::BRAVE_ETHEREUM, "ethereum"},                  \
+  {ContentSettingsType::BRAVE_SOLANA, "solana"},                      \
+  {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, "googleSignIn"},        \
+  {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr},                \
+  {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, nullptr},          \
+  {ContentSettingsType::BRAVE_LOCALHOST_ACCESS, "localhostAccess"},   \
   {ContentSettingsType::BRAVE_WEBCOMPAT_NONE, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS, nullptr}, \
@@ -57,17 +54,11 @@
 
 #define BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME \
   if (name == "autoplay")                                                \
-    return ContentSettingsType::AUTOPLAY;                                \
-  if (name == "googleSignIn")                                            \
-    return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;                    \
-  if (name == "localhostAccess")                                         \
-    return ContentSettingsType::BRAVE_LOCALHOST_ACCESS;                  \
-  if (name == "ethereum")                                                \
-    return ContentSettingsType::BRAVE_ETHEREUM;                          \
-  if (name == "solana")                                                  \
-    return ContentSettingsType::BRAVE_SOLANA;                            \
-  if (name == brave_shields::kBraveShields)                              \
-    return ContentSettingsType::BRAVE_SHIELDS;
+    return ContentSettingsType::AUTOPLAY;
+
+#define BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_TO_GROUP_NAME \
+  if (type == ContentSettingsType::AUTOPLAY)                           \
+    return "autoplay";
 
 #define kInstalledWebappProvider         \
   kRemoteListProvider:                   \
@@ -85,8 +76,8 @@
 #undef kInstalledWebappProvider
 #undef BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
 #undef BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME
+#undef BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_TO_GROUP_NAME
 #undef GetVisiblePermissionCategories
-#undef ContentSettingsTypeToGroupName
 #undef HasRegisteredGroupName
 
 namespace site_settings {
@@ -106,23 +97,6 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
   if (type == ContentSettingsType::BRAVE_SHIELDS)
     return true;
   return HasRegisteredGroupName_ChromiumImpl(type);
-}
-
-std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
-  if (type == ContentSettingsType::AUTOPLAY)
-    return "autoplay";
-  if (type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN)
-    return "googleSignIn";
-  if (type == ContentSettingsType::BRAVE_LOCALHOST_ACCESS) {
-    return "localhostAccess";
-  }
-  if (type == ContentSettingsType::BRAVE_ETHEREUM)
-    return "ethereum";
-  if (type == ContentSettingsType::BRAVE_SOLANA)
-    return "solana";
-  if (type == ContentSettingsType::BRAVE_SHIELDS)
-    return brave_shields::kBraveShields;
-  return ContentSettingsTypeToGroupName_ChromiumImpl(type);
 }
 
 std::vector<ContentSettingsType> GetVisiblePermissionCategories(
