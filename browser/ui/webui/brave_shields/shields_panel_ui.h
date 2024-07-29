@@ -12,11 +12,17 @@
 #include "brave/browser/ui/webui/brave_shields/shields_panel_data_handler.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_handler.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
 class Browser;
+
+namespace content {
+class BrowserContext;
+}
 
 class ShieldsPanelUI : public TopChromeWebUIController,
                        public brave_shields::mojom::PanelHandlerFactory {
@@ -50,6 +56,18 @@ class ShieldsPanelUI : public TopChromeWebUIController,
   raw_ptr<Browser> browser_ = nullptr;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
+};
+
+class ShieldsPanelUIConfig
+    : public DefaultTopChromeWebUIConfig<ShieldsPanelUI> {
+ public:
+  ShieldsPanelUIConfig();
+
+  // WebUIConfig::
+  bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
+
+  // TopChromeWebUIConfig::
+  bool ShouldAutoResizeHost() override;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SHIELDS_SHIELDS_PANEL_UI_H_
