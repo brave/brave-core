@@ -11,7 +11,9 @@
 Perf data is currently moving to AWS S3 `brave-perf-data` bucket.
 The data is accessible via <https://perf-data.s3.brave.com/{path}>.
 The current structure:
-.`/perf-profiles/`: test perf profiles
+`./perf-profiles/`: test perf profiles
+`./telemetry-perf-data/`: WPR files and other data are used by telemetry and
+                          catapult code
 
 ## S3 manual upload
 

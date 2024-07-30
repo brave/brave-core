@@ -65,7 +65,7 @@ def GetProfilePath(profile: str, work_directory: str,
                             f'{profile}_{sha1}.zip')
 
     if not os.path.isfile(zip_path):
-      DownloadFileFromCloudStorage(CloudFolder.PROFILES, sha1, zip_path)
+      DownloadFileFromCloudStorage(CloudFolder.TEST_PROFILES, sha1, zip_path)
 
     profile_dir = os.path.join(work_directory, 'profiles', sha1)
 
