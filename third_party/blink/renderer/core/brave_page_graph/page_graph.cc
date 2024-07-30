@@ -338,30 +338,58 @@ void PageGraph::ProvideTo(LocalFrame& frame) {
   if (!base::FeatureList::IsEnabled(brave_page_graph::features::kPageGraph)) {
     return;
   }
-  DCHECK(!PageGraph::From(frame));
-  DCHECK(frame.IsLocalRoot());
+  CHECK(!PageGraph::From(frame));
+  CHECK(frame.IsLocalRoot());
+  Page* page = frame.GetPage();
+  CHECK(page);
 
-  if (auto* page = frame.GetPage()) {
-    const DOMNodeId initiator_dom_node_id =
-        page->GetChromeClient().InitiatorDomNodeId();
-    if (initiator_dom_node_id != kInvalidDOMNodeId) {
-      blink::Node* initiator_node =
-          blink::DOMNodeIds::NodeForId(initiator_dom_node_id);
-      if (initiator_node) {
-        auto* initiator_tree_page_graph =
-            Supplement<LocalFrame>::From<PageGraph>(
-                *initiator_node->TreeRoot().GetDocument().GetFrame());
-        if (initiator_tree_page_graph) {
-          frame.GetProbeSink()->AddPageGraph(initiator_tree_page_graph);
-          return;
-        }
+  // Lookup the PageGraph from the initiator frame if it exists.
+  const DOMNodeId initiator_dom_node_id =
+      page->GetChromeClient().InitiatorDomNodeId();
+  if (initiator_dom_node_id != kInvalidDOMNodeId) {
+    blink::Node* initiator_node =
+        blink::DOMNodeIds::NodeForId(initiator_dom_node_id);
+    if (initiator_node) {
+      auto* initiator_tree_page_graph = Supplement<LocalFrame>::From<PageGraph>(
+          *initiator_node->TreeRoot().GetDocument().GetFrame());
+      if (initiator_tree_page_graph) {
+        frame.GetProbeSink()->AddPageGraph(initiator_tree_page_graph);
+        return;
       }
     }
   }
 
+  // Lookup the PageGraph from the related pages if it exists.
+  for (const auto& related_page : page->RelatedPages()) {
+    auto* main_local_frame = DynamicTo<LocalFrame>(related_page->MainFrame());
+    if (!main_local_frame) {
+      continue;
+    }
+    auto* related_page_graph =
+        Supplement<LocalFrame>::From<PageGraph>(main_local_frame);
+    if (related_page_graph) {
+      frame.GetProbeSink()->AddPageGraph(related_page_graph);
+      return;
+    }
+  }
+
+  // Lookup the PageGraph from the ordinary pages if it exists.
+  for (const auto& ordinary_page : page->OrdinaryPages()) {
+    auto* main_local_frame = DynamicTo<LocalFrame>(ordinary_page->MainFrame());
+    if (!main_local_frame) {
+      continue;
+    }
+    auto* ordinary_page_graph =
+        Supplement<LocalFrame>::From<PageGraph>(main_local_frame);
+    if (ordinary_page_graph) {
+      frame.GetProbeSink()->AddPageGraph(ordinary_page_graph);
+      return;
+    }
+  }
+
+  // Create a new PageGraph for the current frame.
   PageGraph* page_graph = MakeGarbageCollected<PageGraph>(frame);
   frame.GetProbeSink()->AddPageGraph(page_graph);
-
   Supplement<LocalFrame>::ProvideTo(frame, page_graph);
 }
 
