@@ -64,7 +64,7 @@ export const WalletPanelStory: React.FC<
   ])
 
   React.useEffect(() => {
-    store && store.dispatch(WalletActions.initialize({}))
+    store && store.dispatch(WalletActions.initialize())
   }, [store])
 
   // render

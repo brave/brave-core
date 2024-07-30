@@ -13,8 +13,7 @@ import {
 import {
   BraveWallet,
   WalletState,
-  WalletInitializedPayload,
-  RefreshOpts
+  WalletInitializedPayload
 } from '../../constants/types'
 import {
   DefaultBaseCryptocurrencyChanged,
@@ -38,8 +37,8 @@ const defaultState: WalletState = {
 
 // async actions
 export const WalletAsyncActions = {
-  initialize: createAction<RefreshOpts>('initialize'),
-  refreshAll: createAction<RefreshOpts>('refreshAll'),
+  initialize: createAction('initialize'),
+  refreshAll: createAction('refreshAll'),
   selectAccount: createAction<BraveWallet.AccountId>('selectAccount'), // should use apiProxy - keyringService
   getAllNetworks: createAction('getAllNetworks'), // alias to refreshFullNetworkList
   walletCreated: createAction('walletCreated'),
@@ -55,9 +54,7 @@ export const WalletAsyncActions = {
     createAction<DefaultBaseCryptocurrencyChanged>(
       'defaultBaseCryptocurrencyChanged'
     ),
-  refreshNetworksAndTokens: createAction<RefreshOpts>(
-    'refreshNetworksAndTokens'
-  ),
+  refreshNetworksAndTokens: createAction('refreshNetworksAndTokens'),
   refreshBalancesAndPriceHistory: createAction(
     'refreshBalancesAndPriceHistory'
   ),

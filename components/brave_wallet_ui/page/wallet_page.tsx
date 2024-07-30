@@ -73,7 +73,7 @@ function initialize() {
   initLocale(loadTimeData.data_)
   const root = createRoot(document.getElementById('root')!)
   root.render(<App />)
-  store.dispatch(WalletActions.initialize({}))
+  store.dispatch(WalletActions.initialize())
 }
 
 document.addEventListener('DOMContentLoaded', initialize)
