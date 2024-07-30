@@ -99,6 +99,10 @@ export const NETWORK_TAG_IDS = {
   VISIBLE: 'VISIBLE'
 } as const
 
+export const TOKEN_TAG_IDS = {
+  REGISTRY: 'REGISTRY'
+} as const
+
 export type WalletApiBase = ReturnType<typeof createWalletApiBase>
 export const walletApiBase: WalletApiBase = createWalletApiBase()
 

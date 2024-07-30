@@ -7,7 +7,10 @@ import { EntityId } from '@reduxjs/toolkit'
 
 // types
 import { BraveWallet } from '../../../constants/types'
-import { WalletApiEndpointBuilderParams } from '../api-base.slice'
+import {
+  TOKEN_TAG_IDS,
+  WalletApiEndpointBuilderParams
+} from '../api-base.slice'
 import { type BaseQueryCache } from '../../async/base-query-cache'
 
 // utils
@@ -25,10 +28,6 @@ import {
 } from '../entities/blockchain-token.entity'
 import { LOCAL_STORAGE_KEYS } from '../../constants/local-storage-keys'
 import { stripERC20TokenImageURL } from '../../../utils/string-utils'
-
-export const TOKEN_TAG_IDS = {
-  REGISTRY: 'REGISTRY'
-} as const
 
 export const tokenEndpoints = ({
   mutation,
