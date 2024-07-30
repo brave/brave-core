@@ -30,16 +30,13 @@ import os.log
   init() {}
 
   /// Start the adblock service to get adblock file updates
-  public func start(with adBlockService: AdblockService) {
-    Task {
-      for await resourcesFileURL in adBlockService.resourcesComponentStream() {
-        AdBlockGroupsManager.shared.didUpdateResourcesComponent(
-          resourcesFileURL: resourcesFileURL
-        )
-      }
+  public func start(with adBlockService: AdblockService) async {
+    for await resourcesFileURL in adBlockService.resourcesComponentStream() {
+      AdBlockGroupsManager.shared.didUpdateResourcesComponent(
+        resourcesFileURL: resourcesFileURL
+      )
     }
 
-    FilterListCustomURLDownloader.shared.startIfNeeded()
     subscribeToFilterListChanges(with: adBlockService)
   }
 
