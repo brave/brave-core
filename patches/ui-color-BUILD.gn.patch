@@ -1,0 +1,12 @@
+diff --git a/ui/color/BUILD.gn b/ui/color/BUILD.gn
+index 01a987da95c4a..d257af5c78101 100644
+--- a/ui/color/BUILD.gn
++++ b/ui/color/BUILD.gn
+@@ -85,6 +85,7 @@ component("color") {
+     ]
+     frameworks = [ "AppKit.framework" ]
+   }
++  import("//brave/ui/color/sources.gni") sources += brave_ui_color_sources public_deps += brave_ui_color_public_deps
+ }
+ 
+ source_set("test_support") {

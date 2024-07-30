@@ -3,22 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-copy("copy_leo_colors") {
-  sources = [ "//brave/node_modules/@brave/leo/tokens/skia/colors.h" ]
-
-  outputs = [ "$root_out_dir/gen/brave/browser/ui/color/leo/colors.h" ]
-}
-
-source_set("leo_colors") {
-  sources = get_target_outputs(":copy_leo_colors")
-
-  deps = [
-    ":copy_leo_colors",
-    "//skia",
-    "//ui/gfx",
-  ]
-}
-
 source_set("unit_tests") {
   testonly = true
 

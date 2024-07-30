@@ -9,7 +9,6 @@
 
 #include "base/logging.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/color/leo/colors.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_popup_view_views.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_result_view.h"
 #include "brave/components/brave_search_conversion/p3a.h"
@@ -19,6 +18,7 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "brave/ui/color/leo/colors.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
