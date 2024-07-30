@@ -1001,7 +1001,6 @@ source_set("ui") {
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser/brave_wallet",
       "//brave/browser/resources/settings:resources",
-      "//brave/browser/ui/color:leo_colors",
       "//brave/common/importer",
       "//brave/components/brave_adaptive_captcha",
       "//brave/components/brave_new_tab_ui:generated_resources",
@@ -1031,6 +1030,7 @@ source_set("ui") {
       "//components/sync_device_info",
       "//mojo/public/cpp/bindings",
       "//third_party/blink/public/common",
+      "//ui/color",
     ]
   }
 
