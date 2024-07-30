@@ -37,7 +37,6 @@ BraveNewsEngine::BraveNewsEngine(
           std::move(pending_shared_url_loader_factory)),
       history_querier_(std::move(history_querier)) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
-  sequence_checker_.EnableStackLogging();
 }
 
 BraveNewsEngine::~BraveNewsEngine() {
