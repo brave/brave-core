@@ -1,5 +1,5 @@
 diff --git a/common/py_utils/py_utils/cloud_storage.py b/common/py_utils/py_utils/cloud_storage.py
-index 3a36a573d8d986a724760769b858435da3936bdc..c4c4914cbf466a34f82a2f1a4980302f3446e4b1 100644
+index 3a36a573d8d986a724760769b858435da3936bdc..25f490d36c693e2e3f0d3a7c1d13d3399b20b0ce 100644
 --- a/common/py_utils/py_utils/cloud_storage.py
 +++ b/common/py_utils/py_utils/cloud_storage.py
 @@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
@@ -7,7 +7,12 @@ index 3a36a573d8d986a724760769b858435da3936bdc..c4c4914cbf466a34f82a2f1a4980302f
  
  PUBLIC_BUCKET = 'chromium-telemetry'
 -PARTNER_BUCKET = 'chrome-partner-telemetry'
-+PARTNER_BUCKET = 'brave-telemetry'
++PARTNER_BUCKET = 'brave-perf-data'  # is redirected to s3://brave-perf-data
  INTERNAL_BUCKET = 'chrome-telemetry'
  TELEMETRY_OUTPUT = 'chrome-telemetry-output'
  
+@@ -627,3 +627,4 @@ def CalculateHash(file_path):
+ def ReadHash(hash_path):
+   with open(hash_path, 'rb') as f:
+     return f.read(1024).rstrip().decode('utf-8')
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
