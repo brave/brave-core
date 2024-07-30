@@ -11,6 +11,7 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
@@ -67,6 +68,8 @@ class PublishersController {
   std::unique_ptr<base::OneShotEvent> on_current_update_complete_;
   std::string default_locale_;
   Publishers publishers_;
+
+  base::WeakPtrFactory<PublishersController> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_news
