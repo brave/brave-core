@@ -73,4 +73,10 @@ KeyedService* BraveNewsControllerFactory::BuildServiceInstanceFor(
                                  profile->GetURLLoaderFactory());
 }
 
+bool BraveNewsControllerFactory::ServiceIsNULLWhileTesting() const {
+  // BraveNewsController expects non-null FaviconService, HistoryService, and
+  // SharedURLLoaderFactory. All of these are nullptr in unit tests.
+  return true;
+}
+
 }  // namespace brave_news
