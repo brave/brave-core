@@ -41,14 +41,6 @@ struct FilterListsView: View {
       case .updating: Color(.braveDisabled)
       }
     }
-
-    var isUpdating: Bool {
-      return self == .updating
-    }
-
-    var isUpdated: Bool {
-      return self == .updated
-    }
   }
 
   @ObservedObject private var filterListStorage = FilterListStorage.shared
@@ -60,20 +52,26 @@ struct FilterListsView: View {
   @State private var rulesError: Error?
   @State private var filterListsUpdateStatus = FilterListUpdateStatus.unknown
   @State private var customFilterListsUpdateStatus = FilterListUpdateStatus.unknown
+  @State private var customFilterListsUpdateError: Error? = nil
 
   var body: some View {
     List {
       Section {
         if !customFilterListStorage.filterListsURLs.isEmpty {
-          updateFilterListsButton(status: customFilterListsUpdateStatus) {
+          updateFilterListsButton(
+            status: customFilterListsUpdateStatus,
+            error: customFilterListsUpdateError
+          ) {
             customFilterListsUpdateStatus = .updating
+            customFilterListsUpdateError = nil
             Task {
-              await updateCustomFilterLists()
-              #if DEBUG
-              // Add a delay so we can see and test the different states
-              try await Task.sleep(seconds: 2)
-              #endif
-              customFilterListsUpdateStatus = .updated
+              do {
+                try await FilterListCustomURLDownloader.shared.updateFilterLists()
+                customFilterListsUpdateStatus = .updated
+              } catch {
+                customFilterListsUpdateError = error
+                customFilterListsUpdateStatus = .unknown
+              }
             }
           }
         }
@@ -102,14 +100,10 @@ struct FilterListsView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
       Section {
-        updateFilterListsButton(status: filterListsUpdateStatus) {
+        updateFilterListsButton(status: filterListsUpdateStatus, error: nil) {
           filterListsUpdateStatus = .updating
           Task {
             await updateFilterLists()
-            #if DEBUG
-            // Add a delay so we can see and test the different states
-            try await Task.sleep(seconds: 2)
-            #endif
             filterListsUpdateStatus = .updated
           }
         }
@@ -149,20 +143,28 @@ struct FilterListsView: View {
 
   private func updateFilterListsButton(
     status: FilterListUpdateStatus,
+    error: Error?,
     action: @escaping () -> Void
   ) -> some View {
-    Button(
-      action: action,
-      label: {
-        Label(
-          status.label,
-          braveSystemImage: status.braveImageName
-        )
+    VStack(alignment: .leading) {
+      Button(
+        action: action,
+        label: {
+          Label(
+            status.label,
+            braveSystemImage: status.braveImageName
+          )
+        }
+      )
+      .labelStyle(.titleAndIcon)
+      .foregroundStyle(status.forgroundColor)
+      .disabled(status == .updating)
+      if let error {
+        Text(error.localizedDescription)
+          .foregroundStyle(Color(.braveErrorLabel))
+          .font(.caption)
       }
-    )
-    .labelStyle(.titleAndIcon)
-    .foregroundStyle(status.forgroundColor)
-    .disabled(status.isUpdating)
+    }
   }
 
   private var customFiltersAccessibilityLabel: Text {
@@ -263,7 +265,7 @@ struct FilterListsView: View {
             case .failure:
               Text(Strings.Shields.filterListsDownloadFailed)
                 .font(.caption)
-                .foregroundColor(.red)
+                .foregroundColor(Color(.braveErrorLabel))
             case .pending:
               Text(Strings.Shields.filterListsDownloadPending)
                 .font(.caption)
@@ -351,14 +353,6 @@ struct FilterListsView: View {
     _ = await FilterListStorage.shared.updateFilterLists()
     await AdblockResourceDownloader.shared.updateResources()
     await AdBlockGroupsManager.shared.compileEngines()
-  }
-
-  private func updateCustomFilterLists() async {
-    do {
-      try await FilterListCustomURLDownloader.shared.updateFilterLists()
-    } catch {
-      // Handle the error
-    }
   }
 }
 

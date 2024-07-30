@@ -59,7 +59,7 @@ import Foundation
 
   /// Perform a one time force update of all the filster lists
   func updateFilterLists() async throws {
-    try await CustomFilterListStorage.shared.filterListsURLs.asyncConcurrentForEach { customURL in
+    try await CustomFilterListStorage.shared.filterListsURLs.asyncForEach { customURL in
       let result = try await self.resourceDownloader.download(
         resource: customURL.setting.resource,
         force: true
