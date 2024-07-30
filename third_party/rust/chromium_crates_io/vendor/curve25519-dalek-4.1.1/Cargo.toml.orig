@@ -1,0 +1,74 @@
+[package]
+name = "curve25519-dalek"
+# Before incrementing:
+# - update CHANGELOG
+# - update README if required by semver
+# - if README was updated, also update module documentation in src/lib.rs
+version = "4.1.1"
+edition = "2021"
+rust-version = "1.60.0"
+authors = ["Isis Lovecruft <isis@patternsinthevoid.net>",
+           "Henry de Valence <hdevalence@hdevalence.ca>"]
+readme = "README.md"
+license = "BSD-3-Clause"
+repository = "https://github.com/dalek-cryptography/curve25519-dalek/tree/main/curve25519-dalek"
+homepage = "https://github.com/dalek-cryptography/curve25519-dalek"
+documentation = "https://docs.rs/curve25519-dalek"
+categories = ["cryptography", "no-std"]
+keywords = ["cryptography", "crypto", "ristretto", "curve25519", "ristretto255"]
+description = "A pure-Rust implementation of group operations on ristretto255 and Curve25519"
+exclude = [
+    "**/.gitignore",
+    ".gitignore",
+]
+
+[package.metadata.docs.rs]
+rustdoc-args = [
+    "--html-in-header", "docs/assets/rustdoc-include-katex-header.html",
+    "--cfg", "docsrs",
+]
+features = ["serde", "rand_core", "digest", "legacy_compatibility", "group-bits"]
+
+[dev-dependencies]
+sha2 = { version = "0.10", default-features = false }
+bincode = "1"
+criterion = { version = "0.5", features = ["html_reports"] }
+hex = "0.4.2"
+rand = "0.8"
+rand_core = { version = "0.6", default-features = false, features = ["getrandom"] }
+
+[build-dependencies]
+platforms = "3.0.2"
+rustc_version = "0.4.0"
+
+[[bench]]
+name = "dalek_benchmarks"
+harness = false
+required-features = ["alloc", "rand_core"]
+
+[dependencies]
+cfg-if = "1"
+ff = { version = "0.13", default-features = false, optional = true }
+group = { version = "0.13", default-features = false, optional = true }
+rand_core = { version = "0.6.4", default-features = false, optional = true }
+digest = { version = "0.10", default-features = false, optional = true }
+subtle = { version = "2.3.0", default-features = false }
+serde = { version = "1.0", default-features = false, optional = true, features = ["derive"] }
+zeroize = { version = "1", default-features = false, optional = true }
+
+[target.'cfg(target_arch = "x86_64")'.dependencies]
+cpufeatures = "0.2.6"
+
+[target.'cfg(curve25519_dalek_backend = "fiat")'.dependencies]
+fiat-crypto = { version = "0.2.1", default-features = false }
+
+[features]
+default = ["alloc", "precomputed-tables", "zeroize"]
+alloc = ["zeroize?/alloc"]
+precomputed-tables = []
+legacy_compatibility = []
+group = ["dep:group", "rand_core"]
+group-bits = ["group", "ff/bits"]
+
+[target.'cfg(all(not(curve25519_dalek_backend = "fiat"), not(curve25519_dalek_backend = "serial"), target_arch = "x86_64"))'.dependencies]
+curve25519-dalek-derive = { version = "0.1", path = "../curve25519-dalek-derive" }

@@ -13,11 +13,11 @@ rust_static_library("rust_lib") {
   cxx_bindings = [ "src/lib.rs" ]
 
   deps = [
-    "//brave/third_party/rust/challenge_bypass_ristretto/v2:lib",
+    "//brave/third_party/rust/challenge_bypass_ristretto/v1:lib",
     "//brave/third_party/rust/derive_more/v0_99:lib",
-    "//brave/third_party/rust/hmac/v0_12:lib",
-    "//brave/third_party/rust/sha2/v0_10:lib",
+    "//brave/third_party/rust/hmac/v0_10:lib",
+    "//brave/third_party/rust/rand/v0_7:lib",
+    "//brave/third_party/rust/sha2/v0_9:lib",
     "//third_party/rust/lazy_static/v1:lib",
-    "//third_party/rust/rand/v0_8:lib",
   ]
 }
