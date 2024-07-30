@@ -13,6 +13,7 @@ import components.path_util as path_util
 
 from components.perf_test_utils import GetProcessOutput
 
+GH_BRAVE_CORE_GIT_URL = 'git@github.com:brave/brave-core.git'
 GH_BRAVE_PERF_TEAM = 'brave/perf-team'
 
 
@@ -44,8 +45,9 @@ def PushChangesToBranch(files: Dict[str, str], branch: str,
   # Make a few attempts to rebase if non fast-forward
   for attempt in range(3):
     logging.info('Pushing changes to branch %s #%d', branch, attempt)
-    branch_exists, _ = GetProcessOutput(['git', 'fetch', 'origin', branch],
-                                        cwd=path_util.GetBraveDir())
+    branch_exists, _ = GetProcessOutput(
+        ['git', 'fetch', GH_BRAVE_CORE_GIT_URL, branch],
+        cwd=path_util.GetBraveDir())
     if branch_exists:
       GetProcessOutput(['git', 'checkout', '-f', 'FETCH_HEAD'],
                        cwd=path_util.GetBraveDir(),
@@ -65,7 +67,7 @@ def PushChangesToBranch(files: Dict[str, str], branch: str,
                      cwd=path_util.GetBraveDir(),
                      check=True)
     success, _ = GetProcessOutput(
-        ['git', 'push', 'origin', f'{branch}:{branch}'],
+        ['git', 'push', GH_BRAVE_CORE_GIT_URL, f'{branch}:{branch}'],
         cwd=path_util.GetBraveDir())
     if success:
       return
