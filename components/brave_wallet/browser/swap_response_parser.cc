@@ -379,6 +379,102 @@ std::optional<std::string> ChainIdToHex(const std::string& value) {
   return Uint256ValueToHex(out);
 }
 
+mojom::LiFiStatusCode ParseStatusCode(const swap_responses::LiFiStatus& value) {
+  switch (value) {
+    case swap_responses::LiFiStatus::kNotFound:
+      return mojom::LiFiStatusCode::kNotFound;
+
+    case swap_responses::LiFiStatus::kInvalid:
+      return mojom::LiFiStatusCode::kInvalid;
+
+    case swap_responses::LiFiStatus::kPending:
+      return mojom::LiFiStatusCode::kPending;
+
+    case swap_responses::LiFiStatus::kDone:
+      return mojom::LiFiStatusCode::kDone;
+
+    case swap_responses::LiFiStatus::kFailed:
+      return mojom::LiFiStatusCode::kFailed;
+
+    default:
+      return mojom::LiFiStatusCode::kInvalid;
+  }
+}
+
+mojom::LiFiSubstatusCode ParseSubstatusCode(
+    const swap_responses::LiFiSubstatus& value) {
+  switch (value) {
+    case swap_responses::LiFiSubstatus::kWaitSourceConfirmations:
+      return mojom::LiFiSubstatusCode::kWaitSourceConfirmations;
+
+    case swap_responses::LiFiSubstatus::kWaitDestinationTransaction:
+      return mojom::LiFiSubstatusCode::kWaitDestinationTransaction;
+
+    case swap_responses::LiFiSubstatus::kBridgeNotAvailable:
+      return mojom::LiFiSubstatusCode::kBridgeNotAvailable;
+
+    case swap_responses::LiFiSubstatus::kChainNotAvailable:
+      return mojom::LiFiSubstatusCode::kChainNotAvailable;
+
+    case swap_responses::LiFiSubstatus::kRefundInProgress:
+      return mojom::LiFiSubstatusCode::kRefundInProgress;
+
+    case swap_responses::LiFiSubstatus::kUnknownError:
+      return mojom::LiFiSubstatusCode::kUnknownError;
+
+    case swap_responses::LiFiSubstatus::kCompleted:
+      return mojom::LiFiSubstatusCode::kCompleted;
+
+    case swap_responses::LiFiSubstatus::kPartial:
+      return mojom::LiFiSubstatusCode::kPartial;
+
+    case swap_responses::LiFiSubstatus::kRefunded:
+      return mojom::LiFiSubstatusCode::kRefunded;
+
+    case swap_responses::LiFiSubstatus::kNotProcessableRefundNeeded:
+      return mojom::LiFiSubstatusCode::kNotProcessableRefundNeeded;
+
+    case swap_responses::LiFiSubstatus::kOutOfGas:
+      return mojom::LiFiSubstatusCode::kOutOfGas;
+
+    case swap_responses::LiFiSubstatus::kSlippageExceeded:
+      return mojom::LiFiSubstatusCode::kSlippageExceeded;
+
+    case swap_responses::LiFiSubstatus::kInsufficientAllowance:
+      return mojom::LiFiSubstatusCode::kInsufficientAllowance;
+
+    case swap_responses::LiFiSubstatus::kInsufficientBalance:
+      return mojom::LiFiSubstatusCode::kInsufficientBalance;
+
+    case swap_responses::LiFiSubstatus::kExpired:
+      return mojom::LiFiSubstatusCode::kExpired;
+
+    default:
+      return mojom::LiFiSubstatusCode::kUnknownError;
+  }
+}
+
+mojom::LiFiStepStatusPtr ParseStepStatus(
+    const swap_responses::LiFiStepStatus& value) {
+  auto result = mojom::LiFiStepStatus::New();
+
+  if (auto chain_id = ChainIdToHex(value.chain_id)) {
+    result->chain_id = chain_id.value();
+  } else {
+    return nullptr;
+  }
+
+  result->tx_hash = value.tx_hash;
+  result->tx_link = value.tx_link;
+  result->amount = value.amount;
+
+  if (value.token) {
+    result->contract_address = value.token->address;
+  }
+
+  return result;
+}
+
 mojom::BlockchainTokenPtr ParseToken(const swap_responses::LiFiToken& value) {
   auto result = mojom::BlockchainToken::New();
   result->name = value.name;
@@ -747,6 +843,39 @@ mojom::LiFiErrorPtr ParseErrorResponse(const base::Value& json_value) {
   auto result = mojom::LiFiError::New();
   result->message = value->message;
   result->code = ParseLiFiErrorCode(value->code);
+
+  return result;
+}
+
+mojom::LiFiStatusPtr ParseStatusResponse(const base::Value& json_value) {
+  auto value = swap_responses::LiFiStatusResponse::FromValue(json_value);
+  if (!value) {
+    return nullptr;
+  }
+
+  auto result = mojom::LiFiStatus::New();
+  result->transaction_id = value->transaction_id;
+
+  if (auto sending = ParseStepStatus(value->sending)) {
+    result->sending = std::move(sending);
+  } else {
+    return nullptr;
+  }
+
+  if (auto receiving = ParseStepStatus(value->receiving)) {
+    result->receiving = std::move(receiving);
+  } else {
+    return nullptr;
+  }
+
+  result->lifi_explorer_link = value->lifi_explorer_link;
+  result->from_address = value->from_address;
+  result->to_address = value->to_address;
+  result->tool = value->tool;
+
+  result->status = ParseStatusCode(value->status);
+  result->substatus = ParseSubstatusCode(value->substatus);
+  result->substatus_message = value->substatus_message;
 
   return result;
 }
