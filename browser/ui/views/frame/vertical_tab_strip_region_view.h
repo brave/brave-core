@@ -129,6 +129,7 @@ class VerticalTabStripRegionView : public views::View,
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            OriginalTabSearchButton);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedState);
 
   FullscreenController* GetFullscreenController() const;
   bool IsTabFullscreen() const;
@@ -170,6 +171,8 @@ class VerticalTabStripRegionView : public views::View,
 
   std::u16string GetShortcutTextForNewTabButton(BrowserView* browser_view);
 
+  views::LabelButton& GetToggleButtonForTesting();
+
   raw_ptr<Browser> browser_ = nullptr;
 
   raw_ptr<views::View> original_parent_of_region_view_ = nullptr;
@@ -192,6 +195,7 @@ class VerticalTabStripRegionView : public views::View,
 
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember collapsed_pref_;
+  BooleanPrefMember expanded_state_per_window_pref_;
   BooleanPrefMember floating_mode_pref_;
 
   IntegerPrefMember expanded_width_;

@@ -15,6 +15,7 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kTabHoverMode, TabHoverMode::CARD);
   registry->RegisterBooleanPref(kVerticalTabsEnabled, false);
   registry->RegisterBooleanPref(kVerticalTabsCollapsed, false);
+  registry->RegisterBooleanPref(kVerticalTabsExpandedStatePerWindow, false);
 #if BUILDFLAG(IS_WIN)
   // On Windows, we show window title by default
   // https://github.com/brave/brave-browser/issues/30027

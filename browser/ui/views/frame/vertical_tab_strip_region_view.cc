@@ -639,6 +639,11 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
                           base::Unretained(this)));
   OnCollapsedPrefChanged();
 
+  expanded_state_per_window_pref_.Init(
+      brave_tabs::kVerticalTabsExpandedStatePerWindow, prefs,
+      base::BindRepeating(&VerticalTabStripRegionView::OnCollapsedPrefChanged,
+                          base::Unretained(this)));
+
   floating_mode_pref_.Init(
       brave_tabs::kVerticalTabsFloatingEnabled, prefs,
       base::BindRepeating(
@@ -1203,6 +1208,14 @@ void VerticalTabStripRegionView::UpdateBorder() {
 }
 
 void VerticalTabStripRegionView::OnCollapsedPrefChanged() {
+  if (!expanded_state_per_window_pref_.GetPrefName().empty() &&
+      *expanded_state_per_window_pref_) {
+    // On creation(when expanded_state_per_window_pref_ is empty), we set the
+    // default state based on the `collapsed_pref_` even if the
+    // `expanded_state_per_window_pref_` is set.
+    return;
+  }
+
   SetState(collapsed_pref_.GetValue() ? State::kCollapsed : State::kExpanded);
 }
 
@@ -1325,6 +1338,10 @@ std::u16string VerticalTabStripRegionView::GetShortcutTextForNewTabButton(
   return {};
 }
 #endif
+
+views::LabelButton& VerticalTabStripRegionView::GetToggleButtonForTesting() {
+  return *header_view_->toggle_button();
+}
 
 BEGIN_METADATA(VerticalTabStripRegionView)
 END_METADATA

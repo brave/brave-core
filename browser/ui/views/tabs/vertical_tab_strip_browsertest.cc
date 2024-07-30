@@ -529,6 +529,55 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarVisibility) {
             brave_tab_container->scroll_view_->GetVerticalScrollBarMode());
 }
 
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
+  // Given that kVerticalTabsExpandedStatePerWindow is false,
+  auto* prefs = browser()->profile()->GetPrefs();
+  ASSERT_FALSE(
+      prefs->GetBoolean(brave_tabs::kVerticalTabsExpandedStatePerWindow));
+
+  // When clicking the toggle button,
+  using State = VerticalTabStripRegionView::State;
+  auto* region_view_1 = browser_view()
+                            ->vertical_tab_strip_widget_delegate_view_
+                            ->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view_1);
+  ASSERT_EQ(State::kExpanded, region_view_1->state());
+
+  region_view_1->GetToggleButtonForTesting().button_controller()->NotifyClick();
+  EXPECT_EQ(State::kCollapsed, region_view_1->state());
+  EXPECT_TRUE(prefs->GetBoolean(brave_tabs::kVerticalTabsCollapsed));
+
+  // it affects all browsers.
+  auto* region_view_2 =
+      static_cast<BraveBrowserView*>(
+          Browser::Create(Browser::CreateParams(browser()->profile(), true))
+              ->window())
+          ->vertical_tab_strip_widget_delegate_view_
+          ->vertical_tab_strip_region_view();
+  EXPECT_EQ(State::kCollapsed, region_view_2->state());
+
+  // Given that kVerticalTabsExpandedStatePerWindow is true,
+  prefs->SetBoolean(brave_tabs::kVerticalTabsExpandedStatePerWindow, true);
+
+  // When clicking the toggle button,
+  region_view_1->GetToggleButtonForTesting().button_controller()->NotifyClick();
+
+  // it affects only the browser
+  EXPECT_EQ(State::kExpanded, region_view_1->state());
+  EXPECT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsCollapsed));
+  EXPECT_EQ(State::kCollapsed, region_view_2->state());
+
+  // And new browser should follow the preference.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);
+  auto* region_view_3 =
+      static_cast<BraveBrowserView*>(
+          Browser::Create(Browser::CreateParams(browser()->profile(), true))
+              ->window())
+          ->vertical_tab_strip_widget_delegate_view_
+          ->vertical_tab_strip_region_view();
+  EXPECT_EQ(State::kCollapsed, region_view_3->state());
+}
+
 class VerticalTabStripStringBrowserTest : public VerticalTabStripBrowserTest {
  public:
   using VerticalTabStripBrowserTest::VerticalTabStripBrowserTest;
