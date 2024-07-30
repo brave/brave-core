@@ -14,7 +14,6 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/values.h"
-#include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
@@ -88,21 +87,11 @@ class BraveNewsPublishersControllerTest : public testing::Test {
   BraveNewsPublishersControllerTest()
       : api_request_helper_(TRAFFIC_ANNOTATION_FOR_TESTS,
                             test_url_loader_factory_.GetSafeWeakWrapper()),
-        profile_(
-            TestingProfile::Builder()
-                .AddTestingFactory(
-                    brave_news::BraveNewsControllerFactory::GetInstance(),
-                    base::BindRepeating([](content::BrowserContext* context)
-                                            -> std::unique_ptr<KeyedService> {
-                      return nullptr;
-                    }))
-                .Build()),
-        pref_manager_(*profile_->GetPrefs()),
+        pref_manager_(*profile_.GetPrefs()),
         publishers_controller_(&api_request_helper_) {
-    profile_->GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn,
-                                     true);
-    profile_->GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
-                                     true);
+    profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
+    profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
+                                    true);
   }
 
   std::string GetSourcesUrl() {
@@ -111,14 +100,14 @@ class BraveNewsPublishersControllerTest : public testing::Test {
   }
 
   void SetSubscribedSources(const std::vector<std::string>& publisher_ids) {
-    ScopedDictPrefUpdate update(profile_->GetPrefs(), prefs::kBraveNewsSources);
+    ScopedDictPrefUpdate update(profile_.GetPrefs(), prefs::kBraveNewsSources);
     for (const auto& id : publisher_ids) {
       update->Set(id, true);
     }
   }
 
   bool CombinedSourceExists(const std::string& publisher_id) {
-    const auto& value = profile_->GetPrefs()->GetDict(prefs::kBraveNewsSources);
+    const auto& value = profile_.GetPrefs()->GetDict(prefs::kBraveNewsSources);
     return value.FindBool(publisher_id).has_value();
   }
 
@@ -167,7 +156,7 @@ class BraveNewsPublishersControllerTest : public testing::Test {
   data_decoder::test::InProcessDataDecoder data_decoder_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   api_request_helper::APIRequestHelper api_request_helper_;
-  std::unique_ptr<TestingProfile> profile_;
+  TestingProfile profile_;
   BraveNewsPrefManager pref_manager_;
   PublishersController publishers_controller_;
 };

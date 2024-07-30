@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_news/browser/initialization_promise.h"
 
-#include <memory>
 #include <string>
 #include <utility>
 
@@ -13,7 +12,6 @@
 #include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
-#include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -55,16 +53,7 @@ class BraveNewsInitializationPromiseTest : public testing::Test {
   BraveNewsInitializationPromiseTest()
       : api_request_helper_(TRAFFIC_ANNOTATION_FOR_TESTS,
                             test_url_loader_factory_.GetSafeWeakWrapper()),
-        profile_(
-            TestingProfile::Builder()
-                .AddTestingFactory(
-                    brave_news::BraveNewsControllerFactory::GetInstance(),
-                    base::BindRepeating([](content::BrowserContext* context)
-                                            -> std::unique_ptr<KeyedService> {
-                      return nullptr;
-                    }))
-                .Build()),
-        pref_manager_(*profile_->GetPrefs()),
+        pref_manager_(*profile_.GetPrefs()),
         publishers_controller_(&api_request_helper_),
         initialization_promise_(
             3,
@@ -114,7 +103,7 @@ class BraveNewsInitializationPromiseTest : public testing::Test {
   network::TestURLLoaderFactory test_url_loader_factory_;
   api_request_helper::APIRequestHelper api_request_helper_;
 
-  std::unique_ptr<TestingProfile> profile_;
+  TestingProfile profile_;
   BraveNewsPrefManager pref_manager_;
   PublishersController publishers_controller_;
   InitializationPromise initialization_promise_;
