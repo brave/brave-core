@@ -9,6 +9,13 @@ import Foundation
 #if DEBUG
 
 class MockSwapService: BraveWalletSwapService {
+  func liFiStatus(
+    txHash: String,
+    completion: @escaping (BraveWallet.LiFiStatus?, BraveWallet.LiFiError?, String) -> Void
+  ) {
+    completion(.none, .init(message: "Error", code: .defaultError), "Error")
+  }
+
   func isSwapSupported(chainId: String, completion: @escaping (Bool) -> Void) {
     completion(true)
   }

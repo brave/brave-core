@@ -545,6 +545,61 @@ struct JupiterError {
   bool is_insufficient_liquidity;
 };
 
+struct LiFiStepStatus {
+  string chain_id;
+
+  // The following fields are temporarily undefined in case of a pending
+  // receiving step.
+  string? tx_hash;
+  string? tx_link;
+  string? amount;
+  string? contract_address;
+};
+
+enum LiFiStatusCode {
+  kNotFound,
+  kInvalid,
+  kPending,
+  kDone,
+  kFailed
+};
+
+enum LiFiSubstatusCode {
+  // Substatuses for kPending
+  kWaitSourceConfirmations,
+  kWaitDestinationTransaction,
+  kBridgeNotAvailable,
+  kChainNotAvailable,
+  kRefundInProgress,
+  kUnknownError,
+
+  // Substatuses for kDone
+  kCompleted,
+  kPartial,
+  kRefunded,
+
+  // Substatuses for kFailed
+  kNotProcessableRefundNeeded,
+  kOutOfGas,
+  kSlippageExceeded,
+  kInsufficientAllowance,
+  kInsufficientBalance,
+  kExpired
+};
+
+struct LiFiStatus {
+  string transaction_id;
+  LiFiStepStatus sending;
+  LiFiStepStatus receiving;
+  string lifi_explorer_link;
+  string from_address;
+  string to_address;
+  string tool;
+  LiFiStatusCode status;
+  LiFiSubstatusCode substatus;
+  string substatus_message;
+};
+
 enum LiFiStepType {
   kSwap,
   kCross,
@@ -1116,6 +1171,12 @@ interface SwapService {
 
   // Obtains whether the given chain id supports swap
   IsSwapSupported(string chain_id) => (bool result);
+
+  // Get LiFi status for a given transaction meta id
+  GetLiFiStatus(string tx_hash) =>
+    (LiFiStatus? response,
+     LiFiError? error_response,
+     string error_string);
 };
 
 interface IpfsService {

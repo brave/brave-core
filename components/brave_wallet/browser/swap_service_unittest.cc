@@ -1521,4 +1521,98 @@ TEST_F(SwapServiceUnitTest, GetLiFiTransactionError) {
   task_environment_.RunUntilIdle();
 }
 
+TEST_F(SwapServiceUnitTest, GetLiFiStatus) {
+  SetInterceptor(R"(
+    {
+      "transactionId": "0x0a0e6ac13786c9a3a68f55bbb5eeb3b31a7a25e7e2aa3641c545fd3869da8016",
+      "sending": {
+        "txHash": "0x1263d8b3cb3cf4e3ec0f9df5947e3846e2c6b1fb2bcc3740e36514c2ddd87cbb",
+        "txLink": "https://optimistic.etherscan.io/tx/0x1263d8b3cb3cf4e3ec0f9df5947e3846e2c6b1fb2bcc3740e36514c2ddd87cbb",
+        "amount": "2516860",
+        "token": {
+          "address": "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
+          "chainId": "10",
+          "symbol": "USDC.e",
+          "decimals": "6",
+          "name": "Bridged USD Coin",
+          "coinKey": "USDCe",
+          "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+          "priceUSD": "1"
+        },
+        "chainId": "10",
+        "gasPrice": "61761647",
+        "gasUsed": "239193",
+        "gasToken": {
+          "address": "0x0000000000000000000000000000000000000000",
+          "chainId": "10",
+          "symbol": "ETH",
+          "decimals": "18",
+          "name": "ETH",
+          "coinKey": "ETH",
+          "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+          "priceUSD": "3399.92"
+        },
+        "gasAmount": "14772953630871",
+        "gasAmountUSD": "0.05",
+        "amountUSD": "2.52",
+        "value": "0",
+        "timestamp": "1721381005"
+      },
+      "receiving": {
+        "chainId": "10"
+      },
+      "lifiExplorerLink": "https://explorer.li.fi/tx/0x1263d8b3cb3cf4e3ec0f9df5947e3846e2c6b1fb2bcc3740e36514c2ddd87cbb",
+      "fromAddress": "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
+      "toAddress": "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
+      "tool": "paraswap",
+      "status": "PENDING",
+      "substatus": "WAIT_DESTINATION_TRANSACTION",
+      "substatusMessage": "The transfer is waiting for destination transaction.",
+      "metadata": {
+        "integrator": "brave"
+      }
+    }
+  )");
+
+  auto expected_response = mojom::LiFiStatus::New();
+  expected_response->transaction_id =
+      "0x0a0e6ac13786c9a3a68f55bbb5eeb3b31a7a25e7e2aa3641c545fd3869da8016";
+  expected_response->sending = mojom::LiFiStepStatus::New();
+  expected_response->sending->tx_hash =
+      "0x1263d8b3cb3cf4e3ec0f9df5947e3846e2c6b1fb2bcc3740e36514c2ddd87cbb";
+  expected_response->sending->tx_link =
+      "https://optimistic.etherscan.io/tx/"
+      "0x1263d8b3cb3cf4e3ec0f9df5947e3846e2c6b1fb2bcc3740e36514c2ddd87cbb";
+  expected_response->sending->amount = "2516860";
+  expected_response->sending->contract_address =
+      "0x7F5c764cBc14f9669B88837ca1490cCa17c31607";
+  expected_response->sending->chain_id = "0xa";
+
+  expected_response->receiving = mojom::LiFiStepStatus::New();
+  expected_response->receiving->chain_id = "0xa";
+
+  expected_response->lifi_explorer_link =
+      "https://explorer.li.fi/tx/"
+      "0x1263d8b3cb3cf4e3ec0f9df5947e3846e2c6b1fb2bcc3740e36514c2ddd87cbb";
+  expected_response->from_address =
+      "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4";
+  expected_response->to_address = "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4";
+  expected_response->tool = "paraswap";
+  expected_response->status = mojom::LiFiStatusCode::kPending;
+  expected_response->substatus =
+      mojom::LiFiSubstatusCode::kWaitDestinationTransaction;
+  expected_response->substatus_message =
+      "The transfer is waiting for destination transaction.";
+
+  base::MockCallback<mojom::SwapService::GetLiFiStatusCallback> callback;
+  EXPECT_CALL(callback, Run(EqualsMojo(expected_response),
+                            EqualsMojo(mojom::LiFiErrorPtr()), ""));
+
+  swap_service_->GetLiFiStatus(
+      "0x0a0e6ac13786c9a3a68f55bbb5eeb3b31a7a25e7e2aa3641c545fd3869da8016",
+      callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
 }  // namespace brave_wallet

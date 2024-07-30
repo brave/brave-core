@@ -46,6 +46,9 @@ class SwapService : public KeyedService, public mojom::SwapService {
   void IsSwapSupported(const std::string& chain_id,
                        IsSwapSupportedCallback callback) override;
 
+  void GetLiFiStatus(const std::string& tx_hash,
+                     GetLiFiStatusCallback callback) override;
+
   static GURL GetZeroExQuoteURL(const mojom::SwapQuoteParams& params,
                                 const std::optional<std::string>& fee_param);
   static GURL GetZeroExTransactionURL(
@@ -56,6 +59,7 @@ class SwapService : public KeyedService, public mojom::SwapService {
   static GURL GetJupiterTransactionURL(const std::string& chain_id);
   static GURL GetLiFiQuoteURL();
   static GURL GetLiFiTransactionURL();
+  static GURL GetLiFiStatusURL(const std::string& tx_hash);
 
  private:
   void OnGetZeroExQuote(mojom::SwapFeesPtr swap_fee,
@@ -73,6 +77,8 @@ class SwapService : public KeyedService, public mojom::SwapService {
                                APIRequestResult api_request_result);
   void OnGetLiFiTransaction(GetTransactionCallback callback,
                             APIRequestResult api_request_result);
+  void OnGetLiFiStatus(GetLiFiStatusCallback callback,
+                       APIRequestResult api_request_result);
 
   api_request_helper::APIRequestHelper api_request_helper_;
 
