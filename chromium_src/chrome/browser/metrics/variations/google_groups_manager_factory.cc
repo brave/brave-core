@@ -3,28 +3,28 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/metrics/variations/google_groups_updater_service_factory.h"
+#include "chrome/browser/metrics/variations/google_groups_manager_factory.h"
 
+#include "base/no_destructor.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/variations/service/google_groups_updater_service.h"
+#include "components/variations/service/google_groups_manager.h"
 
 // static
-GoogleGroupsUpdaterServiceFactory*
-GoogleGroupsUpdaterServiceFactory::GetInstance() {
-  return nullptr;
+GoogleGroupsManagerFactory* GoogleGroupsManagerFactory::GetInstance() {
+  static base::NoDestructor<GoogleGroupsManagerFactory> instance;
+  return instance.get();
 }
 
 // static
-GoogleGroupsUpdaterService*
-GoogleGroupsUpdaterServiceFactory::GetForBrowserContext(
+GoogleGroupsManager* GoogleGroupsManagerFactory::GetForBrowserContext(
     content::BrowserContext* context) {
   return nullptr;
 }
 
-GoogleGroupsUpdaterServiceFactory::GoogleGroupsUpdaterServiceFactory()
+GoogleGroupsManagerFactory::GoogleGroupsManagerFactory()
     : ProfileKeyedServiceFactory(
-          "GoogleGroupsUpdaterService",
+          "GoogleGroupsManager",
           // We only want instances of this service corresponding to regular
           // profiles, as those are the only ones that can have sync data to
           // copy from.
@@ -39,19 +39,19 @@ GoogleGroupsUpdaterServiceFactory::GoogleGroupsUpdaterServiceFactory()
               .Build()) {}
 
 std::unique_ptr<KeyedService>
-GoogleGroupsUpdaterServiceFactory::BuildServiceInstanceForBrowserContext(
+GoogleGroupsManagerFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   return nullptr;
 }
 
-bool GoogleGroupsUpdaterServiceFactory::ServiceIsCreatedWithBrowserContext()
+bool GoogleGroupsManagerFactory::ServiceIsCreatedWithBrowserContext()
     const {
   return true;
 }
 
-bool GoogleGroupsUpdaterServiceFactory::ServiceIsNULLWhileTesting() const {
+bool GoogleGroupsManagerFactory::ServiceIsNULLWhileTesting() const {
   return true;
 }
 
-void GoogleGroupsUpdaterServiceFactory::RegisterProfilePrefs(
+void GoogleGroupsManagerFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {}
