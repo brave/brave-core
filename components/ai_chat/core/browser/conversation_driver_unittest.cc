@@ -24,6 +24,7 @@
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/browser/text_embedder.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -131,6 +132,7 @@ class MockConversationDriver : public ConversationDriver {
       PrefService* local_state,
       ModelService* model_service,
       AIChatMetrics* ai_chat_metrics,
+      LeoLocalModelsUpdater* leo_local_models_updater,
       std::unique_ptr<AIChatCredentialManager> credential_manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::string_view channel_string)
@@ -138,8 +140,7 @@ class MockConversationDriver : public ConversationDriver {
                            local_state,
                            model_service,
                            ai_chat_metrics,
-                           // TODO(darkdh): Use MockLeoLocalModelsUpdater
-                           nullptr,
+                           leo_local_models_updater,
                            std::move(credential_manager),
                            url_loader_factory,
                            channel_string) {}
@@ -152,6 +153,30 @@ class MockConversationDriver : public ConversationDriver {
               (GetPageContentCallback, std::string_view),
               (override));
   MOCK_METHOD(void, PrintPreviewFallback, (GetPageContentCallback), (override));
+};
+
+class MockTextEmbedder : public TextEmbedder {
+ public:
+  MockTextEmbedder() = default;
+  ~MockTextEmbedder() override = default;
+  MOCK_METHOD(
+      void,
+      GetTopSimilarityWithPromptTilContextLimit,
+      (const std::string&, const std::string&, uint32_t, TopSimilarityCallback),
+      (override));
+};
+
+class MockLeoLocalModelsUpdater : public LeoLocalModelsUpdater {
+ public:
+  MockLeoLocalModelsUpdater()
+      : LeoLocalModelsUpdater(nullptr, base::FilePath()) {}
+  ~MockLeoLocalModelsUpdater() override = default;
+
+  MOCK_METHOD(void, Register, (), (override));
+  MOCK_METHOD(const base::FilePath&,
+              GetUniversalQAModel,
+              (),
+              (const, override));
 };
 
 }  // namespace
@@ -197,9 +222,12 @@ class ConversationDriverUnitTest : public testing::Test {
           default_model_key_);
     }
 
+    leo_local_models_updater_ = std::make_unique<MockLeoLocalModelsUpdater>();
+
     conversation_driver_ = std::make_unique<MockConversationDriver>(
         &prefs_, &local_state_, service_.get(), nullptr,
-        std::move(credential_manager), shared_url_loader_factory_, "");
+        leo_local_models_updater_.get(), std::move(credential_manager),
+        shared_url_loader_factory_, "");
   }
 
   void EmulateUserOptedIn() {
@@ -222,6 +250,7 @@ class ConversationDriverUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
+  std::unique_ptr<MockLeoLocalModelsUpdater> leo_local_models_updater_;
   std::unique_ptr<MockConversationDriver> conversation_driver_;
   std::string default_model_key_;
   bool is_premium_ = false;
@@ -811,6 +840,112 @@ TEST_F(ConversationDriverUnitTest, ModifyConversation) {
                 ->get_completion_event()
                 ->completion,
             "answer2");
+}
+
+TEST_F(ConversationDriverUnitTest, TextEmbedder) {
+  conversation_driver_->SetEngineForTesting(
+      std::make_unique<MockEngineConsumer>());
+  auto* mock_engine = static_cast<MockEngineConsumer*>(
+      conversation_driver_->GetEngineForTesting());
+
+  conversation_driver_->SetTextEmbedderForTesting(
+      std::make_unique<MockTextEmbedder>());
+  auto* mock_text_embedder = static_cast<MockTextEmbedder*>(
+      conversation_driver_->GetTextEmbedderForTesting());
+
+  uint32_t max_page_content_length = conversation_driver_->GetCurrentModel()
+                                         .options->get_leo_model_options()
+                                         ->max_page_content_length;
+  struct {
+    std::string prompt;
+    std::string page_content;
+    bool should_refine_page_content;
+  } test_cases[] = {
+      {"prompt", std::string(max_page_content_length - 1, 'A'), false},
+      {"prompt", std::string(max_page_content_length, 'A'), false},
+      {"prompt", std::string(max_page_content_length + 1, 'A'), true},
+      {l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE),
+       std::string(max_page_content_length + 1, 'A'), false},
+  };
+
+  for (const auto& test_case : test_cases) {
+    SCOPED_TRACE(testing::Message()
+                 << "Prompt: " << test_case.prompt
+                 << ", Page content length: " << test_case.page_content.length()
+                 << ", Should refine page content: "
+                 << test_case.should_refine_page_content);
+    if (test_case.should_refine_page_content) {
+      EXPECT_CALL(*mock_text_embedder,
+                  GetTopSimilarityWithPromptTilContextLimit(_, _, _, _))
+          .Times(1);
+      EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
+          .Times(0);
+    } else {
+      EXPECT_CALL(*mock_text_embedder,
+                  GetTopSimilarityWithPromptTilContextLimit(_, _, _, _))
+          .Times(0);
+      EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
+          .Times(1);
+    }
+    conversation_driver_->PerformAssistantGeneration(
+        test_case.prompt, 0, test_case.page_content, false, "");
+  }
+}
+
+TEST_F(ConversationDriverUnitTest, LeoLocalModelsUpdater) {
+  EXPECT_CALL(*leo_local_models_updater_, Register());
+  auto credential_manager = std::make_unique<MockAIChatCredentialManager>(
+      base::NullCallback(), &local_state_);
+  auto conversation_driver = std::make_unique<MockConversationDriver>(
+      &prefs_, &local_state_, service_.get(), nullptr,
+      leo_local_models_updater_.get(), std::move(credential_manager),
+      shared_url_loader_factory_, "");
+
+  EXPECT_CALL(*leo_local_models_updater_, GetUniversalQAModel())
+      .WillOnce(testing::ReturnRefOfCopy(base::FilePath()));
+  conversation_driver->OnLeoLocalModelsReady();
+  EXPECT_TRUE(conversation_driver->universal_qa_model_path_.empty());
+
+  EXPECT_CALL(*leo_local_models_updater_, GetUniversalQAModel())
+      .WillOnce(testing::ReturnRefOfCopy(
+          base::FilePath::FromASCII("/path/to/model")));
+  conversation_driver->OnLeoLocalModelsReady();
+  EXPECT_EQ(conversation_driver->universal_qa_model_path_,
+            base::FilePath::FromASCII("/path/to/model"));
+
+  uint32_t max_page_content_length = conversation_driver->GetCurrentModel()
+                                         .options->get_leo_model_options()
+                                         ->max_page_content_length;
+
+  // Path already exists.
+  EXPECT_CALL(*leo_local_models_updater_, GetUniversalQAModel()).Times(0);
+  conversation_driver->PerformAssistantGeneration(
+      "prompt", 0, std::string("A", max_page_content_length + 1), false, "");
+
+  conversation_driver->universal_qa_model_path_ = base::FilePath();
+  EXPECT_CALL(*leo_local_models_updater_, GetUniversalQAModel())
+      .WillOnce(testing::ReturnRefOfCopy(
+          base::FilePath::FromASCII("/path/to/model")));
+  conversation_driver->PerformAssistantGeneration(
+      "prompt", 0, std::string("A", max_page_content_length + 1), false, "");
+  EXPECT_EQ(conversation_driver->universal_qa_model_path_,
+            base::FilePath::FromASCII("/path/to/model"));
+
+  // should_refine_page_content is false.
+  conversation_driver->universal_qa_model_path_ = base::FilePath();
+  EXPECT_CALL(*leo_local_models_updater_, GetUniversalQAModel()).Times(0);
+  conversation_driver->PerformAssistantGeneration(
+      "prompt", 0, std::string(max_page_content_length, 'A'), false, "");
+  EXPECT_TRUE(conversation_driver->universal_qa_model_path_.empty());
+
+  // Already has TextEmbedder.
+  conversation_driver_->SetTextEmbedderForTesting(
+      std::make_unique<MockTextEmbedder>());
+  conversation_driver->universal_qa_model_path_ = base::FilePath();
+  EXPECT_CALL(*leo_local_models_updater_, GetUniversalQAModel()).Times(0);
+  conversation_driver->PerformAssistantGeneration(
+      "prompt", 0, std::string(max_page_content_length, 'A'), false, "");
+  EXPECT_TRUE(conversation_driver->universal_qa_model_path_.empty());
 }
 
 }  // namespace ai_chat
