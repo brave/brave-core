@@ -20,6 +20,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/p3a/nitro_utils/cose.h"
+#include "brave/components/p3a/star_url_loader_network_service_observer.h"
 #include "components/cbor/reader.h"
 #include "crypto/random.h"
 #include "net/base/url_util.h"
@@ -53,13 +54,6 @@ constexpr net::SHA256HashValue kAWSRootCertFP{
     .data = {0x64, 0x1A, 0x03, 0x21, 0xA3, 0xE2, 0x44, 0xEF, 0xE4, 0x56, 0x46,
              0x31, 0x95, 0xD6, 0x06, 0x31, 0x7E, 0xD7, 0xCD, 0xCC, 0x3C, 0x17,
              0x56, 0xE0, 0x98, 0x93, 0xF3, 0xC6, 0x8F, 0x79, 0xBB, 0x5B}};
-
-// Old-style user_data is a pair of prefix:<binary digest> values
-// separated by semicolons. The first value is the TLS cert fingerprint.
-constexpr char kHashPrefix[] = "sha256:";
-constexpr size_t kHashPrefixLength = sizeof(kHashPrefix) - 1;
-constexpr size_t kUserDataOldLength =
-    2 * (kSHA256HashLength + kHashPrefixLength) + 1;
 
 net::NetworkTrafficAnnotationTag AttestationAnnotation() {
   return net::DefineNetworkTrafficAnnotation("nitro_utils_attestation", R"(
@@ -115,36 +109,22 @@ bool VerifyUserDataKey(scoped_refptr<net::X509Certificate> server_cert,
   const net::SHA256HashValue server_cert_fp =
       net::X509Certificate::CalculateFingerprint256(server_cert->cert_buffer());
 
-  // The hashes in the  old and new user_data schemes have incommensurate
-  // lengths, so use the total length to distinguish between them.
-  if (user_data_bytes.size() == kUserDataOldLength) {
-    if (memcmp(user_data_bytes.data(), kHashPrefix, kHashPrefixLength) != 0) {
-      LOG(ERROR)
-          << "Nitro verification: user data is missing sha256 hash prefix";
-      return false;
-    }
-    if (memcmp(server_cert_fp.data, user_data_bytes.data() + kHashPrefixLength,
-               kSHA256HashLength) == 0) {
-      return true;
-    }
-  } else {
-    // Look for the TLS cert fingerprint as a multihash.
-    if (user_data_bytes.size() < kUserDataMinLength) {
-      LOG(ERROR) << "Nitro verification: user data is not at least "
-                 << kUserDataMinLength << " bytes";
-      return false;
-    }
-    // We only support sha2-256 fingerprints.
-    if (user_data_bytes[0] != kMultihashSHA256Code &&
-        user_data_bytes[1] != kSHA256HashLength) {
-      LOG(ERROR) << "Nitro verification: user data not a sha2-256 multihash";
-      return false;
-    }
-    if (memcmp(server_cert_fp.data,
-               user_data_bytes.data() + kMultihashPrefixLength,
-               kSHA256HashLength) == 0) {
-      return true;
-    }
+  // Look for the TLS cert fingerprint as a multihash.
+  if (user_data_bytes.size() < kUserDataMinLength) {
+    LOG(ERROR) << "Nitro verification: user data is not at least "
+               << kUserDataMinLength << " bytes";
+    return false;
+  }
+  // We only support sha2-256 fingerprints.
+  if (user_data_bytes[0] != kMultihashSHA256Code &&
+      user_data_bytes[1] != kSHA256HashLength) {
+    LOG(ERROR) << "Nitro verification: user data not a sha2-256 multihash";
+    return false;
+  }
+  if (memcmp(server_cert_fp.data,
+             user_data_bytes.data() + kMultihashPrefixLength,
+             kSHA256HashLength) == 0) {
+    return true;
   }
   LOG(ERROR)
       << "Nitro verification: server cert fp does not match user data fp, "
@@ -281,6 +261,8 @@ void ParseAndVerifyDocument(
 void RequestAndVerifyAttestationDocument(
     const GURL& attestation_url,
     network::mojom::URLLoaderFactory* url_loader_factory,
+    p3a::StarURLLoaderNetworkServiceObserver*
+        attestation_network_service_observer,
     base::OnceCallback<void(scoped_refptr<net::X509Certificate>)>
         result_callback) {
   std::vector<uint8_t> nonce(20);
@@ -291,6 +273,12 @@ void RequestAndVerifyAttestationDocument(
   std::string nonce_hex = base::ToLowerASCII(base::HexEncode(nonce));
   resource_request->url =
       net::AppendQueryParameter(attestation_url, "nonce", nonce_hex);
+  if (attestation_network_service_observer) {
+    resource_request->trusted_params =
+        std::make_optional<network::ResourceRequest::TrustedParams>();
+    resource_request->trusted_params->url_loader_network_observer =
+        attestation_network_service_observer->Bind();
+  }
 
   std::unique_ptr<network::SimpleURLLoader> url_loader =
       network::SimpleURLLoader::Create(std::move(resource_request),

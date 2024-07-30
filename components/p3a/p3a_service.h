@@ -103,8 +103,6 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   std::optional<MetricLogType> GetDynamicMetricLogType(
       const std::string& histogram_name) const override;
 
-  void DisableStarAttestationForTesting();
-
  private:
   friend class base::RefCountedThreadSafe<P3AService>;
   ~P3AService() override;

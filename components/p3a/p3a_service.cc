@@ -320,8 +320,4 @@ void P3AService::HandleHistogramChange(
                                       only_update_for_constellation);
 }
 
-void P3AService::DisableStarAttestationForTesting() {
-  config_.disable_star_attestation = true;
-}
-
 }  // namespace p3a
