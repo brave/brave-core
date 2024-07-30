@@ -54,8 +54,8 @@ actor ResourceDownloader<Resource: DownloadResourceInterface>: Sendable {
 
   /// Download the give resource type for the filter list and store it into the cache folder url
   @discardableResult
-  func download(resource: Resource) async throws -> DownloadResult {
-    let result = try await downloadInternal(resource: resource)
+  func download(resource: Resource, force: Bool = false) async throws -> DownloadResult {
+    let result = try await downloadInternal(resource: resource, force: force)
 
     switch result {
     case .downloaded(let networkResource, let date):
@@ -90,8 +90,11 @@ actor ResourceDownloader<Resource: DownloadResourceInterface>: Sendable {
     }
   }
 
-  private func downloadInternal(resource: Resource) async throws -> DownloadResultStatus {
-    let etag = try? await resource.createdEtag()
+  private func downloadInternal(
+    resource: Resource,
+    force: Bool = false
+  ) async throws -> DownloadResultStatus {
+    let etag = force ? nil : try? await resource.createdEtag()
 
     do {
       let networkResource = try await self.networkManager.downloadResource(

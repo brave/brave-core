@@ -57,6 +57,17 @@ import Foundation
     }
   }
 
+  /// Perform a one time force update of all the filster lists
+  func updateFilterLists() async throws {
+    try await CustomFilterListStorage.shared.filterListsURLs.asyncForEach { customURL in
+      let result = try await self.resourceDownloader.download(
+        resource: customURL.setting.resource,
+        force: true
+      )
+      self.handle(downloadResult: result, for: customURL)
+    }
+  }
+
   /// Handle the download results of a custom filter list. This will process the download by compiling iOS rule lists and adding the rule list to the `AdBlockEngineManager`.
   private func handle(
     downloadResult: ResourceDownloader<DownloadResource>.DownloadResult,

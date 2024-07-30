@@ -139,27 +139,6 @@ extension AdblockService {
       })
     }
   }
-
-  /// Get a list of files for the given engine type if the path exists
-  @MainActor fileprivate func fileInfos(
-    for engineType: GroupedAdBlockEngine.EngineType
-  ) -> [AdBlockEngineManager.FileInfo] {
-    return filterListCatalogEntries.compactMap { entry in
-      let source = entry.engineSource
-      guard entry.engineType == engineType || source.onlyExceptions(for: engineType) else {
-        return nil
-      }
-
-      guard
-        let localFileURL = installPath(forFilterListUUID: entry.uuid),
-        FileManager.default.fileExists(atPath: localFileURL.relativePath)
-      else {
-        return nil
-      }
-
-      return entry.fileInfo(for: localFileURL)
-    }
-  }
 }
 
 extension AdblockFilterListCatalogEntry {

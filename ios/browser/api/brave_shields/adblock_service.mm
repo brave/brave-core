@@ -198,4 +198,8 @@ void AdBlockResourceObserver::OnResourcesLoaded(
   return _serviceManager->IsFilterListEnabled(base::SysNSStringToUTF8(uuid));
 }
 
+- (void)updateFilterLists:(void (^)(bool))callback {
+  _serviceManager->UpdateFilterLists(base::BindOnce(callback));
+}
+
 @end
