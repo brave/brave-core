@@ -1,8 +1,3 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
-
 use std::cmp;
 use std::time::Duration;
 
@@ -94,7 +89,7 @@ where
             | InternalError::InvalidResponse(_) => {
                 // Default to an exponential backoff with jitter along the full range
                 // https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/
-                rng.gen_range(0..cmp::min(MAX_DELAY_MS, BASE_DELAY_MS * (1 << current_attempt)))
+                rng.gen_range(0, cmp::min(MAX_DELAY_MS, BASE_DELAY_MS * (1 << current_attempt)))
             }
             InternalError::RetryLater(Some(after)) => {
                 let after_ms = (after.as_millis() as u64) + 1;
@@ -112,7 +107,7 @@ where
                 // If the server instructed us with a specific delay, delay for at least that long
                 // while incorporating some random delay based on our current attempt
                 cmp::min(
-                    after_ms + rng.gen_range(0..BASE_DELAY_MS * (1 << current_attempt)),
+                    after_ms + rng.gen_range(0, BASE_DELAY_MS * (1 << current_attempt)),
                     MAX_DELAY_MS,
                 )
             }
