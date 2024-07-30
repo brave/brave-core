@@ -33,15 +33,17 @@ class TextEmbedder {
 
   using TopSimilarityCallback =
       base::OnceCallback<void(base::expected<std::string, std::string>)>;
-  void GetTopSimilarityWithPromptTilContextLimit(
+  virtual void GetTopSimilarityWithPromptTilContextLimit(
       const std::string& prompt,
       const std::string& text,
       uint32_t context_limit,
       TopSimilarityCallback callback);
 
+ protected:
+  TextEmbedder();
+
  private:
   friend class TextEmbedderUnitTest;
-  TextEmbedder();
 
   void GetTopSimilarityWithPromptTilContextLimitInternal(
       const std::string& prompt,

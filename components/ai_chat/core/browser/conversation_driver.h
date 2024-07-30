@@ -176,7 +176,10 @@ class ConversationDriver : public ModelService::Observer,
     engine_ = std::move(engine_for_testing);
   }
   EngineConsumer* GetEngineForTesting() { return engine_.get(); }
-
+  void SetTextEmbedderForTesting(std::unique_ptr<TextEmbedder> text_embedder) {
+    text_embedder_ = std::move(text_embedder);
+  }
+  TextEmbedder* GetTextEmbedderForTesting() { return text_embedder_.get(); }
   void SetChatHistoryForTesting(
       std::vector<mojom::ConversationTurnPtr> history) {
     chat_history_ = std::move(history);
@@ -217,6 +220,8 @@ class ConversationDriver : public ModelService::Observer,
 
  private:
   FRIEND_TEST_ALL_PREFIXES(::AIChatUIBrowserTest, PrintPreviewFallback);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest, LeoLocalModelsUpdater);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest, TextEmbedder);
   FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
                            UpdateOrCreateLastAssistantEntry_Delta);
   FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,

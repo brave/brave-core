@@ -35,10 +35,10 @@ class LeoLocalModelsUpdater : public brave_component_updater::BraveComponent {
   LeoLocalModelsUpdater& operator=(const LeoLocalModelsUpdater&) = delete;
   ~LeoLocalModelsUpdater() override;
 
-  void Register();
+  virtual void Register();
   void Cleanup(base::OnceCallback<void(bool)> reply_callback = {});
 
-  const base::FilePath& GetUniversalQAModel() const;
+  virtual const base::FilePath& GetUniversalQAModel() const;
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
