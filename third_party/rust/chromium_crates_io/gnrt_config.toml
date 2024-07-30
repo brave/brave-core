@@ -116,15 +116,9 @@ license_files = ['LICENCE']
 [crate.arrayref]
 license_files = ['LICENSE']
 
-[crate.base64ct]
-extra_input_roots = [ "../README.md" ]
-
 [crate.bitvec]
 extra_input_roots = ['../doc', '../README.md' ]
 license_files = ['LICENSE.txt']
-
-[crate.const-oid]
-extra_input_roots = [ "../README.md" ]
 
 [crate.cbor4ii]
 extra_input_roots = [ "../README.md" ]
@@ -176,9 +170,6 @@ if (target_cpu == "x64") {
 ''' }
 
 [crate.curve25519-dalek-derive]
-extra_input_roots = [ "../README.md" ]
-
-[crate.der]
 extra_input_roots = [ "../README.md" ]
 
 [crate.derivation-path]
@@ -304,8 +295,8 @@ if (epoch != "0.2") {
 [crate.num-traits]
 extra_kv = { rustflags = [ "--cfg", "has_i128", "--cfg", "has_to_int_unchecked", "--cfg", "has_reverse_bits", "--cfg", "has_leading_trailing_ones", "--cfg", "has_int_assignop_ref", "--cfg", "has_div_euclid", "--cfg", "has_copysign" ] }
 
-[crate.pkcs8]
-extra_input_roots = [ "../README.md" ]
+[crate.platforms]
+extra_src_roots = [ "target" ]
 
 [crate.poly1305]
 extra_kv = { raw_gn = '''
@@ -358,9 +349,6 @@ extra_input_roots = [ "../README.md" ]
 
 [crate.siphasher]
 license_files = ['../../../../../common/licenses/Apache-2.0']
-
-[crate.spki]
-extra_input_roots = [ "../README.md" ]
 
 [crate.sta-rs]
 license_files = ['LICENSE']
