@@ -584,6 +584,29 @@ extension Strings.Shields {
     comment:
       "This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field"
   )
+  public static let updateLists = NSLocalizedString(
+    "UpdateLists",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Update Lists",
+    comment: "This is a label for a button which when pressed updates all the filter lists"
+  )
+  public static let updatingLists = NSLocalizedString(
+    "UpdatingLists",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Updating Lists",
+    comment:
+      "This is a label on a button that updates filter lists which signifies that lista are being updated"
+  )
+  public static let listsUpdated = NSLocalizedString(
+    "ListsUpdated",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Lists Updated",
+    comment:
+      "This is a label on a button that updates filter lists which signifies that lists have been updated"
+  )
 }
 
 // MARK: - Create custom filters

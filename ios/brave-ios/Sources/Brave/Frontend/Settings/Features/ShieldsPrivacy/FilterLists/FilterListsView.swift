@@ -14,6 +14,34 @@ import SwiftUI
 /// A view showing enabled and disabled community filter lists
 struct FilterListsView: View {
   private static let dateFormatter = RelativeDateTimeFormatter()
+  enum FilterListUpdateStatus: Equatable {
+    case unknown
+    case updating
+    case updated
+
+    var label: String {
+      switch self {
+      case .unknown: Strings.Shields.updateLists
+      case .updated: Strings.Shields.listsUpdated
+      case .updating: Strings.Shields.updatingLists
+      }
+    }
+
+    var braveImageName: String {
+      switch self {
+      case .unknown, .updating: "leo.refresh"
+      case .updated: "leo.check.circle-outline"
+      }
+    }
+
+    var forgroundColor: Color {
+      switch self {
+      case .unknown: Color(.braveBlurpleTint)
+      case .updated: Color(.braveSuccessLabel)
+      case .updating: Color(.braveDisabled)
+      }
+    }
+  }
 
   @ObservedObject private var filterListStorage = FilterListStorage.shared
   @ObservedObject private var customFilterListStorage = CustomFilterListStorage.shared
@@ -22,10 +50,31 @@ struct FilterListsView: View {
   @State private var showingCustomFiltersSheet = false
   @State private var customRules: String?
   @State private var rulesError: Error?
+  @State private var filterListsUpdateStatus = FilterListUpdateStatus.unknown
+  @State private var customFilterListsUpdateStatus = FilterListUpdateStatus.unknown
+  @State private var customFilterListsUpdateError: Error? = nil
 
   var body: some View {
     List {
       Section {
+        if !customFilterListStorage.filterListsURLs.isEmpty {
+          updateFilterListsButton(
+            status: customFilterListsUpdateStatus,
+            error: customFilterListsUpdateError
+          ) {
+            customFilterListsUpdateStatus = .updating
+            customFilterListsUpdateError = nil
+            Task {
+              do {
+                try await FilterListCustomURLDownloader.shared.updateFilterLists()
+                customFilterListsUpdateStatus = .updated
+              } catch {
+                customFilterListsUpdateError = error
+                customFilterListsUpdateStatus = .unknown
+              }
+            }
+          }
+        }
         externalFilterListRows
       } header: {
         VStack(alignment: .leading, spacing: 4) {
@@ -51,6 +100,13 @@ struct FilterListsView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
       Section {
+        updateFilterListsButton(status: filterListsUpdateStatus, error: nil) {
+          filterListsUpdateStatus = .updating
+          Task {
+            await updateFilterLists()
+            filterListsUpdateStatus = .updated
+          }
+        }
         defaultFilterListRows
       } header: {
         VStack(alignment: .leading, spacing: 4) {
@@ -71,7 +127,8 @@ struct FilterListsView: View {
     )
     .toggleStyle(SwitchToggleStyle(tint: .accentColor))
     .animation(.default, value: customFilterListStorage.filterListsURLs)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .listStyle(.insetGrouped)
     .navigationTitle(Strings.Shields.contentFiltering)
     .toolbar {
@@ -81,6 +138,32 @@ struct FilterListsView: View {
     }
     .task {
       await loadCustomRules()
+    }
+  }
+
+  private func updateFilterListsButton(
+    status: FilterListUpdateStatus,
+    error: Error?,
+    action: @escaping () -> Void
+  ) -> some View {
+    VStack(alignment: .leading) {
+      Button(
+        action: action,
+        label: {
+          Label(
+            status.label,
+            braveSystemImage: status.braveImageName
+          )
+        }
+      )
+      .labelStyle(.titleAndIcon)
+      .foregroundStyle(status.forgroundColor)
+      .disabled(status == .updating)
+      if let error {
+        Text(error.localizedDescription)
+          .foregroundStyle(Color(.braveErrorLabel))
+          .font(.caption)
+      }
     }
   }
 
@@ -182,7 +265,7 @@ struct FilterListsView: View {
             case .failure:
               Text(Strings.Shields.filterListsDownloadFailed)
                 .font(.caption)
-                .foregroundColor(.red)
+                .foregroundColor(Color(.braveErrorLabel))
             case .pending:
               Text(Strings.Shields.filterListsDownloadPending)
                 .font(.caption)
@@ -264,6 +347,12 @@ struct FilterListsView: View {
       rulesError = error
       customRules = nil
     }
+  }
+
+  private func updateFilterLists() async {
+    _ = await FilterListStorage.shared.updateFilterLists()
+    await AdblockResourceDownloader.shared.updateResources()
+    await AdBlockGroupsManager.shared.compileEngines()
   }
 }
 

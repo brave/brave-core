@@ -229,6 +229,24 @@ import os
     }
   }
 
+  /// This will compile available data right away if it is needed
+  func compileAvailableEngines(
+    for enabledSources: [GroupedAdBlockEngine.Source],
+    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
+  ) async {
+    do {
+      let compilableFiles = compilableFiles(for: enabledSources)
+      try await compileAvailableEngines(
+        for: compilableFiles,
+        resourcesInfo: resourcesInfo
+      )
+    } catch {
+      ContentBlockerManager.log.error(
+        "Failed to compile engine for `\(self.cacheFolderName)`: \(String(describing: error))"
+      )
+    }
+  }
+
   /// Compile an engine from all available data
   private func compileAvailableEngines(
     for files: [AdBlockEngineManager.FileInfo],
