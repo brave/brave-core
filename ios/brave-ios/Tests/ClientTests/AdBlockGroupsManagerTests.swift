@@ -124,14 +124,14 @@ final class AdBlockGroupsManagerTests: XCTestCase {
     // A source provider and groups manager
     let aggressiveFileInfo = AdBlockEngineManager.FileInfo(
       filterListInfo: GroupedAdBlockEngine.FilterListInfo(
-        source: .filterListURL(uuid: UUID().uuidString),
+        source: .filterList(componentId: UUID().uuidString),
         version: "0"
       ),
       localFileURL: Self.sampleFilterListURL
     )
     let standardFileInfo = AdBlockEngineManager.FileInfo(
       filterListInfo: GroupedAdBlockEngine.FilterListInfo(
-        source: .filterListURL(uuid: UUID().uuidString),
+        source: .filterList(componentId: UUID().uuidString),
         version: "0"
       ),
       localFileURL: Self.sampleFilterListURL
