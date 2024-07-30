@@ -7,17 +7,16 @@
 
 #include <string>
 
+#include "base/containers/contains.h"
 #include "base/strings/strcat.h"
 #include "chrome/browser/ui/color/chrome_color_provider_utils.h"
 
 namespace {
 
-std::string MaybeNalaMappings(std::vector<std::string_view>& color_id_sets) {
-  auto it = base::ranges::find(color_id_sets, "nala");
-  if (it == color_id_sets.end()) {
+std::string MaybeNalaMappings(const std::string& sets_param) {
+  if (!base::Contains(sets_param, "ui")) {
     return std::string();
   }
-  color_id_sets.erase(it);
 
   const std::vector<std::string> colors = {
       "primary", "secondary", "tertiary", "neutral", "neutral-variant", "error",
@@ -30,7 +29,7 @@ std::string MaybeNalaMappings(std::vector<std::string_view>& color_id_sets) {
   for (const auto& color : colors) {
     for (const auto& tone : tones) {
       auto leo_color = base::StrCat(
-          {"--leo-color-", color, "-", base::NumberToString(tone)});
+          {"--leo-color-primitive-", color, "-", base::NumberToString(tone)});
       auto ui_color =
           base::StrCat({"--color-ref-", color, base::NumberToString(tone)});
       result += base::StrCat({leo_color, ":var(", ui_color, ");"});
@@ -41,6 +40,6 @@ std::string MaybeNalaMappings(std::vector<std::string_view>& color_id_sets) {
 
 }  // namespace
 
-#define ChromeColorIdName ChromeColorIdName), MaybeNalaMappings(color_id_sets
+#define ChromeColorIdName ChromeColorIdName), MaybeNalaMappings(sets_param
 #include "src/chrome/browser/ui/webui/theme_source.cc"
 #undef ChromeColorIdName
