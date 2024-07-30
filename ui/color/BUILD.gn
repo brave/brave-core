@@ -1,0 +1,19 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+copy("copy_leo_color_headers") {
+  sources = [ "//brave/node_modules/@brave/leo/tokens/skia/colors.h" ]
+  outputs = [ "$root_out_dir/gen/brave/ui/color/leo/colors.h" ]
+}
+
+source_set("leo_color_headers") {
+  sources = get_target_outputs(":copy_leo_color_headers")
+
+  deps = [
+    ":copy_leo_color_headers",
+    "//skia",
+    "//ui/gfx",
+  ]
+}
