@@ -358,8 +358,10 @@ void PageGraph::ProvideTo(LocalFrame& frame) {
     }
   }
 
-  Supplement<LocalFrame>::ProvideTo(frame,
-                                    MakeGarbageCollected<PageGraph>(frame));
+  PageGraph* page_graph = MakeGarbageCollected<PageGraph>(frame);
+  frame.GetProbeSink()->AddPageGraph(page_graph);
+
+  Supplement<LocalFrame>::ProvideTo(frame, page_graph);
 }
 
 PageGraph::PageGraph(LocalFrame& local_frame)
@@ -379,7 +381,6 @@ PageGraph::PageGraph(LocalFrame& local_frame)
   }
 
   DCHECK(local_frame.IsLocalRoot());
-  local_frame.GetProbeSink()->AddPageGraph(this);
 
   shields_node_ = AddNode<NodeShields>();
   ad_shield_node_ = AddNode<NodeShield>(brave_shields::kAds);
