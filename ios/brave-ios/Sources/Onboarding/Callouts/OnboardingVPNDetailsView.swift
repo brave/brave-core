@@ -21,7 +21,7 @@ public struct OnboardingVPNDetailsView: View {
     Strings.VPN.infoCheckLocation,
     Strings.VPN.infoCheckServers,
     Strings.VPN.infoCheckConnectionSpeed,
-    Strings.VPN.infoCheckLimitDevice
+    Strings.VPN.infoCheckLimitDevice,
   ]
 
   public init() {}
