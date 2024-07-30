@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/cookie_settings_base.cc b/components/content_settings/core/common/cookie_settings_base.cc
-index 88d12bf5e10ad48b713d99ba9dcafea8d06b02de..c236b8cb5f7a96ded987764a81197da44156c58c 100644
+index c09e66659a8e0b8b8686e7ac4912a88dc917a7e2..2b5fd76d4dd495e30f758a966859863f5cf49488 100644
 --- a/components/content_settings/core/common/cookie_settings_base.cc
 +++ b/components/content_settings/core/common/cookie_settings_base.cc
-@@ -538,6 +538,7 @@ CookieSettingsBase::DecideAccess(
+@@ -542,6 +542,7 @@ CookieSettingsBase::DecideAccess(
      return BlockAllCookies{};
    }
  
@@ -10,7 +10,7 @@ index 88d12bf5e10ad48b713d99ba9dcafea8d06b02de..c236b8cb5f7a96ded987764a81197da4
    if (!is_third_party_request) {
      return AllowAllCookies{ThirdPartyCookieAllowMechanism::kNone};
    }
-@@ -712,6 +713,7 @@ CookieSettingsBase::GetCookieSettingInternal(
+@@ -716,6 +717,7 @@ CookieSettingsBase::GetCookieSettingInternal(
      CHECK(is_third_party_request, base::NotFatalUntil::M128);
      CHECK(global_setting_or_embedder_blocks_third_party_cookies,
            base::NotFatalUntil::M128);
