@@ -254,7 +254,7 @@ export function getLiFiQuoteOptions({
 
     const fiatDiff = toAmountFiat.minus(fromAmountFiat)
     const fiatDiffRatio = fiatDiff.div(fromAmountFiat)
-    const impact = fiatDiffRatio.times(100)
+    const impact = fiatDiffRatio.times(100).toAbsoluteValue()
 
     return {
       fromAmount: fromAmount,
