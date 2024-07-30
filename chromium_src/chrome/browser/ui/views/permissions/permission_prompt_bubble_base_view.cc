@@ -345,7 +345,7 @@ void AddGeolocationDescriptionIfNeeded(
         // To update widget layout after adding another child view.
         bubble_base_view->UpdateAnchorPosition();
       },
-      bubble_base_view->AsWeakPtr(), browser->AsWeakPtr(),
+      bubble_base_view->GetWeakPtr(), browser->AsWeakPtr(),
       enable_high_accuracy));
 }
 

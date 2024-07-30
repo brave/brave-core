@@ -22,6 +22,9 @@
       base::RepeatingCallback<gfx::Point()> delegate) {             \
     desired_position_delegate_ = std::move(delegate);               \
   }                                                                 \
+  base::WeakPtr<WidgetDelegate> GetWeakPtr() {                      \
+    return weak_ptr_factory_.GetWeakPtr();                          \
+  }                                                                 \
                                                                     \
  private:                                                           \
   base::RepeatingCallback<gfx::Point()> desired_position_delegate_; \
