@@ -184,7 +184,7 @@ export function SignCowSwapOrder(props: Props) {
         <TextButton onClick={() => setShowDetails(!showDetails)}>
           {showDetails
             ? getLocale('braveWalletSignTransactionEIP712MessageHideDetails')
-            : getLocale('braveWalletSignTransactionEIP712MessageTitle')}
+            : getLocale('braveWalletDetails')}
         </TextButton>
       </NetworkFeeAndDetailsContainer>
 

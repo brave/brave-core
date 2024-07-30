@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import Dialog from '@brave/leo/react/dialog'
 import * as leo from '@brave/leo/tokens/css/variables'
 
 export const DappCategoryLabel = styled.div`
@@ -35,4 +36,17 @@ export const DappMetricContainer = styled.div`
   padding: ${leo.spacing.xl};
   border-radius: ${leo.radius.m};
   border: 1px solid ${leo.color.divider.subtle};
+`
+
+export const DappDetailDialog = styled(Dialog)`
+  --leo-dialog-backdrop-background: rgba(17, 18, 23, 0.35);
+  --leo-dialog-backdrop-filter: blur(8px);
+  --leo-dialog-padding: ${leo.spacing['3Xl']};
+`
+
+export const Title = styled.h1`
+  color: ${leo.color.text.primary};
+  font: ${leo.font.heading.h2};
+  margin: 0;
+  padding: 0;
 `

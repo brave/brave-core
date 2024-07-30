@@ -176,7 +176,7 @@ export const SignTransactionPanel = ({
           <TabRow>
             <PanelTab
               isSelected={true}
-              text={getLocale('braveWalletAccountSettingsDetails')}
+              text={getLocale('braveWalletDetails')}
             />
           </TabRow>
           <MessageBox>

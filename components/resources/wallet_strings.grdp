@@ -295,7 +295,6 @@
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_WALLET_SELECT_BLOCKCHAIN" desc="Page title for selecting blockchain for hardware wallet">Select a blockchain to import your hardware wallet</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_DEVICE_DESCRIPTION" desc="Connect a hardware wallet description">Connect your <ph name="HARDWARE_DEVICE"><ex>Ledger</ex>$1</ph> device to Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_UNKNOWN_INTERNAL_ERROR" desc="Connect hardware wallet connection error">Unknown error, please reconnect your hardware wallet and try again.</message>
-  <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_DETAILS" desc="Account settings modal details button">Details</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_WATCHLIST" desc="Account settings modal visible assets button">Visible assets</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_PRIVATE_KEY" desc="Account settings modal show private key button">Private key</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_SAVE" desc="Account settings modal save button">Save</message>
@@ -358,7 +357,6 @@
   <message name="IDS_BRAVE_WALLET_SIGN_WARNING" desc="Sign panel warning message">Note that Brave can’t verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you’re sure you want to take this action, and trust the requesting site.</message>
   <message name="IDS_BRAVE_WALLET_SIGN_WARNING_TITLE" desc="Sign panel risk title">Sign at your own risk</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_MESSAGE_TITLE" desc="Sign panel message title">Message</message>
-  <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_TITLE" desc="Sign panel EIP-712 message title">Details</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_HIDE_DETAILS" desc="Sign panel EIP-712 message hide details">Hide details</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_DOMAIN" desc="Sign panel EIP-712 message domain">Domain</message>
   <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_BUTTON" desc="Sign panel sign button">Sign</message>
@@ -389,7 +387,6 @@
   <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_CURRENCY_SYMBOL" desc="Add network panel symbol label">Currency symbol</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_EXPLORER" desc="Add network explorer label">Block explorer URL</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_PANEL_TITLE" desc="Add network, network panel title">Network</message>
-  <message name="IDS_BRAVE_WALLET_ALLOW_ADD_DETAILS_PANEL_TITLE" desc="Add network, details panel title">Details</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_TITLE" desc="Change network panel title">Allow this site to switch the network?</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_DESCRIPTION" desc="Change network panel description">This will switch the network to a previously added network.</message>
   <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_BUTTON" desc="Change network panel button">Switch network</message>
@@ -1107,4 +1104,5 @@
   <message name="IDS_BRAVE_WALLET_FILTERS" desc="Filters label">Filters</message>
   <message name="IDS_BRAVE_WALLET_CLEAR_FILTERS" desc="Clear filters label">Clear filters</message>
   <message name="IDS_BRAVE_WALLET_SHOW_MORE" desc="Show more label">Show more</message>
+  <message name="IDS_BRAVE_WALLET_DETAILS" desc="Details label">Details</message>
 </grit-part>

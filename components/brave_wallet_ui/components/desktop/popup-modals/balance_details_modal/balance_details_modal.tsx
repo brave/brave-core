@@ -43,7 +43,7 @@ export const BalanceDetailsModal = React.forwardRef<HTMLDivElement, Props>(
 
     return (
       <PopupModal
-        title={getLocale('braveWalletAccountSettingsDetails')}
+        title={getLocale('braveWalletDetails')}
         onClose={onClose}
         width='560px'
         borderRadius={16}

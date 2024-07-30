@@ -27,7 +27,6 @@ import {
 } from '../../../../page/reducers/accounts-tab-reducer'
 
 // hooks
-import { useQuery } from '../../../../common/hooks/use-query'
 import {
   usePortfolioVisibleNetworks //
 } from '../../../../common/hooks/use_portfolio_networks'
@@ -42,6 +41,7 @@ import { Column } from '../../../shared/style'
 // components
 import getWalletPageApiProxy from '../../../../page/wallet_page_api_proxy'
 import { WalletBanner } from '../../wallet-banner/index'
+import { ExploreWeb3Header } from '../explore_web3/explore_web3_header'
 import {
   EditVisibleAssetsModal //
 } from '../../popup-modals/edit-visible-assets-modal/index'
@@ -63,10 +63,8 @@ import {
 import {
   PortfolioOverviewHeader //
 } from '../../card-headers/portfolio-overview-header'
-import { PageTitleHeader } from '../../card-headers/page-title-header'
 import { MarketAsset } from '../market/market_asset'
 import { ExploreWeb3View } from '../explore_web3/explore_web3'
-import { DappDetails } from '../explore_web3/web3_dapp_details'
 import { NftCollection } from '../nfts/components/nft_collection'
 
 export interface Props {
@@ -110,8 +108,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
 
   // routing
   const history = useHistory()
-  const query = useQuery()
-  const selectedDappCategory = query.get('dappCategory')
 
   // methods
   const onShowBackup = React.useCallback(() => {
@@ -318,12 +314,8 @@ export const CryptoView = ({ sessionRoute }: Props) => {
         >
           <WalletPageWrapper
             wrapContentInBox
-            cardHeader={
-              <PageTitleHeader
-                title={getLocale('braveWalletTopNavMarket')}
-                expandRoute={WalletRoutes.Market}
-              />
-            }
+            cardHeader={<ExploreWeb3Header />}
+            hideDivider
           >
             <StyledWrapper>
               {banners}
@@ -351,35 +343,13 @@ export const CryptoView = ({ sessionRoute }: Props) => {
         >
           <WalletPageWrapper
             wrapContentInBox
-            cardHeader={
-              <PageTitleHeader title={getLocale('braveWalletTopNavExplore')} />
-            }
-            useFullHeight={selectedDappCategory !== null}
+            cardHeader={<ExploreWeb3Header />}
+            hideDivider
+            noCardPadding
           >
             <StyledWrapper>
               {banners}
               <ExploreWeb3View />
-            </StyledWrapper>
-          </WalletPageWrapper>
-        </Route>
-
-        <Route
-          path={WalletRoutes.Web3DappDetails}
-          exact={true}
-        >
-          <WalletPageWrapper
-            wrapContentInBox
-            cardHeader={
-              <PageTitleHeader
-                title={getLocale('braveWalletAccountSettingsDetails')}
-                showBackButton
-                onBack={() => history.push(WalletRoutes.Web3)}
-              />
-            }
-          >
-            <StyledWrapper>
-              {banners}
-              <DappDetails />
             </StyledWrapper>
           </WalletPageWrapper>
         </Route>

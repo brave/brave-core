@@ -307,10 +307,6 @@ export const makePortfolioNftsRoute = (
   return `${WalletRoutes.PortfolioNFTs}?${params.toString()}`
 }
 
-export const makeDappDetailsRoute = (dappId: string) => {
-  return WalletRoutes.Web3DappDetails.replace(':dappId', dappId || '')
-}
-
 // Tabs
 export function openTab(url: string) {
   if (chrome.tabs !== undefined) {

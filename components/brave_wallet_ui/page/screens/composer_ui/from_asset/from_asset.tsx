@@ -247,7 +247,7 @@ export const FromAsset = (props: Props) => {
                     >
                       <Row>
                         <InfoIcon />
-                        {getLocale('braveWalletAccountSettingsDetails')}
+                        {getLocale('braveWalletDetails')}
                       </Row>
                     </Button>
                   </div>
