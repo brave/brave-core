@@ -10,12 +10,10 @@ import { WalletState } from '../../constants/types'
 // Utils
 import getAPIProxy from './bridge'
 import { Store } from './types'
-import InteractionNotifier from './interactionNotifier'
+import { interactionNotifier } from './interactionNotifier'
 import { walletApi } from '../slices/api.slice'
 
 const handler = new AsyncActionHandler()
-
-const interactionNotifier = new InteractionNotifier()
 
 function getWalletState(store: Store): WalletState {
   return store.getState().wallet

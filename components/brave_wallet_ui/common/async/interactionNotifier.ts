@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-export default class InteractionNotifier {
+class InteractionNotifier {
   private intervalId: ReturnType<typeof setInterval> | undefined
   userHasInteracted = false
 
@@ -52,3 +52,5 @@ export default class InteractionNotifier {
     }
   }
 }
+
+export const interactionNotifier = new InteractionNotifier()
