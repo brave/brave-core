@@ -351,6 +351,13 @@ _BANNED_CPP_FUNCTIONS += (
         treat_as_error=False,
         excluded_paths=[_THIRD_PARTY_EXCEPT_BLINK],
     ),
+    BanRule(
+        r'/\bEnableStackLogging\(\)',
+        ('Do not commit EnableStackLogging() call, it\'s not intended for production use',
+         ),
+        treat_as_error=True,
+        excluded_paths=[_THIRD_PARTY_EXCEPT_BLINK],
+    ),
 )
 
 
