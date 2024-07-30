@@ -3,44 +3,46 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "ios/chrome/browser/metrics/model/google_groups_updater_service_factory.h"
+#import "ios/chrome/browser/metrics/model/google_groups_manager_factory.h"
 
+#import "base/no_destructor.h"
 #import "components/keyed_service/ios/browser_state_dependency_manager.h"
-#import "components/variations/service/google_groups_updater_service.h"
+#import "components/variations/service/google_groups_manager.h"
 #import "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 
 // static
-GoogleGroupsUpdaterService*
-GoogleGroupsUpdaterServiceFactory::GetForBrowserState(
+GoogleGroupsManager*
+GoogleGroupsManagerFactory::GetForBrowserState(
     ChromeBrowserState* browser_state) {
   return nullptr;
 }
 
 // static
-GoogleGroupsUpdaterServiceFactory*
-GoogleGroupsUpdaterServiceFactory::GetInstance() {
-  return nullptr;
+GoogleGroupsManagerFactory*
+GoogleGroupsManagerFactory::GetInstance() {
+  static base::NoDestructor<GoogleGroupsManagerFactory> instance;
+  return instance.get();
 }
 
-GoogleGroupsUpdaterServiceFactory::GoogleGroupsUpdaterServiceFactory()
+GoogleGroupsManagerFactory::GoogleGroupsManagerFactory()
     : BrowserStateKeyedServiceFactory(
-          "GoogleGroupsUpdaterService",
+          "GoogleGroupsManager",
           BrowserStateDependencyManager::GetInstance()) {}
 
 std::unique_ptr<KeyedService>
-GoogleGroupsUpdaterServiceFactory::BuildServiceInstanceFor(
+GoogleGroupsManagerFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   return nullptr;
 }
 
-bool GoogleGroupsUpdaterServiceFactory::ServiceIsCreatedWithBrowserState()
+bool GoogleGroupsManagerFactory::ServiceIsCreatedWithBrowserState()
     const {
   return true;
 }
 
-bool GoogleGroupsUpdaterServiceFactory::ServiceIsNULLWhileTesting() const {
+bool GoogleGroupsManagerFactory::ServiceIsNULLWhileTesting() const {
   return true;
 }
 
-void GoogleGroupsUpdaterServiceFactory::RegisterBrowserStatePrefs(
+void GoogleGroupsManagerFactory::RegisterBrowserStatePrefs(
     user_prefs::PrefRegistrySyncable* registry) {}
