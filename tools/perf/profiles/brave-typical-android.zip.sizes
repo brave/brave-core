@@ -1,11 +1,11 @@
-Total size 95999K
+Total size 96364K
 
-GROUP Adblock [8320K total]
+GROUP Adblock [8322K total]
    114K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.189 [adcocjohghhfpidemphmcmlmhnfgikei]
-    47K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.7702 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1317K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.8208 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+    47K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.7713 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1318K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.8219 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
    139K Brave Ad Block Updater (Regional Catalog) 1.0.60 [gkboaolpopklhgplhaaiboijnklogmbc]
-  5704K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.7137 [iodkpdagapdfkphljnddpjlldadblomo]
+  5706K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.7143 [iodkpdagapdfkphljnddpjlldadblomo]
      7K Brave Ad Block Updater (Brave Experimental Adblock Rules (plaintext)) 1.0.29 [jcfckfokjmopfomnoebdkdhbhcgjfnbi]
    988K Brave Ad Block Updater (Resources) 1.0.93 [mfddibmblmbccpadfndgakiopmmhebop]
 
@@ -13,15 +13,15 @@ GROUP Ads [22975K total]
     72K Brave Ads Resources 1.0.102 [iblokdlgekdjophgeonmanpnjihcjkjj]
  22903K Brave Ads Resources 1.0.67 [ocilmpijebaopmdifcomolmpigakocmo]
 
-GROUP Ntp [13792K total]
+GROUP Ntp [14064K total]
  12803K Brave NTP background images 1.0.14 [aoojcmojmmcbpfgoecoadbdpnagfchel]
-   988K Brave NTP sponsored images 1.0.1015 [pciohbjgmbejokmghgjkobeionibheai]
+  1260K Brave NTP sponsored images 1.0.1016 [pciohbjgmbejokmghgjkobeionibheai]
 
 GROUP Other [158K total]
    158K Brave Local Data Files Updater 1.0.835 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
 GROUP chromium [598K total]
-    24K crl-set-13407644719142087124.data 8980 [CertificateRevocation]
+    24K crl-set-17489659850736609831.data 8982 [CertificateRevocation]
     31K chromeCommerceHeuristics 2023.3.30.1305 [CommerceHeuristics]
    103K Crowd Deny 2023.11.29.1201 [Crowd Deny]
      9K fileTypePolicies 66 [FileTypePolicies]
