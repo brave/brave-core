@@ -81,6 +81,8 @@ def _RunUpdateProfile(config: perf_config.PerfConfig,
       })
   ]
 
+  #TEST
+
   configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
       options.targets, config.runners[0])
   assert len(configurations) == 1
