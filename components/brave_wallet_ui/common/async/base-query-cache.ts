@@ -6,11 +6,6 @@
 import { mapLimit } from 'async'
 import { EntityId } from '@reduxjs/toolkit'
 
-// types
-import type WalletApiProxy from '../wallet_api_proxy'
-import type { WalletPageApiProxy } from '../../page/wallet_page_api_proxy'
-import type { WalletPanelApiProxy } from '../../panel/wallet_panel_api_proxy'
-
 // constants
 import {
   BraveWallet,
@@ -55,9 +50,7 @@ import {
   makeNativeAssetLogo,
   makeNetworkAsset
 } from '../../options/asset-options'
-import {
-  isIpfs,
-} from '../../utils/string-utils'
+import { isIpfs } from '../../utils/string-utils'
 import { getEnabledCoinTypes } from '../../utils/api-utils'
 import { getBraveRewardsProxy } from './brave_rewards_api_proxy'
 import {
@@ -66,10 +59,6 @@ import {
   getNormalizedExternalRewardsNetwork,
   getRewardsProviderName
 } from '../../utils/rewards_utils'
-
-type IsomorphicApiProxy = WalletApiProxy &
-  Partial<WalletPanelApiProxy> &
-  Partial<WalletPageApiProxy>
 
 /**
  * A place to store & manage dependency data for other queries
@@ -314,10 +303,9 @@ export class BaseQueryCache {
     if (!this._nftImageIpfsGateWayUrlRegistry[trimmedURL]) {
       const { braveWalletIpfsService } = getAPIProxy()
 
-      const { translatedUrl } =
-        isIpfs(trimmedURL)
+      const { translatedUrl } = isIpfs(trimmedURL)
         ? await braveWalletIpfsService.translateToGatewayURL(trimmedURL || '')
-        : {translatedUrl : trimmedURL}
+        : { translatedUrl: trimmedURL }
 
       this._nftImageIpfsGateWayUrlRegistry[trimmedURL] =
         translatedUrl || trimmedURL
@@ -513,7 +501,7 @@ export const baseQueryFunction = () => {
   if (!cache) {
     cache = new BaseQueryCache()
   }
-  return { data: getAPIProxy() as IsomorphicApiProxy, cache }
+  return { data: getAPIProxy(), cache }
 }
 
 export const resetCache = () => {
