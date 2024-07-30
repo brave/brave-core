@@ -11,7 +11,7 @@
 
 #define HistoryModelTypeController BraveHistoryModelTypeController
 
-#include "src/components/browser_sync/sync_api_component_factory_impl.cc"
+#include "src/components/browser_sync/common_controller_builder.cc"
 
 #undef HistoryModelTypeController
 #undef HistoryDeleteDirectivesModelTypeController
