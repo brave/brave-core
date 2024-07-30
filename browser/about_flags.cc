@@ -96,55 +96,6 @@
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-#define BRAVE_VPN_FEATURE_ENTRIES                         \
-  EXPAND_FEATURE_ENTRIES({                                \
-      kBraveVPNFeatureInternalName,                       \
-      "Enable experimental Brave VPN",                    \
-      "Experimental native VPN support",                  \
-      kOsMac | kOsWin,                                    \
-      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPN), \
-  })
-#if BUILDFLAG(IS_WIN)
-
-#define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES                                  \
-  EXPAND_FEATURE_ENTRIES({                                                   \
-      kBraveVPNWireguardFeatureInternalName,                                 \
-      "Enable experimental WireGuard Brave VPN service",                     \
-      "Experimental WireGuard VPN support. Deprecated.",                     \
-      kOsWin,                                                                \
-      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNUseWireguardService), \
-  })
-#define BRAVE_VPN_DNS_FEATURE_ENTRIES                                    \
-  EXPAND_FEATURE_ENTRIES({                                               \
-      kBraveVPNDnsFeatureInternalName,                                   \
-      "Enable DoH for Brave VPN",                                        \
-      "Override DoH settings with Cloudflare dns if necessary to avoid " \
-      "leaking requests due to Smart Multi-Home Named Resolution",       \
-      kOsWin,                                                            \
-      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNDnsProtection),   \
-  })
-#elif BUILDFLAG(IS_MAC)
-#define BRAVE_VPN_DNS_FEATURE_ENTRIES
-
-#define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES                                    \
-  EXPAND_FEATURE_ENTRIES({                                                     \
-      kBraveVPNWireguardForOSXFeatureInternalName,                             \
-      "Enable experimental WireGuard Brave VPN for OSX",                       \
-      "Experimental WireGuard VPN support.",                                   \
-      kOsMac,                                                                  \
-      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPNEnableWireguardForOSX), \
-  })
-#else  // BUILDFLAG(IS_MAC)
-#define BRAVE_VPN_DNS_FEATURE_ENTRIES
-#define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES
-#endif  // BUILDFLAG(IS_WIN)
-#else   // BUILDFLAG(ENABLE_BRAVE_VPN)
-#define BRAVE_VPN_FEATURE_ENTRIES
-#define BRAVE_VPN_DNS_FEATURE_ENTRIES
-#define BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES
-#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
-
 #define SPEEDREADER_FEATURE_ENTRIES                                        \
   IF_BUILDFLAG(                                                            \
       ENABLE_SPEEDREADER,                                                  \
@@ -1018,9 +969,6 @@
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
   CRYPTO_WALLETS_FEATURE_ENTRIES                                               \
   BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                         \
-  BRAVE_VPN_FEATURE_ENTRIES                                                    \
-  BRAVE_VPN_DNS_FEATURE_ENTRIES                                                \
-  BRAVE_VPN_WIREGUARD_FEATURE_ENTRIES                                          \
   SPEEDREADER_FEATURE_ENTRIES                                                  \
   REQUEST_OTR_FEATURE_ENTRIES                                                  \
   BRAVE_MODULE_FILENAME_PATCH                                                  \
@@ -1054,20 +1002,6 @@ namespace {
   static_assert(
       std::initializer_list<FeatureEntry>{BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES}
           .size());
-}
-
-// Called to skip feature entries on brave://flags page without affecting
-// features state.
-bool BraveShouldSkipConditionalFeatureEntry(
-    const flags_ui::FlagsStorage* storage,
-    const FeatureEntry& entry) {
-#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD) && BUILDFLAG(IS_WIN)
-  if (base::EqualsCaseInsensitiveASCII(kBraveVPNWireguardFeatureInternalName,
-                                       entry.internal_name)) {
-    return true;
-  }
-#endif
-  return false;
 }
 
 }  // namespace
