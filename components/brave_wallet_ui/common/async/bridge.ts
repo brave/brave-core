@@ -3,9 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import WalletApiProxy from '../wallet_api_proxy'
-import getWalletPanelApiProxy from '../../panel/wallet_panel_api_proxy'
-import getWalletPageApiProxy from '../../page/wallet_page_api_proxy'
+import type WalletApiProxy from '../wallet_api_proxy'
+import getWalletPanelApiProxy, {
+  type WalletPanelApiProxy
+} from '../../panel/wallet_panel_api_proxy'
+import getWalletPageApiProxy, {
+  type WalletPageApiProxy
+} from '../../page/wallet_page_api_proxy'
 
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 
@@ -32,7 +36,11 @@ const debugProxyHandler = (path?: string) => ({
   }
 })
 
-export function getAPIProxy(): WalletApiProxy {
+export type IsomorphicApiProxy = WalletApiProxy &
+  Partial<WalletPanelApiProxy> &
+  Partial<WalletPageApiProxy>
+
+export function getAPIProxy(): IsomorphicApiProxy {
   const nativeProxy =
     window.location.hostname === 'wallet-panel.top-chrome'
       ? getWalletPanelApiProxy()
