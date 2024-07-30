@@ -3,38 +3,36 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as React from 'react'
-import { Provider } from 'react-redux'
 import { act, renderHook } from '@testing-library/react'
 
+// hooks
 import { usePasswordAttempts } from './use-password-attempts'
-import { ApiProxyContext } from '../context/api-proxy.context'
-import {
-  getMockedAPIProxy,
-  makeMockedStoreWithSpy
-} from '../async/__mocks__/bridge'
+
+// actions
 import { WalletActions } from '../actions'
 
-const proxy = getMockedAPIProxy()
-
-function renderHookOptionsWithCustomStore(store: any) {
-  return {
-    wrapper: ({ children }: { children?: React.ReactChildren }) => (
-      <ApiProxyContext.Provider value={proxy}>
-        <Provider store={store}>{children}</Provider>
-      </ApiProxyContext.Provider>
-    )
-  }
-}
+// mocks
+import type { MockedWalletApiProxy } from '../async/__mocks__/bridge'
+import getAPIProxy from '../async/bridge'
+import {
+  makeMockedStoreWithSpy,
+  renderHookOptionsWithMockStore
+} from '../../utils/test-utils'
 
 describe('usePasswordAttempts hook', () => {
   it('should increment attempts on bad password & lock wallet after 3 failed attempts', async () => {
     const { store, dispatchSpy } = makeMockedStoreWithSpy()
+    expect(store).toBeDefined()
+
+    // auto-mocked by compiler
+    // called after store creation to avoid api reset
+    const proxy = getAPIProxy() as unknown as MockedWalletApiProxy
     proxy.setMockedStore(store)
+    expect(proxy.store).toBeDefined()
 
     const { result } = renderHook(
       () => usePasswordAttempts(),
-      renderHookOptionsWithCustomStore(store)
+      renderHookOptionsWithMockStore(store)
     )
 
     expect(result.current.attempts).toEqual(0)
@@ -42,6 +40,10 @@ describe('usePasswordAttempts hook', () => {
     // attempt 1
     await act(async () => {
       await result.current.attemptPasswordEntry('pass')
+      expect(dispatchSpy).toHaveBeenCalledWith({
+        payload: 1,
+        type: 'wallet/setPasswordAttempts'
+      })
     })
 
     expect(result.current.attempts).toEqual(1)
@@ -49,20 +51,28 @@ describe('usePasswordAttempts hook', () => {
     // attempt 2
     await act(async () => {
       await result.current.attemptPasswordEntry('pass2')
+      expect(dispatchSpy).toHaveBeenCalledWith({
+        payload: 2,
+        type: 'wallet/setPasswordAttempts'
+      })
     })
 
     expect(result.current.attempts).toEqual(2)
 
-    // attempt 3
+    // attempt 3 (last before lock)
     await act(async () => {
       await result.current.attemptPasswordEntry('pass3')
+      // attempts count is rest before locking
+      expect(dispatchSpy).toHaveBeenCalledWith({
+        payload: 0,
+        type: 'wallet/setPasswordAttempts'
+      })
     })
 
     // Wallet is now locked
-    await act(async () => {
-      expect(dispatchSpy).toHaveBeenCalledWith(WalletActions.locked())
-      expect(store.getState().wallet.isWalletLocked).toBe(true)
-    })
+    expect(result.current.attempts).toEqual(0)
+    expect(dispatchSpy).toHaveBeenCalledWith(WalletActions.locked())
+    expect(store.getState().wallet.isWalletLocked).toBe(true)
     // attempts should be reset since the wallet was locked
     expect(result.current.attempts).toEqual(0)
   })
@@ -72,7 +82,7 @@ describe('usePasswordAttempts hook', () => {
 
     const { result } = renderHook(
       () => usePasswordAttempts(),
-      renderHookOptionsWithCustomStore(store)
+      renderHookOptionsWithMockStore(store)
     )
 
     expect(result.current.attempts).toEqual(0)
@@ -89,7 +99,7 @@ describe('usePasswordAttempts hook', () => {
 
     const { result } = renderHook(
       () => usePasswordAttempts(),
-      renderHookOptionsWithCustomStore(store)
+      renderHookOptionsWithMockStore(store)
     )
 
     expect(result.current.attempts).toEqual(0)
