@@ -129,17 +129,13 @@ export const NFTGridViewItem = ({
   const onUnSpam = async () => {
     setShowMore(false)
     await updateNftSpamStatus({ token, isSpam: false })
-    dispatch(
-      WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true })
-    )
+    dispatch(WalletActions.refreshNetworksAndTokens())
   }
 
   const onMarkAsSpam = async () => {
     setShowMore(false)
     await updateNftSpamStatus({ token, isSpam: true })
-    dispatch(
-      WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true })
-    )
+    dispatch(WalletActions.refreshNetworksAndTokens())
   }
 
   const onConfirmDelete = async () => {

@@ -345,7 +345,7 @@ export const NftCollection = ({ networks, accounts }: Props) => {
   }, [hideNftDiscoveryModal, setNftDiscovery])
 
   const onRefresh = React.useCallback(() => {
-    dispatch(WalletActions.refreshNetworksAndTokens({}))
+    dispatch(WalletActions.refreshNetworksAndTokens())
   }, [dispatch])
 
   const navigateToPage = React.useCallback(

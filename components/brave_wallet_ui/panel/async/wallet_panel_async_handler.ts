@@ -31,11 +31,7 @@ async function refreshWalletInfo(store: Store) {
   const { walletInfo } = await proxy.walletHandler.getWalletInfo()
   const { allAccounts } = await proxy.keyringService.getAllAccounts()
   store.dispatch(WalletActions.initialized({ walletInfo, allAccounts }))
-  store.dispatch(
-    WalletActions.refreshAll({
-      skipBalancesRefresh: true
-    })
-  )
+  store.dispatch(WalletActions.refreshAll())
 }
 
 handler.on(PanelActions.navigateToMain.type, async (store: Store) => {

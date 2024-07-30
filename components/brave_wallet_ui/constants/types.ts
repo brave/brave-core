@@ -27,10 +27,6 @@ export type HardwareVendor =
 export { Origin } from 'gen/url/mojom/origin.mojom.m.js'
 export { TimeDelta }
 
-export type RefreshOpts = {
-  skipBalancesRefresh?: boolean
-}
-
 export type HardwareWalletResponseCodeType =
   | 'deviceNotConnected'
   | 'deviceBusy'
