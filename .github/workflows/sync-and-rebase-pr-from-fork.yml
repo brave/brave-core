@@ -56,7 +56,7 @@ jobs:
 
           existing_prs=$(gh pr list -H "$contribHeadRefName" --json number)
           if [[ "$existing_prs" = "[]" ]]; then
-            gh pr create
+            gh pr create \
               --draft \
               --base "$baseRefName" \
               --head "$contribHeadRefName" \
