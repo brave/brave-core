@@ -685,20 +685,22 @@ void SwapService::OnGetLiFiStatus(GetLiFiStatusCallback callback,
     if (auto error_response =
             lifi::ParseErrorResponse(api_request_result.value_body())) {
       std::move(callback).Run(nullptr, std::move(error_response), "");
+      return;
     } else {
       std::move(callback).Run(
           nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+      return;
     }
-
-    return;
   }
 
   if (auto status =
           lifi::ParseStatusResponse(api_request_result.value_body())) {
     std::move(callback).Run(std::move(status), nullptr, "");
+    return;
   } else {
     std::move(callback).Run(nullptr, nullptr,
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    return;
   }
 }
 

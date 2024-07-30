@@ -458,7 +458,7 @@ mojom::LiFiStepStatusPtr ParseStepStatus(
     const swap_responses::LiFiStepStatus& value) {
   auto result = mojom::LiFiStepStatus::New();
 
-  if (auto chain_id = ChainIdToHex(value.chain_id); chain_id) {
+  if (auto chain_id = ChainIdToHex(value.chain_id)) {
     result->chain_id = chain_id.value();
   } else {
     return nullptr;
@@ -856,13 +856,13 @@ mojom::LiFiStatusPtr ParseStatusResponse(const base::Value& json_value) {
   auto result = mojom::LiFiStatus::New();
   result->transaction_id = value->transaction_id;
 
-  if (auto sending = ParseStepStatus(value->sending); sending) {
+  if (auto sending = ParseStepStatus(value->sending)) {
     result->sending = std::move(sending);
   } else {
     return nullptr;
   }
 
-  if (auto receiving = ParseStepStatus(value->receiving); receiving) {
+  if (auto receiving = ParseStepStatus(value->receiving)) {
     result->receiving = std::move(receiving);
   } else {
     return nullptr;
