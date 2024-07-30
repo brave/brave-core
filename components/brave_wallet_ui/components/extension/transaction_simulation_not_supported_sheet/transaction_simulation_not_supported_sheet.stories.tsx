@@ -13,15 +13,12 @@ import {
   TransactionSimulationNotSupportedSheet //
 } from './transaction_simulation_not_supported_sheet'
 
-// mocks
-import { mockNetwork } from '../../../common/constants/mocks'
-
 export const _TransactionSimulationNotSupportedSheet = {
   title: 'Transaction Simulation Not Supported Sheet',
   render: () => {
     return (
       <WalletPanelStory>
-        <TransactionSimulationNotSupportedSheet network={mockNetwork} />
+        <TransactionSimulationNotSupportedSheet />
       </WalletPanelStory>
     )
   }

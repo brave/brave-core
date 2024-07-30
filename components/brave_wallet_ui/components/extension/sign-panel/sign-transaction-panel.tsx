@@ -241,8 +241,8 @@ export const SignTransactionPanel = ({
           />
         </SignPanelButtonRow>
       </Column>
-      {showSimulationNotSupportedMessage && network && (
-        <TransactionSimulationNotSupportedSheet network={network} />
+      {showSimulationNotSupportedMessage && (
+        <TransactionSimulationNotSupportedSheet />
       )}
     </StyledWrapper>
   )

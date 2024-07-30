@@ -24,11 +24,6 @@ export const AlertTextContainer = styled.div`
   font: ${leo.font.small.regular};
 `
 
-export const CheckboxText = styled.span`
-  color: ${leo.color.text.secondary};
-  font: ${leo.font.xSmall.regular};
-`
-
 export const SeeAvailableNetworksLink = styled.a`
   color: ${leo.color.text.interactive};
   text-align: center;

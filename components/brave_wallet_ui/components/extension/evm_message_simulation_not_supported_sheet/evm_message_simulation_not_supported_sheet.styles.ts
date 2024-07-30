@@ -25,11 +25,6 @@ export const AlertTextContainer = styled.div`
   font: ${leo.font.small.regular};
 `
 
-export const CheckboxText = styled.span`
-  color: ${leo.color.text.secondary};
-  font: ${leo.font.xSmall.regular};
-`
-
 export const CollapseTitle = styled.div`
   display: inline-flex;
   flex-direction: row;

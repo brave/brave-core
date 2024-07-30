@@ -64,7 +64,6 @@ provideStrings({
   braveWalletEnterAPasswordToContinue: 'Enter a password to continue',
   braveWalletEnterYourPasswordToStartBackup:
     'Enter your Brave Wallet password to start backing up wallet.',
-  braveWalletDoNotShowThisMessageAgain: 'Do not show this message again.',
 
   // BuySendSwap
   braveWalletBuy: 'Buy',
@@ -566,8 +565,6 @@ provideStrings({
     'Choose which blockchains to use in your wallet.',
   braveWalletShowTestnets: 'Show testnets',
   braveWalletSeeAvailableNetworks: 'See available networks',
-  braveWalletDoNotShowThisMessageAgainForNetwork:
-    'Do not show this message again for this network.',
 
   // Grouping Labels
   braveWalletFeatured: 'Featured',

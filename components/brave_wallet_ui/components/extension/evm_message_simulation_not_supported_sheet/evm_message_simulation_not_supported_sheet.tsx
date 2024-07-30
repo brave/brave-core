@@ -4,16 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Checkbox from '@brave/leo/react/checkbox'
 import Alert from '@brave/leo/react/alert'
 import * as leo from '@brave/leo/tokens/css/variables'
 
 // utils
-import { useSyncedLocalStorage } from '../../../common/hooks/use_local_storage'
 import { getLocale } from '../../../../common/locale'
-import {
-  LOCAL_STORAGE_KEYS //
-} from '../../../common/constants/local-storage-keys'
 
 // components
 import { BottomSheet } from '../../shared/bottom_sheet/bottom_sheet'
@@ -22,7 +17,6 @@ import { BottomSheet } from '../../shared/bottom_sheet/bottom_sheet'
 import { Column, LeoSquaredButton } from '../../shared/style'
 import {
   AlertTextContainer,
-  CheckboxText,
   FullWidthChildrenColumn,
   CollapseTitle,
   TitleText,
@@ -32,23 +26,11 @@ import {
 } from './evm_message_simulation_not_supported_sheet.styles'
 
 export const EvmMessageSimulationNotSupportedSheet = () => {
-  // local storage
-  const [doNotShowAgain, setDoNotShowAgain] = useSyncedLocalStorage<boolean>(
-    LOCAL_STORAGE_KEYS.DO_NOT_SHOW_EVM_MSG_PREVIEW_NOT_SUPPORTED_WARNING,
-    false
-  )
-
   // state
   const [showSheet, setShowSheet] = React.useState(true)
   const [isMessageExpanded, setIsMessageExpanded] = React.useState(false)
-  const [isDoNotShowAgainChecked, setIsDoNotShowAgainChecked] =
-    React.useState(doNotShowAgain)
 
   // render
-  if (doNotShowAgain) {
-    return null
-  }
-
   return (
     <BottomSheet isOpen={showSheet}>
       <TitleText>
@@ -99,19 +81,8 @@ export const EvmMessageSimulationNotSupportedSheet = () => {
             </Column>
           </Column>
         </Alert>
-        <Checkbox
-          checked={isDoNotShowAgainChecked}
-          onChange={({ checked }) => {
-            setIsDoNotShowAgainChecked(checked)
-          }}
-        >
-          <CheckboxText>
-            {getLocale('braveWalletDoNotShowThisMessageAgain')}
-          </CheckboxText>
-        </Checkbox>
         <LeoSquaredButton
           onClick={() => {
-            setDoNotShowAgain(isDoNotShowAgainChecked)
             setShowSheet(false)
           }}
         >
