@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
@@ -54,8 +55,12 @@ BraveNewsTabHelper::BraveNewsTabHelper(content::WebContents* contents)
           contents->GetBrowserContext())) {
   CHECK(!contents->GetBrowserContext()->IsOffTheRecord());
 
-  pref_observation_.Observe(&controller_->prefs());
-  UpdatePageFeed();
+  if (controller_) {
+    pref_observation_.Observe(&controller_->prefs());
+    UpdatePageFeed();
+  } else {
+    CHECK_IS_TEST();
+  }
 }
 
 BraveNewsTabHelper::~BraveNewsTabHelper() = default;
@@ -268,6 +273,10 @@ void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {
 }
 
 void BraveNewsTabHelper::UpdatePageFeed() {
+  if (!controller_) {
+    CHECK_IS_TEST();
+    return;
+  }
   controller_->GetPublisherForSite(
       GetWebContents().GetLastCommittedURL(),
       base::BindOnce(
