@@ -38,18 +38,19 @@
 namespace {
 class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
  public:
-  WaitForFeedsChanged(BraveNewsTabHelper* tab_helper, size_t feeds)
-      : feeds_(feeds), tab_helper_(tab_helper) {
+  WaitForFeedsChanged(BraveNewsTabHelper* tab_helper,
+                      std::optional<size_t> expected_feed_count)
+      : expected_feed_count_(expected_feed_count), tab_helper_(tab_helper) {
     news_observer_.Observe(tab_helper_);
   }
 
   ~WaitForFeedsChanged() override = default;
 
   std::vector<GURL> WaitForFeeds() {
-    if (!last_feeds_) {
+    if (!last_feeds_ || last_feeds_->size() != expected_feed_count_) {
       loop_.Run();
     }
-    base::RunLoop().RunUntilIdle();
+
     return last_feeds_.value();
   }
 
@@ -58,7 +59,8 @@ class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
     // There can be multiple OnAvailableFeedsChanged events, as we navigate
     // (first to clear, then again to populate). This class is waiting for
     // feeds, so expect to receive some.
-    if (feeds.size() < feeds_) {
+    if (expected_feed_count_.has_value() &&
+        feeds.size() != expected_feed_count_) {
       return;
     }
 
@@ -66,7 +68,7 @@ class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
     loop_.Quit();
   }
 
-  size_t feeds_ = 0;
+  std::optional<size_t> expected_feed_count_ = 0;
   base::RunLoop loop_;
   raw_ptr<BraveNewsTabHelper> tab_helper_;
   std::optional<std::vector<GURL>> last_feeds_ = std::nullopt;
@@ -86,7 +88,7 @@ class WaitForFeedTitle {
   bool WaitForTitle(std::string title) {
     bool found_title = false;
     do {
-      WaitForFeedsChanged waiter(tab_helper_.get(), 0);
+      WaitForFeedsChanged waiter(tab_helper_.get(), std::nullopt);
       auto urls = waiter.WaitForFeeds();
       found_title = base::ranges::any_of(urls, [&title, this](const auto& url) {
         return title == tab_helper_->GetTitleForFeedUrl(url);
