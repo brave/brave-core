@@ -39,7 +39,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragment implements PasteEditText.Listener, View.OnFocusChangeListener {
+public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragment
+        implements PasteEditText.Listener, View.OnFocusChangeListener {
 
     private static final int RECOVERY_PHRASE_12_WORDS = 12;
     private static final int RECOVERY_PHRASE_24_WORDS = 24;
@@ -51,8 +52,7 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
     private ImageView mToggleWordMask;
     private CheckBox mLegacyImport;
 
-    @Nullable
-    private ClipboardManager mClipboard;
+    @Nullable private ClipboardManager mClipboard;
     private final List<String> mPastedWords = new ArrayList<>();
     private List<PasteEditText> mGridLayout12List;
     private List<PasteEditText> mGridLayout24List;
@@ -98,60 +98,82 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
 
         mGridLayout24 = view.findViewById(R.id.recovery_phrase_24);
         for (int i = RECOVERY_PHRASE_12_WORDS; i < RECOVERY_PHRASE_24_WORDS; i++) {
-            PasteEditText pasteEditText = generatePasteEditText(i == RECOVERY_PHRASE_24_WORDS - 1, i);
+            PasteEditText pasteEditText =
+                    generatePasteEditText(i == RECOVERY_PHRASE_24_WORDS - 1, i);
             mGridLayout24List.add(pasteEditText);
             mGridLayout24.addView(pasteEditText, generateGridLayoutParams());
         }
 
         mLegacyImport = view.findViewById(R.id.legacy_import);
-        mLegacyImport.setOnCheckedChangeListener((buttonView, isChecked) -> mLegacyWalletRestoreEnabled = isChecked);
+        mLegacyImport.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> mLegacyWalletRestoreEnabled = isChecked);
 
         if (mWordCount != RECOVERY_PHRASE_24_WORDS) {
             mGridLayout24.setVisibility(View.GONE);
         }
 
         mButtonContinue = view.findViewById(R.id.continue_button);
-        mButtonContinue.setOnClickListener((View.OnClickListener) v -> {
-            String recoverPhrase = extractRecoveryPhrase();
-            goToNextPage(recoverPhrase);
-        });
+        mButtonContinue.setOnClickListener(
+                (View.OnClickListener)
+                        v -> {
+                            String recoverPhrase = extractRecoveryPhrase();
+                            goToNextPage(recoverPhrase);
+                        });
 
         mSwitchRecoveryPhrase = view.findViewById(R.id.recovery_phrase_switch);
-        mSwitchRecoveryPhrase.setOnClickListener(v -> {
-            mWordCount = mWordCount == RECOVERY_PHRASE_12_WORDS ? RECOVERY_PHRASE_24_WORDS : RECOVERY_PHRASE_12_WORDS;
-            mGridLayout24.setVisibility(mWordCount == RECOVERY_PHRASE_24_WORDS ? View.VISIBLE : View.GONE);
-            if (mWordCount == RECOVERY_PHRASE_12_WORDS) {
-                mLegacyImport.setChecked(false);
-                int i = RECOVERY_PHRASE_12_WORDS;
-                for (PasteEditText pasteEditText : mGridLayout24List) {
+        mSwitchRecoveryPhrase.setOnClickListener(
+                v -> {
+                    mWordCount =
+                            mWordCount == RECOVERY_PHRASE_12_WORDS
+                                    ? RECOVERY_PHRASE_24_WORDS
+                                    : RECOVERY_PHRASE_12_WORDS;
+                    mGridLayout24.setVisibility(
+                            mWordCount == RECOVERY_PHRASE_24_WORDS ? View.VISIBLE : View.GONE);
+                    if (mWordCount == RECOVERY_PHRASE_12_WORDS) {
+                        mLegacyImport.setChecked(false);
+                        int i = RECOVERY_PHRASE_12_WORDS;
+                        for (PasteEditText pasteEditText : mGridLayout24List) {
 
-                    if (mLastFocusedItem!= null && pasteEditText.getId() == mLastFocusedItem.getId()) {
-                        hideKeyboard(requireActivity(), pasteEditText.getWindowToken());
+                            if (mLastFocusedItem != null
+                                    && pasteEditText.getId() == mLastFocusedItem.getId()) {
+                                hideKeyboard(requireActivity(), pasteEditText.getWindowToken());
+                            }
+
+                            pasteEditText.setText("");
+                            mFilledItems.remove(i);
+                            i++;
+                        }
                     }
+                    mButtonContinue.setEnabled(mFilledItems.size() == mWordCount);
+                    mLegacyImport.setVisibility(
+                            mWordCount == RECOVERY_PHRASE_12_WORDS ? View.INVISIBLE : View.VISIBLE);
 
-                    pasteEditText.setText("");
-                    mFilledItems.remove(i);
-                    i++;
-                }
-
-            }
-            mButtonContinue.setEnabled(mFilledItems.size() == mWordCount);
-            mLegacyImport.setVisibility(mWordCount == RECOVERY_PHRASE_12_WORDS ? View.INVISIBLE : View.VISIBLE);
-
-            final PasteEditText pasteEditText = mGridLayout12List.get(RECOVERY_PHRASE_12_WORDS - 1);
-            pasteEditText.setImeOptions(mWordCount == RECOVERY_PHRASE_12_WORDS ? EditorInfo.IME_ACTION_DONE : EditorInfo.IME_ACTION_NEXT);
-            if (pasteEditText.hasFocus()) {
-                InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.restartInput(pasteEditText);
-            }
-            mSwitchRecoveryPhrase.setText(mWordCount == RECOVERY_PHRASE_12_WORDS ? R.string.recovery_phrase_24 : R.string.recovery_phrase_12);
-        });
+                    final PasteEditText pasteEditText =
+                            mGridLayout12List.get(RECOVERY_PHRASE_12_WORDS - 1);
+                    pasteEditText.setImeOptions(
+                            mWordCount == RECOVERY_PHRASE_12_WORDS
+                                    ? EditorInfo.IME_ACTION_DONE
+                                    : EditorInfo.IME_ACTION_NEXT);
+                    if (pasteEditText.hasFocus()) {
+                        InputMethodManager imm =
+                                (InputMethodManager)
+                                        requireContext()
+                                                .getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.restartInput(pasteEditText);
+                    }
+                    mSwitchRecoveryPhrase.setText(
+                            mWordCount == RECOVERY_PHRASE_12_WORDS
+                                    ? R.string.recovery_phrase_24
+                                    : R.string.recovery_phrase_12);
+                });
 
         mToggleWordMask = view.findViewById(R.id.toggle_word_mask);
-        mToggleWordMask.setOnClickListener(v -> {
-            toggleWordMask();
-            mToggleWordMask.setImageResource(mMaskWord ? R.drawable.ic_eye_on : R.drawable.ic_eye_off);
-        });
+        mToggleWordMask.setOnClickListener(
+                v -> {
+                    toggleWordMask();
+                    mToggleWordMask.setImageResource(
+                            mMaskWord ? R.drawable.ic_eye_on : R.drawable.ic_eye_off);
+                });
     }
 
     @NonNull
@@ -197,31 +219,37 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
         pasteEditText.setListener(this);
         pasteEditText.setInputType(InputType.TYPE_CLASS_TEXT);
         pasteEditText.setAutofillHints("recoveryPhrase");
-        pasteEditText.setImeOptions(lastItem ? EditorInfo.IME_ACTION_DONE : EditorInfo.IME_ACTION_NEXT);
-        pasteEditText.setHint(String.format(getResources().getString(R.string.recovery_phrase_word_hint), position + 1));
-        pasteEditText.setTransformationMethod(mMaskWord ? new PasswordTransformationMethod(): null);
-        pasteEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                /* Not used. */
-            }
+        pasteEditText.setImeOptions(
+                lastItem ? EditorInfo.IME_ACTION_DONE : EditorInfo.IME_ACTION_NEXT);
+        pasteEditText.setHint(
+                String.format(
+                        getResources().getString(R.string.recovery_phrase_word_hint),
+                        position + 1));
+        pasteEditText.setTransformationMethod(
+                mMaskWord ? new PasswordTransformationMethod() : null);
+        pasteEditText.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        /* Not used. */
+                    }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() == 0) {
-                    mFilledItems.remove(position);
-                } else {
-                    mFilledItems.add(position);
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if (s.toString().trim().length() == 0) {
+                            mFilledItems.remove(position);
+                        } else {
+                            mFilledItems.add(position);
+                        }
 
-                mButtonContinue.setEnabled(mFilledItems.size() == mWordCount);
-            }
+                        mButtonContinue.setEnabled(mFilledItems.size() == mWordCount);
+                    }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                /* Not used. */
-            }
-        });
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        /* Not used. */
+                    }
+                });
         pasteEditText.setOnFocusChangeListener(this);
         pasteEditText.setId(View.generateViewId());
         return pasteEditText;
@@ -229,7 +257,9 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
 
     @NonNull
     private GridLayout.LayoutParams generateGridLayoutParams() {
-        GridLayout.LayoutParams gridLayoutParams = new GridLayout.LayoutParams(new ViewGroup.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT));
+        GridLayout.LayoutParams gridLayoutParams =
+                new GridLayout.LayoutParams(
+                        new ViewGroup.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT));
         gridLayoutParams.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
         gridLayoutParams.bottomMargin = ViewUtils.dpToPx(requireContext(), 8);
         gridLayoutParams.leftMargin = ViewUtils.dpToPx(requireContext(), 4);
@@ -246,7 +276,7 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
             Editable editable = visibleEditText.get(i).getText();
             if (editable != null && !editable.toString().trim().isEmpty()) {
                 result.append(editable.toString().trim());
-                if (i != size -1) {
+                if (i != size - 1) {
                     result.append(" ");
                 }
             }
@@ -272,11 +302,13 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
     private void toggleWordMask() {
         mMaskWord = !mMaskWord;
         for (PasteEditText pasteEditText : mGridLayout12List) {
-            pasteEditText.setTransformationMethod(mMaskWord ? new PasswordTransformationMethod(): null);
+            pasteEditText.setTransformationMethod(
+                    mMaskWord ? new PasswordTransformationMethod() : null);
         }
 
         for (PasteEditText pasteEditText : mGridLayout24List) {
-            pasteEditText.setTransformationMethod(mMaskWord ? new PasswordTransformationMethod(): null);
+            pasteEditText.setTransformationMethod(
+                    mMaskWord ? new PasswordTransformationMethod() : null);
         }
     }
 

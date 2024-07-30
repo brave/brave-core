@@ -13,35 +13,34 @@ import androidx.appcompat.widget.AppCompatEditText;
 
 public class PasteEditText extends AppCompatEditText {
 
-   public interface Listener {
-      void onPaste();
-   }
+    public interface Listener {
+        void onPaste();
+    }
 
-   @Nullable
-   private Listener mListener;
+    @Nullable private Listener mListener;
 
-   public PasteEditText(Context context) {
-      super(context);
-   }
+    public PasteEditText(Context context) {
+        super(context);
+    }
 
-   public PasteEditText(Context context, AttributeSet attrs) {
-      super(context, attrs);
-   }
+    public PasteEditText(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
 
-   public PasteEditText(Context context, AttributeSet attrs, int defStyle) {
-      super(context, attrs, defStyle);
-   }
+    public PasteEditText(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
 
-   public void setListener(@Nullable final Listener listener) {
-      mListener = listener;
-   }
+    public void setListener(@Nullable final Listener listener) {
+        mListener = listener;
+    }
 
-   @Override
-   public boolean onTextContextMenuItem(int id) {
-      if (id == android.R.id.paste && mListener != null) {
-         mListener.onPaste();
-         return true;
-      }
-      return super.onTextContextMenuItem(id);
-   }
+    @Override
+    public boolean onTextContextMenuItem(int id) {
+        if (id == android.R.id.paste && mListener != null) {
+            mListener.onPaste();
+            return true;
+        }
+        return super.onTextContextMenuItem(id);
+    }
 }
