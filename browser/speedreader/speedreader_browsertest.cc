@@ -19,7 +19,9 @@
 #include "brave/browser/speedreader/page_distiller.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_data_handler_impl.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -92,8 +94,14 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     feature_list_.InitWithFeaturesAndParameters(
         {{speedreader::kSpeedreaderFeature,
-          {{speedreader::kSpeedreaderTTS.name, "true"}}},
-         {ai_chat::features::kAIChat, {{}}}},
+          {
+            { speedreader::kSpeedreaderTTS.name,
+              "true" }
+          }},
+         {ai_chat::features::kAIChat,
+          { {} }},
+         { tabs::features::kBraveSplitView,
+           { {} } }},
         {});
   }
 
@@ -1011,4 +1019,61 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReaderEnableForSite) {
   NavigateToPageSynchronously("/", WindowOpenDisposition::CURRENT_TAB);
   EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
       tab_helper()->PageDistillState()));
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitView) {
+  ToggleSpeedreader();
+
+  brave::NewSplitViewForTab(browser());
+
+  auto* browser_view = static_cast<BraveBrowserView*>(
+      BrowserView::GetBrowserViewForBrowser(browser()));
+
+  auto* contents_view = browser_view->contents_web_view();
+  auto* secondary_contents_view = browser_view->secondary_contents_web_view();
+
+  auto* toolbar = static_cast<BraveBrowserView*>(browser()->window())
+                      ->reader_mode_toolbar_view_.get();
+  auto* secondary_toolbar = static_cast<BraveBrowserView*>(browser()->window())
+                                ->secondary_reader_mode_toolbar_view_.get();
+
+  ASSERT_TRUE(contents_view);
+  ASSERT_TRUE(secondary_contents_view);
+
+  // No toolbars.
+  EXPECT_FALSE(toolbar->GetVisible());
+  EXPECT_FALSE(secondary_toolbar->GetVisible());
+
+  // Load a distillabe page in first tab.
+  browser()->tab_strip_model()->ActivateTabAt(0);
+  NavigateToPageSynchronously(kTestPageReadable,
+                              WindowOpenDisposition::CURRENT_TAB);
+
+  ASSERT_TRUE(toolbar && secondary_toolbar);
+  EXPECT_TRUE(toolbar->GetVisible());
+  EXPECT_FALSE(secondary_toolbar->GetVisible());
+
+  browser()->tab_strip_model()->ActivateTabAt(1);
+  EXPECT_TRUE(toolbar->GetVisible());
+  EXPECT_FALSE(secondary_toolbar->GetVisible());
+
+  // Load a sitillabe page in second tab.
+  NavigateToPageSynchronously(kTestPageReadable,
+                              WindowOpenDisposition::CURRENT_TAB);
+  EXPECT_TRUE(toolbar->GetVisible());
+  EXPECT_TRUE(secondary_toolbar->GetVisible());
+
+  // Second tab is active. Show original content.
+  ClickReaderButton();
+
+  EXPECT_TRUE(toolbar->GetVisible());
+  EXPECT_FALSE(secondary_toolbar->GetVisible());
+
+  browser()->tab_strip_model()->ActivateTabAt(0);
+  // First tab is active. Show original content.
+  ClickReaderButton();
+
+  // There are no distilled pages.
+  EXPECT_FALSE(toolbar->GetVisible());
+  EXPECT_FALSE(secondary_toolbar->GetVisible());
 }
