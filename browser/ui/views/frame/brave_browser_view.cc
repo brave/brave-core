@@ -39,6 +39,7 @@
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/frame/split_view_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
@@ -330,8 +331,9 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
         browser_->profile()->GetPrefs(), secondary_contents_web_view_);
     secondary_location_bar_widget_ = std::make_unique<views::Widget>();
 
-    auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
-        contents_container()->GetLayoutManager());
+    auto* contents_layout_manager =
+        static_cast<SplitViewContentsLayoutManager*>(
+            contents_container()->GetLayoutManager());
     contents_layout_manager->set_browser_view(this);
     contents_layout_manager->set_secondary_contents_view(
         secondary_contents_web_view_);
@@ -340,12 +342,9 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     contents_layout_manager->SetSplitViewSeparator(split_view_separator_);
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-    reader_mode_toolbar_view_ =
-        std::make_unique<ReaderModeToolbarView>(browser_.get());
     secondary_reader_mode_toolbar_view_ =
         std::make_unique<ReaderModeToolbarView>(browser_.get());
 
-    contents_container_->AddChildView(reader_mode_toolbar_view_.get());
     contents_container_->AddChildView(
         secondary_reader_mode_toolbar_view_.get());
 
@@ -353,7 +352,6 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
         reader_mode_toolbar_view_.get());
     contents_layout_manager->set_secondary_contents_reader_mode_toolbar(
         secondary_reader_mode_toolbar_view_.get());
-    reader_mode_toolbar_view_->AddObserver(this);
     secondary_reader_mode_toolbar_view_->AddObserver(this);
 #endif
 
@@ -363,6 +361,18 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
         split_view_browser_data);
     split_view_observation_.Observe(split_view_browser_data);
   }
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  reader_mode_toolbar_view_ =
+      std::make_unique<ReaderModeToolbarView>(browser_.get());
+  contents_container_->AddChildView(reader_mode_toolbar_view_.get());
+
+  auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
+      contents_container()->GetLayoutManager());
+  contents_layout_manager->set_contents_reader_mode_toolbar(
+      reader_mode_toolbar_view_.get());
+  reader_mode_toolbar_view_->AddObserver(this);
+#endif
 
   const bool supports_vertical_tabs =
       tabs::utils::SupportsVerticalTabs(browser_.get());
@@ -458,7 +468,7 @@ void BraveBrowserView::UpdateSplitViewSizeDelta(
     return;
   }
 
-  auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
+  auto* contents_layout_manager = static_cast<SplitViewContentsLayoutManager*>(
       contents_container()->GetLayoutManager());
   if (old_tab_tile) {
     split_view_browser_data->SetSizeDelta(
@@ -545,7 +555,7 @@ void BraveBrowserView::UpdateSecondaryContentsWebViewVisibility() {
     // the active tab, we let it be held by |contents_web_view_| and
     // |tile.first| by |secondary_contents_web_view_|. But we should rotate
     // the layout order. The layout rotation is done by
-    // BraveContentsLayoutManager.
+    // SplitViewContentsLayoutManager.
     //
     // ex1) When tile.first is the active tab
     //  Tiled tabs | tile.first(active) |         tile.second          |
@@ -569,8 +579,9 @@ void BraveBrowserView::UpdateSecondaryContentsWebViewVisibility() {
     secondary_contents_web_view_->SetVisible(true);
     UpdateSecondaryDevtoolsLayoutAndVisibility(contents);
 
-    auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
-        contents_container()->GetLayoutManager());
+    auto* contents_layout_manager =
+        static_cast<SplitViewContentsLayoutManager*>(
+            contents_container()->GetLayoutManager());
     contents_layout_manager->show_main_web_contents_at_tail(
         second_tile_is_active_web_contents);
   } else {
@@ -753,17 +764,17 @@ void BraveBrowserView::ShowReaderModeToolbar(
   auto tile_contents =
       SplitViewUtils::GetTabTileContents(browser(), web_contents);
   if (!tile_contents.main) {
-    reader_mode_toolbar_view_->SetVisible(false);
-    secondary_reader_mode_toolbar_view_->SetVisible(false);
+    UpdateReaderModeToolbar(reader_mode_toolbar_view_.get(), false);
+    UpdateReaderModeToolbar(secondary_reader_mode_toolbar_view_.get(), false);
   }
   if (!tile_contents.secondary) {
-    secondary_reader_mode_toolbar_view_->SetVisible(false);
+    UpdateReaderModeToolbar(secondary_reader_mode_toolbar_view_.get(), false);
   }
   if (tile_contents.main == web_contents) {
-    reader_mode_toolbar_view_->SetVisible(true);
+    UpdateReaderModeToolbar(reader_mode_toolbar_view_.get(), true);
   }
   if (tile_contents.secondary == web_contents) {
-    secondary_reader_mode_toolbar_view_->SetVisible(true);
+    UpdateReaderModeToolbar(secondary_reader_mode_toolbar_view_.get(), true);
   }
 
   DeprecatedLayoutImmediately();
@@ -774,17 +785,17 @@ void BraveBrowserView::HideReaderModeToolbar(
   auto tile_contents =
       SplitViewUtils::GetTabTileContents(browser(), web_contents);
   if (!tile_contents.main) {
-    reader_mode_toolbar_view_->SetVisible(false);
-    secondary_reader_mode_toolbar_view_->SetVisible(false);
+    UpdateReaderModeToolbar(reader_mode_toolbar_view_.get(), false);
+    UpdateReaderModeToolbar(secondary_reader_mode_toolbar_view_.get(), false);
   }
   if (!tile_contents.secondary) {
-    secondary_reader_mode_toolbar_view_->SetVisible(false);
+    UpdateReaderModeToolbar(secondary_reader_mode_toolbar_view_.get(), false);
   }
   if (tile_contents.main == web_contents) {
-    reader_mode_toolbar_view_->SetVisible(false);
+    UpdateReaderModeToolbar(reader_mode_toolbar_view_.get(), false);
   }
   if (tile_contents.secondary == web_contents) {
-    secondary_reader_mode_toolbar_view_->SetVisible(false);
+    UpdateReaderModeToolbar(secondary_reader_mode_toolbar_view_.get(), false);
   }
   DeprecatedLayoutImmediately();
 }
@@ -800,6 +811,17 @@ void BraveBrowserView::OnReaderModeToolbarActive(
   } else if (toolbar == secondary_reader_mode_toolbar_view_.get()) {
     browser()->ActivateContents(tile_contents.secondary);
   }
+}
+
+void BraveBrowserView::UpdateReaderModeToolbar(ReaderModeToolbarView* toolbar,
+                                               bool visible) {
+  if (!toolbar) {
+    return;
+  }
+  if (toolbar->GetVisible() == visible) {
+    return;
+  }
+  toolbar->SetVisible(visible);
 }
 
 void BraveBrowserView::UpdateReaderModeToolbars() {

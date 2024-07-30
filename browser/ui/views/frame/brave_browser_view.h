@@ -102,6 +102,7 @@ class BraveBrowserView : public BrowserView,
   void ShowReaderModeToolbar(content::WebContents* web_contents) override;
   void HideReaderModeToolbar(content::WebContents* web_contents) override;
   void OnReaderModeToolbarActive(ReaderModeToolbarView* toolbar) override;
+  void UpdateReaderModeToolbar(ReaderModeToolbarView* toolbar, bool visible);
   void UpdateReaderModeToolbars();
 #endif
   bool GetTabStripVisible() const override;

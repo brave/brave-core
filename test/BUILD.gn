@@ -400,7 +400,7 @@ test("brave_unit_tests") {
       "//brave/browser/ui/toolbar/brave_location_bar_model_delegate_unittest.cc",
       "//brave/browser/ui/views/accelerator_table_unittest.cc",
       "//brave/browser/ui/views/bookmarks/brave_bookmark_context_menu_unittest.cc",
-      "//brave/browser/ui/views/frame/brave_contents_layout_manager_unittest.cc",
+      "//brave/browser/ui/views/frame/split_view_contents_layout_manager_unittest.cc",
       "//brave/browser/ui/views/wallet_bubble_focus_observer_unittest.cc",
       "//brave/browser/ui/webui/brave_wallet/wallet_common_ui_unittest.cc",
       "//brave/browser/ui/webui/settings/brave_wallet_handler_unittest.cc",

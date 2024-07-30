@@ -6,9 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_CONTENTS_LAYOUT_MANAGER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_CONTENTS_LAYOUT_MANAGER_H_
 
-#define SetContentsResizingStrategy        \
-  SetContentsResizingStrategy_Unused();    \
-  friend class BraveContentsLayoutManager; \
+#define SetContentsResizingStrategy            \
+  SetContentsResizingStrategy_Unused();        \
+  friend class BraveContentsLayoutManager;     \
+  friend class SplitViewContentsLayoutManager; \
   virtual void SetContentsResizingStrategy
 
 #include "src/chrome/browser/ui/views/frame/contents_layout_manager.h"  // IWYU pragma: export
