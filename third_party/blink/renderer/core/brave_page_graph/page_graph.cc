@@ -22,6 +22,7 @@
 
 #include "base/base64.h"
 #include "base/dcheck_is_on.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/debug/stack_trace.h"
 #include "base/json/json_string_value_serializer.h"
 #include "base/no_destructor.h"
@@ -370,17 +371,16 @@ PageGraph::PageGraph(LocalFrame& local_frame)
       script_tracker_(this),
       request_tracker_(this),
       start_(base::TimeTicks::Now()) {
+  CHECK(local_frame.IsLocalRoot());
   blink::Page* page = local_frame.GetPage();
-  if (!page) {
-    VLOG(1) << "No page";
-    return;
-  }
-  if (!page->IsOrdinary()) {
-    VLOG(1) << "Page type is not ordinary";
-    return;
-  }
+  CHECK(page);
 
-  DCHECK(local_frame.IsLocalRoot());
+  if (!page->IsOrdinary()) {
+    LOG(ERROR) << "PageGraph is ignoring non-ordinary page, some parts of the "
+                  "web page may not be captured.";
+    base::debug::DumpWithoutCrashing();
+    return;
+  }
 
   shields_node_ = AddNode<NodeShields>();
   ad_shield_node_ = AddNode<NodeShield>(brave_shields::kAds);
