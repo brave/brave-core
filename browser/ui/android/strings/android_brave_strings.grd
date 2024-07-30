@@ -968,6 +968,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_CONTINUE_TO_WALLET" desc="Text for continue to wallet button">
         Continue to wallet
       </message>
+      <message name="IDS_RECOVERY_PHRASE_12" desc="12-words recovery phrase Wallet button">
+        I have a 12-words recovery phrase
+      </message>
+      <message name="IDS_RECOVERY_PHRASE_24" desc="24-words recovery phrase Wallet button">
+        I have a 24-words recovery phrase
+      </message>
       <message name="IDS_SET_DEFAULT_BROWSER" desc="Button text for dormant users engagement dialog">
         Set as default browser
       </message>
@@ -2027,21 +2033,15 @@ Are you sure you want to do this?
       Wallet
     </message>
     <message name="IDS_RESTORE_CRYPTO_TEXT" desc="Brave Wallet onboarding text">
-      Enter your recovery phrase to restore your Brave Wallet crypto account.
+      You can paste your entire recovery phrase into any field.
     </message>
     <message name="IDS_RESTORE_CRYPTO_ACCOUNT" desc="Brave Wallet onboarding text">
-      Restore crypto account
+      Import an existing wallet
     </message>
     <message name="IDS_SHOW_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
       Show recovery phrase
     </message>
-    <message name="IDS_ENTER_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
-      Enter your recovery phrase
-    </message>
-    <message name="IDS_ACCESSIBILITY_RESTORE_WALLET_COPY_IMAGE" desc="Brave Wallet onboarding past image accessibility text">
-      Paste
-    </message>
-    <message name="IDS_RESTORE_LEGACY_WALLET_RECOVERY_PHRASE" desc="Brave Wallet onboarding past image accessibility text">
+    <message name="IDS_RESTORE_LEGACY_WALLET_RECOVERY_PHRASE" desc="Brave Wallet onboarding legacy import text">
       Import from legacy Brave crypto wallets?
     </message>
     <message name="IDS_RESTORE" desc="Brave Wallet restore text">
@@ -2067,6 +2067,9 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_CONTINUE_WITH_NETWORKS" desc="Continue with selected networks">
       Continue with <ph name="NUMBER">%1$s</ph> networks
+    </message>
+    <message name="IDS_RECOVERY_PHRASE_WORD_HINT" desc="Recovery phrase word hint on empty items">
+      Word #<ph name="NUMBER">%1$s</ph>
     </message>
     <message name="IDS_CREATE_PASSWORD" desc="Brave Wallet password creation description">
       Create a password

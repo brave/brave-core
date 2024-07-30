@@ -494,7 +494,6 @@ brave_java_resources = [
   "java/res/drawable/ic_closing_all_closes_brave.xml",
   "java/res/drawable/ic_coinbase.xml",
   "java/res/drawable/ic_connect_account.xml",
-  "java/res/drawable/ic_copy.xml",
   "java/res/drawable/ic_crypto_wallets.xml",
   "java/res/drawable/ic_custom_tabs.xml",
   "java/res/drawable/ic_disabled.xml",
