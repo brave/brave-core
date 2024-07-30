@@ -28,8 +28,6 @@ class PrefService;
 class LocationBarModel;
 
 // A simple version of the location bar for secondary web view.
-// This location bar only shows host of the current page.
-//  e.g. http://foo.bar.com/1234 => foo.bar.com
 // When the scheme is not https, the location bar will show an icon to indicate
 // the site might not be safe.
 class SplitViewLocationBar : public views::WidgetDelegateView,
