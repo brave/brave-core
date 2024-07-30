@@ -645,7 +645,6 @@ export const PortfolioOverview = () => {
             networks={visiblePortfolioNetworks}
             accounts={usersFilteredAccounts}
             onShowPortfolioSettings={() => setShowPortfolioSettings(true)}
-            tokenBalancesRegistry={tokenBalancesRegistry}
           />
         </Route>
 

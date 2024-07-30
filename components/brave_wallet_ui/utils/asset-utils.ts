@@ -5,12 +5,16 @@
 
 // Types
 import { BraveWallet } from '../constants/types'
+import {
+  TokenBalancesRegistry //
+} from '../common/slices/entities/token-balance.entity'
 
 // utils
 import Amount from './amount'
 import { getRampNetworkPrefix } from './string-utils'
 import { getNetworkLogo, makeNativeAssetLogo } from '../options/asset-options'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
+import { getBalance } from './balance-utils'
 
 export const getUniqueAssets = (assets: BraveWallet.BlockchainToken[]) => {
   return assets.filter((asset, index) => {
@@ -310,4 +314,74 @@ export const getHiddenOrDeletedTokenIdsList = () => {
 
 export const isTokenIdRemoved = (tokenId: string, removedIds: string[]) => {
   return removedIds.includes(tokenId)
+}
+
+export function getTokensWithBalanceForAccounts(
+  tokens: BraveWallet.BlockchainToken[],
+  filteredAccounts: BraveWallet.AccountInfo[],
+  allAccounts: BraveWallet.AccountInfo[],
+  tokenBalancesRegistry: TokenBalancesRegistry | null | undefined,
+  spamTokenBalancesRegistry: TokenBalancesRegistry | null | undefined,
+  hideUnowned?: boolean
+) {
+  if (hideUnowned) {
+    return tokens.filter((token) => {
+      return filteredAccounts.some((account) => {
+        const balance = getBalance(
+          account.accountId,
+          token,
+          tokenBalancesRegistry
+        )
+        const spamBalance = getBalance(
+          account.accountId,
+          token,
+          spamTokenBalancesRegistry
+        )
+        return (
+          (balance && balance !== '0') || (spamBalance && spamBalance !== '0')
+        )
+      })
+    })
+  }
+
+  // skip balance checks if all accounts are selected
+  if (filteredAccounts.length === allAccounts.length) {
+    return tokens
+  }
+
+  return tokens.filter((token) => {
+    return (
+      filteredAccounts.some((account) => {
+        const balance = getBalance(
+          account.accountId,
+          token,
+          tokenBalancesRegistry
+        )
+        const spamBalance = getBalance(
+          account.accountId,
+          token,
+          spamTokenBalancesRegistry
+        )
+        return (
+          (balance && balance !== '0') || (spamBalance && spamBalance !== '0')
+        )
+      }) ||
+      // not owned by any account
+      !allAccounts.some((account) => {
+        const balance = getBalance(
+          account.accountId,
+          token,
+          tokenBalancesRegistry
+        )
+        const spamBalance = getBalance(
+          account.accountId,
+          token,
+          spamTokenBalancesRegistry
+        )
+        return (
+          (balance && balance !== '0') || (spamBalance && spamBalance !== '0')
+        )
+      })
+    )
+  })
 }
