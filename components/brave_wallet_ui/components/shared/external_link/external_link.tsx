@@ -20,10 +20,13 @@ interface Props {
 }
 
 export const ExternalLink = (props: Props) => {
-  const { text, href } = props
+  const { text, href, width } = props
 
   return (
-    <LinkButton onClick={() => openTab(href)}>
+    <LinkButton
+      width={width}
+      onClick={() => openTab(href)}
+    >
       {text}
       <div slot='icon-after'>
         <Icon name='launch' />

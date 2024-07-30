@@ -187,7 +187,7 @@ export function AllowAddChangeNetworkPanel(props: Props) {
           <PanelTab
             isSelected={selectedTab === 'details'}
             onSubmit={onSelectTab('details')}
-            text={getLocale('braveWalletAllowAddNetworkDetailsPanelTitle')}
+            text={getLocale('braveWalletDetails')}
           />
         </TabRow>
         <MessageBox>

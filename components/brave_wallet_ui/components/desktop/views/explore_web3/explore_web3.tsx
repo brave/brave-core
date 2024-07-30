@@ -10,12 +10,8 @@ import ProgressRing from '@brave/leo/react/progressRing'
 // Types
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
-// Constants & Options
-import { ExploreNavOptions } from '../../../../options/nav-options'
-
 // Utils
 import { getLocale } from '../../../../../common/locale'
-import { makeDappDetailsRoute } from '../../../../utils/routes-utils'
 import {
   useLocalStorage, //
   useSyncedLocalStorage
@@ -38,21 +34,17 @@ import { useQuery } from '../../../../common/hooks/use-query'
 
 // Components
 import {
-  SegmentedControl //
-} from '../../../shared/segmented_control/segmented_control'
-import {
   HeaderControlBar //
 } from '../../../header_control_bar/header_control_bar'
 import {
   Web3DappFilters //
 } from '../../popup-modals/filter-modals/web3_dapp_filters_modal'
 import { DappListItem } from './dapp_list_item'
-import { VirtualizedDappsList } from './virtualized_dapps_list'
 import { DappFilter } from './dapp_filter'
+import { DappDetails } from './web3_dapp_details'
 
 // Styles
 import { Column, Row, Text } from '../../../shared/style'
-import { ControlsRow } from '../portfolio/style'
 import { CategoryHeader, DappsGrid, PlainButton } from './explore_web3.style'
 
 export const ExploreWeb3View = () => {
@@ -64,6 +56,9 @@ export const ExploreWeb3View = () => {
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
   const [showFilters, setShowFilters] = React.useState<boolean>(false)
+  const [selectedDapp, setSelectedDapp] = React.useState<
+    BraveWallet.Dapp | undefined
+  >(undefined)
 
   // local storage
   const [filteredOutNetworkKeys, setFilteredOutNetworkKeys] =
@@ -171,13 +166,6 @@ export const ExploreWeb3View = () => {
     selectedCategory === null
 
   // methods
-  const onDappClick = React.useCallback(
-    (dappId: number) => {
-      history.push(makeDappDetailsRoute(dappId.toString()))
-    },
-    [history]
-  )
-
   const onSelectCategory = React.useCallback(
     (category: string) => {
       history.push({
@@ -240,13 +228,8 @@ export const ExploreWeb3View = () => {
         fullHeight
         fullWidth
         justifyContent='flex-start'
+        padding='10px 20px'
       >
-        <ControlsRow>
-          <SegmentedControl
-            navOptions={ExploreNavOptions}
-            width={384}
-          />
-        </ControlsRow>
         <HeaderControlBar
           actions={controls}
           onSearchValueChange={setSearchValue}
@@ -308,10 +291,15 @@ export const ExploreWeb3View = () => {
         {!isDappMapEmpty(visibleDappsMap) ||
         selectedCategoryDapps?.length === 0 ? (
           selectedCategory ? (
-            <VirtualizedDappsList
-              dappsList={selectedCategoryDapps || []}
-              onClickDapp={onDappClick}
-            />
+            <DappsGrid>
+              {(selectedCategoryDapps || []).map((dapp) => (
+                <DappListItem
+                  key={dapp.id}
+                  dapp={dapp}
+                  onClick={() => setSelectedDapp(dapp)}
+                />
+              ))}
+            </DappsGrid>
           ) : (
             <DappsGrid>
               {Array.from(visibleDappsMap).map(([category, dapps]) => (
@@ -326,7 +314,7 @@ export const ExploreWeb3View = () => {
                       <DappListItem
                         key={dapp.id}
                         dapp={dapp}
-                        onClick={() => onDappClick(dapp.id)}
+                        onClick={() => setSelectedDapp(dapp)}
                       />
                     ))}
                   </Column>
@@ -345,6 +333,16 @@ export const ExploreWeb3View = () => {
           </Row>
         )}
       </Column>
+
+      {selectedDapp ? (
+        <DappDetails
+          isOpen
+          dapp={selectedDapp}
+          onClose={() => {
+            setSelectedDapp(undefined)
+          }}
+        />
+      ) : null}
 
       {showFilters && (
         <Web3DappFilters

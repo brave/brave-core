@@ -19,18 +19,9 @@ import {
 // Constants
 import { WalletRoutes } from '../../../../constants/types'
 
-// Options
-import { ExploreNavOptions } from '../../../../options/nav-options'
-
-// Components
-import {
-  SegmentedControl //
-} from '../../../shared/segmented_control/segmented_control'
-
 // Styled Components
 import { LoadIcon, LoadIconWrapper, MarketDataIframe } from './style'
 import { Column } from '../../../shared/style'
-import { ControlsRow } from '../portfolio/style'
 
 // Utils
 import {
@@ -228,12 +219,6 @@ export const MarketView = () => {
           fullHeight
           fullWidth
         >
-          <ControlsRow>
-            <SegmentedControl
-              navOptions={ExploreNavOptions}
-              width={384}
-            />
-          </ControlsRow>
           <MarketDataIframe
             iframeHeight={iframeHeight}
             ref={marketDataIframeRef}

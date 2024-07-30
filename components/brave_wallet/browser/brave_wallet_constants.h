@@ -515,8 +515,6 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_CONNECT_HARDWARE_DEVICE_DESCRIPTION},
     {"braveWalletUnknownInternalError",
      IDS_BRAVE_WALLET_UNKNOWN_INTERNAL_ERROR},
-    {"braveWalletAccountSettingsDetails",
-     IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_DETAILS},
     {"braveWalletAccountSettingsWatchlist",
      IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_WATCHLIST},
     {"braveWalletAccountSettingsPrivateKey",
@@ -602,8 +600,6 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_SIGN_TRANSACTION_MESSAGE_TITLE},
     {"braveWalletSignTransactionEIP712MessageDomain",
      IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_DOMAIN},
-    {"braveWalletSignTransactionEIP712MessageTitle",
-     IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_TITLE},
     {"braveWalletSignTransactionEIP712MessageHideDetails",
      IDS_BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_HIDE_DETAILS},
     {"braveWalletSignTransactionButton",
@@ -665,8 +661,6 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_EXPLORER},
     {"braveWalletAllowAddNetworkNetworkPanelTitle",
      IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_PANEL_TITLE},
-    {"braveWalletAllowAddNetworkDetailsPanelTitle",
-     IDS_BRAVE_WALLET_ALLOW_ADD_DETAILS_PANEL_TITLE},
     {"braveWalletConfirmTransactionTotal",
      IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_TOTAL},
     {"braveWalletConfirmTransactionGasFee",
@@ -1463,7 +1457,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletVisitDapp", IDS_BRAVE_WALLET_VISIT_DAPP},
     {"braveWalletFilters", IDS_BRAVE_WALLET_FILTERS},
     {"braveWalletClearFilters", IDS_BRAVE_WALLET_CLEAR_FILTERS},
-    {"braveWalletShowMore", IDS_BRAVE_WALLET_SHOW_MORE}};
+    {"braveWalletShowMore", IDS_BRAVE_WALLET_SHOW_MORE},
+    {"braveWalletDetails", IDS_BRAVE_WALLET_DETAILS}};
 
 // 0x swap constants
 inline constexpr char kZeroExSepoliaBaseAPIURL[] =

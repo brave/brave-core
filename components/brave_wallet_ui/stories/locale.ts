@@ -473,7 +473,6 @@ provideStrings({
     'Select a blockchain to import your hardware wallet',
 
   // Account Settings Modal
-  braveWalletAccountSettingsDetails: 'Details',
   braveWalletAccountSettingsWatchlist: 'Visible assets',
   braveWalletAccountSettingsPrivateKey: 'Private key',
   braveWalletAccountSettingsSave: 'Save',
@@ -686,7 +685,6 @@ provideStrings({
     'and trust the requesting site.',
   braveWalletSignWarningTitle: 'Sign at your own risk',
   braveWalletSignTransactionMessageTitle: 'Message',
-  braveWalletSignTransactionEIP712MessageTitle: 'Details',
   braveWalletSignTransactionEIP712MessageHideDetails: 'Hide details',
   braveWalletSignTransactionEIP712MessageDomain: 'Domain',
   braveWalletSignTransactionButton: 'Sign',
@@ -760,7 +758,6 @@ provideStrings({
     'This will switch the network to a previously added network.',
   braveWalletAllowChangeNetworkButton: 'Switch network',
   braveWalletAllowAddNetworkNetworkPanelTitle: 'Network',
-  braveWalletAllowAddNetworkDetailsPanelTitle: 'Details',
 
   // Confirm Transaction Panel
   braveWalletConfirmTransactionTotal: 'Total',
@@ -1364,5 +1361,6 @@ provideStrings({
   braveWalletVisitDapp: 'Visit $1',
   braveWalletFilters: 'Filters',
   braveWalletClearFilters: 'Clear filters',
-  braveWalletShowMore: 'Show more'
+  braveWalletShowMore: 'Show more',
+  braveWalletDetails: 'Details'
 })

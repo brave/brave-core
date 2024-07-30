@@ -18,7 +18,7 @@ export const DappsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: ${leo.spacing['3Xl']};
-  height: 100%;
+  height: auto;
 
   @media screen and (max-width: ${layoutPanelWidth}px) {
     grid-template-columns: 1fr;
