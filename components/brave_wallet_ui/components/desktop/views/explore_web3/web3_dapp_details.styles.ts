@@ -39,7 +39,7 @@ export const DappMetricContainer = styled.div`
 `
 
 export const DappDetailDialog = styled(Dialog)`
-  --leo--dialog-backdrop-background: rgba(17, 18, 23, 0.35);
+  --leo-dialog-backdrop-background: rgba(17, 18, 23, 0.35);
   --leo-dialog-backdrop-filter: blur(8px);
   --leo-dialog-padding: ${leo.spacing['3Xl']};
 `
