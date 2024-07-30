@@ -47,6 +47,7 @@ class BraveNewsControllerFactory : public BrowserContextKeyedServiceFactory {
 
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
+  bool ServiceIsNULLWhileTesting() const override;
 };
 
 }  // namespace brave_news
