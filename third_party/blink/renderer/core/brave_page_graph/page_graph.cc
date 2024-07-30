@@ -334,10 +334,7 @@ PageGraph* PageGraph::From(LocalFrame& frame) {
 
 // static
 void PageGraph::ProvideTo(LocalFrame& frame) {
-  // Cache feature enabled status to not slow down LocalFrame creation.
-  static const bool is_enabled =
-      base::FeatureList::IsEnabled(brave_page_graph::features::kPageGraph);
-  if (!is_enabled) {
+  if (!base::FeatureList::IsEnabled(brave_page_graph::features::kPageGraph)) {
     return;
   }
   DCHECK(!PageGraph::From(frame));
