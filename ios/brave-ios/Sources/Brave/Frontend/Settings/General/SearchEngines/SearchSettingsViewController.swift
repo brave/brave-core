@@ -10,15 +10,15 @@ import os.log
 
 protocol SearchEnginePickerDelegate: AnyObject {
   func searchEnginePicker(
-    _ searchEnginePicker: SearchEnginePicker?,
+    _ searchEnginePicker: SearchEnginePickerViewController?,
     didSelectSearchEngine engine: OpenSearchEngine?,
     forType: DefaultEngineType?
   )
 }
 
-// MARK: - SearchSettingsTableViewController
+// MARK: - SearchSettingsViewController
 
-class SearchSettingsTableViewController: UITableViewController {
+class SearchSettingsViewController: UITableViewController {
 
   // MARK: UX
 
@@ -170,8 +170,8 @@ class SearchSettingsTableViewController: UITableViewController {
 
   // MARK: Internal
 
-  private func configureSearchEnginePicker(_ type: DefaultEngineType) -> SearchEnginePicker {
-    return SearchEnginePicker(type: type, showCancel: false).then {
+  private func configureSearchEnginePicker(_ type: DefaultEngineType) -> SearchEnginePickerViewController {
+    return SearchEnginePickerViewController(type: type, showCancel: false).then {
       // Order alphabetically, so that picker is always consistently ordered.
       // Every engine is a valid choice for the default engine, even the current default engine.
       $0.engines = searchPickerEngines(type: type)
@@ -363,7 +363,7 @@ class SearchSettingsTableViewController: UITableViewController {
 
 // MARK: - Edit Table Data
 
-extension SearchSettingsTableViewController {
+extension SearchSettingsViewController {
   override func tableView(
     _ tableView: UITableView,
     willSelectRowAt indexPath: IndexPath
@@ -393,7 +393,7 @@ extension SearchSettingsTableViewController {
     } else if indexPath.section == Section.customSearch.rawValue
       && indexPath.item == customSearchEngines.count
     {
-      let customEngineViewController = SearchCustomEngineViewController(
+      let customEngineViewController = CustomEngineViewController(
         profile: profile,
         privateBrowsingManager: privateBrowsingManager
       )
@@ -428,57 +428,111 @@ extension SearchSettingsTableViewController {
 
   override func tableView(
     _ tableView: UITableView,
-    commit editingStyle: UITableViewCell.EditingStyle,
-    forRowAt indexPath: IndexPath
-  ) {
-    if editingStyle == .delete {
-      guard let engine = customSearchEngines[safe: indexPath.row] else { return }
+    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+  ) -> UISwipeActionsConfiguration? {
+    guard let engine = customSearchEngines[safe: indexPath.row] else {
+      return nil
+    }
 
-      func deleteCustomEngine() async {
-        do {
-          try await searchEngines.deleteCustomEngine(engine)
-          tableView.deleteRows(at: [indexPath], with: .right)
-          tableView.reloadData()
-          updateTableEditModeVisibility()
-        } catch {
-          Logger.module.error("Search Engine Error while deleting")
-        }
+    let deleteAction = UIContextualAction(style: .destructive, title: Strings.delete) {
+      [weak self] action, view, completion in
+      guard let self = self else {
+        completion(false)
+        return
       }
 
-      if engine == searchEngines.defaultEngine(forType: .standard) {
-        let alert = UIAlertController(
-          title: String(
-            format: Strings.CustomSearchEngine.deleteEngineAlertTitle,
-            engine.displayName
-          ),
-          message: Strings.CustomSearchEngine.deleteEngineAlertDescription,
-          preferredStyle: .alert
-        )
-
-        alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel))
-
-        alert.addAction(
-          UIAlertAction(title: Strings.delete, style: .destructive) { [weak self] _ in
-            guard let self = self else { return }
-
-            if let engine = self.searchEngines.defaultEngine(forType: .privateMode) {
-              self.searchEngines.updateDefaultEngine(engine.shortName, forType: .standard)
-            }
-
-            Task {
-              await deleteCustomEngine()
-            }
-          }
-        )
-
-        UIImpactFeedbackGenerator(style: .medium).vibrate()
-        present(alert, animated: true, completion: nil)
-      } else {
-        Task {
-          await deleteCustomEngine()
-        }
+      self.deleteCustomSearchEngine(engine, using: tableView, at: indexPath) { status in
+        completion(status)
       }
     }
+
+    let editAction = UIContextualAction(style: .normal, title: Strings.edit) {
+      [weak self] action, view, completion in
+      guard let self = self else {
+        completion(false)
+        return
+      }
+
+      completion(true)
+
+      let customEngineViewController = CustomEngineViewController(
+        profile: self.profile,
+        privateBrowsingManager: self.privateBrowsingManager,
+        engineToBeEdited: engine
+      )
+
+      navigationController?.pushViewController(customEngineViewController, animated: true)
+    }
+
+    return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+  }
+
+  private func deleteCustomSearchEngine(
+    _ engine: OpenSearchEngine,
+    using: UITableView,
+    at indexPath: IndexPath,
+    completion: @escaping (Bool) -> Void
+  ) {
+    func deleteCustomEngine() async {
+      do {
+        try await searchEngines.deleteCustomEngine(engine)
+        tableView.deleteRows(at: [indexPath], with: .right)
+        tableView.reloadData()
+        updateTableEditModeVisibility()
+
+        completion(true)
+      } catch {
+        Logger.module.error("Search Engine Error while deleting")
+
+        completion(false)
+      }
+    }
+
+    if engine == searchEngines.defaultEngine(forType: .standard) {
+      let alert = UIAlertController(
+        title: String(
+          format: Strings.CustomSearchEngine.deleteEngineAlertTitle,
+          engine.displayName
+        ),
+        message: Strings.CustomSearchEngine.deleteEngineAlertDescription,
+        preferredStyle: .alert
+      )
+
+      alert.addAction(
+        UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel) { _ in
+          completion(false)
+        }
+      )
+
+      alert.addAction(
+        UIAlertAction(title: Strings.delete, style: .destructive) { [weak self] _ in
+          guard let self = self else { return }
+
+          if let engine = self.searchEngines.defaultEngine(forType: .privateMode) {
+            self.searchEngines.updateDefaultEngine(engine.shortName, forType: .standard)
+          }
+          Task {
+            await deleteCustomEngine()
+          }
+        }
+      )
+
+      UIImpactFeedbackGenerator(style: .medium).vibrate()
+      present(alert, animated: true, completion: nil)
+    } else {
+      Task {
+        await deleteCustomEngine()
+      }
+    }
+  }
+
+  private func editCustomSearchEngine(_ engine: OpenSearchEngine) {
+
+    let customEngineViewController = CustomEngineViewController(
+      profile: self.profile,
+      privateBrowsingManager: self.privateBrowsingManager
+    )
+    navigationController?.pushViewController(customEngineViewController, animated: true)
   }
 
   override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -498,7 +552,7 @@ extension SearchSettingsTableViewController {
 
 // MARK: - Actions
 
-extension SearchSettingsTableViewController {
+extension SearchSettingsViewController {
 
   @objc func didToggleSearchSuggestions(_ toggle: UISwitch) {
     // Setting the value in settings dismisses any opt-in.
@@ -524,10 +578,10 @@ extension SearchSettingsTableViewController {
 
 // MARK: SearchEnginePickerDelegate
 
-extension SearchSettingsTableViewController: SearchEnginePickerDelegate {
+extension SearchSettingsViewController: SearchEnginePickerDelegate {
 
   func searchEnginePicker(
-    _ searchEnginePicker: SearchEnginePicker?,
+    _ searchEnginePicker: SearchEnginePickerViewController?,
     didSelectSearchEngine searchEngine: OpenSearchEngine?,
     forType: DefaultEngineType?
   ) {

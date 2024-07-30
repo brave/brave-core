@@ -395,7 +395,7 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.searchEngines,
           selection: { [unowned self] in
-            let viewController = SearchSettingsTableViewController(
+            let viewController = SearchSettingsViewController(
               profile: self.profile,
               privateBrowsingManager: tabManager.privateBrowsingManager
             )

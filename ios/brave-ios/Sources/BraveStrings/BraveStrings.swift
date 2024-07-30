@@ -1571,7 +1571,7 @@ extension Strings {
     )
 }
 
-// MARK: -  SearchSettingsTableViewController
+// MARK: -  SearchSettingsViewController
 
 extension Strings {
   public static let searchSettingNavTitle = NSLocalizedString(
@@ -1621,7 +1621,7 @@ extension Strings {
     )
 }
 
-// MARK: - SearchCustomEngineViewController
+// MARK: - CustomEngineViewController
 
 extension Strings {
   public struct CustomSearchEngine {
@@ -1648,14 +1648,6 @@ extension Strings {
       bundle: .module,
       value: "Auto Add",
       comment: "Button title for Auto Add in header"
-    )
-
-    public static let customEngineAddButtonTitle = NSLocalizedString(
-      "customSearchEngine.addButtonTitle",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Add",
-      comment: "Button title for Adding Engine in navigation Bar"
     )
 
     public static let thirdPartySearchEngineAddErrorTitle = NSLocalizedString(

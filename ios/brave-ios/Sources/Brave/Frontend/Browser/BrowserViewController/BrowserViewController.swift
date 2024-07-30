@@ -1439,7 +1439,7 @@ public class BrowserViewController: UIViewController {
         if let presentedNavigationController = presentedViewController
           as? ModalSettingsNavigationController,
           let presentedRootController = presentedNavigationController.viewControllers.first,
-          presentedRootController is SearchSettingsTableViewController
+          presentedRootController is SearchSettingsViewController
         {
           searchEngineSettingsDismissed = true
         }
@@ -2967,7 +2967,7 @@ extension BrowserViewController: SearchViewControllerDelegate {
   }
 
   func presentSearchSettingsController() {
-    let settingsNavigationController = SearchSettingsTableViewController(
+    let settingsNavigationController = SearchSettingsViewController(
       profile: profile,
       privateBrowsingManager: privateBrowsingManager
     )

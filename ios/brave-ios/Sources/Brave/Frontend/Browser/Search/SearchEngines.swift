@@ -250,6 +250,29 @@ public class SearchEngines {
     }
   }
 
+  /// Edits an engine which was already in the list
+  func editSearchEngine(_ engine: OpenSearchEngine, with newEngine: OpenSearchEngine) async throws {
+    guard
+      let customEngineIndex = customEngines.firstIndex(where: {
+        $0.shortName.lowercased() == engine.shortName.lowercased()
+      }),
+      let orderedEngineIndex = orderedEngines.firstIndex(where: {
+        $0.shortName.lowercased() == engine.shortName.lowercased()
+      })
+    else {
+      return
+    }
+
+    customEngines[customEngineIndex] = newEngine
+    orderedEngines[orderedEngineIndex] = newEngine
+
+    do {
+      try await saveCustomEngines()
+    } catch {
+      throw SearchEngineError.failedToSave
+    }
+  }
+
   func queryForSearchURL(_ url: URL?, forType engineType: DefaultEngineType) -> String? {
     return defaultEngine(forType: engineType)?.queryForSearchURL(url)
   }

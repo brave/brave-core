@@ -5,7 +5,7 @@
 import Shared
 import UIKit
 
-class SearchEnginePicker: UITableViewController {
+class SearchEnginePickerViewController: UITableViewController {
   weak var delegate: SearchEnginePickerDelegate?
   var engines: [OpenSearchEngine]!
   var selectedSearchEngineName: String?
