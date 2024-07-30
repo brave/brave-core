@@ -16,9 +16,6 @@ from urllib.request import urlopen
 
 import components.path_util as path_util
 
-with path_util.SysPath(path_util.GetBraveScriptDir(), 0):
-  from lib.util import extract_zip
-
 
 def IsSha1Hash(s: str) -> bool:
   return re.match(r'[a-f0-9]{40}', s) is not None
@@ -125,4 +122,6 @@ def DownloadFile(url: str, output: str):
 def DownloadArchiveAndUnpack(output_directory: str, url: str):
   _, f = tempfile.mkstemp(dir=output_directory)
   DownloadFile(url, f)
+  with path_util.SysPath(path_util.GetBraveScriptDir(), 0):
+    from lib.util import extract_zip  # pylint: disable=import-outside-toplevel
   extract_zip(f, output_directory)

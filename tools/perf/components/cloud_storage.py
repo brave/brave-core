@@ -15,7 +15,8 @@ _CLOUD_HTTPS_URL = 'https://perf-data.s3.brave.com'
 
 
 class CloudFolder(str, Enum):
-  PROFILES = 'perf-profiles'
+  TEST_PROFILES = 'perf-profiles'
+  CATAPULT_PERF_DATA = 'telemetry-perf-data'
 
 
 def DownloadFileFromCloudStorage(folder: CloudFolder, sha1: str, output: str):
