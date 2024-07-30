@@ -817,8 +817,9 @@ void TorControl::ReadDone(int rv) {
         // CRLF seen, so we must have i >= 2.  Emit a line and advance
         // to the next one, unless anything went wrong with the line.
         assert(i >= 1);
-        std::string line(readiobuf_->StartOfBuffer() + read_start_,
-                         readiobuf_->offset() + i - 1 - read_start_);
+        std::string_view line =
+            base::as_string_view(readiobuf_->everything().subspan(
+                read_start_, readiobuf_->offset() + i - 1 - read_start_));
         read_start_ = readiobuf_->offset() + i + 1;
         read_cr_ = false;
         if (!ReadLine(line)) {
@@ -845,10 +846,9 @@ void TorControl::ReadDone(int rv) {
       Error();
       return;
     }
-    memmove(readiobuf_->StartOfBuffer(),
-            readiobuf_->StartOfBuffer() + read_start_,
-            readiobuf_->offset() - read_start_ + rv);
-    readiobuf_->set_offset(readiobuf_->offset() - read_start_ + rv);
+    readiobuf_->everything().copy_prefix_from(readiobuf_->everything().subspan(
+        read_start_, readiobuf_->offset() + rv - read_start_));
+    readiobuf_->set_offset(readiobuf_->offset() + rv - read_start_);
     read_start_ = 0;
   } else {
     // Otherwise, just advance the offset by the size of this input.
@@ -874,7 +874,7 @@ void TorControl::ReadDone(int rv) {
 //      We have read a line of input; process it.  Return true on
 //      success, false on error.
 //
-bool TorControl::ReadLine(const std::string& line) {
+bool TorControl::ReadLine(std::string_view line) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
 
   if (line.size() < 4) {
@@ -889,9 +889,9 @@ bool TorControl::ReadLine(const std::string& line) {
   // intermediate reply and ` ' for a final reply.
   //
   // TODO(riastradh): parse or check syntax of status
-  std::string status(line, 0, 3);
+  std::string status(line.substr(0, 3));
   char pos = line[3];
-  std::string reply(line, 4);
+  std::string reply(line.substr(4));
 
   // Determine whether it is an asynchronous reply, status 6yz.
   if (status[0] == '6') {
