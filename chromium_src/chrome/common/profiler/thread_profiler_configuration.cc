@@ -13,6 +13,6 @@
 #undef IsProfilerEnabledForCurrentProcessAndThread
 
 bool ThreadProfilerConfiguration::IsProfilerEnabledForCurrentProcessAndThread(
-    metrics::CallStackProfileParams::Thread thread) const {
+    base::ProfilerThreadType thread) const {
   return false;
 }
