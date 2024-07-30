@@ -81,8 +81,16 @@ const HeaderContainer = styled.div`
   border-bottom: 1px solid ${color.divider.subtle};
   background-color: ${color.container.background};
   height: 100%;
-  padding: 0 ${spacing.xl};
+  width: 100vw;
+  box-sizing: border-box;
   gap: ${spacing.l};
+
+  & > :first-child {
+    margin-left: ${spacing.xl};
+  }
+  & > :last-child {
+    margin-right: ${spacing.xl};
+  }
 `
 
 const StyledPlaylistInfo = styled(PlaylistInfo)`
@@ -106,6 +114,7 @@ const StyledSeparator = styled.div`
 
 const StyledInput = styled.input`
   flex-grow: 1;
+  min-width: 0px;
   color: ${color.text.primary};
   font: ${font.heading.h4};
   border: none;
