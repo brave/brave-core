@@ -100,6 +100,7 @@ void BraveShieldsTabHelper::ClearAllResourcesList() {
   resource_list_blocked_js_.clear();
   resource_list_blocked_fingerprints_.clear();
   resource_list_allowed_once_js_.clear();
+  webcompat_features_invoked_.clear();
 
   for (Observer& obs : observer_list_) {
     obs.OnResourcesChanged();
