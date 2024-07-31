@@ -16,6 +16,9 @@
 #include "brave/ios/browser/favicon/brave_ios_favicon_loader_factory.h"
 #include "brave/ios/browser/skus/skus_service_factory.h"
 #include "brave/ios/browser/url_sanitizer/url_sanitizer_service_factory+private.h"
+
+// FIXME: Replace all of these with the official Chrome factoriess in
+// brave/chromium_src/ios/chrome/browser/browser_state/browser_state_keyed_service_factories.mm
 #import "ios/web_view/internal/autofill/web_view_autofill_log_router_factory.h"
 #import "ios/web_view/internal/autofill/web_view_personal_data_manager_factory.h"
 #import "ios/web_view/internal/language/web_view_accept_languages_service_factory.h"

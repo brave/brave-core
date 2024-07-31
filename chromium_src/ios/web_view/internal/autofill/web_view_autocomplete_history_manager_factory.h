@@ -13,4 +13,4 @@ typedef autofill::AutocompleteHistoryManagerFactory
     WebViewAutocompleteHistoryManagerFactory;
 }
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_AUTOFILL_WEB_VIEW_AUTOCOMPLETE_HISTORY_MANAGER_FACTORY_H_

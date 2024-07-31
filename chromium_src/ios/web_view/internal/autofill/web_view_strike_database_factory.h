@@ -12,4 +12,4 @@ namespace ios_web_view {
 typedef autofill::StrikeDatabaseFactory WebViewStrikeDatabaseFactory;
 }
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_AUTOFILL_WEB_VIEW_STRIKE_DATABASE_FACTORY_H_

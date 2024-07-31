@@ -3,7 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# This file exposes the //ios/web_view embedder as a regular source_set
+# This file exposes the //ios/web_view embedder as a regular source_set as well
+# as any additions found in //brave/ios/web_view/public
 
 ios_web_view_public_headers = [
   "//brave/ios/web_view/public/cwv_web_view_extras.h",

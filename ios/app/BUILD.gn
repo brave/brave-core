@@ -97,6 +97,7 @@ source_set("app") {
     "//ios/public/provider/chrome/browser/ui_utils:ui_utils_api",
     "//ios/web/public/init",
     "//ios/web/public/webui",
+    "//ios/web_view:web_view_sources",
 
     # Use the provider API controlled by args.gn.
     ios_provider_target,

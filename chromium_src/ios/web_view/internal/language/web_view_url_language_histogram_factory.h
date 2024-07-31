@@ -12,4 +12,4 @@ namespace ios_web_view {
 typedef UrlLanguageHistogramFactory WebViewUrlLanguageHistogramFactory;
 }
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_LANGUAGE_WEB_VIEW_URL_LANGUAGE_HISTOGRAM_FACTORY_H_

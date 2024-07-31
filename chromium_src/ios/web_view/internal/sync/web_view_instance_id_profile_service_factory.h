@@ -13,4 +13,4 @@ typedef IOSChromeInstanceIDProfileServiceFactory
     WebViewInstanceIDProfileServiceFactory;
 }
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_SYNC_WEB_VIEW_INSTANCE_ID_PROFILE_SERVICE_FACTORY_H_

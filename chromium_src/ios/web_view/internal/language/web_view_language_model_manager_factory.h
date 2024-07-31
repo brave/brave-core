@@ -12,4 +12,4 @@ namespace ios_web_view {
 typedef LanguageModelManagerFactory WebViewLanguageModelManagerFactory;
 }
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_LANGUAGE_WEB_VIEW_LANGUAGE_MODEL_MANAGER_FACTORY_H_

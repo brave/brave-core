@@ -12,4 +12,4 @@ namespace ios_web_view {
 typedef IOSChromeAccountPasswordStoreFactory WebViewAccountPasswordStoreFactory;
 }
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_PASSWORDS_WEB_VIEW_ACCOUNT_PASSWORD_STORE_FACTORY_H_

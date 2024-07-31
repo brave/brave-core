@@ -13,4 +13,4 @@ typedef IOSPasswordRequirementsServiceFactory
     WebViewPasswordRequirementsServiceFactory;
 }
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_PASSWORDS_WEB_VIEW_PASSWORD_REQUIREMENTS_SERVICE_FACTORY_H_

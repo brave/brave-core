@@ -12,4 +12,4 @@ namespace ios_web_view {
 typedef IOSChromePasswordReuseManagerFactory WebViewPasswordReuseManagerFactory;
 }
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_PASSWORDS_WEB_VIEW_PASSWORD_REUSE_MANAGER_FACTORY_H_

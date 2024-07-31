@@ -12,4 +12,4 @@ namespace autofill {
 typedef AutofillLogRouterFactory WebViewAutofillLogRouterFactory;
 }
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_AUTOFILL_WEB_VIEW_AUTOFILL_LOG_ROUTER_FACTORY_H_

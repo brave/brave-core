@@ -12,4 +12,4 @@ namespace ios_web_view {
 typedef IdentityManagerFactory WebViewIdentityManagerFactory;
 }
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_SIGNIN_WEB_VIEW_IDENTITY_MANAGER_FACTORY_H_

@@ -12,4 +12,4 @@ namespace ios_web_view {
 typedef DeviceInfoSyncServiceFactory WebViewDeviceInfoSyncServiceFactory;
 }
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_SYNC_WEB_VIEW_DEVICE_INFO_SYNC_SERVICE_FACTORY_H_

@@ -12,4 +12,4 @@ namespace ios_web_view {
 typedef autofill::PersonalDataManagerFactory WebViewPersonalDataManagerFactory;
 }
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_AUTOFILL_WEB_VIEW_PERSONAL_DATA_MANAGER_FACTORY_H_

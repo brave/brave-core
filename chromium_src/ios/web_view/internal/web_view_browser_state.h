@@ -21,4 +21,4 @@ class WebViewBrowserState : public ChromeBrowserState {
 
 }  // namespace ios_web_view
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_WEB_VIEW_BROWSER_STATE_H_

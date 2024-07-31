@@ -13,4 +13,4 @@ typedef ios::PasswordManagerLogRouterFactory
     WebViewPasswordManagerLogRouterFactory;
 }
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_PASSWORDS_WEB_VIEW_PASSWORD_MANAGER_LOG_ROUTER_FACTORY_H_

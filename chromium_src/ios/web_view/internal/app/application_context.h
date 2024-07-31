@@ -26,10 +26,8 @@ class URLRequestContextGetter;
 }  // namespace net
 
 namespace network {
-class NetworkChangeManager;
 class NetworkConnectionTracker;
 class SharedURLLoaderFactory;
-class WeakWrapperSharedURLLoaderFactory;
 namespace mojom {
 class NetworkContext;
 }
@@ -43,8 +41,6 @@ class PrefService;
 class SafeBrowsingService;
 
 namespace ios_web_view {
-
-class WebViewIOThread;
 
 // Exposes application global state objects.
 class ApplicationContext {
@@ -109,4 +105,4 @@ class ApplicationContext {
 
 }  // namespace ios_web_view
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_APP_APPLICATION_CONTEXT_H_

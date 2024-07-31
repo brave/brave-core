@@ -12,4 +12,4 @@ namespace ios_web_view {
 typedef IOSChromeBulkLeakCheckServiceFactory WebViewBulkLeakCheckServiceFactory;
 }
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_PASSWORDS_WEB_VIEW_BULK_LEAK_CHECK_SERVICE_FACTORY_H_

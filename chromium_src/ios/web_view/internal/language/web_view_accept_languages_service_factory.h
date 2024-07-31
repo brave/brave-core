@@ -12,4 +12,4 @@ namespace ios_web_view {
 typedef AcceptLanguagesServiceFactory WebViewAcceptLanguagesServiceFactory;
 }
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_LANGUAGE_WEB_VIEW_ACCEPT_LANGUAGES_SERVICE_FACTORY_H_

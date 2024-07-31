@@ -12,4 +12,4 @@ namespace ios_web_view {
 typedef SigninClientFactory WebViewSigninClientFactory;
 }
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_SIGNIN_WEB_VIEW_SIGNIN_CLIENT_FACTORY_H_

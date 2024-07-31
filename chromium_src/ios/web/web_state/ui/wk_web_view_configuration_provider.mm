@@ -36,3 +36,5 @@ void ResetWithWebViewConfiguration(WKWebViewConfiguration* configuration) {
 }  // namespace brave
 
 #include "src/ios/web/web_state/ui/wk_web_view_configuration_provider.mm"
+
+#undef BRAVE_RESET_WITH_WEB_VIEW_CONFIGURATION

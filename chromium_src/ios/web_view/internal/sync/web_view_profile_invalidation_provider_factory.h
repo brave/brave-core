@@ -13,4 +13,4 @@ typedef IOSChromeProfileInvalidationProviderFactory
     WebViewProfileInvalidationProviderFactory;
 }
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_SYNC_WEB_VIEW_PROFILE_INVALIDATION_PROVIDER_FACTORY_H_
