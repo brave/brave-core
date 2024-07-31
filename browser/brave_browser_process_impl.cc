@@ -97,6 +97,10 @@
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #endif
 
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
+#include "brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
+#endif
+
 using brave_component_updater::BraveComponent;
 using ntp_background_images::NTPBackgroundImagesService;
 
@@ -162,6 +166,11 @@ void BraveBrowserProcessImpl::Init() {
       tor::prefs::kTorDisabled,
       base::BindRepeating(&BraveBrowserProcessImpl::OnTorEnabledChanged,
                           base::Unretained(this)));
+#endif
+
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
+  day_zero_browser_ui_expt_manager_ =
+      DayZeroBrowserUIExptManager::Create(profile_manager());
 #endif
 
   InitSystemRequestHandlerCallback();

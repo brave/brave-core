@@ -44,6 +44,10 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
+#include "brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
+#endif
+
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/tor_profile_service.h"
 #endif
@@ -155,6 +159,10 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) || BUILDFLAG(ENABLE_AI_CHAT)
   skus::RegisterLocalStatePrefs(registry);
+#endif
+
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
+  DayZeroBrowserUIExptManager::RegisterLocalStatePrefs(registry);
 #endif
 
   registry->RegisterStringPref(::prefs::kBraveVpnDnsConfig, std::string());

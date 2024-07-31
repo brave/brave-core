@@ -10,11 +10,11 @@
 
 class BraveBrowserMainParts : public ChromeBrowserMainParts {
  public:
-  using ChromeBrowserMainParts::ChromeBrowserMainParts;
+  BraveBrowserMainParts(bool is_integration_test, StartupData* startup_data);
 
   BraveBrowserMainParts(const BraveBrowserMainParts&) = delete;
   BraveBrowserMainParts& operator=(const BraveBrowserMainParts&) = delete;
-  ~BraveBrowserMainParts() override = default;
+  ~BraveBrowserMainParts() override;
 
   int PreMainMessageLoopRun() override;
   void PreBrowserStart() override;

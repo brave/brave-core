@@ -69,6 +69,12 @@
 #include "extensions/browser/extension_system.h"
 #endif
 
+BraveBrowserMainParts::BraveBrowserMainParts(bool is_integration_test,
+                                             StartupData* startup_data)
+    : ChromeBrowserMainParts(is_integration_test, startup_data) {}
+
+BraveBrowserMainParts::~BraveBrowserMainParts() = default;
+
 int BraveBrowserMainParts::PreMainMessageLoopRun() {
   brave_component_updater::BraveOnDemandUpdater::GetInstance()
       ->RegisterOnDemandUpdater(
@@ -87,6 +93,7 @@ void BraveBrowserMainParts::PreBrowserStart() {
   DCHECK(sessions::ContentSerializedNavigationDriver::GetInstance());
   speedreader::SpeedreaderExtendedInfoHandler::Register();
 #endif
+
   ChromeBrowserMainParts::PreBrowserStart();
 }
 

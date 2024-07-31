@@ -5,16 +5,15 @@
 
 package org.chromium.chrome.browser.settings;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.PreferenceCategory;
 
-import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -22,11 +21,9 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 
-/**
- * Fragment to keep track of all the display related preferences.
- */
-public class BackgroundImagesPreferences
-        extends BravePreferenceFragment implements OnPreferenceChangeListener {
+/** Fragment to keep track of all the display related preferences. */
+public class BackgroundImagesPreferences extends BravePreferenceFragment
+        implements OnPreferenceChangeListener {
     // deprecated preferences from browser-android-tabs
     public static final String PREF_SHOW_BACKGROUND_IMAGES = "show_background_images";
     public static final String PREF_SHOW_SPONSORED_IMAGES = "show_sponsored_images";
@@ -79,51 +76,37 @@ public class BackgroundImagesPreferences
         mShowTopSitesPref = (ChromeSwitchPreference) findPreference(PREF_SHOW_TOP_SITES);
         if (mShowTopSitesPref != null) {
             mShowTopSitesPref.setEnabled(true);
-            mShowTopSitesPref.setChecked(
-                    ContextUtils.getAppSharedPreferences().getBoolean(PREF_SHOW_TOP_SITES, true));
+            mShowTopSitesPref.setChecked(NtpUtil.shouldDisplayTopSites());
             mShowTopSitesPref.setOnPreferenceChangeListener(this);
         }
         mShowBraveStatsPref = (ChromeSwitchPreference) findPreference(PREF_SHOW_BRAVE_STATS);
         if (mShowBraveStatsPref != null) {
             mShowBraveStatsPref.setEnabled(true);
-            mShowBraveStatsPref.setChecked(
-                    ContextUtils.getAppSharedPreferences().getBoolean(PREF_SHOW_BRAVE_STATS, true));
+            mShowBraveStatsPref.setChecked(NtpUtil.shouldDisplayBraveStats());
             mShowBraveStatsPref.setOnPreferenceChangeListener(this);
         }
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (PREF_SHOW_BACKGROUND_IMAGES.equals(preference.getKey())
-                && mShowSponsoredImagesPref != null) {
-            mShowSponsoredImagesPref.setEnabled((boolean) newValue);
-        }
-        setOnPreferenceValue(preference.getKey(), (boolean)newValue);
-        BraveRelaunchUtils.askForRelaunch(getActivity());
-        return true;
-    }
-
-    public static void setOnPreferenceValue(String preferenceName, boolean newValue) {
-        if (PREF_SHOW_BACKGROUND_IMAGES.equals(preferenceName)) {
+        String key = preference.getKey();
+        if (PREF_SHOW_BACKGROUND_IMAGES.equals(key)) {
+            if (mShowSponsoredImagesPref != null) {
+                mShowSponsoredImagesPref.setEnabled((boolean) newValue);
+            }
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                    .setBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE, newValue);
-        } else if (PREF_SHOW_SPONSORED_IMAGES.equals(preferenceName)) {
+                    .setBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE, (boolean) newValue);
+        } else if (PREF_SHOW_SPONSORED_IMAGES.equals(key)) {
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(
                             BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE,
                             (boolean) newValue);
-        } else {
-            SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-            SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-            sharedPreferencesEditor.putBoolean(preferenceName, newValue);
-            sharedPreferencesEditor.apply();
+        } else if (PREF_SHOW_TOP_SITES.equals(key)) {
+            NtpUtil.setDisplayTopSites((boolean) newValue);
+        } else if (PREF_SHOW_BRAVE_STATS.equals(key)) {
+            NtpUtil.setDisplayBraveStats((boolean) newValue);
         }
-    }
-
-    public static void setOnPreferenceValue(String preferenceName, int newValue) {
-        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putInt(preferenceName, newValue);
-        sharedPreferencesEditor.apply();
+        BraveRelaunchUtils.askForRelaunch(getActivity());
+        return true;
     }
 }

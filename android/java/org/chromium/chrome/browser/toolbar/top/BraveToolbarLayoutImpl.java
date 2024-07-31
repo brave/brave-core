@@ -74,6 +74,7 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
+import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.SearchActivity;
@@ -89,7 +90,6 @@ import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettin
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
 import org.chromium.chrome.browser.rewards.onboarding.RewardsOnboarding;
-import org.chromium.chrome.browser.settings.AppearancePreferences;
 import org.chromium.chrome.browser.shields.BraveShieldsHandler;
 import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.shields.BraveShieldsUtils;
@@ -360,11 +360,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 customActionButtons.setLayoutParams(actionButtonsLayout);
             }
         }
-        updateShieldsLayoutBackground(
-                isIncognito()
-                        || !ChromeSharedPreferences.getInstance()
-                                .readBoolean(
-                                        AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true));
+        updateShieldsLayoutBackground(isIncognito() || !NtpUtil.shouldShowRewardsIcon());
     }
 
     @Override
@@ -417,8 +413,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mBraveRewardsNativeWorker != null
                 && mBraveRewardsNativeWorker.isSupported()
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
-                && ChromeSharedPreferences.getInstance()
-                        .readBoolean(AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true)
+                && NtpUtil.shouldShowRewardsIcon()
                 && mRewardsLayout != null) {
             mRewardsLayout.setVisibility(View.VISIBLE);
         }
@@ -1326,11 +1321,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     /**
-     * If |tab| is null, set disabled image to shields button and |urlString| is
-     * ignored.
-     * If |urlString| is null, url is fetched from |tab|.
+     * If |tab| is null, set disabled image to shields button and |urlString| is ignored. If
+     * |urlString| is null, url is fetched from |tab|.
      */
-    private void updateBraveShieldsButtonState(Tab tab) {
+    public void updateBraveShieldsButtonState(Tab tab) {
         if (mBraveShieldsButton == null) {
             assert false;
             return;
@@ -1351,8 +1345,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 && mBraveRewardsNativeWorker != null
                 && mBraveRewardsNativeWorker.isSupported()
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
-                && ChromeSharedPreferences.getInstance()
-                        .readBoolean(AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true)) {
+                && NtpUtil.shouldShowRewardsIcon()) {
             mRewardsLayout.setVisibility(View.VISIBLE);
             updateShieldsLayoutBackground(false);
         }
