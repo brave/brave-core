@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/browser/ui/brave_browser.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -57,6 +58,12 @@ class Toolbar : public views::WebView {
 ReaderModeToolbarView::ReaderModeToolbarView(Browser* browser) {
   SetVisible(false);
   SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
+
+  if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser)) {
+    SetBorder(views::CreateThemedSolidSidedBorder(
+        gfx::Insets::TLBR(0, 0, 1, 0), kColorToolbarContentAreaSeparator));
+  }
+
   toolbar_ = std::make_unique<Toolbar>(this, browser->profile());
   AddChildView(toolbar_.get());
 }

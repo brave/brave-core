@@ -348,8 +348,6 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     contents_container_->AddChildView(
         secondary_reader_mode_toolbar_view_.get());
 
-    contents_layout_manager->set_contents_reader_mode_toolbar(
-        reader_mode_toolbar_view_.get());
     contents_layout_manager->set_secondary_contents_reader_mode_toolbar(
         secondary_reader_mode_toolbar_view_.get());
     secondary_reader_mode_toolbar_view_->AddObserver(this);
