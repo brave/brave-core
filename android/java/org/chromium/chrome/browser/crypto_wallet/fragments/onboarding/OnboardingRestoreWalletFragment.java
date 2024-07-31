@@ -216,7 +216,8 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
 
     @NonNull
     private PasteEditText generatePasteEditText(final boolean lastItem, final int position) {
-        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(requireContext(), R.style.BraveWalletEditTextTheme);
+        ContextThemeWrapper contextThemeWrapper =
+                new ContextThemeWrapper(requireContext(), R.style.BraveWalletEditTextTheme);
         PasteEditText pasteEditText = new PasteEditText(contextThemeWrapper);
         pasteEditText.setListener(this);
         pasteEditText.setInputType(InputType.TYPE_CLASS_TEXT);
