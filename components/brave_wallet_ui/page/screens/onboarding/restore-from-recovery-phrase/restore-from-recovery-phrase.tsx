@@ -166,6 +166,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
     }).unwrap()
 
     setHasInvalidSeedError(invalidMnemonic)
+    setCurrentStep('phrase')
 
     if (!invalidMnemonic) {
       await setAutoLockMinutes(autoLockDuration)
@@ -184,6 +185,8 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
 
   const onContinue = React.useCallback(async () => {
     if (currentStep === 'phrase') {
+      // clear any previous errors
+      setHasInvalidSeedError(false)
       return setCurrentStep('password')
     }
 
@@ -323,8 +326,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
             </AlertWrapper>
           )}
 
-          {(phraseWords.length > 0 && !isCorrectPhraseLength) ||
-          hasInvalidSeedError ? (
+          {hasInvalidSeedError ? (
             <InfoAlert
               padding='16px 0 0'
               type='error'
@@ -351,6 +353,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
             onPasswordChange={handlePasswordChange}
             onSubmit={onContinue}
             onAutoLockDurationChange={setAutoLockDuration}
+            initialPassword={password} // Use the preserved password
           />
         </Row>
       )}
@@ -361,8 +364,8 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
             !recoveryPhrase ||
             (currentStep === 'phrase' &&
               (!recoveryPhrase ||
-                recoveryPhraseLength < 12 ||
-                (recoveryPhraseLength > 12 && !isCorrectPhraseLength))) ||
+                !isCorrectPhraseLength ||
+                phraseWords.length !== recoveryPhraseLength)) ||
             (currentStep === 'password' &&
               (!isPasswordValid || hasInvalidSeedError))
           }
