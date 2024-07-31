@@ -23,7 +23,6 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "chrome/browser/feed/rss_links_fetcher.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/feed/buildflags.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/page.h"
