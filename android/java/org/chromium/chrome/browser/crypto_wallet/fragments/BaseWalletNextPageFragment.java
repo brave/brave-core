@@ -96,16 +96,6 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
         super.onDetach();
     }
 
-    protected void enable(@NonNull final AppCompatButton button, final boolean enable) {
-        if (enable) {
-            button.setAlpha(1f);
-            button.setEnabled(true);
-        } else {
-            button.setAlpha(0.5f);
-            button.setEnabled(false);
-        }
-    }
-
     @Nullable
     protected NetworkModel getNetworkModel() {
         Activity activity = requireActivity();
