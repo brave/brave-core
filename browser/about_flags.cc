@@ -386,10 +386,20 @@
       kOsDesktop,                                                        \
       FEATURE_VALUE_TYPE(ai_chat::features::kContextMenuRewriteInPlace), \
   })
+#define BRAVE_AI_CHAT_PAGE_CONTENT_REFINE                                   \
+  EXPAND_FEATURE_ENTRIES({                                                  \
+      "brave-ai-chat-page-content-refine",                                  \
+      "Brave AI Chat Page Content Refine",                                  \
+      "Enable local text embedding for long page content in order to find " \
+      "most relevant parts to the prompt within context limit.",            \
+      kOsDesktop | kOsAndroid,                                              \
+      FEATURE_VALUE_TYPE(ai_chat::features::kPageContentRefine),            \
+  })
 #else
 #define BRAVE_AI_CHAT
 #define BRAVE_AI_CHAT_HISTORY
 #define BRAVE_AI_CHAT_CONTEXT_MENU_REWRITE_IN_PLACE
+#define BRAVE_AI_CHAT_PAGE_CONTENT_REFINE
 #endif
 #if BUILDFLAG(ENABLE_AI_REWRITER)
 #define BRAVE_AI_REWRITER                                     \
@@ -966,6 +976,7 @@
   BRAVE_AI_CHAT                                                                \
   BRAVE_AI_CHAT_HISTORY                                                        \
   BRAVE_AI_CHAT_CONTEXT_MENU_REWRITE_IN_PLACE                                  \
+  BRAVE_AI_CHAT_PAGE_CONTENT_REFINE                                            \
   BRAVE_AI_REWRITER                                                            \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \

@@ -28,6 +28,7 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/leo_local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -108,7 +109,8 @@ void BraveExtensionManagement::Cleanup(content::BrowserContext* context) {
   }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (!ai_chat::IsAIChatEnabled(user_prefs::UserPrefs::Get(context))) {
+  if (!ai_chat::IsAIChatEnabled(user_prefs::UserPrefs::Get(context)) ||
+      !ai_chat::features::IsPageContentRefineEnabled()) {
     if (g_brave_browser_process->leo_local_models_updater()) {
       g_brave_browser_process->leo_local_models_updater()->Cleanup();
     }

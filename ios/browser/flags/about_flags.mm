@@ -102,9 +102,19 @@
       flags_ui::kOsIos,                                      \
       FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory), \
   })
+#define BRAVE_AI_CHAT_PAGE_CONTENT_REFINE                                   \
+  EXPAND_FEATURE_ENTRIES({                                                  \
+      "brave-ai-chat-page-content-refine",                                  \
+      "Brave AI Chat Page Content Refine",                                  \
+      "Enable local text embedding for long page content in order to find " \
+      "most relevant parts to the prompt within context limit.",            \
+      flags_ui::kOsIos,                                                     \
+      FEATURE_VALUE_TYPE(ai_chat::features::kPageContentRefine),            \
+  })
 #else
 #define BRAVE_AI_CHAT
 #define BRAVE_AI_CHAT_HISTORY
+#define BRAVE_AI_CHAT_PAGE_CONTENT_REFINE
 #endif
 
 #define BRAVE_PLAYLIST_FEATURE_ENTRIES                        \
@@ -207,5 +217,6 @@
   BRAVE_SKU_SDK_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT                                                                \
   BRAVE_AI_CHAT_HISTORY                                                        \
+  BRAVE_AI_CHAT_PAGE_CONTENT_REFINE                                            \
   BRAVE_PLAYLIST_FEATURE_ENTRIES                                               \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.

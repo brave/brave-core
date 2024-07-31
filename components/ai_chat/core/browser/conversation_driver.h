@@ -220,8 +220,6 @@ class ConversationDriver : public ModelService::Observer,
 
  private:
   FRIEND_TEST_ALL_PREFIXES(::AIChatUIBrowserTest, PrintPreviewFallback);
-  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest, LeoLocalModelsUpdater);
-  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest, TextEmbedder);
   FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
                            UpdateOrCreateLastAssistantEntry_Delta);
   FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
@@ -230,6 +228,8 @@ class ConversationDriver : public ModelService::Observer,
                            UpdateOrCreateLastAssistantEntry_NotDelta);
   FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
                            UpdateOrCreateLastAssistantEntry_NotDeltaWithSearch);
+  FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, LeoLocalModelsUpdater);
+  FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedder);
 
   void InitEngine();
   void OnUserOptedIn();

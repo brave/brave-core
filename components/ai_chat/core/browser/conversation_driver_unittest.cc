@@ -183,17 +183,17 @@ class MockLeoLocalModelsUpdater : public LeoLocalModelsUpdater {
 
 class ConversationDriverUnitTest : public testing::Test {
  public:
-  ConversationDriverUnitTest() = default;
-  ~ConversationDriverUnitTest() override = default;
-
-  void SetUp() override {
+  ConversationDriverUnitTest() {
     // TODO(petemill): Mock the engine requests so that we are not dependent on
     // specific network API calls for any particular engine. This test only
     // specifies the completion API responses and so doesn't work with the
     // Conversation API engine.
     features_.InitAndEnableFeatureWithParameters(
         features::kAIChat, {{features::kConversationAPIEnabled.name, "false"}});
+  }
+  ~ConversationDriverUnitTest() override = default;
 
+  void SetUp() override {
     prefs::RegisterProfilePrefs(prefs_.registry());
     prefs::RegisterLocalStatePrefs(local_state_.registry());
     ModelService::RegisterProfilePrefs(prefs_.registry());
@@ -842,7 +842,33 @@ TEST_F(ConversationDriverUnitTest, ModifyConversation) {
             "answer2");
 }
 
-TEST_F(ConversationDriverUnitTest, TextEmbedder) {
+class PageContentRefineTest : public ConversationDriverUnitTest,
+                              public testing::WithParamInterface<bool> {
+ public:
+  PageContentRefineTest() {
+    scoped_feature_list_.InitWithFeatureState(features::kPageContentRefine,
+                                              GetParam());
+  }
+  void SetUp() override {
+    ConversationDriverUnitTest::SetUp();
+  }
+
+  bool IsPageContentRefineEnabled() { return GetParam(); }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    PageContentRefineTest,
+    ::testing::Bool(),
+    [](const testing::TestParamInfo<PageContentRefineTest::ParamType>& info) {
+      return base::StringPrintf("PageContentRefine_%s",
+                                info.param ? "Enabled" : "Disabled");
+    });
+
+TEST_P(PageContentRefineTest, TextEmbedder) {
   conversation_driver_->SetEngineForTesting(
       std::make_unique<MockEngineConsumer>());
   auto* mock_engine = static_cast<MockEngineConsumer*>(
@@ -874,7 +900,7 @@ TEST_F(ConversationDriverUnitTest, TextEmbedder) {
                  << ", Page content length: " << test_case.page_content.length()
                  << ", Should refine page content: "
                  << test_case.should_refine_page_content);
-    if (test_case.should_refine_page_content) {
+    if (test_case.should_refine_page_content && IsPageContentRefineEnabled()) {
       EXPECT_CALL(*mock_text_embedder,
                   GetTopSimilarityWithPromptTilContextLimit(_, _, _, _))
           .Times(1);
@@ -892,8 +918,12 @@ TEST_F(ConversationDriverUnitTest, TextEmbedder) {
   }
 }
 
-TEST_F(ConversationDriverUnitTest, LeoLocalModelsUpdater) {
-  EXPECT_CALL(*leo_local_models_updater_, Register());
+TEST_P(PageContentRefineTest, LeoLocalModelsUpdater) {
+  if (IsPageContentRefineEnabled()) {
+    EXPECT_CALL(*leo_local_models_updater_, Register());
+  } else {
+    EXPECT_CALL(*leo_local_models_updater_, Register()).Times(0);
+  }
   auto credential_manager = std::make_unique<MockAIChatCredentialManager>(
       base::NullCallback(), &local_state_);
   auto conversation_driver = std::make_unique<MockConversationDriver>(
@@ -923,13 +953,22 @@ TEST_F(ConversationDriverUnitTest, LeoLocalModelsUpdater) {
       "prompt", 0, std::string("A", max_page_content_length + 1), false, "");
 
   conversation_driver->universal_qa_model_path_ = base::FilePath();
-  EXPECT_CALL(*leo_local_models_updater_, GetUniversalQAModel())
-      .WillOnce(testing::ReturnRefOfCopy(
-          base::FilePath::FromASCII("/path/to/model")));
+  if (IsPageContentRefineEnabled()) {
+    EXPECT_CALL(*leo_local_models_updater_, GetUniversalQAModel())
+        .WillOnce(testing::ReturnRefOfCopy(
+            base::FilePath::FromASCII("/path/to/model")));
+  } else {
+    EXPECT_CALL(*leo_local_models_updater_, GetUniversalQAModel()).Times(0);
+  }
+
   conversation_driver->PerformAssistantGeneration(
       "prompt", 0, std::string("A", max_page_content_length + 1), false, "");
-  EXPECT_EQ(conversation_driver->universal_qa_model_path_,
-            base::FilePath::FromASCII("/path/to/model"));
+  if (IsPageContentRefineEnabled()) {
+    EXPECT_EQ(conversation_driver->universal_qa_model_path_,
+              base::FilePath::FromASCII("/path/to/model"));
+  } else {
+    EXPECT_TRUE(conversation_driver->universal_qa_model_path_.empty());
+  }
 
   // should_refine_page_content is false.
   conversation_driver->universal_qa_model_path_ = base::FilePath();

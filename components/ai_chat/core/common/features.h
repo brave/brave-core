@@ -42,6 +42,9 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kContextMenuRewriteInPlace);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsContextMenuRewriteInPlaceEnabled();
 
+COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kPageContentRefine);
+COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsPageContentRefineEnabled();
+
 }  // namespace ai_chat::features
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_FEATURES_H_
