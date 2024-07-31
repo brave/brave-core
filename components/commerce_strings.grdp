@@ -327,8 +327,8 @@
     </message>
 
     <!-- For Desktop Discounts on navigation -->
-    <message name="IDS_DISCOUNT_USE_THIS_CODE_AT_CHECKOUT" desc="Text shown in the discount dialog to tell users where to use the discount code.">
-      Use this code at checkout.
+    <message name="IDS_DISCOUNT_USE_THIS_CODE_AT_CHECKOUT_WITH_EXPIRATION_DATE" desc="Text shown in the discount dialog to tell users where to use the discount code and the discount expiration date.">
+      Use this code at checkout. Valid until <ph name="DATE">$1<ex>2023-01-01</ex></ph>.
     </message>
     <message name="IDS_DISCOUNT_EXPIRATION_DATE" desc="Text shown in the discount dialog to tell users the discount expiration date.">
       Valid until <ph name="DATE">$1<ex>2023-01-01</ex></ph>.
@@ -350,6 +350,12 @@
     </message>
     <message name="IDS_SEE_SELLER_TERMS_AND_CONDITIONS" desc="This is used as a linked text in the discount dialog, when user clicks the text, it opens the 'Seller's terms and conditions' dialog to see additional qualification of the discount.">
       See seller's terms and conditions
+    </message>
+        <message name="IDS_DISCOUNTS_COUPON_CODE_BUTTON_TOOLTIP" desc="The tooltip message for a button containing a copyable coupon code in the discounts bubble on Desktop. This message is shown when the button is hovered over and if the button has not been clicked.">
+      Click to copy
+    </message>
+    <message name="IDS_DISCOUNTS_COUPON_CODE_BUTTON_TOOLTIP_CLICKED" desc="The tooltip message for a button containing a copyable coupon code in the discounts bubble on Desktop. This message is shown when the button is hovered over and if the button has been clicked.">
+      Copied to clipboard
     </message>
     <if expr="use_titlecase">
       <message name="IDS_DISCOUNT_ICON_EXPANDED_TEXT" desc="The text to use when the icon is expanded in the location bar, indicating discount has been found for the viewing product.">
@@ -441,6 +447,12 @@
   <message name="IDS_PRICE_INSIGHTS_TRACK_BUTTON_TITLE" desc="The title text for track button of price insights.">
     Track
   </message>
+  <message name="IDS_PRICE_INSIGHTS_RANGE_LABEL_LOW" desc="The range slider label text for low prices.">
+    Low
+  </message>
+  <message name="IDS_PRICE_INSIGHTS_RANGE_LABEL_HIGH" desc="The range slider label text for high prices.">
+    High
+  </message>
   <message name="IDS_PRICE_INSIGHTS_TRACKING_BUTTON_TITLE" desc="The title text for tracking button of price insights.">
     Tracking
   </message>
@@ -456,6 +468,24 @@
   <message name="IDS_PRICE_INSIGHTS_ACCESSIBILITY" desc="Accessibility string for the price insights entry point when the confidence is low.">
     Price Insights
   </message>
+  <message name="IDS_PRICE_INSIGHTS_SNACKBAR_BUTTON_TITLE" desc="The snackbar button title for Price Insights when the user has notification enabled.">
+    VIEW
+  </message>
+  <message name="IDS_PRICE_INSIGHTS_SNACKBAR_MESSAGE_TITLE_NOTIFICATION_DISABLED" desc="The snackbar title for Price Insights when the user has notification disabled.">
+    You can view price drops for products you track anytime.
+  </message>
+  <message name="IDS_PRICE_INSIGHTS_SNACKBAR_MESSAGE_TITLE_NOTIFICATION_ENABLED" desc="The snackbar title for Price Insights when the user has notification enabled.">
+    You'll get notified if the price drops on any site.
+  </message>
+  <message name="IDS_PRICE_RANGE_ACCESSIBILITY_DESCRIPTION" is_accessibility_with_no_ui="true" desc="Accessibility string for the price range component.">
+    Typical price for <ph name="PRODUCT_NAME">$1<ex>iPhone 15 Pro</ex></ph> is <ph name="LOW_PRICE">$2<ex>500</ex></ph> - <ph name="HIGH_PRICE">$3<ex>600</ex></ph> but current price is <ph name="CURRENT_PRICE">$4<ex>600</ex></ph> across the web.
+  </message>
+  <message name="IDS_BUYING_OPTIONS_ACCESSIBILITY_DESCRIPTION" is_accessibility_with_no_ui="true" desc="Accessibility string for the buying option component of Price Insights.">
+    Open a page that shows other stores that sell this product.
+  </message>
+  <message name="IDS_PRICE_TRACKING_NOT_TRACKING_ACCESSIBILITY_DESCRIPTION" is_accessibility_with_no_ui="true" desc="Accessibility string for the price tracking button when the current product is not being tracked.">
+    Not tracking
+  </message>
   <if expr="use_titlecase">
     <message name="IDS_PRICE_HISTORY_TITLE_SINGLE_OPTION" desc="The title of the Price History section in the Shopping Insights side panel when we only find one option of this product.">
       Price History Across the Web
@@ -466,8 +496,11 @@
     <message name="IDS_SHOPPING_INSIGHTS_ICON_EXPANDED_TEXT_HIGH_PRICE" desc="The expanded text for the price insights icon in the location bar, indicating an option has relatively high price.">
       Price is High
     </message>
-    <message name="IDS_PRICE_INSIGHTS_PRICE_RANGE_TITLE" desc="The title text for the price range component of price insights.">
+    <message name="IDS_PRICE_INSIGHTS_PRICE_RANGE_TITLE_VARIANT" desc="The title text for the price range component of price insights when the product has a variant.">
       Price Range for All Options
+    </message>
+    <message name="IDS_PRICE_INSIGHTS_PRICE_RANGE_TITLE_NO_VARIANT" desc="The title text for the price range component of price insights when the product has no variant.">
+      Price Range
     </message>
   </if> <!-- use_titlecase -->
   <if expr="not use_titlecase">
@@ -480,8 +513,11 @@
     <message name="IDS_SHOPPING_INSIGHTS_ICON_EXPANDED_TEXT_HIGH_PRICE" desc="The expanded text for the price insights icon in the location bar, indicating an option has relatively high price.">
       Price is high
     </message>
-    <message name="IDS_PRICE_INSIGHTS_PRICE_RANGE_TITLE" desc="The title text for the price range component of price insights.">
+    <message name="IDS_PRICE_INSIGHTS_PRICE_RANGE_TITLE_VARIANT" desc="The title text for the price range component of price insights when the product has a variant.">
       Price range for all options
+    </message>
+    <message name="IDS_PRICE_INSIGHTS_PRICE_RANGE_TITLE_NO_VARIANT" desc="The title text for the price range component of price insights when the product has no variant.">
+      Price range
     </message>
   </if> <!-- not use_titlecase -->
 
@@ -505,8 +541,8 @@
   <message name="IDS_PRODUCT_SPECIFICATIONS_HISTORY_MENU_ITEM" translateable="false" desc="The title of the link in the history UI that navigates the user to a page showing the lists being maintained by the product specifications feature.">
     Product specifications lists
   </message>
-  <message name="IDS_PRODUCT_SPECIFICATIONS_OPEN_TABS_SECTION" translateable="false" desc="The title of the section in the product selection drop-down in the product specifications UI that shows a list of open tabs.">
-    Open Tabs
+  <message name="IDS_PRODUCT_SPECIFICATIONS_SUGGESTIONS_SECTION" translateable="false" desc="The title of the section in the product selection drop-down in the product specifications UI that shows a list of tabs suggested by the browser to be put into the table.">
+    Suggestions
   </message>
   <message name="IDS_PRODUCT_SPECIFICATIONS_RECENTLY_VIEWED_TABS_SECTION" translateable="false" desc="The title of the section in the product selection drop-down in the product specifications UI that shows a list of recently viewed tabs.">
     Recently Viewed
@@ -532,6 +568,9 @@
   <message name="IDS_PRODUCT_SPECIFICATIONS_PAGE_ACTION_ADDED" translateable="false" desc="The text for the Product Specifications page action chip with a placeholder for what the specifications are for, after adding the current page.">
     Added to <ph name="SPECIFICATION">$1<ex>analysis</ex></ph>
   </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_PRICE_ROW_TITLE" translateable="false" desc="The title for the product price row in the product specifications table.">
+    Price
+  </message>
   <message name="IDS_PRODUCT_SPECIFICATIONS_RENAME_GROUP" translateable="false" desc="The title of the menu item for renaming the product specification list.">
     Rename group
   </message>
@@ -546,5 +585,32 @@
   </message>
   <message name="IDS_PRODUCT_SPECIFICATIONS_REMOVE_COLUMN" translateable="false" desc="The title of the menu item for removing a column in the product specification list.">
     Remove column
+  </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_DISCLAIMER" translateable="false" desc="Disclaimer text shown in product specifications UIs.">
+    This is an experimental feature and won't always get it right.
+  </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_LEARN_MORE_A11Y_LABEL" translateable="false" desc="Accessibility label for a link labeled 'Learn more' that links to a help article about product specifications.">
+    Learn more about product specifications.
+  </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_FEEDBACK_PLACEHOLDER" translateable="false" desc="Placeholder text for the product specifications feedback form.">
+    Send feedback for Product Specifications.
+  </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_DISCLOSURE_ACCEPT" translateable="false" desc="The text for the accept button on the FRE disclosure.">
+    Lets go
+  </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_DISCLOSURE_TITLE" translateable="false" desc="The text for the FRE disclosure bubble.">
+    Brave can help you view product specifications
+  </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_DISCLOSURE_ITEMS_HEADER" translateable="false" desc="The text for the disclosure items header.">
+    Things to consider
+  </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_DISCLOSURE_ABOUT_ITEM" translateable="false" desc="The text for the 'about this feature' disclosure item.">
+    Details about the feature
+  </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_DISCLOSURE_ACCOUNT_ITEM" translateable="false" desc="The text for the account requirements disclosure item.">
+    Details about the account
+  </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_DISCLOSURE_DATA_ITEM" translateable="false" desc="The text for the data disclosure item.">
+    Details about the data
   </message>
 </grit-part>

@@ -315,6 +315,9 @@
   <message name="IDS_POLICY_PROXY_NEITHER_SPECIFIED_ERROR" desc="The text displayed in the status column when neither a fixed proxy servers or a .pac url are specified.">
     Neither fixed proxy servers nor a .pac script URL are specified.
   </message>
+  <message name="IDS_POLICY_DEVELOPER_TOOLS_EXTENSIONS_CONFLICT_MESSAGE" desc="The text displayed in the status column when the value of DeveloperToolsAvailability conflicts with ExtensionDeveloperModeSettings.">
+    <ph name="EXTENSION_DEVELOPER_MODE_SETTINGS_POLICY_NAME">$1<ex>ExtensionDeveloperModeSettings</ex></ph> policy is set. <ph name="DEVELOPER_TOOLS_AVAILABILITY_POLICY_NAME">$2<ex>DeveloperToolsAvailability</ex></ph> will not control the availability of developer mode on extensions page.
+  </message>
   <message name="IDS_POLICY_OVERRIDDEN" desc="The text displayed in the status column when the corresponding policy is being ignored because another policy is overriding it.">
     Ignored because it was overridden by <ph name="POLICY_NAME">$1<ex>ProxyMode</ex></ph>.
   </message>
@@ -1270,5 +1273,23 @@ Additional details:
   </message>
   <message name="IDS_POLICY_NOT_SUPPORTED_AS_USER_POLICY_ON_IOS" desc="The text displayed in the status column when a policy is not supported as a user policy on ios.">
     This policy is not yet supported as a user policy on iOS.
+  </message>
+  <message name="IDS_POLICY_SKYVAULT_DOWNLOAD_SIGN_IN_TITLE" desc="The title for the notification asking the user to sign-in to Microsoft OneDrive to complete the download flow.">
+    Sign in to OneDrive to continue downloading
+  </message>
+  <message name="IDS_POLICY_SKYVAULT_DOWNLOAD_SIGN_IN_BUTTON" desc="Label for the button that starts the sign-in flow to Microsoft OneDrive.">
+    Sign in
+  </message>
+  <message name="IDS_POLICY_SKYVAULT_DOWNLOAD_SIGN_IN_CANCEL_BUTTON" desc="Cancel button for the notification asking the user to sign-in to Microsoft OneDrive.">
+    Cancel
+  </message>
+  <message name="IDS_POLICY_SKYVAULT_DOWNLOAD_SIGN_IN_DISPLAY_SOURCE" desc="The name of the notification source, which is download manager. Shown in the notification header.">
+          Download manager
+  </message>
+  <message name="IDS_POLICY_SKYVAULT_MIGRATION_BANNER" desc="The Files App banner displayed in local folders while SkyVault migration is ongoing.">
+    Your administrator is moving your files to <ph name="CLOUD_PROVIDER">$1<ex>Google Drive</ex></ph>. You can modify these files once the upload is complete.
+  </message>
+  <message name="IDS_POLICY_SKYVAULT_MISCONFIGURED_POLICY_MESSAGE" desc="The message informing the user that SkyVault policies aren't configured propely. It can be shown as an error inside the Files App or as a system notification.">
+    The file system has been disabled by your administrator
   </message>
 </grit-part>
