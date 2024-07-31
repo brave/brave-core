@@ -3,7 +3,7 @@ URL: https://crates.io/crates/memchr
 Description: Provides extremely fast (uses SIMD on x86_64, aarch64 and wasm32) routines for
 1, 2 or 3 byte search and single substring search.
 
-Version: 2.7.2
+Version: 2.7.4
 Security Critical: yes
 Shipped: yes
 License: MIT
