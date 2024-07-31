@@ -160,7 +160,7 @@ private struct EditingUserMessageView: View {
           action: { submitEditedText(text) },
           label: {
             Image(braveSystemName: "leo.check.normal")
-              .foregroundStyle(Color.white)
+              .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
               .frame(width: buttonSize, height: buttonSize)
               .background(
                 Color(braveSystemName: .buttonBackground)

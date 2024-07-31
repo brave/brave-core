@@ -87,7 +87,7 @@ struct PremiumUpsellActionView: View {
           .padding([.top, .bottom], 12.0)
           .padding([.leading, .trailing], 16.0)
           .frame(maxWidth: .infinity)
-          .foregroundStyle(.white)
+          .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
           .background(
             Color(braveSystemName: .buttonBackground),
             in: RoundedRectangle(cornerRadius: 12.0, style: .continuous)
@@ -294,6 +294,7 @@ private struct PremiumUpsellTopicView: View {
 struct AIChatPremiumUpsellView_Preview: PreviewProvider {
   static var previews: some View {
     AIChatPremiumUpsellView(upsellType: .premium)
+      .previewColorSchemes()
       .previewLayout(.sizeThatFits)
   }
 }

@@ -28,7 +28,7 @@ struct AIChatNetworkErrorView: View {
           label: {
             Text(Strings.AIChat.retryActionTitle)
               .font(.body.weight(.semibold))
-              .foregroundColor(Color(.white))
+              .foregroundColor(Color(braveSystemName: .schemesOnPrimary))
               .padding()
               .foregroundStyle(.white)
               .background(
@@ -50,6 +50,7 @@ struct AIChatNetworkErrorView: View {
 struct AIChatNetworkErrorView_Preview: PreviewProvider {
   static var previews: some View {
     AIChatNetworkErrorView {}
+      .previewColorSchemes()
       .previewLayout(.sizeThatFits)
   }
 }
