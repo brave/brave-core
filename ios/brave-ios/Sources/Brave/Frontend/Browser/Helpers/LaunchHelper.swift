@@ -66,8 +66,10 @@ public actor LaunchHelper {
       let signpostID = Self.signpost.makeSignpostID()
       let state = Self.signpost.beginInterval("nonBlockingLaunchTask", id: signpostID)
       await FilterListResourceDownloader.shared.start(with: adBlockService)
-      await AdBlockGroupsManager.shared.cleaupInvalidRuleLists()
+      await FilterListCustomURLDownloader.shared.startFetching()
       await AdblockResourceDownloader.shared.startFetching()
+      // It's important to do this at the end to ensure we have our lists loaded
+      await AdBlockGroupsManager.shared.cleaupInvalidRuleLists()
       Self.signpost.endInterval("nonBlockingLaunchTask", state)
     }
   }
