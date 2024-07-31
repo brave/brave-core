@@ -9,11 +9,25 @@
 #include "chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_page_handler.h"
 #include "ui/base/l10n/l10n_util.h"
 
+#define BookmarksSidePanelUIConfig BookmarksSidePanelUIConfig_Unused
 #define BookmarksSidePanelUI BookmarksSidePanelUI_ChromiumImpl
 
 #include "src/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_side_panel_ui.cc"
 
+#undef BookmarksSidePanelUIConfig
 #undef BookmarksSidePanelUI
+
+BookmarksSidePanelUIConfig::BookmarksSidePanelUIConfig()
+    : DefaultTopChromeWebUIConfig(content::kChromeUIScheme,
+                                  chrome::kChromeUIBookmarksSidePanelHost) {}
+
+bool BookmarksSidePanelUIConfig::IsPreloadable() {
+  return true;
+}
+
+std::optional<int> BookmarksSidePanelUIConfig::GetCommandIdForTesting() {
+  return IDC_SHOW_BOOKMARK_SIDE_PANEL;
+}
 
 BookmarksSidePanelUI::BookmarksSidePanelUI(content::WebUI* web_ui)
     : BookmarksSidePanelUI_ChromiumImpl(web_ui) {
