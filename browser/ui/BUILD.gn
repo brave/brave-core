@@ -1350,9 +1350,11 @@ source_set("unit_tests") {
       "views/split_view/split_view_location_bar_unittest.cc",
     ]
     deps = [
+      "//base/test:test_support",
       "//brave/components/l10n/common:test_support",
       "//chrome/browser/ui",
       "//components/javascript_dialogs",
+      "//testing/gmock",
       "//testing/gtest",
       "//ui/base:test_support",
       "//ui/gfx",
