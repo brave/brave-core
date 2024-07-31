@@ -8,6 +8,7 @@ const config = require('../lib/config')
 const updatePatches = require('../lib/updatePatches')
 
 const chromiumPathFilter = (s) => s.length > 0 &&
+  !s.startsWith('buildtools/reclient_cfgs') &&
   !s.startsWith('chrome/app/theme/default') &&
   !s.startsWith('chrome/app/theme/brave') &&
   !s.startsWith('chrome/app/theme/chromium') &&
