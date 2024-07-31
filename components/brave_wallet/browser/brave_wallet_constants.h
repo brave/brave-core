@@ -566,7 +566,6 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletNetworkETH", IDS_BRAVE_WALLET_NETWORK_E_T_H},
     {"braveWalletNetworkMain", IDS_BRAVE_WALLET_NETWORK_MAIN},
     {"braveWalletNetworkTest", IDS_BRAVE_WALLET_NETWORK_TEST},
-    {"braveWalletNetworkGoerli", IDS_BRAVE_WALLET_NETWORK_GOERLI},
     {"braveWalletNetworkSepolia", IDS_BRAVE_WALLET_NETWORK_SEPOLIA},
     {"braveWalletNetworkLocalhost", IDS_BRAVE_WALLET_NETWORK_LOCALHOST},
     {"braveWalletSelectAccount", IDS_BRAVE_WALLET_SELECT_ACCOUNT},
@@ -1455,8 +1454,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletShowMore", IDS_BRAVE_WALLET_SHOW_MORE}};
 
 // 0x swap constants
-inline constexpr char kZeroExGoerliBaseAPIURL[] =
-    "https://goerli.api.0x.wallet.brave.com";
+inline constexpr char kZeroExSepoliaBaseAPIURL[] =
+    "https://sepolia.api.0x.wallet.brave.com";
 inline constexpr char kZeroExPolygonBaseAPIURL[] =
     "https://polygon.api.0x.wallet.brave.com";
 inline constexpr char kZeroExBinanceSmartChainBaseAPIURL[] =

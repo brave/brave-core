@@ -87,7 +87,7 @@ TEST_F(NetworkManagerUnitTest, KnownChainExists) {
   network_manager()->AddCustomNetwork(chain);
 
   auto known_chains = NetworkManager::GetAllKnownChains(mojom::CoinType::ETH);
-  EXPECT_EQ(known_chains.size(), 12u);
+  EXPECT_EQ(known_chains.size(), 11u);
   for (auto& known_chain : known_chains) {
     EXPECT_TRUE(network_manager()->KnownChainExists(known_chain->chain_id,
                                                     mojom::CoinType::ETH));
@@ -214,7 +214,7 @@ TEST_F(NetworkManagerUnitTest, GetAllChainsTest) {
   const base::test::ScopedFeatureList scoped_feature_list{
       features::kBraveWalletZCashFeature};
 
-  EXPECT_EQ(network_manager()->GetAllChains().size(), 23u);
+  EXPECT_EQ(network_manager()->GetAllChains().size(), 22u);
   for (auto& chain : network_manager()->GetAllChains()) {
     EXPECT_TRUE(chain->rpc_endpoints[0].is_valid());
     EXPECT_EQ(chain->active_rpc_endpoint_index, 0);
@@ -419,7 +419,6 @@ TEST_F(NetworkManagerUnitTest, GetNetworkURLForKnownChains) {
       brave_wallet::mojom::kOptimismMainnetChainId,
       brave_wallet::mojom::kAuroraMainnetChainId,
       brave_wallet::mojom::kAvalancheMainnetChainId,
-      brave_wallet::mojom::kGoerliChainId,
       brave_wallet::mojom::kSepoliaChainId};
 
   for (const auto& chain :
@@ -579,7 +578,6 @@ TEST_F(NetworkManagerUnitTest, GetKnownEthNetworkId) {
   EXPECT_EQ(GetKnownEthNetworkId(mojom::kLocalhostChainId),
             "http://localhost:7545/");
   EXPECT_EQ(GetKnownEthNetworkId(mojom::kMainnetChainId), "mainnet");
-  EXPECT_EQ(GetKnownEthNetworkId(mojom::kGoerliChainId), "goerli");
   EXPECT_EQ(GetKnownEthNetworkId(mojom::kSepoliaChainId), "sepolia");
 }
 
@@ -648,7 +646,6 @@ TEST_F(NetworkManagerUnitTest, Eip1559Chain) {
       {mojom::kPolygonMainnetChainId, true},
       {mojom::kAvalancheMainnetChainId, true},
       {mojom::kOptimismMainnetChainId, true},
-      {mojom::kGoerliChainId, true},
       {mojom::kSepoliaChainId, true},
       {mojom::kFilecoinEthereumMainnetChainId, true},
       {mojom::kFilecoinEthereumTestnetChainId, true},
@@ -815,11 +812,10 @@ TEST_F(NetworkManagerUnitTest, RemoveCustomNetworkRemovesEip1559) {
 }
 
 TEST_F(NetworkManagerUnitTest, HiddenNetworks) {
-  EXPECT_THAT(
-      network_manager()->GetHiddenNetworks(mojom::CoinType::ETH),
-      ElementsAreArray<std::string>(
-          {mojom::kGoerliChainId, mojom::kSepoliaChainId,
-           mojom::kLocalhostChainId, mojom::kFilecoinEthereumTestnetChainId}));
+  EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::ETH),
+              ElementsAreArray<std::string>(
+                  {mojom::kSepoliaChainId, mojom::kLocalhostChainId,
+                   mojom::kFilecoinEthereumTestnetChainId}));
   EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::FIL),
               ElementsAreArray<std::string>(
                   {mojom::kFilecoinTestnet, mojom::kLocalhostChainId}));
@@ -873,7 +869,7 @@ TEST_F(NetworkManagerUnitTest, GetAndSetCurrentChainId) {
       {mojom::CoinType::FIL, mojom::kFilecoinMainnet},
   };
   const base::flat_map<mojom::CoinType, std::string> new_default_chain_ids = {
-      {mojom::CoinType::ETH, mojom::kGoerliChainId},
+      {mojom::CoinType::ETH, mojom::kSepoliaChainId},
       {mojom::CoinType::SOL, mojom::kSolanaTestnet},
       {mojom::CoinType::FIL, mojom::kFilecoinTestnet},
   };
