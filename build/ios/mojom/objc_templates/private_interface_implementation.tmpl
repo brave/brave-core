@@ -67,33 +67,20 @@ base::BindOnce(callback)
   return self;
 }
 
-- (void)dealloc {
-  web::GetUIThreadTaskRunner({})->PostTask(FROM_HERE, base::BindOnce(
-    ^(mojo::Remote<{{cpp_namespace}}::{{interface.name}}> remote){
-      remote.reset();
-    }, std::move(_wrappedValue)));
-}
-
-{{ objc_methods_impls(interface) }}
-
-@end
-
-@implementation {{class_prefix}}{{interface.name}}OwnedImpl {
-  std::unique_ptr<{{cpp_namespace}}::{{interface.name}}> _wrappedValue;
-{%- for bridge in interface|interface_remote_sets %}
-  std::vector<base::SequenceBound<std::unique_ptr<{{bridge}}>>> _{{bridge|under_to_lower_camel}}Receivers;
-{%- endfor %}
-}
-
-- (instancetype)initWith{{interface.name}}:(std::unique_ptr<{{cpp_namespace}}::{{interface.name}}>)obj {
+- (instancetype)initWith{{interface.name}}Impl:(std::unique_ptr<{{cpp_namespace}}::{{interface.name}}>)obj {
   if ((self = [super init])) {
-    _wrappedValue = std::move(obj);
+    mojo::PendingReceiver<{{cpp_namespace}}::{{interface.name}}> receiver;
+    _wrappedValue = mojo::Remote<{{cpp_namespace}}::{{interface.name}}>(receiver.InitWithNewPipeAndPassRemote());
+    mojo::MakeSelfOwnedReceiver(std::move(obj), std::move(receiver), web::GetUIThreadTaskRunner({}));
   }
   return self;
 }
 
 - (void)dealloc {
-  web::GetUIThreadTaskRunner({})->DeleteSoon(FROM_HERE, std::move(_wrappedValue));
+  web::GetUIThreadTaskRunner({})->PostTask(FROM_HERE, base::BindOnce(
+    ^(mojo::Remote<{{cpp_namespace}}::{{interface.name}}> remote){
+      remote.reset();
+    }, std::move(_wrappedValue)));
 }
 
 {{ objc_methods_impls(interface) }}
