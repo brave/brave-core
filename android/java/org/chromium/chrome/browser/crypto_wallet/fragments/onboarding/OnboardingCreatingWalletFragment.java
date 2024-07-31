@@ -97,7 +97,7 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
                             Toast.makeText(
                                             requireActivity(),
                                             R.string.account_recovery_failed,
-                                            Toast.LENGTH_SHORT)
+                                            Toast.LENGTH_LONG)
                                     .show();
                             requireActivity().finish();
                         }

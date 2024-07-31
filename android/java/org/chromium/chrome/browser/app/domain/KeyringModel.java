@@ -457,10 +457,15 @@ public class KeyringModel implements KeyringServiceObserver {
     private <T> void selectEthAccount(
             final T result, @NonNull final Callbacks.Callback1<T> callback) {
         mKeyringService.getAllAccounts(
-                allAccounts ->
+                allAccounts -> {
+                    if (allAccounts.ethDappSelectedAccount != null) {
                         mKeyringService.setSelectedAccount(
                                 allAccounts.ethDappSelectedAccount.accountId,
-                                success -> callback.call(result)));
+                                success -> callback.call(result));
+                    } else {
+                        callback.call(result);
+                    }
+                });
     }
 
     @Override
