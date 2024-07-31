@@ -13,33 +13,32 @@ cargo_crate("lib") {
   crate_name = "time_macros"
   epoch = "0.2"
   crate_type = "proc-macro"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/date.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/datetime.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/error.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/format_description/ast.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/format_description/format_item.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/format_description/lexer.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/format_description/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/format_description/public/component.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/format_description/public/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/format_description/public/modifier.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/helpers/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/helpers/string.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/offset.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/quote.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/serde_format_description.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/shim.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/time.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.8/src/to_tokens.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/date.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/datetime.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/format_description/ast.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/format_description/format_item.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/format_description/lexer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/format_description/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/format_description/public/component.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/format_description/public/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/format_description/public/modifier.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/helpers/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/helpers/string.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/offset.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/quote.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/serde_format_description.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/time.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/src/to_tokens.rs",
   ]
   inputs = []
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.2.8"
+  cargo_pkg_version = "0.2.18"
   cargo_pkg_authors = "Jacob Pratt <open-source@jhpratt.dev>, Time contributors"
   cargo_pkg_name = "time-macros"
   cargo_pkg_description = "    Procedural macros for the time crate.     This crate is an implementation detail and should not be relied upon directly."
@@ -49,7 +48,10 @@ cargo_crate("lib") {
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
-  deps = [ "//brave/third_party/rust/time_core/v0_1:lib" ]
+  deps = [
+    "//brave/third_party/rust/num_conv/v0_1:lib",
+    "//brave/third_party/rust/time_core/v0_1:lib",
+  ]
   features = [
     "formatting",
     "parsing",

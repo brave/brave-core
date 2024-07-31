@@ -1,9 +1,9 @@
 Name: time-core
 URL: https://crates.io/crates/time-core
 Description: This crate is an implementation detail and should not be relied upon directly.
-Version: 0.1.0
+Version: 0.1.2
 Security Critical: yes
 Shipped: yes
 License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/time-core-0.1.0/LICENSE-Apache
-Revision: 05bdab8a70223eb1bc722b519093dfa7dd7c2b5f
+License File: //brave/third_party/rust/chromium_crates_io/vendor/time-core-0.1.2/LICENSE-Apache
+Revision: c96bb1a4474b9af1289edbdf34514fbfe95fa833
