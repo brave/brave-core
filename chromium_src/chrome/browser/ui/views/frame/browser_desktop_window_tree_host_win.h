@@ -34,6 +34,12 @@ class BrowserDesktopWindowTreeHostWin
                     LPARAM l_param,
                     LRESULT* result) override;
 
+  // Returns the optionally modified background color to correctly match the
+  // toolbar color in dark/private browsing modes.
+  SkColor GetBackgroundColor(SkColor requested_color) const override;
+
+  SkColor GetToolbarColor() const;
+
   bool is_cloacked_ = false;
 };
 
