@@ -57,9 +57,15 @@ import {
 } from '../../../page/screens/onboarding/onboarding.style'
 import { Row } from '../../shared/style'
 
+export interface AccountFromDeviceListItem extends AccountFromDevice {
+  alreadyInWallet: boolean
+  shouldAddToWallet: boolean
+}
+
 interface Props {
   currentHardwareImportScheme: HardwareImportScheme
-  accounts: Array<Required<AccountFromDevice>>
+  supportedSchemes: HardwareImportScheme[]
+  accounts: AccountFromDeviceListItem[]
   onLoadMore: () => void
   onAccountChecked: (path: string, checked: boolean) => void
   setHardwareImportScheme: (scheme: DerivationScheme) => void
@@ -75,22 +81,32 @@ const defaultNetworkId = (coin: BraveWallet.CoinType) => {
   assertNotReached(`Unknown coin ${coin}`)
 }
 
+const coinsSupportingSchemesDropdown = [
+  BraveWallet.CoinType.ETH,
+  BraveWallet.CoinType.SOL
+]
+
+const getHardwareImportSchemeLabel = (scheme: HardwareImportScheme): string => {
+  return `${scheme.name} "${scheme.pathTemplate('x')}"`
+}
+
 export const HardwareWalletAccountsList = ({
   currentHardwareImportScheme,
+  supportedSchemes,
   setHardwareImportScheme,
   accounts,
   onLoadMore,
   onAccountChecked,
   onAddAccounts
 }: Props) => {
-  const { coin, vendor: hardwareVendor } = currentHardwareImportScheme
+  const { coin } = currentHardwareImportScheme
 
   // queries
   const { data: networksRegistry } = useGetNetworksRegistryQuery()
 
   // state
   const [filteredAccountList, setFilteredAccountList] = React.useState<
-    Array<Required<AccountFromDevice>>
+    AccountFromDeviceListItem[]
   >([])
   const [isLoadingMore, setIsLoadingMore] = React.useState<boolean>(false)
   const [selectedNetworkId, setSelectedNetworkId] = React.useState<EntityId>(
@@ -114,13 +130,36 @@ export const HardwareWalletAccountsList = ({
     )
   }, [networksRegistry, coin])
 
-  const supportedSchemes = AllHardwareImportSchemes.filter((scheme) => {
-    return scheme.coin === coin && scheme.vendor === hardwareVendor
-  })
+  const showSchemesDropdown = coinsSupportingSchemesDropdown.includes(
+    currentHardwareImportScheme.coin
+  )
+
+  const dropdownItems = React.useMemo(() => {
+    if (!showSchemesDropdown) {
+      return null
+    }
+    return (
+      <>
+        <div slot='value'>
+          {getHardwareImportSchemeLabel(currentHardwareImportScheme)}
+        </div>
+        {supportedSchemes.map((scheme) => {
+          return (
+            <leo-option
+              value={scheme.derivationScheme}
+              key={scheme.derivationScheme}
+            >
+              {getHardwareImportSchemeLabel(scheme)}
+            </leo-option>
+          )
+        })}
+      </>
+    )
+  }, [currentHardwareImportScheme, showSchemesDropdown, supportedSchemes])
 
   // methods
   const onSelectAccountCheckbox =
-    (account: Required<AccountFromDevice>) => () => {
+    (account: AccountFromDeviceListItem) => () => {
       onAccountChecked(account.derivationPath, !account.shouldAddToWallet)
     }
 
@@ -157,12 +196,6 @@ export const HardwareWalletAccountsList = ({
     },
     [setSelectedNetworkId, setHardwareImportScheme]
   )
-
-  const getHardwareImportSchemeLabel = (
-    scheme: HardwareImportScheme
-  ): string => {
-    return `${scheme.name} "${scheme.pathTemplate('x')}"`
-  }
 
   const onChangeDerivationScheme = (value?: string) => {
     if (value) {
@@ -219,19 +252,7 @@ export const HardwareWalletAccountsList = ({
                   {getLocale('braveWalletHelpCenter')}
                 </HelpLink>
               </Row>
-              <div slot='value'>
-                {getHardwareImportSchemeLabel(currentHardwareImportScheme)}
-              </div>
-              {supportedSchemes.map((scheme) => {
-                return (
-                  <leo-option
-                    value={scheme.derivationScheme}
-                    key={scheme.derivationScheme}
-                  >
-                    {getHardwareImportSchemeLabel(scheme)}
-                  </leo-option>
-                )
-              })}
+              {dropdownItems}
             </Dropdown>
           ) : null}
           {coin === BraveWallet.CoinType.SOL ? (
@@ -239,24 +260,12 @@ export const HardwareWalletAccountsList = ({
               value={currentHardwareImportScheme.derivationScheme}
               onChange={(e) => onChangeDerivationScheme(e.value)}
             >
-              <div slot='value'>
-                {getHardwareImportSchemeLabel(currentHardwareImportScheme)}
-              </div>
-              {supportedSchemes.map((scheme) => {
-                return (
-                  <leo-option
-                    value={scheme.derivationScheme}
-                    key={scheme.derivationScheme}
-                  >
-                    {getHardwareImportSchemeLabel(scheme)}
-                  </leo-option>
-                )
-              })}
+              {dropdownItems}
             </Dropdown>
           ) : null}
         </SelectWrapper>
       </SelectRow>
-      {[BraveWallet.CoinType.ETH, BraveWallet.CoinType.SOL].includes(coin) && (
+      {showSchemesDropdown && (
         <DisclaimerWrapper>
           <DisclaimerText>
             {getLocale('braveWalletSwitchHDPathTextHardwareWallet')}

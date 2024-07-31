@@ -12,7 +12,10 @@ import { getLocale } from '../../../../common/locale'
 import { loadAccountsFromDevice } from '../../../common/async/hardware'
 
 // components
-import { HardwareWalletAccountsList } from './accounts_list'
+import {
+  AccountFromDeviceListItem,
+  HardwareWalletAccountsList
+} from './accounts_list'
 import {
   AuthorizeHardwareDeviceIFrame //
 } from '../../shared/authorize-hardware-device/authorize-hardware-device'
@@ -37,7 +40,6 @@ import {
   DerivationScheme,
   AllHardwareImportSchemes,
   HardwareImportScheme,
-  AccountFromDevice,
   DerivationSchemes
 } from '../../../common/hardware/types'
 import { BraveWallet, CreateAccountOptionsType } from '../../../constants/types'
@@ -168,10 +170,11 @@ export const HardwareWalletConnect = ({
   // state
   const [selectedHardwareVendor, setSelectedHardwareVendor] =
     React.useState<BraveWallet.HardwareVendor>()
-  const [isConnecting, setIsConnecting] = React.useState<boolean>(false)
-  const [accounts, setAccounts] = React.useState<
-    Array<Required<AccountFromDevice>>
-  >([])
+  const [isLoadingAccounts, setIsLoadingAccounts] =
+    React.useState<boolean>(false)
+  const [accounts, setAccounts] = React.useState<AccountFromDeviceListItem[]>(
+    []
+  )
   const [connectionError, setConnectionError] = React.useState<
     ErrorMessage | undefined
   >(undefined)
@@ -205,37 +208,49 @@ export const HardwareWalletConnect = ({
     setAccounts(newAccounts)
   }
 
-  const loadMoreAccounts = React.useCallback(async () => {
-    const numberOfAccountsToLoad = totalNumberOfAccounts - accounts.length
-    if (numberOfAccountsToLoad <= 0) {
-      return
-    }
-
-    setIsConnecting(true)
-    const result = await loadAccountsFromDevice({
-      startIndex: accounts.length,
-      count: numberOfAccountsToLoad,
-      scheme: currentHardwareImportScheme,
-      onAuthorized: hideAuthorizeDevice
+  const supportedSchemes = React.useMemo(() => {
+    return AllHardwareImportSchemes.filter((scheme) => {
+      return (
+        scheme.coin === selectedAccountType.coin &&
+        scheme.vendor === selectedHardwareVendor
+      )
     })
-    setIsConnecting(false)
+  }, [selectedHardwareVendor, selectedAccountType.coin])
 
-    if (result.payload) {
-      setShowAccountsList(true)
+  const loadMoreAccounts = React.useCallback(
+    async (
+      startIndex: number,
+      numberOfAccountsToLoad: number,
+      scheme: HardwareImportScheme
+    ) => {
+      setIsLoadingAccounts(true)
+      const result = await loadAccountsFromDevice({
+        startIndex,
+        count: numberOfAccountsToLoad,
+        scheme,
+        onAuthorized: hideAuthorizeDevice
+      })
+      setIsLoadingAccounts(false)
 
-      const newAccounts: Array<Required<AccountFromDevice>> =
-        result.payload.map((acc) => {
-          const alreadyInWallet = !!savedAccounts.find((a) => {
-            return (
-              a.accountId.kind === BraveWallet.AccountKind.kHardware &&
-              a.address === acc.address
-            )
-          })
-          return { ...acc, alreadyInWallet, shouldAddToWallet: false }
-        })
+      if (result.payload) {
+        setShowAccountsList(true)
 
-      setAccounts([...accounts, ...newAccounts])
-    } else {
+        const newAccounts: AccountFromDeviceListItem[] = result.payload.map(
+          (acc) => {
+            const alreadyInWallet = !!savedAccounts.find((a) => {
+              return (
+                a.accountId.kind === BraveWallet.AccountKind.kHardware &&
+                a.address === acc.address
+              )
+            })
+            return { ...acc, alreadyInWallet, shouldAddToWallet: false }
+          }
+        )
+
+        setAccounts((prev) => prev.concat(newAccounts))
+        return
+      }
+
       setShowAccountsList(false)
       if (result.error === 'unauthorized') {
         setShowAuthorizeDevice(true)
@@ -244,18 +259,34 @@ export const HardwareWalletConnect = ({
           getErrorMessage(result.error, selectedAccountType.name)
         )
       }
+    },
+    [savedAccounts, selectedAccountType.name]
+  )
+
+  React.useEffect(() => {
+    // Don't load more if already loading.
+    if (isLoadingAccounts) {
+      return
     }
+
+    // Just return if there is nothing to load.
+    const numberOfAccountsToLoad = totalNumberOfAccounts - accounts.length
+    if (numberOfAccountsToLoad <= 0) {
+      return
+    }
+
+    loadMoreAccounts(
+      accounts.length,
+      numberOfAccountsToLoad,
+      currentHardwareImportScheme
+    )
   }, [
     currentHardwareImportScheme,
     totalNumberOfAccounts,
-    savedAccounts,
-    accounts,
-    selectedAccountType.name
+    loadMoreAccounts,
+    accounts.length,
+    isLoadingAccounts
   ])
-
-  React.useEffect(() => {
-    loadMoreAccounts()
-  }, [currentHardwareImportScheme, totalNumberOfAccounts, loadMoreAccounts])
 
   const onAddAccounts = React.useCallback(async () => {
     if (accounts.length === 0) {
@@ -310,6 +341,9 @@ export const HardwareWalletConnect = ({
   }, [selectedHardwareVendor, selectVendor])
 
   const increaseNumberOfAccounts = () => {
+    if (isLoadingAccounts) {
+      return
+    }
     if (currentHardwareImportScheme.singleAccount) {
       setTotalNumberOfAccounts(1)
       return
@@ -352,6 +386,7 @@ export const HardwareWalletConnect = ({
     return (
       <HardwareWalletAccountsList
         currentHardwareImportScheme={currentHardwareImportScheme}
+        supportedSchemes={supportedSchemes}
         setHardwareImportScheme={setHardwareImportScheme}
         accounts={accounts}
         onLoadMore={increaseNumberOfAccounts}
@@ -379,12 +414,12 @@ export const HardwareWalletConnect = ({
       ) : (
         <ContinueButton
           onClick={increaseNumberOfAccounts}
-          isLoading={isConnecting}
+          isLoading={isLoadingAccounts}
         >
           <div slot='loading'>
             {getLocale('braveWalletConnectingHardwareWallet')}
           </div>
-          {!isConnecting && getLocale('braveWalletAddAccountConnect')}
+          {!isLoadingAccounts && getLocale('braveWalletAddAccountConnect')}
         </ContinueButton>
       )}
     </Column>

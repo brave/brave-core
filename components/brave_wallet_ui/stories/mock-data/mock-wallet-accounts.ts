@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import {
   AccountFromDevice,
-  AllHardwareImportSchemes
+  EthLedgerLiveHardwareImportScheme
 } from '../../common/hardware/types'
 import { BraveWallet } from '../../constants/types'
 
@@ -88,18 +88,14 @@ export const mockAccounts: BraveWallet.AccountInfo[] = [
   mockBitcoinAccount
 ]
 
-export const mockAccountsFromDevice: Array<Required<AccountFromDevice>> = [
+export const mockAccountsFromDevice: AccountFromDevice[] = [
   {
-    address: mockAccounts[0].address,
-    derivationPath: AllHardwareImportSchemes[0].pathTemplate(0),
-    alreadyInWallet: false,
-    shouldAddToWallet: true
+    address: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+    derivationPath: EthLedgerLiveHardwareImportScheme.pathTemplate(0)
   },
   {
-    address: mockAccounts[0].address + 'h',
-    derivationPath: AllHardwareImportSchemes[0].pathTemplate(1),
-    alreadyInWallet: true,
-    shouldAddToWallet: false
+    address: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
+    derivationPath: EthLedgerLiveHardwareImportScheme.pathTemplate(1)
   }
 ]
 

@@ -14,17 +14,30 @@ import {
 import { HardwareWalletAccountsList } from './accounts_list'
 import { Meta } from '@storybook/react'
 import {
-  AllHardwareImportSchemes,
-  DerivationScheme
+  DerivationScheme,
+  EthLedgerDeprecatedHardwareImportScheme,
+  EthLedgerLegacyHardwareImportScheme,
+  EthLedgerLiveHardwareImportScheme
 } from '../../../common/hardware/types'
 
 export const HardwareAccountsList = {
   render: () => (
     <WalletPageStory>
       <HardwareWalletAccountsList
-        accounts={mockAccountsFromDevice}
+        accounts={mockAccountsFromDevice.map((a, i) => {
+          return {
+            ...a,
+            shouldAddToWallet: i === 0,
+            alreadyInWallet: i !== 0
+          }
+        })}
         onLoadMore={function (): void {}}
-        currentHardwareImportScheme={AllHardwareImportSchemes[0]}
+        currentHardwareImportScheme={EthLedgerLiveHardwareImportScheme}
+        supportedSchemes={[
+          EthLedgerLiveHardwareImportScheme,
+          EthLedgerLegacyHardwareImportScheme,
+          EthLedgerDeprecatedHardwareImportScheme
+        ]}
         setHardwareImportScheme={function (scheme: DerivationScheme): void {}}
         onAddAccounts={function (): void {}}
         onAccountChecked={function (path: string, checked: boolean): void {}}

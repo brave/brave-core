@@ -56,6 +56,8 @@ export interface HardwareImportScheme {
   coin: BraveWallet.CoinType
   keyringId: BraveWallet.KeyringId
   vendor: BraveWallet.HardwareVendor
+  // TODO(apaymyshev): name field needs l10n
+  // https://github.com/brave/brave-browser/issues/40148
   name: string
   /** Some schemes are valid only for a single network for corresponding
    * coin. */
@@ -126,7 +128,7 @@ export const FilLedgerMainnetHardwareImportScheme: HardwareImportScheme = {
   coin: BraveWallet.CoinType.FIL,
   keyringId: BraveWallet.KeyringId.kFilecoin,
   vendor: BraveWallet.HardwareVendor.kLedger,
-  name: '',
+  name: 'Default',
   fixedNetwork: BraveWallet.FILECOIN_MAINNET,
   pathTemplate: (index) => `m/44'/461'/0'/0/${index}`
 }
@@ -136,7 +138,7 @@ export const FilLedgerTestnetHardwareImportScheme: HardwareImportScheme = {
   coin: BraveWallet.CoinType.FIL,
   keyringId: BraveWallet.KeyringId.kFilecoinTestnet,
   vendor: BraveWallet.HardwareVendor.kLedger,
-  name: '',
+  name: 'Default',
   fixedNetwork: BraveWallet.FILECOIN_TESTNET,
   pathTemplate: (index) => `m/44'/1'/0'/0/${index}`
 }
@@ -146,7 +148,7 @@ export const BtcLedgerMainnetHardwareImportScheme: HardwareImportScheme = {
   coin: BraveWallet.CoinType.BTC,
   keyringId: BraveWallet.KeyringId.kBitcoinImport,
   vendor: BraveWallet.HardwareVendor.kLedger,
-  name: '',
+  name: 'Default',
   fixedNetwork: BraveWallet.BITCOIN_MAINNET,
   pathTemplate: (index) => `84'/0'/${index}'`
 }
@@ -156,7 +158,7 @@ export const BtcLedgerTestnetHardwareImportScheme: HardwareImportScheme = {
   coin: BraveWallet.CoinType.BTC,
   keyringId: BraveWallet.KeyringId.kBitcoinImportTestnet,
   vendor: BraveWallet.HardwareVendor.kLedger,
-  name: '',
+  name: 'Default',
   fixedNetwork: BraveWallet.BITCOIN_TESTNET,
   pathTemplate: (index) => `84'/1'/${index}'`
 }
@@ -205,6 +207,4 @@ export interface FetchHardwareWalletAccountsProps {
 export interface AccountFromDevice {
   address: string
   derivationPath: string
-  alreadyInWallet?: boolean
-  shouldAddToWallet?: boolean
 }
