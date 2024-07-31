@@ -225,10 +225,20 @@ public class BraveVpnNativeWorker {
                 String publicKey,
                 String hostname);
 
-        void verifyCredentials(long nativeBraveVpnNativeWorker, String hostname, String clientId,
-                String subscriberCredential, String apiAuthToken);
-        void invalidateCredentials(long nativeBraveVpnNativeWorker, String hostname,
-                String clientId, String subscriberCredential, String apiAuthToken);
+        void verifyCredentials(
+                long nativeBraveVpnNativeWorker,
+                String hostname,
+                String clientId,
+                String subscriberCredential,
+                String apiAuthToken);
+
+        void invalidateCredentials(
+                long nativeBraveVpnNativeWorker,
+                String hostname,
+                String clientId,
+                String subscriberCredential,
+                String apiAuthToken);
+
         void getSubscriberCredential(long nativeBraveVpnNativeWorker, String productType,
                 String productId, String validationMethod, String purchaseToken,
                 String packageName);

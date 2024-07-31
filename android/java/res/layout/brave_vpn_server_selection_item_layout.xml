@@ -1,10 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/server_text"
+    android:id="@+id/server_selection_item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:textSize="16sp"
-    android:textColor="@color/vpn_timer_text_color"
-    android:drawablePadding="8dp" />
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="12dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/server_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="16dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/server_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/LargeRegular"
+            android:textColor="@color/schemes_on_surface" />
+
+        <TextView
+            android:id="@+id/city_server_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/DefaultRegular"
+            android:textColor="@color/schemes_on_surface_variant" />
+
+    </LinearLayout>
+
+    <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/server_radio_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="16dp" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/schemes_outline_variant"
+        android:layout_marginEnd="16dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:layout_gravity="center_vertical"
+        app:srcCompat="@drawable/ic_carat_right" />
+
+</LinearLayout>

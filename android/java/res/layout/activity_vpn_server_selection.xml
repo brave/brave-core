@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -19,18 +21,57 @@
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"/>
 
-            <include
+            <!-- <include
                 android:id="@+id/automatic_server_text"
-                layout="@layout/brave_vpn_server_selection_item_layout"/>
+                layout="@layout/brave_vpn_server_selection_item_layout"/> -->
+
+            <LinearLayout
+                android:id="@+id/automatic_server_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/LargeRegular"
+                        android:text="@string/automatic"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/SmallRegular"
+                        android:text="@string/automatic_server_selection_text"/>
+
+                </LinearLayout>
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                   android:id="@+id/automatic_server_switch"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   app:showText="false"
+                   android:clickable="false"/>
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
-                android:padding="16dp"
-                android:alpha="0.6"
-                android:text="@string/automatic_server_selection_text"/>
+                android:layout_marginHorizontal="16dp"
+                style="@style/DefaultSemibold"
+                android:textColor="@color/schemes_primary"
+                android:text="@string/servers"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/server_selection_list"
