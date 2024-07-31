@@ -10,7 +10,22 @@
 
 [package]
 name = "spin"
-version = "0.5.2"
+version = "0.9.8"
 
 [features]
+"barrier" = []
+"default" = []
+"fair_mutex" = []
+"lazy" = []
+"lock_api" = []
+"lock_api_crate" = []
+"mutex" = []
+"once" = []
+"portable-atomic" = []
+"portable_atomic" = []
+"rwlock" = []
+"spin_mutex" = []
+"std" = []
+"ticket_mutex" = []
+"use_ticket_mutex" = []
 
