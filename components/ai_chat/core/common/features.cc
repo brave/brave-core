@@ -52,4 +52,12 @@ bool IsContextMenuRewriteInPlaceEnabled() {
   return base::FeatureList::IsEnabled(features::kContextMenuRewriteInPlace);
 }
 
+BASE_FEATURE(kPageContentRefine,
+             "PageContentRefine",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsPageContentRefineEnabled() {
+  return base::FeatureList::IsEnabled(features::kPageContentRefine);
+}
+
 }  // namespace ai_chat::features

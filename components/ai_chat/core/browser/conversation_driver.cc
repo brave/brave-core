@@ -238,7 +238,7 @@ ConversationDriver::ConversationDriver(
                        weak_ptr_factory_.GetWeakPtr()));
   }
 
-  if (leo_local_models_updater_) {
+  if (leo_local_models_updater_ && features::IsPageContentRefineEnabled()) {
     leo_local_models_updater_->Register();
   }
 }
@@ -1069,6 +1069,7 @@ void ConversationDriver::PerformAssistantGeneration(
       base::BindOnce(&ConversationDriver::OnEngineCompletionComplete,
                      weak_ptr_factory_.GetWeakPtr(), current_navigation_id);
   bool should_refine_page_content =
+      features::IsPageContentRefineEnabled() &&
       page_content.length() > GetCurrentModel()
                                   .options->get_leo_model_options()
                                   ->max_page_content_length &&
