@@ -52,7 +52,7 @@ public struct AIChatTermsAndConditionsView: View {
             .padding([.top, .bottom], 12)
             .padding([.leading, .trailing], 16)
             .frame(maxWidth: .infinity)
-            .foregroundStyle(.white)
+            .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
             .background(
               Color(braveSystemName: .buttonBackground),
               in: Capsule()
@@ -69,6 +69,7 @@ public struct AIChatTermsAndConditionsView: View {
 struct AIChatTermsAndConditionsView_Preview: PreviewProvider {
   static var previews: some View {
     AIChatTermsAndConditionsView(termsAndConditionsAccepted: .constant(false))
+      .previewColorSchemes()
       .previewLayout(.sizeThatFits)
   }
 }

@@ -28,9 +28,8 @@ struct AIChatBusyErrorView: View {
           label: {
             Text(Strings.AIChat.retryActionTitle)
               .font(.body.weight(.semibold))
-              .foregroundColor(Color(.white))
               .padding()
-              .foregroundStyle(.white)
+              .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
               .background(
                 Color(braveSystemName: .buttonBackground),
                 in: Capsule()
@@ -52,6 +51,7 @@ struct AIChatBusyErrorView_Preview: PreviewProvider {
     AIChatBusyErrorView {
       print("Retry")
     }
+    .previewColorSchemes()
     .previewLayout(.sizeThatFits)
   }
 }

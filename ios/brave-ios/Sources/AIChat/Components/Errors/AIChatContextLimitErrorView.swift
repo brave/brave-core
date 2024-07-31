@@ -28,9 +28,8 @@ struct AIChatContextLimitErrorView: View {
           label: {
             Text(Strings.AIChat.newChatActionTitle)
               .font(.body.weight(.semibold))
-              .foregroundColor(Color(.white))
               .padding()
-              .foregroundStyle(.white)
+              .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
               .background(
                 Color(braveSystemName: .buttonBackground),
                 in: Capsule()
@@ -52,6 +51,7 @@ struct AIChatContextLimitErrorView_Preview: PreviewProvider {
     AIChatContextLimitErrorView {
       print("New Chat")
     }
+    .previewColorSchemes()
     .previewLayout(.sizeThatFits)
   }
 }

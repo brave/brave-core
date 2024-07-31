@@ -42,14 +42,14 @@ public struct BraveFilledButtonStyle: ButtonStyle {
     configuration.label
       .opacity(configuration.isPressed ? 0.7 : 1.0)
       .font(size.font)
-      .foregroundColor(.white)
+      .foregroundColor(Color(braveSystemName: .schemesOnPrimary))
       .padding(size.padding)
       .background(
         Group {
           if isEnabled {
-            Color(.braveBlurpleTint).opacity(configuration.isPressed ? 0.7 : 1.0)
+            Color(braveSystemName: .buttonBackground).opacity(configuration.isPressed ? 0.7 : 1.0)
           } else {
-            Color(.braveDisabled)
+            Color(braveSystemName: .buttonDisabled)
           }
         }
       )

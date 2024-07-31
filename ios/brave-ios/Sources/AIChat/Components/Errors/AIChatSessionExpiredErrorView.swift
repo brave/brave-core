@@ -28,9 +28,8 @@ struct AIChatSessionExpiredErrorView: View {
           label: {
             Text(Strings.AIChat.refreshCredentialsActionTitle)
               .font(.body.weight(.semibold))
-              .foregroundColor(Color(.white))
               .padding()
-              .foregroundStyle(.white)
+              .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
               .background(
                 Color(braveSystemName: .buttonBackground),
                 in: Capsule()
@@ -52,6 +51,7 @@ struct AIChatSessionExpiredErrorView_Preview: PreviewProvider {
     AIChatSessionExpiredErrorView {
       print("Refresh Credentials")
     }
+    .previewColorSchemes()
     .previewLayout(.sizeThatFits)
   }
 }
