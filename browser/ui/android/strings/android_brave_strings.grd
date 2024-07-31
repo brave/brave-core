@@ -2423,7 +2423,13 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Support provided with the help of the Guardian team.\n\nPlease select the information you're comfortable sharing with us.\n\nThe more information you initially share with us the easier it will be for our support staff to help you resolve your issue.
     </message>
     <message name="IDS_AUTOMATIC_SERVER_SELECTION_TEXT" desc="Vpn server selection text">
-      A server region most proximate to you willl be automatically selected, based on your system timezone. This is recommended in order to ensure fast internet speeds.
+      Auto-select the VPN server region closest to you based on your timezone. This option is recommended to maximize Internet speeds.
+    </message>
+    <message name="IDS_CITY_SERVER_TEXT" desc="Vpn server selection city/server text">
+      2 cities - 5 servers
+    </message>
+    <message name="IDS_SERVERS" desc="Vpn server selection servers text">
+      Servers
     </message>
     <message name="IDS_OTHER_ISSUES" desc="Brave Vpn support text">
       Select Issue

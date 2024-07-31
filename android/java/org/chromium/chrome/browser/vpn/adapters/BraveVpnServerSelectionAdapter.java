@@ -7,13 +7,17 @@
 
 package org.chromium.chrome.browser.vpn.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.radiobutton.MaterialRadioButton;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.activities.VpnServerSelectionActivity.OnServerRegionSelection;
@@ -26,8 +30,13 @@ import java.util.List;
 
 public class BraveVpnServerSelectionAdapter
         extends RecyclerView.Adapter<BraveVpnServerSelectionAdapter.ViewHolder> {
-    List<BraveVpnServerRegion> mBraveVpnServerRegions = new ArrayList<>();
+    private final Context mContext;
+    private List<BraveVpnServerRegion> mBraveVpnServerRegions = new ArrayList<>();
     private OnServerRegionSelection mOnServerRegionSelection;
+
+    public BraveVpnServerSelectionAdapter(Context context) {
+        this.mContext = context;
+    }
 
     @NonNull
     @Override
@@ -42,23 +51,26 @@ public class BraveVpnServerSelectionAdapter
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final BraveVpnServerRegion vpnServerRegion = mBraveVpnServerRegions.get(position);
         if (vpnServerRegion != null) {
-            String locationText =
-                    BraveVpnUtils.countryCodeToEmoji(vpnServerRegion.getCountryIsoCode())
-                            + " "
-                            + vpnServerRegion.getNamePretty();
-            holder.serverText.setText(locationText);
-            if (BraveVpnPrefUtils.getServerRegion().equals(vpnServerRegion.getName())) {
-                holder.serverText.setCompoundDrawablesWithIntrinsicBounds(
-                        0, 0, R.drawable.ic_checkbox_checked, 0);
-            } else {
-                holder.serverText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-            }
-            holder.serverText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mOnServerRegionSelection.onServerRegionClick(vpnServerRegion);
-                }
-            });
+            holder.serverIconText.setText(
+                    BraveVpnUtils.countryCodeToEmoji(vpnServerRegion.getCountryIsoCode()));
+            holder.serverText.setText(vpnServerRegion.getNamePretty());
+            holder.cityServerText.setText(
+                    mContext.getResources().getString(R.string.city_server_text));
+            holder.serverRadioButton.setChecked(
+                    BraveVpnPrefUtils.getServerRegion().equals(vpnServerRegion.getName()));
+            // if (BraveVpnPrefUtils.getServerRegion().equals(vpnServerRegion.getName())) {
+            //     holder.serverText.setCompoundDrawablesWithIntrinsicBounds(
+            //             0, 0, R.drawable.ic_checkbox_checked, 0);
+            // } else {
+            //     holder.serverText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            // }
+            holder.serverSelectionItemLayout.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mOnServerRegionSelection.onServerRegionClick(vpnServerRegion);
+                        }
+                    });
         }
     }
 
@@ -76,11 +88,20 @@ public class BraveVpnServerSelectionAdapter
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        public LinearLayout serverSelectionItemLayout;
+        public TextView serverIconText;
         public TextView serverText;
+        public TextView cityServerText;
+        public MaterialRadioButton serverRadioButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            this.serverSelectionItemLayout =
+                    itemView.findViewById(R.id.server_selection_item_layout);
+            this.serverIconText = itemView.findViewById(R.id.server_icon);
             this.serverText = itemView.findViewById(R.id.server_text);
+            this.cityServerText = itemView.findViewById(R.id.city_server_text);
+            this.serverRadioButton = itemView.findViewById(R.id.server_radio_button);
         }
     }
 }
