@@ -15,7 +15,6 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "gtest/gtest.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::ParseJson;

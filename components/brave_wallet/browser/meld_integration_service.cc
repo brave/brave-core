@@ -141,16 +141,17 @@ void FillCustomerData(
       co.Set("email", customer_data->customer->email);
       cbwr.Set("customer", std::move(co));
     }
-    
-    if(customer_data->customer_id) {
+
+    if (customer_data->customer_id) {
       cbwr.Set("customerId", customer_data->customer_id.value());
     }
 
     if (customer_data->external_customer_id) {
-      cbwr.Set("externalCustomerId", customer_data->external_customer_id.value());
+      cbwr.Set("externalCustomerId",
+               customer_data->external_customer_id.value());
     }
 
-    if(customer_data->external_session_id) {
+    if (customer_data->external_session_id) {
       cbwr.Set("externalSessionId", customer_data->external_session_id.value());
     }
   }
@@ -170,7 +171,7 @@ std::optional<base::Value::Dict> GetCryptoBuyWidgetPayload(
 
   if (session_data->lock_fields && session_data->lock_fields->size()) {
     base::Value::List lfs;
-    for(const auto& fld : *session_data->lock_fields) {
+    for (const auto& fld : *session_data->lock_fields) {
       lfs.Append(fld);
     }
     cbsd.Set("lockFields", std::move(lfs));
@@ -215,7 +216,7 @@ std::optional<base::Value::Dict> GetCryptoSellWidgetPayload(
 
   if (session_data->lock_fields && session_data->lock_fields->size()) {
     base::Value::List lfs;
-    for(const auto& fld : *session_data->lock_fields) {
+    for (const auto& fld : *session_data->lock_fields) {
       lfs.Append(fld);
     }
     cbsd.Set("lockFields", std::move(lfs));
@@ -231,8 +232,8 @@ std::optional<base::Value::Dict> GetCryptoSellWidgetPayload(
 
   cbsd.Set("serviceProvider", session_data->service_provider);
   cbsd.Set("sourceAmount", session_data->source_amount);
-  cbsd.Set("sourceCurrencyCode", session_data->source_currency_code);  
-  if(session_data->wallet_address){
+  cbsd.Set("sourceCurrencyCode", session_data->source_currency_code);
+  if (session_data->wallet_address) {
     cbsd.Set("walletAddress", session_data->wallet_address.value());
   }
 
@@ -258,17 +259,17 @@ std::optional<base::Value::Dict> GetCryptoTransferWidgetPayload(
   base::Value::Dict cbwr;
   base::Value::Dict cbsd;
 
-  if(session_data->country_code) {
+  if (session_data->country_code) {
     cbsd.Set("countryCode", session_data->country_code.value());
   }
 
-  if(session_data->institution_id) {
+  if (session_data->institution_id) {
     cbsd.Set("institutionId", session_data->institution_id.value());
   }
 
   if (session_data->lock_fields && session_data->lock_fields->size()) {
     base::Value::List lfs;
-    for(const auto& fld : *session_data->lock_fields) {
+    for (const auto& fld : *session_data->lock_fields) {
       lfs.Append(fld);
     }
     cbsd.Set("lockFields", std::move(lfs));
@@ -280,17 +281,17 @@ std::optional<base::Value::Dict> GetCryptoTransferWidgetPayload(
 
   cbsd.Set("serviceProvider", session_data->service_provider);
 
-  if(session_data->source_amount) {
+  if (session_data->source_amount) {
     cbsd.Set("sourceAmount", session_data->source_amount.value());
   }
 
   base::Value::List source_currency_codes;
-  for(const auto& cc : session_data->source_currency_codes) {
+  for (const auto& cc : session_data->source_currency_codes) {
     source_currency_codes.Append(cc);
   }
   cbsd.Set("sourceCurrencyCodes", std::move(source_currency_codes));
 
-  if(session_data->wallet_address){
+  if (session_data->wallet_address) {
     cbsd.Set("walletAddress", session_data->wallet_address.value());
   }
 
@@ -307,12 +308,13 @@ std::optional<base::Value::Dict> GetCryptoTransferWidgetPayload(
 }
 
 std::string GetPayload(const std::optional<base::Value::Dict>& payload_value) {
-  if(!payload_value) {
+  if (!payload_value) {
     return "";
   }
 
   std::string payload;
-  auto serialize_success = base::JSONWriter::Write(payload_value.value(), &payload);
+  auto serialize_success =
+      base::JSONWriter::Write(payload_value.value(), &payload);
   DCHECK(serialize_success);
   return payload;
 }
@@ -732,8 +734,8 @@ void MeldIntegrationService::CryptoBuyWidgetCreate(
       base::BindOnce(&MeldIntegrationService::OnCryptoBuyWidgetCreate,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  auto payload_value =
-      GetCryptoBuyWidgetPayload(std::move(session_data), std::move(customer_data));
+  auto payload_value = GetCryptoBuyWidgetPayload(std::move(session_data),
+                                                 std::move(customer_data));
 
   auto url = GURL(kMeldRpcEndpoint).Resolve("/crypto/session/widget");
   auto conversion_callback = base::BindOnce(&SanitizeJson);
@@ -749,7 +751,7 @@ void MeldIntegrationService::OnParseCryptoBuyWidgetCreate(
   if (!crypto_widget) {
     std::move(callback).Run(
         nullptr, std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
     return;
   }
 
@@ -763,7 +765,7 @@ void MeldIntegrationService::OnCryptoBuyWidgetCreate(
       !NeedsToParseResponse(api_request_result.response_code())) {
     std::move(callback).Run(
         nullptr, std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
+                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
     return;
   }
 
@@ -774,20 +776,22 @@ void MeldIntegrationService::OnCryptoBuyWidgetCreate(
   }
 
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, base::BindOnce(&ParseCryptoWidgetCreate, api_request_result.TakeBody()),
+      FROM_HERE,
+      base::BindOnce(&ParseCryptoWidgetCreate, api_request_result.TakeBody()),
       base::BindOnce(&MeldIntegrationService::OnParseCryptoBuyWidgetCreate,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void MeldIntegrationService::CryptoSellWidgetCreate(mojom::CryptoSellSessionDataPtr session_data,
-                              mojom::CryptoWidgetCustomerDataPtr customer_data,
-                              CryptoSellWidgetCreateCallback callback) {
+void MeldIntegrationService::CryptoSellWidgetCreate(
+    mojom::CryptoSellSessionDataPtr session_data,
+    mojom::CryptoWidgetCustomerDataPtr customer_data,
+    CryptoSellWidgetCreateCallback callback) {
   auto internal_callback =
       base::BindOnce(&MeldIntegrationService::OnCryptoSellWidgetCreate,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  auto payload_value =
-      GetCryptoSellWidgetPayload(std::move(session_data), std::move(customer_data));
+  auto payload_value = GetCryptoSellWidgetPayload(std::move(session_data),
+                                                  std::move(customer_data));
 
   auto url = GURL(kMeldRpcEndpoint).Resolve("/crypto/session/widget");
   auto conversion_callback = base::BindOnce(&SanitizeJson);
@@ -803,7 +807,7 @@ void MeldIntegrationService::OnParseCryptoSellWidgetCreate(
   if (!crypto_widget) {
     std::move(callback).Run(
         nullptr, std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
     return;
   }
 
@@ -817,7 +821,7 @@ void MeldIntegrationService::OnCryptoSellWidgetCreate(
       !NeedsToParseResponse(api_request_result.response_code())) {
     std::move(callback).Run(
         nullptr, std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
+                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
     return;
   }
 
@@ -828,21 +832,22 @@ void MeldIntegrationService::OnCryptoSellWidgetCreate(
   }
 
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, base::BindOnce(&ParseCryptoWidgetCreate, api_request_result.TakeBody()),
+      FROM_HERE,
+      base::BindOnce(&ParseCryptoWidgetCreate, api_request_result.TakeBody()),
       base::BindOnce(&MeldIntegrationService::OnParseCryptoSellWidgetCreate,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void MeldIntegrationService::CryptoTransferWidgetCreate(
-      mojom::CryptoTransferSessionDataPtr session_data,
-      mojom::CryptoWidgetCustomerDataPtr customer_data,
-      CryptoTransferWidgetCreateCallback callback) {
+    mojom::CryptoTransferSessionDataPtr session_data,
+    mojom::CryptoWidgetCustomerDataPtr customer_data,
+    CryptoTransferWidgetCreateCallback callback) {
   auto internal_callback =
       base::BindOnce(&MeldIntegrationService::OnCryptoSellWidgetCreate,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  auto payload_value =
-      GetCryptoTransferWidgetPayload(std::move(session_data), std::move(customer_data));
+  auto payload_value = GetCryptoTransferWidgetPayload(std::move(session_data),
+                                                      std::move(customer_data));
 
   auto url = GURL(kMeldRpcEndpoint).Resolve("/crypto/session/widget");
   auto conversion_callback = base::BindOnce(&SanitizeJson);
@@ -850,7 +855,6 @@ void MeldIntegrationService::CryptoTransferWidgetCreate(
       "POST", url, GetPayload(payload_value), "", std::move(internal_callback),
       MakeMeldApiHeaders(), {.auto_retry_on_network_change = true},
       std::move(conversion_callback));
-
 }
 
 void MeldIntegrationService::OnParseCryptoTransferWidgetCreate(
@@ -859,7 +863,7 @@ void MeldIntegrationService::OnParseCryptoTransferWidgetCreate(
   if (!crypto_widget) {
     std::move(callback).Run(
         nullptr, std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
     return;
   }
 
@@ -873,7 +877,7 @@ void MeldIntegrationService::OnCryptoTransferWidgetCreate(
       !NeedsToParseResponse(api_request_result.response_code())) {
     std::move(callback).Run(
         nullptr, std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
+                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
     return;
   }
 
@@ -884,7 +888,8 @@ void MeldIntegrationService::OnCryptoTransferWidgetCreate(
   }
 
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, base::BindOnce(&ParseCryptoWidgetCreate, api_request_result.TakeBody()),
+      FROM_HERE,
+      base::BindOnce(&ParseCryptoWidgetCreate, api_request_result.TakeBody()),
       base::BindOnce(&MeldIntegrationService::OnParseCryptoTransferWidgetCreate,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }

@@ -381,16 +381,17 @@ std::optional<std::vector<mojom::MeldCountryPtr>> ParseCountries(
   return countries;
 }
 
-mojom::MeldCryptoWidgetPtr
-ParseCryptoWidgetCreate(const base::Value& json_value) {
+mojom::MeldCryptoWidgetPtr ParseCryptoWidgetCreate(
+    const base::Value& json_value) {
   // Parses results like this:
   // {
   //   "id": "WXDmJRFbxfUYgRi3Skbqd3",
   //   "externalSessionId": null,
   //   "externalCustomerId": null,
   //   "customerId": "WXDmJQhKFEeFt5jSeAz7gh",
-  //   "widgetUrl": "https://sb.meldcrypto.com?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjcnlwdG8iLCJhY2NvdW50SWQiOiJXUTRpOU45QlBQcUpYblRTOXdURjR0IiwiaXNzIjoibWVsZC5pbyIsInNlc3Npb25JZCI6IldYRG1KUkZieGZVWWdSaTNTa2JxZDMiLCJleHAiOjE3MjA3NzkxMzUsImlhdCI6MTcyMDc3NzMzNX0.Bt9MIkgZujeZVm6qQTEZY1pY2z5qsiKwy4VzTfVGdAg",
-  //   "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjcnlwdG8iLCJhY2NvdW50SWQiOiJXUTRpOU45QlBQcUpYblRTOXdURjR0IiwiaXNzIjoibWVsZC5pbyIsInNlc3Npb25JZCI6IldYRG1KUkZieGZVWWdSaTNTa2JxZDMiLCJleHAiOjE3MjA3NzkxMzUsImlhdCI6MTcyMDc3NzMzNX0.Bt9MIkgZujeZVm6qQTEZY1pY2z5qsiKwy4VzTfVGdAg"
+  //   "widgetUrl":
+  //   "https://sb.meldcrypto.com?token=token_value",
+  //   "token": "token_value"
   // }
 
   if (!json_value.is_dict()) {
@@ -408,6 +409,5 @@ ParseCryptoWidgetCreate(const base::Value& json_value) {
       cw_value->external_customer_id, cw_value->customer_id,
       cw_value->widget_url, cw_value->token);
 }
-
 
 }  // namespace brave_wallet

@@ -73,11 +73,9 @@ class MeldIntegrationService : public KeyedService,
                              mojom::CryptoWidgetCustomerDataPtr customer_data,
                              CryptoBuyWidgetCreateCallback callback) override;
 
-
-      void CryptoSellWidgetCreate(
-          mojom::CryptoSellSessionDataPtr session_data,
-          mojom::CryptoWidgetCustomerDataPtr customer_data,
-          CryptoSellWidgetCreateCallback callback) override;
+  void CryptoSellWidgetCreate(mojom::CryptoSellSessionDataPtr session_data,
+                              mojom::CryptoWidgetCustomerDataPtr customer_data,
+                              CryptoSellWidgetCreateCallback callback) override;
 
   void CryptoTransferWidgetCreate(
       mojom::CryptoTransferSessionDataPtr session_data,
@@ -144,7 +142,7 @@ class MeldIntegrationService : public KeyedService,
       mojom::MeldCryptoWidgetPtr crypto_widget) const;
 
   void OnCryptoTransferWidgetCreate(CryptoTransferWidgetCreateCallback callback,
-                                APIRequestResult api_request_result) const;
+                                    APIRequestResult api_request_result) const;
 
   void OnParseCryptoTransferWidgetCreate(
       CryptoTransferWidgetCreateCallback callback,
