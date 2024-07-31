@@ -621,10 +621,12 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
 
   auto* prefs = browser_->profile()->GetPrefs();
 
-  expanded_width_.Init(
+  expanded_width_pref_.Init(
       brave_tabs::kVerticalTabsExpandedWidth, prefs,
-      base::BindRepeating(&VerticalTabStripRegionView::PreferredSizeChanged,
-                          base::Unretained(this)));
+      base::BindRepeating(
+          &VerticalTabStripRegionView::OnExpandedWidthPrefChanged,
+          base::Unretained(this)));
+  OnExpandedWidthPrefChanged();
 
   show_vertical_tabs_.Init(
       brave_tabs::kVerticalTabsEnabled, prefs,
@@ -641,8 +643,9 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
 
   expanded_state_per_window_pref_.Init(
       brave_tabs::kVerticalTabsExpandedStatePerWindow, prefs,
-      base::BindRepeating(&VerticalTabStripRegionView::OnCollapsedPrefChanged,
-                          base::Unretained(this)));
+      base::BindRepeating(
+          &VerticalTabStripRegionView::OnExpandedStatePerWindowPrefChanged,
+          base::Unretained(this)));
 
   floating_mode_pref_.Init(
       brave_tabs::kVerticalTabsFloatingEnabled, prefs,
@@ -802,6 +805,20 @@ void VerticalTabStripRegionView::SetState(State state) {
 
   PreferredSizeChanged();
   UpdateBorder();
+}
+
+void VerticalTabStripRegionView::SetExpandedWidth(int dest_width) {
+  if (expanded_width_ == dest_width) {
+    return;
+  }
+
+  expanded_width_ = dest_width;
+
+  if (expanded_width_ != *expanded_width_pref_) {
+    expanded_width_pref_.SetValue(expanded_width_);
+  }
+
+  PreferredSizeChanged();
 }
 
 void VerticalTabStripRegionView::UpdateStateAfterDragAndDropFinished(
@@ -1112,7 +1129,7 @@ void VerticalTabStripRegionView::OnResize(int resize_amount,
     resize_offset_ = std::nullopt;
   }
 
-  if (*expanded_width_ == dest_width) {
+  if (expanded_width_ == dest_width) {
     return;
   }
 
@@ -1125,8 +1142,7 @@ void VerticalTabStripRegionView::OnResize(int resize_amount,
     width_animation_.Reset(state_ == State::kCollapsed ? 0 : 1);
   }
 
-  expanded_width_.SetValue(dest_width);
-  PreferredSizeChanged();
+  SetExpandedWidth(dest_width);
 }
 
 void VerticalTabStripRegionView::AnimationProgressed(
@@ -1232,6 +1248,23 @@ void VerticalTabStripRegionView::OnFloatingModePrefChanged() {
   }
 }
 
+void VerticalTabStripRegionView::OnExpandedStatePerWindowPrefChanged() {
+  OnCollapsedPrefChanged();
+  OnExpandedWidthPrefChanged();
+}
+
+void VerticalTabStripRegionView::OnExpandedWidthPrefChanged() {
+  if (!expanded_state_per_window_pref_.GetPrefName().empty() &&
+      *expanded_state_per_window_pref_) {
+    // On creation(when expanded_state_per_window_pref_ is empty), we set the
+    // default state based on the `expanded_width_pref_` even if the
+    // `expanded_state_per_window_pref_` is set.
+    return;
+  }
+
+  SetExpandedWidth(*expanded_width_pref_);
+}
+
 gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
     State state,
     bool include_border,
@@ -1259,7 +1292,7 @@ int VerticalTabStripRegionView::GetPreferredWidthForState(
     bool include_border,
     bool ignore_animation) const {
   auto calculate_expanded_width = [&]() {
-    return *expanded_width_ + (include_border ? GetInsets().width() : 0);
+    return *expanded_width_pref_ + (include_border ? GetInsets().width() : 0);
   };
 
   auto calculate_collapsed_width = [&]() {
