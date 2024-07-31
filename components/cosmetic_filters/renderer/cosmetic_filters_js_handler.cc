@@ -98,14 +98,18 @@ const char kHideSelectorsInjectScript[] =
                 (window.content_cosmetic.hide1pContent ||
                 !window.content_cosmetic.allSelectorsToRules.has(selector))) {
               let rule = selector + '{display:none !important;}';
-              window.content_cosmetic.cosmeticStyleSheet.insertRule(
-                `${rule}`, nextIndex);
-              if (!window.content_cosmetic.hide1pContent) {
-                window.content_cosmetic.allSelectorsToRules.set(
-                  selector, nextIndex);
-                window.content_cosmetic.firstRunQueue.add(selector);
+              try {
+                window.content_cosmetic.cosmeticStyleSheet.insertRule(
+                  `${rule}`, nextIndex);
+                if (!window.content_cosmetic.hide1pContent) {
+                  window.content_cosmetic.allSelectorsToRules.set(
+                    selector, nextIndex);
+                  window.content_cosmetic.firstRunQueue.add(selector);
+                }
+                nextIndex++;
+              } catch (e) {
+                console.warn('Brave Shields ignored an invalid CSS injection: ' + rule)
               }
-              nextIndex++;
             }
           });
           if (!document.adoptedStyleSheets.includes(
