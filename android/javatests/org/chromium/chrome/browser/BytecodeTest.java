@@ -505,8 +505,12 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/theme/ThemeUtils",
                         "getTextBoxColorForToolbarBackgroundInNonNativePage",
                         MethodModifier.STATIC,
-                        false,
-                        null));
+                        true,
+                        int.class,
+                        Context.class,
+                        int.class,
+                        boolean.class,
+                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/site_settings/WebsitePermissionsFetcher", // presubmit: ignore-long-line
