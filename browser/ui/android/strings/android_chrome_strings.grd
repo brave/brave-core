@@ -585,6 +585,14 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message translateable="false" name="IDS_AUTOFILL_OPTIONS_UNDO_TOGGLE_CHANGE" desc="Description below switch toggling the use of third-party autofill in Brave." formatter_data="android_java">
         Undo setting change
       </message>
+      <!-- TODO(crbug.com/40898980): Use finalized string.-->
+      <message translateable="false" name="IDS_AUTOFILL_OPTIONS_HINT_POLICY" desc="Explanation that a policy prevents toggling the use of third-party autofill in Brave." formatter_data="android_java">
+        Disabled by the administrator of this device
+      </message>
+      <!-- TODO(crbug.com/40898980): Use finalized string.-->
+      <message translateable="false" name="IDS_AUTOFILL_OPTIONS_HINT_3P_SETTING" desc="Explanation that a 3P password manager must be selected to toggle the use of third-party autofill in Brave." formatter_data="android_java">
+        Disabled because a different password manager must be set up in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Android System Settings<ph name="END_LINK">&lt;/link&gt;</ph> to use this setting.
+      </message>
       <message name="IDS_AUTOFILL_DELETE_SAVED_CVCS_CONFIRMATION_DIALOG_TITLE" desc="Title for the dialog where the user confirms their intention to delete their saved CVCs.">
         Delete saved security codes?
       </message>
@@ -1668,35 +1676,206 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
 
       <!-- Safety Hub -->
-      <message name="IDS_SAFETY_HUB_PERMISSIONS_OK_TITLE" translateable="false">
+      <message name="IDS_SAFETY_HUB_PERMISSIONS_OK_TITLE" desc="Title for the permissions module in the Safety Hub dashboard. It is displayed when the user has no automatically revoked permissions that need to be reviewed.">
         Permissions look good
       </message>
-      <message name="IDS_SAFETY_HUB_PERMISSIONS_WARNING_TITLE" translateable="false">
+      <message name="IDS_SAFETY_HUB_PERMISSIONS_WARNING_TITLE" desc="Title for the permissions module in the Safety Hub dashboard. It is displayed when some permissions have been automatically revoked.">
         {NUM_SITES, plural, =1 {Permissions removed from 1 site} other {Permissions removed from # sites}}
       </message>
-      <message name="IDS_SAFETY_HUB_PERMISSIONS_PAGE_TITLE" translateable="false">
+      <message name="IDS_SAFETY_HUB_PERMISSIONS_PAGE_TITLE" desc="Page title for the Safety Hub permissions review subpage, allowing users to review the automatically revoked permissions.">
         Review permissions
       </message>
-      <message name="IDS_SAFETY_HUB_PERMISSIONS_PAGE_HEADER" translateable="false">
-        To protect your data, permissions were removed from sites you haven’t visited recently
-      </message>
-      <message name="IDS_SAFETY_HUB_SINGLE_PERMISSION_SNACKBAR" translateable="false">
+      <message name="IDS_SAFETY_HUB_SINGLE_PERMISSION_SNACKBAR" desc="Snackbar text displayed when the user clicks the 'Undo' button for a site with revoked permissions. Informs the user about which site the permissions were allowed again for.">
         Permissions allowed again for <ph name="SITE_NAME">%1$s<ex>https://example.com:443</ex></ph>
       </message>
-      <message name="IDS_SAFETY_HUB_MULTIPLE_PERMISSIONS_SNACKBAR" translateable="false">
-        Permissions allowed again for <ph name="SITE_NUMBER">%1$s<ex>3</ex></ph> sites
+      <message name="IDS_SAFETY_HUB_MULTIPLE_PERMISSIONS_SNACKBAR" desc="Snackbar text displayed when the user click the 'Got it' at the bottom of the permissions review subpage or in the permissions review module of the dashboard. Informs the user about the number of sites for which the revoked permissions were reviewed.">
+        {NUM_SITES, plural,
+        =1 {Permissions reviewed for 1 site}
+        other {Permissions reviewed for {NUM_SITES} sites}}
       </message>
-      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_REVIEW_OK_TITLE" translateable="false">
+      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_REVIEW_OK_TITLE" desc="Title for the notifications module in the Safety Hub dashboard. It is displayed when the user has no notification permissions that need to be reviewed.">
         Notifications look good
       </message>
-      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_REVIEW_WARNING_TITLE" translateable="false">
+      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_REVIEW_WARNING_TITLE" desc="Title for the notifications module in the Safety Hub dashboard. It is displayed when the user has some notification permissions that need to be reviewed.">
         {NUM_SITES, plural, =1 {1 site recently sent a lot of notifications} other {# sites recently sent a lot of notifications}}
       </message>
-      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_PAGE_TITLE" translateable="false">
+      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_PAGE_TITLE" desc="Page title for the Safety Hub notifications review subpage, allowing users to revoke notification permissions from sites that send a lot of notifications.">
         Review notifications
       </message>
-      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_PAGE_HEADER" translateable="false">
+      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_PAGE_HEADER" desc="Header text shown at the very top of the Safety Hub notifications review subpage. Further educates the user about the contents of the page.">
         You can review sites that send a lot of notifications and stop them from sending more in the future
+      </message>
+      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_SUBLABEL" desc="Description text shown below a site name, when it is identified as a site that sends a lot of notifications and has low user interaction.">
+        {NUM_SITES, plural, =1 {About 1 notification a day} other {About # notifications a day}}
+      </message>
+      <message name="IDS_SAFETY_HUB_RESET_NOTIFICATIONS_MENU_ITEM" desc="Menu item displayed when the user clicks the 3-dot menu icon, displayed to the right of a site that sends a lot of notifications. If clicked, it unsubscribes the user from receiving more notifications from that site.">
+        Unsubscribe notifications from this site
+      </message>
+      <message name="IDS_SAFETY_HUB_ALLOW_NOTIFICATIONS_MENU_ITEM" desc="Menu item displayed when the user clicks the 3-dot menu icon, displayed to the right of a site that sends a lot of notifications. If clicked, it removes the site from the notifications review list.">
+        Always allow notifications from this site
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFETY_MODULES_SECTION_HEADER" desc="Title for top level section of Safety Hub page. It includes a safety overview of several modules that Safety Hub periodically checks.">
+        Safety at a glance
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFETY_TIPS_SECTION_HEADER" desc="Title for the user education section of Safety Hub. A series of entries that encourage the user to explore several safety related surfaces follows.">
+        Learn how Brave keeps you safe
+      </message>
+      <message name="IDS_SAFETY_HUB_DESCRIPTION" desc="Description at the top of the Safey Check page. It informs the user that safety check will run checkups periodically for several modules and display the results on this page.">
+        Brave regularly checks to make sure your browser has the safest settings. We'll let you know if anything needs review.
+      </message>
+      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_RESET_ALL_BUTTON" desc="Text found on the primary button of the notifications module warning state. When clicked it will unsubscribe the user from all sites that send a lot of notifications.">
+        Unsubscribe all
+      </message>
+      <message name="IDS_SAFETY_HUB_REMOVED_ONE_PERMISSION_SUBLABEL" desc="Description text shown below a site name, when a single permission, excluding notification permissions, was automatically revoked for that site.">
+        <ph name="PERMISSION">%1$s<ex>Location</ex></ph> <ph name="SEPARATOR">•</ph> Brave removed these permissions because you haven’t visited recently
+      </message>
+      <message name="IDS_SAFETY_HUB_REMOVED_TWO_PERMISSIONS_SUBLABEL" desc="Description text shown below a site name, when two permissions, excluding notification permissions, were automatically revoked for that site.">
+        <ph name="PERMISSION_1">%1$s<ex>Location</ex></ph>, <ph name="PERMISSION_2">%2$s<ex>Notifications</ex></ph> <ph name="SEPARATOR">•</ph> Brave removed these permissions because you haven’t visited recently
+      </message>
+      <message name="IDS_SAFETY_HUB_REMOVED_THREE_PERMISSIONS_SUBLABEL" desc="Description text shown below a site name, when three permissions, excluding notification permissions, were automatically revoked for that site.">
+        <ph name="PERMISSION_1">%1$s<ex>Location</ex></ph>, <ph name="PERMISSION_2">%2$s<ex>Notifications</ex></ph>, <ph name="PERMISSION_3">%3$s<ex>Camera</ex></ph> <ph name="SEPARATOR">•</ph> Brave removed these permissions because you haven’t visited recently
+      </message>
+      <message name="IDS_SAFETY_HUB_REMOVED_FOUR_OR_MORE_PERMISSIONS_SUBLABEL" desc="Description text shown below a site name, when four or more permissions, excluding notification permissions, were automatically revoked for that site.">
+        <ph name="PERMISSION_1">%1$s<ex>Location</ex></ph>, <ph name="PERMISSION_2">%2$s<ex>Notifications</ex></ph>, and more <ph name="SEPARATOR">•</ph> Brave removed these permissions because you haven’t visited recently
+      </message>
+      <message name="IDS_SAFETY_HUB_ABUSIVE_NOTIFICATION_PERMISSIONS_SUBLABEL" desc="Description text shown below a site name, when notification permissions were automatically revoked for that site.">
+        Notifications <ph name="SEPARATOR">•</ph> Brave removed these permissions because this site is dangerous
+      </message>
+      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_RESET_SNACKBAR" desc="Snackbar text displayed when the user clicks the Unsubscribe button for a site which sends a lot of notifications. Informs the user for which site the notifications were unsubscribed.">
+        Notifications not allowed for <ph name="SITE_NAME">%1$s<ex>https://example.com:443</ex></ph>
+      </message>
+      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_ALLOW_SNACKBAR" desc="Snackbar text displayed when the user clicks the Allow button for a site which sends a lot of notifications. Informs the user for which site the notifications were allowed.">
+        Notifications allowed for <ph name="SITE_NAME">%1$s<ex>https://example.com:443</ex></ph>
+      </message>
+      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_BULK_RESET_SNACKBAR" desc="Snackbar text displayed when the user click the 'Unsubscribe all' button at the bottom of the notifications review subpage or in the notifications review module of the dashboard. Informs the user about the number of sites for which the notifications were unsubscribed.">
+        {NUM_SITES, plural,
+        =1 {Notifications not allowed for 1 site}
+        other {Notifications not allowed for {NUM_SITES} sites}}
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFE_BROWSING_ON_TITLE" desc="Title for the Safe Browsing check row in the Safety Check page indicating that the user currently has Safe Browsing turned on and is getting the standard level of protection.">
+        Safe Browsing is on
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFE_BROWSING_ON_SUMMARY" desc="Summary for the Safe Browsing check row in the Safety Check page indicating that the user currently has the standard level of Safe Browsing enabled, which is Brave's second strongest security setting.">
+        You're getting standard protection
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFE_BROWSING_ON_SUMMARY_MANAGED" desc="Summary for the Safe Browsing check row in the Safety Check page indicating that the organization of the user's account or device has turned on Standard level of Safe Browsing for the user, which is Brave's second strongest security setting.">
+        Your organization turned on Safe Browsing
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFE_BROWSING_ENHANCED_TITLE" desc="Title for the Safe Browsing check row in the Safety Check page indicating that the user currently has Safe Browsing turned on and is getting the enhanced level of protection.">
+        Enhanced Safe Browsing is on
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFE_BROWSING_ENHANCED_SUMMARY" desc="Summary for the Safe Browsing check row in the Safety Check page indicating that the user currently has the enhanced level of Safe Browsing enabled, which is Brave's strongest security setting.">
+        You have Brave's strongest security
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFE_BROWSING_ENHANCED_SUMMARY_MANAGED" desc="Summary for the Safe Browsing check row in the Safety Check page indicating that the organization of the user's account or device has turned on Enhanced level of Safe Browsing for the user, which is Brave's strongest security setting.">
+        Your organization turned on Enhanced Safe Browsing
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFE_BROWSING_OFF_SUMMARY" desc="Summary for the Safe Browsing check row in the Safety Check page indicating that the user currently has Safe Browsing disabled, and urging the user to turn on Safe browsing to get protection from dangerous sites.">
+        Turn on Safe Browsing to get protection against dangerous sites
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFE_BROWSING_OFF_SUMMARY_MANAGED" desc="Summary for the Safe Browsing check row in the Safety Check page indicating that the organization of the user's account or device has turned off Safe Browsing for the user.">
+        Your organization turned off Safe Browsing
+      </message>
+      <message name="IDS_SAFETY_HUB_VIEW_SITES_BUTTON" desc="Text found on the secondary button of the revoked permissions and notifications module warning state. When clicked it will open a subpage where the user can review notifications or revoked permissions.">
+        View sites
+      </message>
+      <message name="IDS_SAFETY_HUB_PASSWORDS_NAVIGATION_BUTTON" desc="Text for the button in the password check row in the Safety Check page indicating that upon clicking on it, the user will be redirected to the Brave password manager.">
+        Go to Password Manager
+      </message>
+      <message name="IDS_SAFETY_HUB_GO_TO_GOOGLE_PLAY_BUTTON" desc="Text for the button in the update check row in the Safety Check page indicating that upon clicking on it, the user will be redirected to the Google Play store.">
+        Go to Google Play
+      </message>
+      <message name="IDS_SAFETY_HUB_GO_TO_SECURITY_SETTINGS_BUTTON" desc="Text for the button in the Safe Browsing check row in the Safety Check page indicating that upon clicking on it, the user will be redirected to the Safe Browsing security settings page in Brave.">
+        Go to security settings
+      </message>
+      <message name="IDS_SAFETY_HUB_TURN_ON_BUTTON" desc="Text for the button in the Safe Browsing check row in the Safety Check page urging the user to turn on Safe Browsing. Upon clicking on it, the user will be redirected to the Safe Browsing security settings page in Brave to make a decision.">
+        Turn on
+      </message>
+      <message name="IDS_SAFETY_HUB_GO_TO_SITE_SETTINGS_BUTTON" desc="Text that appears when the user clicks the three dots at the top right of the permissions review subpage, or in the good state of the revoked permissions dashboard module. Upon clicking on the text the user will be redirected to 'Site settings'">
+        Go to site settings
+      </message>
+      <message name="IDS_SAFETY_HUB_GO_TO_NOTIFICATION_SETTINGS_BUTTON" desc="Text that appears when the user clicks the 3-dot icon at the top right of the notifications review subpage, or in the good state of notifications review dashboard module. Upon clicking on the text the user will be redirected to the Notifications settings page.">
+        Go to notification settings
+      </message>
+      <message name="IDS_SAFETY_HUB_AUTOREVOCATION_TOGGLE_TITLE" desc="Title for a setting located in the 'Site settings' page. It toggles the automatic revocation of unused site permissions.">
+        Automatically remove permissions
+      </message>
+      <message name="IDS_SAFETY_HUB_AUTOREVOCATION_TOGGLE_SUMMARY" desc="Subtitle for a setting located in the 'Site settings' page. It toggles the automatic revocation of unused site permissions.">
+        To protect your data, let Brave remove permissions from sites that you haven’t visited recently
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFETY_TIPS_SAFETY_TOOLS_TITLE" desc="Title for a entry in the Safety Hub user education section. The entry leads the user to the safety section of the Brave website.">
+        Brave’s safety tools
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFETY_TIPS_SAFETY_TOOLS_SUMMARY" desc="Subtitle for a entry in the Safety Hub user education section. The entry leads the user to the safety section on the Brave website.">
+        With tools from Brave, you can browse safely and stay in control
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFETY_TIPS_INCOGNITO_TITLE" desc="Title for a entry in the Safety Hub user education section. The entry leads the user to a help center article about Private.">
+        Brave Private
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFETY_TIPS_INCOGNITO_SUMMARY" desc="Subtitle for a entry in the Safety Hub user education section. The entry leads the user to a help center article about Private.">
+        Private mode keeps your browsing private from others who use your device
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFETY_TIPS_SAFE_BROWSING_TITLE" desc="Title for a entry in the Safety Hub user education section. The entry leads the user to a help center article about Safe Browsing.">
+        Safe Browsing
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFETY_TIPS_SAFE_BROWSING_SUMMARY" desc="Subtitle for a entry in the Safety Hub user education section. The entry leads the user to a help center article about Safe Browsing.">
+        Brave warns you about unsafe sites and downloads
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFE_BROWSER_STATE_TITLE" desc="Title for the card at the very top of the Safety Check page, this card is only present if the browser is in an overall safe state.">
+        Your browser looks good
+      </message>
+      <message name="IDS_SAFETY_HUB_CHECKED_RECENTLY" desc="Subtitle for the card at the very top of the Safety Check page, this informs the user that Safety Check has ran checkups for modules recently.">
+        Checked recently
+      </message>
+      <message name="IDS_SAFETY_HUB_NO_PASSWORDS_TITLE" desc="Title for the password check row in the Safety Check page indicating that the user does not have any passwords saved to their Brave account.">
+        No saved passwords
+      </message>
+      <message name="IDS_SAFETY_HUB_NO_COMPROMISED_PASSWORDS_TITLE" desc="Title for the password check row in the Safety Check page indicating that the checkup did not find any compromised passwords.">
+        No compromised passwords
+      </message>
+      <message name="IDS_SAFETY_HUB_NO_PASSWORDS_SUMMARY" desc="Summary for the password check row in the Safety Check page indicating that the user has no passwords saved and that Safety check will start checking for breached passwords when they save them.">
+        Brave can check your passwords when you save them
+      </message>
+      <message name="IDS_SAFETY_HUB_NO_PASSWORDS_SUMMARY_MANAGED" desc="Summary for the password check row in the Safety Check page indicating that the organization of the user's account or device has disabled saving new passwords to the Brave password manager.">
+        Your organization turned off saving passwords
+      </message>
+      <message name="IDS_SAFETY_HUB_UPDATES_OUTDATED_SUMMARY" desc="Summary for the update check row in the Safety Check page indicating that the current installed version of Brave is not up to date and that there is a newer version available for install.">
+        New version of Brave is available
+      </message>
+      <message name="IDS_SAFETY_HUB_VERSION_SUMMARY" desc="Summary for the update check row in the Safety Check page indicating the current Brave version.">
+        Version <ph name="VERSION_NUMBER">%1$s<ex>123.0.5678.90</ex></ph>
+      </message>
+      <message name="IDS_SAFETY_HUB_UPDATE_UNAVAILABLE_TITLE" desc="Title for the update check row in the Safety Check page indicating that Safety Check could not check Brave for updates and that it does not know whether the current version is the latest.">
+        Can’t check Brave version
+      </message>
+      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_REVIEW_OK_SUMMARY" desc="Summary for the notifications module in the Safety Hub dashboard. It is displayed when the user has no notification permissions that need to be reviewed.">
+        Brave will let you know about sites that may be sending too many notifications
+      </message>
+      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_REVIEW_WARNING_SUMMARY" desc="Summary for the notifications module in the Safety Hub dashboard. It is displayed when the user has some notification permissions that need to be reviewed.">
+        You can stop these sites from sending future notifications
+      </message>
+      <message name="IDS_SAFETY_HUB_PERMISSIONS_OK_SUMMARY" desc="Summary for the permissions module in the Safety Hub dashboard. It is displayed when the user has no automatically revoked permissions that need to be reviewed.">
+        Brave automatically removes permissions from abusive and unused sites
+      </message>
+      <message name="IDS_SAFETY_HUB_PERMISSIONS_WARNING_SUMMARY" desc="Text shown as a header at the very top of the Safety Hub permissions review subpage, or as a summary in the permissions review dashboard module. Further educates the user about why their permissions were revoked.">
+        To protect your privacy, permissions were removed from some sites
+      </message>
+      <message name="IDS_SAFETY_HUB_COMPROMISED_PASSWORDS_SUMMARY" desc="Summary for the password check row in the Safety Check page indicating that the checkup found compromised passwords and that the user should change them immediately.">
+        {NUM_PASSWORDS, plural,
+        =1 {You should change this now}
+        other {You should change these now}}
+      </message>
+      <message name="IDS_SAFETY_HUB_PASSWORD_CHECK_UNAVAILABLE_TITLE" desc="Title for the password check row in the Safety Check page indicating that the password checkup could not be completed.">
+        Can't check passwords
+      </message>
+      <message name="IDS_SAFETY_HUB_UNAVAILABLE_SUMMARY" desc="Summary for the rows in the Safety Check page indicating that the checkup for the specific module could not be run at this time and to check again later.">
+        Try again later
+      </message>
+      <message name="IDS_SAFETY_HUB_PASSWORD_CHECK_SIGNED_OUT_SUMMARY" desc="Summary for the password check row in the Safety Check page indicating that the user should sign-in so Safety Check can check if they have compromised passwords. This is only shown for signed-out users when the checkup could not be completed.">
+        To check for compromised passwords, sign in to your Brave sync chain
+      </message>
+      <message name="IDS_SAFETY_HUB_PASSWORD_CHECK_TIME_RECENTLY" desc="Summary for the password check row in the Safety Check page indicating that the checkup was ran recently for the passwords in the user's Brave account.">
+        Recently checked passwords saved to <ph name="USERNAME">%1$s<ex>elisa.becket@gmail.com</ex></ph>
       </message>
 
        <!-- Safe Browsing preferences -->
@@ -2252,6 +2431,12 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SIGN_OUT_UNSAVED_DATA_MESSAGE" desc="Body of a dialog shown to users when they sign out of Brave but Brave hasn't synced some data yet, which is permanently deleted if the user proceeds.">
         Some of your Brave data hasn\u2019t been saved in your Brave sync chain yet.\nTry waiting a few minutes before signing out. If you sign out now, this data will be deleted.
       </message>
+      <message name="IDS_SIGN_OUT_TITLE" desc="The text is displayed as the title of a dialog to confirm if the user wants to sign out of Brave. The user can cancel and stay signed in, or confirm and sign out.">
+        Sign out of Brave?
+      </message>
+      <message name="IDS_SIGN_OUT_MESSAGE" desc="Body of a dialog that is shown when the user starts to sign out. This string precedes the confirmation button 'Sign Out'. If the user chooses to continue to sign out, then the data in their Brave sync chain (such as bookmarks, passwords, history, settings, and more) won't be available on their device. If they sign back in to their Brave sync chain, their data will come back. The tone should be helpful and instructive.">
+        After you sign out, your bookmarks, passwords, and more in your Brave sync chain will be removed from this device.
+      </message>
       <message name="IDS_SIGN_OUT_UNSAVED_DATA_PRIMARY_BUTTON" desc="Button title of a dialog shown to users when they sign out of Brave but Brave hasn't synced some data yet, which is parmanently deleted if the user proceeds by pressing this button">
         Delete and sign out
       </message>
@@ -2401,8 +2586,58 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_ACCOUNT_ANDROID_DEVICE_ACCOUNTS" desc="Title shown on the manage accounts on this device button item.">
         Manage accounts on this device
       </message>
-      <message name="IDS_SIGN_OUT" desc="The text for a preference row that signs out the user.">
+      <message name="IDS_SIGN_OUT" desc="Sign out button, visible if the user has authenticated. Clicking this clears authentication credentials and returns the web-app to the initial 'unauthenticated' state.">
         Sign out
+      </message>
+      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_SECTION_SAVE_BUTTON" desc="This message appears in a user's settings for signing in to Brave with their Brave sync chain. The text appears on button in a temporary card to inform them that there is some local data, like passwords, saved to their device, but the data hasn't been saved to their Brave sync chain yet. The user can click 'Save in Account' to enter a flow where they review the data and choose to save it in their account. When data is saved to the user's Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+        Save in account
+      </message>
+      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_SECTION_DESCRIPTION_PASSWORD" desc="This message appears in a user's settings for signing in to Brave with their Brave sync chain. The text appears in a temporary card to inform them that there is some local data (passwords) saved to their device, but the data hasn't been saved to their Brave sync chain yet. The user can click 'Save in Account' (find the corresponding string by IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_SECTION_SAVE_BUTTON name) to enter a flow where they review the data and choose to save it in their account. When data is saved to the user's Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+        {PASSWORDS_COUNT, plural,
+          =1 {1 password is saved only to this device. To use it on your other devices, save it in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}
+          other {# passwords are saved only to this device. To use them on your other devices, save them in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}}
+      </message>
+      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_SECTION_DESCRIPTION_PASSWORD_AND_OTHER" desc="This message appears in a user's settings for signing in to Brave with their Brave sync chain. The text appears in a temporary card to inform them that there is some local data (bookmarks, or other data) saved to their device, but the data hasn't been saved to their Brave sync chain yet. The user can click 'Save in Account' (find the corresponding string by IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_SECTION_SAVE_BUTTON name) to enter a flow where they review the data and choose to save it in their account. When data is saved to the user's Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+        {PASSWORDS_COUNT, plural,
+          =1 {1 password and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}
+          other {# passwords and other items are saved only to this device. To use them on your other devices, save them in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}}
+      </message>
+      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_SECTION_DESCRIPTION_OTHER" desc="This message appears in a user's settings for signing in to Brave with their Brave sync chain. The text appears in a temporary card to inform them that there is some local data (passwords, bookmarks, or other data) saved to their device, but the data hasn't been saved to their Brave sync chain yet. The user can click 'Save in Account' (find the corresponding string by IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_SECTION_SAVE_BUTTON name) to enter a flow where they review the data and choose to save it in their account. When data is saved to the user's Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+        {ITEMS_COUNT, plural,
+          =1 {1 item is saved only to this device. To use it on your other devices, save it in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}
+          other {# items are saved only to this device. To use them on your other devices, save them in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%2$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}}
+      </message>
+      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_DIALOG_TITLE" desc="The text appears as the title of a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+        Save data in your Brave sync chain
+      </message>
+      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_DIALOG_DESCRIPTION" desc="The text appears as a note in a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave. This note explains where the user can go to view and manage individual items. like individual bookmarks or passwords.">
+        You can also view and manage these items in your bookmarks, reading list, or password manager
+      </message>
+      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_DIALOG_BOOKMARKS" desc="One of the data types that we allow uploading through a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+        {ITEMS_COUNT, plural,
+          =1 {1 bookmark}
+          other {# bookmarks}}
+      </message>
+      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_DIALOG_PASSWORDS" desc="One of the data types that we allow uploading through a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+        {ITEMS_COUNT, plural,
+          =1 {1 password}
+          other {# passwords}}
+      </message>
+      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_DIALOG_READING_LIST" desc="One of the data types that we allow uploading through a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+        {ITEMS_COUNT, plural,
+          =1 {1 page on your reading list}
+          other {# pages on your reading list}}
+      </message>
+      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_DIALOG_SAVE_BUTTON" desc="The text is the primary button in a confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+        Save in account
+      </message>
+      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_DIALOG_CANCEL_BUTTON" desc="Text for the cancel button belonging to the batch upload confirmation dialog where the user can choose to save some data to their Brave sync chain. When data is saved to the Brave sync chain, it's backed up safely and is available on any device where they're signed in to Brave.">
+        Cancel
+      </message>
+      <message name="IDS_ACCOUNT_SETTINGS_BULK_UPLOAD_SAVED_SNACKBAR_MESSAGE" desc="The message appears in a small confirmation bubble with limited space after the user chose to save some data to their Brave sync chain.">
+        {ITEMS_COUNT, plural,
+          =1 {Item saved in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%1$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}
+          other {Items saved in your Brave sync chain, <ph name="ACCOUNT_EMAIL">%1$s<ex>elisa.g.beckett@gmail.com</ex></ph>.}}
       </message>
       <message name="IDS_SYNC_REVIEW_DATA" desc="Title for link to https://chrome.google.com/sync Dashboard to manage sync data.">
         Review your synced data
@@ -2639,12 +2874,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK" desc="Content description for the Private stack selection 'button'.">
         Private tabs
-      </message>
-      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_STANDARD_STACK_SELECTED" desc="Announcement when the standard tab stack is selected.">
-        Switched to standard tabs
-      </message>
-      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK_SELECTED" desc="Announcement when the Private tab stack is selected.">
-        Switched to Private tabs
       </message>
       <message name="IDS_ACCESSIBILITY_UNDO_CLOSED_TAB_ANNOUNCEMENT_MESSAGE" desc="Message spoken out loud for accessibility when a user decides to undo a closed tab.">
         Restored <ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph>, tab
@@ -3374,7 +3603,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Sign in to browse easier across devices
       </message>
       <message name="IDS_SIGNIN_FRE_SUBTITLE" desc="This string is the body of a promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in (access to bookmarks, passwords, history, settings, etc.). We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
-        Sign in to get your bookmarks, passwords and more on all your devices
+        Sign in to get your bookmarks, passwords, and more on all your devices
       </message>
       <message name="IDS_SIGNIN_FRE_SUBTITLE_WITHOUT_SYNC" desc="This string is the body of a promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in (access to bookmarks, passwords, history, settings, etc.). However, we introduce a caveat, because the user has a managed account (such as Enterprise); this means that, depending on their organization's settings, the user might not be able to save all types of data in their Brave sync chain. We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain.">
         Sign in to get the most out of Brave
@@ -4005,6 +4234,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_RECENT_TABS" desc="Menu item for opening the 'Recent tabs' page that shows recently closed tabs and pages the user has opened on his/her other devices. [CHAR_LIMIT=27]">
         Recent tabs
       </message>
+      <message name="IDS_MENU_TINKER_TANK" desc="Menu item for opening the tinker tank bottom sheet. [CHAR_LIMIT=27]" translateable="false">
+        Tinker tank
+      </message>
       <message name="IDS_CHROME_HISTORY" desc="Menu item for opening the CCT history page. [CHAR_LIMIT=27]">
         Brave history
       </message>
@@ -4150,9 +4382,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_BOOKMARK_TOOLBAR_SEARCH_TITLE" desc="Toolbar search title [CHAR_LIMIT=32]">
         Search
       </message>
-      <message name="IDS_BOOKMARK_NO_RESULT" desc="Text explaining that no bookmarks are found to match a search query">
-        Can’t find that bookmark. Check your spelling or add a new bookmark.
-      </message>
       <message name="IDS_EDIT_BOOKMARK" desc="The string prompting the user to edit the content of a bookmark. [CHAR_LIMIT=30]">
         Edit bookmark
       </message>
@@ -4235,6 +4464,24 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_IPH_PRICE_TRACKING_MENU_ITEM_ACCESSIBILITY" is_accessibility_with_no_ui="true" desc="In-product-help accessibility text that describes that a user can track the price of a product in the overflow menu.">
         Track price from the More options button
+      </message>
+      <message name="IDS_PRICE_INSIGHTS_BOTTOM_SHEET_CONTENT_CLOSED" desc="Accessibility string that describes closing a price insights bottom sheet.">
+        Price insights bottom sheet closed
+      </message>
+      <message name="IDS_PRICE_INSIGHTS_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string that describes the price insights bottom sheet.">
+        Price insights bottom sheet
+      </message>
+      <message name="IDS_PRICE_INSIGHTS_BOTTOM_SHEET_CONTENT_OPENED_FULL" desc="Accessibility string that describes fully opening a price insights bottom sheet.">
+        Price insights bottom sheet opened at full height
+      </message>
+      <message name="IDS_PRICE_INSIGHTS_TITLE" desc="The title for the price insights button.">
+        Price insights
+      </message>
+      <message name="IDS_PRICE_INSIGHTS_PRICE_IS_LOW_TITLE" desc="The title when a user see the price insights contextual page action while price is low.">
+        Price is low
+      </message>
+      <message name="IDS_PRICE_HISTORY_TITLE" desc="The title when a user see the price history graph section in the price insights bottom sheet.">
+        Price history across the web
       </message>
       <message name="IDS_IPH_SHOPPING_LIST_SAVE_FLOW" desc="In-product help text that notifies a user that they can organize their saved products from a folder in bookmarks.">
         Organize your tracked products in Bookmarks
@@ -4462,12 +4709,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_RDS_WINDOW_SETTING_MESSAGE_BUTTON" desc="Text on the button allowing users to manage the setting.">
         Go to Settings
-      </message>
-      <message name="IDS_RDS_APP_MENU_USER_EDUCATION_DIALOG_TITLE" desc="Title of the dialog shown to educate the user about the desktop site app menu site-level setting.">
-        Brave will remember your choice
-      </message>
-      <message name="IDS_RDS_APP_MENU_USER_EDUCATION_DIALOG_MESSAGE" desc="Message on the dialog shown to educate the user about the desktop site app menu site-level setting.">
-        When you select desktop site once, the setting is applied to the site each time you visit
       </message>
       <message name="IDS_RDS_SITE_SETTINGS_GENERIC_IPH_TEXT_DESKTOP" desc="Message on the generic text bubble shown to educate the user about using the desktop site site-level setting to switch to desktop mode.">
         You can request the desktop site for <ph name="HOST_NAME">%1$s<ex>www.example.com</ex></ph>
@@ -4820,17 +5061,26 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_GOOGLE_BOTTOM_BAR_PAGE_INSIGHTS_BUTTON_DESCRIPTION" desc="Content description for page insights button">
       View page insights
       </message>
+      <message name="IDS_GOOGLE_BOTTOM_BAR_SEARCH_BUTTON_DESCRIPTION" desc="Content description for search button">
+      Search
+      </message>
+      <message name="IDS_GOOGLE_BOTTOM_BAR_HOME_BUTTON_DESCRIPTION" desc="Content description for home button">
+      Go to Brave App Home
+      </message>
       <message name="IDS_GOOGLE_BOTTOM_BAR_SEARCHBOX_SUPER_G_BUTTON_DESCRIPTION" desc="Content description for super G button in a searchbox that opens Home tab in Brave App">
       Go to Brave App Home
       </message>
       <message name="IDS_GOOGLE_BOTTOM_BAR_SEARCHBOX_TEXT" desc="Text used as hint text for searchbox">
-      Ask anything
+      Search
       </message>
       <message name="IDS_GOOGLE_BOTTOM_BAR_SEARCHBOX_MIC_BUTTON_DESCRIPTION" desc="Content description for mic button in a searchbox that opens Voice Search in Brave App">
       Go to Brave App Voice Search
       </message>
       <message name="IDS_GOOGLE_BOTTOM_BAR_SEARCHBOX_LENS_BUTTON_DESCRIPTION" desc="Content description for lens button in searchbox that opens Lens in Brave App">
       Go to Lens
+      </message>
+      <message name="IDS_GOOGLE_BOTTOM_BAR_SEARCHBOX_LENS_NOT_ENABLED_TOOLTIP_MESSAGE" desc="Tooltip message when lens button is not enabled">
+      Lens is not available on this account.
       </message>
 
       <!-- WebFeed -->
@@ -5866,11 +6116,26 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
 
       <!-- WebID Account Selection strings -->
-      <message name="IDS_ACCOUNT_SELECTION_ADD_ACCOUNT" desc="Title of the button that lets the user sign in to an additional account" translateable="false">
-        Add Account
+      <message name="IDS_ACCOUNT_SELECTION_ADD_ACCOUNT" desc="Title of the button that lets the user sign in to an additional account.">
+        Use a different account
       </message>
       <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT_SIGNIN" desc="Header for sign in sheet. Sheet is shown to prompt user to sign in to a website using an account from an identity provider.">
         Sign in to <ph name="SITE_ETLD_PLUS_ONE">%1$s<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%2$s<ex>idp.com</ex></ph>
+      </message>
+      <message name="IDS_ACCOUNT_SELECTION_BUTTON_MODE_SHEET_TITLE_EXPLICIT_SIGNIN" desc="Header for sign in sheet. Sheet is shown to prompt user to sign in to a website using an account from an identity provider.">
+        Sign in with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph>
+      </message>
+      <message name="IDS_ACCOUNT_SELECTION_BUTTON_MODE_SHEET_TITLE_EXPLICIT_SIGNUP" desc="Header for sign up sheet. Sheet is shown to prompt user to sign up to a website using an account from an identity provider.">
+        Sign up with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph>
+      </message>
+      <message name="IDS_ACCOUNT_SELECTION_BUTTON_MODE_SHEET_TITLE_EXPLICIT_USE" desc="Header for use sheet. Sheet is shown to prompt user to use a website using an account from an identity provider.">
+        Use with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph>
+      </message>
+      <message name="IDS_ACCOUNT_SELECTION_BUTTON_MODE_SHEET_TITLE_EXPLICIT_CONTINUE" desc="Header for continue sheet. Sheet is shown to prompt user to continue to a website using an account from an identity provider.">
+        Continue with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph>
+      </message>
+      <message name="IDS_ACCOUNT_SELECTION_BUTTON_MODE_SHEET_CHOOSE_AN_ACCOUNT" desc="Text to prompt a user to choose an account from an identity provider to sign in to a website with.">
+        Choose an account to continue on <ph name="SITE_ETLD_PLUS_ONE">%1$s<ex>rp.example</ex></ph>
       </message>
       <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT_SIGNUP" desc="Header for sign up sheet. Sheet is shown to prompt user to sign up to a website using an account from an identity provider.">
         Sign up to <ph name="SITE_ETLD_PLUS_ONE">%1$s<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%2$s<ex>idp.com</ex></ph>
@@ -5880,9 +6145,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT_CONTINUE" desc="Header for continue sheet. Sheet is shown to prompt user to continue to a website using an account from an identity provider.">
         Continue to <ph name="SITE_ETLD_PLUS_ONE">%1$s<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%2$s<ex>idp.com</ex></ph>
-      </message>
-      <message name="IDS_ACCOUNT_SELECTION_SHEET_SUBTITLE_EXPLICIT" desc="Message shown when the user is shown the federated identity login prompt. This message is the subtitle for the sign in sheet, which contains the top-level domain of the page the user is visiting when the user is receiving a prompt from an iframe embedded on such page.">
-        on <ph name="MAIN_FRAME_ETLD_PLUS_ONE">%1$s<ex>main-frame.example</ex></ph>
       </message>
       <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_PP_OR_TOS" desc="The consent text shown to the user before sign up when there is no privacy policy or terms of service.">
       To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your name, email address, and profile picture with this site.
@@ -6330,22 +6592,19 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
 
       <!-- Interstitial shown prior to making digital identity request to wallet -->
       <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_DIALOG_TITLE" translateable="false">
-        Caution
+        Make sure you trust this site with your data
       </message>
       <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_LOW_RISK_DIALOG_TEXT" translateable="false">
-        <ph name="WEBSITE_ORIGIN">%1$s<ex>www.cheapalcohol.com</ex></ph> would like to ask Android to give you options for sharing your identity information.
+        <ph name="WEBSITE_ORIGIN">%1$s<ex>www.cheapalcohol.com</ex></ph> wants to use personal info from your digital wallet. Only continue if you trust this site.
       </message>
-      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_LOW_RISK_POSITIVE_BUTTON_TEXT" translateable="false">
-        Share
+      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_LOW_RISK_NEGATIVE_BUTTON_TEXT" translateable="false">
+        Cancel
       </message>
       <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_HIGH_RISK_DIALOG_TEXT" translateable="false">
-        <ph name="WEBSITE_ORIGIN">%1$s<ex>www.cheapalcohol.com</ex></ph> would like to ask Android for access to your identity. Brave cannot determine what privacy risks this may pose.
+        <ph name="WEBSITE_ORIGIN">%1$s<ex>www.cheapalcohol.com</ex></ph> wants to use personal info from your digital wallet. Only continue if you trust this site. Dangerous sites might trick you into revealing things like your legal name or ID number.
       </message>
-      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_HIGH_RISK_POSITIVE_BUTTON_TEXT" translateable="false">
-        Share Anyway
-      </message>
-      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_NEGATIVE_BUTTON_TEXT" translateable="false">
-        Do Not Share
+      <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_HIGH_RISK_NEGATIVE_BUTTON_TEXT" translateable="false">
+        Back to safety
       </message>
       <message name="IDS_DIGITAL_IDENTITY_INTERSTITIAL_REQUEST_ABORTED_DIALOG_TEXT" translateable="false">
         <ph name="WEBSITE_ORIGIN">%1$s<ex>www.cheapalcohol.com</ex></ph> has canceled the request for identity information.
@@ -6366,6 +6625,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         {INACTIVE_TIME_DAYS, plural,
           =1 {Not used for 1 day or more}
           other {Not used for # days or more}}
+      </message>
+      <message name="IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE" desc="In product help shown as a message in the archived tabs dialog.">
+        Tabs you haven’t used for <ph name="DAYS_INACTIVE">%1$d<ex>14</ex></ph> days are moved here and closed after <ph name="DAYS_ARCHIVED">%2$d<ex>60</ex></ph> days. You can change this anytime in <ph name="SETTINGS_TITLE">%3$s<ex>Settings</ex></ph>.
+      </message>
+      <message name="IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE_SETTINGS_TITLE" desc="The word for settings, used in IDS_ARCHIVED_TAB_IPH_CARD_SUBTITLE.">
+        Settings
       </message>
     </messages>
   </release>

@@ -16,6 +16,8 @@
     </if>
   <if expr="is_android">
     </if>
+  <if expr="not is_ios and not is_android">
+    </if>
   <if expr="use_titlecase">
     <then>
       </then>

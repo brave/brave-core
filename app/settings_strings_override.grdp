@@ -50,8 +50,6 @@
     </if>
   <if expr="is_linux">
     </if>
-  <if expr="not is_linux or is_chromeos or is_fuchsia">
-    </if>
   <message name="IDS_SETTINGS_SHOW_BOOKMARKS_BAR" desc="Label for the checkbox which enables or disables showing the bookmarks bar in the toolbar.">
     Show bookmarks
   </message>
@@ -85,9 +83,6 @@
   </if>
 
   <if expr="not is_chromeos">
-    </if>
-
-  <if expr="chrome_root_store_cert_management_ui">
     </if>
 
   <if expr="use_nss_certs">
