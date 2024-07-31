@@ -44,16 +44,13 @@ import Foundation
   }
 
   /// Load any custom filter lists from cache so they are ready to use and start fetching updates.
-  func startIfNeeded() {
+  func startFetching() async {
     guard !startedService else { return }
     self.startedService = true
+    await CustomFilterListStorage.shared.loadCachedFilterLists()
 
-    Task(priority: .high) {
-      await CustomFilterListStorage.shared.loadCachedFilterLists()
-
-      for customURL in CustomFilterListStorage.shared.filterListsURLs {
-        startFetching(filterListCustomURL: customURL)
-      }
+    for customURL in CustomFilterListStorage.shared.filterListsURLs {
+      startFetching(filterListCustomURL: customURL)
     }
   }
 
