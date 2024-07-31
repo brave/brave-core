@@ -1,0 +1,47 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("buildrs_support") {
+  crate_name = "platforms"
+  epoch = "3"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/platforms-3.2.0/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/platforms-3.2.0/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/platforms-3.2.0/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/platforms-3.2.0/src/platform.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/platforms-3.2.0/src/platform/platforms.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/platforms-3.2.0/src/platform/req.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/platforms-3.2.0/src/platform/tier.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/platforms-3.2.0/src/target.rs",
+  ]
+  inputs = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/platforms-3.2.0/src/target/arch.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/platforms-3.2.0/src/target/endian.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/platforms-3.2.0/src/target/env.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/platforms-3.2.0/src/target/os.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/platforms-3.2.0/src/target/pointerwidth.rs",
+  ]
+
+  build_native_rust_unit_tests = false
+  edition = "2018"
+  cargo_pkg_version = "3.2.0"
+  cargo_pkg_authors = "Tony Arcieri <bascule@gmail.com>, Sergey \"Shnatsel\" Davidoff <shnatsel@gmail.com>"
+  cargo_pkg_name = "platforms"
+  cargo_pkg_description = "Rust platform registry with information about valid Rust platforms (target triple, target_arch, target_os) sourced from the Rust compiler."
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  features = [ "std" ]
+}
