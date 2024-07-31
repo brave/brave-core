@@ -1229,7 +1229,6 @@ static_library("internal") {
     "//brave/components/version_info",
     "//brave/third_party/rapidjson",
     "//brave/vendor/bat-native-tweetnacl:tweetnacl",
-    "//brave/vendor/brave_base",
     "//components/pref_registry:pref_registry",
     "//components/prefs",
     "//components/variations:variations",
