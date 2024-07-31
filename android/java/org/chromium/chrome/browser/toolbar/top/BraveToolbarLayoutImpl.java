@@ -1486,6 +1486,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
+    private boolean isCustomTab() {
+        return BraveReflectionUtil.EqualTypes(this.getClass(), CustomTabToolbar.class);
+    }
+
     @Override
     public void onThemeColorChanged(int color, boolean shouldAnimate) {
         if (mWalletIcon != null) {
@@ -1494,8 +1498,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                                                             : mLightModeTint);
         }
 
-        final int textBoxColor = ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(
-                getContext(), color, isIncognito());
+        final int textBoxColor =
+                ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(
+                        getContext(), color, isIncognito(), isCustomTab());
         updateModernLocationBarColorImpl(textBoxColor);
     }
 

@@ -100,9 +100,12 @@ class SearchAccelerator extends ChromeImageButton
     private void updateBackground() {
         if (mThemeColorProvider == null || mIncognitoStateProvider == null) return;
 
-        mBackground.setColorFilter(ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(
-                                           mContext, mThemeColorProvider.getThemeColor(),
-                                           mIncognitoStateProvider.isIncognitoSelected()),
+        mBackground.setColorFilter(
+                ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(
+                        mContext,
+                        mThemeColorProvider.getThemeColor(),
+                        mIncognitoStateProvider.isIncognitoSelected(),
+                        false /*isCustomTab*/),
                 PorterDuff.Mode.SRC_IN);
     }
 }
