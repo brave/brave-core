@@ -59,6 +59,13 @@ bool WillHandleBraveURLRedirect(GURL* url, web::BrowserState* browser_state) {
   return false;
 }
 
+std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
+    web::BrowserState* browser_state) const {
+  // We don't use Chromium web views for anything but WebUI at the moment, so
+  // we don't need any JS features added.
+  return {};
+}
+
 void BraveWebClient::PostBrowserURLRewriterCreation(
     web::BrowserURLRewriter* rewriter) {
   rewriter->AddURLRewriter(&WillHandleBraveURLRedirect);
