@@ -1181,6 +1181,9 @@
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_PERSONAL_INFORMATION_SUGGESTIONS" desc="Text for search result item which, when clicked, navigates the user to suggestions settings, which with a toggle to enable/disable showing personal information suggestions.">
     Personal information suggestions
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_HELP_ME_WRITE_SUGGESTIONS" desc="Text for search result item which, when clicked, navigates the user to suggestions settings, with a section having a toggle to enable/disable showing Help me write after an user types a word.">
+    Help me write
+  </message>
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_EMOJI_SUGGESTIONS" desc="Text for search result item which, when clicked, navigates the user to suggestions settings, with a section having a toggle to enable/disable showing emoji suggestions after an user types a word.">
     Emoji suggestions
   </message>
@@ -1385,11 +1388,23 @@
   <message name="IDS_OS_SETTINGS_TAG_A11Y_MAGNIFIER_SELECT_TO_SPEAK_FOLLOWING" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable full-screen or docked magnification select to speak highlight following.">
     Magnifier follows the word being read by select-to-speak
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_A11Y_MAGNIFIER_CHROMEVOX_FOLLOWING" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable full-screen or docked magnification ChromeVox focus following.">
+    Magnifier follows ChromeVox focus
+  </message>
   <message name="IDS_OS_SETTINGS_TAG_A11Y_DOCKED_MAGNIFIER" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable docked screen magnification.">
     Docked magnifier
   </message>
   <message name="IDS_OS_SETTINGS_TAG_A11Y_DOCKED_MAGNIFIER_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable docked screen magnification. Alternate phrase for: 'Docked magnifier'">
     Partial magnifier
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_A11Y_REDUCED_ANIMATIONS" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable reduced animations.">
+    Reduced animations
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_A11Y_REDUCED_ANIMATIONS_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable reduced animations. Alternate phrase for: 'Reduced animations'">
+    Reduced motion
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_A11Y_REDUCED_ANIMATIONS_ALT2" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable reduced animations. Alternate phrase for: 'Reduced animations'">
+    Reduced movement on the screen
   </message>
   <message name="IDS_OS_SETTINGS_TAG_A11Y_KEYBOARD_AND_TEXT_INPUT_PAGE" desc="Text for search result item which, when clicked, navigates the user to display and magnification accessibility settings. Alternate phrase for: 'Low vision display tools'">
     Keyboard and text input
@@ -1426,6 +1441,12 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_A11Y_HIGHLIGHT_TEXT_CARET_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable highlighting the text caret when it appears or moves. Alternate phrase for: 'Highlight text caret'">
     Text cursor highlighter
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_A11Y_CARET_BROWSING" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable browsing using the text caret.">
+    Caret browsing
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_A11Y_CARET_BROWSING_ALT1" desc="Text for search result item which, when clicked, navigates the user to accessibility settings, with a toggle to enable/disable browsing using the text caret. Alternate phrase for 'Caret browsing'">
+    Navigate with text cursor
   </message>
   <message name="IDS_OS_SETTINGS_TAG_A11Y_CURSOR_AND_TOUCHPAD_PAGE" desc="Text for search result item which, when clicked, navigates the user to cursor and touchpad accessibility settings. Alternate phrase for: 'Mouse accessibility settings'">
     Cursor and touchpad

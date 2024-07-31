@@ -164,6 +164,9 @@
     <message name="IDS_PROFILE_MENU_CUSTOMIZE_PROFILE_BUTTON" desc="Button in the avatar menu bubble view for editing the current profile.">
       Customize profile
     </message>
+    <message name="IDS_PROFILE_MENU_OPEN_ACCOUNT_SETTINGS" desc="Button in the avatar menu bubble view for opening Brave account settings.">
+      Brave services settings
+    </message>
   </if>
   <if expr="use_titlecase">
     <message name="IDS_PROFILES_LIST_PROFILES_TITLE" desc="Title in the profile menu for the list of 'other profiles'.">
@@ -192,6 +195,9 @@
     </message>
     <message name="IDS_PROFILE_MENU_CUSTOMIZE_PROFILE_BUTTON" desc="Button in the avatar menu bubble view for editing the current profile. ">
       Customize Profile
+    </message>
+    <message name="IDS_PROFILE_MENU_OPEN_ACCOUNT_SETTINGS" desc="Button in the avatar menu bubble view for opening Brave account settings.">
+      Brave Services Settings
     </message>
   </if>
   <message name="IDS_PROFILES_MANAGED_BY" desc="Label shown under the avatar in the avatar menu bubble view stating that the account is managed.">
@@ -539,9 +545,6 @@
     <message name="IDS_PROFILE_CUSTOMIZATION_DONE_BUTTON_LABEL" desc="Text for the Done button on the profile customization bubble">
       Done
     </message>
-    <message name="IDS_PROFILE_CUSTOMIZATION_THEMES_CONTAINER_LABEL" desc="The accessibility label description read by the screen reader for the section to choose a theme for the profile">
-      Pick a theme color
-    </message>
     <message name="IDS_PROFILE_CUSTOMIZATION_WELCOME" desc="Title of the profile customization bubble">
       Welcome, <ph name="USERNAME">$1<ex>Bob</ex></ph>
     </message>
@@ -632,22 +635,19 @@
       Setting up your work profile ...
     </message>
     <message name="IDS_ENTERPRISE_OIDC_WELCOME_SUCCESS_TITLE" desc="Title of a section telling the user that their work profile has been created..">
-      Your work profile is ready
+      You're all set!
     </message>
     <message name="IDS_ENTERPRISE_OIDC_WELCOME_SUCCESS_SUBTITLE" desc="Subtitle of a section telling the user that their work profile has been created.">
-      You are ready to use your profile for work
+      Now you can start browsing
     </message>
     <message name="IDS_ENTERPRISE_OIDC_WELCOME_TIMEOUT_TITLE" desc="Title of a section telling the user that their work profile was created but is not fully ready yet.">
-      Your profile setup is almost done
-    </message>
-    <message name="IDS_ENTERPRISE_OIDC_WELCOME_TIMEOUT_SUBTITLE" desc="Subtitle of a section telling the user that their work profile was created but is not fully ready yet.">
-      We're getting your workspace ready! Feel free to explore in the meantime and we'll be ready for you soon.
+      Your work profile is almost ready
     </message>
     <message name="IDS_ENTERPRISE_OIDC_WELCOME_ERROR_TITLE" desc="Title of a section telling the user that there was an error while creating their work profile.">
       Something went wrong
     </message>
     <message name="IDS_ENTERPRISE_OIDC_WELCOME_ERROR_SUBTITLE" desc="Subtitle of a section telling the user that there was an error while creating their work profile.">
-      You can try again or contact your administrator or help
+      You can try again or contact your administrator for help
     </message>
 
     <!-- Profile Picker -->

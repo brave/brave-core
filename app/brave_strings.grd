@@ -612,6 +612,9 @@ Permissions you've already given to websites and apps may apply to this account.
         <message name="IDS_PASSWORDS_PAGE_EXPORT_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before exporting passwords to a file.">
           Brave wants to export your passwords. Type your Windows password to allow this.
         </message>
+        <message name="IDS_PASSWORDS_PAGE_DELETE_ALL_DATA_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before deleting all data from Brave Password Manager.">
+          Brave wants to delete your Password Manager data. Type your Windows password to allow this.
+        </message>
         <message name="IDS_PASSWORDS_PAGE_IMPORT_AUTHENTICATION_PROMPT" desc="Text for the dialog box that prompts the user for their OS account password before overriding passwords during Import.">
           Brave is trying to replace existing passwords. Type your Windows password to allow this.
         </message>
@@ -673,25 +676,6 @@ Permissions you've already given to websites and apps may apply to this account.
       <message name="IDS_DEFAULT_BROWSER_INFOBAR_REFRESH_TEXT" desc="Text to show in an infobar when Brave is not the current default browser.">
         Brave isn't your default browser
       </message>
-      <if expr="is_win">
-        <!-- Try Brave Toast Dialog -->
-        <message name="IDS_TRY_TOAST_HEADING" desc="Top line of the try-chrome-again dialog">
-          There is a new version of Brave available.
-        </message>
-        <message name="IDS_TRY_TOAST_HEADING2" desc="Top line of the try-chrome-again dialog">
-          There's a new version of Brave available, and it's faster than ever.
-        </message>
-        <message name="IDS_TRY_TOAST_HEADING3" desc="Top line of the try-chrome-again dialog">
-          There's a new, safer version of Brave available.
-        </message>
-        <message name="IDS_TRY_TOAST_HEADING4" desc="Top line of the try-chrome-again dialog">
-          Brave has been updated, but you haven't used it for at least 30 days.
-        </message>
-        <message name="IDS_TRY_TOAST_HEADING_SKYPE" desc="Top line of the try-chrome-again dialog">
-          Brave lets you click a phone number on the web and call it with Skype!
-        </message>
-      </if>
-
       <!-- Download Bubble Items -->
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_UNKNOWN_SOURCE" desc="Summary of dangerous warning for a file (like an extension) from an unknown source.">
         Extensions, apps, and themes from unknown sources can harm your device. Brave recommends only installing them from the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph>
@@ -717,12 +701,6 @@ Permissions you've already given to websites and apps may apply to this account.
       </message>
       <message name="IDS_PROMPT_MALICIOUS_DOWNLOAD_CONTENT" desc="Message shown to the user to validate the download when the download content is classified to lead to malware by safebrowsing.">
         <ph name="FILE_NAME">$1<ex>malware.exe</ex></ph> is dangerous, so Brave has blocked it.
-      </message>
-      <message name="IDS_BLOCK_REASON_DANGEROUS_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is malware.">
-        This file is dangerous, so Brave has blocked it.
-      </message>
-      <message name="IDS_BLOCK_REASON_UNWANTED_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is unwanted sofware.">
-        This file may be dangerous, so Brave has blocked it.
       </message>
       <message name="IDS_BLOCK_REASON_PROMPT_FOR_SCANNING" desc="Message shown to the user on chrome://downloads page to explain that this download is recommended to be scanned.">
         Brave recommends scanning this file because it may be dangerous.
@@ -757,8 +735,8 @@ Permissions you've already given to websites and apps may apply to this account.
         Brave blocked this download because you turned Safe Browsing off and the file can't be verified
       </message>
 
-      <!-- chrome://downloads page bypass dangerous download warning dialog -->
-      <message name="IDS_DOWNLOAD_WARNING_BYPASS_DIALOG_LEARN_MORE_LINK" desc="On the downloads page, the label for the link to the help center in the dialog to bypass a dangerous download warning.">
+      <!-- chrome://downloads page bypass dangerous download warning prompt-->
+      <message name="IDS_DOWNLOAD_WARNING_BYPASS_PROMPT_LEARN_MORE_LINK" desc="On the downloads page, the label for the link to the help center in the prompt to bypass a dangerous download warning.">
         Learn why Brave blocks some files
       </message>
 
@@ -803,6 +781,28 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
         <message name="IDS_EXTENSIONS_ALERT_ITEM_BLOCKLISTED_MALWARE_TITLE" desc="A statement that multiple extension/apps have been newly blocklisted for malware.">
           Brave found that these items contain malware:
+        </message>
+
+        <!-- Manifest V2 Deprecation dialog -->
+        <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_KEEP_DIALOG_DESCRIPTION" desc="The description of the dialog asking the user if they want to keep the extension installed, which is affected by the Manifest V2 deprecation">
+          This extension is no longer supported. Brave recommends that you remove it instead.
+        </message>
+        <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_DISABLED_DIALOG_DESCRIPTION" desc="The description of the dialog that appears when extensions were disabled due to the Manifest V2 deprecation">
+          {NUM_EXTENSIONS, plural,
+          =1 {This extension is no longer supported. Brave recommends that you remove it.}
+          other {These extensions are no longer supported. Brave recommends that you remove them.}}
+        </message>
+        <message name="IDS_EXTENSIONS_MV2_DEPRECATION_MESSAGE_DISABLED_SUBTITLE" desc="Subtitle text displayed in the manifest v2 deprecation message for a specific extension during the disabled stage.">
+          Brave recommends that you remove it. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Learn more about supported extensions<ph name="END_LINK">&lt;/a&gt;</ph>
+        </message>
+        <message name="IDS_EXTENSIONS_MV2_DEPRECATION_PANEL_DISABLED_SUBTITLE" desc="Subtitle text displayed in the manifest v2 deprecation panel for the disabled stage.">
+          {NUM_EXTENSIONS, plural,
+            =1 {Brave recommends that you remove it. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Learn more about supported extensions<ph name="END_LINK">&lt;/a&gt;</ph>}
+            other {Brave recommends that you remove them. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Learn more about supported extensions<ph name="END_LINK">&lt;/a&gt;</ph>}
+          }
+        </message>
+        <message name="IDS_EXTENSIONS_MV2_DEPRECATION_PANEL_REMOVE_BUTTON_ACC_LABEL" desc="The (accessible) label for the button to remove an extension.">
+          Remove <ph name="EXTENSION_NAME">$1<ex>Brave Translate</ex></ph> from Brave
         </message>
       </if>
 
@@ -994,10 +994,10 @@ Permissions you've already given to websites and apps may apply to this account.
       <!-- Extension requests sign in to Brave through chrome.identity API -->
       <if expr="enable_extensions">
         <message name="IDS_EXTENSION_ASKS_IDENTITY_WHILE_SIGNED_IN_WEB_ONLY_TITLE" desc="This string is the heading of a dialog intended to inform the user that one of their installed extensions wants them to sign in to Brave to be able to use their Brave sync chain.">
-          The extension \"<ph name="EXTENSION_NAME">$1<ex>Screencast</ex></ph>\" wants you to sign in to Brave
+          The extension "<ph name="EXTENSION_NAME">$1<ex>Screencast</ex></ph>" wants you to sign in to Brave
         </message>
-        <message name="IDS_EXTENSION_ASKS_IDENTITY_WHILE_SIGNED_IN_WEB_ONLY_BODY" desc="This string is the body of a dialog intended to inform the user that one of their installed extensions wants them to sign in to Brave to be able to use their Brave sync chain.">
-         To use this extension as <ph name="USER_EMAIL_ADDRESS">$1<ex>elisa.g.beckett@gmail.com</ex></ph>, sign in to Brave.\nYou’ll also be able to use and save your passwords and more from your Brave sync chain.
+        <message name="IDS_EXTENSION_ASKS_IDENTITY_WHILE_SIGNED_IN_WEB_ONLY_BODY_PART_1" desc="This string is the body of a dialog intended to inform the user that one of their installed extensions wants them to sign in to Brave to be able to use their Brave sync chain.">
+         To use this extension as <ph name="USER_EMAIL_ADDRESS">$1<ex>elisa.g.beckett@gmail.com</ex></ph>, sign in to Brave.
         </message>
         <message name="IDS_EXTENSION_ASKS_IDENTITY_WHILE_SIGNED_IN_WEB_ONLY_TITLE_FALLBACK" desc="This string is the heading of a dialog intended to inform the user that one of their installed extensions wants them to sign in to Brave to be able to use their Brave sync chain. Used when the extension name couldn't be retrieved.">
           An extension wants you to sign in to Brave
@@ -1065,10 +1065,16 @@ Permissions you've already given to websites and apps may apply to this account.
           This will create a new Brave profile for <ph name="USER_EMAIL_ADDRESS">$1<ex>foo@gmail.com</ex></ph>
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_SUBTITLE" desc="Subtitle of the Brave Signin Bubble intercept that is shown when a signed out user signs in on the web with it's first account.">
-          To save and use your passwords and more on all your devices, sign in to Brave
+          To get your passwords and more on all your devices, sign in to Brave
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_SUBTITLE_SUPERVISED" desc="Subtitle of the Brave Signin Bubble intercept that is shown when a signed out user signs in on the web with a supervised account." translateable="false">
+          Sign in to Brave so that your parents can help you stay safe on the web
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_IPH_TEXT_SIGNIN_REMINDER" desc="This string is the body text of a reminder message, which is intended to help users understand that they have been signed in to Brave. The user previously signed in to a Brave service (like Gmail or Maps), and saw the Brave Signin Bubble intercept; when asked whether the user wanted to sign in to Brave as well, the user selected yes. After a period of time, this reminder message appears at the top right of Brave (pointing at the Profile Menu) to remind the user that they made this choice a while ago. This body text string comes after the 'Welcome back, USER_NAME' string. We are focusing on the benefit that user enjoys, now that they're signed in to Brave. The tone should be welcoming.">
-          While you're signed in, you can use your passwords and more from your Brave sync chain in Brave
+          While you're signed in, you can use your passwords and more from your Brave sync chain in Brave. You can change this at any time in settings.
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_IPH_TEXT_SIGNIN_REMINDER_SCREENREADER" desc="This string is the accessibility text of a reminder message, which is intended to help users understand that they have been signed in to Brave.">
+          While you're signed in, you can use your passwords and more from your Brave sync chain in Brave. <ph name="SHORTCUT">$1<ex>CTRL+SHIFT+M</ex></ph> can change your Brave services settings.
         </message>
         <message name="IDS_CHROME_SIGNOUT_CONFIRMATION_PROMPT_VERIFY_BODY" desc="This is the subtitle of an error message dialog that appears when the user opens the Brave Profile Menu and chooses 'Sign out of Brave'. The error message appears when the user has saved some data (like a password or payment method) to Brave, but Brave wasn't able to save the data to the user's Brave sync chain due to a sign-in error; but, the data has been saved locally to Brave. This subtitle is after the 'Some data isn’t saved yet' string. The tone should be cautionary, because we want to explain to the user that their data is not saved to their Brave sync chain. This string provides a path to resolution because it explains how the user can properly save their data before they sign out of Brave.">
           Brave needs to verify it’s you before some data can be saved in your Brave sync chain and used on all your devices. If you sign out, this data will stay on this device.
@@ -1102,10 +1108,20 @@ Permissions you've already given to websites and apps may apply to this account.
             Use Brave Without an Account
           </message>
         </if>
+        <message name="IDS_AVATAR_BUTTON_INTERCEPT_BUBBLE_CHROME_SIGNIN_ACCESSIBILITY_LABEL" desc="Accessibility label (read by the accessibility tools) of the avatar button when the Brave Signin bubble is shown. The text implies that the expanded bubble underneath the button is closable by clicking on the button. The actual text is 'Sign in to Brave?' with a bubble shown under it.">
+          Click to close the Brave sign-in dialog
+        </message>
+        <message name="IDS_AVATAR_BUTTON_SIGNIN_PENDING_ACCESSIBILITY_LABEL" desc="Accessibility label (read by the accessibility tools) of the avatar button when Brave is in 'Sign-in pending' state. This state means that the account associated with Brave does not have valid credentials anymore and needs to be re-authenticated.">
+          Brave account requires re-authentication
+        </message>
+
+        <message name="IDS_SIGNIN_CONTINUE_AS_BUTTON_ACCESSIBILITY_LABEL" desc="Label of the 'Continue as' button of Brave Signin promos">
+          Sign in to Brave as <ph name="USER_EMAIL">$1<ex>john@google.com</ex></ph>
+        </message>
 
         <!-- Autofill Sign In Promo Bubble -->
         <message name="IDS_AUTOFILL_SIGNIN_PROMO_SUBTITLE_PASSWORD" desc="This is the body text of a confirmation message and means that the password was only saved locally to the user's device (not in their Brave sync chain). It appears when the user is not signed in to Brave and is after the 'Password saved to this device' string. If the user wants to save this data to their Brave sync chain, they can click the 'Sign in to Brave' button at the bottom of this message. The tone should be motivating.">
-          To save and use passwords and more on all your devices, sign in to Brave. This password will be saved in your Brave sync chain after you sign in.
+          To get your passwords and more on all your devices, sign in to Brave. This password will be saved in your Brave sync chain after you sign in.
         </message>
       </if>
 
@@ -1140,6 +1156,9 @@ Permissions you've already given to websites and apps may apply to this account.
         Sign in to Brave
       </message>
       <if expr="not use_titlecase">
+        <message name="IDS_PROFILE_MENU_SIGN_OUT_WHEN_SIGNIN_PENDING" desc="The text label of the Sign out of Brave button in the Profile Menu when the user is in sign in pending state.">
+          Remove account from Brave
+        </message>
         <message name="IDS_PROFILE_MENU_PROFILES_LIST_TITLE" desc="Title in the profile menu for the list of 'other Brave profiles'.">
           Other Brave profiles
         </message>
@@ -1151,6 +1170,9 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
       </if>
       <if expr="use_titlecase">
+        <message name="IDS_PROFILE_MENU_SIGN_OUT_WHEN_SIGNIN_PENDING" desc="The text label of the Sign out of Brave button in the Profile Menu when the user is in sign in pending state.">
+          Remove Account from Brave
+        </message>
         <message name="IDS_PROFILE_MENU_PROFILES_LIST_TITLE" desc="Title in the profile menu for the list of 'other Brave profiles'.">
           Other Brave Profiles
         </message>
@@ -1517,6 +1539,9 @@ Permissions you've already given to websites and apps may apply to this account.
         <message name="IDS_RUNTIME_PERMISSION_OS_REASON_TEXT" desc="Text provided to the macOS permission dialog, explaining why Brave needs to access a protected resource (e.g., camera, microphone).">
           Once Brave has access, websites will be able to ask you for access.
         </message>
+        <message name="IDS_LOCAL_NETWORK_ACCESS_PERMISSION_DESC" desc="Text shown in the macOS permission dialog, describing why Brave needs the permission to access local network.">
+          This will allow you to select from available devices and display content on them.
+        </message>
       </if>
 
       <!-- OOBE -->
@@ -1661,6 +1686,10 @@ Permissions you've already given to websites and apps may apply to this account.
       </if>
 
       <if expr="not chromeos_ash and not is_android">
+        <!-- Enterprise profile welcome screen -->
+        <message name="IDS_ENTERPRISE_OIDC_WELCOME_TIMEOUT_SUBTITLE" desc="Subtitle of a section telling the user that their work profile was created but is not fully ready yet.">
+          While we're setting up account access, you can still use Brave. You may not be able to access some resources until setup is complete.
+        </message>
         <!-- Profile Picker -->
         <if expr="chromeos_lacros">
           <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE_LACROS" desc="Profile picker main view subtitle">
@@ -1940,6 +1969,9 @@ Permissions you've already given to websites and apps may apply to this account.
         <message name="IDS_BUNDLE_INSTALLED_SUCCESSFULLY" desc="Installation complete message.">
           Installation complete.
         </message>
+        <message name="IDS_UPDATER_OS_NOT_SUPPORTED" desc="Error displayed if the OS is not supported">
+          Installation failed because your version of Windows is not supported.
+        </message>
 
         <!--extra code-->
         <message name="IDS_EXTRA_CODE" desc="The optional extra code for any of the errors below">
@@ -2003,13 +2035,21 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
 
         <!--Service errors.-->
+        <message name="IDS_SERVICE_ERROR_CANCELLED" desc="Error message displayed in the main dialog when the installation is cancelled.">
+          The installation has been cancelled.
+        </message>
         <message name="IDS_GENERIC_SERVICE_ERROR" desc="Error message displayed in the main dialog for runtime errors that occur in the update client service.">
           Service error: <ph name="SERVICE_ERROR">$1<ex>error-internal</ex></ph>.
         </message>
 
-        <!--Install errors.-->
-        <message name="IDS_GENERIC_INSTALL_ERROR" desc="Error message displayed in the main dialog for runtime errors that occur while installing.">
+        <!--update_client install errors.-->
+        <message name="IDS_GENERIC_INSTALL_ERROR" desc="Error message displayed in the main dialog if update client encounters an error while installing.">
           Install error: <ph name="INSTALL_ERROR">$1<ex>error-internal</ex></ph>
+        </message>
+
+        <!--Installer errors.-->
+        <message name="IDS_GENERIC_INSTALLER_ERROR" desc="Error message displayed in the main dialog when the application installer returns an error.">
+          Installer error: <ph name="INSTALLER_ERROR">$1<ex>error-internal</ex></ph>
         </message>
         <message name="IDS_INSTALL_REBOOT" desc="Message displayed in the main dialog when a system reboot is required or has been initiated after installing.">
           Reboot required: <ph name="INSTALL_SUCCESS">$1<ex>success-message-internal</ex></ph>
@@ -2025,6 +2065,14 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
         <message name="IDS_INSTALLER_TIMED_OUT" desc="Error message displayed in the main dialog when the application installer does not complete in the allowed amount of time.">
           Install error: The installer did not complete. The installation has been aborted.
+        </message>
+
+        <!--Metainstaller errors.-->
+        <message name="IDS_GENERIC_METAINSTALLER_ERROR" desc="Error message displayed when the metainstaller returns an error.">
+          Setup error: <ph name="METAINSTALLER_EXIT_CODE">$1<ex>error-internal</ex></ph>. <ph name="WINDOWS_ERROR">$2<ex>windows-error-description</ex></ph>
+        </message>
+        <message name="IDS_FAILED_TO_ELEVATE_METAINSTALLER" desc="Error displayed if the metainstaller could not be run with elevated privileges for a system install">
+          Failed to run setup with elevated privileges. <ph name="METAINSTALLER_ERROR">$1<ex>error-internal</ex></ph>
         </message>
       </if>
       <!-- Memory Saver Chip strings -->
@@ -2049,10 +2097,24 @@ Permissions you've already given to websites and apps may apply to this account.
       </if>
 
       <!-- Performance Intervention Dialog strings -->
-      <!-- TODO(crbug.com/341709409): Finalize the intervention strings and mark them as translateable -->
       <if expr="not is_android">
-        <message name="IDS_PERFORMANCE_INTERVENTION_DIALOG_BODY" desc="Body text for a dialog suggesting users to deactivate certain tabs to improve performance." translateable="false">
-          To improve your browsing experience, Brave recommends deactivating these background tabs:
+        <message name="IDS_PERFORMANCE_INTERVENTION_DIALOG_BODY_V1" desc="Body text for a dialog suggesting users to deactivate certain tabs to improve performance.">
+          These tabs are using extra resources. To improve your performance, let Brave make them inactive.
+        </message>
+        <message name="IDS_PERFORMANCE_INTERVENTION_DIALOG_BODY_V2" desc="Body text for a dialog suggesting users to deactivate certain tabs to improve performance.">
+          Brave can make these tabs inactive to improve your browsing experience and free up resources.
+        </message>
+        <message name="IDS_PERFORMANCE_INTERVENTION_DIALOG_BODY_V3" desc="Body text for a dialog suggesting users to deactivate certain tabs to improve performance.">
+          Brave can make these tabs inactive to improve your browsing experience and keep things fast.
+        </message>
+        <message name="IDS_PERFORMANCE_INTERVENTION_DIALOG_BODY_SINGULAR_V1" desc="Body text for a dialog suggesting users to deactivate certain tabs to improve performance.">
+          This tab is using extra resources. To improve your performance, let Brave make it inactive.
+        </message>
+        <message name="IDS_PERFORMANCE_INTERVENTION_DIALOG_BODY_SINGULAR_V2" desc="Body text for a dialog suggesting users to deactivate certain tabs to improve performance.">
+          Brave can make this tab inactive to improve your browsing experience and free up resources.
+        </message>
+        <message name="IDS_PERFORMANCE_INTERVENTION_DIALOG_BODY_SINGULAR_V3" desc="Body text for a dialog suggesting users to deactivate certain tabs to improve performance.">
+          Brave can make this tab inactive to improve your browsing experience and keep things fast.
         </message>
       </if>
 

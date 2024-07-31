@@ -135,11 +135,14 @@ CHAR_LIMIT guidelines:
       <message name="IDS_PRIVACY_GUIDE_SEARCH_SUGGESTIONS_ITEM_ONE" desc="First bullet point that describes the details of the search suggestions toggle.">
         When you tap or type in the address bar or search box, you'll see suggestions from your default search engine. This is off in Private.
       </message>
+      <message name="IDS_SAFETY_HUB_SAFETY_TIPS_INCOGNITO_TITLE" desc="Title for a entry in the Safety Hub user education section. The entry leads the user to a help center article about Private.">
+        Brave Private
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFETY_TIPS_INCOGNITO_SUMMARY" desc="Subtitle for a entry in the Safety Hub user education section. The entry leads the user to a help center article about Private.">
+        Private mode keeps your browsing private from others who use your device
+      </message>
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK" desc="Content description for the Private stack selection 'button'.">
         Private tabs
-      </message>
-      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK_SELECTED" desc="Announcement when the Private tab stack is selected.">
-        Switched to Private tabs
       </message>
       <message name="IDS_CONTEXTMENU_OPEN_IN_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a new Private tab. [CHAR_LIMIT=30]">
         Open in Private tab

@@ -212,22 +212,22 @@
   <message name="IDS_SETTINGS_ACCESSIBLE_IMAGE_LABELS_SUBTITLE" desc="Subtitle for screen reader image labels feature.">
     If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave.
   </message>
-  <message name="IDS_SETTINGS_MAIN_NODE_ANNOTATIONS_DOWNLOAD_COMPLETE" desc="Success message when it has downloaded main node annotation files." translateable="false">
+  <message name="IDS_SETTINGS_MAIN_NODE_ANNOTATIONS_DOWNLOAD_COMPLETE" desc="Success message when it has downloaded main node annotation files.">
     Main node annotation files downloaded
   </message>
-  <message name="IDS_SETTINGS_MAIN_NODE_ANNOTATIONS_DOWNLOAD_ERROR" desc="Generic error message when it fails to download main node annotation files." translateable="false">
+  <message name="IDS_SETTINGS_MAIN_NODE_ANNOTATIONS_DOWNLOAD_ERROR" desc="Generic error message when it fails to download main node annotation files.">
     Can't download main node annotation files. Try again later.
   </message>
-  <message name="IDS_SETTINGS_MAIN_NODE_ANNOTATIONS_DOWNLOAD_PROGRESS" desc="Download progress indicator after main node annotation is enabled. The user needs to download certain files for the feature to work." translateable="false">
+  <message name="IDS_SETTINGS_MAIN_NODE_ANNOTATIONS_DOWNLOAD_PROGRESS" desc="Download progress indicator after main node annotation is enabled. The user needs to download certain files for the feature to work.">
     Downloading main node annotation files… <ph name="PERCENT">$1<ex>17</ex></ph>%
   </message>
-  <message name="IDS_SETTINGS_MAIN_NODE_ANNOTATIONS_DOWNLOADING" desc="Generic message when it has started downloading main node annotation files." translateable="false">
+  <message name="IDS_SETTINGS_MAIN_NODE_ANNOTATIONS_DOWNLOADING" desc="Generic message when it has started downloading main node annotation files.">
     Downloading main node annotation files
   </message>
-  <message name="IDS_SETTINGS_MAIN_NODE_ANNOTATIONS_TITLE" desc="Description for screen reader main node annotations feature." translateable="false">
+  <message name="IDS_SETTINGS_MAIN_NODE_ANNOTATIONS_TITLE" desc="Description for screen reader main node annotations feature.">
     Annotate main node
   </message>
-  <message name="IDS_SETTINGS_MAIN_NODE_ANNOTATIONS_SUBTITLE" desc="Subtitle for screen reader main node annotation feature." translateable="false">
+  <message name="IDS_SETTINGS_MAIN_NODE_ANNOTATIONS_SUBTITLE" desc="Subtitle for screen reader main node annotation feature.">
     Identify the main landmark in web pages for assistive technology
   </message>
   <message name="IDS_SETTINGS_CAPTIONS_ENABLE_LIVE_CAPTION_TITLE" desc="Name of the setting to enable Live Caption feature.">
@@ -350,11 +350,12 @@
       Use Classic
     </message>
   </if>
-  <if expr="not is_linux or is_chromeos or is_fuchsia">
-    <message name="IDS_SETTINGS_RESET_TO_DEFAULT_THEME" desc="Name of the control which resets the browser theme back to the default theme.">
-      Reset to default
-    </message>
-  </if>
+  <message name="IDS_SETTINGS_RESET_TO_DEFAULT" desc="Name of the control which resets a browser setting back to the default value">
+    Reset to default
+  </message>
+  <message name="IDS_SETTINGS_CUSTOMIZE_TOOLBAR" desc="Text of the button which allows you to customize your toolbar.">
+    Customize your toolbar
+  </message>
   <message name="IDS_SETTINGS_CHROME_COLORS" desc="Text of the label describing 'Brave Colors' theme.">
     Brave Colors
   </message>
@@ -480,6 +481,9 @@
   <message name="IDS_SETTINGS_NOT_VALID_WEB_ADDRESS_FOR_CONTENT_TYPE" desc="Text indicating that the content setting can't take effect because the setting is limited to secure origins.">
     Origin must be secure
   </message>
+  <message name="IDS_SETTINGS_INPUT_MAX_LENGTH_DESCRIPTION" desc="Descriptive text read by screen readers indicating that an input has a maximum character limit.">
+    Maximum length <ph name="MAX">$1<ex>20</ex></ph> characters
+  </message>
   <message name="IDS_SETTINGS_RETRY" desc="The label text of the retry button because there is an error.">
     Retry
   </message>
@@ -502,6 +506,9 @@
   </message>
   <message name="IDS_PASSWORDS_PAGE_EXPORT_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Brave is trying to ' (or in some languages, 'Brave wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before exporting passwords to a file.">
     export passwords
+  </message>
+  <message name="IDS_PASSWORDS_PAGE_DELETE_ALL_DATA_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown on MacOS after 'Brave is trying to ' (or in some languages, 'Brave wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before deleting all Brave Password Manager data.">
+    delete your <ph name="BRAND">$1<ex>Brave Password Manager</ex></ph> data
   </message>
   <message name="IDS_SETTINGS_AUTOFILL_AND_PASSWORDS" desc="Name of the settings page which allows managing passwords, payment methods and addresses settings.">
     Autofill and passwords
@@ -804,30 +811,6 @@
     </message>
     <message name="IDS_SETTINGS_DEFAULT_BROWSER_MAKE_DEFAULT_BUTTON" desc="Text of the button used to make Brave the default browser on the user's system.">
       Make default
-    </message>
-  </if>
-
-  <if expr="chrome_root_store_cert_management_ui">
-    <!-- TODO(crbug.com/40928765): Make translatable once UI/strings are finalized. -->
-    <!-- Certificate Manager V2 Page -->
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_V2_CLIENT_CERTIFICATES" desc="Label for the client certificates tab in certificate manager." translateable="false">
-      Your certificates
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_V2_LOCAL_CERTIFICATES" desc="Label for the local certificates tab in certificate manager." translateable="false">
-      Local certificates
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_V2_CRS_CERTIFICATES" desc="Label for the Brave Root Store certificates tab in certificate manager." translateable="false">
-      Brave Root Store
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_V2_HASH_COPIED_TOAST" desc="Label for the hash copied toast message in certificate manager." translateable="false">
-      Hash copied to clipboard
-    </message>
-
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_V2_ADMIN_CERTS_SINGULAR" desc="One certificate installed via enterprise policy." translateable="false">
-      1 certificate
-    </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_V2_ADMIN_CERTS_PLURAL" desc="Number of certificates installd via enterprise policy (more than 1)." translateable="false">
-      <ph name="ITEMS_COUNT">$1<ex>5</ex></ph> certificates
     </message>
   </if>
 
@@ -1239,13 +1222,16 @@
   </message>
 
   <!-- Performance Page -->
-  <message name="IDS_SETTINGS_PERFORMANCE_PAGE_TITLE" desc="Title of the performance settings page">
+  <message name="IDS_SETTINGS_PERFORMANCE_PAGE_TITLE" desc="Name of the performance settings page.">
     Performance
   </message>
-  <message name="IDS_SETTINGS_MEMORY_PAGE_TITLE" desc="Title of the memory section on the performance settings page.">
+  <message name="IDS_SETTINGS_PERFORMANCE_GENERAL_PAGE_TITLE" desc="Title of the general section in the performance settings page.">
+    General
+  </message>
+  <message name="IDS_SETTINGS_PERFORMANCE_MEMORY_PAGE_TITLE" desc="Title of the memory section in the performance settings page.">
     Memory
   </message>
-  <message name="IDS_SETTINGS_SPEED_PAGE_TITLE" desc="Title of the speed section on the performance settings page.">
+  <message name="IDS_SETTINGS_PERFORMANCE_SPEED_PAGE_TITLE" desc="Title of the speed section in the performance settings page.">
     Speed
   </message>
   <message name="IDS_SETTINGS_PERFORMANCE_MEMORY_SAVER_MODE_SETTING" desc="Memory saver mode setting label. This mode allows the browser to save memory from background tabs">
@@ -1314,7 +1300,7 @@
   <message name="IDS_SETTINGS_PERFORMANCE_TAB_DISCARDING_EXCEPTIONS_ADD_DIALOG_HELP" desc="Help text shown on the second tab of the tab discarding exception list add dialog. Explains how to use the filter format to add an exclusion rule to the list.">
     Sites you add will always stay active and memory won't be freed up from them. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Learn more about keeping specific sites active<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_BATTERY_PAGE_TITLE" desc="Title of the power section of the performance settings page">
+  <message name="IDS_SETTINGS_PERFORMANCE_BATTERY_PAGE_TITLE" desc="Title of the power section in the performance settings page.">
     Power
   </message>
   <message name="IDS_SETTINGS_PERFORMANCE_BATTERY_SAVER_MODE_SETTING" desc="Energy saver mode setting label. This mode allows the browser to conserve battery by reducing energy usage">
@@ -1335,8 +1321,20 @@
   <message name="IDS_SETTINGS_PERFORMANCE_DISCARD_RING_TREATMENT_ENABLED_LABEL" desc="Label for a performance settings toggle that controls whether the inactive tab UI is shown">
     Inactive tabs appearance
   </message>
-  <message name="IDS_SETTINGS_PERFORMANCE_DISCARD_RING_TREATMENT_ENABLED_DESCRIPTION" desc="Label for a performance settings toggle description that controls whether the inactive tab UI is shown">
-    A dotted circle appears around site icons.
+  <message name="IDS_SETTINGS_PERFORMANCE_DISCARD_RING_TREATMENT_ENABLED_DESCRIPTION_WITH_LEARN_LINK" desc="Label for a performance settings toggle description that controls whether the inactive tab UI is shown. Also contains a link to the help center article.">
+    A dotted circle appears around site icons. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" aria-description="$2"&gt;</ph>Learn more about inactive tabs<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_PERFORMANCE_TAB_HOVER_PREVIEW_CARD_LINK_TITLE" desc="Title for the link row that points to tab hover preview card apperance settings.">
+    Tab hover preview card appearance
+  </message>
+  <message name="IDS_SETTINGS_PERFORMANCE_TAB_HOVER_PREVIEW_CARD_LINK_SUBTITLE" desc="Subtitle for the link row that points to tab hover preview card apperance settings.">
+    Choose to show memory usage and images in the tab hover preview card
+  </message>
+  <message name="IDS_SETTINGS_PERFORMANCE_INTERVENTION_NOTIFICATION_ENABLED_LABEL" desc="Label for a performance settings toggle that controls whether performance intervention notifications should be shown.">
+    Performance issue alerts
+  </message>
+  <message name="IDS_SETTINGS_PERFORMANCE_INTERVENTION_NOTIFICATION_ENABLED_DESCRIPTION" desc="Label for a performance settings toggle that controls whether performance intervention notifications should be shown and link to learn more about performance issue alerts.">
+    Get notifications that suggest ways to improve detected performance issues. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" aria-description="$2"&gt;</ph>Learn more about performance issue alerts<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
 
   <!-- Languages Page -->
@@ -1829,6 +1827,10 @@
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_PRIVACY_SANDBOX_LABEL" desc="Text of the Privacy Sandbox label in the completion card of the 'Privacy Guide'.">
     Ad privacy
+  </message>
+  <!-- TODO(crbug.com/331970504): Make privacy guide ad topics strings translateable. -->
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_PRIVACY_SANDBOX_SUB_LABEL_AD_TOPICS" desc="Text of the Privacy Sandbox sublabel in the completion card of the 'Privacy Guide' - This text is used when the ad topics card is added." translateable="false">
+    Manage your ad topics and other settings to limit what sites can learn about you to show you personalized ads
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_WAA_LABEL" desc="Text of the Web and App Activity label in the completion card of the 'Privacy Guide'.">
     Web &amp; App Activity
@@ -2607,6 +2609,18 @@
   <message name="IDS_SETTINGS_SEARCH_ENGINES_ADDITIONAL_INACTIVE_SITES" desc="Label for button that expands the Inactive Sites list of search engines to show all entries">
     Additional inactive sites
   </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_MORE_ACTIONS_ARIA_LABEL" desc="Accessibility label for the three-dot more actions menu button associated with each search engine on chrome://settings/searchEngines">
+    More actions for <ph name="SEARCH_ENGINE_NAME">$1<ex>Brave</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_ACTIVATE_BUTTON_ARIA_LABEL" desc="Accessibility label for the Activate button associated with each inactive search engine on chrome://settings/searchEngines">
+    Click to activate <ph name="SEARCH_ENGINE_NAME">$1<ex>Brave</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_ADD_SITE_SEARCH_BUTTON_ARIA_LABEL" desc="Accessibility label for the Add button that opens the Add Site search dialog on chrome://settings/searchEngines.">
+    Click to open Add Site Search dialog
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_EDIT_SEARCH_ENGINE_BUTTON_ARIA_LABEL" desc="Accessibility label for the Edit (pencil-icon) button that opens the Edit Site search/Search engine dialog for the associated search engine on chrome://settings/searchEngines.">
+    Click to open Edit dialog for <ph name="SEARCH_ENGINE_NAME">$1<ex>Brave</ex></ph>
+  </message>
 
   <!-- Site Settings Page -->
   <message name="IDS_SETTINGS_EXCEPTIONS_EMBEDDED_ON_HOST" desc="Template text for a child row in the content Exceptions page view. Controls the permission setting for the parent page when embedded on the specified site.">
@@ -2946,19 +2960,19 @@
     Not allowed to use V8 optimizer
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_DESCRIPTION" desc="Description of the keyboard lock content setting.">
-    Sites use keyboard lock to capture keyboard input that would otherwise be handled by the browser or the operating system.
+    Sites use this feature to capture and use the input of your keyboard, like for games or remote desktop apps
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_ALLOWED" desc="Label for the enabled option of the keyboard lock content setting.">
-    Sites can ask to lock your keyboard
+    Sites can ask to capture and use your keyboard input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_BLOCKED" desc="Label for the disabled option of the keyboard lock content setting.">
-    Don't allow sites to lock your keyboard
+    Don't allow sites to capture and use your keyboard input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the keyboard lock content setting.">
-    Allowed to lock your keyboard
+    Allowed to capture and use your keyboard input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the keyboard lock content setting.">
-    Not allowed to lock your keyboard
+    Not allowed to capture and use your keyboard input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION_DESCRIPTION" desc="Description of the location content setting.">
     Sites usually use your location for relevant features or info, like local news or nearby shops
@@ -3087,19 +3101,19 @@
     Download PDFs
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_POINTER_LOCK_DESCRIPTION" desc="Description of the pointer lock content setting.">
-    Sites use pointer lock to hide the mouse pointer and prevent it from leaving the page.
+    Sites use this feature to capture and use the input of your mouse, like for games or remote desktop apps
   </message>
     <message name="IDS_SETTINGS_SITE_SETTINGS_POINTER_LOCK_ALLOWED" desc="Label for the enabled option of the pointer lock content setting.">
-    Sites can ask to lock your mouse pointer
+    Sites can ask to capture and use your mouse input
   </message>
     <message name="IDS_SETTINGS_SITE_SETTINGS_POINTER_LOCK_BLOCKED" desc="Label for the disabled option of the pointer lock content setting.">
-    Don't allow sites to lock your pointer
+    Don't allow sites to capture and use your mouse input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_POINTER_LOCK_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the pointer lock content setting.">
-    Allowed to lock your pointer
+    Allowed to capture and use your mouse input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_POINTER_LOCK_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the pointer lock content setting.">
-    Not allowed to lock your pointer
+    Not allowed to capture and use your mouse input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_POPUPS_DESCRIPTION" desc="Description of the pop-ups content setting.">
     Sites might send pop-ups to show ads, or use redirects to lead you to websites you may not want to visit
@@ -3600,8 +3614,11 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_DISPLAYED_STORAGE_SIGN_OUT" desc="Text for the dialog that warns about being signed out when clearing storage used by displayed sites.">
     You'll be signed out of displayed sites, including in open tabs
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_RESET_CONFIRMATION" desc="Text for the dialog that warns about resetting all permissions for a site.">
-    Reset site permissions for <ph name="SITE">$1<ex>www.example.com</ex></ph>?
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_RESET_DIALOG_TITLE" desc="Title of a dialog that asks users to confirm that they want to reset all permissions for a site.">
+    Reset permissions?
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_RESET_CONFIRMATION" desc="Body text of a dialog that asks users to confirm that they want to reset all permissions for a site.">
+    The next time you visit, <ph name="SITE">$1<ex>www.example.com</ex></ph> will use default permissions
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_DELETE_STORAGE_DIALOG_TITLE" desc="Title of the dialog that warns about deleting storage used by a site.">
     Delete site data?
@@ -3782,7 +3799,15 @@
   <message name="IDS_SETTINGS_SITE_DATA_PAGE_BLOCK_CONFIRM_DIALOG_CANCEL_BUTTON" desc="A button label on the 'Sites you visit may stop working as designed' dialog.">
     Cancel
   </message>
-
+  <message name="IDS_SETTINGS_ADD_SITE_TO_ALLOW_LIST_LABEL" desc="Accessibility label which will be read by screen readers when focus enters the Add button. The user can use this button to add sites to the allowlist.">
+    Add site to allowed list
+  </message>
+  <message name="IDS_SETTINGS_ADD_SITE_TO_BLOCK_LIST_LABEL" desc="Accessibility label which will be read by screen readers when focus enters the Add button. The user can use this button to add sites to the blocklist.">
+    Add site to not-allowed list
+  </message>
+  <message name="IDS_SETTINGS_ADD_SITE_CONTEXT_MENU_LABEL" desc="Accessibility label which will be read by screen readers when focus enters the three dot menu. The user can use this menu to remove or edit sites in the block/allow list">
+    More options for <ph name="ORIGIN">$1<ex>example.com</ex></ph>
+  </message>
   <!-- Site Settings - Storage Access Page -->
   <message name="IDS_SETTINGS_STORAGE_ACCESS_DESCRIPTION" desc="The body description on the Embedded content settings page.">
     Sites you visit can embed content from other sites, for example images, ads, and text. These other sites can ask for permission to use info they've saved about you as you browse the site.
@@ -4066,26 +4091,22 @@
   </message>
 
   <!-- History search -->
-  <!-- TODO(b/328300718): Finalize strings. -->
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_SETTING_LABEL" desc="Title of the page of the settings that enables history search." translateable="false">
-    History search
+  <message name="IDS_SETTINGS_HISTORY_SEARCH_SETTING_LABEL" desc="Title of the page of the settings that enables history search.">
+    History search, powered by AI
   </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_SETTING_SUBLABEL" desc="Sublabel of the setting that enables history search." translateable="false">
-    Search through history
+  <message name="IDS_SETTINGS_HISTORY_SEARCH_SETTING_SUBLABEL" desc="Sublabel of the setting that enables history search.">
+    Use everyday language to search your browsing history and find sites you visited.
   </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_WHEN_ON_BULLET_ONE" desc="Bullet point in the 'When on' column of the description of the setting that enables history search." translateable="false">
-    You can search through your history
+  <message name="IDS_SETTINGS_HISTORY_SEARCH_WHEN_ON_BULLET_ONE" desc="Bullet point in the 'When on' column of the description of the setting that enables history search.">
+    You can search your browsing history based on general page content, not only page title and URL. This gives you improved results, whether you're searching browsing history in the address bar using @history or from the History page.
   </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_CONSIDER_BULLET_ONE" desc="Bullet point in the 'Things to consider' column of the description of the setting that enables history search." translateable="false">
-    You should consider this
+  <message name="IDS_SETTINGS_HISTORY_SEARCH_CONSIDER_BULLET_ONE" desc="Bullet point in the 'Things to consider' column of the description of the setting that enables history search.">
+    When you search browsing history, your history search terms, page content of best matches, and generated model outputs are sent to Brave and may be seen by human reviewers to improve this feature.
   </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_CONSIDER_BULLET_TWO" desc="Bullet point in the 'Things to consider' column of the description of the setting that enables history search." translateable="false">
-    You should consider this too
+  <message name="IDS_SETTINGS_HISTORY_SEARCH_CONSIDER_BULLET_TWO" desc="Bullet point in the 'Things to consider' column of the description of the setting that enables history search.">
+    As you browse sites, their page contents are saved in an encrypted form on your device.
   </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_LEARN_MORE" desc="Footer text for the setting that enables history search that links out to a help article." translateable="false">
-    <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph> about history searches
-  </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_LEARN_MORE_A11Y_LABEL" desc="Label for the 'Learn more' link in the footer text for teh setting that enables history search." translateable="false">
+  <message name="IDS_SETTINGS_HISTORY_SEARCH_LEARN_MORE_A11Y_LABEL" desc="Label for the 'Learn more' link in the toggle for the setting that enables history search.">
     Learn more about history searches
   </message>
 
@@ -4154,6 +4175,9 @@
   <if expr="not is_chromeos">
     <message name="IDS_SETTINGS_SYSTEM_HARDWARE_ACCELERATION_LABEL" desc="Label for the checkbox that forces Brave to render via graphics acceleration (GPU) when available.">
       Use graphics acceleration when available
+    </message>
+    <message name="IDS_SETTINGS_SYSTEM_FEATURE_NOTIFICATIONS_LABEL" desc="Label for the toggle that enables Brave system notifications about features.">
+      Show system notifications about Brave features and tips
     </message>
     <message name="IDS_SETTINGS_SYSTEM_PROXY_SETTINGS_LABEL" desc="Label for the control that opens the system network proxy settings. These settings apply to the entire computer.">
       Open your computer's proxy settings
@@ -4478,7 +4502,7 @@
   <message name="IDS_SETTINGS_SAFETY_HUB" desc="Name of a page in settings that gives users an overview over their safety status and where users can take action to improve their safety.">
     Safety Check
   </message>
-  <message name="IDS_SETTINGS_SAFETY_HUB_ENTRY_POINT_BUTTON" desc="This is the label of a button that takes users to the Safety Check page in Brave settings. This button appears in a section in privacy settings next to a text that gives more details on Safety Check.">
+  <message name="IDS_SETTINGS_SAFETY_HUB_ENTRY_POINT_BUTTON_LABEL" desc="This is the label of a button that takes users to the Safety Check page in Brave settings. This button appears in a section in privacy settings, after the 'Safety Check' and 'Brave found some safety recommendations for your review' strings. The words 'Safety Check' should be translated to match https://localizer.google.com/glossary/termset?gid=27517723&amp;tsid=4e021eb4 or if it's not available https://localizer.google.com/messages/details/BraveClient/7810354727545555354. The tone should be terse, because we need this button to be as short as possible. If it is impossible to say 'Go to Safety Check' in 30 characters, you may translate this as 'Review'. (CHAR LIMIT = 30)">
     Go to Safety Check
   </message>
   <message name="IDS_SETTINGS_SAFETY_HUB_PAGE_CARD_SECTION_HEADER" desc="The title of the first section in the Safety Hub page. The 'Safety at a glance' section gives an overview about the current state of passwords, browser version and safe browsing setting of the browser. ">

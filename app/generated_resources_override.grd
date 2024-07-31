@@ -109,6 +109,9 @@ are declared in tools/grit/grit_rule.gni.
         <part file="shared_settings_strings_override.grdp" />
       </if>
 
+      <if expr="chrome_root_store_cert_management_ui">
+        </if>
+
       <if expr="not is_android">
         </if>
 
@@ -485,6 +488,9 @@ are declared in tools/grit/grit_rule.gni.
         </if>
 
       <if expr="enable_extensions">
+        </if>
+
+      <if expr="enable_extensions">
         <if expr="is_macosx">
           </if>
         <if expr="not chromeos_ash and not is_macosx">
@@ -623,9 +629,6 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
 
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_FAVORITE_PEOPLE_WELCOME_TITLE" desc="Title of the opt-in UI for Google Photos in the new tab page emphasizing on favorite profiles.">
-        See memories of your favorite profiles and more
-      </message>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -644,6 +647,10 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="use_titlecase">
         </if>
 
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -994,14 +1001,15 @@ are declared in tools/grit/grit_rule.gni.
         <if expr="use_titlecase">
           <then>
             </then>
-         <else>
-          </else>
+          <else>
+            </else>
         </if>
 
         <if expr="use_titlecase">
           </if>
         <if expr="not use_titlecase">
           </if>
+
         <if expr="use_titlecase">
           </if>
         <if expr="not use_titlecase">
@@ -1092,11 +1100,13 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="is_macosx">
         </if>
+      <if expr="is_win">
+        </if>
         <if expr="is_macosx">
         </if>
-      <if expr="is_chromeos">
+      <if expr="is_win or is_chromeos">
         </if>
-      <if expr="is_macosx or is_chromeos">
+      <if expr="is_macosx or is_chromeos or is_win">
         </if>
 
       <if expr="is_android">
@@ -1333,6 +1343,11 @@ are declared in tools/grit/grit_rule.gni.
     <if expr="is_chromeos">
         </if>
 
-    </messages>
+    <if expr="is_android">
+        </if>
+
+    <if expr="is_android">
+        </if>
+  </messages>
 </release>
 </grit>
