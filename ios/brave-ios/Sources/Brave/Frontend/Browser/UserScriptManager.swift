@@ -23,6 +23,7 @@ class UserScriptManager {
       .faviconFetcher,
       .rewardsReporting,
       .resourceDownloader,
+      .nightMode,
     ]
 
     if Preferences.UserScript.playlist.value {
@@ -145,7 +146,6 @@ class UserScriptManager {
       case .playlistMediaSource:
         return Preferences.UserScript.mediaSource.value
           ? loadScript(named: "PlaylistSwizzlerScript") : nil
-      case .nightMode: return NightModeScriptHandler.userScript
       case .deAmp: return Preferences.UserScript.deAmp.value ? DeAmpScriptHandler.userScript : nil
       case .requestBlocking:
         return Preferences.UserScript.requestBlocking.value
@@ -163,6 +163,7 @@ class UserScriptManager {
 
       // Always enabled scripts
       case .faviconFetcher: return FaviconScriptHandler.userScript
+      case .nightMode: return DarkReaderScriptHandler.userScript
       case .rewardsReporting:
         return Preferences.UserScript.rewardsReporting.value
           ? RewardsReportingScriptHandler.userScript : nil

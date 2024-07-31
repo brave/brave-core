@@ -407,7 +407,11 @@ class Tab: NSObject {
       }
 
       if let webView = webView {
-        NightModeScriptHandler.executeScript(for: webView, isNightModeEnabled: isNightModeEnabled)
+        if isNightModeEnabled {
+          DarkReaderScriptHandler.enable(for: webView)
+        } else {
+          DarkReaderScriptHandler.disable(for: webView)
+        }
       }
 
       self.setScript(script: .nightMode, enabled: isNightModeEnabled)

@@ -196,6 +196,7 @@
     "async": "^3.2.4",
     "bignumber.js": "^9.0.2",
     "core-js": "^3.9.1",
+    "darkreader": "^4.9.87",
     "date-fns": "^2.15.0",
     "jszip": "^3.8.0",
     "page-metadata-parser": "^1.1.3",
