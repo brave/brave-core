@@ -14,6 +14,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -215,7 +216,8 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
 
     @NonNull
     private PasteEditText generatePasteEditText(final boolean lastItem, final int position) {
-        PasteEditText pasteEditText = new PasteEditText(requireContext());
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(requireContext(), R.style.BraveWalletEditTextTheme);
+        PasteEditText pasteEditText = new PasteEditText(contextThemeWrapper);
         pasteEditText.setListener(this);
         pasteEditText.setInputType(InputType.TYPE_CLASS_TEXT);
         pasteEditText.setAutofillHints("recoveryPhrase");

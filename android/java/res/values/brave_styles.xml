@@ -82,11 +82,15 @@
         <item name="fontWeight">400</item>
     </style>
 
-    <style name="BraveWalletInputLayoutTheme">
-        <!-- Text selection handle color. -->
+    <style name="BraveWalletEditTextTheme">
+        <!-- Text selection background color. -->
+        <item name="android:textColorHighlight">@color/primary_20</item>
+        <!-- Text selection handles color, blinking cursor color and selected border. -->
         <!-- It must be set as a theme at component level -->
         <!-- as we don't want to change it for the whole app. -->
         <item name="colorControlActivated">@color/icon_interactive</item>
+        <!-- Hint text color that translates to the top of the view. -->
+        <item name="android:textColorHint">@color/text_primary</item>
     </style>
 
     <style name="BraveWalletInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -98,11 +102,6 @@
         <item name="cursorColor">@color/icon_interactive</item>
         <!-- Blinking cursor color on error state. -->
         <item name="cursorErrorColor">@color/system_feedback_error</item>
-    </style>
-
-    <style name="BraveWalletInputEditText" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
-        <!-- Text selection background color. -->
-        <item name="android:textColorHighlight">@color/primary_20</item>
     </style>
 
     <!--  Brave Wallet buttons  -->

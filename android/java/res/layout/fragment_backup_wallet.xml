@@ -36,7 +36,7 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:theme="@style/BraveWalletInputLayoutTheme"
+            android:theme="@style/BraveWalletEditTextTheme"
             style="@style/BraveWalletInputLayout"
             app:errorEnabled="true"
             app:endIconMode="password_toggle"
@@ -48,7 +48,6 @@
             android:hint="@string/enter_your_password">
 
             <com.google.android.material.textfield.TextInputEditText
-                style="@style/BraveWalletInputEditText"
                 android:id="@+id/text_input_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
