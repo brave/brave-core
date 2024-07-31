@@ -376,55 +376,6 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   return urls;
 }
 
-#pragma mark - History
-
-- (BOOL)hasViewedAdsInPreviousCycle {
-  const auto calendar =
-      [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
-  const auto now = NSDate.date;
-  const auto previousCycleDate = [calendar dateByAddingUnit:NSCalendarUnitMonth
-                                                      value:-1
-                                                     toDate:now
-                                                    options:0];
-  const auto previousCycleMonth = [calendar component:NSCalendarUnitMonth
-                                             fromDate:previousCycleDate];
-  const auto previousCycleYear = [calendar component:NSCalendarUnitYear
-                                            fromDate:previousCycleDate];
-  const auto viewedDates = [self getAdsHistoryDates];
-  for (NSDate* date in viewedDates) {
-    const auto components =
-        [calendar components:NSCalendarUnitMonth | NSCalendarUnitYear
-                    fromDate:date];
-    if (components.month == previousCycleMonth &&
-        components.year == previousCycleYear) {
-      // Was from previous cycle
-      return YES;
-    }
-  }
-  return NO;
-}
-
-- (NSArray<NSDate*>*)getAdsHistoryDates {
-  if (![self isServiceRunning]) {
-    return @[];
-  }
-
-  const auto ad_history =
-      ads->GetAdHistory(brave_ads::AdHistoryFilterType::kNone,
-                        brave_ads::AdHistorySortType::kNone, base::Time::Min(),
-                        base::Time::Max());
-
-  const auto dates = [[NSMutableArray<NSDate*> alloc] init];
-  for (const auto& ad_history_item : ad_history) {
-    const auto date =
-        [NSDate dateWithTimeIntervalSince1970:ad_history_item.created_at
-                                                  .InSecondsFSinceUnixEpoch()];
-    [dates addObject:date];
-  }
-
-  return dates;
-}
-
 #pragma mark - Profile prefs
 
 - (void)initProfilePrefService {
