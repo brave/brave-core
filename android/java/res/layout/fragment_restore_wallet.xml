@@ -1,121 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/container_background"
-    android:fadeScrollbars="false"
-    android:fillViewport="true"
-    android:scrollbars="vertical">
+    android:orientation="vertical"
+    android:background="@color/container_background">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/restore_title"
+        style="@style/HeadingH3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="18dp"
+        android:gravity="center_horizontal"
+        android:text="@string/restore_crypto_account"
+        android:textColor="@color/text_primary"
+        android:textStyle="bold" />
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:overScrollMode="never"
+        android:fillViewport="true">
 
-        <TextView
-            android:id="@+id/restore_title"
-            style="@style/HeadingH3"
-            android:gravity="center_horizontal"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="18dp"
-            android:text="@string/restore_crypto_account"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/restore_subtitle"
-            style="@style/DefaultRegular"
-            android:gravity="center_horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="40dp"
-            android:text="@string/restore_crypto_text"
-            android:textColor="@color/text_secondary" />
+            <TextView
+                android:id="@+id/restore_subtitle"
+                style="@style/DefaultRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="40dp"
+                android:gravity="center_horizontal"
+                android:text="@string/restore_crypto_text"
+                android:textColor="@color/text_secondary"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/recovery_phrase_12" />
 
+            <GridLayout
+                android:id="@+id/recovery_phrase_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="3"
+                android:rowCount="4"
+                android:layout_marginHorizontal="12dp"
+                app:layout_constraintBottom_toTopOf="@+id/recovery_phrase_24" />
 
+            <GridLayout
+                android:id="@+id/recovery_phrase_24"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="3"
+                android:rowCount="4"
+                android:layout_marginHorizontal="12dp"
+                app:layout_constraintBottom_toTopOf="@+id/toggle_word_mask" />
 
-        <GridLayout
-            android:id="@+id/recovery_phrase_12"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="12dp"
-            android:columnCount="3"
-            android:rowCount="4" />
+            <ImageView
+                android:id="@+id/toggle_word_mask"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="16dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@null"
+                android:focusable="true"
+                android:padding="4dp"
+                android:src="@drawable/ic_eye_on"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/space" />
 
-        <GridLayout
-            android:id="@+id/recovery_phrase_24"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="12dp"
-            android:columnCount="3"
-            android:rowCount="4" />
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="toggle_word_mask" />
 
-        <ImageView
-            android:layout_gravity="end"
-            android:layout_marginTop="20dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:padding="4dp"
-            android:id="@+id/toggle_word_mask"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@null"
-            android:layout_marginEnd="24dp"
-            android:src="@drawable/ic_eye_on"/>
+            <Space
+                android:id="@+id/space"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/barrier"
+                app:layout_constraintBottom_toTopOf="@+id/legacy_import" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/legacy_import"
+                style="@style/BraveWalletCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:paddingHorizontal="8dp"
+                android:layout_gravity="center"
+                android:text="@string/restore_legacy_wallet_recovery_phrase"
+                android:textColor="@color/text_interactive"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/recovery_phrase_switch" />
+            
+            <TextView
+                android:id="@+id/recovery_phrase_switch"
+                style="@style/DefaultRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="@string/recovery_phrase_24"
+                android:textColor="@color/text_interactive"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toTopOf="@+id/continue_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/legacy_import"
-            android:visibility="invisible"
-            style="@style/BraveWalletCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="16dp"
-            android:paddingHorizontal="8dp"
-            android:layout_gravity="center"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:text="@string/restore_legacy_wallet_recovery_phrase"
-            android:textColor="@color/text_interactive" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/continue_button"
+                style="@style/BraveWalletOnboardingButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="48dp"
+                android:enabled="false"
+                android:gravity="center"
+                android:text="@string/continue_text"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-
-        <TextView
-            android:id="@+id/recovery_phrase_switch"
-            style="@style/DefaultRegular"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="32dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:padding="16dp"
-            android:text="@string/recovery_phrase_24"
-            android:textColor="@color/text_interactive"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/continue_button"
-            style="@style/BraveWalletOnboardingButton"
-            android:layout_width="match_parent"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="40dp"
-            android:enabled="false"
-            android:gravity="center"
-            android:text="@string/continue_text" />
-
-    </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
