@@ -17,6 +17,7 @@
 -All/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/*
 -AllocationRecorderBrowserTest.VerifyCrashreportIncludesNoRecorder
 -DebuggerExtensionApiTest.ParentTargetPermissions
+-ErrorPageAutoReloadTest.AutoReload
 -EventPageAndFalse/ExtensionBackForwardCacheBrowserTest.*
 -EventPageAndTrue/ExtensionBackForwardCacheBrowserTest.*
 -EventPageAndTrue/ExtensionBackForwardCacheBrowserTest.ChromeRuntimeConnectUsageInIframeWithoutIframeNavigation/0
