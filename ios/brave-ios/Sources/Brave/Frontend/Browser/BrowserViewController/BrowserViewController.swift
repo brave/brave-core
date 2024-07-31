@@ -1996,39 +1996,6 @@ public class BrowserViewController: UIViewController {
     }
   }
 
-  //  func logSecureContentState(
-  //    tab: Tab,
-  //    path: KVOConstants? = nil,
-  //    change: [NSKeyValueChangeKey: Any]? = nil
-  //  ) {
-  //    var text = """
-  //      Tab URL: \(tab.url?.absoluteString ?? "Empty Tab URL")
-  //       Secure State: \(tab.lastKnownSecureContentState.rawValue)
-  //      """
-  //
-  //    if let keyPath = path?.keyPath {
-  //      text.append("\n Value Observed: \(keyPath)\n")
-  //    }
-  //
-  //    if let webView = tab.webView {
-  //      text.append(
-  //        """
-  //         WebView url: \(webView.lastCommittedURL?.absoluteString ?? "nil")
-  //         WebView hasOnlySecureContent: \(webView. hasOnlySecureContent ?? false ? "true" : "false")
-  //         WebView serverTrust: \(webView.serverTrust != nil ? "present" : "nil")
-  //        """
-  //      )
-  //    }
-  //
-  //    if let change, path == .serverTrust, let newServerTrust = change[.newKey] {
-  //      text.append("\n Change: \(newServerTrust != nil ? "present" : "nil")")
-  //    } else if let change, let value = change[.newKey] {
-  //      text.append("\n Change: \(String(describing: value))")
-  //    }
-  //
-  //    DebugLogger.log(for: .secureState, text: text)
-  //  }
-
   func updateBackForwardActionStatus(for webView: BraveWebView?) {
     guard let webView = webView else { return }
 
@@ -3591,27 +3558,20 @@ extension BrowserViewController {
       return nil
     }
 
-    // FIXME: Certificate
-    guard let trust = webView.underlyingWebView?.serverTrust ?? getServerTrustForErrorPage() else {
-      return
-    }
-
-    let host = webView.lastCommittedURL?.host
-
     Task.detached {
-      let serverCertificates: [SecCertificate] =
-        SecTrustCopyCertificateChain(trust) as? [SecCertificate] ?? []
+      guard let visibleSSLStatus = await webView.visibleSSLStatus else { return }
 
       // TODO: Instead of showing only the first cert in the chain,
       // have a UI that allows users to select any certificate in the chain (similar to Desktop browsers)
-      if let serverCertificate = serverCertificates.first,
+      if let serverCertificate = visibleSSLStatus.certificate?.certificateRef,
         let certificate = BraveCertificateModel(certificate: serverCertificate)
       {
 
         var errorDescription: String?
 
+        // FIXME: Evaluate Certificate Status instead or expose a method to evaluate SecCertificate
         do {
-          try await BraveCertificateUtils.evaluateTrust(trust, for: host)
+          //          try await BraveCertificateUtils.evaluateTrust(trust, for: host)
         } catch {
           Logger.module.error("\(error.localizedDescription)")
 

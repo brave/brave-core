@@ -27,8 +27,10 @@ source_set("web_view") {
   # sources = ios_web_view_public_headers
   sources = [
     "internal/cwv_web_view_extras.mm",
+    "internal/cwv_x509_certificate_extras.mm",
     "internal/web_view_global_state_util_stub.mm",
     "public/cwv_web_view_extras.h",
+    "public/cwv_x509_certificate_extras.h",
   ]
   deps = [
     "//ios/web/js_messaging",
