@@ -14,7 +14,7 @@
 #include "base/test/task_environment.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/web_discovery/browser/util.h"
-#include "brave/components/web_discovery/browser/wdp_service.h"
+#include "brave/components/web_discovery/browser/web_discovery_service.h"
 #include "components/prefs/testing_pref_service.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -33,7 +33,7 @@ class WebDiscoveryServerConfigLoaderTest : public testing::Test {
 
   // testing::Test:
   void SetUp() override {
-    WDPService::RegisterLocalStatePrefs(local_state_.registry());
+    WebDiscoveryService::RegisterLocalStatePrefs(local_state_.registry());
 
     ASSERT_TRUE(install_dir_.CreateUniqueTempDir());
 

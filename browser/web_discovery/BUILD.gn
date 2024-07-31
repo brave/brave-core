@@ -9,8 +9,8 @@ import("//extensions/buildflags/buildflags.gni")
 if (enable_web_discovery_native) {
   source_set("web_discovery") {
     sources = [
-      "wdp_service_factory.cc",
-      "wdp_service_factory.h",
+      "web_discovery_service_factory.cc",
+      "web_discovery_service_factory.h",
     ]
     deps = [
       "//base",
@@ -46,7 +46,7 @@ source_set("unit_tests") {
     ]
 
     if (enable_web_discovery_native) {
-      sources += [ "wdp_service_factory_unittest.cc" ]
+      sources += [ "web_discovery_service_factory_unittest.cc" ]
       deps += [
         ":web_discovery",
         "//brave/components/web_discovery/common",

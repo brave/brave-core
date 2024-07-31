@@ -23,7 +23,6 @@
 #include "brave/browser/ntp_background/ntp_tab_helper.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
-#include "brave/browser/web_discovery/wdp_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -72,7 +71,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-#include "brave/browser/web_discovery/wdp_service_factory.h"
+#include "brave/browser/web_discovery/web_discovery_service_factory.h"
 #include "brave/components/web_discovery/browser/web_discovery_tab_helper.h"
 #include "brave/components/web_discovery/common/features.h"
 #endif
@@ -230,11 +229,12 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   if (base::FeatureList::IsEnabled(
           web_discovery::features::kWebDiscoveryNative)) {
-    auto* wdp_service = web_discovery::WDPServiceFactory::GetForBrowserContext(
-        web_contents->GetBrowserContext());
-    if (wdp_service) {
-      web_discovery::WebDiscoveryTabHelper::CreateForWebContents(web_contents,
-                                                                 wdp_service);
+    auto* web_discovery_service =
+        web_discovery::WebDiscoveryServiceFactory::GetForBrowserContext(
+            web_contents->GetBrowserContext());
+    if (web_discovery_service) {
+      web_discovery::WebDiscoveryTabHelper::CreateForWebContents(
+          web_contents, web_discovery_service);
     }
   }
 #endif

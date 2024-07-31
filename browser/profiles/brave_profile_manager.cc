@@ -49,7 +49,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-#include "brave/components/web_discovery/browser/wdp_service.h"
+#include "brave/components/web_discovery/browser/web_discovery_service.h"
 #endif
 
 using content::BrowserThread;
@@ -92,7 +92,7 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
   perf::MaybeEnableBraveFeatureForPerfTesting(profile);
   brave::MigrateHttpsUpgradeSettings(profile);
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-  web_discovery::WDPService::SetExtensionPrefIfNativeDisabled(
+  web_discovery::WebDiscoveryService::SetExtensionPrefIfNativeDisabled(
       profile->GetPrefs());
 #endif
 }

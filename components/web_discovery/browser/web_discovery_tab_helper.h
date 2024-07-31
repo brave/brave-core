@@ -17,14 +17,14 @@ class RenderFrameHost;
 
 namespace web_discovery {
 
-class WDPService;
+class WebDiscoveryService;
 
 class WebDiscoveryTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<WebDiscoveryTabHelper> {
  public:
   WebDiscoveryTabHelper(content::WebContents* web_contents,
-                        WDPService* wdp_service);
+                        WebDiscoveryService* web_discovery_service);
   ~WebDiscoveryTabHelper() override;
 
   WebDiscoveryTabHelper(const WebDiscoveryTabHelper&) = delete;
@@ -37,7 +37,7 @@ class WebDiscoveryTabHelper
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& url) override;
 
-  raw_ptr<WDPService> wdp_service_;
+  raw_ptr<WebDiscoveryService> web_discovery_service_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

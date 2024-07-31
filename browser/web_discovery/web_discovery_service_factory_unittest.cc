@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/web_discovery/wdp_service_factory.h"
+#include "brave/browser/web_discovery/web_discovery_service_factory.h"
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/web_discovery/common/features.h"
@@ -14,7 +14,7 @@
 
 namespace web_discovery {
 
-TEST(WDPServiceFactoryTest, PrivateNotCreated) {
+TEST(WebDiscoveryServiceFactoryTest, PrivateNotCreated) {
   content::BrowserTaskEnvironment task_environment;
   base::test::ScopedFeatureList scoped_features(features::kWebDiscoveryNative);
   auto* browser_process = TestingBrowserProcess::GetGlobal();
@@ -23,9 +23,9 @@ TEST(WDPServiceFactoryTest, PrivateNotCreated) {
 
   auto* profile = profile_manager.CreateTestingProfile("test");
 
-  EXPECT_TRUE(WDPServiceFactory::GetForBrowserContext(profile));
-  EXPECT_FALSE(
-      WDPServiceFactory::GetForBrowserContext(profile->GetOffTheRecordProfile(
+  EXPECT_TRUE(WebDiscoveryServiceFactory::GetForBrowserContext(profile));
+  EXPECT_FALSE(WebDiscoveryServiceFactory::GetForBrowserContext(
+      profile->GetOffTheRecordProfile(
           Profile::OTRProfileID::CreateUniqueForTesting(), true)));
 }
 

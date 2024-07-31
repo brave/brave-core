@@ -102,7 +102,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-#include "brave/browser/web_discovery/wdp_service_factory.h"
+#include "brave/browser/web_discovery/web_discovery_service_factory.h"
 #endif
 
 namespace brave {
@@ -202,7 +202,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-  web_discovery::WDPServiceFactory::GetInstance();
+  web_discovery::WebDiscoveryServiceFactory::GetInstance();
 #endif
 }
 

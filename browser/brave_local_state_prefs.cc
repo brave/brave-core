@@ -75,7 +75,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-#include "brave/components/web_discovery/browser/wdp_service.h"
+#include "brave/components/web_discovery/browser/web_discovery_service.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -183,7 +183,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
   playlist::PlaylistServiceFactory::RegisterLocalStatePrefs(registry);
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-  web_discovery::WDPService::RegisterLocalStatePrefs(registry);
+  web_discovery::WebDiscoveryService::RegisterLocalStatePrefs(registry);
 #endif
 }
 

@@ -120,7 +120,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-#include "brave/components/web_discovery/browser/wdp_service.h"
+#include "brave/components/web_discovery/browser/web_discovery_service.h"
 #endif
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
@@ -508,7 +508,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 base::Value(false));
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-  web_discovery::WDPService::RegisterProfilePrefs(registry);
+  web_discovery::WebDiscoveryService::RegisterProfilePrefs(registry);
 #endif
 }
 

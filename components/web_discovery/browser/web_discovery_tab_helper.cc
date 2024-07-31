@@ -5,17 +5,18 @@
 
 #include "brave/components/web_discovery/browser/web_discovery_tab_helper.h"
 
-#include "brave/components/web_discovery/browser/wdp_service.h"
+#include "brave/components/web_discovery/browser/web_discovery_service.h"
 #include "content/public/browser/navigation_handle.h"
 
 namespace web_discovery {
 
-WebDiscoveryTabHelper::WebDiscoveryTabHelper(content::WebContents* web_contents,
-                                             WDPService* wdp_service)
+WebDiscoveryTabHelper::WebDiscoveryTabHelper(
+    content::WebContents* web_contents,
+    WebDiscoveryService* web_discovery_service)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<WebDiscoveryTabHelper>(*web_contents),
-      wdp_service_(wdp_service) {
-  CHECK(wdp_service);
+      web_discovery_service_(web_discovery_service) {
+  CHECK(web_discovery_service);
 }
 
 WebDiscoveryTabHelper::~WebDiscoveryTabHelper() = default;
@@ -26,7 +27,7 @@ void WebDiscoveryTabHelper::DidFinishLoad(
   if (!render_frame_host->IsInPrimaryMainFrame()) {
     return;
   }
-  wdp_service_->DidFinishLoad(url, render_frame_host);
+  web_discovery_service_->DidFinishLoad(url, render_frame_host);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(WebDiscoveryTabHelper);

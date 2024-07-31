@@ -13,7 +13,7 @@
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/test/task_environment.h"
-#include "brave/components/web_discovery/browser/wdp_service.h"
+#include "brave/components/web_discovery/browser/web_discovery_service.h"
 #include "components/prefs/testing_pref_service.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -37,7 +37,7 @@ class WebDiscoveryDoubleFetcherTest : public testing::Test {
 
   // testing::Test:
   void SetUp() override {
-    WDPService::RegisterProfilePrefs(profile_prefs_.registry());
+    WebDiscoveryService::RegisterProfilePrefs(profile_prefs_.registry());
 
     InitDoubleFetcher();
     SetUpResponse(net::HTTP_OK);

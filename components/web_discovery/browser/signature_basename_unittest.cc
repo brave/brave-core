@@ -14,7 +14,7 @@
 #include "base/test/task_environment.h"
 #include "brave/components/web_discovery/browser/regex_util.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
-#include "brave/components/web_discovery/browser/wdp_service.h"
+#include "brave/components/web_discovery/browser/web_discovery_service.h"
 #include "components/prefs/testing_pref_service.h"
 #include "crypto/sha2.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -78,7 +78,7 @@ class WebDiscoverySignatureBasenameTest : public testing::Test {
 
   // testing::Test:
   void SetUp() override {
-    WDPService::RegisterProfilePrefs(profile_prefs_.registry());
+    WebDiscoveryService::RegisterProfilePrefs(profile_prefs_.registry());
 
     auto action_config = std::make_unique<SourceMapActionConfig>();
     action_config->keys.push_back("q->url");

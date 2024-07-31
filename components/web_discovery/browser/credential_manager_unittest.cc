@@ -18,7 +18,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/browser/util.h"
-#include "brave/components/web_discovery/browser/wdp_service.h"
+#include "brave/components/web_discovery/browser/web_discovery_service.h"
 #include "components/prefs/testing_pref_service.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -42,7 +42,7 @@ class WebDiscoveryCredentialManagerTest : public testing::Test {
     ASSERT_TRUE(base::Time::FromUTCString("2024-06-22", &set_time));
     task_environment_.AdvanceClock(set_time - base::Time::Now());
 
-    WDPService::RegisterProfilePrefs(profile_prefs_.registry());
+    WebDiscoveryService::RegisterProfilePrefs(profile_prefs_.registry());
 
     base::FilePath data_path =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);

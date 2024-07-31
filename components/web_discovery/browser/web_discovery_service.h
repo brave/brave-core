@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_WDP_SERVICE_H_
-#define BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_WDP_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_WEB_DISCOVERY_SERVICE_H_
+#define BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_WEB_DISCOVERY_SERVICE_H_
 
 #include <memory>
 #include <optional>
@@ -37,17 +37,17 @@ namespace web_discovery {
 
 // The main service for the native re-implementation of Web Discovery Project.
 // Handles scraping and reporting of relevant pages for opted-in users.
-class WDPService : public KeyedService {
+class WebDiscoveryService : public KeyedService {
  public:
-  WDPService(
+  WebDiscoveryService(
       PrefService* local_state,
       PrefService* profile_prefs,
       base::FilePath user_data_dir,
       scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory);
-  ~WDPService() override;
+  ~WebDiscoveryService() override;
 
-  WDPService(const WDPService&) = delete;
-  WDPService& operator=(const WDPService&) = delete;
+  WebDiscoveryService(const WebDiscoveryService&) = delete;
+  WebDiscoveryService& operator=(const WebDiscoveryService&) = delete;
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
@@ -103,4 +103,4 @@ class WDPService : public KeyedService {
 
 }  // namespace web_discovery
 
-#endif  // BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_WDP_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_WEB_DISCOVERY_SERVICE_H_

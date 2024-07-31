@@ -42,8 +42,8 @@ static_library("browser") {
     "signature_basename.h",
     "util.cc",
     "util.h",
-    "wdp_service.cc",
-    "wdp_service.h",
+    "web_discovery_service.cc",
+    "web_discovery_service.h",
     "web_discovery_tab_helper.cc",
     "web_discovery_tab_helper.h",
   ]

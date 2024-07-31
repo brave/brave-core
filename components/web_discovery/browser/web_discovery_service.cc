@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/web_discovery/browser/wdp_service.h"
+#include "brave/components/web_discovery/browser/web_discovery_service.h"
 
 #include <utility>
 
@@ -33,7 +33,7 @@ constexpr base::TimeDelta kAliveCheckInterval = base::Minutes(1);
 constexpr size_t kMinPageCountForAliveMessage = 2;
 }  // namespace
 
-WDPService::WDPService(
+WebDiscoveryService::WebDiscoveryService(
     PrefService* local_state,
     PrefService* profile_prefs,
     base::FilePath user_data_dir,
@@ -50,22 +50,24 @@ WDPService::WDPService(
 #endif
 
   pref_change_registrar_.Init(profile_prefs);
-  pref_change_registrar_.Add(kWebDiscoveryNativeEnabled,
-                             base::BindRepeating(&WDPService::OnEnabledChange,
-                                                 base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kWebDiscoveryNativeEnabled,
+      base::BindRepeating(&WebDiscoveryService::OnEnabledChange,
+                          base::Unretained(this)));
 
   if (profile_prefs_->GetBoolean(kWebDiscoveryNativeEnabled)) {
     Start();
   }
 }
 
-WDPService::~WDPService() = default;
+WebDiscoveryService::~WebDiscoveryService() = default;
 
-void WDPService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+void WebDiscoveryService::RegisterLocalStatePrefs(
+    PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kPatternsRetrievalTime, {});
 }
 
-void WDPService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
+void WebDiscoveryService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kWebDiscoveryNativeEnabled, false);
   registry->RegisterDictionaryPref(kAnonymousCredentialsDict);
   registry->RegisterStringPref(kCredentialRSAPrivateKey, {});
@@ -76,7 +78,8 @@ void WDPService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kPageCounts);
 }
 
-void WDPService::SetExtensionPrefIfNativeDisabled(PrefService* profile_prefs) {
+void WebDiscoveryService::SetExtensionPrefIfNativeDisabled(
+    PrefService* profile_prefs) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   if (!base::FeatureList::IsEnabled(features::kWebDiscoveryNative) &&
       profile_prefs->GetBoolean(kWebDiscoveryNativeEnabled)) {
@@ -85,13 +88,13 @@ void WDPService::SetExtensionPrefIfNativeDisabled(PrefService* profile_prefs) {
 #endif
 }
 
-void WDPService::Start() {
+void WebDiscoveryService::Start() {
   if (!server_config_loader_) {
     server_config_loader_ = std::make_unique<ServerConfigLoader>(
         local_state_, user_data_dir_, shared_url_loader_factory_.get(),
-        base::BindRepeating(&WDPService::OnConfigChange,
+        base::BindRepeating(&WebDiscoveryService::OnConfigChange,
                             base::Unretained(this)),
-        base::BindRepeating(&WDPService::OnPatternsLoaded,
+        base::BindRepeating(&WebDiscoveryService::OnPatternsLoaded,
                             base::Unretained(this)));
     server_config_loader_->LoadConfigs();
   }
@@ -102,7 +105,7 @@ void WDPService::Start() {
   }
 }
 
-void WDPService::Stop() {
+void WebDiscoveryService::Stop() {
   alive_message_timer_.Stop();
   reporter_ = nullptr;
   double_fetcher_ = nullptr;
@@ -120,7 +123,7 @@ void WDPService::Stop() {
   profile_prefs_->ClearPref(kPageCounts);
 }
 
-void WDPService::OnEnabledChange() {
+void WebDiscoveryService::OnEnabledChange() {
   if (profile_prefs_->GetBoolean(kWebDiscoveryNativeEnabled)) {
     Start();
   } else {
@@ -128,11 +131,11 @@ void WDPService::OnEnabledChange() {
   }
 }
 
-void WDPService::OnConfigChange() {
+void WebDiscoveryService::OnConfigChange() {
   credential_manager_->JoinGroups();
 }
 
-void WDPService::OnPatternsLoaded() {
+void WebDiscoveryService::OnPatternsLoaded() {
   if (!content_scraper_) {
     content_scraper_ = std::make_unique<ContentScraper>(
         server_config_loader_.get(), &regex_util_);
@@ -140,7 +143,7 @@ void WDPService::OnPatternsLoaded() {
   if (!double_fetcher_) {
     double_fetcher_ = std::make_unique<DoubleFetcher>(
         profile_prefs_.get(), shared_url_loader_factory_.get(),
-        base::BindRepeating(&WDPService::OnDoubleFetched,
+        base::BindRepeating(&WebDiscoveryService::OnDoubleFetched,
                             base::Unretained(this)));
   }
   if (!reporter_) {
@@ -151,9 +154,10 @@ void WDPService::OnPatternsLoaded() {
   MaybeSendAliveMessage();
 }
 
-void WDPService::OnDoubleFetched(const GURL& url,
-                                 const base::Value& associated_data,
-                                 std::optional<std::string> response_body) {
+void WebDiscoveryService::OnDoubleFetched(
+    const GURL& url,
+    const base::Value& associated_data,
+    std::optional<std::string> response_body) {
   if (!response_body) {
     return;
   }
@@ -163,12 +167,13 @@ void WDPService::OnDoubleFetched(const GURL& url,
   }
   content_scraper_->ParseAndScrapePage(
       url, true, std::move(prev_scrape_result), *response_body,
-      base::BindOnce(&WDPService::OnContentScraped, base::Unretained(this),
-                     true));
+      base::BindOnce(&WebDiscoveryService::OnContentScraped,
+                     base::Unretained(this), true));
 }
 
-void WDPService::DidFinishLoad(const GURL& url,
-                               content::RenderFrameHost* render_frame_host) {
+void WebDiscoveryService::DidFinishLoad(
+    const GURL& url,
+    content::RenderFrameHost* render_frame_host) {
   if (!content_scraper_) {
     return;
   }
@@ -194,14 +199,15 @@ void WDPService::DidFinishLoad(const GURL& url,
   render_frame_host->GetRemoteInterfaces()->GetInterface(
       remote.BindNewPipeAndPassReceiver());
   auto remote_id = document_extractor_remotes_.Add(std::move(remote));
-  content_scraper_->ScrapePage(url, false,
-                               document_extractor_remotes_.Get(remote_id),
-                               base::BindOnce(&WDPService::OnContentScraped,
-                                              base::Unretained(this), false));
+  content_scraper_->ScrapePage(
+      url, false, document_extractor_remotes_.Get(remote_id),
+      base::BindOnce(&WebDiscoveryService::OnContentScraped,
+                     base::Unretained(this), false));
 }
 
-void WDPService::OnContentScraped(bool is_strict,
-                                  std::unique_ptr<PageScrapeResult> result) {
+void WebDiscoveryService::OnContentScraped(
+    bool is_strict,
+    std::unique_ptr<PageScrapeResult> result) {
   if (!result) {
     return;
   }
@@ -235,7 +241,7 @@ void WDPService::OnContentScraped(bool is_strict,
   }
 }
 
-bool WDPService::UpdatePageCountStartTime() {
+bool WebDiscoveryService::UpdatePageCountStartTime() {
   auto now = base::Time::Now();
   if (!current_page_count_start_time_.is_null() &&
       (now - current_page_count_start_time_) < base::Hours(1)) {
@@ -255,11 +261,11 @@ bool WDPService::UpdatePageCountStartTime() {
   return true;
 }
 
-void WDPService::MaybeSendAliveMessage() {
+void WebDiscoveryService::MaybeSendAliveMessage() {
   if (!alive_message_timer_.IsRunning()) {
     alive_message_timer_.Start(
         FROM_HERE, kAliveCheckInterval,
-        base::BindRepeating(&WDPService::MaybeSendAliveMessage,
+        base::BindRepeating(&WebDiscoveryService::MaybeSendAliveMessage,
                             base::Unretained(this)));
   }
   if (!UpdatePageCountStartTime()) {

@@ -13,7 +13,7 @@
 #include "brave/components/web_discovery/browser/regex_util.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "brave/components/web_discovery/browser/util.h"
-#include "brave/components/web_discovery/browser/wdp_service.h"
+#include "brave/components/web_discovery/browser/web_discovery_service.h"
 #include "components/prefs/testing_pref_service.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -39,7 +39,7 @@ class WebDiscoveryReporterTest : public testing::Test {
 
   // testing::Test:
   void SetUp() override {
-    WDPService::RegisterProfilePrefs(profile_prefs_.registry());
+    WebDiscoveryService::RegisterProfilePrefs(profile_prefs_.registry());
     auto server_config = std::make_unique<ServerConfig>();
 
     auto action_config = std::make_unique<SourceMapActionConfig>();
