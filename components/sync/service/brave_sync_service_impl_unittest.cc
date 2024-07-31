@@ -28,8 +28,8 @@
 #include "components/sync/service/data_type_manager_impl.h"
 #include "components/sync/test/data_type_manager_mock.h"
 #include "components/sync/test/fake_model_type_controller.h"
-#include "components/sync/test/fake_sync_api_component_factory.h"
 #include "components/sync/test/fake_sync_engine.h"
+#include "components/sync/test/fake_sync_engine_factory.h"
 #include "components/sync/test/fake_sync_manager.h"
 #include "components/sync/test/sync_service_impl_bundle.h"
 #include "components/sync/test/test_model_type_store_service.h"
@@ -135,13 +135,11 @@ class BraveSyncServiceImplTest : public testing::Test {
     return sync_service_impl_.get();
   }
 
-  FakeSyncApiComponentFactory* component_factory() {
-    return sync_service_impl_bundle_.component_factory();
+  FakeSyncEngineFactory* engine_factory() {
+    return sync_service_impl_bundle_.engine_factory();
   }
 
-  FakeSyncEngine* engine() {
-    return component_factory()->last_created_engine();
-  }
+  FakeSyncEngine* engine() { return engine_factory()->last_created_engine(); }
 
   signin::IdentityManager* identity_manager() {
     return sync_service_impl_bundle_.identity_manager();
