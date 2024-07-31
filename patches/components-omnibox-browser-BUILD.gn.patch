@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index 0e07b9da808358af39c31332017dfac31294460d..23e150ae16cb80ac9e166b0103e2bc578d3140b1 100644
+index 2e013c689a59bc41119431f2a972a9270edfca88..688775ca219e0607aba5e6ece1b536b54178568b 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
-@@ -374,6 +374,7 @@ static_library("browser") {
+@@ -372,6 +372,7 @@ static_library("browser") {
      "//ui/base",
      "//ui/gfx",
    ]
@@ -10,7 +10,7 @@ index 0e07b9da808358af39c31332017dfac31294460d..23e150ae16cb80ac9e166b0103e2bc57
  
    configs += [ "//build/config/compiler:wexit_time_destructors" ]
  
-@@ -976,6 +977,7 @@ fuzzer_test("search_suggestion_parser_fuzzer") {
+@@ -981,6 +982,7 @@ fuzzer_test("search_suggestion_parser_fuzzer") {
  
  mojom("mojo_bindings") {
    sources = [ "omnibox.mojom" ]

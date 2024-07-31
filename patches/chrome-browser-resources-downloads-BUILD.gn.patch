@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/downloads/BUILD.gn b/chrome/browser/resources/downloads/BUILD.gn
-index a06029b4842094f38349d784b1adae16863dff83..7fc58b87481abef8273a3145cad8b4d863b3b2e0 100644
+index 2710b74603e0e63a29a4dd559bfbe1a3b6b8f925..17dace431af9b6094b74fb3493d1c6ecab52a98c 100644
 --- a/chrome/browser/resources/downloads/BUILD.gn
 +++ b/chrome/browser/resources/downloads/BUILD.gn
-@@ -59,4 +59,5 @@ build_webui("build") {
+@@ -60,4 +60,5 @@ build_webui("build") {
      optimize_webui_host = "downloads"
      optimize_webui_in_files = [ "downloads.js" ]
    }

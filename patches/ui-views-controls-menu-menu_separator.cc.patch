@@ -1,8 +1,8 @@
 diff --git a/ui/views/controls/menu/menu_separator.cc b/ui/views/controls/menu/menu_separator.cc
-index f40ad4b9110f10713c5f756ecba4869125433d0f..f9a730a69259e5da8ff01f53a36edb7d141fd08b 100644
+index 464dfdea6ba913111a0b1c99eaf7ba7680391a0e..03cd5cc0c16975546aa065d34f4d6e014c085ef6 100644
 --- a/ui/views/controls/menu/menu_separator.cc
 +++ b/ui/views/controls/menu/menu_separator.cc
-@@ -50,6 +50,7 @@ void MenuSeparator::OnPaint(gfx::Canvas* canvas) {
+@@ -51,6 +51,7 @@ void MenuSeparator::OnPaint(gfx::Canvas* canvas) {
        menu_config.separator_horizontal_border_padding, y,
        width() - menu_config.separator_horizontal_border_padding * 2,
        separator_thickness);

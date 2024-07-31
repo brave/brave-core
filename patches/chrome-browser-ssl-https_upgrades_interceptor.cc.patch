@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ssl/https_upgrades_interceptor.cc b/chrome/browser/ssl/https_upgrades_interceptor.cc
-index 4e7b8c18e5049f0c20148259ee5755789e089ad4..81875827cf4f672efe71c17b1ade82c706429740 100644
+index 7d6e2c5064090a94d49d836f747a0be66a117532..635a2ffdda2bdb09fc94fadf7c0fafa6fc1744b0 100644
 --- a/chrome/browser/ssl/https_upgrades_interceptor.cc
 +++ b/chrome/browser/ssl/https_upgrades_interceptor.cc
-@@ -237,6 +237,7 @@ bool ShouldExcludeNavigation(content::NavigationUIData* navigation_ui_data,
+@@ -238,6 +238,7 @@ bool ShouldExcludeNavigationFromUpgrades(
      level = NavigationRequestSecurityLevel::kCaptivePortalLogin;
    }
  #endif

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile_avatar_icon_util.cc b/chrome/browser/profiles/profile_avatar_icon_util.cc
-index 0958ec93737be9a6e9696631c7bd867652842b2f..7d0bf900c0526906b2ab8f03203f1e15b0e2990b 100644
+index d8f6de012c918ffdcadc586154f1e08b7172b966..57c2bed4cdc5466aada6160dc2b523ef90d8e424 100644
 --- a/chrome/browser/profiles/profile_avatar_icon_util.cc
 +++ b/chrome/browser/profiles/profile_avatar_icon_util.cc
-@@ -277,7 +277,7 @@ constexpr size_t kDefaultAvatarIconsCount = 1;
+@@ -317,7 +317,7 @@ constexpr size_t kDefaultAvatarIconsCount = 1;
  #elif BUILDFLAG(IS_CHROMEOS_ASH)
  constexpr size_t kDefaultAvatarIconsCount = 27;
  #else
@@ -11,7 +11,7 @@ index 0958ec93737be9a6e9696631c7bd867652842b2f..7d0bf900c0526906b2ab8f03203f1e15
  #endif
  
  #if !BUILDFLAG(IS_ANDROID)
-@@ -378,6 +378,7 @@ size_t GetPlaceholderAvatarIndex() {
+@@ -423,6 +423,7 @@ size_t GetPlaceholderAvatarIndex() {
  
  size_t GetModernAvatarIconStartIndex() {
  #if !BUILDFLAG(IS_CHROMEOS_ASH) && !BUILDFLAG(IS_ANDROID)
@@ -19,7 +19,7 @@ index 0958ec93737be9a6e9696631c7bd867652842b2f..7d0bf900c0526906b2ab8f03203f1e15
    return GetPlaceholderAvatarIndex() + 1;
  #else
    // Only use the placeholder avatar on ChromeOS and Android.
-@@ -411,6 +412,7 @@ std::string GetPlaceholderAvatarIconUrl() {
+@@ -456,6 +457,7 @@ std::string GetPlaceholderAvatarIconUrl() {
  
  const IconResourceInfo* GetDefaultAvatarIconResourceInfo(size_t index) {
    CHECK_LT(index, kDefaultAvatarIconsCount);
@@ -27,7 +27,7 @@ index 0958ec93737be9a6e9696631c7bd867652842b2f..7d0bf900c0526906b2ab8f03203f1e15
    static const IconResourceInfo resource_info[kDefaultAvatarIconsCount] = {
    // Old avatar icons:
  #if !BUILDFLAG(IS_ANDROID)
-@@ -675,6 +677,7 @@ base::Value::List GetIconsAndLabelsForProfileAvatarSelector(
+@@ -764,6 +766,7 @@ base::Value::List GetIconsAndLabelsForProfileAvatarSelector(
          selected_avatar_idx == GetPlaceholderAvatarIndex());
      avatars.Insert(avatars.begin(),
                     base::Value(std::move(generic_avatar_info)));

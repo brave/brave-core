@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/api/web_request/extension_web_request_event_router.cc b/extensions/browser/api/web_request/extension_web_request_event_router.cc
-index 498cf51a5a0c1dbaf7c8a579606292ebba248798..8e2be60f9812103828f5f74ab95f8530901daa4c 100644
+index 70b281c5a27cc131dae2b3fd5cb33caf2707a833..fa937ffe321f8a5806d01cc797b8ef5fdda91a8d 100644
 --- a/extensions/browser/api/web_request/extension_web_request_event_router.cc
 +++ b/extensions/browser/api/web_request/extension_web_request_event_router.cc
-@@ -1304,6 +1304,7 @@ WebRequestEventRouter::OnAuthRequired(content::BrowserContext* browser_context,
+@@ -1307,6 +1307,7 @@ WebRequestEventRouter::OnAuthRequired(content::BrowserContext* browser_context,
                                           *request)) {
      return AuthRequiredResponse::AUTH_REQUIRED_RESPONSE_NO_ACTION;
    }
