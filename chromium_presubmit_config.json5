@@ -57,6 +57,7 @@
   // Files to skip in all checks.
   "default_files_to_skip": [
     "\\.storybook/",
+    "ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/DarkReaderScript.js",
     "components/brave_wallet/resources/solana_web3_script\\.js",
     "third_party/rust/",
     "tools/crates/",
