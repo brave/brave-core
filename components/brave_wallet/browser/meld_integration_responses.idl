@@ -88,4 +88,13 @@ namespace meld_integration_responses {
         DOMString? requestId;
         DOMString? timestamp;
     };
+
+    dictionary CryptoWidgetResult {
+        DOMString id;
+        DOMString? externalSessionId;
+        DOMString? externalCustomerId;
+        DOMString customerId;
+        DOMString widgetUrl;
+        DOMString token;
+    };
 };

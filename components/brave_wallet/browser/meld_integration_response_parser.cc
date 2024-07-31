@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/meld_integration.mojom-forward.h"
 
 namespace {
 
@@ -379,5 +380,34 @@ std::optional<std::vector<mojom::MeldCountryPtr>> ParseCountries(
 
   return countries;
 }
+
+mojom::MeldCryptoWidgetPtr
+ParseCryptoWidgetCreate(const base::Value& json_value) {
+  // Parses results like this:
+  // {
+  //   "id": "WXDmJRFbxfUYgRi3Skbqd3",
+  //   "externalSessionId": null,
+  //   "externalCustomerId": null,
+  //   "customerId": "WXDmJQhKFEeFt5jSeAz7gh",
+  //   "widgetUrl": "https://sb.meldcrypto.com?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjcnlwdG8iLCJhY2NvdW50SWQiOiJXUTRpOU45QlBQcUpYblRTOXdURjR0IiwiaXNzIjoibWVsZC5pbyIsInNlc3Npb25JZCI6IldYRG1KUkZieGZVWWdSaTNTa2JxZDMiLCJleHAiOjE3MjA3NzkxMzUsImlhdCI6MTcyMDc3NzMzNX0.Bt9MIkgZujeZVm6qQTEZY1pY2z5qsiKwy4VzTfVGdAg",
+  //   "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjcnlwdG8iLCJhY2NvdW50SWQiOiJXUTRpOU45QlBQcUpYblRTOXdURjR0IiwiaXNzIjoibWVsZC5pbyIsInNlc3Npb25JZCI6IldYRG1KUkZieGZVWWdSaTNTa2JxZDMiLCJleHAiOjE3MjA3NzkxMzUsImlhdCI6MTcyMDc3NzMzNX0.Bt9MIkgZujeZVm6qQTEZY1pY2z5qsiKwy4VzTfVGdAg"
+  // }
+
+  if (!json_value.is_dict()) {
+    return nullptr;
+  }
+
+  const auto cw_value =
+      meld_integration_responses::CryptoWidgetResult::FromValue(json_value);
+  if (!cw_value) {
+    return nullptr;
+  }
+
+  return mojom::MeldCryptoWidget::New(
+      cw_value->id, cw_value->external_session_id,
+      cw_value->external_customer_id, cw_value->customer_id,
+      cw_value->widget_url, cw_value->token);
+}
+
 
 }  // namespace brave_wallet

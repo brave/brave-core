@@ -87,3 +87,61 @@ struct MeldFilter {
   string? payment_method_types;
   string? statuses;
 };
+
+struct CryptoBuySessionData {
+  string country_code;
+  string destination_currency_code;
+  array<string>? lock_fields;
+  string? payment_method_type;
+  string? redirect_url;
+  string service_provider;
+  string source_amount;
+  string source_currency_code;
+  string wallet_address;
+  string? wallet_tag;
+};
+
+struct CryptoSellSessionData {
+  string country_code;
+  string destination_currency_code;
+  array<string>? lock_fields;
+  string? payment_method_type;
+  string? redirect_url;
+  string service_provider;
+  string source_amount;
+  string source_currency_code;
+  string? wallet_address;
+  string? wallet_tag;
+};
+
+struct CryptoTransferSessionData {
+  string? country_code;
+  string? institution_id;
+  array<string>? lock_fields;
+  string? redirect_url;
+  string service_provider;
+  string? source_amount;
+  array<string> source_currency_codes;
+  string? wallet_address;
+  string? wallet_tag;
+};
+
+struct CustomerObject {
+  string email;
+};
+
+struct CryptoWidgetCustomerData {
+  CustomerObject? customer;
+  string? customer_id;
+  string? external_customer_id;
+  string? external_session_id;
+};
+
+struct MeldCryptoWidget {
+  string id;
+  string? external_session_id;
+  string? external_customer_id;
+  string customer_id;
+  string widget_url;
+  string token;
+};

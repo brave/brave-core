@@ -15,6 +15,7 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "gtest/gtest.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::ParseJson;
@@ -446,4 +447,55 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_Countries) {
   EXPECT_FALSE(ParseCountries(ParseJson(json)));
 }
 
+TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoWidgetCreate) {
+  std::string json(R"({
+    "id": "WXDpzmm2cNmtJWLDHgu1GT",
+    "externalSessionId": "test_session_id",
+    "externalCustomerId": "test_session_customer_id",
+    "customerId": "WXEvEDzSgNedXWnJ55pwUJ",
+    "widgetUrl": "https://meldcrypto.com?token=tknvalue",
+    "token": "tknvalue"
+  })");
+  auto result = ParseCryptoWidgetCreate(ParseJson(json));
+  EXPECT_TRUE(result);
+  EXPECT_EQ("WXDpzmm2cNmtJWLDHgu1GT", result->id);
+  EXPECT_EQ("test_session_id", result->external_session_id);
+  EXPECT_EQ("test_session_customer_id", result->external_customer_id);
+  EXPECT_EQ("WXEvEDzSgNedXWnJ55pwUJ", result->customer_id);
+  EXPECT_EQ("https://meldcrypto.com?token=tknvalue", result->widget_url);
+  EXPECT_EQ("tknvalue", result->token);
+
+  // id is mandatory field
+  json = R"({
+    "externalSessionId": "test_session_id",
+    "externalCustomerId": "test_session_customer_id",
+    "customerId": "WXEvEDzSgNedXWnJ55pwUJ",
+    "widgetUrl": "https://meldcrypto.com?token=tknvalue",
+    "token": "tknvalue"
+  })";
+  EXPECT_FALSE(ParseCountries(ParseJson(json)));
+
+  // widgetUrl is mandatory field
+  json = R"({
+    "id": "WXDpzmm2cNmtJWLDHgu1GT",
+    "externalSessionId": "test_session_id",
+    "externalCustomerId": "test_session_customer_id",
+    "customerId": "WXEvEDzSgNedXWnJ55pwUJ",
+    "token": "tknvalue"
+  })";
+  EXPECT_FALSE(ParseCountries(ParseJson(json)));
+
+  // token is mandatory field
+  json = R"({
+    "id": "WXDpzmm2cNmtJWLDHgu1GT",
+    "externalSessionId": "test_session_id",
+    "externalCustomerId": "test_session_customer_id",
+    "customerId": "WXEvEDzSgNedXWnJ55pwUJ",
+    "widgetUrl": "https://meldcrypto.com?token=tknvalue"
+  })";
+  EXPECT_FALSE(ParseCountries(ParseJson(json)));
+
+  json = (R"({})");
+  EXPECT_FALSE(ParseCountries(ParseJson(json)));
+}
 }  // namespace brave_wallet

@@ -30,6 +30,8 @@ std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> ParseCryptoCurrencies(
     const base::Value& json_value);
 std::optional<std::vector<mojom::MeldCountryPtr>> ParseCountries(
     const base::Value& json_value);
+mojom::MeldCryptoWidgetPtr ParseCryptoWidgetCreate(
+    const base::Value& json_value);
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_MELD_INTEGRATION_RESPONSE_PARSER_H_
