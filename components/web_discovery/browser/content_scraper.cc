@@ -94,8 +94,7 @@ PageScrapeResult::~PageScrapeResult() = default;
 
 ContentScraper::ContentScraper(const ServerConfigLoader* server_config_loader,
                                RegexUtil* regex_util)
-    : pool_sequenced_task_runner_(
-          base::ThreadPool::CreateSequencedTaskRunner({})),
+    : sequenced_task_runner_(base::ThreadPool::CreateSequencedTaskRunner({})),
       server_config_loader_(server_config_loader),
       regex_util_(regex_util) {}
 
@@ -226,7 +225,7 @@ void ContentScraper::ParseAndScrapePage(
     select_requests.push_back(std::move(select_request));
   }
 
-  pool_sequenced_task_runner_->PostTaskAndReplyWithResult(
+  sequenced_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&rust_document_extractor::query_element_attributes, html,
                      select_requests),

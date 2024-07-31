@@ -111,7 +111,7 @@ class ServerConfigLoader {
 
   raw_ptr<PrefService> local_state_;
 
-  scoped_refptr<base::SequencedTaskRunner> pool_sequenced_task_runner_;
+  scoped_refptr<base::SequencedTaskRunner> sequenced_task_runner_;
 
   GURL collector_config_url_;
   GURL quorum_config_url_;

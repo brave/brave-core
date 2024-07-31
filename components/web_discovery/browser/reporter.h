@@ -76,7 +76,7 @@ class Reporter {
   raw_ptr<RegexUtil> regex_util_;
   raw_ptr<const ServerConfigLoader> server_config_loader_;
 
-  scoped_refptr<base::SequencedTaskRunner> pool_sequenced_task_runner_;
+  scoped_refptr<base::SequencedTaskRunner> sequenced_task_runner_;
 
   RequestQueue request_queue_;
 

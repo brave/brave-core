@@ -16,6 +16,7 @@
 #include "base/location.h"
 #include "base/rand_util.h"
 #include "base/task/thread_pool.h"
+#include "base/threading/thread_restrictions.h"
 #include "base/values.h"
 #include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/browser/util.h"
@@ -123,6 +124,7 @@ ParseSourceMapActionConfigs(const base::Value::Dict& configs_dict) {
 }
 
 std::optional<std::string> GunzipContents(std::string gzipped_contents) {
+  base::AssertLongCPUWorkAllowed();
   std::string result;
   if (!compression::GzipUncompress(gzipped_contents, &result)) {
     return std::nullopt;
@@ -158,7 +160,7 @@ ServerConfigLoader::ServerConfigLoader(
     base::RepeatingClosure config_callback,
     base::RepeatingClosure patterns_callback)
     : local_state_(local_state),
-      pool_sequenced_task_runner_(
+      sequenced_task_runner_(
           base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()})),
       shared_url_loader_factory_(shared_url_loader_factory),
       config_callback_(config_callback),
@@ -316,7 +318,7 @@ bool ServerConfigLoader::ProcessConfigResponses(
 }
 
 void ServerConfigLoader::LoadStoredPatterns() {
-  pool_sequenced_task_runner_->PostTaskAndReplyWithResult(
+  sequenced_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&ReadPatternsFile, patterns_path_),
       base::BindOnce(&ServerConfigLoader::OnPatternsFileLoaded,
                      weak_ptr_factory_.GetWeakPtr()));
@@ -401,7 +403,7 @@ void ServerConfigLoader::OnPatternsResponse(
     HandlePatternsStatus(false);
     return;
   }
-  pool_sequenced_task_runner_->PostTaskAndReplyWithResult(
+  sequenced_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&GunzipContents, *response_body),
       base::BindOnce(&ServerConfigLoader::OnPatternsGunzip,
                      weak_ptr_factory_.GetWeakPtr()));
@@ -419,7 +421,7 @@ void ServerConfigLoader::OnPatternsGunzip(
     HandlePatternsStatus(false);
     return;
   }
-  pool_sequenced_task_runner_->PostTaskAndReplyWithResult(
+  sequenced_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&WritePatternsFile, patterns_path_, *patterns_json),
       base::BindOnce(&ServerConfigLoader::OnPatternsWritten,

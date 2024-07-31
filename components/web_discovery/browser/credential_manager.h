@@ -19,6 +19,7 @@
 #include "brave/components/web_discovery/browser/credential_signer.h"
 #include "brave/components/web_discovery/browser/rsa.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
+#include "crypto/rsa_private_key.h"
 #include "net/base/backoff_entry.h"
 
 class PrefService;
@@ -111,13 +112,14 @@ class CredentialManager : public CredentialSigner {
   net::BackoffEntry backoff_entry_;
   base::WallClockTimer retry_timer_;
 
-  scoped_refptr<base::SequencedTaskRunner> pool_sequenced_task_runner_;
+  scoped_refptr<base::SequencedTaskRunner> sequenced_task_runner_;
 
   std::unique_ptr<rust::Box<anonymous_credentials::CredentialManager>,
                   base::OnTaskRunnerDeleter>
       anonymous_credential_manager_;
 
-  std::unique_ptr<EVPKeyPtr, base::OnTaskRunnerDeleter> rsa_private_key_;
+  std::unique_ptr<crypto::RSAPrivateKey, base::OnTaskRunnerDeleter>
+      rsa_private_key_;
   std::optional<std::string> rsa_public_key_b64_;
 
   std::optional<std::string> loaded_credential_date_;

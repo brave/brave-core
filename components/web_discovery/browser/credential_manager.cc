@@ -14,11 +14,13 @@
 #include "base/logging.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/components/web_discovery/browser/anonymous_credentials/rs/cxx/src/lib.rs.h"
 #include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/browser/util.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "crypto/rsa_private_key.h"
 #include "crypto/sha2.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -61,8 +63,9 @@ constexpr net::NetworkTrafficAnnotationTag kJoinNetworkTrafficAnnotation =
 
 std::optional<GenerateJoinRequestResult> GenerateJoinRequest(
     anonymous_credentials::CredentialManager* anonymous_credential_manager,
-    EVPKeyPtr* rsa_private_key,
+    crypto::RSAPrivateKey* rsa_private_key,
     std::string pre_challenge) {
+  base::AssertLongCPUWorkAllowed();
   base::span<uint8_t> pre_challenge_span(
       reinterpret_cast<uint8_t*>(pre_challenge.data()), pre_challenge.size());
   auto challenge = crypto::SHA256Hash(pre_challenge_span);
@@ -70,7 +73,7 @@ std::optional<GenerateJoinRequestResult> GenerateJoinRequest(
   auto join_request = anonymous_credential_manager->start_join(
       rust::Slice<const uint8_t>(challenge.data(), challenge.size()));
 
-  auto signature = RSASign(*rsa_private_key, join_request.join_request);
+  auto signature = RSASign(rsa_private_key, join_request.join_request);
 
   if (!signature) {
     VLOG(1) << "RSA signature failed";
@@ -87,6 +90,7 @@ std::optional<std::string> FinishJoin(
     std::vector<const uint8_t> group_pub_key,
     std::vector<const uint8_t> gsk,
     std::vector<const uint8_t> join_resp_bytes) {
+  base::AssertLongCPUWorkAllowed();
   auto pub_key_result = anonymous_credentials::load_group_public_key(
       rust::Slice(group_pub_key.data(), group_pub_key.size()));
   auto gsk_result = anonymous_credentials::load_credential_big(
@@ -120,6 +124,7 @@ std::optional<std::vector<const uint8_t>> PerformSign(
     std::vector<const uint8_t> basename,
     std::optional<std::vector<uint8_t>> gsk_bytes,
     std::optional<std::vector<uint8_t>> credential_bytes) {
+  base::AssertLongCPUWorkAllowed();
   if (gsk_bytes && credential_bytes) {
     auto gsk_result = anonymous_credentials::load_credential_big(
         rust::Slice(reinterpret_cast<const uint8_t*>(gsk_bytes->data()),
@@ -159,14 +164,12 @@ CredentialManager::CredentialManager(
       server_config_loader_(server_config_loader),
       join_url_(GetDirectHPNHost() + kJoinPath),
       backoff_entry_(&kBackoffPolicy),
-      pool_sequenced_task_runner_(
-          base::ThreadPool::CreateSequencedTaskRunner({})),
+      sequenced_task_runner_(base::ThreadPool::CreateSequencedTaskRunner({})),
       anonymous_credential_manager_(
           new rust::Box(anonymous_credentials::new_credential_manager()),
-          base::OnTaskRunnerDeleter(pool_sequenced_task_runner_)),
-      rsa_private_key_(new EVPKeyPtr(),
-                       base::OnTaskRunnerDeleter(pool_sequenced_task_runner_)) {
-}
+          base::OnTaskRunnerDeleter(sequenced_task_runner_)),
+      rsa_private_key_(nullptr,
+                       base::OnTaskRunnerDeleter(sequenced_task_runner_)) {}
 
 CredentialManager::~CredentialManager() = default;
 
@@ -180,10 +183,9 @@ bool CredentialManager::LoadRSAKey() {
     return true;
   }
 
-  *rsa_private_key_ = ImportRSAKeyPair(private_key_b64);
-
+  rsa_private_key_.reset(ImportRSAKeyPair(private_key_b64).release());
   if (!rsa_private_key_) {
-    VLOG(1) << "Failed to decode stored RSA key";
+    VLOG(1) << "Failed to import stored RSA key";
     return false;
   }
 
@@ -196,7 +198,7 @@ void CredentialManager::OnNewRSAKey(std::unique_ptr<RSAKeyInfo> key_info) {
     return;
   }
 
-  *rsa_private_key_ = std::move(key_info->key_pair);
+  rsa_private_key_.reset(key_info->key_pair.release());
   rsa_public_key_b64_ = key_info->public_key_b64;
 
   profile_prefs_->SetString(kCredentialRSAPrivateKey,
@@ -217,12 +219,12 @@ void CredentialManager::JoinGroups() {
       continue;
     }
 
-    if (*rsa_private_key_ == nullptr) {
+    if (rsa_private_key_ == nullptr) {
       if (!LoadRSAKey()) {
         return;
       }
-      if (*rsa_private_key_ == nullptr) {
-        pool_sequenced_task_runner_->PostTaskAndReplyWithResult(
+      if (rsa_private_key_ == nullptr) {
+        sequenced_task_runner_->PostTaskAndReplyWithResult(
             FROM_HERE, base::BindOnce(&GenerateRSAKeyPair),
             base::BindOnce(&CredentialManager::OnNewRSAKey,
                            weak_ptr_factory_.GetWeakPtr()));
@@ -251,7 +253,7 @@ void CredentialManager::StartJoinGroup(const std::string& date,
   std::string pre_challenge;
   base::JSONWriter::Write(challenge_elements, &pre_challenge);
 
-  pool_sequenced_task_runner_->PostTaskAndReplyWithResult(
+  sequenced_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&GenerateJoinRequest, &**anonymous_credential_manager_,
                      rsa_private_key_.get(), pre_challenge),
@@ -374,7 +376,7 @@ bool CredentialManager::ProcessJoinResponse(
   std::vector<const uint8_t> join_resp_bytes_const(join_resp_bytes->begin(),
                                                    join_resp_bytes->end());
 
-  pool_sequenced_task_runner_->PostTaskAndReplyWithResult(
+  sequenced_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&FinishJoin, &**anonymous_credential_manager_, date,
                      group_pub_key, gsk, join_resp_bytes_const),
@@ -431,7 +433,7 @@ bool CredentialManager::Sign(std::vector<const uint8_t> msg,
     }
   }
 
-  pool_sequenced_task_runner_->PostTaskAndReplyWithResult(
+  sequenced_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&PerformSign, &**anonymous_credential_manager_, msg,
                      basename, gsk_bytes, credential_bytes),
@@ -455,7 +457,7 @@ void CredentialManager::UseFixedSeedForTesting() {
                       base::OnTaskRunnerDeleter>(
           new rust::Box(
               anonymous_credentials::new_credential_manager_with_fixed_seed()),
-          base::OnTaskRunnerDeleter(pool_sequenced_task_runner_));
+          base::OnTaskRunnerDeleter(sequenced_task_runner_));
 }
 
 }  // namespace web_discovery

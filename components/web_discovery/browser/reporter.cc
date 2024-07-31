@@ -12,6 +12,7 @@
 #include "base/numerics/byte_conversions.h"
 #include "base/rand_util.h"
 #include "base/task/thread_pool.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/browser/signature_basename.h"
 #include "brave/components/web_discovery/browser/util.h"
@@ -91,6 +92,7 @@ base::Value GenerateFinalPayload(const base::Value::Dict& pre_payload) {
 std::optional<AESEncryptResult> CompressAndEncrypt(
     std::vector<uint8_t> full_signed_message,
     std::string server_pub_key) {
+  base::AssertLongCPUWorkAllowed();
   uLongf compressed_data_size = compressBound(full_signed_message.size());
   std::vector<uint8_t> compressed_data(compressed_data_size + 2);
   if (zlib_internal::CompressHelper(
@@ -125,8 +127,7 @@ Reporter::Reporter(PrefService* profile_prefs,
       credential_signer_(credential_signer),
       regex_util_(regex_util),
       server_config_loader_(server_config_loader),
-      pool_sequenced_task_runner_(
-          base::ThreadPool::CreateSequencedTaskRunner({})),
+      sequenced_task_runner_(base::ThreadPool::CreateSequencedTaskRunner({})),
       request_queue_(profile_prefs,
                      kScheduledReports,
                      kRequestMaxAge,
@@ -215,7 +216,7 @@ void Reporter::OnRequestSigned(
     request_queue_.NotifyRequestComplete(true);
     return;
   }
-  pool_sequenced_task_runner_->PostTaskAndReplyWithResult(
+  sequenced_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&CompressAndEncrypt, full_signed_message, pub_key->second),
       base::BindOnce(&Reporter::OnRequestCompressedAndEncrypted,

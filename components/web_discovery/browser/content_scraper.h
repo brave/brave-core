@@ -106,7 +106,7 @@ class ContentScraper {
                              std::optional<std::string> value_str,
                              base::Value::Dict& attribute_values);
 
-  scoped_refptr<base::SequencedTaskRunner> pool_sequenced_task_runner_;
+  scoped_refptr<base::SequencedTaskRunner> sequenced_task_runner_;
 
   raw_ptr<const ServerConfigLoader> server_config_loader_;
   raw_ptr<RegexUtil> regex_util_;

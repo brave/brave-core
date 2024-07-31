@@ -11,25 +11,24 @@
 #include <string>
 
 #include "base/containers/span.h"
-#include "third_party/boringssl/src/include/openssl/evp.h"
+#include "crypto/rsa_private_key.h"
 
 namespace web_discovery {
-
-using EVPKeyPtr = bssl::UniquePtr<EVP_PKEY>;
 
 struct RSAKeyInfo {
   RSAKeyInfo();
   ~RSAKeyInfo();
-  EVPKeyPtr key_pair;
+  std::unique_ptr<crypto::RSAPrivateKey> key_pair;
   std::string private_key_b64;
   std::string public_key_b64;
 };
 
 std::unique_ptr<RSAKeyInfo> GenerateRSAKeyPair();
 
-EVPKeyPtr ImportRSAKeyPair(const std::string& private_key_b64);
+std::unique_ptr<crypto::RSAPrivateKey> ImportRSAKeyPair(
+    const std::string& private_key_b64);
 
-std::optional<std::string> RSASign(const EVPKeyPtr& key,
+std::optional<std::string> RSASign(crypto::RSAPrivateKey* key,
                                    base::span<uint8_t> message);
 
 }  // namespace web_discovery
