@@ -106,7 +106,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/recovery_phrase_switch" />
-            
+
             <TextView
                 android:id="@+id/recovery_phrase_switch"
                 style="@style/DefaultRegular"
