@@ -273,12 +273,6 @@
       <item name="textAllCaps">false</item>
     </style>
 
-    <style name="BraveWalletOnboarding">
-        <item name="ic_onboarding_backup">@drawable/ic_onboarding_backup</item>
-        <item name="ic_onboarding_intro">@drawable/ic_onboarding_intro</item>
-        <item name="ic_onboarding_password">@drawable/ic_onboarding_password</item>
-    </style>
-
     <style name="BraveVpnToolbar" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@android:color/white</item>
         <item name="android:background">@color/brave_plan_bg</item>

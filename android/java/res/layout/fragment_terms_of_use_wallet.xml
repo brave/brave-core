@@ -10,8 +10,7 @@
     android:layout_height="match_parent"
     android:scrollbars="vertical"
     android:fadeScrollbars="false"
-    android:fillViewport="true"
-    android:theme="@style/BraveWalletOnboarding">
+    android:fillViewport="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
