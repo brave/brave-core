@@ -20,6 +20,7 @@ import { AutoLockOption } from '../../../../../constants/types'
 interface Props {
   autoLockDuration: number
   autoLockOptions: AutoLockOption[]
+  initialPassword?: string
   onSubmit: (values: NewPasswordValues) => void
   onPasswordChange: (values: NewPasswordValues) => void
   onAutoLockDurationChange: (autoLockDuration: number) => void
@@ -28,6 +29,7 @@ interface Props {
 export function CreatePassword({
   autoLockDuration,
   autoLockOptions,
+  initialPassword,
   onSubmit,
   onPasswordChange,
   onAutoLockDurationChange
@@ -40,6 +42,7 @@ export function CreatePassword({
     >
       <NewPasswordInput
         autoFocus={true}
+        initialPassword={initialPassword}
         onSubmit={onSubmit}
         onChange={onPasswordChange}
       />
