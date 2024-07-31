@@ -37,6 +37,10 @@ inline constexpr char kAutomaticSettingsResetLearnMoreURL[] =
 inline constexpr char kAdvancedProtectionDownloadLearnMoreURL[] =
     "https://support.brave.com/";
 
+// "Chrome Settings" URL for the appearance page.
+inline constexpr char kBrowserSettingsSearchEngineURL[] =
+    "chrome://settings/search";
+
 // "Learn more" URL for Battery Saver Mode.
 inline constexpr char kBatterySaverModeLearnMoreUrl[] =
     "https://support.brave.com/hc/en-us/articles/13380606172557";
