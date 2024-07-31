@@ -65,26 +65,28 @@ window.__firefox__.execute(function($) {
   const classIdWithoutHtmlOrBody = '[id]:not(html):not(body),[class]:not(html):not(body)'
 
   const CC = {
-    allSelectors: new Set(),
-    pendingSelectors: { ids: new Set(), classes: new Set() },
-    alwaysHiddenSelectors: new Set(),
-    hiddenSelectors: new Set(),
-    unhiddenSelectors: new Set(),
+    allSelectors: new $.Set(),
+    pendingSelectors: { ids: new $.Set(), classes: new $.Set() },
+    alwaysHiddenSelectors: new $.Set(),
+    hiddenSelectors: new $.Set(),
+    unhiddenSelectors: new $.Set(),
     allStyleRules: [],
     runQueues: [
       // All new selectors go in this first run queue
-      new Set(),
+      new $.Set(),
       // Third party matches go in the second and third queues.
-      new Set(),
+      new $.Set(),
       // This is the final run queue.
       // It's only evaluated for 1p content one more time.
-      new Set()
+      new $.Set()
     ],
     // URLS
-    pendingOrigins: new Set(),
+    pendingOrigins: new $.Set(),
     // A map of origin strings and their isFirstParty results
-    urlFirstParty: new Map(),
-    alreadyKnownFirstPartySubtrees: new WeakSet()
+    urlFirstParty: new $.Map(),
+    alreadyKnownFirstPartySubtrees: new $.WeakSet(),
+    // A list all the selectors that need to be removed from the stylesheet
+    selectorsToRemove: []
   }
 
   /**
@@ -97,7 +99,7 @@ window.__firefox__.execute(function($) {
     }
 
     const origins = Array.from(CC.pendingOrigins)
-    CC.pendingOrigins = new Set()
+    CC.pendingOrigins = new $.Set()
     const results = await getPartiness(origins)
 
     for (const origin of origins) {
@@ -129,8 +131,8 @@ window.__firefox__.execute(function($) {
 
     const ids = Array.from(CC.pendingSelectors.ids)
     const classes = Array.from(CC.pendingSelectors.classes)
-    CC.pendingSelectors.ids = new Set()
-    CC.pendingSelectors.classes = new Set()
+    CC.pendingSelectors.ids = new $.Set()
+    CC.pendingSelectors.classes = new $.Set()
 
     let hasChanges = false
     const results = await sendSelectors(ids, classes)
@@ -322,7 +324,7 @@ window.__firefox__.execute(function($) {
       selectorsPollingIntervalId = undefined
     }
 
-    const observer = new MutationObserver(onMutations)
+    const observer = new $.MutationObserver(onMutations)
 
     const observerConfig = {
       subtree: true,
@@ -388,7 +390,7 @@ window.__firefox__.execute(function($) {
    */
   const extractOriginFromURLString = (urlString) => {
     try {
-      const url = new URL(urlString, window.location.toString())
+      const url = new $.URL(urlString, window.location.toString())
       return url.origin
     } catch (error) {
       console.error(error)
@@ -847,7 +849,7 @@ window.__firefox__.execute(function($) {
    * @returns A list of unhidden selectors
    */
   const unhideSelectorsMatchingElementsAndTheirParents = (nodes) => {
-    const selectorsUnHidden = new Set()
+    const selectorsUnHidden = new $.Set()
 
     for (const nodeRef of nodes) {
       const node = nodeRef.deref()
@@ -881,7 +883,7 @@ window.__firefox__.execute(function($) {
         switch (mutation.attributeName) {
           case 'src':
             if (extractOriginIfNeeded(changedElm)) {
-              elementsWithURLs.push(new WeakRef(changedElm))
+              elementsWithURLs.push(new $.WeakRef(changedElm))
             }
             break
         }
@@ -889,7 +891,7 @@ window.__firefox__.execute(function($) {
         for (const node of mutation.addedNodes) {
           if (!isElement(node)) { continue }
           if (extractOriginIfNeeded(node)) {
-            elementsWithURLs.push(new WeakRef(node))
+            elementsWithURLs.push(new $.WeakRef(node))
           }
         }
       }
@@ -914,7 +916,7 @@ window.__firefox__.execute(function($) {
       selectorsPollingIntervalId = undefined
     }
 
-    const observer = new MutationObserver(onURLMutations)
+    const observer = new $.MutationObserver(onURLMutations)
 
     const observerConfig = {
       subtree: true,
@@ -936,7 +938,7 @@ window.__firefox__.execute(function($) {
 
     elmWithClassOrId.forEach((node) => {
       if (extractOriginIfNeeded(node)) {
-        possibleAdChildNodes.push(new WeakRef(node))
+        possibleAdChildNodes.push(new $.WeakRef(node))
       }
     })
 

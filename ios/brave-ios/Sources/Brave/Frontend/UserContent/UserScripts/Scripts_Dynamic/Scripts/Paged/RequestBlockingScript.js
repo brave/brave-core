@@ -60,10 +60,10 @@ window.__firefox__.execute(function($) {
       return originalFetch.apply(this, arguments)
     }
 
-    const url = new URL(urlString, window.location.href)
+    const url = new $.URL(urlString, window.location.href)
     return sendMessage(url).then(blocked => {
       if (blocked) {
-        return Promise.reject(new TypeError('Load failed'))
+        return Promise.reject(new $.TypeError('Load failed'))
       } else {
         return originalFetch.apply(this, arguments)
       }
@@ -98,7 +98,7 @@ window.__firefox__.execute(function($) {
     try {
       // We do this in a try/catch block to not fail the request in case we can't
       // create a URL
-      resourceURL = new URL(this[localURLProp], window.location.href)
+      resourceURL = new $.URL(this[localURLProp], window.location.href)
     } catch (error) {
       // Ignore this error and proceed like a regular request
       return originalSend.apply(this, arguments)
@@ -110,10 +110,10 @@ window.__firefox__.execute(function($) {
         Object.defineProperties(this, {
           readyState: { value: 4 }
         })
-        this.dispatchEvent(patchProgressEvent(new ProgressEvent('loadstart')))
-        this.dispatchEvent(new Event('readystatechange'))
-        this.dispatchEvent(patchProgressEvent(new ProgressEvent('error')))
-        this.dispatchEvent(patchProgressEvent(new ProgressEvent('loadend')))
+        this.dispatchEvent(patchProgressEvent(new $.ProgressEvent('loadstart')))
+        this.dispatchEvent(new $.Event('readystatechange'))
+        this.dispatchEvent(patchProgressEvent(new $.ProgressEvent('error')))
+        this.dispatchEvent(patchProgressEvent(new $.ProgressEvent('loadend')))
       } else {
         originalSend.apply(this, arguments)
       }

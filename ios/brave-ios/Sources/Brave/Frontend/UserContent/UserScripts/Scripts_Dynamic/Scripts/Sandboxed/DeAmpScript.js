@@ -53,7 +53,7 @@ window.__firefox__.execute(function($) {
 
       const targetHref = canonicalLinkElm.getAttribute('href');
       try {
-        const destUrl = new URL(targetHref);
+        const destUrl = new $.URL(targetHref);
         W.clearInterval(intervalId);
 
         if (W.location.href == destUrl.href || !(destUrl.protocol === 'http:' || destUrl.protocol === 'https:')) {
