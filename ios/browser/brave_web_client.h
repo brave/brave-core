@@ -29,6 +29,9 @@ class BraveWebClient : public ChromeWebClient {
 
   bool IsAppSpecificURL(const GURL& url) const override;
 
+  std::vector<web::JavaScriptFeature*> GetJavaScriptFeatures(
+      web::BrowserState* browser_state) const override;
+
   void PostBrowserURLRewriterCreation(
       web::BrowserURLRewriter* rewriter) override;
 
