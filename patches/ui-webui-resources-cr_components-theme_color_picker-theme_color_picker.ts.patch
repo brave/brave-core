@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.ts b/ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.ts
-index 4556adac0404d7358d020cdff744b39c43fc5bb5..fcdb17d5503c1310915b73ff8189d19448623fa9 100644
+index 023bda4e24b630184c1c8704ec1a46a69bea0011..9bc1ad420dc4a337557b19f479dd28b4efc5c762 100644
 --- a/ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.ts
 +++ b/ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.ts
 @@ -18,7 +18,7 @@ import type {BrowserColorVariant} from '//resources/mojo/ui/base/mojom/themes.mo

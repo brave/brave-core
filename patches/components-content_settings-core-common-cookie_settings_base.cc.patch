@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/common/cookie_settings_base.cc b/components/content_settings/core/common/cookie_settings_base.cc
-index c09e66659a8e0b8b8686e7ac4912a88dc917a7e2..2b5fd76d4dd495e30f758a966859863f5cf49488 100644
+index ed4fe4376df27fce43e781de0c635d5122d2ace1..073cad9e3f17d1adbaa499877ffde1f8cc621b78 100644
 --- a/components/content_settings/core/common/cookie_settings_base.cc
 +++ b/components/content_settings/core/common/cookie_settings_base.cc
 @@ -542,6 +542,7 @@ CookieSettingsBase::DecideAccess(

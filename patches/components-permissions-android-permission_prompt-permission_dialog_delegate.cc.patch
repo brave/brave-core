@@ -1,5 +1,5 @@
 diff --git a/components/permissions/android/permission_prompt/permission_dialog_delegate.cc b/components/permissions/android/permission_prompt/permission_dialog_delegate.cc
-index 05daf57d9a80df6558cf3d51b341975e98e194b7..fbf1bcd0658c397f69d6f89fa316b234e520e6d9 100644
+index f09ae5c81898427566816031547b98a0182d4f4b..d706e78ce35630edfb68a9dc817f99f48c3f4b2b 100644
 --- a/components/permissions/android/permission_prompt/permission_dialog_delegate.cc
 +++ b/components/permissions/android/permission_prompt/permission_dialog_delegate.cc
 @@ -187,6 +187,7 @@ PermissionDialogDelegate* PermissionDialogDelegate::CreateForTesting(

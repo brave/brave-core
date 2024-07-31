@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index ff1ed1a98cbfe8e6c24d64f308dd119c635d00d5..4b1050c170c262cd2819aeaadfc44166a78edff4 100644
+index 21e644a02f6a112c01ea7ee41c6f42d66d08b0dd..fe7ec3c5ef671367f1bf84de1e0c0b2b25cd183e 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4113,6 +4113,7 @@ const FeatureEntry::FeatureVariation kAutofillUpstreamUpdatedUiOptions[] = {
+@@ -4148,6 +4148,7 @@ const FeatureEntry::FeatureVariation kAutofillVcnEnrollRequestTimeoutOptions[] =
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

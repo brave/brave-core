@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_menu_view_base.cc b/chrome/browser/ui/views/profiles/profile_menu_view_base.cc
-index 70da374af533fd32f49ad0f4282ef4167eea6365..9919b2314c883205982c09fa77d4cdb16fdd4e5d 100644
+index b1f2387812161f78334d083718f5f8c71aca0e51..1b0ec4a2eede34447b4fd8412908ed10730b046b 100644
 --- a/chrome/browser/ui/views/profiles/profile_menu_view_base.cc
 +++ b/chrome/browser/ui/views/profiles/profile_menu_view_base.cc
 @@ -603,6 +603,7 @@ void ProfileMenuViewBase::BuildProfileBackgroundContainer(

@@ -1,8 +1,8 @@
 diff --git a/components/crash/core/app/crashpad.cc b/components/crash/core/app/crashpad.cc
-index 874ade6000ded00a2f3ac571c024053fd951387e..4e35a5ab0d49ae389e3d571fed74d918721ca41b 100644
+index 3e96d2562b6cb7a6163c38bc969a6b8021aea083..102197a6bd4313e2e3b60d0f728f196a9dded7eb 100644
 --- a/components/crash/core/app/crashpad.cc
 +++ b/components/crash/core/app/crashpad.cc
-@@ -105,6 +105,7 @@ bool InitializeCrashpadImpl(bool initial_client,
+@@ -92,6 +92,7 @@ bool InitializeCrashpadImpl(bool initial_client,
      DCHECK(browser_process || process_type == "Chrome Installer" ||
             process_type == "notification-helper" ||
             process_type == "platform-experience-helper" ||

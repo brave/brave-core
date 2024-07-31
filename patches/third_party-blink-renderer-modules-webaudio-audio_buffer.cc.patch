@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
-index 2e032806463bb25fd0371c1a03538985a9fd164a..2e6ac692c7d772ce717cb6fad53cd9f7c1c7d9de 100644
+index 08ac36d0df9fd8c09d54b6300b9781d4678830bf..c3ee210ee68ec4ffbde553b385616e20a002391e 100644
 --- a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
 +++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
-@@ -197,6 +197,7 @@ AudioBuffer::AudioBuffer(AudioBus* bus)
+@@ -202,6 +202,7 @@ AudioBuffer::AudioBuffer(AudioBus* bus)
  }
  
  NotShared<DOMFloat32Array> AudioBuffer::getChannelData(
@@ -10,7 +10,7 @@ index 2e032806463bb25fd0371c1a03538985a9fd164a..2e6ac692c7d772ce717cb6fad53cd9f7
      unsigned channel_index,
      ExceptionState& exception_state) {
    if (channel_index >= channels_.size()) {
-@@ -208,6 +209,7 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(
+@@ -213,6 +214,7 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(
      return NotShared<DOMFloat32Array>(nullptr);
    }
  
@@ -18,7 +18,7 @@ index 2e032806463bb25fd0371c1a03538985a9fd164a..2e6ac692c7d772ce717cb6fad53cd9f7
    return getChannelData(channel_index);
  }
  
-@@ -219,13 +221,15 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(unsigned channel_index) {
+@@ -224,13 +226,15 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(unsigned channel_index) {
    return NotShared<DOMFloat32Array>(channels_[channel_index].Get());
  }
  
@@ -37,7 +37,7 @@ index 2e032806463bb25fd0371c1a03538985a9fd164a..2e6ac692c7d772ce717cb6fad53cd9f7
                                    int32_t channel_number,
                                    size_t buffer_offset,
                                    ExceptionState& exception_state) {
-@@ -266,6 +270,7 @@ void AudioBuffer::copyFromChannel(NotShared<DOMFloat32Array> destination,
+@@ -271,6 +275,7 @@ void AudioBuffer::copyFromChannel(NotShared<DOMFloat32Array> destination,
    DCHECK_LE(buffer_offset + count, data_length);
  
    memmove(dst, src + buffer_offset, count * sizeof(*src));

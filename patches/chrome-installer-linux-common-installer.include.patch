@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/installer.include b/chrome/installer/linux/common/installer.include
-index 52489b3dfcd15d6f1b0522c289a2b420bb29fb6a..e89702266a46965a86af535066ce16d4de62b78f 100644
+index 5aca79fa700e4676ef7a1c312ec5782c2dc5e82d..1bb2f1e93668d0bf0dde5cac2b2c3bf327ca56f4 100644
 --- a/chrome/installer/linux/common/installer.include
 +++ b/chrome/installer/linux/common/installer.include
 @@ -75,6 +75,7 @@ process_template() (
@@ -19,7 +19,7 @@ index 52489b3dfcd15d6f1b0522c289a2b420bb29fb6a..e89702266a46965a86af535066ce16d4
    # ICU data file; Necessary when the GN icu_use_data_file flag is true.
    install -m 644 "${OUTPUTDIR}/icudtl.dat" "${STAGEDIR}/${INSTALLDIR}/"
  
-@@ -295,13 +298,15 @@ stage_install_common() {
+@@ -302,13 +305,15 @@ stage_install_common() {
  
    # app icons
    local icon_regex=".*product_logo_[0-9]\+\."
