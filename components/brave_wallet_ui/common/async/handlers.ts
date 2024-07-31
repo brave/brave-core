@@ -5,7 +5,6 @@
 
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
-import { WalletState } from '../../constants/types'
 
 // Utils
 import getAPIProxy from './bridge'
@@ -14,10 +13,6 @@ import { interactionNotifier } from './interactionNotifier'
 import { walletApi } from '../slices/api.slice'
 
 const handler = new AsyncActionHandler()
-
-function getWalletState(store: Store): WalletState {
-  return store.getState().wallet
-}
 
 async function refreshWalletInfo(store: Store) {
   const apiProxy = getAPIProxy()
@@ -60,7 +55,16 @@ handler.on(
 handler.on(WalletActions.initialize.type, async (store) => {
   const { walletHandler, keyringService } = getAPIProxy()
   const { walletInfo } = await walletHandler.getWalletInfo()
+  const { isWalletLocked } = walletInfo
   const { allAccounts } = await keyringService.getAllAccounts()
+  if (!isWalletLocked) {
+    keyringService.notifyUserInteraction()
+  }
+  interactionNotifier.beginWatchingForInteraction(
+    50000,
+    isWalletLocked,
+    keyringService.notifyUserInteraction
+  )
   store.dispatch(WalletActions.initialized({ walletInfo, allAccounts }))
 })
 
@@ -83,6 +87,13 @@ handler.on(WalletActions.locked.type, async (store) => {
 
 handler.on(WalletActions.unlocked.type, async (store) => {
   await refreshWalletInfo(store)
+  const { keyringService } = getAPIProxy()
+  keyringService.notifyUserInteraction()
+  interactionNotifier.beginWatchingForInteraction(
+    50000,
+    false,
+    keyringService.notifyUserInteraction
+  )
 })
 
 handler.on(WalletActions.backedUp.type, async (store) => {
@@ -101,22 +112,12 @@ handler.on(
 )
 
 handler.on(WalletActions.refreshAll.type, async (store: Store) => {
-  const keyringService = getAPIProxy().keyringService
-  const state = getWalletState(store)
-  if (!state.isWalletLocked) {
-    keyringService.notifyUserInteraction()
-  }
-  interactionNotifier.beginWatchingForInteraction(
-    50000,
-    state.isWalletLocked,
-    async () => {
-      keyringService.notifyUserInteraction()
-    }
-  )
-  const braveWalletService = getAPIProxy().braveWalletService
+  const { braveWalletService, walletHandler } = getAPIProxy()
+  const { walletInfo } = await walletHandler.getWalletInfo()
+  const { isWalletCreated, isWalletLocked } = walletInfo
   store.dispatch(walletApi.util.invalidateTags(['DefaultFiatCurrency']))
   // Fetch Balances and Prices
-  if (!state.isWalletLocked && state.isWalletCreated) {
+  if (!isWalletLocked && isWalletCreated) {
     // refresh networks registry & selected network
     await store
       .dispatch(walletApi.endpoints.refreshNetworkInfo.initiate())
