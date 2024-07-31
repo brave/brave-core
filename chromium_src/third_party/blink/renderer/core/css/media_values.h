@@ -6,13 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_CSS_MEDIA_VALUES_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_CSS_MEDIA_VALUES_H_
 
-#define CalculateDeviceWidth                      \
-  CalculateDeviceWidth_ChromiumImpl(LocalFrame*); \
-  static int CalculateDeviceWidth
+#define CalculateDeviceWidth(...)          \
+  CalculateDeviceWidth(__VA_ARGS__, bool); \
+  static int CalculateDeviceWidth_ChromiumImpl(__VA_ARGS__)
 
-#define CalculateDeviceHeight                      \
-  CalculateDeviceHeight_ChromiumImpl(LocalFrame*); \
-  static int CalculateDeviceHeight
+#define CalculateDeviceHeight(...)          \
+  CalculateDeviceHeight(__VA_ARGS__, bool); \
+  static int CalculateDeviceHeight_ChromiumImpl(__VA_ARGS__)
 
 #include "src/third_party/blink/renderer/core/css/media_values.h"  // IWYU pragma: export
 
