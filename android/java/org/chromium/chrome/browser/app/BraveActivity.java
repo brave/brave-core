@@ -1805,6 +1805,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     /**
      * Selects an existing tab if it matches a given origin, marks it as active and returns it.
+     *
      * @return Active tab if it exists, {@code null} otherwise.
      */
     public Tab selectExistingUrlOriginTab(@NonNull final String origin) {
