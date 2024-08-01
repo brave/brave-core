@@ -657,11 +657,25 @@ export class MockedWalletApiProxy {
     }
   }
 
-  braveWalletP3A: Partial<
-    InstanceType<typeof BraveWallet.BraveWalletP3AInterface>
-  > = {
-    reportOnboardingAction: () => {},
-    reportJSProvider: () => {}
+  braveWalletP3A: InstanceType<typeof BraveWallet.BraveWalletP3AInterface> = {
+    reportOnboardingAction: (action) => {
+      console.log(`reporting onboarding action: ${action}`)
+    },
+    reportJSProvider: (providerType, coinType, allowProviderOverwrite) => {
+      console.log(
+        `reporting JS provider: ${JSON.stringify(
+          { providerType, coinType, allowProviderOverwrite },
+          undefined,
+          2
+        )}`
+      )
+    },
+    recordActiveWalletCount(count, coinType) {
+      console.log(`active wallet count: ${count} for ${coinType}`)
+    },
+    recordNFTGalleryView(nftCount) {
+      console.log(`viewing nft gallery with ${nftCount} nfts`)
+    }
   }
 
   assetRatioService: Partial<
