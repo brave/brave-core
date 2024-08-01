@@ -521,9 +521,9 @@ export const useSwap = () => {
         if (quoteResponse.response.lifiQuote) {
           const { routes } = quoteResponse.response.lifiQuote
 
-          // If overrides.quoteOptionId is undefined, we will use the first
-          // route as the default option. If overrides.quoteOptionId is set,
-          // we will try to find the route that matches the quoteOptionId.
+          // If overrides.selectedQuoteOptionId is undefined, we will use the first
+          // route as the default option. If overrides.selectedQuoteOptionId is set,
+          // we will try to find the route that matches the selectedQuoteOptionId.
           const route = overrides.selectedQuoteOptionId
             ? routes.find(
                 (route) => route.uniqueId === overrides.selectedQuoteOptionId
