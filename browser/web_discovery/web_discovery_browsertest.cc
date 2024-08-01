@@ -14,6 +14,8 @@
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
+namespace web_discovery {
+
 using WebDiscoveryTest = InProcessBrowserTest;
 using ::testing::_;
 
@@ -41,3 +43,5 @@ IN_PROC_BROWSER_TEST_F(WebDiscoveryTest, InfobarAddedTest) {
   tab_helper->ShowInfoBar(browser()->profile()->GetPrefs());
   infobar_manager->RemoveObserver(&observer);
 }
+
+}  // namespace web_discovery

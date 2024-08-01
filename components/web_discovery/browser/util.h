@@ -59,6 +59,9 @@ std::optional<std::string> ExtractValueFromQueryString(
     const std::string_view query_string,
     const std::string_view key);
 
+// Strips non-alphanumeric characters from string
+void TransformToAlphanumeric(std::string& str);
+
 }  // namespace web_discovery
 
 #endif  // BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_UTIL_H_

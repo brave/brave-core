@@ -153,7 +153,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   psst::PsstTabHelper::MaybeCreateForWebContents(
       web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 #if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-  WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents);
+  web_discovery::WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)

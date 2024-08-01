@@ -6,6 +6,7 @@
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/time/time.h"
 #include "brave/browser/web_discovery/web_discovery_cta_util.h"
@@ -23,6 +24,15 @@
 std::unique_ptr<infobars::InfoBar> CreateWebDiscoveryInfoBar(
     std::unique_ptr<WebDiscoveryInfoBarDelegate> delegate);
 #endif
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#include "brave/browser/web_discovery/web_discovery_service_factory.h"
+#include "brave/components/web_discovery/browser/web_discovery_service.h"
+#include "brave/components/web_discovery/common/features.h"
+#include "services/service_manager/public/cpp/interface_provider.h"
+#endif
+
+namespace web_discovery {
 
 // static
 void WebDiscoveryTabHelper::MaybeCreateForWebContents(
@@ -48,6 +58,10 @@ WebDiscoveryTabHelper::~WebDiscoveryTabHelper() = default;
 void WebDiscoveryTabHelper::DidFinishLoad(
     content::RenderFrameHost* render_frame_host,
     const GURL& validated_url) {
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+  MaybeExtractFromPage(render_frame_host, validated_url);
+#endif
+
   if (validated_url.host() != kBraveSearchHost) {
     return;
   }
@@ -87,4 +101,32 @@ void WebDiscoveryTabHelper::ShowInfoBar(PrefService* prefs) {
 #endif
 }
 
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+void WebDiscoveryTabHelper::MaybeExtractFromPage(
+    content::RenderFrameHost* render_frame_host,
+    const GURL& url) {
+  if (!base::FeatureList::IsEnabled(features::kBraveWebDiscoveryNative)) {
+    return;
+  }
+  auto* web_discovery_service =
+      WebDiscoveryServiceFactory::GetForBrowserContext(
+          render_frame_host->GetBrowserContext());
+  if (!web_discovery_service) {
+    return;
+  }
+  if (!render_frame_host->IsInPrimaryMainFrame()) {
+    return;
+  }
+  if (!web_discovery_service->ShouldExtractFromPage(url, render_frame_host)) {
+    return;
+  }
+  mojo::Remote<mojom::DocumentExtractor> remote;
+  render_frame_host->GetRemoteInterfaces()->GetInterface(
+      remote.BindNewPipeAndPassReceiver());
+  web_discovery_service->StartExtractingFromPage(url, std::move(remote));
+}
+#endif
+
 WEB_CONTENTS_USER_DATA_KEY_IMPL(WebDiscoveryTabHelper);
+
+}  // namespace web_discovery
