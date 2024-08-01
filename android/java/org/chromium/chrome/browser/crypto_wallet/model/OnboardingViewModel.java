@@ -50,9 +50,7 @@ public class OnboardingViewModel extends ViewModel {
 
     @NonNull
     public String requireRecoveryPhrase() {
-        if (mRecoveryPhrase == null) {
-            throw new IllegalStateException("Wallet recovery phrase must not be null.");
-        }
+        assert mRecoveryPhrase != null : "Wallet recovery phrase must not be null.";
         return mRecoveryPhrase;
     }
 
@@ -62,21 +60,18 @@ public class OnboardingViewModel extends ViewModel {
 
     @NonNull
     public String getPassword() {
-        if (mPassword == null) {
-            throw new IllegalStateException("Wallet password must not be null.");
-        }
+        assert mPassword != null : "Wallet password must not be null.";
         return mPassword;
     }
 
     @NonNull
     public Pair<Integer, String> getVerificationStep(@NonNull final VerificationStep step) {
-        if (mVerificationWords.size() == 0) {
-            throw new IllegalStateException("Verification word list must not be null.");
-        }
+        assert mVerificationWords.size() != 0 : "Verification word list must not be empty.";
 
         return extractPositionAndWordAtIndex(step.getValue());
     }
 
+    @NonNull
     private Pair<Integer, String> extractPositionAndWordAtIndex(final int index) {
         final int key = mVerificationWords.keyAt(index);
         return new Pair<>(key, mVerificationWords.get(key));
