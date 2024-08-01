@@ -218,20 +218,23 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-/**
- * Brave's extension for ChromeActivity
- */
+/** Brave's extension for ChromeActivity */
 @JNINamespace("chrome::android")
 public abstract class BraveActivity extends ChromeActivity
-        implements BrowsingDataBridge.OnClearBrowsingDataListener, BraveVpnObserver,
-                   OnBraveSetDefaultBrowserListener, ConnectionErrorHandler, PrefObserver,
-                   BraveSafeBrowsingApiHandler.BraveSafeBrowsingApiHandlerDelegate,
-                   BraveNewsConnectionErrorHandler.BraveNewsConnectionErrorHandlerDelegate,
-                   MiscAndroidMetricsConnectionErrorHandler
-                           .MiscAndroidMetricsConnectionErrorHandlerDelegate {
+        implements BrowsingDataBridge.OnClearBrowsingDataListener,
+                BraveVpnObserver,
+                OnBraveSetDefaultBrowserListener,
+                ConnectionErrorHandler,
+                PrefObserver,
+                BraveSafeBrowsingApiHandler.BraveSafeBrowsingApiHandlerDelegate,
+                BraveNewsConnectionErrorHandler.BraveNewsConnectionErrorHandlerDelegate,
+                MiscAndroidMetricsConnectionErrorHandler
+                        .MiscAndroidMetricsConnectionErrorHandlerDelegate {
     public static final String BRAVE_WALLET_HOST = "wallet";
+    public static final String BRAVE_WALLET_BASE_URL = "brave://wallet";
     public static final String BRAVE_WALLET_URL = "brave://wallet/crypto/portfolio/assets";
     public static final String BRAVE_BUY_URL = "brave://wallet/crypto/fund-wallet";
     public static final String BRAVE_SEND_URL = "brave://wallet/send";
@@ -1784,6 +1787,48 @@ public abstract class BraveActivity extends ChromeActivity
         return Profile.fromWebContents(tab.getWebContents());
     }
 
+    public void closeExistingTabs(final boolean closeActiveTab, @NonNull final String baseUrl) {
+        final Tab activeTab = getActivityTab();
+        final TabModel tabModel = getCurrentTabModel();
+        if (activeTab != null
+                && activeTab.getUrl().getSpec().startsWith(baseUrl)
+                && closeActiveTab) {
+            activeTab.setClosing(true);
+            tabModel.closeTab(activeTab);
+        }
+
+        Set<Integer> tabIndexes = TabModelUtils.getTabIndexesByBaseUrl(tabModel, baseUrl);
+
+        for (Integer index : tabIndexes) {
+            Tab tab = tabModel.getTabAt(index);
+            if (tab != null) {
+                tab.setClosing(true);
+                tabModel.closeTab(tab);
+            }
+        }
+    }
+
+    public Tab selectExistingBaseUrlTab(@NonNull final String baseUrl) {
+        Tab tab = getActivityTab();
+        if (tab != null && tab.getUrl().getSpec().startsWith(baseUrl)) {
+            return tab;
+        }
+
+        TabModel tabModel = getCurrentTabModel();
+        Set<Integer> tabIndexes = TabModelUtils.getTabIndexesByBaseUrl(tabModel, baseUrl);
+
+        // Find if tab exists.
+        if (!tabIndexes.isEmpty()) {
+            int index = tabIndexes.iterator().next();
+            tab = tabModel.getTabAt(tabIndexes.iterator().next());
+            // Set active tab
+            tabModel.setIndex(index, TabSelectionType.FROM_USER, false);
+            return tab;
+        } else {
+            return null;
+        }
+    }
+
     public Tab selectExistingTab(String url) {
         Tab tab = getActivityTab();
         if (tab != null && tab.getUrl().getSpec().equals(url)) {
@@ -1804,15 +1849,12 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
-    public Tab openAlwaysNewAndCloseExistingTab(String url) {
-        Tab tab = selectExistingTab(url);
-        if (tab != null) {
-            // Close existing tab, if present.
-            tab.setClosing(true);
-        }
+    public void openAlwaysNewAndCloseExistingTab(
+            @NonNull final String baseUrlToClose, @NonNull final String url) {
+        closeExistingTabs(true, baseUrlToClose);
 
-        // Open a new tab
-        return getTabCreator(false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
+        // Open a new tab.
+        getTabCreator(false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
     }
 
     public Tab openNewOrSelectExistingTab(String url, boolean refresh) {
@@ -1824,6 +1866,17 @@ public abstract class BraveActivity extends ChromeActivity
             return tab;
         } else { // Open a new tab
             return getTabCreator(false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
+        }
+    }
+
+    public void openNewOrRefreshExistingTab(
+            @NonNull final String baseUrl, @NonNull final String url) {
+        Tab tab = selectExistingBaseUrlTab(baseUrl);
+        if (tab != null) {
+            tab.reload();
+        } else {
+            // Open a new tab.
+            getTabCreator(false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
         }
     }
 

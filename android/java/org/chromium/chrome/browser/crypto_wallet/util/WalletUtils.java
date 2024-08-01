@@ -111,9 +111,11 @@ public class WalletUtils {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             if (forceNewTab) {
-                activity.openAlwaysNewAndCloseExistingTab(BraveActivity.BRAVE_WALLET_URL);
+                activity.openAlwaysNewAndCloseExistingTab(
+                        BraveActivity.BRAVE_WALLET_BASE_URL, BraveActivity.BRAVE_WALLET_URL);
             } else {
-                activity.openNewOrSelectExistingTab(BraveActivity.BRAVE_WALLET_URL, true);
+                activity.openNewOrRefreshExistingTab(
+                        BraveActivity.BRAVE_WALLET_BASE_URL, BraveActivity.BRAVE_WALLET_URL);
             }
             TabUtils.bringChromeTabbedActivityToTheTop(activity);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
@@ -124,10 +126,7 @@ public class WalletUtils {
     public static void closeWebWallet() {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
-            final Tab walletTab = activity.selectExistingTab(BraveActivity.BRAVE_WALLET_URL);
-            if (walletTab != null) {
-                walletTab.setClosing(true);
-            }
+            activity.closeExistingTabs(true, BraveActivity.BRAVE_WALLET_BASE_URL);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "Error while closing the Wallet tab.", e);
         }
