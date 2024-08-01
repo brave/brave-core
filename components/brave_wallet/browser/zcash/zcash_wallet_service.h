@@ -17,10 +17,10 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_complete_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_shield_sync_service.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_transaction_complete_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
@@ -147,11 +147,17 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   void Reset();
 
  private:
+  friend class ZCashBlocksBatchScanTask;
+  friend class ZCashCompleteTransactionTask;
   friend class ZCashCreateShieldTransactionTask;
+  friend class ZCashCreateShieldedTransactionTask;
   friend class ZCashCreateTransparentTransactionTask;
   friend class ZCashDiscoverNextUnusedZCashAddressTask;
-  friend class ZCashTransactionCompleteManager;
+  friend class ZCashScanBlocksTask;
+  friend class ZCashShieldSyncService;
   friend class ZCashTxManager;
+  friend class ZCashUpdateSubtreeRootsTask;
+  friend class ZCashVerifyChainStateTask;
   friend class ZCashWalletServiceUnitTest;
 
   /*KeyringServiceObserverBase*/
@@ -189,6 +195,7 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   void CreateTransactionTaskDone(ZCashCreateTransparentTransactionTask* task);
   void CreateTransactionTaskDone(ZCashCreateShieldTransactionTask* task);
+  void CompleteTransactionTaskDone(ZCashCompleteTransactionTask* task);
 
   void CompleteTransactionDone(std::string chain_id,
                                ZCashTransaction original_zcash_transaction,
@@ -199,7 +206,6 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   void CreateShieldAllTransaction(const std::string& chain_id,
                                   mojom::AccountIdPtr account_id,
                                   CreateTransactionCallback callback);
-
   void CreateShieldAllTransactionTaskDone(
       const std::string& chain_id,
       mojom::AccountIdPtr account_id,
@@ -248,12 +254,13 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   base::FilePath zcash_data_path_;
   raw_ptr<KeyringService> keyring_service_;
   std::unique_ptr<ZCashRpc> zcash_rpc_;
-  std::unique_ptr<ZCashTransactionCompleteManager> complete_manager_;
 
+  std::list<std::unique_ptr<ZCashCompleteTransactionTask>>
+      complete_transaction_tasks_;
   std::list<std::unique_ptr<ZCashCreateTransparentTransactionTask>>
       create_transaction_tasks_;
-
 #if BUILDFLAG(ENABLE_ORCHARD)
+  base::SequenceBound<ZCashOrchardSyncState> sync_state_;
   std::list<std::unique_ptr<ZCashCreateShieldTransactionTask>>
       create_shield_transaction_tasks_;
   std::map<mojom::AccountIdPtr, std::unique_ptr<ZCashShieldSyncService>>
@@ -261,7 +268,6 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 #endif
 
   mojo::RemoteSet<mojom::ZCashWalletServiceObserver> observers_;
-
   mojo::ReceiverSet<mojom::ZCashWalletService> receivers_;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};

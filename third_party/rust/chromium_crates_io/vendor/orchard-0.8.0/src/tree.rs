@@ -159,12 +159,12 @@ impl MerklePath {
     }
 
     /// Returns the position of the leaf using this Merkle path.
-    pub(crate) fn position(&self) -> u32 {
+    pub fn position(&self) -> u32 {
         self.position
     }
 
     /// Returns the authentication path.
-    pub(crate) fn auth_path(&self) -> [MerkleHashOrchard; MERKLE_DEPTH_ORCHARD] {
+    pub fn auth_path(&self) -> [MerkleHashOrchard; MERKLE_DEPTH_ORCHARD] {
         self.auth_path
     }
 }

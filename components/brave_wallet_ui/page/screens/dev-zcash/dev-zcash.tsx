@@ -130,8 +130,8 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
                            status: ZCashShieldSyncStatus) => {
         if (props.accountId.uniqueKey === accountId.uniqueKey) {
           setSyncStatusResult("Current block " +
-                              status.currentBlock + "/" +
-                              status.chainTip);
+                              status.endBlock + "-" +
+                              status.startBlock + " " + status.scannedRanges + "/" + status.totalRanges);
           setShieldedBalanceValue("Found balance: " + status.spendableBalance);
         }
       },

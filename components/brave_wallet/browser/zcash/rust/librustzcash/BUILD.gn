@@ -6,7 +6,11 @@
 import("//build/rust/rust_static_library.gni")
 
 rust_static_library("zcash_protocol") {
-  visibility = [ ":zcash_primitives" ]
+  visibility = [
+    ":zcash_primitives",
+    "//brave/components/brave_wallet/browser/zcash/rust:rust_lib",
+    "//brave/components/brave_wallet/browser/zcash/rust:rust_lib_cxx_generated",
+  ]
   crate_name = "zcash_protocol"
   crate_root = "src/components/zcash_protocol/src/lib.rs"
   sources = [

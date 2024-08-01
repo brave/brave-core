@@ -25,8 +25,27 @@ UnauthorizedOrchardBundleImpl::~UnauthorizedOrchardBundleImpl() = default;
 // static
 std::unique_ptr<UnauthorizedOrchardBundle> UnauthorizedOrchardBundle::Create(
     base::span<const uint8_t> tree_state,
-    const std::vector<::brave_wallet::OrchardOutput> orchard_outputs,
+    const ::brave_wallet::OrchardSpendsBundle& orchard_spends,
+    const std::vector<::brave_wallet::OrchardOutput>& orchard_outputs,
     std::optional<size_t> random_seed_for_testing) {
+  ::rust::Vec<orchard::OrchardSpend> spends;
+  for (const auto& input : orchard_spends.inputs) {
+    if (!input.witness) {
+      return nullptr;
+    }
+
+    auto& note = input.note;
+
+    orchard::OrchardMerklePath merkle_path;
+    merkle_path.position = input.witness->position;
+    for (const auto& merkle_hash : input.witness->merkle_path) {
+      merkle_path.auth_path.push_back(OrchardMerkleHash{merkle_hash});
+    }
+    spends.push_back(orchard::OrchardSpend{orchard_spends.fvk, note.amount,
+                                           note.addr, note.rho, note.seed,
+                                           std::move(merkle_path)});
+  }
+
   ::rust::Vec<orchard::OrchardOutput> outputs;
   for (const auto& output : orchard_outputs) {
     outputs.push_back(orchard::OrchardOutput{
@@ -37,7 +56,7 @@ std::unique_ptr<UnauthorizedOrchardBundle> UnauthorizedOrchardBundle::Create(
     CHECK_IS_TEST();
     auto bundle_result = create_testing_orchard_bundle(
         ::rust::Slice<const uint8_t>{tree_state.data(), tree_state.size()},
-        std::move(outputs), random_seed_for_testing.value());
+        std::move(spends), std::move(outputs), random_seed_for_testing.value());
     if (!bundle_result->is_ok()) {
       return nullptr;
     }
@@ -46,7 +65,7 @@ std::unique_ptr<UnauthorizedOrchardBundle> UnauthorizedOrchardBundle::Create(
   } else {
     auto bundle_result = create_orchard_bundle(
         ::rust::Slice<const uint8_t>{tree_state.data(), tree_state.size()},
-        std::move(outputs));
+        std::move(spends), std::move(outputs));
     if (!bundle_result->is_ok()) {
       return nullptr;
     }

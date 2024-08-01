@@ -11,6 +11,7 @@
 
 #include "base/barrier_callback.h"
 #include "base/containers/span.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_discover_next_unused_zcash_address_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_get_transparent_utxos_context.h"
@@ -59,7 +60,9 @@ ZCashWalletService::ZCashWalletService(
   zcash_rpc_ = std::make_unique<ZCashRpc>(network_manager, url_loader_factory);
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
-  complete_manager_ = std::make_unique<ZCashTransactionCompleteManager>(this);
+  sync_state_.emplace(
+      base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
+      zcash_data_path_.AppendASCII(kOrchardDatabaseName));
 }
 
 ZCashWalletService::ZCashWalletService(KeyringService* keyring_service,
@@ -68,7 +71,9 @@ ZCashWalletService::ZCashWalletService(KeyringService* keyring_service,
   zcash_rpc_ = std::move(zcash_rpc);
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
-  complete_manager_ = std::make_unique<ZCashTransactionCompleteManager>(this);
+  sync_state_.emplace(
+      base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
+      zcash_data_path_.AppendASCII(kOrchardDatabaseName));
 }
 
 ZCashWalletService::~ZCashWalletService() = default;
@@ -147,8 +152,7 @@ void ZCashWalletService::StartShieldSync(mojom::AccountIdPtr account_id,
 
     shield_sync_services_[account_id.Clone()] =
         std::make_unique<ZCashShieldSyncService>(
-            zcash_rpc(), account_id, account_birthday, fvk.value(),
-            zcash_data_path_.AppendASCII(kOrchardDatabaseName),
+            this, account_id, account_birthday, fvk.value(),
             weak_ptr_factory_.GetWeakPtr());
 
     shield_sync_services_[account_id.Clone()]->StartSyncing();
@@ -321,11 +325,14 @@ void ZCashWalletService::SignAndPostTransaction(
     const mojom::AccountIdPtr& account_id,
     const ZCashTransaction& zcash_transaction,
     SignAndPostTransactionCallback callback) {
-  complete_manager_->CompleteTransaction(
-      chain_id, zcash_transaction, account_id.Clone(),
-      base::BindOnce(&ZCashWalletService::CompleteTransactionDone,
-                     weak_ptr_factory_.GetWeakPtr(), chain_id,
-                     zcash_transaction, std::move(callback)));
+  auto& task = complete_transaction_tasks_.emplace_back(
+      base::WrapUnique<ZCashCompleteTransactionTask>(
+          new ZCashCompleteTransactionTask(
+              this, chain_id, zcash_transaction, account_id.Clone(),
+              base::BindOnce(&ZCashWalletService::CompleteTransactionDone,
+                             weak_ptr_factory_.GetWeakPtr(), chain_id,
+                             zcash_transaction, std::move(callback)))));
+  task->Start();
 }
 
 void ZCashWalletService::SetZCashRpcForTesting(
@@ -696,6 +703,12 @@ void ZCashWalletService::OnTransactionResolvedForStatus(
     return;
   }
   std::move(callback).Run((*result)->height > 0);
+}
+
+void ZCashWalletService::CompleteTransactionTaskDone(
+    ZCashCompleteTransactionTask* task) {
+  CHECK(complete_transaction_tasks_.remove_if(
+      [task](auto& item) { return item.get() == task; }));
 }
 
 void ZCashWalletService::CreateTransactionTaskDone(
