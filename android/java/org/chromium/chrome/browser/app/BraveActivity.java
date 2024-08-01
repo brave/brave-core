@@ -174,6 +174,7 @@ import org.chromium.chrome.browser.speedreader.BraveSpeedReaderUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tab.TabSelectionType;
+import org.chromium.chrome.browser.tabmodel.TabList;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
@@ -216,6 +217,7 @@ import org.chromium.ui.widget.Toast;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -1796,7 +1798,7 @@ public abstract class BraveActivity extends ChromeActivity
             tabModel.closeTab(activeTab);
         }
 
-        Set<Integer> tabIndexes = TabModelUtils.getTabIndexesByUrlOrigin(tabModel, origin);
+        Set<Integer> tabIndexes = getTabIndexesByUrlOrigin(tabModel, origin);
         for (Integer index : tabIndexes) {
             Tab tab = tabModel.getTabAt(index);
             if (tab != null) {
@@ -1813,7 +1815,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         TabModel tabModel = getCurrentTabModel();
-        Set<Integer> tabIndexes = TabModelUtils.getTabIndexesByUrlOrigin(tabModel, origin);
+        Set<Integer> tabIndexes = getTabIndexesByUrlOrigin(tabModel, origin);
 
         // Find if tab exists.
         if (!tabIndexes.isEmpty()) {
@@ -1825,6 +1827,28 @@ public abstract class BraveActivity extends ChromeActivity
         } else {
             return null;
         }
+    }
+
+    /**
+     * Find the {@link Tab} indexes whose URL starts with the specified base URL.
+     *
+     * @param model The {@link TabModel} to act on.
+     * @param origin The URL origin to search for.
+     * @return A set of indexes pointing to the matching {@link Tab}s or empty set if no matches are
+     *     found.
+     */
+    @NonNull
+    private static Set<Integer> getTabIndexesByUrlOrigin(
+            @NonNull final TabList model, @NonNull final String origin) {
+        final Set<Integer> result = new HashSet<>();
+        int count = model.getCount();
+
+        for (int i = 0; i < count; i++) {
+            if (model.getTabAt(i).getUrl().getOrigin().getSpec().contentEquals(origin)) {
+                result.add(i);
+            }
+        }
+        return result;
     }
 
     public Tab selectExistingTab(String url) {
