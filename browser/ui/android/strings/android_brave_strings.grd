@@ -2006,7 +2006,7 @@ Are you sure you want to do this?
       View my recovery phrase
     </message>
     <message name="IDS_BACKUP_LATER" desc="Brave Wallet recovery phrase button text">
-      I’ll back up later
+      I'll back up later
     </message>
     <message name="IDS_CHECK_WORD" desc="Brave Wallet verify recovery phrase title">
       Let's check
@@ -2126,7 +2126,7 @@ Are you sure you want to do this?
       Does not protect you against dangerous websites, downloads, and extensions.
     </message>
     <message name="IDS_PHRASE_DOES_NOT_MATCH" desc="Brave Wallet error when phrase doesn't match">
-      Recovery phrase doesn’t match
+      Recovery phrase doesn't match
     </message>
     <message name="IDS_ACCOUNT_RECOVERY_FAILED" desc="Brave Wallet text">
       Account recovery failed. Please try again.
