@@ -55,8 +55,11 @@ public class AssetStore: Identifiable, ObservableObject, Equatable, WalletObserv
     lhs.token == rhs.token && lhs.isVisible == rhs.isVisible
   }
 
-  @MainActor func fetchERC721Metadata() async -> NFTMetadata? {
-    return await rpcService.fetchNFTMetadata(for: token, ipfsApi: self.ipfsApi)
+  @MainActor func fetchERC721Metadata() async -> BraveWallet.NftMetadata? {
+    return await rpcService.fetchNFTMetadata(
+      for: token,
+      ipfsApi: ipfsApi
+    )
   }
 }
 
@@ -316,7 +319,7 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
     }
   }
 
-  @MainActor func allNFTMetadata() async -> [String: NFTMetadata] {
+  @MainActor func allNFTMetadata() async -> [String: BraveWallet.NftMetadata] {
     let allNetworks = await rpcService.allNetworksForSupportedCoins()
     let allUserAssets = await assetManager.getAllUserAssetsInNetworkAssets(
       networks: allNetworks,

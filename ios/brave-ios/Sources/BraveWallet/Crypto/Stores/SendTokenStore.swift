@@ -22,7 +22,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     }
   }
   /// The current selected NFT metadata. Default with nil value.
-  @Published var selectedSendNFTMetadata: NFTMetadata?
+  @Published var selectedSendNFTMetadata: BraveWallet.NftMetadata?
   /// The current selected token balance. Default with nil value.
   @Published var selectedSendTokenBalance: BDouble?
   /// A boolean indicates if this store is making an unapproved tx
@@ -177,7 +177,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
   private var sendAddressUpdatedTimer: Timer?
   private var sendAmountUpdatedTimer: Timer?
   private var prefilledToken: BraveWallet.BlockchainToken?
-  private var metadataCache: [String: NFTMetadata] = [:]
+  private var metadataCache: [String: BraveWallet.NftMetadata] = [:]
   private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
   private var keyringServiceObserver: KeyringServiceObserver?
@@ -413,7 +413,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       {
         metadataCache[selectedSendToken.id] = await rpcService.fetchNFTMetadata(
           for: selectedSendToken,
-          ipfsApi: self.ipfsApi
+          ipfsApi: ipfsApi
         )
       }
       guard !Task.isCancelled else { return }
@@ -921,8 +921,11 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
 
   @MainActor func fetchNFTMetadata(
     tokens: [BraveWallet.BlockchainToken]
-  ) async -> [String: NFTMetadata] {
-    return await rpcService.fetchNFTMetadata(tokens: tokens, ipfsApi: ipfsApi)
+  ) async -> [String: BraveWallet.NftMetadata] {
+    return await rpcService.fetchNFTMetadata(
+      tokens: tokens,
+      ipfsApi: ipfsApi
+    )
   }
 }
 

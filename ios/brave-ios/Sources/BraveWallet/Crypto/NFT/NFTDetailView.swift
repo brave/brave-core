@@ -14,7 +14,7 @@ struct NFTDetailView: View {
   @ObservedObject var nftDetailStore: NFTDetailStore
   @Binding var walletActionDestination: WalletActionDestination?
 
-  var onNFTMetadataRefreshed: ((NFTMetadata) -> Void)?
+  var onNFTMetadataRefreshed: ((BraveWallet.NftMetadata) -> Void)?
 
   @Environment(\.openURL) private var openWalletURL
   @Environment(\.presentationMode) @Binding private var presentationMode
@@ -43,7 +43,7 @@ struct NFTDetailView: View {
 
   @ViewBuilder private var nftImage: some View {
     NFTImageView(
-      urlString: nftDetailStore.nftMetadata?.imageURLString ?? "",
+      urlString: nftDetailStore.nftMetadata?.image ?? "",
       isLoading: nftDetailStore.isLoading
     ) {
       noImageView
@@ -53,10 +53,9 @@ struct NFTDetailView: View {
   }
 
   private var isSVGImage: Bool {
-    guard let nftMetadata = nftDetailStore.nftMetadata,
-      let imageUrlString = nftMetadata.imageURLString
+    guard let nftMetadata = nftDetailStore.nftMetadata
     else { return false }
-    return imageUrlString.hasPrefix("data:image/svg") || imageUrlString.hasSuffix(".svg")
+    return nftMetadata.image.hasPrefix("data:image/svg") || nftMetadata.image.hasSuffix(".svg")
   }
 
   var body: some View {
@@ -177,11 +176,11 @@ struct NFTDetailView: View {
       } header: {
         Text(Strings.Wallet.nftDetailOverview)
       }
-      if let nftMetadata = nftDetailStore.nftMetadata, let description = nftMetadata.description,
-        !description.isEmpty
+      if let nftMetadata = nftDetailStore.nftMetadata,
+        !nftMetadata.desc.isEmpty
       {
         Section {
-          Text(description)
+          Text(nftMetadata.desc)
             .font(.subheadline)
             .foregroundColor(Color(.braveLabel))
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -197,7 +196,7 @@ struct NFTDetailView: View {
         Section {
           List {
             ForEach(attributes) { attribute in
-              NFTDetailRow(title: attribute.type) {
+              NFTDetailRow(title: attribute.traitType) {
                 Text(attribute.value)
                   .font(.subheadline)
                   .foregroundColor(Color(.braveLabel))

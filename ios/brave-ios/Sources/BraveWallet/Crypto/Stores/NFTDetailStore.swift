@@ -86,7 +86,7 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
   @Published var owner: BraveWallet.AccountInfo?
   @Published var nft: BraveWallet.BlockchainToken
   @Published var isLoading: Bool = false
-  @Published var nftMetadata: NFTMetadata?
+  @Published var nftMetadata: BraveWallet.NftMetadata?
   @Published var networkInfo: BraveWallet.NetworkInfo?
 
   var isObserving: Bool {
@@ -100,7 +100,7 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
     txService: BraveWalletTxService,
     ipfsApi: IpfsAPI,
     nft: BraveWallet.BlockchainToken,
-    nftMetadata: NFTMetadata?,
+    nftMetadata: BraveWallet.NftMetadata?,
     owner: BraveWallet.AccountInfo?
   ) {
     self.assetManager = assetManager
@@ -109,7 +109,7 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
     self.txService = txService
     self.ipfsApi = ipfsApi
     self.nft = nft
-    self.nftMetadata = nftMetadata?.httpfyIpfsUrl(ipfsApi: ipfsApi)
+    self.nftMetadata = nftMetadata
     self.owner = owner
 
     self.setupObservers()
@@ -148,7 +148,10 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
 
       if nftMetadata == nil {
         isLoading = true
-        nftMetadata = await rpcService.fetchNFTMetadata(for: nft, ipfsApi: self.ipfsApi)
+        nftMetadata = await rpcService.fetchNFTMetadata(
+          for: nft,
+          ipfsApi: ipfsApi
+        )
         isLoading = false
       }
     }

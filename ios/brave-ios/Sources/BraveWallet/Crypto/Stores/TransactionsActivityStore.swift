@@ -34,7 +34,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
   private var solEstimatedTxFeesCache: [String: UInt64] = [:]
   private var assetPricesCache: [String: Double] = [:]
   /// Cache of metadata for NFTs. The key is the token's `id`.
-  private var metadataCache: [String: NFTMetadata] = [:]
+  private var metadataCache: [String: BraveWallet.NftMetadata] = [:]
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
   private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
@@ -276,7 +276,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
     userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
     assetRatios: [String: Double],
-    nftMetadata: [String: NFTMetadata],
+    nftMetadata: [String: BraveWallet.NftMetadata],
     solEstimatedTxFees: [String: UInt64]
   ) -> [TransactionSection] {
     // Group transactions by day (only compare day/month/year)

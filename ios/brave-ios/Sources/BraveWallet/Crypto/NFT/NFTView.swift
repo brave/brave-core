@@ -68,7 +68,7 @@ struct NFTView: View {
 
   @ViewBuilder private func nftImage(_ nftViewModel: NFTAssetViewModel) -> some View {
     Group {
-      if let urlString = nftViewModel.nftMetadata?.imageURLString {
+      if let urlString = nftViewModel.nftMetadata?.image {
         NFTImageView(urlString: urlString) {
           LoadingNFTView(shimmer: false)
         }
