@@ -192,7 +192,7 @@ void BraveTabStrip::AddedToWidget() {
     // be being created and it could be unbound to Browser.
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(&BraveTabStrip::UpdateTabContainer,
-                                  base::Unretained(this)));
+                                  weak_factory_.GetWeakPtr()));
   }
 }
 
