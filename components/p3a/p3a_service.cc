@@ -125,6 +125,10 @@ void P3AService::InitCallbacks() {
   }
 }
 
+void P3AService::StartTeardown() {
+  pref_change_registrar_.RemoveAll();
+}
+
 void P3AService::RegisterDynamicMetric(const std::string& histogram_name,
                                        MetricLogType log_type,
                                        bool should_be_on_ui_thread) {

@@ -57,6 +57,10 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   // updates. Can't call it in constructor because of refcounted peculiarities.
   void InitCallbacks();
 
+  // Should be called in UI thread by BraveBrowserProcess to remove
+  // all observers from the PrefChangeRegistrar.
+  void StartTeardown();
+
   // Called by other components to add/remove dynamic metrics
   // (metrics not included in the metric_names.h static list).
   // All dynamic metrics are ephemeral.
