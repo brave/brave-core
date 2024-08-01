@@ -86,6 +86,7 @@
                 android:layout_height="50dp"
                 android:visibility="gone"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:indeterminate="true"/>
 
     </FrameLayout>

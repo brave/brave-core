@@ -239,12 +239,23 @@ public class BraveVpnNativeWorker {
                 String subscriberCredential,
                 String apiAuthToken);
 
-        void getSubscriberCredential(long nativeBraveVpnNativeWorker, String productType,
-                String productId, String validationMethod, String purchaseToken,
+        void getSubscriberCredential(
+                long nativeBraveVpnNativeWorker,
+                String productType,
+                String productId,
+                String validationMethod,
+                String purchaseToken,
                 String packageName);
-        void verifyPurchaseToken(long nativeBraveVpnNativeWorker, String purchaseToken,
-                String productId, String productType, String packageName);
+
+        void verifyPurchaseToken(
+                long nativeBraveVpnNativeWorker,
+                String purchaseToken,
+                String productId,
+                String productType,
+                String packageName);
+
         void reloadPurchasedState(long nativeBraveVpnNativeWorker);
+
         boolean isPurchasedUser(long nativeBraveVpnNativeWorker);
         void getSubscriberCredentialV12(long nativeBraveVpnNativeWorker);
         void reportBackgroundP3A(
