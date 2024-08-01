@@ -30,6 +30,9 @@ inline constexpr size_t kOrchardNullifierSize = 32u;
 inline constexpr size_t kOrchardCmxSize = 32u;
 inline constexpr size_t kOrchardEphemeralKeySize = 32u;
 inline constexpr size_t kOrchardCipherTextSize = 52u;
+inline constexpr size_t kOrchardShardTreeHashSize = 32u;
+inline constexpr uint8_t kOrchardShardSubtreeHeight = 8;
+inline constexpr uint8_t kOrchardShardTreeHeight = 32;
 
 // Reduce current scanning position on this value if reorg is found
 inline constexpr size_t kChainReorgBlockDelta = 150;
@@ -51,6 +54,8 @@ enum class OrchardAddressKind {
   // Internal "change" address
   Internal
 };
+
+enum class ShardTreeRetention { Ephemeral, Marked, Checkpoint };
 
 using ParsedAddress = std::pair<ZCashAddrType, std::vector<uint8_t>>;
 
@@ -89,6 +94,28 @@ struct OrchardNote {
   uint32_t amount = 0;
 
   bool operator==(const OrchardNote& other) const = default;
+};
+
+struct OrchardShardAddress {
+  uint8_t level;
+  uint32_t index;
+};
+
+struct OrchardShard {
+  OrchardShard();
+  ~OrchardShard();
+
+  uint32_t shard_index = 0;
+  std::array<uint8_t, kOrchardShardTreeHashSize> root_hash;
+  std::vector<uint8_t> shard_data;
+  bool contains_marked = 0;
+};
+
+struct OrchardCommitment {
+  uint32_t block_id = 0;
+  uint32_t index = 0;
+  std::array<uint8_t, kOrchardCmxSize> cmu;
+  ShardTreeRetention retention;
 };
 
 bool OutputZCashAddressSupported(const std::string& address, bool is_testnet);

@@ -116,6 +116,9 @@ DecodedZCashAddress::DecodedZCashAddress(DecodedZCashAddress&& other) = default;
 DecodedZCashAddress& DecodedZCashAddress::operator=(
     DecodedZCashAddress&& other) = default;
 
+OrchardShard::OrchardShard() = default;
+OrchardShard::~OrchardShard() = default;
+
 bool OutputZCashAddressSupported(const std::string& address, bool is_testnet) {
   auto decoded_address = DecodeZCashAddress(address);
   if (!decoded_address) {

@@ -34,6 +34,8 @@ use zcash_note_encryption::EphemeralKeyBytes;
 use zcash_primitives::transaction::components::amount::Amount;
 
 use ffi::OrchardOutput;
+use ffi::ShardTree;
+use ffi::ShardTreeContext;
 
 use rand::rngs::OsRng;
 use rand::{RngCore, Error as OtherError};
@@ -48,6 +50,18 @@ use zcash_note_encryption::{
 };
 
 use crate::ffi::OrchardCompactAction;
+
+use shardtree::{
+    error::ShardTreeError,
+    store::{Checkpoint, ShardStore, TreeState},
+    LocatedPrunableTree, LocatedTree, PrunableTree, RetentionFlags,
+    ShardTree
+};
+
+use zcash_client_backend::serialization::shardtree::{read_shard, write_shard};
+use cxx::UniquePtr;
+
+pub use brave_wallet::orchard;
 
 // The rest of the wallet code should be updated to use this version of unwrap
 // and then this code can be removed
@@ -89,6 +103,9 @@ macro_rules! impl_result {
         }
     };
 }
+
+pub(crate) const PRUNING_DEPTH: u32 = 100;
+pub(crate) const SHARD_HEIGHT: u8 = 16;
 
 #[derive(Clone)]
 pub(crate) struct MockRng(u64);
@@ -132,7 +149,7 @@ impl RngCore for MockRng {
     }
 }
 
-
+#[allow(unused)]
 #[allow(unsafe_op_in_unsafe_fn)]
 #[cxx::bridge(namespace = brave_wallet::orchard)]
 mod ffi {
@@ -152,6 +169,25 @@ mod ffi {
         enc_cipher_text : [u8; 52]
     }
 
+    struct ShardAddress {
+        level: u8,
+        index: u32
+    }
+
+    struct ShardTree {
+        index: ShardAddress,
+        hash: [u8; 32],
+        data: Vec<u8>,
+        contains_marked: bool
+    }
+
+    struct ShardCheckpoint {
+    }
+
+    struct ShardCheckpointId {
+        block_height: u32
+    }
+
     extern "Rust" {
         type OrchardExtendedSpendingKey;
         type OrchardUnauthorizedBundle;
@@ -159,11 +195,15 @@ mod ffi {
 
         type BatchOrchardDecodeBundle;
 
+        type OrchardShardTree;
+
         type OrchardExtendedSpendingKeyResult;
         type OrchardUnauthorizedBundleResult;
         type OrchardAuthorizedBundleResult;
 
         type BatchOrchardDecodeBundleResult;
+
+        type OrchardShardTreeResult;
 
         // OsRng is used
         fn create_orchard_bundle(
@@ -224,6 +264,10 @@ mod ffi {
         fn error_message(self: &BatchOrchardDecodeBundleResult) -> String;
         fn unwrap(self: &BatchOrchardDecodeBundleResult) -> Box<BatchOrchardDecodeBundle>;
 
+        fn is_ok(self: &OrchardShardTreeResult) -> bool;
+        fn error_message(self: &OrchardShardTreeResult) -> String;
+        fn unwrap(self: &OrchardShardTreeResult) -> Box<OrchardShardTree>;
+
         fn size(self :&BatchOrchardDecodeBundle) -> u64;
         fn note_value(self :&BatchOrchardDecodeBundle, index: u64) -> u32;
         fn note_nullifier(self :&BatchOrchardDecodeBundle, fvk: &[u8; 96], index: u64) -> [u8; 32];
@@ -238,7 +282,18 @@ mod ffi {
         // Orchard part of v5 transaction as described in
         // https://zips.z.cash/zip-0225
         fn raw_tx(self: &OrchardAuthorizedBundle) -> Vec<u8>;
+
+        fn create_shard_tree(ctx: UniquePtr<ffi::ShardStoreContext>) -> Box<OrchardShardTreeResult>;
+        fn insert_subtree_roots(self: &OrchardShardTree, roots: Vec<ShardTree>) -> bool;
+        fn insert_commitments(self: &OrchardShardTree, commitments: Vec<ShardTree>) -> bool;
     }
+
+    unsafe extern "C++" {
+        include!("brave/components/brave_wallet/browser/zcash/rust/cxx/src/shard_store.h");
+
+        type ShardStoreContext;
+    }
+
 }
 
 #[derive(Debug)]
@@ -298,6 +353,11 @@ pub struct DecryptedOrchardOutput {
 #[derive(Clone)]
 pub struct BatchOrchardDecodeBundleValue {
     outputs: Vec<DecryptedOrchardOutput>
+}
+
+#[derive(Clone)]
+pub struct OrchardShardTree {
+    tree: ShardTree
 }
 
 #[derive(Clone)]
@@ -567,3 +627,240 @@ impl BatchOrchardDecodeBundle {
       }
 }
 
+// pub(crate) fn get_shard(shard_index: u32) {
+//   shard: Optional<ffi::ShardTree> = ffi::get_shard(shard_index);
+
+//   let shard_tree = read_shard(&mut Cursor::new(shard.data)).map_err(Error::Serialization)?;
+//   let located_tree = LocatedPrunableTree::from_parts(shard_root_addr, shard_tree);
+//   if let Some(root_hash_data) = root_hash {
+//       let root_hash = H::read(Cursor::new(root_hash_data)).map_err(Error::Serialization)?;
+//       Ok(located_tree.reannotate_root(Some(Arc::new(root_hash))))
+//   } else {
+//       Ok(located_tree)
+//   }
+
+// }
+
+// pub(crate) fn last_shard() {
+//     shard: Optional<ffi::ShardTree> = ffi::last_shard(shard_index);
+//     let shard_root_addr = Address(shard.address.level, shard.address.index);
+//     let shard_tree = read_shard(&mut Cursor::new(shard.data)).map_err(Error::Serialization)?;
+//     let located_tree = LocatedPrunableTree::from_parts(shard_root_addr, shard_tree);
+//     if let Some(root_hash_data) = root_hash {
+//         let root_hash = H::read(Cursor::new(root_hash_data)).map_err(Error::Serialization)?;
+//         Ok(located_tree.reannotate_root(Some(Arc::new(root_hash))))
+//     } else {
+//         Ok(located_tree)
+//     }
+  
+// }
+
+// pub(crate) fn get_shard_roots() {
+//     shard: Optional<ffi::ShardTree> = ffi::get_shard(shard_index);
+
+// }
+
+// pub(crate) fn put_shard(subtree: LocatedPrunableTree<H>) {
+//     let subtree_root_hash = subtree
+//         .root()
+//         .annotation()
+//         .and_then(|ann| {
+//             ann.as_ref().map(|rc| {
+//                 let mut root_hash = vec![];
+//                 rc.write(&mut root_hash)?;
+//                 Ok(root_hash)
+//             })
+//         })
+//         .transpose()
+//         .map_err(Error::Serialization)?;
+
+//     let mut subtree_data = vec![];
+//     write_shard(&mut subtree_data, subtree.root()).map_err(Error::Serialization)?;
+
+//     let shard_index = subtree.root_addr().index();
+//     ffi::put_shard(shard_index, subtree_root_hash, subtree_data);
+// }
+
+// fn truncate(&mut self, from: Address) -> Result<(), Self::Error> {
+// }
+
+// fn get_cap(&self) -> Result<PrunableTree<Self::H>, Self::Error> {
+// }
+
+// fn put_cap(&mut self, cap: PrunableTree<Self::H>) -> Result<(), Self::Error> {
+// }
+
+// fn min_checkpoint_id(&self) -> Result<Option<Self::CheckpointId>, Self::Error> {
+// }
+
+// fn max_checkpoint_id(&self) -> Result<Option<Self::CheckpointId>, Self::Error> {
+// }
+
+// fn add_checkpoint(
+//     &mut self,
+//     checkpoint_id: Self::CheckpointId,
+//     checkpoint: Checkpoint,
+// ) -> Result<(), Self::Error> {
+// }
+
+// fn checkpoint_count(&self) -> Result<usize, Self::Error> {
+// }
+
+// fn get_checkpoint_at_depth(
+//     &self,
+//     checkpoint_depth: usize,
+// ) -> Result<Option<(Self::CheckpointId, Checkpoint)>, Self::Error> {
+// }
+
+// fn get_checkpoint(
+//     &self,
+//     checkpoint_id: &Self::CheckpointId,
+// ) -> Result<Option<Checkpoint>, Self::Error> {
+// }
+
+// fn with_checkpoints<F>(&mut self, limit: usize, callback: F) -> Result<(), Self::Error>
+// where
+//     F: FnMut(&Self::CheckpointId, &Checkpoint) -> Result<(), Self::Error>,
+// {
+// }
+
+// fn update_checkpoint_with<F>(
+//     &mut self,
+//     checkpoint_id: &Self::CheckpointId,
+//     update: F,
+// ) -> Result<bool, Self::Error>
+// where
+//     F: Fn(&mut Checkpoint) -> Result<(), Self::Error>,
+// {
+//     let tx = self.conn.transaction().map_err(Error::Query)?;
+//     let result = update_checkpoint_with(&tx, self.table_prefix, *checkpoint_id, update)?;
+//     tx.commit().map_err(Error::Query)?;
+//     Ok(result)
+// }
+
+// fn remove_checkpoint(&mut self, checkpoint_id: &Self::CheckpointId) -> Result<(), Self::Error> {
+
+// }
+
+// fn truncate_checkpoints(
+//     &mut self,
+//     checkpoint_id: &Self::CheckpointId,
+// ) -> Result<(), Self::Error> {
+// }
+
+
+// fn create_shard_tree(context: &ShardTreeContext) -> Box<ShardTreeResult> {
+//     let shard_store = CxxShardStoreImpl(native_context: Rc::new(RefCell::new(context)));
+//     if let mut shardtree = ShardTree::new(shard_store, PRUNING_DEPTH.try_into().unwrap()) {
+
+//     } else {
+
+//     }
+
+// }
+
+pub struct CxxShardStoreImpl {
+    native_context: Rc<RefCell<UniquePtr<ShardStoreContext>>>
+}
+
+impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
+    for CxxShardStoreImpl<rusqlite::Connection, H, SHARD_HEIGHT>
+{
+    type H = H;
+    type CheckpointId = BlockHeight;
+    type Error = Error;
+
+    fn get_shard(
+        &self,
+        shard_root: Address,
+    ) -> Result<Option<LocatedPrunableTree<Self::H>>, Self::Error> {
+        Ok(Option::None)
+    }
+
+    fn last_shard(&self) -> Result<Option<LocatedPrunableTree<Self::H>>, Self::Error> {
+        Result::None
+    }
+
+    fn put_shard(&mut self, subtree: LocatedPrunableTree<Self::H>) -> Result<(), Self::Error> {
+        Ok(())
+    }
+
+    fn get_shard_roots(&self) -> Result<Vec<Address>, Self::Error> {
+        Result::None
+    }
+
+    fn truncate(&mut self, from: Address) -> Result<(), Self::Error> {
+        Ok(())
+    }
+
+    fn get_cap(&self) -> Result<PrunableTree<Self::H>, Self::Error> {
+        get_cap(&self.conn, self.table_prefix)
+    }
+
+    fn put_cap(&mut self, cap: PrunableTree<Self::H>) -> Result<(), Self::Error> {
+        put_cap(&self.conn, self.table_prefix, cap)
+    }
+
+    fn min_checkpoint_id(&self) -> Result<Option<Self::CheckpointId>, Self::Error> {
+        min_checkpoint_id(&self.conn, self.table_prefix)
+    }
+
+    fn max_checkpoint_id(&self) -> Result<Option<Self::CheckpointId>, Self::Error> {
+        max_checkpoint_id(&self.conn, self.table_prefix)
+    }
+
+    fn add_checkpoint(
+        &mut self,
+        checkpoint_id: Self::CheckpointId,
+        checkpoint: Checkpoint,
+    ) -> Result<(), Self::Error> {
+        Ok(())
+    }
+
+    fn checkpoint_count(&self) -> Result<usize, Self::Error> {
+        Ok(0)
+    }
+
+    fn get_checkpoint_at_depth(
+        &self,
+        checkpoint_depth: usize,
+    ) -> Result<Option<(Self::CheckpointId, Checkpoint)>, Self::Error> {
+        Ok(Option::None)
+    }
+
+    fn get_checkpoint(
+        &self,
+        checkpoint_id: &Self::CheckpointId,
+    ) -> Result<Option<Checkpoint>, Self::Error> {
+        Ok(Option::None)
+    }
+
+    fn with_checkpoints<F>(&mut self, limit: usize, callback: F) -> Result<(), Self::Error>
+    where
+        F: FnMut(&Self::CheckpointId, &Checkpoint) -> Result<(), Self::Error>,
+    {
+
+    }
+
+    fn update_checkpoint_with<F>(
+        &mut self,
+        checkpoint_id: &Self::CheckpointId,
+        update: F,
+    ) -> Result<bool, Self::Error>
+    where
+        F: Fn(&mut Checkpoint) -> Result<(), Self::Error>,
+    {
+        Ok(false)
+    }
+
+    fn remove_checkpoint(&mut self, checkpoint_id: &Self::CheckpointId) -> Result<(), Self::Error> {
+        Ok(())
+    }
+
+    fn truncate_checkpoints(
+        &mut self,
+        checkpoint_id: &Self::CheckpointId,
+    ) -> Result<(), Self::Error> {
+        Ok(())
+    }
+}

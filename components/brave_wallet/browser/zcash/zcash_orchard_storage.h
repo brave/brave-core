@@ -15,6 +15,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
+#include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 #include "components/prefs/pref_service.h"
 #include "sql/database.h"
 #include "sql/meta_table.h"
@@ -35,7 +36,8 @@ class ZCashOrchardStorage {
     kDbInitError,
     kAccountNotFound,
     kFailedToExecuteStatement,
-    kInternalError
+    kInternalError,
+    kNoCheckpoints
   };
 
   struct Error {
@@ -75,6 +77,40 @@ class ZCashOrchardStorage {
       const uint32_t latest_scanned_block,
       const std::string& latest_scanned_block_hash);
   void ResetDatabase();
+
+  // Shard tree
+  base::expected<OrchardShard, Error> GetCap(mojom::AccountIdPtr account_id);
+  std::optional<Error> PutCap(mojom::AccountIdPtr account_id,
+                              OrchardShard shard);
+
+  std::optional<Error> Truncate(mojom::AccountIdPtr account_id,
+                                OrchardShardAddress address);
+
+  base::expected<uint32_t, Error> GetLatestShardIndex(
+      mojom::AccountIdPtr account_id);
+  std::optional<Error> PutShard(mojom::AccountIdPtr account_id,
+                                OrchardShard shard);
+  base::expected<OrchardShard, Error> GetShard(mojom::AccountIdPtr account_id,
+                                               OrchardShardAddress address);
+  base::expected<OrchardShard, Error> LastShard(mojom::AccountIdPtr account_id, uint8_t shard_height);
+
+  base::expected<uint32_t, Error> CheckpointCount(
+      mojom::AccountIdPtr account_id);
+  base::expected<uint32_t, Error> MinCheckpointId(
+      mojom::AccountIdPtr account_id);
+  base::expected<uint32_t, Error> MaxCheckpointId(
+      mojom::AccountIdPtr account_id);
+  base::expected<uint32_t, Error> GetCheckpointAtDepth(
+      mojom::AccountIdPtr account_id, uint32_t depth);
+
+  std::optional<Error> PutShardRoots(
+      mojom::AccountIdPtr account_id,
+      uint8_t shard_roots_height,
+      uint32_t start_position,
+      std::vector<zcash::mojom::SubtreeRootPtr> roots);
+  base::expected<std::vector<OrchardShardAddress>, Error> GetShardRoots(
+      mojom::AccountIdPtr account_id,
+      uint8_t shard_level);
 
  private:
   bool EnsureDbInit();

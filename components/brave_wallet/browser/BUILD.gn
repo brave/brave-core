@@ -304,6 +304,8 @@ static_library("browser") {
       "zcash/zcash_create_shield_all_transaction_task.h",
       "zcash/zcash_orchard_storage.cc",
       "zcash/zcash_orchard_storage.h",
+      "zcash/zcash_orchard_sync_state.cc",
+      "zcash/zcash_orchard_sync_state.h",
       "zcash/zcash_shield_sync_service.cc",
       "zcash/zcash_shield_sync_service.h",
     ]

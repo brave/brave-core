@@ -24,6 +24,7 @@ source_set("orchard_headers") {
     "authorized_orchard_bundle.h",
     "extended_spending_key.h",
     "orchard_block_decoder.h",
+    "orchard_shard_tree.h",
     "unauthorized_orchard_bundle.h",
   ]
 
@@ -44,6 +45,8 @@ source_set("orchard_impl") {
     "extended_spending_key_impl.h",
     "orchard_block_decoder_impl.cc",
     "orchard_block_decoder_impl.h",
+    "orchard_shard_tree_impl.cc",
+    "orchard_shard_tree_impl.h",
     "unauthorized_orchard_bundle_impl.cc",
     "unauthorized_orchard_bundle_impl.h",
   ]
@@ -53,6 +56,16 @@ source_set("orchard_impl") {
     ":rust_lib",
     "//base",
     "//brave/components/brave_wallet/common",
+    "//build/rust:cxx_cppdeps",
+  ]
+}
+
+source_set("shard_store") {
+  visibility = [ ":*" ]
+  sources = [ "cxx/src/shard_store.h" ]
+
+  public_deps = [
+    "//base",
     "//build/rust:cxx_cppdeps",
   ]
 }
@@ -76,5 +89,9 @@ rust_static_library("rust_lib") {
     "//brave/third_party/rust/orchard/v0_8:lib",
     "//brave/third_party/rust/rand/v0_8:lib",
     "//brave/third_party/rust/zcash_note_encryption/v0_4:lib",
+  ]
+
+  public_deps = [
+    ":shard_store"
   ]
 }

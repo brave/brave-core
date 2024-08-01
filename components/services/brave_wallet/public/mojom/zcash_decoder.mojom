@@ -71,6 +71,12 @@ struct CompactBlock {
   ChainMetadata chain_metadata;
 };
 
+struct SubtreeRoot {
+  array<uint8> root_hash;
+  array<uint8> complete_block_hash;
+  uint32 complete_block_height;
+};
+
 interface ZCashDecoder {
   ParseBlockID(string data) => (BlockID? value);
   ParseGetAddressUtxos(string data) => (GetAddressUtxosResponse? value);
@@ -78,5 +84,6 @@ interface ZCashDecoder {
   ParseRawTransaction(string data) => (RawTransaction? tx);
   ParseTreeState(string data) => (TreeState? tree_state);
   ParseCompactBlocks(array<string> data) => (array<CompactBlock>? compact_blocks);
+  ParseSubtreeRoots(array<string> data) => (array<SubtreeRoot>? subtree_roots);
 };
 

@@ -110,3 +110,19 @@ message CompactBlock {
   repeated CompactTx vtx = 7;
   ChainMetadata chainMetadata = 8;
 }
+
+enum ShieldedProtocol {
+  sapling = 0;
+  orchard = 1;
+}
+
+message GetSubtreeRootsArg {
+  uint32 startIndex = 1;
+  ShieldedProtocol shieldedProtocol = 2;
+  uint32 maxEntries = 3;
+}
+message SubtreeRoot {
+  bytes rootHash = 2;
+  bytes completingBlockHash = 3;
+  uint64 completingBlockHeight = 4;
+}
