@@ -1787,14 +1787,11 @@ public abstract class BraveActivity extends ChromeActivity
         return Profile.fromWebContents(tab.getWebContents());
     }
 
-    /**
-     * Close all tabs whose URL starts with a given base URL.
-     */
+    /** Close all tabs whose URL starts with a given base URL. */
     public void closeExistingTabs(@NonNull final String baseUrl) {
         final Tab activeTab = getActivityTab();
         final TabModel tabModel = getCurrentTabModel();
-        if (activeTab != null
-                && activeTab.getUrl().getSpec().startsWith(baseUrl)) {
+        if (activeTab != null && activeTab.getUrl().getSpec().startsWith(baseUrl)) {
             activeTab.setClosing(true);
             tabModel.closeTab(activeTab);
         }

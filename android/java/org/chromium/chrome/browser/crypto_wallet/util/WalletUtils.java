@@ -18,7 +18,6 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.mojo_base.mojom.TimeDelta;
 
@@ -109,8 +108,10 @@ public class WalletUtils {
 
     /**
      * Opens a web Wallet tab.
-     * @param forceNewTab when {@code true} it closes all Wallet tabs starting with {@link BraveActivity#BRAVE_WALLET_BASE_URL}
-     *                    before opening a new tab. Otherwise, it tries to refresh an old tab whose URL starts with @link BraveActivity#BRAVE_WALLET_BASE_URL}.
+     *
+     * @param forceNewTab when {@code true} it closes all Wallet tabs starting with {@link
+     *     BraveActivity#BRAVE_WALLET_BASE_URL} before opening a new tab. Otherwise, it tries to
+     *     refresh an old tab whose URL starts with @link BraveActivity#BRAVE_WALLET_BASE_URL}.
      */
     public static void openWebWallet(final boolean forceNewTab) {
         try {
@@ -127,9 +128,7 @@ public class WalletUtils {
         }
     }
 
-    /**
-     * Closes all Wallet tabs that contains the base URL `brave://wallet`.
-     */
+    /** Closes all Wallet tabs that contains the base URL `brave://wallet`. */
     public static void closeWebWallet() {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
