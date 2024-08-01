@@ -12,14 +12,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 
 /**
- * Edit text component that notifies a listener when a text is pasted on it from the memory clipboard.
+ * Edit text component that notifies a listener when a text is pasted on it from the memory
+ * clipboard.
+ *
  * @see Listener
  */
 public class PasteEditText extends AppCompatEditText {
 
-    /**
-     * Listener called every time a text is pasted on the component. It may be {@code null}.
-     */
+    /** Listener called every time a text is pasted on the component. It may be {@code null}. */
     public interface Listener {
         void onPaste();
     }
@@ -38,9 +38,7 @@ public class PasteEditText extends AppCompatEditText {
         super(context, attrs, defStyle);
     }
 
-    /**
-     * Sets the listener that will be called when a text is pasted on the edit text.
-     */
+    /** Sets the listener that will be called when a text is pasted on the edit text. */
     public void setListener(@Nullable final Listener listener) {
         mListener = listener;
     }

@@ -48,26 +48,41 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
 
     /** Grid layout containing 12-word phrase. */
     private GridLayout mGridLayout12;
+
     /** Grid layout containing the second part of words for a 24-word phrase */
     private GridLayout mGridLayout24;
+
     private TextView mSwitchRecoveryPhrase;
     private AppCompatButton mButtonContinue;
     private ImageView mToggleWordMask;
     private CheckBox mLegacyImport;
 
     @Nullable private ClipboardManager mClipboard;
+
     /** List of string containing split words pasted from clipboard. */
     private List<String> mPastedWords;
+
     private List<PasteEditText> mGridLayout12List;
     private List<PasteEditText> mGridLayout24List;
+
     /** Flag indicating whether the words are visible or masked. */
     private boolean mMaskWord;
+
     /** Current word count. It can be 12 or 24. */
     private int mWordCount;
-    /** Set of filled items used to notify the listener that enables or disables the button visibility. */
+
+    /**
+     * Set of filled items used to notify the listener that enables or disables the button
+     * visibility.
+     */
     private Set<Integer> mFilledItems;
-    /** View that keeps track of the last focused items, used to hide the keyboard in case the focus belongs to an item that is being hidden. */
+
+    /**
+     * View that keeps track of the last focused items, used to hide the keyboard in case the focus
+     * belongs to an item that is being hidden.
+     */
     private View mLastFocusedItem;
+
     private boolean mLegacyWalletRestoreEnabled;
 
     @NonNull
