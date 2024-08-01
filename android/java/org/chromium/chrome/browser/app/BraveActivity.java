@@ -1789,14 +1789,9 @@ public abstract class BraveActivity extends ChromeActivity
         return Profile.fromWebContents(tab.getWebContents());
     }
 
-    /** Close all tabs whose URL origin matches with a given origin. */
+    /** Close all tabs (including active tab) whose URL origin matches with a given origin. */
     public void closeAllTabsByOrigin(@NonNull final String origin) {
-        final Tab activeTab = getActivityTab();
         final TabModel tabModel = getCurrentTabModel();
-        if (activeTab != null && activeTab.getUrl().getOrigin().getSpec().equals(origin)) {
-            activeTab.setClosing(true);
-            tabModel.closeTab(activeTab);
-        }
 
         Set<Integer> tabIndexes = getTabIndexesByUrlOrigin(tabModel, origin);
         for (Integer index : tabIndexes) {
@@ -1808,19 +1803,18 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
+    /**
+     * Selects an existing tab if it matches a given origin, marks it as active and returns it.
+     * @return Active tab if it exists, {@code null} otherwise.
+     */
     public Tab selectExistingUrlOriginTab(@NonNull final String origin) {
-        Tab tab = getActivityTab();
-        if (tab != null && tab.getUrl().getOrigin().getSpec().equals(origin)) {
-            return tab;
-        }
-
         TabModel tabModel = getCurrentTabModel();
         Set<Integer> tabIndexes = getTabIndexesByUrlOrigin(tabModel, origin);
 
-        // Find if tab exists.
+        // Find if tab exists, including tab already active.
         if (!tabIndexes.isEmpty()) {
             int index = tabIndexes.iterator().next();
-            tab = tabModel.getTabAt(tabIndexes.iterator().next());
+            Tab tab = tabModel.getTabAt(tabIndexes.iterator().next());
             // Set active tab
             tabModel.setIndex(index, TabSelectionType.FROM_USER, false);
             return tab;
