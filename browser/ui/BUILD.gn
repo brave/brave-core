@@ -8,7 +8,6 @@ import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
-import("//brave/components/brave_player/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
@@ -1319,23 +1318,6 @@ source_set("ui") {
       "//components/constrained_window",
       "//ui/events",
       "//ui/views",
-    ]
-  }
-
-  if (enable_brave_player) {
-    sources += [
-      "webui/brave_player_ui.cc",
-      "webui/brave_player_ui.h",
-    ]
-    if (toolkit_views) {
-      sources += [
-        "views/brave_player/brave_player_action_icon_view.cc",
-        "views/brave_player/brave_player_action_icon_view.h",
-      ]
-    }
-    deps += [
-      "//brave/components/brave_player/browser/resources:generated_resources",
-      "//brave/components/brave_player/common",
     ]
   }
 }

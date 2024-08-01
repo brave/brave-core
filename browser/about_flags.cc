@@ -21,7 +21,6 @@
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_news/common/features.h"
-#include "brave/components/brave_player/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -84,10 +83,6 @@
 
 #if BUILDFLAG(IS_WIN)
 #include "sandbox/policy/features.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
-#include "brave/components/brave_player/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -427,16 +422,6 @@
           kOsWin | kOsLinux | kOsMac | kOsAndroid,                            \
           FEATURE_VALUE_TYPE(history::kHistoryMoreSearchResults),             \
       })
-
-#define BRAVE_PLAYER_FEATURE_ENTRIES                                         \
-  IF_BUILDFLAG(ENABLE_BRAVE_PLAYER,                                          \
-               EXPAND_FEATURE_ENTRIES({                                      \
-                   "brave-player",                                           \
-                   "Brave Player",                                           \
-                   "Enables Brave Player",                                   \
-                   kOsMac | kOsWin | kOsLinux | kOsAndroid,                  \
-                   FEATURE_VALUE_TYPE(brave_player::features::kBravePlayer), \
-               }))
 
 #define BRAVE_EXTENSIONS_MANIFEST_V2                                        \
   IF_BUILDFLAG(ENABLE_EXTENSIONS,                                           \
@@ -983,7 +968,6 @@
   BRAVE_AI_CHAT_CONTEXT_MENU_REWRITE_IN_PLACE                                  \
   BRAVE_AI_REWRITER                                                            \
   BRAVE_OMNIBOX_FEATURES                                                       \
-  BRAVE_PLAYER_FEATURE_ENTRIES                                                 \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
   BRAVE_EXTENSIONS_MANIFEST_V2                                                 \
   BRAVE_WORKAROUND_NEW_WINDOW_FLASH                                            \

@@ -9,8 +9,6 @@ include_rules = [
   "+brave/components/brave_component_updater/browser",
   "+brave/components/brave_news",
   "+brave/components/brave_perf_predictor",
-  "+brave/components/brave_player/browser",
-  "+brave/components/brave_player/common",
   "+brave/components/brave_rewards/browser",
   "+brave/components/brave_rewards/common",
   "+brave/components/brave_rewards/resources/extension/grit",

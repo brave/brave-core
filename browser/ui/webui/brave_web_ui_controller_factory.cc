@@ -21,7 +21,6 @@
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/brave_federated/features.h"
-#include "brave/components/brave_player/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -81,12 +80,6 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/ui/webui/tor_internals_ui.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
-#include "brave/browser/ui/webui/brave_player_ui.h"
-#include "brave/components/brave_player/common/features.h"
-#include "brave/components/brave_player/common/url_constants.h"
 #endif
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
@@ -196,10 +189,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (url.is_valid() && url.host() == kWalletPageHost) {
     return new AndroidWalletPageUI(web_ui, url);
 #endif
-#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
-  } else if (host == brave_player::kBravePlayerHost) {
-    return new BravePlayerUI(web_ui);
-#endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_AI_REWRITER)
   } else if (host == kRewriterUIHost) {
     if (ai_rewriter::features::IsAIRewriterEnabled()) {
@@ -207,7 +196,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     }
 #endif
   }
-
   return nullptr;
 }
 
@@ -259,10 +247,6 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
       url.host_piece() == kTorInternalsHost ||
-#endif
-#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
-      (base::FeatureList::IsEnabled(brave_player::features::kBravePlayer) &&
-       url.host_piece() == brave_player::kBravePlayerHost) ||
 #endif
 #if BUILDFLAG(ENABLE_AI_REWRITER)
       (url.host_piece() == kRewriterUIHost &&
