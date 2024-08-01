@@ -22,6 +22,7 @@
 
 #include "base/base64.h"
 #include "base/dcheck_is_on.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/debug/stack_trace.h"
 #include "base/json/json_string_value_serializer.h"
 #include "base/no_destructor.h"
@@ -115,6 +116,7 @@
 #include "third_party/blink/renderer/core/loader/document_loader.h"
 #include "third_party/blink/renderer/core/loader/modulescript/module_script_creation_params.h"
 #include "third_party/blink/renderer/core/loader/resource/script_resource.h"
+#include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/core/script/classic_pending_script.h"
 #include "third_party/blink/renderer/core/script/classic_script.h"
@@ -191,7 +193,7 @@ namespace blink {
 
 namespace {
 
-constexpr char kPageGraphVersion[] = "0.7.2";
+constexpr char kPageGraphVersion[] = "0.7.3";
 constexpr char kPageGraphUrl[] =
     "https://github.com/brave/brave-browser/wiki/PageGraph";
 
@@ -333,16 +335,62 @@ PageGraph* PageGraph::From(LocalFrame& frame) {
 
 // static
 void PageGraph::ProvideTo(LocalFrame& frame) {
-  // Cache feature enabled status to not slow down LocalFrame creation.
-  static const bool is_enabled =
-      base::FeatureList::IsEnabled(brave_page_graph::features::kPageGraph);
-  if (!is_enabled) {
+  if (!base::FeatureList::IsEnabled(brave_page_graph::features::kPageGraph)) {
     return;
   }
-  DCHECK(!PageGraph::From(frame));
-  DCHECK(frame.IsLocalRoot());
-  Supplement<LocalFrame>::ProvideTo(frame,
-                                    MakeGarbageCollected<PageGraph>(frame));
+  CHECK(!PageGraph::From(frame));
+  CHECK(frame.IsLocalRoot());
+  Page* page = frame.GetPage();
+  CHECK(page);
+
+  // Lookup the PageGraph from the initiator frame if it exists.
+  const DOMNodeId initiator_dom_node_id =
+      page->GetChromeClient().InitiatorDomNodeId();
+  if (initiator_dom_node_id != kInvalidDOMNodeId) {
+    blink::Node* initiator_node =
+        blink::DOMNodeIds::NodeForId(initiator_dom_node_id);
+    if (initiator_node) {
+      auto* initiator_tree_page_graph = Supplement<LocalFrame>::From<PageGraph>(
+          *initiator_node->TreeRoot().GetDocument().GetFrame());
+      if (initiator_tree_page_graph) {
+        frame.GetProbeSink()->AddPageGraph(initiator_tree_page_graph);
+        return;
+      }
+    }
+  }
+
+  // Lookup the PageGraph from the related pages if it exists.
+  for (const auto& related_page : page->RelatedPages()) {
+    auto* main_local_frame = DynamicTo<LocalFrame>(related_page->MainFrame());
+    if (!main_local_frame) {
+      continue;
+    }
+    auto* related_page_graph =
+        Supplement<LocalFrame>::From<PageGraph>(main_local_frame);
+    if (related_page_graph) {
+      frame.GetProbeSink()->AddPageGraph(related_page_graph);
+      return;
+    }
+  }
+
+  // Lookup the PageGraph from the ordinary pages if it exists.
+  for (const auto& ordinary_page : page->OrdinaryPages()) {
+    auto* main_local_frame = DynamicTo<LocalFrame>(ordinary_page->MainFrame());
+    if (!main_local_frame) {
+      continue;
+    }
+    auto* ordinary_page_graph =
+        Supplement<LocalFrame>::From<PageGraph>(main_local_frame);
+    if (ordinary_page_graph) {
+      frame.GetProbeSink()->AddPageGraph(ordinary_page_graph);
+      return;
+    }
+  }
+
+  // Create a new PageGraph for the current frame.
+  PageGraph* page_graph = MakeGarbageCollected<PageGraph>(frame);
+  frame.GetProbeSink()->AddPageGraph(page_graph);
+  Supplement<LocalFrame>::ProvideTo(frame, page_graph);
 }
 
 PageGraph::PageGraph(LocalFrame& local_frame)
@@ -351,18 +399,16 @@ PageGraph::PageGraph(LocalFrame& local_frame)
       script_tracker_(this),
       request_tracker_(this),
       start_(base::TimeTicks::Now()) {
+  CHECK(local_frame.IsLocalRoot());
   blink::Page* page = local_frame.GetPage();
-  if (!page) {
-    VLOG(1) << "No page";
-    return;
-  }
-  if (!page->IsOrdinary()) {
-    VLOG(1) << "Page type is not ordinary";
-    return;
-  }
+  CHECK(page);
 
-  DCHECK(local_frame.IsLocalRoot());
-  local_frame.GetProbeSink()->AddPageGraph(this);
+  if (!page->IsOrdinary()) {
+    LOG(ERROR) << "PageGraph is ignoring non-ordinary page, some parts of the "
+                  "web page may not be captured.";
+    base::debug::DumpWithoutCrashing();
+    return;
+  }
 
   shields_node_ = AddNode<NodeShields>();
   ad_shield_node_ = AddNode<NodeShield>(brave_shields::kAds);

@@ -3,6 +3,11 @@
 This document shows all the changes and improvements made in each version of
 [Page Graph](https://github.com/brave/brave-browser/wiki/PageGraph).
 
+## Version 0.7.3
+
+Support for SVG documents (both capturing the structure, and for `<use>`
+elements, capturing and tying the request to the element).
+
 ## Version 0.7.2
 
 Reworked how scripts are tracked in the graph. The actor type hierarchy
