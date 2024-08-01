@@ -46,15 +46,19 @@ def _add_page_graph_to_config(config):
         ]
     }
 
+    config["observers"]["PageGraphProxy"] = config["observers"]["PageGraph"]
+
     if _IS_PG_WEBAPI_PROBES_ENABLED:
         config["settings"]["includes"].extend([
             "brave/third_party/blink/renderer/core/brave_page_graph/blink_converters.h",
             "brave/third_party/blink/renderer/core/brave_page_graph/blink_probe_types.h",
         ])
-        config["observers"]["PageGraph"]["probes"].extend([
-            "RegisterPageGraphBindingEvent",
-            "RegisterPageGraphWebAPICallWithResult",
-        ])
+
+        for probe_target in ("PageGraph", "PageGraphProxy"):
+            config["observers"][probe_target]["probes"].extend([
+                "RegisterPageGraphBindingEvent",
+                "RegisterPageGraphWebAPICallWithResult",
+            ])
 
     return config
 

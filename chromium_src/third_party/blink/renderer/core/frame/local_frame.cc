@@ -15,6 +15,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/page_graph_proxy.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
 #define AddInspectorTraceEvents(...)                               \
@@ -22,7 +23,11 @@
   IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, {                          \
     DCHECK(IsLocalRoot());                                         \
     /* InstallSupplements call is too late, do it here instead. */ \
-    PageGraph::ProvideTo(*this);                                   \
+    if (GetPage()->IsOrdinary()) {                                 \
+      PageGraph::ProvideTo(*this);                                 \
+    } else {                                                       \
+      PageGraphProxy::ProvideTo(*this);                            \
+    }                                                              \
   })
 
 #define ScriptEnabled ScriptEnabled_ChromiumImpl
