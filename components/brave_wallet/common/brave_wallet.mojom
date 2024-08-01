@@ -1741,8 +1741,10 @@ enum ZCashAddressValidationResult {
 };
 
 struct ZCashShieldSyncStatus {
-  uint64 current_block;
-  uint64 chain_tip;
+  uint64 start_block;
+  uint64 end_block;
+  uint64 total_ranges;
+  uint64 scanned_ranges;
   uint32 notes_found;
   uint64 spendable_balance;
 };

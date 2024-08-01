@@ -44,6 +44,8 @@ class ZCashRpc {
       base::expected<zcash::mojom::TreeStatePtr, std::string>)>;
   using GetCompactBlocksCallback = base::OnceCallback<void(
       base::expected<std::vector<zcash::mojom::CompactBlockPtr>, std::string>)>;
+  using GetSubtreeRootsCallback = base::OnceCallback<void(
+      base::expected<std::vector<zcash::mojom::SubtreeRootPtr>, std::string>)>;
 
   ZCashRpc(NetworkManager* network_manager,
            scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -80,6 +82,11 @@ class ZCashRpc {
                                 uint32_t from,
                                 uint32_t to,
                                 GetCompactBlocksCallback callback);
+
+  virtual void GetSubtreeRoots(const std::string& chain_id,
+                               uint32_t start,
+                               uint32_t entries,
+                               GetSubtreeRootsCallback);
 
  private:
   friend class base::RefCountedThreadSafe<ZCashRpc>;
@@ -119,6 +126,12 @@ class ZCashRpc {
       StreamHandlersList::iterator handler_it,
       base::expected<std::vector<std::string>, std::string> result);
 
+  void OnGetSubtreeRootsResponse(
+      ZCashRpc::GetSubtreeRootsCallback callback,
+      UrlLoadersList::iterator it,
+      StreamHandlersList::iterator handler_it,
+      base::expected<std::vector<std::string>, std::string> result);
+
   template <typename T>
   void OnParseResult(base::OnceCallback<void(base::expected<T, std::string>)>,
                      T value);
@@ -126,6 +139,10 @@ class ZCashRpc {
   void OnParseCompactBlocks(
       GetCompactBlocksCallback callback,
       std::optional<std::vector<zcash::mojom::CompactBlockPtr>> compact_blocks);
+
+  void OnParseSubtreeRoots(
+      GetSubtreeRootsCallback callback,
+      std::optional<std::vector<zcash::mojom::SubtreeRootPtr>> subtree_roots);
 
   mojo::AssociatedRemote<zcash::mojom::ZCashDecoder>& GetDecoder();
 

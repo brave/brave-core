@@ -12,7 +12,9 @@
 #include <vector>
 
 #include "base/types/expected.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_block_decoder.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bunde.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
@@ -26,15 +28,19 @@ class OrchardBlockScanner {
   struct Result {
     Result();
     Result(std::vector<OrchardNote> discovered_notes,
-           std::vector<OrchardNullifier> spent_notes);
-    Result(const Result&);
-    Result& operator=(const Result&);
+           std::vector<OrchardNoteSpend> spent_notes,
+           std::unique_ptr<orchard::OrchardDecodedBlocksBundle> scanned_blocks);
+    Result(const Result&) = delete;
+    Result& operator=(const Result&) = delete;
+    Result(Result&&);
+    Result& operator=(Result&&);
     ~Result();
 
     // New notes have been discovered
     std::vector<OrchardNote> discovered_notes;
     // Nullifiers for the previously discovered notes
-    std::vector<OrchardNullifier> spent_notes;
+    std::vector<OrchardNoteSpend> found_spends;
+    std::unique_ptr<orchard::OrchardDecodedBlocksBundle> scanned_blocks;
   };
 
   explicit OrchardBlockScanner(const OrchardFullViewKey& full_view_key);
@@ -43,8 +49,12 @@ class OrchardBlockScanner {
   // Scans blocks to find incoming notes related to fvk
   // Also checks whether existing notes were spent.
   virtual base::expected<Result, OrchardBlockScanner::ErrorCode> ScanBlocks(
-      std::vector<OrchardNote> known_notes,
+      FrontierChainState chain_state,
       std::vector<zcash::mojom::CompactBlockPtr> blocks);
+
+  static Result CreateResultForTesting(
+      const std::optional<FrontierChainState>& chain_state,
+      const std::vector<OrchardCommitment>& commitments);
 
  private:
   std::unique_ptr<orchard::OrchardBlockDecoder> decoder_;

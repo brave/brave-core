@@ -5,19 +5,28 @@
 
 #include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
 
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bunde.h"
+
 namespace brave_wallet {
 
 OrchardBlockScanner::Result::Result() = default;
 
-OrchardBlockScanner::Result::Result(std::vector<OrchardNote> discovered_notes,
-                                    std::vector<OrchardNullifier> spent_notes)
+OrchardBlockScanner::Result::Result(
+    std::vector<OrchardNote> discovered_notes,
+    std::vector<OrchardNoteSpend> spent_notes,
+    std::unique_ptr<orchard::OrchardDecodedBlocksBundle> scanned_blocks)
     : discovered_notes(std::move(discovered_notes)),
-      spent_notes(std::move(spent_notes)) {}
+      found_spends(std::move(spent_notes)),
+      scanned_blocks(std::move(scanned_blocks)) {}
 
-OrchardBlockScanner::Result::Result(const Result&) = default;
-
+OrchardBlockScanner::Result::Result(OrchardBlockScanner::Result&&) = default;
 OrchardBlockScanner::Result& OrchardBlockScanner::Result::operator=(
-    const Result&) = default;
+    OrchardBlockScanner::Result&&) = default;
+
+// OrchardBlockScanner::Result::Result(const Result&) = default;
+
+// OrchardBlockScanner::Result& OrchardBlockScanner::Result::operator=(
+//     const Result&) = default;
 
 OrchardBlockScanner::Result::~Result() = default;
 
@@ -29,24 +38,22 @@ OrchardBlockScanner::~OrchardBlockScanner() = default;
 
 base::expected<OrchardBlockScanner::Result, OrchardBlockScanner::ErrorCode>
 OrchardBlockScanner::ScanBlocks(
-    std::vector<OrchardNote> known_notes,
+    FrontierChainState chain_state,
     std::vector<zcash::mojom::CompactBlockPtr> blocks) {
-  std::vector<OrchardNullifier> found_nullifiers;
-  std::vector<OrchardNote> found_notes;
+  std::unique_ptr<orchard::OrchardDecodedBlocksBundle> result =
+      decoder_->ScanBlocks(chain_state, blocks);
+  if (!result) {
+    return base::unexpected(ErrorCode::kInputError);
+  }
+
+  if (!result->GetDiscoveredNotes()) {
+    return base::unexpected(ErrorCode::kInputError);
+  }
+
+  std::vector<OrchardNoteSpend> found_spends;
+  std::vector<OrchardNote> found_notes = result->GetDiscoveredNotes().value();
 
   for (const auto& block : blocks) {
-    // Scan block using the decoder initialized with the provided fvk
-    // to find new spendable notes.
-    auto scan_result = decoder_->ScanBlock(block);
-    if (!scan_result) {
-      return base::unexpected(ErrorCode::kDecoderError);
-    }
-    found_notes.insert(found_notes.end(), scan_result->begin(),
-                       scan_result->end());
-    // Place found notes to the known notes list so we can also check for
-    // nullifiers
-    known_notes.insert(known_notes.end(), scan_result->begin(),
-                       scan_result->end());
     for (const auto& tx : block->vtx) {
       // We only scan orchard actions here
       for (const auto& orchard_action : tx->orchard_actions) {
@@ -54,25 +61,33 @@ OrchardBlockScanner::ScanBlocks(
           return base::unexpected(ErrorCode::kInputError);
         }
 
-        std::array<uint8_t, kOrchardNullifierSize> action_nullifier;
-        base::ranges::copy(orchard_action->nullifier, action_nullifier.begin());
-
+        OrchardNoteSpend spend;
         // Nullifier is a public information about some note being spent.
-        // Here we are trying to find a known spendable notes which nullifier
+        // -- Here we are trying to find a known spendable notes which nullifier
         // matches nullifier from the processed transaction.
-        if (std::find_if(known_notes.begin(), known_notes.end(),
-                         [&action_nullifier](const auto& v) {
-                           return v.nullifier == action_nullifier;
-                         }) != known_notes.end()) {
-          OrchardNullifier nullifier;
-          nullifier.block_id = block->height;
-          nullifier.nullifier = action_nullifier;
-          found_nullifiers.push_back(std::move(nullifier));
-        }
+        base::ranges::copy(orchard_action->nullifier, spend.nullifier.begin());
+        spend.block_id = block->height;
+        found_spends.push_back(std::move(spend));
       }
     }
   }
-  return Result({std::move(found_notes), std::move(found_nullifiers)});
+
+  return Result(
+      {std::move(found_notes), std::move(found_spends), std::move(result)});
+}
+
+// static
+OrchardBlockScanner::Result OrchardBlockScanner::CreateResultForTesting(
+    const std::optional<FrontierChainState>& chain_state,
+    const std::vector<OrchardCommitment>& commitments) {
+  auto builder = orchard::OrchardDecodedBlocksBundle::CreateTestingBuilder();
+  for (const auto& commitment : commitments) {
+    builder->AddCommitment(commitment);
+  }
+  if (chain_state) {
+    builder->SetFrontierChainState(chain_state.value());
+  }
+  return Result{{}, {}, builder->Complete()};
 }
 
 }  // namespace brave_wallet

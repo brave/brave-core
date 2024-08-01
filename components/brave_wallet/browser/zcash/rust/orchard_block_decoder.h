@@ -10,6 +10,7 @@
 #include <optional>
 #include <vector>
 
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bunde.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 
@@ -19,8 +20,10 @@ class OrchardBlockDecoder {
  public:
   virtual ~OrchardBlockDecoder() = default;
 
-  virtual std::optional<std::vector<::brave_wallet::OrchardNote>> ScanBlock(
-      const ::brave_wallet::zcash::mojom::CompactBlockPtr& block) = 0;
+  virtual std::unique_ptr<OrchardDecodedBlocksBundle> ScanBlocks(
+      const FrontierChainState& frontier_chain_state,
+      const std::vector<::brave_wallet::zcash::mojom::CompactBlockPtr>&
+          blocks) = 0;
 
   static std::unique_ptr<OrchardBlockDecoder> FromFullViewKey(
       const OrchardFullViewKey& fvk);
