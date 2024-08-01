@@ -46,7 +46,9 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
     private static final int RECOVERY_PHRASE_12_WORDS = 12;
     private static final int RECOVERY_PHRASE_24_WORDS = 24;
 
+    /** Grid layout containing 12-word phrase. */
     private GridLayout mGridLayout12;
+    /** Grid layout containing the second part of words for a 24-word phrase */
     private GridLayout mGridLayout24;
     private TextView mSwitchRecoveryPhrase;
     private AppCompatButton mButtonContinue;
@@ -54,12 +56,17 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
     private CheckBox mLegacyImport;
 
     @Nullable private ClipboardManager mClipboard;
-    private final List<String> mPastedWords = new ArrayList<>();
+    /** List of string containing split words pasted from clipboard. */
+    private List<String> mPastedWords;
     private List<PasteEditText> mGridLayout12List;
     private List<PasteEditText> mGridLayout24List;
+    /** Flag indicating whether the words are visible or masked. */
     private boolean mMaskWord;
+    /** Current word count. It can be 12 or 24. */
     private int mWordCount;
+    /** Set of filled items used to notify the listener that enables or disables the button visibility. */
     private Set<Integer> mFilledItems;
+    /** View that keeps track of the last focused items, used to hide the keyboard in case the focus belongs to an item that is being hidden. */
     private View mLastFocusedItem;
     private boolean mLegacyWalletRestoreEnabled;
 
@@ -72,9 +79,12 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // As initial state 12-words phrase is shown.
         mWordCount = RECOVERY_PHRASE_12_WORDS;
         mGridLayout12List = new ArrayList<>(12);
         mGridLayout24List = new ArrayList<>(12);
+        mPastedWords = new ArrayList<>();
+        // As initial state words are masked.
         mMaskWord = true;
         mFilledItems = new HashSet<>();
         mClipboard = requireContext().getSystemService(ClipboardManager.class);
@@ -91,6 +101,7 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
         super.onViewCreated(view, savedInstanceState);
 
         mGridLayout12 = view.findViewById(R.id.recovery_phrase_12);
+        // Populate the first 12 items in the grid layout.
         for (int i = 0; i < RECOVERY_PHRASE_12_WORDS; i++) {
             PasteEditText pasteEditText = generatePasteEditText(i == mWordCount - 1, i);
             mGridLayout12List.add(pasteEditText);
@@ -98,6 +109,7 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
         }
 
         mGridLayout24 = view.findViewById(R.id.recovery_phrase_24);
+        // Populate the second grid layout with the second batch of 12 items.
         for (int i = RECOVERY_PHRASE_12_WORDS; i < RECOVERY_PHRASE_24_WORDS; i++) {
             PasteEditText pasteEditText =
                     generatePasteEditText(i == RECOVERY_PHRASE_24_WORDS - 1, i);
@@ -196,7 +208,7 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
     }
 
     private void fillAvailableItems() {
-        List<PasteEditText> availableItems = getVisibleEditText();
+        List<PasteEditText> availableItems = getVisibleEditTextList();
         final int size = Math.min(availableItems.size(), mPastedWords.size());
         for (int i = 0; i < size; i++) {
             PasteEditText pasteEditText = availableItems.get(i);
@@ -205,7 +217,7 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
     }
 
     @NonNull
-    private List<PasteEditText> getVisibleEditText() {
+    private List<PasteEditText> getVisibleEditTextList() {
         final List<PasteEditText> result = new ArrayList<>(mWordCount);
         result.addAll(mGridLayout12List);
         if (mWordCount == RECOVERY_PHRASE_24_WORDS) {
@@ -216,12 +228,15 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
 
     @NonNull
     private PasteEditText generatePasteEditText(final boolean lastItem, final int position) {
+        // Apply context wrapper to introduce Brave Wallet colors and styles.
         ContextThemeWrapper contextThemeWrapper =
                 new ContextThemeWrapper(requireContext(), R.style.BraveWalletEditTextTheme);
         PasteEditText pasteEditText = new PasteEditText(contextThemeWrapper);
         pasteEditText.setListener(this);
         pasteEditText.setInputType(InputType.TYPE_CLASS_TEXT);
         pasteEditText.setAutofillHints("recoveryPhrase");
+        // Set correct IME option to the last item, so the keyboard will
+        // jump to the next item or hide accordingly.
         pasteEditText.setImeOptions(
                 lastItem ? EditorInfo.IME_ACTION_DONE : EditorInfo.IME_ACTION_NEXT);
         pasteEditText.setHint(
@@ -245,6 +260,7 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                             mFilledItems.add(position);
                         }
 
+                        // Enable or disable continue button when all items are filled.
                         mButtonContinue.setEnabled(mFilledItems.size() == mWordCount);
                     }
 
@@ -273,7 +289,7 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
     @NonNull
     private String extractRecoveryPhrase() {
         final StringBuilder result = new StringBuilder();
-        final List<PasteEditText> visibleEditText = getVisibleEditText();
+        final List<PasteEditText> visibleEditText = getVisibleEditTextList();
         final int size = visibleEditText.size();
         for (int i = 0; i < size; i++) {
             Editable editable = visibleEditText.get(i).getText();

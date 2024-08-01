@@ -131,6 +131,8 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
         super.onResume();
 
         KeyringService keyringService = getKeyringService();
+        // `mRecoveryPhrases` MUST be null at this stage, as it acts as
+        // flag to make sure the mnemonic phrase is generated one and only one time.
         if (keyringService != null && mRecoveryPhrases == null) {
             keyringService.getWalletMnemonic(
                     mOnboardingViewModel.getPassword(),
