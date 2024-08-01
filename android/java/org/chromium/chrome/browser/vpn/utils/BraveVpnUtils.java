@@ -30,6 +30,7 @@ import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity;
 import org.chromium.chrome.browser.vpn.activities.VpnAlwaysOnActivity;
 import org.chromium.chrome.browser.vpn.activities.VpnPaywallActivity;
+import org.chromium.chrome.browser.vpn.activities.VpnServerActivity;
 import org.chromium.chrome.browser.vpn.activities.VpnServerSelectionActivity;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnAlwaysOnErrorDialogFragment;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnConfirmDialogFragment;
@@ -119,6 +120,14 @@ public class BraveVpnUtils {
         }
         Intent vpnServerSelectionIntent = new Intent(activity, VpnServerSelectionActivity.class);
         activity.startActivity(vpnServerSelectionIntent);
+    }
+
+    public static void openVpnServerActivity(Activity activity) {
+        if (activity == null) {
+            return;
+        }
+        Intent vpnServerIntent = new Intent(activity, VpnServerActivity.class);
+        activity.startActivity(vpnServerIntent);
     }
 
     public static void showProgressDialog(Activity activity, String message) {

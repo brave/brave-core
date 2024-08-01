@@ -2431,6 +2431,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SERVERS" desc="Vpn server selection servers text">
       Servers
     </message>
+    <message name="IDS_AVAILABLE_SERVERS" desc="Available servers text">
+      Available Servers
+    </message>
     <message name="IDS_OTHER_ISSUES" desc="Brave Vpn support text">
       Select Issue
     </message>
