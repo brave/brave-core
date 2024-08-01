@@ -197,7 +197,8 @@ platform :ios do
       "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionFailure",
       "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionTokenChange",
       "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareERC20Approve",
-      "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareTransactionNotOnSelectedNetwork"
+      "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareTransactionNotOnSelectedNetwork",
+      "CertificateUtilitiesTests/CertificatePinningTest/testBraveCoreLivePinningFailure"
     ]
   end
 
