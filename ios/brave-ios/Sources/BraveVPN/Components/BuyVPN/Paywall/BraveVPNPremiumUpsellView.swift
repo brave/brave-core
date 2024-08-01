@@ -9,112 +9,65 @@ import SwiftUI
 struct BraveVPNPremiumUpsellView: View {
 
   var body: some View {
-    VStack(spacing: 0) {
-      BraveVPNUpsellTopicView(topicType: .modelType)
-        .padding()
-
-      Color(braveSystemName: .primitivePrimary25)
-        .frame(height: 1.0)
-
-      BraveVPNUpsellTopicView(topicType: .creativity)
-        .padding()
-
-      Color(braveSystemName: .primitivePrimary25)
-        .frame(height: 1.0)
-
-      BraveVPNUpsellTopicView(topicType: .accuracy)
-        .padding()
-
-      Color(braveSystemName: .primitivePrimary25)
-        .frame(height: 1.0)
-
-      BraveVPNUpsellTopicView(topicType: .chatLength)
-        .padding()
+    VStack(spacing: 8) {
+      BraveVPNUpsellTopicView(topicType: .privacy)
+      BraveVPNUpsellTopicView(topicType: .location)
+      BraveVPNUpsellTopicView(topicType: .server)
+      BraveVPNUpsellTopicView(topicType: .speed)
+      BraveVPNUpsellTopicView(topicType: .device)
     }
     .frame(maxWidth: .infinity, alignment: .leading)
-    .overlay(
-      ContainerRelativeShape()
-        .strokeBorder(
-          Color(braveSystemName: .primitivePrimary25),
-          lineWidth: 1.0
-        )
-    )
-    .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
   }
 }
 
 private struct BraveVPNUpsellTopicView: View {
 
   enum UpsellTopicType {
-    case modelType, creativity, accuracy, chatLength
+    case privacy, location, server, speed, device
 
     var icon: String {
-      switch self {
-      case .modelType:
-        return "leo.widget.generic"
-      case .creativity:
-        return "leo.idea"
-      case .accuracy:
-        return "leo.edit.pencil"
-      case .chatLength:
-        return "leo.message.bubble-comments"
-      }
+      return "leo.shield.done"
     }
 
     var title: String {
       switch self {
-      case .modelType:
-        return "Explore different AI models"
-      case .creativity:
-        return "Unlock your creativity"
-      case .accuracy:
-        return "Stay on topic"
-      case .chatLength:
-        return "Chat for longer"
-      }
-    }
-
-    var subTitle: String {
-      switch self {
-      case .modelType:
-        return "Priority access to powerful models with different skills."
-      case .creativity:
-        return "Access models better suited for creative tasks and content generation."
-      case .accuracy:
-        return "Get more accurate answers for more nuanced conversations."
-      case .chatLength:
-        return "Get higher rate limits for longer conversations."
+      case .privacy:
+        return "Extra privacy & security online"
+      case .location:
+        return "Hide your IP & change your location"
+      case .server:
+        return "Hundreds of servers around the world"
+      case .speed:
+        return "Lightning-fast connection speeds"
+      case .device:
+        return "Protect up to 10 devices with one plan"
       }
     }
   }
-  
+
   let topicType: UpsellTopicType
 
   var body: some View {
     HStack {
       Image(braveSystemName: topicType.icon)
-        .padding(8.0)
-        .background(Color(braveSystemName: .primitivePrimary80))
-        .foregroundColor(
-          Color(braveSystemName: .primitivePrimary20)
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
-
-      VStack(alignment: .leading, spacing: 6.0) {
-        Text(topicType.title)
-          .font(.headline)
-          .foregroundStyle(Color.white)
-
-        Text(topicType.subTitle)
-          .font(.footnote)
-          .foregroundStyle(
-            Color(braveSystemName: .primitivePrimary80)
+        .foregroundStyle(
+          LinearGradient(
+            gradient:
+              Gradient(colors: [
+                Color(UIColor(rgb: 0xEC1349)),
+                Color(UIColor(rgb: 0xD41173)),
+              ]),
+            startPoint: .init(x: 0.0, y: 0.0),
+            endPoint: .init(x: 0.0, y: 1.0)
           )
-      }
-      .lineLimit(2)
-      .truncationMode(.tail)
-      .frame(maxWidth: .infinity, alignment: .leading)
-      .fixedSize(horizontal: false, vertical: true)
+        )
+      Text(topicType.title)
+        .font(.subheadline)
+        .foregroundStyle(Color.white)
+        .lineLimit(2)
+        .truncationMode(.tail)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .fixedSize(horizontal: false, vertical: true)
     }
   }
 }
@@ -122,15 +75,17 @@ private struct BraveVPNUpsellTopicView: View {
 #if DEBUG
 #Preview("VPNUpsellView") {
   BraveVPNPremiumUpsellView()
-    .padding()
+    .padding([.horizontal, .top], 24)
+    .padding(.bottom, 16)
     .background(
       Color(braveSystemName: .primitivePrimary10)
     )
 }
 
 #Preview("UpsellTopicTypeView") {
-  BraveVPNUpsellTopicView(topicType: .creativity)
-    .padding()
+  BraveVPNUpsellTopicView(topicType: .speed)
+    .padding([.horizontal, .top], 24)
+    .padding(.bottom, 16)
     .background(
       Color(braveSystemName: .primitivePrimary10)
     )

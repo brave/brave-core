@@ -30,7 +30,7 @@ enum SubscriptionActionType {
 
 struct BraveVPNSubscriptionActionView: View {
   @Binding var shouldRefreshCredentials: Bool
-  
+
   @Binding var shouldRedeedPromoCode: Bool
 
   var body: some View {
@@ -39,7 +39,7 @@ struct BraveVPNSubscriptionActionView: View {
         actionType: .refreshCredentials,
         shouldRefreshCredentials: $shouldRefreshCredentials
       )
-      
+
       BraveVPNTitleActionsView(
         actionType: .redeemPromoCode,
         shouldRefreshCredentials: $shouldRedeedPromoCode
@@ -51,7 +51,7 @@ struct BraveVPNSubscriptionActionView: View {
 
 struct BraveVPNTitleActionsView: View {
   let actionType: SubscriptionActionType
-  
+
   @Binding var shouldRefreshCredentials: Bool
 
   var body: some View {
@@ -59,7 +59,7 @@ struct BraveVPNTitleActionsView: View {
       Text(actionType.mainTitle)
         .font(.callout.weight(.semibold))
         .foregroundColor(Color(braveSystemName: .primitivePrimary90))
-      
+
       Button(
         action: {
           shouldRefreshCredentials = true
