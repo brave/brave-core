@@ -19,7 +19,7 @@ const proxy = getMockedAPIProxy()
 
 function renderHookOptionsWithCustomStore(store: any) {
   return {
-    wrapper: ({ children }: { children?: React.ReactChildren }) => (
+    wrapper: ({ children }: { children?: React.ReactNode }) => (
       <ApiProxyContext.Provider value={proxy}>
         <Provider store={store}>{children}</Provider>
       </ApiProxyContext.Provider>

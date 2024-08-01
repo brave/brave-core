@@ -12,7 +12,7 @@ import {
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // actions
-import { PanelActions } from '../../../panel/actions'
+import { PanelActions } from '../panel.slice'
 
 // utils
 import {
@@ -27,6 +27,7 @@ import {
   signMessageWithHardwareKeyring
 } from '../../async/hardware'
 import { toByteArrayStringUnion } from '../../../utils/mojo-utils'
+import { navigateTo } from '../../../panel/async/wallet_panel_thunks'
 
 interface ProcessSignMessageRequestArgs {
   approved: boolean
@@ -245,7 +246,7 @@ export const signingEndpoints = ({
                 }
           )
 
-          store.dispatch(PanelActions.navigateToMain())
+          store.dispatch(navigateTo('main'))
           api.panelHandler?.closeUI()
 
           return {

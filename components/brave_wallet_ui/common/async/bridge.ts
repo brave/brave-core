@@ -11,6 +11,7 @@ import getWalletPageApiProxy, {
   type WalletPageApiProxy
 } from '../../page/wallet_page_api_proxy'
 
+// Local Storage
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 
 const debugProxyHandler = (path?: string) => ({

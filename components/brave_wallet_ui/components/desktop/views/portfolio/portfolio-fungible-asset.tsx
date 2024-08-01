@@ -98,9 +98,6 @@ import { Row, Column, LeoSquaredButton } from '../../../shared/style'
 import {
   TokenDetailsModal //
 } from './components/token-details-modal/token-details-modal'
-import {
-  WalletActions //
-} from '../../../../common/actions'
 import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
 import {
   WalletPageWrapper //
@@ -396,12 +393,10 @@ export const PortfolioFungibleAsset = () => {
       token: selectedAssetFromParams,
       isVisible: false
     }).unwrap()
-    dispatch(WalletActions.refreshBalancesAndPriceHistory())
     if (showHideTokenModel) setShowHideTokenModal(false)
     if (showTokenDetailsModal) setShowTokenDetailsModal(false)
     history.push(WalletRoutes.PortfolioAssets)
   }, [
-    dispatch,
     history,
     selectedAssetFromParams,
     showHideTokenModel,

@@ -4,14 +4,19 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { mapLimit } from 'async'
-import { Store } from 'redux'
+import { ThunkDispatch } from '@reduxjs/toolkit'
 
 // actions
-import { PanelActions } from '../panel/actions'
+import { PanelActions } from '../common/slices/panel.slice'
+import { navigateTo } from '../panel/async/wallet_panel_thunks'
 
 // types
 import type WalletApiProxy from '../common/wallet_api_proxy'
-import { BraveWallet, SupportedCoinTypes } from '../constants/types'
+import {
+  BraveWallet,
+  ReduxStoreState,
+  SupportedCoinTypes
+} from '../constants/types'
 
 export function handleEndpointError(
   endpointName: string,
@@ -62,17 +67,21 @@ export async function getVisibleNetworksList(api: WalletApiProxy) {
 
 export function navigateToConnectHardwareWallet(
   panelHandler: BraveWallet.PanelHandlerRemote,
-  store: Pick<Store, 'dispatch' | 'getState'>
+  store: {
+    dispatch: ThunkDispatch<any, any, any>
+    getState: () => unknown
+  }
 ) {
   panelHandler.setCloseOnDeactivate(false)
 
-  const selectedPanel: string | undefined =
-    store.getState()?.panel?.selectedPanel
+  const selectedPanel: string | undefined = (
+    store.getState() as ReduxStoreState
+  )?.panel?.selectedPanel
 
   if (selectedPanel === 'connectHardwareWallet') {
     return
   }
 
-  store.dispatch(PanelActions.navigateTo('connectHardwareWallet'))
+  store.dispatch(navigateTo('connectHardwareWallet'))
   store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
 }

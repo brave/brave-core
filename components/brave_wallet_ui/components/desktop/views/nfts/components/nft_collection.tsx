@@ -5,13 +5,13 @@
 
 import * as React from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query'
 
 // types
 import { BraveWallet } from '../../../../../constants/types'
 
 // hooks
+import { useAppDispatch } from '../../../../../common/hooks/use_app_dispatch'
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 import {
   useBalancesFetcher //
@@ -28,7 +28,6 @@ import {
 import { UISelectors, WalletSelectors } from '../../../../../common/selectors'
 
 // actions
-import { WalletActions } from '../../../../../common/actions'
 import { WalletPageActions } from '../../../../../page/actions'
 
 // utils
@@ -40,6 +39,7 @@ import {
   useGetNftDiscoveryEnabledStatusQuery,
   useGetSimpleHashSpamNftsQuery,
   useGetUserTokensRegistryQuery,
+  useRefreshNetworksAndTokensMutation,
   useSetNftDiscoveryEnabledMutation
 } from '../../../../../common/slices/api.slice'
 import {
@@ -121,12 +121,9 @@ export const NftCollection = ({ networks, accounts }: Props) => {
   const listScrollContainerRef = React.useRef<HTMLDivElement>(null)
 
   // redux
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(
     WalletSelectors.assetAutoDiscoveryCompleted
-  )
-  const isRefreshingTokens = useSafeWalletSelector(
-    WalletSelectors.isRefreshingNetworksAndTokens
   )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
@@ -202,8 +199,11 @@ export const NftCollection = ({ networks, accounts }: Props) => {
 
   // mutations
   const [setNftDiscovery] = useSetNftDiscoveryEnabledMutation()
+  const [refreshNetworksAndTokens] = useRefreshNetworksAndTokensMutation()
 
   // memos & computed
+  const isRefreshingTokens = isFetchingUserTokens || isLoadingSimpleHashNfts
+
   const { visibleUserNonSpamNfts, visibleUserMarkedSpamNfts } =
     React.useMemo(() => {
       return groupSpamAndNonSpamNfts(visibleNfts)
@@ -344,10 +344,6 @@ export const NftCollection = ({ networks, accounts }: Props) => {
     hideNftDiscoveryModal()
   }, [hideNftDiscoveryModal, setNftDiscovery])
 
-  const onRefresh = React.useCallback(() => {
-    dispatch(WalletActions.refreshNetworksAndTokens())
-  }, [dispatch])
-
   const navigateToPage = React.useCallback(
     (pageNumber: number) => {
       history.push(makePortfolioNftCollectionRoute(collectionName, pageNumber))
@@ -385,7 +381,7 @@ export const NftCollection = ({ networks, accounts }: Props) => {
               <AutoDiscoveryEmptyState
                 isRefreshingTokens={isRefreshingTokens}
                 onImportNft={toggleShowAddNftModal}
-                onRefresh={onRefresh}
+                onRefresh={refreshNetworksAndTokens}
               />
             ) : (
               <NftsEmptyState onImportNft={toggleShowAddNftModal} />

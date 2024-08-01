@@ -9,7 +9,10 @@ import { EntityId } from '@reduxjs/toolkit'
 // types
 import type { BaseQueryCache } from '../../async/base-query-cache'
 import { BraveWallet, WalletState } from '../../../constants/types'
-import { WalletApiEndpointBuilderParams } from '../api-base.slice'
+import {
+  TOKEN_TAG_IDS,
+  WalletApiEndpointBuilderParams
+} from '../api-base.slice'
 import {
   ImportFromExternalWalletPayloadType,
   ShowRecoveryPhrasePayload
@@ -25,6 +28,8 @@ import { keyringIdForNewAccount } from '../../../utils/account-utils'
 import { suggestNewAccountName } from '../../../utils/address-utils'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import { networkEntityAdapter } from '../entities/network.entity'
+import { interactionNotifier } from '../../async/interactionNotifier'
+import { WalletActions } from '../wallet.slice'
 
 type ImportWalletResults = {
   errorMessage?: string
@@ -579,6 +584,96 @@ export const walletEndpoints = ({
           )
         }
       }
+    }),
+
+    refreshWalletInfo: mutation<true, void>({
+      queryFn: async (arg, { dispatch, endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { cache, data: api } = baseQuery(undefined)
+          const { walletHandler, keyringService, braveWalletService } = api
+
+          const { walletInfo } = await walletHandler.getWalletInfo()
+          const { allAccounts } = await keyringService.getAllAccounts()
+
+          if (!walletInfo.isWalletLocked) {
+            keyringService.notifyUserInteraction()
+          }
+
+          interactionNotifier.beginWatchingForInteraction(
+            50000,
+            walletInfo.isWalletLocked,
+            async () => {
+              keyringService.notifyUserInteraction()
+            }
+          )
+
+          dispatch(WalletActions.initialized({ walletInfo, allAccounts }))
+
+          // refresh networks registry & selected network
+          cache.clearNetworksRegistry()
+
+          // Fetch Balances and Prices
+          if (!walletInfo.isWalletLocked && walletInfo.isWalletCreated) {
+            // refresh tokens registry
+            cache.clearUserTokensRegistry()
+            braveWalletService.discoverAssetsOnAllSupportedChains(false)
+          }
+
+          return {
+            data: true
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'An error occurred while attempting to refresh wallet info',
+            error
+          )
+        }
+      },
+      invalidatesTags: [
+        'DefaultFiatCurrency',
+        'ConnectedAccounts',
+        'DefaultEthWallet',
+        'DefaultSolWallet',
+        'IsMetaMaskInstalled',
+        'Network',
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance',
+        {
+          type: 'UserBlockchainTokens',
+          id: TOKEN_TAG_IDS.REGISTRY
+        }
+      ]
+    }),
+
+    refreshNetworksAndTokens: mutation<true, void>({
+      queryFn: async (arg, { dispatch, endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { cache } = baseQuery(undefined)
+          cache.clearNetworksRegistry()
+          cache.clearUserTokensRegistry()
+          return {
+            data: true
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'An error occurred while attempting to refresh networks and tokens',
+            error
+          )
+        }
+      },
+      invalidatesTags: [
+        'Network',
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance',
+        {
+          type: 'UserBlockchainTokens',
+          id: TOKEN_TAG_IDS.REGISTRY
+        }
+      ]
     })
   }
 }

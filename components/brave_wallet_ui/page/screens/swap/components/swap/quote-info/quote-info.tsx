@@ -46,9 +46,9 @@ import {
 } from '../../../../../../utils/datetime-utils'
 import { getBalance } from '../../../../../../utils/balance-utils'
 import {
+  getPriceIdForToken,
   getTokenPriceAmountFromRegistry,
-  getTokenPriceFromRegistry,
-  getPriceIdForToken
+  getTokenPriceFromRegistry
 } from '../../../../../../utils/pricing-utils'
 import { getLPIcon } from '../../../swap.utils'
 

@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
 import Input, { InputEventDetail } from '@brave/leo/react/input'
 import Dropdown from '@brave/leo/react/dropdown'
@@ -33,9 +32,6 @@ import {
   BitcoinNetworkLocaleMapping,
   DAppSupportedCoinTypes
 } from '../../../../constants/types'
-
-// actions
-import { PanelActions } from '../../../../panel/actions'
 
 // components
 import { DividerLine } from '../../../extension/divider/index'
@@ -68,6 +64,7 @@ import {
   useImportBtcAccountMutation,
   useImportFilAccountMutation
 } from '../../../../common/slices/api.slice'
+import getAPIProxy from '../../../../common/async/bridge'
 
 interface Params {
   accountTypeName: string
@@ -89,7 +86,6 @@ export const ImportAccountModal = () => {
   const { accountTypeName } = useParams<Params>()
 
   // redux
-  const dispatch = useDispatch()
   const isBitcoinImportEnabled = useSafeWalletSelector(
     WalletSelectors.isBitcoinImportEnabled
   )
@@ -196,7 +192,7 @@ export const ImportAccountModal = () => {
   const onClickFileUpload = () => {
     // To prevent panel from being closed when file chooser is open
     if (isPanel) {
-      dispatch(PanelActions.setCloseOnDeactivate(false))
+      getAPIProxy()?.panelHandler?.setCloseOnDeactivate(false)
       // For resume close on deactive when file chooser is close(select/cancel)
       window.addEventListener('focus', onFocusFileUpload)
     }
@@ -204,7 +200,7 @@ export const ImportAccountModal = () => {
 
   const onFocusFileUpload = () => {
     if (isPanel) {
-      dispatch(PanelActions.setCloseOnDeactivate(true))
+      getAPIProxy()?.panelHandler?.setCloseOnDeactivate(true)
       window.removeEventListener('focus', onFocusFileUpload)
     }
   }

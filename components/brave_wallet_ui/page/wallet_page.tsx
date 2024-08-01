@@ -17,9 +17,7 @@ import { loadTimeData } from '../../common/loadTimeData'
 import {
   runLocalStorageMigrations //
 } from '../common/constants/local-storage-keys'
-
-// actions
-import * as WalletActions from '../common/actions/wallet_actions'
+import { walletApi } from '../common/slices/api.slice'
 
 // contexts
 import { ApiProxyContext } from '../common/context/api-proxy.context'
@@ -73,7 +71,7 @@ function initialize() {
   initLocale(loadTimeData.data_)
   const root = createRoot(document.getElementById('root')!)
   root.render(<App />)
-  store.dispatch(WalletActions.initialize())
+  store.dispatch(walletApi.endpoints.refreshWalletInfo.initiate())
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

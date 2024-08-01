@@ -18,8 +18,8 @@ import 'emptykit.css'
 // Utils
 import { loadTimeData } from '../../../../../common/loadTimeData'
 
-// Actions
-import * as WalletActions from '../../../../common/actions/wallet_actions'
+// Redux
+import { walletApi } from '../../../../common/slices/api.slice'
 
 // Components
 import { store, walletPageApiProxy } from '../../../store'
@@ -55,9 +55,9 @@ export function AndroidFundWalletApp() {
 
 function initialize() {
   initLocale(loadTimeData.data_)
-  store.dispatch(WalletActions.initialize())
   const root = createRoot(document.getElementById('root')!)
   root.render(<AndroidFundWalletApp />)
+  store.dispatch(walletApi.endpoints.refreshWalletInfo.initiate())
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

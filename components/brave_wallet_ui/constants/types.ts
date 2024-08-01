@@ -203,7 +203,6 @@ export interface WalletState {
   passwordAttempts: number
   assetAutoDiscoveryCompleted: boolean
   isAnkrBalancesFeatureEnabled: boolean
-  isRefreshingNetworksAndTokens: boolean
 }
 
 export interface PanelState {
@@ -237,6 +236,13 @@ export interface WalletPageState {
 export interface WalletPanelState {
   wallet: WalletState
   panel: PanelState
+  ui: UIState
+}
+
+export interface ReduxStoreState {
+  wallet: WalletState
+  panel?: PanelState
+  page?: PageState
   ui: UIState
 }
 

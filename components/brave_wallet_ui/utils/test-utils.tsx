@@ -8,7 +8,6 @@ import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
 
 // types
-import { WalletActions } from '../common/actions'
 import { PageState, PanelState, UIState, WalletState } from '../constants/types'
 
 // reducers
@@ -16,7 +15,7 @@ import { createWalletApi } from '../common/slices/api.slice'
 import { createWalletReducer } from '../common/slices/wallet.slice'
 import { createPageReducer } from '../page/reducers/page_reducer'
 import { createUIReducer } from '../common/slices/ui.slice'
-import { createPanelReducer } from '../panel/reducers/panel_reducer'
+import { createPanelReducer } from '../common/slices/panel.slice'
 
 // mocks
 import { mockPageState } from '../stories/mock-data/mock-page-state'
@@ -43,6 +42,8 @@ import {
   BraveRewardsProxyOverrides,
   WalletApiDataOverrides
 } from '../constants/testing_types'
+
+// components
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 
 export interface RootStateOverrides {
@@ -105,7 +106,7 @@ export const createMockStore = (
   proxy?.addKeyringServiceObserver?.(makeKeyringServiceObserver(store))
   proxy?.addTxServiceObserver?.(makeTxServiceObserver(store))
   proxy?.addBraveWalletServiceObserver?.(makeBraveWalletServiceObserver(store))
-  store.dispatch(WalletActions.initialize())
+  store.dispatch(api.endpoints.refreshWalletInfo.initiate())
 
   return store
 }

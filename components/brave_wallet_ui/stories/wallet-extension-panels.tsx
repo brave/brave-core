@@ -382,7 +382,8 @@ const mockCustomUiState: Partial<UIState> = {
 }
 
 const mockApiData: WalletApiDataOverrides = {
-  transactionInfos: transactionList.map(deserializeTransaction)
+  transactionInfos: transactionList.map(deserializeTransaction),
+  activeOrigin: originInfo
 }
 
 export const _ConfirmTransaction = {

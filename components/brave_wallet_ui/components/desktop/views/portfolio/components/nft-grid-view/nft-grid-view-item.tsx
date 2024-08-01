@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
@@ -14,6 +13,7 @@ import {
 
 // hooks
 import {
+  useRefreshNetworksAndTokensMutation,
   useRemoveUserTokenMutation,
   useUpdateNftSpamStatusMutation,
   useUpdateUserAssetVisibleMutation
@@ -21,9 +21,6 @@ import {
 import {
   useSyncedLocalStorage //
 } from '../../../../../../common/hooks/use_local_storage'
-
-// actions
-import { WalletActions } from '../../../../../../common/actions'
 
 // Utils
 import { stripERC20TokenImageURL } from '../../../../../../utils/string-utils'
@@ -80,13 +77,11 @@ export const NFTGridViewItem = ({
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
 
-  // hooks
-  const dispatch = useDispatch()
-
   // mutations
   const [updateNftSpamStatus] = useUpdateNftSpamStatusMutation()
   const [removeUserToken] = useRemoveUserTokenMutation()
   const [updateUserAssetVisible] = useUpdateUserAssetVisibleMutation()
+  const [refreshNetworksAndTokens] = useRefreshNetworksAndTokensMutation()
 
   // methods
   const onToggleShowMore = React.useCallback(
@@ -128,14 +123,14 @@ export const NFTGridViewItem = ({
 
   const onUnSpam = async () => {
     setShowMore(false)
-    await updateNftSpamStatus({ token, isSpam: false })
-    dispatch(WalletActions.refreshNetworksAndTokens())
+    await updateNftSpamStatus({ token, isSpam: false }).unwrap()
+    await refreshNetworksAndTokens().unwrap()
   }
 
   const onMarkAsSpam = async () => {
     setShowMore(false)
-    await updateNftSpamStatus({ token, isSpam: true })
-    dispatch(WalletActions.refreshNetworksAndTokens())
+    await updateNftSpamStatus({ token, isSpam: true }).unwrap()
+    await refreshNetworksAndTokens().unwrap()
   }
 
   const onConfirmDelete = async () => {

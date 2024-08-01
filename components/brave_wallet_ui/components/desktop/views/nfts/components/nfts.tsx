@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query'
 
 // types
@@ -14,6 +13,7 @@ import {
 } from '../../../../../constants/types'
 
 // hooks
+import { useAppDispatch } from '../../../../../common/hooks/use_app_dispatch'
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 import {
   useBalancesFetcher //
@@ -31,7 +31,6 @@ import {
 import { UISelectors, WalletSelectors } from '../../../../../common/selectors'
 
 // actions
-import { WalletActions } from '../../../../../common/actions'
 import { WalletPageActions } from '../../../../../page/actions'
 
 // utils
@@ -44,6 +43,7 @@ import {
   useGetNftDiscoveryEnabledStatusQuery,
   useGetSimpleHashSpamNftsQuery,
   useGetUserTokensRegistryQuery,
+  useRefreshNetworksAndTokensMutation,
   useSetNftDiscoveryEnabledMutation
 } from '../../../../../common/slices/api.slice'
 import { useApiProxy } from '../../../../../common/hooks/use-api-proxy'
@@ -133,13 +133,9 @@ export const Nfts = ({
   const listScrollContainerRef = React.useRef<HTMLDivElement>(null)
 
   // redux
-  const dispatch = useDispatch()
-
+  const dispatch = useAppDispatch()
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(
     WalletSelectors.assetAutoDiscoveryCompleted
-  )
-  const isRefreshingTokens = useSafeWalletSelector(
-    WalletSelectors.isRefreshingNetworksAndTokens
   )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
@@ -170,7 +166,7 @@ export const Nfts = ({
   // queries
   const { data: isNftAutoDiscoveryEnabled } =
     useGetNftDiscoveryEnabledStatusQuery()
-  const { data: simpleHashSpamNfts = [], isFetching: isLoadingSpamNfts } =
+  const { data: simpleHashSpamNfts = [], isFetching: isFetchingSpamNfts } =
     useGetSimpleHashSpamNftsQuery(
       selectedTab === 'collected' || !accounts.length ? skipToken : { accounts }
     )
@@ -208,8 +204,12 @@ export const Nfts = ({
 
   // mutations
   const [setNftDiscovery] = useSetNftDiscoveryEnabledMutation()
+  const [refreshNetworksAndTokens] = useRefreshNetworksAndTokensMutation()
 
   // memos & computed
+  const isRefreshingTokens =
+    isFetchingTokens || (selectedTab === 'collected' && isFetchingSpamNfts)
+
   const { visibleUserNonSpamNfts, visibleUserMarkedSpamNfts } =
     React.useMemo(() => {
       return groupSpamAndNonSpamNfts(visibleNfts)
@@ -409,7 +409,7 @@ export const Nfts = ({
     (groupNftsByCollection &&
       isFetchingLatestAssetIdsByCollectionNameRegistry) ||
     (selectedTab === 'hidden' &&
-      (isLoadingSpamNfts || !spamTokenBalancesRegistry))
+      (isFetchingSpamNfts || !spamTokenBalancesRegistry))
 
   // methods
   const onSearchValueChange = React.useCallback(
@@ -463,10 +463,6 @@ export const Nfts = ({
     await setNftDiscovery(true)
     hideNftDiscoveryModal()
   }, [hideNftDiscoveryModal, setNftDiscovery])
-
-  const onRefresh = React.useCallback(() => {
-    dispatch(WalletActions.refreshNetworksAndTokens())
-  }, [dispatch])
 
   const onSelectOption = React.useCallback(
     (selectedOption: NftDropdownOption) => {
@@ -561,7 +557,7 @@ export const Nfts = ({
             <AutoDiscoveryEmptyState
               isRefreshingTokens={isRefreshingTokens}
               onImportNft={toggleShowAddNftModal}
-              onRefresh={onRefresh}
+              onRefresh={refreshNetworksAndTokens}
             />
           ) : (
             <NftsEmptyState onImportNft={toggleShowAddNftModal} />

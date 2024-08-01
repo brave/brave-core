@@ -150,7 +150,7 @@ export const pricingEndpoints = ({
             }
           )
 
-          const registry: SpotPriceRegistry = results
+          const registry = results
             .flat()
             .reduce<SpotPriceRegistry>((acc, assetPrice) => {
               acc[assetPrice.fromAsset.toLowerCase()] = assetPrice
