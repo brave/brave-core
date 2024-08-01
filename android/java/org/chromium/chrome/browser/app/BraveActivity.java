@@ -1787,12 +1787,14 @@ public abstract class BraveActivity extends ChromeActivity
         return Profile.fromWebContents(tab.getWebContents());
     }
 
-    public void closeExistingTabs(final boolean closeActiveTab, @NonNull final String baseUrl) {
+    /**
+     * Close all tabs whose URL starts with a given base URL.
+     */
+    public void closeExistingTabs(@NonNull final String baseUrl) {
         final Tab activeTab = getActivityTab();
         final TabModel tabModel = getCurrentTabModel();
         if (activeTab != null
-                && activeTab.getUrl().getSpec().startsWith(baseUrl)
-                && closeActiveTab) {
+                && activeTab.getUrl().getSpec().startsWith(baseUrl)) {
             activeTab.setClosing(true);
             tabModel.closeTab(activeTab);
         }
@@ -1847,14 +1849,6 @@ public abstract class BraveActivity extends ChromeActivity
         } else {
             return null;
         }
-    }
-
-    public void openAlwaysNewAndCloseExistingTab(
-            @NonNull final String baseUrlToClose, @NonNull final String url) {
-        closeExistingTabs(true, baseUrlToClose);
-
-        // Open a new tab.
-        getTabCreator(false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
     }
 
     public Tab openNewOrSelectExistingTab(String url, boolean refresh) {
