@@ -141,7 +141,7 @@ const ControlsContainer = styled.div`
 
     &::before {
       content: '';
-      background-color: ${color.dialogs.scrimBackground};
+      background-color: ${color.container.background};
       background-position: center;
       position: absolute;
       width: 100%;
