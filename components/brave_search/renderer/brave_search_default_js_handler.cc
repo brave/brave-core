@@ -13,8 +13,8 @@
 #include "content/public/renderer/render_frame.h"
 #include "gin/arguments.h"
 #include "gin/function_template.h"
-#include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/mojom/devtools/console_message.mojom.h"
+#include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/blink.h"
@@ -34,7 +34,7 @@ BraveSearchDefaultJSHandler::~BraveSearchDefaultJSHandler() = default;
 
 bool BraveSearchDefaultJSHandler::EnsureConnected() {
   if (!brave_search_default_.is_bound()) {
-    render_frame_->GetBrowserInterfaceBroker()->GetInterface(
+    render_frame_->GetBrowserInterfaceBroker().GetInterface(
         brave_search_default_.BindNewPipeAndPassReceiver());
     if (can_always_set_default_)
       brave_search_default_->SetCanAlwaysSetDefault();

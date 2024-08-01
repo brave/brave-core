@@ -16,7 +16,7 @@
 #include "brave/components/skus/renderer/skus_utils.h"
 #include "build/build_config.h"
 #include "content/public/renderer/render_frame.h"
-#include "third_party/blink/public/common/browser_interface_broker_proxy.h"
+#include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/web_security_origin.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "url/url_util.h"
@@ -55,7 +55,7 @@ bool SubscriptionRenderFrameObserver::EnsureConnected() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNFeatureEnabled() && product_ == Product::kVPN) {
     if (!vpn_service_.is_bound()) {
-      render_frame()->GetBrowserInterfaceBroker()->GetInterface(
+      render_frame()->GetBrowserInterfaceBroker().GetInterface(
           vpn_service_.BindNewPipeAndPassReceiver());
     }
     bound |= vpn_service_.is_bound();
@@ -64,7 +64,7 @@ bool SubscriptionRenderFrameObserver::EnsureConnected() {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled() && product_ == Product::kLeo) {
     if (!ai_chat_subscription_.is_bound()) {
-      render_frame()->GetBrowserInterfaceBroker()->GetInterface(
+      render_frame()->GetBrowserInterfaceBroker().GetInterface(
           ai_chat_subscription_.BindNewPipeAndPassReceiver());
     }
     bound |= ai_chat_subscription_.is_bound();

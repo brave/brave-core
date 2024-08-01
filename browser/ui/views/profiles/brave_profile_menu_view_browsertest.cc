@@ -32,10 +32,12 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
 
  protected:
   void ClickAvatarButton() {
-    ui::MouseEvent press(ui::ET_MOUSE_PRESSED, gfx::Point(), gfx::Point(),
-                         ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON, 0);
-    ui::MouseEvent release(ui::ET_MOUSE_RELEASED, gfx::Point(), gfx::Point(),
-                           ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON, 0);
+    ui::MouseEvent press(ui::EventType::kMousePressed, gfx::Point(),
+                         gfx::Point(), ui::EventTimeForNow(),
+                         ui::EF_LEFT_MOUSE_BUTTON, 0);
+    ui::MouseEvent release(ui::EventType::kMouseReleased, gfx::Point(),
+                           gfx::Point(), ui::EventTimeForNow(),
+                           ui::EF_LEFT_MOUSE_BUTTON, 0);
     BrowserView* browser_view =
         BrowserView::GetBrowserViewForBrowser(browser());
     AvatarToolbarButton* button =

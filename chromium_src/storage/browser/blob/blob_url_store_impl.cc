@@ -15,15 +15,6 @@
 
 namespace storage {
 
-void BlobURLStoreImpl::Resolve(const GURL& url, ResolveCallback callback) {
-  if (!IsBlobResolvable(url)) {
-    std::move(callback).Run(mojo::NullRemote(), std::nullopt);
-    return;
-  }
-
-  BlobURLStoreImpl_ChromiumImpl::Resolve(url, std::move(callback));
-}
-
 void BlobURLStoreImpl::ResolveAsURLLoaderFactory(
     const GURL& url,
     mojo::PendingReceiver<network::mojom::URLLoaderFactory> receiver,

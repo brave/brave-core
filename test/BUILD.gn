@@ -450,6 +450,7 @@ test("brave_unit_tests") {
       "//brave/components/commands/browser:unit_tests",
       "//brave/components/commands/common:unit_tests",
       "//brave/ui/views:unit_tests",
+      "//chrome/browser/ui/views/bubble",
       "//components/favicon/content",
     ]
   }
@@ -1122,6 +1123,7 @@ test("brave_browser_tests") {
       "//brave/browser/ui/views/tabs:browser_tests",
       "//brave/components/sidebar/browser",
       "//brave/test/views/snapshot",
+      "//chrome/browser/ui/views/bubble",
     ]
 
     if (enable_brave_vpn) {

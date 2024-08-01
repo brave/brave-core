@@ -12,23 +12,29 @@
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_data_handler_impl.h"
 #include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
-#include "content/public/browser/web_ui_controller.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
 class Browser;
 class Profile;
 
+namespace content {
+class BrowserContext;
+}
+
 class SpeedreaderToolbarUI : public TopChromeWebUIController,
                              public speedreader::mojom::ToolbarFactory {
  public:
-  SpeedreaderToolbarUI(content::WebUI* web_ui, const std::string& name);
+  explicit SpeedreaderToolbarUI(content::WebUI* web_ui);
   ~SpeedreaderToolbarUI() override;
   SpeedreaderToolbarUI(const SpeedreaderToolbarUI&) = delete;
   SpeedreaderToolbarUI& operator=(const SpeedreaderToolbarUI&) = delete;
 
   void BindInterface(
       mojo::PendingReceiver<speedreader::mojom::ToolbarFactory> receiver);
+
+  static constexpr std::string GetWebUIName() { return "SpeedreaderPanel"; }
 
  private:
   void CreateInterfaces(
@@ -44,6 +50,18 @@ class SpeedreaderToolbarUI : public TopChromeWebUIController,
   raw_ptr<Browser> browser_ = nullptr;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
+};
+
+class SpeedreaderToolbarUIConfig
+    : public DefaultTopChromeWebUIConfig<SpeedreaderToolbarUI> {
+ public:
+  SpeedreaderToolbarUIConfig();
+
+  // WebUIConfig::
+  bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
+
+  // TopChromeWebUIConfig::
+  bool ShouldAutoResizeHost() override;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SPEEDREADER_SPEEDREADER_TOOLBAR_UI_H_

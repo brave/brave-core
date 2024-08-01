@@ -38,9 +38,6 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mScrimCoordinator");
         makeProtectedField(sToolbarManagerClassName, "mScrimCoordinator");
 
-        deleteField(sBraveToolbarManagerClassName, "mShowStartSurfaceSupplier");
-        makeProtectedField(sToolbarManagerClassName, "mShowStartSurfaceSupplier");
-
         deleteField(sBraveToolbarManagerClassName, "mMenuButtonCoordinator");
         makeProtectedField(sToolbarManagerClassName, "mMenuButtonCoordinator");
 
@@ -74,9 +71,6 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mIncognitoStateProvider");
         makeProtectedField(sToolbarManagerClassName, "mIncognitoStateProvider");
 
-        deleteField(sBraveToolbarManagerClassName, "mTabGroupUi");
-        makeProtectedField(sToolbarManagerClassName, "mTabGroupUi");
-
         deleteField(sBraveToolbarManagerClassName, "mBottomSheetController");
         makeProtectedField(sToolbarManagerClassName, "mBottomSheetController");
 
@@ -97,6 +91,9 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
 
         deleteField(sBraveToolbarManagerClassName, "mReadAloudControllerSupplier");
         makeProtectedField(sToolbarManagerClassName, "mReadAloudControllerSupplier");
+
+        deleteField(sBraveToolbarManagerClassName, "mConstraintsProxy");
+        makeProtectedField(sToolbarManagerClassName, "mConstraintsProxy");
 
         makePublicMethod(sToolbarManagerClassName, "onOrientationChange");
         addMethodAnnotation(

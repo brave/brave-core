@@ -36,7 +36,6 @@ std::unique_ptr<views::View> CreateAIChatSidePanelWebView(
       std::make_unique<WebUIContentsWrapperT<AIChatUI>>(
           GURL(kChatUIURL), profile.get(),
           IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE,
-          /*webui_resizes_host=*/false,
           /*esc_closes_ui=*/false));
   web_view->ShowUI();
   return web_view;

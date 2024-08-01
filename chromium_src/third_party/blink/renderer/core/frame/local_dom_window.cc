@@ -9,6 +9,7 @@
 // tokens named screenX, screenY:
 #include "third_party/blink/renderer/core/events/mouse_event.h"
 #include "third_party/blink/renderer/core/events/pointer_event.h"
+#include "third_party/blink/renderer/core/frame/local_frame.h"
 
 #define outerHeight outerHeight_ChromiumImpl
 #define outerWidth outerWidth_ChromiumImpl
@@ -23,6 +24,10 @@
     script_enabled = settings_client->AllowScript(script_enabled); \
   }
 
+// This translation unit has a call to `ScriptEnabled` that is not passing a
+// URL, and this override is necessary to correct that call.
+#define ScriptEnabled() ScriptEnabled(Url())
+
 #include "src/third_party/blink/renderer/core/frame/local_dom_window.cc"
 #undef BRAVE_LOCAL_DOM_WINDOW_CAN_EXECUTE_SCRIPTS
 #undef outerHeight
@@ -31,6 +36,7 @@
 #undef screenY
 #undef resizeTo
 #undef moveTo
+#undef ScriptEnabled
 
 namespace blink {
 

@@ -52,6 +52,8 @@ source_set("ui") {
     "webui/brave_rewards/rewards_page_handler.h",
     "webui/brave_rewards/rewards_page_ui.cc",
     "webui/brave_rewards/rewards_page_ui.h",
+    "webui/brave_rewards/rewards_web_ui_utils.cc",
+    "webui/brave_rewards/rewards_web_ui_utils.h",
     "webui/brave_rewards_internals_ui.cc",
     "webui/brave_rewards_internals_ui.h",
     "webui/brave_rewards_page_ui.cc",
@@ -580,6 +582,8 @@ source_set("ui") {
 
     deps += [
       "//chrome/browser/devtools",
+      "//chrome/browser/ui/exclusive_access",
+      "//chrome/browser/ui/views/bubble",
       "//components/bookmarks/browser",
     ]
 
@@ -832,7 +836,6 @@ source_set("ui") {
     "//ui/gfx",
     "//ui/resources",
     "//ui/shell_dialogs",
-    "//ui/web_dialogs",
     "//ui/webui",
     "//url",
   ]
@@ -1031,6 +1034,7 @@ source_set("ui") {
       "//mojo/public/cpp/bindings",
       "//third_party/blink/public/common",
       "//ui/color",
+      "//ui/web_dialogs",
     ]
   }
 
@@ -1122,6 +1126,7 @@ source_set("ui") {
       "//brave/components/resources:static_resources",
       "//brave/components/resources:strings_grit",
       "//chrome/browser/extensions",
+      "//chrome/browser/ui/exclusive_access",
       "//components/sessions",
       "//extensions/browser",
       "//extensions/common:common_constants",
@@ -1310,6 +1315,7 @@ source_set("ui") {
     deps += [
       "//brave/components/playlist/browser",
       "//brave/components/playlist/browser/resources:generated_resources",
+      "//chrome/browser/ui/exclusive_access",
       "//components/user_prefs",
     ]
   }

@@ -99,3 +99,16 @@ void ShieldsPanelUI::CreatePanelHandler(
   data_handler_ = std::make_unique<ShieldsPanelDataHandler>(
       std::move(data_handler_receiver), this, browser_->tab_strip_model());
 }
+
+ShieldsPanelUIConfig::ShieldsPanelUIConfig()
+    : DefaultTopChromeWebUIConfig(content::kChromeUIScheme, kShieldsPanelHost) {
+}
+
+bool ShieldsPanelUIConfig::IsWebUIEnabled(
+    content::BrowserContext* browser_context) {
+  return true;
+}
+
+bool ShieldsPanelUIConfig::ShouldAutoResizeHost() {
+  return true;
+}
