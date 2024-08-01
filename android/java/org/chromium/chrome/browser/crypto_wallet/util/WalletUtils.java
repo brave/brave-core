@@ -18,6 +18,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.mojo_base.mojom.TimeDelta;
 
@@ -109,10 +110,22 @@ public class WalletUtils {
     public static void openWebWallet() {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.openNewOrSelectExistingTab(BraveActivity.BRAVE_WALLET_URL, true);
+            activity.openAlwaysNewAndCloseExistingTab(BraveActivity.BRAVE_WALLET_URL);
             TabUtils.bringChromeTabbedActivityToTheTop(activity);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "Error while opening wallet tab.", e);
+        }
+    }
+
+    public static void closeWebWallet() {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            final Tab walletTab = activity.selectExistingTab(BraveActivity.BRAVE_WALLET_URL);
+            if (walletTab != null) {
+                walletTab.setClosing(true);
+            }
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "Error while closing the Wallet tab.", e);
         }
     }
 

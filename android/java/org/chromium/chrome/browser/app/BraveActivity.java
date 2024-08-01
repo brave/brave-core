@@ -1804,6 +1804,17 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
+    public Tab openAlwaysNewAndCloseExistingTab(String url) {
+        Tab tab = selectExistingTab(url);
+        if (tab != null) {
+            // Close existing tab, if present.
+            tab.setClosing(true);
+        }
+
+        // Open a new tab
+        return getTabCreator(false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
+    }
+
     public Tab openNewOrSelectExistingTab(String url, boolean refresh) {
         Tab tab = selectExistingTab(url);
         if (tab != null) {
