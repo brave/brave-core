@@ -122,8 +122,12 @@ void PublishersController::GetPublisherForSite(
   GetOrFetchPublishers(
       subscriptions,
       base::BindOnce(
-          [](PublishersController* controller, GURL site_url,
+          [](base::WeakPtr<PublishersController> controller, GURL site_url,
              GetPublisherCallback callback, Publishers publishers) {
+            if (!controller) {
+              return;
+            }
+
             const auto& site_host = site_url.host();
 
             // Can't match a Publisher from an empty host
@@ -141,7 +145,7 @@ void PublishersController::GetPublisherForSite(
                     },
                     site_host)));
           },
-          base::Unretained(this), site_url, std::move(callback)),
+          weak_ptr_factory_.GetWeakPtr(), site_url, std::move(callback)),
       false);
 }
 
@@ -163,22 +167,27 @@ void PublishersController::GetOrFetchPublishers(
     const SubscriptionsSnapshot& subscriptions,
     GetPublishersCallback callback,
     bool wait_for_current_update /* = false */) {
-  GetOrFetchPublishers(
-      subscriptions,
-      base::BindOnce(
-          [](PublishersController* controller, GetPublishersCallback callback) {
-            // Either there was already data, or the fetch was complete
-            // (with success or error, so we would still check for valid data
-            // again, but it's fine to just send the empty array). Provide data
-            // clone for ownership outside of this class.
-            Publishers clone;
-            for (auto const& kv : controller->publishers_) {
-              clone.insert_or_assign(kv.first, kv.second->Clone());
-            }
-            std::move(callback).Run(std::move(clone));
-          },
-          base::Unretained(this), std::move(callback)),
-      wait_for_current_update);
+  GetOrFetchPublishers(subscriptions,
+                       base::BindOnce(
+                           [](base::WeakPtr<PublishersController> controller,
+                              GetPublishersCallback callback) {
+                             if (!controller) {
+                               return;
+                             }
+                             // Either there was already data, or the fetch was
+                             // complete (with success or error, so we would
+                             // still check for valid data again, but it's fine
+                             // to just send the empty array). Provide data
+                             // clone for ownership outside of this class.
+                             Publishers clone;
+                             for (auto const& kv : controller->publishers_) {
+                               clone.insert_or_assign(kv.first,
+                                                      kv.second->Clone());
+                             }
+                             std::move(callback).Run(std::move(clone));
+                           },
+                           weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
+                       wait_for_current_update);
 }
 
 // To be consumed internally - provides no data so that we don't need to clone,
@@ -212,13 +221,16 @@ void PublishersController::GetLocale(
   GetOrFetchPublishers(
       subscriptions,
       base::BindOnce(
-          [](PublishersController* controller,
+          [](base::WeakPtr<PublishersController> controller,
              mojom::BraveNewsController::GetLocaleCallback callback,
              Publishers _) {
+            if (!controller) {
+              return;
+            }
             VLOG(1) << "Got locale: " << controller->default_locale_;
             std::move(callback).Run(controller->default_locale_);
           },
-          base::Unretained(this), std::move(callback)));
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 const std::string& PublishersController::GetLastLocale() const {
@@ -240,9 +252,13 @@ void PublishersController::EnsurePublishersIsUpdating(
   VLOG(1) << "Fetching publishers from " << sources_url.spec();
 
   auto on_request = base::BindOnce(
-      [](PublishersController* controller,
+      [](base::WeakPtr<PublishersController> controller,
          const SubscriptionsSnapshot& subscriptions,
          api_request_helper::APIRequestResult api_request_result) {
+        if (!controller) {
+          return;
+        }
+
         VLOG(1) << "Publishers response status code: "
                 << api_request_result.response_code()
                 << ", error code: " << api_request_result.error_code()
@@ -270,7 +286,7 @@ void PublishersController::EnsurePublishersIsUpdating(
         controller->on_current_update_complete_->Signal();
         controller->on_current_update_complete_.reset();
       },
-      base::Unretained(this), subscriptions);
+      weak_ptr_factory_.GetWeakPtr(), subscriptions);
   api_request_helper_->Request("GET", sources_url, "", "",
                                std::move(on_request),
                                brave::private_cdn_headers,
