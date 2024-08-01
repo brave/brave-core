@@ -408,19 +408,16 @@ extension BrowserViewController: CWVNavigationDelegate {
       }
 
       // Check if custom user scripts must be added to or removed from the web view.
-      // FIXME: Figure out how to do this check with CWVNavigationAction
-      //      if let targetFrame = navigationAction.targetFrame {
-      //        tab?.currentPageData?.addSubframeURL(
-      //          forRequestURL: requestURL,
-      //          isForMainFrame: targetFrame.isMainFrame
-      //        )
-      //        let scriptTypes =
-      //        await tab?.currentPageData?.makeUserScriptTypes(
-      //          domain: domainForMainFrame,
-      //          isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
-      //        ) ?? []
-      //        tab?.setCustomUserScript(scripts: scriptTypes)
-      //      }
+      tab?.currentPageData?.addSubframeURL(
+        forRequestURL: requestURL,
+        isForMainFrame: navigationAction.navigationType.isMainFrame
+      )
+      let scriptTypes =
+      await tab?.currentPageData?.makeUserScriptTypes(
+        domain: domainForMainFrame,
+        isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
+      ) ?? []
+      tab?.setCustomUserScript(scripts: scriptTypes)
     }
 
     // Brave Search logic.
