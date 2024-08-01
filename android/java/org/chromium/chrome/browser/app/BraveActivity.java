@@ -234,7 +234,7 @@ public abstract class BraveActivity extends ChromeActivity
                 MiscAndroidMetricsConnectionErrorHandler
                         .MiscAndroidMetricsConnectionErrorHandlerDelegate {
     public static final String BRAVE_WALLET_HOST = "wallet";
-    public static final String BRAVE_WALLET_BASE_URL = "brave://wallet";
+    public static final String BRAVE_WALLET_ORIGIN = "brave://wallet";
     public static final String BRAVE_WALLET_URL = "brave://wallet/crypto/portfolio/assets";
     public static final String BRAVE_BUY_URL = "brave://wallet/crypto/fund-wallet";
     public static final String BRAVE_SEND_URL = "brave://wallet/send";
@@ -1787,17 +1787,16 @@ public abstract class BraveActivity extends ChromeActivity
         return Profile.fromWebContents(tab.getWebContents());
     }
 
-    /** Close all tabs whose URL starts with a given base URL. */
-    public void closeExistingTabs(@NonNull final String baseUrl) {
+    /** Close all tabs whose URL origin matches with a given origin. */
+    public void closeAllTabsByOrigin(@NonNull final String origin) {
         final Tab activeTab = getActivityTab();
         final TabModel tabModel = getCurrentTabModel();
-        if (activeTab != null && activeTab.getUrl().getSpec().startsWith(baseUrl)) {
+        if (activeTab != null && activeTab.getUrl().getOrigin().getSpec().equals(origin)) {
             activeTab.setClosing(true);
             tabModel.closeTab(activeTab);
         }
 
-        Set<Integer> tabIndexes = TabModelUtils.getTabIndexesByBaseUrl(tabModel, baseUrl);
-
+        Set<Integer> tabIndexes = TabModelUtils.getTabIndexesByUrlOrigin(tabModel, origin);
         for (Integer index : tabIndexes) {
             Tab tab = tabModel.getTabAt(index);
             if (tab != null) {
@@ -1807,14 +1806,14 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
-    public Tab selectExistingBaseUrlTab(@NonNull final String baseUrl) {
+    public Tab selectExistingUrlOriginTab(@NonNull final String origin) {
         Tab tab = getActivityTab();
-        if (tab != null && tab.getUrl().getSpec().startsWith(baseUrl)) {
+        if (tab != null && tab.getUrl().getOrigin().getSpec().equals(origin)) {
             return tab;
         }
 
         TabModel tabModel = getCurrentTabModel();
-        Set<Integer> tabIndexes = TabModelUtils.getTabIndexesByBaseUrl(tabModel, baseUrl);
+        Set<Integer> tabIndexes = TabModelUtils.getTabIndexesByUrlOrigin(tabModel, origin);
 
         // Find if tab exists.
         if (!tabIndexes.isEmpty()) {
@@ -1861,8 +1860,8 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void openNewOrRefreshExistingTab(
-            @NonNull final String baseUrl, @NonNull final String url) {
-        Tab tab = selectExistingBaseUrlTab(baseUrl);
+            @NonNull final String origin, @NonNull final String url) {
+        Tab tab = selectExistingUrlOriginTab(origin);
         if (tab != null) {
             tab.reload();
         } else {
