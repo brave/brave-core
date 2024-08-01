@@ -101,7 +101,7 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
                                                     // finishing the activity as we need to
                                                     // reload the portfolio section to hide the
                                                     // backup banner.
-                                                    mOnNextPage.showWallet();
+                                                    mOnNextPage.showWallet(true);
                                                 }
                                             }
                                         } else {

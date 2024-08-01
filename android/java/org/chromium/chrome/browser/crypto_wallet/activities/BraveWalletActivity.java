@@ -164,7 +164,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                         } else if (mBackupWallet) {
                             showBackupSequence();
                         } else {
-                            showMainLayout();
+                            showMainLayout(false);
                         }
                     });
         }
@@ -186,11 +186,11 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         };
     }
 
-    private void showMainLayout() {
+    private void showMainLayout(final boolean forceNewTab) {
         addRemoveSecureFlag(false);
 
         mCryptoOnboardingLayout.setVisibility(View.GONE);
-        WalletUtils.openWebWallet();
+        WalletUtils.openWebWallet(forceNewTab);
     }
 
     private void addRemoveSecureFlag(final boolean add) {
@@ -227,7 +227,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     }
 
     @Override
-    public void showWallet() {
+    public void showWallet(final boolean forceNewTab) {
         if (mIsFromDapps) {
             finish();
             try {
@@ -237,7 +237,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 Log.e(TAG, "onboardingCompleted", e);
             }
         } else {
-            showMainLayout();
+            showMainLayout(forceNewTab);
         }
     }
 

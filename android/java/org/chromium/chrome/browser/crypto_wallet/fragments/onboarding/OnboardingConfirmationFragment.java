@@ -40,7 +40,7 @@ public class OnboardingConfirmationFragment extends BaseOnboardingWalletFragment
                     }
                     mConfirmationButtonClicked = true;
 
-                    mOnNextPage.showWallet();
+                    mOnNextPage.showWallet(true);
                 });
     }
 

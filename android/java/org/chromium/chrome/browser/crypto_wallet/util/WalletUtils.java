@@ -107,10 +107,14 @@ public class WalletUtils {
         return AccountInfo.deserialize(ByteBuffer.wrap(bytes));
     }
 
-    public static void openWebWallet() {
+    public static void openWebWallet(final boolean forceNewTab) {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.openAlwaysNewAndCloseExistingTab(BraveActivity.BRAVE_WALLET_URL);
+            if (forceNewTab) {
+                activity.openAlwaysNewAndCloseExistingTab(BraveActivity.BRAVE_WALLET_URL);
+            } else {
+                activity.openNewOrSelectExistingTab(BraveActivity.BRAVE_WALLET_URL, true);
+            }
             TabUtils.bringChromeTabbedActivityToTheTop(activity);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "Error while opening wallet tab.", e);
