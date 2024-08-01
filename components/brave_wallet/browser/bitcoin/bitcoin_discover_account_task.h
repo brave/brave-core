@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
+
 class BitcoinWalletService;
 class KeyringService;
 class HDKey;

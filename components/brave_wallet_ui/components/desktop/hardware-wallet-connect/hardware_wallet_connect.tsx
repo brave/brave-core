@@ -40,7 +40,8 @@ import {
   DerivationScheme,
   AllHardwareImportSchemes,
   HardwareImportScheme,
-  DerivationSchemes
+  DerivationSchemes,
+  AccountFromDevice
 } from '../../../common/hardware/types'
 import { BraveWallet, CreateAccountOptionsType } from '../../../constants/types'
 import { LedgerError } from '../../../common/hardware/ledgerjs/ledger-messages'
@@ -189,24 +190,31 @@ export const HardwareWalletConnect = ({
   const currentHardwareImportScheme: HardwareImportScheme =
     findHardwareImportScheme(currentDerivationScheme)
 
-  const setHardwareImportScheme = (scheme: DerivationScheme) => {
-    if (currentDerivationScheme === scheme) {
-      return
-    }
-    setAccounts([])
-    setTotalNumberOfAccounts(DerivationBatchSize)
-    setCurrentDerivationScheme(scheme)
-  }
-
-  const onAccountChecked = (path: string, checked: boolean) => {
-    const newAccounts = accounts.map((acc) => {
-      if (acc.derivationPath === path) {
-        return { ...acc, shouldAddToWallet: checked }
+  const setHardwareImportScheme = React.useCallback(
+    (scheme: DerivationScheme) => {
+      if (currentDerivationScheme === scheme) {
+        return
       }
-      return acc
-    })
-    setAccounts(newAccounts)
-  }
+      setAccounts([])
+      setTotalNumberOfAccounts(DerivationBatchSize)
+      setCurrentDerivationScheme(scheme)
+    },
+    [currentDerivationScheme]
+  )
+
+  const onAccountChecked = React.useCallback(
+    (path: string, checked: boolean) => {
+      setAccounts((prevAccounts) =>
+        prevAccounts.map((acc) => {
+          if (acc.derivationPath === path) {
+            return { ...acc, shouldAddToWallet: checked }
+          }
+          return acc
+        })
+      )
+    },
+    []
+  )
 
   const supportedSchemes = React.useMemo(() => {
     return AllHardwareImportSchemes.filter((scheme) => {
@@ -217,41 +225,49 @@ export const HardwareWalletConnect = ({
     })
   }, [selectedHardwareVendor, selectedAccountType.coin])
 
-  const loadMoreAccounts = React.useCallback(
-    async (
-      startIndex: number,
-      numberOfAccountsToLoad: number,
-      scheme: HardwareImportScheme
-    ) => {
-      setIsLoadingAccounts(true)
-      const result = await loadAccountsFromDevice({
-        startIndex,
-        count: numberOfAccountsToLoad,
-        scheme,
-        onAuthorized: hideAuthorizeDevice
+  const makeAccountListItems = React.useCallback(
+    (accounts: AccountFromDevice[]): AccountFromDeviceListItem[] => {
+      return accounts.map((acc) => {
+        const alreadyInWallet = !!savedAccounts.find((a) => {
+          return (
+            a.accountId.kind === BraveWallet.AccountKind.kHardware &&
+            a.address === acc.address
+          )
+        })
+        return { ...acc, alreadyInWallet, shouldAddToWallet: false }
       })
+    },
+    [savedAccounts]
+  )
+
+  React.useEffect(() => {
+    // Just return if there is nothing to load.
+    const numberOfAccountsToLoad = totalNumberOfAccounts - accounts.length
+    if (numberOfAccountsToLoad <= 0) {
+      return
+    }
+
+    setIsLoadingAccounts(true)
+    let ignore = false
+    loadAccountsFromDevice({
+      startIndex: accounts.length,
+      count: numberOfAccountsToLoad,
+      scheme: currentHardwareImportScheme,
+      onAuthorized: hideAuthorizeDevice
+    }).then((result) => {
+      if (ignore) {
+        return
+      }
       setIsLoadingAccounts(false)
+      setShowAccountsList(!!result.payload)
 
       if (result.payload) {
-        setShowAccountsList(true)
-
-        const newAccounts: AccountFromDeviceListItem[] = result.payload.map(
-          (acc) => {
-            const alreadyInWallet = !!savedAccounts.find((a) => {
-              return (
-                a.accountId.kind === BraveWallet.AccountKind.kHardware &&
-                a.address === acc.address
-              )
-            })
-            return { ...acc, alreadyInWallet, shouldAddToWallet: false }
-          }
+        setAccounts((prev) =>
+          prev.concat(makeAccountListItems(result.payload ?? []))
         )
-
-        setAccounts((prev) => prev.concat(newAccounts))
         return
       }
 
-      setShowAccountsList(false)
       if (result.error === 'unauthorized') {
         setShowAuthorizeDevice(true)
       } else {
@@ -259,33 +275,16 @@ export const HardwareWalletConnect = ({
           getErrorMessage(result.error, selectedAccountType.name)
         )
       }
-    },
-    [savedAccounts, selectedAccountType.name]
-  )
-
-  React.useEffect(() => {
-    // Don't load more if already loading.
-    if (isLoadingAccounts) {
-      return
+    })
+    return () => {
+      ignore = true
     }
-
-    // Just return if there is nothing to load.
-    const numberOfAccountsToLoad = totalNumberOfAccounts - accounts.length
-    if (numberOfAccountsToLoad <= 0) {
-      return
-    }
-
-    loadMoreAccounts(
-      accounts.length,
-      numberOfAccountsToLoad,
-      currentHardwareImportScheme
-    )
   }, [
     currentHardwareImportScheme,
     totalNumberOfAccounts,
-    loadMoreAccounts,
     accounts.length,
-    isLoadingAccounts
+    selectedAccountType.name,
+    makeAccountListItems
   ])
 
   const onAddAccounts = React.useCallback(async () => {
@@ -340,7 +339,7 @@ export const HardwareWalletConnect = ({
     selectVendor(BraveWallet.HardwareVendor.kTrezor)
   }, [selectedHardwareVendor, selectVendor])
 
-  const increaseNumberOfAccounts = () => {
+  const increaseNumberOfAccounts = React.useCallback(() => {
     if (isLoadingAccounts) {
       return
     }
@@ -349,7 +348,7 @@ export const HardwareWalletConnect = ({
       return
     }
     setTotalNumberOfAccounts((curState) => curState + DerivationBatchSize)
-  }
+  }, [currentHardwareImportScheme.singleAccount, isLoadingAccounts])
 
   const trezorEnabled = [BraveWallet.CoinType.ETH].includes(
     selectedAccountType.coin
