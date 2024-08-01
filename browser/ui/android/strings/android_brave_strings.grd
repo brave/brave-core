@@ -968,11 +968,11 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_CONTINUE_TO_WALLET" desc="Text for continue to wallet button">
         Continue to wallet
       </message>
-      <message name="IDS_RECOVERY_PHRASE_12" desc="12-words recovery phrase Wallet button">
-        I have a 12-words recovery phrase
+      <message name="IDS_RECOVERY_PHRASE_12" desc="12-word recovery phrase Wallet button">
+        I have a 12-word recovery phrase
       </message>
-      <message name="IDS_RECOVERY_PHRASE_24" desc="24-words recovery phrase Wallet button">
-        I have a 24-words recovery phrase
+      <message name="IDS_RECOVERY_PHRASE_24" desc="24-word recovery phrase Wallet button">
+        I have a 24-word recovery phrase
       </message>
       <message name="IDS_SET_DEFAULT_BROWSER" desc="Button text for dormant users engagement dialog">
         Set as default browser
