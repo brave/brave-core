@@ -52,8 +52,7 @@ import {
   getJupiterToAmount,
   getLiFiQuoteOptions,
   getLiFiFromAmount,
-  getLiFiToAmount,
-  getUniqueRouteId
+  getLiFiToAmount
 } from '../swap.utils'
 import {
   makeSwapOrBridgeRoute //
@@ -209,7 +208,9 @@ export const useSwap = () => {
   >(undefined)
   const [selectedProvider, setSelectedProvider] =
     useState<BraveWallet.SwapProvider>(BraveWallet.SwapProvider.kAuto)
-  const [selectedQuoteOptionId, setSelectedQuoteOptionId] = useState<string>('')
+  const [selectedQuoteOptionId, setSelectedQuoteOptionId] = useState<
+    string | undefined
+  >(undefined)
   const [isSubmittingSwap, setIsSubmittingSwap] = useState<boolean>(false)
 
   // Mutations
@@ -381,15 +382,17 @@ export const useSwap = () => {
     setIsFetchingQuote(false)
     setSwapFees(undefined)
     setTimeUntilNextQuote(undefined)
-    setSelectedQuoteOptionId('')
+    setSelectedQuoteOptionId(undefined)
     if (abortController) {
       abortController.abort()
     }
   }, [abortController])
 
   const onSelectQuoteOption = useCallback(
-    (id: string) => {
-      const option = quoteOptions.find((option) => option.id === id)
+    (id?: string) => {
+      const option = id
+        ? quoteOptions.find((option) => option.id === id)
+        : quoteOptions[0]
       if (!option) {
         return
       }
@@ -456,7 +459,6 @@ export const useSwap = () => {
         toAmountWrapped.isZero() ||
         toAmountWrapped.isNaN() ||
         toAmountWrapped.isUndefined()
-      const quoteOptionId = overrides.quoteOptionId ?? selectedQuoteOptionId
 
       if (isFromAmountEmpty && isToAmountEmpty) {
         reset()
@@ -519,21 +521,18 @@ export const useSwap = () => {
         if (quoteResponse.response.lifiQuote) {
           const { routes } = quoteResponse.response.lifiQuote
 
-          // Check if selectedQuoteOptionId is still an available
-          // option, if not fallback to the first option.
-          const route =
-            routes.find(
-              (route) =>
-                getUniqueRouteId('Li.Fi', route.steps) === quoteOptionId
-            ) ||
-            routes[0] ||
-            undefined
+          // If overrides.quoteOptionId is undefined, we will use the first
+          // route as the default option. If overrides.quoteOptionId is set,
+          // we will try to find the route that matches the quoteOptionId.
+          const route = overrides.selectedQuoteOptionId
+            ? routes.find(
+                (route) => route.uniqueId === overrides.selectedQuoteOptionId
+              ) || routes[0]
+            : routes[0]
 
           if (!route) {
             return
           }
-
-          setSelectedQuoteOptionId(getUniqueRouteId('Li.Fi', route.steps))
 
           if (params.editingFromOrToAmount === 'from') {
             setToAmount(getLiFiToAmount(route).format(6))
@@ -554,7 +553,6 @@ export const useSwap = () => {
         }
 
         if (quoteResponse.response.jupiterQuote) {
-          setSelectedQuoteOptionId(getUniqueRouteId('Jupiter'))
           if (params.editingFromOrToAmount === 'from') {
             setToAmount(
               getJupiterToAmount({
@@ -573,7 +571,6 @@ export const useSwap = () => {
         }
 
         if (quoteResponse.response.zeroExQuote) {
-          setSelectedQuoteOptionId(getUniqueRouteId('0x'))
           if (params.editingFromOrToAmount === 'from') {
             setToAmount(
               getZeroExToAmount({
@@ -599,6 +596,8 @@ export const useSwap = () => {
         }
       }
 
+      setSelectedQuoteOptionId(overrides.selectedQuoteOptionId)
+
       if (quoteResponse?.fees) {
         setSwapFees(quoteResponse?.fees)
       }
@@ -621,8 +620,7 @@ export const useSwap = () => {
       generateSwapQuote,
       slippageTolerance,
       checkAllowance,
-      selectedProvider,
-      selectedQuoteOptionId
+      selectedProvider
     ]
   )
 
@@ -738,8 +736,7 @@ export const useSwap = () => {
       reset()
       await handleQuoteRefreshInternal({
         toToken: token,
-        toAmount: '',
-        quoteOptionId: ''
+        toAmount: ''
       })
     },
     [
@@ -1053,8 +1050,7 @@ export const useSwap = () => {
 
     if (quoteUnion.lifiQuote) {
       const route = quoteUnion.lifiQuote.routes.find(
-        (route) =>
-          getUniqueRouteId('Li.Fi', route.steps) === selectedQuoteOptionId
+        (route) => route.uniqueId === selectedQuoteOptionId
       )
       const step = route?.steps[0]
 
@@ -1116,22 +1112,22 @@ export const useSwap = () => {
   const onChangeSwapProvider = useCallback(
     async (provider: BraveWallet.SwapProvider) => {
       setSelectedProvider(provider)
-      await handleQuoteRefresh({
-        provider,
-        quoteOptionId: ''
+      setSelectedQuoteOptionId(undefined)
+      await handleQuoteRefreshInternal({
+        provider
       })
     },
-    [handleQuoteRefresh]
+    [handleQuoteRefreshInternal]
   )
 
   const onChangeSlippageTolerance = useCallback(
     async (slippage: string) => {
       setSlippageTolerance(slippage)
-      await handleQuoteRefresh({
+      await handleQuoteRefreshInternal({
         slippage
       })
     },
-    [handleQuoteRefresh]
+    [handleQuoteRefreshInternal]
   )
 
   const submitButtonText = useMemo(() => {
@@ -1231,6 +1227,12 @@ export const useSwap = () => {
     isSubmittingSwap
   ])
 
+  const handleQuoteRefreshWithSelectedQuoteOptionId = useCallback(async () => {
+    await handleQuoteRefresh({
+      selectedQuoteOptionId
+    })
+  }, [handleQuoteRefresh, selectedQuoteOptionId])
+
   useEffect(() => {
     const interval = setInterval(async () => {
       if (timeUntilNextQuote && timeUntilNextQuote !== 0) {
@@ -1238,13 +1240,18 @@ export const useSwap = () => {
         return
       }
       if (!isFetchingQuote) {
-        await handleQuoteRefresh({})
+        await handleQuoteRefreshWithSelectedQuoteOptionId()
       }
     }, 1000)
     return () => {
       clearInterval(interval)
     }
-  }, [handleQuoteRefresh, timeUntilNextQuote, isFetchingQuote])
+  }, [
+    handleQuoteRefreshWithSelectedQuoteOptionId,
+    timeUntilNextQuote,
+    isFetchingQuote,
+    selectedQuoteOptionId
+  ])
 
   return {
     fromAccount,
@@ -1274,7 +1281,7 @@ export const useSwap = () => {
     setSelectingFromOrTo,
     handleOnSetFromAmount,
     handleOnSetToAmount,
-    handleQuoteRefresh,
+    handleQuoteRefresh: handleQuoteRefreshWithSelectedQuoteOptionId,
     onClickFlipSwapTokens,
     setSwapAndSendSelected,
     handleOnSetToAnotherAddress,

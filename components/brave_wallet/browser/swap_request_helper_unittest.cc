@@ -981,7 +981,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiQuoteParams) {
   params->to_chain_id = mojom::kSolanaMainnet;
   params->to_token = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
   params->slippage_percentage = "3";
-  params->route_priority = mojom::RoutePriority::kSafest;
+  params->route_priority = mojom::RoutePriority::kCheapest;
 
   auto encoded_params = lifi::EncodeQuoteParams(std::move(params), "0.2");
   ASSERT_NE(encoded_params, std::nullopt);

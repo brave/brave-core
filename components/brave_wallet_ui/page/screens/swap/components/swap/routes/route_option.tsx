@@ -74,6 +74,19 @@ const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, {
   marginRight: 0
 })
 
+function getProviderName(provider: BraveWallet.SwapProvider) {
+  switch (provider) {
+    case BraveWallet.SwapProvider.kJupiter:
+      return 'Jupiter'
+    case BraveWallet.SwapProvider.kZeroEx:
+      return '0x'
+    case BraveWallet.SwapProvider.kLiFi:
+      return 'LiFi'
+    default:
+      return ''
+  }
+}
+
 interface Props {
   option: QuoteOption
   isSelected: boolean
@@ -296,7 +309,7 @@ export const RouteOption = (props: Props) => {
                   'braveWalletExchangeViaProvider'
                 )
                   .replace('$5', source.name)
-                  .replace('$6', option.provider)
+                  .replace('$6', getProviderName(option.provider))
                 const { duringTag: exchange, afterTag } = splitStringForTag(
                   descriptionString,
                   1

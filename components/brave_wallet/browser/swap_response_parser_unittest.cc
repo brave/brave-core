@@ -898,7 +898,7 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
 
     ASSERT_EQ(route->steps.size(), 1u);
     const auto& step = route->steps.at(0);
-    EXPECT_EQ(step->type, mojom::LiFiStepType::kNative);
+    EXPECT_EQ(step->type, mojom::LiFiStepType::kLiFi);
     EXPECT_EQ(step->id, "5a6876f1-988e-4710-85b7-be2bd7681421");
     EXPECT_EQ(step->tool, "optimism");
     EXPECT_EQ(step->tool_details->key, "optimism");
@@ -1073,6 +1073,8 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
     EXPECT_EQ(route->tags.at(0), "RECOMMENDED");
     EXPECT_EQ(route->tags.at(1), "CHEAPEST");
     EXPECT_EQ(route->tags.at(2), "FASTEST");
+
+    EXPECT_EQ(route->unique_id, "optimism");
   }
 
   {
