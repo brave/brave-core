@@ -47,6 +47,9 @@ struct BraveVPNPaywallView: View {
   @State
   private var shouldRedeemPromoCode = false
 
+  @State
+  private var isFreeTrialAvailable = true
+
   // Timer used for resetting the restore action to prevent infinite loading
   @State
   private var iapRestoreTimer: Task<Void, Error>?
@@ -59,12 +62,15 @@ struct BraveVPNPaywallView: View {
     NavigationView {
       VStack(spacing: 8.0) {
         ScrollView {
-          VStack(spacing: 16.0) {
+          VStack(spacing: 8.0) {
             BraveVPNPremiumUpsellView()
-              .padding([.top, .horizontal], 8.0)
+              .padding([.horizontal, .top], 24.0)
               .padding(.bottom, 8.0)
+            Color(braveSystemName: .primitivePrimary25)
+              .frame(height: 1.0)
+            BraveVPNPoweredBrandView(isFreeTrialAvailable: isFreeTrialAvailable)
             tierSelection
-              .padding(.horizontal, 8.0)
+              .padding(.horizontal, 16.0)
             BraveVPNSubscriptionActionView(
               shouldRefreshCredentials: $shouldRefreshCredentials,
               shouldRedeedPromoCode: $shouldRedeemPromoCode
@@ -152,9 +158,8 @@ struct BraveVPNPaywallView: View {
     VStack {
       if availableTierTypes.contains(.yearly) {
         BraveVPNPremiumTierSelectionView(
-          title: "One Year",
-          description: "SAVE UP TO 25%",
-          product: storeSDK.vpnYearlyProduct,
+          originalProduct: BraveVPNProductInfo.yearlySubProduct,
+          discountedProduct: BraveVPNProductInfo.monthlySubProduct,
           type: .yearly,
           selectedTierType: $selectedTierType
         )
@@ -162,22 +167,23 @@ struct BraveVPNPaywallView: View {
 
       if availableTierTypes.contains(.monthly) {
         BraveVPNPremiumTierSelectionView(
-          title: "Monthly",
-          description: nil,
-          product: storeSDK.vpnMonthlyProduct,
+          originalProduct: BraveVPNProductInfo.monthlySubProduct,
+          discountedProduct: nil,
           type: .monthly,
           selectedTierType: $selectedTierType
         )
       }
 
-      Text("All subscriptions are auto-renewed but can be cancelled at any time before renewal.")
-        .multilineTextAlignment(.center)
-        .font(.footnote)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .fixedSize(horizontal: false, vertical: true)
-        .foregroundStyle(Color(braveSystemName: .primitivePrimary90))
-        .padding([.horizontal], 16.0)
-        .padding([.vertical], 12.0)
+      Text(
+        "Subscriptions will be charged via your Apple account. Any unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is canceled at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\n\nBy using Brave, you agree to the Terms of Use and Privacy Policy."
+      )
+      .multilineTextAlignment(.leading)
+      .font(.footnote)
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .fixedSize(horizontal: false, vertical: true)
+      .foregroundStyle(Color(braveSystemName: .primitiveBlurple95))
+      .padding([.horizontal], 16.0)
+      .padding([.top], 12.0)
     }
   }
 
@@ -198,7 +204,7 @@ struct BraveVPNPaywallView: View {
                 .tint(Color.white)
                 .padding()
             } else {
-              Text("Try 7 Days Free Subscription")
+              Text("Try 7 Days Free")
                 .font(.body.weight(.semibold))
                 .foregroundColor(Color(.white))
                 .padding()
@@ -210,16 +216,16 @@ struct BraveVPNPaywallView: View {
             LinearGradient(
               gradient:
                 Gradient(colors: [
-                  Color(UIColor(rgb: 0xFF5500)),
-                  Color(UIColor(rgb: 0xFF006B)),
+                  Color(UIColor(rgb: 0xFF4000)),
+                  Color(UIColor(rgb: 0xFF1F01)),
                 ]),
-              startPoint: .init(x: 0.0, y: 0.0),
-              endPoint: .init(x: 0.0, y: 1.0)
+              startPoint: .init(x: 0.26, y: 0.0),
+              endPoint: .init(x: 0.26, y: 1.0)
             )
           )
         }
       )
-      .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
+      .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
       .disabled(paymentStatus == .ongoing)
       .buttonStyle(.plain)
       .padding([.horizontal], 16.0)
