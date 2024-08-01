@@ -265,9 +265,16 @@ std::string BuildLlamaPrompt(
 
   // Use the first two messages to build the first sequence,
   // which includes the system prompt.
+
+  auto get_latest_text =
+      [](const ai_chat::mojom::ConversationTurnPtr& turn) -> std::string {
+    return (turn->edits && !turn->edits->empty()) ? turn->edits->back()->text
+                                                  : turn->text;
+  };
+
   std::string prompt = BuildLlamaFirstSequence(
-      today_system_message, first_user_message, conversation_history[1]->text,
-      std::nullopt, is_mixtral);
+      today_system_message, first_user_message,
+      get_latest_text(conversation_history[1]), std::nullopt, is_mixtral);
 
   // Loop through the rest of the history two at a time building subsequent
   // sequences. Ignore the last item since that's the current entry.
@@ -278,7 +285,8 @@ std::string BuildLlamaPrompt(
                             kSelectedTextPromptPlaceholder,
                             *conversation_history[i]->selected_text})
             : conversation_history[i]->text;
-    const std::string& assistant_message = conversation_history[i + 1]->text;
+    const std::string& assistant_message =
+        get_latest_text(conversation_history[i + 1]);
     prompt += BuildLlamaSubsequentSequence(
         prev_user_message, assistant_message,
         (is_mixtral) ? std::optional(kMixtralAssistantTag) : std::nullopt,

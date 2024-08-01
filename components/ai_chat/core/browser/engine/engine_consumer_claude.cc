@@ -69,10 +69,13 @@ std::string GetConversationHistoryString(
     if (turn == conversation_history.back()) {
       continue;
     }
+    const std::string& text = (turn->edits && !turn->edits->empty())
+                                  ? turn->edits->back()->text
+                                  : turn->text;
     turn_strings.push_back((turn->character_type == CharacterType::HUMAN
                                 ? kHumanPromptPlaceholder
                                 : kAIPromptPlaceholder) +
-                           turn->text);
+                           text);
     if (turn->selected_text) {
       DCHECK(turn->character_type == CharacterType::HUMAN);
       turn_strings.back() =

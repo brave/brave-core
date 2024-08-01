@@ -285,4 +285,79 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_Rewrite) {
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
+TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
+  // Tests events building from history with modified agent reply.
+  EngineConsumer::ConversationHistory history;
+  history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      mojom::ConversationTurnVisibility::VISIBLE,
+      "Which show is 'This is the way' from?", std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt));
+
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  auto search_event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
+      mojom::SearchStatusEvent::New());
+  auto completion_event = mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("Mandalorian"));
+  events.push_back(search_event.Clone());
+  events.push_back(completion_event.Clone());
+
+  std::vector<mojom::ConversationEntryEventPtr> modified_events;
+  modified_events.push_back(search_event.Clone());
+  auto modified_completion_event =
+      mojom::ConversationEntryEvent::NewCompletionEvent(
+          mojom::CompletionEvent::New("The Mandalorian"));
+  modified_events.push_back(modified_completion_event.Clone());
+
+  auto edit = mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "The Mandalorian.",
+      std::nullopt, std::move(modified_events), base::Time::Now(),
+      std::nullopt);
+  std::vector<mojom::ConversationTurnPtr> edits;
+  edits.push_back(std::move(edit));
+  history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "Mandalorian.", std::nullopt,
+      std::move(events), base::Time::Now(), std::move(edits)));
+  history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      mojom::ConversationTurnVisibility::VISIBLE,
+      "Is it related to a broader series?", std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt));
+  std::string expected_events = R"([
+    {"role": "user", "type": "pageText", "content": "I have spoken."},
+    {"role": "user", "type": "chatMessage",
+     "content": "Which show is 'This is the way' from?"},
+    {"role": "assistant", "type": "chatMessage", "content": "The Mandalorian."},
+    {"role": "user", "type": "chatMessage",
+     "content": "Is it related to a broader series?"}
+  ])";
+  auto* mock_api_client = GetMockConversationAPIClient();
+  base::RunLoop run_loop;
+  EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _))
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        // Some structured EXPECT calls to catch nicer errors first
+        ASSERT_EQ(conversation.size(), 4u);
+        EXPECT_EQ(conversation[0].role, mojom::CharacterType::HUMAN);
+        EXPECT_EQ(conversation[0].type, ConversationAPIClient::PageText);
+        EXPECT_EQ(conversation[1].role, mojom::CharacterType::HUMAN);
+        EXPECT_EQ(conversation[2].role, mojom::CharacterType::ASSISTANT);
+        EXPECT_EQ(conversation[3].role, mojom::CharacterType::HUMAN);
+        // Match entire JSON
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events).c_str());
+        std::move(callback).Run("");
+      });
+  engine_->GenerateAssistantResponse(
+      false, "I have spoken.", history, "Is it related to a broader series?",
+      base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
 }  // namespace ai_chat
