@@ -5,24 +5,7 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
-# These tests crash due to TestingBraveBrowserProcess::process_misc_metrics()
-# returning nullptr.
--AddressBubblesControllerTestToolbarPinningOnly.ToggleBubbleOnIconClick
--All/ManagedUserProfileNoticeHandleProceedTest.HandleProceedWithDoneCallback/*
--All/ManagedUserProfileNoticeHandleProceedTest.HandleProceedWithSuccessConfirmationCallback/*
--All/UserPolicyOidcSigninServiceTest.*
--CreateShortcutBrowserCommandControllerTest.ChromeExtensionSchemeEnabled
--HistoryEmbeddingsHandlerTest.FormatsMojoResults
--HistoryEmbeddingsHandlerTest.RecordsMetrics
--HistoryEmbeddingsHandlerTest.Searches
--HistoryEmbeddingsHandlerTest.ShowsPromo
--SaveCreditCardPromptResultMetricTest.EmitsSavePromptResultLocalHasNoCards/*
--SaveCreditCardPromptResultMetricTest.EmitsSavePromptResultLocalHasSavedCards/*
--SaveCreditCardPromptResultMetricTest.EmitsSavePromptResultUploadHasNoCards/*
--SaveCreditCardPromptResultMetricTest.EmitsSavePromptResultUploadHasSavedCards/*
--SyncConfirmationHandlerTest.*
--UploadCardUpdatedDesktopUiTest.ReturnsApplicableExplanatoryMessage/*
--UploadCardUpdatedDesktopUiTest.ReturnsApplicableWindowTitle/*
+
 
 # These tests crash because brave.search.p3a_default_switch pref is not
 # registered.
