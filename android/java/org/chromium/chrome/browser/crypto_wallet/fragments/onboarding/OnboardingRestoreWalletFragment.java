@@ -48,7 +48,6 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
 
     /** Grid layout containing 12-word phrase. */
     private GridLayout mGridLayout12;
-
     /** Grid layout containing the second part of words for a 24-word phrase */
     private GridLayout mGridLayout24;
 
