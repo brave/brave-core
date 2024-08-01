@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
-import("//brave/components/brave_player/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
@@ -56,7 +55,6 @@ source_set("command_ids") {
 
 brave_grit("brave_generated_resources_grit") {
   defines = [
-    "enable_brave_player=$enable_brave_player",
     "enable_brave_vpn=$enable_brave_vpn",
     "enable_pin_shortcut=$enable_pin_shortcut",
     "enable_playlist_webui=$enable_playlist_webui",

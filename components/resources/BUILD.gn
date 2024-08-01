@@ -6,7 +6,6 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
-import("//brave/components/brave_player/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
@@ -43,7 +42,6 @@ brave_grit("static_resources") {
   }
 
   defines = [
-    "enable_brave_player=$enable_brave_player",
     "enable_brave_vpn=$enable_brave_vpn",
     "enable_playlist_webui=$enable_playlist_webui",
     "enable_playlist=$enable_playlist",
@@ -149,13 +147,6 @@ repack("resources") {
       "//brave/browser/resources/settings/shortcuts_page:generated_resources",
     ]
     sources += [ "$root_gen_dir/brave/browser/resources/settings/shortcuts_page/commands_generated.pak" ]
-  }
-
-  if (enable_brave_player) {
-    deps += [
-      "//brave/components/brave_player/browser/resources:generated_resources",
-    ]
-    sources += [ "$root_gen_dir/brave/components/brave_player/browser/resources/brave_player_generated.pak" ]
   }
 
   output = "$root_gen_dir/components/brave_components_resources.pak"

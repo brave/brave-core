@@ -213,10 +213,6 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [63000]
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_player/brave_player.grd": {
-    "META": {"sizes": {"includes": [10]}},
-    "includes": [63010],
-  },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ai_rewriter_ui/ai_rewriter_ui.grd": {
     "META": {"sizes": {"includes": [10]}},
     "includes": [63020],

@@ -7,7 +7,6 @@
 
 #include "base/check_is_test.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
-#include "brave/components/brave_player/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -15,10 +14,6 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_params.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
-#include "brave/components/brave_player/common/features.h"
-#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
@@ -54,20 +49,6 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
           brave::kPlaylistPageActionIconType);
     }
   }
-
-#if BUILDFLAG(ENABLE_BRAVE_PLAYER)
-  if (base::FeatureList::IsEnabled(brave_player::features::kBravePlayer)) {
-    if (params.browser && params.browser->is_type_normal()) {
-      auto insert_iter =
-          base::ranges::find_if(params.types_enabled, [](const auto& type) {
-            return type == PageActionIconType::kSharingHub ||
-                   type == brave::kPlaylistPageActionIconType;
-          });
-      params.types_enabled.insert(insert_iter,
-                                  brave::kBravePlayerPageActionIconType);
-    }
-  }
-#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
