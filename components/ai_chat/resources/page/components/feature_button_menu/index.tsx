@@ -21,10 +21,6 @@ export default function FeatureMenu() {
     getPageHandlerInstance().pageHandler.openBraveLeoSettings()
   }
 
-  const handleNewConversationClick = () => {
-    getPageHandlerInstance().pageHandler.clearConversationHistory()
-  }
-
   const customModels = context.allModels.filter(model => model.options.customModelOptions !== undefined)
   const leoModels = context.allModels.filter(model => model.options.leoModelOptions !== undefined)
 
@@ -99,13 +95,6 @@ export default function FeatureMenu() {
         )
       })}
       <div className={styles.menuSeparator} />
-
-      <leo-menu-item onClick={handleNewConversationClick}>
-        <div className={classnames(styles.menuItemWithIcon, styles.menuItemMainItem)}>
-          <Icon name='edit-box' />
-          <span className={styles.menuText}>{getLocale('menuNewChat')}</span>
-        </div>
-      </leo-menu-item>
 
       {!context.isPremiumUser &&
       <leo-menu-item onClick={context.goPremium}>
