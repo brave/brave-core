@@ -6,6 +6,7 @@
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 source_set("renderer") {
@@ -34,6 +35,13 @@ source_set("renderer") {
 
   if (enable_speedreader) {
     deps += [ "//brave/components/speedreader/renderer" ]
+  }
+
+  if (enable_web_discovery_native) {
+    deps += [
+      "//brave/components/web_discovery/common",
+      "//brave/components/web_discovery/renderer",
+    ]
   }
 
   if (is_android) {

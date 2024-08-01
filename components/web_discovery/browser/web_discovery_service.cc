@@ -5,8 +5,14 @@
 
 #include "brave/components/web_discovery/browser/web_discovery_service.h"
 
+#include <utility>
+
 #include "base/functional/bind.h"
+#include "base/strings/stringprintf.h"
+#include "brave/components/web_discovery/browser/content_scraper.h"
+#include "brave/components/web_discovery/browser/payload_generator.h"
 #include "brave/components/web_discovery/browser/pref_names.h"
+#include "brave/components/web_discovery/browser/privacy_guard.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -70,6 +76,7 @@ void WebDiscoveryService::Start() {
 }
 
 void WebDiscoveryService::Stop() {
+  content_scraper_ = nullptr;
   server_config_loader_ = nullptr;
   credential_manager_ = nullptr;
 }
@@ -92,6 +99,58 @@ void WebDiscoveryService::OnConfigChange() {
   credential_manager_->JoinGroups();
 }
 
-void WebDiscoveryService::OnPatternsLoaded() {}
+void WebDiscoveryService::OnPatternsLoaded() {
+  if (!content_scraper_) {
+    content_scraper_ = std::make_unique<ContentScraper>(
+        server_config_loader_.get(), &regex_util_);
+  }
+}
+
+bool WebDiscoveryService::ShouldExtractFromPage(
+    const GURL& url,
+    content::RenderFrameHost* render_frame_host) {
+  if (!content_scraper_) {
+    return false;
+  }
+  const auto* matching_url_details =
+      server_config_loader_->GetLastPatterns().GetMatchingURLPattern(url,
+                                                                     false);
+  if (!matching_url_details) {
+    return false;
+  }
+  VLOG(1) << "URL matched pattern " << matching_url_details->id << ": " << url;
+  if (IsPrivateURLLikely(regex_util_, url, matching_url_details)) {
+    return false;
+  }
+  return true;
+}
+
+void WebDiscoveryService::StartExtractingFromPage(
+    const GURL& url,
+    mojo::Remote<mojom::DocumentExtractor> document_extractor) {
+  auto remote_id =
+      document_extractor_remotes_.Add(std::move(document_extractor));
+  content_scraper_->ScrapePage(
+      url, false, document_extractor_remotes_.Get(remote_id),
+      base::BindOnce(&WebDiscoveryService::OnContentScraped,
+                     base::Unretained(this), false));
+}
+
+void WebDiscoveryService::OnContentScraped(
+    bool is_strict,
+    std::unique_ptr<PageScrapeResult> result) {
+  if (!result) {
+    return;
+  }
+  const auto& patterns = server_config_loader_->GetLastPatterns();
+  auto* original_url_details =
+      patterns.GetMatchingURLPattern(result->url, is_strict);
+  if (!original_url_details) {
+    return;
+  }
+  auto payloads = GenerateQueryPayloads(
+      server_config_loader_->GetLastServerConfig(), regex_util_,
+      original_url_details, std::move(result));
+}
 
 }  // namespace web_discovery

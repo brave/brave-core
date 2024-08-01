@@ -68,6 +68,11 @@
 #include "third_party/widevine/cdm/widevine_cdm_common.h"
 #endif
 
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#include "brave/components/web_discovery/common/features.h"
+#include "brave/components/web_discovery/renderer/blink_document_extractor.h"
+#endif
+
 namespace {
 void MaybeRemoveWidevineSupport(media::GetSupportedKeySystemsCB cb,
                                 media::KeySystemInfos key_systems) {
@@ -209,6 +214,13 @@ void BraveContentRendererClient::RenderFrameCreated(
 #if BUILDFLAG(ENABLE_AI_REWRITER)
   if (ai_rewriter::features::IsAIRewriterEnabled()) {
     new ai_rewriter::AIRewriterAgent(render_frame, registry);
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+  if (base::FeatureList::IsEnabled(
+          web_discovery::features::kBraveWebDiscoveryNative)) {
+    new web_discovery::BlinkDocumentExtractor(render_frame, registry);
   }
 #endif
 }

@@ -359,6 +359,7 @@ if (enable_web_discovery_native) {
   brave_chrome_browser_deps += [
     "//brave/browser/web_discovery",
     "//brave/components/web_discovery/browser",
+    "//brave/components/web_discovery/browser:tab_helper",
     "//brave/components/web_discovery/common",
   ]
 }

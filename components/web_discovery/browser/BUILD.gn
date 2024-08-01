@@ -25,12 +25,22 @@ source_set("internal") {
   sources = [
     "background_credential_helper.cc",
     "background_credential_helper.h",
+    "content_scraper.cc",
+    "content_scraper.h",
     "credential_manager.cc",
     "credential_manager.h",
     "credential_signer.h",
+    "hash_detection.cc",
+    "hash_detection.h",
     "patterns.cc",
     "patterns.h",
+    "payload_generator.cc",
+    "payload_generator.h",
     "pref_names.h",
+    "privacy_guard.cc",
+    "privacy_guard.h",
+    "regex_util.cc",
+    "regex_util.h",
     "rsa.cc",
     "rsa.h",
     "server_config_loader.cc",
@@ -43,10 +53,11 @@ source_set("internal") {
 
   deps = [
     "anonymous_credentials",
+    "document_extractor",
     "//base",
     "//brave/brave_domains",
     "//brave/components/constants",
-    "//brave/components/web_discovery/common",
+    "//brave/components/web_discovery/common:mojom",
     "//components/prefs",
     "//crypto",
     "//extensions/buildflags",
@@ -59,11 +70,28 @@ source_set("internal") {
   ]
 }
 
+component("tab_helper") {
+  output_name = "web_discovery_tab_helper"
+  sources = [
+    "web_discovery_tab_helper.cc",
+    "web_discovery_tab_helper.h",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/web_discovery/browser",
+    "//content/public/browser",
+    "//services/service_manager/public/cpp",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [
     "credential_manager_unittest.cc",
+    "hash_detection_unittest.cc",
     "patterns_unittest.cc",
+    "payload_generator_unittest.cc",
+    "privacy_guard_unittest.cc",
     "server_config_loader_unittest.cc",
   ]
   deps = [
@@ -77,4 +105,23 @@ source_set("unit_tests") {
     "//services/network/public/cpp",
     "//testing/gtest",
   ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  sources = [ "content_scraper_browsertest.cc" ]
+  deps = [
+    ":browser",
+    ":internal",
+    "//base/test:test_support",
+    "//brave/components/constants",
+    "//brave/components/web_discovery/common",
+    "//brave/components/web_discovery/common:mojom",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//services/service_manager/public/cpp",
+    "//testing/gtest",
+  ]
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }
