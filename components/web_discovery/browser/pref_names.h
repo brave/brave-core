@@ -20,6 +20,14 @@ inline constexpr char kCredentialRSAPrivateKey[] =
 inline constexpr char kAnonymousCredentialsDict[] =
     "brave.web_discovery.anon_creds";
 
+inline constexpr char kScheduledDoubleFetches[] =
+    "brave.web_discovery.scheduled_double_fetches";
+inline constexpr char kScheduledReports[] =
+    "brave.web_discovery.scheduled_reports";
+inline constexpr char kUsedBasenameCounts[] =
+    "brave.web_discovery.used_basename_counts";
+inline constexpr char kPageCounts[] = "brave.web_discovery.page_counts";
+
 // Local state
 
 // Stores the last retrieval time of patterns.json from the
