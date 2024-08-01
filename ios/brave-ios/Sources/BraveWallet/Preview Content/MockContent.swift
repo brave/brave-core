@@ -678,6 +678,7 @@ extension BraveWallet.LiFiQuote {
     routes: [
       .init(
         id: "route.1",
+        uniqueId: "allbridge",
         from: .previewToken,
         fromAmount: "1000000000000000000",
         fromAddress: BraveWallet.AccountInfo.mockEthAccount.address,
@@ -688,7 +689,7 @@ extension BraveWallet.LiFiQuote {
         steps: [
           .init(
             id: "step.1",
-            type: .native,
+            type: .liFi,
             tool: "1inch",
             toolDetails: .init(key: "", name: "", logo: ""),
             action: .init(),
