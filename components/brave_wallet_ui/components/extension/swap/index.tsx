@@ -11,7 +11,26 @@ import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 import { openBlockExplorerURL } from '../../../utils/block-explorer-utils'
 
-// Styled components
+// Components
+import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
+import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
+import { withPlaceholderIcon } from '../../shared/create-placeholder-icon/index'
+import { NftIcon } from '../../shared/nft-icon/nft-icon'
+
+// Types / constants
+import { BraveWallet } from '../../../constants/types'
+import {
+  NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
+  UNKNOWN_TOKEN_COINGECKO_ID
+} from '../../../common/constants/magics'
+
+// Hooks
+import {
+  useGetNetworkQuery,
+  useGetTokenInfoQuery
+} from '../../../common/slices/api.slice'
+
+// Styled Components
 import {
   ExchangeRate,
   SwapDetails,
@@ -33,28 +52,13 @@ import {
   LaunchButton,
   SwapAmountRow
 } from './swap.style'
-import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
-import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
-import { withPlaceholderIcon } from '../../shared/create-placeholder-icon/index'
 import {
   IconsWrapper as SwapAssetIconWrapper,
   NetworkIconWrapper,
-  LaunchIcon
+  LaunchIcon,
+  Text,
+  Row
 } from '../../shared/style'
-import { NftIcon } from '../../shared/nft-icon/nft-icon'
-
-// Types / constants
-import { BraveWallet } from '../../../constants/types'
-import {
-  NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
-  UNKNOWN_TOKEN_COINGECKO_ID
-} from '../../../common/constants/magics'
-
-// Hooks
-import {
-  useGetNetworkQuery,
-  useGetTokenInfoQuery
-} from '../../../common/slices/api.slice'
 
 type SwapToken = Pick<
   BraveWallet.BlockchainToken,
@@ -117,6 +121,9 @@ interface Props {
   recipientOrb?: string
   recipientLabel?: string
   expectRecipientAddress?: boolean
+  isBridgeTx?: boolean
+  toChainId?: string
+  toCoin?: BraveWallet.CoinType
 }
 
 export function SwapBase(props: Props) {
@@ -129,13 +136,20 @@ export function SwapBase(props: Props) {
     senderOrb,
     recipientOrb,
     recipientLabel,
-    expectRecipientAddress
+    expectRecipientAddress,
+    isBridgeTx,
+    toChainId,
+    toCoin
   } = props
 
   // queries
   const { data: sellAssetNetwork } = useGetNetworkQuery(sellToken ?? skipToken)
 
-  const { data: buyAssetNetwork } = useGetNetworkQuery(buyToken ?? skipToken)
+  const { data: buyAssetNetwork } = useGetNetworkQuery(
+    isBridgeTx && toChainId && toCoin
+      ? { chainId: toChainId, coin: toCoin }
+      : buyToken ?? skipToken
+  )
 
   const { data: sellTokenInfo } = useGetTokenInfoQuery(
     sellToken &&
@@ -212,7 +226,7 @@ export function SwapBase(props: Props) {
         </SwapDetailsArrowContainer>
 
         <SwapAsset
-          type='buy'
+          type={isBridgeTx ? 'bridge' : 'buy'}
           network={buyAssetNetwork}
           address={recipientLabel}
           orb={recipientOrb}
@@ -226,7 +240,7 @@ export function SwapBase(props: Props) {
 }
 
 interface SwapAssetProps {
-  type: 'sell' | 'buy'
+  type: 'sell' | 'buy' | 'bridge'
   network?: BraveWallet.NetworkInfo
   amount?: string
   asset?: SwapToken
@@ -278,73 +292,96 @@ function SwapAsset(props: SwapAssetProps) {
           </SwapAssetAddress>
         )}
       </SwapAssetHeader>
-
-      <SwapAssetDetailsContainer>
-        <SwapAssetIconWrapper>
-          {!AssetIconWithPlaceholder || !asset || !network ? (
-            <LoadingSkeleton
-              circle={true}
-              width={40}
-              height={40}
-            />
-          ) : (
-            <>
-              {asset.isErc721 ? (
-                <NftIconWithPlaceholder asset={asset} />
-              ) : (
-                <AssetIconWithPlaceholder asset={asset} />
-              )}
-              {asset.contractAddress !== '' && (
-                <NetworkIconWrapper>
-                  <CreateNetworkIcon
-                    network={network}
-                    marginRight={0}
-                  />
-                </NetworkIconWrapper>
-              )}
-            </>
-          )}
-        </SwapAssetIconWrapper>
-        <SwapAmountColumn>
-          {!networkDescription || !asset || !amount ? (
-            <>
+      {type === 'bridge' ? (
+        <Row
+          justifyContent='flex-start'
+          margin='0px 12px'
+          gap='8px'
+        >
+          <Text
+            textSize='22px'
+            isBold={true}
+            textColor='success'
+          >
+            {getLocale('braveWalletOnNetwork').replace(
+              '$1',
+              network?.chainName ?? ''
+            )}
+          </Text>
+          <CreateNetworkIcon
+            network={network}
+            marginRight={0}
+            size='small'
+          />
+        </Row>
+      ) : (
+        <SwapAssetDetailsContainer>
+          <SwapAssetIconWrapper>
+            {!AssetIconWithPlaceholder || !asset || !network ? (
               <LoadingSkeleton
-                width={200}
-                height={18}
+                circle={true}
+                width={40}
+                height={40}
               />
-              <Spacer />
-              <LoadingSkeleton
-                width={200}
-                height={18}
-              />
-            </>
-          ) : (
-            <>
-              <SwapAmountRow>
-                <SwapAssetAmountSymbol>
-                  {new Amount(amount)
-                    .divideByDecimals(asset.decimals)
-                    .formatAsAsset(6, asset.symbol)}
-                </SwapAssetAmountSymbol>
-                {asset.contractAddress !== '' && (
-                  <LaunchButton
-                    onClick={openBlockExplorerURL({
-                      type: 'token',
-                      network,
-                      value: asset.contractAddress
-                    })}
-                  >
-                    <LaunchIcon />
-                  </LaunchButton>
+            ) : (
+              <>
+                {asset.isErc721 ? (
+                  <NftIconWithPlaceholder asset={asset} />
+                ) : (
+                  <AssetIconWithPlaceholder asset={asset} />
                 )}
-              </SwapAmountRow>
-              <NetworkDescriptionText>
-                {networkDescription}
-              </NetworkDescriptionText>
-            </>
-          )}
-        </SwapAmountColumn>
-      </SwapAssetDetailsContainer>
+                {asset.contractAddress !== '' && (
+                  <NetworkIconWrapper>
+                    <CreateNetworkIcon
+                      network={network}
+                      marginRight={0}
+                    />
+                  </NetworkIconWrapper>
+                )}
+              </>
+            )}
+          </SwapAssetIconWrapper>
+          <SwapAmountColumn>
+            {!networkDescription || !asset || !amount ? (
+              <>
+                <LoadingSkeleton
+                  width={200}
+                  height={18}
+                />
+                <Spacer />
+                <LoadingSkeleton
+                  width={200}
+                  height={18}
+                />
+              </>
+            ) : (
+              <>
+                <SwapAmountRow>
+                  <SwapAssetAmountSymbol>
+                    {new Amount(amount)
+                      .divideByDecimals(asset.decimals)
+                      .formatAsAsset(6, asset.symbol)}
+                  </SwapAssetAmountSymbol>
+                  {asset.contractAddress !== '' && (
+                    <LaunchButton
+                      onClick={openBlockExplorerURL({
+                        type: 'token',
+                        network,
+                        value: asset.contractAddress
+                      })}
+                    >
+                      <LaunchIcon />
+                    </LaunchButton>
+                  )}
+                </SwapAmountRow>
+                <NetworkDescriptionText>
+                  {networkDescription}
+                </NetworkDescriptionText>
+              </>
+            )}
+          </SwapAmountColumn>
+        </SwapAssetDetailsContainer>
+      )}
     </SwapAssetContainer>
   )
 }

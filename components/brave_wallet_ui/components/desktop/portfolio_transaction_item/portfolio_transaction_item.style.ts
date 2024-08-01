@@ -126,7 +126,6 @@ export const ArrowIconWrapper = styled.div`
   border-radius: 100%;
   width: 12px;
   height: 12px;
-  margin: 0px 8px;
 `
 
 export const ArrowIcon = styled(Icon).attrs({

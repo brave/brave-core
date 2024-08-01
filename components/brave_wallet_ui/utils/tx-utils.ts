@@ -1371,6 +1371,10 @@ export const isSwapTransaction = (tx: TransactionInfo) => {
   ].includes(tx.txType)
 }
 
+export const isBridgeTransaction = (tx: TransactionInfo) => {
+  return tx.swapInfo?.fromChainId !== tx.swapInfo?.toChainId
+}
+
 export const getTransactionFormattedSendCurrencyTotal = ({
   normalizedTransferredValue,
   sellToken,
