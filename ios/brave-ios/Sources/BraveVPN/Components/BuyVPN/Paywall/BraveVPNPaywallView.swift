@@ -19,7 +19,7 @@ enum BraveVPNPaymentStatus {
   case failure
 }
 
-struct BraveVPNPaywallView: View {
+public struct BraveVPNPaywallView: View {
   @Environment(\.dismiss)
   private var dismiss
 
@@ -29,8 +29,8 @@ struct BraveVPNPaywallView: View {
   @State
   private var availableTierTypes: [BraveVPNSubscriptionTier] = [.yearly, .monthly]
 
-  @ObservedObject
-  private(set) var storeSDK = BraveStoreSDK.shared
+  //  @ObservedObject
+  //  private(set) var storeSDK = BraveStoreSDK.shared
 
   @State
   private var paymentStatus: BraveVPNPaymentStatus = .success
@@ -56,9 +56,13 @@ struct BraveVPNPaywallView: View {
 
   var premiumUpgrageSuccessful: ((BraveVPNSubscriptionTier) -> Void)?
 
-  var refreshCredentials: (() -> Void)?
+  var openVPNAuthenticationInNewTab: (() -> Void)?
 
-  var body: some View {
+  public init(openVPNAuthenticationInNewTab: @escaping (() -> Void)) {
+    self.openVPNAuthenticationInNewTab = openVPNAuthenticationInNewTab
+  }
+
+  public var body: some View {
     NavigationView {
       VStack(spacing: 8.0) {
         ScrollView {
@@ -145,7 +149,7 @@ struct BraveVPNPaywallView: View {
       }
       .onChange(of: shouldRefreshCredentials) { shouldRefreshCredentials in
         dismiss()
-        refreshCredentials?()
+        openVPNAuthenticationInNewTab?()
       }
     }
     .navigationViewStyle(.stack)
@@ -237,12 +241,12 @@ struct BraveVPNPaywallView: View {
     paymentStatus = .ongoing
 
     do {
-      switch selectedTierType {
-      case .monthly:
-        try await storeSDK.purchase(product: BraveStoreProduct.vpnMonthly)
-      case .yearly:
-        try await storeSDK.purchase(product: BraveStoreProduct.vpnYearly)
-      }
+      //      switch selectedTierType {
+      //      case .monthly:
+      //        try await storeSDK.purchase(product: BraveStoreProduct.vpnMonthly)
+      //      case .yearly:
+      //        try await storeSDK.purchase(product: BraveStoreProduct.vpnYearly)
+      //      }
 
       paymentStatus = .success
       shouldDismiss = true
@@ -258,15 +262,15 @@ struct BraveVPNPaywallView: View {
   private func restorePurchase() async {
     paymentStatus = .ongoing
 
-    if await storeSDK.restorePurchases() {
-      iapRestoreTimer?.cancel()
-      paymentStatus = .success
-      shouldDismiss = true
-    } else {
-      iapRestoreTimer?.cancel()
-      paymentStatus = .failure
-      isShowingPurchaseAlert = true
-    }
+    //    if await storeSDK.restorePurchases() {
+    //      iapRestoreTimer?.cancel()
+    //      paymentStatus = .success
+    //      shouldDismiss = true
+    //    } else {
+    //      iapRestoreTimer?.cancel()
+    //      paymentStatus = .failure
+    //      isShowingPurchaseAlert = true
+    //    }
 
     if iapRestoreTimer != nil {
       iapRestoreTimer?.cancel()
@@ -287,6 +291,6 @@ struct BraveVPNPaywallView: View {
 
 #if DEBUG
 #Preview("VPNSubscriptionPaywall") {
-  BraveVPNPaywallView()
+  BraveVPNPaywallView(openVPNAuthenticationInNewTab: {})
 }
 #endif
