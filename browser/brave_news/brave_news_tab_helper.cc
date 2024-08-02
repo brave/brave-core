@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
@@ -49,8 +50,12 @@ BraveNewsTabHelper::BraveNewsTabHelper(content::WebContents* contents)
               contents->GetBrowserContext())) {
   CHECK(!contents->GetBrowserContext()->IsOffTheRecord());
 
-  pref_observation_.Observe(&controller_->prefs());
-  controller_->GetPublishers(base::DoNothing());
+  if (controller_) {
+    pref_observation_.Observe(&controller_->prefs());
+    controller_->GetPublishers(base::DoNothing());
+  } else {
+    CHECK_IS_TEST();
+  }
 }
 
 BraveNewsTabHelper::~BraveNewsTabHelper() = default;
@@ -58,6 +63,11 @@ BraveNewsTabHelper::~BraveNewsTabHelper() = default;
 const std::vector<GURL> BraveNewsTabHelper::GetAvailableFeedUrls() {
   std::vector<GURL> feeds;
   base::flat_set<GURL> seen_feeds;
+
+  if (!controller_) {
+    CHECK_IS_TEST();
+    return feeds;
+  }
 
   auto current_url = GetWebContents().GetLastCommittedURL();
   if (!current_url.is_empty() && !current_url.host().empty()) {
