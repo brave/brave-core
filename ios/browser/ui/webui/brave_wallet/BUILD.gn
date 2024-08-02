@@ -13,6 +13,8 @@ source_set("brave_wallet") {
     "blockchain_images_source.mm",
     "brave_wallet_page_ui.h",
     "brave_wallet_page_ui.mm",
+    "nft_ui.h",
+    "nft_ui.mm",
     "wallet_common_ui.h",
     "wallet_common_ui.mm",
     "wallet_handler.h",
@@ -47,5 +49,6 @@ source_set("brave_wallet") {
     "//services/service_manager/public/cpp",
     "//third_party/abseil-cpp:absl",
     "//ui/base",
+    "//ui/resources:webui_resources_grd_grit",
   ]
 }
