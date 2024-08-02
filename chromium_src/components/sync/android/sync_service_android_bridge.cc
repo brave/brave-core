@@ -12,6 +12,8 @@
 #include "src/components/sync/android/sync_service_android_bridge.cc"
 #undef KeepAccountSettingsPrefsOnlyForUsers
 
+namespace syncer {
+
 // Along with SyncUserSettings::KeepAccountSettingsPrefsOnlyForUsers_Unused
 // makes this method do nothing.
 // We need it on Android because Brave Browser doesn't use Google Account
@@ -27,3 +29,5 @@
 void SyncServiceAndroidBridge::KeepAccountSettingsPrefsOnlyForUsers(
     JNIEnv* env,
     const base::android::JavaParamRef<jobjectArray>& gaia_ids) {}
+
+}  // namespace syncer
