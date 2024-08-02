@@ -320,6 +320,7 @@ source_set("ui") {
       "//brave/components/sidebar/common",
       "//chrome/app:generated_resources",
       "//chrome/browser/profiles",
+      "//chrome/browser/search",
       "//chrome/browser/sync",
       "//chrome/browser/themes",
       "//chrome/browser/ui/browser_window",
