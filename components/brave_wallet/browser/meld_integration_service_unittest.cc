@@ -21,8 +21,10 @@
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/meld_integration.mojom-forward.h"
 #include "brave/components/brave_wallet/common/meld_integration.mojom.h"
 #include "components/grit/brave_components_strings.h"
+#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/public/mojom/url_loader_factory.mojom.h"
@@ -305,17 +307,25 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       const std::optional<std::string>& external_customer_id,
       const std::optional<std::string>& external_session_id,
       MeldIntegrationService::CryptoBuyWidgetCreateCallback callback,
-      const net::HttpStatusCode http_status = net::HTTP_OK) {
-    auto session_data = mojom::CryptoBuySessionData::New(
-        country_code, destination_currency_code, lock_fields,
-        payment_method_type, redirect_url, service_provider, source_amount,
-        source_currency_code, wallet_address, wallet_tag);
+      const net::HttpStatusCode http_status = net::HTTP_OK,
+      const bool is_session_data_null = false) {
+    mojom::CryptoBuySessionDataPtr session_data;
+    if (!is_session_data_null) {
+      session_data = mojom::CryptoBuySessionData::New(
+          country_code, destination_currency_code, lock_fields,
+          payment_method_type, redirect_url, service_provider, source_amount,
+          source_currency_code, wallet_address, wallet_tag);
+    }
 
-    auto customer_data = mojom::CryptoWidgetCustomerData::New(
-        customer_object_email
-            ? mojom::CustomerObject::New(customer_object_email.value())
-            : nullptr,
-        "customer_id", "external_customer_id", "external_session_id");
+    mojom::CryptoWidgetCustomerDataPtr customer_data;
+    if (customer_object_email || customer_id || external_customer_id ||
+        external_session_id) {
+      customer_data = mojom::CryptoWidgetCustomerData::New(
+          customer_object_email
+              ? mojom::CustomerObject::New(customer_object_email.value())
+              : nullptr,
+          customer_id, external_customer_id, external_session_id);
+    }
 
     auto request_payload_check_callback = base::BindRepeating(
         [](const std::optional<std::string>& customer_id,
@@ -406,17 +416,25 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       const std::optional<std::string>& external_customer_id,
       const std::optional<std::string>& external_session_id,
       MeldIntegrationService::CryptoBuyWidgetCreateCallback callback,
-      const net::HttpStatusCode http_status = net::HTTP_OK) {
-    auto session_data = mojom::CryptoSellSessionData::New(
-        country_code, destination_currency_code, lock_fields,
-        payment_method_type, redirect_url, service_provider, source_amount,
-        source_currency_code, wallet_address, wallet_tag);
+      const net::HttpStatusCode http_status = net::HTTP_OK,
+      const bool is_session_data_null = false) {
+    mojom::CryptoSellSessionDataPtr session_data;
+    if (!is_session_data_null) {
+      session_data = mojom::CryptoSellSessionData::New(
+          country_code, destination_currency_code, lock_fields,
+          payment_method_type, redirect_url, service_provider, source_amount,
+          source_currency_code, wallet_address, wallet_tag);
+    }
 
-    auto customer_data = mojom::CryptoWidgetCustomerData::New(
-        customer_object_email
-            ? mojom::CustomerObject::New(customer_object_email.value())
-            : nullptr,
-        "customer_id", "external_customer_id", "external_session_id");
+    mojom::CryptoWidgetCustomerDataPtr customer_data;
+    if (customer_object_email || customer_id || external_customer_id ||
+        external_session_id) {
+      customer_data = mojom::CryptoWidgetCustomerData::New(
+          customer_object_email
+              ? mojom::CustomerObject::New(customer_object_email.value())
+              : nullptr,
+          customer_id, external_customer_id, external_session_id);
+    }
 
     auto request_payload_check_callback = base::BindRepeating(
         [](const std::optional<std::string>& customer_id,
@@ -506,17 +524,25 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       const std::optional<std::string>& external_customer_id,
       const std::optional<std::string>& external_session_id,
       MeldIntegrationService::CryptoBuyWidgetCreateCallback callback,
-      const net::HttpStatusCode http_status = net::HTTP_OK) {
-    auto session_data = mojom::CryptoTransferSessionData::New(
-        country_code, institution_id, lock_fields, redirect_url,
-        service_provider, source_amount, source_currency_codes, wallet_address,
-        wallet_tag);
+      const net::HttpStatusCode http_status = net::HTTP_OK,
+      const bool is_session_data_null = false) {
+    mojom::CryptoTransferSessionDataPtr session_data;
+    if (!is_session_data_null) {
+      session_data = mojom::CryptoTransferSessionData::New(
+          country_code, institution_id, lock_fields, redirect_url,
+          service_provider, source_amount, source_currency_codes,
+          wallet_address, wallet_tag);
+    }
 
-    auto customer_data = mojom::CryptoWidgetCustomerData::New(
-        customer_object_email
-            ? mojom::CustomerObject::New(customer_object_email.value())
-            : nullptr,
-        "customer_id", "external_customer_id", "external_session_id");
+    mojom::CryptoWidgetCustomerDataPtr customer_data;
+    if (customer_object_email || customer_id || external_customer_id ||
+        external_session_id) {
+      customer_data = mojom::CryptoWidgetCustomerData::New(
+          customer_object_email
+              ? mojom::CustomerObject::New(customer_object_email.value())
+              : nullptr,
+          customer_id, external_customer_id, external_session_id);
+    }
 
     auto request_payload_check_callback = base::BindRepeating(
         [](const std::optional<std::string>& customer_id,
@@ -1510,7 +1536,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoBuyWidgetCreate) {
 })",
       "US", "BTC", std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
       "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
-      "walletTag", std::nullopt, "customer_id", "external_customer_id",
+      "walletTag", "customer@email", "customer_id", "external_customer_id",
       "external_session_id",
       base::BindLambdaForTesting(
           [](mojom::MeldCryptoWidgetPtr crypto_widget,
@@ -1537,8 +1563,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoBuyWidgetCreate) {
 })",
       "US", "BTC", std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
       "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
-      "walletTag", std::nullopt, "customer_id", "external_customer_id",
-      "external_session_id",
+      "walletTag", std::nullopt, std::nullopt, std::nullopt, std::nullopt,
       base::BindLambdaForTesting(
           [](mojom::MeldCryptoWidgetPtr crypto_widget,
              const std::optional<std::vector<std::string>>& errors) {
@@ -1552,8 +1577,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoBuyWidgetCreate) {
       "some wrong data", "US", "BTC",
       std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
       "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
-      "walletTag", std::nullopt, "customer_id", "external_customer_id",
-      "external_session_id",
+      "walletTag", std::nullopt, std::nullopt, std::nullopt, std::nullopt,
       base::BindLambdaForTesting(
           [](mojom::MeldCryptoWidgetPtr crypto_widget,
              const std::optional<std::vector<std::string>>& errors) {
@@ -1566,8 +1590,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoBuyWidgetCreate) {
       "some wrong data", "US", "BTC",
       std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
       "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
-      "walletTag", std::nullopt, "customer_id", "external_customer_id",
-      "external_session_id",
+      "walletTag", std::nullopt, std::nullopt, std::nullopt, std::nullopt,
       base::BindLambdaForTesting(
           [](mojom::MeldCryptoWidgetPtr crypto_widget,
              const std::optional<std::vector<std::string>>& errors) {
@@ -1577,6 +1600,19 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoBuyWidgetCreate) {
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
           }),
       net::HTTP_REQUEST_TIMEOUT);
+
+  TestCryptoBuyWidgetCreate(
+      "", "", "", std::nullopt, std::nullopt, std::nullopt, "", "", "", "",
+      std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt,
+      base::BindLambdaForTesting(
+          [](mojom::MeldCryptoWidgetPtr crypto_widget,
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{l10n_util::GetStringUTF8(
+                          IDS_WALLET_REQUEST_PROCESSING_ERROR)});
+          }),
+      net::HTTP_OK, true);
 
   TestCryptoBuyWidgetCreate(
       R"({
@@ -1591,8 +1627,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoBuyWidgetCreate) {
   })",
       "US", "BTC", std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
       "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
-      "walletTag", std::nullopt, "customer_id", "external_customer_id",
-      "external_session_id",
+      "walletTag", std::nullopt, std::nullopt, std::nullopt, std::nullopt,
       base::BindLambdaForTesting(
           [](mojom::MeldCryptoWidgetPtr crypto_widget,
              const std::optional<std::vector<std::string>>& errors) {
@@ -1616,7 +1651,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoSellWidgetCreate) {
 })",
       "US", "BTC", std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
       "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", std::nullopt,
-      "walletTag", std::nullopt, "customer_id", "external_customer_id",
+      "walletTag", "customer@email", "customer_id", "external_customer_id",
       "external_session_id",
       base::BindLambdaForTesting(
           [](mojom::MeldCryptoWidgetPtr crypto_widget,
@@ -1643,8 +1678,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoSellWidgetCreate) {
 })",
       "US", "BTC", std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
       "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
-      "walletTag", std::nullopt, "customer_id", "external_customer_id",
-      "external_session_id",
+      "walletTag", std::nullopt, std::nullopt, std::nullopt, std::nullopt,
       base::BindLambdaForTesting(
           [](mojom::MeldCryptoWidgetPtr crypto_widget,
              const std::optional<std::vector<std::string>>& errors) {
@@ -1658,8 +1692,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoSellWidgetCreate) {
       "some wrong data", "US", "BTC",
       std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
       "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
-      "walletTag", std::nullopt, "customer_id", "external_customer_id",
-      "external_session_id",
+      "walletTag", std::nullopt, std::nullopt, std::nullopt, std::nullopt,
       base::BindLambdaForTesting(
           [](mojom::MeldCryptoWidgetPtr crypto_widget,
              const std::optional<std::vector<std::string>>& errors) {
@@ -1672,8 +1705,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoSellWidgetCreate) {
       "some wrong data", "US", "BTC",
       std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
       "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
-      "walletTag", std::nullopt, "customer_id", "external_customer_id",
-      "external_session_id",
+      "walletTag", std::nullopt, std::nullopt, std::nullopt, std::nullopt,
       base::BindLambdaForTesting(
           [](mojom::MeldCryptoWidgetPtr crypto_widget,
              const std::optional<std::vector<std::string>>& errors) {
@@ -1683,6 +1715,20 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoSellWidgetCreate) {
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
           }),
       net::HTTP_REQUEST_TIMEOUT);
+
+  TestCryptoSellWidgetCreate(
+      "", "", "", std::nullopt, std::nullopt, std::nullopt, "", "", "",
+      std::nullopt, std::nullopt, std::nullopt, std::nullopt, std::nullopt,
+      std::nullopt,
+      base::BindLambdaForTesting(
+          [](mojom::MeldCryptoWidgetPtr crypto_widget,
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{l10n_util::GetStringUTF8(
+                          IDS_WALLET_REQUEST_PROCESSING_ERROR)});
+          }),
+      net::HTTP_OK, true);
 
   TestCryptoSellWidgetCreate(
       R"({
@@ -1697,7 +1743,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoSellWidgetCreate) {
   })",
       "US", "BTC", std::vector<std::string>{"cryptoCurrency"}, "BANK_TRANSFER",
       "https://sb.fluidmoney.xyz", "AKOYA", "100", "USD", "testWalletAddress",
-      "walletTag", std::nullopt, "customer_id", "external_customer_id",
+      "walletTag", std::nullopt, std::nullopt, std::nullopt,
       "external_session_id",
       base::BindLambdaForTesting(
           [](mojom::MeldCryptoWidgetPtr crypto_widget,
@@ -1723,7 +1769,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoTransferWidgetCreate) {
       "US", "institution", std::vector<std::string>{"cryptoCurrency"},
       "https://sb.fluidmoney.xyz", "AKOYA", "1",
       std::vector<std::string>{"BTC", "ETH"}, std::nullopt, "walletTag",
-      std::nullopt, "customer_id", "external_customer_id",
+      "customer@email", "customer_id", "external_customer_id",
       "external_session_id",
       base::BindLambdaForTesting(
           [](mojom::MeldCryptoWidgetPtr crypto_widget,
@@ -1739,7 +1785,6 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoTransferWidgetCreate) {
             EXPECT_EQ("https://meldcrypto.com?token=token-val",
                       crypto_widget->widget_url);
           }));
-
   TestCryptoTransferWidgetCreate(
       R"({
   "externalSessionId": "external_session_id",
@@ -1751,8 +1796,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoTransferWidgetCreate) {
       "US", "institution", std::vector<std::string>{"cryptoCurrency"},
       "https://sb.fluidmoney.xyz", "AKOYA", "1",
       std::vector<std::string>{"BTC", "ETH"}, std::nullopt, "walletTag",
-      std::nullopt, "customer_id", "external_customer_id",
-      "external_session_id",
+      std::nullopt, std::nullopt, std::nullopt, std::nullopt,
       base::BindLambdaForTesting(
           [](mojom::MeldCryptoWidgetPtr crypto_widget,
              const std::optional<std::vector<std::string>>& errors) {
@@ -1766,8 +1810,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoTransferWidgetCreate) {
       "some wrong data", "US", "institution",
       std::vector<std::string>{"cryptoCurrency"}, "https://sb.fluidmoney.xyz",
       "AKOYA", "1", std::vector<std::string>{"BTC", "ETH"}, std::nullopt,
-      "walletTag", std::nullopt, "customer_id", "external_customer_id",
-      "external_session_id",
+      "walletTag", std::nullopt, std::nullopt, std::nullopt, std::nullopt,
       base::BindLambdaForTesting(
           [](mojom::MeldCryptoWidgetPtr crypto_widget,
              const std::optional<std::vector<std::string>>& errors) {
@@ -1780,8 +1823,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoTransferWidgetCreate) {
       "some wrong data", "US", "institution",
       std::vector<std::string>{"cryptoCurrency"}, "https://sb.fluidmoney.xyz",
       "AKOYA", "1", std::vector<std::string>{"BTC", "ETH"}, std::nullopt,
-      "walletTag", std::nullopt, "customer_id", "external_customer_id",
-      "external_session_id",
+      "walletTag", std::nullopt, std::nullopt, std::nullopt, std::nullopt,
       base::BindLambdaForTesting(
           [](mojom::MeldCryptoWidgetPtr crypto_widget,
              const std::optional<std::vector<std::string>>& errors) {
@@ -1791,6 +1833,20 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoTransferWidgetCreate) {
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
           }),
       net::HTTP_REQUEST_TIMEOUT);
+
+  TestCryptoTransferWidgetCreate(
+      "", std::nullopt, std::nullopt, std::nullopt, std::nullopt, "", "",
+      std::vector<std::string>{}, std::nullopt, std::nullopt, std::nullopt,
+      std::nullopt, std::nullopt, std::nullopt,
+      base::BindLambdaForTesting(
+          [](mojom::MeldCryptoWidgetPtr crypto_widget,
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{l10n_util::GetStringUTF8(
+                          IDS_WALLET_REQUEST_PROCESSING_ERROR)});
+          }),
+      net::HTTP_OK, true);
 
   TestCryptoTransferWidgetCreate(
       R"({
@@ -1806,7 +1862,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoTransferWidgetCreate) {
       "US", "institution", std::vector<std::string>{"cryptoCurrency"},
       "https://sb.fluidmoney.xyz", "AKOYA", "1",
       std::vector<std::string>{"BTC", "ETH"}, std::nullopt, "walletTag",
-      std::nullopt, "customer_id", "external_customer_id",
+      "customer@email", "customer_id", "external_customer_id",
       "external_session_id",
       base::BindLambdaForTesting(
           [](mojom::MeldCryptoWidgetPtr crypto_widget,

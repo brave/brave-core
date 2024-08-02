@@ -133,7 +133,7 @@ bool NeedsToParseResponse(const int http_error_code) {
 }
 
 void FillCustomerData(
-    brave_wallet::mojom::CryptoWidgetCustomerDataPtr customer_data,
+    const brave_wallet::mojom::CryptoWidgetCustomerDataPtr& customer_data,
     base::Value::Dict& cbwr) {
   if (customer_data) {
     if (customer_data->customer) {
@@ -197,7 +197,7 @@ std::optional<base::Value::Dict> GetCryptoBuyWidgetPayload(
   cbwr.Set("sessionData", std::move(cbsd));
   cbwr.Set("sessionType", "BUY");
 
-  FillCustomerData(std::move(customer_data), cbwr);
+  FillCustomerData(customer_data, cbwr);
 
   return cbwr;
 }
@@ -244,7 +244,7 @@ std::optional<base::Value::Dict> GetCryptoSellWidgetPayload(
   cbwr.Set("sessionData", std::move(cbsd));
   cbwr.Set("sessionType", "SELL");
 
-  FillCustomerData(std::move(customer_data), cbwr);
+  FillCustomerData(customer_data, cbwr);
 
   return cbwr;
 }
@@ -302,7 +302,7 @@ std::optional<base::Value::Dict> GetCryptoTransferWidgetPayload(
   cbwr.Set("sessionData", std::move(cbsd));
   cbwr.Set("sessionType", "TRANSFER");
 
-  FillCustomerData(std::move(customer_data), cbwr);
+  FillCustomerData(customer_data, cbwr);
 
   return cbwr;
 }
@@ -730,12 +730,18 @@ void MeldIntegrationService::CryptoBuyWidgetCreate(
     mojom::CryptoBuySessionDataPtr session_data,
     mojom::CryptoWidgetCustomerDataPtr customer_data,
     CryptoBuyWidgetCreateCallback callback) {
+  auto payload_value = GetCryptoBuyWidgetPayload(std::move(session_data),
+                                                 std::move(customer_data));
+  if (!payload_value) {
+    std::move(callback).Run(nullptr,
+                            std::vector<std::string>{l10n_util::GetStringUTF8(
+                                IDS_WALLET_REQUEST_PROCESSING_ERROR)});
+    return;
+  }
+
   auto internal_callback =
       base::BindOnce(&MeldIntegrationService::OnCryptoBuyWidgetCreate,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-
-  auto payload_value = GetCryptoBuyWidgetPayload(std::move(session_data),
-                                                 std::move(customer_data));
 
   auto url = GURL(kMeldRpcEndpoint).Resolve("/crypto/session/widget");
   auto conversion_callback = base::BindOnce(&SanitizeJson);
@@ -786,12 +792,18 @@ void MeldIntegrationService::CryptoSellWidgetCreate(
     mojom::CryptoSellSessionDataPtr session_data,
     mojom::CryptoWidgetCustomerDataPtr customer_data,
     CryptoSellWidgetCreateCallback callback) {
+  auto payload_value = GetCryptoSellWidgetPayload(std::move(session_data),
+                                                  std::move(customer_data));
+  if (!payload_value) {
+    std::move(callback).Run(nullptr,
+                            std::vector<std::string>{l10n_util::GetStringUTF8(
+                                IDS_WALLET_REQUEST_PROCESSING_ERROR)});
+    return;
+  }
+
   auto internal_callback =
       base::BindOnce(&MeldIntegrationService::OnCryptoSellWidgetCreate,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-
-  auto payload_value = GetCryptoSellWidgetPayload(std::move(session_data),
-                                                  std::move(customer_data));
 
   auto url = GURL(kMeldRpcEndpoint).Resolve("/crypto/session/widget");
   auto conversion_callback = base::BindOnce(&SanitizeJson);
@@ -842,12 +854,18 @@ void MeldIntegrationService::CryptoTransferWidgetCreate(
     mojom::CryptoTransferSessionDataPtr session_data,
     mojom::CryptoWidgetCustomerDataPtr customer_data,
     CryptoTransferWidgetCreateCallback callback) {
-  auto internal_callback =
-      base::BindOnce(&MeldIntegrationService::OnCryptoSellWidgetCreate,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-
   auto payload_value = GetCryptoTransferWidgetPayload(std::move(session_data),
                                                       std::move(customer_data));
+  if (!payload_value) {
+    std::move(callback).Run(nullptr,
+                            std::vector<std::string>{l10n_util::GetStringUTF8(
+                                IDS_WALLET_REQUEST_PROCESSING_ERROR)});
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&MeldIntegrationService::OnCryptoTransferWidgetCreate,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   auto url = GURL(kMeldRpcEndpoint).Resolve("/crypto/session/widget");
   auto conversion_callback = base::BindOnce(&SanitizeJson);
