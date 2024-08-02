@@ -16,7 +16,7 @@ std::optional<SkColor> BraveBrowserAppMenuButton::GetHighlightTextColor()
   return std::nullopt;
 }
 
-std::optional<SkColor> BraveBrowserAppMenuButton::GetHighlightColor() const {
+std::optional<SkColor> BraveBrowserAppMenuButton::GetColorForSeverity() const {
   const auto* const color_provider = GetColorProvider();
   switch (type_and_severity_.severity) {
     case AppMenuIconController::Severity::NONE:
@@ -28,6 +28,16 @@ std::optional<SkColor> BraveBrowserAppMenuButton::GetHighlightColor() const {
     case AppMenuIconController::Severity::HIGH:
       return color_provider->GetColor(kColorAppMenuHighlightSeverityHigh);
   }
+}
+
+std::optional<SkColor> BraveBrowserAppMenuButton::GetHighlightColor() const {
+  return GetColorForSeverity();
+}
+
+SkColor BraveBrowserAppMenuButton::GetForegroundColor(ButtonState state) const {
+  std::optional<SkColor> color = GetColorForSeverity();
+  return color.has_value() ? color.value()
+                           : ToolbarButton::GetForegroundColor(state);
 }
 
 bool BraveBrowserAppMenuButton::ShouldPaintBorder() const {
