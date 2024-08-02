@@ -26,6 +26,7 @@ class BraveBrowserAppMenuButton : public BrowserAppMenuButton {
   bool ShouldBlendHighlightColor() const override;
   std::optional<SkColor> GetHighlightTextColor() const override;
   std::optional<SkColor> GetHighlightColor() const override;
+  void UpdateLayoutInsets() override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_BROWSER_APP_MENU_BUTTON_H_
