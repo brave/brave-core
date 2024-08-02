@@ -1635,6 +1635,19 @@ const std::string GetAssetRatioBaseURL();
 const base::flat_map<std::string, std::string>& GetAnkrBlockchains();
 // https://docs.rs/solana-program/1.18.10/src/solana_program/clock.rs.html#129-131
 inline constexpr int kSolanaValidBlockHeightThreshold = 150;
+
+inline constexpr char kCSPFrameSrcName[] = "frame-src";
+inline constexpr char kCSPImageSrcName[] = "img-src";
+inline constexpr char kCSPSelf[] = "'self'";
+inline constexpr char kCSPData[] = "data:";
+inline constexpr char kCSPChromeResources[] = "chrome://resources";
+inline constexpr char kCSPChromeErcTokenImages[] = "chrome://erc-token-images";
+inline constexpr char kCSPChromeImage[] = "chrome://image";
+inline constexpr char kCSPChromeFavicon[] = "chrome://favicon";
+inline constexpr char kCSPBraveCoinGeckoAssetsProxy[] =
+    "https://assets.cgproxy.brave.com";
+const std::string GetWalletFrameSrcCSP();
+const std::string GetWalletImgSrcCSP(bool isPanel);
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_

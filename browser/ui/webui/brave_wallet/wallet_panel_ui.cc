@@ -71,19 +71,10 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
                               IDR_WALLET_PANEL_HTML);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      base::JoinString(
-          {"frame-src", brave_wallet::mojom::kUntrustedTrezorBridgeURL,
-           brave_wallet::mojom::kUntrustedLedgerBridgeURL,
-           kUntrustedLineChartURL, kUntrustedNftURL,
-           base::StrCat({kUntrustedMarketURL, ";"})},
-          " "));
+      brave_wallet::GetWalletFrameSrcCSP());
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
-      base::JoinString(
-          {"img-src", "'self'", "chrome://resources",
-           "chrome://erc-token-images", "chrome://favicon", "chrome://image",
-           "https://assets.cgproxy.brave.com", base::StrCat({"data:", ";"})},
-          " "));
+      brave_wallet::GetWalletImgSrcCSP(true));
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   source->AddString("braveWalletLineChartBridgeUrl", kUntrustedLineChartURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);

@@ -13,6 +13,7 @@
 #include "base/no_destructor.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/switches.h"
+#include "brave/components/constants/webui_url_constants.h"
 
 namespace brave_wallet {
 
@@ -98,5 +99,36 @@ const base::flat_map<std::string, std::string>& GetAnkrBlockchains() {
                    {mojom::kZkSyncEraChainId, "zksync_era"}});
 
   return *blockchains;
+}
+
+const std::string GetWalletFrameSrcCSP() {
+  std::string frameSrcCSP =
+      base::JoinString({kCSPFrameSrcName, kUntrustedNftURL,
+                        kUntrustedLineChartURL, kUntrustedMarketURL},
+                       " ");
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+  // Trezor & Ledger not supported on Android/iOS
+  frameSrcCSP.append(std::string(" ") +
+                     brave_wallet::mojom::kUntrustedTrezorBridgeURL);
+  frameSrcCSP.append(std::string(" ") +
+                     brave_wallet::mojom::kUntrustedLedgerBridgeURL);
+#endif
+  frameSrcCSP.append(";");
+  return frameSrcCSP;
+}
+
+const std::string GetWalletImgSrcCSP(bool isPanel) {
+  std::string imgSrcCSP = base::JoinString(
+      {kCSPImageSrcName, kCSPSelf, kCSPData, kCSPChromeResources,
+       kCSPChromeErcTokenImages, kCSPChromeImage},
+      " ");
+  if (isPanel) {
+    // DApp panels
+    imgSrcCSP.append(std::string(" ") + kCSPChromeFavicon);
+    // Need to load market iframe data. brave-browser/issues/31313
+    imgSrcCSP.append(std::string(" ") + kCSPBraveCoinGeckoAssetsProxy);
+  }
+  imgSrcCSP.append(";");
+  return imgSrcCSP;
 }
 }  // namespace brave_wallet
