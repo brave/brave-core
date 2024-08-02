@@ -225,6 +225,7 @@ extension CredentialListModel {
     var privateKey: Data!
     var encrypted: Data!
     var creationTime: Int64 = 0
+    var lastUsedTime: Int64 = 0
 
     init(
       favicon: FaviconAttributes?,
