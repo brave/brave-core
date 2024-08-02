@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
+#include "brave/browser/ui/views/frame/split_view_contents_layout_manager.h"
 
 #include <memory>
 #include <utility>
@@ -27,7 +27,7 @@ class BraveContentsLayoutManagerUnitTest : public testing::Test {
   views::WebView& secondary_contents_view() {
     return *secondary_contents_view_;
   }
-  BraveContentsLayoutManager& layout_manager() { return *layout_manager_; }
+  SplitViewContentsLayoutManager& layout_manager() { return *layout_manager_; }
 
   // testing::Test:
   void SetUp() override {
@@ -45,7 +45,7 @@ class BraveContentsLayoutManagerUnitTest : public testing::Test {
     split_view_separator_ = contents_container_->AddChildView(
         std::make_unique<SplitViewSeparator>(nullptr));
 
-    auto layout_manager = std::make_unique<BraveContentsLayoutManager>(
+    auto layout_manager = std::make_unique<SplitViewContentsLayoutManager>(
         contents_view_, devtools_view_);
     layout_manager->set_secondary_contents_view(secondary_contents_view_);
     layout_manager->set_secondary_devtools_view(secondary_devtools_view_);
@@ -67,7 +67,7 @@ class BraveContentsLayoutManagerUnitTest : public testing::Test {
   raw_ptr<views::WebView, DanglingUntriaged> secondary_devtools_view_ = nullptr;
   raw_ptr<SplitViewSeparator, DanglingUntriaged> split_view_separator_ =
       nullptr;
-  raw_ptr<BraveContentsLayoutManager, DanglingUntriaged> layout_manager_ =
+  raw_ptr<SplitViewContentsLayoutManager, DanglingUntriaged> layout_manager_ =
       nullptr;
 };
 
