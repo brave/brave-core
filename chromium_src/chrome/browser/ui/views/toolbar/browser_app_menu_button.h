@@ -7,13 +7,15 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_BROWSER_APP_MENU_BUTTON_H_
 
 #define GetHighlightColor virtual GetHighlightColor
-#define UpdateLayoutInsets                \
-  UpdateLayoutInsets_UnUsed() {}          \
+#define UpdateLayoutInsets virtual UpdateLayoutInsets
+#define UpdateTextAndHighlightColor       \
+  UpdateTextAndHighlightColor_UnUsed() {} \
   friend class BraveBrowserAppMenuButton; \
-  void UpdateLayoutInsets
+  void UpdateTextAndHighlightColor
 
 #include "src/chrome/browser/ui/views/toolbar/browser_app_menu_button.h"  // IWYU pragma: export
 
+#undef UpdateTextAndHighlightColor
 #undef UpdateLayoutInsets
 #undef GetHighlightColor
 

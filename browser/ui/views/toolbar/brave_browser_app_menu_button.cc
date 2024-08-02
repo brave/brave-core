@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/toolbar/brave_browser_app_menu_button.h"
 
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/toolbar/app_menu_icon_controller.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
@@ -35,6 +36,11 @@ bool BraveBrowserAppMenuButton::ShouldPaintBorder() const {
 
 bool BraveBrowserAppMenuButton::ShouldBlendHighlightColor() const {
   return true;
+}
+
+// Same Insest for W/O Label.
+void BraveBrowserAppMenuButton::UpdateLayoutInsets() {
+  SetLayoutInsets(::GetLayoutInsets(TOOLBAR_BUTTON));
 }
 
 BEGIN_METADATA(BraveBrowserAppMenuButton)
