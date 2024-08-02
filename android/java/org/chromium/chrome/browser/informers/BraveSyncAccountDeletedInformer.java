@@ -14,7 +14,7 @@ import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.infobar.BraveInfoBarIdentifier;
 import org.chromium.chrome.browser.settings.BraveSyncScreensPreference;
-import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
+import org.chromium.chrome.browser.settings.SettingsLauncherFactory;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.ui.messages.infobar.BraveSimpleConfirmInfoBarBuilder;
 import org.chromium.chrome.browser.ui.messages.infobar.SimpleConfirmInfoBarBuilder;
@@ -35,7 +35,8 @@ public class BraveSyncAccountDeletedInformer {
                 return;
             }
 
-            BraveSimpleConfirmInfoBarBuilder.createInfobarWithDrawable(tab.getWebContents(),
+            BraveSimpleConfirmInfoBarBuilder.createInfobarWithDrawable(
+                    tab.getWebContents(),
                     new SimpleConfirmInfoBarBuilder.Listener() {
                         @Override
                         public void onInfoBarDismissed() {
@@ -58,19 +59,22 @@ public class BraveSyncAccountDeletedInformer {
                             // Pressing link `re-create the account`
                             // Don't show the informer again
                             disableInformer();
-                            SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+                            SettingsLauncher settingsLauncher =
+                                    SettingsLauncherFactory.createSettingsLauncher();
                             settingsLauncher.launchSettingsActivity(
                                     ContextUtils.getApplicationContext(),
                                     BraveSyncScreensPreference.class);
                             return false;
                         }
                     },
-                    BraveInfoBarIdentifier.BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR, activity,
+                    BraveInfoBarIdentifier.BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR,
+                    activity,
                     R.drawable.ic_warning_circle,
                     // See comment at |BraveSyncAccountDeletedInfoBarDelegate::GetMessageText|
                     // for the informer text and link test placeholder empty substitution
                     activity.getString(R.string.brave_sync_account_deleted_infobar_message, ""),
-                    activity.getString(R.string.ok), "",
+                    activity.getString(R.string.ok),
+                    "",
                     activity.getString(R.string.brave_sync_account_deleted_infobar_link_text, ""),
                     false);
         } catch (BraveActivity.BraveActivityNotFoundException e) {

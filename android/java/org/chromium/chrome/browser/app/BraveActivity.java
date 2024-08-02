@@ -164,7 +164,7 @@ import org.chromium.chrome.browser.set_default_browser.OnBraveSetDefaultBrowserL
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
-import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
+import org.chromium.chrome.browser.settings.SettingsLauncherFactory;
 import org.chromium.chrome.browser.settings.developer.BraveQAPreferences;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.share.ShareDelegate.ShareOrigin;
@@ -1531,27 +1531,27 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void openBravePlaylistSettings() {
-        SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+        SettingsLauncher settingsLauncher = SettingsLauncherFactory.createSettingsLauncher();
         settingsLauncher.launchSettingsActivity(this, BravePlaylistPreferences.class);
     }
 
     public void openBraveNewsSettings() {
-        SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+        SettingsLauncher settingsLauncher = SettingsLauncherFactory.createSettingsLauncher();
         settingsLauncher.launchSettingsActivity(this, BraveNewsPreferencesV2.class);
     }
 
     public void openBraveContentFilteringSettings() {
-        SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+        SettingsLauncher settingsLauncher = SettingsLauncherFactory.createSettingsLauncher();
         settingsLauncher.launchSettingsActivity(this, ContentFilteringFragment.class);
     }
 
     public void openBraveWalletSettings() {
-        SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+        SettingsLauncher settingsLauncher = SettingsLauncherFactory.createSettingsLauncher();
         settingsLauncher.launchSettingsActivity(this, BraveWalletPreferences.class);
     }
 
     public void openBraveConnectedSitesSettings() {
-        SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+        SettingsLauncher settingsLauncher = SettingsLauncherFactory.createSettingsLauncher();
         settingsLauncher.launchSettingsActivity(this, BraveWalletEthereumConnectedSites.class);
     }
 

@@ -30,7 +30,7 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
-import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
+import org.chromium.chrome.browser.settings.SettingsLauncherFactory;
 import org.chromium.components.browser_ui.modaldialog.AppModalPresenter;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.ui.base.ActivityWindowAndroid;
@@ -74,7 +74,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.settings) {
-            SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+            SettingsLauncher settingsLauncher = SettingsLauncherFactory.createSettingsLauncher();
             settingsLauncher.launchSettingsActivity(this, BraveWalletPreferences.class);
             return true;
         } else if (item.getItemId() == R.id.lock) {
