@@ -8,7 +8,10 @@ import { BraveWallet } from '../../../constants/types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // utils
-import { handleEndpointError } from '../../../utils/api-utils'
+import {
+  getHasPendingRequests,
+  handleEndpointError
+} from '../../../utils/api-utils'
 
 export const encryptionEndpoints = ({
   mutation,
@@ -53,10 +56,9 @@ export const encryptionEndpoints = ({
             arg.approved
           )
 
-          const { requests } =
-            await api.braveWalletService.getPendingDecryptRequests()
+          const hasPendingRequests = await getHasPendingRequests()
 
-          if (!requests.length) {
+          if (!hasPendingRequests) {
             api.panelHandler?.closeUI()
           }
 
@@ -117,10 +119,9 @@ export const encryptionEndpoints = ({
             arg.approved
           )
 
-          const { requests } =
-            await braveWalletService.getPendingGetEncryptionPublicKeyRequests()
+          const hasPendingRequests = await getHasPendingRequests()
 
-          if (!requests.length) {
+          if (!hasPendingRequests) {
             api.panelHandler?.closeUI()
           }
 

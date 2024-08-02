@@ -13,6 +13,9 @@ import { PanelActions } from '../panel/actions'
 import type WalletApiProxy from '../common/wallet_api_proxy'
 import { BraveWallet, SupportedCoinTypes } from '../constants/types'
 
+// utils
+import getAPIProxy from '../common/async/bridge'
+
 export function handleEndpointError(
   endpointName: string,
   friendlyMessage: string,
@@ -75,4 +78,64 @@ export function navigateToConnectHardwareWallet(
 
   store.dispatch(PanelActions.navigateTo('connectHardwareWallet'))
   store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
+}
+
+export const getHasPendingRequests = async () => {
+  const { braveWalletService, jsonRpcService, txService } = getAPIProxy()
+
+  const { count: pendingTxsCount } =
+    await txService.getPendingTransactionsCount()
+  if (pendingTxsCount > 0) {
+    return true
+  }
+
+  const { requests: signAllTxsRequests } =
+    await braveWalletService.getPendingSignAllTransactionsRequests()
+  if (signAllTxsRequests.length) {
+    return true
+  }
+
+  const { requests: signMessageRequests } =
+    await braveWalletService.getPendingSignMessageRequests()
+  if (signMessageRequests.length) {
+    return true
+  }
+
+  const { requests: signTxRequests } =
+    await braveWalletService.getPendingSignTransactionRequests()
+  if (signTxRequests.length) {
+    return true
+  }
+
+  const { requests: addTokenRequests } =
+    await braveWalletService.getPendingAddSuggestTokenRequests()
+  if (addTokenRequests.length) {
+    return true
+  }
+
+  const { requests: decryptRequests } =
+    await braveWalletService.getPendingDecryptRequests()
+  if (decryptRequests.length) {
+    return true
+  }
+
+  const { requests: publicKeyRequests } =
+    await braveWalletService.getPendingGetEncryptionPublicKeyRequests()
+  if (publicKeyRequests.length) {
+    return true
+  }
+
+  const { requests: addChainRequests } =
+    await jsonRpcService.getPendingAddChainRequests()
+  if (addChainRequests.length) {
+    return true
+  }
+
+  const { requests: switchChainRequests } =
+    await jsonRpcService.getPendingSwitchChainRequests()
+  if (switchChainRequests.length) {
+    return true
+  }
+
+  return false
 }

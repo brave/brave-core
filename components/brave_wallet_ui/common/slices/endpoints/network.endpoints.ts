@@ -16,7 +16,10 @@ import {
 } from '../api-base.slice'
 
 // utils
-import { handleEndpointError } from '../../../utils/api-utils'
+import {
+  getHasPendingRequests,
+  handleEndpointError
+} from '../../../utils/api-utils'
 import { NetworksRegistry, getNetworkId } from '../entities/network.entity'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import { LOCAL_STORAGE_KEYS } from '../../constants/local-storage-keys'
@@ -404,12 +407,10 @@ export const networkEndpoints = ({
             arg.isApproved
           )
 
-          // close the panel if there are
-          // no follow-up requests to switch to the new chain
-          const { requests } =
-            await api.jsonRpcService.getPendingSwitchChainRequests()
+          // close the panel if there are no additional pending requests
+          const hasPendingRequests = await getHasPendingRequests()
 
-          if (!requests.length) {
+          if (!hasPendingRequests) {
             api.panelHandler?.closeUI()
           }
 
@@ -446,7 +447,11 @@ export const networkEndpoints = ({
             arg.isApproved
           )
 
-          api.panelHandler?.closeUI()
+          const hasPendingRequests = await getHasPendingRequests()
+
+          if (!hasPendingRequests) {
+            api.panelHandler?.closeUI()
+          }
 
           return {
             data: true
