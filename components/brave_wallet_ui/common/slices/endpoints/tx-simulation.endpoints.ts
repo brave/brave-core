@@ -40,7 +40,7 @@ export const transactionSimulationEndpoints = ({
           data: status
         }
       },
-      providesTags: ['TransactionSimulationsEnabled']
+      providesTags: ['TransactionSimulationsOptIn']
     }),
 
     setIsTxSimulationOptInStatus: mutation<
@@ -48,13 +48,41 @@ export const transactionSimulationEndpoints = ({
       BraveWallet.BlowfishOptInStatus
     >({
       queryFn: async (status, { endpoint }, extraOptions, baseQuery) => {
-        const { data: api } = baseQuery(undefined)
+        const { data: api, cache } = baseQuery(undefined)
         api.braveWalletService.setTransactionSimulationOptInStatus(status)
+        cache.clearWalletInfo()
         return {
           data: status
         }
       },
-      invalidatesTags: ['TransactionSimulationsEnabled']
+      invalidatesTags: ['TransactionSimulationsOptIn']
+    }),
+
+    getHasTransactionSimulationSupport: query<
+      boolean,
+      { chainId: string; coinType: BraveWallet.CoinType }
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { result } =
+            await api.simulationService.hasTransactionScanSupport(
+              arg.chainId,
+              arg.coinType
+            )
+          return {
+            data: result
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Unable to check if this network (${
+              arg.chainId //
+            }) has transaction simulation support`,
+            error
+          )
+        }
+      }
     }),
 
     getEVMTransactionSimulation: query<

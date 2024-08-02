@@ -302,7 +302,7 @@ function Container() {
         width={390}
         height={650}
       >
-        <LongWrapper>
+        <LongWrapper padding='0px'>
           <PendingTransactionPanel
             selectedPendingTransaction={selectedPendingTransaction}
           />
@@ -314,7 +314,7 @@ function Container() {
   if (signAllTransactionsRequests?.length || signTransactionRequests?.length) {
     return (
       <PanelWrapper isLonger={true}>
-        <LongWrapper>
+        <LongWrapper padding='0px'>
           <PendingSignatureRequestsPanel
             signMode={
               signAllTransactionsRequests?.length ? 'signAllTxs' : 'signTx'

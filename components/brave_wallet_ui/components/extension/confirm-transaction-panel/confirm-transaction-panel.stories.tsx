@@ -14,9 +14,9 @@ export const _ConfirmTransactionPanel = {
   render: () => {
     return (
       <WalletPanelStory>
-        <PanelWrapper isLonger>
+        <PanelWrapper>
           <LongWrapper>
-            <ConfirmTransactionPanel />
+            <ConfirmTransactionPanel retrySimulation={() => {}} />
           </LongWrapper>
         </PanelWrapper>
       </WalletPanelStory>

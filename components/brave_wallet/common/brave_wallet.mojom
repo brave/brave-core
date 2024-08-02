@@ -2628,32 +2628,45 @@ enum BlowfishWarningSeverity {
 
 // UI should defer to the supplied message if the kind isn't recognized
 enum BlowfishWarningKind {
-  kSuspectedMalicious,
-  kKnownMalicious,
-  kTransferringErc20ToOwnContract,
-  kUnlimitedAllowanceToNfts,
-  kBulkApprovalsRequest,
-  kSetOwnerAuthority,
-  kTrustedBlocklistDomain,
-  kSemiTrustedBlocklistDomain,
-  kDanglingApproval,
-  kTradeForNothing,
-  kPermitUnlimitedAllowance,
-  kPermitNoExpiration,
-  kEthSignTxHash,
-  kBlocklistedDomainCrossOrigin,
-  kWhitelistedDomainCrossOrigin,
-  kTooManyTransactions,
-  kCompromisedAuthorityUpgrade,
-  kPoisonedAddress,
   kApprovalToEOA,
+  kBlocklistedDomainCrossOrigin,
+  kBlurBulkOrderNotOnBlur,
+  kBlurV2OrderNotOnBlur,
+  kBulkApprovalsRequest,
+  kCompromisedAuthorityUpgrade,
   kCopyCatDomain,
   kCopyCatImageUnresponsiveDomain,
+  kDanglingApproval,
+  kDebuggerPaused,
+  kDurableNonce,
+  kEthSignTxHash,
+  kForta,
+  kImbalancedDollarValue,
+  kKnownMalicious,
+  kMaliciousPackages,
   kMultiCopyCatDomain,
-  kUserAccountOwnerChange,
   kNewDomain,
-  kUnusualGasConsumption,
+  kPermitNoExpiration,
+  kPermitUnlimitedAllowance,
+  kPoisonedAddress,
   kReferencedOfacAddress,
+  kSemiTrustedBlocklistDomain,
+  kSetOwnerAuthority,
+  kSuspectedMalicious,
+  kTooManyTransactions,
+  kTradeForNothing,
+  kTransferringErc20ToOwnContract,
+  kTransferringTooMuchSol,
+  kTransfersMajorityOfYourSol,
+  kTrustedBlocklistDomain,
+  kUnlimitedAllowanceToNfts,
+  kUnusualGasConsumption,
+  kUserAccountOwnerChange,
+  kTransferToMintAccount,
+  kWhitelistedDomainCrossOrigin,
+  kYakoaNftIpInfringement,
+  kReliableSimulationNotPossible,
+  kInteractingWithAccountWithoutActivity,
   kUnknown = -1
 };
 
@@ -2781,7 +2794,8 @@ enum BlowfishSolanaErrorKind {
 
 enum BlowfishSuggestedColor {
   kCredit,
-  kDebit
+  kDebit,
+  kInfo
 };
 
 enum BlowfishOptInStatus {
@@ -2999,11 +3013,18 @@ struct BlowfishSOLStakeAuthorityChangeData {
   uint64 sol_staked;
 };
 
+struct BlowfishSolanaUserAccountOwnerChangeData {
+  string account;
+  string current_owner;
+  string future_owner;
+};
+
 union BlowfishSolanaStateChangeRawInfoDataUnion {
   BlowfishSOLTransferData sol_transfer_data;
   BlowfishSPLTransferData spl_transfer_data;
   BlowfishSPLApprovalData spl_approval_data;
   BlowfishSOLStakeAuthorityChangeData sol_stake_authority_change_data;
+  BlowfishSolanaUserAccountOwnerChangeData user_account_owner_change_data;
 };
 
 struct BlowfishSolanaStateChangeRawInfo {

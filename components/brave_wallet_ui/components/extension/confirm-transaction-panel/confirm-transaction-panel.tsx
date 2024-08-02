@@ -25,13 +25,17 @@ import {
 
 // Components
 import CreateSiteOrigin from '../../shared/create-site-origin/index'
-import Tooltip from '../../shared/tooltip/index'
-import withPlaceholderIcon from '../../shared/create-placeholder-icon'
+import { Tooltip } from '../../shared/tooltip/index'
+import { withPlaceholderIcon } from '../../shared/create-placeholder-icon'
 import { PanelTab } from '../panel-tab/index'
 import { TransactionDetailBox } from '../transaction-box/index'
-import EditAllowance from '../edit-allowance'
-import AdvancedTransactionSettingsButton from '../advanced-transaction-settings/button'
-import AdvancedTransactionSettings from '../advanced-transaction-settings'
+import { EditAllowance } from '../edit-allowance/index'
+import {
+  AdvancedTransactionSettingsButton //
+} from '../advanced-transaction-settings/button/index'
+import {
+  AdvancedTransactionSettings //
+} from '../advanced-transaction-settings/index'
 import { TransactionInfo } from './transaction-info'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
 import {
@@ -40,6 +44,14 @@ import {
 import { TransactionQueueSteps } from './common/queue'
 import { Origin } from './common/origin'
 import { EditPendingTransactionGas } from './common/gas'
+import { TxWarningBanner } from './common/tx_warnings'
+import { LoadingPanel } from '../loading_panel/loading_panel'
+import {
+  PendingTransactionNetworkFeeAndSettings //
+} from '../pending-transaction-network-fee/pending-transaction-network-fee'
+import {
+  TransactionSimulationNotSupportedSheet //
+} from '../transaction_simulation_not_supported_sheet/transaction_simulation_not_supported_sheet'
 
 // Styled Components
 import {
@@ -58,9 +70,9 @@ import {
   EditButton,
   WarningIcon,
   ContractButton,
-  ExplorerIcon
+  ExplorerIcon,
+  WarningInfoCircleIcon
 } from './style'
-import { Skeleton } from '../../shared/loading-skeleton/styles'
 
 import {
   TabRow,
@@ -75,13 +87,21 @@ import {
   URLText
 } from '../shared-panel-styles'
 import { Column, Row } from '../../shared/style'
+import { NetworkFeeRow } from './common/style'
+import { FooterContainer } from './common/pending_tx_actions_footer.style'
 
 type confirmPanelTabs = 'transaction' | 'details'
 
 const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 0 } as const
 const NftAssetIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
-export const ConfirmTransactionPanel = () => {
+export const ConfirmTransactionPanel = ({
+  retrySimulation,
+  showSimulationNotSupportedMessage
+}: {
+  readonly retrySimulation?: () => void
+  showSimulationNotSupportedMessage?: boolean
+}) => {
   // queries
   const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
     useGetActiveOriginQuery()
@@ -120,16 +140,17 @@ export const ConfirmTransactionPanel = () => {
     hasFeeEstimatesError,
     isLoadingGasFee,
     rejectAllTransactions,
-    isConfirmButtonDisabled
+    isConfirmButtonDisabled,
+    isSolanaDappTransaction
   } = usePendingTransactions()
 
   // queries
   const { data: byteCode, isLoading } = useGetAddressByteCodeQuery(
     transactionDetails && isEthereumTransaction
       ? {
-          address: transactionDetails?.recipient ?? '',
-          coin: transactionDetails?.coinType ?? -1,
-          chainId: transactionDetails?.chainId ?? ''
+          address: transactionDetails.recipient ?? '',
+          coin: transactionDetails.coinType ?? -1,
+          chainId: transactionDetails.chainId ?? ''
         }
       : skipToken
   )
@@ -145,6 +166,8 @@ export const ConfirmTransactionPanel = () => {
   // state
   const [selectedTab, setSelectedTab] =
     React.useState<confirmPanelTabs>('transaction')
+  const [isSimulationWarningDismissed, setIsSimulationWarningDismissed] =
+    React.useState(false)
   const [isEditing, setIsEditing] = React.useState<boolean>(false)
   const [isEditingAllowance, setIsEditingAllowance] =
     React.useState<boolean>(false)
@@ -164,17 +187,13 @@ export const ConfirmTransactionPanel = () => {
   }
 
   // render
-  if (!transactionDetails || !selectedPendingTransaction || !fromAccount) {
-    return (
-      <StyledWrapper>
-        <Skeleton
-          data-testid='confirm-transaction-panel-loading-skeleton'
-          width={'100%'}
-          height={'100%'}
-          enableAnimation
-        />
-      </StyledWrapper>
-    )
+  if (
+    !transactionDetails ||
+    !selectedPendingTransaction ||
+    !fromAccount ||
+    !transactionsQueueLength
+  ) {
+    return <LoadingPanel />
   }
 
   if (isEditing) {
@@ -334,38 +353,61 @@ export const ConfirmTransactionPanel = () => {
             />
           )}
 
-          <TransactionAmountBig>
-            {isERC721TransferFrom || isERC721SafeTransferFrom
-              ? transactionDetails.erc721BlockchainToken?.name +
-                ' ' +
-                transactionDetails.erc721TokenId
-              : new Amount(transactionDetails.valueExact).formatAsAsset(
-                  undefined,
-                  transactionDetails.symbol
-                )}
-          </TransactionAmountBig>
+          {!isSolanaDappTransaction && (
+            <>
+              <Row
+                margin={
+                  isAssociatedTokenAccountCreation
+                    ? '0px 0px 0px 16px'
+                    : undefined
+                }
+                alignItems='center'
+                justifyContent='center'
+                gap={'4px'}
+              >
+                <TransactionAmountBig>
+                  {isERC721TransferFrom || isERC721SafeTransferFrom
+                    ? transactionDetails.erc721BlockchainToken?.name +
+                      ' ' +
+                      transactionDetails.erc721TokenId
+                    : new Amount(transactionDetails.valueExact).formatAsAsset(
+                        undefined,
+                        transactionDetails.symbol
+                      )}
+                </TransactionAmountBig>
 
-          {!isERC721TransferFrom && !isERC721SafeTransferFrom && (
-            <TransactionFiatAmountBig>
-              {new Amount(transactionDetails.fiatValue).formatAsFiat(
-                defaultFiatCurrency
-              )}
-            </TransactionFiatAmountBig>
-          )}
-
-          {isAssociatedTokenAccountCreation && (
-            <WarningBox warningType={'warning'}>
-              <WarningBoxTitleRow>
-                <WarningTitle warningType={'warning'}>
-                  {getLocale('braveWalletConfirmTransactionAccountCreationFee')}{' '}
-                  <LearnMoreButton
-                    onClick={openAssociatedTokenAccountSupportArticleTab}
+                {isAssociatedTokenAccountCreation && (
+                  <Tooltip
+                    maxWidth={'200px'}
+                    minWidth={'180px'}
+                    text={
+                      <>
+                        {getLocale(
+                          'braveWalletConfirmTransactionAccountCreationFee'
+                        )}{' '}
+                        <LearnMoreButton
+                          onClick={openAssociatedTokenAccountSupportArticleTab}
+                        >
+                          {getLocale(
+                            'braveWalletAllowAddNetworkLearnMoreButton'
+                          )}
+                        </LearnMoreButton>
+                      </>
+                    }
                   >
-                    {getLocale('braveWalletAllowAddNetworkLearnMoreButton')}
-                  </LearnMoreButton>
-                </WarningTitle>
-              </WarningBoxTitleRow>
-            </WarningBox>
+                    <WarningInfoCircleIcon />
+                  </Tooltip>
+                )}
+              </Row>
+
+              {!isERC721TransferFrom && !isERC721SafeTransferFrom && (
+                <TransactionFiatAmountBig>
+                  {new Amount(transactionDetails.fiatValue).formatAsFiat(
+                    defaultFiatCurrency
+                  )}
+                </TransactionFiatAmountBig>
+              )}
+            </>
           )}
         </>
       )}
@@ -388,51 +430,71 @@ export const ConfirmTransactionPanel = () => {
         )}
       </TabRow>
 
-      {isWarningCollapsed && (
-        <MessageBox isDetails={selectedTab === 'details'}>
-          {selectedTab === 'transaction' ? (
-            <TransactionInfo
-              onToggleEditGas={
-                isSolanaTransaction || isBitcoinTransaction
-                  ? undefined
-                  : onToggleEditGas
-              }
-              isZCashTransaction={isZCashTransaction}
-              isBitcoinTransaction={isBitcoinTransaction}
-              transactionDetails={transactionDetails}
-              isERC721SafeTransferFrom={isERC721SafeTransferFrom}
-              isERC721TransferFrom={isERC721TransferFrom}
-              transactionsNetwork={transactionsNetwork}
-              hasFeeEstimatesError={Boolean(hasFeeEstimatesError)}
-              isLoadingGasFee={isLoadingGasFee}
-              gasFee={gasFee}
-              insufficientFundsError={insufficientFundsError}
-              insufficientFundsForGasError={insufficientFundsForGasError}
-              isERC20Approve={isERC20Approve}
-              currentTokenAllowance={currentTokenAllowance}
-              isCurrentAllowanceUnlimited={isCurrentAllowanceUnlimited}
-            />
-          ) : (
-            <TransactionDetailBox
-              transactionInfo={selectedPendingTransaction}
-              instructions={transactionDetails.instructions}
-            />
-          )}
-        </MessageBox>
-      )}
+      <MessageBox isDetails={selectedTab === 'details'}>
+        {selectedTab === 'transaction' ? (
+          <TransactionInfo
+            onToggleEditGas={
+              isSolanaTransaction || isBitcoinTransaction
+                ? undefined
+                : onToggleEditGas
+            }
+            isZCashTransaction={isZCashTransaction}
+            isBitcoinTransaction={isBitcoinTransaction}
+            transactionDetails={transactionDetails}
+            isERC721SafeTransferFrom={isERC721SafeTransferFrom}
+            isERC721TransferFrom={isERC721TransferFrom}
+            transactionsNetwork={transactionsNetwork}
+            hasFeeEstimatesError={Boolean(hasFeeEstimatesError)}
+            isLoadingGasFee={isLoadingGasFee}
+            gasFee={gasFee}
+            insufficientFundsError={insufficientFundsError}
+            insufficientFundsForGasError={insufficientFundsForGasError}
+            isERC20Approve={isERC20Approve}
+            currentTokenAllowance={currentTokenAllowance}
+            isCurrentAllowanceUnlimited={isCurrentAllowanceUnlimited}
+          />
+        ) : (
+          <TransactionDetailBox
+            transactionInfo={selectedPendingTransaction}
+            instructions={transactionDetails.instructions}
+          />
+        )}
+      </MessageBox>
 
-      <PendingTransactionActionsFooter
-        onConfirm={onConfirm}
-        onReject={onReject}
-        rejectAllTransactions={rejectAllTransactions}
-        isConfirmButtonDisabled={isConfirmButtonDisabled}
-        transactionDetails={transactionDetails}
-        transactionsQueueLength={transactionsQueueLength}
-        insufficientFundsForGasError={insufficientFundsForGasError}
-        insufficientFundsError={insufficientFundsError}
-        isWarningCollapsed={isWarningCollapsed}
-        setIsWarningCollapsed={setIsWarningCollapsed}
-      />
+      <NetworkFeeRow>
+        <PendingTransactionNetworkFeeAndSettings
+          onToggleEditGas={onToggleEditGas}
+          feeDisplayMode='fiat'
+        />
+      </NetworkFeeRow>
+
+      <Column fullWidth>
+        <FooterContainer>
+          {retrySimulation &&
+            !isSimulationWarningDismissed &&
+            !showSimulationNotSupportedMessage && (
+              <TxWarningBanner
+                retrySimulation={retrySimulation}
+                onDismiss={() => setIsSimulationWarningDismissed(true)}
+              />
+            )}
+        </FooterContainer>
+        <PendingTransactionActionsFooter
+          onConfirm={onConfirm}
+          onReject={onReject}
+          rejectAllTransactions={rejectAllTransactions}
+          isConfirmButtonDisabled={isConfirmButtonDisabled}
+          transactionDetails={transactionDetails}
+          transactionsQueueLength={transactionsQueueLength}
+          insufficientFundsForGasError={insufficientFundsForGasError}
+          insufficientFundsError={insufficientFundsError}
+          isWarningCollapsed={isWarningCollapsed}
+          setIsWarningCollapsed={setIsWarningCollapsed}
+        />
+      </Column>
+      {showSimulationNotSupportedMessage && (
+        <TransactionSimulationNotSupportedSheet />
+      )}
     </StyledWrapper>
   )
 }

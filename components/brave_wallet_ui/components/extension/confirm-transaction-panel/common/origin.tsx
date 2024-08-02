@@ -5,13 +5,21 @@
 
 import * as React from 'react'
 
-// Styled Components
-import { Column, IconsWrapper, LaunchIcon, Row } from '../../../shared/style'
-import { InlineAddressButton } from '../style'
-import { FavIcon } from './style'
+// Images
 import BraveIcon from '../../../../assets/svg-icons/brave-icon.svg'
-import { URLText } from '../../shared-panel-styles'
+
+// Components
 import { SiteOrigin } from '../../../shared/create-site-origin'
+import {
+  ChainInfo,
+  InlineViewOnBlockExplorerIconButton
+} from './view_on_explorer_button'
+import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
+
+// Styled Components
+import { Column, IconsWrapper, Row } from '../../../shared/style'
+import { FavIcon } from './style'
+import { URLText } from '../../shared-panel-styles'
 import {
   ContractOriginColumn,
   InlineContractRow,
@@ -63,11 +71,11 @@ export function Origin(props: Props) {
 export function TransactionOrigin({
   contractAddress,
   originInfo,
-  onClickContractAddress,
-  isFlagged
+  isFlagged,
+  network
 }: Props & {
   contractAddress?: string
-  onClickContractAddress?: (address: string) => void
+  network: ChainInfo
   isFlagged?: boolean
 }) {
   // computed
@@ -105,7 +113,11 @@ export function TransactionOrigin({
           )}
         </IconsWrapper>
       </Column>
-      <ContractOriginColumn>
+      <ContractOriginColumn
+        alignItems='flex-start'
+        justifyContent='flex-start'
+        gap={'4px'}
+      >
         <OriginURLText>
           <SiteOrigin
             originSpec={originInfo.originSpec}
@@ -114,13 +126,22 @@ export function TransactionOrigin({
         </OriginURLText>
         {contractAddress ? (
           <InlineContractRow>
-            {getLocale('braveWalletContract')}
-            <InlineAddressButton
-              title={getLocale('braveWalletTransactionExplorer')}
-              onClick={() => onClickContractAddress?.(contractAddress)}
+            <span>{getLocale('braveWalletContract')}</span>
+
+            <CopyTooltip
+              isAddress
+              text={contractAddress}
+              tooltipText={contractAddress}
             >
-              {reduceAddress(contractAddress)} <LaunchIcon />
-            </InlineAddressButton>
+              <InlineContractRow>
+                <span>{reduceAddress(contractAddress)}</span>
+                <InlineViewOnBlockExplorerIconButton
+                  address={contractAddress}
+                  network={network}
+                  urlType='contract'
+                />
+              </InlineContractRow>
+            </CopyTooltip>
           </InlineContractRow>
         ) : null}
       </ContractOriginColumn>

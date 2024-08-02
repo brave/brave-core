@@ -47,3 +47,8 @@ export const UnverifiedTokenIndicator = styled.div`
   width: 10px;
   height: 10px;
 `
+
+export const TooltipContent = styled.div`
+  max-width: 200px;
+  word-break: break-all;
+`

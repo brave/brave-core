@@ -97,8 +97,11 @@ export const findAccountByAccountId = (
 
 export const getAddressLabel = (
   address: string,
-  accounts: EntityState<BraveWallet.AccountInfo>
+  accounts?: EntityState<BraveWallet.AccountInfo>
 ): string => {
+  if (!accounts) {
+    return registry[address.toLowerCase()] ?? reduceAddress(address)
+  }
   return (
     registry[address.toLowerCase()] ??
     findAccountByAddress(address, accounts)?.name ??

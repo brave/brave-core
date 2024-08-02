@@ -4,33 +4,18 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { BraveWallet } from '../../constants/types'
+import { getGetMojoEnumValues } from '../../utils/enum-utils'
 
 export const BLOWFISH_URL_WARNING_KINDS = [
   BraveWallet.BlowfishWarningKind.kBlocklistedDomainCrossOrigin,
   BraveWallet.BlowfishWarningKind.kCopyCatDomain,
-  BraveWallet.BlowfishWarningKind.kNonAsciiUrl,
-  BraveWallet.BlowfishWarningKind.kSemiTrustedBlocklistDomain
+  BraveWallet.BlowfishWarningKind.kCopyCatImageUnresponsiveDomain,
+  BraveWallet.BlowfishWarningKind.kMultiCopyCatDomain,
+  BraveWallet.BlowfishWarningKind.kNewDomain,
+  BraveWallet.BlowfishWarningKind.kSemiTrustedBlocklistDomain,
+  BraveWallet.BlowfishWarningKind.kTrustedBlocklistDomain
 ] as const
 
-export const BLOWFISH_WARNING_KINDS = [
-  ...BLOWFISH_URL_WARNING_KINDS,
-  BraveWallet.BlowfishWarningKind.kSuspectedMalicious,
-  BraveWallet.BlowfishWarningKind.kKnownMalicious,
-  BraveWallet.BlowfishWarningKind.kTransferringErc20ToOwnContract,
-  BraveWallet.BlowfishWarningKind.kUnlimitedAllowanceToNfts,
-  BraveWallet.BlowfishWarningKind.kBulkApprovalsRequest,
-  BraveWallet.BlowfishWarningKind.kSetOwnerAuthority,
-  BraveWallet.BlowfishWarningKind.kTrustedBlocklistDomain,
-  BraveWallet.BlowfishWarningKind.kDanglingApproval,
-  BraveWallet.BlowfishWarningKind.kTradeForNothing,
-  BraveWallet.BlowfishWarningKind.kPermitUnlimitedAllowance,
-  BraveWallet.BlowfishWarningKind.kPermitNoExpiration,
-  BraveWallet.BlowfishWarningKind.kEthSignTxHash,
-  BraveWallet.BlowfishWarningKind.kObfuscatedCode,
-  BraveWallet.BlowfishWarningKind.kDevtoolsDisabled,
-  BraveWallet.BlowfishWarningKind.kWhitelistedDomainCrossOrigin,
-  BraveWallet.BlowfishWarningKind.kTooManyTransactions,
-  BraveWallet.BlowfishWarningKind.kCompromisedAuthorityUpgrade,
-  BraveWallet.BlowfishWarningKind.kPoisonedAddress,
-  BraveWallet.BlowfishWarningKind.kApprovalToEOA
-] as const
+export const BLOWFISH_WARNING_KINDS = getGetMojoEnumValues(
+  BraveWallet.BlowfishWarningKind
+)
