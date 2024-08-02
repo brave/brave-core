@@ -25,6 +25,7 @@ OBJC_EXPORT
 - (void)walletInteractionDetected;
 - (void)showWalletOnboarding;
 - (void)showWalletBackup;
+- (void)unlockWallet;
 - (void)showAccountCreation:(BraveWalletCoinType)type;
 - (void)requestPermissions:(BraveWalletCoinType)type
                   accounts:(NSArray<NSString*>*)accounts

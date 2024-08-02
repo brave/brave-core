@@ -342,6 +342,11 @@ extension Tab: BraveWalletProviderDelegate {
     // No usage for iOS
   }
 
+  func unlockWallet() {
+    // No usage for iOS
+  }
+
+
   func showWalletOnboarding() {
     showPanel()
   }
