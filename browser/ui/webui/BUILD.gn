@@ -10,10 +10,6 @@ source_set("browser_tests") {
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  if (!is_android) {
-    sources += [ "searchbox/brave_realbox_handler_browsertest.cc" ]
-  }
-
   deps = [
     "//base",
     "//chrome/browser/search_engines",
@@ -24,4 +20,10 @@ source_set("browser_tests") {
     "//testing/gtest",
     "//ui/base",
   ]
+
+  if (!is_android) {
+    sources += [ "searchbox/brave_realbox_handler_browsertest.cc" ]
+
+    deps += [ "//chrome/browser/ui/webui/searchbox" ]
+  }
 }
