@@ -106,13 +106,35 @@ public class WalletUtils {
         return AccountInfo.deserialize(ByteBuffer.wrap(bytes));
     }
 
-    public static void openWebWallet() {
+    /**
+     * Opens a web Wallet tab.
+     *
+     * @param forceNewTab when {@code true} it closes all Wallet tabs starting with {@link
+     *     BraveActivity#BRAVE_WALLET_BASE_URL} before opening a new tab. Otherwise, it tries to
+     *     refresh an old tab whose URL starts with @link BraveActivity#BRAVE_WALLET_BASE_URL}.
+     */
+    public static void openWebWallet(final boolean forceNewTab) {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.openNewOrSelectExistingTab(BraveActivity.BRAVE_WALLET_URL, true);
+            if (forceNewTab) {
+                activity.closeAllTabsByOrigin(BraveActivity.BRAVE_WALLET_ORIGIN);
+            }
+
+            activity.openNewOrRefreshExistingTab(
+                    BraveActivity.BRAVE_WALLET_ORIGIN, BraveActivity.BRAVE_WALLET_URL);
             TabUtils.bringChromeTabbedActivityToTheTop(activity);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "Error while opening wallet tab.", e);
+        }
+    }
+
+    /** Closes all Wallet tabs that contains the base URL `brave://wallet`. */
+    public static void closeWebWallet() {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            activity.closeAllTabsByOrigin(BraveActivity.BRAVE_WALLET_ORIGIN);
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "Error while closing the Wallet tab.", e);
         }
     }
 
