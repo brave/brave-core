@@ -6,7 +6,7 @@ import { BraveWallet, SpotPriceRegistry } from '../../../constants/types'
 import { LiquiditySource, QuoteOption, RouteTagsType } from './constants/types'
 
 // Constants
-import LPMetadata from './constants/LpMetadata'
+import { LPMetadata } from './constants/metadata'
 
 // Utils
 import Amount from '../../../utils/amount'

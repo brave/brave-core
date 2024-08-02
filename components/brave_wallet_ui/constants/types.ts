@@ -1076,7 +1076,7 @@ export const SwapProviderNameMapping = {
   [BraveWallet.SwapProvider.kAuto]: 'Auto',
   [BraveWallet.SwapProvider.kJupiter]: 'Jupiter',
   [BraveWallet.SwapProvider.kZeroEx]: '0x',
-  [BraveWallet.SwapProvider.kLiFi]: 'Li.Fi'
+  [BraveWallet.SwapProvider.kLiFi]: 'LI.FI'
 }
 
 export const SupportedSwapProviders = [
