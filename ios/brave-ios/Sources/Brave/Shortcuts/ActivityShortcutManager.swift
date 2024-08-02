@@ -179,8 +179,9 @@ public class ActivityShortcutManager: NSObject {
 
       switch BraveVPN.vpnState {
       case .notPurchased, .expired:
-        guard let enableVPNController = BraveVPN.vpnState.enableVPNDestinationVC else { return }
-        enableVPNController.openAuthenticationVPNInNewTab = { [weak bvc] in
+        guard BraveVPN.vpnState.isPaywallEnabled else { return }
+
+        let vpnPaywallView = BraveVPNPaywallView(openVPNAuthenticationInNewTab: { [weak bvc] in
           guard let bvc = bvc else { return }
 
           bvc.openURLInNewTab(
@@ -188,9 +189,9 @@ public class ActivityShortcutManager: NSObject {
             isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing,
             isPrivileged: false
           )
-        }
+        })
 
-        bvc.openInsideSettingsNavigation(with: enableVPNController)
+        bvc.openInsideSettingsNavigation(with: UIHostingController(rootView: vpnPaywallView))
       case .purchased(let connected):
         if !connected {
           BraveVPN.reconnect()

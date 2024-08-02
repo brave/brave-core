@@ -66,11 +66,13 @@ struct VPNMenuButton: View {
       // Disconnect VPN before showing Purchase
       BraveVPN.disconnect(skipChecks: true)
 
-      guard let vc = vpnState.enableVPNDestinationVC else { return }
-      vc.openAuthenticationVPNInNewTab = {
+      guard vpnState.isPaywallEnabled else { return }
+
+      let vpnPaywallView = BraveVPNPaywallView(openVPNAuthenticationInNewTab: {
         openURL(.brave.braveVPNRefreshCredentials)
-      }
-      displayVPNDestination(vc)
+      })
+
+      displayVPNDestination(UIHostingController(rootView: vpnPaywallView))
     case .purchased:
       isVPNStatusChanging = true
       // Do not modify UISwitch state here, update it based on vpn status observer.
