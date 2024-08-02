@@ -1635,8 +1635,9 @@ public class BrowserViewController: UIViewController {
       return
     }
 
-    guard let vc = BraveVPN.vpnState.enableVPNDestinationVC else { return }
-    vc.openAuthenticationVPNInNewTab = { [weak self] in
+    guard BraveVPN.vpnState.isPaywallEnabled else { return }
+
+    let vpnPaywallView = BraveVPNPaywallView(openVPNAuthenticationInNewTab: { [weak self] in
       guard let self = self else { return }
 
       self.openURLInNewTab(
@@ -1644,20 +1645,21 @@ public class BrowserViewController: UIViewController {
         isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
         isPrivileged: false
       )
-    }
+    })
 
-    let navigationController = SettingsNavigationController(rootViewController: vc)
+    let navigationController = SettingsNavigationController(
+      rootViewController: UIHostingController(rootView: vpnPaywallView)
+    )
     navigationController.navigationBar.topItem?.leftBarButtonItem =
       .init(
         barButtonSystemItem: .cancel,
         target: navigationController,
         action: #selector(navigationController.done)
       )
-    let idiom = UIDevice.current.userInterfaceIdiom
+    navigationController.modalPresentationStyle =
+      UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
 
     DeviceOrientation.shared.changeOrientationToPortraitOnPhone()
-
-    navigationController.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
     present(navigationController, animated: true)
   }
 
