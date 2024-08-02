@@ -22,7 +22,7 @@ namespace brave_vpn {
 
 namespace {
 
-base::Value::Dict GetValueFromRegion(const mojom::Region& region) {
+base::Value::Dict GetValueFromRegionWithoutCity(const mojom::Region& region) {
   base::Value::Dict region_dict;
   region_dict.Set(kRegionNameKey, region.name);
   region_dict.Set(kRegionNamePrettyKey, region.name_pretty);
@@ -35,12 +35,24 @@ base::Value::Dict GetValueFromRegion(const mojom::Region& region) {
   return region_dict;
 }
 
+base::Value::Dict GetValueFromRegion(const mojom::Region& region) {
+  base::Value::Dict region_dict = GetValueFromRegionWithoutCity(region);
+  base::Value::List cities;
+  for (const auto& city : region.cities) {
+    cities.Append(GetValueFromRegionWithoutCity(*city));
+    // cities.Append(base::Value(city));
+  }
+  region_dict.Set(kRegionCitiesKey, std::move(cities));
+  return region_dict;
+}
+
 bool IsValidRegionValue(const base::Value::Dict& value) {
   if (!value.FindString(kRegionNameKey) ||
       !value.FindString(kRegionNamePrettyKey) ||
       !value.FindString(kRegionContinentKey) ||
       !value.FindString(kRegionCountryIsoCodeKey) ||
       !value.FindString(kRegionPrecisionKey) ||
+      !value.FindList(kRegionCitiesKey) ||
       !value.FindString(kRegionLatitudeKey) ||
       !value.FindString(kRegionLongitudeKey) ||
       !value.FindString(kRegionServerCountKey)) {
@@ -50,7 +62,7 @@ bool IsValidRegionValue(const base::Value::Dict& value) {
   return true;
 }
 
-mojom::Region GetRegionFromValue(const base::Value::Dict& value) {
+mojom::Region GetRegionFromValueWithoutCity(const base::Value::Dict& value) {
   mojom::Region region;
   if (auto* name = value.FindString(brave_vpn::kRegionNameKey)) {
     region.name = *name;
@@ -78,6 +90,16 @@ mojom::Region GetRegionFromValue(const base::Value::Dict& value) {
   if (auto server_count = value.FindInt(brave_vpn::kRegionServerCountKey)) {
     region.server_count = *server_count;
   }
+
+  return region;
+}
+
+mojom::Region GetRegionFromValue(const base::Value::Dict& value) {
+  mojom::Region region = GetRegionFromValueWithoutCity(value);
+  for (const auto& city : *value.FindList(kRegionCitiesKey)) {
+    region.cities.push_back(GetRegionFromValueWithoutCity(city.GetDict()).Clone());
+  }
+
   return region;
 }
 
@@ -100,7 +122,7 @@ std::vector<mojom::Region> ParseRegionList(
     if (!value.is_dict()) {
       continue;
     }
-    regions.push_back(GetRegionFromValue(value.GetDict()));
+    regions.push_back(GetRegionFromValue(value.GetDict()).Clone());
   }
 
   // Sort region list alphabetically
