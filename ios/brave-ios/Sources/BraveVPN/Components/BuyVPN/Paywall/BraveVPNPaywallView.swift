@@ -7,10 +7,9 @@ import BraveStore
 import BraveStrings
 import BraveUI
 import DesignSystem
-import SafariServices
+import Preferences
 import StoreKit
 import SwiftUI
-import Then
 import os.log
 
 enum BraveVPNPaymentStatus {
@@ -48,7 +47,7 @@ public struct BraveVPNPaywallView: View {
   private var shouldRedeemPromoCode = false
 
   @State
-  private var isFreeTrialAvailable = true
+  private var isFreeTrialAvailable = !Preferences.VPN.freeTrialUsed.value
 
   // Timer used for resetting the restore action to prevent infinite loading
   @State
@@ -151,6 +150,10 @@ public struct BraveVPNPaywallView: View {
         dismiss()
         openVPNAuthenticationInNewTab?()
       }
+      .onChange(of: shouldRedeemPromoCode) { shouldRedeemPromoCode in
+        // Open the redeem code sheet
+        SKPaymentQueue.default().presentCodeRedemptionSheet()
+      }
     }
     .navigationViewStyle(.stack)
     .onDisappear {
@@ -208,10 +211,14 @@ public struct BraveVPNPaywallView: View {
                 .tint(Color.white)
                 .padding()
             } else {
-              Text("Try 7 Days Free")
-                .font(.body.weight(.semibold))
-                .foregroundColor(Color(.white))
-                .padding()
+              Text(
+                isFreeTrialAvailable
+                  ? Strings.VPN.freeTrialPeriodAction.capitalized
+                  : Strings.VPN.activateSubscriptionAction.capitalized
+              )
+              .font(.body.weight(.semibold))
+              .foregroundColor(Color(.white))
+              .padding()
             }
           }
           .frame(maxWidth: .infinity)
