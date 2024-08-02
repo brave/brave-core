@@ -27,6 +27,7 @@
 #include "brave/components/brave_wallet/browser/simulation_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -42,7 +43,6 @@
 #include "content/public/common/url_constants.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/webui/web_ui_util.h"
-
 
 WalletPageUI::WalletPageUI(content::WebUI* web_ui)
     : ui::MojoWebUIController(web_ui,
@@ -66,17 +66,17 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
       source,
       base::make_span(kBraveWalletPageGenerated, kBraveWalletPageGeneratedSize),
       IDR_WALLET_PAGE_HTML);
-  source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       "img-src 'self' data: chrome://resources chrome://erc-token-images "
       "chrome://image;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      std::string("frame-src ") + kUntrustedTrezorURL + " " +
-          kUntrustedLedgerURL + " " + kUntrustedNftURL + " " +
-          kUntrustedLineChartURL + " " + kUntrustedMarketURL + ";");
-  source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
+      std::string("frame-src ") +
+          brave_wallet::mojom::kUntrustedTrezorBridgeURL + " " +
+          brave_wallet::mojom::kUntrustedLedgerBridgeURL + " " +
+          kUntrustedNftURL + " " + kUntrustedLineChartURL + " " +
+          kUntrustedMarketURL + ";");
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   source->AddString("braveWalletLineChartBridgeUrl", kUntrustedLineChartURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);

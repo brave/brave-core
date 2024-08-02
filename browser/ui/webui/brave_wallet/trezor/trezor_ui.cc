@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/trezor_bridge/resources/grit/trezor_bridge_generated_map.h"
 #include "components/grit/brave_components_resources.h"
@@ -23,7 +24,8 @@ namespace trezor {
 UntrustedTrezorUI::UntrustedTrezorUI(content::WebUI* web_ui)
     : ui::UntrustedWebUIController(web_ui) {
   auto* untrusted_source = content::WebUIDataSource::CreateAndAdd(
-      web_ui->GetWebContents()->GetBrowserContext(), kUntrustedTrezorURL);
+      web_ui->GetWebContents()->GetBrowserContext(),
+      brave_wallet::mojom::kUntrustedTrezorBridgeURL);
   untrusted_source->SetDefaultResource(IDR_BRAVE_WALLET_TREZOR_BRIDGE_HTML);
   untrusted_source->AddResourcePaths(
       base::make_span(kTrezorBridgeGenerated, kTrezorBridgeGeneratedSize));
@@ -42,8 +44,6 @@ UntrustedTrezorUI::UntrustedTrezorUI(content::WebUI* web_ui)
   untrusted_source->AddResourcePath("load_time_data_deprecated.js",
                                     IDR_WEBUI_JS_LOAD_TIME_DATA_DEPRECATED_JS);
   untrusted_source->UseStringsJs();
-  untrusted_source->AddString("braveWalletTrezorBridgeUrl",
-                              kUntrustedTrezorURL);
 }
 
 UntrustedTrezorUI::~UntrustedTrezorUI() = default;

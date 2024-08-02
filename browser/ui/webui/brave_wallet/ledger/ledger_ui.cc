@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ledger_bridge/resources/grit/ledger_bridge_generated_map.h"
 #include "components/grit/brave_components_resources.h"
@@ -19,7 +20,8 @@ namespace ledger {
 UntrustedLedgerUI::UntrustedLedgerUI(content::WebUI* web_ui)
     : ui::UntrustedWebUIController(web_ui) {
   auto* untrusted_source = content::WebUIDataSource::CreateAndAdd(
-      web_ui->GetWebContents()->GetBrowserContext(), kUntrustedLedgerURL);
+      web_ui->GetWebContents()->GetBrowserContext(),
+      brave_wallet::mojom::kUntrustedLedgerBridgeURL);
   untrusted_source->SetDefaultResource(IDR_BRAVE_WALLET_LEDGER_BRIDGE_HTML);
   untrusted_source->AddResourcePaths(
       base::make_span(kLedgerBridgeGenerated, kLedgerBridgeGeneratedSize));
@@ -31,8 +33,6 @@ UntrustedLedgerUI::UntrustedLedgerUI(content::WebUI* web_ui)
   untrusted_source->AddResourcePath("load_time_data_deprecated.js",
                                     IDR_WEBUI_JS_LOAD_TIME_DATA_DEPRECATED_JS);
   untrusted_source->UseStringsJs();
-  untrusted_source->AddString("braveWalletLedgerBridgeUrl",
-                              kUntrustedLedgerURL);
 }
 
 UntrustedLedgerUI::~UntrustedLedgerUI() = default;

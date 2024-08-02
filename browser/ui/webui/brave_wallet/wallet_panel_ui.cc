@@ -29,6 +29,7 @@
 #include "brave/components/brave_wallet/browser/simulation_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -68,13 +69,14 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
                               base::make_span(kBraveWalletPanelGenerated,
                                               kBraveWalletPanelGeneratedSize),
                               IDR_WALLET_PANEL_HTML);
-  source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      base::JoinString({"frame-src", kUntrustedTrezorURL, kUntrustedLedgerURL,
-                        kUntrustedLineChartURL, kUntrustedNftURL,
-                        base::StrCat({kUntrustedMarketURL, ";"})},
-                       " "));
+      base::JoinString(
+          {"frame-src", brave_wallet::mojom::kUntrustedTrezorBridgeURL,
+           brave_wallet::mojom::kUntrustedLedgerBridgeURL,
+           kUntrustedLineChartURL, kUntrustedNftURL,
+           base::StrCat({kUntrustedMarketURL, ";"})},
+          " "));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       base::JoinString(
@@ -82,7 +84,6 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
            "chrome://erc-token-images", "chrome://favicon", "chrome://image",
            "https://assets.cgproxy.brave.com", base::StrCat({"data:", ";"})},
           " "));
-  source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   source->AddString("braveWalletLineChartBridgeUrl", kUntrustedLineChartURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);

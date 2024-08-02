@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_deposit_page_generated_map.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_fund_wallet_page_generated_map.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
@@ -63,19 +64,19 @@ AndroidWalletPageUI::AndroidWalletPageUI(content::WebUI* web_ui,
 
   source->AddBoolean("isAndroid", true);
   source->AddBoolean("isIOS", false);
-  source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      std::string("frame-src ") + kUntrustedTrezorURL + " " +
-          kUntrustedLedgerURL + " " + kUntrustedNftURL + " " +
-          kUntrustedLineChartURL + " " + kUntrustedMarketURL + ";");
+      std::string("frame-src ") +
+          brave_wallet::mojom::kUntrustedTrezorBridgeURL + " " +
+          brave_wallet::mojom::kUntrustedLedgerBridgeURL + " " +
+          kUntrustedNftURL + " " + kUntrustedLineChartURL + " " +
+          kUntrustedMarketURL + ";");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       base::JoinString(
           {"img-src", "'self'", "chrome://resources",
            "chrome://erc-token-images", base::StrCat({"data:", ";"})},
           " "));
-  source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   source->AddString("braveWalletLineChartBridgeUrl", kUntrustedLineChartURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);
