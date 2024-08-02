@@ -16,6 +16,7 @@ import { PanelActions } from '../../../panel/actions'
 
 // utils
 import {
+  getHasPendingRequests,
   handleEndpointError,
   navigateToConnectHardwareWallet
 } from '../../../utils/api-utils'
@@ -124,7 +125,11 @@ export const signingEndpoints = ({
             await api.braveWalletService.getPendingSignMessageErrors()
 
           if (!errors.length) {
-            api.panelHandler?.closeUI()
+            const hasPendingRequests = await getHasPendingRequests()
+
+            if (!hasPendingRequests) {
+              api.panelHandler?.closeUI()
+            }
           }
 
           return {
@@ -163,10 +168,9 @@ export const signingEndpoints = ({
               getLocale('braveWalletHardwareAccountNotFound')
             )
 
-            const { requests: signMessageRequests } =
-              await api.braveWalletService.getPendingSignMessageRequests()
+            const hasPendingRequests = await getHasPendingRequests()
 
-            if (!signMessageRequests?.length) {
+            if (!hasPendingRequests) {
               api.panelHandler?.closeUI()
             }
 
@@ -246,7 +250,12 @@ export const signingEndpoints = ({
           )
 
           store.dispatch(PanelActions.navigateToMain())
-          api.panelHandler?.closeUI()
+
+          const hasPendingRequests = await getHasPendingRequests()
+
+          if (!hasPendingRequests) {
+            api.panelHandler?.closeUI()
+          }
 
           return {
             data: {
@@ -281,10 +290,9 @@ async function processSignMessageRequest(
     arg.error || null
   )
 
-  const { requests: signMessageRequests } =
-    await api.braveWalletService.getPendingSignMessageRequests()
+  const hasPendingRequests = await getHasPendingRequests()
 
-  if (!signMessageRequests.length) {
+  if (!hasPendingRequests) {
     api.panelHandler?.closeUI()
   }
 }

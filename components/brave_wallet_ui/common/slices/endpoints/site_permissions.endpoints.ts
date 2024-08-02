@@ -8,7 +8,10 @@ import { BraveWallet } from '../../../constants/types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // utils
-import { handleEndpointError } from '../../../utils/api-utils'
+import {
+  getHasPendingRequests,
+  handleEndpointError
+} from '../../../utils/api-utils'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import { storeCurrentAndPreviousPanel } from '../../../utils/local-storage-utils'
 
@@ -82,7 +85,12 @@ export const sitePermissionEndpoints = ({
 
           if (panelHandler) {
             panelHandler.connectToSite([arg.addressToConnect], arg.duration)
-            panelHandler.closeUI()
+
+            const hasPendingRequests = await getHasPendingRequests()
+
+            if (!hasPendingRequests) {
+              api.panelHandler?.closeUI()
+            }
           }
 
           return {
@@ -108,7 +116,12 @@ export const sitePermissionEndpoints = ({
           if (panelHandler) {
             storeCurrentAndPreviousPanel('main', undefined)
             panelHandler.cancelConnectToSite()
-            panelHandler.closeUI()
+
+            const hasPendingRequests = await getHasPendingRequests()
+
+            if (!hasPendingRequests) {
+              api.panelHandler?.closeUI()
+            }
           }
 
           return {

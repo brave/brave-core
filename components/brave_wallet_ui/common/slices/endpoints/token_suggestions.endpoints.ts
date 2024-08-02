@@ -7,7 +7,10 @@
 import { BraveWallet } from '../../../constants/types'
 
 // utils
-import { handleEndpointError } from '../../../utils/api-utils'
+import {
+  getHasPendingRequests,
+  handleEndpointError
+} from '../../../utils/api-utils'
 import { isRemoteImageURL } from '../../../utils/string-utils'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
@@ -70,7 +73,11 @@ export const tokenSuggestionsEndpoints = ({
           )
 
           if (arg.closePanel) {
-            apiProxy.panelHandler?.closeUI()
+            const hasPendingRequests = await getHasPendingRequests()
+
+            if (!hasPendingRequests) {
+              apiProxy.panelHandler?.closeUI()
+            }
           }
 
           return {
