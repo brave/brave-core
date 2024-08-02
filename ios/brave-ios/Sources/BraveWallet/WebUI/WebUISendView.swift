@@ -9,12 +9,19 @@ import SwiftUI
 struct WebUISendView: View {
 
   @State private var title: String = Strings.Wallet.send
+  @Environment(\.openURL) private var openWalletURL
 
   var body: some View {
-    ChromeWebView(urlString: "brave://wallet/send", title: $title)
-      .navigationTitle(title)
-      .navigationBarTitleDisplayMode(.inline)
-      .background(Color(braveSystemName: .containerBackground))
-      .ignoresSafeArea(.keyboard, edges: .bottom)
+    ChromeWebView(
+      urlString: "brave://wallet/send",
+      title: $title,
+      openURL: { url in
+        openWalletURL(url)
+      }
+    )
+    .navigationTitle(title)
+    .navigationBarTitleDisplayMode(.inline)
+    .background(Color(braveSystemName: .containerBackground))
+    .ignoresSafeArea(.keyboard, edges: .bottom)
   }
 }

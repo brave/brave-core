@@ -9,12 +9,19 @@ import SwiftUI
 struct WebUISwapView: View {
 
   @State private var title: String = Strings.Wallet.swap
+  @Environment(\.openURL) private var openWalletURL
 
   var body: some View {
-    ChromeWebView(urlString: "brave://wallet/swap", title: $title)
-      .navigationTitle(title)
-      .navigationBarTitleDisplayMode(.inline)
-      .background(Color(braveSystemName: .containerBackground))
-      .ignoresSafeArea(.keyboard, edges: .bottom)
+    ChromeWebView(
+      urlString: "brave://wallet/swap",
+      title: $title,
+      openURL: { url in
+        openWalletURL(url)
+      }
+    )
+    .navigationTitle(title)
+    .navigationBarTitleDisplayMode(.inline)
+    .background(Color(braveSystemName: .containerBackground))
+    .ignoresSafeArea(.keyboard, edges: .bottom)
   }
 }
