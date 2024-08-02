@@ -394,9 +394,9 @@ class NewTabPageViewController: UIViewController {
       self?.reportSponsoredBackgroundEvent(.viewedImpression)
     }
 
-    if shouldShowBackgroundVideo() {
-      videoPlayer?.maybeStartAutoplay()
-    }
+    videoPlayer?.loadAndAutoplayVideoAssetIfNeeded(
+      shouldAutoplay: shouldShowBackgroundVideo()
+    )
 
     presentNotification()
 
@@ -416,8 +416,8 @@ class NewTabPageViewController: UIViewController {
 
     backgroundView.imageView.image = parent == nil ? nil : background.backgroundImage
 
-    videoPlayer?.maybeCancelPlay()
     if parent == nil {
+      videoPlayer?.cancelPlayIfNeeded()
       videoPlayer?.resetPlayer()
     } else {
       videoPlayer?.createPlayer()
@@ -472,7 +472,7 @@ class NewTabPageViewController: UIViewController {
     )
   }
 
-  private func fadeInCollectionViewAndShowVideoButtons() {
+  private func fadeInCollectionViewAndHideVideoButtons() {
     videoButtonsView.isHidden = true
     gradientView.isHidden = false
     collectionView.isHidden = false
@@ -503,7 +503,7 @@ class NewTabPageViewController: UIViewController {
       return videoPlayer.togglePlay()
     }
     videoButtonsView.tappedCancelButton = { [weak videoPlayer] in
-      videoPlayer?.maybeCancelPlay()
+      videoPlayer?.cancelPlayIfNeeded()
     }
 
     backgroundButtonsView.activeButton = .none
@@ -516,7 +516,7 @@ class NewTabPageViewController: UIViewController {
 
     videoPlayer?.didCancelPlaybackEvent = { [weak self] in
       guard let self = self else { return }
-      self.fadeInCollectionViewAndShowVideoButtons()
+      self.fadeInCollectionViewAndHideVideoButtons()
     }
     videoPlayer?.didStartAutoplayEvent = { [weak self] in
       self?.backgroundButtonsView.videoAutoplayStarted()
@@ -537,7 +537,7 @@ class NewTabPageViewController: UIViewController {
     }
     videoPlayer?.didFinishPlaybackEvent = { [weak self] in
       guard let self = self else { return }
-      self.fadeInCollectionViewAndShowVideoButtons()
+      self.fadeInCollectionViewAndHideVideoButtons()
       self.reportSponsoredBackgroundEvent(.media100)
     }
     videoPlayer?.didStartPlaybackEvent = { [weak self] in
@@ -563,8 +563,7 @@ class NewTabPageViewController: UIViewController {
     } else {
       // Hide the player layer in landscape mode on iPhone.
       backgroundView.playerLayer.isHidden = true
-      videoPlayer?.cancelAutoplay()
-      videoPlayer?.maybeCancelPlay()
+      videoPlayer?.cancelPlayIfNeeded()
     }
   }
 
