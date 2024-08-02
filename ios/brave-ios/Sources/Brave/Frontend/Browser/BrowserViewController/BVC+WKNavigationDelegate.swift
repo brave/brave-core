@@ -413,10 +413,10 @@ extension BrowserViewController: CWVNavigationDelegate {
         isForMainFrame: navigationAction.navigationType.isMainFrame
       )
       let scriptTypes =
-      await tab?.currentPageData?.makeUserScriptTypes(
-        domain: domainForMainFrame,
-        isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
-      ) ?? []
+        await tab?.currentPageData?.makeUserScriptTypes(
+          domain: domainForMainFrame,
+          isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
+        ) ?? []
       tab?.setCustomUserScript(scripts: scriptTypes)
     }
 
@@ -978,6 +978,29 @@ extension BrowserViewController: CWVNavigationDelegate {
     {
       present(downloadAlert, animated: true, completion: nil)
     }
+  }
+
+  public func webView(
+    _ webView: CWVWebView,
+    shouldBlockUniversalLinksFor request: URLRequest
+  ) -> Bool {
+    let isPrivateBrowsing = tabManager.privateBrowsingManager.isPrivateBrowsing == true
+    func isYouTubeLoad() -> Bool {
+      guard let domain = request.mainDocumentURL?.baseDomain else {
+        return false
+      }
+      let domainsWithUniversalLinks: Set<String> = ["youtube.com", "youtu.be"]
+      return domainsWithUniversalLinks.contains(domain)
+    }
+    if isPrivateBrowsing || !Preferences.General.followUniversalLinks.value
+      || (Preferences.General.keepYouTubeInBrave.value && isYouTubeLoad())
+    {
+      // Stop Brave from opening universal links by using the private enum value
+      // `_WKNavigationActionPolicyAllowWithoutTryingAppLink` which is defined here:
+      // https://github.com/WebKit/WebKit/blob/main/Source/WebKit/UIProcess/API/Cocoa/WKNavigationDelegatePrivate.h#L62
+      return true
+    }
+    return false
   }
 }
 

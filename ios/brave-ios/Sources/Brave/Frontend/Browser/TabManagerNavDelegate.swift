@@ -36,37 +36,12 @@ class TabManagerNavDelegate: NSObject, CWVNavigationDelegate {
     }
   }
 
-  private func defaultAllowPolicy(
-    for navigationAction: CWVNavigationAction
-  ) -> CWVNavigationActionPolicy {
-    let isPrivateBrowsing = tabManager?.privateBrowsingManager.isPrivateBrowsing == true
-    func isYouTubeLoad() -> Bool {
-      guard let domain = navigationAction.request.mainDocumentURL?.baseDomain else {
-        return false
-      }
-      let domainsWithUniversalLinks: Set<String> = ["youtube.com", "youtu.be"]
-      return domainsWithUniversalLinks.contains(domain)
-    }
-    // FIXME: Private API, check how Chromium handles this
-    //    if isPrivateBrowsing || !Preferences.General.followUniversalLinks.value
-    //        || (Preferences.General.keepYouTubeInBrave.value && isYouTubeLoad())
-    //    {
-    //      // Stop Brave from opening universal links by using the private enum value
-    //      // `_WKNavigationActionPolicyAllowWithoutTryingAppLink` which is defined here:
-    //      // https://github.com/WebKit/WebKit/blob/main/Source/WebKit/UIProcess/API/Cocoa/WKNavigationDelegatePrivate.h#L62
-    //      let allowDecision =
-    //      WKNavigationActionPolicy(rawValue: WKNavigationActionPolicy.allow.rawValue + 2) ?? .allow
-    //      return allowDecision
-    //    }
-    return .allow
-  }
-
   func webView(
     _ webView: CWVWebView,
     decidePolicyFor navigationAction: CWVNavigationAction,
     decisionHandler: @escaping (CWVNavigationActionPolicy) -> Void
   ) {
-    var res: CWVNavigationActionPolicy = defaultAllowPolicy(for: navigationAction)
+    var res: CWVNavigationActionPolicy = .allow
 
     // Needed to resolve ambiguous delegate signatures: https://github.com/apple/swift/issues/45652#issuecomment-1149235081
     typealias CWVNavigationActionSignature = (CWVNavigationDelegate) -> (
@@ -182,5 +157,16 @@ class TabManagerNavDelegate: NSObject, CWVNavigationDelegate {
     for delegate in delegates {
       delegate.webView?(webView, didRequestDownloadWith: task)
     }
+  }
+
+  func webView(_ webView: CWVWebView, shouldBlockUniversalLinksFor request: URLRequest) -> Bool {
+    for delegate in delegates {
+      if let shouldBlock = delegate.webView?(webView, shouldBlockUniversalLinksFor: request),
+        shouldBlock
+      {
+        return true
+      }
+    }
+    return false
   }
 }

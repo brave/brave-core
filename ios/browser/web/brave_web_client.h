@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_IOS_BROWSER_BRAVE_WEB_CLIENT_H_
-#define BRAVE_IOS_BROWSER_BRAVE_WEB_CLIENT_H_
+#ifndef BRAVE_IOS_BROWSER_WEB_BRAVE_WEB_CLIENT_H_
+#define BRAVE_IOS_BROWSER_WEB_BRAVE_WEB_CLIENT_H_
 
 #include <memory>
 #include <string>
@@ -46,4 +46,4 @@ class BraveWebClient : public ChromeWebClient {
       web::BrowserURLRewriter* rewriter) override;
 };
 
-#endif  // BRAVE_IOS_BROWSER_BRAVE_WEB_CLIENT_H_
+#endif  // BRAVE_IOS_BROWSER_WEB_BRAVE_WEB_CLIENT_H_

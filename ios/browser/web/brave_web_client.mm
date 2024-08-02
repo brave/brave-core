@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import "brave/ios/browser/brave_web_client.h"
+#import "brave/ios/browser/web/brave_web_client.h"
 
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/ios/ns_error_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/constants/url_constants.h"
-#include "brave/ios/browser/brave_web_main_parts.h"
+#include "brave/ios/browser/web/brave_web_main_parts.h"
 #import "components/translate/ios/browser/translate_java_script_feature.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
 #include "ios/chrome/browser/web/model/chrome_web_client.h"
@@ -32,8 +32,7 @@
 
 BraveWebClient::BraveWebClient() {}
 
-BraveWebClient::~BraveWebClient() {
-}
+BraveWebClient::~BraveWebClient() {}
 
 std::unique_ptr<web::WebMainParts> BraveWebClient::CreateWebMainParts() {
   return std::make_unique<BraveWebMainParts>(

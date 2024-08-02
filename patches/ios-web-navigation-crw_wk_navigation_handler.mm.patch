@@ -1,0 +1,12 @@
+diff --git a/ios/web/navigation/crw_wk_navigation_handler.mm b/ios/web/navigation/crw_wk_navigation_handler.mm
+index 443d5684fceb98e1362b8d337b64d0a36c2186c8..76ca6ecf944acfe6f72a9d76c9a557b3ec8f655a 100644
+--- a/ios/web/navigation/crw_wk_navigation_handler.mm
++++ b/ios/web/navigation/crw_wk_navigation_handler.mm
+@@ -287,6 +287,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
+ 
+   BOOL forceBlockUniversalLinks = self.blockUniversalLinksOnNextDecidePolicy;
+   self.blockUniversalLinksOnNextDecidePolicy = NO;
++  BRAVE_SHOULD_BLOCK_UNIVERSAL_LINKS
+ 
+   _webProcessCrashed = NO;
+   if (self.beingDestroyed) {
