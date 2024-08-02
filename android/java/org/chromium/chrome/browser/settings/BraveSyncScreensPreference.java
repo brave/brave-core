@@ -733,7 +733,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                         });
             }
         } else if (mShowCategoriesButton == v) {
-            SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+            SettingsLauncher settingsLauncher = SettingsLauncherFactory.createSettingsLauncher();
             settingsLauncher.launchSettingsActivity(getContext(), BraveManageSyncSettings.class);
         } else if (mAddDeviceButton == v) {
             setNewChainLayout();
