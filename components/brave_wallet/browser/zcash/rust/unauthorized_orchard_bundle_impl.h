@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_UNAUTHORIZED_ORCHARD_BUNDLE_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_UNAUTHORIZED_ORCHARD_BUNDLE_IMPL_H_
 
+#include <memory>
+
 #include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/unauthorized_orchard_bundle.h"
 #include "third_party/rust/cxx/v1/cxx.h"

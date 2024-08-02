@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 
+#include <algorithm>
+#include <vector>
+
 namespace brave_wallet {
 
 std::array<uint8_t, kOrchardNullifierSize> GenerateMockNullifier(

@@ -60,7 +60,9 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
     BraveWallet.ZCashBalance | undefined
   >()
   const [shieldResult, setShieldResult] = useState<string>()
-  const [makeAccountShieldableResult, setMakeAccountShieldableResult] = useState<string>()
+  const [
+    makeAccountShieldableResult,
+    setMakeAccountShieldableResult] = useState<string>()
   const [syncStatusResult, setSyncStatusResult] = useState<string>();
   const [shieldedBalanceValue, setShieldedBalanceValue] = useState<string>();
 
@@ -100,7 +102,8 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
   }
 
   const stopOrchardSync = async() => {
-    const result = await getAPIProxy().zcashWalletService.stopShieldSync(props.accountId);
+    const result =
+      await getAPIProxy().zcashWalletService.stopShieldSync(props.accountId);
     if (result.errorMessage) {
       setSyncStatusResult("Stop error " + result.errorMessage);
     }

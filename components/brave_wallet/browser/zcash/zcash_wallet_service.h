@@ -129,6 +129,8 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   void SetZCashRpcForTesting(std::unique_ptr<ZCashRpc> zcash_rpc);
 
+  void Reset();
+
  private:
   friend class ZCashCreateShieldAllTransactionTask;
   friend class ZCashCreateTransparentTransactionTask;
@@ -138,6 +140,7 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   /*KeyringServiceObserverBase*/
   void Unlocked() override;
+  void Locked() override;
 
   bool SignTransactionInternal(ZCashTransaction& tx,
                                const mojom::AccountIdPtr& account_id);

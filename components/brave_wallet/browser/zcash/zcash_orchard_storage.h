@@ -7,6 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_ORCHARD_STORAGE_H_
 
 #include <array>
+#include <memory>
+#include <string>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -15,9 +17,10 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
-#include "components/prefs/pref_service.h"
-#include "sql/database.h"
-#include "sql/meta_table.h"
+
+namespace sql {
+class Database;
+}
 
 namespace brave_wallet {
 
@@ -83,10 +86,9 @@ class ZCashOrchardStorage {
   bool UpdateSchema();
 
   base::FilePath db_file_path_;
-  sql::Database database_ GUARDED_BY_CONTEXT(sequence_checker_);
-  sql::MetaTable meta_table_;
+  std::unique_ptr<sql::Database> database_
+      GUARDED_BY_CONTEXT(sequence_checker_);
 
-  raw_ptr<PrefService> prefs_;
   SEQUENCE_CHECKER(sequence_checker_);
 };
 

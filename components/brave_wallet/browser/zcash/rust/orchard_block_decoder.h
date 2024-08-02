@@ -6,7 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_ORCHARD_BLOCK_DECODER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_ORCHARD_BLOCK_DECODER_H_
 
+#include <memory>
 #include <optional>
+#include <vector>
 
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"

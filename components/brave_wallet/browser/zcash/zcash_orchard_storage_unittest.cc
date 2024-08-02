@@ -59,12 +59,14 @@ TEST_F(OrchardStorageTest, AccountMeta) {
     EXPECT_EQ(result->latest_scanned_block_hash, "hash");
   }
 
-  // {
-  //   // Failed to insert same account
-  //   EXPECT_EQ(orchard_storage_->RegisterAccount(account_id_1.Clone(), 200,
-  //   "hash").value().error_code,
-  //             OrchardStorage::OrchardStorageErrorCode::kFailedToExecuteStatement);
-  // }
+  {
+    // Failed to insert same account
+    EXPECT_EQ(
+        orchard_storage_->RegisterAccount(account_id_1.Clone(), 200, "hash")
+            .value()
+            .error_code,
+        ZCashOrchardStorage::ErrorCode::kFailedToExecuteStatement);
+  }
 
   // Insert second account
   EXPECT_FALSE(

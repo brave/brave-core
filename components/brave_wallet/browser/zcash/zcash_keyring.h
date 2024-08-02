@@ -44,7 +44,7 @@ class ZCashKeyring : public Secp256k1HDKeyring {
   std::optional<std::array<uint8_t, kOrchardRawBytesSize>> GetOrchardRawBytes(
       const mojom::ZCashKeyId& key_id);
   std::optional<std::array<uint8_t, kOrchardFullViewKeySize>>
-  GetOrchardFullViewKey(const size_t& account_id);
+  GetOrchardFullViewKey(const uint32_t& account_id);
 #endif
 
   std::optional<std::vector<uint8_t>> SignMessage(

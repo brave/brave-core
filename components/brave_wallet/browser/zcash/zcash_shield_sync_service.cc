@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_shield_sync_service.h"
 
+#include <algorithm>
+#include <utility>
+
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -146,7 +149,7 @@ void ZCashShieldSyncService::OnGetAccountMeta(
     return;
   }
 
-  VerifiyChainState(*result);
+  VerifyChainState(*result);
 }
 
 void ZCashShieldSyncService::InitAccount() {
@@ -167,7 +170,7 @@ void ZCashShieldSyncService::OnAccountInit(
   }
 }
 
-void ZCashShieldSyncService::VerifiyChainState(
+void ZCashShieldSyncService::VerifyChainState(
     ZCashOrchardStorage::AccountMeta account_meta) {
   // If block chain has removed blocks we already scanned then we need to handle
   // chain reorg.
@@ -297,8 +300,7 @@ void ZCashShieldSyncService::OnGetLatestBlock(
 void ZCashShieldSyncService::DownloadBlocks() {
   zcash_rpc_->GetCompactBlocks(
       chain_id_, *latest_scanned_block_ + 1,
-      std::min(*latest_scanned_block_ + 1,
-               *latest_scanned_block_ + kScanBatchSize),
+      std::min(*chain_tip_block_, *latest_scanned_block_ + kScanBatchSize),
       base::BindOnce(&ZCashShieldSyncService::OnBlocksDownloaded,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -379,6 +381,10 @@ uint32_t ZCashShieldSyncService::GetSpendableBalance() {
     balance += note.amount;
   }
   return balance;
+}
+
+void ZCashShieldSyncService::Reset() {
+  background_orchard_storage_.AsyncCall(&ZCashOrchardStorage::ResetDatabase);
 }
 
 }  // namespace brave_wallet

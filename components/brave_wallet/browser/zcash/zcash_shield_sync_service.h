@@ -75,6 +75,8 @@ class ZCashShieldSyncService {
 
   mojom::ZCashShieldSyncStatusPtr GetSyncStatus();
 
+  void Reset();
+
  private:
   FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest, ScanBlocks);
 
@@ -101,7 +103,7 @@ class ZCashShieldSyncService {
   // We assume that there is a limit of reorg depth - kChainReorgBlockDelta
 
   // Verifies that last known scanned block hash is unchanged
-  void VerifiyChainState(ZCashOrchardStorage::AccountMeta account_meta);
+  void VerifyChainState(ZCashOrchardStorage::AccountMeta account_meta);
   void OnGetTreeStateForChainVerification(
       ZCashOrchardStorage::AccountMeta account_meta,
       base::expected<zcash::mojom::TreeStatePtr, std::string> tree_state);

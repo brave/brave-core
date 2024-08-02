@@ -42,7 +42,8 @@ ZCashWalletService::ZCashWalletService(
     PrefService* prefs,
     NetworkManager* network_manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : zcash_data_path_(zcash_data_path), keyring_service_(keyring_service) {
+    : zcash_data_path_(std::move(zcash_data_path)),
+      keyring_service_(keyring_service) {
   zcash_rpc_ = std::make_unique<ZCashRpc>(network_manager, url_loader_factory);
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
@@ -122,7 +123,7 @@ void ZCashWalletService::StartShieldSync(
           std::make_unique<ZCashShieldSyncService>(
               zcash_rpc(), account_id, account_birthday,
               keyring_service_->GetOrchardFullViewKey(account_id).value(),
-              zcash_data_path_.Append(kOrchardDatabaseName));
+              zcash_data_path_.AppendASCII(kOrchardDatabaseName));
     }
 
     shield_sync_services_[account_id.Clone()]->StartSyncing(
@@ -555,10 +556,11 @@ void ZCashWalletService::OnPostShieldTransactionDone(
 void ZCashWalletService::GetLatestBlockForAccountBirthday(
     mojom::AccountIdPtr account_id,
     MakeAccountShieldedCallback callback) {
+  CHECK(account_id);
   zcash_rpc_->GetLatestBlock(
       GetNetworkForZCashKeyring(account_id->keyring_id),
       base::BindOnce(&ZCashWalletService::OnGetLatestBlockForAccountBirthday,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(account_id),
+                     weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
                      std::move(callback)));
 }
 
@@ -653,6 +655,24 @@ void ZCashWalletService::Unlocked() {
       RunDiscovery(account->account_id.Clone(), base::DoNothing());
     }
   }
+}
+
+void ZCashWalletService::Locked() {
+#if BUILDFLAG(ENABLE_ORCHARD)
+  for (const auto& pair : shield_sync_services_) {
+    pair.second->PauseSyncing();
+  }
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
+}
+
+void ZCashWalletService::Reset() {
+  weak_ptr_factory_.InvalidateWeakPtrs();
+#if BUILDFLAG(ENABLE_ORCHARD)
+  for (const auto& pair : shield_sync_services_) {
+    pair.second->Reset();
+  }
+  shield_sync_services_.clear();
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
 }
 
 }  // namespace brave_wallet

@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_ORCHARD_BLOCK_DECODER_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_ORCHARD_BLOCK_DECODER_IMPL_H_
 
+#include <vector>
+
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_block_decoder.h"
 
 namespace brave_wallet::orchard {

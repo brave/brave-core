@@ -5,9 +5,17 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_orchard_storage.h"
 
+#include <algorithm>
+#include <limits>
+#include <memory>
+#include <string>
+#include <utility>
+
 #include "base/files/file_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "sql/database.h"
+#include "sql/meta_table.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
@@ -32,8 +40,9 @@ std::optional<uint32_t> ReadUint32(sql::Statement& statement, size_t index) {
 }  // namespace
 
 ZCashOrchardStorage::ZCashOrchardStorage(base::FilePath path_to_database)
-    : db_file_path_(path_to_database), database_() {
+    : db_file_path_(std::move(path_to_database)) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  database_ = std::make_unique<sql::Database>();
 }
 
 ZCashOrchardStorage::~ZCashOrchardStorage() {
@@ -42,7 +51,7 @@ ZCashOrchardStorage::~ZCashOrchardStorage() {
 
 bool ZCashOrchardStorage::EnsureDbInit() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (database_.is_open()) {
+  if (database_->is_open()) {
     return true;
   }
   return CreateOrUpdateDatabase();
@@ -51,7 +60,7 @@ bool ZCashOrchardStorage::EnsureDbInit() {
 void ZCashOrchardStorage::ResetDatabase() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  database_.Close();
+  database_->Close();
   sql::Database::Delete(db_file_path_);
 }
 
@@ -64,16 +73,16 @@ bool ZCashOrchardStorage::CreateOrUpdateDatabase() {
     return false;
   }
 
-  if (!database_.Open(db_file_path_)) {
+  if (!database_->Open(db_file_path_)) {
     NOTREACHED_IN_MIGRATION();
     return false;
   }
 
   sql::MetaTable meta_table;
-  if (!meta_table.Init(&database_, kEmptyDbVersionNumber,
+  if (!meta_table.Init(database_.get(), kEmptyDbVersionNumber,
                        kEmptyDbVersionNumber)) {
     NOTREACHED_IN_MIGRATION();
-    database_.Close();
+    database_->Close();
     return false;
   }
 
@@ -81,14 +90,14 @@ bool ZCashOrchardStorage::CreateOrUpdateDatabase() {
     if (!CreateSchema() ||
         !meta_table.SetVersionNumber(kCurrentVersionNumber)) {
       NOTREACHED_IN_MIGRATION();
-      database_.Close();
+      database_->Close();
       return false;
     }
   } else if (meta_table.GetVersionNumber() < kCurrentVersionNumber) {
     if (!UpdateSchema() ||
         !meta_table.SetVersionNumber(kCurrentVersionNumber)) {
       NOTREACHED_IN_MIGRATION();
-      database_.Close();
+      database_->Close();
       return false;
     }
   }
@@ -99,30 +108,30 @@ bool ZCashOrchardStorage::CreateOrUpdateDatabase() {
 bool ZCashOrchardStorage::CreateSchema() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  sql::Transaction transaction(&database_);
+  sql::Transaction transaction(database_.get());
   return transaction.Begin() &&
-         database_.Execute("CREATE TABLE " kNotesTable
-                           " "
-                           "("
-                           "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                           "account_id TEXT NOT NULL,"
-                           "amount INTEGER NOT NULL,"
-                           "block_id INTEGER NOT NULL,"
-                           "nullifier BLOB NOT NULL UNIQUE);") &&
-         database_.Execute("CREATE TABLE " kSpentNotesTable
-                           " "
-                           "("
-                           "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                           "account_id TEXT NOT NULL,"
-                           "spent_block_id INTEGER NOT NULL,"
-                           "nullifier BLOB NOT NULL UNIQUE);") &&
-         database_.Execute("CREATE TABLE " kAccountMeta
-                           " "
-                           "("
-                           "account_id TEXT NOT NULL PRIMARY KEY,"
-                           "account_birthday INTEGER NOT NULL,"
-                           "latest_scanned_block INTEGER NOT NULL,"
-                           "latest_scanned_block_hash TEXT NOT NULL);") &&
+         database_->Execute("CREATE TABLE " kNotesTable
+                            " "
+                            "("
+                            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                            "account_id TEXT NOT NULL,"
+                            "amount INTEGER NOT NULL,"
+                            "block_id INTEGER NOT NULL,"
+                            "nullifier BLOB NOT NULL UNIQUE);") &&
+         database_->Execute("CREATE TABLE " kSpentNotesTable
+                            " "
+                            "("
+                            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                            "account_id TEXT NOT NULL,"
+                            "spent_block_id INTEGER NOT NULL,"
+                            "nullifier BLOB NOT NULL UNIQUE);") &&
+         database_->Execute("CREATE TABLE " kAccountMeta
+                            " "
+                            "("
+                            "account_id TEXT NOT NULL PRIMARY KEY,"
+                            "account_birthday INTEGER NOT NULL,"
+                            "latest_scanned_block INTEGER NOT NULL,"
+                            "latest_scanned_block_hash TEXT NOT NULL);") &&
          transaction.Commit();
 }
 
@@ -142,14 +151,14 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardStorage::RegisterAccount(
     return Error{kDbInitError, "Failed to init database "};
   }
 
-  sql::Transaction transaction(&database_);
+  sql::Transaction transaction(database_.get());
   if (!transaction.Begin()) {
     NOTREACHED_IN_MIGRATION();
     return Error{kDbInitError, "Failed to init database "};
   }
 
-  sql::Statement register_account_statement(database_.GetCachedStatement(
-      SQL_FROM_HERE, "INSERT OR REPLACE INTO " kAccountMeta " "
+  sql::Statement register_account_statement(database_->GetCachedStatement(
+      SQL_FROM_HERE, "INSERT INTO " kAccountMeta " "
                      "(account_id, account_birthday, latest_scanned_block, "
                      "latest_scanned_block_hash) "
                      "VALUES (?, ?, ?, ?)"));
@@ -161,12 +170,11 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardStorage::RegisterAccount(
 
   if (!register_account_statement.Run()) {
     transaction.Rollback();
-    NOTREACHED_IN_MIGRATION();
-    return Error{kFailedToExecuteStatement, database_.GetErrorMessage()};
+    return Error{kFailedToExecuteStatement, database_->GetErrorMessage()};
   }
 
   if (!transaction.Commit()) {
-    return Error{kFailedToExecuteStatement, database_.GetErrorMessage()};
+    return Error{kFailedToExecuteStatement, database_->GetErrorMessage()};
   }
 
   return std::nullopt;
@@ -179,10 +187,10 @@ ZCashOrchardStorage::GetAccountMeta(mojom::AccountIdPtr account_id) {
   if (!EnsureDbInit()) {
     NOTREACHED_IN_MIGRATION();
     return base::unexpected(
-        Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
+        Error{ErrorCode::kDbInitError, database_->GetErrorMessage()});
   }
 
-  sql::Statement resolve_account_statement(database_.GetCachedStatement(
+  sql::Statement resolve_account_statement(database_->GetCachedStatement(
       SQL_FROM_HERE,
       "SELECT account_birthday, latest_scanned_block, "
       "latest_scanned_block_hash FROM " kAccountMeta " WHERE account_id = ?;"));
@@ -216,36 +224,35 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardStorage::HandleChainReorg(
 
   if (!EnsureDbInit()) {
     NOTREACHED_IN_MIGRATION();
-    return Error{ErrorCode::kDbInitError, database_.GetErrorMessage()};
+    return Error{ErrorCode::kDbInitError, database_->GetErrorMessage()};
   }
 
-  sql::Transaction transaction(&database_);
+  sql::Transaction transaction(database_.get());
 
   if (!transaction.Begin()) {
     NOTREACHED_IN_MIGRATION();
-    return Error{ErrorCode::kInternalError, database_.GetErrorMessage()};
+    return Error{ErrorCode::kInternalError, database_->GetErrorMessage()};
   }
 
-  sql::Statement remove_from_spent_notes(database_.GetCachedStatement(
+  sql::Statement remove_from_spent_notes(database_->GetCachedStatement(
       SQL_FROM_HERE, "DELETE FROM " kSpentNotesTable " "
                      "WHERE spent_block_id > ? AND account_id = ?;"));
 
   remove_from_spent_notes.BindInt64(0, reorg_block_id);
   remove_from_spent_notes.BindString(1, account_id->unique_key);
 
-  sql::Statement remove_from_notes(database_.GetCachedStatement(
+  sql::Statement remove_from_notes(database_->GetCachedStatement(
       SQL_FROM_HERE,
       "DELETE FROM " kNotesTable " WHERE block_id > ? AND account_id = ?;"));
 
   remove_from_notes.BindInt64(0, reorg_block_id);
   remove_from_notes.BindString(1, account_id->unique_key);
 
-  sql::Statement update_account_meta(database_.GetCachedStatement(
+  sql::Statement update_account_meta(database_->GetCachedStatement(
       SQL_FROM_HERE,
-
       "UPDATE " kAccountMeta
       " "
-      "SET latest_scanned_block = ?, latest_scanned_block_hash = ?"
+      "SET latest_scanned_block = ?, latest_scanned_block_hash = ? "
       "WHERE account_id = ?;"));
 
   update_account_meta.BindInt64(0, reorg_block_id);
@@ -257,12 +264,12 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardStorage::HandleChainReorg(
     NOTREACHED_IN_MIGRATION();
     transaction.Rollback();
     return Error{ErrorCode::kFailedToExecuteStatement,
-                 database_.GetErrorMessage()};
+                 database_->GetErrorMessage()};
   }
 
   if (!transaction.Commit()) {
     return Error{ErrorCode::kFailedToExecuteStatement,
-                 database_.GetErrorMessage()};
+                 database_->GetErrorMessage()};
   }
 
   return std::nullopt;
@@ -275,10 +282,10 @@ ZCashOrchardStorage::GetNullifiers(mojom::AccountIdPtr account_id) {
   if (!EnsureDbInit()) {
     NOTREACHED_IN_MIGRATION();
     return base::unexpected(
-        Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
+        Error{ErrorCode::kDbInitError, database_->GetErrorMessage()});
   }
 
-  sql::Statement resolve_note_spents(database_.GetCachedStatement(
+  sql::Statement resolve_note_spents(database_->GetCachedStatement(
       SQL_FROM_HERE,
       "SELECT spent_block_id, nullifier "
       "FROM " kSpentNotesTable " WHERE spent_notes.account_id = ?;"));
@@ -302,7 +309,7 @@ ZCashOrchardStorage::GetNullifiers(mojom::AccountIdPtr account_id) {
   if (!resolve_note_spents.Succeeded()) {
     NOTREACHED_IN_MIGRATION();
     return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
-                                  database_.GetErrorMessage()});
+                                  database_->GetErrorMessage()});
   }
   return result;
 }
@@ -314,10 +321,10 @@ ZCashOrchardStorage::GetSpendableNotes(mojom::AccountIdPtr account_id) {
   if (!EnsureDbInit()) {
     NOTREACHED_IN_MIGRATION();
     return base::unexpected(
-        Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
+        Error{ErrorCode::kDbInitError, database_->GetErrorMessage()});
   }
 
-  sql::Statement resolve_unspent_notes(database_.GetCachedStatement(
+  sql::Statement resolve_unspent_notes(database_->GetCachedStatement(
       SQL_FROM_HERE,
 
       "SELECT "
@@ -361,17 +368,17 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardStorage::UpdateNotes(
 
   if (!EnsureDbInit()) {
     NOTREACHED_IN_MIGRATION();
-    return Error{ErrorCode::kDbInitError, database_.GetErrorMessage()};
+    return Error{ErrorCode::kDbInitError, database_->GetErrorMessage()};
   }
 
-  sql::Transaction transaction(&database_);
+  sql::Transaction transaction(database_.get());
   if (!transaction.Begin()) {
     NOTREACHED_IN_MIGRATION();
-    return Error{ErrorCode::kDbInitError, database_.GetErrorMessage()};
+    return Error{ErrorCode::kDbInitError, database_->GetErrorMessage()};
   }
 
   // Insert found notes to the notes table
-  sql::Statement statement_populate_notes(database_.GetCachedStatement(
+  sql::Statement statement_populate_notes(database_->GetCachedStatement(
       SQL_FROM_HERE, "INSERT INTO " kNotesTable " "
                      "(account_id, amount, block_id, nullifier) "
                      "VALUES (?, ?, ?, ?);"));
@@ -386,12 +393,12 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardStorage::UpdateNotes(
       NOTREACHED_IN_MIGRATION();
       transaction.Rollback();
       return Error{ErrorCode::kFailedToExecuteStatement,
-                   database_.GetErrorMessage()};
+                   database_->GetErrorMessage()};
     }
   }
 
   // Insert found spent nullifiers to spent notes table
-  sql::Statement statement_populate_spent_notes(database_.GetCachedStatement(
+  sql::Statement statement_populate_spent_notes(database_->GetCachedStatement(
       SQL_FROM_HERE, "INSERT INTO " kSpentNotesTable " "
                      "(account_id, spent_block_id, nullifier) "
                      "VALUES (?, ?, ?);"));
@@ -405,16 +412,16 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardStorage::UpdateNotes(
       transaction.Rollback();
       NOTREACHED_IN_MIGRATION();
       return Error{ErrorCode::kFailedToExecuteStatement,
-                   database_.GetErrorMessage()};
+                   database_->GetErrorMessage()};
     }
   }
 
   // Update account meta
-  sql::Statement statement_update_account_meta(database_.GetCachedStatement(
+  sql::Statement statement_update_account_meta(database_->GetCachedStatement(
       SQL_FROM_HERE,
       "UPDATE " kAccountMeta
       " "
-      "SET latest_scanned_block = ?, latest_scanned_block_hash = ?"
+      "SET latest_scanned_block = ?, latest_scanned_block_hash = ? "
       "WHERE account_id = ?;"));
 
   statement_update_account_meta.BindInt64(0, latest_scanned_block);
@@ -424,12 +431,12 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardStorage::UpdateNotes(
     transaction.Rollback();
     NOTREACHED_IN_MIGRATION();
     return Error{ErrorCode::kFailedToExecuteStatement,
-                 database_.GetErrorMessage()};
+                 database_->GetErrorMessage()};
   }
 
   if (!transaction.Commit()) {
     return Error{ErrorCode::kFailedToExecuteStatement,
-                 database_.GetErrorMessage()};
+                 database_->GetErrorMessage()};
   }
 
   return std::nullopt;

@@ -6,6 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_ORCHARD_BLOCK_SCANNER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_ORCHARD_BLOCK_SCANNER_H_
 
+#include <algorithm>
+#include <memory>
+#include <utility>
+#include <vector>
+
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_block_decoder.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"

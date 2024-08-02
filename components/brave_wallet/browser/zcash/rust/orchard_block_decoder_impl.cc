@@ -5,6 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_block_decoder_impl.h"
 
+#include <memory>
+#include <utility>
+#include <vector>
+
 #include "base/memory/ptr_util.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
@@ -53,7 +57,7 @@ OrchardBlockDecoderImpl::ScanBlock(
       ::rust::Box<::brave_wallet::orchard::BatchOrchardDecodeBundle>
           result_bundle = decode_result->unwrap();
       for (size_t i = 0; i < result_bundle->size(); i++) {
-        result.push_back(OrchardNote(
+        result.emplace_back(OrchardNote(
             {block->height, result_bundle->note_nullifier(full_view_key_, i),
              result_bundle->note_value(i)}));
       }

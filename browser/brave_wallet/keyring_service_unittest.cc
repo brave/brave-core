@@ -164,8 +164,6 @@ class KeyringServiceUnitTest : public testing::Test {
 
   JsonRpcService* json_rpc_service() { return json_rpc_service_.get(); }
 
-  base::FilePath GetDataPath() { return temp_dir_.GetPath(); }
-
   network::TestURLLoaderFactory& url_loader_factory() {
     return url_loader_factory_;
   }

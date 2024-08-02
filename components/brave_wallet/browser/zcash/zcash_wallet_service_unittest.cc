@@ -36,8 +36,6 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/scoped_run_loop_timeout.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
-#include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 #endif
 
 using testing::_;

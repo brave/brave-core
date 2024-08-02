@@ -216,6 +216,9 @@ class KeyringService : public mojom::KeyringService {
       base::span<const uint8_t, 32> message);
 
   /* ZCash */
+  // ZCash account birthday represents block in the blockchain where
+  // account was used at first time. It is used as a start index when
+  // zcash blockchain is being scanned.
   bool SetZCashAccountBirthday(
       const mojom::AccountIdPtr& account_id,
       mojom::ZCashAccountShieldBirthdayPtr account_birthday);

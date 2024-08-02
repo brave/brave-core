@@ -32,6 +32,8 @@ inline constexpr size_t kOrchardEphemeralKeySize = 32u;
 inline constexpr size_t kOrchardCipherTextSize = 52u;
 
 // Reduce current scanning position on this value if reorg is found
+// All Zcash network participants basically assume rollbacks longer than 100
+// blocks will not occur
 inline constexpr size_t kChainReorgBlockDelta = 150;
 // Number of blocks downloaded by a single request
 inline constexpr size_t kScanBatchSize = 10;

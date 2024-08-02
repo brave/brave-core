@@ -159,7 +159,7 @@ ZCashKeyring::GetOrchardRawBytes(const mojom::ZCashKeyId& key_id) {
 }
 
 std::optional<std::array<uint8_t, kOrchardFullViewKeySize>>
-ZCashKeyring::GetOrchardFullViewKey(const size_t& account_id) {
+ZCashKeyring::GetOrchardFullViewKey(const uint32_t& account_id) {
   if (!orchard_key_) {
     return std::nullopt;
   }

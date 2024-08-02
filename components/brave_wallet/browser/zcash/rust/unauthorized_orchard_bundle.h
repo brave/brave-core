@@ -7,7 +7,9 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_UNAUTHORIZED_ORCHARD_BUNDLE_H_
 
 #include <array>
+#include <memory>
 #include <optional>
+#include <vector>
 
 #include "base/containers/span.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/authorized_orchard_bundle.h"

@@ -146,10 +146,10 @@ mod ffi {
 
     // Encoded orchard output extracted from the transaction
     struct OrchardCompactAction {
-        nullifier: [u8; 32],
-        ephemeral_key: [u8; 32],
-        cmx: [u8; 32],
-        enc_cipher_text : [u8; 52]
+        nullifier: [u8; 32],  // kOrchardNullifierSize
+        ephemeral_key: [u8; 32],  // kOrchardEphemeralKeySize
+        cmx: [u8; 32],  // kOrchardCmxSize
+        enc_cipher_text : [u8; 52]  // kOrchardCipherTextSize
     }
 
     extern "Rust" {
@@ -188,7 +188,7 @@ mod ffi {
         fn unwrap(self: &OrchardExtendedSpendingKeyResult) -> Box<OrchardExtendedSpendingKey>;
 
         fn batch_decode(
-            fvk_bytes: &[u8; 96],
+            fvk_bytes: &[u8; 96],  // Array size should match kOrchardFullViewKeySize
             actions: Vec<OrchardCompactAction>
         ) -> Box<BatchOrchardDecodeBundleResult>;
 
@@ -210,7 +210,7 @@ mod ffi {
         ) -> [u8; 43];  // Array size should match kOrchardRawBytesSize
         fn full_view_key(
             self: &OrchardExtendedSpendingKey
-        ) -> [u8; 96];
+        ) -> [u8; 96];  // Array size sohuld match kOrchardFullViewKeySize
 
         fn is_ok(self: &OrchardAuthorizedBundleResult) -> bool;
         fn error_message(self: &OrchardAuthorizedBundleResult) -> String;
@@ -224,9 +224,11 @@ mod ffi {
         fn error_message(self: &BatchOrchardDecodeBundleResult) -> String;
         fn unwrap(self: &BatchOrchardDecodeBundleResult) -> Box<BatchOrchardDecodeBundle>;
 
-        fn size(self :&BatchOrchardDecodeBundle) -> u64;
-        fn note_value(self :&BatchOrchardDecodeBundle, index: u64) -> u32;
-        fn note_nullifier(self :&BatchOrchardDecodeBundle, fvk: &[u8; 96], index: u64) -> [u8; 32];
+        fn size(self :&BatchOrchardDecodeBundle) -> usize;
+        fn note_value(self :&BatchOrchardDecodeBundle, index: usize) -> u32;
+        // Result array size should match kOrchardNullifierSize
+        // fvk array size should match kOrchardFullViewKeySize
+        fn note_nullifier(self :&BatchOrchardDecodeBundle, fvk: &[u8; 96], index: usize) -> [u8; 32];
 
         // Orchard digest is desribed here https://zips.z.cash/zip-0244#t-4-orchard-digest
         // Used in constructing signature digest and tx id
@@ -360,8 +362,7 @@ impl OrchardExtendedSpendingKey {
     fn full_view_key(
         self: &OrchardExtendedSpendingKey
     ) -> [u8; 96] {
-        let fvk = OrchardFVK::from(&self.0);
-        return fvk.to_bytes();
+        OrchardFVK::from(&self.0).to_bytes()
     }
 }
 
@@ -554,16 +555,17 @@ fn batch_decode(
 }
 
 impl BatchOrchardDecodeBundle {
-    fn size(self :&BatchOrchardDecodeBundle) -> u64 {
-        return self.0.outputs.len() as u64;
-      }
+    fn size(self :&BatchOrchardDecodeBundle) -> usize {
+      self.0.outputs.len()
+    }
 
-      fn note_value(self :&BatchOrchardDecodeBundle, index: u64) -> u32 {
-        return u32::try_from(self.0.outputs[index as usize].note.value().inner()).unwrap();
-      }
+    fn note_value(self :&BatchOrchardDecodeBundle, index: usize) -> u32 {
+      u32::try_from(self.0.outputs[index as usize].note.value().inner()).expect(
+          "Outputs are always created from a u32, so conversion back will always succeed")
+    }
 
-      fn note_nullifier(self :&BatchOrchardDecodeBundle, fvk: &[u8; 96], index: u64) -> [u8; 32] {
-       return self.0.outputs[index as usize].note.nullifier(&OrchardFVK::from_bytes(fvk).unwrap()).to_bytes();
-      }
+    fn note_nullifier(self :&BatchOrchardDecodeBundle, fvk: &[u8; 96], index: usize) -> [u8; 32] {
+      self.0.outputs[index as usize].note.nullifier(&OrchardFVK::from_bytes(fvk).unwrap()).to_bytes()
+    }
 }
 
