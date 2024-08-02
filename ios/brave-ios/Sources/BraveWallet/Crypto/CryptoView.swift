@@ -157,15 +157,37 @@ public struct CryptoView: View {
                   }
                 )
               case .send:
-                NavigationView {
-                  WebUISendView()
-                }
-                .navigationViewStyle(.stack)
+                SendView(
+                  keyringStore: keyringStore,
+                  cryptoStore: store,
+                  destination: destination,
+                  completion: { success in
+                    if success {
+                      store.closeWalletActionStores()
+                      dismissAction()
+                    }
+                  },
+                  dismissAction: {
+                    store.closeWalletActionStores()
+                    dismissAction()
+                  }
+                )
               case .swap:
-                NavigationView {
-                  WebUISwapView()
-                }
-                .navigationViewStyle(.stack)
+                SwapView(
+                  keyringStore: keyringStore,
+                  cryptoStore: store,
+                  destination: destination,
+                  completion: { success in
+                    if success {
+                      store.closeWalletActionStores()
+                      dismissAction()
+                    }
+                  },
+                  dismissAction: {
+                    store.closeWalletActionStores()
+                    dismissAction()
+                  }
+                )
               case .deposit(let query):
                 DepositTokenView(
                   keyringStore: keyringStore,
@@ -325,15 +347,19 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
               onDismiss: { cryptoStore.walletActionDestination = nil }
             )
           case .send:
-            NavigationView {
-              WebUISendView()
-            }
-            .navigationViewStyle(.stack)
+            SendView(
+              keyringStore: keyringStore,
+              cryptoStore: cryptoStore,
+              destination: action,
+              dismissAction: { cryptoStore.walletActionDestination = nil }
+            )
           case .swap:
-            NavigationView {
-              WebUISwapView()
-            }
-            .navigationViewStyle(.stack)
+            SwapView(
+              keyringStore: keyringStore,
+              cryptoStore: cryptoStore,
+              destination: action,
+              dismissAction: { cryptoStore.walletActionDestination = nil }
+            )
           case .deposit(let query):
             DepositTokenView(
               keyringStore: keyringStore,
