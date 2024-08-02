@@ -89,6 +89,15 @@ BraveWalletPageUI::BraveWalletPageUI(web::WebUIIOS* web_ui, const GURL& url)
   source->AddBoolean(brave_wallet::mojom::kP3ACountTestNetworksLoadTimeKey,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameSrc,
+      std::string("frame-src ") + kUntrustedTrezorURL + " " +
+          kUntrustedLedgerURL + " " + kUntrustedNftURL + " " +
+          kUntrustedLineChartURL + " " + kUntrustedMarketURL + ";");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc,
+      "img-src 'self' data: chrome://resources chrome://erc-token-images "
+      "chrome://image;");
 
   brave_wallet::AddBlockchainTokenImageSource(
       ChromeBrowserState::FromWebUIIOS(web_ui));
