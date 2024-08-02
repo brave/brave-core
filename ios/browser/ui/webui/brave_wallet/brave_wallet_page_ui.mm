@@ -78,7 +78,7 @@ BraveWalletPageUI::BraveWalletPageUI(web::WebUIIOS* web_ui, const GURL& url)
     source->AddString(str.name, l10n_str);
   }
 
-  source->AddBoolean("isAndroid", true);
+  source->AddBoolean("isAndroid", false);
   source->AddBoolean("isIOS", true);
 
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
