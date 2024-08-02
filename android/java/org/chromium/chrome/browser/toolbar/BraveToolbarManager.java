@@ -112,7 +112,6 @@ public class BraveToolbarManager extends ToolbarManager {
     private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
     private LayoutStateProvider mLayoutStateProvider;
     private ObservableSupplier<ReadAloudController> mReadAloudControllerSupplier;
-    private ToolbarManager.ConstraintsProxy mConstraintsProxy;
 
     // Own members.
     private TabGroupUi mTabGroupUi;
@@ -314,7 +313,7 @@ public class BraveToolbarManager extends ToolbarManager {
                             mContentDelegateSupplier,
                             mTabObscuringHandler,
                             mOverlayPanelVisibilitySupplier,
-                            mConstraintsProxy,
+                            getConstraintsProxy(),
                             /* readAloudRestoringSupplier= */ () -> {
                                 final var readAloud = mReadAloudControllerSupplier.get();
                                 return readAloud != null && readAloud.isRestoringPlayer();
@@ -484,6 +483,15 @@ public class BraveToolbarManager extends ToolbarManager {
         assert (mToolbar instanceof BraveTopToolbarCoordinator);
         return mToolbar instanceof BraveTopToolbarCoordinator
                 && ((BraveTopToolbarCoordinator) mToolbar).isToolbarPhone();
+    }
+
+    private ObservableSupplier<Integer> getConstraintsProxy() {
+        if (mToolbar instanceof BraveTopToolbarCoordinator) {
+            return ((BraveTopToolbarCoordinator) mToolbar).getConstraintsProxy();
+        }
+
+        assert false : "Wrong top toolbar type!";
+        return null;
     }
 
     @Override

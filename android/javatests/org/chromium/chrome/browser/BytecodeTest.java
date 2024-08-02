@@ -1745,9 +1745,6 @@ public class BytecodeTest {
                         "mReadAloudControllerSupplier"));
         Assert.assertTrue(
                 fieldExists(
-                        "org/chromium/chrome/browser/toolbar/ToolbarManager", "mConstraintsProxy"));
-        Assert.assertTrue(
-                fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
                         "mCallbackController"));
         Assert.assertTrue(
