@@ -744,6 +744,10 @@ const util = {
     // with debugging issues (e.g., slowness or remote-failures).
     options.env.AUTONINJA_BUILD_ID = buildId
 
+    // Collect build statistics into this variable to display in a separate TC
+    // block.
+    let buildStats = ''
+
     if (config.isTeamcity) {
       // Parse output to display the build status and exact failure location.
       let hasError = false
@@ -755,6 +759,10 @@ const util = {
         if (hasError) {
           Log.error(line)
         } else {
+          if (buildStats || /^(RBE Stats: |metric )/.test(line)) {
+            buildStats += line + '\n'
+            return;
+          }
           console.log(line)
           if (Date.now() - lastStatusTime > 5000) {
             // Extract the status message from the ninja output.
@@ -773,6 +781,12 @@ const util = {
     await util.runAsync('autoninja', ninjaOpts, options)
 
     Log.progressFinish(progressMessage)
+
+    if (config.isTeamcity && buildStats) {
+      Log.progressScope('report build stats', () => {
+        console.log(buildStats)
+      })
+    }
   },
 
   generateXcodeWorkspace: () => {
