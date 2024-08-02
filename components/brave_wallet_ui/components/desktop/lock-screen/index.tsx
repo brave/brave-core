@@ -97,6 +97,7 @@ export const LockScreen = () => {
     }
   }, [history, isPanel])
 
+  // TODO: show double tap screen when true.
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false
 
   // render
@@ -138,14 +139,12 @@ export const LockScreen = () => {
         >
           {getLocale('braveWalletLockScreenButton')}
         </UnlockButton>
-        {!isAndroid && (
           <Button
             onClick={onShowRestore}
             kind='plain'
           >
             {getLocale('braveWalletWelcomeRestoreButton')}
           </Button>
-        )}
       </InputColumn>
     </StyledWrapper>
   )
