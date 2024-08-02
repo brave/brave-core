@@ -610,6 +610,7 @@ export type BlockExplorerUrlTypes =
   | 'token'
   | 'contract'
   | 'nft'
+  | 'lifi'
 
 export interface CreateAccountOptionsType {
   name: string

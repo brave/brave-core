@@ -8,6 +8,7 @@ import * as React from 'react'
 // Utils
 import { WalletSelectors } from '../../../common/selectors'
 import { getLocale } from '../../../../common/locale'
+import { isBridgeTransaction } from '../../../utils/tx-utils'
 
 // Styled components
 import { HeaderTitle } from './swap.style'
@@ -63,6 +64,9 @@ export function ConfirmSwapTransaction() {
 
   // computed
   const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
+  const isBridgeTx = selectedPendingTransaction
+    ? isBridgeTransaction(selectedPendingTransaction)
+    : false
 
   // Methods
   const onToggleAdvancedTransactionSettings = () => {
@@ -125,6 +129,9 @@ export function ConfirmSwapTransaction() {
           recipientLabel={transactionDetails?.recipientLabel}
           // set to true once Swap+Send is supported
           expectRecipientAddress={false}
+          isBridgeTx={isBridgeTx}
+          toChainId={selectedPendingTransaction?.swapInfo?.toChainId}
+          toCoin={selectedPendingTransaction?.swapInfo?.toCoin}
         />
       )}
 

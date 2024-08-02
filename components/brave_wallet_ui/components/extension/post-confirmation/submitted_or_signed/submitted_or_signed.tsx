@@ -60,7 +60,10 @@ export const TransactionSubmittedOrSigned = (props: Props) => {
       <TransactionStatusDescription>{description}</TransactionStatusDescription>
       <ButtonRow>
         <DetailButton
-          onClick={onClickViewOnBlockExplorer('tx', transaction.txHash)}
+          onClick={onClickViewOnBlockExplorer(
+            transaction.swapInfo?.provider === 'lifi' ? 'lifi' : 'tx',
+            transaction.txHash
+          )}
         >
           {getLocale('braveWalletTransactionExplorer')}
         </DetailButton>
