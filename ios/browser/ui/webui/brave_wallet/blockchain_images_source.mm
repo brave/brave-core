@@ -41,8 +41,6 @@ void BlockchainImagesSource::StartDataRequest(const std::string& path,
                                               GotDataCallback callback) {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
 
-  // const std::string path = web::URLDataSourceIOS::URLToRequestPath(url);
-
   std::optional<base::Version> version =
       brave_wallet::GetLastInstalledWalletVersion();
   if (!version) {
