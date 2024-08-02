@@ -174,6 +174,7 @@ import org.chromium.chrome.browser.speedreader.BraveSpeedReaderUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tab.TabSelectionType;
+import org.chromium.chrome.browser.tabmodel.TabList;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
@@ -216,22 +217,26 @@ import org.chromium.ui.widget.Toast;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-/**
- * Brave's extension for ChromeActivity
- */
+/** Brave's extension for ChromeActivity */
 @JNINamespace("chrome::android")
 public abstract class BraveActivity extends ChromeActivity
-        implements BrowsingDataBridge.OnClearBrowsingDataListener, BraveVpnObserver,
-                   OnBraveSetDefaultBrowserListener, ConnectionErrorHandler, PrefObserver,
-                   BraveSafeBrowsingApiHandler.BraveSafeBrowsingApiHandlerDelegate,
-                   BraveNewsConnectionErrorHandler.BraveNewsConnectionErrorHandlerDelegate,
-                   MiscAndroidMetricsConnectionErrorHandler
-                           .MiscAndroidMetricsConnectionErrorHandlerDelegate {
+        implements BrowsingDataBridge.OnClearBrowsingDataListener,
+                BraveVpnObserver,
+                OnBraveSetDefaultBrowserListener,
+                ConnectionErrorHandler,
+                PrefObserver,
+                BraveSafeBrowsingApiHandler.BraveSafeBrowsingApiHandlerDelegate,
+                BraveNewsConnectionErrorHandler.BraveNewsConnectionErrorHandlerDelegate,
+                MiscAndroidMetricsConnectionErrorHandler
+                        .MiscAndroidMetricsConnectionErrorHandlerDelegate {
     public static final String BRAVE_WALLET_HOST = "wallet";
+    public static final String BRAVE_WALLET_ORIGIN = "brave://wallet/";
     public static final String BRAVE_WALLET_URL = "brave://wallet/crypto/portfolio/assets";
     public static final String BRAVE_BUY_URL = "brave://wallet/crypto/fund-wallet";
     public static final String BRAVE_SEND_URL = "brave://wallet/send";
@@ -1784,6 +1789,63 @@ public abstract class BraveActivity extends ChromeActivity
         return Profile.fromWebContents(tab.getWebContents());
     }
 
+    /** Close all tabs (including active tab) whose URL origin matches with a given origin. */
+    public void closeAllTabsByOrigin(@NonNull final String origin) {
+        final TabModel tabModel = getCurrentTabModel();
+
+        Set<Integer> tabIndexes = getTabIndexesByUrlOrigin(tabModel, origin);
+        for (Integer index : tabIndexes) {
+            Tab tab = tabModel.getTabAt(index);
+            if (tab != null) {
+                tab.setClosing(true);
+                tabModel.closeTab(tab);
+            }
+        }
+    }
+
+    /**
+     * Selects an existing tab if it matches a given origin, marks it as active and returns it.
+     *
+     * @return Active tab if it exists, {@code null} otherwise.
+     */
+    public Tab selectExistingUrlOriginTab(@NonNull final String origin) {
+        TabModel tabModel = getCurrentTabModel();
+        Set<Integer> tabIndexes = getTabIndexesByUrlOrigin(tabModel, origin);
+
+        // Find if tab exists, including tab already active.
+        if (!tabIndexes.isEmpty()) {
+            int index = tabIndexes.iterator().next();
+            Tab tab = tabModel.getTabAt(tabIndexes.iterator().next());
+            // Set active tab
+            tabModel.setIndex(index, TabSelectionType.FROM_USER, false);
+            return tab;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Find the {@link Tab} indexes whose URL starts with the specified base URL.
+     *
+     * @param model The {@link TabModel} to act on.
+     * @param origin The URL origin to search for.
+     * @return A set of indexes pointing to the matching {@link Tab}s or empty set if no matches are
+     *     found.
+     */
+    @NonNull
+    private static Set<Integer> getTabIndexesByUrlOrigin(
+            @NonNull final TabList model, @NonNull final String origin) {
+        final Set<Integer> result = new HashSet<>();
+        int count = model.getCount();
+
+        for (int i = 0; i < count; i++) {
+            if (model.getTabAt(i).getUrl().getOrigin().getSpec().contentEquals(origin)) {
+                result.add(i);
+            }
+        }
+        return result;
+    }
+
     public Tab selectExistingTab(String url) {
         Tab tab = getActivityTab();
         if (tab != null && tab.getUrl().getSpec().equals(url)) {
@@ -1813,6 +1875,17 @@ public abstract class BraveActivity extends ChromeActivity
             return tab;
         } else { // Open a new tab
             return getTabCreator(false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
+        }
+    }
+
+    public void openNewOrRefreshExistingTab(
+            @NonNull final String origin, @NonNull final String url) {
+        Tab tab = selectExistingUrlOriginTab(origin);
+        if (tab != null) {
+            tab.reload();
+        } else {
+            // Open a new tab.
+            getTabCreator(false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
         }
     }
 

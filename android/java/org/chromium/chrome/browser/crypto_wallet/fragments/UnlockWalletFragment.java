@@ -128,7 +128,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                                         Utils.clearClipboard(
                                                 mUnlockWalletPassword.getText().toString());
                                         mUnlockWalletPassword.setText(null);
-                                        onNextPage.showWallet();
+                                        onNextPage.showWallet(false);
                                     } else {
                                         mUnlockWalletPasswordLayout.setError(
                                                 getString(R.string.incorrect_password_error));
@@ -209,7 +209,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                                 unlockResult -> {
                                     if (unlockResult) {
                                         if (mOnNextPage != null) {
-                                            mOnNextPage.showWallet();
+                                            mOnNextPage.showWallet(false);
                                         }
                                     } else {
                                         showBiometricAuthenticationButton();
