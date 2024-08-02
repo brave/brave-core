@@ -80,8 +80,7 @@ SkColor BrowserDesktopWindowTreeHostWin::GetBackgroundColor(
 }
 
 SkColor BrowserDesktopWindowTreeHostWin::GetToolbarColor() const {
-  DCHECK(
-      base::FeatureList::IsEnabled(features::kBraveWorkaroundNewWindowFlash));
+  CHECK(base::FeatureList::IsEnabled(features::kBraveWorkaroundNewWindowFlash));
   return GetWidget()->GetColorProvider()->GetColor(kColorToolbar);
 }
 
