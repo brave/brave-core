@@ -21,11 +21,14 @@ class BraveBrowserAppMenuButton : public BrowserAppMenuButton {
   FRIEND_TEST_ALL_PREFIXES(BraveAppMenuBrowserTest,
                            AppMenuButtonUpgradeAlertTest);
 
+  std::optional<SkColor> GetColorForSeverity() const;
+
   // BrowserAppMenuButton overrides:
   bool ShouldPaintBorder() const override;
   bool ShouldBlendHighlightColor() const override;
   std::optional<SkColor> GetHighlightTextColor() const override;
   std::optional<SkColor> GetHighlightColor() const override;
+  SkColor GetForegroundColor(ButtonState state) const override;
   void UpdateLayoutInsets() override;
 };
 
