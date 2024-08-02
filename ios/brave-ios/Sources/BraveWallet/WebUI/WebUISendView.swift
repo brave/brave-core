@@ -6,7 +6,7 @@
 import BraveCore
 import SwiftUI
 
-struct SendView: View {
+struct SendContainerView: View {
 
   let keyringStore: KeyringStore
   let cryptoStore: CryptoStore

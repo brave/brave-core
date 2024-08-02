@@ -6,7 +6,7 @@
 import BraveCore
 import SwiftUI
 
-struct SwapView: View {
+struct SwapContainerView: View {
 
   let keyringStore: KeyringStore
   let cryptoStore: CryptoStore

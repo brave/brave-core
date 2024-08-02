@@ -157,7 +157,7 @@ public struct CryptoView: View {
                   }
                 )
               case .send:
-                SendView(
+                SendContainerView(
                   keyringStore: keyringStore,
                   cryptoStore: store,
                   destination: destination,
@@ -173,7 +173,7 @@ public struct CryptoView: View {
                   }
                 )
               case .swap:
-                SwapView(
+                SwapContainerView(
                   keyringStore: keyringStore,
                   cryptoStore: store,
                   destination: destination,
@@ -347,14 +347,14 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
               onDismiss: { cryptoStore.walletActionDestination = nil }
             )
           case .send:
-            SendView(
+            SendContainerView(
               keyringStore: keyringStore,
               cryptoStore: cryptoStore,
               destination: action,
               dismissAction: { cryptoStore.walletActionDestination = nil }
             )
           case .swap:
-            SwapView(
+            SwapContainerView(
               keyringStore: keyringStore,
               cryptoStore: cryptoStore,
               destination: action,
