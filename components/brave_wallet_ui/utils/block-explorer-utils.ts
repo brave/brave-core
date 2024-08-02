@@ -20,6 +20,10 @@ export const buildExplorerUrl = (
 
   const fallbackURL = `${explorerURL}/${value}`
 
+  if (type === 'lifi') {
+    return `https://scan.li.fi/tx/${value}`
+  }
+
   if (type === 'nft') {
     return id
       ? `${explorerURL}/token/${value}?a=${new Amount(id).format()}`
