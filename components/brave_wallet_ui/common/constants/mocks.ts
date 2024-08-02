@@ -848,9 +848,10 @@ const sepoliaLinkTransferData: BraveWallet.BlowfishERC20TransferData = {
     address: '0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4',
     kind: BraveWallet.BlowfishEVMAddressKind.kAccount
   },
+  // send
   amount: {
-    before: '28907865866843658798',
-    after: '14453965866843658798'
+    after: '28907865866843658798',
+    before: '14453965866843658798'
   },
   asset: BlowfishEVMAssets.sepoliaLink
 }
@@ -1026,12 +1027,12 @@ BraveWallet.BlowfishEVMStateChange = {
 }
 
 /**
- * - Send 14.4539 LINK
  * - Receive 14.4539 LINK
  * - Approve 10 LINK
- * - Approve 1 NFT
- * - Send 1 NFT
+ * - Send 1 Pudgy Pengiuns NFT
+ * - Receive 1 Bored Apes NFT
  * - Send 1 ETH
+ * - Approve 1 Mooncat NFT
  */
 export const mockEvmSimulatedResponse: BraveWallet.EVMSimulationResponse = {
   action: BraveWallet.BlowfishSuggestedAction.kNone,
@@ -1098,7 +1099,7 @@ export const mockEvmSimulatedResponse: BraveWallet.EVMSimulationResponse = {
       }
     },
     {
-      humanReadableDiff: `Send ${
+      humanReadableDiff: `Receive ${
         BlowfishEVMAssets.bayc.symbol //
       } #${BlowfishEVMAssets.bayc.tokenId}`,
       rawInfo: {
@@ -1107,8 +1108,8 @@ export const mockEvmSimulatedResponse: BraveWallet.EVMSimulationResponse = {
           ...emptyEvmRawInfo,
           erc1155TransferData: {
             amount: {
-              after: '0',
-              before: '1'
+              after: '1',
+              before: '0'
             },
             counterparty: {
               address: '0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4',
@@ -1421,31 +1422,50 @@ const emptySvmRawInfo: BraveWallet.BlowfishSolanaStateChangeRawInfoDataUnion = {
   solStakeAuthorityChangeData: undefined,
   solTransferData: undefined,
   splApprovalData: undefined,
-  splTransferData: undefined
+  splTransferData: undefined,
+  userAccountOwnerChangeData: undefined
+}
+
+const mockSendSolEvent: BraveWallet.BlowfishSolanaStateChange = {
+  humanReadableDiff: 'Send 0.0005 SOL',
+  suggestedColor: BraveWallet.BlowfishSuggestedColor.kCredit,
+  rawInfo: {
+    kind: BraveWallet.BlowfishSolanaRawInfoKind.kSolTransfer,
+    data: {
+      ...emptySvmRawInfo,
+      solTransferData: {
+        asset: BlowfishSolanaAssets.mainnetSol,
+        diff: {
+          digits: BigInt(500000),
+          sign: BraveWallet.BlowfishDiffSign.kMinus
+        }
+      }
+    }
+  }
+}
+
+const mockReceiveSolEvent: BraveWallet.BlowfishSolanaStateChange = {
+  humanReadableDiff: 'Receive 0.0005 SOL',
+  suggestedColor: BraveWallet.BlowfishSuggestedColor.kCredit,
+  rawInfo: {
+    kind: BraveWallet.BlowfishSolanaRawInfoKind.kSolTransfer,
+    data: {
+      ...emptySvmRawInfo,
+      solTransferData: {
+        asset: BlowfishSolanaAssets.mainnetSol,
+        diff: {
+          digits: BigInt(500000),
+          sign: BraveWallet.BlowfishDiffSign.kPlus
+        }
+      }
+    }
+  }
 }
 
 export const mockReceiveSolSimulation: BraveWallet.SolanaSimulationResponse = {
   action: BraveWallet.BlowfishSuggestedAction.kBlock,
   error: undefined,
-  expectedStateChanges: [
-    {
-      humanReadableDiff: 'Receive 0.05657 SOL',
-      suggestedColor: BraveWallet.BlowfishSuggestedColor.kCredit,
-      rawInfo: {
-        kind: BraveWallet.BlowfishSolanaRawInfoKind.kSolTransfer,
-        data: {
-          ...emptySvmRawInfo,
-          solTransferData: {
-            asset: BlowfishSolanaAssets.mainnetSol,
-            diff: {
-              digits: BigInt(500000),
-              sign: BraveWallet.BlowfishDiffSign.kPlus
-            }
-          }
-        }
-      }
-    }
-  ],
+  expectedStateChanges: [mockReceiveSolEvent],
   warnings: [
     {
       kind: BraveWallet.BlowfishWarningKind.kApprovalToEOA,
@@ -1523,6 +1543,19 @@ export const mockSendSolNftEvent: BraveWallet.BlowfishSolanaStateChange = {
       }
     }
   }
+}
+
+export const mockSvmSimulationResult: BraveWallet.SolanaSimulationResponse = {
+  action: BraveWallet.BlowfishSuggestedAction.kNone,
+  error: undefined,
+  expectedStateChanges: [
+    mockSendSolEvent,
+    mockReceiveSolEvent,
+    mockSendSplTokenEvent,
+    mockSendSolNftEvent,
+    mockSolStakingChangeEvent
+  ],
+  warnings: mockedSimulationWarnings
 }
 
 export const mockSolStakingChangeSimulation: //

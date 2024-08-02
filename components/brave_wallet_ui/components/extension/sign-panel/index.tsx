@@ -18,6 +18,7 @@ import { BraveWallet, SignDataSteps } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import { unicodeEscape, hasUnicode } from '../../../utils/string-utils'
 import {
+  useGetIsTxSimulationOptInStatusQuery,
   useGetNetworkQuery,
   useProcessSignMessageRequestMutation,
   useSignMessageHardwareMutation
@@ -30,6 +31,12 @@ import { PanelTab } from '../panel-tab/index'
 import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
 import { SignInWithEthereum } from './sign_in_with_ethereum'
 import { SignCowSwapOrder } from './cow_swap_order'
+import {
+  EthSignTypedData //
+} from './common/eth_sign_typed_data'
+import {
+  EvmMessageSimulationNotSupportedSheet //
+} from '../evm_message_simulation_not_supported_sheet/evm_message_simulation_not_supported_sheet'
 
 // Styled Components
 import {
@@ -60,15 +67,14 @@ import {
   URLText,
   WarningIcon
 } from '../shared-panel-styles'
-import {
-  EthSignTypedData //
-} from './common/eth_sign_typed_data'
 
 interface Props {
   signMessageData: BraveWallet.SignMessageRequest[]
   showWarning: boolean
 }
 
+// TODO: fix broken article link
+// https://github.com/brave/brave-browser/issues/39708
 const onClickLearnMore = () => {
   chrome.tabs.create(
     {
@@ -94,6 +100,10 @@ export const SignPanel = (props: Props) => {
         }
       : skipToken
   )
+
+  const { data: simulationOptInStatus } = useGetIsTxSimulationOptInStatusQuery()
+  const isSimulationPermitted =
+    simulationOptInStatus === BraveWallet.BlowfishOptInStatus.kAllowed
 
   // mutations
   const [processSignMessageRequest] = useProcessSignMessageRequestMutation()
@@ -303,6 +313,9 @@ export const SignPanel = (props: Props) => {
           )}
         </>
       )}
+
+      {isSimulationPermitted && <EvmMessageSimulationNotSupportedSheet />}
+
       <SignPanelButtonRow>
         <NavButton
           buttonType='secondary'

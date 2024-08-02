@@ -12,48 +12,6 @@ namespace simulation_responses {
     WARNING
   };
 
-  // UI should defer to the supplied message if the kind isn't recognized
-  enum WarningKind {
-    APPROVAL_TO_E_O_A,
-    BLOCKLISTED_DOMAIN_CROSS_ORIGIN,
-    BLUR_BULK_ORDER_NOT_ON_BLUR,
-    BLUR_V2_ORDER_NOT_ON_BLUR,
-    BULK_APPROVALS_REQUEST,
-    COMPROMISED_AUTHORITY_UPGRADE,
-    COPY_CAT_DOMAIN,
-    COPY_CAT_IMAGE_UNRESPONSIVE_DOMAIN,
-    DANGLING_APPROVAL,
-    DEBUGGER_PAUSED,
-    DURABLE_NONCE,
-    ETH_SIGN_TX_HASH,
-    FORTA,
-    IMBALANCED_DOLLAR_VALUE,
-    KNOWN_MALICIOUS,
-    MALICIOUS_PACKAGES,
-    MULTI_COPY_CAT_DOMAIN,
-    NEW_DOMAIN,
-    PERMIT_NO_EXPIRATION,
-    PERMIT_UNLIMITED_ALLOWANCE,
-    POISONED_ADDRESS,
-    REFERENCED_OFAC_ADDRESS,
-    SEMI_TRUSTED_BLOCKLIST_DOMAIN,
-    SET_OWNER_AUTHORITY,
-    SUSPECTED_MALICIOUS,
-    TOO_MANY_TRANSACTIONS,
-    TRADE_FOR_NOTHING,
-    TRANSFERRING_ERC20_TO_OWN_CONTRACT,
-    TRANSFERRING_TOO_MUCH_SOL,
-    TRANSFERS_MAJORITY_OF_YOUR_SOL,
-    TRUSTED_BLOCKLIST_DOMAIN,
-    UNLIMITED_ALLOWANCE_TO_NFTS,
-    UNUSUAL_GAS_CONSUMPTION,
-    USER_ACCOUNT_OWNER_CHANGE,
-    TRANSFER_TO_MINT_ACCOUNT,
-    WHITELISTED_DOMAIN_CROSS_ORIGIN,
-    YAKOA_NFT_IP_INFRINGEMENT,
-    RELIABLE_SIMULATION_NOT_POSSIBLE
-  };
-
   enum EVMRawInfoKind {
     ERC20_TRANSFER,
     ERC20_APPROVAL,
@@ -106,7 +64,8 @@ namespace simulation_responses {
 
   enum SuggestedColor {
     CREDIT,
-    DEBIT
+    DEBIT,
+    INFO
   };
 
   dictionary Price {
@@ -117,7 +76,7 @@ namespace simulation_responses {
 
   dictionary Warning {
     WarningSeverity severity;
-    WarningKind kind;
+    DOMString kind;
     DOMString message;
   };
 
@@ -393,6 +352,12 @@ namespace simulation_responses {
     DOMString solStaked;
   };
 
+  dictionary SolanaUserAccountOwnerChangeData {
+    DOMString account;
+    DOMString currentOwner;
+    DOMString futureOwner;
+  };
+
   dictionary SolanaStateChangeRawInfo {
     SolanaRawInfoKind kind;
 
@@ -401,8 +366,11 @@ namespace simulation_responses {
     //   - SPLTransferData
     //   - SPLApprovalData
     //   - SOLStakeAuthorityChangeData
-    //   - BFPLoaderAuthorityChangeData
-    //   - CompressedNFTTransferData
+    //   - SolanaUserAccountOwnerChangeData
+    //   - TODO(onyb): add BFPLoaderAuthorityChangeData
+    //   - TODO(onyb): add CompressedNFTTransferData
+    //   - TODO(onyb): add SOLStakeAccountDeposit
+    //   - TODO(onyb): add SOLStakeAccountWithdrawal
     any data;
   };
 

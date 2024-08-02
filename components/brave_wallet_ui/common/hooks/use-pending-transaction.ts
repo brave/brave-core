@@ -356,11 +356,6 @@ export const usePendingTransactions = () => {
       ].includes(transactionInfo.txType)
     : false
 
-  const isAssociatedTokenAccountCreation =
-    transactionInfo?.txType ===
-    BraveWallet.TransactionType
-      .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
-
   // methods
   const onEditAllowanceSave = React.useCallback(
     (allowance: string) => {
@@ -627,7 +622,8 @@ export const usePendingTransactions = () => {
     isERC721TransferFrom,
     isSolanaDappTransaction,
     isSolanaTransaction: transactionDetails?.isSolanaTransaction || false,
-    isAssociatedTokenAccountCreation,
+    isAssociatedTokenAccountCreation:
+      transactionDetails?.isAssociatedTokenAccountCreation || false,
     isFilecoinTransaction: transactionDetails?.isFilecoinTransaction || false,
     onEditAllowanceSave,
     queueNextTransaction,

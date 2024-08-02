@@ -80,7 +80,14 @@ std::optional<std::pair<std::string, std::string>> EncodeScanTransactionParams(
     //   return result;
     // }
     tx_object.Set("value", tx_data->base_data->value);
-    tx_object.Set("to", tx_data->base_data->to);
+
+    // Set to address to null value in case of contract deployment.
+    if (tx_data->base_data->to == "0x") {
+      tx_object.Set("to", base::Value());
+    } else {
+      tx_object.Set("to", tx_data->base_data->to);
+    }
+
     if (tx_data->base_data->data.empty()) {
       tx_object.Set("data", "0x");
     } else {
@@ -90,7 +97,14 @@ std::optional<std::pair<std::string, std::string>> EncodeScanTransactionParams(
     const auto& tx_data = tx_info->tx_data_union->get_eth_tx_data();
 
     tx_object.Set("value", tx_data->value);
-    tx_object.Set("to", tx_data->to);
+
+    // Set to address to null value in case of contract deployment.
+    if (tx_data->to == "0x") {
+      tx_object.Set("to", base::Value());
+    } else {
+      tx_object.Set("to", tx_data->to);
+    }
+
     if (tx_data->data.empty()) {
       tx_object.Set("data", "0x");
     } else {

@@ -15,6 +15,7 @@ export const PanelWrapper = styled.div<{
   justify-content: center;
   width: ${(p) => (p.width ? p.width : 320)}px;
   height: ${(p) => (p.height ? p.height : p.isLonger ? 540 : 400)}px;
+  background-color: ${(p) => p.theme.color.background01};
 `
 
 export const WelcomePanelWrapper = styled.div`

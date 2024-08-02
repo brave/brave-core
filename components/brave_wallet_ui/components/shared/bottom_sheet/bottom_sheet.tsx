@@ -14,7 +14,7 @@ import {
 import { Row } from '../style'
 
 interface Props {
-  onClose: () => void
+  onClose?: () => void
   isOpen: boolean
   children?: React.ReactNode
 }
@@ -29,14 +29,14 @@ export const BottomSheet = (props: Props) => {
         fullWidth={true}
         isOpen={isOpen}
       >
-        <Row
+        {onClose && <Row
           padding='16px 16px 0px 16px'
           justifyContent='flex-end'
         >
           <CloseButton onClick={onClose}>
             <CloseIcon />
           </CloseButton>
-        </Row>
+        </Row>}
         {children}
       </BottomCard>
     </>

@@ -11,7 +11,8 @@ import { Backdrop, Background, FloatingCard } from '../shared-panel-styles'
 import {
   LoadingIconBG,
   LoadingIconFG,
-  LoadingIconWrapper
+  LoadingIconWrapper,
+  LoadingMessage
 } from './loading_panel.styles'
 
 interface Props {
@@ -20,7 +21,7 @@ interface Props {
 
 export const LoadingPanel: React.FC<Props> = ({ message }) => {
   return (
-    <Background>
+    <Background data-testid='loading-panel'>
       <Backdrop>
         <FloatingCard>
           <Column
@@ -34,7 +35,7 @@ export const LoadingPanel: React.FC<Props> = ({ message }) => {
               <LoadingIconFG />
               <LoadingIconBG />
             </LoadingIconWrapper>
-            {message}
+            <LoadingMessage>{message}</LoadingMessage>
           </Column>
         </FloatingCard>
       </Backdrop>

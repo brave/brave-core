@@ -1145,6 +1145,62 @@ TEST(SimulationResponseParserUnitTest, ParseEvmUnknownError) {
   EXPECT_EQ(simulation_response->expected_state_changes.size(), 0ULL);
 }
 
+TEST(SimulationResponseParserUnitTest, ParseEvmUnknownWarnings) {
+  std::string json(R"(
+    {
+      "requestId":"e8cd35ce-f743-4ef2-8e94-f26857744db7",
+      "action":"BLOCK",
+      "warnings": [
+        {
+          "severity": "CRITICAL",
+          "kind": "THIS_IS_AN_UNKNOWN_CRITICAL_ERROR",
+          "message": "There's something wrong with this transaction, but we don't know what it is."
+        },
+        {
+          "severity": "WARNING",
+          "kind": "SUSPECTED_MALICIOUS",
+          "message": "We suspect this transaction is malicious. Approving may lead to loss of funds."
+        }
+      ],
+      "simulationResults":{
+        "aggregated":{
+          "error":null,
+          "userAccount":"0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+          "expectedStateChanges":{
+            "0xd8da6bf26964af9d7eed9e03e53415d37aa96045": []
+          }
+        }
+      }
+    }
+  )");
+  auto simulation_response = evm::ParseSimulationResponse(
+      ParseJson(json), "0xd8da6bf26964af9d7eed9e03e53415d37aa96045");
+  ASSERT_TRUE(simulation_response);
+
+  EXPECT_EQ(simulation_response->action,
+            mojom::BlowfishSuggestedAction::kBlock);
+  ASSERT_EQ(simulation_response->warnings.size(), 2ULL);
+
+  EXPECT_EQ(simulation_response->warnings.at(0)->severity,
+            mojom::BlowfishWarningSeverity::kCritical);
+  EXPECT_EQ(simulation_response->warnings.at(0)->kind,
+            mojom::BlowfishWarningKind::kUnknown);
+  EXPECT_EQ(simulation_response->warnings.at(0)->message,
+            "There's something wrong with this transaction, but we don't know "
+            "what it is.");
+
+  EXPECT_EQ(simulation_response->warnings.at(1)->severity,
+            mojom::BlowfishWarningSeverity::kWarning);
+  EXPECT_EQ(simulation_response->warnings.at(1)->kind,
+            mojom::BlowfishWarningKind::kSuspectedMalicious);
+  EXPECT_EQ(simulation_response->warnings.at(1)->message,
+            "We suspect this transaction is malicious. Approving may lead to "
+            "loss of funds.");
+
+  EXPECT_FALSE(simulation_response->error);
+  EXPECT_EQ(simulation_response->expected_state_changes.size(), 0ULL);
+}
+
 TEST(SimulationResponseParserUnitTest, ParseEvmNullableFields) {
   std::string json_fmt(R"(
     {
@@ -1480,6 +1536,19 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaStateChanges) {
                   "solStaked": "228895995552"
                 }
               }
+            },
+            {
+              "humanReadableDiff": "Program owner for 8eekKf..AtXzrT changed to BUfrp4..dJA75E",
+              "suggestedColor": "INFO",
+              "rawInfo": {
+                "kind": "USER_ACCOUNT_OWNER_CHANGE",
+                "data": {
+                  "account": "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT",
+                  "lamports": "1024632398",
+                  "currentOwner": "11111111111111111111111111111111",
+                  "futureOwner": "BUfrp43eBVbhc5RPsg52CDMAQKHXAj87MnZM5BdJA75E"
+                }
+              }
             }
           ]
         },
@@ -1495,7 +1564,7 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaStateChanges) {
   EXPECT_EQ(simulation_response->action, mojom::BlowfishSuggestedAction::kNone);
   EXPECT_EQ(simulation_response->warnings.size(), 0u);
   EXPECT_FALSE(simulation_response->error);
-  ASSERT_EQ(simulation_response->expected_state_changes.size(), 5u);
+  ASSERT_EQ(simulation_response->expected_state_changes.size(), 6u);
 
   const auto& state_change_0 =
       simulation_response->expected_state_changes.at(0);
@@ -1642,6 +1711,25 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaStateChanges) {
   EXPECT_EQ(state_change_4_raw_info->asset->price->dollar_value_per_token,
             "100.92");
   EXPECT_EQ(state_change_4_raw_info->sol_staked, 228895995552ULL);
+
+  const auto& state_change_5 =
+      simulation_response->expected_state_changes.at(5);
+  EXPECT_EQ(state_change_5->human_readable_diff,
+            "Program owner for 8eekKf..AtXzrT changed to BUfrp4..dJA75E");
+  EXPECT_EQ(state_change_5->suggested_color,
+            mojom::BlowfishSuggestedColor::kInfo);
+  EXPECT_EQ(state_change_5->raw_info->kind,
+            mojom::BlowfishSolanaRawInfoKind::kUserAccountOwnerChange);
+  ASSERT_TRUE(
+      state_change_5->raw_info->data->is_user_account_owner_change_data());
+  const auto& state_change_5_raw_info =
+      state_change_5->raw_info->data->get_user_account_owner_change_data();
+  EXPECT_EQ(state_change_5_raw_info->account,
+            "8eekKfUAGSJbq3CdA2TmHb8tKuyzd5gtEas3MYAtXzrT");
+  EXPECT_EQ(state_change_5_raw_info->current_owner,
+            "11111111111111111111111111111111");
+  EXPECT_EQ(state_change_5_raw_info->future_owner,
+            "BUfrp43eBVbhc5RPsg52CDMAQKHXAj87MnZM5BdJA75E");
 }
 
 // Example adapted from

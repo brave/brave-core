@@ -7,6 +7,12 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import { LoaderIcon } from 'brave-ui/components/icons'
 
+export const LoadingMessage = styled.span`
+  color: ${leo.color.text.primary};
+  text-align: center;
+  font: ${leo.font.small.regular};
+`
+
 export const LoadingIconWrapper = styled.div`
   position: relative;
   height: 32px;
