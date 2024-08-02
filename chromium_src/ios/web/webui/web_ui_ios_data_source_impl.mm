@@ -5,13 +5,9 @@
 
 #include "ios/web/webui/web_ui_ios_data_source_impl.h"
 
+#include "ios/components/webui/web_ui_url_constants.h"
 #include "ios/web/public/webui/web_ui_ios_data_source.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
-
-namespace {
-const char kChromeUIScheme[] = "chrome";
-const char kChromeUIUntrustedScheme[] = "chrome-untrusted";
-}  // namespace
 
 namespace web {
 

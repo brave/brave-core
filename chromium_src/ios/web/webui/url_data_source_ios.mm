@@ -11,11 +11,10 @@
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
+#include "ios/components/webui/web_ui_url_constants.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
 
 namespace {
-
-const char kChromeUIUntrustedScheme[] = "chrome-untrusted";
 
 // A chrome-untrusted data source's name starts with chrome-untrusted://.
 bool IsChromeUntrustedDataSource(const web::URLDataSourceIOS* source) {
@@ -102,7 +101,9 @@ std::string URLDataSourceIOS::GetContentSecurityPolicy(
       // Note: Do not add 'unsafe-eval' here. Instead override CSP for the
       // specific pages that need it, see context http://crbug.com/525224.
       return IsChromeUntrustedDataSource(this)
-                 ? "script-src chrome-untrusted://resources 'self';"
+                 ? base::StrCat({"script-src", kChromeUIUntrustedScheme,
+                                 url::kStandardSchemeSeparator,
+                                 "resources 'self';"})
                  : "script-src chrome://resources 'self';";
     case network::mojom::CSPDirectiveName::FrameAncestors:
       return "frame-ancestors 'none';";

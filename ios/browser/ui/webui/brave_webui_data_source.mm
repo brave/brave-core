@@ -8,18 +8,16 @@
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted_memory.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
+#include "ios/components/webui/web_ui_url_constants.h"
 #include "ios/web/public/web_client.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "ui/base/webui/jstemplate_builder.h"
 #include "ui/base/webui/resource_path.h"
 #include "ui/base/webui/web_ui_util.h"
-
-namespace {
-const char kChromeUIScheme[] = "chrome";
-const char kChromeUIUntrustedScheme[] = "chrome-untrusted";
-}  // namespace
 
 BraveWebUIDataSource::BraveWebUIDataSource()
     : default_resource_(-1),
@@ -131,7 +129,8 @@ void BraveWebUIDataSource::DisableTrustedTypesCSP() {
 // URLDataSourceIOS
 
 std::string BraveWebUIDataSource::GetSource() const {
-  return "chrome-untrusted://";
+  return base::StrCat(
+      {kChromeUIUntrustedScheme, url::kStandardSchemeSeparator});
 }
 
 void BraveWebUIDataSource::StartDataRequest(const std::string& path,

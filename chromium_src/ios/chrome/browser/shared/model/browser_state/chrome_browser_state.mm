@@ -18,7 +18,7 @@
 auto CreateRequestContext_Brave(ChromeBrowserState* browser_state) {
   return [browser_state](ProtocolHandlerMap* protocol_handlers) {
     protocol_handlers->insert(
-        {"chrome-untrusted",
+        {kChromeUIUntrustedScheme,
          web::URLDataManagerIOSBackend::CreateProtocolHandler(browser_state)});
     return browser_state->CreateRequestContext(protocol_handlers);
   };

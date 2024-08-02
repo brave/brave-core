@@ -12,6 +12,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/components/webui/web_ui_url_constants.h"
 #import "ios/web/public/web_state.h"
 #include "ios/web/public/webui/url_data_source_ios.h"
 #import "ios/web/public/webui/web_ui_ios.h"
@@ -57,7 +58,8 @@ UntrustedNftUI::UntrustedNftUI(web::WebUIIOS* web_ui, const GURL& url)
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPanelURL));
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
-      std::string("script-src 'self' chrome-untrusted://resources;"));
+      base::StrCat({"script-src self", kChromeUIUntrustedScheme,
+                    url::kStandardSchemeSeparator, "resources;"}));
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       std::string("style-src 'self' 'unsafe-inline';"));

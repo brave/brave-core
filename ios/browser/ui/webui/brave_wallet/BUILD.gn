@@ -37,6 +37,7 @@ source_set("brave_wallet") {
     "//brave/components/resources:strings_grit",
     "//brave/ios/browser/brave_wallet:brave_wallet",
     "//ios/chrome/browser/shared/model/browser_state:browser_state",
+    "//ios/components/webui:url_constants",
     "//ios/web",
     "//ios/web:resources",
     "//ios/web/public",
