@@ -257,9 +257,12 @@ public class BraveVpnNativeWorker {
         void reloadPurchasedState(long nativeBraveVpnNativeWorker);
 
         boolean isPurchasedUser(long nativeBraveVpnNativeWorker);
+
         void getSubscriberCredentialV12(long nativeBraveVpnNativeWorker);
+
         void reportBackgroundP3A(
                 long nativeBraveVpnNativeWorker, long sessionStartTimeMs, long sessionEndTimeMs);
+
         void reportForegroundP3A(long nativeBraveVpnNativeWorker);
     }
 }
