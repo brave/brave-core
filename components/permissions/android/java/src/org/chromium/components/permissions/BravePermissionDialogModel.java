@@ -26,7 +26,6 @@ import android.widget.TextView;
 
 import androidx.browser.customtabs.CustomTabsIntent;
 
-import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.ui.LayoutInflaterUtils;
 import org.chromium.ui.UiUtils;
@@ -137,8 +136,7 @@ class BravePermissionDialogModel {
         // Create a text label before the lifetime selector.
         TextView lifetimeOptionsText = new TextView(context);
         lifetimeOptionsText.setText(braveDelegate.getLifetimeOptionsText());
-        ApiCompatibilityUtils.setTextAppearance(
-                lifetimeOptionsText, R.style.TextAppearance_TextMedium_Primary);
+        lifetimeOptionsText.setTextAppearance(R.style.TextAppearance_TextMedium_Primary);
 
         LinearLayout.LayoutParams lifetimeOptionsTextLayoutParams =
                 new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
