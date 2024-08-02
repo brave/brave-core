@@ -2,6 +2,7 @@
   "//chrome/app/vector_icons/battery_saver.icon": "leo_energy_saver",
   "//chrome/app/vector_icons/bookmarks_side_panel.icon": "leo_product_bookmarks",
   "//chrome/app/vector_icons/bookmarks_side_panel_refresh.icon": "leo_product_bookmarks",
+  "//chrome/app/vector_icons/browser_logo.icon": "leo_brave_icon_monochrome",
   "//chrome/app/vector_icons/browser_tools.icon": "leo_hamburger_menu",
   "//chrome/app/vector_icons/browser_tools_chrome_refresh.icon": "leo_hamburger_menu",
   "//chrome/app/vector_icons/copy.icon": "leo_copy",
