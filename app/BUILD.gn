@@ -172,7 +172,7 @@ source_set("unit_tests") {
       ":command_ids",
       "//brave/components/commands/common",
       "//chrome/app:command_ids",
-      "//chrome/browser/apps/link_capturing:link_capturing",
+      "//chrome/browser/apps/link_capturing:features",
       "//chrome/browser/companion/core",
       "//chrome/common:chrome_features",
       "//components/translate/core/common",
