@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
@@ -236,7 +237,11 @@ GreaselionServiceImpl::GreaselionServiceImpl(
           version_info::GetBraveVersionWithoutChromiumMajorVersion()),
       delegate_(std::move(delegate)),
       weak_factory_(this) {
-  download_service_->AddObserver(this);
+  if (download_service_) {
+    download_service_->AddObserver(this);
+  } else {
+    CHECK_IS_TEST();
+  }
   extension_registry_->AddObserver(this);
   for (int i = FIRST_FEATURE; i != LAST_FEATURE; i++)
     state_[static_cast<GreaselionFeature>(i)] = false;
@@ -247,7 +252,9 @@ GreaselionServiceImpl::GreaselionServiceImpl(
 GreaselionServiceImpl::~GreaselionServiceImpl() = default;
 
 void GreaselionServiceImpl::Shutdown() {
-  download_service_->RemoveObserver(this);
+  if (download_service_) {
+    download_service_->RemoveObserver(this);
+  }
   extension_registry_->RemoveObserver(this);
   task_runner_->PostTask(FROM_HERE,
                          base::BindOnce(&DeleteExtensionDirs, extension_dirs_));
@@ -299,6 +306,12 @@ void GreaselionServiceImpl::CreateAndInstallExtensions() {
     task_runner_->PostTask(
         FROM_HERE,
         base::BindOnce(&DeleteExtensionDirs, std::move(extension_dirs_)));
+  }
+
+  // download_service_ can be nullptr in unit tests.
+  if (!download_service_) {
+    MaybeNotifyObservers();
+    return;
   }
 
   std::vector<std::unique_ptr<GreaselionRule>>* rules =
@@ -421,7 +434,8 @@ bool GreaselionServiceImpl::update_in_progress() {
 }
 
 bool GreaselionServiceImpl::rules_ready() {
-  return !download_service_->rules()->empty();
+  // download_service_ can be nullptr in unit tests.
+  return download_service_ ? !download_service_->rules()->empty() : false;
 }
 
 void GreaselionServiceImpl::SetBrowserVersionForTesting(

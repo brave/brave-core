@@ -45,8 +45,6 @@ class BraveSearchProviderTest : public testing::Test {
         base::BindRepeating(&TemplateURLServiceFactory::BuildInstanceFor));
 
     profile_ = profile_builder.Build();
-    profile_->GetTestingPrefService()->registry()->RegisterBooleanPref(
-        prefs::kDefaultSearchProviderByExtension, false);
   }
 
   BraveSearchProviderTest(const BraveSearchProviderTest&) = delete;
