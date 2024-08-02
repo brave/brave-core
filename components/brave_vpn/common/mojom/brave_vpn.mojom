@@ -128,6 +128,7 @@ struct Region {
   string continent;
   string country_iso_code;
   string region_precision;
+  array<Region> cities;
   double latitude;
   double longitude;
   int32 server_count;
