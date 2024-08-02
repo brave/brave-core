@@ -19,7 +19,6 @@ import org.chromium.chrome.browser.feed.FeedFeatures;
 import org.chromium.chrome.browser.feed.FeedSurfaceCoordinator;
 import org.chromium.chrome.browser.feed.FeedSurfaceProvider;
 import org.chromium.chrome.browser.feed.FeedSwipeRefreshLayout;
-import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncherImpl;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.magic_stack.ModuleRegistry;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
@@ -162,7 +161,6 @@ public class BraveNewTabPage extends NewTabPage {
                         /* overScrollDisabled= */ false,
                         /* viewportView= */ null,
                         /* actionDelegate= */ null,
-                        HelpAndFeedbackLauncherImpl.getForProfile(profile),
                         mTabStripHeightSupplier);
 
         mFeedSurfaceProvider = feedSurfaceCoordinator;

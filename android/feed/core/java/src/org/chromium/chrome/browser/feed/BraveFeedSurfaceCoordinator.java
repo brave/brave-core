@@ -18,7 +18,6 @@ import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncher;
 import org.chromium.chrome.browser.ntp.NewTabPageLaunchOrigin;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -59,7 +58,6 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             boolean overScrollDisabled,
             @Nullable ViewGroup viewportView,
             FeedActionDelegate actionDelegate,
-            HelpAndFeedbackLauncher helpAndFeedbackLauncher,
             @NonNull ObservableSupplier<Integer> tabStripHeightSupplier) {
         super(
                 activity,
@@ -83,7 +81,6 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
                 overScrollDisabled,
                 viewportView,
                 actionDelegate,
-                helpAndFeedbackLauncher,
                 tabStripHeightSupplier);
     }
 
