@@ -703,6 +703,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   func prepare(isInitialOpen: Bool = false) {
     Task { @MainActor in
       if isInitialOpen {
+        await userAssetManager.alignTokenVisibilityServiceAndCD()
         walletService.discoverAssetsOnAllSupportedChains(bypassRateLimit: true)
       }
 

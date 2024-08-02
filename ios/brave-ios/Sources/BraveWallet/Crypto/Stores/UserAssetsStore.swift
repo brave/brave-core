@@ -151,16 +151,20 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
       let networks: [BraveWallet.NetworkInfo] = self.networkFilters.filter(\.isSelected).map(
         \.model
       )
-      let allUserAssets = await assetManager.getAllUserAssetsInNetworkAssets(
+      let allUserAssetsExcludeDeleted = await assetManager.getAllUserAssetsInNetworkAssets(
         networks: networks,
         includingUserDeleted: false
+      )
+      let allHiddenAssets = await assetManager.getUserAssets(
+        networks: networks,
+        visible: false
       )
       var allTokens = await self.blockchainRegistry.allTokens(
         in: networks,
         includingUserDeleted: false
       )
       // Filter `allTokens` to remove any tokens existing in `allUserAssets`. This is possible for ERC721 tokens in the registry without a `tokenId`, which requires the user to add as a custom token
-      let allUserTokens = allUserAssets.flatMap(\.tokens)
+      let allUserTokens = allUserAssetsExcludeDeleted.flatMap(\.tokens)
       allTokens = allTokens.map { assetsForNetwork in
         NetworkAssets(
           network: assetsForNetwork.network,
@@ -170,11 +174,18 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
           sortOrder: assetsForNetwork.sortOrder
         )
       }
+      let allHiddenTokens: [BraveWallet.BlockchainToken] = allHiddenAssets.flatMap(\.tokens)
 
       let visibleIds: [String] =
-        allUserAssets.flatMap(\.tokens).filter(\.visible)
-        .map { $0.id + $0.chainId }
-      assetStores = (allUserAssets + allTokens)
+        allUserAssetsExcludeDeleted
+        .flatMap(\.tokens)
+        .filter { asset in
+          !allHiddenTokens.contains { hiddenToken in
+            hiddenToken.id.caseInsensitiveCompare(asset.id) == .orderedSame
+          }
+        }
+        .map(\.id)
+      assetStores = (allUserAssetsExcludeDeleted + allTokens)
         .sorted(by: { $0.sortOrder < $1.sortOrder })
         .flatMap { assetsForNetwork in
           assetsForNetwork.tokens.map { token in
@@ -200,7 +211,7 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
               userAssetManager: assetManager,
               isCustomToken: isCustomToken,
               isVisible: visibleIds.contains(where: {
-                $0.caseInsensitiveCompare(token.id + token.chainId) == .orderedSame
+                $0.caseInsensitiveCompare(token.id) == .orderedSame
               })
             )
           }

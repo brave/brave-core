@@ -240,9 +240,17 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
             && token.isSpam == false
         }
       }
+      // It is possible that `visible` flag from `WalletService`
+      // and database is out of sync. But we should respect the
+      // value from database.
+      let updatedUserAssets = userAssets.map {
+        let copy = $0
+        copy.visible = visible
+        return copy
+      }
       let networkAsset = NetworkAssets(
         network: network,
-        tokens: userAssets,
+        tokens: updatedUserAssets,
         sortOrder: index
       )
       result.append(networkAsset)
@@ -702,6 +710,32 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
     Preferences.Wallet.nonSelectedAccountsFilter.value = newAddresses
 
     Preferences.Wallet.migrateCacheKeyCompleted.value = true
+  }
+
+  @MainActor public func alignTokenVisibilityServiceAndCD() async {
+    let locallyHiddenTokens: [BraveWallet.BlockchainToken] =
+      WalletUserAsset.getAllUserAssets(visible: false)?
+      .map { $0.blockchainToken } ?? []
+    let visibleTokensFromService =
+      await walletService.allUserAssets()
+      .filter { $0.visible }
+    let tokensFromServiceNeedUpdate =
+      visibleTokensFromService
+      .filter { token in
+        locallyHiddenTokens.contains { localHiddenToken in
+          localHiddenToken.id.caseInsensitiveCompare(token.id) == .orderedSame
+        }
+      }
+    await withTaskGroup(of: Void.self) { @MainActor group in
+      for token in tokensFromServiceNeedUpdate {
+        group.addTask { @MainActor in
+          await self.walletService.setUserAssetVisible(
+            token: token,
+            visible: false
+          )
+        }
+      }
+    }
   }
 }
 

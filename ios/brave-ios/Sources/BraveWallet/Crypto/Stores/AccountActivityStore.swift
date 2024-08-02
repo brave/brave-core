@@ -200,6 +200,23 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
           networks: networksForAccount,
           includingUserDeleted: true
         )
+      let allHiddenTokens =
+        await assetManager.getUserAssets(
+          networks: allNetworks,
+          visible: false
+        ).flatMap(\.tokens)
+      let allVisibleNetworkAssets =
+        allUserNetworkAssets.map {
+          NetworkAssets(
+            network: $0.network,
+            tokens: $0.tokens.filter({ token in
+              !allHiddenTokens.contains { hiddenToken in
+                hiddenToken.id.caseInsensitiveCompare(token.id) == .orderedSame
+              }
+            }),
+            sortOrder: $0.sortOrder
+          )
+        }
       let allUserAssets = allUserNetworkAssets.flatMap(\.tokens)
       let allTokens = await blockchainRegistry.allTokens(in: networksForAccountCoin).flatMap(
         \.tokens
@@ -255,7 +272,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       // update assets, NFTs, after balance fetch
       guard !Task.isCancelled else { return }
       (self.userAssets, self.userNFTs) = buildAssetsAndNFTs(
-        userNetworkAssets: allUserNetworkAssets,
+        userNetworkAssets: allVisibleNetworkAssets,
         tokenBalances: tokenBalanceCache,
         tokenPrices: tokenPricesCache,
         nftMetadata: nftMetadataCache,
@@ -286,7 +303,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       // update assets, NFTs, transactions after balance & price fetch
       guard !Task.isCancelled else { return }
       (self.userAssets, self.userNFTs) = buildAssetsAndNFTs(
-        userNetworkAssets: allUserNetworkAssets,
+        userNetworkAssets: allVisibleNetworkAssets,
         tokenBalances: tokenBalanceCache,
         tokenPrices: tokenPricesCache,
         nftMetadata: nftMetadataCache,
@@ -312,7 +329,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       // update assets, NFTs, transactions after balance & price & metadata fetch
       guard !Task.isCancelled else { return }
       (self.userAssets, self.userNFTs) = buildAssetsAndNFTs(
-        userNetworkAssets: allUserNetworkAssets,
+        userNetworkAssets: allVisibleNetworkAssets,
         tokenBalances: tokenBalanceCache,
         tokenPrices: tokenPricesCache,
         nftMetadata: nftMetadataCache,
