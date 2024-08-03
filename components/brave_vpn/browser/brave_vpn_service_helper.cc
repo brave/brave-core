@@ -27,7 +27,7 @@ namespace brave_vpn {
 
 mojom::RegionPtr GetRegionPtrWithNameFromRegionList(
     const std::string& name,
-    const std::vector<mojom::Region> region_list) {
+    const std::vector<mojom::RegionPtr>& region_list) {
   auto it = base::ranges::find(region_list, name, &mojom::Region::name);
   if (it != region_list.end())
     return it->Clone();

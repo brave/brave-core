@@ -51,13 +51,10 @@ interface ServiceHandler {
   Disconnect();
 
   // Gets all region from internal cache which is fetched from Guardian API
-  [EnableIfNot=is_android]
   GetAllRegions() => (array<Region> regions);
 
-  [EnableIfNot=is_android]
   GetSelectedRegion() => (Region current_region);
 
-  [EnableIfNot=is_android]
   SetSelectedRegion(Region region);
 
   [EnableIfNot=is_android]
