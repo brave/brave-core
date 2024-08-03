@@ -415,6 +415,19 @@ IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, ExcludePrivateRegistries) {
   NavigateToURLAndWaitForRedirects(original_url, landing_url);
 }
 
+// Test that debouncing rule is skipped if the hostname of the new url as
+// extracted via our simple parser doesn't match the host as parsed via GURL
+IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, IgnoreHostnameMismatch) {
+  ASSERT_TRUE(InstallMockExtension());
+  ToggleDebouncePref(true);
+  // The destination decodes to http://evil.com\\@apps.apple.com
+  // If you paste that in Chrome or Brave, the backslashes are changed
+  // to slashes and you end up on http://evil.com//@apps.apple.com
+  GURL original_url = embedded_test_server()->GetURL(
+      "simple.a.com", "/?url=http%3A%2F%2Fevil.com%5C%5C%40apps.apple.com");
+  NavigateToURLAndWaitForRedirects(original_url, original_url);
+}
+
 // Test that debounceable URLs on domain block list are debounced instead.
 IN_PROC_BROWSER_TEST_F(DebounceBrowserTest, DebounceBeforeDomainBlock) {
   GURL base_url = embedded_test_server()->GetURL("blocked.com", "/");
