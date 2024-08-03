@@ -47,14 +47,14 @@
 namespace brave {
 namespace {
 
-// Max amount of time to wait after getting an URL loaded, in milliseconds. Note
+// Max amount of time to wait after getting an URL loaded, in seconds. Note
 // that the value passed to --ui-test-action-timeout in //brave/package.json, as
-// part of the 'network-audit' script, must be big enough to accomodate this.
+// part of the 'network-audit' script, must be big enough to accommodate this.
 //
 // In particular:
 //   --ui-test-action-timeout: should be greater than |kMaxTimeoutPerLoadedURL|.
 //   --test-launcher-timeout: should be able to fit the total sum of timeouts.
-const int kMaxTimeoutPerLoadedURL = 30;
+const int kMaxTimeoutPerLoadedURL = 20;
 
 // Based on the implementation of isPrivateIP() from NPM's "ip" module.
 // See https://github.com/indutny/node-ip/blob/master/lib/ip.js
