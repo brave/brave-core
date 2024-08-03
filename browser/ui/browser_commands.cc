@@ -45,6 +45,7 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/profiles/profile_picker.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_group.h"
@@ -63,6 +64,10 @@
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_enums.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -221,6 +226,16 @@ void OpenBraveVPNUrls(Browser* browser, int command_id) {
   chrome::AddTabAt(browser, GURL(target_url), -1, true);
 #endif
 }
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+void ToggleAIChat(Browser* browser) {
+#if defined(TOOLKIT_VIEWS)
+  SidePanelUI* side_panel_ui = browser->GetFeatures().side_panel_ui();
+  side_panel_ui->Toggle(SidePanelEntry::Key(SidePanelEntryId::kChatUI),
+                        SidePanelOpenTrigger::kToolbarButton);
+#endif
+}
+#endif
 
 void ShowWalletBubble(Browser* browser) {
 #if defined(TOOLKIT_VIEWS)
