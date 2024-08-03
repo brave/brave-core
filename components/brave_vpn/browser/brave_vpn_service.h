@@ -95,9 +95,6 @@ class BraveVpnService :
   void GetConnectionState(GetConnectionStateCallback callback) override;
   void Connect() override;
   void Disconnect() override;
-  void GetAllRegions(GetAllRegionsCallback callback) override;
-  void GetSelectedRegion(GetSelectedRegionCallback callback) override;
-  void SetSelectedRegion(mojom::RegionPtr region) override;
   void GetProductUrls(GetProductUrlsCallback callback) override;
   void CreateSupportTicket(const std::string& email,
                            const std::string& subject,
@@ -120,6 +117,10 @@ class BraveVpnService :
       mojo::PendingRemote<mojom::ServiceObserver> observer) override;
   void GetPurchasedState(GetPurchasedStateCallback callback) override;
   void LoadPurchasedState(const std::string& domain) override;
+
+  void GetAllRegions(GetAllRegionsCallback callback) override;
+  void GetSelectedRegion(GetSelectedRegionCallback callback) override;
+  void SetSelectedRegion(mojom::RegionPtr region) override;
 
   void GetAllServerRegions(ResponseCallback callback);
   void GetServerRegionsWithCities(ResponseCallback callback);
@@ -219,13 +220,13 @@ class BraveVpnService :
 
   // Check initial purchased/connected state.
   void CheckInitialState();
+  raw_ptr<BraveVPNConnectionManager> connection_manager_ = nullptr;
 
 #if !BUILDFLAG(IS_ANDROID)
   base::ScopedObservation<BraveVPNConnectionManager,
                           BraveVPNConnectionManager::Observer>
       observed_{this};
   bool wait_region_data_ready_ = false;
-  raw_ptr<BraveVPNConnectionManager> connection_manager_ = nullptr;
 
   PrefChangeRegistrar policy_pref_change_registrar_;
 #endif  // !BUILDFLAG(IS_ANDROID)

@@ -24,7 +24,7 @@ class Value;
 namespace brave_vpn {
 mojom::RegionPtr GetRegionPtrWithNameFromRegionList(
     const std::string& name,
-    const std::vector<mojom::Region> region_list);
+    const std::vector<mojom::RegionPtr>& region_list);
 
 // False if subscription is expired.
 bool IsValidCredentialSummary(const base::Value& summary);
