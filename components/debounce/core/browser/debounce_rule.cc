@@ -73,8 +73,8 @@ std::string NaivelyExtractHostnameFromUrl(const std::string& url) {
     mutable_url = mutable_url.substr(kHttp.length());
   }
 
-  // Known limitation: this will not work properly with origins that include
-  // port numbers or with IPv6 hostnames.
+  // Known limitation: this will not work properly with origins which consist
+  // of IPv6 hostnames.
   const std::vector<std::string> parts = base::SplitString(
       mutable_url, ":/", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   if (parts.size() > 0) {
