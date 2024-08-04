@@ -7,19 +7,15 @@ import("//brave/build/config.gni")
 
 source_set("browser") {
   sources = [
-    "webcompat_exceptions_observer.h",
-    "webcompat_exceptions_service.cc",
-    "webcompat_exceptions_service.h",
+    "webcompat_settings_cleaning_service.cc",
+    "webcompat_settings_cleaning_service.h",
   ]
 
   deps = [
     "//base",
-    "//brave/components/brave_component_updater/browser",
-    "//components/keyed_service/core",
-    "//components/prefs",
-    "//components/user_prefs",
+    "//brave/components/webcompat/content/browser",
+    "//components/content_settings/core/browser:browser",
+    "//components/content_settings/core/common:common",
     "//content/public/browser",
-    "//net",
-    "//url",
   ]
 }

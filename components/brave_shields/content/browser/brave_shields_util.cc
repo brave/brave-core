@@ -17,6 +17,7 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
+#include "brave/components/webcompat/content/browser/webcompat_exceptions_service.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -66,6 +67,17 @@ ContentSetting GetDefaultBlockFromControlType(ControlType type) {
 
   return type == ControlType::ALLOW ? CONTENT_SETTING_ALLOW
                                     : CONTENT_SETTING_BLOCK;
+}
+
+bool WebcompatExceptionExists(const ContentSettingsPattern& primary_pattern,
+                              ContentSettingsType webcompat_settings_type) {
+  auto* svc = webcompat::WebcompatExceptionsService::GetInstance();
+  if (!svc) {
+    return false;
+  }
+  const auto patterns = svc->GetPatterns(webcompat_settings_type);
+  return std::find(patterns.begin(), patterns.end(), primary_pattern) !=
+         patterns.end();
 }
 
 class BraveCookieRules {
@@ -586,7 +598,12 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
   ContentSetting content_setting;
   if (type == ControlType::DEFAULT || type == ControlType::BLOCK_THIRD_PARTY) {
     type = ControlType::DEFAULT;
-    content_setting = CONTENT_SETTING_ASK;
+    bool something_to_override =
+        setting_info.primary_pattern.MatchesAllHosts() ||
+        WebcompatExceptionExists(primary_pattern,
+                                 ContentSettingsType::BRAVE_FINGERPRINTING_V2);
+    content_setting =
+        something_to_override ? CONTENT_SETTING_ASK : CONTENT_SETTING_DEFAULT;
   } else {
     content_setting = GetDefaultBlockFromControlType(type);
   }
@@ -859,8 +876,15 @@ void SetWebcompatEnabled(HostContentSettingsMap* map,
                          ContentSettingsType webcompat_settings_type,
                          bool enabled,
                          const GURL& url,
-                         PrefService* local_state) {
+                         PrefService* local_state,
+                         PrefService* profile_state) {
   DCHECK(map);
+
+  if (webcompat_settings_type == ContentSettingsType::BRAVE_FINGERPRINTING_V2) {
+    return SetFingerprintingControlType(
+        map, enabled ? ControlType::ALLOW : ControlType::DEFAULT, url,
+        local_state, profile_state);
+  }
 
   if (!url.SchemeIsHTTPOrHTTPS() && !url.is_empty()) {
     return;
@@ -871,8 +895,14 @@ void SetWebcompatEnabled(HostContentSettingsMap* map,
     return;
   }
 
-  ContentSetting setting =
-      enabled ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK;
+  bool exception_exists =
+      WebcompatExceptionExists(primary_pattern, webcompat_settings_type);
+
+  ContentSetting setting = enabled
+                               ? CONTENT_SETTING_ALLOW
+                               : (exception_exists ? CONTENT_SETTING_BLOCK
+                                                   : CONTENT_SETTING_DEFAULT);
+
   map->SetContentSettingCustomScope(primary_pattern,
                                     ContentSettingsPattern::Wildcard(),
                                     webcompat_settings_type, setting);

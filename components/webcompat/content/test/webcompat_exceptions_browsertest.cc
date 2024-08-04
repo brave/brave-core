@@ -140,45 +140,50 @@ class WebcompatExceptionsBrowserTest : public PlatformBrowserTest {
 IN_PROC_BROWSER_TEST_F(WebcompatExceptionsBrowserTest, RemoteSettingsTest) {
   NavigateToURL("a.test", "/simple.html");
   const auto pattern = ContentSettingsPattern::FromString("*://a.test/*");
+  const webcompat::PatternsByWebcompatTypeMap rule_map_empty;
   auto* webcompat_exceptions_service =
       webcompat::WebcompatExceptionsService::CreateInstance(
           g_brave_browser_process->local_data_files_service());
   auto* map = content_settings();
+  ContentSetting observed_setting;
   for (const auto& test_case : kTestCases) {
-    // Check the default setting
-    const auto observed_setting_default =
-        map->GetContentSetting(GURL("https://a.test"), GURL(), test_case.type);
-    EXPECT_NE(observed_setting_default, CONTENT_SETTING_ALLOW);
-
-    // Create a rule and then reload the page.
     webcompat::PatternsByWebcompatTypeMap rule_map;
     rule_map[test_case.type] = std::vector<ContentSettingsPattern>({pattern});
+
+    // Check the default setting
+    observed_setting =
+        map->GetContentSetting(GURL("https://a.test"), GURL(), test_case.type);
+    EXPECT_NE(observed_setting, CONTENT_SETTING_ALLOW);
+
+    // Set a remote rule and then reload the page.
     webcompat_exceptions_service->SetRulesForTesting(rule_map);
     NavigateToURL("a.test", "/simple.html");
 
     // Check the remote setting gets used
-    const auto observed_setting_remote =
+    observed_setting =
         map->GetContentSetting(GURL("https://a.test"), GURL(), test_case.type);
-    EXPECT_EQ(observed_setting_remote, CONTENT_SETTING_ALLOW);
+    EXPECT_EQ(observed_setting, CONTENT_SETTING_ALLOW);
 
     // Check that the remote setting doesn't leak to another domain
-    const auto observed_setting_cross_site =
+    observed_setting =
         map->GetContentSetting(GURL("https://b.test"), GURL(), test_case.type);
-    EXPECT_NE(observed_setting_cross_site, CONTENT_SETTING_ALLOW);
+    EXPECT_NE(observed_setting, CONTENT_SETTING_ALLOW);
 
     // Check that manual setting can override the remote setting
     brave_shields::SetWebcompatEnabled(map, test_case.type, false,
                                        GURL("https://a.test"), nullptr);
-    const auto observed_setting_override1 =
+    observed_setting =
         map->GetContentSetting(GURL("https://a.test"), GURL(), test_case.type);
-    EXPECT_EQ(observed_setting_override1, CONTENT_SETTING_BLOCK);
+    EXPECT_EQ(observed_setting, test_case.type == BRAVE_FINGERPRINTING_V2
+                                    ? CONTENT_SETTING_ASK
+                                    : CONTENT_SETTING_BLOCK);
 
     // Check that manual setting can override the remote setting
     brave_shields::SetWebcompatEnabled(map, test_case.type, true,
                                        GURL("https://b.test"), nullptr);
-    const auto observed_setting_override2 =
+    observed_setting =
         map->GetContentSetting(GURL("https://b.test"), GURL(), test_case.type);
-    EXPECT_EQ(observed_setting_override2, CONTENT_SETTING_ALLOW);
+    EXPECT_EQ(observed_setting, CONTENT_SETTING_ALLOW);
 
     // Check that webcompat returns false for non-http URLs.
     bool result = brave_shields::IsWebcompatEnabled(map, test_case.type,
@@ -189,5 +194,72 @@ IN_PROC_BROWSER_TEST_F(WebcompatExceptionsBrowserTest, RemoteSettingsTest) {
     bool result2 = brave_shields::IsWebcompatEnabled(map, test_case.type,
                                                      GURL("https://b.test"));
     EXPECT_TRUE(result2);
+
+    // Check that an enabled setting is deleted once the remote
+    // setting matches it.
+    brave_shields::SetWebcompatEnabled(map, test_case.type, true,
+                                       GURL("https://a.test"), nullptr);
+    observed_setting =
+        map->GetContentSetting(GURL("https://a.test"), GURL(), test_case.type);
+    EXPECT_EQ(observed_setting, CONTENT_SETTING_ALLOW);
+    // Enable exception via remote list.
+    webcompat_exceptions_service->SetRulesForTesting(rule_map);
+    // Now disable it via remote list.
+    webcompat_exceptions_service->SetRulesForTesting(rule_map_empty);
+    // Confirm that the exception is still enabled (ALLOW fingerprinting).
+    observed_setting =
+        map->GetContentSetting(GURL("https://a.test"), GURL(), test_case.type);
+    EXPECT_EQ(observed_setting, CONTENT_SETTING_ALLOW);
+
+    // Check that a disabled setting is deleted once the remote
+    // setting matches it.
+    // Enable exception via remote list.
+    webcompat_exceptions_service->SetRulesForTesting(rule_map);
+    // Disable the setting.
+    brave_shields::SetWebcompatEnabled(map, test_case.type, false,
+                                       GURL("https://a.test"), nullptr);
+    observed_setting =
+        map->GetContentSetting(GURL("https://a.test"), GURL(), test_case.type);
+    EXPECT_EQ(observed_setting, test_case.type == BRAVE_FINGERPRINTING_V2
+                                    ? CONTENT_SETTING_ASK
+                                    : CONTENT_SETTING_BLOCK);
+    // Disable exception via remote list.
+    webcompat_exceptions_service->SetRulesForTesting(rule_map_empty);
+    // Now enable it via remote list.
+    webcompat_exceptions_service->SetRulesForTesting(rule_map);
+    // Confirm that the exception is enabled (ALLOW fingerprinting).
+    observed_setting =
+        map->GetContentSetting(GURL("https://a.test"), GURL(), test_case.type);
+    EXPECT_EQ(observed_setting, CONTENT_SETTING_ALLOW);
+
+    // Check that a pref is not deleted when set to ALLOW if it is redundant.
+    // First, disable exception via remote list.
+    webcompat_exceptions_service->SetRulesForTesting(rule_map_empty);
+    // Now, enable exception via remote list.
+    webcompat_exceptions_service->SetRulesForTesting(rule_map);
+    // Set a redundant pref (should not get deleted)
+    brave_shields::SetWebcompatEnabled(map, test_case.type, true,
+                                       GURL("https://a.test"), nullptr);
+    // Disable exception via remote list again.
+    webcompat_exceptions_service->SetRulesForTesting(rule_map_empty);
+    // Confirm that the exception is still enabled (ALLOW fingerprinting).
+    observed_setting =
+        map->GetContentSetting(GURL("https://a.test"), GURL(), test_case.type);
+    EXPECT_EQ(observed_setting, CONTENT_SETTING_ALLOW);
+
+    // Check that a pref is deleted when set to BLOCK if it is redundant.
+    // First, enable exception via remote list.
+    webcompat_exceptions_service->SetRulesForTesting(rule_map);
+    // Now, disable exception via remote list.
+    webcompat_exceptions_service->SetRulesForTesting(rule_map_empty);
+    // Set a redundant pref (should get deleted)
+    brave_shields::SetWebcompatEnabled(map, test_case.type, false,
+                                       GURL("https://a.test"), nullptr);
+    // Enable exception via remote list again.
+    webcompat_exceptions_service->SetRulesForTesting(rule_map);
+    // Confirm that the exception is enabled (ALLOW fingerprinting).
+    observed_setting =
+        map->GetContentSetting(GURL("https://a.test"), GURL(), test_case.type);
+    EXPECT_EQ(observed_setting, CONTENT_SETTING_ALLOW);
   }
 }

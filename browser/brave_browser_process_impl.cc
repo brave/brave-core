@@ -43,6 +43,7 @@
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/components/webcompat/content/browser/webcompat_exceptions_service.h"
+#include "brave/components/webcompat/core/browser/webcompat_settings_cleaning_service.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "brave/services/network/public/cpp/system_request_handler.h"
 #include "build/build_config.h"
@@ -229,6 +230,7 @@ void BraveBrowserProcessImpl::StartBraveServices() {
           webcompat::features::kBraveWebcompatExceptionsService)) {
     webcompat::WebcompatExceptionsService::CreateInstance(
         local_data_files_service());
+    webcompat::WebcompatSettingsCleaningService::CreateInstance();
   }
 
 #if BUILDFLAG(ENABLE_GREASELION)
