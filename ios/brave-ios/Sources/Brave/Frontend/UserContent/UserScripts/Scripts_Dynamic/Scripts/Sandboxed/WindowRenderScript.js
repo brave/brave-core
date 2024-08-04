@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-window.__firefox__.includeOnce("WindowRenderScript", function($) {
-  Object.defineProperty(window.__firefox__, "$<window_render_script>", {
+window.__brave__.includeOnce("WindowRenderScript", function($) {
+  Object.defineProperty(window.__brave__, "$<window_render_script>", {
     enumerable: false,
     configurable: false,
     writable: false,
@@ -20,11 +20,11 @@ window.__firefox__.includeOnce("WindowRenderScript", function($) {
   document.addEventListener('readystatechange', $(function(){
     let eventHandler = $(function(e) {
       if (e.target.readyState === "interactive") {
-        window.__firefox__.$<window_render_script>.resizeWindow();
+        window.__brave__.$<window_render_script>.resizeWindow();
       }
 
       if (e.target.readyState === "complete") {
-        window.__firefox__.$<window_render_script>.resizeWindow();
+        window.__brave__.$<window_render_script>.resizeWindow();
       }
     });
 

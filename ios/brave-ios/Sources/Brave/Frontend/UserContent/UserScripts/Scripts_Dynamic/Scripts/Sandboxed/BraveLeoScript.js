@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-window.__firefox__.includeOnce('BraveLeoScript', function($) {
+window.__brave__.includeOnce('BraveLeoScript', function($) {
 
   const kRolesToSkip = [
     "audio", "banner", "button", "complementary",
@@ -92,7 +92,7 @@ window.__firefox__.includeOnce('BraveLeoScript', function($) {
     return textNodes.join(" ");
   }
 
-  Object.defineProperty(window.__firefox__, '$<getMainArticle>', {
+  Object.defineProperty(window.__brave__, '$<getMainArticle>', {
       enumerable: false,
       configurable: false,
       writable: false,

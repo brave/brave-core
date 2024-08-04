@@ -7,7 +7,7 @@
 
 // Ensure this module only gets included once. This is
 // required for user scripts injected into all frames.
-window.__firefox__.includeOnce("LoginsScript", function() {
+window.__brave__.includeOnce("LoginsScript", function() {
   var gEnabled = true;
   var gStoreWhenAutocompleteOff = true;
   var gAutofillForms = true;
@@ -729,7 +729,7 @@ window.__firefox__.includeOnce("LoginsScript", function() {
         LoginManagerContent.receiveMessage(msg);
         for (var frame of document.querySelectorAll('iframe')) {
           try {
-            frame.contentWindow.__firefox__.logins.inject(msg);
+            frame.contentWindow.__brave__.logins.inject(msg);
           } catch(ex) {
             log(ex);
           }
@@ -741,7 +741,7 @@ window.__firefox__.includeOnce("LoginsScript", function() {
     };
   }
 
-  Object.defineProperty(window.__firefox__, "logins", {
+  Object.defineProperty(window.__brave__, "logins", {
     enumerable: false,
     configurable: false,
     writable: false,

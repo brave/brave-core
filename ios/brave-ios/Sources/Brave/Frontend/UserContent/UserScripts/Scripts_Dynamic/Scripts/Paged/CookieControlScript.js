@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-window.__firefox__.execute(function($) {
+window.__brave__.execute(function($) {
   //Cookie should neither be saved nor accessed (local or session) when user has blocked all cookies.
   const cookie = Object.getOwnPropertyDescriptor(Document.prototype, 'cookie') || Object.getOwnPropertyDescriptor(HTMLDocument.prototype, 'cookie')
 

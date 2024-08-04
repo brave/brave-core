@@ -5,7 +5,7 @@
 
 // The below is needed because the script may not be web-packed into a bundle so it may be missing the run-once code
 
-window.__firefox__.includeOnce("MediaBackgrounding", function($) {
+window.__brave__.includeOnce("MediaBackgrounding", function($) {
   var descriptor = Object.getOwnPropertyDescriptor(Document.prototype, "visibilityState");
   var visibilityStateGet = descriptor.get;
   var visibilityStateSet = descriptor.set;

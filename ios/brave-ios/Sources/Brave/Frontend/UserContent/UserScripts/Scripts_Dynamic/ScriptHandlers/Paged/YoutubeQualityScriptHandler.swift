@@ -28,7 +28,7 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript {
           self.url = url
 
           object.evaluateSafeJavaScript(
-            functionName: "window.__firefox__.\(Self.refreshQuality)",
+            functionName: "window.__brave__.\(Self.refreshQuality)",
             contentWorld: Self.scriptSandbox,
             asFunction: true
           )
@@ -70,7 +70,7 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript {
     let enabled = canEnableHighQuality(option: option)
 
     tab.webView?.evaluateSafeJavaScript(
-      functionName: "window.__firefox__.\(Self.setQuality)",
+      functionName: "window.__brave__.\(Self.setQuality)",
       args: [enabled ? Self.highestQuality : "''"],
       contentWorld: Self.scriptSandbox,
       escapeArgs: false,

@@ -5,7 +5,7 @@
 
 'use strict';
 
-window.__firefox__.includeOnce("BraveSkusScript", function($) {
+window.__brave__.includeOnce("BraveSkusScript", function($) {
   let sendMessage = $(function(method_id, data) {
     return $.postNativeMessage('$<message_handler>', {
       'securityToken': SECURITY_TOKEN,

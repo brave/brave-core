@@ -5,7 +5,7 @@
 
 // MARK: - Media Detection
 
-window.__firefox__.includeOnce("Playlist", function($) {
+window.__brave__.includeOnce("Playlist", function($) {
   function is_nan(value) {
     return typeof value === "number" && value !== value;
   }
@@ -173,7 +173,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
   }
 
   function setupLongPress() {
-    Object.defineProperty(window.__firefox__, '$<playlistLongPressed>', {
+    Object.defineProperty(window.__brave__, '$<playlistLongPressed>', {
       enumerable: false,
       configurable: false,
       writable: false,
@@ -388,7 +388,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
       }
 
       // Needed for Japanese videos like tver.jp which literally never loads automatically
-      Object.defineProperty(window.__firefox__, '$<playlistProcessDocumentLoad>', {
+      Object.defineProperty(window.__brave__, '$<playlistProcessDocumentLoad>', {
         enumerable: false,
         configurable: false,
         writable: false,
@@ -421,7 +421,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
   }
 
   function setupTagNode() {
-      Object.defineProperty(window.__firefox__, '$<mediaCurrentTimeFromTag>', {
+      Object.defineProperty(window.__brave__, '$<mediaCurrentTimeFromTag>', {
         enumerable: false,
         configurable: false,
         writable: false,
@@ -447,7 +447,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
         }
       });
 
-      Object.defineProperty(window.__firefox__, '$<stopMediaPlayback>', {
+      Object.defineProperty(window.__brave__, '$<stopMediaPlayback>', {
           enumerable: false,
           configurable: false,
           writable: false,

@@ -1145,7 +1145,7 @@ class TabWebView: BraveWebView, MenuHelperInterface {
   @objc func menuHelperForcePaste() {
     if let string = UIPasteboard.general.string {
       evaluateSafeJavaScript(
-        functionName: "window.__firefox__.forcePaste",
+        functionName: "window.__brave__.forcePaste",
         args: [string, UserScriptManager.securityToken],
         contentWorld: .defaultClient
       ) { _, _ in }

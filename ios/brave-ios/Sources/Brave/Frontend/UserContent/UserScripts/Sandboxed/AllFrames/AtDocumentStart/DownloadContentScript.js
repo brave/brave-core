@@ -5,8 +5,8 @@
 
 "use strict";
 
-window.__firefox__.includeOnce("DownloadContentScript", function() {
-  Object.defineProperty(window.__firefox__, "download", {
+window.__brave__.includeOnce("DownloadContentScript", function() {
+  Object.defineProperty(window.__brave__, "download", {
     enumerable: false,
     configurable: false,
     writable: false,

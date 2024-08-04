@@ -347,28 +347,28 @@ Operation.prototype.complete = function() {
   }
 };
 
-Object.defineProperty(window.__firefox__, "find", {
+Object.defineProperty(window.__brave__, "find", {
   enumerable: false,
   configurable: false,
   writable: false,
   value: find
 });
 
-Object.defineProperty(window.__firefox__, "findNext", {
+Object.defineProperty(window.__brave__, "findNext", {
   enumerable: false,
   configurable: false,
   writable: false,
   value: findNext
 });
 
-Object.defineProperty(window.__firefox__, "findPrevious", {
+Object.defineProperty(window.__brave__, "findPrevious", {
   enumerable: false,
   configurable: false,
   writable: false,
   value: findPrevious
 });
 
-Object.defineProperty(window.__firefox__, "findDone", {
+Object.defineProperty(window.__brave__, "findDone", {
   enumerable: false,
   configurable: false,
   writable: false,

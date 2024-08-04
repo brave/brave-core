@@ -7,7 +7,7 @@
 
 // Ensure this module only gets included once. This is
 // required for user scripts injected into all frames.
-window.__firefox__.includeOnce("PrintScript", function($) {
+window.__brave__.includeOnce("PrintScript", function($) {
   window.print = $(function() {
     $.postNativeMessage('printScriptHandler', {"securityToken": SECURITY_TOKEN});
   });

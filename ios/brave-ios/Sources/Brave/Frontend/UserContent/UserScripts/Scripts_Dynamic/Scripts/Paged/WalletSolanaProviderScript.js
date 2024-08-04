@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-window.__firefox__.execute(function($, $Object, $Function, $Array) {
+window.__brave__.execute(function($, $Object, $Function, $Array) {
   if (window.isSecureContext) {
     // Failed to Inject SolanaWeb3
     if (typeof $<walletSolanaNameSpace> === 'undefined') {

@@ -262,7 +262,7 @@ protocol ReaderModeScriptHandlerDelegate: AnyObject {
   )
 }
 
-let readerModeNamespace = "window.__firefox__.reader"
+let readerModeNamespace = "window.__brave__.reader"
 
 class ReaderModeScriptHandler: TabContentScript {
   weak var delegate: ReaderModeScriptHandlerDelegate?

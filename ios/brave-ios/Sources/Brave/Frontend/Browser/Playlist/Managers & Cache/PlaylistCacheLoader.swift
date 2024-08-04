@@ -294,7 +294,7 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
   func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
     webView.evaluateSafeJavaScript(
       functionName:
-        "window.__firefox__.\(PlaylistWebLoaderContentHelper.playlistProcessDocumentLoad)()",
+        "window.__brave__.\(PlaylistWebLoaderContentHelper.playlistProcessDocumentLoad)()",
       args: [],
       contentWorld: PlaylistWebLoaderContentHelper.scriptSandbox,
       asFunction: false

@@ -7,7 +7,7 @@ const glob = require("glob");
 const path = require("path");
 const TerserPlugin = require('terser-webpack-plugin');
 
-const __firefox__ = glob.sync("./ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/__firefox__.js")[0];
+const __brave__ = glob.sync("./ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/__brave__.js")[0];
 
 const AllFramesAtDocumentStart = glob.sync("./ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/AllFrames/AtDocumentStart/*.js");
 const AllFramesAtDocumentStartSandboxed = glob.sync("./ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/Sandboxed/AllFrames/AtDocumentStart/*.js");
@@ -22,7 +22,7 @@ const MainFrameAtDocumentEndSandboxed = glob.sync("./ios/brave-ios/Sources/Brave
 module.exports = {
   mode: "production",
   entry: {
-    "__firefox__": __firefox__,
+    "__brave__": __brave__,
     AllFramesAtDocumentStart: AllFramesAtDocumentStart,
     AllFramesAtDocumentStartSandboxed: AllFramesAtDocumentStartSandboxed,
     AllFramesAtDocumentEnd: AllFramesAtDocumentEnd,

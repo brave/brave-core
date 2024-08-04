@@ -96,7 +96,7 @@ class UserScriptManager {
       (WKUserScriptInjectionTime.atDocumentEnd, mainFrameOnly: false, sandboxed: true),
     ].compactMap { (injectionTime, mainFrameOnly, sandboxed) in
 
-      if let source = ScriptLoader.loadUserScript(named: "__firefox__") {
+      if let source = ScriptLoader.loadUserScript(named: "__brave__") {
         return WKUserScript(
           source: source,
           injectionTime: injectionTime,
@@ -201,7 +201,7 @@ class UserScriptManager {
   func fetchWalletScripts(from braveWalletAPI: BraveWalletAPI) {
     if let ethJS = braveWalletAPI.providerScripts(for: .eth)[.ethereum] {
       let providerJS = """
-        window.__firefox__.execute(function($, $Object) {
+        window.__brave__.execute(function($, $Object) {
           if (window.isSecureContext) {
             \(ethJS)
           }
@@ -220,7 +220,7 @@ class UserScriptManager {
         // Local variables are NOT enumerable!
         let \(UserScriptManager.walletSolanaNameSpace);
 
-        window.__firefox__.execute(function($, $Object, $Function, $Array) {
+        window.__brave__.execute(function($, $Object, $Function, $Array) {
           // Inject Solana as a Local Variable.
           \(solanaWeb3Script)
 
@@ -256,7 +256,7 @@ class UserScriptManager {
     }
     if let walletSolProviderScript = braveWalletAPI.providerScripts(for: .sol)[.solana] {
       let script = """
-        window.__firefox__.execute(function($, $Object) {
+        window.__brave__.execute(function($, $Object) {
           \(walletSolProviderScript)
         });
         """
@@ -269,7 +269,7 @@ class UserScriptManager {
     }
     if let walletStandardScript = braveWalletAPI.providerScripts(for: .sol)[.walletStandard] {
       let script = """
-        window.__firefox__.execute(function($, $Object) {
+        window.__brave__.execute(function($, $Object) {
            \(walletStandardScript)
            window.addEventListener('wallet-standard:app-ready', (e) => {
               walletStandardBrave.initialize(window.braveSolana);

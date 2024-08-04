@@ -5,7 +5,7 @@
 
 "use strict";
 
-Object.defineProperty(window.__firefox__, "NoImageMode", {
+Object.defineProperty(window.__brave__, "NoImageMode", {
   enumerable: false,
   configurable: false,
   writable: false,
@@ -28,15 +28,15 @@ function initializeStyleSheet () {
   }
 }
 
-Object.defineProperty(window.__firefox__.NoImageMode, "setEnabled", {
+Object.defineProperty(window.__brave__.NoImageMode, "setEnabled", {
   enumerable: false,
   configurable: false,
   writable: false,
   value: function(enabled) {
-    if (enabled === window.__firefox__.NoImageMode.enabled) {
+    if (enabled === window.__brave__.NoImageMode.enabled) {
       return;
     }
-    window.__firefox__.NoImageMode.enabled = enabled;
+    window.__brave__.NoImageMode.enabled = enabled;
     if (enabled) {
       initializeStyleSheet();
       return;
@@ -78,5 +78,5 @@ Object.defineProperty(window.__firefox__.NoImageMode, "setEnabled", {
 });
 
 window.addEventListener("DOMContentLoaded", function (event) {
-  window.__firefox__.NoImageMode.setEnabled(window.__firefox__.NoImageMode.enabled);
+  window.__brave__.NoImageMode.setEnabled(window.__brave__.NoImageMode.enabled);
 });

@@ -5,7 +5,7 @@
 
 "use strict";
 
-if (!window.__firefox__) {
+if (!window.__brave__) {
   /*
    *  Generate toString
    */
@@ -552,9 +552,9 @@ if (!window.__firefox__) {
   });
 
   /*
-   *  Creates window.__firefox__ with a `Proxy` object as defined above
+   *  Creates window.__brave__ with a `Proxy` object as defined above
    */
-  $Object.defineProperty(window, "__firefox__", {
+  $Object.defineProperty(window, "__brave__", {
     enumerable: false,
     configurable: false,
     writable: false,

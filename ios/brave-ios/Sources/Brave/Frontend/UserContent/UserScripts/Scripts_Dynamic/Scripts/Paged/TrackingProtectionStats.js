@@ -5,7 +5,7 @@
 
 "use strict";
 
-window.__firefox__.execute(function($) {
+window.__brave__.execute(function($) {
   const messageHandler = '$<message_handler>';
   let sendInfo = [];
   let sendInfoTimeout = null;

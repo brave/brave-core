@@ -5,14 +5,14 @@
 
 "use strict";
 
-window.__firefox__.includeOnce("DownloadManager", function($) {
+window.__brave__.includeOnce("DownloadManager", function($) {
   let postMessage = $(function(message) {
     if (message) {
       return $.postNativeMessage('$<message_handler>', message);
     }
   });
 
-  Object.defineProperty(window.__firefox__, "downloadManager", {
+  Object.defineProperty(window.__brave__, "downloadManager", {
     enumerable: false,
     configurable: false,
     writable: false,

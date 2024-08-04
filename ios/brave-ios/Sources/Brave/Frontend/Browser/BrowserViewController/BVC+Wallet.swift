@@ -612,7 +612,7 @@ extension Tab: BraveWalletSolanaEventsListener {
       await webView.evaluateSafeJavaScript(
         functionName: """
           if (\(UserScriptManager.walletSolanaNameSpace).solanaWeb3) {
-            window.__firefox__.execute(function($) {
+            window.__brave__.execute(function($) {
               window.solana.publicKey = $.deepFreeze(
                 new \(UserScriptManager.walletSolanaNameSpace).solanaWeb3.PublicKey('\(publicKey.htmlEntityEncodedString)')
               );

@@ -10,7 +10,7 @@
 //  <div class="ytp-gradient-top" data-layer="1"></div>
 //</ytd-player>
 
-window.__firefox__.includeOnce("YoutubeQuality", function($) {
+window.__brave__.includeOnce("YoutubeQuality", function($) {
   function debugPlayer(player) {
     console.log("List of Functions: ");
     for (var fn in player) {
@@ -54,7 +54,7 @@ window.__firefox__.includeOnce("YoutubeQuality", function($) {
   var ytQualityTimerId = 0;
   var chosenQuality = "";
 
-  Object.defineProperty(window.__firefox__, '$<set_youtube_quality>', {
+  Object.defineProperty(window.__brave__, '$<set_youtube_quality>', {
     enumerable: false,
     configurable: false,
     writable: false,
@@ -80,13 +80,13 @@ window.__firefox__.includeOnce("YoutubeQuality", function($) {
     })
   });
 
-  Object.defineProperty(window.__firefox__, '$<refresh_youtube_quality>', {
+  Object.defineProperty(window.__brave__, '$<refresh_youtube_quality>', {
     enumerable: false,
     configurable: false,
     writable: false,
     value: $(function() {
       if (chosenQuality.length > 0) {
-        window.__firefox__.$<set_youtube_quality>(chosenQuality);
+        window.__brave__.$<set_youtube_quality>(chosenQuality);
       }
     })
   });
@@ -96,7 +96,7 @@ window.__firefox__.includeOnce("YoutubeQuality", function($) {
       "securityToken": SECURITY_TOKEN,
       "request": "get_default_quality"
     }).then($(function(quality) {
-      window.__firefox__.$<set_youtube_quality>(quality);
+      window.__brave__.$<set_youtube_quality>(quality);
     }));
   })();
 });

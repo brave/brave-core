@@ -245,7 +245,7 @@ class LoginsScriptHandler: TabContentScript {
     }
 
     self.tab?.webView?.evaluateSafeJavaScript(
-      functionName: "window.__firefox__.logins.inject",
+      functionName: "window.__brave__.logins.inject",
       args: [jsonString],
       contentWorld: LoginsScriptHandler.scriptSandbox,
       escapeArgs: false

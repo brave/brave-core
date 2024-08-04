@@ -211,7 +211,7 @@ function configureReader() {
   updateImageMargins();
 }
 
-Object.defineProperty(window.__firefox__, "reader", {
+Object.defineProperty(window.__brave__, "reader", {
   enumerable: false,
   configurable: false,
   writable: false,

@@ -5,7 +5,7 @@
 
 'use strict';
 
-window.__firefox__.includeOnce("BraveSearchScript", function($) {
+window.__brave__.includeOnce("BraveSearchScript", function($) {
   let sendMessage = $(function(method_id) {
     return $.postNativeMessage('$<message_handler>', { 'securityToken': SECURITY_TOKEN, 'method_id': method_id});
   });

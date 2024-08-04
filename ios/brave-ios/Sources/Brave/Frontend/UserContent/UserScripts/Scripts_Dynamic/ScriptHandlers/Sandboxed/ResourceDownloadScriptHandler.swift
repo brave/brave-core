@@ -79,7 +79,7 @@ class ResourceDownloadScriptHandler: TabContentScript {
 
   static func downloadResource(for tab: Tab, url: URL) {
     tab.webView?.evaluateSafeJavaScript(
-      functionName: "window.__firefox__.downloadManager.download",
+      functionName: "window.__brave__.downloadManager.download",
       args: [url.absoluteString],
       contentWorld: self.scriptSandbox
     ) { _, error in

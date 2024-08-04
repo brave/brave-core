@@ -75,7 +75,7 @@ extension BraveLeoScriptHandler: AIChatJavascript {
     do {
       let articleText =
         try await webView.evaluateSafeJavaScriptThrowing(
-          functionName: "window.__firefox__.\(getMainArticle)",
+          functionName: "window.__brave__.\(getMainArticle)",
           args: [Self.scriptId],
           contentWorld: Self.scriptSandbox,
           asFunction: true

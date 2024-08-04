@@ -5,7 +5,7 @@
 
 "use strict";
 
-Object.defineProperty(window.__firefox__, "searchQueryForField", {
+Object.defineProperty(window.__brave__, "searchQueryForField", {
   enumerable: false,
   configurable: false,
   writable: false,

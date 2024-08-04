@@ -5,7 +5,7 @@
 
 "use strict";
 
-window.__firefox__.includeOnce("RewardsReporting", function($) {
+window.__brave__.includeOnce("RewardsReporting", function($) {
   const mediaPublisherOrigins = [
     'https://www.twitch.tv', 'https://m.twitch.tv', 'https://player.twitch.tv',
     'https://www.youtube.com', 'https://m.youtube.com',

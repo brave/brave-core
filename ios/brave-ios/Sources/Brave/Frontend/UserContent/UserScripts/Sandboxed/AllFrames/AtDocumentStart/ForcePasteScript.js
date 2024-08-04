@@ -5,8 +5,8 @@
 
 "use strict";
 
-window.__firefox__.includeOnce("ForcePasteScript", function() {
-  Object.defineProperty(window.__firefox__, "forcePaste", {
+window.__brave__.includeOnce("ForcePasteScript", function() {
+  Object.defineProperty(window.__brave__, "forcePaste", {
     enumerable: false,
     configurable: false,
     writable: false,
