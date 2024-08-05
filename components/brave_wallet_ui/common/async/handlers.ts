@@ -14,6 +14,10 @@ import { walletApi } from '../slices/api.slice'
 
 const handler = new AsyncActionHandler()
 
+const onInteractionInterval = () => {
+  getAPIProxy().keyringService.notifyUserInteraction()
+}
+
 async function refreshWalletInfo(store: Store) {
   const apiProxy = getAPIProxy()
 
@@ -63,7 +67,7 @@ handler.on(WalletActions.initialize.type, async (store) => {
   interactionNotifier.beginWatchingForInteraction(
     50000,
     isWalletLocked,
-    keyringService.notifyUserInteraction
+    onInteractionInterval
   )
   store.dispatch(WalletActions.initialized({ walletInfo, allAccounts }))
 })
@@ -92,7 +96,7 @@ handler.on(WalletActions.unlocked.type, async (store) => {
   interactionNotifier.beginWatchingForInteraction(
     50000,
     false,
-    keyringService.notifyUserInteraction
+    onInteractionInterval
   )
 })
 
