@@ -576,12 +576,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.71",
+ "syn 2.0.74",
 ]
 
 [[package]]
 name = "cxx"
-version = "1.0.124"
+version = "1.0.126"
 dependencies = [
  "cc",
  "cxxbridge-flags",
@@ -591,15 +591,15 @@ dependencies = [
 
 [[package]]
 name = "cxxbridge-flags"
-version = "1.0.124"
+version = "1.0.126"
 
 [[package]]
 name = "cxxbridge-macro"
-version = "1.0.124"
+version = "1.0.126"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.71",
+ "syn 2.0.74",
 ]
 
 [[package]]
@@ -1997,7 +1997,7 @@ dependencies = [
 
 [[package]]
 name = "regex"
-version = "1.10.5"
+version = "1.10.6"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -2114,7 +2114,7 @@ version = "1.0.23"
 
 [[package]]
 name = "serde"
-version = "1.0.204"
+version = "1.0.207"
 dependencies = [
  "serde_derive",
 ]
@@ -2137,11 +2137,11 @@ dependencies = [
 
 [[package]]
 name = "serde_derive"
-version = "1.0.204"
+version = "1.0.207"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.71",
+ "syn 2.0.74",
 ]
 
 [[package]]
@@ -2157,9 +2157,10 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.120"
+version = "1.0.124"
 dependencies = [
  "itoa 1.0.11",
+ "memchr",
  "ryu",
  "serde",
 ]
@@ -2430,7 +2431,7 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "2.0.71"
+version = "2.0.74"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2561,7 +2562,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.71",
+ "syn 2.0.74",
 ]
 
 [[package]]
@@ -2703,7 +2704,7 @@ dependencies = [
  "once_cell",
  "proc-macro2",
  "quote",
- "syn 2.0.71",
+ "syn 2.0.74",
  "wasm-bindgen-shared",
 ]
 
@@ -2723,7 +2724,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.71",
+ "syn 2.0.74",
  "wasm-bindgen-backend",
  "wasm-bindgen-shared",
 ]
