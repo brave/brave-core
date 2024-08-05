@@ -484,7 +484,7 @@ void RewardsDOMHandler::InitPrefChangeRegistrar() {
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      brave_ads::prefs::kSubdivisionTargetingSubdivision,
+      brave_ads::prefs::kSubdivisionTargetingUserSelectedSubdivision,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
 
@@ -1074,7 +1074,8 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
       static_cast<double>(ads_service_->GetMaximumNotificationAdsPerHour()));
   ads_data.Set(
       kAdsSubdivisionTargeting,
-      prefs->GetString(brave_ads::prefs::kSubdivisionTargetingSubdivision));
+      prefs->GetString(
+          brave_ads::prefs::kSubdivisionTargetingUserSelectedSubdivision));
   ads_data.Set(
       kAutoDetectedSubdivisionTargeting,
       prefs->GetString(
@@ -1336,7 +1337,8 @@ void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
     prefs->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds,
                       value == "true");
   } else if (key == kAdsSubdivisionTargeting) {
-    prefs->SetString(brave_ads::prefs::kSubdivisionTargetingSubdivision, value);
+    prefs->SetString(
+        brave_ads::prefs::kSubdivisionTargetingUserSelectedSubdivision, value);
   }
 
   GetAdsData(base::Value::List());

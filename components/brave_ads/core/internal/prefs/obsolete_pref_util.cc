@@ -22,6 +22,13 @@ constexpr char kEpsilonGreedyBanditArms[] =
 constexpr char kEpsilonGreedyBanditEligibleSegments[] =
     "brave.brave_ads.epsilon_greedy_bandit_eligible_segments.v2";
 
+constexpr char kHasMigratedConversionState[] =
+    "brave.brave_ads.migrated.conversion_state";
+constexpr char kHasMigratedNotificationState[] =
+    "brave.brave_ads.has_migrated.notification_state";
+constexpr char kHasMigratedRewardsState[] =
+    "brave.brave_ads.migrated.rewards_state";
+
 }  // namespace
 
 void RegisterProfilePrefsForMigration(
@@ -35,6 +42,11 @@ void RegisterProfilePrefsForMigration(
   // Added 04/2024.
   registry->RegisterDictionaryPref(kEpsilonGreedyBanditArms);
   registry->RegisterListPref(kEpsilonGreedyBanditEligibleSegments);
+
+  // Added 08/2024.
+  registry->RegisterBooleanPref(kHasMigratedConversionState, false);
+  registry->RegisterBooleanPref(kHasMigratedNotificationState, false);
+  registry->RegisterBooleanPref(kHasMigratedRewardsState, false);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
@@ -45,6 +57,11 @@ void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
   // Added 04/2024.
   prefs->ClearPref(kEpsilonGreedyBanditArms);
   prefs->ClearPref(kEpsilonGreedyBanditEligibleSegments);
+
+  // Added 08/2024.
+  prefs->ClearPref(kHasMigratedConversionState);
+  prefs->ClearPref(kHasMigratedNotificationState);
+  prefs->ClearPref(kHasMigratedRewardsState);
 }
 
 }  // namespace brave_ads
