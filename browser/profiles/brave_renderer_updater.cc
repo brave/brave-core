@@ -9,6 +9,7 @@
 
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
+#include "brave/browser/android/constants.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/common/brave_renderer_configuration.mojom.h"
@@ -28,6 +29,7 @@
 #include "extensions/buildflags/buildflags.h"
 #include "ipc/ipc_channel_proxy.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "net/base/network_change_notifier.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -98,6 +100,13 @@ BraveRendererUpdater::BraveRendererUpdater(
       playlist::kPlaylistEnabledPref,
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
+
+#if BUILDFLAG(IS_ANDROID)
+  pref_change_registrar_.Add(
+      kYTVideoQualityPref,
+      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                          base::Unretained(this)));
+#endif
 }
 
 BraveRendererUpdater::~BraveRendererUpdater() = default;
@@ -235,6 +244,8 @@ void BraveRendererUpdater::UpdateRenderer(
       base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
       pref_service->GetBoolean(playlist::kPlaylistEnabledPref);
 
+  bool is_yt_hd_quality_playback_enabled =
+      IsYTHDQualityPlaybackEnabled(pref_service);
   (*renderer_configuration)
       ->SetConfiguration(brave::mojom::DynamicParams::New(
           install_window_brave_ethereum_provider,
@@ -242,5 +253,20 @@ void BraveRendererUpdater::UpdateRenderer(
           allow_overwrite_window_ethereum_provider,
           brave_use_native_solana_wallet,
           allow_overwrite_window_solana_provider, de_amp_enabled,
-          onion_only_in_tor_windows, widevine_enabled, playlist_enabled));
+          onion_only_in_tor_windows, widevine_enabled, playlist_enabled,
+          is_yt_hd_quality_playback_enabled));
+}
+
+bool BraveRendererUpdater::IsYTHDQualityPlaybackEnabled(
+    PrefService* pref_service) {
+#if BUILDFLAG(IS_ANDROID)
+  int qualityPref = pref_service->GetInteger(kYTVideoQualityPref);
+  return qualityPref == static_cast<int>(settings::YTVideoQuality::kOn) ||
+         (qualityPref ==
+              static_cast<int>(settings::YTVideoQuality::kAllowOverWifi) &&
+          net::NetworkChangeNotifier::GetConnectionType() ==
+              net::NetworkChangeNotifier::CONNECTION_WIFI);
+#else
+  return false;
+#endif
 }

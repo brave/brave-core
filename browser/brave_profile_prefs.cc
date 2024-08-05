@@ -98,7 +98,7 @@
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/android/preferences/constants.h"
+#include "brave/browser/android/constants.h"
 #include "components/feed/core/common/pref_names.h"
 #include "components/feed/core/shared_prefs/pref_names.h"
 #include "components/ntp_tiles/pref_names.h"

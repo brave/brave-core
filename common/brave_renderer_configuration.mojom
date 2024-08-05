@@ -16,6 +16,7 @@ struct DynamicParams {
   bool onion_only_in_tor_windows = true;
   bool widevine_enabled = false;
   bool playlist_enabled = false;
+  bool is_yt_hd_quality_playback_enabled = false;
 };
 
 // Configures the renderer.

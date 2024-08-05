@@ -8,7 +8,6 @@
 #include <string>
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/android/preferences/constants.h"
 #include "brave/browser/android/preferences/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/pref_names.h"
@@ -36,21 +35,6 @@ const char16_t k_youtube_background_playback_script[] =
     "    }"
     "}());";
 
-const char16_t k_youtube_hd_video_quality_script[] =
-    u"(function() {"
-    "    var player = document.getElementById('movie_player');"
-    "    if (player) {"
-    "        if (player.setPlaybackQualityRange) {"
-    "            player.setPlaybackQualityRange('hd720');"
-    "            return;"
-    "        }"
-    "        if (player.setPlaybackQuality) {"
-    "            player.setPlaybackQuality('hd720');"
-    "            return;"
-    "        }"
-    "    }"
-    "}());";
-
 bool IsYouTubeDomain(const GURL& url) {
   if (net::registry_controlled_domains::SameDomainOrHost(
           url, GURL("https://www.youtube.com"),
@@ -74,23 +58,6 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
 
   return true;
 }
-
-bool IsHDQualityPlaybackEnabled(content::WebContents* contents) {
-  PrefService* prefs =
-      static_cast<Profile*>(contents->GetBrowserContext())->GetPrefs();
-
-  int qualityPref = prefs->GetInteger(kYTVideoQualityPref);
-  if (qualityPref == static_cast<int>(settings::YTVideoQuality::kOff) ||
-      (qualityPref ==
-           static_cast<int>(settings::YTVideoQuality::kAllowOverWifi) &&
-       net::NetworkChangeNotifier::GetConnectionType() !=
-           net::NetworkChangeNotifier::CONNECTION_WIFI)) {
-    return false;
-  }
-  content::RenderFrameHost::AllowInjectingJavaScript();
-
-  return true;
-}
 }  // namespace
 
 BackgroundVideoPlaybackTabHelper::BackgroundVideoPlaybackTabHelper(
@@ -110,11 +77,6 @@ void BackgroundVideoPlaybackTabHelper::DidFinishNavigation(
   if (IsBackgroundVideoPlaybackEnabled(web_contents())) {
     web_contents()->GetPrimaryMainFrame()->ExecuteJavaScript(
         k_youtube_background_playback_script, base::NullCallback());
-  }
-
-  if (IsHDQualityPlaybackEnabled(web_contents())) {
-    web_contents()->GetPrimaryMainFrame()->ExecuteJavaScript(
-        k_youtube_hd_video_quality_script, base::NullCallback());
   }
 }
 
