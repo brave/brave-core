@@ -39,6 +39,15 @@ export default function wireApiEventsToStore () {
       api.addPlaylistUpdatedListener(playlist =>
         getPlaylistActions().playlistUpdated(playlist)
       )
+
+
+      api.shouldShowAddMediaFromPageUI().then(({result}) => {
+        getPlaylistActions().shouldShowAddMediaFromPageChanged(result)
+
+        api.addOnActiveTabChangedListener((shouldShowAddMediaFromPageUI) => {
+          getPlaylistActions().shouldShowAddMediaFromPageChanged(shouldShowAddMediaFromPageUI)
+        })
+      })
     })
     .catch(e => {
       console.error('Playlist page fatal error:', e)

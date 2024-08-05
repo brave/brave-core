@@ -5,13 +5,17 @@
 
 #include "brave/browser/ui/webui/playlist_ui.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "base/strings/strcat.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/playlist/playlist_dialogs.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/browser/ui/webui/playlist_active_tab_tracker.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/pref_names.h"
@@ -77,6 +81,7 @@ void AddLocalizedStrings(content::WebUIDataSource* source) {
       {"bravePlaylistFailedToPlayDescription",
        IDS_PLAYLIST_FAILED_TO_PLAY_DESCRIPTION},
       {"bravePlaylistFailedToPlayRecover", IDS_PLAYLIST_FAILED_TO_PLAY_RECOVER},
+      {"bravePlaylistAddMediaFromPage", IDS_PLAYLIST_ADD_MEDIA_FROM_PAGE},
       {"bravePlaylistAlertDismiss", IDS_PLAYLIST_ALERT_DISMISS},
   };
 
@@ -189,15 +194,18 @@ void PlaylistUI::BindInterface(
 }
 
 void PlaylistUI::CreatePageHandler(
+    mojo::PendingRemote<playlist::mojom::PlaylistPage> page,
     mojo::PendingRemote<playlist::mojom::PlaylistServiceObserver>
         service_observer,
     mojo::PendingReceiver<playlist::mojom::PlaylistService> pending_service,
-    mojo::PendingReceiver<playlist::mojom::PlaylistNativeUI> native_ui) {
+    mojo::PendingReceiver<playlist::mojom::PlaylistPageHandler> native_ui) {
   DCHECK(service_observer.is_valid());
+
+  page_.Bind(std::move(page));
 
   auto* service = playlist::PlaylistServiceFactory::GetForBrowserContext(
       Profile::FromWebUI(web_ui()));
-  native_ui_receivers_.Add(this, std::move(native_ui));
+  page_handler_receivers_.Add(this, std::move(native_ui));
   service_receivers_.Add(service, std::move(pending_service));
   service->AddObserver(std::move(service_observer));
 
@@ -205,6 +213,11 @@ void PlaylistUI::CreatePageHandler(
   if (embedder_) {
     embedder_->ShowUI();
   }
+
+  active_tab_tracker_ = std::make_unique<PlaylistActiveTabTracker>(
+      web_ui()->GetWebContents(),
+      base::BindRepeating(&PlaylistUI::OnActiveTabStateChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
 }
 
 void PlaylistUI::ShowCreatePlaylistUI() {
@@ -224,8 +237,23 @@ void PlaylistUI::OpenSettingsPage() {
   playlist::ShowPlaylistSettings(web_ui()->GetWebContents());
 }
 
+void PlaylistUI::ShowAddMediaToPlaylistUI() {
+  playlist::ShowPlaylistAddBubble(web_ui()->GetWebContents());
+}
+
 void PlaylistUI::ClosePanel() {
   playlist::ClosePanel(web_ui()->GetWebContents());
+}
+
+void PlaylistUI::ShouldShowAddMediaFromPageUI(
+    ShouldShowAddMediaFromPageUICallback callback) {
+  CHECK(active_tab_tracker_);
+  std::move(callback).Run(active_tab_tracker_->ShouldShowAddMediaFromPageUI());
+}
+
+void PlaylistUI::OnActiveTabStateChanged(
+    bool should_show_add_media_from_page_ui) {
+  page_->OnActiveTabChanged(should_show_add_media_from_page_ui);
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(PlaylistUI)

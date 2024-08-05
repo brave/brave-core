@@ -7,9 +7,10 @@ import {
   PageHandlerFactory,
   Playlist,
   PlaylistEvent,
+  PlaylistPageCallbackRouter,
+  PlaylistPageHandlerRemote,
   PlaylistServiceObserverCallbackRouter,
   PlaylistServiceRemote,
-  PlaylistNativeUIRemote
 } from 'gen/brave/components/playlist/common/mojom/playlist.mojom.m.js'
 
 import { getPlaylistActions } from './getPlaylistActions'
@@ -19,33 +20,35 @@ type PlaylistEventListener = (event: PlaylistEvent) => void
 let apiInstance: API
 
 class API {
-  #pageCallbackRouter = new PlaylistServiceObserverCallbackRouter()
-  #pageHandler = new PlaylistServiceRemote()
-  #nativeUI = new PlaylistNativeUIRemote()
+  #pageCallbackRouter = new PlaylistPageCallbackRouter()
+  #playlistServiceObserverCallbackRouter = new PlaylistServiceObserverCallbackRouter()
+  #playlistService = new PlaylistServiceRemote()
+  #pageHandler = new PlaylistPageHandlerRemote()
 
   constructor() {
     const factory = PageHandlerFactory.getRemote()
     factory.createPageHandler(
       this.#pageCallbackRouter.$.bindNewPipeAndPassRemote(),
-      this.#pageHandler.$.bindNewPipeAndPassReceiver(),
-      this.#nativeUI.$.bindNewPipeAndPassReceiver()
+      this.#playlistServiceObserverCallbackRouter.$.bindNewPipeAndPassRemote(),
+      this.#playlistService.$.bindNewPipeAndPassReceiver(),
+      this.#pageHandler.$.bindNewPipeAndPassReceiver()
     )
   }
 
   async getAllPlaylists() {
-    return this.#pageHandler.getAllPlaylists()
+    return this.#playlistService.getAllPlaylists()
   }
 
   async getPlaylist(id: string) {
-    return this.#pageHandler.getPlaylist(id)
+    return this.#playlistService.getPlaylist(id)
   }
 
   createPlaylist(playlist: Playlist) {
-    this.#pageHandler.createPlaylist(playlist)
+    this.#playlistService.createPlaylist(playlist)
   }
 
   renamePlaylist(playlistId: string, newName: string) {
-    this.#pageHandler
+    this.#playlistService
       .renamePlaylist(playlistId, newName)
       .then(({ updatedPlaylist }) => {
         getPlaylistActions().playlistUpdated(updatedPlaylist)
@@ -53,29 +56,29 @@ class API {
   }
 
   removePlaylist(playlistId: string) {
-    this.#pageHandler.removePlaylist(playlistId)
+    this.#playlistService.removePlaylist(playlistId)
   }
 
   addMediaFilesFromActiveTabToPlaylist(playlistId: string) {
-    this.#pageHandler.addMediaFilesFromActiveTabToPlaylist(
+    this.#playlistService.addMediaFilesFromActiveTabToPlaylist(
       playlistId,
       /* canCache */ true
     )
   }
 
   moveItemFromPlaylist(playlistId: string, itemId: string[]) {
-    this.#nativeUI.showMoveItemsUI(playlistId, itemId)
+    this.#pageHandler.showMoveItemsUI(playlistId, itemId)
   }
 
   removeItemFromPlaylist(playlistId: string, itemId: string) {
-    this.#pageHandler.removeItemFromPlaylist(playlistId, itemId)
+    this.#playlistService.removeItemFromPlaylist(playlistId, itemId)
   }
 
   recoverLocalData(
     playlistItemId: string,
     updateMediaSrcBeforeRecovery = false
   ) {
-    this.#pageHandler.recoverLocalDataForItem(
+    this.#playlistService.recoverLocalDataForItem(
       playlistItemId,
       updateMediaSrcBeforeRecovery
     )
@@ -85,30 +88,34 @@ class API {
     playlistItemId: string,
     lastPlayedPosition: number
   ) {
-    this.#pageHandler.updateItemLastPlayedPosition(
+    this.#playlistService.updateItemLastPlayedPosition(
       playlistItemId,
       lastPlayedPosition
     )
   }
 
   removeLocalData(playlistItemId: string) {
-    this.#pageHandler.removeLocalDataForItem(playlistItemId)
+    this.#playlistService.removeLocalDataForItem(playlistItemId)
   }
 
   showCreatePlaylistUI() {
-    this.#nativeUI.showCreatePlaylistUI()
+    this.#pageHandler.showCreatePlaylistUI()
   }
 
   showRemovePlaylistUI(playlistId: string) {
-    this.#nativeUI.showRemovePlaylistUI(playlistId)
+    this.#pageHandler.showRemovePlaylistUI(playlistId)
   }
 
   openSettingsPage() {
-    this.#nativeUI.openSettingsPage()
+    this.#pageHandler.openSettingsPage()
   }
 
   closePanel() {
-    this.#nativeUI.closePanel()
+    this.#pageHandler.closePanel()
+  }
+
+  showAddMediaToPlaylistUI() {
+    this.#pageHandler.showAddMediaToPlaylistUI()
   }
 
   reorderItemFromPlaylist(
@@ -117,7 +124,7 @@ class API {
     position: number,
     callback: (result: boolean) => void
   ) {
-    this.#pageHandler
+    this.#playlistService
       .reorderItemFromPlaylist(playlistId, itemId, position)
       .then(({ result }) => callback(result))
   }
@@ -127,14 +134,18 @@ class API {
     position: number,
     callback: (result: boolean) => void
   ) {
-    this.#pageHandler
+    this.#playlistService
       .reorderPlaylist(playlistId, position)
       .then(({ result }) => callback(result))
   }
 
+  async shouldShowAddMediaFromPageUI() {
+    return this.#pageHandler.shouldShowAddMediaFromPageUI()
+  }
+
   // Events --------------------------------------------------------------------
   addEventListener(listener: PlaylistEventListener) {
-    this.#pageCallbackRouter.onEvent.addListener(listener)
+    this.#playlistServiceObserverCallbackRouter.onEvent.addListener(listener)
   }
 
   addMediaCachingProgressListener(
@@ -146,13 +157,17 @@ class API {
       timeRemaining: string
     ) => void
   ) {
-    this.#pageCallbackRouter.onMediaFileDownloadProgressed.addListener(listener)
-    this.#pageCallbackRouter.onMediaFileDownloadScheduled.addListener(
+    this.#playlistServiceObserverCallbackRouter.onMediaFileDownloadProgressed.addListener(listener)
+    this.#playlistServiceObserverCallbackRouter.onMediaFileDownloadScheduled.addListener(
       (id:string)=>listener(id, BigInt(0), BigInt(0), 0, ''))
   }
 
   addPlaylistUpdatedListener(listener: (playlist: Playlist) => void) {
-    this.#pageCallbackRouter.onPlaylistUpdated.addListener(listener)
+    this.#playlistServiceObserverCallbackRouter.onPlaylistUpdated.addListener(listener)
+  }
+
+  addOnActiveTabChangedListener(listener: (shouldShowAddMediaFromPageUI: boolean) => void) {
+    this.#pageCallbackRouter.onActiveTabChanged.addListener(listener)
   }
 }
 

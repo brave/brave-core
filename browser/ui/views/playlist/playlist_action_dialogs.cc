@@ -10,6 +10,9 @@
 
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/playlist/playlist_browser_finder.h"
+#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
+#include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "brave/browser/ui/views/playlist/thumbnail_view.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/playlist/browser/playlist_service.h"
@@ -28,31 +31,13 @@
 
 namespace {
 
-BrowserView* FindBrowserViewFromSidebarContents(
-    content::WebContents* contents) {
-  auto* proxy = PlaylistSidePanelCoordinator::Proxy::FromWebContents(contents);
-  if (!proxy) {
-    return nullptr;
-  }
-
-  auto coordinator = proxy->GetCoordinator();
-  if (!coordinator) {
-    return nullptr;
-  }
-
-  return coordinator->GetBrowserView();
-}
-
-// If |BrowserView| is not found from Sidebar's |WebContents|, try to find it
-// from tab's |WebContents|.
 BrowserView* FindBrowserViewFromWebContents(content::WebContents* contents) {
-  auto* browser_view = FindBrowserViewFromSidebarContents(contents);
-
-  if (!browser_view) {
-    auto* browser = chrome::FindBrowserWithTab(contents);
-    return browser ? BrowserView::GetBrowserViewForBrowser(browser) : nullptr;
+  auto* browser = playlist::FindBrowserForPlaylistWebUI(contents);
+  if (!browser) {
+    return nullptr;
   }
-  return browser_view;
+
+  return static_cast<BrowserView*>(browser->window());
 }
 
 bool CanMoveItem(const playlist::mojom::PlaylistItemPtr& item) {
@@ -238,6 +223,21 @@ void ShowPlaylistSettings(content::WebContents* contents) {
   CHECK(browser_view);
   ShowSingletonTab(browser_view->browser(),
                    GURL("brave://settings/braveContent#playlist-section"));
+}
+
+void ShowPlaylistAddBubble(content::WebContents* contents) {
+  auto* browser_view = FindBrowserViewFromWebContents(contents);
+  CHECK(browser_view);
+
+  auto* tab_strip_model = browser_view->browser()->tab_strip_model();
+  auto* playlist_tab_helper = PlaylistTabHelper::FromWebContents(
+      tab_strip_model->GetActiveWebContents());
+  if (playlist_tab_helper->found_items().empty()) {
+    return;
+  }
+
+  static_cast<BraveLocationBarView*>(browser_view->GetLocationBarView())
+      ->ShowPlaylistBubble(PlaylistBubblesController::BubbleType::kAdd);
 }
 
 void ClosePanel(content::WebContents* contents) {

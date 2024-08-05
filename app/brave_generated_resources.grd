@@ -1311,6 +1311,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_PLAYLIST_ALERT_DISMISS" desc="A label for 'Dismiss' button on alert">
           Dismiss
         </message>
+        <message name="IDS_PLAYLIST_ADD_MEDIA_FROM_PAGE" desc="A label for 'Add media from page' button">
+          Add media from page
+        </message>
       </if> <!-- enable_playlist_webui -->
 
       <!-- File select -->

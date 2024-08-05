@@ -29,3 +29,6 @@ export const playerStateChanged = (playerState: PlayerState) =>
 
 export const setPlaylistEditMode = (editMode: PlaylistEditMode | undefined) =>
   action(types.PLAYLIST_SET_EDIT_MODE, editMode)
+
+export const shouldShowAddMediaFromPageChanged = (shouldShow: boolean) =>
+  action(types.PLAYLIST_SHOULD_SHOW_ADD_MEDIA_FROM_PAGE_CHANGED, shouldShow)

@@ -39,11 +39,12 @@ PlaylistActionIconView::PlaylistActionIconView(
 
 PlaylistActionIconView::~PlaylistActionIconView() = default;
 
-void PlaylistActionIconView::ShowPlaylistBubble() {
+void PlaylistActionIconView::ShowPlaylistBubble(
+    playlist::PlaylistBubblesController::BubbleType type) {
   DVLOG(2) << __FUNCTION__;
 
   if (auto* controller = GetController()) {
-    controller->ShowBubble(AsWeakPtr());
+    controller->ShowBubble(AsWeakPtr(), type);
   }
 }
 

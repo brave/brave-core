@@ -46,6 +46,8 @@ export interface PlaylistData {
   playlistEditMode: PlaylistEditMode | undefined
 
   cachingProgress: Map<string, CachingProgress>
+
+  shouldShowAddMediaFromPage: boolean
 }
 
 type LoopMode = 'single-item' | 'all-items' | undefined
@@ -116,5 +118,11 @@ export function useInitialized() {
 export function useLoopMode () {
   return useSelector<ApplicationState, LoopMode>(
     applicationState => applicationState.playerState?.loopMode
+  )
+}
+
+export function useShouldShowAddMediaFromPage () {
+  return useSelector<ApplicationState, boolean | undefined>(
+    applicationState => applicationState.playlistData?.shouldShowAddMediaFromPage
   )
 }

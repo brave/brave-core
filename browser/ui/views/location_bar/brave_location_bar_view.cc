@@ -138,9 +138,10 @@ void BraveLocationBarView::Init() {
   }
 }
 
-void BraveLocationBarView::ShowPlaylistBubble() {
+void BraveLocationBarView::ShowPlaylistBubble(
+    playlist::PlaylistBubblesController::BubbleType type) {
   if (auto* playlist_action_icon_view = GetPlaylistActionIconView()) {
-    playlist_action_icon_view->ShowPlaylistBubble();
+    playlist_action_icon_view->ShowPlaylistBubble(type);
   }
 }
 
