@@ -1049,11 +1049,13 @@ export const useSwap = () => {
     }
 
     if (quoteUnion.lifiQuote) {
-      const route = quoteUnion.lifiQuote.routes.find(
-        (route) => route.uniqueId === selectedQuoteOptionId
-      )
-      const step = route?.steps[0]
+      const route = selectedQuoteOptionId
+        ? quoteUnion.lifiQuote.routes.find(
+            (route) => route.uniqueId === selectedQuoteOptionId
+          ) || quoteUnion.lifiQuote.routes[0]
+        : quoteUnion.lifiQuote.routes[0]
 
+      const step = route?.steps[0]
       if (!step) {
         return
       }

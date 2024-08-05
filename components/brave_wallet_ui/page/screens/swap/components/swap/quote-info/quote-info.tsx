@@ -188,7 +188,8 @@ export const QuoteInfo = (props: Props) => {
 
   // Memos & Computed
   const selectedQuoteOption = selectedQuoteOptionId
-    ? quoteOptions.find((option) => option.id === selectedQuoteOptionId)
+    ? quoteOptions.find((option) => option.id === selectedQuoteOptionId) ||
+      quoteOptions[0]
     : quoteOptions[0]
 
   const toTokenPriceAmount =
