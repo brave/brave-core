@@ -21,6 +21,7 @@ import { openWalletRouteTab } from '../../../utils/routes-utils'
 import { UISelectors } from '../../../common/selectors'
 import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import { useUnlockWalletMutation } from '../../../common/slices/api.slice'
+import getWalletPageApiProxy from '../../../page/wallet_page_api_proxy'
 
 // Components
 import { PasswordInput } from '../../shared/password-input/password-input-v2'
@@ -99,7 +100,6 @@ export const LockScreen = () => {
     }
   }, [history, isPanel])
 
-  // TODO: show double tap screen when true.
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false
 
   if (isAndroid) {
@@ -111,8 +111,7 @@ export const LockScreen = () => {
       const time = new Date().getTime()
       const delta = time - lastPress
       if (delta < 400) {
-        // ToDo: Replace alert with WebUIUnlock method.
-        alert('double press')
+        getWalletPageApiProxy().pageHandler.unlockWalletUI()
       }
       lastPress = time
     }
