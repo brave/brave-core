@@ -277,14 +277,7 @@ bool SplitViewLocationBar::HasCertError() const {
 }
 
 std::u16string SplitViewLocationBar::GetURLForDisplay() const {
-  auto url = location_bar_model_->GetURLForDisplay();
-  if (location_bar_model_->GetURL().scheme() == url::kHttpScheme &&
-      !url.starts_with(u"http://")) {
-    // In split view, we want to show the scheme for http.
-    url = u"http://" + url;
-  }
-
-  return url;
+  return location_bar_model_->GetURLForDisplay();
 }
 
 SkPath SplitViewLocationBar::GetBorderPath(bool close) {

@@ -111,8 +111,7 @@ TEST_F(SplitViewLocationBarUnitTest, GetURLForDisplay_HTTP) {
   // We always want http:// scheme to be shown
   GURL url("http://www.example.com");
   delegate().SetURL(url);
-  EXPECT_EQ(u"http://example.com/TestSuffix",
-            location_bar().GetURLForDisplay());
+  EXPECT_EQ(u"example.com/TestSuffix", location_bar().GetURLForDisplay());
 }
 
 TEST_F(SplitViewLocationBarUnitTest, GetURLForDisplay_HTTPS) {
