@@ -22,7 +22,8 @@ const playlistReducer: Reducer<PlaylistData | undefined> = (
       currentList: undefined,
       lastPlayerState: undefined,
       playlistEditMode: undefined,
-      cachingProgress: new Map()
+      cachingProgress: new Map(),
+      shouldShowAddMediaFromPage: false,
     }
   }
 
@@ -94,6 +95,9 @@ const playlistReducer: Reducer<PlaylistData | undefined> = (
     case types.PLAYLIST_SET_EDIT_MODE:
       state = { ...state, playlistEditMode: action.payload }
       break
+
+    case types.PLAYLIST_SHOULD_SHOW_ADD_MEDIA_FROM_PAGE_CHANGED:
+      state = { ...state, shouldShowAddMediaFromPage: action.payload }
   }
   return state
 }

@@ -79,9 +79,10 @@ struct PlaylistItem {
 // the WebUI page's |BrowserProxy| singleton calls this method
 // when the page is first initialized.
 interface PageHandlerFactory {
-  CreatePageHandler(pending_remote<PlaylistServiceObserver> service_observer,
+  CreatePageHandler(pending_remote<PlaylistPage> page,
+                    pending_remote<PlaylistServiceObserver> service_observer,
                     pending_receiver<PlaylistService> service,
-                    pending_receiver<PlaylistNativeUI> native_ui);
+                    pending_receiver<PlaylistPageHandler> page_handler);
 };
 
 // Service-side handler for requests from UI.
@@ -147,10 +148,14 @@ interface PlaylistService {
   AddObserver(pending_remote<PlaylistServiceObserver> observer);
 };
 
+interface PlaylistPage {
+  OnActiveTabChanged(bool should_show_add_media_from_page_ui);
+};
+
 // WebUI will delegate some UIs to native UI via this interface. While
-// PlaylistService is shared among browsers with the same profile, a NativeUI
+// PlaylistService is shared among browsers with the same profile, a PageHnadler
 // instance will be bound to each web ui.
-interface PlaylistNativeUI {
+interface PlaylistPageHandler {
   ShowCreatePlaylistUI();
 
   ShowRemovePlaylistUI(string playlist_id);
@@ -159,7 +164,11 @@ interface PlaylistNativeUI {
 
   OpenSettingsPage();
 
+  ShowAddMediaToPlaylistUI();
+
   ClosePanel();
+
+  ShouldShowAddMediaFromPageUI() => (bool result);
 };
 
 // UI-side handler for response from the service.

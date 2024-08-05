@@ -25,9 +25,11 @@ class GURL;
 
 namespace playlist {
 
+class PlaylistActiveTabTracker;
+
 class PlaylistUI : public ui::UntrustedWebUIController,
                    public playlist::mojom::PageHandlerFactory,
-                   public playlist::mojom::PlaylistNativeUI {
+                   public playlist::mojom::PlaylistPageHandler {
  public:
   static bool ShouldBlockPlaylistWebUI(content::BrowserContext* browser_context,
                                        const GURL& url);
@@ -49,10 +51,11 @@ class PlaylistUI : public ui::UntrustedWebUIController,
 
   // playlist::mojom::PageHandlerFactory:
   void CreatePageHandler(
+      mojo::PendingRemote<playlist::mojom::PlaylistPage> page,
       mojo::PendingRemote<playlist::mojom::PlaylistServiceObserver>
           service_observer,
       mojo::PendingReceiver<playlist::mojom::PlaylistService> service,
-      mojo::PendingReceiver<playlist::mojom::PlaylistNativeUI> native_ui)
+      mojo::PendingReceiver<playlist::mojom::PlaylistPageHandler> page_handler)
       override;
 
   // playlist::mojom::NativeUI:
@@ -61,18 +64,30 @@ class PlaylistUI : public ui::UntrustedWebUIController,
   void ShowMoveItemsUI(const std::string& playlist_id,
                        const std::vector<std::string>& items) override;
   void OpenSettingsPage() override;
+  void ShowAddMediaToPlaylistUI() override;
   void ClosePanel() override;
+  void ShouldShowAddMediaFromPageUI(
+      ShouldShowAddMediaFromPageUICallback callback) override;
 
   static constexpr std::string GetWebUIName() { return "PlaylistPanel"; }
 
  private:
+  void OnActiveTabStateChanged(bool should_show_add_media_from_page_ui);
+
+  std::unique_ptr<PlaylistActiveTabTracker> active_tab_tracker_;
+
   base::WeakPtr<TopChromeWebUIController::Embedder> embedder_;
 
+  mojo::Remote<mojom::PlaylistPage> page_;
+
   mojo::ReceiverSet<playlist::mojom::PlaylistService> service_receivers_;
-  mojo::ReceiverSet<playlist::mojom::PlaylistNativeUI> native_ui_receivers_;
+  mojo::ReceiverSet<playlist::mojom::PlaylistPageHandler>
+      page_handler_receivers_;
 
   mojo::Receiver<playlist::mojom::PageHandlerFactory>
       page_handler_factory_receiver_{this};
+
+  base::WeakPtrFactory<PlaylistUI> weak_ptr_factory_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

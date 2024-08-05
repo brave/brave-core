@@ -11,6 +11,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "brave/browser/ui/views/brave_news/brave_news_action_icon_view.h"
+#include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "brave/browser/ui/views/view_shadow.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
@@ -87,7 +88,9 @@ class BraveLocationBarView : public LocationBarView {
     return brave_actions_;
   }
 
-  void ShowPlaylistBubble();
+  void ShowPlaylistBubble(
+      playlist::PlaylistBubblesController::BubbleType type =
+          playlist::PlaylistBubblesController::BubbleType::kInfer);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(playlist::PlaylistBrowserTest, AddItemsToList);
