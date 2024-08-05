@@ -25,6 +25,7 @@ import java.util.List;
 
 public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAdapter.ViewHolder> {
     private static final String BLANK_SPACES = "   ";
+    private static final String MASKED_WORD = "XXXXXXX";
     private List<String> mRecoveryPhraseList = new ArrayList<>();
     private boolean mBlurPhrase;
     private final MaskFilterSpan mMaskFilterSpan;
@@ -71,7 +72,7 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
         // otherwise the blur will be rendered with an ugly cut at the beginning.
         final SpannableString recoveryPhraseSpannable =
                 mBlurPhrase
-                        ? new SpannableString(BLANK_SPACES + recoveryPhrase)
+                        ? new SpannableString(BLANK_SPACES + MASKED_WORD)
                         : new SpannableString(recoveryPhrase);
         if (mBlurPhrase) {
             recoveryPhraseSpannable.setSpan(
