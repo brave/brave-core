@@ -853,7 +853,10 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
 
   auto pick_color = [&](leo::Color color) {
     if (!key.custom_theme) {
-      return leo::GetColor(color, leo::Theme::kDark);
+      return leo::GetColor(
+          color, key.color_mode == ui::ColorProviderKey::ColorMode::kLight
+                     ? leo::Theme::kLight
+                     : leo::Theme::kDark);
     }
 
     return PickColorContrastingToOmniboxResultsBackground(
