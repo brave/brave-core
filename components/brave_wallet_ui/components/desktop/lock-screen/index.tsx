@@ -33,9 +33,11 @@ import {
   PageIcon,
   InputColumn,
   UnlockButton,
-  InputLabel
+  InputLabel,
+  DoubleTapIcon,
+  AndroidLockScreenWrapper
 } from './style'
-import { VerticalSpace, Row } from '../../shared/style'
+import { VerticalSpace, Row, Text } from '../../shared/style'
 
 export const LockScreen = () => {
   // redux
@@ -100,6 +102,40 @@ export const LockScreen = () => {
   // TODO: show double tap screen when true.
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false
 
+  if (isAndroid) {
+    // Computed
+    let lastPress = 0
+
+    // Methods
+    const onDoubleTap = () => {
+      const time = new Date().getTime()
+      const delta = time - lastPress
+      if (delta < 400) {
+        // ToDo: Replace alert with WebUIUnlock method.
+        alert('double press')
+      }
+      lastPress = time
+    }
+
+    return (
+      <AndroidLockScreenWrapper onClick={onDoubleTap}>
+        <DoubleTapIcon />
+        <Text
+          textSize='22px'
+          textColor='primary'
+        >
+          {getLocale('braveWalletDoubleTapScreen')}
+        </Text>
+        <Text
+          textSize='16px'
+          textColor='tertiary'
+        >
+          {getLocale('braveWalletUnlockAndroidDescription')}
+        </Text>
+      </AndroidLockScreenWrapper>
+    )
+  }
+
   // render
   return (
     <StyledWrapper>
@@ -139,12 +175,12 @@ export const LockScreen = () => {
         >
           {getLocale('braveWalletLockScreenButton')}
         </UnlockButton>
-          <Button
-            onClick={onShowRestore}
-            kind='plain'
-          >
-            {getLocale('braveWalletWelcomeRestoreButton')}
-          </Button>
+        <Button
+          onClick={onShowRestore}
+          kind='plain'
+        >
+          {getLocale('braveWalletWelcomeRestoreButton')}
+        </Button>
       </InputColumn>
     </StyledWrapper>
   )
