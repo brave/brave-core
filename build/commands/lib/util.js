@@ -758,7 +758,7 @@ const util = {
         }
         if (hasError) {
           Log.error(line)
-        } else if (buildStats || /^(RBE Stats: |metric )/.test(line)) {
+        } else if (buildStats || /^(RBE Stats:|metric\s+count)\s+/.test(line)) {
           buildStats += line + '\n'
         } else {
           console.log(line)
