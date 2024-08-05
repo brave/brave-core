@@ -39,8 +39,7 @@ bool BrowserDesktopWindowTreeHostWin::PreHandleMSG(UINT message,
       break;
     }
     case WM_NCPAINT: {
-      // If the window is cloacked, fill it with the ntp background color and
-      // uncloak.
+      // If the window is cloacked, fill it with the toolbar color and uncloak.
       if (is_cloacked_ && base::FeatureList::IsEnabled(
                               features::kBraveWorkaroundNewWindowFlash)) {
         HWND hwnd = GetHWND();
@@ -54,8 +53,7 @@ bool BrowserDesktopWindowTreeHostWin::PreHandleMSG(UINT message,
             window_rect.bottom - window_rect.top,
         };
 
-        SkColor bg_color = GetWidget()->GetColorProvider()->GetColor(
-            kColorNewTabPageBackground);
+        SkColor bg_color = GetToolbarColor();
         HBRUSH brush = ::CreateSolidBrush(skia::SkColorToCOLORREF(bg_color));
         ::FillRect(dc, &fill_rect, brush);
         ::DeleteObject(brush);
@@ -69,6 +67,21 @@ bool BrowserDesktopWindowTreeHostWin::PreHandleMSG(UINT message,
   }
   return BrowserDesktopWindowTreeHostWin_ChromiumImpl::PreHandleMSG(
       message, w_param, l_param, result);
+}
+
+SkColor BrowserDesktopWindowTreeHostWin::GetBackgroundColor(
+    SkColor requested_color) const {
+  if (requested_color == SK_ColorTRANSPARENT ||
+      !base::FeatureList::IsEnabled(features::kBraveWorkaroundNewWindowFlash)) {
+    return requested_color;
+  }
+
+  return GetToolbarColor();
+}
+
+SkColor BrowserDesktopWindowTreeHostWin::GetToolbarColor() const {
+  CHECK(base::FeatureList::IsEnabled(features::kBraveWorkaroundNewWindowFlash));
+  return GetWidget()->GetColorProvider()->GetColor(kColorToolbar);
 }
 
 // static
