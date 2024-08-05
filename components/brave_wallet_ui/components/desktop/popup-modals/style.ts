@@ -59,11 +59,11 @@ export const Modal = styled.div<{
 `
 
 export const Header = styled.div<{
-  headerPaddingVertical?: number
-  headerPaddingHorizontal?: number
+  headerPaddingVertical?: string
+  headerPaddingHorizontal?: string
 }>`
-  --vertical-padding: ${(p) => p.headerPaddingVertical ?? 20}px;
-  --horizontal-padding: ${(p) => p.headerPaddingHorizontal ?? 20}px;
+  --vertical-padding: ${(p) => p.headerPaddingVertical ?? '20px'};
+  --horizontal-padding: ${(p) => p.headerPaddingHorizontal ?? '20px'};
   display: flex;
   align-items: center;
   justify-content: space-between;

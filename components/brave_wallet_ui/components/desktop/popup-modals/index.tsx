@@ -24,8 +24,8 @@ export interface Props {
   width?: string
   showDivider?: boolean
   hideHeader?: boolean
-  headerPaddingVertical?: number
-  headerPaddingHorizontal?: number
+  headerPaddingVertical?: string
+  headerPaddingHorizontal?: string
   borderRadius?: number
   height?: string
 }

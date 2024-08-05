@@ -5,6 +5,8 @@
 
 import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import * as leo from '@brave/leo/tokens/css/variables'
+import { type InputEventDetail } from '@brave/leo/react/input'
 
 // actions
 import {
@@ -24,12 +26,11 @@ import { useRemoveAccountMutation } from '../../../../common/slices/api.slice'
 
 // components
 import { PopupModal } from '../index'
-import { PasswordInput } from '../../../shared/password-input/index'
 
 // style
-import { LeoSquaredButton, Row } from '../../../shared/style'
-import { Title } from '../style'
+import { Column, LeoSquaredButton, Row, Text } from '../../../shared/style'
 import { modalWidth, StyledWrapper } from './remove-account-modal.style'
+import PasswordInputNala from '../../../shared/password-input/password_input_nala'
 
 export const RemoveAccountModal = () => {
   // redux
@@ -94,54 +95,69 @@ export const RemoveAccountModal = () => {
     onConfirmRemoveAccount(password)
   }, [attemptPasswordEntry, password, onConfirmRemoveAccount])
 
-  const onPasswordChange = React.useCallback((value: string): void => {
-    setIsCorrectPassword(true) // clear error
-    setPassword(value)
-  }, [])
+  const onPasswordChange = React.useCallback(
+    (detail: InputEventDetail): void => {
+      setIsCorrectPassword(true) // clear error
+      setPassword(detail.value)
+    },
+    []
+  )
 
   const handlePasswordKeyDown = React.useCallback(
-    (event: React.KeyboardEvent<HTMLInputElement>) => {
-      if (event.key === 'Enter') {
+    (detail: InputEventDetail) => {
+      const key = (detail.innerEvent as unknown as KeyboardEvent).key
+      if (key === 'Enter') {
         onSubmit()
       }
     },
     [onSubmit]
   )
 
-  // computed
-  const title = accountToRemove
-    ? getLocale('braveWalletRemoveAccountModalTitle').replace(
-        '$1',
-        accountToRemove.name ?? accountToRemove.accountId.address
-      )
-    : undefined
-
   // render
   return (
     <PopupModal
-      title=''
+      title={getLocale('braveWalletAccountSettingsRemove')}
       onClose={() => dispatch(AccountsTabActions.setAccountToRemove(undefined))}
       width={modalWidth}
+      headerPaddingHorizontal={leo.spacing['3Xl']}
     >
       <StyledWrapper>
-        {title && (
-          <Row
+        {accountToRemove && (
+          <Column
             alignItems={'flex-start'}
             justifyContent={'flex-start'}
-            marginBottom={'24px'}
+            margin={`0px 0px ${leo.spacing['2Xl']} 0px`}
+            gap={leo.spacing.m}
           >
-            <Title>{title}</Title>
-          </Row>
+            <Text
+              textSize='16px'
+              textAlign='left'
+            >
+              {getLocale('braveWalletRemoveAccountModalTitle').replace(
+                '$1',
+                accountToRemove.name ?? accountToRemove.accountId.address
+              )}
+            </Text>
+
+            <Text
+              textSize='16px'
+              textColor={'tertiary'}
+            >
+              {getLocale('braveWalletPasswordIsRequiredToTakeThisAction')}
+            </Text>
+          </Column>
         )}
-        <Row marginBottom={'24px'}>
-          <PasswordInput
-            placeholder={getLocale('braveWalletEnterYourPassword')}
+
+        <Row
+          marginBottom={'24px'}
+          alignItems='center'
+          justifyContent='stretch'
+        >
+          <PasswordInputNala
             onChange={onPasswordChange}
-            hasError={!!password && !isCorrectPassword}
-            error={getLocale('braveWalletLockScreenError')}
-            autoFocus={false}
-            value={password}
             onKeyDown={handlePasswordKeyDown}
+            password={password}
+            isCorrectPassword={isCorrectPassword}
           />
         </Row>
 
@@ -151,7 +167,7 @@ export const RemoveAccountModal = () => {
             kind='filled'
             isDisabled={password ? !isCorrectPassword : true}
           >
-            {getLocale('braveWalletButtonContinue')}
+            {getLocale('braveWalletAccountsRemove')}
           </LeoSquaredButton>
         </Row>
       </StyledWrapper>

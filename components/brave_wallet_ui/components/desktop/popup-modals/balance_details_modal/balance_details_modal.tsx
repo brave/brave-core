@@ -48,8 +48,8 @@ export const BalanceDetailsModal = React.forwardRef<HTMLDivElement, Props>(
         width='560px'
         borderRadius={16}
         ref={forwardedRef}
-        headerPaddingHorizontal={32}
-        headerPaddingVertical={32}
+        headerPaddingHorizontal={'32px'}
+        headerPaddingVertical={'32px'}
       >
         <Column
           fullHeight={true}

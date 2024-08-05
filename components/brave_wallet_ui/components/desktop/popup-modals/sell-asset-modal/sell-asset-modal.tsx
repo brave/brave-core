@@ -151,8 +151,8 @@ export const SellAssetModal = (props: Props) => {
       width='512px'
       borderRadius={16}
       ref={sellAssetModalRef}
-      headerPaddingVertical={24}
-      headerPaddingHorizontal={32}
+      headerPaddingVertical={'24px'}
+      headerPaddingHorizontal={'32px'}
     >
       <StyledWrapper>
         <Column fullWidth={true}>

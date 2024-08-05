@@ -22,6 +22,11 @@ import {
   UIState
 } from '../../constants/types'
 
+// theme
+import LightDarkThemeProvider from '../../../common/BraveCoreThemeProvider'
+import walletDarkTheme from '../../theme/wallet-dark'
+import walletLightTheme from '../../theme/wallet-light'
+
 // Mocks
 import { WalletApiDataOverrides } from '../../constants/testing_types'
 import '../locale'
@@ -71,11 +76,19 @@ export const WalletPageStory: React.FC<
 
   // render
   return (
-    <MemoryRouter
-      initialEntries={[initialRoute || WalletRoutes.OnboardingWelcome]}
+    <LightDarkThemeProvider
+      initialThemeType={'Light'}
+      dark={walletDarkTheme}
+      light={walletLightTheme}
     >
-      <Provider store={store}>{children}</Provider>
-    </MemoryRouter>
+      <MemoryRouter
+        initialEntries={[initialRoute || WalletRoutes.OnboardingWelcome]}
+      >
+        <Provider store={store}>
+            {children}
+        </Provider>
+      </MemoryRouter>
+    </LightDarkThemeProvider>
   )
 }
 
