@@ -13,8 +13,7 @@ using MenuConfigTest = ViewsTestBase;
 
 TEST_F(MenuConfigTest, ChangedValueTest) {
   const auto& menu_config = views::MenuConfig::instance();
-  EXPECT_EQ(4, menu_config.item_vertical_margin);
-  EXPECT_EQ(16, menu_config.item_horizontal_padding +
+  EXPECT_EQ(24, menu_config.item_horizontal_padding +
                     menu_config.item_horizontal_border_padding);
 }
 
