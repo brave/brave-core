@@ -17,7 +17,9 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.content_public.browser.WebContents;
 
-/** @noinspection unused*/
+/**
+ * @noinspection unused
+ */
 @JNINamespace("brave_wallet")
 public class BraveWalletProviderDelegateImplHelper {
     private static final String TAG = "BraveWalletProvider";
