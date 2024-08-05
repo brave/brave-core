@@ -276,6 +276,39 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, ShowInterstitialAndProceedOTR) {
   infobar_manager->RemoveObserver(&observer);
 }
 
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, ShowInterstitialProceedOTRAndCheckHistory) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  // If request-otr pref is 'ask', should show interstitial because
+  // this URL is included in config file. If user clicks 'Proceed
+  // Off-The-Record' then we should navigate to the originally requested page
+  // and show an infobar indicating to the user that they are navigating in
+  // off-the-record mode.
+  auto* model = browser()->tab_strip_model();
+  auto* contents = model->GetActiveWebContents();
+  auto* infobar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(contents);
+  TestObserver observer;
+  // Set up expectation that an infobar will appear later.
+  EXPECT_CALL(observer, OnInfoBarAdded(_)).Times(1);
+  infobar_manager->AddObserver(&observer);
+
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAsk);
+  GURL url = embedded_test_server()->GetURL("sensitive.a.com", "/simple.html");
+  NavigateTo(url);
+  ASSERT_TRUE(IsShowingInterstitial());
+
+  // Simulate click on "Proceed Off-The-Record" button. This should navigate to
+  // the originally requested page in off-the-record mode.
+  ClickAndWaitForNavigation("primary-button");
+  ASSERT_FALSE(IsShowingInterstitial());
+  ASSERT_EQ(GetHistoryCount(), 0);
+  // Request-OTR infobar should now have been shown, and our observer should
+  // have been called once.
+
+  infobar_manager->RemoveObserver(&observer);
+}
+
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
                        ShowInterstitialAndProceedNormally) {
   ASSERT_TRUE(InstallMockExtension());
@@ -304,6 +337,102 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
   ASSERT_FALSE(IsShowingInterstitial());
   // Request-OTR infobar should never appear, because the user requested to
   // proceed normally, so we should not be in off-the-record mode.
+
+  infobar_manager->RemoveObserver(&observer);
+}
+
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, ShowInterstitialProceedOTRCheckHistoryAndNonOTR) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  // If request-otr pref is 'ask', should show interstitial because
+  // this URL is included in config file. If user clicks 'Proceed
+  // Off-The-Record' then we should navigate to the originally requested page
+  // and show an infobar indicating to the user that they are navigating in
+  // off-the-record mode.
+  auto* model = browser()->tab_strip_model();
+  auto* contents = model->GetActiveWebContents();
+  auto* infobar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(contents);
+  TestObserver observer;
+  // Set up expectation that an infobar will appear later.
+  EXPECT_CALL(observer, OnInfoBarAdded(_)).Times(1);
+  infobar_manager->AddObserver(&observer);
+
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAsk);
+  GURL url = embedded_test_server()->GetURL("sensitive.a.com", "/simple.html");
+  NavigateTo(url);
+  ASSERT_TRUE(IsShowingInterstitial());
+
+  // Simulate click on "Proceed Off-The-Record" button. This should navigate to
+  // the originally requested page in off-the-record mode.
+  ClickAndWaitForNavigation("primary-button");
+  ASSERT_FALSE(IsShowingInterstitial());
+  ASSERT_EQ(GetHistoryCount(), 0);
+
+  GURL url = embedded_test_server()->GetURL("sensitive.a.com", "/simple.html");
+  NavigateTo(url);
+  ASSERT_TRUE(IsShowingInterstitial());
+
+  // Simulate click on "Proceed Off-The-Record" button. This should navigate to
+  // the originally requested page in off-the-record mode.
+  ClickAndWaitForNavigation("back-button");
+  ASSERT_FALSE(IsShowingInterstitial());
+  ASSERT_EQ(GetHistoryCount(), 1);
+  // Request-OTR infobar should now have been shown, and our observer should
+  // have been called once.
+
+  infobar_manager->RemoveObserver(&observer);
+}
+
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, ShowInterstitialProceedOTRCheckHistoryAndNonOTRAndOTRAgain) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  // If request-otr pref is 'ask', should show interstitial because
+  // this URL is included in config file. If user clicks 'Proceed
+  // Off-The-Record' then we should navigate to the originally requested page
+  // and show an infobar indicating to the user that they are navigating in
+  // off-the-record mode.
+  auto* model = browser()->tab_strip_model();
+  auto* contents = model->GetActiveWebContents();
+  auto* infobar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(contents);
+  TestObserver observer;
+  // Set up expectation that an infobar will appear later.
+  EXPECT_CALL(observer, OnInfoBarAdded(_)).Times(1);
+  infobar_manager->AddObserver(&observer);
+
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAsk);
+  GURL url = embedded_test_server()->GetURL("sensitive.a.com", "/simple.html");
+  NavigateTo(url);
+  ASSERT_TRUE(IsShowingInterstitial());
+
+  // Simulate click on "Proceed Off-The-Record" button. This should navigate to
+  // the originally requested page in off-the-record mode.
+  ClickAndWaitForNavigation("primary-button");
+  ASSERT_FALSE(IsShowingInterstitial());
+  ASSERT_EQ(GetHistoryCount(), 0);
+
+  GURL url = embedded_test_server()->GetURL("sensitive.a.com", "/simple.html");
+  NavigateTo(url);
+  ASSERT_TRUE(IsShowingInterstitial());
+
+  // Simulate click on "Proceed Off-The-Record" button. This should navigate to
+  // the originally requested page in off-the-record mode.
+  ClickAndWaitForNavigation("back-button");
+  ASSERT_FALSE(IsShowingInterstitial());
+  ASSERT_EQ(GetHistoryCount(), 1);
+
+  GURL url = embedded_test_server()->GetURL("sensitive.a.com", "/simple.html");
+  NavigateTo(url);
+  ASSERT_TRUE(IsShowingInterstitial());
+
+  // Simulate click on "Proceed Off-The-Record" button. This should navigate to
+  // the originally requested page in off-the-record mode.
+  ClickAndWaitForNavigation("primary-button");
+  ASSERT_FALSE(IsShowingInterstitial());
+  ASSERT_EQ(GetHistoryCount(), 0);
+  // Request-OTR infobar should now have been shown, and our observer should
+  // have been called once.
 
   infobar_manager->RemoveObserver(&observer);
 }
@@ -353,6 +482,43 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
   ASSERT_TRUE(InstallMockExtension());
 
   ASSERT_EQ(GetHistoryCount(), 0);
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAlways);
+  NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
+  ASSERT_EQ(GetHistoryCount(), 0);
+}
+
+// Now check that URLs are added to history after navigation in
+// Request-OTR-tab mode and then on non-Request-OTR-tab mode
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
+                       HistoryRecordedAfterOTRNavigationNonOTRNavigation) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  ASSERT_EQ(GetHistoryCount(), 0);
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAlways);
+  NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
+  ASSERT_EQ(GetHistoryCount(), 0);
+
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kNever);
+  NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
+  ASSERT_EQ(GetHistoryCount(), 1);
+}
+
+// Now check that URLs are not added to history after navigation in
+// Request-OTR-tab mode, then on non-Request-OTR-tab mode and then on Request-OTR-tab
+// mode again
+IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
+                       HistoryNotRecordedAfterOTRNavigationNonOTRNavigationTwice) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  ASSERT_EQ(GetHistoryCount(), 0);
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAlways);
+  NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
+  ASSERT_EQ(GetHistoryCount(), 0);
+
+  SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kNever);
+  NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
+  ASSERT_EQ(GetHistoryCount(), 1);
+
   SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAlways);
   NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
   ASSERT_EQ(GetHistoryCount(), 0);
