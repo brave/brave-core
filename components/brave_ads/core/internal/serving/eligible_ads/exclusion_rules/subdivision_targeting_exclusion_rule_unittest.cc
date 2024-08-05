@@ -247,8 +247,9 @@ TEST_P(
   test::SetProfileBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting,
                                    true);
 
-  test::SetProfileStringPrefValue(prefs::kSubdivisionTargetingSubdivision,
-                                  BuildSubdivisionForTestParam());
+  test::SetProfileStringPrefValue(
+      prefs::kSubdivisionTargetingUserSelectedSubdivision,
+      BuildSubdivisionForTestParam());
 
   MockUrlResponseForTestParam();
 
@@ -269,8 +270,9 @@ TEST_P(
   test::SetProfileBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting,
                                    true);
 
-  test::SetProfileStringPrefValue(prefs::kSubdivisionTargetingSubdivision,
-                                  BuildSubdivisionForTestParam());
+  test::SetProfileStringPrefValue(
+      prefs::kSubdivisionTargetingUserSelectedSubdivision,
+      BuildSubdivisionForTestParam());
 
   MockUrlResponseForTestParam();
 
@@ -292,8 +294,9 @@ TEST_P(
   test::SetProfileBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting,
                                    true);
 
-  test::SetProfileStringPrefValue(prefs::kSubdivisionTargetingSubdivision,
-                                  BuildSubdivisionForTestParam());
+  test::SetProfileStringPrefValue(
+      prefs::kSubdivisionTargetingUserSelectedSubdivision,
+      BuildSubdivisionForTestParam());
 
   MockUrlResponseForTestParam();
 
@@ -376,8 +379,8 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   test::SetProfileBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting,
                                    true);
 
-  test::SetProfileStringPrefValue(prefs::kSubdivisionTargetingSubdivision,
-                                  "DISABLED");
+  test::SetProfileStringPrefValue(
+      prefs::kSubdivisionTargetingUserSelectedSubdivision, "DISABLED");
 
   MockUrlResponseForTestParam();
 
@@ -398,8 +401,8 @@ TEST_P(
   test::SetProfileBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting,
                                    true);
 
-  test::SetProfileStringPrefValue(prefs::kSubdivisionTargetingSubdivision,
-                                  "DISABLED");
+  test::SetProfileStringPrefValue(
+      prefs::kSubdivisionTargetingUserSelectedSubdivision, "DISABLED");
 
   MockUrlResponseForTestParam();
 

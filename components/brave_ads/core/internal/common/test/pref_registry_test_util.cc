@@ -23,18 +23,8 @@ void RegisterLocalStatePrefs() {
 }
 
 void RegisterProfilePrefs() {
-  RegisterProfileBooleanPref(brave_rewards::prefs::kEnabled, true);
-
+  // Ads prefs.
   RegisterProfileStringPref(prefs::kDiagnosticId, "");
-
-  RegisterProfileBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);
-  RegisterProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday, true);
-
-  RegisterProfileBooleanPref(
-      ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
-  RegisterProfileBooleanPref(ntp_background_images::prefs::
-                                 kNewTabPageShowSponsoredImagesBackgroundImage,
-                             true);
 
   RegisterProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
   RegisterProfileInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);
@@ -42,7 +32,8 @@ void RegisterProfilePrefs() {
   RegisterProfileBooleanPref(prefs::kOptedInToSearchResultAds, true);
 
   RegisterProfileBooleanPref(prefs::kShouldAllowSubdivisionTargeting, false);
-  RegisterProfileStringPref(prefs::kSubdivisionTargetingSubdivision, "AUTO");
+  RegisterProfileStringPref(prefs::kSubdivisionTargetingUserSelectedSubdivision,
+                            "AUTO");
   RegisterProfileStringPref(prefs::kSubdivisionTargetingAutoDetectedSubdivision,
                             "");
 
@@ -61,12 +52,23 @@ void RegisterProfilePrefs() {
 
   RegisterProfileBooleanPref(prefs::kHasMigratedClientState, true);
   RegisterProfileBooleanPref(prefs::kHasMigratedConfirmationState, true);
-  RegisterProfileBooleanPref(prefs::kHasMigratedConversionState, true);
-  RegisterProfileBooleanPref(prefs::kHasMigratedNotificationState, true);
-  RegisterProfileBooleanPref(prefs::kHasMigratedRewardsState, true);
   RegisterProfileBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser, false);
 
   RegisterProfileStringPref(prefs::kBrowserVersionNumber, "");
+
+  // Rewards prefs.
+  RegisterProfileBooleanPref(brave_rewards::prefs::kEnabled, true);
+
+  // Brave News prefs.
+  RegisterProfileBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);
+  RegisterProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday, true);
+
+  // New tab page background image prefs.
+  RegisterProfileBooleanPref(
+      ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
+  RegisterProfileBooleanPref(ntp_background_images::prefs::
+                                 kNewTabPageShowSponsoredImagesBackgroundImage,
+                             true);
 }
 
 }  // namespace brave_ads::test

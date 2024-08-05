@@ -198,14 +198,14 @@ void SubdivisionTargeting::SetUserSelectedSubdivision(
 
   if (user_selected_subdivision_ != subdivision) {
     user_selected_subdivision_ = subdivision;
-    SetProfileStringPref(prefs::kSubdivisionTargetingSubdivision,
+    SetProfileStringPref(prefs::kSubdivisionTargetingUserSelectedSubdivision,
                          *user_selected_subdivision_);
   }
 }
 
 void SubdivisionTargeting::UpdateUserSelectedSubdivision() {
   const std::string subdivision =
-      GetProfileStringPref(prefs::kSubdivisionTargetingSubdivision);
+      GetProfileStringPref(prefs::kSubdivisionTargetingUserSelectedSubdivision);
 
   if (user_selected_subdivision_ != subdivision) {
     user_selected_subdivision_ = subdivision;
@@ -216,8 +216,8 @@ void SubdivisionTargeting::UpdateUserSelectedSubdivision() {
 const std::string& SubdivisionTargeting::GetLazyUserSelectedSubdivision()
     const {
   if (!user_selected_subdivision_) {
-    user_selected_subdivision_ =
-        GetProfileStringPref(prefs::kSubdivisionTargetingSubdivision);
+    user_selected_subdivision_ = GetProfileStringPref(
+        prefs::kSubdivisionTargetingUserSelectedSubdivision);
   }
 
   return *user_selected_subdivision_;
@@ -230,7 +230,7 @@ void SubdivisionTargeting::OnNotifyDidInitializeAds() {
 void SubdivisionTargeting::OnNotifyPrefDidChange(const std::string& path) {
   if (path == prefs::kSubdivisionTargetingAutoDetectedSubdivision) {
     UpdateAutoDetectedSubdivision();
-  } else if (path == prefs::kSubdivisionTargetingSubdivision) {
+  } else if (path == prefs::kSubdivisionTargetingUserSelectedSubdivision) {
     UpdateUserSelectedSubdivision();
   } else if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
              DoesMatchUserHasOptedInToBraveNewsAdsPrefPath(path) ||

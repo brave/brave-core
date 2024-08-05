@@ -646,10 +646,10 @@ void AdsServiceImpl::InitializeBraveRewardsPrefChangeRegistrar() {
 
 void AdsServiceImpl::InitializeSubdivisionTargetingPrefChangeRegistrar() {
   pref_change_registrar_.Add(
-      prefs::kSubdivisionTargetingSubdivision,
+      prefs::kSubdivisionTargetingUserSelectedSubdivision,
       base::BindRepeating(&AdsServiceImpl::NotifyPrefChanged,
                           base::Unretained(this),
-                          prefs::kSubdivisionTargetingSubdivision));
+                          prefs::kSubdivisionTargetingUserSelectedSubdivision));
 
   pref_change_registrar_.Add(
       prefs::kSubdivisionTargetingAutoDetectedSubdivision,

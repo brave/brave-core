@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_registry.h"
@@ -94,6 +95,7 @@ void MigrateObsoleteBrowserStatePrefs(const base::FilePath& state_path,
                                       PrefService* prefs) {
   MigrateObsoleteBrowserStatePrefs_ChromiumImpl(state_path, prefs);
 
+  brave_ads::MigrateObsoleteProfilePrefs(prefs);
   brave_wallet::MigrateObsoleteProfilePrefs(prefs);
 }
 
