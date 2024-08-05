@@ -758,11 +758,9 @@ const util = {
         }
         if (hasError) {
           Log.error(line)
+        } else if (buildStats || /^(RBE Stats: |metric )/.test(line)) {
+          buildStats += line + '\n'
         } else {
-          if (buildStats || /^(RBE Stats: |metric )/.test(line)) {
-            buildStats += line + '\n'
-            return;
-          }
           console.log(line)
           if (Date.now() - lastStatusTime > 5000) {
             // Extract the status message from the ninja output.
