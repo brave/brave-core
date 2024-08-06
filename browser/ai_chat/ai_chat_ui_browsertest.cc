@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <optional>
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
@@ -13,6 +14,7 @@
 #include "base/test/bind.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
@@ -32,8 +34,13 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+#include "net/test/embedded_test_server/http_request.h"
+#include "net/test/embedded_test_server/http_response.h"
 #include "printing/buildflags/buildflags.h"
+#include "services/network/public/cpp/network_switches.h"
 #include "ui/compositor/compositor_switches.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
 #include "chrome/browser/printing/test_print_preview_observer.h"
@@ -42,6 +49,53 @@
 namespace {
 
 constexpr char kEmbeddedTestServerDirectory[] = "leo";
+
+std::unique_ptr<net::test_server::HttpResponse> HandleSearchQuerySummaryRequest(
+    const net::test_server::HttpRequest& request) {
+  const GURL url = request.GetURL();
+  if (url.path_piece() != "/api/chatllm/raw_data") {
+    return nullptr;
+  }
+
+  auto query = url.query_piece();
+  if (query == "key=%7Btest_key%7D") {
+    auto response = std::make_unique<net::test_server::BasicHttpResponse>();
+    response->set_code(net::HTTP_OK);
+    response->set_content_type("application/json");
+    response->set_content(
+        R"({"conversation": [{"query": "test query",
+                                "answer": [{"text": "test summary"}]}]})");
+    return response;
+  }
+
+  if (query == "key=%7Bnot_object%7D") {
+    auto response = std::make_unique<net::test_server::BasicHttpResponse>();
+    response->set_code(net::HTTP_OK);
+    response->set_content_type("application/json");
+    response->set_content(R"(["not_object"])");
+    return response;
+  }
+
+  if (query == "key=%7Bempty_conversation%7D") {
+    auto response = std::make_unique<net::test_server::BasicHttpResponse>();
+    response->set_code(net::HTTP_OK);
+    response->set_content_type("application/json");
+    response->set_content(R"({"conversation": []})");
+    return response;
+  }
+
+  if (query == "key=%7Bempty_answer%7D") {
+    auto response = std::make_unique<net::test_server::BasicHttpResponse>();
+    response->set_code(net::HTTP_OK);
+    response->set_content_type("application/json");
+    response->set_content(R"({"conversation": [{"query": "test query",
+                                                  "answer": []}])");
+    return response;
+  }
+
+  return nullptr;
+}
+
 }  // namespace
 
 class AIChatUIBrowserTest : public InProcessBrowserTest {
@@ -57,7 +111,9 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     test_data_dir = base::PathService::CheckedGet(brave::DIR_TEST_DATA);
     test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);
     https_server_.ServeFilesFromDirectory(test_data_dir);
-    ASSERT_TRUE(https_server_.Start());
+    https_server_.RegisterRequestHandler(
+        base::BindRepeating(&HandleSearchQuerySummaryRequest));
+    https_server_.StartAcceptingConnections();
 
     // Set a smaller window size so we can have test data with more pages.
     browser()->window()->SetContentsSize(gfx::Size(800, 600));
@@ -71,6 +127,14 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
+
+    ASSERT_TRUE(https_server_.InitializeAndListen());
+    // Add a host resolver rule to map all outgoing requests to the test server.
+    command_line->AppendSwitchASCII(
+        network::switches::kHostResolverRules,
+        "MAP * " + https_server_.host_port_pair().ToString() +
+            ",EXCLUDE localhost");
+
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
     command_line->AppendSwitch(::switches::kEnablePixelOutputInTests);
 #endif
@@ -125,6 +189,20 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
               run_loop.Quit();
             }),
         "");
+    run_loop.Run();
+  }
+
+  void FetchSearchQuerySummary(const base::Location& location,
+                               const std::optional<ai_chat::SearchQuerySummary>&
+                                   expected_search_query_summary) {
+    SCOPED_TRACE(testing::Message() << location.ToString());
+    base::RunLoop run_loop;
+    chat_tab_helper_->FetchSearchQuerySummary(base::BindLambdaForTesting(
+        [&](const std::optional<ai_chat::SearchQuerySummary>&
+                search_query_summary) {
+          EXPECT_EQ(search_query_summary, expected_search_query_summary);
+          run_loop.Quit();
+        }));
     run_loop.Run();
   }
 
@@ -252,4 +330,55 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewDisabled) {
 
   NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"));
   FetchPageContent(FROM_HERE, "");
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, FetchSearchQuerySummary) {
+  NavigateURL(https_server_.GetURL("search.brave.com", "/search?q=query"));
+
+  // Test when meta tag is not present, should return null result.
+  FetchSearchQuerySummary(FROM_HERE, std::nullopt);
+
+  // Test when summarizer-key meta tag is dynamically inserted, should return
+  // the search query summary from the mock response.
+  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
+                              "var meta = document.createElement('meta');"
+                              "meta.name = 'summarizer-key';"
+                              "meta.content = '{test_key}';"
+                              "document.head.appendChild(meta);");
+  FetchSearchQuerySummary(
+      FROM_HERE, ai_chat::SearchQuerySummary("test query", "test summary"));
+
+  // Test empty summarizer-key meta tag, should return null result.
+  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
+                              "document.querySelector('meta[name=summarizer-"
+                              "key').content = '';");
+  FetchSearchQuerySummary(FROM_HERE, std::nullopt);
+
+  // Mock search query summary response to test parsing.
+  // Replace the meta tag value to another key.
+  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
+                              "document.querySelector('meta[name=summarizer-"
+                              "key').content = '{not_object}';");
+  FetchSearchQuerySummary(FROM_HERE, std::nullopt);
+
+  // Replace the meta tag value to error case: conversation empty.
+  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
+                              "document.querySelector('meta[name=summarizer-"
+                              "key').content = '{empty_conversation}';");
+  FetchSearchQuerySummary(FROM_HERE, std::nullopt);
+
+  // Replace the meta tag value to error case: answer empty.
+  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
+                              "document.querySelector('meta[name=summarizer-"
+                              "key').content = '{empty_answer}';");
+  FetchSearchQuerySummary(FROM_HERE, std::nullopt);
+
+  // Test non-brave search SERP URL, should return null result.
+  NavigateURL(https_server_.GetURL("brave.com", "/search?q=query"));
+  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
+                              "var meta = document.createElement('meta');"
+                              "meta.name = 'summarizer-key';"
+                              "meta.content = '{test_key}';"
+                              "document.head.appendChild(meta);");
+  FetchSearchQuerySummary(FROM_HERE, std::nullopt);
 }

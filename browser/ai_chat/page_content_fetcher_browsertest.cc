@@ -123,6 +123,20 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
+  void GetSearchSummarizerKey(const base::Location& location,
+                              const std::optional<std::string>& expected_key) {
+    SCOPED_TRACE(testing::Message() << location.ToString());
+    base::RunLoop run_loop;
+    ai_chat::GetSearchSummarizerKey(
+        browser()->tab_strip_model()->GetActiveWebContents(),
+        base::BindLambdaForTesting(
+            [&run_loop, &expected_key](const std::optional<std::string>& key) {
+              EXPECT_EQ(expected_key, key);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
   // Handles returning a .patch file if the user is on a github.com pull request
   void SetGithubInterceptor() {
     GURL expected_patch_url =
@@ -218,4 +232,37 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContentPDF) {
   browser()->tab_strip_model()->ActivateTabAt(1);
   EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
   run_loop->Run();
+}
+
+IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, GetSearchSummarizerKey) {
+  auto remove_first_summarizer_key = [&]() {
+    content::ExecuteScriptAsync(
+        GetActiveWebContents()->GetPrimaryMainFrame(),
+        "document.getElementsByName('summarizer-key')[0].remove()");
+  };
+
+  NavigateURL(https_server_.GetURL("a.com", "/summarizer_key_meta.html"));
+  GetSearchSummarizerKey(FROM_HERE,
+                         R"({"query":"test","results_hash":"hash"})");
+
+  // Test meta in two other formats.
+  remove_first_summarizer_key();
+  GetSearchSummarizerKey(FROM_HERE,
+                         R"({"query":"test2","results_hash":"hash"})");
+
+  remove_first_summarizer_key();
+  GetSearchSummarizerKey(FROM_HERE,
+                         R"({"query":"test3","results_hash":"hash"})");
+
+  // Test meta with other attribute.
+  remove_first_summarizer_key();
+  GetSearchSummarizerKey(FROM_HERE, R"({"test"})");
+
+  // Test meta with empty key.
+  remove_first_summarizer_key();
+  GetSearchSummarizerKey(FROM_HERE, std::nullopt);
+
+  // Test meta with empty key and other atribute.
+  remove_first_summarizer_key();
+  GetSearchSummarizerKey(FROM_HERE, std::nullopt);
 }

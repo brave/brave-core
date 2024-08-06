@@ -30,6 +30,9 @@
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
+#include "third_party/re2/src/re2/re2.h"
+#include "ui/accessibility/ax_node.h"
+#include "ui/accessibility/ax_tree_update.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 #include "v8/include/v8-isolate.h"
@@ -70,6 +73,9 @@ constexpr auto kVideoTrackHosts =
                                              {
                                                  "www.ted.com",
                                              });
+
+constexpr char kSearchSummarizerKeyPattern[] =
+    "<meta .*name=\"summarizer-key\" content=\"({.+?})\".*></meta>";
 
 }  // namespace
 
@@ -295,6 +301,25 @@ void PageContentExtractor::OnJSTranscriptUrlResult(
   result->content = mojom::PageContentData::NewContentUrl(transcript_url);
   result->type = std::move(type);
   std::move(callback).Run(std::move(result));
+}
+
+void PageContentExtractor::GetSearchSummarizerKey(
+    mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback) {
+  auto snapshotter = render_frame()->CreateAXTreeSnapshotter(
+      ui::AXMode::kWebContents | ui::AXMode::kHTMLMetadata);
+  ui::AXTreeUpdate snapshot;
+  snapshotter->Snapshot(0, {}, &snapshot);
+
+  RE2 pattern(kSearchSummarizerKeyPattern);
+  for (const auto& meta : snapshot.tree_data.metadata) {
+    std::string key;
+    if (re2::RE2::FullMatch(meta, pattern, &key)) {
+      std::move(callback).Run(key);
+      return;
+    }
+  }
+
+  std::move(callback).Run({});
 }
 
 }  // namespace ai_chat
