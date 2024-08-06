@@ -375,10 +375,6 @@ public struct AIChatView: View {
         },
         onOptionSelected: { option in
           switch option {
-          case .newChat:
-            model.clearConversationHistory()
-            break
-
           case .goPremium:
             isPremiumPaywallPresented = true
 

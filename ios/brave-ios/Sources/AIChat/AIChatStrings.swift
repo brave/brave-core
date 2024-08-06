@@ -678,13 +678,6 @@ extension Strings {
       value: "LANGUAGE MODELS",
       comment: "The title of the section where language models are displayed as a list."
     )
-    public static let quickMenuNewChatActionTitle = NSLocalizedString(
-      "aichat.quickMenuNewChatActionTitle",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value: "New Chat",
-      comment: "The title of action for quick menu which starts a new chat"
-    )
     public static let quickMenuGoPremiumActionTitle = NSLocalizedString(
       "aichat.quickMenuGoPremiumActionTitle",
       tableName: "BraveLeo",
