@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/first_run/upgrade_util_win.cc b/chrome/browser/first_run/upgrade_util_win.cc
-index 0be66656020a11f62f5086be9194d952884c08ea..8179c3f4f1005ecbe1a62a2026926f1c7dd9ce1b 100644
+index 0be66656020a11f62f5086be9194d952884c08ea..017ba625ee060aef07bdd4df40cfe283e5d51f7a 100644
 --- a/chrome/browser/first_run/upgrade_util_win.cc
 +++ b/chrome/browser/first_run/upgrade_util_win.cc
 @@ -54,7 +54,7 @@
@@ -11,6 +11,15 @@ index 0be66656020a11f62f5086be9194d952884c08ea..8179c3f4f1005ecbe1a62a2026926f1c
  #include "chrome/updater/app/server/win/updater_legacy_idl.h"
  #endif
  
+@@ -67,7 +67,7 @@ bool GetNewerChromeFile(base::FilePath* path) {
+   return true;
+ }
+ 
+-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || defined(OFFICIAL_BUILD)
+ // Holds the result of the IPC to CoCreate the process launcher.
+ struct CreateProcessLauncherResult
+     : public base::RefCountedThreadSafe<CreateProcessLauncherResult> {
 @@ -180,7 +180,7 @@ Microsoft::WRL::ComPtr<IUnknown> CreateProcessLauncher() {
  #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
  
