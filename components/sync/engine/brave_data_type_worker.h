@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_MODEL_TYPE_WORKER_H_
-#define BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_MODEL_TYPE_WORKER_H_
+#ifndef BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_DATA_TYPE_WORKER_H_
+#define BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_DATA_TYPE_WORKER_H_
 
 #include "base/feature_list.h"
 #include "base/gtest_prod_util.h"
 #include "components/sync/base/model_type.h"
 #include "components/sync/base/passphrase_enums.h"
 #include "components/sync/engine/commit_and_get_updates_types.h"
-#include "components/sync/engine/model_type_worker.h"
+#include "components/sync/engine/data_type_worker.h"
 
 namespace syncer {
 
@@ -25,29 +25,29 @@ BASE_DECLARE_FEATURE(kBraveSyncResetProgressMarker);
 
 }  // namespace features
 
-FORWARD_DECLARE_TEST(BraveModelTypeWorkerTest, ResetProgressMarker);
-FORWARD_DECLARE_TEST(BraveModelTypeWorkerTest, ResetProgressMarkerMaxPeriod);
-FORWARD_DECLARE_TEST(BraveModelTypeWorkerTest,
+FORWARD_DECLARE_TEST(BraveDataTypeWorkerTest, ResetProgressMarker);
+FORWARD_DECLARE_TEST(BraveDataTypeWorkerTest, ResetProgressMarkerMaxPeriod);
+FORWARD_DECLARE_TEST(BraveDataTypeWorkerTest,
                      ResetProgressMarkerDisabledFeature);
 
-class BraveModelTypeWorker : public ModelTypeWorker {
+class BraveDataTypeWorker : public DataTypeWorker {
  public:
-  BraveModelTypeWorker(ModelType type,
-                       const sync_pb::ModelTypeState& initial_state,
-                       Cryptographer* cryptographer,
-                       bool encryption_enabled,
-                       PassphraseType passphrase_type,
-                       NudgeHandler* nudge_handler,
-                       CancelationSignal* cancelation_signal);
-  ~BraveModelTypeWorker() override;
-  BraveModelTypeWorker(const BraveModelTypeWorker&) = delete;
-  BraveModelTypeWorker& operator=(const BraveModelTypeWorker&) = delete;
+  BraveDataTypeWorker(ModelType type,
+                      const sync_pb::ModelTypeState& initial_state,
+                      Cryptographer* cryptographer,
+                      bool encryption_enabled,
+                      PassphraseType passphrase_type,
+                      NudgeHandler* nudge_handler,
+                      CancelationSignal* cancelation_signal);
+  ~BraveDataTypeWorker() override;
+  BraveDataTypeWorker(const BraveDataTypeWorker&) = delete;
+  BraveDataTypeWorker& operator=(const BraveDataTypeWorker&) = delete;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(BraveModelTypeWorkerTest, ResetProgressMarker);
-  FRIEND_TEST_ALL_PREFIXES(BraveModelTypeWorkerTest,
+  FRIEND_TEST_ALL_PREFIXES(BraveDataTypeWorkerTest, ResetProgressMarker);
+  FRIEND_TEST_ALL_PREFIXES(BraveDataTypeWorkerTest,
                            ResetProgressMarkerMaxPeriod);
-  FRIEND_TEST_ALL_PREFIXES(BraveModelTypeWorkerTest,
+  FRIEND_TEST_ALL_PREFIXES(BraveDataTypeWorkerTest,
                            ResetProgressMarkerDisabledFeature);
 
   void OnCommitResponse(
@@ -66,4 +66,4 @@ class BraveModelTypeWorker : public ModelTypeWorker {
 
 }  // namespace syncer
 
-#endif  // BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_MODEL_TYPE_WORKER_H_
+#endif  // BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_DATA_TYPE_WORKER_H_

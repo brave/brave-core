@@ -3,13 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/sync/engine/brave_model_type_worker.h"
-
 #include <utility>
 
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
+#include "brave/components/sync/engine/brave_data_type_worker.h"
 #include "components/sync/engine/data_type_processor.h"
 
 namespace syncer {
@@ -34,7 +33,7 @@ size_t kFailuresToResetMarker = 7;
 base::TimeDelta kMinimalTimeBetweenResetMarker = base::Minutes(30);
 }  // namespace
 
-BraveModelTypeWorker::BraveModelTypeWorker(
+BraveDataTypeWorker::BraveDataTypeWorker(
     ModelType type,
     const sync_pb::ModelTypeState& initial_state,
     Cryptographer* cryptographer,
@@ -42,21 +41,21 @@ BraveModelTypeWorker::BraveModelTypeWorker(
     PassphraseType passphrase_type,
     NudgeHandler* nudge_handler,
     CancelationSignal* cancelation_signal)
-    : ModelTypeWorker(type,
-                      initial_state,
-                      cryptographer,
-                      encryption_enabled,
-                      passphrase_type,
-                      nudge_handler,
-                      cancelation_signal) {}
+    : DataTypeWorker(type,
+                     initial_state,
+                     cryptographer,
+                     encryption_enabled,
+                     passphrase_type,
+                     nudge_handler,
+                     cancelation_signal) {}
 
-BraveModelTypeWorker::~BraveModelTypeWorker() = default;
+BraveDataTypeWorker::~BraveDataTypeWorker() = default;
 
-void BraveModelTypeWorker::OnCommitResponse(
+void BraveDataTypeWorker::OnCommitResponse(
     const CommitResponseDataList& committed_response_list,
     const FailedCommitResponseDataList& error_response_list) {
-  ModelTypeWorker::OnCommitResponse(committed_response_list,
-                                    error_response_list);
+  DataTypeWorker::OnCommitResponse(committed_response_list,
+                                   error_response_list);
 
   if (!base::FeatureList::IsEnabled(features::kBraveSyncResetProgressMarker)) {
     return;
@@ -68,16 +67,16 @@ void BraveModelTypeWorker::OnCommitResponse(
 }
 
 // static
-size_t BraveModelTypeWorker::GetFailuresToResetMarkerForTests() {
+size_t BraveDataTypeWorker::GetFailuresToResetMarkerForTests() {
   return kFailuresToResetMarker;
 }
 
 // static
-base::TimeDelta BraveModelTypeWorker::MinimalTimeBetweenResetForTests() {
+base::TimeDelta BraveDataTypeWorker::MinimalTimeBetweenResetForTests() {
   return kMinimalTimeBetweenResetMarker;
 }
 
-bool BraveModelTypeWorker::IsResetProgressMarkerRequired(
+bool BraveDataTypeWorker::IsResetProgressMarkerRequired(
     const FailedCommitResponseDataList& error_response_list) {
   if (!last_reset_marker_time_.is_null() &&
       base::Time::Now() - last_reset_marker_time_ <
@@ -110,7 +109,7 @@ bool BraveModelTypeWorker::IsResetProgressMarkerRequired(
   return failed_commit_times_ >= kFailuresToResetMarker;
 }
 
-void BraveModelTypeWorker::ResetProgressMarker() {
+void BraveDataTypeWorker::ResetProgressMarker() {
   VLOG(1) << "Reset progress marker for type " << ModelTypeToDebugString(type_);
   // Normal reset of progress marker due to 7th failure
   // P3A sample is 0

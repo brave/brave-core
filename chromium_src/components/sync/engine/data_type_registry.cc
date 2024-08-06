@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/sync/engine/brave_model_type_worker.h"
+#include "brave/components/sync/engine/brave_data_type_worker.h"
 
-#define ModelTypeWorker BraveModelTypeWorker
-#include "src/components/sync/engine/model_type_registry.cc"
-#undef ModelTypeWorker
+#define DataTypeWorker BraveDataTypeWorker
+#include "src/components/sync/engine/data_type_registry.cc"
+#undef DataTypeWorker
