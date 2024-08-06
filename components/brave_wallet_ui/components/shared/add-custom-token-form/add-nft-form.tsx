@@ -413,7 +413,7 @@ export const AddNftForm = (props: Props) => {
         <FullWidthFormColumn>
           <Input
             value={tokenContractAddress}
-            onChange={handleTokenAddressChanged}
+            onInput={handleTokenAddressChanged}
             placeholder={getLocale('braveWalletExempliGratia').replace(
               '$1',
               '0xbd3531da5cf5857e7cfaa92426877b022e612cf8'
