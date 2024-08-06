@@ -10,7 +10,7 @@
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
-#include "components/sync/engine/model_type_processor.h"
+#include "components/sync/engine/data_type_processor.h"
 
 namespace syncer {
 

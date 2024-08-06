@@ -27,7 +27,7 @@
 #include "components/sync/model/type_entities_count.h"
 #include "components/sync/service/data_type_manager_impl.h"
 #include "components/sync/test/data_type_manager_mock.h"
-#include "components/sync/test/fake_model_type_controller.h"
+#include "components/sync/test/fake_data_type_controller.h"
 #include "components/sync/test/fake_sync_engine.h"
 #include "components/sync/test/fake_sync_engine_factory.h"
 #include "components/sync/test/fake_sync_manager.h"
@@ -105,9 +105,9 @@ class BraveSyncServiceImplTest : public testing::Test {
 
   void CreateSyncService(
       ModelTypeSet registered_types = ModelTypeSet({BOOKMARKS})) {
-    ModelTypeController::TypeVector controllers;
+    DataTypeController::TypeVector controllers;
     for (ModelType type : registered_types) {
-      controllers.push_back(std::make_unique<FakeModelTypeController>(type));
+      controllers.push_back(std::make_unique<FakeDataTypeController>(type));
     }
 
     std::unique_ptr<SyncClientMock> sync_client =
@@ -533,8 +533,8 @@ TEST_F(BraveSyncServiceImplTest, JoinDeletedChain) {
 }
 
 TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
-  // This test ensures that BraveHistoryModelTypeController and
-  // BraveHistoryDeleteDirectivesModelTypeController allow to run if
+  // This test ensures that BraveHistoryDataTypeController and
+  // BraveHistoryDeleteDirectivesDataTypeController allow to run if
   // IsEncryptEverythingEnabled is set to true; upstream doesn't allow
   // History sync when encrypt everything is set to true.
   // The test is placed here alongside BraveSyncServiceImplTest because
@@ -566,26 +566,26 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
                   ->IsEncryptEverythingEnabled());
 
   auto history_model_type_controller =
-      std::make_unique<history::BraveHistoryModelTypeController>(
+      std::make_unique<history::BraveHistoryDataTypeController>(
           brave_sync_service_impl(), identity_manager(), nullptr,
           pref_service());
 
   auto history_precondition_state =
       history_model_type_controller->GetPreconditionState();
   EXPECT_EQ(history_precondition_state,
-            ModelTypeController::PreconditionState::kPreconditionsMet);
+            DataTypeController::PreconditionState::kPreconditionsMet);
 
   auto test_model_type_store_service =
       std::make_unique<TestModelTypeStoreService>();
-  auto history_delete_directives_model_type_controller = std::make_unique<
-      history::BraveHistoryDeleteDirectivesModelTypeController>(
-      base::DoNothing(), brave_sync_service_impl(),
-      test_model_type_store_service.get(), nullptr, pref_service());
+  auto history_delete_directives_model_type_controller =
+      std::make_unique<history::BraveHistoryDeleteDirectivesDataTypeController>(
+          base::DoNothing(), brave_sync_service_impl(),
+          test_model_type_store_service.get(), nullptr, pref_service());
 
   auto history_delete_directives_precondition_state =
       history_delete_directives_model_type_controller->GetPreconditionState();
   EXPECT_EQ(history_delete_directives_precondition_state,
-            ModelTypeController::PreconditionState::kPreconditionsMet);
+            DataTypeController::PreconditionState::kPreconditionsMet);
 
   OSCryptMocker::TearDown();
 }
