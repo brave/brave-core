@@ -39,7 +39,7 @@ export const Modal = styled.div<{
   max-height: 90vh;
   height: ${(p) => p.height ?? 'unset'};
   background-color: ${leo.color.container.background};
-  border-radius: ${(p) => (p.borderRadius ? p.borderRadius : 8)}px;
+  border-radius: ${(p) => (p.borderRadius ? p.borderRadius : 16)}px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   overflow: hidden;
@@ -51,7 +51,6 @@ export const Modal = styled.div<{
     height: unset;
     position: absolute;
     border-radius: 16px 16px 0px 0px;
-    top: 32px;
     bottom: 0px;
     left: 0px;
     right: 0px;
