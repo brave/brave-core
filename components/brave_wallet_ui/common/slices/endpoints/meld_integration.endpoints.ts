@@ -10,7 +10,8 @@ import {
   MeldFilter,
   MeldCryptoQuote,
   MeldServiceProvider,
-  SupportedOnRampNetworks
+  SupportedOnRampNetworks,
+  MeldPaymentMethod
 } from '../../../constants/types'
 import { handleEndpointError } from '../../../utils/api-utils'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
@@ -153,7 +154,6 @@ export const meldIntegrationEndpoints = ({
           }
           const { countries, error } =
             await meldIntegrationService.getCountries(filter)
-
           if (error) {
             return handleEndpointError(
               endpoint,
@@ -253,6 +253,44 @@ export const meldIntegrationEndpoints = ({
         }
       },
       invalidatesTags: ['MeldCryptoQuotes']
+    }),
+    getMeldPaymentMethods: query<MeldPaymentMethod[], void>({
+      queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { meldIntegrationService } = baseQuery(undefined).data
+
+          const filter: MeldFilter = {
+            countries: undefined,
+            fiatCurrencies: undefined,
+            cryptoCurrencies: undefined,
+            serviceProviders: undefined,
+            paymentMethodTypes: undefined,
+            statuses: undefined,
+            cryptoChains: undefined
+          }
+          const { paymentMethods, error } =
+            await meldIntegrationService.getPaymentMethods(filter)
+
+          if (error) {
+            return handleEndpointError(
+              endpoint,
+              'Error getting paymentMethods: ',
+              error
+            )
+          }
+
+          return {
+            data: paymentMethods || []
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Error getting paymentMethods: ',
+            error
+          )
+        }
+      },
+      providesTags: ['MeldPaymentMethods']
     })
   }
 }
