@@ -14,6 +14,7 @@ source_set("browser_tests") {
     "//base",
     "//chrome/browser/search_engines",
     "//chrome/browser/ui",
+    "//chrome/browser/ui/webui/searchbox",
     "//chrome/test",
     "//chrome/test:test_support",
     "//components/omnibox/browser",
