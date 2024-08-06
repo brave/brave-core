@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/views/tabs/tab_group_editor_bubble_view.h"
 
+#include "chrome/browser/ui/views/data_sharing/data_sharing_bubble_controller.h"
 #include "chrome/browser/user_education/user_education_service.h"
 #include "ui/views/layout/flex_layout.h"
 
