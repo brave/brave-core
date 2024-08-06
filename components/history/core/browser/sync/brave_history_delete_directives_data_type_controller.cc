@@ -13,12 +13,12 @@ BraveHistoryDeleteDirectivesDataTypeController::
     BraveHistoryDeleteDirectivesDataTypeController(
         const base::RepeatingClosure& dump_stack,
         syncer::SyncService* sync_service,
-        syncer::ModelTypeStoreService* model_type_store_service,
+        syncer::DataTypeStoreService* data_type_store_service,
         HistoryService* history_service,
         PrefService* pref_service)
     : HistoryDeleteDirectivesDataTypeController(dump_stack,
                                                 sync_service,
-                                                model_type_store_service,
+                                                data_type_store_service,
                                                 history_service,
                                                 pref_service) {}
 
