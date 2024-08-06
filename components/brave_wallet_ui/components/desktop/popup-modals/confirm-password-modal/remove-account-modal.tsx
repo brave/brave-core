@@ -161,7 +161,16 @@ export const RemoveAccountModal = () => {
           />
         </Row>
 
-        <Row>
+        <Row gap='4px'>
+          <LeoSquaredButton
+            onClick={() =>
+              dispatch(AccountsTabActions.setAccountToRemove(undefined))
+            }
+            kind='plain-faint'
+          >
+            {getLocale('braveWalletButtonCancel')}
+          </LeoSquaredButton>
+
           <LeoSquaredButton
             onClick={onSubmit}
             kind='filled'
