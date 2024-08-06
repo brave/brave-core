@@ -6,8 +6,10 @@
 // types
 import {
   BraveWallet,
+  MeldCountry,
   MeldCryptoCurrency,
   MeldFiatCurrency,
+  MeldPaymentMethod,
   SerializableTransactionInfo,
   SpotPriceRegistry
 } from '../../constants/types'
@@ -1895,3 +1897,110 @@ export const mockServiceProviders = [
     }
   }
 ]
+
+export const mockMeldCountries = [
+  {
+    'countryCode': 'AF',
+    'name': 'Afghanistan',
+    'flagImageUrl': 'https://images-country.meld.io/AF/flag.svg',
+    'regions': null
+  },
+  {
+    'countryCode': 'AL',
+    'name': 'Albania',
+    'flagImageUrl': 'https://images-country.meld.io/AL/flag.svg',
+    'regions': null
+  },
+  {
+    'countryCode': 'DZ',
+    'name': 'Algeria',
+    'flagImageUrl': 'https://images-country.meld.io/DZ/flag.svg',
+    'regions': null
+  },
+  {
+    'countryCode': 'AS',
+    'name': 'American Samoa',
+    'flagImageUrl': 'https://images-country.meld.io/AS/flag.svg',
+    'regions': null
+  },
+  {
+    'countryCode': 'AD',
+    'name': 'Andorra',
+    'flagImageUrl': 'https://images-country.meld.io/AD/flag.svg',
+    'regions': null
+  }
+] as unknown as MeldCountry[]
+
+export const mockMeldPaymentMethods = [
+  {
+    'paymentMethod': 'APPLE_PAY',
+    'name': 'Apple Pay',
+    'paymentType': 'MOBILE_WALLET',
+    'logoImages': {
+      'darkUrl': 'https://images-paymentMethod.meld.io/APPLE_PAY/logo_dark.png',
+      'darkShortUrl': null,
+      'lightUrl':
+        'https://images-paymentMethod.meld.io/APPLE_PAY/logo_light.png',
+      'lightShortUrl': null
+    }
+  },
+  {
+    'paymentMethod': 'CREDIT_DEBIT_CARD',
+    'name': 'Credit & Debit Card',
+    'paymentType': 'CARD',
+    'logoImages': {
+      'darkUrl':
+        'https://images-paymentMethod.meld.io/CREDIT_DEBIT_CARD/logo_dark.png',
+      'darkShortUrl': null,
+      'lightUrl':
+        'https://images-paymentMethod.meld.io/CREDIT_DEBIT_CARD/logo_light.png',
+      'lightShortUrl': null
+    }
+  },
+  {
+    'paymentMethod': 'FAST',
+    'name': 'FAST',
+    'paymentType': 'BANK_TRANSFER',
+    'logoImages': {
+      'darkUrl': 'https://images-paymentMethod.meld.io/FAST/logo_dark.png',
+      'darkShortUrl': null,
+      'lightUrl': 'https://images-paymentMethod.meld.io/FAST/logo_light.png',
+      'lightShortUrl': null
+    }
+  },
+  {
+    'paymentMethod': 'NG_BANK_TRANSFER',
+    'name': 'Local Manual Bank Transfer',
+    'paymentType': 'BANK_TRANSFER',
+    'logoImages': {
+      'darkUrl':
+        'https://images-paymentMethod.meld.io/NG_BANK_TRANSFER/logo_dark.png',
+      'darkShortUrl': null,
+      'lightUrl':
+        'https://images-paymentMethod.meld.io/NG_BANK_TRANSFER/logo_light.png',
+      'lightShortUrl': null
+    }
+  },
+  {
+    'paymentMethod': 'SEPA',
+    'name': 'SEPA',
+    'paymentType': 'BANK_TRANSFER',
+    'logoImages': {
+      'darkUrl': 'https://images-paymentMethod.meld.io/SEPA/logo_dark.png',
+      'darkShortUrl': null,
+      'lightUrl': 'https://images-paymentMethod.meld.io/SEPA/logo_light.png',
+      'lightShortUrl': null
+    }
+  },
+  {
+    'paymentMethod': 'SPEI',
+    'name': 'SPEI',
+    'paymentType': 'BANK_TRANSFER',
+    'logoImages': {
+      'darkUrl': 'https://images-paymentMethod.meld.io/SPEI/logo_dark.png',
+      'darkShortUrl': null,
+      'lightUrl': 'https://images-paymentMethod.meld.io/SPEI/logo_light.png',
+      'lightShortUrl': null
+    }
+  }
+] as unknown as MeldPaymentMethod[]
