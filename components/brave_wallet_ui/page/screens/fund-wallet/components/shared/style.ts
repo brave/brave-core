@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { color, font } from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 import LeoDialog from '@brave/leo/react/dialog'
+import LeoDropdown from '@brave/leo/react/dropdown'
 
 import { WalletButton } from '../../../../../components/shared/style'
 import { layoutPanelWidth } from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
@@ -73,6 +74,8 @@ export const ControlText = styled.h3`
 export const Dialog = styled(LeoDialog).attrs({
   size: window.innerWidth <= layoutPanelWidth ? 'mobile' : 'normal'
 })`
+  --leo-dialog-backdrop-background: rgba(17, 18, 23, 0.35);
+  --leo-dialog-backdrop-filter: blur(8px);
   --leo-dialog-padding: 16px;
 
   .subtitle {
@@ -114,3 +117,6 @@ export const ContainerButton = styled(WalletButton)`
   }
 `
 
+export const Dropdown = styled(LeoDropdown)`
+  min-width: 100%;
+`
