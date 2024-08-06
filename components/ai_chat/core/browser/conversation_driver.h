@@ -230,6 +230,7 @@ class ConversationDriver : public ModelService::Observer,
                            UpdateOrCreateLastAssistantEntry_NotDeltaWithSearch);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, LeoLocalModelsUpdater);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedder);
+  FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedderInitialized);
 
   void InitEngine();
   void OnUserOptedIn();
@@ -241,6 +242,13 @@ class ConversationDriver : public ModelService::Observer,
                                   std::string page_content = "",
                                   bool is_video = false,
                                   std::string invalidation_token = "");
+  void OnTextEmbedderInitialized(
+      const std::string& input,
+      EngineConsumer::GenerationDataCallback data_received_callback,
+      EngineConsumer::GenerationCompletedCallback data_completed_callback,
+      std::string page_content,
+      bool is_video,
+      bool initialized);
   void OnGetRefinedPageContent(
       const std::string& input,
       EngineConsumer::GenerationDataCallback data_received_callback,

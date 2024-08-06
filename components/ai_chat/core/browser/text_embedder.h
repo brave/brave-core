@@ -31,6 +31,11 @@ class TextEmbedder {
   TextEmbedder(const TextEmbedder&) = delete;
   TextEmbedder& operator=(const TextEmbedder&) = delete;
 
+  virtual bool IsInitialized() const;
+
+  using InitializeCallback = base::OnceCallback<void(bool)>;
+  virtual void Initialize(InitializeCallback callback);
+
   using TopSimilarityCallback =
       base::OnceCallback<void(base::expected<std::string, std::string>)>;
   virtual void GetTopSimilarityWithPromptTilContextLimit(
@@ -40,10 +45,12 @@ class TextEmbedder {
       TopSimilarityCallback callback);
 
  protected:
-  TextEmbedder();
+  explicit TextEmbedder(const base::FilePath& model_path);
 
  private:
   friend class TextEmbedderUnitTest;
+
+  void InitializeEmbedder(base::OnceCallback<void(bool)> callback);
 
   void GetTopSimilarityWithPromptTilContextLimitInternal(
       const std::string& prompt,
@@ -74,6 +81,7 @@ class TextEmbedder {
   std::vector<tflite::task::processor::EmbeddingResult> embeddings_;
   std::unique_ptr<tflite::task::text::TextEmbedder> tflite_text_embedder_;
 
+  const base::FilePath model_path_;
   scoped_refptr<base::SequencedTaskRunner> owner_task_runner_;
   scoped_refptr<base::SequencedTaskRunner> embedder_task_runner_;
 

@@ -157,8 +157,10 @@ class MockConversationDriver : public ConversationDriver {
 
 class MockTextEmbedder : public TextEmbedder {
  public:
-  MockTextEmbedder() = default;
+  MockTextEmbedder() : TextEmbedder(base::FilePath()) {}
   ~MockTextEmbedder() override = default;
+  MOCK_METHOD(bool, IsInitialized, (), (const, override));
+  MOCK_METHOD(void, Initialize, (InitializeCallback), (override));
   MOCK_METHOD(
       void,
       GetTopSimilarityWithPromptTilContextLimit,
@@ -879,6 +881,13 @@ TEST_P(PageContentRefineTest, TextEmbedder) {
   auto* mock_text_embedder = static_cast<MockTextEmbedder*>(
       conversation_driver_->GetTextEmbedderForTesting());
 
+  if (IsPageContentRefineEnabled()) {
+    ON_CALL(*mock_text_embedder, IsInitialized)
+        .WillByDefault(testing::Return(true));
+  } else {
+    EXPECT_CALL(*mock_text_embedder, IsInitialized).Times(0);
+  }
+
   uint32_t max_page_content_length = conversation_driver_->GetCurrentModel()
                                          .options->get_leo_model_options()
                                          ->max_page_content_length;
@@ -918,6 +927,67 @@ TEST_P(PageContentRefineTest, TextEmbedder) {
   }
 }
 
+TEST_P(PageContentRefineTest, TextEmbedderInitialized) {
+  if (!IsPageContentRefineEnabled()) {
+    return;
+  }
+  conversation_driver_->SetEngineForTesting(
+      std::make_unique<MockEngineConsumer>());
+  auto* mock_engine = static_cast<MockEngineConsumer*>(
+      conversation_driver_->GetEngineForTesting());
+
+  conversation_driver_->SetTextEmbedderForTesting(
+      std::make_unique<MockTextEmbedder>());
+  auto* mock_text_embedder = static_cast<MockTextEmbedder*>(
+      conversation_driver_->GetTextEmbedderForTesting());
+  struct {
+    bool is_initialized;
+    bool initialize_result;
+  } test_cases[] = {
+      {true, false},  // Already initialized so initialize_result is ignored.
+      {false, false},
+      {false, true},
+  };
+
+  uint32_t max_page_content_length = conversation_driver_->GetCurrentModel()
+                                         .options->get_leo_model_options()
+                                         ->max_page_content_length;
+  for (const auto& test_case : test_cases) {
+    SCOPED_TRACE(testing::Message()
+                 << "IsInitialized: " << test_case.is_initialized
+                 << ", Initialize result: " << test_case.initialize_result);
+
+    ON_CALL(*mock_text_embedder, IsInitialized)
+        .WillByDefault(testing::Return(test_case.is_initialized));
+    if (test_case.is_initialized) {
+      EXPECT_CALL(*mock_text_embedder, Initialize).Times(0);
+      EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
+          .Times(0);
+      EXPECT_CALL(*mock_text_embedder,
+                  GetTopSimilarityWithPromptTilContextLimit(_, _, _, _))
+          .Times(1);
+    } else {
+      EXPECT_CALL(*mock_text_embedder, Initialize)
+          .WillOnce(
+              base::test::RunOnceCallback<0>(test_case.initialize_result));
+      if (!test_case.initialize_result) {
+        EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
+            .Times(1);
+        EXPECT_CALL(*mock_text_embedder,
+                    GetTopSimilarityWithPromptTilContextLimit(_, _, _, _))
+            .Times(0);
+      } else {
+        EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
+            .Times(0);
+        EXPECT_CALL(*mock_text_embedder,
+                    GetTopSimilarityWithPromptTilContextLimit(_, _, _, _))
+            .Times(1);
+      }
+    }
+    conversation_driver_->PerformAssistantGeneration(
+        "prompt", 0, std::string(max_page_content_length + 1, 'A'), false, "");
+  }
+}
 TEST_P(PageContentRefineTest, LeoLocalModelsUpdater) {
   if (IsPageContentRefineEnabled()) {
     EXPECT_CALL(*leo_local_models_updater_, Register());
@@ -947,29 +1017,6 @@ TEST_P(PageContentRefineTest, LeoLocalModelsUpdater) {
                                          .options->get_leo_model_options()
                                          ->max_page_content_length;
 
-  // Path already exists.
-  EXPECT_CALL(*leo_local_models_updater_, GetUniversalQAModel()).Times(0);
-  conversation_driver->PerformAssistantGeneration(
-      "prompt", 0, std::string("A", max_page_content_length + 1), false, "");
-
-  conversation_driver->universal_qa_model_path_ = base::FilePath();
-  if (IsPageContentRefineEnabled()) {
-    EXPECT_CALL(*leo_local_models_updater_, GetUniversalQAModel())
-        .WillOnce(testing::ReturnRefOfCopy(
-            base::FilePath::FromASCII("/path/to/model")));
-  } else {
-    EXPECT_CALL(*leo_local_models_updater_, GetUniversalQAModel()).Times(0);
-  }
-
-  conversation_driver->PerformAssistantGeneration(
-      "prompt", 0, std::string("A", max_page_content_length + 1), false, "");
-  if (IsPageContentRefineEnabled()) {
-    EXPECT_EQ(conversation_driver->universal_qa_model_path_,
-              base::FilePath::FromASCII("/path/to/model"));
-  } else {
-    EXPECT_TRUE(conversation_driver->universal_qa_model_path_.empty());
-  }
-
   // should_refine_page_content is false.
   conversation_driver->universal_qa_model_path_ = base::FilePath();
   EXPECT_CALL(*leo_local_models_updater_, GetUniversalQAModel()).Times(0);
@@ -978,7 +1025,7 @@ TEST_P(PageContentRefineTest, LeoLocalModelsUpdater) {
   EXPECT_TRUE(conversation_driver->universal_qa_model_path_.empty());
 
   // Already has TextEmbedder.
-  conversation_driver_->SetTextEmbedderForTesting(
+  conversation_driver->SetTextEmbedderForTesting(
       std::make_unique<MockTextEmbedder>());
   conversation_driver->universal_qa_model_path_ = base::FilePath();
   EXPECT_CALL(*leo_local_models_updater_, GetUniversalQAModel()).Times(0);
