@@ -5,6 +5,8 @@
 
 #include "components/embedder_support/user_agent_utils.h"
 
+#include "base/strings/strcat.h"
+
 namespace {
 
 constexpr char kBraveBrandNameForCHUA[] = "Brave";
@@ -20,5 +22,9 @@ constexpr char kBraveBrandNameForCHUA[] = "Brave";
 // can't use it here in the //components.
 #define BRAVE_GET_USER_AGENT_BRAND_LIST brand = kBraveBrandNameForCHUA;
 
+#define BRAVE_BRAND_VERSION_OVERRIDE_FOR_FULL_BRAND_VERSION_TYPE \
+  base::StrCat({major_version, ".0.0.0"})
+
 #include "src/components/embedder_support/user_agent_utils.cc"
+#undef BRAVE_BRAND_VERSION_OVERRIDE_FOR_FULL_BRAND_VERSION_TYPE
 #undef BRAVE_GET_USER_AGENT_BRAND_LIST
