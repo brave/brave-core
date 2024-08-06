@@ -136,8 +136,6 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
     [self initComponentUpdater];
 
     [self initProfilePrefService];
-    [self maybeMigrateProfilePrefs];
-
     [self initLocalStatePrefService];
 
     [self initObservers];
@@ -389,59 +387,6 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 
   _profilePrefService = chromeBrowserState->GetPrefs();
   CHECK(_profilePrefService);
-}
-
-- (void)migrateBooleanProfilePref:(NSDictionary*)legacyProfilePrefs
-                             path:(const std::string&)path {
-  // Only for "ads_pref.plist" migration; please see pref service migration
-  // chromium_src/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-  NSString* legacyProfilePref = base::SysUTF8ToNSString(path);
-  if ([legacyProfilePrefs objectForKey:legacyProfilePref]) {
-    self.profilePrefService->SetBoolean(
-        path, [legacyProfilePrefs[legacyProfilePref] boolValue]);
-  }
-}
-
-- (void)maybeMigrateProfilePrefs {
-  // Only for "ads_pref.plist" migration; please see pref service migration
-  // chromium_src/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-  NSString* legacyProfilePrefsPath =
-      [self.storagePath stringByAppendingPathComponent:@"ads_pref.plist"];
-  NSDictionary* legacyProfilePrefs = [[NSMutableDictionary alloc]
-      initWithContentsOfFile:legacyProfilePrefsPath];
-  if (!legacyProfilePrefs) {
-    return;
-  }
-
-  BLOG(1, @"Migrating profile prefs");
-
-  if ([legacyProfilePrefs objectForKey:@"BATAdsEnabled"]) {
-    const BOOL isEnabled = [legacyProfilePrefs[@"BATAdsEnabled"] boolValue];
-    self.profilePrefService->SetBoolean(brave_rewards::prefs::kEnabled,
-                                        isEnabled);
-    self.profilePrefService->SetBoolean(
-        brave_ads::prefs::kOptedInToNotificationAds, isEnabled);
-  } else {
-    [self migrateBooleanProfilePref:legacyProfilePrefs
-                               path:brave_rewards::prefs::kEnabled];
-    [self
-        migrateBooleanProfilePref:legacyProfilePrefs
-                             path:brave_ads::prefs::kOptedInToNotificationAds];
-  }
-
-  [self migrateBooleanProfilePref:legacyProfilePrefs
-                             path:brave_ads::prefs::kHasMigratedClientState];
-
-  [self migrateBooleanProfilePref:legacyProfilePrefs
-                             path:brave_ads::prefs::
-                                      kHasMigratedConfirmationState];
-
-  NSError* error = nil;
-  [[NSFileManager defaultManager] removeItemAtPath:legacyProfilePrefsPath
-                                             error:&error];
-  if (error) {
-    BLOG(0, @"Failed to remove legacy prefs: %@", error);
-  }
 }
 
 #pragma mark - Local state prefs
