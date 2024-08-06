@@ -112,8 +112,6 @@ class BraveSyncServiceImplTest : public testing::Test {
 
     std::unique_ptr<SyncClientMock> sync_client =
         sync_service_impl_bundle_.CreateSyncClientMock();
-    ON_CALL(*sync_client, CreateModelTypeControllers(_))
-        .WillByDefault(Return(ByMove(std::move(controllers))));
 
     auto sync_service_delegate(std::make_unique<SyncServiceImplDelegateMock>());
     sync_service_delegate_ = sync_service_delegate.get();
@@ -121,6 +119,7 @@ class BraveSyncServiceImplTest : public testing::Test {
     sync_service_impl_ = std::make_unique<BraveSyncServiceImpl>(
         sync_service_impl_bundle_.CreateBasicInitParams(std::move(sync_client)),
         std::move(sync_service_delegate));
+    sync_service_impl_->Initialize(std::move(controllers));
   }
 
   brave_sync::Prefs* brave_sync_prefs() { return &brave_sync_prefs_; }
@@ -161,7 +160,6 @@ TEST_F(BraveSyncServiceImplTest, ValidPassphrase) {
 
   CreateSyncService();
 
-  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
 
   bool set_code_result = brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
@@ -178,8 +176,6 @@ TEST_F(BraveSyncServiceImplTest, InvalidPassphrase) {
   OSCryptMocker::SetUp();
 
   CreateSyncService();
-
-  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
 
   bool set_code_result =
@@ -197,8 +193,6 @@ TEST_F(BraveSyncServiceImplTest, ValidPassphraseLeadingTrailingWhitespace) {
   OSCryptMocker::SetUp();
 
   CreateSyncService();
-
-  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
 
   std::string sync_code_extra_whitespace =
@@ -230,8 +224,6 @@ TEST_F(BraveSyncServiceImplDeathTest, MAYBE_EmulateGetOrCreateSyncCodeCHECK) {
   OSCryptMocker::SetUp();
 
   CreateSyncService();
-
-  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
 
   // Since Chromium commit 33441a0f3f9a591693157f2fd16852ce072e6f9d
@@ -259,8 +251,6 @@ TEST_F(BraveSyncServiceImplTest, StopAndClearForBraveSeed) {
   OSCryptMocker::SetUp();
 
   CreateSyncService();
-
-  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
 
   bool set_code_result = brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
@@ -278,8 +268,6 @@ TEST_F(BraveSyncServiceImplTest, StopAndClearForBraveSeed) {
 TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
   OSCryptMocker::SetUp();
   CreateSyncService();
-
-  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
 
@@ -339,8 +327,6 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
 TEST_F(BraveSyncServiceImplTest, OnSelfDeviceInfoDeleted) {
   OSCryptMocker::SetUp();
   CreateSyncService();
-
-  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
 
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
@@ -390,8 +376,6 @@ TEST_F(BraveSyncServiceImplTest, OnSelfDeviceInfoDeleted) {
 TEST_F(BraveSyncServiceImplTest, PermanentlyDeleteAccount) {
   OSCryptMocker::SetUp();
   CreateSyncService();
-
-  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
   task_environment_.RunUntilIdle();
@@ -417,8 +401,6 @@ TEST_F(BraveSyncServiceImplTest, PermanentlyDeleteAccount) {
 TEST_F(BraveSyncServiceImplTest, OnAccountDeleted_Success) {
   OSCryptMocker::SetUp();
   CreateSyncService();
-
-  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
 
   brave_sync_service_impl()->initiated_delete_account_ = true;
@@ -437,8 +419,6 @@ TEST_F(BraveSyncServiceImplTest, OnAccountDeleted_Success) {
 TEST_F(BraveSyncServiceImplTest, OnAccountDeleted_FailureAndRetry) {
   OSCryptMocker::SetUp();
   CreateSyncService();
-
-  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
 
   brave_sync_service_impl()->initiated_delete_account_ = true;
@@ -471,8 +451,6 @@ TEST_F(BraveSyncServiceImplTest, OnAccountDeleted_FailureAndRetry) {
 TEST_F(BraveSyncServiceImplTest, JoinActiveOrNewChain) {
   OSCryptMocker::SetUp();
   CreateSyncService();
-
-  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
 
   EXPECT_FALSE(brave_sync_service_impl()->join_chain_result_callback_);
@@ -497,8 +475,6 @@ TEST_F(BraveSyncServiceImplTest, JoinActiveOrNewChain) {
 TEST_F(BraveSyncServiceImplTest, JoinDeletedChain) {
   OSCryptMocker::SetUp();
   CreateSyncService();
-
-  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
 
   EXPECT_FALSE(brave_sync_service_impl()->join_chain_result_callback_);
@@ -544,8 +520,6 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
 
   OSCryptMocker::SetUp();
   CreateSyncService();
-
-  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
   task_environment_.RunUntilIdle();
@@ -593,8 +567,6 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
 TEST_F(BraveSyncServiceImplTest, OnlyBookmarksAfterSetup) {
   OSCryptMocker::SetUp();
   CreateSyncService();
-
-  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
   task_environment_.RunUntilIdle();
@@ -618,8 +590,6 @@ TEST_F(BraveSyncServiceImplTest, OnlyBookmarksAfterSetup) {
 TEST_F(BraveSyncServiceImplTest, P3aForHistoryThroughDelegate) {
   OSCryptMocker::SetUp();
   CreateSyncService(ModelTypeSet({BOOKMARKS, HISTORY}));
-
-  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
   task_environment_.RunUntilIdle();
@@ -683,8 +653,6 @@ TEST_F(BraveSyncServiceImplTest, NoLeaveDetailsWhenInitializeIOS) {
             ++(*leave_chain_pref_changed_count);
           },
           &leave_chain_pref_changed_count));
-
-  brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
 
   // We expect that AddLeaveChainDetail will not be invoked at
