@@ -353,7 +353,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             - ONE_ITEM_SPACE
                             - getNewContentCount()
                             - newsLoadingCount;
-            if (newsPosition < mNewsItems.size()) {
+            if (newsPosition < mNewsItems.size() && newsPosition >= 0) {
                 FeedItemsCard newsItem = mNewsItems.get(newsPosition);
                 if (mBraveNewsController != null) {
                     new CardBuilderFeedCard(
