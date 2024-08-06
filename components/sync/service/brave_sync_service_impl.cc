@@ -55,10 +55,11 @@ BraveSyncServiceImpl::~BraveSyncServiceImpl() {
   brave_sync_prefs_change_registrar_.RemoveAll();
 }
 
-void BraveSyncServiceImpl::Initialize() {
+void BraveSyncServiceImpl::Initialize(
+    DataTypeController::TypeVector controllers) {
   base::AutoReset<bool> is_initializing_resetter(&is_initializing_, true);
 
-  SyncServiceImpl::Initialize();
+  SyncServiceImpl::Initialize(std::move(controllers));
 
   // P3A ping for those who have sync disabled
   if (!user_settings_->IsInitialSyncFeatureSetupComplete()) {
