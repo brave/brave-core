@@ -436,17 +436,6 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
                              path:brave_ads::prefs::
                                       kHasMigratedConfirmationState];
 
-  [self
-      migrateBooleanProfilePref:legacyProfilePrefs
-                           path:brave_ads::prefs::kHasMigratedConversionState];
-
-  [self migrateBooleanProfilePref:legacyProfilePrefs
-                             path:brave_ads::prefs::
-                                      kHasMigratedNotificationState];
-
-  [self migrateBooleanProfilePref:legacyProfilePrefs
-                             path:brave_ads::prefs::kHasMigratedRewardsState];
-
   NSError* error = nil;
   [[NSFileManager defaultManager] removeItemAtPath:legacyProfilePrefsPath
                                              error:&error];

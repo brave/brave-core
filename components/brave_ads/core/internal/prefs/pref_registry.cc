@@ -11,28 +11,17 @@
 namespace brave_ads {
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* const registry) {
-  registry->RegisterBooleanPref(prefs::kShouldShowOnboardingNotification, true);
-
-  registry->RegisterIntegerPref(prefs::kSupportedCountryCodesLastSchemaVersion,
-                                0);
+  // Ads prefs.
+  registry->RegisterStringPref(prefs::kDiagnosticId, "");
 
   registry->RegisterBooleanPref(prefs::kOptedInToNotificationAds, false);
-
-  registry->RegisterDoublePref(prefs::kNotificationAdLastNormalizedCoordinateX,
-                               0.0);
-  registry->RegisterDoublePref(prefs::kNotificationAdLastNormalizedCoordinateY,
-                               0.0);
-  registry->RegisterBooleanPref(prefs::kNotificationAdDidFallbackToCustom,
-                                false);
+  registry->RegisterInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);
 
   registry->RegisterBooleanPref(prefs::kOptedInToSearchResultAds, true);
 
-  registry->RegisterStringPref(prefs::kDiagnosticId, "");
-
-  registry->RegisterInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);
-
   registry->RegisterBooleanPref(prefs::kShouldAllowSubdivisionTargeting, false);
-  registry->RegisterStringPref(prefs::kSubdivisionTargetingSubdivision, "AUTO");
+  registry->RegisterStringPref(
+      prefs::kSubdivisionTargetingUserSelectedSubdivision, "AUTO");
   registry->RegisterStringPref(
       prefs::kSubdivisionTargetingAutoDetectedSubdivision, "");
 
@@ -51,13 +40,20 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* const registry) {
 
   registry->RegisterBooleanPref(prefs::kHasMigratedClientState, false);
   registry->RegisterBooleanPref(prefs::kHasMigratedConfirmationState, false);
-  registry->RegisterBooleanPref(prefs::kHasMigratedConversionState, false);
-  registry->RegisterBooleanPref(prefs::kHasMigratedNotificationState, false);
-  registry->RegisterBooleanPref(prefs::kHasMigratedRewardsState, false);
   registry->RegisterBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser,
                                 false);
 
   registry->RegisterStringPref(prefs::kBrowserVersionNumber, "");
+
+  // Ads service prefs.
+  registry->RegisterBooleanPref(prefs::kShouldShowOnboardingNotification, true);
+
+  registry->RegisterDoublePref(prefs::kNotificationAdLastNormalizedCoordinateX,
+                               0.0);
+  registry->RegisterDoublePref(prefs::kNotificationAdLastNormalizedCoordinateY,
+                               0.0);
+  registry->RegisterBooleanPref(prefs::kNotificationAdDidFallbackToCustom,
+                                false);
 }
 
 }  // namespace brave_ads
