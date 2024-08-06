@@ -32,7 +32,10 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/infobars/content/content_infobar_manager.h"
+#include "components/infobars/core/infobar.h"
 #include "components/infobars/core/infobar_manager.h"
+#include "components/infobars/core/infobar_delegate.h"
+#include "brave/browser/infobars/request_otr_infobar_delegate.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -238,6 +241,7 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, ShowInterstitialAlways) {
   GURL url = embedded_test_server()->GetURL("sensitive.a.com", "/simple.html");
   NavigateTo(url);
   ASSERT_FALSE(IsShowingInterstitial());
+
   // Request-OTR infobar should now have been shown, and our observer should
   // have been called once.
 
@@ -369,12 +373,29 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, ShowInterstitialProceedOTRCheckHis
   ASSERT_FALSE(IsShowingInterstitial());
   ASSERT_EQ(GetHistoryCount(), 0);
 
-  GURL url = embedded_test_server()->GetURL("sensitive.a.com", "/simple.html");
+  // Iterate over InfoBars to find RequestOTRInfoBarDelegate.
+  infobars::InfoBar* found_infobar = nullptr;
+  for (infobars::InfoBar* infobar : infobar_manager->infobars()) {
+    if (infobar->delegate()->GetIdentifier() == infobars::InfoBarDelegate::BRAVE_REQUEST_OTR_INFOBAR_DELEGATE) {
+      found_infobar = infobar;
+      break;
+    }
+  }
+
+  ASSERT_NE(found_infobar, nullptr);
+
+  // Now you have the specific InfoBar. Access its delegate.
+  auto* delegate = static_cast<RequestOTRInfoBarDelegate*>(found_infobar->delegate());
+  ASSERT_NE(delegate, nullptr);
+
+  // Simulate clicking the "Turn Off" button.
+  delegate->TestAccept();
+
   NavigateTo(url);
   ASSERT_TRUE(IsShowingInterstitial());
 
-  // Simulate click on "Proceed Off-The-Record" button. This should navigate to
-  // the originally requested page in off-the-record mode.
+  // Simulate click on "Proceed Normally" button. This should navigate to
+  // the originally requested page in "normal" mode.
   ClickAndWaitForNavigation("back-button");
   ASSERT_FALSE(IsShowingInterstitial());
   ASSERT_EQ(GetHistoryCount(), 1);
@@ -398,7 +419,7 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, ShowInterstitialProceedOTRCheckHis
       infobars::ContentInfoBarManager::FromWebContents(contents);
   TestObserver observer;
   // Set up expectation that an infobar will appear later.
-  EXPECT_CALL(observer, OnInfoBarAdded(_)).Times(1);
+  EXPECT_CALL(observer, OnInfoBarAdded(_)).Times(2);
   infobar_manager->AddObserver(&observer);
 
   SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAsk);
@@ -412,17 +433,33 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, ShowInterstitialProceedOTRCheckHis
   ASSERT_FALSE(IsShowingInterstitial());
   ASSERT_EQ(GetHistoryCount(), 0);
 
-  GURL url = embedded_test_server()->GetURL("sensitive.a.com", "/simple.html");
+  // Iterate over InfoBars to find RequestOTRInfoBarDelegate.
+  infobars::InfoBar* found_infobar = nullptr;
+  for (infobars::InfoBar* infobar : infobar_manager->infobars()) {
+    if (infobar->delegate()->GetIdentifier() == infobars::InfoBarDelegate::BRAVE_REQUEST_OTR_INFOBAR_DELEGATE) {
+      found_infobar = infobar;
+      break;
+    }
+  }
+
+  ASSERT_NE(found_infobar, nullptr);
+
+  // Now you have the specific InfoBar. Access its delegate.
+  auto* delegate = static_cast<RequestOTRInfoBarDelegate*>(found_infobar->delegate());
+  ASSERT_NE(delegate, nullptr);
+
+  // Simulate clicking the 'Turn-Off' button.
+  delegate->TestAccept();
+
   NavigateTo(url);
   ASSERT_TRUE(IsShowingInterstitial());
 
-  // Simulate click on "Proceed Off-The-Record" button. This should navigate to
-  // the originally requested page in off-the-record mode.
+  // Simulate click on "Proceed Normally" button. This should navigate to
+  // the originally requested page in "normal" mode.
   ClickAndWaitForNavigation("back-button");
   ASSERT_FALSE(IsShowingInterstitial());
   ASSERT_EQ(GetHistoryCount(), 1);
 
-  GURL url = embedded_test_server()->GetURL("sensitive.a.com", "/simple.html");
   NavigateTo(url);
   ASSERT_TRUE(IsShowingInterstitial());
 
@@ -430,7 +467,7 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, ShowInterstitialProceedOTRCheckHis
   // the originally requested page in off-the-record mode.
   ClickAndWaitForNavigation("primary-button");
   ASSERT_FALSE(IsShowingInterstitial());
-  ASSERT_EQ(GetHistoryCount(), 0);
+  ASSERT_EQ(GetHistoryCount(), 0); // Fails here
   // Request-OTR infobar should now have been shown, and our observer should
   // have been called once.
 

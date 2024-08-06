@@ -25,6 +25,7 @@ class RequestOTRInfoBarDelegate : public ConfirmInfoBarDelegate {
   // Creates a request-otr infobar and delegate and adds the infobar to
   // |infobar_manager|.
   static void Create(infobars::ContentInfoBarManager* infobar_manager);
+  void TestAccept() { Accept(); }
 
  private:
   // ConfirmInfoBarDelegate:
