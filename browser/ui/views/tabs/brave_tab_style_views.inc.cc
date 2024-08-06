@@ -104,6 +104,9 @@ SkPath BraveVerticalTabStyle::GetPath(
     bool force_active,
     TabStyle::RenderUnits render_units) const {
   if (!HorizontalTabsUpdateEnabled() && !ShouldShowVerticalTabs()) {
+    if ((path_type == TabStyle::PathType::kHitTest) && tab()->closing()) {
+      return {};
+    }
     return BraveGM2TabStyle::GetPath(path_type, scale, force_active,
                                      render_units);
   }
