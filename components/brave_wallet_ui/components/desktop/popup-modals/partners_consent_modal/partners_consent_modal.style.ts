@@ -8,6 +8,8 @@ import Dialog from '@brave/leo/react/dialog'
 import { font, spacing, color } from '@brave/leo/tokens/css/variables'
 
 export const TermsDialog = styled(Dialog)`
+  --leo-dialog-backdrop-background: rgba(17, 18, 23, 0.35);
+  --leo-dialog-backdrop-filter: blur(8px);
   --leo-dialog-padding: ${spacing['2Xl']};
 `
 

@@ -12,9 +12,9 @@ import { MeldCryptoCurrency } from '../../../../../constants/types'
 import { Column, Row } from '../../../../../components/shared/style'
 import {
   AssetIcon,
-  AssetSymbol,
   CaretDown,
   ControlsWrapper,
+  ControlText,
   Label,
   WrapperButton
 } from '../shared/style'
@@ -49,7 +49,7 @@ export const SelectAssetButton = (props: SelectAssetButtonProps) => {
                     size='40px'
                     src={`chrome://image?${selectedAsset?.symbolImageUrl}`}
                   />
-                  <AssetSymbol>{assetSymbol}</AssetSymbol>
+                  <ControlText>{assetSymbol}</ControlText>
                 </>
               )}
             </Row>

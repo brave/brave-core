@@ -16,10 +16,11 @@ import { Column, Row } from '../../../../../components/shared/style'
 import {
   CaretDown,
   ControlsWrapper,
+  ControlText,
   Label,
   WrapperButton
 } from '../shared/style'
-import { AccountAddress, AccountName } from './select_account_button.style'
+import { AccountAddress } from './select_account_button.style'
 
 interface SelectAccountProps {
   labelText: string
@@ -41,12 +42,13 @@ export const SelectAccountButton = ({
             <Row
               justifyContent='flex-start'
               gap='8px'
+              minHeight='40px'
             >
               <CreateAccountIcon
                 account={selectedAccount}
                 size='medium'
               />
-              <AccountName>{selectedAccount?.name}</AccountName>
+              <ControlText>{selectedAccount?.name}</ControlText>
             </Row>
             <CaretDown />
           </ControlsWrapper>
