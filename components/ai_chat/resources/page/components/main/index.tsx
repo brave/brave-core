@@ -63,6 +63,9 @@ function Main() {
   let currentErrorElement = null
 
   let scrollerElement: HTMLDivElement | null = null
+  let headerElement: HTMLDivElement | null = null
+  let conversationContentElement: HTMLDivElement | null = null
+
   const scrollPos = React.useRef({ isAtBottom: true })
 
   if (hasAcceptedAgreement) {
@@ -104,10 +107,57 @@ function Main() {
     }
   }
 
+  let inputFocused: boolean = false
+  let viewPortWithoutKeyboard = 0
+  let keyboardSize = 0
+
+  window.addEventListener('resize', () => {
+    if (!context.isMobile || !inputFocused || window.visualViewport == null) {
+      return
+    }
+    let viewPortWithKeyboard = window.visualViewport.height
+    if (headerElement == null || conversationContentElement == null ||
+      viewPortWithKeyboard === 0 || viewPortWithoutKeyboard === 0) {
+      return
+    }
+    if (keyboardSize === 0 ||
+        keyboardSize < viewPortWithoutKeyboard - viewPortWithKeyboard) {
+      keyboardSize = viewPortWithoutKeyboard - viewPortWithKeyboard
+    }
+    let mountPoint: HTMLElement | null = document.getElementById('mountPoint')
+    if (mountPoint !== undefined && mountPoint !== null) {
+      if (mountPoint.clientHeight >=
+          (headerElement.clientHeight + conversationContentElement.clientHeight)
+          * 2) {
+        let percent = viewPortWithKeyboard * 100 / viewPortWithoutKeyboard
+        mountPoint.style.height = `${percent}%`
+      } else if (keyboardSize > viewPortWithoutKeyboard - viewPortWithKeyboard) {
+        mountPoint.style.height = '100%'
+      }
+    }
+  })
+
+  const handleOnFocusInput = () => {
+    inputFocused = true
+    if (window.visualViewport != null) {
+      viewPortWithoutKeyboard = window.visualViewport.height
+    }
+  }
+
+  const handleOnBlurInput = () => {
+    let mountPoint: HTMLElement | null = document.getElementById('mountPoint')
+    if (mountPoint !== undefined && mountPoint !== null
+        && mountPoint.style.height !== '100%') {
+      inputFocused = false
+      mountPoint.style.height = '100%'
+    }
+  }
+
   return (
     <main className={styles.main}>
       {context.showAgreementModal && <PrivacyMessage />}
-      <div className={styles.header}>
+      <div className={styles.header}
+        ref={node => {headerElement = node}}>
         <div className={styles.logo}>
           <Icon name='product-brave-leo' />
           <div className={styles.logoTitle}>Leo AI</div>
@@ -151,7 +201,8 @@ function Main() {
         onScroll={handleScroll}
       >
         <AlertCenter position='top-left' className={styles.alertCenter} />
-        <div className={styles.conversationContent}>
+        <div className={styles.conversationContent}
+          ref={node => {conversationContentElement = node}}>
           {context.hasAcceptedAgreement && <>
             <ModelIntro />
             <ConversationList
@@ -214,7 +265,11 @@ function Main() {
           </div>
         )}
         <ToolsButtonMenu {...context}>
-          <InputBox {...context} />
+          <InputBox
+            context={context}
+            onFocusInput={handleOnFocusInput}
+            onBlurInput={handleOnBlurInput}
+          />
         </ToolsButtonMenu>
       </div>
     </main>
