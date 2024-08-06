@@ -303,7 +303,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     }
 
     rpcService.network(coin: token.coin, origin: nil) { [weak self] network in
-      if let assetBalance = self?.assetManager.getBalances(
+      if let assetBalance = self?.assetManager.getAssetBalances(
         for: token,
         account: account.id
       )?.first(where: { $0.chainId == network.chainId }) {
@@ -695,7 +695,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
 
     // Check if balance available to pay for gas
     let ethBalance: BDouble
-    if let assetBalance = assetManager.getBalances(
+    if let assetBalance = assetManager.getAssetBalances(
       for: network.nativeToken,
       account: accountInfo.id
     )?.first(where: { $0.chainId == network.chainId }) {
@@ -834,7 +834,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     // Check if balance available to pay for gas
     if route.fromToken.coin == .eth {
       let ethBalance: BDouble
-      if let assetBalance = assetManager.getBalances(
+      if let assetBalance = assetManager.getAssetBalances(
         for: network.nativeToken,
         account: accountInfo.id
       )?.first(where: { $0.chainId == network.chainId }) {
@@ -1124,38 +1124,40 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       let continueClosure: (BraveWallet.NetworkInfo) -> Void = { [weak self] network in
         guard let self = self else { return }
         self.blockchainRegistry.allTokens(chainId: network.chainId, coin: network.coin) { tokens in
-          // Native token on the current selected network
-          let nativeAsset = network.nativeToken
-          // visible custom tokens added by users
-          let userVisibleAssets = self.assetManager.getAllUserAssetsInNetworkAssetsByVisibility(
-            networks: [network],
-            visible: true
-          ).flatMap { $0.tokens }
-          let customTokens = userVisibleAssets.filter { asset in
-            !tokens.contains(where: {
-              $0.contractAddress(in: network).caseInsensitiveCompare(asset.contractAddress)
-                == .orderedSame
-            })
-          }
-          let sortedCustomTokens = customTokens.sorted {
-            if $0.contractAddress(in: network).caseInsensitiveCompare(nativeAsset.contractAddress)
-              == .orderedSame
-            {
-              return true
-            } else {
-              return $0.symbol < $1.symbol
+          Task { @MainActor in
+            let nativeAsset = network.nativeToken
+            // visible custom tokens added by users
+            let userVisibleAssets = await self.assetManager.getUserAssets(
+              networks: [network],
+              visible: true
+            ).flatMap { $0.tokens }
+            let customTokens = userVisibleAssets.filter { asset in
+              !tokens.contains(where: {
+                $0.contractAddress(in: network).caseInsensitiveCompare(asset.contractAddress)
+                  == .orderedSame
+              })
             }
+            let sortedCustomTokens = customTokens.sorted {
+              if $0.contractAddress(in: network).caseInsensitiveCompare(nativeAsset.contractAddress)
+                == .orderedSame
+              {
+                return true
+              } else {
+                return $0.symbol < $1.symbol
+              }
+            }
+            self.allTokens = (sortedCustomTokens + tokens.sorted(by: { $0.symbol < $1.symbol }))
+              .filter { !$0.isNft }
+            // Seems like user assets always include the selected network's native asset
+            // But let's make sure all token list includes the native asset
+            if !self.allTokens.contains(where: {
+              $0.symbol.lowercased() == nativeAsset.symbol.lowercased()
+            }) {
+              self.allTokens.insert(nativeAsset, at: 0)
+            }
+            updateSelectedTokens(in: network)
           }
-          self.allTokens = (sortedCustomTokens + tokens.sorted(by: { $0.symbol < $1.symbol }))
-            .filter { !$0.isNft }
-          // Seems like user assets always include the selected network's native asset
-          // But let's make sure all token list includes the native asset
-          if !self.allTokens.contains(where: {
-            $0.symbol.lowercased() == nativeAsset.symbol.lowercased()
-          }) {
-            self.allTokens.insert(nativeAsset, at: 0)
-          }
-          updateSelectedTokens(in: network)
+          // Native token on the current selected network
         }
       }
 

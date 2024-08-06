@@ -136,7 +136,7 @@ class NFTStoreTests: XCTestCase {
     let assetRatioService = BraveWallet.TestAssetRatioService()
 
     let mockAssetManager = TestableWalletUserAssetManager()
-    mockAssetManager._getAllUserAssetsInNetworkAssetsByVisibility = { networks, visible in
+    mockAssetManager._getUserAssets = { networks, visible in
       [
         NetworkAssets(
           network: .mockMainnet,

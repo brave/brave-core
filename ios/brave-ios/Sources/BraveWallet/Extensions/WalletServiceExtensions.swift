@@ -67,4 +67,17 @@ extension BraveWalletBraveWalletService {
       }
     )
   }
+
+  @MainActor func addUserAssets(_ tokens: [BraveWallet.BlockchainToken]) async {
+    await withTaskGroup(
+      of: Void.self,
+      body: { group in
+        for token in tokens {
+          group.addTask {
+            await self.addUserAsset(token: token)
+          }
+        }
+      }
+    )
+  }
 }

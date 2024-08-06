@@ -157,7 +157,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
         networksForCoin: networksForCoin,
         for: allAccountInfos
       ).filter { $0.txStatus != .rejected }
-      let userAssets = assetManager.getAllUserAssetsInNetworkAssets(
+      let userAssets = await assetManager.getAllUserAssetsInNetworkAssets(
         networks: allNetworksAllCoins,
         includingUserDeleted: true
       ).flatMap(\.tokens)
