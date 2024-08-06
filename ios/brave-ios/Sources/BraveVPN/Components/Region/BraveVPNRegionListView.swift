@@ -136,7 +136,6 @@ public struct BraveVPNRegionListView: View {
   @ViewBuilder
   private func countryRegionItem(at index: Int, region: GRDRegion) -> some View {
     let isSelectedRegion = region.countryISOCode == BraveVPN.activatedRegion?.countryISOCode
-    let serverCount = region.cities.count
 
     Button {
       selectDesignatedVPNRegion(at: index)
@@ -150,16 +149,12 @@ public struct BraveVPNRegionListView: View {
               isSelectedRegion
                 ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .textPrimary)
             )
-          Text(
-            serverCount > 1
-              ? String(format: Strings.VPN.multipleServerCountTitle, serverCount)
-              : String(format: Strings.VPN.serverCountTitle, serverCount)
-          )
-          .font(.footnote)
-          .foregroundStyle(
-            isSelectedRegion
-              ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .textSecondary)
-          )
+          Text(generateServerCountDetails(for: region))
+            .font(.footnote)
+            .foregroundStyle(
+              isSelectedRegion
+                ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .textSecondary)
+            )
         }
         Spacer()
         if isSelectedRegion {
@@ -197,6 +192,23 @@ public struct BraveVPNRegionListView: View {
     .foregroundStyle(Color(braveSystemName: .textPrimary))
     .tint(.accentColor)
     .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
+  }
+
+  private func generateServerCountDetails(for region: GRDRegion) -> String {
+    let cityCount = region.cities.count
+    let serverCount = Int(truncating: region.serverCount)
+
+    let cityCountTitle =
+      cityCount > 1
+      ? String(format: Strings.VPN.multipleCityCountTitle, cityCount)
+      : String(format: Strings.VPN.cityCountTitle, cityCount)
+
+    let serverCountTitle =
+      serverCount > 1
+      ? String(format: Strings.VPN.multipleServerCountTitle, serverCount)
+      : String(format: Strings.VPN.serverCountTitle, serverCount)
+
+    return "\(cityCountTitle) - \(serverCountTitle)"
   }
 
   private func enableAutomaticServer(_ enabled: Bool) {

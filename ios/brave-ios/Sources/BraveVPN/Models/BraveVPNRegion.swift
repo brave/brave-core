@@ -16,6 +16,7 @@ struct BraveVPNCityRegion: Identifiable, Equatable {
   let id = UUID()
   let displayName: String
   let regionName: String
+  var serverCount: Int = 0
   var isAutomatic = false
 }
 
@@ -31,21 +32,23 @@ class VPNCityRegionDetail: ObservableObject {
   var countryName: String = ""
 
   @Published var selectedRegion: BraveVPNCityRegion? = nil
-  
+
   func assignSelectedRegion(
     countryName: String,
-    cityRegions: [BraveVPNCityRegion])
-  {
+    cityRegions: [BraveVPNCityRegion]
+  ) {
     self.countryName = countryName
     self.cityRegions.append(contentsOf: cityRegions)
-    
-    let selectedCity = cityRegions.first (where: { $0.regionName ==  BraveVPN.selectedRegion?.regionName })
-    
+
+    let selectedCity = cityRegions.first(where: {
+      $0.regionName == BraveVPN.selectedRegion?.regionName
+    })
+
     guard let selectedCity = selectedCity else {
       selectedRegion = self.cityRegions.first
       return
     }
-    
+
     selectedRegion = selectedCity
   }
 }
