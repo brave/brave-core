@@ -17,7 +17,7 @@ class IdentityManager;
 }  // namespace signin
 
 namespace syncer {
-// class ModelTypeStoreService;
+// class DataTypeStoreService;
 class SyncService;
 }  // namespace syncer
 

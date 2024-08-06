@@ -12,7 +12,7 @@
 class PrefService;
 
 namespace syncer {
-class ModelTypeStoreService;
+class DataTypeStoreService;
 class SyncService;
 }  // namespace syncer
 
@@ -24,7 +24,7 @@ class BraveHistoryDeleteDirectivesDataTypeController
   BraveHistoryDeleteDirectivesDataTypeController(
       const base::RepeatingClosure& dump_stack,
       syncer::SyncService* sync_service,
-      syncer::ModelTypeStoreService* model_type_store_service,
+      syncer::DataTypeStoreService* data_type_store_service,
       HistoryService* history_service,
       PrefService* pref_service);
 

@@ -539,25 +539,25 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
                   ->GetUserSettings()
                   ->IsEncryptEverythingEnabled());
 
-  auto history_model_type_controller =
+  auto history_data_type_controller =
       std::make_unique<history::BraveHistoryDataTypeController>(
           brave_sync_service_impl(), identity_manager(), nullptr,
           pref_service());
 
   auto history_precondition_state =
-      history_model_type_controller->GetPreconditionState();
+      history_data_type_controller->GetPreconditionState();
   EXPECT_EQ(history_precondition_state,
             DataTypeController::PreconditionState::kPreconditionsMet);
 
-  auto test_model_type_store_service =
-      std::make_unique<TestModelTypeStoreService>();
-  auto history_delete_directives_model_type_controller =
+  auto test_data_type_store_service =
+      std::make_unique<TestDataTypeStoreService>();
+  auto history_delete_directives_data_type_controller =
       std::make_unique<history::BraveHistoryDeleteDirectivesDataTypeController>(
           base::DoNothing(), brave_sync_service_impl(),
-          test_model_type_store_service.get(), nullptr, pref_service());
+          test_data_type_store_service.get(), nullptr, pref_service());
 
   auto history_delete_directives_precondition_state =
-      history_delete_directives_model_type_controller->GetPreconditionState();
+      history_delete_directives_data_type_controller->GetPreconditionState();
   EXPECT_EQ(history_delete_directives_precondition_state,
             DataTypeController::PreconditionState::kPreconditionsMet);
 
