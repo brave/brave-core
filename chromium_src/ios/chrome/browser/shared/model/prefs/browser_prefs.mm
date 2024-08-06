@@ -30,6 +30,7 @@
 void BraveRegisterBrowserStatePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   brave_ads::RegisterProfilePrefs(registry);
+  brave_ads::RegisterProfilePrefsForMigration(registry);
   brave_rewards::RegisterProfilePrefs(registry);
   brave_rewards::RegisterProfilePrefsForMigration(registry);
   brave_sync::Prefs::RegisterProfilePrefs(registry);
