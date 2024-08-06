@@ -28,6 +28,10 @@ struct PageContent {
 // RenderFrame.
 interface PageContentExtractor {
   ExtractPageContent() => (PageContent? page_content);
+
+  // Get summarizer-key meta tag from Brave Search SERP if it exists.
+  // This should only be called when the last commited URL is Brave Search SERP.
+  GetSearchSummarizerKey() => (string? key);
 };
 
 // Allows the renderer to notify the browser process of meaningful changes to

@@ -25,6 +25,7 @@
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/text_embedder.h"
+#include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -201,6 +202,27 @@ class ConversationDriver : public ModelService::Observer {
 
   virtual void OnFaviconImageDataChanged();
 
+  using FetchSearchQuerySummaryCallback = base::OnceCallback<void(
+      const std::optional<SearchQuerySummary>& search_query_summary)>;
+
+  // Get summarizer-key meta tag content from Brave Search SERP if exists and
+  // use it to fetch search query and summary from Brave search chatllm
+  // endpoint.
+  virtual void FetchSearchQuerySummary(
+      FetchSearchQuerySummaryCallback callback);
+
+  // Fetch search query and summary from Brave Search SERP and add them to the
+  // conversation history or clear the existing staged search query and summary
+  // from the conversation history.
+  // Fetch only occurs if below conditions are met:
+  //   1) user has opted in
+  //   2) page context is linked
+  //   3) page URL is Brave Search SERP
+  //   4) conversation is active
+  // Otherwise, it would clear the previously staged search query and summary
+  // from the conversation history if it exists.
+  void MaybeFetchOrClearSearchQuerySummary();
+
   // Implementer should call this when the content is updated in a way that
   // will not be detected by the on-demand techniques used by GetPageContent.
   // For example for sites where GetPageContent does not read the live DOM but
@@ -229,11 +251,33 @@ class ConversationDriver : public ModelService::Observer {
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, LocalModelsUpdater);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedder);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedderInitialized);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           MaybeFetchOrClearSearchQuerySummary);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           MaybeFetchOrClearSearchQuerySummary_NoResult);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           MaybeFetchOrClearSearchQuerySummary_NotOptedIn);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           MaybeFetchOrClearSearchQuerySummary_NoPageContent);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationDriverUnitTest,
+      MaybeFetchOrClearSearchQuerySummary_NotBraveSearchSERP);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           MaybeFetchOrClearSearchQuerySummary_OnNewPage);
+  FRIEND_TEST_ALL_PREFIXES(
+      ConversationDriverUnitTest,
+      MaybeFetchOrClearSearchQuerySummary_OnConversationActiveChanged);
 
   void InitEngine();
   void OnUserOptedIn();
   bool MaybePopPendingRequests();
   void MaybeSeedOrClearSuggestions();
+
+  void ClearSearchQuerySummary();
+  void OnSearchQuerySummaryFetched(
+      int64_t navigation_id,
+      const std::optional<SearchQuerySummary>& search_query_summary);
+  bool ShouldFetchSearchQuerySummary();
 
   void PerformAssistantGeneration(const std::string& input,
                                   int64_t current_navigation_id,

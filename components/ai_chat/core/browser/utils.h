@@ -9,6 +9,7 @@
 #include "base/functional/callback_forward.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 #include "third_party/skia/include/core/SkBitmap.h"
+#include "url/gurl.h"
 
 class PrefService;
 
@@ -18,6 +19,8 @@ namespace ai_chat {
 bool IsAIChatEnabled(PrefService* prefs);
 bool HasUserOptedIn(PrefService* prefs);
 void SetUserOptedIn(PrefService* prefs, bool opted_in);
+
+bool IsBraveSearchSERP(const GURL& url);
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 using GetOCRTextCallback = base::OnceCallback<void(std::string)>;

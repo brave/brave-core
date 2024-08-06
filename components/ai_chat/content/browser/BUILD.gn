@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
+import("//tools/json_schema_compiler/json_schema_api.gni")
 
 assert(enable_ai_chat)
 
@@ -23,7 +24,9 @@ static_library("browser") {
   ]
 
   deps = [
+    ":generated_brave_search_responses",
     "//base",
+    "//brave/brave_domains",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/buildflags",
@@ -50,4 +53,11 @@ static_library("browser") {
     "//ui/base",
     "//url",
   ]
+}
+
+generated_types("generated_brave_search_responses") {
+  sources = [ "brave_search_responses.idl" ]
+  deps = [ "//base" ]
+  root_namespace = "ai_chat::%(namespace)s"
+  visibility = [ ":browser" ]
 }

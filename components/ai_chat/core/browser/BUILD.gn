@@ -40,6 +40,7 @@ static_library("browser") {
     "local_models_updater.h",
     "model_service.cc",
     "model_service.h",
+    "types.h",
     "utils.cc",
     "utils.h",
   ]
@@ -128,6 +129,7 @@ if (!is_ios) {
       "local_models_updater_unittest.cc",
       "model_service_unittest.cc",
       "text_embedder_unittest.cc",
+      "utils_unittest.cc",
     ]
 
     deps = [

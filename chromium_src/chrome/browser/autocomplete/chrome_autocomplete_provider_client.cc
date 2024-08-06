@@ -79,7 +79,7 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
           ai_chat::mojom::ConversationTurnVisibility::VISIBLE,
           base::UTF16ToUTF8(query) /* text */, std::nullopt /* selected_text */,
           std::nullopt /* events */, base::Time::Now(),
-          std::nullopt /* edits */);
+          std::nullopt /* edits */, false /* from_brave_search_SERP */);
 
   chat_tab_helper->SubmitHumanConversationEntry(std::move(turn));
 

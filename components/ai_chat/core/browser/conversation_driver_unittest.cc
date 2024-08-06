@@ -27,6 +27,7 @@
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/text_embedder.h"
+#include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -153,6 +154,10 @@ class MockConversationDriver : public ConversationDriver {
               (GetPageContentCallback, std::string_view),
               (override));
   MOCK_METHOD(void, PrintPreviewFallback, (GetPageContentCallback), (override));
+  MOCK_METHOD(void,
+              FetchSearchQuerySummary,
+              (FetchSearchQuerySummaryCallback),
+              (override));
 };
 
 class MockTextEmbedder : public TextEmbedder {
@@ -228,6 +233,22 @@ class ConversationDriverUnitTest : public testing::Test {
   void WaitForOnEngineCompletionComplete() { task_environment_.RunUntilIdle(); }
 
   void TearDown() override {}
+
+  void StageSearchQuerySummary() {
+    std::vector<mojom::ConversationTurnPtr> history;
+    history.push_back(mojom::ConversationTurn::New(
+        mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+        mojom::ConversationTurnVisibility::VISIBLE, "query", std::nullopt,
+        std::nullopt, base::Time::Now(), std::nullopt, true));
+    std::vector<mojom::ConversationEntryEventPtr> events;
+    events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("summary")));
+    history.push_back(mojom::ConversationTurn::New(
+        mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+        mojom::ConversationTurnVisibility::VISIBLE, "summary", std::nullopt,
+        std::move(events), base::Time::Now(), std::nullopt, true));
+    conversation_driver_->SetChatHistoryForTesting(std::move(history));
+  }
 
  protected:
   base::test::TaskEnvironment task_environment_;
@@ -348,11 +369,11 @@ TEST_F(ConversationDriverUnitTest, SubmitSelectedText) {
       mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
       mojom::ConversationTurnVisibility::VISIBLE,
       l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
-      "I have spoken.", std::nullopt, base::Time::Now(), std::nullopt));
+      "I have spoken.", std::nullopt, base::Time::Now(), std::nullopt, false));
   expected_history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       mojom::ConversationTurnVisibility::VISIBLE, "This is the way.",
-      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt));
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, false));
   EXPECT_EQ(history.size(), expected_history.size());
   for (size_t i = 0; i < history.size(); i++) {
     EXPECT_TRUE(CompareConversationTurn(history[i], expected_history[i]));
@@ -391,20 +412,21 @@ TEST_F(ConversationDriverUnitTest, SubmitSelectedText) {
       mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
       mojom::ConversationTurnVisibility::VISIBLE,
       l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
-      "I have spoken.", std::nullopt, base::Time::Now(), std::nullopt));
+      "I have spoken.", std::nullopt, base::Time::Now(), std::nullopt, false));
   expected_history2.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       mojom::ConversationTurnVisibility::VISIBLE, "This is the way.",
-      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt));
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, false));
   expected_history2.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
       mojom::ConversationTurnVisibility::VISIBLE,
       l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
-      "I have spoken again.", std::nullopt, base::Time::Now(), std::nullopt));
+      "I have spoken again.", std::nullopt, base::Time::Now(), std::nullopt,
+      false));
   expected_history2.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       mojom::ConversationTurnVisibility::VISIBLE, "This is the way.",
-      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt));
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, false));
   EXPECT_EQ(history2.size(), expected_history2.size());
   for (size_t i = 0; i < history2.size(); i++) {
     EXPECT_TRUE(CompareConversationTurn(history2[i], expected_history2[i]));
@@ -746,11 +768,11 @@ TEST_F(ConversationDriverUnitTest, ModifyConversation) {
   history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       mojom::ConversationTurnVisibility::VISIBLE, "prompt1", std::nullopt,
-      std::nullopt, created_time1, std::nullopt));
+      std::nullopt, created_time1, std::nullopt, false));
   history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       mojom::ConversationTurnVisibility::VISIBLE, "answer1", std::nullopt,
-      std::nullopt, base::Time::Now(), std::nullopt));
+      std::nullopt, base::Time::Now(), std::nullopt, false));
   conversation_driver_->SetChatHistoryForTesting(std::move(history));
 
   // Modify an entry for the first time.
@@ -981,6 +1003,207 @@ TEST_P(PageContentRefineTest, TextEmbedderInitialized) {
     conversation_driver_->PerformAssistantGeneration(
         "prompt", 0, std::string(max_page_content_length + 1, 'A'), false, "");
   }
+}
+
+TEST_F(ConversationDriverUnitTest, MaybeFetchOrClearSearchQuerySummary) {
+  // Fetch with result should update the conversation history and call
+  // OnHistoryUpdate on observers.
+  ON_CALL(*conversation_driver_, GetPageURL)
+      .WillByDefault(
+          testing::Return(GURL("https://search.brave.com/search?q=test")));
+  EXPECT_CALL(*conversation_driver_, FetchSearchQuerySummary)
+      .WillOnce(base::test::RunOnceCallback<0>(
+          SearchQuerySummary("query", "summary")));
+  MockConversationDriverObserver observer(conversation_driver_.get());
+  EXPECT_CALL(observer, OnHistoryUpdate()).Times(1);  // From fetch.
+
+  // User opting in would trigger MaybeFetchOrClearSearchQuerySummary being
+  // called.
+  EmulateUserOptedIn();
+  EXPECT_TRUE(conversation_driver_->is_conversation_active_);
+  EXPECT_TRUE(conversation_driver_->should_send_page_contents_);
+
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(conversation_driver_.get());
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  auto& history = conversation_driver_->GetConversationHistory();
+  std::vector<mojom::ConversationTurnPtr> expected_history;
+  expected_history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      mojom::ConversationTurnVisibility::VISIBLE, "query", std::nullopt,
+      std::nullopt, base::Time::Now(), std::nullopt, true));
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("summary")));
+  expected_history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "summary", std::nullopt,
+      std::move(events), base::Time::Now(), std::nullopt, true));
+  ASSERT_EQ(history.size(), expected_history.size());
+  for (size_t i = 0; i < history.size(); i++) {
+    expected_history[i]->created_time = history[i]->created_time;
+    EXPECT_EQ(history[i], expected_history[i]);
+  }
+}
+
+TEST_F(ConversationDriverUnitTest,
+       MaybeFetchOrClearSearchQuerySummary_NoResult) {
+  EmulateUserOptedIn();
+  ASSERT_TRUE(conversation_driver_->should_send_page_contents_);
+
+  ON_CALL(*conversation_driver_, GetPageURL)
+      .WillByDefault(
+          testing::Return(GURL("https://search.brave.com/search?q=test")));
+  EXPECT_CALL(*conversation_driver_, FetchSearchQuerySummary)
+      .WillOnce(base::test::RunOnceCallback<0>(std::nullopt));
+  MockConversationDriverObserver observer(conversation_driver_.get());
+  EXPECT_CALL(observer, OnHistoryUpdate()).Times(0);
+
+  conversation_driver_->MaybeFetchOrClearSearchQuerySummary();
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(conversation_driver_.get());
+  testing::Mock::VerifyAndClearExpectations(&observer);
+  EXPECT_TRUE(conversation_driver_->GetConversationHistory().empty());
+}
+
+TEST_F(ConversationDriverUnitTest,
+       MaybeFetchOrClearSearchQuerySummary_NotOptedIn) {
+  EmulateUserOptedIn();
+  ASSERT_TRUE(conversation_driver_->should_send_page_contents_);
+  StageSearchQuerySummary();
+
+  // Fetch should not be called when user is not opted in, staged query
+  // and summary will be cleared.
+  ON_CALL(*conversation_driver_, GetPageURL)
+      .WillByDefault(
+          testing::Return(GURL("https://search.brave.com/search?q=test")));
+  EXPECT_CALL(*conversation_driver_, FetchSearchQuerySummary).Times(0);
+  MockConversationDriverObserver observer(conversation_driver_.get());
+  EXPECT_CALL(observer, OnHistoryUpdate()).Times(1);  // From clear.
+
+  // User opted in pref change would trigger MaybeFetchOrClearSearchQuerySummary
+  // being called.
+  conversation_driver_->SetUserOptedIn(false);
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(conversation_driver_.get());
+  testing::Mock::VerifyAndClearExpectations(&observer);
+  EXPECT_TRUE(conversation_driver_->GetConversationHistory().empty());
+}
+
+TEST_F(ConversationDriverUnitTest,
+       MaybeFetchOrClearSearchQuerySummary_NoPageContent) {
+  EmulateUserOptedIn();
+  ASSERT_TRUE(conversation_driver_->should_send_page_contents_);
+  StageSearchQuerySummary();
+
+  // Fetch should not be called if page content is not linked, staged query
+  // and summary will be cleared.
+  ON_CALL(*conversation_driver_, GetPageURL)
+      .WillByDefault(
+          testing::Return(GURL("https://search.brave.com/search?q=test")));
+  EXPECT_CALL(*conversation_driver_, FetchSearchQuerySummary).Times(0);
+  MockConversationDriverObserver observer(conversation_driver_.get());
+  EXPECT_CALL(observer, OnHistoryUpdate()).Times(1);  // From clear.
+
+  // MaybeFetchOrClearSearchQuerySummary would be triggered by below.
+  conversation_driver_->SetShouldSendPageContents(false);
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(conversation_driver_.get());
+  testing::Mock::VerifyAndClearExpectations(&observer);
+  EXPECT_TRUE(conversation_driver_->GetConversationHistory().empty());
+}
+
+TEST_F(ConversationDriverUnitTest,
+       MaybeFetchOrClearSearchQuerySummary_NotBraveSearchSERP) {
+  EmulateUserOptedIn();
+  ASSERT_TRUE(conversation_driver_->should_send_page_contents_);
+  StageSearchQuerySummary();
+
+  // Fetch should not be called if page URL is not Brave Search SERP, staged
+  // query and summary will be cleared.
+  ON_CALL(*conversation_driver_, GetPageURL)
+      .WillByDefault(testing::Return(GURL("https://search.brave.com")));
+  EXPECT_CALL(*conversation_driver_, FetchSearchQuerySummary).Times(0);
+  MockConversationDriverObserver observer(conversation_driver_.get());
+  EXPECT_CALL(observer, OnHistoryUpdate()).Times(1);  // From clear.
+
+  conversation_driver_->MaybeFetchOrClearSearchQuerySummary();
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(conversation_driver_.get());
+  testing::Mock::VerifyAndClearExpectations(&observer);
+  EXPECT_TRUE(conversation_driver_->GetConversationHistory().empty());
+}
+
+TEST_F(ConversationDriverUnitTest,
+       MaybeFetchOrClearSearchQuerySummary_OnNewPage) {
+  EmulateUserOptedIn();
+  ASSERT_TRUE(conversation_driver_->should_send_page_contents_);
+  StageSearchQuerySummary();
+
+  // Fetch should not be called when navigating away to non-Brave Search SERP
+  // and staged query and summary will be cleared.
+  ON_CALL(*conversation_driver_, GetPageURL)
+      .WillByDefault(testing::Return(GURL("https://search.brave.com")));
+  EXPECT_CALL(*conversation_driver_, FetchSearchQuerySummary).Times(0);
+  MockConversationDriverObserver observer(conversation_driver_.get());
+  EXPECT_CALL(observer, OnHistoryUpdate()).Times(1);  // From clear.
+
+  // MaybeFetchOrClearSearchQuerySummary would be triggered by below.
+  conversation_driver_->OnNewPage(conversation_driver_->current_navigation_id_ +
+                                  1);
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(conversation_driver_.get());
+  testing::Mock::VerifyAndClearExpectations(&observer);
+  EXPECT_TRUE(conversation_driver_->GetConversationHistory().empty());
+
+  // Fetch should be called when navigating back to Brave Search SERP.
+  ON_CALL(*conversation_driver_, GetPageURL)
+      .WillByDefault(
+          testing::Return(GURL("https://search.brave.com/search?q=test")));
+  EXPECT_CALL(*conversation_driver_, FetchSearchQuerySummary)
+      .WillOnce(base::test::RunOnceCallback<0>(
+          SearchQuerySummary("query", "summary")));
+  EXPECT_CALL(observer, OnHistoryUpdate()).Times(2);  // From clear and fetch.
+  // MaybeFetchOrClearSearchQuerySummary would be triggered by below.
+  conversation_driver_->OnNewPage(conversation_driver_->current_navigation_id_ +
+                                  1);
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(conversation_driver_.get());
+  testing::Mock::VerifyAndClearExpectations(&observer);
+  EXPECT_EQ(conversation_driver_->GetConversationHistory().size(), 2u);
+}
+
+TEST_F(ConversationDriverUnitTest,
+       MaybeFetchOrClearSearchQuerySummary_OnConversationActiveChanged) {
+  EmulateUserOptedIn();
+  ASSERT_TRUE(conversation_driver_->should_send_page_contents_);
+  ASSERT_TRUE(conversation_driver_->is_conversation_active_);
+  StageSearchQuerySummary();
+
+  // Fetch should not be called when conversation is inactive and staged query
+  // and summary will be kept.
+  ON_CALL(*conversation_driver_, GetPageURL)
+      .WillByDefault(
+          testing::Return(GURL("https://search.brave.com/search?q=test")));
+  EXPECT_CALL(*conversation_driver_, FetchSearchQuerySummary).Times(0);
+  MockConversationDriverObserver observer(conversation_driver_.get());
+  EXPECT_CALL(observer, OnHistoryUpdate()).Times(0);
+  // MaybeFetchOrClearSearchQuerySummary would be triggered by below.
+  conversation_driver_->OnConversationActiveChanged(false);
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(conversation_driver_.get());
+  testing::Mock::VerifyAndClearExpectations(&observer);
+  EXPECT_EQ(conversation_driver_->GetConversationHistory().size(), 2u);
+
+  // No fetch should be called when conversation is active again.
+  EXPECT_CALL(*conversation_driver_, FetchSearchQuerySummary).Times(0);
+  conversation_driver_->OnConversationActiveChanged(true);
+  EXPECT_CALL(observer, OnHistoryUpdate()).Times(0);
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(conversation_driver_.get());
+  testing::Mock::VerifyAndClearExpectations(&observer);
+  EXPECT_EQ(conversation_driver_->GetConversationHistory().size(), 2u);
 }
 
 }  // namespace ai_chat

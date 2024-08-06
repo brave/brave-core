@@ -56,6 +56,9 @@ class PageContentExtractor
   void ExtractPageContent(
       mojom::PageContentExtractor::ExtractPageContentCallback callback)
       override;
+  void GetSearchSummarizerKey(
+      mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback)
+      override;
 
   // AIChatResourceSnifferThrottleDelegate
   void OnInterceptedPageContentChanged(

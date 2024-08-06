@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_AI_CHAT_TAB_HELPER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -16,6 +17,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "components/favicon/core/favicon_driver_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/navigation_handle.h"
@@ -124,6 +126,13 @@ class AIChatTabHelper : public content::WebContentsObserver,
                       std::string_view invalidation_token) override;
   void PrintPreviewFallback(GetPageContentCallback callback) override;
   std::u16string GetPageTitle() const override;
+  void FetchSearchQuerySummary(
+      FetchSearchQuerySummaryCallback callback) override;
+
+  void OnSearchSummarizerKeyFetched(FetchSearchQuerySummaryCallback callback,
+                                    const std::optional<std::string>& key);
+  void OnSearchQuerySummaryFetched(FetchSearchQuerySummaryCallback callback,
+                                   api_request_helper::APIRequestResult result);
 
   void BindPageContentExtractorReceiver(
       mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
@@ -145,6 +154,9 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   // A scoper only used for PDF viewing.
   std::unique_ptr<content::ScopedAccessibilityMode> scoped_accessibility_mode_;
+
+  // Used for fetching search query summary.
+  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
 
   mojo::AssociatedReceiver<mojom::PageContentExtractorHost>
       page_content_extractor_receiver_{this};

@@ -17,11 +17,16 @@
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
+#include "base/values.h"
+#include "brave/brave_domains/service_domains.h"
+#include "brave/components/ai_chat/content/browser/brave_search_responses.h"
 #include "brave/components/ai_chat/content/browser/model_service_factory.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/types.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -37,6 +42,8 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
+#include "net/base/url_util.h"
+#include "net/traffic_annotation/network_traffic_annotation.h"
 #include "pdf/buildflags.h"
 #include "ui/accessibility/ax_mode.h"
 #include "ui/accessibility/ax_updates_and_events.h"
@@ -45,7 +52,45 @@
 namespace ai_chat {
 
 namespace {
+
 std::optional<uint32_t> g_max_page_content_length_for_testing;
+
+net::NetworkTrafficAnnotationTag
+GetSearchQuerySummaryNetworkTrafficAnnotationTag() {
+  return net::DefineNetworkTrafficAnnotation("ai_chat_tab_helper", R"(
+      semantics {
+        sender: "Brave Leo AI Chat"
+        description:
+          "This sender is used to get search query summary from Brave search."
+        trigger:
+          "Triggered by uses of Brave Leo AI Chat on Brave Search SERP."
+        data:
+          "User's search query and the corresponding summary."
+        destination: WEBSITE
+      }
+      policy {
+        cookies_allowed: NO
+        policy_exception_justification:
+          "Not implemented."
+      }
+    )");
+}
+
+std::optional<SearchQuerySummary> ParseSearchQuerySummaryResponse(
+    const base::Value& value) {
+  auto search_query_response =
+      brave_search_responses::QuerySummaryResponse::FromValue(value);
+  if (!search_query_response || search_query_response->conversation.empty()) {
+    return std::nullopt;
+  }
+
+  const auto& query_summary = search_query_response->conversation[0];
+  if (query_summary.answer.empty()) {
+    return std::nullopt;
+  }
+
+  return SearchQuerySummary(query_summary.query, query_summary.answer[0].text);
+}
 
 }  // namespace
 
@@ -343,6 +388,63 @@ void AIChatTabHelper::CheckPDFA11yTree() {
     return;
   }
   OnPDFA11yInfoLoaded();
+}
+
+void AIChatTabHelper::FetchSearchQuerySummary(
+    FetchSearchQuerySummaryCallback callback) {
+  if (!IsBraveSearchSERP(GetPageURL())) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&AIChatTabHelper::OnSearchSummarizerKeyFetched,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  GetSearchSummarizerKey(web_contents(), std::move(internal_callback));
+}
+
+void AIChatTabHelper::OnSearchSummarizerKeyFetched(
+    FetchSearchQuerySummaryCallback callback,
+    const std::optional<std::string>& key) {
+  if (!key || key->empty()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  if (!api_request_helper_) {
+    api_request_helper_ =
+        std::make_unique<api_request_helper::APIRequestHelper>(
+            GetSearchQuerySummaryNetworkTrafficAnnotationTag(),
+            web_contents()
+                ->GetBrowserContext()
+                ->GetDefaultStoragePartition()
+                ->GetURLLoaderFactoryForBrowserProcess());
+  }
+
+  // https://search.brave.com/api/chatllm/raw_data?key=<key>
+  GURL base_url(
+      base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
+                    brave_domains::GetServicesDomain(kBraveSearchURLPrefix),
+                    "/api/chatllm/raw_data"}));
+  CHECK(base_url.is_valid());
+  GURL url = net::AppendQueryParameter(base_url, "key", *key);
+
+  auto internal_callback =
+      base::BindOnce(&AIChatTabHelper::OnSearchQuerySummaryFetched,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  api_request_helper_->Request("GET", url, "", "application/json",
+                               std::move(internal_callback), {}, {});
+}
+
+void AIChatTabHelper::OnSearchQuerySummaryFetched(
+    FetchSearchQuerySummaryCallback callback,
+    api_request_helper::APIRequestResult result) {
+  if (!result.Is2XXResponseCode()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  std::move(callback).Run(ParseSearchQuerySummaryResponse(result.value_body()));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);

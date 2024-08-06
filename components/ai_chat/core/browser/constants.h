@@ -31,6 +31,8 @@ extern const char kLeoModelSupportUrl[];
 inline constexpr int kCustomModelMaxPageContentLength = 9600;
 inline constexpr int kCustomModelLongConversationCharLimit = 10000;
 
+inline constexpr char kBraveSearchURLPrefix[] = "search";
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONSTANTS_H_

@@ -735,7 +735,8 @@ struct AIChatView_Preview: PreviewProvider {
                   selectedText: nil,
                   events: nil,
                   createdTime: Date.now,
-                  edits: nil
+                  edits: nil,
+                  fromBraveSearchSerp: false
                 ),
               isEntryInProgress: false,
               lastEdited: nil,
