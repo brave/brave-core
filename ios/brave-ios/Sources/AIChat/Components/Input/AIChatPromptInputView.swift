@@ -176,8 +176,8 @@ struct AIChatPromptInputView: View {
         .stroke(
           LinearGradient(
             stops: [
-              .init(color: Color(braveSystemName: .dividerStrong), location: 0),
-              .init(color: Color(braveSystemName: .dividerStrong), location: 0.5),
+              .init(color: Color(braveSystemName: .dividerSubtle), location: 0),
+              .init(color: Color(braveSystemName: .dividerSubtle), location: 0.5),
               // avoid stroke at bottom of shape
               .init(color: Color(braveSystemName: .containerBackground), location: 1),
             ],

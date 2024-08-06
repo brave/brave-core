@@ -19,6 +19,7 @@ struct AIChatUserMessageView: View {
       EditingUserMessageView(
         existingText: message,
         isFieldFocused: isFieldFocused,
+        isEdited: lastEdited != nil,
         cancel: cancelEditing,
         submitEditedText: submitEditedText
       )
@@ -62,6 +63,8 @@ struct AIChatUserMessageView_Previews: PreviewProvider {
 
 private struct UserHeaderView: View {
 
+  let isEdited: Bool
+
   var body: some View {
     HStack {
       Image(braveSystemName: "leo.user.circle")
@@ -73,6 +76,12 @@ private struct UserHeaderView: View {
       Text(Strings.AIChat.youMessageTitle)
         .font(.body.weight(.semibold))
         .foregroundStyle(Color(braveSystemName: .textTertiary))
+
+      if isEdited {
+        Spacer()
+
+        AIChatEditedBadgeView()
+      }
     }
   }
 }
@@ -90,7 +99,7 @@ private struct SentUserMessageView: View {
 
   var body: some View {
     VStack(alignment: .leading) {
-      UserHeaderView()
+      UserHeaderView(isEdited: lastEdited != nil)
 
       VStack(alignment: .leading, spacing: 16) {
         Text(message)
@@ -122,6 +131,7 @@ private struct EditingUserMessageView: View {
   let existingText: String
   @State private var text: String
   var isFieldFocused: FocusState<Bool>.Binding
+  let isEdited: Bool
   let cancel: () -> Void
   let submitEditedText: (String) -> Void
 
@@ -130,19 +140,21 @@ private struct EditingUserMessageView: View {
   init(
     existingText: String,
     isFieldFocused: FocusState<Bool>.Binding,
+    isEdited: Bool,
     cancel: @escaping () -> Void,
     submitEditedText: @escaping (String) -> Void
   ) {
     self.existingText = existingText
     self._text = State(wrappedValue: existingText)
     self.isFieldFocused = isFieldFocused
+    self.isEdited = isEdited
     self.cancel = cancel
     self.submitEditedText = submitEditedText
   }
 
   var body: some View {
     VStack(alignment: .leading) {
-      UserHeaderView()
+      UserHeaderView(isEdited: isEdited)
 
       HStack {
         TextField("", text: $text, axis: .vertical)

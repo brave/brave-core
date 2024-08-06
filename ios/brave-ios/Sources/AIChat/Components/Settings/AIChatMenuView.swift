@@ -72,15 +72,12 @@ private struct AIChatMenuItemView<RightAccessoryView: View>: View {
 }
 
 enum AIChatMenuOptionTypes {
-  case newChat
   case goPremium
   case managePremium
   case advancedSettings
 
   var title: String {
     switch self {
-    case .newChat:
-      return Strings.AIChat.quickMenuNewChatActionTitle
     case .goPremium:
       return Strings.AIChat.quickMenuGoPremiumActionTitle
     case .managePremium:
@@ -92,8 +89,6 @@ enum AIChatMenuOptionTypes {
 
   var imageName: String {
     switch self {
-    case .newChat:
-      return "leo.edit.box"
     case .goPremium, .managePremium:
       return "leo.lock.open"
     case .advancedSettings:
@@ -171,11 +166,6 @@ struct AIChatMenuView: View {
 
       Color(braveSystemName: .dividerSubtle)
         .frame(height: 8.0)
-
-      menuActionItems(for: .newChat)
-
-      Color(braveSystemName: .dividerSubtle)
-        .frame(height: 1.0)
 
       // Check if leo in-app purchase is activated before or not
       if let state = BraveStoreSDK.shared.leoSubscriptionStatus?.state {
