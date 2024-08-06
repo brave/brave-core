@@ -26,6 +26,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/button/label_button.h"
+#include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/textfield/textfield.h"
 #include "ui/views/layout/fill_layout.h"
 
@@ -563,7 +564,7 @@ void PlaylistMoveDialog::EnterChoosePlaylistMode() {
                                    base::Unretained(this)));
 
   // This view owns the button so it's okay to bind Unretained(this).
-  SetExtraView(std::make_unique<views::LabelButton>(
+  SetExtraView(std::make_unique<views::MdTextButton>(
       base::BindRepeating(&PlaylistMoveDialog::OnNewPlaylistPressed,
                           base::Unretained(this)),
       l10n_util::GetStringUTF16(IDS_PLAYLIST_MOVE_MEDIA_DIALOG_NEW_PLAYLIST)));
@@ -601,7 +602,7 @@ void PlaylistMoveDialog::EnterCreatePlaylistMode() {
                                    base::Unretained(this)));
 
   // This view owns the button so it's okay to bind Unretained(this).
-  SetExtraView(std::make_unique<views::LabelButton>(
+  SetExtraView(std::make_unique<views::MdTextButton>(
       base::BindRepeating(&PlaylistMoveDialog::OnBackPressed,
                           base::Unretained(this)),
       l10n_util::GetStringUTF16(IDS_PLAYLIST_MOVE_MEDIA_DIALOG_BACK)));
