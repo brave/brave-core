@@ -84,7 +84,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
     @"BraveAdsComponentUpdaterMetadata";
 
 @interface NotificationAdIOS ()
-- (instancetype)initWithNotificationInfo:
+- (instancetype)initWithNotificationAdInfo:
     (const brave_ads::NotificationAdInfo&)info;
 @end
 
@@ -1261,7 +1261,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 
 - (void)showNotificationAd:(const brave_ads::NotificationAdInfo&)ad {
   const auto notificationAd =
-      [[NotificationAdIOS alloc] initWithNotificationInfo:ad];
+      [[NotificationAdIOS alloc] initWithNotificationAdInfo:ad];
   [self.notificationsHandler showNotificationAd:notificationAd];
 }
 
@@ -1572,7 +1572,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
     return nil;
   }
 
-  return [[NotificationAdIOS alloc] initWithNotificationInfo:*ad];
+  return [[NotificationAdIOS alloc] initWithNotificationAdInfo:*ad];
 }
 
 - (void)triggerNotificationAdEvent:(NSString*)placementId
