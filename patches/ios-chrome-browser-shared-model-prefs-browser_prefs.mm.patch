@@ -1,19 +1,19 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 2edc99539f731c9718b24f935477bfd921f3b319..6397955c13643d63fba2e688867ebaffea54bdde 100644
+index 874622eef0019a636bc4589815182a5e6e940dd0..e20ffaa8121fcb684c0729d6da0df004f520eb26 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -568,6 +568,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-   // Bottom omnibox preferences.
-   registry->RegisterBooleanPref(prefs::kBottomOmnibox, false);
-   registry->RegisterBooleanPref(prefs::kBottomOmniboxByDefault, false);
+@@ -663,6 +663,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+                                std::string());
+   registry->RegisterIntegerPref(prefs::kIosSyncSegmentsNewTabPageDisplayCount,
+                                 0);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -856,6 +857,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
- 
-   registry->RegisterBooleanPref(kObsoletePasswordsPerAccountPrefMigrationDone,
-                                 false);
+@@ -955,6 +956,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   // Prefs migrated to localState prefs.
+   registry->RegisterBooleanPref(prefs::kBottomOmnibox, false);
+   registry->RegisterBooleanPref(prefs::kBottomOmniboxByDefault, false);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
