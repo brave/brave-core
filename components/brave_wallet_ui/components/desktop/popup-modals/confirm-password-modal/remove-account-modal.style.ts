@@ -6,6 +6,8 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 
+const { spacing } = leo
+
 export const modalWidth = '442px'
 
 export const StyledWrapper = styled.div`
@@ -14,5 +16,5 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  padding: 0px ${leo.spacing['3Xl']} ${leo.spacing['3Xl']} ${leo.spacing['3Xl']};
+  padding: 0px ${spacing['3Xl']} ${spacing['3Xl']} ${spacing['3Xl']};
 `
