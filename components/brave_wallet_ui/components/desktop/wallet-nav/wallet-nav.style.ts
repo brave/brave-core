@@ -16,17 +16,11 @@ import {
 export const Wrapper = styled.div<{
   isPanel: boolean
 }>`
-  --nav-background: ${leo.color.container.background};
-  @media (prefers-color-scheme: dark) {
-    /* #1C2026 does not exist in design system */
-    --nav-background: ${(p) =>
-      p.isPanel ? '#1C2026' : leo.color.container.background};
-  }
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: var(--nav-background);
+  background-color: ${leo.color.container.background};
   border-radius: 16px;
   position: absolute;
   top: ${layoutTopPosition}px;
