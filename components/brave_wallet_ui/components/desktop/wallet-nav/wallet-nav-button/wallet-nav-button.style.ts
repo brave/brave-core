@@ -10,10 +10,6 @@ import { WalletButton, Text } from '../../../shared/style'
 import { layoutSmallWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledButton = styled(WalletButton)<{ isSelected?: boolean }>`
-  --button-background-hover: ${leo.color.container.highlight};
-  @media (prefers-color-scheme: dark) {
-    --button-background-hover: ${leo.color.primitive.neutral[80]};
-  }
   --icon-color: ${(p) =>
     p.isSelected ? leo.color.icon.interactive : leo.color.neutral[30]};
   --text-color: ${(p) =>
@@ -45,9 +41,9 @@ export const StyledButton = styled(WalletButton)<{ isSelected?: boolean }>`
     margin-bottom: 0px;
     margin-right: 8px;
     background-color: ${(p) =>
-      p.isSelected ? 'var(--button-background-hover)' : 'none'};
+      p.isSelected ? leo.color.container.highlight : 'none'};
     &:hover {
-      background-color: var(--button-background-hover);
+      background-color: ${leo.color.container.highlight};
     }
     &:last-child {
       margin-right: 0px;
