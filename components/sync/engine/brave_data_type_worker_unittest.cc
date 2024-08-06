@@ -3,14 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/sync/engine/brave_model_type_worker.h"
-
 #include <utility>
 
 #include "base/functional/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/time/time_override.h"
+#include "brave/components/sync/engine/brave_data_type_worker.h"
 #include "components/sync/engine/cancelation_signal.h"
 #include "components/sync/nigori/cryptographer_impl.h"
 #include "components/sync/protocol/sync.pb.h"
@@ -28,12 +27,12 @@ using sync_pb::ModelTypeState;
 
 namespace syncer {
 
-class BraveModelTypeWorkerTest : public ::testing::Test {
+class BraveDataTypeWorkerTest : public ::testing::Test {
  protected:
-  explicit BraveModelTypeWorkerTest(ModelType model_type = PREFERENCES)
+  explicit BraveDataTypeWorkerTest(ModelType model_type = PREFERENCES)
       : model_type_(model_type) {}
 
-  ~BraveModelTypeWorkerTest() override = default;
+  ~BraveDataTypeWorkerTest() override = default;
 
   void NormalInitialize() {
     ModelTypeState initial_state;
@@ -54,11 +53,10 @@ class BraveModelTypeWorkerTest : public ::testing::Test {
     DCHECK(!worker());
 
     auto processor = std::make_unique<MockDataTypeProcessor>();
-    processor->SetDisconnectCallback(
-        base::BindOnce(&BraveModelTypeWorkerTest::DisconnectProcessor,
-                       base::Unretained(this)));
+    processor->SetDisconnectCallback(base::BindOnce(
+        &BraveDataTypeWorkerTest::DisconnectProcessor, base::Unretained(this)));
 
-    worker_ = std::make_unique<BraveModelTypeWorker>(
+    worker_ = std::make_unique<BraveDataTypeWorker>(
         type, state, &cryptographer_, /*encryption_enabled=*/false,
         PassphraseType::kImplicitPassphrase, &mock_nudge_handler_,
         &cancelation_signal_);
@@ -71,7 +69,7 @@ class BraveModelTypeWorkerTest : public ::testing::Test {
     is_processor_disconnected_ = true;
   }
 
-  BraveModelTypeWorker* worker() { return worker_.get(); }
+  BraveDataTypeWorker* worker() { return worker_.get(); }
   MockNudgeHandler* nudge_handler() { return &mock_nudge_handler_; }
 
   bool IsProgressMarkerEmpty() {
@@ -87,7 +85,7 @@ class BraveModelTypeWorkerTest : public ::testing::Test {
   const ModelType model_type_;
   FakeCryptographer cryptographer_;
   CancelationSignal cancelation_signal_;
-  std::unique_ptr<BraveModelTypeWorker> worker_;
+  std::unique_ptr<BraveDataTypeWorker> worker_;
   MockNudgeHandler mock_nudge_handler_;
   bool is_processor_disconnected_ = false;
 };
@@ -125,9 +123,9 @@ FailedCommitResponseDataList MakeErrorResponseList(
 
 }  // namespace
 
-TEST_F(BraveModelTypeWorkerTest, ResetProgressMarker) {
+TEST_F(BraveDataTypeWorkerTest, ResetProgressMarker) {
   g_minimal_time_between_reset_marker =
-      BraveModelTypeWorker::MinimalTimeBetweenResetForTests();
+      BraveDataTypeWorker::MinimalTimeBetweenResetForTests();
 
   NormalInitialize();
 
@@ -146,8 +144,7 @@ TEST_F(BraveModelTypeWorkerTest, ResetProgressMarker) {
     }
 
     for (size_t i = 0;
-         i < BraveModelTypeWorker::GetFailuresToResetMarkerForTests() - 1;
-         ++i) {
+         i < BraveDataTypeWorker::GetFailuresToResetMarkerForTests() - 1; ++i) {
       auto local_time_override = AdvanceTimeToAllowResetMarker();
       worker()->OnCommitResponse(CommitResponseDataList(),
                                  MakeErrorResponseList(err));
@@ -161,13 +158,13 @@ TEST_F(BraveModelTypeWorkerTest, ResetProgressMarker) {
   }
 }
 
-TEST_F(BraveModelTypeWorkerTest, ResetProgressMarkerMaxPeriod) {
+TEST_F(BraveDataTypeWorkerTest, ResetProgressMarkerMaxPeriod) {
   NormalInitialize();
   auto error_response_list =
       MakeErrorResponseList(CommitResponse_ResponseType_CONFLICT);
 
   for (size_t i = 0;
-       i < BraveModelTypeWorker::GetFailuresToResetMarkerForTests() - 1; ++i) {
+       i < BraveDataTypeWorker::GetFailuresToResetMarkerForTests() - 1; ++i) {
     worker()->OnCommitResponse(CommitResponseDataList(), error_response_list);
     EXPECT_FALSE(IsProgressMarkerEmpty());
   }
@@ -184,7 +181,7 @@ TEST_F(BraveModelTypeWorkerTest, ResetProgressMarkerMaxPeriod) {
   FillProgressMarker();
 
   for (size_t i = 0;
-       i < BraveModelTypeWorker::GetFailuresToResetMarkerForTests() - 1; ++i) {
+       i < BraveDataTypeWorker::GetFailuresToResetMarkerForTests() - 1; ++i) {
     worker()->OnCommitResponse(CommitResponseDataList(), error_response_list);
     EXPECT_FALSE(IsProgressMarkerEmpty());
   }
@@ -194,7 +191,7 @@ TEST_F(BraveModelTypeWorkerTest, ResetProgressMarkerMaxPeriod) {
   EXPECT_FALSE(IsProgressMarkerEmpty());
 }
 
-TEST_F(BraveModelTypeWorkerTest, ResetProgressMarkerDisabledFeature) {
+TEST_F(BraveDataTypeWorkerTest, ResetProgressMarkerDisabledFeature) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndDisableFeature(features::kBraveSyncResetProgressMarker);
 
@@ -203,7 +200,7 @@ TEST_F(BraveModelTypeWorkerTest, ResetProgressMarkerDisabledFeature) {
       MakeErrorResponseList(CommitResponse_ResponseType_CONFLICT);
 
   for (size_t i = 0;
-       i < BraveModelTypeWorker::GetFailuresToResetMarkerForTests() - 1; ++i) {
+       i < BraveDataTypeWorker::GetFailuresToResetMarkerForTests() - 1; ++i) {
     worker()->OnCommitResponse(CommitResponseDataList(), error_response_list);
     EXPECT_FALSE(IsProgressMarkerEmpty());
   }
