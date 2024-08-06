@@ -325,7 +325,46 @@ import XCTest
     }
 
     let mockAssetManager = TestableWalletUserAssetManager()
-    mockAssetManager._getAllUserAssetsInNetworkAssetsByVisibility = { networks, _ in
+    mockAssetManager._getUserAssets = { networks, _ in
+      [
+        NetworkAssets(
+          network: .mockMainnet,
+          tokens: mockEthUserAssets.filter(\.visible),
+          sortOrder: 0
+        ),
+        NetworkAssets(
+          network: .mockSolana,
+          tokens: mockSolUserAssets.filter(\.visible),
+          sortOrder: 1
+        ),
+        NetworkAssets(
+          network: .mockSepolia,
+          tokens: mockEthSepoliaUserAssets.filter(\.visible),
+          sortOrder: 2
+        ),
+        NetworkAssets(
+          network: .mockFilecoinMainnet,
+          tokens: mockFilUserAssets.filter(\.visible),
+          sortOrder: 3
+        ),
+        NetworkAssets(
+          network: .mockFilecoinTestnet,
+          tokens: mockFilTestnetUserAssets.filter(\.visible),
+          sortOrder: 4
+        ),
+        NetworkAssets(
+          network: .mockBitcoinMainnet,
+          tokens: mockBtcUserAssets.filter(\.visible),
+          sortOrder: 3
+        ),
+        NetworkAssets(
+          network: .mockBitcoinTestnet,
+          tokens: mockBtcTestnetUserAssets.filter(\.visible),
+          sortOrder: 4
+        ),
+      ].filter { networkAsset in networks.contains(where: { $0 == networkAsset.network }) }
+    }
+    mockAssetManager._getUserAssets = { networks, _ in
       [
         NetworkAssets(
           network: .mockMainnet,

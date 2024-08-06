@@ -270,7 +270,8 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
           }
           self?.isUpdatingUserAssets = true
           Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.reset()
-          await self?.userAssetManager.removeUserAssetsAndBalance(for: nil)
+          Preferences.Wallet.migrateWalletUserAssetToCoreCompleted.reset()
+          await self?.userAssetManager.removeUserAssetsAndBalances(for: nil)
           await self?.userAssetManager.migrateUserAssets()
           self?.updateAssets()
           self?.isUpdatingUserAssets = false
@@ -290,17 +291,18 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         // migration is slow. Makes sure auto-discovered assets during asset migration to
         // CoreData are added after.
         Task { @MainActor [self] in
-
           if let updatingUserAssets = self?.isUpdatingUserAssets, !updatingUserAssets {
-            let dispatchGroup = DispatchGroup()
-            for asset in discoveredAssets {
-              dispatchGroup.enter()
-              await self?.userAssetManager.addUserAsset(asset)
-              dispatchGroup.leave()
+            await withTaskGroup(of: Void.self) { group in
+              for asset in discoveredAssets {
+                group.addTask {
+                  await self?.userAssetManager.addUserAsset(
+                    asset,
+                    isAutoDiscovery: true
+                  )
+                }
+              }
             }
-            dispatchGroup.notify(queue: .main) {
-              self?.updateAutoDiscoveredAssets()
-            }
+            self?.updateAutoDiscoveredAssets()
           } else {
             self?.autoDiscoveredAssets.append(contentsOf: discoveredAssets)
           }
@@ -340,7 +342,10 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
               if let network = allNetworks?.first(where: {
                 $0.coin == .eth && $0.chainId == chainId
               }) {
-                await self?.userAssetManager.addUserAsset(network.nativeToken)
+                await self?.userAssetManager.addUserAsset(
+                  network.nativeToken,
+                  isAutoDiscovery: false
+                )
                 self?.updateAssets()
               }
             }
@@ -698,6 +703,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   func prepare(isInitialOpen: Bool = false) {
     Task { @MainActor in
       if isInitialOpen {
+        await userAssetManager.alignTokenVisibilityServiceAndCD()
         walletService.discoverAssetsOnAllSupportedChains(bypassRateLimit: true)
       }
 
@@ -825,7 +831,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     case .addSuggestedToken(let approved, let token):
       Task { @MainActor in
         if approved {
-          await userAssetManager.addUserAsset(token)
+          await userAssetManager.addUserAsset(token, isAutoDiscovery: false)
           updateAssets()
         }
         walletService.notifyAddSuggestTokenRequestsProcessed(
@@ -909,7 +915,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         var activeAccountsForCoin = Int32(0)
         let accounts = accountsForCoin[coin] ?? []
         for account in accounts {
-          if let balancesForAccount = userAssetManager.getBalances(
+          if let balancesForAccount = userAssetManager.getAssetBalances(
             for: nil,
             account: account.id
           ) {
@@ -945,7 +951,7 @@ extension CryptoStore: PreferencesObserver {
         !autoDiscoveredAssets.isEmpty
       {
         for asset in autoDiscoveredAssets {
-          await userAssetManager.addUserAsset(asset)
+          await userAssetManager.addUserAsset(asset, isAutoDiscovery: true)
         }
         autoDiscoveredAssets.removeAll()
         updateAssets()

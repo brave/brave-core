@@ -441,10 +441,11 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
       let selectedAccounts = filters.accounts.filter(\.isSelected).map(\.model)
       let selectedNetworks = filters.networks.filter(\.isSelected).map(\.model)
       let allVisibleUserAssets: [NetworkAssets] =
-        assetManager.getAllUserAssetsInNetworkAssetsByVisibility(
+        await assetManager.getUserAssets(
           networks: selectedNetworks,
           visible: true
-        ).map { networkAssets in  // filter out NFTs from Portfolio
+        )
+        .map { networkAssets in  // filter out NFTs from Portfolio
           NetworkAssets(
             network: networkAssets.network,
             tokens: networkAssets.tokens.filter { !($0.isNft || $0.isErc721) },
@@ -508,7 +509,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
 
       // Looping through `allTokenNetworkAccounts` to get token's cached balance
       for tokenNetworkAccounts in allTokenNetworkAccounts {
-        if let tokenBalances = assetManager.getBalances(
+        if let tokenBalances = assetManager.getAssetBalances(
           for: tokenNetworkAccounts.token,
           account: nil
         ) {
@@ -555,7 +556,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
                     )
                   }
                   tokenBalances.merge(with: [account.id: balanceForToken ?? 0])
-                  await assetManager.updateBalance(
+                  await assetManager.updateAssetBalance(
                     for: token,
                     account: account.id,
                     balance: "\(balanceForToken ?? 0)"

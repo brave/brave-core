@@ -220,16 +220,22 @@ struct NFTView: View {
               nftStore.updateNFTStatus(
                 nft.token,
                 visible: false,
-                isSpam: false,
-                isDeletedByUser: false
+                isSpam: nft.token.isSpam
               )
-            } else {  // either a hidden NFT or a junk NFT, mark as visible
-              nftStore.updateNFTStatus(
-                nft.token,
-                visible: true,
-                isSpam: false,
-                isDeletedByUser: false
-              )
+            } else {
+              if nft.token.isSpam {  // a junk NFT, unspam
+                nftStore.updateNFTStatus(
+                  nft.token,
+                  visible: nft.token.visible,
+                  isSpam: false
+                )
+              } else {  // a hidden NFT, mark as visible
+                nftStore.updateNFTStatus(
+                  nft.token,
+                  visible: true,
+                  isSpam: nft.token.isSpam
+                )
+              }
             }
           } label: {
             if nft.token.visible {  // a collected visible NFT
@@ -389,12 +395,7 @@ struct NFTView: View {
           title: Strings.Wallet.manageSiteConnectionsConfirmAlertRemove,
           action: { _ in
             guard let nft = nftToBeRemoved else { return }
-            nftStore.updateNFTStatus(
-              nft.token,
-              visible: false,
-              isSpam: nft.token.isSpam,
-              isDeletedByUser: true
-            )
+            nftStore.removeNFT(nft.token)
             nftToBeRemoved = nil
           }
         ),

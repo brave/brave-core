@@ -120,7 +120,7 @@ class DepositTokenStore: ObservableObject, WalletObserverStore {
 
   func update() {
     Task { @MainActor in
-      let allUserAssets = assetManager.getAllUserAssetsInNetworkAssets(
+      let allUserAssets = await assetManager.getAllUserAssetsInNetworkAssets(
         networks: allNetworks,
         includingUserDeleted: false
       )

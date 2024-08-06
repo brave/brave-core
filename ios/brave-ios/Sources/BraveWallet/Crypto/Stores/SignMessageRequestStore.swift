@@ -85,7 +85,7 @@ class SignMessageRequestStore: ObservableObject {
       let allNetworks = await rpcService.allNetworksForSupportedCoins(
         respectHiddenNetworksPreference: false
       )
-      let userAssets = assetManager.getAllUserAssetsInNetworkAssets(
+      let userAssets = await assetManager.getAllUserAssetsInNetworkAssets(
         networks: allNetworks,
         includingUserDeleted: true
       ).flatMap(\.tokens)

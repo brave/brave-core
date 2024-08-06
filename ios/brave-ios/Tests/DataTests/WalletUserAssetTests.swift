@@ -132,7 +132,7 @@ class WalletUserAssetTests: CoreDataTestCase {
     }
 
     DataController.viewContext.refreshAllObjects()
-    let allAssets = WalletUserAsset.getAllVisibleUserAssets()
+    let allAssets = WalletUserAsset.getAllUserAssets(visible: true)
     XCTAssertNotNil(allAssets)
     XCTAssertEqual(allAssets!.count, 2)
   }
@@ -165,7 +165,7 @@ class WalletUserAssetTests: CoreDataTestCase {
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
     backgroundSaveAndWaitForExpectation {
       Task {
-        await WalletUserAsset.removeUserAsset(asset: asset)
+        await WalletUserAsset.removeUserAsset(token: asset)
       }
     }
     XCTAssertEqual(try! DataController.viewContext.count(for: self.fetchRequest), 0)
@@ -179,7 +179,7 @@ class WalletUserAssetTests: CoreDataTestCase {
   ) -> WalletUserAsset {
     backgroundSaveAndWaitForExpectation {
       Task {
-        await WalletUserAsset.addUserAsset(asset: asset)
+        await WalletUserAsset.addUserAsset(token: asset)
       }
     }
     let userAsset = try! DataController.viewContext.fetch(fetchRequest).first!

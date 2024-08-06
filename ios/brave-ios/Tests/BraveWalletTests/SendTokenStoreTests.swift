@@ -115,7 +115,7 @@ class SendTokenStoreTests: XCTestCase {
     }
 
     let mockAssetManager = TestableWalletUserAssetManager()
-    mockAssetManager._getAllUserAssetsInNetworkAssetsByVisibility = { _, _ in
+    mockAssetManager._getUserAssets = { _, _ in
       userAssets.map { (network, tokens) in
         NetworkAssets(network: network, tokens: tokens, sortOrder: 0)
       }

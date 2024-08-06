@@ -131,10 +131,11 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
         chainId: network.chainId,
         coin: network.coin
       )
-      let userAssets: [BraveWallet.BlockchainToken] = assetManager.getAllUserAssetsInNetworkAssets(
-        networks: [network],
-        includingUserDeleted: true
-      ).flatMap(\.tokens)
+      let userAssets: [BraveWallet.BlockchainToken] =
+        await assetManager.getAllUserAssetsInNetworkAssets(
+          networks: [network],
+          includingUserDeleted: true
+        ).flatMap(\.tokens)
       if transaction.coin == .eth {
         // Gather known information about the transaction(s) tokens
         let unknownTokenInfo = [transaction].unknownTokenContractAddressChainIdPairs(

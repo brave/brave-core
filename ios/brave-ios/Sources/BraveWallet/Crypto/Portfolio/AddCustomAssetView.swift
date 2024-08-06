@@ -267,14 +267,20 @@ struct AddCustomAssetView: View {
               .foregroundColor(Color(.braveBlurpleTint))
           }
         }
-        ToolbarItemGroup(placement: .navigationBarTrailing) {
-          Button {
-            resignFirstResponder()
-            addCustomToken()
-          } label: {
-            Text(Strings.Wallet.add)
+        if userAssetStore.isAddingAsset {
+          ToolbarItemGroup(placement: .navigationBarTrailing) {
+            ProgressView()
           }
-          .disabled(addButtonDisabled)
+        } else {
+          ToolbarItemGroup(placement: .navigationBarTrailing) {
+            Button {
+              resignFirstResponder()
+              addCustomToken()
+            } label: {
+              Text(Strings.Wallet.add)
+            }
+            .disabled(addButtonDisabled)
+          }
         }
       }
       .alert(isPresented: $showError) {

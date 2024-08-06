@@ -158,6 +158,7 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
 
     Preferences.Wallet.displayWeb3Notifications.reset()
     Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.reset()
+    Preferences.Wallet.migrateWalletUserAssetToCoreCompleted.reset()
     // Portfolio/NFT Filters
     Preferences.Wallet.groupByFilter.reset()
     Preferences.Wallet.sortOrderFilter.reset()

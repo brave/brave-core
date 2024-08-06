@@ -201,7 +201,7 @@ class SelectAccountTokenStoreTests: XCTestCase {
     mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
       self.allUserAssetsInNetworkAssets
     }
-    mockAssetManager._getAllUserAssetsInNetworkAssetsByVisibility = { networks, _ in
+    mockAssetManager._getUserAssets = { networks, _ in
       var result: [NetworkAssets] = []
       for network in networks {
         let visibleTokens = self.allUserAssets.filter {
