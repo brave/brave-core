@@ -149,7 +149,6 @@ export const SellAssetModal = (props: Props) => {
       title={`${getLocale('braveWalletSell')} ${selectedAsset.name}`}
       onClose={onCloseSellModal}
       width='512px'
-      borderRadius={16}
       ref={sellAssetModalRef}
       headerPaddingVertical={'24px'}
       headerPaddingHorizontal={'32px'}

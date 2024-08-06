@@ -46,7 +46,6 @@ export const BalanceDetailsModal = React.forwardRef<HTMLDivElement, Props>(
         title={getLocale('braveWalletDetails')}
         onClose={onClose}
         width='560px'
-        borderRadius={16}
         ref={forwardedRef}
         headerPaddingHorizontal={'32px'}
         headerPaddingVertical={'32px'}

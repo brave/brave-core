@@ -27,7 +27,6 @@ export const StyledWrapper = styled.div`
 
 export const Modal = styled.div<{
   width?: string
-  borderRadius?: number
   height?: string
 }>`
   display: flex;
@@ -39,7 +38,7 @@ export const Modal = styled.div<{
   max-height: 90vh;
   height: ${(p) => p.height ?? 'unset'};
   background-color: ${leo.color.container.background};
-  border-radius: ${(p) => (p.borderRadius ? p.borderRadius : 16)}px;
+  border-radius: ${leo.radius.xl};
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   overflow: hidden;

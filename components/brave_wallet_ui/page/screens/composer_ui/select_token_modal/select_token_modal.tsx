@@ -737,7 +737,6 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
               : 'braveWalletChooseAssetToSend'
           )}
           width='560px'
-          borderRadius={16}
           height='90vh'
           ref={isPanel ? undefined : forwardedRef}
         >

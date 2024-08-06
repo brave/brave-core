@@ -310,7 +310,6 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
       }
       onClose={onClose}
       width='500px'
-      borderRadius={16}
       height={showAddCustomToken ? 'unset' : '90vh'}
     >
       {!showAddCustomToken && (

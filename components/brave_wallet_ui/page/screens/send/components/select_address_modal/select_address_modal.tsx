@@ -376,7 +376,6 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
           onBack={() => setShowChecksumInfo(false)}
           title=''
           width='560px'
-          borderRadius={16}
           height='90vh'
           ref={forwardedRef}
         >
@@ -391,7 +390,6 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         onClose={onClose}
         title={getLocale('braveWalletChooseRecipient')}
         width='560px'
-        borderRadius={16}
         height='90vh'
         ref={forwardedRef}
       >
