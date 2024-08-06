@@ -8,9 +8,7 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 import LeoDialog from '@brave/leo/react/dialog'
 
-import {
-  WalletButton
-} from '../../../../../components/shared/style'
+import { WalletButton } from '../../../../../components/shared/style'
 import { layoutPanelWidth } from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const Label = styled.label`
@@ -28,8 +26,8 @@ export const AssetSymbol = styled.h3`
   margin: 0;
 `
 
-export const AssetIcon = styled.img<{size?: string}>`
-  width: ${props => props.size || '40px'};
+export const AssetIcon = styled.img<{ size?: string }>`
+  width: ${(props) => props.size || '40px'};
   height: auto;
   border-radius: 50%;
 `
@@ -62,6 +60,14 @@ export const ControlsWrapper = styled.div`
     width: 100%;
     justify-content: space-between;
   }
+`
+
+export const ControlText = styled.h3`
+  color: ${color.text.primary};
+  text-align: center;
+  font: ${font.heading.h3};
+  padding: 0;
+  margin: 0;
 `
 
 export const Dialog = styled(LeoDialog).attrs({
@@ -107,3 +113,4 @@ export const ContainerButton = styled(WalletButton)`
     max-width: 344px;
   }
 `
+
