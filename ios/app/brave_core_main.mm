@@ -209,7 +209,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     _webMain = std::make_unique<web::WebMain>(std::move(params));
 
     // Initialize and set the main browser state.
-    ios::ChromeBrowserStateManager* browserStateManager =
+    ChromeBrowserStateManager* browserStateManager =
         GetApplicationContext()->GetChromeBrowserStateManager();
     ChromeBrowserState* chromeBrowserState =
         browserStateManager->GetLastUsedBrowserStateDeprecatedDoNotUse();

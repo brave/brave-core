@@ -55,7 +55,7 @@ FaviconLoaderSize const FaviconLoaderSizeDesiredLargest =
 }
 
 + (instancetype)getForPrivateMode:(bool)privateMode {
-  ios::ChromeBrowserStateManager* browser_state_manager =
+  ChromeBrowserStateManager* browser_state_manager =
       GetApplicationContext()->GetChromeBrowserStateManager();
   CHECK(browser_state_manager);
 

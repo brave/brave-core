@@ -78,7 +78,7 @@ void BookmarksImporter::AddBookmarks(
   if (bookmarks.empty())
     return;
 
-  ios::ChromeBrowserStateManager* browser_state_manager =
+  ChromeBrowserStateManager* browser_state_manager =
       GetApplicationContext()->GetChromeBrowserStateManager();
   ChromeBrowserState* browser_state =
       browser_state_manager->GetLastUsedBrowserStateDeprecatedDoNotUse();
