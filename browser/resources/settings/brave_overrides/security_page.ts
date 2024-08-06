@@ -8,11 +8,23 @@ import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/pol
 
 RegisterPolymerTemplateModifications({
   'settings-security-page': (templateContent) => {
-    const safeBrowsingReportingToggle = templateContent.getElementById('safeBrowsingReportingToggle')
-    if (!safeBrowsingReportingToggle) {
-      console.error('[Brave Settings Overrides] Could not find safeBrowsingReportingToggle id on security page.')
+    const safeBrowsingReportingToggleSetting = templateContent.
+      querySelector(
+        'template[is=dom-if][if="[[!hideExtendedReportingRadioButton_]]"]'
+    )
+    if (!safeBrowsingReportingToggleSetting) {
+      console.error(
+        '[Brave Settings Overrides] Could not find template with ' +
+        'if=[[!hideExtendedReportingRadioButton_]] on security page.'
+      )
     } else {
-      safeBrowsingReportingToggle.setAttribute('hidden', 'true')
+      const safeBrowsingReportingToggle = safeBrowsingReportingToggleSetting.
+        content.getElementById('safeBrowsingReportingToggle')
+      if (!safeBrowsingReportingToggle) {
+        console.error('[Brave Settings Overrides] Could not find safeBrowsingReportingToggle id on security page.')
+      } else {
+        safeBrowsingReportingToggle.setAttribute('hidden', 'true')
+      }
     }
     const safeBrowsingEnhanced = templateContent.getElementById('safeBrowsingEnhanced')
     if (!safeBrowsingEnhanced) {
