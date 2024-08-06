@@ -46,14 +46,16 @@ export const Modal = styled.div<{
     width: unset;
     min-width: unset;
     max-width: unset;
-    max-height: unset;
-    height: unset;
     position: absolute;
     border-radius: 16px 16px 0px 0px;
     bottom: 0px;
     left: 0px;
     right: 0px;
   }
+`
+
+export const ModalContent = styled(Column)`
+  overflow-y: auto;
 `
 
 export const Header = styled.div<{

@@ -11,7 +11,7 @@ import Input from '@brave/leo/react/input'
 import { Column, Text } from '../../../../components/shared/style'
 
 export const ScrollContainer = styled(Column)`
-  flex: 1;
+  flex: 0.99;
   overflow-x: hidden;
   overflow-y: auto;
 `

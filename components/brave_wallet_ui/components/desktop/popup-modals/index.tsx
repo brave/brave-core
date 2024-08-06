@@ -13,7 +13,8 @@ import {
   CloseIcon,
   BackIcon,
   Modal,
-  Divider
+  Divider,
+  ModalContent
 } from './style'
 
 export interface Props {
@@ -87,7 +88,12 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
             </Header>
           )}
           {showDivider && <Divider />}
-          {children}
+          <ModalContent
+            fullWidth
+            flex={1}
+          >
+            {children}
+          </ModalContent>
         </Modal>
       </StyledWrapper>
     )
