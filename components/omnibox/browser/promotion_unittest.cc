@@ -99,14 +99,14 @@ class OmniboxPromotionTest : public testing::Test {
     auto bing_data = TemplateURLDataFromPrepopulatedEngine(
         TemplateURLPrepopulateData::brave_bing);
     auto bing_template_url = std::make_unique<TemplateURL>(*bing_data);
-    auto template_url_service =
-        search_engines_test_environment.ReleaseTemplateURLService();
+    auto* template_url_service =
+        search_engines_test_environment.template_url_service();
     template_url_service->Load();
     template_url_service->SetUserSelectedDefaultSearchProvider(
         bing_template_url.get());
 
     auto client_mock = std::make_unique<MockAutocompleteProviderClient>();
-    client_mock->set_template_url_service(std::move(template_url_service));
+    client_mock->set_template_url_service(template_url_service);
     ON_CALL(*client_mock, GetPrefs()).WillByDefault(Return(&pref_service_));
     ON_CALL(*client_mock, IsOffTheRecord()).WillByDefault(Return(incognito));
     std::unique_ptr<AutocompleteController> controller =

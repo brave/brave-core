@@ -43,7 +43,7 @@ class BraveBookmarkProviderTest : public testing::Test {
     client_.GetBookmarkModel()->AddURL(node, 0, u"Hello",
                                        GURL("https://example.com"));
     client_.set_template_url_service(
-        search_engines_test_environment_.ReleaseTemplateURLService());
+        search_engines_test_environment_.template_url_service());
     provider_ = base::MakeRefCounted<BraveBookmarkProvider>(&client_);
   }
 
