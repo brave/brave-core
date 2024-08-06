@@ -38,12 +38,15 @@ import {
   ServiceProvidersWrapper
 } from './fund_wallet_v1.style'
 import { Column } from '../../../components/shared/style'
+import { PaymentMethodFilters } from './components/payment_method_filters/payment_method_filters'
 
 export const FundWalletScreen = () => {
   // state
   const [isCurrencyDialogOpen, setIsCurrencyDialogOpen] = React.useState(false)
   const [isAssetDialogOpen, setIsAssetDialogOpen] = React.useState(false)
   const [isAccountDialogOpen, setIsAccountDialogOpen] = React.useState(false)
+  const [isPaymentFiltersOpen, setIsPaymentFiltersOpen] = React.useState(false)
+  console.log(setIsPaymentFiltersOpen)
 
   // hooks
   const {
@@ -66,7 +69,14 @@ export const FundWalletScreen = () => {
     onSelectCurrency,
     onSetAmount,
     serviceProviders,
-    onFlipAmounts
+    onFlipAmounts,
+    selectedCountryCode,
+    setSelectedCountryCode,
+    isLoadingPaymentMethods,
+    isLoadingCountries,
+    countries,
+    paymentMethods,
+    onChangePaymentMethods
   } = useBuy()
 
   // redux
@@ -180,6 +190,16 @@ export const FundWalletScreen = () => {
           setIsAccountDialogOpen(false)
         }}
         onClose={() => setIsAccountDialogOpen(false)}
+      />
+
+      <PaymentMethodFilters
+        isOpen={isPaymentFiltersOpen}
+        countries={countries || []}
+        selectedCountryCode={selectedCountryCode}
+        onSelectCountry={setSelectedCountryCode}
+        paymentMethods={paymentMethods || []}
+        isLoading={isLoadingPaymentMethods || isLoadingCountries}
+        onSelectPaymentMethods={onChangePaymentMethods}
       />
     </>
   )
