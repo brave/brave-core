@@ -718,10 +718,14 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         AssetGroupViewModel.sorted(lhs: $0, rhs: $1)
       })
       .optionallyFilter(  // when grouping assets & hiding small balances
-        shouldFilter: filters.groupBy != .none && filters.isHidingSmallBalances,
+        shouldFilter: filters.groupBy != .none || filters.isHidingSmallBalances,
         isIncluded: { group in
-          // hide groups without assets or zero fiat value.
-          return (!group.assets.isEmpty && group.totalFiatValue > 0)
+          if filters.isHidingSmallBalances {
+            // hide groups without assets or zero fiat value.
+            return (!group.assets.isEmpty && group.totalFiatValue > 0)
+          }
+          // assets are grouped, hide groups without assets
+          return !group.assets.isEmpty
         }
       )
   }
