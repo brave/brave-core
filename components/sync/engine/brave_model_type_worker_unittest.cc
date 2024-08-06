@@ -15,7 +15,7 @@
 #include "components/sync/nigori/cryptographer_impl.h"
 #include "components/sync/protocol/sync.pb.h"
 #include "components/sync/test/fake_cryptographer.h"
-#include "components/sync/test/mock_model_type_processor.h"
+#include "components/sync/test/mock_data_type_processor.h"
 #include "components/sync/test/mock_nudge_handler.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -53,7 +53,7 @@ class BraveModelTypeWorkerTest : public ::testing::Test {
   void InitializeWithState(const ModelType type, const ModelTypeState& state) {
     DCHECK(!worker());
 
-    auto processor = std::make_unique<MockModelTypeProcessor>();
+    auto processor = std::make_unique<MockDataTypeProcessor>();
     processor->SetDisconnectCallback(
         base::BindOnce(&BraveModelTypeWorkerTest::DisconnectProcessor,
                        base::Unretained(this)));

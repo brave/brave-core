@@ -7,20 +7,20 @@
 
 namespace history {
 
-BraveHistoryModelTypeController::BraveHistoryModelTypeController(
+BraveHistoryDataTypeController::BraveHistoryDataTypeController(
     syncer::SyncService* sync_service,
     signin::IdentityManager* identity_manager,
     HistoryService* history_service,
     PrefService* pref_service)
-    : HistoryModelTypeController(sync_service,
-                                 identity_manager,
-                                 history_service,
-                                 pref_service) {}
+    : HistoryDataTypeController(sync_service,
+                                identity_manager,
+                                history_service,
+                                pref_service) {}
 
-BraveHistoryModelTypeController::~BraveHistoryModelTypeController() = default;
+BraveHistoryDataTypeController::~BraveHistoryDataTypeController() = default;
 
-syncer::ModelTypeController::PreconditionState
-BraveHistoryModelTypeController::GetPreconditionState() const {
+syncer::DataTypeController::PreconditionState
+BraveHistoryDataTypeController::GetPreconditionState() const {
   return PreconditionState::kPreconditionsMet;
 }
 

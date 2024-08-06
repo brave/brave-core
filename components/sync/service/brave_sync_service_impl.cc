@@ -135,9 +135,9 @@ void BraveSyncServiceImpl::OnSelfDeviceInfoDeleted(base::OnceClosure cb) {
   // ---
   // BraveSyncServiceImplDelegate::OnDeviceInfoChange()
   // ...
-  // ClientTagBasedModelTypeProcessor::ClearAllMetadataAndResetStateImpl()
+  // ClientTagBasedDataTypeProcessor::ClearAllMetadataAndResetStateImpl()
   // ...
-  // ClientTagBasedModelTypeProcessor::OnSyncStarting()
+  // ClientTagBasedDataTypeProcessor::OnSyncStarting()
   // ---
   // Note that `ClearAllTrackedMetadataAndResetState` will only be called during
   // init when sync seed decryption key mismatched.
@@ -370,7 +370,7 @@ void BraveSyncServiceImpl::UpdateP3AObjectsNumber() {
     CHECK(dtc_it != data_type_manager_->GetControllerMap().end())
         << "Missing controller for type " << ModelTypeToDebugString(model_type);
 
-    ModelTypeController* controller = dtc_it->second.get();
+    DataTypeController* controller = dtc_it->second.get();
     controller->GetTypeEntitiesCount(
         base::BindOnce(&BraveSyncServiceImpl::OnGetTypeEntitiesCount,
                        weak_ptr_factory_.GetWeakPtr()));

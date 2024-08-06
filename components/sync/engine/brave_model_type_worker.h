@@ -18,7 +18,6 @@ namespace syncer {
 class CancelationSignal;
 class Cryptographer;
 class NudgeHandler;
-class ModelTypeProcessor;
 
 namespace features {
 
