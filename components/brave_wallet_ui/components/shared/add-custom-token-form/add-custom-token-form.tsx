@@ -356,7 +356,7 @@ export const AddCustomTokenForm = (props: Props) => {
           <FormColumn>
             <Input
               value={tokenContractAddress}
-              onChange={handleTokenAddressChanged}
+              onInput={handleTokenAddressChanged}
               placeholder={'0x099689220846644F87D1137665CDED7BF3422747'}
             >
               <Row
@@ -375,7 +375,7 @@ export const AddCustomTokenForm = (props: Props) => {
           <FormColumn>
             <Input
               value={name}
-              onChange={handleTokenNameChanged}
+              onInput={handleTokenNameChanged}
               disabled={isTokenInfoLoading}
             >
               <InputLabel>
@@ -389,7 +389,7 @@ export const AddCustomTokenForm = (props: Props) => {
           <FormColumn>
             <Input
               value={symbol}
-              onChange={handleTokenSymbolChanged}
+              onInput={handleTokenSymbolChanged}
               disabled={isTokenInfoLoading}
             >
               <InputLabel>
@@ -400,7 +400,7 @@ export const AddCustomTokenForm = (props: Props) => {
           <FormColumn>
             <Input
               value={decimals}
-              onChange={handleTokenDecimalsChanged}
+              onInput={handleTokenDecimalsChanged}
               disabled={isDecimalDisabled}
               type='number'
             >
@@ -431,14 +431,14 @@ export const AddCustomTokenForm = (props: Props) => {
             <FullWidthFormColumn>
               <Input
                 value={iconURL}
-                onChange={handleIconURLChanged}
+                onInput={handleIconURLChanged}
               >
                 <InputLabel>{getLocale('braveWalletIconURL')}</InputLabel>
               </Input>
 
               <Input
                 value={coingeckoId}
-                onChange={handleCoingeckoIDChanged}
+                onInput={handleCoingeckoIDChanged}
                 disabled={isTokenInfoLoading}
               >
                 <InputLabel>
