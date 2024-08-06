@@ -11,7 +11,8 @@ import {
   MeldCryptoCurrency,
   MeldFiatCurrency,
   BraveWallet,
-  MeldCryptoQuote
+  MeldCryptoQuote,
+  MeldPaymentMethod
 } from '../../../../constants/types'
 
 // api
@@ -24,7 +25,8 @@ import {
   useGenerateMeldCryptoQuotesMutation,
   useGetTokenSpotPricesQuery,
   walletApi,
-  useGetMeldServiceProvidersQuery
+  useGetMeldServiceProvidersQuery,
+  useGetMeldPaymentMethodsQuery
 } from '../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 
@@ -61,11 +63,14 @@ export const useBuy = () => {
   const { data: cryptoCurrencies, isLoading: isLoadingAssets } =
     useGetMeldCryptoCurrenciesQuery()
   const { accounts } = useAccountsQuery()
-  const { data: countries } = useGetMeldCountriesQuery()
+  const { data: countries, isLoading: isLoadingCountries } =
+    useGetMeldCountriesQuery()
   const { data: defaultCountryCode } = useGetDefaultCountryQuery()
   const [generateQuotes] = useGenerateMeldCryptoQuotesMutation()
   const { data: serviceProviders = [], isLoading: isLoadingServiceProvider } =
     useGetMeldServiceProvidersQuery()
+  const { data: paymentMethods, isLoading: isLoadingPaymentMethods } =
+    useGetMeldPaymentMethodsQuery()
 
   // state
   const [selectedAsset, setSelectedAsset] =
@@ -85,7 +90,13 @@ export const useBuy = () => {
   const [timeUntilNextQuote, setTimeUntilNextQuote] = useState<
     number | undefined
   >(undefined)
-
+  const [selectedCountryCode, setSelectedCountryCode] = useState<string>(
+    defaultCountryCode || 'US'
+  )
+  const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<
+    MeldPaymentMethod[]
+  >(paymentMethods || [])
+  console.log('selectedPaymentMethods', selectedPaymentMethods)
   // computed
   const tokenPriceIds: string[] = useMemo(() => {
     return cryptoCurrencies?.map((asset) => getAssetPriceId(asset)) ?? []
@@ -220,11 +231,9 @@ export const useBuy = () => {
       amount,
       defaultCountryCode,
       generateQuotes,
-      reset,
       selectedAccount?.address,
       selectedAsset,
-      selectedCurrency?.currencyCode,
-      quotes
+      selectedCurrency?.currencyCode
     ]
   )
 
@@ -355,6 +364,13 @@ export const useBuy = () => {
     onSetAmount,
     serviceProviders,
     isLoadingServiceProvider,
-    onFlipAmounts
+    onFlipAmounts,
+    selectedCountryCode,
+    setSelectedCountryCode,
+    reset,
+    isLoadingPaymentMethods,
+    isLoadingCountries,
+    paymentMethods,
+    onChangePaymentMethods: setSelectedPaymentMethods
   }
 }
