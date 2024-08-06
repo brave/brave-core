@@ -544,7 +544,7 @@
 
 - (bool)editingEnabled {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  ios::ChromeBrowserStateManager* browserStateManager =
+  ChromeBrowserStateManager* browserStateManager =
       GetApplicationContext()->GetChromeBrowserStateManager();
   ChromeBrowserState* browserState =
       browserStateManager->GetLastUsedBrowserStateDeprecatedDoNotUse();

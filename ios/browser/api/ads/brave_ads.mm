@@ -396,7 +396,7 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
 #pragma mark - Profile prefs
 
 - (void)initProfilePrefService {
-  ios::ChromeBrowserStateManager* browserStateManager =
+  ChromeBrowserStateManager* browserStateManager =
       GetApplicationContext()->GetChromeBrowserStateManager();
   CHECK(browserStateManager);
 

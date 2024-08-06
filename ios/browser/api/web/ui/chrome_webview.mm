@@ -178,7 +178,7 @@ void WebViewJavaScriptDialogPresenter::SetUIDelegate(
 @implementation ChromeWebViewController
 - (instancetype)initWithPrivateBrowsing:(bool)isPrivateBrowsing {
   if ((self = [super init])) {
-    ios::ChromeBrowserStateManager* browser_state_manager =
+    ChromeBrowserStateManager* browser_state_manager =
         GetApplicationContext()->GetChromeBrowserStateManager();
 
     browser_state_ =
