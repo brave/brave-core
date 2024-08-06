@@ -36,7 +36,6 @@
 namespace {
 
 bool SystemNotificationsEnabled(Profile* profile) {
-#if BUILDFLAG(ENABLE_SYSTEM_NOTIFICATIONS)
 #if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
   return true;
 #elif BUILDFLAG(IS_WIN)
@@ -54,9 +53,6 @@ bool SystemNotificationsEnabled(Profile* profile) {
   return base::FeatureList::IsEnabled(features::kNativeNotifications) &&
          base::FeatureList::IsEnabled(features::kSystemNotifications);
 #endif  // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
-#else
-  return false;
-#endif  // BUILDFLAG(ENABLE_SYSTEM_NOTIFICATIONS)
 }
 
 NotificationPlatformBridge* GetSystemNotificationPlatformBridge(
