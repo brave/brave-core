@@ -103,9 +103,9 @@ namespace brave {
 namespace {
 
 bool CanTakeTabs(const Browser* from, const Browser* to) {
-  return from != to && !from->IsAttemptingToCloseBrowser() &&
-         !from->IsBrowserClosing() && !from->is_delete_scheduled() &&
-         to->profile() == from->profile();
+  return from != to && from->type() == Browser::TYPE_NORMAL &&
+         !from->IsAttemptingToCloseBrowser() && !from->IsBrowserClosing() &&
+         !from->is_delete_scheduled() && to->profile() == from->profile();
 }
 
 std::optional<tabs::TabHandle> GetActiveTabHandle(Browser* browser) {
