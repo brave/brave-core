@@ -8,14 +8,17 @@
 #include <algorithm>
 
 #include "base/check_is_test.h"
+#include "base/files/file_util.h"
 #include "base/hash/hash.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
+#include "base/metrics/histogram_functions.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
+#include "base/timer/elapsed_timer.h"
 #include "third_party/tflite/src/tensorflow/lite/core/api/op_resolver.h"
 #include "third_party/tflite_support/src/tensorflow_lite_support/cc/task/text/utils/text_op_resolver.h"
 
@@ -30,23 +33,16 @@ size_t TextEmbedder::g_segment_size_limit_(300);
 // static
 std::unique_ptr<TextEmbedder> TextEmbedder::Create(
     const base::FilePath& model_path) {
-  auto embedder = base::WrapUnique(new TextEmbedder());
-  TFLiteTextEmbedderOptions options;
-  options.mutable_base_options()->mutable_model_file()->set_file_name(
-      model_path.AsUTF8Unsafe());
-  auto maybe_text_embedder =
-      TFLiteTextEmbedder::CreateFromOptions(options, CreateTextOpResolver());
-  if (!maybe_text_embedder.ok()) {
-    VLOG(1) << maybe_text_embedder.status().ToString();
+  if (model_path.empty()) {
     return nullptr;
   }
-
-  embedder->tflite_text_embedder_ = std::move(maybe_text_embedder.value());
+  auto embedder = base::WrapUnique(new TextEmbedder(model_path));
   return embedder;
 }
 
-TextEmbedder::TextEmbedder()
-    : owner_task_runner_(base::SequencedTaskRunner::GetCurrentDefault()),
+TextEmbedder::TextEmbedder(const base::FilePath& model_path)
+    : model_path_(model_path),
+      owner_task_runner_(base::SequencedTaskRunner::GetCurrentDefault()),
       embedder_task_runner_(
           base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()})),
       weak_ptr_factory_(
@@ -56,7 +52,53 @@ TextEmbedder::TextEmbedder()
 
 TextEmbedder::~TextEmbedder() {
   DCHECK(owner_task_runner_->RunsTasksInCurrentSequence());
-  embedder_task_runner_->DeleteSoon(FROM_HERE, weak_ptr_factory_.release());
+  // Calling from owner task runner intentionally so we can stop tflite
+  // interpretor running on embedder task runner.
+  if (tflite_text_embedder_) {
+    tflite_text_embedder_->Cancel();
+  }
+  embedder_task_runner_->DeleteSoon(FROM_HERE, std::move(weak_ptr_factory_));
+}
+
+bool TextEmbedder::IsInitialized() const {
+  return tflite_text_embedder_ != nullptr;
+}
+
+void TextEmbedder::Initialize(base::OnceCallback<void(bool)> callback) {
+  DCHECK(owner_task_runner_->RunsTasksInCurrentSequence());
+
+  embedder_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&TextEmbedder::InitializeEmbedder,
+                     weak_ptr_factory_->GetWeakPtr(),
+                     base::BindPostTaskToCurrentDefault(std::move(callback))));
+}
+
+void TextEmbedder::InitializeEmbedder(InitializeCallback callback) {
+  DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
+  if (!base::PathExists(model_path_)) {
+    std::move(callback).Run(false);
+    return;
+  }
+  TFLiteTextEmbedderOptions options;
+  std::string file_content;
+  if (!base::ReadFileToString(model_path_, &file_content)) {
+    std::move(callback).Run(false);
+    return;
+  }
+  *options.mutable_base_options()
+       ->mutable_model_file()
+       ->mutable_file_content() = std::move(file_content);
+  auto maybe_text_embedder =
+      TFLiteTextEmbedder::CreateFromOptions(options, CreateTextOpResolver());
+  if (!maybe_text_embedder.ok()) {
+    VLOG(1) << maybe_text_embedder.status().ToString();
+    std::move(callback).Run(false);
+    return;
+  }
+
+  tflite_text_embedder_ = std::move(maybe_text_embedder.value());
+  std::move(callback).Run(true);
 }
 
 void TextEmbedder::GetTopSimilarityWithPromptTilContextLimit(
@@ -87,15 +129,24 @@ void TextEmbedder::GetTopSimilarityWithPromptTilContextLimitInternal(
     uint32_t context_limit,
     TopSimilarityCallback callback) {
   DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
+  if (!tflite_text_embedder_) {
+    std::move(callback).Run(
+        base::unexpected("TextEmbedder is not initialized."));
+    return;
+  }
   auto text_hash = base::FastHash(base::as_bytes(base::make_span(text)));
   if (text_hash != text_hash_) {
     text_hash_ = text_hash;
     segments_ = SplitSegments(text);
+    base::ElapsedTimer timer;
     auto status = EmbedSegments();
     if (!status.ok()) {
       std::move(callback).Run(base::unexpected(status.ToString()));
       return;
     }
+    base::UmaHistogramMicrosecondsTimes(
+        "Brave.AIChat.TextEmbedder.EmbedSegmentsInMicroseconds",
+        timer.Elapsed());
   }
   if (segments_.size() != embeddings_.size()) {
     std::move(callback).Run(
@@ -203,6 +254,9 @@ absl::Status TextEmbedder::EmbedText(
     const std::string& text,
     tflite::task::processor::EmbeddingResult& embedding) {
   DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
+  if (!tflite_text_embedder_) {
+    return absl::FailedPreconditionError("TextEmbedder is not initialized.");
+  }
   auto maybe_embedding = tflite_text_embedder_->Embed(text);
   if (!maybe_embedding.ok()) {
     return maybe_embedding.status();

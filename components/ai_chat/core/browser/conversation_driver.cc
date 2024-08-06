@@ -1083,6 +1083,39 @@ void ConversationDriver::PerformAssistantGeneration(
         TextEmbedder::Create(base::FilePath(universal_qa_model_path_));
   }
   if (text_embedder_ && should_refine_page_content) {
+    if (text_embedder_->IsInitialized()) {
+      text_embedder_->GetTopSimilarityWithPromptTilContextLimit(
+          input, page_content,
+          GetCurrentModel()
+              .options->get_leo_model_options()
+              ->max_page_content_length,
+          base::BindOnce(&ConversationDriver::OnGetRefinedPageContent,
+                         weak_ptr_factory_.GetWeakPtr(), input,
+                         std::move(data_received_callback),
+                         std::move(data_completed_callback), page_content,
+                         is_video));
+    } else {
+      text_embedder_->Initialize(base::BindOnce(
+          &ConversationDriver::OnTextEmbedderInitialized,
+          weak_ptr_factory_.GetWeakPtr(), input,
+          std::move(data_received_callback), std::move(data_completed_callback),
+          std::move(page_content), is_video));
+    }
+  } else {
+    engine_->GenerateAssistantResponse(is_video, page_content, chat_history_,
+                                       input, std::move(data_received_callback),
+                                       std::move(data_completed_callback));
+  }
+}
+
+void ConversationDriver::OnTextEmbedderInitialized(
+    const std::string& input,
+    EngineConsumer::GenerationDataCallback data_received_callback,
+    EngineConsumer::GenerationCompletedCallback data_completed_callback,
+    std::string page_content,
+    bool is_video,
+    bool initialized) {
+  if (initialized) {
     text_embedder_->GetTopSimilarityWithPromptTilContextLimit(
         input, page_content,
         GetCurrentModel()
@@ -1094,12 +1127,12 @@ void ConversationDriver::PerformAssistantGeneration(
                        std::move(data_completed_callback), page_content,
                        is_video));
   } else {
-    engine_->GenerateAssistantResponse(is_video, page_content, chat_history_,
-                                       input, std::move(data_received_callback),
-                                       std::move(data_completed_callback));
+    VLOG(1) << "Failed to initialize TextEmbedder";
+    engine_->GenerateAssistantResponse(
+        is_video, std::move(page_content), chat_history_, input,
+        std::move(data_received_callback), std::move(data_completed_callback));
   }
 }
-
 void ConversationDriver::OnGetRefinedPageContent(
     const std::string& input,
     EngineConsumer::GenerationDataCallback data_received_callback,
