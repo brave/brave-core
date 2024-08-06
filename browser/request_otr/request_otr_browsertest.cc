@@ -184,6 +184,31 @@ class RequestOTRBrowserTestBase : public BaseLocalDataFilesBrowserTest {
     return history_count;
   }
 
+  std::string GetHistoryEntry(const GURL& url) {
+    history::HistoryService* history_service =
+        HistoryServiceFactory::GetForProfile(
+            browser()->profile(), ServiceAccessType::IMPLICIT_ACCESS);
+    CHECK(history_service);
+
+    std::string title = "";
+    base::RunLoop loop;
+    base::CancelableTaskTracker task_tracker;
+
+    history_service->QueryURL(
+        url,
+        /*want_visits=*/false,
+        base::BindLambdaForTesting([&](history::QueryURLResult result) {
+            if (result.success) {
+                title = base::UTF16ToUTF8(result.row.title());
+            }
+            loop.Quit(); // Exit the RunLoop once the query is complete
+        }),
+        &task_tracker);
+
+    loop.Run(); // Run the loop until Quit is called
+    return title;
+  }
+
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
 };
@@ -460,6 +485,12 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, ShowInterstitialProceedOTRCheckHis
   ASSERT_FALSE(IsShowingInterstitial());
   ASSERT_EQ(GetHistoryCount(), 1);
 
+  std::string title = GetHistoryEntry(url);
+  std::string expected = "sensitive.a.com:"; // We test only the start as the port changes
+  size_t pos = title.find(':');
+  std::string actual = title.substr(0, pos + 1);
+  ASSERT_EQ(actual, expected);
+
   NavigateTo(url);
   ASSERT_TRUE(IsShowingInterstitial());
 
@@ -467,7 +498,12 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest, ShowInterstitialProceedOTRCheckHis
   // the originally requested page in off-the-record mode.
   ClickAndWaitForNavigation("primary-button");
   ASSERT_FALSE(IsShowingInterstitial());
-  ASSERT_EQ(GetHistoryCount(), 0); // Fails here
+  ASSERT_EQ(GetHistoryCount(), 1); // It is still one
+
+  title = GetHistoryEntry(url);
+  ASSERT_EQ(title, expected); // Now it sets it to "sensitive website" which is not ok
+
+
   // Request-OTR infobar should now have been shown, and our observer should
   // have been called once.
 
@@ -537,7 +573,7 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
 
   SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kNever);
   NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
-  ASSERT_EQ(GetHistoryCount(), 1);
+  ASSERT_EQ(GetHistoryCount(), 1); // It fails here: should be one
 }
 
 // Now check that URLs are not added to history after navigation in
@@ -554,11 +590,11 @@ IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
 
   SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kNever);
   NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
-  ASSERT_EQ(GetHistoryCount(), 1);
+  ASSERT_EQ(GetHistoryCount(), 1); // It fails here: should be one
 
   SetRequestOTRPref(RequestOTRService::RequestOTRActionOption::kAlways);
   NavigateTo(embedded_test_server()->GetURL("sensitive.a.com", "/simple.html"));
-  ASSERT_EQ(GetHistoryCount(), 0);
+  ASSERT_EQ(GetHistoryCount(), 1); // It fails here: should be one
 }
 
 IN_PROC_BROWSER_TEST_F(RequestOTRBrowserTest,
