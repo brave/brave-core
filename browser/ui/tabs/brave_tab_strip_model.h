@@ -25,9 +25,6 @@ class BraveTabStripModel : public TabStripModel {
   BraveTabStripModel(const BraveTabStripModel&) = delete;
   BraveTabStripModel operator=(const BraveTabStripModel&) = delete;
 
-  void SelectRelativeTab(TabRelativeDirection direction,
-                         TabStripUserGestureDetails detail) override;
-
   // Set the next tab when doing a MRU cycling with Ctrl-tab
   void SelectMRUTab(
       TabRelativeDirection direction,
@@ -44,6 +41,12 @@ class BraveTabStripModel : public TabStripModel {
   void CloseTabs(
       base::span<int> indices,
       uint32_t close_flags = TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
+
+  // TabStripModel:
+  void SelectRelativeTab(TabRelativeDirection direction,
+                         TabStripUserGestureDetails detail) override;
+  void ExecuteContextMenuCommand(int context_index,
+                                 ContextMenuCommand command_id) override;
 
  private:
   // List of tab indexes sorted by most recently used
