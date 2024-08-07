@@ -49,7 +49,8 @@ import { LongWrapper } from '../../../stories/style'
 const SIMPLE_TRANSACTION_TYPES = [
   BraveWallet.TransactionType.ETHSend,
   BraveWallet.TransactionType.SolanaCompressedNftTransfer,
-  BraveWallet.TransactionType.SolanaSystemTransfer
+  BraveWallet.TransactionType.SolanaSystemTransfer,
+  BraveWallet.TransactionType.ETHSwap // use safer-sign UI
 ]
 
 interface Props {
