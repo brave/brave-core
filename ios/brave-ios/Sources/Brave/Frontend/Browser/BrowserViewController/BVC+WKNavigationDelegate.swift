@@ -275,7 +275,7 @@ extension BrowserViewController: CWVNavigationDelegate {
 
     // handles Decentralized DNS
     if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: requestURL),
-      navigationAction.navigationType == .autoToplevel
+      navigationAction.navigationType.isMainFrame
     {
       topToolbar.locationView.loading = true
       let result = await decentralizedDNSHelper.lookup(
@@ -308,11 +308,9 @@ extension BrowserViewController: CWVNavigationDelegate {
 
     // Website redirection logic
     if requestURL.isWebPage(includeDataURIs: false),
-      navigationAction.navigationType.isMainFrame,
-      navigationAction.navigationType.isRedirect,  // FIXME: Test?
+      navigationAction.navigationType.isMainFrame,  // FIXME: Test?
       let redirectURL = WebsiteRedirects.redirect(for: requestURL)
     {
-
       tab?.loadRequest(URLRequest(url: redirectURL))
       return .cancel
     }
