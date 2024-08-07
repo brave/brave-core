@@ -1,13 +1,13 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 
 import { getLocale } from '$web-common/locale'
-import { useSelector } from '../../state/hooks'
 import * as S from './style'
-import Button from '$web-components/button'
+import { useSelector } from '../../state/hooks'
 import getPanelBrowserAPI from '../../api/panel_browser_api'
 
 function SellPanel () {
@@ -29,7 +29,7 @@ function SellPanel () {
   return (
     <S.Box>
       <S.PanelContent>
-        <S.MainLogo />
+        <S.MainLogo name='product-vpn' />
         <S.PanelHeader role='banner'>
           <S.ProductTitle>{getLocale('braveVpn')}</S.ProductTitle>
           <S.PoweredBy>
@@ -37,24 +37,28 @@ function SellPanel () {
             <S.GuardianLogo />
           </S.PoweredBy>
         </S.PanelHeader>
-        <S.List>
+        <S.SellingPoints>
           {featureList.map((entry, i) => (
-            <li key={i}>
-              {entry}
-            </li>
+            <S.SellingPoint key={i}>
+              <S.SellingPointIcon name='shield-done' />
+              <S.SellingPointLabel>
+                {entry}
+              </S.SellingPointLabel>
+            </S.SellingPoint>
           ))}
-        </S.List>
+        </S.SellingPoints>
         <S.ActionArea>
-          <Button
-            isPrimary
-            isCallToAction
-            onClick={handleClick.bind(null, 'checkout')}
+          <S.ActionButton
+            slot='actions'
+            kind='filled'
+            size='large'
+            onClick={() => handleClick('checkout')}
           >
             {getLocale('braveVpnBuy')}
-          </Button>
-          <a href="#" onClick={handleClick.bind(null, 'recover')}>
+          </S.ActionButton>
+          <S.ActionLink href="#" onClick={() => handleClick('recover')}>
             {getLocale('braveVpnPurchased')}
-          </a>
+          </S.ActionLink>
         </S.ActionArea>
       </S.PanelContent>
       <S.SellGraphic />

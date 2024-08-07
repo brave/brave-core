@@ -88,7 +88,7 @@ export const _SelectLocation = () => {
 
 export const _SellPanel = () => {
   return (
-    <S.PanelFrame>
+    <S.PanelFrame width='360px'>
       <SellPanel />
     </S.PanelFrame>
   )

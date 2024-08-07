@@ -9,32 +9,41 @@ import SellPanel from './components/sell-panel'
 import LoadingPanel from './components/loading-panel'
 import { ViewType } from './state/component_types'
 import { useSelector } from './state/hooks'
+import { PanelWrapper } from './style'
 import PurchaseFailedPanel from './components/purchase-failed-panel'
 
-function Main () {
+function Main() {
   const currentView = useSelector(state => state.currentView)
   const stateDescription = useSelector(state => state.stateDescription)
 
   if (currentView === ViewType.Loading) {
     return (
-      <LoadingPanel />
+      <PanelWrapper>
+        <LoadingPanel />
+      </PanelWrapper>
     )
   }
 
   if (currentView === ViewType.Main) {
     return (
-      <MainPanel />
+      <PanelWrapper>
+        <MainPanel />
+      </PanelWrapper>
     )
   }
 
   if (currentView === ViewType.PurchaseFailed) {
     return (
-      <PurchaseFailedPanel stateDescription={stateDescription} />
+      <PanelWrapper>
+        <PurchaseFailedPanel stateDescription={stateDescription} />
+      </PanelWrapper>
     )
   }
 
   return (
-    <SellPanel />
+    <PanelWrapper width={'360px'}>
+      <SellPanel />
+    </PanelWrapper>
   )
 }
 
