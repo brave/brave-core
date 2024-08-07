@@ -79,10 +79,11 @@ struct ChromeWebView: UIViewControllerRepresentable {
 
     func chromeWebViewController(
       _ chromeWebViewController: ChromeWebViewController,
-      openNewWindowFor newWindowURL: URL,
-      openerURL: URL,
+      openNewWindowFor newWindowURL: URL?,
+      openerURL: URL?,
       initiatedByUser: Bool
     ) {
+      guard let newWindowURL else { return }
       openURL?(newWindowURL)
     }
   }

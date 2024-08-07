@@ -36,8 +36,8 @@ OBJC_EXPORT
 @optional
 - (void)chromeWebViewController:
             (ChromeWebViewController*)chromeWebViewController
-               openNewWindowFor:(const NSURL*)newWindowURL
-                      openerURL:(const NSURL*)openerURL
+               openNewWindowFor:(const NSURL* _Nullable)newWindowURL
+                      openerURL:(const NSURL* _Nullable)openerURL
                 initiatedByUser:(BOOL)initiatedByUser;
 @end
 

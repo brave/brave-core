@@ -45,13 +45,13 @@ void BraveWebClient::AddAdditionalSchemes(Schemes* schemes) const {
   schemes->standard_schemes.push_back(kBraveUIScheme);
   schemes->secure_schemes.push_back(kBraveUIScheme);
 
-  schemes->standard_schemes.push_back("chrome-untrusted");
-  schemes->secure_schemes.push_back("chrome-untrusted");
+  schemes->standard_schemes.push_back(kChromeUIUntrustedScheme);
+  schemes->secure_schemes.push_back(kChromeUIUntrustedScheme);
 }
 
 bool BraveWebClient::IsAppSpecificURL(const GURL& url) const {
   return ChromeWebClient::IsAppSpecificURL(url) ||
-         url.SchemeIs(kBraveUIScheme) || url.SchemeIs("chrome-untrusted");
+         url.SchemeIs(kBraveUIScheme) || url.SchemeIs(kChromeUIUntrustedScheme);
 }
 
 bool WillHandleBraveURLRedirect(GURL* url, web::BrowserState* browser_state) {
