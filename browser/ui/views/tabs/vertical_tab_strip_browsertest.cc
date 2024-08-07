@@ -737,6 +737,19 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, OriginalTabSearchButton) {
   EXPECT_FALSE(original_tab_search_button->GetVisible());
 }
 
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, PinningGroupedTab) {
+  // Regression check for https://github.com/brave/brave-browser/issues/40201
+  ToggleVerticalTabStrip();
+
+  // Given that we have a grouped tab
+  browser()->tab_strip_model()->ExecuteContextMenuCommand(
+      0, TabStripModel::CommandToggleGrouped);
+
+  // When pinning the tab shouldn't cause crash.
+  browser()->tab_strip_model()->ExecuteContextMenuCommand(
+      0, TabStripModel::CommandTogglePinned);
+}
+
 class VerticalTabStripDragAndDropBrowserTest
     : public VerticalTabStripBrowserTest {
  public:
