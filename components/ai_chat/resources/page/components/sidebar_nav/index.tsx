@@ -9,35 +9,7 @@ import classnames from '$web-common/classnames'
 import Icon from '@brave/leo/react/icon'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Button from '@brave/leo/react/button'
-import DataContext from '../../state/context'
-
-const conversationList = [
-  {
-    title: 'Theories of AI',
-    description:
-      'This is the summary of the conversation, caps at two lines maximum.',
-    createdAt: '2024-01-01'
-  },
-  {
-    title: 'Interpersonal Communication',
-    description:
-      'This is the summary of the conversation, caps at two lines maximum.',
-    createdAt: '2024-01-02'
-  },
-  {
-    title: 'Ethical gains and losses with progress in AI',
-    description:
-      'This is the summary of the conversation, caps at two lines maximum. This is the summary of the conversation, caps at two lines maximum.',
-    createdAt: '2024-01-03'
-  },
-  {
-    title:
-      'AI and the future of work is promising with the right policies in place',
-    description:
-      'This is the summary of the conversation, caps at two lines maximum.',
-    createdAt: '2024-01-04'
-  }
-]
+import { useAIChat } from '../../state/ai_chat_context'
 
 interface SimpleInputProps {
   text?: string
@@ -130,10 +102,12 @@ function DisplayTitle(props: DisplayTitleProps) {
 
 interface SidebarNavProps {
   enableBackButton?: boolean
+  isConversationListOpen: boolean
+  setIsConversationListOpen: (value: boolean) => unknown
 }
 
 export default function SidebarNav(props: SidebarNavProps) {
-  const context = React.useContext(DataContext)
+  const aiChatContext = useAIChat()
   const [editingIndex, setEditingIndex] = React.useState<number | null>(null)
 
   return (
@@ -148,7 +122,9 @@ export default function SidebarNav(props: SidebarNavProps) {
           <Button
             kind='plain-faint'
             fab
-            onClick={() => context.setIsConversationListOpen(false)}
+            onClick={() => {
+              props.setIsConversationListOpen(false)
+            }}
           >
             <Icon name='arrow-left' />
           </Button>
@@ -162,21 +138,25 @@ export default function SidebarNav(props: SidebarNavProps) {
       </div>
       <div className={styles.scroller}>
         <nav className={styles.nav}>
-          <div className={styles.timeLabel}>Today</div>
+          {/* <div className={styles.timeLabel}>Today</div> */}
           <ol>
-            {conversationList.map((item, index) => {
+            {aiChatContext.visibleConversations.map((item, index) => {
               return (
-                <li>
+                <li key={item.uuid}>
                   <div
                     className={classnames({
                       [styles.navItem]: true,
-                      [styles.navItemActive]: index === 0
+                      [styles.navItemActive]: item.uuid === aiChatContext.selectedConversationId
                     })}
+                    onClick={() => {
+                      aiChatContext.onSelectConversationId(item.uuid)
+                      props.setIsConversationListOpen(false)
+                    }}
                   >
                     {editingIndex === index ? (
                       <div className={styles.editibleTitle}>
                         <SimpleInput
-                          text={item.title}
+                          text={item.uuid}
                           onBlur={() => setEditingIndex(null)}
                           onSubmit={(value) => {
                             console.log(value)
@@ -186,8 +166,8 @@ export default function SidebarNav(props: SidebarNavProps) {
                       </div>
                     ) : (
                       <DisplayTitle
-                        title={item.title}
-                        description={item.description}
+                        title={item.uuid}
+                        description={''}
                         onEditTitle={() => setEditingIndex(index)}
                       />
                     )}
