@@ -9,6 +9,7 @@
 #include <optional>
 #include <vector>
 
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
@@ -26,6 +27,11 @@ void NewOffTheRecordWindowTor(Browser* browser);
 void NewOffTheRecordWindowTor(Profile* profile);
 
 void NewTorConnectionForSite(Browser*);
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+void ToggleAIChat(Browser* browser);
+#endif
+
 void ShowWalletBubble(Browser* browser);
 void ShowApproveWalletBubble(Browser* browser);
 void CloseWalletBubble(Browser* browser);

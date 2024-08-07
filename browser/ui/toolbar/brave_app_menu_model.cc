@@ -146,6 +146,13 @@ void BraveAppMenuModel::BuildTabsAndWindowsSection() {
 void BraveAppMenuModel::BuildBraveProductsSection() {
   // Needs to add separator as this section is brave specific section.
   bool need_separator = false;
+
+  if (IsCommandIdEnabled(IDC_TOGGLE_AI_CHAT)) {
+    InsertItemWithStringIdAt(GetNextIndexOfBraveProductsSection(),
+                             IDC_TOGGLE_AI_CHAT, IDS_TOGGLE_AI_CHAT);
+    need_separator = true;
+  }
+
   if (IsCommandIdEnabled(IDC_SHOW_BRAVE_WALLET)) {
     InsertItemWithStringIdAt(GetNextIndexOfBraveProductsSection(),
                              IDC_SHOW_BRAVE_WALLET, IDS_SHOW_BRAVE_WALLET);
@@ -421,10 +428,13 @@ bool BraveAppMenuModel::IsCommandIdEnabled(int id) const {
 }
 
 size_t BraveAppMenuModel::GetNextIndexOfBraveProductsSection() const {
-  std::vector<int> commands_to_check = {
-      IDC_SHOW_BRAVE_VPN_PANEL, IDC_BRAVE_VPN_MENU,
-      IDC_SHOW_BRAVE_WALLET,    IDC_NEW_OFFTHERECORD_WINDOW_TOR,
-      IDC_NEW_INCOGNITO_WINDOW, IDC_NEW_WINDOW};
+  std::vector<int> commands_to_check = {IDC_SHOW_BRAVE_VPN_PANEL,
+                                        IDC_BRAVE_VPN_MENU,
+                                        IDC_SHOW_BRAVE_WALLET,
+                                        IDC_TOGGLE_AI_CHAT,
+                                        IDC_NEW_OFFTHERECORD_WINDOW_TOR,
+                                        IDC_NEW_INCOGNITO_WINDOW,
+                                        IDC_NEW_WINDOW};
   const auto last_index_of_second_section =
       GetProperItemIndex(commands_to_check, false).value();
   const auto last_cmd_id_of_second_section =

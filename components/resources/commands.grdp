@@ -346,6 +346,9 @@
   <message name="IDS_IDC_LIVE_CAPTION">
     Toggle live captions
   </message>
+  <message name="IDS_IDC_TOGGLE_AI_CHAT">
+    Toggle Leo AI
+  </message>
   <message name="IDS_IDC_SHOW_BRAVE_WALLET_PANEL">
     Show Brave Wallet panel
   </message>

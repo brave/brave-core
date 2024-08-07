@@ -66,8 +66,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -139,8 +139,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   content::BrowserContext* context = web_contents->GetBrowserContext();
-  if (ai_chat::IsAIChatEnabled(user_prefs::UserPrefs::Get(context)) &&
-      Profile::FromBrowserContext(context)->IsRegularProfile()) {
+  if (ai_chat::IsAllowedForContext(context)) {
     auto skus_service_getter = base::BindRepeating(
         [](content::BrowserContext* context) {
           return skus::SkusServiceFactory::GetForContext(context);

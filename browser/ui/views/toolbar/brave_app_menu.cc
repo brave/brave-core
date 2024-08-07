@@ -222,6 +222,7 @@ void BraveAppMenu::RecordMenuUsage(int command_id) {
       group = misc_metrics::MenuGroup::kTabWindow;
       break;
     case IDC_SHOW_BRAVE_WALLET:
+    case IDC_TOGGLE_AI_CHAT:
     case IDC_SHOW_BRAVE_SYNC:
     case IDC_SHOW_BRAVE_REWARDS:
       group = misc_metrics::MenuGroup::kBraveFeatures;

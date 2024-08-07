@@ -6,6 +6,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
@@ -186,6 +187,13 @@ IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, SpeedreaderToolbar) {
   } else {
     EXPECT_EQ(result, false);
   }
+}
+
+IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, Command) {
+  chrome::BrowserCommandController* command_controller =
+      browser()->command_controller();
+  EXPECT_EQ(command_controller->IsCommandEnabled(IDC_TOGGLE_AI_CHAT),
+            IsAIChatEnabledTest());
 }
 
 INSTANTIATE_TEST_SUITE_P(
