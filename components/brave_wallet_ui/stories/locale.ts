@@ -509,6 +509,8 @@ provideStrings({
   braveWalletAccountsDeposit: 'Deposit',
   braveWalletAccountsRemove: 'Remove',
   braveWalletAccountSettings: 'Account settings',
+  braveWalletPasswordIsRequiredToTakeThisAction:
+    'Password is required to take this action.',
 
   // Empty Token List State
   braveWalletNoAvailableAssets: 'No available assets',

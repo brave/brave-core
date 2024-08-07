@@ -407,7 +407,6 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
       onClose={onClose}
       title='Transaction Details'
       width='630px'
-      borderRadius={16}
     >
       <ContentWrapper
         fullWidth={true}

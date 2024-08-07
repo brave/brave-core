@@ -38,7 +38,7 @@ export const AddOrEditNftModal = ({ nftToken, onClose, onHideForm }: Props) => {
       onClose={onClose}
       width='584px'
       showDivider={false}
-      headerPaddingHorizontal={32}
+      headerPaddingHorizontal={'32px'}
     >
       <StyledWrapper>
         <AddNftForm
