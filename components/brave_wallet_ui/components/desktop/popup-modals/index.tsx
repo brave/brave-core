@@ -13,7 +13,8 @@ import {
   CloseIcon,
   BackIcon,
   Modal,
-  Divider
+  Divider,
+  ModalContent
 } from './style'
 
 export interface Props {
@@ -24,9 +25,8 @@ export interface Props {
   width?: string
   showDivider?: boolean
   hideHeader?: boolean
-  headerPaddingVertical?: number
-  headerPaddingHorizontal?: number
-  borderRadius?: number
+  headerPaddingVertical?: string
+  headerPaddingHorizontal?: string
   height?: string
 }
 
@@ -37,7 +37,6 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
     const {
       title,
       width,
-      borderRadius,
       headerPaddingVertical,
       headerPaddingHorizontal,
       showDivider,
@@ -69,7 +68,6 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
       <StyledWrapper>
         <Modal
           width={width}
-          borderRadius={borderRadius}
           height={height}
           ref={forwardedRef}
         >
@@ -90,7 +88,12 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
             </Header>
           )}
           {showDivider && <Divider />}
-          {children}
+          <ModalContent
+            fullWidth
+            flex={1}
+          >
+            {children}
+          </ModalContent>
         </Modal>
       </StyledWrapper>
     )

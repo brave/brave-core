@@ -4,17 +4,15 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import Input from '@brave/leo/react/input'
+import Icon from '@brave/leo/react/icon'
 import * as leo from '@brave/leo/tokens/css/variables'
 
-const { spacing } = leo
-
-export const modalWidth = '442px'
-
-export const StyledWrapper = styled.div`
+export const FullWidthInput = styled(Input)`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 0px ${spacing['3Xl']} ${spacing['3Xl']} ${spacing['3Xl']};
+`
+
+export const LockIcon = styled(Icon).attrs({ name: 'lock-plain' })`
+  --leo-icon-size: 20px;
+  color: ${leo.color.icon.default};
 `

@@ -98,7 +98,6 @@ export const Web3DappFilters = ({ categories, onClose }: Props) => {
       onClose={onClose}
       title={getLocale('braveWalletPortfolioFiltersTitle')}
       width='500px'
-      borderRadius={16}
     >
       <ScrollableColumn>
         <ContentWrapper

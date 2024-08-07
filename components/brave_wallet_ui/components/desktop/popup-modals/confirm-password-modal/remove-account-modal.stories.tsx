@@ -5,15 +5,27 @@
 
 import * as React from 'react'
 
+// Components
 import {
   WalletPageStory //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { RemoveAccountModal } from './remove-account-modal'
 
+// Mocks
+import { mockAccount } from '../../../../common/constants/mocks'
+
 export const _RemoveAccountModal = {}
 export default {
   title: 'Remove Account Modal',
-  render: () => <WalletPageStory>
-    <RemoveAccountModal />
-  </WalletPageStory>
+  render: () => (
+    <div style={{ width: '100%', height: '100%' }}>
+      <WalletPageStory
+        accountTabStateOverride={{
+          accountToRemove: { ...mockAccount, name: 'BTC Import' }
+        }}
+      >
+        <RemoveAccountModal />
+      </WalletPageStory>
+    </div>
+  )
 }
