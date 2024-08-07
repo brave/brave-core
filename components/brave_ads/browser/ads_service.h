@@ -146,6 +146,8 @@ class AdsService : public KeyedService {
       mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) = 0;
 
+  virtual void ClearData() = 0;
+
   // Called to get ad history between `from_time` and `to_time` date range. The
   // callback takes one argument - `base::Value::List` containing info of the
   // obtained ad history.

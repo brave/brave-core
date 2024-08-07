@@ -323,6 +323,8 @@ class AdsServiceImpl final : public AdsService,
                          GetCachedAdEventsCallback callback) override;
   void ResetAdEventCacheForInstanceId(const std::string& id) override;
 
+  void ClearData() override;
+
   void GetSiteHistory(int max_count,
                       int recent_day_range,
                       GetSiteHistoryCallback callback) override;
