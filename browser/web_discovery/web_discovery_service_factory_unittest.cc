@@ -15,8 +15,9 @@
 namespace web_discovery {
 
 TEST(WebDiscoveryServiceFactoryTest, PrivateNotCreated) {
+  base::test::ScopedFeatureList scoped_features(
+      features::kBraveWebDiscoveryNative);
   content::BrowserTaskEnvironment task_environment;
-  base::test::ScopedFeatureList scoped_features(features::kWebDiscoveryNative);
   auto* browser_process = TestingBrowserProcess::GetGlobal();
   TestingProfileManager profile_manager(browser_process);
   ASSERT_TRUE(profile_manager.SetUp());

@@ -14,6 +14,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/threading/sequence_bound.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/web_discovery/browser/anonymous_credentials/rs/cxx/src/lib.rs.h"
 #include "brave/components/web_discovery/browser/credential_signer.h"
@@ -34,6 +35,38 @@ namespace web_discovery {
 struct GenerateJoinRequestResult {
   anonymous_credentials::StartJoinResult start_join_result;
   std::string signature;
+};
+
+class BackgroundCredentialHelper {
+ public:
+  BackgroundCredentialHelper();
+  ~BackgroundCredentialHelper();
+
+  BackgroundCredentialHelper(const BackgroundCredentialHelper&) = delete;
+  BackgroundCredentialHelper& operator=(const BackgroundCredentialHelper&) =
+      delete;
+
+  void UseFixedSeedForTesting();
+
+  std::unique_ptr<RSAKeyInfo> GenerateRSAKey();
+  void SetRSAKey(std::unique_ptr<crypto::RSAPrivateKey> rsa_private_key);
+  std::optional<GenerateJoinRequestResult> GenerateJoinRequest(
+      std::string pre_challenge);
+  std::optional<std::string> FinishJoin(
+      std::string date,
+      std::vector<const uint8_t> group_pub_key,
+      std::vector<const uint8_t> gsk,
+      std::vector<const uint8_t> join_resp_bytes);
+  std::optional<std::vector<const uint8_t>> PerformSign(
+      std::vector<const uint8_t> msg,
+      std::vector<const uint8_t> basename,
+      std::optional<std::vector<uint8_t>> gsk_bytes,
+      std::optional<std::vector<uint8_t>> credential_bytes);
+
+ private:
+  rust::Box<anonymous_credentials::CredentialManager>
+      anonymous_credential_manager_;
+  std::unique_ptr<crypto::RSAPrivateKey> rsa_private_key_;
 };
 
 // Manages and utilizes anonymous credentials used for communicating
@@ -63,7 +96,7 @@ class CredentialManager : public CredentialSigner {
   // CredentialSigner:
   bool CredentialExistsForToday() override;
 
-  bool Sign(std::vector<const uint8_t> msg,
+  void Sign(std::vector<const uint8_t> msg,
             std::vector<const uint8_t> basename,
             SignCallback callback) override;
 
@@ -78,7 +111,7 @@ class CredentialManager : public CredentialSigner {
   void OnNewRSAKey(std::unique_ptr<RSAKeyInfo> key_info);
 
   void StartJoinGroup(const std::string& date,
-                      const std::string& group_pub_key_b64);
+                      const std::vector<uint8_t>& group_pub_key);
 
   void OnJoinRequestReady(
       std::string date,
@@ -102,9 +135,9 @@ class CredentialManager : public CredentialSigner {
                     SignCallback callback,
                     std::optional<std::vector<const uint8_t>> signed_message);
 
-  raw_ptr<PrefService> profile_prefs_;
-  raw_ptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  raw_ptr<const ServerConfigLoader> server_config_loader_;
+  const raw_ptr<PrefService> profile_prefs_;
+  const raw_ptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  const raw_ptr<const ServerConfigLoader> server_config_loader_;
 
   GURL join_url_;
   base::flat_map<std::string, std::unique_ptr<network::SimpleURLLoader>>
@@ -112,14 +145,9 @@ class CredentialManager : public CredentialSigner {
   net::BackoffEntry backoff_entry_;
   base::WallClockTimer retry_timer_;
 
-  scoped_refptr<base::SequencedTaskRunner> sequenced_task_runner_;
+  scoped_refptr<base::SequencedTaskRunner> background_task_runner_;
 
-  std::unique_ptr<rust::Box<anonymous_credentials::CredentialManager>,
-                  base::OnTaskRunnerDeleter>
-      anonymous_credential_manager_;
-
-  std::unique_ptr<crypto::RSAPrivateKey, base::OnTaskRunnerDeleter>
-      rsa_private_key_;
+  base::SequenceBound<BackgroundCredentialHelper> background_credential_helper_;
   std::optional<std::string> rsa_public_key_b64_;
 
   std::optional<std::string> loaded_credential_date_;

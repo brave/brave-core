@@ -14,7 +14,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
-#include "brave/components/web_discovery/common/buildflags/buildflags.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/search_engines/template_url.h"
@@ -96,7 +96,7 @@ bool ShouldShowWebDiscoveryInfoBar(TemplateURLService* service,
   const char* enabled_pref_name = kWebDiscoveryExtensionEnabled;
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   if (base::FeatureList::IsEnabled(
-          web_discovery::features::kWebDiscoveryNative)) {
+          web_discovery::features::kBraveWebDiscoveryNative)) {
     enabled_pref_name = web_discovery::kWebDiscoveryNativeEnabled;
   }
 #endif

@@ -5,6 +5,8 @@
 
 #include "brave/components/web_discovery/browser/util.h"
 
+#include <utility>
+
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/brave_domains/service_domains.h"
@@ -46,7 +48,7 @@ GURL GetPatternsEndpoint() {
 
 std::unique_ptr<network::ResourceRequest> CreateResourceRequest(GURL url) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = url;
+  resource_request->url = std::move(url);
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   return resource_request;
 }

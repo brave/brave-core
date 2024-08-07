@@ -7,7 +7,7 @@
 
 namespace web_discovery::features {
 
-BASE_FEATURE(kWebDiscoveryNative,
+BASE_FEATURE(kBraveWebDiscoveryNative,
              "BraveWebDiscoveryNative",
              base::FEATURE_DISABLED_BY_DEFAULT);
 

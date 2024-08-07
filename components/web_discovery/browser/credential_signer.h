@@ -17,7 +17,7 @@ class CredentialSigner {
  public:
   using SignCallback =
       base::OnceCallback<void(std::optional<std::vector<const uint8_t>>)>;
-  virtual ~CredentialSigner();
+  virtual ~CredentialSigner() = default;
 
   // Returns true is a credential is available for the current date.
   // The caller can expect future calls to `Sign` to succeed, if made today.
@@ -29,7 +29,7 @@ class CredentialSigner {
   // preventing Sybil attacks.
   // See signature_basename.h/cc for more information on how the basename
   // should be generated.
-  virtual bool Sign(std::vector<const uint8_t> msg,
+  virtual void Sign(std::vector<const uint8_t> msg,
                     std::vector<const uint8_t> basename,
                     SignCallback callback) = 0;
 };

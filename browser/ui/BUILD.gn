@@ -17,7 +17,7 @@ import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
-import("//brave/components/web_discovery/common/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -843,6 +843,7 @@ source_set("ui") {
     "//brave/components/tor/buildflags",
     "//brave/components/url_sanitizer/browser",
     "//brave/components/vector_icons",
+    "//brave/components/web_discovery/buildflags",
     "//brave/components/webui",
     "//chrome/app:command_ids",
     "//chrome/app/vector_icons:vector_icons",
@@ -911,10 +912,7 @@ source_set("ui") {
   }
 
   if (enable_web_discovery_native) {
-    deps += [
-      "//brave/components/web_discovery/common",
-      "//brave/components/web_discovery/common/buildflags",
-    ]
+    deps += [ "//brave/components/web_discovery/common" ]
   }
 
   if (is_linux) {

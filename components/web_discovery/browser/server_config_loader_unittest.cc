@@ -78,22 +78,6 @@ class WebDiscoveryServerConfigLoaderTest : public testing::Test {
         install_dir_.GetPath().AppendASCII("wdp_patterns.json"));
   }
 
-  base::test::TaskEnvironment task_environment_;
-  std::unique_ptr<ServerConfigLoader> server_config_loader_;
-  base::ScopedTempDir install_dir_;
-
-  size_t hpn_config_requests_made_ = 0;
-  size_t quorum_config_requests_made_ = 0;
-  size_t patterns_requests_made_ = 0;
-
-  size_t config_ready_calls_made_ = 0;
-  size_t patterns_ready_calls_made_ = 0;
-
-  net::HttpStatusCode hpn_config_status_code_ = net::HTTP_OK;
-  net::HttpStatusCode quorum_config_status_code_ = net::HTTP_OK;
-  net::HttpStatusCode patterns_status_code_ = net::HTTP_OK;
-
- private:
   void HandleRequest(const network::ResourceRequest& request) {
     url_loader_factory_.ClearResponses();
 
@@ -120,13 +104,30 @@ class WebDiscoveryServerConfigLoaderTest : public testing::Test {
 
   void HandlePatternsReady() { patterns_ready_calls_made_++; }
 
+  base::test::TaskEnvironment task_environment_;
+  TestingPrefServiceSimple local_state_;
+
+  network::TestURLLoaderFactory url_loader_factory_;
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+
+  base::ScopedTempDir install_dir_;
+
+  size_t hpn_config_requests_made_ = 0;
+  size_t quorum_config_requests_made_ = 0;
+  size_t patterns_requests_made_ = 0;
+
+  size_t config_ready_calls_made_ = 0;
+  size_t patterns_ready_calls_made_ = 0;
+
+  net::HttpStatusCode hpn_config_status_code_ = net::HTTP_OK;
+  net::HttpStatusCode quorum_config_status_code_ = net::HTTP_OK;
+  net::HttpStatusCode patterns_status_code_ = net::HTTP_OK;
+
   std::string patterns_gz_contents_;
   std::string quorum_config_contents_;
   std::string hpn_config_contents_;
 
-  TestingPrefServiceSimple local_state_;
-  network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  std::unique_ptr<ServerConfigLoader> server_config_loader_;
 };
 
 TEST_F(WebDiscoveryServerConfigLoaderTest, LoadConfigs) {

@@ -49,7 +49,7 @@ KeyedService* WebDiscoveryServiceFactory::BuildServiceInstanceFor(
 
 content::BrowserContext* WebDiscoveryServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
-  if (!base::FeatureList::IsEnabled(features::kWebDiscoveryNative)) {
+  if (!base::FeatureList::IsEnabled(features::kBraveWebDiscoveryNative)) {
     return nullptr;
   }
   // Prevents creation of service instance for incognito/OTR profiles

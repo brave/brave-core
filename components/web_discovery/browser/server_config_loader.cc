@@ -84,12 +84,11 @@ constexpr auto kAllowedReportLocations =
 KeyMap ParseKeys(const base::Value::Dict& encoded_keys) {
   KeyMap map;
   for (const auto [date, key_b64] : encoded_keys) {
-    std::vector<uint8_t> decoded_data;
-    // Decode to check for valid base64
-    if (!base::Base64Decode(key_b64.GetString())) {
+    auto decoded_data = base::Base64Decode(key_b64.GetString());
+    if (!decoded_data) {
       continue;
     }
-    map[date] = key_b64.GetString();
+    map[date] = *decoded_data;
   }
   return map;
 }
@@ -145,6 +144,70 @@ std::optional<std::string> ReadPatternsFile(base::FilePath patterns_path) {
   return contents;
 }
 
+std::unique_ptr<ServerConfig> ProcessConfigResponses(
+    const std::string collector_response_body,
+    const std::string quorum_response_body) {
+  base::AssertLongCPUWorkAllowed();
+  auto collector_parsed_json = base::JSONReader::ReadAndReturnValueWithError(
+      collector_response_body, base::JSON_PARSE_RFC);
+  auto quorum_parsed_json = base::JSONReader::ReadAndReturnValueWithError(
+      quorum_response_body, base::JSON_PARSE_RFC);
+
+  if (!collector_parsed_json.has_value() || !quorum_parsed_json.has_value()) {
+    const auto& error = !collector_parsed_json.has_value()
+                            ? collector_parsed_json.error()
+                            : quorum_parsed_json.error();
+    VLOG(1) << "Failed to parse server config json: " << error.ToString();
+    return nullptr;
+  }
+
+  const auto* collector_root = collector_parsed_json.value().GetIfDict();
+  const auto* quorum_root = quorum_parsed_json.value().GetIfDict();
+  if (!collector_root || !quorum_root) {
+    VLOG(1) << "Failed to parse server config: not a dict";
+    return nullptr;
+  }
+
+  const auto min_version = collector_root->FindInt(kMinVersionFieldName);
+  if (min_version && *min_version > kCurrentVersion) {
+    VLOG(1) << "Server minimum version is higher than current version, failing";
+    return nullptr;
+  }
+
+  auto config = std::make_unique<ServerConfig>();
+
+  const auto* group_pub_keys = collector_root->FindDict(kGroupPubKeysFieldName);
+  if (!group_pub_keys) {
+    VLOG(1) << "Failed to retrieve groupPubKeys from server config";
+    return nullptr;
+  }
+  const auto* pub_keys = collector_root->FindDict(kPubKeysFieldName);
+  if (!pub_keys) {
+    VLOG(1) << "Failed to retrieve pubKeys from server config";
+    return nullptr;
+  }
+  const auto* source_map = collector_root->FindDict(kSourceMapFieldName);
+  const auto* source_map_actions =
+      source_map ? source_map->FindDict(kSourceMapActionsFieldName) : nullptr;
+  if (!source_map_actions) {
+    VLOG(1) << "Failed to retrieve sourceMap from server config";
+    return nullptr;
+  }
+
+  const auto* location = quorum_root->FindString(kLocationFieldName);
+  if (location && kAllowedReportLocations.contains(*location)) {
+    config->location = *location;
+  } else {
+    config->location = kOmittedLocationValue;
+  }
+
+  config->group_pub_keys = ParseKeys(*group_pub_keys);
+  config->pub_keys = ParseKeys(*pub_keys);
+  config->source_map_actions = ParseSourceMapActionConfigs(*source_map_actions);
+
+  return config;
+}
+
 }  // namespace
 
 SourceMapActionConfig::SourceMapActionConfig() = default;
@@ -153,6 +216,14 @@ SourceMapActionConfig::~SourceMapActionConfig() = default;
 ServerConfig::ServerConfig() = default;
 ServerConfig::~ServerConfig() = default;
 
+ServerConfigDownloadResult::ServerConfigDownloadResult(
+    bool is_collector_config,
+    std::optional<std::string> response_body)
+    : is_collector_config(is_collector_config), response_body(response_body) {}
+ServerConfigDownloadResult::~ServerConfigDownloadResult() = default;
+ServerConfigDownloadResult::ServerConfigDownloadResult(
+    const ServerConfigDownloadResult&) = default;
+
 ServerConfigLoader::ServerConfigLoader(
     PrefService* local_state,
     base::FilePath user_data_dir,
@@ -160,7 +231,7 @@ ServerConfigLoader::ServerConfigLoader(
     base::RepeatingClosure config_callback,
     base::RepeatingClosure patterns_callback)
     : local_state_(local_state),
-      sequenced_task_runner_(
+      background_task_runner_(
           base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()})),
       shared_url_loader_factory_(shared_url_loader_factory),
       config_callback_(config_callback),
@@ -211,27 +282,75 @@ void ServerConfigLoader::LoadConfigs() {
   quorum_config_url_loader_ = network::SimpleURLLoader::Create(
       std::move(quorum_resource_request), kNetworkTrafficAnnotation);
 
-  auto callback = base::BarrierCallback<std::optional<std::string>>(
-      2, base::BindOnce(&ServerConfigLoader::OnConfigResponses,
+  auto callback = base::BarrierCallback<ServerConfigDownloadResult>(
+      2, base::BindOnce(&ServerConfigLoader::OnConfigResponsesDownloaded,
                         base::Unretained(this)));
 
+  auto make_download_result = [](bool is_collector_config,
+                                 std::optional<std::string> response_body) {
+    return ServerConfigDownloadResult(is_collector_config, response_body);
+  };
+
+  auto collector_callback =
+      base::BindOnce(make_download_result, true).Then(callback);
+  auto quorum_callback =
+      base::BindOnce(make_download_result, false).Then(callback);
+
   collector_config_url_loader_->DownloadToString(
-      shared_url_loader_factory_.get(), callback, kMaxResponseSize);
+      shared_url_loader_factory_.get(), std::move(collector_callback),
+      kMaxResponseSize);
   quorum_config_url_loader_->DownloadToString(shared_url_loader_factory_.get(),
-                                              callback, kMaxResponseSize);
+                                              std::move(quorum_callback),
+                                              kMaxResponseSize);
 }
 
-void ServerConfigLoader::OnConfigResponses(
-    std::vector<std::optional<std::string>> response_bodies) {
-  CHECK_EQ(response_bodies.size(), 2u);
-  base::Time update_time = base::Time::Now();
-  bool result = ProcessConfigResponses(response_bodies[0], response_bodies[1]);
+void ServerConfigLoader::OnConfigResponsesDownloaded(
+    std::vector<ServerConfigDownloadResult> results) {
+  CHECK_EQ(results.size(), 2u);
+  const std::optional<std::string>* collector_response_body = nullptr;
+  const std::optional<std::string>* quorum_response_body = nullptr;
+  for (const auto& result : results) {
+    if (result.is_collector_config) {
+      collector_response_body = &result.response_body;
+    } else {
+      quorum_response_body = &result.response_body;
+    }
+  }
+  CHECK(collector_response_body && quorum_response_body);
+
+  auto* collector_response_info = collector_config_url_loader_->ResponseInfo();
+  auto* quorum_response_info = quorum_config_url_loader_->ResponseInfo();
+  if (!*collector_response_body || !*quorum_response_body ||
+      !collector_response_info || !quorum_response_info ||
+      collector_response_info->headers->response_code() != 200 ||
+      quorum_response_info->headers->response_code() != 200) {
+    VLOG(1) << "Failed to download one or more server configs";
+    OnConfigResponsesProcessed(nullptr);
+    return;
+  }
+
+  background_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&ProcessConfigResponses, **collector_response_body,
+                     **quorum_response_body),
+      base::BindOnce(&ServerConfigLoader::OnConfigResponsesProcessed,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void ServerConfigLoader::OnConfigResponsesProcessed(
+    std::unique_ptr<ServerConfig> config) {
+  bool result = config != nullptr;
+  if (result) {
+    last_loaded_server_config_ = std::move(config);
+    config_callback_.Run();
+  }
 
   config_backoff_entry_.InformOfRequest(result);
 
   collector_config_url_loader_ = nullptr;
   quorum_config_url_loader_ = nullptr;
 
+  auto update_time = base::Time::Now();
   if (!result) {
     update_time += config_backoff_entry_.GetTimeUntilRelease();
   } else {
@@ -245,80 +364,8 @@ void ServerConfigLoader::OnConfigResponses(
       base::BindOnce(&ServerConfigLoader::LoadConfigs, base::Unretained(this)));
 }
 
-bool ServerConfigLoader::ProcessConfigResponses(
-    const std::optional<std::string>& collector_response_body,
-    const std::optional<std::string>& quorum_response_body) {
-  auto* collector_response_info = collector_config_url_loader_->ResponseInfo();
-  auto* quorum_response_info = quorum_config_url_loader_->ResponseInfo();
-  if (!collector_response_body || !collector_response_info ||
-      !quorum_response_body || !collector_response_info ||
-      collector_response_info->headers->response_code() != 200 ||
-      quorum_response_info->headers->response_code() != 200) {
-    VLOG(1) << "Failed to fetch server config";
-    return false;
-  }
-
-  auto collector_parsed_json = base::JSONReader::ReadAndReturnValueWithError(
-      *collector_response_body, base::JSON_PARSE_RFC);
-  auto quorum_parsed_json = base::JSONReader::ReadAndReturnValueWithError(
-      *quorum_response_body, base::JSON_PARSE_RFC);
-
-  if (!collector_parsed_json.has_value() || !quorum_parsed_json.has_value()) {
-    VLOG(1) << "Failed to parse server config json";
-    return false;
-  }
-
-  const auto* collector_root = collector_parsed_json.value().GetIfDict();
-  const auto* quorum_root = quorum_parsed_json.value().GetIfDict();
-  if (!collector_root || !quorum_root) {
-    VLOG(1) << "Failed to parse server config: not a dict";
-    return false;
-  }
-
-  const auto min_version = collector_root->FindInt(kMinVersionFieldName);
-  if (min_version && *min_version > kCurrentVersion) {
-    VLOG(1) << "Server minimum version is higher than current version, failing";
-    return false;
-  }
-
-  auto config = std::make_unique<ServerConfig>();
-
-  const auto* group_pub_keys = collector_root->FindDict(kGroupPubKeysFieldName);
-  if (!group_pub_keys) {
-    VLOG(1) << "Failed to retrieve groupPubKeys from server config";
-    return false;
-  }
-  const auto* pub_keys = collector_root->FindDict(kPubKeysFieldName);
-  if (!pub_keys) {
-    VLOG(1) << "Failed to retrieve pubKeys from server config";
-    return false;
-  }
-  const auto* source_map = collector_root->FindDict(kSourceMapFieldName);
-  const auto* source_map_actions =
-      source_map ? source_map->FindDict(kSourceMapActionsFieldName) : nullptr;
-  if (!source_map_actions) {
-    VLOG(1) << "Failed to retrieve sourceMap from server config";
-    return false;
-  }
-
-  const auto* location = quorum_root->FindString(kLocationFieldName);
-  if (location && kAllowedReportLocations.contains(*location)) {
-    config->location = *location;
-  } else {
-    config->location = kOmittedLocationValue;
-  }
-
-  config->group_pub_keys = ParseKeys(*group_pub_keys);
-  config->pub_keys = ParseKeys(*pub_keys);
-  config->source_map_actions = ParseSourceMapActionConfigs(*source_map_actions);
-
-  last_loaded_server_config_ = std::move(config);
-  config_callback_.Run();
-  return true;
-}
-
 void ServerConfigLoader::LoadStoredPatterns() {
-  sequenced_task_runner_->PostTaskAndReplyWithResult(
+  background_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&ReadPatternsFile, patterns_path_),
       base::BindOnce(&ServerConfigLoader::OnPatternsFileLoaded,
                      weak_ptr_factory_.GetWeakPtr()));
@@ -332,14 +379,10 @@ void ServerConfigLoader::OnPatternsFileLoaded(
     SchedulePatternsRequest();
     return;
   }
-  auto parsed_patterns = ParsePatterns(*patterns_json);
-  if (!parsed_patterns) {
-    local_state_->ClearPref(kPatternsRetrievalTime);
-    SchedulePatternsRequest();
-    return;
-  }
-  last_loaded_patterns_ = std::move(parsed_patterns);
-  patterns_callback_.Run();
+  background_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE, base::BindOnce(&ParsePatterns, *patterns_json),
+      base::BindOnce(&ServerConfigLoader::OnStoredPatternsParsed,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void ServerConfigLoader::SchedulePatternsRequest() {
@@ -403,7 +446,7 @@ void ServerConfigLoader::OnPatternsResponse(
     HandlePatternsStatus(false);
     return;
   }
-  sequenced_task_runner_->PostTaskAndReplyWithResult(
+  background_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&GunzipContents, *response_body),
       base::BindOnce(&ServerConfigLoader::OnPatternsGunzip,
                      weak_ptr_factory_.GetWeakPtr()));
@@ -416,14 +459,33 @@ void ServerConfigLoader::OnPatternsGunzip(
     HandlePatternsStatus(false);
     return;
   }
-  auto parsed_patterns = ParsePatterns(*patterns_json);
+  background_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE, base::BindOnce(&ParsePatterns, *patterns_json),
+      base::BindOnce(&ServerConfigLoader::OnNewPatternsParsed,
+                     weak_ptr_factory_.GetWeakPtr(), *patterns_json));
+}
+
+void ServerConfigLoader::OnStoredPatternsParsed(
+    std::unique_ptr<PatternsGroup> parsed_patterns) {
+  if (!parsed_patterns) {
+    local_state_->ClearPref(kPatternsRetrievalTime);
+    SchedulePatternsRequest();
+    return;
+  }
+  last_loaded_patterns_ = std::move(parsed_patterns);
+  patterns_callback_.Run();
+}
+
+void ServerConfigLoader::OnNewPatternsParsed(
+    std::string new_patterns_json,
+    std::unique_ptr<PatternsGroup> parsed_patterns) {
   if (!parsed_patterns) {
     HandlePatternsStatus(false);
     return;
   }
-  sequenced_task_runner_->PostTaskAndReplyWithResult(
+  background_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&WritePatternsFile, patterns_path_, *patterns_json),
+      base::BindOnce(&WritePatternsFile, patterns_path_, new_patterns_json),
       base::BindOnce(&ServerConfigLoader::OnPatternsWritten,
                      weak_ptr_factory_.GetWeakPtr(),
                      std::move(parsed_patterns)));

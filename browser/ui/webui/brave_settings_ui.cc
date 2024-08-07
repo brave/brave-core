@@ -48,8 +48,7 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
-#include "brave/components/web_discovery/common/buildflags/buildflags.h"
-#include "brave/components/web_discovery/common/features.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
@@ -88,6 +87,10 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#include "brave/components/web_discovery/common/features.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
@@ -193,9 +196,10 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 
   html_source->AddBoolean("enable_extensions", BUILDFLAG(ENABLE_EXTENSIONS));
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-  html_source->AddBoolean("isWebDiscoveryNativeEnabled",
-                          base::FeatureList::IsEnabled(
-                              web_discovery::features::kWebDiscoveryNative));
+  html_source->AddBoolean(
+      "isWebDiscoveryNativeEnabled",
+      base::FeatureList::IsEnabled(
+          web_discovery::features::kBraveWebDiscoveryNative));
 #endif
 
   html_source->AddBoolean("extensionsManifestV2Feature",
