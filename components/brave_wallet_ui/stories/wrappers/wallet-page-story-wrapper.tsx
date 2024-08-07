@@ -23,9 +23,7 @@ import {
 } from '../../constants/types'
 
 // Mocks
-import { ApiProxyContext } from '../../common/context/api-proxy.context'
 import { WalletApiDataOverrides } from '../../constants/testing_types'
-import getAPIProxy from '../../common/async/bridge' // aut-mocked by complier
 import '../locale'
 
 export interface WalletPageStoryProps {
@@ -36,8 +34,6 @@ export interface WalletPageStoryProps {
   apiOverrides?: WalletApiDataOverrides
   initialRoute?: WalletRoutes
 }
-
-const mockedProxy = getAPIProxy()
 
 export const WalletPageStory: React.FC<
   React.PropsWithChildren<WalletPageStoryProps>
@@ -78,11 +74,7 @@ export const WalletPageStory: React.FC<
     <MemoryRouter
       initialEntries={[initialRoute || WalletRoutes.OnboardingWelcome]}
     >
-      <Provider store={store}>
-        <ApiProxyContext.Provider value={mockedProxy}>
-          {children}
-        </ApiProxyContext.Provider>
-      </Provider>
+      <Provider store={store}>{children}</Provider>
     </MemoryRouter>
   )
 }

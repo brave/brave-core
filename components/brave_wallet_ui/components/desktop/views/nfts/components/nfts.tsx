@@ -35,6 +35,7 @@ import { WalletActions } from '../../../../../common/actions'
 import { WalletPageActions } from '../../../../../page/actions'
 
 // utils
+import getAPIProxy from '../../../../../common/async/bridge'
 import { getLocale } from '$web-common/locale'
 import {
   LOCAL_STORAGE_KEYS //
@@ -46,7 +47,6 @@ import {
   useGetUserTokensRegistryQuery,
   useSetNftDiscoveryEnabledMutation
 } from '../../../../../common/slices/api.slice'
-import { useApiProxy } from '../../../../../common/hooks/use-api-proxy'
 import {
   compareTokensByName,
   filterTokensByNetworks,
@@ -163,9 +163,6 @@ export const Nfts = ({
       ) === null
     )
   const [showSearchBar, setShowSearchBar] = React.useState<boolean>(false)
-
-  // custom hooks
-  const { braveWalletP3A } = useApiProxy()
 
   // queries
   const { data: isNftAutoDiscoveryEnabled } =
@@ -490,8 +487,8 @@ export const Nfts = ({
 
   // effects
   React.useEffect(() => {
-    braveWalletP3A.recordNFTGalleryView(visibleNfts.length)
-  }, [braveWalletP3A, visibleNfts.length])
+    getAPIProxy().braveWalletP3A.recordNFTGalleryView(visibleNfts.length)
+  }, [visibleNfts.length])
 
   // render
   return (

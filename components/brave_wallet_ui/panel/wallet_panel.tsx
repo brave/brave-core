@@ -14,10 +14,9 @@ import { loadTimeData } from '../../common/loadTimeData'
 import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
-import store, { walletPanelApiProxy } from './store'
+import store from './store'
 import * as WalletActions from '../common/actions/wallet_actions'
 import Container from './container'
-import { ApiProxyContext } from '../common/context/api-proxy.context'
 import {
   runLocalStorageMigrations //
 } from '../common/constants/local-storage-keys'
@@ -42,11 +41,9 @@ function App() {
           dark={walletDarkTheme}
           light={walletLightTheme}
         >
-          <ApiProxyContext.Provider value={walletPanelApiProxy}>
-            <BrowserRouter>
-              <Container />
-            </BrowserRouter>
-          </ApiProxyContext.Provider>
+          <BrowserRouter>
+            <Container />
+          </BrowserRouter>
         </BraveCoreThemeProvider>
       )}
     </Provider>

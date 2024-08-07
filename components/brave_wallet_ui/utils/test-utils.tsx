@@ -131,3 +131,29 @@ export function renderComponentOptionsWithMockStore(
     )
   }
 }
+
+export const makeMockedStoreWithSpy = (
+  stateOverrides: RootStateOverrides = {},
+  apiOverrides?: WalletApiDataOverrides,
+  rewardsApiOverrides?: BraveRewardsProxyOverrides
+) => {
+  const store = createMockStore(
+    stateOverrides,
+    apiOverrides,
+    rewardsApiOverrides
+  )
+
+  const areWeTestingWithJest = process.env.JEST_WORKER_ID !== undefined
+
+  if (areWeTestingWithJest) {
+    const dispatchSpy = jest.fn(store.dispatch)
+    const ogDispatch = store.dispatch
+    store.dispatch = ((args: any) => {
+      ogDispatch(args)
+      dispatchSpy?.(args)
+    }) as any
+    return { store, dispatchSpy }
+  }
+
+  return { store }
+}

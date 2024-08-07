@@ -8,6 +8,7 @@ import { useHistory } from 'react-router'
 import { useDispatch } from 'react-redux'
 
 // utils
+import getAPIProxy from '../../../../common/async/bridge'
 import { getLocale } from '../../../../../common/locale'
 import { WalletPageActions } from '../../../actions'
 
@@ -15,7 +16,6 @@ import { WalletPageActions } from '../../../actions'
 import { WalletRoutes } from '../../../../constants/types'
 
 // hooks
-import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
 
 // components
@@ -31,7 +31,7 @@ import {
 } from '../../onboarding/onboarding.style'
 import { OnboardingContentLayout } from '../../onboarding/components/onboarding_content_layout/content_layout'
 import {
-  InputLabel
+  InputLabel //
 } from '../../../../components/shared/password-input/password-input-v2.style'
 
 export const BackupEnterPassword: React.FC = () => {
@@ -40,9 +40,6 @@ export const BackupEnterPassword: React.FC = () => {
 
   // redux
   const dispatch = useDispatch()
-
-  // context
-  const { keyringService } = useApiProxy()
 
   // custom hooks
   const { attemptPasswordEntry } = usePasswordAttempts()
@@ -73,7 +70,9 @@ export const BackupEnterPassword: React.FC = () => {
     setPassword('')
     setIsCorrectPassword(true)
 
-    const { mnemonic } = await keyringService.getWalletMnemonic(password)
+    const { mnemonic } = await getAPIProxy().keyringService.getWalletMnemonic(
+      password
+    )
     if (mnemonic) {
       dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic }))
       history.push(WalletRoutes.BackupExplainRecoveryPhrase)

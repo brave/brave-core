@@ -19,6 +19,7 @@ import {
 
 // utils
 import { getLocale, getLocaleWithTag } from '../../../../../common/locale'
+import getAPIProxy from '../../../../common/async/bridge'
 
 // constants
 import { FILECOIN_FORMAT_DESCRIPTION_URL } from '../../../../common/constants/urls'
@@ -37,7 +38,6 @@ import PasswordInput from '../../../shared/password-input/index'
 // hooks
 import { useIsMounted } from '../../../../common/hooks/useIsMounted'
 import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
-import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 import { useAccountOrb } from '../../../../common/hooks/use-orb'
 import {
   useGetQrCodeImageQuery,
@@ -119,7 +119,7 @@ export const DepositModal = ({ selectedAccount }: DepositModalProps) => {
 export const AccountSettingsModal = () => {
   // custom hooks
   const isMounted = useIsMounted()
-  const { keyringService } = useApiProxy()
+
   // redux
   const dispatch = useDispatch()
 
@@ -152,15 +152,16 @@ export const AccountSettingsModal = () => {
   // methods
   const onViewPrivateKey = React.useCallback(
     async (accountId: BraveWallet.AccountId) => {
-      const { privateKey } = await keyringService.encodePrivateKeyForExport(
-        accountId,
-        password
-      )
+      const { privateKey } =
+        await getAPIProxy().keyringService.encodePrivateKeyForExport(
+          accountId,
+          password
+        )
       if (isMounted) {
         return setPrivateKey(privateKey)
       }
     },
-    [password, keyringService, isMounted]
+    [password, isMounted]
   )
 
   const onDoneViewingPrivateKey = React.useCallback(() => {

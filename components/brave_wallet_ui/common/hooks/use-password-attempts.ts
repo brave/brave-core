@@ -5,9 +5,15 @@
 
 import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+
+// types
 import { WalletState } from '../../constants/types'
+
+// actions
 import { WalletActions } from '../actions'
-import { useApiProxy } from './use-api-proxy'
+
+// utils
+import getAPIProxy from '../async/bridge'
 
 const MAX_ATTEMPTS = 3 // The amount of tries before locking the wallet
 
@@ -19,9 +25,6 @@ const MAX_ATTEMPTS = 3 // The amount of tries before locking the wallet
  * Uses redux to track attempts globally
  */
 export const usePasswordAttempts = () => {
-  // custom hooks
-  const { keyringService } = useApiProxy()
-
   // redux
   const dispatch = useDispatch()
   const attempts = useSelector(({ wallet }: { wallet: WalletState }) => {
@@ -35,6 +38,8 @@ export const usePasswordAttempts = () => {
         // require password to view key
         return false
       }
+
+      const { keyringService } = getAPIProxy()
 
       // entered password must be correct
       const { result: isPasswordValid } = await keyringService.validatePassword(
@@ -60,7 +65,7 @@ export const usePasswordAttempts = () => {
       dispatch(WalletActions.setPasswordAttempts(0))
       return isPasswordValid
     },
-    [keyringService, dispatch, attempts]
+    [dispatch, attempts]
   )
 
   return {
