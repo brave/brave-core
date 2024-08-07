@@ -14,132 +14,12 @@
 #include "base/functional/callback_forward.h"
 #include "base/json/json_reader.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_vpn {
-
-namespace {
-
-base::Value::Dict GetValueFromRegionWithoutCity(
-    const mojom::RegionPtr& region) {
-  base::Value::Dict region_dict;
-  region_dict.Set(kRegionNameKey, region->name);
-  region_dict.Set(kRegionNamePrettyKey, region->name_pretty);
-  region_dict.Set(kRegionContinentKey, region->continent);
-  region_dict.Set(kRegionCountryIsoCodeKey, region->country_iso_code);
-  region_dict.Set(kRegionPrecisionKey, region->region_precision);
-  region_dict.Set(kRegionLatitudeKey, region->latitude);
-  region_dict.Set(kRegionLongitudeKey, region->longitude);
-  region_dict.Set(kRegionServerCountKey, region->server_count);
-  return region_dict;
-}
-
-base::Value::Dict GetValueFromRegion(const mojom::RegionPtr& region) {
-  base::Value::Dict region_dict = GetValueFromRegionWithoutCity(region);
-  base::Value::List cities;
-  for (const auto& city : region->cities) {
-    cities.Append(GetValueFromRegionWithoutCity(city));
-  }
-  region_dict.Set(kRegionCitiesKey, std::move(cities));
-  return region_dict;
-}
-
-bool IsValidRegionValue(const base::Value::Dict& value) {
-  if (!value.FindString(kRegionNameKey) ||
-      !value.FindString(kRegionNamePrettyKey) ||
-      !value.FindString(kRegionContinentKey) ||
-      !value.FindString(kRegionCountryIsoCodeKey) ||
-      !value.FindString(kRegionPrecisionKey) ||
-      !value.FindList(kRegionCitiesKey) ||
-      !value.FindString(kRegionLatitudeKey) ||
-      !value.FindString(kRegionLongitudeKey) ||
-      !value.FindString(kRegionServerCountKey)) {
-    return false;
-  }
-
-  return true;
-}
-
-mojom::RegionPtr GetRegionFromValueWithoutCity(const base::Value::Dict& value) {
-  mojom::RegionPtr region = mojom::Region::New();
-  if (auto* name = value.FindString(brave_vpn::kRegionNameKey)) {
-    region->name = *name;
-  }
-  if (auto* name_pretty = value.FindString(brave_vpn::kRegionNamePrettyKey)) {
-    region->name_pretty = *name_pretty;
-  }
-  if (auto* continent = value.FindString(brave_vpn::kRegionContinentKey)) {
-    region->continent = *continent;
-  }
-  if (auto* country_iso_code =
-          value.FindString(brave_vpn::kRegionCountryIsoCodeKey)) {
-    region->country_iso_code = *country_iso_code;
-  }
-  if (auto* region_precision =
-          value.FindString(brave_vpn::kRegionPrecisionKey)) {
-    region->region_precision = *region_precision;
-  }
-  if (auto latitude = value.FindDouble(brave_vpn::kRegionLatitudeKey)) {
-    region->latitude = *latitude;
-  }
-  if (auto longitude = value.FindDouble(brave_vpn::kRegionLongitudeKey)) {
-    region->longitude = *longitude;
-  }
-  if (auto server_count = value.FindInt(brave_vpn::kRegionServerCountKey)) {
-    region->server_count = *server_count;
-  }
-
-  return region;
-}
-
-mojom::RegionPtr GetRegionFromValue(const base::Value::Dict& value) {
-  mojom::RegionPtr region = GetRegionFromValueWithoutCity(value);
-  // for (const auto& city : *value.FindList(kRegionCitiesKey)) {
-  //   region.cities.push_back(GetRegionFromValueWithoutCity(city.GetDict()).Clone());
-  // }
-
-  const auto* cities = value.FindList(kRegionCitiesKey);
-  for (const auto& city : *cities) {
-    region->cities.push_back(GetRegionFromValueWithoutCity(city.GetDict()));
-  }
-
-  return region;
-}
-
-bool ValidateCachedRegionData(const base::Value::List& region_value) {
-  for (const auto& value : region_value) {
-    // Make sure cached one has all latest properties.
-    if (!value.is_dict() || !IsValidRegionValue(value.GetDict())) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-std::vector<mojom::RegionPtr> ParseRegionList(
-    const base::Value::List& region_list) {
-  std::vector<mojom::RegionPtr> regions;
-  for (const auto& value : region_list) {
-    DCHECK(value.is_dict());
-    if (!value.is_dict()) {
-      continue;
-    }
-    regions.push_back(GetRegionFromValue(value.GetDict()).Clone());
-  }
-
-  // Sort region list alphabetically
-  std::sort(regions.begin(), regions.end(),
-            [](mojom::RegionPtr& a, mojom::RegionPtr& b) {
-              return (a->name_pretty < b->name_pretty);
-            });
-  return regions;
-}
-
-}  // namespace
-
 BraveVPNRegionDataManager::BraveVPNRegionDataManager(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* local_prefs)
@@ -306,10 +186,17 @@ void BraveVPNRegionDataManager::FetchRegionDataIfNeeded() {
     NotifyRegionDataReady();
     return;
   }
+  FetchRegions();
+}
 
+void BraveVPNRegionDataManager::FetchRegions() {
+  LOG(ERROR) << "brave_vpn : " << "FetchRegions 1";
+  if (!url_loader_factory_) {
+    LOG(ERROR) << "brave_vpn : " << "FetchRegions 1.5";
+  }
   api_request_ = std::make_unique<BraveVpnAPIRequest>(url_loader_factory_);
   VLOG(2) << __func__ << " : Start fetching region data";
-
+  LOG(ERROR) << "brave_vpn : " << "FetchRegions 2";
   // Unretained is safe here becasue this class owns |api_request_|.
   api_request_->GetServerRegionsWithCities(base::BindOnce(
       &BraveVPNRegionDataManager::OnFetchRegionList, base::Unretained(this)));
@@ -322,8 +209,18 @@ void BraveVPNRegionDataManager::OnFetchRegionList(
     CHECK_IS_TEST();
   }
   api_request_.reset();
-
   std::optional<base::Value> value = base::JSONReader::Read(region_list);
+
+  LOG(ERROR) << "brave_vpn : " << "OnFetchRegionList 1";
+#if BUILDFLAG(IS_ANDROID)
+  if (value && value->is_list()) {
+    auto new_regions = ParseRegionList(value->GetList());
+    LOG(ERROR) << "brave_vpn : " << "OnFetchRegionList 2";
+    for (const auto& region : new_regions) {
+      LOG(ERROR) << "brave_vpn : " << region->name;
+    }
+  }
+#else
   if (value && value->is_list() &&
       ParseAndCacheRegionList(value->GetList(), true)) {
     VLOG(2) << "Got valid region list";
@@ -339,6 +236,7 @@ void BraveVPNRegionDataManager::OnFetchRegionList(
 
   VLOG(2) << "Got invalid region list";
   NotifyRegionDataReady();
+#endif
 }
 
 bool BraveVPNRegionDataManager::ParseAndCacheRegionList(

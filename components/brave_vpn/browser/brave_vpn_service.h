@@ -22,6 +22,7 @@
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_delegate.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/skus/browser/skus_utils.h"
@@ -50,6 +51,7 @@ class BraveBrowserCommandControllerTest;
 namespace brave_vpn {
 
 class BraveVPNServiceDelegate;
+class BraveVPNRegionDataManager;
 
 inline constexpr char kNewUserReturningHistogramName[] =
     "Brave.VPN.NewUserReturning";
@@ -78,6 +80,10 @@ class BraveVpnService :
 
   BraveVpnService(const BraveVpnService&) = delete;
   BraveVpnService& operator=(const BraveVpnService&) = delete;
+
+#if BUILDFLAG(IS_ANDROID)
+  mojo::PendingRemote<brave_vpn::mojom::ServiceHandler> MakeRemote();
+#endif  // BUILDFLAG(IS_ANDROID)
 
   std::string GetCurrentEnvironment() const;
   bool is_purchased_user() const {
@@ -119,6 +125,9 @@ class BraveVpnService :
   void LoadPurchasedState(const std::string& domain) override;
 
   void GetAllRegions(GetAllRegionsCallback callback) override;
+  void OnFetchRegionList(GetAllRegionsCallback callback,
+                         const std::string& region_list,
+                         bool success);
   void GetSelectedRegion(GetSelectedRegionCallback callback) override;
   void SetSelectedRegion(mojom::RegionPtr region) override;
 

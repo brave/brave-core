@@ -112,6 +112,15 @@ void BraveVpnService::CheckInitialState() {
   }
 }
 
+#if BUILDFLAG(IS_ANDROID)
+mojo::PendingRemote<brave_vpn::mojom::ServiceHandler>
+BraveVpnService::MakeRemote() {
+  mojo::PendingRemote<brave_vpn::mojom::ServiceHandler> remote;
+  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
+  return remote;
+}
+#endif  // BUILDFLAG(IS_ANDROID)
+
 std::string BraveVpnService::GetCurrentEnvironment() const {
   return local_prefs_->GetString(prefs::kBraveVPNEnvironment);
 }
@@ -354,13 +363,36 @@ void BraveVpnService::UpdatePurchasedStateForSessionExpired(
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 void BraveVpnService::GetAllRegions(GetAllRegionsCallback callback) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  LOG(ERROR) << "brave_vpn : " << "GetAllRegions";
+#if BUILDFLAG(IS_ANDROID)
+  api_request_->GetServerRegionsWithCities(
+      base::BindOnce(&BraveVpnService::OnFetchRegionList,
+                     base::Unretained(this), std::move(callback)));
+#else
   std::vector<mojom::RegionPtr> regions;
   for (const auto& region :
        connection_manager_->GetRegionDataManager().GetRegions()) {
     regions.push_back(region.Clone());
   }
   std::move(callback).Run(std::move(regions));
+#endif
+}
+
+void BraveVpnService::OnFetchRegionList(GetAllRegionsCallback callback,
+                                        const std::string& region_list,
+                                        bool success) {
+  std::optional<base::Value> value = base::JSONReader::Read(region_list);
+  LOG(ERROR) << "brave_vpn : " << "OnFetchRegionList 1";
+  if (value && value->is_list()) {
+    auto new_regions = ParseRegionList(value->GetList());
+    LOG(ERROR) << "brave_vpn : " << "OnFetchRegionList 2";
+    std::vector<mojom::RegionPtr> regions;
+    for (const auto& region : new_regions) {
+      regions.push_back(region.Clone());
+    }
+    std::move(callback).Run(std::move(regions));
+  }
 }
 
 void BraveVpnService::GetSelectedRegion(GetSelectedRegionCallback callback) {
@@ -382,6 +414,7 @@ void BraveVpnService::SetSelectedRegion(mojom::RegionPtr region_ptr) {
 
 #if BUILDFLAG(IS_ANDROID)
 void BraveVpnService::GetPurchaseToken(GetPurchaseTokenCallback callback) {
+  LOG(ERROR) << "brave_vpn : " << "GetPurchaseToken";
   std::string purchase_token_string = "";
   std::string package_string = "com.brave.browser";
   std::string product_id_string = "brave-firewall-vpn-premium";
@@ -435,6 +468,7 @@ mojom::PurchasedInfo BraveVpnService::GetPurchasedInfoSync() const {
 
 void BraveVpnService::GetPurchasedState(GetPurchasedStateCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  LOG(ERROR) << "brave_vpn : " << "GetPurchasedState";
   std::move(callback).Run(GetPurchasedInfoSync().Clone());
 }
 

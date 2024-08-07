@@ -455,6 +455,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/util/UsageMonitor.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnNativeWorker.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnObserver.java",
+  "../../brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnServiceFactoryAndroid.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/DisconnectVpnBroadcastReceiver.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/activities/BraveVpnParentActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/activities/BraveVpnProfileActivity.java",

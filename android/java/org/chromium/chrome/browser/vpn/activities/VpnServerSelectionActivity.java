@@ -20,24 +20,51 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.materialswitch.MaterialSwitch;
 
 import org.chromium.base.Log;
+import org.chromium.brave_vpn.mojom.Region;
+import org.chromium.brave_vpn.mojom.ServiceHandler;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
+import org.chromium.chrome.browser.vpn.BraveVpnServiceFactoryAndroid;
 import org.chromium.chrome.browser.vpn.adapters.BraveVpnServerSelectionAdapter;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.Toast;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class VpnServerSelectionActivity extends BraveVpnParentActivity {
+public class VpnServerSelectionActivity extends BraveVpnParentActivity
+        implements ConnectionErrorHandler {
     private BraveVpnServerSelectionAdapter mBraveVpnServerSelectionAdapter;
     private LinearLayout mServerSelectionListLayout;
     private ProgressBar mServerSelectionProgress;
     private RecyclerView mServerRegionList;
+
+    private ServiceHandler mServiceHandler;
+
+    @Override
+    public void onConnectionError(MojoException e) {
+        if (mServiceHandler != null) {
+            mServiceHandler.close();
+            mServiceHandler = null;
+        }
+        initVpnService();
+    }
+
+    private void initVpnService() {
+        if (mServiceHandler != null) {
+            mServiceHandler = null;
+        }
+        mServiceHandler =
+                BraveVpnServiceFactoryAndroid.getInstance()
+                        .getVpnService(
+                                getProfileProviderSupplier().get().getOriginalProfile(), this);
+    }
 
     public interface OnServerRegionSelection {
         void onServerRegionClick(BraveVpnServerRegion vpnServerRegion);
@@ -120,8 +147,16 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity {
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        BraveVpnNativeWorker.getInstance().getServerRegionsWithCities();
+        initVpnService();
+        // BraveVpnNativeWorker.getInstance().getServerRegionsWithCities();
         showProgress();
+        Log.e("brave_vpn", "initVpnService");
+        mServiceHandler.getAllRegions(
+                regions -> {
+                    for (Region region : regions) {
+                        Log.e("brave_vpn", region.name);
+                    }
+                });
     }
 
     @Override
