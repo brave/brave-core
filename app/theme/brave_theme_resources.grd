@@ -108,10 +108,6 @@
         <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG_BING" file="brave/brave_search_conversion_banner_graphic_ddg_bing.png" />
         <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_LOGO_IN_SEARCH_PROMOTION" file="brave/brave_search_logo_in_search_promotion.png" />
       </if>
-
-      <if expr="enable_brave_player and not is_android">
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_PLAYER_ACTION_VIEW_ICON" file="brave/brave_player_action_icon.png" />
-      </if>
     </structures>
   </release>
 </grit>

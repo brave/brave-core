@@ -613,7 +613,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_SHARED_PINNED_TABS_DUMMY_TAB_VIEW_TITLE" desc="A title for a page that shows up when a dummy tab is visible">
           This tab is active in another window
         </message>
-        <message name="IDS_SHARED_PINNED_TABS_DUMMY_TAB_VIEW_DESCRIPTION" desc="The description explaning how to bring the tab to this window when dummy tab is visible"> 
+        <message name="IDS_SHARED_PINNED_TABS_DUMMY_TAB_VIEW_DESCRIPTION" desc="The description explaning how to bring the tab to this window when dummy tab is visible">
           Clicking this tab will bring its contents to this window
         </message>
 
@@ -1299,12 +1299,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Dismiss
         </message>
       </if> <!-- enable_playlist_webui -->
-
-      <if expr="enable_brave_player">
-        <message name="IDS_BRAVE_PLAYER_ACTION_VIEW" desc="A label for a button in the omnibox to open the 'Brave Player Page'">
-          Brave Player
-        </message>
-      </if> <!-- enable_brave_player -->
 
       <!-- File select -->
       <message name="IDS_BRAVE_FILE_SELECT_OPEN_TITLE" desc="">
