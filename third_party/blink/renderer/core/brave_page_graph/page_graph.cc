@@ -763,7 +763,7 @@ void PageGraph::RegisterPageGraphScriptCompilation(
 
     if (processed_js_urls_it != processed_js_urls_.end()) {
       auto& processed_js_urls = processed_js_urls_it->value;
-      auto* processed_js_url_it =
+      const auto& processed_js_url_it =
           base::ranges::find(processed_js_urls, script_data.code,
                              &ProcessedJavascriptURL::script_code);
 
