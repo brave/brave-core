@@ -669,7 +669,8 @@ enum TransactionParser {
         )
       )
     case .solanaSplTokenTransfer,
-      .solanaSplTokenTransferWithAssociatedTokenAccountCreation:
+      .solanaSplTokenTransferWithAssociatedTokenAccountCreation,
+      .solanaCompressedNftTransfer:
       guard let amount = transaction.txDataUnion.solanaTxData?.amount,
         let toAddress = transaction.txDataUnion.solanaTxData?.toWalletAddress,
         let splTokenMintAddress = transaction.txDataUnion.solanaTxData?.splTokenMintAddress
@@ -868,8 +869,6 @@ enum TransactionParser {
     case .erc1155SafeTransferFrom:
       return nil
     case .ethFilForwarderTransfer:
-      return nil
-    case .solanaCompressedNftTransfer:
       return nil
     @unknown default:
       return nil

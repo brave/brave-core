@@ -147,7 +147,7 @@ class NFTStoreTests: XCTestCase {
           balances.append(1)
         } else if nft.contractAddress.caseInsensitiveCompare(
           self.invisibleEthNFT.contractAddress
-          ) == .orderedSame,
+        ) == .orderedSame,
           accountAddress.caseInsensitiveCompare(
             self.ethAccount1.address
           ) == .orderedSame

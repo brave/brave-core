@@ -813,6 +813,27 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
             completion(success, errMsg)
           }
         }
+      } else if token.isCompressed {
+        self.solTxManagerProxy.makeBubbleGumProgramTransferTxData(
+          chainId: network.chainId,
+          tokenAddress: token.contractAddress,
+          fromWalletAddress: fromAccountInfo.address,
+          toWalletAddress: sendToAddress
+        ) { solTxData, error, errMsg in
+          guard let solanaTxData = solTxData else {
+            self.isMakingTx = false
+            completion(false, errMsg)
+            return
+          }
+          self.handleSolSPLTx(
+            network: network,
+            fromAccountInfo: fromAccountInfo,
+            solTxData: solanaTxData,
+            error: error,
+            errMsg: errMsg,
+            completion: completion
+          )
+        }
       } else {
         self.solTxManagerProxy.makeTokenProgramTransferTxData(
           chainId: network.chainId,
@@ -827,17 +848,35 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
             completion(false, errMsg)
             return
           }
-          let txDataUnion = BraveWallet.TxDataUnion(solanaTxData: solanaTxData)
-          self.txService.addUnapprovedTransaction(
-            txDataUnion: txDataUnion,
-            chainId: network.chainId,
-            from: fromAccountInfo.accountId
-          ) { success, txMetaId, errorMessage in
-            self.isMakingTx = false
-            completion(success, errorMessage)
-          }
+          self.handleSolSPLTx(
+            network: network,
+            fromAccountInfo: fromAccountInfo,
+            solTxData: solanaTxData,
+            error: error,
+            errMsg: errMsg,
+            completion: completion
+          )
         }
       }
+    }
+  }
+
+  private func handleSolSPLTx(
+    network: BraveWallet.NetworkInfo,
+    fromAccountInfo: BraveWallet.AccountInfo,
+    solTxData: BraveWallet.SolanaTxData,
+    error: BraveWallet.SolanaProviderError,
+    errMsg: String,
+    completion: @escaping (_ success: Bool, _ errMsg: String?) -> Void
+  ) {
+    let txDataUnion = BraveWallet.TxDataUnion(solanaTxData: solTxData)
+    self.txService.addUnapprovedTransaction(
+      txDataUnion: txDataUnion,
+      chainId: network.chainId,
+      from: fromAccountInfo.accountId
+    ) { success, txMetaId, errorMessage in
+      self.isMakingTx = false
+      completion(success, errorMessage)
     }
   }
 
