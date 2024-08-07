@@ -279,7 +279,9 @@ std::optional<LiFiBridgeData> LiFiBridgeDataDecode(
       .bridge = data[1].GetString(),
       .integrator = data[2].GetString(),
       .sending_asset_id = TransformContractAddress(data[4].GetString()),
-      .receiver = TransformEoaAddress(data[5].GetString()),
+      .receiver = destination_chain_id == mojom::kSolanaMainnet
+                      ? ""
+                      : TransformEoaAddress(data[5].GetString()),
       .min_amount = data[6].GetString(),
       .destination_chain_id = destination_chain_id,
       .destination_coin = destination_chain_id == mojom::kSolanaMainnet
