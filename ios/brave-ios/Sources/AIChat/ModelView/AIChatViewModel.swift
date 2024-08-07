@@ -38,6 +38,11 @@ public class AIChatViewModel: NSObject, ObservableObject {
     return api.slashActions
   }
 
+  public var isCurrentModelPremium: Bool {
+    currentModel.options.tag == .leoModelOptions
+      && currentModel.options.leoModelOptions?.access == .premium
+  }
+
   public var isContentAssociationPossible: Bool {
     return webView?.url?.isWebPage(includeDataURIs: true) == true
   }

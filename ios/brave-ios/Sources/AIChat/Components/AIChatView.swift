@@ -55,9 +55,18 @@ public struct AIChatView: View {
 
   var openURL: ((URL) -> Void)
 
-  @FocusState private var isEditingFieldFocused: Bool
+  enum Field {
+    case input, editing
+  }
+
+  @FocusState private var focusedField: Field?
 
   @State private var editingTurnIndex: Int?
+
+  private var shouldAutoFocusInputOnAppear: Bool {
+    model.isAgreementAccepted && hasSeenIntro.value
+      && !(model.premiumStatus != .active && model.isCurrentModelPremium)
+  }
 
   public init(
     model: AIChatViewModel,
@@ -141,14 +150,18 @@ public struct AIChatView: View {
                             message: turn.edits?.last?.text ?? turn.text,
                             lastEdited: turn.edits?.last?.createdTime,
                             isEditingMessage: editingTurnIndex == index,
-                            isFieldFocused: $isEditingFieldFocused,
-                            cancelEditing: { self.editingTurnIndex = nil },
+                            focusedField: $focusedField,
+                            cancelEditing: {
+                              self.editingTurnIndex = nil
+                              self.focusedField = nil
+                            },
                             submitEditedText: { editedText in
                               self.model.modifyConversation(
                                 turnId: UInt(index),
                                 newText: editedText
                               )
                               self.editingTurnIndex = nil
+                              self.focusedField = nil
                             }
                           )
                           .padding()
@@ -197,7 +210,7 @@ public struct AIChatView: View {
                         }
                       }
 
-                      apiErrorViews(for: model)
+                      apiErrorViews
 
                       if model.shouldShowSuggestions && !model.requestInProgress
                         && model.apiError == .none
@@ -299,7 +312,8 @@ public struct AIChatView: View {
           prompt: $prompt,
           speechRecognizer: speechRecognizer,
           isShowingSlashTools: $isShowingSlashTools,
-          slashToolsOption: $slashToolsOption
+          slashToolsOption: $slashToolsOption,
+          focusedField: $focusedField
         ) { prompt in
           hasSeenIntro.value = true
 
@@ -319,7 +333,7 @@ public struct AIChatView: View {
         }
         .disabled(
           model.requestInProgress || model.suggestionsStatus == .isGenerating
-            || model.apiError == .contextLimitReached || isEditingFieldFocused
+            || model.apiError == .contextLimitReached || editingTurnIndex != nil
         )
       }
     }
@@ -362,6 +376,11 @@ public struct AIChatView: View {
         return .handled
       }
     )
+    .onAppear {
+      if shouldAutoFocusInputOnAppear {
+        focusedField = .input
+      }
+    }
   }
 
   private var menuView: some View {
@@ -420,7 +439,7 @@ public struct AIChatView: View {
           icon: Image(braveSystemName: "leo.edit.pencil"),
           onSelected: {
             editingTurnIndex = turnIndex
-            isEditingFieldFocused = true
+            focusedField = .editing
           }
         )
       }
@@ -486,14 +505,11 @@ public struct AIChatView: View {
   }
 
   @ViewBuilder
-  private func apiErrorViews(for model: AIChatViewModel) -> some View {
-    let isPremiumAccess =
-      model.currentModel.options.tag == .leoModelOptions
-      && model.currentModel.options.leoModelOptions?.access == .premium
+  private var apiErrorViews: some View {
     let isPremium = model.premiumStatus == .active
     let isPremiumDisconnected = model.premiumStatus == .activeDisconnected
 
-    if isPremiumAccess && isPremiumDisconnected {
+    if model.isCurrentModelPremium && isPremiumDisconnected {
       if let subscriptionState = BraveStoreSDK.shared.leoSubscriptionStatus?.state,
         subscriptionState != .expired && subscriptionState != .revoked
       {
@@ -514,7 +530,7 @@ public struct AIChatView: View {
           dismiss()
         }
       }
-    } else if isPremiumAccess && !isPremium {
+    } else if model.isCurrentModelPremium && !isPremium {
       AIChatPremiumUpsellView(
         upsellType: .premium,
         upgradeAction: {
@@ -634,7 +650,7 @@ public struct AIChatView: View {
 #if DEBUG
 struct AIChatView_Preview: PreviewProvider {
 
-  @FocusState static var isPreviewFieldFocused: Bool
+  @FocusState static var focusedField: AIChatView.Field?
 
   static var previews: some View {
     return VStack(spacing: 0.0) {
@@ -662,7 +678,7 @@ struct AIChatView_Preview: PreviewProvider {
               message: "Does it work with Apple devices?",
               lastEdited: nil,
               isEditingMessage: false,
-              isFieldFocused: $isPreviewFieldFocused,
+              focusedField: $focusedField,
               cancelEditing: {},
               submitEditedText: { _ in }
             )
@@ -736,7 +752,8 @@ struct AIChatView_Preview: PreviewProvider {
         prompt: .constant(""),
         speechRecognizer: SpeechRecognizer(),
         isShowingSlashTools: .constant(false),
-        slashToolsOption: .constant(nil)
+        slashToolsOption: .constant(nil),
+        focusedField: $focusedField
       ) {
         print("Prompt Submitted: \($0)")
       }

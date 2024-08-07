@@ -31,6 +31,8 @@ struct AIChatPromptInputView: View {
       entry: AiChat.ActionEntry
     )?
 
+  var focusedField: FocusState<AIChatView.Field?>.Binding
+
   var onSubmit: (String) -> Void
 
   @Environment(\.isEnabled) private var isEnabled
@@ -45,12 +47,14 @@ struct AIChatPromptInputView: View {
         entry: AiChat.ActionEntry
       )?
     >,
+    focusedField: FocusState<AIChatView.Field?>.Binding,
     onSubmit: @escaping (String) -> Void
   ) {
     self._prompt = prompt
     self.speechRecognizer = speechRecognizer
     self._isShowingSlashTools = isShowingSlashTools
     self._slashToolsOption = slashToolsOption
+    self.focusedField = focusedField
     self.onSubmit = onSubmit
   }
 
@@ -98,6 +102,7 @@ struct AIChatPromptInputView: View {
         insets: UIEdgeInsets(top: 16.0, left: 15.0, bottom: 0.0, right: 16.0)
       )
       .padding(.top, slashToolsOption == nil ? 8.0 : 0.0)
+      .focused(focusedField, equals: .input)
 
       HStack(spacing: 0.0) {
         Button(
@@ -219,6 +224,9 @@ struct AIChatPromptInputView: View {
 
 #if DEBUG
 struct AIChatPromptInputView_Preview: PreviewProvider {
+
+  @FocusState static var focusedField: AIChatView.Field?
+
   static var previews: some View {
     let entry = AiChat.ActionEntry(details: .init(label: "Professional", type: .academicize))
 
@@ -228,7 +236,8 @@ struct AIChatPromptInputView_Preview: PreviewProvider {
       prompt: .constant(""),
       speechRecognizer: SpeechRecognizer(),
       isShowingSlashTools: .constant(false),
-      slashToolsOption: .constant((group, entry))
+      slashToolsOption: .constant((group, entry)),
+      focusedField: $focusedField
     ) {
       print("Prompt Submitted: \($0)")
     }
