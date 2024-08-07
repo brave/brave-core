@@ -50,7 +50,7 @@ namespace brave {
 // tied with tab. If it has specific life time, use separated manager for
 // registering it.
 void RegisterContextualSidePanel(content::WebContents* web_contents) {
-  auto* registry = SidePanelRegistry::Get(web_contents);
+  auto* registry = SidePanelRegistry::GetDeprecated(web_contents);
   if (!registry) {
     return;
   }

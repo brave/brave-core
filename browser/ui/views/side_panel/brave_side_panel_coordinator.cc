@@ -59,7 +59,7 @@ void BraveSidePanelCoordinator::OnTabStripModelChanged(
   // https://github.com/brave/brave-browser/issues/38331#issuecomment-2119901610
   if (active_tab_changed) {
     auto* old_contextual_registry =
-        SidePanelRegistry::Get(selection.old_contents);
+        SidePanelRegistry::GetDeprecated(selection.old_contents);
     // If old tab's WebContents has contextual registry, it should be in
     // observed list. If not, start observe as it's removed from base class'
     // method right after. Otherwise, we get crash.
