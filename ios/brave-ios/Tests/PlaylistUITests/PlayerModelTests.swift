@@ -35,7 +35,7 @@ class PlayerModelTests: CoreDataTestCase {
     }
   }
 
-  private func addMockItems(count: Int = 10, to folder: PlaylistFolder) async {
+  @MainActor private func addMockItems(count: Int = 10, to folder: PlaylistFolder) async {
     let infos: [PlaylistInfo] = (0..<count).map { i in
       .init(
         name: "Item \(i)",
@@ -57,10 +57,9 @@ class PlayerModelTests: CoreDataTestCase {
       withExtension: "mp4"
     )!.bookmarkData()
     await withCheckedContinuation { continuation in
-      self.backgroundSaveAndWaitForExpectation {
-        PlaylistItem.addItems(infos, folderUUID: folder.uuid, cachedData: testVideoData)
+      PlaylistItem.addItems(infos, folderUUID: folder.uuid, cachedData: testVideoData) {
+        continuation.resume()
       }
-      continuation.resume()
     }
   }
 

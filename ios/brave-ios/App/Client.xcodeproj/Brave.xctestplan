@@ -136,6 +136,20 @@
         "identifier" : "UserAgentTests",
         "name" : "UserAgentTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "AIChatTests",
+        "name" : "AIChatTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "PlaylistUITests",
+        "name" : "PlaylistUITests"
+      }
     }
   ],
   "version" : 1
