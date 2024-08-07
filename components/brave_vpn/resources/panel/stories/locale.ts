@@ -34,7 +34,7 @@ provideStrings({
   braveVpnErrorPanelBackButtonAriaLabel: 'Go to main',
   braveVpnFeature1: 'Extra privacy & security online',
   braveVpnFeature2: 'Hide your IP & change your location',
-  braveVpnFeature3: 'Hundreds of servers around the world',
+  braveVpnFeature3: 'This is for testing multi line text. Product will have "Hundreds of servers around the world"',
   braveVpnFeature4: 'Lightning-fast connection speeds',
   braveVpnFeature5: 'Protect up to 10 devices with one plan',
   braveVpnLoading: 'One moment while loading…',

@@ -16,7 +16,6 @@ import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 import vpnDarkTheme from './theme/vpn-dark'
 import vpnLightTheme from './theme/vpn-light'
 import Container from './container'
-import { PanelWrapper } from './style'
 import store from './state/store'
 import getPanelBrowserAPI from './api/panel_browser_api'
 
@@ -45,9 +44,7 @@ function App () {
         dark={vpnDarkTheme}
         light={vpnLightTheme}
       >
-        <PanelWrapper>
-          <Container />
-        </PanelWrapper>
+        <Container />
       </BraveCoreThemeProvider>
     </Provider>
   )
