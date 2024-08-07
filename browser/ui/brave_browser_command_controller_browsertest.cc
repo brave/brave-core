@@ -25,7 +25,6 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/policy/core/browser/browser_policy_connector.h"
@@ -206,18 +205,6 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  // Sanity check policy is enabled by default
-  EXPECT_TRUE(ai_chat::IsAIChatEnabled(browser()->profile()->GetPrefs()));
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_AI_CHAT));
-  // When AI Chat is blocked by policy, the commands should not be available
-  BlockAIChatByPolicy(true);
-  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_TOGGLE_AI_CHAT));
-  // When AI Chat is unblocked by policy, the commands should become available
-  BlockAIChatByPolicy(false);
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_AI_CHAT));
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   EXPECT_FALSE(
       brave_vpn::IsBraveVPNDisabledByPolicy(browser()->profile()->GetPrefs()));
@@ -242,9 +229,6 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_SIDEBAR));
-#if BUILDFLAG(ENABLE_AI_CHAT)
-
-#endif
 }
 
 // Create private browser and test its brave commands status.
@@ -349,6 +333,22 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
   EXPECT_FALSE(
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
+}
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       ToggleAIChat_ControlledByPolicy) {
+  auto* command_controller = browser()->command_controller();
+  // Sanity check policy is enabled by default
+  EXPECT_TRUE(ai_chat::IsAIChatEnabled(browser()->profile()->GetPrefs()));
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_AI_CHAT));
+  // When AI Chat is blocked by policy, the commands should not be available
+  BlockAIChatByPolicy(true);
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_TOGGLE_AI_CHAT));
+  // When AI Chat is unblocked by policy, the commands should become available
+  BlockAIChatByPolicy(false);
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_AI_CHAT));
 }
 #endif
 

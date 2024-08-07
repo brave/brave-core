@@ -10,7 +10,10 @@
 
 namespace ai_chat {
 
-bool IsAllowedForContext(content::BrowserContext* context);
+// Determine whether this BrowserContext is allowed to use AI Chat. When
+// |check_policy| is true, it will also check the feature flag and policy.
+bool IsAllowedForContext(content::BrowserContext* context,
+                         bool check_policy = true);
 
 }  // namespace ai_chat
 

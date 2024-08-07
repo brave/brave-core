@@ -179,16 +179,6 @@ void BraveToolbarView::Init() {
       base::BindRepeating(&BraveToolbarView::OnShowBookmarksButtonChanged,
                           base::Unretained(this)));
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  if (ai_chat::IsAllowedForContext(browser_->profile())) {
-    show_ai_chat_button_.Init(
-        ai_chat::prefs::kBraveAIChatShowToolbarButton,
-        browser_->profile()->GetPrefs(),
-        base::BindRepeating(&BraveToolbarView::UpdateAIChatButtonVisibility,
-                            base::Unretained(this)));
-  }
-#endif
-
   show_wallet_button_.Init(
       kShowWalletIconOnToolbar, browser_->profile()->GetPrefs(),
       base::BindRepeating(&BraveToolbarView::UpdateWalletButtonVisibility,
@@ -255,10 +245,23 @@ void BraveToolbarView::Init() {
   UpdateWalletButtonVisibility();
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  ai_chat_button_ = container_view->AddChildViewAt(
-      std::make_unique<AIChatButton>(browser()),
-      *container_view->GetIndexOf(GetAppMenuButton()) - 1);
-  UpdateAIChatButtonVisibility();
+  // Don't check policy status since we're going to
+  // setup a watcher for policy pref.
+  if (ai_chat::IsAllowedForContext(browser_->profile(), false)) {
+    ai_chat_button_ = container_view->AddChildViewAt(
+        std::make_unique<AIChatButton>(browser()),
+        *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+    show_ai_chat_button_.Init(
+        ai_chat::prefs::kBraveAIChatShowToolbarButton,
+        browser_->profile()->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::UpdateAIChatButtonVisibility,
+                            base::Unretained(this)));
+    hide_ai_chat_button_by_policy_.Init(
+        ai_chat::prefs::kEnabledByPolicy, profile->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::UpdateAIChatButtonVisibility,
+                            base::Unretained(this)));
+    UpdateAIChatButtonVisibility();
+  }
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)

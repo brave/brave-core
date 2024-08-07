@@ -19,7 +19,6 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/views/accessibility/view_accessibility.h"
-#include "ui/views/controls/button/button_controller.h"
 
 namespace {
 
@@ -68,8 +67,6 @@ AIChatButton::AIChatButton(Browser* browser)
 
   SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_SIDEBAR_SHOW));
   set_context_menu_controller(this);
-  button_controller()->set_notify_action(
-      views::ButtonController::NotifyAction::kOnPress);
   GetViewAccessibility().SetHasPopup(ax::mojom::HasPopup::kMenu);
 }
 

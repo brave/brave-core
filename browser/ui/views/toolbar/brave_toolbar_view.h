@@ -103,6 +103,7 @@ class BraveToolbarView : public ToolbarView,
 #if BUILDFLAG(ENABLE_AI_CHAT)
   raw_ptr<AIChatButton> ai_chat_button_ = nullptr;
   BooleanPrefMember show_ai_chat_button_;
+  BooleanPrefMember hide_ai_chat_button_by_policy_;
 #endif
 
   BooleanPrefMember show_wallet_button_;

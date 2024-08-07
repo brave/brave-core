@@ -227,18 +227,16 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #if BUILDFLAG(ENABLE_TOR)
   UpdateCommandForTor();
 #endif
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  UpdateCommandForAIChat();
-#endif
   UpdateCommandForSidebar();
   UpdateCommandForBraveVPN();
   UpdateCommandForPlaylist();
   UpdateCommandForWaybackMachine();
-#if BUILDFLAG(ENABLE_AI_CHAT) || BUILDFLAG(ENABLE_AI_CHAT)
+#if BUILDFLAG(ENABLE_AI_CHAT) || BUILDFLAG(ENABLE_BRAVE_VPN)
   pref_change_registrar_.Init(browser_->profile()->GetPrefs());
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (ai_chat::IsAllowedForContext(browser_->profile())) {
+  UpdateCommandForAIChat();
+  if (ai_chat::IsAllowedForContext(browser_->profile(), false)) {
     pref_change_registrar_.Add(
         ai_chat::prefs::kEnabledByPolicy,
         base::BindRepeating(
