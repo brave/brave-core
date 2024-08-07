@@ -35,6 +35,8 @@ const SCROLL_BOTTOM_THRESHOLD = 10.0
 function Main() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
+  const [isConversationListOpen, setIsConversationListOpen] = React.useState(false)
+
   const shouldShowPremiumSuggestionForModel =
     aiChatContext.hasAcceptedAgreement &&
     !aiChatContext.isPremiumStatusFetching && // Avoid flash of content
@@ -157,13 +159,21 @@ function Main() {
 
   return (
     <main className={styles.main}>
-      {aiChatContext.isConversationListOpen && (
+      {isConversationListOpen && (
         <div className={styles.conversationList}>
-          <SidebarNav enableBackButton={true} />
+          <SidebarNav
+            enableBackButton={true}
+            isConversationListOpen={isConversationListOpen}
+            setIsConversationListOpen={setIsConversationListOpen}
+          />
         </div>
       )}
-      {context.showAgreementModal && <PrivacyMessage />}
-      <PageTitleHeader ref={headerElement} />
+      {showAgreementModal && <PrivacyMessage />}
+      <PageTitleHeader ref={headerElement}
+        isConversationListOpen={isConversationListOpen}
+        setIsConversationListOpen={setIsConversationListOpen}
+        title={aiChatContext.selectedConversationId}
+      />
       <div className={classnames({
         [styles.scroller]: true,
         [styles.flushBottom]: !aiChatContext.hasAcceptedAgreement
@@ -174,7 +184,7 @@ function Main() {
         <AlertCenter position='top-left' className={styles.alertCenter} />
         <div className={styles.conversationContent}
           ref={conversationContentElement}>
-          {aiChatContext.isHistoryEnabled &&
+          {/* {aiChatContext.isHistoryEnabled &&
           <ul>
             <li onClick={() => aiChatContext.onSelectConversationUuid(undefined)}>This page's conversation</li>
           {aiChatContext.visibleConversations.map(conversation => (
@@ -184,7 +194,7 @@ function Main() {
             </li>
           ))}
           </ul>
-          }
+          } */}
           {aiChatContext.hasAcceptedAgreement && <>
             <ModelIntro />
             <ConversationList

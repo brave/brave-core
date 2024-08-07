@@ -15,7 +15,12 @@ import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
 
-export default function FeatureMenu() {
+interface Props {
+  isConversationListOpen: boolean
+  setIsConversationListOpen: (value: boolean) => unknown
+}
+
+export default function FeatureMenu(props: Props) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
@@ -26,7 +31,7 @@ export default function FeatureMenu() {
   const customModels = conversationContext.allModels.filter(model => model.options.customModelOptions !== undefined)
   const leoModels = conversationContext.allModels.filter(model => model.options.leoModelOptions !== undefined)
   const handleSearchAndHistoryClick = () => {
-    aiChatContext.setIsConversationListOpen(true)
+    props.setIsConversationListOpen(true)
   }
 
 
