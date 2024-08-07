@@ -327,6 +327,9 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/multiwindow/MultiWindowUtils"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/password_manager/settings/ExportFlow"));
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragmentAdvanced")); // presubmit: ignore-long-line
     }
 
     @Test
@@ -1684,6 +1687,10 @@ public class BytecodeTest {
                         ActivityLifecycleDispatcher.class,
                         ActivityTabProvider.class,
                         TopUiThemeColorProvider.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragmentAdvanced", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/browsing_data/BraveClearBrowsingDataFragmentAdvanced")); // presubmit: ignore-long-line
     }
 
     @Test

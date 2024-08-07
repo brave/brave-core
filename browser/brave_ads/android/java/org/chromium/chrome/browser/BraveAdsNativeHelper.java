@@ -22,32 +22,43 @@ public class BraveAdsNativeHelper {
 
     public static void nativeSetOptedInToNotificationAds(Profile profile, boolean opted_in) {
         BraveAdsNativeHelperJni.get().setOptedInToNotificationAds(profile, opted_in);
-    };
+    }
 
     public static boolean nativeIsSupportedRegion(Profile profile) {
         return BraveAdsNativeHelperJni.get().isSupportedRegion(profile);
-    };
+    }
+
+    public static void nativeClearData(Profile profile) {
+        BraveAdsNativeHelperJni.get().clearData(profile);
+    }
 
     public static void nativeOnNotificationAdShown(Profile profile, String j_notification_id) {
         BraveAdsNativeHelperJni.get().onNotificationAdShown(profile, j_notification_id);
-    };
+    }
 
     public static void nativeOnNotificationAdClosed(
             Profile profile, String j_notification_id, boolean j_by_user) {
         BraveAdsNativeHelperJni.get().onNotificationAdClosed(profile, j_notification_id, j_by_user);
-    };
+    }
 
     public static void nativeOnNotificationAdClicked(Profile profile, String j_notification_id) {
         BraveAdsNativeHelperJni.get().onNotificationAdClicked(profile, j_notification_id);
-    };
+    }
 
     @NativeMethods
     interface Natives {
         boolean isOptedInToNotificationAds(Profile profile);
+
         void setOptedInToNotificationAds(Profile profile, boolean opted_in);
+
         boolean isSupportedRegion(Profile profile);
+
+        void clearData(Profile profile);
+
         void onNotificationAdShown(Profile profile, String j_notification_id);
+
         void onNotificationAdClosed(Profile profile, String j_notification_id, boolean j_by_user);
+
         void onNotificationAdClicked(Profile profile, String j_notification_id);
     }
 }

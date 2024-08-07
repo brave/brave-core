@@ -13,6 +13,8 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import org.chromium.chrome.browser.browsing_data.BraveClearBrowsingDataFragmentAdvanced;
+import org.chromium.chrome.browser.browsing_data.ClearBrowsingDataFragmentAdvanced;
 import org.chromium.chrome.browser.download.settings.BraveDownloadSettings;
 import org.chromium.chrome.browser.download.settings.DownloadSettings;
 import org.chromium.chrome.browser.safe_browsing.settings.BraveStandardProtectionSettingsFragment;
@@ -32,6 +34,8 @@ public class BraveSettingsLauncherImpl extends SettingsLauncherImpl {
                 fragment = BraveStandardProtectionSettingsFragment.class;
             } else if (fragment.equals(DownloadSettings.class)) {
                 fragment = BraveDownloadSettings.class;
+            } else if (fragment.equals(ClearBrowsingDataFragmentAdvanced.class)) {
+                fragment = BraveClearBrowsingDataFragmentAdvanced.class;
             }
         }
         super.launchSettingsActivity(context, fragment, fragmentArgs);

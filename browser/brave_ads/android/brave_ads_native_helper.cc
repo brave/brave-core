@@ -50,6 +50,19 @@ jboolean JNI_BraveAdsNativeHelper_IsSupportedRegion(
 }
 
 // static
+void JNI_BraveAdsNativeHelper_ClearData(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& j_profile_android) {
+  Profile* profile = Profile::FromJavaObject(j_profile_android);
+  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile);
+  if (!ads_service) {
+    return;
+  }
+
+  ads_service->ClearData();
+}
+
+// static
 void JNI_BraveAdsNativeHelper_OnNotificationAdShown(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
