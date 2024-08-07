@@ -84,7 +84,7 @@ public class BraveVpnApiResponseUtils {
                 String serverRegion = BraveVpnPrefUtils.getServerRegion();
                 region =
                         serverRegion.equals(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC)
-                                ? ""
+                                ? region
                                 : serverRegion;
             }
 

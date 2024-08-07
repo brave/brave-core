@@ -130,6 +130,7 @@ brave_jni_headers_sources = [
   "//brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
   "//brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java",
   "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnNativeWorker.java",
+  "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnServiceFactoryAndroid.java",
   "//brave/browser/brave_ads/android/java/org/chromium/chrome/browser/BraveAdsNativeHelper.java",
   "//brave/components/safetynet/java/org/chromium/chrome/browser/util/SafetyNetCheck.java",
 ]

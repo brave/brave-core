@@ -35,6 +35,7 @@ class BraveVPNRegionDataManager {
   bool IsRegionDataReady() const;
   std::string GetSelectedRegion() const;
   void FetchRegionDataIfNeeded();
+  void FetchRegions();
 
   void set_selected_region_changed_callback(
       base::RepeatingCallback<void(const std::string&)> callback) {
