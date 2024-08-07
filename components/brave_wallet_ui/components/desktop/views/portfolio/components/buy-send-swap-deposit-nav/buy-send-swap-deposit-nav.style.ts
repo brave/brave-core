@@ -44,6 +44,9 @@ export const Button = styled(WalletButton)<{
 export const ButtonIcon = styled(Icon)`
   --leo-icon-size: 24px;
   color: ${leo.color.white};
+  @media (prefers-color-scheme: dark) {
+    color: ${leo.color.schemes.onPrimary};
+  }
 `
 
 export const ButtonText = styled.span`
