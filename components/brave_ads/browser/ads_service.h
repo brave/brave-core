@@ -153,6 +153,9 @@ class AdsService : public KeyedService {
                             base::Time to_time,
                             GetAdHistoryCallback callback) = 0;
 
+  // Called to clear Brave Ads data.
+  virtual void ClearData() = 0;
+
   // Called to like an ad. This is a toggle, so calling it again returns the
   // setting to the neutral state. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.

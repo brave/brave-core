@@ -90,6 +90,8 @@ class AdsServiceMock : public AdsService {
               GetAdHistory,
               (base::Time, base::Time, GetAdHistoryCallback));
 
+  MOCK_METHOD(void, ClearData, ());
+
   MOCK_METHOD(void, ToggleLikeAd, (base::Value::Dict, ToggleReactionCallback));
   MOCK_METHOD(void,
               ToggleDislikeAd,

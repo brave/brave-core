@@ -261,6 +261,8 @@ class AdsServiceImpl final : public AdsService,
                     base::Time to_time,
                     GetAdHistoryCallback callback) override;
 
+  void ClearData() override;
+
   void ToggleLikeAd(base::Value::Dict value,
                     ToggleReactionCallback callback) override;
   void ToggleDislikeAd(base::Value::Dict value,
@@ -450,7 +452,7 @@ class AdsServiceImpl final : public AdsService,
 
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 
-  const base::FilePath base_path_;
+  const base::FilePath ads_service_path_;
 
   const raw_ptr<NotificationDisplayService> display_service_ =
       nullptr;  // NOT OWNED
