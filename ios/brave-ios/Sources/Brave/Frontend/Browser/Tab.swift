@@ -134,14 +134,11 @@ class Tab: NSObject {
         }
         return .secure
       case .authenticationBroken:
-        return .missingSSL  // FIXME: Not sure what status to use for this
+        return .invalidCert
       case .unauthenticated:
         if let lastCommittedURL = await webView?.lastCommittedURL,
-          let internalURL = InternalURL(lastCommittedURL)
+          InternalURL.isValid(url: lastCommittedURL)
         {
-          if internalURL.isErrorPage, ErrorPageHelper.certificateError(for: lastCommittedURL) != 0 {
-            return .invalidCert
-          }
           return .localhost
         }
         return .missingSSL
@@ -149,12 +146,7 @@ class Tab: NSObject {
         return .unknown
       }
     }()
-    if lastKnownSecureContentState == .secure && !sslStatus.hasOnlySecureContent {
-      lastKnownSecureContentState = .mixedContent
-    }
   }
-
-  var sslPinningError: Error?
 
   private let _syncTab: BraveSyncTab?
   private let _faviconDriver: FaviconDriver?
@@ -847,7 +839,6 @@ class Tab: NSObject {
       return
     }
     lastRequest = request
-    sslPinningError = nil
 
     if let url = request.url {
       // Donate Custom Intent Open Website
@@ -880,14 +871,6 @@ class Tab: NSObject {
     }
 
     tabDelegate?.didReloadTab(self)
-
-    // If the current page is an error page, and the reload button is tapped, load the original URL
-    if let url = webView?.lastCommittedURL, let internalUrl = InternalURL(url),
-      let page = internalUrl.originalURLFromErrorPage
-    {
-      webView?.replaceLocation(with: page)
-      return
-    }
 
     if let webView {
       if let userAgentType {

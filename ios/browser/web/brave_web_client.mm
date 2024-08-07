@@ -93,48 +93,6 @@ void BraveWebClient::PostBrowserURLRewriterCreation(
   ChromeWebClient::PostBrowserURLRewriterCreation(rewriter);
 }
 
-void BraveWebClient::PrepareErrorPage(
-    web::WebState* web_state,
-    const GURL& url,
-    NSError* error,
-    bool is_post,
-    bool is_off_the_record,
-    const std::optional<net::SSLInfo>& info,
-    int64_t navigation_id,
-    base::OnceCallback<void(NSString*)> callback) {
-  DCHECK(error);
-
-  CWVWebView* web_view = [CWVWebView webViewForWebState:web_state];
-  id<CWVNavigationDelegate> navigation_delegate = web_view.navigationDelegate;
-
-  // |final_underlying_error| should be checked first for any specific error
-  // cases such as lookalikes and safebrowsing errors. |info| is only non-empty
-  // if this is a SSL related error.
-  NSError* final_underlying_error =
-      base::ios::GetFinalUnderlyingErrorFromError(error);
-  if ([final_underlying_error.domain isEqual:kSafeBrowsingErrorDomain] &&
-      [navigation_delegate
-          respondsToSelector:@selector(webView:handleUnsafeURLWithHandler:)]) {
-    DCHECK_EQ(kUnsafeResourceErrorCode, final_underlying_error.code);
-  } else if ([final_underlying_error.domain isEqual:kLookalikeUrlErrorDomain] &&
-             [navigation_delegate respondsToSelector:@selector
-                                  (webView:handleLookalikeURLWithHandler:)]) {
-    DCHECK_EQ(kLookalikeUrlErrorCode, final_underlying_error.code);
-  } else if (info.has_value() &&
-             [navigation_delegate respondsToSelector:@selector
-                                  (webView:handleSSLErrorWithHandler:)]) {
-    CWVSSLErrorHandler* handler = [[CWVSSLErrorHandler alloc]
-             initWithWebState:web_state
-                          URL:net::NSURLWithGURL(url)
-                        error:error
-                      SSLInfo:info.value()
-        errorPageHTMLCallback:base::CallbackToBlock(std::move(callback))];
-    [navigation_delegate webView:web_view handleSSLErrorWithHandler:handler];
-  } else {
-    std::move(callback).Run(error.localizedDescription);
-  }
-}
-
 bool BraveWebClient::EnableLongPressUIContextMenu() const {
   return CWVWebView.chromeContextMenuEnabled;
 }

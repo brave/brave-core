@@ -831,31 +831,11 @@ extension BrowserViewController: CWVNavigationDelegate {
     recordFinishedPageLoadP3A()
   }
 
-  public func webView(_ webView: CWVWebView, handleSSLErrorWith handler: CWVSSLErrorHandler) {
-    guard let tab = tab(for: webView), let webView = tab.webView else { return }
-
-    let error = handler.error as NSError
-
-    handler.displayErrorPage(withHTML: "")
-
-    ErrorPageHelper(certStore: profile.certStore).loadPage(
-      error,
-      forUrl: handler.url,
-      inWebView: webView
-    )
-
-    // Submitting same erroneous URL using toolbar will cause progress bar get stuck
-    // Reseting the progress bar in case there is an error is necessary
-    if tab == self.tabManager.selectedTab {
-      self.topToolbar.hideProgressBar()
-    }
-  }
-
-  // FIXME: Need to refactor this logic into BraveWebClient::PrepareErrorPage + CWVWebView's handleSSLErrorWith delegate method
   public func webView(_ webView: CWVWebView, didFailNavigationWithError error: any Error) {
     guard let tab = tab(for: webView), let webView = tab.webView else { return }
 
     // Handle invalid upgrade to https
+    // FIXME: Replace with HTTPS upgrade tab helper
     if let responseURL = webView.lastCommittedURL,
       let response = handleInvalidHTTPSUpgrade(
         tab: tab,
@@ -879,34 +859,12 @@ extension BrowserViewController: CWVNavigationDelegate {
       return
     }
 
-    if let sslPinningError = tab.sslPinningError {
-      error = sslPinningError as NSError
-    }
-
     if error.code == Int(CFNetworkErrors.cfurlErrorCancelled.rawValue) {
       if tab === tabManager.selectedTab {
         updateToolbarCurrentURL(tab.url?.displayURL)
         updateWebViewPageZoom(tab: tab)
       }
       return
-    }
-
-    if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
-      ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inWebView: webView)
-
-      // Submitting same erroneous URL using toolbar will cause progress bar get stuck
-      // Reseting the progress bar in case there is an error is necessary
-      if tab == self.tabManager.selectedTab {
-        self.topToolbar.hideProgressBar()
-      }
-
-      // If the local web server isn't working for some reason (Brave cellular data is
-      // disabled in settings, for example), we'll fail to load the session restore URL.
-      // We rely on loading that page to get the restore callback to reset the restoring
-      // flag, so if we fail to load that page, reset it here.
-      if InternalURL(url)?.aboutComponent == "sessionrestore" {
-        tab.restoring = false
-      }
     }
   }
 

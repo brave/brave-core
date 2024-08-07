@@ -69,10 +69,6 @@ class TabManagerNavDelegate: NSObject, CWVNavigationDelegate {
           if policy == .cancel {
             res = policy
           }
-
-          //          if policy == .download {
-          //            res = policy
-          //          }
           group.leave()
         }
       )
@@ -116,10 +112,6 @@ class TabManagerNavDelegate: NSObject, CWVNavigationDelegate {
           if policy == .cancel {
             res = policy
           }
-
-          //          if policy == .download {
-          //            res = policy
-          //          }
           group.leave()
         }
       )
@@ -138,12 +130,6 @@ class TabManagerNavDelegate: NSObject, CWVNavigationDelegate {
   func webView(_ webView: CWVWebView, didFailNavigationWithError error: any Error) {
     for delegate in delegates {
       delegate.webView?(webView, didFailNavigationWithError: error)
-    }
-  }
-
-  func webView(_ webView: CWVWebView, handleSSLErrorWith handler: CWVSSLErrorHandler) {
-    for delegate in delegates {
-      delegate.webView?(webView, handleSSLErrorWith: handler)
     }
   }
 

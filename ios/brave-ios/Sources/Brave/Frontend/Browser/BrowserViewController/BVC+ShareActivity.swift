@@ -284,9 +284,7 @@ extension BrowserViewController {
 
     // Display Certificate Activity
     if let tabURL = tabManager.selectedTab?.webView?.lastCommittedURL,
-      // FIXME: Certificate
-      tabManager.selectedTab?.webView?.underlyingWebView?.serverTrust != nil
-        || ErrorPageHelper.hasCertificates(for: tabURL)
+      tabManager.selectedTab?.webView?.visibleSSLStatus?.certificate != nil
     {
       activities.append(
         BasicMenuActivity(

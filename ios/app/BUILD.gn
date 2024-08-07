@@ -62,6 +62,7 @@ source_set("app") {
     "//brave/ios/browser/api/web_image",
     "//brave/ios/browser/skus",
     "//brave/ios/browser/ui/webui",
+    "//brave/ios/browser/web",
     "//components/browser_sync",
     "//components/component_updater",
     "//components/history/core/browser",

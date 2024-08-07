@@ -116,9 +116,6 @@ class BackForwardListViewController: UIViewController, UIGestureRecognizerDelega
       if internalUrl.isAboutHomeURL {
         return true
       }
-      if let url = internalUrl.originalURLFromErrorPage, InternalURL.isValid(url: url) {
-        return false
-      }
       return true
     }
   }

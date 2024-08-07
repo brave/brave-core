@@ -930,9 +930,6 @@ extension BrowserViewController: ToolbarDelegate {
       guard let url = tabManager.selectedTab?.url else { return nil }
 
       if let internalURL = InternalURL(url) {
-        if internalURL.isErrorPage {
-          return internalURL.originalURLFromErrorPage
-        }
         if internalURL.isReaderModePage {
           return internalURL.extractedUrlParam
         }
@@ -1013,10 +1010,7 @@ extension BrowserViewController: ToolbarDelegate {
     guard let tab = tabManager.selectedTab, let url = tab.url,
       let secureContentStateButton = urlBar.locationView.secureContentStateButton
     else { return }
-    // FIXME: Certificate
-    let hasCertificate =
-      (tab.webView?.underlyingWebView?.serverTrust ?? (try? ErrorPageHelper.serverTrust(from: url)))
-      != nil
+    let hasCertificate = tab.webView?.visibleSSLStatus?.certificate != nil
     let pageSecurityView = PageSecurityView(
       displayURL: urlBar.locationView.urlDisplayLabel.text ?? url.absoluteDisplayString,
       secureState: tab.lastKnownSecureContentState,
