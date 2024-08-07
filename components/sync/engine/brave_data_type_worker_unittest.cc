@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <utility>
 
@@ -23,7 +23,7 @@ using base::subtle::TimeNowIgnoringOverride;
 using sync_pb::CommitResponse_ResponseType;
 using sync_pb::CommitResponse_ResponseType_CONFLICT;
 using sync_pb::CommitResponse_ResponseType_TRANSIENT_ERROR;
-using sync_pb::ModelTypeState;
+using sync_pb::DataTypeState;
 
 namespace syncer {
 
@@ -35,21 +35,21 @@ class BraveDataTypeWorkerTest : public ::testing::Test {
   ~BraveDataTypeWorkerTest() override = default;
 
   void NormalInitialize() {
-    ModelTypeState initial_state;
+    DataTypeState initial_state;
     initial_state.mutable_progress_marker()->set_data_type_id(
         GetSpecificsFieldNumberFromModelType(model_type_));
     initial_state.mutable_progress_marker()->set_token(
         "some_saved_progress_token");
 
     initial_state.set_initial_sync_state(
-        sync_pb::ModelTypeState_InitialSyncState_INITIAL_SYNC_DONE);
+        sync_pb::DataTypeState_InitialSyncState_INITIAL_SYNC_DONE);
 
     InitializeWithState(model_type_, initial_state);
 
     nudge_handler()->ClearCounters();
   }
 
-  void InitializeWithState(const ModelType type, const ModelTypeState& state) {
+  void InitializeWithState(const ModelType type, const DataTypeState& state) {
     DCHECK(!worker());
 
     auto processor = std::make_unique<MockDataTypeProcessor>();
@@ -73,11 +73,11 @@ class BraveDataTypeWorkerTest : public ::testing::Test {
   MockNudgeHandler* nudge_handler() { return &mock_nudge_handler_; }
 
   bool IsProgressMarkerEmpty() {
-    return worker()->model_type_state_.progress_marker().token().empty();
+    return worker()->data_type_state_.progress_marker().token().empty();
   }
 
   void FillProgressMarker() {
-    worker()->model_type_state_.mutable_progress_marker()->set_token("TOKEN1");
+    worker()->data_type_state_.mutable_progress_marker()->set_token("TOKEN1");
   }
 
  private:

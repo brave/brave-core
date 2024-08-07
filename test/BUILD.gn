@@ -141,7 +141,7 @@ test("brave_unit_tests") {
     "//chrome/browser/signin/test_signin_client_builder.h",
     "//components/domain_reliability/test_util.cc",
     "//components/domain_reliability/test_util.h",
-    "//components/sync/base/model_type_unittest.cc",
+    "//components/sync/base/data_type_unittest.cc",
     "//components/sync/engine/sync_scheduler_impl_unittest.cc",
     "//components/sync/service/sync_auth_manager_unittest.cc",
     "//components/sync_device_info/device_info_sync_bridge_unittest.cc",

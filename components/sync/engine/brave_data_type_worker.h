@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_DATA_TYPE_WORKER_H_
 #define BRAVE_COMPONENTS_SYNC_ENGINE_BRAVE_DATA_TYPE_WORKER_H_
@@ -33,7 +33,7 @@ FORWARD_DECLARE_TEST(BraveDataTypeWorkerTest,
 class BraveDataTypeWorker : public DataTypeWorker {
  public:
   BraveDataTypeWorker(ModelType type,
-                      const sync_pb::ModelTypeState& initial_state,
+                      const sync_pb::DataTypeState& initial_state,
                       Cryptographer* cryptographer,
                       bool encryption_enabled,
                       PassphraseType passphrase_type,
