@@ -245,7 +245,7 @@ void SearchEngineTracker::RecordWebDiscoveryEnabledP3A() {
 #endif
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   if (base::FeatureList::IsEnabled(
-          web_discovery::features::kWebDiscoveryNative)) {
+          web_discovery::features::kBraveWebDiscoveryNative)) {
     enabled =
         profile_prefs_->GetBoolean(web_discovery::kWebDiscoveryNativeEnabled);
   }

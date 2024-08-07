@@ -7,10 +7,12 @@
 
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/threading/thread_restrictions.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace web_discovery {
@@ -88,7 +90,6 @@ std::optional<std::vector<PayloadRuleGroup>> ParsePayloadRules(
       return std::nullopt;
     }
     auto* action = rule_group_dict->FindString(kActionKey);
-    auto* fields = rule_group_dict->FindList(kFieldsKey);
     auto* rule_type_str = rule_group_dict->FindString(kRuleTypeKey);
     auto* result_type_str = rule_group_dict->FindString(kResultTypeKey);
     if (!action || !rule_type_str || !result_type_str) {
@@ -106,7 +107,7 @@ std::optional<std::vector<PayloadRuleGroup>> ParsePayloadRules(
     rule_group_it->key = key;
     rule_group_it->result_type = result_type_it->second;
     rule_group_it->rule_type = rule_type_it->second;
-    if (fields) {
+    if (auto* fields = rule_group_dict->FindList(kFieldsKey)) {
       rule_group_it->rules = std::vector<PayloadRule>(fields->size());
 
       auto rule_it = rule_group_it->rules.begin();
@@ -124,15 +125,16 @@ std::optional<std::vector<PayloadRuleGroup>> ParsePayloadRules(
 }
 
 RefineFunctionList ParseFunctionsApplied(const base::Value::List* list) {
+  CHECK(list);
   RefineFunctionList result;
   for (const auto& function_val : *list) {
     const auto* function_list = function_val.GetIfList();
     if (!function_list || function_list->size() <= 1) {
       continue;
     }
-    std::vector<base::Value> function_vec;
+    base::Value::List function_vec;
     for (const auto& element : *function_list) {
-      function_vec.push_back(element.Clone());
+      function_vec.Append(element.Clone());
     }
     result.push_back(std::move(function_vec));
   }
@@ -212,6 +214,11 @@ std::optional<std::vector<PatternsURLDetails>> ParsePatternsURLDetails(
     auto& details = result[i];
 
     details.url_regex = std::make_unique<re2::RE2>(*url_regex);
+    if (!details.url_regex->ok()) {
+      VLOG(1) << "URL pattern is not valid regex: "
+              << details.url_regex->error();
+      return std::nullopt;
+    }
 
     std::string i_str = base::NumberToString(i);
 
@@ -224,10 +231,7 @@ std::optional<std::vector<PatternsURLDetails>> ParsePatternsURLDetails(
     }
     details.id = *id;
 
-    details.is_search_engine =
-        base::ranges::find(search_engines_list->begin(),
-                           search_engines_list->end(),
-                           i_str) != search_engines_list->end();
+    details.is_search_engine = base::Contains(*search_engines_list, i_str);
 
     auto scrape_rule_groups = ParseScrapeRules(scrape_url_dict);
     if (!scrape_rule_groups) {
@@ -285,14 +289,22 @@ const PatternsURLDetails* PatternsGroup::GetMatchingURLPattern(
   return nullptr;
 }
 
-std::unique_ptr<PatternsGroup> ParsePatterns(const std::string& patterns_json) {
-  auto result = std::make_unique<PatternsGroup>();
-  auto patterns_value = base::JSONReader::Read(patterns_json);
-  if (!patterns_value || !patterns_value->is_dict()) {
+std::unique_ptr<PatternsGroup> ParsePatterns(std::string_view patterns_json) {
+  base::AssertLongCPUWorkAllowed();
+  const auto patterns_parse_result =
+      base::JSONReader::ReadAndReturnValueWithError(patterns_json);
+  if (!patterns_parse_result.has_value()) {
+    VLOG(1) << "Failed to parse patterns JSON: "
+            << patterns_parse_result.error().ToString();
+    return nullptr;
+  }
+  const auto& patterns_value = patterns_parse_result.value();
+  if (!patterns_value.is_dict()) {
     VLOG(1) << "Patterns is not JSON or is not dict";
     return nullptr;
   }
-  const auto& patterns_dict = patterns_value->GetDict();
+  auto result = std::make_unique<PatternsGroup>();
+  const auto& patterns_dict = patterns_value.GetDict();
 
   auto* normal_dict = patterns_dict.FindDict(kNormalPatternsKey);
   auto* strict_dict = patterns_dict.FindDict(kStrictPatternsKey);

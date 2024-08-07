@@ -28,7 +28,7 @@ class SimpleURLLoader;
 
 namespace web_discovery {
 
-using KeyMap = base::flat_map<std::string, std::string>;
+using KeyMap = base::flat_map<std::string, std::vector<uint8_t>>;
 
 struct SourceMapActionConfig {
   SourceMapActionConfig();
@@ -56,6 +56,17 @@ struct ServerConfig {
       source_map_actions;
 
   std::string location;
+};
+
+struct ServerConfigDownloadResult {
+  ServerConfigDownloadResult(bool is_collector_config,
+                             std::optional<std::string> response_body);
+  ~ServerConfigDownloadResult();
+
+  ServerConfigDownloadResult(const ServerConfigDownloadResult&);
+
+  bool is_collector_config;
+  std::optional<std::string> response_body;
 };
 
 // Handles retrieval, updating and caching of the following server
@@ -93,11 +104,9 @@ class ServerConfigLoader {
   void SetLastPatternsForTesting(std::unique_ptr<PatternsGroup> patterns);
 
  private:
-  void OnConfigResponses(
-      std::vector<std::optional<std::string>> response_bodies);
-  bool ProcessConfigResponses(
-      const std::optional<std::string>& collector_response_body,
-      const std::optional<std::string>& quorum_response_body);
+  void OnConfigResponsesDownloaded(
+      std::vector<ServerConfigDownloadResult> results);
+  void OnConfigResponsesProcessed(std::unique_ptr<ServerConfig> config);
 
   void LoadStoredPatterns();
   void OnPatternsFileLoaded(std::optional<std::string> patterns_json);
@@ -105,13 +114,16 @@ class ServerConfigLoader {
   void RequestPatterns();
   void OnPatternsResponse(std::optional<std::string> response_body);
   void OnPatternsGunzip(std::optional<std::string> patterns_json);
+  void OnStoredPatternsParsed(std::unique_ptr<PatternsGroup> parsed_patterns);
+  void OnNewPatternsParsed(std::string new_patterns_json,
+                           std::unique_ptr<PatternsGroup> parsed_patterns);
   void OnPatternsWritten(std::unique_ptr<PatternsGroup> parsed_group,
                          bool result);
   void HandlePatternsStatus(bool result);
 
-  raw_ptr<PrefService> local_state_;
+  const raw_ptr<PrefService> local_state_;
 
-  scoped_refptr<base::SequencedTaskRunner> sequenced_task_runner_;
+  scoped_refptr<base::SequencedTaskRunner> background_task_runner_;
 
   GURL collector_config_url_;
   GURL quorum_config_url_;

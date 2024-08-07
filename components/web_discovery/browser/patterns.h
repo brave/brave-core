@@ -52,7 +52,7 @@ enum class PayloadResultType {
 
 // Contains functions for refining the scraped value. The inner vector
 // contains the function name and arguments for the function.
-using RefineFunctionList = std::vector<std::vector<base::Value>>;
+using RefineFunctionList = std::vector<base::Value::List>;
 
 // Defines rule for scraping an attribute from a given selected element.
 struct ScrapeRule {
@@ -167,7 +167,7 @@ struct PatternsGroup {
 };
 
 // Returns nullptr if parsing fails.
-std::unique_ptr<PatternsGroup> ParsePatterns(const std::string& patterns_json);
+std::unique_ptr<PatternsGroup> ParsePatterns(std::string_view patterns_json);
 
 }  // namespace web_discovery
 

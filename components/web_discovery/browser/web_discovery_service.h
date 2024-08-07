@@ -52,9 +52,13 @@ class WebDiscoveryService : public KeyedService {
   // Relevant for a Griffin/variations rollback.
   static void SetExtensionPrefIfNativeDisabled(PrefService* profile_prefs);
 
+  // KeyedService:
+  void Shutdown() override;
+
  private:
   void Start();
   void Stop();
+  void ClearPrefs();
 
   void OnEnabledChange();
 

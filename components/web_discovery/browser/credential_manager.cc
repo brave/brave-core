@@ -8,6 +8,8 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/containers/span.h"
+#include "base/containers/span_rust.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -17,6 +19,7 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/web_discovery/browser/anonymous_credentials/rs/cxx/src/lib.rs.h"
 #include "brave/components/web_discovery/browser/pref_names.h"
+#include "brave/components/web_discovery/browser/rsa.h"
 #include "brave/components/web_discovery/browser/util.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -61,19 +64,43 @@ constexpr net::NetworkTrafficAnnotationTag kJoinNetworkTrafficAnnotation =
         "Users can opt-in or out via brave://settings/search"
     })");
 
-std::optional<GenerateJoinRequestResult> GenerateJoinRequest(
-    anonymous_credentials::CredentialManager* anonymous_credential_manager,
-    crypto::RSAPrivateKey* rsa_private_key,
-    std::string pre_challenge) {
+}  // namespace
+
+BackgroundCredentialHelper::BackgroundCredentialHelper()
+    : anonymous_credential_manager_(
+          anonymous_credentials::new_credential_manager()) {}
+
+BackgroundCredentialHelper::~BackgroundCredentialHelper() = default;
+
+void BackgroundCredentialHelper::UseFixedSeedForTesting() {
+  anonymous_credential_manager_ =
+      anonymous_credentials::new_credential_manager_with_fixed_seed();
+}
+
+std::unique_ptr<RSAKeyInfo> BackgroundCredentialHelper::GenerateRSAKey() {
+  auto key_pair = GenerateRSAKeyPair();
+  if (!key_pair) {
+    return nullptr;
+  }
+  rsa_private_key_ = std::move(key_pair->key_pair);
+  return key_pair;
+}
+
+void BackgroundCredentialHelper::SetRSAKey(
+    std::unique_ptr<crypto::RSAPrivateKey> rsa_private_key) {
+  rsa_private_key_ = std::move(rsa_private_key);
+}
+
+std::optional<GenerateJoinRequestResult>
+BackgroundCredentialHelper::GenerateJoinRequest(std::string pre_challenge) {
   base::AssertLongCPUWorkAllowed();
-  base::span<uint8_t> pre_challenge_span(
-      reinterpret_cast<uint8_t*>(pre_challenge.data()), pre_challenge.size());
-  auto challenge = crypto::SHA256Hash(pre_challenge_span);
+  CHECK(rsa_private_key_);
+  auto challenge = crypto::SHA256Hash(base::as_byte_span(pre_challenge));
 
-  auto join_request = anonymous_credential_manager->start_join(
-      rust::Slice<const uint8_t>(challenge.data(), challenge.size()));
+  auto join_request = anonymous_credential_manager_->start_join(
+      base::SpanToRustSlice(challenge));
 
-  auto signature = RSASign(rsa_private_key, join_request.join_request);
+  auto signature = RSASign(rsa_private_key_.get(), join_request.join_request);
 
   if (!signature) {
     VLOG(1) << "RSA signature failed";
@@ -84,19 +111,18 @@ std::optional<GenerateJoinRequestResult> GenerateJoinRequest(
                                    .signature = *signature};
 }
 
-std::optional<std::string> FinishJoin(
-    anonymous_credentials::CredentialManager* anonymous_credential_manager,
+std::optional<std::string> BackgroundCredentialHelper::FinishJoin(
     std::string date,
     std::vector<const uint8_t> group_pub_key,
     std::vector<const uint8_t> gsk,
     std::vector<const uint8_t> join_resp_bytes) {
   base::AssertLongCPUWorkAllowed();
   auto pub_key_result = anonymous_credentials::load_group_public_key(
-      rust::Slice(group_pub_key.data(), group_pub_key.size()));
-  auto gsk_result = anonymous_credentials::load_credential_big(
-      rust::Slice(gsk.data(), gsk.size()));
+      base::SpanToRustSlice(group_pub_key));
+  auto gsk_result =
+      anonymous_credentials::load_credential_big(base::SpanToRustSlice(gsk));
   auto join_resp_result = anonymous_credentials::load_join_response(
-      rust::Slice(join_resp_bytes.data(), join_resp_bytes.size()));
+      base::SpanToRustSlice(join_resp_bytes));
   if (!pub_key_result.error_message.empty() ||
       !gsk_result.error_message.empty() ||
       !join_resp_result.error_message.empty()) {
@@ -107,7 +133,7 @@ std::optional<std::string> FinishJoin(
             << join_resp_result.error_message.c_str();
     return std::nullopt;
   }
-  auto finish_res = anonymous_credential_manager->finish_join(
+  auto finish_res = anonymous_credential_manager_->finish_join(
       *pub_key_result.value, *gsk_result.value,
       std::move(join_resp_result.value));
   if (!finish_res.error_message.empty()) {
@@ -118,8 +144,8 @@ std::optional<std::string> FinishJoin(
   return base::Base64Encode(finish_res.data);
 }
 
-std::optional<std::vector<const uint8_t>> PerformSign(
-    anonymous_credentials::CredentialManager* anonymous_credential_manager,
+std::optional<std::vector<const uint8_t>>
+BackgroundCredentialHelper::PerformSign(
     std::vector<const uint8_t> msg,
     std::vector<const uint8_t> basename,
     std::optional<std::vector<uint8_t>> gsk_bytes,
@@ -127,11 +153,9 @@ std::optional<std::vector<const uint8_t>> PerformSign(
   base::AssertLongCPUWorkAllowed();
   if (gsk_bytes && credential_bytes) {
     auto gsk_result = anonymous_credentials::load_credential_big(
-        rust::Slice(reinterpret_cast<const uint8_t*>(gsk_bytes->data()),
-                    gsk_bytes->size()));
+        base::SpanToRustSlice(*gsk_bytes));
     auto credential_result = anonymous_credentials::load_user_credentials(
-        rust::Slice(reinterpret_cast<const uint8_t*>(credential_bytes->data()),
-                    credential_bytes->size()));
+        base::SpanToRustSlice(*credential_bytes));
     if (!gsk_result.error_message.empty() ||
         !credential_result.error_message.empty()) {
       VLOG(1) << "Failed to sign due to deserialization error with gsk, or "
@@ -140,20 +164,17 @@ std::optional<std::vector<const uint8_t>> PerformSign(
               << credential_result.error_message.c_str();
       return std::nullopt;
     }
-    anonymous_credential_manager->set_gsk_and_credentials(
+    anonymous_credential_manager_->set_gsk_and_credentials(
         std::move(gsk_result.value), std::move(credential_result.value));
   }
-  auto sig_res = anonymous_credential_manager->sign(
-      rust::Slice(msg.data(), msg.size()),
-      rust::Slice(basename.data(), basename.size()));
+  auto sig_res = anonymous_credential_manager_->sign(
+      base::SpanToRustSlice(msg), base::SpanToRustSlice(basename));
   if (!sig_res.error_message.empty()) {
     VLOG(1) << "Failed to sign: " << sig_res.error_message.c_str();
     return std::nullopt;
   }
   return std::vector<const uint8_t>(sig_res.data.begin(), sig_res.data.end());
 }
-
-}  // namespace
 
 CredentialManager::CredentialManager(
     PrefService* profile_prefs,
@@ -164,12 +185,8 @@ CredentialManager::CredentialManager(
       server_config_loader_(server_config_loader),
       join_url_(GetDirectHPNHost() + kJoinPath),
       backoff_entry_(&kBackoffPolicy),
-      sequenced_task_runner_(base::ThreadPool::CreateSequencedTaskRunner({})),
-      anonymous_credential_manager_(
-          new rust::Box(anonymous_credentials::new_credential_manager()),
-          base::OnTaskRunnerDeleter(sequenced_task_runner_)),
-      rsa_private_key_(nullptr,
-                       base::OnTaskRunnerDeleter(sequenced_task_runner_)) {}
+      background_task_runner_(base::ThreadPool::CreateSequencedTaskRunner({})),
+      background_credential_helper_(background_task_runner_) {}
 
 CredentialManager::~CredentialManager() = default;
 
@@ -183,11 +200,15 @@ bool CredentialManager::LoadRSAKey() {
     return true;
   }
 
-  rsa_private_key_.reset(ImportRSAKeyPair(private_key_b64).release());
-  if (!rsa_private_key_) {
+  auto key_pair = ImportRSAKeyPair(private_key_b64);
+  if (!key_pair) {
     VLOG(1) << "Failed to import stored RSA key";
+    rsa_public_key_b64_ = std::nullopt;
     return false;
   }
+  background_credential_helper_
+      .AsyncCall(&BackgroundCredentialHelper::SetRSAKey)
+      .WithArgs(std::move(key_pair));
 
   return true;
 }
@@ -198,7 +219,6 @@ void CredentialManager::OnNewRSAKey(std::unique_ptr<RSAKeyInfo> key_info) {
     return;
   }
 
-  rsa_private_key_.reset(key_info->key_pair.release());
   rsa_public_key_b64_ = key_info->public_key_b64;
 
   profile_prefs_->SetString(kCredentialRSAPrivateKey,
@@ -213,53 +233,48 @@ void CredentialManager::JoinGroups() {
   auto today_date = FormatServerDate(base::Time::Now().UTCMidnight());
   const auto& anon_creds_dict =
       profile_prefs_->GetDict(kAnonymousCredentialsDict);
-  for (const auto& [date, group_pub_key_b64] : server_config.group_pub_keys) {
+  for (const auto& [date, group_pub_key] : server_config.group_pub_keys) {
     if (date < today_date || join_url_loaders_.contains(date) ||
         anon_creds_dict.contains(date)) {
       continue;
     }
 
-    if (rsa_private_key_ == nullptr) {
+    if (!rsa_public_key_b64_) {
       if (!LoadRSAKey()) {
         return;
       }
-      if (rsa_private_key_ == nullptr) {
-        sequenced_task_runner_->PostTaskAndReplyWithResult(
-            FROM_HERE, base::BindOnce(&GenerateRSAKeyPair),
-            base::BindOnce(&CredentialManager::OnNewRSAKey,
-                           weak_ptr_factory_.GetWeakPtr()));
+      if (!rsa_public_key_b64_) {
+        background_credential_helper_
+            .AsyncCall(&BackgroundCredentialHelper::GenerateRSAKey)
+            .Then(base::BindOnce(&CredentialManager::OnNewRSAKey,
+                                 weak_ptr_factory_.GetWeakPtr()));
         return;
       }
     }
 
-    StartJoinGroup(date, group_pub_key_b64);
+    StartJoinGroup(date, group_pub_key);
   }
 }
 
-void CredentialManager::StartJoinGroup(const std::string& date,
-                                       const std::string& group_pub_key_b64) {
-  auto group_pub_key = base::Base64Decode(group_pub_key_b64);
-  if (!group_pub_key) {
-    VLOG(1) << "Failed to decode group public key for " << date;
-    return;
-  }
-  std::vector<const uint8_t> group_pub_key_const(group_pub_key->begin(),
-                                                 group_pub_key->end());
+void CredentialManager::StartJoinGroup(
+    const std::string& date,
+    const std::vector<uint8_t>& group_pub_key) {
+  std::vector<const uint8_t> group_pub_key_const(group_pub_key.begin(),
+                                                 group_pub_key.end());
 
   auto challenge_elements = base::Value::List::with_capacity(2);
   challenge_elements.Append(*rsa_public_key_b64_);
-  challenge_elements.Append(group_pub_key_b64);
+  challenge_elements.Append(base::Base64Encode(group_pub_key));
 
   std::string pre_challenge;
   base::JSONWriter::Write(challenge_elements, &pre_challenge);
 
-  sequenced_task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(&GenerateJoinRequest, &**anonymous_credential_manager_,
-                     rsa_private_key_.get(), pre_challenge),
-      base::BindOnce(&CredentialManager::OnJoinRequestReady,
-                     weak_ptr_factory_.GetWeakPtr(), date,
-                     group_pub_key_const));
+  background_credential_helper_
+      .AsyncCall(&BackgroundCredentialHelper::GenerateJoinRequest)
+      .WithArgs(pre_challenge)
+      .Then(base::BindOnce(&CredentialManager::OnJoinRequestReady,
+                           weak_ptr_factory_.GetWeakPtr(), date,
+                           group_pub_key_const));
 }
 
 void CredentialManager::OnJoinRequestReady(
@@ -376,12 +391,11 @@ bool CredentialManager::ProcessJoinResponse(
   std::vector<const uint8_t> join_resp_bytes_const(join_resp_bytes->begin(),
                                                    join_resp_bytes->end());
 
-  sequenced_task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(&FinishJoin, &**anonymous_credential_manager_, date,
-                     group_pub_key, gsk, join_resp_bytes_const),
-      base::BindOnce(&CredentialManager::OnCredentialsReady,
-                     weak_ptr_factory_.GetWeakPtr(), date, gsk));
+  background_credential_helper_
+      .AsyncCall(&BackgroundCredentialHelper::FinishJoin)
+      .WithArgs(date, group_pub_key, gsk, join_resp_bytes_const)
+      .Then(base::BindOnce(&CredentialManager::OnCredentialsReady,
+                           weak_ptr_factory_.GetWeakPtr(), date, gsk));
   return true;
 }
 
@@ -405,7 +419,7 @@ bool CredentialManager::CredentialExistsForToday() {
       .contains(FormatServerDate(base::Time::Now()));
 }
 
-bool CredentialManager::Sign(std::vector<const uint8_t> msg,
+void CredentialManager::Sign(std::vector<const uint8_t> msg,
                              std::vector<const uint8_t> basename,
                              SignCallback callback) {
   auto today_date = FormatServerDate(base::Time::Now().UTCMidnight());
@@ -417,30 +431,31 @@ bool CredentialManager::Sign(std::vector<const uint8_t> msg,
     auto* today_cred_dict = anon_creds_dict.FindDict(today_date);
     if (!today_cred_dict) {
       VLOG(1) << "Failed to sign due to unavailability of credentials";
-      return false;
+      std::move(callback).Run(std::nullopt);
+      return;
     }
     auto* gsk_b64 = today_cred_dict->FindString(kGSKDictKey);
     auto* credential_b64 = today_cred_dict->FindString(kCredentialDictKey);
     if (!gsk_b64 || !credential_b64) {
       VLOG(1) << "Failed to sign due to unavailability of gsk/credential";
-      return false;
+      std::move(callback).Run(std::nullopt);
+      return;
     }
     gsk_bytes = base::Base64Decode(*gsk_b64);
     credential_bytes = base::Base64Decode(*credential_b64);
     if (!gsk_bytes || !credential_bytes) {
       VLOG(1) << "Failed to sign due to bad gsk/credential base64";
-      return false;
+      std::move(callback).Run(std::nullopt);
+      return;
     }
   }
 
-  sequenced_task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(&PerformSign, &**anonymous_credential_manager_, msg,
-                     basename, gsk_bytes, credential_bytes),
-      base::BindOnce(&CredentialManager::OnSignResult,
-                     weak_ptr_factory_.GetWeakPtr(), today_date,
-                     std::move(callback)));
-  return true;
+  background_credential_helper_
+      .AsyncCall(&BackgroundCredentialHelper::PerformSign)
+      .WithArgs(msg, basename, gsk_bytes, credential_bytes)
+      .Then(base::BindOnce(&CredentialManager::OnSignResult,
+                           weak_ptr_factory_.GetWeakPtr(), today_date,
+                           std::move(callback)));
 }
 
 void CredentialManager::OnSignResult(
@@ -452,12 +467,8 @@ void CredentialManager::OnSignResult(
 }
 
 void CredentialManager::UseFixedSeedForTesting() {
-  anonymous_credential_manager_ =
-      std::unique_ptr<rust::Box<anonymous_credentials::CredentialManager>,
-                      base::OnTaskRunnerDeleter>(
-          new rust::Box(
-              anonymous_credentials::new_credential_manager_with_fixed_seed()),
-          base::OnTaskRunnerDeleter(sequenced_task_runner_));
+  background_credential_helper_.AsyncCall(
+      &BackgroundCredentialHelper::UseFixedSeedForTesting);
 }
 
 }  // namespace web_discovery

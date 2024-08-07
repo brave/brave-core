@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -69,7 +70,9 @@ class WebDiscoveryCredentialManagerTest : public testing::Test {
 
     auto server_config = std::make_unique<ServerConfig>();
     for (const auto [date, join_response] : *join_responses) {
-      server_config->group_pub_keys[date] = *group_pub_key;
+      auto decoded_group_pub_key = base::Base64Decode(*group_pub_key);
+      ASSERT_TRUE(decoded_group_pub_key);
+      server_config->group_pub_keys[date] = *decoded_group_pub_key;
       join_responses_[date] = join_response.GetString();
     }
     server_config_loader_->SetLastServerConfigForTesting(
@@ -90,12 +93,6 @@ class WebDiscoveryCredentialManagerTest : public testing::Test {
     credential_manager_->UseFixedSeedForTesting();
   }
 
-  base::test::TaskEnvironment task_environment_;
-  std::unique_ptr<CredentialManager> credential_manager_;
-  TestingPrefServiceSimple profile_prefs_;
-  size_t join_requests_made_ = 0;
-
- private:
   void HandleRequest(const network::ResourceRequest& request) {
     url_loader_factory_.ClearResponses();
     std::string response;
@@ -120,10 +117,19 @@ class WebDiscoveryCredentialManagerTest : public testing::Test {
     join_requests_made_++;
   }
 
-  base::flat_map<std::string, std::string> join_responses_;
-  std::unique_ptr<ServerConfigLoader> server_config_loader_;
+  base::test::TaskEnvironment task_environment_;
+
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+
+  TestingPrefServiceSimple profile_prefs_;
+  std::unique_ptr<ServerConfigLoader> server_config_loader_;
+
+  base::flat_map<std::string, std::string> join_responses_;
+
+  std::unique_ptr<CredentialManager> credential_manager_;
+
+  size_t join_requests_made_ = 0;
 };
 
 TEST_F(WebDiscoveryCredentialManagerTest, JoinGroups) {

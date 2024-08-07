@@ -18,7 +18,6 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "extensions/buildflags/buildflags.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/service_manager/public/cpp/interface_provider.h"
 
 namespace web_discovery {
 
@@ -66,11 +65,16 @@ void WebDiscoveryService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 void WebDiscoveryService::SetExtensionPrefIfNativeDisabled(
     PrefService* profile_prefs) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  if (!base::FeatureList::IsEnabled(features::kWebDiscoveryNative) &&
+  if (!base::FeatureList::IsEnabled(features::kBraveWebDiscoveryNative) &&
       profile_prefs->GetBoolean(kWebDiscoveryNativeEnabled)) {
     profile_prefs->SetBoolean(kWebDiscoveryExtensionEnabled, true);
   }
 #endif
+}
+
+void WebDiscoveryService::Shutdown() {
+  Stop();
+  pref_change_registrar_.RemoveAll();
 }
 
 void WebDiscoveryService::Start() {
@@ -93,8 +97,9 @@ void WebDiscoveryService::Start() {
 void WebDiscoveryService::Stop() {
   server_config_loader_ = nullptr;
   credential_manager_ = nullptr;
+}
 
-  profile_prefs_->ClearPref(kWebDiscoveryNativeEnabled);
+void WebDiscoveryService::ClearPrefs() {
   profile_prefs_->ClearPref(kAnonymousCredentialsDict);
   profile_prefs_->ClearPref(kCredentialRSAPrivateKey);
   profile_prefs_->ClearPref(kCredentialRSAPublicKey);
@@ -105,6 +110,7 @@ void WebDiscoveryService::OnEnabledChange() {
     Start();
   } else {
     Stop();
+    ClearPrefs();
   }
 }
 

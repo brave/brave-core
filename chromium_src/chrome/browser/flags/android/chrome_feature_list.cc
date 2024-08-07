@@ -18,7 +18,7 @@
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/request_otr/common/features.h"
 #include "brave/components/speedreader/common/features.h"
-#include "brave/components/web_discovery/common/features.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
@@ -30,9 +30,18 @@
 #define BRAVE_AI_CHAT_FLAG
 #endif
 
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#include "brave/components/web_discovery/common/features.h"
+#define BRAVE_WEB_DISCOVERY_FLAG \
+  &web_discovery::features::kBraveWebDiscoveryNative,
+#else
+#define BRAVE_WEB_DISCOVERY_FLAG
+#endif
+
 // clang-format off
 #define kForceWebContentsDarkMode kForceWebContentsDarkMode,            \
     BRAVE_AI_CHAT_FLAG                                                  \
+    BRAVE_WEB_DISCOVERY_FLAG                                            \
     &brave_rewards::features::kBraveRewards,                            \
     &brave_search_conversion::features::kOmniboxBanner,                 \
     &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,           \
@@ -50,14 +59,14 @@
     &google_sign_in_permission::features::kBraveGoogleSignInPermission, \
     &net::features::kBraveForgetFirstPartyStorage,                      \
     &brave_shields::features::kBraveShowStrictFingerprintingMode,       \
-    &brave_shields::features::kBraveLocalhostAccessPermission,          \
-    &web_discovery::features::kWebDiscoveryNative
+    &brave_shields::features::kBraveLocalhostAccessPermission
 
 // clang-format on
 
 #include "src/chrome/browser/flags/android/chrome_feature_list.cc"
 #undef kForceWebContentsDarkMode
 #undef BRAVE_AI_CHAT_FLAG
+#undef BRAVE_WEB_DISCOVERY_FLAG
 
 namespace chrome {
 namespace android {

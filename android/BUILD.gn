@@ -5,7 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/p3a/buildflags.gni")
-import("//brave/components/web_discovery/common/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//brave/components/webcompat_reporter/buildflags/buildflags.gni")
 import("//build/config/android/rules.gni")
 
