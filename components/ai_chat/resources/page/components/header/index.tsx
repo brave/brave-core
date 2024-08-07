@@ -6,23 +6,30 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
-import getPageHandlerInstance from '../../api/page_handler'
-import DataContext from '../../state/context'
+import getAPI from '../../api'
 import FeatureButtonMenu from '../feature_button_menu'
 import styles from './style.module.scss'
+import { useAIChat } from '../../state/ai_chat_context'
+import { useConversation } from '../../state/conversation_context'
 
-interface PageTitleHeaderProps {
+interface Props {
+  isConversationListOpen: boolean
+  setIsConversationListOpen: (value: boolean) => unknown
+}
+
+interface PageTitleHeaderProps extends Props {
   title?: string
 }
 
 export function PageTitleHeader(props: PageTitleHeaderProps) {
-  const context = React.useContext(DataContext)
-  const { hasAcceptedAgreement } = context
+  const aiChatContext = useAIChat()
+  const conversationContext = useConversation()
 
-  const shouldDisplayEraseAction = context.conversationHistory.length >= 1
+  const shouldDisplayEraseAction =
+    conversationContext.conversationHistory.length >= 1
 
   const handleEraseClick = () => {
-    getPageHandlerInstance().pageHandler.clearConversationHistory()
+    aiChatContext.onNewConversation()
   }
 
   return (
@@ -32,7 +39,7 @@ export function PageTitleHeader(props: PageTitleHeaderProps) {
           <Button
             kind='plain-faint'
             fab
-            onClick={() => {}}
+            onClick={() => {aiChatContext.onSelectConversationId(undefined)}}
           >
             <Icon name='arrow-left' />
           </Button>
@@ -42,15 +49,15 @@ export function PageTitleHeader(props: PageTitleHeaderProps) {
         <div className={styles.logo}>
           <Icon name='product-brave-leo' />
           <div className={styles.logoTitle}>Leo AI</div>
-          {context.isPremiumUser && (
+          {aiChatContext.isPremiumUser && (
             <div className={styles.badgePremium}>PREMIUM</div>
           )}
         </div>
       )}
       <div className={styles.actions}>
-        {hasAcceptedAgreement && (
+        {aiChatContext.hasAcceptedAgreement && (
           <>
-            <Button
+            {/* <Button
               fab
               kind='plain-faint'
               aria-label='Launch'
@@ -58,7 +65,7 @@ export function PageTitleHeader(props: PageTitleHeaderProps) {
               onClick={() => {}}
             >
               <Icon name='launch' />
-            </Button>
+            </Button> */}
             {shouldDisplayEraseAction && (
               <Button
                 fab
@@ -70,14 +77,14 @@ export function PageTitleHeader(props: PageTitleHeaderProps) {
                 <Icon name='erase' />
               </Button>
             )}
-            <FeatureButtonMenu />
+            <FeatureButtonMenu {...props} />
             <Button
               fab
               kind='plain-faint'
               aria-label='Close'
               title='Close'
               className={styles.closeButton}
-              onClick={() => getPageHandlerInstance().pageHandler.closePanel()}
+              onClick={() => getAPI().UIHandler.closeUI()}
             >
               <Icon name='close' />
             </Button>
@@ -88,15 +95,16 @@ export function PageTitleHeader(props: PageTitleHeaderProps) {
   )
 }
 
-export default function SidebarHeader() {
-  const context = React.useContext(DataContext)
-  const { hasAcceptedAgreement } = context
+export default function SidebarHeader(props: Props) {
+  const aiChatContext = useAIChat()
+  const conversationContext = useConversation()
 
   const handleEraseClick = () => {
-    getPageHandlerInstance().pageHandler.clearConversationHistory()
+    aiChatContext.onNewConversation()
   }
 
-  const shouldDisplayEraseAction = context.conversationHistory.length >= 1
+  const shouldDisplayEraseAction =
+    conversationContext.conversationHistory.length >= 1
 
   return (
     <div className={styles.header}>
@@ -105,13 +113,13 @@ export default function SidebarHeader() {
         <div className={styles.logo}>
           <Icon name='product-brave-leo' />
           <div className={styles.logoTitle}>Leo AI</div>
-          {context.isPremiumUser && (
+          {aiChatContext.isPremiumUser && (
             <div className={styles.badgePremium}>PREMIUM</div>
           )}
         </div>
       </div>
       <div className={styles.actions}>
-        {hasAcceptedAgreement && (
+        {aiChatContext.hasAcceptedAgreement && (
           <>
             {shouldDisplayEraseAction && (
               <Button
@@ -124,7 +132,7 @@ export default function SidebarHeader() {
                 <Icon name='erase' />
               </Button>
             )}
-            <FeatureButtonMenu />
+            <FeatureButtonMenu {...props} />
           </>
         )}
       </div>
