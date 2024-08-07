@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <utility>
 
@@ -35,7 +35,7 @@ base::TimeDelta kMinimalTimeBetweenResetMarker = base::Minutes(30);
 
 BraveDataTypeWorker::BraveDataTypeWorker(
     ModelType type,
-    const sync_pb::ModelTypeState& initial_state,
+    const sync_pb::DataTypeState& initial_state,
     Cryptographer* cryptographer,
     bool encryption_enabled,
     PassphraseType passphrase_type,
@@ -115,7 +115,7 @@ void BraveDataTypeWorker::ResetProgressMarker() {
   // P3A sample is 0
   base::UmaHistogramExactLinear("Brave.Sync.ProgressTokenEverReset", 0, 1);
   last_reset_marker_time_ = base::Time::Now();
-  model_type_state_.mutable_progress_marker()->clear_token();
+  data_type_state_.mutable_progress_marker()->clear_token();
 }
 
 }  // namespace syncer

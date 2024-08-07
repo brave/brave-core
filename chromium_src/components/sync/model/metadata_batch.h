@@ -6,12 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_MODEL_METADATA_BATCH_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_MODEL_METADATA_BATCH_H_
 
-#define SetModelTypeState \
-  ClearProgressToken();   \
-  void SetModelTypeState
+#define SetDataTypeState \
+  ClearProgressToken();  \
+  void SetDataTypeState
 
 #include "src/components/sync/model/metadata_batch.h"  // IWYU pragma: export
 
-#undef SetModelTypeState
+#undef SetDataTypeState
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_MODEL_METADATA_BATCH_H_
