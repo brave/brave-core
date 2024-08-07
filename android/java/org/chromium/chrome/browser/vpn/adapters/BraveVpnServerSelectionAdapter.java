@@ -17,9 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.radiobutton.MaterialRadioButton;
 
+import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.activities.VpnServerSelectionActivity.OnServerRegionSelection;
-import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
@@ -29,7 +29,7 @@ import java.util.List;
 public class BraveVpnServerSelectionAdapter
         extends RecyclerView.Adapter<BraveVpnServerSelectionAdapter.ViewHolder> {
     private final Context mContext;
-    private List<BraveVpnServerRegion> mBraveVpnServerRegions = new ArrayList<>();
+    private List<Region> mRegions = new ArrayList<>();
     private OnServerRegionSelection mOnServerRegionSelection;
 
     public BraveVpnServerSelectionAdapter(Context context) {
@@ -47,15 +47,14 @@ public class BraveVpnServerSelectionAdapter
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final BraveVpnServerRegion vpnServerRegion = mBraveVpnServerRegions.get(position);
-        if (vpnServerRegion != null) {
-            holder.serverIconText.setText(
-                    BraveVpnUtils.countryCodeToEmoji(vpnServerRegion.getCountryIsoCode()));
-            holder.serverText.setText(vpnServerRegion.getNamePretty());
+        final Region region = mRegions.get(position);
+        if (region != null) {
+            holder.serverIconText.setText(BraveVpnUtils.countryCodeToEmoji(region.countryIsoCode));
+            holder.serverText.setText(region.namePretty);
             holder.cityServerText.setText(
                     mContext.getResources().getString(R.string.city_server_text));
             holder.serverRadioButton.setChecked(
-                    BraveVpnPrefUtils.getServerRegion().equals(vpnServerRegion.getName()));
+                    BraveVpnPrefUtils.getServerRegion().equals(region.name));
             // if (BraveVpnPrefUtils.getServerRegion().equals(vpnServerRegion.getName())) {
             //     holder.serverText.setCompoundDrawablesWithIntrinsicBounds(
             //             0, 0, R.drawable.ic_checkbox_checked, 0);
@@ -66,7 +65,7 @@ public class BraveVpnServerSelectionAdapter
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mOnServerRegionSelection.onServerRegionClick(vpnServerRegion);
+                            mOnServerRegionSelection.onServerRegionClick(region);
                         }
                     });
         }
@@ -74,11 +73,11 @@ public class BraveVpnServerSelectionAdapter
 
     @Override
     public int getItemCount() {
-        return mBraveVpnServerRegions.size();
+        return mRegions.size();
     }
 
-    public void setVpnServerRegions(List<BraveVpnServerRegion> vpnServerRegions) {
-        this.mBraveVpnServerRegions = vpnServerRegions;
+    public void setVpnServerRegions(List<Region> vpnServerRegions) {
+        this.mRegions = vpnServerRegions;
     }
 
     public void setOnServerRegionSelection(OnServerRegionSelection onServerRegionSelection) {
