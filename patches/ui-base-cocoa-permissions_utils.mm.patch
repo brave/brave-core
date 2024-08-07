@@ -1,0 +1,33 @@
+diff --git a/ui/base/cocoa/permissions_utils.mm b/ui/base/cocoa/permissions_utils.mm
+index 8aaad05c86604c901521b062914de51cb482c69d..e133fdce4a44af57279315a43e9df9725c600a9f 100644
+--- a/ui/base/cocoa/permissions_utils.mm
++++ b/ui/base/cocoa/permissions_utils.mm
+@@ -23,6 +23,10 @@ BASE_FEATURE(kWarmScreenCaptureSonoma,
+              "WarmScreenCaptureSonoma",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ 
++BASE_FEATURE(kWarmScreenCaptureSequoia,
++             "WarmScreenCaptureSequoia",
++             base::FEATURE_DISABLED_BY_DEFAULT);
++
+ bool ShouldWarmScreenCapture() {
+   const int macos_version = base::mac::MacOSVersion();
+   // On macOS < 14, we're using CGWindowListCreateImage to capture a screenshot.
+@@ -33,8 +37,15 @@ bool ShouldWarmScreenCapture() {
+     return true;
+   }
+ 
+-  // Kill switch.
+-  if (!base::FeatureList::IsEnabled(kWarmScreenCaptureSonoma)) {
++  // Kill switch, Sonoma.
++  if (macos_version < 15'00'00 &&
++      !base::FeatureList::IsEnabled(kWarmScreenCaptureSonoma)) {
++    return false;
++  }
++
++  // Feature disabled by default for Sequoia unless explicitly enabled.
++  if (macos_version >= 15'00'00 &&
++      !base::FeatureList::IsEnabled(kWarmScreenCaptureSequoia)) {
+     return false;
+   }
+ 
