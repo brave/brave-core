@@ -6,6 +6,8 @@
 brave_browser_ai_chat_sources = [
   "//brave/browser/ai_chat/ai_chat_settings_helper.cc",
   "//brave/browser/ai_chat/ai_chat_settings_helper.h",
+  "//brave/browser/ai_chat/ai_chat_utils.cc",
+  "//brave/browser/ai_chat/ai_chat_utils.h",
 ]
 
 brave_browser_ai_chat_deps = [
