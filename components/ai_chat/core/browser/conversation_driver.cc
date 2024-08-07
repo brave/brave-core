@@ -395,7 +395,7 @@ void ConversationDriver::AddToConversationHistory(
   }
 
   if (ai_chat_metrics_ != nullptr) {
-    if (chat_history_.size() == 1) {
+    if (chat_history_.size() == 0) {
       ai_chat_metrics_->RecordNewChat();
     }
     if (turn->character_type == CharacterType::HUMAN) {
