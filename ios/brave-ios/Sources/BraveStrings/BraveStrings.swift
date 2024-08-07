@@ -9183,6 +9183,16 @@ extension Strings {
       value: "Brave Rewards",
       comment: ""
     )
+
+    public static let braveAdsDataToggleOption =
+      NSLocalizedString(
+        "ads.braveAdsDataToggleOption",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Brave Ads Data",
+        comment:
+          "Text for the toggle switch to clear 'Brave Ads' data in settings"
+      )
   }
 }
 

@@ -18,7 +18,7 @@ import os
   struct ClearableSetting: Identifiable {
     enum ClearableType: String {
       case history, cache, cookiesAndCache, passwords, downloads, braveNews, playlistCache,
-        playlistData, recentSearches
+        playlistData, recentSearches, braveAdsData
     }
 
     var id: ClearableType
@@ -88,6 +88,7 @@ import os
   private let p3aUtilities: BraveP3AUtils
   private let deAmpPrefs: DeAmpPrefs
   private let debounceService: DebounceService?
+  private let rewards: BraveRewards?
   private let clearDataCallback: ClearDataCallback
   let tabManager: TabManager
 
@@ -97,6 +98,7 @@ import os
     feedDataSource: FeedDataSource,
     debounceService: DebounceService?,
     braveCore: BraveCoreMain,
+    rewards: BraveRewards?,
     clearDataCallback: @escaping ClearDataCallback
   ) {
     self.p3aUtilities = braveCore.p3aUtils
@@ -104,6 +106,7 @@ import os
     self.debounceService = debounceService
     self.tabManager = tabManager
     self.isP3AEnabled = p3aUtilities.isP3AEnabled
+    self.rewards = rewards
     self.clearDataCallback = clearDataCallback
     self.adBlockAndTrackingPreventionLevel = ShieldPreferences.blockAdsAndTrackingLevel
     self.httpsUpgradeLevel = ShieldPreferences.httpsUpgradeLevel
@@ -142,6 +145,22 @@ import os
         clearable: BraveNewsClearable(feedDataSource: feedDataSource),
         isEnabled: true
       ),
+    ]
+
+    // Enable clearing of Brave Ads data only if:
+    // - Brave Ads is running
+    // - Brave Rewards is disabled
+    if let rewards, !rewards.isEnabled, rewards.ads.isServiceRunning() {
+      clearableSettings.append(
+        ClearableSetting(
+          id: .braveAdsData,
+          clearable: BraveAdsDataClearable(rewards: rewards),
+          isEnabled: false
+        )
+      )
+    }
+
+    clearableSettings += [
       ClearableSetting(id: .playlistCache, clearable: PlayListCacheClearable(), isEnabled: false),
       ClearableSetting(id: .playlistData, clearable: PlayListDataClearable(), isEnabled: false),
       ClearableSetting(id: .recentSearches, clearable: RecentSearchClearable(), isEnabled: true),

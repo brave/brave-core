@@ -60,6 +60,7 @@ brave_settings_web_component_files = [
 brave_settings_non_web_component_files = [
   "brave_appearance_page/brave_appearance_browser_proxy.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.ts",
+  "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_proxy.ts",
   "brave_autofill_page/brave_autofill_page.ts",
   "brave_add_site_dialog/brave_add_site_dialog.ts",
   "brave_data_collection_page/brave_data_collection_browser_proxy.ts",

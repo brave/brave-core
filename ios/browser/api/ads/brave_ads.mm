@@ -14,6 +14,7 @@
 #include "base/containers/flat_map.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
@@ -30,6 +31,7 @@
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
@@ -59,6 +61,7 @@
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #include "net/base/apple/url_conversions.h"
+#include "sql/database.h"
 #include "url/gurl.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -79,9 +82,14 @@
     brave_ads::__cpp_var = newValue;                                       \
   }
 
-static const int kComponentUpdaterManifestSchemaVersion = 1;
-static NSString* const kComponentUpdaterMetadataPrefKey =
+namespace {
+
+constexpr int kComponentUpdaterManifestSchemaVersion = 1;
+constexpr char kAdsDatabaseFilename[] = "Ads.db";
+constexpr NSString* kComponentUpdaterMetadataPrefKey =
     @"BraveAdsComponentUpdaterMetadata";
+
+}  // namespace
 
 @interface NotificationAdIOS ()
 - (instancetype)initWithNotificationAdInfo:
@@ -140,7 +148,9 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 
     [self initObservers];
 
-    [self initDatabase];
+    databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
 
     adEventCache = new brave_ads::AdEventCache();
 
@@ -157,18 +167,21 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 
   [self stopNetworkMonitor];
 
-  [self deallocAds];
+  [self cleanupAds];
+
   [self deallocAdsClientNotifier];
   [self deallocAdsClient];
 
   [self deallocAdEventCache];
 }
 
-- (void)deallocAds {
+- (void)cleanupAds {
   if (ads != nil) {
     delete ads;
     ads = nil;
   }
+
+  adsDatabase.Reset();
 }
 
 - (void)deallocAdsClientNotifier {
@@ -243,6 +256,8 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
     return completion(/*success=*/false);
   }
 
+  [self initDatabase];
+
   ads = brave_ads::Ads::CreateInstance(adsClient);
 
   auto cppSysInfo =
@@ -265,7 +280,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
                     }
                     completion(success);
                     if (!success) {
-                      [self deallocAds];
+                      [self cleanupAds];
                     }
                   }));
 }
@@ -277,7 +292,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
           // TODO(https://github.com/brave/brave-browser/issues/32917):
           // Deprecate shutdown API call.
           self->ads->Shutdown(base::BindOnce(^(bool) {
-            [self deallocAds];
+            [self cleanupAds];
 
             if (completion) {
               completion();
@@ -324,13 +339,12 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 #pragma mark - Database
 
 - (NSString*)adsDatabasePath {
-  return [self.storagePath stringByAppendingPathComponent:@"Ads.db"];
+  return [self.storagePath
+      stringByAppendingPathComponent:base::SysUTF8ToNSString(
+                                         kAdsDatabaseFilename)];
 }
 
 - (void)initDatabase {
-  databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
-      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-       base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
   const auto dbPath = base::SysNSStringToUTF8([self adsDatabasePath]);
   adsDatabase = base::SequenceBound<brave_ads::Database>(
       databaseQueue, base::FilePath(dbPath));
@@ -1536,9 +1550,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
       base::SysNSStringToUTF8(placementId),
       base::SysNSStringToUTF8(creativeInstanceId),
       static_cast<brave_ads::mojom::InlineContentAdEventType>(eventType),
-      base::BindOnce(^(const bool success) {
-        completion(success);
-      }));
+      base::BindOnce(completion));
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/33470): Unify Brave Ads
@@ -1556,9 +1568,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
       base::SysNSStringToUTF8(wallpaperId),
       base::SysNSStringToUTF8(creativeInstanceId),
       static_cast<brave_ads::mojom::NewTabPageAdEventType>(eventType),
-      base::BindOnce(^(const bool success) {
-        completion(success);
-      }));
+      base::BindOnce(completion));
 }
 
 - (nullable NotificationAdIOS*)maybeGetNotificationAd:(NSString*)identifier {
@@ -1585,9 +1595,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   ads->TriggerNotificationAdEvent(
       base::SysNSStringToUTF8(placementId),
       static_cast<brave_ads::mojom::NotificationAdEventType>(eventType),
-      base::BindOnce(^(const bool success) {
-        completion(success);
-      }));
+      base::BindOnce(completion));
 }
 
 - (void)triggerPromotedContentAdEvent:(NSString*)placementId
@@ -1603,9 +1611,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
       base::SysNSStringToUTF8(placementId),
       base::SysNSStringToUTF8(creativeInstanceId),
       static_cast<brave_ads::mojom::PromotedContentAdEventType>(eventType),
-      base::BindOnce(^(const bool success) {
-        completion(success);
-      }));
+      base::BindOnce(completion));
 }
 
 - (void)triggerSearchResultAdEvent:
@@ -1619,9 +1625,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   ads->TriggerSearchResultAdEvent(
       searchResultAd.cppObjPtr,
       static_cast<brave_ads::mojom::SearchResultAdEventType>(eventType),
-      base::BindOnce(^(const bool success) {
-        completion(success);
-      }));
+      base::BindOnce(completion));
 }
 
 - (void)purgeOrphanedAdEventsForType:(BraveAdsAdType)adType
@@ -1632,9 +1636,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 
   ads->PurgeOrphanedAdEventsForType(
       static_cast<brave_ads::mojom::AdType>(adType),
-      base::BindOnce(^(const bool success) {
-        completion(success);
-      }));
+      base::BindOnce(completion));
 }
 
 - (void)toggleLikeAd:(NSString*)creativeInstanceId
@@ -1671,6 +1673,29 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 
   ads->ToggleDislikeAd(brave_ads::AdHistoryItemToValue(ad_history_item),
                        /*intentional*/ base::DoNothing());
+}
+
+- (void)clearData:(void (^)())completion {
+  // Ensure the Brave Ads service is stopped before clearing data.
+  CHECK(![self isServiceRunning]);
+
+  self.profilePrefService->ClearPrefsWithPrefixSilently("brave.brave_ads");
+
+  base::FilePath storage_path(base::SysNSStringToUTF8(self.storagePath));
+  base::ThreadPool::PostTaskAndReply(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(
+          [](base::FilePath storage_path) {
+            sql::Database::Delete(storage_path.Append(kAdsDatabaseFilename));
+
+            base::DeleteFile(
+                storage_path.Append(brave_ads::kClientJsonFilename));
+
+            base::DeleteFile(
+                storage_path.Append(brave_ads::kConfirmationsJsonFilename));
+          },
+          std::move(storage_path)),
+      base::BindOnce(completion));
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/33788): Unify Brave Ads

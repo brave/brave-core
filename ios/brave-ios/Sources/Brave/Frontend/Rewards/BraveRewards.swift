@@ -109,8 +109,7 @@ public class BraveRewards: PreferencesObserver {
   private var braveNewsObservation: AnyCancellable?
 
   private var shouldShutdownAds: Bool {
-    ads.isServiceRunning() && !ads.isEnabled && !Preferences.BraveNews.isEnabled.value
-      && !BraveAds.shouldAlwaysRunService()
+    ads.isServiceRunning() && !shouldStartAds
   }
 
   /// Propose that the ads service should be shutdown based on whether or not that all features
@@ -153,6 +152,15 @@ public class BraveRewards: PreferencesObserver {
     }
   }
 
+  public var shouldStartAds: Bool {
+    // Start Brave Ads if one of the following is true:
+    // - Brave Rewards is enabled.
+    // - Brave News is enabled.
+    // - `ShouldAlwaysRunBraveAdsService` feature is enabled.
+    return ads.isEnabled || Preferences.BraveNews.isEnabled.value
+      || BraveAds.shouldAlwaysRunService()
+  }
+
   private(set) var isTurningOnRewards: Bool = false
 
   private func createWalletIfNeeded(_ completion: (() -> Void)? = nil) {
@@ -187,6 +195,26 @@ public class BraveRewards: PreferencesObserver {
           ads.initialize { _ in
             continuation.resume()
           }
+        }
+      }
+    }
+  }
+
+  // MARK: - Brave Ads Data
+
+  /// Clear Brave Ads Data.
+  @MainActor func clearAdsData() async {
+    await withCheckedContinuation { continuation in
+      ads.shutdownService { [ads] in
+        ads.clearData {
+          continuation.resume()
+        }
+      }
+    }
+    if shouldStartAds {
+      await withCheckedContinuation { continuation in
+        ads.initialize { _ in
+          continuation.resume()
         }
       }
     }

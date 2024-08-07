@@ -215,7 +215,7 @@ AdsServiceImpl::AdsServiceImpl(
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      base_path_(profile_->GetPath().AppendASCII("ads_service")),
+      ads_service_path_(profile_->GetPath().AppendASCII("ads_service")),
       display_service_(NotificationDisplayService::GetForProfile(profile_)),
       rewards_service_(rewards_service),
       bat_ads_client_associated_receiver_(this) {
@@ -419,7 +419,8 @@ void AdsServiceImpl::BatAdsServiceCreatedCallback(
 
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&EnsureBaseDirectoryExistsOnFileTaskRunner, base_path_),
+      base::BindOnce(&EnsureBaseDirectoryExistsOnFileTaskRunner,
+                     ads_service_path_),
       base::BindOnce(&AdsServiceImpl::InitializeBasePathDirectoryCallback,
                      weak_ptr_factory_.GetWeakPtr(), current_start_number));
 }
@@ -428,7 +429,7 @@ void AdsServiceImpl::InitializeBasePathDirectoryCallback(
     const size_t current_start_number,
     const bool success) {
   if (!success) {
-    VLOG(1) << "Failed to initialize " << base_path_ << " directory";
+    VLOG(1) << "Failed to initialize " << ads_service_path_ << " directory";
     return ShutdownAdsService();
   }
 
@@ -449,7 +450,7 @@ void AdsServiceImpl::InitializeDatabase() {
   CHECK(!database_);
 
   database_ = base::SequenceBound<Database>(
-      file_task_runner_, base_path_.AppendASCII("database.sqlite"));
+      file_task_runner_, ads_service_path_.AppendASCII(kDatabaseFilename));
 }
 
 void AdsServiceImpl::InitializeRewardsWallet(
@@ -530,7 +531,7 @@ void AdsServiceImpl::ShutdownAndResetState() {
   local_state_->ClearPref(brave_l10n::prefs::kCountryCode);
 
   file_task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE, base::BindOnce(&DeletePathOnFileTaskRunner, base_path_),
+      FROM_HERE, base::BindOnce(&DeletePathOnFileTaskRunner, ads_service_path_),
       base::BindOnce(&AdsServiceImpl::ShutdownAndResetStateCallback,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -1316,6 +1317,10 @@ void AdsServiceImpl::GetAdHistory(const base::Time from_time,
   }
 }
 
+void AdsServiceImpl::ClearData() {
+  ShutdownAndResetState();
+}
+
 void AdsServiceImpl::ToggleLikeAd(base::Value::Dict value,
                                   ToggleReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
@@ -1640,14 +1645,16 @@ void AdsServiceImpl::Save(const std::string& name,
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&base::ImportantFileWriter::WriteFileAtomically,
-                     base_path_.AppendASCII(name), value, std::string_view()),
+                     ads_service_path_.AppendASCII(name), value,
+                     std::string_view()),
       std::move(callback));
 }
 
 void AdsServiceImpl::Load(const std::string& name, LoadCallback callback) {
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&LoadOnFileTaskRunner, base_path_.AppendASCII(name)),
+      base::BindOnce(&LoadOnFileTaskRunner,
+                     ads_service_path_.AppendASCII(name)),
       base::BindOnce(
           [](LoadCallback callback, const std::optional<std::string>& value) {
             std::move(callback).Run(value);
