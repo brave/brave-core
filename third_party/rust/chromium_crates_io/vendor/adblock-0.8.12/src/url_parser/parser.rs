@@ -32,14 +32,13 @@ pub(crate) const USERINFO: &AsciiSet = &PATH
     .add(b'|');
 
 #[derive(Clone)]
-pub struct Hostname {
+pub(super) struct Hostname {
     serialization: String,
 
     // Components
-    pub scheme_end: usize,   // Before ':'
-    pub username_end: usize, // Before ':' (if a password is given) or '@' (if not)
-    pub host_start: usize,
-    pub host_end: usize,
+    pub(super) scheme_end: usize,   // Before ':'
+    pub(super) host_start: usize,
+    pub(super) host_end: usize,
 }
 
 impl Hostname {
@@ -192,9 +191,6 @@ simple_enum_error! {
     FileUrlNotSupported => "file URLs are not supported",
     ExpectedMoreChars => "Expected more characters",
 }
-
-#[cfg(feature = "heapsize")]
-known_heap_size!(0, ParseError);
 
 impl From<idna::Errors> for ParseError {
     fn from(_: idna::Errors) -> ParseError {
@@ -391,7 +387,6 @@ impl Parser {
         }
         // Anarchist URL (no authority)
         let path_start = self.serialization.len();
-        let username_end = path_start;
         let host_start = path_start;
         let host_end = path_start;
         self.serialization.push_str(input.chars.as_str());
@@ -404,7 +399,6 @@ impl Parser {
         Ok(Hostname {
             serialization: self.serialization,
             scheme_end,
-            username_end,
             host_start,
             host_end,
         })
@@ -418,7 +412,7 @@ impl Parser {
     ) -> ParseResult<Hostname> {
         self.serialization.push_str("//");
         // authority state
-        let (username_end, remaining) = self.parse_userinfo(input, scheme_type)?;
+        let (_username_end, remaining) = self.parse_userinfo(input, scheme_type)?;
         // host state
         let host_start = self.serialization.len();
         let (host_end, remaining) = self.parse_host(remaining, scheme_type)?;
@@ -426,7 +420,6 @@ impl Parser {
         Ok(Hostname {
             serialization: self.serialization,
             scheme_end,
-            username_end,
             host_start,
             host_end,
         })

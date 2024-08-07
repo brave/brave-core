@@ -791,11 +791,11 @@ mod css_validation {
         type ExtraMatchingData = ();
         type AttrValue = CssString;
         type Identifier = CssIdent;
-        type LocalName = DummyValue;
+        type LocalName = CssString;
         type NamespaceUrl = DummyValue;
         type NamespacePrefix = DummyValue;
         type BorrowedNamespaceUrl = DummyValue;
-        type BorrowedLocalName = DummyValue;
+        type BorrowedLocalName = CssString;
         type NonTSPseudoClass = NonTSPseudoClass;
         type PseudoElement = PseudoElement;
     }
@@ -914,6 +914,11 @@ mod css_validation {
         // Accept a closing comment within a string. It should still be impossible to create an
         // opening comment to match it.
         assert!(validate_css_selector(r#"input[x="*/{}*{background:url(https://hackvertor.co.uk/images/logo.gif)}"]"#, false).is_some());
+    }
+
+    #[test]
+    fn escaped_quote_in_tag_name() {
+        assert_eq!(validate_css_selector(r#"head\""#, false), Some(r#"head\""#.to_string()));
     }
 }
 

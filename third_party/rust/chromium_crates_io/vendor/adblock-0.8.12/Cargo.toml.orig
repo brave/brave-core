@@ -1,6 +1,6 @@
 [package]
 name = "adblock"
-version = "0.8.11"
+version = "0.8.12"
 authors = ["Anton Lazarev <alazarev@brave.com>", "Andrius Aucinas"]
 edition = "2021"
 
@@ -23,7 +23,7 @@ exclude = [
 ]
 
 [dependencies]
-addr = { version = "0.14", default-features = false, features = ["psl"], optional = true }
+addr = { version = "0.15", default-features = false, features = ["psl"], optional = true }
 url = "2.2"
 percent-encoding = "2.1"
 once_cell = "1.8"
@@ -45,7 +45,7 @@ thiserror = "1.0"
 [dev-dependencies]
 criterion = "0.5"
 csv = "1"
-mock_instant = { version = "0.2", features = ["sync"] }
+mock_instant = { version = "0.5" }
 serde_json = "1.0"
 # By default, reqwest builds openssl from source, which fails on missing/incompatible system dependencies
 reqwest = { version = "0.11", features = ["rustls-tls"], default-features = false }
