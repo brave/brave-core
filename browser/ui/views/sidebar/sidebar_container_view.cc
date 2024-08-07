@@ -141,11 +141,10 @@ void SidebarContainerView::Init() {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
   DCHECK(browser_view);
 
-  auto* side_panel_registry =
-      SidePanelCoordinator::GetGlobalSidePanelRegistry(browser_);
-  panel_registry_observations_.AddObservation(side_panel_registry);
+  auto* global_registry = side_panel_coordinator_->GetWindowRegistry();
+  panel_registry_observations_.AddObservation(global_registry);
 
-  for (const auto& entry : side_panel_registry->entries()) {
+  for (const auto& entry : global_registry->entries()) {
     DVLOG(1) << "Observing panel entry in ctor: "
              << SidePanelEntryIdToString(entry->key().id());
     panel_entry_observations_.AddObservation(entry.get());
@@ -837,7 +836,7 @@ void SidebarContainerView::OnTabStripModelChanged(
 
 void SidebarContainerView::StopObservingContextualSidePanelRegistry(
     content::WebContents* contents) {
-  auto* registry = SidePanelRegistry::Get(contents);
+  auto* registry = SidePanelRegistry::GetDeprecated(contents);
   if (!registry) {
     return;
   }
@@ -856,7 +855,7 @@ void SidebarContainerView::StopObservingContextualSidePanelRegistry(
 
 void SidebarContainerView::StartObservingContextualSidePanelRegistry(
     content::WebContents* contents) {
-  auto* registry = SidePanelRegistry::Get(contents);
+  auto* registry = SidePanelRegistry::GetDeprecated(contents);
   if (!registry) {
     return;
   }

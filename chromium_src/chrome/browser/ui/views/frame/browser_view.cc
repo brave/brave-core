@@ -31,7 +31,6 @@
 #define SidePanel BraveSidePanel
 #define kAlignLeft kHorizontalAlignLeft
 #define kAlignRight kHorizontalAlignRight
-#define SidePanelCoordinator BraveSidePanelCoordinator
 #define BookmarkBarView BraveBookmarkBarView
 #define ContentsLayoutManager BraveContentsLayoutManager
 #define UpdateExclusiveAccessBubble UpdateExclusiveAccessBubble_ChromiumImpl
@@ -41,7 +40,6 @@
 #undef UpdateExclusiveAccessBubble
 #undef ContentsLayoutManager
 #undef BookmarkBarView
-#undef SidePanelCoordinator
 #undef kAlignLeft
 #undef kAlignRight
 #undef SidePanel
