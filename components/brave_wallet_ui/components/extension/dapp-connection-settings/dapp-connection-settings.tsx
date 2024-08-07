@@ -20,7 +20,6 @@ import {
 
 // Proxies
 import getWalletPanelApiProxy from '../../../panel/wallet_panel_api_proxy'
-import { useApiProxy } from '../../../common/hooks/use-api-proxy'
 
 // Types
 import {
@@ -132,9 +131,6 @@ export const DAppConnectionSettings = () => {
     querySubscriptionOptions60s
   )
 
-  // Proxies
-  const { braveWalletService } = useApiProxy()
-
   // Hooks
   useOnClickOutside(settingsMenuRef, () => setShowSettings(false), showSettings)
 
@@ -236,8 +232,8 @@ export const DAppConnectionSettings = () => {
 
     if (selectedCoin) {
       ;(async () => {
-        await braveWalletService
-          .isPermissionDenied(selectedCoin)
+        await getWalletPanelApiProxy()
+          .braveWalletService.isPermissionDenied(selectedCoin)
           .then((result) => {
             if (subscribed) {
               setIsPermissionDenied(result.denied)
@@ -250,7 +246,7 @@ export const DAppConnectionSettings = () => {
     return () => {
       subscribed = false
     }
-  }, [braveWalletService, selectedCoin, activeOrigin])
+  }, [selectedCoin, activeOrigin])
 
   return (
     <>

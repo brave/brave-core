@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as React from 'react'
-import { Provider } from 'react-redux'
 import { renderHook, waitFor } from '@testing-library/react'
 
 import { useGetTransactionsQuery } from './api.slice'
@@ -14,7 +12,10 @@ import {
   mockFilecoinAccountInfo,
   mockSolanaAccountInfo
 } from '../constants/mocks'
-import { createMockStore } from '../../utils/test-utils'
+import {
+  createMockStore,
+  renderHookOptionsWithMockStore
+} from '../../utils/test-utils'
 import {
   createMockTransactionInfo //
 } from '../../stories/mock-data/mock-transaction-info'
@@ -24,14 +25,6 @@ import {
   mockBasicAttentionToken,
   mockBitcoinErc20Token
 } from '../../stories/mock-data/mock-asset-options'
-
-function renderHookOptionsWithCustomStore(store: any) {
-  return {
-    wrapper: ({ children }: { children?: React.ReactNode }) => (
-      <Provider store={store}>{children}</Provider>
-    )
-  }
-}
 
 const mockSolanaSendTokenTx = createMockTransactionInfo({
   chainId: BraveWallet.SOLANA_MAINNET,
@@ -94,7 +87,7 @@ describe('api slice: useGetTransactionsQuery', () => {
           coinType: BraveWallet.CoinType.ETH,
           chainId: null
         }),
-      renderHookOptionsWithCustomStore(store)
+      renderHookOptionsWithMockStore(store)
     )
 
     // loading
@@ -134,7 +127,7 @@ describe('api slice: useGetTransactionsQuery', () => {
           coinType: null,
           chainId: null
         }),
-      renderHookOptionsWithCustomStore(store)
+      renderHookOptionsWithMockStore(store)
     )
 
     // loading

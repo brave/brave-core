@@ -18,16 +18,13 @@ import {
   runLocalStorageMigrations //
 } from '../common/constants/local-storage-keys'
 
-// actions
+// redux
 import * as WalletActions from '../common/actions/wallet_actions'
-
-// contexts
-import { ApiProxyContext } from '../common/context/api-proxy.context'
+import { store } from './store'
 
 // components
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 import Container from './container'
-import { store, walletPageApiProxy } from './store'
 
 // style
 import walletDarkTheme from '../theme/wallet-dark'
@@ -60,9 +57,7 @@ function App() {
           dark={walletDarkTheme}
           light={walletLightTheme}
         >
-          <ApiProxyContext.Provider value={walletPageApiProxy}>
-            <Container />
-          </ApiProxyContext.Provider>
+          <Container />
         </BraveCoreThemeProvider>
       </BrowserRouter>
     </Provider>

@@ -7,8 +7,7 @@
 import { assert } from 'chrome://resources/js/assert.js'
 
 // redux
-import { createStore, combineReducers } from 'redux'
-import { createWalletReducer } from '../../slices/wallet.slice'
+import type { AnyAction } from 'redux'
 
 // types
 import { BraveWallet, CommonNftMetadata } from '../../../constants/types'
@@ -22,7 +21,6 @@ import { getAssetIdKey } from '../../../utils/asset-utils'
 import Amount from '../../../utils/amount'
 
 // mocks
-import { mockWalletState } from '../../../stories/mock-data/mock-wallet-state'
 import { mockedMnemonic } from '../../../stories/mock-data/user-accounts'
 import {
   NativeAssetBalanceRegistry,
@@ -73,30 +71,9 @@ import {
 } from '../../../stories/mock-data/mock-eth-requests'
 import { mockDappsListMap } from '../../../mocks/mock-dapps-list'
 
-export const makeMockedStoreWithSpy = () => {
-  const store = createStore(
-    combineReducers({
-      wallet: createWalletReducer(mockWalletState)
-    })
-  )
-
-  const areWeTestingWithJest = process.env.JEST_WORKER_ID !== undefined
-
-  if (areWeTestingWithJest) {
-    const dispatchSpy = jest.fn(store.dispatch)
-    const ogDispatch = store.dispatch
-    store.dispatch = ((args: any) => {
-      ogDispatch(args)
-      dispatchSpy?.(args)
-    }) as any
-    return { store, dispatchSpy }
-  }
-
-  return { store }
-}
-
 export class MockedWalletApiProxy {
-  store = makeMockedStoreWithSpy().store
+  /** used for simulating fired observers */
+  store: { dispatch: (action: AnyAction) => void } | null = null
 
   defaultBaseCurrency: string = 'usd'
   selectedAccountId: BraveWallet.AccountId = mockAccount.accountId
@@ -604,7 +581,7 @@ export class MockedWalletApiProxy {
       result: password === 'password'
     }),
     lock: () => {
-      this.store.dispatch(WalletActions.locked())
+      this.store?.dispatch(WalletActions.locked())
       alert('wallet locked')
     },
     encodePrivateKeyForExport: async (
