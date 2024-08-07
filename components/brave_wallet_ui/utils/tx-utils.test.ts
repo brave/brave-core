@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+import { getLocale } from '../../common/locale'
 import {
   getMockedTransactionInfo,
   mockAccount,
@@ -43,6 +44,7 @@ import {
   getIsRevokeApprovalTx,
   getTransactionGas,
   getTransactionStatusString,
+  getTransactionTypeName,
   toTxDataUnion
 } from './tx-utils'
 
@@ -735,5 +737,120 @@ describe('findTransactionToken', () => {
         )?.symbol
       ).toBe('BAT')
     })
+  })
+})
+
+describe('getTransactionTypeName', () => {
+  test.each([
+    {
+      txType: BraveWallet.TransactionType.ERC1155SafeTransferFrom,
+      expectedString: getLocale(
+        'braveWalletTransactionTypeNameSafeTransferFrom'
+      )
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ERC20Approve,
+      expectedString: getLocale('braveWalletTransactionTypeNameErc20Approve')
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ERC20Transfer,
+      expectedString: getLocale('braveWalletTransactionTypeNameTokenTransfer')
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ERC721SafeTransferFrom,
+      expectedString: getLocale(
+        'braveWalletTransactionTypeNameSafeTransferFrom'
+      )
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ERC721TransferFrom,
+      expectedString: getLocale('braveWalletTransactionTypeNameNftTransfer')
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ETHFilForwarderTransfer,
+      expectedString: getLocale('braveWalletTransactionTypeNameForwardFil')
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ETHSend,
+      expectedString: getLocale('braveWalletTransactionIntentSend').replace(
+        '$1',
+        'ETH'
+      )
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ETHSwap,
+      expectedString: getLocale('braveWalletSwap')
+    },
+
+    {
+      txType: BraveWallet.TransactionType.Other,
+      expectedString: getLocale('braveWalletTransactionTypeNameOther')
+    },
+
+    {
+      txType: BraveWallet.TransactionType.SolanaCompressedNftTransfer,
+      expectedString: getLocale(
+        'braveWalletTransactionTypeNameCompressedNftTransfer'
+      )
+    },
+
+    {
+      txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+      expectedString: getLocale(
+        'braveWalletTransactionTypeNameSignAndSendDappTransaction'
+      )
+    },
+
+    {
+      txType: BraveWallet.TransactionType.SolanaDappSignTransaction,
+      expectedString: getLocale(
+        'braveWalletTransactionTypeNameSignDappTransaction'
+      )
+    },
+
+    {
+      txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer,
+      expectedString: getLocale('braveWalletTransactionTypeNameTokenTransfer')
+    },
+
+    {
+      txType:
+        BraveWallet.TransactionType
+          .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation,
+      expectedString: getLocale(
+        'braveWalletTransactionTypeNameSplTokenTransferWithAssociatedTokenAccountCreation'
+      )
+    },
+
+    {
+      txType: BraveWallet.TransactionType.SolanaSwap,
+      expectedString: getLocale('braveWalletSwap')
+    },
+
+    {
+      txType: BraveWallet.TransactionType.SolanaSystemTransfer,
+      expectedString: getLocale('braveWalletTransactionIntentSend').replace(
+        '$1',
+        'SOL'
+      )
+    }
+  ])(
+    'renders the correct localized function name per tx type',
+    ({ expectedString, txType }) => {
+      expect(getTransactionTypeName(txType)).toBe(expectedString)
+    }
+  )
+
+  test('should return "Other" for unknown tx type', () => {
+    expect(getTransactionTypeName(999)).toBe(
+      getLocale('braveWalletTransactionTypeNameOther')
+    )
   })
 })
