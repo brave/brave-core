@@ -174,6 +174,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   GURL SanitizeURL(content::RenderFrameHost* render_frame_host,
                    const GURL& url) override;
 
+  bool AllowSignedExchange(content::BrowserContext* context) override;
+
  private:
   void OnAllowGoogleAuthChanged();
 

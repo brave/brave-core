@@ -1364,3 +1364,11 @@ GURL BraveContentBrowserClient::SanitizeURL(
   }
   return url_sanitizer_service->SanitizeURL(url);
 }
+
+bool BraveContentBrowserClient::AllowSignedExchange(
+    content::BrowserContext* context) {
+  // This override has been introduced due to the deletion of the flag
+  // `features::kSignedHTTPExchange`, which was being used to disable signed
+  // exchanges.
+  return false;
+}
