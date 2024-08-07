@@ -87,8 +87,8 @@ void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
 
     std::sort(mru_cycle_list_.begin(), mru_cycle_list_.end(),
               [this](int a, int b) {
-                return GetWebContentsAt(a)->GetLastActiveTime() >
-                       GetWebContentsAt(b)->GetLastActiveTime();
+                return GetWebContentsAt(a)->GetLastActiveTimeTicks() >
+                       GetWebContentsAt(b)->GetLastActiveTimeTicks();
               });
 
     // Tell the cycling controller that we start cycling to handle tabs keys
