@@ -10,6 +10,7 @@ export const LabelButton = styled.button`
   padding: 0;
   border: none;
   cursor: pointer;
+  background: none;
   ${walletButtonFocusMixin}
 `
 
