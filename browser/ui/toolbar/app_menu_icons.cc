@@ -31,6 +31,7 @@ const std::map<int, const gfx::VectorIcon&>& GetCommandIcons() {
           {IDC_NEW_OFFTHERECORD_WINDOW_TOR, kLeoWindowTabTorIcon},
           {IDC_SHOW_BRAVE_REWARDS, kLeoProductBatOutlineIcon},
           {IDC_SHOW_BRAVE_WALLET, kLeoProductBraveWalletIcon},
+          {IDC_TOGGLE_AI_CHAT, kLeoProductBraveLeoIcon},
           {IDC_BRAVE_VPN_MENU, kLeoProductVpnIcon},
           {IDC_PASSWORDS_AND_AUTOFILL_MENU, kLeoKeyIcon},
           {IDC_RECENT_TABS_MENU, kLeoHistoryIcon},
