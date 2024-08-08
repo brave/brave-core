@@ -27,7 +27,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_feature.h"
-#include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
+#include "brave/components/brave_ads/core/internal/reminders/reminders_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_feature.h"
@@ -105,7 +105,7 @@ struct ParamInfo final {
     {{switches::kEnableFeatures, kPromotedContentAdFeature.name}, true},
     {{switches::kEnableFeatures, kPurchaseIntentFeature.name}, true},
     {{switches::kEnableFeatures, kRedeemPaymentTokensFeature.name}, true},
-    {{switches::kEnableFeatures, kReminderFeature.name}, true},
+    {{switches::kEnableFeatures, kRemindersFeature.name}, true},
     {{switches::kEnableFeatures, kSearchResultAdFeature.name}, true},
     {{switches::kEnableFeatures, kSubdivisionFeature.name}, true},
     {{switches::kEnableFeatures, kTextClassificationFeature.name}, true},
@@ -180,7 +180,7 @@ struct ParamInfo final {
     {{variations::switches::kForceFieldTrialParams,
       kRedeemPaymentTokensFeature.name},
      true},
-    {{variations::switches::kForceFieldTrialParams, kReminderFeature.name},
+    {{variations::switches::kForceFieldTrialParams, kRemindersFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams,
       kSearchResultAdFeature.name},

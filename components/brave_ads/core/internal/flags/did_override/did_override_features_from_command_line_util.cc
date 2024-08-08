@@ -24,7 +24,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_feature.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_feature.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_feature.h"
-#include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
+#include "brave/components/brave_ads/core/internal/reminders/reminders_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_feature.h"
@@ -73,7 +73,7 @@ const base::Feature* const kFeatures[] = {
     &kPromotedContentAdFeature,
     &kPurchaseIntentFeature,
     &kRedeemPaymentTokensFeature,
-    &kReminderFeature,
+    &kRemindersFeature,
     &kSearchResultAdFeature,
     &kSubdivisionFeature,
     &kTextClassificationFeature,

@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_handler.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
-#include "brave/components/brave_ads/core/internal/reminder/reminder.h"
+#include "brave/components/brave_ads/core/internal/reminders/reminders.h"
 #include "brave/components/brave_ads/core/internal/studies/studies.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
@@ -166,7 +166,7 @@ class AdsImpl final : public Ads {
 
   Reactions reactions_;
 
-  Reminder reminder_;
+  Reminders reminders_;
 
   Studies studies_;
 
