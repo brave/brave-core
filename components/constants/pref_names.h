@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_CONSTANTS_PREF_NAMES_H_
 
 #include "build/build_config.h"
+#include "extensions/buildflags/buildflags.h"
 
 inline constexpr char kBraveAutofillPrivateWindows[] =
     "brave.autofill_private_windows";
@@ -85,8 +86,10 @@ inline constexpr char kBraveShieldsSettingsVersion[] =
 inline constexpr char kDefaultBrowserPromptEnabled[] =
     "brave.default_browser_prompt_enabled";
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
 inline constexpr char kWebDiscoveryExtensionEnabled[] =
     "brave.web_discovery_enabled";
+#endif
 inline constexpr char kWebDiscoveryCTAState[] = "brave.web_discovery.cta_state";
 inline constexpr char kDontAskEnableWebDiscovery[] =
     "brave.dont_ask_enable_web_discovery";

@@ -9,22 +9,16 @@
 
 #include "base/base64.h"
 #include "base/containers/span.h"
-#include "base/containers/span_rust.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
-#include "base/threading/thread_restrictions.h"
-#include "brave/components/web_discovery/browser/anonymous_credentials/rs/cxx/src/lib.rs.h"
 #include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/browser/rsa.h"
 #include "brave/components/web_discovery/browser/util.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "crypto/rsa_private_key.h"
-#include "crypto/sha2.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
@@ -66,116 +60,6 @@ constexpr net::NetworkTrafficAnnotationTag kJoinNetworkTrafficAnnotation =
 
 }  // namespace
 
-BackgroundCredentialHelper::BackgroundCredentialHelper()
-    : anonymous_credential_manager_(
-          anonymous_credentials::new_credential_manager()) {}
-
-BackgroundCredentialHelper::~BackgroundCredentialHelper() = default;
-
-void BackgroundCredentialHelper::UseFixedSeedForTesting() {
-  anonymous_credential_manager_ =
-      anonymous_credentials::new_credential_manager_with_fixed_seed();
-}
-
-std::unique_ptr<RSAKeyInfo> BackgroundCredentialHelper::GenerateRSAKey() {
-  auto key_pair = GenerateRSAKeyPair();
-  if (!key_pair) {
-    return nullptr;
-  }
-  rsa_private_key_ = std::move(key_pair->key_pair);
-  return key_pair;
-}
-
-void BackgroundCredentialHelper::SetRSAKey(
-    std::unique_ptr<crypto::RSAPrivateKey> rsa_private_key) {
-  rsa_private_key_ = std::move(rsa_private_key);
-}
-
-std::optional<GenerateJoinRequestResult>
-BackgroundCredentialHelper::GenerateJoinRequest(std::string pre_challenge) {
-  base::AssertLongCPUWorkAllowed();
-  CHECK(rsa_private_key_);
-  auto challenge = crypto::SHA256Hash(base::as_byte_span(pre_challenge));
-
-  auto join_request = anonymous_credential_manager_->start_join(
-      base::SpanToRustSlice(challenge));
-
-  auto signature = RSASign(rsa_private_key_.get(), join_request.join_request);
-
-  if (!signature) {
-    VLOG(1) << "RSA signature failed";
-    return std::nullopt;
-  }
-
-  return GenerateJoinRequestResult{.start_join_result = join_request,
-                                   .signature = *signature};
-}
-
-std::optional<std::string> BackgroundCredentialHelper::FinishJoin(
-    std::string date,
-    std::vector<const uint8_t> group_pub_key,
-    std::vector<const uint8_t> gsk,
-    std::vector<const uint8_t> join_resp_bytes) {
-  base::AssertLongCPUWorkAllowed();
-  auto pub_key_result = anonymous_credentials::load_group_public_key(
-      base::SpanToRustSlice(group_pub_key));
-  auto gsk_result =
-      anonymous_credentials::load_credential_big(base::SpanToRustSlice(gsk));
-  auto join_resp_result = anonymous_credentials::load_join_response(
-      base::SpanToRustSlice(join_resp_bytes));
-  if (!pub_key_result.error_message.empty() ||
-      !gsk_result.error_message.empty() ||
-      !join_resp_result.error_message.empty()) {
-    VLOG(1) << "Failed to finish credential join due to deserialization error "
-               "with group pub key, gsk, or join response: "
-            << pub_key_result.error_message.c_str()
-            << gsk_result.error_message.c_str()
-            << join_resp_result.error_message.c_str();
-    return std::nullopt;
-  }
-  auto finish_res = anonymous_credential_manager_->finish_join(
-      *pub_key_result.value, *gsk_result.value,
-      std::move(join_resp_result.value));
-  if (!finish_res.error_message.empty()) {
-    VLOG(1) << "Failed to finish credential join for " << date << ": "
-            << finish_res.error_message.c_str();
-    return std::nullopt;
-  }
-  return base::Base64Encode(finish_res.data);
-}
-
-std::optional<std::vector<const uint8_t>>
-BackgroundCredentialHelper::PerformSign(
-    std::vector<const uint8_t> msg,
-    std::vector<const uint8_t> basename,
-    std::optional<std::vector<uint8_t>> gsk_bytes,
-    std::optional<std::vector<uint8_t>> credential_bytes) {
-  base::AssertLongCPUWorkAllowed();
-  if (gsk_bytes && credential_bytes) {
-    auto gsk_result = anonymous_credentials::load_credential_big(
-        base::SpanToRustSlice(*gsk_bytes));
-    auto credential_result = anonymous_credentials::load_user_credentials(
-        base::SpanToRustSlice(*credential_bytes));
-    if (!gsk_result.error_message.empty() ||
-        !credential_result.error_message.empty()) {
-      VLOG(1) << "Failed to sign due to deserialization error with gsk, or "
-                 "user credential: "
-              << gsk_result.error_message.c_str()
-              << credential_result.error_message.c_str();
-      return std::nullopt;
-    }
-    anonymous_credential_manager_->set_gsk_and_credentials(
-        std::move(gsk_result.value), std::move(credential_result.value));
-  }
-  auto sig_res = anonymous_credential_manager_->sign(
-      base::SpanToRustSlice(msg), base::SpanToRustSlice(basename));
-  if (!sig_res.error_message.empty()) {
-    VLOG(1) << "Failed to sign: " << sig_res.error_message.c_str();
-    return std::nullopt;
-  }
-  return std::vector<const uint8_t>(sig_res.data.begin(), sig_res.data.end());
-}
-
 CredentialManager::CredentialManager(
     PrefService* profile_prefs,
     network::SharedURLLoaderFactory* shared_url_loader_factory,
@@ -193,22 +77,22 @@ CredentialManager::~CredentialManager() = default;
 bool CredentialManager::LoadRSAKey() {
   std::string private_key_b64 =
       profile_prefs_->GetString(kCredentialRSAPrivateKey);
-  rsa_public_key_b64_ = profile_prefs_->GetString(kCredentialRSAPublicKey);
 
-  if (private_key_b64.empty() || rsa_public_key_b64_->empty()) {
-    rsa_public_key_b64_ = std::nullopt;
+  if (private_key_b64.empty()) {
     return true;
   }
 
-  auto key_pair = ImportRSAKeyPair(private_key_b64);
-  if (!key_pair) {
+  auto key_info = ImportRSAKeyPair(private_key_b64);
+  if (!key_info) {
     VLOG(1) << "Failed to import stored RSA key";
-    rsa_public_key_b64_ = std::nullopt;
     return false;
   }
+
+  CHECK(key_info->key_pair);
+  rsa_public_key_b64_ = std::move(key_info->public_key_b64);
   background_credential_helper_
       .AsyncCall(&BackgroundCredentialHelper::SetRSAKey)
-      .WithArgs(std::move(key_pair));
+      .WithArgs(std::move(key_info->key_pair));
 
   return true;
 }
@@ -220,10 +104,10 @@ void CredentialManager::OnNewRSAKey(std::unique_ptr<RSAKeyInfo> key_info) {
   }
 
   rsa_public_key_b64_ = key_info->public_key_b64;
+  CHECK(key_info->key_pair && key_info->private_key_b64);
 
   profile_prefs_->SetString(kCredentialRSAPrivateKey,
-                            key_info->private_key_b64);
-  profile_prefs_->SetString(kCredentialRSAPublicKey, *rsa_public_key_b64_);
+                            *key_info->private_key_b64);
 
   JoinGroups();
 }

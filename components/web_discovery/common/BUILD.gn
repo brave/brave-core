@@ -7,7 +7,8 @@ import("//brave/components/web_discovery/buildflags/buildflags.gni")
 
 assert(enable_web_discovery_native)
 
-static_library("common") {
+component("common") {
+  output_name = "web_discovery_common"
   sources = [
     "features.cc",
     "features.h",

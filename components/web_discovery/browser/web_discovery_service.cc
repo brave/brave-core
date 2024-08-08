@@ -59,7 +59,6 @@ void WebDiscoveryService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kWebDiscoveryNativeEnabled, false);
   registry->RegisterDictionaryPref(kAnonymousCredentialsDict);
   registry->RegisterStringPref(kCredentialRSAPrivateKey, {});
-  registry->RegisterStringPref(kCredentialRSAPublicKey, {});
 }
 
 void WebDiscoveryService::SetExtensionPrefIfNativeDisabled(
@@ -102,7 +101,6 @@ void WebDiscoveryService::Stop() {
 void WebDiscoveryService::ClearPrefs() {
   profile_prefs_->ClearPref(kAnonymousCredentialsDict);
   profile_prefs_->ClearPref(kCredentialRSAPrivateKey);
-  profile_prefs_->ClearPref(kCredentialRSAPublicKey);
 }
 
 void WebDiscoveryService::OnEnabledChange() {

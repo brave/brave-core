@@ -11,16 +11,13 @@
 #include <string>
 #include <vector>
 
-#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/threading/sequence_bound.h"
 #include "base/timer/wall_clock_timer.h"
-#include "brave/components/web_discovery/browser/anonymous_credentials/rs/cxx/src/lib.rs.h"
+#include "brave/components/web_discovery/browser/background_credential_helper.h"
 #include "brave/components/web_discovery/browser/credential_signer.h"
-#include "brave/components/web_discovery/browser/rsa.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
-#include "crypto/rsa_private_key.h"
 #include "net/base/backoff_entry.h"
 
 class PrefService;
@@ -31,43 +28,6 @@ class SimpleURLLoader;
 }  // namespace network
 
 namespace web_discovery {
-
-struct GenerateJoinRequestResult {
-  anonymous_credentials::StartJoinResult start_join_result;
-  std::string signature;
-};
-
-class BackgroundCredentialHelper {
- public:
-  BackgroundCredentialHelper();
-  ~BackgroundCredentialHelper();
-
-  BackgroundCredentialHelper(const BackgroundCredentialHelper&) = delete;
-  BackgroundCredentialHelper& operator=(const BackgroundCredentialHelper&) =
-      delete;
-
-  void UseFixedSeedForTesting();
-
-  std::unique_ptr<RSAKeyInfo> GenerateRSAKey();
-  void SetRSAKey(std::unique_ptr<crypto::RSAPrivateKey> rsa_private_key);
-  std::optional<GenerateJoinRequestResult> GenerateJoinRequest(
-      std::string pre_challenge);
-  std::optional<std::string> FinishJoin(
-      std::string date,
-      std::vector<const uint8_t> group_pub_key,
-      std::vector<const uint8_t> gsk,
-      std::vector<const uint8_t> join_resp_bytes);
-  std::optional<std::vector<const uint8_t>> PerformSign(
-      std::vector<const uint8_t> msg,
-      std::vector<const uint8_t> basename,
-      std::optional<std::vector<uint8_t>> gsk_bytes,
-      std::optional<std::vector<uint8_t>> credential_bytes);
-
- private:
-  rust::Box<anonymous_credentials::CredentialManager>
-      anonymous_credential_manager_;
-  std::unique_ptr<crypto::RSAPrivateKey> rsa_private_key_;
-};
 
 // Manages and utilizes anonymous credentials used for communicating
 // with Web Discovery servers. These Direct Anonymous Attestation credentials

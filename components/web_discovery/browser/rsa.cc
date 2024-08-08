@@ -26,37 +26,54 @@ RSAKeyInfo::~RSAKeyInfo() = default;
 
 std::unique_ptr<RSAKeyInfo> GenerateRSAKeyPair() {
   base::AssertLongCPUWorkAllowed();
-  auto info = std::make_unique<RSAKeyInfo>();
 
   auto private_key = crypto::RSAPrivateKey::Create(kRsaKeySize);
   if (!private_key) {
     return nullptr;
   }
 
-  info->key_pair = std::move(private_key);
+  auto key_pair = std::move(private_key);
 
   std::vector<uint8_t> encoded_public_key;
   std::vector<uint8_t> encoded_private_key;
 
-  if (!info->key_pair->ExportPrivateKey(&encoded_private_key) ||
-      !info->key_pair->ExportPublicKey(&encoded_public_key)) {
+  if (!key_pair->ExportPrivateKey(&encoded_private_key) ||
+      !key_pair->ExportPublicKey(&encoded_public_key)) {
     return nullptr;
   }
 
+  auto info = std::make_unique<RSAKeyInfo>();
+
+  info->key_pair = std::move(key_pair);
   info->public_key_b64 = base::Base64Encode(encoded_public_key);
   info->private_key_b64 = base::Base64Encode(encoded_private_key);
 
   return info;
 }
 
-std::unique_ptr<crypto::RSAPrivateKey> ImportRSAKeyPair(
+std::unique_ptr<RSAKeyInfo> ImportRSAKeyPair(
     const std::string& private_key_b64) {
   auto decoded_key = base::Base64Decode(private_key_b64);
   if (!decoded_key) {
     return nullptr;
   }
 
-  return crypto::RSAPrivateKey::CreateFromPrivateKeyInfo(*decoded_key);
+  auto key_pair = crypto::RSAPrivateKey::CreateFromPrivateKeyInfo(*decoded_key);
+  if (!key_pair) {
+    return nullptr;
+  }
+
+  std::vector<uint8_t> encoded_public_key;
+  if (!key_pair->ExportPublicKey(&encoded_public_key)) {
+    return nullptr;
+  }
+
+  auto info = std::make_unique<RSAKeyInfo>();
+
+  info->key_pair = std::move(key_pair);
+  info->public_key_b64 = base::Base64Encode(encoded_public_key);
+
+  return info;
 }
 
 std::optional<std::string> RSASign(crypto::RSAPrivateKey* key,

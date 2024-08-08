@@ -9,13 +9,24 @@
 #include "brave/components/web_discovery/browser/web_discovery_service.h"
 #include "brave/components/web_discovery/common/features.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile_selections.h"
 #include "chrome/common/chrome_paths.h"
-#include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 
 namespace web_discovery {
+
+namespace {
+
+ProfileSelections GetProfileSelections() {
+  if (!base::FeatureList::IsEnabled(features::kBraveWebDiscoveryNative)) {
+    return ProfileSelections::BuildNoProfilesSelected();
+  }
+  return ProfileSelections::BuildForRegularProfile();
+}
+
+}  // namespace
 
 WebDiscoveryService* WebDiscoveryServiceFactory::GetForBrowserContext(
     content::BrowserContext* context) {
@@ -29,9 +40,8 @@ WebDiscoveryServiceFactory* WebDiscoveryServiceFactory::GetInstance() {
 }
 
 WebDiscoveryServiceFactory::WebDiscoveryServiceFactory()
-    : BrowserContextKeyedServiceFactory(
-          "WebDiscoveryService",
-          BrowserContextDependencyManager::GetInstance()) {}
+    : ProfileKeyedServiceFactory("WebDiscoveryService",
+                                 GetProfileSelections()) {}
 
 WebDiscoveryServiceFactory::~WebDiscoveryServiceFactory() = default;
 
@@ -45,15 +55,6 @@ KeyedService* WebDiscoveryServiceFactory::BuildServiceInstanceFor(
   return new WebDiscoveryService(g_browser_process->local_state(),
                                  user_prefs::UserPrefs::Get(context),
                                  user_data_dir, shared_url_loader_factory);
-}
-
-content::BrowserContext* WebDiscoveryServiceFactory::GetBrowserContextToUse(
-    content::BrowserContext* context) const {
-  if (!base::FeatureList::IsEnabled(features::kBraveWebDiscoveryNative)) {
-    return nullptr;
-  }
-  // Prevents creation of service instance for incognito/OTR profiles
-  return context->IsOffTheRecord() ? nullptr : context;
 }
 
 bool WebDiscoveryServiceFactory::ServiceIsCreatedWithBrowserContext() const {

@@ -17,6 +17,7 @@ if (enable_web_discovery_native) {
       "//brave/components/web_discovery/browser",
       "//brave/components/web_discovery/common",
       "//chrome/browser:browser_process",
+      "//chrome/browser/profiles:profile",
       "//chrome/common:constants",
       "//components/keyed_service/content",
       "//components/user_prefs",
@@ -44,14 +45,6 @@ source_set("unit_tests") {
       "//content/test:test_support",
       "//testing/gtest",
     ]
-
-    if (enable_web_discovery_native) {
-      sources += [ "web_discovery_service_factory_unittest.cc" ]
-      deps += [
-        ":web_discovery",
-        "//brave/components/web_discovery/common",
-      ]
-    }
   }
 }
 

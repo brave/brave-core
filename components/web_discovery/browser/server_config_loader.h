@@ -109,16 +109,11 @@ class ServerConfigLoader {
   void OnConfigResponsesProcessed(std::unique_ptr<ServerConfig> config);
 
   void LoadStoredPatterns();
-  void OnPatternsFileLoaded(std::optional<std::string> patterns_json);
   void SchedulePatternsRequest();
   void RequestPatterns();
   void OnPatternsResponse(std::optional<std::string> response_body);
-  void OnPatternsGunzip(std::optional<std::string> patterns_json);
   void OnStoredPatternsParsed(std::unique_ptr<PatternsGroup> parsed_patterns);
-  void OnNewPatternsParsed(std::string new_patterns_json,
-                           std::unique_ptr<PatternsGroup> parsed_patterns);
-  void OnPatternsWritten(std::unique_ptr<PatternsGroup> parsed_group,
-                         bool result);
+  void OnNewPatternsParsed(std::unique_ptr<PatternsGroup> parsed_patterns);
   void HandlePatternsStatus(bool result);
 
   const raw_ptr<PrefService> local_state_;

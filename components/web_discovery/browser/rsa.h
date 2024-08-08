@@ -19,13 +19,13 @@ struct RSAKeyInfo {
   RSAKeyInfo();
   ~RSAKeyInfo();
   std::unique_ptr<crypto::RSAPrivateKey> key_pair;
-  std::string private_key_b64;
+  std::optional<std::string> private_key_b64;
   std::string public_key_b64;
 };
 
 std::unique_ptr<RSAKeyInfo> GenerateRSAKeyPair();
 
-std::unique_ptr<crypto::RSAPrivateKey> ImportRSAKeyPair(
+std::unique_ptr<RSAKeyInfo> ImportRSAKeyPair(
     const std::string& private_key_b64);
 
 std::optional<std::string> RSASign(crypto::RSAPrivateKey* key,
