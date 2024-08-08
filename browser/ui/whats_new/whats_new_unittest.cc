@@ -35,7 +35,7 @@ class BraveWhatsNewTest : public testing::Test {
     PrepareValidFieldTrialParams();
     ASSERT_TRUE(testing_profile_manager_.SetUp());
     profile_ = testing_profile_manager_.CreateTestingProfile("testing_profile");
-    testing_profile_manager_.UpdateLastUser(profile_);
+    testing_profile_manager_.SetProfileAsLastUsed(profile_);
 
     // Make updated user.
     ChromeVersionService::SetVersion(profile_->GetPrefs(), "112.1.50.4");
