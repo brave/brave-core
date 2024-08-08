@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // types
+import { getNetworkId } from '../common/slices/entities/network.entity'
 import { TokenBalancesRegistry } from '../common/slices/entities/token-balance.entity'
 import { BraveWallet, SupportedTestNetworks } from '../constants/types'
 
@@ -122,6 +123,57 @@ export function setBalance({
   chainBalances.tokenBalances[
     getAssetIdKey({ chainId, coin: coinType, contractAddress, tokenId })
   ] = balance
+}
+
+export function getBalanceFromRegistry({
+  registry,
+  accountUniqueId,
+  chainId,
+  contractAddress,
+  tokenId,
+  coin
+}: {
+  registry: TokenBalancesRegistry
+  accountUniqueId: string
+  chainId: string
+  contractAddress: string
+  tokenId: string
+  coin: BraveWallet.CoinType
+}) {
+  return (
+    registry.accounts[accountUniqueId]?.chains?.[
+      getNetworkId({
+        chainId,
+        coin
+      })
+    ]?.tokenBalances?.[
+      getAssetIdKey({
+        coin,
+        chainId,
+        contractAddress: contractAddress,
+        tokenId
+      })
+    ] || '0'
+  )
+}
+
+export function getAccountAndChainBalancesFromRegistry({
+  registry,
+  accountUniqueId,
+  chainId
+}: {
+  registry: TokenBalancesRegistry
+  accountUniqueId: string
+  chainId: string
+}) {
+  return (
+    registry.accounts[accountUniqueId]?.chains?.[
+      getNetworkId({
+        chainId,
+        coin: BraveWallet.CoinType.ETH
+      })
+    ]?.tokenBalances || {}
+  )
 }
 
 export function createEmptyTokenBalancesRegistry(): TokenBalancesRegistry {

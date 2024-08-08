@@ -20,10 +20,10 @@ import { BraveRewardsProxyOverrides } from '../../../constants/testing_types'
 
 const mockedRewardsData: BraveRewardsProxyOverrides = {
   externalWallet: {
-    links: { account: '' },
+    url: '',
+    name: 'DeadBeef',
     provider: 'uphold',
-    status: WalletStatus.kConnected,
-    username: 'DeadBeef'
+    status: WalletStatus.kConnected
   },
   balance: 1234,
   rewardsEnabled: true

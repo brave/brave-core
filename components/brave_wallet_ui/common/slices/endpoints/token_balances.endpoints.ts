@@ -36,16 +36,11 @@ import {
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import { networkSupportsAccount } from '../../../utils/network-utils'
 import { cacher } from '../../../utils/query-cache-utils'
-import { getNetworkId, networkEntityAdapter } from '../entities/network.entity'
+import { getNetworkId } from '../entities/network.entity'
 import { TokenBalancesRegistry } from '../entities/token-balance.entity'
+import { type BaseQueryCache } from '../../async/base-query-cache'
 import {
-  type BaseQueryCache, //
-  baseQueryFunction
-} from '../../async/base-query-cache'
-import {
-  getPersistedPortfolioSpamTokenBalances,
-  getPersistedPortfolioTokenBalances,
-  setPersistedPortfolioSpamTokenBalances,
+  getPersistedTokenBalances,
   setPersistedPortfolioTokenBalances
 } from '../../../utils/local-storage-utils'
 import { getIsRewardsNetwork } from '../../../utils/rewards_utils'
@@ -296,296 +291,228 @@ export const tokenBalancesEndpoints = ({
             ) || ['TokenBalancesForChainId']
     }),
 
-    /**
-     * `isLoading` should not be use when consuming this query, as it is `false`
-     * when streaming
-     */
     getTokenBalancesRegistry: query<
       TokenBalancesRegistry | null,
       GetTokenBalancesRegistryArg
     >({
-      queryFn: function (arg) {
-        const persistedBalances = arg.isSpamRegistry
-          ? getPersistedPortfolioSpamTokenBalances()
-          : getPersistedPortfolioTokenBalances()
-
-        // return a subset of the registry for
-        // the accounts and networks passed as args
-        const registrySubset: TokenBalancesRegistry = {
-          accounts: {}
-        }
-
-        for (const accountId of arg.accountIds) {
-          // only return info for accounts that have been passed as args
-          if (persistedBalances.accounts[accountId.uniqueKey]) {
-            registrySubset.accounts[accountId.uniqueKey] =
-              persistedBalances.accounts[accountId.uniqueKey]
-            // filter account balances to just
-            // the chains that have been passed as args
-            const accountNetworkIds = Object.keys(
-              registrySubset.accounts[accountId.uniqueKey].chains
-            )
-            for (const network of arg.networks) {
-              const networkId = getNetworkId(network)
-              if (!accountNetworkIds.includes(networkId)) {
-                delete registrySubset.accounts[accountId.uniqueKey].chains[
-                  networkId
-                ]
-              }
-            }
-          }
-        }
-
-        // return null so we can tell if we have data or not to start with
-        return {
-          data: Object.keys(registrySubset).length ? registrySubset : null
-        }
-      },
-      async onCacheEntryAdded(
-        arg,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
-      ) {
-        const { data: api, cache } = baseQueryFunction()
-
-        const {
-          braveWalletService,
-          jsonRpcService,
-          bitcoinWalletService,
-          zcashWalletService
-        } = api
-
-        const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
-
-        const includeRewardsBalance = arg.networks.some(getIsRewardsNetwork)
-
-        if (includeRewardsBalance) {
-          const rewardsData =
-            cache.rewardsInfo || (await cache.getBraveRewardsInfo())
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api, cache } = baseQuery(undefined)
 
           const {
-            balance: rewardsBalance,
-            provider: externalRewardsProvider,
-            rewardsToken,
-            status: rewardsStatus
-          } = rewardsData
+            braveWalletService,
+            jsonRpcService,
+            bitcoinWalletService,
+            zcashWalletService
+          } = api
 
-          if (
-            rewardsStatus === WalletStatus.kConnected &&
-            rewardsToken &&
-            externalRewardsProvider &&
-            rewardsBalance
-          ) {
-            // add rewards info to balance registry
-            setBalance(
-              // TODO(apaymyshev): we need a better way to handle such fake
-              // account
-              {
-                accountId: { uniqueKey: externalRewardsProvider },
-                chainId: BraveWallet.MAINNET_CHAIN_ID,
-                contractAddress: rewardsToken.contractAddress,
-                balance: new Amount(rewardsBalance)
-                  .multiplyByDecimals(rewardsToken.decimals)
-                  .format(),
-                tokenBalancesRegistry,
-                coinType: BraveWallet.CoinType.ETH,
-                tokenId: ''
-              }
-            )
+          const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
+
+          const includeRewardsBalance = arg.networks.some(getIsRewardsNetwork)
+
+          if (includeRewardsBalance) {
+            const rewardsData =
+              cache.rewardsInfo || (await cache.getBraveRewardsInfo())
+
+            const {
+              balance: rewardsBalance,
+              provider: externalRewardsProvider,
+              rewardsToken,
+              status: rewardsStatus
+            } = rewardsData
+
+            if (
+              rewardsStatus === WalletStatus.kConnected &&
+              rewardsToken &&
+              externalRewardsProvider &&
+              rewardsBalance
+            ) {
+              // add rewards info to balance registry
+              setBalance(
+                // TODO(apaymyshev): we need a better way to handle such fake
+                // account
+                {
+                  accountId: { uniqueKey: externalRewardsProvider },
+                  chainId: BraveWallet.MAINNET_CHAIN_ID,
+                  contractAddress: rewardsToken.contractAddress,
+                  balance: new Amount(rewardsBalance)
+                    .multiplyByDecimals(rewardsToken.decimals)
+                    .format(),
+                  tokenBalancesRegistry,
+                  coinType: BraveWallet.CoinType.ETH,
+                  tokenId: ''
+                }
+              )
+            }
           }
-        }
 
-        function onBalance(result: BalanceResult) {
-          setBalance({
-            ...result,
-            tokenBalancesRegistry
-          })
-        }
-
-        function onAnkrBalances(
-          accountId: BraveWallet.AccountId,
-          ankrAssetBalances: BraveWallet.AnkrAssetBalance[]
-        ) {
-          for (const { asset, balance } of ankrAssetBalances) {
+          function onBalance(result: BalanceResult) {
             setBalance({
-              accountId,
-              chainId: asset.chainId,
-              contractAddress: asset.contractAddress,
-              balance,
-              tokenBalancesRegistry,
-              coinType: asset.coin,
-              tokenId: asset.tokenId
+              ...result,
+              tokenBalancesRegistry
             })
           }
-        }
 
-        try {
-          // wait for the initial query to resolve before proceeding
-          await cacheDataLoaded
+          function onAnkrBalances(
+            accountId: BraveWallet.AccountId,
+            ankrAssetBalances: BraveWallet.AnkrAssetBalance[]
+          ) {
+            for (const { asset, balance } of ankrAssetBalances) {
+              setBalance({
+                accountId,
+                chainId: asset.chainId,
+                contractAddress: asset.contractAddress,
+                balance,
+                tokenBalancesRegistry,
+                coinType: asset.coin,
+                tokenId: asset.tokenId
+              })
+            }
+          }
 
-          try {
-            const ankrSupportedNetworks: BalanceNetwork[] = []
-            const nonAnkrSupportedNetworks: BalanceNetwork[] =
-              arg.useAnkrBalancesFeature ? [] : arg.networks
+          const ankrSupportedNetworks: BalanceNetwork[] = []
+          const nonAnkrSupportedNetworks: BalanceNetwork[] =
+            arg.useAnkrBalancesFeature ? [] : arg.networks
 
-            if (arg.useAnkrBalancesFeature) {
-              const { chainIds: ankrSupportedChainIds } =
-                await braveWalletService.getAnkrSupportedChainIds()
+          if (arg.useAnkrBalancesFeature) {
+            const { chainIds: ankrSupportedChainIds } =
+              await braveWalletService.getAnkrSupportedChainIds()
 
-              for (const network of arg.networks) {
-                if (ankrSupportedChainIds.includes(network.chainId)) {
-                  ankrSupportedNetworks.push(network)
-                } else {
-                  nonAnkrSupportedNetworks.push(network)
-                }
+            for (const network of arg.networks) {
+              if (ankrSupportedChainIds.includes(network.chainId)) {
+                ankrSupportedNetworks.push(network)
+              } else {
+                nonAnkrSupportedNetworks.push(network)
               }
             }
+          }
 
-            await eachLimit(
-              arg.accountIds,
-              arg.accountIds.length,
-              async (accountId: BraveWallet.AccountId) => {
-                const ankrSupportedAccountChainIds = ankrSupportedNetworks
-                  .filter((network) =>
-                    networkSupportsAccount(network, accountId)
-                  )
-                  .map(({ chainId }) => chainId)
+          await eachLimit(
+            arg.accountIds,
+            arg.accountIds.length,
+            async (accountId: BraveWallet.AccountId) => {
+              const ankrSupportedAccountChainIds = ankrSupportedNetworks
+                .filter((network) => networkSupportsAccount(network, accountId))
+                .map(({ chainId }) => chainId)
 
-                const ankrAssetBalances: BraveWallet.AnkrAssetBalance[] =
-                  ankrSupportedAccountChainIds.length
-                    ? await fetchAnkrAccountBalances(
-                        jsonRpcService,
-                        accountId,
-                        ankrSupportedAccountChainIds
-                      )
-                    : []
-
-                onAnkrBalances(accountId, ankrAssetBalances)
-
-                const nonAnkrSupportedAccountNetworks =
-                  nonAnkrSupportedNetworks.filter((network) =>
-                    networkSupportsAccount(network, accountId)
-                  )
-
-                const userTokensRegistry = arg.isSpamRegistry
-                  ? blockchainTokenEntityAdaptorInitialState
-                  : await cache.getUserTokensRegistry()
-
-                const spamTokens = arg.isSpamRegistry
-                  ? await cache.getSpamNftsForAccountId(accountId)
+              const ankrAssetBalances: BraveWallet.AnkrAssetBalance[] =
+                ankrSupportedAccountChainIds.length
+                  ? await fetchAnkrAccountBalances(
+                      jsonRpcService,
+                      accountId,
+                      ankrSupportedAccountChainIds
+                    )
                   : []
 
-                if (nonAnkrSupportedAccountNetworks.length) {
-                  await eachLimit(
-                    nonAnkrSupportedAccountNetworks,
-                    3,
-                    async (network: BraveWallet.NetworkInfo) => {
-                      assert(coinTypesMapping[network.coin] !== undefined)
-                      try {
-                        const tokens = arg.isSpamRegistry
-                          ? spamTokens.filter(
-                              (token) =>
-                                token.coin === network.coin &&
-                                token.chainId === network.chainId
-                            )
-                          : getEntitiesListFromEntityState(
-                              userTokensRegistry,
-                              userTokensRegistry.idsByChainId[
-                                networkEntityAdapter.selectId({
-                                  coin: network.coin,
-                                  chainId: network.chainId
-                                })
+              onAnkrBalances(accountId, ankrAssetBalances)
+
+              const nonAnkrSupportedAccountNetworks =
+                nonAnkrSupportedNetworks.filter((network) =>
+                  networkSupportsAccount(network, accountId)
+                )
+
+              const userTokensRegistry = arg.isSpamRegistry
+                ? blockchainTokenEntityAdaptorInitialState
+                : await cache.getUserTokensRegistry()
+
+              const spamTokens = arg.isSpamRegistry
+                ? await cache.getSpamNftsForAccountId(accountId)
+                : []
+
+              if (nonAnkrSupportedAccountNetworks.length) {
+                await eachLimit(
+                  nonAnkrSupportedAccountNetworks,
+                  3,
+                  async (network: BraveWallet.NetworkInfo) => {
+                    assert(coinTypesMapping[network.coin] !== undefined)
+                    try {
+                      const tokens = arg.isSpamRegistry
+                        ? spamTokens.filter(
+                            (token) =>
+                              token.coin === network.coin &&
+                              token.chainId === network.chainId
+                          )
+                        : getEntitiesListFromEntityState(
+                            userTokensRegistry,
+                            userTokensRegistry.idsByChainId[
+                              getNetworkId({
+                                coin: network.coin,
+                                chainId: network.chainId
+                              })
+                            ]
+                          )
+
+                      await fetchTokenBalanceRegistryForAccountsAndChainIds({
+                        args:
+                          network.coin === CoinTypes.SOL
+                            ? [
+                                {
+                                  accountId,
+                                  coin: CoinTypes.SOL,
+                                  chainId: network.chainId,
+                                  tokens
+                                }
                               ]
-                            )
-
-                        await fetchTokenBalanceRegistryForAccountsAndChainIds({
-                          args:
-                            network.coin === CoinTypes.SOL
-                              ? [
-                                  {
-                                    accountId,
-                                    coin: CoinTypes.SOL,
-                                    chainId: network.chainId,
-                                    tokens
-                                  }
-                                ]
-                              : [
-                                  {
-                                    accountId,
-                                    coin: coinTypesMapping[network.coin],
-                                    chainId: network.chainId,
-                                    tokens
-                                  }
-                                ],
-                          cache,
-                          bitcoinWalletService,
-                          braveWalletService,
-                          jsonRpcService,
-                          zcashWalletService,
-                          onBalance
-                        })
-                      } catch (error) {
-                        console.error(error)
-                      }
+                            : [
+                                {
+                                  accountId,
+                                  coin: coinTypesMapping[network.coin],
+                                  chainId: network.chainId,
+                                  tokens
+                                }
+                              ],
+                        cache,
+                        bitcoinWalletService,
+                        braveWalletService,
+                        jsonRpcService,
+                        zcashWalletService,
+                        onBalance
+                      })
+                    } catch (error) {
+                      console.error(error)
                     }
-                  )
-                }
-
-                // NFTs
-                const nfts = arg.isSpamRegistry
-                  ? spamTokens.filter(
-                      (token) => token.isNft && token.coin === accountId.coin
-                    )
-                  : getEntitiesListFromEntityState(
-                      userTokensRegistry,
-                      userTokensRegistry.nonFungibleIdsByCoinType[
-                        accountId.coin
-                      ]
-                    )
-                await fetchNftBalancesForAccount({
-                  accountId,
-                  nfts,
-                  onBalance
-                })
+                  }
+                )
               }
-            )
 
-            updateCachedData((draft) => {
-              // rules of `immer` apply here:
-              // https://redux-toolkit.js.org/usage/immer-reducers#immer-usage-patterns
-
-              // return the object since we can't reassigning the draft
-              return tokenBalancesRegistry
-            })
-
-            const persistedBalances = arg.isSpamRegistry
-              ? getPersistedPortfolioSpamTokenBalances()
-              : getPersistedPortfolioTokenBalances()
-
-            const mergedRegistry = mergeTokenBalancesRegistry(
-              persistedBalances,
-              tokenBalancesRegistry
-            )
-            if (arg.isSpamRegistry) {
-              setPersistedPortfolioSpamTokenBalances(mergedRegistry)
-            } else {
-              setPersistedPortfolioTokenBalances(mergedRegistry)
+              // NFTs
+              const nfts = arg.isSpamRegistry
+                ? spamTokens.filter(
+                    (token) => token.isNft && token.coin === accountId.coin
+                  )
+                : getEntitiesListFromEntityState(
+                    userTokensRegistry,
+                    userTokensRegistry.nonFungibleIdsByCoinType[accountId.coin]
+                  )
+              await fetchNftBalancesForAccount({
+                accountId,
+                nfts,
+                onBalance
+              })
             }
+          )
 
-            reportActiveWalletsToP3A(arg.accountIds, mergedRegistry)
-          } catch (error) {
-            handleEndpointError(
-              'getTokenBalancesRegistry.onCacheEntryAdded',
-              `Streaming token balances failed`,
-              error
-            )
+          const mergedRegistry = mergeTokenBalancesRegistry(
+            getPersistedTokenBalances(arg.isSpamRegistry),
+            tokenBalancesRegistry
+          )
+
+          // update combined registry in local storage
+          setPersistedPortfolioTokenBalances(mergedRegistry, arg.isSpamRegistry)
+
+          // report to P3A
+          reportActiveWalletsToP3A(arg.accountIds, mergedRegistry)
+
+          return {
+            data: tokenBalancesRegistry
           }
-        } catch {
-          // cacheDataLoaded` will throw if
-          // `cacheEntryRemoved` resolves before `cacheDataLoaded`
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Failed to get token balances: ${error}`,
+            error
+          )
         }
-        // cacheEntryRemoved will resolve when the cache subscription is no
-        // longer active
-        await cacheEntryRemoved
       },
       providesTags: (result, err, args) =>
         err

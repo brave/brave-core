@@ -9,6 +9,7 @@ import {
   SerializableTransactionInfo,
   SpotPriceRegistry
 } from '../../constants/types'
+import type { TokenBalancesRegistry } from '../slices/entities/token-balance.entity'
 
 // images
 import {
@@ -19,6 +20,7 @@ import {
 
 // utils
 import { getPriceIdForToken } from '../../utils/pricing-utils'
+import { getNetworkId } from '../slices/entities/network.entity'
 
 // mocks
 import {
@@ -1595,14 +1597,6 @@ export type NativeAssetBalanceRegistry = Record<
   | undefined
 >
 
-export type TokenBalanceRegistry = Record<
-  string, // account address
-  Record<
-    string, // asset identifier
-    string // balance
-  >
->
-
 export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
   [mockAccount.address]: {
     [BraveWallet.BITCOIN_MAINNET]: '0',
@@ -1702,35 +1696,73 @@ export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
   }
 }
 
-export const mockTokenBalanceRegistry: TokenBalanceRegistry = {
-  [mockAccount.address]: {
-    [mockBasicAttentionTokenId]: '111',
-    [mockBinanceCoinErc20TokenId]: '222',
-    [mockBitcoinErc20TokenId]: '333',
-    [mockAlgorandErc20TokenId]: '444',
-    [mockZrxErc20TokenId]: '555',
-    [mockDaiTokenId]: '666',
-    [mockUSDCoinId]: '777'
-  },
-  [mockEthAccountInfo.address]: {
-    [mockBasicAttentionTokenId]: '11',
-    [mockBinanceCoinErc20TokenId]: '22',
-    [mockBitcoinErc20TokenId]: '33',
-    [mockAlgorandErc20TokenId]: '44',
-    [mockZrxErc20TokenId]: '55',
-    [mockDaiTokenId]: '66',
-    [mockUSDCoinId]: '77'
-  },
-  [mockSolanaAccount.address]: {
-    [mockSplNftId]: '1',
-    [mockSplUSDCoinId]: '14444',
-    [mockSplBasicAttentionTokenId]: '99999'
-  },
-  [mockSolanaAccountInfo.address]: {
-    [mockSplNftId]: '0',
-    [mockSplUSDCoinId]: '3333',
-    [mockSplBasicAttentionTokenId]: '3421'
-  },
-  [mockFilecoinAccount.address]: {},
-  [mockFilecoinAccountInfo.address]: {}
+export const mockTokenBalanceRegistry: TokenBalancesRegistry = {
+  accounts: {
+    [mockAccount.accountId.uniqueKey]: {
+      chains: {
+        [getNetworkId(mockEthMainnet)]: {
+          tokenBalances: {
+            [mockBasicAttentionTokenId]: '111',
+            [mockBinanceCoinErc20TokenId]: '222',
+            [mockBitcoinErc20TokenId]: '333',
+            [mockAlgorandErc20TokenId]: '444',
+            [mockZrxErc20TokenId]: '555',
+            [mockDaiTokenId]: '666',
+            [mockUSDCoinId]: '777'
+          }
+        }
+      }
+    },
+    [mockEthAccountInfo.accountId.uniqueKey]: {
+      chains: {
+        [getNetworkId(mockEthMainnet)]: {
+          tokenBalances: {
+            [mockBasicAttentionTokenId]: '11',
+            [mockBinanceCoinErc20TokenId]: '22',
+            [mockBitcoinErc20TokenId]: '33',
+            [mockAlgorandErc20TokenId]: '44',
+            [mockZrxErc20TokenId]: '55',
+            [mockDaiTokenId]: '66',
+            [mockUSDCoinId]: '77'
+          }
+        }
+      }
+    },
+    [mockSolanaAccount.accountId.uniqueKey]: {
+      chains: {
+        [getNetworkId(mockSolanaMainnetNetwork)]: {
+          tokenBalances: {
+            [mockSplNftId]: '1',
+            [mockSplUSDCoinId]: '14444',
+            [mockSplBasicAttentionTokenId]: '99999'
+          }
+        }
+      }
+    },
+    [mockSolanaAccountInfo.accountId.uniqueKey]: {
+      chains: {
+        [getNetworkId(mockSolanaMainnetNetwork)]: {
+          tokenBalances: {
+            [mockSplNftId]: '0',
+            [mockSplUSDCoinId]: '3333',
+            [mockSplBasicAttentionTokenId]: '3421'
+          }
+        }
+      }
+    },
+    [mockFilecoinAccount.accountId.uniqueKey]: {
+      chains: {
+        [getNetworkId(mockFilecoinMainnetNetwork)]: {
+          tokenBalances: {}
+        }
+      }
+    },
+    [mockFilecoinAccountInfo.address]: {
+      chains: {
+        [getNetworkId(mockFilecoinMainnetNetwork)]: {
+          tokenBalances: {}
+        }
+      }
+    }
+  }
 }
