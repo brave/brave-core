@@ -88,7 +88,7 @@ class AdsServiceMock : public AdsService {
 
   MOCK_METHOD(void,
               GetAdHistory,
-              (base::Time, base::Time, GetAdHistoryCallback));
+              (base::Time, base::Time, GetAdHistoryForUICallback));
 
   MOCK_METHOD(void, ClearData, ());
 

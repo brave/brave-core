@@ -11,14 +11,20 @@
 
 namespace brave_ads {
 
+// TODO(https://github.com/brave/brave-browser/issues/40241): Deprecate once
+// `AdHistoryItemInfo` for `ToggleLikeAd`, and `ToggleDislikeAd` is replaced
+// with `ReactionInfo`.
 base::Value::Dict AdHistoryItemToValue(
     const AdHistoryItemInfo& ad_history_item);
+
+// TODO(https://github.com/brave/brave-browser/issues/40241): Move to
+// `legacy_client_migration_ad_history_json_reader_util.cc` once
+// `AdHistoryItemInfo` for `LikeAd`, `DislikeAd`, `LikeSegment`,
+// `DislikeSegment`, `ToggleSaveAd`, and `ToggleMarkAdAsInappropriate` is
+// replaced with `ReactionInfo`.
 AdHistoryItemInfo AdHistoryItemFromValue(const base::Value::Dict& dict);
 
 base::Value::List AdHistoryToValue(const AdHistoryList& ad_history);
-AdHistoryList AdHistoryFromValue(const base::Value::List& list);
-
-base::Value::List AdHistoryToUIValue(const AdHistoryList& ad_history);
 
 }  // namespace brave_ads
 

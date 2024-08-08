@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 namespace brave_ads {
 
@@ -37,6 +38,9 @@ using TriggerAdEventCallback = base::OnceCallback<void(bool success)>;
 
 using PurgeOrphanedAdEventsForTypeCallback =
     base::OnceCallback<void(bool success)>;
+
+using GetAdHistoryCallback =
+    base::OnceCallback<void(const std::optional<AdHistoryList>& ad_history)>;
 
 }  // namespace brave_ads
 

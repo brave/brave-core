@@ -18,7 +18,7 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_constants.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/targeting/geographical/subdivision/supported_subdivisions.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -281,16 +281,23 @@ void RewardsPageHandler::GetAdsStatement(GetAdsStatementCallback callback) {
 void RewardsPageHandler::GetAdsHistory(GetAdsHistoryCallback callback) {
   base::Time now = base::Time::Now();
   base::Time from_time =
-      now - brave_ads::kAdHistoryRetentionPeriod - base::Days(1);
+      now - brave_ads::kAdHistoryRetentionPeriod.Get() - base::Days(1);
 
-  auto on_history = [](decltype(callback) callback, base::Value::List list) {
+  auto on_history = [](decltype(callback) callback,
+                       std::optional<base::Value::List> list) {
     // The Ads service provides Ads history data as a `base::Value` (i.e. JSON).
     // Rather than sending a Mojo `base::Value` interface to the client (which
     // is awkward to use in this context), send the data to the WebUI as a JSON
     // string. The front-end will send this JSON data back when the user
     // modifies Ads history state.
+
+    if (!list) {
+      // If there is no Ads history data, send an empty JSON array.
+      list = base::Value::List();
+    }
+
     std::string json;
-    if (!base::JSONWriter::Write(list, &json)) {
+    if (!base::JSONWriter::Write(*list, &json)) {
       LOG(ERROR) << "Unable to convert Ads history to JSON";
     }
     std::move(callback).Run(std::move(json));

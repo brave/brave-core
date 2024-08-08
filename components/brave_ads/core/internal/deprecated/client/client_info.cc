@@ -17,8 +17,6 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_value_util.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_value_util.h"
-#include "build/build_config.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 
@@ -35,10 +33,6 @@ ClientInfo& ClientInfo::operator=(ClientInfo&& other) noexcept = default;
 ClientInfo::~ClientInfo() = default;
 
 base::Value::Dict ClientInfo::ToValue() const {
-  base::Value::Dict dict =
-      base::Value::Dict()
-          .Set("adsShownHistory", AdHistoryToValue(ad_history));
-
   const base::TimeDelta time_window = kPurchaseIntentTimeWindow.Get();
 
   base::Value::Dict purchase_intent_signal_history_dict;
@@ -82,12 +76,6 @@ base::Value::Dict ClientInfo::ToValue() const {
 // TODO(https://github.com/brave/brave-browser/issues/26003): Reduce cognitive
 // complexity.
 bool ClientInfo::FromValue(const base::Value::Dict& dict) {
-#if !BUILDFLAG(IS_IOS)
-  if (const auto* const value = dict.FindList("adsShownHistory")) {
-    ad_history = AdHistoryFromValue(*value);
-  }
-#endif
-
   if (const auto* const value = dict.FindDict("purchaseIntentSignalHistory")) {
     for (const auto [segment, history] : *value) {
       const auto* const items = history.GetIfList();

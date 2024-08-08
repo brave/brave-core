@@ -1310,7 +1310,7 @@ void AdsServiceImpl::PurgeOrphanedAdEventsForType(
 
 void AdsServiceImpl::GetAdHistory(const base::Time from_time,
                                   const base::Time to_time,
-                                  GetAdHistoryCallback callback) {
+                                  GetAdHistoryForUICallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
     bat_ads_associated_remote_->GetAdHistory(from_time, to_time,
                                              std::move(callback));

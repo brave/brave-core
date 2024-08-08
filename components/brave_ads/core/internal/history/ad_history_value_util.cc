@@ -7,6 +7,8 @@
 
 #include "base/json/values_util.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_ads/core/internal/ads_core_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 namespace brave_ads {
@@ -28,19 +30,19 @@ constexpr char kCreativeSetId[] = "creativeSetId";
 constexpr char kCampaignId[] = "campaignId";
 constexpr char kAdvertiserId[] = "advertiserId";
 constexpr char kSegment[] = "segment";
-constexpr char kBrand[] = "brand";
-constexpr char kBrandInfo[] = "brandInfo";
-constexpr char kBrandDisplayUrl[] = "brandDisplayUrl";
-constexpr char kBrandUrl[] = "brandUrl";
-constexpr char kAdReactionType[] = "likeAction";
-constexpr char kCategoryReactionTypeKey[] = "optAction";
+constexpr char kTitle[] = "brand";
+constexpr char kDescription[] = "brandInfo";
+constexpr char kTargetUrl[] = "brandUrl";
+constexpr char kTargetDisplayUrl[] = "brandDisplayUrl";
+constexpr char kLikeAdReactionType[] = "likeAction";
 constexpr char kIsSaved[] = "savedAd";
-constexpr char kIsMarkedAsInappropriate[] = "flaggedAd";
+constexpr char kIsAdMarkedAsInappropriate[] = "flaggedAd";
 
-// Category content.
-constexpr char kCategoryContentKey[] = "categoryContent";
-constexpr char kLegacyCategoryContentKey[] = "category_content";
-constexpr char kCategoryKey[] = "category";
+// Segment content.
+constexpr char kSegmentContentKey[] = "categoryContent";
+constexpr char kLegacySegmentContentKey[] = "category_content";
+constexpr char kSegmentKey[] = "category";
+constexpr char kLikeSegmentReactionTypeKey[] = "optAction";
 
 // UI
 constexpr char kUIUuidKey[] = "uuid";
@@ -105,59 +107,34 @@ void ParseAdContent(const base::Value::Dict& dict,
     ad_history_item.segment = *segment;
   }
 
-  if (const auto* const brand = content_dict->FindString(kBrand)) {
-    ad_history_item.brand = *brand;
+  if (const auto* const title = content_dict->FindString(kTitle)) {
+    ad_history_item.title = *title;
   }
 
-  if (const auto* const brand_info = content_dict->FindString(kBrandInfo)) {
-    ad_history_item.brand_info = *brand_info;
+  if (const auto* const description = content_dict->FindString(kDescription)) {
+    ad_history_item.description = *description;
   }
 
-  if (const auto* const brand_display_url =
-          content_dict->FindString(kBrandDisplayUrl)) {
-    ad_history_item.brand_display_url = *brand_display_url;
-  }
-
-  if (const auto* const brand_url = content_dict->FindString(kBrandUrl)) {
-    ad_history_item.brand_url = GURL(*brand_url);
-  }
-
-  if (const auto reaction_type = content_dict->FindInt(kAdReactionType)) {
-    ad_history_item.ad_reaction_type =
-        static_cast<mojom::ReactionType>(*reaction_type);
-  }
-
-  if (const auto is_saved = content_dict->FindBool(kIsSaved)) {
-    ad_history_item.is_saved = *is_saved;
-  }
-
-  if (const auto is_marked_as_inappropriate =
-          content_dict->FindBool(kIsMarkedAsInappropriate)) {
-    ad_history_item.is_marked_as_inappropriate = *is_marked_as_inappropriate;
+  if (const auto* const target_url = content_dict->FindString(kTargetUrl)) {
+    ad_history_item.target_url = GURL(*target_url);
   }
 }
 
-void ParseCategoryContent(const base::Value::Dict& dict,
-                          AdHistoryItemInfo& ad_history_item) {
+void ParseSegmentContent(const base::Value::Dict& dict,
+                         AdHistoryItemInfo& ad_history_item) {
   const base::Value::Dict* content_dict = nullptr;
 
-  content_dict = dict.FindDict(kCategoryContentKey);
+  content_dict = dict.FindDict(kSegmentContentKey);
   if (!content_dict) {
     // Migration from legacy key.
-    content_dict = dict.FindDict(kLegacyCategoryContentKey);
+    content_dict = dict.FindDict(kLegacySegmentContentKey);
     if (!content_dict) {
       return;
     }
   }
 
-  if (const auto* const segment = content_dict->FindString(kCategoryKey)) {
+  if (const auto* const segment = content_dict->FindString(kSegmentKey)) {
     ad_history_item.segment = *segment;
-  }
-
-  if (const auto reaction_type =
-          content_dict->FindInt(kCategoryReactionTypeKey)) {
-    ad_history_item.segment_reaction_type =
-        static_cast<mojom::ReactionType>(*reaction_type);
   }
 }
 
@@ -183,20 +160,24 @@ base::Value::Dict AdHistoryItemToValue(
                .Set(kCampaignId, ad_history_item.campaign_id)
                .Set(kAdvertiserId, ad_history_item.advertiser_id)
                .Set(kSegment, ad_history_item.segment)
-               .Set(kBrand, ad_history_item.brand)
-               .Set(kBrandInfo, ad_history_item.brand_info)
-               .Set(kBrandDisplayUrl, ad_history_item.brand_display_url)
-               .Set(kBrandUrl, ad_history_item.brand_url.spec())
-               .Set(kAdReactionType,
-                    static_cast<int>(ad_history_item.ad_reaction_type))
-               .Set(kIsSaved, ad_history_item.is_saved)
-               .Set(kIsMarkedAsInappropriate,
-                    ad_history_item.is_marked_as_inappropriate))
-      .Set(kCategoryContentKey,
+               .Set(kTitle, ad_history_item.title)
+               .Set(kDescription, ad_history_item.description)
+               .Set(kTargetUrl, ad_history_item.target_url.spec())
+               .Set(kTargetDisplayUrl, ad_history_item.target_url.host())
+               .Set(kLikeAdReactionType,
+                    static_cast<int>(GetReactions().AdReactionTypeForId(
+                        ad_history_item.advertiser_id)))
+               .Set(kIsSaved, GetReactions().IsAdSaved(
+                                  ad_history_item.creative_instance_id))
+               .Set(kIsAdMarkedAsInappropriate,
+                    GetReactions().IsAdMarkedAsInappropriate(
+                        ad_history_item.creative_set_id)))
+      .Set(kSegmentContentKey,
            base::Value::Dict()
-               .Set(kCategoryKey, ad_history_item.segment)
-               .Set(kCategoryReactionTypeKey,
-                    static_cast<int>(ad_history_item.segment_reaction_type)));
+               .Set(kSegmentKey, ad_history_item.segment)
+               .Set(kLikeSegmentReactionTypeKey,
+                    static_cast<int>(GetReactions().SegmentReactionTypeForId(
+                        ad_history_item.segment))));
 }
 
 AdHistoryItemInfo AdHistoryItemFromValue(const base::Value::Dict& dict) {
@@ -204,36 +185,12 @@ AdHistoryItemInfo AdHistoryItemFromValue(const base::Value::Dict& dict) {
 
   ParseCreatedAt(dict, ad_history_item);
   ParseAdContent(dict, ad_history_item);
-  ParseCategoryContent(dict, ad_history_item);
+  ParseSegmentContent(dict, ad_history_item);
 
   return ad_history_item;
 }
 
 base::Value::List AdHistoryToValue(const AdHistoryList& ad_history) {
-  base::Value::List list;
-  list.reserve(ad_history.size());
-
-  for (const auto& ad_history_item : ad_history) {
-    list.Append(AdHistoryItemToValue(ad_history_item));
-  }
-
-  return list;
-}
-
-AdHistoryList AdHistoryFromValue(const base::Value::List& list) {
-  AdHistoryList ad_history;
-  ad_history.reserve(list.size());
-
-  for (const auto& value : list) {
-    if (const auto* const dict = value.GetIfDict()) {
-      ad_history.push_back(AdHistoryItemFromValue(*dict));
-    }
-  }
-
-  return ad_history;
-}
-
-base::Value::List AdHistoryToUIValue(const AdHistoryList& ad_history) {
   base::Value::List list;
   list.reserve(ad_history.size());
 

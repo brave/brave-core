@@ -9,8 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/history/ad_history_util.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_test_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
@@ -31,20 +30,13 @@ TEST_F(BraveAdsAdHistoryBuilderUtilTest, BuildAdHistoryItem) {
       ad, ConfirmationType::kViewedImpression, ad.title, ad.body);
 
   // Assert
-  EXPECT_THAT(
-      ad_history_item,
-      ::testing::FieldsAre(
-          /*created_at*/ test::Now(), ConfirmationType::kViewedImpression,
-          ad.type, ad.placement_id, ad.creative_instance_id, ad.creative_set_id,
-          ad.campaign_id, ad.advertiser_id, ad.segment,
-          /*brand*/ ad.title,
-          /*brand_info*/ ad.body,
-          /*brand_display_url*/ ad.target_url.host(),
-          /*brand_url*/ ad.target_url,
-          /*ad_reaction_type*/ mojom::ReactionType::kNeutral,
-          /*segment_reaction_type*/ mojom::ReactionType::kNeutral,
-          /*is_saved*/ false,
-          /*is_marked_as_inappropriate*/ false));
+  EXPECT_THAT(ad_history_item,
+              ::testing::FieldsAre(
+                  /*created_at*/ test::Now(), ad.type,
+                  ConfirmationType::kViewedImpression, ad.placement_id,
+                  ad.creative_instance_id, ad.creative_set_id, ad.campaign_id,
+                  ad.advertiser_id, ad.segment, ad.title,
+                  /*description*/ ad.body, ad.target_url));
 }
 
 }  // namespace brave_ads

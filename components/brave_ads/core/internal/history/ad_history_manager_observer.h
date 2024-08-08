@@ -14,9 +14,9 @@ struct AdHistoryItemInfo;
 
 class AdHistoryManagerObserver : public base::CheckedObserver {
  public:
-  // Invoked when ad history is appended.
-  virtual void OnDidAppendAdHistoryItem(
-      const AdHistoryItemInfo& ad_history_item) {}
+  // Invoked when ad history is added.
+  virtual void OnDidAddAdHistoryItem(const AdHistoryItemInfo& ad_history_item) {
+  }
 
   // Invoked when the user likes an ad.
   virtual void OnDidLikeAd(const AdHistoryItemInfo& ad_history_item) {}
@@ -24,24 +24,17 @@ class AdHistoryManagerObserver : public base::CheckedObserver {
   // Invoked when the user dislikes an ad.
   virtual void OnDidDislikeAd(const AdHistoryItemInfo& ad_history_item) {}
 
-  // Invoked when the likes a segment.
+  // Invoked when the user likes a segment.
   virtual void OnDidLikeSegment(const AdHistoryItemInfo& ad_history_item) {}
 
   // Invoked when the user dislikes a segment.
   virtual void OnDidDislikeSegment(const AdHistoryItemInfo& ad_history_item) {}
 
-  // Invoked when a user saves an ad.
-  virtual void OnDidSaveAd(const AdHistoryItemInfo& ad_history_item) {}
+  // Invoked when a user saves or unsaves an ad.
+  virtual void OnDidToggleSaveAd(const AdHistoryItemInfo& ad_history_item) {}
 
-  // Invoked when a user unsaves an ad.
-  virtual void OnDidUnsaveAd(const AdHistoryItemInfo& ad_history_item) {}
-
-  // Invoked when a user marks an ad as appropriate.
-  virtual void OnDidMarkAdAsAppropriate(
-      const AdHistoryItemInfo& ad_history_item) {}
-
-  // Invoked when a user marks an ad as inappropriate.
-  virtual void OnDidMarkAdAsInappropriate(
+  // Invoked when a user marks an ad as inappropriate or appropriate.
+  virtual void OnDidToggleMarkAdAsInappropriate(
       const AdHistoryItemInfo& ad_history_item) {}
 };
 

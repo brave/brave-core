@@ -18,9 +18,6 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_filter_types.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_sort_types.h"
 
 namespace base {
 class Time;
@@ -94,10 +91,9 @@ class AdsImpl final : public Ads {
       mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) override;
 
-  AdHistoryList GetAdHistory(AdHistoryFilterType filter_type,
-                             AdHistorySortType sort_type,
-                             base::Time from_time,
-                             base::Time to_time) override;
+  void GetAdHistory(base::Time from_time,
+                    base::Time to_time,
+                    GetAdHistoryForUICallback callback) override;
 
   void ToggleLikeAd(const base::Value::Dict& value,
                     ToggleReactionCallback callback) override;
