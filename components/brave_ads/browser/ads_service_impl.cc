@@ -1308,11 +1308,6 @@ void AdsServiceImpl::PurgeOrphanedAdEventsForType(
   }
 }
 
-void AdsServiceImpl::ClearData() {
-  // Will be implemented in https://github.com/brave/brave-browser/issues/39051
-  NOTIMPLEMENTED();
-}
-
 void AdsServiceImpl::GetAdHistory(const base::Time from_time,
                                   const base::Time to_time,
                                   GetAdHistoryCallback callback) {
