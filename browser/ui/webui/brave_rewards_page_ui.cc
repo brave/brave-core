@@ -1115,13 +1115,13 @@ void RewardsDOMHandler::GetAdsHistory(const base::Value::List& args) {
 
   AllowJavascript();
 
+  brave_rewards::p3a::RecordAdsHistoryView();
+
   const base::Time now = base::Time::Now();
 
   const base::Time from_time =
       now - brave_ads::kAdHistoryRetentionPeriod.Get() - base::Days(1);
   const base::Time from_time_at_local_midnight = from_time.LocalMidnight();
-
-  brave_rewards::p3a::RecordAdsHistoryView();
 
   ads_service_->GetAdHistory(from_time_at_local_midnight, now,
                              base::BindOnce(&RewardsDOMHandler::OnGetAdsHistory,
