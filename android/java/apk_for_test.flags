@@ -302,7 +302,7 @@
 }
 
 -keep class org.chromium.chrome.browser.settings.SettingsLauncherImpl {
-    public <init>(...);
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.settings.BraveSettingsLauncherImpl {
