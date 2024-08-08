@@ -18,10 +18,10 @@ public class BraveAdsNativeHelper {
 
     public static boolean nativeIsOptedInToNotificationAds(Profile profile) {
         return BraveAdsNativeHelperJni.get().isOptedInToNotificationAds(profile);
-    };
+    }
 
-    public static void nativeSetOptedInToNotificationAds(Profile profile, boolean opted_in) {
-        BraveAdsNativeHelperJni.get().setOptedInToNotificationAds(profile, opted_in);
+    public static void nativeSetOptedInToNotificationAds(Profile profile, boolean optedIn) {
+        BraveAdsNativeHelperJni.get().setOptedInToNotificationAds(profile, optedIn);
     }
 
     public static boolean nativeIsSupportedRegion(Profile profile) {
@@ -32,33 +32,33 @@ public class BraveAdsNativeHelper {
         BraveAdsNativeHelperJni.get().clearData(profile);
     }
 
-    public static void nativeOnNotificationAdShown(Profile profile, String j_notification_id) {
-        BraveAdsNativeHelperJni.get().onNotificationAdShown(profile, j_notification_id);
+    public static void nativeOnNotificationAdShown(Profile profile, String jNotificationId) {
+        BraveAdsNativeHelperJni.get().onNotificationAdShown(profile, jNotificationId);
     }
 
     public static void nativeOnNotificationAdClosed(
-            Profile profile, String j_notification_id, boolean j_by_user) {
-        BraveAdsNativeHelperJni.get().onNotificationAdClosed(profile, j_notification_id, j_by_user);
+            Profile profile, String jNotificationId, boolean jByUser) {
+        BraveAdsNativeHelperJni.get().onNotificationAdClosed(profile, jNotificationId, jByUser);
     }
 
-    public static void nativeOnNotificationAdClicked(Profile profile, String j_notification_id) {
-        BraveAdsNativeHelperJni.get().onNotificationAdClicked(profile, j_notification_id);
+    public static void nativeOnNotificationAdClicked(Profile profile, String jNotificationId) {
+        BraveAdsNativeHelperJni.get().onNotificationAdClicked(profile, jNotificationId);
     }
 
     @NativeMethods
     interface Natives {
         boolean isOptedInToNotificationAds(Profile profile);
 
-        void setOptedInToNotificationAds(Profile profile, boolean opted_in);
+        void setOptedInToNotificationAds(Profile profile, boolean optedIn);
 
         boolean isSupportedRegion(Profile profile);
 
         void clearData(Profile profile);
 
-        void onNotificationAdShown(Profile profile, String j_notification_id);
+        void onNotificationAdShown(Profile profile, String jNotificationId);
 
-        void onNotificationAdClosed(Profile profile, String j_notification_id, boolean j_by_user);
+        void onNotificationAdClosed(Profile profile, String jNotificationId, boolean jByUser);
 
-        void onNotificationAdClicked(Profile profile, String j_notification_id);
+        void onNotificationAdClicked(Profile profile, String jNotificationId);
     }
 }

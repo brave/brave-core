@@ -86,8 +86,6 @@ class AdsServiceMock : public AdsService {
               PurgeOrphanedAdEventsForType,
               (mojom::AdType, PurgeOrphanedAdEventsForTypeCallback));
 
-  MOCK_METHOD(void, ClearData, ());
-
   MOCK_METHOD(void,
               GetAdHistory,
               (base::Time, base::Time, GetAdHistoryCallback));
