@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/rpm/build.sh b/chrome/installer/linux/rpm/build.sh
-index 15b3638c242bacb8ba68c4ebe561f23e56bec6aa..1b85747832053fc91022cb4c89adc68c3917f8b6 100755
+index fdc61e7a98647ddce1a762c61ed731f21ab01526..b7459784114e932b3d39955c53bf4db6725bbaea 100755
 --- a/chrome/installer/linux/rpm/build.sh
 +++ b/chrome/installer/linux/rpm/build.sh
 @@ -15,8 +15,9 @@ gen_spec() {
@@ -13,7 +13,7 @@ index 15b3638c242bacb8ba68c4ebe561f23e56bec6aa..1b85747832053fc91022cb4c89adc68c
      local INSTALLDIR="${INSTALLDIR}-${CHANNEL}"
      local PACKAGE="${PACKAGE}-${CHANNEL}"
      local MENUNAME="${MENUNAME} (${CHANNEL})"
-@@ -88,6 +89,8 @@ do_package() {
+@@ -87,6 +88,8 @@ do_package() {
    PROVIDES="${PACKAGE}"
    RPM_COMMON_DEPS="${OUTPUTDIR}/rpm_common.deps"
    DEPENDS=$(cat "${RPM_COMMON_DEPS}" | tr '\n' ',')
@@ -22,7 +22,7 @@ index 15b3638c242bacb8ba68c4ebe561f23e56bec6aa..1b85747832053fc91022cb4c89adc68c
    gen_spec
  
    # Create temporary rpmbuild dirs.
-@@ -110,7 +113,10 @@ do_package() {
+@@ -109,7 +112,10 @@ do_package() {
      --define "__os_install_post  %{nil}" \
      --define "_build_id_links none" \
      "${SPEC}"
@@ -34,7 +34,7 @@ index 15b3638c242bacb8ba68c4ebe561f23e56bec6aa..1b85747832053fc91022cb4c89adc68c
    mv "$RPMBUILD_DIR/RPMS/$ARCHITECTURE/${PKGNAME}.${ARCHITECTURE}.rpm" \
       "${OUTPUTDIR}"
    # Make sure the package is world-readable, otherwise it causes problems when
-@@ -146,7 +152,10 @@ verify_channel() {
+@@ -145,7 +151,10 @@ verify_channel() {
        CHANNEL=stable
        ;;
      unstable|dev|alpha )

@@ -68,7 +68,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "128.0.6613.18",
+        "tag": "128.0.6613.27",
         "repository": {
           "url": "https://github.com/brave/chromium"
         }

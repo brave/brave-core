@@ -1,5 +1,5 @@
 diff --git a/components/permissions/BUILD.gn b/components/permissions/BUILD.gn
-index e41a3a9b9cee93f06a2d140dc9978463c7b30ecd..af71949c0ef88ba7b44c153c080ab153e3279142 100644
+index 69c6cfce9fe7b6459f55b20ec4883246204d1069..9f823100aab4e229980235becb62cc3b843fa454 100644
 --- a/components/permissions/BUILD.gn
 +++ b/components/permissions/BUILD.gn
 @@ -5,7 +5,7 @@
@@ -11,7 +11,7 @@ index e41a3a9b9cee93f06a2d140dc9978463c7b30ecd..af71949c0ef88ba7b44c153c080ab153
    sources = [
      "constants.cc",
      "constants.h",
-@@ -162,6 +162,7 @@ source_set("permissions") {
+@@ -163,6 +163,7 @@ source_set("permissions") {
    if (!is_android) {
      deps += [ "//components/guest_view/browser" ]
    }
