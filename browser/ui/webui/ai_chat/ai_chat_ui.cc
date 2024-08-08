@@ -155,8 +155,21 @@ bool UntrustedChatUIConfig::IsWebUIEnabled(
          Profile::FromBrowserContext(browser_context)->IsRegularProfile();
 }
 
+#if BUILDFLAG(IS_ANDROID)
+std::unique_ptr<content::WebUIController>
+UntrustedChatUIConfig::CreateWebUIController(content::WebUI* web_ui,
+                                             const GURL& url) {
+  return std::make_unique<AIChatUI>(web_ui);
+}
+#endif  // #if BUILDFLAG(IS_ANDROID)
+
+#if !BUILDFLAG(IS_ANDROID)
 UntrustedChatUIConfig::UntrustedChatUIConfig()
     : DefaultTopChromeWebUIConfig(content::kChromeUIUntrustedScheme,
                                   kChatUIHost) {}
+#else
+UntrustedChatUIConfig::UntrustedChatUIConfig()
+    : WebUIConfig(content::kChromeUIUntrustedScheme, kChatUIHost) {}
+#endif  // #if !BUILDFLAG(IS_ANDROID)
 
 WEB_UI_CONTROLLER_TYPE_IMPL(AIChatUI)
