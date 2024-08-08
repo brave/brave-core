@@ -22,7 +22,7 @@ namespace {
 bool StopSyncIfActive(Profile* profile, const char* func_name) {
   // If HasPrimaryAccount is used somewhere out of DisableSyncForProfileDeletion
   // we don't want to stop Sync.
-  if (std::string(func_name) != "DisableSyncForProfileDeletion") {
+  if (std::string_view(func_name) != "DisableSyncForProfileDeletion") {
     VLOG(0) << "Unexpected call of StopSyncIfActive from " << func_name
             << " Sync is not stopped";
     return true;
