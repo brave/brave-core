@@ -51,10 +51,8 @@ struct ADS_EXPORT AdHistoryItemInfo final {
   GURL brand_url;
 
   // User reactions.
-  mojom::UserReactionType ad_user_reaction_type =
-      mojom::UserReactionType::kNeutral;
-  mojom::UserReactionType category_user_reaction_type =
-      mojom::UserReactionType::kNeutral;
+  mojom::ReactionType ad_reaction_type = mojom::ReactionType::kNeutral;
+  mojom::ReactionType segment_reaction_type = mojom::ReactionType::kNeutral;
   bool is_saved = false;
   bool is_marked_as_inappropriate = false;
 };

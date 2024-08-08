@@ -211,12 +211,11 @@ TEST_F(BraveAdsAdHistoryManagerTest, LikeAd) {
 
   // Act & Assert
   AdHistoryItemInfo expected_ad_history_item = *ad_history_item;
-  expected_ad_history_item.ad_user_reaction_type =
-      mojom::UserReactionType::kLike;
+  expected_ad_history_item.ad_reaction_type = mojom::ReactionType::kLiked;
   EXPECT_CALL(history_manager_observer_mock_,
               OnDidLikeAd(expected_ad_history_item));
 
-  base::MockCallback<ToggleUserReactionCallback> callback;
+  base::MockCallback<ToggleReactionCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
   AdHistoryManager::GetInstance().LikeAd(*ad_history_item, callback.Get());
 }
@@ -233,17 +232,16 @@ TEST_F(BraveAdsAdHistoryManagerTest, DislikeAd) {
 
   // Act & Assert
   AdHistoryItemInfo expected_ad_history_item = *ad_history_item;
-  expected_ad_history_item.ad_user_reaction_type =
-      mojom::UserReactionType::kDislike;
+  expected_ad_history_item.ad_reaction_type = mojom::ReactionType::kDisliked;
   EXPECT_CALL(history_manager_observer_mock_,
               OnDidDislikeAd(expected_ad_history_item));
 
-  base::MockCallback<ToggleUserReactionCallback> callback;
+  base::MockCallback<ToggleReactionCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
   AdHistoryManager::GetInstance().DislikeAd(*ad_history_item, callback.Get());
 }
 
-TEST_F(BraveAdsAdHistoryManagerTest, LikeCategory) {
+TEST_F(BraveAdsAdHistoryManagerTest, LikeSegment) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
@@ -255,15 +253,14 @@ TEST_F(BraveAdsAdHistoryManagerTest, LikeCategory) {
 
   // Act & Assert
   EXPECT_CALL(history_manager_observer_mock_,
-              OnDidLikeCategory(*ad_history_item));
+              OnDidLikeSegment(*ad_history_item));
 
-  base::MockCallback<ToggleUserReactionCallback> callback;
+  base::MockCallback<ToggleReactionCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
-  AdHistoryManager::GetInstance().LikeCategory(*ad_history_item,
-                                               callback.Get());
+  AdHistoryManager::GetInstance().LikeSegment(*ad_history_item, callback.Get());
 }
 
-TEST_F(BraveAdsAdHistoryManagerTest, DislikeCategory) {
+TEST_F(BraveAdsAdHistoryManagerTest, DislikeSegment) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
@@ -275,12 +272,12 @@ TEST_F(BraveAdsAdHistoryManagerTest, DislikeCategory) {
 
   // Act & Assert
   EXPECT_CALL(history_manager_observer_mock_,
-              OnDidDislikeCategory(*ad_history_item));
+              OnDidDislikeSegment(*ad_history_item));
 
-  base::MockCallback<ToggleUserReactionCallback> callback;
+  base::MockCallback<ToggleReactionCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
-  AdHistoryManager::GetInstance().DislikeCategory(*ad_history_item,
-                                                  callback.Get());
+  AdHistoryManager::GetInstance().DislikeSegment(*ad_history_item,
+                                                 callback.Get());
 }
 
 TEST_F(BraveAdsAdHistoryManagerTest, SaveAd) {
@@ -300,7 +297,7 @@ TEST_F(BraveAdsAdHistoryManagerTest, SaveAd) {
   EXPECT_CALL(history_manager_observer_mock_,
               OnDidSaveAd(expected_ad_history_item));
 
-  base::MockCallback<ToggleUserReactionCallback> callback;
+  base::MockCallback<ToggleReactionCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
   AdHistoryManager::GetInstance().ToggleSaveAd(ad_history_item, callback.Get());
 }
@@ -322,7 +319,7 @@ TEST_F(BraveAdsAdHistoryManagerTest, UnsaveAd) {
   EXPECT_CALL(history_manager_observer_mock_,
               OnDidUnsaveAd(expected_ad_history_item));
 
-  base::MockCallback<ToggleUserReactionCallback> callback;
+  base::MockCallback<ToggleReactionCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
   AdHistoryManager::GetInstance().ToggleSaveAd(ad_history_item, callback.Get());
 }
@@ -344,7 +341,7 @@ TEST_F(BraveAdsAdHistoryManagerTest, MarkAdAsInappropriate) {
   EXPECT_CALL(history_manager_observer_mock_,
               OnDidMarkAdAsInappropriate(expected_ad_history_item));
 
-  base::MockCallback<ToggleUserReactionCallback> callback;
+  base::MockCallback<ToggleReactionCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
   AdHistoryManager::GetInstance().ToggleMarkAdAsInappropriate(ad_history_item,
                                                               callback.Get());
@@ -367,7 +364,7 @@ TEST_F(BraveAdsAdHistoryManagerTest, MarkAdAsAppropriate) {
   EXPECT_CALL(history_manager_observer_mock_,
               OnDidMarkAdAsAppropriate(expected_ad_history_item));
 
-  base::MockCallback<ToggleUserReactionCallback> callback;
+  base::MockCallback<ToggleReactionCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
   AdHistoryManager::GetInstance().ToggleMarkAdAsInappropriate(ad_history_item,
                                                               callback.Get());

@@ -16,10 +16,6 @@ namespace brave_ads::test {
 
 namespace {
 
-constexpr char kHeadlineText[] = "headline";
-constexpr char kDescription[] = "description";
-constexpr int kValue = 1.0;
-
 constexpr char kConversionUrlPattern[] = "https://brave.com/*";
 constexpr base::TimeDelta kConversionObservationWindow = base::Days(3);
 
@@ -41,7 +37,7 @@ mojom::CreativeSearchResultAdInfoPtr BuildCreativeSearchResultAd(
   mojom_creative_ad->advertiser_id =
       RandomUuidOr(should_generate_random_uuids, kAdvertiserId);
   mojom_creative_ad->target_url = GURL(kTargetUrl);
-  mojom_creative_ad->headline_text = kHeadlineText;
+  mojom_creative_ad->headline_text = kTitle;
   mojom_creative_ad->description = kDescription;
   mojom_creative_ad->value = kValue;
 

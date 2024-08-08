@@ -9,6 +9,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
+#include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

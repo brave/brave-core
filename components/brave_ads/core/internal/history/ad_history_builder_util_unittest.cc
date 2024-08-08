@@ -41,8 +41,8 @@ TEST_F(BraveAdsAdHistoryBuilderUtilTest, BuildAdHistoryItem) {
           /*brand_info*/ ad.body,
           /*brand_display_url*/ ad.target_url.host(),
           /*brand_url*/ ad.target_url,
-          /*ad_user_reaction_type*/ mojom::UserReactionType::kNeutral,
-          /*category_user_reaction_type*/ mojom::UserReactionType::kNeutral,
+          /*ad_reaction_type*/ mojom::ReactionType::kNeutral,
+          /*segment_reaction_type*/ mojom::ReactionType::kNeutral,
           /*is_saved*/ false,
           /*is_marked_as_inappropriate*/ false));
 }

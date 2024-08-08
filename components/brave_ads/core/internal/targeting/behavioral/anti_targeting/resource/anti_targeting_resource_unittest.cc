@@ -53,7 +53,7 @@ TEST_F(BraveAdsAntiTargetingResourceTest, LoadResource) {
 
 TEST_F(BraveAdsAntiTargetingResourceTest, DoNotLoadMalformedResource) {
   // Arrange
-  ASSERT_TRUE(CopyFileFromTestDataPathToTempProfilePath(
+  ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(
       /*from_path=*/test::kMalformedResourceId,
       /*to_path=*/kAntiTargetingResourceId));
 

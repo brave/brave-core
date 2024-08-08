@@ -25,7 +25,7 @@ class BraveAdsMalformedDatabaseMigrationTest
   void SetUpMocks() override {
     DatabaseManager::GetInstance().AddObserver(this);
 
-    ASSERT_TRUE(CopyFileFromTestDataPathToTempProfilePath(
+    ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(
         kMalformedDatabaseSchemaFilename, kDatabaseFilename));
   }
 
@@ -57,7 +57,7 @@ class BraveAdsMalformedDatabaseMigrationTest
 };
 
 TEST_F(BraveAdsMalformedDatabaseMigrationTest,
-       MigrateFromInvalidDatabaseSchema) {
+       MigrateFromMalformedDatabaseSchema) {
   // Database migration occurs after invoking `Setup` and `SetUpMocks` during
   // the initialization of `AdsImpl` in `test::TestBase`. Consequently,
   // `EXPECT_CALL` cannot be used with the mocks.

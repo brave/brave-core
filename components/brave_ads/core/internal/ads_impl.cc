@@ -121,7 +121,7 @@ void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
     return std::move(callback).Run(/*statement=*/nullptr);
   }
 
-  Account::GetStatement(std::move(callback));
+  account_.GetStatement(std::move(callback));
 }
 
 void AdsImpl::MaybeServeInlineContentAd(
@@ -254,7 +254,7 @@ AdHistoryList AdsImpl::GetAdHistory(const AdHistoryFilterType filter_type,
 }
 
 void AdsImpl::ToggleLikeAd(const base::Value::Dict& value,
-                           ToggleUserReactionCallback callback) {
+                           ToggleReactionCallback callback) {
   if (!is_initialized_) {
     return std::move(callback).Run(/*success=*/false);
   }
@@ -264,7 +264,7 @@ void AdsImpl::ToggleLikeAd(const base::Value::Dict& value,
 }
 
 void AdsImpl::ToggleDislikeAd(const base::Value::Dict& value,
-                              ToggleUserReactionCallback callback) {
+                              ToggleReactionCallback callback) {
   if (!is_initialized_) {
     return std::move(callback).Run(/*success=*/false);
   }
@@ -273,28 +273,28 @@ void AdsImpl::ToggleDislikeAd(const base::Value::Dict& value,
                                             std::move(callback));
 }
 
-void AdsImpl::ToggleLikeCategory(const base::Value::Dict& value,
-                                 ToggleUserReactionCallback callback) {
+void AdsImpl::ToggleLikeSegment(const base::Value::Dict& value,
+                                ToggleReactionCallback callback) {
   if (!is_initialized_) {
     return std::move(callback).Run(/*success=*/false);
   }
 
-  AdHistoryManager::GetInstance().LikeCategory(AdHistoryItemFromValue(value),
-                                               std::move(callback));
+  AdHistoryManager::GetInstance().LikeSegment(AdHistoryItemFromValue(value),
+                                              std::move(callback));
 }
 
-void AdsImpl::ToggleDislikeCategory(const base::Value::Dict& value,
-                                    ToggleUserReactionCallback callback) {
+void AdsImpl::ToggleDislikeSegment(const base::Value::Dict& value,
+                                   ToggleReactionCallback callback) {
   if (!is_initialized_) {
     return std::move(callback).Run(/*success=*/false);
   }
 
-  AdHistoryManager::GetInstance().DislikeCategory(AdHistoryItemFromValue(value),
-                                                  std::move(callback));
+  AdHistoryManager::GetInstance().DislikeSegment(AdHistoryItemFromValue(value),
+                                                 std::move(callback));
 }
 
 void AdsImpl::ToggleSaveAd(const base::Value::Dict& value,
-                           ToggleUserReactionCallback callback) {
+                           ToggleReactionCallback callback) {
   if (!is_initialized_) {
     return std::move(callback).Run(/*success=*/false);
   }
@@ -304,7 +304,7 @@ void AdsImpl::ToggleSaveAd(const base::Value::Dict& value,
 }
 
 void AdsImpl::ToggleMarkAdAsInappropriate(const base::Value::Dict& value,
-                                          ToggleUserReactionCallback callback) {
+                                          ToggleReactionCallback callback) {
   if (!is_initialized_) {
     return std::move(callback).Run(/*success=*/false);
   }
@@ -334,6 +334,21 @@ void AdsImpl::CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr wallet,
   PurgeExpiredAdEvents(base::BindOnce(&AdsImpl::PurgeExpiredAdEventsCallback,
                                       weak_factory_.GetWeakPtr(),
                                       std::move(wallet), std::move(callback)));
+}
+
+void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
+                                      InitializeCallback callback) {
+  BLOG(1, "Successfully initialized ads");
+
+  is_initialized_ = true;
+
+  if (wallet) {
+    account_.SetWallet(wallet->payment_id, wallet->recovery_seed);
+  }
+
+  NotifyPendingAdsClientObservers();
+
+  std::move(callback).Run(/*success=*/true);
 }
 
 void AdsImpl::PurgeExpiredAdEventsCallback(mojom::WalletInfoPtr wallet,
@@ -451,21 +466,6 @@ void AdsImpl::LoadConfirmationStateCallback(mojom::WalletInfoPtr wallet,
   }
 
   SuccessfullyInitialized(std::move(wallet), std::move(callback));
-}
-
-void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
-                                      InitializeCallback callback) {
-  BLOG(1, "Successfully initialized ads");
-
-  is_initialized_ = true;
-
-  if (wallet) {
-    account_.SetWallet(wallet->payment_id, wallet->recovery_seed);
-  }
-
-  NotifyPendingAdsClientObservers();
-
-  std::move(callback).Run(/*success=*/true);
 }
 
 }  // namespace brave_ads

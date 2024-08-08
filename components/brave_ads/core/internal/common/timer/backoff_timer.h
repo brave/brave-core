@@ -33,7 +33,7 @@ class BackoffTimer final {
                               base::TimeDelta delay,
                               base::OnceClosure user_task);
 
-  // Returns true if the timer is running (i.e., not stopped).
+  // Returns `true` if the timer is running (i.e., not stopped).
   bool IsRunning() const;
 
   // Call this method to stop the timer if running and to reset the exponential

@@ -18,12 +18,8 @@ namespace brave_ads {
 
 namespace {
 
-bool HasInstance() {
-  return GlobalState::HasInstance();
-}
-
-AdsClient* GetInstance() {
-  CHECK(HasInstance());
+AdsClient* GetAdsClient() {
+  CHECK(GlobalState::HasInstance());
 
   AdsClient* const ads_client = GlobalState::GetInstance()->GetAdsClient();
   CHECK(ads_client);
@@ -34,113 +30,113 @@ AdsClient* GetInstance() {
 }  // namespace
 
 void AddAdsClientNotifierObserver(AdsClientNotifierObserver* const observer) {
-  GetInstance()->AddObserver(observer);
+  GetAdsClient()->AddObserver(observer);
 }
 
 void RemoveAdsClientNotifierObserver(
     AdsClientNotifierObserver* const observer) {
-  GetInstance()->RemoveObserver(observer);
+  GetAdsClient()->RemoveObserver(observer);
 }
 
 void NotifyPendingAdsClientObservers() {
-  GetInstance()->NotifyPendingObservers();
+  GetAdsClient()->NotifyPendingObservers();
 }
 
 bool IsNetworkConnectionAvailable() {
-  return GetInstance()->IsNetworkConnectionAvailable();
+  return GetAdsClient()->IsNetworkConnectionAvailable();
 }
 
 bool IsBrowserActive() {
-  return GetInstance()->IsBrowserActive();
+  return GetAdsClient()->IsBrowserActive();
 }
 
 bool IsBrowserInFullScreenMode() {
-  return GetInstance()->IsBrowserInFullScreenMode();
+  return GetAdsClient()->IsBrowserInFullScreenMode();
 }
 
 bool CanShowNotificationAds() {
-  return GetInstance()->CanShowNotificationAds();
+  return GetAdsClient()->CanShowNotificationAds();
 }
 
 bool CanShowNotificationAdsWhileBrowserIsBackgrounded() {
-  return GetInstance()->CanShowNotificationAdsWhileBrowserIsBackgrounded();
+  return GetAdsClient()->CanShowNotificationAdsWhileBrowserIsBackgrounded();
 }
 
 void ShowNotificationAd(const NotificationAdInfo& ad) {
-  GetInstance()->ShowNotificationAd(ad);
+  GetAdsClient()->ShowNotificationAd(ad);
 }
 
 void CloseNotificationAd(const std::string& placement_id) {
-  GetInstance()->CloseNotificationAd(placement_id);
+  GetAdsClient()->CloseNotificationAd(placement_id);
 }
 
 void CacheAdEventForInstanceId(const std::string& id,
                                const AdType ad_type,
                                const ConfirmationType confirmation_type,
                                const base::Time time) {
-  GetInstance()->CacheAdEventForInstanceId(id, ToString(ad_type),
-                                           ToString(confirmation_type), time);
+  GetAdsClient()->CacheAdEventForInstanceId(id, ToString(ad_type),
+                                            ToString(confirmation_type), time);
 }
 
 std::vector<base::Time> GetCachedAdEvents(
     const AdType ad_type,
     const ConfirmationType confirmation_type) {
-  return GetInstance()->GetCachedAdEvents(ToString(ad_type),
-                                          ToString(confirmation_type));
+  return GetAdsClient()->GetCachedAdEvents(ToString(ad_type),
+                                           ToString(confirmation_type));
 }
 
 void ResetAdEventCacheForInstanceId(const std::string& id) {
-  GetInstance()->ResetAdEventCacheForInstanceId(id);
+  GetAdsClient()->ResetAdEventCacheForInstanceId(id);
 }
 
 void GetSiteHistory(int max_count,
                     int recent_day_range,
                     GetSiteHistoryCallback callback) {
-  GetInstance()->GetSiteHistory(max_count, recent_day_range,
-                                std::move(callback));
+  GetAdsClient()->GetSiteHistory(max_count, recent_day_range,
+                                 std::move(callback));
 }
 
 void UrlRequest(mojom::UrlRequestInfoPtr url_request,
                 UrlRequestCallback callback) {
-  GetInstance()->UrlRequest(std::move(url_request), std::move(callback));
+  GetAdsClient()->UrlRequest(std::move(url_request), std::move(callback));
 }
 
 void Save(const std::string& name,
           const std::string& value,
           SaveCallback callback) {
-  GetInstance()->Save(name, value, std::move(callback));
+  GetAdsClient()->Save(name, value, std::move(callback));
 }
 
 void Load(const std::string& name, LoadCallback callback) {
-  GetInstance()->Load(name, std::move(callback));
+  GetAdsClient()->Load(name, std::move(callback));
 }
 
 void LoadResourceComponent(const std::string& id,
                            int version,
                            LoadFileCallback callback) {
-  GetInstance()->LoadResourceComponent(id, version, std::move(callback));
+  GetAdsClient()->LoadResourceComponent(id, version, std::move(callback));
 }
 
 std::string LoadDataResource(const std::string& name) {
-  return GetInstance()->LoadDataResource(name);
+  return GetAdsClient()->LoadDataResource(name);
 }
 
 void ShowScheduledCaptcha(const std::string& payment_id,
                           const std::string& captcha_id) {
-  GetInstance()->ShowScheduledCaptcha(payment_id, captcha_id);
+  GetAdsClient()->ShowScheduledCaptcha(payment_id, captcha_id);
 }
 
 void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                       RunDBTransactionCallback callback) {
-  GetInstance()->RunDBTransaction(std::move(transaction), std::move(callback));
+  GetAdsClient()->RunDBTransaction(std::move(transaction), std::move(callback));
 }
 
 void RecordP2AEvents(const std::vector<std::string>& events) {
-  GetInstance()->RecordP2AEvents(events);
+  GetAdsClient()->RecordP2AEvents(events);
 }
 
 std::optional<base::Value> GetProfilePref(const std::string& path) {
-  return GetInstance()->GetProfilePref(path);
+  return GetAdsClient()->GetProfilePref(path);
 }
 
 bool GetProfileBooleanPref(const std::string& path) {
@@ -260,7 +256,7 @@ base::TimeDelta GetProfileTimeDeltaPref(const std::string& path) {
 }
 
 void SetProfilePref(const std::string& path, base::Value value) {
-  GetInstance()->SetProfilePref(path, std::move(value));
+  GetAdsClient()->SetProfilePref(path, std::move(value));
 }
 
 void SetProfileBooleanPref(const std::string& path, const bool value) {
@@ -305,15 +301,15 @@ void SetProfileTimeDeltaPref(const std::string& path,
 }
 
 void ClearProfilePref(const std::string& path) {
-  GetInstance()->ClearProfilePref(path);
+  GetAdsClient()->ClearProfilePref(path);
 }
 
 bool HasProfilePrefPath(const std::string& path) {
-  return GetInstance()->HasProfilePrefPath(path);
+  return GetAdsClient()->HasProfilePrefPath(path);
 }
 
 std::optional<base::Value> GetLocalStatePref(const std::string& path) {
-  return GetInstance()->GetLocalStatePref(path);
+  return GetAdsClient()->GetLocalStatePref(path);
 }
 
 bool GetLocalStateBooleanPref(const std::string& path) {
@@ -433,7 +429,7 @@ base::TimeDelta GetLocalStateTimeDeltaPref(const std::string& path) {
 }
 
 void SetLocalStatePref(const std::string& path, base::Value value) {
-  GetInstance()->SetLocalStatePref(path, std::move(value));
+  GetAdsClient()->SetLocalStatePref(path, std::move(value));
 }
 
 void SetLocalStateBooleanPref(const std::string& path, const bool value) {
@@ -479,19 +475,19 @@ void SetLocalStateTimeDeltaPref(const std::string& path,
 }
 
 void ClearLocalStatePref(const std::string& path) {
-  GetInstance()->ClearLocalStatePref(path);
+  GetAdsClient()->ClearLocalStatePref(path);
 }
 
 bool HasLocalStatePrefPath(const std::string& path) {
-  return GetInstance()->HasLocalStatePrefPath(path);
+  return GetAdsClient()->HasLocalStatePrefPath(path);
 }
 
 void Log(const char* const file,
          int line,
          int verbose_level,
          const std::string& message) {
-  if (HasInstance()) {
-    GetInstance()->Log(file, line, verbose_level, message);
+  if (GlobalState::HasInstance()) {
+    GetAdsClient()->Log(file, line, verbose_level, message);
   }
 }
 

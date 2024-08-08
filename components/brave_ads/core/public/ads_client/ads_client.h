@@ -45,7 +45,7 @@ class ADS_EXPORT AdsClient {
   virtual bool IsBrowserInFullScreenMode() const = 0;
 
   // Returns `true` if notification ads can be shown.
-  virtual bool CanShowNotificationAds() = 0;
+  virtual bool CanShowNotificationAds() const = 0;
 
   // Returns `true` if notification ads can be shown while the browser is
   // backgrounded.

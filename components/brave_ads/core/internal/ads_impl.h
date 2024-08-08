@@ -11,11 +11,12 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_handler.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
-#include "brave/components/brave_ads/core/internal/reminder/reminder.h"
+#include "brave/components/brave_ads/core/internal/reminders/reminders.h"
 #include "brave/components/brave_ads/core/internal/studies/studies.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
@@ -104,18 +105,17 @@ class AdsImpl final : public Ads {
                              base::Time to_time) override;
 
   void ToggleLikeAd(const base::Value::Dict& value,
-                    ToggleUserReactionCallback callback) override;
+                    ToggleReactionCallback callback) override;
   void ToggleDislikeAd(const base::Value::Dict& value,
-                       ToggleUserReactionCallback callback) override;
-  void ToggleLikeCategory(const base::Value::Dict& value,
-                          ToggleUserReactionCallback callback) override;
-  void ToggleDislikeCategory(const base::Value::Dict& value,
-                             ToggleUserReactionCallback callback) override;
+                       ToggleReactionCallback callback) override;
+  void ToggleLikeSegment(const base::Value::Dict& value,
+                         ToggleReactionCallback callback) override;
+  void ToggleDislikeSegment(const base::Value::Dict& value,
+                            ToggleReactionCallback callback) override;
   void ToggleSaveAd(const base::Value::Dict& value,
-                    ToggleUserReactionCallback callback) override;
-  void ToggleMarkAdAsInappropriate(
-      const base::Value::Dict& value,
-      ToggleUserReactionCallback callback) override;
+                    ToggleReactionCallback callback) override;
+  void ToggleMarkAdAsInappropriate(const base::Value::Dict& value,
+                                   ToggleReactionCallback callback) override;
 
  private:
   void CreateOrOpenDatabase(mojom::WalletInfoPtr wallet,
@@ -123,12 +123,20 @@ class AdsImpl final : public Ads {
   void CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr wallet,
                                     InitializeCallback callback,
                                     bool success);
+  void SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
+                               InitializeCallback callback);
+
+  // TODO(https://github.com/brave/brave-browser/issues/40265): Periodically
+  // purge expired and orphaned state.
   void PurgeExpiredAdEventsCallback(mojom::WalletInfoPtr wallet,
                                     InitializeCallback callback,
                                     bool success);
   void PurgeAllOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
                                         InitializeCallback callback,
                                         bool success);
+
+  // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
+  // from using JSON state to a more efficient data approach.
   void MigrateClientStateCallback(mojom::WalletInfoPtr wallet,
                                   InitializeCallback callback,
                                   bool success);
@@ -141,11 +149,11 @@ class AdsImpl final : public Ads {
   void LoadConfirmationStateCallback(mojom::WalletInfoPtr wallet,
                                      InitializeCallback callback,
                                      bool success);
-  void SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
-                               InitializeCallback callback);
 
   bool is_initialized_ = false;
 
+  // TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate global
+  // state.
   GlobalState global_state_;
 
   TokenGenerator token_generator_;
@@ -157,7 +165,7 @@ class AdsImpl final : public Ads {
 
   Reactions reactions_;
 
-  Reminder reminder_;
+  Reminders reminders_;
 
   Studies studies_;
 

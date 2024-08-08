@@ -53,7 +53,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, LoadResource) {
 
 TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadMalformedResource) {
   // Arrange
-  ASSERT_TRUE(CopyFileFromTestDataPathToTempProfilePath(
+  ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(
       /*from_path=*/test::kMalformedResourceId,
       /*to_path=*/kPurchaseIntentResourceId));
 

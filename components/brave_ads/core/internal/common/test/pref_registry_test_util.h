@@ -12,7 +12,6 @@ namespace brave_ads::test {
 // pref mocks to use PrefService.
 
 void RegisterLocalStatePrefs();
-
 void RegisterProfilePrefs();
 
 }  // namespace brave_ads::test

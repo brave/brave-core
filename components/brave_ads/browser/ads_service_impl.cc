@@ -1122,6 +1122,10 @@ void AdsServiceImpl::AddBatAdsObserver(
   }
 }
 
+bool AdsServiceImpl::IsBrowserUpgradeRequiredToServeAds() const {
+  return browser_upgrade_required_to_serve_ads_;
+}
+
 int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
   int64_t ads_per_hour =
       profile_->GetPrefs()->GetInt64(prefs::kMaximumNotificationAdsPerHour);
@@ -1183,10 +1187,6 @@ void AdsServiceImpl::GetStatementOfAccounts(
   }
 
   bat_ads_associated_remote_->GetStatementOfAccounts(std::move(callback));
-}
-
-bool AdsServiceImpl::IsBrowserUpgradeRequiredToServeAds() const {
-  return browser_upgrade_required_to_serve_ads_;
 }
 
 void AdsServiceImpl::MaybeServeInlineContentAd(
@@ -1317,7 +1317,7 @@ void AdsServiceImpl::GetAdHistory(const base::Time from_time,
 }
 
 void AdsServiceImpl::ToggleLikeAd(base::Value::Dict value,
-                                  ToggleUserReactionCallback callback) {
+                                  ToggleReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
     bat_ads_associated_remote_->ToggleLikeAd(std::move(value),
                                              std::move(callback));
@@ -1325,32 +1325,31 @@ void AdsServiceImpl::ToggleLikeAd(base::Value::Dict value,
 }
 
 void AdsServiceImpl::ToggleDislikeAd(base::Value::Dict value,
-                                     ToggleUserReactionCallback callback) {
+                                     ToggleReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
     bat_ads_associated_remote_->ToggleDislikeAd(std::move(value),
                                                 std::move(callback));
   }
 }
 
-void AdsServiceImpl::ToggleLikeCategory(base::Value::Dict value,
-                                        ToggleUserReactionCallback callback) {
+void AdsServiceImpl::ToggleLikeSegment(base::Value::Dict value,
+                                       ToggleReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
-    bat_ads_associated_remote_->ToggleLikeCategory(std::move(value),
-                                                   std::move(callback));
+    bat_ads_associated_remote_->ToggleLikeSegment(std::move(value),
+                                                  std::move(callback));
   }
 }
 
-void AdsServiceImpl::ToggleDislikeCategory(
-    base::Value::Dict value,
-    ToggleUserReactionCallback callback) {
+void AdsServiceImpl::ToggleDislikeSegment(base::Value::Dict value,
+                                          ToggleReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
-    bat_ads_associated_remote_->ToggleDislikeCategory(std::move(value),
-                                                      std::move(callback));
+    bat_ads_associated_remote_->ToggleDislikeSegment(std::move(value),
+                                                     std::move(callback));
   }
 }
 
 void AdsServiceImpl::ToggleSaveAd(base::Value::Dict value,
-                                  ToggleUserReactionCallback callback) {
+                                  ToggleReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
     bat_ads_associated_remote_->ToggleSaveAd(std::move(value),
                                              std::move(callback));
@@ -1359,7 +1358,7 @@ void AdsServiceImpl::ToggleSaveAd(base::Value::Dict value,
 
 void AdsServiceImpl::ToggleMarkAdAsInappropriate(
     base::Value::Dict value,
-    ToggleUserReactionCallback callback) {
+    ToggleReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
     bat_ads_associated_remote_->ToggleMarkAdAsInappropriate(
         std::move(value), std::move(callback));

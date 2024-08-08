@@ -15,6 +15,7 @@ inline constexpr char kDeviceId[] =
 
 inline constexpr char kDiagnosticId[] = "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2";
 
+inline constexpr char kMalformedJsonFilename[] = "malformed.json";
 inline constexpr char kMalformedJson[] = "MALFORMED_JSON";
 
 }  // namespace brave_ads::test

@@ -102,6 +102,7 @@ void MigrateConfirmationState(InitializeCallback callback) {
                             json::reader::ReadConfirmations(json);
                         if (!confirmations) {
                           // Confirmation queue state does not exist.
+                          BLOG(3, "Successfully migrated confirmation state");
                           return SuccessfullyMigrated(std::move(callback));
                         }
 

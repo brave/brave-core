@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/reminder/reminder.h"
+#include "brave/components/brave_ads/core/internal/reminders/reminders.h"
 
 #include <cstddef>
 #include <memory>
@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
-#include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
+#include "brave/components/brave_ads/core/internal/reminders/reminders_feature.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 
@@ -39,22 +39,23 @@ void AddAdHistoryForClickedEvent(const size_t count) {
 
 }  // namespace
 
-class BraveAdsReminderTest : public test::TestBase {
+class BraveAdsRemindersTest : public test::TestBase {
  protected:
   void SetUp() override {
     test::TestBase::SetUp();
 
     ads_observer_mock_ = test::AddAdsObserverMock();
 
-    reminder_ = std::make_unique<Reminder>();
+    reminders_ = std::make_unique<Reminders>();
   }
 
   raw_ptr<AdsObserverMock> ads_observer_mock_ = nullptr;
 
-  std::unique_ptr<Reminder> reminder_;
+  std::unique_ptr<Reminders> reminders_;
 };
 
-TEST_F(BraveAdsReminderTest, ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
+TEST_F(BraveAdsRemindersTest,
+       ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_,
               OnRemindUser(mojom::ReminderType::kClickedSameAdMultipleTimes));
@@ -63,7 +64,7 @@ TEST_F(BraveAdsReminderTest, ShowReminderWhenUserClicksTheSameAdMultipleTimes) {
   FastForwardClockBy(base::Seconds(1));
 }
 
-TEST_F(BraveAdsReminderTest,
+TEST_F(BraveAdsRemindersTest,
        DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimes) {
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_, OnRemindUser).Times(0);
@@ -73,11 +74,11 @@ TEST_F(BraveAdsReminderTest,
 }
 
 TEST_F(
-    BraveAdsReminderTest,
+    BraveAdsRemindersTest,
     DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimesWhenDisabledAddAdHistoryForClickedAdEvent) {
   // Arrange
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(kReminderFeature);
+  scoped_feature_list.InitAndDisableFeature(kRemindersFeature);
 
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_, OnRemindUser).Times(0);

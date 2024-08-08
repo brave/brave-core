@@ -34,7 +34,7 @@ base::Time TimeFromUTCString(const std::string& time_string);
 // `base::TimeDelta` object.
 base::TimeDelta TimeDeltaFromString(const std::string& time_string);
 
-// Converts a string representation of UTC time duration since now to a
+// Converts a string representation of time duration since UTC now to a
 // `base::TimeDelta` object.
 base::TimeDelta TimeDeltaFromUTCString(const std::string& time_string);
 

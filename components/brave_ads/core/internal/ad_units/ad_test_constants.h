@@ -38,6 +38,11 @@ inline constexpr char kSegment[] = "untargeted";
 
 inline constexpr char kTargetUrl[] = "https://brave.com";
 
+inline constexpr char kTitle[] = "Test Ad Title";
+inline constexpr char kDescription[] = "Test Ad Description";
+
+inline constexpr int kValue = 1.0;
+
 }  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_AD_TEST_CONSTANTS_H_

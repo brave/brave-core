@@ -20,6 +20,12 @@ namespace brave_ads {
 using InitializeCallback = base::OnceCallback<void(bool success)>;
 using ShutdownCallback = base::OnceCallback<void(bool success)>;
 
+using GetDiagnosticsCallback =
+    base::OnceCallback<void(std::optional<base::Value::List> diagnostics)>;
+
+using GetStatementOfAccountsCallback =
+    base::OnceCallback<void(mojom::StatementInfoPtr statement)>;
+
 using MaybeServeNewTabPageAdCallback =
     base::OnceCallback<void(const std::optional<NewTabPageAdInfo>& ad)>;
 
@@ -28,12 +34,6 @@ using MaybeServeInlineContentAdCallback =
                             const std::optional<InlineContentAdInfo>& ad)>;
 
 using TriggerAdEventCallback = base::OnceCallback<void(bool success)>;
-
-using GetStatementOfAccountsCallback =
-    base::OnceCallback<void(mojom::StatementInfoPtr statement)>;
-
-using GetDiagnosticsCallback =
-    base::OnceCallback<void(std::optional<base::Value::List> diagnostics)>;
 
 using PurgeOrphanedAdEventsForTypeCallback =
     base::OnceCallback<void(bool success)>;

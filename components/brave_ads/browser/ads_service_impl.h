@@ -210,6 +210,8 @@ class AdsServiceImpl final : public AdsService,
   void AddBatAdsObserver(
       mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer) override;
 
+  bool IsBrowserUpgradeRequiredToServeAds() const override;
+
   int64_t GetMaximumNotificationAdsPerHour() const override;
 
   void OnNotificationAdShown(const std::string& placement_id) override;
@@ -220,8 +222,6 @@ class AdsServiceImpl final : public AdsService,
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
-
-  bool IsBrowserUpgradeRequiredToServeAds() const override;
 
   void MaybeServeInlineContentAd(
       const std::string& dimensions,
@@ -262,18 +262,17 @@ class AdsServiceImpl final : public AdsService,
                     GetAdHistoryCallback callback) override;
 
   void ToggleLikeAd(base::Value::Dict value,
-                    ToggleUserReactionCallback callback) override;
+                    ToggleReactionCallback callback) override;
   void ToggleDislikeAd(base::Value::Dict value,
-                       ToggleUserReactionCallback callback) override;
-  void ToggleLikeCategory(base::Value::Dict value,
-                          ToggleUserReactionCallback callback) override;
-  void ToggleDislikeCategory(base::Value::Dict value,
-                             ToggleUserReactionCallback callback) override;
+                       ToggleReactionCallback callback) override;
+  void ToggleLikeSegment(base::Value::Dict value,
+                         ToggleReactionCallback callback) override;
+  void ToggleDislikeSegment(base::Value::Dict value,
+                            ToggleReactionCallback callback) override;
   void ToggleSaveAd(base::Value::Dict value,
-                    ToggleUserReactionCallback callback) override;
-  void ToggleMarkAdAsInappropriate(
-      base::Value::Dict value,
-      ToggleUserReactionCallback callback) override;
+                    ToggleReactionCallback callback) override;
+  void ToggleMarkAdAsInappropriate(base::Value::Dict value,
+                                   ToggleReactionCallback callback) override;
 
   void NotifyTabTextContentDidChange(int32_t tab_id,
                                      const std::vector<GURL>& redirect_chain,

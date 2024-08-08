@@ -38,11 +38,10 @@ AdHistoryItemInfo BuildAdHistoryItem(const AdInfo& ad,
   ad_history_item.brand_url = ad.target_url;
 
   // User reactions.
-  ad_history_item.ad_user_reaction_type =
-      ClientStateManager::GetInstance().GetUserReactionTypeForAd(ad);
-  ad_history_item.category_user_reaction_type =
-      ClientStateManager::GetInstance().GetUserReactionTypeForCategory(
-          ad.segment);
+  ad_history_item.ad_reaction_type =
+      ClientStateManager::GetInstance().GetReactionTypeForAd(ad);
+  ad_history_item.segment_reaction_type =
+      ClientStateManager::GetInstance().GetReactionTypeForSegment(ad.segment);
   ad_history_item.is_saved = false;
   ad_history_item.is_marked_as_inappropriate = false;
 
