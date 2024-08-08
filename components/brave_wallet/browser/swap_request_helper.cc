@@ -146,7 +146,7 @@ namespace {
 
 std::optional<std::string> EncodeChainId(const std::string& value) {
   if (value == mojom::kSolanaMainnet) {
-    return "SOL";
+    return kLiFiSolanaMainnetChainID;
   }
 
   uint256_t val;

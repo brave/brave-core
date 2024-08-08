@@ -2158,4 +2158,125 @@ TEST(EthDataParser,
   EXPECT_EQ(swap_info->provider, "lifi");
 }
 
+TEST(EthDataParser, GetTransactionInfoFromDataLiFiStartBridgeTokensViaMayan) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
+  std::vector<uint8_t> data;
+
+  // Function:
+  // startBridgeTokensViaMayan((bytes32 transactionId,
+  //                            string bridge,
+  //                            string integrator,
+  //                            string referrer,
+  //                            address sendingAssetId,
+  //                            address receiver,
+  //                            uint256 minAmount,
+  //                            uint256 destinationChainId,
+  //                            bool hasSourceSwaps,
+  //                            bool hasDestinationCalls)
+  //                            bridgeData)
+
+  // Bridge BNB on BSC -> USDC on Solana
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xb621b032"  // function selector
+
+      /***************************** HEAD ****************************/
+      // offset to start data part of bridgeData
+      "0000000000000000000000000000000000000000000000000000000000000040"
+
+      // offset to start of extraneous data (ignored)
+      "0000000000000000000000000000000000000000000000000000000000000200"
+
+      /************************** bridgeData *************************/
+
+      // transactionId
+      "0e83f6be858a49d81d2972bd954c73f5ca8591de4cbdb94dce6d0d47d39ba16e"
+
+      // bridge (offset)
+      "0000000000000000000000000000000000000000000000000000000000000140"
+      // integrator (offset)
+      "0000000000000000000000000000000000000000000000000000000000000180"
+      // referrer
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // sendingAssetId
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // receiver
+      "00000000000000000000000011f111f111f111f111f111f111f111f111f111f1"
+      // minAmount
+      "00000000000000000000000000000000000000000000000001753753f24cb000"
+      // destinationChainId
+      "000000000000000000000000000000000000000000000000000416edef1601be"
+      // hasSourceSwaps
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // hasDestinationCalls
+      "0000000000000000000000000000000000000000000000000000000000000000"
+
+      // offset to start data part of bridge
+      // size of bridge string
+      "0000000000000000000000000000000000000000000000000000000000000005"
+      // bridge string
+      "6d6179616e000000000000000000000000000000000000000000000000000000"
+
+      // offset to start data part of integrator
+      // size of integrator string
+      "0000000000000000000000000000000000000000000000000000000000000005"
+      // integrator string
+      "6272617665000000000000000000000000000000000000000000000000000000"
+
+      // extraneous calldata (ignored)
+      "71a6faa032fb1e7bd69b0811c2bd0199173bc2b6f3e6a96af79025d09f256b78"
+      "000000000000000000000000bf5f3f65102ae745a48bd521d10bab5bf02a9ef4"
+      "0000000000000000000000000000000000000000000000000000000000000060"
+      "0000000000000000000000000000000000000000000000000000000000000284"
+      "1eb1cff000000000000000000000000000000000000000000000000000000000"
+      "0008201300000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000b3b0d0dc812e5333ead0d99ab5d2fe0929c343ba58d58abd0d8a78459a6e"
+      "9edda26d00000000000000000000000000000000000000000000000000000000"
+      "000000016dfa43f824c3b8b61e715fe8bf447f2aba63e59ab537f186cf665152"
+      "c2114c3971a6faa032fb1e7bd69b0811c2bd0199173bc2b6f3e6a96af79025d0"
+      "9f256b7800000000000000000000000000000000000000000000000000000000"
+      "000000011e8c4fab8994494c8f1e5c1287445b2917d60c43c79aa959162f5d60"
+      "00598d32000000000000000000000000a92d461a9a988a7f11ec285d39783a63"
+      "7fdd6ba4c6fa7af3bedbad3a3d65f36aabc97431b1bbe4c2d2f6e0e47ca60203"
+      "452f5d6100000000000000000000000000000000000000000000000000000000"
+      "0000000100000000000000000000000000000000000000000000000000000000"
+      "000001a000000000000000000000000000000000000000000000000000000000"
+      "66b3884000000000000000000000000000000000000000000000000000000000"
+      "66b3884000000000000000000000000000000000000000000000000000000000"
+      "02d6552400000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "000000c000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      &data));
+
+  auto tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+
+  EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+  ASSERT_TRUE(swap_info);
+
+  EXPECT_EQ(swap_info->from_coin, mojom::CoinType::ETH);
+  EXPECT_EQ(swap_info->from_chain_id, "");
+  EXPECT_EQ(swap_info->from_asset,
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // BNB
+  EXPECT_EQ(swap_info->from_amount, "0x1753753f24cb000");   // 0.105051 BNB
+
+  EXPECT_EQ(swap_info->to_coin, mojom::CoinType::SOL);
+  EXPECT_EQ(swap_info->to_chain_id, mojom::kSolanaMainnet);
+  EXPECT_EQ(swap_info->to_asset,
+            "");  // cannot be reliably determined from the data
+  EXPECT_EQ(swap_info->to_amount,
+            "");  // cannot be reliably determined from the data
+
+  EXPECT_EQ(swap_info->receiver,
+            "");  // cannot be reliably determined from the data
+  EXPECT_EQ(swap_info->provider, "lifi");
+}
+
 }  // namespace brave_wallet

@@ -769,7 +769,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiQuoteParams) {
         "slippage": 0.03
       },
       "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
-      "toChainId": "SOL",
+      "toChainId": "1151111081099710",
       "toTokenAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
     }
   )");
@@ -1034,7 +1034,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
         "fromAmount": "2000000",
         "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
         "slippage": 0.03,
-        "toChainId": "SOL",
+        "toChainId": "1151111081099710",
         "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
         "fromToken": {
           "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
@@ -1046,7 +1046,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
         },
         "toToken": {
           "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-          "chainId": "SOL",
+          "chainId": "1151111081099710",
           "symbol": "USDC",
           "decimals": 6,
           "name": "USD Coin",
@@ -1106,7 +1106,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
             "fromAmount": "2000000",
             "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
             "slippage": 0.03,
-            "toChainId": "SOL",
+            "toChainId": "1151111081099710",
             "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
             "fromToken": {
               "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
@@ -1118,7 +1118,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
             },
             "toToken": {
               "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-              "chainId": "SOL",
+              "chainId": "1151111081099710",
               "symbol": "USDC",
               "decimals": 6,
               "name": "USD Coin",

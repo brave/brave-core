@@ -269,12 +269,19 @@ std::optional<LiFiBridgeData> LiFiBridgeDataDecode(
   }
 
   auto destination_chain_id = data[7].GetString();
+  // Solana mainnet chain id used by LiFi encoded as hex string.
+  // Ref: kLiFiSolanaMainnetChainID in browser/brave_wallet_constants.h
+  if (destination_chain_id == "0x416edef1601be") {
+    destination_chain_id = mojom::kSolanaMainnet;
+  }
 
   return LiFiBridgeData{
       .bridge = data[1].GetString(),
       .integrator = data[2].GetString(),
       .sending_asset_id = TransformContractAddress(data[4].GetString()),
-      .receiver = TransformEoaAddress(data[5].GetString()),
+      .receiver = destination_chain_id == mojom::kSolanaMainnet
+                      ? ""
+                      : TransformEoaAddress(data[5].GetString()),
       .min_amount = data[6].GetString(),
       .destination_chain_id = destination_chain_id,
       .destination_coin = destination_chain_id == mojom::kSolanaMainnet
