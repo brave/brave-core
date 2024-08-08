@@ -153,7 +153,7 @@ interface PlaylistPage {
 };
 
 // WebUI will delegate some UIs to native UI via this interface. While
-// PlaylistService is shared among browsers with the same profile, a PageHnadler
+// PlaylistService is shared among browsers with the same profile, a PageHandler
 // instance will be bound to each web ui.
 interface PlaylistPageHandler {
   ShowCreatePlaylistUI();

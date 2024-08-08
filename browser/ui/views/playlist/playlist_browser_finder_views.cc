@@ -27,24 +27,18 @@ BrowserView* FindBrowserViewFromSidebarContents(
   return coordinator->GetBrowserView();
 }
 
-// If |BrowserView| is not found from Sidebar's |WebContents|, try to find it
-// from tab's |WebContents|.
-BrowserView* FindBrowserViewFromWebContents(content::WebContents* contents) {
-  auto* browser_view = FindBrowserViewFromSidebarContents(contents);
-
-  if (!browser_view) {
-    auto* browser = chrome::FindBrowserWithTab(contents);
-    return browser ? BrowserView::GetBrowserViewForBrowser(browser) : nullptr;
-  }
-  return browser_view;
-}
-
 }  // namespace
 
 // Implementation for playlist_browser_finder.h
 Browser* FindBrowserForPlaylistWebUI(content::WebContents* web_contents) {
-  auto* browser_view = FindBrowserViewFromWebContents(web_contents);
-  return browser_view ? browser_view->browser() : nullptr;
+  if (auto* browser_view = FindBrowserViewFromSidebarContents(web_contents)) {
+    return browser_view->browser();
+  }
+
+  // If |BrowserView| is not found from Sidebar's |WebContents|, try to find it
+  // from tab's |WebContents|.
+  // https://github.com/brave/brave-browser/issues/37528
+  return chrome::FindBrowserWithTab(web_contents);
 }
 
 }  // namespace playlist
