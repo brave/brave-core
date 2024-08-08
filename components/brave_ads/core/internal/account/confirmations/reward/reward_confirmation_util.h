@@ -13,7 +13,6 @@
 
 namespace brave_ads {
 
-class TokenGeneratorInterface;
 struct ConfirmationInfo;
 struct TransactionInfo;
 
@@ -21,7 +20,6 @@ std::optional<std::string> BuildRewardCredential(
     const ConfirmationInfo& confirmation);
 
 std::optional<ConfirmationInfo> BuildRewardConfirmation(
-    TokenGeneratorInterface* token_generator,
     const TransactionInfo& transaction,
     base::Value::Dict user_data);
 

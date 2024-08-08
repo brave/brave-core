@@ -9,9 +9,9 @@
 
 #include "base/check.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -47,12 +47,10 @@ void MaybeCloseAllNotifications() {
 }  // namespace
 
 NotificationAdHandler::NotificationAdHandler(
-    Account& account,
     SiteVisit& site_visit,
     const SubdivisionTargeting& subdivision_targeting,
     const AntiTargetingResource& anti_targeting_resource)
-    : account_(account),
-      site_visit_(site_visit),
+    : site_visit_(site_visit),
       serving_(subdivision_targeting, anti_targeting_resource) {
   AddAdsClientNotifierObserver(this);
   BrowserManager::GetInstance().AddObserver(this);
@@ -195,8 +193,8 @@ void NotificationAdHandler::OnDidFireNotificationAdViewedEvent(
 
   AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
 
-  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kViewedImpression);
+  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
+                       ConfirmationType::kViewedImpression);
 }
 
 void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
@@ -212,8 +210,8 @@ void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
 
   AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
-  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kClicked);
+  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
+                       ConfirmationType::kClicked);
 }
 
 void NotificationAdHandler::OnDidFireNotificationAdDismissedEvent(
@@ -227,8 +225,8 @@ void NotificationAdHandler::OnDidFireNotificationAdDismissedEvent(
 
   AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kDismissed);
 
-  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kDismissed);
+  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
+                       ConfirmationType::kDismissed);
 }
 
 void NotificationAdHandler::OnDidFireNotificationAdTimedOutEvent(

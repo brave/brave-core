@@ -19,20 +19,16 @@
 
 namespace brave_ads {
 
-class BraveAdsRewardConfirmationPayloadUtilTest : public test::TestBase {
- protected:
-  TokenGeneratorMock token_generator_mock_;
-};
+class BraveAdsRewardConfirmationPayloadUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsRewardConfirmationPayloadUtilTest,
        BuildRewardConfirmationPayload) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const RewardInfo reward = test::BuildReward(*confirmation);

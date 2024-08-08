@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection.h"
-
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 
@@ -15,11 +13,10 @@ namespace brave_ads {
 class BraveAdsUserIdleDetectionTest : public test::TestBase {};
 
 TEST_F(BraveAdsUserIdleDetectionTest, RewardsUserDidBecomeActive) {
-  // Arrange
-  const UserIdleDetection user_idle_detection;
-
   // Act & Assert
-  EXPECT_CALL(ads_client_mock_, Log);
+  EXPECT_CALL(ads_client_mock_, Log).Times(::testing::AnyNumber());
+  EXPECT_CALL(ads_client_mock_, Log(::testing::_, ::testing::_, ::testing::_,
+                                    "User is active after 10 s"));
   NotifyUserDidBecomeActive(/*idle_time=*/base::Seconds(10),
                             /*screen_was_locked=*/false);
 }
@@ -27,8 +24,6 @@ TEST_F(BraveAdsUserIdleDetectionTest, RewardsUserDidBecomeActive) {
 TEST_F(BraveAdsUserIdleDetectionTest, NonRewardsUserDidBecomeActive) {
   // Arrange
   test::DisableBraveRewards();
-
-  const UserIdleDetection user_idle_detection;
 
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, Log).Times(0);
@@ -38,11 +33,13 @@ TEST_F(BraveAdsUserIdleDetectionTest, NonRewardsUserDidBecomeActive) {
 
 TEST_F(BraveAdsUserIdleDetectionTest,
        RewardsUserDidBecomeActiveWhileScreenWasLocked) {
-  // Arrange
-  const UserIdleDetection user_idle_detection;
-
   // Act & Assert
-  EXPECT_CALL(ads_client_mock_, Log).Times(2);
+  EXPECT_CALL(ads_client_mock_, Log).Times(::testing::AnyNumber());
+  EXPECT_CALL(ads_client_mock_, Log(::testing::_, ::testing::_, ::testing::_,
+                                    "User is active after 10 s"));
+  EXPECT_CALL(ads_client_mock_,
+              Log(::testing::_, ::testing::_, ::testing::_,
+                  "Screen was locked before the user become active"));
   NotifyUserDidBecomeActive(/*idle_time=*/base::Seconds(10),
                             /*screen_was_locked=*/true);
 }
@@ -52,8 +49,6 @@ TEST_F(BraveAdsUserIdleDetectionTest,
   // Arrange
   test::DisableBraveRewards();
 
-  const UserIdleDetection user_idle_detection;
-
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, Log).Times(0);
   NotifyUserDidBecomeActive(/*idle_time=*/base::Seconds(10),
@@ -61,9 +56,6 @@ TEST_F(BraveAdsUserIdleDetectionTest,
 }
 
 TEST_F(BraveAdsUserIdleDetectionTest, RewardsUserDidBecomeIdle) {
-  // Arrange
-  const UserIdleDetection user_idle_detection;
-
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, Log);
   NotifyUserDidBecomeIdle();
@@ -72,8 +64,6 @@ TEST_F(BraveAdsUserIdleDetectionTest, RewardsUserDidBecomeIdle) {
 TEST_F(BraveAdsUserIdleDetectionTest, NonRewardsUserDidBecomeIdle) {
   // Arrange
   test::DisableBraveRewards();
-
-  const UserIdleDetection user_idle_detection;
 
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, Log).Times(0);

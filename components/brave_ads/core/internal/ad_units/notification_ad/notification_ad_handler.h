@@ -25,7 +25,6 @@ class TimeDelta;
 
 namespace brave_ads {
 
-class Account;
 class AntiTargetingResource;
 class SiteVisit;
 class SubdivisionTargeting;
@@ -36,8 +35,7 @@ class NotificationAdHandler final : public AdsClientNotifierObserver,
                                     public NotificationAdEventHandlerDelegate,
                                     public NotificationAdServingDelegate {
  public:
-  NotificationAdHandler(Account& account,
-                        SiteVisit& site_visit,
+  NotificationAdHandler(SiteVisit& site_visit,
                         const SubdivisionTargeting& subdivision_targeting,
                         const AntiTargetingResource& anti_targeting_resource);
 
@@ -88,7 +86,6 @@ class NotificationAdHandler final : public AdsClientNotifierObserver,
   void OnDidFireNotificationAdTimedOutEvent(
       const NotificationAdInfo& ad) override;
 
-  const raw_ref<Account> account_;
   const raw_ref<SiteVisit> site_visit_;
 
   NotificationAdEventHandler event_handler_;

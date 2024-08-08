@@ -14,7 +14,6 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
@@ -22,10 +21,7 @@
 
 namespace brave_ads {
 
-Confirmations::Confirmations(TokenGeneratorInterface* const token_generator)
-    : token_generator_(token_generator) {
-  CHECK(token_generator_);
-
+Confirmations::Confirmations() {
   confirmation_queue_.SetDelegate(this);
 }
 
@@ -44,8 +40,7 @@ void Confirmations::Confirm(const TransactionInfo& transaction,
 
   const std::optional<ConfirmationInfo> confirmation =
       UserHasJoinedBraveRewards()
-          ? BuildRewardConfirmation(token_generator_, transaction,
-                                    std::move(user_data))
+          ? BuildRewardConfirmation(transaction, std::move(user_data))
           : BuildNonRewardConfirmation(transaction, std::move(user_data));
   if (!confirmation) {
     return BLOG(0, "Failed to build confirmation");

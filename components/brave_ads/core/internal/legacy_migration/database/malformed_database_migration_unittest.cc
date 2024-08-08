@@ -59,7 +59,7 @@ class BraveAdsMalformedDatabaseMigrationTest
 TEST_F(BraveAdsMalformedDatabaseMigrationTest,
        MigrateFromMalformedDatabaseSchema) {
   // Database migration occurs after invoking `Setup` and `SetUpMocks` during
-  // the initialization of `AdsImpl` in `test::TestBase`. Consequently,
+  // the initialization of `Ads` in `test::TestBase`. Consequently,
   // `EXPECT_CALL` cannot be used with the mocks.
 
   // Assert

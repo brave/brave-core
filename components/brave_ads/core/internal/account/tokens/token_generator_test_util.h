@@ -9,8 +9,6 @@
 #include <cstddef>
 #include <vector>
 
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
-
 namespace brave_ads {
 
 namespace cbr {
@@ -19,7 +17,9 @@ class Token;
 
 namespace test {
 
-void MockTokenGenerator(const TokenGeneratorMock& mock, size_t count);
+// Use this function to mock the token generator for testing purposes, when code
+// paths involve building reward confirmations.
+void MockTokenGenerator(size_t count);
 
 std::vector<cbr::Token> BuildTokens(size_t count);
 

@@ -19,16 +19,13 @@
 namespace brave_ads::test {
 
 std::optional<ConfirmationInfo> BuildRewardConfirmation(
-    TokenGeneratorInterface* const token_generator,
     const bool should_generate_random_uuids) {
-  CHECK(token_generator);
   CHECK(UserHasJoinedBraveRewards());
 
   const TransactionInfo transaction = BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, should_generate_random_uuids);
-  return BuildRewardConfirmation(token_generator, transaction,
-                                 /*user_data=*/{});
+  return BuildRewardConfirmation(transaction, /*user_data=*/{});
 }
 
 RewardInfo BuildReward(const ConfirmationInfo& confirmation) {

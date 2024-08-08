@@ -6,17 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_REACTIONS_REACTIONS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_REACTIONS_REACTIONS_H_
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager_observer.h"
 
 namespace brave_ads {
 
-class Account;
 struct AdHistoryItemInfo;
 
 class Reactions final : public AdHistoryManagerObserver {
  public:
-  explicit Reactions(Account& account);
+  Reactions();
 
   Reactions(const Reactions&) = delete;
   Reactions& operator=(const Reactions&) = delete;
@@ -33,8 +31,6 @@ class Reactions final : public AdHistoryManagerObserver {
   void OnDidMarkAdAsInappropriate(
       const AdHistoryItemInfo& ad_history_item) override;
   void OnDidSaveAd(const AdHistoryItemInfo& ad_history_item) override;
-
-  const raw_ref<const Account> account_;
 };
 
 }  // namespace brave_ads

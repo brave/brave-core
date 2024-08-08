@@ -11,7 +11,6 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_test_constants.h"
@@ -36,18 +35,15 @@ class BraveAdsRewardConfirmationUtilTest : public test::TestBase {
 
     AdvanceClockTo(test::TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
   }
-
-  TokenGeneratorMock token_generator_mock_;
 };
 
 TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act
@@ -63,7 +59,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {
 
 TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
@@ -72,8 +68,8 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
       /*should_generate_random_uuids=*/false);
 
   // Act
-  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data=*/{});
+  const std::optional<ConfirmationInfo> confirmation =
+      BuildRewardConfirmation(transaction, /*user_data=*/{});
   ASSERT_TRUE(confirmation);
 
   // Assert
@@ -114,7 +110,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
 TEST_F(BraveAdsRewardConfirmationUtilTest,
        DoNotBuildRewardConfirmationIfNoConfirmationTokens) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
@@ -122,35 +118,19 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
       /*should_generate_random_uuids=*/false);
 
   // Act
-  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data=*/{});
+  const std::optional<ConfirmationInfo> confirmation =
+      BuildRewardConfirmation(transaction, /*user_data=*/{});
 
   // Assert
   EXPECT_FALSE(confirmation);
 }
 
 TEST_F(BraveAdsRewardConfirmationUtilTest,
-       DISABLED_DoNotBuildRewardConfirmationWithInvalidTokenGenerator) {
-  // Arrange
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/false);
-
-  // Act & Assert
-  EXPECT_DEATH_IF_SUPPORTED(
-      BuildRewardConfirmation(/*token_generator=*/nullptr, transaction,
-                              /*user_data=*/{}),
-      "Check failed: token_generator");
-}
-
-TEST_F(BraveAdsRewardConfirmationUtilTest,
        DISABLED_DoNotBuildRewardConfirmationWithInvalidTransaction) {
   // Act & Assert
-  EXPECT_DEATH_IF_SUPPORTED(
-      BuildRewardConfirmation(&token_generator_mock_, /*transaction=*/{},
-                              /*user_data=*/{}),
-      "Check failed: transaction.IsValid*");
+  EXPECT_DEATH_IF_SUPPORTED(BuildRewardConfirmation(/*transaction=*/{},
+                                                    /*user_data=*/{}),
+                            "Check failed: transaction.IsValid*");
 }
 
 TEST_F(BraveAdsRewardConfirmationUtilTest,
@@ -164,10 +144,9 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
       /*should_generate_random_uuids=*/false);
 
   // Act & Assert
-  EXPECT_DEATH_IF_SUPPORTED(
-      BuildRewardConfirmation(&token_generator_mock_, transaction,
-                              /*user_data=*/{}),
-      "Check failed: UserHasJoinedBraveRewards*");
+  EXPECT_DEATH_IF_SUPPORTED(BuildRewardConfirmation(transaction,
+                                                    /*user_data=*/{}),
+                            "Check failed: UserHasJoinedBraveRewards*");
 }
 
 }  // namespace brave_ads
