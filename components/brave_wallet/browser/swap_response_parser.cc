@@ -367,7 +367,7 @@ namespace {
 std::optional<std::string> ChainIdToHex(const std::string& value) {
   // LiFi uses the following two chain ID strings interchangeably for Solana
   // Ref: https://docs.li.fi/li.fi-api/solana/request-examples
-  if (value == "SOL" || value == "1151111081099710") {
+  if (value == "SOL" || value == kLiFiSolanaMainnetChainID) {
     return mojom::kSolanaMainnet;
   }
 
