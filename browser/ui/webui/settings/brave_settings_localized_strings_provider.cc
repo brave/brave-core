@@ -502,6 +502,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveRewardsPageLabel", IDS_SETTINGS_BRAVE_REWARDS_PAGE_LABEL},
       {"braveRewardsShowBraveRewardsButtonLabel",
        IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL},
+
+      // Delete browsing data settings
+      {"clearBraveAdsData", IDS_SETTINGS_CLEAR_BRAVE_ADS_DATA},
+      {"resetRewardsData", IDS_SETTINGS_RESET_REWARDS_DATA},
+
       // Misc (TODO: Organize this)
       {"showSearchTabsBtn", IDS_SETTINGS_TABS_SEARCH_SHOW},
       {"onExitPageTitle", IDS_SETTINGS_BRAVE_ON_EXIT},
@@ -585,7 +590,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"p3aEnableTitle", IDS_BRAVE_P3A_ENABLE_SETTING},
       {"p3aEnabledDesc", IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM},
       {"siteSettings", IDS_SETTINGS_SITE_AND_SHIELDS_SETTINGS},
-      {"resetRewardsData", IDS_SETTINGS_RESET_REWARDS_DATA},
       {"showFullUrls", IDS_SETTINGS_ALWAYS_SHOW_FULL_URLS},
       {"resetWallet", IDS_SETTINGS_WALLET_RESET},
       {"resetTransactionInfo", IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO},

@@ -19,7 +19,7 @@ RegisterStyleOverride(
       :host {
         --body-container-height: 372px !important;
       }
-      #rewards-reset-data {
+      #reset-brave-rewards-data, #clear-brave-ads-data {
         display: block;
         margin-top: 10px;
       }
@@ -73,7 +73,7 @@ RegisterPolymerTemplateModifications({
       saveButton.textContent = loadTimeData.getString('save')
     }
 
-    // Append rewards reset data link
+    // Append clear Brave Ads data link
     const body = templateContent.querySelector('[slot="body"]')
     if (!body) {
       console.error(
@@ -83,12 +83,34 @@ RegisterPolymerTemplateModifications({
     body.insertAdjacentHTML(
       'beforeend',
       getTrustedHTML`
-        <a id="rewards-reset-data" href="chrome://rewards/#reset"></a>
+        <a id="clear-brave-ads-data"
+          href="chrome://settings/privacy"
+          onClick="[[onClearBraveAdsDataClickHandler_]]"
+          hidden="[[braveRewardsEnabled_]]">
+        </a>
+      `)
+    const clearBraveAdsLink =
+      templateContent.getElementById('clear-brave-ads-data')
+    if (!clearBraveAdsLink) {
+      console.error('[Settings] missing clear Brave Ads link')
+    } else {
+      clearBraveAdsLink.textContent =
+        loadTimeData.getString('clearBraveAdsData')
+    }
+
+    // Append reset Brave Rewards data link
+    body.insertAdjacentHTML(
+      'beforeend',
+      getTrustedHTML`
+        <a id="reset-brave-rewards-data"
+          href="chrome://rewards/#reset"
+          hidden="[[!braveRewardsEnabled_]]">
+        </a>
       `)
     const rewardsResetLink =
-      templateContent.getElementById('rewards-reset-data')
+      templateContent.getElementById('reset-brave-rewards-data')
     if (!rewardsResetLink) {
-      console.error('[Settings] missing Rewards reset link')
+      console.error('[Settings] missing reset Brave Rewards link')
     } else {
       rewardsResetLink.textContent = loadTimeData.getString('resetRewardsData')
     }
