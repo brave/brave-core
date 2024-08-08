@@ -53,12 +53,11 @@ bool StopSyncIfActive(Profile* profile, const char* func_name) {
 // Ensure HasPrimaryAccount override happens at DisableSyncForProfileDeletion
 // function. We assume 'IdentityManager* identity_manager' is initialized from
 // the factory followed by a nullptr check.
-#define IdentityManager                                                \
-  IdentityManager* identity_manager_unused = nullptr;                  \
-  (void)(identity_manager_unused);                                     \
-  static_assert(std::string_view(__func__) ==                          \
-                    std::string_view("DisableSyncForProfileDeletion"), \
-                "Override at a wrong function");                       \
+#define IdentityManager                                                        \
+  IdentityManager* identity_manager_unused = nullptr;                          \
+  (void)(identity_manager_unused);                                             \
+  static_assert(std::string_view(__func__) == "DisableSyncForProfileDeletion", \
+                "Override at a wrong function");                               \
   signin::IdentityManager
 
 #define HasPrimaryAccount(LEVEL) \
