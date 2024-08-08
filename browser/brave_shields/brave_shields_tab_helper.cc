@@ -21,6 +21,7 @@
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/reload_type.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
 #include "net/base/url_util.h"
@@ -56,6 +57,11 @@ void BraveShieldsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   if (navigation_handle->IsInMainFrame() && navigation_handle->HasCommitted() &&
       !navigation_handle->IsSameDocument()) {
+    if (navigation_handle->GetReloadType() != content::ReloadType::NORMAL) {
+      // We are navigating to a new page or force-reloading. Therefore, clear
+      // the webcompat features listed.
+      webcompat_features_invoked_.clear();
+    }
     ClearAllResourcesList();
   }
 }
@@ -100,7 +106,6 @@ void BraveShieldsTabHelper::ClearAllResourcesList() {
   resource_list_blocked_js_.clear();
   resource_list_blocked_fingerprints_.clear();
   resource_list_allowed_once_js_.clear();
-  webcompat_features_invoked_.clear();
 
   for (Observer& obs : observer_list_) {
     obs.OnResourcesChanged();
