@@ -956,7 +956,7 @@ extension BrowserViewController: WKNavigationDelegate {
 
   public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
     guard let tab = tab(for: webView) else { return }
-
+    tab.upgradedHTTPSRequest = nil
     // Set the committed url which will also set tab.url
     tab.committedURL = webView.url
 
@@ -1818,6 +1818,13 @@ extension BrowserViewController: WKUIDelegate {
     if ShieldPreferences.httpsUpgradeLevel.isEnabled,
       let upgradedURL = braveCore.httpsUpgradeExceptionsService.upgradeToHTTPS(for: requestURL)
     {
+      guard tab.upgradedHTTPSRequest?.url?.baseDomain != requestURL.baseDomain else {
+        // Avoid circular upgrades. This should be nil or we already tried to upgrade this
+        // and somehow it went back to http (i.e. server side redirect).
+        // We handle this as an invalid https upgrade right away
+        tab.upgradedHTTPSRequest = navigationAction.request
+        return handleInvalidHTTPSUpgrade(tab: tab, responseURL: upgradedURL)
+      }
       Self.log.debug(
         "Upgrading `\(requestURL.absoluteString)` to HTTPS"
       )
@@ -1840,7 +1847,6 @@ extension BrowserViewController: WKUIDelegate {
       let originalURL = originalRequest.url,
       responseURL.baseDomain == originalURL.baseDomain
     else {
-      braveCore.httpsUpgradeExceptionsService.addException(for: responseURL)
       return nil
     }
 
