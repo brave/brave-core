@@ -120,7 +120,7 @@ void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
     return std::move(callback).Run(/*statement=*/nullptr);
   }
 
-  account_.GetStatement(std::move(callback));
+  GetAccount().GetStatement(std::move(callback));
 }
 
 void AdsImpl::MaybeServeInlineContentAd(
@@ -130,7 +130,7 @@ void AdsImpl::MaybeServeInlineContentAd(
     return std::move(callback).Run(dimensions, /*ad=*/std::nullopt);
   }
 
-  ad_handler_.MaybeServeInlineContentAd(dimensions, std::move(callback));
+  GetAdHandler().MaybeServeInlineContentAd(dimensions, std::move(callback));
 }
 
 void AdsImpl::TriggerInlineContentAdEvent(
@@ -142,8 +142,8 @@ void AdsImpl::TriggerInlineContentAdEvent(
     return std::move(callback).Run(/*success=*/false);
   }
 
-  ad_handler_.TriggerInlineContentAdEvent(placement_id, creative_instance_id,
-                                          event_type, std::move(callback));
+  GetAdHandler().TriggerInlineContentAdEvent(placement_id, creative_instance_id,
+                                             event_type, std::move(callback));
 }
 
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
@@ -151,7 +151,7 @@ void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
     return std::move(callback).Run(/*ad=*/std::nullopt);
   }
 
-  ad_handler_.MaybeServeNewTabPageAd(std::move(callback));
+  GetAdHandler().MaybeServeNewTabPageAd(std::move(callback));
 }
 
 void AdsImpl::TriggerNewTabPageAdEvent(
@@ -163,8 +163,8 @@ void AdsImpl::TriggerNewTabPageAdEvent(
     return std::move(callback).Run(/*success=*/false);
   }
 
-  ad_handler_.TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                       event_type, std::move(callback));
+  GetAdHandler().TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
+                                          event_type, std::move(callback));
 }
 
 std::optional<NotificationAdInfo> AdsImpl::MaybeGetNotificationAd(
@@ -181,8 +181,8 @@ void AdsImpl::TriggerNotificationAdEvent(
     return std::move(callback).Run(/*success=*/false);
   }
 
-  ad_handler_.TriggerNotificationAdEvent(placement_id, event_type,
-                                         std::move(callback));
+  GetAdHandler().TriggerNotificationAdEvent(placement_id, event_type,
+                                            std::move(callback));
 }
 
 void AdsImpl::TriggerPromotedContentAdEvent(
@@ -194,8 +194,8 @@ void AdsImpl::TriggerPromotedContentAdEvent(
     return std::move(callback).Run(/*success=*/false);
   }
 
-  ad_handler_.TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
-                                            event_type, std::move(callback));
+  GetAdHandler().TriggerPromotedContentAdEvent(
+      placement_id, creative_instance_id, event_type, std::move(callback));
 }
 
 void AdsImpl::TriggerSearchResultAdEvent(
@@ -206,8 +206,8 @@ void AdsImpl::TriggerSearchResultAdEvent(
     return std::move(callback).Run(/*success=*/false);
   }
 
-  ad_handler_.TriggerSearchResultAdEvent(std::move(mojom_creative_ad),
-                                         event_type, std::move(callback));
+  GetAdHandler().TriggerSearchResultAdEvent(std::move(mojom_creative_ad),
+                                            event_type, std::move(callback));
 }
 
 void AdsImpl::PurgeOrphanedAdEventsForType(
@@ -342,7 +342,7 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
   is_initialized_ = true;
 
   if (wallet) {
-    account_.SetWallet(wallet->payment_id, wallet->recovery_seed);
+    GetAccount().SetWallet(wallet->payment_id, wallet->recovery_seed);
   }
 
   NotifyPendingAdsClientObservers();

@@ -16,13 +16,12 @@
 
 namespace brave_ads {
 
-class TokenGeneratorInterface;
 struct TransactionInfo;
 
 class Confirmations final : public ConfirmationQueueDelegate,
                             public RedeemConfirmationDelegate {
  public:
-  explicit Confirmations(TokenGeneratorInterface* token_generator);
+  Confirmations();
 
   Confirmations(const Confirmations&) = delete;
   Confirmations& operator=(const Confirmations&) = delete;
@@ -53,9 +52,6 @@ class Confirmations final : public ConfirmationQueueDelegate,
   void OnFailedToProcessConfirmationQueue(
       const ConfirmationInfo& confirmation) override;
   void OnDidExhaustConfirmationQueue() override;
-
-  const raw_ptr<TokenGeneratorInterface> token_generator_ =
-      nullptr;  // NOT OWNED
 
   raw_ptr<ConfirmationDelegate> delegate_ = nullptr;
 

@@ -16,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_interface.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_factory.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
 #include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards.h"
@@ -31,10 +30,7 @@
 
 namespace brave_ads {
 
-Account::Account(TokenGeneratorInterface* const token_generator)
-    : token_generator_(token_generator) {
-  CHECK(token_generator_);
-
+Account::Account() {
   AddAdsClientNotifierObserver(this);
 
   InitializeConfirmations();
@@ -222,7 +218,7 @@ void Account::Initialize() {
 void Account::InitializeConfirmations() {
   BLOG(1, "Initialize confirmations");
 
-  confirmations_ = std::make_unique<Confirmations>(token_generator_);
+  confirmations_ = std::make_unique<Confirmations>();
   confirmations_->SetDelegate(this);
 }
 
@@ -241,7 +237,7 @@ void Account::MaybeInitializeUserRewards() {
   // Brave Rewards because the associated data and the `Ads` instance will be
   // destroyed.
 
-  user_rewards_ = std::make_unique<UserRewards>(token_generator_, *wallet_);
+  user_rewards_ = std::make_unique<UserRewards>(*wallet_);
   user_rewards_->SetDelegate(this);
 
   user_rewards_->FetchIssuers();

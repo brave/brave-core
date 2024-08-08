@@ -26,6 +26,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_util.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -41,11 +42,7 @@ namespace {
 constexpr base::TimeDelta kRetryAfter = base::Seconds(15);
 }  // namespace
 
-RefillConfirmationTokens::RefillConfirmationTokens(
-    TokenGeneratorInterface* const token_generator)
-    : token_generator_(token_generator) {
-  CHECK(token_generator_);
-}
+RefillConfirmationTokens::RefillConfirmationTokens() = default;
 
 RefillConfirmationTokens::~RefillConfirmationTokens() {
   delegate_ = nullptr;
@@ -91,7 +88,7 @@ void RefillConfirmationTokens::Refill() {
 
 void RefillConfirmationTokens::GenerateTokens() {
   const size_t count = CalculateAmountOfConfirmationTokensToRefill();
-  tokens_ = token_generator_->Generate(count);
+  tokens_ = GetTokenGenerator()->Generate(count);
   blinded_tokens_ = cbr::BlindTokens(*tokens_);
 }
 

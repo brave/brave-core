@@ -17,7 +17,6 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_test_constants.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/redeem_non_reward_confirmation_test_util.h"
@@ -47,8 +46,6 @@ class BraveAdsConfirmationQueueTest : public test::TestBase {
     confirmation_queue_->SetDelegate(&delegate_mock_);
   }
 
-  TokenGeneratorMock token_generator_mock_;
-
   std::unique_ptr<ConfirmationQueue> confirmation_queue_;
   ::testing::StrictMock<ConfirmationQueueDelegateMock> delegate_mock_;
 
@@ -57,12 +54,11 @@ class BraveAdsConfirmationQueueTest : public test::TestBase {
 
 TEST_F(BraveAdsConfirmationQueueTest, AddConfirmation) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));
@@ -88,7 +84,7 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessConfirmation) {
 
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -101,8 +97,7 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessConfirmation) {
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));

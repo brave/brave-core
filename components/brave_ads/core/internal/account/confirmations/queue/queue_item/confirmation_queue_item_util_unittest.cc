@@ -25,20 +25,16 @@
 
 namespace brave_ads {
 
-class BraveAdsConfirmationQueueItemDelayTest : public test::TestBase {
- protected:
-  TokenGeneratorMock token_generator_mock_;
-};
+class BraveAdsConfirmationQueueItemDelayTest : public test::TestBase {};
 
 TEST_F(BraveAdsConfirmationQueueItemDelayTest,
        CalculateDelayBeforeProcessingConfirmationQueueItem) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
   const ConfirmationQueueItemInfo confirmation_queue_item =
       BuildConfirmationQueueItem(*confirmation,
@@ -56,12 +52,11 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
 TEST_F(BraveAdsConfirmationQueueItemDelayTest,
        CalculateDelayBeforeProcessingPastDueConfirmationQueueItem) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
   const ConfirmationQueueItemInfo confirmation_queue_item =
       BuildConfirmationQueueItem(*confirmation,
@@ -80,12 +75,11 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
 TEST_F(BraveAdsConfirmationQueueItemDelayTest,
        CalculateMinimumDelayBeforeProcessingConfirmationQueueItem) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
   const ConfirmationQueueItemInfo confirmation_queue_item =
       BuildConfirmationQueueItem(
@@ -105,7 +99,7 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
 TEST_F(BraveAdsConfirmationQueueItemDelayTest,
        RebuildConfirmationWithoutDynamicUserData) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   test::MockConfirmationUserData();
@@ -113,8 +107,7 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
   AdvanceClockTo(test::TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const base::Time created_at = test::Now();
@@ -141,7 +134,7 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
 TEST_F(BraveAdsConfirmationQueueItemDelayTest,
        RebuildConfirmationDynamicUserData) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   test::MockConfirmationUserData();
@@ -149,8 +142,7 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
   AdvanceClockTo(test::TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const base::Time created_at = test::Now();

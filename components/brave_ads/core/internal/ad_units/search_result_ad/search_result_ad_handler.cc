@@ -11,8 +11,8 @@
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
+#include "brave/components/brave_ads/core/internal/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -38,9 +38,8 @@ void FireEventCallback(TriggerAdEventCallback callback,
 
 }  // namespace
 
-SearchResultAdHandler::SearchResultAdHandler(Account& account,
-                                             SiteVisit& site_visit)
-    : account_(account), site_visit_(site_visit) {
+SearchResultAdHandler::SearchResultAdHandler(SiteVisit& site_visit)
+    : site_visit_(site_visit) {
   event_handler_.SetDelegate(this);
 }
 
@@ -175,8 +174,8 @@ void SearchResultAdHandler::OnDidFireSearchResultAdViewedEvent(
 
   AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
 
-  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kViewedImpression);
+  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
+                       ConfirmationType::kViewedImpression);
 }
 
 void SearchResultAdHandler::OnDidFireSearchResultAdClickedEvent(
@@ -189,8 +188,8 @@ void SearchResultAdHandler::OnDidFireSearchResultAdClickedEvent(
 
   AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
-  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kClicked);
+  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
+                       ConfirmationType::kClicked);
 }
 
 }  // namespace brave_ads

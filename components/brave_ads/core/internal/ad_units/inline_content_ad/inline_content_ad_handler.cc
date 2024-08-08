@@ -10,7 +10,7 @@
 #include "base/check.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/account/account.h"
+#include "brave/components/brave_ads/core/internal/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
@@ -52,12 +52,10 @@ void FireEventCallback(TriggerAdEventCallback callback,
 }  // namespace
 
 InlineContentAdHandler::InlineContentAdHandler(
-    Account& account,
     SiteVisit& site_visit,
     const SubdivisionTargeting& subdivision_targeting,
     const AntiTargetingResource& anti_targeting_resource)
-    : account_(account),
-      site_visit_(site_visit),
+    : site_visit_(site_visit),
       serving_(subdivision_targeting, anti_targeting_resource) {
   event_handler_.SetDelegate(this);
   serving_.SetDelegate(this);
@@ -208,8 +206,8 @@ void InlineContentAdHandler::OnDidFireInlineContentAdViewedEvent(
 
   AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
 
-  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kViewedImpression);
+  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
+                       ConfirmationType::kViewedImpression);
 }
 
 void InlineContentAdHandler::OnDidFireInlineContentAdClickedEvent(
@@ -222,8 +220,8 @@ void InlineContentAdHandler::OnDidFireInlineContentAdClickedEvent(
 
   AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
-  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kClicked);
+  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
+                       ConfirmationType::kClicked);
 }
 
 void InlineContentAdHandler::OnTabDidChange(const TabInfo& tab) {

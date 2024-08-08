@@ -23,7 +23,6 @@
 
 namespace brave_ads {
 
-class TokenGeneratorInterface;
 struct IssuersInfo;
 
 class UserRewards final : public AdsClientNotifierObserver,
@@ -31,8 +30,7 @@ class UserRewards final : public AdsClientNotifierObserver,
                           public RedeemPaymentTokensDelegate,
                           public RefillConfirmationTokensDelegate {
  public:
-  explicit UserRewards(TokenGeneratorInterface* token_generator,
-                       WalletInfo wallet);
+  explicit UserRewards(WalletInfo wallet);
 
   UserRewards(const UserRewards&) = delete;
   UserRewards& operator=(const UserRewards&) = delete;

@@ -10,7 +10,6 @@
 #include <optional>
 #include <string>
 
-#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/values.h"
@@ -27,14 +26,13 @@
 namespace brave_ads {
 
 class Confirmations;
-class TokenGeneratorInterface;
 struct TransactionInfo;
 
 class Account final : public AdsClientNotifierObserver,
                       public ConfirmationDelegate,
                       public UserRewardsDelegate {
  public:
-  explicit Account(TokenGeneratorInterface* token_generator);
+  Account();
 
   Account(const Account&) = delete;
   Account& operator=(const Account&) = delete;
@@ -121,9 +119,6 @@ class Account final : public AdsClientNotifierObserver,
 
   // UserRewardsDelegate:
   void OnDidMigrateVerifiedRewardsUser() override;
-
-  const raw_ptr<TokenGeneratorInterface> token_generator_ =
-      nullptr;  // NOT OWNED
 
   base::ObserverList<AccountObserver> observers_;
 

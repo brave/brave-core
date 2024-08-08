@@ -6,6 +6,8 @@
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 
 #include "base/test/mock_callback.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
@@ -201,6 +203,9 @@ TEST_F(BraveAdsAdHistoryManagerTest,
 
 TEST_F(BraveAdsAdHistoryManagerTest, LikeAd) {
   // Arrange
+  test::MockTokenGenerator(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
+
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
@@ -222,6 +227,9 @@ TEST_F(BraveAdsAdHistoryManagerTest, LikeAd) {
 
 TEST_F(BraveAdsAdHistoryManagerTest, DislikeAd) {
   // Arrange
+  test::MockTokenGenerator(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
+
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
@@ -282,6 +290,9 @@ TEST_F(BraveAdsAdHistoryManagerTest, DislikeSegment) {
 
 TEST_F(BraveAdsAdHistoryManagerTest, SaveAd) {
   // Arrange
+  test::MockTokenGenerator(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
+
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
@@ -326,6 +337,9 @@ TEST_F(BraveAdsAdHistoryManagerTest, UnsaveAd) {
 
 TEST_F(BraveAdsAdHistoryManagerTest, MarkAdAsInappropriate) {
   // Arrange
+  test::MockTokenGenerator(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
+
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);

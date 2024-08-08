@@ -3,11 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/reminders/reminders.h"
-
-#include <cstddef>
-#include <memory>
-
 #include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
@@ -45,13 +40,9 @@ class BraveAdsRemindersTest : public test::TestBase {
     test::TestBase::SetUp();
 
     ads_observer_mock_ = test::AddAdsObserverMock();
-
-    reminders_ = std::make_unique<Reminders>();
   }
 
   raw_ptr<AdsObserverMock> ads_observer_mock_ = nullptr;
-
-  std::unique_ptr<Reminders> reminders_;
 };
 
 TEST_F(BraveAdsRemindersTest,

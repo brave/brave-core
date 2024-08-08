@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler.h"
@@ -31,7 +30,6 @@
 
 namespace brave_ads {
 
-class Account;
 class SiteVisit;
 struct AdInfo;
 struct ConversionInfo;
@@ -39,7 +37,7 @@ struct TabInfo;
 
 class AdHandler final : public ConversionsObserver, SiteVisitObserver {
  public:
-  explicit AdHandler(Account& account);
+  AdHandler();
 
   AdHandler(const AdHandler&) = delete;
   AdHandler& operator=(const AdHandler&) = delete;
@@ -90,8 +88,6 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
   void OnDidLandOnPage(const TabInfo& tab, const AdInfo& ad) override;
   void OnDidNotLandOnPage(const TabInfo& tab, const AdInfo& ad) override;
   void OnCanceledPageLand(int32_t tab_id, const AdInfo& ad) override;
-
-  const raw_ref<Account> account_;
 
   Catalog catalog_;
 

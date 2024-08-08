@@ -5,16 +5,15 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
 
-#include <memory>
 #include <optional>
 
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer_mock.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
@@ -36,28 +35,20 @@ class BraveAdsReactionsTest : public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+    test::MockTokenGenerator(/*count=*/1);
 
-    account_ = std::make_unique<Account>(&token_generator_mock_);
-    account_->AddObserver(&account_observer_mock_);
-
-    reactions_ = std::make_unique<Reactions>(*account_);
+    GetAccount().AddObserver(&account_observer_mock_);
 
     test::ForcePermissionRules();
   }
 
   void TearDown() override {
-    account_->RemoveObserver(&account_observer_mock_);
+    GetAccount().RemoveObserver(&account_observer_mock_);
 
     test::TestBase::TearDown();
   }
 
-  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
-
-  std::unique_ptr<Account> account_;
   AccountObserverMock account_observer_mock_;
-
-  std::unique_ptr<Reactions> reactions_;
 };
 
 TEST_F(BraveAdsReactionsTest, LikeAd) {

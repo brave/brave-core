@@ -24,11 +24,9 @@
 
 namespace brave_ads {
 
-class TokenGeneratorInterface;
-
 class RefillConfirmationTokens final {
  public:
-  explicit RefillConfirmationTokens(TokenGeneratorInterface* token_generator);
+  RefillConfirmationTokens();
 
   RefillConfirmationTokens(const RefillConfirmationTokens&) = delete;
   RefillConfirmationTokens& operator=(const RefillConfirmationTokens&) = delete;
@@ -81,9 +79,6 @@ class RefillConfirmationTokens final {
   void NotifyFailedToRefillConfirmationTokens() const;
   void NotifyWillRetryRefillingConfirmationTokens(base::Time retry_at) const;
   void NotifyDidRetryRefillingConfirmationTokens() const;
-
-  const raw_ptr<TokenGeneratorInterface> token_generator_ =
-      nullptr;  // NOT OWNED
 
   raw_ptr<RefillConfirmationTokensDelegate> delegate_ = nullptr;
 
