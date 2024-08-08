@@ -10,7 +10,6 @@
 #include <string>
 
 #include "base/scoped_observation.h"
-#include "chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h"
 #include "components/prefs/pref_member.h"
 #include "components/url_formatter/url_formatter.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -24,6 +23,7 @@ class Label;
 class ImageView;
 }  // namespace views
 
+class SplitViewLocationBarModelDelegate;
 class PrefService;
 class LocationBarModel;
 
@@ -32,15 +32,14 @@ class LocationBarModel;
 // the site might not be safe.
 class SplitViewLocationBar : public views::WidgetDelegateView,
                              public content::WebContentsObserver,
-                             public views::ViewObserver,
-                             public ChromeLocationBarModelDelegate {
+                             public views::ViewObserver {
   METADATA_HEADER(SplitViewLocationBar, views::WidgetDelegateView)
 
  public:
   ~SplitViewLocationBar() override;
 
   static SplitViewLocationBar* Create(PrefService* prefs,
-                                      views::View* web_view);
+                                      views::View* parent_web_view);
 
   void SetWebContents(content::WebContents* web_contents);
 
@@ -60,10 +59,6 @@ class SplitViewLocationBar : public views::WidgetDelegateView,
                                views::View* starting_view) override;
   void OnViewBoundsChanged(views::View* observed_view) override;
   void OnViewIsDeleting(views::View* observed_view) override;
-
-  // ChromeLocationBarModelDelegate:
-  content::WebContents* GetActiveWebContents() const override;
-  bool ShouldDisplayURL() const override;
 
  private:
   friend class SplitViewLocationBarUnitTest;
@@ -90,6 +85,8 @@ class SplitViewLocationBar : public views::WidgetDelegateView,
 
   raw_ptr<PrefService> prefs_ = nullptr;
 
+  std::unique_ptr<SplitViewLocationBarModelDelegate>
+      location_bar_model_delegate_;
   std::unique_ptr<LocationBarModel> location_bar_model_;
 
   raw_ptr<views::ImageView> safety_icon_ = nullptr;
