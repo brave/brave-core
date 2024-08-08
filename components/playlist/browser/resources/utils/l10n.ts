@@ -36,6 +36,7 @@ export type Message =
   | 'bravePlaylistFailedToPlayDescription'
   | 'bravePlaylistFailedToPlayRecover'
   | 'bravePlaylistAlertDismiss'
+  | 'bravePlaylistAddMediaFromPage'
 
 export function getLocalizedString(message: Message) {
   return getLocale(message)

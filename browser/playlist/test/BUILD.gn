@@ -18,7 +18,10 @@ source_set("browser_tests") {
   ]
 
   if (enable_playlist_webui) {
-    sources += [ "playlist_browsertest.cc" ]
+    sources += [
+      "playlist_active_tab_tracker_browsertest.cc",
+      "playlist_browsertest.cc",
+    ]
   }
 
   deps = [

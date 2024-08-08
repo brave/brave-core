@@ -1280,6 +1280,8 @@ source_set("ui") {
 
   if (enable_playlist_webui) {
     sources += [
+      "playlist/playlist_browser_finder.cc",
+      "playlist/playlist_browser_finder.h",
       "playlist/playlist_dialogs.cc",
       "playlist/playlist_dialogs.h",
       "views/playlist/playlist_action_dialogs.cc",
@@ -1288,6 +1290,7 @@ source_set("ui") {
       "views/playlist/playlist_action_icon_view.h",
       "views/playlist/playlist_add_bubble_view.cc",
       "views/playlist/playlist_add_bubble_view.h",
+      "views/playlist/playlist_browser_finder_views.cc",
       "views/playlist/playlist_bubble_view.cc",
       "views/playlist/playlist_bubble_view.h",
       "views/playlist/playlist_bubbles_controller.cc",
@@ -1306,6 +1309,8 @@ source_set("ui") {
       "views/side_panel/playlist/playlist_side_panel_coordinator.h",
       "views/side_panel/playlist/playlist_side_panel_web_view.cc",
       "views/side_panel/playlist/playlist_side_panel_web_view.h",
+      "webui/playlist_active_tab_tracker.cc",
+      "webui/playlist_active_tab_tracker.h",
       "webui/playlist_ui.cc",
       "webui/playlist_ui.h",
     ]
