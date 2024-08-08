@@ -967,9 +967,6 @@ extension BrowserViewController: WKNavigationDelegate {
 
       return (.useCredential, credentials.credentials)
     } catch {
-      if let error = error as? Authenticator.LoginDataError, error == .userCancelledAuthentication {
-        return (.cancelAuthenticationChallenge, nil)
-      }
       return (.rejectProtectionSpace, nil)
     }
   }
