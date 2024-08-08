@@ -19,6 +19,7 @@
 #include "ios/web_view/internal/cwv_web_view_configuration_internal.h"
 #include "ios/web_view/internal/cwv_web_view_internal.h"
 #include "ios/web_view/internal/web_view_browser_state.h"
+#include "ios/web_view/public/cwv_navigation_delegate.h"
 
 const CWVUserAgentType CWVUserAgentTypeNone =
     static_cast<CWVUserAgentType>(web::UserAgentType::NONE);
@@ -159,6 +160,24 @@ id NSObjectFromValue(const base::Value* value) {
       web::WKWebViewConfigurationProvider::FromBrowserState(
           self.webState->GetBrowserState());
   return config_provider.GetWebViewConfiguration();
+}
+
+#pragma mark - CRWWebStateDelegate
+
+- (void)webState:(web::WebState*)webState
+    didRequestHTTPAuthForProtectionSpace:(NSURLProtectionSpace*)protectionSpace
+                      proposedCredential:(NSURLCredential*)proposedCredential
+                       completionHandler:(void (^)(NSString* username,
+                                                   NSString* password))handler {
+  SEL selector = @selector(webView:
+      didRequestHTTPAuthForProtectionSpace:proposedCredential:completionHandler
+                                          :);
+  if ([self.navigationDelegate respondsToSelector:selector]) {
+    [self.navigationDelegate webView:self
+        didRequestHTTPAuthForProtectionSpace:protectionSpace
+                          proposedCredential:proposedCredential
+                           completionHandler:handler];
+  }
 }
 
 @end

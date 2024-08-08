@@ -155,4 +155,26 @@ class TabManagerNavDelegate: NSObject, CWVNavigationDelegate {
     }
     return false
   }
+
+  func webView(
+    _ webView: CWVWebView,
+    didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
+    proposedCredential: URLCredential,
+    completionHandler handler: @escaping (String?, String?) -> Void
+  ) {
+    var handled: Bool = false
+    for delegate in delegates {
+      delegate.webView?(
+        webView,
+        didRequestHTTPAuthFor: protectionSpace,
+        proposedCredential: proposedCredential,
+        completionHandler: { username, password in
+          if !handled {
+            handled = true
+            handler(username, password)
+          }
+        }
+      )
+    }
+  }
 }

@@ -958,6 +958,73 @@ extension BrowserViewController: CWVNavigationDelegate {
     }
     return false
   }
+
+  public func webView(
+    _ webView: CWVWebView,
+    didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
+    proposedCredential: URLCredential,
+    completionHandler handler: @escaping (String?, String?) -> Void
+  ) {
+    Task { @MainActor in
+      do {
+        guard let tab = tabManager[webView] else { return }
+        let credential = try await credentialForHTTPAuthRequest(
+          webView: webView,
+          tab: tab,
+          protectionSpace: protectionSpace,
+          proposedCredential: proposedCredential
+        )
+        handler(credential.user, credential.password)
+      } catch {
+        handler(nil, nil)
+      }
+    }
+  }
+
+  @MainActor private func credentialForHTTPAuthRequest(
+    webView: CWVWebView,
+    tab: Tab,
+    protectionSpace: URLProtectionSpace,
+    proposedCredential: URLCredential
+  ) async throws -> URLCredential {
+    let host = protectionSpace.host
+    let origin = "\(host):\(protectionSpace.port)"
+
+    // The challenge may come from a background tab, so ensure it's the one visible.
+    tabManager.selectTab(tab)
+    tab.isDisplayingBasicAuthPrompt = true
+    defer { tab.isDisplayingBasicAuthPrompt = false }
+
+    let isHidden = webView.isHidden
+    defer { webView.isHidden = isHidden }
+
+    // Manually trigger a `url` change notification
+    if host != tab.url?.host {
+      webView.isHidden = true
+
+      observeValue(
+        forKeyPath: KVOConstants.visibleURL.keyPath,
+        of: webView,
+        change: [.newKey: webView.visibleURL as Any, .kindKey: 1],
+        context: nil
+      )
+    }
+
+    let credentials = try await Authenticator.handleAuthRequest(
+      self,
+      credential: proposedCredential,
+      protectionSpace: protectionSpace
+    )
+
+    if BasicAuthCredentialsManager.validDomains.contains(host) {
+      BasicAuthCredentialsManager.setCredential(
+        origin: origin,
+        credential: credentials.credentials
+      )
+    }
+
+    return credentials.credentials
+  }
 }
 
 // MARK: WKNavigationDelegate
