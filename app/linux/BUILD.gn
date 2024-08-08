@@ -1,3 +1,8 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/build/config.gni")
 import("//build/linux/extract_symbols.gni")
 
@@ -5,7 +10,8 @@ if (should_generate_symbols) {
   action("generate_breakpad_symbols") {
     # host_toolchain must be used for cross-compilation case.
     # See chrome/updater/mac:syms
-    dump_syms = "//third_party/breakpad:dump_syms($host_toolchain)"
+    dump_syms =
+        "//third_party/breakpad:dump_syms($host_system_allocator_toolchain)"
     symbols_dir = "$brave_dist_dir/$brave_product_name.breakpad.syms"
     outputs = [ symbols_dir ]
 
