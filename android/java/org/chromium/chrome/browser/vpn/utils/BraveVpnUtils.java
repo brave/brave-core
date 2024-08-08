@@ -27,6 +27,7 @@ import org.chromium.base.Log;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnPlansActivity;
+import org.chromium.chrome.browser.vpn.activities.VpnPaywallActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity;
 import org.chromium.chrome.browser.vpn.activities.VpnAlwaysOnActivity;
@@ -61,7 +62,7 @@ public class BraveVpnUtils {
         if (activity == null) {
             return;
         }
-        Intent braveVpnPlanIntent = new Intent(activity, BraveVpnPlansActivity.class);
+        Intent braveVpnPlanIntent = new Intent(activity, VpnPaywallActivity.class);
         braveVpnPlanIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         braveVpnPlanIntent.setAction(Intent.ACTION_VIEW);
         activity.startActivity(braveVpnPlanIntent);

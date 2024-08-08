@@ -89,6 +89,14 @@
     tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
 
 <activity
+    android:name="org.chromium.chrome.browser.vpn.activities.VpnPaywallActivity"
+    android:theme="@style/Theme.Chromium.Activity"
+    android:noHistory="true"
+    android:launchMode="singleTask"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
+
+<activity
     android:name="org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity"
     android:theme="@style/Theme.Chromium.Activity"
     android:noHistory="true"
