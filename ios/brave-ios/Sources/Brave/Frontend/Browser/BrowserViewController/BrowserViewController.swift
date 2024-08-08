@@ -1640,6 +1640,8 @@ public class BrowserViewController: UIViewController {
     let vpnPaywallView = BraveVPNPaywallView(openVPNAuthenticationInNewTab: { [weak self] in
       guard let self = self else { return }
 
+      self.popToBVC()
+
       self.openURLInNewTab(
         .brave.braveVPNRefreshCredentials,
         isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
@@ -2588,6 +2590,8 @@ extension BrowserViewController {
 
 extension BrowserViewController: SettingsDelegate {
   func settingsOpenURLInNewTab(_ url: URL) {
+    popToBVC()
+
     self.openURLInNewTab(
       url,
       isPrivate: privateBrowsingManager.isPrivateBrowsing,

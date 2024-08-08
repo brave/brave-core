@@ -28,17 +28,11 @@ public struct BraveVPNPaywallView: View {
   @State
   private var availableTierTypes: [BraveVPNSubscriptionTier] = [.yearly, .monthly]
 
-  //  @ObservedObject
-  //  private(set) var storeSDK = BraveStoreSDK.shared
-
   @State
   private var paymentStatus: BraveVPNPaymentStatus = .success
 
   @State
   private var isShowingPurchaseAlert = false
-
-  @State
-  private var shouldDismiss: Bool = false
 
   @State
   private var shouldRefreshCredentials = false
@@ -49,113 +43,130 @@ public struct BraveVPNPaywallView: View {
   @State
   private var isFreeTrialAvailable = !Preferences.VPN.freeTrialUsed.value
 
-  // Timer used for resetting the restore action to prevent infinite loading
   @State
   private var iapRestoreTimer: Task<Void, Error>?
 
-  var premiumUpgrageSuccessful: ((BraveVPNSubscriptionTier) -> Void)?
+  @ObservedObject
+  var iapObserverManager: BraveVPNIAPObserverManager
+
+  var installVPNProfile: (() -> Void)?
 
   var openVPNAuthenticationInNewTab: (() -> Void)?
 
   public init(openVPNAuthenticationInNewTab: @escaping (() -> Void)) {
+    self.iapObserverManager = BraveVPNIAPObserverManager(iapObserver: BraveVPN.iapObserver)
     self.openVPNAuthenticationInNewTab = openVPNAuthenticationInNewTab
   }
 
   public var body: some View {
-    NavigationView {
-      VStack(spacing: 8.0) {
-        ScrollView {
-          VStack(spacing: 8.0) {
-            BraveVPNPremiumUpsellView()
-              .padding([.horizontal, .top], 24.0)
-              .padding(.bottom, 8.0)
-            Color(braveSystemName: .primitivePrimary25)
-              .frame(height: 1.0)
-            BraveVPNPoweredBrandView(isFreeTrialAvailable: isFreeTrialAvailable)
-            tierSelection
-              .padding(.horizontal, 16.0)
-            BraveVPNSubscriptionActionView(
-              shouldRefreshCredentials: $shouldRefreshCredentials,
-              shouldRedeedPromoCode: $shouldRedeemPromoCode
-            )
+    VStack(spacing: 8.0) {
+      ScrollView {
+        VStack(spacing: 8.0) {
+          BraveVPNPremiumUpsellView()
+            .padding([.horizontal, .top], 24.0)
             .padding(.bottom, 8.0)
-          }
-          .navigationTitle("Brave Firewall + VPN")
-          .navigationBarTitleDisplayMode(.inline)
-          .toolbar {
-            ToolbarItemGroup(placement: .confirmationAction) {
-              Button(
-                action: {
-                  Task { await restorePurchase() }
-                },
-                label: {
-                  if paymentStatus == .ongoing {
-                    ProgressView()
-                      .tint(Color.white)
-                  } else {
-                    Text("Restore")
-                  }
+          Color(braveSystemName: .primitivePrimary25)
+            .frame(height: 1.0)
+          BraveVPNPoweredBrandView(isFreeTrialAvailable: isFreeTrialAvailable)
+          tierSelection
+            .padding(.horizontal, 16.0)
+          BraveVPNSubscriptionActionView(
+            shouldRefreshCredentials: $shouldRefreshCredentials,
+            shouldRedeedPromoCode: $shouldRedeemPromoCode
+          )
+          .padding(.bottom, 8.0)
+        }
+        .navigationTitle("Brave Firewall + VPN")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+          ToolbarItemGroup(placement: .confirmationAction) {
+            Button(
+              action: {
+                Task { await restorePurchase() }
+              },
+              label: {
+                if paymentStatus == .ongoing {
+                  ProgressView()
+                    .tint(Color.white)
+                } else {
+                  Text("Restore")
                 }
-              )
-              .foregroundColor(.white)
-              .disabled(paymentStatus == .ongoing)
-              .buttonStyle(.plain)
-            }
-
-            ToolbarItemGroup(placement: .cancellationAction) {
-              Button("Cancel") {
-                dismiss()
               }
-              .foregroundColor(.white)
-            }
+            )
+            .foregroundColor(.white)
+            .disabled(paymentStatus == .ongoing)
+            .buttonStyle(.plain)
           }
         }
-        .introspectViewController(customize: { vc in
-          vc.navigationItem.do {
-            let appearance = UINavigationBarAppearance().then {
-              $0.configureWithDefaultBackground()
-              $0.backgroundColor = UIColor(braveSystemName: .primitivePrimary10)
-              $0.titleTextAttributes = [.foregroundColor: UIColor.white]
-              $0.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-            }
-            $0.standardAppearance = appearance
-            $0.scrollEdgeAppearance = appearance
+      }
+      .introspectViewController(customize: { vc in
+        vc.navigationItem.do {
+          let appearance = UINavigationBarAppearance().then {
+            $0.configureWithDefaultBackground()
+            $0.backgroundColor = UIColor(braveSystemName: .primitivePrimary10)
+            $0.titleTextAttributes = [.foregroundColor: UIColor.white]
+            $0.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
           }
-        })
-
-        paywallActionView
-          .padding(.bottom, 16.0)
-      }
-      .background(
-        Color(braveSystemName: .primitivePrimary10)
-          .edgesIgnoringSafeArea(.all)
-      )
-      .alert(isPresented: $isShowingPurchaseAlert) {
-        Alert(
-          title: Text("Error"),
-          message: Text(
-            "Unable to complete purchase. Please try again, or check your payment details on Apple and try again."
-          ),
-          dismissButton: .default(Text("OK"))
-        )
-      }
-      .onChange(of: shouldDismiss) { shouldDismiss in
-        premiumUpgrageSuccessful?(selectedTierType)
-
-        if shouldDismiss {
-          dismiss()
+          $0.standardAppearance = appearance
+          $0.scrollEdgeAppearance = appearance
         }
-      }
-      .onChange(of: shouldRefreshCredentials) { shouldRefreshCredentials in
-        dismiss()
-        openVPNAuthenticationInNewTab?()
-      }
-      .onChange(of: shouldRedeemPromoCode) { shouldRedeemPromoCode in
-        // Open the redeem code sheet
-        SKPaymentQueue.default().presentCodeRedemptionSheet()
-      }
+
+        vc.navigationController?.navigationBar.tintColor = .white
+      })
+
+      paywallActionView
+        .padding(.bottom, 16.0)
     }
-    .navigationViewStyle(.stack)
+    .background(
+      Color(braveSystemName: .primitivePrimary10)
+        .edgesIgnoringSafeArea(.all)
+    )
+    .alert(isPresented: $isShowingPurchaseAlert) {
+      Alert(
+        title: Text(Strings.VPN.vpnErrorPurchaseFailedTitle),
+        message: Text(
+          Strings.VPN.vpnErrorPurchaseFailedBody
+        ),
+        dismissButton: .default(Text(Strings.OKString))
+      )
+    }
+    .onChange(of: shouldRefreshCredentials) { _ in
+      dismiss()
+      openVPNAuthenticationInNewTab?()
+    }
+    .onChange(of: shouldRedeemPromoCode) { _ in
+      // Open the redeem code sheet
+      SKPaymentQueue.default().presentCodeRedemptionSheet()
+    }
+    .onChange(of: iapObserverManager.isPurchaseSuccessful) { purchaseOrRestoreSuccessful in
+      resetTheRestoreTimerIfNecessary()
+      
+      guard purchaseOrRestoreSuccessful else {
+        paymentStatus = .failure
+        return
+      }
+      
+      if iapObserverManager.isReceiptValidationRequired {
+        Task {
+          _ = await BraveVPN.validateReceiptData()
+        }
+      }
+      
+      paymentStatus = .success
+      
+      installVPNProfile?()
+    }
+    .onChange(of: iapObserverManager.isPurchaseFailedError) { error in
+      resetTheRestoreTimerIfNecessary()
+
+      paymentStatus = .failure
+
+      if case .transactionError(let err) = error, err?.code == SKError.paymentCancelled {
+        return
+      }
+      
+      isShowingPurchaseAlert = true
+    }
     .onDisappear {
       iapRestoreTimer?.cancel()
     }
@@ -247,37 +258,35 @@ public struct BraveVPNPaywallView: View {
   private func purchaseSubscription() async {
     paymentStatus = .ongoing
 
-    do {
-      //      switch selectedTierType {
-      //      case .monthly:
-      //        try await storeSDK.purchase(product: BraveStoreProduct.vpnMonthly)
-      //      case .yearly:
-      //        try await storeSDK.purchase(product: BraveStoreProduct.vpnYearly)
-      //      }
+    addPaymentForSubcription(type: selectedTierType)
+  }
 
-      paymentStatus = .success
-      shouldDismiss = true
-    } catch {
-      Logger.module.debug("[BraveVPN PaywallView] - Purchase Failed: \(error)")
+  private func addPaymentForSubcription(type: BraveVPNSubscriptionTier) {
+    var subscriptionProduct: SKProduct?
 
-      paymentStatus = .failure
-      isShowingPurchaseAlert = true
+    switch type {
+    case .yearly:
+      subscriptionProduct = BraveVPNProductInfo.yearlySubProduct
+    case .monthly:
+      subscriptionProduct = BraveVPNProductInfo.monthlySubProduct
     }
+
+    guard let subscriptionProduct = subscriptionProduct else {
+      Logger.module.error("Failed to retrieve \(type.rawValue) subcription product")
+      paymentStatus = .failure
+
+      return
+    }
+
+    let payment = SKPayment(product: subscriptionProduct)
+    SKPaymentQueue.default().add(payment)
   }
 
   @MainActor
   private func restorePurchase() async {
     paymentStatus = .ongoing
 
-    //    if await storeSDK.restorePurchases() {
-    //      iapRestoreTimer?.cancel()
-    //      paymentStatus = .success
-    //      shouldDismiss = true
-    //    } else {
-    //      iapRestoreTimer?.cancel()
-    //      paymentStatus = .failure
-    //      isShowingPurchaseAlert = true
-    //    }
+    SKPaymentQueue.default().restoreCompletedTransactions()
 
     if iapRestoreTimer != nil {
       iapRestoreTimer?.cancel()
@@ -292,6 +301,13 @@ public struct BraveVPNPaywallView: View {
 
       // Show Alert for failure of restore
       isShowingPurchaseAlert = true
+    }
+  }
+  
+  private func resetTheRestoreTimerIfNecessary() {
+    if iapRestoreTimer != nil {
+      iapRestoreTimer?.cancel()
+      iapRestoreTimer = nil
     }
   }
 }

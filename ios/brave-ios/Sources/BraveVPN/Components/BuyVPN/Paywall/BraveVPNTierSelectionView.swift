@@ -8,9 +8,9 @@ import DesignSystem
 import StoreKit
 import SwiftUI
 
-enum BraveVPNSubscriptionTier {
-  case monthly
-  case yearly
+enum BraveVPNSubscriptionTier: String {
+  case monthly = "yearly"
+  case yearly = "monthly"
 }
 
 struct BraveVPNPremiumTierSelectionView: View {
