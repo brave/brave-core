@@ -47,8 +47,8 @@ export default function BeginGeneration() {
             isMobile: false,
             hasAcceptedAgreement: true
           }}
-          onFocusInput={() => undefined}
-          onBlurInput={() => undefined} />
+          onFocusInputMobile={() => undefined}
+          onBlurInputMobile={() => undefined} />
       </ToolsButtonMenu>
     </FiltersContainer>
     <NoContent />
