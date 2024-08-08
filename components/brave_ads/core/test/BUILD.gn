@@ -444,7 +444,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule_test_util.h",
     "//brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule_unittest.cc",
     "//brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule_util_unittest.cc",
-    "//brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/dislike_category_exclusion_rule_unittest.cc",
+    "//brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/dislike_segment_exclusion_rule_unittest.cc",
     "//brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/dislike_exclusion_rule_unittest.cc",
     "//brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature_unittest.cc",
     "//brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/marked_as_inappropriate_exclusion_rule_unittest.cc",

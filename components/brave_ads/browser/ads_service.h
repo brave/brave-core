@@ -157,38 +157,37 @@ class AdsService : public KeyedService {
   // setting to the neutral state. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
   virtual void ToggleLikeAd(base::Value::Dict value,
-                            ToggleUserReactionCallback callback) = 0;
+                            ToggleReactionCallback callback) = 0;
 
   // Called to dislike an ad. This is a toggle, so calling it again returns the
   // setting to the neutral state. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
   virtual void ToggleDislikeAd(base::Value::Dict value,
-                               ToggleUserReactionCallback callback) = 0;
+                               ToggleReactionCallback callback) = 0;
 
   // Called to like a category. This is a toggle, so calling it again returns
   // the setting to the neutral state. The callback takes one argument - `bool`
   // is set to `true` if successful otherwise `false`.
-  virtual void ToggleLikeCategory(base::Value::Dict value,
-                                  ToggleUserReactionCallback callback) = 0;
+  virtual void ToggleLikeSegment(base::Value::Dict value,
+                                 ToggleReactionCallback callback) = 0;
 
   // Called to dislike a category. This is a toggle, so calling it again
   // returns the setting to the neutral state. The callback takes one argument -
-  virtual void ToggleDislikeCategory(base::Value::Dict value,
-                                     ToggleUserReactionCallback callback) = 0;
+  virtual void ToggleDislikeSegment(base::Value::Dict value,
+                                    ToggleReactionCallback callback) = 0;
   // `bool` is set to `true` if successful otherwise `false`.
 
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. The callback takes one argument -
   // `bool` is set to `true` if successful otherwise `false`.
   virtual void ToggleSaveAd(base::Value::Dict value,
-                            ToggleUserReactionCallback callback) = 0;
+                            ToggleReactionCallback callback) = 0;
 
   // Called to mark an ad as inappropriate. This is a toggle, so calling it
   // again unmarks the ad. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
-  virtual void ToggleMarkAdAsInappropriate(
-      base::Value::Dict value,
-      ToggleUserReactionCallback callback) = 0;
+  virtual void ToggleMarkAdAsInappropriate(base::Value::Dict value,
+                                           ToggleReactionCallback callback) = 0;
 
   // Called when the page for `tab_id` has loaded and the content is available
   // for analysis. `redirect_chain` containing a list of redirect URLs that

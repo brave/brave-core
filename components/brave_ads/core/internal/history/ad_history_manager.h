@@ -68,28 +68,28 @@ class AdHistoryManager final {
       ConfirmationType confirmation_type) const;
 
   void LikeAd(const AdHistoryItemInfo& ad_history_item,
-              ToggleUserReactionCallback callback) const;
+              ToggleReactionCallback callback) const;
   void DislikeAd(const AdHistoryItemInfo& ad_history_item,
-                 ToggleUserReactionCallback callback) const;
+                 ToggleReactionCallback callback) const;
 
-  void LikeCategory(const AdHistoryItemInfo& ad_history_item,
-                    ToggleUserReactionCallback callback) const;
-  void DislikeCategory(const AdHistoryItemInfo& ad_history_item,
-                       ToggleUserReactionCallback callback) const;
+  void LikeSegment(const AdHistoryItemInfo& ad_history_item,
+                   ToggleReactionCallback callback) const;
+  void DislikeSegment(const AdHistoryItemInfo& ad_history_item,
+                      ToggleReactionCallback callback) const;
 
   void ToggleSaveAd(const AdHistoryItemInfo& ad_history_item,
-                    ToggleUserReactionCallback callback) const;
+                    ToggleReactionCallback callback) const;
 
   void ToggleMarkAdAsInappropriate(const AdHistoryItemInfo& ad_history_item,
-                                   ToggleUserReactionCallback callback) const;
+                                   ToggleReactionCallback callback) const;
 
  private:
   void NotifyDidAppendAdHistoryItem(
       const AdHistoryItemInfo& ad_history_item) const;
   void NotifyDidLikeAd(const AdHistoryItemInfo& ad_history_item) const;
   void NotifyDidDislikeAd(const AdHistoryItemInfo& ad_history_item) const;
-  void NotifyDidLikeCategory(const AdHistoryItemInfo& ad_history_item) const;
-  void NotifyDidDislikeCategory(const AdHistoryItemInfo& ad_history_item) const;
+  void NotifyDidLikeSegment(const AdHistoryItemInfo& ad_history_item) const;
+  void NotifyDidDislikeSegment(const AdHistoryItemInfo& ad_history_item) const;
   void NotifyDidSaveAd(const AdHistoryItemInfo& ad_history_item) const;
   void NotifyDidUnsaveAd(const AdHistoryItemInfo& ad_history_item) const;
   void NotifyDidMarkAdAsInappropriate(

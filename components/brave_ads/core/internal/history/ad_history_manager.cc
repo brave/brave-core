@@ -145,13 +145,12 @@ std::optional<AdHistoryItemInfo> AdHistoryManager::Add(
 }
 
 void AdHistoryManager::LikeAd(const AdHistoryItemInfo& ad_history_item,
-                              ToggleUserReactionCallback callback) const {
+                              ToggleReactionCallback callback) const {
   AdHistoryItemInfo mutable_ad_history_item = ad_history_item;
-  mutable_ad_history_item.ad_user_reaction_type =
+  mutable_ad_history_item.ad_reaction_type =
       ClientStateManager::GetInstance().ToggleLikeAd(mutable_ad_history_item);
 
-  if (mutable_ad_history_item.ad_user_reaction_type ==
-      mojom::UserReactionType::kLike) {
+  if (mutable_ad_history_item.ad_reaction_type == mojom::ReactionType::kLiked) {
     NotifyDidLikeAd(mutable_ad_history_item);
   }
 
@@ -159,44 +158,43 @@ void AdHistoryManager::LikeAd(const AdHistoryItemInfo& ad_history_item,
 }
 
 void AdHistoryManager::DislikeAd(const AdHistoryItemInfo& ad_history_item,
-                                 ToggleUserReactionCallback callback) const {
+                                 ToggleReactionCallback callback) const {
   AdHistoryItemInfo mutable_ad_history_item = ad_history_item;
-  mutable_ad_history_item.ad_user_reaction_type =
+  mutable_ad_history_item.ad_reaction_type =
       ClientStateManager::GetInstance().ToggleDislikeAd(ad_history_item);
 
-  if (mutable_ad_history_item.ad_user_reaction_type ==
-      mojom::UserReactionType::kDislike) {
+  if (mutable_ad_history_item.ad_reaction_type ==
+      mojom::ReactionType::kDisliked) {
     NotifyDidDislikeAd(mutable_ad_history_item);
   }
 
   std::move(callback).Run(/*success=*/true);
 }
 
-void AdHistoryManager::LikeCategory(const AdHistoryItemInfo& ad_history_item,
-                                    ToggleUserReactionCallback callback) const {
-  const mojom::UserReactionType toggled_user_reaction_type =
-      ClientStateManager::GetInstance().ToggleLikeCategory(ad_history_item);
-  if (toggled_user_reaction_type == mojom::UserReactionType::kLike) {
-    NotifyDidLikeCategory(ad_history_item);
+void AdHistoryManager::LikeSegment(const AdHistoryItemInfo& ad_history_item,
+                                   ToggleReactionCallback callback) const {
+  const mojom::ReactionType toggled_reaction_type =
+      ClientStateManager::GetInstance().ToggleLikeSegment(ad_history_item);
+  if (toggled_reaction_type == mojom::ReactionType::kLiked) {
+    NotifyDidLikeSegment(ad_history_item);
   }
 
   std::move(callback).Run(/*success=*/true);
 }
 
-void AdHistoryManager::DislikeCategory(
-    const AdHistoryItemInfo& ad_history_item,
-    ToggleUserReactionCallback callback) const {
-  const mojom::UserReactionType toggled_user_reaction_type =
-      ClientStateManager::GetInstance().ToggleDislikeCategory(ad_history_item);
-  if (toggled_user_reaction_type == mojom::UserReactionType::kDislike) {
-    NotifyDidDislikeCategory(ad_history_item);
+void AdHistoryManager::DislikeSegment(const AdHistoryItemInfo& ad_history_item,
+                                      ToggleReactionCallback callback) const {
+  const mojom::ReactionType toggled_reaction_type =
+      ClientStateManager::GetInstance().ToggleDislikeSegment(ad_history_item);
+  if (toggled_reaction_type == mojom::ReactionType::kDisliked) {
+    NotifyDidDislikeSegment(ad_history_item);
   }
 
   std::move(callback).Run(/*success=*/true);
 }
 
 void AdHistoryManager::ToggleSaveAd(const AdHistoryItemInfo& ad_history_item,
-                                    ToggleUserReactionCallback callback) const {
+                                    ToggleReactionCallback callback) const {
   AdHistoryItemInfo mutable_ad_history_item = ad_history_item;
   mutable_ad_history_item.is_saved =
       ClientStateManager::GetInstance().ToggleSaveAd(ad_history_item);
@@ -212,7 +210,7 @@ void AdHistoryManager::ToggleSaveAd(const AdHistoryItemInfo& ad_history_item,
 
 void AdHistoryManager::ToggleMarkAdAsInappropriate(
     const AdHistoryItemInfo& ad_history_item,
-    ToggleUserReactionCallback callback) const {
+    ToggleReactionCallback callback) const {
   AdHistoryItemInfo mutable_ad_history_item = ad_history_item;
   mutable_ad_history_item.is_marked_as_inappropriate =
       ClientStateManager::GetInstance().ToggleMarkAdAsInappropriate(
@@ -250,17 +248,17 @@ void AdHistoryManager::NotifyDidDislikeAd(
   }
 }
 
-void AdHistoryManager::NotifyDidLikeCategory(
+void AdHistoryManager::NotifyDidLikeSegment(
     const AdHistoryItemInfo& ad_history_item) const {
   for (AdHistoryManagerObserver& observer : observers_) {
-    observer.OnDidLikeCategory(ad_history_item);
+    observer.OnDidLikeSegment(ad_history_item);
   }
 }
 
-void AdHistoryManager::NotifyDidDislikeCategory(
+void AdHistoryManager::NotifyDidDislikeSegment(
     const AdHistoryItemInfo& ad_history_item) const {
   for (AdHistoryManagerObserver& observer : observers_) {
-    observer.OnDidDislikeCategory(ad_history_item);
+    observer.OnDidDislikeSegment(ad_history_item);
   }
 }
 

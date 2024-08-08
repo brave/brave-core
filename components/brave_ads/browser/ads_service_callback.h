@@ -31,7 +31,7 @@ using PurgeOrphanedAdEventsForTypeCallback =
 using GetAdHistoryCallback =
     base::OnceCallback<void(base::Value::List history)>;
 
-using ToggleUserReactionCallback = base::OnceCallback<void(bool success)>;
+using ToggleReactionCallback = base::OnceCallback<void(bool success)>;
 
 }  // namespace brave_ads
 
