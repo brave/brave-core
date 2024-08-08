@@ -67,3 +67,8 @@ std::vector<permissions::ElementAnchoredBubbleVariant>
 BraveWalletPermissionPromptImpl::GetPromptVariants() const {
   return {};
 }
+
+std::optional<permissions::feature_params::PermissionElementPromptPosition>
+BraveWalletPermissionPromptImpl::GetPromptPosition() const {
+  return std::nullopt;
+}

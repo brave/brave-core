@@ -11,9 +11,14 @@
 
 #include "brave/components/brave_rewards/common/mojom/rewards_page.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+
+namespace content {
+class BrowserContext;
+}
 
 namespace brave_rewards {
 
@@ -21,7 +26,7 @@ namespace brave_rewards {
 class RewardsPageTopUI : public TopChromeWebUIController,
                          public mojom::RewardsPageHandlerFactory {
  public:
-  explicit RewardsPageTopUI(content::WebUI* web_ui, const std::string& host);
+  explicit RewardsPageTopUI(content::WebUI* web_ui);
   ~RewardsPageTopUI() override;
 
   void BindInterface(
@@ -39,6 +44,18 @@ class RewardsPageTopUI : public TopChromeWebUIController,
   mojo::Receiver<RewardsPageHandlerFactory> factory_receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
+};
+
+class RewardsPageTopUIConfig
+    : public DefaultTopChromeWebUIConfig<RewardsPageTopUI> {
+ public:
+  RewardsPageTopUIConfig();
+
+  // WebUIConfig::
+  bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
+
+  // TopChromeWebUIConfig::
+  bool ShouldAutoResizeHost() override;
 };
 
 }  // namespace brave_rewards

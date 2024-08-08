@@ -12,6 +12,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/meld_integration_service_factory.h"
@@ -183,4 +184,16 @@ void WalletPanelUI::CreatePanelHandler(
   if (blockchain_registry) {
     blockchain_registry->Bind(std::move(blockchain_registry_receiver));
   }
+}
+
+WalletPanelUIConfig::WalletPanelUIConfig()
+    : DefaultTopChromeWebUIConfig(content::kChromeUIScheme, kWalletPanelHost) {}
+
+bool WalletPanelUIConfig::IsWebUIEnabled(
+    content::BrowserContext* browser_context) {
+  return brave_wallet::IsAllowedForContext(browser_context);
+}
+
+bool WalletPanelUIConfig::ShouldAutoResizeHost() {
+  return true;
 }

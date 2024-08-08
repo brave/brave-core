@@ -165,7 +165,7 @@ const runTests = (passthroughArgs, suite, buildConfig, options) => {
       if (config.targetOS === 'android' && !options.manual_android_test_device) {
         // Specify emulator to run tests on
         braveArgs.push(
-            `--avd-config tools/android/avd/proto/generic_android${options.android_test_emulator_version}.textpb`)
+            `--avd-config tools/android/avd/proto/${options.android_test_emulator_name}.textpb`)
       }
       let runOptions = config.defaultOptions
       if (config.isTeamcity) {

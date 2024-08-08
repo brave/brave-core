@@ -30,6 +30,8 @@ class MockPermissionLifetimePrompt : public PermissionPrompt {
   bool ShouldFinalizeRequestAfterDecided() const override;
   std::vector<permissions::ElementAnchoredBubbleVariant> GetPromptVariants()
       const override;
+  std::optional<feature_params::PermissionElementPromptPosition>
+  GetPromptPosition() const override;
 
   Delegate* delegate() { return delegate_; }
   void ResetFactory();

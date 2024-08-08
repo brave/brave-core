@@ -11,13 +11,10 @@ import java.util.HashMap;
 
 /** Class to override default cached values. */
 public class BraveCachedFlag extends CachedFlag {
-    private static final String ANDROID_HUB = "AndroidHub";
     private static final String ANDROID_TAB_GROUP_STABLE_IDS = "AndroidTabGroupStableIds";
     private static final String INCOGNITO_REAUTHENTICATION_FOR_ANDROID =
             "IncognitoReauthenticationForAndroid";
     private static final String MAGIC_STACK_ANDROID = "MagicStackAndroid";
-    private static final String SHOW_NTP_AT_STARTUP_ANDROID = "ShowNtpAtStartupAndroid";
-    private static final String START_SURFACE_ANDROID = "StartSurfaceAndroid";
     private static final String SURFACE_POLISH = "SurfacePolish";
 
     // Set of flags to override.
@@ -25,12 +22,9 @@ public class BraveCachedFlag extends CachedFlag {
 
     static {
         sFlags = new HashMap<String, Boolean>();
-        sFlags.put(ANDROID_HUB, false);
         sFlags.put(ANDROID_TAB_GROUP_STABLE_IDS, false);
         sFlags.put(INCOGNITO_REAUTHENTICATION_FOR_ANDROID, true);
         sFlags.put(MAGIC_STACK_ANDROID, false);
-        sFlags.put(SHOW_NTP_AT_STARTUP_ANDROID, false);
-        sFlags.put(START_SURFACE_ANDROID, false);
         sFlags.put(SURFACE_POLISH, false);
     }
 

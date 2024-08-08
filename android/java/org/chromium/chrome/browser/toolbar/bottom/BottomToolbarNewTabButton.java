@@ -104,9 +104,12 @@ class BottomToolbarNewTabButton extends ChromeImageButton
         if (mThemeColorProvider == null || mIncognitoStateProvider == null || mBackground == null) {
             return;
         }
-        mBackground.setColorFilter(ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(
-                                           mContext, mThemeColorProvider.getThemeColor(),
-                                           mIncognitoStateProvider.isIncognitoSelected()),
+        mBackground.setColorFilter(
+                ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(
+                        mContext,
+                        mThemeColorProvider.getThemeColor(),
+                        mIncognitoStateProvider.isIncognitoSelected(),
+                        false /*isCustomTab*/),
                 PorterDuff.Mode.SRC_IN);
     }
 }

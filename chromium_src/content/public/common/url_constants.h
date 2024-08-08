@@ -9,7 +9,7 @@
 #include "src/content/public/common/url_constants.h"  // IWYU pragma: export
 
 namespace content {
-CONTENT_EXPORT extern const char kBraveUIScheme[];
+inline constexpr char kBraveUIScheme[] = "brave";
 }
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_COMMON_URL_CONSTANTS_H_

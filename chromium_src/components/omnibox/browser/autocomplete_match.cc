@@ -12,7 +12,10 @@
 const gfx::VectorIcon& AutocompleteMatch::GetVectorIcon(
     bool is_bookmark,
     const TemplateURL* turl) const {
-  if (!GetAdditionalInfo(commander::kCommanderMatchMarker).empty()) {
+  // TODO: `GetAdditionalInfoForDebugging()` shouldn't be used for non-debugging
+  // purposes.
+  if (!GetAdditionalInfoForDebugging(commander::kCommanderMatchMarker)
+           .empty()) {
     return kLeoCaratRightIcon;
   }
   return GetVectorIcon_Chromium(is_bookmark, turl);

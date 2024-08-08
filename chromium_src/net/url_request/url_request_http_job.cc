@@ -13,16 +13,12 @@
 #define ShouldSSLErrorsBeFatal(host) \
   ShouldSSLErrorsBeFatal(            \
       request_->isolation_info().network_anonymization_key(), host)
-#define ShouldUpgradeToSSL(host, net_log)                                   \
-  ShouldUpgradeToSSL(request->isolation_info().network_anonymization_key(), \
-                     host, net_log)
 #define AddHSTSHeader(host, value) \
   AddHSTSHeader(request_->isolation_info(), host, value)
 
 #include "src/net/url_request/url_request_http_job.cc"
 
 #undef AddHSTSHeader
-#undef ShouldUpgradeToSSL
 #undef ShouldSSLErrorsBeFatal
 #undef GetSSLUpgradeDecision
 

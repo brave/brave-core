@@ -23,8 +23,7 @@ namespace net {
 // in the run-time. This function is the only function which looks up entries
 // in the public suffix list, so we add our special case handling here to avoid
 // patching effective_tld_names.gperf directly.
-int LookupSuffixInReversedSet(const unsigned char* graph,
-                              size_t length,
+int LookupSuffixInReversedSet(base::span<const uint8_t> graph,
                               bool include_private,
                               std::string_view host,
                               size_t* suffix_length) {
@@ -54,8 +53,8 @@ int LookupSuffixInReversedSet(const unsigned char* graph,
     return kDafsaFound;
   }
 
-  return LookupSuffixInReversedSet_ChromiumImpl(graph, length, include_private,
-                                                host, suffix_length);
+  return LookupSuffixInReversedSet_ChromiumImpl(graph, include_private, host,
+                                                suffix_length);
 }
 
 }  // namespace net

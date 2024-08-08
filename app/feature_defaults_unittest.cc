@@ -81,7 +81,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &android_webview::features::kWebViewMediaIntegrityApiBlinkExtension,
 #endif
       &attribution_reporting::features::kConversionMeasurement,
-      &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
       &autofill::features::test::kAutofillServerCommunication,
 #if BUILDFLAG(IS_ANDROID)
       &base::features::kCollectAndroidFrameTimelineMetrics,
@@ -94,6 +93,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kBiddingAndScoringDebugReportingAPI,
       &blink::features::kBrowsingTopics,
       &blink::features::kClientHintsFormFactors,
+      &blink::features::kControlledFrame,
       &blink::features::kCssSelectorFragmentAnchor,
       &blink::features::kFencedFrames,
       &blink::features::kFencedFramesM120FeaturesPart2,
@@ -104,7 +104,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kInterestGroupStorage,
       &blink::features::kParakeet,
       &blink::features::kPrerender2,
-      &blink::features::kPrivacySandboxAdsAPIs,
       &blink::features::kPrivateAggregationApi,
       &blink::features::kReduceCookieIPCs,
       &blink::features::kSharedStorageAPI,
@@ -137,11 +136,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &extensions_features::kExtensionsManifestV3Only,
       &features::kToolbarPinning,
 #endif
-      &features::kAttributionReportingCrossAppWebOverride,
       &features::kBookmarkTriggerForPrerender2,
       &features::kChromeLabs,
       &features::kChromeStructuredMetrics,
-      &features::kControlledFrame,
       &features::kCookieDeprecationFacilitatedTesting,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kDesktopPWAsLinkCapturing,
@@ -158,7 +155,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kKAnonymityServiceOHTTPRequests,
       &features::kNewTabPageTriggerForPrerender2,
       &features::kNotificationTriggers,
-      &features::kOmniboxTriggerForPrerender2,
 #if BUILDFLAG(IS_ANDROID)
       &features::kPrivacyGuidePreloadAndroid,
 #endif
@@ -235,7 +231,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &optimization_guide::features::
           kRemoteOptimizationGuideFetchingAnonymousDataConsent,
       &page_image_service::kImageService,
-      &page_image_service::kImageServiceObserveSyncDownloadStatus,
       &page_image_service::kImageServiceSuggestPoweredImages,
 #if BUILDFLAG(IS_ANDROID)
       &password_manager::features::
@@ -254,7 +249,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &privacy_sandbox::kTrackingProtectionContentSettingUbControl,
       &safe_browsing::kExtensionTelemetryDisableOffstoreExtensions,
       &safe_browsing::kExtensionTelemetryTabsApiSignal,
-      &safe_browsing::kImprovedDownloadPageWarnings,
       &segmentation_platform::features::kSegmentationPlatformCollectTabRankData,
       &segmentation_platform::features::kSegmentationPlatformDeviceTier,
       &segmentation_platform::features::kSegmentationPlatformFeature,
@@ -262,7 +256,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &shared_highlighting::kIOSSharedHighlightingV2,
       &shared_highlighting::kSharedHighlightingManager,
       &subresource_filter::kAdTagging,
-      &syncer::kEnableBookmarkFoldersForAccountStorage,
+      &syncer::kSyncEnableBookmarksInTransportMode,
 #if !BUILDFLAG(IS_ANDROID)
       &translate::kTFLiteLanguageDetectionEnabled,
 #endif

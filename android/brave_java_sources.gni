@@ -10,6 +10,7 @@ import("//brave/android/java/org/chromium/chrome/browser/playlist/sources.gni")
 import("//brave/base/brave_base_cached_flags_java_sources.gni")
 import("//brave/base/brave_base_shared_preferences_java.gni")
 import("//brave/browser/brave_ads/android/java_sources.gni")
+import("//brave/browser/hub/internal/android/java/java_sources.gni")
 import("//brave/browser/incognito/android/java_sources.gni")
 import("//brave/browser/share/android/java_sources.gni")
 import("//brave/browser/tab_ui/android/brave_tab_ui_sources.gni")
@@ -76,6 +77,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUiPrefs.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoCustomTabRootUiCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoMojomHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoPlansActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoPrefUtils.java",
@@ -272,6 +274,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/omnibox/BraveLocationBarLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/omnibox/BraveLocationBarMediator.java",
   "../../brave/android/java/org/chromium/chrome/browser/omnibox/BraveLocationBarQRDialogFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/omnibox/styles/BraveOmniboxResourceProvider.java",
   "../../brave/android/java/org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediator.java",
   "../../brave/android/java/org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediatorBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveRewardsOnboardingFragment.java",
@@ -409,7 +412,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/tabmodel/BraveTabCreator.java",
   "../../brave/android/java/org/chromium/chrome/browser/tasks/BraveReturnToChromeUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/BraveHomeButton.java",
-  "../../brave/android/java/org/chromium/chrome/browser/toolbar/BraveIncognitoToggleTabLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/BraveToolbarManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BookmarksButton.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarConfiguration.java",
@@ -429,11 +431,10 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/TabSwitcherBottomToolbarModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/TabSwitcherBottomToolbarViewBinder.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator.java",
-  "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveTabSwitcherModeTTCoordinator.java",
-  "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveTabSwitcherModeTopToolbar.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveToolbarLayoutImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/ui/messages/infobar/BraveSimpleConfirmInfoBarBuilder.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ui/system/BraveStatusBarColorController.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/BravePackageReplacedBroadcastReceiver.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentServiceImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/NotificationIntent.java",

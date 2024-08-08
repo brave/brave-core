@@ -25,7 +25,7 @@ GetExecutingScriptsImpl(Isolate* isolate, bool all, bool include_position) {
         continue;
       }
 
-      const int script_id = Script::cast(maybe_script)->id();
+      const int script_id = Cast<Script>(maybe_script)->id();
       if (script_id <= 0) {
         continue;
       }
