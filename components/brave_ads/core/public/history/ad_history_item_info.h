@@ -7,10 +7,10 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_HISTORY_AD_HISTORY_ITEM_INFO_H_
 
 #include <string>
+#include <vector>
 
-#include "base/containers/circular_deque.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/export.h"
@@ -31,33 +31,23 @@ struct ADS_EXPORT AdHistoryItemInfo final {
 
   bool operator==(const AdHistoryItemInfo&) const = default;
 
+  [[nodiscard]] bool IsValid() const;
+
   base::Time created_at;
-
-  ConfirmationType confirmation_type = ConfirmationType::kUndefined;
-
-  // Ad.
   AdType type = AdType::kUndefined;
+  ConfirmationType confirmation_type = ConfirmationType::kUndefined;
   std::string placement_id;
   std::string creative_instance_id;
   std::string creative_set_id;
   std::string campaign_id;
   std::string advertiser_id;
   std::string segment;
-
-  // Brand.
-  std::string brand;
-  std::string brand_info;
-  std::string brand_display_url;
-  GURL brand_url;
-
-  // User reactions.
-  mojom::ReactionType ad_reaction_type = mojom::ReactionType::kNeutral;
-  mojom::ReactionType segment_reaction_type = mojom::ReactionType::kNeutral;
-  bool is_saved = false;
-  bool is_marked_as_inappropriate = false;
+  std::string title;
+  std::string description;
+  GURL target_url;
 };
 
-using AdHistoryList = base::circular_deque<AdHistoryItemInfo>;
+using AdHistoryList = std::vector<AdHistoryItemInfo>;
 
 }  // namespace brave_ads
 

@@ -19,8 +19,6 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_observer_interface.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_value_util.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/bat_ads_observer.h"
 
@@ -208,11 +206,7 @@ void BatAdsImpl::PurgeOrphanedAdEventsForType(
 void BatAdsImpl::GetAdHistory(const base::Time from_time,
                               const base::Time to_time,
                               GetAdHistoryCallback callback) {
-  const brave_ads::AdHistoryList ad_history = GetAds()->GetAdHistory(
-      brave_ads::AdHistoryFilterType::kConfirmationType,
-      brave_ads::AdHistorySortType::kDescendingOrder, from_time, to_time);
-
-  std::move(callback).Run(brave_ads::AdHistoryToUIValue(ad_history));
+  GetAds()->GetAdHistory(from_time, to_time, std::move(callback));
 }
 
 void BatAdsImpl::GetStatementOfAccounts(

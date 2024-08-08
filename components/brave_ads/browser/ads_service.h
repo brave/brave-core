@@ -151,7 +151,7 @@ class AdsService : public KeyedService {
   // obtained ad history.
   virtual void GetAdHistory(base::Time from_time,
                             base::Time to_time,
-                            GetAdHistoryCallback callback) = 0;
+                            GetAdHistoryForUICallback callback) = 0;
 
   // Called to clear Brave Ads data.
   virtual void ClearData() = 0;

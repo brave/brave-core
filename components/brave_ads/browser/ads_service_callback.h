@@ -28,8 +28,8 @@ using MaybeServeInlineContentAdAsDictCallback =
 using PurgeOrphanedAdEventsForTypeCallback =
     base::OnceCallback<void(bool success)>;
 
-using GetAdHistoryCallback =
-    base::OnceCallback<void(base::Value::List history)>;
+using GetAdHistoryForUICallback =
+    base::OnceCallback<void(std::optional<base::Value::List> ad_history)>;
 
 using ToggleReactionCallback = base::OnceCallback<void(bool success)>;
 
