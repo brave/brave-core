@@ -8,7 +8,7 @@
 
 #include "base/feature_list.h"
 #include "base/gtest_prod_util.h"
-#include "components/sync/base/model_type.h"
+#include "components/sync/base/data_type.h"
 #include "components/sync/base/passphrase_enums.h"
 #include "components/sync/engine/commit_and_get_updates_types.h"
 #include "components/sync/engine/data_type_worker.h"
@@ -32,7 +32,7 @@ FORWARD_DECLARE_TEST(BraveDataTypeWorkerTest,
 
 class BraveDataTypeWorker : public DataTypeWorker {
  public:
-  BraveDataTypeWorker(ModelType type,
+  BraveDataTypeWorker(DataType type,
                       const sync_pb::DataTypeState& initial_state,
                       Cryptographer* cryptographer,
                       bool encryption_enabled,

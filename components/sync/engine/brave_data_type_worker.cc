@@ -34,7 +34,7 @@ base::TimeDelta kMinimalTimeBetweenResetMarker = base::Minutes(30);
 }  // namespace
 
 BraveDataTypeWorker::BraveDataTypeWorker(
-    ModelType type,
+    DataType type,
     const sync_pb::DataTypeState& initial_state,
     Cryptographer* cryptographer,
     bool encryption_enabled,
@@ -110,7 +110,7 @@ bool BraveDataTypeWorker::IsResetProgressMarkerRequired(
 }
 
 void BraveDataTypeWorker::ResetProgressMarker() {
-  VLOG(1) << "Reset progress marker for type " << ModelTypeToDebugString(type_);
+  VLOG(1) << "Reset progress marker for type " << DataTypeToDebugString(type_);
   // Normal reset of progress marker due to 7th failure
   // P3A sample is 0
   base::UmaHistogramExactLinear("Brave.Sync.ProgressTokenEverReset", 0, 1);

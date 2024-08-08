@@ -104,9 +104,9 @@ class BraveSyncServiceImplTest : public testing::Test {
   ~BraveSyncServiceImplTest() override { sync_service_impl_->Shutdown(); }
 
   void CreateSyncService(
-      ModelTypeSet registered_types = ModelTypeSet({BOOKMARKS})) {
+      DataTypeSet registered_types = DataTypeSet({BOOKMARKS})) {
     DataTypeController::TypeVector controllers;
-    for (ModelType type : registered_types) {
+    for (DataType type : registered_types) {
       controllers.push_back(std::make_unique<FakeDataTypeController>(type));
     }
 
@@ -589,7 +589,7 @@ TEST_F(BraveSyncServiceImplTest, OnlyBookmarksAfterSetup) {
 
 TEST_F(BraveSyncServiceImplTest, P3aForHistoryThroughDelegate) {
   OSCryptMocker::SetUp();
-  CreateSyncService(ModelTypeSet({BOOKMARKS, HISTORY}));
+  CreateSyncService(DataTypeSet({BOOKMARKS, HISTORY}));
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
   task_environment_.RunUntilIdle();

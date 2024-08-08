@@ -20,7 +20,7 @@
 #include "components/browser_sync/browser_sync_switches.h"
 #include "components/component_updater/component_updater_switches.h"
 #include "components/sync/base/command_line_switches.h"
-#include "components/sync/base/model_type.h"
+#include "components/sync/base/data_type.h"
 #include "components/variations/variations_switches.h"
 #include "ios/chrome/browser/flags/chrome_switches.h"
 

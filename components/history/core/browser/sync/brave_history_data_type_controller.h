@@ -7,7 +7,7 @@
 #define BRAVE_COMPONENTS_HISTORY_CORE_BROWSER_SYNC_BRAVE_HISTORY_DATA_TYPE_CONTROLLER_H_
 
 #include "components/history/core/browser/sync/history_data_type_controller.h"
-#include "components/sync/base/model_type.h"
+#include "components/sync/base/data_type.h"
 
 class PrefService;
 

@@ -29,27 +29,27 @@ namespace syncer {
 
 class BraveDataTypeWorkerTest : public ::testing::Test {
  protected:
-  explicit BraveDataTypeWorkerTest(ModelType model_type = PREFERENCES)
-      : model_type_(model_type) {}
+  explicit BraveDataTypeWorkerTest(DataType data_type = PREFERENCES)
+      : data_type_(data_type) {}
 
   ~BraveDataTypeWorkerTest() override = default;
 
   void NormalInitialize() {
     DataTypeState initial_state;
     initial_state.mutable_progress_marker()->set_data_type_id(
-        GetSpecificsFieldNumberFromModelType(model_type_));
+        GetSpecificsFieldNumberFromDataType(data_type_));
     initial_state.mutable_progress_marker()->set_token(
         "some_saved_progress_token");
 
     initial_state.set_initial_sync_state(
         sync_pb::DataTypeState_InitialSyncState_INITIAL_SYNC_DONE);
 
-    InitializeWithState(model_type_, initial_state);
+    InitializeWithState(data_type_, initial_state);
 
     nudge_handler()->ClearCounters();
   }
 
-  void InitializeWithState(const ModelType type, const DataTypeState& state) {
+  void InitializeWithState(const DataType type, const DataTypeState& state) {
     DCHECK(!worker());
 
     auto processor = std::make_unique<MockDataTypeProcessor>();
@@ -82,7 +82,7 @@ class BraveDataTypeWorkerTest : public ::testing::Test {
 
  private:
   base::test::SingleThreadTaskEnvironment task_environment;
-  const ModelType model_type_;
+  const DataType data_type_;
   FakeCryptographer cryptographer_;
   CancelationSignal cancelation_signal_;
   std::unique_ptr<BraveDataTypeWorker> worker_;
