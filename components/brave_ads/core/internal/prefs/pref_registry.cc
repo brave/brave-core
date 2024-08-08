@@ -38,6 +38,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* const registry) {
 
   registry->RegisterTimePref(prefs::kNextTokenRedemptionAt, base::Time::Now());
 
+  registry->RegisterDictionaryPref(prefs::kAdReactions);
+  registry->RegisterDictionaryPref(prefs::kSegmentReactions);
+  registry->RegisterListPref(prefs::kSaveAds);
+  registry->RegisterListPref(prefs::kMarkedAsInappropriate);
+
   registry->RegisterBooleanPref(prefs::kHasMigratedClientState, false);
   registry->RegisterBooleanPref(prefs::kHasMigratedConfirmationState, false);
   registry->RegisterBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser,

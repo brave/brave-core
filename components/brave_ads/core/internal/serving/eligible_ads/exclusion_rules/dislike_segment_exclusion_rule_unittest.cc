@@ -6,11 +6,8 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/dislike_segment_exclusion_rule.h"
 
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -35,10 +32,7 @@ TEST_F(BraveAdsDislikeSegmentExclusionRuleTest, ShouldExclude) {
   CreativeAdInfo creative_ad;
   creative_ad.segment = test::kSegment;
 
-  AdHistoryItemInfo ad_history_item;
-  ad_history_item.segment = creative_ad.segment;
-  ad_history_item.segment_reaction_type = mojom::ReactionType::kNeutral;
-  ClientStateManager::GetInstance().ToggleDislikeSegment(ad_history_item);
+  GetReactions().ToggleDislikeSegment(test::kSegment);
 
   // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());

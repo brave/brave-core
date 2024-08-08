@@ -1,10 +1,4 @@
 {
-  "adPreferences": {
-    "filtered_advertisers": [],
-    "filtered_categories": [],
-    "saved_ads": [],
-    "flagged_ads": []
-  },
   "adsShownHistory": [],
   "purchaseIntentSignalHistory": {},
   "textClassificationProbabilitiesHistory": []

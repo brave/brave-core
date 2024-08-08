@@ -47,10 +47,12 @@ enum ReminderType {
   kExternalWalletConnected
 };
 
+// You should not change the assigned values as they are used for persisting and
+// restoring state.
 enum ReactionType {
+  kDisliked = -1,
   kNeutral = 0,
-  kLiked,
-  kDisliked
+  kLiked = 1
 };
 
 // These values must match AdType.

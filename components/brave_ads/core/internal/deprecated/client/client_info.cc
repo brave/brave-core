@@ -37,7 +37,6 @@ ClientInfo::~ClientInfo() = default;
 base::Value::Dict ClientInfo::ToValue() const {
   base::Value::Dict dict =
       base::Value::Dict()
-          .Set("adPreferences", ad_preferences.ToValue())
           .Set("adsShownHistory", AdHistoryToValue(ad_history));
 
   const base::TimeDelta time_window = kPurchaseIntentTimeWindow.Get();
@@ -83,10 +82,6 @@ base::Value::Dict ClientInfo::ToValue() const {
 // TODO(https://github.com/brave/brave-browser/issues/26003): Reduce cognitive
 // complexity.
 bool ClientInfo::FromValue(const base::Value::Dict& dict) {
-  if (const auto* const value = dict.FindDict("adPreferences")) {
-    ad_preferences.FromValue(*value);
-  }
-
 #if !BUILDFLAG(IS_IOS)
   if (const auto* const value = dict.FindList("adsShownHistory")) {
     ad_history = AdHistoryFromValue(*value);
