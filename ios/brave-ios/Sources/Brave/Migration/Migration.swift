@@ -41,6 +41,7 @@ public class Migration {
 
     migrateDeAmpPreferences()
     migrateDebouncePreferences()
+    migrateChromiumWebViewsPreferencesAndData()
 
     // Adding Observer to enable sync types
     NotificationCenter.default.addObserver(
@@ -158,6 +159,17 @@ public class Migration {
       adsRewardsLog.error(
         "Failed to migrate confirmations.json to ads folder: \(error.localizedDescription)"
       )
+    }
+  }
+
+  /// Migrates preferences and data to support Chromium web views
+  func migrateChromiumWebViewsPreferencesAndData() {
+    // FIXME: Product change: Chromium loads mobile on iPad by default, may need to switch this to just migrate always and not based on saved value
+    Preferences.UserAgent.alwaysRequestDesktopSite.migrate { value in
+      // We only want to set the default content setting if explicitly set
+      if value {
+        self.braveCore.defaultHostContentSettings.defaultPageMode = .desktop
+      }
     }
   }
 }

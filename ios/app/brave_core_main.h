@@ -27,6 +27,7 @@
 @class DeAmpPrefs;
 @class AIChat;
 @class HTTPSUpgradeExceptionsService;
+@class DefaultHostContentSettings;
 @protocol AIChatDelegate;
 @protocol IpfsAPI;
 
@@ -102,6 +103,9 @@ OBJC_EXPORT
 @property(readonly) DeAmpPrefs* deAmpPrefs;
 
 @property(readonly) NTPBackgroundImagesService* backgroundImagesService;
+
+/// The default content settings for regular browsing windows
+@property(readonly) DefaultHostContentSettings* defaultHostContentSettings;
 
 - (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate;
 

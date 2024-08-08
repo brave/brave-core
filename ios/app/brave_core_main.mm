@@ -32,6 +32,8 @@
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
+#include "brave/ios/browser/api/content_settings/default_host_content_settings.h"
+#include "brave/ios/browser/api/content_settings/default_host_content_settings_internal.h"
 #include "brave/ios/browser/api/de_amp/de_amp_prefs+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/https_upgrade_exceptions/https_upgrade_exceptions_service+private.h"
@@ -48,6 +50,7 @@
 #include "brave/ios/browser/ui/webui/brave_web_ui_controller_factory.h"
 #include "brave/ios/browser/web/brave_web_client.h"
 #include "components/component_updater/component_updater_paths.h"
+#include "components/content_settings/core/browser/content_settings_utils.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/password_manager/core/browser/password_store/password_store.h"
@@ -58,6 +61,7 @@
 #include "ios/chrome/app/startup/provider_registration.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_model_factory.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_undo_service_factory.h"
+#include "ios/chrome/browser/content_settings/model/host_content_settings_map_factory.h"
 #include "ios/chrome/browser/credential_provider/model/credential_provider_buildflags.h"
 #include "ios/chrome/browser/history/model/history_service_factory.h"
 #include "ios/chrome/browser/history/model/web_history_service_factory.h"
@@ -131,6 +135,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
 @property(nonatomic)
     HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
+@property(nonatomic) DefaultHostContentSettings* defaultHostContentSettings;
 @end
 
 @implementation BraveCoreMain
@@ -546,5 +551,16 @@ static bool CustomLogHandler(int severity,
                                 /*fallback_to_google_server=*/false));
 }
 #endif
+
+- (DefaultHostContentSettings*)defaultHostContentSettings {
+  if (!_defaultHostContentSettings) {
+    HostContentSettingsMap* map =
+        ios::HostContentSettingsMapFactory::GetForBrowserState(
+            _mainBrowserState);
+    _defaultHostContentSettings =
+        [[DefaultHostContentSettings alloc] initWithSettingsMap:map];
+  }
+  return _defaultHostContentSettings;
+}
 
 @end

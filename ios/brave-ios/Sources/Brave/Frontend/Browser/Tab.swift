@@ -963,8 +963,7 @@ class Tab: NSObject {
   func switchUserAgent() {
     guard let webView else { return }
     let userAgentType: CWVUserAgentType =
-      UserAgent.shouldUseDesktopMode
-      ? .desktop : webView.currentItemUserAgentType() == .desktop ? .mobile : .desktop
+      webView.currentItemUserAgentType() == .desktop ? .mobile : .desktop
     reload(userAgentType: userAgentType)
   }
 

@@ -17,6 +17,7 @@ group("browser") {
     "api/brave_shields",
     "api/brave_wallet:wallet_mojom_wrappers",
     "api/certificate",
+    "api/content_settings",
     "api/credential_provider",
     "api/developer_options_code",
     "api/favicon",
