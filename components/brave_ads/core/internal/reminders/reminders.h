@@ -6,12 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_REMINDERS_REMINDERS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_REMINDERS_REMINDERS_H_
 
+#include <optional>
+#include <string>
+
+#include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager_observer.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 namespace brave_ads {
-
-struct AdHistoryItemInfo;
 
 class Reminders : public AdHistoryManagerObserver {
  public:
@@ -26,13 +29,24 @@ class Reminders : public AdHistoryManagerObserver {
   ~Reminders() override;
 
  private:
-  void MaybeShowReminderAfterDelay(const AdHistoryItemInfo& ad_history_item);
+  void MaybeShowReminders(const AdHistoryItemInfo& ad_history_item);
+
+  bool CanShowUserClickTheSameAdMultipleTimesReminder(
+      const AdHistoryItemInfo& ad_history_item);
+  void MaybeShowUserClickTheSameAdMultipleTimesReminderAfterDelay(
+      const AdHistoryItemInfo& ad_history_item);
+  void MaybeShowUserClickTheSameAdMultipleTimesReminder(
+      const AdHistoryItemInfo& ad_history_item);
+  void MaybeShowUserClickTheSameAdMultipleTimesReminderCallback(
+      const std::string& creative_instance_id,
+      const std::optional<AdHistoryList>& ad_history);
 
   // AdHistoryManagerObserver:
-  void OnDidAppendAdHistoryItem(
-      const AdHistoryItemInfo& ad_history_item) override;
+  void OnDidAddAdHistoryItem(const AdHistoryItemInfo& ad_history_item) override;
 
   base::OneShotTimer timer_;
+
+  base::WeakPtrFactory<Reminders> weak_factory_{this};
 };
 
 }  // namespace brave_ads

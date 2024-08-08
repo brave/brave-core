@@ -720,6 +720,7 @@ static_library("internal") {
     "reminders/reminder/clicked_same_ad_multiple_times_reminder_util.h",
     "reminders/reminders.cc",
     "reminders/reminders.h",
+    "reminders/reminders_constants.h",
     "reminders/reminders_feature.cc",
     "reminders/reminders_feature.h",
     "segments/segment_alias.h",
