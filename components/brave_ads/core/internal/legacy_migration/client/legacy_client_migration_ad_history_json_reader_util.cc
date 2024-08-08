@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration_ad_history_json_reader_util.h"
 
-#include "brave/components/brave_ads/core/public/history/ad_history_value_util.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_item_value_util.h"
 
 namespace brave_ads::json::reader {
 

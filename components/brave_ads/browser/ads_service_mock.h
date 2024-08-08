@@ -93,20 +93,24 @@ class AdsServiceMock : public AdsService {
 
   MOCK_METHOD(void, ClearData, ());
 
-  MOCK_METHOD(void, ToggleLikeAd, (base::Value::Dict, ToggleReactionCallback));
+  MOCK_METHOD(void,
+              ToggleLikeAd,
+              (mojom::ReactionInfoPtr, ToggleReactionCallback));
   MOCK_METHOD(void,
               ToggleDislikeAd,
-              (base::Value::Dict, ToggleReactionCallback));
+              (mojom::ReactionInfoPtr, ToggleReactionCallback));
   MOCK_METHOD(void,
               ToggleLikeSegment,
-              (base::Value::Dict, ToggleReactionCallback));
+              (mojom::ReactionInfoPtr, ToggleReactionCallback));
   MOCK_METHOD(void,
               ToggleDislikeSegment,
-              (base::Value::Dict, ToggleReactionCallback));
-  MOCK_METHOD(void, ToggleSaveAd, (base::Value::Dict, ToggleReactionCallback));
+              (mojom::ReactionInfoPtr, ToggleReactionCallback));
+  MOCK_METHOD(void,
+              ToggleSaveAd,
+              (mojom::ReactionInfoPtr, ToggleReactionCallback));
   MOCK_METHOD(void,
               ToggleMarkAdAsInappropriate,
-              (base::Value::Dict, ToggleReactionCallback));
+              (mojom::ReactionInfoPtr, ToggleReactionCallback));
 
   MOCK_METHOD(void,
               NotifyTabTextContentDidChange,

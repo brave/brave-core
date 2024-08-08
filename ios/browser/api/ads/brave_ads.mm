@@ -25,6 +25,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
@@ -37,8 +38,6 @@
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_value_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/user_engagement/ad_events/ad_event_cache.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -298,8 +297,6 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
   if ([self isServiceRunning]) {
     dispatch_group_notify(
         self.componentUpdaterPrefsWriteGroup, dispatch_get_main_queue(), ^{
-          // TODO(https://github.com/brave/brave-browser/issues/32917):
-          // Deprecate shutdown API call.
           self->ads->Shutdown(base::BindOnce(^(bool) {
             [self cleanupAds];
 
@@ -1650,42 +1647,6 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
       base::BindOnce(completion));
 }
 
-- (void)toggleLikeAd:(NSString*)creativeInstanceId
-        advertiserId:(NSString*)advertiserId
-             segment:(NSString*)segment {
-  if (![self isServiceRunning]) {
-    return;
-  }
-
-  brave_ads::AdHistoryItemInfo ad_history_item;
-  ad_history_item.type = brave_ads::AdType::kNotificationAd;
-  ad_history_item.creative_instance_id =
-      base::SysNSStringToUTF8(creativeInstanceId);
-  ad_history_item.advertiser_id = base::SysNSStringToUTF8(advertiserId);
-  ad_history_item.segment = base::SysNSStringToUTF8(segment);
-
-  ads->ToggleLikeAd(brave_ads::AdHistoryItemToValue(ad_history_item),
-                    /*intentional*/ base::DoNothing());
-}
-
-- (void)toggleDislikeAd:(NSString*)creativeInstanceId
-           advertiserId:(NSString*)advertiserId
-                segment:(NSString*)segment {
-  if (![self isServiceRunning]) {
-    return;
-  }
-
-  brave_ads::AdHistoryItemInfo ad_history_item;
-  ad_history_item.type = brave_ads::AdType::kNotificationAd;
-  ad_history_item.creative_instance_id =
-      base::SysNSStringToUTF8(creativeInstanceId);
-  ad_history_item.advertiser_id = base::SysNSStringToUTF8(advertiserId);
-  ad_history_item.segment = base::SysNSStringToUTF8(segment);
-
-  ads->ToggleDislikeAd(brave_ads::AdHistoryItemToValue(ad_history_item),
-                       /*intentional*/ base::DoNothing());
-}
-
 - (void)clearData:(void (^)())completion {
   // Ensure the Brave Ads service is stopped before clearing data.
   CHECK(![self isServiceRunning]);
@@ -1709,18 +1670,6 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
           std::move(storage_path)),
       base::BindOnce(completion));
 }
-
-// TODO(https://github.com/brave/brave-browser/issues/33788): Unify Brave Ads
-// like category.
-
-// TODO(https://github.com/brave/brave-browser/issues/33788): Unify Brave Ads
-// dislike category.
-
-// TODO(https://github.com/brave/brave-browser/issues/33789): Unify Brave Ads
-// save ad.
-
-// TODO(https://github.com/brave/brave-browser/issues/33790): Unify Brave Ads
-// mark ad as inappropriate.
 
 #pragma mark - Ads client notifier
 

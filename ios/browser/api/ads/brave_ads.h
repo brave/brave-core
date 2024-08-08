@@ -133,14 +133,6 @@ OBJC_EXPORT
 - (void)purgeOrphanedAdEventsForType:(BraveAdsAdType)adType
                           completion:(void (^)(BOOL success))completion;
 
-- (void)toggleLikeAd:(NSString*)creativeInstanceId
-        advertiserId:(NSString*)advertiserId
-             segment:(NSString*)segment;
-
-- (void)toggleDislikeAd:(NSString*)creativeInstanceId
-           advertiserId:(NSString*)advertiserId
-                segment:(NSString*)segment;
-
 - (void)clearData:(void (^)())completion;
 
 #pragma mark - Ads client notifier

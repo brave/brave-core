@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/time/time.h"
-#include "base/values.h"
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
@@ -161,38 +160,39 @@ class AdsService : public KeyedService {
   // Called to like an ad. This is a toggle, so calling it again returns the
   // setting to the neutral state. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
-  virtual void ToggleLikeAd(base::Value::Dict value,
+  virtual void ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
                             ToggleReactionCallback callback) = 0;
 
   // Called to dislike an ad. This is a toggle, so calling it again returns the
   // setting to the neutral state. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
-  virtual void ToggleDislikeAd(base::Value::Dict value,
+  virtual void ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
                                ToggleReactionCallback callback) = 0;
 
   // Called to like a category. This is a toggle, so calling it again returns
   // the setting to the neutral state. The callback takes one argument - `bool`
   // is set to `true` if successful otherwise `false`.
-  virtual void ToggleLikeSegment(base::Value::Dict value,
+  virtual void ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
                                  ToggleReactionCallback callback) = 0;
 
   // Called to dislike a category. This is a toggle, so calling it again
   // returns the setting to the neutral state. The callback takes one argument -
   // `bool` is set to `true` if successful otherwise `false`.
-  virtual void ToggleDislikeSegment(base::Value::Dict value,
+  virtual void ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
                                     ToggleReactionCallback callback) = 0;
 
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. The callback takes one argument -
   // `bool` is set to `true` if successful otherwise `false`.
-  virtual void ToggleSaveAd(base::Value::Dict value,
+  virtual void ToggleSaveAd(mojom::ReactionInfoPtr reactimojom_reactionon,
                             ToggleReactionCallback callback) = 0;
 
   // Called to mark an ad as inappropriate. This is a toggle, so calling it
   // again unmarks the ad. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
-  virtual void ToggleMarkAdAsInappropriate(base::Value::Dict value,
-                                           ToggleReactionCallback callback) = 0;
+  virtual void ToggleMarkAdAsInappropriate(
+      mojom::ReactionInfoPtr mojom_reaction,
+      ToggleReactionCallback callback) = 0;
 
   // Called when the page for `tab_id` has loaded and the content is available
   // for analysis. `redirect_chain` containing a list of redirect URLs that

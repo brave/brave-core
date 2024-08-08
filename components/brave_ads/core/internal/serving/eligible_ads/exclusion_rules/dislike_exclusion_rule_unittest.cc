@@ -8,6 +8,7 @@
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -18,7 +19,7 @@ class BraveAdsDislikeExclusionRuleTest : public test::TestBase {
   const DislikeExclusionRule exclusion_rule_;
 };
 
-TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldInclude) {
+TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldIncludeForNeutralReaction) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.advertiser_id = test::kAdvertiserId;
@@ -27,12 +28,25 @@ TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldInclude) {
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldExclude) {
+TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldIncludeForLikedReaction) {
   // Arrange
+  GetReactions().AdsForTesting() = {
+      {test::kAdvertiserId, mojom::ReactionType::kLiked}};
+
   CreativeAdInfo creative_ad;
   creative_ad.advertiser_id = test::kAdvertiserId;
 
-  GetReactions().ToggleDislikeAd(test::kAdvertiserId);
+  // Act & Assert
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
+}
+
+TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldExcludeForDislikedReaction) {
+  // Arrange
+  GetReactions().AdsForTesting() = {
+      {test::kAdvertiserId, mojom::ReactionType::kDisliked}};
+
+  CreativeAdInfo creative_ad;
+  creative_ad.advertiser_id = test::kAdvertiserId;
 
   // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());

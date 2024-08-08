@@ -9,7 +9,6 @@
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -31,10 +30,10 @@ TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, ShouldInclude) {
 
 TEST_F(BraveAdsMarkedAsInappropriateExclusionRuleTest, ShouldExclude) {
   // Arrange
+  GetReactions().MarkedAdsAsInappropriateForTesting() = {test::kCreativeSetId};
+
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = test::kCreativeSetId;
-
-  GetReactions().ToggleMarkAdAsInappropriate(test::kCreativeSetId);
 
   // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());

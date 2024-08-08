@@ -31,24 +31,6 @@ class AdHistoryManagerObserverMock : public AdHistoryManagerObserver {
   MOCK_METHOD(void,
               OnDidAddAdHistoryItem,
               (const AdHistoryItemInfo& ad_history_item));
-
-  MOCK_METHOD(void, OnDidLikeAd, (const AdHistoryItemInfo& ad_history_item));
-  MOCK_METHOD(void, OnDidDislikeAd, (const AdHistoryItemInfo& ad_history_item));
-
-  MOCK_METHOD(void,
-              OnDidLikeSegment,
-              (const AdHistoryItemInfo& ad_history_item));
-  MOCK_METHOD(void,
-              OnDidDislikeSegment,
-              (const AdHistoryItemInfo& ad_history_item));
-
-  MOCK_METHOD(void,
-              OnDidToggleSaveAd,
-              (const AdHistoryItemInfo& ad_history_item));
-
-  MOCK_METHOD(void,
-              OnDidToggleMarkAdAsInappropriate,
-              (const AdHistoryItemInfo& ad_history_item));
 };
 
 }  // namespace brave_ads

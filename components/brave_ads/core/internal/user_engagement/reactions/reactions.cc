@@ -5,29 +5,33 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
 
+#include <utility>
+
+#include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
-#include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions_type_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions_value_util.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
 
 Reactions::Reactions() {
-  AdHistoryManager::GetInstance().AddObserver(this);
-
   Load();
 }
 
-Reactions::~Reactions() {
-  AdHistoryManager::GetInstance().RemoveObserver(this);
-}
+Reactions::~Reactions() = default;
 
-void Reactions::ToggleLikeAd(const std::string& advertiser_id) {
+void Reactions::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
+                             ToggleReactionCallback callback) {
+  if (!mojom_reaction) {
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  const std::string advertiser_id = mojom_reaction->advertiser_id;
   const mojom::ReactionType mojom_reaction_type =
       AdReactionTypeForId(advertiser_id);
   const mojom::ReactionType toggled_mojom_reaction_type =
@@ -37,11 +41,24 @@ void Reactions::ToggleLikeAd(const std::string& advertiser_id) {
   } else {
     ad_reactions_[advertiser_id] = toggled_mojom_reaction_type;
   }
-
   SetProfileDictPref(prefs::kAdReactions, ReactionMapToDict(ad_reactions_));
+
+  if (toggled_mojom_reaction_type == mojom::ReactionType::kLiked) {
+    NotifyDidLikeAd(mojom_reaction->advertiser_id);
+
+    Deposit(&*mojom_reaction, ConfirmationType::kLikedAd);
+  }
+
+  std::move(callback).Run(/*success=*/true);
 }
 
-void Reactions::ToggleDislikeAd(const std::string& advertiser_id) {
+void Reactions::ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
+                                ToggleReactionCallback callback) {
+  if (!mojom_reaction) {
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  const std::string advertiser_id = mojom_reaction->advertiser_id;
   const mojom::ReactionType mojom_reaction_type =
       AdReactionTypeForId(advertiser_id);
   const mojom::ReactionType toggled_mojom_reaction_type =
@@ -51,8 +68,15 @@ void Reactions::ToggleDislikeAd(const std::string& advertiser_id) {
   } else {
     ad_reactions_[advertiser_id] = toggled_mojom_reaction_type;
   }
-
   SetProfileDictPref(prefs::kAdReactions, ReactionMapToDict(ad_reactions_));
+
+  if (toggled_mojom_reaction_type == mojom::ReactionType::kDisliked) {
+    NotifyDidDislikeAd(mojom_reaction->advertiser_id);
+
+    Deposit(&*mojom_reaction, ConfirmationType::kDislikedAd);
+  }
+
+  std::move(callback).Run(/*success=*/true);
 }
 
 mojom::ReactionType Reactions::AdReactionTypeForId(
@@ -61,11 +85,17 @@ mojom::ReactionType Reactions::AdReactionTypeForId(
   if (iter == ad_reactions_.cend()) {
     return mojom::ReactionType::kNeutral;
   }
-  const auto [_, reaction_type] = *iter;
+  const auto& [_, reaction_type] = *iter;
   return reaction_type;
 }
 
-void Reactions::ToggleLikeSegment(const std::string& segment) {
+void Reactions::ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
+                                  ToggleReactionCallback callback) {
+  if (!mojom_reaction) {
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  const std::string segment = mojom_reaction->segment;
   const mojom::ReactionType mojom_reaction_type =
       SegmentReactionTypeForId(segment);
   const mojom::ReactionType toggled_mojom_reaction_type =
@@ -75,12 +105,23 @@ void Reactions::ToggleLikeSegment(const std::string& segment) {
   } else {
     segment_reactions_[segment] = toggled_mojom_reaction_type;
   }
-
   SetProfileDictPref(prefs::kSegmentReactions,
                      ReactionMapToDict(segment_reactions_));
+
+  if (toggled_mojom_reaction_type == mojom::ReactionType::kLiked) {
+    NotifyDidLikeSegment(mojom_reaction->segment);
+  }
+
+  std::move(callback).Run(/*success=*/true);
 }
 
-void Reactions::ToggleDislikeSegment(const std::string& segment) {
+void Reactions::ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
+                                     ToggleReactionCallback callback) {
+  if (!mojom_reaction) {
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  const std::string segment = mojom_reaction->segment;
   const mojom::ReactionType mojom_reaction_type =
       SegmentReactionTypeForId(segment);
   const mojom::ReactionType toggled_mojom_reaction_type =
@@ -90,9 +131,14 @@ void Reactions::ToggleDislikeSegment(const std::string& segment) {
   } else {
     segment_reactions_[segment] = toggled_mojom_reaction_type;
   }
-
   SetProfileDictPref(prefs::kSegmentReactions,
                      ReactionMapToDict(segment_reactions_));
+
+  if (toggled_mojom_reaction_type == mojom::ReactionType::kDisliked) {
+    NotifyDidDislikeSegment(mojom_reaction->segment);
+  }
+
+  std::move(callback).Run(/*success=*/true);
 }
 
 mojom::ReactionType Reactions::SegmentReactionTypeForId(
@@ -105,13 +151,26 @@ mojom::ReactionType Reactions::SegmentReactionTypeForId(
   return reaction_type;
 }
 
-void Reactions::ToggleSaveAd(const std::string& creative_instance_id) {
-  const auto [iterator, inserted] = saved_ads_.insert(creative_instance_id);
+void Reactions::ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
+                             ToggleReactionCallback callback) {
+  if (!mojom_reaction) {
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  const auto [iterator, inserted] =
+      saved_ads_.insert(mojom_reaction->creative_instance_id);
   if (!inserted) {
     saved_ads_.erase(iterator);
   }
-
   SetProfileListPref(prefs::kSaveAds, ReactionSetToList(saved_ads_));
+
+  if (inserted) {
+    NotifyDidToggleSaveAd(mojom_reaction->creative_instance_id);
+
+    Deposit(&*mojom_reaction, ConfirmationType::kSavedAd);
+  }
+
+  std::move(callback).Run(/*success=*/true);
 }
 
 bool Reactions::IsAdSaved(const std::string& creative_instance_id) const {
@@ -119,15 +178,27 @@ bool Reactions::IsAdSaved(const std::string& creative_instance_id) const {
 }
 
 void Reactions::ToggleMarkAdAsInappropriate(
-    const std::string& creative_set_id) {
+    mojom::ReactionInfoPtr mojom_reaction,
+    ToggleReactionCallback callback) {
+  if (!mojom_reaction) {
+    return std::move(callback).Run(/*success=*/false);
+  }
+
   const auto [iterator, inserted] =
-      marked_as_inappropriate_.insert(creative_set_id);
+      marked_as_inappropriate_.insert(mojom_reaction->creative_set_id);
   if (!inserted) {
     marked_as_inappropriate_.erase(iterator);
   }
-
   SetProfileListPref(prefs::kMarkedAsInappropriate,
                      ReactionSetToList(marked_as_inappropriate_));
+
+  if (inserted) {
+    NotifyDidToggleSaveAd(mojom_reaction->creative_set_id);
+
+    Deposit(&*mojom_reaction, ConfirmationType::kMarkAdAsInappropriate);
+  }
+
+  std::move(callback).Run(/*success=*/true);
 }
 
 bool Reactions::IsAdMarkedAsInappropriate(
@@ -173,44 +244,51 @@ void Reactions::Load() {
 }
 
 // static
-void Reactions::Deposit(const AdHistoryItemInfo& ad_history_item,
+void Reactions::Deposit(const mojom::ReactionInfo* const mojom_reaction,
                         const ConfirmationType confirmation_type) {
-  GetAccount().Deposit(ad_history_item.creative_instance_id,
-                       ad_history_item.segment, ad_history_item.type,
-                       confirmation_type);
+  CHECK(mojom_reaction);
+
+  GetAccount().Deposit(
+      mojom_reaction->creative_instance_id, mojom_reaction->segment,
+      static_cast<AdType>(mojom_reaction->ad_type), confirmation_type);
 }
 
-void Reactions::OnDidLikeAd(const AdHistoryItemInfo& ad_history_item) {
-  ToggleLikeAd(ad_history_item.advertiser_id);
-
-  Deposit(ad_history_item, ConfirmationType::kLikedAd);
+void Reactions::NotifyDidLikeAd(const std::string& advertiser_id) const {
+  for (ReactionsObserver& observer : observers_) {
+    observer.OnDidLikeAd(advertiser_id);
+  }
 }
 
-void Reactions::OnDidDislikeAd(const AdHistoryItemInfo& ad_history_item) {
-  ToggleDislikeAd(ad_history_item.advertiser_id);
-
-  Deposit(ad_history_item, ConfirmationType::kDislikedAd);
+void Reactions::NotifyDidDislikeAd(const std::string& advertiser_id) const {
+  for (ReactionsObserver& observer : observers_) {
+    observer.OnDidDislikeAd(advertiser_id);
+  }
 }
 
-void Reactions::OnDidLikeSegment(const AdHistoryItemInfo& ad_history_item) {
-  ToggleLikeSegment(ad_history_item.segment);
+void Reactions::NotifyDidLikeSegment(const std::string& segment) const {
+  for (ReactionsObserver& observer : observers_) {
+    observer.OnDidLikeSegment(segment);
+  }
 }
 
-void Reactions::OnDidDislikeSegment(const AdHistoryItemInfo& ad_history_item) {
-  ToggleDislikeSegment(ad_history_item.segment);
+void Reactions::NotifyDidDislikeSegment(const std::string& segment) const {
+  for (ReactionsObserver& observer : observers_) {
+    observer.OnDidDislikeSegment(segment);
+  }
 }
 
-void Reactions::OnDidToggleSaveAd(const AdHistoryItemInfo& ad_history_item) {
-  ToggleSaveAd(ad_history_item.creative_instance_id);
-
-  Deposit(ad_history_item, ConfirmationType::kSavedAd);
+void Reactions::NotifyDidToggleSaveAd(
+    const std::string& creative_instance_id) const {
+  for (ReactionsObserver& observer : observers_) {
+    observer.OnDidToggleSaveAd(creative_instance_id);
+  }
 }
 
-void Reactions::OnDidToggleMarkAdAsInappropriate(
-    const AdHistoryItemInfo& ad_history_item) {
-  ToggleMarkAdAsInappropriate(ad_history_item.creative_set_id);
-
-  Deposit(ad_history_item, ConfirmationType::kMarkAdAsInappropriate);
+void Reactions::NotifyDidToggleMarkAdAsInappropriate(
+    const std::string& creative_set) const {
+  for (ReactionsObserver& observer : observers_) {
+    observer.OnDidToggleMarkAdAsInappropriate(creative_set);
+  }
 }
 
 }  // namespace brave_ads
