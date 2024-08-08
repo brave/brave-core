@@ -63,8 +63,8 @@ function Main() {
   let currentErrorElement = null
 
   let scrollerElement: HTMLDivElement | null = null
-  let headerElement: HTMLDivElement | null = null
-  let conversationContentElement: HTMLDivElement | null = null
+  const headerElement = React.useRef<HTMLDivElement>(null)
+  const conversationContentElement = React.useRef<HTMLDivElement>(null)
 
   const scrollPos = React.useRef({ isAtBottom: true })
 
@@ -107,48 +107,58 @@ function Main() {
     }
   }
 
-  let inputFocused: boolean = false
-  let viewPortWithoutKeyboard = 0
-  let keyboardSize = 0
+  const inputFocused = React.useRef(false)
+  const viewPortWithoutKeyboard = React.useRef(0)
+  const keyboardSize = React.useRef(0)
 
-  window.addEventListener('resize', () => {
-    if (!context.isMobile || !inputFocused || window.visualViewport == null) {
-      return
-    }
-    let viewPortWithKeyboard = window.visualViewport.height
-    if (headerElement == null || conversationContentElement == null ||
-      viewPortWithKeyboard === 0 || viewPortWithoutKeyboard === 0) {
-      return
-    }
-    if (keyboardSize === 0 ||
-        keyboardSize < viewPortWithoutKeyboard - viewPortWithKeyboard) {
-      keyboardSize = viewPortWithoutKeyboard - viewPortWithKeyboard
-    }
-    let mountPoint: HTMLElement | null = document.getElementById('mountPoint')
-    if (mountPoint !== undefined && mountPoint !== null) {
-      if (mountPoint.clientHeight >=
-          (headerElement.clientHeight + conversationContentElement.clientHeight)
-          * 2) {
-        let percent = viewPortWithKeyboard * 100 / viewPortWithoutKeyboard
-        mountPoint.style.height = `${percent}%`
-      } else if (keyboardSize > viewPortWithoutKeyboard - viewPortWithKeyboard) {
-        mountPoint.style.height = '100%'
+    React.useEffect(() => {
+      const handler = () => {
+        if (!context.isMobile || !inputFocused.current ||
+            !window.visualViewport) {
+          return
+        }
+        const viewPortWithKeyboard = window.visualViewport.height
+        if (!headerElement.current || !conversationContentElement.current ||
+          viewPortWithKeyboard === 0 || viewPortWithoutKeyboard.current === 0) {
+          return
+        }
+        if (keyboardSize.current === 0 ||
+            keyboardSize.current <
+              viewPortWithoutKeyboard.current - viewPortWithKeyboard) {
+          keyboardSize.current =
+            viewPortWithoutKeyboard.current - viewPortWithKeyboard
+        }
+        const mountPoint = document.getElementById('mountPoint')
+        if (mountPoint) {
+          if (mountPoint.clientHeight >=
+              (headerElement.current.clientHeight +
+                conversationContentElement.current.clientHeight) * 2) {
+            const percent = viewPortWithKeyboard * 100 /
+              viewPortWithoutKeyboard.current
+            mountPoint.style.height = `${percent}%`
+          } else if (keyboardSize.current >
+              viewPortWithoutKeyboard.current - viewPortWithKeyboard) {
+            mountPoint.style.height = '100%'
+          }
+        }
       }
-    }
-  })
+      window.addEventListener('resize', handler)
+      return () => {
+        window.removeEventListener('resize', handler)
+      }
+    }, [])
 
-  const handleOnFocusInput = () => {
-    inputFocused = true
+  const handleOnFocusInputMobile = () => {
+    inputFocused.current = true
     if (window.visualViewport != null) {
-      viewPortWithoutKeyboard = window.visualViewport.height
+      viewPortWithoutKeyboard.current = window.visualViewport.height
     }
   }
 
-  const handleOnBlurInput = () => {
-    let mountPoint: HTMLElement | null = document.getElementById('mountPoint')
-    if (mountPoint !== undefined && mountPoint !== null
-        && mountPoint.style.height !== '100%') {
-      inputFocused = false
+  const handleOnBlurInputMobile = () => {
+    const mountPoint = document.getElementById('mountPoint')
+    if (mountPoint && mountPoint?.style.height !== '100%') {
+      inputFocused.current = false
       mountPoint.style.height = '100%'
     }
   }
@@ -157,7 +167,7 @@ function Main() {
     <main className={styles.main}>
       {context.showAgreementModal && <PrivacyMessage />}
       <div className={styles.header}
-        ref={node => {headerElement = node}}>
+        ref={headerElement}>
         <div className={styles.logo}>
           <Icon name='product-brave-leo' />
           <div className={styles.logoTitle}>Leo AI</div>
@@ -202,7 +212,7 @@ function Main() {
       >
         <AlertCenter position='top-left' className={styles.alertCenter} />
         <div className={styles.conversationContent}
-          ref={node => {conversationContentElement = node}}>
+          ref={conversationContentElement}>
           {context.hasAcceptedAgreement && <>
             <ModelIntro />
             <ConversationList
@@ -267,8 +277,8 @@ function Main() {
         <ToolsButtonMenu {...context}>
           <InputBox
             context={context}
-            onFocusInput={handleOnFocusInput}
-            onBlurInput={handleOnBlurInput}
+            onFocusInputMobile={handleOnFocusInputMobile}
+            onBlurInputMobile={handleOnBlurInputMobile}
           />
         </ToolsButtonMenu>
       </div>
