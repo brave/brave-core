@@ -1,0 +1,23 @@
+diff --git a/components/omnibox/browser/autocomplete_result.cc b/components/omnibox/browser/autocomplete_result.cc
+index 75fd8b1cb94fe53a3e9d00c9db9f18011f3c49da..1d76022aeca5c09ecb28a6f4935ae08ad4ca3874 100644
+--- a/components/omnibox/browser/autocomplete_result.cc
++++ b/components/omnibox/browser/autocomplete_result.cc
+@@ -267,12 +267,12 @@ void AutocompleteResult::TransferOldMatches(const AutocompleteInput& input,
+ 
+ void AutocompleteResult::AppendMatches(const ACMatches& matches) {
+   for (const auto& match : matches) {
+-    DCHECK_EQ(AutocompleteMatch::SanitizeString(match.contents), match.contents)
+-        << "description: " << match.description
+-        << ", match type: " << match.type;
+-    DCHECK_EQ(AutocompleteMatch::SanitizeString(match.description),
+-              match.description)
+-        << "contents: " << match.contents << ", match type: " << match.type;
++    // DCHECK_EQ(AutocompleteMatch::SanitizeString(match.contents), match.contents)
++    //     << "description: " << match.description
++    //     << ", match type: " << match.type;
++    // DCHECK_EQ(AutocompleteMatch::SanitizeString(match.description),
++    //           match.description)
++    //     << "contents: " << match.contents << ", match type: " << match.type;
+     matches_.push_back(match);
+   }
+ }

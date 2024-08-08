@@ -44,24 +44,19 @@ bool IsFrameWithOpaqueOrigin(blink::WebFrame* frame) {
          frame->Top()->GetSecurityOrigin().IsOpaque();
 }
 
-GURL GetOriginOrURL(const blink::WebFrame* frame) {
-  url::Origin top_origin = url::Origin(frame->Top()->GetSecurityOrigin());
-  // The |top_origin| is unique ("null") e.g., for file:// URLs. Use the
-  // document URL as the primary URL in those cases.
-  // TODO(alexmos): This is broken for --site-per-process, since top() can be a
-  // WebRemoteFrame which does not have a document(), and the WebRemoteFrame's
-  // URL is not replicated.  See https://crbug.com/628759.
-  if (top_origin.opaque() && frame->Top()->IsWebLocalFrame()) {
-    return frame->Top()->ToWebLocalFrame()->GetDocument().Url();
-  }
-  return top_origin.GetURL();
+GURL GetTopFrameOriginAsURL(const blink::WebFrame* frame) {
+  DCHECK(frame);
+  url::Origin top_origin(frame->Top()->GetSecurityOrigin());
+  return top_origin.opaque()
+             ? top_origin.GetTupleOrPrecursorTupleIfOpaque().GetURL()
+             : top_origin.GetURL();
 }
 
 bool IsBraveShieldsDown(const blink::WebFrame* frame,
                         const GURL& secondary_url,
                         const ContentSettingsForOneType& rules) {
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
-  const GURL& primary_url = GetOriginOrURL(frame);
+  const GURL& primary_url = GetTopFrameOriginAsURL(frame);
 
   for (const auto& rule : rules) {
     if (rule.primary_pattern.Matches(primary_url) &&
@@ -284,7 +279,7 @@ bool BraveContentSettingsAgentImpl::IsCosmeticFilteringEnabled(
 
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
   if (content_setting_rules_) {
-    const GURL& primary_url = GetOriginOrURL(frame);
+    const GURL& primary_url = GetTopFrameOriginAsURL(frame);
 
     for (const auto& rule : content_setting_rules_->cosmetic_filtering_rules) {
       if (rule.primary_pattern.Matches(primary_url) &&
@@ -308,7 +303,7 @@ bool BraveContentSettingsAgentImpl::IsFirstPartyCosmeticFilteringEnabled(
 
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
   if (content_setting_rules_) {
-    const GURL& primary_url = GetOriginOrURL(frame);
+    const GURL& primary_url = GetTopFrameOriginAsURL(frame);
 
     for (const auto& rule : content_setting_rules_->cosmetic_filtering_rules) {
       if (rule.primary_pattern.Matches(primary_url) &&
@@ -343,13 +338,14 @@ BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel(
       setting = CONTENT_SETTING_ALLOW;
     } else {
       setting = brave_shields::GetBraveFPContentSettingFromRules(
-          content_setting_rules_->fingerprinting_rules, GetOriginOrURL(frame));
+          content_setting_rules_->fingerprinting_rules,
+          GetTopFrameOriginAsURL(frame));
     }
     if (setting != CONTENT_SETTING_ALLOW) {
       auto webcompat_setting =
           brave_shields::GetBraveWebcompatContentSettingFromRules(
-              content_setting_rules_->webcompat_rules, GetOriginOrURL(frame),
-              webcompat_settings_type);
+              content_setting_rules_->webcompat_rules,
+              GetTopFrameOriginAsURL(frame), webcompat_settings_type);
       if (webcompat_setting == CONTENT_SETTING_ALLOW) {
         setting = CONTENT_SETTING_ALLOW;
       }
@@ -366,6 +362,16 @@ BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel(
     DVLOG(1) << "farbling level BALANCED";
     return BraveFarblingLevel::BALANCED;
   }
+}
+
+base::Token BraveContentSettingsAgentImpl::GetBraveFarblingToken() {
+  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+  if (content_setting_rules_) {
+    return brave_shields::GetFarblingTokenFromRules(
+        content_setting_rules_->brave_shields_metadata,
+        GetTopFrameOriginAsURL(frame));
+  }
+  return {};
 }
 
 bool BraveContentSettingsAgentImpl::AllowAutoplay(bool play_requested) {

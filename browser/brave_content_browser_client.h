@@ -80,6 +80,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   uint8_t WorkerGetBraveFarblingLevel(
       const GURL& url,
       content::BrowserContext* browser_context) override;
+  base::Token WorkerGetBraveFarblingToken(
+      const GURL& url,
+      content::BrowserContext* browser_context) override;
 
   content::ContentBrowserClient::AllowWebBluetoothResult AllowWebBluetooth(
       content::BrowserContext* browser_context,

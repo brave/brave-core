@@ -15,4 +15,14 @@ void SharedWorkerContentSettingsProxyImpl::GetBraveFarblingLevel(
     std::move(callback).Run(1 /* OFF */);
   }
 }
+
+void SharedWorkerContentSettingsProxyImpl::GetBraveFarblingToken(
+    GetBraveFarblingTokenCallback callback) {
+  if (!origin_.opaque()) {
+    owner_->GetBraveFarblingToken(origin_.GetURL(), std::move(callback));
+  } else {
+    std::move(callback).Run({});
+  }
+}
+
 }  // namespace content

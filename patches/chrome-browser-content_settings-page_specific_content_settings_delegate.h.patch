@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/content_settings/page_specific_content_settings_delegate.h b/chrome/browser/content_settings/page_specific_content_settings_delegate.h
+index 864fdfc99ccfe229e79c18f823753f3ffbcb7df3..d9a7c1bd3478f02b41a1e3b10b0d74e368f0735c 100644
+--- a/chrome/browser/content_settings/page_specific_content_settings_delegate.h
++++ b/chrome/browser/content_settings/page_specific_content_settings_delegate.h
+@@ -95,6 +95,8 @@ class PageSpecificContentSettingsDelegate
+   bool IsBlockedOnSystemLevel(ContentSettingsType type) override;
+   bool IsFrameAllowlistedForJavaScript(
+       content::RenderFrameHost* render_frame_host) override;
++  base::Token GetOrCreateFarblingToken(const GURL& primary_url,
++                                       const GURL& secondary_url) override;
+ 
+   // content::WebContentsObserver:
+   void PrimaryPageChanged(content::Page& page) override;

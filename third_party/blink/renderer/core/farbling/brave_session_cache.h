@@ -98,8 +98,7 @@ class CORE_EXPORT BraveSessionCache final
   }
 
  private:
-  uint64_t session_key_;
-  uint8_t domain_key_[32];
+  base::Token farbling_token_;
   WTF::HashMap<FarbleKey, int> farbled_integers_;
   BraveFarblingLevel farbling_level_;
   std::optional<blink::BraveAudioFarblingHelper> audio_farbling_helper_;

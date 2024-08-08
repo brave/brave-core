@@ -8,9 +8,11 @@
 #include <string_view>
 
 #include "base/command_line.h"
+#include "base/containers/span.h"
 #include "base/feature_list.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/token.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
@@ -21,6 +23,8 @@
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
+#include "third_party/blink/renderer/core/frame/settings.h"
+#include "third_party/blink/renderer/core/loader/document_loader.h"
 #include "third_party/blink/renderer/core/workers/worker_or_worklet_global_scope.h"
 #include "third_party/blink/renderer/platform/fonts/font_fallback_list.h"
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
@@ -33,6 +37,8 @@
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 #include "url/url_constants.h"
+
+#pragma clang optimize off
 
 namespace {
 
@@ -47,7 +53,7 @@ inline uint64_t lfsr_next(uint64_t v) {
 
 namespace brave {
 
-const char kBraveSessionToken[] = "brave_session_token";
+// const char kBraveSessionToken[] = "brave_session_token";
 const char BraveSessionCache::kSupplementName[] = "BraveSessionCache";
 const int kFarbledUserAgentMaxExtraSpaces = 5;
 
@@ -57,46 +63,81 @@ const char kLettersForRandomStrings[] =
 // length of kLettersForRandomStrings array
 const size_t kLettersForRandomStringsLength = 62;
 
+bool IsExecutionContextSupportedForFarbling(const ExecutionContext& context) {
+  constexpr const char* kExcludedProtocols[] = {
+      url::kFileScheme,
+      "chrome-extension",
+      "chrome-untrusted",
+  };
+
+  const String protocol = context.GetSecurityOrigin()
+                              ->GetOriginOrPrecursorOriginIfOpaque()
+                              ->Protocol();
+  if (base::Contains(kExcludedProtocols, protocol) ||
+      blink::SchemeRegistry::ShouldTreatURLSchemeAsDisplayIsolated(protocol)) {
+    return false;
+  }
+
+  return true;
+}
+
 blink::WebContentSettingsClient* GetContentSettingsClientFor(
     ExecutionContext* context,
     bool require_filled_content_settings_rules) {
-  blink::WebContentSettingsClient* settings = nullptr;
-  if (!context)
-    return settings;
-  // Avoid blocking fingerprinting in WebUI, extensions, etc.
-  const String protocol = context->GetSecurityOrigin()->Protocol();
-  if (protocol == url::kAboutScheme || protocol == "chrome-extension" ||
-      blink::SchemeRegistry::ShouldTreatURLSchemeAsDisplayIsolated(protocol)) {
-    return settings;
+  if (!context) {
+    return nullptr;
   }
+
+  // Avoid blocking fingerprinting in WebUI, extensions, etc.
+  if (!IsExecutionContextSupportedForFarbling(*context)) {
+    return nullptr;
+  }
+
   if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) {
-    auto* local_frame = window->GetFrame();
-    if (!local_frame) {
-      local_frame = window->GetDisconnectedFrame();
-    }
-    while (local_frame) {
-      settings = local_frame->GetContentSettingsClient();
-      if (!require_filled_content_settings_rules) {
-        break;
+    auto get_content_settings =
+        [](blink::LocalFrame* local_frame) -> blink::WebContentSettingsClient* {
+      if (!local_frame) {
+        return nullptr;
       }
-
-      if (settings && settings->HasContentSettingsRules()) {
-        break;
+      blink::WebContentSettingsClient* content_settings =
+          local_frame->LocalFrameRoot().GetContentSettingsClient();
+      if (!content_settings || !content_settings->HasContentSettingsRules()) {
+        return nullptr;
       }
+      return content_settings;
+    };
 
-      // Dynamic iframes without a committed navigation don't have content
-      // settings rules filled, so in this case we look for a parent frame which
-      // has required data for shields/farbling to be enabled.
-      auto* parent_frame =
-          blink::DynamicTo<blink::LocalFrame>(local_frame->Parent());
-      DCHECK(!parent_frame || parent_frame != local_frame);
-      local_frame = parent_frame;
+    if (auto* isolate = v8::Isolate::TryGetCurrent();
+        isolate && isolate->InContext()) {
+      if (auto* content_settings =
+              get_content_settings(window->GetDisconnectedFrame())) {
+        // LOG(ERROR) << "Got content settings from disconnected frame";
+        return content_settings;
+      } else {
+        LOG(ERROR) << "No content settings from disconnected frame";
+      }
+    } else {
+      LOG(ERROR) << "No isolate or not in context";
     }
+
+    if (auto* content_settings = get_content_settings(window->GetFrame())) {
+      // LOG(ERROR) << "Got content settings from frame";
+      return content_settings;
+    } else {
+      LOG(ERROR) << "No content settings from frame";
+    }
+
+    return nullptr;
   } else if (auto* worker_or_worklet =
                  blink::DynamicTo<blink::WorkerOrWorkletGlobalScope>(context)) {
-    settings = worker_or_worklet->ContentSettingsClient();
+    auto* cs = worker_or_worklet->ContentSettingsClient();
+    LOG(ERROR) << "Content settings from worker or worklet. " << cs
+               << " Has rules: "
+               << (cs ? cs->HasContentSettingsRules() : false);
+    return worker_or_worklet->ContentSettingsClient();
   }
-  return settings;
+
+  NOTREACHED();
 }
 
 BraveFarblingLevel GetBraveFarblingLevelFor(
@@ -104,9 +145,10 @@ BraveFarblingLevel GetBraveFarblingLevelFor(
     ContentSettingsType webcompat_settings_type,
     BraveFarblingLevel default_value) {
   BraveFarblingLevel value = default_value;
-  if (context)
+  if (context) {
     value = brave::BraveSessionCache::From(*context).GetBraveFarblingLevel(
         webcompat_settings_type);
+  }
   return value;
 }
 
@@ -119,16 +161,19 @@ bool AllowFingerprinting(ExecutionContext* context,
 
 bool AllowFontFamily(ExecutionContext* context,
                      const AtomicString& family_name) {
-  if (!context)
+  if (!context) {
     return true;
+  }
 
   auto* settings = brave::GetContentSettingsClientFor(context, true);
-  if (!settings)
+  if (!settings) {
     return true;
+  }
 
   if (!brave::BraveSessionCache::From(*context).AllowFontFamily(settings,
-                                                                family_name))
+                                                                family_name)) {
     return false;
+  }
 
   return true;
 }
@@ -139,7 +184,10 @@ int FarbleInteger(ExecutionContext* context,
                   int min_value,
                   int max_value) {
   BraveSessionCache& cache = BraveSessionCache::From(*context);
-  return cache.FarbledInteger(key, spoof_value, min_value, max_value);
+  auto fi = cache.FarbledInteger(key, spoof_value, min_value, max_value);
+  // LOG(ERROR) << "FarbleInteger " << key << " " << spoof_value << " "
+  //            << min_value << " " << max_value << " " << fi;
+  return fi;
 }
 
 bool BlockScreenFingerprinting(ExecutionContext* context,
@@ -180,44 +228,42 @@ int FarbledPointerScreenCoordinate(const DOMWindow* view,
 BraveSessionCache::BraveSessionCache(ExecutionContext& context)
     : Supplement<ExecutionContext>(context) {
   farbling_level_ = BraveFarblingLevel::OFF;
-  scoped_refptr<const blink::SecurityOrigin> origin;
+  blink::Settings* page_settings = nullptr;
   if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) {
     auto* frame = window->GetFrame();
-    if (!frame)
+    if (!frame) {
       frame = window->GetDisconnectedFrame();
-    if (frame)
-      origin = frame->Tree().Top().GetSecurityContext()->GetSecurityOrigin();
-  } else {
-    origin = context.GetSecurityContext().GetSecurityOrigin();
+    }
+    if (frame) {
+      page_settings = frame->GetSettings();
+      LOG(ERROR) << "BraveSessionCache::BraveSessionCache got page settings "
+                 << this << " " << page_settings;
+      if (page_settings) {
+        farbling_token_ = page_settings->GetFarblingToken();
+      }
+      if (farbling_token_.is_zero()) {
+        auto& top_local_frame = frame->LocalFrameRoot();
+        if (auto* document_loader =
+                top_local_frame.Loader().GetDocumentLoader()) {
+          // Always get the farbling token from the top frame.
+          farbling_token_ =
+              document_loader->GetContentSettings()->farbling_token;
+          if (page_settings && !farbling_token_.is_zero()) {
+            page_settings->SetFarblingToken(farbling_token_);
+          }
+        }
+      }
+    }
   }
-  if (!origin || origin->IsOpaque())
-    return;
-  const auto host = origin->Host();
-  if (host.IsNull() || host.empty())
-    return;
-  const std::string domain =
-      blink::network_utils::GetDomainAndRegistry(
-          host, blink::network_utils::kIncludePrivateRegistries)
-          .Utf8();
-  if (domain.empty())
-    return;
 
-  base::CommandLine* cmd_line = base::CommandLine::ForCurrentProcess();
-  base::StringToUint64(
-      cmd_line->HasSwitch(kBraveSessionToken)
-          ? cmd_line->GetSwitchValueASCII(kBraveSessionToken)
-          // https://github.com/brave/brave-browser/issues/22021
-          : "23456",  // this is intentionally different from the test default
-                      // of 12345 so we can still detect any switch issues in
-                      // our farbling tests
-      &session_key_);
-
-  crypto::HMAC h(crypto::HMAC::SHA256);
-  CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key_),
-               sizeof session_key_));
-  CHECK(h.Sign(domain, domain_key_, sizeof domain_key_));
   settings_client_ = GetContentSettingsClientFor(&context, true);
   if (settings_client_ != nullptr) {
+    if (farbling_token_.is_zero()) {
+      farbling_token_ = settings_client_->GetBraveFarblingToken();
+      if (page_settings && !farbling_token_.is_zero()) {
+        page_settings->SetFarblingToken(farbling_token_);
+      }
+    }
     auto raw_farbling_level = settings_client_->GetBraveFarblingLevel(
         ContentSettingsType::BRAVE_WEBCOMPAT_NONE);
     farbling_level_ =
@@ -227,6 +273,19 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
             : (raw_farbling_level == BraveFarblingLevel::OFF
                    ? BraveFarblingLevel::OFF
                    : BraveFarblingLevel::BALANCED);
+  } else {
+    LOG(ERROR) << "BraveSessionCache::BraveSessionCache no settings client "
+               << this;
+  }
+
+  if (!farbling_token_.is_zero()) {
+    LOG(ERROR) << "got farbling token! " << this << farbling_token_.ToString();
+  } else if (settings_client_) {
+    CHECK(!IsExecutionContextSupportedForFarbling(context))
+        << "no farbling token " << this << " "
+        << context.GetSecurityOrigin()
+               ->GetOriginOrPrecursorOriginIfOpaque()
+               ->ToRawString();
   }
 }
 
@@ -254,9 +313,9 @@ void BraveSessionCache::FarbleAudioChannel(float* dst, size_t count) {
     if (audio_farbling_level == BraveFarblingLevel::OFF) {
       return;
     }
-    const uint64_t* fudge = reinterpret_cast<const uint64_t*>(domain_key_);
-    double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
-    uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
+    double fudge_factor =
+        0.99 + ((farbling_token_.high() / maxUInt64AsDouble) / 100);
+    uint64_t seed = farbling_token_.high();
     audio_farbling_helper_.emplace(
         fudge_factor, seed,
         audio_farbling_level == BraveFarblingLevel::MAXIMUM);
@@ -274,8 +333,9 @@ void BraveSessionCache::PerturbPixels(const unsigned char* data, size_t size) {
 
 void BraveSessionCache::PerturbPixelsInternal(const unsigned char* data,
                                               size_t size) {
-  if (!data || size == 0)
+  if (!data || size == 0) {
     return;
+  }
 
   uint8_t* pixels = const_cast<uint8_t*>(data);
   // This needs to be type size_t because we pass it to std::string_view
@@ -287,8 +347,7 @@ void BraveSessionCache::PerturbPixelsInternal(const unsigned char* data,
   // calculate initial seed to find first pixel to perturb, based on session
   // key, domain key, and canvas contents
   crypto::HMAC h(crypto::HMAC::SHA256);
-  uint64_t session_plus_domain_key =
-      session_key_ ^ *reinterpret_cast<uint64_t*>(domain_key_);
+  uint64_t session_plus_domain_key = farbling_token_.high();
   CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_plus_domain_key),
                sizeof session_plus_domain_key));
   uint8_t canvas_key[32];
@@ -303,8 +362,9 @@ void BraveSessionCache::PerturbPixelsInternal(const unsigned char* data,
   for (int i = 0; i < 32; i++) {
     uint8_t bit = canvas_key[i];
     for (int j = 0; j < 16; j++) {
-      if (j % 8 == 0)
+      if (j % 8 == 0) {
         bit = canvas_key[i];
+      }
       channel = v % 3;
       pixel_index = 4 * (v % pixel_count) + channel;
       pixels[pixel_index] = pixels[pixel_index] ^ (bit & 0x1);
@@ -319,8 +379,8 @@ WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
                                                     wtf_size_t length) {
   uint8_t key[32];
   crypto::HMAC h(crypto::HMAC::SHA256);
-  CHECK(h.Init(reinterpret_cast<const unsigned char*>(&domain_key_),
-               sizeof domain_key_));
+  const auto farbling_seed = farbling_token_.AsBytes();
+  CHECK(h.Init(farbling_seed.data(), farbling_seed.size_bytes()));
   CHECK(h.Sign(seed, key, sizeof key));
   // initial PRNG seed based on session key and passed-in seed string
   uint64_t v = *reinterpret_cast<uint64_t*>(key);
@@ -339,8 +399,9 @@ WTF::String BraveSessionCache::FarbledUserAgent(WTF::String real_user_agent) {
   WTF::StringBuilder result;
   result.Append(real_user_agent);
   int extra = prng() % kFarbledUserAgentMaxExtraSpaces;
-  for (int i = 0; i < extra; i++)
+  for (int i = 0; i < extra; i++) {
     result.Append(" ");
+  }
   return result.ToString();
 }
 
@@ -376,8 +437,9 @@ bool BraveSessionCache::AllowFontFamily(
     case BraveFarblingLevel::BALANCED:
     case BraveFarblingLevel::MAXIMUM: {
       if (AllowFontByFamilyName(family_name,
-                                blink::DefaultLanguage().GetString().Left(2)))
+                                blink::DefaultLanguage().GetString().Left(2))) {
         return true;
+      }
       if (IsFontAllowedForFarbling(family_name)) {
         FarblingPRNG prng = MakePseudoRandomGenerator();
         prng.discard(family_name.Impl()->GetHash() % 16);
@@ -393,8 +455,8 @@ bool BraveSessionCache::AllowFontFamily(
 }
 
 FarblingPRNG BraveSessionCache::MakePseudoRandomGenerator(FarbleKey key) {
-  uint64_t seed =
-      *reinterpret_cast<uint64_t*>(domain_key_) ^ static_cast<uint64_t>(key);
+  LOG(ERROR) << "MakePseudoRandomGenerator " << farbling_token_.ToString();
+  uint64_t seed = farbling_token_.high() ^ static_cast<uint64_t>(key);
   return FarblingPRNG(seed);
 }
 

@@ -41,6 +41,7 @@ struct RendererContentSettingRules
   ContentSettingsForOneType fingerprinting_rules;
   ContentSettingsForOneType brave_shields_rules;
   ContentSettingsForOneType cosmetic_filtering_rules;
+  ContentSettingsForOneType brave_shields_metadata;
   std::map<ContentSettingsType, ContentSettingsForOneType> webcompat_rules;
 };
 

@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/common/navigation/navigation_params.cc b/third_party/blink/common/navigation/navigation_params.cc
+index 648216625d58c15de6da8a0ed9e5195c06c5989e..7c1e59937fe08d0590f7d7db0cad55607612a57c 100644
+--- a/third_party/blink/common/navigation/navigation_params.cc
++++ b/third_party/blink/common/navigation/navigation_params.cc
+@@ -39,7 +39,7 @@ mojom::RendererContentSettingsPtr CreateDefaultRendererContentSettings() {
+   //   allow_image is not supported on Android), then these defaults are used.
+   return mojom::RendererContentSettings::New(
+       /*allow_script=*/true, /*allow_image=*/true, /*allow_popup=*/false,
+-      /*allow_mixed_content=*/false);
++      /*allow_mixed_content=*/false, base::Token());
+ }
+ 
+ }  // namespace blink

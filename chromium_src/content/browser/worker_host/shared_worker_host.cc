@@ -15,4 +15,12 @@ void SharedWorkerHost::GetBraveFarblingLevel(
           url, GetProcessHost()->GetBrowserContext()));
 }
 
+void SharedWorkerHost::GetBraveFarblingToken(
+    const GURL& url,
+    base::OnceCallback<void(const base::Token&)> callback) {
+  std::move(callback).Run(
+      GetContentClient()->browser()->WorkerGetBraveFarblingToken(
+          url, GetProcessHost()->GetBrowserContext()));
+}
+
 }  // namespace content

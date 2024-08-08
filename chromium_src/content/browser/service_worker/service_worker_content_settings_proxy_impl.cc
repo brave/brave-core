@@ -24,4 +24,21 @@ void ServiceWorkerContentSettingsProxyImpl::GetBraveFarblingLevel(
           origin_.GetURL(), context_wrapper_->browser_context()));
 }
 
+void ServiceWorkerContentSettingsProxyImpl::GetBraveFarblingToken(
+    GetBraveFarblingTokenCallback callback) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  // May be shutting down.
+  if (!context_wrapper_->browser_context()) {
+    std::move(callback).Run({});
+    return;
+  }
+  if (origin_.opaque()) {
+    std::move(callback).Run({});
+    return;
+  }
+  std::move(callback).Run(
+      GetContentClient()->browser()->WorkerGetBraveFarblingToken(
+          origin_.GetURL(), context_wrapper_->browser_context()));
+}
+
 }  // namespace content

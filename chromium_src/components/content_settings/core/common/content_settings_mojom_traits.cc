@@ -26,6 +26,7 @@ bool StructTraits<content_settings::mojom::RendererContentSettingRulesDataView,
          data.ReadFingerprintingRules(&out->fingerprinting_rules) &&
          data.ReadBraveShieldsRules(&out->brave_shields_rules) &&
          data.ReadCosmeticFilteringRules(&out->cosmetic_filtering_rules) &&
+         data.ReadBraveShieldsMetadata(&out->brave_shields_metadata) &&
          data.ReadWebcompatRules(&out->webcompat_rules);
 }
 

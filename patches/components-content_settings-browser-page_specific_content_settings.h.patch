@@ -1,0 +1,14 @@
+diff --git a/components/content_settings/browser/page_specific_content_settings.h b/components/content_settings/browser/page_specific_content_settings.h
+index c0576db72292dd80e84608838b648e0f1eebf819..cbb218279b41fc12781042430cc801e6e70cf440 100644
+--- a/components/content_settings/browser/page_specific_content_settings.h
++++ b/components/content_settings/browser/page_specific_content_settings.h
+@@ -183,6 +183,9 @@ class PageSpecificContentSettings
+     // JavaScript.
+     virtual bool IsFrameAllowlistedForJavaScript(
+         content::RenderFrameHost* render_frame_host) = 0;
++
++    virtual base::Token GetOrCreateFarblingToken(const GURL& primary_url,
++                                                 const GURL& secondary_url);
+   };
+ 
+   // Classes that want to be notified about site data events must implement

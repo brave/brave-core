@@ -8,6 +8,7 @@
 
 #include <map>
 
+#include "base/token.h"
 #include "components/content_settings/core/common/content_settings.h"
 
 class GURL;
@@ -32,8 +33,13 @@ ContentSetting GetBraveWebcompatContentSettingFromRules(
 
 ShieldsSettingCounts GetFPSettingCountFromRules(
     const ContentSettingsForOneType& fp_rules);
+
 ShieldsSettingCounts GetAdsSettingCountFromRules(
     const ContentSettingsForOneType& ads_rules);
+
+base::Token GetFarblingTokenFromRules(const ContentSettingsForOneType& fp_rules,
+                                      const GURL& primary_url);
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_BRAVE_SHIELD_UTILS_H_

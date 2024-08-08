@@ -32,6 +32,12 @@ uint8_t ContentBrowserClient::WorkerGetBraveFarblingLevel(
   return 1 /* OFF */;
 }
 
+base::Token ContentBrowserClient::WorkerGetBraveFarblingToken(
+    const GURL& url,
+    BrowserContext* browser_context) {
+  return {};
+}
+
 GURL ContentBrowserClient::SanitizeURL(content::RenderFrameHost*,
                                        const GURL& url) {
   return url;

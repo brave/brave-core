@@ -6,6 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_CONTENT_BROWSER_CLIENT_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_CONTENT_BROWSER_CLIENT_H_
 
+#include "base/token.h"
 #include "third_party/blink/public/mojom/loader/referrer.mojom.h"
 
 // Brave-specific: allows the embedder to modify the referrer string
@@ -26,6 +27,8 @@
   virtual bool AllowWorkerFingerprinting(const GURL& url,                    \
                                          BrowserContext* browser_context);   \
   virtual uint8_t WorkerGetBraveFarblingLevel(                               \
+      const GURL& url, BrowserContext* browser_context);                     \
+  virtual base::Token WorkerGetBraveFarblingToken(                           \
       const GURL& url, BrowserContext* browser_context);                     \
   virtual GURL SanitizeURL(content::RenderFrameHost*, const GURL&);          \
   virtual void SetBrowserStartupIsCompleteForTesting

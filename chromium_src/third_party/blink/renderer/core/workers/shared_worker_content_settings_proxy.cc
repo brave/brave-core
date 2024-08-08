@@ -18,4 +18,10 @@ BraveFarblingLevel SharedWorkerContentSettingsProxy::GetBraveFarblingLevel(
   return BraveFarblingLevel::MAXIMUM;
 }
 
+base::Token SharedWorkerContentSettingsProxy::GetBraveFarblingToken() {
+  base::Token farbling_token;
+  GetService()->GetBraveFarblingToken(&farbling_token);
+  return farbling_token;
+}
+
 }  // namespace blink

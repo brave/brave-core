@@ -1,8 +1,38 @@
 diff --git a/components/content_settings/browser/page_specific_content_settings.cc b/components/content_settings/browser/page_specific_content_settings.cc
-index 2f882c8898a262a1a424353a3727c7d0e5db90fe..4207a1bcfc69c69015e75b7c57bf183a12d20cde 100644
+index 2f882c8898a262a1a424353a3727c7d0e5db90fe..5070790631afb4d34c9fe44ce0568fa15dbde252 100644
 --- a/components/content_settings/browser/page_specific_content_settings.cc
 +++ b/components/content_settings/browser/page_specific_content_settings.cc
-@@ -821,6 +821,7 @@ bool PageSpecificContentSettings::IsContentBlocked(
+@@ -392,15 +392,18 @@ void WebContentsHandler::ReadyToCommitNavigation(
+     content::NavigationHandle* navigation_handle) {
+   content::RenderFrameHost* rfh = navigation_handle->GetRenderFrameHost();
+ 
+-  RendererContentSettingRules rules;
+-  content_settings::GetRendererContentSettingRules(map_, &rules);
+-  delegate()->SetDefaultRendererContentSettingRules(rfh, &rules);
+   const GURL& primary_url =
+       navigation_handle->GetParentFrameOrOuterDocument()
+           ? navigation_handle->GetParentFrameOrOuterDocument()
+                 ->GetOutermostMainFrame()
+                 ->GetLastCommittedURL()
+           : navigation_handle->GetURL();
++  //auto farbling_token =
++      delegate_->GetOrCreateFarblingToken(primary_url, primary_url);
++
++  RendererContentSettingRules rules;
++  content_settings::GetRendererContentSettingRules(map_, &rules);
++  delegate()->SetDefaultRendererContentSettingRules(rfh, &rules);
+ 
+   rules.FilterRulesByOutermostMainFrameURL(primary_url);
+ 
+@@ -436,6 +439,7 @@ void WebContentsHandler::ReadyToCommitNavigation(
+                               ContentSettingsType::MIXEDSCRIPT) ==
+       CONTENT_SETTING_ALLOW;
+ #endif
++  // content_settings->farbling_token = farbling_token;
+ 
+   navigation_handle->SetContentSettings(std::move(content_settings));
+ }
+@@ -821,6 +825,7 @@ bool PageSpecificContentSettings::IsContentBlocked(
        content_type == ContentSettingsType::ADS ||
        content_type == ContentSettingsType::SOUND ||
        content_type == ContentSettingsType::CLIPBOARD_READ_WRITE ||
@@ -10,7 +40,7 @@ index 2f882c8898a262a1a424353a3727c7d0e5db90fe..4207a1bcfc69c69015e75b7c57bf183a
        content_type == ContentSettingsType::SENSORS ||
        content_type == ContentSettingsType::GEOLOCATION ||
        content_type == ContentSettingsType::NOTIFICATIONS) {
-@@ -847,6 +848,7 @@ bool PageSpecificContentSettings::IsContentAllowed(
+@@ -847,6 +852,7 @@ bool PageSpecificContentSettings::IsContentAllowed(
        content_type != ContentSettingsType::MEDIASTREAM_CAMERA &&
        content_type != ContentSettingsType::MIDI_SYSEX &&
        content_type != ContentSettingsType::CLIPBOARD_READ_WRITE &&
@@ -18,3 +48,16 @@ index 2f882c8898a262a1a424353a3727c7d0e5db90fe..4207a1bcfc69c69015e75b7c57bf183a
        content_type != ContentSettingsType::SENSORS &&
        content_type != ContentSettingsType::GEOLOCATION &&
        content_type != ContentSettingsType::NOTIFICATIONS) {
+@@ -1720,6 +1726,12 @@ PageSpecificContentSettings::MaybeGetSyncedSettingsForPictureInPicture() {
+   return nullptr;
+ }
+ 
++base::Token PageSpecificContentSettings::Delegate::GetOrCreateFarblingToken(
++    const GURL& primary_url,
++    const GURL& secondary_url) {
++  NOTREACHED();
++}
++
+ PAGE_USER_DATA_KEY_IMPL(PageSpecificContentSettings);
+ 
+ }  // namespace content_settings

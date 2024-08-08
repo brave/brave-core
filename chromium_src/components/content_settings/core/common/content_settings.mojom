@@ -13,5 +13,6 @@ struct RendererContentSettingRules {
   array<ContentSettingPatternSource> fingerprinting_rules;
   array<ContentSettingPatternSource> brave_shields_rules;
   array<ContentSettingPatternSource> cosmetic_filtering_rules;
+  array<ContentSettingPatternSource> brave_shields_metadata;
   map<ContentSettingsType, array<ContentSettingPatternSource>> webcompat_rules;
 };

@@ -66,6 +66,7 @@ class BraveContentSettingsAgentImpl
 
   BraveFarblingLevel GetBraveFarblingLevel(
       ContentSettingsType webcompat_settings_type) override;
+  base::Token GetBraveFarblingToken() override;
 
   bool IsReduceLanguageEnabled() override;
 

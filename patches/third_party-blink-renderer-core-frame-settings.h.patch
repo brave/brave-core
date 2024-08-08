@@ -1,0 +1,17 @@
+diff --git a/third_party/blink/renderer/core/frame/settings.h b/third_party/blink/renderer/core/frame/settings.h
+index e08f157d94139ba27e514a5d0bc47e658dcb423e..001de83713eccd344e3d3f98bfc366b09a1076c4 100644
+--- a/third_party/blink/renderer/core/frame/settings.h
++++ b/third_party/blink/renderer/core/frame/settings.h
+@@ -57,8 +57,12 @@ class CORE_EXPORT Settings : public SettingsBase {
+ 
+   void SetPreferCompositingToLCDTextForTesting(bool enabled);
+ 
++  void SetFarblingToken(base::Token token) { farbling_token_ = token; }
++  base::Token GetFarblingToken() const { return farbling_token_; }
++
+  private:
+   GenericFontFamilySettings generic_font_family_settings_;
++  base::Token farbling_token_;
+ };
+ 
+ }  // namespace blink

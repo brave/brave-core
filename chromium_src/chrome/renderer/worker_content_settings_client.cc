@@ -49,6 +49,24 @@ BraveFarblingLevel WorkerContentSettingsClient::GetBraveFarblingLevel(
   }
 }
 
+base::Token WorkerContentSettingsClient::GetBraveFarblingToken() {
+  LOG(ERROR) << "WorkerContentSettingsClient::GetBraveFarblingToken";
+  if (content_setting_rules_) {
+    const GURL& primary_url = top_frame_origin_.GetURL();
+    LOG(ERROR)
+        << "WorkerContentSettingsClient::GetBraveFarblingToken primary_url: "
+        << primary_url;
+    // LOG(ERROR) << content_setting_rules_->brave_shields_rules;
+    return brave_shields::GetFarblingTokenFromRules(
+        content_setting_rules_->brave_shields_metadata, primary_url);
+  } else {
+    LOG(ERROR) << "WorkerContentSettingsClient::GetBraveFarblingToken no "
+                  "content_setting_rules";
+  }
+
+  return {};
+}
+
 blink::WebSecurityOrigin
 WorkerContentSettingsClient::GetEphemeralStorageOriginSync() {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
