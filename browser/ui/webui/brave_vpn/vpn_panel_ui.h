@@ -13,9 +13,9 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_ui_message_handler.h"
-#include "content/public/browser/webui_config.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -61,16 +61,14 @@ class VPNPanelUI : public ui::UntrustedWebUIController,
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 
-class UntrustedVPNPanelUIConfig : public content::WebUIConfig {
+class UntrustedVPNPanelUIConfig
+    : public DefaultTopChromeWebUIConfig<VPNPanelUI> {
  public:
   UntrustedVPNPanelUIConfig();
   ~UntrustedVPNPanelUIConfig() override = default;
 
-  std::unique_ptr<content::WebUIController> CreateWebUIController(
-      content::WebUI* web_ui,
-      const GURL& url) override;
-
   bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
+  bool ShouldAutoResizeHost() override;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_VPN_VPN_PANEL_UI_H_

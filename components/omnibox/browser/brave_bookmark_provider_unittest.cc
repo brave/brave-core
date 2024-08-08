@@ -17,6 +17,7 @@
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
 #include "components/prefs/pref_service.h"
+#include "components/search_engines/search_engines_test_environment.h"
 #include "components/search_engines/template_url_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -42,7 +43,7 @@ class BraveBookmarkProviderTest : public testing::Test {
     client_.GetBookmarkModel()->AddURL(node, 0, u"Hello",
                                        GURL("https://example.com"));
     client_.set_template_url_service(
-        std::make_unique<TemplateURLService>(nullptr, 0));
+        search_engines_test_environment_.ReleaseTemplateURLService());
     provider_ = base::MakeRefCounted<BraveBookmarkProvider>(&client_);
   }
 
@@ -50,6 +51,7 @@ class BraveBookmarkProviderTest : public testing::Test {
 
  protected:
   TestSchemeClassifier classifier_;
+  search_engines::SearchEnginesTestEnvironment search_engines_test_environment_;
   BraveFakeAutocompleteProviderClient client_;
   std::unique_ptr<bookmarks::BookmarkModel> model_;
   scoped_refptr<BraveBookmarkProvider> provider_;

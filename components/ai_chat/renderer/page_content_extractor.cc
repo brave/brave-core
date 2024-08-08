@@ -26,7 +26,7 @@
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "net/base/url_util.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
-#include "third_party/blink/public/common/browser_interface_broker_proxy.h"
+#include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"

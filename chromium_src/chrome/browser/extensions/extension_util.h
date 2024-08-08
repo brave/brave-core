@@ -15,8 +15,7 @@ namespace extensions {
 namespace util {
 std::unique_ptr<const PermissionSet> GetInstallPromptPermissionSetForExtension(
     const Extension* extension,
-    Profile* profile,
-    bool include_optional_permissions);
+    Profile* profile);
 }  // namespace util
 }  // namespace extensions
 

@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/performance_manager/metrics/memory_pressure_metrics.h"
 #include "chrome/browser/performance_manager/metrics/page_resource_monitor.h"
 
 namespace performance_manager::metrics {
@@ -12,11 +11,9 @@ class StubGraphOwnedDefaultImpl : public GraphOwnedDefaultImpl {};
 }  // namespace
 }  // namespace performance_manager::metrics
 
-// Both PageResourceMonitor and MemoryPressureMetrics collect data only to send
-// UMA/UKM. It means they do nothing in Brave, but the collection is
-// CPU-intensive. Disable it to save CPU during startup.
+// PageResourceMonitor collects data only to send UMA/UKM. It means it does
+// nothing in Brave, but the collection is CPU-intensive. Disable it to save
+// CPU during startup.
 #define PageResourceMonitor StubGraphOwnedDefaultImpl
-#define MemoryPressureMetrics StubGraphOwnedDefaultImpl
 #include "src/chrome/browser/performance_manager/chrome_browser_main_extra_parts_performance_manager.cc"
-#undef MemoryPressureMetrics
 #undef PageResourceMonitor

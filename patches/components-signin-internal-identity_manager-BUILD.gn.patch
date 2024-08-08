@@ -1,12 +1,12 @@
 diff --git a/components/signin/internal/identity_manager/BUILD.gn b/components/signin/internal/identity_manager/BUILD.gn
-index 405b68bd327d1ceaadac89eca3ecd09e882df60d..3c3e1ffd95878e9ec58e734ba7de9e255cc14f1c 100644
+index c2f602f90345f13e9513c0946721bc2010d41e76..75c7efc88eaa7ac7dc51b5bd9b512981da2943a6 100644
 --- a/components/signin/internal/identity_manager/BUILD.gn
 +++ b/components/signin/internal/identity_manager/BUILD.gn
-@@ -142,6 +142,7 @@ source_set("identity_manager") {
+@@ -140,6 +140,7 @@ source_set("identity_manager") {
        "device_accounts_synchronizer_impl.h",
      ]
    }
 +  import("//brave/components/signin/internal/identity_manager/sources.gni") sources += brave_components_signin_internal_identity_manager_sources
  }
  
- source_set("unit_tests") {
+ source_set("capabilities") {

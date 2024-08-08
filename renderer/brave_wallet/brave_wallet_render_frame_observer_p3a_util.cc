@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "gin/converter.h"
-#include "third_party/blink/public/common/browser_interface_broker_proxy.h"
+#include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
@@ -86,7 +86,7 @@ void BraveWalletRenderFrameObserverP3AUtil::ReportJSProvider(
 bool BraveWalletRenderFrameObserverP3AUtil::EnsureConnected(
     content::RenderFrame* render_frame) {
   if (!brave_wallet_p3a_.is_bound()) {
-    render_frame->GetBrowserInterfaceBroker()->GetInterface(
+    render_frame->GetBrowserInterfaceBroker().GetInterface(
         brave_wallet_p3a_.BindNewPipeAndPassReceiver());
   }
   return brave_wallet_p3a_.is_bound();

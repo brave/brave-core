@@ -5,6 +5,7 @@
 
 #include "chrome/browser/android/signin/signin_manager_android.h"
 
+#include "base/android/callback_android.h"
 #include "base/android/jni_string.h"
 #include "brave/build/android/jni_headers/BraveSigninManager_jni.h"
 #include "chrome/android/chrome_jni_headers/SigninManagerImpl_jni.h"

@@ -9,6 +9,8 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
+// Needed to prevent overriding url_typed_with_http_scheme
+#include "chrome/browser/ui/location_bar/location_bar.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -50,6 +52,14 @@ bool IsURLAllowedInIncognitoBraveImpl(
 
 }  // namespace
 
+// We want URLs that were manually typed with HTTP scheme to be HTTPS
+// upgradable, but preserve the upstream's behavior in regards to captive
+// portals (like hotel login pages which typically aren't cofnigured to work
+// with HTTPS)
+#define url_typed_with_http_scheme \
+  url_typed_with_http_scheme;      \
+  force_no_https_upgrade = false
+
 #define BRAVE_IS_URL_ALLOWED_IN_INCOGNITO                      \
   if (!IsURLAllowedInIncognitoBraveImpl(url, browser_context)) \
     return false;
@@ -57,3 +67,4 @@ bool IsURLAllowedInIncognitoBraveImpl(
 #include "src/chrome/browser/ui/browser_navigator.cc"
 #undef BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL
 #undef BRAVE_IS_URL_ALLOWED_IN_INCOGNITO
+#undef url_typed_with_http_scheme

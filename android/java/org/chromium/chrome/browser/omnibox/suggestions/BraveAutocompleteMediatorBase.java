@@ -23,7 +23,8 @@ class BraveAutocompleteMediatorBase {
             @NonNull AutocompleteMatch suggestion,
             @NonNull GURL url,
             long inputStart,
-            boolean openInNewTab) {
+            boolean openInNewTab,
+            boolean shouldUpdateSuggestionUrl) {
         Context context =
                 (Context)
                         BraveReflectionUtil.getField(AutocompleteMediator.class, "mContext", this);
@@ -60,6 +61,8 @@ class BraveAutocompleteMediatorBase {
                 long.class,
                 inputStart,
                 boolean.class,
-                openInNewTab);
+                openInNewTab,
+                boolean.class,
+                shouldUpdateSuggestionUrl);
     }
 }

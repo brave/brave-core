@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/BUILD.gn b/chrome/browser/ui/webui/BUILD.gn
-index feeb7411b2068e50492548bcfb21015bbe588586..1fcadedbea2c6d7293b562bd6c05b00f588795e0 100644
+index b5cabbc533a3243a7e980c0ad262f5cecc9deb54..99c54fd126774bf891dab640013775401b31193e 100644
 --- a/chrome/browser/ui/webui/BUILD.gn
 +++ b/chrome/browser/ui/webui/BUILD.gn
-@@ -85,6 +85,7 @@ source_set("configs") {
+@@ -104,6 +104,7 @@ source_set("configs") {
        deps += [ "//ash/webui/sample_system_web_app_ui" ]
      }
    }

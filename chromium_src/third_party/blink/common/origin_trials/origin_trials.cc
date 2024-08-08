@@ -32,7 +32,6 @@ bool IsTrialDisabledInBrave(std::string_view trial_name) {
       "FencedFrames",
       "Fledge",
       "Parakeet",
-      "PrivacySandboxAdsAPIs",
       "SignedExchangeSubresourcePrefetch",
       "SubresourceWebBundles",
       "TrustTokens",
@@ -54,10 +53,7 @@ bool IsTrialDisabledInBrave(blink::mojom::OriginTrialFeature feature) {
       {
           blink::mojom::OriginTrialFeature::kAdInterestGroupAPI,
           blink::mojom::OriginTrialFeature::kDigitalGoods,
-          blink::mojom::OriginTrialFeature::kFencedFrames,
-          blink::mojom::OriginTrialFeature::kFledge,
           blink::mojom::OriginTrialFeature::kParakeet,
-          blink::mojom::OriginTrialFeature::kPrivacySandboxAdsAPIs,
           blink::mojom::OriginTrialFeature::kPrivateStateTokens,
       };
 

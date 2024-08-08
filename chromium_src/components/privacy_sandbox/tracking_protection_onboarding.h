@@ -6,11 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PRIVACY_SANDBOX_TRACKING_PROTECTION_ONBOARDING_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PRIVACY_SANDBOX_TRACKING_PROTECTION_ONBOARDING_H_
 
-#define MaybeMarkEligible           \
-  MaybeMarkEligible_ChromiumImpl(); \
-  void MaybeMarkEligible
+#define MaybeMarkModeBEligible           \
+  MaybeMarkModeBEligible_ChromiumImpl(); \
+  void MaybeMarkModeBEligible
 
 #include "src/components/privacy_sandbox/tracking_protection_onboarding.h"  // IWYU pragma: export
-#undef MaybeMarkEligible
+#undef MaybeMarkModeBEligible
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_PRIVACY_SANDBOX_TRACKING_PROTECTION_ONBOARDING_H_

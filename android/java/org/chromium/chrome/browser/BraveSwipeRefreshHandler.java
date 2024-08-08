@@ -8,6 +8,7 @@ package org.chromium.chrome.browser;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.OverscrollAction;
+import org.chromium.ui.base.BackGestureEventSwipeEdge;
 import org.chromium.ui.base.PageTransition;
 import org.chromium.url.GURL;
 
@@ -23,7 +24,10 @@ public class BraveSwipeRefreshHandler extends SwipeRefreshHandler {
 
     @Override
     public boolean start(
-            @OverscrollAction int type, float startX, float startY, boolean navigateForward) {
+            @OverscrollAction int type,
+            float startX,
+            float startY,
+            @BackGestureEventSwipeEdge int initiatingEdge) {
         GURL url = mTab.getUrl();
         if (url.getScheme().equals("chrome-untrusted")
                 && url.getHost().equals("chat")
@@ -32,6 +36,6 @@ public class BraveSwipeRefreshHandler extends SwipeRefreshHandler {
             return false;
         }
 
-        return super.start(type, startX, startY, navigateForward);
+        return super.start(type, startX, startY, initiatingEdge);
     }
 }

@@ -47,6 +47,7 @@ if (!is_ios) {
       "//components/prefs",
       "//components/prefs:test_support",
       "//components/search_engines",
+      "//components/search_engines:test_support",
       "//content/test:test_support",
       "//testing/gtest",
     ]

@@ -127,7 +127,6 @@
     *** mActivityTabProvider;
     *** mAppThemeColorProvider;
     *** mScrimCoordinator;
-    *** mShowStartSurfaceSupplier;
     *** mMenuButtonCoordinator;
     *** mToolbarTabController;
     *** mLocationBar;
@@ -153,7 +152,6 @@
 }
 
 -keep class org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator {
-    *** mTabSwitcherModeCoordinator;
     *** mOptionalButtonController;
     *** mToolbarColorObserverManager;
     public <init>(...);
@@ -161,21 +159,6 @@
 
 -keep class org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator {
     public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTTCoordinator {
-    *** mActiveTabSwitcherToolbar;
-}
-
--keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTopToolbar {
-    *** mNewTabViewButton;
-    *** mNewTabImageButton;
-    *** mMenuButton;
-    *** mShouldShowNewTabVariation;
-    *** mIsIncognito;
-    *** updateNewTabButtonVisibility(...);
-    *** shouldShowIncognitoToggle(...);
-    *** getToolbarColorForCurrentState(...);
 }
 
 -keep class org.chromium.chrome.browser.download.MimeUtils {
@@ -326,10 +309,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.toolbar.IncognitoToggleTabLayout {
-    *** mIncognitoButtonIcon;
-}
-
 -keep class org.chromium.chrome.browser.tasks.tab_management.TabGroupUiCoordinator {
     public <init>(...);
     *** mToolbarView;
@@ -374,7 +353,10 @@
 
 -keep class org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl
 
--keep class org.chromium.chrome.browser.toolbar.top.ToolbarPhone
+-keep class org.chromium.chrome.browser.toolbar.top.ToolbarPhone {
+    *** mLocationBarBackgroundColorForNtp;
+    *** mToolbarBackgroundColorForNtp;
+}
 
 -keep class org.chromium.components.permissions.PermissionDialogModelFactory {
     *** getModel(...);
@@ -885,3 +867,20 @@
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout
 
 -keep class org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutBase
+
+-keep class org.chromium.chrome.browser.hub.HubManagerImpl {
+    *** ensureHubCoordinatorIsInitialized(...);
+}
+
+-keep class org.chromium.chrome.browser.ui.system.StatusBarColorController {
+    public <init>(...);
+    *** mBackgroundColorForNtp;
+}
+
+-keep class org.chromium.chrome.browser.ui.system.BraveStatusBarColorController {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider {
+    *** getToolbarSidePaddingForNtp(...);
+}
