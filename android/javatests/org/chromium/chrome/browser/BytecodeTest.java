@@ -37,6 +37,7 @@ import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.base.test.BaseJUnit4ClassRunner;
 import org.chromium.base.test.util.Batch;
@@ -57,6 +58,7 @@ import org.chromium.chrome.browser.compositor.layouts.LayoutRenderHost;
 import org.chromium.chrome.browser.compositor.layouts.LayoutUpdateHost;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.BravePartialCustomTabBottomSheetStrategy;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabHandleStrategyFactory;
+import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.feed.FeedActionDelegate;
 import org.chromium.chrome.browser.feed.FeedSurfaceCoordinator;
 import org.chromium.chrome.browser.feed.SnapScrollHelper;
@@ -111,6 +113,7 @@ import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
+import org.chromium.chrome.browser.toolbar.top.ToggleTabStackButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
@@ -151,7 +154,6 @@ import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.InsetObserver;
 import org.chromium.ui.ViewProvider;
 import org.chromium.ui.base.ActivityWindowAndroid;
-import org.chromium.ui.base.EventOffsetHandler;
 import org.chromium.ui.base.IntentRequestTracker;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.base.WindowDelegate;
@@ -1074,6 +1076,7 @@ public class BytecodeTest {
                         AppMenuDelegate.class,
                         ActivityLifecycleDispatcher.class,
                         BottomSheetController.class,
+                        DataSharingTabManager.class,
                         TabContentManager.class,
                         TabCreatorManager.class,
                         SnackbarManager.class,
@@ -1128,6 +1131,7 @@ public class BytecodeTest {
                         ScrimCoordinator.class,
                         ObservableSupplier.class,
                         BottomSheetController.class,
+                        DataSharingTabManager.class,
                         TabModelSelector.class,
                         TabContentManager.class,
                         ViewGroup.class,
@@ -1202,6 +1206,7 @@ public class BytecodeTest {
                         ThemeColorProvider.class,
                         MenuButtonCoordinator.class,
                         ObservableSupplier.class,
+                        ToggleTabStackButtonCoordinator.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
                         Supplier.class,
@@ -1478,7 +1483,7 @@ public class BytecodeTest {
                         Supplier.class,
                         AppMenuDelegate.class,
                         StatusBarColorProvider.class,
-                        ObservableSupplierImpl.class,
+                        OneshotSupplierImpl.class,
                         IntentRequestTracker.class,
                         InsetObserver.class,
                         Function.class,
@@ -1638,7 +1643,6 @@ public class BytecodeTest {
                         "org/chromium/components/embedder_support/view/ContentView",
                         "org/chromium/components/embedder_support/view/BraveContentView",
                         Context.class,
-                        EventOffsetHandler.class,
                         WebContents.class));
         Assert.assertTrue(
                 constructorsMatch(
