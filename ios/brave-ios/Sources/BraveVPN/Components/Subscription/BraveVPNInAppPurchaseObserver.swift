@@ -9,6 +9,38 @@ import Shared
 import StoreKit
 import os.log
 
+public class BraveVPNIAPObserverManager: NSObject, ObservableObject,
+  BraveVPNInAppPurchaseObserverDelegate
+{
+  @Published var isPurchaseSuccessful = false
+  @Published var isReceiptValidationRequired = false
+  @Published var isPurchaseFailedError: BraveVPNInAppPurchaseObserver.PurchaseError?
+  @Published var isPromotedPurchase = false
+  
+  private let iapObserver: BraveVPNInAppPurchaseObserver
+
+  public init(iapObserver: BraveVPNInAppPurchaseObserver) {
+    self.iapObserver = iapObserver
+    super.init()
+    self.iapObserver.delegate = self
+  }
+
+  // MARK: - IAPObserverDelegate
+
+  public func purchasedOrRestoredProduct(validateReceipt: Bool) {
+    isPurchaseSuccessful = true
+    isReceiptValidationRequired = validateReceipt
+  }
+
+  public func purchaseFailed(error: BraveVPNInAppPurchaseObserver.PurchaseError) {
+    isPurchaseFailedError = error
+  }
+
+  public func handlePromotedInAppPurchase() {
+    isPromotedPurchase = true
+  }
+}
+
 public protocol BraveVPNInAppPurchaseObserverDelegate: AnyObject {
   func purchasedOrRestoredProduct(validateReceipt: Bool)
   func purchaseFailed(error: BraveVPNInAppPurchaseObserver.PurchaseError)
@@ -17,7 +49,7 @@ public protocol BraveVPNInAppPurchaseObserverDelegate: AnyObject {
 
 public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserver {
 
-  public enum PurchaseError {
+  public enum PurchaseError: Equatable {
     case transactionError(error: SKError?)
     case receiptError
   }

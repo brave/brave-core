@@ -184,6 +184,8 @@ public class ActivityShortcutManager: NSObject {
         let vpnPaywallView = BraveVPNPaywallView(openVPNAuthenticationInNewTab: { [weak bvc] in
           guard let bvc = bvc else { return }
 
+          bvc.popToBVC()
+
           bvc.openURLInNewTab(
             .brave.braveVPNRefreshCredentials,
             isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing,
