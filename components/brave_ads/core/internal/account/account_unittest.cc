@@ -182,7 +182,7 @@ TEST_F(BraveAdsAccountTest, GetStatementForRewardsUser) {
 
   base::MockCallback<GetStatementOfAccountsCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
-  Account::GetStatement(callback.Get());
+  account_->GetStatement(callback.Get());
 }
 
 TEST_F(BraveAdsAccountTest, DoNotGetStatementForNonRewardsUser) {
@@ -192,7 +192,7 @@ TEST_F(BraveAdsAccountTest, DoNotGetStatementForNonRewardsUser) {
   // Act & Assert
   base::MockCallback<GetStatementOfAccountsCallback> callback;
   EXPECT_CALL(callback, Run(/*statement=*/::testing::IsFalse()));
-  Account::GetStatement(callback.Get());
+  account_->GetStatement(callback.Get());
 }
 
 TEST_F(BraveAdsAccountTest, DepositForCash) {

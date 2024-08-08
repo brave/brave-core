@@ -13,9 +13,15 @@ namespace brave_ads::test {
 
 std::optional<std::string> MaybeReadFileToString(const std::string& name);
 
+// The file can include `<time:period>` tags for mocking timestamps. `period`
+// can be one of the following: `now`, `distant_past`, `distant_future`, `+/-#
+// seconds`, `+/-# minutes`, `+/-# hours`, or `+/-# days`, i.e.,
+//
+//     `<time:+7 days>`
 std::optional<std::string> MaybeReadFileToStringAndReplaceTags(
     const std::string& name);
 
+// Read bundled .pak data resources.
 std::optional<std::string> MaybeReadDataResourceToString(
     const std::string& name);
 

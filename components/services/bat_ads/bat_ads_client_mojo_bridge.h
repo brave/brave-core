@@ -55,7 +55,7 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
   bool IsBrowserActive() const override;
   bool IsBrowserInFullScreenMode() const override;
 
-  bool CanShowNotificationAds() override;
+  bool CanShowNotificationAds() const override;
   bool CanShowNotificationAdsWhileBrowserIsBackgrounded() const override;
   void ShowNotificationAd(const brave_ads::NotificationAdInfo& ad) override;
   void CloseNotificationAd(const std::string& placement_id) override;

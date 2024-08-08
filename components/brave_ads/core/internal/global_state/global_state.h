@@ -17,6 +17,7 @@ namespace brave_ads {
 // TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate global
 // state.
 
+class AdHistoryManager;
 class AdsClient;
 class AdsNotifierManager;
 class BrowserManager;
@@ -25,7 +26,6 @@ class ConfirmationStateManager;
 class DatabaseManager;
 class DiagnosticManager;
 class GlobalStateHolder;
-class AdHistoryManager;
 class NotificationAdManager;
 class TabManager;
 class UserActivityManager;
@@ -60,9 +60,7 @@ class GlobalState final {
   UserActivityManager& GetUserActivityManager();
 
   mojom::SysInfo& SysInfo();
-
   mojom::BuildChannelInfo& BuildChannel();
-
   mojom::Flags& Flags();
 
  private:
@@ -78,7 +76,7 @@ class GlobalState final {
   std::unique_ptr<ConfirmationStateManager> confirmation_state_manager_;
   std::unique_ptr<DatabaseManager> database_manager_;
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
-  std::unique_ptr<AdHistoryManager> history_manager_;
+  std::unique_ptr<AdHistoryManager> ad_history_manager_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivityManager> user_activity_manager_;

@@ -5,6 +5,7 @@
 
 #include "brave/components/services/bat_ads/bat_ads_impl.h"
 
+#include <memory>
 #include <optional>
 #include <utility>
 

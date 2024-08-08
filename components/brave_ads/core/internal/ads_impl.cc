@@ -121,7 +121,7 @@ void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
     return std::move(callback).Run(/*statement=*/nullptr);
   }
 
-  Account::GetStatement(std::move(callback));
+  account_.GetStatement(std::move(callback));
 }
 
 void AdsImpl::MaybeServeInlineContentAd(
@@ -336,6 +336,21 @@ void AdsImpl::CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr wallet,
                                       std::move(wallet), std::move(callback)));
 }
 
+void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
+                                      InitializeCallback callback) {
+  BLOG(1, "Successfully initialized ads");
+
+  is_initialized_ = true;
+
+  if (wallet) {
+    account_.SetWallet(wallet->payment_id, wallet->recovery_seed);
+  }
+
+  NotifyPendingAdsClientObservers();
+
+  std::move(callback).Run(/*success=*/true);
+}
+
 void AdsImpl::PurgeExpiredAdEventsCallback(mojom::WalletInfoPtr wallet,
                                            InitializeCallback callback,
                                            const bool success) {
@@ -451,21 +466,6 @@ void AdsImpl::LoadConfirmationStateCallback(mojom::WalletInfoPtr wallet,
   }
 
   SuccessfullyInitialized(std::move(wallet), std::move(callback));
-}
-
-void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
-                                      InitializeCallback callback) {
-  BLOG(1, "Successfully initialized ads");
-
-  is_initialized_ = true;
-
-  if (wallet) {
-    account_.SetWallet(wallet->payment_id, wallet->recovery_seed);
-  }
-
-  NotifyPendingAdsClientObservers();
-
-  std::move(callback).Run(/*success=*/true);
 }
 
 }  // namespace brave_ads

@@ -52,7 +52,7 @@ class Account final : public AdsClientNotifierObserver,
   void SetWallet(const std::string& payment_id,
                  const std::string& recovery_seed_base64);
 
-  static void GetStatement(GetStatementOfAccountsCallback callback);
+  void GetStatement(GetStatementOfAccountsCallback callback);
 
   void Deposit(const std::string& creative_instance_id,
                const std::string& segment,

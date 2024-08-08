@@ -42,9 +42,9 @@ void MockDeviceId() {
   GlobalState::GetInstance()->SysInfo().device_id = kDeviceId;
 }
 
-void MockPlatformHelper(const PlatformHelperMock& mock,
+void MockPlatformHelper(const PlatformHelperMock& platform_helper_mock,
                         const PlatformType type) {
-  PlatformHelper::SetForTesting(&mock);
+  PlatformHelper::SetForTesting(&platform_helper_mock);
 
   bool is_mobile = false;
   std::string name;
@@ -83,9 +83,10 @@ void MockPlatformHelper(const PlatformHelperMock& mock,
     }
   }
 
-  ON_CALL(mock, IsMobile).WillByDefault(::testing::Return(is_mobile));
-  ON_CALL(mock, GetName).WillByDefault(::testing::Return(name));
-  ON_CALL(mock, GetType).WillByDefault(::testing::Return(type));
+  ON_CALL(platform_helper_mock, IsMobile)
+      .WillByDefault(::testing::Return(is_mobile));
+  ON_CALL(platform_helper_mock, GetName).WillByDefault(::testing::Return(name));
+  ON_CALL(platform_helper_mock, GetType).WillByDefault(::testing::Return(type));
 }
 
 void MockBuildChannel(const BuildChannelType type) {
@@ -116,37 +117,40 @@ void MockBuildChannel(const BuildChannelType type) {
                         << base::to_underlying(type);
 }
 
-void MockIsNetworkConnectionAvailable(const AdsClientMock& mock,
+void MockIsNetworkConnectionAvailable(const AdsClientMock& ads_client_mock,
                                       const bool is_available) {
-  ON_CALL(mock, IsNetworkConnectionAvailable())
+  ON_CALL(ads_client_mock, IsNetworkConnectionAvailable())
       .WillByDefault(::testing::Return(is_available));
 }
 
-void MockIsBrowserActive(const AdsClientMock& mock, const bool is_active) {
-  ON_CALL(mock, IsBrowserActive).WillByDefault(::testing::Return(is_active));
+void MockIsBrowserActive(const AdsClientMock& ads_client_mock,
+                         const bool is_active) {
+  ON_CALL(ads_client_mock, IsBrowserActive)
+      .WillByDefault(::testing::Return(is_active));
 }
 
-void MockIsBrowserInFullScreenMode(const AdsClientMock& mock,
+void MockIsBrowserInFullScreenMode(const AdsClientMock& ads_client_mock,
                                    const bool is_full_screen_mode) {
-  ON_CALL(mock, IsBrowserInFullScreenMode())
+  ON_CALL(ads_client_mock, IsBrowserInFullScreenMode())
       .WillByDefault(::testing::Return(is_full_screen_mode));
 }
 
-void MockCanShowNotificationAds(AdsClientMock& mock, const bool can_show) {
-  ON_CALL(mock, CanShowNotificationAds())
+void MockCanShowNotificationAds(const AdsClientMock& ads_client_mock,
+                                const bool can_show) {
+  ON_CALL(ads_client_mock, CanShowNotificationAds())
       .WillByDefault(::testing::Return(can_show));
 }
 
 void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
-    const AdsClientMock& mock,
+    const AdsClientMock& ads_client_mock,
     const bool can_show) {
-  ON_CALL(mock, CanShowNotificationAdsWhileBrowserIsBackgrounded())
+  ON_CALL(ads_client_mock, CanShowNotificationAdsWhileBrowserIsBackgrounded())
       .WillByDefault(::testing::Return(can_show));
 }
 
-void MockGetSiteHistory(AdsClientMock& mock,
+void MockGetSiteHistory(const AdsClientMock& ads_client_mock,
                         const SiteHistoryList& site_history) {
-  ON_CALL(mock, GetSiteHistory)
+  ON_CALL(ads_client_mock, GetSiteHistory)
       .WillByDefault(
           ::testing::Invoke([site_history](const size_t max_count,
                                            const size_t /*recent_day_range*/,
@@ -157,9 +161,9 @@ void MockGetSiteHistory(AdsClientMock& mock,
           }));
 }
 
-void MockUrlResponses(AdsClientMock& mock,
+void MockUrlResponses(const AdsClientMock& ads_client_mock,
                       const URLResponseMap& url_responses) {
-  ON_CALL(mock, UrlRequest)
+  ON_CALL(ads_client_mock, UrlRequest)
       .WillByDefault(::testing::Invoke(
           [url_responses](const mojom::UrlRequestInfoPtr& url_request,
                           UrlRequestCallback callback) {

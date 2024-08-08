@@ -37,7 +37,7 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD(bool, IsBrowserActive, (), (const));
   MOCK_METHOD(bool, IsBrowserInFullScreenMode, (), (const));
 
-  MOCK_METHOD(bool, CanShowNotificationAds, ());
+  MOCK_METHOD(bool, CanShowNotificationAds, (), (const));
   MOCK_METHOD(bool,
               CanShowNotificationAdsWhileBrowserIsBackgrounded,
               (),

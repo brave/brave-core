@@ -32,7 +32,7 @@ GlobalState::GlobalState(AdsClient* const ads_client)
   confirmation_state_manager_ = std::make_unique<ConfirmationStateManager>();
   database_manager_ = std::make_unique<DatabaseManager>();
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
-  history_manager_ = std::make_unique<AdHistoryManager>();
+  ad_history_manager_ = std::make_unique<AdHistoryManager>();
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
   tab_manager_ = std::make_unique<TabManager>();
   user_activity_manager_ = std::make_unique<UserActivityManager>();
@@ -98,8 +98,8 @@ DiagnosticManager& GlobalState::GetDiagnosticManager() {
 
 AdHistoryManager& GlobalState::GetHistoryManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  CHECK(history_manager_);
-  return *history_manager_;
+  CHECK(ad_history_manager_);
+  return *ad_history_manager_;
 }
 
 NotificationAdManager& GlobalState::GetNotificationAdManager() {

@@ -32,7 +32,7 @@ class AdsClientIOS : public brave_ads::AdsClient {
   bool IsBrowserInFullScreenMode() const override;
   bool CanShowNotificationAdsWhileBrowserIsBackgrounded() const override;
   void ShowNotificationAd(const brave_ads::NotificationAdInfo& ad) override;
-  bool CanShowNotificationAds() override;
+  bool CanShowNotificationAds() const override;
   void CloseNotificationAd(const std::string& placement_id) override;
   void CacheAdEventForInstanceId(const std::string& id,
                                  const std::string& ad_type,

@@ -26,26 +26,29 @@ using URLResponseMap =
 
 void MockDeviceId();
 
-void MockPlatformHelper(const PlatformHelperMock& mock, PlatformType type);
+void MockPlatformHelper(const PlatformHelperMock& platform_helper_mock,
+                        PlatformType type);
 
 void MockBuildChannel(BuildChannelType type);
 
-void MockIsNetworkConnectionAvailable(const AdsClientMock& mock,
+void MockIsNetworkConnectionAvailable(const AdsClientMock& ads_client_mock,
                                       bool is_available);
 
-void MockIsBrowserActive(const AdsClientMock& mock, bool is_active);
-void MockIsBrowserInFullScreenMode(const AdsClientMock& mock,
+void MockIsBrowserActive(const AdsClientMock& ads_client_mock, bool is_active);
+void MockIsBrowserInFullScreenMode(const AdsClientMock& ads_client_mock,
                                    bool is_full_screen_mode);
 
-void MockCanShowNotificationAds(AdsClientMock& mock, bool can_show);
+void MockCanShowNotificationAds(const AdsClientMock& ads_client_mock,
+                                bool can_show);
 void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
-    const AdsClientMock& mock,
+    const AdsClientMock& ads_client_mock,
     bool can_show);
 
-void MockGetSiteHistory(AdsClientMock& mock,
+void MockGetSiteHistory(const AdsClientMock& ads_client_mock,
                         const SiteHistoryList& site_history);
 
-void MockUrlResponses(AdsClientMock& mock, const URLResponseMap& url_responses);
+void MockUrlResponses(const AdsClientMock& ads_client_mock,
+                      const URLResponseMap& url_responses);
 
 }  // namespace brave_ads::test
 

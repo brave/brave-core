@@ -18,6 +18,7 @@ void ResetCommandLineSwitches();
 
 std::optional<bool>& DidAppendCommandLineSwitches();
 
+// Should only be called from `test::TestBase::SetUpMocks`.
 void AppendCommandLineSwitches(
     const CommandLineSwitchList& command_line_switches);
 

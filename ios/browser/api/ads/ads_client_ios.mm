@@ -54,7 +54,7 @@ void AdsClientIOS::ShowNotificationAd(const brave_ads::NotificationAdInfo& ad) {
   [bridge_ showNotificationAd:ad];
 }
 
-bool AdsClientIOS::CanShowNotificationAds() {
+bool AdsClientIOS::CanShowNotificationAds() const {
   return [bridge_ canShowNotificationAds];
 }
 
