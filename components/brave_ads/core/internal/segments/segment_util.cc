@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
+#include <utility>
 #include <vector>
 
 #include "base/check.h"
@@ -12,9 +13,11 @@
 #include "base/containers/flat_set.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
+#include "brave/components/brave_ads/core/internal/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/preferences/filtered_category_info.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
 namespace brave_ads {
 
@@ -96,23 +99,32 @@ bool HasChildSegment(const std::string& segment) {
 bool ShouldFilterSegment(const std::string& segment) {
   CHECK(!segment.empty());
 
-  const std::string parent_segment = GetParentSegment(segment);
+  const ReactionMap& segment_reactions = GetReactions().Segments();
 
-  const FilteredCategoryList& filtered_segments =
-      ClientStateManager::GetInstance().GetFilteredCategories();
-  const auto iter = base::ranges::find_if(
-      filtered_segments, [&segment, &parent_segment](
-                             const FilteredCategoryInfo& filtered_segment) {
-        if (HasChildSegment(filtered_segment.name)) {
-          // Filter against child, i.e. "technology & computing-linux"
-          return segment == filtered_segment.name;
-        }
+  {
+    // Filter matching segment, i.e. "technology & computing-linux".
+    const auto iter = base::ranges::find(
+        segment_reactions, segment,
+        &std::pair<const std::string, mojom::ReactionType>::first);
+    if (iter != segment_reactions.cend() &&
+        iter->second == mojom::ReactionType::kDisliked) {
+      return true;
+    }
+  }
 
-        // Filter against parent, i.e. "technology & computing"
-        return parent_segment == GetParentSegment(filtered_segment.name);
-      });
+  {
+    // Filter matching parent segment, i.e. "technology & computing".
+    const std::string parent_segment = GetParentSegment(segment);
+    const auto iter = base::ranges::find(
+        segment_reactions, parent_segment,
+        &std::pair<const std::string, mojom::ReactionType>::first);
+    if (iter != segment_reactions.cend() &&
+        iter->second == mojom::ReactionType::kDisliked) {
+      return true;
+    }
+  }
 
-  return iter != filtered_segments.cend();
+  return false;
 }
 
 }  // namespace brave_ads

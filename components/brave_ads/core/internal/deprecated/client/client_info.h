@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/preferences/ad_preferences_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_alias.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
@@ -33,7 +32,6 @@ struct ClientInfo final {
   std::string ToJson() const;
   [[nodiscard]] bool FromJson(const std::string& json);
 
-  AdPreferencesInfo ad_preferences;
   AdHistoryList ad_history;
   TextClassificationProbabilityList text_classification_probabilities;
   PurchaseIntentSignalHistoryMap purchase_intent_signal_history;

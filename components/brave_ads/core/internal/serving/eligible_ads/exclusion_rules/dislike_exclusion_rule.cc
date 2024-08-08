@@ -5,25 +5,18 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/dislike_exclusion_rule.h"
 
-#include "base/containers/contains.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_ads/core/internal/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/preferences/filtered_advertiser_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
 
 namespace brave_ads {
 
 namespace {
 
 bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
-  const FilteredAdvertiserList& filtered_advertisers =
-      ClientStateManager::GetInstance().GetFilteredAdvertisers();
-  if (filtered_advertisers.empty()) {
-    return true;
-  }
-
-  return !base::Contains(filtered_advertisers, creative_ad.advertiser_id,
-                         &FilteredAdvertiserInfo::id);
+  return GetReactions().AdReactionTypeForId(creative_ad.advertiser_id) !=
+         mojom::ReactionType::kDisliked;
 }
 
 }  // namespace

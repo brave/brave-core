@@ -168,38 +168,38 @@ class ADS_EXPORT Ads {
                                      base::Time to_time) = 0;
 
   // Called to like an ad. This is a toggle, so calling it again returns the
-  // setting to the neutral state. Returns `ReactionType` containing the
-  // current state.
+  // setting to the neutral state. The callback takes one argument - `bool` is
+  // set to `true` if successful otherwise `false`.
   virtual void ToggleLikeAd(const base::Value::Dict& value,
                             ToggleReactionCallback callback) = 0;
 
   // Called to dislike an ad. This is a toggle, so calling it again returns the
-  // setting to the neutral state. Returns `ReactionType` containing the
-  // current state.
+  // setting to the neutral state. The callback takes one argument - `bool` is
+  // set to `true` if successful otherwise `false`.
   virtual void ToggleDislikeAd(const base::Value::Dict& value,
                                ToggleReactionCallback callback) = 0;
 
-  // Called to like a segment. This is a toggle, so calling it again returns
-  // the setting to the neutral state. Returns `ReactionType` containing the
-  // current state.
+  // Called to like a category. This is a toggle, so calling it again returns
+  // the setting to the neutral state. The callback takes one argument - `bool`
+  // is set to `true` if successful otherwise `false`.
   virtual void ToggleLikeSegment(const base::Value::Dict& value,
                                  ToggleReactionCallback callback) = 0;
 
-  // Called to dislike a segment. This is a toggle, so calling it again returns
-  // the setting to the neutral state. Returns `ReactionType` containing the
-  // current state.
+  // Called to dislike a category. This is a toggle, so calling it again
+  // returns the setting to the neutral state. The callback takes one argument -
+  // `bool` is set to `true` if successful otherwise `false`.
   virtual void ToggleDislikeSegment(const base::Value::Dict& value,
                                     ToggleReactionCallback callback) = 0;
 
   // Called to save an ad for later viewing. This is a toggle, so calling it
-  // again removes the ad from the saved list. Returns `true` if the ad was
-  // saved otherwise `false`.
+  // again removes the ad from the saved list. The callback takes one argument -
+  // `bool` is set to `true` if successful otherwise `false`.
   virtual void ToggleSaveAd(const base::Value::Dict& value,
                             ToggleReactionCallback callback) = 0;
 
   // Called to mark an ad as inappropriate. This is a toggle, so calling it
-  // again unmarks the ad. Returns `true` if the ad was marked otherwise
-  // `false`.
+  // again unmarks the ad. The callback takes one argument - `bool` is
+  // set to `true` if successful otherwise `false`.
   virtual void ToggleMarkAdAsInappropriate(const base::Value::Dict& value,
                                            ToggleReactionCallback callback) = 0;
 };

@@ -40,6 +40,13 @@ inline constexpr char kServeAdAt[] = "brave.brave_ads.serve_ad_at";
 inline constexpr char kNextTokenRedemptionAt[] =
     "brave.brave_ads.rewards.next_time_redemption_at";
 
+inline constexpr char kAdReactions[] = "brave.brave_ads.reactions.ads";
+inline constexpr char kSegmentReactions[] =
+    "brave.brave_ads.reactions.segments";
+inline constexpr char kSaveAds[] = "brave.brave_ads.reactions.saved_ads";
+inline constexpr char kMarkedAsInappropriate[] =
+    "brave.brave_ads.reactions.marked_as_inappropriate";
+
 inline constexpr char kHasMigratedClientState[] =
     "brave.brave_ads.state.has_migrated.client.v6";
 inline constexpr char kHasMigratedConfirmationState[] =

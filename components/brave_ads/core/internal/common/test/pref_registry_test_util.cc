@@ -50,6 +50,11 @@ void RegisterProfilePrefs() {
 
   RegisterProfileTimePref(prefs::kNextTokenRedemptionAt, DistantFuture());
 
+  RegisterProfileDictPref(prefs::kAdReactions);
+  RegisterProfileDictPref(prefs::kSegmentReactions);
+  RegisterProfileListPref(prefs::kSaveAds);
+  RegisterProfileListPref(prefs::kMarkedAsInappropriate);
+
   RegisterProfileBooleanPref(prefs::kHasMigratedClientState, true);
   RegisterProfileBooleanPref(prefs::kHasMigratedConfirmationState, true);
   RegisterProfileBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser, false);
