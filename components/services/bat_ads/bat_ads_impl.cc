@@ -236,27 +236,25 @@ void BatAdsImpl::ToggleDislikeAd(base::Value::Dict value,
   GetAds()->ToggleDislikeAd(value, std::move(callback));
 }
 
-void BatAdsImpl::ToggleLikeCategory(base::Value::Dict value,
-                                    ToggleLikeCategoryCallback callback) {
-  GetAds()->ToggleLikeCategory(value, std::move(callback));
+void BatAdsImpl::ToggleLikeSegment(base::Value::Dict value,
+                                   ToggleLikeSegmentCallback callback) {
+  GetAds()->ToggleLikeSegment(value, std::move(callback));
 }
 
-void BatAdsImpl::ToggleDislikeCategory(base::Value::Dict value,
-                                       ToggleDislikeCategoryCallback callback) {
-  GetAds()->ToggleDislikeCategory(value, std::move(callback));
+void BatAdsImpl::ToggleDislikeSegment(base::Value::Dict value,
+                                      ToggleDislikeSegmentCallback callback) {
+  GetAds()->ToggleDislikeSegment(value, std::move(callback));
 }
 
 void BatAdsImpl::ToggleSaveAd(base::Value::Dict value,
                               ToggleSaveAdCallback callback) {
   GetAds()->ToggleSaveAd(value, std::move(callback));
-  std::move(callback).Run(/*success=*/true);
 }
 
 void BatAdsImpl::ToggleMarkAdAsInappropriate(
     base::Value::Dict value,
     ToggleMarkAdAsInappropriateCallback callback) {
   GetAds()->ToggleMarkAdAsInappropriate(value, std::move(callback));
-  std::move(callback).Run(/*success=*/true);
 }
 
 brave_ads::Ads* BatAdsImpl::GetAds() {

@@ -1207,7 +1207,7 @@ void RewardsDOMHandler::ToggleAdOptIn(const base::Value::List& args) {
 
   AllowJavascript();
 
-  ads_service_->ToggleLikeCategory(
+  ads_service_->ToggleLikeSegment(
       dict->Clone(), base::BindOnce(&RewardsDOMHandler::OnToggleAdOptIn,
                                     weak_factory_.GetWeakPtr()));
 }
@@ -1235,7 +1235,7 @@ void RewardsDOMHandler::ToggleAdOptOut(const base::Value::List& args) {
 
   AllowJavascript();
 
-  ads_service_->ToggleDislikeCategory(
+  ads_service_->ToggleDislikeSegment(
       dict->Clone(), base::BindOnce(&RewardsDOMHandler::OnToggleAdOptOut,
                                     weak_factory_.GetWeakPtr()));
 }

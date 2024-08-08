@@ -35,7 +35,7 @@ TEST_F(BraveAdsDislikeExclusionRuleTest, ShouldExclude) {
 
   AdHistoryItemInfo ad_history_item;
   ad_history_item.advertiser_id = test::kAdvertiserId;
-  ad_history_item.ad_user_reaction_type = mojom::UserReactionType::kNeutral;
+  ad_history_item.ad_reaction_type = mojom::ReactionType::kNeutral;
   ClientStateManager::GetInstance().ToggleDislikeAd(ad_history_item);
 
   // Act & Assert

@@ -52,18 +52,15 @@ class ClientStateManager final {
       const PurchaseIntentSignalHistoryInfo& history);
   const PurchaseIntentSignalHistoryMap& GetPurchaseIntentSignalHistory() const;
 
-  mojom::UserReactionType ToggleLikeAd(
-      const AdHistoryItemInfo& ad_history_item);
-  mojom::UserReactionType ToggleDislikeAd(
-      const AdHistoryItemInfo& ad_history_item);
-  mojom::UserReactionType GetUserReactionTypeForAd(const AdInfo& ad);
+  mojom::ReactionType ToggleLikeAd(const AdHistoryItemInfo& ad_history_item);
+  mojom::ReactionType ToggleDislikeAd(const AdHistoryItemInfo& ad_history_item);
+  mojom::ReactionType GetReactionTypeForAd(const AdInfo& ad);
 
-  mojom::UserReactionType ToggleLikeCategory(
+  mojom::ReactionType ToggleLikeSegment(
       const AdHistoryItemInfo& ad_history_item);
-  mojom::UserReactionType ToggleDislikeCategory(
+  mojom::ReactionType ToggleDislikeSegment(
       const AdHistoryItemInfo& ad_history_item);
-  mojom::UserReactionType GetUserReactionTypeForCategory(
-      const std::string& category);
+  mojom::ReactionType GetReactionTypeForSegment(const std::string& segment);
 
   bool ToggleSaveAd(const AdHistoryItemInfo& ad_history_item);
 

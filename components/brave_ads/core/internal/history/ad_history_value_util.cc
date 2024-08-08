@@ -32,8 +32,8 @@ constexpr char kBrand[] = "brand";
 constexpr char kBrandInfo[] = "brandInfo";
 constexpr char kBrandDisplayUrl[] = "brandDisplayUrl";
 constexpr char kBrandUrl[] = "brandUrl";
-constexpr char kAdUserReactionType[] = "likeAction";
-constexpr char kCategoryUserReactionTypeKey[] = "optAction";
+constexpr char kAdReactionType[] = "likeAction";
+constexpr char kCategoryReactionTypeKey[] = "optAction";
 constexpr char kIsSaved[] = "savedAd";
 constexpr char kIsMarkedAsInappropriate[] = "flaggedAd";
 
@@ -122,10 +122,9 @@ void ParseAdContent(const base::Value::Dict& dict,
     ad_history_item.brand_url = GURL(*brand_url);
   }
 
-  if (const auto user_reaction_type =
-          content_dict->FindInt(kAdUserReactionType)) {
-    ad_history_item.ad_user_reaction_type =
-        static_cast<mojom::UserReactionType>(*user_reaction_type);
+  if (const auto reaction_type = content_dict->FindInt(kAdReactionType)) {
+    ad_history_item.ad_reaction_type =
+        static_cast<mojom::ReactionType>(*reaction_type);
   }
 
   if (const auto is_saved = content_dict->FindBool(kIsSaved)) {
@@ -151,14 +150,14 @@ void ParseCategoryContent(const base::Value::Dict& dict,
     }
   }
 
-  if (const auto* const category = content_dict->FindString(kCategoryKey)) {
-    ad_history_item.segment = *category;
+  if (const auto* const segment = content_dict->FindString(kCategoryKey)) {
+    ad_history_item.segment = *segment;
   }
 
-  if (const auto user_reaction_type =
-          content_dict->FindInt(kCategoryUserReactionTypeKey)) {
-    ad_history_item.category_user_reaction_type =
-        static_cast<mojom::UserReactionType>(*user_reaction_type);
+  if (const auto reaction_type =
+          content_dict->FindInt(kCategoryReactionTypeKey)) {
+    ad_history_item.segment_reaction_type =
+        static_cast<mojom::ReactionType>(*reaction_type);
   }
 }
 
@@ -188,17 +187,16 @@ base::Value::Dict AdHistoryItemToValue(
                .Set(kBrandInfo, ad_history_item.brand_info)
                .Set(kBrandDisplayUrl, ad_history_item.brand_display_url)
                .Set(kBrandUrl, ad_history_item.brand_url.spec())
-               .Set(kAdUserReactionType,
-                    static_cast<int>(ad_history_item.ad_user_reaction_type))
+               .Set(kAdReactionType,
+                    static_cast<int>(ad_history_item.ad_reaction_type))
                .Set(kIsSaved, ad_history_item.is_saved)
                .Set(kIsMarkedAsInappropriate,
                     ad_history_item.is_marked_as_inappropriate))
       .Set(kCategoryContentKey,
            base::Value::Dict()
                .Set(kCategoryKey, ad_history_item.segment)
-               .Set(kCategoryUserReactionTypeKey,
-                    static_cast<int>(
-                        ad_history_item.category_user_reaction_type)));
+               .Set(kCategoryReactionTypeKey,
+                    static_cast<int>(ad_history_item.segment_reaction_type)));
 }
 
 AdHistoryItemInfo AdHistoryItemFromValue(const base::Value::Dict& dict) {

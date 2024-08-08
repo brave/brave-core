@@ -33,25 +33,21 @@ class AdHistoryManagerObserverMock : public AdHistoryManagerObserver {
               (const AdHistoryItemInfo& ad_history_item));
 
   MOCK_METHOD(void, OnDidLikeAd, (const AdHistoryItemInfo& ad_history_item));
-
   MOCK_METHOD(void, OnDidDislikeAd, (const AdHistoryItemInfo& ad_history_item));
 
   MOCK_METHOD(void,
-              OnDidLikeCategory,
+              OnDidLikeSegment,
               (const AdHistoryItemInfo& ad_history_item));
-
   MOCK_METHOD(void,
-              OnDidDislikeCategory,
+              OnDidDislikeSegment,
               (const AdHistoryItemInfo& ad_history_item));
 
   MOCK_METHOD(void, OnDidSaveAd, (const AdHistoryItemInfo& ad_history_item));
-
   MOCK_METHOD(void, OnDidUnsaveAd, (const AdHistoryItemInfo& ad_history_item));
 
   MOCK_METHOD(void,
               OnDidMarkAdAsAppropriate,
               (const AdHistoryItemInfo& ad_history_item));
-
   MOCK_METHOD(void,
               OnDidMarkAdAsInappropriate,
               (const AdHistoryItemInfo& ad_history_item));

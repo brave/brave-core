@@ -79,7 +79,7 @@ TEST_F(BraveAdsReactionsTest, LikeAd) {
                   /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
 
-  base::MockCallback<ToggleUserReactionCallback> callback;
+  base::MockCallback<ToggleReactionCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
   AdHistoryManager::GetInstance().LikeAd(*ad_history_item, callback.Get());
 }
@@ -103,7 +103,7 @@ TEST_F(BraveAdsReactionsTest, DislikeAd) {
                   /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
 
-  base::MockCallback<ToggleUserReactionCallback> callback;
+  base::MockCallback<ToggleReactionCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
   AdHistoryManager::GetInstance().DislikeAd(*ad_history_item, callback.Get());
 }
@@ -128,7 +128,7 @@ TEST_F(BraveAdsReactionsTest, MarkAdAsInappropriate) {
           /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
 
-  base::MockCallback<ToggleUserReactionCallback> callback;
+  base::MockCallback<ToggleReactionCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
   AdHistoryManager::GetInstance().ToggleMarkAdAsInappropriate(*ad_history_item,
                                                               callback.Get());
@@ -153,7 +153,7 @@ TEST_F(BraveAdsReactionsTest, SaveAd) {
                   /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
 
-  base::MockCallback<ToggleUserReactionCallback> callback;
+  base::MockCallback<ToggleReactionCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
   AdHistoryManager::GetInstance().ToggleSaveAd(*ad_history_item,
                                                callback.Get());

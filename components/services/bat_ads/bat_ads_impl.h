@@ -101,10 +101,10 @@ class BatAdsImpl : public mojom::BatAds {
                     ToggleLikeAdCallback callback) override;
   void ToggleDislikeAd(base::Value::Dict value,
                        ToggleDislikeAdCallback callback) override;
-  void ToggleLikeCategory(base::Value::Dict value,
-                          ToggleLikeCategoryCallback callback) override;
-  void ToggleDislikeCategory(base::Value::Dict value,
-                             ToggleDislikeCategoryCallback callback) override;
+  void ToggleLikeSegment(base::Value::Dict value,
+                         ToggleLikeSegmentCallback callback) override;
+  void ToggleDislikeSegment(base::Value::Dict value,
+                            ToggleDislikeSegmentCallback callback) override;
   void ToggleSaveAd(base::Value::Dict value,
                     ToggleSaveAdCallback callback) override;
   void ToggleMarkAdAsInappropriate(

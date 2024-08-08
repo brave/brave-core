@@ -9,7 +9,7 @@ Exclusion rules frequency cap the number of times a user can see a notification 
 | creative instance  | Exclude the ad if it exceeds the cap for the creative instance  |
 | daily cap  | Exclude the ad if the user has exceeded the daily cap for the campaign  |
 | dayparting  | Exclude the ad if not within the scheduled time slot  |
-| dislike category  | Exclude the ad if the user disliked the category  |
+| dislike segment  | Exclude the ad if the user disliked the segment  |
 | dislike  | Exclude the ad if the user disliked the advertiser  |
 | dismissed  | Exclude the ad if the user dismissed the creative instance within the last 48 hours for the same campaign  |
 | marked as inappropriate  | Exclude the ad if the user marked the creative set as inappropriate  |

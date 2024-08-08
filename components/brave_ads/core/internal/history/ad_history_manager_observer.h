@@ -24,11 +24,11 @@ class AdHistoryManagerObserver : public base::CheckedObserver {
   // Invoked when the user dislikes an ad.
   virtual void OnDidDislikeAd(const AdHistoryItemInfo& ad_history_item) {}
 
-  // Invoked when the likes a `category`.
-  virtual void OnDidLikeCategory(const AdHistoryItemInfo& ad_history_item) {}
+  // Invoked when the likes a segment.
+  virtual void OnDidLikeSegment(const AdHistoryItemInfo& ad_history_item) {}
 
-  // Invoked when the user dislikes a `category`.
-  virtual void OnDidDislikeCategory(const AdHistoryItemInfo& ad_history_item) {}
+  // Invoked when the user dislikes a segment.
+  virtual void OnDidDislikeSegment(const AdHistoryItemInfo& ad_history_item) {}
 
   // Invoked when a user saves an ad.
   virtual void OnDidSaveAd(const AdHistoryItemInfo& ad_history_item) {}

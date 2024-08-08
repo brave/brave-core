@@ -194,8 +194,8 @@ interface BatAds {
 
   ToggleLikeAd(mojo_base.mojom.DictionaryValue value) => (bool success);
   ToggleDislikeAd(mojo_base.mojom.DictionaryValue value) => (bool success);
-  ToggleLikeCategory(mojo_base.mojom.DictionaryValue value) => (bool success);
-  ToggleDislikeCategory(mojo_base.mojom.DictionaryValue value) =>
+  ToggleLikeSegment(mojo_base.mojom.DictionaryValue value) => (bool success);
+  ToggleDislikeSegment(mojo_base.mojom.DictionaryValue value) =>
       (bool success);
   ToggleSaveAd(mojo_base.mojom.DictionaryValue value) => (bool success);
   ToggleMarkAdAsInappropriate(mojo_base.mojom.DictionaryValue value) =>

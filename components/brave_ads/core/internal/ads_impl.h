@@ -105,18 +105,17 @@ class AdsImpl final : public Ads {
                              base::Time to_time) override;
 
   void ToggleLikeAd(const base::Value::Dict& value,
-                    ToggleUserReactionCallback callback) override;
+                    ToggleReactionCallback callback) override;
   void ToggleDislikeAd(const base::Value::Dict& value,
-                       ToggleUserReactionCallback callback) override;
-  void ToggleLikeCategory(const base::Value::Dict& value,
-                          ToggleUserReactionCallback callback) override;
-  void ToggleDislikeCategory(const base::Value::Dict& value,
-                             ToggleUserReactionCallback callback) override;
+                       ToggleReactionCallback callback) override;
+  void ToggleLikeSegment(const base::Value::Dict& value,
+                         ToggleReactionCallback callback) override;
+  void ToggleDislikeSegment(const base::Value::Dict& value,
+                            ToggleReactionCallback callback) override;
   void ToggleSaveAd(const base::Value::Dict& value,
-                    ToggleUserReactionCallback callback) override;
-  void ToggleMarkAdAsInappropriate(
-      const base::Value::Dict& value,
-      ToggleUserReactionCallback callback) override;
+                    ToggleReactionCallback callback) override;
+  void ToggleMarkAdAsInappropriate(const base::Value::Dict& value,
+                                   ToggleReactionCallback callback) override;
 
  private:
   void CreateOrOpenDatabase(mojom::WalletInfoPtr wallet,

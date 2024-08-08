@@ -47,10 +47,10 @@ enum ReminderType {
   kExternalWalletConnected
 };
 
-enum UserReactionType {
+enum ReactionType {
   kNeutral = 0,
-  kLike,
-  kDislike
+  kLiked,
+  kDisliked
 };
 
 // These values must match AdType.
