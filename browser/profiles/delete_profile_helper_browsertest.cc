@@ -44,7 +44,7 @@ IN_PROC_BROWSER_TEST_F(DeleteProfileHelperBrowserTest,
       profile_manager->GenerateNextProfileDirectoryPath();
   Profile& profile_to_delete = profiles::testing::CreateProfileSync(
       profile_manager, profile_path_to_delete);
-  EXPECT_TRUE(profile_manager->GetProfileAttributesStorage()
+  ASSERT_TRUE(profile_manager->GetProfileAttributesStorage()
                   .GetProfileAttributesWithPath(profile_path_to_delete));
   // Set the profile as last-used, so that the callback of
   // `MaybeScheduleProfileForDeletion()` is called.
@@ -74,13 +74,13 @@ IN_PROC_BROWSER_TEST_F(DeleteProfileHelperBrowserTest,
       base::BindLambdaForTesting([&loop](Profile* profile) { loop.Quit(); }),
       ProfileMetrics::DELETE_PROFILE_PRIMARY_ACCOUNT_NOT_ALLOWED);
 
+  keep_alive_added_waiter.Wait();
+  loop.Run();
+
   // Ensure that we've invoked BraveSyncServiceImpl::StopAndClear() from
   // DisableSyncForProfileDeletion at delete_profile_helper.cc, so
   // now seed should be empty
   seed = brave_sync_prefs.GetSeed(&failed_to_decrypt);
   ASSERT_FALSE(failed_to_decrypt);
   EXPECT_TRUE(seed.empty());
-
-  keep_alive_added_waiter.Wait();
-  loop.Run();
 }
