@@ -37,7 +37,7 @@ BrowserView* FindBrowserViewFromWebContents(content::WebContents* contents) {
     return nullptr;
   }
 
-  return static_cast<BrowserView*>(browser->window());
+  return BrowserView::GetBrowserViewForBrowser(browser);
 }
 
 bool CanMoveItem(const playlist::mojom::PlaylistItemPtr& item) {

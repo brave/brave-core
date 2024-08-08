@@ -33,6 +33,11 @@ void ShowPlaylistSettings() {
 void ClosePanel() {
   NOTREACHED_NORETURN();
 }
+
+void ShowPlaylistAddBubble(content::WebContents* contents) {
+  NOTREACHED_NORETURN();
+}
+
 // #else functions are defined in playlist_action_dialogs.cc
 #endif
 

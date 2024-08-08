@@ -29,7 +29,7 @@ const AppContainer = styled.div<{ isPlaylistPlayerPage: boolean }>`
     isPlaylistPlayerPage ? '74px' : '56px'};
 `
 
-const StickyArea = styled.header<{ position: 'top' | 'bottom' }>`
+const StickyArea = styled.div<{ position: 'top' | 'bottom' }>`
   width: 100vw;
   ${({ position }) =>
     position === 'top'

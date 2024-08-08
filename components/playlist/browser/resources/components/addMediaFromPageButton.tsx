@@ -9,22 +9,20 @@ import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 
 import { getPlaylistAPI } from '../api/api'
-import {getLocalizedString} from '../utils/l10n'
+import { getLocalizedString } from '../utils/l10n'
 
 export function AddMediaFromPageButton () {
   return (
-    <>
-      <Button
-        kind='outline'
-        onClick={() => {
-          getPlaylistAPI().showAddMediaToPlaylistUI()
-        }}
-      >
-        <div slot='icon-before'>
-          <Icon name='product-playlist-add' />
-        </div>
-        <div>{getLocalizedString('bravePlaylistAddMediaFromPage')}</div>
-      </Button>
-    </>
+    <Button
+      kind='outline'
+      onClick={() => {
+        getPlaylistAPI().showAddMediaToPlaylistUI()
+      }}
+    >
+      <div slot='icon-before'>
+        <Icon name='product-playlist-add' />
+      </div>
+      <div>{getLocalizedString('bravePlaylistAddMediaFromPage')}</div>
+    </Button>
   )
 }
