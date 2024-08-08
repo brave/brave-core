@@ -46,10 +46,10 @@ const int kFailedAttemtpsToAckDeviceDelete = 5;
 
 std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
     const DeviceInfoSpecifics& specifics) {
-  ModelTypeSet data_types;
+  DataTypeSet data_types;
   for (const int field_number :
        specifics.invalidation_fields().interested_data_type_ids()) {
-    ModelType data_type = GetModelTypeFromSpecificsFieldNumber(field_number);
+    DataType data_type = GetDataTypeFromSpecificsFieldNumber(field_number);
     if (!IsRealDataType(data_type)) {
       DLOG(WARNING) << "Unknown field number " << field_number;
       continue;

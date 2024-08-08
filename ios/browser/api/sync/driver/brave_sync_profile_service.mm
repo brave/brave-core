@@ -7,7 +7,7 @@
 
 #include <unordered_map>
 
-#include "components/sync/base/model_type.h"
+#include "components/sync/base/data_type.h"
 #include "components/sync/base/user_selectable_type.h"
 #include "components/sync/service/sync_service.h"
 #include "components/sync/service/sync_user_settings.h"
@@ -88,12 +88,11 @@ BraveSyncUserSelectableTypes options_from_user_types(
 
 - (BraveSyncUserSelectableTypes)activeSelectableTypes {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  syncer::ModelTypeSet active_types = sync_service_->GetActiveDataTypes();
+  syncer::DataTypeSet active_types = sync_service_->GetActiveDataTypes();
 
   syncer::UserSelectableTypeSet user_types;
   for (syncer::UserSelectableType type : syncer::UserSelectableTypeSet::All()) {
-    if (active_types.Has(
-            syncer::UserSelectableTypeToCanonicalModelType(type))) {
+    if (active_types.Has(syncer::UserSelectableTypeToCanonicalDataType(type))) {
       user_types.Put(type);
     }
   }

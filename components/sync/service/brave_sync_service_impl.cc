@@ -364,12 +364,12 @@ void BraveSyncServiceImpl::UpdateP3AObjectsNumber() {
 
   for (UserSelectableType user_selected_type :
        GetUserSettings()->GetSelectedTypes()) {
-    ModelType model_type =
-        UserSelectableTypeToCanonicalModelType(user_selected_type);
+    DataType data_type =
+        UserSelectableTypeToCanonicalDataType(user_selected_type);
 
-    auto dtc_it = data_type_manager_->GetControllerMap().find(model_type);
+    auto dtc_it = data_type_manager_->GetControllerMap().find(data_type);
     CHECK(dtc_it != data_type_manager_->GetControllerMap().end())
-        << "Missing controller for type " << ModelTypeToDebugString(model_type);
+        << "Missing controller for type " << DataTypeToDebugString(data_type);
 
     DataTypeController* controller = dtc_it->second.get();
     controller->GetTypeEntitiesCount(
