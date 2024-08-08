@@ -935,8 +935,13 @@ extension BrowserViewController: WKNavigationDelegate {
     tab.isDisplayingBasicAuthPrompt = true
     defer { tab.isDisplayingBasicAuthPrompt = false }
 
+    let isHidden = webView.isHidden
+    defer { webView.isHidden = isHidden }
+
     // Manually trigger a `url` change notification
-    if protectionSpace.host != tab.url?.host {
+    if host != tab.url?.host {
+      webView.isHidden = true
+
       observeValue(
         forKeyPath: KVOConstants.url.keyPath,
         of: webView,
