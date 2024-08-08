@@ -30,14 +30,26 @@ import os.log
   init() {}
 
   /// Start the adblock service to get adblock file updates
-  public func start(with adBlockService: AdblockService) async {
-    for await resourcesFileURL in adBlockService.resourcesComponentStream() {
+  public func start(with adBlockService: AdblockService) {
+    if let resourcesPath = adBlockService.resourcesPath {
+      // Do an initial load of resources
       AdBlockGroupsManager.shared.didUpdateResourcesComponent(
-        resourcesFileURL: resourcesFileURL
+        resourcesFileURL: resourcesPath
       )
     }
 
+    subscribeToResourceChanges(with: adBlockService)
     subscribeToFilterListChanges(with: adBlockService)
+  }
+
+  private func subscribeToResourceChanges(with adBlockService: AdblockService) {
+    Task {
+      for await resourcesFileURL in adBlockService.resourcesComponentStream() {
+        AdBlockGroupsManager.shared.didUpdateResourcesComponent(
+          resourcesFileURL: resourcesFileURL
+        )
+      }
+    }
   }
 
   /// Subscribe to filter list changes so we keep the engines up to date
@@ -112,10 +124,6 @@ extension AdblockService {
   /// Get a stream of resource component updates
   @MainActor fileprivate func resourcesComponentStream() -> AsyncStream<URL> {
     return AsyncStream { continuation in
-      if let resourcesPath = self.resourcesPath {
-        continuation.yield(resourcesPath)
-      }
-
       registerResourcesChanges { [weak self] _ in
         guard let resourcesPath = self?.resourcesPath else {
           return
