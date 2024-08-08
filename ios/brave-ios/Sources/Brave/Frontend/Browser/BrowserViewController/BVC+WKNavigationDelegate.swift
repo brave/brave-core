@@ -932,6 +932,18 @@ extension BrowserViewController: WKNavigationDelegate {
 
     // The challenge may come from a background tab, so ensure it's the one visible.
     tabManager.selectTab(tab)
+    tab.isDisplayingBasicAuthPrompt = true
+    defer { tab.isDisplayingBasicAuthPrompt = false }
+
+    // Manually trigger a `url` change notification
+    if protectionSpace.host != tab.url?.host {
+      observeValue(
+        forKeyPath: KVOConstants.url.keyPath,
+        of: webView,
+        change: [.newKey: webView.url as Any, .kindKey: 1],
+        context: nil
+      )
+    }
 
     do {
       let credentials = try await Authenticator.handleAuthRequest(
@@ -950,6 +962,9 @@ extension BrowserViewController: WKNavigationDelegate {
 
       return (.useCredential, credentials.credentials)
     } catch {
+      if let error = error as? Authenticator.LoginDataError, error == .userCancelledAuthentication {
+        return (.cancelAuthenticationChallenge, nil)
+      }
       return (.rejectProtectionSpace, nil)
     }
   }
