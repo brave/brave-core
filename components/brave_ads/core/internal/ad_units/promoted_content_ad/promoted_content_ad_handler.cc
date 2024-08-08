@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/internal/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -29,9 +29,8 @@ void FireEventCallback(TriggerAdEventCallback callback,
 
 }  // namespace
 
-PromotedContentAdHandler::PromotedContentAdHandler(Account& account,
-                                                   SiteVisit& site_visit)
-    : account_(account), site_visit_(site_visit) {
+PromotedContentAdHandler::PromotedContentAdHandler(SiteVisit& site_visit)
+    : site_visit_(site_visit) {
   event_handler_.SetDelegate(this);
 }
 
@@ -103,8 +102,8 @@ void PromotedContentAdHandler::OnDidFirePromotedContentAdViewedEvent(
 
   AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
 
-  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kViewedImpression);
+  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
+                       ConfirmationType::kViewedImpression);
 }
 
 void PromotedContentAdHandler::OnDidFirePromotedContentAdClickedEvent(
@@ -117,8 +116,8 @@ void PromotedContentAdHandler::OnDidFirePromotedContentAdClickedEvent(
 
   AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
-  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kClicked);
+  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
+                       ConfirmationType::kClicked);
 }
 
 }  // namespace brave_ads

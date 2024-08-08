@@ -19,13 +19,12 @@
 
 namespace brave_ads {
 
-class Account;
 class SiteVisit;
 struct SearchResultAdInfo;
 
 class SearchResultAdHandler final : public SearchResultAdEventHandlerDelegate {
  public:
-  SearchResultAdHandler(Account& account, SiteVisit& site_visit);
+  explicit SearchResultAdHandler(SiteVisit& site_visit);
 
   SearchResultAdHandler(const SearchResultAdHandler&) = delete;
   SearchResultAdHandler& operator=(const SearchResultAdHandler&) = delete;
@@ -65,8 +64,6 @@ class SearchResultAdHandler final : public SearchResultAdEventHandlerDelegate {
       const SearchResultAdInfo& ad) override;
   void OnDidFireSearchResultAdClickedEvent(
       const SearchResultAdInfo& ad) override;
-
-  const raw_ref<Account> account_;
 
   const raw_ref<SiteVisit> site_visit_;
 

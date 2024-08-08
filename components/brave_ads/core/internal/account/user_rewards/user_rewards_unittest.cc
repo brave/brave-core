@@ -11,11 +11,9 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request_builder_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_delegate_mock.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_test_util.h"
@@ -45,12 +43,9 @@ class BraveAdsUserRewardsTest : public AdsClientMock, public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    user_rewards_ =
-        std::make_unique<UserRewards>(&token_generator_mock_, test::Wallet());
+    user_rewards_ = std::make_unique<UserRewards>(test::Wallet());
     user_rewards_->SetDelegate(&delegate_mock_);
   }
-
-  TokenGeneratorMock token_generator_mock_;
 
   std::unique_ptr<UserRewards> user_rewards_;
   UserRewardsDelegateMock delegate_mock_;
@@ -58,7 +53,7 @@ class BraveAdsUserRewardsTest : public AdsClientMock, public test::TestBase {
 
 TEST_F(BraveAdsUserRewardsTest, FetchIssuers) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
+  test::MockTokenGenerator(/*count=*/50);
 
   const test::URLResponseMap url_responses = {
       {BuildIssuersUrlPath(),
@@ -74,7 +69,7 @@ TEST_F(BraveAdsUserRewardsTest, FetchIssuers) {
 
 TEST_F(BraveAdsUserRewardsTest, DoNotFetchInvalidIssuers) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
+  test::MockTokenGenerator(/*count=*/50);
 
   const test::URLResponseMap url_responses = {
       {BuildIssuersUrlPath(), {{net::HTTP_OK, /*response_body=*/R"(
@@ -186,7 +181,7 @@ TEST_F(BraveAdsUserRewardsTest, RefillConfirmationTokens) {
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
+  test::MockTokenGenerator(/*count=*/50);
 
   const test::URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(test::kWalletPaymentId),
@@ -226,7 +221,7 @@ TEST_F(BraveAdsUserRewardsTest, MigrateVerifiedRewardsUser) {
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
+  test::MockTokenGenerator(/*count=*/50);
 
   const test::URLResponseMap url_responses = {
       {BuildIssuersUrlPath(),
@@ -265,7 +260,7 @@ TEST_F(BraveAdsUserRewardsTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
+  test::MockTokenGenerator(/*count=*/50);
 
   const test::URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(test::kWalletPaymentId),
@@ -293,7 +288,7 @@ TEST_F(BraveAdsUserRewardsTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
+  test::MockTokenGenerator(/*count=*/50);
 
   const test::URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(test::kWalletPaymentId),
@@ -318,7 +313,7 @@ TEST_F(BraveAdsUserRewardsTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
+  test::MockTokenGenerator(/*count=*/50);
 
   const test::URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(test::kWalletPaymentId),

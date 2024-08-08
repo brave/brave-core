@@ -15,7 +15,6 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -39,8 +38,7 @@ class BraveAdsConfirmationQueueDatabaseTableTest : public test::TestBase {
   std::optional<ConfirmationInfo> BuildRewardConfirmation(
       const bool should_generate_random_uuids) {
     const std::optional<ConfirmationInfo> confirmation =
-        test::BuildRewardConfirmation(&token_generator_mock_,
-                                      should_generate_random_uuids);
+        test::BuildRewardConfirmation(should_generate_random_uuids);
     if (!confirmation) {
       return std::nullopt;
     }
@@ -50,8 +48,6 @@ class BraveAdsConfirmationQueueDatabaseTableTest : public test::TestBase {
     // regenerate the confirmation without the dynamic user data.
     return RebuildConfirmationWithoutDynamicUserData(*confirmation);
   }
-
-  TokenGeneratorMock token_generator_mock_;
 
   ConfirmationQueue database_table_;
 };
@@ -69,7 +65,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest, SaveEmptyConfirmationQueue) {
 
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest, SaveConfirmationQueueItems) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
@@ -91,7 +87,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest, SaveConfirmationQueueItems) {
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
        SaveDuplicateConfirmationQueueItems) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
@@ -118,7 +114,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
   // Arrange
   database_table_.SetBatchSize(2);
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
@@ -139,7 +135,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
        GetNextConfirmationQueueItem) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/2);
 
   ConfirmationQueueItemList confirmation_queue_items;
@@ -170,7 +166,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
        GetSortedConfirmationQueueSortedByTimeInAscendingOrder) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/3);
 
   ConfirmationQueueItemList confirmation_queue_items;
@@ -212,7 +208,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
        DeleteConfirmationQueueItem) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/2);
 
   ConfirmationQueueItemList confirmation_queue_items;
@@ -250,7 +246,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
        DoNotDeleteMissingConfirmationQueueItem) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/3);
 
   ConfirmationQueueItemList confirmation_queue_items;
@@ -292,7 +288,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
 
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest, RetryConfirmationQueueItem) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   ConfirmationQueueItemList confirmation_queue_items;
@@ -328,7 +324,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest, RetryConfirmationQueueItem) {
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
        DoNotRetryMissingConfirmationQueueItem) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/3);
 
   ConfirmationQueueItemList confirmation_queue_items;

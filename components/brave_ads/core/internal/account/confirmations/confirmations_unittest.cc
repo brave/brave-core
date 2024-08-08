@@ -10,7 +10,6 @@
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -25,10 +24,8 @@ class BraveAdsConfirmationsTest : public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    confirmations_ = std::make_unique<Confirmations>(&token_generator_mock_);
+    confirmations_ = std::make_unique<Confirmations>();
   }
-
-  TokenGeneratorMock token_generator_mock_;
 
   std::unique_ptr<Confirmations> confirmations_;
 
@@ -37,7 +34,7 @@ class BraveAdsConfirmationsTest : public test::TestBase {
 
 TEST_F(BraveAdsConfirmationsTest, ConfirmForRewardsUser) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(

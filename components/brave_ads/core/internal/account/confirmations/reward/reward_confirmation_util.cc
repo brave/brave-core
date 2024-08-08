@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/user_data_info.h"
+#include "brave/components/brave_ads/core/internal/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
@@ -32,17 +33,15 @@ namespace brave_ads {
 
 namespace {
 
-std::optional<RewardInfo> BuildReward(
-    TokenGeneratorInterface* const token_generator,
-    const ConfirmationInfo& confirmation) {
-  CHECK(token_generator);
+std::optional<RewardInfo> BuildReward(const ConfirmationInfo& confirmation) {
   CHECK(IsValid(confirmation));
   CHECK(UserHasJoinedBraveRewards());
 
   RewardInfo reward;
 
   // Token
-  const std::vector<cbr::Token> tokens = token_generator->Generate(/*count=*/1);
+  const std::vector<cbr::Token> tokens =
+      GetTokenGenerator()->Generate(/*count=*/1);
   CHECK(!tokens.empty());
   reward.token = tokens.front();
 
@@ -119,10 +118,8 @@ std::optional<std::string> BuildRewardCredential(
 }
 
 std::optional<ConfirmationInfo> BuildRewardConfirmation(
-    TokenGeneratorInterface* const token_generator,
     const TransactionInfo& transaction,
     base::Value::Dict user_data) {
-  CHECK(token_generator);
   CHECK(transaction.IsValid());
   CHECK(UserHasJoinedBraveRewards());
 
@@ -135,8 +132,7 @@ std::optional<ConfirmationInfo> BuildRewardConfirmation(
   confirmation.user_data =
       BuildConfirmationUserData(transaction, std::move(user_data));
 
-  const std::optional<RewardInfo> reward =
-      BuildReward(token_generator, confirmation);
+  const std::optional<RewardInfo> reward = BuildReward(confirmation);
   if (!reward) {
     BLOG(0, "Failed to build reward");
 

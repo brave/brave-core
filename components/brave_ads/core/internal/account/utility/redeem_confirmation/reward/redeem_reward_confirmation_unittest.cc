@@ -13,7 +13,6 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_test_constants.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_delegate_mock.h"
@@ -33,8 +32,6 @@ namespace brave_ads {
 
 class BraveAdsRedeemRewardConfirmationTest : public test::TestBase {
  protected:
-  TokenGeneratorMock token_generator_mock_;
-
   RedeemConfirmationDelegateMock delegate_mock_;
   base::WeakPtrFactory<RedeemConfirmationDelegateMock>
       confirmation_delegate_weak_factory_{&delegate_mock_};
@@ -44,7 +41,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, Redeem) {
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -57,8 +54,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, Redeem) {
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -74,12 +70,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, Redeem) {
 
 TEST_F(BraveAdsRedeemRewardConfirmationTest, RetryRedeemingIfNoIssuers) {
   // Arrange
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/true);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/true);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -100,7 +95,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -109,8 +104,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -129,7 +123,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -142,8 +136,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -164,7 +157,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -178,8 +171,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -200,7 +192,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -213,8 +205,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -235,7 +226,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -249,8 +240,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -271,7 +261,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -284,8 +274,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -306,7 +295,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -332,8 +321,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -354,7 +342,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -381,8 +369,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -403,7 +390,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -423,8 +410,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -445,7 +431,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -471,8 +457,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -493,7 +478,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -520,8 +505,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -542,7 +526,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -568,8 +552,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -590,7 +573,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -616,8 +599,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -638,7 +620,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -665,8 +647,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -687,7 +668,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -711,8 +692,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -733,7 +713,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -757,8 +737,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -779,7 +758,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -806,8 +785,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -827,7 +805,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, FetchPaymentTokenAfter) {
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+  test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -840,8 +818,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, FetchPaymentTokenAfter) {
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert

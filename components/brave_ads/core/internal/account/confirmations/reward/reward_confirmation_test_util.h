@@ -8,8 +8,6 @@
 
 #include <optional>
 
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
-
 namespace brave_ads {
 
 struct ConfirmationInfo;
@@ -18,7 +16,6 @@ struct RewardInfo;
 namespace test {
 
 std::optional<ConfirmationInfo> BuildRewardConfirmation(
-    TokenGeneratorInterface* token_generator,
     bool should_generate_random_uuids);
 
 RewardInfo BuildReward(const ConfirmationInfo& confirmation);
