@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
+#include <iostream>
+#include <memory>
+
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -12,8 +15,8 @@
 #include "base/functional/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/internal/command_line_switch_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/mock_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/local_state_pref_value_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
@@ -46,9 +49,9 @@ TestBase::TestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
       scoped_default_locale_(
           brave_l10n::test::ScopedDefaultLocale(kDefaultLocale)) {
-  CHECK(temp_profile_dir_.CreateUniqueTempDir());
-
   set_ads_client_notifier_task_environment(&task_environment_);
+
+  SimulateProfile();
 }
 
 TestBase::~TestBase() {
@@ -77,59 +80,63 @@ void TestBase::SetUp(const bool is_integration_test) {
   SimulateCommandLineSwitches();
 
   RegisterProfilePrefs();
-
   RegisterLocalStatePrefs();
 
   MockAdsClientNotifier();
-
   MockAdsClient();
 
-  is_integration_test_ ? SetUpIntegrationTest() : SetUpUnitTest();
+  if (is_integration_test) {
+    return SetUpIntegrationTest();
+  }
+
+  SetUpUnitTest();
 }
 
-AdsImpl& TestBase::GetAds() const {
+Ads& TestBase::GetAds() const {
   CHECK(is_integration_test_) << "GetAds should only be called if SetUp is "
                                  "initialized for integration testing";
+  CHECK(ads_) << "Ads instance is not initialized";
 
-  CHECK(ads_);
   return *ads_;
 }
 
-bool TestBase::CopyFileFromTestDataPathToTempProfilePath(
+bool TestBase::CopyFileFromTestDataPathToProfilePath(
     const std::string& from_path,
     const std::string& to_path) const {
-  CHECK(setup_called_) << "CopyFileFromTestDataPathToTempProfilePath should be "
-                          "called after SetUp";
+  CHECK(setup_called_)
+      << "CopyFileFromTestDataPathToProfilePath should be called after SetUp";
 
   const base::FilePath from_test_data_path = DataPath().AppendASCII(from_path);
-  const base::FilePath to_temp_profile_path =
-      temp_profile_dir_.GetPath().AppendASCII(to_path);
+  const base::FilePath to_profile_path = ProfilePath().AppendASCII(to_path);
 
-  return base::CopyFile(from_test_data_path, to_temp_profile_path);
+  return base::CopyFile(from_test_data_path, to_profile_path);
 }
 
-bool TestBase::CopyFileFromTestDataPathToTempProfilePath(
+bool TestBase::CopyFileFromTestDataPathToProfilePath(
     const std::string& path) const {
-  return CopyFileFromTestDataPathToTempProfilePath(path, path);
+  return CopyFileFromTestDataPathToProfilePath(/*from_path=*/path,
+                                               /*to_path=*/path);
 }
 
-bool TestBase::CopyDirectoryFromTestDataPathToTempProfilePath(
+bool TestBase::CopyDirectoryFromTestDataPathToProfilePath(
     const std::string& from_path,
-    const std::string& to_path) const {
-  CHECK(setup_called_) << "CopyDirectoryFromTestDataPathToTempProfilePath "
-                          "should be called after SetUp";
+    const std::string& to_path,
+    const bool recursive) const {
+  CHECK(setup_called_) << "CopyDirectoryFromTestDataPathToProfilePath should "
+                          "be called after SetUp";
 
   const base::FilePath from_test_data_path = DataPath().AppendASCII(from_path);
-  const base::FilePath to_temp_profile_path =
-      temp_profile_dir_.GetPath().AppendASCII(to_path);
+  const base::FilePath to_profile_path = ProfilePath().AppendASCII(to_path);
 
-  return base::CopyDirectory(from_test_data_path, to_temp_profile_path,
-                             /*recursive=*/true);
+  return base::CopyDirectory(from_test_data_path, to_profile_path, recursive);
 }
 
-bool TestBase::CopyDirectoryFromTestDataPathToTempProfilePath(
-    const std::string& path) const {
-  return CopyDirectoryFromTestDataPathToTempProfilePath(path, path);
+bool TestBase::CopyDirectoryFromTestDataPathToProfilePath(
+    const std::string& path,
+    const bool recursive) const {
+  return CopyDirectoryFromTestDataPathToProfilePath(/*from_path=*/path,
+                                                    /*to_path=*/path,
+                                                    recursive);
 }
 
 void TestBase::FastForwardClockBy(const base::TimeDelta time_delta) {
@@ -152,6 +159,7 @@ void TestBase::FastForwardClockTo(const base::Time time) {
 
 void TestBase::FastForwardClockToNextPendingTask() {
   CHECK(HasPendingTasks()) << "There are no pending tasks";
+
   task_environment_.FastForwardBy(NextPendingTaskDelay());
 }
 
@@ -188,13 +196,19 @@ void TestBase::AdvanceClockToUTCMidnight() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+void TestBase::SimulateProfile() {
+  CHECK(profile_dir_.CreateUniqueTempDir());
+
+  std::cout << "SIMULATED PROFILE PATH: " << ProfilePath() << std::endl;
+}
+
 void TestBase::MockAdsClientNotifier() {
   MockAdsClientNotifierAddObserver(ads_client_mock_, *this);
 }
 
 void TestBase::MockAdsClient() {
   // Also, see `common/test/mock_test_util.h`. `MockUrlRequest`,
-  // `ShowScheduledCaptcha`, `RecordP2PAdEvents`, and `Log` are not mocked here;
+  // `ShowScheduledCaptcha`, `RecordP2AEvents`, and `Log` are not mocked here;
   // they should be mocked as needed.
 
   MockIsNetworkConnectionAvailable(ads_client_mock_, true);
@@ -214,14 +228,14 @@ void TestBase::MockAdsClient() {
   MockGetSiteHistory(ads_client_mock_, /*site_history=*/{});
 
   MockSave(ads_client_mock_);
-  MockLoad(ads_client_mock_, temp_profile_dir_);
+  MockLoad(ads_client_mock_, ProfilePath());
 
-  MockLoadResourceComponent(ads_client_mock_, temp_profile_dir_);
+  MockLoadResourceComponent(ads_client_mock_, ProfilePath());
 
   MockLoadDataResource(ads_client_mock_);
 
-  database_ = std::make_unique<Database>(
-      temp_profile_dir_.GetPath().AppendASCII(kDatabaseFilename));
+  database_ =
+      std::make_unique<Database>(ProfilePath().AppendASCII(kDatabaseFilename));
   MockRunDBTransaction(ads_client_mock_, *database_);
 
   MockGetProfilePref(ads_client_mock_);
@@ -252,21 +266,25 @@ void TestBase::Mock() {
 
 void TestBase::MockDefaultAdsServiceState() const {
   CHECK(!is_integration_test_)
-      << "MockDefaultAdsServiceState should only be called if SetUp is not "
-         "initialized for integration testing";
-
-  CHECK(GlobalState::HasInstance());
+      << "MockDefaultAdsServiceState should only be called if SetUp is "
+         "initialized for unit testing";
+  CHECK(GlobalState::HasInstance())
+      << "Must be called after GlobalState is instantiated";
 
   GlobalState::GetInstance()->GetDatabaseManager().CreateOrOpen(
       base::BindOnce([](const bool success) {
         CHECK(success) << "Failed to create or open database";
       }));
 
+  // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
+  // from using JSON state to a more efficient data approach.
   GlobalState::GetInstance()->GetClientStateManager().LoadState(
       base::BindOnce([](const bool success) {
         CHECK(success) << "Failed to load client state";
       }));
 
+  // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
+  // from using JSON state to a more efficient data approach.
   GlobalState::GetInstance()->GetConfirmationStateManager().LoadState(
       Wallet(), base::BindOnce([](const bool success) {
         CHECK(success) << "Failed to load confirmation state";
@@ -278,9 +296,10 @@ void TestBase::SetUpIntegrationTest() {
       << "SetUpIntegrationTest should only be called if SetUp is initialized "
          "for integration testing";
 
-  ads_ = std::make_unique<AdsImpl>(&ads_client_mock_);
+  ads_ = std::unique_ptr<Ads>(Ads::CreateInstance(&ads_client_mock_));
+  CHECK(ads_) << "Failed to create ads instance";
 
-  // Must be called after `AdsImpl` is instantiated but prior to `Initialize`.
+  // Must be called after `Ads` is instantiated but prior to `Initialize`.
   Mock();
 
   ads_->Initialize(WalletPtr(),
@@ -303,9 +322,8 @@ void TestBase::SetUpIntegrationTestCallback(const bool success) {
 }
 
 void TestBase::SetUpUnitTest() {
-  CHECK(!is_integration_test_)
-      << "SetUpUnitTest should only be called if SetUp is not initialized for "
-         "integration testing";
+  CHECK(!is_integration_test_) << "SetUpUnitTest should only be called if "
+                                  "SetUp is initialized for unit testing";
 
   global_state_ = std::make_unique<GlobalState>(&ads_client_mock_);
 

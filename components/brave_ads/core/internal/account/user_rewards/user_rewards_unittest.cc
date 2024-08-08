@@ -227,7 +227,6 @@ TEST_F(BraveAdsUserRewardsTest, MigrateVerifiedRewardsUser) {
   test::BuildAndSetIssuers();
 
   test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
-  test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
       {BuildIssuersUrlPath(),

@@ -19,8 +19,8 @@ class BraveAdsConfirmationTokenUtilTest : public test::TestBase {};
 TEST_F(BraveAdsConfirmationTokenUtilTest, GetConfirmationToken) {
   // Arrange
   const ConfirmationTokenList confirmation_tokens =
-      test::RefillConfirmationTokens(/*count=*/2);
-  ASSERT_THAT(confirmation_tokens, ::testing::SizeIs(2));
+      test::RefillConfirmationTokens(/*count=*/1);
+  ASSERT_THAT(confirmation_tokens, ::testing::SizeIs(1));
 
   // Act & Assert
   EXPECT_EQ(confirmation_tokens.front(), MaybeGetConfirmationToken());

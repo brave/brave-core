@@ -15,9 +15,9 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_for_testing.h"
-#include "brave/components/brave_ads/core/internal/ads_impl.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_util.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_mock.h"
+#include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -51,34 +51,37 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
   void TearDown() override;
 
  protected:
-  // Override `SetUp` and call `SetUp` with `is_integration_test` set to `true`
-  // to test functionality and performance under product-like circumstances with
-  // data to replicate live settings to simulate what a real user scenario looks
-  // like from start to finish.
+  // Override `SetUp` and call `test::TestBase::SetUp` with
+  // `is_integration_test` set to `true` to test functionality and performance
+  // under product-like circumstances with data to replicate live settings to
+  // simulate what a real user scenario looks like from start to finish.
   void SetUp(bool is_integration_test);
 
   // Override `SetUpMocks` to mock command-line switches, the file system,
   // preferences, and `AdsClient` before initialization.
   virtual void SetUpMocks() {}
 
-  // Convenience function for accessing AdsImpl from integration tests.
-  AdsImpl& GetAds() const;
+  // Convenience function for accessing Ads from integration tests.
+  Ads& GetAds() const;
 
   // Copies a single file from "test/data" to the temp profile path. Use
-  // `CopyDirectoryFromTestDataPathToTempProfilePath` to copy directories.
-  [[nodiscard]] bool CopyFileFromTestDataPathToTempProfilePath(
+  // `CopyDirectoryFromTestDataPathToProfilePath` to copy directories.
+  [[nodiscard]] bool CopyFileFromTestDataPathToProfilePath(
       const std::string& from_path,
       const std::string& to_path) const;
-  [[nodiscard]] bool CopyFileFromTestDataPathToTempProfilePath(
+  [[nodiscard]] bool CopyFileFromTestDataPathToProfilePath(
       const std::string& path) const;
 
-  // Copies the given path from "test/data", and all subdirectories and their
-  // contents as well to the temp directory.
-  [[nodiscard]] bool CopyDirectoryFromTestDataPathToTempProfilePath(
+  // Copies the given path from "test/data" and its contents to the temporary
+  // directory. If recursive` is `true`, it also copies all subdirectories and
+  // their contents.
+  [[nodiscard]] bool CopyDirectoryFromTestDataPathToProfilePath(
       const std::string& from_path,
-      const std::string& to_path) const;
-  [[nodiscard]] bool CopyDirectoryFromTestDataPathToTempProfilePath(
-      const std::string& path) const;
+      const std::string& to_path,
+      bool recursive) const;
+  [[nodiscard]] bool CopyDirectoryFromTestDataPathToProfilePath(
+      const std::string& path,
+      bool recursive) const;
 
   // Fast-forwards virtual time by `time_delta`, causing all tasks on the main
   // thread and thread pool with a remaining delay less than or equal to
@@ -130,11 +133,14 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
 
   base::test::TaskEnvironment task_environment_;
 
-  ::testing::NiceMock<AdsClientMock> ads_client_mock_;
-
   ::testing::NiceMock<PlatformHelperMock> platform_helper_mock_;
 
+  ::testing::NiceMock<AdsClientMock> ads_client_mock_;
+
  private:
+  void SimulateProfile();
+  const base::FilePath& ProfilePath() const { return profile_dir_.GetPath(); }
+
   void MockAdsClientNotifier();
   void MockAdsClient();
   void Mock();
@@ -145,7 +151,7 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
 
   void SetUpUnitTest();
 
-  base::ScopedTempDir temp_profile_dir_;
+  base::ScopedTempDir profile_dir_;
 
   bool setup_called_ = false;
   bool teardown_called_ = false;
@@ -159,7 +165,7 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
   bool is_integration_test_ = false;
 
   // Integration tests only.
-  std::unique_ptr<AdsImpl> ads_;
+  std::unique_ptr<Ads> ads_;
 
   // Unit tests only.
   std::unique_ptr<GlobalState> global_state_;

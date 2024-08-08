@@ -65,7 +65,7 @@ class BraveAdsDatabaseMigrationForNonRewardsTest
       return;
     }
 
-    ASSERT_TRUE(CopyFileFromTestDataPathToTempProfilePath(
+    ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(
         DatabasePathForSchemaVersion(), kDatabaseFilename));
   }
 
@@ -92,7 +92,7 @@ class BraveAdsDatabaseMigrationForNonRewardsTest
 
 TEST_P(BraveAdsDatabaseMigrationForNonRewardsTest, MigrateFromSchema) {
   // Database migration occurs after invoking `Setup` and `SetUpMocks` during
-  // the initialization of `AdsImpl` in `test::TestBase`. Consequently,
+  // the initialization of `Ads` in `test::TestBase`. Consequently,
   // `EXPECT_CALL` cannot be used with the mocks.
 
   // Assert
