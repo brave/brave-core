@@ -161,7 +161,7 @@ void SearchResultAdEventHandler::MaybeFireEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
     FireSearchResultAdEventHandlerCallback callback) const {
-  ad_events_database_table_.GetUnexpiredForType(
+  ad_events_database_table_.GetUnexpired(
       mojom::AdType::kSearchResultAd,
       base::BindOnce(&SearchResultAdEventHandler::MaybeFireEventCallback,
                      weak_factory_.GetWeakPtr(), ad, event_type,
