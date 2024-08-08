@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_test_constants.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

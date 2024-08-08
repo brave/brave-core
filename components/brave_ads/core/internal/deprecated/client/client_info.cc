@@ -47,8 +47,6 @@ base::Value::Dict ClientInfo::ToValue() const {
 
     purchase_intent_signal_history_dict.Set(segment, std::move(list));
   }
-  dict.Set("purchaseIntentSignalHistory",
-           std::move(purchase_intent_signal_history_dict));
 
   base::Value::List probabilities_history_list;
   for (const auto& item : text_classification_probabilities) {
@@ -67,14 +65,13 @@ base::Value::Dict ClientInfo::ToValue() const {
         "textClassificationProbabilities", std::move(probabilities_list)));
   }
 
-  dict.Set("textClassificationProbabilitiesHistory",
+  return base::Value::Dict()
+      .Set("purchaseIntentSignalHistory",
+           std::move(purchase_intent_signal_history_dict))
+      .Set("textClassificationProbabilitiesHistory",
            std::move(probabilities_history_list));
-
-  return dict;
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/26003): Reduce cognitive
-// complexity.
 bool ClientInfo::FromValue(const base::Value::Dict& dict) {
   if (const auto* const value = dict.FindDict("purchaseIntentSignalHistory")) {
     for (const auto [segment, history] : *value) {
