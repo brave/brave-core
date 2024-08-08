@@ -2425,8 +2425,17 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_AUTOMATIC_SERVER_SELECTION_TEXT" desc="Vpn server selection text">
       Auto-select the VPN server region closest to you based on your timezone. This option is recommended to maximize Internet speeds.
     </message>
-    <message name="IDS_CITY_SERVER_TEXT" desc="Vpn server selection city/server text">
-      2 cities - 5 servers
+    <message name="IDS_CITY_TEXT" desc="Vpn server selection city text">
+      {CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE">%1$d<ex>1</ex></ph> city}
+          other {<ph name="CITY_COUNT_MANY">%1$d<ex>2</ex></ph> cities}
+        }
+    </message>
+    <message name="IDS_SERVER_TEXT" desc="Vpn server selection server text">
+      {SERVER_COUNT, plural,
+          =1 { - <ph name="SERVER_COUNT_ONE">%1$d<ex>1</ex></ph> server}
+          other { - <ph name="SERVER_COUNT_MANY">%1$d<ex>2</ex></ph> servers}
+        }
     </message>
     <message name="IDS_SERVERS" desc="Vpn server selection servers text">
       Servers
