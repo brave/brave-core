@@ -48,6 +48,7 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
+import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupUi;
@@ -355,7 +356,7 @@ public class BraveToolbarManager extends ToolbarManager {
                     () -> {
                         mTabModelSelector
                                 .getModel(mIncognitoStateProvider.isIncognitoSelected())
-                                .closeAllTabs();
+                                .closeTabs(TabClosureParams.closeAllTabs().build());
                     };
 
             assert (mActivity instanceof ChromeActivity);
