@@ -19,6 +19,7 @@ import { coinTypesMapping } from '../constants'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // utils
+import getAPIProxy from '../../async/bridge'
 import Amount from '../../../utils/amount'
 import {
   GetBlockchainTokenIdArg,
@@ -228,16 +229,39 @@ export const tokenBalancesEndpoints = ({
         } = api
 
         try {
-          const result = await fetchTokenBalanceRegistryForAccountsAndChainIds({
-            args,
-            cache,
-            bitcoinWalletService,
-            braveWalletService,
-            jsonRpcService,
-            zcashWalletService
-          })
+          const registry: TokenBalancesRegistry =
+            await fetchTokenBalanceRegistryForAccountsAndChainIds({
+              args,
+              cache,
+              bitcoinWalletService,
+              braveWalletService,
+              jsonRpcService,
+              zcashWalletService
+            })
+
+          // NFTs
+          for (const arg of args) {
+            const { accountId } = arg
+            // TODO: handle empty tokens arg
+            const nfts = (arg.tokens || []).filter((token) => token.isNft)
+            await fetchNftBalancesForAccount({
+              accountId,
+              nfts,
+              onBalance: (balanceResult) =>
+                setBalance({
+                  accountId: accountId,
+                  balance: balanceResult.balance,
+                  chainId: balanceResult.chainId,
+                  coinType: balanceResult.coinType,
+                  contractAddress: balanceResult.contractAddress,
+                  tokenId: balanceResult.tokenId,
+                  tokenBalancesRegistry: registry
+                })
+            })
+          }
+
           return {
-            data: result
+            data: registry
           }
         } catch (error) {
           return handleEndpointError(
@@ -505,6 +529,23 @@ export const tokenBalancesEndpoints = ({
                     }
                   )
                 }
+
+                // NFTs
+                const nfts = arg.isSpamRegistry
+                  ? spamTokens.filter(
+                      (token) => token.isNft && token.coin === accountId.coin
+                    )
+                  : getEntitiesListFromEntityState(
+                      userTokensRegistry,
+                      userTokensRegistry.nonFungibleIdsByCoinType[
+                        accountId.coin
+                      ]
+                    )
+                await fetchNftBalancesForAccount({
+                  accountId,
+                  nfts,
+                  onBalance
+                })
               }
             )
 
@@ -956,71 +997,6 @@ async function fetchAccountTokenBalanceRegistryForChainId({
     }
   }
 
-  const nfts = nonNativeTokens.filter((token) => token.isNft)
-
-  // NFTs
-  if (nfts.length) {
-    // batch nfts into batches of 50 or less,
-    // then fetch balances for each batch
-    // this is to avoid hitting the max request size
-    // Can be removed once core implements batching
-    // https://github.com/brave/brave-browser/issues/39954
-    const nftBatches = []
-    for (let i = 0; i < nfts.length; i += MAX_NFT_BALANCE_CHECK_BATCH_SIZE) {
-      nftBatches.push(nfts.slice(i, i + MAX_NFT_BALANCE_CHECK_BATCH_SIZE))
-    }
-
-    // get balances for groups
-    for (const nftsBatch of nftBatches) {
-      if (!nftsBatch.length) {
-        continue
-      }
-      const {
-        balances: nftBatchBalances,
-        errorMessage: nftBatchBalancesErrorMessage
-      } = await jsonRpcService.getNftBalances(
-        arg.accountId.address,
-        nftsBatch.map((token) => {
-          return {
-            chainId: token.chainId,
-            contractAddress: token.contractAddress,
-            tokenId: token.tokenId
-          }
-        }),
-        arg.coin
-      )
-
-      if (nftBatchBalancesErrorMessage) {
-        console.warn(
-          'An error occurred while fetching NFT balances: ' +
-            nftBatchBalancesErrorMessage
-        )
-        console.warn({
-          failedNftBalanceCheckBatchArgs: {
-            address: arg.accountId.address,
-            nfts: nftsBatch,
-            coin: arg.coin
-          }
-        })
-      }
-
-      nftBatchBalances.forEach((nftBalance, index) => {
-        const token = nftsBatch[index]
-        if (!token) {
-          return
-        }
-        onBalance({
-          accountId: arg.accountId,
-          chainId: arg.chainId,
-          contractAddress: token.contractAddress,
-          balance: nftBalance.toString(),
-          coinType: token.coin,
-          tokenId: token.tokenId
-        })
-      })
-    }
-  }
-
   if (arg.coin === CoinTypes.ETH) {
     // jsonRpcService.getERC20TokenBalances cannot handle
     // native assets
@@ -1179,4 +1155,78 @@ async function fetchTokenBalanceRegistryForAccountsAndChainIds({
   })
 
   return tokenBalancesRegistry
+}
+
+async function fetchNftBalancesForAccount({
+  nfts,
+  accountId,
+  onBalance
+}: {
+  nfts: GetBlockchainTokenIdArg[]
+  accountId: BraveWallet.AccountId
+  onBalance: (arg: BalanceResult) => void | Promise<void>
+}) {
+  if (nfts.length) {
+    const { jsonRpcService } = getAPIProxy()
+
+    // batch nfts into batches of 50 or less,
+    // then fetch balances for each batch
+    // this is to avoid hitting the max request size
+    // Can be removed once core implements batching
+    // https://github.com/brave/brave-browser/issues/39954
+    const nftBatches = []
+    for (let i = 0; i < nfts.length; i += MAX_NFT_BALANCE_CHECK_BATCH_SIZE) {
+      nftBatches.push(nfts.slice(i, i + MAX_NFT_BALANCE_CHECK_BATCH_SIZE))
+    }
+
+    // get balances for groups
+    for (const nftsBatch of nftBatches) {
+      if (!nftsBatch.length) {
+        continue
+      }
+      const {
+        balances: nftBatchBalances,
+        errorMessage: nftBatchBalancesErrorMessage
+      } = await jsonRpcService.getNftBalances(
+        accountId.address,
+        nftsBatch.map((token) => {
+          return {
+            chainId: token.chainId,
+            contractAddress: token.contractAddress,
+            tokenId: token.tokenId
+          }
+        }),
+        accountId.coin
+      )
+
+      if (nftBatchBalancesErrorMessage) {
+        console.warn(
+          'An error occurred while fetching NFT balances: ' +
+            nftBatchBalancesErrorMessage
+        )
+        console.warn({
+          failedNftBalanceCheckBatchArgs: {
+            address: accountId.address,
+            nfts: nftsBatch,
+            coin: accountId.coin
+          }
+        })
+      }
+
+      nftBatchBalances.forEach((nftBalance, index) => {
+        const token = nftsBatch[index]
+        if (!token) {
+          return
+        }
+        onBalance({
+          accountId: accountId,
+          chainId: token.chainId,
+          contractAddress: token.contractAddress,
+          balance: nftBalance.toString(),
+          coinType: token.coin,
+          tokenId: token.tokenId
+        })
+      })
+    }
+  }
 }
