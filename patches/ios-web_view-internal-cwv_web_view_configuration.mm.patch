@@ -1,5 +1,5 @@
 diff --git a/ios/web_view/internal/cwv_web_view_configuration.mm b/ios/web_view/internal/cwv_web_view_configuration.mm
-index db4c4bd18207dbfe22c05cb6da2fdb94dced9393..794bf7820c4abaee0c4fe5d89a2d2b9484a25a7c 100644
+index db4c4bd18207dbfe22c05cb6da2fdb94dced9393..7110894808fa2b710879720ae95e3d5c4130dd6c 100644
 --- a/ios/web_view/internal/cwv_web_view_configuration.mm
 +++ b/ios/web_view/internal/cwv_web_view_configuration.mm
 @@ -5,13 +5,14 @@
@@ -78,29 +78,6 @@ index db4c4bd18207dbfe22c05cb6da2fdb94dced9393..794bf7820c4abaee0c4fe5d89a2d2b94
  
      _preferences =
          [[CWVPreferences alloc] initWithPrefService:_browserState->GetPrefs()];
-@@ -185,14 +192,14 @@ NSHashTable<CWVWebViewConfiguration*>* gNonPersistentConfigurations = nil;
- #pragma mark - ReuseCheckService
- 
- - (CWVReuseCheckService*)reuseCheckService {
--  if (!_reuseCheckService && self.persistent) {
--    affiliations::AffiliationService* affiliation_service =
--        ios_web_view::WebViewAffiliationServiceFactory::GetForBrowserState(
--            static_cast<ios_web_view::WebViewBrowserState*>(self.browserState));
--
--    _reuseCheckService = [[CWVReuseCheckService alloc]
--        initWithAffiliationService:affiliation_service];
--  }
-+  // if (!_reuseCheckService && self.persistent) {
-+  //   affiliations::AffiliationService* affiliation_service =
-+  //       ios_web_view::WebViewAffiliationServiceFactory::GetForBrowserState(
-+  //           static_cast<ios_web_view::WebViewBrowserState*>(self.browserState));
-+
-+  //   _reuseCheckService = [[CWVReuseCheckService alloc]
-+  //       initWithAffiliationService:affiliation_service];
-+  // }
-   return _reuseCheckService;
- }
- 
 @@ -205,7 +212,7 @@ NSHashTable<CWVWebViewConfiguration*>* gNonPersistentConfigurations = nil;
  #pragma mark - Private Methods
  
