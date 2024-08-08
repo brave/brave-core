@@ -28,6 +28,7 @@
       "pageset-repeat": 20,
       "stories": [
         "load:chrome:blank",
+        "load:site:example:2023",
         "load:media:youtube:2018",
       ]
     },

@@ -28,6 +28,7 @@ import components.perf_test_runner as perf_test_runner
 import components.perf_test_utils as perf_test_utils
 import components.path_util as path_util
 import components.profile_tools as profile_tools
+import components.wpr_tools as wpr_tools
 
 from components.common_options import CommonOptions, PerfMode
 
@@ -92,7 +93,6 @@ def _RunUpdateProfile(config: perf_config.PerfConfig,
   profile_tools.MakeUpdatedProfileArchive(configurations[0], options)
   return 0
 
-
 def main():
   parser = argparse.ArgumentParser(
       formatter_class=argparse.RawTextHelpFormatter,
@@ -121,8 +121,8 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
     logging.info('Cleaning working directory %s', options.working_directory)
     shutil.rmtree(options.working_directory)
 
-  if not os.path.exists(options.working_directory):
-    os.mkdir(options.working_directory)
+  os.makedirs(options.working_directory, exist_ok=True)
+
   json_config = load_config(args.config, options)
   config = perf_config.PerfConfig(json_config)
 
@@ -141,6 +141,9 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
 
   if options.mode == PerfMode.UPDATE_PROFILE:
     return _RunUpdateProfile(config, options)
+
+  if options.mode == PerfMode.RECORD_WPR:
+    return 0 if wpr_tools.record_wpr(config, options) else 1
 
   raise RuntimeError('Unknown mode')
 

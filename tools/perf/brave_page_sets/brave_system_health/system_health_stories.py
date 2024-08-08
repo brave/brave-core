@@ -67,7 +67,7 @@ class LoadGoogleStory2023(_BraveLoadingStory):
 
 
 class LoadYoutubeStory2023(_BraveLoadingStory):
-  NAME = 'load:site:youtube:2023:wow'
+  NAME = 'load:site:youtube:2023'
   URL = 'https://www.youtube.com/watch?v=Way9Dexny3w'
   SCROLL_PAGE = False
   TAGS = [story_tags.YEAR_2023]
@@ -90,7 +90,7 @@ class LoadWikipediaStory2023(_BraveLoadingStory):
 
 class LoadTwitterStory2023(_BraveLoadingStory):
   NAME = 'load:site:twitter:2023'
-  URL = 'https://twitter.com/SpaceX'
+  URL = 'https://x.com/SpaceX'
   TAGS = [story_tags.YEAR_2023]
 
 
@@ -103,4 +103,35 @@ class LoadCNNStory2023(_BraveLoadingStory):
 class LoadBBCStory2023(_BraveLoadingStory):
   NAME = 'load:site:bbc:2023'
   URL = 'https://www.bbc.com/'
+  TAGS = [story_tags.YEAR_2023]
+
+
+class LoadHackernewsStory2023(_BraveLoadingStory):
+  NAME = 'load:site:hackernews:2023'
+  URL = 'https://news.ycombinator.com/'
+  SCROLL_PAGE = False
+  TAGS = [story_tags.YEAR_2023]
+
+
+class LoadPinterestStory2023(_BraveLoadingStory):
+  NAME = 'load:site:pinterest:2023'
+  URL = 'https://www.pinterest.com/search/pins/?q=home%20decor'
+  TAGS = [story_tags.YEAR_2023]
+
+
+class LoadIMDBStory2023(_BraveLoadingStory):
+  NAME = 'load:site:imdb:2023'
+  URL = 'https://www.imdb.com/what-to-watch/popular/'
+  TAGS = [story_tags.YEAR_2023]
+
+
+class LoadAmazonStory2023(_BraveLoadingStory):
+  NAME = 'load:site:amazon:2023'
+  URL = 'https://www.amazon.com/gp/new-releases/'
+  TAGS = [story_tags.YEAR_2023]
+
+
+class LoadBraveNewsStory2023(_BraveLoadingStory):
+  NAME = 'load:ntp:brave_news:2023'
+  URL = 'chrome://newtab/'
   TAGS = [story_tags.YEAR_2023]
