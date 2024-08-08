@@ -178,6 +178,11 @@ void BraveBrowserProcessImpl::Init() {
 void BraveBrowserProcessImpl::StartTearDown() {
   brave_stats_updater_.reset();
   brave_referrals_service_.reset();
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
+  if (p3a_service_) {
+    p3a_service_->StartTeardown();
+  }
+#endif
   BrowserProcessImpl::StartTearDown();
 }
 
