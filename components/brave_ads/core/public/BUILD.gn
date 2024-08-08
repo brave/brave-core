@@ -39,7 +39,6 @@ source_set("headers") {
     "export.h",
     "flags/flags_util.h",
     "history/ad_history_constants.h",
-    "history/ad_history_filter_types.h",
     "history/ad_history_item_info.h",
     "history/ad_history_value_util.h",
     "history/site_history.h",
