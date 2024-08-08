@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
@@ -38,11 +39,9 @@ void FailedToInitialize(InitializeCallback callback) {
 
 }  // namespace
 
-AdsImpl::AdsImpl(AdsClient* const ads_client)
-    : global_state_(ads_client),
-      account_(&token_generator_),
-      ad_handler_(account_),
-      reactions_(account_) {}
+AdsImpl::AdsImpl(AdsClient* const ads_client,
+                 std::unique_ptr<TokenGeneratorInterface> token_generator)
+    : global_state_(ads_client, std::move(token_generator)) {}
 
 AdsImpl::~AdsImpl() = default;
 
