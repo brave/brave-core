@@ -14,6 +14,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/command_line_switch_test_util_internal.h"
@@ -325,7 +326,8 @@ void TestBase::SetUpUnitTest() {
   CHECK(!is_integration_test_) << "SetUpUnitTest should only be called if "
                                   "SetUp is initialized for unit testing";
 
-  global_state_ = std::make_unique<GlobalState>(&ads_client_mock_);
+  global_state_ = std::make_unique<GlobalState>(
+      &ads_client_mock_, std::make_unique<TokenGeneratorMock>());
 
   // Must be called after `GlobalState` is instantiated but prior to
   // `MockDefaultAdsServiceState`.

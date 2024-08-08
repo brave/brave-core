@@ -5,7 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
+#include <utility>
+
 #include "base/check.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
+#include "brave/components/brave_ads/core/internal/ads_core.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
@@ -21,7 +25,9 @@
 
 namespace brave_ads {
 
-GlobalState::GlobalState(AdsClient* const ads_client)
+GlobalState::GlobalState(
+    AdsClient* const ads_client,
+    std::unique_ptr<TokenGeneratorInterface> token_generator)
     : ads_client_(ads_client),
       global_state_holder_(std::make_unique<GlobalStateHolder>(this)) {
   CHECK(ads_client_);
@@ -36,6 +42,7 @@ GlobalState::GlobalState(AdsClient* const ads_client)
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
   tab_manager_ = std::make_unique<TabManager>();
   user_activity_manager_ = std::make_unique<UserActivityManager>();
+  ads_core_ = std::make_unique<AdsCore>(std::move(token_generator));
 }
 
 GlobalState::~GlobalState() {
@@ -118,6 +125,12 @@ UserActivityManager& GlobalState::GetUserActivityManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(user_activity_manager_);
   return *user_activity_manager_;
+}
+
+AdsCore& GlobalState::GetAdsCore() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(ads_core_);
+  return *ads_core_;
 }
 
 mojom::SysInfo& GlobalState::SysInfo() {
