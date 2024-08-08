@@ -535,6 +535,8 @@ source_set("ui") {
       "views/side_panel/brave_side_panel_view_base.h",
       "views/split_view/split_view_location_bar.cc",
       "views/split_view/split_view_location_bar.h",
+      "views/split_view/split_view_location_bar_model_delegate.cc",
+      "views/split_view/split_view_location_bar_model_delegate.h",
       "views/split_view/split_view_menu_bubble.cc",
       "views/split_view/split_view_menu_bubble.h",
       "views/split_view/split_view_separator.cc",
@@ -1347,12 +1349,14 @@ source_set("unit_tests") {
       "brave_file_select_utils_unittest.cc",
       "brave_layout_constants_unittest.cc",
       "brave_scheme_utils_unittest.cc",
+      "views/split_view/split_view_location_bar_model_delegate_unittest.cc",
       "views/split_view/split_view_location_bar_unittest.cc",
     ]
     deps = [
       "//base/test:test_support",
       "//brave/components/l10n/common:test_support",
       "//chrome/browser/ui",
+      "//chrome/test:test_support",
       "//components/javascript_dialogs",
       "//testing/gmock",
       "//testing/gtest",
