@@ -1648,6 +1648,7 @@ inline constexpr char kCSPBraveCoinGeckoAssetsProxy[] =
     "https://assets.cgproxy.brave.com";
 const std::string GetWalletFrameSrcCSP();
 const std::string GetWalletImgSrcCSP(bool isPanel);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_

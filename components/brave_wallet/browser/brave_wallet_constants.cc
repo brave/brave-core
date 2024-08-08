@@ -101,6 +101,14 @@ const base::flat_map<std::string, std::string>& GetAnkrBlockchains() {
   return *blockchains;
 }
 
+// CSP Override for CSPDirectiveName::FrameSrc.
+// On desktop, will return:
+//   "frame-src chrome-untrusted://nft-display/
+//   chrome-untrusted://line-chart-display/ chrome-untrusted://market-display/
+//   chrome-untrusted://trezor-bridge/ chrome-untrusted://ledger-bridge/;"
+// On mobile, will return:
+//   "frame-src chrome-untrusted://nft-display/
+//   chrome-untrusted://line-chart-display/ chrome-untrusted://market-display/;"
 const std::string GetWalletFrameSrcCSP() {
   std::string frameSrcCSP =
       base::JoinString({kCSPFrameSrcName, kUntrustedNftURL,
@@ -117,6 +125,13 @@ const std::string GetWalletFrameSrcCSP() {
   return frameSrcCSP;
 }
 
+// CSP Override for CSPDirectiveName::ImgSrc.
+// When isPanel is false, will return
+//   "img-src 'self' data: chrome://resources chrome://erc-token-images
+//   chrome://image;"
+// When isPanel is true, will return:
+//   "img-src 'self' data: chrome://resources chrome://erc-token-images
+//   chrome://image chrome://favicon https://assets.cgproxy.brave.com;"
 const std::string GetWalletImgSrcCSP(bool isPanel) {
   std::string imgSrcCSP = base::JoinString(
       {kCSPImageSrcName, kCSPSelf, kCSPData, kCSPChromeResources,
@@ -131,4 +146,5 @@ const std::string GetWalletImgSrcCSP(bool isPanel) {
   imgSrcCSP.append(";");
   return imgSrcCSP;
 }
+
 }  // namespace brave_wallet
