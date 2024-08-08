@@ -88,7 +88,7 @@ KeyMap ParseKeys(const base::Value::Dict& encoded_keys) {
     if (!decoded_data) {
       continue;
     }
-    map[date] = *decoded_data;
+    map[date] = std::move(*decoded_data);
   }
   return map;
 }
@@ -107,9 +107,9 @@ ParseSourceMapActionConfigs(const base::Value::Dict& configs_dict) {
     }
     auto* keys_list = config_dict->FindList(kKeysFieldName);
     if (keys_list) {
-      for (const auto& key_val : *keys_list) {
+      for (auto& key_val : *keys_list) {
         if (key_val.is_string()) {
-          action_config->keys.push_back(key_val.GetString());
+          action_config->keys.push_back(std::move(key_val.GetString()));
         }
       }
     }
@@ -122,26 +122,35 @@ ParseSourceMapActionConfigs(const base::Value::Dict& configs_dict) {
   return map;
 }
 
-std::optional<std::string> GunzipContents(std::string gzipped_contents) {
-  base::AssertLongCPUWorkAllowed();
-  std::string result;
-  if (!compression::GzipUncompress(gzipped_contents, &result)) {
-    return std::nullopt;
+std::unique_ptr<PatternsGroup> ParseAndWritePatternsFile(
+    base::FilePath patterns_path,
+    std::string gzipped_contents) {
+  std::string uncompressed_contents;
+  if (!compression::GzipUncompress(gzipped_contents, &uncompressed_contents)) {
+    VLOG(1) << "Failed to uncompress patterns";
+    return nullptr;
   }
-  return result;
+  auto patterns = ParsePatterns(uncompressed_contents);
+  if (!patterns) {
+    return nullptr;
+  }
+
+  if (!base::WriteFile(patterns_path, uncompressed_contents)) {
+    VLOG(1) << "Failed to write patterns file";
+    return nullptr;
+  }
+  return patterns;
 }
 
-bool WritePatternsFile(base::FilePath patterns_path, std::string contents) {
-  return base::WriteFile(patterns_path, contents);
-}
-
-std::optional<std::string> ReadPatternsFile(base::FilePath patterns_path) {
+std::unique_ptr<PatternsGroup> ReadAndParsePatternsFile(
+    base::FilePath patterns_path) {
   std::string contents;
   if (!base::ReadFileToStringWithMaxSize(patterns_path, &contents,
                                          kPatternsMaxFileSize)) {
-    return std::nullopt;
+    VLOG(1) << "Failed to read local patterns file";
+    return nullptr;
   }
-  return contents;
+  return ParsePatterns(contents);
 }
 
 std::unique_ptr<ServerConfig> ProcessConfigResponses(
@@ -196,7 +205,7 @@ std::unique_ptr<ServerConfig> ProcessConfigResponses(
 
   const auto* location = quorum_root->FindString(kLocationFieldName);
   if (location && kAllowedReportLocations.contains(*location)) {
-    config->location = *location;
+    config->location = std::move(*location);
   } else {
     config->location = kOmittedLocationValue;
   }
@@ -219,7 +228,8 @@ ServerConfig::~ServerConfig() = default;
 ServerConfigDownloadResult::ServerConfigDownloadResult(
     bool is_collector_config,
     std::optional<std::string> response_body)
-    : is_collector_config(is_collector_config), response_body(response_body) {}
+    : is_collector_config(is_collector_config),
+      response_body(std::move(response_body)) {}
 ServerConfigDownloadResult::~ServerConfigDownloadResult() = default;
 ServerConfigDownloadResult::ServerConfigDownloadResult(
     const ServerConfigDownloadResult&) = default;
@@ -288,7 +298,8 @@ void ServerConfigLoader::LoadConfigs() {
 
   auto make_download_result = [](bool is_collector_config,
                                  std::optional<std::string> response_body) {
-    return ServerConfigDownloadResult(is_collector_config, response_body);
+    return ServerConfigDownloadResult(is_collector_config,
+                                      std::move(response_body));
   };
 
   auto collector_callback =
@@ -307,20 +318,19 @@ void ServerConfigLoader::LoadConfigs() {
 void ServerConfigLoader::OnConfigResponsesDownloaded(
     std::vector<ServerConfigDownloadResult> results) {
   CHECK_EQ(results.size(), 2u);
-  const std::optional<std::string>* collector_response_body = nullptr;
-  const std::optional<std::string>* quorum_response_body = nullptr;
+  std::optional<std::string> collector_response_body;
+  std::optional<std::string> quorum_response_body;
   for (const auto& result : results) {
     if (result.is_collector_config) {
-      collector_response_body = &result.response_body;
+      collector_response_body = std::move(result.response_body);
     } else {
-      quorum_response_body = &result.response_body;
+      quorum_response_body = std::move(result.response_body);
     }
   }
-  CHECK(collector_response_body && quorum_response_body);
 
   auto* collector_response_info = collector_config_url_loader_->ResponseInfo();
   auto* quorum_response_info = quorum_config_url_loader_->ResponseInfo();
-  if (!*collector_response_body || !*quorum_response_body ||
+  if (!collector_response_body || !quorum_response_body ||
       !collector_response_info || !quorum_response_info ||
       collector_response_info->headers->response_code() != 200 ||
       quorum_response_info->headers->response_code() != 200) {
@@ -331,8 +341,9 @@ void ServerConfigLoader::OnConfigResponsesDownloaded(
 
   background_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&ProcessConfigResponses, **collector_response_body,
-                     **quorum_response_body),
+      base::BindOnce(&ProcessConfigResponses,
+                     std::move(*collector_response_body),
+                     std::move(*quorum_response_body)),
       base::BindOnce(&ServerConfigLoader::OnConfigResponsesProcessed,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -366,21 +377,7 @@ void ServerConfigLoader::OnConfigResponsesProcessed(
 
 void ServerConfigLoader::LoadStoredPatterns() {
   background_task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE, base::BindOnce(&ReadPatternsFile, patterns_path_),
-      base::BindOnce(&ServerConfigLoader::OnPatternsFileLoaded,
-                     weak_ptr_factory_.GetWeakPtr()));
-}
-
-void ServerConfigLoader::OnPatternsFileLoaded(
-    std::optional<std::string> patterns_json) {
-  if (!patterns_json) {
-    VLOG(1) << "Failed to load local patterns file";
-    local_state_->ClearPref(kPatternsRetrievalTime);
-    SchedulePatternsRequest();
-    return;
-  }
-  background_task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE, base::BindOnce(&ParsePatterns, *patterns_json),
+      FROM_HERE, base::BindOnce(&ReadAndParsePatternsFile, patterns_path_),
       base::BindOnce(&ServerConfigLoader::OnStoredPatternsParsed,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -447,22 +444,11 @@ void ServerConfigLoader::OnPatternsResponse(
     return;
   }
   background_task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE, base::BindOnce(&GunzipContents, *response_body),
-      base::BindOnce(&ServerConfigLoader::OnPatternsGunzip,
-                     weak_ptr_factory_.GetWeakPtr()));
-}
-
-void ServerConfigLoader::OnPatternsGunzip(
-    std::optional<std::string> patterns_json) {
-  if (!patterns_json) {
-    VLOG(1) << "Failed to decompress patterns file";
-    HandlePatternsStatus(false);
-    return;
-  }
-  background_task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE, base::BindOnce(&ParsePatterns, *patterns_json),
+      FROM_HERE,
+      base::BindOnce(&ParseAndWritePatternsFile, patterns_path_,
+                     std::move(*response_body)),
       base::BindOnce(&ServerConfigLoader::OnNewPatternsParsed,
-                     weak_ptr_factory_.GetWeakPtr(), *patterns_json));
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void ServerConfigLoader::OnStoredPatternsParsed(
@@ -477,31 +463,14 @@ void ServerConfigLoader::OnStoredPatternsParsed(
 }
 
 void ServerConfigLoader::OnNewPatternsParsed(
-    std::string new_patterns_json,
     std::unique_ptr<PatternsGroup> parsed_patterns) {
   if (!parsed_patterns) {
     HandlePatternsStatus(false);
     return;
   }
-  background_task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(&WritePatternsFile, patterns_path_, new_patterns_json),
-      base::BindOnce(&ServerConfigLoader::OnPatternsWritten,
-                     weak_ptr_factory_.GetWeakPtr(),
-                     std::move(parsed_patterns)));
-}
-
-void ServerConfigLoader::OnPatternsWritten(
-    std::unique_ptr<PatternsGroup> parsed_group,
-    bool result) {
-  if (!result) {
-    VLOG(1) << "Failed to write patterns file";
-    HandlePatternsStatus(false);
-    return;
-  }
   local_state_->SetTime(kPatternsRetrievalTime, base::Time::Now());
   HandlePatternsStatus(true);
-  last_loaded_patterns_ = std::move(parsed_group);
+  last_loaded_patterns_ = std::move(parsed_patterns);
   patterns_callback_.Run();
 }
 

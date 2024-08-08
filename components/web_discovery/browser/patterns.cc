@@ -67,8 +67,8 @@ bool ParsePayloadRule(const base::Value& rule_value, PayloadRule* rule_out) {
     VLOG(1) << "Selector or key missing from payload rule";
     return false;
   }
-  rule_out->selector = *selector;
-  rule_out->key = *payload_key;
+  rule_out->selector = std::move(*selector);
+  rule_out->key = std::move(*payload_key);
   if (rule_list->size() > 2) {
     auto* field_action = (*rule_list)[2].GetIfString();
     if (field_action && *field_action == kJoinFieldAction) {
@@ -103,8 +103,8 @@ std::optional<std::vector<PayloadRuleGroup>> ParsePayloadRules(
       VLOG(1) << "Payload rule or result types unknown";
       return std::nullopt;
     }
-    rule_group_it->action = *action;
-    rule_group_it->key = key;
+    rule_group_it->action = std::move(*action);
+    rule_group_it->key = std::move(key);
     rule_group_it->result_type = result_type_it->second;
     rule_group_it->rule_type = rule_type_it->second;
     if (auto* fields = rule_group_dict->FindList(kFieldsKey)) {
@@ -127,16 +127,12 @@ std::optional<std::vector<PayloadRuleGroup>> ParsePayloadRules(
 RefineFunctionList ParseFunctionsApplied(const base::Value::List* list) {
   CHECK(list);
   RefineFunctionList result;
-  for (const auto& function_val : *list) {
-    const auto* function_list = function_val.GetIfList();
+  for (auto& function_val : *list) {
+    auto* function_list = function_val.GetIfList();
     if (!function_list || function_list->size() <= 1) {
       continue;
     }
-    base::Value::List function_vec;
-    for (const auto& element : *function_list) {
-      function_vec.Append(element.Clone());
-    }
-    result.push_back(std::move(function_vec));
+    result.push_back(function_list->Clone());
   }
   return result;
 }
@@ -175,9 +171,9 @@ std::optional<base::flat_map<std::string, ScrapeRuleGroup>> ParseScrapeRules(
           rule->rule_type = rule_type_it->second;
         }
       }
-      rule->attribute = *attribute;
+      rule->attribute = std::move(*attribute);
       if (sub_selector) {
-        rule->sub_selector = *sub_selector;
+        rule->sub_selector = std::move(*sub_selector);
       }
       if (functions_applied) {
         rule->functions_applied = ParseFunctionsApplied(functions_applied);
@@ -229,7 +225,7 @@ std::optional<std::vector<PatternsURLDetails>> ParsePatternsURLDetails(
       VLOG(1) << "ID or scrape dict missing for pattern";
       return std::nullopt;
     }
-    details.id = *id;
+    details.id = std::move(*id);
 
     details.is_search_engine = base::Contains(*search_engines_list, i_str);
 
@@ -250,7 +246,7 @@ std::optional<std::vector<PatternsURLDetails>> ParsePatternsURLDetails(
       if (query_template_dict) {
         auto* prefix = query_template_dict->FindString(kQueryTemplatePrefixKey);
         if (prefix) {
-          details.search_template_prefix = *prefix;
+          details.search_template_prefix = std::move(*prefix);
         }
       }
     }

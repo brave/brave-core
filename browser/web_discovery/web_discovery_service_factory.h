@@ -7,13 +7,13 @@
 #define BRAVE_BROWSER_WEB_DISCOVERY_WEB_DISCOVERY_SERVICE_FACTORY_H_
 
 #include "base/no_destructor.h"
-#include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+#include "chrome/browser/profiles/profile_keyed_service_factory.h"
 
 namespace web_discovery {
 
 class WebDiscoveryService;
 
-class WebDiscoveryServiceFactory : public BrowserContextKeyedServiceFactory {
+class WebDiscoveryServiceFactory : public ProfileKeyedServiceFactory {
  public:
   static WebDiscoveryServiceFactory* GetInstance();
   static WebDiscoveryService* GetForBrowserContext(
@@ -30,8 +30,6 @@ class WebDiscoveryServiceFactory : public BrowserContextKeyedServiceFactory {
       delete;
 
   KeyedService* BuildServiceInstanceFor(
-      content::BrowserContext* context) const override;
-  content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
   bool ServiceIsCreatedWithBrowserContext() const override;
 };

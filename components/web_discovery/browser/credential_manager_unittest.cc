@@ -56,12 +56,10 @@ class WebDiscoveryCredentialManagerTest : public testing::Test {
     ASSERT_TRUE(test_data_value);
     const auto& test_data_dict = test_data_value->GetDict();
     const auto* rsa_priv_key = test_data_dict.FindString("rsa_priv_key");
-    const auto* rsa_pub_key = test_data_dict.FindString("rsa_pub_key");
     const auto* group_pub_key = test_data_dict.FindString("group_pub_key");
     const auto* join_responses = test_data_dict.FindDict("join_responses");
-    ASSERT_TRUE(rsa_priv_key && rsa_pub_key && group_pub_key && join_responses);
+    ASSERT_TRUE(rsa_priv_key && group_pub_key && join_responses);
 
-    profile_prefs_.SetString(kCredentialRSAPublicKey, *rsa_pub_key);
     profile_prefs_.SetString(kCredentialRSAPrivateKey, *rsa_priv_key);
 
     server_config_loader_ = std::make_unique<ServerConfigLoader>(

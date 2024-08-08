@@ -21,6 +21,7 @@
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/branded_strings.h"
 #include "components/prefs/pref_service.h"
+#include "extensions/buildflags/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
@@ -170,7 +171,9 @@ void WelcomeDOMHandler::HandleSetMetricsReportingEnabled(
 void WelcomeDOMHandler::HandleEnableWebDiscovery(
     const base::Value::List& args) {
   DCHECK(profile_);
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   profile_->GetPrefs()->SetBoolean(kWebDiscoveryExtensionEnabled, true);
+#endif
 }
 
 void WelcomeDOMHandler::SetLocalStateBooleanEnabled(
