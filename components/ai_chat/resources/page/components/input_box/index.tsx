@@ -32,8 +32,8 @@ type Props = Pick<AIChatContext,
 
 interface InputBoxProps {
     context: Props
-    onFocusInput: () => void
-    onBlurInput: () => void
+    onFocusInputMobile: () => void
+    onBlurInputMobile: () => void
 }
 
 function InputBox(props: InputBoxProps) {
@@ -67,18 +67,20 @@ function InputBox(props: InputBoxProps) {
     }
   }
 
-  const handleFocus = (event: React.FormEvent<HTMLTextAreaElement>) => {
-    if (!props.context.isMobile) {
-      return
+  // We don't want to handle that event on desktop
+  let handleFocusMobile
+  if (props.context.isMobile) {
+    handleFocusMobile = (event: React.FormEvent<HTMLTextAreaElement>) => {
+      props.onFocusInputMobile()
     }
-    props.onFocusInput()
   }
 
-  const handleBlur = (event: React.FormEvent<HTMLTextAreaElement>) => {
-    if (!props.context.isMobile) {
-      return
+  // We don't want to handle that event on desktop
+  let handleBlurMobile
+  if (props.context.isMobile) {
+    handleBlurMobile = (event: React.FormEvent<HTMLTextAreaElement>) => {
+      props.onBlurInputMobile()
     }
-    props.onBlurInput()
   }
 
   const maybeAutofocus = (node: HTMLTextAreaElement | null) => {
@@ -107,8 +109,8 @@ function InputBox(props: InputBoxProps) {
           placeholder={getLocale('placeholderLabel')}
           onChange={onInputChange}
           onKeyDown={handleOnKeyDown}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
+          onFocus={handleFocusMobile}
+          onBlur={handleBlurMobile}
           value={props.context.inputText}
           autoFocus
           rows={1}
