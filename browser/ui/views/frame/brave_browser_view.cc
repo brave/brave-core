@@ -284,8 +284,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     auto original_side_panel = RemoveChildViewT(unified_side_panel_.get());
     sidebar_container_view_ =
         AddChildView(std::make_unique<SidebarContainerView>(
-            GetBraveBrowser(),
-            SidePanelUtil::GetSidePanelCoordinatorForBrowser(browser_.get()),
+            GetBraveBrowser(), browser_->GetFeatures().side_panel_coordinator(),
             std::move(original_side_panel)));
     unified_side_panel_ = sidebar_container_view_->side_panel();
 
