@@ -27,8 +27,7 @@ class AdEvents final : public TableInterface {
   void GetAll(GetAdEventsCallback callback) const;
   // Get unexpired ad events, sorted in descending order.
   void GetUnexpired(GetAdEventsCallback callback) const;
-  void GetUnexpiredForType(mojom::AdType ad_type,
-                           GetAdEventsCallback callback) const;
+  void GetUnexpired(mojom::AdType ad_type, GetAdEventsCallback callback) const;
 
   void PurgeExpired(ResultCallback callback) const;
 

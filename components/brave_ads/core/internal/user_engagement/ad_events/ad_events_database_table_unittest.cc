@@ -183,8 +183,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredForAdType) {
   // Act & Assert
   base::MockCallback<database::table::GetAdEventsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true, AdEventList{ad_event_3}));
-  database_table_.GetUnexpiredForType(mojom::AdType::kNewTabPageAd,
-                                      callback.Get());
+  database_table_.GetUnexpired(mojom::AdType::kNewTabPageAd, callback.Get());
 }
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest,
@@ -229,8 +228,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
   // Act & Assert
   base::MockCallback<database::table::GetAdEventsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true, AdEventList{ad_event_1}));
-  database_table_.GetUnexpiredForType(mojom::AdType::kNotificationAd,
-                                      callback.Get());
+  database_table_.GetUnexpired(mojom::AdType::kNotificationAd, callback.Get());
 }
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeExpired) {

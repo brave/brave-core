@@ -36,7 +36,7 @@ void EligibleNewTabPageAdsV2::GetForUserModel(
     EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   BLOG(1, "Get eligible new tab page ads");
 
-  ad_events_database_table_.GetUnexpiredForType(
+  ad_events_database_table_.GetUnexpired(
       mojom::AdType::kNewTabPageAd,
       base::BindOnce(
           &EligibleNewTabPageAdsV2::GetEligibleAdsForUserModelCallback,

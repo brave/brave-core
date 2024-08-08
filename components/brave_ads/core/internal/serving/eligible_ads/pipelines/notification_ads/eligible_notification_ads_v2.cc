@@ -37,7 +37,7 @@ void EligibleNotificationAdsV2::GetForUserModel(
     EligibleAdsCallback<CreativeNotificationAdList> callback) {
   BLOG(1, "Get eligible notification ads");
 
-  ad_events_database_table_.GetUnexpiredForType(
+  ad_events_database_table_.GetUnexpired(
       mojom::AdType::kNotificationAd,
       base::BindOnce(
           &EligibleNotificationAdsV2::GetEligibleAdsForUserModelCallback,

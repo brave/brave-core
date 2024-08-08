@@ -83,7 +83,7 @@ void NewTabPageAdEventHandler::GetCreativeAdCallback(
                              std::move(callback));
   }
 
-  ad_events_database_table_.GetUnexpiredForType(
+  ad_events_database_table_.GetUnexpired(
       mojom::AdType::kNewTabPageAd,
       base::BindOnce(&NewTabPageAdEventHandler::GetAdEventsCallback,
                      weak_factory_.GetWeakPtr(), ad, event_type,

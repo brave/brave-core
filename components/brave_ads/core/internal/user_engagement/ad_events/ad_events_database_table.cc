@@ -304,8 +304,6 @@ void MigrateToV35(mojom::DBTransactionInfo* const transaction) {
   // Optimize database query for `GetUnexpired`.
   CreateTableIndex(transaction, /*table_name=*/"ad_events",
                    /*columns=*/{"created_at"});
-
-  // Optimize database query for `GetUnexpiredForType`.
   CreateTableIndex(transaction, /*table_name=*/"ad_events",
                    /*columns=*/{"type", "created_at"});
 }
@@ -411,8 +409,8 @@ void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
-void AdEvents::GetUnexpiredForType(const mojom::AdType ad_type,
-                                   GetAdEventsCallback callback) const {
+void AdEvents::GetUnexpired(const mojom::AdType ad_type,
+                            GetAdEventsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
@@ -616,8 +614,6 @@ void AdEvents::Create(mojom::DBTransactionInfo* const transaction) {
   // Optimize database query for `GetUnexpired`.
   CreateTableIndex(transaction, GetTableName(),
                    /*columns=*/{"created_at"});
-
-  // Optimize database query for `GetUnexpiredForType`.
   CreateTableIndex(transaction, GetTableName(),
                    /*columns=*/{"type", "created_at"});
 }

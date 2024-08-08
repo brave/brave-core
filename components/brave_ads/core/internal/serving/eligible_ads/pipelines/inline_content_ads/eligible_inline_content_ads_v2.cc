@@ -38,7 +38,7 @@ void EligibleInlineContentAdsV2::GetForUserModel(
     EligibleAdsCallback<CreativeInlineContentAdList> callback) {
   BLOG(1, "Get eligible inline content ads");
 
-  ad_events_database_table_.GetUnexpiredForType(
+  ad_events_database_table_.GetUnexpired(
       mojom::AdType::kInlineContentAd,
       base::BindOnce(
           &EligibleInlineContentAdsV2::GetEligibleAdsForUserModelCallback,
