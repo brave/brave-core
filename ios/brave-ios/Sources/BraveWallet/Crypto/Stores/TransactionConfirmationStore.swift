@@ -573,6 +573,10 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       value = details.fromAmount
       fiat = details.fromFiat ?? ""
 
+      if activeParsedTransaction.transaction.txType == .solanaCompressedNftTransfer {
+        symbol = "SOL"
+      }
+
       isSolTokenTransferWithAssociatedTokenAccountCreation =
         activeParsedTransaction.transaction.txType
         == .solanaSplTokenTransferWithAssociatedTokenAccountCreation

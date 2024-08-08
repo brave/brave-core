@@ -30,6 +30,7 @@ extension BraveWallet.TransactionInfo {
       .erc1155SafeTransferFrom,
       .solanaSystemTransfer,
       .solanaSplTokenTransfer,
+      .solanaCompressedNftTransfer,
       .solanaSplTokenTransferWithAssociatedTokenAccountCreation,
       .solanaDappSignAndSendTransaction,
       .solanaDappSignTransaction,

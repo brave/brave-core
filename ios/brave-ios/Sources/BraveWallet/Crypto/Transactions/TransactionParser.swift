@@ -677,12 +677,15 @@ enum TransactionParser {
       else {
         return nil
       }
-      let fromToken = token(
-        for: splTokenMintAddress,
-        network: txNetwork,
-        userAssets: userAssets,
-        allTokens: allTokens
-      )
+      let fromToken: BraveWallet.BlockchainToken? =
+        transaction.txType == .solanaCompressedNftTransfer
+        ? nil
+        : token(
+          for: splTokenMintAddress,
+          network: txNetwork,
+          userAssets: userAssets,
+          allTokens: allTokens
+        )  // solana compressed NFT transfer might get it's NFT info after issue #40353
       let tokenNFTMetadata: BraveWallet.NftMetadata?
       if let fromToken {
         tokenNFTMetadata = nftMetadata[fromToken.id]
@@ -692,18 +695,23 @@ enum TransactionParser {
       let fromValue = "\(amount)"
       var fromValueFormatted = ""
       var fromFiat = "$0.00"
-      if let token = fromToken {
-        fromValueFormatted =
-          formatter.decimalString(for: fromValue, radix: .decimal, decimals: Int(token.decimals))?
-          .trimmingTrailingZeros ?? ""
-        if token.isNft {
-          fromFiat = ""  // don't show fiat for NFTs
-        } else {
-          fromFiat =
-            currencyFormatter.formatAsFiat(
-              assetRatios[token.assetRatioId.lowercased(), default: 0]
-                * (Double(fromValueFormatted) ?? 0)
-            ) ?? "$0.00"
+      if transaction.txType == .solanaCompressedNftTransfer {
+        fromValueFormatted = "0"
+        fromFiat = ""
+      } else {
+        if let token = fromToken {
+          fromValueFormatted =
+            formatter.decimalString(for: fromValue, radix: .decimal, decimals: Int(token.decimals))?
+            .trimmingTrailingZeros ?? ""
+          if token.isNft {
+            fromFiat = ""  // don't show fiat for NFTs
+          } else {
+            fromFiat =
+              currencyFormatter.formatAsFiat(
+                assetRatios[token.assetRatioId.lowercased(), default: 0]
+                  * (Double(fromValueFormatted) ?? 0)
+              ) ?? "$0.00"
+          }
         }
       }
       // Example:
@@ -1356,13 +1364,12 @@ extension BraveWallet.TransactionInfo {
     case .ethSend, .erc1155SafeTransferFrom, .other:
       break
     case .solanaSystemTransfer,
+      .solanaCompressedNftTransfer,
       .solanaDappSignTransaction,
       .solanaDappSignAndSendTransaction,
       .solanaSwap:
       break
     case .ethFilForwarderTransfer:
-      break
-    case .solanaCompressedNftTransfer:
       break
     @unknown default:
       break
