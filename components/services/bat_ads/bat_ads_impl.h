@@ -98,18 +98,18 @@ class BatAdsImpl : public mojom::BatAds {
                     base::Time to_time,
                     GetAdHistoryCallback callback) override;
 
-  void ToggleLikeAd(base::Value::Dict value,
+  void ToggleLikeAd(brave_ads::mojom::ReactionInfoPtr reaction,
                     ToggleLikeAdCallback callback) override;
-  void ToggleDislikeAd(base::Value::Dict value,
+  void ToggleDislikeAd(brave_ads::mojom::ReactionInfoPtr reaction,
                        ToggleDislikeAdCallback callback) override;
-  void ToggleLikeSegment(base::Value::Dict value,
+  void ToggleLikeSegment(brave_ads::mojom::ReactionInfoPtr reaction,
                          ToggleLikeSegmentCallback callback) override;
-  void ToggleDislikeSegment(base::Value::Dict value,
+  void ToggleDislikeSegment(brave_ads::mojom::ReactionInfoPtr reaction,
                             ToggleDislikeSegmentCallback callback) override;
-  void ToggleSaveAd(base::Value::Dict value,
+  void ToggleSaveAd(brave_ads::mojom::ReactionInfoPtr reaction,
                     ToggleSaveAdCallback callback) override;
   void ToggleMarkAdAsInappropriate(
-      base::Value::Dict value,
+      brave_ads::mojom::ReactionInfoPtr reaction,
       ToggleMarkAdAsInappropriateCallback callback) override;
 
  private:

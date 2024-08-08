@@ -40,7 +40,7 @@ source_set("headers") {
     "flags/flags_util.h",
     "history/ad_history_feature.h",
     "history/ad_history_item_info.h",
-    "history/ad_history_value_util.h",
+    "history/ad_history_item_value_util.h",
     "history/site_history.h",
     "prefs/obsolete_pref_util.h",
     "prefs/pref_names.h",
@@ -48,6 +48,7 @@ source_set("headers") {
     "targeting/geographical/subdivision/supported_subdivisions.h",
     "user_attention/user_idle_detection/user_idle_detection_feature.h",
     "user_engagement/ad_events/ad_event_cache.h",
+    "user_engagement/reactions/reactions_util.h",
     "user_engagement/site_visit/site_visit_feature.h",
   ]
 

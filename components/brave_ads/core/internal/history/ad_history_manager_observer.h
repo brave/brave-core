@@ -17,25 +17,6 @@ class AdHistoryManagerObserver : public base::CheckedObserver {
   // Invoked when ad history is added.
   virtual void OnDidAddAdHistoryItem(const AdHistoryItemInfo& ad_history_item) {
   }
-
-  // Invoked when the user likes an ad.
-  virtual void OnDidLikeAd(const AdHistoryItemInfo& ad_history_item) {}
-
-  // Invoked when the user dislikes an ad.
-  virtual void OnDidDislikeAd(const AdHistoryItemInfo& ad_history_item) {}
-
-  // Invoked when the user likes a segment.
-  virtual void OnDidLikeSegment(const AdHistoryItemInfo& ad_history_item) {}
-
-  // Invoked when the user dislikes a segment.
-  virtual void OnDidDislikeSegment(const AdHistoryItemInfo& ad_history_item) {}
-
-  // Invoked when a user saves or unsaves an ad.
-  virtual void OnDidToggleSaveAd(const AdHistoryItemInfo& ad_history_item) {}
-
-  // Invoked when a user marks an ad as inappropriate or appropriate.
-  virtual void OnDidToggleMarkAdAsInappropriate(
-      const AdHistoryItemInfo& ad_history_item) {}
 };
 
 }  // namespace brave_ads

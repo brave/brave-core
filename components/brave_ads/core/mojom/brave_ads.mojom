@@ -54,6 +54,14 @@ enum ReactionType {
   kDisliked = 2
 };
 
+struct ReactionInfo {
+  AdType ad_type;
+  string creative_instance_id;
+  string creative_set_id;
+  string advertiser_id;
+  string segment;
+};
+
 // These values must match `public/ad_units/ad_type.h`.
 enum AdType {
   kUndefined = 0,

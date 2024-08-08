@@ -18,7 +18,8 @@ class BraveAdsDislikeSegmentExclusionRuleTest : public test::TestBase {
   const DislikeSegmentExclusionRule exclusion_rule_;
 };
 
-TEST_F(BraveAdsDislikeSegmentExclusionRuleTest, ShouldInclude) {
+TEST_F(BraveAdsDislikeSegmentExclusionRuleTest,
+       ShouldIncludeForNeutralReaction) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.segment = test::kSegment;
@@ -27,12 +28,26 @@ TEST_F(BraveAdsDislikeSegmentExclusionRuleTest, ShouldInclude) {
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
 }
 
-TEST_F(BraveAdsDislikeSegmentExclusionRuleTest, ShouldExclude) {
+TEST_F(BraveAdsDislikeSegmentExclusionRuleTest, ShouldIncludeForLikedReaction) {
   // Arrange
+  GetReactions().SegmentsForTesting() = {
+      {test::kSegment, mojom::ReactionType::kLiked}};
+
   CreativeAdInfo creative_ad;
   creative_ad.segment = test::kSegment;
 
-  GetReactions().ToggleDislikeSegment(test::kSegment);
+  // Act & Assert
+  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
+}
+
+TEST_F(BraveAdsDislikeSegmentExclusionRuleTest,
+       ShouldExcludeForDislikedReaction) {
+  // Arrange
+  GetReactions().SegmentsForTesting() = {
+      {test::kSegment, mojom::ReactionType::kDisliked}};
+
+  CreativeAdInfo creative_ad;
+  creative_ad.segment = test::kSegment;
 
   // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());

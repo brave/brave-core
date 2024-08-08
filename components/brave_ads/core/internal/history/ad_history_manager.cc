@@ -16,13 +16,13 @@
 #include "brave/components/brave_ads/core/internal/history/ad_history_builder_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_database_table.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_database_table_util.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_value_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_value_util.h"
 
 namespace brave_ads {
 
@@ -91,43 +91,6 @@ void AdHistoryManager::Add(const SearchResultAdInfo& ad,
   MaybeAdd(ad, confirmation_type, ad.headline_text, ad.description);
 }
 
-void AdHistoryManager::LikeAd(const AdHistoryItemInfo& ad_history_item,
-                              ToggleReactionCallback callback) const {
-  NotifyDidLikeAd(ad_history_item);
-  std::move(callback).Run(/*success=*/true);
-}
-
-void AdHistoryManager::DislikeAd(const AdHistoryItemInfo& ad_history_item,
-                                 ToggleReactionCallback callback) const {
-  NotifyDidDislikeAd(ad_history_item);
-  std::move(callback).Run(/*success=*/true);
-}
-
-void AdHistoryManager::LikeSegment(const AdHistoryItemInfo& ad_history_item,
-                                   ToggleReactionCallback callback) const {
-  NotifyDidLikeSegment(ad_history_item);
-  std::move(callback).Run(/*success=*/true);
-}
-
-void AdHistoryManager::DislikeSegment(const AdHistoryItemInfo& ad_history_item,
-                                      ToggleReactionCallback callback) const {
-  NotifyDidDislikeSegment(ad_history_item);
-  std::move(callback).Run(/*success=*/true);
-}
-
-void AdHistoryManager::ToggleSaveAd(const AdHistoryItemInfo& ad_history_item,
-                                    ToggleReactionCallback callback) const {
-  NotifyDidToggleSaveAd(ad_history_item);
-  std::move(callback).Run(/*success=*/true);
-}
-
-void AdHistoryManager::ToggleMarkAdAsInappropriate(
-    const AdHistoryItemInfo& ad_history_item,
-    ToggleReactionCallback callback) const {
-  NotifyDidToggleMarkAdAsInappropriate(ad_history_item);
-  std::move(callback).Run(/*success=*/true);
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdHistoryManager::MaybeAdd(const AdInfo& ad,
@@ -161,48 +124,6 @@ void AdHistoryManager::NotifyDidAddAdHistoryItem(
     const AdHistoryItemInfo& ad_history_item) const {
   for (AdHistoryManagerObserver& observer : observers_) {
     observer.OnDidAddAdHistoryItem(ad_history_item);
-  }
-}
-
-void AdHistoryManager::NotifyDidLikeAd(
-    const AdHistoryItemInfo& ad_history_item) const {
-  for (AdHistoryManagerObserver& observer : observers_) {
-    observer.OnDidLikeAd(ad_history_item);
-  }
-}
-
-void AdHistoryManager::NotifyDidDislikeAd(
-    const AdHistoryItemInfo& ad_history_item) const {
-  for (AdHistoryManagerObserver& observer : observers_) {
-    observer.OnDidDislikeAd(ad_history_item);
-  }
-}
-
-void AdHistoryManager::NotifyDidLikeSegment(
-    const AdHistoryItemInfo& ad_history_item) const {
-  for (AdHistoryManagerObserver& observer : observers_) {
-    observer.OnDidLikeSegment(ad_history_item);
-  }
-}
-
-void AdHistoryManager::NotifyDidDislikeSegment(
-    const AdHistoryItemInfo& ad_history_item) const {
-  for (AdHistoryManagerObserver& observer : observers_) {
-    observer.OnDidDislikeSegment(ad_history_item);
-  }
-}
-
-void AdHistoryManager::NotifyDidToggleSaveAd(
-    const AdHistoryItemInfo& ad_history_item) const {
-  for (AdHistoryManagerObserver& observer : observers_) {
-    observer.OnDidToggleSaveAd(ad_history_item);
-  }
-}
-
-void AdHistoryManager::NotifyDidToggleMarkAdAsInappropriate(
-    const AdHistoryItemInfo& ad_history_item) const {
-  for (AdHistoryManagerObserver& observer : observers_) {
-    observer.OnDidToggleMarkAdAsInappropriate(ad_history_item);
   }
 }
 

@@ -101,17 +101,17 @@ class AdsImpl final : public Ads {
                     base::Time to_time,
                     GetAdHistoryForUICallback callback) override;
 
-  void ToggleLikeAd(const base::Value::Dict& value,
+  void ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
                     ToggleReactionCallback callback) override;
-  void ToggleDislikeAd(const base::Value::Dict& value,
+  void ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
                        ToggleReactionCallback callback) override;
-  void ToggleLikeSegment(const base::Value::Dict& value,
+  void ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
                          ToggleReactionCallback callback) override;
-  void ToggleDislikeSegment(const base::Value::Dict& value,
+  void ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
                             ToggleReactionCallback callback) override;
-  void ToggleSaveAd(const base::Value::Dict& value,
+  void ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
                     ToggleReactionCallback callback) override;
-  void ToggleMarkAdAsInappropriate(const base::Value::Dict& value,
+  void ToggleMarkAdAsInappropriate(mojom::ReactionInfoPtr mojom_reaction,
                                    ToggleReactionCallback callback) override;
 
  private:

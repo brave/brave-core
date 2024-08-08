@@ -62,21 +62,6 @@ class AdHistoryManager final {
   void Add(const SearchResultAdInfo& ad,
            ConfirmationType confirmation_type) const;
 
-  // TODO(https://github.com/brave/brave-browser/issues/40241): Decouple
-  // reactions from ads history.
-  void LikeAd(const AdHistoryItemInfo& ad_history_item,
-              ToggleReactionCallback callback) const;
-  void DislikeAd(const AdHistoryItemInfo& ad_history_item,
-                 ToggleReactionCallback callback) const;
-  void LikeSegment(const AdHistoryItemInfo& ad_history_item,
-                   ToggleReactionCallback callback) const;
-  void DislikeSegment(const AdHistoryItemInfo& ad_history_item,
-                      ToggleReactionCallback callback) const;
-  void ToggleSaveAd(const AdHistoryItemInfo& ad_history_item,
-                    ToggleReactionCallback callback) const;
-  void ToggleMarkAdAsInappropriate(const AdHistoryItemInfo& ad_history_item,
-                                   ToggleReactionCallback callback) const;
-
  private:
   void MaybeAdd(const AdInfo& ad,
                 ConfirmationType confirmation_type,
@@ -87,16 +72,6 @@ class AdHistoryManager final {
                                const std::optional<AdHistoryList>& ad_history);
 
   void NotifyDidAddAdHistoryItem(
-      const AdHistoryItemInfo& ad_history_item) const;
-
-  // TODO(https://github.com/brave/brave-browser/issues/40241): Decouple
-  // reactions from ads history.
-  void NotifyDidLikeAd(const AdHistoryItemInfo& ad_history_item) const;
-  void NotifyDidDislikeAd(const AdHistoryItemInfo& ad_history_item) const;
-  void NotifyDidLikeSegment(const AdHistoryItemInfo& ad_history_item) const;
-  void NotifyDidDislikeSegment(const AdHistoryItemInfo& ad_history_item) const;
-  void NotifyDidToggleSaveAd(const AdHistoryItemInfo& ad_history_item) const;
-  void NotifyDidToggleMarkAdAsInappropriate(
       const AdHistoryItemInfo& ad_history_item) const;
 
   base::ObserverList<AdHistoryManagerObserver> observers_;

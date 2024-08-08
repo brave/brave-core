@@ -28,6 +28,8 @@ using MaybeServeInlineContentAdAsDictCallback =
 using PurgeOrphanedAdEventsForTypeCallback =
     base::OnceCallback<void(bool success)>;
 
+// TODO(https://github.com/brave/brave-browser/issues/24595): Transition
+// GetAdHistory from base::Value to a mojom data structure.
 using GetAdHistoryForUICallback =
     base::OnceCallback<void(std::optional<base::Value::List> ad_history)>;
 

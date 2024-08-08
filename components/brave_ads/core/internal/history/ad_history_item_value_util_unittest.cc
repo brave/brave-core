@@ -1,15 +1,15 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/history/ad_history_value_util.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_item_value_util.h"
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_builder_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_test_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
@@ -19,10 +19,10 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kAdHistoryAsJson[] = R"(
-  [
-    {
-      "adDetailRows": [
+// The fields `ad_content`, `category_content`, and `created_at` in the legacy
+// format have been renamed to `adContent`, `categoryContent`, and `createdAt`.
+constexpr char kAdHistoryItemAsJson[] =
+    R"(
         {
           "adContent": {
             "adAction": "view",
@@ -46,16 +46,13 @@ constexpr char kAdHistoryAsJson[] = R"(
             "optAction": 0
           },
           "createdAt": "12993327900000000"
-        }
-      ],
-      "timestampInMilliseconds": 1348854300000,
-      "uuid": "0"
-    },
-    {
-      "adDetailRows": [
+        })";
+
+constexpr char kLegacyAdHistoryItemAsJson[] =
+    R"(
         {
-          "adContent": {
-            "adAction": "click",
+          "ad_content": {
+            "adAction": "view",
             "adType": "ad_notification",
             "advertiserId": "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2",
             "brand": "Test Ad Title",
@@ -71,21 +68,16 @@ constexpr char kAdHistoryAsJson[] = R"(
             "savedAd": false,
             "segment": "untargeted"
           },
-          "categoryContent": {
+          "category_content": {
             "category": "untargeted",
             "optAction": 0
           },
-          "createdAt": "12993327900000000"
-        }
-      ],
-      "timestampInMilliseconds": 1348854300000,
-      "uuid": "1"
-    }
-  ])";
+          "created_at": "12993327900000000"
+        })";
 
 }  // namespace
 
-class BraveAdsAdHistoryValueUtilTest : public test::TestBase {
+class BraveAdsAdHistoryItemValueUtilTest : public test::TestBase {
  protected:
   void SetUp() override {
     test::TestBase::SetUp();
@@ -95,18 +87,47 @@ class BraveAdsAdHistoryValueUtilTest : public test::TestBase {
   }
 };
 
-TEST_F(BraveAdsAdHistoryValueUtilTest, AdHistoryToValue) {
+TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromValue) {
   // Arrange
-  const AdHistoryList ad_history = test::BuildAdHistory(
-      AdType::kNotificationAd,
-      {ConfirmationType::kViewedImpression, ConfirmationType::kClicked},
+  const base::Value::Dict dict =
+      base::test::ParseJsonDict(kAdHistoryItemAsJson);
+
+  // Act
+  const AdHistoryItemInfo ad_history_item = AdHistoryItemFromValue(dict);
+
+  // Assert
+  EXPECT_EQ(ad_history_item,
+            test::BuildAdHistoryItem(AdType::kNotificationAd,
+                                     ConfirmationType::kViewedImpression,
+                                     /*should_generate_random_uuids=*/false));
+}
+
+TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromLegacyValue) {
+  // Arrange
+  const base::Value::Dict dict =
+      base::test::ParseJsonDict(kLegacyAdHistoryItemAsJson);
+
+  // Act
+  const AdHistoryItemInfo ad_history_item = AdHistoryItemFromValue(dict);
+
+  // Assert
+  EXPECT_EQ(ad_history_item,
+            test::BuildAdHistoryItem(AdType::kNotificationAd,
+                                     ConfirmationType::kViewedImpression,
+                                     /*should_generate_random_uuids=*/false));
+}
+
+TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemToValue) {
+  // Arrange
+  const AdHistoryItemInfo ad_history_item = test::BuildAdHistoryItem(
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/false);
 
   // Act
-  const base::Value::List list = AdHistoryToValue(ad_history);
+  const base::Value::Dict dict = AdHistoryItemToValue(ad_history_item);
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonList(kAdHistoryAsJson), list);
+  EXPECT_EQ(base::test::ParseJsonDict(kAdHistoryItemAsJson), dict);
 }
 
 }  // namespace brave_ads

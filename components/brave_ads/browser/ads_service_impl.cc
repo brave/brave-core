@@ -1340,52 +1340,52 @@ void AdsServiceImpl::GetAdHistory(const base::Time from_time,
   }
 }
 
-void AdsServiceImpl::ToggleLikeAd(base::Value::Dict value,
+void AdsServiceImpl::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
                                   ToggleReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
-    bat_ads_associated_remote_->ToggleLikeAd(std::move(value),
+    bat_ads_associated_remote_->ToggleLikeAd(std::move(mojom_reaction),
                                              std::move(callback));
   }
 }
 
-void AdsServiceImpl::ToggleDislikeAd(base::Value::Dict value,
+void AdsServiceImpl::ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
                                      ToggleReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
-    bat_ads_associated_remote_->ToggleDislikeAd(std::move(value),
+    bat_ads_associated_remote_->ToggleDislikeAd(std::move(mojom_reaction),
                                                 std::move(callback));
   }
 }
 
-void AdsServiceImpl::ToggleLikeSegment(base::Value::Dict value,
+void AdsServiceImpl::ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
                                        ToggleReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
-    bat_ads_associated_remote_->ToggleLikeSegment(std::move(value),
+    bat_ads_associated_remote_->ToggleLikeSegment(std::move(mojom_reaction),
                                                   std::move(callback));
   }
 }
 
-void AdsServiceImpl::ToggleDislikeSegment(base::Value::Dict value,
+void AdsServiceImpl::ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
                                           ToggleReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
-    bat_ads_associated_remote_->ToggleDislikeSegment(std::move(value),
+    bat_ads_associated_remote_->ToggleDislikeSegment(std::move(mojom_reaction),
                                                      std::move(callback));
   }
 }
 
-void AdsServiceImpl::ToggleSaveAd(base::Value::Dict value,
+void AdsServiceImpl::ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
                                   ToggleReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
-    bat_ads_associated_remote_->ToggleSaveAd(std::move(value),
+    bat_ads_associated_remote_->ToggleSaveAd(std::move(mojom_reaction),
                                              std::move(callback));
   }
 }
 
 void AdsServiceImpl::ToggleMarkAdAsInappropriate(
-    base::Value::Dict value,
+    mojom::ReactionInfoPtr mojom_reaction,
     ToggleReactionCallback callback) {
   if (bat_ads_associated_remote_.is_bound()) {
     bat_ads_associated_remote_->ToggleMarkAdAsInappropriate(
-        std::move(value), std::move(callback));
+        std::move(mojom_reaction), std::move(callback));
   }
 }
 
