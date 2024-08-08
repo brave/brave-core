@@ -210,6 +210,8 @@ class AdsServiceImpl final : public AdsService,
   void AddBatAdsObserver(
       mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer) override;
 
+  bool IsBrowserUpgradeRequiredToServeAds() const override;
+
   int64_t GetMaximumNotificationAdsPerHour() const override;
 
   void OnNotificationAdShown(const std::string& placement_id) override;
@@ -220,8 +222,6 @@ class AdsServiceImpl final : public AdsService,
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
-
-  bool IsBrowserUpgradeRequiredToServeAds() const override;
 
   void MaybeServeInlineContentAd(
       const std::string& dimensions,

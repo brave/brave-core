@@ -33,6 +33,8 @@ class AdsServiceMock : public AdsService {
               AddBatAdsObserver,
               (mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer));
 
+  MOCK_METHOD(bool, IsBrowserUpgradeRequiredToServeAds, (), (const));
+
   MOCK_METHOD(int64_t, GetMaximumNotificationAdsPerHour, (), (const));
 
   MOCK_METHOD(void, OnNotificationAdShown, (const std::string&));
@@ -42,8 +44,6 @@ class AdsServiceMock : public AdsService {
   MOCK_METHOD(void, GetDiagnostics, (GetDiagnosticsCallback));
 
   MOCK_METHOD(void, GetStatementOfAccounts, (GetStatementOfAccountsCallback));
-
-  MOCK_METHOD(bool, IsBrowserUpgradeRequiredToServeAds, (), (const));
 
   MOCK_METHOD(void,
               MaybeServeInlineContentAd,

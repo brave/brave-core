@@ -37,6 +37,9 @@ class AdsService : public KeyedService {
 
   ~AdsService() override;
 
+  // Returns true if a browser upgrade is required to serve ads.
+  virtual bool IsBrowserUpgradeRequiredToServeAds() const = 0;
+
   // Returns the maximum number of notification ads that can be served per hour.
   virtual int64_t GetMaximumNotificationAdsPerHour() const = 0;
 
@@ -65,12 +68,9 @@ class AdsService : public KeyedService {
   virtual void GetStatementOfAccounts(
       GetStatementOfAccountsCallback callback) = 0;
 
-  // Returns true if a browser upgrade is required to serve ads.
-  virtual bool IsBrowserUpgradeRequiredToServeAds() const = 0;
-
-  // Should be called to serve an inline content ad for the specified
-  // `dimensions`. The callback takes two arguments - `std::string` containing
-  // the dimensions and `base::Value::Dict` containing the info for the ad.
+  // Called to serve an inline content ad for the specified `dimensions`. The
+  // callback takes two arguments - `std::string` containing the dimensions and
+  // `InlineContentAdInfo` containing the info for the ad.
   virtual void MaybeServeInlineContentAd(
       const std::string& dimensions,
       MaybeServeInlineContentAdAsDictCallback callback) = 0;
@@ -140,8 +140,8 @@ class AdsService : public KeyedService {
       TriggerAdEventCallback callback) = 0;
 
   // Called to purge orphaned served ad events for the specified `ad_type`
-  // before calling `MaybeServe*Ad()`. The callback takes one argument - `bool`
-  // is set to `true` if successful otherwise `false`.
+  // before calling `MaybeServe*Ad`. The callback takes one argument - `bool` is
+  // set to `true` if successful otherwise `false`.
   virtual void PurgeOrphanedAdEventsForType(
       mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) = 0;
@@ -155,42 +155,42 @@ class AdsService : public KeyedService {
 
   // Called to like an ad. This is a toggle, so calling it again returns the
   // setting to the neutral state. The callback takes one argument - `bool` is
-  // set to `true` if successful otherwise `false`
+  // set to `true` if successful otherwise `false`.
   virtual void ToggleLikeAd(base::Value::Dict value,
                             ToggleUserReactionCallback callback) = 0;
 
   // Called to dislike an ad. This is a toggle, so calling it again returns the
   // setting to the neutral state. The callback takes one argument - `bool` is
-  // set to `true` if successful otherwise `false`
+  // set to `true` if successful otherwise `false`.
   virtual void ToggleDislikeAd(base::Value::Dict value,
                                ToggleUserReactionCallback callback) = 0;
 
   // Called to like a category. This is a toggle, so calling it again returns
   // the setting to the neutral state. The callback takes one argument - `bool`
-  // is set to `true` if successful otherwise `false`
+  // is set to `true` if successful otherwise `false`.
   virtual void ToggleLikeCategory(base::Value::Dict value,
                                   ToggleUserReactionCallback callback) = 0;
 
   // Called to dislike a category. This is a toggle, so calling it again
   // returns the setting to the neutral state. The callback takes one argument -
-  // `bool` is set to `true` if successful otherwise `false`
   virtual void ToggleDislikeCategory(base::Value::Dict value,
                                      ToggleUserReactionCallback callback) = 0;
+  // `bool` is set to `true` if successful otherwise `false`.
 
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. The callback takes one argument -
-  // `bool` is set to `true` if successful otherwise `false`
+  // `bool` is set to `true` if successful otherwise `false`.
   virtual void ToggleSaveAd(base::Value::Dict value,
                             ToggleUserReactionCallback callback) = 0;
 
   // Called to mark an ad as inappropriate. This is a toggle, so calling it
   // again unmarks the ad. The callback takes one argument - `bool` is
-  // set to `true` if successful otherwise `false`
+  // set to `true` if successful otherwise `false`.
   virtual void ToggleMarkAdAsInappropriate(
       base::Value::Dict value,
       ToggleUserReactionCallback callback) = 0;
 
-  // Invoked when the page for `tab_id` has loaded and the content is available
+  // Called when the page for `tab_id` has loaded and the content is available
   // for analysis. `redirect_chain` containing a list of redirect URLs that
   // occurred on the way to the current page. The current page is the last one
   // in the list (so even when there's no redirect, there should be one entry in
@@ -200,7 +200,7 @@ class AdsService : public KeyedService {
       const std::vector<GURL>& redirect_chain,
       const std::string& text) = 0;
 
-  // Invoked when the page for `tab_id` has loaded and the content is available
+  // Called when the page for `tab_id` has loaded and the content is available
   // for analysis. `redirect_chain` containing a list of redirect URLs that
   // occurred on the way to the current page. The current page is the last one
   // in the list (so even when there's no redirect, there should be one entry in
@@ -210,7 +210,7 @@ class AdsService : public KeyedService {
       const std::vector<GURL>& redirect_chain,
       const std::string& html) = 0;
 
-  // Invoked when media starts playing on a browser tab for the specified
+  // Called when media starts playing on a browser tab for the specified
   // `tab_id`.
   virtual void NotifyTabDidStartPlayingMedia(int32_t tab_id) = 0;
 
@@ -218,7 +218,7 @@ class AdsService : public KeyedService {
   // `tab_id`.
   virtual void NotifyTabDidStopPlayingMedia(int32_t tab_id) = 0;
 
-  // Invoked when a browser tab is updated with the specified `redirect_chain`
+  // Called when a browser tab is updated with the specified `redirect_chain`
   // containing a list of redirect URLs that occurred on the way to the current
   // page. The current page is the last one in the list (so even when there's no
   // redirect, there should be one entry in the list). `is_restoring` should be
@@ -233,7 +233,7 @@ class AdsService : public KeyedService {
                                   bool is_error_page,
                                   bool is_visible) = 0;
 
-  // Invoked when a browser tab with the specified `tab_id` is closed.
+  // Called when a browser tab with the specified `tab_id` is closed.
   virtual void NotifyDidCloseTab(int32_t tab_id) = 0;
 
   // Called when a page navigation was initiated by a user gesture.
@@ -242,13 +242,13 @@ class AdsService : public KeyedService {
   virtual void NotifyUserGestureEventTriggered(
       int32_t page_transition_type) = 0;
 
-  // Invoked when the browser did become active.
+  // Called when the browser did become active.
   virtual void NotifyBrowserDidBecomeActive() = 0;
 
-  // Invoked when the browser did resign active.
+  // Called when the browser did resign active.
   virtual void NotifyBrowserDidResignActive() = 0;
 
-  // Invoked when the user solves an adaptive captch.
+  // Called when the user solves an adaptive captcha.
   virtual void NotifyDidSolveAdaptiveCaptcha() = 0;
 };
 
