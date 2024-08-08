@@ -147,12 +147,17 @@ class ScriptFactory {
     case .domainUserScript(let domainUserScript):
       resultingScript = try self.makeScript(for: domainUserScript)
 
-    case .selectorsPoller(let setup):
+    case .selectorsPoller(let setup, let proceduralActions):
       let encoder = JSONEncoder()
       let data = try encoder.encode(setup)
       let args = String(data: data, encoding: .utf8)!
+      let proceduralActionFilters =
+        proceduralActions.isEmpty ? "undefined" : "[ \(proceduralActions.joined(separator: ","))]"
+      let proceduralFiltersScript = try makeScriptSource(of: .proceduralFilters)
       let source = try ScriptFactory.shared.makeScriptSource(of: .selectorsPoller)
         .replacingOccurrences(of: "$<args>", with: args)
+        .replacingOccurrences(of: "$<procedural_filters_script>", with: proceduralFiltersScript)
+        .replacingOccurrences(of: "$<procedural_filters>", with: proceduralActionFilters)
 
       let secureSource = CosmeticFiltersScriptHandler.secureScript(
         handlerNamesMap: [

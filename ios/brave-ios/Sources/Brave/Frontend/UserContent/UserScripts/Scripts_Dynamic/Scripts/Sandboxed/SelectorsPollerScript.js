@@ -4,9 +4,15 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 window.__firefox__.execute(function($) {
-  const args = $<args>
+  const args = $<args>;
+  const proceduralFilters = $<procedural_filters>;
   const messageHandler = '$<message_handler>';
   const partinessMessageHandler = '$<partiness_message_handler>';
+  const {
+    applyCompiledSelector, compileProceduralSelector
+  } = (function() {
+    $<procedural_filters_script>
+  })();
 
   /**
    * Send ids and classes to iOS and await new hide selectors
@@ -84,7 +90,12 @@ window.__firefox__.execute(function($) {
     pendingOrigins: new Set(),
     // A map of origin strings and their isFirstParty results
     urlFirstParty: new Map(),
-    alreadyKnownFirstPartySubtrees: new WeakSet()
+    alreadyKnownFirstPartySubtrees: new WeakSet(),
+    // All the procedural rules that exist and need to be processed
+    // when the script is loaded and a new element is added
+    proceduralActionFilters: undefined,
+    // Tells us if procedural filtering is available
+    hasProceduralActions: false,
   }
 
   /**
@@ -312,6 +323,18 @@ window.__firefox__.execute(function($) {
       currentMutationScore += mutationScore
       if (currentMutationScore > args.switchToSelectorsPollingThreshold) {
         usePolling(observer)
+      }
+    }
+
+    if (CC.hasProceduralActions) {
+      const addedElements = [];
+      mutations.forEach(mutation =>
+        mutation.addedNodes.length !== 0 && mutation.addedNodes.forEach(n =>
+          n.nodeType === Node.ELEMENT_NODE && addedElements.push(n)
+        )
+      )
+      if (addedElements.length !== 0) {
+        executeProceduralActions(addedElements);
       }
     }
   }
@@ -968,17 +991,6 @@ window.__firefox__.execute(function($) {
     return hasChanges
   }
 
-  /**
-   * Adds given style selectors to allStyleRules
-   * @param {*} styleSelectors The style selectors to add
-   */
-  /*const processStyleSelectors = (styleSelectors) => {
-    styleSelectors.forEach(entry => {
-      const rule = entry.selector + '{' + entry.rules.join(';') + ';}'
-      CC.allStyleRules.push(rule)
-    })
-  }*/
-
   /// Moves the stylesheet to the bottom of the page
   const moveStyle = () => {
     const styleElm = CC.cosmeticStyleSheet
@@ -1070,18 +1082,93 @@ window.__firefox__.execute(function($) {
       unhideSelectorsMatchingElementsAndTheirParents(nodesWithExtractedURLs)
     }
 
-    // 4. Set the rules on the stylesheet. So far we don't have any rules set
+    // 4. Perform procedural actions before setting stylesheet
+    if (CC.hasProceduralActions) {
+      executeProceduralActions()
+    }
+
+    // 5. Set the rules on the stylesheet. So far we don't have any rules set
     // We could do this earlier but it causes elements to hide and unhide
     // It's best to wait to this period so we have
     setRulesOnStylesheet()
-    // 5. Start our queue pump if we need to
+    // 6. Start our queue pump if we need to
     scheduleQueuePump(args.hideFirstPartyContent, args.genericHide)
 
     if (!args.hideFirstPartyContent) {
-      // 6. Start listening to new urls
+      // 7. Start listening to new urls
       startURLMutationObserver()
     }
   }
+
+  /// Process any :style, :remove, :remove-attr, or :remove-class selectors
+  const executeProceduralActions = (added) => {
+    // If passed a list of added elements, do not query the entire document
+    if (CC.proceduralActionFilters === undefined) {
+      return
+    }
+
+    /**
+    * Adds given style to allStyleRules
+    * @param {Object} entry The entry to add
+    */
+    const addStyleRule = (selector, rule) => {
+      const css = selector + '{' + rule + ';}'
+      CC.allStyleRules.push(css)
+    }
+
+    const performAction = (selector, element, action) => {
+      if (action === undefined) {
+        addStyleRule(selector, 'display: none !important')
+      } else if (action.type === 'style') {
+        addStyleRule(selector, action.arg)
+      } else if (action.type === 'remove') {
+        element.remove()
+      } else if (action.type === 'remove-attr') {
+        // We can remove attributes without checking if they exist
+        element.removeAttribute(action.arg)
+      } else if (action.type === 'remove-class') {
+        // Check if the element has any classes to remove because
+        // classList.remove(tokens...) always triggers another mutation
+        // even if nothing was removed.
+        if (element.classList.contains(action.arg)) {
+          element.classList.remove(action.arg);
+        }
+      }
+    }
+    for (const { selector, action } of CC.proceduralActionFilters) {
+      let matchingElements = [];
+      let startOperator = 0;
+
+      if (selector[0].type === 'css-selector' && added === undefined) {
+        matchingElements = document.querySelectorAll(selector[0].arg);
+        startOperator = 1;
+      } else if (added === undefined) {
+        matchingElements = document.querySelectorAll('*');
+        startOperator = 0;
+      } else {
+        matchingElements = added;
+        startOperator = 0;
+      }
+
+      if (startOperator === selector.length) {
+        // First `css-selector` was already handled, and no more elements remain
+        matchingElements.forEach(elem => {
+          performAction(selector[0].arg, elem, action);
+        });
+      } else {
+        try {
+          const filter = compileProceduralSelector(selector.slice(startOperator));
+          applyCompiledSelector(filter, matchingElements).forEach(elem => {
+            performAction(selector[0].arg, elem, action);
+          });
+        } catch (e) {
+          console.error('Failed to apply filter ' + JSON.stringify(selector) + ' ' + JSON.stringify(action) + ': ');
+          console.error(e.message);
+          console.error(e.stack);
+        }
+      }
+    }
+  };
 
   const waitForBody = () => {
     if (document.body) {
@@ -1112,11 +1199,10 @@ window.__firefox__.execute(function($) {
     processHideSelectors(args.aggressiveSelectors, false)
   }
 
-  // Load some static style selectors if they are defined
-  // TODO - args.proceduralActionFilters
-  /*if (args.styleSelectors) {
-    processStyleSelectors(args.styleSelectors)
-  }*/
+  if (proceduralFilters && proceduralFilters.length > 0) {
+    CC.proceduralActionFilters = proceduralFilters
+    CC.hasProceduralActions = true
+  }
 
   window.setTimeout(waitForBody, maxTimeMSBeforeStart)
 });
