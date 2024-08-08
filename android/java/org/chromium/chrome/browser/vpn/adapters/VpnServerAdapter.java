@@ -47,8 +47,8 @@ public class VpnServerAdapter extends RecyclerView.Adapter<VpnServerAdapter.View
         final BraveVpnServerRegion vpnServerRegion = mBraveVpnServerRegions.get(position);
         if (vpnServerRegion != null) {
             holder.serverText.setText(vpnServerRegion.getNamePretty());
-            holder.cityServerText.setText(
-                    mContext.getResources().getString(R.string.city_server_text));
+            // holder.cityServerText.setText(
+            //         mContext.getResources().getString(R.string.city_server_text));
             holder.serverRadioButton.setChecked(
                     BraveVpnPrefUtils.getServerRegion().equals(vpnServerRegion.getName()));
             holder.serverSelectionItemLayout.setOnClickListener(

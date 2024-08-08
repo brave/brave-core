@@ -51,8 +51,17 @@ public class BraveVpnServerSelectionAdapter
         if (region != null) {
             holder.serverIconText.setText(BraveVpnUtils.countryCodeToEmoji(region.countryIsoCode));
             holder.serverText.setText(region.namePretty);
-            holder.cityServerText.setText(
-                    mContext.getResources().getString(R.string.city_server_text));
+            String cityText =
+                    mContext.getResources()
+                            .getQuantityString(
+                                    R.plurals.city_text,
+                                    region.cities.length,
+                                    region.cities.length);
+            String serverText =
+                    mContext.getResources()
+                            .getQuantityString(
+                                    R.plurals.server_text, region.serverCount, region.serverCount);
+            holder.cityServerText.setText(cityText.concat(serverText));
             holder.serverRadioButton.setChecked(
                     BraveVpnPrefUtils.getServerRegion().equals(region.name));
             // if (BraveVpnPrefUtils.getServerRegion().equals(vpnServerRegion.getName())) {
