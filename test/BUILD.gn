@@ -980,6 +980,7 @@ test("brave_browser_tests") {
     "//components/safe_browsing/content/browser/web_ui",
     "//components/safe_browsing/core/common",
     "//components/security_interstitials/content:security_interstitial_page",
+    "//components/security_state/content",
     "//components/segmentation_platform/public",
     "//components/send_tab_to_self",
     "//components/shared_highlighting/core/common",
