@@ -808,6 +808,27 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
   EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
 }
 
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
+                       OpenUnManagedPanelAfterDeletingDefaultWebTypeItem) {
+  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  const auto items = model()->GetAllSidebarItems();
+  const auto wallet_item_iter =
+      base::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
+                         &SidebarItem::built_in_item_type);
+  ASSERT_NE(wallet_item_iter, items.cend());
+  const int wallet_item_index = std::distance(items.cbegin(), wallet_item_iter);
+  SidebarServiceFactory::GetForProfile(browser()->profile())
+      ->RemoveItemAt(wallet_item_index);
+  EXPECT_FALSE(!!model()->GetIndexOf(SidebarItem::BuiltInItemType::kWallet));
+
+  // Test with upstream's side panel that runs only with chrome://new-tab-page.
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://new-tab-page/")));
+  panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->GetVisible(); }));
+}
+
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
   auto* guest_browser = static_cast<BraveBrowser*>(CreateGuestBrowser());
   auto* controller = guest_browser->sidebar_controller();
