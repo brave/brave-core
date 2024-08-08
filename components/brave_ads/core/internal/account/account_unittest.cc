@@ -200,7 +200,6 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   test::BuildAndSetIssuers();
 
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-  test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
       {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
@@ -217,7 +216,7 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
 
   // Act & Assert
   EXPECT_CALL(account_observer_mock_,
-              OnDidProcessDeposit(::testing::FieldsAre(
+              OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
                   /*id*/ ::testing::_, /*created_at*/ test::Now(),
                   test::kCreativeInstanceId, test::kSegment, /*value*/ 1.0,
                   AdType::kNotificationAd, ConfirmationType::kViewedImpression,
@@ -234,7 +233,6 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
   test::BuildAndSetIssuers();
 
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-  test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
       {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
@@ -251,7 +249,7 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
 
   // Act & Assert
   EXPECT_CALL(account_observer_mock_,
-              OnDidProcessDeposit(::testing::FieldsAre(
+              OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
                   /*id*/ ::testing::_, /*created_at*/ test::Now(),
                   test::kCreativeInstanceId, test::kSegment, /*value*/ 1.0,
                   AdType::kNotificationAd, ConfirmationType::kViewedImpression,
@@ -267,11 +265,10 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
 TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-  test::RefillConfirmationTokens(/*count=*/1);
 
   // Act & Assert
   EXPECT_CALL(account_observer_mock_,
-              OnDidProcessDeposit(::testing::FieldsAre(
+              OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
                   /*id*/ ::testing::_, /*created_at*/ test::Now(),
                   test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
                   AdType::kNotificationAd, ConfirmationType::kClicked,
@@ -285,11 +282,10 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
 TEST_F(BraveAdsAccountTest, DepositForNonCashWithUserData) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-  test::RefillConfirmationTokens(/*count=*/1);
 
   // Act & Assert
   EXPECT_CALL(account_observer_mock_,
-              OnDidProcessDeposit(::testing::FieldsAre(
+              OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
                   /*id*/ ::testing::_, /*created_at*/ test::Now(),
                   test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
                   AdType::kNotificationAd, ConfirmationType::kClicked,
@@ -328,7 +324,7 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingCashForRewardsUser) {
 
   // Act
   EXPECT_CALL(account_observer_mock_,
-              OnDidProcessDeposit(::testing::FieldsAre(
+              OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
                   /*id*/ ::testing::_, /*created_at*/ test::Now(),
                   test::kCreativeInstanceId, test::kSegment, /*value*/ 1.0,
                   AdType::kNotificationAd, ConfirmationType::kViewedImpression,
@@ -360,7 +356,7 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingNonCashForRewardsUser) {
 
   // Act
   EXPECT_CALL(account_observer_mock_,
-              OnDidProcessDeposit(::testing::FieldsAre(
+              OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
                   /*id*/ ::testing::_, /*created_at*/ test::Now(),
                   test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
                   AdType::kNotificationAd, ConfirmationType::kClicked,

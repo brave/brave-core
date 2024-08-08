@@ -6,17 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TEST_COMMAND_LINE_SWITCH_TEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TEST_COMMAND_LINE_SWITCH_TEST_UTIL_H_
 
-#include <optional>
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_info.h"
 
 namespace brave_ads::test {
-
-void SimulateCommandLineSwitches();
-void ResetCommandLineSwitches();
-
-std::optional<bool>& DidAppendCommandLineSwitches();
 
 // Should only be called from `test::TestBase::SetUpMocks`.
 void AppendCommandLineSwitches(

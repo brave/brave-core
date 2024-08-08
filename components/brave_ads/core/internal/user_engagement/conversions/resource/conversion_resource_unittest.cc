@@ -54,7 +54,7 @@ TEST_F(BraveAdsConversionResourceTest, LoadResource) {
 
 TEST_F(BraveAdsConversionResourceTest, DoNotLoadMalformedResource) {
   // Arrange
-  ASSERT_TRUE(CopyFileFromTestDataPathToTempProfilePath(
+  ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(
       /*from_path=*/test::kMalformedResourceId,
       /*to_path=*/kConversionResourceId));
 

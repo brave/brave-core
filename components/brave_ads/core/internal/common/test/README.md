@@ -50,8 +50,8 @@ To mock files loaded with `Load`, place your mocked files in the following direc
         └── test/
             └── data
 
-To simulate a profile, use `CopyFileFromTestDataPathToTempProfilePath` or
-`CopyDirectoryFromTestDataPathToTempProfilePath` in `SetUpMocks` for copying files or directories, respectively.
+To simulate a profile, use `CopyFileFromTestDataPathToProfilePath` or
+`CopyDirectoryFromTestDataPathToProfilePath` in `SetUpMocks` for copying files or directories, respectively.
 
 See [file_path_test_util.h](file_path_test_util.h) and [file_test_util.h](file_test_util.h).
 
@@ -154,7 +154,7 @@ See [mock_test_util.h](./mock_test_util.h), [test_constants.h](./test_constants.
 
 Override `SetUp` and call it with `is_integration_test` set to `true` to test functionality and performance under product-like circumstances. This approach uses data to replicate live settings, simulating a real user scenario from start to finish.
 
-Use the `GetAds` convenience function to access `AdsImpl`. i.e.
+Use the `GetAds` convenience function to access `Ads`. i.e.
 
     GetAds().TriggerNotificationAdEvent(
         /*placement_id=*/"7ee858e8-6306-4317-88c3-9e7d58afad26",

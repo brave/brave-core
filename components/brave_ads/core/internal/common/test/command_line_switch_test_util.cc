@@ -9,8 +9,8 @@
 #include "base/command_line.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/internal/command_line_switch_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/string_test_util_internal.h"
-#include "brave/components/brave_rewards/common/rewards_flags.h"
 
 namespace brave_ads::test {
 
@@ -20,19 +20,6 @@ constexpr char kNoCommandLineSwitchKey[] = "WithNoCommandLineSwitch";
 constexpr char kNoCommandLineSwitchValue[] = "WithEmptyValue";
 
 }  // namespace
-
-void SimulateCommandLineSwitches() {
-  brave_rewards::RewardsFlags::SetForceParsingForTesting(true);
-}
-
-void ResetCommandLineSwitches() {
-  brave_rewards::RewardsFlags::SetForceParsingForTesting(false);
-}
-
-std::optional<bool>& DidAppendCommandLineSwitches() {
-  static std::optional<bool> did_append;
-  return did_append;
-}
 
 void AppendCommandLineSwitches(
     const CommandLineSwitchList& command_line_switches) {

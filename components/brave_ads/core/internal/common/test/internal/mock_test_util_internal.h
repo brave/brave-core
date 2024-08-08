@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TEST_INTERNAL_MOCK_TEST_UTIL_INTERNAL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TEST_INTERNAL_MOCK_TEST_UTIL_INTERNAL_H_
 
-#include "base/files/scoped_temp_dir.h"
+#include "base/files/file_path.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_mock.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
 
@@ -30,8 +30,8 @@ void MockSave(AdsClientMock& ads_client_mock);
 void MockLoad(AdsClientMock& ads_client_mock,
               const base::FilePath& profile_path);
 
-void MockLoadResourceComponent(AdsClientMock& mock,
-                               const base::ScopedTempDir& temp_profile_dir);
+void MockLoadResourceComponent(AdsClientMock& ads_client_mock,
+                               const base::FilePath& profile_path);
 
 void MockLoadDataResource(AdsClientMock& ads_client_mock);
 

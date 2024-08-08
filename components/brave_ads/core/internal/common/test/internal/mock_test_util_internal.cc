@@ -13,16 +13,14 @@
 #include "base/check.h"
 #include "base/containers/extend.h"
 #include "base/files/file.h"
-#include "base/files/file_path.h"
 #include "base/files/file_util.h"
-#include "base/files/scoped_temp_dir.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/internal/command_line_switch_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/current_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/local_state_pref_value_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/profile_pref_value_test_util_internal.h"
@@ -162,12 +160,12 @@ void MockSave(AdsClientMock& ads_client_mock) {
       }));
 }
 
-void MockLoad(AdsClientMock& mock,
-              const base::ScopedTempDir& temp_profile_dir) {
-  ON_CALL(mock, Load)
+void MockLoad(AdsClientMock& ads_client_mock,
+              const base::FilePath& profile_path) {
+  ON_CALL(ads_client_mock, Load)
       .WillByDefault(::testing::Invoke(
-          [&temp_profile_dir](const std::string& name, LoadCallback callback) {
-            base::FilePath path = temp_profile_dir.GetPath().AppendASCII(name);
+          [&profile_path](const std::string& name, LoadCallback callback) {
+            base::FilePath path = profile_path.AppendASCII(name);
             if (!base::PathExists(path)) {
               // If path does not exist attempt to load the file from the test
               // data path.
@@ -183,13 +181,13 @@ void MockLoad(AdsClientMock& mock,
           }));
 }
 
-void MockLoadResourceComponent(AdsClientMock& mock,
-                               const base::ScopedTempDir& temp_profile_dir) {
-  ON_CALL(mock, LoadResourceComponent)
+void MockLoadResourceComponent(AdsClientMock& ads_client_mock,
+                               const base::FilePath& profile_path) {
+  ON_CALL(ads_client_mock, LoadResourceComponent)
       .WillByDefault(::testing::Invoke(
-          [&temp_profile_dir](const std::string& id, const int /*version*/,
-                              LoadFileCallback callback) {
-            base::FilePath path = temp_profile_dir.GetPath().AppendASCII(id);
+          [&profile_path](const std::string& id, const int /*version*/,
+                          LoadFileCallback callback) {
+            base::FilePath path = profile_path.AppendASCII(id);
 
             if (!base::PathExists(path)) {
               // If path does not exist attempt to load the file from the test

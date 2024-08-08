@@ -25,7 +25,7 @@ class BraveAdsMalformedDatabaseMigrationTest
   void SetUpMocks() override {
     DatabaseManager::GetInstance().AddObserver(this);
 
-    ASSERT_TRUE(CopyFileFromTestDataPathToTempProfilePath(
+    ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(
         kMalformedDatabaseSchemaFilename, kDatabaseFilename));
   }
 
