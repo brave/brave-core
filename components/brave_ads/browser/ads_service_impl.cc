@@ -1122,6 +1122,10 @@ void AdsServiceImpl::AddBatAdsObserver(
   }
 }
 
+bool AdsServiceImpl::IsBrowserUpgradeRequiredToServeAds() const {
+  return browser_upgrade_required_to_serve_ads_;
+}
+
 int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
   int64_t ads_per_hour =
       profile_->GetPrefs()->GetInt64(prefs::kMaximumNotificationAdsPerHour);
@@ -1183,10 +1187,6 @@ void AdsServiceImpl::GetStatementOfAccounts(
   }
 
   bat_ads_associated_remote_->GetStatementOfAccounts(std::move(callback));
-}
-
-bool AdsServiceImpl::IsBrowserUpgradeRequiredToServeAds() const {
-  return browser_upgrade_required_to_serve_ads_;
 }
 
 void AdsServiceImpl::MaybeServeInlineContentAd(
