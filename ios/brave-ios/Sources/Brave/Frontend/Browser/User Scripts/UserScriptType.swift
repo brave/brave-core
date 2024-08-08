@@ -28,9 +28,6 @@ enum UserScriptType: Hashable {
     /// These are standard hide selectors that will get automatically processed when the script loads.
     /// Standard selectors may be unhidden on standard mode if they contain 1p content
     let standardSelectors: Set<String>
-    /// These are hide selectors that will get automatically processed when the script loads.
-    /// These are represented as raw JSON and will still need to be parsed.
-    let proceduralActionFilters: Set<String>
   }
 
   struct EngineScriptConfiguration: Hashable {
@@ -59,7 +56,9 @@ enum UserScriptType: Hashable {
   case engineScript(EngineScriptConfiguration)
   /// Selectors poller script (aka cosmetic filtering script) is responsible for hiding and unhiding css elements as dictated by the ad-block engines.
   /// This script is actually executed rather than injected and this type is solely used for the creation rather than the injection of the script.
-  case selectorsPoller(SelectorsPollerSetup)
+  ///
+  /// proceduralFilters are represented as raw JSON and will still need to be parsed.
+  case selectorsPoller(SelectorsPollerSetup, proceduralActions: Set<String>)
   /// Global Privacy Control (GPC) script
   case gpc(Bool)
 

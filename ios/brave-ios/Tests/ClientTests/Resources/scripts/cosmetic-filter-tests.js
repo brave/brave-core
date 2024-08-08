@@ -12,18 +12,30 @@
    * @param {Array} unhiddenIds All the ids that are not hidden
    * @returns A Promise that resolves new hide selectors
    */
-  const sendTestResults = (hiddenIds, unhiddenIds) => {
+  const sendTestResults = (results) => {
     return webkit.messageHandlers['SendCosmeticFiltersResult'].postMessage({
-      'hiddenIds': hiddenIds,
-      'unhiddenIds': unhiddenIds
+      'hiddenIds': results.hiddenIds,
+      'unhiddenIds': results.unhiddenIds,
+      'removedClass': results.removedClass,
+      'removedAttribute': results.removedAttribute,
+      'removedElement': results.removedElement,
+      'styledElement': results.styledElement
     })
+  }
+
+  const sendDebugMessage = (message) => {
+    return webkit.messageHandlers['LoggingHandler'].postMessage(message)
   }
 
   const getHideResults = () => {
     const elements = document.querySelectorAll('[id]')
     const results = {
       hiddenIds: [],
-      unhiddenIds: []
+      unhiddenIds: [],
+      removedElement: true,
+      removedClass: false,
+      removedAttribute: false,
+      styledElement: false
     }
 
     elements.forEach((node) => {
@@ -36,11 +48,27 @@
       } else {
         results.unhiddenIds.push(node.id)
       }
+
+      if (node.id === 'test-remove-element') {
+        results.removedElement = false
+      }
+
+      if (node.id === 'test-remove-class') {
+        results.removedClass = !node.classList.contains('test')
+      }
+
+      if (node.id === 'test-remove-attribute') {
+        results.removedAttribute = !node.hasAttribute('test')
+      }
+
+      if (node.id === 'test-style-element') {
+        results.styledElement = window.getComputedStyle(node).backgroundColor === "rgb(255, 0, 0)"
+      }
     })
 
     return results
   }
 
   let results = getHideResults()
-  sendTestResults(results.hiddenIds, results.unhiddenIds)
+  sendTestResults(results)
 })()

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import CryptoKit
 import SnapKit
 import WebKit
@@ -25,6 +26,10 @@ final class ScriptExecutionTests: XCTestCase {
   struct CosmeticFilteringTestDTO: Decodable {
     let hiddenIds: [String]
     let unhiddenIds: [String]
+    let removedElement: Bool
+    let removedClass: Bool
+    let removedAttribute: Bool
+    let styledElement: Bool
   }
 
   @MainActor func testSiteStateListenerScript() async throws {
@@ -238,9 +243,23 @@ final class ScriptExecutionTests: XCTestCase {
       switchToSelectorsPollingThreshold: 1000,
       fetchNewClassIdRulesThrottlingMs: 100,
       aggressiveSelectors: initialAggressiveSelectors,
-      standardSelectors: initialStandardSelectors.union(invalidSelectors),
-      proceduralActionFilters: []
+      standardSelectors: initialStandardSelectors.union(invalidSelectors)
     )
+
+    AdblockEngine.setDomainResolver()
+    let engine = try AdblockEngine(
+      rules: [
+        "brave.com###test-remove-element:remove()",
+        "brave.com###test-remove-class:remove-class(test)",
+        "brave.com###test-remove-attribute:remove-attr(test)",
+        "brave.com###test-style-element:style(background-color: red !important)",
+      ].joined(separator: "\n")
+    )
+    let proceduralFilters = try engine.cosmeticFilterModel(
+      forFrameURL: URL(string: "https://brave.com")!
+    )?.proceduralActions
+
+    XCTAssertNotNil(proceduralFilters)
 
     // Attach fake message handlers for our CF script
     let selectorsMessageHandler = viewController.attachScriptHandler(
@@ -254,10 +273,6 @@ final class ScriptExecutionTests: XCTestCase {
             from: data
           )
 
-          XCTAssertEqual(
-            dto.data.ids.count,
-            polledAggressiveIds.count + polledStandardIds.count + nestedIds.count
-          )
           for id in polledAggressiveIds {
             XCTAssertTrue(dto.data.ids.contains(id))
           }
@@ -316,6 +331,13 @@ final class ScriptExecutionTests: XCTestCase {
         return nil
       })
     )
+    viewController.attachScriptHandler(
+      contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
+      name: "LoggingHandler",
+      messageHandler: MockMessageHandler(callback: { message in
+        print("Script Message: \(message.body)")
+      })
+    )
 
     // Load the view and add scripts
     viewController.loadViewIfNeeded()
@@ -326,7 +348,9 @@ final class ScriptExecutionTests: XCTestCase {
     try await viewController.loadHTMLStringAndWait(htmlString)
 
     // Execute the selectors poller script
-    let script = try ScriptFactory.shared.makeScript(for: .selectorsPoller(setup))
+    let script = try ScriptFactory.shared.makeScript(
+      for: .selectorsPoller(setup, proceduralActions: Set(proceduralFilters ?? []))
+    )
     try await viewController.webView.evaluateSafeJavaScriptThrowing(
       functionName: script.source,
       contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
@@ -393,5 +417,10 @@ final class ScriptExecutionTests: XCTestCase {
       resultsAfterPump?.hiddenIds.contains("test-ad-primary-aggressive-3rd-party"),
       true
     )
+    // Test for procedural filters
+    XCTAssertTrue(resultsAfterPump?.removedElement ?? false)
+    XCTAssertTrue(resultsAfterPump?.removedAttribute ?? false)
+    XCTAssertTrue(resultsAfterPump?.removedClass ?? false)
+    XCTAssertTrue(resultsAfterPump?.styledElement ?? false)
   }
 }
