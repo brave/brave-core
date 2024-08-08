@@ -36,7 +36,6 @@
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_filter_types.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_value_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"

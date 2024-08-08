@@ -19,7 +19,6 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_observer_interface.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_filter_types.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_value_util.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
