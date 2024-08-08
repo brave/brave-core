@@ -18,6 +18,8 @@ class TimeDelta;
 
 namespace brave_ads::test {
 
+// Sets preference values but does not notify observers.
+
 void SetProfilePrefValue(const std::string& path, base::Value value);
 void SetDefaultProfilePrefValue(const std::string& path, base::Value value);
 void SetProfileBooleanPrefValue(const std::string& path, bool value);

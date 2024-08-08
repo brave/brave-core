@@ -143,7 +143,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredOnTheCuspOfExpiry) {
   database_table_.GetUnexpired(callback.Get());
 }
 
-TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredForType) {
+TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredForAdType) {
   // Arrange
   AdvanceClockTo(test::TimeFromUTCString("Tue, 19 Mar 2024 16:28"));
 
@@ -188,7 +188,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredForType) {
 }
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest,
-       GetUnexpiredForTypeIfCreativeSetExistsInCreativeSetConversions) {
+       GetUnexpiredForAdTypeIfCreativeSetExistsInCreativeSetConversions) {
   // Arrange
   AdvanceClockTo(test::TimeFromUTCString("Tue, 19 Mar 2024 05:35"));
 

@@ -18,6 +18,8 @@ class TimeDelta;
 
 namespace brave_ads::test {
 
+// Sets preference values but does not notify observers.
+
 void SetLocalStatePrefValue(const std::string& path, base::Value value);
 void SetDefaultLocalStatePrefValue(const std::string& path, base::Value value);
 void SetLocalStateBooleanPrefValue(const std::string& path, bool value);

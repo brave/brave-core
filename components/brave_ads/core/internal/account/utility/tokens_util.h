@@ -12,6 +12,7 @@
 
 #include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 
 namespace brave_ads {
 
@@ -20,7 +21,6 @@ class BlindedToken;
 class PublicKey;
 class SignedToken;
 class Token;
-class UnblindedToken;
 }  // namespace cbr
 
 std::optional<cbr::PublicKey> ParsePublicKey(const base::Value::Dict& dict);

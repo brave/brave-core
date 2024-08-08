@@ -91,7 +91,7 @@ void BatAdsClientMojoBridge::ShowNotificationAd(
   }
 }
 
-bool BatAdsClientMojoBridge::CanShowNotificationAds() {
+bool BatAdsClientMojoBridge::CanShowNotificationAds() const {
   if (!bat_ads_client_associated_receiver_.is_bound()) {
     return false;
   }

@@ -2,7 +2,7 @@
 
 Helpful stuff for testing ads.
 
-Ads tests **MUST** inherit from `test::TestBase` when using `TEST_F` or `TEST_P`, i.e.
+Ads tests **MUST** inherit from `test::TestBase` when using `TEST_F` or `TEST_P`, i.e.,
 
     class FooTest : public test::TestBase {
      protected:
@@ -13,7 +13,7 @@ Ads tests **MUST** inherit from `test::TestBase` when using `TEST_F` or `TEST_P`
 
     TEST_F(FooTest, Bar) { ... }
 
-You **MUST** set up mocks in `SetUpMocks`, `TEST_F`, or `TEST_P`. You should **NOT** set up mocks in `SetUp`, otherwise, they may be overridden.
+Mocks should be set up in `SetUpMocks`, `TEST_F`, or `TEST_P`. Avoid setting up mocks in `SetUp` as they might be overridden by `test::TestBase`.
 
 `test::TestBase`, inherited from `::testing::Test`, is not copyable.
 
@@ -29,7 +29,7 @@ See [task_environment_](../../../../../../../base/test/task_environment.h).
 
 ## Mocking Command-Line Switches
 
-To mock command-line switches, invoke `test::AppendCommandLineSwitches` within `test::TestBase::SetUpMocks`, i.e.,
+To mock command-line switches, invoke `test::AppendCommandLineSwitches` within `SetUpMocks`, i.e.,
 
     void SetUpMocks() override {
         test::AppendCommandLineSwitches({{"foo", "bar"}, {"baz", "qux"}});

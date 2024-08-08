@@ -1,7 +1,7 @@
 /* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/core/internal/common/test/internal/mock_test_util_internal.h"
 
@@ -64,9 +64,9 @@ void MockFlags() {
   }
 }
 
-void MockAdsClientNotifierAddObserver(AdsClientMock& mock,
+void MockAdsClientNotifierAddObserver(AdsClientMock& ads_client_mock,
                                       TestBase& test_base) {
-  ON_CALL(mock, AddObserver)
+  ON_CALL(ads_client_mock, AddObserver)
       .WillByDefault(::testing::Invoke(
           [&test_base](AdsClientNotifierObserver* const observer) {
             CHECK(observer);
@@ -74,8 +74,8 @@ void MockAdsClientNotifierAddObserver(AdsClientMock& mock,
           }));
 }
 
-void MockShowNotificationAd(AdsClientMock& mock) {
-  ON_CALL(mock, ShowNotificationAd)
+void MockShowNotificationAd(AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, ShowNotificationAd)
       .WillByDefault(::testing::Invoke([](const NotificationAdInfo& ad) {
         // TODO(https://github.com/brave/brave-browser/issues/29587): Decouple
         // reminders from push notification ads.
@@ -87,15 +87,15 @@ void MockShowNotificationAd(AdsClientMock& mock) {
       }));
 }
 
-void MockCloseNotificationAd(AdsClientMock& mock) {
-  ON_CALL(mock, CloseNotificationAd)
+void MockCloseNotificationAd(AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, CloseNotificationAd)
       .WillByDefault(::testing::Invoke([](const std::string& placement_id) {
         CHECK(!placement_id.empty());
       }));
 }
 
-void MockCacheAdEventForInstanceId(const AdsClientMock& mock) {
-  ON_CALL(mock, CacheAdEventForInstanceId)
+void MockCacheAdEventForInstanceId(const AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, CacheAdEventForInstanceId)
       .WillByDefault(::testing::Invoke(
           [](const std::string& id, const std::string& ad_type,
              const std::string& confirmation_type, const base::Time time) {
@@ -110,8 +110,8 @@ void MockCacheAdEventForInstanceId(const AdsClientMock& mock) {
           }));
 }
 
-void MockGetCachedAdEvents(const AdsClientMock& mock) {
-  ON_CALL(mock, GetCachedAdEvents)
+void MockGetCachedAdEvents(const AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, GetCachedAdEvents)
       .WillByDefault(::testing::Invoke([](const std::string& ad_type,
                                           const std::string& confirmation_type)
                                            -> std::vector<base::Time> {
@@ -143,8 +143,8 @@ void MockGetCachedAdEvents(const AdsClientMock& mock) {
       }));
 }
 
-void MockResetAdEventCacheForInstanceId(const AdsClientMock& mock) {
-  ON_CALL(mock, ResetAdEventCacheForInstanceId)
+void MockResetAdEventCacheForInstanceId(const AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, ResetAdEventCacheForInstanceId)
       .WillByDefault(::testing::Invoke([](const std::string& id) {
         CHECK(!id.empty());
 
@@ -153,8 +153,8 @@ void MockResetAdEventCacheForInstanceId(const AdsClientMock& mock) {
       }));
 }
 
-void MockSave(AdsClientMock& mock) {
-  ON_CALL(mock, Save)
+void MockSave(AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, Save)
       .WillByDefault(::testing::Invoke([](const std::string& /*name*/,
                                           const std::string& /*value*/,
                                           SaveCallback callback) {
@@ -203,16 +203,16 @@ void MockLoadResourceComponent(AdsClientMock& mock,
           }));
 }
 
-void MockLoadDataResource(AdsClientMock& mock) {
-  ON_CALL(mock, LoadDataResource)
+void MockLoadDataResource(AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, LoadDataResource)
       .WillByDefault(
           ::testing::Invoke([](const std::string& name) -> std::string {
             return MaybeReadDataResourceToString(name).value_or("");
           }));
 }
 
-void MockRunDBTransaction(AdsClientMock& mock, Database& database) {
-  ON_CALL(mock, RunDBTransaction)
+void MockRunDBTransaction(AdsClientMock& ads_client_mock, Database& database) {
+  ON_CALL(ads_client_mock, RunDBTransaction)
       .WillByDefault(
           ::testing::Invoke([&database](mojom::DBTransactionInfoPtr transaction,
                                         RunDBTransactionCallback callback) {
@@ -225,16 +225,17 @@ void MockRunDBTransaction(AdsClientMock& mock, Database& database) {
           }));
 }
 
-void MockGetProfilePref(const AdsClientMock& mock) {
-  ON_CALL(mock, GetProfilePref)
+void MockGetProfilePref(const AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, GetProfilePref)
       .WillByDefault(::testing::Invoke(
           [](const std::string& path) -> std::optional<base::Value> {
             return GetProfilePrefValue(path);
           }));
 }
 
-void MockSetProfilePref(const AdsClientMock& mock, TestBase& test_base) {
-  ON_CALL(mock, SetProfilePref)
+void MockSetProfilePref(const AdsClientMock& ads_client_mock,
+                        TestBase& test_base) {
+  ON_CALL(ads_client_mock, SetProfilePref)
       .WillByDefault(::testing::Invoke(
           [&test_base](const std::string& path, base::Value value) {
             SetProfilePrefValue(path, std::move(value));
@@ -242,29 +243,30 @@ void MockSetProfilePref(const AdsClientMock& mock, TestBase& test_base) {
           }));
 }
 
-void MockClearProfilePref(AdsClientMock& mock) {
-  ON_CALL(mock, ClearProfilePref)
+void MockClearProfilePref(AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, ClearProfilePref)
       .WillByDefault(::testing::Invoke(
           [](const std::string& path) { ClearProfilePrefValue(path); }));
 }
 
-void MockHasProfilePrefPath(const AdsClientMock& mock) {
-  ON_CALL(mock, HasProfilePrefPath)
+void MockHasProfilePrefPath(const AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, HasProfilePrefPath)
       .WillByDefault(::testing::Invoke([](const std::string& path) -> bool {
         return HasProfilePrefPathValue(path);
       }));
 }
 
-void MockGetLocalStatePref(const AdsClientMock& mock) {
-  ON_CALL(mock, GetLocalStatePref)
+void MockGetLocalStatePref(const AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, GetLocalStatePref)
       .WillByDefault(::testing::Invoke(
           [](const std::string& path) -> std::optional<base::Value> {
             return GetLocalStatePrefValue(path);
           }));
 }
 
-void MockSetLocalStatePref(const AdsClientMock& mock, TestBase& test_base) {
-  ON_CALL(mock, SetLocalStatePref)
+void MockSetLocalStatePref(const AdsClientMock& ads_client_mock,
+                           TestBase& test_base) {
+  ON_CALL(ads_client_mock, SetLocalStatePref)
       .WillByDefault(::testing::Invoke(
           [&test_base](const std::string& path, base::Value value) {
             SetLocalStatePrefValue(path, std::move(value));
@@ -272,14 +274,14 @@ void MockSetLocalStatePref(const AdsClientMock& mock, TestBase& test_base) {
           }));
 }
 
-void MockClearLocalStatePref(AdsClientMock& mock) {
-  ON_CALL(mock, ClearLocalStatePref)
+void MockClearLocalStatePref(AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, ClearLocalStatePref)
       .WillByDefault(::testing::Invoke(
           [](const std::string& path) { ClearLocalStatePrefValue(path); }));
 }
 
-void MockHasLocalStatePrefPath(const AdsClientMock& mock) {
-  ON_CALL(mock, HasLocalStatePrefPath)
+void MockHasLocalStatePrefPath(const AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, HasLocalStatePrefPath)
       .WillByDefault(::testing::Invoke([](const std::string& path) -> bool {
         return HasLocalStatePrefPathValue(path);
       }));

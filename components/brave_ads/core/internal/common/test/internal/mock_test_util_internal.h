@@ -16,34 +16,38 @@ class TestBase;
 
 void MockFlags();
 
-void MockAdsClientNotifierAddObserver(AdsClientMock& mock, TestBase& test_base);
+void MockAdsClientNotifierAddObserver(AdsClientMock& ads_client_mock,
+                                      TestBase& test_base);
 
-void MockShowNotificationAd(AdsClientMock& mock);
-void MockCloseNotificationAd(AdsClientMock& mock);
+void MockShowNotificationAd(AdsClientMock& ads_client_mock);
+void MockCloseNotificationAd(AdsClientMock& ads_client_mock);
 
-void MockCacheAdEventForInstanceId(const AdsClientMock& mock);
-void MockGetCachedAdEvents(const AdsClientMock& mock);
-void MockResetAdEventCacheForInstanceId(const AdsClientMock& mock);
+void MockCacheAdEventForInstanceId(const AdsClientMock& ads_client_mock);
+void MockGetCachedAdEvents(const AdsClientMock& ads_client_mock);
+void MockResetAdEventCacheForInstanceId(const AdsClientMock& ads_client_mock);
 
-void MockSave(AdsClientMock& mock);
-void MockLoad(AdsClientMock& mock, const base::ScopedTempDir& temp_profile_dir);
+void MockSave(AdsClientMock& ads_client_mock);
+void MockLoad(AdsClientMock& ads_client_mock,
+              const base::FilePath& profile_path);
 
 void MockLoadResourceComponent(AdsClientMock& mock,
                                const base::ScopedTempDir& temp_profile_dir);
 
-void MockLoadDataResource(AdsClientMock& mock);
+void MockLoadDataResource(AdsClientMock& ads_client_mock);
 
-void MockRunDBTransaction(AdsClientMock& mock, Database& database);
+void MockRunDBTransaction(AdsClientMock& ads_client_mock, Database& database);
 
-void MockGetProfilePref(const AdsClientMock& mock);
-void MockSetProfilePref(const AdsClientMock& mock, TestBase& test_base);
-void MockClearProfilePref(AdsClientMock& mock);
-void MockHasProfilePrefPath(const AdsClientMock& mock);
+void MockGetProfilePref(const AdsClientMock& ads_client_mock);
+void MockSetProfilePref(const AdsClientMock& ads_client_mock,
+                        TestBase& test_base);
+void MockClearProfilePref(AdsClientMock& ads_client_mock);
+void MockHasProfilePrefPath(const AdsClientMock& ads_client_mock);
 
-void MockGetLocalStatePref(const AdsClientMock& mock);
-void MockSetLocalStatePref(const AdsClientMock& mock, TestBase& test_base);
-void MockClearLocalStatePref(AdsClientMock& mock);
-void MockHasLocalStatePrefPath(const AdsClientMock& mock);
+void MockGetLocalStatePref(const AdsClientMock& ads_client_mock);
+void MockSetLocalStatePref(const AdsClientMock& ads_client_mock,
+                           TestBase& test_base);
+void MockClearLocalStatePref(AdsClientMock& ads_client_mock);
+void MockHasLocalStatePrefPath(const AdsClientMock& ads_client_mock);
 
 }  // namespace brave_ads::test
 
