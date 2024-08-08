@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
+#include "brave/components/brave_ads/core/internal/reminders/reminders_feature.h"
 
 namespace brave_ads {
 
-BASE_FEATURE(kReminderFeature, "Reminder", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kRemindersFeature, "Reminders", base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_ads

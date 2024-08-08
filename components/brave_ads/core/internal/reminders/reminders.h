@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_REMINDER_REMINDER_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_REMINDER_REMINDER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_REMINDERS_REMINDERS_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_REMINDERS_REMINDERS_H_
 
 #include "base/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager_observer.h"
@@ -13,17 +13,17 @@ namespace brave_ads {
 
 struct AdHistoryItemInfo;
 
-class Reminder : public AdHistoryManagerObserver {
+class Reminders : public AdHistoryManagerObserver {
  public:
-  Reminder();
+  Reminders();
 
-  Reminder(const Reminder&) = delete;
-  Reminder& operator=(const Reminder&) = delete;
+  Reminders(const Reminders&) = delete;
+  Reminders& operator=(const Reminders&) = delete;
 
-  Reminder(Reminder&&) noexcept = delete;
-  Reminder& operator=(Reminder&&) noexcept = delete;
+  Reminders(Reminders&&) noexcept = delete;
+  Reminders& operator=(Reminders&&) noexcept = delete;
 
-  ~Reminder() override;
+  ~Reminders() override;
 
  private:
   void MaybeShowReminderAfterDelay(const AdHistoryItemInfo& ad_history_item);
@@ -37,4 +37,4 @@ class Reminder : public AdHistoryManagerObserver {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_REMINDER_REMINDER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_REMINDERS_REMINDERS_H_
