@@ -89,8 +89,10 @@ def _XMLTransform(source_pairs, outputs_zip):
                 continue
 
             root = ET.XML(xml_content)
-            result = loaded_module._ProcessXML(root)  # pylint: disable=line-too-long,protected-access
-            output = ET.tostring(result, encoding='utf-8', xml_declaration=True)
+            result = loaded_module._ProcessXML(root)  # pylint: disable=protected-access
+            output = ET.tostring(result,
+                                 encoding='utf-8',
+                                 xml_declaration=True)
 
             # Parse output path
             # For simplicity, we assume input path will always has java/res in

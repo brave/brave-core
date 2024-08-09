@@ -7,7 +7,7 @@ import brave_chromium_utils
 import override_utils
 
 with brave_chromium_utils.sys_path('//brave/tools/perf'):
-    from components.cloud_storage import CloudFolder, DownloadFileFromCloudStorage  # pylint: disable=import-outside-toplevel
+    from components.cloud_storage import CloudFolder, DownloadFileFromCloudStorage
 
 
 @override_utils.override_function(globals())
