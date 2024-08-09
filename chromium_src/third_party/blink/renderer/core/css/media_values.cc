@@ -9,29 +9,29 @@
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/screen.h"
 
-#define CalculateDeviceWidth                                                   \
-  CalculateDeviceWidth(LocalFrame* frame) {                                    \
+#define CalculateDeviceWidth(...)                                              \
+  CalculateDeviceWidth(__VA_ARGS__, bool early) {                              \
     ExecutionContext* context = frame->DomWindow()->GetExecutionContext();     \
     auto* top_frame = DynamicTo<LocalFrame>(frame->Top());                     \
-    return top_frame && brave::BlockScreenFingerprinting(context)              \
+    return top_frame && brave::BlockScreenFingerprinting(context, early)       \
                ? brave::FarbleInteger(context,                                 \
                                       brave::FarbleKey::kWindowInnerWidth,     \
                                       CalculateViewportWidth(top_frame), 0, 8) \
                : CalculateDeviceWidth_ChromiumImpl(frame);                     \
   }                                                                            \
-  int MediaValues::CalculateDeviceWidth_ChromiumImpl
+  int MediaValues::CalculateDeviceWidth_ChromiumImpl(__VA_ARGS__)
 
-#define CalculateDeviceHeight                                              \
-  CalculateDeviceHeight(LocalFrame* frame) {                               \
+#define CalculateDeviceHeight(...)                                         \
+  CalculateDeviceHeight(__VA_ARGS__, bool early) {                         \
     ExecutionContext* context = frame->DomWindow()->GetExecutionContext(); \
     auto* top_frame = DynamicTo<LocalFrame>(frame->Top());                 \
-    return top_frame && brave::BlockScreenFingerprinting(context)          \
+    return top_frame && brave::BlockScreenFingerprinting(context, early)   \
                ? brave::FarbleInteger(                                     \
                      context, brave::FarbleKey::kWindowInnerHeight,        \
                      CalculateViewportHeight(top_frame), 0, 8)             \
                : CalculateDeviceHeight_ChromiumImpl(frame);                \
   }                                                                        \
-  int MediaValues::CalculateDeviceHeight_ChromiumImpl
+  int MediaValues::CalculateDeviceHeight_ChromiumImpl(__VA_ARGS__)
 
 #include "src/third_party/blink/renderer/core/css/media_values.cc"
 

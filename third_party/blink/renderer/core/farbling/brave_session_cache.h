@@ -61,7 +61,8 @@ CORE_EXPORT int FarbleInteger(ExecutionContext* context,
                               int spoof_value,
                               int min_value,
                               int max_value);
-CORE_EXPORT bool BlockScreenFingerprinting(ExecutionContext* context);
+CORE_EXPORT bool BlockScreenFingerprinting(ExecutionContext* context,
+                                           bool early = false);
 CORE_EXPORT int FarbledPointerScreenCoordinate(const DOMWindow* view,
                                                FarbleKey key,
                                                int client_coordinate,
@@ -97,7 +98,6 @@ class CORE_EXPORT BraveSessionCache final
   }
 
  private:
-  bool farbling_enabled_;
   uint64_t session_key_;
   uint8_t domain_key_[32];
   WTF::HashMap<FarbleKey, int> farbled_integers_;
