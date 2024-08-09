@@ -211,15 +211,15 @@ void MockLoadDataResource(AdsClientMock& ads_client_mock) {
 
 void MockRunDBTransaction(AdsClientMock& ads_client_mock, Database& database) {
   ON_CALL(ads_client_mock, RunDBTransaction)
-      .WillByDefault(
-          ::testing::Invoke([&database](mojom::DBTransactionInfoPtr transaction,
-                                        RunDBTransactionCallback callback) {
-            CHECK(transaction);
+      .WillByDefault(::testing::Invoke(
+          [&database](mojom::DBTransactionInfoPtr mojom_transaction,
+                      RunDBTransactionCallback callback) {
+            CHECK(mojom_transaction);
 
-            mojom::DBCommandResponseInfoPtr command_response =
-                database.RunTransaction(std::move(transaction));
+            mojom::DBStatementResultInfoPtr mojom_statement_result =
+                database.RunTransaction(std::move(mojom_transaction));
 
-            std::move(callback).Run(std::move(command_response));
+            std::move(callback).Run(std::move(mojom_statement_result));
           }));
 }
 

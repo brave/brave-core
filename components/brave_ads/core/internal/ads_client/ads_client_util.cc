@@ -126,9 +126,10 @@ void ShowScheduledCaptcha(const std::string& payment_id,
   GetAdsClient()->ShowScheduledCaptcha(payment_id, captcha_id);
 }
 
-void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
+void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_transaction,
                       RunDBTransactionCallback callback) {
-  GetAdsClient()->RunDBTransaction(std::move(transaction), std::move(callback));
+  GetAdsClient()->RunDBTransaction(std::move(mojom_transaction),
+                                   std::move(callback));
 }
 
 void RecordP2AEvents(const std::vector<std::string>& events) {

@@ -67,7 +67,7 @@ std::string LoadDataResource(const std::string& name);
 void ShowScheduledCaptcha(const std::string& payment_id,
                           const std::string& captcha_id);
 
-void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
+void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_transaction,
                       RunDBTransactionCallback callback);
 
 void RecordP2AEvents(const std::vector<std::string>& events);

@@ -26,10 +26,10 @@ class Deposits final : public TableInterface {
  public:
   void Save(const DepositInfo& deposit, ResultCallback callback);
 
-  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
-                      const CreativeAdList& creative_ads);
-  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
-                      const DepositInfo& deposit);
+  void Insert(mojom::DBTransactionInfo* mojom_transaction,
+              const CreativeAdList& creative_ads);
+  void Insert(mojom::DBTransactionInfo* mojom_transaction,
+              const DepositInfo& deposit);
 
   void GetForCreativeInstanceId(const std::string& creative_instance_id,
                                 GetDepositsCallback callback) const;
@@ -38,14 +38,15 @@ class Deposits final : public TableInterface {
 
   std::string GetTableName() const override;
 
-  void Create(mojom::DBTransactionInfo* transaction) override;
-  void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
+  void Create(mojom::DBTransactionInfo* mojom_transaction) override;
+  void Migrate(mojom::DBTransactionInfo* mojom_transaction,
+               int to_version) override;
 
  private:
-  std::string BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
-                                     const CreativeAdList& creative_ads) const;
-  std::string BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
-                                     const DepositInfo& deposit) const;
+  std::string BuildInsertSql(mojom::DBStatementInfo* mojom_statement,
+                             const CreativeAdList& creative_ads) const;
+  std::string BuildInsertSql(mojom::DBStatementInfo* mojom_statement,
+                             const DepositInfo& deposit) const;
 };
 
 }  // namespace brave_ads::database::table

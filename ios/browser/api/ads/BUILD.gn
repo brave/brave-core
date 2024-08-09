@@ -53,13 +53,13 @@ ios_objc_mojom_wrappers("brave_ads_mojom_wrappers") {
   mojom_target = "//brave/components/brave_ads/core/mojom"
   sources = [ "//brave/components/brave_ads/core/mojom/brave_ads.mojom" ]
   exclude_types = [
-    "DBCommandInfo",
-    "DBCommandBindingInfo",
-    "DBCommandResponseInfo",
-    "DBCommandResult",
-    "DBRecordInfo",
+    "DBStatementInfo",
+    "DBBindColumnInfo",
+    "DBStatementResultInfo",
+    "DBRowsUnion",
+    "DBRowInfo",
     "DBTransactionInfo",
-    "DBValue",
+    "DBColumnValueUnion",
   ]
 
   # The module name is `BraveAds` now which matches the class we already have

@@ -38,15 +38,16 @@ class AdEvents final : public TableInterface {
 
   std::string GetTableName() const override;
 
-  void Create(mojom::DBTransactionInfo* transaction) override;
-  void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
+  void Create(mojom::DBTransactionInfo* mojom_transaction) override;
+  void Migrate(mojom::DBTransactionInfo* mojom_transaction,
+               int to_version) override;
 
  private:
-  void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
-                      const AdEventList& ad_event);
+  void Insert(mojom::DBTransactionInfo* mojom_transaction,
+              const AdEventList& ad_event);
 
-  std::string BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
-                                     const AdEventList& ad_events) const;
+  std::string BuildInsertSql(mojom::DBStatementInfo* mojom_statement,
+                             const AdEventList& ad_events) const;
 };
 
 }  // namespace brave_ads::database::table

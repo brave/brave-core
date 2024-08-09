@@ -14,7 +14,6 @@
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/containers/container_util.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
@@ -32,32 +31,31 @@ constexpr char kTableName[] = "ad_history";
 
 constexpr int kDefaultBatchSize = 50;
 
-void BindRecords(mojom::DBCommandInfo* const command) {
-  CHECK(command);
+void BindColumnTypes(mojom::DBStatementInfo* const mojom_statement) {
+  CHECK(mojom_statement);
 
-  command->record_bindings = {
-      mojom::DBCommandInfo::RecordBindingType::INT64_TYPE,   // created_at
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // type
-      mojom::DBCommandInfo::RecordBindingType::
-          STRING_TYPE,  // confirmation_type
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // placement_id
-      mojom::DBCommandInfo::RecordBindingType::
-          STRING_TYPE,  // creative_instance_id
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // creative_set_id
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // campaign_id
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // advertiser_id
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // segment
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // title
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // description
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE   // target_url
+  mojom_statement->bind_column_types = {
+      mojom::DBBindColumnType::kInt64,   // created_at
+      mojom::DBBindColumnType::kString,  // type
+      mojom::DBBindColumnType::kString,  // confirmation_type
+      mojom::DBBindColumnType::kString,  // placement_id
+      mojom::DBBindColumnType::kString,  // creative_instance_id
+      mojom::DBBindColumnType::kString,  // creative_set_id
+      mojom::DBBindColumnType::kString,  // campaign_id
+      mojom::DBBindColumnType::kString,  // advertiser_id
+      mojom::DBBindColumnType::kString,  // segment
+      mojom::DBBindColumnType::kString,  // title
+      mojom::DBBindColumnType::kString,  // description
+      mojom::DBBindColumnType::kString   // target_url
   };
 }
 
-size_t BindParameters(mojom::DBCommandInfo* command,
-                      const AdHistoryList& ad_history) {
-  CHECK(command);
+size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
+                   const AdHistoryList& ad_history) {
+  CHECK(mojom_statement);
+  CHECK(!ad_history.empty());
 
-  size_t count = 0;
+  size_t row_count = 0;
 
   int index = 0;
   for (const auto& ad_history_item : ad_history) {
@@ -73,65 +71,68 @@ size_t BindParameters(mojom::DBCommandInfo* command,
       continue;
     }
 
-    BindInt64(command, index++,
-              ToChromeTimestampFromTime(ad_history_item.created_at));
-    BindString(command, index++, ToString(ad_history_item.type));
-    BindString(command, index++, ToString(ad_history_item.confirmation_type));
-    BindString(command, index++, ad_history_item.placement_id);
-    BindString(command, index++, ad_history_item.creative_instance_id);
-    BindString(command, index++, ad_history_item.creative_set_id);
-    BindString(command, index++, ad_history_item.campaign_id);
-    BindString(command, index++, ad_history_item.advertiser_id);
-    BindString(command, index++, ad_history_item.segment);
-    BindString(command, index++, ad_history_item.title);
-    BindString(command, index++, ad_history_item.description);
-    BindString(command, index++, ad_history_item.target_url.spec());
+    BindColumnInt64(mojom_statement, index++,
+                    ToChromeTimestampFromTime(ad_history_item.created_at));
+    BindColumnString(mojom_statement, index++, ToString(ad_history_item.type));
+    BindColumnString(mojom_statement, index++,
+                     ToString(ad_history_item.confirmation_type));
+    BindColumnString(mojom_statement, index++, ad_history_item.placement_id);
+    BindColumnString(mojom_statement, index++,
+                     ad_history_item.creative_instance_id);
+    BindColumnString(mojom_statement, index++, ad_history_item.creative_set_id);
+    BindColumnString(mojom_statement, index++, ad_history_item.campaign_id);
+    BindColumnString(mojom_statement, index++, ad_history_item.advertiser_id);
+    BindColumnString(mojom_statement, index++, ad_history_item.segment);
+    BindColumnString(mojom_statement, index++, ad_history_item.title);
+    BindColumnString(mojom_statement, index++, ad_history_item.description);
+    BindColumnString(mojom_statement, index++,
+                     ad_history_item.target_url.spec());
 
-    ++count;
+    ++row_count;
   }
 
-  return count;
+  return row_count;
 }
 
-AdHistoryItemInfo GetFromRecord(mojom::DBRecordInfo* const record) {
-  CHECK(record);
+AdHistoryItemInfo FromMojomRow(const mojom::DBRowInfo* const mojom_row) {
+  CHECK(mojom_row);
 
   AdHistoryItemInfo ad_history_item;
 
   ad_history_item.created_at =
-      ToTimeFromChromeTimestamp(ColumnInt64(record, 0));
-  ad_history_item.type = ToAdType(ColumnString(record, 1));
+      ToTimeFromChromeTimestamp(ColumnInt64(mojom_row, 0));
+  ad_history_item.type = ToAdType(ColumnString(mojom_row, 1));
   ad_history_item.confirmation_type =
-      ToConfirmationType(ColumnString(record, 2));
-  ad_history_item.placement_id = ColumnString(record, 3);
-  ad_history_item.creative_instance_id = ColumnString(record, 4);
-  ad_history_item.creative_set_id = ColumnString(record, 5);
-  ad_history_item.campaign_id = ColumnString(record, 6);
-  ad_history_item.advertiser_id = ColumnString(record, 7);
-  ad_history_item.segment = ColumnString(record, 8);
-  ad_history_item.title = ColumnString(record, 9);
-  ad_history_item.description = ColumnString(record, 10);
-  ad_history_item.target_url = GURL(ColumnString(record, 11));
+      ToConfirmationType(ColumnString(mojom_row, 2));
+  ad_history_item.placement_id = ColumnString(mojom_row, 3);
+  ad_history_item.creative_instance_id = ColumnString(mojom_row, 4);
+  ad_history_item.creative_set_id = ColumnString(mojom_row, 5);
+  ad_history_item.campaign_id = ColumnString(mojom_row, 6);
+  ad_history_item.advertiser_id = ColumnString(mojom_row, 7);
+  ad_history_item.segment = ColumnString(mojom_row, 8);
+  ad_history_item.title = ColumnString(mojom_row, 9);
+  ad_history_item.description = ColumnString(mojom_row, 10);
+  ad_history_item.target_url = GURL(ColumnString(mojom_row, 11));
 
   return ad_history_item;
 }
 
 void GetCallback(GetAdHistoryCallback callback,
-                 mojom::DBCommandResponseInfoPtr command_response) {
-  if (!command_response ||
-      command_response->status !=
-          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+                 mojom::DBStatementResultInfoPtr mojom_statement_result) {
+  if (!mojom_statement_result ||
+      mojom_statement_result->result_code !=
+          mojom::DBStatementResultInfo::ResultCode::kSuccess) {
     BLOG(0, "Failed to get ad history");
 
     return std::move(callback).Run(/*ad_history=*/std::nullopt);
   }
 
-  CHECK(command_response->result);
+  CHECK(mojom_statement_result->rows_union);
 
   AdHistoryList ad_history;
 
-  for (const auto& record : command_response->result->get_records()) {
-    const AdHistoryItemInfo ad_history_item = GetFromRecord(&*record);
+  for (const auto& mojom_row : mojom_statement_result->rows_union->get_rows()) {
+    const AdHistoryItemInfo ad_history_item = FromMojomRow(&*mojom_row);
     if (!ad_history_item.IsValid()) {
       // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
       // potential defects using `DumpWithoutCrashing`.
@@ -150,12 +151,13 @@ void GetCallback(GetAdHistoryCallback callback,
   std::move(callback).Run(ad_history);
 }
 
-void MigrateToV42(mojom::DBTransactionInfo* const transaction) {
-  CHECK(transaction);
+void MigrateToV42(mojom::DBTransactionInfo* const mojom_transaction) {
+  CHECK(mojom_transaction);
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kExecute;
+  mojom_statement->sql =
       R"(
           CREATE TABLE ad_history (
             id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -172,23 +174,23 @@ void MigrateToV42(mojom::DBTransactionInfo* const transaction) {
             description TEXT NOT NULL,
             target_url TEXT NOT NULL
           );)";
-  transaction->commands.push_back(std::move(command));
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 
   // Optimize database query for `GetForDateRange`,
   // `GetHighestRankedPlacementsForDateRange`, and `PurgeExpired`.
-  CreateTableIndex(transaction,
+  CreateTableIndex(mojom_transaction,
                    /*table_name=*/"ad_history", /*columns=*/{"created_at"});
 
   // Optimize database query for `GetHighestRankedPlacementsForDateRange`.
-  CreateTableIndex(transaction, /*table_name=*/"ad_history",
+  CreateTableIndex(mojom_transaction, /*table_name=*/"ad_history",
                    /*columns=*/{"confirmation_type"});
 
   // Optimize database query for `GetHighestRankedPlacementsForDateRange`.
-  CreateTableIndex(transaction, /*table_name=*/"ad_history",
+  CreateTableIndex(mojom_transaction, /*table_name=*/"ad_history",
                    /*columns=*/{"placement_id"});
 
   // Optimize database query for `GetForCreativeInstanceId`.
-  CreateTableIndex(transaction, /*table_name=*/"ad_history",
+  CreateTableIndex(mojom_transaction, /*table_name=*/"ad_history",
                    /*columns=*/{"creative_instance_id"});
 }
 
@@ -202,25 +204,28 @@ void AdHistory::Save(const AdHistoryList& ad_history,
     return std::move(callback).Run(/*success=*/true);
   }
 
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  mojom::DBTransactionInfoPtr mojom_transaction =
+      mojom::DBTransactionInfo::New();
 
   const std::vector<AdHistoryList> batches =
       SplitVector(ad_history, batch_size_);
 
   for (const auto& batch : batches) {
-    InsertOrUpdate(&*transaction, batch);
+    Insert(&*mojom_transaction, batch);
   }
 
-  RunTransaction(std::move(transaction), std::move(callback));
+  RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
 
 void AdHistory::GetForDateRange(const base::Time from_time,
                                 const base::Time to_time,
                                 GetAdHistoryCallback callback) const {
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::READ;
-  command->sql = base::ReplaceStringPlaceholders(
+  mojom::DBTransactionInfoPtr mojom_transaction =
+      mojom::DBTransactionInfo::New();
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kStep;
+  mojom_statement->sql = base::ReplaceStringPlaceholders(
       R"(
           SELECT
             created_at,
@@ -245,10 +250,10 @@ void AdHistory::GetForDateRange(const base::Time from_time,
        base::NumberToString(ToChromeTimestampFromTime(from_time)),
        base::NumberToString(ToChromeTimestampFromTime(to_time))},
       nullptr);
-  BindRecords(&*command);
-  transaction->commands.push_back(std::move(command));
+  BindColumnTypes(&*mojom_statement);
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunDBTransaction(std::move(transaction),
+  RunDBTransaction(std::move(mojom_transaction),
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
@@ -256,7 +261,8 @@ void AdHistory::GetHighestRankedPlacementsForDateRange(
     const base::Time from_time,
     const base::Time to_time,
     GetAdHistoryCallback callback) const {
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  mojom::DBTransactionInfoPtr mojom_transaction =
+      mojom::DBTransactionInfo::New();
 
   // Chrome doesn't use window functions in SQL so we are unable to use:
   //
@@ -274,16 +280,17 @@ void AdHistory::GetHighestRankedPlacementsForDateRange(
   //          ) as row_number
   //        FROM
   //          PrioritizedAdHistory
-  //      ) as ad_history
+  //      ) as filtered_ad_history
   //      WHERE
   //        row_number = 1
   //    )
   //
   // See `src/third_party/sqlite/sqlite_chromium_configuration_flags.gni`.
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::READ;
-  command->sql = base::ReplaceStringPlaceholders(
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kStep;
+  mojom_statement->sql = base::ReplaceStringPlaceholders(
       R"(
           -- This query uses a common table expression (CTE) to assign a
           -- numerical priority to each `confirmation_type` within the
@@ -347,20 +354,22 @@ void AdHistory::GetHighestRankedPlacementsForDateRange(
        base::NumberToString(ToChromeTimestampFromTime(from_time)),
        base::NumberToString(ToChromeTimestampFromTime(to_time))},
       nullptr);
-  BindRecords(&*command);
-  transaction->commands.push_back(std::move(command));
+  BindColumnTypes(&*mojom_statement);
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunDBTransaction(std::move(transaction),
+  RunDBTransaction(std::move(mojom_transaction),
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdHistory::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
     GetAdHistoryCallback callback) const {
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::READ;
-  command->sql = base::ReplaceStringPlaceholders(
+  mojom::DBTransactionInfoPtr mojom_transaction =
+      mojom::DBTransactionInfo::New();
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kStep;
+  mojom_statement->sql = base::ReplaceStringPlaceholders(
       R"(
           SELECT
             created_at,
@@ -380,18 +389,20 @@ void AdHistory::GetForCreativeInstanceId(
           WHERE
             creative_instance_id = '$2';)",
       {GetTableName(), creative_instance_id}, nullptr);
-  BindRecords(&*command);
-  transaction->commands.push_back(std::move(command));
+  BindColumnTypes(&*mojom_statement);
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunDBTransaction(std::move(transaction),
+  RunDBTransaction(std::move(mojom_transaction),
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdHistory::PurgeExpired(ResultCallback callback) const {
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql = base::ReplaceStringPlaceholders(
+  mojom::DBTransactionInfoPtr mojom_transaction =
+      mojom::DBTransactionInfo::New();
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kExecute;
+  mojom_statement->sql = base::ReplaceStringPlaceholders(
       R"(
           DELETE FROM
             $1
@@ -401,21 +412,22 @@ void AdHistory::PurgeExpired(ResultCallback callback) const {
        base::NumberToString(ToChromeTimestampFromTime(
            base::Time::Now() - kAdHistoryRetentionPeriod.Get()))},
       nullptr);
-  transaction->commands.push_back(std::move(command));
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunTransaction(std::move(transaction), std::move(callback));
+  RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
 
 std::string AdHistory::GetTableName() const {
   return kTableName;
 }
 
-void AdHistory::Create(mojom::DBTransactionInfo* const transaction) {
-  CHECK(transaction);
+void AdHistory::Create(mojom::DBTransactionInfo* const mojom_transaction) {
+  CHECK(mojom_transaction);
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kExecute;
+  mojom_statement->sql =
       R"(
           CREATE TABLE ad_history (
             id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -432,31 +444,33 @@ void AdHistory::Create(mojom::DBTransactionInfo* const transaction) {
             description TEXT NOT NULL,
             target_url TEXT NOT NULL
           );)";
-  transaction->commands.push_back(std::move(command));
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 
   // Optimize database query for `GetForDateRange`,
   // `GetHighestRankedPlacementsForDateRange`, and `PurgeExpired`.
-  CreateTableIndex(transaction, GetTableName(), /*columns=*/{"created_at"});
+  CreateTableIndex(mojom_transaction, GetTableName(),
+                   /*columns=*/{"created_at"});
 
   // Optimize database query for `GetHighestRankedPlacementsForDateRange`.
-  CreateTableIndex(transaction, GetTableName(),
+  CreateTableIndex(mojom_transaction, GetTableName(),
                    /*columns=*/{"confirmation_type"});
 
   // Optimize database query for `GetHighestRankedPlacementsForDateRange`.
-  CreateTableIndex(transaction, GetTableName(), /*columns=*/{"placement_id"});
+  CreateTableIndex(mojom_transaction, GetTableName(),
+                   /*columns=*/{"placement_id"});
 
   // Optimize database query for `GetForCreativeInstanceId`.
-  CreateTableIndex(transaction, GetTableName(),
+  CreateTableIndex(mojom_transaction, GetTableName(),
                    /*columns=*/{"creative_instance_id"});
 }
 
-void AdHistory::Migrate(mojom::DBTransactionInfo* const transaction,
+void AdHistory::Migrate(mojom::DBTransactionInfo* const mojom_transaction,
                         const int to_version) {
-  CHECK(transaction);
+  CHECK(mojom_transaction);
 
   switch (to_version) {
     case 42: {
-      MigrateToV42(transaction);
+      MigrateToV42(mojom_transaction);
       break;
     }
   }
@@ -464,26 +478,26 @@ void AdHistory::Migrate(mojom::DBTransactionInfo* const transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AdHistory::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
-                               const AdHistoryList& ad_history) const {
-  CHECK(transaction);
+void AdHistory::Insert(mojom::DBTransactionInfo* mojom_transaction,
+                       const AdHistoryList& ad_history) const {
+  CHECK(mojom_transaction);
 
   if (ad_history.empty()) {
     return;
   }
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::RUN;
-  command->sql = BuildInsertOrUpdateSql(&*command, ad_history);
-  transaction->commands.push_back(std::move(command));
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type = mojom::DBStatementInfo::OperationType::kRun;
+  mojom_statement->sql = BuildInsertSql(&*mojom_statement, ad_history);
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 }
 
-std::string AdHistory::BuildInsertOrUpdateSql(
-    mojom::DBCommandInfo* command,
-    const AdHistoryList& ad_history) const {
-  CHECK(command);
+std::string AdHistory::BuildInsertSql(mojom::DBStatementInfo* mojom_statement,
+                                      const AdHistoryList& ad_history) const {
+  CHECK(mojom_statement);
+  CHECK(!ad_history.empty());
 
-  const size_t binded_parameters_count = BindParameters(command, ad_history);
+  const size_t row_count = BindColumns(mojom_statement, ad_history);
 
   return base::ReplaceStringPlaceholders(
       R"(
@@ -501,8 +515,8 @@ std::string AdHistory::BuildInsertOrUpdateSql(
             description,
             target_url
           ) VALUES $2;)",
-      {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count=*/12, binded_parameters_count)},
+      {GetTableName(),
+       BuildBindColumnPlaceholders(/*column_count=*/12, row_count)},
       nullptr);
 }
 

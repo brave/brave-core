@@ -1410,19 +1410,20 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
                               captchaId:base::SysUTF8ToNSString(captcha_id)];
 }
 
-- (void)runDBTransaction:(brave_ads::mojom::DBTransactionInfoPtr)transaction
+- (void)runDBTransaction:
+            (brave_ads::mojom::DBTransactionInfoPtr)mojom_transaction
                 callback:(brave_ads::RunDBTransactionCallback)completion {
   __weak BraveAds* weakSelf = self;
   adsDatabase.AsyncCall(&brave_ads::Database::RunTransaction)
-      .WithArgs(std::move(transaction))
+      .WithArgs(std::move(mojom_transaction))
       .Then(base::BindOnce(
           ^(brave_ads::RunDBTransactionCallback callback,
-            brave_ads::mojom::DBCommandResponseInfoPtr response) {
+            brave_ads::mojom::DBStatementResultInfoPtr mojom_statement_result) {
             const auto strongSelf = weakSelf;
             if (!strongSelf || ![strongSelf isServiceRunning]) {
               return;
             }
-            std::move(callback).Run(std::move(response));
+            std::move(callback).Run(std::move(mojom_statement_result));
           },
           std::move(completion)));
 }

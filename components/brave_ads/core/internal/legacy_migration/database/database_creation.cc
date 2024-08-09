@@ -32,75 +32,71 @@ namespace brave_ads::database {
 
 namespace {
 
-void Create(mojom::DBTransactionInfo* const transaction) {
-  CHECK(transaction);
+void Create(mojom::DBTransactionInfo* const mojom_transaction) {
+  CHECK(mojom_transaction);
 
   table::ConfirmationQueue confirmation_queue_database_table;
-  confirmation_queue_database_table.Create(transaction);
+  confirmation_queue_database_table.Create(mojom_transaction);
 
   table::AdEvents ad_events_database_table;
-  ad_events_database_table.Create(transaction);
+  ad_events_database_table.Create(mojom_transaction);
 
   table::Transactions transactions_database_table;
-  transactions_database_table.Create(transaction);
+  transactions_database_table.Create(mojom_transaction);
 
   table::AdHistory ad_history_database_table;
-  ad_history_database_table.Create(transaction);
+  ad_history_database_table.Create(mojom_transaction);
 
   table::Campaigns campaigns_database_table;
-  campaigns_database_table.Create(transaction);
+  campaigns_database_table.Create(mojom_transaction);
 
   table::Segments segments_database_table;
-  segments_database_table.Create(transaction);
+  segments_database_table.Create(mojom_transaction);
 
   table::Deposits deposits_database_table;
-  deposits_database_table.Create(transaction);
+  deposits_database_table.Create(mojom_transaction);
 
   table::CreativeSetConversions creative_set_conversion_database_table;
-  creative_set_conversion_database_table.Create(transaction);
+  creative_set_conversion_database_table.Create(mojom_transaction);
 
   table::CreativeNotificationAds creative_notification_ads_database_table;
-  creative_notification_ads_database_table.Create(transaction);
+  creative_notification_ads_database_table.Create(mojom_transaction);
 
   table::CreativeInlineContentAds creative_inline_content_ads_database_table;
-  creative_inline_content_ads_database_table.Create(transaction);
+  creative_inline_content_ads_database_table.Create(mojom_transaction);
 
   table::CreativeNewTabPageAds creative_new_tab_page_ads_database_table;
-  creative_new_tab_page_ads_database_table.Create(transaction);
+  creative_new_tab_page_ads_database_table.Create(mojom_transaction);
 
   table::CreativeNewTabPageAdWallpapers
       creative_new_tab_page_ad_wallpapers_database_table;
-  creative_new_tab_page_ad_wallpapers_database_table.Create(transaction);
+  creative_new_tab_page_ad_wallpapers_database_table.Create(mojom_transaction);
 
   table::CreativePromotedContentAds
       creative_promoted_content_ads_database_table;
-  creative_promoted_content_ads_database_table.Create(transaction);
+  creative_promoted_content_ads_database_table.Create(mojom_transaction);
 
   table::CreativeAds creative_ads_database_table;
-  creative_ads_database_table.Create(transaction);
+  creative_ads_database_table.Create(mojom_transaction);
 
   table::GeoTargets geo_targets_database_table;
-  geo_targets_database_table.Create(transaction);
+  geo_targets_database_table.Create(mojom_transaction);
 
   table::Dayparts dayparts_database_table;
-  dayparts_database_table.Create(transaction);
+  dayparts_database_table.Create(mojom_transaction);
 }
 
 }  // namespace
 
 void Create(ResultCallback callback) {
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  mojom::DBTransactionInfoPtr mojom_transaction =
+      mojom::DBTransactionInfo::New();
+  mojom_transaction->version = kVersion;
+  mojom_transaction->compatible_version = kCompatibleVersion;
 
-  Create(&*transaction);
+  Create(&*mojom_transaction);
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::MIGRATE;
-
-  transaction->version = kVersion;
-  transaction->compatible_version = kCompatibleVersion;
-  transaction->commands.push_back(std::move(command));
-
-  RunTransaction(std::move(transaction), std::move(callback));
+  RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
 
 }  // namespace brave_ads::database

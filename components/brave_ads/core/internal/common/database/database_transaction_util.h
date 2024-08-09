@@ -11,7 +11,7 @@
 
 namespace brave_ads::database {
 
-void RunTransaction(mojom::DBTransactionInfoPtr transaction,
+void RunTransaction(mojom::DBTransactionInfoPtr mojom_transaction,
                     ResultCallback callback);
 
 }  // namespace brave_ads::database

@@ -18,8 +18,9 @@ class TableInterface {
 
   virtual std::string GetTableName() const = 0;
 
-  virtual void Create(mojom::DBTransactionInfo* transaction) = 0;
-  virtual void Migrate(mojom::DBTransactionInfo* transaction, int to_version);
+  virtual void Create(mojom::DBTransactionInfo* mojom_transaction) = 0;
+  virtual void Migrate(mojom::DBTransactionInfo* mojom_transaction,
+                       int to_version);
 };
 
 }  // namespace brave_ads::database

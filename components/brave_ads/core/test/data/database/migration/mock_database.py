@@ -13,8 +13,8 @@ import sqlite3
 import string
 import sys
 
-DEFAULT_TEXT_PARAMETER_LENGTH = 32
-DEFAULT_LONGVARCHAR_PARAMETER_LENGTH = 64
+DEFAULT_TEXT_COLUMN_LENGTH = 32
+DEFAULT_LONGVARCHAR_COLUMN_LENGTH = 64
 
 MILLISECONDS_IN_SECOND = 1000
 
@@ -50,53 +50,53 @@ def generate_mock_chrome_webkit_timestamp():
     return chrome_webkit_delta_in_seconds * MILLISECONDS_IN_SECOND
 
 
-def generate_mock_parameter_with_random_test_data(connection, table_name,
-                                                  column_name, column_type):
+def generate_mock_column_with_random_test_data(connection, table_name,
+                                               column_name, column_type):
     if column_type in ('INTEGER', 'INT', 'NUMERIC'):
-        mock_parameter = secrets.randbelow(100)
+        mock_column = secrets.randbelow(100)
     elif column_type == 'TEXT':
-        mock_parameter = generate_mock_string(DEFAULT_TEXT_PARAMETER_LENGTH)
+        mock_column = generate_mock_string(DEFAULT_TEXT_COLUMN_LENGTH)
     elif column_type == 'LONGVARCHAR':
         longvarchar_length = get_longvarchar_length(connection, table_name,
                                                     column_name)
         string_length = longvarchar_length[
-            0] if longvarchar_length else DEFAULT_LONGVARCHAR_PARAMETER_LENGTH
-        mock_parameter = generate_mock_string(string_length)
+            0] if longvarchar_length else DEFAULT_LONGVARCHAR_COLUMN_LENGTH
+        mock_column = generate_mock_string(string_length)
     elif column_type in ('REAL', 'DOUBLE'):
-        mock_parameter = round(secrets.SystemRandom().uniform(0.0, 1.0), 1)
+        mock_column = round(secrets.SystemRandom().uniform(0.0, 1.0), 1)
     elif column_type == 'BLOB':
-        mock_parameter = generate_mock_blob()
+        mock_column = generate_mock_blob()
     elif column_type in ('DATE', 'TIMESTAMP'):
-        mock_parameter = generate_mock_chrome_webkit_timestamp()
+        mock_column = generate_mock_chrome_webkit_timestamp()
     else:
         sys.exit(f"ERROR: Unsupported column type {column_type}")
 
-    return mock_parameter
+    return mock_column
 
 
-def generate_mock_parameter_with_fixed_test_data(column_type):
+def generate_mock_column_with_fixed_test_data(column_type):
     if column_type in ('INTEGER', 'INT', 'NUMERIC'):
-        mock_parameter = 0
+        mock_column = 0
     elif column_type in ('TEXT', 'LONGVARCHAR'):
-        mock_parameter = ""
+        mock_column = ""
     elif column_type in ('REAL', 'DOUBLE'):
-        mock_parameter = 0.0
+        mock_column = 0.0
     elif column_type == 'BLOB':
-        mock_parameter = b""
+        mock_column = b""
     elif column_type in ('DATE', 'TIMESTAMP'):
-        mock_parameter = 0
+        mock_column = 0
     else:
         sys.exit(f"ERROR: Unsupported column type {column_type}")
 
-    return mock_parameter
+    return mock_column
 
 
-def generate_mock_parameters(connection, table_name, should_mock_column_nulls,
-                             should_use_random_test_data):
+def generate_mock_columns(connection, table_name, should_mock_column_nulls,
+                          should_use_random_test_data):
     auto_increment_column_names = get_auto_increment_column_names(
         connection, table_name)
 
-    mock_parameters = []
+    mock_columns = []
 
     table_info = get_table_info(connection, table_name)
     for column_name, column_type, column_notnull, column_pk in zip(
@@ -106,36 +106,36 @@ def generate_mock_parameters(connection, table_name, should_mock_column_nulls,
             # Do not mock auto-increment columns.
             continue
 
-        mock_parameter = None
+        mock_column = None
 
         if column_pk == 1:
-            # Always mock the parameter if the column is a primary key.
-            mock_parameter = (
-                generate_mock_parameter_with_random_test_data(
+            # Always mock the column if the column is a primary key.
+            mock_column = (
+                generate_mock_column_with_random_test_data(
                     connection, table_name, column_name, column_type)
                 if is_column_unique(connection, table_name, column_name)
                 or should_use_random_test_data else
-                generate_mock_parameter_with_fixed_test_data(column_type))
+                generate_mock_column_with_fixed_test_data(column_type))
         elif column_notnull == 1:
-            # Always mock the parameter if the column has a NOT NULL constraint.
-            mock_parameter = (
-                generate_mock_parameter_with_random_test_data(
+            # Always mock the column if the column has a NOT NULL constraint.
+            mock_column = (
+                generate_mock_column_with_random_test_data(
                     connection, table_name, column_name, column_type)
                 if is_column_unique(connection, table_name, column_name)
                 or should_use_random_test_data else
-                generate_mock_parameter_with_fixed_test_data(column_type))
+                generate_mock_column_with_fixed_test_data(column_type))
         else:
-            # Only mock the parameter if we should mock NULL columns.
+            # Only mock the column if we should mock NULL columns.
             if should_mock_column_nulls:
-                mock_parameter = (
-                    generate_mock_parameter_with_random_test_data(
+                mock_column = (
+                    generate_mock_column_with_random_test_data(
                         connection, table_name, column_name, column_type)
                     if should_use_random_test_data else
-                    generate_mock_parameter_with_fixed_test_data(column_type))
+                    generate_mock_column_with_fixed_test_data(column_type))
 
-        mock_parameters.append(mock_parameter)
+        mock_columns.append(mock_column)
 
-    return mock_parameters
+    return mock_columns
 
 
 def create_connection(database):
@@ -286,7 +286,7 @@ def delete_table_auto_increment_counter(connection, table_name):
         pass
 
 
-def insert_mock_table_row(connection, table_name, parameters):
+def insert_mock_table_row(connection, table_name, columns):
     auto_increment_column_names = get_auto_increment_column_names(
         connection, table_name)
 
@@ -298,7 +298,7 @@ def insert_mock_table_row(connection, table_name, parameters):
 
     comma_separated_filtered_column_names = ', '.join(filtered_column_names)
 
-    bind_parameters = ", ".join(["?"] * len(parameters))
+    bind_columns = ", ".join(["?"] * len(columns))
 
     connection_cursor = connection.cursor()
     try:
@@ -306,47 +306,45 @@ def insert_mock_table_row(connection, table_name, parameters):
             f'''
             INSERT INTO {table_name} (
               {comma_separated_filtered_column_names}
-            ) VALUES ({bind_parameters})
-            ''', parameters)
+            ) VALUES ({bind_columns})
+            ''', columns)
     except sqlite3.IntegrityError as e:
-        print(f"ERROR: Failed to insert {parameters} into {table_name}: {e}")
+        print(f"ERROR: Failed to insert {columns} into {table_name}: {e}")
         raise
 
 
 def insert_mock_table_rows(connection, table_name):
     # Generate and insert a table row with all columns populated, including
     # those that can be NULL with random test data.
-    mock_parameters = generate_mock_parameters(connection,
-                                               table_name,
-                                               should_mock_column_nulls=True,
-                                               should_use_random_test_data=True)
-    insert_mock_table_row(connection, table_name, mock_parameters)
+    mock_columns = generate_mock_columns(connection,
+                                         table_name,
+                                         should_mock_column_nulls=True,
+                                         should_use_random_test_data=True)
+    insert_mock_table_row(connection, table_name, mock_columns)
 
     # Generate and insert a table row with all columns populated, including
     # those that can be NULL with fixed test data.
-    mock_parameters = generate_mock_parameters(
-        connection,
-        table_name,
-        should_mock_column_nulls=True,
-        should_use_random_test_data=False)
-    insert_mock_table_row(connection, table_name, mock_parameters)
+    mock_columns = generate_mock_columns(connection,
+                                         table_name,
+                                         should_mock_column_nulls=True,
+                                         should_use_random_test_data=False)
+    insert_mock_table_row(connection, table_name, mock_columns)
 
     # Generate and insert a table row with only non-NULL columns populated with
     # random test data.
-    mock_parameters = generate_mock_parameters(connection,
-                                               table_name,
-                                               should_mock_column_nulls=False,
-                                               should_use_random_test_data=True)
-    insert_mock_table_row(connection, table_name, mock_parameters)
+    mock_columns = generate_mock_columns(connection,
+                                         table_name,
+                                         should_mock_column_nulls=False,
+                                         should_use_random_test_data=True)
+    insert_mock_table_row(connection, table_name, mock_columns)
 
     # Generate and insert a table row with only non-NULL columns populated with
     # fixed test data.
-    mock_parameters = generate_mock_parameters(
-        connection,
-        table_name,
-        should_mock_column_nulls=False,
-        should_use_random_test_data=False)
-    insert_mock_table_row(connection, table_name, mock_parameters)
+    mock_columns = generate_mock_columns(connection,
+                                         table_name,
+                                         should_mock_column_nulls=False,
+                                         should_use_random_test_data=False)
+    insert_mock_table_row(connection, table_name, mock_columns)
 
 
 def mock_table(connection, table_name):
