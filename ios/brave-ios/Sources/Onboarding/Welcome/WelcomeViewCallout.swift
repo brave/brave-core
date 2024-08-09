@@ -58,7 +58,6 @@ public enum WelcomeViewCalloutState {
   case defaultBrowser(info: WelcomeViewDefaultBrowserDetails)
   case settings(title: String, details: String)
   case p3a(info: WelcomeViewDefaultBrowserDetails)
-  case defaultBrowserCallout(info: WelcomeViewDefaultBrowserDetails)
 }
 
 class WelcomeViewCallout: UIView {
@@ -570,90 +569,6 @@ class WelcomeViewCallout: UIView {
       contentStackView.setCustomSpacing(horizontalLayoutMargin, after: actionToggle)
       contentStackView.setCustomSpacing(horizontalLayoutMargin, after: detailsLabel)
       contentStackView.setCustomSpacing(3 * horizontalLayoutMargin, after: actionDescriptionLabel)
-      contentStackView.setCustomSpacing(horizontalLayoutMargin, after: primaryButton)
-    case .defaultBrowserCallout(let info):
-      contentStackView.do {
-        $0.layoutMargins = UIEdgeInsets(
-          top: 2 * UX.verticalLayoutMargin,
-          left: 20,
-          bottom: UX.verticalLayoutMargin,
-          right: 20
-        )
-      }
-
-      titleLabel.do {
-        $0.text = info.title
-        $0.textAlignment = .left
-        $0.font = .preferredFont(for: .title3, weight: .bold)
-        $0.alpha = 1.0
-        $0.isHidden = false
-      }
-
-      detailsLabel.do {
-        $0.text = info.details
-        $0.font = .preferredFont(for: .body, weight: .regular)
-        $0.alpha = 1.0
-        $0.isHidden = false
-      }
-
-      secondaryDetailsLabel.do {
-        $0.text = info.details
-        $0.font = .preferredFont(for: .body, weight: .bold)
-        $0.alpha = 1.0
-        $0.isHidden = false
-      }
-
-      primaryButton.do {
-        $0.setTitle(info.primaryButtonTitle, for: .normal)
-        $0.titleLabel?.font = .preferredFont(for: .body, weight: .regular)
-        $0.addAction(
-          UIAction(
-            identifier: .init(rawValue: "primary.action"),
-            handler: { _ in
-              info.primaryButtonAction()
-            }
-          ),
-          for: .touchUpInside
-        )
-        $0.alpha = 1.0
-        $0.isHidden = false
-      }
-
-      secondaryLabel.do {
-        $0.text = Strings.Callout.defaultBrowserCalloutSecondaryButtonDescription
-        $0.textAlignment = .right
-        $0.font = .preferredFont(for: .body, weight: .regular)
-        $0.alpha = 1.0
-        $0.isHidden = false
-        $0.numberOfLines = 1
-        $0.minimumScaleFactor = 0.7
-        $0.adjustsFontSizeToFitWidth = true
-      }
-
-      secondaryButton.do {
-        $0.setTitle(info.secondaryButtonTitle, for: .normal)
-        $0.titleLabel?.font = .preferredFont(for: .title3, weight: .bold)
-        $0.addAction(
-          UIAction(
-            identifier: .init(rawValue: "secondary.action"),
-            handler: { _ in
-              info.secondaryButtonAction?()
-            }
-          ),
-          for: .touchUpInside
-        )
-        $0.alpha = 1.0
-        $0.isHidden = false
-      }
-
-      secondaryButtonContentView.do {
-        $0.alpha = 1.0
-        $0.isHidden = false
-      }
-
-      contentStackView.setCustomSpacing(horizontalLayoutMargin, after: titleLabel)
-      contentStackView.setCustomSpacing(horizontalLayoutMargin, after: detailsLabel)
-      contentStackView.setCustomSpacing(2 * horizontalLayoutMargin, after: secondaryDetailsLabel)
       contentStackView.setCustomSpacing(horizontalLayoutMargin, after: primaryButton)
     }
   }

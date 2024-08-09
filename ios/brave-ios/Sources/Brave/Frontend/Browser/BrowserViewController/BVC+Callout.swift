@@ -47,7 +47,7 @@ extension BrowserViewController {
     case .bottomBar:
       presentBottomBarCallout(skipSafeGuards: skipSafeGuards)
     case .defaultBrowser:
-      presentDefaultBrowserScreenCallout()
+      presentDefaultBrowserScreenCallout(skipSafeGuards: skipSafeGuards)
     case .rewards:
       presentBraveRewardsScreenCallout(skipSafeGuards: skipSafeGuards)
     case .vpnPromotion:
@@ -131,37 +131,16 @@ extension BrowserViewController {
     present(popup, animated: false)
   }
 
-  private func presentDefaultBrowserScreenCallout() {
-    let onboardingController = WelcomeViewController(
-      state: WelcomeViewCalloutState.defaultBrowserCallout(
-        info: WelcomeViewCalloutState.WelcomeViewDefaultBrowserDetails(
-          title: Strings.Callout.defaultBrowserCalloutTitle,
-          details: Strings.Callout.defaultBrowserCalloutDescription,
-          primaryButtonTitle: Strings.Callout.defaultBrowserCalloutPrimaryButtonTitle,
-          secondaryButtonTitle: Strings.Callout.defaultBrowserCalloutSecondaryButtonTitle,
-          primaryButtonAction: { [weak self] in
-            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-              return
-            }
+  private func presentDefaultBrowserScreenCallout(skipSafeGuards: Bool = false) {    
+    if !skipSafeGuards {
+      let isLikelyDefault = DefaultBrowserHelper.isBraveLikelyDefaultBrowser()
 
-            Preferences.General.defaultBrowserCalloutDismissed.value = true
-            self?.isOnboardingOrFullScreenCalloutPresented = true
+      guard !isLikelyDefault else {
+        return
+      }
+    }
+    
 
-            UIApplication.shared.open(settingsUrl)
-            self?.dismiss(animated: false)
-          },
-          secondaryButtonAction: { [weak self] in
-            self?.isOnboardingOrFullScreenCalloutPresented = true
-
-            self?.dismiss(animated: false)
-          }
-        )
-      ),
-      p3aUtilities: braveCore.p3aUtils,
-      attributionManager: attributionManager
-    )
-
-    present(onboardingController, animated: true)
   }
 
   private func presentBraveRewardsScreenCallout(skipSafeGuards: Bool = false) {
