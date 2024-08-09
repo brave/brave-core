@@ -101,7 +101,7 @@ TextRecognitionDialogView::TextRecognitionDialogView(const SkBitmap& image)
                          base::BindRepeating(
                              &TextRecognitionDialogView::OnShowResultTimerFired,
                              base::Unretained(this))) {
-  SetModalType(ui::MODAL_TYPE_CHILD);
+  SetModalType(ui::mojom::ModalType::kChild);
   SetButtons(ui::DIALOG_BUTTON_OK);
   SetButtonLabel(ui::DIALOG_BUTTON_OK,
                  brave_l10n::GetLocalizedResourceUTF16String(

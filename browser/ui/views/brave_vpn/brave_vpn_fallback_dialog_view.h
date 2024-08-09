@@ -35,7 +35,7 @@ class BraveVpnFallbackDialogView : public views::DialogDelegateView {
   void OnClosing();
 
   // views::DialogDelegate overrides:
-  ui::ModalType GetModalType() const override;
+  ui::mojom::ModalType GetModalType() const override;
   bool ShouldShowCloseButton() const override;
   bool ShouldShowWindowTitle() const override;
 
