@@ -186,13 +186,14 @@ export const Nfts = ({
   const userNonSpamNftIds =
     userTokensRegistry?.nonSpamTokenIds ?? emptyTokenIdsList
 
-  const { data: spamTokenBalancesRegistry } = useBalancesFetcher({
-    accounts,
-    networks,
-    isSpamRegistry: true
-  })
+  const { data: spamTokenBalancesRegistry, isLoading: isLoadingSpamBalances } =
+    useBalancesFetcher({
+      accounts,
+      networks,
+      isSpamRegistry: true
+    })
 
-  const { data: tokenBalancesRegistry } =
+  const { data: tokenBalancesRegistry, isLoading: isLoadingTokenBalances } =
     // will fetch balances for all accounts so we can filter NFTs by accounts
     useBalancesFetcher(
       isFetchingTokens || networks.length === 0 || allAccounts.length === 0
@@ -402,11 +403,11 @@ export const Nfts = ({
   }, [searchResults, currentPageNumber])
 
   const isLoadingAssets =
+    isLoadingTokenBalances ||
     !assetAutoDiscoveryCompleted ||
     (groupNftsByCollection &&
       isFetchingLatestAssetIdsByCollectionNameRegistry) ||
-    (selectedTab === 'hidden' &&
-      (isLoadingSpamNfts || !spamTokenBalancesRegistry))
+    (selectedTab === 'hidden' && (isLoadingSpamNfts || isLoadingSpamBalances))
 
   // methods
   const onSearchValueChange = React.useCallback(
