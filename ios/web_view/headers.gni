@@ -7,6 +7,7 @@
 # as any additions found in //brave/ios/web_view/public
 
 ios_web_view_public_headers = [
+  "//brave/ios/web_view/public/cwv_ssl_status_extras.h",
   "//brave/ios/web_view/public/cwv_web_view_extras.h",
   "//brave/ios/web_view/public/cwv_x509_certificate_extras.h",
 

@@ -3547,27 +3547,16 @@ extension BrowserViewController {
       // TODO: Instead of showing only the first cert in the chain,
       // have a UI that allows users to select any certificate in the chain (similar to Desktop browsers)
       if let serverCertificate = visibleSSLStatus.certificate?.certificateRef,
-        let certificate = BraveCertificateModel(certificate: serverCertificate)
+        let certificate = BraveCertificateModel(certificate: serverCertificate),
+        let lastCommittedURL = await webView.lastCommittedURL
       {
-
         var errorDescription: String?
-
-        // FIXME: Evaluate Certificate Status instead or expose a method to evaluate SecCertificate
-        do {
-          //          try await BraveCertificateUtils.evaluateTrust(trust, for: host)
-        } catch {
-          Logger.module.error("\(error.localizedDescription)")
-
-          // Remove the common-name from the first part of the error message
-          // This is because the certificate viewer already displays it.
-          // If it doesn't match, it won't be removed, so this is fine.
-          errorDescription = error.localizedDescription
-          if let range = errorDescription?.range(of: "“\(certificate.subjectName.commonName)” ")
-            ?? errorDescription?.range(of: "\"\(certificate.subjectName.commonName)\" ")
-          {
-            errorDescription =
-              errorDescription?.replacingCharacters(in: range, with: "").capitalizeFirstLetter
-          }
+        if visibleSSLStatus.securityStyle == .authenticationBroken,
+          visibleSSLStatus.isCertStatusError
+        {
+          errorDescription = visibleSSLStatus.certStatusErrors(for: lastCommittedURL)
+            .map(\.shortDescription)
+            .joined(separator: ", ")
         }
 
         await MainActor.run { [errorDescription] in
