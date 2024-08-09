@@ -23,15 +23,14 @@
             android:layout_gravity="center_horizontal" />
 
         <TextView
-            style="@style/HeadingH3"
+            style="@style/HeadingH3Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_marginHorizontal="32dp"
             android:layout_marginBottom="8dp"
             android:text="@string/creating_wallet_onboarding_text"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold" />
+            android:textColor="@color/text_primary" />
 
         <TextView
             style="@style/DefaultRegular"

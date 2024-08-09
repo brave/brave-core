@@ -12,7 +12,7 @@
 
         <TextView
             android:id="@+id/supported_networks"
-            style="@style/HeadingH3"
+            style="@style/HeadingH3Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -22,8 +22,7 @@
             android:layout_marginTop="14dp"
             android:layout_marginBottom="18dp"
             android:text="@string/supported_networks"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold" />
+            android:textColor="@color/text_primary" />
 
         <TextView
             style="@style/DefaultRegular"

@@ -18,7 +18,7 @@
 
         <TextView
             android:id="@+id/before_we_begin"
-            style="@style/HeadingH3"
+            style="@style/HeadingH3Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -28,8 +28,7 @@
             android:layout_marginTop="14dp"
             android:layout_marginBottom="18dp"
             android:text="@string/before_we_begin"
-            android:textColor="@color/wallet_text_color"
-            android:textStyle="bold" />
+            android:textColor="@color/wallet_text_color" />
 
         <TextView
             style="@style/DefaultRegular"

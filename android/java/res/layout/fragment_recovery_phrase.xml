@@ -15,7 +15,7 @@
 
         <TextView
             android:id="@+id/recovery_phrase_title"
-            style="@style/HeadingH3"
+            style="@style/HeadingH3Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -25,8 +25,7 @@
             android:layout_marginTop="14dp"
             android:layout_marginBottom="18dp"
             android:text="@string/recovery_phrase_title"
-            android:textColor="@color/wallet_text_color"
-            android:textStyle="bold"/>
+            android:textColor="@color/wallet_text_color" />
 
         <TextView
             style="@style/DefaultRegular"
@@ -65,7 +64,7 @@
 
         <TextView
             android:id="@+id/copy"
-            style="@style/DefaultRegular"
+            style="@style/DefaultBold"
             android:layout_below="@+id/recovery_phrase_recycler_view"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
@@ -78,7 +77,6 @@
             android:focusable="true"
             android:padding="16dp"
             android:text="@string/brave_wallet_click_to_copy"
-            android:textStyle="bold"
             android:textSize="16sp"
             android:textColor="@color/text_interactive" />
 
@@ -93,7 +91,7 @@
 
         <TextView
             android:id="@+id/skip"
-            style="@style/DefaultRegular"
+            style="@style/DefaultBold"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
@@ -106,7 +104,6 @@
             android:focusable="true"
             android:padding="16dp"
             android:text="@string/skip"
-            android:textStyle="bold"
             android:textSize="16sp"
             android:textColor="@color/text_secondary" />
 

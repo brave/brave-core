@@ -22,13 +22,12 @@
             android:layout_gravity="center" >
 
             <TextView
-                style="@style/HeadingH3"
+                style="@style/HeadingH3Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="@string/check_word"
-                android:textColor="@color/text_primary"
-                android:textStyle="bold" />
+                android:textColor="@color/text_primary" />
 
             <ImageView
                 android:id="@+id/recovery_step_1"
@@ -107,7 +106,7 @@
 
         <TextView
             android:id="@+id/skip"
-            style="@style/DefaultRegular"
+            style="@style/DefaultBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -119,7 +118,6 @@
             android:focusable="true"
             android:padding="16dp"
             android:text="@string/skip"
-            android:textStyle="bold"
             android:textSize="16sp"
             android:textColor="@color/text_secondary" />
     </LinearLayout>

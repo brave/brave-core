@@ -66,7 +66,7 @@
 
     <TextView
         android:id="@+id/btn_unlock_wallet_restore"
-        style="@style/DefaultRegular"
+        style="@style/DefaultBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -76,7 +76,6 @@
         android:focusable="true"
         android:padding="16dp"
         android:text="@string/restore"
-        android:textStyle="bold"
         android:textSize="16sp"
         android:textColor="@color/brave_wallet_dn_button_color" />
 

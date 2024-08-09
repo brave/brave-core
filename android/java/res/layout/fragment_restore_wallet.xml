@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/restore_title"
-        style="@style/HeadingH3"
+        style="@style/HeadingH3Bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
@@ -16,8 +16,7 @@
         android:layout_marginBottom="18dp"
         android:gravity="center_horizontal"
         android:text="@string/restore_crypto_account"
-        android:textColor="@color/text_primary"
-        android:textStyle="bold" />
+        android:textColor="@color/text_primary" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -109,7 +108,7 @@
 
             <TextView
                 android:id="@+id/recovery_phrase_switch"
-                style="@style/DefaultRegular"
+                style="@style/DefaultBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
@@ -120,7 +119,6 @@
                 android:text="@string/recovery_phrase_24"
                 android:textColor="@color/text_interactive"
                 android:textSize="16sp"
-                android:textStyle="bold"
                 android:layout_gravity="center"
                 app:layout_constraintBottom_toTopOf="@+id/continue_button"
                 app:layout_constraintStart_toStartOf="parent"
