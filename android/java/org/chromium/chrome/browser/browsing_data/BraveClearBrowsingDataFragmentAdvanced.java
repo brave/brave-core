@@ -26,30 +26,43 @@ public class BraveClearBrowsingDataFragmentAdvanced extends ClearBrowsingDataFra
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
 
-        ClickableSpansTextMessagePreference clearBraveAdsDataPref =
-                new ClickableSpansTextMessagePreference(getContext(), null);
-        clearBraveAdsDataPref.setSummary(buildClearBraveAdsDataText());
-        getPreferenceScreen().addPreference(clearBraveAdsDataPref);
+        getPreferenceScreen()
+                .addPreference(
+                        BraveRewardsHelper.isRewardsEnabled()
+                                ? buildResetBraveRewardsDataPref()
+                                : buildClearBraveAdsDataPref());
     }
 
-    SpannableString buildClearBraveAdsDataText() {
-        if (BraveRewardsHelper.isRewardsEnabled()) {
-            return SpanApplier.applySpans(
-                    getContext().getString(R.string.reset_brave_rewards_data),
-                    new SpanInfo(
-                            "<link1>",
-                            "</link1>",
-                            new NoUnderlineClickableSpan(
-                                    requireContext(), resetBraveRewardsDataCallback())));
-        } else {
-            return SpanApplier.applySpans(
-                    getContext().getString(R.string.clear_brave_ads_data),
-                    new SpanInfo(
-                            "<link1>",
-                            "</link1>",
-                            new NoUnderlineClickableSpan(
-                                    requireContext(), clearBraveAdsDataCallback())));
-        }
+    private ClickableSpansTextMessagePreference buildResetBraveRewardsDataPref() {
+        SpannableString resetBraveRewardsDataText =
+                SpanApplier.applySpans(
+                        getContext().getString(R.string.reset_brave_rewards_data),
+                        new SpanInfo(
+                                "<link1>",
+                                "</link1>",
+                                new NoUnderlineClickableSpan(
+                                        requireContext(), resetBraveRewardsDataCallback())));
+
+        ClickableSpansTextMessagePreference resetBraveRewardsDataPref =
+                new ClickableSpansTextMessagePreference(getContext(), null);
+        resetBraveRewardsDataPref.setSummary(resetBraveRewardsDataText);
+        return resetBraveRewardsDataPref;
+    }
+
+    private ClickableSpansTextMessagePreference buildClearBraveAdsDataPref() {
+        SpannableString clearBraveAdsDataText =
+                SpanApplier.applySpans(
+                        getContext().getString(R.string.clear_brave_ads_data),
+                        new SpanInfo(
+                                "<link1>",
+                                "</link1>",
+                                new NoUnderlineClickableSpan(
+                                        requireContext(), clearBraveAdsDataCallback())));
+
+        ClickableSpansTextMessagePreference clearBraveAdsDataPref =
+                new ClickableSpansTextMessagePreference(getContext(), null);
+        clearBraveAdsDataPref.setSummary(clearBraveAdsDataText);
+        return clearBraveAdsDataPref;
     }
 
     private Callback<View> resetBraveRewardsDataCallback() {
