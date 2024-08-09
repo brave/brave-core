@@ -142,13 +142,16 @@ int FarbleInteger(ExecutionContext* context,
   return cache.FarbledInteger(key, spoof_value, min_value, max_value);
 }
 
-bool BlockScreenFingerprinting(ExecutionContext* context) {
+bool BlockScreenFingerprinting(ExecutionContext* context,
+                               bool early /* = false */) {
   if (!base::FeatureList::IsEnabled(
           blink::features::kBraveBlockScreenFingerprinting)) {
     return false;
   }
   BraveFarblingLevel level = GetBraveFarblingLevelFor(
-      context, ContentSettingsType::BRAVE_WEBCOMPAT_SCREEN,
+      context,
+      early ? ContentSettingsType::BRAVE_WEBCOMPAT_NONE
+            : ContentSettingsType::BRAVE_WEBCOMPAT_SCREEN,
       BraveFarblingLevel::OFF);
   return level != BraveFarblingLevel::OFF;
 }
@@ -176,7 +179,6 @@ int FarbledPointerScreenCoordinate(const DOMWindow* view,
 
 BraveSessionCache::BraveSessionCache(ExecutionContext& context)
     : Supplement<ExecutionContext>(context) {
-  farbling_enabled_ = false;
   farbling_level_ = BraveFarblingLevel::OFF;
   scoped_refptr<const blink::SecurityOrigin> origin;
   if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) {
@@ -226,7 +228,6 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
                    ? BraveFarblingLevel::OFF
                    : BraveFarblingLevel::BALANCED);
   }
-  farbling_enabled_ = true;
 }
 
 BraveSessionCache& BraveSessionCache::From(ExecutionContext& context) {
@@ -363,7 +364,7 @@ int BraveSessionCache::FarbledInteger(FarbleKey key,
 bool BraveSessionCache::AllowFontFamily(
     blink::WebContentSettingsClient* settings,
     const AtomicString& family_name) {
-  if (!farbling_enabled_ || !settings ||
+  if (!settings ||
       GetBraveFarblingLevel(ContentSettingsType::BRAVE_WEBCOMPAT_FONT) ==
           BraveFarblingLevel::OFF ||
       !settings->IsReduceLanguageEnabled()) {
@@ -399,7 +400,7 @@ FarblingPRNG BraveSessionCache::MakePseudoRandomGenerator(FarbleKey key) {
 
 BraveFarblingLevel BraveSessionCache::GetBraveFarblingLevel(
     ContentSettingsType webcompat_content_settings) {
-  if (!farbling_enabled_ || farbling_level_ == BraveFarblingLevel::OFF) {
+  if (farbling_level_ == BraveFarblingLevel::OFF) {
     return BraveFarblingLevel::OFF;
   }
   auto item = farbling_levels_.find(webcompat_content_settings);
