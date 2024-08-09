@@ -69,6 +69,19 @@ class MeldIntegrationService : public KeyedService,
   void GetCountries(mojom::MeldFilterPtr filter,
                     GetCountriesCallback callback) override;
 
+  void CryptoBuyWidgetCreate(mojom::CryptoBuySessionDataPtr session_data,
+                             mojom::CryptoWidgetCustomerDataPtr customer_data,
+                             CryptoBuyWidgetCreateCallback callback) override;
+
+  void CryptoSellWidgetCreate(mojom::CryptoSellSessionDataPtr session_data,
+                              mojom::CryptoWidgetCustomerDataPtr customer_data,
+                              CryptoSellWidgetCreateCallback callback) override;
+
+  void CryptoTransferWidgetCreate(
+      mojom::CryptoTransferSessionDataPtr session_data,
+      mojom::CryptoWidgetCustomerDataPtr customer_data,
+      CryptoTransferWidgetCreateCallback callback) override;
+
  private:
   friend class MeldIntegrationServiceUnitTest;
   mojo::ReceiverSet<mojom::MeldIntegrationService> receivers_;
@@ -114,6 +127,26 @@ class MeldIntegrationService : public KeyedService,
   void OnParseCountries(
       GetCountriesCallback callback,
       std::optional<std::vector<mojom::MeldCountryPtr>> countries) const;
+
+  void OnCryptoBuyWidgetCreate(CryptoBuyWidgetCreateCallback callback,
+                               APIRequestResult api_request_result) const;
+  void OnParseCryptoBuyWidgetCreate(
+      CryptoBuyWidgetCreateCallback callback,
+      mojom::MeldCryptoWidgetPtr crypto_widget) const;
+
+  void OnCryptoSellWidgetCreate(CryptoSellWidgetCreateCallback callback,
+                                APIRequestResult api_request_result) const;
+
+  void OnParseCryptoSellWidgetCreate(
+      CryptoSellWidgetCreateCallback callback,
+      mojom::MeldCryptoWidgetPtr crypto_widget) const;
+
+  void OnCryptoTransferWidgetCreate(CryptoTransferWidgetCreateCallback callback,
+                                    APIRequestResult api_request_result) const;
+
+  void OnParseCryptoTransferWidgetCreate(
+      CryptoTransferWidgetCreateCallback callback,
+      mojom::MeldCryptoWidgetPtr crypto_widget) const;
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   base::WeakPtrFactory<MeldIntegrationService> weak_ptr_factory_{this};

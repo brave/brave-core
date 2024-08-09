@@ -1154,6 +1154,18 @@ interface MeldIntegrationService {
   // All parameters are optional
   GetCountries(MeldFilter filter)
     => (array<MeldCountry>? countries, array<string>? error);
+
+  CryptoBuyWidgetCreate(CryptoBuySessionData session_data,
+    CryptoWidgetCustomerData? customer_data)
+    => (MeldCryptoWidget? widget_data, array<string>? error);
+
+  CryptoSellWidgetCreate(CryptoSellSessionData session_data,
+    CryptoWidgetCustomerData? customer_data)
+    => (MeldCryptoWidget? widget_data, array<string>? error);
+
+  CryptoTransferWidgetCreate(CryptoTransferSessionData session_data,
+    CryptoWidgetCustomerData? customer_data)
+    => (MeldCryptoWidget? widget_data, array<string>? error);
 };
 
 // Implements cross-chain swap functionality using 0x, Jupiter, and LiFi APIs
