@@ -2,42 +2,37 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import styled from 'styled-components'
 
-export const Box = styled.div`
-  width: 100%;
-  height: 100%;
-  background: ${(p) => p.theme.color.panelBackground};
-  overflow: hidden;
-  min-height: 260px;
-`
+import styled from 'styled-components'
+import ProgressRing from '@brave/leo/react/progressRing'
+import { color, font, spacing } from '@brave/leo/tokens/css/variables'
 
 export const PanelContent = styled.section`
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
-  padding: 20% 24px 25px 24px;
+  align-items: center;
+  padding: 24px;
+  position: relative;
   z-index: 2;
 `
 
-export const LoaderIconBox = styled.div`
-  width: 64px;
-  height: 64px;
-  margin-bottom: 24px;
-
-  svg > path {
-    fill: #CA3BB2;
-  }
+export const LoadingIcon = styled(ProgressRing)`
+  --leo-progressring-size: 40px;
+  --leo-progressring-color: ${color.icon.interactive};
 `
 
-export const Title = styled.h1`
-  color: ${(p) => p.theme.color.text01};
-  font-family: ${(p) => p.theme.fontFamily.heading};
-  font-size: 14px;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  line-height: 2;
+export const Status = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: ${spacing.m};
+  padding: 35px 0;
+`
+
+export const PanelDesc = styled.div`
+  color: ${color.text.secondary};
+  font: ${font.default.regular};
   margin: 0;
   text-align: center;
 `

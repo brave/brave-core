@@ -4,10 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { SettingsAdvancedIcon, CaratStrongRightIcon } from 'brave-ui/components/icons'
 
 import * as S from './style'
-import { getLocale } from '../../../../../common/locale'
+import { getLocale } from '$web-common/locale'
 import { formatMessage } from '../../../../../brave_rewards/resources/shared/lib/locale_context'
 import SelectRegionList from '../select-region-list'
 import PanelBox from '../panel-box'
@@ -17,11 +16,13 @@ import SettingsPanel from '../settings-panel'
 import ContactSupport from '../contact-support'
 import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
-import getPanelBrowserAPI, { ConnectionState } from '../../api/panel_browser_api'
+import getPanelBrowserAPI, {
+  ConnectionState
+} from '../../api/panel_browser_api'
 import Flag from '../flag'
 
-function SessionExpiredContent () {
-  const productUrls = useSelector(state => state.productUrls)
+function SessionExpiredContent() {
+  const productUrls = useSelector((state) => state.productUrls)
   const message = getLocale('braveVpnSessionExpiredContent')
 
   const handleClick = (intent: string) => {
@@ -31,30 +32,59 @@ function SessionExpiredContent () {
 
   return (
     <span>
-      {
-        formatMessage(message, {
-          tags: {
-            $1: (content) => (
-              <a href="#" key="recoverAccount" onClick={handleClick.bind(null, 'manage')}>
-                {content}
-              </a>
-            )
-          }
-        })
-      }
+      {formatMessage(message, {
+        tags: {
+          $1: (content) => (
+            <a
+              href='#'
+              key='recoverAccount'
+              onClick={() => handleClick('manage')}
+            >
+              {content}
+            </a>
+          )
+        }
+      })}
     </span>
   )
 }
 
-function MainPanel () {
+// Exported to share same header & settings button with loading panel.
+export function PanelHeader(props: { title: string }) {
+  return (
+    <S.PanelHeader>
+      <S.VpnLogo name='product-vpn' />
+      <S.PanelTitle>{props.title}</S.PanelTitle>
+    </S.PanelHeader>
+  )
+}
+
+export function SettingsButton(props: {
+  tooltip: string
+  onClick: () => void
+}) {
+  return (
+    <S.SettingsButton
+      type='button'
+      onClick={props.onClick}
+      title={props.tooltip}
+    >
+      <S.StyledIcon name='settings'></S.StyledIcon>
+    </S.SettingsButton>
+  )
+}
+
+function MainPanel() {
   const dispatch = useDispatch()
-  const [isSettingsPanelVisible, setSettingsPanelVisible] = React.useState(false)
-  const [isContactSupportVisible, setContactSupportVisible] = React.useState(false)
-  const currentRegion = useSelector(state => state.currentRegion)
-  const hasError = useSelector(state => state.hasError)
-  const isSelectingRegion = useSelector(state => state.isSelectingRegion)
-  const connectionStatus = useSelector(state => state.connectionStatus)
-  const expired = useSelector(state => state.expired)
+  const [isSettingsPanelVisible, setSettingsPanelVisible] =
+    React.useState(false)
+  const [isContactSupportVisible, setContactSupportVisible] =
+    React.useState(false)
+  const currentRegion = useSelector((state) => state.currentRegion)
+  const hasError = useSelector((state) => state.hasError)
+  const isSelectingRegion = useSelector((state) => state.isSelectingRegion)
+  const connectionStatus = useSelector((state) => state.connectionStatus)
+  const expired = useSelector((state) => state.expired)
 
   const onSelectRegionButtonClick = () => {
     dispatch(Actions.toggleRegionSelector(true))
@@ -67,60 +97,60 @@ function MainPanel () {
   const closeContactSupport = () => setContactSupportVisible(false)
 
   if (isContactSupportVisible) {
-    return (<ContactSupport
-      onCloseContactSupport={closeContactSupport}
-    />)
+    return <ContactSupport onCloseContactSupport={closeContactSupport} />
   }
 
   if (isSettingsPanelVisible) {
-    return (<SettingsPanel
-      closeSettingsPanel={closeSettingsPanel}
-      showContactSupport={showContactSupport}
-    />)
+    return (
+      <SettingsPanel
+        closeSettingsPanel={closeSettingsPanel}
+        showContactSupport={showContactSupport}
+      />
+    )
   }
 
   if (isSelectingRegion) {
-    return (<SelectRegionList />)
+    return <SelectRegionList />
   }
 
   if (hasError) {
-    return (<ErrorPanel showContactSupport={showContactSupport} />)
+    return <ErrorPanel showContactSupport={showContactSupport} />
   }
 
   return (
     <PanelBox>
       <S.PanelContent>
-        <S.PanelHeader>
-          <S.SettingsButton
-            type='button'
-            onClick={handleSettingsButtonClick}
-            title={getLocale('braveVpnSettingsTooltip')}
-          >
-            <SettingsAdvancedIcon />
-          </S.SettingsButton>
-        </S.PanelHeader>
-        <S.PanelTitle>{getLocale('braveVpn')}</S.PanelTitle>
+        <SettingsButton
+          tooltip={getLocale('braveVpnSettingsTooltip')}
+          onClick={handleSettingsButtonClick}
+        />
+        <PanelHeader title={getLocale('braveVpnMainPanelTitle')} />
         <Toggle disabled={expired} />
         {connectionStatus === ConnectionState.CONNECT_NOT_ALLOWED && (
-          <S.ConnectNotAllowedNote>
-          <div>{getLocale('braveVpnConnectNotAllowed')}</div>
-          </S.ConnectNotAllowedNote>
+          <S.StyledAlert
+            type='warning'
+            hideIcon
+          >
+            {getLocale('braveVpnConnectNotAllowed')}
+          </S.StyledAlert>
         )}
         {expired && (
-          <S.SessionExpiredNote>
-            <S.SessionExpiredNoteTitle>
-              {getLocale('braveVpnSessionExpiredTitle')}
-            </S.SessionExpiredNoteTitle>
+          <S.StyledAlert
+            type='warning'
+            mode='full'
+            hideIcon
+          >
+            <div slot='title'>{getLocale('braveVpnSessionExpiredTitle')}</div>
             <SessionExpiredContent />
-          </S.SessionExpiredNote>
+          </S.StyledAlert>
         )}
         <S.RegionSelectorButton
           type='button'
           onClick={onSelectRegionButtonClick}
         >
-          <Flag countryCode={currentRegion.countryIsoCode}/>
+          <Flag countryCode={currentRegion.countryIsoCode} />
           <S.RegionLabel>{currentRegion?.namePretty}</S.RegionLabel>
-          <CaratStrongRightIcon />
+          <S.StyledIcon name='carat-right' />
         </S.RegionSelectorButton>
       </S.PanelContent>
     </PanelBox>

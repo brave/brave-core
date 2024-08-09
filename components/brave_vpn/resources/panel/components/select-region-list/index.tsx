@@ -2,97 +2,113 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
-import { Radio } from 'brave-ui'
-import Button from '$web-components/button'
-import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
 
 import * as S from './style'
+import Flag from '../flag'
 import { Region } from '../../api/panel_browser_api'
 import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
-import { getLocale } from '../../../../../common/locale'
-import Flag from '../flag'
+import { getLocale } from '$web-common/locale'
 
-function SelectRegion () {
-  // TODO(nullhook): Scroll to the selected radio input when this component loads
-  // TODO(nullhook): Add search region functionality
+import 'emptykit.css'
+
+interface RegionContentProps {
+  region: Region
+  selected: boolean
+}
+
+function RegionContent(props: RegionContentProps) {
   const dispatch = useDispatch()
-  const currentRegion = useSelector(state => state.currentRegion)
-  const regions = useSelector(state => state.regions)
-  const [selectedRegion, setSelectedRegion] = React.useState(currentRegion)
-  const ref = React.useRef() as React.MutableRefObject<HTMLButtonElement>
+  const handleConnect = () => {
+    dispatch(Actions.connectToNewRegion(props.region))
+  }
+
+  const ref = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    if (props.selected) ref.current?.scrollIntoView()
+  }, [])
+
+  return (
+    <S.RegionContainer
+      selected={props.selected}
+      ref={ref}
+    >
+      <S.RegionCountry selected={props.selected}>
+        <Flag countryCode={props.region.countryIsoCode} />
+        <S.RegionCountryLabel>
+          {props.region.namePretty}
+        </S.RegionCountryLabel>
+        {props.selected && (
+          <S.StyledCheckBox name='check-circle-filled'></S.StyledCheckBox>
+        )}
+        <S.RegionConnect
+          slot='actions'
+          kind='filled'
+          size='tiny'
+          onClick={handleConnect}
+          id='connect'
+        >
+          {getLocale('braveVpnConnect')}
+        </S.RegionConnect>
+      </S.RegionCountry>
+    </S.RegionContainer>
+  )
+}
+
+export function PanelHeader(props: {
+  title: string
+  buttonAriaLabel: string
+  onClick: () => void
+}) {
+  return (
+    <S.PanelHeader>
+      <S.StyledButton
+        type='button'
+        onClick={props.onClick}
+        aria-label={props.buttonAriaLabel}
+        title={props.buttonAriaLabel}
+      >
+        <S.StyledIcon name='arrow-left'></S.StyledIcon>
+      </S.StyledButton>
+      <S.HeaderLabel>{props.title}</S.HeaderLabel>
+    </S.PanelHeader>
+  )
+}
+
+function SelectRegion() {
+  const dispatch = useDispatch()
+  const currentRegion = useSelector((state) => state.currentRegion)
+  const regions = useSelector((state) => state.regions)
 
   const handleGoBackClick = () => {
     dispatch(Actions.toggleRegionSelector(false))
   }
 
-  const handleItemClick = (currentRegion: Region) => {
-    // Using a local state will help to keep the selection
-    // consistent, if the user exits without pressing connect
-    setSelectedRegion(currentRegion)
-  }
-
-  const handleConnect = () => {
-    dispatch(Actions.connectToNewRegion(selectedRegion))
-  }
-
-  if (!selectedRegion) {
+  if (!currentRegion) {
     console.error('Selected region is not defined')
   }
-
-  React.useEffect(() => {
-    if (ref.current && currentRegion) {
-      ref.current.scrollIntoView()
-    }
-  }, [])
 
   return (
     <S.Box>
       <S.PanelContent>
-        <S.PanelHeader>
-          <S.BackButton
-            type='button'
-            onClick={handleGoBackClick}
-          >
-            <CaratStrongLeftIcon />
-          </S.BackButton>
-        </S.PanelHeader>
+        <PanelHeader
+          title={getLocale('braveVpnSelectYourServer')}
+          buttonAriaLabel={getLocale('braveVpnSelectPanelBackButtonAriaLabel')}
+          onClick={handleGoBackClick}
+        />
+        <S.Divider />
         <S.RegionList>
-          <Radio
-            value={selectedRegion ? { [selectedRegion?.name]: true } : {}}
-            size={'small'}
-            disabled={false}
-          >
-            {regions.map((entry: Region, i: number) => (
-              <div
-                key={i}
-                data-value={entry.name}
-              >
-                <S.RegionLabelButton
-                  type="button"
-                  aria-describedby="country-name"
-                  onClick={handleItemClick.bind(this, entry)}
-                >
-                  <Flag countryCode={entry.countryIsoCode} />
-                  <S.RegionLabel id="country-name">
-                    {entry.namePretty}
-                  </S.RegionLabel>
-                </S.RegionLabelButton>
-              </div>
-            ))}
-          </Radio>
+          {regions.map((region: Region) => (
+            <RegionContent
+              key={region.name}
+              region={region}
+              selected={currentRegion.name === region.name}
+            />
+          ))}
         </S.RegionList>
-        <S.ActionArea>
-          <Button
-            type={'submit'}
-            isPrimary
-            isCallToAction
-            onClick={handleConnect}
-          >
-            {getLocale('braveVpnConnect')}
-          </Button>
-        </S.ActionArea>
       </S.PanelContent>
     </S.Box>
   )

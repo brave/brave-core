@@ -2,46 +2,47 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import styled from 'styled-components'
+import Icon from '@brave/leo/react/icon'
+import ProgressRing from '@brave/leo/react/progressRing'
+import { color, font, spacing } from '@brave/leo/tokens/css/variables'
+
+export const Content = styled.div`
+  display: flex;
+  padding: ${spacing['2Xl']} ${spacing.m};
+  align-items: center;
+  gap: ${spacing.m};
+  align-self: stretch;
+`
 
 // Status indicator
 export const StatusBox = styled.div`
   display: flex;
   align-items: center;
-  margin: 20px 0 24px 0;
+  gap: 8px;
+  flex: 1 0 0;
 `
 
-export const StatusText = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text01};
-  letter-spacing: 0.04em;
+export const StatusLabel = styled.span<{ color: string }>`
+  font: ${font.heading.h4};
+  color: ${(p) => p.color};
 `
 
-export const ActiveIndicator = styled.span`
-  width: 6px;
-  height: 6px;
-  margin-right: 8px;
-  border-radius: 50%;
-  background: ${(p) => p.theme.color.successBorder};
+export const ActiveIndicator = styled(Icon)`
+  --leo-icon-size: 20px;
+  --leo-icon-color: ${color.systemfeedback.successIcon};
 `
 
 export const InActiveIndicator = styled(ActiveIndicator)`
-  background: ${(p) => p.theme.color.disabled};
+  --leo-icon-color: ${color.icon.default};
 `
 
 export const FailedIndicator = styled(ActiveIndicator)`
-  background: ${(p) => p.theme.color.warn};
+  --leo-icon-color: ${color.systemfeedback.errorText};
 `
 
-export const Loader = styled.span`
-  width: 12px;
-  height: 12px;
-  margin-right: 8px;
-
-  svg {
-    fill: ${(p) => p.theme.color.text03};
-  }
+export const LoadingIcon = styled(ProgressRing)`
+  --leo-progressring-size: 20px;
+  --leo-progressring-color: ${color.icon.interactive};
 `

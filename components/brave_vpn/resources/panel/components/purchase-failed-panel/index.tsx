@@ -2,19 +2,20 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 
-import { getLocale } from '../../../../../common/locale'
-import * as S from '../general'
-import { AlertCircleIcon } from 'brave-ui/components/icons'
+import { getLocale } from '$web-common/locale'
+import * as S from './style'
 import ContactSupport from '../contact-support'
 
 interface Props {
   stateDescription?: string
 }
 
-function PurchaseFailedPanel (props: Props) {
-  const [isContactSupportVisible, setContactSupportVisible] = React.useState(false)
+function PurchaseFailedPanel(props: Props) {
+  const [isContactSupportVisible, setContactSupportVisible] =
+    React.useState(false)
   const closeContactSupport = () => {
     setContactSupportVisible(false)
   }
@@ -22,24 +23,33 @@ function PurchaseFailedPanel (props: Props) {
     setContactSupportVisible(!isContactSupportVisible)
   }
   if (isContactSupportVisible) {
-    return <ContactSupport
-      onCloseContactSupport={closeContactSupport}
-    />
+    return <ContactSupport onCloseContactSupport={closeContactSupport} />
   }
 
-  const title = props.stateDescription ? props.stateDescription
-                                       : getLocale('braveVpnPurchaseFailed')
+  const title = props.stateDescription
+    ? props.stateDescription
+    : getLocale('braveVpnPurchaseFailed')
   return (
     <S.Box>
       <S.PanelContent>
-        <S.IconBox>
-          <AlertCircleIcon color='#84889C' />
-        </S.IconBox>
-        <S.Title>{title}</S.Title>
-        {!isContactSupportVisible && <S.ButtonText onClick={showContactSupport}>
+        <S.EmptyPanelHeader />
+        <S.StyledAlert
+          type='error'
+          mode='full'
+          hideIcon
+        >
+          {title}
+        </S.StyledAlert>
+
+        {!isContactSupportVisible && (
+          <S.StyledActionButton
+            slot='actions'
+            kind='plain'
+            onClick={showContactSupport}
+          >
             {getLocale('braveVpnContactSupport')}
-        </S.ButtonText>
-        }
+          </S.StyledActionButton>
+        )}
       </S.PanelContent>
     </S.Box>
   )
