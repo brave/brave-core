@@ -1646,8 +1646,8 @@ inline constexpr char kCSPChromeImage[] = "chrome://image";
 inline constexpr char kCSPChromeFavicon[] = "chrome://favicon";
 inline constexpr char kCSPBraveCoinGeckoAssetsProxy[] =
     "https://assets.cgproxy.brave.com";
-const std::string GetWalletFrameSrcCSP();
-const std::string GetWalletImgSrcCSP(bool isPanel);
+std::string GetWalletFrameSrcCSP();
+std::string GetWalletImgSrcCSP(bool is_panel);
 
 }  // namespace brave_wallet
 

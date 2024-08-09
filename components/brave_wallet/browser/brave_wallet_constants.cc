@@ -109,35 +109,33 @@ const base::flat_map<std::string, std::string>& GetAnkrBlockchains() {
 // On mobile, will return:
 //   "frame-src chrome-untrusted://nft-display/
 //   chrome-untrusted://line-chart-display/ chrome-untrusted://market-display/;"
-const std::string GetWalletFrameSrcCSP() {
+std::string GetWalletFrameSrcCSP() {
   std::string frameSrcCSP =
       base::JoinString({kCSPFrameSrcName, kUntrustedNftURL,
                         kUntrustedLineChartURL, kUntrustedMarketURL},
                        " ");
 #if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
   // Trezor & Ledger not supported on Android/iOS
-  frameSrcCSP.append(std::string(" ") +
-                     brave_wallet::mojom::kUntrustedTrezorBridgeURL);
-  frameSrcCSP.append(std::string(" ") +
-                     brave_wallet::mojom::kUntrustedLedgerBridgeURL);
+  frameSrcCSP.append(std::string(" ") + mojom::kUntrustedTrezorBridgeURL);
+  frameSrcCSP.append(std::string(" ") + mojom::kUntrustedLedgerBridgeURL);
 #endif
   frameSrcCSP.append(";");
   return frameSrcCSP;
 }
 
 // CSP Override for CSPDirectiveName::ImgSrc.
-// When isPanel is false, will return
+// When is_panel is false, will return
 //   "img-src 'self' data: chrome://resources chrome://erc-token-images
 //   chrome://image;"
-// When isPanel is true, will return:
+// When is_panel is true, will return:
 //   "img-src 'self' data: chrome://resources chrome://erc-token-images
 //   chrome://image chrome://favicon https://assets.cgproxy.brave.com;"
-const std::string GetWalletImgSrcCSP(bool isPanel) {
+std::string GetWalletImgSrcCSP(bool is_panel) {
   std::string imgSrcCSP = base::JoinString(
       {kCSPImageSrcName, kCSPSelf, kCSPData, kCSPChromeResources,
        kCSPChromeErcTokenImages, kCSPChromeImage},
       " ");
-  if (isPanel) {
+  if (is_panel) {
     // DApp panels
     imgSrcCSP.append(std::string(" ") + kCSPChromeFavicon);
     // Need to load market iframe data. brave-browser/issues/31313
