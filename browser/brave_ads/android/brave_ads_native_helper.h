@@ -23,6 +23,10 @@ static jboolean JNI_BraveAdsNativeHelper_IsSupportedRegion(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android);
 
+static void JNI_BraveAdsNativeHelper_ClearData(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& j_profile_android);
+
 static void JNI_BraveAdsNativeHelper_OnNotificationAdShown(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,

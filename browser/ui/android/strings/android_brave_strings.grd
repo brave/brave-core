@@ -1247,6 +1247,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_RESET_BRAVE_REWARDS_OPTION_DESCRIPTION" desc="Description for preference to reset Brave Rewards.">
         This will delete your Brave Rewards and reset all of your Brave Rewards data
       </message>
+      <message name="IDS_RESET_BRAVE_REWARDS_DATA" desc="Description for preference to reset 'Brave Rewards' data.">
+        <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Reset Brave Rewards data&#8230;<ph name="END_LINK1">&lt;/link1&gt;</ph>
+      </message>
+      <message name="IDS_CLEAR_BRAVE_ADS_DATA" desc="Description for preference to clear 'Brave Ads' data.">
+        <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Clear Brave Ads data&#8230;<ph name="END_LINK1">&lt;/link1&gt;</ph>
+      </message>
       <message name="IDS_ADD_BOOKMARK_MENU" desc="Add Bookmark menu item text for the bookmark button.">
         Add Bookmark
       </message>
