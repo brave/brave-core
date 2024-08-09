@@ -949,21 +949,38 @@ export class MockedWalletApiProxy {
       }
     },
     getERC20TokenBalances: async (contracts, address, chainId) => {
-      const balances = Object.keys(this.tokenBalancesRegistry?.[address])
-        .filter((tokenId) => tokenId.includes(chainId))
-        .map((tokenIdentifier) => {
-          const token = this.blockchainTokens.find(
-            (t) => getAssetIdKey(t) === tokenIdentifier
-          )
+      const account = this.accountInfos.find((a) => a.address === address)
 
-          const amount =
-            this.tokenBalancesRegistry[address][tokenIdentifier] || '0'
+      if (!account) {
+        throw new Error('account not found for address: ' + address)
+      }
 
-          return {
-            balance: amount,
-            contractAddress: token?.contractAddress || ''
-          }
+      const accountUniqueId = account.accountId.uniqueKey
+
+      const balancesByAssetId = getAccountAndChainBalancesFromRegistry({
+        accountUniqueId,
+        chainId,
+        registry: this.tokenBalancesRegistry
+      })
+
+      const balances = contracts.map((contract) => {
+        const assetId = getAssetIdKey({
+          contractAddress: contract,
+          coin: account.accountId.coin,
+          chainId,
+          tokenId: '' // ERC20
         })
+
+        if (!balancesByAssetId[assetId]) {
+          throw new Error('balance not found for contract address: ' + contract)
+        }
+
+        return {
+          balance: balancesByAssetId[assetId] || '0',
+          contractAddress: contract
+        }
+      })
+
       return {
         balances,
         error: 0,

@@ -73,7 +73,7 @@ type GetSPLTokenBalancesForAddressAndChainIdArg = {
    * optional, if not provided, will fetch all tokens using
    * getTokenAccountsByOwner.
    */
-  tokens?: GetBlockchainTokenIdArg[]
+  tokens: GetBlockchainTokenIdArg[]
   coin: typeof CoinTypes.SOL
 }
 
@@ -216,12 +216,7 @@ export const tokenBalancesEndpoints = ({
     >({
       queryFn: async (args, { endpoint }, extraOptions, baseQuery) => {
         const { data: api, cache } = baseQuery(undefined)
-        const {
-          bitcoinWalletService,
-          zcashWalletService,
-          jsonRpcService,
-          braveWalletService
-        } = api
+        const { bitcoinWalletService, zcashWalletService, jsonRpcService } = api
 
         try {
           const registry: TokenBalancesRegistry =
@@ -229,7 +224,6 @@ export const tokenBalancesEndpoints = ({
               args,
               cache,
               bitcoinWalletService,
-              braveWalletService,
               jsonRpcService,
               zcashWalletService
             })
@@ -237,8 +231,7 @@ export const tokenBalancesEndpoints = ({
           // NFTs
           for (const arg of args) {
             const { accountId } = arg
-            // TODO: handle empty tokens arg
-            const nfts = (arg.tokens || []).filter((token) => token.isNft)
+            const nfts = arg.tokens.filter((token) => token.isNft)
             await fetchNftBalancesForAccount({
               accountId,
               nfts,
@@ -443,27 +436,16 @@ export const tokenBalancesEndpoints = ({
                           )
 
                       await fetchTokenBalanceRegistryForAccountsAndChainIds({
-                        args:
-                          network.coin === CoinTypes.SOL
-                            ? [
-                                {
-                                  accountId,
-                                  coin: CoinTypes.SOL,
-                                  chainId: network.chainId,
-                                  tokens
-                                }
-                              ]
-                            : [
-                                {
-                                  accountId,
-                                  coin: coinTypesMapping[network.coin],
-                                  chainId: network.chainId,
-                                  tokens
-                                }
-                              ],
+                        args: [
+                          {
+                            accountId,
+                            coin: coinTypesMapping[network.coin],
+                            chainId: network.chainId,
+                            tokens
+                          }
+                        ],
                         cache,
                         bitcoinWalletService,
-                        braveWalletService,
                         jsonRpcService,
                         zcashWalletService,
                         onBalance
@@ -871,7 +853,6 @@ async function fetchAccountTokenBalanceRegistryForChainId({
   bitcoinWalletService,
   jsonRpcService,
   zcashWalletService,
-  braveWalletService,
   onBalance,
   cache
 }: {
@@ -879,27 +860,14 @@ async function fetchAccountTokenBalanceRegistryForChainId({
   jsonRpcService: BraveWallet.JsonRpcServiceRemote
   bitcoinWalletService: BraveWallet.BitcoinWalletServiceRemote
   zcashWalletService: BraveWallet.ZCashWalletServiceRemote
-  braveWalletService: BraveWallet.BraveWalletServiceRemote
   onBalance: (arg: BalanceResult) => void | Promise<void>
   cache: BaseQueryCache
 }): Promise<void> {
   // Construct arg to query native token for use in case the
   // optimized balance fetcher kicks in.
-  const nativeTokenArg = arg.tokens
-    ? arg.tokens.find(isNativeAsset)
-    : {
-        coin: arg.coin,
-        chainId: arg.chainId,
-        contractAddress: '',
-        isErc721: false,
-        isNft: false,
-        tokenId: '',
-        isCompressed: false
-      }
+  const nativeTokenArg = arg.tokens.find(isNativeAsset)
 
-  const nonNativeTokens = (arg.tokens ?? []).filter(
-    (token) => !isNativeAsset(token)
-  )
+  const nonNativeTokens = arg.tokens.filter((token) => !isNativeAsset(token))
 
   if (nativeTokenArg) {
     const balance = await fetchAccountTokenCurrentBalance({
@@ -1047,7 +1015,6 @@ async function fetchTokenBalanceRegistryForAccountsAndChainIds({
   args,
   jsonRpcService,
   bitcoinWalletService,
-  braveWalletService,
   zcashWalletService,
   onBalance,
   cache
@@ -1056,7 +1023,6 @@ async function fetchTokenBalanceRegistryForAccountsAndChainIds({
   jsonRpcService: BraveWallet.JsonRpcServiceRemote
   bitcoinWalletService: BraveWallet.BitcoinWalletServiceRemote
   zcashWalletService: BraveWallet.ZCashWalletServiceRemote
-  braveWalletService: BraveWallet.BraveWalletServiceRemote
   onBalance?: (arg: BalanceResult) => void | Promise<void>
   cache: BaseQueryCache
 }): Promise<TokenBalancesRegistry> {
@@ -1066,7 +1032,6 @@ async function fetchTokenBalanceRegistryForAccountsAndChainIds({
     await fetchAccountTokenBalanceRegistryForChainId({
       arg,
       bitcoinWalletService,
-      braveWalletService,
       jsonRpcService,
       zcashWalletService,
       cache,

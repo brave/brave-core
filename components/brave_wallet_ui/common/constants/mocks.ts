@@ -20,7 +20,6 @@ import {
 
 // utils
 import { getPriceIdForToken } from '../../utils/pricing-utils'
-import { getNetworkId } from '../slices/entities/network.entity'
 
 // mocks
 import {
@@ -1700,7 +1699,7 @@ export const mockTokenBalanceRegistry: TokenBalancesRegistry = {
   accounts: {
     [mockAccount.accountId.uniqueKey]: {
       chains: {
-        [getNetworkId(mockEthMainnet)]: {
+        [BraveWallet.MAINNET_CHAIN_ID]: {
           tokenBalances: {
             [mockBasicAttentionTokenId]: '111',
             [mockBinanceCoinErc20TokenId]: '222',
@@ -1715,7 +1714,7 @@ export const mockTokenBalanceRegistry: TokenBalancesRegistry = {
     },
     [mockEthAccountInfo.accountId.uniqueKey]: {
       chains: {
-        [getNetworkId(mockEthMainnet)]: {
+        [BraveWallet.MAINNET_CHAIN_ID]: {
           tokenBalances: {
             [mockBasicAttentionTokenId]: '11',
             [mockBinanceCoinErc20TokenId]: '22',
@@ -1730,7 +1729,7 @@ export const mockTokenBalanceRegistry: TokenBalancesRegistry = {
     },
     [mockSolanaAccount.accountId.uniqueKey]: {
       chains: {
-        [getNetworkId(mockSolanaMainnetNetwork)]: {
+        [BraveWallet.SOLANA_MAINNET]: {
           tokenBalances: {
             [mockSplNftId]: '1',
             [mockSplUSDCoinId]: '14444',
@@ -1741,7 +1740,7 @@ export const mockTokenBalanceRegistry: TokenBalancesRegistry = {
     },
     [mockSolanaAccountInfo.accountId.uniqueKey]: {
       chains: {
-        [getNetworkId(mockSolanaMainnetNetwork)]: {
+        [BraveWallet.SOLANA_MAINNET]: {
           tokenBalances: {
             [mockSplNftId]: '0',
             [mockSplUSDCoinId]: '3333',
@@ -1752,14 +1751,14 @@ export const mockTokenBalanceRegistry: TokenBalancesRegistry = {
     },
     [mockFilecoinAccount.accountId.uniqueKey]: {
       chains: {
-        [getNetworkId(mockFilecoinMainnetNetwork)]: {
+        [BraveWallet.FILECOIN_MAINNET]: {
           tokenBalances: {}
         }
       }
     },
     [mockFilecoinAccountInfo.address]: {
       chains: {
-        [getNetworkId(mockFilecoinMainnetNetwork)]: {
+        [BraveWallet.FILECOIN_MAINNET]: {
           tokenBalances: {}
         }
       }

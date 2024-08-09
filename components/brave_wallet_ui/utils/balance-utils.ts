@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // types
-import { getNetworkId } from '../common/slices/entities/network.entity'
 import { TokenBalancesRegistry } from '../common/slices/entities/token-balance.entity'
 import { BraveWallet, SupportedTestNetworks } from '../constants/types'
 
@@ -141,12 +140,7 @@ export function getBalanceFromRegistry({
   coin: BraveWallet.CoinType
 }) {
   return (
-    registry.accounts[accountUniqueId]?.chains?.[
-      getNetworkId({
-        chainId,
-        coin
-      })
-    ]?.tokenBalances?.[
+    registry.accounts[accountUniqueId]?.chains?.[chainId]?.tokenBalances?.[
       getAssetIdKey({
         coin,
         chainId,
@@ -167,12 +161,7 @@ export function getAccountAndChainBalancesFromRegistry({
   chainId: string
 }) {
   return (
-    registry.accounts[accountUniqueId]?.chains?.[
-      getNetworkId({
-        chainId,
-        coin: BraveWallet.CoinType.ETH
-      })
-    ]?.tokenBalances || {}
+    registry.accounts[accountUniqueId]?.chains?.[chainId]?.tokenBalances || {}
   )
 }
 
