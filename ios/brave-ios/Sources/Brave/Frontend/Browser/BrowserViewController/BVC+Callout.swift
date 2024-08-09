@@ -28,9 +28,11 @@ extension BrowserViewController {
   /// - Rewards
   /// - VPN Link Receipt
   func presentFullScreenCallouts() {
-    for type in FullScreenCalloutType.allCases {
-      presentScreenCallout(for: type)
-    }
+    presentDefaultBrowserScreenCallout(skipSafeGuards: true)
+
+    //    for type in FullScreenCalloutType.allCases {
+    //      presentScreenCallout(for: type)
+    //    }
   }
 
   private func presentScreenCallout(for type: FullScreenCalloutType, skipSafeGuards: Bool = false) {
@@ -131,7 +133,7 @@ extension BrowserViewController {
     present(popup, animated: false)
   }
 
-  private func presentDefaultBrowserScreenCallout(skipSafeGuards: Bool = false) {    
+  private func presentDefaultBrowserScreenCallout(skipSafeGuards: Bool = false) {
     if !skipSafeGuards {
       let isLikelyDefault = DefaultBrowserHelper.isBraveLikelyDefaultBrowser()
 
@@ -139,8 +141,18 @@ extension BrowserViewController {
         return
       }
     }
-    
 
+    let defaultBrowserCallout = UIHostingController(
+      rootView: FocusSystemSettingsView(
+        screenType: .callout,
+        shouldDismiss: Binding.constant(false)
+      )
+    ).then {
+      $0.isModalInPresentation = true
+      $0.modalPresentationStyle = .overFullScreen
+    }
+
+    present(defaultBrowserCallout, animated: true)
   }
 
   private func presentBraveRewardsScreenCallout(skipSafeGuards: Bool = false) {
