@@ -464,6 +464,21 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoWidgetCreate) {
   EXPECT_EQ("https://meldcrypto.com?token=tknvalue", result->widget_url);
   EXPECT_EQ("tknvalue", result->token);
 
+  json = R"({
+    "id": "WXDpzmm2cNmtJWLDHgu1GT",
+    "customerId": "WXEvEDzSgNedXWnJ55pwUJ",
+    "widgetUrl": "https://meldcrypto.com?token=tknvalue",
+    "token": "tknvalue"
+  })";
+  result = ParseCryptoWidgetCreate(ParseJson(json));
+  EXPECT_TRUE(result);
+  EXPECT_EQ("WXDpzmm2cNmtJWLDHgu1GT", result->id);
+  EXPECT_FALSE(result->external_session_id);
+  EXPECT_FALSE(result->external_customer_id);
+  EXPECT_EQ("WXEvEDzSgNedXWnJ55pwUJ", result->customer_id);
+  EXPECT_EQ("https://meldcrypto.com?token=tknvalue", result->widget_url);
+  EXPECT_EQ("tknvalue", result->token);
+
   // id is mandatory field
   json = R"({
     "externalSessionId": "test_session_id",
@@ -472,7 +487,40 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoWidgetCreate) {
     "widgetUrl": "https://meldcrypto.com?token=tknvalue",
     "token": "tknvalue"
   })";
-  EXPECT_FALSE(ParseCountries(ParseJson(json)));
+  EXPECT_FALSE(ParseCryptoWidgetCreate(ParseJson(json)));
+
+  // customerId is mandatory field
+  json = R"({
+    "id": "WXDpzmm2cNmtJWLDHgu1GT",
+    "externalSessionId": "test_session_id",
+    "externalCustomerId": "test_session_customer_id",
+    "customerId": "",
+    "widgetUrl": "https://meldcrypto.com?token=tknvalue",
+    "token": "tknvalue"
+  })";
+  EXPECT_FALSE(ParseCryptoWidgetCreate(ParseJson(json)));
+
+  // widgetUrl is valid HTTP(S) URL
+  json = R"({
+    "id": "WXDpzmm2cNmtJWLDHgu1GT",
+    "externalSessionId": "test_session_id",
+    "externalCustomerId": "test_session_customer_id",
+    "customerId": "WXEvEDzSgNedXWnJ55pwUJ",
+    "widgetUrl": "wrong_url",
+    "token": "tknvalue"
+  })";
+  EXPECT_FALSE(ParseCryptoWidgetCreate(ParseJson(json)));
+
+  // widgetUrl is valid HTTP(S) URL
+  json = R"({
+    "id": "WXDpzmm2cNmtJWLDHgu1GT",
+    "externalSessionId": "test_session_id",
+    "externalCustomerId": "test_session_customer_id",
+    "customerId": "WXEvEDzSgNedXWnJ55pwUJ",
+    "widgetUrl": "ftp://meldcrypto.com?token=tknvalue",
+    "token": "tknvalue"
+  })";
+  EXPECT_FALSE(ParseCryptoWidgetCreate(ParseJson(json)));
 
   // widgetUrl is mandatory field
   json = R"({
@@ -482,7 +530,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoWidgetCreate) {
     "customerId": "WXEvEDzSgNedXWnJ55pwUJ",
     "token": "tknvalue"
   })";
-  EXPECT_FALSE(ParseCountries(ParseJson(json)));
+  EXPECT_FALSE(ParseCryptoWidgetCreate(ParseJson(json)));
 
   // token is mandatory field
   json = R"({
@@ -492,9 +540,9 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoWidgetCreate) {
     "customerId": "WXEvEDzSgNedXWnJ55pwUJ",
     "widgetUrl": "https://meldcrypto.com?token=tknvalue"
   })";
-  EXPECT_FALSE(ParseCountries(ParseJson(json)));
+  EXPECT_FALSE(ParseCryptoWidgetCreate(ParseJson(json)));
 
   json = (R"({})");
-  EXPECT_FALSE(ParseCountries(ParseJson(json)));
+  EXPECT_FALSE(ParseCryptoWidgetCreate(ParseJson(json)));
 }
 }  // namespace brave_wallet

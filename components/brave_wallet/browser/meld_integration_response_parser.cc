@@ -404,6 +404,16 @@ mojom::MeldCryptoWidgetPtr ParseCryptoWidgetCreate(
     return nullptr;
   }
 
+  if (cw_value->id.empty() || cw_value->customer_id.empty() ||
+      cw_value->widget_url.empty() || cw_value->token.empty()) {
+    return nullptr;
+  }
+
+  if (const auto widget_url = GURL(cw_value->widget_url);
+      !widget_url.is_valid() || !widget_url.SchemeIsHTTPOrHTTPS()) {
+    return nullptr;
+  }
+
   return mojom::MeldCryptoWidget::New(
       cw_value->id, cw_value->external_session_id,
       cw_value->external_customer_id, cw_value->customer_id,
