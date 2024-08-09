@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import datetime
 import logging
 import os
 import re
@@ -162,8 +163,7 @@ class BrowserType:
     if not common_options.variations_repo_dir:
       raise RuntimeError('Set --variations-repo-dir to use Griffin trials')
     return _MakeTestingFieldTrials(artifacts_dir, version,
-                                   common_options.variations_repo_dir,
-                                   'production')
+                                   common_options.variations_repo_dir)
 
   def GetBinaryPath(self, target_os: str) -> str:
     if target_os == 'windows':
@@ -231,32 +231,27 @@ class BraveBrowserTypeImpl(BrowserType):
 
 
 def _MakeTestingFieldTrials(artifacts_dir: str, version: BraveVersion,
-                            variations_repo_dir: str,
-                            branch: str) -> FieldTrialConfig:
+                            variations_repo_dir: str) -> FieldTrialConfig:
   combined_version: str = version.combined_version()
   logging.debug('Generating trials for combined_version %s', combined_version)
   target_path = os.path.join(artifacts_dir, 'fieldtrial_testing_config.json')
+  revision_path = os.path.join(artifacts_dir, 'brave-variations-revision.txt')
 
   args = [
       path_util.GetVpython3Path(),
       'seed/fieldtrials_testing_config_generator.py', f'--output={target_path}',
-      f'--target-date={version.commit_date}', f'--target-branch={branch}',
+      f'--output-revision={revision_path}',
+      f'--target-date={version.commit_date}',
       f'--target-version={combined_version}', '--target-channel=NIGHTLY'
   ]
   GetProcessOutput(args, cwd=variations_repo_dir, check=True)
 
-  get_rev_args = [
-      'git',
-      'rev-list',
-      '-n',
-      '1',
-      '--first-parent',
-      f'--before={version.commit_date}',
-      f'origin/{branch}',
-  ]
-  _, rev = GetProcessOutput(get_rev_args, cwd=variations_repo_dir, check=True)
-  rev = rev.rstrip()
+  rev: Optional[str] = None
+  with open(revision_path, 'r') as f:
+    rev = f.readline()
+  assert rev is not None
 
+  rev = rev.rstrip()
   return FieldTrialConfig(target_path, rev)
 
 
