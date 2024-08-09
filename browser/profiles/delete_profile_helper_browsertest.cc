@@ -22,6 +22,9 @@
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+// Profiles are not supported on Android and iOS, so can't do the test
+static_assert(!BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS));
+
 namespace {
 const char kValidSyncCode[] =
     "fringe digital begin feed equal output proof cheap "
