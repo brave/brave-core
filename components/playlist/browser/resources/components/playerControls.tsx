@@ -84,6 +84,7 @@ function Control ({
 
 export default function PlayerControls ({ videoElement, className }: Props) {
   const [isPlaying, setPlaying] = React.useState(false)
+  const [isMuted, setIsMuted] = React.useState(false)
 
   const shuffleEnabled = useSelector<ApplicationState, boolean | undefined>(
     (applicationState) => applicationState.playerState?.shuffleEnabled
@@ -98,16 +99,19 @@ export default function PlayerControls ({ videoElement, className }: Props) {
       }
       const notifyPlaying = () => setPlaying(true)
       const notifyPaused = () => setPlaying(false)
+      const updateMuted = () => setIsMuted(videoElement.muted)
 
       videoElement.addEventListener('click', togglePlayingState)
       videoElement.addEventListener('playing', notifyPlaying)
       videoElement.addEventListener('pause', notifyPaused)
       videoElement.addEventListener('ended', notifyPaused)
+      videoElement.addEventListener('volumechange', updateMuted)
       return () => {
         videoElement.removeEventListener('click', togglePlayingState)
         videoElement.removeEventListener('playing', notifyPlaying)
         videoElement.removeEventListener('pause', notifyPaused)
         videoElement.removeEventListener('ended', notifyPaused)
+        videoElement.removeEventListener('volumechange', updateMuted)
       }
     }
 
@@ -179,6 +183,15 @@ export default function PlayerControls ({ videoElement, className }: Props) {
         />
       </div>
       <div>
+        <Control
+          iconName={isMuted ? 'volume-off' : 'volume-on'}
+          visibility='normal'
+          title={getLocalizedString('bravePlaylistA11YToggleMuted')}
+          kind={'plain-faint'}
+          onClick={() => {
+            if (videoElement) videoElement.muted = !isMuted
+          }}
+        />
         <Control
           iconName={shuffleEnabled ? 'shuffle-toggle-on' : 'shuffle-off'}
           visibility='normal'

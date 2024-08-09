@@ -73,6 +73,7 @@ void AddLocalizedStrings(content::WebUIDataSource* source) {
       {"bravePlaylistA11YNext", IDS_PLAYLIST_A11Y_NEXT},
       {"bravePlaylistA11YPrevious", IDS_PLAYLIST_A11Y_PREVIOUS},
       {"bravePlaylistA11YShuffle", IDS_PLAYLIST_A11Y_SHUFFLE},
+      {"bravePlaylistA11YToggleMuted", IDS_PLAYLIST_A11Y_TOGGLE_MUTED},
       {"bravePlaylistA11YRewind", IDS_PLAYLIST_A11Y_REWIND},
       {"bravePlaylistA11YForward", IDS_PLAYLIST_A11Y_FORWARD},
       {"bravePlaylistA11YClose", IDS_PLAYLIST_A11Y_CLOSE},

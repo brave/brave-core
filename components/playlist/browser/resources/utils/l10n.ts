@@ -25,6 +25,7 @@ export type Message =
   | 'bravePlaylistA11YPause'
   | 'bravePlaylistA11YNext'
   | 'bravePlaylistA11YPrevious'
+  | 'bravePlaylistA11YToggleMuted'
   | 'bravePlaylistA11YShuffle'
   | 'bravePlaylistA11YRewind'
   | 'bravePlaylistA11YForward'

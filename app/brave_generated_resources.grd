@@ -1269,6 +1269,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_PLAYLIST_A11Y_PREVIOUS" desc="An a11y name for a 'prev' button in media player">
           Previous Track
         </message>
+        <message name="IDS_PLAYLIST_A11Y_TOGGLE_MUTED" desc="An a11y name for a 'mute' button in media player">
+          Toggle muted
+        </message>
         <message name="IDS_PLAYLIST_A11Y_SHUFFLE" desc="An a11y name for a 'shuffle' button in media player">
           Shuffle
         </message>
