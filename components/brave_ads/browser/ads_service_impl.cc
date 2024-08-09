@@ -1738,13 +1738,14 @@ void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 
-void AdsServiceImpl::RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
-                                      RunDBTransactionCallback callback) {
-  CHECK(transaction);
+void AdsServiceImpl::RunDBTransaction(
+    mojom::DBTransactionInfoPtr mojom_transaction,
+    RunDBTransactionCallback callback) {
+  CHECK(mojom_transaction);
   CHECK(database_);
 
   database_.AsyncCall(&Database::RunTransaction)
-      .WithArgs(std::move(transaction))
+      .WithArgs(std::move(mojom_transaction))
       .Then(std::move(callback));
 }
 

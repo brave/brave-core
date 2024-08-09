@@ -44,27 +44,28 @@ void DatabaseManager::RemoveObserver(DatabaseManagerObserver* const observer) {
 void DatabaseManager::CreateOrOpen(ResultCallback callback) {
   NotifyWillCreateOrOpenDatabase();
 
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-  transaction->version = database::kVersion;
-  transaction->compatible_version = database::kCompatibleVersion;
+  mojom::DBTransactionInfoPtr mojom_transaction =
+      mojom::DBTransactionInfo::New();
+  mojom_transaction->version = database::kVersion;
+  mojom_transaction->compatible_version = database::kCompatibleVersion;
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::INITIALIZE;
-
-  transaction->commands.push_back(std::move(command));
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kCreateOrOpen;
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 
   RunDBTransaction(
-      std::move(transaction),
+      std::move(mojom_transaction),
       base::BindOnce(&DatabaseManager::CreateOrOpenCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void DatabaseManager::CreateOrOpenCallback(
     ResultCallback callback,
-    mojom::DBCommandResponseInfoPtr command_response) {
-  if (!command_response ||
-      command_response->status !=
-          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+    mojom::DBStatementResultInfoPtr mojom_statement_result) {
+  if (!mojom_statement_result ||
+      mojom_statement_result->result_code !=
+          mojom::DBStatementResultInfo::ResultCode::kSuccess) {
     BLOG(0, "Failed to create or open database");
 
     NotifyFailedToCreateOrOpenDatabase();
@@ -72,11 +73,13 @@ void DatabaseManager::CreateOrOpenCallback(
     return std::move(callback).Run(/*success=*/false);
   }
 
-  CHECK(command_response->result);
-  CHECK_EQ(command_response->result->get_value()->which(),
-           mojom::DBValue::Tag::kIntValue);
+  CHECK(mojom_statement_result->rows_union);
+  CHECK_EQ(
+      mojom_statement_result->rows_union->get_column_value_union()->which(),
+      mojom::DBColumnValueUnion::Tag::kIntValue);
   const int from_version =
-      command_response->result->get_value()->get_int_value();
+      mojom_statement_result->rows_union->get_column_value_union()
+          ->get_int_value();
 
   if (from_version == 0) {
     // Fresh install.

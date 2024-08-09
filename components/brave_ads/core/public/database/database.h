@@ -31,30 +31,29 @@ class ADS_EXPORT Database final {
 
   ~Database();
 
-  mojom::DBCommandResponseInfoPtr RunTransaction(
-      mojom::DBTransactionInfoPtr transaction);
+  mojom::DBStatementResultInfoPtr RunTransaction(
+      mojom::DBTransactionInfoPtr mojom_transaction);
 
  private:
-  void RunTransactionImpl(mojom::DBTransactionInfoPtr transaction,
-                          mojom::DBCommandResponseInfo* command_response);
+  void RunTransactionImpl(mojom::DBTransactionInfoPtr mojom_transaction,
+                          mojom::DBStatementResultInfo* mojom_statement_result);
 
-  mojom::DBCommandResponseInfo::StatusType Initialize(
-      int version,
-      int compatible_version,
-      mojom::DBCommandResponseInfo* command_response);
+  mojom::DBStatementResultInfo::ResultCode Initialize(
+      const mojom::DBTransactionInfo* mojom_transaction,
+      mojom::DBStatementResultInfo* mojom_statement_result);
 
-  mojom::DBCommandResponseInfo::StatusType Execute(
-      const mojom::DBCommandInfo* command);
+  mojom::DBStatementResultInfo::ResultCode Execute(
+      const mojom::DBStatementInfo* mojom_statement);
 
-  mojom::DBCommandResponseInfo::StatusType Run(
-      const mojom::DBCommandInfo* command);
+  mojom::DBStatementResultInfo::ResultCode Run(
+      const mojom::DBStatementInfo* mojom_statement);
 
-  mojom::DBCommandResponseInfo::StatusType Read(
-      const mojom::DBCommandInfo* command,
-      mojom::DBCommandResponseInfo* command_response);
+  mojom::DBStatementResultInfo::ResultCode Step(
+      const mojom::DBStatementInfo* mojom_statement,
+      mojom::DBStatementResultInfo* mojom_statement_result);
 
-  mojom::DBCommandResponseInfo::StatusType Migrate(int version,
-                                                   int compatible_version);
+  mojom::DBStatementResultInfo::ResultCode Migrate(
+      const mojom::DBTransactionInfo* mojom_transaction);
 
   bool ShouldCreateTables();
 
@@ -69,6 +68,7 @@ class ADS_EXPORT Database final {
   sql::Database db_;
   sql::MetaTable meta_table_;
   bool is_initialized_ = false;
+  bool should_vacuum_ = false;
 
   std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
 
