@@ -771,6 +771,8 @@
 -ServiceWorkerWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.WebBundleRequestCanceledWithResourceType/0
 -ServiceWorkerWithExtraHeaders/SubresourceWebBundlesWebRequestApiTest.WebBundleRequestRedirected/0
 -SubresourceWebBundlesContentScriptApiTest.SubresourceWebBundleIframe
+-WebAccessibleResourcesBrowserTest.DeclarativeNetRequest
+-WebAccessibleResourcesNonGuidBrowserTest.DeclarativeNetRequest
 
 # These tests fail because of our fix to WebRequest onHeadersReceived bug. See
 # Chromium bug https://bugs.chromium.org/p/chromium/issues/detail?id=809761 and
@@ -1059,6 +1061,7 @@
 -LoadingPredictorExtensionBrowserTest.PrefetchObservedByExtension
 -ModelExecutionDisabledBrowserTest.*
 -ModelExecutionEnabledBrowserTestWithExplicitBrowserSignin.EnableFeatureViaPref
+-ModelExecutionEnabledBrowserTestWithExplicitBrowserSignin.HistorySearchRecordsSyntheticFieldTrial
 -ModelExecutionEnabledOnDeviceDisabledBrowserTest.*
 -ModelExecutionEnterprisePolicyBrowserTest.DisableThenEnable
 -ModelExecutionEnterprisePolicyBrowserTest.DisableThenEnableCompose
