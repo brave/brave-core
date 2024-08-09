@@ -42,6 +42,7 @@ static_library("browser") {
     "//brave/components/brave_ads/core",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common/buildflags",
+    "//brave/components/greaselion/browser/buildflags",
     "//brave/components/resources",
     "//brave/components/services/bat_rewards/public/interfaces",
     "//mojo/public/cpp/bindings",

@@ -30,6 +30,7 @@ source_set("profiles") {
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",
     "//brave/components/constants",
+    "//brave/components/request_otr/common/buildflags",
     "//brave/components/tor/buildflags",
     "//chrome/common",
     "//components/gcm_driver:gcm_buildflags",
