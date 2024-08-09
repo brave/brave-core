@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 21e644a02f6a112c01ea7ee41c6f42d66d08b0dd..b4357ab5faa92d6d91d2dd0d572bcecf7e9ef0a5 100644
+index 093eb0df522c18534c70b5419d0ee7ce17d9e03a..fd9add735c643a0241e41cbda972e39fc953c5e4 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4148,6 +4148,7 @@ const FeatureEntry::FeatureVariation kAutofillVcnEnrollRequestTimeoutOptions[] =
+@@ -4177,6 +4177,7 @@ const FeatureEntry::FeatureVariation
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
@@ -10,7 +10,7 @@ index 21e644a02f6a112c01ea7ee41c6f42d66d08b0dd..b4357ab5faa92d6d91d2dd0d572bcecf
  // Include generated flags for flag unexpiry; see //docs/flag_expiry.md and
  // //tools/flags/generate_unexpire_flags.py.
  #include "build/chromeos_buildflags.h"
-@@ -12081,6 +12082,7 @@ void GetStorage(Profile* profile, GetStorageCallback callback) {
+@@ -12123,6 +12124,7 @@ void GetStorage(Profile* profile, GetStorageCallback callback) {
  
  bool ShouldSkipConditionalFeatureEntry(const flags_ui::FlagsStorage* storage,
                                         const FeatureEntry& entry) {
