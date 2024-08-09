@@ -34,6 +34,7 @@ android_test_exception_sources = [
   "//brave/browser/extensions/extension_system_browsertest.cc",
   "//brave/browser/perf/brave_perf_features_processor_browsertest.cc",
   "//brave/browser/policy/brave_policy_browsertest.cc",
+  "//brave/browser/profiles/delete_profile_helper_browsertest.cc",
   "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.cc",
   "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.h",
   "//brave/browser/renderer_context_menu/brave_spelling_menu_observer_browsertest.cc",
