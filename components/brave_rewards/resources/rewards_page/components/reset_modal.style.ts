@@ -8,6 +8,7 @@ import { css, scopedCSS } from '../lib/scoped_css'
 
 export const style = scopedCSS('reset-modal', css`
   & {
+    overflow: auto;
     max-width: 600px;
     color: ${color.text.secondary};
 

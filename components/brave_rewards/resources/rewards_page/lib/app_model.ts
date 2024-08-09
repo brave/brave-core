@@ -22,8 +22,37 @@ export interface AvailableCountryInfo {
   defaultCountryCode: string
 }
 
+export type AdType =
+  'new-tab-page' |
+  'notification' |
+  'search-result' |
+  'inline-content'
+
 export interface AdsInfo {
+  adsEnabled: Record<AdType, boolean>
   adsReceivedThisMonth: number
+  adTypesReceivedThisMonth: Record<AdType, number>
+  minEarningsThisMonth: number
+  maxEarningsThisMonth: number
+  nextPaymentDate: number
+  notificationAdsPerHour: number
+  shouldAllowSubdivisionTargeting: boolean
+  currentSubdivision: string
+  availableSubdivisions: Array<{ code: string, name: string }>
+  autoDetectedSubdivision: string
+}
+
+export type AdLikeStatus = 'liked' | 'disliked' | ''
+
+export interface AdsHistoryItem {
+  id: string
+  createdAt: number
+  name: string
+  text: string
+  domain: string
+  url: string
+  likeStatus: AdLikeStatus
+  inappropriate: boolean
 }
 
 export interface RewardsParameters {
@@ -74,6 +103,12 @@ export interface AppModel {
     (provider: ExternalWalletProvider, args: Record<string, string>)
       => Promise<ConnectExternalWalletResult>
   resetRewards: () => Promise<void>
+  setAdTypeEnabled: (adType: AdType, enabled: boolean) => Promise<void>
+  setNotificationAdsPerHour: (adsPerHour: number) => Promise<void>
+  setAdsSubdivision: (subdivision: string) => Promise<void>
+  getAdsHistory: () => Promise<AdsHistoryItem[]>
+  setAdLikeStatus: (id: string, status: AdLikeStatus) => Promise<void>
+  setAdInappropriate: (id: string, value: boolean) => Promise<void>
 }
 
 export function defaultState(): AppState {
@@ -123,6 +158,18 @@ export function defaultModel(): AppModel {
 
     async connectExternalWallet(provider, args) { return 'unexpected-error' },
 
-    async resetRewards() {}
+    async resetRewards() {},
+
+    async setAdTypeEnabled(adType, enabled) {},
+
+    async setNotificationAdsPerHour(adsPerHour) {},
+
+    async setAdsSubdivision(subdivision) {},
+
+    async getAdsHistory() { return [] },
+
+    async setAdLikeStatus(id, status) {},
+
+    async setAdInappropriate(id, value) {}
   }
 }

@@ -10,7 +10,7 @@ import Checkbox from '@brave/leo/react/checkbox'
 import { useLocaleContext } from '../lib/locale_strings'
 import { formatMessage } from '../../shared/lib/locale_context'
 import { NewTabLink } from '../../shared/components/new_tab_link'
-import { Modal, ModalHeader, ModalActions } from './modal'
+import { Modal } from './modal'
 import * as urls from '../../shared/lib/rewards_urls'
 
 import { style } from './reset_modal.style'
@@ -25,12 +25,12 @@ export function ResetModal (props: Props) {
   const [consented, setConsented] = React.useState(false)
 
   return (
-    <Modal onClose={props.onClose}>
-      <ModalHeader
+    <Modal className='reset-modal' onEscape={props.onClose}>
+      <Modal.Header
         title={getString('resetRewardsTitle')}
         onClose={props.onClose}
       />
-      <div className='reset-modal' {...style}>
+      <div {...style}>
         <div className='message-icon'>
           <Icon name='warning-triangle-filled' />
         </div>
@@ -67,22 +67,22 @@ export function ResetModal (props: Props) {
             </div>
           </Checkbox>
         </div>
-        <ModalActions
-          actions={[
-            {
-              text: getString('cancelButtonLabel'),
-              onClick: props.onClose
-            },
-            {
-              className: 'reset-button',
-              text: getString('resetButtonLabel'),
-              onClick: props.onReset,
-              isDisabled: !consented,
-              isPrimary: true
-            }
-          ]}
-        />
       </div>
+      <Modal.Actions
+        actions={[
+          {
+            text: getString('cancelButtonLabel'),
+            onClick: props.onClose
+          },
+          {
+            className: 'reset-button',
+            text: getString('resetButtonLabel'),
+            onClick: props.onReset,
+            isDisabled: !consented,
+            isPrimary: true
+          }
+        ]}
+      />
     </Modal>
   )
 }

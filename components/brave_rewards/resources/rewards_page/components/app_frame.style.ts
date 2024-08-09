@@ -18,7 +18,6 @@ export const style = scopedCSS('app-frame', css`
     flex-direction: column;
 
     header {
-      flex: 0 0 auto;
       padding: 12px 16px;
       display: flex;
     }
@@ -36,9 +35,9 @@ export const style = scopedCSS('app-frame', css`
     }
 
     main {
-      flex: 1 0 auto;
+      flex: 1 1 auto;
       overflow: auto;
-      margin: 0 16px 16px;
+      padding: 0 16px 16px;
     }
 
     footer {
@@ -132,6 +131,7 @@ export const style = scopedCSS('app-frame', css`
       a, button {
         --leo-icon-size: 18px;
 
+        width: 100%;
         color: ${color.text.secondary};
         font: ${font.components.navbutton};
         text-decoration: none;
@@ -139,6 +139,10 @@ export const style = scopedCSS('app-frame', css`
         align-items: center;
         gap: 16px;
         padding: 13px 24px;
+
+        &:hover {
+          background: ${color.container.highlight};
+        }
       }
 
       a.current {
