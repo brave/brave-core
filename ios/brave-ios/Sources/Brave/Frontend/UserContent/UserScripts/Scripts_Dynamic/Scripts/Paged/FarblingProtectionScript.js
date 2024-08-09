@@ -15,6 +15,7 @@ window.__firefox__.execute(function($) {
     // Randomization is determined by the fudge factor
     const farbleAudio = $((fudgeFactor) => {
       delete window.nacl
+      if (window.AudioBuffer === undefined) { return }
 
       const farbleArrayData = (destination) => {
         // Let's fudge the data by our fudge factor.
@@ -172,6 +173,7 @@ window.__firefox__.execute(function($) {
     // 3. Farble speech synthesizer
     // Adds a vake voice determined by the fakeVoiceName and randomVoiceIndexScale.
     const farbleVoices = (fakeVoiceName, randomVoiceIndexScale) => {
+      if (window.SpeechSynthesisUtterance === undefined) { return }
       const makeFakeVoiceFromVoice = (voice) => {
         const newVoice = Object.create(Object.getPrototypeOf(voice), {
           name: { value: fakeVoiceName },
