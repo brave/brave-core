@@ -78,6 +78,7 @@ brave_chrome_java_srcjar_deps = [
   "//brave/android:brave_android_java_enums_srcjar",
   "//brave/android:brave_config_java",
   "//brave/browser/android/preferences:java_pref_names_srcjar",
+  "//brave/browser/android/youtube:java_enums_srcjar",
 ]
 
 brave_chrome_app_java_resources_deps = [

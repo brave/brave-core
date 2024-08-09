@@ -32,7 +32,7 @@ class CosmeticFiltersJsRenderFrameObserver
       content::RenderFrame* render_frame,
       const int32_t isolated_world_id,
       base::RepeatingCallback<bool(void)> get_de_amp_enabled_closure_,
-      base::RepeatingCallback<bool(void)> get_yt_hd_quality_closure_);
+      base::RepeatingCallback<bool(void)> get_youtube_hd_quality_closure_);
   ~CosmeticFiltersJsRenderFrameObserver() override;
 
   CosmeticFiltersJsRenderFrameObserver(
@@ -68,7 +68,7 @@ class CosmeticFiltersJsRenderFrameObserver
 
   GURL url_;
   base::RepeatingCallback<bool(void)> get_de_amp_enabled_closure_;
-  base::RepeatingCallback<bool(void)> get_yt_hd_quality_closure_;
+  base::RepeatingCallback<bool(void)> get_youtube_hd_quality_closure_;
 
   std::unique_ptr<base::OneShotEvent> ready_;
 

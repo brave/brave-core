@@ -18,28 +18,31 @@ import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 
-public class BraveMediaYTQualityPreferences extends BravePreferenceFragment
-        implements BraveMediaRadioButtonYTQualityPreference.RadioButtonsDelegate {
-    static final String PREF_YT_VIDEO_QUALITY = "yt_video_quality";
+public class BraveMediaYoutubeQualityPreferences extends BravePreferenceFragment
+        implements BraveMediaRadioButtonYoutubeQualityPreference.RadioButtonsDelegate {
+    static final String PREF_YOUTUBE_VIDEO_QUALITY = "youtube_video_quality";
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
         getActivity().setTitle(R.string.hd_quality_settings_title);
-        SettingsUtils.addPreferencesFromResource(this, R.xml.brave_media_yt_quality_preferences);
+        SettingsUtils.addPreferencesFromResource(
+                this, R.xml.brave_media_youtube_quality_preferences);
 
-        BraveMediaRadioButtonYTQualityPreference mRadioButtons =
-                (BraveMediaRadioButtonYTQualityPreference) findPreference(PREF_YT_VIDEO_QUALITY);
+        BraveMediaRadioButtonYoutubeQualityPreference mRadioButtons =
+                (BraveMediaRadioButtonYoutubeQualityPreference)
+                        findPreference(PREF_YOUTUBE_VIDEO_QUALITY);
 
-        @YTVideoQuality
+        @YoutubeVideoQuality
         int defaultQuality =
-                UserPrefs.get(getProfile()).getInteger(BravePref.YT_VIDEO_QUALITY_PREF);
+                UserPrefs.get(getProfile()).getInteger(BravePref.YOUTUBE_VIDEO_QUALITY_PREF);
 
         mRadioButtons.initialize(this, defaultQuality);
     }
 
     @Override
-    public void setDefaultQuality(@YTVideoQuality int defaultQuality) {
-        UserPrefs.get(getProfile()).setInteger(BravePref.YT_VIDEO_QUALITY_PREF, defaultQuality);
+    public void setDefaultQuality(@YoutubeVideoQuality int defaultQuality) {
+        UserPrefs.get(getProfile())
+                .setInteger(BravePref.YOUTUBE_VIDEO_QUALITY_PREF, defaultQuality);
         ChromeTabbedActivity chromeTabbedActivity = BraveActivity.getChromeTabbedActivity();
         if (chromeTabbedActivity != null && chromeTabbedActivity.getActivityTab() != null) {
             Tab currentTab = chromeTabbedActivity.getActivityTab();

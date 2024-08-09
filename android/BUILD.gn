@@ -14,7 +14,6 @@ declare_args() {
 
 java_cpp_enum("brave_android_java_enums_srcjar") {
   sources = [
-    "//brave/browser/android/constants.h",
     "//brave/chromium_src/chrome/browser/notifications/notification_handler_impl.h",
     "//brave/components/decentralized_dns/core/constants.h",
   ]

@@ -42,7 +42,7 @@
             android:summary="@string/block_youtube_shorts_description"
             android:defaultValue="false" />
         <Preference
-            android:fragment="org.chromium.chrome.browser.settings.BraveMediaYTQualityPreferences"
+            android:fragment="org.chromium.chrome.browser.settings.BraveMediaYoutubeQualityPreferences"
             android:title="@string/youtube_high_definition_playback"
             android:summary="@string/youtube_high_definition_playback_description" />
 

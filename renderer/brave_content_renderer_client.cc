@@ -137,14 +137,14 @@ void BraveContentRendererClient::RenderFrameCreated(
       return dynamic_params.de_amp_enabled;
     });
 
-    auto yt_hd_dynamic_params_closure = base::BindRepeating([]() {
+    auto youtube_hd_dynamic_params_closure = base::BindRepeating([]() {
       auto dynamic_params = BraveRenderThreadObserver::GetDynamicParams();
-      return dynamic_params.is_yt_hd_quality_playback_enabled;
+      return dynamic_params.is_youtube_hd_quality_playback_enabled;
     });
 
     new cosmetic_filters::CosmeticFiltersJsRenderFrameObserver(
         render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL, dynamic_params_closure,
-        yt_hd_dynamic_params_closure);
+        youtube_hd_dynamic_params_closure);
   }
 
   if (base::FeatureList::IsEnabled(

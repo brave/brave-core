@@ -54,7 +54,7 @@ CosmeticFiltersJsRenderFrameObserver::CosmeticFiltersJsRenderFrameObserver(
     content::RenderFrame* render_frame,
     const int32_t isolated_world_id,
     base::RepeatingCallback<bool(void)> get_de_amp_enabled_closure,
-    base::RepeatingCallback<bool(void)> get_yt_hd_quality_closure)
+    base::RepeatingCallback<bool(void)> get_youtube_hd_quality_closure)
     : RenderFrameObserver(render_frame),
       RenderFrameObserverTracker<CosmeticFiltersJsRenderFrameObserver>(
           render_frame),
@@ -62,7 +62,8 @@ CosmeticFiltersJsRenderFrameObserver::CosmeticFiltersJsRenderFrameObserver(
       native_javascript_handle_(
           new CosmeticFiltersJSHandler(render_frame, isolated_world_id)),
       get_de_amp_enabled_closure_(std::move(get_de_amp_enabled_closure)),
-      get_yt_hd_quality_closure_(std::move(get_yt_hd_quality_closure)),
+      get_youtube_hd_quality_closure_(
+          std::move(get_youtube_hd_quality_closure)),
       ready_(new base::OneShotEvent()) {}
 
 CosmeticFiltersJsRenderFrameObserver::~CosmeticFiltersJsRenderFrameObserver() =
@@ -116,9 +117,10 @@ void CosmeticFiltersJsRenderFrameObserver::RunScriptsAtDocumentStart() {
 
 void CosmeticFiltersJsRenderFrameObserver::ApplyRules() {
   bool de_amp_enabled = get_de_amp_enabled_closure_.Run();
-  bool is_yt_hd_quality_playback_enabled = get_yt_hd_quality_closure_.Run();
+  bool is_youtube_hd_quality_playback_enabled =
+      get_youtube_hd_quality_closure_.Run();
   native_javascript_handle_->ApplyRules(de_amp_enabled,
-                                        is_yt_hd_quality_playback_enabled);
+                                        is_youtube_hd_quality_playback_enabled);
 }
 
 void CosmeticFiltersJsRenderFrameObserver::OnProcessURL() {

@@ -15,22 +15,22 @@ import org.chromium.chrome.R;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayout;
 
-public class BraveMediaRadioButtonYTQualityPreference extends Preference {
+public class BraveMediaRadioButtonYoutubeQualityPreference extends Preference {
 
-    /** This is a delegate that is implemented in BraveMediaYTQualityPreferences */
+    /** This is a delegate that is implemented in BraveMediaRadioButtonYoutubeQualityPreference */
     public interface RadioButtonsDelegate {
-        default void setDefaultQuality(@YTVideoQuality int quality) {}
+        default void setDefaultQuality(@YoutubeVideoQuality int quality) {}
     }
 
-    private @YTVideoQuality int mQuality;
+    private @YoutubeVideoQuality int mQuality;
     private RadioButtonsDelegate mDelegate;
 
-    public BraveMediaRadioButtonYTQualityPreference(Context context, AttributeSet attrs) {
+    public BraveMediaRadioButtonYoutubeQualityPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setLayoutResource(R.xml.brave_media_radio_button_yt_quality_preference);
+        setLayoutResource(R.xml.brave_media_radio_button_youtube_quality_preference);
     }
 
-    public void initialize(RadioButtonsDelegate delegate, @YTVideoQuality int quality) {
+    public void initialize(RadioButtonsDelegate delegate, @YoutubeVideoQuality int quality) {
         mDelegate = delegate;
         mQuality = quality;
     }
@@ -46,11 +46,11 @@ public class BraveMediaRadioButtonYTQualityPreference extends Preference {
                 (RadioButtonWithDescription) holder.findViewById(R.id.allow_over_wifi);
         RadioButtonWithDescription rbOff =
                 (RadioButtonWithDescription) holder.findViewById(R.id.off);
-        if (mQuality == YTVideoQuality.ON) {
+        if (mQuality == YoutubeVideoQuality.ON) {
             rbOn.setChecked(true);
-        } else if (mQuality == YTVideoQuality.ALLOW_OVER_WIFI) {
+        } else if (mQuality == YoutubeVideoQuality.ALLOW_OVER_WIFI) {
             rbAllowWifi.setChecked(true);
-        } else if (mQuality == YTVideoQuality.OFF) {
+        } else if (mQuality == YoutubeVideoQuality.OFF) {
             rbOff.setChecked(true);
         }
         group.setOnCheckedChangeListener(
@@ -61,11 +61,11 @@ public class BraveMediaRadioButtonYTQualityPreference extends Preference {
                     if (isChecked) {
                         int qualityPrefs = -1;
                         if (checkedId == R.id.on) {
-                            qualityPrefs = YTVideoQuality.ON;
+                            qualityPrefs = YoutubeVideoQuality.ON;
                         } else if (checkedId == R.id.allow_over_wifi) {
-                            qualityPrefs = YTVideoQuality.ALLOW_OVER_WIFI;
+                            qualityPrefs = YoutubeVideoQuality.ALLOW_OVER_WIFI;
                         } else if (checkedId == R.id.off) {
-                            qualityPrefs = YTVideoQuality.OFF;
+                            qualityPrefs = YoutubeVideoQuality.OFF;
                         }
 
                         if (qualityPrefs != -1) {

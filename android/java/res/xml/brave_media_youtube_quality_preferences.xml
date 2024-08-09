@@ -7,7 +7,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <org.chromium.chrome.browser.settings.BraveMediaRadioButtonYTQualityPreference
-        android:key="yt_video_quality" />
+    <org.chromium.chrome.browser.settings.BraveMediaRadioButtonYoutubeQualityPreference
+        android:key="youtube_video_quality" />
 
 </PreferenceScreen>
