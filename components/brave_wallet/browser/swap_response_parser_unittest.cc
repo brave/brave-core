@@ -1074,6 +1074,418 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
     EXPECT_EQ(route->tags.at(1), "CHEAPEST");
     EXPECT_EQ(route->tags.at(2), "FASTEST");
   }
+
+  {
+    // OK: USDC.e on Polygon --> SOL on Solana
+    std::string json(R"(
+      {
+        "routes": [
+          {
+            "id": "4c901782-830f-454e-9ed8-6d246829799f",
+            "fromChainId": "137",
+            "fromAmountUSD": "20.00",
+            "fromAmount": "20000000",
+            "fromToken": {
+              "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+              "chainId": "137",
+              "symbol": "USDC.e",
+              "decimals": "6",
+              "name": "Bridged USD Coin",
+              "coinKey": "USDCe",
+              "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+              "priceUSD": "1"
+            },
+            "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
+            "toChainId": "1151111081099710",
+            "toAmountUSD": "17.15",
+            "toAmount": "107802690",
+            "toAmountMin": "104568610",
+            "toToken": {
+              "address": "11111111111111111111111111111111",
+              "chainId": "1151111081099710",
+              "symbol": "SOL",
+              "decimals": "9",
+              "name": "SOL",
+              "coinKey": "SOL",
+              "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png",
+              "priceUSD": "159.11"
+            },
+            "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
+            "gasCostUSD": "0.01",
+            "containsSwitchChain": false,
+            "steps": [
+              {
+                "type": "lifi",
+                "id": "4c901782-830f-454e-9ed8-6d246829799f:0",
+                "tool": "mayan",
+                "toolDetails": {
+                  "key": "mayan",
+                  "name": "Mayan",
+                  "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/bridges/mayan.png"
+                },
+                "action": {
+                  "fromToken": {
+                    "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+                    "chainId": "137",
+                    "symbol": "USDC.e",
+                    "decimals": "6",
+                    "name": "Bridged USD Coin",
+                    "coinKey": "USDCe",
+                    "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+                    "priceUSD": "1"
+                  },
+                  "fromAmount": "20000000",
+                  "toToken": {
+                    "address": "11111111111111111111111111111111",
+                    "chainId": "1151111081099710",
+                    "symbol": "SOL",
+                    "decimals": "9",
+                    "name": "SOL",
+                    "coinKey": "SOL",
+                    "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png",
+                    "priceUSD": "159.11"
+                  },
+                  "fromChainId": "137",
+                  "toChainId": "1151111081099710",
+                  "slippage": "0.03",
+                  "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
+                  "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4"
+                },
+                "estimate": {
+                  "tool": "mayan",
+                  "approvalAddress": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+                  "toAmountMin": "104568610",
+                  "toAmount": "107802690",
+                  "fromAmount": "20000000",
+                  "feeCosts": [
+                    {
+                      "name": "Swap Relayer Fee",
+                      "description": "Fee for the swap relayer",
+                      "token": {
+                        "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+                        "chainId": "137",
+                        "symbol": "USDC.e",
+                        "decimals": "6",
+                        "name": "Bridged USD Coin",
+                        "coinKey": "USDCe",
+                        "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+                        "priceUSD": "1"
+                      },
+                      "amount": "2746612",
+                      "amountUSD": "2.75",
+                      "percentage": "0.1373305975",
+                      "included": true
+                    }
+                  ],
+                  "gasCosts": [
+                    {
+                      "type": "SEND",
+                      "price": "43687550986",
+                      "estimate": "370000",
+                      "limit": "513000",
+                      "amount": "16164393864820000",
+                      "amountUSD": "0.01",
+                      "token": {
+                        "address": "0x0000000000000000000000000000000000000000",
+                        "chainId": "137",
+                        "symbol": "MATIC",
+                        "decimals": "18",
+                        "name": "MATIC",
+                        "coinKey": "MATIC",
+                        "logoURI": "https://static.debank.com/image/matic_token/logo_url/matic/6f5a6b6f0732a7a235131bd7804d357c.png",
+                        "priceUSD": "0.4077"
+                      }
+                    }
+                  ],
+                  "executionDuration": "368",
+                  "fromAmountUSD": "20.00",
+                  "toAmountUSD": "17.15"
+                },
+                "includedSteps": [
+                  {
+                    "id": "e003be5c-5099-4f3a-8053-efb5767c4ba8",
+                    "type": "cross",
+                    "action": {
+                      "fromChainId": "137",
+                      "fromAmount": "20000000",
+                      "fromToken": {
+                        "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+                        "chainId": "137",
+                        "symbol": "USDC.e",
+                        "decimals": "6",
+                        "name": "Bridged USD Coin",
+                        "coinKey": "USDCe",
+                        "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+                        "priceUSD": "1"
+                      },
+                      "toChainId": "1151111081099710",
+                      "toToken": {
+                        "address": "11111111111111111111111111111111",
+                        "chainId": "1151111081099710",
+                        "symbol": "SOL",
+                        "decimals": "9",
+                        "name": "SOL",
+                        "coinKey": "SOL",
+                        "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png",
+                        "priceUSD": "159.11"
+                      },
+                      "slippage": "0.03",
+                      "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
+                      "destinationGasConsumption": "0"
+                    },
+                    "estimate": {
+                      "tool": "mayan",
+                      "fromAmount": "20000000",
+                      "toAmount": "107802690",
+                      "toAmountMin": "104568610",
+                      "gasCosts": [
+                        {
+                          "type": "SEND",
+                          "price": "43687550986",
+                          "estimate": "370000",
+                          "limit": "555000",
+                          "amount": "16164393864820000",
+                          "amountUSD": "0.01",
+                          "token": {
+                            "address": "0x0000000000000000000000000000000000000000",
+                            "chainId": "137",
+                            "symbol": "MATIC",
+                            "decimals": "18",
+                            "name": "MATIC",
+                            "coinKey": "MATIC",
+                            "logoURI": "https://static.debank.com/image/matic_token/logo_url/matic/6f5a6b6f0732a7a235131bd7804d357c.png",
+                            "priceUSD": "0.4077"
+                          }
+                        }
+                      ],
+                      "executionDuration": "368",
+                      "approvalAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
+                      "feeCosts": [
+                        {
+                          "name": "Swap Relayer Fee",
+                          "description": "Fee for the swap relayer",
+                          "token": {
+                            "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+                            "chainId": "137",
+                            "symbol": "USDC.e",
+                            "decimals": "6",
+                            "name": "Bridged USD Coin",
+                            "coinKey": "USDCe",
+                            "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+                            "priceUSD": "1"
+                          },
+                          "amount": "2746612",
+                          "amountUSD": "2.75",
+                          "percentage": "0.1373305975",
+                          "included": true
+                        }
+                      ]
+                    },
+                    "tool": "mayan",
+                    "toolDetails": {
+                      "key": "mayan",
+                      "name": "Mayan",
+                      "logoURI": "https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/bridges/mayan.png"
+                    }
+                  }
+                ],
+                "integrator": "lifi-api"
+              }
+            ],
+            "tags": [
+              "RECOMMENDED",
+              "CHEAPEST",
+              "FASTEST"
+            ]
+          }
+        ],
+        "unavailableRoutes": {
+          "filteredOut": [],
+          "failed": []
+        }
+      }
+    )");
+
+    auto quote = lifi::ParseQuoteResponse(ParseJson(json));
+    ASSERT_TRUE(quote);
+
+    ASSERT_EQ(quote->routes.size(), 1u);
+    const auto& route = quote->routes.at(0);
+    EXPECT_EQ(route->id, "4c901782-830f-454e-9ed8-6d246829799f");
+    EXPECT_EQ(route->from_amount, "20000000");
+    EXPECT_EQ(route->from_token->contract_address,
+              "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174");
+    EXPECT_EQ(route->from_token->chain_id, "0x89");
+    EXPECT_EQ(route->from_token->symbol, "USDC.e");
+    EXPECT_EQ(route->from_token->decimals, 6);
+    EXPECT_EQ(route->from_token->name, "Bridged USD Coin");
+    EXPECT_EQ(route->from_token->logo,
+              "https://raw.githubusercontent.com/trustwallet/assets/master/"
+              "blockchains/ethereum/assets/"
+              "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png");
+    EXPECT_EQ(route->from_address,
+              "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0");
+    EXPECT_EQ(route->to_amount, "107802690");
+    EXPECT_EQ(route->to_amount_min, "104568610");
+    EXPECT_EQ(route->to_token->contract_address, "");
+    EXPECT_EQ(route->to_token->chain_id, "0x65");
+    EXPECT_EQ(route->to_token->symbol, "SOL");
+    EXPECT_EQ(route->to_token->decimals, 9);
+    EXPECT_EQ(route->to_token->name, "SOL");
+    EXPECT_EQ(route->to_token->logo,
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png");
+    EXPECT_EQ(route->to_address, "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4");
+
+    ASSERT_EQ(route->steps.size(), 1u);
+    const auto& step = route->steps.at(0);
+    EXPECT_EQ(step->type, mojom::LiFiStepType::kNative);
+    EXPECT_EQ(step->id, "4c901782-830f-454e-9ed8-6d246829799f:0");
+    EXPECT_EQ(step->tool, "mayan");
+    EXPECT_EQ(step->tool_details->key, "mayan");
+    EXPECT_EQ(step->tool_details->name, "Mayan");
+    EXPECT_EQ(step->tool_details->logo,
+              "https://raw.githubusercontent.com/lifinance/types/main/src/"
+              "assets/icons/bridges/mayan.png");
+    EXPECT_EQ(step->action->from_token->contract_address,
+              "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174");
+    EXPECT_EQ(step->action->from_token->chain_id, "0x89");
+    EXPECT_EQ(step->action->from_token->symbol, "USDC.e");
+    EXPECT_EQ(step->action->from_token->decimals, 6);
+    EXPECT_EQ(step->action->from_token->name, "Bridged USD Coin");
+    EXPECT_EQ(step->action->from_token->logo,
+              "https://raw.githubusercontent.com/trustwallet/assets/master/"
+              "blockchains/ethereum/assets/"
+              "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png");
+    EXPECT_EQ(step->action->from_amount, "20000000");
+    EXPECT_EQ(step->action->to_token->contract_address, "");
+    EXPECT_EQ(step->action->to_token->chain_id, "0x65");
+    EXPECT_EQ(step->action->to_token->symbol, "SOL");
+    EXPECT_EQ(step->action->to_token->decimals, 9);
+    EXPECT_EQ(step->action->to_token->name, "SOL");
+    EXPECT_EQ(step->action->to_token->logo,
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png");
+    EXPECT_EQ(step->action->slippage, "0.03");
+    EXPECT_EQ(step->action->from_address,
+              "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0");
+    EXPECT_EQ(step->action->to_address,
+              "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4");
+    EXPECT_EQ(step->estimate->tool, "mayan");
+    EXPECT_EQ(step->estimate->approval_address,
+              "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE");
+    EXPECT_EQ(step->estimate->to_amount_min, "104568610");
+    EXPECT_EQ(step->estimate->to_amount, "107802690");
+    EXPECT_EQ(step->estimate->from_amount, "20000000");
+    ASSERT_EQ(step->estimate->fee_costs->size(), 1u);
+    const auto& fee_cost = step->estimate->fee_costs->at(0);
+    EXPECT_EQ(fee_cost->name, "Swap Relayer Fee");
+    EXPECT_EQ(fee_cost->description, "Fee for the swap relayer");
+    EXPECT_EQ(fee_cost->token->contract_address,
+              "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174");
+    EXPECT_EQ(fee_cost->token->chain_id, "0x89");
+    EXPECT_EQ(fee_cost->token->symbol, "USDC.e");
+    EXPECT_EQ(fee_cost->token->decimals, 6);
+    EXPECT_EQ(fee_cost->token->name, "Bridged USD Coin");
+    EXPECT_EQ(fee_cost->token->logo,
+              "https://raw.githubusercontent.com/trustwallet/assets/master/"
+              "blockchains/ethereum/assets/"
+              "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png");
+    EXPECT_EQ(fee_cost->amount, "2746612");
+    EXPECT_EQ(fee_cost->percentage, "0.1373305975");
+    EXPECT_TRUE(fee_cost->included);
+    ASSERT_EQ(step->estimate->gas_costs.size(), 1u);
+    const auto& gas_cost = step->estimate->gas_costs.at(0);
+    EXPECT_EQ(gas_cost->type, "SEND");
+    EXPECT_EQ(gas_cost->estimate, "370000");
+    EXPECT_EQ(gas_cost->limit, "513000");
+    EXPECT_EQ(gas_cost->amount, "16164393864820000");
+    EXPECT_EQ(gas_cost->token->contract_address, "");
+    EXPECT_EQ(gas_cost->token->chain_id, "0x89");
+    EXPECT_EQ(gas_cost->token->symbol, "MATIC");
+    EXPECT_EQ(gas_cost->token->decimals, 18);
+    EXPECT_EQ(gas_cost->token->name, "MATIC");
+    EXPECT_EQ(gas_cost->token->logo,
+              "https://static.debank.com/image/matic_token/logo_url/matic/"
+              "6f5a6b6f0732a7a235131bd7804d357c.png");
+    EXPECT_EQ(step->estimate->execution_duration, "368");
+
+    ASSERT_TRUE(step->included_steps);
+    ASSERT_EQ(step->included_steps->size(), 1u);
+    const auto& included_step = step->included_steps->at(0);
+    EXPECT_EQ(included_step->id, "e003be5c-5099-4f3a-8053-efb5767c4ba8");
+    EXPECT_EQ(included_step->type, mojom::LiFiStepType::kCross);
+    EXPECT_EQ(included_step->tool, "mayan");
+    EXPECT_EQ(included_step->tool_details->key, "mayan");
+    EXPECT_EQ(included_step->tool_details->name, "Mayan");
+    EXPECT_EQ(included_step->tool_details->logo,
+              "https://raw.githubusercontent.com/lifinance/types/main/src/"
+              "assets/icons/bridges/mayan.png");
+    EXPECT_EQ(included_step->action->from_token->contract_address,
+              "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174");
+    EXPECT_EQ(included_step->action->from_token->chain_id, "0x89");
+    EXPECT_EQ(included_step->action->from_token->symbol, "USDC.e");
+    EXPECT_EQ(included_step->action->from_token->decimals, 6);
+    EXPECT_EQ(included_step->action->from_token->name, "Bridged USD Coin");
+    EXPECT_EQ(included_step->action->from_token->logo,
+              "https://raw.githubusercontent.com/trustwallet/assets/master/"
+              "blockchains/ethereum/assets/"
+              "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png");
+    EXPECT_EQ(included_step->action->from_amount, "20000000");
+    EXPECT_EQ(included_step->action->to_token->contract_address, "");
+    EXPECT_EQ(included_step->action->to_token->chain_id, "0x65");
+    EXPECT_EQ(included_step->action->to_token->symbol, "SOL");
+    EXPECT_EQ(included_step->action->to_token->decimals, 9);
+    EXPECT_EQ(included_step->action->to_token->name, "SOL");
+    EXPECT_EQ(included_step->action->to_token->logo,
+              "https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png");
+    EXPECT_EQ(included_step->action->slippage, "0.03");
+    EXPECT_EQ(included_step->action->from_address,
+              "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0");
+    EXPECT_EQ(included_step->estimate->tool, "mayan");
+    EXPECT_EQ(included_step->estimate->from_amount, "20000000");
+    EXPECT_EQ(included_step->estimate->to_amount, "107802690");
+    EXPECT_EQ(included_step->estimate->to_amount_min, "104568610");
+    ASSERT_EQ(included_step->estimate->gas_costs.size(), 1u);
+    const auto& included_step_gas_cost =
+        included_step->estimate->gas_costs.at(0);
+    EXPECT_EQ(included_step_gas_cost->type, "SEND");
+    EXPECT_EQ(included_step_gas_cost->estimate, "370000");
+    EXPECT_EQ(included_step_gas_cost->limit, "555000");
+    EXPECT_EQ(included_step_gas_cost->amount, "16164393864820000");
+    EXPECT_EQ(included_step_gas_cost->token->contract_address, "");
+    EXPECT_EQ(included_step_gas_cost->token->chain_id, "0x89");
+    EXPECT_EQ(included_step_gas_cost->token->symbol, "MATIC");
+    EXPECT_EQ(included_step_gas_cost->token->decimals, 18);
+    EXPECT_EQ(included_step_gas_cost->token->name, "MATIC");
+    EXPECT_EQ(included_step_gas_cost->token->logo,
+              "https://static.debank.com/image/matic_token/logo_url/matic/"
+              "6f5a6b6f0732a7a235131bd7804d357c.png");
+    EXPECT_EQ(included_step->estimate->execution_duration, "368");
+    EXPECT_EQ(included_step->estimate->approval_address,
+              "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0");
+    ASSERT_EQ(included_step->estimate->fee_costs->size(), 1u);
+    const auto& included_step_fee_cost =
+        included_step->estimate->fee_costs->at(0);
+    EXPECT_EQ(included_step_fee_cost->name, "Swap Relayer Fee");
+    EXPECT_EQ(included_step_fee_cost->description, "Fee for the swap relayer");
+    EXPECT_EQ(included_step_fee_cost->token->contract_address,
+              "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174");
+    EXPECT_EQ(included_step_fee_cost->token->chain_id, "0x89");
+    EXPECT_EQ(included_step_fee_cost->token->symbol, "USDC.e");
+    EXPECT_EQ(included_step_fee_cost->token->decimals, 6);
+    EXPECT_EQ(included_step_fee_cost->token->name, "Bridged USD Coin");
+    EXPECT_EQ(included_step_fee_cost->token->logo,
+              "https://raw.githubusercontent.com/trustwallet/assets/master/"
+              "blockchains/ethereum/assets/"
+              "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png");
+    EXPECT_EQ(included_step_fee_cost->amount, "2746612");
+    EXPECT_EQ(included_step_fee_cost->percentage, "0.1373305975");
+    EXPECT_TRUE(included_step_fee_cost->included);
+
+    ASSERT_EQ(route->tags.size(), 3u);
+    EXPECT_EQ(route->tags.at(0), "RECOMMENDED");
+    EXPECT_EQ(route->tags.at(1), "CHEAPEST");
+    EXPECT_EQ(route->tags.at(2), "FASTEST");
+  }
 }
 
 TEST(SwapResponseParserUnitTest, ParseLiFiTransactionResponse) {

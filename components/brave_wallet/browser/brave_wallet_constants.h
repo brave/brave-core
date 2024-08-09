@@ -1582,7 +1582,7 @@ inline constexpr char kLiFiIntegratorID[] = "brave";
 inline constexpr char kLiFiNativeEVMAssetContractAddress[] =
     "0x0000000000000000000000000000000000000000";
 inline constexpr char kLiFiNativeSVMAssetContractAddress[] =
-    "So11111111111111111111111111111111111111112";
+    "11111111111111111111111111111111";
 inline constexpr char kLiFiSolanaMainnetChainID[] = "1151111081099710";
 
 // LiFi // 0x common constants
