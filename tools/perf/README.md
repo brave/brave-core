@@ -27,7 +27,7 @@ A sh command to run all 3 steps:
 `FILE=<filename>; \
 SHA1=$(shasum -a 1 BUILD.gn | head -c 40); \
   aws s3 cp $FILE s3://brave-perf-data/<folder>/$SHA1 \
-    --profile go-translate-dev --acl bucket-owner-full-control \
+    --profile go-translate-dev --acl bucket-owner-full-control --sse AES256 \
   echo $SHA1 > $FILE.sha1;`
 
 ## GSC manual upload (legacy)
