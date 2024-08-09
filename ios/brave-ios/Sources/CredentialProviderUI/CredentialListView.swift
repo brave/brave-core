@@ -211,6 +211,7 @@ extension CredentialListModel {
 
     var favicon: String!
     var recordIdentifier: String!
+    var gaia: String!
     var username: String!
     var password: String!
     var rank: Int64 = 0
