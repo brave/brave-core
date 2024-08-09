@@ -120,8 +120,9 @@ void BraveVpnDnsSettingsNotificiationDialogView::OnLearnMoreLinkClicked() {
   AcceptDialog();
 }
 
-ui::ModalType BraveVpnDnsSettingsNotificiationDialogView::GetModalType() const {
-  return ui::MODAL_TYPE_WINDOW;
+ui::mojom::ModalType BraveVpnDnsSettingsNotificiationDialogView::GetModalType()
+    const {
+  return ui::mojom::ModalType::kWindow;
 }
 
 bool BraveVpnDnsSettingsNotificiationDialogView::ShouldShowCloseButton() const {

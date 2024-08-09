@@ -36,7 +36,7 @@ void ShowObsoleteSystemConfirmDialog(base::OnceCallback<void(bool)> callback) {
 ObsoleteSystemConfirmDialogView::ObsoleteSystemConfirmDialogView(
     base::OnceCallback<void(bool)> closing_callback)
     : closing_callback_(std::move(closing_callback)) {
-  SetModalType(ui::MODAL_TYPE_WINDOW);
+  SetModalType(ui::mojom::ModalType::kWindow);
   SetShowCloseButton(false);
   SetUseDefaultFillLayout(true);
   SetAcceptCallback(

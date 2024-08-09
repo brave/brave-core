@@ -249,7 +249,7 @@ AIRewriterDialogDelegate::AIRewriterDialogDelegate(
     : content::WebContentsObserver(contents),
       target_contents_(contents->GetWeakPtr()) {
   set_can_close(true);
-  set_dialog_modal_type(ui::MODAL_TYPE_WINDOW);
+  set_dialog_modal_type(ui::mojom::ModalType::kWindow);
   set_dialog_content_url(GURL(kRewriterUIURL));
   set_dialog_size(gfx::Size(600, 550));
   set_dialog_args(*base::WriteJson(base::Value::Dict()));

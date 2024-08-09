@@ -219,8 +219,8 @@ void CrashReportPermissionAskDialogView::CreateChildViews(
         footnote_default_style);
 }
 
-ui::ModalType CrashReportPermissionAskDialogView::GetModalType() const {
-  return ui::MODAL_TYPE_WINDOW;
+ui::mojom::ModalType CrashReportPermissionAskDialogView::GetModalType() const {
+  return ui::mojom::ModalType::kWindow;
 }
 
 bool CrashReportPermissionAskDialogView::ShouldShowCloseButton() const {

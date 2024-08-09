@@ -29,7 +29,7 @@ class CrashReportPermissionAskDialogView : public views::DialogDelegateView {
       const CrashReportPermissionAskDialogView&) = delete;
 
   // views::DialogDelegateView overrides:
-  ui::ModalType GetModalType() const override;
+  ui::mojom::ModalType GetModalType() const override;
   bool ShouldShowCloseButton() const override;
   bool ShouldShowWindowTitle() const override;
   void OnWidgetInitialized() override;
