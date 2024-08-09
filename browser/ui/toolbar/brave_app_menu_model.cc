@@ -17,7 +17,6 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/app/chrome_command_ids.h"
-#include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/toolbar/app_menu_model.h"
@@ -275,12 +274,6 @@ void BraveAppMenuModel::BuildMoreToolsSubMenu() {
     need_separator = false;
   }
 
-  if (media_router::MediaRouterEnabled(browser()->profile())) {
-    more_tools_menu_model->InsertItemWithStringIdAt(
-        next_target_index++, IDC_ROUTE_MEDIA, IDS_MEDIA_ROUTER_MENU_ITEM_TITLE);
-    need_separator = true;
-  }
-
   // Insert sync menu
   if (IsCommandIdEnabled(IDC_SHOW_BRAVE_SYNC)) {
     more_tools_menu_model->InsertItemWithStringIdAt(
@@ -331,19 +324,6 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
   // Hide extensions sub menu.
   DCHECK(GetIndexOfCommandId(IDC_EXTENSIONS_SUBMENU).has_value());
   RemoveItemAt(GetIndexOfCommandId(IDC_EXTENSIONS_SUBMENU).value());
-
-  // Remove upstream's cast item. It'll be added into more tools sub menu.
-  if (media_router::MediaRouterEnabled(browser()->profile())) {
-    SimpleMenuModel* parent_model_for_cast = this;
-    DCHECK(GetIndexOfCommandId(IDC_SAVE_AND_SHARE_MENU).has_value());
-    parent_model_for_cast = static_cast<SimpleMenuModel*>(GetSubmenuModelAt(
-        GetIndexOfCommandId(IDC_SAVE_AND_SHARE_MENU).value()));
-
-    DCHECK(parent_model_for_cast->GetIndexOfCommandId(IDC_ROUTE_MEDIA)
-               .has_value());
-    parent_model_for_cast->RemoveItemAt(
-        parent_model_for_cast->GetIndexOfCommandId(IDC_ROUTE_MEDIA).value());
-  }
 
   {
     // Remove upstream's profile menu. "Add new profile" will be added into more
