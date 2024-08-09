@@ -259,7 +259,7 @@ class AdsServiceImpl final : public AdsService,
 
   void GetAdHistory(base::Time from_time,
                     base::Time to_time,
-                    GetAdHistoryCallback callback) override;
+                    GetAdHistoryForUICallback callback) override;
 
   void ClearData() override;
 

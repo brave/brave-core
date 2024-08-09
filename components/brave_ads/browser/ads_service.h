@@ -151,7 +151,7 @@ class AdsService : public KeyedService {
   // obtained ad history.
   virtual void GetAdHistory(base::Time from_time,
                             base::Time to_time,
-                            GetAdHistoryCallback callback) = 0;
+                            GetAdHistoryForUICallback callback) = 0;
 
   // Called to clear Brave Ads data.
   virtual void ClearData() = 0;
@@ -176,9 +176,9 @@ class AdsService : public KeyedService {
 
   // Called to dislike a category. This is a toggle, so calling it again
   // returns the setting to the neutral state. The callback takes one argument -
+  // `bool` is set to `true` if successful otherwise `false`.
   virtual void ToggleDislikeSegment(base::Value::Dict value,
                                     ToggleReactionCallback callback) = 0;
-  // `bool` is set to `true` if successful otherwise `false`.
 
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. The callback takes one argument -

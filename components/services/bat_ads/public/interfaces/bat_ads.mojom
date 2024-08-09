@@ -190,7 +190,7 @@ interface BatAds {
       (bool success);
 
   GetAdHistory(mojo_base.mojom.Time from_time, mojo_base.mojom.Time to_time) =>
-      (mojo_base.mojom.ListValue value);
+      (mojo_base.mojom.ListValue? value);
 
   ToggleLikeAd(mojo_base.mojom.DictionaryValue value) => (bool success);
   ToggleDislikeAd(mojo_base.mojom.DictionaryValue value) => (bool success);

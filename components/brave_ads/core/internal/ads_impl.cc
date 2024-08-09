@@ -243,13 +243,14 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
           ad_type, std::move(callback)));
 }
 
-AdHistoryList AdsImpl::GetAdHistory(const AdHistoryFilterType filter_type,
-                                    const AdHistorySortType sort_type,
-                                    const base::Time from_time,
-                                    const base::Time to_time) {
-  return is_initialized_
-             ? AdHistoryManager::Get(filter_type, sort_type, from_time, to_time)
-             : AdHistoryList{};
+void AdsImpl::GetAdHistory(const base::Time from_time,
+                           const base::Time to_time,
+                           GetAdHistoryForUICallback callback) {
+  if (!is_initialized_) {
+    return std::move(callback).Run(/*ad_history*/ std::nullopt);
+  }
+
+  AdHistoryManager::GetForUI(from_time, to_time, std::move(callback));
 }
 
 void AdsImpl::ToggleLikeAd(const base::Value::Dict& value,

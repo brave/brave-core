@@ -17,15 +17,32 @@
 
 namespace brave_ads {
 
-class BraveAdsLegacyClientMigrationTest : public test::TestBase {
- protected:
-  void SetUpMocks() override {
-    test::SetProfileBooleanPrefValue(prefs::kHasMigratedClientState, false);
-  }
-};
+namespace {
+constexpr char kLegacyClientMigrationJsonFilename[] =
+    "legacy_client_migration.json";
+}  // namespace
+
+class BraveAdsLegacyClientMigrationTest : public test::TestBase {};
 
 TEST_F(BraveAdsLegacyClientMigrationTest, Migrate) {
   // Arrange
+  test::SetProfileBooleanPrefValue(prefs::kHasMigratedClientState, false);
+
+  ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(
+      kLegacyClientMigrationJsonFilename));
+
+  // Act & Assert
+  base::MockCallback<InitializeCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true));
+  MigrateClientState(callback.Get());
+
+  EXPECT_TRUE(HasMigratedClientState());
+}
+
+TEST_F(BraveAdsLegacyClientMigrationTest, AlreadyMigrated) {
+  // Arrange
+  test::SetProfileBooleanPrefValue(prefs::kHasMigratedClientState, true);
+
   ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(kClientJsonFilename));
 
   // Act & Assert
@@ -36,8 +53,10 @@ TEST_F(BraveAdsLegacyClientMigrationTest, Migrate) {
   EXPECT_TRUE(HasMigratedClientState());
 }
 
-TEST_F(BraveAdsLegacyClientMigrationTest, ResetMalformedState) {
+TEST_F(BraveAdsLegacyClientMigrationTest, ResetMalformedClientState) {
   // Arrange
+  test::SetProfileBooleanPrefValue(prefs::kHasMigratedClientState, false);
+
   ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(
       test::kMalformedJsonFilename, kClientJsonFilename));
 

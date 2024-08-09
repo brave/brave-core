@@ -1,0 +1,834 @@
+{
+  "adPreferences": {
+    "filtered_advertisers": [
+      {
+        "id": "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2"
+      },
+      {
+        "id": "e7b8a6d4-5f3b-4c8a-9b8f-1c2b3d4e5f6a"
+      }
+    ],
+    "filtered_categories": [
+      {
+        "name": "food & drink"
+      },
+      {
+        "name": "technology & computing"
+      }
+    ],
+    "flagged_ads": [
+      {
+        "creative_set_id": "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123"
+      },
+      {
+        "creative_set_id": "b1a8f2d4-3c5e-4f8a-9d7e-2b3c4d5e6f7a"
+      }
+    ],
+    "saved_ads": [
+      {
+        "creative_instance_id": "546fe7b0-5047-4f28-a11c-81f14edcf0f6"
+      },
+      {
+        "creative_instance_id": "f3a9c1d2-4e5b-4c8a-9d7e-3b4c5d6e7f8a"
+      }
+    ]
+  },
+  "adsShownHistory": [
+    {
+      "adContent": {
+        "adAction": "view",
+        "adType": "ad_notification",
+        "advertiserId": "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2",
+        "brand": "Test Ad Title 1",
+        "brandDisplayUrl": "brave.com",
+        "brandInfo": "Test Ad Description 1",
+        "brandUrl": "https://brave.com/",
+        "campaignId": "84197fc8-830a-4a8e-8339-7a70c2bfa104",
+        "creativeInstanceId": "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
+        "creativeSetId": "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123",
+        "flaggedAd": false,
+        "likeAction": 1,
+        "placementId": "9bac9ae4-693c-4569-9b3e-300e357780cf",
+        "savedAd": true,
+        "segment": "untargeted"
+      },
+      "categoryContent": {
+        "category": "untargeted",
+        "optAction": 0
+      },
+      "createdAt": "13253761234567"
+    },
+    {
+      "adContent": {
+        "adAction": "click",
+        "adType": "ad_notification",
+        "advertiserId": "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2",
+        "brand": "Test Ad Title 1",
+        "brandDisplayUrl": "brave.com",
+        "brandInfo": "Test Ad Description 1",
+        "brandUrl": "https://brave.com/",
+        "campaignId": "84197fc8-830a-4a8e-8339-7a70c2bfa104",
+        "creativeInstanceId": "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
+        "creativeSetId": "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123",
+        "flaggedAd": false,
+        "likeAction": 1,
+        "placementId": "9bac9ae4-693c-4569-9b3e-300e357780cf",
+        "savedAd": true,
+        "segment": "untargeted"
+      },
+      "categoryContent": {
+        "category": "untargeted",
+        "optAction": 0
+      },
+      "createdAt": "13254625234567"
+    }
+  ],
+  "purchaseIntentSignalHistory": {
+    "food & drink": [
+      {
+        "created_at": 1696118400,
+        "weight": 1
+      },
+      {
+        "created_at": 1696032000,
+        "weight": 0.8
+      }
+    ],
+    "technology & computing": [
+      {
+        "created_at": 1695945600,
+        "weight": 0.6
+      },
+      {
+        "created_at": 1695859200,
+        "weight": 0.4
+      }
+    ]
+  },
+  "textClassificationProbabilitiesHistory": [
+    {
+      "textClassificationProbabilities": [
+        {
+          "segment": "arts & entertainment-film",
+          "pageScore": "0.014439903199672699"
+        },
+        {
+          "segment": "arts & entertainment-music",
+          "pageScore": "0.14911872148513794"
+        },
+        {
+          "segment": "arts & entertainment-opera",
+          "pageScore": "0.049411315470933914"
+        },
+        {
+          "segment": "automotive-automotive",
+          "pageScore": "0.013158123940229416"
+        },
+        {
+          "segment": "automotive-motorcycles",
+          "pageScore": "0.03220339119434357"
+        },
+        {
+          "segment": "cell phones-cell phones",
+          "pageScore": "0.007855219766497612"
+        },
+        {
+          "segment": "crypto-crypto",
+          "pageScore": "0.2534106969833374"
+        },
+        {
+          "segment": "food & drink-vegan",
+          "pageScore": "0.01577565260231495"
+        },
+        {
+          "segment": "history-archaeology",
+          "pageScore": "0.010236017405986786"
+        },
+        {
+          "segment": "hobbies & interests-genealogy",
+          "pageScore": "0.025348717346787453"
+        },
+        {
+          "segment": "hobbies & interests-hobbies & interests",
+          "pageScore": "0.028421763330698013"
+        },
+        {
+          "segment": "home-garden",
+          "pageScore": "0.045508988201618195"
+        },
+        {
+          "segment": "personal finance-retirement planning",
+          "pageScore": "0.007823011837899685"
+        },
+        {
+          "segment": "pets-aquariums",
+          "pageScore": "0.26279857754707336"
+        },
+        {
+          "segment": "sports-golf",
+          "pageScore": "0.013442588038742542"
+        }
+      ]
+    },
+    {
+      "textClassificationProbabilities": [
+        {
+          "segment": "architecture-architecture",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "arts & entertainment-animation",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "arts & entertainment-anime",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "arts & entertainment-arts & entertainment",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "arts & entertainment-comics",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "arts & entertainment-design",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "arts & entertainment-film",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "arts & entertainment-literature",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "arts & entertainment-music",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "arts & entertainment-opera",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "arts & entertainment-poetry",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "arts & entertainment-radio",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "arts & entertainment-television",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "automotive-automotive",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "automotive-motorcycles",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "automotive-pickup trucks",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "business-business",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "business-energy",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "business-marketing",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "careers-careers",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "cell phones-cell phones",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "crypto-crypto",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "education-academia",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "education-education",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "education-homeschooling",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "family & parenting-parenting",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "family & parenting-pregnancy",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "fashion-beauty",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "fashion-clothing",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "fashion-fashion",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "fashion-jewelry",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "folklore-astrology",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "folklore-folklore",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "folklore-paranormal phenomena",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "food & drink-baking",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "food & drink-barbecues & grilling",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "food & drink-beer",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "food & drink-cheese",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "food & drink-cider",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "food & drink-cocktails",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "food & drink-coffee",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "food & drink-cooking",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "food & drink-food & drink",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "food & drink-pasta",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "food & drink-tea",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "food & drink-vegan",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "food & drink-vegetarian",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "food & drink-wine",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "gaming-gaming",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "health & fitness-alternative medicine",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "health & fitness-bodybuilding",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "health & fitness-dental care",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "health & fitness-diet & nutrition",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "health & fitness-exercise",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "health & fitness-sex",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "history-archaeology",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "history-history",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "hobbies & interests-antiques",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "hobbies & interests-arts & crafts",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "hobbies & interests-board games",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "hobbies & interests-coins",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "hobbies & interests-dance",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "hobbies & interests-gambling",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "hobbies & interests-genealogy",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "hobbies & interests-hobbies & interests",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "hobbies & interests-horse racing",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "hobbies & interests-needlework",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "hobbies & interests-photography",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "hobbies & interests-sci-fi",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "hobbies & interests-scouting",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "hobbies & interests-smoking",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "hobbies & interests-writing",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "home-appliances",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "home-garden",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "home-home",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "home-interior design",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "law-law",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "military-military",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "other-other",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "personal finance-banking",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "personal finance-credit & debt & loans",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "personal finance-insurance",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "personal finance-investing",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "personal finance-personal finance",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "personal finance-retirement planning",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "personal finance-tax",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "pets-aquariums",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "pets-birds",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "pets-cats",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "pets-dogs",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "pets-pets",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "real estate-mortgages",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "real estate-real estate",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "science-astronomy",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "science-biology",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "science-chemistry",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "science-economics",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "science-geography",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "science-geology",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "science-mathematics",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "science-mechanics",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "science-palaeontology",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "science-physics",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "science-science",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-american football",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-archery",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-athletics",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-baseball",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-basketball",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-bowling",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-boxing",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-climbing",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-cricket",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-cycling",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-diving",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-fishing",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-golf",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-hockey",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-hunting",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-jogging",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-martial arts",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-olympics",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-racing",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-rugby",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-sailing",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-skateboarding",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-skiing",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-snowboarding",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-soccer",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-sports",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-surfing",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-swimming",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-tennis",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-volleyball",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-wrestling",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "sports-yoga",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "technology & computing-apple",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "technology & computing-database",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "technology & computing-freeware",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "technology & computing-programming",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "technology & computing-software",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "technology & computing-technology & computing",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "technology & computing-unix",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "technology & computing-windows",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "travel-adventure travel",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "travel-air travel",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "travel-hotels",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "travel-travel",
+          "pageScore": "0.00671140942722559"
+        },
+        {
+          "segment": "weather-weather",
+          "pageScore": "0.00671140942722559"
+        }
+      ]
+    },
+    {
+      "textClassificationProbabilities": [
+        {
+          "segment": "arts & entertainment-film",
+          "pageScore": "0.018897509202361107"
+        },
+        {
+          "segment": "arts & entertainment-music",
+          "pageScore": "0.09930917620658875"
+        },
+        {
+          "segment": "arts & entertainment-opera",
+          "pageScore": "0.02594490349292755"
+        },
+        {
+          "segment": "automotive-automotive",
+          "pageScore": "0.04389949515461922"
+        },
+        {
+          "segment": "automotive-motorcycles",
+          "pageScore": "0.028937876224517822"
+        },
+        {
+          "segment": "crypto-crypto",
+          "pageScore": "0.4181951880455017"
+        },
+        {
+          "segment": "food & drink-vegan",
+          "pageScore": "0.00844249315559864"
+        },
+        {
+          "segment": "history-archaeology",
+          "pageScore": "0.014394473284482956"
+        },
+        {
+          "segment": "hobbies & interests-genealogy",
+          "pageScore": "0.03124655969440937"
+        },
+        {
+          "segment": "hobbies & interests-hobbies & interests",
+          "pageScore": "0.01746024563908577"
+        },
+        {
+          "segment": "home-garden",
+          "pageScore": "0.03515900298953056"
+        },
+        {
+          "segment": "pets-aquariums",
+          "pageScore": "0.16433636844158173"
+        },
+        {
+          "segment": "science-palaeontology",
+          "pageScore": "0.008549151942133904"
+        },
+        {
+          "segment": "technology & computing-software",
+          "pageScore": "0.013220075517892838"
+        }
+      ]
+    }
+  ]
+}

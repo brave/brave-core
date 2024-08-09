@@ -29,7 +29,7 @@ class AdHistoryManagerObserverMock : public AdHistoryManagerObserver {
   ~AdHistoryManagerObserverMock() override;
 
   MOCK_METHOD(void,
-              OnDidAppendAdHistoryItem,
+              OnDidAddAdHistoryItem,
               (const AdHistoryItemInfo& ad_history_item));
 
   MOCK_METHOD(void, OnDidLikeAd, (const AdHistoryItemInfo& ad_history_item));
@@ -42,14 +42,12 @@ class AdHistoryManagerObserverMock : public AdHistoryManagerObserver {
               OnDidDislikeSegment,
               (const AdHistoryItemInfo& ad_history_item));
 
-  MOCK_METHOD(void, OnDidSaveAd, (const AdHistoryItemInfo& ad_history_item));
-  MOCK_METHOD(void, OnDidUnsaveAd, (const AdHistoryItemInfo& ad_history_item));
+  MOCK_METHOD(void,
+              OnDidToggleSaveAd,
+              (const AdHistoryItemInfo& ad_history_item));
 
   MOCK_METHOD(void,
-              OnDidMarkAdAsAppropriate,
-              (const AdHistoryItemInfo& ad_history_item));
-  MOCK_METHOD(void,
-              OnDidMarkAdAsInappropriate,
+              OnDidToggleMarkAdAsInappropriate,
               (const AdHistoryItemInfo& ad_history_item));
 };
 

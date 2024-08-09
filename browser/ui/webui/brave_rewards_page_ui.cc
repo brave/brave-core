@@ -23,7 +23,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_constants.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/targeting/geographical/subdivision/supported_subdivisions.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -130,7 +130,7 @@ class RewardsDOMHandler
   void GetContributionList(const base::Value::List& args);
   void GetAdsData(const base::Value::List& args);
   void GetAdsHistory(const base::Value::List& args);
-  void OnGetAdsHistory(base::Value::List history);
+  void OnGetAdsHistory(std::optional<base::Value::List> ad_history);
   void ToggleAdThumbUp(const base::Value::List& args);
   void OnToggleAdThumbUp(const bool success);
   void ToggleAdThumbDown(const base::Value::List& args);
@@ -1115,25 +1115,28 @@ void RewardsDOMHandler::GetAdsHistory(const base::Value::List& args) {
 
   AllowJavascript();
 
+  brave_rewards::p3a::RecordAdsHistoryView();
+
   const base::Time now = base::Time::Now();
 
   const base::Time from_time =
-      now - brave_ads::kAdHistoryRetentionPeriod - base::Days(1);
+      now - brave_ads::kAdHistoryRetentionPeriod.Get() - base::Days(1);
   const base::Time from_time_at_local_midnight = from_time.LocalMidnight();
-
-  brave_rewards::p3a::RecordAdsHistoryView();
 
   ads_service_->GetAdHistory(from_time_at_local_midnight, now,
                              base::BindOnce(&RewardsDOMHandler::OnGetAdsHistory,
                                             weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnGetAdsHistory(base::Value::List ads_history) {
+void RewardsDOMHandler::OnGetAdsHistory(
+    std::optional<base::Value::List> ad_history) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  CallJavascriptFunction("brave_rewards.adsHistory", ads_history);
+  CallJavascriptFunction(
+      "brave_rewards.adsHistory",
+      ad_history ? std::move(*ad_history) : base::Value::List());
 }
 
 void RewardsDOMHandler::ToggleAdThumbUp(const base::Value::List& args) {

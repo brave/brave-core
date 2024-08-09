@@ -9,6 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/creative_search_result_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
+#include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

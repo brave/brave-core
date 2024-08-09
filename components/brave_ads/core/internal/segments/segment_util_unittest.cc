@@ -7,13 +7,12 @@
 
 #include <optional>
 
+#include "brave/components/brave_ads/core/internal/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_test_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -79,10 +78,7 @@ TEST_F(BraveAdsSegmentUtilTest, GetParentSegmentsForEmptyList) {
 
 TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
   // Arrange
-  AdHistoryItemInfo ad_history_item;
-  ad_history_item.segment = "parent-child";
-  ad_history_item.segment_reaction_type = mojom::ReactionType::kNeutral;
-  ClientStateManager::GetInstance().ToggleDislikeSegment(ad_history_item);
+  GetReactions().ToggleDislikeSegment("parent-child");
 
   // Act & Assert
   EXPECT_TRUE(ShouldFilterSegment("parent-child"));
@@ -90,10 +86,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
 
 TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
   // Arrange
-  AdHistoryItemInfo ad_history_item;
-  ad_history_item.segment = "parent-child";
-  ad_history_item.segment_reaction_type = mojom::ReactionType::kNeutral;
-  ClientStateManager::GetInstance().ToggleDislikeSegment(ad_history_item);
+  GetReactions().ToggleDislikeSegment("parent-child");
 
   // Act & Assert
   EXPECT_FALSE(ShouldFilterSegment("foo-bar"));
@@ -101,10 +94,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
 
 TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
   // Arrange
-  AdHistoryItemInfo ad_history_item;
-  ad_history_item.segment = "parent";
-  ad_history_item.segment_reaction_type = mojom::ReactionType::kNeutral;
-  ClientStateManager::GetInstance().ToggleDislikeSegment(ad_history_item);
+  GetReactions().ToggleDislikeSegment("parent");
 
   // Act & Assert
   EXPECT_TRUE(ShouldFilterSegment("parent"));
@@ -112,10 +102,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
 
 TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentSegment) {
   // Arrange
-  AdHistoryItemInfo ad_history_item;
-  ad_history_item.segment = "parent";
-  ad_history_item.segment_reaction_type = mojom::ReactionType::kNeutral;
-  ClientStateManager::GetInstance().ToggleDislikeSegment(ad_history_item);
+  GetReactions().ToggleDislikeSegment("parent");
 
   // Act & Assert
   EXPECT_FALSE(ShouldFilterSegment("foo"));
@@ -124,10 +111,7 @@ TEST_F(BraveAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentSegment) {
 TEST_F(BraveAdsSegmentUtilTest,
        ShouldFilterAgainstParentForMatchingParentSegmentWithChild) {
   // Arrange
-  AdHistoryItemInfo ad_history_item;
-  ad_history_item.segment = "parent";
-  ad_history_item.segment_reaction_type = mojom::ReactionType::kNeutral;
-  ClientStateManager::GetInstance().ToggleDislikeSegment(ad_history_item);
+  GetReactions().ToggleDislikeSegment("parent");
 
   // Act & Assert
   EXPECT_TRUE(ShouldFilterSegment("parent-child"));
@@ -136,10 +120,7 @@ TEST_F(BraveAdsSegmentUtilTest,
 TEST_F(BraveAdsSegmentUtilTest,
        ShouldNotFilterAgainstParentForNonMatchingParentSegmentWithChild) {
   // Arrange
-  AdHistoryItemInfo ad_history_item;
-  ad_history_item.segment = "parent";
-  ad_history_item.segment_reaction_type = mojom::ReactionType::kNeutral;
-  ClientStateManager::GetInstance().ToggleDislikeSegment(ad_history_item);
+  GetReactions().ToggleDislikeSegment("parent");
 
   // Act & Assert
   EXPECT_FALSE(ShouldFilterSegment("foo-bar"));
