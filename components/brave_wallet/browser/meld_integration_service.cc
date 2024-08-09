@@ -15,15 +15,19 @@
 #include "base/containers/flat_map.h"
 #include "base/environment.h"
 #include "base/functional/bind.h"
+#include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/meld_integration_response_parser.h"
+#include "brave/components/brave_wallet/browser/meld_integration_responses.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
+#include "brave/components/brave_wallet/common/meld_integration.mojom-forward.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 #include "net/base/url_util.h"
@@ -126,6 +130,193 @@ bool NeedsToParseResponse(const int http_error_code) {
   static const base::NoDestructor<std::unordered_set<int>>
       kRespCodesAllowedToContinueParsing({400, 401, 403});
   return kRespCodesAllowedToContinueParsing->contains(http_error_code);
+}
+
+void FillCustomerData(
+    const brave_wallet::mojom::CryptoWidgetCustomerDataPtr& customer_data,
+    base::Value::Dict& cbwr) {
+  if (customer_data) {
+    if (customer_data->customer) {
+      base::Value::Dict co;
+      co.Set("email", customer_data->customer->email);
+      cbwr.Set("customer", std::move(co));
+    }
+
+    if (customer_data->customer_id) {
+      cbwr.Set("customerId", customer_data->customer_id.value());
+    }
+
+    if (customer_data->external_customer_id) {
+      cbwr.Set("externalCustomerId",
+               customer_data->external_customer_id.value());
+    }
+
+    if (customer_data->external_session_id) {
+      cbwr.Set("externalSessionId", customer_data->external_session_id.value());
+    }
+  }
+}
+
+std::optional<base::Value::Dict> GetCryptoBuyWidgetPayload(
+    brave_wallet::mojom::CryptoBuySessionDataPtr session_data,
+    brave_wallet::mojom::CryptoWidgetCustomerDataPtr customer_data) {
+  if (!session_data) {
+    return std::nullopt;
+  }
+
+  base::Value::Dict cbwr;
+  base::Value::Dict cbsd;
+  cbsd.Set("countryCode", session_data->country_code);
+  cbsd.Set("destinationCurrencyCode", session_data->destination_currency_code);
+
+  if (session_data->lock_fields && session_data->lock_fields->size()) {
+    base::Value::List lfs;
+    for (const auto& fld : *session_data->lock_fields) {
+      lfs.Append(fld);
+    }
+    cbsd.Set("lockFields", std::move(lfs));
+  }
+
+  if (session_data->payment_method_type) {
+    cbsd.Set("paymentMethodType", session_data->payment_method_type.value());
+  }
+
+  if (session_data->redirect_url) {
+    cbsd.Set("redirectUrl", session_data->redirect_url.value());
+  }
+
+  cbsd.Set("serviceProvider", session_data->service_provider);
+  cbsd.Set("sourceAmount", session_data->source_amount);
+  cbsd.Set("sourceCurrencyCode", session_data->source_currency_code);
+  cbsd.Set("walletAddress", session_data->wallet_address);
+
+  if (session_data->wallet_tag) {
+    cbsd.Set("walletTag", session_data->wallet_tag.value());
+  }
+
+  cbwr.Set("sessionData", std::move(cbsd));
+  cbwr.Set("sessionType", "BUY");
+
+  FillCustomerData(customer_data, cbwr);
+
+  return cbwr;
+}
+
+std::optional<base::Value::Dict> GetCryptoSellWidgetPayload(
+    brave_wallet::mojom::CryptoSellSessionDataPtr session_data,
+    brave_wallet::mojom::CryptoWidgetCustomerDataPtr customer_data) {
+  if (!session_data) {
+    return std::nullopt;
+  }
+
+  base::Value::Dict cbwr;
+  base::Value::Dict cbsd;
+  cbsd.Set("countryCode", session_data->country_code);
+  cbsd.Set("destinationCurrencyCode", session_data->destination_currency_code);
+
+  if (session_data->lock_fields && session_data->lock_fields->size()) {
+    base::Value::List lfs;
+    for (const auto& fld : *session_data->lock_fields) {
+      lfs.Append(fld);
+    }
+    cbsd.Set("lockFields", std::move(lfs));
+  }
+
+  if (session_data->payment_method_type) {
+    cbsd.Set("paymentMethodType", session_data->payment_method_type.value());
+  }
+
+  if (session_data->redirect_url) {
+    cbsd.Set("redirectUrl", session_data->redirect_url.value());
+  }
+
+  cbsd.Set("serviceProvider", session_data->service_provider);
+  cbsd.Set("sourceAmount", session_data->source_amount);
+  cbsd.Set("sourceCurrencyCode", session_data->source_currency_code);
+  if (session_data->wallet_address) {
+    cbsd.Set("walletAddress", session_data->wallet_address.value());
+  }
+
+  if (session_data->wallet_tag) {
+    cbsd.Set("walletTag", session_data->wallet_tag.value());
+  }
+
+  cbwr.Set("sessionData", std::move(cbsd));
+  cbwr.Set("sessionType", "SELL");
+
+  FillCustomerData(customer_data, cbwr);
+
+  return cbwr;
+}
+
+std::optional<base::Value::Dict> GetCryptoTransferWidgetPayload(
+    brave_wallet::mojom::CryptoTransferSessionDataPtr session_data,
+    brave_wallet::mojom::CryptoWidgetCustomerDataPtr customer_data) {
+  if (!session_data) {
+    return std::nullopt;
+  }
+
+  base::Value::Dict cbwr;
+  base::Value::Dict cbsd;
+
+  if (session_data->country_code) {
+    cbsd.Set("countryCode", session_data->country_code.value());
+  }
+
+  if (session_data->institution_id) {
+    cbsd.Set("institutionId", session_data->institution_id.value());
+  }
+
+  if (session_data->lock_fields && session_data->lock_fields->size()) {
+    base::Value::List lfs;
+    for (const auto& fld : *session_data->lock_fields) {
+      lfs.Append(fld);
+    }
+    cbsd.Set("lockFields", std::move(lfs));
+  }
+
+  if (session_data->redirect_url) {
+    cbsd.Set("redirectUrl", session_data->redirect_url.value());
+  }
+
+  cbsd.Set("serviceProvider", session_data->service_provider);
+
+  if (session_data->source_amount) {
+    cbsd.Set("sourceAmount", session_data->source_amount.value());
+  }
+
+  base::Value::List source_currency_codes;
+  for (const auto& cc : session_data->source_currency_codes) {
+    source_currency_codes.Append(cc);
+  }
+  cbsd.Set("sourceCurrencyCodes", std::move(source_currency_codes));
+
+  if (session_data->wallet_address) {
+    cbsd.Set("walletAddress", session_data->wallet_address.value());
+  }
+
+  if (session_data->wallet_tag) {
+    cbsd.Set("walletTag", session_data->wallet_tag.value());
+  }
+
+  cbwr.Set("sessionData", std::move(cbsd));
+  cbwr.Set("sessionType", "TRANSFER");
+
+  FillCustomerData(customer_data, cbwr);
+
+  return cbwr;
+}
+
+std::string GetPayload(const std::optional<base::Value::Dict>& payload_value) {
+  if (!payload_value) {
+    return "";
+  }
+
+  std::string payload;
+  auto serialize_success =
+      base::JSONWriter::Write(payload_value.value(), &payload);
+  DCHECK(serialize_success);
+  return payload;
 }
 
 }  // namespace
@@ -533,6 +724,192 @@ void MeldIntegrationService::OnParseCountries(
     return;
   }
   std::move(callback).Run(std::move(countries), std::nullopt);
+}
+
+void MeldIntegrationService::CryptoBuyWidgetCreate(
+    mojom::CryptoBuySessionDataPtr session_data,
+    mojom::CryptoWidgetCustomerDataPtr customer_data,
+    CryptoBuyWidgetCreateCallback callback) {
+  auto payload_value = GetCryptoBuyWidgetPayload(std::move(session_data),
+                                                 std::move(customer_data));
+  if (!payload_value) {
+    std::move(callback).Run(nullptr,
+                            std::vector<std::string>{l10n_util::GetStringUTF8(
+                                IDS_WALLET_REQUEST_PROCESSING_ERROR)});
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&MeldIntegrationService::OnCryptoBuyWidgetCreate,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  auto url = GURL(kMeldRpcEndpoint).Resolve("/crypto/session/widget");
+  auto conversion_callback = base::BindOnce(&SanitizeJson);
+  api_request_helper_->Request(
+      "POST", url, GetPayload(payload_value), "", std::move(internal_callback),
+      MakeMeldApiHeaders(), {.auto_retry_on_network_change = true},
+      std::move(conversion_callback));
+}
+
+void MeldIntegrationService::OnParseCryptoBuyWidgetCreate(
+    CryptoBuyWidgetCreateCallback callback,
+    mojom::MeldCryptoWidgetPtr crypto_widget) const {
+  if (!crypto_widget) {
+    std::move(callback).Run(
+        nullptr, std::vector<std::string>{
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+    return;
+  }
+
+  std::move(callback).Run(std::move(crypto_widget), std::nullopt);
+}
+
+void MeldIntegrationService::OnCryptoBuyWidgetCreate(
+    CryptoBuyWidgetCreateCallback callback,
+    APIRequestResult api_request_result) const {
+  if (!api_request_result.Is2XXResponseCode() &&
+      !NeedsToParseResponse(api_request_result.response_code())) {
+    std::move(callback).Run(
+        nullptr, std::vector<std::string>{
+                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
+    return;
+  }
+
+  if (auto errors = ParseMeldErrorResponse(api_request_result.value_body());
+      errors) {
+    std::move(callback).Run(nullptr, errors);
+    return;
+  }
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&ParseCryptoWidgetCreate, api_request_result.TakeBody()),
+      base::BindOnce(&MeldIntegrationService::OnParseCryptoBuyWidgetCreate,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void MeldIntegrationService::CryptoSellWidgetCreate(
+    mojom::CryptoSellSessionDataPtr session_data,
+    mojom::CryptoWidgetCustomerDataPtr customer_data,
+    CryptoSellWidgetCreateCallback callback) {
+  auto payload_value = GetCryptoSellWidgetPayload(std::move(session_data),
+                                                  std::move(customer_data));
+  if (!payload_value) {
+    std::move(callback).Run(nullptr,
+                            std::vector<std::string>{l10n_util::GetStringUTF8(
+                                IDS_WALLET_REQUEST_PROCESSING_ERROR)});
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&MeldIntegrationService::OnCryptoSellWidgetCreate,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  auto url = GURL(kMeldRpcEndpoint).Resolve("/crypto/session/widget");
+  auto conversion_callback = base::BindOnce(&SanitizeJson);
+  api_request_helper_->Request(
+      "POST", url, GetPayload(payload_value), "", std::move(internal_callback),
+      MakeMeldApiHeaders(), {.auto_retry_on_network_change = true},
+      std::move(conversion_callback));
+}
+
+void MeldIntegrationService::OnParseCryptoSellWidgetCreate(
+    CryptoSellWidgetCreateCallback callback,
+    mojom::MeldCryptoWidgetPtr crypto_widget) const {
+  if (!crypto_widget) {
+    std::move(callback).Run(
+        nullptr, std::vector<std::string>{
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+    return;
+  }
+
+  std::move(callback).Run(std::move(crypto_widget), std::nullopt);
+}
+
+void MeldIntegrationService::OnCryptoSellWidgetCreate(
+    CryptoSellWidgetCreateCallback callback,
+    APIRequestResult api_request_result) const {
+  if (!api_request_result.Is2XXResponseCode() &&
+      !NeedsToParseResponse(api_request_result.response_code())) {
+    std::move(callback).Run(
+        nullptr, std::vector<std::string>{
+                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
+    return;
+  }
+
+  if (auto errors = ParseMeldErrorResponse(api_request_result.value_body());
+      errors) {
+    std::move(callback).Run(nullptr, errors);
+    return;
+  }
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&ParseCryptoWidgetCreate, api_request_result.TakeBody()),
+      base::BindOnce(&MeldIntegrationService::OnParseCryptoSellWidgetCreate,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void MeldIntegrationService::CryptoTransferWidgetCreate(
+    mojom::CryptoTransferSessionDataPtr session_data,
+    mojom::CryptoWidgetCustomerDataPtr customer_data,
+    CryptoTransferWidgetCreateCallback callback) {
+  auto payload_value = GetCryptoTransferWidgetPayload(std::move(session_data),
+                                                      std::move(customer_data));
+  if (!payload_value) {
+    std::move(callback).Run(nullptr,
+                            std::vector<std::string>{l10n_util::GetStringUTF8(
+                                IDS_WALLET_REQUEST_PROCESSING_ERROR)});
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&MeldIntegrationService::OnCryptoTransferWidgetCreate,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  auto url = GURL(kMeldRpcEndpoint).Resolve("/crypto/session/widget");
+  auto conversion_callback = base::BindOnce(&SanitizeJson);
+  api_request_helper_->Request(
+      "POST", url, GetPayload(payload_value), "", std::move(internal_callback),
+      MakeMeldApiHeaders(), {.auto_retry_on_network_change = true},
+      std::move(conversion_callback));
+}
+
+void MeldIntegrationService::OnParseCryptoTransferWidgetCreate(
+    CryptoTransferWidgetCreateCallback callback,
+    mojom::MeldCryptoWidgetPtr crypto_widget) const {
+  if (!crypto_widget) {
+    std::move(callback).Run(
+        nullptr, std::vector<std::string>{
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+    return;
+  }
+
+  std::move(callback).Run(std::move(crypto_widget), std::nullopt);
+}
+
+void MeldIntegrationService::OnCryptoTransferWidgetCreate(
+    CryptoTransferWidgetCreateCallback callback,
+    APIRequestResult api_request_result) const {
+  if (!api_request_result.Is2XXResponseCode() &&
+      !NeedsToParseResponse(api_request_result.response_code())) {
+    std::move(callback).Run(
+        nullptr, std::vector<std::string>{
+                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
+    return;
+  }
+
+  if (auto errors = ParseMeldErrorResponse(api_request_result.value_body());
+      errors) {
+    std::move(callback).Run(nullptr, errors);
+    return;
+  }
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&ParseCryptoWidgetCreate, api_request_result.TakeBody()),
+      base::BindOnce(&MeldIntegrationService::OnParseCryptoTransferWidgetCreate,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 }  // namespace brave_wallet
