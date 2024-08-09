@@ -1,5 +1,5 @@
 diff --git a/ios/web/navigation/crw_wk_navigation_handler.mm b/ios/web/navigation/crw_wk_navigation_handler.mm
-index 443d5684fceb98e1362b8d337b64d0a36c2186c8..76ca6ecf944acfe6f72a9d76c9a557b3ec8f655a 100644
+index 443d5684fceb98e1362b8d337b64d0a36c2186c8..aa5a0da881bf6165255da0cb0f3c6f90fb968e7e 100644
 --- a/ios/web/navigation/crw_wk_navigation_handler.mm
 +++ b/ios/web/navigation/crw_wk_navigation_handler.mm
 @@ -287,6 +287,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
@@ -10,3 +10,27 @@ index 443d5684fceb98e1362b8d337b64d0a36c2186c8..76ca6ecf944acfe6f72a9d76c9a557b3
  
    _webProcessCrashed = NO;
    if (self.beingDestroyed) {
+@@ -698,6 +699,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
+                                 code:error.code
+                             userInfo:userInfo];
+   }
++  BRAVE_DID_FAIL_PROVISIONAL_NAVIGATION
+ 
+   // Handle load cancellation for directly cancelled navigations without
+   // handling their potential errors. Otherwise, handle the error.
+@@ -1712,6 +1714,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
+           web::CertVerificationError(is_recoverable, certStatus));
+     }
+   }
++  BRAVE_PROCESS_AUTH_CHALLENGE
+   completionHandler(NSURLSessionAuthChallengeRejectProtectionSpace, nil);
+ }
+ 
+@@ -1773,6 +1776,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
+     // automatically be retried by the web view, so early return in this case.
+     return;
+   }
++  BRAVE_HANDLE_LOAD_ERROR
+ 
+   NSError* contextError = web::NetErrorFromError(error);
+   if (policyDecisionCancellationError) {
