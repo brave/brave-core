@@ -76,7 +76,9 @@ export const FundWalletScreen = () => {
     isLoadingCountries,
     countries,
     paymentMethods,
-    onChangePaymentMethods
+    onChangePaymentMethods,
+    isCreatingWidget,
+    onBuy
   } = useBuy()
 
   // redux
@@ -146,6 +148,8 @@ export const FundWalletScreen = () => {
                         quote={quote}
                         serviceProviders={serviceProviders || []}
                         isBestOption={false}
+                        isCreatingWidget={isCreatingWidget}
+                        onBuy={onBuy}
                       />
                     ))}
                   </Column>

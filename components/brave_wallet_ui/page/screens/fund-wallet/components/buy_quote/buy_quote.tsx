@@ -40,12 +40,16 @@ interface BuyQuoteProps {
   quote: MeldCryptoQuote
   serviceProviders: MeldServiceProvider[]
   isBestOption?: boolean
+  isCreatingWidget: boolean
+  onBuy: (quote: MeldCryptoQuote) => void
 }
 
 export const BuyQuote = ({
   quote,
   serviceProviders,
-  isBestOption
+  isBestOption,
+  isCreatingWidget,
+  onBuy
 }: BuyQuoteProps) => {
   const {
     serviceProvider,
@@ -104,7 +108,9 @@ export const BuyQuote = ({
           justifyContent='flex-start'
           alignItems='center'
         >
-          {providerImageUrl ? <ProviderImage src={`chrome://image?${providerImageUrl}`} /> : null}
+          {providerImageUrl ? (
+            <ProviderImage src={`chrome://image?${providerImageUrl}`} />
+          ) : null}
 
           <Column alignItems='flex-start'>
             <ProviderName>{formattedProviderName}</ProviderName>
@@ -170,7 +176,10 @@ export const BuyQuote = ({
               </QuoteTotal>
             </QuoteDetailsRow>
           </QuoteDetailsWrapper>
-          <BuyButton>
+          <BuyButton
+            isLoading={isCreatingWidget}
+            onClick={() => onBuy(quote)}
+          >
             Buy with {formattedProviderName}
             <div slot='icon-after'>
               <Icon name='launch' />
