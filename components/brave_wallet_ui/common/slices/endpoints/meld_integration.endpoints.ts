@@ -11,7 +11,10 @@ import {
   MeldCryptoQuote,
   MeldServiceProvider,
   SupportedOnRampNetworks,
-  MeldPaymentMethod
+  MeldPaymentMethod,
+  CryptoWidgetCustomerData,
+  CryptoBuySessionData,
+  MeldCryptoWidget
 } from '../../../constants/types'
 import { handleEndpointError } from '../../../utils/api-utils'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
@@ -24,6 +27,10 @@ type GetCryptoQuotesArgs = {
   account: string | null
 }
 
+type CreateMledBuyWidgetArgs = {
+  sessionData: CryptoBuySessionData
+  customerData: CryptoWidgetCustomerData
+}
 export const meldIntegrationEndpoints = ({
   query,
   mutation
@@ -291,6 +298,45 @@ export const meldIntegrationEndpoints = ({
         }
       },
       providesTags: ['MeldPaymentMethods']
+    }),
+    createMeldBuyWidget: mutation<
+      {
+        widget: MeldCryptoWidget | null
+      },
+      CreateMledBuyWidgetArgs
+    >({
+      queryFn: async (params, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { meldIntegrationService } = baseQuery(undefined).data
+          const { sessionData, customerData } = params
+          const { widgetData, error } =
+            await meldIntegrationService.cryptoBuyWidgetCreate(
+              sessionData,
+              customerData
+            )
+
+          if (error) {
+            return handleEndpointError(
+              endpoint,
+              'Error in createMeldBuyWidget: ',
+              error
+            )
+          }
+
+          return {
+            data: {
+              widget: widgetData
+            }
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Error in createMeldBuyWidget: ',
+            error
+          )
+        }
+      },
+      invalidatesTags: ['MeldWidget']
     })
   }
 }
