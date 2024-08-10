@@ -27,10 +27,11 @@ type GetCryptoQuotesArgs = {
   account: string | null
 }
 
-type CreateMledBuyWidgetArgs = {
+type CreateMeldBuyWidgetArgs = {
   sessionData: CryptoBuySessionData
   customerData: CryptoWidgetCustomerData
 }
+
 export const meldIntegrationEndpoints = ({
   query,
   mutation
@@ -303,7 +304,7 @@ export const meldIntegrationEndpoints = ({
       {
         widget: MeldCryptoWidget | null
       },
-      CreateMledBuyWidgetArgs
+      CreateMeldBuyWidgetArgs
     >({
       queryFn: async (params, { endpoint }, extraOptions, baseQuery) => {
         try {
