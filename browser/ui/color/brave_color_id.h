@@ -140,7 +140,8 @@
     E_CPONLY(kColorBravePlaylistMoveDialogDescription)                \
     E_CPONLY(kColorBravePlaylistMoveDialogCreatePlaylistAndMoveTitle) \
     E_CPONLY(kColorBravePlaylistNewPlaylistDialogNameLabel)           \
-    E_CPONLY(kColorBravePlaylistNewPlaylistDialogItemsLabel)
+    E_CPONLY(kColorBravePlaylistNewPlaylistDialogItemsLabel)          \
+    E_CPONLY(kColorBravePlaylistTextInteractive)
 
 #define BRAVE_OMNIBOX_COLOR_IDS \
     E_CPONLY(kColorBraveOmniboxResultViewSeparator)

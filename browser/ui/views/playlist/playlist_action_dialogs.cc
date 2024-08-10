@@ -23,6 +23,7 @@
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
+#include "ui/base/cursor/cursor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/button/label_button.h"
@@ -251,6 +252,32 @@ void ClosePanel(content::WebContents* contents) {
     ui->Close();
   }
 }
+
+namespace {
+class PlaylistLabelButton : public views::LabelButton {
+  METADATA_HEADER(PlaylistLabelButton, views::LabelButton)
+ public:
+  PlaylistLabelButton(views::Button::PressedCallback callback = {},
+                      const std::u16string& text = std::u16string())
+      : LabelButton(std::move(callback), text) {
+    SetEnabledTextColorIds(kColorBravePlaylistTextInteractive);
+    label()->SetFontList(label()->font_list().Derive(
+        0, gfx::Font::FontStyle::NORMAL, gfx::Font::Weight::NORMAL));
+  }
+
+  ~PlaylistLabelButton() override = default;
+
+  ui::Cursor GetCursor(const ui::MouseEvent& event) override {
+    if (!GetEnabled()) {
+      return ui::Cursor();
+    }
+    return ui::mojom::CursorType::kHand;
+  }
+};
+
+BEGIN_METADATA(PlaylistLabelButton)
+END_METADATA
+}  // namespace
 
 }  // namespace playlist
 
@@ -564,7 +591,7 @@ void PlaylistMoveDialog::EnterChoosePlaylistMode() {
                                    base::Unretained(this)));
 
   // This view owns the button so it's okay to bind Unretained(this).
-  SetExtraView(std::make_unique<views::MdTextButton>(
+  SetExtraView(std::make_unique<playlist::PlaylistLabelButton>(
       base::BindRepeating(&PlaylistMoveDialog::OnNewPlaylistPressed,
                           base::Unretained(this)),
       l10n_util::GetStringUTF16(IDS_PLAYLIST_MOVE_MEDIA_DIALOG_NEW_PLAYLIST)));
@@ -602,7 +629,7 @@ void PlaylistMoveDialog::EnterCreatePlaylistMode() {
                                    base::Unretained(this)));
 
   // This view owns the button so it's okay to bind Unretained(this).
-  SetExtraView(std::make_unique<views::MdTextButton>(
+  SetExtraView(std::make_unique<playlist::PlaylistLabelButton>(
       base::BindRepeating(&PlaylistMoveDialog::OnBackPressed,
                           base::Unretained(this)),
       l10n_util::GetStringUTF16(IDS_PLAYLIST_MOVE_MEDIA_DIALOG_BACK)));
