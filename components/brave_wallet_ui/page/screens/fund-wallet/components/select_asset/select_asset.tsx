@@ -233,7 +233,7 @@ export const SelectAsset = (props: SelectAssetProps) => {
               padding='0 8px 0 8px'
             >
               <ListTitle>Asset</ListTitle>
-              <ListTitle>~Price</ListTitle>
+              <ListTitle>~ Price</ListTitle>
             </Row>
             <AutoSizer style={AutoSizerStyle}>
               {function ({ width, height }: { width: number; height: number }) {
