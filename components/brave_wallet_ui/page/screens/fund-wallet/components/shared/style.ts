@@ -117,6 +117,11 @@ export const ContainerButton = styled(WalletButton)`
   }
 `
 
+export const ListTitle = styled.span`
+  color: ${color.text.tertiary};
+  font: ${font.components.tableheader};
+`
+
 export const Dropdown = styled(LeoDropdown)`
   min-width: 100%;
 `
