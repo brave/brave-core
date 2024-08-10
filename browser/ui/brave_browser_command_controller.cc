@@ -152,9 +152,14 @@ void BraveBrowserCommandController::OnTileTabs(
     const SplitViewBrowserData::Tile& tile) {
   UpdateCommandForSplitView();
 }
+
 void BraveBrowserCommandController::OnWillBreakTile(
     const SplitViewBrowserData::Tile& tile) {
   UpdateCommandForSplitView();
+}
+
+void BraveBrowserCommandController::OnWillDeleteBrowserData() {
+  split_view_browser_data_observation_.Reset();
 }
 
 bool BraveBrowserCommandController::SupportsCommand(int id) const {

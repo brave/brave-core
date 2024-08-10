@@ -27,7 +27,11 @@ SplitViewBrowserData::SplitViewBrowserData(Browser* browser)
       *this, browser->tab_strip_model());
 }
 
-SplitViewBrowserData::~SplitViewBrowserData() = default;
+SplitViewBrowserData::~SplitViewBrowserData() {
+  while (!observers_.empty()) {
+    observers_.begin()->OnWillDeleteBrowserData();
+  }
+}
 
 void SplitViewBrowserData::TileTabs(const Tile& tile) {
   CHECK(!IsTabTiled(tile.first));
