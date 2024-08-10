@@ -12,7 +12,9 @@ import {
   MeldFiatCurrency,
   BraveWallet,
   MeldCryptoQuote,
-  MeldPaymentMethod
+  MeldPaymentMethod,
+  CryptoBuySessionData,
+  CryptoWidgetCustomerData
 } from '../../../../constants/types'
 
 // api
@@ -26,7 +28,8 @@ import {
   useGetTokenSpotPricesQuery,
   walletApi,
   useGetMeldServiceProvidersQuery,
-  useGetMeldPaymentMethodsQuery
+  useGetMeldPaymentMethodsQuery,
+  useCreateMeldBuyWidgetMutation
 } from '../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 
@@ -66,11 +69,14 @@ export const useBuy = () => {
   const { data: countries, isLoading: isLoadingCountries } =
     useGetMeldCountriesQuery()
   const { data: defaultCountryCode } = useGetDefaultCountryQuery()
-  const [generateQuotes] = useGenerateMeldCryptoQuotesMutation()
   const { data: serviceProviders = [], isLoading: isLoadingServiceProvider } =
     useGetMeldServiceProvidersQuery()
   const { data: paymentMethods, isLoading: isLoadingPaymentMethods } =
     useGetMeldPaymentMethodsQuery()
+
+  // mutations
+  const [generateQuotes] = useGenerateMeldCryptoQuotesMutation()
+  const [createMeldBuyWidget] = useCreateMeldBuyWidgetMutation()
 
   // state
   const [selectedAsset, setSelectedAsset] =
@@ -96,6 +102,8 @@ export const useBuy = () => {
   const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<
     MeldPaymentMethod[]
   >(paymentMethods || [])
+  const [isCreatingWidget, setIsCreatingWidget] = useState(false)
+
   console.log('selectedPaymentMethods', selectedPaymentMethods)
   // computed
   const tokenPriceIds: string[] = useMemo(() => {
@@ -309,6 +317,57 @@ export const useBuy = () => {
     }
   }, [accounts, selectedAccount])
 
+  const onBuy = useCallback(
+    async (quote: MeldCryptoQuote) => {
+      if (!quote.serviceProvider || !selectedCurrency) return
+
+      const sessionData: CryptoBuySessionData = {
+        countryCode: selectedCountryCode,
+        destinationCurrencyCode: selectedAsset.currencyCode,
+        paymentMethodType: undefined,
+        redirectUrl: undefined,
+        serviceProvider: quote.serviceProvider,
+        sourceAmount: amount,
+        sourceCurrencyCode: selectedCurrency.currencyCode,
+        walletAddress: selectedAccount.address,
+        walletTag: undefined,
+        lockFields: ['walletAddress']
+      }
+
+      const customerData: CryptoWidgetCustomerData = {
+        customer: undefined,
+        customerId: undefined,
+        externalCustomerId: undefined,
+        externalSessionId: undefined
+      }
+
+      try {
+        setIsCreatingWidget(true)
+        const { widget } = await createMeldBuyWidget({
+          sessionData,
+          customerData
+        }).unwrap()
+        setIsCreatingWidget(false)
+
+        if (widget) {
+          const { widgetUrl } = widget
+          chrome.tabs.create({ url: widgetUrl })
+        }
+      } catch (error) {
+        console.error('createMeldBuyWidget failed', error)
+        setIsCreatingWidget(false)
+      }
+    },
+    [
+      amount,
+      createMeldBuyWidget,
+      selectedAccount?.address,
+      selectedAsset?.currencyCode,
+      selectedCountryCode,
+      selectedCurrency
+    ]
+  )
+
   useEffect(() => {
     if (fiatCurrencies && fiatCurrencies.length > 0 && !selectedCurrency) {
       const defaultCurrency = fiatCurrencies.find(
@@ -371,6 +430,8 @@ export const useBuy = () => {
     isLoadingPaymentMethods,
     isLoadingCountries,
     paymentMethods,
-    onChangePaymentMethods: setSelectedPaymentMethods
+    onChangePaymentMethods: setSelectedPaymentMethods,
+    onBuy,
+    isCreatingWidget
   }
 }
