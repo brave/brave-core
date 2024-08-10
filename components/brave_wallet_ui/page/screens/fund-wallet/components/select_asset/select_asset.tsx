@@ -32,7 +32,12 @@ import {
   Loader,
   AutoSizerStyle
 } from './select_asset.style'
-import { ContainerButton, Dialog, DialogTitle } from '../shared/style'
+import {
+  ContainerButton,
+  Dialog,
+  DialogTitle,
+  ListTitle
+} from '../shared/style'
 import {
   getAssetSymbol,
   getTokenPriceFromRegistry,
@@ -156,7 +161,8 @@ export const SelectAsset = (props: SelectAssetProps) => {
     return assets.filter((asset) => {
       return (
         asset?.name?.toLowerCase().includes(searchText.toLowerCase()) ||
-        asset.currencyCode.toLowerCase().includes(searchText.toLowerCase())
+        asset.currencyCode.toLowerCase().includes(searchText.toLowerCase()) ||
+        asset?.contractAddress?.toLowerCase().includes(searchText.toLowerCase())
       )
     })
   }, [assets, searchText])
@@ -194,7 +200,7 @@ export const SelectAsset = (props: SelectAssetProps) => {
         slot='subtitle'
       >
         <SearchInput
-          placeholder='Search currency'
+          placeholder='Search token or paste address'
           onInput={(e) => setSearchText(e.value)}
         >
           <Icon
@@ -221,39 +227,49 @@ export const SelectAsset = (props: SelectAssetProps) => {
             No available assets
           </Row>
         ) : (
-          <AutoSizer style={AutoSizerStyle}>
-            {function ({ width, height }: { width: number; height: number }) {
-              return (
-                <List
-                  itemKey={getListItemKey}
-                  width={width}
-                  height={height}
-                  itemCount={searchResults.length}
-                  itemSize={getSize}
-                  itemData={searchResults}
-                  children={({ data, index, style }) => (
-                    <AssetListItem
-                      index={index}
-                      style={style}
-                      setSize={setSize}
-                      asset={data[index]}
-                      isLoadingPrices={isLoadingSpotPrices}
-                      assetPrice={
-                        spotPriceRegistry
-                          ? getTokenPriceFromRegistry(
-                              spotPriceRegistry,
-                              data[index]
-                            )
-                          : undefined
-                      }
-                      fiatCurrencyCode={selectedFiatCurrency?.currencyCode}
-                      onSelect={onSelectAsset}
-                    />
-                  )}
-                />
-              )
-            }}
-          </AutoSizer>
+          <>
+            <Row
+              justifyContent='space-between'
+              padding='0 8px 0 8px'
+            >
+              <ListTitle>Asset</ListTitle>
+              <ListTitle>~Price</ListTitle>
+            </Row>
+            <AutoSizer style={AutoSizerStyle}>
+              {function ({ width, height }: { width: number; height: number }) {
+                return (
+                  <List
+                    itemKey={getListItemKey}
+                    width={width}
+                    height={height}
+                    itemCount={searchResults.length}
+                    itemSize={getSize}
+                    itemData={searchResults}
+                    style={{ scrollbarWidth: 'none' }}
+                    children={({ data, index, style }) => (
+                      <AssetListItem
+                        index={index}
+                        style={style}
+                        setSize={setSize}
+                        asset={data[index]}
+                        isLoadingPrices={isLoadingSpotPrices}
+                        assetPrice={
+                          spotPriceRegistry
+                            ? getTokenPriceFromRegistry(
+                                spotPriceRegistry,
+                                data[index]
+                              )
+                            : undefined
+                        }
+                        fiatCurrencyCode={selectedFiatCurrency?.currencyCode}
+                        onSelect={onSelectAsset}
+                      />
+                    )}
+                  />
+                )
+              }}
+            </AutoSizer>
+          </>
         )}
       </Column>
     </Dialog>
