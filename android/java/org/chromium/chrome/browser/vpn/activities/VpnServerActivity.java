@@ -17,40 +17,31 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.base.Log;
+import com.google.android.material.radiobutton.MaterialRadioButton;
+
+import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.adapters.VpnServerAdapter;
-import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
-import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.ui.widget.Toast;
 
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class VpnServerActivity extends BraveVpnParentActivity {
-    private VpnServerAdapter mBraveVpnServerSelectionAdapter;
-    private LinearLayout mServerSelectionListLayout;
-    private ProgressBar mServerSelectionProgress;
+    private VpnServerAdapter mVpnServerAdapter;
+
+    private LinearLayout mOptimalLayout;
+    private MaterialRadioButton mOptimalServerRadioButton;
+
+    private LinearLayout mServerListLayout;
+    private ProgressBar mServerProgress;
     private RecyclerView mServerRegionList;
 
-    public interface OnServerRegionSelection {
-        void onServerRegionClick(BraveVpnServerRegion vpnServerRegion);
-    }
-
-    @Override
-    public void onResumeWithNative() {
-        super.onResumeWithNative();
-        BraveVpnNativeWorker.getInstance().addObserver(this);
-    }
-
-    @Override
-    public void onPauseWithNative() {
-        BraveVpnNativeWorker.getInstance().removeObserver(this);
-        super.onPauseWithNative();
+    public interface OnCitySelection {
+        void onCityClick(Region city);
     }
 
     private void initializeViews() {
@@ -63,10 +54,19 @@ public class VpnServerActivity extends BraveVpnParentActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(getResources().getString(R.string.change_location));
 
+        // mOptimalLayout = (LinearLayout) findViewById(R.id.optimal_region_layout);
+        // TextView optimalServerText = (TextView) mOptimalLayout.findViewById(R.id.server_text);
+        // optimalServerText.setText(getString(R.string.optimal_text));
+        // TextView optimalCityServerText = (TextView)
+        // mOptimalLayout.findViewById(R.id.city_server_text);
+        // optimalCityServerText.setText(getString(R.string.optimal_desc));
+        // mOptimalServerRadioButton = (MaterialRadioButton)
+        // mOptimalLayout.findViewById(R.id.server_radio_button);
+
         mServerRegionList = (RecyclerView) findViewById(R.id.server_list);
 
-        mServerSelectionListLayout = (LinearLayout) findViewById(R.id.server_layout);
-        mServerSelectionProgress = (ProgressBar) findViewById(R.id.server_progress);
+        mServerListLayout = (LinearLayout) findViewById(R.id.server_layout);
+        mServerProgress = (ProgressBar) findViewById(R.id.server_progress);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mServerRegionList.addItemDecoration(
@@ -101,55 +101,40 @@ public class VpnServerActivity extends BraveVpnParentActivity {
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        BraveVpnNativeWorker.getInstance().getServerRegionsWithCities();
+        Region region = BraveVpnUtils.selectedRegion;
+        // if (getIntent() != null && getIntent().getExtras().getSerializable(BraveVpnUtils.REGION)
+        // != null) {
+        //     region = (Region) getIntent().getExtras().getSerializable(BraveVpnUtils.REGION);
+        // }
+        // if (region != null && region.cities.length > 0) {
         showProgress();
-    }
+        List<Region> cities = new ArrayList<Region>(Arrays.asList(region.cities));
 
-    @Override
-    public void onGetServerRegionsWithCities(String jsonResponse, boolean isSuccess) {
-        if (isSuccess) {
-            Log.e("brave_vpn", jsonResponse);
-            List<BraveVpnServerRegion> braveVpnServerRegions =
-                    BraveVpnUtils.getServerLocations(jsonResponse);
-            Collections.sort(
-                    braveVpnServerRegions,
-                    new Comparator<BraveVpnServerRegion>() {
-                        @Override
-                        public int compare(
-                                BraveVpnServerRegion braveVpnServerRegion1,
-                                BraveVpnServerRegion braveVpnServerRegion2) {
-                            return braveVpnServerRegion1
-                                    .getNamePretty()
-                                    .compareToIgnoreCase(braveVpnServerRegion2.getNamePretty());
+        Region optimalRegion = new Region();
+        optimalRegion.namePretty = getString(R.string.optimal_text);
+        optimalRegion.name = getString(R.string.optimal_desc);
+        cities.add(0, optimalRegion);
+
+        mVpnServerAdapter = new VpnServerAdapter(VpnServerActivity.this);
+        mVpnServerAdapter.setCities(cities);
+        mVpnServerAdapter.setOnCitySelection(
+                new OnCitySelection() {
+                    @Override
+                    public void onCityClick(Region city) {
+                        if (BraveVpnPrefUtils.getServerRegion().equals(city.name)) {
+                            Toast.makeText(
+                                            VpnServerActivity.this,
+                                            R.string.already_selected_the_server,
+                                            Toast.LENGTH_SHORT)
+                                    .show();
+                        } else {
+                            // changeServerRegion(city);
                         }
-                    });
-            mBraveVpnServerSelectionAdapter = new VpnServerAdapter(VpnServerActivity.this);
-            mBraveVpnServerSelectionAdapter.setVpnServerRegions(braveVpnServerRegions);
-            mBraveVpnServerSelectionAdapter.setOnServerRegionSelection(
-                    new OnServerRegionSelection() {
-                        @Override
-                        public void onServerRegionClick(BraveVpnServerRegion braveVpnServerRegion) {
-                            if (BraveVpnPrefUtils.getServerRegion()
-                                    .equals(braveVpnServerRegion.getName())) {
-                                Toast.makeText(
-                                                VpnServerActivity.this,
-                                                R.string.already_selected_the_server,
-                                                Toast.LENGTH_SHORT)
-                                        .show();
-                            } else {
-                                changeServerRegion(braveVpnServerRegion);
-                            }
-                        }
-                    });
-            mServerRegionList.setAdapter(mBraveVpnServerSelectionAdapter);
-            hideProgress();
-        } else {
-            Toast.makeText(
-                            VpnServerActivity.this,
-                            R.string.fail_to_get_server_locations,
-                            Toast.LENGTH_LONG)
-                    .show();
-        }
+                    }
+                });
+        mServerRegionList.setAdapter(mVpnServerAdapter);
+        hideProgress();
+        // }
     }
 
     @Override
@@ -163,34 +148,34 @@ public class VpnServerActivity extends BraveVpnParentActivity {
         return true;
     }
 
-    private void changeServerRegion(BraveVpnServerRegion braveVpnServerRegion) {
-        mIsServerLocationChanged = true;
-        BraveVpnUtils.selectedServerRegion = braveVpnServerRegion;
-        BraveVpnUtils.showProgressDialog(
-                VpnServerActivity.this, getResources().getString(R.string.vpn_connect_text));
-        if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
-            mBraveVpnPrefModel = new BraveVpnPrefModel();
-            BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
-        } else {
-            verifySubscription();
-        }
-    }
+    // private void changeServerRegion(BraveVpnServerRegion braveVpnServerRegion) {
+    //     mIsServerLocationChanged = true;
+    //     BraveVpnUtils.selectedServerRegion = braveVpnServerRegion;
+    //     BraveVpnUtils.showProgressDialog(
+    //             VpnServerActivity.this, getResources().getString(R.string.vpn_connect_text));
+    //     if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+    //         mBraveVpnPrefModel = new BraveVpnPrefModel();
+    //         BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
+    //     } else {
+    //         verifySubscription();
+    //     }
+    // }
 
     public void showProgress() {
-        if (mServerSelectionProgress != null) {
-            mServerSelectionProgress.setVisibility(View.VISIBLE);
+        if (mServerProgress != null) {
+            mServerProgress.setVisibility(View.VISIBLE);
         }
-        if (mServerSelectionListLayout != null) {
-            mServerSelectionListLayout.setAlpha(0.4f);
+        if (mServerListLayout != null) {
+            mServerListLayout.setAlpha(0.4f);
         }
     }
 
     public void hideProgress() {
-        if (mServerSelectionProgress != null) {
-            mServerSelectionProgress.setVisibility(View.GONE);
+        if (mServerProgress != null) {
+            mServerProgress.setVisibility(View.GONE);
         }
-        if (mServerSelectionListLayout != null) {
-            mServerSelectionListLayout.setAlpha(1f);
+        if (mServerListLayout != null) {
+            mServerListLayout.setAlpha(1f);
         }
     }
 

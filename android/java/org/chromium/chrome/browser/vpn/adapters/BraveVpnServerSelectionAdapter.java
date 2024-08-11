@@ -64,12 +64,6 @@ public class BraveVpnServerSelectionAdapter
             holder.cityServerText.setText(cityText.concat(serverText));
             holder.serverRadioButton.setChecked(
                     BraveVpnPrefUtils.getServerRegion().equals(region.name));
-            // if (BraveVpnPrefUtils.getServerRegion().equals(vpnServerRegion.getName())) {
-            //     holder.serverText.setCompoundDrawablesWithIntrinsicBounds(
-            //             0, 0, R.drawable.ic_checkbox_checked, 0);
-            // } else {
-            //     holder.serverText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-            // }
             holder.serverSelectionItemLayout.setOnClickListener(
                     new View.OnClickListener() {
                         @Override
