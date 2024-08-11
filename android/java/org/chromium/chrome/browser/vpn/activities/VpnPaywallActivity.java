@@ -21,11 +21,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
 
 import com.android.billingclient.api.ProductDetails;
-
-import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
@@ -33,7 +30,6 @@ import org.chromium.chrome.browser.billing.LinkSubscriptionUtils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
-import org.chromium.chrome.browser.vpn.adapters.BraveVpnPlanPagerAdapter;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.text.SpanApplier.SpanInfo;
@@ -259,12 +255,12 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
     private void updateSelectedPlanView() {
         mYearlySelectorLayout.setBackgroundResource(
                 mSelectedPlanType == SelectedPlanType.YEARLY
-                        ? R.drawable.vpn_plan_selected_bg
-                        : R.drawable.vpn_plan_bg);
+                        ? R.drawable.vpn_paywall_selected_bg
+                        : R.drawable.vpn_paywall_bg);
         mMonthlySelectorLayout.setBackgroundResource(
                 mSelectedPlanType == SelectedPlanType.MONTHLY
-                        ? R.drawable.vpn_plan_selected_bg
-                        : R.drawable.vpn_plan_bg);
+                        ? R.drawable.vpn_paywall_selected_bg
+                        : R.drawable.vpn_paywall_bg);
     }
 
     @Override

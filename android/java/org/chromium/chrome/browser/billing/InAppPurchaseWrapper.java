@@ -36,6 +36,7 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -517,7 +518,9 @@ public class InAppPurchaseWrapper {
         if (pricingPhase != null) {
             double price = ((double) pricingPhase.getPriceAmountMicros() / MICRO_UNITS);
             String priceString = String.format(Locale.getDefault(), "%.2f", price);
-            return pricingPhase.getPriceCurrencyCode() + " " + priceString;
+            String currencySymbol =
+                    Currency.getInstance(pricingPhase.getPriceCurrencyCode()).getSymbol();
+            return currencySymbol + " " + priceString;
         }
         return null;
     }
@@ -527,7 +530,9 @@ public class InAppPurchaseWrapper {
         if (pricingPhase != null) {
             double yearlyPrice = ((double) pricingPhase.getPriceAmountMicros() / MICRO_UNITS) * 12;
             String priceString = String.format(Locale.getDefault(), "%.2f", yearlyPrice);
-            return pricingPhase.getPriceCurrencyCode() + priceString;
+            String currencySymbol =
+                    Currency.getInstance(pricingPhase.getPriceCurrencyCode()).getSymbol();
+            return currencySymbol + " " + priceString;
         }
         return null;
     }
