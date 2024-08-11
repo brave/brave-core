@@ -28,8 +28,9 @@ SplitViewBrowserData::SplitViewBrowserData(Browser* browser)
 }
 
 SplitViewBrowserData::~SplitViewBrowserData() {
-  while (!observers_.empty()) {
-    observers_.begin()->OnWillDeleteBrowserData();
+  // base::ObserverList is safe to be mutated during iteration.
+  for (auto& observer : observers_) {
+    observer.OnWillDeleteBrowserData();
   }
 }
 
