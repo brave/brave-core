@@ -101,6 +101,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, AppMenuButtonUpgradeAlertTest) {
 
   EXPECT_EQ(GetLayoutConstant(TOOLBAR_BUTTON_HEIGHT),
             brave_menu_button->height());
+  EXPECT_EQ(::GetLayoutInsets(TOOLBAR_BUTTON), brave_menu_button->GetInsets());
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
