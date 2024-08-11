@@ -27,7 +27,6 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/button/label_button.h"
-#include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/textfield/textfield.h"
 #include "ui/views/layout/fill_layout.h"
 
@@ -254,6 +253,7 @@ void ClosePanel(content::WebContents* contents) {
 }
 
 namespace {
+// A button that shows a label and changes the cursor to a hand when hovered.
 class PlaylistLabelButton : public views::LabelButton {
   METADATA_HEADER(PlaylistLabelButton, views::LabelButton)
  public:
@@ -261,8 +261,9 @@ class PlaylistLabelButton : public views::LabelButton {
                       const std::u16string& text = std::u16string())
       : LabelButton(std::move(callback), text) {
     SetEnabledTextColorIds(kColorBravePlaylistTextInteractive);
+    const int size_diff = 13 - label()->font_list().GetFontSize();
     label()->SetFontList(label()->font_list().Derive(
-        0, gfx::Font::FontStyle::NORMAL, gfx::Font::Weight::NORMAL));
+        size_diff, gfx::Font::FontStyle::NORMAL, gfx::Font::Weight::SEMIBOLD));
   }
 
   ~PlaylistLabelButton() override = default;
