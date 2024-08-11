@@ -37,7 +37,7 @@ std::optional<SkColor> BraveBrowserAppMenuButton::GetHighlightColor() const {
 SkColor BraveBrowserAppMenuButton::GetForegroundColor(ButtonState state) const {
   std::optional<SkColor> color = GetColorForSeverity();
   return color.has_value() ? color.value()
-                           : ToolbarButton::GetForegroundColor(state);
+                           : BrowserAppMenuButton::GetForegroundColor(state);
 }
 
 bool BraveBrowserAppMenuButton::ShouldPaintBorder() const {
