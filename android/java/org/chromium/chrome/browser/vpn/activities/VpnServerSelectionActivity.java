@@ -141,8 +141,9 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
                                 new OnServerRegionSelection() {
                                     @Override
                                     public void onServerRegionClick(Region region) {
+                                        BraveVpnUtils.selectedRegion = region;
                                         BraveVpnUtils.openVpnServerActivity(
-                                                VpnServerSelectionActivity.this);
+                                                VpnServerSelectionActivity.this, region);
                                     }
                                 });
                         mServerRegionList.setAdapter(mBraveVpnServerSelectionAdapter);

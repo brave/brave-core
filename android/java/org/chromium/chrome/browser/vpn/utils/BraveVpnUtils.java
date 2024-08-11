@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
@@ -54,9 +55,11 @@ public class BraveVpnUtils {
 
     public static boolean mUpdateProfileAfterSplitTunnel;
     public static BraveVpnServerRegion selectedServerRegion;
+    public static Region selectedRegion;
     private static ProgressDialog sProgressDialog;
 
     public static String IS_KILL_SWITCH = "is_kill_switch";
+    public static String REGION = "region";
 
     public static void openBraveVpnPlansActivity(Activity activity) {
         if (activity == null) {
@@ -122,11 +125,14 @@ public class BraveVpnUtils {
         activity.startActivity(vpnServerSelectionIntent);
     }
 
-    public static void openVpnServerActivity(Activity activity) {
+    public static void openVpnServerActivity(Activity activity, Region region) {
         if (activity == null) {
             return;
         }
         Intent vpnServerIntent = new Intent(activity, VpnServerActivity.class);
+        // Bundle bundle = new Bundle();
+        // bundle.putSerializable(REGION, region);
+        // vpnServerIntent.putExtras(bundle);
         activity.startActivity(vpnServerIntent);
     }
 

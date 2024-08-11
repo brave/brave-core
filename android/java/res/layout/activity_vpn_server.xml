@@ -31,6 +31,10 @@
                 android:textColor="@color/schemes_primary"
                 android:text="@string/available_servers"/>
 
+            <!-- <include
+                android:id="@+id/optimal_region_layout"
+                layout="@layout/vpn_server_item_layout"/> -->
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/server_list"
                 android:layout_width="match_parent"

@@ -2427,18 +2427,24 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_CITY_TEXT" desc="Vpn server selection city text">
       {CITY_COUNT, plural,
-          =1 {<ph name="CITY_COUNT_ONE">%1$d<ex>1</ex></ph> city}
-          other {<ph name="CITY_COUNT_MANY">%1$d<ex>2</ex></ph> cities}
+          =1 {<ph name="CITY_COUNT_ONE">%1$d<ex>1</ex></ph> city - }
+          other {<ph name="CITY_COUNT_MANY">%1$d<ex>2</ex></ph> cities - }
         }
     </message>
     <message name="IDS_SERVER_TEXT" desc="Vpn server selection server text">
       {SERVER_COUNT, plural,
-          =1 { - <ph name="SERVER_COUNT_ONE">%1$d<ex>1</ex></ph> server}
-          other { - <ph name="SERVER_COUNT_MANY">%1$d<ex>2</ex></ph> servers}
+          =1 {<ph name="SERVER_COUNT_ONE">%1$d<ex>1</ex></ph> server}
+          other {<ph name="SERVER_COUNT_MANY">%1$d<ex>2</ex></ph> servers}
         }
     </message>
     <message name="IDS_SERVERS" desc="Vpn server selection servers text">
       Servers
+    </message>
+    <message name="IDS_OPTIMAL_TEXT" desc="Optimal server text">
+      Optimal
+    </message>
+    <message name="IDS_OPTIMAL_DESC" desc="Optimal server description">
+      Use the best server available
     </message>
     <message name="IDS_AVAILABLE_SERVERS" desc="Available servers text">
       Available Servers
