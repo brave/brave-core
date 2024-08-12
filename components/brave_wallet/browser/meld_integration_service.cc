@@ -413,7 +413,7 @@ void MeldIntegrationService::GetCryptoQuotes(
   base::Value::Dict payload;
   AddKeyIfNotEmpty(&payload, "countryCode", country);
   AddKeyIfNotEmpty(&payload, "sourceCurrencyCode", source_currency_code);
-  payload.Set("sourceAmount",source_amount);
+  payload.Set("sourceAmount", source_amount);
   AddKeyIfNotEmpty(&payload, "destinationCurrencyCode",
                    destination_currency_code);
   if (account) {
