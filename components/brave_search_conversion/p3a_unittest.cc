@@ -31,14 +31,6 @@ const ConversionTypeInfo type_infos[] = {
         .histogram_name = kSearchPromoBannerDHistogramName,
     },
     {
-        .type = ConversionType::kDDGBannerTypeA,
-        .histogram_name = kSearchPromoDDGBannerAHistogramName,
-    },
-    {
-        .type = ConversionType::kDDGBannerTypeB,
-        .histogram_name = kSearchPromoDDGBannerBHistogramName,
-    },
-    {
         .type = ConversionType::kDDGBannerTypeC,
         .histogram_name = kSearchPromoDDGBannerCHistogramName,
     },

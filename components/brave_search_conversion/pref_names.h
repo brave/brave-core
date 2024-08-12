@@ -14,7 +14,7 @@ inline constexpr char kDismissed[] = "brave.brave_search_conversion.dismissed";
 inline constexpr char kMaybeLaterClickedTime[] =
     "brave.brave_search_conversion.maybe_later_clicked_time";
 
-// Index ranges from 0 to 3 and it's matched DDGTypeA to DDGTypeD.
+// Index ranges from 0 to 1 and it's matched DDGTypeC to DDGTypeD.
 // It's the type index for now.
 inline constexpr char kDDGBannerTypeIndex[] =
     "brave.brave_search_conversion.ddg_banner_type_index";

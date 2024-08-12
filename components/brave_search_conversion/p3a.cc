@@ -29,10 +29,6 @@ const char kBannerCShownKey[] = "banner_c.shown";
 const char kBannerCTriggeredKey[] = "banner_c.triggered";
 const char kBannerDShownKey[] = "banner_d.shown";
 const char kBannerDTriggeredKey[] = "banner_d.triggered";
-const char kDDGBannerAShownKey[] = "ddg_banner_a.shown";
-const char kDDGBannerATriggeredKey[] = "ddg_banner_a.triggered";
-const char kDDGBannerBShownKey[] = "ddg_banner_b.shown";
-const char kDDGBannerBTriggeredKey[] = "ddg_banner_b.triggered";
 const char kDDGBannerCShownKey[] = "ddg_banner_c.shown";
 const char kDDGBannerCTriggeredKey[] = "ddg_banner_c.triggered";
 const char kDDGBannerDShownKey[] = "ddg_banner_d.shown";
@@ -53,15 +49,10 @@ const char* GetPromoShownKeyName(ConversionType type) {
       return kBannerCShownKey;
     case ConversionType::kBannerTypeD:
       return kBannerDShownKey;
-    case ConversionType::kDDGBannerTypeA:
-      return kDDGBannerAShownKey;
-    case ConversionType::kDDGBannerTypeB:
-      return kDDGBannerBShownKey;
     case ConversionType::kDDGBannerTypeC:
       return kDDGBannerCShownKey;
     case ConversionType::kDDGBannerTypeD:
       return kDDGBannerDShownKey;
-
     case ConversionType::kButton:
       return kButtonShownKey;
     case ConversionType::kNTP:
@@ -82,10 +73,6 @@ const char* GetPromoTriggeredKeyName(ConversionType type) {
       return kBannerCTriggeredKey;
     case ConversionType::kBannerTypeD:
       return kBannerDTriggeredKey;
-    case ConversionType::kDDGBannerTypeA:
-      return kDDGBannerATriggeredKey;
-    case ConversionType::kDDGBannerTypeB:
-      return kDDGBannerBTriggeredKey;
     case ConversionType::kDDGBannerTypeC:
       return kDDGBannerCTriggeredKey;
     case ConversionType::kDDGBannerTypeD:
@@ -111,10 +98,6 @@ const char* GetPromoTypeHistogramName(ConversionType type) {
       return kSearchPromoBannerCHistogramName;
     case ConversionType::kBannerTypeD:
       return kSearchPromoBannerDHistogramName;
-    case ConversionType::kDDGBannerTypeA:
-      return kSearchPromoDDGBannerAHistogramName;
-    case ConversionType::kDDGBannerTypeB:
-      return kSearchPromoDDGBannerBHistogramName;
     case ConversionType::kDDGBannerTypeC:
       return kSearchPromoDDGBannerCHistogramName;
     case ConversionType::kDDGBannerTypeD:
@@ -137,8 +120,7 @@ void UpdateHistograms(PrefService* prefs) {
 
   const ConversionType types[] = {
       ConversionType::kBannerTypeB,    ConversionType::kBannerTypeC,
-      ConversionType::kBannerTypeD,    ConversionType::kDDGBannerTypeA,
-      ConversionType::kDDGBannerTypeB, ConversionType::kDDGBannerTypeC,
+      ConversionType::kBannerTypeD,    ConversionType::kDDGBannerTypeC,
       ConversionType::kDDGBannerTypeD, ConversionType::kNTP};
 
   VLOG(1) << "SearchConversionP3A: updating histograms";
