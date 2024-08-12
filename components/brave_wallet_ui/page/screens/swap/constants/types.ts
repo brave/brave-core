@@ -16,7 +16,6 @@ export type LiquiditySource = {
 }
 
 export type RouteTagsType = 'CHEAPEST' | 'FASTEST'
-export type Providers = 'Jupiter' | '0x' | 'Li.Fi'
 
 export type QuoteOption = {
   fromAmount: Amount
@@ -41,10 +40,10 @@ export type QuoteOption = {
   networkFee: Amount
 
   networkFeeFiat: string
-  provider: Providers
+  provider: BraveWallet.SwapProvider
   executionDuration?: string
   tags: RouteTagsType[]
-  id: string
+  id?: string
 }
 
 export type SwapAndSend = {
@@ -101,5 +100,5 @@ export type SwapParamsOverrides = {
   toToken?: BraveWallet.BlockchainToken
   provider?: BraveWallet.SwapProvider
   slippage?: string
-  quoteOptionId?: string
+  selectedQuoteOptionId?: string
 }

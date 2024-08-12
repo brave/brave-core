@@ -207,12 +207,8 @@ std::string EncodeStepType(const mojom::LiFiStepType type) {
     return "cross";
   }
 
-  if (type == mojom::LiFiStepType::kNative) {
+  if (type == mojom::LiFiStepType::kLiFi) {
     return "lifi";
-  }
-
-  if (type == mojom::LiFiStepType::kProtocol) {
-    return "protocol";
   }
 
   NOTREACHED_NORETURN();

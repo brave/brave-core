@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -516,11 +517,7 @@ std::optional<mojom::LiFiStepType> ParseStepType(const std::string& value) {
   }
 
   if (value == "lifi") {
-    return mojom::LiFiStepType::kNative;
-  }
-
-  if (value == "protocol") {
-    return mojom::LiFiStepType::kProtocol;
+    return mojom::LiFiStepType::kLiFi;
   }
 
   return std::nullopt;
@@ -659,6 +656,12 @@ mojom::LiFiQuotePtr ParseQuoteResponse(const base::Value& json_value) {
 
       route->steps.push_back(std::move(step));
     }
+
+    std::vector<std::string> tools;
+    for (const auto& step : route->steps) {
+      tools.push_back(step->tool);
+    }
+    route->unique_id = base::JoinString(tools, "-");
 
     route->tags = route_value.tags;
     result->routes.push_back(std::move(route));

@@ -90,10 +90,7 @@ export function useZeroEx(params: SwapParams) {
                     .format(),
                 toToken: toToken.contractAddress,
                 slippagePercentage: slippageTolerance,
-                routePriority:
-                  fromToken.chainId === toToken.chainId
-                    ? BraveWallet.RoutePriority.kCheapest
-                    : BraveWallet.RoutePriority.kRecommended,
+                routePriority: BraveWallet.RoutePriority.kCheapest,
                 provider: BraveWallet.SwapProvider.kZeroEx
               },
               jupiterTransactionParams: undefined,

@@ -10,10 +10,13 @@ import usePromise from '$web-common/usePromise'
 
 // Types
 import { QuoteOption } from '../../../constants/types'
-import { BraveWallet } from '../../../../../../constants/types'
+import {
+  BraveWallet,
+  SwapProviderNameMapping
+} from '../../../../../../constants/types'
 
 // Constants
-import LPMetadata from '../../../constants/LpMetadata'
+import { SwapProviderMetadata } from '../../../constants/metadata'
 
 // Queries
 import {
@@ -296,7 +299,7 @@ export const RouteOption = (props: Props) => {
                   'braveWalletExchangeViaProvider'
                 )
                   .replace('$5', source.name)
-                  .replace('$6', option.provider)
+                  .replace('$6', SwapProviderNameMapping[option.provider] ?? '')
                 const { duringTag: exchange, afterTag } = splitStringForTag(
                   descriptionString,
                   1
@@ -322,7 +325,7 @@ export const RouteOption = (props: Props) => {
                         )}
                         <ProviderIcon
                           size='14px'
-                          icon={LPMetadata[option.provider]}
+                          icon={SwapProviderMetadata[option.provider]}
                         />
                       </LPIconWrapper>
                       <Row

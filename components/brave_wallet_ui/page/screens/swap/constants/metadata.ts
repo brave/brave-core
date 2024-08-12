@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { BraveWallet } from '../../../../constants/types'
+
 import ZeroXIcon from '../assets/lp-icons/0x.svg'
 import AaveIcon from '../assets/lp-icons/aave.svg'
 import AldrinIcon from '../assets/lp-icons/aldrin.svg'
@@ -55,6 +57,12 @@ import UniswapIcon from '../assets/lp-icons/uniswap.svg'
 import WaultSwapIcon from '../assets/lp-icons/waultswap.png'
 import WOOFiIcon from '../assets/lp-icons/woofi.svg'
 
+const SwapProviderMetadata = {
+  [BraveWallet.SwapProvider.kZeroEx]: ZeroXIcon,
+  [BraveWallet.SwapProvider.kJupiter]: JupiterIcon,
+  [BraveWallet.SwapProvider.kLiFi]: LiFiIcon,
+}
+
 type LPMetadataType = {
   [name: string]: string
 }
@@ -89,8 +97,7 @@ const LPMetadata: LPMetadataType = {
   'Jupiter': JupiterIcon,
   'KyberDMM': KyberDMMIcon,
   'Lido': LidoIcon,
-  'Li.Fi': LiFiIcon,
-  'LI.FI Dex Aggregator': LiFiIcon,
+  'LI.FI DEX Aggregator': LiFiIcon,
   'Lifinity': LifinityIcon,
   // LiquidityProvider info unknown
   'LiquidityProvider': '',
@@ -126,4 +133,4 @@ const LPMetadata: LPMetadataType = {
   'WOOFi': WOOFiIcon
 }
 
-export default LPMetadata
+export { LPMetadata, SwapProviderMetadata }
