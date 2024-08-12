@@ -15,8 +15,6 @@ namespace android {
 static jlong JNI_BraveVpnServiceFactoryAndroid_GetInterfaceToVpnService(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
-  LOG(ERROR) << "brave_vpn"
-             << "JNI_BraveVpnServiceFactoryAndroid_GetInterfaceToVpnService";
   auto* profile = Profile::FromJavaObject(profile_android);
   if (profile == nullptr) {
     return static_cast<jlong>(-1);

@@ -17,8 +17,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.radiobutton.MaterialRadioButton;
-
 import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.adapters.VpnServerAdapter;
@@ -32,9 +30,6 @@ import java.util.List;
 
 public class VpnServerActivity extends BraveVpnParentActivity {
     private VpnServerAdapter mVpnServerAdapter;
-
-    private LinearLayout mOptimalLayout;
-    private MaterialRadioButton mOptimalServerRadioButton;
 
     private LinearLayout mServerListLayout;
     private ProgressBar mServerProgress;
@@ -53,15 +48,6 @@ public class VpnServerActivity extends BraveVpnParentActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle(getResources().getString(R.string.change_location));
-
-        // mOptimalLayout = (LinearLayout) findViewById(R.id.optimal_region_layout);
-        // TextView optimalServerText = (TextView) mOptimalLayout.findViewById(R.id.server_text);
-        // optimalServerText.setText(getString(R.string.optimal_text));
-        // TextView optimalCityServerText = (TextView)
-        // mOptimalLayout.findViewById(R.id.city_server_text);
-        // optimalCityServerText.setText(getString(R.string.optimal_desc));
-        // mOptimalServerRadioButton = (MaterialRadioButton)
-        // mOptimalLayout.findViewById(R.id.server_radio_button);
 
         mServerRegionList = (RecyclerView) findViewById(R.id.server_list);
 
@@ -102,11 +88,6 @@ public class VpnServerActivity extends BraveVpnParentActivity {
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         Region region = BraveVpnUtils.selectedRegion;
-        // if (getIntent() != null && getIntent().getExtras().getSerializable(BraveVpnUtils.REGION)
-        // != null) {
-        //     region = (Region) getIntent().getExtras().getSerializable(BraveVpnUtils.REGION);
-        // }
-        // if (region != null && region.cities.length > 0) {
         showProgress();
         List<Region> cities = new ArrayList<Region>(Arrays.asList(region.cities));
 

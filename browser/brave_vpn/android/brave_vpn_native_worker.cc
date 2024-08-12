@@ -47,44 +47,6 @@ void BraveVpnNativeWorker::Destroy(
   delete this;
 }
 
-void BraveVpnNativeWorker::GetAllServerRegions(JNIEnv* env) {
-  BraveVpnService* brave_vpn_service = GetBraveVpnService();
-  if (brave_vpn_service) {
-    brave_vpn_service->GetAllServerRegions(
-        base::BindOnce(&BraveVpnNativeWorker::OnGetAllServerRegions,
-                       weak_factory_.GetWeakPtr()));
-  }
-}
-
-void BraveVpnNativeWorker::OnGetAllServerRegions(
-    const std::string& server_regions_json,
-    bool success) {
-  JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveVpnNativeWorker_onGetAllServerRegions(
-      env, weak_java_brave_vpn_native_worker_.get(env),
-      base::android::ConvertUTF8ToJavaString(env, server_regions_json),
-      success);
-}
-
-void BraveVpnNativeWorker::GetServerRegionsWithCities(JNIEnv* env) {
-  BraveVpnService* brave_vpn_service = GetBraveVpnService();
-  if (brave_vpn_service) {
-    brave_vpn_service->GetServerRegionsWithCities(
-        base::BindOnce(&BraveVpnNativeWorker::OnGetServerRegionsWithCities,
-                       weak_factory_.GetWeakPtr()));
-  }
-}
-
-void BraveVpnNativeWorker::OnGetServerRegionsWithCities(
-    const std::string& server_regions_json,
-    bool success) {
-  JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveVpnNativeWorker_onGetServerRegionsWithCities(
-      env, weak_java_brave_vpn_native_worker_.get(env),
-      base::android::ConvertUTF8ToJavaString(env, server_regions_json),
-      success);
-}
-
 void BraveVpnNativeWorker::GetTimezonesForRegions(JNIEnv* env) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
