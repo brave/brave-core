@@ -1340,7 +1340,7 @@ TEST(SwapResponseParserUnitTest, ParseLiFiQuoteResponse) {
 
     ASSERT_EQ(route->steps.size(), 1u);
     const auto& step = route->steps.at(0);
-    EXPECT_EQ(step->type, mojom::LiFiStepType::kNative);
+    EXPECT_EQ(step->type, mojom::LiFiStepType::kLiFi);
     EXPECT_EQ(step->id, "4c901782-830f-454e-9ed8-6d246829799f:0");
     EXPECT_EQ(step->tool, "mayan");
     EXPECT_EQ(step->tool_details->key, "mayan");
