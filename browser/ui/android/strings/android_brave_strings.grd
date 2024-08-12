@@ -2295,7 +2295,7 @@ Are you sure you want to do this?
       Renews monthly
     </message>
     <message name="IDS_MONTHLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
-      <ph name="MONTHLY_AMOUNT">%1$s</ph> / mo.
+      <ph name="MONTHLY_AMOUNT">%1$s</ph> /month
     </message>
     <message name="IDS_ONE_YEAR" desc="Brave VPN plan text">
       One Year
@@ -2304,7 +2304,7 @@ Are you sure you want to do this?
       Renews annually (<ph name="DISCOUNT_TEXT_START">&lt;discount_text&gt;</ph>save <ph name="PERCENTAGE_AMOUNT">%1$d</ph>%%<ph name="DISCOUNT_TEXT_END">&lt;/discount_text&gt;</ph>)
     </message>
     <message name="IDS_YEARLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
-      <ph name="YEARLY_AMOUNT">%1$s</ph> / yr.
+      <ph name="YEARLY_AMOUNT">%1$s</ph> /year
     </message>
     <message name="IDS_BRAVE_VPN_RENEWAL_TEXT" desc="Brave VPN plan text">
       Subscriptions will be charged via your Google account. Any unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is canceled at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\n\nBy using Brave, you agree to the Terms of Use and Privacy Policy.

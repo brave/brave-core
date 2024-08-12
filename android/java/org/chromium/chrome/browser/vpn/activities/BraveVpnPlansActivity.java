@@ -179,26 +179,27 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                                                     mProductDetails = monthlyProductDetails;
                                                     updateSelectedPlanView();
                                                 });
-                                        String monthlyFormattedPrice =
+                                        SpannableString monthlyFormattedPrice =
                                                 InAppPurchaseWrapper.getInstance()
                                                         .getFormattedProductPrice(
-                                                                monthlyProductDetails);
+                                                                BraveVpnPlansActivity.this,
+                                                                monthlyProductDetails,
+                                                                R.string
+                                                                        .monthly_subscription_amount);
                                         if (monthlyFormattedPrice != null) {
                                             mMonthlySubscriptionAmountText.setText(
-                                                    String.format(
-                                                            getResources()
-                                                                    .getString(
-                                                                            R.string
-                                                                                    .monthly_subscription_amount),
-                                                            monthlyFormattedPrice));
+                                                    monthlyFormattedPrice,
+                                                    TextView.BufferType.SPANNABLE);
                                             mMonthlyPlanProgress.setVisibility(View.GONE);
                                         }
-                                        String fullPrice =
+                                        SpannableString fullPrice =
                                                 InAppPurchaseWrapper.getInstance()
                                                         .getFormattedFullProductPrice(
+                                                                BraveVpnPlansActivity.this,
                                                                 monthlyProductDetails);
                                         if (fullPrice != null) {
-                                            mRemovedValueText.setText(fullPrice);
+                                            mRemovedValueText.setText(
+                                                    fullPrice, TextView.BufferType.SPANNABLE);
                                         }
                                     }
                                 });
@@ -223,18 +224,17 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                                                     mProductDetails = yearlyProductDetails;
                                                     updateSelectedPlanView();
                                                 });
-                                        String yearlyFormattedPrice =
+                                        SpannableString yearlyFormattedPrice =
                                                 InAppPurchaseWrapper.getInstance()
                                                         .getFormattedProductPrice(
-                                                                yearlyProductDetails);
+                                                                BraveVpnPlansActivity.this,
+                                                                yearlyProductDetails,
+                                                                R.string
+                                                                        .yearly_subscription_amount);
                                         if (yearlyFormattedPrice != null) {
                                             mYearlySubscriptionAmountText.setText(
-                                                    String.format(
-                                                            getResources()
-                                                                    .getString(
-                                                                            R.string
-                                                                                    .yearly_subscription_amount),
-                                                            yearlyFormattedPrice));
+                                                    yearlyFormattedPrice,
+                                                    TextView.BufferType.SPANNABLE);
                                             mYearlyPlanProgress.setVisibility(View.GONE);
                                         }
                                     }

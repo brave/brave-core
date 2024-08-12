@@ -7,6 +7,11 @@ package org.chromium.chrome.browser.billing;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.TextAppearanceSpan;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -513,26 +518,60 @@ public class InAppPurchaseWrapper {
         return null;
     }
 
-    public String getFormattedProductPrice(ProductDetails productDetails) {
+    public SpannableString getFormattedProductPrice(
+            Context context, ProductDetails productDetails, int stringRes) {
         ProductDetails.PricingPhase pricingPhase = getPricingPhase(productDetails);
         if (pricingPhase != null) {
             double price = ((double) pricingPhase.getPriceAmountMicros() / MICRO_UNITS);
             String priceString = String.format(Locale.getDefault(), "%.2f", price);
             String currencySymbol =
                     Currency.getInstance(pricingPhase.getPriceCurrencyCode()).getSymbol();
-            return currencySymbol + " " + priceString;
+            String priceWithSymbol = currencySymbol + priceString;
+            String finalPrice =
+                    context.getResources()
+                            .getString(
+                                    stringRes,
+                                    pricingPhase.getPriceCurrencyCode() + " " + priceWithSymbol);
+            SpannableString priceSpannable = new SpannableString(finalPrice);
+            int index = finalPrice.indexOf(priceWithSymbol);
+            priceSpannable.setSpan(
+                    new TextAppearanceSpan(context, R.style.LargeSemibold),
+                    index,
+                    index + priceWithSymbol.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            priceSpannable.setSpan(
+                    new ForegroundColorSpan(context.getResources().getColor(android.R.color.white)),
+                    index,
+                    index + priceWithSymbol.length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return priceSpannable;
         }
         return null;
     }
 
-    public String getFormattedFullProductPrice(ProductDetails productDetails) {
+    public SpannableString getFormattedFullProductPrice(
+            Context context, ProductDetails productDetails) {
         ProductDetails.PricingPhase pricingPhase = getPricingPhase(productDetails);
         if (pricingPhase != null) {
             double yearlyPrice = ((double) pricingPhase.getPriceAmountMicros() / MICRO_UNITS) * 12;
             String priceString = String.format(Locale.getDefault(), "%.2f", yearlyPrice);
             String currencySymbol =
                     Currency.getInstance(pricingPhase.getPriceCurrencyCode()).getSymbol();
-            return currencySymbol + " " + priceString;
+            String priceWithSymbol = currencySymbol + priceString;
+            String finalPrice = pricingPhase.getPriceCurrencyCode() + " " + priceWithSymbol;
+            SpannableString priceSpannable = new SpannableString(finalPrice);
+            int index = finalPrice.indexOf(priceWithSymbol);
+            priceSpannable.setSpan(
+                    new TextAppearanceSpan(context, R.style.LargeSemibold),
+                    index,
+                    index + priceWithSymbol.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            priceSpannable.setSpan(
+                    new ForegroundColorSpan(context.getResources().getColor(android.R.color.white)),
+                    index,
+                    index + priceWithSymbol.length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return priceSpannable;
         }
         return null;
     }

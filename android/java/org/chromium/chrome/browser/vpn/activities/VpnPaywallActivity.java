@@ -10,6 +10,7 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 import android.graphics.Paint;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.text.style.TextAppearanceSpan;
 import android.text.style.UnderlineSpan;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -104,12 +105,12 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
         SpannableString trialTextSpan = new SpannableString(trialFullString);
         int trialTextIndex = trialFullString.indexOf(day7TrialString);
         trialTextSpan.setSpan(
-                new android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
+                new UnderlineSpan(),
                 trialTextIndex,
                 trialFullString.length(),
                 SPAN_EXCLUSIVE_EXCLUSIVE);
         trialTextSpan.setSpan(
-                new UnderlineSpan(),
+                new TextAppearanceSpan(VpnPaywallActivity.this, R.style.DefaultSemibold),
                 trialTextIndex,
                 trialFullString.length(),
                 SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -168,26 +169,27 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
                                                     mProductDetails = monthlyProductDetails;
                                                     updateSelectedPlanView();
                                                 });
-                                        String monthlyFormattedPrice =
+                                        SpannableString monthlyFormattedPrice =
                                                 InAppPurchaseWrapper.getInstance()
                                                         .getFormattedProductPrice(
-                                                                monthlyProductDetails);
+                                                                VpnPaywallActivity.this,
+                                                                monthlyProductDetails,
+                                                                R.string
+                                                                        .monthly_subscription_amount);
                                         if (monthlyFormattedPrice != null) {
                                             mMonthlySubscriptionAmountText.setText(
-                                                    String.format(
-                                                            getResources()
-                                                                    .getString(
-                                                                            R.string
-                                                                                    .monthly_subscription_amount),
-                                                            monthlyFormattedPrice));
+                                                    monthlyFormattedPrice,
+                                                    TextView.BufferType.SPANNABLE);
                                             mMonthlyPlanProgress.setVisibility(View.GONE);
                                         }
-                                        String fullPrice =
+                                        SpannableString fullPrice =
                                                 InAppPurchaseWrapper.getInstance()
                                                         .getFormattedFullProductPrice(
+                                                                VpnPaywallActivity.this,
                                                                 monthlyProductDetails);
                                         if (fullPrice != null) {
-                                            mRemovedValueText.setText(fullPrice);
+                                            mRemovedValueText.setText(
+                                                    fullPrice, TextView.BufferType.SPANNABLE);
                                         }
                                     }
                                 });
@@ -212,18 +214,17 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
                                                     mProductDetails = yearlyProductDetails;
                                                     updateSelectedPlanView();
                                                 });
-                                        String yearlyFormattedPrice =
+                                        SpannableString yearlyFormattedPrice =
                                                 InAppPurchaseWrapper.getInstance()
                                                         .getFormattedProductPrice(
-                                                                yearlyProductDetails);
+                                                                VpnPaywallActivity.this,
+                                                                yearlyProductDetails,
+                                                                R.string
+                                                                        .yearly_subscription_amount);
                                         if (yearlyFormattedPrice != null) {
                                             mYearlySubscriptionAmountText.setText(
-                                                    String.format(
-                                                            getResources()
-                                                                    .getString(
-                                                                            R.string
-                                                                                    .yearly_subscription_amount),
-                                                            yearlyFormattedPrice));
+                                                    yearlyFormattedPrice,
+                                                    TextView.BufferType.SPANNABLE);
                                             mYearlyPlanProgress.setVisibility(View.GONE);
                                         }
                                     }

@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.brave_leo;
 
+import android.text.SpannableString;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -89,16 +90,15 @@ public class BraveLeoPlansActivity extends AsyncInitializationActivity {
                                                 .initiatePurchase(
                                                         BraveLeoPlansActivity.this,
                                                         monthlyProductDetails));
-                        String monthlyFormattedPrice =
+                        SpannableString monthlyFormattedPrice =
                                 InAppPurchaseWrapper.getInstance()
-                                        .getFormattedProductPrice(monthlyProductDetails);
+                                        .getFormattedProductPrice(
+                                                BraveLeoPlansActivity.this,
+                                                monthlyProductDetails,
+                                                R.string.monthly_subscription_amount);
                         if (monthlyFormattedPrice != null) {
                             mMonthlySubscriptionAmountText.setText(
-                                    String.format(
-                                            getResources()
-                                                    .getString(
-                                                            R.string.monthly_subscription_amount),
-                                            monthlyFormattedPrice));
+                                    monthlyFormattedPrice, TextView.BufferType.SPANNABLE);
                             mMonthlyPlanProgress.setVisibility(View.GONE);
                         }
                     }
