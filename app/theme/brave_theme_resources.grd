@@ -105,7 +105,6 @@
         <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DARK" file="brave/brave_search_conversion_banner_graphic_dark.png" />
         <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG" file="brave/brave_search_conversion_banner_graphic_ddg.png" />
         <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG_DARK" file="brave/brave_search_conversion_banner_graphic_ddg_dark.png" />
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG_BING" file="brave/brave_search_conversion_banner_graphic_ddg_bing.png" />
         <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_LOGO_IN_SEARCH_PROMOTION" file="brave/brave_search_logo_in_search_promotion.png" />
       </if>
     </structures>

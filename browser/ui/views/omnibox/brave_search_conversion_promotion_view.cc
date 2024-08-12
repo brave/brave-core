@@ -156,11 +156,6 @@ class HorizontalGradientBackground : public views::Background {
       return 27;
     }
 
-    if (graphic_resource_ ==
-        IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG_BING) {
-      return 0;
-    }
-
     return 8;
   }
 
@@ -426,21 +421,19 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
 
   // Setup banner contents.
   // We don't use titile for banner type A.
-  if (type_ != ConversionType::kDDGBannerTypeA) {
-    const std::u16string title_label =
-        brave_l10n::GetLocalizedResourceUTF16String(
-            GetBannerTypeTitleStringResourceId());
-    views::Label::CustomFont title_font = {
-        GetFont(16, gfx::Font::Weight::SEMIBOLD)};
-    auto* banner_title = banner_contents->AddChildView(
-        std::make_unique<views::Label>(title_label, title_font));
-    if (UseDDG() && ShouldDrawGraphic()) {
-      banner_title->SetProperty(views::kMarginsKey,
-                                gfx::Insets::TLBR(0, 0, 0, 300));
-    }
-    banner_title->SetAutoColorReadabilityEnabled(false);
-    banner_title->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+  const std::u16string title_label =
+      brave_l10n::GetLocalizedResourceUTF16String(
+          GetBannerTypeTitleStringResourceId());
+  views::Label::CustomFont title_font = {
+      GetFont(16, gfx::Font::Weight::SEMIBOLD)};
+  auto* banner_title = banner_contents->AddChildView(
+      std::make_unique<views::Label>(title_label, title_font));
+  if (UseDDG() && ShouldDrawGraphic()) {
+    banner_title->SetProperty(views::kMarginsKey,
+                              gfx::Insets::TLBR(0, 0, 0, 300));
   }
+  banner_title->SetAutoColorReadabilityEnabled(false);
+  banner_title->SetHorizontalAlignment(gfx::ALIGN_LEFT);
 
   const std::u16string desc_label = brave_l10n::GetLocalizedResourceUTF16String(
       GetBannerTypeDescStringResourceId());
@@ -624,11 +617,6 @@ int BraveSearchConversionPromotionView::GetBannerTypeTitleStringResourceId() {
       return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_TITLE;
     case ConversionType::kBannerTypeD:
       return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_TITLE;
-    case ConversionType::kDDGBannerTypeA:
-      // DDG Type A doesn't use title.
-      NOTREACHED_NORETURN();
-    case ConversionType::kDDGBannerTypeB:
-      return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_DDG_TITLE;
     case ConversionType::kDDGBannerTypeC:
       return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_DDG_TITLE;
     case ConversionType::kDDGBannerTypeD:
@@ -650,10 +638,6 @@ int BraveSearchConversionPromotionView::GetBannerTypeDescStringResourceId() {
       return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_DESC;
     case ConversionType::kBannerTypeD:
       return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_DESC;
-    case ConversionType::kDDGBannerTypeA:
-      return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_A_DDG_DESC;
-    case ConversionType::kDDGBannerTypeB:
-      return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_DDG_DESC;
     case ConversionType::kDDGBannerTypeC:
       return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_DDG_DESC;
     case ConversionType::kDDGBannerTypeD:
@@ -666,9 +650,7 @@ int BraveSearchConversionPromotionView::GetBannerTypeDescStringResourceId() {
 }
 
 bool BraveSearchConversionPromotionView::UseDDG() const {
-  return (type_ == ConversionType::kDDGBannerTypeA ||
-          type_ == ConversionType::kDDGBannerTypeB ||
-          type_ == ConversionType::kDDGBannerTypeC ||
+  return (type_ == ConversionType::kDDGBannerTypeC ||
           type_ == ConversionType::kDDGBannerTypeD);
 }
 
@@ -691,11 +673,6 @@ std::optional<int> BraveSearchConversionPromotionView::GetBackgroundGraphic()
   if (!UseDDG()) {
     return use_dark ? IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DARK
                     : IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC;
-  }
-
-  if (type_ == ConversionType::kDDGBannerTypeA ||
-      type_ == ConversionType::kDDGBannerTypeB) {
-    return IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG_BING;
   }
 
   return use_dark ? IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG_DARK

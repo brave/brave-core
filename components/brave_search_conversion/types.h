@@ -16,8 +16,6 @@ enum class ConversionType {
   kBannerTypeB,
   kBannerTypeC,
   kBannerTypeD,
-  kDDGBannerTypeA,
-  kDDGBannerTypeB,
   kDDGBannerTypeC,
   kDDGBannerTypeD,
 };

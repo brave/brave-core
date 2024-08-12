@@ -155,7 +155,7 @@ TEST_F(BraveSearchConversionTest, ConversionTypeTest) {
 
   // Set DDG as a default provider and check banner type again.
   ConfigureDDGAsDefaultProvider();
-  EXPECT_EQ(ConversionType::kDDGBannerTypeA,
+  EXPECT_EQ(ConversionType::kDDGBannerTypeC,
             GetConversionType(
                 &pref_service_,
                 search_engines_test_environment_.template_url_service()));
@@ -179,18 +179,6 @@ TEST_F(BraveSearchConversionTest, ConversionTypeTest) {
 
   // Set DDG and check ddg banner.
   ConfigureDDGAsDefaultProvider();
-  EXPECT_EQ(ConversionType::kDDGBannerTypeA,
-            GetConversionType(
-                &pref_service_,
-                search_engines_test_environment_.template_url_service()));
-
-  task_environment_.AdvanceClock(base::Minutes(1));
-  EXPECT_EQ(ConversionType::kDDGBannerTypeB,
-            GetConversionType(
-                &pref_service_,
-                search_engines_test_environment_.template_url_service()));
-
-  task_environment_.AdvanceClock(base::Minutes(1));
   EXPECT_EQ(ConversionType::kDDGBannerTypeC,
             GetConversionType(
                 &pref_service_,
@@ -203,7 +191,7 @@ TEST_F(BraveSearchConversionTest, ConversionTypeTest) {
                 search_engines_test_environment_.template_url_service()));
 
   task_environment_.AdvanceClock(base::Minutes(1));
-  EXPECT_EQ(ConversionType::kDDGBannerTypeA,
+  EXPECT_EQ(ConversionType::kDDGBannerTypeC,
             GetConversionType(
                 &pref_service_,
                 search_engines_test_environment_.template_url_service()));
