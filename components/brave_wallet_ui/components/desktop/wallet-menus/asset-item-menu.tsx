@@ -38,11 +38,13 @@ import {
 
 // Styled Components
 import {
-  StyledWrapper,
   PopupButton,
-  PopupButtonText,
-  ButtonIcon
-} from './wellet-menus.style'
+  MenuItemIcon,
+  MoreVerticalIcon,
+  ButtonMenu,
+  MenuButton,
+  MenuItemRow
+} from './wallet_menus.style'
 
 const coinSupportsSwap = (coin: BraveWallet.CoinType) => {
   return [BraveWallet.CoinType.ETH, BraveWallet.CoinType.SOL].includes(coin)
@@ -148,51 +150,69 @@ export const AssetItemMenu = (props: Props) => {
   }, [updateUserAssetVisible, asset])
 
   return (
-    <StyledWrapper yPosition={42}>
+    <ButtonMenu>
+      <div slot='anchor-content'>
+        <MenuButton
+          kind='plain-faint'
+          padding='0px'
+        >
+          <MoreVerticalIcon />
+        </MenuButton>
+      </div>
+
       {isBuySupported && (
         <PopupButton onClick={onClickBuy}>
-          <ButtonIcon name='coins-alt1' />
-          <PopupButtonText>{getLocale('braveWalletBuy')}</PopupButtonText>
+          <MenuItemRow>
+            <MenuItemIcon name='coins-alt1' />
+            {getLocale('braveWalletBuy')}
+          </MenuItemRow>
         </PopupButton>
       )}
       {!isAssetsBalanceZero && (
         <PopupButton onClick={onClickSend}>
-          <ButtonIcon name='send' />
-          <PopupButtonText>{getLocale('braveWalletSend')}</PopupButtonText>
+          <MenuItemRow>
+            <MenuItemIcon name='send' />
+            {getLocale('braveWalletSend')}
+          </MenuItemRow>
         </PopupButton>
       )}
       {isSwapSupported && !isAssetsBalanceZero && (
         <PopupButton onClick={onClickSwap}>
-          <ButtonIcon name='currency-exchange' />
-          <PopupButtonText>{getLocale('braveWalletSwap')}</PopupButtonText>
+          <MenuItemRow>
+            <MenuItemIcon name='currency-exchange' />
+            {getLocale('braveWalletSwap')}
+          </MenuItemRow>
         </PopupButton>
       )}
       <PopupButton onClick={onClickDeposit}>
-        <ButtonIcon name='money-bag-coins' />
-        <PopupButtonText>
+        <MenuItemRow>
+          <MenuItemIcon name='money-bag-coins' />
           {getLocale('braveWalletAccountsDeposit')}
-        </PopupButtonText>
+        </MenuItemRow>
       </PopupButton>
       {isSellSupported && (
         <PopupButton onClick={onClickSell}>
-          <ButtonIcon name='usd-circle' />
-          <PopupButtonText>{getLocale('braveWalletSell')}</PopupButtonText>
+          <MenuItemRow>
+            <MenuItemIcon name='usd-circle' />
+            {getLocale('braveWalletSell')}
+          </MenuItemRow>
         </PopupButton>
       )}
       {onClickEditToken && (
         <PopupButton onClick={onClickEditToken}>
-          <ButtonIcon name='edit-pencil' />
-          <PopupButtonText>
+          <MenuItemRow>
+            <MenuItemIcon name='edit-pencil' />
             {getLocale('braveWalletAllowSpendEditButton')}
-          </PopupButtonText>
+          </MenuItemRow>
         </PopupButton>
       )}
       <PopupButton onClick={onClickHide}>
-        <ButtonIcon name='eye-off' />
-        <PopupButtonText>
+        <MenuItemRow>
+          <MenuItemIcon name='eye-off' />
           {getLocale('braveWalletConfirmHidingToken')}
-        </PopupButtonText>
+        </MenuItemRow>
       </PopupButton>
+
       {showSellModal && selectedSellAsset && (
         <SellAssetModal
           selectedAsset={selectedSellAsset}
@@ -205,6 +225,6 @@ export const AssetItemMenu = (props: Props) => {
           sellAssetBalance={assetBalance}
         />
       )}
-    </StyledWrapper>
+    </ButtonMenu>
   )
 }

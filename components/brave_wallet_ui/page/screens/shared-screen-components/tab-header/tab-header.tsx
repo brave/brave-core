@@ -5,17 +5,8 @@
 
 import * as React from 'react'
 
-// Hooks
-import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
-
 // Styled Components
-import {
-  HeaderWrapper,
-  BraveLogo,
-  SettingsButton,
-  SettingsIcon,
-  SettingsWrapper
-} from './tab-header.style'
+import { HeaderWrapper, BraveLogo } from './tab-header.style'
 import { Row } from '../../send/shared.styles'
 
 // Components
@@ -30,19 +21,6 @@ export interface Props {
 export const TabHeader = (props: Props) => {
   const { hideHeaderMenu } = props
 
-  // State
-  const [showSettings, setShowSettings] = React.useState<boolean>(false)
-
-  // Refs
-  const settingsModalRef = React.useRef<HTMLDivElement>(null)
-
-  // Hooks
-  useOnClickOutside(
-    settingsModalRef,
-    () => setShowSettings(false),
-    showSettings
-  )
-
   // render
   return (
     <HeaderWrapper>
@@ -52,19 +30,7 @@ export const TabHeader = (props: Props) => {
       >
         <BraveLogo />
       </Row>
-      {!hideHeaderMenu && (
-        <SettingsWrapper ref={settingsModalRef}>
-          <SettingsButton onClick={() => setShowSettings((prev) => !prev)}>
-            <SettingsIcon name='more-vertical' />
-          </SettingsButton>
-          {showSettings && (
-            <WalletSettingsMenu
-              onClosePopup={() => setShowSettings(false)}
-              yPosition={50}
-            />
-          )}
-        </SettingsWrapper>
-      )}
+      {!hideHeaderMenu && <WalletSettingsMenu anchorButtonKind='filled' />}
     </HeaderWrapper>
   )
 }

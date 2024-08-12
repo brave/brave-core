@@ -49,9 +49,6 @@ import {
 } from '../../../common/slices/entities/token-balance.entity'
 import { querySubscriptionOptions60s } from '../../../common/slices/constants'
 
-// Hooks
-import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
-
 // Components
 import {
   CreateAccountIcon //
@@ -71,7 +68,6 @@ import {
 import {
   MenuButton,
   ButtonIcon,
-  MenuWrapper,
   HorizontalDivider
 } from './shared-card-headers.style'
 import { Row, Column, HorizontalSpace } from '../../shared/style'
@@ -82,9 +78,11 @@ interface Props {
   tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
 }
 
-export const AccountDetailsHeader = (props: Props) => {
-  const { account, onClickMenuOption, tokenBalancesRegistry } = props
-
+export const AccountDetailsHeader = ({
+  account,
+  onClickMenuOption,
+  tokenBalancesRegistry
+}: Props) => {
   // routing
   const history = useHistory()
 
@@ -98,20 +96,6 @@ export const AccountDetailsHeader = (props: Props) => {
     })
   })
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
-
-  // state
-  const [showAccountDetailsMenu, setShowAccountDetailsMenu] =
-    React.useState<boolean>(false)
-
-  // refs
-  const accountDetailsMenuRef = React.useRef<HTMLDivElement>(null)
-
-  // hooks
-  useOnClickOutside(
-    accountDetailsMenuRef,
-    () => setShowAccountDetailsMenu(false),
-    showAccountDetailsMenu
-  )
 
   // Memos
   const accountsFungibleTokens = React.useMemo(() => {
@@ -208,10 +192,12 @@ export const AccountDetailsHeader = (props: Props) => {
     return options
   }, [account])
 
+  // methods
   const goBack = React.useCallback(() => {
     history.push(WalletRoutes.Accounts)
   }, [history])
 
+  // render
   return (
     <Row
       padding={isPanel ? '16px' : '24px 0px'}
@@ -280,19 +266,11 @@ export const AccountDetailsHeader = (props: Props) => {
             <HorizontalSpace space='16px' />
           </>
         )}
-        <MenuWrapper ref={accountDetailsMenuRef}>
-          <MenuButton
-            onClick={() => setShowAccountDetailsMenu((prev) => !prev)}
-          >
-            <ButtonIcon name='more-vertical' />
-          </MenuButton>
-          {showAccountDetailsMenu && (
-            <AccountDetailsMenu
-              options={menuOptions}
-              onClickMenuOption={onClickMenuOption}
-            />
-          )}
-        </MenuWrapper>
+
+        <AccountDetailsMenu
+          options={menuOptions}
+          onClickMenuOption={onClickMenuOption}
+        />
       </Row>
     </Row>
   )

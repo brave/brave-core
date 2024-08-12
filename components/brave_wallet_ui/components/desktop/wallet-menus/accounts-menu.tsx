@@ -15,33 +15,54 @@ import { getLocale } from '../../../../common/locale'
 
 // Styled Components
 import {
-  StyledWrapper,
   PopupButton,
-  PopupButtonText,
-  ButtonIcon
-} from './wellet-menus.style'
+  MenuItemIcon,
+  MenuItemRow,
+  ButtonMenu,
+  INTERACTIVE_ICON_COLOR,
+  AddIcon,
+  MenuButton
+} from './wallet_menus.style'
 
 export const AccountsMenu = () => {
   // routing
   const history = useHistory()
 
+  // computed
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false
+
+  // render
   return (
-    <StyledWrapper yPosition={42}>
-      {CreateAccountOptions.filter(option => (
-        // Filter out hardware wallet item on Android.
-        !isAndroid || option.name !== 'braveWalletConnectHardwareWallet'
-      )).map((option) => (
+    <ButtonMenu>
+      <div slot='anchor-content'>
+        <MenuButton
+          kind='outline'
+          padding='1px 0px'
+          size='small'
+        >
+          <AddIcon
+            size='18px'
+            color={INTERACTIVE_ICON_COLOR}
+          />
+        </MenuButton>
+      </div>
+      {CreateAccountOptions.filter(
+        (option) =>
+          // Filter out hardware wallet item on Android.
+          !isAndroid || option.name !== 'braveWalletConnectHardwareWallet'
+      ).map((option) => (
         <PopupButton
           key={option.name}
           onClick={() => history.push(option.route)}
           minWidth={240}
         >
-          <ButtonIcon name={option.icon} />
-          <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
+          <MenuItemRow>
+            <MenuItemIcon name={option.icon} />
+            {getLocale(option.name)}
+          </MenuItemRow>
         </PopupButton>
       ))}
-    </StyledWrapper>
+    </ButtonMenu>
   )
 }
 

@@ -27,6 +27,7 @@ export const LeftRightContainer = styled(Row)`
   min-width: 35%;
 `
 
+// TODO: delete
 export const ClickAwayArea = styled.div`
   left: 0;
   right: 0;

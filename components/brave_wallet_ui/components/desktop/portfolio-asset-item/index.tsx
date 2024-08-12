@@ -64,9 +64,6 @@ import {
   Spacer,
   NetworkDescriptionText,
   Button,
-  AssetMenuWrapper,
-  AssetMenuButton,
-  AssetMenuButtonIcon,
   Wrapper,
   InfoBar,
   LoadingRing,
@@ -112,18 +109,15 @@ export const PortfolioAssetItem = ({
     )
 
   // state
-  const [showAssetMenu, setShowAssetMenu] = React.useState<boolean>(false)
   const [showBalanceDetailsModal, setShowBalanceDetailsModal] =
     React.useState<boolean>(false)
   const [showEditTokenModal, setShowEditTokenModal] =
     React.useState<boolean>(false)
 
   // refs
-  const assetMenuRef = React.useRef<HTMLDivElement>(null)
   const balanceDetailsRef = React.useRef<HTMLDivElement>(null)
 
   // hooks
-  useOnClickOutside(assetMenuRef, () => setShowAssetMenu(false), showAssetMenu)
   useOnClickOutside(
     balanceDetailsRef,
     () => setShowBalanceDetailsModal(false),
@@ -307,31 +301,21 @@ export const PortfolioAssetItem = ({
                 </WithHideBalancePlaceholder>
               </BalanceColumn>
             </Button>
-            <AssetMenuWrapper ref={assetMenuRef}>
-              <AssetMenuButton
-                onClick={() => setShowAssetMenu((prev) => !prev)}
-              >
-                <AssetMenuButtonIcon />
-              </AssetMenuButton>
-              {showAssetMenu && (
-                <>
-                  {isRewardsToken ? (
-                    <RewardsMenu />
-                  ) : (
-                    <AssetItemMenu
-                      assetBalance={assetBalance}
-                      asset={token}
-                      account={account}
-                      onClickEditToken={
-                        token.contractAddress !== ''
-                          ? () => setShowEditTokenModal(true)
-                          : undefined
-                      }
-                    />
-                  )}
-                </>
-              )}
-            </AssetMenuWrapper>
+
+            {isRewardsToken ? (
+              <RewardsMenu />
+            ) : (
+              <AssetItemMenu
+                assetBalance={assetBalance}
+                asset={token}
+                account={account}
+                onClickEditToken={
+                  token.contractAddress !== ''
+                    ? () => setShowEditTokenModal(true)
+                    : undefined
+                }
+              />
+            )}
           </HoverArea>
         )}
         {showBalanceInfo && (

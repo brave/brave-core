@@ -18,38 +18,19 @@ import { DefaultPanelHeader } from './default-panel-header'
 import { getLocale } from '../../../../common/locale'
 
 // Hooks
-import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 
 import { AccountsMenu } from '../wallet-menus/accounts-menu'
 
 // Styled Components
-import {
-  HeaderTitle,
-  MenuButton,
-  ButtonIcon,
-  MenuWrapper
-} from './shared-card-headers.style'
+import { HeaderTitle } from './shared-card-headers.style'
 import { Row } from '../../shared/style'
 
 export const AccountsHeader = () => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
-  // State
-  const [showPortfolioOverviewMenu, setShowPortfolioOverviewMenu] =
-    React.useState<boolean>(false)
-
-  // Refs
-  const portfolioOverviewMenuRef = React.useRef<HTMLDivElement>(null)
-
-  // Hooks
-  useOnClickOutside(
-    portfolioOverviewMenuRef,
-    () => setShowPortfolioOverviewMenu(false),
-    showPortfolioOverviewMenu
-  )
-
+  // render
   return isPanel ? (
     <DefaultPanelHeader
       title={getLocale('braveWalletTopNavAccounts')}
@@ -61,14 +42,7 @@ export const AccountsHeader = () => {
       justifyContent='space-between'
     >
       <HeaderTitle>{getLocale('braveWalletTopNavAccounts')}</HeaderTitle>
-      <MenuWrapper ref={portfolioOverviewMenuRef}>
-        <MenuButton
-          onClick={() => setShowPortfolioOverviewMenu((prev) => !prev)}
-        >
-          <ButtonIcon name='plus-add' />
-        </MenuButton>
-        {showPortfolioOverviewMenu && <AccountsMenu />}
-      </MenuWrapper>
+      <AccountsMenu />
     </Row>
   )
 }

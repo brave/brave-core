@@ -16,23 +16,32 @@ import { getLocale } from '../../../../common/locale'
 
 // Styled Components
 import {
-  StyledWrapper,
   PopupButton,
-  PopupButtonText,
-  ButtonIcon
-} from './wellet-menus.style'
+  MenuItemIcon,
+  ButtonMenu,
+  MenuItemRow,
+  INTERACTIVE_ICON_COLOR
+} from './wallet_menus.style'
 import { VerticalDivider, VerticalSpace } from '../../shared/style'
+import { MenuButton } from '../card-headers/shared-card-headers.style'
 
 interface Props {
   options: AccountButtonOptionsObjectType[]
   onClickMenuOption: (option: AccountModalTypes) => void
 }
 
-export const AccountDetailsMenu = (props: Props) => {
-  const { options, onClickMenuOption } = props
-
+export const AccountDetailsMenu = ({ options, onClickMenuOption }: Props) => {
+  // render
   return (
-    <StyledWrapper yPosition={42}>
+    <ButtonMenu>
+      <div slot='anchor-content'>
+        <MenuButton>
+          <MenuItemIcon
+            name='more-vertical'
+            color={INTERACTIVE_ICON_COLOR}
+          />
+        </MenuButton>
+      </div>
       {options.map((option) => (
         <React.Fragment key={option.id}>
           {option.id === 'privateKey' && (
@@ -42,11 +51,13 @@ export const AccountDetailsMenu = (props: Props) => {
             </>
           )}
           <PopupButton onClick={() => onClickMenuOption(option.id)}>
-            <ButtonIcon name={option.icon} />
-            <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
+            <MenuItemRow>
+              <MenuItemIcon name={option.icon} />
+              {getLocale(option.name)}
+            </MenuItemRow>
           </PopupButton>
         </React.Fragment>
       ))}
-    </StyledWrapper>
+    </ButtonMenu>
   )
 }

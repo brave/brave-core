@@ -13,7 +13,7 @@ import {
   PopupButton,
   PopupButtonText,
   ButtonIcon
-} from './wellet-menus.style'
+} from './wallet_menus.style'
 
 interface Props {
   onClickDeposit: () => void

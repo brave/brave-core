@@ -20,7 +20,7 @@ import {
   PopupButton,
   PopupButtonText,
   ButtonIcon
-} from './wellet-menus.style'
+} from './wallet_menus.style'
 
 interface Props {
   onClick: (option: NavOption) => void
