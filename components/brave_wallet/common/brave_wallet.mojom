@@ -375,10 +375,8 @@ struct Dapp {
 };
 
 enum RoutePriority {
-  kRecommended,
   kFastest,
-  kCheapest,
-  kSafest
+  kCheapest
 };
 
 enum SwapProvider {
@@ -603,8 +601,7 @@ struct LiFiStatus {
 enum LiFiStepType {
   kSwap,
   kCross,
-  kNative,
-  kProtocol
+  kLiFi
 };
 
 struct LiFiToolDetails {
@@ -667,6 +664,7 @@ struct LiFiStep {
 
 struct LiFiRoute {
   string id;
+  string unique_id;
   BlockchainToken from_token;
   string from_amount;
   string from_address;

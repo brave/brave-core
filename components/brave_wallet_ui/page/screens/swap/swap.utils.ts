@@ -3,15 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import { BraveWallet, SpotPriceRegistry } from '../../../constants/types'
-import {
-  LiquiditySource,
-  Providers,
-  QuoteOption,
-  RouteTagsType
-} from './constants/types'
+import { LiquiditySource, QuoteOption, RouteTagsType } from './constants/types'
 
 // Constants
-import LPMetadata from './constants/LpMetadata'
+import { LPMetadata } from './constants/metadata'
 
 // Utils
 import Amount from '../../../utils/amount'
@@ -102,11 +97,10 @@ export function getZeroExQuoteOptions({
               )
             )
             .formatAsFiat(defaultFiatCurrency),
-      provider: '0x',
+      provider: BraveWallet.SwapProvider.kZeroEx,
       // There is only 1 quote returned for Ox
       // making it the Fastest and Cheapest.
-      tags: ['FASTEST', 'CHEAPEST'],
-      id: getUniqueRouteId('0x')
+      tags: ['FASTEST', 'CHEAPEST']
     }
   ]
 }
@@ -203,11 +197,10 @@ export function getJupiterQuoteOptions({
               )
             )
             .formatAsFiat(defaultFiatCurrency),
-      provider: 'Jupiter',
+      provider: BraveWallet.SwapProvider.kJupiter,
       // There is only 1 quote returned for Jupiter
       // making it the Fastest and Cheapest.
-      tags: ['FASTEST', 'CHEAPEST'],
-      id: getUniqueRouteId('Jupiter')
+      tags: ['FASTEST', 'CHEAPEST']
     }
   ]
 }
@@ -289,13 +282,11 @@ export function getLiFiQuoteOptions({
         .map((step) => Number(step.estimate.executionDuration))
         .reduce((a, b) => a + b, 0)
         .toString(),
-      provider: 'Li.Fi',
-      // We need to filter out RECOMMENDED since it is now
-      // being depreciated by Li.Fi.
-      tags: route.tags.filter(
-        (tag) => tag !== 'RECOMMENDED'
+      provider: BraveWallet.SwapProvider.kLiFi,
+      tags: route.tags.filter((tag) =>
+        ['CHEAPEST', 'FASTEST'].includes(tag)
       ) as RouteTagsType[],
-      id: getUniqueRouteId('Li.Fi', route.steps)
+      id: route.uniqueId
     }
   })
 }
@@ -309,14 +300,4 @@ export const getLPIcon = (source: Pick<LiquiditySource, 'name' | 'logo'>) => {
     return `chrome://image?${source.logo}`
   }
   return ''
-}
-
-export const getUniqueRouteId = (
-  provider: Providers,
-  sources?: Array<Pick<LiquiditySource, 'tool'>>
-) => {
-  if (provider === '0x' || provider === 'Jupiter') {
-    return provider
-  }
-  return sources?.map((source) => source.tool).join('-') ?? ''
 }

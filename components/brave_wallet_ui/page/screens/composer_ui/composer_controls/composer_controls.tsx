@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // Constants
-import LPMetadata from '../../swap/constants/LpMetadata'
+import { LPMetadata } from '../../swap/constants/metadata'
 
 // Types
 import {

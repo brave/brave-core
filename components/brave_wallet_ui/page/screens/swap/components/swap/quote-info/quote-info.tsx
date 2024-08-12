@@ -95,7 +95,7 @@ interface Props {
   isBridge: boolean
   slippageTolerance: string
   quoteOptions: QuoteOption[]
-  selectedQuoteOptionId: string
+  selectedQuoteOptionId: string | undefined
   onSelectQuoteOption: (id: string) => void
   onChangeRecipient: (address: string) => void
   onChangeSlippageTolerance: (slippage: string) => void
@@ -187,9 +187,11 @@ export const QuoteInfo = (props: Props) => {
   )
 
   // Memos & Computed
-  const selectedQuoteOption = quoteOptions.find(
-    (option) => option.id === selectedQuoteOptionId
-  )
+  const selectedQuoteOption = selectedQuoteOptionId
+    ? quoteOptions.find((option) => option.id === selectedQuoteOptionId) ||
+      quoteOptions[0]
+    : quoteOptions[0]
+
   const toTokenPriceAmount =
     spotPriceRegistry &&
     toToken &&

@@ -75,7 +75,7 @@ mojom::SwapQuoteParamsPtr GetCannedSwapQuoteParams(
   params->to_token = to_token;
 
   params->slippage_percentage = "3";
-  params->route_priority = mojom::RoutePriority::kRecommended;
+  params->route_priority = mojom::RoutePriority::kFastest;
   params->provider = provider;
   return params;
 }
@@ -171,7 +171,7 @@ mojom::LiFiQuotePtr GetCannedLiFiQuote() {
 
   quote->routes[0]->steps.push_back(mojom::LiFiStep::New());
   quote->routes[0]->steps[0]->id = "57d247fc-d80a-4f4a-9596-72db3061aa72";
-  quote->routes[0]->steps[0]->type = mojom::LiFiStepType::kNative;
+  quote->routes[0]->steps[0]->type = mojom::LiFiStepType::kLiFi;
   quote->routes[0]->steps[0]->tool = "allbridge";
   auto tool_details = mojom::LiFiToolDetails::New();
   tool_details->key = "allbridge";
@@ -288,7 +288,8 @@ mojom::LiFiQuotePtr GetCannedLiFiQuote() {
       ->included_steps->at(0)
       ->estimate->gas_costs.push_back(gas_cost.Clone());
 
-  quote->routes[0]->tags = {"RECOMMENDED", "CHEAPEST", "FASTEST"};
+  quote->routes[0]->tags = {"CHEAPEST", "FASTEST"};
+  quote->routes[0]->unique_id = "allbridge";
 
   return quote;
 }
@@ -1382,7 +1383,6 @@ TEST_F(SwapServiceUnitTest, GetLiFiQuote) {
             }
           ],
           "tags": [
-            "RECOMMENDED",
             "CHEAPEST",
             "FASTEST"
           ]

@@ -11,7 +11,7 @@ import {
 import { UISelectors } from '../../../../../../common/selectors'
 
 // Constants
-import LPMetadata from '../../../constants/LpMetadata'
+import { SwapProviderMetadata } from '../../../constants/metadata'
 
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
@@ -108,9 +108,7 @@ export const SwapProviders = (props: Props) => {
                 padding='16px 0px'
               >
                 <Row width='unset'>
-                  <ProviderIcon
-                    src={LPMetadata[SwapProviderNameMapping[provider]]}
-                  />
+                  <ProviderIcon src={SwapProviderMetadata[provider]} />
                   <Text
                     textSize='14px'
                     isBold={true}

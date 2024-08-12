@@ -31,8 +31,8 @@ import {
 
 interface Props {
   quoteOptions: QuoteOption[]
-  selectedQuoteOptionId: string
-  onSelectQuoteOption: (id: string) => void
+  selectedQuoteOptionId: string | undefined
+  onSelectQuoteOption: (id: string | undefined) => void
 }
 
 export const Routes = (props: Props) => {
@@ -124,12 +124,16 @@ export const Routes = (props: Props) => {
         gap='8px'
         padding='2px 16px'
       >
-        {sortedQuoteOptions.map((option) => (
+        {sortedQuoteOptions.map((option, idx) => (
           <RouteOption
-            isSelected={option.id === userSelectedQuoteOptionId}
-            onClickOption={() => setUserSelectedQuoteOptionId(option.id)}
+            isSelected={
+              userSelectedQuoteOptionId === undefined
+                ? idx === 0
+                : option.id === userSelectedQuoteOptionId
+            }
+            onClickOption={() => setUserSelectedQuoteOptionId(option?.id)}
             option={option}
-            key={option.id}
+            key={idx}
           />
         ))}
       </ScrollableColumn>
