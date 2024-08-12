@@ -91,6 +91,10 @@ package = "anyhow"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/base64-0.13.1"
 package = "base64"
 
+[patch.crates-io.bitflags_v2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/bitflags-2.6.0"
+package = "bitflags"
+
 [patch.crates-io.cfg-if_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/cfg-if-1.0.0"
 package = "cfg-if"
@@ -226,3 +230,7 @@ package = "zcash_encoding"
 [patch.crates-io.zcash_primitives_v0_15]
 path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/zcash_primitives"
 package = "zcash_primitives"
+
+[patch.crates-io.zcash_client_backend_v0_12]
+path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/zcash_client_backend"
+package = "zcash_client_backend"
