@@ -43,8 +43,7 @@ export const primaryButton = `
     rgba(255, 255, 255, var(--self-lighten-opacity)) 0,
     rgba(255, 255, 255, var(--self-lighten-opacity)) 100%);
 
-
-  color: var(--leo-color-white);
+  color: ${color.schemes.onPrimary};
   background: var(--self-lighten-gradient), var(--self-background-color);
 
   &:hover {
@@ -58,6 +57,7 @@ export const primaryButton = `
   &[disabled]:not(.pressed) {
     --self-background-color: var(--leo-color-neutral-30);
     --self-lighten-opacity: 0.5;
+    color: ${color.white};
 
     @media (prefers-color-scheme: dark) {
       --self-background-color: var(--leo-color-neutral-20);
