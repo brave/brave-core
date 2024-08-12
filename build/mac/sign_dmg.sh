@@ -13,7 +13,7 @@ MAC_SIGNING_KEYCHAIN="${3}"
 MAC_SIGNING_IDENTIFIER="${4}"
 REQUIREMENTS="${5}"
 
-app_name="$(basename $SOURCE)"
+app_name=$(basename "$SOURCE")
 
 set -v
 
@@ -38,7 +38,7 @@ cp "$SOURCE" "$DEST"
 
 set -v
 
-/usr/bin/codesign --force --options runtime --timestamp --sign "$MAC_SIGNING_IDENTIFIER" --keychain "$MAC_SIGNING_KEYCHAIN" "$DEST" "$REQUIREMENTS"
+codesign --force --options runtime --timestamp --sign "$MAC_SIGNING_IDENTIFIER" --keychain "$MAC_SIGNING_KEYCHAIN" "$DEST" "$REQUIREMENTS"
 
-/usr/bin/codesign -vvvvd "$DEST"
-/usr/bin/codesign --verify --strict --deep -vvvv "$DEST"
+codesign -vvvvd "$DEST"
+codesign --verify --strict --deep -vvvv "$DEST"

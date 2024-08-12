@@ -515,7 +515,13 @@ action("create_dist_zips") {
   } else {  # !is_win
     script = "//brave/script/create-dist.py"
 
-    inputs = get_target_outputs(":brave_license_dist_resources")
+    inputs = []
+    deps = [ "app/$current_os:dist_resources" ]
+
+    if (!is_mac) {
+      inputs += get_target_outputs(":brave_license_dist_resources")
+      deps += [ ":brave_license_dist_resources" ]
+    }
 
     if (!is_mac && !is_android && !is_ios) {
       inputs += get_target_outputs(":brave_dist_resources")
@@ -534,13 +540,11 @@ action("create_dist_zips") {
 
     dir_inputs = []
     if (is_mac) {
-      dir_inputs += [ "$brave_exe" ]
+      dir_inputs += [ brave_exe ]
+      rebase_base_dir = rebase_path(root_out_dir)
+    } else {
+      rebase_base_dir = rebase_path(brave_dist_dir, root_out_dir)
     }
-
-    deps = [
-      ":brave_license_dist_resources",
-      "app/$current_os:dist_resources",
-    ]
 
     if (!is_mac && !is_android && !is_ios) {
       deps += [
@@ -554,11 +558,6 @@ action("create_dist_zips") {
     }
 
     rebase_output = rebase_path(output)
-    if (is_mac) {
-      rebase_base_dir = rebase_path(root_out_dir)
-    } else {
-      rebase_base_dir = rebase_path(brave_dist_dir, root_out_dir)
-    }
     args = [
       "--base-dir=$rebase_base_dir",
       "--inputs=$file_inputs",
