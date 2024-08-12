@@ -127,9 +127,9 @@ class BraveVpnService :
   void GetPurchasedState(GetPurchasedStateCallback callback) override;
   void LoadPurchasedState(const std::string& domain) override;
 
-  void GetAllRegions(GetAllRegionsCallback callback) override;
+  void GetAllRegions(const std::string& region_precision,
+                     GetAllRegionsCallback callback) override;
 
-  void GetServerRegionsWithCities(ResponseCallback callback);
   void GetTimezonesForRegions(ResponseCallback callback);
   void GetHostnamesForRegion(ResponseCallback callback,
                              const std::string& region);

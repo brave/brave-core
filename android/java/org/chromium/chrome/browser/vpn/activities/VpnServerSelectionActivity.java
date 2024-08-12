@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.materialswitch.MaterialSwitch;
 
+import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.brave_vpn.mojom.ServiceHandler;
 import org.chromium.chrome.R;
@@ -132,6 +133,7 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
         initVpnService();
         showProgress();
         mServiceHandler.getAllRegions(
+                BraveVpnConstants.REGION_PRECISION_CITY_BY_COUNTRY,
                 regions -> {
                     if (regions.length > 0) {
                         mBraveVpnServerSelectionAdapter =

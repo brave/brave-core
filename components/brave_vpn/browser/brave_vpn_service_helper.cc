@@ -50,11 +50,13 @@ base::Value::Dict GetValueFromRegionWithoutCity(
 
 base::Value::Dict GetValueFromRegion(const mojom::RegionPtr& region) {
   base::Value::Dict region_dict = GetValueFromRegionWithoutCity(region);
-  base::Value::List cities;
-  for (const auto& city : region->cities) {
-    cities.Append(GetValueFromRegionWithoutCity(city));
+  if (!region->cities.empty()) {
+    base::Value::List cities;
+    for (const auto& city : region->cities) {
+      cities.Append(GetValueFromRegionWithoutCity(city));
+    }
+    region_dict.Set(kRegionCitiesKey, std::move(cities));
   }
-  region_dict.Set(kRegionCitiesKey, std::move(cities));
   return region_dict;
 }
 
@@ -108,9 +110,11 @@ mojom::RegionPtr GetRegionFromValueWithoutCity(const base::Value::Dict& value) {
 
 mojom::RegionPtr GetRegionFromValue(const base::Value::Dict& value) {
   mojom::RegionPtr region = GetRegionFromValueWithoutCity(value);
-  const auto* cities = value.FindList(kRegionCitiesKey);
-  for (const auto& city : *cities) {
-    region->cities.push_back(GetRegionFromValueWithoutCity(city.GetDict()));
+  if (value.FindList(kRegionCitiesKey)) {
+    const auto* cities = value.FindList(kRegionCitiesKey);
+    for (const auto& city : *cities) {
+      region->cities.push_back(GetRegionFromValueWithoutCity(city.GetDict()));
+    }
   }
 
   return region;

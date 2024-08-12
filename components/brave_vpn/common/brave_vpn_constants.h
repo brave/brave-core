@@ -41,7 +41,7 @@ inline constexpr char kSupportTicketTimezoneKey[] = "timezone";
 inline constexpr char kVpnHost[] = "connect-api.guardianapp.com";
 inline constexpr char kAllServerRegions[] = "api/v1/servers/all-server-regions";
 inline constexpr char kServerRegionsWithCities[] =
-    "api/v1.3/servers/all-server-regions/city-by-country";
+    "api/v1.3/servers/all-server-regions/";
 inline constexpr char kTimezonesForRegions[] =
     "api/v1.1/servers/timezones-for-regions";
 inline constexpr char kHostnameForRegion[] =

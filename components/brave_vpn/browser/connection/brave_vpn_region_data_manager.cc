@@ -190,16 +190,13 @@ void BraveVPNRegionDataManager::FetchRegionDataIfNeeded() {
 }
 
 void BraveVPNRegionDataManager::FetchRegions() {
-  LOG(ERROR) << "brave_vpn : " << "FetchRegions 1";
-  if (!url_loader_factory_) {
-    LOG(ERROR) << "brave_vpn : " << "FetchRegions 1.5";
-  }
   api_request_ = std::make_unique<BraveVpnAPIRequest>(url_loader_factory_);
   VLOG(2) << __func__ << " : Start fetching region data";
-  LOG(ERROR) << "brave_vpn : " << "FetchRegions 2";
   // Unretained is safe here becasue this class owns |api_request_|.
-  api_request_->GetServerRegionsWithCities(base::BindOnce(
-      &BraveVPNRegionDataManager::OnFetchRegionList, base::Unretained(this)));
+  api_request_->GetServerRegions(
+      base::BindOnce(&BraveVPNRegionDataManager::OnFetchRegionList,
+                     base::Unretained(this)),
+      mojom::kRegionPrecisionCityByCountry);
 }
 
 void BraveVPNRegionDataManager::OnFetchRegionList(
@@ -210,17 +207,6 @@ void BraveVPNRegionDataManager::OnFetchRegionList(
   }
   api_request_.reset();
   std::optional<base::Value> value = base::JSONReader::Read(region_list);
-
-  LOG(ERROR) << "brave_vpn : " << "OnFetchRegionList 1";
-#if BUILDFLAG(IS_ANDROID)
-  if (value && value->is_list()) {
-    auto new_regions = ParseRegionList(value->GetList());
-    LOG(ERROR) << "brave_vpn : " << "OnFetchRegionList 2";
-    for (const auto& region : new_regions) {
-      LOG(ERROR) << "brave_vpn : " << region->name;
-    }
-  }
-#else
   if (value && value->is_list() &&
       ParseAndCacheRegionList(value->GetList(), true)) {
     VLOG(2) << "Got valid region list";
@@ -236,7 +222,6 @@ void BraveVPNRegionDataManager::OnFetchRegionList(
 
   VLOG(2) << "Got invalid region list";
   NotifyRegionDataReady();
-#endif
 }
 
 bool BraveVPNRegionDataManager::ParseAndCacheRegionList(
