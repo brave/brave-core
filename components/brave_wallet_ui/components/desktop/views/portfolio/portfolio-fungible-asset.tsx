@@ -486,7 +486,7 @@ export const PortfolioFungibleAsset = () => {
           src={`chrome-untrusted://line-chart-display${
             isLoadingGraphData ? '' : `?${encodedPriceData}`
           }`}
-          sandbox='allow-scripts allow-same-origin'
+          sandbox='allow-scripts'
         />
         <Row padding='0px 20px'>
           <ButtonRow>

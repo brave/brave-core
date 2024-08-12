@@ -38,6 +38,7 @@ UntrustedLineChartUI::UntrustedLineChartUI(content::WebUI* web_ui)
       kLineChartDisplayGenerated, kLineChartDisplayGeneratedSize));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPageURL));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPanelURL));
+  web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   webui::SetupWebUIDataSource(untrusted_source,
                               base::make_span(kLineChartDisplayGenerated,
                                               kLineChartDisplayGeneratedSize),
