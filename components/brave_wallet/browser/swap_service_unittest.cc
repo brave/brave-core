@@ -993,23 +993,20 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionURL) {
 }
 
 TEST_F(SwapServiceUnitTest, IsSwapSupported) {
-  const std::vector<std::string> supported_chain_ids({
-      // ZeroEx
-      mojom::kMainnetChainId, mojom::kSepoliaChainId,
-      mojom::kPolygonMainnetChainId, mojom::kBnbSmartChainMainnetChainId,
-      mojom::kAvalancheMainnetChainId, mojom::kFantomMainnetChainId,
-      mojom::kCeloMainnetChainId, mojom::kOptimismMainnetChainId,
-      mojom::kArbitrumMainnetChainId, mojom::kBaseMainnetChainId,
+  const std::vector<std::string> supported_chain_ids(
+      {// ZeroEx
+       mojom::kMainnetChainId, mojom::kSepoliaChainId,
+       mojom::kPolygonMainnetChainId, mojom::kBnbSmartChainMainnetChainId,
+       mojom::kAvalancheMainnetChainId, mojom::kFantomMainnetChainId,
+       mojom::kCeloMainnetChainId, mojom::kOptimismMainnetChainId,
+       mojom::kArbitrumMainnetChainId, mojom::kBaseMainnetChainId,
 
-      // Jupiter
-      mojom::kSolanaMainnet,
+       // Jupiter
+       mojom::kSolanaMainnet,
 
-      // LiFi (in addition to ZeroEx)
-      //
-      // TODO(onyb): Uncomment once LiFi is supported.
-      // mojom::kPolygonZKEVMChainId, mojom::kGnosisChainId,
-      // mojom::kZkSyncEraChainId, mojom::kAuroraMainnetChainId
-  });
+       // LiFi (in addition to ZeroEx)
+       mojom::kPolygonZKEVMChainId, mojom::kGnosisChainId,
+       mojom::kZkSyncEraChainId, mojom::kAuroraMainnetChainId});
 
   for (auto& chain_id : supported_chain_ids) {
     SCOPED_TRACE(testing::Message() << "chain_id: " << chain_id);

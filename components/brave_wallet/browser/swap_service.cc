@@ -71,6 +71,7 @@ bool IsNetworkSupportedByJupiter(const std::string& chain_id) {
   return chain_id == mojom::kSolanaMainnet;
 }
 
+// Extracted from https://li.quest/v1/chains
 bool IsNetworkSupportedByLiFi(const std::string& chain_id) {
   return (chain_id == mojom::kMainnetChainId ||
           chain_id == mojom::kOptimismMainnetChainId ||
@@ -323,10 +324,8 @@ GURL SwapService::GetLiFiStatusURL(const std::string& tx_hash) {
 void SwapService::IsSwapSupported(const std::string& chain_id,
                                   IsSwapSupportedCallback callback) {
   std::move(callback).Run(IsNetworkSupportedByZeroEx(chain_id) ||
-                          IsNetworkSupportedByJupiter(chain_id)
-                          // TODO(onyb): Enable LiFi support when it's ready.
-                          // || IsNetworkSupportedByLiFi(chain_id)
-  );
+                          IsNetworkSupportedByJupiter(chain_id) ||
+                          IsNetworkSupportedByLiFi(chain_id));
 }
 
 void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
