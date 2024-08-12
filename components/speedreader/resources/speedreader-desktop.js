@@ -47,6 +47,15 @@ class speedreaderUtils {
         link.addEventListener('click', (e) => {
             window.speedreader.showOriginalPage()
         })
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' &&
+                !event.altKey && !event.shiftKey &&
+                !event.metaKey && !event.ctrlKey) {
+                window.speedreader.showOriginalPage()
+                event.preventDefault()
+                event.stopPropagation()
+            }
+        })
     }
 
     static calculateReadtime = () => {
