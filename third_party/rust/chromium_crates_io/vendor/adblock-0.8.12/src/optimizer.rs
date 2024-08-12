@@ -1,6 +1,6 @@
 use crate::filters::network::{FilterPart, NetworkFilter, NetworkFilterMask};
 use itertools::*;
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 
 trait Optimization {
     fn fusion(&self, filters: &[NetworkFilter]) -> NetworkFilter;
@@ -12,9 +12,11 @@ trait Optimization {
 pub fn optimize(filters: Vec<NetworkFilter>) -> Vec<NetworkFilter> {
     let mut optimized: Vec<NetworkFilter> = Vec::new();
 
-    // let union_domain_group = UnionDomainGroup {};
-    // let (mut fused, unfused) = apply_optimisation(&union_domain_group, filters);
-    // optimized.append(&mut fused);
+    /*
+    let union_domain_group = UnionDomainGroup {};
+    let (mut fused, unfused) = apply_optimisation(&union_domain_group, filters);
+    optimized.append(&mut fused);
+    */
 
     let simple_pattern_group = SimplePatternGroup {};
     let (mut fused, mut unfused) = apply_optimisation(&simple_pattern_group, filters);
@@ -133,6 +135,7 @@ impl Optimization for SimplePatternGroup {
     }
 }
 
+/*
 struct UnionDomainGroup {}
 
 impl Optimization for UnionDomainGroup {
@@ -196,6 +199,7 @@ impl Optimization for UnionDomainGroup {
         !filter.is_csp() && (filter.opt_domains.is_some() || filter.opt_not_domains.is_some())
     }
 }
+*/
 
 #[cfg(test)]
 mod optimization_tests_pattern_group {
@@ -376,6 +380,7 @@ mod optimization_tests_pattern_group {
     }
 }
 
+/*
 #[cfg(test)]
 mod optimization_tests_union_domain {
     use super::*;
@@ -519,3 +524,4 @@ mod optimization_tests_union_domain {
         );
     }
 }
+*/
