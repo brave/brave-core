@@ -112,15 +112,31 @@ const StyledSeparator = styled.div`
   height: ${icon.m};
 `
 
-const StyledInput = styled.input`
+const NameEditFieldContainer = styled.div`
+  position: relative;
   flex-grow: 1;
   min-width: 0px;
+`
+
+const StyledInput = styled.input`
   color: ${color.text.primary};
   font: ${font.heading.h4};
   border: none;
   border-radius: ${radius[8]};
   background: ${color.container.highlight};
-  padding: 10px 8px;
+  padding: 8px 50px 8px 10px;
+  width: 100%;
+  box-sizing: border-box;
+`
+
+const StyledLengthLabel = styled.span`
+  color: ${color.text.secondary};
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: text;
+  user-select: none;
 `
 
 const SaveButton = styled(StyledButton)`
@@ -154,6 +170,52 @@ function BackButton ({
         color={color.icon.default}
       />
     </StyledLink>
+  )
+}
+
+const maxNameLength = 30
+
+function NameEditField ({
+  defaultName,
+  onSave,
+  onChange
+}: {
+  defaultName: string
+  onSave: () => void
+  onChange: (newName: string) => void
+}) {
+  const inputRef = React.useRef<HTMLInputElement>(null)
+  const [currentLength, setCurrentLength] = React.useState(defaultName.length);
+  
+  return (
+    <NameEditFieldContainer>
+      <StyledInput
+        ref={inputRef}
+        type='text'
+        maxLength={maxNameLength}
+        defaultValue={defaultName}
+        autoFocus
+        onChange={(e) => { 
+          onChange(e.target.value) 
+          setCurrentLength(e.target.value.length)
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Escape') {
+            getPlaylistActions().setPlaylistEditMode(undefined)
+            e.preventDefault()
+            return
+          }
+
+          if (e.key === 'Enter') {
+            onSave()
+            e.preventDefault()
+          }
+        }}
+      />
+      <StyledLengthLabel onClick={() => {inputRef.current?.focus()}}>
+        {currentLength}/{maxNameLength}
+      </StyledLengthLabel>
+    </NameEditFieldContainer>
   )
 }
 
@@ -258,23 +320,10 @@ function PlaylistHeader ({ playlistId }: { playlistId: string }) {
       <BackButton playlistEditMode={playlistEditMode} />
       {playlistEditMode === PlaylistEditMode.RENAME ? (
         <>
-          <StyledInput
-            type='text'
-            defaultValue={playlist.name}
-            autoFocus
-            onChange={(e) => setNewName(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Escape') {
-                getPlaylistActions().setPlaylistEditMode(undefined)
-                e.preventDefault()
-                return
-              }
-
-              if (e.key === 'Enter') {
-                onSave()
-                e.preventDefault()
-              }
-            }}
+          <NameEditField
+            defaultName={playlist?.name}
+            onChange={setNewName}
+            onSave={onSave}
           />
           <SaveButton
             kind='filled'
