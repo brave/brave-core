@@ -104,7 +104,6 @@ export const useBuy = () => {
   >(paymentMethods || [])
   const [isCreatingWidget, setIsCreatingWidget] = useState(false)
 
-  console.log('selectedPaymentMethods', selectedPaymentMethods)
   // computed
   const tokenPriceIds: string[] = useMemo(() => {
     return cryptoCurrencies?.map((asset) => getAssetPriceId(asset)) ?? []
@@ -209,7 +208,8 @@ export const useBuy = () => {
           amount: amountWrapped.toNumber(),
           country: defaultCountryCode || 'US',
           sourceCurrencyCode: params.sourceCurrencyCode,
-          destionationCurrencyCode: params.destionationCurrencyCode
+          destionationCurrencyCode: params.destionationCurrencyCode,
+          paymentMethods: selectedPaymentMethods
         }).unwrap()
       } catch (error) {
         console.error('generateQuotes failed', error)
@@ -223,11 +223,12 @@ export const useBuy = () => {
       }
 
       if (quoteResponse?.error) {
-        console.log('quoteResponse.error', quoteResponse.error)
+        console.error('quoteResponse.error', quoteResponse.error)
         setBuyErrors(quoteResponse.error)
       }
 
       if (quoteResponse?.cryptoQuotes) {
+        console.log('quoteResponse.cryptoQuotes', quoteResponse.cryptoQuotes)
         setQuotes(quoteResponse.cryptoQuotes)
       }
 
@@ -240,8 +241,9 @@ export const useBuy = () => {
       defaultCountryCode,
       generateQuotes,
       selectedAccount?.address,
-      selectedAsset,
-      selectedCurrency?.currencyCode
+      selectedAsset?.currencyCode,
+      selectedCurrency?.currencyCode,
+      selectedPaymentMethods
     ]
   )
 
