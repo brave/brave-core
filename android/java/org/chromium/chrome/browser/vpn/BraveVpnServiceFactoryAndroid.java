@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.vpn;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
-import org.chromium.base.Log;
 import org.chromium.brave_vpn.mojom.ServiceHandler;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -35,23 +34,18 @@ public class BraveVpnServiceFactoryAndroid {
 
     public ServiceHandler getVpnService(
             Profile profile, ConnectionErrorHandler connectionErrorHandler) {
-        Log.e("brave_vpn", "BraveVpnServiceFactoryAndroid : getVpnService 1");
         if (profile == null) {
             return null;
         }
-        Log.e("brave_vpn", "BraveVpnServiceFactoryAndroid : getVpnService 2");
         long nativeHandle =
                 BraveVpnServiceFactoryAndroidJni.get().getInterfaceToVpnService(profile);
-        Log.e("brave_vpn", "BraveVpnServiceFactoryAndroid : getVpnService 2.5");
         if (nativeHandle == -1) {
             return null;
         }
-        Log.e("brave_vpn", "BraveVpnServiceFactoryAndroid : getVpnService 3");
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         ServiceHandler serviceHandler = ServiceHandler.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) serviceHandler).getProxyHandler();
         handler.setErrorHandler(connectionErrorHandler);
-        Log.e("brave_vpn", "BraveVpnServiceFactoryAndroid : getVpnService 4");
 
         return serviceHandler;
     }

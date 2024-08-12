@@ -73,20 +73,6 @@ public class BraveVpnNativeWorker {
     }
 
     @CalledByNative
-    public void onGetAllServerRegions(String jsonServerRegions, boolean isSuccess) {
-        for (BraveVpnObserver observer : mObservers) {
-            observer.onGetAllServerRegions(jsonServerRegions, isSuccess);
-        }
-    }
-
-    @CalledByNative
-    public void onGetServerRegionsWithCities(String jsonServerRegions, boolean isSuccess) {
-        for (BraveVpnObserver observer : mObservers) {
-            observer.onGetServerRegionsWithCities(jsonServerRegions, isSuccess);
-        }
-    }
-
-    @CalledByNative
     public void onGetTimezonesForRegions(String jsonTimezones, boolean isSuccess) {
         for (BraveVpnObserver observer : mObservers) {
             observer.onGetTimezonesForRegions(jsonTimezones, isSuccess);
@@ -135,14 +121,6 @@ public class BraveVpnNativeWorker {
         for (BraveVpnObserver observer : mObservers) {
             observer.onVerifyPurchaseToken(jsonResponse, purchaseToken, productId, isSuccess);
         }
-    }
-
-    public void getAllServerRegions() {
-        BraveVpnNativeWorkerJni.get().getAllServerRegions(mNativeBraveVpnNativeWorker);
-    }
-
-    public void getServerRegionsWithCities() {
-        BraveVpnNativeWorkerJni.get().getServerRegionsWithCities(mNativeBraveVpnNativeWorker);
     }
 
     public void getTimezonesForRegions() {
@@ -210,10 +188,6 @@ public class BraveVpnNativeWorker {
         void init(BraveVpnNativeWorker caller);
 
         void destroy(long nativeBraveVpnNativeWorker, BraveVpnNativeWorker caller);
-
-        void getAllServerRegions(long nativeBraveVpnNativeWorker);
-
-        void getServerRegionsWithCities(long nativeBraveVpnNativeWorker);
 
         void getTimezonesForRegions(long nativeBraveVpnNativeWorker);
 

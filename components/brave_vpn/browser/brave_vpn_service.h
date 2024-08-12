@@ -22,7 +22,6 @@
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_delegate.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
-#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/skus/browser/skus_utils.h"
@@ -51,7 +50,6 @@ class BraveBrowserCommandControllerTest;
 namespace brave_vpn {
 
 class BraveVPNServiceDelegate;
-class BraveVPNRegionDataManager;
 
 inline constexpr char kNewUserReturningHistogramName[] =
     "Brave.VPN.NewUserReturning";
@@ -101,6 +99,8 @@ class BraveVpnService :
   void GetConnectionState(GetConnectionStateCallback callback) override;
   void Connect() override;
   void Disconnect() override;
+  void GetSelectedRegion(GetSelectedRegionCallback callback) override;
+  void SetSelectedRegion(mojom::RegionPtr region) override;
   void GetProductUrls(GetProductUrlsCallback callback) override;
   void CreateSupportTicket(const std::string& email,
                            const std::string& subject,
@@ -113,6 +113,9 @@ class BraveVpnService :
 #else
   // mojom::vpn::ServiceHandler
   void GetPurchaseToken(GetPurchaseTokenCallback callback) override;
+  void OnFetchRegionList(GetAllRegionsCallback callback,
+                         const std::string& region_list,
+                         bool success);
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   using ResponseCallback =
@@ -125,13 +128,7 @@ class BraveVpnService :
   void LoadPurchasedState(const std::string& domain) override;
 
   void GetAllRegions(GetAllRegionsCallback callback) override;
-  void OnFetchRegionList(GetAllRegionsCallback callback,
-                         const std::string& region_list,
-                         bool success);
-  void GetSelectedRegion(GetSelectedRegionCallback callback) override;
-  void SetSelectedRegion(mojom::RegionPtr region) override;
 
-  void GetAllServerRegions(ResponseCallback callback);
   void GetServerRegionsWithCities(ResponseCallback callback);
   void GetTimezonesForRegions(ResponseCallback callback);
   void GetHostnamesForRegion(ResponseCallback callback,
@@ -229,13 +226,12 @@ class BraveVpnService :
 
   // Check initial purchased/connected state.
   void CheckInitialState();
-  raw_ptr<BraveVPNConnectionManager> connection_manager_ = nullptr;
-
 #if !BUILDFLAG(IS_ANDROID)
   base::ScopedObservation<BraveVPNConnectionManager,
                           BraveVPNConnectionManager::Observer>
       observed_{this};
   bool wait_region_data_ready_ = false;
+  raw_ptr<BraveVPNConnectionManager> connection_manager_ = nullptr;
 
   PrefChangeRegistrar policy_pref_change_registrar_;
 #endif  // !BUILDFLAG(IS_ANDROID)

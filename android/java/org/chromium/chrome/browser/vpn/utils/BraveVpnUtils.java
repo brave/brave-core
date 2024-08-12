@@ -130,9 +130,6 @@ public class BraveVpnUtils {
             return;
         }
         Intent vpnServerIntent = new Intent(activity, VpnServerActivity.class);
-        // Bundle bundle = new Bundle();
-        // bundle.putSerializable(REGION, region);
-        // vpnServerIntent.putExtras(bundle);
         activity.startActivity(vpnServerIntent);
     }
 
