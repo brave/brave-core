@@ -213,17 +213,28 @@ void BraveNewsController::GetPublisherFeed(const std::string& publisher_id,
 void BraveNewsController::GetPublisherForSite(const GURL& site_url,
                                               GetPublisherCallback callback) {
   DVLOG(1) << __FUNCTION__;
+  if (!pref_manager_.IsEnabled()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
   IN_ENGINE(GetPublisherForSite, std::move(callback), site_url);
 }
 
 void BraveNewsController::GetPublisherForFeed(const GURL& feed_url,
                                               GetPublisherCallback callback) {
   DVLOG(1) << __FUNCTION__;
+  if (!pref_manager_.IsEnabled()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
   IN_ENGINE(GetPublisherForFeed, std::move(callback), feed_url);
 }
 
 void BraveNewsController::EnsureFeedV2IsUpdating() {
   DVLOG(1) << __FUNCTION__;
+  if (!pref_manager_.IsEnabled()) {
+    return;
+  }
   CheckForFeedsUpdate();
 }
 
@@ -285,6 +296,10 @@ void BraveNewsController::AddPublishersListener(
 void BraveNewsController::GetSuggestedPublisherIds(
     GetSuggestedPublisherIdsCallback callback) {
   DVLOG(1) << __FUNCTION__;
+  if (!pref_manager_.IsEnabled()) {
+    std::move(callback).Run({});
+    return;
+  }
   IN_ENGINE(GetSuggestedPublisherIds, std::move(callback));
 }
 
