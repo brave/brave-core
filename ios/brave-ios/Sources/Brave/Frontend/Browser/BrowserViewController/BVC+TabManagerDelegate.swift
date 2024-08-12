@@ -212,9 +212,17 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     // If BVC isnt visible hold on to this toast until viewDidAppear
-    if self.view.window == nil {
-      self.pendingToast = toast
+    if view.window == nil {
+      pendingToast = toast
       return
+    }
+
+    if toast is ButtonToast {
+      if activeButtonToast != nil {
+        activeButtonToast?.dismiss(false, animated: false)
+      } else {
+        activeButtonToast = toast
+      }
     }
 
     toast.showToast(
@@ -224,6 +232,11 @@ extension BrowserViewController: TabManagerDelegate {
       makeConstraints: { make in
         make.left.right.equalTo(self.view)
         make.bottom.equalTo(self.webViewContainer)
+      },
+      completion: {
+        if toast is ButtonToast {
+          self.activeButtonToast = nil
+        }
       }
     )
   }

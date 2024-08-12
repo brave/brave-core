@@ -35,7 +35,8 @@ class Toast: UIView {
     viewController: UIViewController? = nil,
     delay: DispatchTimeInterval,
     duration: DispatchTimeInterval?,
-    makeConstraints: @escaping (SnapKit.ConstraintMaker) -> Swift.Void
+    makeConstraints: @escaping (ConstraintMaker) -> Void,
+    completion: (() -> Void)? = nil
   ) {
     self.viewController = viewController
 
@@ -58,7 +59,7 @@ class Toast: UIView {
           self.displayState = .showing
           if let duration = duration {
             DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
-              self.dismiss(false)
+              self.dismiss(false, completion: completion)
             }
           }
         }
@@ -66,7 +67,7 @@ class Toast: UIView {
     }
   }
 
-  func dismiss(_ buttonPressed: Bool) {
+  func dismiss(_ buttonPressed: Bool, animated: Bool = true, completion: (() -> Void)? = nil) {
     if displayState == .pendingDismiss || displayState == .dismissed {
       return
     }
@@ -75,8 +76,10 @@ class Toast: UIView {
     superview?.removeGestureRecognizer(gestureRecognizer)
     layer.removeAllAnimations()
 
+    let duration = animated ? SimpleToastUX.toastAnimationDuration : 0.1
+
     UIView.animate(
-      withDuration: SimpleToastUX.toastAnimationDuration,
+      withDuration: duration,
       animations: {
         self.animationConstraint?.update(offset: SimpleToastUX.toastHeight)
         self.layoutIfNeeded()
@@ -87,6 +90,8 @@ class Toast: UIView {
         if !buttonPressed {
           self.completionHandler?(false)
         }
+
+        completion?()
       }
     )
   }

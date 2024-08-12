@@ -171,7 +171,8 @@ class ButtonToast: Toast {
     viewController: UIViewController? = nil,
     delay: DispatchTimeInterval = SimpleToastUX.toastDelayBefore,
     duration: DispatchTimeInterval? = SimpleToastUX.toastDismissAfter,
-    makeConstraints: @escaping (SnapKit.ConstraintMaker) -> Swift.Void
+    makeConstraints: @escaping (ConstraintMaker) -> Void,
+    completion: (() -> Void)? = nil
   ) {
     super.showToast(
       viewController: viewController,
