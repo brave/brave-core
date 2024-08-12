@@ -108,8 +108,8 @@ def get_lzma_exec():
 
 
 def extract_zip(zip_path, destination):
-    if sys.platform == 'darwin':
-        # Use unzip command on Mac to keep symbol links in zip file work.
+    if sys.platform in ('darwin', 'linux'):
+        # Use the unzip command to properly handle symbolic links.
         execute(['unzip', zip_path, '-d', destination])
     else:
         with zipfile.ZipFile(zip_path) as z:
