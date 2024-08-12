@@ -1,24 +1,24 @@
-Total size 135982K
+Total size 136243K
 
-GROUP Adblock [8410K total]
-   117K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.192 [adcocjohghhfpidemphmcmlmhnfgikei]
-    47K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.7875 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1351K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.8379 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
-   139K Brave Ad Block Updater (Regional Catalog) 1.0.60 [gkboaolpopklhgplhaaiboijnklogmbc]
-  5729K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.7288 [iodkpdagapdfkphljnddpjlldadblomo]
-    10K Brave Ad Block Updater (Brave Experimental Adblock Rules (plaintext)) 1.0.34 [jcfckfokjmopfomnoebdkdhbhcgjfnbi]
-  1013K Brave Ad Block Updater (Resources) 1.0.96 [mfddibmblmbccpadfndgakiopmmhebop]
+GROUP Adblock [8381K total]
+   118K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.194 [adcocjohghhfpidemphmcmlmhnfgikei]
+    52K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.7973 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1351K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.8503 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+   142K Brave Ad Block Updater (Regional Catalog) 1.0.63 [gkboaolpopklhgplhaaiboijnklogmbc]
+  5681K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.7393 [iodkpdagapdfkphljnddpjlldadblomo]
+     6K Brave Ad Block Updater (Brave Experimental Adblock Rules (plaintext)) 1.0.35 [jcfckfokjmopfomnoebdkdhbhcgjfnbi]
+  1028K Brave Ad Block Updater (Resources) 1.0.97 [mfddibmblmbccpadfndgakiopmmhebop]
 
 GROUP Ads [22975K total]
     72K Brave Ads Resources 1.0.102 [iblokdlgekdjophgeonmanpnjihcjkjj]
  22903K Brave Ads Resources 1.0.67 [ocilmpijebaopmdifcomolmpigakocmo]
 
-GROUP Ntp [13949K total]
+GROUP Ntp [14257K total]
  12803K Brave NTP background images 1.0.14 [aoojcmojmmcbpfgoecoadbdpnagfchel]
-  1145K Brave NTP sponsored images 1.0.1681 [gccbbckogglekeggclmmekihdgdpdgoe]
+  1453K Brave NTP sponsored images 1.0.1685 [gccbbckogglekeggclmmekihdgdpdgoe]
 
 GROUP Other [159K total]
-   159K Brave Local Data Files Updater 1.0.847 [afalakplffnnnlkncjhbmahjfjhmlkal]
+   159K Brave Local Data Files Updater 1.0.853 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
 GROUP large_files [80269K total]
   3262K Default\Local Extension Settings\mnojpmjdmbbfmejpflffifhffcmidifd\000003.log
