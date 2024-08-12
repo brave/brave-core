@@ -120,7 +120,7 @@ RegisterStyleOverride(
         border-radius: 6px !important;
       }
 
-      a[href].iron-selected {
+      a[href].selected {
         color: #DB2F04;
         font-weight: 400 !important;
       }
@@ -135,7 +135,7 @@ RegisterStyleOverride(
         height: 24px;
       }
 
-      a[href].iron-selected::before {
+      a[href].selected::before {
         content: "";
         position: absolute;
         top: 50%;
@@ -149,7 +149,7 @@ RegisterStyleOverride(
       }
 
       @media (prefers-color-scheme: dark) {
-        a[href].iron-selected {
+        a[href].selected {
           color: #FB5930;
         }
 
