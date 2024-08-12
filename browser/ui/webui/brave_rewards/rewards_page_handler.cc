@@ -236,6 +236,21 @@ void RewardsPageHandler::GetExternalWalletProviders(
   std::move(callback).Run(rewards_service_->GetExternalWalletProviders());
 }
 
+void RewardsPageHandler::GetAvailableBalance(
+    GetAvailableBalanceCallback callback) {
+  auto fetch_balance_callback = [](decltype(callback) callback,
+                                   mojom::BalancePtr balance) {
+    if (balance) {
+      std::move(callback).Run(balance->total);
+    } else {
+      std::move(callback).Run(std::nullopt);
+    }
+  };
+
+  rewards_service_->FetchBalance(
+      base::BindOnce(fetch_balance_callback, std::move(callback)));
+}
+
 void RewardsPageHandler::GetAdsSettings(GetAdsSettingsCallback callback) {
   auto settings = mojom::AdsSettings::New();
 

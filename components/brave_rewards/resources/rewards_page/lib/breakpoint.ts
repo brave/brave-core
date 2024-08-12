@@ -7,7 +7,7 @@ import * as React from 'react'
 
 type ViewType = 'narrow' | 'wide'
 
-let breakpointQuery = window.matchMedia('(width < 530px)')
+let breakpointQuery = window.matchMedia('(width < 675px)')
 
 function getViewType() {
   return breakpointQuery.matches ? 'narrow' : 'wide'

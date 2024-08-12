@@ -20,6 +20,17 @@ export const style = scopedCSS('app-frame', css`
     header {
       padding: 12px 16px;
       display: flex;
+      align-items: center;
+      background: transparent;
+      transition: all 400ms;
+      border-bottom: solid 1px transparent;
+
+      &.overlapped {
+        background:
+          color-mix(in srgb, ${color.container.background} 60% , transparent);
+        border-bottom-color: ${color.divider.subtle};
+        box-shadow: 0px 4px 13px -2px rgba(0, 0, 0, 0.08);
+      }
     }
 
     h4 {
@@ -30,6 +41,10 @@ export const style = scopedCSS('app-frame', css`
       text-align: center;
     }
 
+    leo-buttonmenu {
+      height: 24px;
+    }
+
     button {
       --leo-icon-size: 24px;
     }
@@ -37,6 +52,7 @@ export const style = scopedCSS('app-frame', css`
     main {
       flex: 1 1 auto;
       overflow: auto;
+      scrollbar-width: none;
       padding: 0 16px 16px;
     }
 
@@ -44,6 +60,7 @@ export const style = scopedCSS('app-frame', css`
       flex: 0 0 auto;
       background: ${color.container.background};
       padding: 8px;
+      box-shadow: 0px -8px 16px rgba(0, 0, 0, 0.04);
     }
 
     ul {

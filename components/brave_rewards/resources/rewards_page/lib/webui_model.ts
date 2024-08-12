@@ -15,6 +15,7 @@ import { AppModel, AppState, AdType, defaultState } from './app_model'
 import { RewardsPageProxy } from './rewards_page_proxy'
 import { createStateManager } from '../../shared/lib/state_manager'
 import { createAdsHistoryAdapter } from './ads_history_adapter'
+import { optional } from '../../shared/lib/optional'
 import * as mojom from './mojom'
 
 function normalizePlatform(name: string) {
@@ -78,6 +79,13 @@ export function createModel(): AppModel {
     })
   }
 
+  async function updateBalance() {
+    const { balance } = await pageHandler.getAvailableBalance()
+    stateManager.update({
+      balance: typeof balance === 'number' ? optional(balance) : optional()
+    })
+  }
+
   async function updateAdsInfo() {
     const [{ statement }, { settings }] = await Promise.all([
       await pageHandler.getAdsStatement(),
@@ -126,10 +134,13 @@ export function createModel(): AppModel {
   }
 
   async function loadData() {
+    const inBackground = (promise: Promise<unknown>) => null
+
     await Promise.all([
       updatePaymentId(),
       updateCountryCode(),
       updateExternalWallet(),
+      inBackground(updateBalance()),
       updateAdsInfo(),
       updateRewardsParameters()
     ])
