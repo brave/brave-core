@@ -10,7 +10,9 @@ cxx = { version = "1" }
 orchard = { version = "0.8.0",  default-features = false }
 rand = "0.8"
 zcash_primitives  = { version = "0.15.1", default-features = false }
-zcash_note_encryption  = "0.4"
+zcash_note_encryption = "0.4"
+zcash_client_backend = { version = "0.12.1", default-features = false }
+shardtree = { version="0.3", features=["legacy-api"] }
 
 [lib]
 name = "zcash"
