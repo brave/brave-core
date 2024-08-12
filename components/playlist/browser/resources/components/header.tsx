@@ -318,7 +318,7 @@ function NewPlaylistButton () {
       }}
     >
       <ColoredIcon
-        name='plus-add'
+        name='folder-new'
         color={color.icon.default}
       />
     </MediumSizedButton>
