@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
 
 // hooks
 import { useBuy } from '../swap/hooks/useBuy'
@@ -37,8 +38,13 @@ import {
   LoadingWrapper,
   ServiceProvidersWrapper
 } from './fund_wallet_v1.style'
-import { Column } from '../../../components/shared/style'
+import { Column, Row } from '../../../components/shared/style'
 import { PaymentMethodFilters } from './components/payment_method_filters/payment_method_filters'
+import {
+  SearchInput,
+  FilterButton,
+  FilterIcon
+} from './components/shared/style'
 
 export const FundWalletScreen = () => {
   // state
@@ -46,7 +52,6 @@ export const FundWalletScreen = () => {
   const [isAssetDialogOpen, setIsAssetDialogOpen] = React.useState(false)
   const [isAccountDialogOpen, setIsAccountDialogOpen] = React.useState(false)
   const [isPaymentFiltersOpen, setIsPaymentFiltersOpen] = React.useState(false)
-  console.log(setIsPaymentFiltersOpen)
 
   // hooks
   const {
@@ -64,6 +69,7 @@ export const FundWalletScreen = () => {
     defaultFiatCurrency,
     isFetchingQuotes,
     quotes,
+    filteredQuotes,
     onSelectToken,
     onSelectAccount,
     onSelectCurrency,
@@ -78,7 +84,9 @@ export const FundWalletScreen = () => {
     paymentMethods,
     onChangePaymentMethods,
     isCreatingWidget,
-    onBuy
+    onBuy,
+    searchTerm,
+    onSearch
   } = useBuy()
 
   // redux
@@ -136,12 +144,42 @@ export const FundWalletScreen = () => {
               </LoadingWrapper>
             ) : (
               <>
-                {quotes?.length > 0 && serviceProviders?.length > 0 ? (
+                {quotes?.length > 0 ? (
+                  <>
+                    <Divider />
+                    <Row
+                      width='100%'
+                      justifyContent='space-between'
+                      alignItems='center'
+                      padding='0  8px'
+                    >
+                      <Row width='297px'>
+                        <SearchInput
+                          placeholder='Search'
+                          value={searchTerm}
+                          onInput={(e) => onSearch(e.value)}
+                          size='small'
+                        >
+                          <Icon
+                            name='search'
+                            slot='left-icon'
+                          />
+                        </SearchInput>
+                      </Row>
+                      <FilterButton
+                        size='small'
+                        onClick={() => setIsPaymentFiltersOpen(true)}
+                      >
+                        <FilterIcon />
+                      </FilterButton>
+                    </Row>
+                  </>
+                ) : null}
+                {filteredQuotes?.length > 0 && serviceProviders?.length > 0 ? (
                   <Column
                     width='100%'
-                    padding='8px'
+                    padding='0 8px'
                   >
-                    <Divider />
                     {quotes?.map((quote) => (
                       <BuyQuote
                         key={quote.serviceProvider}
@@ -204,6 +242,7 @@ export const FundWalletScreen = () => {
         paymentMethods={paymentMethods || []}
         isLoading={isLoadingPaymentMethods || isLoadingCountries}
         onSelectPaymentMethods={onChangePaymentMethods}
+        onClose={() => setIsPaymentFiltersOpen(false)}
       />
     </>
   )

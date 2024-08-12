@@ -25,6 +25,7 @@ type GetCryptoQuotesArgs = {
   destionationCurrencyCode: string
   amount: number
   account: string | null
+  paymentMethods: MeldPaymentMethod[]
 }
 
 type CreateMeldBuyWidgetArgs = {
