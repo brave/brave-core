@@ -4,41 +4,16 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router-dom'
-import SegmentedControlItem from '@brave/leo/react/controlItem'
 
 // utils
-import { getLocale } from '../../../../../common/locale'
-import { useLocationPathName } from '../../../../common/hooks/use-pathname'
 import { ExploreNavOptions } from '../../../../options/nav-options'
-
-// styles
 import {
-  SegmentedControl,
-  ControlItemWrapper
-} from './explore_web3_header.style'
+  SegmentedControl //
+} from '../../../shared/segmented_control/segmented_control'
+
+// components
 
 export const ExploreWeb3Header = () => {
-  // routing
-  const walletLocation = useLocationPathName()
-  const history = useHistory()
-
-  return (
-    <SegmentedControl
-      value={walletLocation}
-      onChange={({ value }) => {
-        if (!value) return
-        history.push(value)
-      }}
-    >
-      {ExploreNavOptions.map((option) => (
-        <SegmentedControlItem
-          key={option.name}
-          value={option.route}
-        >
-          <ControlItemWrapper>{getLocale(option.name)}</ControlItemWrapper>
-        </SegmentedControlItem>
-      ))}
-    </SegmentedControl>
-  )
+  // render
+  return <SegmentedControl navOptions={ExploreNavOptions} />
 }

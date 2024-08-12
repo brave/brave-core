@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
+import ControlItem from '@brave/leo/react/controlItem'
 
 // Types
 import { NavOption } from '../../../constants/types'
@@ -13,54 +14,51 @@ import { NavOption } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 
 // Styled Components
-import { ButtonsContainer, Button } from './segmented_control.style'
+import {
+  SegmentedControl as StyledSegmentedControl,
+  ControlItemWrapper,
+  StyledWrapper
+} from './segmented_control.style'
 
 interface Props {
   navOptions: NavOption[]
-  width?: number
+  width?: string
 }
 
-export const SegmentedControl = (props: Props) => {
-  const { navOptions, width } = props
-
+export const SegmentedControl = ({ navOptions, width }: Props) => {
   // Routing
   const history = useHistory()
   const { pathname: walletLocation, hash } = useLocation()
 
-  // Methods
-  const onClick = React.useCallback(
-    (navOption: NavOption) => {
-      history.push(navOption.route)
-    },
-    [history]
-  )
+  // Computed
+  const selectedRoute =
+    navOptions.find((option) =>
+      option.route.startsWith('#')
+        ? option.route === hash
+        : option.route === walletLocation
+    )?.route || navOptions[0].route
 
-  const isSelected = React.useCallback(
-    (navOption: NavOption) => {
-      return navOption.route.startsWith('#')
-        ? !hash
-          ? // Since hashes are not necessary
-            // we default the first option as selected,
-            // if there is no hash in the route location.
-            navOptions[0].id === navOption.id
-          : hash === navOption.route
-        : walletLocation.includes(navOption.route)
-    },
-    [walletLocation, navOptions, hash]
-  )
-
+  // Render
   return (
-    <ButtonsContainer width={width}>
-      {navOptions.map((navOption: NavOption) => (
-        <Button
-          key={navOption.id}
-          isSelected={isSelected(navOption)}
-          onClick={() => onClick(navOption)}
-        >
-          {getLocale(navOption.name)}
-        </Button>
-      ))}
-    </ButtonsContainer>
+    <StyledWrapper width={width}>
+      <StyledSegmentedControl
+        value={selectedRoute}
+        onChange={({ value }) => {
+          if (value) {
+            history.push(value)
+          }
+        }}
+      >
+        {navOptions.map((option) => (
+          <ControlItem
+            key={option.name}
+            value={option.route}
+          >
+            <ControlItemWrapper>{getLocale(option.name)}</ControlItemWrapper>
+          </ControlItem>
+        ))}
+      </StyledSegmentedControl>
+    </StyledWrapper>
   )
 }
 
