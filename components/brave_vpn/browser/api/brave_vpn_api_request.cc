@@ -62,11 +62,13 @@ BraveVpnAPIRequest::BraveVpnAPIRequest(
 
 BraveVpnAPIRequest::~BraveVpnAPIRequest() = default;
 
-void BraveVpnAPIRequest::GetServerRegionsWithCities(ResponseCallback callback) {
+void BraveVpnAPIRequest::GetServerRegions(ResponseCallback callback,
+                                          const std::string& region_precision) {
   auto internal_callback =
       base::BindOnce(&BraveVpnAPIRequest::OnGetResponse,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  GURL base_url = GetURLWithPath(kVpnHost, kServerRegionsWithCities);
+  GURL base_url =
+      GetURLWithPath(kVpnHost, kServerRegionsWithCities + region_precision);
   OAuthRequest(base_url, "GET", "", std::move(internal_callback));
 }
 

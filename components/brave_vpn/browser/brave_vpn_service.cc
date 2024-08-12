@@ -378,12 +378,14 @@ void BraveVpnService::UpdatePurchasedStateForSessionExpired(
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-void BraveVpnService::GetAllRegions(GetAllRegionsCallback callback) {
+void BraveVpnService::GetAllRegions(const std::string& region_precision,
+                                    GetAllRegionsCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 #if BUILDFLAG(IS_ANDROID)
-  api_request_->GetServerRegionsWithCities(
+  api_request_->GetServerRegions(
       base::BindOnce(&BraveVpnService::OnFetchRegionList,
-                     base::Unretained(this), std::move(callback)));
+                     base::Unretained(this), std::move(callback)),
+      region_precision);
 #else
   std::vector<mojom::RegionPtr> regions;
   for (const auto& region :
