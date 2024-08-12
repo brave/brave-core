@@ -291,7 +291,7 @@ public class BraveWalletUtilsTest {
         testStruct.toToken = "";
         testStruct.toAmount = "";
         testStruct.slippagePercentage = "";
-        testStruct.routePriority = RoutePriority.RECOMMENDED;
+        testStruct.routePriority = RoutePriority.CHEAPEST;
 
         try {
             java.nio.ByteBuffer byteBuffer = testStruct.serialize();
