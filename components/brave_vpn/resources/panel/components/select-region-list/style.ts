@@ -85,47 +85,41 @@ export const RegionContainer =
           border: 1px solid ${color.divider.interactive};
           background: ${color.container.interactive};
           box-shadow: ${effect.elevation['01']};
+
+          leo-button {
+            display: none;
+          }
         `
       : css`
           &:hover {
             background: ${color.container.highlight};
             box-shadow: ${effect.elevation['01']};
+
+            leo-button {
+              opacity: 1;
+              transition: opacity 0.3s;
+            }
+          }
+
+          &:has(:focus) leo-button, &:focus-visible leo-button {
+            opacity: 1;
           }
         `}
-
-  ${(p) => !p.selected &&
-    css`
-      &:focus-within leo-button {
-        visibility: visible;
-        opacity: 1;
-      }
-    `}
 `
 
 export const RegionConnect = styled(Button)`
-  visibility: hidden;
   opacity: 0;
   position: absolute;
   right: ${spacing.xl};
 `
 
-export const RegionCountry = styled.div<{ selected: boolean }>`
+export const RegionCountry = styled.div`
   position: relative;
   display: flex;
   padding: ${spacing.m} ${spacing.xl};
   align-items: center;
   gap: ${spacing.m};
   align-self: stretch;
-
-  ${(p) =>
-    !p.selected &&
-    css`
-      &:hover > leo-button {
-        visibility: visible;
-        opacity: 1;
-        transition: opacity 0.3s;
-      }
-    `}
 `
 
 export const HeaderLabel = styled.span`
