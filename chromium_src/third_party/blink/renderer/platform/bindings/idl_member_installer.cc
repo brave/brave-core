@@ -17,7 +17,7 @@ namespace {
 
 bool IsConnectionConfig(const IDLMemberInstaller::AttributeConfig& config) {
   constexpr std::string_view kConnection = "connection";
-  return kConnection == config.name;
+  return kConnection == config.property_name;
 }
 
 }  // namespace
