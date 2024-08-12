@@ -103,6 +103,7 @@ export const useBuy = () => {
     MeldPaymentMethod[]
   >(paymentMethods || [])
   const [isCreatingWidget, setIsCreatingWidget] = useState(false)
+  const [searchTerm, setSearchTerm] = useState<string>('')
 
   // computed
   const tokenPriceIds: string[] = useMemo(() => {
@@ -140,6 +141,16 @@ export const useBuy = () => {
     }
     return ['', '']
   }, [selectedAssetSpotPrice, selectedAsset, amount])
+
+  const filteredQuotes = useMemo(() => {
+    if (searchTerm === '') {
+      return quotes
+    }
+
+    return quotes.filter((quote) =>
+      quote.serviceProvider?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  }, [quotes, searchTerm])
 
   // methods
   const reset = useCallback(() => {
@@ -228,7 +239,6 @@ export const useBuy = () => {
       }
 
       if (quoteResponse?.cryptoQuotes) {
-        console.log('quoteResponse.cryptoQuotes', quoteResponse.cryptoQuotes)
         setQuotes(quoteResponse.cryptoQuotes)
       }
 
@@ -312,13 +322,6 @@ export const useBuy = () => {
     })
   }, [cryptoEstimate, handleQuoteRefresh])
 
-  // effects
-  useEffect(() => {
-    if (accounts.length > 0 && !selectedAccount) {
-      setSelectedAccount(accounts[0])
-    }
-  }, [accounts, selectedAccount])
-
   const onBuy = useCallback(
     async (quote: MeldCryptoQuote) => {
       if (!quote.serviceProvider || !selectedCurrency) return
@@ -370,6 +373,13 @@ export const useBuy = () => {
     ]
   )
 
+  // effects
+  useEffect(() => {
+    if (accounts.length > 0 && !selectedAccount) {
+      setSelectedAccount(accounts[0])
+    }
+  }, [accounts, selectedAccount])
+
   useEffect(() => {
     if (fiatCurrencies && fiatCurrencies.length > 0 && !selectedCurrency) {
       const defaultCurrency = fiatCurrencies.find(
@@ -417,6 +427,7 @@ export const useBuy = () => {
     handleQuoteRefreshInternal,
     isFetchingQuotes,
     quotes,
+    filteredQuotes,
     buyErrors,
     timeUntilNextQuote,
     onSelectToken,
@@ -434,6 +445,8 @@ export const useBuy = () => {
     paymentMethods,
     onChangePaymentMethods: setSelectedPaymentMethods,
     onBuy,
-    isCreatingWidget
+    isCreatingWidget,
+    searchTerm,
+    onSearch: setSearchTerm
   }
 }

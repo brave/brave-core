@@ -21,7 +21,7 @@ export const AccountName = styled.h3`
 export const AccountAddress = styled.span`
   display: flex;
   padding: ${spacing.s} ${spacing.m};
-  margin: ${spacing.m} 0;
+  margin-top: ${spacing.m} 0;
   align-items: flex-start;
   background-color: ${color.page.background};
   border-radius: ${spacing.m};

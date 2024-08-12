@@ -8,12 +8,17 @@ import {
   mockMeldCryptoQuotes,
   mockServiceProviders
 } from '../../../../../common/constants/mocks'
+import { MeldCryptoQuote } from 'components/brave_wallet_ui/constants/types'
 
 export const _BuyQuote = () => {
   return (
     <BuyQuote
       quote={mockMeldCryptoQuotes[0]}
       serviceProviders={mockServiceProviders}
+      isCreatingWidget={false}
+      onBuy={function (quote: MeldCryptoQuote): void {
+        console.log(quote)
+      }}
     />
   )
 }

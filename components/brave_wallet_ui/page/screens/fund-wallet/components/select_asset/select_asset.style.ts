@@ -5,22 +5,8 @@
 
 import styled from 'styled-components'
 import { font, color } from '@brave/leo/tokens/css/variables'
-import { layoutPanelWidth } from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
-import Input from '@brave/leo/react/input'
 import ProgressRing from '@brave/leo/react/progressRing'
 
-export const SearchInput = styled(Input).attrs({
-  mode: 'filled',
-  size: window.innerWidth <= layoutPanelWidth ? 'small' : 'normal'
-})`
-  margin-top: 2px;
-  width: 100%;
-  padding-bottom: 8px;
-
-  @media (max-width: ${layoutPanelWidth}px) {
-    size: small;
-  }
-`
 export const Wrapper = styled.div`
   position: fixed;
   top: 0;

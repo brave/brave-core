@@ -8,6 +8,8 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 import LeoDialog from '@brave/leo/react/dialog'
 import LeoDropdown from '@brave/leo/react/dropdown'
+import Input from '@brave/leo/react/input'
+import Button from '@brave/leo/react/button'
 
 import { WalletButton } from '../../../../../components/shared/style'
 import { layoutPanelWidth } from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
@@ -124,4 +126,31 @@ export const ListTitle = styled.span`
 
 export const Dropdown = styled(LeoDropdown)`
   min-width: 100%;
+`
+
+export const SearchInput = styled(Input).attrs({
+  mode: 'filled',
+  size: window.innerWidth <= layoutPanelWidth ? 'small' : 'normal'
+})`
+  width: 100%;
+
+  @media (max-width: ${layoutPanelWidth}px) {
+    size: small;
+  }
+`
+
+export const FilterButton = styled(Button).attrs({
+  kind: 'outline'
+})`
+  --leo-button-color: ${color.icon.interactive};
+  --leo-button-border-color: ${color.icon.interactive};
+  flex-grow: 0;
+  width: 36px;
+`
+
+export const FilterIcon = styled(Icon).attrs({
+  name: 'filter-settings'
+})`
+  --leo-icon-size: 18px;
+  --leo-icon-color: ${color.icon.interactive};
 `

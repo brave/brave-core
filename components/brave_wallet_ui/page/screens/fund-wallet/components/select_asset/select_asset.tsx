@@ -28,7 +28,6 @@ import {
   AssetName,
   AssetNetwork,
   AssetPrice,
-  SearchInput,
   Loader,
   AutoSizerStyle
 } from './select_asset.style'
@@ -36,7 +35,8 @@ import {
   ContainerButton,
   Dialog,
   DialogTitle,
-  ListTitle
+  ListTitle,
+  SearchInput
 } from '../shared/style'
 import {
   getAssetSymbol,
@@ -196,11 +196,12 @@ export const SelectAsset = (props: SelectAssetProps) => {
     >
       <DialogTitle slot='title'>Select Asset</DialogTitle>
       <Row
-        padding='24px 0 0 0'
+        padding='24px 0 8px 0'
         slot='subtitle'
       >
         <SearchInput
           placeholder='Search token or paste address'
+          width='300px'
           onInput={(e) => setSearchText(e.value)}
         >
           <Icon

@@ -33,11 +33,10 @@ export const ControlPanel = styled.div`
 export const ServiceProvidersWrapper = styled(ScrollableColumn)`
   display: flex;
   flex-wrap: wrap;
-  gap: ${spacing.xl};
+  gap: ${spacing['3Xl']};
 
   @media screen and (max-width: ${layoutPanelWidth}px) {
     border-radius: 16px;
-    margin-top: 8px;
     background-color: ${color.container.background};
   }
 `
@@ -65,7 +64,7 @@ export const Divider = styled.div`
   width: 100%;
   height: 1px;
   background-color: ${color.divider.subtle};
-  margin: ${spacing['4Xl']} 0;
+  margin-top: ${spacing['3Xl']};
 
   @media screen and (max-width: ${layoutPanelWidth}px) {
     display: none;

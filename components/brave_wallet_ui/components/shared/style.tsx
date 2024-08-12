@@ -147,7 +147,7 @@ export const Row = styled.div<
     height?: '100%' | 'unset'
     margin?: number | string
     padding?: number | string
-    width?: '100%' | 'unset'
+    width?: CSSProperties['width']
     marginBottom?: number | string
     // https://styled-components.com/docs/api#transient-props
     $wrap?: boolean
