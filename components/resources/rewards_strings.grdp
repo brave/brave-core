@@ -787,4 +787,35 @@
     You're estimated to earn between: <ph name="RANGE">$1</ph>
   </message>
 
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_BALANCE_LABEL" desc="">
+    Your balance
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_CONNECTED_LABEL" desc="">
+    Connected
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_DETAILS_TITLE" desc="">
+    <ph name="PROVIDER">$1</ph> wallet
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_LABEL" desc="">
+    Payout account
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_LINK" desc="">
+    Go to my account
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_LOGGED_OUT_TITLE" desc="">
+    Logged Out
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_LOGIN_BUTTON_LABEL" desc="">
+    Login to <ph name="PROVIDER">$1</ph>
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_LOGIN_TEXT" desc="">
+    Login to <ph name="PROVIDER">$1</ph> to see your balance
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_TITLE" desc="">
+    Payout Account
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_TOOLTIP" desc="">
+    Your BAT earnings will be paid to this payout account.
+  </message>
+
 </grit-part>

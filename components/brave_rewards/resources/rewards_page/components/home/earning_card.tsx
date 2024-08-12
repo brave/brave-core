@@ -108,24 +108,28 @@ export function EarningCard() {
       <div key='value' className='counter-value'>
         {
           formatEarningsEstimate(
-              adsInfo.minEarningsThisMonth, adsInfo.maxEarningsThisMonth)
+            adsInfo.minEarningsThisMonth,
+            adsInfo.maxEarningsThisMonth)
         } BAT
-        <Tooltip mode='default'>
-          <Icon name='info-outline' />
-          <div slot='content'>
-            {
-              formatMessage(getString('earningsRangeTooltip'), [
-                <div key='range' className='earnings-range'>
-                  {
-                    formatEarningsRange(
-                        adsInfo.minEarningsThisMonth,
-                        adsInfo.maxEarningsThisMonth)
-                  } BAT
-                </div>
-              ])
-            }
-          </div>
-        </Tooltip>
+        {
+          adsInfo.maxEarningsThisMonth > adsInfo.minEarningsThisMonth &&
+            <Tooltip mode='default'>
+              <Icon name='info-outline' />
+              <div slot='content'>
+                {
+                  formatMessage(getString('earningsRangeTooltip'), [
+                    <div key='range' className='earnings-range'>
+                      {
+                        formatEarningsRange(
+                          adsInfo.minEarningsThisMonth,
+                          adsInfo.maxEarningsThisMonth)
+                      } BAT
+                    </div>
+                  ])
+                }
+              </div>
+            </Tooltip>
+        }
       </div>
     ])
   }

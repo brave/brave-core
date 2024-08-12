@@ -125,23 +125,31 @@ interface Props {
 function PanelFrame(props: Props) {
   const tabOpener = React.useContext(TabOpenerContext)
   const { getString } = useLocaleContext()
+  const [isScrolled, setIsScrolled] = React.useState(false)
 
   function onExpand() {
     tabOpener.openTab(urls.settingsURL)
   }
 
+  function onScroll(event: React.UIEvent) {
+    const { scrollTop } = event.currentTarget
+    if (scrollTop === 0) {
+      setIsScrolled(false)
+    } else if (!isScrolled) {
+      setIsScrolled(true)
+    }
+  }
+
   return (
     <div className='panel-frame' {...style}>
-      <main>
-        <header>
-          <button className='expand-button' onClick={onExpand}>
-            <Icon name='expand' />
-          </button>
-          <h4>{getString('rewardsPageTitle')}</h4>
-          <MoreMenu>
-            <Icon name='more-vertical' />
-          </MoreMenu>
-        </header>
+      <header className={isScrolled ? 'overlapped' : ''}>
+        <button className='expand-button' onClick={onExpand}>
+          <Icon name='expand' />
+        </button>
+        <h4>{getString('rewardsPageTitle')}</h4>
+        <MoreMenu><Icon name='more-vertical' /></MoreMenu>
+      </header>
+      <main onScroll={onScroll}>
         {props.children}
       </main>
       <footer>

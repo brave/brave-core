@@ -15,6 +15,7 @@ export const modalStyle = scopedCSS('app-modal', css`
     border-radius: 16px;
     padding: 32px;
     background: ${color.container.background};
+    color: ${color.text.primary};
     outline: none;
 
     display: flex;
