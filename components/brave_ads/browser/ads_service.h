@@ -54,6 +54,9 @@ class AdsService : public KeyedService {
   // Called when a notification ad with `placement_id` is clicked.
   virtual void OnNotificationAdClicked(const std::string& placement_id) = 0;
 
+  // Called to clear ads data.
+  virtual void ClearData() = 0;
+
   // Called to add an ads observer.
   virtual void AddBatAdsObserver(
       mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer) = 0;
@@ -146,15 +149,12 @@ class AdsService : public KeyedService {
       mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) = 0;
 
-  // Called to get ad history between `from_time` and `to_time` date range. The
+  // Called to get ad history for the given date range in descending order. The
   // callback takes one argument - `base::Value::List` containing info of the
   // obtained ad history.
   virtual void GetAdHistory(base::Time from_time,
                             base::Time to_time,
                             GetAdHistoryForUICallback callback) = 0;
-
-  // Called to clear Brave Ads data.
-  virtual void ClearData() = 0;
 
   // Called to like an ad. This is a toggle, so calling it again returns the
   // setting to the neutral state. The callback takes one argument - `bool` is
