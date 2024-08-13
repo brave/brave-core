@@ -23,6 +23,9 @@ class SequencedTaskRunner;
 }  // namespace base
 
 namespace ai_chat {
+// TextEmbedder is a wrapper class for tflite::task::text::TextEmbedder.and
+// runs all the operations on a separate sequence task runner to avoid blocking
+// owner sequence runner ex. brwoser UI thread.
 class TextEmbedder {
  public:
   static std::unique_ptr<TextEmbedder> Create(const base::FilePath& model_path);
@@ -33,9 +36,16 @@ class TextEmbedder {
 
   virtual bool IsInitialized() const;
 
+  // Initialize tflite::task::text::TextEmbedder with the model file.
+  // Since tflite on Windows doesn't support file path loading so we read the
+  // model file and pass it through file content.
   using InitializeCallback = base::OnceCallback<void(bool)>;
   virtual void Initialize(InitializeCallback callback);
 
+  // Comparing the similarity between the prompt and the text and return the
+  // most relevant text to the prompt with the cosine similarity score. The most
+  // relavent text will respect the order in the original text. The returned
+  // text will be filled until the context_limit.
   using TopSimilarityCallback =
       base::OnceCallback<void(base::expected<std::string, std::string>)>;
   virtual void GetTopSimilarityWithPromptTilContextLimit(
@@ -58,6 +68,7 @@ class TextEmbedder {
       uint32_t context_limit,
       TopSimilarityCallback callback);
 
+  // Split the text into segments with maximum segment size limit.
   std::vector<std::string> SplitSegments(const std::string& text);
 
   // (index, similarity)
@@ -85,6 +96,7 @@ class TextEmbedder {
   scoped_refptr<base::SequencedTaskRunner> owner_task_runner_;
   scoped_refptr<base::SequencedTaskRunner> embedder_task_runner_;
 
+  // Needed to be deleted in embedder_task_runner_.
   std::unique_ptr<base::WeakPtrFactory<TextEmbedder>> weak_ptr_factory_;
 };
 }  // namespace ai_chat

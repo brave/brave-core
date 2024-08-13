@@ -28,7 +28,7 @@ constexpr const char kComponentBase64PublicKey[] =
     "qEU63D9MqCMbM9DdaQF4gopUf+"
     "AYSZTC1Ze0suZQfw4jhMHImcd1kmi2d893ROd7KD1UQIDAQAB";
 }  // namespace
-   //
+
 constexpr const char kUniversalQAModelName[] =
     "universal_sentence_encoder_qa_with_metadata.tflite";
 
