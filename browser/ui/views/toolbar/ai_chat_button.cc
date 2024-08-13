@@ -39,7 +39,7 @@ class AIChatButtonMenuModel : public ui::SimpleMenuModel,
 
   void Build() {
     AddItemWithStringId(ContextMenuCommand::kHideAIChatButton,
-                        IDS_HIDE_SIDE_PANEL_TOOLBAR_BUTTON);
+                        IDS_HIDE_BRAVE_AI_CHAT_ICON_ON_TOOLBAR);
   }
 
   // ui::SimpleMenuModel::Delegate:
@@ -65,7 +65,7 @@ AIChatButton::AIChatButton(Browser* browser)
   // Visibility is managed by |ToolbarView|.
   SetVisible(false);
 
-  SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_SIDEBAR_SHOW));
+  SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_AI_CHAT_TOOLBAR_BUTTON));
   set_context_menu_controller(this);
   GetViewAccessibility().SetHasPopup(ax::mojom::HasPopup::kMenu);
 }
