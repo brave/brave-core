@@ -920,6 +920,12 @@
   </message>
 
   <!-- Settings / Search engine -->
+  <message name="IDS_SETTINGS_BRAVE_SEARCH_ENGINES_SEARCH_SUGGEST_LABEL" desc="The label of the option to enable/disable sending omnibox input to the user's default search engine to get additional suggestions.">
+    Show search suggestions
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_SEARCH_ENGINES_SEARCH_SUGGEST_DESC" desc="The desc of the option to enable/disable sending omnibox input to the user's default search engine to get additional suggestions.">
+    When you type in the address bar or search box, Brave sends what you type to your default search engine to get better suggestions. This is not available in private windows.
+  </message>
   <message name="IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_LABEL" desc="The label for the settings switch controlling the addition of custom search engines">
     Index other search engines
   </message>
