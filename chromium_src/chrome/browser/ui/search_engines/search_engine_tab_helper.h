@@ -13,6 +13,8 @@
   bool IsFormSubmit(content::NavigationEntry* entry); \
   void GenerateKeywordIfNecessary
 
+#include "brave/components/search_engines/brave_search_engines_pref_names.h"
+
 #include "src/chrome/browser/ui/search_engines/search_engine_tab_helper.h"  // IWYU pragma: export
 
 #undef GenerateKeywordIfNecessary

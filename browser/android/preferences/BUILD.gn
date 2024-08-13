@@ -36,7 +36,6 @@ source_set("preferences") {
 
 java_cpp_strings("java_pref_names_srcjar") {
   sources = [
-    "//brave/chromium_src/components/search_engines/search_engines_pref_names.h",
     "//brave/components/brave_adaptive_captcha/pref_names.h",
     "//brave/components/brave_rewards/common/pref_names.h",
     "//brave/components/brave_shields/core/common/pref_names.h",
@@ -51,6 +50,7 @@ java_cpp_strings("java_pref_names_srcjar") {
     "//brave/components/omnibox/browser/brave_omnibox_prefs.h",
     "//brave/components/p3a/pref_names.h",
     "//brave/components/request_otr/common/pref_names.h",
+    "//brave/components/search_engines/brave_search_engines_pref_names.h",
     "//brave/components/speedreader/speedreader_pref_names.h",
     "//components/translate/core/browser/translate_pref_names.h",
   ]
