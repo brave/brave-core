@@ -136,8 +136,10 @@ class Tab: NSObject {
       case .authenticationBroken:
         return .invalidCert
       case .unauthenticated:
+        let webuiSchemes = ["brave", "chrome"]
         if let lastCommittedURL = await webView?.lastCommittedURL,
           InternalURL.isValid(url: lastCommittedURL)
+            || webuiSchemes.contains(lastCommittedURL.scheme ?? "")
         {
           return .localhost
         }

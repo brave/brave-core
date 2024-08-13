@@ -501,7 +501,7 @@ extension BrowserViewController: CWVNavigationDelegate {
     // This is the normal case, opening a http or https url, which we handle by loading them in this WKWebView. We
     // always allow this. Additionally, data URIs are also handled just like normal web pages.
 
-    if ["http", "https", "data", "blob", "file"].contains(requestURL.scheme) {
+    if ["http", "https", "data", "blob", "file", "brave", "chrome"].contains(requestURL.scheme) {
       // FIXME: Test
       if navigationAction.navigationType.isMainFrame {
         if let etldP1 = requestURL.baseDomain,
@@ -607,7 +607,9 @@ extension BrowserViewController: CWVNavigationDelegate {
     // Standard schemes are handled in previous if-case.
     // This check handles custom app schemes to open external apps.
     // Our own 'brave' scheme does not require the switch-app prompt.
-    if requestURL.scheme?.contains("brave") == false {
+    if requestURL.scheme?.contains("brave") == false
+      && requestURL.scheme?.contains("chrome") == false
+    {
       // Do not allow opening external URLs from child tabs
       let shouldOpen = await handleExternalURL(
         requestURL,
