@@ -51,6 +51,11 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
     content::BrowsingDataFilterBuilder* filter_builder,
     uint64_t origin_type_mask,
     base::OnceCallback<void(/*failed_data_types=*/uint64_t)> callback) {
+#if BUILDFLAG(ENABLE_IPFS)
+  if (remove_mask & content::BrowsingDataRemover::DATA_TYPE_CACHE) {
+    ClearIPFSCache();
+  }
+#endif
   ChromeBrowsingDataRemoverDelegate::RemoveEmbedderData(delete_begin,
                                                         delete_end,
                                                         remove_mask,
@@ -66,10 +71,6 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
   if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS)
     ClearShieldsSettings(delete_begin, delete_end);
 
-#if BUILDFLAG(ENABLE_IPFS)
-  if (remove_mask & content::BrowsingDataRemover::DATA_TYPE_CACHE)
-    ClearIPFSCache();
-#endif
   // Brave News feed cache
   if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY) {
     brave_news::BraveNewsControllerFactory::GetForContext(profile_)
@@ -177,12 +178,13 @@ void BraveBrowsingDataRemoverDelegate::ClearIPFSCache() {
     return;
   }
 
+  auto callback = CreateTaskCompletionClosure(TracingDataType::kIPFSCache);
   base::ThreadPool::PostTaskAndReply(
       FROM_HERE,
       {base::TaskPriority::USER_VISIBLE, base::MayBlock(),
        base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
       base::BindOnce(&BraveBrowsingDataRemoverDelegate::WaitForIPFSRepoGC,
                      weak_ptr_factory_.GetWeakPtr(), std::move(process)),
-      CreateTaskCompletionClosure(TracingDataType::kIPFSCache));
+      std::move(callback));
 }
 #endif  // BUILDFLAG(ENABLE_IPFS)
