@@ -1388,6 +1388,7 @@ source_set("browser_tests") {
 
     sources = [
       "brave_browser_browsertest.cc",
+      "views/split_view/split_view_location_bar_browsertest.cc",
       "window_closing_confirm_browsertest.cc",
     ]
 

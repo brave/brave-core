@@ -67,6 +67,10 @@ class SplitViewLocationBar : public views::WidgetDelegateView,
  private:
   friend class SplitViewLocationBarUnitTest;
 
+  FRIEND_TEST_ALL_PREFIXES(SplitViewLocationBarBrowserTest,
+                           URLShouldBeUpdated_WhenActiveTabChanges);
+  FRIEND_TEST_ALL_PREFIXES(SplitViewLocationBarBrowserTest,
+                           URLShouldBeUpdated_WhenNavigationHappens);
   FRIEND_TEST_ALL_PREFIXES(SplitViewLocationBarUnitTest, GetURLForDisplay_HTTP);
   FRIEND_TEST_ALL_PREFIXES(SplitViewLocationBarUnitTest,
                            GetURLForDisplay_HTTPS);
