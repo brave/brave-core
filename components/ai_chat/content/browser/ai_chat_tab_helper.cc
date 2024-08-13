@@ -231,7 +231,7 @@ void AIChatTabHelper::InnerWebContentsAttached(
 void AIChatTabHelper::OnWebContentsFocused(
     content::RenderWidgetHost* render_widget_host) {
   if (IsPdf(web_contents())) {
-    CheckPDFA11yTree(web_contents()->GetPrimaryMainFrame());
+    CheckPDFA11yTree();
   }
 }
 
@@ -319,8 +319,9 @@ uint32_t AIChatTabHelper::GetMaxPageContentLength() {
   }
 }
 
-void AIChatTabHelper::CheckPDFA11yTree(content::RenderFrameHost* primary_rfh) {
+void AIChatTabHelper::CheckPDFA11yTree() {
   DVLOG(3) << __func__ << ": " << GetPageURL();
+  auto* primary_rfh = web_contents()->GetPrimaryMainFrame();
   if (!primary_rfh || is_pdf_a11y_info_loaded_) {
     return;
   }
@@ -337,7 +338,7 @@ void AIChatTabHelper::CheckPDFA11yTree(content::RenderFrameHost* primary_rfh) {
     base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
         FROM_HERE,
         base::BindOnce(&AIChatTabHelper::CheckPDFA11yTree,
-                       weak_ptr_factory_.GetWeakPtr(), primary_rfh),
+                       weak_ptr_factory_.GetWeakPtr()),
         base::Seconds(3));
     return;
   }
