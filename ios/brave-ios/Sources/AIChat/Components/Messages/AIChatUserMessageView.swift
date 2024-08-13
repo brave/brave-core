@@ -10,7 +10,7 @@ struct AIChatUserMessageView: View {
   let message: String
   let lastEdited: Date?
   let isEditingMessage: Bool
-  var isFieldFocused: FocusState<Bool>.Binding
+  var focusedField: FocusState<AIChatView.Field?>.Binding
   let cancelEditing: () -> Void
   let submitEditedText: (String) -> Void
 
@@ -18,7 +18,7 @@ struct AIChatUserMessageView: View {
     if isEditingMessage {
       EditingUserMessageView(
         existingText: message,
-        isFieldFocused: isFieldFocused,
+        focusedField: focusedField,
         isEdited: lastEdited != nil,
         cancel: cancelEditing,
         submitEditedText: submitEditedText
@@ -35,7 +35,7 @@ struct AIChatUserMessageView: View {
 #if DEBUG
 struct AIChatUserMessageView_Previews: PreviewProvider {
 
-  @FocusState static var isPreviewFieldFocused: Bool
+  @FocusState static var focusedField: AIChatView.Field?
 
   static var previews: some View {
     Group {
@@ -43,7 +43,7 @@ struct AIChatUserMessageView_Previews: PreviewProvider {
         message: "Does it work with Apple devices?",
         lastEdited: Date(),
         isEditingMessage: false,
-        isFieldFocused: $isPreviewFieldFocused,
+        focusedField: $focusedField,
         cancelEditing: {},
         submitEditedText: { _ in }
       )
@@ -51,7 +51,7 @@ struct AIChatUserMessageView_Previews: PreviewProvider {
         message: "Does it work with Apple devices?",
         lastEdited: Date(),
         isEditingMessage: true,
-        isFieldFocused: $isPreviewFieldFocused,
+        focusedField: $focusedField,
         cancelEditing: {},
         submitEditedText: { _ in }
       )
@@ -130,7 +130,7 @@ private struct EditingUserMessageView: View {
 
   let existingText: String
   @State private var text: String
-  var isFieldFocused: FocusState<Bool>.Binding
+  var focusedField: FocusState<AIChatView.Field?>.Binding
   let isEdited: Bool
   let cancel: () -> Void
   let submitEditedText: (String) -> Void
@@ -139,14 +139,14 @@ private struct EditingUserMessageView: View {
 
   init(
     existingText: String,
-    isFieldFocused: FocusState<Bool>.Binding,
+    focusedField: FocusState<AIChatView.Field?>.Binding,
     isEdited: Bool,
     cancel: @escaping () -> Void,
     submitEditedText: @escaping (String) -> Void
   ) {
     self.existingText = existingText
     self._text = State(wrappedValue: existingText)
-    self.isFieldFocused = isFieldFocused
+    self.focusedField = focusedField
     self.isEdited = isEdited
     self.cancel = cancel
     self.submitEditedText = submitEditedText
@@ -158,7 +158,7 @@ private struct EditingUserMessageView: View {
 
       HStack {
         TextField("", text: $text, axis: .vertical)
-          .focused(isFieldFocused)
+          .focused(focusedField, equals: .editing)
         Button(
           action: cancel,
           label: {
