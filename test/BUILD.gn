@@ -494,25 +494,10 @@ test("brave_unit_tests") {
 
   if (is_android) {
     deps += [
-      ":brave_public_test_apk",
-      "//android_webview/nonembedded",
-      "//android_webview/test:webview_instrumentation_test_native_jni_impl",
       "//brave:brave_pak_assets",
-      "//chrome:chrome_android_core",
-      "//chrome/android:browser_test_support",
       "//chrome/android:chrome_apk_paks",
-      "//chrome/android:chrome_test_util",
-      "//chrome/browser/android/metrics:ukm_utils_for_test",
-      "//chrome/browser/password_manager/android:test_support",
-      "//chrome/browser/subresource_filter:android_test_support",
       "//chrome/test/android:chrome_java_test_support_common",
-      "//components/component_updater/android:embedded_component_loader_java",
-      "//components/external_intents/android:test_support",
       "//components/gcm_driver/instance_id/android:instance_id_driver_test_support_java",
-      "//components/paint_preview/player/android:test_support",
-      "//components/variations/android:test_support",
-      "//content/public/test/android:content_native_test_support",
-      "//net/android:java_test_native_support",
     ]
     if (enable_brave_vpn || enable_ai_chat) {
       deps += [ "//brave/components/brave_mobile_subscription/renderer/android:unit_tests" ]

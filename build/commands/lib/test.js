@@ -70,6 +70,10 @@ const buildTests = async (suite, buildConfig = config.defaultBuildConfig, option
   ]
   if (testSuites.includes(suite)) {
     config.buildTargets = ['brave/test:' + suite]
+    if (suite === 'brave_unit_tests' && config.targetOS === 'android') {
+      // We need to build the APK for the java tests as well.
+      config.buildTargets.push('brave/test:brave_public_test_apk')
+    }
   } else {
     config.buildTargets = [suite]
   }
