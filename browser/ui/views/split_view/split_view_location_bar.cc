@@ -121,13 +121,13 @@ views::Widget::InitParams SplitViewLocationBar::GetWidgetInitParams(
   return params;
 }
 
-void SplitViewLocationBar::SetWebContents(content::WebContents* web_contents) {
-  if (this->web_contents() == web_contents) {
+void SplitViewLocationBar::SetWebContents(content::WebContents* new_contents) {
+  if (web_contents() == new_contents) {
     return;
   }
 
-  location_bar_model_delegate_->set_web_contents(web_contents);
-  Observe(web_contents);
+  location_bar_model_delegate_->set_web_contents(new_contents);
+  Observe(new_contents);
   UpdateURLAndIcon();
 }
 
