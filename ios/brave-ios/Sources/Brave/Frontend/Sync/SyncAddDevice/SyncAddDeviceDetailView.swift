@@ -46,10 +46,10 @@ class SyncAddDeviceInformationView: UIStackView {
   }
 
   func updateLabels(isFirstIndex: Bool) {
-    titleLabel.text = isFirstIndex ? Strings.syncAddDeviceScan : Strings.syncAddDeviceWords
+    titleLabel.text = isFirstIndex ? Strings.Sync.addDeviceScan : Strings.Sync.addDeviceWords
 
     if isFirstIndex {
-      let description = Strings.syncAddDeviceScanDescription
+      let description = Strings.Sync.addDeviceScanDescription
       let attributedDescription = NSMutableAttributedString(string: description)
 
       if let lastSentenceRange = lastSentenceRange(text: description) {
@@ -65,8 +65,8 @@ class SyncAddDeviceInformationView: UIStackView {
       descriptionLabel.attributedText = attributedDescription
     } else {
       // The button name should be the same as in codewords instructions.
-      let buttonName = Strings.scanSyncCode
-      let addDeviceWords = String(format: Strings.syncAddDeviceWordsDescription, buttonName)
+      let buttonName = Strings.Sync.scanSyncCode
+      let addDeviceWords = String(format: Strings.Sync.addDeviceWordsDescription, buttonName)
       let description = NSMutableAttributedString(string: addDeviceWords)
 
       let boldRange = (addDeviceWords as NSString).range(of: buttonName)
@@ -223,7 +223,7 @@ class SyncAddDeviceActionView: UIStackView {
   }
 
   private lazy var copyPasteButton = UIButton().then {
-    $0.setTitle(Strings.copyToClipboard, for: .normal)
+    $0.setTitle(Strings.Sync.copyToClipboard, for: .normal)
     $0.titleLabel?.font = .preferredFont(for: .subheadline, weight: .semibold)
     $0.addTarget(self, action: #selector(copyToClipboard), for: .touchUpInside)
     $0.setTitleColor(UIColor(braveSystemName: .textPrimary), for: .normal)
@@ -246,9 +246,9 @@ class SyncAddDeviceActionView: UIStackView {
   private var copyButtonPressed = false {
     didSet {
       if copyButtonPressed {
-        copyPasteButton.setTitle(Strings.copiedToClipboard, for: .normal)
+        copyPasteButton.setTitle(Strings.Sync.copiedToClipboard, for: .normal)
       } else {
-        copyPasteButton.setTitle(Strings.copyToClipboard, for: .normal)
+        copyPasteButton.setTitle(Strings.Sync.copyToClipboard, for: .normal)
       }
     }
   }
@@ -358,7 +358,7 @@ class SyncAddDeviceCodeExpirationView: UIStackView {
 
   private let codeExpirationTitleLabel = UILabel().then {
     $0.font = .preferredFont(forTextStyle: .subheadline)
-    $0.text = Strings.syncCodeExpirationTitleLabel
+    $0.text = Strings.Sync.codeExpirationTitleLabel
     $0.lineBreakMode = .byWordWrapping
     $0.textColor = UIColor(braveSystemName: .systemfeedbackErrorText)
     $0.textAlignment = .left
@@ -450,7 +450,7 @@ class SyncAddDeviceCodeExpirationView: UIStackView {
       delegate?.codeExpired()
     } else {
       timeRemainingTitleLabel.text = String(
-        format: Strings.syncCodeTimeRemainingTitleLabel,
+        format: Strings.Sync.codeTimeRemainingTitleLabel,
         timeRemainingString
       )
     }

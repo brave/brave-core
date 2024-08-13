@@ -407,7 +407,7 @@ class SettingsViewController: TableViewController {
           cellClass: MultilineValue1Cell.self
         ),
         Row(
-          text: Strings.sync,
+          text: Strings.Sync.syncTitle,
           selection: { [unowned self] in
             if syncAPI.isInSyncGroup {
               if !DeviceInfo.hasConnectivity() {

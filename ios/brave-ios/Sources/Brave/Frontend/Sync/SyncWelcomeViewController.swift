@@ -112,7 +112,7 @@ class SyncWelcomeViewController: SyncViewController {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.semibold)
-    label.text = Strings.braveSync
+    label.text = Strings.Sync.syncTitle
     label.textAlignment = .center
     return label
   }()
@@ -124,7 +124,7 @@ class SyncWelcomeViewController: SyncViewController {
     label.numberOfLines = 0
     label.lineBreakMode = .byWordWrapping
     label.textAlignment = .center
-    label.text = Strings.braveSyncWelcome
+    label.text = Strings.Sync.welcome
     label.setContentHuggingPriority(UILayoutPriority(rawValue: 250), for: .horizontal)
 
     return label
@@ -140,7 +140,7 @@ class SyncWelcomeViewController: SyncViewController {
   lazy var newToSyncButton: RoundInterfaceButton = {
     let button = RoundInterfaceButton(type: .roundedRect)
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle(Strings.newSyncCode, for: .normal)
+    button.setTitle(Strings.Sync.newSyncCode, for: .normal)
     button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.bold)
     button.setTitleColor(.white, for: .normal)
     button.backgroundColor = .braveBlurpleTint
@@ -156,7 +156,7 @@ class SyncWelcomeViewController: SyncViewController {
   lazy var existingUserButton: RoundInterfaceButton = {
     let button = RoundInterfaceButton(type: .roundedRect)
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle(Strings.scanSyncCode, for: .normal)
+    button.setTitle(Strings.Sync.scanSyncCode, for: .normal)
     button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
     button.setTitleColor(.braveLabel, for: .normal)
     button.addTarget(self, action: #selector(existingUserAction), for: .touchUpInside)
@@ -188,7 +188,7 @@ class SyncWelcomeViewController: SyncViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = Strings.sync
+    title = Strings.Sync.syncTitle
 
     view.addSubview(mainStackView)
     mainStackView.snp.makeConstraints { make in
@@ -241,8 +241,8 @@ class SyncWelcomeViewController: SyncViewController {
         guard self.syncAPI.isInSyncGroup else {
           addDevice.disableNavigationPrevention()
           let alert = UIAlertController(
-            title: Strings.syncUnsuccessful,
-            message: Strings.syncUnableCreateGroup,
+            title: Strings.Sync.syncUnsuccessful,
+            message: Strings.Sync.unableCreateGroup,
             preferredStyle: .alert
           )
           alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
@@ -303,7 +303,7 @@ class SyncWelcomeViewController: SyncViewController {
       guard let self = self, status else { return }
 
       let syncInternalsController = ChromeWebViewController(privateBrowsing: false).then {
-        $0.title = Strings.braveSyncInternalsTitle
+        $0.title = Strings.Sync.internalsTitle
         $0.loadURL("brave://sync-internals")
       }
 
@@ -398,7 +398,7 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
           guard let deviceLimitLevel = deviceLimit.level else {
             clearSyncChainWithAlert(
               title: Strings.genericErrorTitle,
-              message: Strings.Sync.syncDeviceFetchErrorAlertDescription,
+              message: Strings.Sync.deviceFetchErrorAlertDescription,
               controller: controller
             )
             return
@@ -416,7 +416,7 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
             if !devicesSyncChain.isEmpty {
               for device in devicesSyncChain where !device.name.isEmpty {
                 if device.isCurrentDevice {
-                  var currentDeviceNameList = "\n\(device.name) (\(Strings.syncThisDevice))"
+                  var currentDeviceNameList = "\n\(device.name) (\(Strings.Sync.thisDevice))"
                   currentDeviceNameList += alertMessage
                   alertMessage = currentDeviceNameList
                 } else {
@@ -424,13 +424,13 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
                 }
               }
 
-              alertMessage = "\n\(Strings.Sync.syncDevicesInSyncChainTitle):\n" + alertMessage
+              alertMessage = "\n\(Strings.Sync.devicesInSyncChainTitle):\n" + alertMessage
             }
 
-            alertMessage += "\n\n \(Strings.Sync.syncJoinChainCodewordsWarning)"
+            alertMessage += "\n\n \(Strings.Sync.joinChainCodewordsWarning)"
 
             let alert = UIAlertController(
-              title: Strings.Sync.syncJoinChainWarningTitle,
+              title: Strings.Sync.joinChainWarningTitle,
               message: alertMessage,
               preferredStyle: .alert
             )
@@ -449,7 +449,7 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
             // Devices 10 and more - add alert to block and prevent sync
             let alert = UIAlertController(
               title: Strings.genericErrorTitle,
-              message: Strings.Sync.syncMaximumDeviceReachedErrorDescription,
+              message: Strings.Sync.maximumDeviceReachedErrorDescription,
               preferredStyle: .alert
             )
             alert.addAction(
@@ -465,8 +465,8 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
         // Leave sync chain should be called if there is deleted chain alert
         // to reset sync and local preferences with observer
         self.clearSyncChainWithAlert(
-          title: Strings.Sync.syncChainAlreadyDeletedAlertTitle,
-          message: Strings.Sync.syncChainAlreadyDeletedAlertDescription,
+          title: Strings.Sync.chainAlreadyDeletedAlertTitle,
+          message: Strings.Sync.chainAlreadyDeletedAlertDescription,
           controller: controller
         )
       }

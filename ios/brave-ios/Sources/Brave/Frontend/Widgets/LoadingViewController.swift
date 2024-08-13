@@ -95,7 +95,7 @@ public class AuthenticationController: LoadingViewController {
 
     switch viewType {
     case .sync:
-      alertMessage = Strings.Sync.syncSetPasscodeAlertDescription
+      alertMessage = Strings.Sync.setPasscodeAlertDescription
     case .tabTray:
       alertMessage = Strings.Privacy.tabTraySetPasscodeAlertDescription
     default:
@@ -103,7 +103,7 @@ public class AuthenticationController: LoadingViewController {
     }
 
     let alert = UIAlertController(
-      title: Strings.Sync.syncSetPasscodeAlertTitle,
+      title: Strings.Sync.setPasscodeAlertTitle,
       message: alertMessage,
       preferredStyle: .alert
     )
