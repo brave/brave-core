@@ -20,9 +20,6 @@ class MediaThumbnailLoader: ObservableObject {
   }
 
   func loadThumbnail(assetURL: URL, pageURL: URL) async throws {
-    if assetURL.scheme == "blob" {
-      throw MediaThumbnailError.invalidURL
-    }
     // The page URL is more stable than the asset URL for most sites, but we don't want to
     // pick up favicons so prefix the cache key.
     let cacheKey = "playlist-\(pageURL.absoluteString)"
@@ -38,6 +35,9 @@ class MediaThumbnailLoader: ObservableObject {
       }
       await SDImageCache.shared.store(image, forKey: cacheKey)
       return
+    }
+    if assetURL.scheme == "blob" {
+      throw MediaThumbnailError.invalidURL
     }
     // FIXME: Bring over HLSThumbnailGenerator to handle HLS stream thumbnails
     let generator = AVAssetImageGenerator(asset: .init(url: assetURL))
