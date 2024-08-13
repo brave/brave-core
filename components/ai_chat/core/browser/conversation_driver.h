@@ -54,7 +54,7 @@ class ConversationDriver : public ModelService::Observer {
 
     virtual void OnHistoryUpdate() {}
     virtual void OnAPIRequestInProgress(bool in_progress) {}
-    virtual void OnAPIResponseError(mojom::APIError error) {}
+    virtual void OnAPIResponseError(mojom::APIErrorPtr error) {}
     virtual void OnModelDataChanged(
         const std::string& model_key,
         const std::vector<mojom::ModelPtr>& model_list) {}
@@ -115,7 +115,7 @@ class ConversationDriver : public ModelService::Observer {
   void SetShouldSendPageContents(bool should_send);
   bool GetShouldSendPageContents();
   void ClearConversationHistory();
-  mojom::APIError GetCurrentAPIError();
+  mojom::APIErrorPtr GetCurrentAPIError();
   mojom::ConversationTurnPtr ClearErrorAndGetFailedMessage();
   void GetPremiumStatus(mojom::PageHandler::GetPremiumStatusCallback callback);
   bool GetCanShowPremium();
@@ -129,21 +129,20 @@ class ConversationDriver : public ModelService::Observer {
 
   void AddSubmitSelectedTextError(const std::string& selected_text,
                                   mojom::ActionType action_type,
-                                  mojom::APIError error);
+                                  mojom::APIErrorPtr error);
 
   void SubmitSelectedText(
       const std::string& selected_text,
       mojom::ActionType action_type,
       GeneratedTextCallback received_callback = base::NullCallback(),
-      EngineConsumer::GenerationCompletedCallback completed_callback =
-          base::NullCallback());
+      GenerationCompletedCallback completed_callback = base::NullCallback());
 
   void SubmitSelectedTextWithQuestion(
       const std::string& selected_text,
       const std::string& question,
       mojom::ActionType action_type,
       GeneratedTextCallback received_callback,
-      EngineConsumer::GenerationCompletedCallback completed_callback);
+      GenerationCompletedCallback completed_callback);
 
   void ModifyConversation(uint32_t turn_index, const std::string& new_text);
 
@@ -242,10 +241,9 @@ class ConversationDriver : public ModelService::Observer {
   void OnEngineCompletionDataReceived(int64_t navigation_id,
                                       mojom::ConversationEntryEventPtr result);
   void OnEngineCompletionComplete(int64_t navigation_id,
-                                  EngineConsumer::GenerationResult result);
-  void OnSuggestedQuestionsResponse(
-      int64_t navigation_id,
-      EngineConsumer::SuggestedQuestionResult result);
+                                  GenerationResult result);
+  void OnSuggestedQuestionsResponse(int64_t navigation_id,
+                                    SuggestedQuestionResult result);
   void OnSuggestedQuestionsChanged();
   void OnPageHasContentChanged(mojom::SiteInfoPtr site_info);
   void OnPremiumStatusReceived(
@@ -253,7 +251,7 @@ class ConversationDriver : public ModelService::Observer {
       mojom::PremiumStatus premium_status,
       mojom::PremiumInfoPtr premium_info);
   void UpdateOrCreateLastAssistantEntry(mojom::ConversationEntryEventPtr text);
-  void SetAPIError(const mojom::APIError& error);
+  void SetAPIError(mojom::APIErrorPtr error);
   bool IsContentAssociationPossible();
 
   void CleanUp();
@@ -303,8 +301,7 @@ class ConversationDriver : public ModelService::Observer {
   // documents.
   int64_t current_navigation_id_;
 
-  mojom::APIError current_error_ =
-      mojom::APIError(mojom::APIErrorType::None, std::nullopt);
+  mojom::APIErrorPtr current_error_ = nullptr;
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Unknown;
 
   mojom::ConversationTurnPtr pending_conversation_entry_;

@@ -118,14 +118,14 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
       const std::string& element_id,
       const std::string& expected_selected_text,
       const std::vector<std::string>& received_data,
-      base::expected<std::string, mojom::APIError> completed_result,
+      base::expected<std::string, mojom::APIErrorPtr> completed_result,
       const std::string& expected_updated_text) {
     base::RunLoop run_loop;
     // Verify that rewrite is requested
     EXPECT_CALL(*mock_engine, GenerateRewriteSuggestion(_, _, _, _))
         .WillOnce([&](std::string text, const std::string& question,
-                      EngineConsumer::GenerationDataCallback data_callback,
-                      EngineConsumer::GenerationCompletedCallback callback) {
+                      GenerationDataCallback data_callback,
+                      GenerationCompletedCallback callback) {
           ASSERT_TRUE(callback);
           ASSERT_TRUE(data_callback);
           for (const auto& data : received_data) {
@@ -133,7 +133,7 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
                 mojom::CompletionEvent::New(data));
             data_callback.Run(std::move(event));
           }
-          std::move(callback).Run(completed_result);
+          std::move(callback).Run(std::move(completed_result));
           run_loop.Quit();
         });
 
@@ -230,7 +230,7 @@ IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest, RewriteInPlace) {
   // 1) Get error in completed callback immediately.
   EXPECT_FALSE(IsAIChatSidebarActive());
   TestRewriteInPlace(contents, mock_engine, "textarea", "OK2", {},
-                     base::unexpected(mojom::APIError(
+                     base::unexpected(mojom::APIError::New(
                          mojom::APIErrorType::ConnectionIssue, std::nullopt)),
                      "OK2");
   EXPECT_TRUE(IsAIChatSidebarActive());
@@ -239,7 +239,7 @@ IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest, RewriteInPlace) {
   EXPECT_FALSE(IsAIChatSidebarActive());
   // 2) Get partial streaming responses then error in completed callback.
   TestRewriteInPlace(contents, mock_engine, "textarea", "OK2", {"N", "O"},
-                     base::unexpected(mojom::APIError(
+                     base::unexpected(mojom::APIError::New(
                          mojom::APIErrorType::ConnectionIssue, std::nullopt)),
                      "OK2");
   EXPECT_TRUE(IsAIChatSidebarActive());

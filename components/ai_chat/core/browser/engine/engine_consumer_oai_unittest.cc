@@ -35,7 +35,7 @@ namespace ai_chat {
 class MockCallback {
  public:
   MOCK_METHOD(void, OnDataReceived, (mojom::ConversationEntryEventPtr));
-  MOCK_METHOD(void, OnCompleted, (EngineConsumer::GenerationResult));
+  MOCK_METHOD(void, OnCompleted, (GenerationResult));
 };
 
 class MockOAIAPIClient : public OAIAPIClient {
@@ -47,8 +47,8 @@ class MockOAIAPIClient : public OAIAPIClient {
               PerformRequest,
               (const mojom::CustomModelOptions&,
                base::Value::List,
-               EngineConsumer::GenerationDataCallback,
-               EngineConsumer::GenerationCompletedCallback),
+               GenerationDataCallback,
+               GenerationCompletedCallback),
               (override));
 };
 
@@ -93,8 +93,8 @@ TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
   base::RunLoop run_loop;
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
       .WillOnce([&](const mojom::CustomModelOptions& model_options,
-                    base::Value::List, EngineConsumer::GenerationDataCallback,
-                    EngineConsumer::GenerationCompletedCallback) {
+                    base::Value::List, GenerationDataCallback,
+                    GenerationCompletedCallback) {
         EXPECT_EQ("https://test.com/", model_options.endpoint.spec());
 
         // Update the model options
@@ -120,8 +120,8 @@ TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
   base::RunLoop run_loop2;
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
       .WillOnce([&](const mojom::CustomModelOptions& model_options,
-                    base::Value::List, EngineConsumer::GenerationDataCallback,
-                    EngineConsumer::GenerationCompletedCallback) {
+                    base::Value::List, GenerationDataCallback,
+                    GenerationCompletedCallback) {
         EXPECT_EQ("https://updated-test.com/", model_options.endpoint.spec());
         run_loop2.Quit();
       });
@@ -140,12 +140,10 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
   base::RunLoop run_loop;
 
   auto invoke_completion_callback = [](const std::string& result_string) {
-    return [result_string](
-               const mojom::CustomModelOptions&, base::Value::List,
-               EngineConsumer::GenerationDataCallback,
-               EngineConsumer::GenerationCompletedCallback completed_callback) {
-      std::move(completed_callback)
-          .Run(EngineConsumer::GenerationResult(result_string));
+    return [result_string](const mojom::CustomModelOptions&, base::Value::List,
+                           GenerationDataCallback,
+                           GenerationCompletedCallback completed_callback) {
+      std::move(completed_callback).Run(GenerationResult(result_string));
     };
   };
 
@@ -161,43 +159,39 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
 
   engine_->GenerateQuestionSuggestions(
       false, page_content,
-      base::BindLambdaForTesting(
-          [&](EngineConsumer::SuggestedQuestionResult result) {
-            EXPECT_TRUE(result.has_value());
-            EXPECT_EQ(result.value().size(), 1ull);
-          }));
+      base::BindLambdaForTesting([&](SuggestedQuestionResult result) {
+        EXPECT_TRUE(result.has_value());
+        EXPECT_EQ(result.value().size(), 1ull);
+      }));
 
   engine_->GenerateQuestionSuggestions(
       false, page_content,
-      base::BindLambdaForTesting(
-          [&](EngineConsumer::SuggestedQuestionResult result) {
-            EXPECT_STREQ(result.value()[0].c_str(), "Question 1");
-            EXPECT_STREQ(result.value()[1].c_str(), "Question 2");
-          }));
+      base::BindLambdaForTesting([&](SuggestedQuestionResult result) {
+        EXPECT_STREQ(result.value()[0].c_str(), "Question 1");
+        EXPECT_STREQ(result.value()[1].c_str(), "Question 2");
+      }));
 
   engine_->GenerateQuestionSuggestions(
       false, page_content,
-      base::BindLambdaForTesting(
-          [&](EngineConsumer::SuggestedQuestionResult result) {
-            EXPECT_STREQ(result.value()[0].c_str(), "Question 1");
-            EXPECT_STREQ(result.value()[1].c_str(), "Question 2");
-          }));
+      base::BindLambdaForTesting([&](SuggestedQuestionResult result) {
+        EXPECT_STREQ(result.value()[0].c_str(), "Question 1");
+        EXPECT_STREQ(result.value()[1].c_str(), "Question 2");
+      }));
 
   engine_->GenerateQuestionSuggestions(
       false, page_content,
-      base::BindLambdaForTesting(
-          [&](EngineConsumer::SuggestedQuestionResult result) {
-            EXPECT_STREQ(result.value()[0].c_str(), "Question 1");
-            EXPECT_STREQ(result.value()[1].c_str(), "Question 2");
-            run_loop.Quit();
-          }));
+      base::BindLambdaForTesting([&](SuggestedQuestionResult result) {
+        EXPECT_STREQ(result.value()[0].c_str(), "Question 1");
+        EXPECT_STREQ(result.value()[1].c_str(), "Question 2");
+        run_loop.Quit();
+      }));
 
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
 TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
-  EngineConsumer::ConversationHistory history;
+  ConversationHistory history;
 
   std::string human_input = "Which show is this catchphrase from?";
   std::string selected_text = "This is the way.";
@@ -226,8 +220,8 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
       .WillOnce(
           [&](const mojom::CustomModelOptions, base::Value::List messages,
-              EngineConsumer::GenerationDataCallback,
-              EngineConsumer::GenerationCompletedCallback completed_callback) {
+              GenerationDataCallback,
+              GenerationCompletedCallback completed_callback) {
             // system role is added by the engine
             EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
             EXPECT_EQ(*messages[0].GetDict().Find("content"),
@@ -246,8 +240,7 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
             EXPECT_EQ(*messages[3].GetDict().Find("content"),
                       "What's his name?");
 
-            std::move(completed_callback)
-                .Run(EngineConsumer::GenerationResult("I dont know"));
+            std::move(completed_callback).Run(GenerationResult("I dont know"));
           });
 
   {
@@ -259,11 +252,10 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
 
   engine_->GenerateAssistantResponse(
       /* is_video */ false, "", history, "What's his name?", base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult result) {
-            EXPECT_STREQ(result.value().c_str(), "I dont know");
-            run_loop.Quit();
-          }));
+      base::BindLambdaForTesting([&run_loop](GenerationResult result) {
+        EXPECT_STREQ(result.value().c_str(), "I dont know");
+        run_loop.Quit();
+      }));
 
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(client);
@@ -272,9 +264,8 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
   base::RunLoop run_loop2;
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
       .WillOnce([&](const mojom::CustomModelOptions, base::Value::List messages,
-                    EngineConsumer::GenerationDataCallback,
-                    EngineConsumer::GenerationCompletedCallback
-                        completed_callback) {
+                    GenerationDataCallback,
+                    GenerationCompletedCallback completed_callback) {
         // system role is added by the engine
         EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
         EXPECT_EQ(*messages[0].GetDict().Find("content"),
@@ -292,15 +283,13 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
         EXPECT_EQ(*messages[3].GetDict().Find("content"),
                   "Is it related to a broader series?");
 
-        std::move(completed_callback).Run(EngineConsumer::GenerationResult(""));
+        std::move(completed_callback).Run(GenerationResult(""));
       });
 
   engine_->GenerateAssistantResponse(
       false, "", GetHistoryWithModifiedReply(), "test", base::DoNothing(),
       base::BindLambdaForTesting(
-          [&run_loop2](EngineConsumer::GenerationResult result) {
-            run_loop2.Quit();
-          }));
+          [&run_loop2](GenerationResult result) { run_loop2.Quit(); }));
   run_loop2.Run();
   testing::Mock::VerifyAndClearExpectations(client);
 }
@@ -309,20 +298,19 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
   auto* client = GetClient();
   base::RunLoop run_loop;
 
-  EngineConsumer::ConversationHistory history;
+  ConversationHistory history;
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
       .WillOnce(
           [&](const mojom::CustomModelOptions, base::Value::List messages,
-              EngineConsumer::GenerationDataCallback,
-              EngineConsumer::GenerationCompletedCallback completed_callback) {
+              GenerationDataCallback,
+              GenerationCompletedCallback completed_callback) {
             // Page content should always be attached to the first message
             EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
             EXPECT_EQ(*messages[1].GetDict().Find("content"),
                       "This is the text of a web page:\n<page>\nThis is a "
                       "page.\n</page>\n\nTell me more about this page");
-            std::move(completed_callback)
-                .Run(EngineConsumer::GenerationResult(""));
+            std::move(completed_callback).Run(GenerationResult(""));
           });
 
   {
@@ -336,7 +324,7 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
       /* is_video */ false,
       /* page_content */ "This is a page.", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+          [&run_loop](GenerationResult) { run_loop.Quit(); }));
 
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(client);

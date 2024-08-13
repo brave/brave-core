@@ -22,10 +22,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
-#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -47,7 +43,7 @@ base::Value::List BuildMessages(
     const std::string& page_content,
     const std::optional<std::string>& selected_text,
     const bool& is_video,
-    const EngineConsumer::ConversationHistory& conversation_history) {
+    const ConversationHistory& conversation_history) {
   base::Value::List messages;
 
   // Append system message
@@ -237,7 +233,7 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
   if (conversation_history.empty()) {
     std::move(completed_callback)
         .Run(base::unexpected(
-            mojom::APIError(mojom::APIErrorType::None, std::nullopt)));
+            mojom::APIError::New(mojom::APIErrorType::None, std::nullopt)));
     return;
   }
 
@@ -245,7 +241,7 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
   if (last_turn->character_type != CharacterType::HUMAN) {
     std::move(completed_callback)
         .Run(base::unexpected(
-            mojom::APIError(mojom::APIErrorType::None, std::nullopt)));
+            mojom::APIError::New(mojom::APIErrorType::None, std::nullopt)));
     return;
   }
 

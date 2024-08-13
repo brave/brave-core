@@ -34,7 +34,7 @@ namespace ai_chat {
 class MockCallback {
  public:
   MOCK_METHOD(void, OnDataReceived, (mojom::ConversationEntryEventPtr));
-  MOCK_METHOD(void, OnCompleted, (EngineConsumer::GenerationResult));
+  MOCK_METHOD(void, OnCompleted, (GenerationResult));
 };
 
 class EngineConsumerLlamaUnitTest : public testing::Test {
@@ -67,7 +67,7 @@ class EngineConsumerLlamaUnitTest : public testing::Test {
 };
 
 TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
-  EngineConsumer::ConversationHistory history;
+  ConversationHistory history;
   history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
       mojom::ConversationTurnVisibility::VISIBLE,
@@ -110,8 +110,8 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
   EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _))
       .WillOnce([&](const std::string& prompt,
                     const std::vector<std::string>& history,
-                    EngineConsumer::GenerationCompletedCallback callback,
-                    EngineConsumer::GenerationDataCallback data_callback) {
+                    GenerationCompletedCallback callback,
+                    GenerationDataCallback data_callback) {
         EXPECT_TRUE(base::StartsWith(prompt, prompt_before_time_and_date));
         EXPECT_TRUE(base::EndsWith(prompt, prompt_after_time_and_date));
         std::move(callback).Run("");
@@ -126,7 +126,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
   engine_->GenerateAssistantResponse(
       false, "This is a page.", history, "What's his name?", base::DoNothing(),
       base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+          [&run_loop](GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
 
@@ -158,8 +158,8 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
   EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _))
       .WillOnce([&](const std::string& prompt,
                     const std::vector<std::string>& history,
-                    EngineConsumer::GenerationCompletedCallback callback,
-                    EngineConsumer::GenerationDataCallback data_callback) {
+                    GenerationCompletedCallback callback,
+                    GenerationDataCallback data_callback) {
         EXPECT_TRUE(base::StartsWith(prompt, prompt_before_time_and_date));
         EXPECT_TRUE(base::EndsWith(prompt, prompt_after_time_and_date));
         std::move(callback).Run("");
@@ -175,9 +175,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
   engine_->GenerateAssistantResponse(
       false, "This is a page.", history2, "What's his name?", base::DoNothing(),
       base::BindLambdaForTesting(
-          [&run_loop2](EngineConsumer::GenerationResult) {
-            run_loop2.Quit();
-          }));
+          [&run_loop2](GenerationResult) { run_loop2.Quit(); }));
   run_loop2.Run();
   testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
 
@@ -186,8 +184,8 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
   EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _))
       .WillOnce([](const std::string& prompt,
                    const std::vector<std::string>& history,
-                   EngineConsumer::GenerationCompletedCallback callback,
-                   EngineConsumer::GenerationDataCallback data_callback) {
+                   GenerationCompletedCallback callback,
+                   GenerationDataCallback data_callback) {
         std::string prompt_segment_with_truncated_page_content =
             "This is the text of a web page:\n<page>\n12\n</page>\n\n";
 
@@ -212,9 +210,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
   engine_->GenerateAssistantResponse(
       false, "12345", history, "user question", base::DoNothing(),
       base::BindLambdaForTesting(
-          [&run_loop3](EngineConsumer::GenerationResult) {
-            run_loop3.Quit();
-          }));
+          [&run_loop3](GenerationResult) { run_loop3.Quit(); }));
   run_loop3.Run();
   testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
 
@@ -223,8 +219,8 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
   EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _))
       .WillOnce([](const std::string& prompt,
                    const std::vector<std::string>& stop_words,
-                   EngineConsumer::GenerationCompletedCallback callback,
-                   EngineConsumer::GenerationDataCallback data_callback) {
+                   GenerationCompletedCallback callback,
+                   GenerationDataCallback data_callback) {
         // Make sure the prompt uses the modified agent reply.
         EXPECT_NE(prompt.find("Which show is 'This is the way' from?"),
                   std::string::npos);
@@ -236,9 +232,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
       false, "12345", GetHistoryWithModifiedReply(), "user question",
       base::DoNothing(),
       base::BindLambdaForTesting(
-          [&run_loop4](EngineConsumer::GenerationResult) {
-            run_loop4.Quit();
-          }));
+          [&run_loop4](GenerationResult) { run_loop4.Quit(); }));
   run_loop4.Run();
   testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
 }
@@ -251,8 +245,8 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateRewriteSuggestion) {
   EXPECT_CALL(*mock_client, QueryPrompt(_, _, _, _))
       .WillOnce([&](const std::string& prompt,
                     const std::vector<std::string>& history,
-                    EngineConsumer::GenerationCompletedCallback callback,
-                    EngineConsumer::GenerationDataCallback data_callback) {
+                    GenerationCompletedCallback callback,
+                    GenerationDataCallback data_callback) {
         // The excerpt should become "Hello" instead of "Hello World" due to
         // the truncation and sanitization.
         EXPECT_EQ(
@@ -290,7 +284,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateRewriteSuggestion) {
         EXPECT_TRUE(event->is_completion_event());
         EXPECT_EQ(event->get_completion_event()->completion, "Reply");
       });
-  EXPECT_CALL(mock_callback, OnCompleted(EngineConsumer::GenerationResult("")));
+  EXPECT_CALL(mock_callback, OnCompleted(GenerationResult("")));
 
   engine_->GenerateRewriteSuggestion(
       "<excerpt>Hello World</excerpt>", "Rewrite the excerpt in a funny tone.",

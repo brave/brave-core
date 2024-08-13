@@ -104,8 +104,10 @@ void ConversationDriverIOS::OnAPIRequestInProgress(bool in_progress) {
   [bridge_ onAPIRequestInProgress:in_progress];
 }
 
-void ConversationDriverIOS::OnAPIResponseError(ai_chat::mojom::APIError error) {
-  [bridge_ onAPIResponseError:[[AiChatAPIError alloc] initWithAPIError:error]];
+void ConversationDriverIOS::OnAPIResponseError(
+    ai_chat::mojom::APIErrorPtr error) {
+  [bridge_ onAPIResponseError:[[AiChatAPIError alloc]
+                                  initWithAPIErrorPtr:std::move(error)]];
 }
 
 void ConversationDriverIOS::OnModelDataChanged(

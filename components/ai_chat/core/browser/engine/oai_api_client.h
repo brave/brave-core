@@ -10,11 +10,14 @@
 #include <string>
 #include <utility>
 
+#include "base/memory/weak_ptr.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 
 namespace api_request_helper {
 class APIRequestResult;
+class APIRequestHelper;
 }  // namespace api_request_helper
 
 namespace network {
@@ -26,12 +29,6 @@ namespace ai_chat {
 // Performs remote request to the OAI format APIs.
 class OAIAPIClient {
  public:
-  using GenerationResult = base::expected<std::string, mojom::APIError>;
-  using GenerationDataCallback =
-      base::RepeatingCallback<void(mojom::ConversationEntryEventPtr)>;
-  using GenerationCompletedCallback =
-      base::OnceCallback<void(GenerationResult)>;
-
   explicit OAIAPIClient(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
@@ -48,16 +45,14 @@ class OAIAPIClient {
 
  protected:
   void SetAPIRequestHelperForTesting(
-      std::unique_ptr<api_request_helper::APIRequestHelper> api_helper) {
-    api_request_helper_ = std::move(api_helper);
-  }
+      std::unique_ptr<api_request_helper::APIRequestHelper> api_helper);
   api_request_helper::APIRequestHelper* GetAPIRequestHelperForTesting() {
     return api_request_helper_.get();
   }
 
  private:
   void OnQueryCompleted(GenerationCompletedCallback callback,
-                        APIRequestResult result);
+                        api_request_helper::APIRequestResult result);
   void OnQueryDataReceived(GenerationDataCallback callback,
                            base::expected<base::Value, std::string> result);
 

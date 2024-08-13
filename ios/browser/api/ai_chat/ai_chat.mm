@@ -204,8 +204,8 @@
 }
 
 - (AiChatAPIError*)currentAPIError {
-  return
-      [[AiChatAPIError alloc] initWithAPIError:driver_->GetCurrentAPIError()];
+  return [[AiChatAPIError alloc]
+      initWithAPIErrorPtr:driver_->GetCurrentAPIError()];
 }
 
 - (void)getPremiumStatus:(void (^)(AiChatPremiumStatus))completion {
@@ -240,17 +240,15 @@
         onSuggestion(base::SysUTF8ToNSString(suggestion_text));
       })
                    : base::NullCallback(),
-      onCompleted
-          ? base::BindOnce(^(ai_chat::EngineConsumer::GenerationResult result) {
-              if (auto result_string = result; result_string.has_value()) {
-                onCompleted(base::SysUTF8ToNSString(result_string.value()),
-                            nil);
-              } else {
-                onCompleted(nil, [[AiChatAPIError alloc]
-                                     initWithAPIError:result.error()]);
-              }
-            })
-          : base::NullCallback());
+      onCompleted ? base::BindOnce(^(ai_chat::GenerationResult result) {
+        if (auto& result_string = result; result_string.has_value()) {
+          onCompleted(base::SysUTF8ToNSString(result_string.value()), nil);
+        } else {
+          onCompleted(nil, [[AiChatAPIError alloc]
+                               initWithAPIErrorPtr:result.error()->Clone()]);
+        }
+      })
+                  : base::NullCallback());
 }
 
 - (void)submitSelectedText:(NSString*)selectedText
@@ -266,17 +264,15 @@
         onSuggestion(base::SysUTF8ToNSString(suggestion_text));
       })
                    : base::NullCallback(),
-      onCompleted
-          ? base::BindOnce(^(ai_chat::EngineConsumer::GenerationResult result) {
-              if (auto result_string = result; result_string.has_value()) {
-                onCompleted(base::SysUTF8ToNSString(result_string.value()),
-                            nil);
-              } else {
-                onCompleted(nil, [[AiChatAPIError alloc]
-                                     initWithAPIError:result.error()]);
-              }
-            })
-          : base::NullCallback());
+      onCompleted ? base::BindOnce(^(ai_chat::GenerationResult result) {
+        if (auto& result_string = result; result_string.has_value()) {
+          onCompleted(base::SysUTF8ToNSString(result_string.value()), nil);
+        } else {
+          onCompleted(nil, [[AiChatAPIError alloc]
+                               initWithAPIErrorPtr:result.error()->Clone()]);
+        }
+      })
+                  : base::NullCallback());
 }
 
 - (void)rateMessage:(bool)isLiked

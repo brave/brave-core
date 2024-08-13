@@ -100,14 +100,14 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   if (conversation_history.empty()) {
     std::move(completed_callback)
         .Run(base::unexpected(
-            mojom::APIError(mojom::APIErrorType::None, std::nullopt)));
+            mojom::APIError::New(mojom::APIErrorType::None, std::nullopt)));
     return;
   }
 
   const mojom::ConversationTurnPtr& last_turn = conversation_history.back();
   if (last_turn->character_type != mojom::CharacterType::HUMAN) {
     std::move(completed_callback)
-        .Run(base::unexpected(mojom::APIError(
+        .Run(base::unexpected(mojom::APIError::New(
             mojom::APIErrorType::ConnectionIssue, std::nullopt)));
     return;
   }

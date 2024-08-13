@@ -23,6 +23,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_service_keys/brave_service_key_utils.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/http/http_status_code.h"
@@ -125,8 +126,10 @@ RemoteCompletionClient::RemoteCompletionClient(
     AIChatCredentialManager* credential_manager)
     : model_name_(model_name),
       stop_sequences_(stop_sequences),
-      api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
-      credential_manager_(credential_manager) {}
+      credential_manager_(credential_manager) {
+  api_request_helper_ = std::make_unique<api_request_helper::APIRequestHelper>(
+      GetNetworkTrafficAnnotationTag(), url_loader_factory);
+}
 
 RemoteCompletionClient::~RemoteCompletionClient() = default;
 
@@ -187,9 +190,9 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
                        weak_ptr_factory_.GetWeakPtr(), credential,
                        std::move(data_completed_callback));
 
-    api_request_helper_.RequestSSE(kHttpMethod, api_url, request_body,
-                                   "application/json", std::move(on_received),
-                                   std::move(on_complete), headers, {});
+    api_request_helper_->RequestSSE(kHttpMethod, api_url, request_body,
+                                    "application/json", std::move(on_received),
+                                    std::move(on_complete), headers, {});
   } else {
     VLOG(2) << "Making non-streaming AI Chat API Request";
     auto on_complete =
@@ -197,16 +200,16 @@ void RemoteCompletionClient::OnFetchPremiumCredential(
                        weak_ptr_factory_.GetWeakPtr(), credential,
                        std::move(data_completed_callback));
 
-    api_request_helper_.Request(kHttpMethod, api_url, request_body,
-                                "application/json", std::move(on_complete),
-                                headers, {});
+    api_request_helper_->Request(kHttpMethod, api_url, request_body,
+                                 "application/json", std::move(on_complete),
+                                 headers, {});
   }
 }
 
 void RemoteCompletionClient::ClearAllQueries() {
   // TODO(nullhook): Keep track of in-progress requests and cancel them
   // individually. This would be useful to keep some in-progress requests alive.
-  api_request_helper_.CancelAll();
+  api_request_helper_->CancelAll();
 }
 
 void RemoteCompletionClient::OnQueryDataReceived(
@@ -228,7 +231,7 @@ void RemoteCompletionClient::OnQueryDataReceived(
 void RemoteCompletionClient::OnQueryCompleted(
     std::optional<CredentialCacheEntry> credential,
     GenerationCompletedCallback callback,
-    APIRequestResult result) {
+    api_request_helper::APIRequestResult result) {
   const bool success = result.Is2XXResponseCode();
   // Handle successful request
   if (success) {
@@ -253,14 +256,14 @@ void RemoteCompletionClient::OnQueryCompleted(
   }
 
   // Handle error
-  mojom::APIError error;
+  mojom::APIErrorPtr error = mojom::APIError::New();
 
   if (net::HTTP_TOO_MANY_REQUESTS == result.response_code()) {
-    error.type = mojom::APIErrorType::RateLimitReached;
+    error->type = mojom::APIErrorType::RateLimitReached;
   } else if (net::HTTP_REQUEST_ENTITY_TOO_LARGE == result.response_code()) {
-    error.type = mojom::APIErrorType::ContextLimitReached;
+    error->type = mojom::APIErrorType::ContextLimitReached;
   } else {
-    error.type = mojom::APIErrorType::ConnectionIssue;
+    error->type = mojom::APIErrorType::ConnectionIssue;
   }
 
   std::move(callback).Run(base::unexpected(std::move(error)));

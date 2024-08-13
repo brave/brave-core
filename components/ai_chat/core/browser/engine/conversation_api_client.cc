@@ -25,6 +25,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_service_keys/brave_service_key_utils.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -41,6 +42,8 @@ namespace {
 
 using ConversationEvent = ConversationAPIClient::ConversationEvent;
 using ConversationEventType = ConversationAPIClient::ConversationEventType;
+using api_request_helper::APIRequestHelper;
+using api_request_helper::APIRequestResult;
 
 constexpr char kRemotePath[] = "v1/conversation";
 
@@ -214,6 +217,11 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
   return json;
 }
 
+void ConversationAPIClient::SetAPIRequestHelperForTesting(
+    std::unique_ptr<api_request_helper::APIRequestHelper> api_helper) {
+  api_request_helper_ = std::move(api_helper);
+}
+
 void ConversationAPIClient::PerformRequestWithCredentials(
     const std::vector<ConversationEvent>& conversation,
     GenerationDataCallback data_received_callback,
@@ -222,7 +230,7 @@ void ConversationAPIClient::PerformRequestWithCredentials(
   if (conversation.empty()) {
     std::move(completed_callback)
         .Run(base::unexpected(
-            mojom::APIError(mojom::APIErrorType::None, std::nullopt)));
+            mojom::APIError::New(mojom::APIErrorType::None, std::nullopt)));
     return;
   }
 
@@ -232,7 +240,7 @@ void ConversationAPIClient::PerformRequestWithCredentials(
   if (!api_url.is_valid()) {
     std::move(completed_callback)
         .Run(base::unexpected(
-            mojom::APIError(mojom::APIErrorType::None, std::nullopt)));
+            mojom::APIError::New(mojom::APIErrorType::None, std::nullopt)));
     return;
   }
 
@@ -318,14 +326,14 @@ void ConversationAPIClient::OnQueryCompleted(
   }
 
   // Handle error
-  mojom::APIError error;
+  mojom::APIErrorPtr error = mojom::APIError::New();
 
   if (net::HTTP_TOO_MANY_REQUESTS == result.response_code()) {
-    error.type = mojom::APIErrorType::RateLimitReached;
+    error->type = mojom::APIErrorType::RateLimitReached;
   } else if (net::HTTP_REQUEST_ENTITY_TOO_LARGE == result.response_code()) {
-    error.type = mojom::APIErrorType::ContextLimitReached;
+    error->type = mojom::APIErrorType::ContextLimitReached;
   } else {
-    error.type = mojom::APIErrorType::ConnectionIssue;
+    error->type = mojom::APIErrorType::ConnectionIssue;
   }
 
   std::move(callback).Run(base::unexpected(std::move(error)));

@@ -24,10 +24,6 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
-#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -62,7 +58,7 @@ static constexpr auto kStopSequences =
     base::MakeFixedFlatSet<std::string_view>({kHumanPromptSequence});
 
 std::string GetConversationHistoryString(
-    const EngineConsumer::ConversationHistory& conversation_history) {
+    const ConversationHistory& conversation_history) {
   std::vector<std::string> turn_strings;
   for (const mojom::ConversationTurnPtr& turn : conversation_history) {
     // Ignore the last entry since it's the current human entry
@@ -87,12 +83,11 @@ std::string GetConversationHistoryString(
   return base::JoinString(turn_strings, "");
 }
 
-std::string BuildClaudePrompt(
-    const std::string& question_part,
-    const std::string& page_content,
-    const std::optional<std::string>& selected_text,
-    const bool& is_video,
-    const EngineConsumer::ConversationHistory& conversation_history) {
+std::string BuildClaudePrompt(const std::string& question_part,
+                              const std::string& page_content,
+                              const std::optional<std::string>& selected_text,
+                              const bool& is_video,
+                              const ConversationHistory& conversation_history) {
   auto prompt_segment_article =
       page_content.empty()
           ? ""
@@ -255,7 +250,7 @@ void EngineConsumerClaudeRemote::GenerateAssistantResponse(
   if (conversation_history.empty()) {
     std::move(completed_callback)
         .Run(base::unexpected(
-            mojom::APIError(mojom::APIErrorType::None, std::nullopt)));
+            mojom::APIError::New(mojom::APIErrorType::None, std::nullopt)));
     return;
   }
 
@@ -263,7 +258,7 @@ void EngineConsumerClaudeRemote::GenerateAssistantResponse(
   if (last_turn->character_type != CharacterType::HUMAN) {
     std::move(completed_callback)
         .Run(base::unexpected(
-            mojom::APIError(mojom::APIErrorType::None, std::nullopt)));
+            mojom::APIError::New(mojom::APIErrorType::None, std::nullopt)));
     return;
   }
 

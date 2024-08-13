@@ -24,9 +24,6 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
-#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -195,7 +192,7 @@ std::string BuildLlamaGenerateQuestionsPrompt(bool is_video,
 }
 
 std::string BuildLlamaPrompt(
-    const ai_chat::EngineConsumer::ConversationHistory& conversation_history,
+    const ai_chat::ConversationHistory& conversation_history,
     std::string page_content,
     const std::optional<std::string>& selected_text,
     const bool& is_video,
@@ -437,14 +434,14 @@ void EngineConsumerLlamaRemote::GenerateAssistantResponse(
   if (conversation_history.empty()) {
     std::move(completed_callback)
         .Run(base::unexpected(
-            mojom::APIError(mojom::APIErrorType::None, std::nullopt)));
+            mojom::APIError::New(mojom::APIErrorType::None, std::nullopt)));
     return;
   }
   const mojom::ConversationTurnPtr& last_turn = conversation_history.back();
   if (last_turn->character_type != mojom::CharacterType::HUMAN) {
     std::move(completed_callback)
         .Run(base::unexpected(
-            mojom::APIError(mojom::APIErrorType::None, std::nullopt)));
+            mojom::APIError::New(mojom::APIErrorType::None, std::nullopt)));
     return;
   }
   std::optional<std::string> selected_text = std::nullopt;

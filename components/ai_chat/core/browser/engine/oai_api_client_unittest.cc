@@ -19,7 +19,6 @@
 #include "base/strings/string_util.h"
 #include "base/test/task_environment.h"
 #include "base/types/expected.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "net/base/net_errors.h"
@@ -30,14 +29,12 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using ConversationHistory = std::vector<ai_chat::mojom::ConversationTurn>;
 using ::testing::_;
 using ::testing::Sequence;
 using DataReceivedCallback =
     api_request_helper::APIRequestHelper::DataReceivedCallback;
 using ResultCallback = api_request_helper::APIRequestHelper::ResultCallback;
 using Ticket = api_request_helper::APIRequestHelper::Ticket;
-using GenerationResult = ai_chat::OAIAPIClient::GenerationResult;
 
 namespace ai_chat {
 
@@ -219,11 +216,11 @@ TEST_F(OAIAPIUnitTest, APIError) {
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
       .WillOnce([&](GenerationResult result) {
         EXPECT_FALSE(result.has_value());
-        EXPECT_EQ(mojom::APIErrorType::ConnectionIssue, result.error().type);
+        EXPECT_EQ(mojom::APIErrorType::ConnectionIssue, result.error()->type);
         EXPECT_EQ(
             "The model `gpt-4-turbo-preview` does not exist or you do not have "
             "access to it.",
-            result.error().message);
+            result.error()->message);
       });
 
   // Begin request

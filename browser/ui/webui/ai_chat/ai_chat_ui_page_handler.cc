@@ -375,7 +375,7 @@ void AIChatUIPageHandler::OnAPIRequestInProgress(bool in_progress) {
   }
 }
 
-void AIChatUIPageHandler::OnAPIResponseError(mojom::APIError error) {
+void AIChatUIPageHandler::OnAPIResponseError(mojom::APIErrorPtr error) {
   if (page_.is_bound()) {
     page_->OnAPIResponseError(error.Clone());
   }

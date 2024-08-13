@@ -122,7 +122,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   // AIChatTabHelper::Observer
   void OnHistoryUpdate() override;
   void OnAPIRequestInProgress(bool in_progress) override;
-  void OnAPIResponseError(mojom::APIError error) override;
+  void OnAPIResponseError(mojom::APIErrorPtr error) override;
   void OnModelDataChanged(
       const std::string& model_key,
       const std::vector<mojom::ModelPtr>& model_list) override;

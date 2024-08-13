@@ -49,8 +49,8 @@ class MockConversationAPIClient : public ConversationAPIClient {
   MOCK_METHOD(void,
               PerformRequest,
               (const std::vector<ConversationEvent>&,
-               EngineConsumer::GenerationDataCallback,
-               EngineConsumer::GenerationCompletedCallback),
+               GenerationDataCallback,
+               GenerationCompletedCallback),
               (override));
 
   std::string GetEventsJson(
@@ -135,8 +135,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _))
       .WillOnce([&](const std::vector<ConversationEvent>& conversation,
-                    EngineConsumer::GenerationDataCallback data_callback,
-                    EngineConsumer::GenerationCompletedCallback callback) {
+                    GenerationDataCallback data_callback,
+                    GenerationCompletedCallback callback) {
         // Some structured EXPECT calls to catch nicer errors first
         EXPECT_EQ(conversation.size(), 2u);
         EXPECT_EQ(conversation[0].role, mojom::CharacterType::HUMAN);
@@ -160,7 +160,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
       false, page_content, history, "Which show is this about?",
       base::DoNothing(),
       base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+          [&run_loop](GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
@@ -175,8 +175,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _))
       .WillOnce([&](const std::vector<ConversationEvent>& conversation,
-                    EngineConsumer::GenerationDataCallback data_callback,
-                    EngineConsumer::GenerationCompletedCallback callback) {
+                    GenerationDataCallback data_callback,
+                    GenerationCompletedCallback callback) {
         // Some structured EXPECT calls to catch nicer errors first
         EXPECT_EQ(conversation.size(), 3u);
         EXPECT_EQ(conversation[0].role, mojom::CharacterType::HUMAN);
@@ -201,7 +201,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
       false, "This is a page about The Mandalorian.", history,
       "Is this related to a broader series?", base::DoNothing(),
       base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+          [&run_loop](GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
@@ -210,7 +210,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateEvents_HistoryWithSelectedText) {
   // Tests events building from history with selected text and new query without
   // selected text but with page association.
-  EngineConsumer::ConversationHistory history;
+  ConversationHistory history;
   history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       mojom::ConversationTurnVisibility::VISIBLE,
@@ -236,8 +236,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _))
       .WillOnce([&](const std::vector<ConversationEvent>& conversation,
-                    EngineConsumer::GenerationDataCallback data_callback,
-                    EngineConsumer::GenerationCompletedCallback callback) {
+                    GenerationDataCallback data_callback,
+                    GenerationCompletedCallback callback) {
         // Some structured EXPECT calls to catch nicer errors first
         EXPECT_EQ(conversation.size(), 5u);
         EXPECT_EQ(conversation[0].role, mojom::CharacterType::HUMAN);
@@ -255,7 +255,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       false, "This is my page. I have spoken.", history,
       "Is it related to a broader series?", base::DoNothing(),
       base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+          [&run_loop](GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
@@ -269,8 +269,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_Rewrite) {
   auto* mock_api_client = GetMockConversationAPIClient();
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _))
       .WillOnce([&](const std::vector<ConversationEvent>& conversation,
-                    EngineConsumer::GenerationDataCallback data_callback,
-                    EngineConsumer::GenerationCompletedCallback callback) {
+                    GenerationDataCallback data_callback,
+                    GenerationCompletedCallback callback) {
         EXPECT_EQ(conversation.size(), 2u);
         EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
                      FormatComparableEventsJson(expected_events).c_str());
@@ -280,14 +280,14 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_Rewrite) {
   engine_->GenerateRewriteSuggestion(
       "Hello World", "Use a funny tone", base::DoNothing(),
       base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+          [&run_loop](GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
   // Tests events building from history with modified agent reply.
-  EngineConsumer::ConversationHistory history;
+  ConversationHistory history;
   history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       mojom::ConversationTurnVisibility::VISIBLE,
@@ -337,8 +337,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _))
       .WillOnce([&](const std::vector<ConversationEvent>& conversation,
-                    EngineConsumer::GenerationDataCallback data_callback,
-                    EngineConsumer::GenerationCompletedCallback callback) {
+                    GenerationDataCallback data_callback,
+                    GenerationCompletedCallback callback) {
         // Some structured EXPECT calls to catch nicer errors first
         ASSERT_EQ(conversation.size(), 4u);
         EXPECT_EQ(conversation[0].role, mojom::CharacterType::HUMAN);
@@ -355,7 +355,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
       false, "I have spoken.", history, "Is it related to a broader series?",
       base::DoNothing(),
       base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+          [&run_loop](GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }

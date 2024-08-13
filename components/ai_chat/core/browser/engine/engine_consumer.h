@@ -6,15 +6,9 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_H_
 
-#include <memory>
 #include <string>
-#include <utility>
-#include <vector>
 
-#include "base/functional/callback_forward.h"
-#include "base/types/expected.h"
-#include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_types.h"
 
 namespace ai_chat {
 
@@ -23,21 +17,6 @@ namespace ai_chat {
 // subclass) or remote (invoked via network requests).
 class EngineConsumer {
  public:
-  using SuggestedQuestionResult =
-      base::expected<std::vector<std::string>, mojom::APIError>;
-  using SuggestedQuestionsCallback =
-      base::OnceCallback<void(SuggestedQuestionResult)>;
-
-  using GenerationResult = base::expected<std::string, mojom::APIError>;
-
-  using GenerationDataCallback =
-      base::RepeatingCallback<void(mojom::ConversationEntryEventPtr)>;
-
-  using GenerationCompletedCallback =
-      base::OnceCallback<void(GenerationResult)>;
-
-  using ConversationHistory = std::vector<mojom::ConversationTurnPtr>;
-
   EngineConsumer();
   EngineConsumer(const EngineConsumer&) = delete;
   EngineConsumer& operator=(const EngineConsumer&) = delete;

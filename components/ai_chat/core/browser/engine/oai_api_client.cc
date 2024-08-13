@@ -15,6 +15,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
@@ -98,6 +99,11 @@ void OAIAPIClient::ClearAllQueries() {
   api_request_helper_->CancelAll();
 }
 
+void OAIAPIClient::SetAPIRequestHelperForTesting(
+    std::unique_ptr<api_request_helper::APIRequestHelper> api_helper) {
+  api_request_helper_ = std::move(api_helper);
+}
+
 void OAIAPIClient::PerformRequest(
     const mojom::CustomModelOptions& model_options,
     base::Value::List messages,
@@ -137,8 +143,9 @@ void OAIAPIClient::PerformRequest(
   }
 }
 
-void OAIAPIClient::OnQueryCompleted(GenerationCompletedCallback callback,
-                                    APIRequestResult result) {
+void OAIAPIClient::OnQueryCompleted(
+    GenerationCompletedCallback callback,
+    api_request_helper::APIRequestResult result) {
   const bool success = result.Is2XXResponseCode();
   // Handle successful request
   if (success) {
@@ -167,7 +174,7 @@ void OAIAPIClient::OnQueryCompleted(GenerationCompletedCallback callback,
   }
 
   // Handle error
-  std::move(callback).Run(base::unexpected(mojom::APIError(
+  std::move(callback).Run(base::unexpected(mojom::APIError::New(
       mojom::APIErrorType::ConnectionIssue, last_error_message_)));
   last_error_message_.reset();
 }
