@@ -125,7 +125,11 @@ public class OnboardingFingerprintUnlockFragment extends BaseOnboardingWalletFra
                                 authenticationCallback.onAuthenticationError(
                                         BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED, ""))
                 .build()
-                .authenticate(new BiometricPrompt.CryptoObject(cipher), new CancellationSignal(), executor, authenticationCallback);
+                .authenticate(
+                        new BiometricPrompt.CryptoObject(cipher),
+                        new CancellationSignal(),
+                        executor,
+                        authenticationCallback);
     }
 
     private void goToTheNextPage() {

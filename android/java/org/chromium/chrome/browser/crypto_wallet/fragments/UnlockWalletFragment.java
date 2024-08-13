@@ -131,7 +131,8 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
                 });
 
         if (KeystoreHelper.shouldUseBiometricToUnlock()
-                && Utils.isBiometricSupported(requireContext()) && mCipher != null) {
+                && Utils.isBiometricSupported(requireContext())
+                && mCipher != null) {
 
             mBiometricUnlockButton.setVisibility(View.VISIBLE);
             // noinspection NewApi

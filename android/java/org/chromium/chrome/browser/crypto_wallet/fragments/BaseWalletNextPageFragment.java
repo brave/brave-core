@@ -243,6 +243,10 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
                                 authenticationCallback.onAuthenticationError(
                                         BIOMETRIC_ERROR_USER_CANCELED, ""))
                 .build()
-                .authenticate(new BiometricPrompt.CryptoObject(cipher), new CancellationSignal(), executor, authenticationCallback);
+                .authenticate(
+                        new BiometricPrompt.CryptoObject(cipher),
+                        new CancellationSignal(),
+                        executor,
+                        authenticationCallback);
     }
 }

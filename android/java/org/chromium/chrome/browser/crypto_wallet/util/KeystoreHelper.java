@@ -46,11 +46,11 @@ public class KeystoreHelper {
             final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
             cipher.init(Cipher.ENCRYPT_MODE, getSecretKey());
             return cipher;
-        } catch (NoSuchAlgorithmException |
-                 NoSuchPaddingException |
-                 NoSuchProviderException |
-                 InvalidAlgorithmParameterException |
-                 InvalidKeyException e) {
+        } catch (NoSuchAlgorithmException
+                | NoSuchPaddingException
+                | NoSuchProviderException
+                | InvalidAlgorithmParameterException
+                | InvalidKeyException e) {
             return null;
         }
     }
@@ -67,21 +67,22 @@ public class KeystoreHelper {
             if (TextUtils.isEmpty(ivBase64)) {
                 return null;
             }
-            GCMParameterSpec spec = new GCMParameterSpec(128, Base64.decode(ivBase64, Base64.DEFAULT));
+            GCMParameterSpec spec =
+                    new GCMParameterSpec(128, Base64.decode(ivBase64, Base64.DEFAULT));
             SecretKey secretKey =
                     ((KeyStore.SecretKeyEntry) keyStore.getEntry(BRAVE_WALLET_ALIAS, null))
                             .getSecretKey();
             final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
             cipher.init(Cipher.DECRYPT_MODE, secretKey, spec);
             return cipher;
-        } catch (InvalidAlgorithmParameterException |
-                 NoSuchPaddingException |
-                 UnrecoverableEntryException |
-                 CertificateException |
-                 NoSuchAlgorithmException |
-                 KeyStoreException |
-                 IOException |
-                 InvalidKeyException e) {
+        } catch (InvalidAlgorithmParameterException
+                | NoSuchPaddingException
+                | UnrecoverableEntryException
+                | CertificateException
+                | NoSuchAlgorithmException
+                | KeyStoreException
+                | IOException
+                | InvalidKeyException e) {
             return null;
         }
     }
