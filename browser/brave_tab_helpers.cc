@@ -104,16 +104,12 @@
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/onboarding/onboarding_tab_helper.h"
-#include "brave/browser/ui/side_panel/brave_contextual_side_panel_tab_helper.h"
 #include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
 #endif
 
 namespace brave {
 
 void AttachTabHelpers(content::WebContents* web_contents) {
-#if defined(TOOLKIT_VIEWS)
-  BraveContextualSidePanelTabHelper::CreateForWebContents(web_contents);
-#endif
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionTabHelper::CreateForWebContents(web_contents);
 #endif
