@@ -222,9 +222,10 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
   return brave_ads::ShouldSupportSearchResultAds();
 }
 
-- (BOOL)shouldShowSponsoredImagesAndVideos {
+- (BOOL)shouldShowSponsoredImagesAndVideosSetting {
   const std::string country_code =
       brave_l10n::GetCountryCode(self->_localStatePrefService);
+
   // Currently, sponsored videos are only supported in Japan.
   return base::ToLowerASCII(country_code) == "jp";
 }

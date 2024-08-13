@@ -101,7 +101,7 @@ class NTPTableViewController: TableViewController {
     case .sponsoredImages:
       return BackgroundType.sponsoredImages
     case .sponsoredImagesAndVideos:
-      return rewards?.shouldShowSponsoredImagesAndVideos == true
+      return rewards?.ads.shouldShowSponsoredImagesAndVideosSetting() == true
         ? BackgroundType.sponsoredImagesAndVideos(
           Strings.NTP.settingsSponsoredImagesAndVideosSelection
         )
@@ -111,7 +111,7 @@ class NTPTableViewController: TableViewController {
 
   private func backgroundImageOptions() -> [BackgroundType] {
     var available: [BackgroundType] = [.defaultImages]
-    if rewards?.shouldShowSponsoredImagesAndVideos == true {
+    if rewards?.ads.shouldShowSponsoredImagesAndVideosSetting() == true {
       available += [
         .sponsoredImages,
         .sponsoredImagesAndVideos(Strings.NTP.settingsSponsoredImagesAndVideosSelection),

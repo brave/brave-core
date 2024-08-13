@@ -200,10 +200,6 @@ public class BraveRewards: PreferencesObserver {
     }
   }
 
-  public var shouldShowSponsoredImagesAndVideos: Bool {
-    return ads.shouldShowSponsoredImagesAndVideos()
-  }
-
   // MARK: - Brave Ads Data
 
   /// Clear Brave Ads Data.

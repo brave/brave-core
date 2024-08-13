@@ -64,7 +64,8 @@ OBJC_EXPORT
 + (BOOL)shouldSupportSearchResultAds;
 
 /// Returns `true` if should show Sponsored Images & Videos option in settings.
-- (BOOL)shouldShowSponsoredImagesAndVideos;
+/// This function will be deprecated once Sponsored Video is available globally.
+- (BOOL)shouldShowSponsoredImagesAndVideosSetting;
 
 /// Returns `true` if the user opted-in to search result ads.
 - (BOOL)isOptedInToSearchResultAds;

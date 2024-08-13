@@ -10,11 +10,11 @@ import os.log
 
 enum NTPWallpaper {
   case image(NTPBackgroundImage)
-  case sponsoredImageOrVideo(NTPSponsoredImageBackground)
+  case sponsoredMedia(NTPSponsoredImageBackground)
   case superReferral(NTPSponsoredImageBackground, code: String)
 
   var backgroundVideoPath: URL? {
-    if case .sponsoredImageOrVideo(let background) = self {
+    if case .sponsoredMedia(let background) = self {
       return background.isVideoFile ? background.imagePath : nil
     }
     return nil
@@ -25,7 +25,7 @@ enum NTPWallpaper {
     switch self {
     case .image(let background):
       imagePath = background.imagePath
-    case .sponsoredImageOrVideo(let background):
+    case .sponsoredMedia(let background):
       if background.isVideoFile {
         return nil
       }
@@ -41,7 +41,7 @@ enum NTPWallpaper {
     switch self {
     case .image:
       imagePath = nil
-    case .sponsoredImageOrVideo(let background):
+    case .sponsoredMedia(let background):
       imagePath = background.logo.imagePath
     case .superReferral(let background, _):
       imagePath = background.logo.imagePath
@@ -53,7 +53,7 @@ enum NTPWallpaper {
     switch self {
     case .image:
       return nil  // Will eventually return a real value
-    case .sponsoredImageOrVideo(let background):
+    case .sponsoredMedia(let background):
       return background.focalPoint
     case .superReferral(let background, _):
       return background.focalPoint
@@ -145,7 +145,7 @@ public class NTPDataSource {
 
           if let campaign = sponsor.campaigns[safe: campaignIndex] {
             return (
-              campaign.backgrounds.map(NTPWallpaper.sponsoredImageOrVideo), .sponsoredRotation
+              campaign.backgrounds.map(NTPWallpaper.sponsoredMedia), .sponsoredRotation
             )
           }
         }
