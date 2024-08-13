@@ -73,7 +73,7 @@ ConversionType GetDDGConversionType(PrefService* prefs) {
   const int ddg_banner_type_index =
       prefs->GetInteger(prefs::kDDGBannerTypeIndex);
   const int banner_type_index =
-      static_cast<int>(ConversionType::kDDGBannerTypeA) + ddg_banner_type_index;
+      static_cast<int>(ConversionType::kDDGBannerTypeC) + ddg_banner_type_index;
   return static_cast<ConversionType>(banner_type_index);
 }
 
@@ -95,7 +95,7 @@ void UpdateDDGConversionType(PrefService* prefs) {
   if (base::Time::Now() - last_ddg_banner_type_shown_time >= base::Minutes(1)) {
     int ddg_banner_type_index = prefs->GetInteger(prefs::kDDGBannerTypeIndex);
     prefs->SetInteger(prefs::kDDGBannerTypeIndex,
-                      (ddg_banner_type_index + 1) % 4);
+                      (ddg_banner_type_index + 1) % 2);
     prefs->SetTime(prefs::kLatestDDGBannerTypeFirstShownTime,
                    base::Time::Now());
   }

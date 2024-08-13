@@ -22,10 +22,6 @@ inline constexpr char kSearchPromoBannerCHistogramName[] =
     "Brave.Search.Promo.BannerC";
 inline constexpr char kSearchPromoBannerDHistogramName[] =
     "Brave.Search.Promo.BannerD";
-inline constexpr char kSearchPromoDDGBannerAHistogramName[] =
-    "Brave.Search.Promo.DDGBannerA";
-inline constexpr char kSearchPromoDDGBannerBHistogramName[] =
-    "Brave.Search.Promo.DDGBannerB";
 inline constexpr char kSearchPromoDDGBannerCHistogramName[] =
     "Brave.Search.Promo.DDGBannerC";
 inline constexpr char kSearchPromoDDGBannerDHistogramName[] =

@@ -545,15 +545,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_DESC" desc="The text for the banner type description">
           Fully private, 100% independent, and with great AI features.
         </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_A_DDG_DESC" desc="The text for the banner type description">
-          DDG is just Bing in disguise. Time for real privacy, better results, and an independent index. Time for Brave Search.
-        </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_DDG_TITLE" desc="The text for the banner type title">
-          Ditch the duck
-        </message>
-        <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_DDG_DESC" desc="The text for the banner type description">
-          Brave Search doesn’t track you, your queries, or your clicks. And (unlike DDG) it’s not just Bing in disguise.
-        </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_DDG_TITLE" desc="The text for the banner type title">
           Get better results
         </message>
