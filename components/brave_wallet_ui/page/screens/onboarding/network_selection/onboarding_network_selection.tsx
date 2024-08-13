@@ -44,7 +44,7 @@ import {
 } from '../../../../constants/types'
 
 // components
-import { SearchBar } from '../../../../components/shared/search-bar'
+import { SearchBar } from '../../../../components/shared/search_bar/search_bar'
 import {
   CreateNetworkIcon //
 } from '../../../../components/shared/create-network-icon'
@@ -312,15 +312,14 @@ export const OnboardingNetworkSelection = () => {
         fullWidth
         alignItems='flex-start'
       >
-        <SearchBar
-          value={searchText}
-          action={(e) => {
-            setSearchText(e.target.value)
-          }}
-          placeholder='Search networks'
-          autoFocus
-          isV2
-        />
+        <Row>
+          <SearchBar
+            value={searchText}
+            onChange={setSearchText}
+            placeholder={getLocale('braveWalletSearchNetworks')}
+            autoFocus
+          />
+        </Row>
         <Row
           justifyContent='flex-end'
           margin='8px 0'

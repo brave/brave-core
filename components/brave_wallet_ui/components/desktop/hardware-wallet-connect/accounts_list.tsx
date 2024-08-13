@@ -42,7 +42,7 @@ import {
 } from '../../../utils/derivation_path_utils'
 
 // Components
-import { SearchBar } from '../../shared/search-bar/index'
+import { SearchBar } from '../../shared/search_bar/search_bar'
 import { NetworkFilterSelector } from '../network-filter-selector'
 import { AccountListItem } from './account_list_item'
 
@@ -148,8 +148,8 @@ export const HardwareWalletAccountsList = ({
       setSelectedDerivationPaths(updatedPaths)
     }
 
-  const filterAccountList = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const search = event?.target?.value || ''
+  const filterAccountList = (value: string) => {
+    const search = value || ''
     if (search === '') {
       setFilteredAccountList(accounts)
     } else {
@@ -326,8 +326,7 @@ export const HardwareWalletAccountsList = ({
       )}
       <SearchBar
         placeholder={getLocale('braveWalletSearchScannedAccounts')}
-        action={filterAccountList}
-        isV2
+        onChange={filterAccountList}
       />
       <HardwareWalletAccountsListContainer>
         {accounts.length === 0 && (

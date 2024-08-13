@@ -27,10 +27,9 @@ export const ControlBarWrapper = styled(Row)<{
 export const SearchBarWrapper = styled(Row)<{
   showSearchBar: boolean
 }>`
-  width: 230px;
+  flex: 1;
   @media screen and (max-width: ${layoutPanelWidth}px) {
     display: ${(p) => (p.showSearchBar ? 'flex' : 'none')};
-    width: 100%;
   }
 `
 

@@ -13,6 +13,7 @@ import { UISelectors } from '../../../common/selectors'
 
 // Components
 import { DefaultPanelHeader } from './default-panel-header'
+import { SearchBar } from '../../shared/search_bar/search_bar'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -24,11 +25,10 @@ import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import { SearchBarWrapper } from './activity_page_header.style'
 import { HeaderTitle } from './shared-card-headers.style'
 import { Row } from '../../shared/style'
-import SearchBar from '../../shared/search-bar'
 
 export interface Props {
   searchValue: string
-  onSearchValueChange?: React.ChangeEventHandler<HTMLInputElement> | undefined
+  onSearchValueChange: (value: string) => void
 }
 
 export const ActivityPageHeader = (props: Props) => {
@@ -51,9 +51,8 @@ export const ActivityPageHeader = (props: Props) => {
       <SearchBarWrapper alignItems='flex-start'>
         <SearchBar
           placeholder={getLocale('braveWalletSearchText')}
-          action={onSearchValueChange}
+          onChange={onSearchValueChange}
           value={searchValue}
-          isV2={true}
         />
       </SearchBarWrapper>
     </Row>

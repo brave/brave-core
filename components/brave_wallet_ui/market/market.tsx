@@ -60,7 +60,7 @@ import { TopRow } from '../components/desktop/views/market/style'
 import {
   AssetsFilterDropdown //
 } from '../components/desktop/assets-filter-dropdown/index'
-import { SearchBar } from '../components/shared/search-bar/index'
+import { SearchBar } from '../components/shared/search_bar/search_bar'
 import { MarketGrid } from '../components/shared/market-grid/market-grid'
 
 const App = () => {
@@ -240,10 +240,7 @@ const App = () => {
             <SearchBar
               placeholder='Search'
               autoFocus={true}
-              action={(event) => {
-                setSearchTerm(event.target.value)
-              }}
-              isV2={true}
+              onChange={setSearchTerm}
             />
           </TopRow>
           <MarketGrid

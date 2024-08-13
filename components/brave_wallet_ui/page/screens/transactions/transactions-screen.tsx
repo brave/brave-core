@@ -52,7 +52,7 @@ import {
 import {
   ActivityPageHeader //
 } from '../../../components/desktop/card-headers/activity_page_header'
-import { SearchBar } from '../../../components/shared/search-bar'
+import { SearchBar } from '../../../components/shared/search_bar/search_bar'
 import {
   TransactionDetailsModal //
 } from '../../../components/desktop/popup-modals/transaction_details_modal/transaction_details_modal'
@@ -222,7 +222,7 @@ export const TransactionsScreen: React.FC = () => {
         cardHeader={
           <ActivityPageHeader
             searchValue={searchValue}
-            onSearchValueChange={(e) => setSearchValue(e.target.value)}
+            onSearchValueChange={setSearchValue}
           />
         }
       >
@@ -243,7 +243,7 @@ export const TransactionsScreen: React.FC = () => {
       cardHeader={
         <ActivityPageHeader
           searchValue={searchValue}
-          onSearchValueChange={(e) => setSearchValue(e.target.value)}
+          onSearchValueChange={setSearchValue}
         />
       }
     >
@@ -255,9 +255,8 @@ export const TransactionsScreen: React.FC = () => {
           >
             <SearchBar
               placeholder={getLocale('braveWalletSearchText')}
-              action={(e) => setSearchValue(e.target.value)}
+              onChange={setSearchValue}
               value={searchValue}
-              isV2={true}
             />
             <VerticalSpacer space={24} />
           </Column>

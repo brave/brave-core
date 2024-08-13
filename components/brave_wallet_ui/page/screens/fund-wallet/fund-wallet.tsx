@@ -74,7 +74,7 @@ import {
   RenderTokenFunc,
   VirtualizedTokensList
 } from '../../../components/desktop/views/portfolio/components/token-lists/virtualized-tokens-list'
-import SearchBar from '../../../components/shared/search-bar'
+import { SearchBar } from '../../../components/shared/search_bar/search_bar'
 import SelectAccountItem from '../../../components/shared/select-account-item'
 import SelectAccount from '../../../components/shared/select-account'
 import { BuyAssetOptionItem } from '../../../components/shared/buy-option/buy-asset-option'
@@ -190,14 +190,6 @@ function AssetSelection({ isAndroid }: Props) {
   const { data: options } = useGetOnRampAssetsQuery()
 
   // methods
-  // This filters a list of assets when the user types in search bar
-  const onSearchValueChange = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchValue(event.target.value)
-    },
-    []
-  )
-
   const renderToken: RenderTokenFunc<BraveWallet.BlockchainToken> =
     React.useCallback(
       ({ item: asset, ref }) => {
@@ -348,22 +340,14 @@ function AssetSelection({ isAndroid }: Props) {
             />
           </Row>
 
-          <FilterTokenRow
-            horizontalPadding={12}
-            isV2={false}
-          >
-            <Column
-              flex={1}
-              style={{ minWidth: '25%' }}
-              alignItems='flex-start'
-            >
-              <SearchBar
-                placeholder={getLocale('braveWalletSearchText')}
-                action={onSearchValueChange}
-                value={searchValue}
-                isV2={false}
-              />
-            </Column>
+          <FilterTokenRow>
+            <SearchBar
+              placeholder={getLocale('braveWalletSearchText')}
+              onChange={setSearchValue}
+              value={searchValue}
+              size='small'
+            />
+
             <NetworkFilterSelector
               isV2={false}
               networkListSubset={networksFilterOptions}
@@ -569,11 +553,6 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
     () => setShowAccountSearch(false),
     []
   )
-  const onSearchTextChanged = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) =>
-      setAccountSearchText(e.target.value),
-    []
-  )
 
   const onSelectAccountFromSearch = React.useCallback(
     (account: BraveWallet.AccountInfo) => {
@@ -676,8 +655,7 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
             />
             <SearchBar
               placeholder={getLocale('braveWalletSearchAccount')}
-              action={onSearchTextChanged}
-              isV2={true}
+              onChange={setAccountSearchText}
             />
             <VerticalSpace space='16px' />
 
