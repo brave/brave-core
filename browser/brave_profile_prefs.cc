@@ -48,6 +48,7 @@
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "brave/components/search_engines/brave_search_engines_pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
