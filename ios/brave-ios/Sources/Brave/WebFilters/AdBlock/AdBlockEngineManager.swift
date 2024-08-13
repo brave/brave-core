@@ -336,7 +336,7 @@ import os
       )
     } catch {
       ContentBlockerManager.log.error(
-        "Failed to compile grouped rule lists for `\(self.blocklistType.debugDescription)`"
+        "Failed to compile grouped rule lists for `\(self.blocklistType.debugDescription)`: \(String(describing: error))"
       )
     }
     pendingContentBlockerGroup = nil

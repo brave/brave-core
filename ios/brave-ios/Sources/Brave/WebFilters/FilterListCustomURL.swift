@@ -18,22 +18,17 @@ struct FilterListCustomURL: Identifiable, Equatable {
     return setting.id
   }
 
+  let title: String
   var setting: CustomFilterListSetting
   var downloadStatus: DownloadStatus = .pending
 
-  @MainActor var title: String {
-    let lastPathComponent = setting.externalURL.lastPathComponent
-    guard !lastPathComponent.isEmpty else {
-      return URLFormatter.formatURLOrigin(
-        forDisplayOmitSchemePathAndTrivialSubdomains: setting.externalURL.absoluteDisplayString
-      )
-    }
-    return lastPathComponent
-  }
-
-  public init(setting: CustomFilterListSetting, downloadStatus: DownloadStatus = .pending) {
+  @MainActor public init(
+    setting: CustomFilterListSetting,
+    downloadStatus: DownloadStatus = .pending
+  ) {
     self.setting = setting
     self.downloadStatus = downloadStatus
+    self.title = Self.createTitle(from: setting.externalURL)
   }
 
   @MainActor public init(externalURL: URL, isEnabled: Bool, inMemory: Bool) {
@@ -44,5 +39,15 @@ struct FilterListCustomURL: Identifiable, Equatable {
     )
 
     self.init(setting: setting)
+  }
+
+  private static func createTitle(from externalURL: URL) -> String {
+    let lastPathComponent = externalURL.lastPathComponent
+    guard !lastPathComponent.isEmpty else {
+      return URLFormatter.formatURLOrigin(
+        forDisplayOmitSchemePathAndTrivialSubdomains: externalURL.absoluteDisplayString
+      )
+    }
+    return lastPathComponent
   }
 }

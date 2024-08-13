@@ -52,6 +52,8 @@ import Foundation
     for customURL in CustomFilterListStorage.shared.filterListsURLs {
       startFetching(filterListCustomURL: customURL)
     }
+
+    ContentBlockerManager.log.debug("Started fetching custom filter lists")
   }
 
   /// Perform a one time force update of all the filster lists

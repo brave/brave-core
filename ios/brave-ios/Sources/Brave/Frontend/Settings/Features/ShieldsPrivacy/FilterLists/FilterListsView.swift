@@ -53,11 +53,12 @@ struct FilterListsView: View {
   @State private var filterListsUpdateStatus = FilterListUpdateStatus.unknown
   @State private var customFilterListsUpdateStatus = FilterListUpdateStatus.unknown
   @State private var customFilterListsUpdateError: Error? = nil
+  @State private var searchText = ""
 
   var body: some View {
     List {
       Section {
-        if !customFilterListStorage.filterListsURLs.isEmpty {
+        if !customFilterListStorage.filterListsURLs.isEmpty && searchText.isEmpty {
           updateFilterListsButton(
             status: customFilterListsUpdateStatus,
             error: customFilterListsUpdateError
@@ -87,24 +88,28 @@ struct FilterListsView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
       .toggleStyle(SwitchToggleStyle(tint: .accentColor))
 
-      Section {
-        customFiltersRows
-      } header: {
-        VStack(alignment: .leading, spacing: 4) {
-          Text(Strings.Shields.customFilters)
-            .textCase(.uppercase)
-          Text(Strings.Shields.customFiltersDescription)
-            .textCase(.none)
+      if searchText.isEmpty {
+        Section {
+          customFiltersRows
+        } header: {
+          VStack(alignment: .leading, spacing: 4) {
+            Text(Strings.Shields.customFilters)
+              .textCase(.uppercase)
+            Text(Strings.Shields.customFiltersDescription)
+              .textCase(.none)
+          }
         }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
       Section {
-        updateFilterListsButton(status: filterListsUpdateStatus, error: nil) {
-          filterListsUpdateStatus = .updating
-          Task {
-            await updateFilterLists()
-            filterListsUpdateStatus = .updated
+        if searchText.isEmpty {
+          updateFilterListsButton(status: filterListsUpdateStatus, error: nil) {
+            filterListsUpdateStatus = .updating
+            Task {
+              await updateFilterLists()
+              filterListsUpdateStatus = .updated
+            }
           }
         }
         defaultFilterListRows
@@ -125,6 +130,7 @@ struct FilterListsView: View {
         }
       }
     )
+    .searchable(text: $searchText)
     .toggleStyle(SwitchToggleStyle(tint: .accentColor))
     .animation(.default, value: customFilterListStorage.filterListsURLs)
     .scrollContentBackground(.hidden)
@@ -210,11 +216,15 @@ struct FilterListsView: View {
   }
 
   @ViewBuilder private var defaultFilterListRows: some View {
+    let searchText = searchText.lowercased()
     #if DEBUG
     let allEnabled = Binding {
-      filterListStorage.filterLists.allSatisfy({ $0.isEnabled })
+      filterListStorage.filterLists.allSatisfy({
+        $0.isEnabled || !$0.satisfies(searchText: searchText)
+      })
     } set: { isEnabled in
       filterListStorage.filterLists.enumerated().forEach { index, filterList in
+        guard filterList.satisfies(searchText: searchText) else { return }
         let isEnabled = filterList.entry.hidden ? filterList.entry.defaultEnabled : isEnabled
         filterListStorage.filterLists[index].isEnabled = isEnabled
       }
@@ -228,7 +238,7 @@ struct FilterListsView: View {
     #endif
 
     ForEach($filterListStorage.filterLists) { $filterList in
-      if !filterList.isHidden {
+      if !filterList.isHidden && filterList.satisfies(searchText: searchText) {
         Toggle(isOn: $filterList.isEnabled) {
           VStack(alignment: .leading) {
             Text(filterList.entry.title)
@@ -243,63 +253,68 @@ struct FilterListsView: View {
   }
 
   @ViewBuilder private var externalFilterListRows: some View {
+    let searchText = searchText.lowercased()
     ForEach($customFilterListStorage.filterListsURLs) { $filterListURL in
-      VStack(alignment: .leading, spacing: 4) {
-        Toggle(isOn: $filterListURL.setting.isEnabled) {
-          VStack(alignment: .leading, spacing: 4) {
-            Text(filterListURL.title)
-              .foregroundColor(Color(.bravePrimary))
-              .truncationMode(.middle)
-              .lineLimit(1)
+      if filterListURL.satisfies(searchText: searchText) {
+        VStack(alignment: .leading, spacing: 4) {
+          Toggle(isOn: $filterListURL.setting.isEnabled) {
+            VStack(alignment: .leading, spacing: 4) {
+              Text(filterListURL.title)
+                .foregroundColor(Color(.bravePrimary))
+                .truncationMode(.middle)
+                .lineLimit(1)
 
-            switch filterListURL.downloadStatus {
-            case .downloaded(let downloadDate):
-              Text(
-                String.localizedStringWithFormat(
-                  Strings.Shields.filterListsLastUpdated,
-                  Self.dateFormatter.localizedString(for: downloadDate, relativeTo: Date())
+              switch filterListURL.downloadStatus {
+              case .downloaded(let downloadDate):
+                Text(
+                  String.localizedStringWithFormat(
+                    Strings.Shields.filterListsLastUpdated,
+                    Self.dateFormatter.localizedString(for: downloadDate, relativeTo: Date())
+                  )
                 )
-              )
-              .font(.caption)
-              .foregroundColor(Color(.braveLabel))
-            case .failure:
-              Text(Strings.Shields.filterListsDownloadFailed)
-                .font(.caption)
-                .foregroundColor(Color(.braveErrorLabel))
-            case .pending:
-              Text(Strings.Shields.filterListsDownloadPending)
                 .font(.caption)
                 .foregroundColor(Color(.braveLabel))
+              case .failure:
+                Text(Strings.Shields.filterListsDownloadFailed)
+                  .font(.caption)
+                  .foregroundColor(Color(.braveErrorLabel))
+              case .pending:
+                Text(Strings.Shields.filterListsDownloadPending)
+                  .font(.caption)
+                  .foregroundColor(Color(.braveLabel))
+              }
             }
           }
-        }
-        .onChange(of: filterListURL.setting.isEnabled) { isEnabled in
-          Task {
-            CustomFilterListSetting.save(inMemory: !customFilterListStorage.persistChanges)
+          .onChange(of: filterListURL.setting.isEnabled) { isEnabled in
+            Task {
+              CustomFilterListSetting.save(inMemory: !customFilterListStorage.persistChanges)
+            }
           }
-        }
 
-        Text(filterListURL.setting.externalURL.absoluteDisplayString)
-          .font(.caption)
-          .foregroundColor(Color(.secondaryBraveLabel))
-          .allowsTightening(true)
+          Text(filterListURL.setting.externalURL.absoluteDisplayString)
+            .font(.caption)
+            .foregroundColor(Color(.secondaryBraveLabel))
+            .allowsTightening(true)
+        }
       }
     }
     .onDelete(perform: onDeleteHandling)
 
-    Button {
-      showingAddSheet = true
-    } label: {
-      Text(Strings.Shields.addFilterByURL)
-        .foregroundColor(Color(.braveBlurpleTint))
-    }
-    .disabled(editMode?.wrappedValue.isEditing == true)
-    .popover(
-      isPresented: $showingAddSheet,
-      content: {
-        FilterListAddURLView()
+    if searchText.isEmpty {
+      Button {
+        showingAddSheet = true
+      } label: {
+        Text(Strings.Shields.addFilterByURL)
+          .foregroundColor(Color(.braveBlurpleTint))
       }
-    )
+      .disabled(editMode?.wrappedValue.isEditing == true)
+      .popover(
+        isPresented: $showingAddSheet,
+        content: {
+          FilterListAddURLView()
+        }
+      )
+    }
   }
 
   private func onDeleteHandling(offsets: IndexSet) {
@@ -366,3 +381,17 @@ struct FilterListsView_Previews: PreviewProvider {
   }
 }
 #endif
+
+extension FilterList {
+  fileprivate func satisfies(searchText: String) -> Bool {
+    guard !searchText.isEmpty else { return true }
+    return entry.title.contains(searchText) || entry.desc.contains(searchText)
+  }
+}
+
+extension FilterListCustomURL {
+  @MainActor fileprivate func satisfies(searchText: String) -> Bool {
+    guard !searchText.isEmpty else { return true }
+    return setting.externalURL.absoluteString.contains(searchText)
+  }
+}
