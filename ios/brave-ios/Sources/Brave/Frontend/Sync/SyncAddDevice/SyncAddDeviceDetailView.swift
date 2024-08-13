@@ -461,9 +461,15 @@ class SyncAddDeviceCodeExpirationView: UIStackView {
     let minutes = Int(time) / 60 % 60
     let seconds = Int(time) % 60
 
-    let hoursText = hours > 1 ? "\(hours) hours" : "\(hours) hour"
-    let minutesText = "\(minutes) min"
-    let secondsText = seconds > 1 ? "\(seconds) seconds" : "\(seconds) second"
+    let hoursText =
+      hours > 1
+      ? "\(hours) \(Strings.Sync.codeTimeMultipleHourText)"
+      : "\(hours) \(Strings.Sync.codeTimeSingleHourText)"
+    let minutesText = "\(minutes) \(Strings.Sync.codeTimeMinutesAbbreviation)"
+    let secondsText =
+      seconds > 1
+      ? "\(seconds) \(Strings.Sync.codeTimeMultipleSecondsText)"
+      : "\(seconds) \(Strings.Sync.codeTimeSingleSecondText)"
 
     return "\(hoursText) \(minutesText) \(secondsText)"
   }
