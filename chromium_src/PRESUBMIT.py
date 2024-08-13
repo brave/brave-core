@@ -50,7 +50,6 @@ def CheckOverriddenHeadersDeclareIWYUExport(input_api, output_api):
 def CheckOverrides(input_api, output_api):
     items = []
     with brave_chromium_utils.sys_path('//brave/tools/chromium_src'):
-        # pylint: disable=import-outside-toplevel
         import check_chromium_src
     overrides = [
         f.AbsoluteLocalPath() for f in input_api.AffectedSourceFiles(None)

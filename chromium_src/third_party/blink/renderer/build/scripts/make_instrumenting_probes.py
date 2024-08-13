@@ -6,8 +6,6 @@
 import brave_chromium_utils
 import override_utils
 
-# pylint: disable=line-too-long
-
 # Get gn arg to enable PageGraph.
 _IS_PG_ENABLED = brave_chromium_utils.get_gn_arg("enable_brave_page_graph")
 # Get gn arg to enable WebAPI probes.

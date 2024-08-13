@@ -15,7 +15,7 @@ import traceback
 import brave_chromium_utils
 import override_utils
 
-# pylint: disable=line-too-long,protected-access,unused-variable
+# pylint: disable=protected-access,unused-variable
 
 CANNED_CHECKS_KEY = 'canned'
 
@@ -23,7 +23,6 @@ CANNED_CHECKS_KEY = 'canned'
 # Helper to load json5 presubmit config.
 def load_presubmit_config():
     with brave_chromium_utils.sys_path('//third_party/pyjson5/src'):
-        # pylint: disable=import-outside-toplevel
         import json5
         return json5.load(
             open(

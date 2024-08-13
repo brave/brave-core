@@ -8,7 +8,7 @@ import re
 import brave_chromium_utils
 import override_utils
 
-# pylint: disable=relative-beyond-top-level,line-too-long
+# pylint: disable=relative-beyond-top-level
 from .code_node import SymbolNode, TextNode
 from .codegen_accumulator import CodeGenAccumulator
 from .codegen_context import CodeGenContext
