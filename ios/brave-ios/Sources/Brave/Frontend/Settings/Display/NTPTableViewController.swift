@@ -11,10 +11,11 @@ import Shared
 import Static
 
 class NTPTableViewController: TableViewController {
-  enum BackgroundImageType: RepresentableOptionType {
+  enum BackgroundType: RepresentableOptionType {
 
     case defaultImages
-    case sponsored
+    case sponsoredImages
+    case sponsoredImagesAndVideos(String)
     case superReferrer(String)
 
     var key: String {
@@ -24,13 +25,18 @@ class NTPTableViewController: TableViewController {
     public var displayString: String {
       switch self {
       case .defaultImages: return "\(Strings.NTP.settingsDefaultImagesOnly)"
-      case .sponsored: return Strings.NTP.settingsSponsoredImagesSelection
+      case .sponsoredImages: return Strings.NTP.settingsSponsoredImagesSelection
+      case .sponsoredImagesAndVideos(let displayString): return displayString
       case .superReferrer(let referrer): return referrer
       }
     }
   }
 
-  init() {
+  private let rewards: BraveRewards?
+
+  init(_ rewards: BraveRewards?) {
+    self.rewards = rewards
+
     super.init(style: .insetGrouped)
   }
 
@@ -84,21 +90,41 @@ class NTPTableViewController: TableViewController {
     dataSource.sections = [imageSection, widgetSection]
   }
 
-  private func selectedItem() -> BackgroundImageType {
+  private func selectedItem() -> BackgroundType {
     if let referrer = Preferences.NewTabPage.selectedCustomTheme.value {
       return .superReferrer(referrer)
     }
 
-    return Preferences.NewTabPage.backgroundSponsoredImages.value ? .sponsored : .defaultImages
+    switch Preferences.NewTabPage.backgroundMediaType {
+    case .defaultImages:
+      return BackgroundType.defaultImages
+    case .sponsoredImages:
+      return BackgroundType.sponsoredImages
+    case .sponsoredImagesAndVideos:
+      return rewards?.shouldShowSponsoredImagesAndVideos == true
+        ? BackgroundType.sponsoredImagesAndVideos(
+          Strings.NTP.settingsSponsoredImagesAndVideosSelection
+        )
+        : BackgroundType.sponsoredImagesAndVideos(Strings.NTP.settingsSponsoredImagesSelection)
+    }
   }
 
-  private lazy var backgroundImageOptions: [BackgroundImageType] = {
-    var available: [BackgroundImageType] = [.defaultImages, .sponsored]
+  private func backgroundImageOptions() -> [BackgroundType] {
+    var available: [BackgroundType] = [.defaultImages]
+    if rewards?.shouldShowSponsoredImagesAndVideos == true {
+      available += [
+        .sponsoredImages,
+        .sponsoredImagesAndVideos(Strings.NTP.settingsSponsoredImagesAndVideosSelection),
+      ]
+    } else {
+      available += [.sponsoredImagesAndVideos(Strings.NTP.settingsSponsoredImagesSelection)]
+    }
+
     available += Preferences.NewTabPage.installedCustomThemes.value.map {
       .superReferrer($0)
     }
     return available
-  }()
+  }
 
   private func backgroundImagesSetting(section: Section) -> Row {
     var row = Row(
@@ -110,20 +136,27 @@ class NTPTableViewController: TableViewController {
 
     row.selection = { [unowned self] in
       // Show options for tab bar visibility
-      let optionsViewController = OptionSelectionViewController<BackgroundImageType>(
+      let optionsViewController = OptionSelectionViewController<BackgroundType>(
         headerText: Strings.NTP.settingsBackgroundImageSubMenu,
         footerText: Strings.NTP.imageTypeSelectionDescription,
         style: .insetGrouped,
-        options: self.backgroundImageOptions,
+        options: self.backgroundImageOptions(),
         selectedOption: self.selectedItem(),
         optionChanged: { _, option in
           // Should turn this off whenever possible to prevent unnecessary resource downloading
-          Preferences.NewTabPage.backgroundSponsoredImages.value = option == .sponsored
-
-          if case .superReferrer(let referrer) = option {
-            Preferences.NewTabPage.selectedCustomTheme.value = referrer
-          } else {
+          switch option {
+          case .defaultImages:
+            Preferences.NewTabPage.backgroundMediaType = .defaultImages
             Preferences.NewTabPage.selectedCustomTheme.value = nil
+          case .sponsoredImages:
+            Preferences.NewTabPage.backgroundMediaType = .sponsoredImages
+            Preferences.NewTabPage.selectedCustomTheme.value = nil
+          case .sponsoredImagesAndVideos:
+            Preferences.NewTabPage.backgroundMediaType = .sponsoredImagesAndVideos
+            Preferences.NewTabPage.selectedCustomTheme.value = nil
+          case .superReferrer(let referrer):
+            Preferences.NewTabPage.selectedCustomTheme.value = referrer
+            Preferences.NewTabPage.backgroundMediaType = .sponsoredImagesAndVideos
           }
 
           self.dataSource.reloadCell(row: row, section: section, displayText: option.displayString)

@@ -48,7 +48,7 @@ class NewTabPageBackground: PreferencesObserver {
     self.currentBackground = dataSource.newBackground()
 
     Preferences.NewTabPage.backgroundImages.observe(from: self)
-    Preferences.NewTabPage.backgroundSponsoredImages.observe(from: self)
+    Preferences.NewTabPage.backgroundMediaTypeRaw.observe(from: self)
     Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
 
     recordSponsoredImagesEnabledP3A()
@@ -79,7 +79,7 @@ class NewTabPageBackground: PreferencesObserver {
     // Q26 Is the sponsored new tab page option enabled?
     let isSIEnabled =
       Preferences.NewTabPage.backgroundImages.value
-      && Preferences.NewTabPage.backgroundSponsoredImages.value
+      && Preferences.NewTabPage.backgroundMediaType.isSponsored
     UmaHistogramBoolean("Brave.NTP.SponsoredImagesEnabled", isSIEnabled)
   }
 }

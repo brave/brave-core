@@ -84,7 +84,7 @@ extension NTPLearnMoreViewController: NTPLearnMoreViewDelegate {
   }
 
   func hideSponsoredImagesTapped() {
-    Preferences.NewTabPage.backgroundSponsoredImages.value = false
+    Preferences.NewTabPage.backgroundMediaType = .defaultImages
     self.close()
   }
 

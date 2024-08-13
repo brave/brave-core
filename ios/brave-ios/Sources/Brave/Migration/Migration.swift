@@ -25,6 +25,7 @@ public class Migration {
     Preferences.migrateWalletPreferences()
     Preferences.migrateAdAndTrackingProtection()
     Preferences.migrateHTTPSUpgradeLevel()
+    Preferences.migrateBackgroundSponsoredImages()
 
     if Preferences.General.isFirstLaunch.value {
       if UIDevice.current.userInterfaceIdiom == .phone {
@@ -194,6 +195,12 @@ extension Preferences {
       key: "shields.https-everywhere",
       default: true
     )
+
+    /// Whether sponsored images are included into the background image rotation
+    static let backgroundSponsoredImages = Option<Bool>(
+      key: "newtabpage.background-sponsored-images",
+      default: true
+    )
   }
 
   /// Migration preferences
@@ -234,6 +241,11 @@ extension Preferences {
     static let lostTabsWindowIDMigration = Option<Bool>(
       key: "migration.lost-tabs-window-id-two",
       default: !UIApplication.shared.supportsMultipleScenes
+    )
+
+    static let backgroundSponsoredImagesCompleted = Option<Bool>(
+      key: "migration.newtabpage-background-sponsored-images",
+      default: false
     )
   }
 
@@ -369,6 +381,18 @@ extension Preferences {
     )
 
     Preferences.Migration.walletProviderAccountRequestCompleted.value = true
+  }
+
+  fileprivate class func migrateBackgroundSponsoredImages() {
+    guard !Migration.backgroundSponsoredImagesCompleted.value else { return }
+
+    // Migrate old Background Sponsored Images setting
+    DeprecatedPreferences.backgroundSponsoredImages.migrate { isEnabled in
+      Preferences.NewTabPage.backgroundMediaType =
+        isEnabled ? .sponsoredImagesAndVideos : .defaultImages
+    }
+
+    Migration.backgroundSponsoredImagesCompleted.value = true
   }
 }
 
