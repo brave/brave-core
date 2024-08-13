@@ -146,6 +146,9 @@
   <message name="IDS_SETTINGS_SHOW_BRAVE_NEWS_BUTTON_LABEL" desc="The label for the settings switch controlling whether the Brave News button is shown in the toolbar">
     Show Brave News button
   </message>
+  <message name="IDS_SETTINGS_SHOW_LEO_BUTTON_LABEL" desc="The label for the settings switch controlling whether the Leo button is shown in the toolbar">
+    Show Leo AI button
+  </message>
   <message name="IDS_SETTINGS_SHOW_BOOKMARK_BAR" desc="The label for settings switch controlling the permanent visibility of bookmarks bar">
     Show bookmarks
   </message>

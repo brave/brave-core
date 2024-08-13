@@ -264,6 +264,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatContextMenuEnabled] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatShowToolbarButton] =
+      settings_api::PrefType::kBoolean;
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
