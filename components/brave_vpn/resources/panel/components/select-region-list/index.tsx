@@ -36,7 +36,7 @@ function RegionContent(props: RegionContentProps) {
       selected={props.selected}
       ref={ref}
     >
-      <S.RegionCountry selected={props.selected}>
+      <S.RegionCountry>
         <Flag countryCode={props.region.countryIsoCode} />
         <S.RegionCountryLabel>
           {props.region.namePretty}
@@ -49,7 +49,6 @@ function RegionContent(props: RegionContentProps) {
           kind='filled'
           size='tiny'
           onClick={handleConnect}
-          id='connect'
         >
           {getLocale('braveVpnConnect')}
         </S.RegionConnect>
