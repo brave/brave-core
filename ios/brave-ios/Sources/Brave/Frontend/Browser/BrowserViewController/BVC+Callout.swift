@@ -28,11 +28,9 @@ extension BrowserViewController {
   /// - Rewards
   /// - VPN Link Receipt
   func presentFullScreenCallouts() {
-    presentDefaultBrowserScreenCallout(skipSafeGuards: true)
-
-    //    for type in FullScreenCalloutType.allCases {
-    //      presentScreenCallout(for: type)
-    //    }
+    for type in FullScreenCalloutType.allCases {
+      presentScreenCallout(for: type)
+    }
   }
 
   private func presentScreenCallout(for type: FullScreenCalloutType, skipSafeGuards: Bool = false) {
