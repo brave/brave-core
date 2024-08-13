@@ -671,7 +671,10 @@ class SettingsViewController: TableViewController {
       Row(
         text: Strings.NTP.settingsTitle,
         selection: { [unowned self] in
-          self.navigationController?.pushViewController(NTPTableViewController(), animated: true)
+          self.navigationController?.pushViewController(
+            NTPTableViewController(rewards),
+            animated: true
+          )
         },
         image: UIImage(braveSystemNamed: "leo.window.tab-new"),
         accessory: .disclosureIndicator,

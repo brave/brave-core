@@ -224,7 +224,8 @@ class NewTabPageViewController: UIViewController {
     ]
 
     var isBackgroundNTPSI = false
-    if let ntpBackground = background.currentBackground, case .sponsoredImage = ntpBackground {
+    if let ntpBackground = background.currentBackground, case .sponsoredImageOrVideo = ntpBackground
+    {
       isBackgroundNTPSI = true
     }
     let ntpDefaultBrowserCalloutProvider = NTPDefaultBrowserCalloutProvider(
@@ -330,7 +331,7 @@ class NewTabPageViewController: UIViewController {
     }
 
     setupBackgroundImage()
-    setupBackgroundVideo()
+    setupBackgroundVideoIfNeeded()
     backgroundView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -394,6 +395,7 @@ class NewTabPageViewController: UIViewController {
       self?.reportSponsoredBackgroundEvent(.viewedImpression)
     }
 
+    setupBackgroundVideoIfNeeded()
     videoPlayer?.loadAndAutoplayVideoAssetIfNeeded(
       shouldAutoplay: shouldShowBackgroundVideo()
     )
@@ -448,7 +450,7 @@ class NewTabPageViewController: UIViewController {
       switch background {
       case .image, .superReferral:
         hideNotification()
-      case .sponsoredImage:
+      case .sponsoredImageOrVideo:
         // Current background is still a sponsored image so it can stay
         // visible
         break
@@ -486,12 +488,18 @@ class NewTabPageViewController: UIViewController {
     )
   }
 
-  func setupBackgroundVideo() {
+  func setupBackgroundVideoIfNeeded() {
     videoButtonsView.isHidden = true
 
-    guard let backgroundVideoPath = background.backgroundVideoPath else {
+    // Setup the background video only if:
+    // - it hasn't been setup before
+    // - the current NTP background is a video
+    guard videoPlayer == nil,
+      let backgroundVideoPath = background.backgroundVideoPath
+    else {
       return
     }
+
     gradientView.isHidden = false
     videoPlayer = NewTabPageVideoPlayer(backgroundVideoPath)
     backgroundView.setupPlayerLayer(backgroundVideoPath, player: videoPlayer?.player)
@@ -524,7 +532,7 @@ class NewTabPageViewController: UIViewController {
     videoPlayer?.didFinishAutoplayEvent = { [weak self] in
       guard let self = self else { return }
       self.backgroundButtonsView.videoAutoplayFinished()
-      if case .sponsoredImage(let background) = self.background.currentBackground {
+      if case .sponsoredImageOrVideo(let background) = self.background.currentBackground {
         self.backgroundButtonsView.activeButton = .brandLogo(background.logo)
       }
       self.backgroundButtonsView.alpha = 0
@@ -580,7 +588,7 @@ class NewTabPageViewController: UIViewController {
         } else {
           backgroundButtonsView.activeButton = .none
         }
-      case .sponsoredImage(let background):
+      case .sponsoredImageOrVideo(let background):
         backgroundButtonsView.activeButton = .brandLogo(background.logo)
       case .superReferral:
         backgroundButtonsView.activeButton = .qrCode
@@ -642,7 +650,7 @@ class NewTabPageViewController: UIViewController {
     completion: ((_ success: Bool) -> Void)? = nil
   ) {
     if let tab = browserTab,
-      case .sponsoredImage(let sponsoredBackground) = background.currentBackground
+      case .sponsoredImageOrVideo(let sponsoredBackground) = background.currentBackground
     {
       let eventType: NewTabPageP3AHelper.EventType? = {
         switch event {
@@ -682,7 +690,7 @@ class NewTabPageViewController: UIViewController {
     }
 
     var isShowingSponseredImage = false
-    if case .sponsoredImage = background.currentBackground {
+    if case .sponsoredImageOrVideo = background.currentBackground {
       isShowingSponseredImage = true
     }
 
@@ -1083,7 +1091,7 @@ class NewTabPageViewController: UIViewController {
     switch background {
     case .image:
       presentImageCredit(sender)
-    case .sponsoredImage(let background):
+    case .sponsoredImageOrVideo(let background):
       tappedSponsorButton(background.logo)
     case .superReferral(_, let code):
       tappedQRCode(code)
@@ -1336,7 +1344,7 @@ extension NewTabPageViewController {
     newTabsStorage.add(value: 1, to: Date())
     let newTabsCreatedAnswer = newTabsStorage.maximumDaysCombinedValue
 
-    if case .sponsoredImage = background.currentBackground {
+    if case .sponsoredImageOrVideo = background.currentBackground {
       sponsoredStorage.add(value: 1, to: Date())
     }
 

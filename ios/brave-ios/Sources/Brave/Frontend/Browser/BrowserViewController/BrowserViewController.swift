@@ -496,7 +496,7 @@ public class BrowserViewController: UIViewController {
     Preferences.Playlist.enablePlaylistMenuBadge.observe(from: self)
     Preferences.Playlist.enablePlaylistURLBarButton.observe(from: self)
     Preferences.Playlist.syncSharedFoldersAutomatically.observe(from: self)
-    Preferences.NewTabPage.backgroundSponsoredImages.observe(from: self)
+    Preferences.NewTabPage.backgroundMediaTypeRaw.observe(from: self)
     ShieldPreferences.blockAdsAndTrackingLevelRaw.observe(from: self)
     ShieldPreferences.httpsUpgradeLevelRaw.observe(from: self)
     Preferences.Privacy.screenTimeEnabled.observe(from: self)
@@ -3369,7 +3369,7 @@ extension BrowserViewController: PreferencesObserver {
       updateURLBarWalletButton()
     case Preferences.Playlist.syncSharedFoldersAutomatically.key:
       syncPlaylistFolders()
-    case Preferences.NewTabPage.backgroundSponsoredImages.key:
+    case Preferences.NewTabPage.backgroundMediaTypeRaw.key:
       recordAdsUsageType()
     case Preferences.Privacy.screenTimeEnabled.key:
       if Preferences.Privacy.screenTimeEnabled.value {

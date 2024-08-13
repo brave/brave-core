@@ -44,6 +44,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_registry.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -219,6 +220,13 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
 
 + (BOOL)shouldSupportSearchResultAds {
   return brave_ads::ShouldSupportSearchResultAds();
+}
+
+- (BOOL)shouldShowSponsoredImagesAndVideos {
+  const std::string country_code =
+      brave_l10n::GetCountryCode(self->_localStatePrefService);
+  // Currently, sponsored videos are only supported in Japan.
+  return base::ToLowerASCII(country_code) == "jp";
 }
 
 - (BOOL)isOptedInToSearchResultAds {

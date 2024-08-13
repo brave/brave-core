@@ -4662,14 +4662,14 @@ extension Strings {
       "ntp.settingsBackgroundImages",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Background Images",
-      comment: "A setting to enable or disable background images on the main screen."
+      value: "Background",
+      comment: "A setting to enable or disable background on the NTP screen."
     )
     public static let settingsBackgroundImageSubMenu = NSLocalizedString(
       "ntp.settingsBackgroundImageSubMenu",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Image Type",
+      value: "Media Type",
       comment: "A button that leads to a 'more' menu, letting users configure additional settings."
     )
     public static let settingsDefaultImagesOnly = NSLocalizedString(
@@ -4684,9 +4684,17 @@ extension Strings {
       "ntp.settingsSponsoredImagesSelection",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Sponsored",
+      value: "Sponsored Images",
       comment:
         "A selection to let the users see sponsored image backgrounds when opening a new tab."
+    )
+    public static let settingsSponsoredImagesAndVideosSelection = NSLocalizedString(
+      "ntp.settingsSponsoredImagesAndVideosSelection",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Sponsored Images & Videos",
+      comment:
+        "A selection to let the users see sponsored image and video backgrounds when opening a new tab."
     )
     public static let settingsAutoOpenKeyboard = NSLocalizedString(
       "ntp.settingsAutoOpenKeyboard",
