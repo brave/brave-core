@@ -12,14 +12,11 @@
 // PageActionIconType values are less than T::kMaxValue and it casts the sample
 // to an unsigned int, so we fail the DCHECK. This override only performs the
 // DCHECK if the sample is non-negative.
-#define BRAVE_HISTOGRAM_FUNCTIONS_UMA_HISTOGRAM_ENUMERATION_STRING_ARG \
-  if (static_cast<intmax_t>(sample) >= 0)
-#define BRAVE_HISTOGRAM_FUNCTIONS_UMA_HISTOGRAM_ENUMERATION_CHAR_POINTER_ARG \
+#define BRAVE_HISTOGRAM_FUNCTIONS_UMA_HISTOGRAM_ENUMERATION \
   if (static_cast<intmax_t>(sample) >= 0)
 
 #include "src/base/metrics/histogram_functions.h"  // IWYU pragma: export
 
-#undef BRAVE_HISTOGRAM_FUNCTIONS_UMA_HISTOGRAM_ENUMERATION_STRING_ARG
-#undef BRAVE_HISTOGRAM_FUNCTIONS_UMA_HISTOGRAM_ENUMERATION_CHAR_POINTER_ARG
+#undef BRAVE_HISTOGRAM_FUNCTIONS_UMA_HISTOGRAM_ENUMERATION
 
 #endif  // BRAVE_CHROMIUM_SRC_BASE_METRICS_HISTOGRAM_FUNCTIONS_H_
