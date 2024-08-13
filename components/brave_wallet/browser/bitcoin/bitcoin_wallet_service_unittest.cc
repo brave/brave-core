@@ -465,7 +465,7 @@ TEST_F(BitcoinWalletServiceUnitTest, SignAndPostTransaction) {
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, DiscoverExtendedKeyAccount) {
-  base::MockCallback<BitcoinWalletService::DiscoverExtendedKeyAccountCallback>
+  base::MockCallback<BitcoinWalletService::GetExtendedKeyAccountBalanceCallback>
       callback;
   bitcoin_test_rpc_server_->SetUpBitcoinRpc(std::nullopt, std::nullopt);
 
@@ -510,7 +510,7 @@ TEST_F(BitcoinWalletServiceUnitTest, DiscoverExtendedKeyAccount) {
             return balance == expected;
           }),
           std::optional<std::string>()));
-  bitcoin_wallet_service_->DiscoverExtendedKeyAccount(
+  bitcoin_wallet_service_->GetExtendedKeyAccountBalance(
       mojom::kBitcoinMainnet, xpub_extended_key, callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);

@@ -192,8 +192,7 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
   auto tx_data = ParseEthTransaction1559Params(json, &from);
 
   ASSERT_TRUE(tx_data);
-  EXPECT_TRUE(ShouldCreate1559Tx(tx_data, true));
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data, false));
+  EXPECT_TRUE(ShouldCreate1559Tx(*tx_data));
 
   // Test only EIP1559 gas fee fields are specified.
   json =
@@ -212,8 +211,7 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
 
   tx_data = ParseEthTransaction1559Params(json, &from);
   ASSERT_TRUE(tx_data);
-  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true));
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false));
+  EXPECT_TRUE(ShouldCreate1559Tx(*tx_data));
 
   // Test only legacy gas field is specified.
   json =
@@ -230,8 +228,7 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
       })";
   tx_data = ParseEthTransaction1559Params(json, &from);
   ASSERT_TRUE(tx_data);
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), true));
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false));
+  EXPECT_FALSE(ShouldCreate1559Tx(*tx_data));
 
   // Test no gas fee fields are specified.
   json =
@@ -246,8 +243,7 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
       })";
   tx_data = ParseEthTransaction1559Params(json, &from);
   ASSERT_TRUE(tx_data);
-  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true));
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false));
+  EXPECT_TRUE(ShouldCreate1559Tx(*tx_data));
 }
 
 TEST(EthResponseHelperUnitTest, ParseEthSignParams) {

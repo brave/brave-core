@@ -189,21 +189,15 @@ mojom::TxData1559Ptr ParseEthTransaction1559Params(const std::string& json,
   return tx_data;
 }
 
-bool ShouldCreate1559Tx(const mojom::TxData1559Ptr& tx_data_1559,
-                        bool network_supports_eip1559) {
-  // Network or keyring without EIP1559 support.
-  if (!network_supports_eip1559) {
-    return false;
-  }
-
+bool ShouldCreate1559Tx(const mojom::TxData1559& tx_data_1559) {
   // Network with EIP1559 support and EIP1559 gas fields are specified.
-  if (tx_data_1559 && !tx_data_1559->max_priority_fee_per_gas.empty() &&
-      !tx_data_1559->max_fee_per_gas.empty()) {
+  if (!tx_data_1559.max_priority_fee_per_gas.empty() &&
+      !tx_data_1559.max_fee_per_gas.empty()) {
     return true;
   }
 
   // Network with EIP1559 support and legacy gas fields are specified.
-  if (tx_data_1559 && !tx_data_1559->base_data->gas_price.empty()) {
+  if (!tx_data_1559.base_data->gas_price.empty()) {
     return false;
   }
 

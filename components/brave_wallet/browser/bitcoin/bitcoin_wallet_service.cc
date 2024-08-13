@@ -722,25 +722,25 @@ void BitcoinWalletService::GetBalance(mojom::AccountIdPtr account_id,
   context->ScheduleWorkOnTask();
 }
 
-void BitcoinWalletService::DiscoverExtendedKeyAccount(
+void BitcoinWalletService::GetExtendedKeyAccountBalance(
     const std::string& chain_id,
     const std::string& extended_key,
-    DiscoverExtendedKeyAccountCallback callback) {
+    GetExtendedKeyAccountBalanceCallback callback) {
   CHECK(IsBitcoinNetwork(chain_id));
   auto task = std::make_unique<DiscoverExtendedKeyAccountTask>(this, chain_id,
                                                                extended_key);
 
   task->set_callback(base::BindOnce(
-      &BitcoinWalletService::OnDiscoverExtendedKeyAccountDone,
+      &BitcoinWalletService::OnGetExtendedKeyAccountBalanceDone,
       weak_ptr_factory_.GetWeakPtr(), task.get(), std::move(callback)));
 
   discover_extended_key_account_tasks_.emplace_back(std::move(task))
       ->ScheduleWorkOnTask();
 }
 
-void BitcoinWalletService::OnDiscoverExtendedKeyAccountDone(
+void BitcoinWalletService::OnGetExtendedKeyAccountBalanceDone(
     DiscoverExtendedKeyAccountTask* task,
-    DiscoverExtendedKeyAccountCallback callback,
+    GetExtendedKeyAccountBalanceCallback callback,
     base::expected<DiscoveredBitcoinAccount, std::string> result) {
   CHECK(discover_extended_key_account_tasks_.remove_if(
       [task](auto& item) { return item.get() == task; }));

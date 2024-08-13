@@ -47,10 +47,10 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
   // mojom::BitcoinWalletService:
   void GetBalance(mojom::AccountIdPtr account_id,
                   GetBalanceCallback callback) override;
-  void DiscoverExtendedKeyAccount(
+  void GetExtendedKeyAccountBalance(
       const std::string& chain_id,
       const std::string& extended_key,
-      DiscoverExtendedKeyAccountCallback callback) override;
+      GetExtendedKeyAccountBalanceCallback callback) override;
   void GetBitcoinAccountInfo(mojom::AccountIdPtr account_id,
                              GetBitcoinAccountInfoCallback callback) override;
   mojom::BitcoinAccountInfoPtr GetBitcoinAccountInfoSync(
@@ -132,9 +132,9 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
       DiscoverWalletAccountTask* task,
       DiscoverWalletAccountCallback callback,
       base::expected<DiscoveredBitcoinAccount, std::string> result);
-  void OnDiscoverExtendedKeyAccountDone(
+  void OnGetExtendedKeyAccountBalanceDone(
       DiscoverExtendedKeyAccountTask* task,
-      DiscoverExtendedKeyAccountCallback callback,
+      GetExtendedKeyAccountBalanceCallback callback,
       base::expected<DiscoveredBitcoinAccount, std::string> result);
 
   void OnImportedAccountDiscoveryDone(

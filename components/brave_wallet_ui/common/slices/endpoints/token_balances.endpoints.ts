@@ -565,7 +565,7 @@ export const tokenBalancesEndpoints = ({
 
             case BraveWallet.CoinType.BTC: {
               const { balance, errorMessage } =
-                await bitcoinWalletService.discoverExtendedKeyAccount(
+                await bitcoinWalletService.getExtendedKeyAccountBalance(
                   chainId,
                   address
                 )

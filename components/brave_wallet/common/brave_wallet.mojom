@@ -1689,7 +1689,7 @@ interface BitcoinWalletService {
   GetBalance(AccountId account_id) => (BitcoinBalance? balance, string? error_message);
 
   // Checks balance of possible hw account.
-  DiscoverExtendedKeyAccount(string chain_id, string extended_key) => (BitcoinBalance? balance, string? error_message);
+  GetExtendedKeyAccountBalance(string chain_id, string extended_key) => (BitcoinBalance? balance, string? error_message);
 
   // These are parts of wallet internals api(brave://wallet/dev-bitcoin)
   RunDiscovery(AccountId account_id, bool change) => (BitcoinAddress? address, string? error_message);
