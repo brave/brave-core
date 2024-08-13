@@ -130,7 +130,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
           receiver);
 
   // Traverse through a11y tree to check existence of status node.
-  void CheckPDFA11yTree(content::RenderFrameHost*);
+  void CheckPDFA11yTree();
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
