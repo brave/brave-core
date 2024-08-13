@@ -114,12 +114,12 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    title = Strings.sync
+    title = Strings.Sync.syncTitle
 
     tableView.do {
       $0.dataSource = self
       $0.delegate = self
-      $0.tableHeaderView = makeInformationTextView(with: Strings.syncSettingsHeader)
+      $0.tableHeaderView = makeInformationTextView(with: Strings.Sync.settingsHeader)
     }
 
     doLayout()
@@ -199,32 +199,32 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
     var title: String?
     var message: String?
     var removeButtonName: String?
-    let deviceName = device?.name?.htmlEntityEncodedString ?? Strings.syncRemoveDeviceDefaultName
+    let deviceName = device?.name?.htmlEntityEncodedString ?? Strings.Sync.removeDeviceDefaultName
 
     switch type {
     case .lastDeviceLeft:
-      title = String(format: Strings.syncRemoveLastDeviceTitle, deviceName)
-      message = Strings.syncRemoveLastDeviceMessage
-      removeButtonName = Strings.syncRemoveLastDeviceRemoveButtonName
+      title = String(format: Strings.Sync.removeLastDeviceTitle, deviceName)
+      message = Strings.Sync.removeLastDeviceMessage
+      removeButtonName = Strings.Sync.removeLastDeviceRemoveButtonName
     case .currentDeviceLeft:
       title = String(
-        format: Strings.syncRemoveCurrentDeviceTitle,
-        "\(deviceName) (\(Strings.syncThisDevice))"
+        format: Strings.Sync.removeCurrentDeviceTitle,
+        "\(deviceName) (\(Strings.Sync.thisDevice))"
       )
-      message = Strings.syncRemoveCurrentDeviceMessage
-      removeButtonName = Strings.removeDevice
+      message = Strings.Sync.removeCurrentDeviceMessage
+      removeButtonName = Strings.Sync.removeDevice
     case .otherDeviceLeft:
-      title = String(format: Strings.syncRemoveOtherDeviceTitle, deviceName)
-      message = Strings.syncRemoveOtherDeviceMessage
-      removeButtonName = Strings.removeDevice
+      title = String(format: Strings.Sync.removeOtherDeviceTitle, deviceName)
+      message = Strings.Sync.removeOtherDeviceMessage
+      removeButtonName = Strings.Sync.removeDevice
     case .syncChainDeleteConfirmation:
-      title = Strings.Sync.syncDeleteAccountAlertTitle
+      title = Strings.Sync.deleteAccountAlertTitle
       message =
-        "\(Strings.Sync.syncDeleteAccountAlertDescriptionPart1)\n\n\(Strings.Sync.syncDeleteAccountAlertDescriptionPart2)\n\n\(Strings.Sync.syncDeleteAccountAlertDescriptionPart3)"
+        "\(Strings.Sync.deleteAccountAlertDescriptionPart1)\n\n\(Strings.Sync.deleteAccountAlertDescriptionPart2)\n\n\(Strings.Sync.deleteAccountAlertDescriptionPart3)"
       removeButtonName = Strings.delete
     case .syncChainDeleteError:
-      title = Strings.Sync.syncChainAccountDeletionErrorTitle
-      message = Strings.Sync.syncChainAccountDeletionErrorDescription
+      title = Strings.Sync.chainAccountDeletionErrorTitle
+      message = Strings.Sync.chainAccountDeletionErrorDescription
       removeButtonName = Strings.OKString
     }
 
@@ -359,7 +359,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
       guard let self = self, status else { return }
 
       let syncInternalsController = ChromeWebViewController(privateBrowsing: false).then {
-        $0.title = Strings.braveSyncInternalsTitle
+        $0.title = Strings.Sync.internalsTitle
         $0.loadURL("brave://sync-internals")
       }
 
@@ -420,7 +420,7 @@ extension SyncSettingsTableViewController {
       actionSheet.popoverPresentationController?.permittedArrowDirections = [.up, .down]
     }
 
-    let removeAction = UIAlertAction(title: Strings.syncRemoveDeviceAction, style: .destructive) {
+    let removeAction = UIAlertAction(title: Strings.Sync.removeDeviceAction, style: .destructive) {
       _ in
       if !DeviceInfo.hasConnectivity() {
         self.present(SyncAlerts.noConnection, animated: true)
@@ -475,9 +475,9 @@ extension SyncSettingsTableViewController {
   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
     switch section {
     case Sections.deviceList.rawValue:
-      return Strings.devices
+      return Strings.Sync.devices
     case Sections.syncTypes.rawValue:
-      return Strings.Sync.syncSettingsTitle
+      return Strings.Sync.settingsTitle
     default:
       return nil
     }
@@ -486,7 +486,7 @@ extension SyncSettingsTableViewController {
   func tableView(_ tableView: UITableView, viewForFooterInSection sectionIndex: Int) -> UIView? {
     switch sectionIndex {
     case Sections.syncTypes.rawValue:
-      return makeInformationTextView(with: Strings.Sync.syncConfigurationInformationText)
+      return makeInformationTextView(with: Strings.Sync.configurationInformationText)
     default:
       return nil
     }
@@ -515,7 +515,7 @@ extension SyncSettingsTableViewController {
       }
 
       guard let name = device.name else { break }
-      let deviceName = device.isCurrentDevice ? "\(name) (\(Strings.syncThisDevice))" : name
+      let deviceName = device.isCurrentDevice ? "\(name) (\(Strings.Sync.thisDevice))" : name
 
       cell.textLabel?.text = deviceName
       cell.textLabel?.textColor = .braveLabel
@@ -540,10 +540,10 @@ extension SyncSettingsTableViewController {
 
     switch indexPath.section {
     case Sections.deviceActions.rawValue:
-      cell.textLabel?.text = Strings.syncAddAnotherDevice
+      cell.textLabel?.text = Strings.Sync.addAnotherDevice
       cell.textLabel?.textColor = .braveBlurpleTint
     case Sections.chainRemoval.rawValue:
-      cell.textLabel?.text = Strings.syncDeleteAccount
+      cell.textLabel?.text = Strings.Sync.deleteAccount
       cell.textLabel?.textColor = .braveErrorLabel
     default:
       return

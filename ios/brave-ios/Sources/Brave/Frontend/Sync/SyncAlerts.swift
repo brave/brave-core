@@ -9,8 +9,8 @@ import UIKit
 struct SyncAlerts {
   static var noConnection: UIAlertController {
     let alert = UIAlertController(
-      title: Strings.syncNoConnectionTitle,
-      message: Strings.syncNoConnectionBody,
+      title: Strings.Sync.noConnectionTitle,
+      message: Strings.Sync.noConnectionBody,
       preferredStyle: .alert
     )
 
@@ -20,8 +20,8 @@ struct SyncAlerts {
   }
 
   static var initializationError: UIAlertController {
-    let title = Strings.syncInitErrorTitle
-    let message = Strings.syncInitErrorMessage
+    let title = Strings.Sync.initErrorTitle
+    let message = Strings.Sync.initErrorMessage
     let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
     alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
 

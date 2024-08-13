@@ -26,16 +26,17 @@ class SyncAddDeviceViewController: SyncViewController {
     $0.spacing = 18
   }
 
-  private var modeControl = UISegmentedControl(items: [Strings.QRCode, Strings.codeWords]).then {
-    $0.translatesAutoresizingMaskIntoConstraints = false
-    $0.selectedSegmentIndex = 0
-    $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-    $0.selectedSegmentTintColor = UIColor(braveSystemName: .containerBackground)
-    $0.setTitleTextAttributes(
-      [.foregroundColor: UIColor(braveSystemName: .textPrimary)],
-      for: .selected
-    )
-  }
+  private var modeControl = UISegmentedControl(items: [Strings.Sync.QRCode, Strings.Sync.codeWords])
+    .then {
+      $0.translatesAutoresizingMaskIntoConstraints = false
+      $0.selectedSegmentIndex = 0
+      $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+      $0.selectedSegmentTintColor = UIColor(braveSystemName: .containerBackground)
+      $0.setTitleTextAttributes(
+        [.foregroundColor: UIColor(braveSystemName: .textPrimary)],
+        for: .selected
+      )
+    }
 
   private let titleDescriptionStackView = SyncAddDeviceInformationView()
 
@@ -47,7 +48,7 @@ class SyncAddDeviceViewController: SyncViewController {
 
   // MARK: Internal
 
-  private var pageTitle: String = Strings.sync
+  private var pageTitle: String = Strings.Sync.syncTitle
 
   private var deviceType: SyncDeviceType = .mobile
 
@@ -115,7 +116,7 @@ class SyncAddDeviceViewController: SyncViewController {
 
   private func setTheme() {
     title =
-      deviceType == .computer ? Strings.syncAddComputerTitle : Strings.syncAddTabletOrPhoneTitle
+      deviceType == .computer ? Strings.Sync.addComputerTitle : Strings.Sync.addTabletOrPhoneTitle
 
     modeControl.do {
       $0.isHidden = deviceType == .computer

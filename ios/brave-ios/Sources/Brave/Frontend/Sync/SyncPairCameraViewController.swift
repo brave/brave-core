@@ -49,7 +49,7 @@ class SyncPairCameraViewController: SyncViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = Strings.scan
+    title = Strings.Sync.scan
 
     let stackView = UIStackView().then {
       $0.axis = .vertical
@@ -89,7 +89,7 @@ class SyncPairCameraViewController: SyncViewController {
     titleLabel = UILabel().then {
       $0.translatesAutoresizingMaskIntoConstraints = false
       $0.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.semibold)
-      $0.text = Strings.syncToDevice
+      $0.text = Strings.Sync.toDevice
     }
     titleDescriptionStackView.addArrangedSubview(titleLabel)
 
@@ -99,7 +99,7 @@ class SyncPairCameraViewController: SyncViewController {
       $0.numberOfLines = 0
       $0.lineBreakMode = .byWordWrapping
       $0.textAlignment = .center
-      $0.text = Strings.syncToDeviceDescription
+      $0.text = Strings.Sync.toDeviceDescription
     }
     titleDescriptionStackView.addArrangedSubview(descriptionLabel)
 
@@ -113,7 +113,7 @@ class SyncPairCameraViewController: SyncViewController {
 
     enterWordsButton = RoundInterfaceButton(type: .roundedRect)
     enterWordsButton.translatesAutoresizingMaskIntoConstraints = false
-    enterWordsButton.setTitle(Strings.enterCodeWords, for: .normal)
+    enterWordsButton.setTitle(Strings.Sync.enterCodeWords, for: .normal)
     enterWordsButton.titleLabel?.font = UIFont.systemFont(
       ofSize: 15,
       weight: UIFont.Weight.semibold
@@ -198,7 +198,7 @@ class SyncPairCameraViewController: SyncViewController {
     // Check Internet Connectivity
     if !DeviceInfo.hasConnectivity() {
       task.cancel()
-      showErrorAlert(title: Strings.syncNoConnectionTitle, message: Strings.syncNoConnectionBody)
+      showErrorAlert(title: Strings.Sync.noConnectionTitle, message: Strings.Sync.noConnectionBody)
       return
     }
 
@@ -209,7 +209,7 @@ class SyncPairCameraViewController: SyncViewController {
     } else {
       cameraView.cameraOverlayError()
       showErrorAlert(
-        title: Strings.syncUnableCreateGroup,
+        title: Strings.Sync.unableCreateGroup,
         message: wordsValidation.errorDescription
       )
     }
@@ -217,7 +217,7 @@ class SyncPairCameraViewController: SyncViewController {
 
   private func showErrorAlert(title: String, message: String) {
     let alert = UIAlertController(
-      title: Strings.syncUnableCreateGroup,
+      title: Strings.Sync.unableCreateGroup,
       message: message,
       preferredStyle: .alert
     )

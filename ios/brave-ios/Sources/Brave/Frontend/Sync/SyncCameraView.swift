@@ -15,7 +15,7 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
   var cameraOverlayView: UIImageView!
   private lazy var cameraAccessButton: RoundInterfaceButton = {
     let button = self.createCameraButton()
-    button.setTitle(Strings.grantCameraAccess, for: .normal)
+    button.setTitle(Strings.Sync.grantCameraAccess, for: .normal)
     button.tintColor = .white
     button.addTarget(self, action: #selector(cameraAccess), for: .touchUpInside)
     return button

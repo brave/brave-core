@@ -258,16 +258,16 @@ extension BraveSyncAPI.QrCodeDataValidationResult {
     case .valid:
       return ""
     case .notWellFormed:
-      return Strings.invalidSyncCodeDescription
+      return Strings.Sync.invalidSyncCodeDescription
     case .versionDeprecated:
-      return Strings.syncDeprecatedVersionError
+      return Strings.Sync.deprecatedVersionError
     case .expired:
-      return Strings.syncExpiredError
+      return Strings.Sync.expiredError
     case .validForTooLong:
-      return Strings.syncValidForTooLongError
+      return Strings.Sync.validForTooLongError
     default:
       assertionFailure("Invalid Error Description")
-      return Strings.invalidSyncCodeDescription
+      return Strings.Sync.invalidSyncCodeDescription
     }
   }
 }
@@ -278,18 +278,18 @@ extension BraveSyncAPI.WordsValidationStatus {
     case .valid:
       return ""
     case .notValidPureWords:
-      return Strings.invalidSyncCodeDescription
+      return Strings.Sync.invalidSyncCodeDescription
     case .versionDeprecated:
-      return Strings.syncDeprecatedVersionError
+      return Strings.Sync.deprecatedVersionError
     case .expired:
-      return Strings.syncExpiredError
+      return Strings.Sync.expiredError
     case .validForTooLong:
-      return Strings.syncValidForTooLongError
+      return Strings.Sync.validForTooLongError
     case .wrongWordsNumber:
-      return Strings.notEnoughWordsDescription
+      return Strings.Sync.notEnoughWordsDescription
     default:
       assertionFailure("Invalid Error Description")
-      return Strings.invalidSyncCodeDescription
+      return Strings.Sync.invalidSyncCodeDescription
     }
   }
 }

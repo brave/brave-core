@@ -102,7 +102,7 @@ class SyncSelectDeviceTypeViewController: SyncViewController {
 
   let loadingView = UIView()
   let chooseDeviceLabel = UILabel().then {
-    $0.text = Strings.syncChooseDeviceHeader
+    $0.text = Strings.Sync.chooseDeviceHeader
     $0.textAlignment = .center
     $0.textColor = .braveLabel
     $0.numberOfLines = 0
@@ -117,19 +117,19 @@ class SyncSelectDeviceTypeViewController: SyncViewController {
 
   let mobileButton = SyncDeviceTypeButton(
     image: "sync-mobile",
-    title: Strings.syncTabletOrMobileDevice,
+    title: Strings.Sync.tabletOrMobileDevice,
     type: .mobile
   )
   let computerButton = SyncDeviceTypeButton(
     image: "sync-computer",
-    title: Strings.syncComputerDevice,
+    title: Strings.Sync.computerDevice,
     type: .computer
   )
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = Strings.syncChooseDevice
+    title = Strings.Sync.chooseDevice
 
     let chooseDeviceStackView = UIStackView(arrangedSubviews: [
       UIView.spacer(.horizontal, amount: 24),

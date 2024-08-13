@@ -20,7 +20,7 @@ class SyncCodewordsView: UIView, UITextViewDelegate {
 
   lazy var placeholder: UILabel = {
     let label = UILabel()
-    label.text = Strings.codeWordInputHelp
+    label.text = Strings.Sync.codeWordInputHelp
     label.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.regular)
     label.textColor = .secondaryBraveLabel
     label.lineBreakMode = .byWordWrapping
