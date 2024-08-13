@@ -156,8 +156,7 @@ class ADS_EXPORT Ads {
       mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) = 0;
 
-  // Called to get ad history for the given date range. Returns
-  // `base::Value::List` containing info of the obtained ad history. The
+  // Called to get ad history for the given date range in descending order. The
   // callback takes one argument - `base::Value::List` containing info of the
   // obtained ad history.
   virtual void GetAdHistory(base::Time from_time,

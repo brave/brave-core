@@ -132,8 +132,8 @@ class AdsServiceImpl final : public AdsService,
   void InitializeBatAds(brave_rewards::mojom::RewardsWalletPtr rewards_wallet);
   void InitializeBatAdsCallback(bool success);
 
-  void ShutdownAndResetState();
-  void ShutdownAndResetStateCallback(bool /*success*/);
+  void ShutdownAndClearData();
+  void ShutdownAndClearDataCallback(bool /*success*/);
 
   void SetSysInfo();
   void SetBuildChannel();
@@ -219,6 +219,8 @@ class AdsServiceImpl final : public AdsService,
                               bool by_user) override;
   void OnNotificationAdClicked(const std::string& placement_id) override;
 
+  void ClearData() override;
+
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
@@ -260,8 +262,6 @@ class AdsServiceImpl final : public AdsService,
   void GetAdHistory(base::Time from_time,
                     base::Time to_time,
                     GetAdHistoryForUICallback callback) override;
-
-  void ClearData() override;
 
   void ToggleLikeAd(base::Value::Dict value,
                     ToggleReactionCallback callback) override;

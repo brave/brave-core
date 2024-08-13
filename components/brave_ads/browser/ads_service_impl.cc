@@ -522,22 +522,26 @@ void AdsServiceImpl::InitializeBatAdsCallback(const bool success) {
   }
 }
 
-void AdsServiceImpl::ShutdownAndResetState() {
+void AdsServiceImpl::ShutdownAndClearData() {
   ShutdownAdsService();
 
-  VLOG(6) << "Resetting ads state";
+  VLOG(6) << "Clearing ads data";
 
   profile_->GetPrefs()->ClearPrefsWithPrefixSilently("brave.brave_ads");
   local_state_->ClearPref(brave_l10n::prefs::kCountryCode);
 
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&DeletePathOnFileTaskRunner, ads_service_path_),
-      base::BindOnce(&AdsServiceImpl::ShutdownAndResetStateCallback,
+      base::BindOnce(&AdsServiceImpl::ShutdownAndClearDataCallback,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void AdsServiceImpl::ShutdownAndResetStateCallback(const bool /*success*/) {
-  VLOG(6) << "Reset ads state";
+void AdsServiceImpl::ShutdownAndClearDataCallback(const bool success) {
+  if (!success) {
+    VLOG(0) << "Failed to clear ads data";
+  } else {
+    VLOG(6) << "Cleared ads data";
+  }
 
   MaybeStartBatAdsService();
 }
@@ -1173,6 +1177,10 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
       /*intentional*/ base::DoNothing());
 }
 
+void AdsServiceImpl::ClearData() {
+  ShutdownAndClearData();
+}
+
 void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*diagnostics*/ std::nullopt);
@@ -1315,10 +1323,6 @@ void AdsServiceImpl::GetAdHistory(const base::Time from_time,
     bat_ads_associated_remote_->GetAdHistory(from_time, to_time,
                                              std::move(callback));
   }
-}
-
-void AdsServiceImpl::ClearData() {
-  ShutdownAndResetState();
 }
 
 void AdsServiceImpl::ToggleLikeAd(base::Value::Dict value,
@@ -1868,7 +1872,7 @@ void AdsServiceImpl::OnExternalWalletConnected() {
 
 void AdsServiceImpl::OnCompleteReset(const bool success) {
   if (success) {
-    ShutdownAndResetState();
+    ShutdownAndClearData();
   }
 }
 
