@@ -1140,6 +1140,7 @@ test("brave_browser_tests") {
       "//brave/browser/renderer_context_menu/test/render_view_context_menu_browsertest.cc",
       "//brave/browser/ssl/certificate_transparency_browsertest.cc",
       "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc",
+      "//brave/browser/ui/webui/searchbox/brave_realbox_handler_browsertest.cc",
     ]
     deps += [
       "//brave/app/theme:brave_theme_resources_grit",
