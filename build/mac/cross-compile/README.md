@@ -93,12 +93,20 @@ npm run build -- Static --target_os=mac --target_arch=x64 \
 
 ## Code signing
 
-Let's assume that you have a code signing certificate called `MyCert`. It should
-be stored in the default (login) keychain. Set the following additional
-environment variable to the password for your keychain:
+Let's assume that you have a code signing certificate called `MyCert`. Set the
+following additional environment variable to the password of the keychain where
+the certificate is stored:
 
 ```
 export KEYCHAIN_PASSWORD=...
+```
+
+If the certificate is stored in the login keychain, then no further environment
+variables are required. Otherwise, set `KEYCHAIN_PATH` to the path of the
+keychain. For example:
+
+```
+export KEYCHAIN_PATH=/Users/michael/Library/Keychains/signing.keychain-db
 ```
 
 Now you can codesign Brave via:
