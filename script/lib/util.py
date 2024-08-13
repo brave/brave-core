@@ -108,8 +108,8 @@ def get_lzma_exec():
 
 
 def extract_zip(zip_path, destination):
-    if sys.platform == 'darwin':
-        # Use unzip command on Mac to keep symbol links in zip file work.
+    if sys.platform in ('darwin', 'linux'):
+        # Use the unzip command to properly handle symbolic links.
         execute(['unzip', zip_path, '-d', destination])
     else:
         with zipfile.ZipFile(zip_path) as z:
@@ -118,6 +118,11 @@ def extract_zip(zip_path, destination):
 
 def make_zip(zip_file_path, files, dirs):
     safe_unlink(zip_file_path)
+    # This code originally comes from Electron. It is not entirely clear why the
+    # implementation has a special case for macOS. It seems likely that it is to
+    # support symlinks. The special macOS implementation has one subtle
+    # difference to the pure-Python one further below: It does not error out for
+    # missing files.
     if sys.platform == 'darwin':
         files += dirs
         execute(['zip', '-r', '-y', zip_file_path] + files)

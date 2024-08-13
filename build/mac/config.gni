@@ -14,8 +14,13 @@ declare_args() {
   is_universal_binary = false
 }
 
-keychain_db =
-    getenv("HOME") + "/Library/Keychains/${mac_signing_keychain}.keychain-db"
+if (host_os == "mac") {
+  keychain_db =
+      getenv("HOME") + "/Library/Keychains/${mac_signing_keychain}.keychain-db"
+} else {
+  keychain_db = "/Users/" + getenv("USER") +
+                "/Library/Keychains/${mac_signing_keychain}.keychain-db"
+}
 
 brave_packaging_base_dir = root_out_dir
 if (is_universal_binary) {

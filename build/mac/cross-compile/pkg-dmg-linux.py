@@ -22,8 +22,9 @@ DMG_TOOL_PATH = join(dirname(dirname(dirname(dirname(__file__)))),
 def main():
     assert exists(DMG_TOOL_PATH), DMG_TOOL_PATH + \
         ' does not exist. Please make sure that checkout_dmg_tool is set to' \
-        ' True in the "custom_vars" section of the "src/brave" section of ' \
-        ' your .gclient file, then `npm run sync` to download and build it.'
+        ' True in the "custom_vars" section of the "src/brave" section of' \
+        ' your .gclient file, then `npm run sync` (without `--target_os=mac`)' \
+        ' to download and build it.'
     args = parse_args()
     assert args.source == '/var/empty', 'Only --source=/var/empty is supported.'
     to_copy = list(map(parse_copy_arg, args.copy))

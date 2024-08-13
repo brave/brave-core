@@ -34,9 +34,10 @@ SRC_DIR = dirname(dirname(dirname(dirname(dirname(dirname(__file__))))))
 def main(argv):
     check_tmp_dir()
     tool, args = basename(argv[0]), argv[1:]
-    host, src_dir_on_host, keychain_pw = read_env_vars(tool)
+    host, src_dir_on_host, keychain_pw, keychain_path = read_env_vars(tool)
     remote_commands = get_remote_commands(tool, args, os.getcwd(),
-                                          src_dir_on_host, keychain_pw)
+                                          src_dir_on_host, keychain_pw,
+                                          keychain_path)
     exit_code = run_via_ssh(host, remote_commands)
     return get_outer_exit_code(tool, args, exit_code)
 
@@ -54,34 +55,44 @@ def read_env_vars(tool):
     src_dir_on_host = require_env_var('MACOS_SRC_DIR_MOUNT')
     keychain_pw = \
         require_env_var('KEYCHAIN_PASSWORD') if requires_keychain(tool) else ''
-    return host, src_dir_on_host, keychain_pw
+    keychain_path = os.getenv('KEYCHAIN_PATH', '')
+    return host, src_dir_on_host, keychain_pw, keychain_path
 
 
-def get_remote_commands(tool, args, cwd, src_dir_on_host, keychain_pw):
+def get_remote_commands(tool, args, cwd, src_dir_on_host, keychain_pw,
+                        keychain_path):
     result = []
     cwd_on_host = join(src_dir_on_host, relpath(cwd, SRC_DIR))
     result.append(['cd', quote(cwd_on_host)])
     if requires_keychain(tool):
-        result.append(['security', 'unlock-keychain', '-p', quote(keychain_pw)])
+        unlock_keychain_cmd = [
+            'security', 'unlock-keychain', '-p',
+            quote(keychain_pw)
+        ]
+        if keychain_path:
+            unlock_keychain_cmd.append(quote(keychain_path))
+        result.append(unlock_keychain_cmd)
     args_on_host = make_relative(args, cwd)
     if tool == 'pkgbuild' and '--analyze' not in args:
-        result.extend(get_pkgbuild_commands(tool, args_on_host))
+        # We get errors without this delay:
+        result.append(['sleep', '1'])
+        result.extend(get_commands_via_tmpfile(tool, args_on_host))
+    elif tool == 'productsign':
+        result.extend(get_commands_via_tmpfile(tool, args_on_host))
     else:
         result.append([tool] + args_on_host)
     return result
 
 
-def get_pkgbuild_commands(tool, args_on_host):
-    result = []
-    # We get errors without this delay:
-    result.append(['sleep', '1'])
-    # When src_dir_on_host is mounted via mount_9p, then pkgbuild fails to
+def get_commands_via_tmpfile(tool, args_on_host):
+    # When src_dir_on_host is mounted via mount_9p, then some tools fail to
     # write to it. So write to a known-writeable location. Then `mv` to the
     # correct destination.
-    pkgbuild_dest_orig = args_on_host[-1]
+    result = []
+    orig_dest = args_on_host[-1]
     result.append(['tempfile=$(mktemp)'])
     result.append([tool] + args_on_host[:-1] + ['$tempfile'])
-    result.append(['mv', '$tempfile', pkgbuild_dest_orig])
+    result.append(['mv', '$tempfile', orig_dest])
     return result
 
 
@@ -105,7 +116,7 @@ def make_relative(args, cwd):
 
 
 def requires_keychain(tool):
-    return tool in ('codesign', 'productsign')
+    return tool in ('codesign', 'productsign', 'pkgbuild')
 
 
 def run_via_ssh(host, commands):
