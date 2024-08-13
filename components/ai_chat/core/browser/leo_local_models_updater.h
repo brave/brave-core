@@ -19,6 +19,7 @@ namespace ai_chat {
 
 extern const char kUniversalQAModelName[];
 
+// A component updater for downloading local models for Leo.
 class LeoLocalModelsUpdater : public brave_component_updater::BraveComponent {
  public:
   class Observer : public base::CheckedObserver {
@@ -36,6 +37,9 @@ class LeoLocalModelsUpdater : public brave_component_updater::BraveComponent {
   ~LeoLocalModelsUpdater() override;
 
   virtual void Register();
+  // Method for deleting component updater directory. Path is relative to
+  // user_data_dir passed in the constructor. If the user_data_dir is empty, it
+  // won't have any effect.
   void Cleanup(base::OnceCallback<void(bool)> reply_callback = {});
 
   virtual const base::FilePath& GetUniversalQAModel() const;
