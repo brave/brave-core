@@ -93,7 +93,7 @@ class SplitViewLocationBarUnitTest : public testing::Test {
 
   // testing::Test
   void SetUp() override {
-    location_bar_ = base::WrapUnique(new SplitViewLocationBar(nullptr));
+    location_bar_ = std::make_unique<SplitViewLocationBar>(nullptr, nullptr);
     location_bar_->location_bar_model_ =
         std::make_unique<LocationBarModelImpl>(&delegate_, 1024);
   }

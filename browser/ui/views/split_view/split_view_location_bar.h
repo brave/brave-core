@@ -14,6 +14,7 @@
 #include "components/url_formatter/url_formatter.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/gfx/native_widget_types.h"
 #include "ui/views/view.h"
 #include "ui/views/view_observer.h"
 #include "ui/views/widget/widget_delegate.h"
@@ -36,14 +37,17 @@ class SplitViewLocationBar : public views::WidgetDelegateView,
   METADATA_HEADER(SplitViewLocationBar, views::WidgetDelegateView)
 
  public:
+  SplitViewLocationBar(PrefService* prefs, views::View* parent_web_view);
   ~SplitViewLocationBar() override;
 
-  static SplitViewLocationBar* Create(PrefService* prefs,
-                                      views::View* parent_web_view);
+  static views::Widget::InitParams GetWidgetInitParams(
+      gfx::NativeView parent_native_view,
+      std::unique_ptr<views::WidgetDelegateView> delegate);
 
   void SetWebContents(content::WebContents* web_contents);
 
   // views::WidgetDelegateView:
+  void AddedToWidget() override;
   void OnPaintBackground(gfx::Canvas* canvas) override;
   void OnPaintBorder(gfx::Canvas* canvas) override;
   gfx::Size CalculatePreferredSize(
@@ -70,8 +74,6 @@ class SplitViewLocationBar : public views::WidgetDelegateView,
                            UpdateURLAndIcon_CertErrorShouldShowHTTPSwithStrike);
   FRIEND_TEST_ALL_PREFIXES(SplitViewLocationBarUnitTest,
                            UpdateIcon_InsecureContentsShouldShowWarningIcon);
-
-  explicit SplitViewLocationBar(PrefService* prefs);
 
   void UpdateVisibility();
   void UpdateBounds();

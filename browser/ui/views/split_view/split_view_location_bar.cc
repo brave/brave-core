@@ -35,13 +35,20 @@
 #include "ui/views/view_class_properties.h"
 #include "ui/views/widget/widget_delegate.h"
 
-SplitViewLocationBar::SplitViewLocationBar(PrefService* prefs)
+SplitViewLocationBar::SplitViewLocationBar(PrefService* prefs,
+                                           views::View* parent_web_view)
     : prefs_(prefs),
       location_bar_model_delegate_(
           std::make_unique<SplitViewLocationBarModelDelegate>()),
       location_bar_model_(std::make_unique<LocationBarModelImpl>(
           location_bar_model_delegate_.get(),
           content::kMaxURLDisplayChars)) {
+  if (parent_web_view) {
+    view_observation_.Observe(parent_web_view);
+  } else {
+    CHECK_IS_TEST();
+  }
+
   constexpr auto kChildSpacing = 8;
   views::Builder<SplitViewLocationBar>(this)
       .SetBorder(
@@ -104,26 +111,14 @@ SplitViewLocationBar::SplitViewLocationBar(PrefService* prefs)
 SplitViewLocationBar::~SplitViewLocationBar() = default;
 
 // static
-SplitViewLocationBar* SplitViewLocationBar::Create(
-    PrefService* prefs,
-    views::View* parent_web_view) {
-  CHECK(parent_web_view->GetWidget());
-  auto* location_bar = new SplitViewLocationBar(prefs);
-
+views::Widget::InitParams SplitViewLocationBar::GetWidgetInitParams(
+    gfx::NativeView parent_native_view,
+    std::unique_ptr<views::WidgetDelegateView> delegate) {
   views::Widget::InitParams params(views::Widget::InitParams::TYPE_CONTROL);
-  params.parent = parent_web_view->GetWidget()->GetNativeView();
   params.activatable = views::Widget::InitParams::Activatable::kNo;
-  params.delegate = location_bar;
-  auto* widget = new views::Widget();
-  widget->Init(std::move(params));
-
-  location_bar->view_observation_.Observe(parent_web_view);
-  location_bar->UpdateVisibility();
-  location_bar->UpdateBounds();
-
-  widget->Show();
-
-  return location_bar;
+  params.parent = parent_native_view;
+  params.delegate = delegate.release();  // Widget owns the delegate
+  return params;
 }
 
 void SplitViewLocationBar::SetWebContents(content::WebContents* web_contents) {
@@ -134,6 +129,12 @@ void SplitViewLocationBar::SetWebContents(content::WebContents* web_contents) {
   location_bar_model_delegate_->set_web_contents(web_contents);
   Observe(web_contents);
   UpdateURLAndIcon();
+}
+
+void SplitViewLocationBar::AddedToWidget() {
+  WidgetDelegateView::AddedToWidget();
+  UpdateVisibility();
+  UpdateBounds();
 }
 
 void SplitViewLocationBar::OnPaintBackground(gfx::Canvas* canvas) {
