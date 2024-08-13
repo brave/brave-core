@@ -59,7 +59,7 @@ IN_PROC_BROWSER_TEST_F(BraveRealboxHandlerTest, BraveSearchUsesNewTabSource) {
       GURL("https://search.brave.com/search?q=hello+world&source=desktop"),
       u":br");
   EXPECT_EQ(
-      GURL("https://search.brave.com/search?q=hello+world&source=new_tab"),
+      GURL("https://search.brave.com/search?q=hello+world&source=newtab"),
       contents()->GetLastCommittedURL());
 }
 
