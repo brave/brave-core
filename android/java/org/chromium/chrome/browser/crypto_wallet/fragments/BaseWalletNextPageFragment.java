@@ -45,6 +45,7 @@ import java.security.cert.CertificateException;
 import java.util.concurrent.Executor;
 
 import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
@@ -171,7 +172,8 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.P)
     protected void showBiometricAuthenticationDialog(
             @NonNull final View biometricUnlockButton,
-            @NonNull final BiometricAuthenticationCallback biometricAuthenticationCallback) {
+            @NonNull final BiometricAuthenticationCallback biometricAuthenticationCallback,
+            @NonNull final Cipher cipher) {
         final BiometricPrompt.AuthenticationCallback authenticationCallback =
                 new BiometricPrompt.AuthenticationCallback() {
                     @Override
@@ -181,9 +183,11 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
 
                         final KeyringService keyringService = getKeyringService();
                         String unlockWalletPassword;
+                        final Cipher cipher = authenticationResult.getCryptoObject().getCipher();
+                        assert cipher != null;
 
                         try {
-                            unlockWalletPassword = KeystoreHelper.decryptText();
+                            unlockWalletPassword = KeystoreHelper.decryptText(cipher);
                         } catch (InvalidAlgorithmParameterException
                                 | UnrecoverableEntryException
                                 | NoSuchPaddingException
@@ -239,6 +243,6 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
                                 authenticationCallback.onAuthenticationError(
                                         BIOMETRIC_ERROR_USER_CANCELED, ""))
                 .build()
-                .authenticate(new CancellationSignal(), executor, authenticationCallback);
+                .authenticate(new BiometricPrompt.CryptoObject(cipher), new CancellationSignal(), executor, authenticationCallback);
     }
 }
