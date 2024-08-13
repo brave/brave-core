@@ -67,16 +67,16 @@ export MACOS_SRC_DIR_MOUNT=/ChromiumSrc
 ```
 
 You also need to create a temporary directory for your build type. Let's say you
-want to create a `Static` build. Then create the directory `src/out/Static/tmp`
-and set:
+want to create a `Static` build. Then create the directory
+`src/out/mac_Static/tmp` and set:
 
 ```
-export TMPDIR=.../path/to/src/out/Static/tmp
+export TMPDIR=.../path/to/src/out/mac_Static/tmp
 ```
 
 As of this writing, you do need to update `TMPDIR` when you switch to a
 different build type. So if you want to build `Release`, then create
-`src/out/Release/tmp` and set `TMPDIR` to `.../src/out/Release/tmp`.
+`src/out/mac_Release/tmp` and set `TMPDIR` to `.../src/out/mac_Release/tmp`.
 
 The build produces temporary files. The above step makes sure that also those
 temporary files are accessible to macOS under `/ChromiumSrc`.
@@ -93,12 +93,20 @@ npm run build -- Static --target_os=mac --target_arch=x64 \
 
 ## Code signing
 
-Let's assume that you have a code signing certificate called `MyCert`. It should
-be stored in the default (login) keychain. Set the following additional
-environment variable to the password for your keychain:
+Let's assume that you have a code signing certificate called `MyCert`. Set the
+following additional environment variable to the password of the keychain where
+the certificate is stored:
 
 ```
 export KEYCHAIN_PASSWORD=...
+```
+
+If the certificate is stored in the login keychain, then no further environment
+variables are required. Otherwise, set `KEYCHAIN_PATH` to the path of the
+keychain. For example:
+
+```
+export KEYCHAIN_PATH=/Users/michael/Library/Keychains/signing.keychain-db
 ```
 
 Now you can codesign Brave via:
