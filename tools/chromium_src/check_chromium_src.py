@@ -31,10 +31,8 @@ BRAVE_SRC = os.path.abspath(
 BRAVE_CHROMIUM_SRC = os.path.join(BRAVE_SRC, 'chromium_src')
 CHROMIUM_SRC = os.path.abspath(os.path.dirname(BRAVE_SRC))
 
-# pylint: disable=line-too-long
 NORMAL_DEFINITIONS_REGEXP = r'^#define[\s\\]+([a-zA-Z0-9_]+[^\s\(]*)(?:[ \t]+\\\s*|[ \t])?([a-zA-Z0-9_]+[^\s\(]*)?$'
 FUNCTION_LIKE_DEFINITIONS_REGEXP = r'^#define[\s\\]+([a-zA-Z0-9_]+)[\s\\]*\(.*?\)(?:[ \t]+\\\s*|[ \t])?([a-zA-Z0-9_]*[\s\\]*\(.*?\))?'
-# pylint: enable=line-too-long
 
 
 def strip_comments(content):
@@ -456,7 +454,6 @@ class ChromiumSrcOverridesChecker:
             json5_path = os.path.join(CHROMIUM_SRC, 'third_party', 'pyjson5',
                                       'src')
             sys.path.append(json5_path)
-            # pylint: disable=import-outside-toplevel
             import json5
 
             with open(config_path, "r", encoding='utf-8') as exclusions_file:

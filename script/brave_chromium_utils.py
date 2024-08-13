@@ -124,7 +124,7 @@ def get_gn_args(output_dir: str) -> Dict[str, Any]:
         raise FileNotFoundError(f"{ARGS_GN} not found in {output_dir}")
 
     with sys_path('//build'):
-        import gn_helpers  # pylint: disable=import-outside-toplevel
+        import gn_helpers
     with open(args_gn_filename, "r") as f:
         return gn_helpers.FromGNArgs(f.read())
 

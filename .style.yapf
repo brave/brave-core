@@ -1,9 +1,6 @@
 [style]
 based_on_style = pep8
 
-# PEP-8 limits to 79 chars. Chromium uses 80 chars everywhere.
-column_limit = 80
-
 # Workaround yapf dict formatting bug.
 # See for details: https://github.com/google/yapf/issues/392
 allow_split_before_dict_value = False

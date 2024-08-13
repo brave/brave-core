@@ -16,8 +16,6 @@ import override_utils
 USE_PYTHON3 = True
 PRESUBMIT_VERSION = '2.0.0'
 
-# pylint: disable=line-too-long
-
 
 # Adds support for chromium_presubmit_config.json5 and some helpers.
 def CheckToModifyInputApi(input_api, _output_api):
@@ -82,7 +80,6 @@ def CheckPatchFormatted(input_api, output_api):
     git_cl_format_cmd.append(input_api.PresubmitLocalPath())
 
     with brave_chromium_utils.sys_path("//brave/vendor/depot_tools"):
-        # pylint: disable=import-outside-toplevel
         import git_cl
 
     # Run git cl format and get return code.
@@ -159,7 +156,6 @@ def CheckESLint(input_api, output_api):
                                              include_deletes=False)
 
     with brave_chromium_utils.sys_path('//tools'):
-        # pylint: disable=import-outside-toplevel
         from web_dev_style import js_checker
         return js_checker.JSChecker(input_api,
                                     output_api).RunEsLintChecks(files_to_check)
@@ -167,7 +163,6 @@ def CheckESLint(input_api, output_api):
 
 def CheckWebDevStyle(input_api, output_api):
     with brave_chromium_utils.sys_path('//tools'):
-        # pylint: disable=import-outside-toplevel
         from web_dev_style import presubmit_support, js_checker
         # Disable RunEsLintChecks, it's run separately in CheckESLint.
         with override_utils.override_scope_function(
@@ -185,9 +180,15 @@ def CheckChangeLintsClean(input_api, output_api):
 
 def CheckPylint(input_api, output_api):
     extra_paths_list = os.environ['PYTHONPATH'].split(os.pathsep)
-    return input_api.canned_checks.RunPylint(input_api,
-                                             output_api,
-                                             extra_paths_list=extra_paths_list)
+    disabled_warnings = [
+        'import-outside-toplevel',
+        'line-too-long',
+    ]
+    return input_api.canned_checks.RunPylint(
+        input_api,
+        output_api,
+        extra_paths_list=extra_paths_list,
+        disabled_warnings=disabled_warnings)
 
 
 def CheckLicense(input_api, output_api):
@@ -467,7 +468,6 @@ def CheckJavaStyle(_original_check, input_api, output_api):
         return []
 
     with brave_chromium_utils.sys_path('//tools/android/checkstyle'):
-        # pylint: disable=import-outside-toplevel
         import checkstyle
 
     files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
