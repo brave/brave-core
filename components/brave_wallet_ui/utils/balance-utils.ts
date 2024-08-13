@@ -124,6 +124,47 @@ export function setBalance({
   ] = balance
 }
 
+export function getBalanceFromRegistry({
+  registry,
+  accountUniqueId,
+  chainId,
+  contractAddress,
+  tokenId,
+  coin
+}: {
+  registry: TokenBalancesRegistry
+  accountUniqueId: string
+  chainId: string
+  contractAddress: string
+  tokenId: string
+  coin: BraveWallet.CoinType
+}) {
+  return (
+    registry.accounts[accountUniqueId]?.chains?.[chainId]?.tokenBalances?.[
+      getAssetIdKey({
+        coin,
+        chainId,
+        contractAddress: contractAddress,
+        tokenId
+      })
+    ] || '0'
+  )
+}
+
+export function getAccountAndChainBalancesFromRegistry({
+  registry,
+  accountUniqueId,
+  chainId
+}: {
+  registry: TokenBalancesRegistry
+  accountUniqueId: string
+  chainId: string
+}) {
+  return (
+    registry.accounts[accountUniqueId]?.chains?.[chainId]?.tokenBalances || {}
+  )
+}
+
 export function createEmptyTokenBalancesRegistry(): TokenBalancesRegistry {
   return {
     accounts: {}

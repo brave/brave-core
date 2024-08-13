@@ -16,6 +16,11 @@ import {
   GetTokenBalancesRegistryArg //
 } from '../slices/endpoints/token_balances.endpoints'
 
+// utils
+import {
+  getPersistedTokenBalancesSubset //
+} from '../../utils/local-storage-utils'
+
 type Arg = Pick<GetTokenBalancesRegistryArg, 'networks' | 'isSpamRegistry'> & {
   accounts: BraveWallet.AccountInfo[]
 }
@@ -52,12 +57,16 @@ export const useBalancesFetcher = (arg: Arg | typeof skipToken) => {
     {
       ...querySubscriptionOptions60s,
       selectFromResult: (res) => ({
-        data: res.data,
-        /**
-         * The data is streamed and may be `null` if nothing is persisted yet.
-         * res.isLoading is `false` when streaming is in progress
-         */
-        isLoading: !res.data
+        data:
+          res.data ??
+          (arg === skipToken
+            ? null
+            : getPersistedTokenBalancesSubset({
+                accountIds: arg.accounts.map((account) => account.accountId),
+                networks: arg.networks,
+                isSpamRegistry: arg.isSpamRegistry
+              })),
+        isLoading: res.isLoading
       })
     }
   )
