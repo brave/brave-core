@@ -80,7 +80,6 @@ std::optional<std::string> CreateWireguardConfig(
 }
 
 WireguardKeyPair GenerateNewX25519Keypair() {
-  crypto::EnsureOpenSSLInit();
   uint8_t pubkey[32] = {}, privkey[32] = {};
   X25519_keypair(pubkey, privkey);
   return std::make_tuple(

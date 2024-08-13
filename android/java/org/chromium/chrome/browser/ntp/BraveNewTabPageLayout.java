@@ -1176,7 +1176,6 @@ public class BraveNewTabPageLayout
             NewTabPageUma uma,
             Profile profile,
             WindowAndroid windowAndroid,
-            boolean isSurfacePolishEnabled,
             boolean isTablet,
             ObservableSupplier<Integer> tabStripHeightSupplier) {
         super.initialize(
@@ -1192,7 +1191,6 @@ public class BraveNewTabPageLayout
                 uma,
                 profile,
                 windowAndroid,
-                isSurfacePolishEnabled,
                 isTablet,
                 tabStripHeightSupplier);
 

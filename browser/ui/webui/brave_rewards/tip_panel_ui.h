@@ -11,9 +11,14 @@
 
 #include "brave/components/brave_rewards/common/mojom/rewards_tip_panel.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+
+namespace content {
+class BrowserContext;
+}
 
 namespace brave_rewards {
 
@@ -40,6 +45,17 @@ class TipPanelUI : public TopChromeWebUIController,
   mojo::Receiver<TipPanelHandlerFactory> factory_receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
+};
+
+class TipPanelUIConfig : public DefaultTopChromeWebUIConfig<TipPanelUI> {
+ public:
+  TipPanelUIConfig();
+
+  // WebUIConfig::
+  bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
+
+  // TopChromeWebUIConfig::
+  bool ShouldAutoResizeHost() override;
 };
 
 }  // namespace brave_rewards

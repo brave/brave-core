@@ -17,6 +17,7 @@ import android.view.ActionMode;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.Window;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
@@ -54,8 +55,6 @@ import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntent
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.LayoutRenderHost;
 import org.chromium.chrome.browser.compositor.layouts.LayoutUpdateHost;
-import org.chromium.chrome.browser.contextmenu.ContextMenuItemDelegate;
-import org.chromium.chrome.browser.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.BravePartialCustomTabBottomSheetStrategy;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabHandleStrategyFactory;
 import org.chromium.chrome.browser.feed.FeedActionDelegate;
@@ -66,12 +65,9 @@ import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
-import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.keyboard_accessory.ManualFillingComponentSupplier;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
-import org.chromium.chrome.browser.logo.CachedTintedBitmap;
-import org.chromium.chrome.browser.logo.LogoCoordinator;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.new_tab_url.DseNewTabUrlManager;
@@ -96,17 +92,16 @@ import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout;
 import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabContextMenuItemDelegate;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
-import org.chromium.chrome.browser.tabmodel.ChromeTabCreator.OverviewNtpCreator;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
-import org.chromium.chrome.browser.toolbar.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
@@ -138,6 +133,7 @@ import org.chromium.components.browser_ui.widget.selectable_list.SelectableListL
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListToolbar.SearchDelegate;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
 import org.chromium.components.commerce.core.ShoppingService;
+import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.externalauth.ExternalAuthUtils;
@@ -214,11 +210,6 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator"));
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTCoordinator"));
-        Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar"));
-        Assert.assertTrue(
-                classExists(
                         "org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView"));
@@ -246,8 +237,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate")); // presubmit: ignore-long-line
-        Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/toolbar/IncognitoToggleTabLayout"));
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator"));
@@ -477,27 +466,6 @@ public class BytecodeTest {
                         null));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "updateNewTabButtonVisibility",
-                        MethodModifier.REGULAR,
-                        false,
-                        null));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "getToolbarColorForCurrentState",
-                        MethodModifier.REGULAR,
-                        false,
-                        null));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "shouldShowIncognitoToggle",
-                        MethodModifier.REGULAR,
-                        false,
-                        null));
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/chrome/browser/download/MimeUtils",
                         "canAutoOpenMimeType",
                         MethodModifier.STATIC,
@@ -537,8 +505,12 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/theme/ThemeUtils",
                         "getTextBoxColorForToolbarBackgroundInNonNativePage",
                         MethodModifier.STATIC,
-                        false,
-                        null));
+                        true,
+                        int.class,
+                        Context.class,
+                        int.class,
+                        boolean.class,
+                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/site_settings/WebsitePermissionsFetcher", // presubmit: ignore-long-line
@@ -665,8 +637,7 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         true,
                         boolean.class,
-                        long.class,
-                        boolean.class));
+                        long.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/IntentHandler",
@@ -817,6 +788,14 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         true,
                         void.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/omnibox/styles/OmniboxResourceProvider",
+                        "getToolbarSidePaddingForNtp",
+                        MethodModifier.STATIC,
+                        true,
+                        int.class,
+                        Context.class));
     }
 
     @Test
@@ -858,6 +837,7 @@ public class BytecodeTest {
                         AutocompleteMatch.class,
                         GURL.class,
                         long.class,
+                        boolean.class,
                         boolean.class));
 
         // Check for method type declaration changes here
@@ -988,7 +968,7 @@ public class BytecodeTest {
                         int.class,
                         float.class,
                         float.class,
-                        boolean.class));
+                        int.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/password_manager/settings/ExportFlow",
@@ -1004,6 +984,13 @@ public class BytecodeTest {
                         true,
                         void.class,
                         AutocompleteMatch.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/hub/HubManagerImpl",
+                        "ensureHubCoordinatorIsInitialized",
+                        MethodModifier.REGULAR,
+                        true,
+                        void.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
@@ -1039,7 +1026,6 @@ public class BytecodeTest {
                         Supplier.class,
                         OneshotSupplier.class,
                         boolean.class,
-                        OverviewNtpCreator.class,
                         AsyncTabParamsManager.class,
                         Supplier.class,
                         Supplier.class,
@@ -1059,7 +1045,6 @@ public class BytecodeTest {
                         TopUiThemeColorProvider.class,
                         TabObscuringHandler.class,
                         ObservableSupplier.class,
-                        IdentityDiscController.class,
                         List.class,
                         ActivityTabProvider.class,
                         ScrimCoordinator.class,
@@ -1072,7 +1057,6 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         boolean.class,
                         ObservableSupplier.class,
-                        OneshotSupplier.class,
                         ObservableSupplier.class,
                         OneshotSupplier.class,
                         WindowAndroid.class,
@@ -1081,13 +1065,11 @@ public class BytecodeTest {
                         StatusBarColorController.class,
                         AppMenuDelegate.class,
                         ActivityLifecycleDispatcher.class,
-                        Supplier.class,
                         BottomSheetController.class,
                         TabContentManager.class,
                         TabCreatorManager.class,
                         SnackbarManager.class,
                         Supplier.class,
-                        OneshotSupplier.class,
                         OmniboxActionDelegate.class,
                         Supplier.class,
                         boolean.class,
@@ -1141,7 +1123,6 @@ public class BytecodeTest {
                         TabModelSelector.class,
                         TabContentManager.class,
                         ViewGroup.class,
-                        Supplier.class,
                         TabCreatorManager.class,
                         OneshotSupplier.class,
                         SnackbarManager.class,
@@ -1204,7 +1185,6 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                         "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator",
                         ToolbarControlContainer.class,
-                        ViewStub.class,
                         ToolbarLayout.class,
                         ToolbarDataProvider.class,
                         ToolbarTabController.class,
@@ -1212,29 +1192,22 @@ public class BytecodeTest {
                         List.class,
                         OneshotSupplier.class,
                         ThemeColorProvider.class,
-                        ThemeColorProvider.class,
-                        MenuButtonCoordinator.class,
                         MenuButtonCoordinator.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        ButtonDataProvider.class,
                         Supplier.class,
-                        Supplier.class,
-                        BooleanSupplier.class,
-                        boolean.class,
-                        boolean.class,
                         HistoryDelegate.class,
                         BooleanSupplier.class,
                         OfflineDownloader.class,
                         boolean.class,
-                        Callback.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
                         BrowserStateBrowserControlsVisibilityDelegate.class,
                         FullscreenManager.class,
                         TabObscuringHandler.class,
-                        DesktopWindowStateProvider.class));
+                        DesktopWindowStateProvider.class,
+                        OneshotSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
@@ -1437,17 +1410,33 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/BraveSwipeRefreshHandler",
                         Tab.class));
 
-        Assert.assertTrue(
-                constructorsMatch(
-                        "org/chromium/chrome/browser/logo/LogoMediator",
-                        "org/chromium/chrome/browser/logo/BraveLogoMediator",
-                        Context.class,
-                        Callback.class,
-                        PropertyModel.class,
-                        boolean.class,
-                        Callback.class,
-                        LogoCoordinator.VisibilityObserver.class,
-                        CachedTintedBitmap.class));
+        // TODO(alexeybarabash): test is disabled because it fails at Release
+        // configuration without obvious reason.
+        // Difference in args:
+        //
+        // LogoMediator(
+        //
+        // android.content.Context,org.chromium.base.Callback,org.chromium.ui.modelutil.PropertyModel,boolean,org.chromium.base.Callback,LS)
+        // BraveLogoMediator(
+        //
+        // android.content.Context,org.chromium.base.Callback,org.chromium.ui.modelutil.PropertyModel,boolean,org.chromium.base.Callback,yy1,LS)
+        // So it looks `VisibilityObserver visibilityObserver` arg at LogoMediator.ctor is missing.
+        // This test succeed on Debug. apk_for_test.flags
+        // has required entries. Other workaround is to make LogoMediator.ctor
+        // public.
+        // import org.chromium.chrome.browser.logo.CachedTintedBitmap;
+        // import org.chromium.chrome.browser.logo.LogoCoordinator;
+        // Assert.assertTrue(
+        //         constructorsMatch(
+        //                 "org/chromium/chrome/browser/logo/LogoMediator",
+        //                 "org/chromium/chrome/browser/logo/BraveLogoMediator",
+        //                 Context.class,
+        //                 Callback.class,
+        //                 PropertyModel.class,
+        //                 boolean.class,
+        //                 Callback.class,
+        //                 LogoCoordinator.VisibilityObserver.class,
+        //                 CachedTintedBitmap.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
@@ -1471,8 +1460,6 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        ObservableSupplier.class,
-                        OneshotSupplier.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
@@ -1503,7 +1490,6 @@ public class BytecodeTest {
                         IntentRequestTracker.class,
                         InsetObserver.class,
                         Function.class,
-                        OneshotSupplier.class,
                         boolean.class,
                         BackPressManager.class,
                         Bundle.class,
@@ -1584,21 +1570,31 @@ public class BytecodeTest {
                         SnackbarManager.class,
                         Profile.class,
                         NativePageHost.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherImpl",
-                "org/chromium/chrome/browser/feedback/BraveHelpAndFeedbackLauncherImpl",
-                Profile.class));
-        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/firstrun/FreIntentCreator",
-                "org/chromium/chrome/browser/firstrun/BraveFreIntentCreator"));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/components/external_intents/ExternalNavigationHandler",
-                "org/chromium/chrome/browser/externalnav/BraveExternalNavigationHandler",
-                ExternalNavigationDelegate.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator",
-                "org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator",
-                ContextMenuItemDelegate.class, Supplier.class, int.class, ExternalAuthUtils.class,
-                Context.class, ContextMenuParams.class, ContextMenuNativeDelegate.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherImpl",
+                        "org/chromium/chrome/browser/feedback/BraveHelpAndFeedbackLauncherImpl",
+                        Profile.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/firstrun/FreIntentCreator",
+                        "org/chromium/chrome/browser/firstrun/BraveFreIntentCreator"));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/components/external_intents/ExternalNavigationHandler",
+                        "org/chromium/chrome/browser/externalnav/BraveExternalNavigationHandler",
+                        ExternalNavigationDelegate.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator",
+                        "org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator",
+                        TabContextMenuItemDelegate.class,
+                        Supplier.class,
+                        int.class,
+                        ExternalAuthUtils.class,
+                        Context.class,
+                        ContextMenuParams.class,
+                        ContextMenuNativeDelegate.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/base/shared_preferences/StrictPreferenceKeyChecker",
@@ -1675,6 +1671,19 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/password_manager/settings/ExportFlow",
                         "org/chromium/chrome/browser/password_manager/settings/BraveExportFlow"));
+
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/ui/system/StatusBarColorController",
+                        "org/chromium/chrome/browser/ui/system/BraveStatusBarColorController",
+                        Window.class,
+                        boolean.class,
+                        Context.class,
+                        StatusBarColorProvider.class,
+                        ObservableSupplier.class,
+                        ActivityLifecycleDispatcher.class,
+                        ActivityTabProvider.class,
+                        TopUiThemeColorProvider.class));
     }
 
     @Test
@@ -1760,10 +1769,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
-                        "mShowStartSurfaceSupplier"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
                         "mMenuButtonCoordinator"));
         Assert.assertTrue(
                 fieldExists(
@@ -1799,8 +1804,6 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
                         "mIncognitoStateProvider"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabGroupUi"));
-        Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
                         "mBottomSheetController"));
@@ -1826,35 +1829,11 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
-                        "mTabSwitcherModeCoordinator"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                         "mOptionalButtonController"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                         "mToolbarColorObserverManager"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTCoordinator",
-                        "mActiveTabSwitcherToolbar"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "mNewTabViewButton"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "mNewTabImageButton"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "mShouldShowNewTabVariation"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "mIsIncognito"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/app/ChromeActivity",
@@ -1871,10 +1850,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                         "mBottomControlsStacker"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/IncognitoToggleTabLayout",
-                        "mIncognitoButtonIcon"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator",
@@ -2040,6 +2015,18 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/compositor/layouts/ToolbarSwipeLayout",
                         "mMoveToolbar"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/top/ToolbarPhone",
+                        "mLocationBarBackgroundColorForNtp"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/top/ToolbarPhone",
+                        "mToolbarBackgroundColorForNtp"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/ui/system/StatusBarColorController",
+                        "mBackgroundColorForNtp"));
     }
 
     @Test

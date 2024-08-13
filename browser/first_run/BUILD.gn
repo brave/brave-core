@@ -5,12 +5,12 @@
 
 source_set("unit_tests") {
   testonly = true
-  if (!is_android) {
+  if (is_mac) {
     sources = [ "first_run_unittest.cc" ]
 
     deps = [
       "//chrome/browser",
-      "//chrome/browser/ui",
+      "//chrome/browser/ui:ui_features",
       "//testing/gtest",
     ]
   }

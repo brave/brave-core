@@ -148,12 +148,6 @@ void AIChatUI::BindInterface(
       web_ui()->GetWebContents(), web_contents, profile_, std::move(receiver));
 }
 
-std::unique_ptr<content::WebUIController>
-UntrustedChatUIConfig::CreateWebUIController(content::WebUI* web_ui,
-                                             const GURL& url) {
-  return std::make_unique<AIChatUI>(web_ui);
-}
-
 bool UntrustedChatUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
   return ai_chat::IsAIChatEnabled(
@@ -162,6 +156,7 @@ bool UntrustedChatUIConfig::IsWebUIEnabled(
 }
 
 UntrustedChatUIConfig::UntrustedChatUIConfig()
-    : WebUIConfig(content::kChromeUIUntrustedScheme, kChatUIHost) {}
+    : DefaultTopChromeWebUIConfig(content::kChromeUIUntrustedScheme,
+                                  kChatUIHost) {}
 
 WEB_UI_CONTROLLER_TYPE_IMPL(AIChatUI)

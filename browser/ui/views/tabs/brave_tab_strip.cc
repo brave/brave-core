@@ -28,6 +28,7 @@
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_group.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/ui_features.h"
@@ -192,7 +193,7 @@ void BraveTabStrip::AddedToWidget() {
     // be being created and it could be unbound to Browser.
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(&BraveTabStrip::UpdateTabContainer,
-                                  base::Unretained(this)));
+                                  weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -300,8 +301,7 @@ std::optional<SplitViewBrowserData::Tile> BraveTabStrip::GetTileForTab(
 void BraveTabStrip::UpdateTabContainer() {
   const bool using_vertical_tabs = ShouldShowVerticalTabs();
   const bool should_use_compound_tab_container =
-      using_vertical_tabs ||
-      base::FeatureList::IsEnabled(features::kSplitTabStrip);
+      using_vertical_tabs || base::FeatureList::IsEnabled(tabs::kSplitTabStrip);
   const bool is_using_compound_tab_container =
       views::IsViewClass<BraveCompoundTabContainer>(
           base::to_address(tab_container_));
@@ -395,9 +395,9 @@ void BraveTabStrip::UpdateTabContainer() {
       tab_container_->OnGroupVisualsChanged(group_id, visual_data, visual_data);
     }
 
-    for (int i = 0; i < model->count(); i++) {
-      for (auto& observer : observers_) {
-        observer.OnTabAdded(i);
+    if (observer_) {
+      for (int i = 0; i < model->count(); i++) {
+        observer_->OnTabAdded(i);
       }
     }
 
@@ -425,7 +425,7 @@ void BraveTabStrip::UpdateTabContainer() {
           base::Unretained(vertical_region_view)));
     }
   } else {
-    if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
+    if (base::FeatureList::IsEnabled(tabs::kScrollableTabStrip)) {
       auto* browser_view = static_cast<BraveBrowserView*>(
           BrowserView::GetBrowserViewForBrowser(browser));
       DCHECK(browser_view);

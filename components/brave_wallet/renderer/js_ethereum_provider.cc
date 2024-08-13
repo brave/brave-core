@@ -29,8 +29,8 @@
 #include "gin/handle.h"
 #include "gin/object_template_builder.h"
 #include "third_party/abseil-cpp/absl/base/macros.h"
-#include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/mojom/devtools/console_message.mojom.h"
+#include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
@@ -140,7 +140,7 @@ bool JSEthereumProvider::EnsureConnected() {
   }
 
   if (!ethereum_provider_.is_bound()) {
-    render_frame()->GetBrowserInterfaceBroker()->GetInterface(
+    render_frame()->GetBrowserInterfaceBroker().GetInterface(
         ethereum_provider_.BindNewPipeAndPassReceiver());
     ethereum_provider_->Init(receiver_.BindNewPipeAndPassRemote());
   }
@@ -278,7 +278,7 @@ const char* JSEthereumProvider::MetaMask::GetTypeName() {
 v8::Local<v8::Promise> JSEthereumProvider::MetaMask::IsUnlocked(
     v8::Isolate* isolate) {
   if (!ethereum_provider_.is_bound()) {
-    render_frame_->GetBrowserInterfaceBroker()->GetInterface(
+    render_frame_->GetBrowserInterfaceBroker().GetInterface(
         ethereum_provider_.BindNewPipeAndPassReceiver());
   }
 

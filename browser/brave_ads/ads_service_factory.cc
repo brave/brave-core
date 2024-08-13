@@ -9,6 +9,7 @@
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/device_id/device_id_impl.h"
 #include "brave/browser/brave_ads/services/bat_ads_service_factory_impl.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
@@ -78,7 +79,8 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
           profile, g_browser_process->local_state(),
           brave_adaptive_captcha_service, CreateAdsTooltipsDelegate(profile),
           std::make_unique<DeviceIdImpl>(),
-          std::make_unique<BatAdsServiceFactoryImpl>(), history_service,
+          std::make_unique<BatAdsServiceFactoryImpl>(),
+          g_brave_browser_process->resource_component(), history_service,
           rewards_service);
   return ads_service.release();
 }

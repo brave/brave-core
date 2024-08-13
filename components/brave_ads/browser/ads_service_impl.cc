@@ -9,6 +9,7 @@
 
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/containers/circular_deque.h"
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
@@ -27,7 +28,6 @@
 #include "base/timer/timer.h"
 #include "brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge.h"
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper.h"
-#include "brave/browser/brave_browser_process.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
@@ -58,7 +58,6 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "build/build_config.h"  // IWYU pragma: keep
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
@@ -184,18 +183,6 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-void RegisterResourceComponentsForCountryCode(const std::string& country_code) {
-  g_brave_browser_process->resource_component()
-      ->RegisterComponentForCountryCode(country_code);
-}
-
-void RegisterResourceComponentsForDefaultLanguageCode() {
-  const std::string& locale = brave_l10n::GetDefaultLocaleString();
-  const std::string language_code = brave_l10n::GetISOLanguageCode(locale);
-  g_brave_browser_process->resource_component()
-      ->RegisterComponentForLanguageCode(language_code);
-}
-
 void OnUrlLoaderResponseStartedCallback(
     const GURL& /*final_url*/,
     const network::mojom::URLResponseHead& response_head) {
@@ -214,10 +201,12 @@ AdsServiceImpl::AdsServiceImpl(
     std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
     std::unique_ptr<DeviceId> device_id,
     std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
+    brave_ads::ResourceComponent* resource_component,
     history::HistoryService* history_service,
     brave_rewards::RewardsService* rewards_service)
     : profile_(profile),
       local_state_(local_state),
+      resource_component_(resource_component),
       history_service_(history_service),
       adaptive_captcha_service_(adaptive_captcha_service),
       ads_tooltips_delegate_(std::move(ads_tooltips_delegate)),
@@ -231,12 +220,15 @@ AdsServiceImpl::AdsServiceImpl(
       rewards_service_(rewards_service),
       bat_ads_client_associated_receiver_(this) {
   CHECK(profile_);
-  CHECK(local_state_);
   CHECK(adaptive_captcha_service_);
   CHECK(device_id_);
-  CHECK(history_service_);
+  CHECK(bat_ads_service_factory_);
   CHECK(rewards_service_);
   CHECK(profile->IsRegularProfile());
+
+  if (!history_service_ || !local_state_) {
+    CHECK_IS_TEST();
+  }
 
   if (CanStartBatAdsService()) {
     bat_ads_client_notifier_pending_receiver_ =
@@ -249,13 +241,19 @@ AdsServiceImpl::AdsServiceImpl(
 
   GetDeviceIdAndMaybeStartBatAdsService();
 
-  g_brave_browser_process->resource_component()->AddObserver(this);
+  if (resource_component_) {
+    resource_component_->AddObserver(this);
+  } else {
+    CHECK_IS_TEST();
+  }
 
   rewards_service_->AddObserver(this);
 }
 
 AdsServiceImpl::~AdsServiceImpl() {
-  g_brave_browser_process->resource_component()->RemoveObserver(this);
+  if (resource_component_) {
+    resource_component_->RemoveObserver(this);
+  }
 
   bat_ads_observer_receiver_.reset();
 
@@ -292,9 +290,18 @@ void AdsServiceImpl::Migrate() {
 }
 
 void AdsServiceImpl::RegisterResourceComponentsForCurrentCountryCode() const {
-  const std::string country_code = brave_l10n::GetCountryCode(local_state_);
+  if (resource_component_) {
+    const std::string country_code = brave_l10n::GetCountryCode(local_state_);
+    resource_component_->RegisterComponentForCountryCode(country_code);
+  }
+}
 
-  RegisterResourceComponentsForCountryCode(country_code);
+void AdsServiceImpl::RegisterResourceComponentsForDefaultLanguageCode() const {
+  if (resource_component_) {
+    const std::string& locale = brave_l10n::GetDefaultLocaleString();
+    const std::string language_code = brave_l10n::GetISOLanguageCode(locale);
+    resource_component_->RegisterComponentForLanguageCode(language_code);
+  }
 }
 
 bool AdsServiceImpl::UserHasJoinedBraveRewards() const {
@@ -393,7 +400,7 @@ void AdsServiceImpl::StartBatAdsService() {
 
 void AdsServiceImpl::DisconnectHandler() {
   VLOG(1) << "Bat Ads Service was disconnected";
-  Shutdown();
+  ShutdownAdsService();
 }
 
 bool AdsServiceImpl::ShouldProceedInitialization(
@@ -426,7 +433,7 @@ void AdsServiceImpl::InitializeBasePathDirectoryCallback(
     const bool success) {
   if (!success) {
     VLOG(1) << "Failed to initialize " << base_path_ << " directory";
-    return Shutdown();
+    return ShutdownAdsService();
   }
 
   Initialize(current_start_number);
@@ -469,7 +476,7 @@ void AdsServiceImpl::InitializeRewardsWalletCallback(
 
   if (!wallet && UserHasJoinedBraveRewards()) {
     VLOG(1) << "Failed to initialize Brave Rewards wallet";
-    return Shutdown();
+    return ShutdownAdsService();
   }
 
   InitializeBatAds(std::move(wallet));
@@ -497,7 +504,7 @@ void AdsServiceImpl::InitializeBatAds(
 void AdsServiceImpl::InitializeBatAdsCallback(const bool success) {
   if (!success) {
     VLOG(1) << "Failed to initialize Bat Ads";
-    return Shutdown();
+    return ShutdownAdsService();
   }
 
   is_bat_ads_initialized_ = true;
@@ -518,7 +525,7 @@ void AdsServiceImpl::InitializeBatAdsCallback(const bool success) {
 }
 
 void AdsServiceImpl::ShutdownAndResetState() {
-  Shutdown();
+  ShutdownAdsService();
 
   VLOG(6) << "Resetting ads state";
 
@@ -609,6 +616,9 @@ void AdsServiceImpl::CloseAdaptiveCaptcha() {
 }
 
 void AdsServiceImpl::InitializeLocalStatePrefChangeRegistrar() {
+  if (!local_state_) {
+    return;
+  }
   local_state_pref_change_registrar_.Init(local_state_);
 
   local_state_pref_change_registrar_.Add(
@@ -707,7 +717,7 @@ void AdsServiceImpl::InitializeSearchResultAdsPrefChangeRegistrar() {
 
 void AdsServiceImpl::OnOptedInToAdsPrefChanged(const std::string& path) {
   if (!CanStartBatAdsService()) {
-    return Shutdown();
+    return ShutdownAdsService();
   }
 
   if (IsBatAdsServiceBound() && UserHasOptedInToNotificationAds() &&
@@ -966,13 +976,13 @@ void AdsServiceImpl::OpenNewTabWithAdCallback(
     return VLOG(1) << "Failed to get notification ad";
   }
 
-  const NotificationAdInfo notification = NotificationAdFromValue(*dict);
+  const NotificationAdInfo notification_ad = NotificationAdFromValue(*dict);
 
-  OpenNewTabWithUrl(notification.target_url);
+  OpenNewTabWithUrl(notification_ad.target_url);
 }
 
 void AdsServiceImpl::OpenNewTabWithUrl(const GURL& url) {
-  if (g_browser_process->IsShuttingDown()) {
+  if (is_shutting_down_) {
     return;
   }
 
@@ -1060,7 +1070,7 @@ void AdsServiceImpl::OnNotificationAdPositionChanged() {
                                      profile_->GetPrefs());
 }
 
-void AdsServiceImpl::Shutdown() {
+void AdsServiceImpl::ShutdownAdsService() {
   if (is_bat_ads_initialized_) {
     SuspendP2AHistograms();
 
@@ -1097,6 +1107,12 @@ void AdsServiceImpl::Shutdown() {
   }
 
   is_bat_ads_initialized_ = false;
+}
+
+void AdsServiceImpl::Shutdown() {
+  is_shutting_down_ = true;
+
+  ShutdownAdsService();
 }
 
 void AdsServiceImpl::AddBatAdsObserver(
@@ -1645,8 +1661,12 @@ void AdsServiceImpl::LoadComponentResource(
     const std::string& id,
     const int version,
     LoadComponentResourceCallback callback) {
+  if (!resource_component_) {
+    return std::move(callback).Run({});
+  }
+
   std::optional<base::FilePath> file_path =
-      g_brave_browser_process->resource_component()->MaybeGetPath(id, version);
+      resource_component_->MaybeGetPath(id, version);
   if (!file_path) {
     return std::move(callback).Run({});
   }

@@ -40,7 +40,10 @@ bool IsInputSearchType(const AutocompleteInput& input) {
 
 // static
 bool LeoProvider::IsMatchFromLeoProvider(const AutocompleteMatch& match) {
-  return !match.GetAdditionalInfo(kIsMatchFromLeoProviderKey).empty();
+  // TODO: `GetAdditionalInfoForDebugging()` shouldn't be used for non-debugging
+  // purposes.
+  return !match.GetAdditionalInfoForDebugging(kIsMatchFromLeoProviderKey)
+              .empty();
 }
 
 LeoProvider::LeoProvider(AutocompleteProviderClient* client)

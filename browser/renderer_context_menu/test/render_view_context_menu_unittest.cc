@@ -126,14 +126,22 @@ class BraveRenderViewContextMenuTest : public testing::Test {
     ProtocolHandlerRegistryFactory::GetInstance()->SetTestingFactory(
         profile_.get(), base::BindRepeating(&BuildProtocolHandlerRegistry));
   }
-  void TearDown() override { registry_.reset(); }
+
+  void TearDown() override {
+    registry_.reset();
+    web_contents_.reset();
+    client_.reset();
+    browser_.reset();
+    profile_.reset();
+  }
+
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
 
  private:
   content::BrowserTaskEnvironment browser_task_environment;
+  ScopedTestingLocalState testing_local_state_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<custom_handlers::ProtocolHandlerRegistry> registry_;
-  ScopedTestingLocalState testing_local_state_;
   std::unique_ptr<Browser> browser_;
   std::unique_ptr<ChromeAutocompleteProviderClient> client_;
   std::unique_ptr<content::WebContents> web_contents_;

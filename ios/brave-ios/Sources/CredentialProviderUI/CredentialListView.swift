@@ -53,8 +53,8 @@ public struct CredentialListView: View {
             .padding(.vertical, 4)
             VStack(alignment: .leading, spacing: 0) {
               Text(credential.serviceName)
-              if !credential.user.isEmpty {
-                Text(credential.user)
+              if !credential.username.isEmpty {
+                Text(credential.username)
                   .foregroundStyle(.secondary)
               }
             }
@@ -205,20 +205,32 @@ private struct FaviconImage: View {
 #if DEBUG
 extension CredentialListModel {
   private class MockCredential: NSObject, Credential {
+    func isPasskey() -> Bool {
+      return false
+    }
+
     var favicon: String!
+    var recordIdentifier: String!
+    var username: String!
     var password: String!
     var rank: Int64 = 0
-    var recordIdentifier: String!
     var serviceIdentifier: String!
     var serviceName: String!
-    var user: String!
     var note: String!
+    var syncId: Data!
+    var userDisplayName: String!
+    var userId: Data!
+    var credentialId: Data!
+    var rpId: String!
+    var privateKey: Data!
+    var encrypted: Data!
+    var creationTime: Int64 = 0
 
     init(
       favicon: FaviconAttributes?,
       rank: Int64,
       serviceName: String,
-      user: String,
+      username: String,
       password: String,
       note: String
     ) {
@@ -240,7 +252,7 @@ extension CredentialListModel {
       self.recordIdentifier = UUID().uuidString
       self.serviceIdentifier = UUID().uuidString
       self.serviceName = serviceName
-      self.user = user
+      self.username = username
       self.note = note
       super.init()
     }
@@ -252,11 +264,18 @@ extension CredentialListModel {
           favicon: nil,
           rank: 1,
           serviceName: "github.com",
-          user: "user",
+          username: "user",
           password: "test",
           note: ""
         ),
-      .init(favicon: nil, rank: 2, serviceName: "github.com", user: "", password: "test", note: "")
+      .init(
+        favicon: nil,
+        rank: 2,
+        serviceName: "github.com",
+        username: "",
+        password: "test",
+        note: ""
+      )
     ),
     originHost: "github.com",
     isAuthenticated: true

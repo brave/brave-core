@@ -45,8 +45,9 @@ class SearchAccelerator extends ChromeImageButton
 
         mContext = context;
 
-        mBackground = ApiCompatibilityUtils.getDrawable(
-                mContext.getResources(), R.drawable.ntp_search_box);
+        mBackground =
+                ApiCompatibilityUtils.getDrawable(
+                        mContext.getResources(), R.drawable.home_surface_search_box_background);
         mBackground.mutate();
         setBackground(mBackground);
 
@@ -99,9 +100,12 @@ class SearchAccelerator extends ChromeImageButton
     private void updateBackground() {
         if (mThemeColorProvider == null || mIncognitoStateProvider == null) return;
 
-        mBackground.setColorFilter(ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(
-                                           mContext, mThemeColorProvider.getThemeColor(),
-                                           mIncognitoStateProvider.isIncognitoSelected()),
+        mBackground.setColorFilter(
+                ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(
+                        mContext,
+                        mThemeColorProvider.getThemeColor(),
+                        mIncognitoStateProvider.isIncognitoSelected(),
+                        false /*isCustomTab*/),
                 PorterDuff.Mode.SRC_IN);
     }
 }

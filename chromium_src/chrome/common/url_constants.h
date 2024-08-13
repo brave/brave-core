@@ -37,6 +37,10 @@ inline constexpr char kAutomaticSettingsResetLearnMoreURL[] =
 inline constexpr char kAdvancedProtectionDownloadLearnMoreURL[] =
     "https://support.brave.com/";
 
+// "Chrome Settings" URL for the appearance page.
+inline constexpr char kBrowserSettingsSearchEngineURL[] =
+    "chrome://settings/search";
+
 // "Learn more" URL for Battery Saver Mode.
 inline constexpr char kBatterySaverModeLearnMoreUrl[] =
     "https://support.brave.com/hc/en-us/articles/13380606172557";
@@ -161,6 +165,10 @@ inline constexpr char kCrashReasonURL[] =
 inline constexpr char kCrashReasonFeedbackDisplayedURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018192251-How-do-I-fix-page-crashes-and-other-page-loading-errors-";
+
+// "Learn more" URL for the inactive tabs appearance setting.
+inline constexpr char16_t kDiscardRingTreatmentLearnMoreUrl[] =
+    u"https://support.brave.com/";
 
 // "Learn more" URL for the "Do not track" setting in the privacy section.
 inline constexpr char16_t kDoNotTrackLearnMoreURL[] =
@@ -317,6 +325,10 @@ inline constexpr char16_t kPaymentMethodsURLForGPayWeb[] =
 inline constexpr char kAddressesAndPaymentMethodsLearnMoreURL[] =
     "https://support.brave.com";
 
+// "Learn more" URL for the performance intervention notification setting.
+inline constexpr char16_t kPerformanceInterventionLearnMoreUrl[] =
+    u"https://support.brave.com";
+
 // "Learn more" URL for the preloading section in Performance settings.
 inline constexpr char kPreloadingLearnMoreUrl[] = "https://support.brave.com";
 
@@ -391,6 +403,15 @@ inline constexpr char16_t kSyncLearnMoreURL[] = u"https://support.brave.com/";
 
 // The URL for the "Learn more" page for Help me Write.
 inline constexpr char kComposeLearnMorePageURL[] = "https://support.brave.com/";
+
+// The URL for the "Learn more" links for pages related to History search.
+// TODO(crbug.com/328300718): Update help article URL.
+inline constexpr char kHistorySearchLearnMorePageURL[] =
+    "https://support.brave.com/";
+
+// The URL for the Settings page to enable history search.
+inline constexpr char16_t kHistorySearchSettingURL[] =
+    u"chrome://settings/historySearch";
 
 // The URL for the "Learn more" link in the enterprise disclaimer for managed
 // profile in the Signin Intercept bubble.

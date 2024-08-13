@@ -19,7 +19,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     // https://groups.google.com/a/chromium.org/g/embedder-dev/c/XsNTwEiN1lI/m/TMXh-ZvOAAAJ
     {kKeyPinningComponentUpdater, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNewTabPageTriggerForPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kOmniboxTriggerForPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSupportSearchSuggestionForPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 

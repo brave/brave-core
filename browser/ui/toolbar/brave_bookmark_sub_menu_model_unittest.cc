@@ -85,17 +85,18 @@ class BraveBookmarkSubMenuModelUnitTest : public testing::Test {
   }
   void TearDown() override {
     browser_.reset();
+    profile_.reset();
     TestingBrowserProcess::GetGlobal()->SetLocalState(nullptr);
   }
 
  protected:
   content::BrowserTaskEnvironment task_environment_;
+  TestingPrefServiceSimple test_local_state_;
   TestSimpleMenuDelegate delegate_;
   std::unique_ptr<Browser> browser_;
   std::unique_ptr<TestBrowserWindow> test_window_;
   std::unique_ptr<TestingProfile> profile_;
   raw_ptr<BookmarkModel> model_ = nullptr;
-  TestingPrefServiceSimple test_local_state_;
 };
 
 TEST_F(BraveBookmarkSubMenuModelUnitTest, Build) {

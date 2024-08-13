@@ -51,8 +51,8 @@ public class BraveClassAdapter {
         chain = new BraveFreIntentCreatorClassAdapter(chain);
         chain = new BraveHelpAndFeedbackLauncherImplClassAdapter(chain);
         chain = new BraveHomepageManagerClassAdapter(chain);
+        chain = new BraveHubManagerImplClassAdapter(chain);
         chain = new BraveIdentityDiscControllerClassAdapter(chain);
-        chain = new BraveIncognitoToggleTabLayoutClassAdapter(chain);
         chain = new BraveIntentHandlerClassAdapter(chain);
         chain = new BraveLauncherActivityClassAdapter(chain);
         chain = new BraveLaunchIntentDispatcherClassAdapter(chain);
@@ -76,6 +76,7 @@ public class BraveClassAdapter {
         chain = new BraveNotificationBuilderClassAdapter(chain);
         chain = new BraveNotificationManagerProxyImplClassAdapter(chain);
         chain = new BraveNotificationPermissionRationaleDialogControllerClassAdapter(chain);
+        chain = new BraveOmniboxResourceProviderClassAdapter(chain);
         chain = new BravePartialCustomTabBottomSheetStrategyClassAdapter(chain);
         chain = new BravePasswordAccessReauthenticationHelperClassAdapter(chain);
         chain = new BravePasswordSettingsBaseClassAdapter(chain);
@@ -95,14 +96,13 @@ public class BraveClassAdapter {
         chain = new BraveSiteSettingsCategoryClassAdapter(chain);
         chain = new BraveSiteSettingsDelegateClassAdapter(chain);
         chain = new BraveSiteSettingsPreferencesBaseClassAdapter(chain);
+        chain = new BraveStatusBarColorControllerClassAdapter(chain);
         chain = new BraveStatusMediatorClassAdapter(chain);
         chain = new BraveStrictPreferenceKeyCheckerClassAdapter(chain);
         chain = new BraveSwipeRefreshHandlerClassAdapter(chain);
         chain = new BraveSystemAccountManagerDelegateAdapter(chain);
         chain = new BraveTabGroupUiCoordinatorClassAdapter(chain);
         chain = new BraveTabHelpersClassAdapter(chain);
-        chain = new BraveTabSwitcherModeTTCoordinatorClassAdapter(chain);
-        chain = new BraveTabSwitcherModeTopToolbarClassAdapter(chain);
         chain = new BraveTabUiThemeProviderClassAdapter(chain);
         chain = new BraveTabUiThemeUtilsClassAdapter(chain);
         chain = new BraveTabbedActivityClassAdapter(chain);

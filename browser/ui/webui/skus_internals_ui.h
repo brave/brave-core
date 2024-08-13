@@ -46,10 +46,8 @@ class SkusInternalsUI : public content::WebUIController,
                               CreateOrderFromReceiptCallback callback) override;
 
   // SelectFileDialog::Listener overrides:
-  void FileSelected(const ui::SelectedFileInfo& file,
-                    int index,
-                    void* params) override;
-  void FileSelectionCanceled(void* params) override;
+  void FileSelected(const ui::SelectedFileInfo& file, int index) override;
+  void FileSelectionCanceled() override;
 
   std::string GetLastVPNConnectionError() const;
   base::Value::Dict GetOrderInfo(const std::string& location) const;

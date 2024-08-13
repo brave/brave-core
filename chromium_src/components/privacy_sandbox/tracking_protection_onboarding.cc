@@ -5,15 +5,15 @@
 
 #include "components/privacy_sandbox/tracking_protection_onboarding.h"
 
-#define MaybeMarkEligible MaybeMarkEligible_ChromiumImpl
+#define MaybeMarkModeBEligible MaybeMarkModeBEligible_ChromiumImpl
 #include "src/components/privacy_sandbox/tracking_protection_onboarding.cc"
-#undef MaybeMarkEligible
+#undef MaybeMarkModeBEligible
 
 namespace privacy_sandbox {
 
-void TrackingProtectionOnboarding::MaybeMarkEligible() {
+void TrackingProtectionOnboarding::MaybeMarkModeBEligible() {
   DCHECK_EQ(TrackingProtectionOnboardingStatus::kIneligible,
-            GetInternalOnboardingStatus(pref_service_));
+            GetInternalModeBOnboardingStatus(pref_service_));
   return;
 }
 
