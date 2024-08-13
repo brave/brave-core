@@ -6,14 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SEARCHBOX_REALBOX_HANDLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SEARCHBOX_REALBOX_HANDLER_H_
 
-#define SetLensSearchboxClientForTesting(...)    \
-  SetLensSearchboxClientForTesting(__VA_ARGS__); \
-                                                 \
- private:                                        \
+#define GetMatchWithUrl(...)    \
+  GetMatchWithUrl(__VA_ARGS__); \
+                                \
   friend class BraveRealboxHandlerTest
 
 #include "src/chrome/browser/ui/webui/searchbox/realbox_handler.h"  // IWYU pragma: export
 
-#undef SetLensSearchboxClientForTesting
+#undef GetMatchWithUrl
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SEARCHBOX_REALBOX_HANDLER_H_
