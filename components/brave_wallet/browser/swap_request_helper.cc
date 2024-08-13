@@ -146,7 +146,7 @@ namespace {
 
 std::optional<std::string> EncodeChainId(const std::string& value) {
   if (value == mojom::kSolanaMainnet) {
-    return "SOL";
+    return kLiFiSolanaMainnetChainID;
   }
 
   uint256_t val;
@@ -173,9 +173,15 @@ base::Value::Dict EncodeToolDetails(
 std::optional<base::Value::Dict> EncodeToken(
     const mojom::BlockchainTokenPtr& token) {
   base::Value::Dict result;
-  result.Set("address", token->contract_address.empty()
-                            ? kLiFiNativeEVMAssetContractAddress
-                            : token->contract_address);
+
+  if (token->contract_address.empty()) {
+    result.Set("address", token->coin == mojom::CoinType::SOL
+                              ? kLiFiNativeSVMAssetContractAddress
+                              : kLiFiNativeEVMAssetContractAddress);
+  } else {
+    result.Set("address", token->contract_address);
+  }
+
   result.Set("decimals", token->decimals);
   result.Set("symbol", token->symbol);
 
