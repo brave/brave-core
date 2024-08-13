@@ -4,60 +4,90 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import json
-from pathlib import Path
 import os
+import shlex
+import shutil
+
+import brave_chromium_utils
+import override_utils
+
+VERBOSE = False  # Set to True to print verbose messages.
 
 
-def get_root():
-    return f'{Path(__file__).parent}/../..'
+# Loads the leo overrides from leo_overrides.json.
+def LoadLeoOverrides():
+    leo_overrides_config_path = brave_chromium_utils.wspath(
+        '//brave/components/vector_icons/leo_overrides.json')
+    leo_override_format = '//brave/node_modules/@brave/leo/icons-skia/{}.icon'
 
+    with open(leo_overrides_config_path, 'r') as f:
+        leo_overrides_config = json.load(f)
 
-def get_root_relative(icon_path):
-    return "//" + os.path.relpath(os.path.abspath(icon_path), get_root()) \
-      .replace(os.sep, '/')
-
-
-leo_overrides = {}
-
-
-def maybe_load_overrides():
-    """Loads the Leo Overrides into the global `leo_overrides` variable"""
-    if len(leo_overrides) != 0:
-        return
-
-    brave_root = os.path.join(get_root(), 'brave')
-    overrides_file_path = f'{brave_root}/vector_icons/leo_overrides.json'
-
-    data = json.load(open(overrides_file_path))
-
-    for icon, leo_override in data.items():
+    leo_overrides = {}
+    for icon, leo_override in leo_overrides_config.items():
         if not icon.startswith("//"):
-            raise Exception("Only absolute paths are supported")
-        leo_overrides[icon] = \
-          f'../../brave/node_modules/@brave/leo/icons-skia/{leo_override}.icon'
+            raise ValueError(f'Invalid icon path: {icon}, must start with //')
+        leo_override = brave_chromium_utils.wspath(
+            leo_override_format.format(leo_override))
+        if not os.path.exists(leo_override):
+            raise FileNotFoundError(f'leo override not found: {leo_override}')
+        leo_overrides[icon] = os.path.relpath(leo_override)
+
+    return leo_overrides
 
 
-def get_icon_path(icon_path, alt_working_directory):
-    """Determines where to read the icon from. Options are:
-    1. The Leo `icons-skia` folder, mapping `icon_path` to a Leo icon, as per
-       the `leo_overrides.json` file.
-    2. The Brave equivalent of the the Chromium icon path.
-    3. The Chromium Path (this is the default, if no override is specified).
+# Rewrites the file list with overridden icons.
+def RewriteFileListWithOverrides(file_list):
+    with open(file_list, "r") as f:
+        file_list_contents = f.read()
+    icon_list = shlex.split(file_list_contents)
 
-    Args:
-        icon_path: The path to the chromium icon
-        alt_working_directory: The Brave overrides folder for this icon.
-  """
-    maybe_load_overrides()
+    leo_overrides = LoadLeoOverrides()
 
-    # Check for alternative path
-    alt_icon_path = os.path.join(alt_working_directory,
-                                 os.path.basename(icon_path))
+    rewritten_icon_list = []
+    for icon_path in icon_list:
+        icon_ws_path = brave_chromium_utils.to_wspath(icon_path)
+        chromium_src_override = brave_chromium_utils.get_chromium_src_override(
+            icon_path)
 
-    chromium_path = get_root_relative(icon_path)
-    if chromium_path in leo_overrides:
-        return leo_overrides[chromium_path]
-    if os.path.exists(alt_icon_path):
-        return alt_icon_path
+        # Leo override may have a different name than the original icon.
+        # Copy the override to gen/brave/vector_icons_overrides with the
+        # original name.
+        leo_override = leo_overrides.get(icon_ws_path)
+        if leo_override:
+            if os.path.exists(chromium_src_override):
+                raise RuntimeError(
+                    f'leo override and chromium_src override both exist for '
+                    f'{icon_path}')
 
-    return icon_path
+            gen_file = f'gen/brave/vector_icons_overrides/{icon_ws_path[2:]}'
+            os.makedirs(os.path.dirname(gen_file), exist_ok=True)
+            shutil.copyfile(leo_override, gen_file)
+            rewritten_icon_list.append(gen_file)
+            if VERBOSE:
+                print(
+                    f'Using leo override: {leo_override} copied to {gen_file}')
+            continue
+
+        # If the icon is not in leo overrides, check if it's in chromium_src
+        # overrides.
+        if os.path.exists(chromium_src_override):
+            chromium_src_override = os.path.relpath(chromium_src_override)
+            rewritten_icon_list.append(chromium_src_override)
+            if VERBOSE:
+                print(f'Using chromium_src override: {chromium_src_override}')
+            continue
+
+        # Otherwise use the original icon.
+        rewritten_icon_list.append(icon_path)
+
+    # Write the rewritten file list to the original file list.
+    with open(file_list, "w") as f:
+        f.write(shlex.join(rewritten_icon_list))
+
+
+@override_utils.override_function(globals())
+def AggregateVectorIcons(orig_func, working_directory, file_list, output_cc,
+                         output_h):
+    RewriteFileListWithOverrides(file_list)
+    return orig_func(working_directory, file_list, output_cc, output_h)

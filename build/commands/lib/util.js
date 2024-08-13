@@ -510,13 +510,13 @@ const util = {
     Log.progressFinish('update branding')
   },
 
-  touchOverriddenChromiumSrcFiles: () => {
+  touchOverriddenFiles: () => {
     Log.progressStart('touch original files overridden by chromium_src')
 
     // Return true when original file of |file| should be touched.
     const applyFileFilter = (file) => {
       // Only include overridable files.
-      const supportedExts = ['.cc', '.h', '.json', '.mm', '.mojom', '.py', '.pdl'];
+      const supportedExts = ['.cc', '.h', '.icon', '.json', '.mm', '.mojom', '.pdl', '.py'];
       return supportedExts.includes(path.extname(file))
     }
 
@@ -557,39 +557,6 @@ const util = {
       }
     }
     Log.progressFinish('touch original files overridden by chromium_src')
-  },
-
-  touchOverriddenVectorIconFiles: () => {
-    Log.progressStart('touch original vector icon files overridden by brave/vector_icons')
-
-    // Return true when original file of |file| should be touched.
-    const applyFileFilter = (file) => {
-      // Only includes icon files.
-      const ext = path.extname(file)
-      if (ext !== '.icon') { return false }
-      return true
-    }
-
-    const braveVectorIconsDir = path.join(config.srcDir, 'brave', 'vector_icons')
-    var braveVectorIconFiles = util.walkSync(braveVectorIconsDir, applyFileFilter)
-
-    // Touch original files by updating mtime.
-    const braveVectorIconsDirLen = braveVectorIconsDir.length
-    braveVectorIconFiles.forEach(braveVectorIconFile => {
-      var overriddenFile = path.join(config.srcDir, braveVectorIconFile.slice(braveVectorIconsDirLen))
-      if (fs.existsSync(overriddenFile)) {
-        // If overriddenFile is older than file in vector_icons, touch it to trigger rebuild.
-        updateFileUTimesIfOverrideIsNewer(overriddenFile, braveVectorIconFile)
-      }
-    })
-    Log.progressFinish('touch original vector icon files overridden by brave/vector_icons')
-  },
-
-  touchOverriddenFiles: () => {
-    Log.progressScope('touch overridden files', () => {
-      util.touchOverriddenChromiumSrcFiles()
-      util.touchOverriddenVectorIconFiles()
-    })
   },
 
   touchGsutilChangeLogFile: () => {
