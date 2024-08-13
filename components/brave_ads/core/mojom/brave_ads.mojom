@@ -47,15 +47,14 @@ enum ReminderType {
   kExternalWalletConnected
 };
 
-// You should not change the assigned values as they are used for persisting and
-// restoring state.
+[Stable, Extensible]
 enum ReactionType {
-  kDisliked = -1,
-  kNeutral = 0,
-  kLiked = 1
+  [Default] kNeutral = 0,
+  kLiked = 1,
+  kDisliked = 2
 };
 
-// These values must match AdType.
+// These values must match `public/ad_units/ad_type.h`.
 enum AdType {
   kUndefined = 0,
   kNotificationAd,
@@ -141,67 +140,84 @@ struct UrlResponseInfo {
   map<string, string> headers;
 };
 
-union DBValue {
+struct DBTransactionInfo {
+  int32 version;
+  int32 compatible_version;
+  array<DBStatementInfo> statements;
+};
+
+
+enum DBBindColumnType {
+  kInt,
+  kInt64,
+  kDouble,
+  kBool,
+  kString
+};
+
+union DBColumnValueUnion {
   int32 int_value;
   int64 int64_value;
   double double_value;
   bool bool_value;
   string string_value;
-  int8 null_value;
 };
 
-struct DBCommandBindingInfo {
+struct DBBindColumnInfo {
   int32 index;
-  DBValue value;
+  DBColumnValueUnion value_union;
 };
 
-struct DBCommandInfo {
-  enum Type {
-    INITIALIZE,
-    READ,
-    RUN,
-    EXECUTE,
-    MIGRATE
+struct DBRowInfo {
+  array<DBColumnValueUnion> column_values_union;
+};
+
+union DBRowsUnion {
+  array<DBRowInfo> rows;
+  DBColumnValueUnion column_value_union;
+};
+
+struct DBStatementInfo {
+  enum OperationType {
+    // Create or open the database.
+    kCreateOrOpen,
+
+    // Execute a statement with bound columns that return records.
+    kStep,
+
+    // Execute a statement with bound columns that does not return records.
+    kRun,
+
+    // Execute a statement that does not return records.
+    kExecute,
+
+    // Migrate the database to the latest version.
+    kMigrate,
+
+    // Vacuum the database after committing the transaction.
+    kVacuum
   };
 
-  enum RecordBindingType {
-    STRING_TYPE,
-    INT_TYPE,
-    INT64_TYPE,
-    DOUBLE_TYPE,
-    BOOL_TYPE
-  };
-
-  Type type;
+  OperationType operation_type;
   string sql;
-  array<DBCommandBindingInfo> bindings;
-  array<RecordBindingType> record_bindings;
+  array<DBBindColumnType> bind_column_types;
+  array<DBBindColumnInfo> bind_columns;
 };
 
-struct DBTransactionInfo {
-  int32 version;
-  int32 compatible_version;
-  array<DBCommandInfo> commands;
-};
-
-struct DBRecordInfo {
-  array<DBValue> fields;
-};
-
-union DBCommandResult {
-  array<DBRecordInfo> records;
-  DBValue value;
-};
-
-struct DBCommandResponseInfo {
-  enum StatusType {
-    RESPONSE_OK,
-    INITIALIZATION_ERROR,
-    TRANSACTION_ERROR,
-    COMMAND_ERROR,
-    RESPONSE_ERROR
+struct DBStatementResultInfo {
+  enum ResultCode {
+    kSuccess,  // No error.
+    kUninitialized,
+    kFailedToInitializeMetaTable,
+    kFailedToOpenDatabase,
+    kMigrationError,
+    kTransactionError,
+    kStatementError
   };
 
-  DBCommandResult? result;
-  StatusType status;
+  DBRowsUnion? rows_union;
+  ResultCode result_code;
 };
+
+// Silences presubmit on mojom check. This struct does not need to be [Stable].
+struct DBCommandResponseInfo {};

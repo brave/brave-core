@@ -114,8 +114,8 @@ class ADS_EXPORT AdsClient {
                                     const std::string& captcha_id) = 0;
 
   // Run a database transaction. The callback takes one argument -
-  // `mojom::DBCommandResponseInfoPtr` containing the info of the transaction.
-  virtual void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
+  // `mojom::DBStatementResultInfoPtr` containing the info of the transaction.
+  virtual void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_transaction,
                                 RunDBTransactionCallback callback) = 0;
 
   // Record P2A (Private Advertising Analytics) `events`.

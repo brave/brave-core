@@ -17,7 +17,6 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/containers/container_util.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
@@ -38,101 +37,103 @@ constexpr char kTableName[] = "creative_promoted_content_ads";
 
 constexpr int kDefaultBatchSize = 50;
 
-void BindRecords(mojom::DBCommandInfo* const command) {
-  CHECK(command);
+void BindColumnTypes(mojom::DBStatementInfo* const mojom_statement) {
+  CHECK(mojom_statement);
 
-  command->record_bindings = {
-      mojom::DBCommandInfo::RecordBindingType::
-          STRING_TYPE,  // creative_instance_id
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // creative_set_id
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // campaign_id
-      mojom::DBCommandInfo::RecordBindingType::INT64_TYPE,   // start_at
-      mojom::DBCommandInfo::RecordBindingType::INT64_TYPE,   // end_at
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // daily_cap
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // advertiser_id
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // priority
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_day
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_week
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // per_month
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,     // total_max
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // value
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // segment
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // geo_target
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // target_url
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // title
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // description
-      mojom::DBCommandInfo::RecordBindingType::DOUBLE_TYPE,  // ptr
-      mojom::DBCommandInfo::RecordBindingType::
-          STRING_TYPE,  // dayparts->days_of_week
-      mojom::DBCommandInfo::RecordBindingType::
-          INT_TYPE,  // dayparts->start_minute
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE  // dayparts->end_minute
+  mojom_statement->bind_column_types = {
+      mojom::DBBindColumnType::kString,  // creative_instance_id
+      mojom::DBBindColumnType::kString,  // creative_set_id
+      mojom::DBBindColumnType::kString,  // campaign_id
+      mojom::DBBindColumnType::kInt64,   // start_at
+      mojom::DBBindColumnType::kInt64,   // end_at
+      mojom::DBBindColumnType::kInt,     // daily_cap
+      mojom::DBBindColumnType::kString,  // advertiser_id
+      mojom::DBBindColumnType::kInt,     // priority
+      mojom::DBBindColumnType::kInt,     // per_day
+      mojom::DBBindColumnType::kInt,     // per_week
+      mojom::DBBindColumnType::kInt,     // per_month
+      mojom::DBBindColumnType::kInt,     // total_max
+      mojom::DBBindColumnType::kDouble,  // value
+      mojom::DBBindColumnType::kString,  // split_test_group
+      mojom::DBBindColumnType::kString,  // segment
+      mojom::DBBindColumnType::kString,  // geo_target
+      mojom::DBBindColumnType::kString,  // target_url
+      mojom::DBBindColumnType::kString,  // title
+      mojom::DBBindColumnType::kString,  // description
+      mojom::DBBindColumnType::kDouble,  // ptr
+      mojom::DBBindColumnType::kString,  // dayparts->days_of_week
+      mojom::DBBindColumnType::kInt,     // dayparts->start_minute
+      mojom::DBBindColumnType::kInt      // dayparts->end_minute
   };
 }
 
-size_t BindParameters(mojom::DBCommandInfo* command,
-                      const CreativePromotedContentAdList& creative_ads) {
-  CHECK(command);
+size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
+                   const CreativePromotedContentAdList& creative_ads) {
+  CHECK(mojom_statement);
+  CHECK(!creative_ads.empty());
 
-  size_t count = 0;
+  size_t row_count = 0;
 
   int index = 0;
   for (const auto& creative_ad : creative_ads) {
-    BindString(command, index++, creative_ad.creative_instance_id);
-    BindString(command, index++, creative_ad.creative_set_id);
-    BindString(command, index++, creative_ad.campaign_id);
-    BindString(command, index++, creative_ad.title);
-    BindString(command, index++, creative_ad.description);
+    BindColumnString(mojom_statement, index++,
+                     creative_ad.creative_instance_id);
+    BindColumnString(mojom_statement, index++, creative_ad.creative_set_id);
+    BindColumnString(mojom_statement, index++, creative_ad.campaign_id);
+    BindColumnString(mojom_statement, index++, creative_ad.title);
+    BindColumnString(mojom_statement, index++, creative_ad.description);
 
-    ++count;
+    ++row_count;
   }
 
-  return count;
+  return row_count;
 }
 
-CreativePromotedContentAdInfo GetFromRecord(mojom::DBRecordInfo* const record) {
-  CHECK(record);
+CreativePromotedContentAdInfo FromMojomRow(
+    const mojom::DBRowInfo* const mojom_row) {
+  CHECK(mojom_row);
 
   CreativePromotedContentAdInfo creative_ad;
 
-  creative_ad.creative_instance_id = ColumnString(record, 0);
-  creative_ad.creative_set_id = ColumnString(record, 1);
-  creative_ad.campaign_id = ColumnString(record, 2);
-  creative_ad.start_at = ToTimeFromChromeTimestamp(ColumnInt64(record, 3));
-  creative_ad.end_at = ToTimeFromChromeTimestamp(ColumnInt64(record, 4));
-  creative_ad.daily_cap = ColumnInt(record, 5);
-  creative_ad.advertiser_id = ColumnString(record, 6);
-  creative_ad.priority = ColumnInt(record, 7);
-  creative_ad.per_day = ColumnInt(record, 8);
-  creative_ad.per_week = ColumnInt(record, 9);
-  creative_ad.per_month = ColumnInt(record, 10);
-  creative_ad.total_max = ColumnInt(record, 11);
-  creative_ad.value = ColumnDouble(record, 12);
-  creative_ad.segment = ColumnString(record, 13);
-  creative_ad.geo_targets.insert(ColumnString(record, 14));
-  creative_ad.target_url = GURL(ColumnString(record, 15));
-  creative_ad.title = ColumnString(record, 16);
-  creative_ad.description = ColumnString(record, 17);
-  creative_ad.pass_through_rate = ColumnDouble(record, 18);
+  creative_ad.creative_instance_id = ColumnString(mojom_row, 0);
+  creative_ad.creative_set_id = ColumnString(mojom_row, 1);
+  creative_ad.campaign_id = ColumnString(mojom_row, 2);
+  creative_ad.start_at = ToTimeFromChromeTimestamp(ColumnInt64(mojom_row, 3));
+  creative_ad.end_at = ToTimeFromChromeTimestamp(ColumnInt64(mojom_row, 4));
+  creative_ad.daily_cap = ColumnInt(mojom_row, 5);
+  creative_ad.advertiser_id = ColumnString(mojom_row, 6);
+  creative_ad.priority = ColumnInt(mojom_row, 7);
+  creative_ad.per_day = ColumnInt(mojom_row, 8);
+  creative_ad.per_week = ColumnInt(mojom_row, 9);
+  creative_ad.per_month = ColumnInt(mojom_row, 10);
+  creative_ad.total_max = ColumnInt(mojom_row, 11);
+  creative_ad.value = ColumnDouble(mojom_row, 12);
+  creative_ad.split_test_group = ColumnString(mojom_row, 13);
+  creative_ad.segment = ColumnString(mojom_row, 14);
+  creative_ad.geo_targets.insert(ColumnString(mojom_row, 15));
+  creative_ad.target_url = GURL(ColumnString(mojom_row, 16));
+  creative_ad.title = ColumnString(mojom_row, 17);
+  creative_ad.description = ColumnString(mojom_row, 18);
+  creative_ad.pass_through_rate = ColumnDouble(mojom_row, 19);
 
   CreativeDaypartInfo daypart;
-  daypart.days_of_week = ColumnString(record, 19);
-  daypart.start_minute = ColumnInt(record, 20);
-  daypart.end_minute = ColumnInt(record, 21);
+  daypart.days_of_week = ColumnString(mojom_row, 20);
+  daypart.start_minute = ColumnInt(mojom_row, 21);
+  daypart.end_minute = ColumnInt(mojom_row, 22);
   creative_ad.dayparts.push_back(daypart);
 
   return creative_ad;
 }
 
 CreativePromotedContentAdList GetCreativeAdsFromResponse(
-    mojom::DBCommandResponseInfoPtr command_response) {
-  CHECK(command_response);
-  CHECK(command_response->result);
+    mojom::DBStatementResultInfoPtr mojom_statement_result) {
+  CHECK(mojom_statement_result);
+  CHECK(mojom_statement_result->rows_union);
 
   CreativePromotedContentAdMap creative_ads;
 
-  for (const auto& record : command_response->result->get_records()) {
-    const CreativePromotedContentAdInfo creative_ad = GetFromRecord(&*record);
+  for (const auto& mojom_row : mojom_statement_result->rows_union->get_rows()) {
+    const CreativePromotedContentAdInfo creative_ad = FromMojomRow(&*mojom_row);
 
     const std::string uuid =
         base::StrCat({creative_ad.creative_instance_id, creative_ad.segment});
@@ -166,10 +167,10 @@ CreativePromotedContentAdList GetCreativeAdsFromResponse(
 void GetForCreativeInstanceIdCallback(
     const std::string& creative_instance_id,
     GetCreativePromotedContentAdCallback callback,
-    mojom::DBCommandResponseInfoPtr command_response) {
-  if (!command_response ||
-      command_response->status !=
-          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+    mojom::DBStatementResultInfoPtr mojom_statement_result) {
+  if (!mojom_statement_result ||
+      mojom_statement_result->result_code !=
+          mojom::DBStatementResultInfo::ResultCode::kSuccess) {
     BLOG(0, "Failed to get creative promoted content ad");
 
     return std::move(callback).Run(/*success=*/false, creative_instance_id,
@@ -177,7 +178,7 @@ void GetForCreativeInstanceIdCallback(
   }
 
   const CreativePromotedContentAdList creative_ads =
-      GetCreativeAdsFromResponse(std::move(command_response));
+      GetCreativeAdsFromResponse(std::move(mojom_statement_result));
 
   if (creative_ads.size() != 1) {
     BLOG(0, "Failed to get creative promoted content ad");
@@ -191,12 +192,13 @@ void GetForCreativeInstanceIdCallback(
   std::move(callback).Run(/*success=*/true, creative_instance_id, creative_ad);
 }
 
-void GetForSegmentsCallback(const SegmentList& segments,
-                            GetCreativePromotedContentAdsCallback callback,
-                            mojom::DBCommandResponseInfoPtr command_response) {
-  if (!command_response ||
-      command_response->status !=
-          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+void GetForSegmentsCallback(
+    const SegmentList& segments,
+    GetCreativePromotedContentAdsCallback callback,
+    mojom::DBStatementResultInfoPtr mojom_statement_result) {
+  if (!mojom_statement_result ||
+      mojom_statement_result->result_code !=
+          mojom::DBStatementResultInfo::ResultCode::kSuccess) {
     BLOG(0, "Failed to get creative promoted content ads");
 
     return std::move(callback).Run(/*success=*/false, segments,
@@ -204,16 +206,16 @@ void GetForSegmentsCallback(const SegmentList& segments,
   }
 
   const CreativePromotedContentAdList creative_ads =
-      GetCreativeAdsFromResponse(std::move(command_response));
+      GetCreativeAdsFromResponse(std::move(mojom_statement_result));
 
   std::move(callback).Run(/*success=*/true, segments, creative_ads);
 }
 
 void GetAllCallback(GetCreativePromotedContentAdsCallback callback,
-                    mojom::DBCommandResponseInfoPtr command_response) {
-  if (!command_response ||
-      command_response->status !=
-          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+                    mojom::DBStatementResultInfoPtr mojom_statement_result) {
+  if (!mojom_statement_result ||
+      mojom_statement_result->result_code !=
+          mojom::DBStatementResultInfo::ResultCode::kSuccess) {
     BLOG(0, "Failed to get all creative new tab page ads");
 
     return std::move(callback).Run(/*success=*/false, /*segments=*/{},
@@ -221,7 +223,7 @@ void GetAllCallback(GetCreativePromotedContentAdsCallback callback,
   }
 
   const CreativePromotedContentAdList creative_ads =
-      GetCreativeAdsFromResponse(std::move(command_response));
+      GetCreativeAdsFromResponse(std::move(mojom_statement_result));
 
   const SegmentList segments = GetSegments(creative_ads);
 
@@ -242,34 +244,35 @@ void CreativePromotedContentAds::Save(
     return std::move(callback).Run(/*success=*/true);
   }
 
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  mojom::DBTransactionInfoPtr mojom_transaction =
+      mojom::DBTransactionInfo::New();
 
   const std::vector<CreativePromotedContentAdList> batches =
       SplitVector(creative_ads, batch_size_);
 
   for (const auto& batch : batches) {
-    InsertOrUpdate(&*transaction, batch);
+    Insert(&*mojom_transaction, batch);
 
     const CreativeAdList creative_ads_batch(batch.cbegin(), batch.cend());
-    campaigns_database_table_.InsertOrUpdate(&*transaction, creative_ads_batch);
-    creative_ads_database_table_.InsertOrUpdate(&*transaction,
-                                                creative_ads_batch);
-    dayparts_database_table_.InsertOrUpdate(&*transaction, creative_ads_batch);
-    deposits_database_table_.InsertOrUpdate(&*transaction, creative_ads_batch);
-    geo_targets_database_table_.InsertOrUpdate(&*transaction,
-                                               creative_ads_batch);
-    segments_database_table_.InsertOrUpdate(&*transaction, creative_ads_batch);
+    campaigns_database_table_.Insert(&*mojom_transaction, creative_ads_batch);
+    creative_ads_database_table_.Insert(&*mojom_transaction,
+                                        creative_ads_batch);
+    dayparts_database_table_.Insert(&*mojom_transaction, creative_ads_batch);
+    deposits_database_table_.Insert(&*mojom_transaction, creative_ads_batch);
+    geo_targets_database_table_.Insert(&*mojom_transaction, creative_ads_batch);
+    segments_database_table_.Insert(&*mojom_transaction, creative_ads_batch);
   }
 
-  RunTransaction(std::move(transaction), std::move(callback));
+  RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
 
 void CreativePromotedContentAds::Delete(ResultCallback callback) const {
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  mojom::DBTransactionInfoPtr mojom_transaction =
+      mojom::DBTransactionInfo::New();
 
-  DeleteTable(&*transaction, GetTableName());
+  DeleteTable(&*mojom_transaction, GetTableName());
 
-  RunTransaction(std::move(transaction), std::move(callback));
+  RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
 
 void CreativePromotedContentAds::GetForCreativeInstanceId(
@@ -280,10 +283,12 @@ void CreativePromotedContentAds::GetForCreativeInstanceId(
                                    /*creative_ads=*/{});
   }
 
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::READ;
-  command->sql = base::ReplaceStringPlaceholders(
+  mojom::DBTransactionInfoPtr mojom_transaction =
+      mojom::DBTransactionInfo::New();
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kStep;
+  mojom_statement->sql = base::ReplaceStringPlaceholders(
       R"(
           SELECT
             creative_promoted_content_ad.creative_instance_id,
@@ -299,6 +304,7 @@ void CreativePromotedContentAds::GetForCreativeInstanceId(
             creative_ads.per_month,
             creative_ads.total_max,
             creative_ads.value,
+            creative_ads.split_test_group,
             segments.segment,
             geo_targets.geo_target,
             creative_ads.target_url,
@@ -318,10 +324,10 @@ void CreativePromotedContentAds::GetForCreativeInstanceId(
           WHERE
             creative_promoted_content_ad.creative_instance_id = '$2';)",
       {GetTableName(), creative_instance_id}, nullptr);
-  BindRecords(&*command);
-  transaction->commands.push_back(std::move(command));
+  BindColumnTypes(&*mojom_statement);
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunDBTransaction(std::move(transaction),
+  RunDBTransaction(std::move(mojom_transaction),
                    base::BindOnce(&GetForCreativeInstanceIdCallback,
                                   creative_instance_id, std::move(callback)));
 }
@@ -334,10 +340,12 @@ void CreativePromotedContentAds::GetForSegments(
                                    /*creative_ads=*/{});
   }
 
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::READ;
-  command->sql = base::ReplaceStringPlaceholders(
+  mojom::DBTransactionInfoPtr mojom_transaction =
+      mojom::DBTransactionInfo::New();
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kStep;
+  mojom_statement->sql = base::ReplaceStringPlaceholders(
       R"(
           SELECT
             creative_promoted_content_ad.creative_instance_id,
@@ -353,6 +361,7 @@ void CreativePromotedContentAds::GetForSegments(
             creative_ads.per_month,
             creative_ads.total_max,
             creative_ads.value,
+            creative_ads.split_test_group,
             segments.segment,
             geo_targets.geo_target,
             creative_ads.target_url,
@@ -373,30 +382,32 @@ void CreativePromotedContentAds::GetForSegments(
             segments.segment IN $2
             AND $3 BETWEEN campaigns.start_at AND campaigns.end_at;)",
       {GetTableName(),
-       BuildBindingParameterPlaceholder(/*parameters_count=*/segments.size()),
+       BuildBindColumnPlaceholder(/*column_count=*/segments.size()),
        base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
       nullptr);
-  BindRecords(&*command);
+  BindColumnTypes(&*mojom_statement);
 
   int index = 0;
   for (const auto& segment : segments) {
-    BindString(&*command, index, segment);
+    BindColumnString(&*mojom_statement, index, segment);
     ++index;
   }
 
-  transaction->commands.push_back(std::move(command));
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 
   RunDBTransaction(
-      std::move(transaction),
+      std::move(mojom_transaction),
       base::BindOnce(&GetForSegmentsCallback, segments, std::move(callback)));
 }
 
 void CreativePromotedContentAds::GetForActiveCampaigns(
     GetCreativePromotedContentAdsCallback callback) const {
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::READ;
-  command->sql = base::ReplaceStringPlaceholders(
+  mojom::DBTransactionInfoPtr mojom_transaction =
+      mojom::DBTransactionInfo::New();
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kStep;
+  mojom_statement->sql = base::ReplaceStringPlaceholders(
       R"(
           SELECT
             creative_promoted_content_ad.creative_instance_id,
@@ -412,6 +423,7 @@ void CreativePromotedContentAds::GetForActiveCampaigns(
             creative_ads.per_month,
             creative_ads.total_max,
             creative_ads.value,
+            creative_ads.split_test_group,
             segments.segment,
             geo_targets.geo_target,
             creative_ads.target_url,
@@ -433,10 +445,10 @@ void CreativePromotedContentAds::GetForActiveCampaigns(
       {GetTableName(),
        base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
       nullptr);
-  BindRecords(&*command);
-  transaction->commands.push_back(std::move(command));
+  BindColumnTypes(&*mojom_statement);
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunDBTransaction(std::move(transaction),
+  RunDBTransaction(std::move(mojom_transaction),
                    base::BindOnce(&GetAllCallback, std::move(callback)));
 }
 
@@ -445,12 +457,13 @@ std::string CreativePromotedContentAds::GetTableName() const {
 }
 
 void CreativePromotedContentAds::Create(
-    mojom::DBTransactionInfo* const transaction) {
-  CHECK(transaction);
+    mojom::DBTransactionInfo* const mojom_transaction) {
+  CHECK(mojom_transaction);
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kExecute;
+  mojom_statement->sql =
       R"(
           CREATE TABLE creative_promoted_content_ads (
             creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
@@ -459,16 +472,17 @@ void CreativePromotedContentAds::Create(
             title TEXT NOT NULL,
             description TEXT NOT NULL
           );)";
-  transaction->commands.push_back(std::move(command));
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 }
 
-void CreativePromotedContentAds::Migrate(mojom::DBTransactionInfo* transaction,
-                                         const int to_version) {
-  CHECK(transaction);
+void CreativePromotedContentAds::Migrate(
+    mojom::DBTransactionInfo* mojom_transaction,
+    const int to_version) {
+  CHECK(mojom_transaction);
 
   switch (to_version) {
-    case 35: {
-      MigrateToV35(transaction);
+    case 43: {
+      MigrateToV43(mojom_transaction);
       break;
     }
   }
@@ -476,37 +490,38 @@ void CreativePromotedContentAds::Migrate(mojom::DBTransactionInfo* transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void CreativePromotedContentAds::MigrateToV35(
-    mojom::DBTransactionInfo* const transaction) {
-  CHECK(transaction);
+void CreativePromotedContentAds::MigrateToV43(
+    mojom::DBTransactionInfo* const mojom_transaction) {
+  CHECK(mojom_transaction);
 
   // We can safely recreate the table because it will be repopulated after
   // downloading the catalog.
-  DropTable(transaction, GetTableName());
-  Create(transaction);
+  DropTable(mojom_transaction, GetTableName());
+  Create(mojom_transaction);
 }
 
-void CreativePromotedContentAds::InsertOrUpdate(
-    mojom::DBTransactionInfo* transaction,
+void CreativePromotedContentAds::Insert(
+    mojom::DBTransactionInfo* mojom_transaction,
     const CreativePromotedContentAdList& creative_ads) {
-  CHECK(transaction);
+  CHECK(mojom_transaction);
 
   if (creative_ads.empty()) {
     return;
   }
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::RUN;
-  command->sql = BuildInsertOrUpdateSql(&*command, creative_ads);
-  transaction->commands.push_back(std::move(command));
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type = mojom::DBStatementInfo::OperationType::kRun;
+  mojom_statement->sql = BuildInsertSql(&*mojom_statement, creative_ads);
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 }
 
-std::string CreativePromotedContentAds::BuildInsertOrUpdateSql(
-    mojom::DBCommandInfo* command,
+std::string CreativePromotedContentAds::BuildInsertSql(
+    mojom::DBStatementInfo* mojom_statement,
     const CreativePromotedContentAdList& creative_ads) const {
-  CHECK(command);
+  CHECK(mojom_statement);
+  CHECK(!creative_ads.empty());
 
-  const size_t binded_parameters_count = BindParameters(command, creative_ads);
+  const size_t row_count = BindColumns(mojom_statement, creative_ads);
 
   return base::ReplaceStringPlaceholders(
       R"(
@@ -517,8 +532,8 @@ std::string CreativePromotedContentAds::BuildInsertOrUpdateSql(
             title,
             description
           ) VALUES $2;)",
-      {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count=*/5, binded_parameters_count)},
+      {GetTableName(),
+       BuildBindColumnPlaceholders(/*column_count=*/5, row_count)},
       nullptr);
 }
 

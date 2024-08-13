@@ -22,7 +22,7 @@ constexpr char kReactionMapAsJson[] =
     R"(
         {
           "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2": 1,
-          "untargeted": -1
+          "untargeted": 2
         })";
 
 constexpr char kReactionSetAsJson[] =

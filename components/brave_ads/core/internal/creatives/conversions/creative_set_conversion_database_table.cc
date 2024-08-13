@@ -16,7 +16,6 @@
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
@@ -30,25 +29,24 @@ namespace {
 
 constexpr char kTableName[] = "creative_set_conversions";
 
-void BindRecords(mojom::DBCommandInfo* const command) {
-  CHECK(command);
+void BindColumnTypes(mojom::DBStatementInfo* const mojom_statement) {
+  CHECK(mojom_statement);
 
-  command->record_bindings = {
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // creative_set_id
-      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // url_pattern
-      mojom::DBCommandInfo::RecordBindingType::
-          STRING_TYPE,  // verifiable_advertiser_public_key
-      mojom::DBCommandInfo::RecordBindingType::INT_TYPE,   // observation_window
-      mojom::DBCommandInfo::RecordBindingType::INT64_TYPE  // expire_at
+  mojom_statement->bind_column_types = {
+      mojom::DBBindColumnType::kString,  // creative_set_id
+      mojom::DBBindColumnType::kString,  // url_pattern
+      mojom::DBBindColumnType::kString,  // verifiable_advertiser_public_key
+      mojom::DBBindColumnType::kInt,     // observation_window
+      mojom::DBBindColumnType::kInt64    // expire_at
   };
 }
 
-size_t BindParameters(
-    mojom::DBCommandInfo* command,
-    const CreativeSetConversionList& creative_set_conversions) {
-  CHECK(command);
+size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
+                   const CreativeSetConversionList& creative_set_conversions) {
+  CHECK(mojom_statement);
+  CHECK(!creative_set_conversions.empty());
 
-  size_t count = 0;
+  size_t row_count = 0;
 
   int index = 0;
   for (const auto& creative_set_conversion : creative_set_conversions) {
@@ -64,39 +62,43 @@ size_t BindParameters(
       continue;
     }
 
-    BindString(command, index++, creative_set_conversion.id);
-    BindString(command, index++, creative_set_conversion.url_pattern);
-    BindString(command, index++,
-               creative_set_conversion.verifiable_advertiser_public_key_base64
-                   .value_or(""));
-    BindInt(command, index++,
-            creative_set_conversion.observation_window.InDays());
-    BindInt64(command, index++,
-              ToChromeTimestampFromTime(
-                  creative_set_conversion.expire_at.value_or(base::Time())));
+    BindColumnString(mojom_statement, index++, creative_set_conversion.id);
+    BindColumnString(mojom_statement, index++,
+                     creative_set_conversion.url_pattern);
+    BindColumnString(mojom_statement, index++,
+                     creative_set_conversion
+                         .verifiable_advertiser_public_key_base64.value_or(""));
+    BindColumnInt(mojom_statement, index++,
+                  creative_set_conversion.observation_window.InDays());
+    BindColumnInt64(
+        mojom_statement, index++,
+        ToChromeTimestampFromTime(
+            creative_set_conversion.expire_at.value_or(base::Time())));
 
-    ++count;
+    ++row_count;
   }
 
-  return count;
+  return row_count;
 }
 
-CreativeSetConversionInfo GetFromRecord(mojom::DBRecordInfo* const record) {
-  CHECK(record);
+CreativeSetConversionInfo FromMojomRow(
+    const mojom::DBRowInfo* const mojom_row) {
+  CHECK(mojom_row);
 
   CreativeSetConversionInfo creative_set_conversion;
 
-  creative_set_conversion.id = ColumnString(record, 0);
-  creative_set_conversion.url_pattern = ColumnString(record, 1);
+  creative_set_conversion.id = ColumnString(mojom_row, 0);
+  creative_set_conversion.url_pattern = ColumnString(mojom_row, 1);
   const std::string verifiable_advertiser_public_key_base64 =
-      ColumnString(record, 2);
+      ColumnString(mojom_row, 2);
   if (!verifiable_advertiser_public_key_base64.empty()) {
     creative_set_conversion.verifiable_advertiser_public_key_base64 =
         verifiable_advertiser_public_key_base64;
   }
-  creative_set_conversion.observation_window = base::Days(ColumnInt(record, 3));
+  creative_set_conversion.observation_window =
+      base::Days(ColumnInt(mojom_row, 3));
   const base::Time expire_at =
-      ToTimeFromChromeTimestamp(ColumnInt64(record, 4));
+      ToTimeFromChromeTimestamp(ColumnInt64(mojom_row, 4));
   if (!expire_at.is_null()) {
     creative_set_conversion.expire_at = expire_at;
   }
@@ -105,23 +107,23 @@ CreativeSetConversionInfo GetFromRecord(mojom::DBRecordInfo* const record) {
 }
 
 void GetCallback(GetCreativeSetConversionsCallback callback,
-                 mojom::DBCommandResponseInfoPtr command_response) {
-  if (!command_response ||
-      command_response->status !=
-          mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
+                 mojom::DBStatementResultInfoPtr mojom_statement_result) {
+  if (!mojom_statement_result ||
+      mojom_statement_result->result_code !=
+          mojom::DBStatementResultInfo::ResultCode::kSuccess) {
     BLOG(0, "Failed to get creative set conversions");
 
     return std::move(callback).Run(/*success=*/false,
                                    /*conversion_set_conversions=*/{});
   }
 
-  CHECK(command_response->result);
+  CHECK(mojom_statement_result->rows_union);
 
   CreativeSetConversionList creative_set_conversions;
 
-  for (const auto& record : command_response->result->get_records()) {
+  for (const auto& mojom_row : mojom_statement_result->rows_union->get_rows()) {
     const CreativeSetConversionInfo creative_set_conversion =
-        GetFromRecord(&*record);
+        FromMojomRow(&*mojom_row);
     if (!creative_set_conversion.IsValid()) {
       // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
       // potential defects using `DumpWithoutCrashing`.
@@ -140,17 +142,18 @@ void GetCallback(GetCreativeSetConversionsCallback callback,
   std::move(callback).Run(/*success=*/true, creative_set_conversions);
 }
 
-void MigrateToV23(mojom::DBTransactionInfo* const transaction) {
-  CHECK(transaction);
+void MigrateToV23(mojom::DBTransactionInfo* const mojom_transaction) {
+  CHECK(mojom_transaction);
 
   // Recreate table to address a migration problem from older versions.
-  DropTable(transaction, "ad_conversions");
+  DropTable(mojom_transaction, "ad_conversions");
 
-  DropTable(transaction, "creative_ad_conversions");
+  DropTable(mojom_transaction, "creative_ad_conversions");
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kExecute;
+  mojom_statement->sql =
       R"(
           CREATE TABLE creative_ad_conversions (
             creative_set_id TEXT NOT NULL,
@@ -164,17 +167,18 @@ void MigrateToV23(mojom::DBTransactionInfo* const transaction) {
               type
             ) ON CONFLICT REPLACE
           );)";
-  transaction->commands.push_back(std::move(command));
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 }
 
-void MigrateToV28(mojom::DBTransactionInfo* const transaction) {
-  CHECK(transaction);
+void MigrateToV28(mojom::DBTransactionInfo* const mojom_transaction) {
+  CHECK(mojom_transaction);
 
   // Create a temporary table:
   //   - renaming the `expiry_timestamp` column to `expire_at`.
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kExecute;
+  mojom_statement->sql =
       R"(
           CREATE TABLE creative_ad_conversions_temp (
             creative_set_id TEXT NOT NULL,
@@ -188,7 +192,7 @@ void MigrateToV28(mojom::DBTransactionInfo* const transaction) {
               type
             ) ON CONFLICT REPLACE
           );)";
-  transaction->commands.push_back(std::move(command));
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 
   // Copy legacy columns to the temporary table, drop the legacy table, and
   // rename the temporary table.
@@ -201,22 +205,23 @@ void MigrateToV28(mojom::DBTransactionInfo* const transaction) {
       "creative_set_id",    "type",     "url_pattern", "advertiser_public_key",
       "observation_window", "expire_at"};
 
-  CopyTableColumns(transaction, "creative_ad_conversions",
+  CopyTableColumns(mojom_transaction, "creative_ad_conversions",
                    "creative_ad_conversions_temp", from_columns, to_columns,
                    /*should_drop=*/true);
 
-  RenameTable(transaction, "creative_ad_conversions_temp",
+  RenameTable(mojom_transaction, "creative_ad_conversions_temp",
               "creative_ad_conversions");
 }
 
-void MigrateToV29(mojom::DBTransactionInfo* const transaction) {
-  CHECK(transaction);
+void MigrateToV29(mojom::DBTransactionInfo* const mojom_transaction) {
+  CHECK(mojom_transaction);
 
   // Migrate `expire_at` column from a UNIX timestamp to a WebKit/Chrome
   // timestamp.
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kExecute;
+  mojom_statement->sql =
       R"(
           UPDATE
             creative_ad_conversions
@@ -224,11 +229,11 @@ void MigrateToV29(mojom::DBTransactionInfo* const transaction) {
             expire_at = (
               CAST(expire_at AS INT64) + 11644473600
             ) * 1000000;)";
-  transaction->commands.push_back(std::move(command));
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 }
 
-void MigrateToV30(mojom::DBTransactionInfo* const transaction) {
-  CHECK(transaction);
+void MigrateToV30(mojom::DBTransactionInfo* const mojom_transaction) {
+  CHECK(mojom_transaction);
 
   // Create a temporary table:
   //   - with a new `extract_verifiable_id` column defaulted to `true` for
@@ -236,9 +241,10 @@ void MigrateToV30(mojom::DBTransactionInfo* const transaction) {
   //   - removing the deprecated `type` column.
   //   - renaming the `advertiser_public_key` column to
   //     `verifiable_advertiser_public_key`.
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kExecute;
+  mojom_statement->sql =
       R"(
           CREATE TABLE creative_set_conversions_temp (
             creative_set_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
@@ -248,7 +254,7 @@ void MigrateToV30(mojom::DBTransactionInfo* const transaction) {
             observation_window INTEGER NOT NULL,
             expire_at TIMESTAMP NOT NULL
           );)";
-  transaction->commands.push_back(std::move(command));
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 
   // Copy legacy columns to the temporary table, drop the legacy table, and
   // rename the temporary table.
@@ -260,22 +266,23 @@ void MigrateToV30(mojom::DBTransactionInfo* const transaction) {
       "creative_set_id", "url_pattern", "verifiable_advertiser_public_key",
       "observation_window", "expire_at"};
 
-  CopyTableColumns(transaction, "creative_ad_conversions",
+  CopyTableColumns(mojom_transaction, "creative_ad_conversions",
                    "creative_set_conversions_temp", from_columns, to_columns,
                    /*should_drop=*/true);
 
-  RenameTable(transaction, "creative_set_conversions_temp",
+  RenameTable(mojom_transaction, "creative_set_conversions_temp",
               "creative_set_conversions");
 }
 
-void MigrateToV31(mojom::DBTransactionInfo* const transaction) {
-  CHECK(transaction);
+void MigrateToV31(mojom::DBTransactionInfo* const mojom_transaction) {
+  CHECK(mojom_transaction);
 
   // Create a temporary table:
   //   - removing the deprecated `extract_verifiable_id` column.
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kExecute;
+  mojom_statement->sql =
       R"(
           CREATE TABLE creative_set_conversions_temp (
             creative_set_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
@@ -284,7 +291,7 @@ void MigrateToV31(mojom::DBTransactionInfo* const transaction) {
             observation_window INTEGER NOT NULL,
             expire_at TIMESTAMP NOT NULL
           );)";
-  transaction->commands.push_back(std::move(command));
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 
   // Copy legacy columns to the temporary table, drop the legacy table, and
   // rename the temporary table.
@@ -292,20 +299,28 @@ void MigrateToV31(mojom::DBTransactionInfo* const transaction) {
                                             "verifiable_advertiser_public_key",
                                             "observation_window", "expire_at"};
 
-  CopyTableColumns(transaction, "creative_set_conversions",
+  CopyTableColumns(mojom_transaction, "creative_set_conversions",
                    "creative_set_conversions_temp", columns,
                    /*should_drop=*/true);
 
-  RenameTable(transaction, "creative_set_conversions_temp",
+  RenameTable(mojom_transaction, "creative_set_conversions_temp",
               "creative_set_conversions");
 }
 
-void MigrateToV35(mojom::DBTransactionInfo* const transaction) {
-  CHECK(transaction);
+void MigrateToV35(mojom::DBTransactionInfo* const mojom_transaction) {
+  CHECK(mojom_transaction);
 
   // Optimize database query for `GetUnexpired`.
-  CreateTableIndex(transaction, /*table_name=*/"creative_set_conversions",
+  CreateTableIndex(mojom_transaction, /*table_name=*/"creative_set_conversions",
                    /*columns=*/{"expire_at"});
+}
+
+void MigrateToV43(mojom::DBTransactionInfo* const mojom_transaction) {
+  CHECK(mojom_transaction);
+
+  // Optimize database query for `database::table::AdEvents`.
+  CreateTableIndex(mojom_transaction, /*table_name=*/"creative_set_conversions",
+                   /*columns=*/{"creative_set_id"});
 }
 
 }  // namespace
@@ -317,19 +332,22 @@ void CreativeSetConversions::Save(
     return std::move(callback).Run(/*success=*/true);
   }
 
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  mojom::DBTransactionInfoPtr mojom_transaction =
+      mojom::DBTransactionInfo::New();
 
-  InsertOrUpdate(&*transaction, creative_set_conversions);
+  Insert(&*mojom_transaction, creative_set_conversions);
 
-  RunTransaction(std::move(transaction), std::move(callback));
+  RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
 
 void CreativeSetConversions::GetUnexpired(
     GetCreativeSetConversionsCallback callback) const {
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::READ;
-  command->sql = base::ReplaceStringPlaceholders(
+  mojom::DBTransactionInfoPtr mojom_transaction =
+      mojom::DBTransactionInfo::New();
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kStep;
+  mojom_statement->sql = base::ReplaceStringPlaceholders(
       R"(
           SELECT
             creative_set_id,
@@ -344,18 +362,20 @@ void CreativeSetConversions::GetUnexpired(
       {GetTableName(),
        base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
       nullptr);
-  BindRecords(&*command);
-  transaction->commands.push_back(std::move(command));
+  BindColumnTypes(&*mojom_statement);
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunDBTransaction(std::move(transaction),
+  RunDBTransaction(std::move(mojom_transaction),
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void CreativeSetConversions::PurgeExpired(ResultCallback callback) const {
-  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql = base::ReplaceStringPlaceholders(
+  mojom::DBTransactionInfoPtr mojom_transaction =
+      mojom::DBTransactionInfo::New();
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kExecute;
+  mojom_statement->sql = base::ReplaceStringPlaceholders(
       R"(
           DELETE FROM
             $1
@@ -364,9 +384,9 @@ void CreativeSetConversions::PurgeExpired(ResultCallback callback) const {
       {GetTableName(),
        base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
       nullptr);
-  transaction->commands.push_back(std::move(command));
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunTransaction(std::move(transaction), std::move(callback));
+  RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
 
 std::string CreativeSetConversions::GetTableName() const {
@@ -374,12 +394,13 @@ std::string CreativeSetConversions::GetTableName() const {
 }
 
 void CreativeSetConversions::Create(
-    mojom::DBTransactionInfo* const transaction) {
-  CHECK(transaction);
+    mojom::DBTransactionInfo* const mojom_transaction) {
+  CHECK(mojom_transaction);
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kExecute;
+  mojom_statement->sql =
       R"(
           CREATE TABLE creative_set_conversions (
             creative_set_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
@@ -388,44 +409,55 @@ void CreativeSetConversions::Create(
             observation_window INTEGER NOT NULL,
             expire_at TIMESTAMP NOT NULL
           );)";
-  transaction->commands.push_back(std::move(command));
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  // Optimize database query for `GetUnexpired`.
-  CreateTableIndex(transaction, GetTableName(), /*columns=*/{"expire_at"});
+  // Optimize database query for `GetUnexpired` from schema 35.
+  CreateTableIndex(mojom_transaction, GetTableName(),
+                   /*columns=*/{"expire_at"});
+
+  // Optimize database query for `database::table::AdEvents` from schema 43.
+  CreateTableIndex(mojom_transaction, GetTableName(),
+                   /*columns=*/{"creative_set_id"});
 }
 
-void CreativeSetConversions::Migrate(mojom::DBTransactionInfo* transaction,
-                                     const int to_version) {
-  CHECK(transaction);
+void CreativeSetConversions::Migrate(
+    mojom::DBTransactionInfo* mojom_transaction,
+    const int to_version) {
+  CHECK(mojom_transaction);
 
   switch (to_version) {
     case 23: {
-      MigrateToV23(transaction);
+      MigrateToV23(mojom_transaction);
       break;
     }
 
     case 28: {
-      MigrateToV28(transaction);
+      MigrateToV28(mojom_transaction);
       break;
     }
 
     case 29: {
-      MigrateToV29(transaction);
+      MigrateToV29(mojom_transaction);
       break;
     }
 
     case 30: {
-      MigrateToV30(transaction);
+      MigrateToV30(mojom_transaction);
       break;
     }
 
     case 31: {
-      MigrateToV31(transaction);
+      MigrateToV31(mojom_transaction);
       break;
     }
 
     case 35: {
-      MigrateToV35(transaction);
+      MigrateToV35(mojom_transaction);
+      break;
+    }
+
+    case 43: {
+      MigrateToV43(mojom_transaction);
       break;
     }
   }
@@ -433,28 +465,30 @@ void CreativeSetConversions::Migrate(mojom::DBTransactionInfo* transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void CreativeSetConversions::InsertOrUpdate(
-    mojom::DBTransactionInfo* transaction,
+void CreativeSetConversions::Insert(
+    mojom::DBTransactionInfo* mojom_transaction,
     const CreativeSetConversionList& creative_set_conversions) {
-  CHECK(transaction);
+  CHECK(mojom_transaction);
 
   if (creative_set_conversions.empty()) {
     return;
   }
 
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::RUN;
-  command->sql = BuildInsertOrUpdateSql(&*command, creative_set_conversions);
-  transaction->commands.push_back(std::move(command));
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type = mojom::DBStatementInfo::OperationType::kRun;
+  mojom_statement->sql =
+      BuildInsertSql(&*mojom_statement, creative_set_conversions);
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 }
 
-std::string CreativeSetConversions::BuildInsertOrUpdateSql(
-    mojom::DBCommandInfo* command,
+std::string CreativeSetConversions::BuildInsertSql(
+    mojom::DBStatementInfo* mojom_statement,
     const CreativeSetConversionList& creative_set_conversions) const {
-  CHECK(command);
+  CHECK(mojom_statement);
+  CHECK(!creative_set_conversions.empty());
 
-  const size_t binded_parameters_count =
-      BindParameters(command, creative_set_conversions);
+  const size_t row_count =
+      BindColumns(mojom_statement, creative_set_conversions);
 
   return base::ReplaceStringPlaceholders(
       R"(
@@ -465,8 +499,8 @@ std::string CreativeSetConversions::BuildInsertOrUpdateSql(
             observation_window,
             expire_at
           ) VALUES $2;)",
-      {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count=*/5, binded_parameters_count)},
+      {GetTableName(),
+       BuildBindColumnPlaceholders(/*column_count=*/5, row_count)},
       nullptr);
 }
 

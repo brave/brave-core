@@ -15,8 +15,8 @@
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_record_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_row_util.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 #include "sql/meta_table.h"
 #include "sql/recovery.h"
@@ -47,100 +47,119 @@ Database::Database(base::FilePath path) : db_path_(std::move(path)) {
 
 Database::~Database() = default;
 
-mojom::DBCommandResponseInfoPtr Database::RunTransaction(
-    mojom::DBTransactionInfoPtr transaction) {
+mojom::DBStatementResultInfoPtr Database::RunTransaction(
+    mojom::DBTransactionInfoPtr mojom_transaction) {
+  CHECK(mojom_transaction);
+
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  mojom::DBCommandResponseInfoPtr command_response =
-      mojom::DBCommandResponseInfo::New();
+  mojom::DBStatementResultInfoPtr mojom_statement_result =
+      mojom::DBStatementResultInfo::New();
 
-  RunTransactionImpl(std::move(transaction), &*command_response);
+  RunTransactionImpl(std::move(mojom_transaction), &*mojom_statement_result);
 
-  return command_response;
+  return mojom_statement_result;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void Database::RunTransactionImpl(
-    mojom::DBTransactionInfoPtr transaction,
-    mojom::DBCommandResponseInfo* const command_response) {
+    mojom::DBTransactionInfoPtr mojom_transaction,
+    mojom::DBStatementResultInfo* const mojom_statement_result) {
+  CHECK(mojom_transaction);
+  CHECK(mojom_statement_result);
+
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  CHECK(transaction);
-  CHECK(command_response);
-
   if (!db_.is_open() && !db_.Open(db_path_)) {
-    command_response->status =
-        mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
+    mojom_statement_result->result_code =
+        mojom::DBStatementResultInfo::ResultCode::kFailedToOpenDatabase;
     return;
   }
 
-  sql::Transaction committer(&db_);
-  if (!committer.Begin()) {
-    command_response->status =
-        mojom::DBCommandResponseInfo::StatusType::TRANSACTION_ERROR;
+  should_vacuum_ = false;
+
+  sql::Transaction transaction(&db_);
+  if (!transaction.Begin()) {
+    mojom_statement_result->result_code =
+        mojom::DBStatementResultInfo::ResultCode::kTransactionError;
     return;
   }
 
-  for (const auto& command : transaction->commands) {
-    mojom::DBCommandResponseInfo::StatusType status;
+  for (const auto& mojom_statement : mojom_transaction->statements) {
+    mojom::DBStatementResultInfo::ResultCode result_code =
+        mojom::DBStatementResultInfo::ResultCode::kSuccess;
 
-    switch (command->type) {
-      case mojom::DBCommandInfo::Type::INITIALIZE: {
-        status = Initialize(transaction->version,
-                            transaction->compatible_version, command_response);
+    switch (mojom_statement->operation_type) {
+      case mojom::DBStatementInfo::OperationType::kCreateOrOpen: {
+        result_code = Initialize(&*mojom_transaction, mojom_statement_result);
         break;
       }
 
-      case mojom::DBCommandInfo::Type::READ: {
-        status = Read(&*command, command_response);
+      case mojom::DBStatementInfo::OperationType::kStep: {
+        result_code = Step(&*mojom_statement, mojom_statement_result);
         break;
       }
 
-      case mojom::DBCommandInfo::Type::EXECUTE: {
-        status = Execute(&*command);
+      case mojom::DBStatementInfo::OperationType::kExecute: {
+        result_code = Execute(&*mojom_statement);
         break;
       }
 
-      case mojom::DBCommandInfo::Type::RUN: {
-        status = Run(&*command);
+      case mojom::DBStatementInfo::OperationType::kRun: {
+        result_code = Run(&*mojom_statement);
         break;
       }
 
-      case mojom::DBCommandInfo::Type::MIGRATE: {
-        status = Migrate(transaction->version, transaction->compatible_version);
+      case mojom::DBStatementInfo::OperationType::kMigrate: {
+        result_code = Migrate(&*mojom_transaction);
+        break;
+      }
+
+      case mojom::DBStatementInfo::OperationType::kVacuum: {
+        should_vacuum_ = true;
+        result_code = mojom::DBStatementResultInfo::ResultCode::kSuccess;
         break;
       }
     }
 
-    if (status != mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-      committer.Rollback();
-      command_response->status = status;
-      return;
+    if (result_code != mojom::DBStatementResultInfo::ResultCode::kSuccess) {
+      // Rollback the transaction if any of the statements failed.
+      mojom_statement_result->result_code = result_code;
+      return transaction.Rollback();
     }
   }
 
-  if (!committer.Commit()) {
-    command_response->status =
-        mojom::DBCommandResponseInfo::StatusType::TRANSACTION_ERROR;
+  // Commit the transaction if all statements succeeded.
+
+  if (!transaction.Commit()) {
+    mojom_statement_result->result_code =
+        mojom::DBStatementResultInfo::ResultCode::kTransactionError;
+  }
+
+  if (should_vacuum_ && !db_.Execute("VACUUM")) {
+    // Log the error and continue. The vacuum operation is not critical.
+    VLOG(0) << "Database error: " << db_.GetErrorMessage();
   }
 }
 
-mojom::DBCommandResponseInfo::StatusType Database::Initialize(
-    const int32_t version,
-    const int32_t compatible_version,
-    mojom::DBCommandResponseInfo* const command_response) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+mojom::DBStatementResultInfo::ResultCode Database::Initialize(
+    const mojom::DBTransactionInfo* const mojom_transaction,
+    mojom::DBStatementResultInfo* const mojom_statement_result) {
+  CHECK(mojom_transaction);
+  CHECK(mojom_statement_result);
 
-  CHECK(command_response);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   int table_version = 0;
 
   if (!is_initialized_) {
     const bool should_create_tables = ShouldCreateTables();
 
-    if (!meta_table_.Init(&db_, version, compatible_version)) {
-      return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
+    if (!meta_table_.Init(&db_, mojom_transaction->version,
+                          mojom_transaction->compatible_version)) {
+      return mojom::DBStatementResultInfo::ResultCode::
+          kFailedToInitializeMetaTable;
     }
 
     if (!should_create_tables) {
@@ -156,99 +175,110 @@ mojom::DBCommandResponseInfo::StatusType Database::Initialize(
     table_version = meta_table_.GetVersionNumber();
   }
 
-  command_response->result = mojom::DBCommandResult::NewValue(
-      mojom::DBValue::NewIntValue(table_version));
+  mojom_statement_result->rows_union = mojom::DBRowsUnion::NewColumnValueUnion(
+      mojom::DBColumnValueUnion::NewIntValue(table_version));
 
-  return mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK;
+  return mojom::DBStatementResultInfo::ResultCode::kSuccess;
 }
 
-mojom::DBCommandResponseInfo::StatusType Database::Execute(
-    const mojom::DBCommandInfo* const command) {
-  CHECK(command);
+mojom::DBStatementResultInfo::ResultCode Database::Execute(
+    const mojom::DBStatementInfo* const mojom_statement) {
+  CHECK(mojom_statement);
 
   if (!is_initialized_) {
-    return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
+    VLOG(0) << "Failed because database is not initialized";
+    return mojom::DBStatementResultInfo::ResultCode::kUninitialized;
   }
 
-  if (!db_.Execute(command->sql)) {
-    VLOG(0) << "Database error: " << db_.GetErrorMessage();
-    return mojom::DBCommandResponseInfo::StatusType::COMMAND_ERROR;
+  if (!db_.Execute(mojom_statement->sql)) {
+    VLOG(0) << "Failed due to database error: " << db_.GetErrorMessage();
+    return mojom::DBStatementResultInfo::ResultCode::kStatementError;
   }
 
-  return mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK;
+  return mojom::DBStatementResultInfo::ResultCode::kSuccess;
 }
 
-mojom::DBCommandResponseInfo::StatusType Database::Run(
-    const mojom::DBCommandInfo* const command) {
-  CHECK(command);
+mojom::DBStatementResultInfo::ResultCode Database::Run(
+    const mojom::DBStatementInfo* const mojom_statement) {
+  CHECK(mojom_statement);
 
   if (!is_initialized_) {
-    return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
+    VLOG(0) << "Failed because database is not initialized";
+    return mojom::DBStatementResultInfo::ResultCode::kUninitialized;
   }
 
   sql::Statement statement;
-  statement.Assign(db_.GetUniqueStatement(command->sql));
+  statement.Assign(db_.GetUniqueStatement(mojom_statement->sql));
   if (!statement.is_valid()) {
-    VLOG(0) << "Invalid database statement " << statement.GetSQLStatement();
-    return mojom::DBCommandResponseInfo::StatusType::COMMAND_ERROR;
+    VLOG(0) << "Failed due to invalid database SQL statement: "
+            << statement.GetSQLStatement();
+    return mojom::DBStatementResultInfo::ResultCode::kStatementError;
   }
 
-  for (const auto& binding : command->bindings) {
-    database::Bind(&statement, *binding);
+  for (const auto& mojom_bind_column : mojom_statement->bind_columns) {
+    database::BindColumn(&statement, *mojom_bind_column);
   }
 
   if (!statement.Run()) {
-    return mojom::DBCommandResponseInfo::StatusType::COMMAND_ERROR;
+    VLOG(0) << "Failed due to invalid database SQL statement: "
+            << statement.GetSQLStatement();
+    return mojom::DBStatementResultInfo::ResultCode::kStatementError;
   }
 
-  return mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK;
+  return mojom::DBStatementResultInfo::ResultCode::kSuccess;
 }
 
-mojom::DBCommandResponseInfo::StatusType Database::Read(
-    const mojom::DBCommandInfo* const command,
-    mojom::DBCommandResponseInfo* const command_response) {
-  CHECK(command);
-  CHECK(command_response);
+mojom::DBStatementResultInfo::ResultCode Database::Step(
+    const mojom::DBStatementInfo* const mojom_statement,
+    mojom::DBStatementResultInfo* const mojom_statement_result) {
+  CHECK(mojom_statement);
+  CHECK(mojom_statement_result);
 
   if (!is_initialized_) {
-    return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
+    VLOG(0) << "Failed because database is not initialized";
+    return mojom::DBStatementResultInfo::ResultCode::kUninitialized;
   }
 
   sql::Statement statement;
-  statement.Assign(db_.GetUniqueStatement(command->sql));
+  statement.Assign(db_.GetUniqueStatement(mojom_statement->sql));
   if (!statement.is_valid()) {
-    VLOG(0) << "Invalid database statement " << statement.GetSQLStatement();
-    return mojom::DBCommandResponseInfo::StatusType::COMMAND_ERROR;
+    VLOG(0) << "Failed due to invalid database SQL statement "
+            << statement.GetSQLStatement();
+    return mojom::DBStatementResultInfo::ResultCode::kStatementError;
   }
 
-  for (const auto& binding : command->bindings) {
-    database::Bind(&statement, *binding);
+  for (const auto& mojom_bind_column : mojom_statement->bind_columns) {
+    database::BindColumn(&statement, *mojom_bind_column);
   }
 
-  command_response->result =
-      mojom::DBCommandResult::NewRecords(std::vector<mojom::DBRecordInfoPtr>());
+  mojom_statement_result->rows_union =
+      mojom::DBRowsUnion::NewRows(std::vector<mojom::DBRowInfoPtr>());
 
   while (statement.Step()) {
-    command_response->result->get_records().push_back(
-        database::CreateRecord(&statement, command->record_bindings));
+    mojom_statement_result->rows_union->get_rows().push_back(
+        database::CreateRow(&statement, mojom_statement->bind_column_types));
   }
 
-  return mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK;
+  return mojom::DBStatementResultInfo::ResultCode::kSuccess;
 }
 
-mojom::DBCommandResponseInfo::StatusType Database::Migrate(
-    const int32_t version,
-    const int32_t compatible_version) {
+mojom::DBStatementResultInfo::ResultCode Database::Migrate(
+    const mojom::DBTransactionInfo* const mojom_transaction) {
+  CHECK(mojom_transaction);
+
   if (!is_initialized_) {
-    return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
+    VLOG(0) << "Failed because database is not initialized";
+    return mojom::DBStatementResultInfo::ResultCode::kUninitialized;
   }
 
-  if (!meta_table_.SetVersionNumber(version) ||
-      !meta_table_.SetCompatibleVersionNumber(compatible_version)) {
-    return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
+  if (!meta_table_.SetVersionNumber(mojom_transaction->version) ||
+      !meta_table_.SetCompatibleVersionNumber(
+          mojom_transaction->compatible_version)) {
+    VLOG(0) << "Failed to migrate database";
+    return mojom::DBStatementResultInfo::ResultCode::kMigrationError;
   }
 
-  return mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK;
+  return mojom::DBStatementResultInfo::ResultCode::kSuccess;
 }
 
 bool Database::ShouldCreateTables() {

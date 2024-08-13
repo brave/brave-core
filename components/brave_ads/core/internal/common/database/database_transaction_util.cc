@@ -15,23 +15,24 @@ namespace brave_ads::database {
 
 namespace {
 
-void RunTransactionCallback(ResultCallback callback,
-                            mojom::DBCommandResponseInfoPtr command_response) {
-  if (!command_response) {
+void RunTransactionCallback(
+    ResultCallback callback,
+    mojom::DBStatementResultInfoPtr mojom_statement_result) {
+  if (!mojom_statement_result ||
+      mojom_statement_result->result_code !=
+          mojom::DBStatementResultInfo::ResultCode::kSuccess) {
     return std::move(callback).Run(/*success=*/false);
   }
 
-  std::move(callback).Run(
-      /*success=*/command_response->status ==
-      mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK);
+  std::move(callback).Run(/*success=*/true);
 }
 
 }  // namespace
 
-void RunTransaction(mojom::DBTransactionInfoPtr transaction,
+void RunTransaction(mojom::DBTransactionInfoPtr mojom_transaction,
                     ResultCallback callback) {
   RunDBTransaction(
-      std::move(transaction),
+      std::move(mojom_transaction),
       base::BindOnce(&RunTransactionCallback, std::move(callback)));
 }
 

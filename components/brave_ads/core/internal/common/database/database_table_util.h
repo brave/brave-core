@@ -13,33 +13,33 @@
 
 namespace brave_ads::database {
 
-void DropTableIndex(mojom::DBTransactionInfo* transaction,
+void DropTableIndex(mojom::DBTransactionInfo* mojom_transaction,
                     const std::string& index_name);
 
-void CreateTableIndex(mojom::DBTransactionInfo* transaction,
+void CreateTableIndex(mojom::DBTransactionInfo* mojom_transaction,
                       const std::string& table_name,
                       const std::vector<std::string>& columns);
 
-void DropTable(mojom::DBTransactionInfo* transaction,
+void DropTable(mojom::DBTransactionInfo* mojom_transaction,
                const std::string& table_name);
 
-void DeleteTable(mojom::DBTransactionInfo* transaction,
+void DeleteTable(mojom::DBTransactionInfo* mojom_transaction,
                  const std::string& table_name);
 
-void CopyTableColumns(mojom::DBTransactionInfo* transaction,
+void CopyTableColumns(mojom::DBTransactionInfo* mojom_transaction,
                       const std::string& from,
                       const std::string& to,
                       const std::vector<std::string>& from_columns,
                       const std::vector<std::string>& to_columns,
                       bool should_drop);
 
-void CopyTableColumns(mojom::DBTransactionInfo* transaction,
+void CopyTableColumns(mojom::DBTransactionInfo* mojom_transaction,
                       const std::string& from,
                       const std::string& to,
                       const std::vector<std::string>& columns,
                       bool should_drop);
 
-void RenameTable(mojom::DBTransactionInfo* transaction,
+void RenameTable(mojom::DBTransactionInfo* mojom_transaction,
                  const std::string& from,
                  const std::string& to);
 

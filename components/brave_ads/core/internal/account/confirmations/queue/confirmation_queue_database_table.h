@@ -50,16 +50,16 @@ class ConfirmationQueue final : public TableInterface {
 
   std::string GetTableName() const override;
 
-  void Create(mojom::DBTransactionInfo* transaction) override;
-  void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
+  void Create(mojom::DBTransactionInfo* mojom_transaction) override;
+  void Migrate(mojom::DBTransactionInfo* mojom_transaction,
+               int to_version) override;
 
  private:
-  void InsertOrUpdate(
-      mojom::DBTransactionInfo* transaction,
-      const ConfirmationQueueItemList& confirmation_queue_items) const;
+  void Insert(mojom::DBTransactionInfo* mojom_transaction,
+              const ConfirmationQueueItemList& confirmation_queue_items) const;
 
-  std::string BuildInsertOrUpdateSql(
-      mojom::DBCommandInfo* command,
+  std::string BuildInsertSql(
+      mojom::DBStatementInfo* mojom_statement,
       const ConfirmationQueueItemList& confirmation_queue_items) const;
 
   int batch_size_;
