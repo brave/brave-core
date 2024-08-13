@@ -16,7 +16,7 @@ import {
 } from '../common/slices/entities/token-balance.entity'
 
 // utils
-import { networkEntityAdapter } from '../common/slices/entities/network.entity'
+import { getNetworkId } from '../common/slices/entities/network.entity'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 import { createEmptyTokenBalancesRegistry } from './balance-utils'
 
@@ -45,12 +45,10 @@ export const parseJSONFromLocalStorage = <T = any>(
 
 export const makeInitialFilteredOutNetworkKeys = () => {
   const localHostNetworkKeys = SupportedCoinTypes.map((coin) => {
-    return networkEntityAdapter
-      .selectId({
-        chainId: BraveWallet.LOCALHOST_CHAIN_ID,
-        coin: coin
-      })
-      .toString()
+    return getNetworkId({
+      chainId: BraveWallet.LOCALHOST_CHAIN_ID,
+      coin: coin
+    })
   })
   const testNetworkKeys = SupportedTestNetworks.filter(
     (chainId) => chainId !== BraveWallet.LOCALHOST_CHAIN_ID
@@ -59,27 +57,21 @@ export const makeInitialFilteredOutNetworkKeys = () => {
       chainId === BraveWallet.SOLANA_DEVNET ||
       chainId === BraveWallet.SOLANA_TESTNET
     ) {
-      return networkEntityAdapter
-        .selectId({
-          chainId: chainId,
-          coin: BraveWallet.CoinType.SOL
-        })
-        .toString()
+      return getNetworkId({
+        chainId: chainId,
+        coin: BraveWallet.CoinType.SOL
+      })
     }
     if (chainId === BraveWallet.FILECOIN_TESTNET) {
-      return networkEntityAdapter
-        .selectId({
-          chainId: chainId,
-          coin: BraveWallet.CoinType.FIL
-        })
-        .toString()
-    }
-    return networkEntityAdapter
-      .selectId({
+      return getNetworkId({
         chainId: chainId,
-        coin: BraveWallet.CoinType.ETH
+        coin: BraveWallet.CoinType.FIL
       })
-      .toString()
+    }
+    return getNetworkId({
+      chainId: chainId,
+      coin: BraveWallet.CoinType.ETH
+    })
   })
   return [...testNetworkKeys, ...localHostNetworkKeys]
 }
@@ -129,11 +121,16 @@ export function setStoredPortfolioTimeframe(
   )
 }
 
-export const getPersistedPortfolioTokenBalances = (): TokenBalancesRegistry => {
+export const getPersistedTokenBalances = (
+  isSpamRegistry = false
+): TokenBalancesRegistry => {
   try {
     const registry: TokenBalancesRegistry = JSON.parse(
-      window.localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN_BALANCES) ||
-        JSON.stringify(createEmptyTokenBalancesRegistry())
+      window.localStorage.getItem(
+        isSpamRegistry
+          ? LOCAL_STORAGE_KEYS.SPAM_TOKEN_BALANCES
+          : LOCAL_STORAGE_KEYS.TOKEN_BALANCES
+      ) || JSON.stringify(createEmptyTokenBalancesRegistry())
     )
     if (registry.accounts) {
       return registry
@@ -145,42 +142,51 @@ export const getPersistedPortfolioTokenBalances = (): TokenBalancesRegistry => {
   }
 }
 
-export const getPersistedPortfolioSpamTokenBalances =
-  (): TokenBalancesRegistry => {
-    try {
-      const registry: TokenBalancesRegistry = JSON.parse(
-        window.localStorage.getItem(LOCAL_STORAGE_KEYS.SPAM_TOKEN_BALANCES) ||
-          JSON.stringify(createEmptyTokenBalancesRegistry())
+export const getPersistedTokenBalancesSubset = (arg: {
+  accountIds: BraveWallet.AccountId[]
+  networks: Array<Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>>
+  isSpamRegistry?: boolean
+}): TokenBalancesRegistry | null => {
+  const persistedBalances = getPersistedTokenBalances(arg.isSpamRegistry)
+
+  // return a subset of the registry for
+  // the accounts and networks passed as args
+  const registrySubset: TokenBalancesRegistry = {
+    accounts: {}
+  }
+
+  for (const accountId of arg.accountIds) {
+    // only return info for accounts that have been passed as args
+    if (persistedBalances.accounts[accountId.uniqueKey]) {
+      registrySubset.accounts[accountId.uniqueKey] =
+        persistedBalances.accounts[accountId.uniqueKey]
+      // filter account balances to just
+      // the chains that have been passed as args
+      const accountNetworkIds = Object.keys(
+        registrySubset.accounts[accountId.uniqueKey].chains
       )
-      if (registry.accounts) {
-        return registry
+      for (const network of arg.networks) {
+        const networkId = getNetworkId(network)
+        if (!accountNetworkIds.includes(networkId)) {
+          delete registrySubset.accounts[accountId.uniqueKey].chains[networkId]
+        }
       }
-      return createEmptyTokenBalancesRegistry()
-    } catch (error) {
-      console.error(error)
-      return createEmptyTokenBalancesRegistry()
     }
   }
 
-export const setPersistedPortfolioTokenBalances = (
-  registry: TokenBalancesRegistry
-) => {
-  try {
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.TOKEN_BALANCES,
-      JSON.stringify(registry)
-    )
-  } catch (error) {
-    console.error(error)
-  }
+  // return null if the subset is empty
+  return Object.keys(registrySubset.accounts).length ? registrySubset : null
 }
 
-export const setPersistedPortfolioSpamTokenBalances = (
-  registry: TokenBalancesRegistry
+export const setPersistedPortfolioTokenBalances = (
+  registry: TokenBalancesRegistry,
+  isSpamRegistry = false
 ) => {
   try {
     window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.SPAM_TOKEN_BALANCES,
+      isSpamRegistry
+        ? LOCAL_STORAGE_KEYS.SPAM_TOKEN_BALANCES
+        : LOCAL_STORAGE_KEYS.TOKEN_BALANCES,
       JSON.stringify(registry)
     )
   } catch (error) {

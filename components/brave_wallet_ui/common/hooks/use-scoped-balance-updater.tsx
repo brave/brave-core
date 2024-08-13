@@ -17,7 +17,7 @@ import { WalletSelectors } from '../selectors'
 interface Arg {
   network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
   accounts: BraveWallet.AccountInfo[]
-  tokens?: BraveWallet.BlockchainToken[]
+  tokens: BraveWallet.BlockchainToken[]
 }
 
 const coinTypesMapping = {

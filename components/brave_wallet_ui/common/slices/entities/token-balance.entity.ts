@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 export type ChainBalances = {
-  tokenBalances: Record<string, string> // key = contractAddress or native
+  tokenBalances: Record<string, string> // key = assetId
 }
 
 export type AccountBalances = {

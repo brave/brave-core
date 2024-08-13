@@ -168,7 +168,7 @@ export const NftCollection = ({ networks, accounts }: Props) => {
       })
     })
 
-  const { data: tokenBalancesRegistry } =
+  const { data: tokenBalancesRegistry, isLoading: isLoadingTokenBalances } =
     // will fetch balances for all accounts so we can filter NFTs by accounts
     useBalancesFetcher(
       isFetchingUserTokens || networks.length === 0 || allAccounts.length === 0
@@ -190,15 +190,16 @@ export const NftCollection = ({ networks, accounts }: Props) => {
     accounts.length > 0 &&
     networks.length > 0
 
-  const { data: spamTokenBalancesRegistry } = useBalancesFetcher(
-    shouldFetchSpamNftBalances
-      ? {
-          accounts,
-          networks,
-          isSpamRegistry: true
-        }
-      : skipToken
-  )
+  const { data: spamTokenBalancesRegistry, isLoading: isLoadingSpamBalances } =
+    useBalancesFetcher(
+      shouldFetchSpamNftBalances
+        ? {
+            accounts,
+            networks,
+            isSpamRegistry: true
+          }
+        : skipToken
+    )
 
   // mutations
   const [setNftDiscovery] = useSetNftDiscoveryEnabledMutation()
@@ -308,12 +309,13 @@ export const NftCollection = ({ networks, accounts }: Props) => {
   }, [nftListForCollection, currentPageNumber])
 
   const isLoadingAssets =
+    isLoadingTokenBalances ||
     isLoadingSimpleHashNfts ||
     isFetchingUserTokens ||
     isLoadingAccounts ||
     !assetAutoDiscoveryCompleted ||
     !allSpamNfts ||
-    (shouldFetchSpamNftBalances && !spamTokenBalancesRegistry)
+    (shouldFetchSpamNftBalances && isLoadingSpamBalances)
 
   // methods
   const onSelectAsset = React.useCallback(
