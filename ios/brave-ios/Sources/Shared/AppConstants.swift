@@ -52,8 +52,8 @@ public struct KVOConstants: Equatable {
   public static let visibleURL: Self = .init(keyPath: "visibleURL")
   public static let title: Self = .init(keyPath: "title")
 
+  // FIXME: Remove these
   // WKWebView specific
-  public static let url: Self = .init(keyPath: "URL")
   public static let _sampledPageTopColor: Self = .init(keyPath: "_sampl\("edPageTopC")olor")
 }
 
