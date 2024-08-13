@@ -243,8 +243,8 @@ class KeyringService : public mojom::KeyringService {
   std::optional<std::array<uint8_t, kOrchardRawBytesSize>> GetOrchardRawBytes(
       const mojom::AccountIdPtr& account_id,
       const mojom::ZCashKeyIdPtr& key_id);
-  std::optional<std::array<uint8_t, kOrchardFullViewKeySize>>
-  GetOrchardFullViewKey(const mojom::AccountIdPtr& account_id);
+  std::optional<OrchardFullViewKey> GetOrchardFullViewKey(
+      const mojom::AccountIdPtr& account_id);
 #endif
 
   const std::vector<mojom::AccountInfoPtr>& GetAllAccountInfos();

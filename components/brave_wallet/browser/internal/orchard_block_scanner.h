@@ -21,7 +21,7 @@ namespace brave_wallet {
 // spendable notes related to the account.
 class OrchardBlockScanner {
  public:
-  enum ErrorCode { kInputError, kDecoderError };
+  enum class ErrorCode { kInputError, kDecoderError };
 
   struct Result {
     Result();
@@ -37,8 +37,7 @@ class OrchardBlockScanner {
     std::vector<OrchardNullifier> spent_notes;
   };
 
-  explicit OrchardBlockScanner(
-      const std::array<uint8_t, kOrchardFullViewKeySize>& full_view_key);
+  explicit OrchardBlockScanner(const OrchardFullViewKey& full_view_key);
   virtual ~OrchardBlockScanner();
 
   // Scans blocks to find incoming notes related to fvk

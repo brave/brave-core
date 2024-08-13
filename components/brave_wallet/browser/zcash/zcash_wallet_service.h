@@ -31,6 +31,9 @@ class ZCashCreateShieldAllTransactionTask;
 class ZCashGetTransparentUtxosContext;
 
 class ZCashWalletService : public mojom::ZCashWalletService,
+#if BUILDFLAG(ENABLE_ORCHARD)
+                           public ZCashShieldSyncService::Observer,
+#endif
                            KeyringServiceObserverBase {
  public:
   using UtxoMap =
@@ -75,7 +78,6 @@ class ZCashWalletService : public mojom::ZCashWalletService,
                            MakeAccountShieldedCallback callback) override;
 
   void StartShieldSync(mojom::AccountIdPtr account_id,
-                       mojo::PendingRemote<mojom::ZCashSyncObserver> observer,
                        StartShieldSyncCallback callback) override;
   void StopShieldSync(mojom::AccountIdPtr account_id,
                       StopShieldSyncCallback callback) override;
@@ -103,6 +105,9 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   void ValidateZCashAddress(const std::string& addr,
                             bool testnet,
                             ValidateZCashAddressCallback callback) override;
+
+  void AddObserver(
+      mojo::PendingRemote<mojom::ZCashWalletServiceObserver> observer) override;
 
   void GetUtxos(const std::string& chain_id,
                 mojom::AccountIdPtr account_id,
@@ -217,6 +222,14 @@ class ZCashWalletService : public mojom::ZCashWalletService,
                                 mojom::AccountIdPtr account_id);
 
   std::vector<mojom::AccountIdPtr> GetShieldedAccounts();
+
+  void OnSyncStart(const mojom::AccountIdPtr& account_id) override;
+  void OnSyncStop(const mojom::AccountIdPtr& account_id) override;
+  void OnSyncError(const mojom::AccountIdPtr& account_id,
+                   const std::string& error) override;
+  void OnSyncStatusUpdate(
+      const mojom::AccountIdPtr& account_id,
+      const mojom::ZCashShieldSyncStatusPtr& status) override;
 #endif
 
   void UpdateNextUnusedAddressForAccount(const mojom::AccountIdPtr& account_id,
@@ -237,6 +250,8 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   std::map<mojom::AccountIdPtr, std::unique_ptr<ZCashShieldSyncService>>
       shield_sync_services_;
 #endif
+
+  mojo::RemoteSet<mojom::ZCashWalletServiceObserver> observers_;
 
   mojo::ReceiverSet<mojom::ZCashWalletService> receivers_;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>

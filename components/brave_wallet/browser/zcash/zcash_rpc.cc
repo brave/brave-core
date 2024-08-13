@@ -502,9 +502,12 @@ void ZCashRpc::GetCompactBlocks(const std::string& chain_id,
   UrlLoadersList::iterator it = url_loaders_list_.insert(
       url_loaders_list_.begin(), std::move(url_loader));
 
+  auto compact_blocks_stream_handler =
+      std::make_unique<GetCompactBlocksGrpcStreamHandler>();
+  compact_blocks_stream_handler->set_message_data_limit(2 * 1000 * 1000);
+
   StreamHandlersList::iterator handler_it = stream_handlers_list_.insert(
-      stream_handlers_list_.begin(),
-      std::make_unique<GetCompactBlocksGrpcStreamHandler>());
+      stream_handlers_list_.begin(), std::move(compact_blocks_stream_handler));
 
   static_cast<GetCompactBlocksGrpcStreamHandler*>(handler_it->get())
       ->set_callback(base::BindOnce(&ZCashRpc::OnGetCompactBlocksResponse,

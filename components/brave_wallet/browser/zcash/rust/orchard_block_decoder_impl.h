@@ -21,9 +21,8 @@ class OrchardBlockDecoderImpl : public OrchardBlockDecoder {
 
  private:
   friend class OrchardBlockDecoder;
-  OrchardBlockDecoderImpl(
-      const std::array<uint8_t, kOrchardFullViewKeySize>& fvk);
-  std::array<uint8_t, kOrchardFullViewKeySize> full_view_key_;
+  explicit OrchardBlockDecoderImpl(const OrchardFullViewKey& fvk);
+  OrchardFullViewKey full_view_key_;
 };
 
 }  // namespace brave_wallet::orchard

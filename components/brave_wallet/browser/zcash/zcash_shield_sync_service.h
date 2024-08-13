@@ -28,15 +28,15 @@ namespace brave_wallet {
 // related to the account.
 class ZCashShieldSyncService {
  public:
-  enum ErrorCode {
-    kFailedToDownloadBlocks = 0,
-    kFailedToUpdateDatabase = 1,
-    kFailedToUpdateChainTip = 2,
-    kFailedToRetrieveSpendableNotes = 3,
-    kFailedToReceiveTreeState = 4,
-    kFailedToInitAccount = 5,
-    kFailedToRetrieveAccount = 6,
-    kScannerError = 7,
+  enum class ErrorCode {
+    kFailedToDownloadBlocks,
+    kFailedToUpdateDatabase,
+    kFailedToUpdateChainTip,
+    kFailedToRetrieveSpendableNotes,
+    kFailedToReceiveTreeState,
+    kFailedToInitAccount,
+    kFailedToRetrieveAccount,
+    kScannerError,
   };
 
   struct Error {
@@ -44,10 +44,21 @@ class ZCashShieldSyncService {
     std::string message;
   };
 
+  class Observer {
+   public:
+    virtual ~Observer() {}
+    virtual void OnSyncStart(const mojom::AccountIdPtr& account_id) = 0;
+    virtual void OnSyncStop(const mojom::AccountIdPtr& account_id) = 0;
+    virtual void OnSyncError(const mojom::AccountIdPtr& account_id,
+                             const std::string& error) = 0;
+    virtual void OnSyncStatusUpdate(
+        const mojom::AccountIdPtr& account_id,
+        const mojom::ZCashShieldSyncStatusPtr& status) = 0;
+  };
+
   class OrchardBlockScannerProxy {
    public:
-    OrchardBlockScannerProxy(
-        std::array<uint8_t, kOrchardFullViewKeySize> full_view_key);
+    explicit OrchardBlockScannerProxy(OrchardFullViewKey full_view_key);
     virtual ~OrchardBlockScannerProxy();
     virtual void ScanBlocks(
         std::vector<OrchardNote> known_notes,
@@ -65,13 +76,13 @@ class ZCashShieldSyncService {
       const mojom::AccountIdPtr& account_id,
       const mojom::ZCashAccountShieldBirthdayPtr& account_birthday,
       const std::array<uint8_t, kOrchardFullViewKeySize>& fvk,
-      base::FilePath db_dir_path);
+      base::FilePath db_dir_path,
+      base::WeakPtr<Observer> observer);
   virtual ~ZCashShieldSyncService();
 
   bool IsStarted();
 
-  void StartSyncing(mojo::PendingRemote<mojom::ZCashSyncObserver> observer);
-  void PauseSyncing();
+  void StartSyncing();
 
   mojom::ZCashShieldSyncStatusPtr GetSyncStatus();
 
@@ -87,11 +98,12 @@ class ZCashShieldSyncService {
   void WorkOnTask();
 
   // Setup account info
-  void GetAccountMeta();
+  void GetOrCreateAccount();
   void OnGetAccountMeta(base::expected<ZCashOrchardStorage::AccountMeta,
                                        ZCashOrchardStorage::Error> result);
   void InitAccount();
-  void OnAccountInit(std::optional<ZCashOrchardStorage::Error> error);
+  void OnAccountInit(base::expected<ZCashOrchardStorage::AccountMeta,
+                                    ZCashOrchardStorage::Error> error);
 
   // Get last known block in the blockchain
   void UpdateChainTip();
@@ -130,8 +142,8 @@ class ZCashShieldSyncService {
           result);
   // Process a bunch of downloaded blocks to resolve related notes and
   // nullifiers
-  void ScanBlocks(std::vector<zcash::mojom::CompactBlockPtr> blocks);
-  void OnBlocksScanned(uint32_t blocks_count,
+  void ScanBlocks();
+  void OnBlocksScanned(uint32_t last_block_height,
                        std::string last_block_hash,
                        base::expected<OrchardBlockScanner::Result,
                                       OrchardBlockScanner::ErrorCode> result);
@@ -151,17 +163,18 @@ class ZCashShieldSyncService {
   // Birthday of the account will be used to resolve initial scan range.
   mojom::ZCashAccountShieldBirthdayPtr account_birthday_;
   base::FilePath db_dir_path_;
+  base::WeakPtr<Observer> observer_;
   std::string chain_id_;
-
-  mojo::Remote<mojom::ZCashSyncObserver> observer_;
 
   base::SequenceBound<ZCashOrchardStorage> background_orchard_storage_;
   std::unique_ptr<OrchardBlockScannerProxy> block_scanner_;
 
+  std::optional<ZCashOrchardStorage::AccountMeta> account_meta_;
   // Latest scanned block
   std::optional<size_t> latest_scanned_block_;
   // Latest block in the blockchain
   std::optional<size_t> chain_tip_block_;
+  std::optional<std::vector<zcash::mojom::CompactBlockPtr>> downloaded_blocks_;
   // Local cache of spendable notes to fast check on discovered nullifiers
   std::optional<std::vector<OrchardNote>> spendable_notes_;
   std::optional<Error> error_;

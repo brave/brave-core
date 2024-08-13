@@ -11,7 +11,8 @@ OrchardBlockScanner::Result::Result() = default;
 
 OrchardBlockScanner::Result::Result(std::vector<OrchardNote> discovered_notes,
                                     std::vector<OrchardNullifier> spent_notes)
-    : discovered_notes(discovered_notes), spent_notes(spent_notes) {}
+    : discovered_notes(std::move(discovered_notes)),
+      spent_notes(std::move(spent_notes)) {}
 
 OrchardBlockScanner::Result::Result(const Result&) = default;
 
@@ -21,7 +22,7 @@ OrchardBlockScanner::Result& OrchardBlockScanner::Result::operator=(
 OrchardBlockScanner::Result::~Result() = default;
 
 OrchardBlockScanner::OrchardBlockScanner(
-    const std::array<uint8_t, kOrchardFullViewKeySize>& full_view_key)
+    const OrchardFullViewKey& full_view_key)
     : decoder_(orchard::OrchardBlockDecoder::FromFullViewKey(full_view_key)) {}
 
 OrchardBlockScanner::~OrchardBlockScanner() = default;
@@ -54,8 +55,7 @@ OrchardBlockScanner::ScanBlocks(
         }
 
         std::array<uint8_t, kOrchardNullifierSize> action_nullifier;
-        std::copy(orchard_action->nullifier.begin(),
-                  orchard_action->nullifier.end(), action_nullifier.begin());
+        base::ranges::copy(orchard_action->nullifier, action_nullifier.begin());
 
         // Nullifier is a public information about some note being spent.
         // Here we are trying to find a known spendable notes which nullifier

@@ -39,7 +39,7 @@ class HDKeyZip32 {
   GetDiversifiedAddress(uint32_t div_index, OrchardAddressKind kind);
 
   // Full view key(fvk) is used to decode incoming transactions
-  std::array<uint8_t, kOrchardFullViewKeySize> GetFullViewKey();
+  OrchardFullViewKey GetFullViewKey();
 
  private:
   explicit HDKeyZip32(std::unique_ptr<orchard::ExtendedSpendingKey> key);

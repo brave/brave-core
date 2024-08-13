@@ -47,8 +47,7 @@ std::unique_ptr<ExtendedSpendingKey> ExtendedSpendingKey::GenerateFromSeed(
   return nullptr;
 }
 
-std::array<uint8_t, kOrchardFullViewKeySize>
-ExtendedSpendingKeyImpl::GetFullViewKey() {
+OrchardFullViewKey ExtendedSpendingKeyImpl::GetFullViewKey() {
   return extended_spending_key_->full_view_key();
 }
 

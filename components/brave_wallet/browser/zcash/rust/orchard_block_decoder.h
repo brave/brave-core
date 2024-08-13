@@ -23,7 +23,7 @@ class OrchardBlockDecoder {
       const ::brave_wallet::zcash::mojom::CompactBlockPtr& block) = 0;
 
   static std::unique_ptr<OrchardBlockDecoder> FromFullViewKey(
-      const std::array<uint8_t, kOrchardFullViewKeySize>& fvk);
+      const OrchardFullViewKey& fvk);
 };
 
 }  // namespace brave_wallet::orchard

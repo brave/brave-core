@@ -56,23 +56,35 @@ class MockZCashRPC : public ZCashRpc {
                     GetTreeStateCallback callback));
 };
 
-class MockZCashShieldSyncServiceObserver : public mojom::ZCashSyncObserver {
+class MockZCashShieldSyncServiceObserver
+    : public ZCashShieldSyncService::Observer {
  public:
-  MOCK_METHOD0(OnStart, void());
+  MOCK_METHOD1(OnSyncStart, void(const mojom::AccountIdPtr& account_id));
 
   std::vector<mojom::ZCashShieldSyncStatusPtr>& GetStatuses() {
     return statuses_;
   }
 
-  void OnUpdateSyncStatus(mojom::ZCashShieldSyncStatusPtr status) override {
-    statuses_.push_back(std::move(status));
+  void OnSyncStatusUpdate(
+      const mojom::AccountIdPtr& account_id,
+      const mojom::ZCashShieldSyncStatusPtr& status) override {
+    statuses_.push_back(status.Clone());
   }
 
-  MOCK_METHOD0(OnStop, void());
-  MOCK_METHOD1(OnError, void(const std::string& error));
+  MOCK_METHOD1(OnSyncStop, void(const mojom::AccountIdPtr& account_id));
+  MOCK_METHOD2(OnSyncError,
+               void(const mojom::AccountIdPtr& account_id,
+                    const std::string& error));
+
+  base::WeakPtr<MockZCashShieldSyncServiceObserver> GetWeakPtr() {
+    return weak_ptr_factory_.GetWeakPtr();
+  }
 
  private:
   std::vector<mojom::ZCashShieldSyncStatusPtr> statuses_;
+
+  base::WeakPtrFactory<MockZCashShieldSyncServiceObserver> weak_ptr_factory_{
+      this};
 };
 
 }  // namespace
@@ -120,10 +132,12 @@ class ZCashShieldSyncServiceTest : public testing::Test {
                                               mojom::KeyringId::kZCashMainnet,
                                               mojom::AccountKind::kDerived, 0);
     auto account_birthday = mojom::ZCashAccountShieldBirthday::New(100, "hash");
-    std::array<uint8_t, kOrchardFullViewKeySize> fvk;
+    OrchardFullViewKey fvk;
 
+    observer_ = std::make_unique<MockZCashShieldSyncServiceObserver>();
     sync_service_ = std::make_unique<ZCashShieldSyncService>(
-        &zcash_rpc_, account_id, account_birthday, fvk, db_path);
+        &zcash_rpc_, account_id, account_birthday, fvk, db_path,
+        observer_->GetWeakPtr());
     // Ensure previous OrchardStorage is destroyed on background thread
     task_environment_.RunUntilIdle();
   }
@@ -131,6 +145,8 @@ class ZCashShieldSyncServiceTest : public testing::Test {
   ZCashRpc* zcash_rpc() { return &zcash_rpc_; }
 
   ZCashShieldSyncService* sync_service() { return sync_service_.get(); }
+
+  MockZCashShieldSyncServiceObserver* observer() { return observer_.get(); }
 
   mojom::AccountIdPtr account() { return zcash_account_.Clone(); }
 
@@ -175,8 +191,8 @@ class ZCashShieldSyncServiceTest : public testing::Test {
   mojom::AccountIdPtr zcash_account_;
   base::ScopedTempDir temp_dir_;
   testing::NiceMock<MockZCashRPC> zcash_rpc_;
+  std::unique_ptr<MockZCashShieldSyncServiceObserver> observer_;
   std::unique_ptr<ZCashShieldSyncService> sync_service_;
-
   base::test::TaskEnvironment task_environment_;
 };
 
@@ -195,8 +211,8 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
                                ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(zcash::mojom::BlockID::New(
-                500u, std::vector<uint8_t>({5, 0, 0})));
+            std::move(callback).Run(
+                zcash::mojom::BlockID::New(500u, std::vector<uint8_t>({})));
           }));
 
   ON_CALL(zcash_rpc_, GetTreeState(_, _, _))
@@ -205,7 +221,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
              ZCashRpc::GetTreeStateCallback callback) {
             // Valid tree state
             auto tree_state = zcash::mojom::TreeState::New(
-                chain_id, block->height, "hash", 0, "", "");
+                chain_id, block->height, "aabb", 0, "", "");
             std::move(callback).Run(std::move(tree_state));
           }));
 
@@ -217,20 +233,15 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
             for (uint32_t i = from; i <= to; i++) {
               // Create empty block for testing
               blocks.push_back(zcash::mojom::CompactBlock::New(
-                  0u, i, std::vector<uint8_t>(), std::vector<uint8_t>(), 0u,
-                  std::vector<uint8_t>(),
+                  0u, i, std::vector<uint8_t>({0xbb, 0xaa}),
+                  std::vector<uint8_t>(), 0u, std::vector<uint8_t>(),
                   std::vector<zcash::mojom::CompactTxPtr>(), nullptr));
             }
             std::move(callback).Run(std::move(blocks));
           }));
 
   {
-    auto observer = std::make_unique<MockZCashShieldSyncServiceObserver>();
-    mojo::PendingRemote<mojom::ZCashSyncObserver> receiver;
-    mojo::MakeSelfOwnedReceiver(std::move(observer),
-                                receiver.InitWithNewPipeAndPassReceiver());
-
-    sync_service()->StartSyncing(std::move(receiver));
+    sync_service()->StartSyncing();
     task_environment_.RunUntilIdle();
 
     auto sync_status = sync_service()->GetSyncStatus();
@@ -261,9 +272,6 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
                 mojom::AccountKind::kDerived, 0);
             OrchardBlockScanner::Result result;
             for (const auto& block : blocks) {
-              // EXPECT_GE(block->height, 500u);
-              // EXPECT_GE(1000u, block->height);
-
               // 3 notes in the blockchain
               if (block->height == 605) {
                 result.discovered_notes.push_back(
@@ -291,17 +299,12 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
              ZCashRpc::GetTreeStateCallback callback) {
             // Valid tree state
             auto tree_state = zcash::mojom::TreeState::New(
-                chain_id, block->height, "hash", 0, "", "");
+                chain_id, block->height, "aabbcc", 0, "", "");
             std::move(callback).Run(std::move(tree_state));
           }));
 
   {
-    auto observer = std::make_unique<MockZCashShieldSyncServiceObserver>();
-    mojo::PendingRemote<mojom::ZCashSyncObserver> receiver;
-    mojo::MakeSelfOwnedReceiver(std::move(observer),
-                                receiver.InitWithNewPipeAndPassReceiver());
-
-    sync_service()->StartSyncing(std::move(receiver));
+    sync_service()->StartSyncing();
     task_environment_.RunUntilIdle();
 
     auto sync_status = sync_service()->GetSyncStatus();
@@ -324,8 +327,9 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
           [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
              ZCashRpc::GetTreeStateCallback callback) {
             // Hash of the latest scanned block
+            // Tree state has been changed
             auto tree_state = zcash::mojom::TreeState::New(
-                chain_id, block->height, "another_hash", 0, "", "");
+                chain_id, block->height, "aabbccdd", 0, "", "");
             std::move(callback).Run(std::move(tree_state));
           }));
 
@@ -341,12 +345,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
           })));
 
   {
-    auto observer = std::make_unique<MockZCashShieldSyncServiceObserver>();
-    mojo::PendingRemote<mojom::ZCashSyncObserver> receiver;
-    mojo::MakeSelfOwnedReceiver(std::move(observer),
-                                receiver.InitWithNewPipeAndPassReceiver());
-
-    sync_service()->StartSyncing(std::move(receiver));
+    sync_service()->StartSyncing();
     task_environment_.RunUntilIdle();
 
     auto sync_status = sync_service()->GetSyncStatus();
@@ -368,9 +367,9 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
       .WillByDefault(::testing::Invoke(
           [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
              ZCashRpc::GetTreeStateCallback callback) {
-            // Hash of the latest scanned block
+            // Hash of the latest scanned block differs
             auto tree_state = zcash::mojom::TreeState::New(
-                chain_id, block->height, "another_hash", 0, "", "");
+                chain_id, block->height, "aabbccddee", 0, "", "");
             std::move(callback).Run(std::move(tree_state));
           }));
 
@@ -407,12 +406,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
           })));
 
   {
-    auto observer = std::make_unique<MockZCashShieldSyncServiceObserver>();
-    mojo::PendingRemote<mojom::ZCashSyncObserver> receiver;
-    mojo::MakeSelfOwnedReceiver(std::move(observer),
-                                receiver.InitWithNewPipeAndPassReceiver());
-
-    sync_service()->StartSyncing(std::move(receiver));
+    sync_service()->StartSyncing();
     task_environment_.RunUntilIdle();
 
     auto sync_status = sync_service()->GetSyncStatus();

@@ -48,8 +48,9 @@ TEST_F(OrchardStorageTest, AccountMeta) {
     EXPECT_FALSE(result.has_value());
   }
 
-  EXPECT_FALSE(
-      orchard_storage_->RegisterAccount(account_id_1.Clone(), 100, "hash"));
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id_1.Clone(), 100, "hash")
+          .has_value());
 
   {
     auto result = orchard_storage_->GetAccountMeta(account_id_1.Clone());
@@ -63,14 +64,15 @@ TEST_F(OrchardStorageTest, AccountMeta) {
     // Failed to insert same account
     EXPECT_EQ(
         orchard_storage_->RegisterAccount(account_id_1.Clone(), 200, "hash")
-            .value()
+            .error()
             .error_code,
         ZCashOrchardStorage::ErrorCode::kFailedToExecuteStatement);
   }
 
   // Insert second account
-  EXPECT_FALSE(
-      orchard_storage_->RegisterAccount(account_id_2.Clone(), 200, "hash"));
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id_2.Clone(), 200, "hash")
+          .has_value());
   {
     auto result = orchard_storage_->GetAccountMeta(account_id_2.Clone());
     EXPECT_TRUE(result.has_value());
@@ -88,10 +90,12 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
                                               mojom::KeyringId::kZCashMainnet,
                                               mojom::AccountKind::kDerived, 1);
 
-  EXPECT_FALSE(
-      orchard_storage_->RegisterAccount(account_id_1.Clone(), 100, "hash"));
-  EXPECT_FALSE(
-      orchard_storage_->RegisterAccount(account_id_2.Clone(), 100, "hash"));
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id_1.Clone(), 100, "hash")
+          .has_value());
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id_2.Clone(), 100, "hash")
+          .has_value());
 
   // Update notes for account 1
   {
@@ -213,10 +217,12 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
                                               mojom::KeyringId::kZCashMainnet,
                                               mojom::AccountKind::kDerived, 1);
 
-  EXPECT_FALSE(
-      orchard_storage_->RegisterAccount(account_id_1.Clone(), 100, "hash"));
-  EXPECT_FALSE(
-      orchard_storage_->RegisterAccount(account_id_2.Clone(), 100, "hash"));
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id_1.Clone(), 100, "hash")
+          .has_value());
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id_2.Clone(), 100, "hash")
+          .has_value());
 
   // Update notes for account 1
   {

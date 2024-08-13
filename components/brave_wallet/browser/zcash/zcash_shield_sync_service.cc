@@ -15,8 +15,33 @@
 
 namespace brave_wallet {
 
+namespace {
+
+size_t GetCode(ZCashShieldSyncService::ErrorCode error) {
+  switch (error) {
+    case ZCashShieldSyncService::ErrorCode::kFailedToDownloadBlocks:
+      return 0;
+    case ZCashShieldSyncService::ErrorCode::kFailedToUpdateDatabase:
+      return 1;
+    case ZCashShieldSyncService::ErrorCode::kFailedToUpdateChainTip:
+      return 2;
+    case ZCashShieldSyncService::ErrorCode::kFailedToRetrieveSpendableNotes:
+      return 3;
+    case ZCashShieldSyncService::ErrorCode::kFailedToReceiveTreeState:
+      return 4;
+    case ZCashShieldSyncService::ErrorCode::kFailedToInitAccount:
+      return 5;
+    case ZCashShieldSyncService::ErrorCode::kFailedToRetrieveAccount:
+      return 6;
+    case ZCashShieldSyncService::ErrorCode::kScannerError:
+      return 7;
+  }
+}
+
+}  // namespace
+
 ZCashShieldSyncService::OrchardBlockScannerProxy::OrchardBlockScannerProxy(
-    std::array<uint8_t, kOrchardFullViewKeySize> full_view_key) {
+    OrchardFullViewKey full_view_key) {
   background_block_scanner_.emplace(
       base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
       full_view_key);
@@ -40,12 +65,14 @@ ZCashShieldSyncService::ZCashShieldSyncService(
     ZCashRpc* zcash_rpc,
     const mojom::AccountIdPtr& account_id,
     const mojom::ZCashAccountShieldBirthdayPtr& account_birthday,
-    const std::array<uint8_t, kOrchardFullViewKeySize>& fvk,
-    base::FilePath db_dir_path)
+    const OrchardFullViewKey& fvk,
+    base::FilePath db_dir_path,
+    base::WeakPtr<Observer> observer)
     : zcash_rpc_(zcash_rpc),
       account_id_(account_id.Clone()),
       account_birthday_(account_birthday.Clone()),
-      db_dir_path_(db_dir_path) {
+      db_dir_path_(db_dir_path),
+      observer_(std::move(observer)) {
   chain_id_ = GetNetworkForZCashKeyring(account_id->keyring_id);
   block_scanner_ = std::make_unique<OrchardBlockScannerProxy>(fvk);
   background_orchard_storage_.emplace(
@@ -60,19 +87,11 @@ void ZCashShieldSyncService::SetOrchardBlockScannerProxyForTesting(
   block_scanner_ = std::move(block_scanner);
 }
 
-void ZCashShieldSyncService::StartSyncing(
-    mojo::PendingRemote<mojom::ZCashSyncObserver> observer) {
-  if (observer_.is_bound()) {
-    NOTREACHED_IN_MIGRATION();
-    return;
-  }
-  observer_.Bind(std::move(observer));
+void ZCashShieldSyncService::StartSyncing() {
   ScheduleWorkOnTask();
-}
-
-void ZCashShieldSyncService::PauseSyncing() {
-  stopped_ = true;
-  observer_->OnStop();
+  if (observer_) {
+    observer_->OnSyncStart(account_id_);
+  }
 }
 
 mojom::ZCashShieldSyncStatusPtr ZCashShieldSyncService::GetSyncStatus() {
@@ -92,8 +111,9 @@ void ZCashShieldSyncService::WorkOnTask() {
 
   if (error_) {
     if (observer_) {
-      observer_->OnError(base::NumberToString(error_->code) + ": " +
-                         error_->message);
+      observer_->OnSyncError(
+          account_id_,
+          base::NumberToString(GetCode(error_->code)) + ": " + error_->message);
     }
     return;
   }
@@ -103,8 +123,13 @@ void ZCashShieldSyncService::WorkOnTask() {
     return;
   }
 
+  if (!account_meta_) {
+    GetOrCreateAccount();
+    return;
+  }
+
   if (!latest_scanned_block_) {
-    GetAccountMeta();
+    VerifyChainState(*account_meta_);
     return;
   }
 
@@ -114,21 +139,26 @@ void ZCashShieldSyncService::WorkOnTask() {
   }
 
   if (observer_) {
-    observer_->OnUpdateSyncStatus(current_sync_status_.Clone());
+    observer_->OnSyncStatusUpdate(account_id_, current_sync_status_.Clone());
   }
 
-  if (*latest_scanned_block_ < *chain_tip_block_) {
+  if (!downloaded_blocks_ && *latest_scanned_block_ < *chain_tip_block_) {
     DownloadBlocks();
     return;
   }
 
+  if (downloaded_blocks_) {
+    ScanBlocks();
+    return;
+  }
+
   if (observer_) {
-    observer_->OnStop();
+    observer_->OnSyncStop(account_id_);
     stopped_ = true;
   }
 }
 
-void ZCashShieldSyncService::GetAccountMeta() {
+void ZCashShieldSyncService::GetOrCreateAccount() {
   background_orchard_storage_.AsyncCall(&ZCashOrchardStorage::GetAccountMeta)
       .WithArgs(account_id_.Clone())
       .Then(base::BindOnce(&ZCashShieldSyncService::OnGetAccountMeta,
@@ -138,18 +168,24 @@ void ZCashShieldSyncService::GetAccountMeta() {
 void ZCashShieldSyncService::OnGetAccountMeta(
     base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
         result) {
-  if (!result.has_value()) {
-    if (result.error().error_code ==
-        ZCashOrchardStorage::ErrorCode::kAccountNotFound) {
-      InitAccount();
-    } else {
-      error_ = Error{kFailedToRetrieveAccount, result.error().message};
-      ScheduleWorkOnTask();
+  if (result.has_value()) {
+    account_meta_ = *result;
+    if (account_meta_->latest_scanned_block_id <
+        account_meta_->account_birthday) {
+      error_ = Error{ErrorCode::kFailedToRetrieveAccount, ""};
     }
+    ScheduleWorkOnTask();
     return;
   }
 
-  VerifyChainState(*result);
+  if (result.error().error_code ==
+      ZCashOrchardStorage::ErrorCode::kAccountNotFound) {
+    InitAccount();
+    return;
+  } else {
+    error_ = Error{ErrorCode::kFailedToRetrieveAccount, result.error().message};
+  }
+  ScheduleWorkOnTask();
 }
 
 void ZCashShieldSyncService::InitAccount() {
@@ -161,13 +197,14 @@ void ZCashShieldSyncService::InitAccount() {
 }
 
 void ZCashShieldSyncService::OnAccountInit(
-    std::optional<ZCashOrchardStorage::Error> error) {
-  if (error) {
-    error_ = Error{kFailedToInitAccount, error->message};
-    ScheduleWorkOnTask();
+    base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
+        result) {
+  if (!result.has_value()) {
+    error_ = Error{ErrorCode::kFailedToInitAccount, result.error().message};
   } else {
-    GetAccountMeta();
+    account_meta_ = *result;
   }
+  ScheduleWorkOnTask();
 }
 
 void ZCashShieldSyncService::VerifyChainState(
@@ -195,14 +232,18 @@ void ZCashShieldSyncService::OnGetTreeStateForChainVerification(
     ZCashOrchardStorage::AccountMeta account_meta,
     base::expected<zcash::mojom::TreeStatePtr, std::string> tree_state) {
   if (!tree_state.has_value() || !tree_state.value()) {
-    error_ = Error{kFailedToReceiveTreeState, tree_state.error()};
+    error_ = Error{ErrorCode::kFailedToReceiveTreeState, tree_state.error()};
     ScheduleWorkOnTask();
   } else {
-    if (tree_state.value()->hash != account_meta.latest_scanned_block_hash) {
+    auto backend_block_hash = RevertHex(tree_state.value()->hash);
+    if (backend_block_hash != account_meta.latest_scanned_block_hash) {
       // Assume that chain reorg can't affect more than kChainReorgBlockDelta
       // blocks So we can just fallback on this number.
-      GetTreeStateForChainReorg(account_meta.latest_scanned_block_id -
-                                kChainReorgBlockDelta);
+      uint32_t new_block_id =
+          account_meta.latest_scanned_block_id > kChainReorgBlockDelta
+              ? account_meta.latest_scanned_block_id - kChainReorgBlockDelta
+              : 0;
+      GetTreeStateForChainReorg(new_block_id);
       return;
     } else {
       // Restore latest scanned block from the database so we can continue
@@ -229,7 +270,7 @@ void ZCashShieldSyncService::OnGetTreeStateForChainReorg(
     base::expected<zcash::mojom::TreeStatePtr, std::string> tree_state) {
   if (!tree_state.has_value() || !tree_state.value() ||
       new_block_height != (*tree_state)->height) {
-    error_ = Error{kFailedToReceiveTreeState, tree_state.error()};
+    error_ = Error{ErrorCode::kFailedToReceiveTreeState, tree_state.error()};
     ScheduleWorkOnTask();
     return;
   } else {
@@ -248,17 +289,14 @@ void ZCashShieldSyncService::OnDatabaseUpdatedForChainReorg(
     uint32_t new_block_height,
     std::optional<ZCashOrchardStorage::Error> error) {
   if (error) {
-    error_ = Error{kFailedToUpdateDatabase, error->message};
-    ScheduleWorkOnTask();
+    error_ = Error{ErrorCode::kFailedToUpdateDatabase, error->message};
   } else {
     latest_scanned_block_ = new_block_height;
-    // Reload list of discovered spendable notes and update account info
-    UpdateSpendableNotes();
   }
+  ScheduleWorkOnTask();
 }
 
 void ZCashShieldSyncService::UpdateSpendableNotes() {
-  spendable_notes_ = std::nullopt;
   background_orchard_storage_.AsyncCall(&ZCashOrchardStorage::GetSpendableNotes)
       .WithArgs(account_id_.Clone())
       .Then(base::BindOnce(&ZCashShieldSyncService::OnGetSpendableNotes,
@@ -269,14 +307,14 @@ void ZCashShieldSyncService::OnGetSpendableNotes(
     base::expected<std::vector<OrchardNote>, ZCashOrchardStorage::Error>
         result) {
   if (!result.has_value()) {
-    error_ = Error{kFailedToRetrieveSpendableNotes, result.error().message};
+    error_ = Error{ErrorCode::kFailedToRetrieveSpendableNotes,
+                   result.error().message};
   } else {
     spendable_notes_ = result.value();
     current_sync_status_ = mojom::ZCashShieldSyncStatus::New(
         latest_scanned_block_.value(), chain_tip_block_.value(),
         spendable_notes_->size(), GetSpendableBalance());
   }
-
   ScheduleWorkOnTask();
 }
 
@@ -289,11 +327,10 @@ void ZCashShieldSyncService::UpdateChainTip() {
 void ZCashShieldSyncService::OnGetLatestBlock(
     base::expected<zcash::mojom::BlockIDPtr, std::string> result) {
   if (!result.has_value()) {
-    error_ = Error{kFailedToUpdateChainTip, result.error()};
+    error_ = Error{ErrorCode::kFailedToUpdateChainTip, result.error()};
   } else {
     chain_tip_block_ = (*result)->height;
   }
-
   ScheduleWorkOnTask();
 }
 
@@ -310,42 +347,41 @@ void ZCashShieldSyncService::OnBlocksDownloaded(
         result) {
   if (!result.has_value()) {
     error_ = Error{ErrorCode::kFailedToDownloadBlocks, result.error()};
-    ScheduleWorkOnTask();
   } else {
-    ScanBlocks(std::move(result.value()));
+    downloaded_blocks_ = std::move(result.value());
   }
+  ScheduleWorkOnTask();
 }
 
-void ZCashShieldSyncService::ScanBlocks(
-    std::vector<zcash::mojom::CompactBlockPtr> blocks) {
-  if (blocks.empty()) {
-    error_ = Error{kScannerError, ""};
+void ZCashShieldSyncService::ScanBlocks() {
+  if (!downloaded_blocks_ || downloaded_blocks_->empty()) {
+    error_ = Error{ErrorCode::kScannerError, ""};
     ScheduleWorkOnTask();
     return;
   }
 
-  auto blocks_count = blocks.size();
-  auto last_block_hash = ToHex(blocks[blocks.size() - 1]->hash);
+  auto last_block_hash = ToHex(downloaded_blocks_->back()->hash);
+  auto last_block_height = downloaded_blocks_->back()->height;
 
   block_scanner_->ScanBlocks(
-      *spendable_notes_, std::move(blocks),
+      *spendable_notes_, std::move(downloaded_blocks_.value()),
       base::BindOnce(&ZCashShieldSyncService::OnBlocksScanned,
-                     weak_ptr_factory_.GetWeakPtr(), blocks_count,
+                     weak_ptr_factory_.GetWeakPtr(), last_block_height,
                      last_block_hash));
 }
 
 void ZCashShieldSyncService::OnBlocksScanned(
-    uint32_t blocks_count,
+    uint32_t last_block_height,
     std::string last_block_hash,
     base::expected<OrchardBlockScanner::Result, OrchardBlockScanner::ErrorCode>
         result) {
+  downloaded_blocks_ = std::nullopt;
   if (!result.has_value()) {
-    error_ =
-        Error{ErrorCode::kScannerError, base::NumberToString(result.error())};
+    error_ = Error{ErrorCode::kScannerError, ""};
     ScheduleWorkOnTask();
   } else {
     UpdateNotes(result->discovered_notes, result->spent_notes,
-                latest_scanned_block_.value() + blocks_count, last_block_hash);
+                last_block_height, last_block_hash);
   }
 }
 
@@ -366,12 +402,12 @@ void ZCashShieldSyncService::UpdateNotesComplete(
     uint32_t new_latest_scanned_block,
     std::optional<ZCashOrchardStorage::Error> error) {
   if (error) {
-    error_ = Error{kFailedToUpdateDatabase, error->message};
-    ScheduleWorkOnTask();
+    error_ = Error{ErrorCode::kFailedToUpdateDatabase, error->message};
   } else {
     latest_scanned_block_ = new_latest_scanned_block;
-    UpdateSpendableNotes();
+    spendable_notes_ = std::nullopt;
   }
+  ScheduleWorkOnTask();
 }
 
 uint32_t ZCashShieldSyncService::GetSpendableBalance() {

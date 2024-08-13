@@ -15,8 +15,7 @@
 
 namespace brave_wallet::orchard {
 
-OrchardBlockDecoderImpl::OrchardBlockDecoderImpl(
-    const std::array<uint8_t, kOrchardFullViewKeySize>& fvk)
+OrchardBlockDecoderImpl::OrchardBlockDecoderImpl(const OrchardFullViewKey& fvk)
     : full_view_key_(fvk) {}
 
 OrchardBlockDecoderImpl::~OrchardBlockDecoderImpl() = default;
@@ -70,7 +69,7 @@ OrchardBlockDecoderImpl::ScanBlock(
 
 // static
 std::unique_ptr<OrchardBlockDecoder> OrchardBlockDecoder::FromFullViewKey(
-    const std::array<uint8_t, kOrchardFullViewKeySize>& fvk) {
+    const OrchardFullViewKey& fvk) {
   return base::WrapUnique<OrchardBlockDecoder>(
       new OrchardBlockDecoderImpl(fvk));
 }

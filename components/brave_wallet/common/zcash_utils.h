@@ -31,6 +31,8 @@ inline constexpr size_t kOrchardCmxSize = 32u;
 inline constexpr size_t kOrchardEphemeralKeySize = 32u;
 inline constexpr size_t kOrchardCipherTextSize = 52u;
 
+using OrchardFullViewKey = std::array<uint8_t, kOrchardFullViewKeySize>;
+
 // Reduce current scanning position on this value if reorg is found
 // All Zcash network participants basically assume rollbacks longer than 100
 // blocks will not occur
@@ -140,6 +142,10 @@ std::optional<std::string> ExtractTransparentPart(
 std::optional<std::string> ExtractOrchardPart(
     const std::string& unified_address,
     bool is_testnet);
+
+// Converts 000000000049900203ce1cba81a36d29390ea40fc78cf4799e8139b96f3a8114 to
+// 0x14813a6fb939819e79f48cc70fa40e39296da381ba1cce030290490000000000
+std::optional<std::string> RevertHex(const std::string& hex);
 
 }  // namespace brave_wallet
 

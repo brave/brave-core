@@ -66,35 +66,17 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
   const [syncStatusResult, setSyncStatusResult] = useState<string>();
   const [shieldedBalanceValue, setShieldedBalanceValue] = useState<string>();
 
-  React.useEffect(() => {
-    fetchBalance()
-  })
-
   const makeAccountShielded = async() => {
     const result = await getAPIProxy().zcashWalletService.makeAccountShielded(
         props.accountId);
-    setMakeAccountShieldableResult(result.errorMessage || '');
+    setMakeAccountShieldableResult(result.errorMessage || 'Done');
   }
 
+  // methods
   const startOrchardSync = async() => {
-    const syncObserver = new BraveWallet.ZCashSyncObserverReceiver({
-      onStart: () => {
-        setSyncStatusResult("Started");
-      },
-      onStop: () => {
-        setSyncStatusResult("Stopped");
-      },
-      onUpdateSyncStatus: (status: ZCashShieldSyncStatus) => {
-        setSyncStatusResult("Current block " + status.currentBlock + "/" + status.chainTip);
-        setShieldedBalanceValue("" + status.spendableBalance);
-      },
-      onError: (error: string) => {
-        setSyncStatusResult("Error : " + error);
-      }
-    });
-
-    const result = await getAPIProxy().zcashWalletService.startShieldSync(
-      props.accountId, syncObserver.$.bindNewPipeAndPassRemote());
+    setSyncStatusResult('')
+    const result =
+        await getAPIProxy().zcashWalletService.startShieldSync(props.accountId);
 
     if (result.errorMessage) {
       setSyncStatusResult("Sync error " + result.errorMessage);
@@ -109,16 +91,6 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
     }
   }
 
-  const fetchBalance = async () => {
-    setLoading(true)
-    const result = await getAPIProxy().zcashWalletService.getBalance(
-      BraveWallet.Z_CASH_MAINNET,
-      props.accountId
-    )
-    setBalance(result.balance || undefined)
-    setLoading(false)
-  }
-
   const shieldFunds = async () => {
     let {
       txId,
@@ -129,6 +101,56 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
     )
     setShieldResult(txId || errorMessage || "unknown")
   }
+
+  const fetchBalance = React.useCallback(async () => {
+    setLoading(true)
+    const result = await getAPIProxy().zcashWalletService.getBalance(
+      BraveWallet.Z_CASH_MAINNET,
+      props.accountId
+    )
+    setBalance(result.balance || undefined)
+    setLoading(false)
+  }, [props.accountId])
+
+  // effects
+  React.useEffect(() => {
+    const zcashWalletServiceObserver =
+        new BraveWallet.ZCashWalletServiceObserverReceiver({
+      onSyncStart: (accountId: BraveWallet.AccountId) => {
+        if (props.accountId.uniqueKey === accountId.uniqueKey) {
+          setSyncStatusResult("Started");
+        }
+      },
+      onSyncStop: (accountId: BraveWallet.AccountId) => {
+        if (props.accountId.uniqueKey === accountId.uniqueKey) {
+          setSyncStatusResult("Stopped");
+        }
+      },
+      onSyncStatusUpdate: (accountId: BraveWallet.AccountId,
+                           status: ZCashShieldSyncStatus) => {
+        if (props.accountId.uniqueKey === accountId.uniqueKey) {
+          setSyncStatusResult("Current block " +
+                              status.currentBlock + "/" +
+                              status.chainTip);
+          setShieldedBalanceValue("Found balance: " + status.spendableBalance);
+        }
+      },
+      onSyncError: (accountId: BraveWallet.AccountId, error: string) => {
+        if (props.accountId.uniqueKey === accountId.uniqueKey) {
+          setSyncStatusResult("Error : " + error);
+        }
+      }
+    });
+
+    getAPIProxy().zcashWalletService.addObserver(
+        zcashWalletServiceObserver.$.bindNewPipeAndPassRemote());
+
+    return () => zcashWalletServiceObserver.$.close()
+  }, [props.accountId])
+
+  React.useEffect(() => {
+    fetchBalance()
+  }, [fetchBalance])
 
   return (
     <BalanceSection>
@@ -186,17 +208,19 @@ const GetZCashAccountInfoSection: React.FC<
     BraveWallet.ZCashAccountInfo | undefined
   >()
 
-  React.useEffect(() => {
-    fetchZCashAccountInfo()
-  })
-
-  const fetchZCashAccountInfo = async () => {
+  // methods
+  const fetchZCashAccountInfo = React.useCallback(async () => {
     setLoading(true)
     const result =
       await getAPIProxy().zcashWalletService.getZCashAccountInfo(accountId)
     setZCashAccountInfo(result.accountInfo || undefined)
     setLoading(false)
-  }
+  }, [accountId])
+
+  // effects
+  React.useEffect(() => {
+    fetchZCashAccountInfo()
+  }, [fetchZCashAccountInfo])
 
   const keyId = (keyId: BraveWallet.BitcoinKeyId | undefined) => {
     if (!keyId) {

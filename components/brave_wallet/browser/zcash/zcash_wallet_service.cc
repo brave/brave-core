@@ -94,9 +94,14 @@ void ZCashWalletService::MakeAccountShielded(
     MakeAccountShieldedCallback callback) {
 #if BUILDFLAG(ENABLE_ORCHARD)
   if (IsZCashShieldedTransactionsEnabled()) {
-    if (!GetAccountShieldBirthday(account_id).is_null()) {
-      std::move(callback).Run("Already shieldable");
-      return;
+    // Only 1 account can be shieldable at the moment
+    const auto& accounts = keyring_service_->GetAllAccountInfos();
+    for (const auto& account : accounts) {
+      if (IsZCashAccount(*(account->account_id)) &&
+          !GetAccountShieldBirthday(account->account_id).is_null()) {
+        std::move(callback).Run("Already has shieldable account");
+        return;
+      }
     }
     GetLatestBlockForAccountBirthday(account_id.Clone(), std::move(callback));
     return;
@@ -105,10 +110,8 @@ void ZCashWalletService::MakeAccountShielded(
   std::move(callback).Run("Not supported");
 }
 
-void ZCashWalletService::StartShieldSync(
-    mojom::AccountIdPtr account_id,
-    mojo::PendingRemote<mojom::ZCashSyncObserver> observer,
-    StartShieldSyncCallback callback) {
+void ZCashWalletService::StartShieldSync(mojom::AccountIdPtr account_id,
+                                         StartShieldSyncCallback callback) {
 #if BUILDFLAG(ENABLE_ORCHARD)
   if (IsZCashShieldedTransactionsEnabled()) {
     auto account_birthday = GetAccountShieldBirthday(account_id);
@@ -117,17 +120,24 @@ void ZCashWalletService::StartShieldSync(
       return;
     }
 
-    auto it = shield_sync_services_.find(account_id);
-    if (it == shield_sync_services_.end()) {
-      shield_sync_services_[account_id.Clone()] =
-          std::make_unique<ZCashShieldSyncService>(
-              zcash_rpc(), account_id, account_birthday,
-              keyring_service_->GetOrchardFullViewKey(account_id).value(),
-              zcash_data_path_.AppendASCII(kOrchardDatabaseName));
+    auto fvk = keyring_service_->GetOrchardFullViewKey(account_id);
+    if (!fvk) {
+      std::move(callback).Run("Cannot resolve FVK");
+      return;
     }
 
-    shield_sync_services_[account_id.Clone()]->StartSyncing(
-        std::move(observer));
+    if (shield_sync_services_.find(account_id) != shield_sync_services_.end()) {
+      std::move(callback).Run("Already in sync");
+      return;
+    }
+
+    shield_sync_services_[account_id.Clone()] =
+        std::make_unique<ZCashShieldSyncService>(
+            zcash_rpc(), account_id, account_birthday, fvk.value(),
+            zcash_data_path_.AppendASCII(kOrchardDatabaseName),
+            weak_ptr_factory_.GetWeakPtr());
+
+    shield_sync_services_[account_id.Clone()]->StartSyncing();
 
     std::move(callback).Run(std::nullopt);
     return;
@@ -142,8 +152,11 @@ void ZCashWalletService::StopShieldSync(mojom::AccountIdPtr account_id,
   if (IsZCashShieldedTransactionsEnabled()) {
     auto it = shield_sync_services_.find(account_id);
     if (it != shield_sync_services_.end()) {
-      it->second->PauseSyncing();
       shield_sync_services_.erase(it);
+      OnSyncStop(account_id);
+    } else {
+      std::move(callback).Run("Not syncing");
+      return;
     }
     std::move(callback).Run(std::nullopt);
     return;
@@ -292,6 +305,11 @@ void ZCashWalletService::SignAndPostTransaction(
 void ZCashWalletService::SetZCashRpcForTesting(
     std::unique_ptr<ZCashRpc> zcash_rpc) {
   zcash_rpc_ = std::move(zcash_rpc);
+}
+
+void ZCashWalletService::AddObserver(
+    mojo::PendingRemote<mojom::ZCashWalletServiceObserver> observer) {
+  observers_.Add(std::move(observer));
 }
 
 void ZCashWalletService::ValidateZCashAddress(
@@ -576,6 +594,11 @@ void ZCashWalletService::OnGetLatestBlockForAccountBirthday(
   // Get block info for the block that is back from latest block for
   // kChainReorgBlockDelta to ensure account birthday won't be affected by chain
   // reorg.
+  if ((*result)->height < kChainReorgBlockDelta) {
+    std::move(callback).Run("Failed to retrieve latest block");
+    return;
+  }
+
   auto block_id = zcash::mojom::BlockID::New(
       (*result)->height - kChainReorgBlockDelta, std::vector<uint8_t>());
 
@@ -609,6 +632,33 @@ ZCashWalletService::GetAccountShieldBirthday(
     return nullptr;
   }
   return account_info->account_shield_birthday.Clone();
+}
+
+void ZCashWalletService::OnSyncStart(const mojom::AccountIdPtr& account_id) {
+  for (const auto& observer : observers_) {
+    observer->OnSyncStart(account_id.Clone());
+  }
+}
+
+void ZCashWalletService::OnSyncStop(const mojom::AccountIdPtr& account_id) {
+  for (const auto& observer : observers_) {
+    observer->OnSyncStop(account_id.Clone());
+  }
+}
+
+void ZCashWalletService::OnSyncError(const mojom::AccountIdPtr& account_id,
+                                     const std::string& error) {
+  for (const auto& observer : observers_) {
+    observer->OnSyncError(account_id.Clone(), error);
+  }
+}
+
+void ZCashWalletService::OnSyncStatusUpdate(
+    const mojom::AccountIdPtr& account_id,
+    const mojom::ZCashShieldSyncStatusPtr& status) {
+  for (const auto& observer : observers_) {
+    observer->OnSyncStatusUpdate(account_id.Clone(), status.Clone());
+  }
 }
 
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
@@ -659,9 +709,7 @@ void ZCashWalletService::Unlocked() {
 
 void ZCashWalletService::Locked() {
 #if BUILDFLAG(ENABLE_ORCHARD)
-  for (const auto& pair : shield_sync_services_) {
-    pair.second->PauseSyncing();
-  }
+  shield_sync_services_.clear();
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 }
 

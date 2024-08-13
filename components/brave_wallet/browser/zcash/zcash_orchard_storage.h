@@ -34,7 +34,7 @@ class ZCashOrchardStorage {
     std::string latest_scanned_block_hash;
   };
 
-  enum ErrorCode {
+  enum class ErrorCode {
     kDbInitError,
     kAccountNotFound,
     kFailedToExecuteStatement,
@@ -49,9 +49,9 @@ class ZCashOrchardStorage {
   explicit ZCashOrchardStorage(base::FilePath path_to_database);
   ~ZCashOrchardStorage();
 
-  std::optional<Error> RegisterAccount(
+  base::expected<AccountMeta, Error> RegisterAccount(
       mojom::AccountIdPtr account_id,
-      uint64_t account_birthday_block,
+      uint32_t account_birthday_block,
       const std::string& account_bithday_block_hash);
   base::expected<AccountMeta, Error> GetAccountMeta(
       mojom::AccountIdPtr account_id);

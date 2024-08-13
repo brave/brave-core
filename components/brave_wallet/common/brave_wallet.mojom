@@ -1734,11 +1734,11 @@ struct ZCashShieldSyncStatus {
   uint64 spendable_balance;
 };
 
-interface ZCashSyncObserver {
-  OnStart();
-  OnUpdateSyncStatus(ZCashShieldSyncStatus status);
-  OnStop();
-  OnError(string error);
+interface ZCashWalletServiceObserver {
+  OnSyncStart(AccountId account_id);
+  OnSyncStatusUpdate(AccountId account_id, ZCashShieldSyncStatus status);
+  OnSyncStop(AccountId account_id);
+  OnSyncError(AccountId account_id, string error);
 };
 
 interface ZCashWalletService {
@@ -1753,8 +1753,10 @@ interface ZCashWalletService {
   ShieldFunds(string network_id, AccountId account_id) =>
       (string? tx_id, string? error_message);
 
+  AddObserver(pending_remote<ZCashWalletServiceObserver> observer);
+
   MakeAccountShielded(AccountId account_id) => (string? error_message);
-  StartShieldSync(AccountId account_id, pending_remote<ZCashSyncObserver> observer) => (string? error_message);
+  StartShieldSync(AccountId account_id) => (string? error_message);
   StopShieldSync(AccountId account_id) => (string? error_message);
 };
 

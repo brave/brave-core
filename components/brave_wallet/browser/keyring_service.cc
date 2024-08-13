@@ -2041,8 +2041,8 @@ KeyringService::GetOrchardRawBytes(const mojom::AccountIdPtr& account_id,
   return zcash_keyring->GetOrchardRawBytes(*key_id);
 }
 
-std::optional<std::array<uint8_t, kOrchardFullViewKeySize>>
-KeyringService::GetOrchardFullViewKey(const mojom::AccountIdPtr& account_id) {
+std::optional<OrchardFullViewKey> KeyringService::GetOrchardFullViewKey(
+    const mojom::AccountIdPtr& account_id) {
   auto* zcash_keyring = GetZCashKeyringById(account_id->keyring_id);
   if (!zcash_keyring) {
     return std::nullopt;
