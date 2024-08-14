@@ -15,9 +15,10 @@ declare_args() {
 }
 
 declare_args() {
-  # It would be nice to declare build_omaha4 in the declare_args block above.
-  # But its default value depends on brave_enable_updater. In this case, GN
-  # requires us to create a separate declare_args block.
+  # We ship a pre-built (and pre-signed) copy of Omaha 4 in official builds. The
+  # main reason for this is that upstream's browser signing code expects it this
+  # way. The following arg, which controls whether Omaha 4 should be built from
+  # source, is therefore disabled by default for official builds:
   build_omaha4 = brave_enable_updater && !is_official_build
 }
 
