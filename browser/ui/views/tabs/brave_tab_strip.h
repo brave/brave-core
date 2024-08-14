@@ -49,7 +49,6 @@ class BraveTabStrip : public TabStrip {
   TabContainer* GetTabContainerForTesting();
 
   // TabStrip overrides:
-  SkColor GetTabSeparatorColor() const override;
   bool ShouldDrawStrokes() const override;
   void Layout(PassKey) override;
 
