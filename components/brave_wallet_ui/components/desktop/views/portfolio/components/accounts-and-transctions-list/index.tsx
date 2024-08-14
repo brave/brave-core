@@ -217,7 +217,7 @@ export const AccountsAndTransactionsList = ({
           <Row padding='24px 0px'>
             <SegmentedControl
               navOptions={PortfolioAssetOptions}
-              width={384}
+              width={'384px'}
             />
           </Row>
         )}
@@ -300,7 +300,7 @@ export const AccountsAndTransactionsList = ({
             <Row padding='24px 0px'>
               <SegmentedControl
                 navOptions={PortfolioAssetOptions}
-                width={384}
+                width={'384px'}
               />
             </Row>
           )}

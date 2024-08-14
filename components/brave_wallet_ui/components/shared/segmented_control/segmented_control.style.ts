@@ -4,48 +4,24 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
+import LeoSegmentedControl, {
+  SegmentedControlProps
+} from '@brave/leo/react/segmentedControl'
 
-// Shared Styles
-import { StyledButton } from '../../../page/screens/send/shared.styles'
-import { layoutPanelWidth } from '../../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
-
-export const ButtonsContainer = styled.div<{
-  width?: number
-}>`
+export const StyledWrapper = styled.div<{ width?: string }>`
+  flex: 1;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-  overflow: hidden;
-  padding: 4px;
-  width: ${(p) => (p.width !== undefined ? `${p.width}px` : '100%')};
-  background-color: ${leo.color.container.highlight};
-  border-radius: 16px;
-  @media screen and (max-width: ${layoutPanelWidth}px) {
-    border-radius: 12px;
-  }
+  justify-content: center;
 `
 
-export const Button = styled(StyledButton)<{
-  isSelected: boolean
-}>`
-  --selected-background-color: ${leo.color.container.background};
-  background-color: ${(p) =>
-    p.isSelected ? 'var(--selected-background-color)' : 'none'};
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 20px;
-  letter-spacing: 0.4px;
-  width: 100%;
-  padding: 10px;
-  color: ${(p) =>
-    p.isSelected ? leo.color.text.primary : leo.color.text.secondary};
-  box-shadow: ${(p) => (p.isSelected ? leo.effect.elevation['01'] : 'none')};
-  @media screen and (max-width: ${layoutPanelWidth}px) {
-    border-radius: 8px;
-    padding: 5px;
-  }
+export const SegmentedControl = styled(
+  LeoSegmentedControl
+)<SegmentedControlProps>`
+  margin: 24px 0 10px 0;
+`
+
+export const ControlItemWrapper = styled.div`
+  text-align: center;
 `
