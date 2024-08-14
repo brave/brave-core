@@ -37,6 +37,7 @@
 #include "components/page_info/core/features.h"
 #include "components/performance_manager/public/features.h"
 #include "components/permissions/features.h"
+#include "components/plus_addresses/features.h"
 #include "components/privacy_sandbox/privacy_sandbox_features.h"
 #include "components/safe_browsing/core/common/features.h"
 #include "components/search/ntp_features.h"
@@ -46,6 +47,7 @@
 #include "components/signin/public/base/signin_switches.h"
 #include "components/subresource_filter/core/common/common_features.h"
 #include "components/sync/base/features.h"
+#include "components/webapps/browser/features.h"
 #include "content/common/features.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/dips_utils.h"
@@ -143,6 +145,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &features::kDesktopPWAsLinkCapturing,
 #endif
+      &features::kDevToolsConsoleInsights,
       &features::kDigitalGoodsApi,
       &features::kDIPS,
       &features::kFedCm,
@@ -203,6 +206,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &metrics::structured::kEnabledStructuredMetricsService,
       &metrics::structured::kPhoneHubStructuredMetrics,
       &net::features::kEnableWebTransportDraft07,
+      &net::features::kTopLevelTpcdOriginTrial,
       &net::features::kTpcdMetadataGrants,
       &net::features::kWaitForFirstPartySetsInit,
       &network::features::kFledgePst,
@@ -241,6 +245,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &permissions::features::kPermissionOnDeviceNotificationPredictions,
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
+      &plus_addresses::features::kPlusAddressesEnabled,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
       &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
       &privacy_sandbox::kPrivacySandboxFirstPartySetsUI,
@@ -248,7 +253,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &privacy_sandbox::kPrivacySandboxSettings4,
       &privacy_sandbox::kTrackingProtectionContentSettingUbControl,
       &safe_browsing::kExtensionTelemetryDisableOffstoreExtensions,
+      &safe_browsing::kExtensionTelemetryForEnterprise,
       &safe_browsing::kExtensionTelemetryTabsApiSignal,
+      &safe_browsing::kGooglePlayProtectInApkTelemetry,
       &segmentation_platform::features::kSegmentationPlatformCollectTabRankData,
       &segmentation_platform::features::kSegmentationPlatformDeviceTier,
       &segmentation_platform::features::kSegmentationPlatformFeature,
@@ -260,6 +267,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &translate::kTFLiteLanguageDetectionEnabled,
 #endif
+      &webapps::features::kWebAppsEnableMLModelForPromotion,
   };
 
   for (const auto* feature : disabled_features) {
