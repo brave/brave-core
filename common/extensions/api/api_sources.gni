@@ -1,0 +1,26 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
+
+brave_extensions_api_uncompiled_sources = []
+brave_extensions_api_root_namespace = "extensions::api::%(namespace)s"
+brave_extensions_api_schema_include_rules =
+    "//brave/common/extensions/api:extensions::api::%(namespace)s"
+
+schema_sources_ = [
+  "brave_rewards.json",
+  "brave_shields.json",
+  "brave_talk.json",
+  "brave_theme.json",
+  "greaselion.json",
+  "rewards_notifications.json",
+]
+
+if (ethereum_remote_client_enabled) {
+  schema_sources_ += [ "brave_wallet.json" ]
+}
+
+brave_extensions_api_schema_sources = get_path_info(schema_sources_, "abspath")

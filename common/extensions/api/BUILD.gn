@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
+import("//brave/common/extensions/api/api_sources.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
 import("//tools/json_schema_compiler/json_features.gni")
@@ -40,30 +41,17 @@ json_features("behavior_features") {
   sources = [ "_behavior_features.json" ]
 }
 
-brave_extensions_api_schema_sources = [
-  "brave_rewards.json",
-  "brave_shields.json",
-  "brave_talk.json",
-  "brave_theme.json",
-  "greaselion.json",
-  "rewards_notifications.json",
-]
-
-if (ethereum_remote_client_enabled) {
-  brave_extensions_api_schema_sources += [ "brave_wallet.json" ]
+group("extensions_features") {
+  public_deps = [
+    ":api_features",
+    ":behavior_features",
+    ":manifest_features",
+    ":permission_features",
+    ":resources",
+  ]
 }
 
-brave_extensions_api_uncompiled_sources = []
-brave_extensions_api_root_namespace = "extensions::api::%(namespace)s"
-brave_extensions_api_schema_include_rules =
-    "//brave/common/extensions/api:extensions::api::%(namespace)s"
-
 brave_extensions_api_deps = [
-  ":api_features",
-  ":behavior_features",
-  ":manifest_features",
-  ":permission_features",
-  ":resources",
   "//chrome/common/extensions/api",
   "//extensions/common/api",
   "//skia",
@@ -75,21 +63,6 @@ brave_grit("resources") {
     "grit/brave_api_resources.h",
     "brave_api_resources.pak",
   ]
-}
-
-function_registration("generated_api_registration") {
-  sources = brave_extensions_api_schema_sources
-  impl_dir = "//brave/common/extensions/api/"
-  bundle_name = "Brave"
-  root_namespace = brave_extensions_api_root_namespace
-
-  deps = [
-    "//brave/components/brave_ads/core/mojom",
-    "//brave/components/brave_rewards/common/mojom",
-    "//extensions/common",
-  ]
-
-  visibility = [ ":api" ]
 }
 
 generated_json_strings("generated_api_json_strings") {
@@ -121,7 +94,6 @@ generated_types("generated_api_types") {
 group("api") {
   public_deps = [
     ":generated_api_json_strings",
-    ":generated_api_registration",
     ":generated_api_types",
   ]
 }
