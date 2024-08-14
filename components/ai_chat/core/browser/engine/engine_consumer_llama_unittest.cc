@@ -284,7 +284,8 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateRewriteSuggestion) {
         EXPECT_TRUE(event->is_completion_event());
         EXPECT_EQ(event->get_completion_event()->completion, "Reply");
       });
-  EXPECT_CALL(mock_callback, OnCompleted(GenerationResult("")));
+  const GenerationResult result("");
+  EXPECT_CALL(mock_callback, OnCompleted(testing::Eq(std::ref(result))));
 
   engine_->GenerateRewriteSuggestion(
       "<excerpt>Hello World</excerpt>", "Rewrite the excerpt in a funny tone.",
