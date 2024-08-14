@@ -56,6 +56,9 @@ private let KVOs: [KVOConstants] = [
 struct TranslationContainer: View {
   var scriptHandler: BraveTranslateScriptHandler
 
+  @State
+  private var languageInfo: BraveTranslateLanguageInfo?
+
   var body: some View {
     #if compiler(>=6.0)
     Color.clear
@@ -64,15 +67,21 @@ struct TranslationContainer: View {
       }
       .osAvailabilityModifiers({ view in
         if #available(iOS 18.0, *) {
-          view.translationTask(
-            .init(source: "de"),
-            action: { session in
-              scriptHandler.activateScript(using: session)
+          view
+            .task {
+              languageInfo = await scriptHandler.getLanguageInfo()
             }
-          )
+            .translationTask(
+              .init(source: languageInfo?.pageLanguage, target: languageInfo?.currentLanguage),
+              action: { session in
+                if let languageInfo = self.languageInfo {
+                  scriptHandler.activateScript(using: session, languageInfo: languageInfo)
+                }
+              }
+            )
         } else {
           view.task {
-            scriptHandler.activateScript()
+            await scriptHandler.activateScript(languageInfo: scriptHandler.getLanguageInfo())
           }
         }
       })
@@ -82,7 +91,7 @@ struct TranslationContainer: View {
         print("translation container is visible")
       }
       .task {
-        scriptHandler.activateScript()
+        await scriptHandler.activateScript(languageInfo: scriptHandler.getLanguageInfo())
       }
     #endif
   }

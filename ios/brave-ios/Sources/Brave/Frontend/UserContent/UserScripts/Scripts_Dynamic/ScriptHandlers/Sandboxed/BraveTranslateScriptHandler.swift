@@ -20,10 +20,17 @@ enum BraveTranslateError: Error {
   case otherError
 }
 
+struct BraveTranslateLanguageInfo {
+  let currentLanguage: Locale.Language
+  let pageLanguage: Locale.Language
+}
+
 class BraveTranslateScriptHandler: NSObject, TabContentScript {
   private weak var tab: Tab?
   private let recognizer = NLLanguageRecognizer()
   private static let namespace = "translate_\(uniqueID)"
+
+  private var translationSession: Any?
 
   private struct RequestMessage: Codable {
     let method: String
@@ -130,16 +137,19 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     return Locale.current.language
   }
 
-  func getLanguageInfo() async throws -> (
-    currentLanguage: Locale.Language, pageLanguage: Locale.Language
-  ) {
+  func getLanguageInfo() async -> BraveTranslateLanguageInfo {
     let pageLanguage = await guessLanguage() ?? Locale.current.language
-    return (Locale.current.language, pageLanguage)
+    return .init(currentLanguage: Locale.current.language, pageLanguage: pageLanguage)
   }
 
-  func activateScript() {
+  @available(iOS 18.0, *)
+  func activateScript(using session: TranslationSession, languageInfo: BraveTranslateLanguageInfo) {
+    self.translationSession = session
+    activateScript(languageInfo: languageInfo)
+  }
+
+  func activateScript(languageInfo: BraveTranslateLanguageInfo) {
     Task { @MainActor in
-      let languageInfo = try await getLanguageInfo()
       guard let currentLanguage = languageInfo.currentLanguage.languageCode?.identifier,
         let pageLanguage = languageInfo.pageLanguage.languageCode?.identifier,
         currentLanguage != pageLanguage
@@ -171,6 +181,32 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
             RequestMessage.self,
             from: JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
           )
+
+          if #available(iOS 18.0, *),
+            let translationSession = translationSession as? TranslationSession,
+            message.url.path.starts(with: "/translate_a/")
+          {
+            let components = URLComponents(string: "https://translate.brave.com?\(message.body)")
+            let phrases = components!.queryItems!.map({ "\($0.value ?? "")" })
+            let results = try await translationSession.translations(
+              from: phrases.map({ .init(sourceText: $0) })
+            ).map({ $0.targetText })
+
+            let data = try JSONSerialization.data(withJSONObject: results, options: [])
+
+            replyHandler(
+              [
+                "value": [
+                  "statusCode": 200,
+                  "responseType": "",
+                  "response": String(data: data, encoding: String.Encoding.utf8) ?? "",
+                  "headers": "",
+                ]
+              ],
+              nil
+            )
+            return
+          }
 
           var request = URLRequest(url: message.url)
           request.httpMethod = message.method
@@ -212,7 +248,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
       print("TRANSLATE IS READY!")
 
       Task { @MainActor in
-        activateScript()
+        self.activateScript(languageInfo: await getLanguageInfo())
       }
     }
 
