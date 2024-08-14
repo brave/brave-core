@@ -17,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "url/gurl.h"
+class GURL;
 
 namespace brave_ads::test {
 

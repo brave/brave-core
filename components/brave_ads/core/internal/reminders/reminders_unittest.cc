@@ -20,6 +20,7 @@
 #include "brave/components/brave_ads/core/internal/reminders/reminders_feature.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -36,7 +37,7 @@ void BuildAndSaveAdHistory(const AdType ad_type, const int clicked_count) {
       test::BuildAdHistory(ad_type, confirmation_types,
                            /*should_generate_random_uuids=*/false);
 
-  SaveAdHistory(ad_history);
+  database::SaveAdHistory(ad_history);
 }
 
 }  // namespace

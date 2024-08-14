@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/calendar/calendar_util.h"
 
+#include "base/time/time.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

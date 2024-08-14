@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_util.h"
 
+#include "url/gurl.h"
+
 namespace brave_ads::test {
 
 // See `test/data/resources/nnqccijfhvzwyrxpxwjrpmynaiazctqb` for conversion

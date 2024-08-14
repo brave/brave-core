@@ -35,7 +35,7 @@ class Transactions final : public TableInterface {
   void Reconcile(const PaymentTokenList& payment_tokens,
                  ResultCallback callback) const;
 
-  void Delete(ResultCallback callback) const;
+  void PurgeExpired(ResultCallback callback) const;
 
   std::string GetTableName() const override;
 

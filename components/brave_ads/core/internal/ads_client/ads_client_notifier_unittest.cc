@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
 
+#include <cstdint>
+
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_observer_mock.h"
 #include "testing/gmock/include/gmock/gmock.h"

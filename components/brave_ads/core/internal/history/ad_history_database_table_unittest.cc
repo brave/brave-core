@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/history/ad_history_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_test_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
@@ -54,7 +55,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, Save) {
       /*should_generate_random_uuids=*/true);
 
   // Act
-  SaveAdHistory(ad_history);
+  database::SaveAdHistory(ad_history);
 
   // Assert
   base::MockCallback<GetAdHistoryCallback> callback;
@@ -67,7 +68,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, Save) {
 
 TEST_F(BraveAdsAdHistoryDatabaseTableTest, SaveEmpty) {
   // Act
-  SaveAdHistory({});
+  database::SaveAdHistory({});
 
   // Assert
   base::MockCallback<GetAdHistoryCallback> callback;
@@ -89,7 +90,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, SaveInBatches) {
       /*should_generate_random_uuids=*/true);
 
   // Act
-  SaveAdHistory(ad_history);
+  database::SaveAdHistory(ad_history);
 
   // Assert
   base::MockCallback<GetAdHistoryCallback> callback;
@@ -106,7 +107,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, GetForDateRange) {
       AdType::kNotificationAd,
       {ConfirmationType::kViewedImpression, ConfirmationType::kClicked},
       /*should_generate_random_uuids=*/true);
-  SaveAdHistory(ad_history_1);
+  database::SaveAdHistory(ad_history_1);
 
   AdvanceClockBy(base::Days(2));
 
@@ -116,7 +117,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, GetForDateRange) {
       AdType::kNotificationAd,
       {ConfirmationType::kViewedImpression, ConfirmationType::kClicked},
       /*should_generate_random_uuids=*/true);
-  SaveAdHistory(ad_history_2);
+  database::SaveAdHistory(ad_history_2);
 
   // Act & Assert
   base::MockCallback<GetAdHistoryCallback> callback;
@@ -134,7 +135,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest,
       AdType::kNotificationAd,
       {ConfirmationType::kViewedImpression, ConfirmationType::kClicked},
       /*should_generate_random_uuids=*/false);
-  SaveAdHistory(ad_history_1);
+  database::SaveAdHistory(ad_history_1);
 
   AdvanceClockBy(base::Days(2));
 
@@ -144,18 +145,18 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest,
       AdType::kNotificationAd,
       {ConfirmationType::kViewedImpression, ConfirmationType::kClicked},
       /*should_generate_random_uuids=*/false);
-  SaveAdHistory(ad_history_2);
+  database::SaveAdHistory(ad_history_2);
 
   const AdHistoryList ad_history_3 = test::BuildAdHistoryForSamePlacement(
       AdType::kNotificationAd, {ConfirmationType::kViewedImpression},
       /*should_generate_random_uuids=*/false);
-  SaveAdHistory(ad_history_3);
+  database::SaveAdHistory(ad_history_3);
 
   const AdHistoryList ad_history_4 = test::BuildAdHistoryForSamePlacement(
       AdType::kNotificationAd,
       {ConfirmationType::kViewedImpression, ConfirmationType::kDismissed},
       /*should_generate_random_uuids=*/false);
-  SaveAdHistory(ad_history_4);
+  database::SaveAdHistory(ad_history_4);
 
   // Act & Assert
   const AdHistoryList expected_ad_history = GetHighestRankedPlacementAdHistory(
@@ -176,7 +177,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, GetForCreativeInstanceId) {
       AdType::kNotificationAd,
       {ConfirmationType::kViewedImpression, ConfirmationType::kClicked},
       /*should_generate_random_uuids=*/false);
-  SaveAdHistory(ad_history);
+  database::SaveAdHistory(ad_history);
 
   // Act & Assert
   base::MockCallback<GetAdHistoryCallback> callback;
@@ -193,7 +194,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest,
       AdType::kNotificationAd,
       {ConfirmationType::kViewedImpression, ConfirmationType::kClicked},
       /*should_generate_random_uuids=*/true);
-  SaveAdHistory(ad_history);
+  database::SaveAdHistory(ad_history);
 
   // Act & Assert
   base::MockCallback<GetAdHistoryCallback> callback;
@@ -209,7 +210,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, PurgeExpired) {
       AdType::kNotificationAd,
       {ConfirmationType::kViewedImpression, ConfirmationType::kClicked},
       /*should_generate_random_uuids=*/true);
-  SaveAdHistory(ad_history_1);
+  database::SaveAdHistory(ad_history_1);
 
   AdvanceClockBy(kAdHistoryRetentionPeriod.Get());
 
@@ -217,7 +218,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, PurgeExpired) {
       AdType::kNotificationAd,
       {ConfirmationType::kViewedImpression, ConfirmationType::kClicked},
       /*should_generate_random_uuids=*/true);
-  SaveAdHistory(ad_history_2);
+  database::SaveAdHistory(ad_history_2);
 
   // Act & Assert
   base::MockCallback<ResultCallback> purge_expired_callback;
@@ -239,7 +240,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, DoNotPurgeOnTheCuspOfExpiration) {
       AdType::kNotificationAd,
       {ConfirmationType::kViewedImpression, ConfirmationType::kClicked},
       /*should_generate_random_uuids=*/true);
-  SaveAdHistory(ad_history);
+  database::SaveAdHistory(ad_history);
 
   AdvanceClockBy(kAdHistoryRetentionPeriod.Get() - base::Milliseconds(1));
 

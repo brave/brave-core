@@ -76,13 +76,4 @@ void GetTransactionsForDateRange(const base::Time from_time,
           std::move(callback)));
 }
 
-void RemoveAllTransactions(RemoveAllTransactionsCallback callback) {
-  const database::table::Transactions database_table;
-  database_table.Delete(base::BindOnce(
-      [](RemoveAllTransactionsCallback callback, const bool success) {
-        std::move(callback).Run(success);
-      },
-      std::move(callback)));
-}
-
 }  // namespace brave_ads

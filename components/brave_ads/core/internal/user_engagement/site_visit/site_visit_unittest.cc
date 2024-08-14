@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer_mock.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
 #include "url/gurl.h"
 

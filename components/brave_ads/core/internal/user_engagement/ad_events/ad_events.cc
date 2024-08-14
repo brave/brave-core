@@ -36,15 +36,6 @@ void RecordAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {
                     std::move(callback)));
 }
 
-void PurgeExpiredAdEvents(AdEventCallback callback) {
-  const database::table::AdEvents database_table;
-  database_table.PurgeExpired(base::BindOnce(
-      [](AdEventCallback callback, const bool success) {
-        std::move(callback).Run(success);
-      },
-      std::move(callback)));
-}
-
 void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
                            AdEventCallback callback) {
   const database::table::AdEvents database_table;

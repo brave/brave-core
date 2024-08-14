@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/history/ad_history_database_table.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
-namespace brave_ads {
+namespace brave_ads::database {
 
 void PurgeExpiredAdHistory() {
   const database::table::AdHistory database_table;
@@ -34,4 +34,4 @@ void SaveAdHistory(const AdHistoryList& ad_history) {
                       }));
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::database

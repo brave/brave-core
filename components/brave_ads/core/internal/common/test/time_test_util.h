@@ -8,7 +8,10 @@
 
 #include <string>
 
-#include "base/time/time.h"
+namespace base {
+class Time;
+class TimeDelta;
+}  // namespace base
 
 namespace brave_ads::test {
 
