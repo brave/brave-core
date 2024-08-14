@@ -50,7 +50,11 @@ if (enable_extensions) {
     "//extensions/common:common_constants",
   ]
 
-  brave_chrome_common_public_deps += [ "extensions/api" ]
+  brave_chrome_common_public_deps += [
+    "extensions/api",
+    "//brave/common/extensions/api",
+    "//brave/common/extensions/api:extensions_features",
+  ]
 }
 
 if (!is_ios) {

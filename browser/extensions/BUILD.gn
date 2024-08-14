@@ -60,6 +60,7 @@ source_set("extensions") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/brave_rewards:util",
     "//brave/browser/component_updater",
+    "//brave/browser/extensions/api:generated_api_registration",
     "//brave/common",
     "//brave/common/extensions/api",
     "//brave/components/brave_adaptive_captcha",

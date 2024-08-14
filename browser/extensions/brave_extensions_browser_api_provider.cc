@@ -5,7 +5,7 @@
 
 #include "brave/browser/extensions/brave_extensions_browser_api_provider.h"
 
-#include "brave/common/extensions/api/generated_api_registration.h"
+#include "brave/browser/extensions/api/generated_api_registration.h"
 #include "extensions/browser/extension_function_registry.h"
 
 namespace extensions {
