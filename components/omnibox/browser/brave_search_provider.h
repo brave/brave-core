@@ -15,6 +15,7 @@ class BraveSearchProvider : public SearchProvider {
   BraveSearchProvider& operator=(const BraveSearchProvider&) = delete;
 
   void DoHistoryQuery(bool minimal_changes) override;
+  bool IsQueryPotentiallyPrivate() const override;
 
  protected:
   ~BraveSearchProvider() override;
