@@ -56,6 +56,13 @@
   pref="{{prefs.brave.today.should_show_toolbar_button}}"
   label="$i18n{appearanceSettingsShowBraveNewsButtonLabel}">
 </settings-toggle-button>
+<template is="dom-if" if="[[showLeoAssistant_()]]">
+  <settings-toggle-button
+    class="cr-row"
+    pref="{{prefs.brave.ai_chat.show_toolbar_button}}"
+    label="$i18n{appearanceSettingsShowLeoButtonLabel}">
+  </settings-toggle-button>
+</template>
 <template is="dom-if" if="[[isBraveRewardsSupported_()]]">
   <settings-toggle-button
     class="cr-row"
