@@ -7,6 +7,7 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 
 import Icon from '@brave/leo/react/icon'
+import Button from '@brave/leo/react/button'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import { color, spacing } from '@brave/leo/tokens/css/variables'
 
@@ -40,6 +41,10 @@ const StyledButtonMenu = styled(ButtonMenu)<{ visible: boolean }>`
   color: ${color.text.secondary};
 `
 
+const StyledButton = styled(Button)`
+  --leo-button-padding: 0;
+`
+
 export default function ContextualMenuAnchorButton ({
   items,
   visible,
@@ -55,7 +60,6 @@ export default function ContextualMenuAnchorButton ({
 
   return (
     <StyledButtonMenu
-      tabIndex={0}
       visible={visible}
       onChange={({ isOpen }) => {
         if (isOpen) onShowMenu?.()
@@ -64,9 +68,9 @@ export default function ContextualMenuAnchorButton ({
       onClose={() => onDismissMenu?.()}
       isOpen={open}
     >
-      <div slot='anchor-content'>
+      <StyledButton kind='plain-faint' size='small' slot='anchor-content'>
         <Icon name='more-horizontal' />
-      </div>
+      </StyledButton>
       {items
         .filter((i) => i)
         .map((i) => (

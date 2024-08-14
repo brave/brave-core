@@ -231,6 +231,7 @@ export function PlaylistItem ({
 
   const [hovered, setHovered] = React.useState(false)
   const [showingMenu, setShowingMenu] = React.useState(false)
+  const [focused, setFocused] = React.useState(false)
 
   const cachingProgress = useSelector<
     ApplicationState,
@@ -252,6 +253,8 @@ export function PlaylistItem ({
 
   return (
     <PlaylistItemContainer
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       isActive={(isEditing && isSelected) || isCurrentItem}
@@ -304,7 +307,7 @@ export function PlaylistItem ({
         }
       </ItemInfoContainer>
       <ContextualMenuAnchorButton
-        visible={(hovered || showingMenu) && !isEditing}
+        visible={(hovered || focused || showingMenu) && !isEditing}
         items={[
           {
             name: getLocalizedString('bravePlaylistContextMenuMove'),
