@@ -431,7 +431,7 @@ export const findTransactionToken = <
  *
  * Prefer using useSwapTransactionParser() hook in React components, which
  * can asynchronously extract details from the blockchain.
-*/
+ */
 export const getETHSwapTransactionBuyAndSellTokens = ({
   nativeAsset,
   tokensList,
@@ -1871,3 +1871,64 @@ export const isAssociatedTokenAccountCreationTx = (
   tx?.txType ===
   BraveWallet.TransactionType
     .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+
+export function getTransactionTypeName(txType: BraveWallet.TransactionType) {
+  switch (txType) {
+    case BraveWallet.TransactionType.ERC1155SafeTransferFrom:
+      return getLocale('braveWalletTransactionTypeNameSafeTransferFrom')
+
+    case BraveWallet.TransactionType.ERC20Approve:
+      return getLocale('braveWalletTransactionTypeNameErc20Approve')
+
+    case BraveWallet.TransactionType.ERC20Transfer:
+      return getLocale('braveWalletTransactionTypeNameTokenTransfer')
+
+    case BraveWallet.TransactionType.ERC721SafeTransferFrom:
+      return getLocale('braveWalletTransactionTypeNameSafeTransferFrom')
+
+    case BraveWallet.TransactionType.ERC721TransferFrom:
+      return getLocale('braveWalletTransactionTypeNameNftTransfer')
+
+    case BraveWallet.TransactionType.ETHFilForwarderTransfer:
+      return getLocale('braveWalletTransactionTypeNameForwardFil')
+
+    case BraveWallet.TransactionType.ETHSend:
+      return getLocale('braveWalletTransactionIntentSend').replace('$1', 'ETH')
+
+    case BraveWallet.TransactionType.ETHSwap:
+      return getLocale('braveWalletSwap')
+
+    case BraveWallet.TransactionType.Other:
+      return getLocale('braveWalletTransactionTypeNameOther')
+
+    case BraveWallet.TransactionType.SolanaCompressedNftTransfer:
+      return getLocale('braveWalletTransactionTypeNameCompressedNftTransfer')
+
+    case BraveWallet.TransactionType.SolanaDappSignAndSendTransaction:
+      return getLocale(
+        'braveWalletTransactionTypeNameSignAndSendDappTransaction'
+      )
+
+    case BraveWallet.TransactionType.SolanaDappSignTransaction:
+      return getLocale('braveWalletTransactionTypeNameSignDappTransaction')
+
+    case BraveWallet.TransactionType.SolanaSPLTokenTransfer:
+      return getLocale('braveWalletTransactionTypeNameTokenTransfer')
+
+    case BraveWallet.TransactionType
+      .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation:
+      return getLocale(
+        'braveWalletTransactionTypeNameSplTokenTransfer' +
+          'WithAssociatedTokenAccountCreation'
+      )
+
+    case BraveWallet.TransactionType.SolanaSwap:
+      return getLocale('braveWalletSwap')
+
+    case BraveWallet.TransactionType.SolanaSystemTransfer:
+      return getLocale('braveWalletTransactionIntentSend').replace('$1', 'SOL')
+
+    default:
+      return getLocale('braveWalletTransactionTypeNameOther')
+  }
+}
