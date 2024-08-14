@@ -408,16 +408,19 @@ void MeldIntegrationService::GetCryptoQuotes(
     const std::string& destination_currency_code,
     const double source_amount,
     const std::optional<std::string>& account,
+    const std::optional<std::string>& payment_method,
     GetCryptoQuotesCallback callback) {
   base::Value::Dict payload;
   AddKeyIfNotEmpty(&payload, "countryCode", country);
   AddKeyIfNotEmpty(&payload, "sourceCurrencyCode", source_currency_code);
-  AddKeyIfNotEmpty(&payload, "sourceAmount",
-                   base::NumberToString(source_amount));
+  payload.Set("sourceAmount", source_amount);
   AddKeyIfNotEmpty(&payload, "destinationCurrencyCode",
                    destination_currency_code);
   if (account) {
     AddKeyIfNotEmpty(&payload, "walletAddress", *account);
+  }
+  if (payment_method) {
+    AddKeyIfNotEmpty(&payload, "paymentMethodType", *payment_method);
   }
 
   const std::string json_payload = GetJSON(payload);

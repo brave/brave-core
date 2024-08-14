@@ -47,6 +47,7 @@ class MeldIntegrationService : public KeyedService,
                        const std::string& destination_currency_code,
                        const double source_amount,
                        const std::optional<std::string>& account,
+                       const std::optional<std::string>& payment_method,
                        GetCryptoQuotesCallback callback) override;
 
   static GURL GetPaymentMethodsURL(const mojom::MeldFilterPtr& filter);
