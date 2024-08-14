@@ -11,6 +11,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
@@ -31,6 +32,31 @@
 namespace brave_ads::database {
 
 namespace {
+
+void MigrateToV44(mojom::DBTransactionInfo* const mojom_transaction) {
+  CHECK(mojom_transaction);
+
+  // Normally, whether or not the database supports `auto_vacuum` must be
+  // configured before the database file is actually created. However, when not
+  // in write-ahead log mode, the `auto_vacuum` properties of an existing
+  // database may be changed by using the `auto_vacuum` pragmas and then
+  // immediately VACUUMing the database.
+
+  Execute(mojom_transaction, "PRAGMA auto_vacuum = FULL;");
+  Vacuum(mojom_transaction);
+}
+
+void Migrate(mojom::DBTransactionInfo* mojom_transaction,
+             const int to_version) {
+  CHECK(mojom_transaction);
+
+  switch (to_version) {
+    case 44: {
+      MigrateToV44(mojom_transaction);
+      break;
+    }
+  }
+}
 
 void MigrateToVersion(mojom::DBTransactionInfo* mojom_transaction,
                       const int to_version) {
@@ -90,6 +116,8 @@ void MigrateToVersion(mojom::DBTransactionInfo* mojom_transaction,
 
   table::Dayparts dayparts_database_table;
   dayparts_database_table.Migrate(mojom_transaction, to_version);
+
+  Migrate(mojom_transaction, to_version);
 }
 
 }  // namespace
