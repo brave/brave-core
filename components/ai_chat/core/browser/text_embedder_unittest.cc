@@ -107,8 +107,12 @@ class TextEmbedderUnitTest : public testing::Test {
     embedder->segments_ = segments;
   }
 
-  void SetSegmentSizeLimitForTesting(size_t limit) {
-    TextEmbedder::SetSegmentSizeLimitForTesting(limit);
+  void SetSegmentSizeCeilingForTesting(size_t ceiling) {
+    TextEmbedder::SetSegmentSizeCeilingForTesting(ceiling);
+  }
+
+  void SetSegmentSizeFloorForTesting(size_t floor) {
+    TextEmbedder::SetSegmentSizeFloorForTesting(floor);
   }
 
  protected:
@@ -152,6 +156,7 @@ TEST_F(TextEmbedderUnitTest, Initialize) {
 }
 
 TEST_F(TextEmbedderUnitTest, SplitSegments) {
+  SetSegmentSizeFloorForTesting(1);
   struct {
     std::string input;
     std::vector<std::string> expected;
@@ -172,9 +177,9 @@ TEST_F(TextEmbedderUnitTest, SplitSegments) {
       "A. B. C. D. E. F. G. H. I. J. K. L. M. N. "
       "O. P. Q. R. S. T. U. V. W. X. Y. Z";
   struct {
-    size_t segments_size_limit;
+    size_t segments_size_ceiling;
     std::vector<std::string> expected;
-  } segments_size_test_cases[] = {
+  } segments_ceiling_test_cases[] = {
       {1, {"A B C D E F G H I J K L M N O P Q R S T U V W X Y Z"}},
       {2, {"A B C D E F G H I J K L M", "N O P Q R S T U V W X Y Z"}},
       {3, {"A B C D E F G H", "I J K L M N O P", "Q R S T U V W X", "Y Z"}},
@@ -196,10 +201,28 @@ TEST_F(TextEmbedderUnitTest, SplitSegments) {
       {23, {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
             "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}},
   };
-  for (const auto& test_case : segments_size_test_cases) {
-    SCOPED_TRACE(test_case.segments_size_limit);
-    SetSegmentSizeLimitForTesting(test_case.segments_size_limit);
+  for (const auto& test_case : segments_ceiling_test_cases) {
+    SCOPED_TRACE(test_case.segments_size_ceiling);
+    SetSegmentSizeCeilingForTesting(test_case.segments_size_ceiling);
     EXPECT_EQ(test_case.expected, SplitSegments(kSegmentedText));
+  }
+
+  SetSegmentSizeCeilingForTesting(300);
+  struct {
+    size_t segments_size_floor;
+    std::string text;
+    std::vector<std::string> expected;
+  } segments_floor_test_cases[] = {
+      {2, "A. B. C", {"A", "B", "C"}},   {3, "A. B. C", {"A", "B", "C"}},
+      {4, "A. B. C", {"A.", "B.", "C"}}, {4, "A? B! C", {"A", "B", "C"}},
+      {5, "A? B! C", {"A", "B", "C"}},
+  };
+  for (const auto& test_case : segments_floor_test_cases) {
+    SCOPED_TRACE(
+        "Floor: " + base::NumberToString(test_case.segments_size_floor) +
+        " Text: " + test_case.text);
+    SetSegmentSizeFloorForTesting(test_case.segments_size_floor);
+    EXPECT_EQ(test_case.expected, SplitSegments(test_case.text));
   }
 }
 
@@ -219,6 +242,9 @@ TEST_F(TextEmbedderUnitTest, EmbedSegments) {
   SetSegments(embedder_.get(), {"This is the way.", "I have spoken."});
   EXPECT_TRUE(EmbedSegments(embedder_.get()).ok());
   EXPECT_EQ(embeddings_size(), 2u);
+
+  SetSegments(embedder_.get(), {std::string(163840, 'A')});
+  EXPECT_TRUE(EmbedSegments(embedder_.get()).ok());
 }
 
 TEST_F(TextEmbedderUnitTest, RefineTopKSimilarity) {
@@ -292,6 +318,7 @@ TEST_F(TextEmbedderUnitTest, RefineTopKSimilarity) {
 }
 
 TEST_F(TextEmbedderUnitTest, GetTopSimilarityWithPromptTilContextLimit) {
+  SetSegmentSizeFloorForTesting(1);
   ASSERT_EQ(text_hash(), 0u);
   constexpr char kText[] = "lion. moose. banana. alien";
   uint32_t kTextLength = static_cast<uint32_t>(strlen(kText));

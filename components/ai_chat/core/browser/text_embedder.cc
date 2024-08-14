@@ -28,7 +28,8 @@ using tflite::task::text::CreateTextOpResolver;
 
 namespace ai_chat {
 
-size_t TextEmbedder::g_segment_size_limit_(300);
+size_t TextEmbedder::g_segment_size_ceiling_(300);
+size_t TextEmbedder::g_segment_size_floor_(50);
 
 // static
 std::unique_ptr<TextEmbedder> TextEmbedder::Create(
@@ -187,11 +188,15 @@ std::vector<std::string> TextEmbedder::SplitSegments(const std::string& text) {
   DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
   auto segments = base::SplitStringUsingSubstr(
       text, ". ", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  if (segments.size() < g_segment_size_floor_) {
+    segments = base::SplitString(text, " !?", base::TRIM_WHITESPACE,
+                                 base::SPLIT_WANT_NONEMPTY);
+  }
   DVLOG(4) << "Segments: " << segments.size();
-  if (segments.size() > g_segment_size_limit_) {
+  if (segments.size() > g_segment_size_ceiling_) {
     std::vector<std::string> new_segments;
-    size_t join_size =
-        static_cast<size_t>(std::ceil(segments.size() / g_segment_size_limit_));
+    size_t join_size = static_cast<size_t>(
+        std::ceil(segments.size() / g_segment_size_ceiling_));
     std::string new_segment = "";
     for (size_t i = 0; i < segments.size(); ++i) {
       base::StrAppend(&new_segment, {segments[i]});
@@ -287,9 +292,15 @@ scoped_refptr<base::SequencedTaskRunner> TextEmbedder::GetEmbedderTaskRunner() {
 }
 
 // static
-void TextEmbedder::SetSegmentSizeLimitForTesting(size_t limit) {
+void TextEmbedder::SetSegmentSizeCeilingForTesting(size_t ceiling) {
   CHECK_IS_TEST();
-  g_segment_size_limit_ = limit;
+  g_segment_size_ceiling_ = ceiling;
+}
+
+// static
+void TextEmbedder::SetSegmentSizeFloorForTesting(size_t floor) {
+  CHECK_IS_TEST();
+  g_segment_size_floor_ = floor;
 }
 
 }  // namespace ai_chat
