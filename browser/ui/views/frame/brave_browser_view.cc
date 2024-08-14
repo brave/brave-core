@@ -901,13 +901,13 @@ void BraveBrowserView::AddedToWidget() {
   }
 
   if (secondary_contents_web_view_) {
-    auto location_bar = std::make_unique<SplitViewLocationBar>(
+    secondary_location_bar_ = std::make_unique<SplitViewLocationBar>(
         browser()->profile()->GetPrefs(), secondary_contents_web_view_);
-    secondary_location_bar_ = location_bar.get();
 
-    auto* widget = new views::Widget();
-    widget->Init(SplitViewLocationBar::GetWidgetInitParams(
-        GetWidget()->GetNativeView(), std::move(location_bar)));
+    secondary_location_bar_widget_ = std::make_unique<views::Widget>();
+    secondary_location_bar_widget_->Init(
+        SplitViewLocationBar::GetWidgetInitParams(
+            GetWidget()->GetNativeView(), secondary_location_bar_.get()));
   }
 }
 

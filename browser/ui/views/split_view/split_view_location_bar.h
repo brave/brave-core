@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "components/prefs/pref_member.h"
 #include "components/url_formatter/url_formatter.h"
@@ -42,7 +43,7 @@ class SplitViewLocationBar : public views::WidgetDelegateView,
 
   static views::Widget::InitParams GetWidgetInitParams(
       gfx::NativeView parent_native_view,
-      std::unique_ptr<views::WidgetDelegateView> delegate);
+      views::WidgetDelegateView* delegate);
 
   void SetWebContents(content::WebContents* web_contents);
 
