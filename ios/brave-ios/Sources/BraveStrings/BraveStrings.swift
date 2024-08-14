@@ -1197,6 +1197,13 @@ extension Strings {
       value: "View Certificate",
       comment: ""
     )
+    public static let signIntoWebsiteURLBarTitle = NSLocalizedString(
+      "pageSecurityView.signIntoWebsiteURLBarTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Sign in to website",
+      comment: ""
+    )
   }
 }
 

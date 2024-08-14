@@ -74,6 +74,10 @@ extension URL {
       return internalUrl.extractedUrlParam?.displayURL
     }
 
+    if let internalUrl = InternalURL(self), internalUrl.isBasicAuthURL {
+      return self
+    }
+
     if !InternalURL.isValid(url: self) {
       let url = self.havingRemovedAuthorisationComponents()
       if let internalUrl = InternalURL(url), internalUrl.isErrorPage {

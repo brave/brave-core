@@ -6,6 +6,7 @@
 import BraveCore
 import BraveStrings
 import Foundation
+import Shared
 import SnapKit
 import UIKit
 
@@ -103,9 +104,13 @@ class CollapsedURLBarView: UIView {
   var currentURL: URL? {
     didSet {
       urlLabel.text = currentURL.map {
-        URLFormatter.formatURLOrigin(
-          forDisplayOmitSchemePathAndTrivialSubdomains: $0.absoluteString
-        )
+        if let internalURL = InternalURL($0), internalURL.isBasicAuthURL {
+          Strings.PageSecurityView.signIntoWebsiteURLBarTitle
+        } else {
+          URLFormatter.formatURLOrigin(
+            forDisplayOmitSchemePathAndTrivialSubdomains: $0.absoluteString
+          )
+        }
       }
     }
   }
