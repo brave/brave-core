@@ -75,7 +75,7 @@ import {
 } from '../../../../../utils/pagination_utils'
 
 // components
-import SearchBar from '../../../../shared/search-bar'
+import { SearchBar } from '../../../../shared/search_bar/search_bar'
 import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-grid-view-item'
 import { EnableNftDiscoveryModal } from '../../../popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
 import { AutoDiscoveryEmptyState } from './auto-discovery-empty-state/auto-discovery-empty-state'
@@ -411,8 +411,8 @@ export const Nfts = ({
 
   // methods
   const onSearchValueChange = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchValue(event.target.value)
+    (value: string) => {
+      setSearchValue(value)
       if (currentPageNumber !== 1) {
         history.push(makePortfolioNftsRoute(selectedTab, 1))
       }
@@ -514,20 +514,23 @@ export const Nfts = ({
         )}
         <Row width={showSearchBar ? '100%' : 'unset'}>
           {showSearchBar ? (
-            <Row width='unset'>
+            <Row>
               <SearchBarWrapper
                 margin='0px 12px 0px 0px'
                 showSearchBar={showSearchBar}
               >
                 <SearchBar
                   placeholder={getLocale('braveWalletSearchText')}
-                  action={onSearchValueChange}
+                  onChange={onSearchValueChange}
                   value={searchValue}
-                  isV2={true}
                   autoFocus={true}
+                  size='small'
                 />
               </SearchBarWrapper>
-              <PortfolioActionButton onClick={onCloseSearchBar}>
+              <PortfolioActionButton
+                disableResize
+                onClick={onCloseSearchBar}
+              >
                 <ButtonIcon name='close' />
               </PortfolioActionButton>
             </Row>

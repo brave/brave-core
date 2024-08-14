@@ -68,8 +68,7 @@ import {
   QRCodeImage,
   ScrollContainer,
   SearchWrapper,
-  SelectAssetWrapper,
-  SearchAndDropdownWrapper
+  SelectAssetWrapper
 } from './fund-wallet.style'
 import {
   LoadingRing //
@@ -83,7 +82,7 @@ import {
   RenderTokenFunc,
   VirtualizedTokensList
 } from '../../../components/desktop/views/portfolio/components/token-lists/virtualized-tokens-list'
-import SearchBar from '../../../components/shared/search-bar/index'
+import { SearchBar } from '../../../components/shared/search_bar/search_bar'
 import SelectAccountItem from '../../../components/shared/select-account-item/index'
 import SelectAccount from '../../../components/shared/select-account/index'
 import { BuyAssetOptionItem } from '../../../components/shared/buy-option/buy-asset-option'
@@ -324,14 +323,6 @@ function AssetSelection() {
   }, [searchValue, assetsForFilteredNetwork])
 
   // methods
-  // This filters a list of assets when the user types in search bar
-  const onSearchValueChange = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchValue(event.target.value)
-    },
-    []
-  )
-
   const nextStep = React.useCallback(() => {
     if (!selectedDepositAssetId) {
       return
@@ -396,18 +387,13 @@ function AssetSelection() {
         fullHeight={true}
         justifyContent='flex-start'
       >
-        <FilterTokenRow
-          horizontalPadding={12}
-          isV2={false}
-        >
-          <SearchAndDropdownWrapper alignItems='flex-start'>
-            <SearchBar
-              placeholder={getLocale('braveWalletSearchText')}
-              action={onSearchValueChange}
-              value={searchValue}
-              isV2={false}
-            />
-          </SearchAndDropdownWrapper>
+        <FilterTokenRow>
+          <SearchBar
+            placeholder={getLocale('braveWalletSearchText')}
+            onChange={setSearchValue}
+            value={searchValue}
+            size='small'
+          />
           <NetworkFilterSelector
             isV2={false}
             selectedNetwork={selectedNetworkFromFilter}
@@ -550,12 +536,8 @@ function DepositAccount() {
     () => setShowAccountSearch(false),
     []
   )
-  const _onSearchTextChanged = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) =>
-      setAccountSearchText(e.target.value),
-    []
-  )
-  const onSearchTextChanged = useDebouncedCallback(_onSearchTextChanged, 250)
+
+  const onSearchTextChanged = useDebouncedCallback(setAccountSearchText, 250)
 
   const onSelectAccountFromSearch = React.useCallback(
     (account: BraveWallet.AccountInfo) => {
@@ -619,7 +601,7 @@ function DepositAccount() {
           />
           <SearchBar
             placeholder={getLocale('braveWalletSearchAccount')}
-            action={onSearchTextChanged}
+            onChange={onSearchTextChanged}
           />
           <ScrollContainer>
             <SelectAccount

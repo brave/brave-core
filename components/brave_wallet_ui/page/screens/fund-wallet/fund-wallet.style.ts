@@ -123,8 +123,3 @@ export const AlertText = styled.p`
   margin: 0;
   padding: 0;
 `
-
-export const SearchAndDropdownWrapper = styled(Column)`
-  flex: 1;
-  min-width: 25%;
-`

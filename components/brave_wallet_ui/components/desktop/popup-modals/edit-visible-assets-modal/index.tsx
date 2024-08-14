@@ -26,7 +26,7 @@ import { AddAsset } from '../../add-asset/add-asset'
 import {
   SegmentedControl //
 } from '../../../shared/segmented_control/segmented_control'
-import { SearchBar } from '../../../shared/search-bar'
+import { SearchBar } from '../../../shared/search_bar/search_bar'
 import { NetworkFilterSelector } from '../../network-filter-selector'
 
 // Styled Components
@@ -207,13 +207,6 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
   }, [sortedTokenListForSelectedNetworks, searchValue])
 
   // Methods
-  const updateSearchValue = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchValue(event.target.value)
-    },
-    []
-  )
-
   const onCheckWatchlistItem = React.useCallback(
     (token: BraveWallet.BlockchainToken) => {
       setTokensToAdd((prev) => prev.concat(token))
@@ -342,10 +335,9 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
           <PaddedRow marginBottom={8}>
             <SearchBar
               placeholder={getLocale('braveWalletSearchText')}
-              action={updateSearchValue}
+              onChange={setSearchValue}
               autoFocus={true}
               value={searchValue}
-              isV2={true}
             />
             <HorizontalSpace space='16px' />
             <NetworkFilterSelector

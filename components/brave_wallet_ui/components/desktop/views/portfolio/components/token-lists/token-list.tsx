@@ -69,7 +69,7 @@ import {
 } from '../../../../../../common/hooks/use_local_storage'
 
 // Components
-import SearchBar from '../../../../../shared/search-bar/index'
+import { SearchBar } from '../../../../../shared/search_bar/search_bar'
 import { PortfolioAssetItemLoadingSkeleton } from '../../../../portfolio-asset-item/portfolio-asset-item-loading-skeleton'
 import {
   AssetGroupContainer //
@@ -156,21 +156,11 @@ export const TokenLists = ({
   const [showSearchBar, setShowSearchBar] = React.useState<boolean>(false)
 
   // methods
-
-  // This filters a list of assets when the user types in search bar
-  const onSearchValueChange = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchValue(event.target.value)
-    },
-    []
-  )
-
   const showAddAssetsModal = React.useCallback(() => {
     history.push(WalletRoutes.AddAssetModal)
   }, [history])
 
   // memos
-
   const filteredOutSmallBalanceTokens = React.useMemo(() => {
     if (hideSmallBalances) {
       return userAssetList.filter((token) =>
@@ -660,21 +650,23 @@ export const TokenLists = ({
               showSearchBar={showSearchBar}
             >
               <SearchBar
+                size='small'
                 placeholder={getLocale('braveWalletSearchText')}
-                action={onSearchValueChange}
+                onChange={setSearchValue}
                 value={searchValue}
-                isV2={true}
               />
             </SearchBarWrapper>
           )}
-          {showSearchBar && (
+          {showSearchBar ? (
             <Row width='unset'>
-              <PortfolioActionButton onClick={onCloseSearchBar}>
+              <PortfolioActionButton
+                disableResize
+                onClick={onCloseSearchBar}
+              >
                 <ButtonIcon name='close' />
               </PortfolioActionButton>
             </Row>
-          )}
-          {!showSearchBar && (
+          ) : (
             <Row
               width='unset'
               gap='12px'

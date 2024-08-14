@@ -567,6 +567,7 @@ provideStrings({
     'Choose which blockchains to use in your wallet.',
   braveWalletShowTestnets: 'Show testnets',
   braveWalletSeeAvailableNetworks: 'See available networks',
+  braveWalletSearchNetworks: 'Search networks',
 
   // Grouping Labels
   braveWalletFeatured: 'Featured',

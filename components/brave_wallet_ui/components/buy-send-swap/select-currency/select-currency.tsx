@@ -12,7 +12,7 @@ import { BraveWallet } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 
 // Components
-import { SearchBar } from '../../shared/search-bar/index'
+import { SearchBar } from '../../shared/search_bar/search_bar'
 import Header from '../select-header'
 import { SelectCurrencyItem } from '../select-currency-item/select-currency-item'
 
@@ -24,7 +24,7 @@ import {
 // Styled Components
 import { SelectScrollSearchContainer } from '../shared-styles'
 import { SelectCurrencyWrapper } from './select-currency.style'
-import { VerticalSpace } from '../../shared/style'
+import { Row, VerticalSpace } from '../../shared/style'
 import { LoadingRing } from '../../extension/add-suggested-token-panel/style'
 
 export interface Props {
@@ -60,12 +60,14 @@ export const SelectOnRampFiatCurrency = (props: Props) => {
         onBack={onBack}
         hasAddButton={false}
       />
-      <SearchBar
-        placeholder={getLocale('braveWalletSearchCurrency')}
-        action={(e) => setSearch(e.target.value)}
-        autoFocus={true}
-        isV2={true}
-      />
+      <Row>
+        <SearchBar
+          placeholder={getLocale('braveWalletSearchCurrency')}
+          onChange={setSearch}
+          autoFocus={true}
+          margin='0 0 8px 0'
+        />
+      </Row>
       <VerticalSpace space='16px' />
       <SelectScrollSearchContainer>
         {isLoading ? (

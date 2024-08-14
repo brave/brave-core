@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import type * as React from 'react'
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
@@ -148,18 +149,14 @@ export const CoinGeckoText = styled.span`
   margin: 15px 0px;
 `
 
-export const FilterTokenRow = styled.div<{
-  horizontalPadding?: number
-  isV2?: boolean
-}>`
+export const FilterTokenRow = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: center;
   flex-wrap: wrap;
   width: 100%;
   gap: 14px;
-  padding: 0px
-    ${(p) => (p.horizontalPadding !== undefined ? p.horizontalPadding : 0)}px;
-  margin-bottom: ${(p) => (p.isV2 ? '16px' : 0)};
+  padding: 0px 12px;
 `
 
 export const SelectTimelineWrapper = styled(Row)`
@@ -208,8 +205,9 @@ export const BalanceAndChangeWrapper = styled(Column)`
   }
 `
 
-export const PortfolioActionButton = styled(WalletButton)`
-  --button-border-color: ${leo.color.divider.interactive};
+export const PortfolioActionButton = styled(WalletButton)<
+  React.ComponentProps<'button'> & { disableResize?: boolean }
+>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -218,12 +216,12 @@ export const PortfolioActionButton = styled(WalletButton)`
   background: none;
   background-color: ${leo.color.container.background};
   border-radius: 8px;
-  border: 1px solid var(--button-border-color);
+  border: 1px solid ${leo.color.divider.interactive};
   height: 36px;
   width: 36px;
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    height: 28px;
-    width: 28px;
+    height: ${(p) => (p.disableResize ? '36' : '28')}px;
+    width: ${(p) => (p.disableResize ? '36' : '28')}px;
   }
 `
 

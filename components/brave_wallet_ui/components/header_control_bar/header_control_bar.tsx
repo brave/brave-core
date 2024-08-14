@@ -10,7 +10,7 @@ import Icon from '@brave/leo/react/icon'
 import { getLocale } from '../../../common/locale'
 
 // components
-import { SearchBar } from '../shared/search-bar'
+import { SearchBar } from '../shared/search_bar/search_bar'
 
 // styles
 import {
@@ -18,7 +18,7 @@ import {
   PortfolioActionButton,
   SearchButtonWrapper
 } from '../desktop/views/portfolio/style'
-import { Row, Text } from '../shared/style'
+import { Column, Row, Text } from '../shared/style'
 import {
   BackButton,
   ControlBarWrapper,
@@ -47,13 +47,6 @@ export const HeaderControlBar: React.FC<Props> = ({
   const [showSearchBar, setShowSearchBar] = React.useState<boolean>(false)
 
   // methods
-  const handleSearch = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      onSearchValueChange(event.target.value)
-    },
-    [onSearchValueChange]
-  )
-
   const onCloseSearchBar = React.useCallback(() => {
     setShowSearchBar(false)
     onSearchValueChange('')
@@ -66,24 +59,22 @@ export const HeaderControlBar: React.FC<Props> = ({
       alignItems='center'
       showSearchBar={showSearchBar}
     >
-      <Row justifyContent='flex-start'>
-        {!showSearchBar && (
-          <>
-            {onClickBackButton ? (
-              <BackButton onClick={onClickBackButton}>
-                <Icon name='arrow-left' />
-              </BackButton>
-            ) : null}
-            <Text
-              textSize='16px'
-              textAlign='left'
-              isBold={true}
-            >
-              {title}
-            </Text>
-          </>
-        )}
-      </Row>
+      {!showSearchBar && (
+        <Column alignItems='flex-start'>
+          {onClickBackButton ? (
+            <BackButton onClick={onClickBackButton}>
+              <Icon name='arrow-left' />
+            </BackButton>
+          ) : null}
+          <Text
+            textSize='16px'
+            textAlign='left'
+            isBold={true}
+          >
+            {title}
+          </Text>
+        </Column>
+      )}
       <Row width={showSearchBar ? '100%' : 'unset'}>
         <SearchBarWrapper
           margin='0px 12px 0px 0px'
@@ -91,14 +82,17 @@ export const HeaderControlBar: React.FC<Props> = ({
         >
           <SearchBar
             placeholder={getLocale('braveWalletSearchText')}
-            action={handleSearch}
+            onChange={onSearchValueChange}
             value={searchValue}
-            isV2={true}
+            size='small'
           />
         </SearchBarWrapper>
         {showSearchBar ? (
           <Row width='unset'>
-            <PortfolioActionButton onClick={onCloseSearchBar}>
+            <PortfolioActionButton
+              disableResize
+              onClick={onCloseSearchBar}
+            >
               <ButtonIcon name='close' />
             </PortfolioActionButton>
           </Row>
