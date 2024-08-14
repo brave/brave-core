@@ -134,10 +134,37 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       const std::string& from_asset,
       const std::string& to_asset,
       const double source_amount,
-      const std::string& account,
+      const std::optional<std::string>& account,
+      const std::optional<std::string>& payment_method,
       MeldIntegrationService::GetCryptoQuotesCallback callback,
       const net::HttpStatusCode http_status = net::HTTP_OK) {
-    SetInterceptor(content, http_status);
+    auto request_payload_check_callback = base::BindRepeating(
+        [](const std::string& country, const std::string& from_asset,
+           const std::string& to_asset, const double source_amount,
+           const std::optional<std::string>& account,
+           const std::optional<std::string>& payment_method,
+           const std::string& request_payload) {
+          auto request_payload_value = base::test::ParseJson(request_payload);
+          EXPECT_TRUE(request_payload_value.is_dict());
+          auto& request_payload_dict = request_payload_value.GetDict();
+
+          CheckString(request_payload_dict.FindString("countryCode"), country);
+          CheckString(request_payload_dict.FindString("sourceCurrencyCode"),
+                      from_asset);
+          CheckString(
+              request_payload_dict.FindString("destinationCurrencyCode"),
+              to_asset);
+          EXPECT_EQ(request_payload_dict.FindDouble("sourceAmount"),
+                    source_amount);
+
+          CheckOptString(request_payload_dict.FindString("walletAddress"),
+                         account);
+          CheckOptString(request_payload_dict.FindString("paymentMethodType"),
+                         payment_method);
+        },
+        country, from_asset, to_asset, source_amount, account, payment_method);
+
+    SetInterceptor(content, http_status, &request_payload_check_callback);
 
     base::RunLoop run_loop;
     base::MockCallback<MeldIntegrationService::GetCryptoQuotesCallback>
@@ -151,9 +178,9 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
               run_loop.Quit();
             });
 
-    meld_integration_service_->GetCryptoQuotes(country, from_asset, to_asset,
-                                               source_amount, account,
-                                               mock_callback.Get());
+    meld_integration_service_->GetCryptoQuotes(
+        country, from_asset, to_asset, source_amount, account, payment_method,
+        mock_callback.Get());
     run_loop.Run();
   }
 
@@ -797,8 +824,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
-  TestGetCryptoQuotes(
-      R"({
+  const std::string content = R"({
     "quotes": [
       {
         "transactionType": "CRYPTO_PURCHASE",
@@ -821,38 +847,54 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
     ],
     "message": null,
     "error": null
-  })",
-      "US", "USD", "BTC", 50, "btc account address",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_FALSE(errors.has_value());
-            EXPECT_EQ(base::ranges::count_if(
-                          *quotes,
-                          [](const auto& item) {
-                            return item->transaction_type ==
-                                       "CRYPTO_PURCHASE" &&
-                                   item->source_amount == "50" &&
-                                   item->source_amount_without_fee == "43.97" &&
-                                   item->fiat_amount_without_fees == "43.97" &&
-                                   item->destination_amount_without_fees ==
-                                       std::nullopt &&
-                                   item->source_currency_code == "USD" &&
-                                   item->country_code == "US" &&
-                                   item->total_fee == "6.03" &&
-                                   item->network_fee == "3.53" &&
-                                   item->transaction_fee == "2" &&
-                                   item->destination_amount == "0.00066413" &&
-                                   item->destination_currency_code == "BTC" &&
-                                   item->exchange_rate == "75286" &&
-                                   item->payment_method == "APPLE_PAY" &&
-                                   item->customer_score == "20" &&
-                                   item->service_provider == "TRANSAK";
-                          }),
-                      1);
-          }));
+  })";
+
+  auto check_parsed_content =
+      [](const std::optional<std::vector<mojom::MeldCryptoQuotePtr>>& quotes,
+         const std::optional<std::vector<std::string>>& errors) {
+        EXPECT_FALSE(errors.has_value());
+        EXPECT_EQ(base::ranges::count_if(
+                      *quotes,
+                      [](const auto& item) {
+                        return item->transaction_type == "CRYPTO_PURCHASE" &&
+                               item->source_amount == "50" &&
+                               item->source_amount_without_fee == "43.97" &&
+                               item->fiat_amount_without_fees == "43.97" &&
+                               item->destination_amount_without_fees ==
+                                   std::nullopt &&
+                               item->source_currency_code == "USD" &&
+                               item->country_code == "US" &&
+                               item->total_fee == "6.03" &&
+                               item->network_fee == "3.53" &&
+                               item->transaction_fee == "2" &&
+                               item->destination_amount == "0.00066413" &&
+                               item->destination_currency_code == "BTC" &&
+                               item->exchange_rate == "75286" &&
+                               item->payment_method == "APPLE_PAY" &&
+                               item->customer_score == "20" &&
+                               item->service_provider == "TRANSAK";
+                      }),
+                  1);
+      };
+
   TestGetCryptoQuotes(
-      "some wrong data", "US", "USD", "BTC", 50, "btc account address",
+      content, "US", "USD", "BTC", 50, "btc account address", "VISA",
+      base::BindLambdaForTesting(
+          [&](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
+              const std::optional<std::vector<std::string>>& errors) {
+            check_parsed_content(quotes, errors);
+          }));
+
+  TestGetCryptoQuotes(
+      content, "US", "USD", "BTC", 50, std::nullopt, std::nullopt,
+      base::BindLambdaForTesting(
+          [&](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
+              const std::optional<std::vector<std::string>>& errors) {
+            check_parsed_content(quotes, errors);
+          }));
+
+  TestGetCryptoQuotes(
+      "some wrong data", "US", "USD", "BTC", 50, "btc account address", "VISA",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
              const std::optional<std::vector<std::string>>& errors) {
@@ -888,7 +930,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
     "message": null,
     "error": "error description"
   })",
-      "US", "USD", "BTC", 50, "btc account address",
+      "US", "USD", "BTC", 50, "btc account address", "VISA",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
              const std::optional<std::vector<std::string>>& errors) {
@@ -908,7 +950,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
-      "US", "USD", "BTC", 50, "btc account address",
+      "US", "USD", "BTC", 50, "btc account address", "VISA",
       base::BindLambdaForTesting(
           [&](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
               const std::optional<std::vector<std::string>>& errors) {
@@ -924,7 +966,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
     "message": null,
     "error": "No Valid Quote Combinations Found For Provided Quote Request."
   })",
-      "US", "USD", "BTC", 50, "btc account address",
+      "US", "USD", "BTC", 50, "btc account address", "VISA",
       base::BindLambdaForTesting(
           [&](std::optional<std::vector<mojom::MeldCryptoQuotePtr>> quotes,
               const std::optional<std::vector<std::string>>& errors) {
