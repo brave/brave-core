@@ -272,7 +272,8 @@ class PlaylistToast: Toast {
     viewController: UIViewController? = nil,
     delay: DispatchTimeInterval,
     duration: DispatchTimeInterval?,
-    makeConstraints: @escaping (SnapKit.ConstraintMaker) -> Swift.Void
+    makeConstraints: @escaping (ConstraintMaker) -> Void,
+    completion: (() -> Void)? = nil
   ) {
     super.showToast(viewController: viewController, delay: delay, duration: duration) {
       guard let viewController = viewController as? BrowserViewController else {
@@ -288,34 +289,8 @@ class PlaylistToast: Toast {
     }
   }
 
-  override func dismiss(_ buttonPressed: Bool) {
+  func dismiss(_ buttonPressed: Bool) {
     self.dismiss(buttonPressed, animated: true)
-  }
-
-  func dismiss(_ buttonPressed: Bool, animated: Bool) {
-    if displayState == .pendingDismiss || displayState == .dismissed {
-      return
-    }
-
-    displayState = .pendingDismiss
-    superview?.removeGestureRecognizer(gestureRecognizer)
-    layer.removeAllAnimations()
-
-    let duration = animated ? SimpleToastUX.toastAnimationDuration : 0.1
-    UIView.animate(
-      withDuration: duration,
-      animations: {
-        self.animationConstraint?.update(offset: SimpleToastUX.toastHeight)
-        self.layoutIfNeeded()
-      },
-      completion: { finished in
-        self.displayState = .dismissed
-        self.removeFromSuperview()
-        if !buttonPressed {
-          self.completionHandler?(false)
-        }
-      }
-    )
   }
 
   private var shadowLayerZOrder: Int {

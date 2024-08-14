@@ -208,6 +208,8 @@ public class BrowserViewController: UIViewController {
   var pendingToast: Toast?
   /// A toast that is showing the combined download progress
   var downloadToast: DownloadToast?
+  /// A toast which is active and not yet dismissed
+  var activeButtonToast: Toast?
   /// A boolean to determine If AddToListActivity should be added
   var addToPlayListActivityItem: (enabled: Bool, item: PlaylistInfo?)?
   /// A boolean to determine if OpenInPlaylistActivity should be shown
