@@ -303,7 +303,7 @@ void AdHistory::GetHighestRankedPlacementsForDateRange(
                 WHEN 'click' THEN 1
                 WHEN 'dismiss' THEN 2
                 WHEN 'view' THEN 3
-                ELSE 4
+                ELSE 0
               END AS priority
             FROM
               $1
@@ -327,6 +327,7 @@ void AdHistory::GetHighestRankedPlacementsForDateRange(
                   PrioritizedAdHistory AS other_ad_history
                 WHERE
                   other_ad_history.placement_id = ad_history.placement_id
+                  AND other_ad_history.priority > 0
               )
           )
 
