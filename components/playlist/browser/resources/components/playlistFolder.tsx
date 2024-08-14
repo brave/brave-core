@@ -161,7 +161,7 @@ const StyledEmptyFolderMessageContainer = styled.div`
 `
 
 const StyledEmptyFolderIcon = styled.div`
-  content: url(${`${EmptyFolderIcon}`});
+  content: url(${EmptyFolderIcon});
 `
 
 const StyledEmptyFolderMessage = styled.div`
