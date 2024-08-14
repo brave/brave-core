@@ -741,28 +741,25 @@ class SettingsViewController: TableViewController {
       text: Strings.VPN.vpnName,
       detailText: text,
       selection: { [unowned self] in
-
         let vc = { () -> UIViewController? in
           switch BraveVPN.vpnState {
           case .notPurchased, .expired:
-            guard let vc = BraveVPN.vpnState.enableVPNDestinationVC else {
+            guard let vpnPaywallVC = BraveVPN.vpnState.enableVPNDestinationVC else {
               return nil
             }
-            vc.openAuthenticationVPNInNewTab = { [weak self] in
-              guard let self = self else { return }
-
-              self.settingsDelegate?.settingsOpenURLInNewTab(.brave.braveVPNRefreshCredentials)
+            vpnPaywallVC.openAuthenticationVPNInNewTab = { [weak self] in
+              self?.settingsDelegate?.settingsOpenURLInNewTab(.brave.braveVPNRefreshCredentials)
             }
 
-            return BraveVPN.vpnState.enableVPNDestinationVC
+            return vpnPaywallVC
           case .purchased:
-            let vc = BraveVPNSettingsViewController(iapObserver: BraveVPN.iapObserver)
-            vc.openURL = { [unowned self] url in
+            let vpnSettingsVC = BraveVPNSettingsViewController(iapObserver: BraveVPN.iapObserver)
+            vpnSettingsVC.openURL = { [unowned self] url in
               self.settingsDelegate?.settingsOpenURLInNewTab(url)
               self.dismiss(animated: true)
             }
 
-            return vc
+            return vpnSettingsVC
           }
         }()
 
@@ -1360,9 +1357,7 @@ class SettingsViewController: TableViewController {
     case .notPurchased, .expired:
       guard let vc = state.enableVPNDestinationVC else { return }
       vc.openAuthenticationVPNInNewTab = { [weak self] in
-        guard let self = self else { return }
-
-        self.settingsDelegate?.settingsOpenURLInNewTab(.brave.braveVPNRefreshCredentials)
+        self?.settingsDelegate?.settingsOpenURLInNewTab(.brave.braveVPNRefreshCredentials)
       }
       navigationController?.pushViewController(vc, animated: true)
     case .purchased:

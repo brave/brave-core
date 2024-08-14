@@ -2586,8 +2586,11 @@ extension BrowserViewController {
 
 extension BrowserViewController: SettingsDelegate {
   func settingsOpenURLInNewTab(_ url: URL) {
-    let forcedPrivate = privateBrowsingManager.isPrivateBrowsing
-    self.openURLInNewTab(url, isPrivate: forcedPrivate, isPrivileged: false)
+    self.openURLInNewTab(
+      url,
+      isPrivate: privateBrowsingManager.isPrivateBrowsing,
+      isPrivileged: false
+    )
   }
 
   func settingsOpenURLs(_ urls: [URL], loadImmediately: Bool) {
