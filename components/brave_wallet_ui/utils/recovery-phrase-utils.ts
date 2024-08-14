@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+export const WORD_SEPARATOR = ' '
+
 export const isPhraseLengthValid = (phrase: string) => {
   const wordsInPhraseValue = phrase.trim().split(/\s+/g).length
   // valid lengths: 12, 15, 18, 21, or 24
@@ -34,4 +36,11 @@ export const cleanupRecoveryPhraseInput = (value: string) => {
   const cleanedInput = needsCleaning ? removePeriod.trimEnd() : removePeriod
 
   return cleanedInput
+}
+
+export const normalizeRecoveryPhraseInput = (value: string) => {
+  return value
+    .replace(/[\r\n]+/g, WORD_SEPARATOR) // replace \r and \n with a space
+    .replace(/\s+/g, WORD_SEPARATOR) // replace multiple spaces with a single space
+    .trim()
 }

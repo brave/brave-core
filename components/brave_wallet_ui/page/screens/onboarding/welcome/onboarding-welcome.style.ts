@@ -85,7 +85,6 @@ export const Title = styled.h4`
 
 export const Heading = styled.h1`
   font: ${leo.font.heading.display1};
-  font-family: 'Flecha M';
   color: ${leo.color.text.primary};
   margin: 0;
   padding-bottom: 16px;

@@ -35,6 +35,7 @@ export interface NewPasswordValues {
 export interface Props {
   autoFocus?: boolean
   showToggleButton?: boolean
+  initialPassword?: string
   onSubmit: (values: NewPasswordValues) => void
   onChange: (values: NewPasswordValues) => void
 }
@@ -42,6 +43,7 @@ export interface Props {
 export const NewPasswordInput = ({
   autoFocus,
   showToggleButton,
+  initialPassword,
   onSubmit,
   onChange
 }: Props) => {
@@ -60,7 +62,7 @@ export const NewPasswordInput = ({
     password,
     setConfirmedPassword,
     passwordsMatch
-  } = usePasswordStrength()
+  } = usePasswordStrength(initialPassword)
 
   const handleKeyDown = React.useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -134,7 +136,10 @@ export const NewPasswordInput = ({
           fullWidth
           alignItems='flex-start'
         >
-          <Row justifyContent='flex-start' marginBottom='4px'>
+          <Row
+            justifyContent='flex-start'
+            marginBottom='4px'
+          >
             <InputLabel htmlFor='password-confirmation'>
               {getLocale('braveWalletConfirmPasswordInput')}
             </InputLabel>
