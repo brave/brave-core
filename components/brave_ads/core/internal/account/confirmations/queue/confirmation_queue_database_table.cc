@@ -26,6 +26,7 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/containers/container_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -259,29 +260,24 @@ void GetCallback(GetConfirmationQueueCallback callback,
 void MigrateToV36(mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE confirmation_queue (
-            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            transaction_id TEXT NOT NULL,
-            creative_instance_id TEXT NOT NULL,
-            type TEXT NOT NULL,
-            ad_type TEXT NOT NULL,
-            created_at TIMESTAMP NOT NULL,
-            token TEXT,
-            blinded_token TEXT,
-            unblinded_token TEXT,
-            public_key TEXT,
-            signature TEXT,
-            credential_base64url TEXT,
-            user_data TEXT NOT NULL,
-            process_at TIMESTAMP NOT NULL,
-            retry_count INTEGER DEFAULT 0
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE confirmation_queue (
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        transaction_id TEXT NOT NULL,
+        creative_instance_id TEXT NOT NULL,
+        type TEXT NOT NULL,
+        ad_type TEXT NOT NULL,
+        created_at TIMESTAMP NOT NULL,
+        token TEXT,
+        blinded_token TEXT,
+        unblinded_token TEXT,
+        public_key TEXT,
+        signature TEXT,
+        credential_base64url TEXT,
+        user_data TEXT NOT NULL,
+        process_at TIMESTAMP NOT NULL,
+        retry_count INTEGER DEFAULT 0
+      );)");
 
   // Optimize database query for `GetAll, and `GetNext`.
   CreateTableIndex(mojom_transaction, /*table_name=*/"confirmation_queue",
@@ -341,18 +337,13 @@ void ConfirmationQueue::Delete(const std::string& transaction_id,
                                ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_transaction =
       mojom::DBTransactionInfo::New();
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql = base::ReplaceStringPlaceholders(
-      R"(
-          DELETE FROM
-            $1
-          WHERE
-            transaction_id = '$2';
-      )",
-      {GetTableName(), transaction_id}, nullptr);
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(&*mojom_transaction, R"(
+              DELETE FROM
+                $1
+              WHERE
+                transaction_id = '$2';
+            )",
+          {GetTableName(), transaction_id});
 
   RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
@@ -369,30 +360,24 @@ void ConfirmationQueue::Retry(const std::string& transaction_id,
   // `kMaximumRetryDelay`.
   mojom::DBTransactionInfoPtr mojom_transaction =
       mojom::DBTransactionInfo::New();
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql = base::ReplaceStringPlaceholders(
-      R"(
-          UPDATE
-            $1
-          SET
-            retry_count = retry_count + 1,
-            process_at = $2 + (
-              CASE
-                WHEN ($3 << retry_count) < $4
-                THEN ($5 << retry_count)
-                ELSE $6
-              END
-            )
-          WHERE
-            transaction_id = '$7';)",
-      {GetTableName(),
-       base::NumberToString(ToChromeTimestampFromTime(base::Time::Now())),
-       retry_after, max_retry_delay, retry_after, max_retry_delay,
-       transaction_id},
-      nullptr);
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(&*mojom_transaction, R"(
+            UPDATE
+              $1
+            SET
+              retry_count = retry_count + 1,
+              process_at = $2 + (
+                CASE
+                  WHEN ($3 << retry_count) < $4
+                  THEN ($5 << retry_count)
+                  ELSE $6
+                END
+              )
+            WHERE
+              transaction_id = '$7';)",
+          {GetTableName(),
+           base::NumberToString(ToChromeTimestampFromTime(base::Time::Now())),
+           retry_after, max_retry_delay, retry_after, max_retry_delay,
+           transaction_id});
 
   RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
@@ -477,29 +462,24 @@ void ConfirmationQueue::Create(
     mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE confirmation_queue (
-            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            transaction_id TEXT NOT NULL,
-            creative_instance_id TEXT NOT NULL,
-            type TEXT NOT NULL,
-            ad_type TEXT NOT NULL,
-            created_at TIMESTAMP NOT NULL,
-            token TEXT,
-            blinded_token TEXT,
-            unblinded_token TEXT,
-            public_key TEXT,
-            signature TEXT,
-            credential_base64url TEXT,
-            user_data TEXT NOT NULL,
-            process_at TIMESTAMP NOT NULL,
-            retry_count INTEGER DEFAULT 0
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE confirmation_queue (
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        transaction_id TEXT NOT NULL,
+        creative_instance_id TEXT NOT NULL,
+        type TEXT NOT NULL,
+        ad_type TEXT NOT NULL,
+        created_at TIMESTAMP NOT NULL,
+        token TEXT,
+        blinded_token TEXT,
+        unblinded_token TEXT,
+        public_key TEXT,
+        signature TEXT,
+        credential_base64url TEXT,
+        user_data TEXT NOT NULL,
+        process_at TIMESTAMP NOT NULL,
+        retry_count INTEGER DEFAULT 0
+      );)");
 
   // Optimize database query for `GetAll, and `GetNext` from schema 36.
   CreateTableIndex(mojom_transaction, /*table_name=*/"confirmation_queue",

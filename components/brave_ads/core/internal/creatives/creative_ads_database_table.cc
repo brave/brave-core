@@ -16,6 +16,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -230,23 +231,18 @@ std::string CreativeAds::GetTableName() const {
 void CreativeAds::Create(mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE creative_ads (
-            creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
-            creative_set_id TEXT NOT NULL,
-            per_day INTEGER NOT NULL DEFAULT 0,
-            per_week INTEGER NOT NULL DEFAULT 0,
-            per_month INTEGER NOT NULL DEFAULT 0,
-            total_max INTEGER NOT NULL DEFAULT 0,
-            value DOUBLE NOT NULL DEFAULT 0,
-            split_test_group TEXT,
-            target_url TEXT NOT NULL
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE creative_ads (
+        creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        creative_set_id TEXT NOT NULL,
+        per_day INTEGER NOT NULL DEFAULT 0,
+        per_week INTEGER NOT NULL DEFAULT 0,
+        per_month INTEGER NOT NULL DEFAULT 0,
+        total_max INTEGER NOT NULL DEFAULT 0,
+        value DOUBLE NOT NULL DEFAULT 0,
+        split_test_group TEXT,
+        target_url TEXT NOT NULL
+      );)");
 }
 
 void CreativeAds::Migrate(mojom::DBTransactionInfo* mojom_transaction,

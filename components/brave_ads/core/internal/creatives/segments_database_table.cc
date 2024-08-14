@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 
@@ -70,20 +71,15 @@ std::string Segments::GetTableName() const {
 void Segments::Create(mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE segments (
-            creative_set_id TEXT NOT NULL,
-            segment TEXT NOT NULL,
-            PRIMARY KEY (
-              creative_set_id,
-              segment
-            ) ON CONFLICT REPLACE
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE segments (
+        creative_set_id TEXT NOT NULL,
+        segment TEXT NOT NULL,
+        PRIMARY KEY (
+          creative_set_id,
+          segment
+        ) ON CONFLICT REPLACE
+      );)");
 }
 
 void Segments::Migrate(mojom::DBTransactionInfo* mojom_transaction,
