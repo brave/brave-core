@@ -140,13 +140,27 @@ public class NTPDataSource {
           && !privateBrowsingManager.isPrivateBrowsing
 
         if attemptSponsored {
-          // Pick the campaign randomly
-          let campaignIndex: Int = Int.random(in: 0..<sponsor.campaigns.count)
+          let isSponsoredVideoAllowed =
+            Preferences.NewTabPage.backgroundMediaType == .sponsoredImagesAndVideos
 
-          if let campaign = sponsor.campaigns[safe: campaignIndex] {
-            return (
-              campaign.backgrounds.map(NTPWallpaper.sponsoredMedia), .sponsoredRotation
-            )
+          // Exclude campaigns with only sponsored video backgrounds if the user
+          // has selected the `Sponsored Images` option in settings.
+          let campaigns = sponsor.campaigns.filter {
+            $0.backgrounds.contains { !$0.isVideoFile || isSponsoredVideoAllowed }
+          }
+
+          // Pick the campaign randomly
+          if let campaign = campaigns.randomElement() {
+            // Exclude sponsored video backgrounds if the user has selected
+            // the `Sponsored Images` option in settings.
+            let filteredBackgrounds = campaign.backgrounds.filter {
+              !$0.isVideoFile || isSponsoredVideoAllowed
+            }
+            if !filteredBackgrounds.isEmpty {
+              return (
+                filteredBackgrounds.map(NTPWallpaper.sponsoredMedia), .sponsoredRotation
+              )
+            }
           }
         }
       }
@@ -197,13 +211,6 @@ public class NTPDataSource {
     Preferences.NewTabPage.backgroundRotationCounter.value += 1
 
     guard let bgWithIndex = backgroundSet[safe: backgroundIndex] else { return nil }
-
-    if bgWithIndex.backgroundVideoPath != nil,
-      Preferences.NewTabPage.backgroundMediaType != .sponsoredImagesAndVideos
-    {
-      return NTPWallpaper.image(.fallback)
-    }
-
     return bgWithIndex
   }
 
