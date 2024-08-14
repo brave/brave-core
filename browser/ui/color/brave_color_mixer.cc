@@ -14,6 +14,7 @@
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/node_modules/@brave/leo/tokens/skia/nala_color_id.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -316,8 +317,9 @@ void AddBraveOmniboxLightThemeColorMixer(ui::ColorProvider* provider,
       kColorToolbarBackgroundSubtleEmphasis};
   mixer[kColorOmniboxText] = {kLightOmniboxText};
 
-  mixer[kColorOmniboxResultsBackground] = {GetOmniboxResultBackground(
-      kColorOmniboxResultsBackground, /*dark*/ false, /*incognito*/ false)};
+  mixer[kColorOmniboxResultsBackground] = {
+      GetOmniboxResultBackground(kColorOmniboxResultsBackground, /*dark*/ false,
+                                 /*incognito*/ false)};
   mixer[kColorOmniboxResultsBackgroundHovered] = {
       GetOmniboxResultBackground(kColorOmniboxResultsBackgroundHovered,
                                  /*dark*/ false, /*incognito*/ false)};
@@ -440,16 +442,13 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorForTest] = {kLightColorForTest};
 
-  mixer[kColorIconBase] = {SkColorSetRGB(0x49, 0x50, 0x57)};
   mixer[kColorBookmarkBarInstructionsText] = {
       PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x49, 0x50, 0x57),
                                     SkColorSetRGB(0xFF, 0xFF, 0xFF))};
-  mixer[kColorBookmarkBarInstructionsLink] = {nala::kColorTextInteractive};
   mixer[kColorMenuItemSubText] = {SkColorSetRGB(0x86, 0x8E, 0x96)};
   // It's "Themeable/Blue/10" but leo/color.h doesn't have it.
   mixer[kColorSearchConversionBannerTypeBackground] = {
       SkColorSetRGB(0xEA, 0xF1, 0xFF)};
-  mixer[kColorSearchConversionCloseButton] = {nala::kColorIconDefault};
   mixer[kColorSearchConversionBannerTypeDescText] = {
       SkColorSetRGB(0x2E, 0x30, 0x39)};
   mixer[kColorSearchConversionBannerTypeBackgroundBorder] = {
@@ -474,15 +473,9 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetRGB(0x21, 0x25, 0x29)};
   mixer[kColorSidebarArrowBackgroundHovered] = {kColorToolbarInkDropHover};
   mixer[kColorSidebarSeparator] = {SkColorSetRGB(0xE6, 0xE8, 0xF5)};
-  mixer[kColorSidebarPanelHeaderSeparator] = {nala::kColorDividerSubtle};
-  mixer[kColorSidebarPanelHeaderBackground] = {nala::kColorContainerBackground};
-  mixer[kColorSidebarPanelHeaderTitle] = {nala::kColorTextPrimary};
-  mixer[kColorSidebarPanelHeaderButton] = {nala::kColorIconDefault};
-  mixer[kColorSidebarPanelHeaderButtonHovered] = {nala::kColorNeutral60};
 
   mixer[kColorSidebarButtonBase] = {kColorToolbarButtonIcon};
   if (!HasCustomToolbarColor(key)) {
-    mixer[kColorToolbarButtonActivated] = {nala::kColorIconInteractive};
     mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
   }
 
@@ -504,13 +497,6 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorWebDiscoveryInfoBarNoThanks] = {SkColorSetRGB(0x6B, 0x70, 0x84)};
   mixer[kColorWebDiscoveryInfoBarClose] = {SkColorSetRGB(0x6B, 0x70, 0x84)};
 
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  mixer[kColorWaybackMachineURLLoaded] = {
-      nala::kColorSystemfeedbackSuccessIcon};
-  mixer[kColorWaybackMachineURLNotAvailable] = {
-      nala::kColorSystemfeedbackErrorIcon};
-#endif
-
   // Color for download button when all completed and button needs user
   // interaction.
   mixer[kColorBraveDownloadToolbarButtonActive] = {
@@ -529,14 +515,6 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabGroupBackgroundAlpha] = {
       SkColorSetA(SK_ColorBLACK, 0.15 * 255)};
 
-#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    playlist::AddThemeColorMixer(provider, key);
-  }
-#endif
-
-  mixer[kColorBraveExtensionMenuIcon] = {nala::kColorIconInteractive};
-
   mixer[kColorBraveAppMenuAccentColor] = {SkColorSetRGB(0xDF, 0xE1, 0xFF)};
 }
 
@@ -546,16 +524,10 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorForTest] = {kDarkColorForTest};
 
-  mixer[kColorIconBase] = {SkColorSetRGB(0xC2, 0xC4, 0xCF)};
   mixer[kColorBookmarkBarInstructionsText] = {
       PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x49, 0x50, 0x57),
                                     SkColorSetRGB(0xFF, 0xFF, 0xFF))};
-  mixer[kColorBookmarkBarInstructionsLink] = {nala::kColorTextInteractive};
   mixer[kColorMenuItemSubText] = {SkColorSetRGB(0x84, 0x88, 0x9C)};
-  // It's "Themeable/Blue/10" but leo/color.h doesn't have it.
-  mixer[kColorSearchConversionBannerTypeBackground] = {
-      SkColorSetRGB(0x00, 0x1C, 0x37)};
-  mixer[kColorSearchConversionCloseButton] = {nala::kColorIconDefault};
   mixer[kColorSearchConversionBannerTypeDescText] = {
       SkColorSetRGB(0xE2, 0xE3, 0xE7)};
   mixer[kColorSearchConversionBannerTypeBackgroundBorder] = {
@@ -579,20 +551,9 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetRGB(0xF0, 0xF0, 0xFF)};
   mixer[kColorSidebarArrowBackgroundHovered] = {kColorToolbarInkDropHover};
   mixer[kColorSidebarSeparator] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
-  mixer[kColorSidebarPanelHeaderSeparator] = {nala::kColorDividerSubtle};
-
-  // To align with upstream's panel backround color, use |kGogleGreay900|.
-  // When we apply our style to panel webui, use below color for header.
-  // leo::GetColor(leo::Color::kColorContainerBackground, leo::Theme::kDark).
-  // Or delete when panel webui renders header view also.
-  mixer[kColorSidebarPanelHeaderBackground] = {gfx::kGoogleGrey900};
-  mixer[kColorSidebarPanelHeaderTitle] = {nala::kColorTextPrimary};
-  mixer[kColorSidebarPanelHeaderButton] = {nala::kColorIconDefault};
-  mixer[kColorSidebarPanelHeaderButtonHovered] = {nala::kColorNeutral60};
 
   mixer[kColorSidebarButtonBase] = {kColorToolbarButtonIcon};
   if (!HasCustomToolbarColor(key)) {
-    mixer[kColorToolbarButtonActivated] = {nala::kColorIconInteractive};
     mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
   }
   mixer[kColorSidebarAddButtonDisabled] = {PickColorContrastingToToolbar(
@@ -614,13 +575,6 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorWebDiscoveryInfoBarClose] = {
       SkColorSetARGB(0xBF, 0x8C, 0x90, 0xA1)};
 
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  mixer[kColorWaybackMachineURLLoaded] = {
-      nala::kColorSystemfeedbackSuccessIcon};
-  mixer[kColorWaybackMachineURLNotAvailable] = {
-      nala::kColorSystemfeedbackErrorIcon};
-#endif
-
   mixer[kColorBraveDownloadToolbarButtonActive] = {
       SkColorSetRGB(0x87, 0x84, 0xF4)};
 
@@ -636,14 +590,6 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorTabGroupBackgroundAlpha] = {
       SkColorSetA(SK_ColorBLACK, 0.25 * 255)};
-
-#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    playlist::AddThemeColorMixer(provider, key);
-  }
-#endif
-
-  mixer[kColorBraveExtensionMenuIcon] = {nala::kColorIconInteractive};
 
   mixer[kColorBraveAppMenuAccentColor] = {SkColorSetRGB(0x37, 0x2C, 0xBF)};
 }
@@ -661,6 +607,36 @@ void AddBraveThemeColorMixer(ui::ColorProvider* provider,
 #endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   AddBraveSpeedreaderColorMixer(provider, key);
+#endif
+
+  auto& mixer = provider->AddMixer();
+  mixer[kColorIconBase] = {nala::kColorIconDefault};
+  mixer[kColorBookmarkBarInstructionsLink] = {nala::kColorTextInteractive};
+  mixer[kColorSearchConversionBannerTypeBackground] = {nala::kColorBlue10};
+  mixer[kColorSidebarPanelHeaderSeparator] = {nala::kColorDividerSubtle};
+  mixer[kColorSearchConversionCloseButton] = {nala::kColorIconDefault};
+  mixer[kColorSidebarPanelHeaderBackground] = {nala::kColorContainerBackground};
+  mixer[kColorSidebarPanelHeaderTitle] = {nala::kColorTextPrimary};
+  mixer[kColorSidebarPanelHeaderButton] = {nala::kColorIconDefault};
+  mixer[kColorSidebarPanelHeaderButtonHovered] = {nala::kColorNeutral60};
+
+  if (!HasCustomToolbarColor(key)) {
+    mixer[kColorToolbarButtonActivated] = {nala::kColorIconInteractive};
+  }
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  mixer[kColorWaybackMachineURLLoaded] = {
+      nala::kColorSystemfeedbackSuccessIcon};
+  mixer[kColorWaybackMachineURLNotAvailable] = {
+      nala::kColorSystemfeedbackErrorIcon};
+#endif
+
+  mixer[kColorBraveExtensionMenuIcon] = {nala::kColorIconInteractive};
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    playlist::AddThemeColorMixer(provider, key);
+  }
 #endif
 }
 
