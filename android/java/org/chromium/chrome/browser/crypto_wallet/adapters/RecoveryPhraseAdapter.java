@@ -70,6 +70,8 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
                         mRecoveryPhraseList.get(position));
         // When blurring a word, add blank spaces at the beginning to improve the overall effect,
         // otherwise the blur will be rendered with an ugly cut at the beginning.
+        // SECURITY: Blurring the word XXXXXXX and not the real words.
+        // ALWAYS USE A PLACEHOLDER TO PREVENT TEXT EXTRACTION WHEN BLURRED!
         final SpannableString recoveryPhraseSpannable =
                 mBlurPhrase
                         ? new SpannableString(BLANK_SPACES + MASKED_WORD)
