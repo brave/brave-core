@@ -13,6 +13,19 @@ enum TabBarVisibility: Int, CaseIterable {
   case landscapeOnly
 }
 
+enum BackgroundMediaType: Int, CaseIterable {
+  case defaultImages
+  case sponsoredImages
+  case sponsoredImagesAndVideos
+
+  public var isSponsored: Bool {
+    switch self {
+    case .sponsoredImages, .sponsoredImagesAndVideos: return true
+    case .defaultImages: return false
+    }
+  }
+}
+
 extension Preferences {
   public enum AutoCloseTabsOption: Int, CaseIterable {
     case manually
@@ -209,11 +222,22 @@ extension Preferences {
   final public class NewTabPage {
     /// Whether bookmark image are enabled / shown
     static let backgroundImages = Option<Bool>(key: "newtabpage.background-images", default: true)
-    /// Whether sponsored images are included into the background image rotation
-    static let backgroundSponsoredImages = Option<Bool>(
-      key: "newtabpage.background-sponsored-images",
-      default: true
+
+    /// Determines the type of sponsored media to include in the background image rotation
+    /// - Warning: You should not access this directly but  through ``backgroundMediaType``
+    static let backgroundMediaTypeRaw = Option<Int>(
+      key: "newtabpage.background-media-type",
+      default: BackgroundMediaType.sponsoredImagesAndVideos.rawValue
     )
+
+    /// A  variable to access the ``backgroundMediaTypeRaw`` preference value
+    static var backgroundMediaType: BackgroundMediaType {
+      get {
+        BackgroundMediaType(rawValue: backgroundMediaTypeRaw.value)
+          ?? BackgroundMediaType.sponsoredImagesAndVideos
+      }
+      set { backgroundMediaTypeRaw.value = newValue.rawValue }
+    }
 
     /// The counter that indicates what background should be shown, this is used to determine when a new
     ///     sponsored image should be shown. (`1` means, first image in cycle N, should be shown).
