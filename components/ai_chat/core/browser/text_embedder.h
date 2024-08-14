@@ -85,8 +85,10 @@ class TextEmbedder {
 
   scoped_refptr<base::SequencedTaskRunner> GetEmbedderTaskRunner();
 
-  static void SetSegmentSizeLimitForTesting(size_t limit);
-  static size_t g_segment_size_limit_;
+  static void SetSegmentSizeCeilingForTesting(size_t ceiling);
+  static void SetSegmentSizeFloorForTesting(size_t floor);
+  static size_t g_segment_size_floor_;
+  static size_t g_segment_size_ceiling_;
   size_t text_hash_ = 0;
   std::vector<std::string> segments_;
   std::vector<tflite::task::processor::EmbeddingResult> embeddings_;
