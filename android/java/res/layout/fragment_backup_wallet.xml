@@ -1,155 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
     android:fadeScrollbars="false"
-    android:fillViewport="true"
-    android:theme="@style/BraveWalletOnboarding">
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:layout_width="162dp"
-            android:layout_height="162dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="64dp"
-            android:layout_marginEnd="64dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/ic_bg">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@null"
-                android:layout_gravity="center"
-                app:srcCompat="?attr/ic_onboarding_backup"/>
-
-        </FrameLayout>
+        <TextView
+            style="@style/HeadingH3Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="18dp"
+            android:gravity="center_horizontal"
+            android:text="@string/enter_password_to_continue_title"
+            android:textColor="@color/text_primary" />
 
         <TextView
+            style="@style/DefaultRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="40dp"
+            android:text="@string/enter_password_to_continue"
+            android:textColor="@color/text_secondary" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:theme="@style/BraveWalletEditTextTheme"
+            style="@style/BraveWalletInputLayout"
+            app:errorEnabled="true"
+            app:endIconMode="password_toggle"
+            android:id="@+id/text_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/backup_your_wallet"
-            android:textColor="@color/wallet_text_color"
-            android:textSize="18sp"/>
+            android:hint="@string/enter_your_password">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_marginStart="64dp"
-            android:layout_marginEnd="64dp"
-            android:layout_marginBottom="30dp"
-            android:text="@string/backup_your_wallet_text"
-            android:textColor="@color/wallet_secondary_text_color"
-            android:textSize="14sp"/>
-
-        <android.widget.CheckBox
-            android:id="@+id/backup_wallet_checkbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/backup_wallet_checkbox_text"
-            android:textSize="14sp"
-            android:gravity="center_horizontal"
-            android:textColor="@color/wallet_secondary_layout_text_color"
-            android:buttonTint="@color/brave_action_color"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="30dp"/>
-
-        <TextView
-            android:id="@+id/tv_backup_wallet_password_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="24dp"
-            android:text="@string/backup_wallet_password"
-            android:textColor="@color/wallet_text_color"
-            android:visibility="gone"
-            android:textSize="14sp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="48dp"
-            android:layout_marginBottom="32dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/et_backup_wallet_password"
-                android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_input_edit_text"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="@string/password"
-                android:importantForAutofill="no"
                 android:inputType="textPassword"
-                android:paddingHorizontal="18dp"
-                android:paddingVertical="10dp"
-                style="@style/BraveWalletEditTextBordered"
-                android:visibility="gone" />
+                android:lines="1"/>
 
-            <ImageView
-                android:id="@+id/iv_biometric_unlock_wallet"
-                android:layout_width="48dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="2dp"
-                android:contentDescription="@string/accessibility_biometric_unlock"
-                android:padding="6dp"
-                android:visibility="gone"
-                app:srcCompat="@drawable/ic_fingerprint"
-                app:tint="@color/brave_action_color" />
-
-        </LinearLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_backup_wallet_continue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:id="@+id/button_continue"
+            android:layout_width="match_parent"
             android:gravity="center"
-            android:background="@drawable/crypto_wallet_blue_button"
             android:text="@string/continue_text"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
             android:enabled="false"
-            android:alpha="0.5"
-            android:layout_marginBottom="16dp"
-            android:textColor="@android:color/white"
-            style="?android:attr/borderlessButtonStyle"/>
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="40dp"
+            android:layout_marginHorizontal="16dp"
+            style="@style/BraveWalletOnboardingButton"/>
 
-        <TextView
-            android:id="@+id/btn_backup_wallet_skip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:background="?android:attr/selectableItemBackground"
+        <ImageView
+            android:id="@+id/biometric_unlock_wallet"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_biometric_login"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
-            android:textAllCaps="false"
-            android:layout_marginBottom="16dp"
-            android:text="@string/skip"
-            android:textSize="16sp"
-            android:textColor="@color/wallet_text_color"/>
-
+            android:contentDescription="@string/accessibility_biometric_unlock"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

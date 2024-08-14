@@ -27,7 +27,7 @@
 
         <TextView
             android:id="@+id/fingerprint_unlock_title"
-            style="@style/HeadingH3"
+            style="@style/HeadingH3Bold"
             android:gravity="center"
             android:layout_below="@+id/ellipse"
             android:layout_width="match_parent"
@@ -35,8 +35,7 @@
             android:layout_marginTop="37dp"
             android:layout_marginHorizontal="16dp"
             android:text="@string/brave_wallet_fingerprint_unlock_title"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold" />
+            android:textColor="@color/text_primary" />
 
         <TextView
             style="@style/DefaultRegular"
@@ -62,7 +61,7 @@
 
         <TextView
             android:id="@+id/skip"
-            style="@style/DefaultRegular"
+            style="@style/DefaultBold"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
@@ -75,7 +74,6 @@
             android:focusable="true"
             android:padding="16dp"
             android:text="@string/brave_wallet_skip"
-            android:textStyle="bold"
             android:textSize="16sp"
             android:textColor="@color/text_secondary" />
     </RelativeLayout>

@@ -26,7 +26,7 @@
 
         <TextView
             android:id="@+id/all_set_title"
-            style="@style/HeadingH3"
+            style="@style/HeadingH3Bold"
             android:gravity="center"
             android:layout_below="@+id/wallet_portfolio"
             android:layout_width="match_parent"
@@ -34,8 +34,7 @@
             android:layout_marginTop="37dp"
             android:layout_marginHorizontal="16dp"
             android:text="@string/brave_wallet_all_set"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold" />
+            android:textColor="@color/text_primary" />
 
         <TextView
             style="@style/DefaultRegular"

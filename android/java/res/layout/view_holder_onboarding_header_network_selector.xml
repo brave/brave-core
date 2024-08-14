@@ -9,8 +9,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="4dp">
     <TextView
-        style="@style/XSmallSemibold"
-        android:textStyle="bold"
+        style="@style/XSmallBold"
         android:id="@+id/network_selector_label_name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -20,8 +19,7 @@
         />
 
     <TextView
-        style="@style/XSmallSemibold"
-        android:textStyle="bold"
+        style="@style/XSmallBold"
         android:id="@+id/select_all_networks"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

@@ -204,6 +204,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/LockableNestedScrollView.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/NonSwipeableViewPager.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/PasswordStrengthMeterView.java",
+  "../../brave/android/java/org/chromium/chrome/browser/custom_layout/PasteEditText.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/VerticalViewPager.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/popup_window_tooltip/ArrowColorDrawable.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/popup_window_tooltip/PopupWindowTooltip.java",

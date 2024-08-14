@@ -50,7 +50,7 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
                 });
 
         mPasswordStrengthMeterView = view.findViewById(R.id.password_strength_meter);
-        mPasswordStrengthMeterView.setListener(match -> enable(mContinueButton, match));
+        mPasswordStrengthMeterView.setListener(match -> mContinueButton.setEnabled(match));
     }
 
     @Override

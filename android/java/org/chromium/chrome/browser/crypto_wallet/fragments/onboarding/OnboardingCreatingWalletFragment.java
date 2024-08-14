@@ -17,11 +17,13 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.ui.widget.Toast;
 
 import java.util.Set;
 
@@ -60,7 +62,45 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
                             goToNextPage();
                             return;
                         }
-                        createWallet(keyringModel);
+                        if (mOnboardingViewModel.getRecoveryPhrase() == null) {
+                            createWallet(keyringModel);
+                        } else {
+                            restoreWallet(keyringModel);
+                        }
+                    });
+        }
+    }
+
+    private void restoreWallet(@NonNull final KeyringModel keyringModel) {
+        JsonRpcService jsonRpcService = getJsonRpcService();
+        KeyringService keyringService = getKeyringService();
+
+        if (jsonRpcService != null) {
+            Set<NetworkInfo> availableNetworks = mOnboardingViewModel.getAvailableNetworks();
+            Set<NetworkInfo> selectedNetworks = mOnboardingViewModel.getSelectedNetworks();
+
+            keyringModel.restoreWallet(
+                    mOnboardingViewModel.getPassword(),
+                    mOnboardingViewModel.requireRecoveryPhrase(),
+                    mOnboardingViewModel.isLegacyRestoreEnabled(),
+                    availableNetworks,
+                    selectedNetworks,
+                    jsonRpcService,
+                    result -> {
+                        if (result) {
+                            if (keyringService != null) {
+                                keyringService.notifyWalletBackupComplete();
+                            }
+                            Utils.setCryptoOnboarding(false);
+                            goToNextPage();
+                        } else {
+                            Toast.makeText(
+                                            requireActivity(),
+                                            R.string.account_recovery_failed,
+                                            Toast.LENGTH_LONG)
+                                    .show();
+                            requireActivity().finish();
+                        }
                     });
         }
     }

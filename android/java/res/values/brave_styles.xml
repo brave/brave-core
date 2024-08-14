@@ -82,11 +82,15 @@
         <item name="fontWeight">400</item>
     </style>
 
-    <style name="BraveWalletInputLayoutTheme">
-        <!-- Text selection handle color. -->
+    <style name="BraveWalletEditTextTheme">
+        <!-- Text selection background color. -->
+        <item name="android:textColorHighlight">@color/primary_20</item>
+        <!-- Text selection handles color, blinking cursor color and selected border. -->
         <!-- It must be set as a theme at component level -->
         <!-- as we don't want to change it for the whole app. -->
         <item name="colorControlActivated">@color/icon_interactive</item>
+        <!-- Hint text color that translates to the top of the view. -->
+        <item name="android:textColorHint">@color/text_primary</item>
     </style>
 
     <style name="BraveWalletInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -98,11 +102,6 @@
         <item name="cursorColor">@color/icon_interactive</item>
         <!-- Blinking cursor color on error state. -->
         <item name="cursorErrorColor">@color/system_feedback_error</item>
-    </style>
-
-    <style name="BraveWalletInputEditText" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
-        <!-- Text selection background color. -->
-        <item name="android:textColorHighlight">@color/primary_20</item>
     </style>
 
     <!--  Brave Wallet buttons  -->
@@ -274,12 +273,6 @@
       <item name="textAllCaps">false</item>
     </style>
 
-    <style name="BraveWalletOnboarding">
-        <item name="ic_onboarding_backup">@drawable/ic_onboarding_backup</item>
-        <item name="ic_onboarding_intro">@drawable/ic_onboarding_intro</item>
-        <item name="ic_onboarding_password">@drawable/ic_onboarding_password</item>
-    </style>
-
     <style name="BraveVpnToolbar" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@android:color/white</item>
         <item name="android:background">@color/brave_plan_bg</item>
@@ -369,6 +362,10 @@
         <item name="fontWeight">400</item>
     </style>
 
+    <style name="DefaultBold" parent="DefaultRegular">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="SmallRegular">
         <item name="android:textSize">@dimen/small_regular</item>
         <item name="lineHeight">16sp</item>
@@ -397,6 +394,18 @@
         <item name="fontWeight">400</item>
     </style>
 
+    <style name="LargeSemibold">
+        <!-- Default browser size for fonts -->
+        <item name="android:textSize">@dimen/large_semibold</item>
+        <item name="lineHeight">24sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="fontWeight">600</item>
+    </style>
+
+    <style name="LargeBold" parent="LargeSemibold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="DefaultSemibold">
         <!-- Default Brave UI size -->
         <item name="android:textSize">@dimen/default_semibold</item>
@@ -412,6 +421,10 @@
         <item name="fontWeight">600</item>
     </style>
 
+    <style name="XSmallBold" parent="XSmallSemibold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="HeadingH1">
         <item name="android:textSize">@dimen/heading_h1</item>
         <item name="lineHeight">40sp</item>
@@ -419,11 +432,19 @@
         <item name="fontWeight">500</item>
     </style>
 
+    <style name="HeadingH1Bold" parent="HeadingH1">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="HeadingH3">
         <item name="android:textSize">@dimen/heading_h3</item>
         <item name="lineHeight">28sp</item>
         <item name="fontStyle">normal</item>
         <item name="fontWeight">500</item>
+    </style>
+
+    <style name="HeadingH3Bold" parent="HeadingH3">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="HeadingH4">

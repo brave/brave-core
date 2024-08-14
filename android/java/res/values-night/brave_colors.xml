@@ -144,12 +144,9 @@
     <color name="wallet_text_color">#F6F7F8</color>
     <color name="wallet_secondary_text_color">#84889C</color>
     <color name="wallet_secondary_layout_text_color">#C2C4CF</color>
-    <color name="recovery_phrase_text_color">#1E2029</color>
     <color name="wallet_toolbar_bg_color">#000000</color>
     <color name="wallet_bg">#0D0F14</color>
     <color name="wallet_edittext_outline_color">#3B3E4F</color>
-    <color name="wallet_warning_box_bg_color">#3B3E4F</color>
-    <color name="recovery_phrase_warning_text_color">#C2C4CF</color>
     <color name="wallet_top_banner_color">#33E32444</color>
     <color name="wallet_error_text_color">#FF4B6A</color>
     <color name="wallet_sign_msg_err_bg_color">#FF460A10</color>

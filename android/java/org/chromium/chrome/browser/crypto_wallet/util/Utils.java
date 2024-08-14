@@ -126,9 +126,10 @@ public class Utils {
 
     private static final int CLEAR_CLIPBOARD_INTERVAL = 60000; // In milliseconds
 
-    public static List<String> getRecoveryPhraseAsList(String recoveryPhrase) {
-        String[] recoveryPhraseArray = recoveryPhrase.split(" ");
-        return new ArrayList<String>(Arrays.asList(recoveryPhraseArray));
+    @NonNull
+    public static List<String> getRecoveryPhraseAsList(@NonNull final String recoveryPhrase) {
+        final String[] recoveryPhraseArray = recoveryPhrase.split(" ");
+        return new ArrayList<>(Arrays.asList(recoveryPhraseArray));
     }
 
     public static String getRecoveryPhraseFromList(List<String> recoveryPhrases) {
