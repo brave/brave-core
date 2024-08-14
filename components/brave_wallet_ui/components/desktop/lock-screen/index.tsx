@@ -100,16 +100,16 @@ export const LockScreen = () => {
     }
   }, [history, isPanel])
 
+  const onDoubleTap = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (e.detail === 2) {
+      getWalletAPIProxy().pageHandler?.unlockWalletUI()
+    }
+  }
+
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false
 
+  // render
   if (isAndroid) {
-    // Methods
-    const onDoubleTap = (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (e.detail === 2) {
-        getWalletAPIProxy().pageHandler?.unlockWalletUI()
-      }
-    }
-
     return (
       <AndroidLockScreenWrapper onClick={onDoubleTap}>
         <DoubleTapIcon />
@@ -129,7 +129,6 @@ export const LockScreen = () => {
     )
   }
 
-  // render
   return (
     <StyledWrapper>
       <PageIcon />
