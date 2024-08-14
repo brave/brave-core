@@ -33,16 +33,13 @@ import {
   OnboardingCreatingWallet //
 } from '../creating_wallet/onboarding_creating_wallet'
 import { CreatePassword } from '../create_password/components/create_password'
+import { AutoLockSettings } from '../components/auto_lock_settings/auto_lock_settings'
 
 // options
 import { autoLockOptions } from '../../../../options/auto_lock_options'
 
 // styles
-import {
-  Column,
-  Row,
-  VerticalSpace //
-} from '../../../../components/shared/style'
+import { Column, Row } from '../../../../components/shared/style'
 import {
   CheckboxText,
   InfoAlert,
@@ -133,6 +130,9 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
           return newValues
         })
       }
+
+      // clear any previous errors
+      setHasInvalidSeedError(false)
     },
     [recoveryPhraseLength]
   )
@@ -166,7 +166,6 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
     }).unwrap()
 
     setHasInvalidSeedError(invalidMnemonic)
-    setCurrentStep('phrase')
 
     if (!invalidMnemonic) {
       await setAutoLockMinutes(autoLockDuration)
@@ -185,8 +184,6 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
 
   const onContinue = React.useCallback(async () => {
     if (currentStep === 'phrase') {
-      // clear any previous errors
-      setHasInvalidSeedError(false)
       return setCurrentStep('password')
     }
 
@@ -217,7 +214,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
           <Column
             alignItems='flex-end'
             justifyContent='center'
-            margin='52px 0 28px'
+            margin='35px 0 24px'
           >
             <RecoveryPhraseContainer phraseLength={recoveryPhraseLength}>
               {Array.from({ length: recoveryPhraseLength }, (_, index) => (
@@ -277,9 +274,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
                   </CheckboxText>
                 </Checkbox>
               </Column>
-            ) : (
-              <VerticalSpace space='22px' />
-            )}
+            ) : null}
           </Row>
 
           {importableWallets?.isMetaMaskInitialized && (
@@ -325,40 +320,42 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
               </InfoAlert>
             </AlertWrapper>
           )}
+        </>
+      )}
 
-          {hasInvalidSeedError ? (
+      {/* Create Password */}
+      {currentStep === 'password' && (
+        <Column
+          alignItems='center'
+          justifyContent='center'
+          margin='36px 0 24px'
+        >
+          <Column gap='68px'>
+            <CreatePassword
+              onPasswordChange={handlePasswordChange}
+              onSubmit={onContinue}
+              initialPassword={password} // Use the preserved password
+            />
+
+            <AutoLockSettings
+              options={autoLockOptions}
+              value={autoLockDuration}
+              onChange={setAutoLockDuration}
+            />
+          </Column>
+
+          {hasInvalidSeedError && (
             <InfoAlert
               padding='16px 0 0'
               type='error'
             >
               {getLocale('braveWalletRestoreWalletError')}
             </InfoAlert>
-          ) : (
-            <VerticalSpace space='54px' />
           )}
-          <VerticalSpace space='24px' />
-        </>
+        </Column>
       )}
 
-      {/* Create Password */}
-      {currentStep === 'password' && (
-        <Row
-          alignItems='center'
-          justifyContent='center'
-          margin='68px 0 24px'
-        >
-          <CreatePassword
-            autoLockDuration={autoLockDuration}
-            autoLockOptions={autoLockOptions}
-            onPasswordChange={handlePasswordChange}
-            onSubmit={onContinue}
-            onAutoLockDurationChange={setAutoLockDuration}
-            initialPassword={password} // Use the preserved password
-          />
-        </Row>
-      )}
-
-      <Column>
+      <Column padding='24px 0 0 0'>
         <ContinueButton
           isDisabled={
             !recoveryPhrase ||
