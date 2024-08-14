@@ -58,8 +58,13 @@ public class SearchEngines {
   private let initialSearchEngines: InitialSearchEngines
   private let locale: Locale
 
+  public var isBraveSearchDefaultRegion: Bool {
+    return initialSearchEngines.isBraveSearchDefaultRegion
+  }
+
   public init(locale: Locale = .current) {
     initialSearchEngines = InitialSearchEngines(locale: locale)
+
     self.locale = locale
     self.disabledEngineNames = getDisabledEngineNames()
   }
