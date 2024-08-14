@@ -19,6 +19,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/containers/container_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -559,22 +560,17 @@ void CreativeInlineContentAds::Create(
     mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE creative_inline_content_ads (
-            creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
-            creative_set_id TEXT NOT NULL,
-            campaign_id TEXT NOT NULL,
-            title TEXT NOT NULL,
-            description TEXT NOT NULL,
-            image_url TEXT NOT NULL,
-            dimensions TEXT NOT NULL,
-            cta_text TEXT NOT NULL
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE creative_inline_content_ads (
+        creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        creative_set_id TEXT NOT NULL,
+        campaign_id TEXT NOT NULL,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        image_url TEXT NOT NULL,
+        dimensions TEXT NOT NULL,
+        cta_text TEXT NOT NULL
+      );)");
 }
 
 void CreativeInlineContentAds::Migrate(

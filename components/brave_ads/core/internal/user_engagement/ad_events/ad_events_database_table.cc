@@ -15,6 +15,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -145,22 +146,17 @@ void MigrateToV5(mojom::DBTransactionInfo* const mojom_transaction) {
   // Recreate table to address a migration problem from older versions.
   DropTable(mojom_transaction, "ad_events");
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE ad_events (
-            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            uuid TEXT NOT NULL,
-            type TEXT,
-            confirmation_type TEXT,
-            campaign_id TEXT NOT NULL,
-            creative_set_id TEXT NOT NULL,
-            creative_instance_id TEXT NOT NULL,
-            timestamp TIMESTAMP NOT NULL
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE ad_events (
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        uuid TEXT NOT NULL,
+        type TEXT,
+        confirmation_type TEXT,
+        campaign_id TEXT NOT NULL,
+        creative_set_id TEXT NOT NULL,
+        creative_instance_id TEXT NOT NULL,
+        timestamp TIMESTAMP NOT NULL
+      );)");
 }
 
 void MigrateToV13(mojom::DBTransactionInfo* const mojom_transaction) {
@@ -169,24 +165,19 @@ void MigrateToV13(mojom::DBTransactionInfo* const mojom_transaction) {
   // Create a temporary table:
   //   - with a new `advertiser_id` column.
   //   - with a new `segment` column.
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE ad_events_temp (
-            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            uuid TEXT NOT NULL,
-            type TEXT,
-            confirmation_type TEXT,
-            campaign_id TEXT NOT NULL,
-            creative_set_id TEXT NOT NULL,
-            creative_instance_id TEXT NOT NULL,
-            advertiser_id TEXT,
-            segment TEXT,
-            timestamp TIMESTAMP NOT NULL
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE ad_events_temp (
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        uuid TEXT NOT NULL,
+        type TEXT,
+        confirmation_type TEXT,
+        campaign_id TEXT NOT NULL,
+        creative_set_id TEXT NOT NULL,
+        creative_instance_id TEXT NOT NULL,
+        advertiser_id TEXT,
+        segment TEXT,
+        timestamp TIMESTAMP NOT NULL
+      );)");
 
   // Copy legacy columns to the temporary table, drop the legacy table, and
   // rename the temporary table.
@@ -217,24 +208,19 @@ void MigrateToV28(mojom::DBTransactionInfo* const mojom_transaction) {
   // Create a temporary table:
   //   - with a new `segment` column.
   //   - renaming the `timestamp` column to `created_at`.
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE ad_events_temp (
-            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            placement_id TEXT NOT NULL,
-            type TEXT,
-            confirmation_type TEXT,
-            campaign_id TEXT NOT NULL,
-            creative_set_id TEXT NOT NULL,
-            creative_instance_id TEXT NOT NULL,
-            advertiser_id TEXT,
-            segment TEXT,
-            created_at TIMESTAMP NOT NULL
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE ad_events_temp (
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        placement_id TEXT NOT NULL,
+        type TEXT,
+        confirmation_type TEXT,
+        campaign_id TEXT NOT NULL,
+        creative_set_id TEXT NOT NULL,
+        creative_instance_id TEXT NOT NULL,
+        advertiser_id TEXT,
+        segment TEXT,
+        created_at TIMESTAMP NOT NULL
+      );)");
 
   // Copy legacy columns to the temporary table, drop the legacy table, rename
   // the temporary table and create an index.
@@ -267,36 +253,26 @@ void MigrateToV29(mojom::DBTransactionInfo* const mojom_transaction) {
 
   // Migrate `created_at` column from a UNIX timestamp to a WebKit/Chrome
   // timestamp.
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          UPDATE
-            ad_events
-          SET
-            created_at = (
-              CAST(created_at AS INT64) + 11644473600
-            ) * 1000000;)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      UPDATE
+        ad_events
+      SET
+        created_at = (
+          CAST(created_at AS INT64) + 11644473600
+        ) * 1000000;)");
 }
 
 void MigrateToV32(mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
   // Migrate `confirmation_type` from 'saved' to 'bookmark'.
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          UPDATE
-            ad_events
-          SET
-            confirmation_type = 'bookmark'
-          WHERE
-            confirmation_type == 'saved';)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      UPDATE
+        ad_events
+      SET
+        confirmation_type = 'bookmark'
+      WHERE
+        confirmation_type == 'saved';)");
 }
 
 void MigrateToV35(mojom::DBTransactionInfo* const mojom_transaction) {
@@ -317,17 +293,12 @@ void MigrateToV41(mojom::DBTransactionInfo* const mojom_transaction) {
   // Remove non-clicked search result ad events for users who have not joined
   // Brave Rewards.
   if (!UserHasJoinedBraveRewards()) {
-    mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-    mojom_statement->operation_type =
-        mojom::DBStatementInfo::OperationType::kExecute;
-    mojom_statement->sql =
-        R"(
-            DELETE FROM
-              ad_events
-            WHERE
-              type == 'search_result_ad'
-              AND confirmation_type != 'click';)";
-    mojom_transaction->statements.push_back(std::move(mojom_statement));
+    Execute(mojom_transaction, R"(
+        DELETE FROM
+          ad_events
+        WHERE
+          type == 'search_result_ad'
+          AND confirmation_type != 'click';)");
   }
 }
 
@@ -487,33 +458,27 @@ void AdEvents::GetUnexpired(const mojom::AdType ad_type,
 void AdEvents::PurgeExpired(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_transaction =
       mojom::DBTransactionInfo::New();
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql = base::ReplaceStringPlaceholders(
-      R"(
-          DELETE FROM
-            $1
-          WHERE
-            creative_set_id NOT IN (
-              SELECT
-                creative_set_id
-              FROM
-                creative_set_conversions
-            )
-            AND DATETIME(
-              (created_at / 1000000) - 11644473600,
-              'unixepoch'
-            ) <= DATETIME(
-              ($2 / 1000000) - 11644473600,
-              'unixepoch',
-              '$3'
-            );)",
-      {GetTableName(),
-       base::NumberToString(ToChromeTimestampFromTime(base::Time::Now())),
-       UserHasJoinedBraveRewards() ? "-3 months" : "-30 days"},
-      nullptr);
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(&*mojom_transaction, R"(
+            DELETE FROM
+              $1
+            WHERE
+              creative_set_id NOT IN (
+                SELECT
+                  creative_set_id
+                FROM
+                  creative_set_conversions
+              )
+              AND DATETIME(
+                (created_at / 1000000) - 11644473600,
+                'unixepoch'
+              ) <= DATETIME(
+                ($2 / 1000000) - 11644473600,
+                'unixepoch',
+                '$3'
+              );)",
+          {GetTableName(),
+           base::NumberToString(ToChromeTimestampFromTime(base::Time::Now())),
+           UserHasJoinedBraveRewards() ? "-3 months" : "-30 days"});
 
   RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
@@ -522,29 +487,24 @@ void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
                              ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_transaction =
       mojom::DBTransactionInfo::New();
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql = base::ReplaceStringPlaceholders(
-      R"(
-          DELETE FROM
-            $1
-          WHERE
-            placement_id IN (
-              SELECT
-                placement_id
-              FROM
-                $2
-              GROUP BY
-                placement_id
-              HAVING
-                count(*) = 1
-            )
-            AND confirmation_type = 'served'
-            AND type = '$3';)",
-      {GetTableName(), GetTableName(), ToString(static_cast<AdType>(ad_type))},
-      nullptr);
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(
+      &*mojom_transaction, R"(
+        DELETE FROM
+          $1
+        WHERE
+          placement_id IN (
+            SELECT
+              placement_id
+            FROM
+              $2
+            GROUP BY
+              placement_id
+            HAVING
+              count(*) = 1
+          )
+          AND confirmation_type = 'served'
+          AND type = '$3';)",
+      {GetTableName(), GetTableName(), ToString(static_cast<AdType>(ad_type))});
 
   RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
@@ -564,30 +524,24 @@ void AdEvents::PurgeOrphaned(const std::vector<std::string>& placement_ids,
 
   mojom::DBTransactionInfoPtr mojom_transaction =
       mojom::DBTransactionInfo::New();
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql = base::ReplaceStringPlaceholders(
-      R"(
-          DELETE FROM
-            $1
-          WHERE
-            placement_id IN (
-              SELECT
-                placement_id
-              FROM
-                $2
-              GROUP BY
-                placement_id
-              HAVING
-                count(*) = 1
-            )
-            AND confirmation_type = 'served'
-            AND placement_id IN ($3);)",
-      {GetTableName(), GetTableName(),
-       base::JoinString(quoted_placement_ids, ", ")},
-      nullptr);
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(&*mojom_transaction, R"(
+            DELETE FROM
+              $1
+            WHERE
+              placement_id IN (
+                SELECT
+                  placement_id
+                FROM
+                  $2
+                GROUP BY
+                  placement_id
+                HAVING
+                  count(*) = 1
+              )
+              AND confirmation_type = 'served'
+              AND placement_id IN ($3);)",
+          {GetTableName(), GetTableName(),
+           base::JoinString(quoted_placement_ids, ", ")});
 
   RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
@@ -595,27 +549,22 @@ void AdEvents::PurgeOrphaned(const std::vector<std::string>& placement_ids,
 void AdEvents::PurgeAllOrphaned(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_transaction =
       mojom::DBTransactionInfo::New();
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql = base::ReplaceStringPlaceholders(
-      R"(
-          DELETE FROM
-            $1
-          WHERE
-            placement_id IN (
-              SELECT
-                placement_id
-              FROM
-                $2
-              GROUP BY
-                placement_id
-              HAVING
-                count(*) = 1
-            )
-            AND confirmation_type = 'served';)",
-      {GetTableName(), GetTableName()}, nullptr);
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(&*mojom_transaction, R"(
+            DELETE FROM
+              $1
+            WHERE
+              placement_id IN (
+                SELECT
+                  placement_id
+                FROM
+                  $2
+                GROUP BY
+                  placement_id
+                HAVING
+                  count(*) = 1
+              )
+              AND confirmation_type = 'served';)",
+          {GetTableName(), GetTableName()});
 
   RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
@@ -627,24 +576,19 @@ std::string AdEvents::GetTableName() const {
 void AdEvents::Create(mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE ad_events (
-            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            placement_id TEXT NOT NULL,
-            type TEXT,
-            confirmation_type TEXT,
-            campaign_id TEXT NOT NULL,
-            creative_set_id TEXT NOT NULL,
-            creative_instance_id TEXT NOT NULL,
-            advertiser_id TEXT,
-            segment TEXT,
-            created_at TIMESTAMP NOT NULL
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE ad_events (
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        placement_id TEXT NOT NULL,
+        type TEXT,
+        confirmation_type TEXT,
+        campaign_id TEXT NOT NULL,
+        creative_set_id TEXT NOT NULL,
+        creative_instance_id TEXT NOT NULL,
+        advertiser_id TEXT,
+        segment TEXT,
+        created_at TIMESTAMP NOT NULL
+      );)");
 
   // Optimize database query for `GetUnexpired` from schema 35.
   CreateTableIndex(mojom_transaction, GetTableName(),

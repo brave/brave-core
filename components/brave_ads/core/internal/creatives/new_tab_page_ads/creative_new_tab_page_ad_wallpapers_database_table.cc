@@ -13,6 +13,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 
@@ -86,24 +87,19 @@ void CreativeNewTabPageAdWallpapers::Create(
     mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE creative_new_tab_page_ad_wallpapers (
-            creative_instance_id TEXT NOT NULL,
-            image_url TEXT NOT NULL,
-            focal_point_x INT NOT NULL,
-            focal_point_y INT NOT NULL,
-            PRIMARY KEY (
-              creative_instance_id,
-              image_url,
-              focal_point_x,
-              focal_point_y
-            ) ON CONFLICT REPLACE
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE creative_new_tab_page_ad_wallpapers (
+        creative_instance_id TEXT NOT NULL,
+        image_url TEXT NOT NULL,
+        focal_point_x INT NOT NULL,
+        focal_point_y INT NOT NULL,
+        PRIMARY KEY (
+          creative_instance_id,
+          image_url,
+          focal_point_x,
+          focal_point_y
+        ) ON CONFLICT REPLACE
+      );)");
 }
 
 void CreativeNewTabPageAdWallpapers::Migrate(

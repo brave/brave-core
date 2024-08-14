@@ -15,6 +15,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -130,17 +131,12 @@ void MigrateToV24(mojom::DBTransactionInfo* const mojom_transaction) {
   // Recreate table to address a migration problem from older versions.
   DropTable(mojom_transaction, "deposits");
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE deposits (
-            creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
-            value DOUBLE NOT NULL,
-            expire_at TIMESTAMP NOT NULL
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE deposits (
+        creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        value DOUBLE NOT NULL,
+        expire_at TIMESTAMP NOT NULL
+      );)");
 }
 
 void MigrateToV29(mojom::DBTransactionInfo* const mojom_transaction) {
@@ -148,18 +144,13 @@ void MigrateToV29(mojom::DBTransactionInfo* const mojom_transaction) {
 
   // Migrate `expire_at` column from a UNIX timestamp to a WebKit/Chrome
   // timestamp.
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          UPDATE
-            deposits
-          SET
-            expire_at = (
-              CAST(expire_at AS INT64) + 11644473600
-            ) * 1000000;)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      UPDATE
+        deposits
+      SET
+        expire_at = (
+          CAST(expire_at AS INT64) + 11644473600
+        ) * 1000000;)");
 }
 
 void MigrateToV43(mojom::DBTransactionInfo* const mojom_transaction) {
@@ -256,19 +247,13 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
 void Deposits::PurgeExpired(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_transaction =
       mojom::DBTransactionInfo::New();
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql = base::ReplaceStringPlaceholders(
-      R"(
-          DELETE FROM
-            $1
-          WHERE
-            $2 >= expire_at;)",
-      {GetTableName(),
-       base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
-      nullptr);
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(&*mojom_transaction, R"(
+            DELETE FROM
+              $1
+            WHERE
+              $2 >= expire_at;)",
+          {GetTableName(),
+           base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))});
 
   RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
@@ -280,17 +265,12 @@ std::string Deposits::GetTableName() const {
 void Deposits::Create(mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE deposits (
-            creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
-            value DOUBLE NOT NULL,
-            expire_at TIMESTAMP NOT NULL
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE deposits (
+        creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        value DOUBLE NOT NULL,
+        expire_at TIMESTAMP NOT NULL
+      );)");
 
   // Optimize database query for `GetForCreativeInstanceId` from schema 43.
   CreateTableIndex(mojom_transaction, GetTableName(),
