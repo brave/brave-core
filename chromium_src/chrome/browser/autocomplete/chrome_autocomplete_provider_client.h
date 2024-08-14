@@ -20,6 +20,7 @@
 #define GetInMemoryDatabase                           \
   GetInMemoryDatabase() override;                     \
   void OpenLeo(const std::u16string& query) override; \
+  std::u16string GetClipboardText() const override;   \
   bool IsLeoProviderEnabled
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 

@@ -15,6 +15,7 @@
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "chrome/browser/ui/omnibox/clipboard_utils.h"
 #endif  // BUILDFLAG(!IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_COMMANDER)
@@ -98,4 +99,13 @@ bool ChromeAutocompleteProviderClient::IsLeoProviderEnabled() {
              ai_chat::prefs::kBraveChatAutocompleteProviderEnabled);
 #endif
 }
+
+std::u16string ChromeAutocompleteProviderClient::GetClipboardText() const {
+#if !BUILDFLAG(IS_ANDROID)
+  return ::GetClipboardText(/*notify_if_restricted*/ false);
+#else
+  return u"";
+#endif
+}
+
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
