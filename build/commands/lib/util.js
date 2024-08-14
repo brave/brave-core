@@ -689,6 +689,9 @@ const util = {
       await util.buildNativeRedirectCC()
 
       const extraGnGenOpts = config.extraGnGenOpts ? [config.extraGnGenOpts] : []
+      if (config.isCI) {
+        extraGnGenOpts.push('--check')
+      }
       util.runGnGen(config.outputDir, config.buildArgs(), extraGnGenOpts, options)
     })
   },

@@ -1,2 +1,4 @@
 # This file contains supported CI features in the current checkout to
 # conditionally enable them on CI. Use lower_snake_case naming.
+
+gn_check_runs_on_gen
