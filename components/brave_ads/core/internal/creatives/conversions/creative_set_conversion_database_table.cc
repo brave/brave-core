@@ -12,7 +12,6 @@
 #include "base/check.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
@@ -38,7 +37,7 @@ void BindColumnTypes(mojom::DBStatementInfo* const mojom_statement) {
       mojom::DBBindColumnType::kString,  // url_pattern
       mojom::DBBindColumnType::kString,  // verifiable_advertiser_public_key
       mojom::DBBindColumnType::kInt,     // observation_window
-      mojom::DBBindColumnType::kInt64    // expire_at
+      mojom::DBBindColumnType::kTime     // expire_at
   };
 }
 
@@ -71,10 +70,8 @@ size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
                          .verifiable_advertiser_public_key_base64.value_or(""));
     BindColumnInt(mojom_statement, index++,
                   creative_set_conversion.observation_window.InDays());
-    BindColumnInt64(
-        mojom_statement, index++,
-        ToChromeTimestampFromTime(
-            creative_set_conversion.expire_at.value_or(base::Time())));
+    BindColumnTime(mojom_statement, index++,
+                   creative_set_conversion.expire_at.value_or(base::Time()));
 
     ++row_count;
   }
@@ -98,8 +95,7 @@ CreativeSetConversionInfo FromMojomRow(
   }
   creative_set_conversion.observation_window =
       base::Days(ColumnInt(mojom_row, 3));
-  const base::Time expire_at =
-      ToTimeFromChromeTimestamp(ColumnInt64(mojom_row, 4));
+  const base::Time expire_at = ColumnTime(mojom_row, 4);
   if (!expire_at.is_null()) {
     creative_set_conversion.expire_at = expire_at;
   }
@@ -335,9 +331,7 @@ void CreativeSetConversions::GetUnexpired(
             $1
           WHERE
             $2 < expire_at;)",
-      {GetTableName(),
-       base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
-      nullptr);
+      {GetTableName(), TimeToSqlValueAsString(base::Time::Now())}, nullptr);
   BindColumnTypes(&*mojom_statement);
   mojom_transaction->statements.push_back(std::move(mojom_statement));
 
@@ -353,8 +347,7 @@ void CreativeSetConversions::PurgeExpired(ResultCallback callback) const {
               $1
             WHERE
               $2 >= expire_at;)",
-          {GetTableName(),
-           base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))});
+          {GetTableName(), TimeToSqlValueAsString(base::Time::Now())});
 
   RunTransaction(std::move(mojom_transaction), std::move(callback));
 }

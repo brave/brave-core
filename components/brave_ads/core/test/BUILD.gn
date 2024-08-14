@@ -325,7 +325,6 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/common/test/time_test_util.cc",
     "//brave/components/brave_ads/core/internal/common/test/time_test_util.h",
     "//brave/components/brave_ads/core/internal/common/time/time_constraint_util_unittest.cc",
-    "//brave/components/brave_ads/core/internal/common/time/time_delta_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/common/time/time_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/common/url/request_builder/host/hosts/anonymous_search_url_host_unittest.cc",
     "//brave/components/brave_ads/core/internal/common/url/request_builder/host/hosts/anonymous_url_host_unittest.cc",

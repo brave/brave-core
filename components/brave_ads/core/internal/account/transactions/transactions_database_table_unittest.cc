@@ -13,7 +13,6 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/time/time_delta_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
@@ -180,7 +179,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, PurgeExpired) {
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
-  AdvanceClockBy(Months(3));
+  AdvanceClockBy(base::Days(90));
 
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
       /*value=*/0.03, AdType::kNotificationAd, ConfirmationType::kClicked,
@@ -227,7 +226,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
-  AdvanceClockBy(Months(3) - base::Milliseconds(1));
+  AdvanceClockBy(base::Days(90) - base::Milliseconds(1));
 
   const TransactionInfo transaction_2 = test::BuildTransaction(
       /*value=*/0.01, AdType::kNotificationAd, ConfirmationType::kClicked,

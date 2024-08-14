@@ -49,6 +49,18 @@ void BindColumnString(mojom::DBStatementInfo* mojom_statement,
 [[nodiscard]] std::string ColumnString(const mojom::DBRowInfo* mojom_row,
                                        size_t column);
 
+void BindColumnTime(mojom::DBStatementInfo* mojom_statement,
+                    int32_t index,
+                    base::Time value);
+[[nodiscard]] base::Time ColumnTime(const mojom::DBRowInfo* mojom_row,
+                                    size_t column);
+
+void BindColumnTimeDelta(mojom::DBStatementInfo* mojom_statement,
+                         int32_t index,
+                         base::TimeDelta value);
+[[nodiscard]] base::TimeDelta ColumnTimeDelta(const mojom::DBRowInfo* mojom_row,
+                                              size_t column);
+
 }  // namespace brave_ads::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_DATABASE_DATABASE_COLUMN_UTIL_H_

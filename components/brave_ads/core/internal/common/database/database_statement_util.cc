@@ -9,6 +9,7 @@
 
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "sql/statement.h"
 
 namespace brave_ads::database {
 
@@ -42,6 +43,10 @@ void Vacuum(mojom::DBTransactionInfo* const mojom_transaction) {
   mojom_statement->operation_type =
       mojom::DBStatementInfo::OperationType::kVacuum;
   mojom_transaction->statements.push_back(std::move(mojom_statement));
+}
+
+std::string TimeToSqlValueAsString(base::Time time) {
+  return base::NumberToString(sql::Statement::TimeToSqlValue(time));
 }
 
 }  // namespace brave_ads::database

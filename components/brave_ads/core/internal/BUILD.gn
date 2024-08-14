@@ -468,8 +468,6 @@ static_library("internal") {
     "common/subdivision/url_request/subdivision_url_request_json_reader_util.h",
     "common/time/time_constraint_util.cc",
     "common/time/time_constraint_util.h",
-    "common/time/time_delta_util.cc",
-    "common/time/time_delta_util.h",
     "common/time/time_formatting_util.cc",
     "common/time/time_formatting_util.h",
     "common/time/time_util.cc",

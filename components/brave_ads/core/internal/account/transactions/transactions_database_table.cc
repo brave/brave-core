@@ -12,7 +12,6 @@
 #include "base/check.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
@@ -35,13 +34,13 @@ void BindColumnTypes(mojom::DBStatementInfo* const mojom_statement) {
 
   mojom_statement->bind_column_types = {
       mojom::DBBindColumnType::kString,  // id
-      mojom::DBBindColumnType::kInt64,   // created_at
+      mojom::DBBindColumnType::kTime,    // created_at
       mojom::DBBindColumnType::kString,  // creative_instance_id
       mojom::DBBindColumnType::kDouble,  // value
       mojom::DBBindColumnType::kString,  // segment
       mojom::DBBindColumnType::kString,  // ad_type
       mojom::DBBindColumnType::kString,  // confirmation_type
-      mojom::DBBindColumnType::kInt64    // reconciled_at
+      mojom::DBBindColumnType::kTime     // reconciled_at
   };
 }
 
@@ -61,9 +60,8 @@ size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
     }
 
     BindColumnString(mojom_statement, index++, transaction.id);
-    BindColumnInt64(mojom_statement, index++,
-                    ToChromeTimestampFromTime(
-                        transaction.created_at.value_or(base::Time())));
+    BindColumnTime(mojom_statement, index++,
+                   transaction.created_at.value_or(base::Time()));
     BindColumnString(mojom_statement, index++,
                      transaction.creative_instance_id);
     BindColumnDouble(mojom_statement, index++, transaction.value);
@@ -71,9 +69,8 @@ size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
     BindColumnString(mojom_statement, index++, ToString(transaction.ad_type));
     BindColumnString(mojom_statement, index++,
                      ToString(transaction.confirmation_type));
-    BindColumnInt64(mojom_statement, index++,
-                    ToChromeTimestampFromTime(
-                        transaction.reconciled_at.value_or(base::Time())));
+    BindColumnTime(mojom_statement, index++,
+                   transaction.reconciled_at.value_or(base::Time()));
 
     ++row_count;
   }
@@ -87,8 +84,7 @@ TransactionInfo FromMojomRow(const mojom::DBRowInfo* const mojom_row) {
   TransactionInfo transaction;
 
   transaction.id = ColumnString(mojom_row, 0);
-  const base::Time created_at =
-      ToTimeFromChromeTimestamp(ColumnInt64(mojom_row, 1));
+  const base::Time created_at = ColumnTime(mojom_row, 1);
   if (!created_at.is_null()) {
     transaction.created_at = created_at;
   }
@@ -98,8 +94,7 @@ TransactionInfo FromMojomRow(const mojom::DBRowInfo* const mojom_row) {
   transaction.ad_type = ToAdType(ColumnString(mojom_row, 5));
   transaction.confirmation_type =
       ToConfirmationType(ColumnString(mojom_row, 6));
-  const base::Time reconciled_at =
-      ToTimeFromChromeTimestamp(ColumnInt64(mojom_row, 7));
+  const base::Time reconciled_at = ColumnTime(mojom_row, 7);
   if (!reconciled_at.is_null()) {
     transaction.reconciled_at = reconciled_at;
   }
@@ -333,9 +328,8 @@ void Transactions::GetForDateRange(const base::Time from_time,
             $1
           WHERE
             created_at BETWEEN $2 AND $3;)",
-      {GetTableName(),
-       base::NumberToString(ToChromeTimestampFromTime(from_time)),
-       base::NumberToString(ToChromeTimestampFromTime(to_time))},
+      {GetTableName(), TimeToSqlValueAsString(from_time),
+       TimeToSqlValueAsString(to_time)},
       nullptr);
   BindColumnTypes(&*mojom_statement);
   mojom_transaction->statements.push_back(std::move(mojom_statement));
@@ -367,8 +361,7 @@ void Transactions::Reconcile(const PaymentTokenList& payment_tokens,
               id IN $3
               OR creative_instance_id IN $4
             );)",
-      {GetTableName(),
-       base::NumberToString(ToChromeTimestampFromTime(base::Time::Now())),
+      {GetTableName(), TimeToSqlValueAsString(base::Time::Now()),
        BuildBindColumnPlaceholder(
            /*column_count=*/transaction_ids.size()),
        BuildBindColumnPlaceholder(/*column_count=*/1)},
@@ -393,16 +386,9 @@ void Transactions::PurgeExpired(ResultCallback callback) const {
               $1
             WHERE
               reconciled_at != 0
-            AND DATETIME(
-                (created_at / 1000000) - 11644473600,
-                'unixepoch'
-            ) <= DATETIME(
-              ($2 / 1000000) - 11644473600,
-              'unixepoch',
-              '-3 months'
-            );)",
+            AND created_at <= $2;)",
           {GetTableName(),
-           base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))});
+           TimeToSqlValueAsString(base::Time::Now() - base::Days(90))});
 
   RunTransaction(std::move(mojom_transaction), std::move(callback));
 }

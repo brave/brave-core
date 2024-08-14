@@ -52,6 +52,18 @@ mojom::DBRowInfoPtr CreateRow(
             statement->ColumnBool(column));
         break;
       }
+
+      case mojom::DBBindColumnType::kTime: {
+        mojom_column_value_union = mojom::DBColumnValueUnion::NewTimeValue(
+            statement->ColumnTime(column));
+        break;
+      }
+
+      case mojom::DBBindColumnType::kTimeDelta: {
+        mojom_column_value_union = mojom::DBColumnValueUnion::NewTimeDeltaValue(
+            statement->ColumnTimeDelta(column));
+        break;
+      }
     }
 
     mojom_row->column_values_union.push_back(

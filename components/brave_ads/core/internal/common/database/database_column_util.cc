@@ -50,6 +50,7 @@ void BindColumn(sql::Statement* const statement,
                          mojom_bind_column.value_union->get_int_value());
       break;
     }
+
     case mojom::DBColumnValueUnion::Tag::kInt64Value: {
       statement->BindInt64(mojom_bind_column.index,
                            mojom_bind_column.value_union->get_int64_value());
@@ -71,6 +72,19 @@ void BindColumn(sql::Statement* const statement,
     case mojom::DBColumnValueUnion::Tag::kStringValue: {
       statement->BindString(mojom_bind_column.index,
                             mojom_bind_column.value_union->get_string_value());
+      break;
+    }
+
+    case mojom::DBColumnValueUnion::Tag::kTimeValue: {
+      statement->BindTime(mojom_bind_column.index,
+                          mojom_bind_column.value_union->get_time_value());
+      break;
+    }
+
+    case mojom::DBColumnValueUnion::Tag::kTimeDeltaValue: {
+      statement->BindTimeDelta(
+          mojom_bind_column.index,
+          mojom_bind_column.value_union->get_time_delta_value());
       break;
     }
   }
@@ -187,6 +201,52 @@ std::string ColumnString(const mojom::DBRowInfo* const mojom_row,
            mojom_row->column_values_union.at(column)->which());
 
   return mojom_row->column_values_union.at(column)->get_string_value();
+}
+
+void BindColumnTime(mojom::DBStatementInfo* const mojom_statement,
+                    const int32_t index,
+                    const base::Time value) {
+  CHECK(mojom_statement);
+
+  mojom::DBBindColumnInfoPtr mojom_bind_column = mojom::DBBindColumnInfo::New();
+  mojom_bind_column->index = index;
+  mojom_bind_column->value_union =
+      mojom::DBColumnValueUnion::NewTimeValue(value);
+
+  mojom_statement->bind_columns.push_back(std::move(mojom_bind_column));
+}
+
+base::Time ColumnTime(const mojom::DBRowInfo* const mojom_row,
+                      const size_t column) {
+  CHECK(mojom_row);
+  CHECK_LT(column, mojom_row->column_values_union.size());
+  CHECK_EQ(mojom::DBColumnValueUnion::Tag::kTimeValue,
+           mojom_row->column_values_union.at(column)->which());
+
+  return mojom_row->column_values_union.at(column)->get_time_value();
+}
+
+void BindColumnTimeDelta(mojom::DBStatementInfo* const mojom_statement,
+                         const int32_t index,
+                         const base::TimeDelta value) {
+  CHECK(mojom_statement);
+
+  mojom::DBBindColumnInfoPtr mojom_bind_column = mojom::DBBindColumnInfo::New();
+  mojom_bind_column->index = index;
+  mojom_bind_column->value_union =
+      mojom::DBColumnValueUnion::NewTimeDeltaValue(value);
+
+  mojom_statement->bind_columns.push_back(std::move(mojom_bind_column));
+}
+
+base::TimeDelta ColumnTimeDelta(const mojom::DBRowInfo* const mojom_row,
+                                const size_t column) {
+  CHECK(mojom_row);
+  CHECK_LT(column, mojom_row->column_values_union.size());
+  CHECK_EQ(mojom::DBColumnValueUnion::Tag::kTimeDeltaValue,
+           mojom_row->column_values_union.at(column)->which());
+
+  return mojom_row->column_values_union.at(column)->get_time_delta_value();
 }
 
 }  // namespace brave_ads::database

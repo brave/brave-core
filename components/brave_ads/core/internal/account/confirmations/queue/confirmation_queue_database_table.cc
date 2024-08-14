@@ -51,7 +51,7 @@ void BindColumnTypes(mojom::DBStatementInfo* const mojom_statement) {
       mojom::DBBindColumnType::kString,  // creative_instance_id
       mojom::DBBindColumnType::kString,  // type
       mojom::DBBindColumnType::kString,  // ad_type
-      mojom::DBBindColumnType::kInt64,   // created_at
+      mojom::DBBindColumnType::kTime,    // created_at
       mojom::DBBindColumnType::kString,  // token
       mojom::DBBindColumnType::kString,  // blinded_token
       mojom::DBBindColumnType::kString,  // unblinded_token
@@ -59,7 +59,7 @@ void BindColumnTypes(mojom::DBStatementInfo* const mojom_statement) {
       mojom::DBBindColumnType::kString,  // signature
       mojom::DBBindColumnType::kString,  // credential_base64url
       mojom::DBBindColumnType::kString,  // user_data
-      mojom::DBBindColumnType::kInt64,   // process_at
+      mojom::DBBindColumnType::kTime,    // process_at
       mojom::DBBindColumnType::kInt      // retry_count
   };
 }
@@ -101,9 +101,8 @@ size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
 
     BindColumnString(mojom_statement, index++, ToString(confirmation.ad_type));
 
-    BindColumnInt64(mojom_statement, index++,
-                    ToChromeTimestampFromTime(
-                        confirmation.created_at.value_or(base::Time())));
+    BindColumnTime(mojom_statement, index++,
+                   confirmation.created_at.value_or(base::Time()));
 
     if (confirmation.reward) {
       BindColumnString(mojom_statement, index++,
@@ -140,10 +139,8 @@ size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
         base::JSONWriter::Write(confirmation.user_data.fixed, &user_data_json));
     BindColumnString(mojom_statement, index++, user_data_json);
 
-    BindColumnInt64(
-        mojom_statement, index++,
-        ToChromeTimestampFromTime(
-            confirmation_queue_item.process_at.value_or(base::Time())));
+    BindColumnTime(mojom_statement, index++,
+                   confirmation_queue_item.process_at.value_or(base::Time()));
 
     BindColumnInt(mojom_statement, index++,
                   confirmation_queue_item.retry_count);
@@ -172,8 +169,7 @@ ConfirmationQueueItemInfo FromMojomRow(
   confirmation_queue_item.confirmation.ad_type =
       ToAdType(ColumnString(mojom_row, 3));
 
-  const base::Time created_at =
-      ToTimeFromChromeTimestamp(ColumnInt64(mojom_row, 4));
+  const base::Time created_at = ColumnTime(mojom_row, 4);
   if (!created_at.is_null()) {
     confirmation_queue_item.confirmation.created_at = created_at;
   }
@@ -210,8 +206,7 @@ ConfirmationQueueItemInfo FromMojomRow(
       base::JSONReader::ReadDict(ColumnString(mojom_row, 11))
           .value_or(base::Value::Dict());
 
-  const base::Time process_at =
-      ToTimeFromChromeTimestamp(ColumnInt64(mojom_row, 12));
+  const base::Time process_at = ColumnTime(mojom_row, 12);
   if (!process_at.is_null()) {
     confirmation_queue_item.process_at = process_at;
   }
@@ -360,7 +355,8 @@ void ConfirmationQueue::Retry(const std::string& transaction_id,
   // `kMaximumRetryDelay`.
   mojom::DBTransactionInfoPtr mojom_transaction =
       mojom::DBTransactionInfo::New();
-  Execute(&*mojom_transaction, R"(
+  Execute(
+      &*mojom_transaction, R"(
             UPDATE
               $1
             SET
@@ -374,10 +370,8 @@ void ConfirmationQueue::Retry(const std::string& transaction_id,
               )
             WHERE
               transaction_id = '$7';)",
-          {GetTableName(),
-           base::NumberToString(ToChromeTimestampFromTime(base::Time::Now())),
-           retry_after, max_retry_delay, retry_after, max_retry_delay,
-           transaction_id});
+      {GetTableName(), TimeToSqlValueAsString(base::Time::Now()), retry_after,
+       max_retry_delay, retry_after, max_retry_delay, transaction_id});
 
   RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
