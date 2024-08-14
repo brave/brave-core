@@ -212,7 +212,7 @@
     "webtorrent": "^0.114.0"
   },
   "overrides": {
-    "axios": "1.6.0",
+    "axios": "1.7.4",
     "loader-utils": "2.0.4",
     "json5": "2.2.3",
     "@babel/traverse": "7.23.2"
