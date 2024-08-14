@@ -404,6 +404,8 @@ static_library("internal") {
     "common/database/database_column_util.h",
     "common/database/database_row_util.cc",
     "common/database/database_row_util.h",
+    "common/database/database_statement_util.cc",
+    "common/database/database_statement_util.h",
     "common/database/database_table_util.cc",
     "common/database/database_table_util.h",
     "common/database/database_transaction_util.cc",

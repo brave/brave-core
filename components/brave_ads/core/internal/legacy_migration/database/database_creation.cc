@@ -11,6 +11,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
@@ -34,6 +35,8 @@ namespace {
 
 void Create(mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
+
+  Execute(mojom_transaction, "PRAGMA auto_vacuum = FULL;");
 
   table::ConfirmationQueue confirmation_queue_database_table;
   confirmation_queue_database_table.Create(mojom_transaction);
