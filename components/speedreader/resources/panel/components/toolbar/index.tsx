@@ -50,13 +50,32 @@ function Toolbar() {
 
   React.useEffect(() => {
     getToolbarAPI().dataHandler.onToolbarStateChanged(activeButton)
+
+    const onKeydown = (event: KeyboardEvent) => {
+      event.stopPropagation()
+
+      if (event.code === 'Escape' && !event.altKey && !event.ctrlKey && !event.metaKey && !event.shiftKey) {
+        if (activeButton === MainButtonType.None) {
+          getToolbarAPI().dataHandler.viewOriginal()
+        } else {
+          setActiveButton(MainButtonType.None)
+        }
+      }
+    }
+
+    const id = getToolbarAPI().eventsRouter.onTuneBubbleClosed.addListener(() => {
+      if (activeButton === MainButtonType.Tune) {
+        setActiveButton(MainButtonType.None)
+      }
+    })
+
+    document.body.addEventListener('keydown', onKeydown)
+    return () => {
+      document.body.removeEventListener('keydown', onKeydown)
+      getToolbarAPI().eventsRouter.removeListener(id)
+    }
   }, [activeButton])
 
-  getToolbarAPI().eventsRouter.onTuneBubbleClosed.addListener(() => {
-    if (activeButton === MainButtonType.Tune) {
-      setActiveButton(MainButtonType.None)
-    }
-  })
 
   if (!appearanceSettings || !ttsSettings) {
     return null
@@ -128,7 +147,7 @@ function Toolbar() {
         onClick={handleMainButtonClick.bind(this)}
       />
       {(activeButton === MainButtonType.None || activeButton === MainButtonType.Tune) &&
-       (<ReaderModeControl onClose={handleClose.bind(this)} />)
+        (<ReaderModeControl onClose={handleClose.bind(this)} />)
       }
       {activeButton === MainButtonType.Appearance && (
         <AppearanceControl
