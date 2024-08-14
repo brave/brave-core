@@ -245,6 +245,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
       // Always load YouTube in Brave for new users
       Preferences.General.keepYouTubeInBrave.value = true
+
+      // Enable Search Suggestions for BraveSearch default countries
+      Preferences.Search.showSuggestions.value =
+        AppState.shared.profile.searchEngines.isBraveSearchDefaultRegion
+
+      Preferences.Search.shouldShowSuggestionsOptIn.value =
+        !AppState.shared.profile.searchEngines.isBraveSearchDefaultRegion
     }
 
     if Preferences.URP.referralLookupOutstanding.value == nil {
