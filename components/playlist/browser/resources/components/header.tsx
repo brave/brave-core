@@ -312,7 +312,7 @@ function NewPlaylistButton () {
       size='small'
       kind='plain'
       fab
-      title={getLocalizedString('bravePlaylistA11YCreatePlaylistFolder')}
+      title={getLocalizedString('bravePlaylistTooltipCreatePlaylistFolder')}
       onClick={() => {
         getPlaylistAPI().showCreatePlaylistUI()
       }}
@@ -331,7 +331,7 @@ function SettingButton () {
       size='small'
       kind='plain'
       fab
-      title={getLocalizedString('bravePlaylistA11YOpenPlaylistSettings')}
+      title={getLocalizedString('bravePlaylistTooltipOpenPlaylistSettings')}
       onClick={() => getPlaylistAPI().openSettingsPage()}
     >
       <ColoredIcon
@@ -348,7 +348,7 @@ function CloseButton () {
       size='small'
       kind='plain'
       fab
-      title={getLocalizedString('bravePlaylistA11YClosePanel')}
+      title={getLocalizedString('bravePlaylistTooltipClosePanel')}
       onClick={() => getPlaylistAPI().closePanel()}
     >
       <ColoredIcon
