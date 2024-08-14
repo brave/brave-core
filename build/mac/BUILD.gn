@@ -344,7 +344,7 @@ copy("updater_parts_script") {
   outputs = [ "$packaging_dir/signing/updater_parts.py" ]
 }
 
-generated_pkg_scripts = "$root_gen_dir/pkg-scripts"
+generated_pkg_scripts = "$target_gen_dir/pkg-scripts"
 
 action("create_pkg") {
   script = "//build/gn_run_binary.py"
