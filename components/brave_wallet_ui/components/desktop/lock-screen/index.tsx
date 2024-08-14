@@ -21,7 +21,7 @@ import { openWalletRouteTab } from '../../../utils/routes-utils'
 import { UISelectors } from '../../../common/selectors'
 import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import { useUnlockWalletMutation } from '../../../common/slices/api.slice'
-import getWalletPageApiProxy from '../../../page/wallet_page_api_proxy'
+import getWalletAPIProxy from '../../../common/async/bridge'
 
 // Components
 import { PasswordInput } from '../../shared/password-input/password-input-v2'
@@ -103,17 +103,11 @@ export const LockScreen = () => {
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false
 
   if (isAndroid) {
-    // Computed
-    let lastPress = 0
-
     // Methods
-    const onDoubleTap = () => {
-      const time = new Date().getTime()
-      const delta = time - lastPress
-      if (delta < 400) {
-        getWalletPageApiProxy().pageHandler.unlockWalletUI()
+    const onDoubleTap = (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (e.detail === 2) {
+        getWalletAPIProxy().pageHandler?.unlockWalletUI()
       }
-      lastPress = time
     }
 
     return (
