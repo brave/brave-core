@@ -189,11 +189,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     } = props
 
     // State
-    const [searchValue, setSearchValue] = React.useState<string>(
-      modalType === 'bridge' && selectingFromOrTo === 'to' && selectedFromToken
-        ? selectedFromToken.symbol
-        : ''
-    )
+    const [searchValue, setSearchValue] = React.useState<string>('')
     const [selectedNetworkFilter, setSelectedNetworkFilter] =
       React.useState<BraveWallet.NetworkInfo>(
         selectedNetwork || AllNetworksOption
