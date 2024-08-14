@@ -21,6 +21,10 @@ import {
   useSetAutoLockMinutesMutation
 } from '../../../../common/slices/api.slice'
 import { clearClipboard } from '../../../../utils/copy-to-clipboard'
+import {
+  normalizeRecoveryPhraseInput,
+  WORD_SEPARATOR
+} from '../../../../utils/recovery-phrase-utils'
 
 // components
 import {
@@ -49,7 +53,6 @@ import { AlertWrapper, ContinueButton } from '../onboarding.style'
 
 type RestoreWalletSteps = 'phrase' | 'password'
 const VALID_PHRASE_LENGTHS = [12, 15, 18, 21, 24]
-const WORD_SEPARATOR = ' '
 
 export const OnboardingRestoreFromRecoveryPhrase = () => {
   // queries
@@ -107,11 +110,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
   // methods
   const onPhraseWordChange = React.useCallback(
     async (index: number, value: string) => {
-      const sanitizedValue = value
-        .replace(/[\r\n]+/g, WORD_SEPARATOR) // replace \r and \n with a space
-        .replace(/\s+/g, WORD_SEPARATOR) // replace multiple spaces with a single space
-        .trim()
-
+      const sanitizedValue = normalizeRecoveryPhraseInput(value)
       // when the a recovery phrase is pasted,
       // split the words and fill the input fields
       if (sanitizedValue.includes(WORD_SEPARATOR)) {
