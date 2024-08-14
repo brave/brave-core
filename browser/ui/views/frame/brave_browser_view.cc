@@ -321,6 +321,9 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
         contents_container_->AddChildView(std::move(contents_web_view));
     split_view_separator_ = contents_container_->AddChildView(
         std::make_unique<SplitViewSeparator>(browser_.get()));
+    secondary_location_bar_ = std::make_unique<SplitViewLocationBar>(
+        browser_->profile()->GetPrefs(), secondary_contents_web_view_);
+    secondary_location_bar_widget_ = std::make_unique<views::Widget>();
 
     auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
         contents_container()->GetLayoutManager());
@@ -900,11 +903,8 @@ void BraveBrowserView::AddedToWidget() {
         vertical_tab_strip_host_view_.get());
   }
 
-  if (secondary_contents_web_view_) {
-    secondary_location_bar_ = std::make_unique<SplitViewLocationBar>(
-        browser()->profile()->GetPrefs(), secondary_contents_web_view_);
-
-    secondary_location_bar_widget_ = std::make_unique<views::Widget>();
+  if (secondary_location_bar_widget_) {
+    CHECK(secondary_location_bar_);
     secondary_location_bar_widget_->Init(
         SplitViewLocationBar::GetWidgetInitParams(
             GetWidget()->GetNativeView(), secondary_location_bar_.get()));
