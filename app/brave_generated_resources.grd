@@ -1251,46 +1251,46 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_PLAYLIST_EMPTY_FOLDER_MESSAGE" desc="A message that shows up when a playlist folder is empty">
           The fun starts when you have something to play. Add your favorite media and playback anytime, anywhere. Even offline.
         </message>
-        <message name="IDS_PLAYLIST_A11Y_CREATE_PLAYLIST_FOLDER" desc="An a11y name for a button to create new playlist folder">
+        <message name="IDS_PLAYLIST_TOOLTIP_CREATE_PLAYLIST_FOLDER" desc="An a11y name for a button to create new playlist folder">
           Create a new folder
         </message>
-        <message name="IDS_PLAYLIST_A11Y_OPEN_PLAYLIST_SETTINGS" desc="An a11y name for a button to open playlist settings">
+        <message name="IDS_PLAYLIST_TOOLTIP_OPEN_PLAYLIST_SETTINGS" desc="An a11y name for a button to open playlist settings">
           Open Playlist settings
         </message>
-        <message name="IDS_PLAYLIST_A11Y_PLAY" desc="An a11y name for a 'play' button in media player">
+        <message name="IDS_PLAYLIST_TOOLTIP_PLAY" desc="An a11y name for a 'play' button in media player">
           Play
         </message>
-        <message name="IDS_PLAYLIST_A11Y_PAUSE" desc="An a11y name for a 'pause' button in media player">
+        <message name="IDS_PLAYLIST_TOOLTIP_PAUSE" desc="An a11y name for a 'pause' button in media player">
           Pause
         </message>
-        <message name="IDS_PLAYLIST_A11Y_NEXT" desc="An a11y name for a 'next' button in media player">
-          Next Track
+        <message name="IDS_PLAYLIST_TOOLTIP_NEXT" desc="An a11y name for a 'next' button in media player">
+          Next track
         </message>
-        <message name="IDS_PLAYLIST_A11Y_PREVIOUS" desc="An a11y name for a 'prev' button in media player">
-          Previous Track
+        <message name="IDS_PLAYLIST_TOOLTIP_PREVIOUS" desc="An a11y name for a 'prev' button in media player">
+          Previous track
         </message>
-        <message name="IDS_PLAYLIST_A11Y_TOGGLE_MUTED" desc="An a11y name for a 'mute' button in media player">
-          Toggle muted
+        <message name="IDS_PLAYLIST_TOOLTIP_TOGGLE_MUTED" desc="An a11y name for a 'mute' button in media player">
+          Toggle mute
         </message>
-        <message name="IDS_PLAYLIST_A11Y_SHUFFLE" desc="An a11y name for a 'shuffle' button in media player">
+        <message name="IDS_PLAYLIST_TOOLTIP_SHUFFLE" desc="An a11y name for a 'shuffle' button in media player">
           Shuffle
         </message>
-        <message name="IDS_PLAYLIST_A11Y_REWIND" desc="An a11y name for a 'rewind' button in media player">
+        <message name="IDS_PLAYLIST_TOOLTIP_REWIND" desc="An a11y name for a 'rewind' button in media player">
           Rewind
         </message>
-        <message name="IDS_PLAYLIST_A11Y_FORWARD" desc="An a11y name for a 'forward' button in media player">
+        <message name="IDS_PLAYLIST_TOOLTIP_FORWARD" desc="An a11y name for a 'forward' button in media player">
           Forward
         </message>
-        <message name="IDS_PLAYLIST_A11Y_CLOSE" desc="An a11y name for a 'close' button in media player when it's mini player mode">
+        <message name="IDS_PLAYLIST_TOOLTIP_CLOSE" desc="An a11y name for a 'close' button in media player when it's mini player mode">
           Close
         </message>
-        <message name="IDS_PLAYLIST_A11Y_LOOP_OFF" desc="An a11y name for a 'loop' button in media player when the loop is off">
+        <message name="IDS_PLAYLIST_TOOLTIP_LOOP_OFF" desc="An a11y name for a 'loop' button in media player when the loop is off">
           Repeat off
         </message>
-        <message name="IDS_PLAYLIST_A11Y_LOOP_ONE" desc="An a11y name for a 'loop' button in media player when repeating one item">
+        <message name="IDS_PLAYLIST_TOOLTIP_LOOP_ONE" desc="An a11y name for a 'loop' button in media player when repeating one item">
           Repeat one
         </message>
-        <message name="IDS_PLAYLIST_A11Y_LOOP_ALL" desc="An a11y name for a 'loop' button in media player when repeating all items">
+        <message name="IDS_PLAYLIST_TOOLTIP_LOOP_ALL" desc="An a11y name for a 'loop' button in media player when repeating all items">
           Repeat all
         </message>
         <message name="IDS_PLAYLIST_FAILED_TO_PLAY_TITLE" desc="A title for alert that shows up when an item is not playable">
