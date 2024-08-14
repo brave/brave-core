@@ -74,7 +74,8 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
                                          content::WebContents* contents)
     : views::BubbleDialogDelegateView(action_view,
                                       views::BubbleBorder::TOP_RIGHT,
-                                      views::BubbleBorder::STANDARD_SHADOW),
+                                      views::BubbleBorder::STANDARD_SHADOW,
+                                      /*autosize=*/true),
       contents_(contents) {
   DCHECK(contents);
 
