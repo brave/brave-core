@@ -44,6 +44,7 @@
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
+#include "brave/browser/ui/views/split_view/split_view_location_bar.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
@@ -320,6 +321,9 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
         contents_container_->AddChildView(std::move(contents_web_view));
     split_view_separator_ = contents_container_->AddChildView(
         std::make_unique<SplitViewSeparator>(browser_.get()));
+    secondary_location_bar_ = std::make_unique<SplitViewLocationBar>(
+        browser_->profile()->GetPrefs(), secondary_contents_web_view_);
+    secondary_location_bar_widget_ = std::make_unique<views::Widget>();
 
     auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
         contents_container()->GetLayoutManager());
@@ -531,6 +535,7 @@ void BraveBrowserView::UpdateSecondaryContentsWebViewVisibility() {
     if (secondary_contents_web_view_->web_contents() != contents) {
       secondary_contents_web_view_->SetWebContents(nullptr);
       secondary_contents_web_view_->SetWebContents(contents);
+      secondary_location_bar_->SetWebContents(contents);
     }
 
     secondary_contents_web_view_->SetVisible(true);
@@ -542,6 +547,7 @@ void BraveBrowserView::UpdateSecondaryContentsWebViewVisibility() {
         second_tile_is_active_web_contents);
   } else {
     secondary_contents_web_view_->SetWebContents(nullptr);
+    secondary_location_bar_->SetWebContents(nullptr);
     secondary_contents_web_view_->SetVisible(false);
     secondary_devtools_web_view_->SetWebContents(nullptr);
     secondary_devtools_web_view_->SetVisible(false);
@@ -895,6 +901,13 @@ void BraveBrowserView::AddedToWidget() {
 
     GetBrowserViewLayout()->set_vertical_tab_strip_host(
         vertical_tab_strip_host_view_.get());
+  }
+
+  if (secondary_location_bar_widget_) {
+    CHECK(secondary_location_bar_);
+    secondary_location_bar_widget_->Init(
+        SplitViewLocationBar::GetWidgetInitParams(
+            GetWidget()->GetNativeView(), secondary_location_bar_.get()));
   }
 }
 
