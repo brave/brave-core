@@ -9,45 +9,32 @@ import * as React from 'react'
 import NewPasswordInput, {
   NewPasswordValues
 } from '../../../../../components/shared/password-input/new-password-input'
-import {
-  AutoLockSettings //
-} from '../../components/auto_lock_settings/auto_lock_settings'
 
 // styles
 import { Column } from '../../../../../components/shared/style'
-import { AutoLockOption } from '../../../../../constants/types'
 
 interface Props {
-  autoLockDuration: number
-  autoLockOptions: AutoLockOption[]
+  initialPassword?: string
   onSubmit: (values: NewPasswordValues) => void
   onPasswordChange: (values: NewPasswordValues) => void
-  onAutoLockDurationChange: (autoLockDuration: number) => void
 }
 
 export function CreatePassword({
-  autoLockDuration,
-  autoLockOptions,
+  initialPassword,
   onSubmit,
-  onPasswordChange,
-  onAutoLockDurationChange
+  onPasswordChange
 }: Props) {
   return (
     <Column
+      width='100%'
       justifyContent='center'
       alignItems='center'
-      gap='68px'
     >
       <NewPasswordInput
         autoFocus={true}
+        initialPassword={initialPassword}
         onSubmit={onSubmit}
         onChange={onPasswordChange}
-      />
-
-      <AutoLockSettings
-        options={autoLockOptions}
-        value={autoLockDuration}
-        onChange={onAutoLockDurationChange}
       />
     </Column>
   )

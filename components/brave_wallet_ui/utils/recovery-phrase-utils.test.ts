@@ -5,7 +5,8 @@
 
 import {
   cleanupRecoveryPhraseInput,
-  isPhraseLengthValid
+  isPhraseLengthValid,
+  normalizeRecoveryPhraseInput
 } from './recovery-phrase-utils'
 
 describe('cleanupRecoveryPhraseInput', () => {
@@ -44,5 +45,49 @@ describe('isPhraseLengthValid', () => {
     expect(
       isPhraseLengthValid(Array(length).fill('word').join(' ')).isInvalid
     ).toBe(true)
+  })
+})
+
+describe('normalizeRecoveryPhraseInput', () => {
+  it('should replace line breaks with a space', () => {
+    const input = 'word1\r\nword2\nword3'
+    const expectedOutput = 'word1 word2 word3'
+    expect(normalizeRecoveryPhraseInput(input)).toBe(expectedOutput)
+  })
+
+  it('should replace multiple spaces with a single space', () => {
+    const input = 'word1     word2   word3'
+    const expectedOutput = 'word1 word2 word3'
+    expect(normalizeRecoveryPhraseInput(input)).toBe(expectedOutput)
+  })
+
+  it('should trim leading and trailing whitespace', () => {
+    const input = '   word1 word2 word3   '
+    const expectedOutput = 'word1 word2 word3'
+    expect(normalizeRecoveryPhraseInput(input)).toBe(expectedOutput)
+  })
+
+  it('should handle a combination of line breaks, multiple spaces, and leading/trailing whitespace', () => {
+    const input = '\n  word1\r\n\r\n  word2   word3   \r\n'
+    const expectedOutput = 'word1 word2 word3'
+    expect(normalizeRecoveryPhraseInput(input)).toBe(expectedOutput)
+  })
+
+  it('should handle input that does not need normalization', () => {
+    const input = 'word1 word2 word3'
+    const expectedOutput = 'word1 word2 word3'
+    expect(normalizeRecoveryPhraseInput(input)).toBe(expectedOutput)
+  })
+
+  it('should return an empty string when input is an empty string', () => {
+    const input = ''
+    const expectedOutput = ''
+    expect(normalizeRecoveryPhraseInput(input)).toBe(expectedOutput)
+  })
+
+  it('should handle single words without modification', () => {
+    const input = 'word1'
+    const expectedOutput = 'word1'
+    expect(normalizeRecoveryPhraseInput(input)).toBe(expectedOutput)
   })
 })
