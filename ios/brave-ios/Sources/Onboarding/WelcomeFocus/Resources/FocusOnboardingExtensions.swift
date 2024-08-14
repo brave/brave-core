@@ -7,7 +7,7 @@ import Foundation
 
 extension Locale {
   /// Regions focus onboarding is shown UK and Japan
-  public var isOnboardingRegion: Bool {
+  public var isNewOnboardingRegion: Bool {
     return Locale.current.region?.identifier == "JP" || Locale.current.region?.identifier == "GB"
   }
 }

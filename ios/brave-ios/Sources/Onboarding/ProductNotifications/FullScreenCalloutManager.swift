@@ -63,7 +63,7 @@ public struct FullScreenCalloutManager {
   /// Returns true if the callout should be shown.
   public static func shouldShowCallout(calloutType: FullScreenCalloutType) -> Bool {
     // If region is onboarding_region check new focus onboarding is finished
-    if Locale.current.isOnboardingRegion,
+    if Locale.current.isNewOnboardingRegion,
       !Preferences.FocusOnboarding.focusOnboardingFinished.value
     {
       return false
@@ -81,7 +81,7 @@ public struct FullScreenCalloutManager {
 
     // Delay period 3 days that will be added to full screen callouts
     // This will be the case as long as new onboarding is active for onboarding_regions
-    if Locale.current.isOnboardingRegion {
+    if Locale.current.isNewOnboardingRegion {
       calloutDelayInterval += delayAmountJpOnboarding
     }
 
