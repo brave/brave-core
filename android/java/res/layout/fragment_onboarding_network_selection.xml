@@ -8,12 +8,11 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/setup_wallet_root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:theme="@style/BraveWalletOnboarding">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/supported_networks"
-            style="@style/HeadingH3"
+            style="@style/HeadingH3Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -23,8 +22,7 @@
             android:layout_marginTop="14dp"
             android:layout_marginBottom="18dp"
             android:text="@string/supported_networks"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold" />
+            android:textColor="@color/text_primary" />
 
         <TextView
             style="@style/DefaultRegular"
@@ -40,6 +38,7 @@
             android:textColor="@color/text_secondary" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:theme="@style/BraveWalletEditTextTheme"
             style="@style/BraveWalletInputLayout"
             android:id="@+id/network_search_layout"
             android:layout_width="match_parent"

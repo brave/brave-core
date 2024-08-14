@@ -968,6 +968,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_CONTINUE_TO_WALLET" desc="Text for continue to wallet button">
         Continue to wallet
       </message>
+      <message name="IDS_RECOVERY_PHRASE_12" desc="12-word recovery phrase Wallet button">
+        I have a 12-word recovery phrase
+      </message>
+      <message name="IDS_RECOVERY_PHRASE_24" desc="24-word recovery phrase Wallet button">
+        I have a 24-word recovery phrase
+      </message>
       <message name="IDS_SET_DEFAULT_BROWSER" desc="Button text for dormant users engagement dialog">
         Set as default browser
       </message>
@@ -1843,7 +1849,7 @@ Are you sure you want to do this?
       <message name="IDS_YOU_ARE_DONE_TEXT" desc="Brave rewards onboarding title">
         By using Brave Rewards, you are protecting your privacy and helping make the web a better place for everyone. And that’s awesome!
       </message>
-      <message name="IDS_GO_BACK" desc="Brave rewards onboarding button text">
+      <message name="IDS_GO_BACK" desc="Go back button text">
         Go Back
       </message>
       <message name="IDS_LETS_TAKE_A_QUICK_TOUR" desc="Brave rewards onboarding button text">
@@ -1948,20 +1954,17 @@ Are you sure you want to do this?
     <message name="IDS_SETUP_CRYPTO_DESCRIPTION" desc="Brave Wallet onboarding new wallet description">
       Get started with Brave Wallet within minutes
     </message>
-    <message name="IDS_BACKUP_YOUR_WALLET" desc="Brave Wallet onboarding text">
-      Backup your wallet now!
+    <message name="IDS_ENTER_PASSWORD_TO_CONTINUE_TITLE" desc="Brave Wallet enter password text">
+      Enter a password to continue
     </message>
-    <message name="IDS_BACKUP_YOUR_WALLET_TEXT" desc="Brave Wallet onboarding text">
-      In the next step you’ll see a 12-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.
+    <message name="IDS_ENTER_PASSWORD_TO_CONTINUE" desc="Brave Wallet enter password to back up wallet text">
+      Enter your Brave Wallet password to start backing up wallet.
     </message>
     <message name="IDS_CONTINUE_TEXT" desc="Brave Wallet onboarding text">
       Continue
     </message>
     <message name="IDS_MESSAGE" desc="Brave wallet message title text">
       Message
-    </message>
-    <message name="IDS_BACKUP_WALLET_CHECKBOX_TEXT" desc="Brave Wallet onboarding text">
-      I understand that if I lose my recovery phrase, I won’t be able to access my crypto wallet.
     </message>
     <message name="IDS_WALLET_ACCEPT_ITEMS" desc="Brave Wallet creation subtitle">
       We require that you acknowledge the items below
@@ -1975,29 +1978,17 @@ Are you sure you want to do this?
     <message name="IDS_ACCEPT_TERMS_OF_USE" desc="Brave Wallet terms of use text">
       I have read and agree to the <ph name="CLICK_START">%1$s</ph>Terms of Use<ph name="CLICK_END">%2$s</ph>.
     </message>
-    <message name="IDS_YOUR_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
-      Your recovery phrase
+    <message name="IDS_RECOVERY_PHRASE_TITLE" desc="Brave Wallet onboarding title for recovery phrase screen">
+      Save your recovery phrase
     </message>
-    <message name="IDS_YOUR_RECOVERY_PHRASE_TEXT" desc="Brave Wallet onboarding text">
-      Write down or copy these words in the exact order shown below, and save them somewhere safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.
+    <message name="IDS_RECOVERY_PHRASE_CONTENT" desc="Brave Wallet onboarding text content for recovery phrase screen">
+      Your recovery phrase is the key to access your wallet in case you forget your password or lose your device.
     </message>
     <message name="IDS_YOUR_RECOVERY_PHRASE_WARNING_TEXT" desc="Brave Wallet onboarding text">
-      WARNING: Never share your recovery phrase. Anyone with this phrase can take your assets forever.
-    </message>
-    <message name="IDS_RECOVERY_PHRASE_CHECKBOX_TEXT" desc="Brave Wallet onboarding text">
-      I have backed up my phrase somewhere safe.
-    </message>
-    <message name="IDS_WALLET_COPY" desc="Brave Wallet onboarding bottom menu text">
-      Copy
+      Keep it in a secure place that is not accessible to others and avoid sharing it with anyone.
     </message>
     <message name="IDS_ENTER_PASSWORD" desc="Brave wallet password hint text">
       Enter Password
-    </message>
-    <message name="IDS_RETYPE_PASSWORD" desc="Brave wallet password hint text">
-      Verify password
-    </message>
-    <message name="IDS_RETYPE_PASSWORD_ERROR" desc="Brave Wallet password error text">
-      Verified password did not match
     </message>
     <message name="IDS_CREATING_WALLET_ONBOARDING_TEXT" desc="Text displayed along with a spinner during Brave Wallet creation or restoring.">
       Creating your wallet…
@@ -2015,7 +2006,22 @@ Are you sure you want to do this?
       Update account
     </message>
     <message name="IDS_RECOVERY_PHRASE_ITEM_TEXT" desc="Brave Wallet onboarding text">
-      <ph name="NUMBER">%1$s</ph>. <ph name="RECOVERY_PHRASE">%2$s</ph>
+      #<ph name="NUMBER">%1$s</ph> <ph name="RECOVERY_PHRASE">%2$s</ph>
+    </message>
+    <message name="IDS_VIEW_RECOVERY_PHRASE" desc="Brave Wallet backup later dialog button">
+      View my recovery phrase
+    </message>
+    <message name="IDS_BACKUP_LATER" desc="Brave Wallet recovery phrase button text">
+      I'll back up later
+    </message>
+    <message name="IDS_CHECK_WORD" desc="Brave Wallet verify recovery phrase title">
+      Let's check
+    </message>
+    <message name="IDS_ENTER_WORD" desc="Brave Wallet verify recovery phrase content">
+      Enter the word in position <ph name="WORD_POSITION">%1$s</ph> from your recovery phrase.
+    </message>
+    <message name="IDS_SKIP_RECOVERY_STEP" desc="Brave Wallet skip recovery phrase dialog text">
+      You can skip this step now, but you still need to back up your recovery phrase to ensure account security.
     </message>
     <message name="IDS_ENABLE_FINGERPRINT_UNLOCK" desc="Brave Wallet onboarding text">
       Enable fingerprint unlock?
@@ -2033,34 +2039,16 @@ Are you sure you want to do this?
       Wallet
     </message>
     <message name="IDS_RESTORE_CRYPTO_TEXT" desc="Brave Wallet onboarding text">
-      Enter your recovery phrase to restore your Brave Wallet crypto account.
+      You can paste your entire recovery phrase into any field.
     </message>
     <message name="IDS_RESTORE_CRYPTO_ACCOUNT" desc="Brave Wallet onboarding text">
-      Restore crypto account
+      Import an existing wallet
     </message>
     <message name="IDS_SHOW_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
       Show recovery phrase
     </message>
-    <message name="IDS_ENTER_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
-      Enter your recovery phrase
-    </message>
-    <message name="IDS_ACCESSIBILITY_RESTORE_WALLET_COPY_IMAGE" desc="Brave Wallet onboarding past image accessibility text">
-      Paste
-    </message>
-    <message name="IDS_RESTORE_WALLET_NEW_PASSWORD_PHRASE" desc="Brave Wallet onboarding past image accessibility text">
-      New Password
-    </message>
-    <message name="IDS_RESTORE_LEGACY_WALLET_RECOVERY_PHRASE" desc="Brave Wallet onboarding past image accessibility text">
+    <message name="IDS_RESTORE_LEGACY_WALLET_RECOVERY_PHRASE" desc="Brave Wallet onboarding legacy import text">
       Import from legacy Brave crypto wallets?
-    </message>
-    <message name="IDS_VERIFY_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
-      Verify recovery phrase
-    </message>
-    <message name="IDS_VERIFY_RECOVERY_PHRASE_TEXT" desc="Brave Wallet onboarding text">
-      Select the words in your recovery phrase in their correct order.
-    </message>
-    <message name="IDS_VERIFY" desc="Brave Wallet onboarding text">
-      Verify
     </message>
     <message name="IDS_RESTORE" desc="Brave Wallet restore text">
       Restore
@@ -2085,6 +2073,9 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_CONTINUE_WITH_NETWORKS" desc="Continue with selected networks">
       Continue with <ph name="NUMBER">%1$s</ph> networks
+    </message>
+    <message name="IDS_RECOVERY_PHRASE_WORD_HINT" desc="Recovery phrase word hint on empty items">
+      Word #<ph name="NUMBER">%1$s</ph>
     </message>
     <message name="IDS_CREATE_PASSWORD" desc="Brave Wallet password creation description">
       Create a password
@@ -2137,14 +2128,11 @@ Are you sure you want to do this?
     <message name="IDS_UNLOCK_WALLET_SUBTITLE" desc="Brave Wallet onboarding subtitle">
       Enter password to unlock wallet
     </message>
-    <message name="IDS_PASSWORD_TEXT" desc="Brave Wallet onboarding text">
-      Passwords must be at least 8 characters.
-    </message>
     <message name="IDS_BRAVE_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for Safe Browsing no protection mode.">
       Does not protect you against dangerous websites, downloads, and extensions.
     </message>
-    <message name="IDS_PHRASES_DID_NOT_MATCH" desc="Brave Wallet text">
-      Phrases did not match. Please try again.
+    <message name="IDS_PHRASE_DOES_NOT_MATCH" desc="Brave Wallet error when phrase doesn't match">
+      Recovery phrase doesn't match
     </message>
     <message name="IDS_ACCOUNT_RECOVERY_FAILED" desc="Brave Wallet text">
       Account recovery failed. Please try again.
@@ -3127,9 +3115,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_UPDATING_VPN_PROFILE" desc="Message to indicate profile is being update after split tunnel update.">
       Updating VPN Profile ...
     </message>
-    <message name="IDS_BACKUP_WALLET_PASSWORD" desc="Brave Wallet prompt to enter a password">
-      Enter your Brave Wallet password
-    </message>
     <message name="IDS_BRAVE_WALLET_SIGN_WARNING" desc="Sign panel warning message">
       Note that Brave can't verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you're sure you want to take this action, and trust the requesting site.
     </message>
@@ -3159,6 +3144,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_SKIP" desc="Text to skip something">
       Skip this for now
+    </message>
+    <message name="IDS_BRAVE_WALLET_CLICK_TO_COPY" desc="Click to copy something to the clipboard">
+      Click to copy
     </message>
     <message name="IDS_BRAVE_WALLET_GO_TO_PORTFOLIO" desc="Text to navigate to portfolio section">
       Go to my portfolio

@@ -15,7 +15,7 @@
         android:gravity="center_vertical"
         android:orientation="vertical">
         <TextView
-            style="@style/HeadingH1"
+            style="@style/HeadingH1Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -23,8 +23,7 @@
             android:layout_marginBottom="16dp"
             android:text="@string/defi_secure_storage"
             android:lines="3"
-            android:textColor="@color/wallet_text_color"
-            android:textStyle="bold" />
+            android:textColor="@color/wallet_text_color" />
 
         <TextView
             style="@style/LargeRegular"
@@ -64,15 +63,14 @@
                     android:layout_alignParentStart="true"/>
 
                 <TextView
-                    style="@style/HeadingH3"
+                    style="@style/HeadingH3Bold"
                     android:id="@+id/setup_crypto_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="@string/setup_crypto"
                     android:textColor="@color/wallet_text_color"
-                    android:layout_toEndOf="@+id/add_new_wallet_icon"
-                    android:textStyle="bold" />
+                    android:layout_toEndOf="@+id/add_new_wallet_icon" />
 
                 <TextView
                     style="@style/DefaultRegular"
@@ -114,15 +112,14 @@
                     android:layout_alignParentStart="true"/>
 
                 <TextView
-                    style="@style/HeadingH3"
+                    style="@style/HeadingH3Bold"
                     android:id="@+id/restore_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="@string/already_have_a_wallet"
                     android:textColor="@color/wallet_text_color"
-                    android:layout_toEndOf="@+id/restore_wallet_icon"
-                    android:textStyle="bold" />
+                    android:layout_toEndOf="@+id/restore_wallet_icon" />
 
                 <TextView
                     style="@style/DefaultRegular"

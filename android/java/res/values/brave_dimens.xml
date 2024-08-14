@@ -33,8 +33,6 @@
     <dimen name="shields_tooltip_arrow_width">30dp</dimen>
     <dimen name="shields_tooltip_arrow_height">15dp</dimen>
 
-    <dimen name="zero_margin"> 0dp </dimen>
-
     <dimen name="custom_tabs_control_container_leo_height">0dp</dimen>
 
     <dimen name="vpn_plan_margin">32dp</dimen>
@@ -45,6 +43,7 @@
 
     <dimen name="default_regular">14sp</dimen>
     <dimen name="large_regular">16sp</dimen>
+    <dimen name="large_semibold">16sp</dimen>
     <dimen name="default_semibold">14sp</dimen>
     <dimen name="small_regular">12sp</dimen>
     <dimen name="x_small_semibold">11sp</dimen>

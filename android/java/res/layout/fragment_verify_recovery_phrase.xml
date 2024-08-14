@@ -1,96 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
     android:fadeScrollbars="false"
-    android:background="@color/wallet_bg"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="18dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center" >
+
+            <TextView
+                style="@style/HeadingH3Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/check_word"
+                android:textColor="@color/text_primary" />
+
+            <ImageView
+                android:id="@+id/recovery_step_1"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:src="@drawable/rectangle_9" />
+
+            <ImageView
+                android:id="@+id/recovery_step_2"
+                android:layout_marginHorizontal="4dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:src="@drawable/rectangle_9" />
+
+            <ImageView
+                android:id="@+id/recovery_step_3"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:src="@drawable/rectangle_9" />
+
+        </LinearLayout>
+
         <TextView
+            android:id="@+id/check_word"
+            style="@style/DefaultRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_marginTop="32dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/verify_recovery_phrase"
-            android:textColor="@color/wallet_text_color"
-            android:textSize="18sp"/>
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="40dp"
+            android:textColor="@color/text_secondary" />
 
-        <TextView
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:theme="@style/BraveWalletEditTextTheme"
+            style="@style/BraveWalletInputLayout"
+            app:errorEnabled="true"
+            app:endIconMode="clear_text"
+            android:id="@+id/text_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_marginStart="64dp"
-            android:layout_marginEnd="64dp"
-            android:layout_marginBottom="24dp"
-            android:text="@string/verify_recovery_phrase_text"
-            android:textColor="@color/wallet_secondary_text_color"
-            android:textSize="14sp"/>
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recovery_phrase_selected_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="150dp"
-            android:background="@drawable/rounded_wallet_edittext"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="24dp"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_input_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:lines="1"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recovery_phrase_recyclerview"
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="24dp"/>
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_verify_recovery_phrase_continue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:id="@+id/button_verify_word"
+            android:layout_width="match_parent"
             android:gravity="center"
-            android:background="@drawable/crypto_wallet_blue_button"
-            android:text="@string/verify"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:text="@string/continue_text"
             android:enabled="false"
-            android:alpha="0.5"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:textColor="@android:color/white"
-            style="?android:attr/borderlessButtonStyle"/>
+            android:layout_marginHorizontal="16dp"
+            style="@style/BraveWalletOnboardingButton"/>
 
         <TextView
-            android:id="@+id/btn_verify_recovery_phrase_skip"
+            android:id="@+id/skip"
+            style="@style/DefaultBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="40dp"
             android:background="?android:attr/selectableItemBackground"
-            android:layout_gravity="center_horizontal"
             android:clickable="true"
             android:focusable="true"
-            android:textAllCaps="false"
-            android:layout_marginBottom="16dp"
+            android:padding="16dp"
             android:text="@string/skip"
             android:textSize="16sp"
-            android:textColor="@color/wallet_text_color"/>
-
+            android:textColor="@color/text_secondary" />
     </LinearLayout>
 
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

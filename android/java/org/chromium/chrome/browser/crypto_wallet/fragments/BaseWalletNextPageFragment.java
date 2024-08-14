@@ -5,13 +5,21 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
+import static android.hardware.biometrics.BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.hardware.biometrics.BiometricPrompt;
+import android.os.Build;
+import android.os.CancellationSignal;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -23,12 +31,31 @@ import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.app.domain.NetworkModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
+import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.ui.widget.Toast;
+
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
+import java.util.concurrent.Executor;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 /**
  * Base Brave Wallet fragment that performs a cast on the host activity to extract {@link
  * OnNextPage} interface used for basic navigation actions.
  */
 public abstract class BaseWalletNextPageFragment extends Fragment {
+    public interface BiometricAuthenticationCallback {
+        void authenticationSuccess(@NonNull final String unlockWalletPassword);
+    }
 
     // Might be {@code null} when detached from the screen.
     @Nullable protected OnNextPage mOnNextPage;
@@ -128,5 +155,90 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
             mAnimationDrawable.setEnterFadeDuration(10);
             mAnimationDrawable.setExitFadeDuration(5000);
         }
+    }
+
+    /** Shows biometric authentication button if supported and if it was previously set. */
+    protected void showBiometricAuthenticationButton(@NonNull final View view) {
+        if (Utils.isBiometricSupported(requireContext())
+                && KeystoreHelper.shouldUseBiometricToUnlock()) {
+            view.setVisibility(View.VISIBLE);
+        } else {
+            view.setVisibility(View.GONE);
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    protected void showBiometricAuthenticationDialog(
+            @NonNull final View biometricUnlockButton,
+            @NonNull final BiometricAuthenticationCallback biometricAuthenticationCallback) {
+        final BiometricPrompt.AuthenticationCallback authenticationCallback =
+                new BiometricPrompt.AuthenticationCallback() {
+                    @Override
+                    public void onAuthenticationSucceeded(
+                            BiometricPrompt.AuthenticationResult authenticationResult) {
+                        super.onAuthenticationSucceeded(authenticationResult);
+
+                        final KeyringService keyringService = getKeyringService();
+                        String unlockWalletPassword;
+
+                        try {
+                            unlockWalletPassword = KeystoreHelper.decryptText();
+                        } catch (InvalidAlgorithmParameterException
+                                | UnrecoverableEntryException
+                                | NoSuchPaddingException
+                                | IllegalBlockSizeException
+                                | CertificateException
+                                | KeyStoreException
+                                | NoSuchAlgorithmException
+                                | BadPaddingException
+                                | IOException
+                                | InvalidKeyException e) {
+                            // KeystoreHelper.decryptText() may throw a long list
+                            // of exceptions.
+                            showBiometricAuthenticationButton(biometricUnlockButton);
+                            return;
+                        }
+
+                        if (TextUtils.isEmpty(unlockWalletPassword) || keyringService == null) {
+                            showBiometricAuthenticationButton(biometricUnlockButton);
+                            return;
+                        }
+
+                        keyringService.unlock(
+                                unlockWalletPassword,
+                                result -> {
+                                    if (result) {
+                                        biometricAuthenticationCallback.authenticationSuccess(
+                                                unlockWalletPassword);
+                                    } else {
+                                        showBiometricAuthenticationButton(biometricUnlockButton);
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onAuthenticationError(int errorCode, CharSequence errString) {
+                        super.onAuthenticationError(errorCode, errString);
+
+                        final Context context = getContext();
+                        if (!TextUtils.isEmpty(errString) && context != null) {
+                            Toast.makeText(context, errString, Toast.LENGTH_SHORT).show();
+                        }
+                        showBiometricAuthenticationButton(biometricUnlockButton);
+                    }
+                };
+        Executor executor = ContextCompat.getMainExecutor(requireContext());
+        new BiometricPrompt.Builder(requireContext())
+                .setTitle(getResources().getString(R.string.fingerprint_unlock))
+                .setDescription(getResources().getString(R.string.use_fingerprint_text))
+                .setNegativeButton(
+                        getResources().getString(android.R.string.cancel),
+                        executor,
+                        (dialog, which) ->
+                                authenticationCallback.onAuthenticationError(
+                                        BIOMETRIC_ERROR_USER_CANCELED, ""))
+                .build()
+                .authenticate(new CancellationSignal(), executor, authenticationCallback);
     }
 }

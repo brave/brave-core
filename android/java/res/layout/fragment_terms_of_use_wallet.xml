@@ -10,8 +10,7 @@
     android:layout_height="match_parent"
     android:scrollbars="vertical"
     android:fadeScrollbars="false"
-    android:fillViewport="true"
-    android:theme="@style/BraveWalletOnboarding">
+    android:fillViewport="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,7 +18,7 @@
 
         <TextView
             android:id="@+id/before_we_begin"
-            style="@style/HeadingH3"
+            style="@style/HeadingH3Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -29,8 +28,7 @@
             android:layout_marginTop="14dp"
             android:layout_marginBottom="18dp"
             android:text="@string/before_we_begin"
-            android:textColor="@color/wallet_text_color"
-            android:textStyle="bold" />
+            android:textColor="@color/wallet_text_color" />
 
         <TextView
             style="@style/DefaultRegular"
@@ -77,7 +75,6 @@
             android:gravity="center"
             android:text="@string/continue_text"
             android:enabled="false"
-            android:alpha="0.5"
             android:layout_marginBottom="40dp"
             android:layout_marginHorizontal="16dp"
             android:layout_alignParentStart="true"

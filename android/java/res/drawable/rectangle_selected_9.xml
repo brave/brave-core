@@ -4,21 +4,21 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
+
 <vector
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="52dp"
-    android:height="52dp"
-    android:viewportWidth="52"
-    android:viewportHeight="52"
+    android:width="20dp"
+    android:height="8dp"
+    android:viewportWidth="20"
+    android:viewportHeight="8"
     >
     <group>
         <clip-path
-            android:pathData="M26 0C40.3594 0 52 11.6406 52 26C52 40.3594 40.3594 52 26 52C11.6406 52 0 40.3594 0 26C0 11.6406 11.6406 0 26 0Z"
+            android:pathData="M4 0H16C18.2091 0 20 1.79086 20 4C20 6.20914 18.2091 8 16 8H4C1.79086 8 0 6.20914 0 4C0 1.79086 1.79086 0 4 0Z"
             />
         <path
-            android:pathData="M26 0C40.3594 0 52 11.6406 52 26C52 40.3594 40.3594 52 26 52C11.6406 52 0 40.3594 0 26C0 11.6406 11.6406 0 26 0Z"
-            android:strokeWidth="2"
-            android:strokeColor="#66545FF8"
+            android:pathData="M0 0V8H20V0"
+            android:fillColor="@color/button_background"
             />
     </group>
 </vector>

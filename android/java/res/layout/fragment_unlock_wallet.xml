@@ -35,7 +35,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/unlock_wallet_password_layout"
-        android:theme="@style/BraveWalletInputLayoutTheme"
+        android:theme="@style/BraveWalletEditTextTheme"
         style="@style/BraveWalletInputLayout"
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="16dp"
@@ -47,7 +47,6 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/unlock_wallet_password"
-            style="@style/BraveWalletInputEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -58,6 +57,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_unlock"
         style="@style/BraveWalletOnboardingButton"
+        android:enabled="false"
         android:layout_width="match_parent"
         android:layout_gravity="center_horizontal"
         android:layout_marginHorizontal="16dp"
@@ -66,7 +66,7 @@
 
     <TextView
         android:id="@+id/btn_unlock_wallet_restore"
-        style="@style/DefaultRegular"
+        style="@style/DefaultBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -76,23 +76,21 @@
         android:focusable="true"
         android:padding="16dp"
         android:text="@string/restore"
-        android:textStyle="bold"
         android:textSize="16sp"
         android:textColor="@color/brave_wallet_dn_button_color" />
 
     <ImageView
         android:id="@+id/biometric_unlock_wallet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="16dp"
         android:src="@drawable/ic_biometric_login"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:background="@drawable/wallet_hollow_button_background"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
-        android:contentDescription="@null"
+        android:contentDescription="@string/accessibility_biometric_unlock"
         android:visibility="gone"/>
 
 </LinearLayout>

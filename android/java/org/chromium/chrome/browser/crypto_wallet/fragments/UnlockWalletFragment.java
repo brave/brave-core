@@ -5,30 +5,19 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
-import static android.hardware.biometrics.BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.hardware.biometrics.BiometricPrompt;
-import android.hardware.biometrics.BiometricPrompt.AuthenticationCallback;
-import android.hardware.biometrics.BiometricPrompt.AuthenticationResult;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CancellationSignal;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -40,26 +29,13 @@ import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.ui.widget.Toast;
 
-import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableEntryException;
-import java.security.cert.CertificateException;
-import java.util.concurrent.Executor;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
-public class UnlockWalletFragment extends BaseWalletNextPageFragment {
+public class UnlockWalletFragment extends BaseWalletNextPageFragment
+        implements BaseWalletNextPageFragment.BiometricAuthenticationCallback {
 
     private TextInputEditText mUnlockWalletPassword;
     private TextInputLayout mUnlockWalletPasswordLayout;
-    private Button mUnlockButton;
+    private AppCompatButton mUnlockButton;
     private TextView mUnlockWalletRestoreButton;
     private ImageView mBiometricUnlockButton;
 
@@ -93,7 +69,6 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
         mUnlockWalletPassword = view.findViewById(R.id.unlock_wallet_password);
         mUnlockWalletPasswordLayout = view.findViewById(R.id.unlock_wallet_password_layout);
         mUnlockButton = view.findViewById(R.id.btn_unlock);
-        mUnlockButton.setEnabled(false);
         mUnlockWalletRestoreButton = view.findViewById(R.id.btn_unlock_wallet_restore);
         mBiometricUnlockButton = view.findViewById(R.id.biometric_unlock_wallet);
 
@@ -147,7 +122,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
                 v -> {
                     if (Utils.isBiometricSupported(requireContext())) {
                         // noinspection NewApi
-                        showBiometricAuthenticationDialog();
+                        showBiometricAuthenticationDialog(mBiometricUnlockButton, this);
                     }
                 });
 
@@ -156,7 +131,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
 
             mBiometricUnlockButton.setVisibility(View.VISIBLE);
             // noinspection NewApi
-            showBiometricAuthenticationDialog();
+            showBiometricAuthenticationDialog(mBiometricUnlockButton, this);
         }
     }
 
@@ -169,88 +144,12 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
         }
     }
 
-    @SuppressLint("MissingPermission")
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    private void showBiometricAuthenticationDialog() {
-        final AuthenticationCallback authenticationCallback =
-                new AuthenticationCallback() {
-                    @Override
-                    public void onAuthenticationSucceeded(AuthenticationResult result) {
-                        super.onAuthenticationSucceeded(result);
-
-                        final KeyringService keyringService = getKeyringService();
-                        String unlockWalletPassword;
-
-                        try {
-                            unlockWalletPassword = KeystoreHelper.decryptText();
-                        } catch (InvalidAlgorithmParameterException
-                                | UnrecoverableEntryException
-                                | NoSuchPaddingException
-                                | IllegalBlockSizeException
-                                | CertificateException
-                                | KeyStoreException
-                                | NoSuchAlgorithmException
-                                | BadPaddingException
-                                | IOException
-                                | InvalidKeyException e) {
-                            // KeystoreHelper.decryptText() may throw a long list
-                            // of exceptions.
-                            showBiometricAuthenticationButton();
-                            return;
-                        }
-
-                        if (TextUtils.isEmpty(unlockWalletPassword) || keyringService == null) {
-                            showBiometricAuthenticationButton();
-                            return;
-                        }
-
-                        keyringService.unlock(
-                                unlockWalletPassword,
-                                unlockResult -> {
-                                    if (unlockResult) {
-                                        if (mOnNextPage != null) {
-                                            mOnNextPage.showWallet(false);
-                                        }
-                                    } else {
-                                        showBiometricAuthenticationButton();
-                                        mUnlockWalletPassword.setError(
-                                                getString(R.string.incorrect_password_error));
-                                    }
-                                });
-                    }
-
-                    @Override
-                    public void onAuthenticationError(int errorCode, CharSequence errString) {
-                        super.onAuthenticationError(errorCode, errString);
-
-                        final Context context = getContext();
-                        if (!TextUtils.isEmpty(errString) && context != null) {
-                            Toast.makeText(context, errString, Toast.LENGTH_SHORT).show();
-                        }
-                        showBiometricAuthenticationButton();
-                    }
-                };
-        Executor executor = ContextCompat.getMainExecutor(requireContext());
-        new BiometricPrompt.Builder(requireContext())
-                .setTitle(getResources().getString(R.string.fingerprint_unlock))
-                .setDescription(getResources().getString(R.string.use_fingerprint_text))
-                .setNegativeButton(
-                        getResources().getString(android.R.string.cancel),
-                        executor,
-                        (dialog, which) ->
-                                authenticationCallback.onAuthenticationError(
-                                        BIOMETRIC_ERROR_USER_CANCELED, ""))
-                .build()
-                .authenticate(new CancellationSignal(), executor, authenticationCallback);
-    }
-
-    /** Shows biometric authentication button if supported and if it was previously set. */
-    private void showBiometricAuthenticationButton() {
-        if (Utils.isBiometricSupported(requireContext())
-                && KeystoreHelper.shouldUseBiometricToUnlock()) {
-            mBiometricUnlockButton.setVisibility(View.VISIBLE);
-        } else {
-            mBiometricUnlockButton.setVisibility(View.GONE);
+    @Override
+    public void authenticationSuccess(@NonNull String unlockWalletPassword) {
+        Utils.clearClipboard(unlockWalletPassword);
+        mUnlockWalletPassword.setText(null);
+        if (mOnNextPage != null) {
+            mOnNextPage.showWallet(false);
         }
     }
 }
