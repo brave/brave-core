@@ -27,6 +27,10 @@ namespace brave_ads {
 
 struct NotificationAdInfo;
 
+namespace database {
+class Maintenance;
+}  // namespace database
+
 class AdsImpl final : public Ads {
  public:
   AdsImpl(AdsClient* ads_client,
@@ -117,11 +121,6 @@ class AdsImpl final : public Ads {
   void SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
                                InitializeCallback callback);
 
-  // TODO(https://github.com/brave/brave-browser/issues/40265): Periodically
-  // purge expired and orphaned state.
-  void PurgeExpiredAdEventsCallback(mojom::WalletInfoPtr wallet,
-                                    InitializeCallback callback,
-                                    bool success);
   void PurgeAllOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
                                         InitializeCallback callback,
                                         bool success);
@@ -146,6 +145,9 @@ class AdsImpl final : public Ads {
   // TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate global
   // state.
   GlobalState global_state_;
+
+  // Handles database maintenance tasks, such as purging and vacuuming.
+  std::unique_ptr<database::Maintenance> database_maintenance_;
 
   base::WeakPtrFactory<AdsImpl> weak_factory_{this};
 };
