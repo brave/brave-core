@@ -32,11 +32,11 @@ import {
   OnboardingContentLayout //
 } from '../components/onboarding_content_layout/content_layout'
 import { CreatePassword } from './components/create_password'
+import { AutoLockSettings } from '../components/auto_lock_settings/auto_lock_settings'
 
 // styles
-import { ContinueButton, NextButtonRow } from '../onboarding.style'
 import { Column } from '../../../../components/shared/style'
-import { AutoLockSettings } from '../components/auto_lock_settings/auto_lock_settings'
+import { ContinueButton, NextButtonRow } from '../onboarding.style'
 
 interface OnboardingCreatePasswordProps {
   onWalletCreated: () => void
