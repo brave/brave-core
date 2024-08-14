@@ -450,14 +450,18 @@ class TabLocationView: UIView {
   }
 
   private func updateURLBarWithText() {
-    // Matches LocationBarModelImpl::GetFormattedURL in Chromium (except for omitHTTP)
-    // components/omnibox/browser/location_bar_model_impl.cc
-    // TODO: Export omnibox related APIs and use directly
-    urlDisplayLabel.text = URLFormatter.formatURL(
-      url?.absoluteString ?? "",
-      formatTypes: [.trimAfterHost, .omitHTTP, .omitHTTPS, .omitTrivialSubdomains],
-      unescapeOptions: .normal
-    )
+    if let url = url, let internalURL = InternalURL(url), internalURL.isBasicAuthURL {
+      urlDisplayLabel.text = Strings.PageSecurityView.signIntoWebsiteURLBarTitle
+    } else {
+      // Matches LocationBarModelImpl::GetFormattedURL in Chromium (except for omitHTTP)
+      // components/omnibox/browser/location_bar_model_impl.cc
+      // TODO: Export omnibox related APIs and use directly
+      urlDisplayLabel.text = URLFormatter.formatURL(
+        url?.absoluteString ?? "",
+        formatTypes: [.trimAfterHost, .omitHTTP, .omitHTTPS, .omitTrivialSubdomains],
+        unescapeOptions: .normal
+      )
+    }
 
     reloadButton.isHidden = url == nil
     voiceSearchButton.isHidden = (url != nil) || !isVoiceSearchAvailable

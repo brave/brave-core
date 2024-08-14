@@ -251,6 +251,7 @@ class Tab: NSObject {
   fileprivate var lastRequest: URLRequest?
   var restoring: Bool = false
   var pendingScreenshot = false
+  var isDisplayingBasicAuthPrompt = false
 
   // This variable is used to keep track of current page. It is used to detect
   // and report same document navigations to Brave Rewards library.
@@ -300,6 +301,10 @@ class Tab: NSObject {
     didSet {
       if let _url = url, let internalUrl = InternalURL(_url), internalUrl.isAuthorized {
         url = URL(string: internalUrl.stripAuthorization)
+      }
+
+      if isDisplayingBasicAuthPrompt {
+        url = URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
       }
 
       // Setting URL in SyncTab is adding pending item to navigation manager on brave-core side
