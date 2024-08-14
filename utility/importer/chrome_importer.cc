@@ -463,7 +463,9 @@ void ChromeImporter::ImportPasswords(
   password_manager::LoginDatabase database(
       copy_password_file.copied_file_path(),
       password_manager::IsAccountStore(false));
-  if (!database.Init(nullptr)) {
+  if (!database.Init(
+          /*on_undecryptable_passwords_removed=*/base::NullCallback(),
+          /*encryptor=*/nullptr)) {
     LOG(ERROR) << "LoginDatabase Init() failed";
     return;
   }
