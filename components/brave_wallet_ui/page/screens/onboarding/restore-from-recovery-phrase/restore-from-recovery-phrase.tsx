@@ -49,6 +49,7 @@ import { AlertWrapper, ContinueButton } from '../onboarding.style'
 
 type RestoreWalletSteps = 'phrase' | 'password'
 const VALID_PHRASE_LENGTHS = [12, 15, 18, 21, 24]
+const WORD_SEPARATOR = ' '
 
 export const OnboardingRestoreFromRecoveryPhrase = () => {
   // queries
@@ -106,14 +107,24 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
   // methods
   const onPhraseWordChange = React.useCallback(
     async (index: number, value: string) => {
+      const sanitizedValue = value
+        .replace(/[\r\n]+/g, WORD_SEPARATOR) // replace \r and \n with a space
+        .replace(/\s+/g, WORD_SEPARATOR) // replace multiple spaces with a single space
+        .trim()
+
       // when the a recovery phrase is pasted,
       // split the words and fill the input fields
-      if (value.includes(' ')) {
-        const words = value.split(' ')
+      if (sanitizedValue.includes(WORD_SEPARATOR)) {
+        const words = sanitizedValue.split(WORD_SEPARATOR)
+        let newPhraseLength = words.length > 12 ? 24 : 12
+        if (newPhraseLength !== recoveryPhraseLength) {
+          setRecoveryPhraseLength(newPhraseLength)
+        }
+
         setPhraseWords((prev) => {
           const newValues = [...prev]
           words.forEach((word, i) => {
-            if (i < recoveryPhraseLength && !newValues[i]) {
+            if (i < newPhraseLength && !newValues[i]) {
               newValues[i] = word
             }
           })
