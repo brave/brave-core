@@ -439,7 +439,7 @@ extension LoginInfoViewController: LoginInfoTableViewCellDelegate {
 
   func didSelectOpenWebsite(_ cell: LoginInfoTableViewCell) {
     settingsDelegate?.settingsOpenURLInNewTab(credentials.url)
-    dismiss(animated: true, completion: nil)
+    dismiss(animated: true)
   }
 
   func didSelectReveal(_ cell: LoginInfoTableViewCell, completion: ((Bool) -> Void)?) {
