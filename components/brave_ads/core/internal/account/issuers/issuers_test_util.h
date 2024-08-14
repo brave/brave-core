@@ -8,10 +8,13 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_info.h"
 
-namespace brave_ads::test {
+namespace brave_ads {
+
+struct IssuersInfo;
+
+namespace test {
 
 TokenIssuerList BuildTokenIssuers();
 
@@ -25,6 +28,8 @@ IssuersInfo BuildIssuers();
 
 void BuildAndSetIssuers();
 
-}  // namespace brave_ads::test
+}  // namespace test
+
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_TEST_UTIL_H_

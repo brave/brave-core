@@ -25,8 +25,6 @@ using AddTransactionCallback =
 using GetTransactionsCallback =
     base::OnceCallback<void(bool success, const TransactionList& transactions)>;
 
-using RemoveAllTransactionsCallback = base::OnceCallback<void(bool success)>;
-
 TransactionInfo BuildTransaction(const std::string& creative_instance_id,
                                  const std::string& segment,
                                  double value,
@@ -43,8 +41,6 @@ TransactionInfo AddTransaction(const std::string& creative_instance_id,
 void GetTransactionsForDateRange(base::Time from_time,
                                  base::Time to_time,
                                  GetTransactionsCallback callback);
-
-void RemoveAllTransactions(RemoveAllTransactionsCallback callback);
 
 }  // namespace brave_ads
 

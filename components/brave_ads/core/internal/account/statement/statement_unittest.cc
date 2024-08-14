@@ -8,9 +8,12 @@
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -36,7 +39,7 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsThisMonth) {
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
-  test::SaveTransactions(transactions);
+  database::SaveTransactions(transactions);
 
   // Act & Assert
   const mojom::StatementInfoPtr expected_statement =
@@ -114,7 +117,7 @@ TEST_F(BraveAdsStatementTest,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_8);
 
-  test::SaveTransactions(transactions);
+  database::SaveTransactions(transactions);
 
   // Act & Assert
   const mojom::StatementInfoPtr expected_statement =
@@ -178,7 +181,7 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_6);
 
-  test::SaveTransactions(transactions);
+  database::SaveTransactions(transactions);
 
   // Act & Assert
   const mojom::StatementInfoPtr expected_statement =
@@ -253,7 +256,7 @@ TEST_F(BraveAdsStatementTest, GetWithFilteredTransactions) {
   transaction_4.ad_type = AdType::kNewTabPageAd;
   transactions.push_back(transaction_4);
 
-  test::SaveTransactions(transactions);
+  database::SaveTransactions(transactions);
 
   // Act & Assert
   const mojom::StatementInfoPtr expected_statement =

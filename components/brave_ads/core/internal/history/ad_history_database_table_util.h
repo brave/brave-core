@@ -8,12 +8,12 @@
 
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
-namespace brave_ads {
+namespace brave_ads::database {
 
 void PurgeExpiredAdHistory();
 
 void SaveAdHistory(const AdHistoryList& ad_history);
 
-}  // namespace brave_ads
+}  // namespace brave_ads::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_AD_HISTORY_DATABASE_TABLE_UTIL_H_

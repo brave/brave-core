@@ -6,16 +6,18 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_TEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_TEST_UTIL_H_
 
-#include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 namespace base {
 class Time;
 }  // namespace base
 
-namespace brave_ads::test {
+namespace brave_ads {
 
-void SaveTransactions(const TransactionList& transactions);
+struct TransactionInfo;
+
+namespace test {
 
 TransactionInfo BuildTransaction(double value,
                                  AdType ad_type,
@@ -27,6 +29,8 @@ TransactionInfo BuildUnreconciledTransaction(double value,
                                              ConfirmationType confirmation_type,
                                              bool should_generate_random_uuids);
 
-}  // namespace brave_ads::test
+}  // namespace test
+
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_TEST_UTIL_H_

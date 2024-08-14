@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/catalog_permission_rule_test_util.h"
 
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_test_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"

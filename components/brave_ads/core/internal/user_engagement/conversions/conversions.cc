@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions.h"
 
-#include <map>
-
 #include "base/check.h"
 #include "base/containers/adapters.h"
 #include "base/debug/dump_without_crashing.h"

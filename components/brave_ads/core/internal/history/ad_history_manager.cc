@@ -141,7 +141,7 @@ void AdHistoryManager::MaybeAdd(const AdInfo& ad,
 
   const AdHistoryItemInfo ad_history_item =
       BuildAdHistoryItem(ad, confirmation_type, title, description);
-  SaveAdHistory({ad_history_item});
+  database::SaveAdHistory({ad_history_item});
 
   NotifyDidAddAdHistoryItem(ad_history_item);
 }

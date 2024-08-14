@@ -90,7 +90,6 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.cc",
     "//brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h",
     "//brave/components/brave_ads/core/internal/account/transactions/transactions_unittest.cc",
-    "//brave/components/brave_ads/core/internal/account/transactions/transactions_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/dynamic/diagnostic_id_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/dynamic/system_timestamp_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/fixed/build_channel_user_data_unittest.cc",

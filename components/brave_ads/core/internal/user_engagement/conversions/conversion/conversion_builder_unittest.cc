@@ -14,7 +14,9 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_test_constants.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

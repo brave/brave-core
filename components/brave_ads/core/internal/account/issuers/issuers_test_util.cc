@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_test_util.h"
 
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_types.h"

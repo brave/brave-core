@@ -133,7 +133,7 @@ class AdsServiceImpl final : public AdsService,
   void InitializeBatAdsCallback(bool success);
 
   void ShutdownAndClearData();
-  void ShutdownAndClearDataCallback(bool /*success*/);
+  void ShutdownAndClearDataCallback(bool success);
 
   void SetSysInfo();
   void SetBuildChannel();

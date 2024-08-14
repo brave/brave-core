@@ -432,11 +432,30 @@ void Transactions::Reconcile(const PaymentTokenList& payment_tokens,
   RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
 
-void Transactions::Delete(ResultCallback callback) const {
+void Transactions::PurgeExpired(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_transaction =
       mojom::DBTransactionInfo::New();
-
-  DeleteTable(&*mojom_transaction, GetTableName());
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kExecute;
+  mojom_statement->sql = base::ReplaceStringPlaceholders(
+      R"(
+          DELETE FROM
+            $1
+          WHERE
+            reconciled_at != 0
+          AND DATETIME(
+              (created_at / 1000000) - 11644473600,
+              'unixepoch'
+          ) <= DATETIME(
+            ($2 / 1000000) - 11644473600,
+            'unixepoch',
+            '-3 months'
+          );)",
+      {GetTableName(),
+       base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
+      nullptr);
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
 
   RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
