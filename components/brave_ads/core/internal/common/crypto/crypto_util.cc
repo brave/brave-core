@@ -9,6 +9,7 @@
 #include <openssl/hkdf.h>
 #include <openssl/sha.h>
 
+#include <cstdint>
 #include <iterator>
 
 #include "base/base64.h"

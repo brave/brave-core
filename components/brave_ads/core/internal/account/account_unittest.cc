@@ -10,10 +10,10 @@
 #include "brave/components/brave_ads/core/internal/account/account_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_test_constants.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/create_reward_confirmation_url_request_builder_test_constants.h"
@@ -163,7 +163,7 @@ TEST_F(BraveAdsAccountTest, GetStatementForRewardsUser) {
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_7);
 
-  test::SaveTransactions(transactions);
+  database::SaveTransactions(transactions);
 
   // Act & Assert
   const mojom::StatementInfoPtr expected_statement =

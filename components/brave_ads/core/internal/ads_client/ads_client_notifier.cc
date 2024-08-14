@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
 
+#include <cstdint>
 #include <memory>
 
 #include "base/functional/bind.h"

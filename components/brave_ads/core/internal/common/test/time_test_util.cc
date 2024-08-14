@@ -7,6 +7,7 @@
 
 #include "base/check.h"
 #include "base/i18n/time_formatting.h"
+#include "base/time/time.h"
 
 namespace brave_ads::test {
 

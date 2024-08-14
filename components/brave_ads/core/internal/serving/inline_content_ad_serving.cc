@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving.h"
 
-#include <cstdint>
 #include <optional>
 #include <utility>
 

@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_test_util.h"

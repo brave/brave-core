@@ -8,10 +8,13 @@
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -65,7 +68,7 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
-  test::SaveTransactions(transactions);
+  database::SaveTransactions(transactions);
 
   // Act & Assert
   base::MockCallback<GetTransactionsCallback> callback;
@@ -74,29 +77,6 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
   GetTransactionsForDateRange(/*from_time=*/test::Now(),
                               /*to_time=*/test::DistantFuture(),
                               callback.Get());
-}
-
-TEST_F(BraveAdsTransactionsTest, RemoveAll) {
-  // Arrange
-  TransactionList transactions;
-
-  const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/true);
-  transactions.push_back(transaction_1);
-
-  const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
-      /*value=*/0.0, AdType::kNotificationAd, ConfirmationType::kDismissed,
-      /*should_generate_random_uuids=*/true);
-  transactions.push_back(transaction_2);
-
-  test::SaveTransactions(transactions);
-
-  // Act & Assert
-  base::MockCallback<RemoveAllTransactionsCallback> callback;
-  EXPECT_CALL(callback, Run(/*success=*/true));
-  RemoveAllTransactions(callback.Get());
 }
 
 }  // namespace brave_ads

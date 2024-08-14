@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource_id_pattern_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource_id_pattern_search_in_types.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"  // IWYU pragma: keep
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

@@ -15,6 +15,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "third_party/re2/src/re2/re2.h"
 

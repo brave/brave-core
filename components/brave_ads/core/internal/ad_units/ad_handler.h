@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_AD_HANDLER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_AD_HANDLER_H_
 
+#include <cstdint>
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_handler.h"
