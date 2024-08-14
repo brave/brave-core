@@ -23,6 +23,7 @@
 #include "ui/base/ui_base_features.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
+#include "ui/color/color_provider_manager.h"
 #include "ui/color/color_recipe.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/color_utils.h"
@@ -390,6 +391,20 @@ void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsUrlSelected] = {kColorOmniboxResultsUrl};
 }
 
+void AddLeoColorMixer(ui::ColorProvider* provider,
+                      const ui::ColorProviderManager::Key& key) {
+  auto leo_theme = key.color_mode == ui::ColorProviderManager::ColorMode::kLight
+                       ? leo::Theme::kLight
+                       : leo::Theme::kDark;
+  ui::ColorMixer& mixer = provider->AddMixer();
+  for (int i = static_cast<int>(leo::Color::kLeoColorsStart);
+       i != static_cast<int>(leo::Color::kLeoColorsEnd); i++) {
+    leo::Color color_name = static_cast<leo::Color>(i);
+    auto color_value = leo::GetColor(color_name, leo_theme);
+    mixer[static_cast<int>(color_name)] = {color_value};
+  }
+}
+
 }  // namespace
 
 SkColor GetLocationBarBackground(bool dark, bool priv) {
@@ -706,6 +721,7 @@ void AddBraveThemeColorMixer(ui::ColorProvider* provider,
   key.color_mode == ui::ColorProviderKey::ColorMode::kDark
       ? AddBraveDarkThemeColorMixer(provider, key)
       : AddBraveLightThemeColorMixer(provider, key);
+  AddLeoColorMixer(provider, key);
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   AddBraveVpnColorMixer(provider, key);
 #endif
