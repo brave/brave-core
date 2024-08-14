@@ -402,8 +402,8 @@ export default function Player() {
               onClick={() => {
                 if (currentList && currentItem) {
                   notifyEventsToTopFrame({
-                    type: PlaylistTypes.PLAYLIST_GO_BACK_TO_CURRENTLY_PLAYING_FOLDER,
-                    data: { currentList, currentItem }
+                    type: PlaylistTypes.PLAYLIST_OPEN_SOURCE_PAGE,
+                    data: currentItem
                   })
                 }
               }}
