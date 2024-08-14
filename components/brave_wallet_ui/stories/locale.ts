@@ -882,6 +882,22 @@ provideStrings({
   braveWalletTransactionApproveUnlimited: 'Unlimited',
   braveWalletApprovalTransactionIntent: 'approve',
 
+  // Transaction Type Names
+  braveWalletTransactionTypeNameErc20Approve: 'Approve',
+  braveWalletTransactionTypeNameSafeTransferFrom: 'Safe Transfer',
+  braveWalletTransactionTypeNameTokenTransfer: 'Token transfer',
+  braveWalletTransactionTypeNameNftTransfer: 'Transfer NFT',
+  braveWalletTransactionTypeNameForwardFil: 'Forward FIL',
+  braveWalletTransactionTypeNameOther: 'Other',
+  braveWalletTransactionTypeNameCompressedNftTransfer:
+    'Compressed NFT Transfer',
+  braveWalletTransactionTypeNameSignAndSendDappTransaction:
+    'Sign and Send DApp transaction',
+  braveWalletTransactionTypeNameSignDappTransaction: 'Sign DApp Transaction',
+  ['braveWalletTransactionTypeNameSplTokenTransfer' +
+  'WithAssociatedTokenAccountCreation']:
+    'SPL Token Transfer With Associated Token Account Creation',
+
   // Transaction Simulation
   braveWalletScanningTransaction: 'Scanning transaction',
   braveWalletTransactionPreviewFailed: 'Transaction preview failed',

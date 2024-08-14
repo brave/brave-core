@@ -17,6 +17,7 @@ import {
 // utils
 import { getLocale } from '../../../../common/locale'
 import { numberArrayToHexStr } from '../../../utils/hex-utils'
+import { getTransactionTypeName } from '../../../utils/tx-utils'
 
 // components
 import {
@@ -38,8 +39,6 @@ export interface Props {
   transactionInfo: SerializableTransactionInfo
   instructions?: TypedSolanaInstructionWithParams[]
 }
-
-const txKeys = Object.keys(BraveWallet.TransactionType)
 
 export const TransactionDetailBox = ({
   transactionInfo,
@@ -165,7 +164,7 @@ export const TransactionDetailBox = ({
           <TransactionText>
             {getLocale('braveWalletTransactionDetailBoxFunction')}:
           </TransactionText>
-          <DetailText>{txKeys[txType]}</DetailText>
+          <DetailText>{getTransactionTypeName(txType)}</DetailText>
         </DetailColumn>
       ) : null}
 

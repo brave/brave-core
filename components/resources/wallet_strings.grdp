@@ -1142,4 +1142,14 @@
   <message name="IDS_BRAVE_WALLET_EVM_MESSAGE_SCANNING_FEATURE_ACCURACY_EXPLANATION" desc="Exaplins that the message scanning feature ensures accuracy of expected results">It's like double-checking a letter to make sure it's just right before signing it.</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_MAY_INCLUDE_ACCOUNT_CREATION_FEE" desc="A warning that the transaction might include an associated token account creation fee">This transaction may include an account creation fee</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_IS_REQUIRED_TO_TAKE_THIS_ACTION" desc="Description text explaining that a password is required to proceed">Password is required to take this action.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_TYPE_NAME_ERC_20_APPROVE" desc="Blockchain function name for ERC-20 token approvals">Approve</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_TYPE_NAME_SAFE_TRANSFER_FROM" desc="Blockchain function name for SafeTransferFrom in ERC-721 and ERC-1155 tokens">Safe Transfer</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_TYPE_NAME_TOKEN_TRANSFER" desc="Blockchain function name for non-native token transfers">Token transfer</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_TYPE_NAME_NFT_TRANSFER" desc="Blockchain function name for NFT transfers">Transfer NFT</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_TYPE_NAME_FORWARD_FIL" desc="Blockchain function name for moving FIL from an  Ethereum-based f4 address to a Filecoin address of a different type">Forward FIL</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_TYPE_NAME_OTHER" desc="Blockchain function name for an unknown transaction type">Other</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_TYPE_NAME_COMPRESSED_NFT_TRANSFER" desc="Blockchain function name for Solana compressed NFT transfers">Compressed NFT Transfer</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_TYPE_NAME_SIGN_AND_SEND_DAPP_TRANSACTION" desc="Blockchain function name for signing and sending a Solana DApp transaction">Sign and Send DApp transaction</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_TYPE_NAME_SIGN_DAPP_TRANSACTION" desc="Blockchain function name for Solana Sign DApp transactions">Sign DApp Transaction</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_TYPE_NAME_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION" desc="Blockchain function name for Solana SPL token transfer with associated token account creation">SPL Token Transfer With Associated Token Account Creation</message>
 </grit-part>
