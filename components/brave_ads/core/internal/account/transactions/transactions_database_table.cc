@@ -17,6 +17,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -137,21 +138,16 @@ void GetCallback(GetTransactionsCallback callback,
 void MigrateToV18(mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE transactions (
-            id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
-            created_at TIMESTAMP NOT NULL,
-            creative_instance_id TEXT,
-            value DOUBLE NOT NULL,
-            ad_type TEXT NOT NULL,
-            confirmation_type TEXT NOT NULL,
-            reconciled_at TIMESTAMP
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE transactions (
+        id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        created_at TIMESTAMP NOT NULL,
+        creative_instance_id TEXT,
+        value DOUBLE NOT NULL,
+        ad_type TEXT NOT NULL,
+        confirmation_type TEXT NOT NULL,
+        reconciled_at TIMESTAMP
+      );)");
 }
 
 void MigrateToV26(mojom::DBTransactionInfo* const mojom_transaction) {
@@ -159,22 +155,17 @@ void MigrateToV26(mojom::DBTransactionInfo* const mojom_transaction) {
 
   // Create a temporary table:
   //   - with a new `segment` column.
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE transactions_temp (
-            id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
-            created_at TIMESTAMP NOT NULL,
-            creative_instance_id TEXT,
-            value DOUBLE NOT NULL,
-            segment TEXT,
-            ad_type TEXT NOT NULL,
-            confirmation_type TEXT NOT NULL,
-            reconciled_at TIMESTAMP
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE transactions_temp (
+        id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        created_at TIMESTAMP NOT NULL,
+        creative_instance_id TEXT,
+        value DOUBLE NOT NULL,
+        segment TEXT,
+        ad_type TEXT NOT NULL,
+        confirmation_type TEXT NOT NULL,
+        reconciled_at TIMESTAMP
+      );)");
 
   // Copy legacy columns to the temporary table, drop the legacy table, rename
   // the temporary table and create an index.
@@ -191,59 +182,40 @@ void MigrateToV26(mojom::DBTransactionInfo* const mojom_transaction) {
 void MigrateToV29(mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
-  {
     // Migrate `created_at` column from an Epoch timestamp to a WebKit/Chrome
     // timestamp.
-    mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-    mojom_statement->operation_type =
-        mojom::DBStatementInfo::OperationType::kExecute;
-    mojom_statement->sql =
-        R"(
-            UPDATE
-              transactions
-            SET
-              created_at = (
-                CAST(created_at AS INT64) + 11644473600
-              ) * 1000000;)";
-    mojom_transaction->statements.push_back(std::move(mojom_statement));
-  }
+  Execute(mojom_transaction, R"(
+      UPDATE
+        transactions
+      SET
+        created_at = (
+          CAST(created_at AS INT64) + 11644473600
+        ) * 1000000;)");
 
-  {
-    // Migrate `reconciled_at` column from an Epoch timestamp to a WebKit/Chrome
-    // timestamp.
-    mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-    mojom_statement->operation_type =
-        mojom::DBStatementInfo::OperationType::kExecute;
-    mojom_statement->sql =
-        R"(
-            UPDATE
-              transactions
-            SET
-              reconciled_at = (
-                CAST(reconciled_at AS INT64) + 11644473600
-              ) * 1000000
-            WHERE
-              reconciled_at != 0;)";
-    mojom_transaction->statements.push_back(std::move(mojom_statement));
-  }
+  // Migrate `reconciled_at` column from an Epoch timestamp to a WebKit/Chrome
+  // timestamp.
+  Execute(mojom_transaction, R"(
+      UPDATE
+        transactions
+      SET
+        reconciled_at = (
+          CAST(reconciled_at AS INT64) + 11644473600
+        ) * 1000000
+      WHERE
+        reconciled_at != 0;)");
 }
 
 void MigrateToV32(mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
   // Migrate `confirmation_type` from 'saved' to 'bookmark'.
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          UPDATE
-            transactions
-          SET
-            confirmation_type = 'bookmark'
-          WHERE
-            confirmation_type == 'saved';)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      UPDATE
+        transactions
+      SET
+        confirmation_type = 'bookmark'
+      WHERE
+        confirmation_type == 'saved';)");
 }
 
 void MigrateToV35(mojom::DBTransactionInfo* const mojom_transaction) {
@@ -258,71 +230,52 @@ void MigrateToV39(mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
   // Delete legacy transactions with an undefined `created_at` timestamp.
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          DELETE FROM
-            transactions
-          WHERE
-            created_at == 0;)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      DELETE FROM
+        transactions
+      WHERE
+        created_at == 0;)");
 }
 
 void MigrateToV40(mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
-  {
-    // Delete legacy transactions with an undefined `creative_instance_id`,
-    // `segment` or `ad_type`.
-    mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-    mojom_statement->operation_type =
-        mojom::DBStatementInfo::OperationType::kExecute;
-    mojom_statement->sql =
-        R"(
-          DELETE FROM
-            transactions
-          WHERE
-            COALESCE(creative_instance_id, '') = ''
-            OR COALESCE(segment, '') = ''
-            OR ad_type = '';)";
-    mojom_transaction->statements.push_back(std::move(mojom_statement));
-  }
+  // Delete legacy transactions with an undefined `creative_instance_id`,
+  // `segment` or `ad_type`.
+  Execute(mojom_transaction, R"(
+      DELETE FROM
+        transactions
+      WHERE
+        COALESCE(creative_instance_id, '') = ''
+        OR COALESCE(segment, '') = ''
+        OR ad_type = '';)");
 
-  {
-    // Create a temporary table:
-    //   - with a new `creative_instance_id` column constraint.
-    //   - with a new `segment` column constraint.
-    //   - with a new `reconciled_at` default value.
-    mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-    mojom_statement->operation_type =
-        mojom::DBStatementInfo::OperationType::kExecute;
-    mojom_statement->sql =
-        R"(
-          CREATE TABLE transactions_temp (
-            id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
-            created_at TIMESTAMP NOT NULL,
-            creative_instance_id TEXT NOT NULL,
-            value DOUBLE NOT NULL,
-            segment TEXT NOT NULL,
-            ad_type TEXT NOT NULL,
-            confirmation_type TEXT NOT NULL,
-            reconciled_at TIMESTAMP DEFAULT 0
-          );)";
-    mojom_transaction->statements.push_back(std::move(mojom_statement));
+  // Create a temporary table:
+  //   - with a new `creative_instance_id` column constraint.
+  //   - with a new `segment` column constraint.
+  //   - with a new `reconciled_at` default value.
+  Execute(mojom_transaction, R"(
+      CREATE TABLE transactions_temp (
+        id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        created_at TIMESTAMP NOT NULL,
+        creative_instance_id TEXT NOT NULL,
+        value DOUBLE NOT NULL,
+        segment TEXT NOT NULL,
+        ad_type TEXT NOT NULL,
+        confirmation_type TEXT NOT NULL,
+        reconciled_at TIMESTAMP DEFAULT 0
+      );)");
 
-    // Copy legacy columns to the temporary table, drop the legacy table,
-    // rename the temporary table and create an index.
-    const std::vector<std::string> columns = {
-        "id",      "created_at", "creative_instance_id", "value",
-        "segment", "ad_type",    "confirmation_type",    "reconciled_at"};
+  // Copy legacy columns to the temporary table, drop the legacy table,
+  // rename the temporary table and create an index.
+  const std::vector<std::string> columns = {
+      "id",      "created_at", "creative_instance_id", "value",
+      "segment", "ad_type",    "confirmation_type",    "reconciled_at"};
 
-    CopyTableColumns(mojom_transaction, "transactions", "transactions_temp",
-                     columns, /*should_drop=*/true);
+  CopyTableColumns(mojom_transaction, "transactions", "transactions_temp",
+                   columns, /*should_drop=*/true);
 
-    RenameTable(mojom_transaction, "transactions_temp", "transactions");
-  }
+  RenameTable(mojom_transaction, "transactions_temp", "transactions");
 
   // Optimize database query for `GetForDateRange`.
   CreateTableIndex(mojom_transaction, /*table_name=*/"transactions",
@@ -435,27 +388,21 @@ void Transactions::Reconcile(const PaymentTokenList& payment_tokens,
 void Transactions::PurgeExpired(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_transaction =
       mojom::DBTransactionInfo::New();
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql = base::ReplaceStringPlaceholders(
-      R"(
-          DELETE FROM
-            $1
-          WHERE
-            reconciled_at != 0
-          AND DATETIME(
-              (created_at / 1000000) - 11644473600,
-              'unixepoch'
-          ) <= DATETIME(
-            ($2 / 1000000) - 11644473600,
-            'unixepoch',
-            '-3 months'
-          );)",
-      {GetTableName(),
-       base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
-      nullptr);
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(&*mojom_transaction, R"(
+            DELETE FROM
+              $1
+            WHERE
+              reconciled_at != 0
+            AND DATETIME(
+                (created_at / 1000000) - 11644473600,
+                'unixepoch'
+            ) <= DATETIME(
+              ($2 / 1000000) - 11644473600,
+              'unixepoch',
+              '-3 months'
+            );)",
+          {GetTableName(),
+           base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))});
 
   RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
@@ -467,22 +414,17 @@ std::string Transactions::GetTableName() const {
 void Transactions::Create(mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE transactions (
-            id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
-            created_at TIMESTAMP NOT NULL,
-            creative_instance_id TEXT NOT NULL,
-            value DOUBLE NOT NULL,
-            segment TEXT NOT NULL,
-            ad_type TEXT NOT NULL,
-            confirmation_type TEXT NOT NULL,
-            reconciled_at TIMESTAMP DEFAULT 0
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE transactions (
+        id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        created_at TIMESTAMP NOT NULL,
+        creative_instance_id TEXT NOT NULL,
+        value DOUBLE NOT NULL,
+        segment TEXT NOT NULL,
+        ad_type TEXT NOT NULL,
+        confirmation_type TEXT NOT NULL,
+        reconciled_at TIMESTAMP DEFAULT 0
+      );)");
 
   // Optimize database query for `GetForDateRange` from schema 35.
   CreateTableIndex(mojom_transaction, GetTableName(),

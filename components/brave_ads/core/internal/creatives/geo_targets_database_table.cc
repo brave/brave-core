@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 
@@ -72,20 +73,15 @@ std::string GeoTargets::GetTableName() const {
 void GeoTargets::Create(mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE geo_targets (
-            campaign_id TEXT NOT NULL,
-            geo_target TEXT NOT NULL,
-            PRIMARY KEY (
-              campaign_id,
-              geo_target
-            ) ON CONFLICT REPLACE
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE geo_targets (
+        campaign_id TEXT NOT NULL,
+        geo_target TEXT NOT NULL,
+        PRIMARY KEY (
+          campaign_id,
+          geo_target
+        ) ON CONFLICT REPLACE
+      );)");
 }
 
 void GeoTargets::Migrate(mojom::DBTransactionInfo* mojom_transaction,

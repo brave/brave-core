@@ -15,6 +15,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/containers/container_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -154,27 +155,22 @@ void GetCallback(GetAdHistoryCallback callback,
 void MigrateToV42(mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE ad_history (
-            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            created_at TIMESTAMP NOT NULL,
-            type TEXT NOT NULL,
-            confirmation_type TEXT NOT NULL,
-            placement_id TEXT NOT NULL,
-            creative_instance_id TEXT NOT NULL,
-            creative_set_id TEXT NOT NULL,
-            campaign_id TEXT NOT NULL,
-            advertiser_id TEXT NOT NULL,
-            segment TEXT NOT NULL,
-            title TEXT NOT NULL,
-            description TEXT NOT NULL,
-            target_url TEXT NOT NULL
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE ad_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        created_at TIMESTAMP NOT NULL,
+        type TEXT NOT NULL,
+        confirmation_type TEXT NOT NULL,
+        placement_id TEXT NOT NULL,
+        creative_instance_id TEXT NOT NULL,
+        creative_set_id TEXT NOT NULL,
+        campaign_id TEXT NOT NULL,
+        advertiser_id TEXT NOT NULL,
+        segment TEXT NOT NULL,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        target_url TEXT NOT NULL
+      );)");
 
   // Optimize database query for `GetForDateRange`,
   // `GetHighestRankedPlacementsForDateRange`, and `PurgeExpired`.
@@ -400,20 +396,14 @@ void AdHistory::GetForCreativeInstanceId(
 void AdHistory::PurgeExpired(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_transaction =
       mojom::DBTransactionInfo::New();
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql = base::ReplaceStringPlaceholders(
-      R"(
-          DELETE FROM
-            $1
-          WHERE
-            created_at <= $2;)",
-      {GetTableName(),
-       base::NumberToString(ToChromeTimestampFromTime(
-           base::Time::Now() - kAdHistoryRetentionPeriod.Get()))},
-      nullptr);
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(&*mojom_transaction, R"(
+            DELETE FROM
+              $1
+            WHERE
+              created_at <= $2;)",
+          {GetTableName(),
+           base::NumberToString(ToChromeTimestampFromTime(
+               base::Time::Now() - kAdHistoryRetentionPeriod.Get()))});
 
   RunTransaction(std::move(mojom_transaction), std::move(callback));
 }
@@ -425,27 +415,22 @@ std::string AdHistory::GetTableName() const {
 void AdHistory::Create(mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE ad_history (
-            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            created_at TIMESTAMP NOT NULL,
-            type TEXT NOT NULL,
-            confirmation_type TEXT NOT NULL,
-            placement_id TEXT NOT NULL,
-            creative_instance_id TEXT NOT NULL,
-            creative_set_id TEXT NOT NULL,
-            campaign_id TEXT NOT NULL,
-            advertiser_id TEXT NOT NULL,
-            segment TEXT NOT NULL,
-            title TEXT NOT NULL,
-            description TEXT NOT NULL,
-            target_url TEXT NOT NULL
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE ad_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        created_at TIMESTAMP NOT NULL,
+        type TEXT NOT NULL,
+        confirmation_type TEXT NOT NULL,
+        placement_id TEXT NOT NULL,
+        creative_instance_id TEXT NOT NULL,
+        creative_set_id TEXT NOT NULL,
+        campaign_id TEXT NOT NULL,
+        advertiser_id TEXT NOT NULL,
+        segment TEXT NOT NULL,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        target_url TEXT NOT NULL
+      );)");
 
   // Optimize database query for `GetForDateRange`,
   // `GetHighestRankedPlacementsForDateRange`, and `PurgeExpired`.

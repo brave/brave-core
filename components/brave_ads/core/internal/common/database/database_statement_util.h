@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_DATABASE_DATABASE_STATEMENT_UTIL_H_
 
 #include <string>
+#include <vector>
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
@@ -14,6 +15,9 @@ namespace brave_ads::database {
 
 void Execute(mojom::DBTransactionInfo* mojom_transaction,
              const std::string& sql);
+void Execute(mojom::DBTransactionInfo* mojom_transaction,
+             const std::string& sql,
+             const std::vector<std::string>& subst);
 
 void Vacuum(mojom::DBTransactionInfo* mojom_transaction);
 

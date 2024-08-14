@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database {
@@ -19,6 +20,18 @@ void Execute(mojom::DBTransactionInfo* const mojom_transaction,
   mojom_statement->operation_type =
       mojom::DBStatementInfo::OperationType::kExecute;
   mojom_statement->sql = sql;
+  mojom_transaction->statements.push_back(std::move(mojom_statement));
+}
+
+void Execute(mojom::DBTransactionInfo* const mojom_transaction,
+             const std::string& sql,
+             const std::vector<std::string>& subst) {
+  CHECK(mojom_transaction);
+
+  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
+  mojom_statement->operation_type =
+      mojom::DBStatementInfo::OperationType::kExecute;
+  mojom_statement->sql = base::ReplaceStringPlaceholders(sql, subst, nullptr);
   mojom_transaction->statements.push_back(std::move(mojom_statement));
 }
 

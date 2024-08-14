@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
@@ -79,21 +80,16 @@ std::string Campaigns::GetTableName() const {
 void Campaigns::Create(mojom::DBTransactionInfo* const mojom_transaction) {
   CHECK(mojom_transaction);
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kExecute;
-  mojom_statement->sql =
-      R"(
-          CREATE TABLE campaigns (
-            id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
-            start_at TIMESTAMP NOT NULL,
-            end_at TIMESTAMP NOT NULL,
-            daily_cap INTEGER DEFAULT 0 NOT NULL,
-            advertiser_id TEXT NOT NULL,
-            priority INTEGER NOT NULL DEFAULT 0,
-            ptr DOUBLE NOT NULL DEFAULT 1
-          );)";
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  Execute(mojom_transaction, R"(
+      CREATE TABLE campaigns (
+        id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        start_at TIMESTAMP NOT NULL,
+        end_at TIMESTAMP NOT NULL,
+        daily_cap INTEGER DEFAULT 0 NOT NULL,
+        advertiser_id TEXT NOT NULL,
+        priority INTEGER NOT NULL DEFAULT 0,
+        ptr DOUBLE NOT NULL DEFAULT 1
+      );)");
 }
 
 void Campaigns::Migrate(mojom::DBTransactionInfo* mojom_transaction,
