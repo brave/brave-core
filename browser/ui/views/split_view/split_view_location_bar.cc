@@ -43,6 +43,8 @@ SplitViewLocationBar::SplitViewLocationBar(PrefService* prefs,
       location_bar_model_(std::make_unique<LocationBarModelImpl>(
           location_bar_model_delegate_.get(),
           content::kMaxURLDisplayChars)) {
+  set_owned_by_client();
+
   if (parent_web_view) {
     view_observation_.Observe(parent_web_view);
   } else {
@@ -113,11 +115,12 @@ SplitViewLocationBar::~SplitViewLocationBar() = default;
 // static
 views::Widget::InitParams SplitViewLocationBar::GetWidgetInitParams(
     gfx::NativeView parent_native_view,
-    std::unique_ptr<views::WidgetDelegateView> delegate) {
+    views::WidgetDelegateView* delegate) {
   views::Widget::InitParams params(views::Widget::InitParams::TYPE_CONTROL);
+  params.ownership = views::Widget::InitParams::CLIENT_OWNS_WIDGET;
   params.activatable = views::Widget::InitParams::Activatable::kNo;
   params.parent = parent_native_view;
-  params.delegate = delegate.release();  // Widget owns the delegate
+  params.delegate = delegate;
   return params;
 }
 

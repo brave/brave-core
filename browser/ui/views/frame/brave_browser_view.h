@@ -232,7 +232,9 @@ class BraveBrowserView : public BrowserView,
   raw_ptr<views::WebView> secondary_devtools_web_view_ = nullptr;
   raw_ptr<ContentsWebView> secondary_contents_web_view_ = nullptr;
   raw_ptr<SplitViewSeparator> split_view_separator_ = nullptr;
-  raw_ptr<SplitViewLocationBar> secondary_location_bar_ = nullptr;
+
+  std::unique_ptr<SplitViewLocationBar> secondary_location_bar_;
+  std::unique_ptr<views::Widget> secondary_location_bar_widget_;
 
   PrefChangeRegistrar pref_change_registrar_;
   base::ScopedObservation<commands::AcceleratorService,
