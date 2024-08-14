@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
+#include "brave/components/brave_ads/core/internal/database/database_maintenance.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
@@ -41,7 +42,8 @@ void FailedToInitialize(InitializeCallback callback) {
 
 AdsImpl::AdsImpl(AdsClient* const ads_client,
                  std::unique_ptr<TokenGeneratorInterface> token_generator)
-    : global_state_(ads_client, std::move(token_generator)) {}
+    : global_state_(ads_client, std::move(token_generator)),
+      database_maintenance_(std::make_unique<database::Maintenance>()) {}
 
 AdsImpl::~AdsImpl() = default;
 
@@ -331,9 +333,9 @@ void AdsImpl::CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr wallet,
     return FailedToInitialize(std::move(callback));
   }
 
-  PurgeExpiredAdEvents(base::BindOnce(&AdsImpl::PurgeExpiredAdEventsCallback,
-                                      weak_factory_.GetWeakPtr(),
-                                      std::move(wallet), std::move(callback)));
+  PurgeAllOrphanedAdEvents(base::BindOnce(
+      &AdsImpl::PurgeAllOrphanedAdEventsCallback, weak_factory_.GetWeakPtr(),
+      std::move(wallet), std::move(callback)));
 }
 
 void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
@@ -349,26 +351,6 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
   NotifyPendingAdsClientObservers();
 
   std::move(callback).Run(/*success=*/true);
-}
-
-void AdsImpl::PurgeExpiredAdEventsCallback(mojom::WalletInfoPtr wallet,
-                                           InitializeCallback callback,
-                                           const bool success) {
-  if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-    // potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to purge expired ad events");
-    base::debug::DumpWithoutCrashing();
-
-    BLOG(0, "Failed to purge expired ad events");
-
-    return FailedToInitialize(std::move(callback));
-  }
-
-  PurgeAllOrphanedAdEvents(base::BindOnce(
-      &AdsImpl::PurgeAllOrphanedAdEventsCallback, weak_factory_.GetWeakPtr(),
-      std::move(wallet), std::move(callback)));
 }
 
 void AdsImpl::PurgeAllOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,

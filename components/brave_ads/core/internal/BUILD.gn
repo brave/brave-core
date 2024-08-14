@@ -578,6 +578,8 @@ static_library("internal") {
     "creatives/segments_database_util.cc",
     "creatives/segments_database_util.h",
     "database/database.cc",
+    "database/database_maintenance.cc",
+    "database/database_maintenance.h",
     "database/database_manager.cc",
     "database/database_manager.h",
     "database/database_manager_observer.h",
