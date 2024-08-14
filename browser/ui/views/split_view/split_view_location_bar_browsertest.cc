@@ -42,22 +42,8 @@ class SplitViewLocationBarBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
     ASSERT_TRUE(embedded_test_server()->Start());
-
-    // embedded_https_test_server().RegisterRequestHandler(
-    //     base::BindRepeating(&SplitViewLocationBarBrowserTest::HandleRequest,
-    //                         base::Unretained(this)));
     ASSERT_TRUE(embedded_https_test_server().Start());
   }
-
-  // std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
-  //     const net::test_server::HttpRequest& request) {
-  //   auto http_response =
-  //       std::make_unique<net::test_server::BasicHttpResponse>();
-  //   http_response->set_code(net::HTTP_OK);
-  //   http_response->set_content("hello");
-  //   http_response->set_content_type("text/plain");
-  //   return http_response;
-  // }
 
  private:
   base::test::ScopedFeatureList scoped_features_;
