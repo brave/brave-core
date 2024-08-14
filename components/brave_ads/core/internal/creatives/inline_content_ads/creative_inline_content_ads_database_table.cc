@@ -13,7 +13,6 @@
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
@@ -46,8 +45,8 @@ void BindColumnTypes(mojom::DBStatementInfo* const mojom_statement) {
       mojom::DBBindColumnType::kString,  // creative_instance_id
       mojom::DBBindColumnType::kString,  // creative_set_id
       mojom::DBBindColumnType::kString,  // campaign_id
-      mojom::DBBindColumnType::kInt64,   // start_at
-      mojom::DBBindColumnType::kInt64,   // end_at
+      mojom::DBBindColumnType::kTime,    // start_at
+      mojom::DBBindColumnType::kTime,    // end_at
       mojom::DBBindColumnType::kInt,     // daily_cap
       mojom::DBBindColumnType::kString,  // advertiser_id
       mojom::DBBindColumnType::kInt,     // priority
@@ -106,8 +105,8 @@ CreativeInlineContentAdInfo FromMojomRow(
   creative_ad.creative_instance_id = ColumnString(mojom_row, 0);
   creative_ad.creative_set_id = ColumnString(mojom_row, 1);
   creative_ad.campaign_id = ColumnString(mojom_row, 2);
-  creative_ad.start_at = ToTimeFromChromeTimestamp(ColumnInt64(mojom_row, 3));
-  creative_ad.end_at = ToTimeFromChromeTimestamp(ColumnInt64(mojom_row, 4));
+  creative_ad.start_at = ColumnTime(mojom_row, 3);
+  creative_ad.end_at = ColumnTime(mojom_row, 4);
   creative_ad.daily_cap = ColumnInt(mojom_row, 5);
   creative_ad.advertiser_id = ColumnString(mojom_row, 6);
   creative_ad.priority = ColumnInt(mojom_row, 7);
@@ -419,7 +418,7 @@ void CreativeInlineContentAds::GetForSegmentsAndDimensions(
             AND $4 BETWEEN campaigns.start_at AND campaigns.end_at;)",
       {GetTableName(),
        BuildBindColumnPlaceholder(/*column_count=*/segments.size()), dimensions,
-       base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
+       TimeToSqlValueAsString(base::Time::Now())},
       nullptr);
   BindColumnTypes(&*mojom_statement);
 
@@ -486,8 +485,7 @@ void CreativeInlineContentAds::GetForDimensions(
           WHERE
             creative_inline_content_ad.dimensions = '$2'
             AND $3 BETWEEN campaigns.start_at AND campaigns.end_at;)",
-      {GetTableName(), dimensions,
-       base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
+      {GetTableName(), dimensions, TimeToSqlValueAsString(base::Time::Now())},
       nullptr);
   BindColumnTypes(&*mojom_statement);
   mojom_transaction->statements.push_back(std::move(mojom_statement));
@@ -542,9 +540,7 @@ void CreativeInlineContentAds::GetForActiveCampaigns(
             INNER JOIN segments ON segments.creative_set_id = creative_inline_content_ad.creative_set_id
           WHERE
             $2 BETWEEN campaigns.start_at AND campaigns.end_at;)",
-      {GetTableName(),
-       base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
-      nullptr);
+      {GetTableName(), TimeToSqlValueAsString(base::Time::Now())}, nullptr);
   BindColumnTypes(&*mojom_statement);
   mojom_transaction->statements.push_back(std::move(mojom_statement));
 

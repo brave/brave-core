@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/debug/dump_without_crashing.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/containers/container_util.h"
@@ -36,7 +35,7 @@ void BindColumnTypes(mojom::DBStatementInfo* const mojom_statement) {
   CHECK(mojom_statement);
 
   mojom_statement->bind_column_types = {
-      mojom::DBBindColumnType::kInt64,   // created_at
+      mojom::DBBindColumnType::kTime,    // created_at
       mojom::DBBindColumnType::kString,  // type
       mojom::DBBindColumnType::kString,  // confirmation_type
       mojom::DBBindColumnType::kString,  // placement_id
@@ -72,8 +71,7 @@ size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
       continue;
     }
 
-    BindColumnInt64(mojom_statement, index++,
-                    ToChromeTimestampFromTime(ad_history_item.created_at));
+    BindColumnTime(mojom_statement, index++, ad_history_item.created_at);
     BindColumnString(mojom_statement, index++, ToString(ad_history_item.type));
     BindColumnString(mojom_statement, index++,
                      ToString(ad_history_item.confirmation_type));
@@ -100,8 +98,7 @@ AdHistoryItemInfo FromMojomRow(const mojom::DBRowInfo* const mojom_row) {
 
   AdHistoryItemInfo ad_history_item;
 
-  ad_history_item.created_at =
-      ToTimeFromChromeTimestamp(ColumnInt64(mojom_row, 0));
+  ad_history_item.created_at = ColumnTime(mojom_row, 0);
   ad_history_item.type = ToAdType(ColumnString(mojom_row, 1));
   ad_history_item.confirmation_type =
       ToConfirmationType(ColumnString(mojom_row, 2));
@@ -242,9 +239,8 @@ void AdHistory::GetForDateRange(const base::Time from_time,
             created_at BETWEEN $2 AND $3
           ORDER BY
             created_at DESC;)",
-      {GetTableName(),
-       base::NumberToString(ToChromeTimestampFromTime(from_time)),
-       base::NumberToString(ToChromeTimestampFromTime(to_time))},
+      {GetTableName(), TimeToSqlValueAsString(from_time),
+       TimeToSqlValueAsString(to_time)},
       nullptr);
   BindColumnTypes(&*mojom_statement);
   mojom_transaction->statements.push_back(std::move(mojom_statement));
@@ -347,9 +343,8 @@ void AdHistory::GetHighestRankedPlacementsForDateRange(
             FilteredAdHistory
           ORDER BY
             created_at DESC;)",
-      {GetTableName(),
-       base::NumberToString(ToChromeTimestampFromTime(from_time)),
-       base::NumberToString(ToChromeTimestampFromTime(to_time))},
+      {GetTableName(), TimeToSqlValueAsString(from_time),
+       TimeToSqlValueAsString(to_time)},
       nullptr);
   BindColumnTypes(&*mojom_statement);
   mojom_transaction->statements.push_back(std::move(mojom_statement));
@@ -402,8 +397,8 @@ void AdHistory::PurgeExpired(ResultCallback callback) const {
             WHERE
               created_at <= $2;)",
           {GetTableName(),
-           base::NumberToString(ToChromeTimestampFromTime(
-               base::Time::Now() - kAdHistoryRetentionPeriod.Get()))});
+           TimeToSqlValueAsString(base::Time::Now() -
+                                  kAdHistoryRetentionPeriod.Get())});
 
   RunTransaction(std::move(mojom_transaction), std::move(callback));
 }

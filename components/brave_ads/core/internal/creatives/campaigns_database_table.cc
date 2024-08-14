@@ -33,10 +33,8 @@ size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
   int index = 0;
   for (const auto& creative_ad : creative_ads) {
     BindColumnString(mojom_statement, index++, creative_ad.campaign_id);
-    BindColumnInt64(mojom_statement, index++,
-                    ToChromeTimestampFromTime(creative_ad.start_at));
-    BindColumnInt64(mojom_statement, index++,
-                    ToChromeTimestampFromTime(creative_ad.end_at));
+    BindColumnTime(mojom_statement, index++, creative_ad.start_at);
+    BindColumnTime(mojom_statement, index++, creative_ad.end_at);
     BindColumnInt(mojom_statement, index++, creative_ad.daily_cap);
     BindColumnString(mojom_statement, index++, creative_ad.advertiser_id);
     BindColumnInt(mojom_statement, index++, creative_ad.priority);

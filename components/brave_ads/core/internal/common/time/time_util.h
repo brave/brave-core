@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIME_TIME_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIME_TIME_UTIL_H_
 
-#include <cstdint>
 #include <string>
 
 namespace base {
@@ -14,9 +13,6 @@ class Time;
 }  // namespace base
 
 namespace brave_ads {
-
-int64_t ToChromeTimestampFromTime(base::Time time);
-base::Time ToTimeFromChromeTimestamp(int64_t timestamp);
 
 int GetLocalTimeInMinutes(base::Time time);
 

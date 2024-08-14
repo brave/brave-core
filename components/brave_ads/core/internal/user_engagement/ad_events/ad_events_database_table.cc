@@ -11,7 +11,6 @@
 #include "base/check.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
@@ -41,7 +40,7 @@ void BindColumnTypes(mojom::DBStatementInfo* const mojom_statement) {
       mojom::DBBindColumnType::kString,  // creative_instance_id
       mojom::DBBindColumnType::kString,  // advertiser_id
       mojom::DBBindColumnType::kString,  // segment
-      mojom::DBBindColumnType::kInt64    // created_at
+      mojom::DBBindColumnType::kTime     // created_at
   };
 }
 
@@ -75,9 +74,8 @@ size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
     BindColumnString(mojom_statement, index++, ad_event.creative_instance_id);
     BindColumnString(mojom_statement, index++, ad_event.advertiser_id);
     BindColumnString(mojom_statement, index++, ad_event.segment);
-    BindColumnInt64(
-        mojom_statement, index++,
-        ToChromeTimestampFromTime(ad_event.created_at.value_or(base::Time())));
+    BindColumnTime(mojom_statement, index++,
+                   ad_event.created_at.value_or(base::Time()));
 
     ++row_count;
   }
@@ -98,8 +96,7 @@ AdEventInfo FromMojomRow(const mojom::DBRowInfo* const mojom_row) {
   ad_event.creative_instance_id = ColumnString(mojom_row, 5);
   ad_event.advertiser_id = ColumnString(mojom_row, 6);
   ad_event.segment = ColumnString(mojom_row, 7);
-  const base::Time created_at =
-      ToTimeFromChromeTimestamp(ColumnInt64(mojom_row, 8));
+  const base::Time created_at = ColumnTime(mojom_row, 8);
   if (!created_at.is_null()) {
     ad_event.created_at = created_at;
   }
@@ -384,18 +381,11 @@ void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
               FROM
                 creative_set_conversions
             )
-            OR DATETIME(
-              (created_at / 1000000) - 11644473600,
-              'unixepoch'
-            ) > DATETIME(
-              ($2 / 1000000) - 11644473600,
-              'unixepoch',
-              '-3 months'
-            )
+            OR created_at > $2
           ORDER BY
             created_at ASC;)",
       {GetTableName(),
-       base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
+       TimeToSqlValueAsString(base::Time::Now() - base::Days(90))},
       nullptr);
   BindColumnTypes(&*mojom_statement);
   mojom_transaction->statements.push_back(std::move(mojom_statement));
@@ -434,19 +424,12 @@ void AdEvents::GetUnexpired(const mojom::AdType ad_type,
                 FROM
                   creative_set_conversions
               )
-              OR DATETIME(
-                (created_at / 1000000) - 11644473600,
-                'unixepoch'
-              ) > DATETIME(
-                ($3 / 1000000) - 11644473600,
-                'unixepoch',
-                '-3 months'
-              )
+              OR created_at > $3
             )
           ORDER BY
             created_at ASC;)",
       {GetTableName(), ToString(static_cast<AdType>(ad_type)),
-       base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
+       TimeToSqlValueAsString(base::Time::Now() - base::Days(90))},
       nullptr);
   BindColumnTypes(&*mojom_statement);
   mojom_transaction->statements.push_back(std::move(mojom_statement));
@@ -456,6 +439,8 @@ void AdEvents::GetUnexpired(const mojom::AdType ad_type,
 }
 
 void AdEvents::PurgeExpired(ResultCallback callback) const {
+  const size_t days = UserHasJoinedBraveRewards() ? 90 : 30;
+
   mojom::DBTransactionInfoPtr mojom_transaction =
       mojom::DBTransactionInfo::New();
   Execute(&*mojom_transaction, R"(
@@ -468,17 +453,9 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
                 FROM
                   creative_set_conversions
               )
-              AND DATETIME(
-                (created_at / 1000000) - 11644473600,
-                'unixepoch'
-              ) <= DATETIME(
-                ($2 / 1000000) - 11644473600,
-                'unixepoch',
-                '$3'
-              );)",
+              AND created_at <= $2;)",
           {GetTableName(),
-           base::NumberToString(ToChromeTimestampFromTime(base::Time::Now())),
-           UserHasJoinedBraveRewards() ? "-3 months" : "-30 days"});
+           TimeToSqlValueAsString(base::Time::Now() - base::Days(days))});
 
   RunTransaction(std::move(mojom_transaction), std::move(callback));
 }

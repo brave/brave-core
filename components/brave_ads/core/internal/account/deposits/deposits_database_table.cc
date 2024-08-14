@@ -11,7 +11,6 @@
 #include "base/check.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
@@ -34,7 +33,7 @@ void BindColumnTypes(mojom::DBStatementInfo* const mojom_statement) {
   mojom_statement->bind_column_types = {
       mojom::DBBindColumnType::kString,  // creative_instance_id
       mojom::DBBindColumnType::kDouble,  // value
-      mojom::DBBindColumnType::kInt64    // expire_at
+      mojom::DBBindColumnType::kTime     // expire_at
   };
 }
 
@@ -50,9 +49,8 @@ size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
     BindColumnString(mojom_statement, index++,
                      creative_ad.creative_instance_id);
     BindColumnDouble(mojom_statement, index++, creative_ad.value);
-    BindColumnInt64(
-        mojom_statement, index++,
-        ToChromeTimestampFromTime(creative_ad.end_at + base::Days(7)));
+    BindColumnTime(mojom_statement, index++,
+                   creative_ad.end_at + base::Days(7));
 
     ++row_count;
   }
@@ -67,9 +65,7 @@ void BindColumns(mojom::DBStatementInfo* const mojom_statement,
 
   BindColumnString(mojom_statement, 0, deposit.creative_instance_id);
   BindColumnDouble(mojom_statement, 1, deposit.value);
-  BindColumnInt64(
-      mojom_statement, 2,
-      ToChromeTimestampFromTime(deposit.expire_at.value_or(base::Time())));
+  BindColumnTime(mojom_statement, 2, deposit.expire_at.value_or(base::Time()));
 }
 
 DepositInfo FromMojomRow(const mojom::DBRowInfo* const mojom_row) {
@@ -79,8 +75,7 @@ DepositInfo FromMojomRow(const mojom::DBRowInfo* const mojom_row) {
 
   deposit.creative_instance_id = ColumnString(mojom_row, 0);
   deposit.value = ColumnDouble(mojom_row, 1);
-  const base::Time expire_at =
-      ToTimeFromChromeTimestamp(ColumnInt64(mojom_row, 2));
+  const base::Time expire_at = ColumnTime(mojom_row, 2);
   if (!expire_at.is_null()) {
     deposit.expire_at = expire_at;
   }
@@ -252,8 +247,7 @@ void Deposits::PurgeExpired(ResultCallback callback) const {
               $1
             WHERE
               $2 >= expire_at;)",
-          {GetTableName(),
-           base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))});
+          {GetTableName(), TimeToSqlValueAsString(base::Time::Now())});
 
   RunTransaction(std::move(mojom_transaction), std::move(callback));
 }

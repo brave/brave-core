@@ -11,6 +11,10 @@
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
+namespace base {
+class Time;
+}  // namespace base
+
 namespace brave_ads::database {
 
 void Execute(mojom::DBTransactionInfo* mojom_transaction,
@@ -20,6 +24,8 @@ void Execute(mojom::DBTransactionInfo* mojom_transaction,
              const std::vector<std::string>& subst);
 
 void Vacuum(mojom::DBTransactionInfo* mojom_transaction);
+
+std::string TimeToSqlValueAsString(base::Time time);
 
 }  // namespace brave_ads::database
 
