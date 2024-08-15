@@ -179,7 +179,11 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_PROTECTIONS_APPLIED_LABEL" desc="Label for secondary panel of Shields which shows a list of invoked fingerprinting protections">
-    Fingerprinting protections applied
+    Fingerprinting protections applied.
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_LEARN_MORE_LINK_TEXT" desc="The label in the shields fingerprinting side panel for users to obtain more information.">
+    Learn more
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_BLOCKED_FINGERPRINTS_LABEL" desc="Label for secondary panel of Shields which shows a list of blocked fingerprints">
