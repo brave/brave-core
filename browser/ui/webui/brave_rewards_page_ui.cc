@@ -1435,8 +1435,8 @@ void RewardsDOMHandler::OnGetStatementOfAccounts(
   dict.Set("adsReceivedThisMonth", statement->ads_received_this_month);
   dict.Set("adsMinEarningsThisMonth", statement->min_earnings_this_month);
   dict.Set("adsMaxEarningsThisMonth", statement->max_earnings_this_month);
-  dict.Set("adsMinEarningsLastMonth", statement->min_earnings_last_month);
-  dict.Set("adsMaxEarningsLastMonth", statement->max_earnings_last_month);
+  dict.Set("adsMinEarningsLastMonth", statement->min_earnings_previous_month);
+  dict.Set("adsMaxEarningsLastMonth", statement->max_earnings_previous_month);
 
   base::Value::Dict ads_summary;
   for (const auto& [mojom_ad_type, count] : statement->ads_summary_this_month) {

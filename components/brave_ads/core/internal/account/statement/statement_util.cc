@@ -61,18 +61,18 @@ std::pair<double, double> GetEstimatedEarningsForThisMonth(
   return {range_low * kMinEstimatedEarningsMultiplier.Get(), range_high};
 }
 
-std::pair<double, double> GetEstimatedEarningsForLastMonth(
+std::pair<double, double> GetEstimatedEarningsForPreviousMonth(
     const TransactionList& transactions) {
-  const double range_low = GetReconciledEarningsForLastMonth(
+  const double range_low = GetReconciledEarningsForPreviousMonth(
       FilterTransactionsForEstimatedEarnings(transactions));
-  const double range_high = GetReconciledEarningsForLastMonth(transactions);
+  const double range_high = GetReconciledEarningsForPreviousMonth(transactions);
 
   return {range_low * kMinEstimatedEarningsMultiplier.Get(), range_high};
 }
 
 int32_t GetAdsReceivedThisMonth(const TransactionList& transactions) {
-  const base::Time from_time = GetLocalTimeAtBeginningOfThisMonth();
-  const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
+  const base::Time from_time = LocalTimeAtBeginningOfThisMonth();
+  const base::Time to_time = LocalTimeAtEndOfThisMonth();
 
   return static_cast<int32_t>(
       GetAdsReceivedForDateRange(transactions, from_time, to_time));
@@ -80,8 +80,8 @@ int32_t GetAdsReceivedThisMonth(const TransactionList& transactions) {
 
 base::flat_map<mojom::AdType, int32_t> GetAdsSummaryThisMonth(
     const TransactionList& transactions) {
-  const base::Time from_time = GetLocalTimeAtBeginningOfThisMonth();
-  const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
+  const base::Time from_time = LocalTimeAtBeginningOfThisMonth();
+  const base::Time to_time = LocalTimeAtEndOfThisMonth();
 
   return GetAdsSummaryForDateRange(transactions, from_time, to_time);
 }

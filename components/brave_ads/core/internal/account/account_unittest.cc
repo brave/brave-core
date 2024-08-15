@@ -167,9 +167,9 @@ TEST_F(BraveAdsAccountTest, GetStatementForRewardsUser) {
   // Act & Assert
   const mojom::StatementInfoPtr expected_mojom_statement =
       mojom::StatementInfo::New();
-  expected_mojom_statement->min_earnings_last_month =
+  expected_mojom_statement->min_earnings_previous_month =
       0.01 * kMinEstimatedEarningsMultiplier.Get();
-  expected_mojom_statement->max_earnings_last_month = 0.01;
+  expected_mojom_statement->max_earnings_previous_month = 0.01;
   expected_mojom_statement->min_earnings_this_month =
       0.05 * kMinEstimatedEarningsMultiplier.Get();
   expected_mojom_statement->max_earnings_this_month = 0.05;

@@ -12,7 +12,8 @@ namespace brave_ads {
 
 double GetUnreconciledEarnings(const TransactionList& transactions);
 double GetReconciledEarningsForThisMonth(const TransactionList& transactions);
-double GetReconciledEarningsForLastMonth(const TransactionList& transactions);
+double GetReconciledEarningsForPreviousMonth(
+    const TransactionList& transactions);
 
 }  // namespace brave_ads
 

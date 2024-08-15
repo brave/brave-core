@@ -487,8 +487,9 @@ void BraveRewardsNativeWorker::OnGetAdsAccountStatement(
       /* success */ true,
       statement->next_payment_date.InSecondsFSinceUnixEpoch() * 1000,
       statement->ads_received_this_month, statement->min_earnings_this_month,
-      statement->max_earnings_this_month, statement->min_earnings_last_month,
-      statement->max_earnings_last_month);
+      statement->max_earnings_this_month,
+      statement->min_earnings_previous_month,
+      statement->max_earnings_previous_month);
 }
 
 bool BraveRewardsNativeWorker::CanConnectAccount(JNIEnv* env) {
