@@ -15,7 +15,7 @@ public struct FocusSystemSettingsView: View {
   }
 
   @Environment(\.colorScheme) private var colorScheme
-  @Environment(\.presentationMode) @Binding private var presentationMode
+  @Environment(\.dismiss) var dismiss
   @Environment(\.verticalSizeClass) private var verticalSizeClass: UserInterfaceSizeClass?
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass: UserInterfaceSizeClass?
 
@@ -142,12 +142,16 @@ public struct FocusSystemSettingsView: View {
             completeDefaultBrowserInteraction()
           },
           label: {
-            completeActionButtonText
-              .font(.subheadline.weight(.semibold))
-              .foregroundColor(Color(braveSystemName: .textInteractive))
-              .dynamicTypeSize(dynamicTypeRange)
-              .padding()
-              .frame(maxWidth: .infinity)
+            Text(
+              screenType == .onboarding
+                ? "\(Strings.FocusOnboarding.startBrowseActionButtonTitle) \(Image(systemName: "arrow.right"))"
+                : "\(Strings.FocusOnboarding.notNowActionButtonTitle)"
+            )
+            .font(.subheadline.weight(.semibold))
+            .foregroundColor(Color(braveSystemName: .textInteractive))
+            .dynamicTypeSize(dynamicTypeRange)
+            .padding()
+            .frame(maxWidth: .infinity)
           }
         )
         .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
@@ -161,23 +165,12 @@ public struct FocusSystemSettingsView: View {
     .padding(.horizontal, shouldUseExtendedDesign ? 75 : 20)
   }
 
-  @ViewBuilder
-  private var completeActionButtonText: some View {
-    if screenType == .onboarding {
-      Text(
-        "\(Strings.FocusOnboarding.startBrowseActionButtonTitle) \(Image(systemName: "arrow.right"))"
-      )
-    } else {
-      Text(Strings.FocusOnboarding.notNowActionButtonTitle)
-    }
-  }
-
   private func completeDefaultBrowserInteraction() {
     if screenType == .onboarding {
       Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
       shouldDismiss = true
     } else {
-      presentationMode.dismiss()
+      dismiss()
     }
   }
 }
