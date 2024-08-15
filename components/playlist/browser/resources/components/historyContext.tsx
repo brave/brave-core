@@ -18,10 +18,11 @@ export function HistoryContext (props: React.PropsWithChildren<{}>) {
     return () => (history = undefined)
   }, [h])
 
-  // When the component mounts, restore the location from local storage
+  // When the component mounts, restore the location from local storage.
+  // This happens only when the initial location is the default location.
   React.useEffect(() => {
     const lastLocation = localStorage.getItem('lastLocation')
-    if (lastLocation) {
+    if (location.pathname === '/' && lastLocation) {
       history?.replace(lastLocation)
     }
   }, [])

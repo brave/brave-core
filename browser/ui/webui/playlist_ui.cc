@@ -196,6 +196,11 @@ void PlaylistUI::CreatePageHandler(
     mojo::PendingReceiver<playlist::mojom::PlaylistPageHandler> native_ui) {
   DCHECK(service_observer.is_valid());
 
+  if (page_.is_bound()) {
+    // this can happen when page navigation is triggered from browser side(Open
+    // in Playlist menu)
+    page_.reset();
+  }
   page_.Bind(std::move(page));
 
   auto* service = playlist::PlaylistServiceFactory::GetForBrowserContext(
