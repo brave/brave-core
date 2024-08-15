@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_browser_ai_chat_android_sources =
-    [ "//brave/browser/ai_chat/android/ai_chat_utils.cc" ]
+    [ "//brave/browser/ai_chat/android/ai_chat_utils_android.cc" ]
 
 brave_browser_ai_chat_android_deps = [
   "//brave/components/ai_chat/core/browser",

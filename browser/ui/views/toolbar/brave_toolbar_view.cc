@@ -17,6 +17,7 @@
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -40,6 +41,12 @@
 #include "ui/base/window_open_disposition_utils.h"
 #include "ui/events/event.h"
 #include "ui/views/window/hit_test_utils.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_utils.h"
+#include "brave/browser/ui/views/toolbar/ai_chat_button.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -236,6 +243,26 @@ void BraveToolbarView::Init() {
   wallet_->UpdateImageAndText();
 
   UpdateWalletButtonVisibility();
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // Don't check policy status since we're going to
+  // setup a watcher for policy pref.
+  if (ai_chat::IsAllowedForContext(browser_->profile(), false)) {
+    ai_chat_button_ = container_view->AddChildViewAt(
+        std::make_unique<AIChatButton>(browser()),
+        *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+    show_ai_chat_button_.Init(
+        ai_chat::prefs::kBraveAIChatShowToolbarButton,
+        browser_->profile()->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::UpdateAIChatButtonVisibility,
+                            base::Unretained(this)));
+    hide_ai_chat_button_by_policy_.Init(
+        ai_chat::prefs::kEnabledByPolicy, profile->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::UpdateAIChatButtonVisibility,
+                            base::Unretained(this)));
+    UpdateAIChatButtonVisibility();
+  }
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::BraveVpnServiceFactory::GetForProfile(profile)) {
@@ -463,6 +490,14 @@ void BraveToolbarView::ResetButtonBounds() {
     bookmark_->SetX(bookmark_x);
   }
 }
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+void BraveToolbarView::UpdateAIChatButtonVisibility() {
+  bool should_show = ai_chat::IsAllowedForContext(browser()->profile()) &&
+                     show_ai_chat_button_.GetValue();
+  ai_chat_button_->SetVisible(should_show);
+}
+#endif
 
 void BraveToolbarView::UpdateWalletButtonVisibility() {
   Profile* profile = browser()->profile();
