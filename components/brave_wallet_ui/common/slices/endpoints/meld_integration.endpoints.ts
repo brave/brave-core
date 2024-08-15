@@ -247,7 +247,8 @@ export const meldIntegrationEndpoints = ({
             sourceCurrencyCode,
             destionationCurrencyCode,
             amount,
-            account
+            account,
+            null
           )
 
           return {
