@@ -50,6 +50,7 @@ function Container () {
       treeListElement = <ToggleList
           webcompatSettings={ siteSettings?.webcompatSettings }
           totalBlockedTitle={getLocale('braveShieldsFingerprintingProtectionsAppliedLabel')}
+          learnMoreText={getLocale('braveShieldsLearnMoreLinkText')}
       />
     }
   }

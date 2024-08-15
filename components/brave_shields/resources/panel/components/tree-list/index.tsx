@@ -19,6 +19,10 @@ import { ContentSettingsType } from 'gen/components/content_settings/core/common
 
 import Toggle from '../../../../../web-components/toggle'
 
+interface WebcompatSettingsMap {[index: ContentSettingsType]: boolean}
+
+const kLearnMoreLink = 'https://support.brave.com/hc/en-us/articles/360022806212-How-do-I-use-Shields-while-browsing#h_01HXSZ8JPHR8YMBEZCT5M0VZTR'
+
 interface Props {
   blockedList: Url[]
   allowedList?: Url[]
@@ -45,14 +49,14 @@ function generateWebcompatEntries (invokedWebcompatList: Number[] | undefined) :
 }
 
 function countActiveProtections (
-  webcompatSettings: Map<ContentSettingsType, boolean>,
+  webcompatSettings: WebcompatSettingsMap,
   invokedWebcompatList: number[] | undefined) {
   if (invokedWebcompatList === undefined) {
     return 0;
   }
   let count = 0;
   for (const invokedItem of invokedWebcompatList) {
-    if (webcompatSettings[invokedItem] === false) {
+    if (!webcompatSettings[invokedItem]) {
       count++;
     }
   }
@@ -193,7 +197,15 @@ function TreeList (props: Props) {
   )
 }
 
-export function ToggleList (props: { webcompatSettings: Map<ContentSettingsType, boolean>, totalBlockedTitle: string }) {
+const handleLearnMoreClick = () => {
+  chrome.tabs.create({ url: kLearnMoreLink, active: true })
+}
+
+export function ToggleList (props: {
+  webcompatSettings: WebcompatSettingsMap,
+  totalBlockedTitle: string,
+  learnMoreText: string
+}) {
   const { siteBlockInfo, getSiteSettings } = React.useContext(DataContext)
   const invokedWebcompatList = siteBlockInfo?.invokedWebcompatList;
   const count = countActiveProtections(props.webcompatSettings, invokedWebcompatList);
@@ -206,6 +218,7 @@ export function ToggleList (props: { webcompatSettings: Map<ContentSettingsType,
     <ScriptsInfo>
       <span id='active-protection-count'>{count}</span>
       <span>{props.totalBlockedTitle}</span>
+      <span><a href="#" onClick={handleLearnMoreClick}>{props.learnMoreText}</a></span>
     </ScriptsInfo>
     <ToggleListContainer>
       {entries.map(([name, value]: [string, number]) => (
@@ -213,7 +226,7 @@ export function ToggleList (props: { webcompatSettings: Map<ContentSettingsType,
           <span>{name}</span>
           <Toggle
             onChange={(isEnabled: boolean) => handleWebcompatToggle(value, isEnabled)}
-            isOn={props.webcompatSettings[value] !== true}
+            isOn={!props.webcompatSettings[value]}
             size='sm'
             accessibleLabel={name}
             disabled={false}
