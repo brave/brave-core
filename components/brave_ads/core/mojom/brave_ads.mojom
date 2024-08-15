@@ -152,7 +152,9 @@ enum DBBindColumnType {
   kInt64,
   kDouble,
   kBool,
-  kString
+  kString,
+  kTime,
+  kTimeDelta
 };
 
 union DBColumnValueUnion {
@@ -161,6 +163,8 @@ union DBColumnValueUnion {
   double double_value;
   bool bool_value;
   string string_value;
+  mojo_base.mojom.Time time_value;
+  mojo_base.mojom.TimeDelta time_delta_value;
 };
 
 struct DBBindColumnInfo {

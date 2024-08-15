@@ -8,7 +8,6 @@
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/time/time_delta_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
@@ -68,9 +67,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpired) {
   database_table_.RecordEvent(ad_event_1, record_ad_event_callback.Get());
 
   // Move the clock forward to when the ad events expire.
-  AdvanceClockBy(Months(3));
+  AdvanceClockBy(base::Days(90));
 
-  // Ad event 2: Recorded on 19th June 2024. This ad event should be included
+  // Ad event 2: Recorded on 17th June 2024. This ad event should be included
   // because it occurred within the expiry window.
   const NotificationAdInfo ad_2 =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
@@ -111,7 +110,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
   database::SaveCreativeSetConversions(creative_set_conversions);
 
   // Move the clock forward to when the ad events expire.
-  AdvanceClockBy(Months(3));
+  AdvanceClockBy(base::Days(90));
 
   // Act & Assert
   base::MockCallback<database::table::GetAdEventsCallback> callback;
@@ -136,7 +135,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredOnTheCuspOfExpiry) {
   database_table_.RecordEvent(ad_event, record_ad_event_callback.Get());
 
   // Move the clock forward to just before the ad events expire.
-  AdvanceClockBy(Months(3) - base::Milliseconds(1));
+  AdvanceClockBy(base::Days(90) - base::Milliseconds(1));
 
   // Act & Assert
   base::MockCallback<database::table::GetAdEventsCallback> callback;
@@ -161,9 +160,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredForAdType) {
   database_table_.RecordEvent(ad_event_1, record_ad_event_callback.Get());
 
   // Move the clock forward to when the ad events expire.
-  AdvanceClockBy(Months(3));
+  AdvanceClockBy(base::Days(90));
 
-  // Ad event 2: Recorded on 19th March 2024. This ad event should not be
+  // Ad event 2: Recorded on 17th June 2024. This ad event should not be
   // included because it has a mismatching ad type.
   const NotificationAdInfo ad_2 =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
@@ -172,7 +171,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredForAdType) {
                    /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_2, record_ad_event_callback.Get());
 
-  // Ad event 3: Recorded on 19th June 2024. This ad event should be included
+  // Ad event 3: Recorded on 17th June 2024. This ad event should be included
   // because it occurred within the expiry window.
   const NewTabPageAdInfo ad_3 =
       test::BuildNewTabPageAd(/*should_generate_random_uuids=*/true);
@@ -224,7 +223,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
   database::SaveCreativeSetConversions(creative_set_conversions);
 
   // Move the clock forward to when the ad events expire.
-  AdvanceClockBy(Months(3));
+  AdvanceClockBy(base::Days(90));
 
   // Act & Assert
   base::MockCallback<database::table::GetAdEventsCallback> callback;
@@ -249,9 +248,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeExpired) {
   database_table_.RecordEvent(ad_event_1, result_callback.Get());
 
   // Move the clock forward to when the ad events expire.
-  AdvanceClockBy(Months(3));
+  AdvanceClockBy(base::Days(90));
 
-  // Ad event 2: Recorded on 19th June 2024. This ad event should be included
+  // Ad event 2: Recorded on 17th June 2024. This ad event should be included
   // because it occurred within the expiry window.
   const NotificationAdInfo ad_2 =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
@@ -335,7 +334,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
   database::SaveCreativeSetConversions(creative_set_conversions);
 
   // Move the clock forward to when the ad events expire.
-  AdvanceClockBy(Months(3));
+  AdvanceClockBy(base::Days(90));
 
   // Act
   database_table_.PurgeExpired(result_callback.Get());
