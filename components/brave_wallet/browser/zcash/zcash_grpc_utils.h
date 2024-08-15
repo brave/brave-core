@@ -32,7 +32,7 @@ class GRrpcMessageStreamHandler
  private:
   virtual bool ProcessMessage(std::string_view message) = 0;
 
-  size_t message_data_limit_;
+  size_t message_data_limit_ = 0;
   std::string data_;
   size_t retry_counter_ = 0;
 };

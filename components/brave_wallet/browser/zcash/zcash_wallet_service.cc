@@ -586,6 +586,7 @@ void ZCashWalletService::OnGetLatestBlockForAccountBirthday(
     mojom::AccountIdPtr account_id,
     MakeAccountShieldedCallback callback,
     base::expected<zcash::mojom::BlockIDPtr, std::string> result) {
+  CHECK(account_id);
   if (!result.has_value() || !result.value()) {
     std::move(callback).Run("Failed to retrieve latest block");
     return;
@@ -605,7 +606,7 @@ void ZCashWalletService::OnGetLatestBlockForAccountBirthday(
   zcash_rpc_->GetTreeState(
       GetNetworkForZCashKeyring(account_id->keyring_id), std::move(block_id),
       base::BindOnce(&ZCashWalletService::OnGetTreeStateForAccountBirthday,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(account_id),
+                     weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
                      std::move(callback)));
 }
 

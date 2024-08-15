@@ -524,7 +524,6 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
       "jelly art frequent fence middle ice moral wage toddler attitude sign "
       "lesson grain",
       kTestWalletPassword, false, base::DoNothing());
-  OrchardBundleManager::OverrideRandomSeedForTesting(70972);
   GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
   GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
 

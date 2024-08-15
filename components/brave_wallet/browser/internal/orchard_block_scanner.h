@@ -41,7 +41,7 @@ class OrchardBlockScanner {
   virtual ~OrchardBlockScanner();
 
   // Scans blocks to find incoming notes related to fvk
-  // Also check whether existing notes were spend.
+  // Also checks whether existing notes were spent.
   virtual base::expected<Result, OrchardBlockScanner::ErrorCode> ScanBlocks(
       std::vector<OrchardNote> known_notes,
       std::vector<zcash::mojom::CompactBlockPtr> blocks);

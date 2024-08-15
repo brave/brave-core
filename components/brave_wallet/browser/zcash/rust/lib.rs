@@ -44,7 +44,7 @@ use brave_wallet::{
 };
 
 use zcash_note_encryption::{
-    batch, BatchDomain, Domain, ShieldedOutput, COMPACT_NOTE_SIZE, ENC_CIPHERTEXT_SIZE,
+    batch, Domain, ShieldedOutput, COMPACT_NOTE_SIZE,
 };
 
 use crate::ffi::OrchardCompactAction;
@@ -560,12 +560,12 @@ impl BatchOrchardDecodeBundle {
     }
 
     fn note_value(self :&BatchOrchardDecodeBundle, index: usize) -> u32 {
-      u32::try_from(self.0.outputs[index as usize].note.value().inner()).expect(
+      u32::try_from(self.0.outputs[index].note.value().inner()).expect(
           "Outputs are always created from a u32, so conversion back will always succeed")
     }
 
     fn note_nullifier(self :&BatchOrchardDecodeBundle, fvk: &[u8; 96], index: usize) -> [u8; 32] {
-      self.0.outputs[index as usize].note.nullifier(&OrchardFVK::from_bytes(fvk).unwrap()).to_bytes()
+      self.0.outputs[index].note.nullifier(&OrchardFVK::from_bytes(fvk).unwrap()).to_bytes()
     }
 }
 

@@ -31,7 +31,7 @@ const int kCurrentVersionNumber = 2;
 
 std::optional<uint32_t> ReadUint32(sql::Statement& statement, size_t index) {
   auto v = statement.ColumnInt64(index);
-  if (v < 0 || v > std::numeric_limits<uint32_t>::max()) {
+  if (!base::IsValueInRangeForNumericType<uint32_t>(v)) {
     return std::nullopt;
   }
   return static_cast<uint32_t>(v);

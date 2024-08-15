@@ -35,9 +35,9 @@ using OrchardFullViewKey = std::array<uint8_t, kOrchardFullViewKeySize>;
 
 // Reduce current scanning position on this value if reorg is found
 // All Zcash network participants basically assume rollbacks longer than 100
-// blocks will not occur
+// blocks will not occur.
 inline constexpr size_t kChainReorgBlockDelta = 150;
-// Number of blocks downloaded by a single request
+// Number of blocks downloaded by a single request.
 inline constexpr size_t kScanBatchSize = 10;
 
 // https://zips.z.cash/zip-0316#encoding-of-unified-addresses
@@ -50,9 +50,9 @@ enum ZCashAddrType {
 };
 
 enum class OrchardAddressKind {
-  // External kind, can be used in account addresses
+  // External kind, can be used in account addresses.
   External,
-  // Internal "change" address
+  // Internal "change" address.
   Internal
 };
 

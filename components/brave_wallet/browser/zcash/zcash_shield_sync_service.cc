@@ -234,24 +234,24 @@ void ZCashShieldSyncService::OnGetTreeStateForChainVerification(
   if (!tree_state.has_value() || !tree_state.value()) {
     error_ = Error{ErrorCode::kFailedToReceiveTreeState, tree_state.error()};
     ScheduleWorkOnTask();
-  } else {
-    auto backend_block_hash = RevertHex(tree_state.value()->hash);
-    if (backend_block_hash != account_meta.latest_scanned_block_hash) {
-      // Assume that chain reorg can't affect more than kChainReorgBlockDelta
-      // blocks So we can just fallback on this number.
-      uint32_t new_block_id =
-          account_meta.latest_scanned_block_id > kChainReorgBlockDelta
-              ? account_meta.latest_scanned_block_id - kChainReorgBlockDelta
-              : 0;
-      GetTreeStateForChainReorg(new_block_id);
-      return;
-    } else {
-      // Restore latest scanned block from the database so we can continue
-      // scanning from previous point.
-      latest_scanned_block_ = account_meta.latest_scanned_block_id;
-      ScheduleWorkOnTask();
-    }
+    return;
   }
+  auto backend_block_hash = RevertHex(tree_state.value()->hash);
+  if (backend_block_hash != account_meta.latest_scanned_block_hash) {
+    // Assume that chain reorg can't affect more than kChainReorgBlockDelta
+    // blocks So we can just fallback on this number.
+    uint32_t new_block_id =
+        account_meta.latest_scanned_block_id > kChainReorgBlockDelta
+            ? account_meta.latest_scanned_block_id - kChainReorgBlockDelta
+            : 0;
+    GetTreeStateForChainReorg(new_block_id);
+    return;
+  }
+
+  // Restore latest scanned block from the database so we can continue
+  // scanning from previous point.
+  latest_scanned_block_ = account_meta.latest_scanned_block_id;
+  ScheduleWorkOnTask();
 }
 
 void ZCashShieldSyncService::GetTreeStateForChainReorg(
@@ -290,9 +290,11 @@ void ZCashShieldSyncService::OnDatabaseUpdatedForChainReorg(
     std::optional<ZCashOrchardStorage::Error> error) {
   if (error) {
     error_ = Error{ErrorCode::kFailedToUpdateDatabase, error->message};
-  } else {
-    latest_scanned_block_ = new_block_height;
+    ScheduleWorkOnTask();
+    return;
   }
+
+  latest_scanned_block_ = new_block_height;
   ScheduleWorkOnTask();
 }
 
