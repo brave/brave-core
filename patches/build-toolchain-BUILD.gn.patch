@@ -1,0 +1,13 @@
+diff --git a/build/toolchain/BUILD.gn b/build/toolchain/BUILD.gn
+index d3a608e49559309f640a667373a0ee5e2997b0f5..d030fe966fc83d4fc818f2c3140d4df80b044782 100644
+--- a/build/toolchain/BUILD.gn
++++ b/build/toolchain/BUILD.gn
+@@ -11,7 +11,7 @@ declare_args() {
+ }
+ 
+ if (current_toolchain == default_toolchain) {
+-  if (action_pool_depth == -1 || use_remoteexec) {
++  if (action_pool_depth == -1) {
+     action_pool_depth = exec_script("get_cpu_count.py", [], "value")
+   }
+ 
