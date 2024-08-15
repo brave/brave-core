@@ -236,6 +236,10 @@ inline constexpr char kGoogleAccountChooserURL[] = "https://support.brave.com/";
 inline constexpr char kGoogleAccountDeviceActivityURL[] =
     "https://support.brave.com/";
 
+// URL of the two factor authentication setup required intersitial.
+inline constexpr char kGoogleTwoFactorIntersitialURL[] =
+    "https://support.brave.com/";
+
 // URL of the Google Password Manager.
 inline constexpr char kGooglePasswordManagerURL[] = "https://support.brave.com";
 
