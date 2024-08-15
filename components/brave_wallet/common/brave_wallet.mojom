@@ -322,6 +322,9 @@ interface PageHandler {
 
   // Android only - Used by the brave://wallet page to open up the backup UI.
   ShowWalletBackupUI();
+
+  // Android only - Used by the brave://wallet page to open up the unlock UI.
+  UnlockWalletUI();
 };
 
 enum AssetPriceTimeframe {

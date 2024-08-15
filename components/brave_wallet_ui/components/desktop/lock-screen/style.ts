@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import Icon from '@brave/leo/react/icon'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Button from '@brave/leo/react/button'
 
@@ -13,7 +14,7 @@ import {
 } from '../../../assets/svg-icons/unlock-wallet-icons'
 
 // Shared Styles
-import { Text, Column } from '../../shared/style'
+import { Text, Column, WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -65,4 +66,32 @@ export const InputColumn = styled(Column)`
 export const UnlockButton = styled(Button)`
   width: 100%;
   margin-bottom: 12px;
+`
+
+export const AndroidLockScreenWrapper = styled(WalletButton)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  background-color: none;
+  border: none;
+  outline: none;
+  margin: 0px;
+  padding: 12px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  gap: 8px;
+  z-index: 100;
+  position: absolute;
+`
+
+export const DoubleTapIcon = styled(Icon).attrs({
+  name: 'finger-double-tap'
+})`
+  --leo-icon-size: 72px;
+  color: ${leo.color.icon.interactive};
+  margin-bottom: 16px;
 `

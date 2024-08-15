@@ -28,6 +28,11 @@ void ShowWalletBackup() {
   Java_BraveWalletProviderDelegateImplHelper_showWalletBackup(env);
 }
 
+void UnlockWallet() {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveWalletProviderDelegateImplHelper_unlockWallet(env);
+}
+
 void ShowWalletOnboarding(content::WebContents*) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveWalletProviderDelegateImplHelper_showWalletOnboarding(env);

@@ -227,6 +227,7 @@ leo_icons = [
   "file.svg",
   "filter.svg",
   "filter-settings.svg",
+  "finger-double-tap.svg",
   "flash.svg",
   "flashdrive.svg",
   "folder-exchange.svg",

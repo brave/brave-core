@@ -31,6 +31,7 @@ class BraveWalletProviderDelegate {
   virtual bool IsTabVisible() = 0;
   virtual void ShowPanel() = 0;
   virtual void ShowWalletBackup() = 0;
+  virtual void UnlockWallet() = 0;
   virtual void WalletInteractionDetected() = 0;
   virtual void ShowWalletOnboarding() = 0;
   virtual void ShowAccountCreation(mojom::CoinType type) = 0;

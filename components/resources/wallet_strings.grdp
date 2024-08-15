@@ -214,6 +214,8 @@
   <message name="IDS_BRAVE_WALLET_LOCK_SCREEN_BUTTON" desc="Lock screen unlock button">Unlock</message>
   <message name="IDS_BRAVE_WALLET_LOCK_SCREEN_ERROR" desc="Lock screen wrong password error">Incorrect password</message>
   <message name="IDS_BRAVE_WALLET_UNLOCK_WALLET" desc="Unlock wallet screen title">Unlock Wallet</message>
+  <message name="IDS_BRAVE_WALLET_DOUBLE_TAP_SCREEN" desc="Double tap screen to continue title">Double tap screen to continue</message>
+  <message name="IDS_BRAVE_WALLET_UNLOCK_ANDROID_DESCRIPTION" desc="Unlock android wallet screen description">Your wallet is locked for your security. Unlock wallet to continue.</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_SETTINGS" desc="Wallet popup settings button">Settings</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_LOCK" desc="Wallet popup lock crypto button">Lock wallet</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_BACKUP" desc="Wallet popup backup wallet button">Backup Wallet</message>
