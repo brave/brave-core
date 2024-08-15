@@ -101,6 +101,7 @@ export const LockScreen = () => {
   }, [history, isPanel])
 
   const onDoubleTap = (e: React.MouseEvent<HTMLButtonElement>) => {
+    // Event detail is two for double clicks.
     if (e.detail === 2) {
       getWalletAPIProxy().pageHandler?.unlockWalletUI()
     }
