@@ -238,13 +238,14 @@ void BraveContentRendererClient::WillEvaluateServiceWorkerOnWorkerThread(
     v8::Local<v8::Context> v8_context,
     int64_t service_worker_version_id,
     const GURL& service_worker_scope,
-    const GURL& script_url) {
+    const GURL& script_url,
+    const blink::ServiceWorkerToken& service_worker_token) {
   brave_search_service_worker_holder_.WillEvaluateServiceWorkerOnWorkerThread(
       context_proxy, v8_context, service_worker_version_id,
       service_worker_scope, script_url);
   ChromeContentRendererClient::WillEvaluateServiceWorkerOnWorkerThread(
       context_proxy, v8_context, service_worker_version_id,
-      service_worker_scope, script_url);
+      service_worker_scope, script_url, service_worker_token);
 }
 
 void BraveContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
