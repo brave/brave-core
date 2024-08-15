@@ -365,6 +365,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_EQ(result->second[0]->chain_id, mojom::kPolygonMainnetChainId);
   EXPECT_EQ(result->second[0]->coin, mojom::CoinType::ETH);
   EXPECT_EQ(result->second[0]->is_compressed, false);
+  EXPECT_EQ(result->second[0]->spl_token_program,
+            mojom::SPLTokenProgram::kUnsupported);
 
   // Valid, 2 ETH NFTs
   json = R"({
@@ -425,6 +427,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_EQ(result->second[0]->chain_id, mojom::kPolygonMainnetChainId);
   EXPECT_EQ(result->second[0]->coin, mojom::CoinType::ETH);
   EXPECT_EQ(result->second[0]->is_compressed, false);
+  EXPECT_EQ(result->second[0]->spl_token_program,
+            mojom::SPLTokenProgram::kUnsupported);
 
   EXPECT_EQ(result->second[1]->contract_address,
             "0x2222222222222222222222222222222222222222");
@@ -443,6 +447,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_EQ(result->second[1]->chain_id, mojom::kMainnetChainId);
   EXPECT_EQ(result->second[1]->coin, mojom::CoinType::ETH);
   EXPECT_EQ(result->second[1]->is_compressed, false);
+  EXPECT_EQ(result->second[1]->spl_token_program,
+            mojom::SPLTokenProgram::kUnsupported);
 
   // 6 ETH nfts, but only 1 has all necessary keys yields 1 NFT
   //
@@ -584,6 +590,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_EQ(result->second[0]->chain_id, mojom::kSolanaMainnet);
   EXPECT_EQ(result->second[0]->coin, mojom::CoinType::SOL);
   EXPECT_EQ(result->second[0]->is_compressed, false);
+  EXPECT_EQ(result->second[0]->spl_token_program,
+            mojom::SPLTokenProgram::kUnknown);
 
   // 1 SOL NFT (NonFungibleEdition)
   json = R"({
@@ -633,6 +641,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_EQ(result->second[0]->coingecko_id, "");
   EXPECT_EQ(result->second[0]->chain_id, mojom::kSolanaMainnet);
   EXPECT_EQ(result->second[0]->coin, mojom::CoinType::SOL);
+  EXPECT_EQ(result->second[0]->spl_token_program,
+            mojom::SPLTokenProgram::kUnknown);
 
   // 1 SOL NFT (ProgrammableNonFungible)
   json = R"({
@@ -684,6 +694,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_EQ(result->second[0]->coingecko_id, "");
   EXPECT_EQ(result->second[0]->chain_id, mojom::kSolanaMainnet);
   EXPECT_EQ(result->second[0]->coin, mojom::CoinType::SOL);
+  EXPECT_EQ(result->second[0]->spl_token_program,
+            mojom::SPLTokenProgram::kUnknown);
 
   // An NFT with a spam_score > 0 will be skipped
   json = R"({
@@ -834,6 +846,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_EQ(result->second[0]->contract_address,
             "6FoSmkL9Z6yoFtTrhsC8Zq4w4PDpsMfGRXSgiR3ri66n");
   EXPECT_EQ(result->second[0]->is_compressed, true);
+  EXPECT_EQ(result->second[0]->spl_token_program,
+            mojom::SPLTokenProgram::kUnknown);
 }
 
 TEST_F(SimpleHashClientUnitTest, ParseSolCompressedNftProofData) {
