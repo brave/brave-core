@@ -46,7 +46,9 @@ AdsImpl::AdsImpl(AdsClient* const ads_client,
     : global_state_(ads_client, std::move(token_generator)),
       database_maintenance_(std::make_unique<database::Maintenance>()) {}
 
-AdsImpl::~AdsImpl() = default;
+AdsImpl::~AdsImpl() {
+  NotificationAdManager::GetInstance().MaybeRemoveAll();
+}
 
 void AdsImpl::AddBatAdsObserver(
     std::unique_ptr<AdsObserverInterface> observer) {
@@ -90,24 +92,6 @@ void AdsImpl::Initialize(mojom::WalletInfoPtr wallet,
   }
 
   CreateOrOpenDatabase(std::move(wallet), std::move(callback));
-}
-
-void AdsImpl::Shutdown(ShutdownCallback callback) {
-  if (!is_initialized_) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Shutdown failed as ads not initialized");
-    base::debug::DumpWithoutCrashing();
-
-    BLOG(0, "Shutdown failed as not initialized");
-
-    return std::move(callback).Run(/*success=*/false);
-  }
-
-  NotificationAdManager::GetInstance().RemoveAll(/*should_close=*/true);
-
-  std::move(callback).Run(/*success=*/true);
 }
 
 void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {

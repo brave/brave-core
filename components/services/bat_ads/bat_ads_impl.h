@@ -49,7 +49,6 @@ class BatAdsImpl : public mojom::BatAds {
 
   void Initialize(brave_ads::mojom::WalletInfoPtr wallet,
                   InitializeCallback callback) override;
-  void Shutdown(ShutdownCallback callback) override;
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 

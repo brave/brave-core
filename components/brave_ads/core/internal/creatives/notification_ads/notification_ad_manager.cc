@@ -104,6 +104,14 @@ void NotificationAdManager::RemoveAll(bool should_close) {
   SetProfileListPref(prefs::kNotificationAds, NotificationAdsToValue(ads_));
 }
 
+void NotificationAdManager::MaybeRemoveAll() {
+// Only remove and close notification ads on iOS, because notifications ads live
+// in the notification tray or notification center on other platforms.
+#if BUILDFLAG(IS_IOS)
+  RemoveAll(/*should_close=*/true);
+#endif  // BUILDFLAG(IS_IOS)
+}
+
 bool NotificationAdManager::Exists(const std::string& placement_id) const {
   CHECK(!placement_id.empty());
 
@@ -121,10 +129,6 @@ void NotificationAdManager::Initialize() {
   }
   ads_ = NotificationAdsFromValue(*list);
 
-  MaybeRemoveAll();
-}
-
-void NotificationAdManager::MaybeRemoveAll() {
 #if BUILDFLAG(IS_ANDROID)
   if (WasBrowserUpgraded()) {
     // Android deletes notifications after upgrading an app, so we should remove

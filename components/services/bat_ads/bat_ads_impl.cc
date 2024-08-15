@@ -85,10 +85,6 @@ void BatAdsImpl::Initialize(brave_ads::mojom::WalletInfoPtr wallet,
   GetAds()->Initialize(std::move(wallet), std::move(callback));
 }
 
-void BatAdsImpl::Shutdown(ShutdownCallback callback) {
-  GetAds()->Shutdown(std::move(callback));
-}
-
 void BatAdsImpl::MaybeGetNotificationAd(
     const std::string& placement_id,
     MaybeGetNotificationAdCallback callback) {

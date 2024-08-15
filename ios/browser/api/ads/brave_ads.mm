@@ -294,18 +294,14 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
 
 - (void)shutdownService:(nullable void (^)())completion {
   if ([self isServiceRunning]) {
-    dispatch_group_notify(
-        self.componentUpdaterPrefsWriteGroup, dispatch_get_main_queue(), ^{
-          // TODO(https://github.com/brave/brave-browser/issues/32917):
-          // Deprecate shutdown API call.
-          self->ads->Shutdown(base::BindOnce(^(bool) {
-            [self cleanupAds];
+    dispatch_group_notify(self.componentUpdaterPrefsWriteGroup,
+                          dispatch_get_main_queue(), ^{
+                            [self cleanupAds];
 
-            if (completion) {
-              completion();
-            }
-          }));
-        });
+                            if (completion) {
+                              completion();
+                            }
+                          });
   } else {
     if (completion) {
       completion();

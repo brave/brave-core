@@ -152,7 +152,6 @@ interface BatAds {
   SetFlags(brave_ads.mojom.Flags flags);
 
   Initialize(brave_ads.mojom.WalletInfo? wallet) => (bool success);
-  Shutdown() => (bool success);
 
   GetDiagnostics() => (mojo_base.mojom.ListValue? value);
 
