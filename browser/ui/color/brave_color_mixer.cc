@@ -23,6 +23,7 @@
 #include "ui/base/ui_base_features.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
+#include "ui/color/color_provider_key.h"
 #include "ui/color/color_recipe.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/color_utils.h"
@@ -748,6 +749,8 @@ void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarPanelHeaderButtonHovered] = {
       leo::GetColor(leo::Color::kColorNeutral60,
                     is_dark ? leo::Theme::kDark : leo::Theme::kLight)};
+  mixer[kColorTabDividerFrameInactive] = {SkColorSetRGB(0x3F, 0x32, 0x56)};
+  mixer[kColorTabDividerFrameActive] = {SkColorSetRGB(0x3F, 0x32, 0x56)};
 }
 
 void AddBraveTorThemeColorMixer(ui::ColorProvider* provider,
@@ -824,6 +827,8 @@ void AddTorThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorToolbarContentAreaSeparator] = {kColorToolbar};
   mixer[ui::kColorFrameActive] = {kPrivateTorFrame};
   mixer[ui::kColorFrameInactive] = {kPrivateTorFrame};
+  mixer[kColorTabDividerFrameInactive] = {SkColorSetRGB(0x5A, 0x53, 0x66)};
+  mixer[kColorTabDividerFrameActive] = {SkColorSetRGB(0x5A, 0x53, 0x66)};
 }
 
 void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
@@ -901,4 +906,12 @@ void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
       is_dark ? leo::kColorPrimitiveNeutral20 : SK_ColorWHITE};
   mixer[kColorTabBackgroundActiveFrameInactive] = {
       kColorTabBackgroundActiveFrameActive};
+
+  auto divider_color =
+      leo::GetColor(leo::Color::kColorDividerStrong,
+                    key.color_mode == ui::ColorProviderKey::ColorMode::kDark
+                        ? leo::Theme::kDark
+                        : leo::Theme::kLight);
+  mixer[kColorTabDividerFrameInactive] = {divider_color};
+  mixer[kColorTabDividerFrameActive] = {divider_color};
 }
