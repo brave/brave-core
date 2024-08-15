@@ -1442,7 +1442,7 @@ TEST_F(SimpleHashClientUnitTest, GetNfts) {
   nft1->logo =
       "https://cdn.simplehash.com/assets/"
       "168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png";
-  nft1->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
+  nft1->spl_token_program = mojom::SPLTokenProgram::kUnknown;
   expected_nfts.push_back(std::move(nft1));
 
   auto nft2 = mojom::BlockchainToken::New();
@@ -1459,7 +1459,7 @@ TEST_F(SimpleHashClientUnitTest, GetNfts) {
   nft2->logo =
       "https://cdn.simplehash.com/assets/"
       "8ceccddf1868cf1d3860184fab3f084049efecdbaafb4eea43a1e33823c161a1.png";
-  nft2->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
+  nft2->spl_token_program = mojom::SPLTokenProgram::kUnknown;
   expected_nfts.push_back(std::move(nft2));
   TestGetNfts(mojom::CoinType::SOL, std::move(nft_ids), expected_nfts);
 
