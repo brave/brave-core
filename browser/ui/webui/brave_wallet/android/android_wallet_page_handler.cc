@@ -30,3 +30,7 @@ void AndroidWalletPageHandler::ShowApprovePanelUI() {
 void AndroidWalletPageHandler::ShowWalletBackupUI() {
   ::brave_wallet::ShowWalletBackup();
 }
+
+void AndroidWalletPageHandler::UnlockWalletUI() {
+  ::brave_wallet::UnlockWallet();
+}

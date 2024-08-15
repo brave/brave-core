@@ -17,6 +17,9 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.content_public.browser.WebContents;
 
+/**
+ * @noinspection unused
+ */
 @JNINamespace("brave_wallet")
 public class BraveWalletProviderDelegateImplHelper {
     private static final String TAG = "BraveWalletProvider";
@@ -27,7 +30,17 @@ public class BraveWalletProviderDelegateImplHelper {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.showWalletPanel(false);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "showPanel " + e);
+            Log.e(TAG, "showPanel", e);
+        }
+    }
+
+    @CalledByNative
+    public static void unlockWallet() {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            activity.openBraveWallet(false, false, false);
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "unlockWallet", e);
         }
     }
 
@@ -47,7 +60,7 @@ public class BraveWalletProviderDelegateImplHelper {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.showWalletOnboarding();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "showWalletOnboarding " + e);
+            Log.e(TAG, "showWalletOnboarding", e);
         }
     }
 

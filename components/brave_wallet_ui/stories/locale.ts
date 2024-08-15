@@ -353,6 +353,9 @@ provideStrings({
   braveWalletLockScreenButton: 'Unlock',
   braveWalletLockScreenError: 'Incorrect password',
   braveWalletUnlockWallet: 'Unlock Wallet',
+  braveWalletDoubleTapScreen: 'Double tap screen to continue',
+  braveWalletUnlockAndroidDescription:
+    'Your wallet is locked for your security. Unlock wallet to continue.',
 
   // Wallet More Popup
   braveWalletWalletPopupSettings: 'Settings',

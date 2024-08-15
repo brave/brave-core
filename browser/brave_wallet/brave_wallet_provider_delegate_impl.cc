@@ -89,6 +89,10 @@ void BraveWalletProviderDelegateImpl::ShowWalletBackup() {
   ::brave_wallet::ShowWalletBackup();
 }
 
+void BraveWalletProviderDelegateImpl::UnlockWallet() {
+  ::brave_wallet::UnlockWallet();
+}
+
 void BraveWalletProviderDelegateImpl::WalletInteractionDetected() {
   ::brave_wallet::WalletInteractionDetected(web_contents_);
 }

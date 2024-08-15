@@ -29,5 +29,9 @@ void WalletPageHandler::ShowApprovePanelUI() {
 }
 
 void WalletPageHandler::ShowWalletBackupUI() {
-  NOTREACHED_IN_MIGRATION();
+  NOTREACHED();
+}
+
+void WalletPageHandler::UnlockWalletUI() {
+  NOTREACHED();
 }
