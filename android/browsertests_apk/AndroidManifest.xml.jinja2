@@ -157,6 +157,12 @@
                  android:exported="false" />
         {% endfor %}
 
+        <!-- Disables at startup init of Emoji2. See http://crbug.com/1205141 -->
+        <provider
+            android:authorities="org.chromium.android_browsertests_apk.androidx-startup"
+            android:name="androidx.startup.InitializationProvider"
+            android:exported="false"
+            tools:node="remove" />
         {% include "//brave/android/java/AndroidManifest.xml" %}
     </application>
 
