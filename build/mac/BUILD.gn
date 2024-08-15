@@ -381,26 +381,28 @@ action("create_pkg") {
   }
 }
 
-action("postinstall") {
-  visibility = [ ":create_pkg" ]
+if (brave_enable_updater) {
+  action("postinstall") {
+    visibility = [ ":create_pkg" ]
 
-  script = "create_postinstall.py"
+    script = "create_postinstall.py"
 
-  output = "$generated_pkg_scripts/postinstall"
+    output = "$generated_pkg_scripts/postinstall"
 
-  args = [
-    rebase_path("//chrome/installer/mac/pkg_postinstall.in"),
-    brave_exe,
-    "Contents/Frameworks/$chrome_product_full_name Framework.framework",
-    rebase_path(output),
-  ]
+    args = [
+      rebase_path("//chrome/installer/mac/pkg_postinstall.in"),
+      brave_exe,
+      "Contents/Frameworks/$chrome_product_full_name Framework.framework",
+      rebase_path(output),
+    ]
 
-  inputs = [
-    script,
-    "//chrome/installer/mac/pkg_postinstall.in",
-  ]
+    inputs = [
+      script,
+      "//chrome/installer/mac/pkg_postinstall.in",
+    ]
 
-  outputs = [ output ]
+    outputs = [ output ]
+  }
 }
 
 action("sign_pkg") {
