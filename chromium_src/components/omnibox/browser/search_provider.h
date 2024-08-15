@@ -13,8 +13,11 @@
   bool IsBraveRichSuggestion(bool is_keyword); \
   virtual void DoHistoryQuery
 
+#define IsQueryPotentiallyPrivate virtual IsQueryPotentiallyPrivate
+
 #include "src/components/omnibox/browser/search_provider.h"  // IWYU pragma: export
 
+#undef IsQueryPotentiallyPrivate
 #undef DoHistoryQuery
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_SEARCH_PROVIDER_H_
