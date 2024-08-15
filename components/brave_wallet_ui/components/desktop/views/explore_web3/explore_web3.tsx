@@ -307,6 +307,7 @@ export const ExploreWeb3View = () => {
                   key={category}
                   width='100%'
                   margin='0 0 18px 0'
+                  justifyContent='flex-start'
                 >
                   <CategoryHeader>{category}</CategoryHeader>
                   <Column width='100%'>
