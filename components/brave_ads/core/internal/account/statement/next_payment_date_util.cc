@@ -22,7 +22,7 @@ base::Time CalculateNextPaymentDate(const base::Time next_token_redemption_at,
 
   if (now_exploded.day_of_month <= kNextPaymentDay.Get()) {
     // Today is on or before our next payment day
-    if (DidReconcileTransactionsLastMonth(transactions)) {
+    if (DidReconcileTransactionsPreviousMonth(transactions)) {
       // If last month has reconciled transactions, then the next payment date
       // will occur this month
     } else {

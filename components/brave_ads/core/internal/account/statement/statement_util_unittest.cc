@@ -92,7 +92,7 @@ TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForThisMonth) {
   EXPECT_DOUBLE_EQ(0.09, max_estimated_earnings);
 }
 
-TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForLastMonth) {
+TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForPreviousMonth) {
   // Arrange
   AdvanceClockTo(test::TimeFromString("5 November 2020"));
 
@@ -133,7 +133,7 @@ TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForLastMonth) {
 
   // Act
   const auto [min_estimated_earnings, max_estimated_earnings] =
-      GetEstimatedEarningsForLastMonth(transactions);
+      GetEstimatedEarningsForPreviousMonth(transactions);
 
   // Assert
   EXPECT_DOUBLE_EQ(0.02 * kMinEstimatedEarningsMultiplier.Get(),

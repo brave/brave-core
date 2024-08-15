@@ -26,7 +26,8 @@ bool DoesHistoryRespectRollingTimeConstraint(
 
   for (const auto& time : base::Reversed(history)) {
     if (time <= threshold) {
-      // If the time point exceeds the threshold, the cap has not been reached.
+      // If the time point is less than or equal to the threshold, the cap has
+      // not been reached.
       break;
     }
 

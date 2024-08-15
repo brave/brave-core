@@ -9,24 +9,6 @@
 
 namespace brave_ads {
 
-namespace {
-constexpr int kDaysInWeek = 7;
-}  // namespace
-
-int DayOfWeek(int year, int month, int day) {
-  CHECK((month >= 1 && month <= 12));
-  CHECK((day >= 1 && day <= DaysPerMonth(year, month)));
-
-  if (month < 3) {
-    month += 12;
-    --year;
-  }
-
-  return (day + (2 * month) + ((6 * (month + 1)) / 10) + year + (year / 4) -
-          (year / 100) + (year / 400) + 1) %
-         kDaysInWeek;
-}
-
 int DayOfWeek(const base::Time time, const bool is_local) {
   base::Time::Exploded exploded;
 

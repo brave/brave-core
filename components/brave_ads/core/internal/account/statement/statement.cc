@@ -18,11 +18,8 @@
 namespace brave_ads {
 
 void BuildStatement(BuildStatementCallback callback) {
-  const base::Time from_time = GetTimeInDistantPast();
-  const base::Time to_time = GetLocalTimeAtEndOfThisMonth();
-
   GetTransactionsForDateRange(
-      from_time, to_time,
+      /*from_time=*/base::Time(), /*to_time=*/LocalTimeAtEndOfThisMonth(),
       base::BindOnce(
           [](BuildStatementCallback callback, const bool success,
              const TransactionList& transactions) {
@@ -35,15 +32,18 @@ void BuildStatement(BuildStatementCallback callback) {
             mojom::StatementInfoPtr mojom_statement =
                 mojom::StatementInfo::New();
 
-            const auto [min_last_month, max_last_month] =
-                GetEstimatedEarningsForLastMonth(transactions);
-            mojom_statement->min_earnings_last_month = min_last_month;
-            mojom_statement->max_earnings_last_month = max_last_month;
+            const auto [min_earnings_previous_month,
+                        max_earnings_previous_month] =
+                GetEstimatedEarningsForPreviousMonth(transactions);
+            mojom_statement->min_earnings_previous_month =
+                min_earnings_previous_month;
+            mojom_statement->max_earnings_previous_month =
+                max_earnings_previous_month;
 
-            const auto [min_this_month, max_this_month] =
+            const auto [min_earnings_this_month, max_earnings_this_month] =
                 GetEstimatedEarningsForThisMonth(transactions);
-            mojom_statement->min_earnings_this_month = min_this_month;
-            mojom_statement->max_earnings_this_month = max_this_month;
+            mojom_statement->min_earnings_this_month = min_earnings_this_month;
+            mojom_statement->max_earnings_this_month = max_earnings_this_month;
 
             mojom_statement->next_payment_date =
                 GetNextPaymentDate(transactions);

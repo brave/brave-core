@@ -5,11 +5,37 @@
 
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 
+#include <ctime>
+
 #include "base/check.h"
 #include "base/i18n/time_formatting.h"
 #include "base/time/time.h"
 
 namespace brave_ads::test {
+
+namespace {
+
+// Returns true if the given time is in daylight saving time.
+bool IsDaylightSavingTime(const base::Time time) {
+  base::Time::Exploded exploded;
+  time.LocalExplode(&exploded);
+
+  std::tm tm_time = {};
+  tm_time.tm_year = exploded.year - 1900;
+  tm_time.tm_mon = exploded.month - 1;
+  tm_time.tm_mday = exploded.day_of_month;
+  tm_time.tm_hour = exploded.hour;
+  tm_time.tm_min = exploded.minute;
+  tm_time.tm_sec = exploded.second;
+  tm_time.tm_isdst = -1;  // Let mktime determine if DST is in effect.
+
+  const std::time_t local_time = std::mktime(&tm_time);
+  CHECK_NE(-1, local_time) << "Invalid time";
+
+  return tm_time.tm_isdst > 0;
+}
+
+}  // namespace
 
 base::Time DistantPast() {
   // Just after the myth of the beginning of time.
@@ -41,9 +67,15 @@ std::string DistantFutureAsIso8601() {
   return base::TimeFormatAsIso8601(DistantFuture());
 }
 
-base::Time TimeFromString(const std::string& time_string) {
+base::Time TimeFromString(const std::string& time_string,
+                          const bool should_adjust_for_dst) {
   base::Time time;
   CHECK(base::Time::FromString(time_string.c_str(), &time));
+
+  if (should_adjust_for_dst && IsDaylightSavingTime(time)) {
+    time += base::Hours(1);
+  }
+
   return time;
 }
 
@@ -53,11 +85,13 @@ base::Time TimeFromUTCString(const std::string& time_string) {
   return time;
 }
 
-base::TimeDelta TimeDeltaFromString(const std::string& time_string) {
-  return TimeFromString(time_string) - base::Time::Now();
+base::TimeDelta TimeDeltaFromString(const std::string& time_string,
+                                    const bool should_adjust_for_dst) {
+  return TimeFromString(time_string, should_adjust_for_dst) - base::Time::Now();
 }
 
 base::TimeDelta TimeDeltaFromUTCString(const std::string& time_string) {
   return TimeFromUTCString(time_string) - base::Time::Now();
 }
+
 }  // namespace brave_ads::test

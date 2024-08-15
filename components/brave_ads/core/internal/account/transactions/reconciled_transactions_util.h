@@ -15,7 +15,7 @@ class Time;
 namespace brave_ads {
 
 bool DidReconcileTransaction(const TransactionInfo& transaction);
-bool DidReconcileTransactionsLastMonth(const TransactionList& transactions);
+bool DidReconcileTransactionsPreviousMonth(const TransactionList& transactions);
 bool DidReconcileTransactionsThisMonth(const TransactionList& transactions);
 bool DidReconcileTransactionWithinDateRange(const TransactionInfo& transaction,
                                             base::Time from_time,

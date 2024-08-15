@@ -167,7 +167,7 @@ TEST_F(BraveAdsEarningsUtilTest,
   EXPECT_DOUBLE_EQ(0.0, GetReconciledEarningsForThisMonth(transactions));
 }
 
-TEST_F(BraveAdsEarningsUtilTest, GetReconciledEarningsForLastMonth) {
+TEST_F(BraveAdsEarningsUtilTest, GetReconciledEarningsForPreviousMonth) {
   // Arrange
   AdvanceClockTo(test::TimeFromString("5 November 2020"));
 
@@ -226,11 +226,11 @@ TEST_F(BraveAdsEarningsUtilTest, GetReconciledEarningsForLastMonth) {
   transactions.push_back(transaction_8);
 
   // Act & Assert
-  EXPECT_DOUBLE_EQ(0.12, GetReconciledEarningsForLastMonth(transactions));
+  EXPECT_DOUBLE_EQ(0.12, GetReconciledEarningsForPreviousMonth(transactions));
 }
 
 TEST_F(BraveAdsEarningsUtilTest,
-       GetReconciledEarningsForLastMonthForNoTransactions) {
+       GetReconciledEarningsForPreviousMonthForNoTransactions) {
   // Arrange
   AdvanceClockTo(test::TimeFromString("5 November 2020"));
 
@@ -277,7 +277,7 @@ TEST_F(BraveAdsEarningsUtilTest,
   transactions.push_back(transaction_6);
 
   // Act & Assert
-  EXPECT_DOUBLE_EQ(0.0, GetReconciledEarningsForLastMonth(transactions));
+  EXPECT_DOUBLE_EQ(0.0, GetReconciledEarningsForPreviousMonth(transactions));
 }
 
 }  // namespace brave_ads
