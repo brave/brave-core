@@ -197,33 +197,6 @@ void BraveTabStrip::AddedToWidget() {
   }
 }
 
-SkColor BraveTabStrip::GetTabSeparatorColor() const {
-  if (ShouldShowVerticalTabs()) {
-    return SK_ColorTRANSPARENT;
-  }
-
-  Profile* profile = controller()->GetProfile();
-  if (!profile->IsRegularProfile()) {
-    if (profile->IsTor()) {
-      return SkColorSetRGB(0x5A, 0x53, 0x66);
-    }
-
-    // For incognito/guest window.
-    return SkColorSetRGB(0x3F, 0x32, 0x56);
-  }
-
-  // If custom theme is used, follow upstream separator color.
-  auto* theme_service = ThemeServiceFactory::GetForProfile(profile);
-  if (theme_service->GetThemeSupplier()) {
-    return TabStrip::GetTabSeparatorColor();
-  }
-
-  bool dark_mode = dark_mode::GetActiveBraveDarkModeType() ==
-                   dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
-  return dark_mode ? SkColorSetRGB(0x39, 0x38, 0x38)
-                   : SkColorSetRGB(0xBE, 0xBF, 0xBF);
-}
-
 std::optional<int> BraveTabStrip::GetCustomBackgroundId(
     BrowserFrameActiveState active_state) const {
   if (!ShouldShowVerticalTabs()) {
