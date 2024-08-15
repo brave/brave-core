@@ -86,7 +86,7 @@ inline constexpr char kChromeHelpViaMenuURL[] = "https://support.brave.com/";
 
 inline constexpr char kChromeHelpViaWebUIURL[] = "https://support.brave.com/";
 
-inline constexpr char kFirstPartySetsLearnMoreURL[] =
+inline constexpr char kRelatedWebsiteSetsLearnMoreURL[] =
     "https://support.brave.com/";
 
 // The isolated-app: scheme is used for Isolated Web Apps. A public explainer
