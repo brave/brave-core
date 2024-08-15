@@ -26,10 +26,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
 
-    <application android:name="ChromeBrowserTestsApplication"
+    <application android:name="org.chromium.android_browsertests_apk.ChromeBrowserTestsApplication"
             android:label="ChromeBrowserTests"
             android:requestLegacyExternalStorage="true">
-        <activity android:name="ChromeBrowserTestsActivity"
+        <activity android:name="org.chromium.android_browsertests_apk.ChromeBrowserTestsActivity"
                   android:launchMode="singleTask"
                   android:theme="@style/Theme.Chromium.TabbedMode"
                   android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
@@ -121,9 +121,10 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="org.chromium.components.background_task_scheduler.BackgroundTaskJobService"
-                 android:exported="false"
-                 android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:name="org.chromium.components.background_task_scheduler.internal.BackgroundTaskJobService"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            tools:node="remove"/>
 
         <service android:name="org.chromium.chrome.browser.crash.ChromeMinidumpUploadJobService"
                  android:permission="android.permission.BIND_JOB_SERVICE"
@@ -161,6 +162,5 @@
 
     <instrumentation android:name="org.chromium.android_browsertests_apk.ChromeBrowserTestsInstrumentationTestRunner"
             android:label="ChromeBrowserTests"
-            android:targetPackage="org.chromium.android_browsertests_apk"
-            chromium-junit3="true"/>
+            android:targetPackage="org.chromium.android_browsertests_apk"/>
 </manifest>
