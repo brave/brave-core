@@ -102,7 +102,6 @@ import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
-import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPane;
 import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPaneCoordinatorFactory;
 import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPaneDrawableCoordinator;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
