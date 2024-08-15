@@ -885,6 +885,10 @@
     *** getToolbarSidePaddingForNtp(...);
 }
 
--keep class org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPaneBase {
-    *** createTabSwitcherPaneCoordinator(...);
+-keep class org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPane {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tasks.tab_management.BraveTabSwitcherPane {
+    public <init>(...);
 }

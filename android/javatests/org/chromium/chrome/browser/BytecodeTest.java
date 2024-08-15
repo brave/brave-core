@@ -9,12 +9,14 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.ActionMode;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.Window;
@@ -100,6 +102,9 @@ import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
+import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPane;
+import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPaneCoordinatorFactory;
+import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPaneDrawableCoordinator;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
@@ -165,6 +170,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.function.DoubleConsumer;
 import java.util.function.Function;
 
 /**
@@ -1698,6 +1704,19 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragmentAdvanced", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/browsing_data/BraveClearBrowsingDataFragmentAdvanced")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/tasks/tab_management/TabSwitcherPane",
+                        "org/chromium/chrome/browser/tasks/tab_management/BraveTabSwitcherPane",
+                        Context.class,
+                        SharedPreferences.class,
+                        OneshotSupplier.class,
+                        TabSwitcherPaneCoordinatorFactory.class,
+                        Supplier.class,
+                        OnClickListener.class,
+                        TabSwitcherPaneDrawableCoordinator.class,
+                        DoubleConsumer.class,
+                        UserEducationHelper.class));
     }
 
     @Test

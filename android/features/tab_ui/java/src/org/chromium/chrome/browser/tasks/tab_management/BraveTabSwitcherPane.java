@@ -26,7 +26,7 @@ import java.util.function.DoubleConsumer;
 
 public class BraveTabSwitcherPane extends TabSwitcherPane {
 
-    BraveTabSwitcherPane(
+    public BraveTabSwitcherPane(
             @NonNull Context context,
             @NonNull SharedPreferences sharedPreferences,
             @NonNull OneshotSupplier<ProfileProvider> profileProviderSupplier,
