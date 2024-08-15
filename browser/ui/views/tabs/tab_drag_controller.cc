@@ -187,9 +187,9 @@ void TabDragController::DetachAndAttachToNewContext(
     std::vector<tabs::TabHandle> tabs;
     auto* tab_strip_model = browser->tab_strip_model();
     DCHECK_EQ(tab_strip_model, attached_context_->GetTabStripModel());
-    for (const auto& tab_drag_data : drag_data_) {
+    for (size_t i = first_tab_index(); i < drag_data_.size(); ++i) {
       tabs.push_back(tab_strip_model->GetTabHandleAt(
-          tab_strip_model->GetIndexOfWebContents(tab_drag_data.contents)));
+          tab_strip_model->GetIndexOfWebContents(drag_data_[i].contents)));
     }
     old_split_view_browser_data->TabsWillBeAttachedToNewBrowser(tabs);
   }
