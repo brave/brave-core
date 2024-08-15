@@ -163,16 +163,3 @@ def GetBraveSigningConfig(config_class, mac_provisioning_profile=None):
             return True
 
     return ProvisioningProfileCodeSignConfig
-
-
-class ConfigWrapper:
-    """
-    DistributionCodeSignConfig's attributes are read-only. ConfigWrapper lets us
-    wrap its instances and partially set different attribute values.
-    """
-
-    def __init__(self, target):
-        self._target = target
-
-    def __getattr__(self, name):
-        return getattr(self._target, name)
