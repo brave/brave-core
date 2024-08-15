@@ -222,7 +222,9 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
                         super.onAuthenticationError(errorCode, errString);
 
                         final Context context = getContext();
-                        if (!TextUtils.isEmpty(errString) && context != null) {
+                        // Error code 10 is when the user taps back to dismiss the dialog,
+                        // there's no need to show a toast to log this action.
+                        if (!TextUtils.isEmpty(errString) && context != null && errorCode != 10) {
                             Toast.makeText(context, errString, Toast.LENGTH_SHORT).show();
                         }
                         showBiometricAuthenticationButton(biometricUnlockButton);
