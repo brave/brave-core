@@ -282,7 +282,7 @@
 
     <style name="VpnPaywallToolbar" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@android:color/white</item>
-        <item name="android:background">@color/primitive_blurple_25</item>
+        <item name="android:background">@color/primitive_blurple_10</item>
         <item name="titleTextColor">@android:color/white</item>
         <item name="android:textColorPrimary">@android:color/white</item>
     </style>
