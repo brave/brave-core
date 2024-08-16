@@ -6,6 +6,7 @@
 import BraveCore
 import BraveUI
 import Foundation
+import Growth
 import Preferences
 import UIKit
 
@@ -18,6 +19,7 @@ import UIKit
 class NewTabPageBackground: PreferencesObserver {
   /// The source of new tab page backgrounds
   private let dataSource: NTPDataSource
+  private let rewards: BraveRewards
   /// The current background image & possibly sponsor
   private(set) var currentBackground: NTPWallpaper? {
     didSet {
@@ -43,8 +45,9 @@ class NewTabPageBackground: PreferencesObserver {
   /// while the New Tab Page is active
   var changed: (() -> Void)?
   /// Create a background holder given a source of all NTP background images
-  init(dataSource: NTPDataSource) {
+  init(dataSource: NTPDataSource, rewards: BraveRewards) {
     self.dataSource = dataSource
+    self.rewards = rewards
     self.currentBackground = dataSource.newBackground()
 
     Preferences.NewTabPage.backgroundImages.observe(from: self)
@@ -52,6 +55,7 @@ class NewTabPageBackground: PreferencesObserver {
     Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
 
     recordSponsoredImagesEnabledP3A()
+    recordSponsoredMediaTypeP3A()
   }
 
   deinit {
@@ -71,6 +75,7 @@ class NewTabPageBackground: PreferencesObserver {
         guard let self = self else { return }
         self.currentBackground = self.dataSource.newBackground()
         self.recordSponsoredImagesEnabledP3A()
+        self.recordSponsoredMediaTypeP3A()
       }
     )
   }
@@ -81,5 +86,27 @@ class NewTabPageBackground: PreferencesObserver {
       Preferences.NewTabPage.backgroundImages.value
       && Preferences.NewTabPage.backgroundMediaType.isSponsored
     UmaHistogramBoolean("Brave.NTP.SponsoredImagesEnabled", isSIEnabled)
+  }
+
+  private func recordSponsoredMediaTypeP3A() {
+    // Question: What type of new tab page sponsored media is shown?
+    enum Answer: Int, CaseIterable {
+      case disabled = 0
+      case images = 1
+      case imagesAndVideos = 2
+    }
+
+    var answer = Answer.disabled
+    if Preferences.NewTabPage.backgroundImages.value
+      && Preferences.NewTabPage.backgroundMediaType.isSponsored
+    {
+      answer =
+        Preferences.NewTabPage.backgroundMediaType == .sponsoredImagesAndVideos
+          && rewards.ads.shouldShowSponsoredImagesAndVideosSetting()
+        ? .imagesAndVideos
+        : .images
+    }
+
+    UmaHistogramEnumeration("Brave.NTP.SponsoredMediaType", sample: answer)
   }
 }
