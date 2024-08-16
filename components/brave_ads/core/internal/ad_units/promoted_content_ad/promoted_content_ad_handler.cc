@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
-#include "brave/components/brave_ads/core/internal/ads_core_util.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"

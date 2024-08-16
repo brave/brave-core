@@ -21,6 +21,7 @@
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 
 namespace brave_ads {
@@ -41,9 +42,10 @@ void ConfirmationStateManager::LoadState(
 
   wallet_ = wallet;
 
-  Load(kConfirmationsJsonFilename,
-       base::BindOnce(&ConfirmationStateManager::LoadCallback,
-                      weak_factory_.GetWeakPtr(), std::move(callback)));
+  GetAdsClient()->Load(
+      kConfirmationsJsonFilename,
+      base::BindOnce(&ConfirmationStateManager::LoadCallback,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void ConfirmationStateManager::LoadCallback(
@@ -83,20 +85,22 @@ void ConfirmationStateManager::SaveState() {
 
   BLOG(9, "Saving confirmation state");
 
-  Save(kConfirmationsJsonFilename, ToJson(),
-       base::BindOnce([](const bool success) {
-         if (!success) {
-           // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-           // potential defects using `DumpWithoutCrashing`.
-           SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                     "Failed to save confirmation state");
-           base::debug::DumpWithoutCrashing();
+  GetAdsClient()->Save(kConfirmationsJsonFilename, ToJson(),
+                       base::BindOnce([](const bool success) {
+                         if (!success) {
+                           // TODO(https://github.com/brave/brave-browser/issues/32066):
+                           // Detect potential defects using
+                           // `DumpWithoutCrashing`.
+                           SCOPED_CRASH_KEY_STRING64(
+                               "Issue32066", "failure_reason",
+                               "Failed to save confirmation state");
+                           base::debug::DumpWithoutCrashing();
 
-           return BLOG(0, "Failed to save confirmation state");
-         }
+                           return BLOG(0, "Failed to save confirmation state");
+                         }
 
-         BLOG(9, "Successfully saved confirmation state");
-       }));
+                         BLOG(9, "Successfully saved confirmation state");
+                       }));
 }
 
 std::string ConfirmationStateManager::ToJson() {

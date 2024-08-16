@@ -25,6 +25,7 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "url/gurl.h"
 
 namespace brave_ads::database::table {
@@ -357,9 +358,10 @@ void CreativeInlineContentAds::GetForCreativeInstanceId(
   BindColumnTypes(&*mojom_statement);
   mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunDBTransaction(std::move(mojom_transaction),
-                   base::BindOnce(&GetForCreativeInstanceIdCallback,
-                                  creative_instance_id, std::move(callback)));
+  GetAdsClient()->RunDBTransaction(
+      std::move(mojom_transaction),
+      base::BindOnce(&GetForCreativeInstanceIdCallback, creative_instance_id,
+                     std::move(callback)));
 }
 
 void CreativeInlineContentAds::GetForSegmentsAndDimensions(
@@ -429,9 +431,10 @@ void CreativeInlineContentAds::GetForSegmentsAndDimensions(
 
   mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunDBTransaction(std::move(mojom_transaction),
-                   base::BindOnce(&GetForSegmentsAndDimensionsCallback,
-                                  segments, std::move(callback)));
+  GetAdsClient()->RunDBTransaction(
+      std::move(mojom_transaction),
+      base::BindOnce(&GetForSegmentsAndDimensionsCallback, segments,
+                     std::move(callback)));
 }
 
 void CreativeInlineContentAds::GetForDimensions(
@@ -490,7 +493,7 @@ void CreativeInlineContentAds::GetForDimensions(
   BindColumnTypes(&*mojom_statement);
   mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunDBTransaction(
+  GetAdsClient()->RunDBTransaction(
       std::move(mojom_transaction),
       base::BindOnce(&GetForDimensionsCallback, std::move(callback)));
 }
@@ -544,8 +547,9 @@ void CreativeInlineContentAds::GetForActiveCampaigns(
   BindColumnTypes(&*mojom_statement);
   mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunDBTransaction(std::move(mojom_transaction),
-                   base::BindOnce(&GetAllCallback, std::move(callback)));
+  GetAdsClient()->RunDBTransaction(
+      std::move(mojom_transaction),
+      base::BindOnce(&GetAllCallback, std::move(callback)));
 }
 
 std::string CreativeInlineContentAds::GetTableName() const {

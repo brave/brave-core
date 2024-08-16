@@ -7,7 +7,6 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_util.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_feature.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_util.h"
@@ -22,6 +21,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/segments_database_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {

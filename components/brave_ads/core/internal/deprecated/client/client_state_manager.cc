@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 
 namespace brave_ads {
@@ -36,9 +37,10 @@ ClientStateManager& ClientStateManager::GetInstance() {
 void ClientStateManager::LoadState(InitializeCallback callback) {
   BLOG(3, "Loading client state");
 
-  Load(kClientJsonFilename,
-       base::BindOnce(&ClientStateManager::LoadCallback,
-                      weak_factory_.GetWeakPtr(), std::move(callback)));
+  GetAdsClient()->Load(
+      kClientJsonFilename,
+      base::BindOnce(&ClientStateManager::LoadCallback,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void ClientStateManager::AppendToPurchaseIntentSignalHistoryForSegment(
@@ -99,20 +101,22 @@ void ClientStateManager::SaveState() {
 
   BLOG(9, "Saving client state");
 
-  Save(kClientJsonFilename, client_.ToJson(),
-       base::BindOnce([](const bool success) {
-         if (!success) {
-           // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-           // potential defects using `DumpWithoutCrashing`.
-           SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                     "Failed to save client state");
-           base::debug::DumpWithoutCrashing();
+  GetAdsClient()->Save(kClientJsonFilename, client_.ToJson(),
+                       base::BindOnce([](const bool success) {
+                         if (!success) {
+                           // TODO(https://github.com/brave/brave-browser/issues/32066):
+                           // Detect potential defects using
+                           // `DumpWithoutCrashing`.
+                           SCOPED_CRASH_KEY_STRING64(
+                               "Issue32066", "failure_reason",
+                               "Failed to save client state");
+                           base::debug::DumpWithoutCrashing();
 
-           return BLOG(0, "Failed to save client state");
-         }
+                           return BLOG(0, "Failed to save client state");
+                         }
 
-         BLOG(9, "Successfully saved client state");
-       }));
+                         BLOG(9, "Successfully saved client state");
+                       }));
 }
 
 void ClientStateManager::LoadCallback(InitializeCallback callback,

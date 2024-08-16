@@ -12,7 +12,7 @@ class AdsObserverMock;
 
 namespace test {
 
-AdsObserverMock* AddAdsObserverMock();
+AdsObserverMock* MockAdsObserver();
 
 }  // namespace test
 

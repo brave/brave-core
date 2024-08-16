@@ -9,6 +9,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
@@ -43,8 +44,8 @@ bool DoesHistoryRespectRollingTimeConstraint(
     const AdType type,
     const base::TimeDelta time_constraint,
     const size_t cap) {
-  const std::vector<base::Time> history =
-      GetCachedAdEvents(type, ConfirmationType::kServedImpression);
+  const std::vector<base::Time> history = GetAdsClient()->GetCachedAdEvents(
+      ToString(type), ToString(ConfirmationType::kServedImpression));
 
   return DoesHistoryRespectRollingTimeConstraint(history, time_constraint, cap);
 }

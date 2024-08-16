@@ -8,14 +8,11 @@
 
 class PrefService;
 
-namespace user_prefs {
-class PrefRegistrySyncable;
-}  // namespace user_prefs
+class PrefRegistrySimple;
 
 namespace brave_ads {
 
-void RegisterProfilePrefsForMigration(
-    user_prefs::PrefRegistrySyncable* registry);
+void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs);
 

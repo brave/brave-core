@@ -13,10 +13,11 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/language_components.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
-#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_path_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_resource_constants.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
@@ -31,11 +32,11 @@ bool DoesRequireResource() {
 }  // namespace
 
 TextClassificationResource::TextClassificationResource() {
-  AddAdsClientNotifierObserver(this);
+  GetAdsClient()->AddObserver(this);
 }
 
 TextClassificationResource::~TextClassificationResource() {
-  RemoveAdsClientNotifierObserver(this);
+  GetAdsClient()->RemoveObserver(this);
 }
 
 void TextClassificationResource::ClassifyPage(const std::string& text,
@@ -65,7 +66,7 @@ void TextClassificationResource::MaybeLoadOrUnload() {
 }
 
 void TextClassificationResource::Load() {
-  LoadResourceComponent(
+  GetAdsClient()->LoadResourceComponent(
       kTextClassificationResourceId, kTextClassificationResourceVersion.Get(),
       base::BindOnce(&TextClassificationResource::LoadResourceComponentCallback,
                      weak_factory_.GetWeakPtr()));

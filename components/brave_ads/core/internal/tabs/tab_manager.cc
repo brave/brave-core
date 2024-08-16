@@ -11,16 +11,17 @@
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
 
 TabManager::TabManager() {
-  AddAdsClientNotifierObserver(this);
+  GetAdsClient()->AddObserver(this);
 }
 
 TabManager::~TabManager() {
-  RemoveAdsClientNotifierObserver(this);
+  GetAdsClient()->RemoveObserver(this);
 }
 
 // static

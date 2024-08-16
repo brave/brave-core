@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/dislike_exclusion_rule.h"
 
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/ads_core_util.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
 

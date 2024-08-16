@@ -5,11 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation_util.h"
 
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_util.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {

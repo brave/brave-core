@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 
-#include "components/pref_registry/pref_registry_syncable.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_ads {
@@ -31,8 +31,7 @@ constexpr char kHasMigratedRewardsState[] =
 
 }  // namespace
 
-void RegisterProfilePrefsForMigration(
-    user_prefs::PrefRegistrySyncable* const registry) {
+void RegisterProfilePrefsForMigration(PrefRegistrySimple* const registry) {
   // Added 11/2023.
   registry->RegisterDoublePref(kNotificationAdLastNormalizedDisplayCoordinateX,
                                0.0);

@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
-#include "brave/components/brave_ads/core/internal/ads_core.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"

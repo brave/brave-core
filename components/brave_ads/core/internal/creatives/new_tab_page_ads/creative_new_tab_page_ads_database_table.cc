@@ -25,6 +25,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "url/gurl.h"
 
 namespace brave_ads::database::table {
@@ -354,9 +355,10 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
   BindColumnTypes(&*mojom_statement);
   mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunDBTransaction(std::move(mojom_transaction),
-                   base::BindOnce(&GetForCreativeInstanceIdCallback,
-                                  creative_instance_id, std::move(callback)));
+  GetAdsClient()->RunDBTransaction(
+      std::move(mojom_transaction),
+      base::BindOnce(&GetForCreativeInstanceIdCallback, creative_instance_id,
+                     std::move(callback)));
 }
 
 void CreativeNewTabPageAds::GetForSegments(
@@ -426,7 +428,7 @@ void CreativeNewTabPageAds::GetForSegments(
 
   mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunDBTransaction(
+  GetAdsClient()->RunDBTransaction(
       std::move(mojom_transaction),
       base::BindOnce(&GetForSegmentsCallback, segments, std::move(callback)));
 }
@@ -482,8 +484,9 @@ void CreativeNewTabPageAds::GetForActiveCampaigns(
   BindColumnTypes(&*mojom_statement);
   mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunDBTransaction(std::move(mojom_transaction),
-                   base::BindOnce(&GetAllCallback, std::move(callback)));
+  GetAdsClient()->RunDBTransaction(
+      std::move(mojom_transaction),
+      base::BindOnce(&GetAllCallback, std::move(callback)));
 }
 
 std::string CreativeNewTabPageAds::GetTableName() const {

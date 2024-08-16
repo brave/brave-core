@@ -10,7 +10,7 @@
 #include "base/check.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/ads_core_util.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"

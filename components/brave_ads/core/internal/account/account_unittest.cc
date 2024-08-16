@@ -21,7 +21,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/fetch_payment_token_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/ads_core_util.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/ads_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/ads_observer_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
@@ -44,7 +44,7 @@ class BraveAdsAccountTest : public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    ads_observer_mock_ = test::AddAdsObserverMock();
+    ads_observer_mock_ = test::MockAdsObserver();
 
     GetAccount().AddObserver(&account_observer_mock_);
   }

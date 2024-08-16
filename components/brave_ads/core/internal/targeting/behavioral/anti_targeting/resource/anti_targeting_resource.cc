@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components.h"
 #include "brave/components/brave_ads/core/internal/common/resources/resource_util_impl.h"
-#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_path_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource_constants.h"
@@ -46,11 +46,11 @@ bool DoesRequireResource() {
 }  // namespace
 
 AntiTargetingResource::AntiTargetingResource() {
-  AddAdsClientNotifierObserver(this);
+  GetAdsClient()->AddObserver(this);
 }
 
 AntiTargetingResource::~AntiTargetingResource() {
-  RemoveAdsClientNotifierObserver(this);
+  GetAdsClient()->RemoveObserver(this);
 }
 
 AntiTargetingSiteList AntiTargetingResource::GetSites(

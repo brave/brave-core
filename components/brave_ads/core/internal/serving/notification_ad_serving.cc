@@ -25,6 +25,7 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
@@ -36,11 +37,11 @@ NotificationAdServing::NotificationAdServing(
       kNotificationAdServingVersion.Get(), subdivision_targeting,
       anti_targeting_resource);
 
-  AddAdsClientNotifierObserver(this);
+  GetAdsClient()->AddObserver(this);
 }
 
 NotificationAdServing::~NotificationAdServing() {
-  RemoveAdsClientNotifierObserver(this);
+  GetAdsClient()->RemoveObserver(this);
   delegate_ = nullptr;
 }
 

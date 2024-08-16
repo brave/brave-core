@@ -13,8 +13,9 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
-#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_path_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 
 namespace brave_ads {
@@ -44,12 +45,12 @@ bool DoesRequireResource() {
 }  // namespace
 
 Catalog::Catalog() {
-  AddAdsClientNotifierObserver(this);
+  GetAdsClient()->AddObserver(this);
   DatabaseManager::GetInstance().AddObserver(this);
 }
 
 Catalog::~Catalog() {
-  RemoveAdsClientNotifierObserver(this);
+  GetAdsClient()->RemoveObserver(this);
   DatabaseManager::GetInstance().RemoveObserver(this);
 }
 

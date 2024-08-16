@@ -10,15 +10,16 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
 UserIdleDetection::UserIdleDetection() {
-  AddAdsClientNotifierObserver(this);
+  GetAdsClient()->AddObserver(this);
 }
 
 UserIdleDetection::~UserIdleDetection() {
-  RemoveAdsClientNotifierObserver(this);
+  GetAdsClient()->RemoveObserver(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

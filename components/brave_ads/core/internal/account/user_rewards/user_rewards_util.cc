@@ -8,6 +8,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 

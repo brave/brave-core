@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_PACING_PACING_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_PACING_PACING_H_
 
+#include <vector>
+
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pacing/pacing_util.h"
 
 namespace brave_ads {

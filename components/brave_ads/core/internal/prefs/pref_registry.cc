@@ -6,11 +6,15 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "components/pref_registry/pref_registry_syncable.h"
+#include "components/prefs/pref_registry_simple.h"
 
 namespace brave_ads {
 
-void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* const registry) {
+void RegisterLocalStatePrefs(PrefRegistrySimple* const registry) {
+  // Add local state prefs to be registered here.
+}
+
+void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
   // Ads prefs.
   registry->RegisterStringPref(prefs::kDiagnosticId, "");
 

@@ -7,7 +7,7 @@
 
 #include "base/json/values_util.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_ads/core/internal/ads_core_util.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 

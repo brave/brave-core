@@ -7,7 +7,7 @@
 
 #include <optional>
 
-#include "brave/components/brave_ads/core/internal/ads_core_util.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_test_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"

@@ -14,8 +14,8 @@
 #include "brave/components/brave_ads/core/internal/account/statement/earnings_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/next_payment_date_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {

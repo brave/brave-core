@@ -19,6 +19,8 @@
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
@@ -26,7 +28,7 @@ namespace brave_ads {
 UserRewards::UserRewards(WalletInfo wallet) : wallet_(std::move(wallet)) {
   CHECK(wallet_.IsValid());
 
-  AddAdsClientNotifierObserver(this);
+  GetAdsClient()->AddObserver(this);
 
   issuers_url_request_.SetDelegate(this);
   refill_confirmation_tokens_.SetDelegate(this);
@@ -34,7 +36,7 @@ UserRewards::UserRewards(WalletInfo wallet) : wallet_(std::move(wallet)) {
 }
 
 UserRewards::~UserRewards() {
-  RemoveAdsClientNotifierObserver(this);
+  GetAdsClient()->RemoveObserver(this);
 
   delegate_ = nullptr;
 }
@@ -138,7 +140,7 @@ void UserRewards::OnDidRetryRefillingConfirmationTokens() {
 
 void UserRewards::OnCaptchaRequiredToRefillConfirmationTokens(
     const std::string& captcha_id) {
-  ShowScheduledCaptcha(wallet_.payment_id, captcha_id);
+  GetAdsClient()->ShowScheduledCaptcha(wallet_.payment_id, captcha_id);
 }
 
 }  // namespace brave_ads

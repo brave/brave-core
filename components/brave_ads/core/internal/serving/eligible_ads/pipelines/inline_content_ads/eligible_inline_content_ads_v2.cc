@@ -21,6 +21,7 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
@@ -60,7 +61,7 @@ void EligibleInlineContentAdsV2::GetEligibleAdsForUserModelCallback(
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
-  GetSiteHistory(
+  GetAdsClient()->GetSiteHistory(
       kSiteHistoryMaxCount.Get(), kSiteHistoryRecentDayRange.Get(),
       base::BindOnce(&EligibleInlineContentAdsV2::GetEligibleAds,
                      weak_factory_.GetWeakPtr(), std::move(user_model),

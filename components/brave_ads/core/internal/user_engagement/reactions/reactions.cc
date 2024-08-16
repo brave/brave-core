@@ -7,9 +7,9 @@
 
 #include "base/containers/contains.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
-#include "brave/components/brave_ads/core/internal/ads_core_util.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions_type_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions_value_util.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"

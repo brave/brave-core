@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CORE_UTIL_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CORE_UTIL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CORE_ADS_CORE_UTIL_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CORE_ADS_CORE_UTIL_H_
 
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_handler.h"
@@ -33,4 +33,4 @@ Reactions& GetReactions();
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CORE_UTIL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CORE_ADS_CORE_UTIL_H_
