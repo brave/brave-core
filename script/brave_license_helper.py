@@ -89,7 +89,8 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         # Rust crates that are downloaded but not used (due to Cargo.toml
         # misconfigurations in other crates).
         os.path.join('brave', 'third_party', 'rust', 'valuable'),
-        os.path.join('brave', 'third_party', 'rust', 'windows_aarch64_gnullvm'),
+        os.path.join('brave', 'third_party', 'rust',
+                     'windows_aarch64_gnullvm'),
         os.path.join('brave', 'third_party', 'rust', 'windows_i686_gnu'),
         os.path.join('brave', 'third_party', 'rust', 'windows_x86_64_gnu'),
         os.path.join('brave', 'third_party', 'rust', 'windows_x86_64_gnullvm'),
