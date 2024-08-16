@@ -16,6 +16,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     // Enable NIK-partitioning by default.
     {kPartitionConnectionsByNetworkIsolationKey,
      base::FEATURE_ENABLED_BY_DEFAULT},
+    {kTopLevelTpcdOriginTrial, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTpcdMetadataGrants, base::FEATURE_DISABLED_BY_DEFAULT},
     {kWaitForFirstPartySetsInit, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
