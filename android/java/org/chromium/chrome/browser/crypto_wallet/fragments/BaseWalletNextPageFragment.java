@@ -183,7 +183,8 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
 
                         final KeyringService keyringService = getKeyringService();
                         String unlockWalletPassword;
-                        final Cipher resultCipher = authenticationResult.getCryptoObject().getCipher();
+                        final Cipher resultCipher =
+                                authenticationResult.getCryptoObject().getCipher();
                         assert resultCipher != null;
 
                         try {
