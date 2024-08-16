@@ -15,14 +15,14 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
       let network: BraveWallet.NetworkInfo
       let balance: Double?
       let price: String?
-      let nftMetadata: NFTMetadata?
+      let nftMetadata: BraveWallet.NftMetadata?
 
       init(
         token: BraveWallet.BlockchainToken,
         network: BraveWallet.NetworkInfo,
         balance: Double? = nil,
         price: String? = nil,
-        nftMetadata: NFTMetadata? = nil
+        nftMetadata: BraveWallet.NftMetadata? = nil
       ) {
         self.token = token
         self.network = network
@@ -83,7 +83,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
   /// Cache of prices of assets. The key(s) are the `BraveWallet.BlockchainToken.assetRatioId` lowercased.
   private var pricesForTokensCache: [String: String] = [:]
   /// Cache of metadata for NFTs. The key(s) is the token's `id`.
-  private var metadataCache: [String: NFTMetadata] = [:]
+  private var metadataCache: [String: BraveWallet.NftMetadata] = [:]
 
   let didSelect: (BraveWallet.AccountInfo, BraveWallet.BlockchainToken) -> Void
   private let keyringService: BraveWalletKeyringService
@@ -349,7 +349,10 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
   func fetchNFTMetadata(for userVisibleNFTs: [BraveWallet.BlockchainToken]) {
     guard !userVisibleNFTs.isEmpty else { return }
     Task { @MainActor in
-      let allMetadata = await rpcService.fetchNFTMetadata(tokens: userVisibleNFTs, ipfsApi: ipfsApi)
+      let allMetadata = await rpcService.fetchNFTMetadata(
+        tokens: userVisibleNFTs,
+        ipfsApi: ipfsApi
+      )
       self.metadataCache.merge(with: allMetadata)
       self.updateAccountSections()
     }
@@ -365,7 +368,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     btcBalancesCache: [String: [BTCBalanceType: Double]],
     balancesFetched: Bool,
     pricesCache: [String: String],
-    metadataCache: [String: NFTMetadata],
+    metadataCache: [String: BraveWallet.NftMetadata],
     hideZeroBalances: Bool,
     query: String,
     currencyFormatter: NumberFormatter

@@ -15,7 +15,7 @@ private struct EditTokenView: View {
 
   @Binding var tokenNeedsTokenId: BraveWallet.BlockchainToken?
 
-  @State var nftMetadata: NFTMetadata?
+  @State var nftMetadata: BraveWallet.NftMetadata?
 
   private var tokenName: String {
     if assetStore.token.isErc721 || assetStore.token.isNft, !assetStore.token.tokenId.isEmpty {

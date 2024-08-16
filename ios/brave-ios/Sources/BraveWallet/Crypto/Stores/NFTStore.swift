@@ -23,7 +23,7 @@ struct NFTAssetViewModel: Identifiable, Equatable {
   var network: BraveWallet.NetworkInfo
   /// Balance for the NFT for each account address. The key is the account address.
   var balanceForAccounts: [String: Int]
-  var nftMetadata: NFTMetadata?
+  var nftMetadata: BraveWallet.NftMetadata?
 
   public var id: String {
     token.id + network.chainId
@@ -154,7 +154,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   /// Cancellable for the last running `update()` Task.
   private var updateTask: Task<(), Never>?
   /// Cache of metadata for NFTs. The key is the token's `id`.
-  private var metadataCache: [String: NFTMetadata] = [:]
+  private var metadataCache: [String: BraveWallet.NftMetadata] = [:]
   /// Spam from SimpleHash in form of `NetworkAssets`
   private var simpleHashSpamNFTs: [NetworkAssets] = [] {
     didSet {
@@ -414,7 +414,10 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     }
   }
 
-  func updateNFTMetadataCache(for token: BraveWallet.BlockchainToken, metadata: NFTMetadata) {
+  func updateNFTMetadataCache(
+    for token: BraveWallet.BlockchainToken,
+    metadata: BraveWallet.NftMetadata
+  ) {
     metadataCache[token.id] = metadata
     var updatedGroups: [NFTGroupViewModel] = []
     for group in userNFTGroups {

@@ -131,7 +131,7 @@ enum TransactionParser {
     userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
     assetRatios: [String: Double],
-    nftMetadata: [String: NFTMetadata],
+    nftMetadata: [String: BraveWallet.NftMetadata],
     solEstimatedTxFee: UInt64?,
     currencyFormatter: NumberFormatter,
     decimalFormatStyle: WalletAmountFormatter.DecimalFormatStyle? = nil
@@ -581,7 +581,7 @@ enum TransactionParser {
         userAssets: userAssets,
         allTokens: allTokens
       )
-      let tokenNFTMetadata: NFTMetadata?
+      let tokenNFTMetadata: BraveWallet.NftMetadata?
       if let token {
         tokenNFTMetadata = nftMetadata[token.id]
       } else {
@@ -669,20 +669,24 @@ enum TransactionParser {
         )
       )
     case .solanaSplTokenTransfer,
-      .solanaSplTokenTransferWithAssociatedTokenAccountCreation:
+      .solanaSplTokenTransferWithAssociatedTokenAccountCreation,
+      .solanaCompressedNftTransfer:
       guard let amount = transaction.txDataUnion.solanaTxData?.amount,
         let toAddress = transaction.txDataUnion.solanaTxData?.toWalletAddress,
         let splTokenMintAddress = transaction.txDataUnion.solanaTxData?.splTokenMintAddress
       else {
         return nil
       }
-      let fromToken = token(
-        for: splTokenMintAddress,
-        network: txNetwork,
-        userAssets: userAssets,
-        allTokens: allTokens
-      )
-      let tokenNFTMetadata: NFTMetadata?
+      let fromToken: BraveWallet.BlockchainToken? =
+        transaction.txType == .solanaCompressedNftTransfer
+        ? nil
+        : token(
+          for: splTokenMintAddress,
+          network: txNetwork,
+          userAssets: userAssets,
+          allTokens: allTokens
+        )  // solana compressed NFT transfer might get it's NFT info after issue #40353
+      let tokenNFTMetadata: BraveWallet.NftMetadata?
       if let fromToken {
         tokenNFTMetadata = nftMetadata[fromToken.id]
       } else {
@@ -691,18 +695,23 @@ enum TransactionParser {
       let fromValue = "\(amount)"
       var fromValueFormatted = ""
       var fromFiat = "$0.00"
-      if let token = fromToken {
-        fromValueFormatted =
-          formatter.decimalString(for: fromValue, radix: .decimal, decimals: Int(token.decimals))?
-          .trimmingTrailingZeros ?? ""
-        if token.isNft {
-          fromFiat = ""  // don't show fiat for NFTs
-        } else {
-          fromFiat =
-            currencyFormatter.formatAsFiat(
-              assetRatios[token.assetRatioId.lowercased(), default: 0]
-                * (Double(fromValueFormatted) ?? 0)
-            ) ?? "$0.00"
+      if transaction.txType == .solanaCompressedNftTransfer {
+        fromValueFormatted = "0"
+        fromFiat = ""
+      } else {
+        if let token = fromToken {
+          fromValueFormatted =
+            formatter.decimalString(for: fromValue, radix: .decimal, decimals: Int(token.decimals))?
+            .trimmingTrailingZeros ?? ""
+          if token.isNft {
+            fromFiat = ""  // don't show fiat for NFTs
+          } else {
+            fromFiat =
+              currencyFormatter.formatAsFiat(
+                assetRatios[token.assetRatioId.lowercased(), default: 0]
+                  * (Double(fromValueFormatted) ?? 0)
+              ) ?? "$0.00"
+          }
         }
       }
       // Example:
@@ -868,8 +877,6 @@ enum TransactionParser {
     case .erc1155SafeTransferFrom:
       return nil
     case .ethFilForwarderTransfer:
-      return nil
-    case .solanaCompressedNftTransfer:
       return nil
     @unknown default:
       return nil
@@ -1129,7 +1136,7 @@ struct SendDetails: Equatable {
   /// The amount formatted as currency
   let fromFiat: String?
   /// Metadata if `fromToken` is an NFT
-  let fromTokenMetadata: NFTMetadata?
+  let fromTokenMetadata: BraveWallet.NftMetadata?
 
   /// Gas fee for the transaction
   let gasFee: GasFee?
@@ -1170,7 +1177,7 @@ struct Eth721TransferDetails: Equatable {
   /// From amount formatted
   let fromAmount: String
   /// Metadata for the NFT being sent
-  let nftMetadata: NFTMetadata?
+  let nftMetadata: BraveWallet.NftMetadata?
 
   /// Owner (must not be confused with the caller (fromAddress)
   let owner: String
@@ -1241,7 +1248,7 @@ extension BraveWallet.TransactionInfo {
     userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
     assetRatios: [String: Double],
-    nftMetadata: [String: NFTMetadata],
+    nftMetadata: [String: BraveWallet.NftMetadata],
     solEstimatedTxFee: UInt64? = nil,
     currencyFormatter: NumberFormatter,
     decimalFormatStyle: WalletAmountFormatter.DecimalFormatStyle? = nil
@@ -1357,13 +1364,12 @@ extension BraveWallet.TransactionInfo {
     case .ethSend, .erc1155SafeTransferFrom, .other:
       break
     case .solanaSystemTransfer,
+      .solanaCompressedNftTransfer,
       .solanaDappSignTransaction,
       .solanaDappSignAndSendTransaction,
       .solanaSwap:
       break
     case .ethFilForwarderTransfer:
-      break
-    case .solanaCompressedNftTransfer:
       break
     @unknown default:
       break

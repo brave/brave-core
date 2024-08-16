@@ -43,7 +43,7 @@ class AccountActivityStoreTests: XCTestCase {
   private func setupServices(
     mockEthBalanceWei: String = "",
     mockERC20BalanceWei: String = "",
-    mockERC721BalanceWei: String = "",
+    mockNFTBalances: [BraveWallet.NftIdentifier: Double] = [:],
     mockLamportBalance: UInt64 = 0,
     mockSplTokenBalances: [String: String] = [:],  // [tokenMintAddress: balance],
     mockFilBalance: String = "",
@@ -80,8 +80,20 @@ class AccountActivityStoreTests: XCTestCase {
     rpcService._erc20TokenBalance = { _, _, _, completion in
       completion(mockERC20BalanceWei, .success, "")
     }
-    rpcService._erc721TokenBalance = { _, _, _, _, completion in
-      completion(mockERC721BalanceWei, .success, "")  // eth nft balance
+    rpcService._nftBalances = { _, nftIdentifiers, _, completion in
+      var balances: [NSNumber] = []
+      for nft in nftIdentifiers {
+        var balance: Double = 0
+        if let firstId = mockNFTBalances.keys.first(where: { id in
+          id.contractAddress.caseInsensitiveCompare(nft.contractAddress) == .orderedSame
+            && id.chainId == nft.chainId
+            && id.tokenId == nft.tokenId
+        }) {
+          balance = mockNFTBalances[firstId] ?? 0
+        }
+        balances.append(balance as NSNumber)
+      }
+      completion(balances, "")
     }
     rpcService._solanaBalance = { accountAddress, chainId, completion in
       if chainId == BraveWallet.SolanaMainnet {
@@ -91,11 +103,11 @@ class AccountActivityStoreTests: XCTestCase {
       }
     }
     rpcService._splTokenAccountBalance = { _, tokenMintAddress, _, completion in
-      // spd token, sol nft balance
+      // spd token
       completion(
         mockSplTokenBalances[tokenMintAddress] ?? "",
         UInt8(0),
-        mockSplTokenBalances[tokenMintAddress] ?? "",
+        "",
         .success,
         ""
       )
@@ -172,15 +184,19 @@ class AccountActivityStoreTests: XCTestCase {
         radix: .hex,
         decimals: Int(BraveWallet.BlockchainToken.mockUSDCToken.decimals)
       ) ?? ""
-    let mockNFTBalance: Double = 1
-    let mockERC721BalanceWei =
-      formatter.weiString(from: mockNFTBalance, radix: .hex, decimals: 0) ?? ""
+    let mockERC721Balance: Double = 1
 
-    let mockERC721Metadata: NFTMetadata = .init(
-      imageURLString: "mock.image.url",
+    let mockERC721Metadata: BraveWallet.NftMetadata = .init(
       name: "mock nft name",
       description: "mock nft description",
-      attributes: nil
+      image: "mock.image.url",
+      imageData: "mock.image.data",
+      externalUrl: "mock.external.url",
+      attributes: [],
+      backgroundColor: "mock.backgroundColor",
+      animationUrl: "mock.animation.url",
+      youtubeUrl: "mock.youtube.url",
+      collection: "mock.collection"
     )
 
     // default in mainnet
@@ -190,13 +206,19 @@ class AccountActivityStoreTests: XCTestCase {
       BraveWallet.TransactionInfo.previewConfirmedSwap.copy() as! BraveWallet.TransactionInfo
     sepoliaSwapTxCopy.chainId = BraveWallet.SepoliaChainId
 
+    let mockERC721NFT = BraveWallet.BlockchainToken.mockERC721NFTToken.copy(asVisibleAsset: true)
+    let mockERC721NFTTokenIdentifier: BraveWallet.NftIdentifier = .init(
+      chainId: mockERC721NFT.chainId,
+      contractAddress: mockERC721NFT.contractAddress,
+      tokenId: mockERC721NFT.tokenId
+    )
     let (
       keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
       swapService, txService, solTxManagerProxy, ipfsApi, bitcoinWalletService
     ) = setupServices(
       mockEthBalanceWei: mockEthBalanceWei,
       mockERC20BalanceWei: mockERC20BalanceWei,
-      mockERC721BalanceWei: mockERC721BalanceWei,
+      mockNFTBalances: [mockERC721NFTTokenIdentifier: mockERC721Balance],
       transactions: [sepoliaSwapTxCopy, ethSendTxCopy].enumerated().map { (index, tx) in
         // transactions sorted by created time, make sure they are in-order
         tx.createdTime = firstTransactionDate.addingTimeInterval(TimeInterval(index) * 1.days)
@@ -204,6 +226,9 @@ class AccountActivityStoreTests: XCTestCase {
       }
     )
 
+    rpcService._nftMetadatas = { _, _, completion in
+      completion([mockERC721Metadata], "")
+    }
     let mockAssetManager = TestableWalletUserAssetManager()
     mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
       [
@@ -211,7 +236,7 @@ class AccountActivityStoreTests: XCTestCase {
           network: .mockMainnet,
           tokens: [
             BraveWallet.NetworkInfo.mockMainnet.nativeToken.copy(asVisibleAsset: true),
-            .mockERC721NFTToken.copy(asVisibleAsset: true),
+            mockERC721NFT,
             .mockUSDCToken.copy(asVisibleAsset: true),
             // To verify brave/brave-browser#36806
             .previewDaiToken.copy(asVisibleAsset: false),
@@ -299,16 +324,16 @@ class AccountActivityStoreTests: XCTestCase {
         )
         XCTAssertEqual(
           lastUpdatedNFTs[safe: 0]?.balanceForAccounts[account.id],
-          Int(mockNFTBalance)
+          Int(mockERC721Balance)
         )
         XCTAssertEqual(
-          lastUpdatedNFTs[safe: 0]?.nftMetadata?.imageURLString,
-          mockERC721Metadata.imageURLString
+          lastUpdatedNFTs[safe: 0]?.nftMetadata?.image,
+          mockERC721Metadata.image
         )
         XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.nftMetadata?.name, mockERC721Metadata.name)
         XCTAssertEqual(
-          lastUpdatedNFTs[safe: 0]?.nftMetadata?.description,
-          mockERC721Metadata.description
+          lastUpdatedNFTs[safe: 0]?.nftMetadata?.desc,
+          mockERC721Metadata.desc
         )
       }.store(in: &cancellables)
 
@@ -355,16 +380,20 @@ class AccountActivityStoreTests: XCTestCase {
     let mockSolanaNFTTokenBalance: Double = 1
 
     let mockSplTokenBalances: [String: String] = [
-      BraveWallet.BlockchainToken.mockSpdToken.contractAddress: "\(mockSpdTokenBalance)",
-      BraveWallet.BlockchainToken.mockSolanaNFTToken.contractAddress:
-        "\(mockSolanaNFTTokenBalance)",
+      BraveWallet.BlockchainToken.mockSpdToken.contractAddress: "\(mockSpdTokenBalance)"
     ]
 
-    let mockSolMetadata: NFTMetadata = .init(
-      imageURLString: "sol.mock.image.url",
+    let mockSolMetadata: BraveWallet.NftMetadata = .init(
       name: "sol mock nft name",
       description: "sol mock nft description",
-      attributes: nil
+      image: "sol.mock.image.url",
+      imageData: "sol.mock.image.data",
+      externalUrl: "sol.mock.external.url",
+      attributes: [],
+      backgroundColor: "sol.mock.backgroundColor",
+      animationUrl: "sol.mock.animation.url",
+      youtubeUrl: "sol.mock.youtube.url",
+      collection: "sol.mock.collection"
     )
 
     let solSendTxCopy =
@@ -375,10 +404,19 @@ class AccountActivityStoreTests: XCTestCase {
       as! BraveWallet.TransactionInfo
     solTestnetSendTxCopy.chainId = BraveWallet.SolanaTestnet
 
+    let mockSolanaNFTToken =
+      BraveWallet.BlockchainToken.mockSolanaNFTToken.copy(asVisibleAsset: true)
+    let mockSolanaNFTTokenIdentifier = BraveWallet.NftIdentifier(
+      chainId: mockSolanaNFTToken.chainId,
+      contractAddress: mockSolanaNFTToken.contractAddress,
+      tokenId: mockSolanaNFTToken.tokenId
+    )
+
     let (
       keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
       swapService, txService, solTxManagerProxy, ipfsApi, bitcoinWalletService
     ) = setupServices(
+      mockNFTBalances: [mockSolanaNFTTokenIdentifier: mockSolanaNFTTokenBalance],
       mockLamportBalance: mockLamportBalance,
       mockSplTokenBalances: mockSplTokenBalances,
       transactions: [solTestnetSendTxCopy, solSendTxCopy].enumerated().map { (index, tx) in
@@ -388,6 +426,9 @@ class AccountActivityStoreTests: XCTestCase {
       }
     )
 
+    rpcService._nftMetadatas = { _, _, completion in
+      completion([mockSolMetadata], "")
+    }
     let mockAssetManager = TestableWalletUserAssetManager()
     mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
       [
@@ -395,7 +436,7 @@ class AccountActivityStoreTests: XCTestCase {
           network: .mockSolana,
           tokens: [
             BraveWallet.NetworkInfo.mockSolana.nativeToken.copy(asVisibleAsset: true),
-            .mockSolanaNFTToken.copy(asVisibleAsset: true),
+            mockSolanaNFTToken,
             .mockSpdToken.copy(asVisibleAsset: true),
           ],
           sortOrder: 0
@@ -497,13 +538,13 @@ class AccountActivityStoreTests: XCTestCase {
           Int(mockSolanaNFTTokenBalance)
         )
         XCTAssertEqual(
-          lastUpdatedNFTs[safe: 0]?.nftMetadata?.imageURLString,
-          mockSolMetadata.imageURLString
+          lastUpdatedNFTs[safe: 0]?.nftMetadata?.image,
+          mockSolMetadata.image
         )
         XCTAssertEqual(lastUpdatedNFTs[safe: 0]?.nftMetadata?.name, mockSolMetadata.name)
         XCTAssertEqual(
-          lastUpdatedNFTs[safe: 0]?.nftMetadata?.description,
-          mockSolMetadata.description
+          lastUpdatedNFTs[safe: 0]?.nftMetadata?.desc,
+          mockSolMetadata.desc
         )
       }.store(in: &cancellables)
 

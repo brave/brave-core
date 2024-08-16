@@ -41,7 +41,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
   private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
-  private var nftMetadataCache: [String: NFTMetadata] = [:]
+  private var nftMetadataCache: [String: BraveWallet.NftMetadata] = [:]
   private var solEstimatedTxFeesCache: [String: UInt64] = [:]
   private var assetRatiosCache: [String: Double] = [:]
 

@@ -65,6 +65,24 @@ extension BraveWalletJsonRpcService {
             completion(nil)
           }
         }
+      } else if token.isNft {
+        nftBalances(
+          walletAddress: account.address,
+          nftIdentifiers: [
+            .init(
+              chainId: token.chainId,
+              contractAddress: token.contractAddress,
+              tokenId: token.tokenId
+            )
+          ],
+          coin: token.coin
+        ) { quantities, errMsg in
+          if let quantity = quantities.first {
+            completion(quantity.doubleValue)
+          } else {
+            completion(nil)
+          }
+        }
       } else {
         splTokenAccountBalance(
           walletAddress: account.address,
@@ -278,14 +296,24 @@ extension BraveWalletJsonRpcService {
         chainId: network.chainId,
         completion: completion
       )
-    } else if token.isErc721 {
-      erc721TokenBalance(
-        contractAddress: token.contractAddress,
-        tokenId: token.tokenId,
-        accountAddress: accountAddress,
-        chainId: network.chainId,
-        completion: completion
-      )
+    } else if token.isErc721 || token.isErc1155 || token.isNft {
+      nftBalances(
+        walletAddress: accountAddress,
+        nftIdentifiers: [
+          .init(
+            chainId: token.chainId,
+            contractAddress: token.contractAddress,
+            tokenId: token.tokenId
+          )
+        ],
+        coin: token.coin
+      ) { quantities, errMsg in
+        if let quantity = quantities.first {
+          completion(quantity.stringValue, .success, "")
+        } else {
+          completion("", .internalError, errMsg)
+        }
+      }
     } else {
       let errorMessage =
         "Unable to fetch ethereum balance for \(token.symbol) token in account address '\(accountAddress)'"
@@ -380,86 +408,60 @@ extension BraveWalletJsonRpcService {
   @MainActor func fetchNFTMetadata(
     for token: BraveWallet.BlockchainToken,
     ipfsApi: IpfsAPI
-  ) async -> NFTMetadata? {
-    var metaDataString = ""
-    if token.isErc721 {
-      let (_, metaData, result, errMsg) = await self.erc721Metadata(
-        contract: token.contractAddress,
-        tokenId: token.tokenId,
-        chainId: token.chainId
-      )
-
-      if result != .success {
-        Logger.module.debug("Failed to load ERC721 metadata: \(errMsg)")
-      }
-      metaDataString = metaData
-    } else {
-      let (_, metaData, result, errMsg) = await self.solTokenMetadata(
+  ) async -> BraveWallet.NftMetadata? {
+    let nftIdentifier: BraveWallet.NftIdentifier =
+      .init(
         chainId: token.chainId,
-        tokenMintAddress: token.contractAddress
+        contractAddress: token.contractAddress,
+        tokenId: token.tokenId
       )
-      if result != .success {
-        Logger.module.debug("Failed to load Solana NFT metadata: \(errMsg)")
-      }
-      metaDataString = metaData
-    }
-    if let data = metaDataString.data(using: .utf8),
-      let result = try? JSONDecoder().decode(NFTMetadata.self, from: data)
-    {
-      return result.httpfyIpfsUrl(ipfsApi: ipfsApi)
-    }
-    return nil
+    let result = await self.nftMetadatas(
+      coin: token.coin,
+      nftIdentifiers: [nftIdentifier]
+    ).0.first
+    return result?.httpfyIpfsUrl(ipfsApi: ipfsApi)
   }
 
-  /// Returns a map of Token.id with its NFT metadata
+  /// Returns a map of Token.id with its `BraveWallet.NftMetadata`
   @MainActor func fetchNFTMetadata(
     tokens: [BraveWallet.BlockchainToken],
     ipfsApi: IpfsAPI
-  ) async -> [String: NFTMetadata] {
-    await withTaskGroup(of: [String: NFTMetadata].self) {
-      @MainActor [weak self] group -> [String: NFTMetadata] in
+  ) async -> [String: BraveWallet.NftMetadata] {
+    var tokenCoinMap = [BraveWallet.CoinType: [BraveWallet.BlockchainToken]]()
+    for coin in WalletConstants.supportedCoinTypes() {
+      let tokensPerCoin = tokens.filter { $0.coin == coin }
+      if !tokensPerCoin.isEmpty {
+        tokenCoinMap[coin] = tokensPerCoin
+      }
+    }
+    return await withTaskGroup(
+      of: [String: BraveWallet.NftMetadata].self
+    ) { @MainActor [weak self] group in
       guard let self = self else { return [:] }
-      for token in tokens {
-        group.addTask { @MainActor in
-          var metaDataString = ""
-          if token.isErc721 {
-            let (_, metaData, result, errMsg) = await self.erc721Metadata(
-              contract: token.contractAddress,
-              tokenId: token.tokenId,
-              chainId: token.chainId
+      for (coin, tokensPerCoin) in tokenCoinMap {
+        group.addTask {
+          let nftIdentifiers = tokensPerCoin.map {
+            BraveWallet.NftIdentifier(
+              chainId: $0.chainId,
+              contractAddress: $0.contractAddress,
+              tokenId: $0.tokenId
             )
-
-            if result != .success {
-              Logger.module.debug("Failed to load ERC721 metadata: \(errMsg)")
-            }
-            metaDataString = metaData
-          } else {
-            let (_, metaData, result, errMsg) = await self.solTokenMetadata(
-              chainId: token.chainId,
-              tokenMintAddress: token.contractAddress
-            )
-            if result != .success {
-              Logger.module.debug("Failed to load Solana NFT metadata: \(errMsg)")
-            }
-            metaDataString = metaData
           }
-
-          if let data = metaDataString.data(using: .utf8),
-            let result = try? JSONDecoder().decode(NFTMetadata.self, from: data)
-          {
-
-            return [token.id: result.httpfyIpfsUrl(ipfsApi: ipfsApi)]
+          let metadatas = await self.nftMetadatas(coin: coin, nftIdentifiers: nftIdentifiers).0
+          var result = [String: BraveWallet.NftMetadata]()
+          for (index, token) in tokensPerCoin.enumerated() {
+            if let metadata = metadatas[safe: index] {
+              result[token.id] = metadata.httpfyIpfsUrl(ipfsApi: ipfsApi)
+            }
           }
-          return [:]
+          return result
         }
       }
-
       return await group.reduce(
-        [:],
-        {
-          $0.merging($1, uniquingKeysWith: { key, _ in key })
-        }
-      )
+        into: [:]
+      ) { partialResult, new in
+        partialResult.merge(with: new)
+      }
     }
   }
 

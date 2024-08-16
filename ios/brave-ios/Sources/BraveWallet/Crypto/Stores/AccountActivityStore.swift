@@ -51,7 +51,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
   private var tokenBalanceCache: [String: Double] = [:]
   private var tokenPricesCache: [String: String] = [:]
-  private var nftMetadataCache: [String: NFTMetadata] = [:]
+  private var nftMetadataCache: [String: BraveWallet.NftMetadata] = [:]
   private var solEstimatedTxFeesCache: [String: UInt64] = [:]
   private var btcBalancesCache: [BTCBalanceType: Double] = [:]
 
@@ -399,7 +399,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     userNetworkAssets: [NetworkAssets],
     tokenBalances: [String: Double],
     tokenPrices: [String: String],
-    nftMetadata: [String: NFTMetadata],
+    nftMetadata: [String: BraveWallet.NftMetadata],
     btcBalances: [BTCBalanceType: Double]
   ) -> ([AssetViewModel], [NFTAssetViewModel]) {
     var updatedUserAssets: [AssetViewModel] = []
@@ -453,7 +453,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
     tokenPrices: [String: String],
-    nftMetadata: [String: NFTMetadata],
+    nftMetadata: [String: BraveWallet.NftMetadata],
     solEstimatedTxFees: [String: UInt64]
   ) -> [TransactionSection] {
     // Group transactions by day (only compare day/month/year)
