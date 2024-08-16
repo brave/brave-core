@@ -10,6 +10,7 @@
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/test/theme_service_changed_waiter.h"
@@ -135,9 +136,8 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTestWithoutSystemTheme,
   // Test dark theme
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
-  EXPECT_EQ(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK,
-      dark_mode::GetActiveBraveDarkModeType());
+  EXPECT_EQ(dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK,
+            dark_mode::GetActiveBraveDarkModeType());
 
   color_provider =
       ThemeServiceFactory::GetForProfile(profile)->GetColorProvider();
@@ -163,19 +163,18 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ThemeObserverTest) {
   // Check theme oberver is called twice by changing theme.
   // One for changing to dark and the other for changing to light.
   TestNativeThemeObserver native_theme_observer;
-  EXPECT_CALL(
-      native_theme_observer,
-      OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi())).Times(2);
+  EXPECT_CALL(native_theme_observer,
+              OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi()))
+      .Times(2);
   ui::NativeTheme::GetInstanceForNativeUi()->AddObserver(
       &native_theme_observer);
 
   TestNativeThemeObserver web_theme_observer;
-  EXPECT_CALL(
-      web_theme_observer,
-      OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForWeb())).Times(2);
+  EXPECT_CALL(web_theme_observer,
+              OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForWeb()))
+      .Times(2);
 
-  ui::NativeTheme::GetInstanceForWeb()->AddObserver(
-      &web_theme_observer);
+  ui::NativeTheme::GetInstanceForWeb()->AddObserver(&web_theme_observer);
 
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
@@ -245,8 +244,9 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ColorProviderTest) {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* cp = browser_view->GetColorProvider();
   SkColor frame_active_color = cp->GetColor(ui::kColorFrameActive);
-  EXPECT_TRUE(frame_active_color == kLightFrame ||
-              frame_active_color == kDarkFrame);
+  SkColor nala_frame_color =
+      cp->GetColor(nala::kColorDesktopbrowserTabbarBackground);
+  EXPECT_EQ(nala_frame_color, frame_active_color);
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Check frame color is not ours when theme extension is installed.
@@ -261,8 +261,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ColorProviderTest) {
 
   cp = browser_view->GetColorProvider();
   frame_active_color = cp->GetColor(ui::kColorFrameActive);
-  EXPECT_TRUE(frame_active_color != kLightFrame &&
-              frame_active_color != kDarkFrame);
+  EXPECT_NE(nala_frame_color, frame_active_color);
 #endif
 
   auto* private_browser = CreateIncognitoBrowser();
@@ -286,20 +285,20 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, MAYBE_DarkModeChangeByRegTest) {
   // And Toggle it twice from initial value to go back to initial value  because
   // reg value changes system value. Otherwise, dark mode config could be
   // changed after running this test.
-  if (!ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeSupported())
+  if (!ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeSupported()) {
     return;
+  }
 
   base::win::RegKey hkcu_themes_regkey;
-  bool key_open_succeeded = hkcu_themes_regkey.Open(
-      HKEY_CURRENT_USER,
-      L"Software\\Microsoft\\Windows\\CurrentVersion\\"
-      L"Themes\\Personalize",
-      KEY_WRITE) == ERROR_SUCCESS;
+  bool key_open_succeeded =
+      hkcu_themes_regkey.Open(HKEY_CURRENT_USER,
+                              L"Software\\Microsoft\\Windows\\CurrentVersion\\"
+                              L"Themes\\Personalize",
+                              KEY_WRITE) == ERROR_SUCCESS;
   DCHECK(key_open_succeeded);
 
   DWORD apps_use_light_theme = 1;
-  hkcu_themes_regkey.ReadValueDW(L"AppsUseLightTheme",
-                                 &apps_use_light_theme);
+  hkcu_themes_regkey.ReadValueDW(L"AppsUseLightTheme", &apps_use_light_theme);
   const bool initial_dark_mode = apps_use_light_theme == 0;
 
   // Set dark mode to "Same as Windows". In this mode we want to be receiving
