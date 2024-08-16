@@ -10,6 +10,9 @@ import android.security.keystore.KeyProperties;
 import android.text.TextUtils;
 import android.util.Base64;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
@@ -37,8 +40,55 @@ public class KeystoreHelper {
     private static final String BRAVE_WALLET_ALIAS = "BRAVE_WALLET_ALIAS";
     private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
 
-    public static void useBiometricOnUnlock(String text) {
-        if (!encryptText(text)) {
+    @Nullable
+    public static Cipher getCipherForEncryption() {
+        try {
+            final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+            cipher.init(Cipher.ENCRYPT_MODE, getSecretKey());
+            return cipher;
+        } catch (NoSuchAlgorithmException
+                | NoSuchPaddingException
+                | NoSuchProviderException
+                | InvalidAlgorithmParameterException
+                | InvalidKeyException e) {
+            return null;
+        }
+    }
+
+    @Nullable
+    public static Cipher getCipherForDecryption() {
+        try {
+            KeyStore keyStore = KeyStore.getInstance(ANDROID_KEY_STORE);
+            keyStore.load(null);
+
+            String ivBase64 =
+                    ChromeSharedPreferences.getInstance()
+                            .readString(BravePreferenceKeys.BRAVE_BIOMETRICS_FOR_WALLET_IV, "");
+            if (TextUtils.isEmpty(ivBase64)) {
+                return null;
+            }
+            GCMParameterSpec spec =
+                    new GCMParameterSpec(128, Base64.decode(ivBase64, Base64.DEFAULT));
+            SecretKey secretKey =
+                    ((KeyStore.SecretKeyEntry) keyStore.getEntry(BRAVE_WALLET_ALIAS, null))
+                            .getSecretKey();
+            final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, spec);
+            return cipher;
+        } catch (InvalidAlgorithmParameterException
+                | NoSuchPaddingException
+                | UnrecoverableEntryException
+                | CertificateException
+                | NoSuchAlgorithmException
+                | KeyStoreException
+                | IOException
+                | InvalidKeyException e) {
+            return null;
+        }
+    }
+
+    public static void useBiometricOnUnlock(String text, @NonNull final Cipher cipher) {
+        if (!encryptText(text, cipher)) {
             return;
         }
 
@@ -46,12 +96,10 @@ public class KeystoreHelper {
                 .writeBoolean(BravePreferenceKeys.BRAVE_USE_BIOMETRICS_FOR_WALLET, true);
     }
 
-    private static boolean encryptText(String text) {
+    private static boolean encryptText(String text, @NonNull final Cipher cipher) {
         try {
-            Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-            cipher.init(Cipher.ENCRYPT_MODE, getSecretKey());
             byte[] iv = cipher.getIV();
-            byte[] encrypted = cipher.doFinal(text.getBytes("UTF-8"));
+            byte[] encrypted = cipher.doFinal(text.getBytes(StandardCharsets.UTF_8));
             saveToSharedPref(iv, encrypted);
         } catch (Exception exc) {
             // Fallback to password only if we fail to encrypt it for biometric
@@ -94,7 +142,8 @@ public class KeystoreHelper {
                 .readBoolean(BravePreferenceKeys.BRAVE_USE_BIOMETRICS_FOR_WALLET, false);
     }
 
-    public static String decryptText()
+    @NonNull
+    public static String decryptText(@NonNull final Cipher cipher)
             throws KeyStoreException,
                     CertificateException,
                     NoSuchAlgorithmException,
@@ -105,24 +154,13 @@ public class KeystoreHelper {
                     UnrecoverableEntryException,
                     InvalidKeyException,
                     IllegalBlockSizeException {
-        String ivBase64 =
-                ChromeSharedPreferences.getInstance()
-                        .readString(BravePreferenceKeys.BRAVE_BIOMETRICS_FOR_WALLET_IV, "");
+
         String encryptedBase64 =
                 ChromeSharedPreferences.getInstance()
                         .readString(BravePreferenceKeys.BRAVE_BIOMETRICS_FOR_WALLET_ENCRYPTED, "");
-        if (TextUtils.isEmpty(ivBase64) || TextUtils.isEmpty(encryptedBase64)) {
+        if (TextUtils.isEmpty(encryptedBase64)) {
             return "";
         }
-        KeyStore keyStore = KeyStore.getInstance(ANDROID_KEY_STORE);
-        keyStore.load(null);
-
-        Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-        GCMParameterSpec spec = new GCMParameterSpec(128, Base64.decode(ivBase64, Base64.DEFAULT));
-        SecretKey secretKey =
-                ((KeyStore.SecretKeyEntry) keyStore.getEntry(BRAVE_WALLET_ALIAS, null))
-                        .getSecretKey();
-        cipher.init(Cipher.DECRYPT_MODE, secretKey, spec);
 
         return new String(
                 cipher.doFinal(Base64.decode(encryptedBase64, Base64.DEFAULT)),

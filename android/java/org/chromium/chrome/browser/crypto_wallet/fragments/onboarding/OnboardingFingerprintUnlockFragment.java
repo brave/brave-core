@@ -30,6 +30,8 @@ import org.chromium.ui.widget.Toast;
 
 import java.util.concurrent.Executor;
 
+import javax.crypto.Cipher;
+
 public class OnboardingFingerprintUnlockFragment extends BaseOnboardingWalletFragment {
     private boolean mUseFingerprintUnlockClicked;
     private AppCompatButton mUseFingerprintUnlockButton;
@@ -58,15 +60,15 @@ public class OnboardingFingerprintUnlockFragment extends BaseOnboardingWalletFra
         mUseFingerprintUnlockButton = view.findViewById(R.id.button_fingerprint_unlock_continue);
         mUseFingerprintUnlockButton.setOnClickListener(
                 v -> {
-                    if (mUseFingerprintUnlockClicked
-                            || !Utils.isBiometricSupported(requireContext())) {
+                    if (mUseFingerprintUnlockClicked) {
                         return;
                     }
                     mUseFingerprintUnlockClicked = true;
 
-                    if (Utils.isBiometricSupported(requireContext())) {
+                    final Cipher cipher = KeystoreHelper.getCipherForEncryption();
+                    if (Utils.isBiometricSupported(requireContext()) && cipher != null) {
                         // noinspection NewApi
-                        setUpBiometric(mOnboardingViewModel.getPassword());
+                        setUpBiometric(mOnboardingViewModel.getPassword(), cipher);
                     } else {
                         goToTheNextPage();
                     }
@@ -86,14 +88,16 @@ public class OnboardingFingerprintUnlockFragment extends BaseOnboardingWalletFra
 
     @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.P)
-    private void setUpBiometric(@NonNull final String password) {
+    private void setUpBiometric(@NonNull final String password, @NonNull final Cipher cipher) {
         final BiometricPrompt.AuthenticationCallback authenticationCallback =
                 new BiometricPrompt.AuthenticationCallback() {
                     @Override
                     public void onAuthenticationSucceeded(
                             BiometricPrompt.AuthenticationResult result) {
                         super.onAuthenticationSucceeded(result);
-                        KeystoreHelper.useBiometricOnUnlock(password);
+                        Cipher resultCipher = result.getCryptoObject().getCipher();
+                        assert resultCipher != null;
+                        KeystoreHelper.useBiometricOnUnlock(password, resultCipher);
                         goToTheNextPage();
                     }
 
@@ -121,7 +125,11 @@ public class OnboardingFingerprintUnlockFragment extends BaseOnboardingWalletFra
                                 authenticationCallback.onAuthenticationError(
                                         BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED, ""))
                 .build()
-                .authenticate(new CancellationSignal(), executor, authenticationCallback);
+                .authenticate(
+                        new BiometricPrompt.CryptoObject(cipher),
+                        new CancellationSignal(),
+                        executor,
+                        authenticationCallback);
     }
 
     private void goToTheNextPage() {
