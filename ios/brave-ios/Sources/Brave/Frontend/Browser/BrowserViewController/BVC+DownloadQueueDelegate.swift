@@ -46,6 +46,7 @@ extension BrowserViewController: DownloadQueueDelegate {
     combinedTotalBytesExpected: Int64?
   ) {
     downloadToast?.combinedBytesDownloaded = combinedBytesDownloaded
+    downloadToast?.combinedTotalBytesExpected = combinedTotalBytesExpected
   }
 
   func downloadQueue(

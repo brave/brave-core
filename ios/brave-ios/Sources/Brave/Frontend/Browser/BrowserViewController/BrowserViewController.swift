@@ -215,7 +215,6 @@ public class BrowserViewController: UIViewController {
   /// A boolean to determine if OpenInPlaylistActivity should be shown
   var openInPlaylistActivityItem: (enabled: Bool, item: PlaylistInfo?)?
   var shouldDownloadNavigationResponse: Bool = false
-  var pendingDownloads = [WKDownload: PendingDownload]()
 
   var navigationToolbar: ToolbarProtocol {
     return toolbar ?? topToolbar
