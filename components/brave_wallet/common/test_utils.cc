@@ -12,9 +12,15 @@
 namespace brave_wallet {
 
 bool AllCoinsTested() {
-  // Change hardcoded values here only when all failed callers have adequate
-  // testing for newly added coin or keyring.
-  return 5 == std::size(kAllCoins) && 10 == std::size(kAllKeyrings);
+  // Change hardcoded value here only when all failed callers have adequate
+  // testing for newly added coin.
+  return 5 == std::size(kAllCoins);
+}
+
+bool AllKeyringsTested() {
+  // Change hardcoded value here only when all failed callers have adequate
+  // testing for newly added keyring.
+  return 12 == std::size(kAllKeyrings);
 }
 
 mojom::NetworkInfo GetTestNetworkInfo1(const std::string& chain_id,
@@ -83,6 +89,12 @@ void PrintTo(const BitcoinBalancePtr& balance, ::std::ostream* os) {
 
 void PrintTo(const BitcoinKeyId& key_id, ::std::ostream* os) {
   *os << key_id.change << "/" << key_id.index;
+}
+
+void PrintTo(const BitcoinAccountInfoPtr& account_info, ::std::ostream* os) {
+  PrintTo(account_info->next_receive_address, os);
+  *os << "/";
+  PrintTo(account_info->next_change_address, os);
 }
 
 }  // namespace mojom

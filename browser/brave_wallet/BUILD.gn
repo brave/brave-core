@@ -160,8 +160,6 @@ source_set("unit_tests") {
     "brave_wallet_service_unittest.cc",
     "eth_allowance_manager_unittest.cc",
     "eth_pending_tx_tracker_unittest.cc",
-    "filecoin_keyring_unittest.cc",
-    "keyring_service_unittest.cc",
   ]
   deps = [
     "//base/test:test_support",

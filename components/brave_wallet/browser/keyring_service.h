@@ -34,6 +34,7 @@ class AccountDiscoveryManager;
 class AssetDiscoveryManagerUnitTest;
 class BitcoinBaseKeyring;
 class BitcoinHDKeyring;
+class BitcoinHardwareKeyring;
 class BitcoinImportKeyring;
 class EthereumKeyring;
 class EthereumProviderImplUnitTest;
@@ -112,6 +113,11 @@ class KeyringService : public mojom::KeyringService {
                            AddHardwareAccountsCallback callback) override;
   std::vector<mojom::AccountInfoPtr> AddHardwareAccountsSync(
       std::vector<mojom::HardwareWalletAccountPtr> info);
+  void AddBitcoinHardwareAccount(
+      mojom::HardwareWalletAccountPtr info,
+      AddBitcoinHardwareAccountCallback callback) override;
+  mojom::AccountInfoPtr AddBitcoinHardwareAccountSync(
+      mojom::HardwareWalletAccountPtr info);
   void RemoveAccount(mojom::AccountIdPtr account_id,
                      const std::string& password,
                      RemoveAccountCallback callback) override;
@@ -332,6 +338,8 @@ class KeyringService : public mojom::KeyringService {
       mojom::KeyringId keyring_id) const;
   BitcoinImportKeyring* GetBitcoinImportKeyring(
       mojom::KeyringId keyring_id) const;
+  BitcoinHardwareKeyring* GetBitcoinHardwareKeyring(
+      mojom::KeyringId keyring_id) const;
   BitcoinHDKeyring* GetBitcoinHDKeyringById(mojom::KeyringId keyring_id) const;
   ZCashKeyring* GetZCashKeyringById(mojom::KeyringId keyring_id) const;
   std::vector<mojom::AccountInfoPtr> GetHardwareAccountsSync(
@@ -390,6 +398,8 @@ class KeyringService : public mojom::KeyringService {
   base::flat_map<mojom::KeyringId, std::unique_ptr<HDKeyring>> keyrings_;
   base::flat_map<mojom::KeyringId, std::unique_ptr<BitcoinImportKeyring>>
       bitcoin_import_keyrings_;
+  base::flat_map<mojom::KeyringId, std::unique_ptr<BitcoinHardwareKeyring>>
+      bitcoin_hardware_keyrings_;
   std::unique_ptr<PasswordEncryptor> encryptor_;
 
   raw_ptr<JsonRpcService> json_rpc_service_;

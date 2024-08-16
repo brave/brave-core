@@ -49,6 +49,10 @@ std::string NewAccName(mojom::KeyringId keyring_id, uint32_t index) {
         return "Bitcoin Imported Account";
       case mojom::KeyringId::kBitcoinImportTestnet:
         return "Bitcoin Imported Testnet Account";
+      case mojom::KeyringId::kBitcoinHardware:
+        return "Bitcoin Hardware Account";
+      case mojom::KeyringId::kBitcoinHardwareTestnet:
+        return "Bitcoin Hardware Testnet Account";
     }
     NOTREACHED_IN_MIGRATION();
     return "";
@@ -114,6 +118,25 @@ mojom::AccountInfoPtr AccountUtils::GetImportedAccount(
   return nullptr;
 }
 
+mojom::AccountInfoPtr AccountUtils::GetHardwareAccount(
+    mojom::KeyringId keyring_id,
+    uint32_t index) {
+  EXPECT_TRUE(IsBitcoinHardwareKeyring(keyring_id));
+
+  auto all_accounts = keyring_service_->GetAllAccountsSync();
+  for (auto& acc : all_accounts->accounts) {
+    if (acc->account_id->keyring_id != keyring_id ||
+        acc->account_id->kind != mojom::AccountKind::kHardware) {
+      continue;
+    }
+    if (index == 0) {
+      return acc->Clone();
+    }
+    --index;
+  }
+  return nullptr;
+}
+
 mojom::AccountInfoPtr AccountUtils::CreateImportedAccount(
     mojom::KeyringId keyring_id,
     const std::string& name) {
@@ -131,6 +154,34 @@ mojom::AccountInfoPtr AccountUtils::CreateImportedAccount(
   return acc;
 }
 
+mojom::AccountInfoPtr AccountUtils::CreateHardwareAccount(
+    mojom::KeyringId keyring_id,
+    const std::string& name) {
+  EXPECT_TRUE(IsBitcoinHardwareKeyring(keyring_id));
+  const auto network = GetNetworkForBitcoinKeyring(keyring_id);
+
+  mojom::HardwareWalletAccountPtr hw_account;
+  if (keyring_id == mojom::KeyringId::kBitcoinHardware) {
+    hw_account = mojom::HardwareWalletAccount::New(
+        "xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJo"
+        "Cu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8",
+        "derivation_path", "Btc hw account", mojom::HardwareVendor::kLedger,
+        "device_id", mojom::KeyringId::kBitcoinHardware);
+  } else if (keyring_id == mojom::KeyringId::kBitcoinHardwareTestnet) {
+    hw_account = mojom::HardwareWalletAccount::New(
+        "tpubD6NzVbkrYhZ4XgiXtGrdW5XDAPFCL9h7we1vwNCpn8tGbBcgfVYjXyhWo4E1xkh56h"
+        "jod1RhGjxbaTLV3X4FyWuejifB9jusQ46QzG87VKp",
+        "derivation_path", "Btc hw testnet account",
+        mojom::HardwareVendor::kLedger, "device_id",
+        mojom::KeyringId::kBitcoinHardwareTestnet);
+  }
+  auto acc =
+      keyring_service_->AddBitcoinHardwareAccountSync(std::move(hw_account))
+          ->Clone();
+  EXPECT_TRUE(acc);
+  return acc;
+}
+
 mojom::AccountInfoPtr AccountUtils::EnsureAccount(mojom::KeyringId keyring_id,
                                                   uint32_t index) {
   if (IsBitcoinImportKeyring(keyring_id)) {
@@ -141,6 +192,17 @@ mojom::AccountInfoPtr AccountUtils::EnsureAccount(mojom::KeyringId keyring_id,
       }
     }
     auto acc = GetImportedAccount(keyring_id, index);
+    EXPECT_TRUE(acc);
+    return acc;
+  }
+  if (IsBitcoinHardwareKeyring(keyring_id)) {
+    for (auto i = 0u; i <= index; ++i) {
+      if (!GetHardwareAccount(keyring_id, i)) {
+        EXPECT_TRUE(
+            CreateHardwareAccount(keyring_id, NewAccName(keyring_id, i)));
+      }
+    }
+    auto acc = GetHardwareAccount(keyring_id, index);
     EXPECT_TRUE(acc);
     return acc;
   }
@@ -248,12 +310,21 @@ mojom::AccountInfoPtr AccountUtils::CreateEthHWAccount() {
   std::vector<mojom::HardwareWalletAccountPtr> hw_accounts;
   hw_accounts.push_back(mojom::HardwareWalletAccount::New(
       address, "m/44'/60'/1'/0/0", "HW Account " + address,
-      mojom::HardwareVendor::kLedger, "device1", mojom::CoinType::ETH,
-      mojom::KeyringId::kDefault));
+      mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kDefault));
 
   auto added_accounts =
       keyring_service_->AddHardwareAccountsSync(std::move(hw_accounts));
   return std::move(added_accounts[0]);
+}
+
+mojom::AccountInfoPtr AccountUtils::CreateBtcHWAccount() {
+  mojom::HardwareWalletAccountPtr account = mojom::HardwareWalletAccount::New(
+      "xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu"
+      "1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8",
+      "m/84'/0'/0'", "HW Account", mojom::HardwareVendor::kLedger, "device1",
+      mojom::KeyringId::kBitcoinHardware);
+
+  return keyring_service_->AddBitcoinHardwareAccountSync(account.Clone());
 }
 
 mojom::AccountIdPtr AccountUtils::FindAccountIdByAddress(
@@ -300,13 +371,15 @@ std::vector<mojom::AccountInfoPtr> AccountUtils::AllFilTestAccounts() {
 }
 
 std::vector<mojom::AccountInfoPtr> AccountUtils::AllBtcAccounts() {
-  return AllAccounts(
-      {mojom::KeyringId::kBitcoin84, mojom::KeyringId::kBitcoinImport});
+  return AllAccounts({mojom::KeyringId::kBitcoin84,
+                      mojom::KeyringId::kBitcoinImport,
+                      mojom::KeyringId::kBitcoinHardware});
 }
 
 std::vector<mojom::AccountInfoPtr> AccountUtils::AllBtcTestAccounts() {
   return AllAccounts({mojom::KeyringId::kBitcoin84Testnet,
-                      mojom::KeyringId::kBitcoinImportTestnet});
+                      mojom::KeyringId::kBitcoinImportTestnet,
+                      mojom::KeyringId::kBitcoinHardwareTestnet});
 }
 
 std::vector<mojom::AccountInfoPtr> AccountUtils::AllZecAccounts() {

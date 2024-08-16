@@ -300,12 +300,14 @@ export const HardwareWalletConnect = ({
         name: getDefaultAccountName(currentHardwareImportScheme, index),
         hardwareVendor: currentHardwareImportScheme.vendor,
         deviceId: deviceId,
-        coin: currentHardwareImportScheme.coin,
         keyringId: currentHardwareImportScheme.keyringId
       }))
 
     try {
-      await importHardwareAccounts(hwAccounts).unwrap()
+      await importHardwareAccounts({
+        coin: currentHardwareImportScheme.coin,
+        accounts: hwAccounts
+      }).unwrap()
       onSuccess()
     } catch (error) {
       console.log(error)

@@ -146,7 +146,7 @@ export const FilLedgerTestnetHardwareImportScheme: HardwareImportScheme = {
 export const BtcLedgerMainnetHardwareImportScheme: HardwareImportScheme = {
   derivationScheme: DerivationSchemes.BtcLedgerMainnet,
   coin: BraveWallet.CoinType.BTC,
-  keyringId: BraveWallet.KeyringId.kBitcoinImport,
+  keyringId: BraveWallet.KeyringId.kBitcoinHardware,
   vendor: BraveWallet.HardwareVendor.kLedger,
   name: 'Default',
   fixedNetwork: BraveWallet.BITCOIN_MAINNET,
@@ -156,7 +156,7 @@ export const BtcLedgerMainnetHardwareImportScheme: HardwareImportScheme = {
 export const BtcLedgerTestnetHardwareImportScheme: HardwareImportScheme = {
   derivationScheme: DerivationSchemes.BtcLedgerTestnet,
   coin: BraveWallet.CoinType.BTC,
-  keyringId: BraveWallet.KeyringId.kBitcoinImportTestnet,
+  keyringId: BraveWallet.KeyringId.kBitcoinHardwareTestnet,
   vendor: BraveWallet.HardwareVendor.kLedger,
   name: 'Default',
   fixedNetwork: BraveWallet.BITCOIN_TESTNET,
