@@ -17,7 +17,7 @@ struct AssetSearchView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
 
   @State private var allAssets: [AssetViewModel] = []
-  @State private var allNFTMetadata: [String: NFTMetadata] = [:]
+  @State private var allNFTMetadata: [String: BraveWallet.NftMetadata] = [:]
   @State private var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = []
   @State private var isPresentingNetworkFilter = false
   @State private var selectedToken: BraveWallet.BlockchainToken?

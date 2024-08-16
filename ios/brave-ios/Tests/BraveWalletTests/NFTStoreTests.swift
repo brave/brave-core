@@ -38,17 +38,65 @@ class NFTStoreTests: XCTestCase {
   let solNetwork: BraveWallet.NetworkInfo = .mockSolana
   let solAccount: BraveWallet.AccountInfo = .mockSolAccount
 
-  let mockERC721Metadata: NFTMetadata = .init(
-    imageURLString: "mock.image.url",
+  let mockERC721Metadata: BraveWallet.NftMetadata = .init(
     name: "mock nft name",
     description: "mock nft description",
-    attributes: nil
+    image: "mock.image.url",
+    imageData: "mock.image.data",
+    externalUrl: "mock.external.url",
+    attributes: [],
+    backgroundColor: "mock.backgroundColor",
+    animationUrl: "mock.animation.url",
+    youtubeUrl: "mock.youtube.url",
+    collection: "mock.collection"
   )
-  let mockSolMetadata: NFTMetadata = .init(
-    imageURLString: "sol.mock.image.url",
+  let mockInvisibleERC721Metadata: BraveWallet.NftMetadata = .init(
+    name: "mock invisible nft name",
+    description: "mock invisible nft description",
+    image: "mock.invisible.image.url",
+    imageData: "mock.invisible.image.data",
+    externalUrl: "mock.invisible.external.url",
+    attributes: [],
+    backgroundColor: "invisible.mock.backgroundColor",
+    animationUrl: "mock.invisible.animation.url",
+    youtubeUrl: "mock.invisible.youtube.url",
+    collection: "mock.invisible.collection"
+  )
+  let mockUnownedERC721Metadata: BraveWallet.NftMetadata = .init(
+    name: "mock unowned nft name",
+    description: "mock unowned nft description",
+    image: "mock.unowned.image.url",
+    imageData: "mock.unowned.image.data",
+    externalUrl: "mock.unowned.external.url",
+    attributes: [],
+    backgroundColor: "mock.unowned.backgroundColor",
+    animationUrl: "mock.unowned.animation.url",
+    youtubeUrl: "mock.unowned.youtube.url",
+    collection: "mock.unowned.collection"
+  )
+  let mockSpamMetadata: BraveWallet.NftMetadata = .init(
+    name: "mock spam nft name",
+    description: "mock spam nft description",
+    image: "mock.spam.image.url",
+    imageData: "mock.spam.image.data",
+    externalUrl: "mock.spam.external.url",
+    attributes: [],
+    backgroundColor: "mock.spam.backgroundColor",
+    animationUrl: "mock.spam.animation.url",
+    youtubeUrl: "mock.spam.youtube.url",
+    collection: "mock.spam.collection"
+  )
+  let mockSolMetadata: BraveWallet.NftMetadata = .init(
     name: "sol mock nft name",
     description: "sol mock nft description",
-    attributes: nil
+    image: "sol.mock.image.url",
+    imageData: "sol.mock.image.data",
+    externalUrl: "sol.mock.external.url",
+    attributes: [],
+    backgroundColor: "sol.mock.backgroundColor",
+    animationUrl: "sol.mock.animation.url",
+    youtubeUrl: "sol.mock.youtube.url",
+    collection: "sol.mock.collection"
   )
 
   let spamEthNFT =
@@ -61,7 +109,8 @@ class NFTStoreTests: XCTestCase {
 
   private func setupServices(
     mockEthUserAssets: [BraveWallet.BlockchainToken],
-    mockSolUserAssets: [BraveWallet.BlockchainToken]
+    mockSolUserAssets: [BraveWallet.BlockchainToken],
+    mockNFTMetadata: [BraveWallet.BlockchainToken: BraveWallet.NftMetadata]
   ) -> (
     BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService,
     BraveWallet.TestBraveWalletService, BraveWallet.TestAssetRatioService,
@@ -85,42 +134,52 @@ class NFTStoreTests: XCTestCase {
     }
 
     let rpcService = MockJsonRpcService()
-    rpcService._erc721Metadata = { contractAddress, tokenId, chainId, completion in
-      guard contractAddress == BraveWallet.BlockchainToken.mockERC721NFTToken.contractAddress else {
-        completion("", "", .internalError, "Error")
-        return
-      }
-      let metadata = """
+    rpcService._nftBalances = { accountAddress, nftIdentifiers, _, completion in
+      var balances: [NSNumber] = []
+      for nft in nftIdentifiers {
+        if nft.contractAddress.caseInsensitiveCompare(
+          BraveWallet.BlockchainToken.mockERC721NFTToken.contractAddress
+        ) == .orderedSame,
+          accountAddress.caseInsensitiveCompare(
+            self.ethAccount1.address
+          ) == .orderedSame
         {
-          "image": "mock.image.url",
-          "name": "mock nft name",
-          "description": "mock nft description"
+          balances.append(1)
+        } else if nft.contractAddress.caseInsensitiveCompare(
+          self.invisibleEthNFT.contractAddress
+        ) == .orderedSame,
+          accountAddress.caseInsensitiveCompare(
+            self.ethAccount1.address
+          ) == .orderedSame
+        {
+          balances.append(1)
+        } else if nft.contractAddress.caseInsensitiveCompare(
+          mockSolUserAssets[safe: 2]?.contractAddress ?? ""
+        ) == .orderedSame {
+          balances.append(1)
         }
-        """
-      completion("", metadata, .success, "")
-    }
-    rpcService._erc721TokenBalance = {
-      contractAddress,
-      tokenId,
-      accountAddress,
-      chainId,
-      completion in
-      guard accountAddress == self.ethAccount1.address,
-        contractAddress == BraveWallet.BlockchainToken.mockERC721NFTToken.contractAddress
-      else {
-        completion("", .internalError, "Error")
-        return
       }
-      completion("0x1", .success, "")
+      completion(balances, "")
+    }
+    rpcService._nftMetadatas = { coin, nftIdentifiers, completion in
+      var allMetadata = [BraveWallet.NftMetadata]()
+      let metadataForCoin = mockNFTMetadata.filter { (key, value) in
+        key.coin == coin
+      }
+      for identifier in nftIdentifiers {
+        for (key, value) in metadataForCoin {
+          if identifier.chainId == key.chainId,
+            identifier.contractAddress == key.contractAddress,
+            identifier.tokenId == key.tokenId
+          {
+            allMetadata.append(value)
+          }
+        }
+      }
+      completion(allMetadata, "")
     }
     rpcService._splTokenAccountBalance = { accountAddress, tokenMintAddress, chainId, completion in
-      guard accountAddress == self.solAccount.address,
-        tokenMintAddress == mockSolUserAssets[safe: 2]?.contractAddress
-      else {
-        completion("", 0, "", .internalError, "Error")
-        return
-      }
-      completion("1", 0, "1", .success, "")
+      completion("", 0, "", .internalError, "Error")
     }
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
@@ -156,7 +215,12 @@ class NFTStoreTests: XCTestCase {
           network: .mockSolana,
           tokens: mockSolUserAssets.filter({ $0.isSpam == isSpam }),
           sortOrder: 0
-        )
+        ),
+        NetworkAssets(
+          network: .mockMainnet,
+          tokens: mockEthUserAssets.filter({ $0.isSpam == isSpam }),
+          sortOrder: 1
+        ),
       ].filter { networkAsset in networks.contains(where: { $0 == networkAsset.network }) }
     }
 
@@ -203,7 +267,16 @@ class NFTStoreTests: XCTestCase {
     // setup test services
     let (
       keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService
-    ) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
+    ) = setupServices(
+      mockEthUserAssets: mockEthUserAssets,
+      mockSolUserAssets: mockSolUserAssets,
+      mockNFTMetadata: [
+        .mockERC721NFTToken: mockERC721Metadata,
+        unownedEthNFT: mockUnownedERC721Metadata,
+        invisibleEthNFT: mockInvisibleERC721Metadata,
+        .mockSolanaNFTToken: mockSolMetadata,
+      ]
+    )
 
     // setup store
     let store = NFTStore(
@@ -237,29 +310,38 @@ class NFTStoreTests: XCTestCase {
           XCTFail("Unexpected test result")
           return
         }
-        XCTAssertEqual(visibleNFTs.count, 3)
+
+        XCTAssertEqual(visibleNFTs.count, 3)  // Solana NFT, Erc721, unowned Erc721
         XCTAssertEqual(visibleNFTs[safe: 0]?.token.symbol, mockSolUserAssets[safe: 2]?.symbol)
         XCTAssertEqual(
-          visibleNFTs[safe: 0]?.nftMetadata?.imageURLString,
-          self.mockSolMetadata.imageURLString
+          visibleNFTs[safe: 0]?.nftMetadata?.image,
+          self.mockSolMetadata.image
         )
         XCTAssertEqual(visibleNFTs[safe: 0]?.nftMetadata?.name, self.mockSolMetadata.name)
         XCTAssertEqual(
-          visibleNFTs[safe: 0]?.nftMetadata?.description,
-          self.mockSolMetadata.description
+          visibleNFTs[safe: 0]?.nftMetadata?.desc,
+          self.mockSolMetadata.desc
         )
         XCTAssertEqual(visibleNFTs[safe: 1]?.token.symbol, mockEthUserAssets[safe: 2]?.symbol)
         XCTAssertEqual(
-          visibleNFTs[safe: 1]?.nftMetadata?.imageURLString,
-          self.mockERC721Metadata.imageURLString
+          visibleNFTs[safe: 1]?.nftMetadata?.image,
+          self.mockERC721Metadata.image
         )
         XCTAssertEqual(visibleNFTs[safe: 1]?.nftMetadata?.name, self.mockERC721Metadata.name)
         XCTAssertEqual(
-          visibleNFTs[safe: 1]?.nftMetadata?.description,
-          self.mockERC721Metadata.description
+          visibleNFTs[safe: 1]?.nftMetadata?.desc,
+          self.mockERC721Metadata.desc
         )
         XCTAssertEqual(visibleNFTs[safe: 2]?.token.symbol, mockEthUserAssets[safe: 3]?.symbol)
-        XCTAssertNil(visibleNFTs[safe: 2]?.nftMetadata)
+        XCTAssertEqual(
+          visibleNFTs[safe: 2]?.nftMetadata?.image,
+          self.mockUnownedERC721Metadata.image
+        )
+        XCTAssertEqual(visibleNFTs[safe: 2]?.nftMetadata?.name, self.mockUnownedERC721Metadata.name)
+        XCTAssertEqual(
+          visibleNFTs[safe: 2]?.nftMetadata?.desc,
+          self.mockUnownedERC721Metadata.desc
+        )
       }.store(in: &cancellables)
 
     isLocked = false
@@ -401,17 +483,16 @@ class NFTStoreTests: XCTestCase {
     // setup test services
     let (
       keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService
-    ) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
-    rpcService._erc721Metadata = { contractAddress, tokenId, chainId, completion in
-      let metadata = """
-        {
-          "image": "mock.image.url",
-          "name": "mock nft name",
-          "description": "mock nft description"
-        }
-        """
-      completion("", metadata, .success, "")
-    }
+    ) = setupServices(
+      mockEthUserAssets: mockEthUserAssets,
+      mockSolUserAssets: mockSolUserAssets,
+      mockNFTMetadata: [
+        .mockERC721NFTToken: mockERC721Metadata,
+        unownedEthNFT: mockUnownedERC721Metadata,
+        invisibleEthNFT: mockInvisibleERC721Metadata,
+        .mockSolanaNFTToken: mockSolMetadata,
+      ]
+    )
 
     // setup store
     let store = NFTStore(
@@ -440,22 +521,27 @@ class NFTStoreTests: XCTestCase {
           XCTFail("Unexpected test result")
           return
         }
-        XCTAssertEqual(lastUpdatedNFTGroups.count, 1)
+        XCTAssertEqual(lastUpdatedNFTGroups.count, 1)  // invisible Erc721
         guard let onlyGroupAssets = lastUpdatedNFTGroups.first?.assets else {
           XCTFail("Unexpected test result")
           return
         }
-        let hiddenNFTs = onlyGroupAssets.filter {
-          !$0.token.visible && !$0.token.isSpam
-        }
+        let hiddenNFTs = onlyGroupAssets.filter { !$0.token.visible }
 
         XCTAssertEqual(hiddenNFTs.count, 1)
         XCTAssertEqual(hiddenNFTs[safe: 0]?.token.symbol, mockEthUserAssets[safe: 4]?.symbol)
         XCTAssertEqual(
-          hiddenNFTs[safe: 0]?.nftMetadata?.imageURLString,
-          self.mockERC721Metadata.imageURLString
+          hiddenNFTs[safe: 0]?.nftMetadata?.image,
+          self.mockInvisibleERC721Metadata.image
         )
-        XCTAssertEqual(hiddenNFTs[safe: 0]?.nftMetadata?.name, self.mockERC721Metadata.name)
+        XCTAssertEqual(
+          hiddenNFTs[safe: 0]?.nftMetadata?.name,
+          self.mockInvisibleERC721Metadata.name
+        )
+        XCTAssertEqual(
+          hiddenNFTs[safe: 0]?.nftMetadata?.desc,
+          self.mockInvisibleERC721Metadata.desc
+        )
       }.store(in: &cancellables)
     isLocked = false
     store.update()
@@ -481,17 +567,17 @@ class NFTStoreTests: XCTestCase {
     // setup test services
     let (
       keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService
-    ) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
-    rpcService._erc721Metadata = { contractAddress, tokenId, chainId, completion in
-      let metadata = """
-        {
-          "image": "mock.image.url",
-          "name": "mock nft name",
-          "description": "mock nft description"
-        }
-        """
-      completion("", metadata, .success, "")
-    }
+    ) = setupServices(
+      mockEthUserAssets: mockEthUserAssets,
+      mockSolUserAssets: mockSolUserAssets,
+      mockNFTMetadata: [
+        .mockERC721NFTToken: mockERC721Metadata,
+        unownedEthNFT: mockUnownedERC721Metadata,
+        invisibleEthNFT: mockERC721Metadata,
+        spamEthNFT: mockSpamMetadata,
+        .mockSolanaNFTToken: mockSolMetadata,
+      ]
+    )
 
     // MARK: Group By: None
     // setup store
@@ -528,10 +614,10 @@ class NFTStoreTests: XCTestCase {
         XCTAssertEqual(spamNFTs.count, 1)
         XCTAssertEqual(spamNFTs[safe: 0]?.token.symbol, self.spamEthNFT.symbol)
         XCTAssertEqual(
-          spamNFTs[safe: 0]?.nftMetadata?.imageURLString,
-          self.mockERC721Metadata.imageURLString
+          spamNFTs[safe: 0]?.nftMetadata?.image,
+          self.mockSpamMetadata.image
         )
-        XCTAssertEqual(spamNFTs[safe: 0]?.nftMetadata?.name, self.mockERC721Metadata.name)
+        XCTAssertEqual(spamNFTs[safe: 0]?.nftMetadata?.name, self.mockSpamMetadata.name)
       }.store(in: &cancellables)
 
     isLocked = false
@@ -557,17 +643,16 @@ class NFTStoreTests: XCTestCase {
     // setup test services
     let (
       keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService
-    ) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
-    rpcService._erc721Metadata = { contractAddress, tokenId, chainId, completion in
-      let metadata = """
-        {
-          "image": "mock.image.url",
-          "name": "mock nft name",
-          "description": "mock nft description"
-        }
-        """
-      completion("", metadata, .success, "")
-    }
+    ) = setupServices(
+      mockEthUserAssets: mockEthUserAssets,
+      mockSolUserAssets: mockSolUserAssets,
+      mockNFTMetadata: [
+        .mockERC721NFTToken: mockERC721Metadata,
+        invisibleEthNFT: mockERC721Metadata,
+        spamEthNFT: mockSpamMetadata,
+        .mockSolanaNFTToken: mockSolMetadata,
+      ]
+    )
 
     // setup store
     let store = NFTStore(
@@ -606,16 +691,16 @@ class NFTStoreTests: XCTestCase {
           BraveWallet.BlockchainToken.mockSolanaNFTToken.symbol
         )
         XCTAssertEqual(
-          spamNFTs[safe: 0]?.nftMetadata?.imageURLString,
-          self.mockSolMetadata.imageURLString
+          spamNFTs[safe: 0]?.nftMetadata?.image,
+          self.mockSolMetadata.image
         )
         XCTAssertEqual(spamNFTs[safe: 0]?.nftMetadata?.name, self.mockSolMetadata.name)
         XCTAssertEqual(spamNFTs[safe: 1]?.token.symbol, self.spamEthNFT.symbol)
         XCTAssertEqual(
-          spamNFTs[safe: 1]?.nftMetadata?.imageURLString,
-          self.mockERC721Metadata.imageURLString
+          spamNFTs[safe: 1]?.nftMetadata?.image,
+          self.mockSpamMetadata.image
         )
-        XCTAssertEqual(spamNFTs[safe: 1]?.nftMetadata?.name, self.mockERC721Metadata.name)
+        XCTAssertEqual(spamNFTs[safe: 1]?.nftMetadata?.name, self.mockSpamMetadata.name)
       }.store(in: &cancellables)
 
     isLocked = false
@@ -642,17 +727,16 @@ class NFTStoreTests: XCTestCase {
     // setup test services
     let (
       keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService
-    ) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
-    rpcService._erc721Metadata = { contractAddress, tokenId, chainId, completion in
-      let metadata = """
-        {
-          "image": "mock.image.url",
-          "name": "mock nft name",
-          "description": "mock nft description"
-        }
-        """
-      completion("", metadata, .success, "")
-    }
+    ) = setupServices(
+      mockEthUserAssets: mockEthUserAssets,
+      mockSolUserAssets: mockSolUserAssets,
+      mockNFTMetadata: [
+        .mockERC721NFTToken: mockERC721Metadata,
+        invisibleEthNFT: mockERC721Metadata,
+        spamEthNFT: mockSpamMetadata,
+        .mockSolanaNFTToken: mockSolMetadata,
+      ]
+    )
 
     // setup store
     let store = NFTStore(
@@ -688,10 +772,11 @@ class NFTStoreTests: XCTestCase {
         XCTAssertEqual(spamNFTs.count, 1)
         XCTAssertEqual(spamNFTs[safe: 0]?.token.symbol, self.spamEthNFT.symbol)
         XCTAssertEqual(
-          spamNFTs[safe: 0]?.nftMetadata?.imageURLString,
-          self.mockERC721Metadata.imageURLString
+          spamNFTs[safe: 0]?.nftMetadata?.image,
+          self.mockSpamMetadata.image
         )
-        XCTAssertEqual(spamNFTs[safe: 0]?.nftMetadata?.name, self.mockERC721Metadata.name)
+        XCTAssertEqual(spamNFTs[safe: 0]?.nftMetadata?.name, self.mockSpamMetadata.name)
+        XCTAssertEqual(spamNFTs[safe: 0]?.nftMetadata?.desc, self.mockSpamMetadata.desc)
       }.store(in: &cancellables)
 
     isLocked = false
@@ -718,7 +803,16 @@ class NFTStoreTests: XCTestCase {
     // setup test services
     let (
       keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService
-    ) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
+    ) = setupServices(
+      mockEthUserAssets: mockEthUserAssets,
+      mockSolUserAssets: mockSolUserAssets,
+      mockNFTMetadata: [
+        .mockERC721NFTToken: mockERC721Metadata,
+        unownedEthNFT: mockUnownedERC721Metadata,
+        invisibleEthNFT: mockERC721Metadata,
+        .mockSolanaNFTToken: mockSolMetadata,
+      ]
+    )
 
     // setup store
     let store = NFTStore(
@@ -808,17 +902,16 @@ class NFTStoreTests: XCTestCase {
     // setup test services
     let (
       keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService
-    ) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
-    rpcService._erc721Metadata = { contractAddress, tokenId, chainId, completion in
-      let metadata = """
-        {
-          "image": "mock.image.url",
-          "name": "mock nft name",
-          "description": "mock nft description"
-        }
-        """
-      completion("", metadata, .success, "")
-    }
+    ) = setupServices(
+      mockEthUserAssets: mockEthUserAssets,
+      mockSolUserAssets: mockSolUserAssets,
+      mockNFTMetadata: [
+        .mockERC721NFTToken: mockERC721Metadata,
+        unownedEthNFT: mockUnownedERC721Metadata,
+        invisibleEthNFT: mockInvisibleERC721Metadata,
+        .mockSolanaNFTToken: mockSolMetadata,
+      ]
+    )
 
     // setup store
     let store = NFTStore(
@@ -859,13 +952,13 @@ class NFTStoreTests: XCTestCase {
           return
         }
         let groupOneHiddenNFTs = groupOne.assets.filter {
-          !$0.token.visible && !$0.token.isSpam
+          !$0.token.visible || $0.token.isSpam
         }
         let groupTwoHiddenNFTs = groupTwo.assets.filter {
-          !$0.token.visible && !$0.token.isSpam
+          !$0.token.visible || $0.token.isSpam
         }
         let groupThreeHiddenNFTs = groupThree.assets.filter {
-          !$0.token.visible && !$0.token.isSpam
+          !$0.token.visible || $0.token.isSpam
         }
         XCTAssertEqual(groupOneHiddenNFTs.count, 1)
         XCTAssertEqual(
@@ -873,20 +966,43 @@ class NFTStoreTests: XCTestCase {
           mockSolUserAssets[safe: 2]?.symbol
         )
         XCTAssertEqual(
-          groupOneHiddenNFTs[safe: 0]?.nftMetadata?.imageURLString,
-          self.mockSolMetadata.imageURLString
+          groupOneHiddenNFTs[safe: 0]?.nftMetadata?.image,
+          self.mockSolMetadata.image
         )
         XCTAssertEqual(groupOneHiddenNFTs[safe: 0]?.nftMetadata?.name, self.mockSolMetadata.name)
-        XCTAssertEqual(groupTwoHiddenNFTs.count, 1)
+        XCTAssertEqual(groupTwoHiddenNFTs.count, 2)
         XCTAssertEqual(
           groupTwoHiddenNFTs[safe: 0]?.token.symbol,
           mockEthUserAssets[safe: 2]?.symbol
         )
         XCTAssertEqual(
-          groupTwoHiddenNFTs[safe: 0]?.nftMetadata?.imageURLString,
-          self.mockERC721Metadata.imageURLString
+          groupTwoHiddenNFTs[safe: 0]?.nftMetadata?.image,
+          self.mockERC721Metadata.image
         )
-        XCTAssertEqual(groupTwoHiddenNFTs[safe: 0]?.nftMetadata?.name, self.mockERC721Metadata.name)
+        XCTAssertEqual(
+          groupTwoHiddenNFTs[safe: 0]?.nftMetadata?.name,
+          self.mockERC721Metadata.name
+        )
+        XCTAssertEqual(
+          groupTwoHiddenNFTs[safe: 0]?.nftMetadata?.desc,
+          self.mockERC721Metadata.desc
+        )
+        XCTAssertEqual(
+          groupTwoHiddenNFTs[safe: 1]?.token.symbol,
+          mockEthUserAssets[safe: 4]?.symbol
+        )
+        XCTAssertEqual(
+          groupTwoHiddenNFTs[safe: 1]?.nftMetadata?.image,
+          self.mockInvisibleERC721Metadata.image
+        )
+        XCTAssertEqual(
+          groupTwoHiddenNFTs[safe: 1]?.nftMetadata?.name,
+          self.mockInvisibleERC721Metadata.name
+        )
+        XCTAssertEqual(
+          groupTwoHiddenNFTs[safe: 1]?.nftMetadata?.desc,
+          self.mockInvisibleERC721Metadata.desc
+        )
         XCTAssertEqual(groupThreeHiddenNFTs.count, 0)
       }.store(in: &cancellables)
     isLocked = false
@@ -922,7 +1038,16 @@ class NFTStoreTests: XCTestCase {
     // setup test services
     let (
       keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService
-    ) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
+    ) = setupServices(
+      mockEthUserAssets: mockEthUserAssets,
+      mockSolUserAssets: mockSolUserAssets,
+      mockNFTMetadata: [
+        .mockERC721NFTToken: mockERC721Metadata,
+        unownedEthNFT: mockUnownedERC721Metadata,
+        invisibleEthNFT: mockERC721Metadata,
+        .mockSolanaNFTToken: mockSolMetadata,
+      ]
+    )
 
     // setup store
     let store = NFTStore(
@@ -971,10 +1096,10 @@ class NFTStoreTests: XCTestCase {
           solNetworkGroupVisibleNFTs[safe: 0]?.token.symbol,
           mockSolUserAssets[safe: 2]?.symbol
         )
-        XCTAssertEqual(ethNetworkGroupVisibleNFTs.count, 1)
+        XCTAssertEqual(ethNetworkGroupVisibleNFTs.count, 1)  // isHidingUnownedNFTs: true
         XCTAssertEqual(
-          ethNetworkGroupVisibleNFTs[safe: 0]?.token.symbol,
-          mockEthUserAssets[safe: 2]?.symbol
+          ethNetworkGroupVisibleNFTs[safe: 0]?.token.contractAddress,
+          mockEthUserAssets[safe: 1]?.contractAddress
         )
       }.store(in: &cancellables)
     isLocked = false
@@ -1010,17 +1135,16 @@ class NFTStoreTests: XCTestCase {
     // setup test services
     let (
       keyringService, rpcService, walletService, assetRatioService, mockAssetManager, txService
-    ) = setupServices(mockEthUserAssets: mockEthUserAssets, mockSolUserAssets: mockSolUserAssets)
-    rpcService._erc721Metadata = { contractAddress, tokenId, chainId, completion in
-      let metadata = """
-        {
-          "image": "mock.image.url",
-          "name": "mock nft name",
-          "description": "mock nft description"
-        }
-        """
-      completion("", metadata, .success, "")
-    }
+    ) = setupServices(
+      mockEthUserAssets: mockEthUserAssets,
+      mockSolUserAssets: mockSolUserAssets,
+      mockNFTMetadata: [
+        .mockERC721NFTToken: mockERC721Metadata,
+        unownedEthNFT: mockUnownedERC721Metadata,
+        invisibleEthNFT: mockInvisibleERC721Metadata,
+        .mockSolanaNFTToken: mockSolMetadata,
+      ]
+    )
 
     // setup store
     let store = NFTStore(
@@ -1051,6 +1175,7 @@ class NFTStoreTests: XCTestCase {
           XCTFail("Unexpected test result")
           return
         }
+        // Solana mainnet, Ethereum mainnet, Polygon, Filecoin mainnet, Bitcoin mainnet
         XCTAssertEqual(lastUpdatedNFTGroups.count, 5)
         guard
           let solNetworkGroup = lastUpdatedNFTGroups[safe: 0],
@@ -1060,10 +1185,10 @@ class NFTStoreTests: XCTestCase {
           return
         }
         let solGroupHiddenNFTs = solNetworkGroup.assets.filter {
-          !$0.token.visible && !$0.token.isSpam
+          !$0.token.visible || $0.token.isSpam
         }
         let ethNetworkGroupHiddenNFTs = ethNetworkGroup.assets.filter {
-          !$0.token.visible && !$0.token.isSpam
+          !$0.token.visible || $0.token.isSpam
         }
         XCTAssertEqual(solGroupHiddenNFTs.count, 1)
         XCTAssertEqual(
@@ -1071,22 +1196,34 @@ class NFTStoreTests: XCTestCase {
           mockSolUserAssets[safe: 2]?.symbol
         )
         XCTAssertEqual(
-          solGroupHiddenNFTs[safe: 0]?.nftMetadata?.imageURLString,
-          self.mockSolMetadata.imageURLString
+          solGroupHiddenNFTs[safe: 0]?.nftMetadata?.image,
+          self.mockSolMetadata.image
         )
         XCTAssertEqual(solGroupHiddenNFTs[safe: 0]?.nftMetadata?.name, self.mockSolMetadata.name)
-        XCTAssertEqual(ethNetworkGroupHiddenNFTs.count, 1)
+        XCTAssertEqual(ethNetworkGroupHiddenNFTs.count, 2)
         XCTAssertEqual(
           ethNetworkGroupHiddenNFTs[safe: 0]?.token.symbol,
           mockEthUserAssets[safe: 2]?.symbol
         )
         XCTAssertEqual(
-          ethNetworkGroupHiddenNFTs[safe: 0]?.nftMetadata?.imageURLString,
-          self.mockERC721Metadata.imageURLString
+          ethNetworkGroupHiddenNFTs[safe: 0]?.nftMetadata?.image,
+          self.mockERC721Metadata.image
         )
         XCTAssertEqual(
           ethNetworkGroupHiddenNFTs[safe: 0]?.nftMetadata?.name,
           self.mockERC721Metadata.name
+        )
+        XCTAssertEqual(
+          ethNetworkGroupHiddenNFTs[safe: 1]?.token.symbol,
+          mockEthUserAssets[safe: 4]?.symbol
+        )
+        XCTAssertEqual(
+          ethNetworkGroupHiddenNFTs[safe: 1]?.nftMetadata?.image,
+          self.mockInvisibleERC721Metadata.image
+        )
+        XCTAssertEqual(
+          ethNetworkGroupHiddenNFTs[safe: 1]?.nftMetadata?.name,
+          self.mockInvisibleERC721Metadata.name
         )
       }.store(in: &cancellables)
     isLocked = false

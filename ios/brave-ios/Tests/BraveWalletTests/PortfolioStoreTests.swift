@@ -281,9 +281,9 @@ import XCTest
         completion(usdcAccount2BalanceWei, .success, "")
       }
     }
-    rpcService._erc721TokenBalance = { _, _, _, _, completion in
+    rpcService._nftBalances = { _, _, _, completion in
       // should not be fetching NFT balance in Portfolio
-      completion("", .internalError, "Error Message")
+      completion([], "Error Message")
     }
     rpcService._solanaBalance = { accountAddress, chainId, completion in
       // sol balance

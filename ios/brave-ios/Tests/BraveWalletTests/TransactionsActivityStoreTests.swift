@@ -58,15 +58,20 @@ class TransactionsActivityStoreTests: XCTestCase {
 
     let rpcService = MockJsonRpcService()
     rpcService.hiddenNetworks.removeAll()
-    rpcService._erc721Metadata = { _, _, _, completion in
-      let metadata = """
-        {
-          "image": "mock.image.url",
-          "name": "mock nft name",
-          "description": "mock nft description"
-        }
-        """
-      completion("", metadata, .success, "")
+    rpcService._nftMetadatas = { _, _, completion in
+      let metadata: BraveWallet.NftMetadata = .init(
+        name: "mock.nft.name",
+        description: "mock.nft.description",
+        image: "mock.nft.image",
+        imageData: "mock.nft.image.data",
+        externalUrl: "mock.nft.external.url",
+        attributes: [],
+        backgroundColor: "mock.nft.background.color",
+        animationUrl: "mock.nft.animation.url",
+        youtubeUrl: "mock.youtube.url",
+        collection: "moc.nft.collection"
+      )
+      completion([metadata], "")
     }
 
     let walletService = BraveWallet.TestBraveWalletService()

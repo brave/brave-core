@@ -86,11 +86,17 @@ class SelectAccountTokenStoreTests: XCTestCase {
     let mockSOLBalance: Double = 3.8765  // lamports rounded
     let mockSOLPrice: String = "200"  // SOL value = $775.30
     let mockNFTBalance: Double = 1
-    let mockNFTMetadata: NFTMetadata = .init(
-      imageURLString: "sol.mock.image.url",
+    let mockNFTMetadata: BraveWallet.NftMetadata = .init(
       name: "sol mock nft name",
       description: "sol mock nft description",
-      attributes: nil
+      image: "sol.mock.image.url",
+      imageData: "sol.mock.image.data",
+      externalUrl: "sol.mock.external.url",
+      attributes: [],
+      backgroundColor: "sol.mock.backgroundColor",
+      animationUrl: "sol.mock.animation.url",
+      youtubeUrl: "sol.mock.youtube.url",
+      collection: "sol.mock.collection"
     )
     let mockFILBalance: Double = 1
     let mockFILPrice: String = "4.06"  // FIL value = $4.06
@@ -171,28 +177,18 @@ class SelectAccountTokenStoreTests: XCTestCase {
       }
       completion("0", .success, "")  // usdc balance for `mockEthAccount`
     }
+    rpcService._nftBalances = { _, nftIdentifiers, _, completion in
+      completion([mockNFTBalance as NSNumber], "")
+    }
+    rpcService._nftMetadatas = { coin, _, completion in
+      if coin == .sol {
+        completion([mockNFTMetadata], "")
+      } else {
+        completion([], "Error")
+      }
+    }
     rpcService._solanaBalance = { accountAddress, chainId, completion in
       completion(mockSOLLamportBalance, .success, "")  // sol balance
-    }
-    rpcService._splTokenAccountBalance = { _, _, _, completion in
-      // sol nft balance
-      completion("\(mockNFTBalance)", UInt8(0), "\(mockNFTBalance)", .success, "")
-    }
-    rpcService._solTokenMetadata = { tokenChainId, tokenMintAddress, completion in
-      guard tokenChainId == self.allUserAssets[4].chainId,
-        tokenMintAddress == self.allUserAssets[4].contractAddress
-      else {
-        completion("", "", .internalError, "")
-        return
-      }
-      let metadata = """
-        {
-          "image": "\(mockNFTMetadata.imageURLString ?? "")",
-          "name": "\(mockNFTMetadata.name ?? "")",
-          "description": "\(mockNFTMetadata.description ?? "")"
-        }
-        """
-      completion("", metadata, .success, "")
     }
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }

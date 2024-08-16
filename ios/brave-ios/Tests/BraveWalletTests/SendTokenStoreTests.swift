@@ -15,6 +15,31 @@ class SendTokenStoreTests: XCTestCase {
   private var cancellables: Set<AnyCancellable> = []
   private let batSymbol = "BAT"
 
+  private let mockERC721Metadata: BraveWallet.NftMetadata = .init(
+    name: "mock nft name",
+    description: "mock nft description",
+    image: "mock.image.url",
+    imageData: "mock.image.data",
+    externalUrl: "mock.external.url",
+    attributes: [],
+    backgroundColor: "mock.backgroundColor",
+    animationUrl: "mock.animation.url",
+    youtubeUrl: "mock.youtube.url",
+    collection: "mock.collection"
+  )
+  private let mockSolMetadata: BraveWallet.NftMetadata = .init(
+    name: "sol mock nft name",
+    description: "sol mock nft description",
+    image: "sol.mock.image.url",
+    imageData: "sol.mock.image.data",
+    externalUrl: "sol.mock.external.url",
+    attributes: [],
+    backgroundColor: "sol.mock.backgroundColor",
+    animationUrl: "sol.mock.animation.url",
+    youtubeUrl: "sol.mock.youtube.url",
+    collection: "sol.mock.collection"
+  )
+
   private func setupServices(
     selectedAccount: BraveWallet.AccountInfo = BraveWallet.AccountInfo.previewAccount,
     userAssets: [BraveWallet.NetworkInfo: [BraveWallet.BlockchainToken]] = [
@@ -23,7 +48,7 @@ class SendTokenStoreTests: XCTestCase {
     selectedCoin: BraveWallet.CoinType = .eth,
     balance: String = "0",
     erc20Balance: String = "0",
-    erc721Balance: String = "0",
+    erc721Balance: Double = 0,
     solanaBalance: UInt64 = 0,
     splTokenBalance: String = "0",
     snsGetSolAddr: String = "",
@@ -53,7 +78,7 @@ class SendTokenStoreTests: XCTestCase {
     rpcService.hiddenNetworks.removeAll()
     rpcService._balance = { $3(balance, .success, "") }
     rpcService._erc20TokenBalance = { $3(erc20Balance, .success, "") }
-    rpcService._erc721TokenBalance = { $4(erc721Balance, .success, "") }
+    rpcService._nftBalances = { $3([erc721Balance as NSNumber], "") }
     rpcService._solanaBalance = { $2(solanaBalance, .success, "") }
     rpcService._splTokenAccountBalance = { _, _, _, completion in
       completion(splTokenBalance, UInt8(6), "", .success, "")
@@ -71,25 +96,14 @@ class SendTokenStoreTests: XCTestCase {
     rpcService._unstoppableDomainsGetWalletAddr = { _, _, completion in
       completion(unstoppableDomainsGetWalletAddr, .success, "")
     }
-    rpcService._erc721Metadata = { _, _, _, completion in
-      let metadata = """
-        {
-          "image": "mock.image.url",
-          "name": "mock nft name",
-          "description": "mock nft description"
-        }
-        """
-      completion("", metadata, .success, "")
-    }
-    rpcService._solTokenMetadata = { _, _, completion in
-      let metaData = """
-        {
-          "image": "sol.mock.image.url",
-          "name": "sol mock nft name",
-          "description": "sol mock nft description"
-        }
-        """
-      completion("", metaData, .success, "")
+    rpcService._nftMetadatas = { coin, _, completion in
+      if coin == .eth {
+        completion([self.mockERC721Metadata], "")
+      } else if coin == .sol {
+        completion([self.mockSolMetadata], "")
+      } else {
+        completion([], "Error")
+      }
     }
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._isBase58EncodedSolanaPubkey = { _, completion in completion(true) }
@@ -480,8 +494,8 @@ class SendTokenStoreTests: XCTestCase {
     rpcService._balance = { _, _, _, completion in
       completion(mockBalanceWei, .success, "")
     }
-    rpcService._erc721Metadata = { _, _, _, completion in
-      completion("", "", .internalError, "")
+    rpcService._nftMetadatas = { _, _, completion in
+      completion([], "Error")
     }
 
     walletService._userAssets = { $2([.previewToken]) }
@@ -777,12 +791,6 @@ class SendTokenStoreTests: XCTestCase {
     ethTxManagerProxy._makeErc721TransferFromData = { _, _, _, _, completion in
       completion(true, .init())
     }
-    let mockERC721Metadata: NFTMetadata = .init(
-      imageURLString: "mock.image.url",
-      name: "mock nft name",
-      description: "mock nft description",
-      attributes: nil
-    )
 
     let store = SendTokenStore(
       keyringService: keyringService,
@@ -812,9 +820,9 @@ class SendTokenStoreTests: XCTestCase {
           XCTFail("Unexpected test result")
           return
         }
-        XCTAssertEqual(lastUpdatedMetadata?.imageURLString, mockERC721Metadata.imageURLString)
-        XCTAssertEqual(lastUpdatedMetadata?.name, mockERC721Metadata.name)
-        XCTAssertEqual(lastUpdatedMetadata?.description, mockERC721Metadata.description)
+        XCTAssertEqual(lastUpdatedMetadata?.image, self.mockERC721Metadata.image)
+        XCTAssertEqual(lastUpdatedMetadata?.name, self.mockERC721Metadata.name)
+        XCTAssertEqual(lastUpdatedMetadata?.desc, self.mockERC721Metadata.desc)
       }.store(in: &cancellables)
 
     store.selectedSendToken = .mockERC721NFTToken
@@ -832,12 +840,6 @@ class SendTokenStoreTests: XCTestCase {
     ethTxManagerProxy._makeErc721TransferFromData = { _, _, _, _, completion in
       completion(true, .init())
     }
-    let mockSolMetadata: NFTMetadata = .init(
-      imageURLString: "sol.mock.image.url",
-      name: "sol mock nft name",
-      description: "sol mock nft description",
-      attributes: nil
-    )
 
     let store = SendTokenStore(
       keyringService: keyringService,
@@ -867,9 +869,9 @@ class SendTokenStoreTests: XCTestCase {
           XCTFail("Unexpected test result")
           return
         }
-        XCTAssertEqual(lastUpdatedMetadata?.imageURLString, mockSolMetadata.imageURLString)
-        XCTAssertEqual(lastUpdatedMetadata?.name, mockSolMetadata.name)
-        XCTAssertEqual(lastUpdatedMetadata?.description, mockSolMetadata.description)
+        XCTAssertEqual(lastUpdatedMetadata?.image, self.mockSolMetadata.image)
+        XCTAssertEqual(lastUpdatedMetadata?.name, self.mockSolMetadata.name)
+        XCTAssertEqual(lastUpdatedMetadata?.desc, self.mockSolMetadata.desc)
       }.store(in: &cancellables)
 
     store.selectedSendToken = .mockSolanaNFTToken

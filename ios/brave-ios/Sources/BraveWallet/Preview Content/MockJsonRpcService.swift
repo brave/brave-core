@@ -118,9 +118,6 @@ class MockJsonRpcService: BraveWallet.TestJsonRpcService {
     self._erc20TokenAllowance = { _, _, _, _, completion in
       completion("0", .success, "")
     }
-    self._erc721TokenBalance = { _, _, _, _, completion in
-      completion("0", .success, "")
-    }
     self._solanaBalance = { accountAddress, chainId, completion in
       completion(0, .success, "")
     }
@@ -130,26 +127,6 @@ class MockJsonRpcService: BraveWallet.TestJsonRpcService {
     self._splTokenBalances = { _, _, completion in
       completion([], .success, "")
     }
-    self._erc721Metadata = { _, _, _, completion in
-      let metadata = """
-        {
-          "image": "mock.image.url",
-          "name": "mock nft name",
-          "description": "mock nft description"
-        }
-        """
-      completion("", metadata, .success, "")
-    }
-    self._solTokenMetadata = { _, _, completion in
-      let metaData = """
-        {
-          "image": "sol.mock.image.url",
-          "name": "sol mock nft name",
-          "description": "sol mock nft description"
-        }
-        """
-      completion("", metaData, .success, "")
-    }
     self._ethTokenInfo = { _, _, completion in
       completion(nil, .resourceNotFound, "Token not found.")
     }
@@ -157,7 +134,7 @@ class MockJsonRpcService: BraveWallet.TestJsonRpcService {
       completion([], "Error Message")
     }
     self._nftBalances = { _, _, _, completion in
-      completion([], "Error Message")
+      completion([0], "")
     }
   }
 }

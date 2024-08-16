@@ -30,6 +30,7 @@ extension BraveWallet.TransactionInfo {
       .erc1155SafeTransferFrom,
       .solanaSystemTransfer,
       .solanaSplTokenTransfer,
+      .solanaCompressedNftTransfer,
       .solanaSplTokenTransferWithAssociatedTokenAccountCreation,
       .solanaDappSignAndSendTransaction,
       .solanaDappSignTransaction,
@@ -699,5 +700,37 @@ extension Array where Element == BraveWallet.AccountInfo {
       account.coin == network.coin
         && network.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
     }
+  }
+}
+
+extension BraveWallet.NftMetadata {
+  var imageURL: URL? {
+    URL(string: image)
+  }
+
+  func httpfyIpfsUrl(ipfsApi: IpfsAPI) -> BraveWallet.NftMetadata {
+    guard image.hasPrefix("ipfs://"),
+      let url = URL(string: image)
+    else {
+      return self
+    }
+    return .init(
+      name: self.name,
+      description: self.desc,
+      image: ipfsApi.resolveGatewayUrl(for: url)?.absoluteString ?? self.image,
+      imageData: self.imageData,
+      externalUrl: self.externalUrl,
+      attributes: self.attributes,
+      backgroundColor: self.backgroundColor,
+      animationUrl: self.animationUrl,
+      youtubeUrl: self.youtubeUrl,
+      collection: self.collection
+    )
+  }
+}
+
+extension BraveWallet.NftAttribute: Identifiable {
+  public var id: String {
+    traitType
   }
 }
