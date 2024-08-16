@@ -40,7 +40,7 @@ private struct TopNewsListWidgetProvider: TimelineProvider {
     Task {
       let grouping = context.family == .systemMedium ? 2 : 5
       // No need to load more than the grouping in the snapshot
-      let topics = Array(await model.fetchNewsTopics().prefix(grouping))
+      let topics = Array(await model.fetchNewsTopics(Locale.autoupdatingCurrent).prefix(grouping))
       let images = await model.fetchImageThumbnailsForTopics(topics, thumbnailSize)
       completion(.init(date: Date(), topics: topics, images: images))
     }
@@ -50,7 +50,9 @@ private struct TopNewsListWidgetProvider: TimelineProvider {
     Task {
       let grouping = context.family == .systemMedium ? 2 : 5
       let interval = context.family == .systemMedium ? 15 : 20
-      let allTopics = Array(await model.fetchNewsTopics().prefix(grouping * 3))
+      let allTopics = Array(
+        await model.fetchNewsTopics(Locale.autoupdatingCurrent).prefix(grouping * 3)
+      )
       let topics = allTopics.splitEvery(grouping)
       let images = await model.fetchImageThumbnailsForTopics(allTopics, thumbnailSize)
       let entries: [TopNewsListEntry] = zip(topics, topics.indices).map({ topics, index in
@@ -201,7 +203,7 @@ struct TopNewsListView_PreviewProvider: PreviewProvider {
     var body: some View {
       TopNewsListView(entry: .init(date: .now, topics: topics, images: [:]))
         .task {
-          topics = await model.fetchNewsTopics()
+          topics = await model.fetchNewsTopics(Locale(identifier: "en_US"))
         }
     }
   }
