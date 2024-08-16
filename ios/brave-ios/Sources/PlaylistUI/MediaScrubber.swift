@@ -6,6 +6,7 @@
 import BraveUI
 import CoreMedia
 import Foundation
+import Strings
 import SwiftUI
 
 /// A control which mimics a SwiftUI Slider but allows the user to change the current time of an
@@ -48,7 +49,7 @@ struct MediaScrubber<Label: View>: View {
     case .seconds(let duration):
       Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
     case .indefinite:
-      Text("Live")
+      Text(Strings.Playlist.liveIndicator)
     }
   }
 
@@ -164,7 +165,7 @@ struct MediaScrubber<Label: View>: View {
           in: 0.0...duration,
           step: 1
         ) {
-          Text("Current Media Time")  // TODO: Localize
+          Text(Strings.Playlist.accessibilityCurrentMediaTime)
         } minimumValueLabel: {
           currentValueLabel
         } maximumValueLabel: {
@@ -223,7 +224,7 @@ struct DefaultMediaScrubberLabel: View {
           Image(systemName: "circlebadge.fill")
             .imageScale(.small)
             .foregroundStyle(Color(braveSystemName: .red50))
-          Text("Live")
+          Text(Strings.Playlist.liveIndicator)
         }
       }
     }

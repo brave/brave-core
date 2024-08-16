@@ -128,7 +128,7 @@ struct PlaylistContentView: View {
         }
       }
     } toolbar: {
-      Button("Done") {
+      Button(Strings.Playlist.doneButtonTitle) {
         dismiss()
       }
       .fontWeight(.semibold)
@@ -138,7 +138,10 @@ struct PlaylistContentView: View {
           playerModel.startPictureInPicture()
           dismiss()
         } label: {
-          Label("Enter Picture in Picture", braveSystemImage: "leo.picture.in-picture")
+          Label(
+            Strings.Playlist.accessibilityEnterPictureInPicture,
+            braveSystemImage: "leo.picture.in-picture"
+          )
         }
         .labelStyle(.iconOnly)
         .transition(.opacity.animation(.default))
@@ -165,12 +168,12 @@ struct PlaylistContentView: View {
         EditFolderView(folder: selectedFolder, folders: Array(folders))
       }
     }
-    .alert("New Playlist", isPresented: $isNewPlaylistAlertPresented) {
-      TextField("My New Playlist", text: $newPlaylistName)
+    .alert(Strings.Playlist.newPlaylistButtonTitle, isPresented: $isNewPlaylistAlertPresented) {
+      TextField(Strings.Playlist.newPlaylistPlaceholder, text: $newPlaylistName)
       Button(role: .cancel) {
         newPlaylistName = ""
       } label: {
-        Text("Cancel")
+        Text(Strings.CancelString)
       }
       .keyboardShortcut(.cancelAction)
       Button {
@@ -188,7 +191,7 @@ struct PlaylistContentView: View {
           }
         }
       } label: {
-        Text("Create")
+        Text(Strings.Playlist.createNewPlaylistButtonTitle)
       }
       .keyboardShortcut(.defaultAction)
       // Unfortunately we can't disable this button due to _many_ SwiftUI bugs.
@@ -251,8 +254,8 @@ struct PlaylistContentUnavailableView: View {
       Image(.emptyPlaylist)
       Text(
         isPlaylistEmpty
-          ? "Add videos to the playlist and play them here!"
-          : "Tap videos from your playlist to play."
+          ? Strings.Playlist.noMediaToPickFromEmptyState
+          : Strings.Playlist.noMediaSelectedEmptyState
       )
       .multilineTextAlignment(.center)
       .foregroundStyle(Color(braveSystemName: .textTertiary))

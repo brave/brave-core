@@ -5,6 +5,7 @@
 
 import AVKit
 import Foundation
+import Strings
 import SwiftUI
 
 /// Displays controls for picking playback routes such as AirPlay
@@ -15,7 +16,7 @@ struct RoutePickerView: View {
     Button {
       underlyingRoutePickerControl?.sendActions(for: .touchUpInside)
     } label: {
-      Label("AirPlay", braveSystemImage: "leo.airplay.video")
+      Label(Strings.Playlist.accessibilityAirPlay, braveSystemImage: "leo.airplay.video")
     }
     .labelStyle(.iconOnly)
     .buttonStyle(.playbackControl)

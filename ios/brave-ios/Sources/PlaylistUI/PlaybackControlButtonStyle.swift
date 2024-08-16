@@ -160,7 +160,7 @@ struct PlaybackControlButtonStyle_PreviewProvider: PreviewProvider {
         } label: {
           HStack {
             Label("Hello, World", braveSystemImage: "leo.2x")
-            Text("Test")
+            Text(verbatim: "Test")
           }
         }
         .padding()

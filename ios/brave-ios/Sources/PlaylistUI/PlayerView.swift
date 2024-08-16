@@ -6,6 +6,7 @@
 import AVKit
 import DesignSystem
 import Foundation
+import Strings
 import SwiftUI
 
 /// This view displays the main video player along with controls on top of it when the player is
@@ -64,8 +65,7 @@ struct PlayerView: View {
       isFullScreen && (orientation.isLandscape || !playerModel.isPortraitVideo) ? .all : [],
       edges: .vertical
     )
-    // FIXME: Better accessibility copy
-    .accessibilityLabel(isFullScreen ? "Tap to toggle controls" : "Media player")
+    .accessibilityLabel(isFullScreen ? Strings.Playlist.accessibilityTapToToggleControls : "")
     .accessibilityAddTraits(isFullScreen ? .isButton : [])
     .overlay {
       InlinePlaybackControlsView(model: playerModel)
@@ -150,11 +150,17 @@ extension PlayerView {
           Spacer()
           Toggle(isOn: $model.isShuffleEnabled) {
             if model.isShuffleEnabled {
-              Label("Shuffle Mode: On", braveSystemImage: "leo.shuffle.toggle-on")
-                .transition(.opacity.animation(.linear(duration: 0.1)))
+              Label(
+                Strings.Playlist.accessibilityShuffleModeOn,
+                braveSystemImage: "leo.shuffle.toggle-on"
+              )
+              .transition(.opacity.animation(.linear(duration: 0.1)))
             } else {
-              Label("Shuffle Mode: Off", braveSystemImage: "leo.shuffle.off")
-                .transition(.opacity.animation(.linear(duration: 0.1)))
+              Label(
+                Strings.Playlist.accessibilityShuffleModeOff,
+                braveSystemImage: "leo.shuffle.off"
+              )
+              .transition(.opacity.animation(.linear(duration: 0.1)))
             }
           }
           .toggleStyle(.button)
@@ -165,7 +171,7 @@ extension PlayerView {
               await model.playNextItem()
             }
           } label: {
-            Label("Next Item", braveSystemImage: "leo.next.outline")
+            Label(Strings.Playlist.accessibilityNextItem, braveSystemImage: "leo.next.outline")
           }
           .disabled(!model.canPlayNextItem)
         }
@@ -197,7 +203,10 @@ extension PlayerView {
                   toggleFullScreen()
                 }
               } label: {
-                Label("Exit Fullscreen", braveSystemImage: "leo.fullscreen.off")
+                Label(
+                  Strings.Playlist.accessibilityExitFullscreen,
+                  braveSystemImage: "leo.fullscreen.off"
+                )
               }
               .tint(Color(braveSystemName: .textPrimary))
             }
@@ -213,15 +222,15 @@ extension PlayerView {
           Button {
             Task { await model.seekBackwards() }
           } label: {
-            Label("Step Back", braveSystemImage: "leo.rewind.15")
+            Label(Strings.Playlist.accessibilityStepBack, braveSystemImage: "leo.rewind.15")
           }
           .buttonStyle(.playbackControl(size: .large))
           Toggle(isOn: $model.isPlaying) {
             if model.isPlaying {
-              Label("Pause", braveSystemImage: "leo.pause.filled")
+              Label(Strings.Playlist.accessibilityPause, braveSystemImage: "leo.pause.filled")
                 .transition(.playButtonTransition)
             } else {
-              Label("Play", braveSystemImage: "leo.play.filled")
+              Label(Strings.Playlist.accessibilityPlay, braveSystemImage: "leo.play.filled")
                 .transition(.playButtonTransition)
             }
           }
@@ -231,7 +240,7 @@ extension PlayerView {
           Button {
             Task { await model.seekForwards() }
           } label: {
-            Label("Step Forward", braveSystemImage: "leo.forward.15")
+            Label(Strings.Playlist.accessibilityStepForwards, braveSystemImage: "leo.forward.15")
           }
           .buttonStyle(.playbackControl(size: .large))
         }
