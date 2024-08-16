@@ -67,6 +67,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveShieldsFingerprintingProtectionsAppliedLabel",
      IDS_BRAVE_SHIELDS_FINGERPRINTING_PROTECTIONS_APPLIED_LABEL},
     {"braveShieldsLearnMoreLinkText", IDS_BRAVE_SHIELDS_LEARN_MORE_LINK_TEXT},
+    {"braveShieldsFingerprintingListDescription",
+     IDS_BRAVE_SHIELDS_FINGERPRINTING_LIST_DESCRIPTION},
     {"braveShieldsAllowedScriptsLabel",
      IDS_BRAVE_SHIELDS_ALLOWED_SCRIPTS_LABEL},
     {"braveShieldsBlockedFingerprintsLabel",
