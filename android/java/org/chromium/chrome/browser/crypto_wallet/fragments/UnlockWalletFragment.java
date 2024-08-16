@@ -30,6 +30,8 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
+import javax.crypto.Cipher;
+
 public class UnlockWalletFragment extends BaseWalletNextPageFragment
         implements BaseWalletNextPageFragment.BiometricAuthenticationCallback {
 
@@ -38,6 +40,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
     private AppCompatButton mUnlockButton;
     private TextView mUnlockWalletRestoreButton;
     private ImageView mBiometricUnlockButton;
+    @Nullable private Cipher mCipher;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
             Api33AndPlusBackPressHelper.create(
                     this, (FragmentActivity) requireActivity(), () -> requireActivity().finish());
         }
+        mCipher = KeystoreHelper.getCipherForDecryption();
     }
 
     @Override
@@ -120,18 +124,19 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
 
         mBiometricUnlockButton.setOnClickListener(
                 v -> {
-                    if (Utils.isBiometricSupported(requireContext())) {
+                    if (Utils.isBiometricSupported(requireContext()) && mCipher != null) {
                         // noinspection NewApi
-                        showBiometricAuthenticationDialog(mBiometricUnlockButton, this);
+                        showBiometricAuthenticationDialog(mBiometricUnlockButton, this, mCipher);
                     }
                 });
 
         if (KeystoreHelper.shouldUseBiometricToUnlock()
-                && Utils.isBiometricSupported(requireContext())) {
+                && Utils.isBiometricSupported(requireContext())
+                && mCipher != null) {
 
             mBiometricUnlockButton.setVisibility(View.VISIBLE);
             // noinspection NewApi
-            showBiometricAuthenticationDialog(mBiometricUnlockButton, this);
+            showBiometricAuthenticationDialog(mBiometricUnlockButton, this, mCipher);
         }
     }
 
