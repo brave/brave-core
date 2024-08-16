@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/playlist/playlist_add_bubble_view.h"
 
-#include <algorithm>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -187,9 +186,9 @@ void PlaylistAddBubbleView::InitListView() {
   SetButtonEnabled(ui::DIALOG_BUTTON_OK, true);
   SetButtonEnabled(ui::DIALOG_BUTTON_CANCEL, true);
 
-  scroll_view_->SetPreferredSize(gfx::Size(
-      kWidth, std::min(kWidth, list_view_->GetPreferredSize().height() +
-                                   scroll_view_->GetInsets().height())));
+  scroll_view_->SetPreferredSize(std::nullopt);
+  scroll_view_->SetPreferredSize(
+      gfx::Size(kWidth, scroll_view_->GetPreferredSize().height()));
   if (GetWidget()) {
     SizeToContents();
   }
