@@ -7,6 +7,7 @@ import BraveShared
 import Data
 import Foundation
 import Playlist
+import Strings
 import SwiftUI
 
 struct PlaylistSidebarList: View {
@@ -92,13 +93,13 @@ struct PlaylistSidebarList: View {
                   }
                 }
               } label: {
-                Label("Remove Offline Data", braveSystemImage: "leo.cloud.off")
+                Label(Strings.Playlist.removeOfflineData, braveSystemImage: "leo.cloud.off")
               }
             } else {
               Button {
                 PlaylistManager.shared.download(item: .init(item: item))
               } label: {
-                Label("Save Offline Data", braveSystemImage: "leo.cloud.download")
+                Label(Strings.Playlist.saveOfflineData, braveSystemImage: "leo.cloud.download")
               }
             }
             Divider()
@@ -106,15 +107,18 @@ struct PlaylistSidebarList: View {
               Button {
                 openTabURL(url)
               } label: {
-                Label("Open In New Tab", braveSystemImage: "leo.plus.add")
+                Label(Strings.Playlist.openInNewTab, braveSystemImage: "leo.plus.add")
               }
               Button {
                 openTabURL(url, privateMode: true)
               } label: {
-                Label("Open In New Private Tab", braveSystemImage: "leo.product.private-window")
+                Label(
+                  Strings.Playlist.openInNewPrivateTab,
+                  braveSystemImage: "leo.product.private-window"
+                )
               }
               ShareLink(item: url) {
-                Label("Share", braveSystemImage: "leo.share.macos")
+                Label(Strings.Playlist.share, braveSystemImage: "leo.share.macos")
               }
               Divider()
             }
@@ -132,7 +136,7 @@ struct PlaylistSidebarList: View {
                     .tag(folder.id)
                 }
               } label: {
-                Label("Move…", braveSystemImage: "leo.folder.exchange")
+                Label(Strings.Playlist.moveMenuItemTitle, braveSystemImage: "leo.folder.exchange")
               }
               .pickerStyle(.menu)
             }
@@ -144,7 +148,7 @@ struct PlaylistSidebarList: View {
                 }
               }
             } label: {
-              Label("Delete", braveSystemImage: "leo.trash")
+              Label(Strings.Playlist.deleteItem, braveSystemImage: "leo.trash")
             }
           }
         }
@@ -236,13 +240,13 @@ struct PlaylistSidebarListHeader: View {
       } label: {
         if isPlaying {
           Label(
-            "Pause",
+            Strings.Playlist.accessibilityPause,
             braveSystemImage: "leo.pause.circle"
           )
           .transition(.playButtonTransition)
         } else {
           Label(
-            "Play",
+            Strings.Playlist.accessibilityPlay,
             braveSystemImage: "leo.play.circle"
           )
           .transition(.playButtonTransition)
@@ -266,7 +270,7 @@ struct PlaylistSidebarListHeader: View {
           Button {
             isNewPlaylistAlertPresented = true
           } label: {
-            Label("New Playlist", braveSystemImage: "leo.plus.add")
+            Label(Strings.Playlist.newPlaylistButtonTitle, braveSystemImage: "leo.plus.add")
           }
         } label: {
           Text("\(selectedFolder.title ?? "") \(Image(braveSystemName: "leo.carat.down"))")
@@ -289,7 +293,11 @@ struct PlaylistSidebarListHeader: View {
             )
           )
           let totalSize = totalSizeOnDisk
-          Text("\(items.count) items")  // FIXME: Pluralization
+          Text(
+            items.count == 1
+              ? Strings.Playlist.itemCountSingular
+              : String.localizedStringWithFormat(Strings.Playlist.itemCountPlural, items.count)
+          )
           if !items.isEmpty {
             Text(totalDuration, format: .units(width: .narrow, maximumUnitCount: 2))
           }
@@ -305,16 +313,16 @@ struct PlaylistSidebarListHeader: View {
           Button {
             isRenamePlaylistAlertPresented = true
           } label: {
-            Label("Rename…", braveSystemImage: "leo.edit.pencil")
+            Label(Strings.Playlist.renamePlaylist, braveSystemImage: "leo.edit.pencil")
           }
           Button(role: .destructive) {
             isDeletePlaylistConfirmationActive = true
           } label: {
-            Label("Delete Playlist…", braveSystemImage: "leo.trash")
+            Label(Strings.Playlist.deletePlaylist, braveSystemImage: "leo.trash")
           }
         }
       } label: {
-        Text("Edit")
+        Text(Strings.Playlist.editPlaylistShortTitle)
           .fontWeight(.semibold)
       } primaryAction: {
         isEditModePresented = true
@@ -351,7 +359,7 @@ struct PlaylistSidebarContentUnavailableView: View {
         Image("social-vimeo", bundle: .module)
         Image("social-instagram", bundle: .module)
       }
-      Text("Add media from your favorite sites and it’ll play here.")
+      Text(Strings.Playlist.noMediaToPickFromEmptyState)
         .multilineTextAlignment(.center)
         .foregroundStyle(Color(braveSystemName: .textTertiary))
         .frame(maxWidth: .infinity)

@@ -32,9 +32,16 @@ struct PopulateNewPlaylistView: View {
     ScrollView(.vertical) {
       VStack {
         VStack(alignment: .leading) {
-          Text("Add from your **\(Strings.Playlist.defaultPlaylistTitle)** playlist")
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
-          Text("Tap to select media")
+          Text(
+            LocalizedStringKey(
+              String.localizedStringWithFormat(
+                Strings.Playlist.fillNewPlaylistTitle,
+                Strings.Playlist.defaultPlaylistTitle
+              )
+            )
+          )
+          .foregroundStyle(Color(braveSystemName: .textPrimary))
+          Text(Strings.Playlist.fillNewPlaylistSubtitle)
             .font(.footnote)
             .foregroundStyle(Color(braveSystemName: .textTertiary))
         }
@@ -73,7 +80,7 @@ struct PopulateNewPlaylistView: View {
         }
         dismiss()
       } label: {
-        Text("Save")
+        Text(Strings.Playlist.saveButtonTitle)
           .font(.subheadline.weight(.semibold))
           .frame(maxWidth: .infinity)
           .padding(.vertical, 12)

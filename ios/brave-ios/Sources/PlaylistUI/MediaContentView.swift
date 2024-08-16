@@ -6,6 +6,7 @@
 import AVKit
 import Data
 import Foundation
+import Strings
 import SwiftUI
 
 extension PlaylistSheetDetent.DetentAnchorID {
@@ -207,11 +208,17 @@ extension MediaContentView {
           HStack {
             Toggle(isOn: $model.isShuffleEnabled) {
               if model.isShuffleEnabled {
-                Label("Shuffle Mode: On", braveSystemImage: "leo.shuffle.toggle-on")
-                  .transition(.opacity.animation(.linear(duration: 0.1)))
+                Label(
+                  Strings.Playlist.accessibilityShuffleModeOn,
+                  braveSystemImage: "leo.shuffle.toggle-on"
+                )
+                .transition(.opacity.animation(.linear(duration: 0.1)))
               } else {
-                Label("Shuffle Mode: Off", braveSystemImage: "leo.shuffle.off")
-                  .transition(.opacity.animation(.linear(duration: 0.1)))
+                Label(
+                  Strings.Playlist.accessibilityShuffleModeOff,
+                  braveSystemImage: "leo.shuffle.off"
+                )
+                .transition(.opacity.animation(.linear(duration: 0.1)))
               }
             }
             .labelStyle(.iconOnly)
@@ -220,17 +227,17 @@ extension MediaContentView {
             Button {
               Task { await model.seekBackwards() }
             } label: {
-              Label("Step Back", braveSystemImage: "leo.rewind.15")
+              Label(Strings.Playlist.accessibilityStepBack, braveSystemImage: "leo.rewind.15")
             }
             .buttonStyle(.playbackControl(size: .large))
             .tint(Color(braveSystemName: .textPrimary))
             Spacer()
             Toggle(isOn: $model.isPlaying) {
               if model.isPlaying {
-                Label("Pause", braveSystemImage: "leo.pause.filled")
+                Label(Strings.Playlist.accessibilityPause, braveSystemImage: "leo.pause.filled")
                   .transition(.playButtonTransition)
               } else {
-                Label("Play", braveSystemImage: "leo.play.filled")
+                Label(Strings.Playlist.accessibilityPlay, braveSystemImage: "leo.play.filled")
                   .transition(.playButtonTransition)
               }
             }
@@ -242,7 +249,7 @@ extension MediaContentView {
             Button {
               Task { await model.seekForwards() }
             } label: {
-              Label("Step Forward", braveSystemImage: "leo.forward.15")
+              Label(Strings.Playlist.accessibilityStepForwards, braveSystemImage: "leo.forward.15")
             }
             .buttonStyle(.playbackControl(size: .large))
             .tint(Color(braveSystemName: .textPrimary))
@@ -279,15 +286,14 @@ extension MediaContentView {
                     model.sleepTimerCondition = .itemPlaybackCompletion
                   }
                 } label: {
-                  // FIXME: Needs better copy
-                  Text("End of Item")
+                  Text(Strings.Playlist.sleepTimerEndOfItem)
                 }
               } header: {
-                Text("Stop Playback After…")
+                Text(Strings.Playlist.sleepTimerStopPlaybackAfter)
               }
               if model.sleepTimerCondition != nil {
                 Divider()
-                Button("Cancel Timer") {
+                Button(Strings.Playlist.sleepTimerCancelTimer) {
                   withAnimation(.snappy) {
                     model.sleepTimerCondition = nil
                   }
@@ -296,7 +302,7 @@ extension MediaContentView {
             } label: {
               HStack {
                 // FIXME: iOS 16 - Menu doesn't apply button styles
-                Label("Sleep Timer", braveSystemImage: "leo.sleep.timer")
+                Label(Strings.Playlist.sleepTimer, braveSystemImage: "leo.sleep.timer")
                   .labelStyle(.iconOnly)
                 if case .date(let sleepTimerFireDate) = model.sleepTimerCondition {
                   Text(timerInterval: .now...sleepTimerFireDate, countsDown: true)
@@ -316,7 +322,10 @@ extension MediaContentView {
                 toggleFullScreen()
               }
             } label: {
-              Label("Fullscreen", braveSystemImage: "leo.fullscreen.on")
+              Label(
+                Strings.Playlist.accessibilityEnterFullscreen,
+                braveSystemImage: "leo.fullscreen.on"
+              )
             }
           }
           .buttonStyle(.playbackControl)

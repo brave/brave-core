@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
+import Strings
 import SwiftUI
 
 enum ItemDownloadState {
@@ -57,7 +58,7 @@ struct PlaylistItemView: View {
           case .seconds(let duration):
             Text(.seconds(duration), format: .time(pattern: .minuteSecond))
           case .indefinite:
-            Text("Live")
+            Text(Strings.Playlist.liveIndicator)
           case .unknown:
             EmptyView()
           }
@@ -65,7 +66,7 @@ struct PlaylistItemView: View {
             switch downloadState {
             case .downloading(let percentCompleted):
               Label {
-                Text("Preparing")
+                Text(Strings.Playlist.itemDownloadStatusPreparing)
               } icon: {
                 Gauge(value: percentCompleted) {
                   EmptyView()
@@ -76,8 +77,7 @@ struct PlaylistItemView: View {
               .foregroundColor(Color(braveSystemName: .primary50))
             case .completed:
               Label {
-                // FIXME: Better accessibility label
-                Text("Item Ready")
+                Text(Strings.Playlist.accessibilityItemDownloadStatusReady)
               } icon: {
                 Image(braveSystemName: "leo.check.circle-outline")
               }
