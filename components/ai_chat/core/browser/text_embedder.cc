@@ -16,8 +16,6 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/task/bind_post_task.h"
-#include "base/task/sequenced_task_runner.h"
-#include "base/task/thread_pool.h"
 #include "base/timer/elapsed_timer.h"
 #include "third_party/tflite/src/tensorflow/lite/core/api/op_resolver.h"
 #include "third_party/tflite_support/src/tensorflow_lite_support/cc/task/text/utils/text_op_resolver.h"
@@ -32,34 +30,29 @@ size_t TextEmbedder::g_segment_size_ceiling_(300);
 size_t TextEmbedder::g_segment_size_floor_(50);
 
 // static
-std::unique_ptr<TextEmbedder> TextEmbedder::Create(
-    const base::FilePath& model_path) {
+std::unique_ptr<TextEmbedder, base::OnTaskRunnerDeleter> TextEmbedder::Create(
+    const base::FilePath& model_path,
+    scoped_refptr<base::SequencedTaskRunner> embedder_task_runner) {
   if (model_path.empty()) {
-    return nullptr;
+    return std::unique_ptr<TextEmbedder, base::OnTaskRunnerDeleter>(
+        nullptr, base::OnTaskRunnerDeleter(embedder_task_runner));
   }
-  auto embedder = base::WrapUnique(new TextEmbedder(model_path));
+  auto embedder = std::unique_ptr<TextEmbedder, base::OnTaskRunnerDeleter>(
+      new TextEmbedder(model_path, embedder_task_runner),
+      base::OnTaskRunnerDeleter(embedder_task_runner));
   return embedder;
 }
 
-TextEmbedder::TextEmbedder(const base::FilePath& model_path)
+TextEmbedder::TextEmbedder(
+    const base::FilePath& model_path,
+    scoped_refptr<base::SequencedTaskRunner> embedder_task_runner)
     : model_path_(model_path),
       owner_task_runner_(base::SequencedTaskRunner::GetCurrentDefault()),
-      embedder_task_runner_(
-          base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()})),
-      weak_ptr_factory_(
-          std::make_unique<base::WeakPtrFactory<TextEmbedder>>(this)) {
+      embedder_task_runner_(embedder_task_runner) {
   DCHECK(owner_task_runner_->RunsTasksInCurrentSequence());
 }
 
-TextEmbedder::~TextEmbedder() {
-  DCHECK(owner_task_runner_->RunsTasksInCurrentSequence());
-  // Calling from owner task runner intentionally so we can stop tflite
-  // interpretor running on embedder task runner.
-  if (tflite_text_embedder_) {
-    tflite_text_embedder_->Cancel();
-  }
-  embedder_task_runner_->DeleteSoon(FROM_HERE, std::move(weak_ptr_factory_));
-}
+TextEmbedder::~TextEmbedder() = default;
 
 bool TextEmbedder::IsInitialized() const {
   return tflite_text_embedder_ != nullptr;
@@ -71,7 +64,7 @@ void TextEmbedder::Initialize(base::OnceCallback<void(bool)> callback) {
   embedder_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&TextEmbedder::InitializeEmbedder,
-                     weak_ptr_factory_->GetWeakPtr(),
+                     weak_ptr_factory_.GetWeakPtr(),
                      base::BindPostTaskToCurrentDefault(std::move(callback))));
 }
 
@@ -120,8 +113,17 @@ void TextEmbedder::GetTopSimilarityWithPromptTilContextLimit(
       FROM_HERE,
       base::BindOnce(
           &TextEmbedder::GetTopSimilarityWithPromptTilContextLimitInternal,
-          weak_ptr_factory_->GetWeakPtr(), prompt, text, context_limit,
+          weak_ptr_factory_.GetWeakPtr(), prompt, text, context_limit,
           base::BindPostTaskToCurrentDefault(std::move(callback))));
+}
+
+void TextEmbedder::CancelAllTasks() {
+  DCHECK(owner_task_runner_->RunsTasksInCurrentSequence());
+  // Calling from owner task runner intentionally so we can stop tflite
+  // interpretor running on embedder task runner.
+  if (tflite_text_embedder_) {
+    tflite_text_embedder_->Cancel();
+  }
 }
 
 void TextEmbedder::GetTopSimilarityWithPromptTilContextLimitInternal(
@@ -285,10 +287,6 @@ absl::Status TextEmbedder::EmbedSegments() {
     embeddings_.push_back(embedding);
   }
   return absl::OkStatus();
-}
-
-scoped_refptr<base::SequencedTaskRunner> TextEmbedder::GetEmbedderTaskRunner() {
-  return embedder_task_runner_;
 }
 
 // static

@@ -17,6 +17,8 @@
 #include "base/functional/overloaded.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/scoped_observation.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool.h"
 #include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
@@ -157,7 +159,9 @@ class MockConversationDriver : public ConversationDriver {
 
 class MockTextEmbedder : public TextEmbedder {
  public:
-  MockTextEmbedder() : TextEmbedder(base::FilePath()) {}
+  explicit MockTextEmbedder(
+      scoped_refptr<base::SequencedTaskRunner> task_runner)
+      : TextEmbedder(base::FilePath(), task_runner) {}
   ~MockTextEmbedder() override = default;
   MOCK_METHOD(bool, IsInitialized, (), (const, override));
   MOCK_METHOD(void, Initialize, (InitializeCallback), (override));
@@ -853,9 +857,14 @@ class PageContentRefineTest : public ConversationDriverUnitTest,
   }
   void SetUp() override {
     ConversationDriverUnitTest::SetUp();
+    embedder_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::TaskPriority::USER_BLOCKING});
   }
 
   bool IsPageContentRefineEnabled() { return GetParam(); }
+
+ protected:
+  scoped_refptr<base::SequencedTaskRunner> embedder_task_runner_;
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -877,7 +886,9 @@ TEST_P(PageContentRefineTest, TextEmbedder) {
       conversation_driver_->GetEngineForTesting());
 
   conversation_driver_->SetTextEmbedderForTesting(
-      std::make_unique<MockTextEmbedder>());
+      std::unique_ptr<MockTextEmbedder, base::OnTaskRunnerDeleter>(
+          new MockTextEmbedder(embedder_task_runner_),
+          base::OnTaskRunnerDeleter(embedder_task_runner_)));
   auto* mock_text_embedder = static_cast<MockTextEmbedder*>(
       conversation_driver_->GetTextEmbedderForTesting());
 
@@ -937,7 +948,9 @@ TEST_P(PageContentRefineTest, TextEmbedderInitialized) {
       conversation_driver_->GetEngineForTesting());
 
   conversation_driver_->SetTextEmbedderForTesting(
-      std::make_unique<MockTextEmbedder>());
+      std::unique_ptr<MockTextEmbedder, base::OnTaskRunnerDeleter>(
+          new MockTextEmbedder(embedder_task_runner_),
+          base::OnTaskRunnerDeleter(embedder_task_runner_)));
   auto* mock_text_embedder = static_cast<MockTextEmbedder*>(
       conversation_driver_->GetTextEmbedderForTesting());
   struct {
@@ -1026,7 +1039,9 @@ TEST_P(PageContentRefineTest, LeoLocalModelsUpdater) {
 
   // Already has TextEmbedder.
   conversation_driver->SetTextEmbedderForTesting(
-      std::make_unique<MockTextEmbedder>());
+      std::unique_ptr<MockTextEmbedder, base::OnTaskRunnerDeleter>(
+          new MockTextEmbedder(embedder_task_runner_),
+          base::OnTaskRunnerDeleter(embedder_task_runner_)));
   conversation_driver->universal_qa_model_path_ = base::FilePath();
   EXPECT_CALL(*leo_local_models_updater_, GetUniversalQAModel()).Times(0);
   conversation_driver->PerformAssistantGeneration(

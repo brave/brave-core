@@ -10,6 +10,8 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/ai_chat/core/browser/leo_local_models_updater.h"
@@ -20,16 +22,20 @@ namespace ai_chat {
 
 class TextEmbedderUnitTest : public testing::Test {
  public:
-  TextEmbedderUnitTest() = default;
+  TextEmbedderUnitTest()
+      : embedder_(nullptr, base::OnTaskRunnerDeleter(nullptr)) {}
   ~TextEmbedderUnitTest() override = default;
 
   void SetUp() override {
+    embedder_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::TaskPriority::BEST_EFFORT});
     base::FilePath test_dir =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
     model_dir_ =
         test_dir.AppendASCII("leo").AppendASCII("leo-local-models-updater");
     embedder_ = TextEmbedder::Create(
-        base::FilePath(model_dir_.AppendASCII(kUniversalQAModelName)));
+        base::FilePath(model_dir_.AppendASCII(kUniversalQAModelName)),
+        embedder_task_runner_);
     ASSERT_TRUE(embedder_);
     base::RunLoop run_loop;
     embedder_->Initialize(
@@ -44,11 +50,11 @@ class TextEmbedderUnitTest : public testing::Test {
   std::vector<std::string> SplitSegments(const std::string& text) {
     std::vector<std::string> segments;
     base::RunLoop run_loop;
-    embedder_->GetEmbedderTaskRunner()->PostTask(
-        FROM_HERE, base::BindLambdaForTesting([&]() {
-          segments = embedder_->SplitSegments(text);
-          run_loop.Quit();
-        }));
+    embedder_task_runner_->PostTask(FROM_HERE,
+                                    base::BindLambdaForTesting([&]() {
+                                      segments = embedder_->SplitSegments(text);
+                                      run_loop.Quit();
+                                    }));
     run_loop.Run();
     return segments;
   }
@@ -56,11 +62,11 @@ class TextEmbedderUnitTest : public testing::Test {
   absl::Status EmbedSegments(ai_chat::TextEmbedder* embedder) {
     absl::Status status;
     base::RunLoop run_loop;
-    embedder->GetEmbedderTaskRunner()->PostTask(
-        FROM_HERE, base::BindLambdaForTesting([&]() {
-          status = embedder->EmbedSegments();
-          run_loop.Quit();
-        }));
+    embedder_task_runner_->PostTask(FROM_HERE,
+                                    base::BindLambdaForTesting([&]() {
+                                      status = embedder->EmbedSegments();
+                                      run_loop.Quit();
+                                    }));
     run_loop.Run();
     return status;
   }
@@ -70,7 +76,7 @@ class TextEmbedderUnitTest : public testing::Test {
       uint32_t context_limit) {
     base::expected<std::string, std::string> result;
     base::RunLoop run_loop;
-    embedder_->GetEmbedderTaskRunner()->PostTask(
+    embedder_task_runner_->PostTask(
         FROM_HERE, base::BindLambdaForTesting([&]() {
           result = embedder_->RefineTopKSimilarity(std::move(ranked_sentences),
                                                    context_limit);
@@ -116,22 +122,26 @@ class TextEmbedderUnitTest : public testing::Test {
   }
 
  protected:
+  scoped_refptr<base::SequencedTaskRunner> embedder_task_runner_;
   base::test::TaskEnvironment task_environment_;
   base::FilePath model_dir_;
-  std::unique_ptr<ai_chat::TextEmbedder> embedder_;
+  std::unique_ptr<ai_chat::TextEmbedder, base::OnTaskRunnerDeleter> embedder_;
 };
 
 TEST_F(TextEmbedderUnitTest, Create) {
-  EXPECT_FALSE(TextEmbedder::Create(base::FilePath()));
+  EXPECT_FALSE(TextEmbedder::Create(base::FilePath(), embedder_task_runner_));
   // Invalid model path is tested in TextEmbedderUnitTest.Initialize.
   EXPECT_TRUE(TextEmbedder::Create(
-      base::FilePath(model_dir_.AppendASCII("model.tflite"))));
+      base::FilePath(model_dir_.AppendASCII("model.tflite")),
+      embedder_task_runner_));
   EXPECT_TRUE(TextEmbedder::Create(
-      base::FilePath(model_dir_.AppendASCII(kUniversalQAModelName))));
+      base::FilePath(model_dir_.AppendASCII(kUniversalQAModelName)),
+      embedder_task_runner_));
 }
 
 TEST_F(TextEmbedderUnitTest, Initialize) {
-  auto embedder = TextEmbedder::Create(model_dir_.AppendASCII("model.tflite"));
+  auto embedder = TextEmbedder::Create(model_dir_.AppendASCII("model.tflite"),
+                                       embedder_task_runner_);
   ASSERT_TRUE(embedder);
   base::RunLoop run_loop;
   embedder->Initialize(

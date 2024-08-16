@@ -176,7 +176,8 @@ class ConversationDriver : public ModelService::Observer,
     engine_ = std::move(engine_for_testing);
   }
   EngineConsumer* GetEngineForTesting() { return engine_.get(); }
-  void SetTextEmbedderForTesting(std::unique_ptr<TextEmbedder> text_embedder) {
+  void SetTextEmbedderForTesting(
+      std::unique_ptr<TextEmbedder, base::OnTaskRunnerDeleter> text_embedder) {
     text_embedder_ = std::move(text_embedder);
   }
   TextEmbedder* GetTextEmbedderForTesting() { return text_embedder_.get(); }
@@ -340,7 +341,7 @@ class ConversationDriver : public ModelService::Observer,
 
   mojom::ConversationTurnPtr pending_conversation_entry_;
 
-  std::unique_ptr<TextEmbedder> text_embedder_;
+  std::unique_ptr<TextEmbedder, base::OnTaskRunnerDeleter> text_embedder_;
 
   base::WeakPtrFactory<ConversationDriver> weak_ptr_factory_{this};
 };
