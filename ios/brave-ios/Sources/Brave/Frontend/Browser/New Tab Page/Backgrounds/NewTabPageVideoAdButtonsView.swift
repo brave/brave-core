@@ -11,9 +11,9 @@ import Shared
 import SnapKit
 import UIKit
 
-/// The foreground view of the New Tab Page video player. It contains the cancel
-/// button and handles user tap gestures to play/pause the video.
-class NewTabPageVideoButtonsView: UIView {
+/// The foreground view of the New Tab Page video ad player. It contains the
+/// cancel button and handles user tap gestures to play/pause the video.
+class NewTabPageVideoAdButtonsView: UIView {
   var tappedBackgroundVideo: (() -> Bool)?
   var tappedCancelButton: (() -> Void)?
 
@@ -109,7 +109,7 @@ class NewTabPageVideoButtonsView: UIView {
   }
 }
 
-extension NewTabPageVideoButtonsView {
+extension NewTabPageVideoAdButtonsView {
   private class CancelButton: SpringButton {
     let imageView = UIImageView(
       image: UIImage(braveSystemNamed: "leo.close")!

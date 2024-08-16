@@ -12,10 +12,11 @@ import Shared
 import SnapKit
 import UIKit
 
-/// The class is responsible for managing the video playback on the New Tab Page.
-/// It handles events such as play finished, played 25 percent, autoplay finished,
-/// play cancelled, and video loaded.
-class NewTabPageVideoPlayer {
+// The NewTabPageVideoAdPlayer class is responsible for handling video ads on a
+// new tab page. It sets up the video player, controls playback (play, pause,
+// stop), and manages user interactions. The class also listens for events like
+// video start, pause, and completion, and tracks ad performance metrics.
+class NewTabPageVideoAdPlayer {
   var didStartAutoplayEvent: (() -> Void)?
   var didFinishAutoplayEvent: (() -> Void)?
   var didStartPlaybackEvent: (() -> Void)?
@@ -217,7 +218,7 @@ class NewTabPageVideoPlayer {
       seekToStopFrame()
     }
 
-    disallowBackgroundAudioDuringPlayback()
+    stopBackgroundAudioDuringPlayback()
 
     didFinishAutoplayEvent?()
   }
@@ -282,13 +283,11 @@ class NewTabPageVideoPlayer {
   }
 
   private func allowBackgroundAudioDuringAutoplay() {
-    // When the video is autoplaying, audio is muted, so background audio should always be
-    // allowed to continue playing.
     try? AVAudioSession.sharedInstance().setCategory(.playback, options: [.mixWithOthers])
     try? AVAudioSession.sharedInstance().setActive(true)
   }
 
-  private func disallowBackgroundAudioDuringPlayback() {
+  private func stopBackgroundAudioDuringPlayback() {
     try? AVAudioSession.sharedInstance().setActive(false)
     try? AVAudioSession.sharedInstance().setCategory(
       .playback,
