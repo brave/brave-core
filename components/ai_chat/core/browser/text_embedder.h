@@ -15,6 +15,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/types/expected.h"
 #include "third_party/tflite_support/src/tensorflow_lite_support/cc/task/text/text_embedder.h"
 
@@ -28,7 +29,9 @@ namespace ai_chat {
 // owner sequence runner ex. brwoser UI thread.
 class TextEmbedder {
  public:
-  static std::unique_ptr<TextEmbedder> Create(const base::FilePath& model_path);
+  static std::unique_ptr<TextEmbedder, base::OnTaskRunnerDeleter> Create(
+      const base::FilePath& model_path,
+      scoped_refptr<base::SequencedTaskRunner> embedder_task_runner);
 
   virtual ~TextEmbedder();
   TextEmbedder(const TextEmbedder&) = delete;
@@ -54,8 +57,15 @@ class TextEmbedder {
       uint32_t context_limit,
       TopSimilarityCallback callback);
 
+  // Cancel all the pending tflite tasks on the embedder task runner.
+  // Should be used right before the TextEmbedder is destroyed to avoid long
+  // running tflite tasks blocking shutdown.
+  void CancelAllTasks();
+
  protected:
-  explicit TextEmbedder(const base::FilePath& model_path);
+  explicit TextEmbedder(
+      const base::FilePath& model_path,
+      scoped_refptr<base::SequencedTaskRunner> embedder_task_runner);
 
  private:
   friend class TextEmbedderUnitTest;
@@ -83,8 +93,6 @@ class TextEmbedder {
 
   absl::Status EmbedSegments();
 
-  scoped_refptr<base::SequencedTaskRunner> GetEmbedderTaskRunner();
-
   static void SetSegmentSizeCeilingForTesting(size_t ceiling);
   static void SetSegmentSizeFloorForTesting(size_t floor);
   static size_t g_segment_size_floor_;
@@ -98,8 +106,7 @@ class TextEmbedder {
   scoped_refptr<base::SequencedTaskRunner> owner_task_runner_;
   scoped_refptr<base::SequencedTaskRunner> embedder_task_runner_;
 
-  // Needed to be deleted in embedder_task_runner_.
-  std::unique_ptr<base::WeakPtrFactory<TextEmbedder>> weak_ptr_factory_;
+  base::WeakPtrFactory<TextEmbedder> weak_ptr_factory_{this};
 };
 }  // namespace ai_chat
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_TEXT_EMBEDDER_H_

@@ -24,6 +24,8 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
@@ -150,7 +152,8 @@ ConversationDriver::ConversationDriver(
           std::string(channel_string))),
       url_loader_factory_(url_loader_factory),
       model_service_(model_service),
-      on_page_text_fetch_complete_(new base::OneShotEvent()) {
+      on_page_text_fetch_complete_(new base::OneShotEvent()),
+      text_embedder_(nullptr, base::OnTaskRunnerDeleter(nullptr)) {
   DCHECK(pref_service_);
 
   models_observer_.Observe(model_service_.get());
@@ -702,7 +705,10 @@ void ConversationDriver::CleanUp() {
   OnSuggestedQuestionsChanged();
   SetAPIError(mojom::APIError::None);
   engine_->ClearAllQueries();
-  text_embedder_.reset();
+  if (text_embedder_) {
+    text_embedder_->CancelAllTasks();
+    text_embedder_.reset();
+  }
 
   MaybeSeedOrClearSuggestions();
 
@@ -1079,8 +1085,14 @@ void ConversationDriver::PerformAssistantGeneration(
       universal_qa_model_path_ =
           leo_local_models_updater_->GetUniversalQAModel();
     }
-    text_embedder_ =
-        TextEmbedder::Create(base::FilePath(universal_qa_model_path_));
+    // Tasks in TextEmbedder are run on |embedder_task_runner|. The
+    // text_embedder_ must be deleted on that sequence to guarantee that pending
+    // tasks can safely be executed.
+    scoped_refptr<base::SequencedTaskRunner> embedder_task_runner =
+        base::ThreadPool::CreateSequencedTaskRunner(
+            {base::MayBlock(), base::TaskPriority::USER_BLOCKING});
+    text_embedder_ = TextEmbedder::Create(
+        base::FilePath(universal_qa_model_path_), embedder_task_runner);
   }
   if (text_embedder_ && should_refine_page_content) {
     if (text_embedder_->IsInitialized()) {
