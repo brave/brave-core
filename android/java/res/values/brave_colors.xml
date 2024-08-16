@@ -411,6 +411,7 @@
     <color name="location_bar_background_color_for_ntp">#f2f2f2</color>
     <color name="toolbar_background_color_for_ntp">@android:color/white</color>
 
+    <color name="primitive_blurple_10">#0f0663</color>
     <color name="primitive_blurple_20">#251491</color>
     <color name="primitive_blurple_25">#2E19B0</color>
     <color name="primitive_blurple_35">#3e37d4</color>
