@@ -10,7 +10,7 @@ import UIKit
 
 /// Handles fetching Brave News Topics for widgets
 struct NewsTopicsModel {
-  var fetchNewsTopics: @Sendable () async -> [NewsTopic]
+  var fetchNewsTopics: @Sendable (Locale) async -> [NewsTopic]
   var fetchImageThumbnailsForTopics:
     @Sendable ([NewsTopic], CGSize) async -> [NewsTopic.ID: UIImage]
 }
@@ -24,12 +24,21 @@ extension NewsTopicsModel {
   /// from there.
   static var live: Self {
     .init(
-      fetchNewsTopics: {
+      fetchNewsTopics: { currentLocale in
         do {
+          let supportedLocales = [
+            Locale(identifier: "en_US"),
+            Locale(identifier: "en_GB"),
+            Locale(identifier: "en_IN"),
+          ]
+          let targetLocale =
+            supportedLocales.first(where: { $0 == currentLocale }) ?? supportedLocales.first(
+              where: { $0.region == currentLocale.region }) ?? supportedLocales.first!
+
           // At the moment there is only english US topics
           let url = URL(
             string:
-              "https://brave-today-cdn.brave.com/news-topic-clustering/widget_topic_news.en_US.json"
+              "https://brave-today-cdn.brave.com/news-topic-clustering/widget_topic_news.\(targetLocale.identifier).json"
           )!
           let session = URLSession(configuration: .default)
           let (data, _) = try await session.data(for: URLRequest(url: url))
@@ -102,7 +111,7 @@ extension NewsTopicsModel {
       )!
     )
     return .init(
-      fetchNewsTopics: {
+      fetchNewsTopics: { _ in
         do {
           let topics = Dictionary(
             grouping: try JSONDecoder.topicsDecoder.decode(
