@@ -843,6 +843,9 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
       token->token_id = Uint256ValueToHex(token_id_uint256);
     }
 
+    // coin
+    token->coin = coin;
+
     if (IsSPLToken(token)) {
       token->spl_token_program = mojom::SPLTokenProgram::kUnknown;
     } else {
@@ -853,9 +856,6 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
     token->is_compressed =
         nft->FindBoolByDottedPath("extra_metadata.compression.compressed")
             .value_or(false);
-
-    // coin
-    token->coin = coin;
 
     nft_tokens.push_back(std::move(token));
   }
