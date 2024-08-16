@@ -6,6 +6,7 @@
 import Data
 import Foundation
 import Playlist
+import Strings
 import SwiftUI
 
 struct EditFolderView: View {
@@ -71,13 +72,13 @@ struct EditFolderView: View {
         .bottomBar
       )
       .toolbarBackground(.visible, for: .navigationBar, .bottomBar)
-      .navigationTitle(folder.title ?? "Edit Playlist")
+      .navigationTitle(folder.title ?? Strings.Playlist.editPlaylist)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
           Button {
             dismiss()
           } label: {
-            Text("Done")
+            Text(Strings.Playlist.doneButtonTitle)
               .fontWeight(.semibold)
           }
           .tint(Color(braveSystemName: .textInteractive))
@@ -88,15 +89,18 @@ struct EditFolderView: View {
               Button {
                 isRenamePlaylistAlertPresented = true
               } label: {
-                Label("Rename…", braveSystemImage: "leo.edit.pencil")
+                Label(Strings.Playlist.renamePlaylist, braveSystemImage: "leo.edit.pencil")
               }
               Button(role: .destructive) {
                 isDeletePlaylistConfirmationActive = true
               } label: {
-                Label("Delete Playlist…", braveSystemImage: "leo.trash")
+                Label(Strings.Playlist.deletePlaylist, braveSystemImage: "leo.trash")
               }
             } label: {
-              Label("More", systemImage: "ellipsis.circle.fill")
+              Label(
+                Strings.Playlist.accessibilityMoreMenuButtonTitle,
+                systemImage: "ellipsis.circle.fill"
+              )
             }
             .tint(Color(braveSystemName: .textInteractive))
           }
@@ -120,7 +124,7 @@ struct EditFolderView: View {
             }
             .pickerStyle(.inline)
           } label: {
-            Text("Move")
+            Text(Strings.Playlist.moveItem)
           }
           .tint(Color(braveSystemName: .textInteractive))
           .disabled(selectedItems.isEmpty || folders.count < 2)
@@ -130,7 +134,7 @@ struct EditFolderView: View {
               await deleteSelectedItems()
             }
           } label: {
-            Text("Delete")
+            Text(Strings.Playlist.deleteItem)
           }
           .tint(Color(braveSystemName: .textInteractive))
           .disabled(selectedItems.isEmpty)

@@ -619,7 +619,7 @@ public final class PlayerModel: ObservableObject {
       case .loadingStreamingURLFailed(.cannotLoadMedia):
         return Strings.PlayList.sorryAlertTitle
       default:
-        return "Something went wrong"  // TODO: Localize
+        return Strings.Playlist.somethingWentWrong
       }
     }
 

@@ -6,6 +6,7 @@
 import Data
 import Foundation
 import Playlist
+import Strings
 import SwiftUI
 
 private struct FolderEditActionsModifier: ViewModifier {
@@ -26,7 +27,7 @@ private struct FolderEditActionsModifier: ViewModifier {
         }
       }
       .confirmationDialog(
-        "All videos on this playlist will be removed",
+        Strings.Playlist.deletePlaylistConfirmationMessage,
         isPresented: $isDeletePlaylistConfirmationPresented,
         titleVisibility: .visible
       ) {
@@ -37,17 +38,17 @@ private struct FolderEditActionsModifier: ViewModifier {
             }
           }
         } label: {
-          Text("Delete Playlist")
+          Text(Strings.Playlist.deletePlaylist)
         }
         Button(role: .cancel) {
         } label: {
-          Text("Cancel")
+          Text(Strings.CancelString)
         }
         .keyboardShortcut(.cancelAction)
       }
-      .alert("Rename Playlist", isPresented: $isRenamePlaylistAlertPresented) {
+      .alert(Strings.Playlist.renamePlaylist, isPresented: $isRenamePlaylistAlertPresented) {
         TextField("", text: $renameText)
-        Button("Cancel", role: .cancel) {
+        Button(Strings.CancelString, role: .cancel) {
           // No action
         }
         .keyboardShortcut(.cancelAction)
@@ -60,7 +61,7 @@ private struct FolderEditActionsModifier: ViewModifier {
             }
           }
         } label: {
-          Text("Save")
+          Text(Strings.Playlist.saveButtonTitle)
         }
         .keyboardShortcut(.defaultAction)
       }
