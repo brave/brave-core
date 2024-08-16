@@ -344,6 +344,10 @@ copy("updater_parts_script") {
   outputs = [ "$packaging_dir/signing/updater_parts.py" ]
 }
 
+if (brave_enable_updater) {
+  generated_pkg_scripts = "$target_gen_dir/pkg-scripts"
+}
+
 action("create_pkg") {
   script = "//build/gn_run_binary.py"
   shell_script = "//brave/build/mac/create_pkg.sh"
@@ -351,7 +355,15 @@ action("create_pkg") {
   args = [
     rebase_path(shell_script, root_build_dir),
     rebase_path(app_path, root_build_dir),
-    rebase_path("//brave/build/mac/pkg-scripts"),
+  ]
+
+  if (brave_enable_updater) {
+    args += [ rebase_path(generated_pkg_scripts) ]
+  } else {
+    args += [ rebase_path("//brave/build/mac/pkg-scripts") ]
+  }
+
+  args += [
     rebase_path("$root_out_dir/Brave Browser Component.plist"),
     "$mac_unsigned_output_prefix/$brave_pkg",
   ]
@@ -365,6 +377,34 @@ action("create_pkg") {
   outputs = [ unsigned_pkg_path ]
 
   deps = [ ":finalize_app" ]
+
+  if (brave_enable_updater) {
+    deps += [ ":postinstall" ]
+  }
+}
+
+if (brave_enable_updater) {
+  action("postinstall") {
+    visibility = [ ":create_pkg" ]
+
+    script = "create_postinstall.py"
+
+    output = "$generated_pkg_scripts/postinstall"
+
+    args = [
+      rebase_path("//chrome/installer/mac/pkg_postinstall.in"),
+      brave_exe,
+      "Contents/Frameworks/$chrome_product_full_name Framework.framework",
+      rebase_path(output),
+    ]
+
+    inputs = [
+      script,
+      "//chrome/installer/mac/pkg_postinstall.in",
+    ]
+
+    outputs = [ output ]
+  }
 }
 
 action("sign_pkg") {
@@ -615,5 +655,42 @@ if (brave_enable_updater) {
     # also changing kBravePublisherKeyHash in crx_verifier.cc.
     key = "//brave/updater/crx-private-key.der"
     deps = [ ":copy_dmg_pkg" ]
+  }
+  action("sign_updater") {
+    deps = [
+      "//chrome/updater/mac:updater_bundle",
+      "//chrome/updater/mac:updater_install_script",
+      "//chrome/updater/mac/installer:metainstaller",
+      "//chrome/updater/mac/signing",
+      "//chrome/updater/tools:BraveUpdaterUtil",
+    ]
+    script = "sign_updater.py"
+    output_dir = "$root_out_dir/$mac_signed_output_prefix"
+    output_file = "$updater_product_full_name-$chrome_version_full.zip"
+    args = [
+      rebase_path("$root_out_dir/Updater Packaging/sign_updater.py",
+                  root_build_dir),
+      rebase_path(output_dir),
+      output_file,
+      "--input",
+      rebase_path(root_out_dir),
+      "--identity",
+      mac_signing_identifier,
+      "--installer-identity",
+      mac_installer_signing_identifier,
+    ]
+    if (notarize) {
+      args += [
+        "--notarize",
+        "--notary-arg=--apple-id",
+        "--notary-arg=$notary_user",
+        "--notary-arg=--password",
+        "--notary-arg=$notary_password",
+        "--notary-arg=--team-id",
+        "--notary-arg=$chrome_mac_team_id",
+      ]
+    }
+    outputs = [ "$output_dir/$output_file" ]
+    inputs = [ script ]
   }
 }

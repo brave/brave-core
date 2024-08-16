@@ -14,7 +14,20 @@ declare_args() {
   brave_enable_updater = false
 }
 
+declare_args() {
+  # We ship a pre-built (and pre-signed) copy of Omaha 4 in official builds. The
+  # main reason for this is that upstream's browser signing code expects it this
+  # way. The following arg, which controls whether Omaha 4 should be built from
+  # source, is therefore disabled by default for official builds:
+  build_omaha4 = brave_enable_updater && !is_official_build
+}
+
 if (brave_enable_updater) {
   assert(target_os == "mac",
          "brave_enable_updater currently only takes effect on macOS.")
+}
+
+if (build_omaha4) {
+  assert(brave_enable_updater,
+         "brave_enable_updater must be true to build Omaha 4")
 }

@@ -84,15 +84,23 @@ def get_remote_commands(tool, args, cwd, src_dir_on_host, keychain_pw,
     return result
 
 
-def get_commands_via_tmpfile(tool, args_on_host):
+def get_commands_via_tmpfile(tool, args):
     # When src_dir_on_host is mounted via mount_9p, then some tools fail to
     # write to it. So write to a known-writeable location. Then `mv` to the
     # correct destination.
-    result = []
-    orig_dest = args_on_host[-1]
-    result.append(['tempfile=$(mktemp)'])
-    result.append([tool] + args_on_host[:-1] + ['$tempfile'])
-    result.append(['mv', '$tempfile', orig_dest])
+    result = [['tempfile=$(mktemp)']]
+    dest, dest_index = get_destination_arg(args)
+    new_args = args[:dest_index] + ['$tempfile'] + args[dest_index + 1:]
+    result.append([tool] + new_args)
+    result.append(['mv', '$tempfile', dest])
+    return result
+
+
+def get_destination_arg(args):
+    result = None
+    for i, arg in enumerate(args):
+        if arg.endswith(".pkg") or arg.endswith(".pkg'"):
+            result = arg, i
     return result
 
 

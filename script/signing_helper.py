@@ -110,8 +110,6 @@ def BraveModifyPartsForSigning(parts, config):
         privileged_helper.identifier = re.sub(channel_re, replacement,
                                               privileged_helper.identifier)
 
-        parts.update(GetUpdaterSigningParts(config))
-
     return parts
 
 
@@ -165,37 +163,3 @@ def GetBraveSigningConfig(config_class, mac_provisioning_profile=None):
             return True
 
     return ProvisioningProfileCodeSignConfig
-
-
-def GetUpdaterSigningParts(config):
-    try:
-        from signing import updater_parts  # pylint: disable=import-outside-toplevel
-    except ImportError:
-        # brave_enable_updater is false.
-        return {}
-    result = {}
-    updater_config = ConfigWrapper(config)
-    updater_config.app_product = 'BraveUpdater'  # pylint: disable=W0201
-    updater_config.keystone_app_name = 'BraveSoftwareUpdate'  # pylint: disable=W0201
-    for part in updater_parts.get_parts(updater_config):
-        name = 'updater-' + basename(splitext(part.path)[0]).lower()
-        part.path = \
-            '{0.framework_dir}/Versions/{0.version}/Helpers/'.format(config) + \
-            part.path
-        if exists(part.path):
-            result[name] = part
-    assert result, "No Updater files. Has upstream's directory layout changed?"
-    return result
-
-
-class ConfigWrapper:
-    """
-    DistributionCodeSignConfig's attributes are read-only. ConfigWrapper lets us
-    wrap its instances and partially set different attribute values.
-    """
-
-    def __init__(self, target):
-        self._target = target
-
-    def __getattr__(self, name):
-        return getattr(self._target, name)
