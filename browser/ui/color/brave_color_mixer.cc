@@ -309,20 +309,25 @@ void AddBraveOmniboxLightThemeColorMixer(ui::ColorProvider* provider,
   ui::ColorMixer& mixer = provider->AddMixer();
 
   // Apply bravified color when there is no custom theme.
-  mixer[kColorToolbarBackgroundSubtleEmphasis] = {GetLocationBarBackground(
-      /*dark*/ false, /*private*/ false)};
+  mixer[kColorToolbarBackgroundSubtleEmphasis] = {
+      nala::kColorDesktopbrowserOmnibarBackgroundDesktop};
   // Use same color for normal & hover location bar background.
   // Instead, shadow is set when hovered.
   mixer[kColorToolbarBackgroundSubtleEmphasisHovered] = {
       kColorToolbarBackgroundSubtleEmphasis};
-  mixer[kColorOmniboxText] = {kLightOmniboxText};
 
+  mixer[kColorOmniboxText] = {nala::kColorTextPrimary};
   mixer[kColorOmniboxResultsBackground] = {
-      GetOmniboxResultBackground(kColorOmniboxResultsBackground, /*dark*/ false,
-                                 /*incognito*/ false)};
+      nala::kColorDesktopbrowserOmnibarBackgroundActive};
   mixer[kColorOmniboxResultsBackgroundHovered] = {
-      GetOmniboxResultBackground(kColorOmniboxResultsBackgroundHovered,
-                                 /*dark*/ false, /*incognito*/ false)};
+      nala::kColorDesktopbrowserOmnibarBackgroundSelectedItem};
+  //   mixer[kColorOmniboxResultsBackground] = {
+  //       GetOmniboxResultBackground(kColorOmniboxResultsBackground, /*dark*/
+  //       false,
+  //                                  /*incognito*/ false)};
+//   mixer[kColorOmniboxResultsBackgroundHovered] = {
+//       GetOmniboxResultBackground(kColorOmniboxResultsBackgroundHovered,
+//                                  /*dark*/ false, /*incognito*/ false)};
   mixer[kColorOmniboxResultsBackgroundSelected] = {
       GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
                                  /*dark*/ false, /*incognito*/ false)};
@@ -336,8 +341,8 @@ void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
   ui::ColorMixer& mixer = provider->AddMixer();
 
   // Apply bravified color when there is no custom theme.
-  mixer[kColorToolbarBackgroundSubtleEmphasis] = {GetLocationBarBackground(
-      /*dark*/ true, /*private*/ false)};
+  mixer[kColorToolbarBackgroundSubtleEmphasis] = {
+      nala::kColorDesktopbrowserOmnibarBackgroundDesktop};
   mixer[kColorToolbarBackgroundSubtleEmphasisHovered] = {
       kColorToolbarBackgroundSubtleEmphasis};
   mixer[kColorOmniboxText] = {kDarkOmniboxText};
