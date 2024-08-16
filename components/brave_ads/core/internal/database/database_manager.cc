@@ -17,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_creation.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_migration.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
@@ -54,7 +55,7 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
       mojom::DBStatementInfo::OperationType::kCreateOrOpen;
   mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunDBTransaction(
+  GetAdsClient()->RunDBTransaction(
       std::move(mojom_transaction),
       base::BindOnce(&DatabaseManager::CreateOrOpenCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));

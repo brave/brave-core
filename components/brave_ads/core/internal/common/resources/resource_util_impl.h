@@ -16,7 +16,9 @@
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/resource_util.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace base {
 class File;
@@ -67,7 +69,7 @@ void LoadAndParseResourceComponent(
     const std::string& id,
     const int version,
     LoadAndParseResourceComponentCallback<T> callback) {
-  LoadResourceComponent(
+  GetAdsClient()->LoadResourceComponent(
       id, version,
       base::BindOnce(&LoadResourceComponentCallback<T>, std::move(callback)));
 }

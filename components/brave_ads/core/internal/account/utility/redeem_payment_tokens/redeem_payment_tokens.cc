@@ -19,6 +19,7 @@
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_ads {
@@ -79,9 +80,10 @@ void RedeemPaymentTokens::Redeem() {
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  UrlRequest(std::move(url_request),
-             base::BindOnce(&RedeemPaymentTokens::RedeemCallback,
-                            weak_factory_.GetWeakPtr(), payment_tokens));
+  GetAdsClient()->UrlRequest(
+      std::move(url_request),
+      base::BindOnce(&RedeemPaymentTokens::RedeemCallback,
+                     weak_factory_.GetWeakPtr(), payment_tokens));
 }
 
 void RedeemPaymentTokens::RedeemCallback(

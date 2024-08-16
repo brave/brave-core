@@ -12,6 +12,7 @@
 #include "base/debug/dump_without_crashing.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/containers/container_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
@@ -21,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
 
 namespace brave_ads::database::table {
@@ -245,8 +247,9 @@ void AdHistory::GetForDateRange(const base::Time from_time,
   BindColumnTypes(&*mojom_statement);
   mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunDBTransaction(std::move(mojom_transaction),
-                   base::BindOnce(&GetCallback, std::move(callback)));
+  GetAdsClient()->RunDBTransaction(
+      std::move(mojom_transaction),
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdHistory::GetHighestRankedPlacementsForDateRange(
@@ -349,8 +352,9 @@ void AdHistory::GetHighestRankedPlacementsForDateRange(
   BindColumnTypes(&*mojom_statement);
   mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunDBTransaction(std::move(mojom_transaction),
-                   base::BindOnce(&GetCallback, std::move(callback)));
+  GetAdsClient()->RunDBTransaction(
+      std::move(mojom_transaction),
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdHistory::GetForCreativeInstanceId(
@@ -384,8 +388,9 @@ void AdHistory::GetForCreativeInstanceId(
   BindColumnTypes(&*mojom_statement);
   mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunDBTransaction(std::move(mojom_transaction),
-                   base::BindOnce(&GetCallback, std::move(callback)));
+  GetAdsClient()->RunDBTransaction(
+      std::move(mojom_transaction),
+      base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdHistory::PurgeExpired(ResultCallback callback) const {

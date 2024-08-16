@@ -12,7 +12,7 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
-#include "brave/components/brave_ads/core/internal/ads_core_util.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
@@ -26,6 +26,7 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_value_util.h"
 
 namespace brave_ads {
@@ -348,7 +349,7 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
     GetAccount().SetWallet(wallet->payment_id, wallet->recovery_seed);
   }
 
-  NotifyPendingAdsClientObservers();
+  GetAdsClient()->NotifyPendingObservers();
 
   std::move(callback).Run(/*success=*/true);
 }

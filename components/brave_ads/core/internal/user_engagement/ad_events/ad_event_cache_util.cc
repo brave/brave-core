@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
@@ -29,7 +30,7 @@ void RebuildAdEventCache() {
 
         const std::string& id = GetInstanceId();
 
-        ResetAdEventCacheForInstanceId(id);
+        GetAdsClient()->ResetAdEventCacheForInstanceId(id);
 
         for (const auto& ad_event : ad_events) {
           if (!ad_event.IsValid()) {
@@ -52,12 +53,13 @@ void RebuildAdEventCache() {
 void CacheAdEvent(const AdEventInfo& ad_event) {
   CHECK(ad_event.IsValid());
 
-  CacheAdEventForInstanceId(GetInstanceId(), ad_event.type,
-                            ad_event.confirmation_type, *ad_event.created_at);
+  GetAdsClient()->CacheAdEventForInstanceId(
+      GetInstanceId(), ToString(ad_event.type),
+      ToString(ad_event.confirmation_type), *ad_event.created_at);
 }
 
 void ResetAdEventCache() {
-  ResetAdEventCacheForInstanceId(GetInstanceId());
+  GetAdsClient()->ResetAdEventCacheForInstanceId(GetInstanceId());
 }
 
 }  // namespace brave_ads
