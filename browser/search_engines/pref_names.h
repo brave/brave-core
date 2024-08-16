@@ -11,4 +11,8 @@ inline constexpr char kUseAlternativePrivateSearchEngineProvider[] =
 inline constexpr char kShowAlternativePrivateSearchEngineProviderToggle[] =
     "brave.show_alternate_private_search_engine_toggle";
 
+// local state
+inline constexpr char kEnableSearchSuggestionsByDefault[] =
+    "brave.enable_search_suggestions_by_default";
+
 #endif  // BRAVE_BROWSER_SEARCH_ENGINES_PREF_NAMES_H_
