@@ -95,9 +95,9 @@ public class OnboardingFingerprintUnlockFragment extends BaseOnboardingWalletFra
                     public void onAuthenticationSucceeded(
                             BiometricPrompt.AuthenticationResult result) {
                         super.onAuthenticationSucceeded(result);
-                        Cipher cipher = result.getCryptoObject().getCipher();
-                        assert cipher != null;
-                        KeystoreHelper.useBiometricOnUnlock(password, cipher);
+                        Cipher resultCipher = result.getCryptoObject().getCipher();
+                        assert resultCipher != null;
+                        KeystoreHelper.useBiometricOnUnlock(password, resultCipher);
                         goToTheNextPage();
                     }
 

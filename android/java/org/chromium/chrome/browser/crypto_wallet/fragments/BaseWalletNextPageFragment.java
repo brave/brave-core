@@ -183,11 +183,11 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
 
                         final KeyringService keyringService = getKeyringService();
                         String unlockWalletPassword;
-                        final Cipher cipher = authenticationResult.getCryptoObject().getCipher();
-                        assert cipher != null;
+                        final Cipher resultCipher = authenticationResult.getCryptoObject().getCipher();
+                        assert resultCipher != null;
 
                         try {
-                            unlockWalletPassword = KeystoreHelper.decryptText(cipher);
+                            unlockWalletPassword = KeystoreHelper.decryptText(resultCipher);
                         } catch (InvalidAlgorithmParameterException
                                 | UnrecoverableEntryException
                                 | NoSuchPaddingException
