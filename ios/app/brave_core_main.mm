@@ -361,8 +361,8 @@ static bool CustomLogHandler(int severity,
   if (!_logHandler) {
     return false;
   }
-  const int vlog_level = logging::GetVlogLevelHelper(file, strlen(file));
-  if (severity <= vlog_level || severity == logging::LOGGING_FATAL) {
+  if (severity > logging::LOGGING_VERBOSE ||
+      severity <= logging::GetVlogLevelHelper(file, strlen(file))) {
     return _logHandler(severity, base::SysUTF8ToNSString(file), line,
                        message_start, base::SysUTF8ToNSString(str));
   }
