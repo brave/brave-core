@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import Toggle from '@brave/leo/react/toggle'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // Selectors
 import { UISelectors } from '../../../common/selectors'
@@ -36,24 +37,39 @@ import { openWalletSettings } from '../../../utils/routes-utils'
 import { useSyncedLocalStorage } from '../../../common/hooks/use_local_storage'
 
 // Styled Components
+import { VerticalDivider } from '../../shared/style'
 import {
-  StyledWrapper,
+  MenuItemIcon,
+  ButtonMenu,
+  MenuButton,
+  MenuItemRow,
+  MenuOptionRow,
+  MoreVerticalIcon,
   PopupButton,
-  PopupButtonText,
-  ButtonIcon,
-  ToggleRow,
-  SectionLabel
-} from './wellet-menus.style'
-import { VerticalDivider, Row, Column } from '../../shared/style'
+  SectionLabel,
+  ToggleRow
+} from './wallet_menus.style'
 
 export interface Props {
-  onClosePopup?: () => void
-  yPosition?: number
+  anchorButtonKind?: 'filled' | 'plain-faint'
 }
 
-export const WalletSettingsMenu = (props: Props) => {
-  const { onClosePopup, yPosition } = props
+const onClickHelpCenter = () => {
+  chrome.tabs.create(
+    {
+      url: 'https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet'
+    },
+    () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    }
+  )
+}
 
+export const WalletSettingsMenu = ({
+  anchorButtonKind = 'plain-faint'
+}: Props) => {
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
@@ -93,35 +109,7 @@ export const WalletSettingsMenu = (props: Props) => {
         console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
     })
-    if (onClosePopup) {
-      onClosePopup()
-    }
-  }, [selectedNetwork, onClosePopup])
-
-  const onClickHelpCenter = React.useCallback(() => {
-    chrome.tabs.create(
-      {
-        url: 'https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet'
-      },
-      () => {
-        if (chrome.runtime.lastError) {
-          console.error(
-            'tabs.create failed: ' + chrome.runtime.lastError.message
-          )
-        }
-      }
-    )
-    if (onClosePopup) {
-      onClosePopup()
-    }
-  }, [onClosePopup])
-
-  const onClickSettings = React.useCallback(() => {
-    openWalletSettings()
-    if (onClosePopup) {
-      onClosePopup()
-    }
-  }, [onClosePopup])
+  }, [selectedNetwork])
 
   // Methods
   const onToggleHideGraph = React.useCallback(() => {
@@ -173,141 +161,131 @@ export const WalletSettingsMenu = (props: Props) => {
   }
 
   return (
-    <StyledWrapper
-      yPosition={yPosition}
-      padding='0px'
-    >
-      <Column
-        fullWidth={true}
-        padding='8px 8px 0px 8px'
-      >
-        <PopupButton
-          onClick={async () => {
-            await lockWallet()
-          }}
+    <ButtonMenu>
+      <div slot='anchor-content'>
+        <MenuButton
+          kind={anchorButtonKind}
+          padding={anchorButtonKind === 'filled' ? '1px 2px' : '0px'}
+          buttonColor={leo.color.container.background}
         >
-          <ButtonIcon name='lock' />
-          <PopupButtonText>
-            {getLocale('braveWalletWalletPopupLock')}
-          </PopupButtonText>
+          <MoreVerticalIcon />
+        </MenuButton>
+      </div>
+      <PopupButton
+        onClick={async () => {
+          await lockWallet()
+        }}
+      >
+        <MenuItemRow>
+          <MenuItemIcon name='lock' />
+          {getLocale('braveWalletWalletPopupLock')}
+        </MenuItemRow>
+      </PopupButton>
+
+      <PopupButton onClick={onClickBackup}>
+        <MenuItemRow>
+          <MenuItemIcon name='safe' />
+          {getLocale('braveWalletBackupButton')}
+        </MenuItemRow>
+      </PopupButton>
+
+      {(selectedNetwork?.coin === BraveWallet.CoinType.ETH ||
+        selectedNetwork?.coin === BraveWallet.CoinType.SOL) && (
+        <PopupButton onClick={onClickConnectedSites}>
+          <MenuItemRow>
+            <MenuItemIcon name='link-normal' />
+            {getLocale('braveWalletWalletPopupConnectedSites')}
+          </MenuItemRow>
         </PopupButton>
-
-        <PopupButton onClick={onClickBackup}>
-          <ButtonIcon name='safe' />
-          <PopupButtonText>
-            {getLocale('braveWalletBackupButton')}
-          </PopupButtonText>
-        </PopupButton>
-
-        {(selectedNetwork?.coin === BraveWallet.CoinType.ETH ||
-          selectedNetwork?.coin === BraveWallet.CoinType.SOL) && (
-          <PopupButton onClick={onClickConnectedSites}>
-            <ButtonIcon name='link-normal' />
-            <PopupButtonText>
-              {getLocale('braveWalletWalletPopupConnectedSites')}
-            </PopupButtonText>
-          </PopupButton>
-        )}
-
-        <PopupButton onClick={onClickSettings}>
-          <ButtonIcon name='settings' />
-          <PopupButtonText>
-            {getLocale('braveWalletWalletPopupSettings')}
-          </PopupButtonText>
-        </PopupButton>
-      </Column>
-
-      {(walletLocation === WalletRoutes.PortfolioNFTs ||
-        walletLocation === WalletRoutes.PortfolioAssets) && (
-        <>
-          <SectionLabel justifyContent='flex-start'>
-            {getLocale('braveWalletPortfolioSettings')}
-          </SectionLabel>
-          <Column
-            fullWidth={true}
-            padding='8px 8px 0px 8px'
-          >
-            <ToggleRow onClick={onToggleHideBalances}>
-              <Row>
-                <ButtonIcon name='eye-on' />
-                <PopupButtonText>
-                  {getLocale('braveWalletWalletPopupHideBalances')}
-                </PopupButtonText>
-                <Toggle
-                  checked={!hidePortfolioBalances}
-                  onChange={onToggleHideBalances}
-                  size='small'
-                />
-              </Row>
-            </ToggleRow>
-
-            <ToggleRow onClick={onToggleHideGraph}>
-              <Row>
-                <ButtonIcon name='graph' />
-                <PopupButtonText>
-                  {getLocale('braveWalletWalletPopupShowGraph')}
-                </PopupButtonText>
-              </Row>
-              <Toggle
-                checked={!hidePortfolioGraph}
-                onChange={onToggleHideGraph}
-                size='small'
-              />
-            </ToggleRow>
-
-            <ToggleRow onClick={onToggleHideNFTsTab}>
-              <Row>
-                <ButtonIcon name='nft' />
-                <PopupButtonText>
-                  {getLocale('braveWalletWalletNFTsTab')}
-                </PopupButtonText>
-              </Row>
-              <Toggle
-                checked={!hidePortfolioNFTsTab}
-                onChange={onToggleHideNFTsTab}
-                size='small'
-              />
-            </ToggleRow>
-          </Column>
-        </>
       )}
+
+      <PopupButton onClick={openWalletSettings}>
+        <MenuItemRow>
+          <MenuItemIcon name='settings' />
+          {getLocale('braveWalletWalletPopupSettings')}
+        </MenuItemRow>
+      </PopupButton>
+
+      {/* {(walletLocation === WalletRoutes.PortfolioNFTs ||
+        walletLocation === WalletRoutes.PortfolioAssets) && ( */}
+      <>
+        <SectionLabel justifyContent='flex-start'>
+          {getLocale('braveWalletPortfolioSettings')}
+        </SectionLabel>
+
+        <ToggleRow>
+          <MenuOptionRow onClick={onToggleHideBalances}>
+            <MenuItemRow>
+              <MenuItemIcon name='eye-on' />
+              {getLocale('braveWalletWalletPopupHideBalances')}
+            </MenuItemRow>
+            <Toggle
+              checked={!hidePortfolioBalances}
+              onChange={onToggleHideBalances}
+              size='small'
+            />
+          </MenuOptionRow>
+        </ToggleRow>
+
+        <ToggleRow>
+          <MenuOptionRow onClick={onToggleHideGraph}>
+            <MenuItemRow>
+              <MenuItemIcon name='graph' />
+              {getLocale('braveWalletWalletPopupShowGraph')}
+            </MenuItemRow>
+            <Toggle
+              checked={!hidePortfolioGraph}
+              onChange={onToggleHideGraph}
+              size='small'
+            />
+          </MenuOptionRow>
+        </ToggleRow>
+
+        <ToggleRow>
+          <MenuOptionRow onClick={onToggleHideNFTsTab}>
+            <MenuItemRow>
+              <MenuItemIcon name='nft' />
+              {getLocale('braveWalletWalletNFTsTab')}
+            </MenuItemRow>
+            <Toggle
+              checked={!hidePortfolioNFTsTab}
+              onChange={onToggleHideNFTsTab}
+              size='small'
+            />
+          </MenuOptionRow>
+        </ToggleRow>
+      </>
+      {/* )} */}
 
       {walletLocation === WalletRoutes.Accounts && isPanel && (
         <>
           <SectionLabel justifyContent='flex-start'>
             {getLocale('braveWalletAccountSettings')}
           </SectionLabel>
-          <Column
-            fullWidth={true}
-            padding='8px 8px 0px 8px'
-          >
-            {CreateAccountOptions.map((option) => (
-              <PopupButton
-                key={option.name}
-                onClick={() => onClickRoute(option.route)}
-                minWidth={240}
-              >
-                <ButtonIcon name={option.icon} />
-                <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
-              </PopupButton>
-            ))}
-          </Column>
+
+          {CreateAccountOptions.map((option) => (
+            <PopupButton
+              key={option.name}
+              onClick={() => onClickRoute(option.route)}
+              minWidth={240}
+            >
+              <MenuItemRow>
+                <MenuItemIcon name={option.icon} />
+                {getLocale(option.name)}
+              </MenuItemRow>
+            </PopupButton>
+          ))}
         </>
       )}
 
       <VerticalDivider />
 
-      <Column
-        fullWidth={true}
-        padding='8px 8px 0px 8px'
-      >
-        <PopupButton onClick={onClickHelpCenter}>
-          <ButtonIcon name='help-outline' />
-          <PopupButtonText>
-            {getLocale('braveWalletHelpCenter')}
-          </PopupButtonText>
-        </PopupButton>
-      </Column>
-    </StyledWrapper>
+      <PopupButton onClick={onClickHelpCenter}>
+        <MenuItemRow>
+          <MenuItemIcon name='help-outline' />
+          {getLocale('braveWalletHelpCenter')}
+        </MenuItemRow>
+      </PopupButton>
+    </ButtonMenu>
   )
 }

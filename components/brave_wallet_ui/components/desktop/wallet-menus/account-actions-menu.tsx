@@ -16,11 +16,13 @@ import {
 
 // Styled Components
 import {
-  StyledWrapper,
   PopupButton,
-  PopupButtonText,
-  ButtonIcon
-} from './wellet-menus.style'
+  MenuItemIcon,
+  ButtonMenu,
+  MenuItemRow,
+  MoreVerticalIcon,
+  MenuButton
+} from './wallet_menus.style'
 import { VerticalDivider, VerticalSpace } from '../../shared/style'
 
 export interface Props {
@@ -28,18 +30,27 @@ export interface Props {
   onClick: (id: AccountModalTypes) => void
 }
 
-export const AccountActionsMenu = (props: Props) => {
-  const { options, onClick } = props
-
+export const AccountActionsMenu = ({ options, onClick }: Props) => {
+  // render
   return (
-    <StyledWrapper yPosition={26}>
+    <ButtonMenu>
+      <div slot='anchor-content'>
+        <MenuButton
+          kind='plain-faint'
+          padding='0px'
+        >
+          <MoreVerticalIcon />
+        </MenuButton>
+      </div>
       {options.slice(0, 2).map((option) => (
         <PopupButton
           key={option.id}
           onClick={() => onClick(option.id)}
         >
-          <ButtonIcon name={option.icon} />
-          <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
+          <MenuItemRow>
+            <MenuItemIcon name={option.icon} />
+            {getLocale(option.name)}
+          </MenuItemRow>
         </PopupButton>
       ))}
       <VerticalDivider />
@@ -49,11 +60,13 @@ export const AccountActionsMenu = (props: Props) => {
           key={option.id}
           onClick={() => onClick(option.id)}
         >
-          <ButtonIcon name={option.icon} />
-          <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
+          <MenuItemRow>
+            <MenuItemIcon name={option.icon} />
+            {getLocale(option.name)}
+          </MenuItemRow>
         </PopupButton>
       ))}
-    </StyledWrapper>
+    </ButtonMenu>
   )
 }
 

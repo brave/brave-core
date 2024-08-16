@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
-import Icon from '@brave/leo/react/icon'
 import ProgressRing from '@brave/leo/react/progressRing'
 
 // Shared Styles
@@ -114,30 +113,6 @@ export const Spacer = styled.div`
 export const NetworkDescriptionText = styled(Text)`
   line-height: 20px;
   color: ${leo.color.text.secondary};
-`
-
-export const AssetMenuWrapper = styled.div`
-  position: relative;
-`
-
-export const AssetMenuButton = styled(WalletButton)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  outline: none;
-  background: none;
-  pointer-events: auto;
-  border: none;
-  margin: 0px;
-  padding: 0px;
-`
-
-export const AssetMenuButtonIcon = styled(Icon).attrs({
-  name: 'more-vertical'
-})`
-  --leo-icon-size: 24px;
-  color: ${leo.color.icon.default};
 `
 
 export const Wrapper = styled(Column)<{

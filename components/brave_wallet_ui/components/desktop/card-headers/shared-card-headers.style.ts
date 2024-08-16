@@ -25,10 +25,12 @@ export const HeaderTitle = styled.span<{
   word-break: break-all;
 `
 
+// TODO: delete
 export const MenuWrapper = styled.div`
   position: relative;
 `
 
+// TODO: delete
 export const MenuButton = styled(WalletButton)<{
   marginRight?: number
 }>`

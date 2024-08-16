@@ -28,9 +28,6 @@ import {
 import { getLocale } from '../../../../common/locale'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 
-// hooks
-import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
-
 // Selectors
 import { UISelectors } from '../../../common/selectors'
 import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
@@ -73,9 +70,6 @@ import { RewardsLogin } from '../rewards_login/rewards_login'
 import {
   StyledWrapper,
   NameAndIcon,
-  AccountMenuWrapper,
-  AccountMenuButton,
-  AccountMenuIcon,
   AccountBalanceText,
   AccountDescription,
   AccountNameWrapper,
@@ -127,19 +121,6 @@ export const AccountListItem = ({
       rewardsToken
     } = emptyRewardsInfo
   } = useGetRewardsInfoQuery()
-
-  // state
-  const [showAccountMenu, setShowAccountMenu] = React.useState<boolean>(false)
-
-  // refs
-  const accountMenuRef = React.useRef<HTMLDivElement>(null)
-
-  // hooks
-  useOnClickOutside(
-    accountMenuRef,
-    () => setShowAccountMenu(false),
-    showAccountMenu
-  )
 
   // methods
   const onSelectAccount = React.useCallback(() => {
@@ -398,25 +379,16 @@ export const AccountListItem = ({
         </AccountButton>
 
         {!isDisconnectedRewardsAccount && (
-          <AccountMenuWrapper ref={accountMenuRef}>
-            <AccountMenuButton
-              onClick={() => setShowAccountMenu((prev) => !prev)}
-            >
-              <AccountMenuIcon />
-            </AccountMenuButton>
-            {showAccountMenu && (
-              <>
-                {isRewardsAccount ? (
-                  <RewardsMenu />
-                ) : (
-                  <AccountActionsMenu
-                    onClick={onClickButtonOption}
-                    options={buttonOptions}
-                  />
-                )}
-              </>
+          <>
+            {isRewardsAccount ? (
+              <RewardsMenu />
+            ) : (
+              <AccountActionsMenu
+                onClick={onClickButtonOption}
+                options={buttonOptions}
+              />
             )}
-          </AccountMenuWrapper>
+          </>
         )}
       </Row>
       {isDisconnectedRewardsAccount && (

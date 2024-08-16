@@ -19,7 +19,7 @@ import {
   LineChartWrapper,
   LineChartButton,
   PopupButtonText
-} from './wellet-menus.style'
+} from './wallet_menus.style'
 
 export interface Props {
   onClick: (id: BraveWallet.AssetPriceTimeframe) => void

@@ -16,11 +16,13 @@ import { getLocale } from '../../../../common/locale'
 
 // Styled Components
 import {
-  StyledWrapper,
   PopupButton,
-  PopupButtonText,
-  ButtonIcon
-} from './wellet-menus.style'
+  MenuItemIcon,
+  ButtonMenu,
+  MenuButton,
+  MoreVerticalIcon,
+  MenuItemRow
+} from './wallet_menus.style'
 
 const onClickRewardsSettings = () => {
   chrome.tabs.create(
@@ -67,17 +69,27 @@ export const RewardsMenu = () => {
   }
 
   return (
-    <StyledWrapper yPosition={26}>
+    <ButtonMenu>
+      <div slot='anchor-content'>
+        <MenuButton
+          kind='plain-faint'
+          padding='0px'
+        >
+          <MoreVerticalIcon />
+        </MenuButton>
+      </div>
       <PopupButton onClick={onClickOnProviderAccount}>
-        <ButtonIcon name='launch' />
-        <PopupButtonText>{providerButtonText}</PopupButtonText>
+        <MenuItemRow>
+          <MenuItemIcon name='launch' />
+          {providerButtonText}
+        </MenuItemRow>
       </PopupButton>
       <PopupButton onClick={onClickRewardsSettings}>
-        <ButtonIcon name='product-bat-outline' />
-        <PopupButtonText>
+        <MenuItemRow>
+          <MenuItemIcon name='product-bat-outline' />
           {getLocale('braveWalletRewardsSettings')}
-        </PopupButtonText>
+        </MenuItemRow>
       </PopupButton>
-    </StyledWrapper>
+    </ButtonMenu>
   )
 }

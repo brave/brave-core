@@ -63,10 +63,6 @@ export const NameAndIcon = styled.div`
   flex-direction: row;
 `
 
-export const AccountMenuWrapper = styled.div`
-  position: relative;
-`
-
 export const ButtonIcon = styled(Icon)`
   --leo-icon-size: 14px;
   color: ${leo.color.icon.default};
@@ -95,26 +91,6 @@ export const OvalButtonText = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
   font-weight: 600;
-`
-
-export const AccountMenuButton = styled(WalletButton)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  outline: none;
-  background: none;
-  pointer-events: auto;
-  border: none;
-  margin: 0px;
-  padding: 0px;
-`
-
-export const AccountMenuIcon = styled(Icon).attrs({
-  name: 'more-vertical'
-})`
-  --leo-icon-size: 24px;
-  color: ${leo.color.icon.default};
 `
 
 export const AccountBalanceText = styled(Text)`
