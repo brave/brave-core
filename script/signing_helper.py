@@ -114,6 +114,7 @@ def BraveModifyPartsForSigning(parts, config):
 
 
 def GetBraveSigningConfig(config_class, mac_provisioning_profile=None):
+
     """ Creates Brave specific config used for signing """
     class ConfigNonChromeBranded(config_class):  # pylint: disable=too-few-public-methods
         """ Config that overrides is_chrome_branded """
