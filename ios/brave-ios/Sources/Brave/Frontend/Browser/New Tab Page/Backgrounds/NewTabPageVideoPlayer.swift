@@ -12,9 +12,9 @@ import Shared
 import SnapKit
 import UIKit
 
-/// New Tab Page video player?. The class is responsible for managing the video
-/// playback on the New Tab Page. It handles events such as play finished,
-/// played 25 percent, autoplay finished, play cancelled, and video loaded.
+/// The class is responsible for managing the video playback on the New Tab Page.
+/// It handles events such as play finished, played 25 percent, autoplay finished,
+/// play cancelled, and video loaded.
 class NewTabPageVideoPlayer {
   var didStartAutoplayEvent: (() -> Void)?
   var didFinishAutoplayEvent: (() -> Void)?
@@ -31,7 +31,7 @@ class NewTabPageVideoPlayer {
 
   private var media25TimeObserver: Any?
   private var media100TimeObserver: Any?
-  private var autoplayFinishedObserver: NSKeyValueObservation?
+  private var autoplayPausedObserver: NSKeyValueObservation?
 
   private let kMaxAutoplayDurationInSeconds = 6.0
   private let kStopFramePositionAdjustment = 0.5
@@ -52,7 +52,6 @@ class NewTabPageVideoPlayer {
   }
 
   func resetPlayer() {
-    removeObservers()
     player = nil
   }
 
@@ -196,7 +195,9 @@ class NewTabPageVideoPlayer {
 
     didStartAutoplayEvent?()
 
-    addAutoplayFinishedObserver()
+    addAutoplayPausedObserver()
+
+    allowBackgroundAudioDuringAutoplay()
 
     player?.isMuted = true
     player?.play()
@@ -208,13 +209,15 @@ class NewTabPageVideoPlayer {
     }
     didFinishAutoplay = true
 
-    removeAutoplayFinishedObserver()
+    removeAutoplayPausedObserver()
     player?.currentItem?.forwardPlaybackEndTime = CMTime()
     player?.pause()
 
     if shouldSeekToStopFrame {
       seekToStopFrame()
     }
+
+    disallowBackgroundAudioDuringPlayback()
 
     didFinishAutoplayEvent?()
   }
@@ -258,8 +261,8 @@ class NewTabPageVideoPlayer {
     media100TimeObserver = nil
   }
 
-  private func addAutoplayFinishedObserver() {
-    autoplayFinishedObserver = player?.observe(\.timeControlStatus) {
+  private func addAutoplayPausedObserver() {
+    autoplayPausedObserver = player?.observe(\.timeControlStatus) {
       [weak self] (player, _) in
       if player.timeControlStatus == .paused {
         self?.finishAutoplayIfNeeded()
@@ -267,15 +270,32 @@ class NewTabPageVideoPlayer {
     }
   }
 
-  private func removeAutoplayFinishedObserver() {
-    autoplayFinishedObserver?.invalidate()
-    autoplayFinishedObserver = nil
+  private func removeAutoplayPausedObserver() {
+    autoplayPausedObserver?.invalidate()
+    autoplayPausedObserver = nil
   }
 
   private func removeObservers() {
-    removeAutoplayFinishedObserver()
+    removeAutoplayPausedObserver()
     removeMedia25Observer()
     removeMedia100Observer()
+  }
+
+  private func allowBackgroundAudioDuringAutoplay() {
+    // When the video is autoplaying, audio is muted, so background audio should always be
+    // allowed to continue playing.
+    try? AVAudioSession.sharedInstance().setCategory(.playback, options: [.mixWithOthers])
+    try? AVAudioSession.sharedInstance().setActive(true)
+  }
+
+  private func disallowBackgroundAudioDuringPlayback() {
+    try? AVAudioSession.sharedInstance().setActive(false)
+    try? AVAudioSession.sharedInstance().setCategory(
+      .playback,
+      mode: .default,
+      policy: .default,
+      options: []
+    )
   }
 
   private func parseStopFrameFromFilename(filename: String) -> Double? {
