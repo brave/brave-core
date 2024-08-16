@@ -82,7 +82,17 @@ hooks = [
     'name': 'download_sparkle',
     'pattern': '.',
     'condition': 'checkout_mac and download_prebuilt_sparkle',
-    'action': ['vpython3', 'build/mac/download_sparkle.py', '1.24.3'],
+    'action': ['vpython3', 'build/download_dep.py',
+               'sparkle/sparkle-1.24.3.tar.gz',
+               '//build/mac_files/sparkle_binaries'],
+  },
+  {
+    'name': 'download_omaha4',
+    'pattern': '.',
+    'condition': 'checkout_mac',
+    'action': ['vpython3', 'build/download_dep.py',
+               'omaha4/BraveUpdater-128.1.70.58.zip',
+               '//build/mac_files/omaha4'],
   },
   {
     'name': 'update_pip',
@@ -108,13 +118,17 @@ hooks = [
     'name': 'wireguard_nt',
     'pattern': '.',
     'condition': 'checkout_win',
-    'action': ['vpython3', 'build/win/download_brave_vpn_wireguard_binaries.py', '0.10.1', 'brave-vpn-wireguard-nt-dlls'],
+    'action': ['vpython3', 'build/download_dep.py',
+               'brave-vpn-wireguard-dlls/brave-vpn-wireguard-nt-dlls-0.10.1.zip',
+               '//brave/third_party/brave-vpn-wireguard-nt-dlls'],
   },
   {
     'name': 'wireguard_tunnel',
     'pattern': '.',
     'condition': 'checkout_win',
-    'action': ['vpython3', 'build/win/download_brave_vpn_wireguard_binaries.py', 'v0.5.3', 'brave-vpn-wireguard-tunnel-dlls'],
+    'action': ['vpython3', 'build/download_dep.py',
+               'brave-vpn-wireguard-dlls/brave-vpn-wireguard-tunnel-dlls-v0.5.3.zip',
+               '//brave/third_party/brave-vpn-wireguard-tunnel-dlls'],
   },
   {
     # Install Web Discovery Project dependencies for Windows, Linux, and macOS
