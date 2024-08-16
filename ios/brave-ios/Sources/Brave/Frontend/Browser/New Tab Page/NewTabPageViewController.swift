@@ -163,7 +163,7 @@ class NewTabPageViewController: UIViewController {
       privateBrowsingManager: privateBrowsingManager
     )
     self.p3aHelper = p3aHelper
-    background = NewTabPageBackground(dataSource: dataSource)
+    background = NewTabPageBackground(dataSource: dataSource, rewards: rewards)
     notifications = NewTabPageNotifications(rewards: rewards)
     collectionView = NewTabCollectionView(frame: .zero, collectionViewLayout: layout)
     super.init(nibName: nil, bundle: nil)
