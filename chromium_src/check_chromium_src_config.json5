@@ -111,6 +111,9 @@
             "TargetGetModuleFileNameExA64",
             "TargetGetModuleFileNameExW64",
         ],
+        "ui/color/color_id.h": [
+            "BRAVE_MATERIAL_MISSING_COLOR_IDS"
+        ],
         "ui/resources/grit/webui_resources.h": [
             "IDR_WEBUI_CR_ELEMENTS_CR_BUTTON_CR_BUTTON_HTML_JS",
             "IDR_WEBUI_CR_ELEMENTS_CR_BUTTON_CR_BUTTON_JS",

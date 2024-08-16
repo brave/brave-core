@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_COLOR_PLAYLIST_PLAYLIST_COLOR_MIXER_H_
 #define BRAVE_BROWSER_UI_COLOR_PLAYLIST_PLAYLIST_COLOR_MIXER_H_
 
-#include "brave/ui/color/leo/colors.h"
 #include "ui/color/color_provider_key.h"
 
 namespace ui {
@@ -16,7 +15,6 @@ class ColorProvider;
 namespace playlist {
 
 void AddThemeColorMixer(ui::ColorProvider* provider,
-                        leo::Theme theme,
                         const ui::ColorProviderKey& key);
 
 }  // namespace playlist

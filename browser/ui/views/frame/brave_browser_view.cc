@@ -54,7 +54,7 @@
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
-#include "brave/ui/color/leo/colors.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/app_mode/app_mode_utils.h"
 #include "chrome/browser/devtools/devtools_window.h"
@@ -486,7 +486,7 @@ void BraveBrowserView::UpdateContentsWebViewBorder() {
 
     if (auto* cp = GetColorProvider()) {
       contents_web_view_->SetBorder(
-          create_border(leo::kColorPrimitivePrimary70, 2));
+          create_border(cp->GetColor(nala::kColorPrimitivePrimary70), 2));
 
       secondary_contents_web_view_->SetBorder(create_border(
           cp->GetColor(kColorBraveSplitViewInactiveWebViewBorder), 1));

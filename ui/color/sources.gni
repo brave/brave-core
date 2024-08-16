@@ -4,4 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_ui_color_sources = []
-brave_ui_color_public_deps = [ "//brave/ui/color:leo_color_headers" ]
+brave_ui_color_public_deps = [ "//brave/ui/color:nala_color_id" ]
+
+brave_ui_color_mixer_sources = []
+brave_ui_color_mixer_public_deps = [ "//brave/ui/color:brave_color_mixers" ]

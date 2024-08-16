@@ -6,6 +6,7 @@
 #include "brave/browser/ui/color/playlist/playlist_color_mixer.h"
 
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "ui/color/color_mixer.h"
 #include "ui/color/color_provider.h"
 #include "ui/color/color_recipe.h"
@@ -13,27 +14,21 @@
 namespace playlist {
 
 void AddThemeColorMixer(ui::ColorProvider* provider,
-                        leo::Theme theme,
                         const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
-  mixer[kColorBravePlaylistAddedIcon] = {
-      leo::GetColor(leo::Color::kColorSystemfeedbackSuccessIcon, theme)};
-  mixer[kColorBravePlaylistCheckedIcon] = {
-      leo::GetColor(leo::Color::kColorIconInteractive, theme)};
+  mixer[kColorBravePlaylistAddedIcon] = {nala::kColorSystemfeedbackSuccessIcon};
+  mixer[kColorBravePlaylistCheckedIcon] = {nala::kColorIconInteractive};
   mixer[kColorBravePlaylistSelectedBackground] = {
-      leo::GetColor(leo::Color::kColorContainerInteractive, theme)};
-  mixer[kColorBravePlaylistListBorder] = {
-      leo::GetColor(leo::Color::kColorDividerSubtle, theme)};
-  mixer[kColorBravePlaylistMoveDialogDescription] = {
-      leo::GetColor(leo::Color::kColorTextSecondary, theme)};
+      nala::kColorContainerInteractive};
+  mixer[kColorBravePlaylistListBorder] = {nala::kColorDividerSubtle};
+  mixer[kColorBravePlaylistMoveDialogDescription] = {nala::kColorTextSecondary};
   mixer[kColorBravePlaylistMoveDialogCreatePlaylistAndMoveTitle] = {
-      leo::GetColor(leo::Color::kColorTextPrimary, theme)};
+      nala::kColorTextPrimary};
   mixer[kColorBravePlaylistNewPlaylistDialogNameLabel] = {
-      leo::GetColor(leo::Color::kColorTextPrimary, theme)};
+      nala::kColorTextPrimary};
   mixer[kColorBravePlaylistNewPlaylistDialogItemsLabel] = {
-      leo::GetColor(leo::Color::kColorTextSecondary, theme)};
-  mixer[kColorBravePlaylistTextInteractive] = {
-      leo::GetColor(leo::Color::kColorTextInteractive, theme)};
+      nala::kColorTextSecondary};
+  mixer[kColorBravePlaylistTextInteractive] = {nala::kColorTextInteractive};
 }
 
 }  // namespace playlist

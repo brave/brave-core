@@ -3,17 +3,36 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-copy("copy_leo_color_headers") {
-  sources = [ "//brave/node_modules/@brave/leo/tokens/skia/colors.h" ]
-  outputs = [ "$root_out_dir/gen/brave/ui/color/leo/colors.h" ]
+copy("copy_nala_files") {
+  sources = [
+    "//brave/node_modules/@brave/leo/tokens/skia/nala_color_id.h",
+    "//brave/node_modules/@brave/leo/tokens/skia/nala_color_mixer.cc",
+    "//brave/node_modules/@brave/leo/tokens/skia/nala_color_mixer.h",
+  ]
+
+  outputs = [ "$target_gen_dir/nala/{{source_file_part}}" ]
 }
 
-source_set("leo_color_headers") {
-  sources = get_target_outputs(":copy_leo_color_headers")
+source_set("nala_color_id") {
+  sources = [ "$target_gen_dir/nala/nala_color_id.h" ]
+
+  deps = [ ":copy_nala_files" ]
+}
+
+source_set("brave_color_mixers") {
+  sources = [
+    "$target_gen_dir/nala/nala_color_mixer.cc",
+    "$target_gen_dir/nala/nala_color_mixer.h",
+    "missing_color_ref_mixer.cc",
+    "missing_color_ref_mixer.h",
+  ]
 
   deps = [
-    ":copy_leo_color_headers",
-    "//skia",
-    "//ui/gfx",
+    ":copy_nala_files",
+    ":nala_color_id",
+    "//ui/color",
+    "//ui/color:color_headers",
+    "//ui/color:color_provider_key",
+    "//ui/color/dynamic_color",
   ]
 }
