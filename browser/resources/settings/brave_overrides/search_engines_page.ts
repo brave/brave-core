@@ -35,4 +35,5 @@ RegisterStyleOverride(
           margin: 0 5% 0 0;
         }
       </style>
-    ` )
+    `
+ )
