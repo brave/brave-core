@@ -149,6 +149,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kDigitalGoodsApi,
       &features::kDIPS,
       &features::kFedCm,
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+      &features::kFewerUpdateConfirmations,
+#endif
 #if !BUILDFLAG(IS_ANDROID)
       &features::kHaTSWebUI,
 #endif
