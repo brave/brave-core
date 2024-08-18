@@ -23,10 +23,8 @@ import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.brave_vpn.mojom.ServiceHandler;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnServiceFactoryAndroid;
 import org.chromium.chrome.browser.vpn.adapters.BraveVpnServerSelectionAdapter;
-import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -194,18 +192,4 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
 
     @Override
     public void updateProfileView() {}
-
-    private void changeServerRegion() {
-        mIsServerLocationChanged = true;
-        // BraveVpnUtils.selectedServerRegion = braveVpnServerRegion;
-        BraveVpnUtils.showProgressDialog(
-                VpnServerSelectionActivity.this,
-                getResources().getString(R.string.vpn_connect_text));
-        if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
-            mBraveVpnPrefModel = new BraveVpnPrefModel();
-            BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
-        } else {
-            verifySubscription();
-        }
-    }
 }

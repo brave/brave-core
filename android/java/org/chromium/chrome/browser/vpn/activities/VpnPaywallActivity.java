@@ -31,6 +31,7 @@ import org.chromium.chrome.browser.billing.LinkSubscriptionUtils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
+import org.chromium.chrome.browser.vpn.adapters.BraveVpnPlanPagerAdapter;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.text.SpanApplier.SpanInfo;
@@ -58,19 +59,6 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
 
     private SelectedPlanType mSelectedPlanType = SelectedPlanType.YEARLY;
     private ProductDetails mProductDetails;
-
-    @Override
-    public void onResumeWithNative() {
-        super.onResumeWithNative();
-        BraveVpnNativeWorker.getInstance().addObserver(this);
-        BraveVpnUtils.dismissProgressDialog();
-    }
-
-    @Override
-    public void onPauseWithNative() {
-        BraveVpnNativeWorker.getInstance().removeObserver(this);
-        super.onPauseWithNative();
-    }
 
     private void initializeViews() {
         setContentView(R.layout.activity_vpn_paywall);

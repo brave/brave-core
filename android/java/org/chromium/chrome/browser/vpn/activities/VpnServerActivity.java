@@ -109,13 +109,12 @@ public class VpnServerActivity extends BraveVpnParentActivity {
                                             Toast.LENGTH_SHORT)
                                     .show();
                         } else {
-                            // changeServerRegion(city);
+                            changeServerRegion();
                         }
                     }
                 });
         mServerRegionList.setAdapter(mVpnServerAdapter);
         hideProgress();
-        // }
     }
 
     @Override
@@ -128,19 +127,6 @@ public class VpnServerActivity extends BraveVpnParentActivity {
     public boolean shouldStartGpuProcess() {
         return true;
     }
-
-    // private void changeServerRegion(BraveVpnServerRegion braveVpnServerRegion) {
-    //     mIsServerLocationChanged = true;
-    //     BraveVpnUtils.selectedServerRegion = braveVpnServerRegion;
-    //     BraveVpnUtils.showProgressDialog(
-    //             VpnServerActivity.this, getResources().getString(R.string.vpn_connect_text));
-    //     if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
-    //         mBraveVpnPrefModel = new BraveVpnPrefModel();
-    //         BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
-    //     } else {
-    //         verifySubscription();
-    //     }
-    // }
 
     public void showProgress() {
         if (mServerProgress != null) {
