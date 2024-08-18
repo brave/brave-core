@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "src/chrome/browser/ui/search_engines/search_engine_tab_helper.cc"
+
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 

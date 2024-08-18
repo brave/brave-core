@@ -6,14 +6,14 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SEARCH_ENGINES_SEARCH_ENGINES_PREF_NAMES_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SEARCH_ENGINES_SEARCH_ENGINES_PREF_NAMES_H_
 
+#include "brave/components/search_engines/brave_search_engines_pref_names.h"
+
 #include "src/components/search_engines/search_engines_pref_names.h"  // IWYU pragma: export
 
 namespace prefs {
 
 inline constexpr char kDefaultSearchProviderByExtension[] =
     "brave.default_search_provider_by_extension";
-inline constexpr char kAddOpenSearchEngines[] =
-    "brave.other_search_engines_enabled";
 inline constexpr char kBraveDefaultSearchVersion[] =
     "brave.search.default_version";
 inline constexpr char kSyncedDefaultPrivateSearchProviderGUID[] =

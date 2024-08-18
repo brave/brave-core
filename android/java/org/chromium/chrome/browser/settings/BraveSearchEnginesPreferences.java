@@ -25,12 +25,14 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
     private static final String PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR =
             "show_autocomplete_in_address_bar";
     private static final String PREF_AUTOCOMPLETE_TOP_SITES = "autocomplete_top_sites";
+    private static final String PREF_ADD_OPEN_SEARCH_ENGINES = "brave.other_search_engines_enabled";
 
     private ChromeManagedPreferenceDelegate mManagedPreferenceDelegate;
 
     private ChromeSwitchPreference mShowAutocompleteInAddressBar;
     private ChromeSwitchPreference mSearchSuggestions;
     private ChromeSwitchPreference mAutocompleteTopSites;
+    private ChromeSwitchPreference mAddOpenSearchEngines;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,6 +100,12 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
                 UserPrefs.get(getProfile()).getBoolean(Pref.SEARCH_SUGGEST_ENABLED));
         mAutocompleteTopSites.setChecked(
                 UserPrefs.get(getProfile()).getBoolean(BravePref.TOP_SITE_SUGGESTIONS_ENABLED));
+
+        mAddOpenSearchEngines =
+                (ChromeSwitchPreference) findPreference(PREF_ADD_OPEN_SEARCH_ENGINES);
+        mAddOpenSearchEngines.setOnPreferenceChangeListener(this);
+        mAddOpenSearchEngines.setChecked(
+                UserPrefs.get(getProfile()).getBoolean(BravePref.ADD_OPEN_SEARCH_ENGINES));
     }
 
     @Override
@@ -114,6 +122,9 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
         } else if (PREF_AUTOCOMPLETE_TOP_SITES.equals(key)) {
             UserPrefs.get(getProfile())
                     .setBoolean(BravePref.TOP_SITE_SUGGESTIONS_ENABLED, (boolean) newValue);
+        } else if (PREF_ADD_OPEN_SEARCH_ENGINES.equals(key)) {
+            UserPrefs.get(getProfile())
+                    .setBoolean(BravePref.ADD_OPEN_SEARCH_ENGINES, (boolean) newValue);
         }
         return true;
     }

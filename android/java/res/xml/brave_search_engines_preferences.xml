@@ -33,4 +33,9 @@
         android:order="5"
         android:title="@string/autocomplete_top_sites_title"
         android:persistent="false"/>
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="brave.other_search_engines_enabled"
+        android:order="6"
+        android:title="@string/index_other_search_engines_title"
+        android:summary="@string/index_other_search_engines_text" />
 </PreferenceScreen>
