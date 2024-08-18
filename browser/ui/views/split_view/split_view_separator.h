@@ -40,6 +40,7 @@ class SplitViewSeparator : public views::ResizeArea,
   void ViewHierarchyChanged(
       const views::ViewHierarchyChangedDetails& details) override;
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
+  void OnPaintBackground(gfx::Canvas* canvas) override;
 
   // views::ResizeAreaDelegate:
   void OnResize(int resize_amount, bool done_resizing) override;
