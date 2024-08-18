@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/json/json_helper.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "url/gurl.h"
 
@@ -27,7 +28,7 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
   document.Parse(json.c_str());
 
   const std::string json_schema =
-      LoadDataResource(kCatalogJsonSchemaDataResourceName);
+      GetAdsClient()->LoadDataResource(kCatalogJsonSchemaDataResourceName);
 
   if (!helper::json::Validate(&document, json_schema)) {
     BLOG(1, helper::json::GetLastError(&document));

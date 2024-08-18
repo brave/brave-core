@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_PREFS_PREF_REGISTRY_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_PREFS_PREF_REGISTRY_H_
 
-namespace user_prefs {
-class PrefRegistrySyncable;
-}  // namespace user_prefs
+class PrefRegistrySimple;
 
 namespace brave_ads {
 
-void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+
+void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
 }  // namespace brave_ads
 

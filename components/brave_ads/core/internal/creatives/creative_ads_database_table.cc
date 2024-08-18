@@ -21,6 +21,7 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "url/gurl.h"
 
 namespace brave_ads::database::table {
@@ -219,9 +220,10 @@ void CreativeAds::GetForCreativeInstanceId(
   BindColumnTypes(&*mojom_statement);
   mojom_transaction->statements.push_back(std::move(mojom_statement));
 
-  RunDBTransaction(std::move(mojom_transaction),
-                   base::BindOnce(&GetForCreativeInstanceIdCallback,
-                                  creative_instance_id, std::move(callback)));
+  GetAdsClient()->RunDBTransaction(
+      std::move(mojom_transaction),
+      base::BindOnce(&GetForCreativeInstanceIdCallback, creative_instance_id,
+                     std::move(callback)));
 }
 
 std::string CreativeAds::GetTableName() const {

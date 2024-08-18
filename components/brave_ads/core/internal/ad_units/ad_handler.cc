@@ -9,7 +9,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/page_land_user_data.h"
-#include "brave/components/brave_ads/core/internal/ads_core_util.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_util.h"

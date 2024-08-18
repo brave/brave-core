@@ -26,7 +26,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_util.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
-#include "brave/components/brave_ads/core/internal/ads_core_util.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -34,6 +34,7 @@
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_ads {
@@ -108,7 +109,7 @@ void RefillConfirmationTokens::RequestSignedTokens() {
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  UrlRequest(
+  GetAdsClient()->UrlRequest(
       std::move(url_request),
       base::BindOnce(&RefillConfirmationTokens::RequestSignedTokensCallback,
                      weak_factory_.GetWeakPtr()));
@@ -179,9 +180,10 @@ void RefillConfirmationTokens::GetSignedTokens() {
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  UrlRequest(std::move(url_request),
-             base::BindOnce(&RefillConfirmationTokens::GetSignedTokensCallback,
-                            weak_factory_.GetWeakPtr()));
+  GetAdsClient()->UrlRequest(
+      std::move(url_request),
+      base::BindOnce(&RefillConfirmationTokens::GetSignedTokensCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void RefillConfirmationTokens::GetSignedTokensCallback(

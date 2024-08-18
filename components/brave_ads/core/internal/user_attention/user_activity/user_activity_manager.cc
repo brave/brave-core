@@ -23,6 +23,7 @@
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_scoring.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_trigger_info.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_util.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
@@ -45,13 +46,13 @@ void LogEvent(const UserActivityEventType event_type) {
 }  // namespace
 
 UserActivityManager::UserActivityManager() {
-  AddAdsClientNotifierObserver(this);
+  GetAdsClient()->AddObserver(this);
   BrowserManager::GetInstance().AddObserver(this);
   TabManager::GetInstance().AddObserver(this);
 }
 
 UserActivityManager::~UserActivityManager() {
-  RemoveAdsClientNotifierObserver(this);
+  GetAdsClient()->RemoveObserver(this);
   BrowserManager::GetInstance().RemoveObserver(this);
   TabManager::GetInstance().RemoveObserver(this);
 }

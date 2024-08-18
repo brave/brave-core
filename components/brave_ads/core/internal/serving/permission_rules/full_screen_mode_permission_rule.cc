@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rule_feature.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
@@ -22,7 +23,7 @@ bool HasFullScreenModePermission() {
     return true;
   }
 
-  if (!IsBrowserInFullScreenMode()) {
+  if (!GetAdsClient()->IsBrowserInFullScreenMode()) {
     return true;
   }
 

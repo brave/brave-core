@@ -20,7 +20,9 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "net/http/http_status_code.h"
 
@@ -65,9 +67,9 @@ void IssuersUrlRequest::Fetch() {
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  UrlRequest(std::move(url_request),
-             base::BindOnce(&IssuersUrlRequest::FetchCallback,
-                            weak_factory_.GetWeakPtr()));
+  GetAdsClient()->UrlRequest(std::move(url_request),
+                             base::BindOnce(&IssuersUrlRequest::FetchCallback,
+                                            weak_factory_.GetWeakPtr()));
 }
 
 void IssuersUrlRequest::FetchCallback(

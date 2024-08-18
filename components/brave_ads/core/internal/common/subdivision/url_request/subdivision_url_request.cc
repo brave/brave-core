@@ -19,6 +19,7 @@
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/internal/flags/debug/debug_flag_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_ads {
@@ -63,9 +64,10 @@ void SubdivisionUrlRequest::Fetch() {
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
-  UrlRequest(std::move(url_request),
-             base::BindOnce(&SubdivisionUrlRequest::FetchCallback,
-                            weak_factory_.GetWeakPtr()));
+  GetAdsClient()->UrlRequest(
+      std::move(url_request),
+      base::BindOnce(&SubdivisionUrlRequest::FetchCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void SubdivisionUrlRequest::FetchCallback(

@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_util.h"
 
 #include "base/check_op.h"
+#include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_constants.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"

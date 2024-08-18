@@ -10,8 +10,10 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "build/build_config.h"  // IWYU pragma: keep
 
@@ -58,11 +60,11 @@ void NotificationAdManager::Add(const NotificationAdInfo& ad) {
 
   ads_.push_back(ad);
 
-  ShowNotificationAd(ad);
+  GetAdsClient()->ShowNotificationAd(ad);
 
 #if BUILDFLAG(IS_ANDROID)
   if (ads_.size() > kMaximumNotificationAds) {
-    CloseNotificationAd(ads_.front().placement_id);
+    GetAdsClient()->CloseNotificationAd(ads_.front().placement_id);
     ads_.pop_front();
   }
 #endif  // BUILDFLAG(IS_ANDROID)
@@ -75,7 +77,7 @@ void NotificationAdManager::Remove(const std::string& placement_id,
   CHECK(!placement_id.empty());
 
   if (should_close) {
-    CloseNotificationAd(placement_id);
+    GetAdsClient()->CloseNotificationAd(placement_id);
   }
 
   const auto iter =
@@ -92,7 +94,7 @@ void NotificationAdManager::Remove(const std::string& placement_id,
 void NotificationAdManager::RemoveAll(bool should_close) {
   if (should_close) {
     for (const auto& ad : ads_) {
-      CloseNotificationAd(ad.placement_id);
+      GetAdsClient()->CloseNotificationAd(ad.placement_id);
     }
   }
 

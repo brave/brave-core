@@ -9,6 +9,7 @@
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
@@ -27,7 +28,7 @@ bool CanServeAtRegularIntervals() {
 bool ShouldServeAtRegularIntervals() {
   return ShouldServe() &&
          (BrowserManager::GetInstance().IsInForeground() ||
-          CanShowNotificationAdsWhileBrowserIsBackgrounded()) &&
+          GetAdsClient()->CanShowNotificationAdsWhileBrowserIsBackgrounded()) &&
          GetMaximumNotificationAdsPerHour() > 0;
 }
 
