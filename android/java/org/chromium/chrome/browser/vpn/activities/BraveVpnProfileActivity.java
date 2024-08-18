@@ -30,18 +30,6 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
     private ProgressBar mProfileProgress;
     private LinearLayout mProfileLayout;
 
-    @Override
-    public void onResumeWithNative() {
-        super.onResumeWithNative();
-        BraveVpnNativeWorker.getInstance().addObserver(this);
-    }
-
-    @Override
-    public void onPauseWithNative() {
-        BraveVpnNativeWorker.getInstance().removeObserver(this);
-        super.onPauseWithNative();
-    }
-
     private void initializeViews() {
         setContentView(R.layout.activity_brave_vpn_profile);
 

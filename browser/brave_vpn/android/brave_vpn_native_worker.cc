@@ -214,8 +214,18 @@ void BraveVpnNativeWorker::VerifyPurchaseToken(
     const base::android::JavaParamRef<jstring>& product_id,
     const base::android::JavaParamRef<jstring>& product_type,
     const base::android::JavaParamRef<jstring>& bundle_id) {
+  LOG(ERROR) << "brave_vpn" << "verifyPurchaseToken";
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
+    LOG(ERROR) << "brave_vpn" << "verifyPurchaseToken 2";
+    LOG(ERROR) << "brave_vpn"
+               << "verifyPurchaseToken 2 : purchase_token : " << purchase_token;
+    LOG(ERROR) << "brave_vpn"
+               << "verifyPurchaseToken 2 : product_id : " << product_id;
+    LOG(ERROR) << "brave_vpn"
+               << "verifyPurchaseToken 2 : product_type : " << product_type;
+    LOG(ERROR) << "brave_vpn"
+               << "verifyPurchaseToken 2 : bundle_id : " << bundle_id;
     brave_vpn_service->VerifyPurchaseToken(
         base::BindOnce(
             &BraveVpnNativeWorker::OnVerifyPurchaseToken,
@@ -234,6 +244,9 @@ void BraveVpnNativeWorker::OnVerifyPurchaseToken(
     const std::string& product_id,
     const std::string& json_response,
     bool success) {
+  LOG(ERROR) << "brave_vpn"
+             << "OnVerifyPurchaseToken 2 : json_response" + json_response;
+  LOG(ERROR) << "brave_vpn" << "OnVerifyPurchaseToken 2";
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveVpnNativeWorker_onVerifyPurchaseToken(
       env, weak_java_brave_vpn_native_worker_.get(env),
