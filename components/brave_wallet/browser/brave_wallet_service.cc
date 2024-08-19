@@ -982,7 +982,7 @@ void BraveWalletService::MaybeMigrateSPLTokenProgram() {
 
   // Get all solana SPL NFTs that are marked incorrectly as unsupported
   // and reset their spl_token_program to unknown.
-  for (auto& item : ::brave_wallet::GetAllUserAssets(profile_prefs_)) {
+  for (const auto& item : ::brave_wallet::GetAllUserAssets(profile_prefs_)) {
     if (item->is_nft &&
         item->spl_token_program == mojom::SPLTokenProgram::kUnsupported &&
         IsSPLToken(item)) {
