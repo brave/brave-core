@@ -17,9 +17,9 @@
 html {
   --cr-link-color-rgb: 63, 57, 232;
   --cr-link-color: var(--leo-color-text-interactive, rgb(var(--cr-link-color-rgb))) !important;
-  --brave-focus-outline: auto 3px var(--flat-focus-shadow-color);
   --disabled-color: rgb(241, 243, 244);
-  --flat-focus-shadow-color: rgba(255, 69, 48, .4) !important;
+  --flat-focus-shadow-color: var(--leo-color-divider-interactive) !important;
+  --brave-focus-outline: auto 3px var(--flat-focus-shadow-color);
   --cr-selectable-focus_-_outline: var(--brave-focus-outline) !important;
   --cr-primary-text-color: #343546 !important;
   --cr-primary-text_-_font-weight: 600 !important;
