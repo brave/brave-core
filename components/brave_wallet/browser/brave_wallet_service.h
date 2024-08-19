@@ -91,6 +91,8 @@ class BraveWalletService : public KeyedService,
   static void MigrateEip1559ForCustomNetworks(PrefService* prefs);
   void MaybeMigrateCompressedNfts();
 
+  void MaybeMigrateSPLTokenProgram();
+
   // mojom::BraveWalletService:
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletServiceObserver>
                        observer) override;
@@ -372,6 +374,9 @@ class BraveWalletService : public KeyedService,
   void CancelAllGetEncryptionPublicKeyCallbacks();
   void CancelAllDecryptCallbacks();
   void OnGetNftsForCompressedMigration(
+      std::vector<mojom::BlockchainTokenPtr> nfts);
+
+  void OnGetNftsForSPLTokenProgramMigration(
       std::vector<mojom::BlockchainTokenPtr> nfts);
 
   base::OnceClosure sign_tx_request_added_cb_for_testing_;

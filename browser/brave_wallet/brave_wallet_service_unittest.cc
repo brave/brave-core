@@ -3267,6 +3267,95 @@ TEST_F(BraveWalletServiceUnitTest, MaybeMigrateCompressedNfts) {
   EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletIsCompressedNftMigrated));
 }
 
+TEST_F(BraveWalletServiceUnitTest, MaybeMigrateSPLNfts) {
+  GetPrefs()->SetBoolean(kBraveWalletIsSPLTokenProgramMigrated, false);
+
+  std::vector<mojom::BlockchainTokenPtr> tokens;
+  GetUserAssets(mojom::kSolanaMainnet, mojom::CoinType::SOL, &tokens);
+  EXPECT_EQ(tokens.size(), 1u);
+  EXPECT_FALSE(tokens[0]->is_nft);
+
+  // Add a SPL NFT that's marked as kUnsupported SPL token program
+  // before migration.
+  auto nft = mojom::BlockchainToken::New();
+  nft->contract_address = "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW";
+  nft->name = "Solana NFT";
+  nft->logo = "solana.png";
+  nft->is_compressed = false;
+  nft->is_erc20 = false;
+  nft->is_erc721 = false;
+  nft->is_erc1155 = false;
+  nft->is_nft = true;
+  nft->is_spam = false;
+  nft->symbol = "SOLNFT";
+  nft->decimals = 0;
+  nft->visible = true;
+  nft->chain_id = mojom::kSolanaMainnet;
+  nft->coin = mojom::CoinType::SOL;
+  nft->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
+  auto added_asset = ::brave_wallet::AddUserAsset(GetPrefs(), std::move(nft));
+  ASSERT_TRUE(added_asset);
+
+  // Mock simple hash response for call made when adding the asset.
+  std::map<GURL, std::string> responses;
+  responses[GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "assets?nft_ids=solana.AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW")] =
+      R"({
+    "nfts": [
+      {
+        "nft_id": "solana.AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
+        "chain": "solana",
+        "contract_address": "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "description": "A true gladiator standing with his two back legs, big wings that make him move and attack quickly, and his tail like a big sword that can easily cut-off enemies into slices.",
+        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
+        "contract": {
+          "type": "NonFungibleEdition",
+          "name": "Common Water Warrior #19",
+          "symbol": "DRAGON",
+          "deployed_by": null,
+          "deployed_via_contract": null,
+          "owned_by": null,
+          "has_multiple_collections": false
+        },
+        "collection": {
+          "collection_id": "2732df34e18c360ccc0cc0809177c70b",
+          "name": null,
+          "description": null,
+          "image_url": "https://lh3.googleusercontent.com/WXQW8GJiTDlucKnaip3NJC_4iFvLCfbQ_Ep9y4D7x-ElE5jOMlKJwcyqD7v27M7yPNiHlIxq9clPqylLlQVoeNfFvmXqboUPhDsS",
+          "spam_score": 73
+        },
+        "last_sale": null,
+        "first_created": {},
+        "rarity": {
+          "rank": null,
+          "score": null,
+          "unique_attributes": null
+        },
+        "royalty": [],
+        "extra_metadata": {
+          "token_program": "BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY"
+        }
+      }
+    ]
+  })";
+  SetInterceptors(responses);
+
+  // Run the migration.
+  service_->MaybeMigrateSPLTokenProgram();
+  task_environment_.RunUntilIdle();
+
+  // Verify that the token program is now set to kUnknown.
+  GetUserAssets(mojom::kSolanaMainnet, mojom::CoinType::SOL, &tokens);
+  EXPECT_EQ(tokens.size(), 2u);
+  EXPECT_TRUE(tokens[1]->is_nft);
+  EXPECT_TRUE(tokens[1]->contract_address ==
+              "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW");
+  EXPECT_EQ(tokens[1]->spl_token_program, mojom::SPLTokenProgram::kUnknown);
+}
+
 TEST_F(BraveWalletServiceUnitTest, GetCountryCode) {
   const struct {
     const int country_code;

@@ -197,6 +197,10 @@ BraveWalletService::BraveWalletService(
 
   // Added 05/2024 to label compressed nfts as such.
   BraveWalletService::MaybeMigrateCompressedNfts();
+
+  // Added 08/2024 to reset spl_token_program for SPL tokens incorrectly marked
+  // as unsupported.
+  BraveWalletService::MaybeMigrateSPLTokenProgram();
 }
 
 BraveWalletService::BraveWalletService() : weak_ptr_factory_(this) {}
@@ -969,6 +973,43 @@ void BraveWalletService::OnGetNftsForCompressedMigration(
   }
 
   profile_prefs_->SetBoolean(kBraveWalletIsCompressedNftMigrated, true);
+}
+
+void BraveWalletService::MaybeMigrateSPLTokenProgram() {
+  if (profile_prefs_->GetBoolean(kBraveWalletIsSPLTokenProgramMigrated)) {
+    return;
+  }
+
+  // Get all solana SPL NFTs that are marked incorrectly as unsupported.
+  std::vector<mojom::NftIdentifierPtr> nft_ids;
+  for (auto& item : ::brave_wallet::GetAllUserAssets(profile_prefs_)) {
+    if (item->coin == mojom::CoinType::SOL && item->is_nft &&
+        item->spl_token_program == mojom::SPLTokenProgram::kUnsupported) {
+      auto nft_id = mojom::NftIdentifier::New();
+      nft_id->chain_id = item->chain_id;
+      nft_id->contract_address = item->contract_address;
+      nft_id->token_id = item->token_id;
+      nft_ids.push_back(std::move(nft_id));
+    }
+  }
+
+  simple_hash_client_->GetNfts(
+      mojom::CoinType::SOL, std::move(nft_ids),
+      base::BindOnce(&BraveWalletService::OnGetNftsForSPLTokenProgramMigration,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void BraveWalletService::OnGetNftsForSPLTokenProgramMigration(
+    std::vector<mojom::BlockchainTokenPtr> nfts) {
+  for (auto& nft : nfts) {
+    if (IsSPLToken(nft) &&
+        !::brave_wallet::SetAssetSPLTokenProgram(
+            profile_prefs_, nft, mojom::SPLTokenProgram::kUnknown)) {
+      continue;
+    }
+  }
+
+  profile_prefs_->SetBoolean(kBraveWalletIsSPLTokenProgramMigrated, true);
 }
 
 void BraveWalletService::OnWalletUnlockPreferenceChanged(
