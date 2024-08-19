@@ -980,32 +980,14 @@ void BraveWalletService::MaybeMigrateSPLTokenProgram() {
     return;
   }
 
-  // Get all solana SPL NFTs that are marked incorrectly as unsupported.
-  std::vector<mojom::NftIdentifierPtr> nft_ids;
+  // Get all solana SPL NFTs that are marked incorrectly as unsupported
+  // and reset their spl_token_program to unknown.
   for (auto& item : ::brave_wallet::GetAllUserAssets(profile_prefs_)) {
     if (item->coin == mojom::CoinType::SOL && item->is_nft &&
-        item->spl_token_program == mojom::SPLTokenProgram::kUnsupported) {
-      auto nft_id = mojom::NftIdentifier::New();
-      nft_id->chain_id = item->chain_id;
-      nft_id->contract_address = item->contract_address;
-      nft_id->token_id = item->token_id;
-      nft_ids.push_back(std::move(nft_id));
-    }
-  }
-
-  simple_hash_client_->GetNfts(
-      mojom::CoinType::SOL, std::move(nft_ids),
-      base::BindOnce(&BraveWalletService::OnGetNftsForSPLTokenProgramMigration,
-                     weak_ptr_factory_.GetWeakPtr()));
-}
-
-void BraveWalletService::OnGetNftsForSPLTokenProgramMigration(
-    std::vector<mojom::BlockchainTokenPtr> nfts) {
-  for (auto& nft : nfts) {
-    if (IsSPLToken(nft) &&
-        !::brave_wallet::SetAssetSPLTokenProgram(
-            profile_prefs_, nft, mojom::SPLTokenProgram::kUnknown)) {
-      continue;
+        item->spl_token_program == mojom::SPLTokenProgram::kUnsupported &&
+        IsSPLToken(item)) {
+      ::brave_wallet::SetAssetSPLTokenProgram(profile_prefs_, item,
+                                              mojom::SPLTokenProgram::kUnknown);
     }
   }
 

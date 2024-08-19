@@ -376,9 +376,6 @@ class BraveWalletService : public KeyedService,
   void OnGetNftsForCompressedMigration(
       std::vector<mojom::BlockchainTokenPtr> nfts);
 
-  void OnGetNftsForSPLTokenProgramMigration(
-      std::vector<mojom::BlockchainTokenPtr> nfts);
-
   base::OnceClosure sign_tx_request_added_cb_for_testing_;
   base::OnceClosure sign_all_txs_request_added_cb_for_testing_;
 

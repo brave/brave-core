@@ -3296,53 +3296,6 @@ TEST_F(BraveWalletServiceUnitTest, MaybeMigrateSPLNfts) {
   auto added_asset = ::brave_wallet::AddUserAsset(GetPrefs(), std::move(nft));
   ASSERT_TRUE(added_asset);
 
-  // Mock simple hash response for call made when adding the asset.
-  std::map<GURL, std::string> responses;
-  responses[GURL(
-      "https://simplehash.wallet.brave.com/api/v0/nfts/"
-      "assets?nft_ids=solana.AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW")] =
-      R"({
-    "nfts": [
-      {
-        "nft_id": "solana.AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
-        "chain": "solana",
-        "contract_address": "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
-        "token_id": null,
-        "name": "Common Water Warrior #19",
-        "description": "A true gladiator standing with his two back legs, big wings that make him move and attack quickly, and his tail like a big sword that can easily cut-off enemies into slices.",
-        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
-        "contract": {
-          "type": "NonFungibleEdition",
-          "name": "Common Water Warrior #19",
-          "symbol": "DRAGON",
-          "deployed_by": null,
-          "deployed_via_contract": null,
-          "owned_by": null,
-          "has_multiple_collections": false
-        },
-        "collection": {
-          "collection_id": "2732df34e18c360ccc0cc0809177c70b",
-          "name": null,
-          "description": null,
-          "image_url": "https://lh3.googleusercontent.com/WXQW8GJiTDlucKnaip3NJC_4iFvLCfbQ_Ep9y4D7x-ElE5jOMlKJwcyqD7v27M7yPNiHlIxq9clPqylLlQVoeNfFvmXqboUPhDsS",
-          "spam_score": 73
-        },
-        "last_sale": null,
-        "first_created": {},
-        "rarity": {
-          "rank": null,
-          "score": null,
-          "unique_attributes": null
-        },
-        "royalty": [],
-        "extra_metadata": {
-          "token_program": "BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY"
-        }
-      }
-    ]
-  })";
-  SetInterceptors(responses);
-
   // Run the migration.
   service_->MaybeMigrateSPLTokenProgram();
   task_environment_.RunUntilIdle();
