@@ -12,6 +12,8 @@ declare_args() {
   notary_password = ""
   notarize = false
   is_universal_binary = false
+
+  install_omaha4_with_pkg = false
 }
 
 if (host_os == "mac") {

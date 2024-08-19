@@ -332,7 +332,7 @@ copy("copies") {
   outputs = [ "$packaging_dir/{{source_file_part}}" ]
 }
 
-if (brave_enable_updater) {
+if (install_omaha4_with_pkg) {
   generated_pkg_scripts = "$target_gen_dir/pkg-scripts"
 }
 
@@ -345,7 +345,7 @@ action("create_pkg") {
     rebase_path(app_path, root_build_dir),
   ]
 
-  if (brave_enable_updater) {
+  if (install_omaha4_with_pkg) {
     args += [ rebase_path(generated_pkg_scripts) ]
   } else {
     args += [ rebase_path("//brave/build/mac/pkg-scripts") ]
@@ -366,12 +366,12 @@ action("create_pkg") {
 
   deps = [ ":finalize_app" ]
 
-  if (brave_enable_updater) {
+  if (install_omaha4_with_pkg) {
     deps += [ ":postinstall" ]
   }
 }
 
-if (brave_enable_updater) {
+if (install_omaha4_with_pkg) {
   action("postinstall") {
     visibility = [ ":create_pkg" ]
 
