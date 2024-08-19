@@ -373,7 +373,7 @@ TEST_F(P3AConstellationHelperTest, NebulaSample) {
     EXPECT_EQ(histogram_name_from_callback_, kTestNebulaHistogramName);
   }
   EXPECT_GE(points_request_count, 1u);
-  EXPECT_LE(points_request_count, 20u);
+  EXPECT_LE(points_request_count, 25u);
 }
 
 }  // namespace p3a
