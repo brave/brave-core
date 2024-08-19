@@ -19,7 +19,8 @@ constexpr size_t kGrpcHeaderSize = 5;
 constexpr char kNoCompression = 0;
 }  // namespace
 
-GRrpcMessageStreamHandler::GRrpcMessageStreamHandler() = default;
+GRrpcMessageStreamHandler::GRrpcMessageStreamHandler()
+    : message_data_limit_(kMaxMessageSizeBytes) {}
 GRrpcMessageStreamHandler::~GRrpcMessageStreamHandler() = default;
 
 void GRrpcMessageStreamHandler::OnDataReceived(std::string_view string_piece,
@@ -37,7 +38,7 @@ void GRrpcMessageStreamHandler::OnDataReceived(std::string_view string_piece,
       }
       message_body_size = base::numerics::U32FromBigEndian(
           base::as_byte_span(data_view).subspan<1, 4u>());
-      if (*message_body_size > kMaxMessageSizeBytes) {
+      if (*message_body_size > message_data_limit_) {
         // Too large message
         OnComplete(false);
         return;

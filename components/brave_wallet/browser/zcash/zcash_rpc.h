@@ -9,6 +9,7 @@
 #include <list>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
@@ -41,6 +42,8 @@ class ZCashRpc {
       base::OnceCallback<void(base::expected<bool, std::string>)>;
   using GetTreeStateCallback = base::OnceCallback<void(
       base::expected<zcash::mojom::TreeStatePtr, std::string>)>;
+  using GetCompactBlocksCallback = base::OnceCallback<void(
+      base::expected<std::vector<zcash::mojom::CompactBlockPtr>, std::string>)>;
 
   ZCashRpc(NetworkManager* network_manager,
            scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -72,6 +75,11 @@ class ZCashRpc {
                               uint64_t block_start,
                               uint64_t block_end,
                               IsKnownAddressCallback callback);
+
+  virtual void GetCompactBlocks(const std::string& chain_id,
+                                uint32_t from,
+                                uint32_t to,
+                                GetCompactBlocksCallback callback);
 
  private:
   friend class base::RefCountedThreadSafe<ZCashRpc>;
@@ -105,9 +113,19 @@ class ZCashRpc {
                               UrlLoadersList::iterator it,
                               std::unique_ptr<std::string> response_body);
 
+  void OnGetCompactBlocksResponse(
+      ZCashRpc::GetCompactBlocksCallback callback,
+      UrlLoadersList::iterator it,
+      StreamHandlersList::iterator handler_it,
+      base::expected<std::vector<std::string>, std::string> result);
+
   template <typename T>
   void OnParseResult(base::OnceCallback<void(base::expected<T, std::string>)>,
                      T value);
+
+  void OnParseCompactBlocks(
+      GetCompactBlocksCallback callback,
+      std::optional<std::vector<zcash::mojom::CompactBlockPtr>> compact_blocks);
 
   mojo::AssociatedRemote<zcash::mojom::ZCashDecoder>& GetDecoder();
 

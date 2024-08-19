@@ -12,7 +12,7 @@ import { BraveWallet } from '../../../constants/types'
 import {
   LoadingSkeleton //
 } from '../../../components/shared/loading-skeleton/index'
-import { CoinType } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
+import { CoinType, ZCashShieldSyncStatus } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
 import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
 
 const StyledWrapper = styled.div`
@@ -60,19 +60,35 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
     BraveWallet.ZCashBalance | undefined
   >()
   const [shieldResult, setShieldResult] = useState<string>()
+  const [
+    makeAccountShieldableResult,
+    setMakeAccountShieldableResult] = useState<string>()
+  const [syncStatusResult, setSyncStatusResult] = useState<string>();
+  const [shieldedBalanceValue, setShieldedBalanceValue] = useState<string>();
 
-  React.useEffect(() => {
-    fetchBalance()
-  })
+  const makeAccountShielded = async() => {
+    const result = await getAPIProxy().zcashWalletService.makeAccountShielded(
+        props.accountId);
+    setMakeAccountShieldableResult(result.errorMessage || 'Done');
+  }
 
-  const fetchBalance = async () => {
-    setLoading(true)
-    const result = await getAPIProxy().zcashWalletService.getBalance(
-      BraveWallet.Z_CASH_MAINNET,
-      props.accountId
-    )
-    setBalance(result.balance || undefined)
-    setLoading(false)
+  // methods
+  const startOrchardSync = async() => {
+    setSyncStatusResult('')
+    const result =
+        await getAPIProxy().zcashWalletService.startShieldSync(props.accountId);
+
+    if (result.errorMessage) {
+      setSyncStatusResult("Sync error " + result.errorMessage);
+    }
+  }
+
+  const stopOrchardSync = async() => {
+    const result =
+      await getAPIProxy().zcashWalletService.stopShieldSync(props.accountId);
+    if (result.errorMessage) {
+      setSyncStatusResult("Stop error " + result.errorMessage);
+    }
   }
 
   const shieldFunds = async () => {
@@ -86,6 +102,56 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
     setShieldResult(txId || errorMessage || "unknown")
   }
 
+  const fetchBalance = React.useCallback(async () => {
+    setLoading(true)
+    const result = await getAPIProxy().zcashWalletService.getBalance(
+      BraveWallet.Z_CASH_MAINNET,
+      props.accountId
+    )
+    setBalance(result.balance || undefined)
+    setLoading(false)
+  }, [props.accountId])
+
+  // effects
+  React.useEffect(() => {
+    const zcashWalletServiceObserver =
+        new BraveWallet.ZCashWalletServiceObserverReceiver({
+      onSyncStart: (accountId: BraveWallet.AccountId) => {
+        if (props.accountId.uniqueKey === accountId.uniqueKey) {
+          setSyncStatusResult("Started");
+        }
+      },
+      onSyncStop: (accountId: BraveWallet.AccountId) => {
+        if (props.accountId.uniqueKey === accountId.uniqueKey) {
+          setSyncStatusResult("Stopped");
+        }
+      },
+      onSyncStatusUpdate: (accountId: BraveWallet.AccountId,
+                           status: ZCashShieldSyncStatus) => {
+        if (props.accountId.uniqueKey === accountId.uniqueKey) {
+          setSyncStatusResult("Current block " +
+                              status.currentBlock + "/" +
+                              status.chainTip);
+          setShieldedBalanceValue("Found balance: " + status.spendableBalance);
+        }
+      },
+      onSyncError: (accountId: BraveWallet.AccountId, error: string) => {
+        if (props.accountId.uniqueKey === accountId.uniqueKey) {
+          setSyncStatusResult("Error : " + error);
+        }
+      }
+    });
+
+    getAPIProxy().zcashWalletService.addObserver(
+        zcashWalletServiceObserver.$.bindNewPipeAndPassRemote());
+
+    return () => zcashWalletServiceObserver.$.close()
+  }, [props.accountId])
+
+  React.useEffect(() => {
+    fetchBalance()
+  }, [fetchBalance])
+
   return (
     <BalanceSection>
       <h2>getBalance</h2>
@@ -97,10 +163,18 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
         />
       ) : (
         <>
+          <button onClick={makeAccountShielded}>Upgrade to shielded</button>
+          <button onClick={startOrchardSync}>Start orchard sync</button>
+          <button onClick={stopOrchardSync}>Stop orchard sync</button>
+
           <button onClick={fetchBalance}>Reload</button>
           <button onClick={shieldFunds}>Shield</button>
+          <h3>make account shieldable result: {makeAccountShieldableResult}</h3>
+          <h3>sync status: {syncStatusResult}</h3>
           <h3>shield result: {shieldResult}</h3>
           <h3>balance: {balance?.totalBalance.toString()}</h3>
+          <h3>shielded balance: {shieldedBalanceValue}</h3>
+
           <ul>
             {balance?.balances &&
               Object.entries(balance.balances as { [key: string]: BigInt }).map(
@@ -134,17 +208,19 @@ const GetZCashAccountInfoSection: React.FC<
     BraveWallet.ZCashAccountInfo | undefined
   >()
 
-  React.useEffect(() => {
-    fetchZCashAccountInfo()
-  })
-
-  const fetchZCashAccountInfo = async () => {
+  // methods
+  const fetchZCashAccountInfo = React.useCallback(async () => {
     setLoading(true)
     const result =
       await getAPIProxy().zcashWalletService.getZCashAccountInfo(accountId)
     setZCashAccountInfo(result.accountInfo || undefined)
     setLoading(false)
-  }
+  }, [accountId])
+
+  // effects
+  React.useEffect(() => {
+    fetchZCashAccountInfo()
+  }, [fetchZCashAccountInfo])
 
   const keyId = (keyId: BraveWallet.BitcoinKeyId | undefined) => {
     if (!keyId) {

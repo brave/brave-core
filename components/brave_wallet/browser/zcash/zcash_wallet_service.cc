@@ -27,6 +27,9 @@
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 namespace brave_wallet {
+#if BUILDFLAG(ENABLE_ORCHARD)
+inline constexpr char kOrchardDatabaseName[] = "orchard.db";
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 void ZCashWalletService::Bind(
     mojo::PendingReceiver<mojom::ZCashWalletService> receiver) {
@@ -34,11 +37,13 @@ void ZCashWalletService::Bind(
 }
 
 ZCashWalletService::ZCashWalletService(
+    base::FilePath zcash_data_path,
     KeyringService* keyring_service,
     PrefService* prefs,
     NetworkManager* network_manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : keyring_service_(keyring_service) {
+    : zcash_data_path_(std::move(zcash_data_path)),
+      keyring_service_(keyring_service) {
   zcash_rpc_ = std::make_unique<ZCashRpc>(network_manager, url_loader_factory);
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
@@ -82,6 +87,82 @@ void ZCashWalletService::GetZCashAccountInfo(
     mojom::AccountIdPtr account_id,
     GetZCashAccountInfoCallback callback) {
   std::move(callback).Run(keyring_service_->GetZCashAccountInfo(account_id));
+}
+
+void ZCashWalletService::MakeAccountShielded(
+    mojom::AccountIdPtr account_id,
+    MakeAccountShieldedCallback callback) {
+#if BUILDFLAG(ENABLE_ORCHARD)
+  if (IsZCashShieldedTransactionsEnabled()) {
+    // Only 1 account can be shieldable at the moment
+    const auto& accounts = keyring_service_->GetAllAccountInfos();
+    for (const auto& account : accounts) {
+      if (IsZCashAccount(*(account->account_id)) &&
+          !GetAccountShieldBirthday(account->account_id).is_null()) {
+        std::move(callback).Run("Already has shieldable account");
+        return;
+      }
+    }
+    GetLatestBlockForAccountBirthday(account_id.Clone(), std::move(callback));
+    return;
+  }
+#endif
+  std::move(callback).Run("Not supported");
+}
+
+void ZCashWalletService::StartShieldSync(mojom::AccountIdPtr account_id,
+                                         StartShieldSyncCallback callback) {
+#if BUILDFLAG(ENABLE_ORCHARD)
+  if (IsZCashShieldedTransactionsEnabled()) {
+    auto account_birthday = GetAccountShieldBirthday(account_id);
+    if (!account_birthday) {
+      std::move(callback).Run("Account not supported");
+      return;
+    }
+
+    auto fvk = keyring_service_->GetOrchardFullViewKey(account_id);
+    if (!fvk) {
+      std::move(callback).Run("Cannot resolve FVK");
+      return;
+    }
+
+    if (shield_sync_services_.find(account_id) != shield_sync_services_.end()) {
+      std::move(callback).Run("Already in sync");
+      return;
+    }
+
+    shield_sync_services_[account_id.Clone()] =
+        std::make_unique<ZCashShieldSyncService>(
+            zcash_rpc(), account_id, account_birthday, fvk.value(),
+            zcash_data_path_.AppendASCII(kOrchardDatabaseName),
+            weak_ptr_factory_.GetWeakPtr());
+
+    shield_sync_services_[account_id.Clone()]->StartSyncing();
+
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+#endif
+  std::move(callback).Run("Not supported");
+}
+
+void ZCashWalletService::StopShieldSync(mojom::AccountIdPtr account_id,
+                                        StopShieldSyncCallback callback) {
+#if BUILDFLAG(ENABLE_ORCHARD)
+  if (IsZCashShieldedTransactionsEnabled()) {
+    auto it = shield_sync_services_.find(account_id);
+    if (it != shield_sync_services_.end()) {
+      shield_sync_services_.erase(it);
+      OnSyncStop(account_id);
+    } else {
+      std::move(callback).Run("Not syncing");
+      return;
+    }
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+#endif
+  std::move(callback).Run("Not supported");
 }
 
 void ZCashWalletService::RunDiscovery(mojom::AccountIdPtr account_id,
@@ -224,6 +305,11 @@ void ZCashWalletService::SignAndPostTransaction(
 void ZCashWalletService::SetZCashRpcForTesting(
     std::unique_ptr<ZCashRpc> zcash_rpc) {
   zcash_rpc_ = std::move(zcash_rpc);
+}
+
+void ZCashWalletService::AddObserver(
+    mojo::PendingRemote<mojom::ZCashWalletServiceObserver> observer) {
+  observers_.Add(std::move(observer));
 }
 
 void ZCashWalletService::ValidateZCashAddress(
@@ -485,6 +571,97 @@ void ZCashWalletService::OnPostShieldTransactionDone(
   }
 }
 
+void ZCashWalletService::GetLatestBlockForAccountBirthday(
+    mojom::AccountIdPtr account_id,
+    MakeAccountShieldedCallback callback) {
+  CHECK(account_id);
+  zcash_rpc_->GetLatestBlock(
+      GetNetworkForZCashKeyring(account_id->keyring_id),
+      base::BindOnce(&ZCashWalletService::OnGetLatestBlockForAccountBirthday,
+                     weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
+                     std::move(callback)));
+}
+
+void ZCashWalletService::OnGetLatestBlockForAccountBirthday(
+    mojom::AccountIdPtr account_id,
+    MakeAccountShieldedCallback callback,
+    base::expected<zcash::mojom::BlockIDPtr, std::string> result) {
+  CHECK(account_id);
+  if (!result.has_value() || !result.value()) {
+    std::move(callback).Run("Failed to retrieve latest block");
+    return;
+  }
+
+  // Get block info for the block that is back from latest block for
+  // kChainReorgBlockDelta to ensure account birthday won't be affected by chain
+  // reorg.
+  if ((*result)->height < kChainReorgBlockDelta) {
+    std::move(callback).Run("Failed to retrieve latest block");
+    return;
+  }
+
+  auto block_id = zcash::mojom::BlockID::New(
+      (*result)->height - kChainReorgBlockDelta, std::vector<uint8_t>());
+
+  zcash_rpc_->GetTreeState(
+      GetNetworkForZCashKeyring(account_id->keyring_id), std::move(block_id),
+      base::BindOnce(&ZCashWalletService::OnGetTreeStateForAccountBirthday,
+                     weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
+                     std::move(callback)));
+}
+
+void ZCashWalletService::OnGetTreeStateForAccountBirthday(
+    mojom::AccountIdPtr account_id,
+    MakeAccountShieldedCallback callback,
+    base::expected<zcash::mojom::TreeStatePtr, std::string> result) {
+  if (!result.has_value() || !result.value()) {
+    std::move(callback).Run("Failed to retrieve tree state");
+    return;
+  }
+
+  keyring_service_->SetZCashAccountBirthday(
+      account_id, mojom::ZCashAccountShieldBirthday::New((*result)->height,
+                                                         (*result)->hash));
+  std::move(callback).Run(std::nullopt);
+}
+
+mojom::ZCashAccountShieldBirthdayPtr
+ZCashWalletService::GetAccountShieldBirthday(
+    const mojom::AccountIdPtr& account_id) {
+  auto account_info = keyring_service_->GetZCashAccountInfo(account_id);
+  if (!account_info || !account_info->account_shield_birthday) {
+    return nullptr;
+  }
+  return account_info->account_shield_birthday.Clone();
+}
+
+void ZCashWalletService::OnSyncStart(const mojom::AccountIdPtr& account_id) {
+  for (const auto& observer : observers_) {
+    observer->OnSyncStart(account_id.Clone());
+  }
+}
+
+void ZCashWalletService::OnSyncStop(const mojom::AccountIdPtr& account_id) {
+  for (const auto& observer : observers_) {
+    observer->OnSyncStop(account_id.Clone());
+  }
+}
+
+void ZCashWalletService::OnSyncError(const mojom::AccountIdPtr& account_id,
+                                     const std::string& error) {
+  for (const auto& observer : observers_) {
+    observer->OnSyncError(account_id.Clone(), error);
+  }
+}
+
+void ZCashWalletService::OnSyncStatusUpdate(
+    const mojom::AccountIdPtr& account_id,
+    const mojom::ZCashShieldSyncStatusPtr& status) {
+  for (const auto& observer : observers_) {
+    observer->OnSyncStatusUpdate(account_id.Clone(), status.Clone());
+  }
+}
+
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 void ZCashWalletService::GetTransactionStatus(
@@ -529,6 +706,22 @@ void ZCashWalletService::Unlocked() {
       RunDiscovery(account->account_id.Clone(), base::DoNothing());
     }
   }
+}
+
+void ZCashWalletService::Locked() {
+#if BUILDFLAG(ENABLE_ORCHARD)
+  shield_sync_services_.clear();
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
+}
+
+void ZCashWalletService::Reset() {
+  weak_ptr_factory_.InvalidateWeakPtrs();
+#if BUILDFLAG(ENABLE_ORCHARD)
+  for (const auto& pair : shield_sync_services_) {
+    pair.second->Reset();
+  }
+  shield_sync_services_.clear();
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
 }
 
 }  // namespace brave_wallet

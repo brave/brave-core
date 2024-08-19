@@ -50,6 +50,9 @@ std::optional<mojom::CoinType> GetCoinTypeFromPrefKey_DEPRECATED(
     const std::string& key);
 
 namespace {
+
+inline constexpr char kZCashDataFolderName[] = "zcash_data";
+
 bool AccountMatchesCoinAndChain(const mojom::AccountId& account_id,
                                 mojom::CoinType coin,
                                 const std::string& chain_id) {
@@ -128,6 +131,7 @@ BraveWalletService::BraveWalletService(
 
   if (IsZCashEnabled()) {
     zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
+        delegate_->GetWalletBaseDirectory().AppendASCII(kZCashDataFolderName),
         keyring_service(), profile_prefs, network_manager(),
         url_loader_factory);
   }
@@ -1764,6 +1768,9 @@ void BraveWalletService::Reset() {
   }
   if (bitcoin_wallet_service_) {
     bitcoin_wallet_service_->Reset();
+  }
+  if (zcash_wallet_service_) {
+    zcash_wallet_service_->Reset();
   }
 
   // Clear BraveWalletService

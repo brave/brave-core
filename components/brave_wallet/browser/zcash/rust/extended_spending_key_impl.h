@@ -32,6 +32,8 @@ class ExtendedSpendingKeyImpl : ExtendedSpendingKey {
   std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
   GetDiversifiedAddress(uint32_t div_index, OrchardAddressKind kind) override;
 
+  OrchardFullViewKey GetFullViewKey() override;
+
  private:
   friend class ExtendedSpendingKey;
   explicit ExtendedSpendingKeyImpl(rust::Box<OrchardExtendedSpendingKey> esk);

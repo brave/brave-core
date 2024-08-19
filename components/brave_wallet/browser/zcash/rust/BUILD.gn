@@ -23,12 +23,14 @@ source_set("orchard_headers") {
   sources = [
     "authorized_orchard_bundle.h",
     "extended_spending_key.h",
+    "orchard_block_decoder.h",
     "unauthorized_orchard_bundle.h",
   ]
 
   public_deps = [
     "//base",
     "//brave/components/brave_wallet/common",
+    "//brave/components/services/brave_wallet/public/mojom",
   ]
 }
 
@@ -40,6 +42,8 @@ source_set("orchard_impl") {
     "authorized_orchard_bundle_impl.h",
     "extended_spending_key_impl.cc",
     "extended_spending_key_impl.h",
+    "orchard_block_decoder_impl.cc",
+    "orchard_block_decoder_impl.h",
     "unauthorized_orchard_bundle_impl.cc",
     "unauthorized_orchard_bundle_impl.h",
   ]
@@ -65,7 +69,12 @@ rust_static_library("rust_lib") {
   deps = [
     "librustzcash:zcash_primitives",
     "//brave/components/brave_wallet/rust:rust_lib",
+    "//brave/third_party/rust/byteorder/v1:lib",
+    "//brave/third_party/rust/incrementalmerkletree/v0_5:lib",
+    "//brave/third_party/rust/memuse/v0_2:lib",
+    "//brave/third_party/rust/nonempty/v0_7:lib",
     "//brave/third_party/rust/orchard/v0_8:lib",
     "//brave/third_party/rust/rand/v0_8:lib",
+    "//brave/third_party/rust/zcash_note_encryption/v0_4:lib",
   ]
 }

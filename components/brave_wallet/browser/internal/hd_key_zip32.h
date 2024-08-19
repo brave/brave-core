@@ -38,6 +38,9 @@ class HDKeyZip32 {
   std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
   GetDiversifiedAddress(uint32_t div_index, OrchardAddressKind kind);
 
+  // Full view key(fvk) is used to decode incoming transactions
+  OrchardFullViewKey GetFullViewKey();
+
  private:
   explicit HDKeyZip32(std::unique_ptr<orchard::ExtendedSpendingKey> key);
   // Extended spending key is a root key of an account, all other keys can be

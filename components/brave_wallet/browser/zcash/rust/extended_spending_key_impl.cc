@@ -47,4 +47,8 @@ std::unique_ptr<ExtendedSpendingKey> ExtendedSpendingKey::GenerateFromSeed(
   return nullptr;
 }
 
+OrchardFullViewKey ExtendedSpendingKeyImpl::GetFullViewKey() {
+  return extended_spending_key_->full_view_key();
+}
+
 }  // namespace brave_wallet::orchard
