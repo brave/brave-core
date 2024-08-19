@@ -96,7 +96,8 @@ struct OPMLImporterViewModifier: ViewModifier {
   }
 
   nonisolated private func importOPML(from url: URL) async {
-    guard url.isFileURL, let data = await AsyncFileManager.default.contents(atPath: url.path())
+    guard url.isFileURL,
+      let data = await AsyncFileManager.default.contents(atPath: url.path(percentEncoded: false))
     else {
       isPresented = false
       importError = .noFeedsFound

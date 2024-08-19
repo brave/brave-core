@@ -99,7 +99,10 @@ class TemporaryDocument: NSObject {
           try await AsyncFileManager.default.removeItem(at: url)
         }
 
-        await AsyncFileManager.default.createFile(atPath: url.path(), contents: data)
+        await AsyncFileManager.default.createFile(
+          atPath: url.path(percentEncoded: false),
+          contents: data
+        )
 
         localFileURL = url
         pendingContinuation?.resume(returning: url)
