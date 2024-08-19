@@ -53,50 +53,6 @@ private let KVOs: [KVOConstants] = [
   ._sampledPageTopColor,
 ]
 
-struct TranslationContainer: View {
-  var scriptHandler: BraveTranslateScriptHandler
-
-  @State
-  private var languageInfo: BraveTranslateLanguageInfo?
-
-  var body: some View {
-    #if compiler(>=6.0)
-    Color.clear
-      .onAppear {
-        print("translation container is visible")
-      }
-      .osAvailabilityModifiers({ view in
-        if #available(iOS 18.0, *) {
-          view
-            .task {
-              languageInfo = await scriptHandler.getLanguageInfo()
-            }
-            .translationTask(
-              .init(source: languageInfo?.pageLanguage, target: languageInfo?.currentLanguage),
-              action: { session in
-                if let languageInfo = self.languageInfo {
-                  scriptHandler.activateScript(using: session, languageInfo: languageInfo)
-                }
-              }
-            )
-        } else {
-          view.task {
-            await scriptHandler.activateScript(languageInfo: scriptHandler.getLanguageInfo())
-          }
-        }
-      })
-    #else
-    Color.clear
-      .onAppear {
-        print("translation container is visible")
-      }
-      .task {
-        await scriptHandler.activateScript(languageInfo: scriptHandler.getLanguageInfo())
-      }
-    #endif
-  }
-}
-
 public class BrowserViewController: UIViewController {
   let webViewContainer = UIView()
   private(set) lazy var screenshotHelper = ScreenshotHelper(tabManager: tabManager)
