@@ -16,6 +16,7 @@ import org.chromium.base.Callback;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
@@ -46,6 +47,7 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
             @NonNull ScrimCoordinator scrimCoordinator,
             @NonNull ObservableSupplier<Boolean> omniboxFocusStateSupplier,
             @NonNull BottomSheetController bottomSheetController,
+            @NonNull DataSharingTabManager dataSharingTabManager,
             @NonNull TabModelSelector tabModelSelector,
             @NonNull TabContentManager tabContentManager,
             @NonNull ViewGroup rootView,
@@ -61,6 +63,7 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
                 scrimCoordinator,
                 omniboxFocusStateSupplier,
                 bottomSheetController,
+                dataSharingTabManager,
                 tabModelSelector,
                 tabContentManager,
                 rootView,
