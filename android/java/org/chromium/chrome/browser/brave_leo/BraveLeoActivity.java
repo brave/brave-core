@@ -99,7 +99,6 @@ public class BraveLeoActivity extends CustomTabActivity {
                         () -> mToolbarCoordinator,
                         () -> mNavigationController,
                         () -> mIntentDataProvider,
-                        () -> mDelegateFactory.getEphemeralTabCoordinator(),
                         mBackPressManager,
                         () -> mTabController,
                         () -> mMinimizationManagerHolder.getMinimizationManager(),
