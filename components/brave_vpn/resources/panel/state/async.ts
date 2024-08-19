@@ -8,6 +8,7 @@ import AsyncActionHandler from '../../../../common/AsyncActionHandler'
 import getPanelBrowserAPI, { ConnectionState, PurchasedState } from '../api/panel_browser_api'
 import * as Actions from './actions'
 import { RootState } from './store'
+import * as mojom from '../../shared/lib/mojom'
 
 const handler = new AsyncActionHandler()
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
@@ -50,7 +51,7 @@ handler.on(Actions.purchaseConfirmed.getType(), async (store) => {
   const [{ state }, { currentRegion }, { regions }] = await Promise.all([
     getPanelBrowserAPI().serviceHandler.getConnectionState(),
     getPanelBrowserAPI().serviceHandler.getSelectedRegion(),
-    getPanelBrowserAPI().serviceHandler.getAllRegions()
+    getPanelBrowserAPI().serviceHandler.getAllRegions(mojom.kRegionPrecisionCityByCountry)
   ])
 
   store.dispatch(Actions.showMainView({
@@ -65,7 +66,7 @@ handler.on(Actions.purchaseConfirmed.getType(), async (store) => {
 handler.on(Actions.purchaseExpired.getType(), async (store) => {
   const [{ currentRegion }, { regions }] = await Promise.all([
     getPanelBrowserAPI().serviceHandler.getSelectedRegion(),
-    getPanelBrowserAPI().serviceHandler.getAllRegions()
+    getPanelBrowserAPI().serviceHandler.getAllRegions(mojom.kRegionPrecisionCityByCountry)
   ])
 
   store.dispatch(Actions.showMainView({

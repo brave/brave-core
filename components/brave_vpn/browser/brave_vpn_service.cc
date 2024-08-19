@@ -19,6 +19,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_helper.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"

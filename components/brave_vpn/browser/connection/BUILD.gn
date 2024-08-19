@@ -48,6 +48,8 @@ source_set("common") {
   sources = [
     "brave_vpn_connection_info.cc",
     "brave_vpn_connection_info.h",
+    "brave_vpn_region_data_helper.cc",
+    "brave_vpn_region_data_helper.h",
     "brave_vpn_region_data_manager.cc",
     "brave_vpn_region_data_manager.h",
   ]
