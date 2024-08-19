@@ -524,7 +524,7 @@ void BraveReferralsService::GetSafetynetStatusResult(
     const std::string& result_string,
     const bool attestation_passed) {
   if (pref_service_->GetString(kSafetynetStatus).empty()) {
-    NOTREACHED_IN_MIGRATION() << "Failed to get safetynet status";
+    // The device could not support SafetyNet.
     pref_service_->SetString(kSafetynetStatus, "not verified");
   }
   CheckForReferralFinalization();
