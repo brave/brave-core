@@ -52,7 +52,7 @@ public class BraveTabSwitcherPane extends TabSwitcherPane {
     public @NonNull HubLayoutAnimatorProvider createHideHubLayoutAnimatorProvider(
             @NonNull HubContainerView hubContainerView) {
         int tabId = getCurrentTabId();
-        if (getTabListMode() != TabListMode.LIST && tabId == Tab.INVALID_TAB_ID) {
+        if (getTabListMode() != TabListMode.LIST && tabId != Tab.INVALID_TAB_ID) {
             // Force call TabSwitcherPaneBase.createTabSwitcherPaneCoordinator
             // to ensure TabSwitcherPaneBase.mTabSwitcherPaneCoordinatorSupplier is set
             BraveReflectionUtil.InvokeMethod(
