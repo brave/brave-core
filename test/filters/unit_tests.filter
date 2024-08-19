@@ -590,11 +590,6 @@
 # This test times out because TaskEnvironment::FastForwardBy never returns.
 -NotificationsEngagementServiceTest.EraseStaleEntries
 
-# These tests are disabled due to an issue related to calling
-# browsertest_util::AddTab. This problem should be investigated and these tests
-# reenabled. See https://github.com/brave/brave-browser/issues/39075
--SavedTabGroupKeyedServiceUnitTestV2.*
-
 # These tests are disabled because we explicitly patch the
 # ThemeColorPickerHandler "extended_list" code path to always be active and we
 # override the handling of the seed color to restore it to pre-ChromeRefresh2023
