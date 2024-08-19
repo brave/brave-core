@@ -24,10 +24,7 @@ public class BraveSwipeRefreshHandler extends SwipeRefreshHandler {
 
     @Override
     public boolean start(
-            @OverscrollAction int type,
-            float startX,
-            float startY,
-            @BackGestureEventSwipeEdge int initiatingEdge) {
+            @OverscrollAction int type, @BackGestureEventSwipeEdge int initiatingEdge) {
         GURL url = mTab.getUrl();
         if (url.getScheme().equals("chrome-untrusted")
                 && url.getHost().equals("chat")
@@ -36,6 +33,6 @@ public class BraveSwipeRefreshHandler extends SwipeRefreshHandler {
             return false;
         }
 
-        return super.start(type, startX, startY, initiatingEdge);
+        return super.start(type, initiatingEdge);
     }
 }

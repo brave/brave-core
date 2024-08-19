@@ -120,8 +120,6 @@ public class BraveSwipeRefreshHandlerTest {
                                                 BraveSwipeRefreshHandler.from(tab);
                                 return braveSwipeRefreshHandler.start(
                                         OverscrollAction.PULL_TO_REFRESH,
-                                        0,
-                                        0,
                                         BackGestureEventSwipeEdge.LEFT);
                             } catch (Exception ex) {
                                 throw ex;
