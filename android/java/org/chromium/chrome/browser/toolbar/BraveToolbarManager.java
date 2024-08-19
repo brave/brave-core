@@ -34,6 +34,7 @@ import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.bottombar.ephemeraltab.EphemeralTabCoordinator;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.compositor.overlays.strip.StripLayoutHelperManager;
+import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.homepage.HomepageManager;
@@ -131,6 +132,8 @@ public class BraveToolbarManager extends ToolbarManager {
     private BrowserControlsVisibilityManager mBrowserControlsVisibilityManager;
     private OneshotSupplierImpl<BottomControlsContentDelegate> mContentDelegateSupplier =
             new OneshotSupplierImpl<>();
+    private final DataSharingTabManager mDataSharingTabManager;
+    private ObservableSupplier<TabModelSelector> mTabModelSelectorSupplier;
 
     public BraveToolbarManager(
             AppCompatActivity activity,
@@ -165,6 +168,7 @@ public class BraveToolbarManager extends ToolbarManager {
             AppMenuDelegate appMenuDelegate,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             @NonNull BottomSheetController bottomSheetController,
+            @NonNull DataSharingTabManager dataSharingTabManager,
             @NonNull TabContentManager tabContentManager,
             @NonNull TabCreatorManager tabCreatorManager,
             @NonNull SnackbarManager snackbarManager,
@@ -212,6 +216,7 @@ public class BraveToolbarManager extends ToolbarManager {
                 appMenuDelegate,
                 activityLifecycleDispatcher,
                 bottomSheetController,
+                dataSharingTabManager,
                 tabContentManager,
                 tabCreatorManager,
                 snackbarManager,
@@ -233,6 +238,8 @@ public class BraveToolbarManager extends ToolbarManager {
         mEdgeToEdgeControllerSupplier = edgeToEdgeControllerSupplier;
         mProfileSupplier = profileSupplier;
         mBrowserControlsVisibilityManager = controlsVisibilityManager;
+        mDataSharingTabManager = dataSharingTabManager;
+        mTabModelSelectorSupplier = tabModelSelectorSupplier;
 
         if (isToolbarPhone()) {
             updateBottomToolbarVisibility();
@@ -276,6 +283,7 @@ public class BraveToolbarManager extends ToolbarManager {
                                     mScrimCoordinator,
                                     mOmniboxFocusStateSupplier,
                                     mBottomSheetController,
+                                    mDataSharingTabManager,
                                     mTabModelSelector,
                                     mTabContentManager,
                                     mCompositorViewHolder,
@@ -293,7 +301,8 @@ public class BraveToolbarManager extends ToolbarManager {
                                     id ->
                                             ((ChromeActivity) mActivity)
                                                     .onOptionsItemSelected(id, null),
-                                    mProfileSupplier.get()),
+                                    mProfileSupplier.get(),
+                                    mTabModelSelectorSupplier),
                             mActivityTabProvider,
                             mToolbarTabController::openHomepage,
                             mCallbackController.makeCancelable(
@@ -341,14 +350,16 @@ public class BraveToolbarManager extends ToolbarManager {
             @Nullable StripLayoutHelperManager stripLayoutHelperManager,
             OnClickListener tabSwitcherClickHandler,
             OnClickListener bookmarkClickHandler,
-            OnClickListener customTabsBackClickHandler) {
+            OnClickListener customTabsBackClickHandler,
+            @Nullable ObservableSupplier<Integer> archivedTabCountSupplier) {
 
         super.initializeWithNative(
                 layoutManager,
                 stripLayoutHelperManager,
                 tabSwitcherClickHandler,
                 bookmarkClickHandler,
-                customTabsBackClickHandler);
+                customTabsBackClickHandler,
+                archivedTabCountSupplier);
 
         if (isToolbarPhone() && BottomToolbarConfiguration.isBottomToolbarEnabled()) {
             enableBottomControls();
