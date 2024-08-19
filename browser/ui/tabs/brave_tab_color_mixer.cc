@@ -75,6 +75,28 @@ ui::ColorTransform GetCustomColorOrDefaultColor(
   return {*chrome_color_id};
 }
 
+void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
+                                const ui::ColorProviderKey& key) {
+  auto& mixer = provider->AddMixer();
+
+  mixer[kColorBraveSplitViewMenuItemIcon] = {nala::kColorIconDefault};
+  mixer[kColorBraveSplitViewUrl] = {nala::kColorTextTertiary};
+  mixer[kColorBraveSplitViewMenuButtonBorder] = {nala::kColorDividerSubtle};
+  mixer[kColorBraveSplitViewActiveWebViewBorder] = {
+      nala::kColorIconInteractive};
+  mixer[kColorBraveSplitViewMenuButtonBackground] = {
+      nala::kColorContainerBackground};
+  mixer[kColorBraveSplitViewMenuButtonIcon] = {nala::kColorIconInteractive};
+  mixer[kColorBraveSharedPinnedTabDummyViewThumbnailBorder] = {
+      nala::kColorDividerSubtle};
+  mixer[kColorBraveSharedPinnedTabDummyViewDescription] = {
+      nala::kColorTextSecondary};
+  mixer[kColorBraveSharedPinnedTabDummyViewTitle] = {nala::kColorTextPrimary};
+  mixer[kColorBraveSharedPinnedTabDummyViewBackground] = {
+      nala::kColorContainerBackground};
+  mixer[kColorBraveSplitViewInactiveWebViewBorder] = {kColorToolbar};
+}
+
 }  // namespace
 
 namespace tabs {
@@ -97,23 +119,8 @@ void AddBraveTabLightThemeColorMixer(ui::ColorProvider* provider,
           {kColorBraveVerticalTabNTBShortcutTextColor,
            SkColorSetRGB(0x85, 0x89, 0x89)},
           {kColorBraveSplitViewTileBackground, SkColorSetRGB(0xDA, 0xDF, 0xE1)},
-          {kColorBraveSharedPinnedTabDummyViewBackground,
-           nala::kColorContainerBackground},
-          {kColorBraveSharedPinnedTabDummyViewTitle, nala::kColorTextPrimary},
-          {kColorBraveSharedPinnedTabDummyViewDescription,
-           nala::kColorTextSecondary},
-          {kColorBraveSharedPinnedTabDummyViewThumbnailBorder,
-           nala::kColorDividerSubtle},
-          {kColorBraveSplitViewMenuButtonIcon, nala::kColorIconInteractive},
-          {kColorBraveSplitViewMenuButtonBackground,
-           nala::kColorContainerBackground},
-          {kColorBraveSplitViewMenuButtonBorder, nala::kColorDividerSubtle},
-          {kColorBraveSplitViewActiveWebViewBorder,
-           nala::kColorIconInteractive},
-          {kColorBraveSplitViewInactiveWebViewBorder, kLightFrame},
-          {kColorBraveSplitViewMenuItemIcon, nala::kColorIconDefault},
-          {kColorBraveSplitViewUrl, nala::kColorTextTertiary},
       });
+  AddBraveTabThemeColorMixer(provider, key);
   for (const auto& [color_id, default_color] : *kDefaultColorMap) {
     mixer[color_id] =
         GetCustomColorOrDefaultColor(key.custom_theme, color_id, default_color);
@@ -138,23 +145,9 @@ void AddBraveTabDarkThemeColorMixer(ui::ColorProvider* provider,
           {kColorBraveVerticalTabNTBShortcutTextColor,
            SkColorSetRGB(0x68, 0x6D, 0x7D)},
           {kColorBraveSplitViewTileBackground, SkColorSetRGB(0x0D, 0x12, 0x14)},
-          {kColorBraveSharedPinnedTabDummyViewBackground,
-           nala::kColorContainerBackground},
-          {kColorBraveSharedPinnedTabDummyViewTitle, nala::kColorTextPrimary},
-          {kColorBraveSharedPinnedTabDummyViewDescription,
-           nala::kColorTextSecondary},
-          {kColorBraveSharedPinnedTabDummyViewThumbnailBorder,
-           nala::kColorDividerSubtle},
-          {kColorBraveSplitViewMenuButtonIcon, nala::kColorIconInteractive},
-          {kColorBraveSplitViewMenuButtonBackground,
-           nala::kColorContainerBackground},
-          {kColorBraveSplitViewMenuButtonBorder, nala::kColorDividerSubtle},
-          {kColorBraveSplitViewActiveWebViewBorder,
-           nala::kColorIconInteractive},
-          {kColorBraveSplitViewInactiveWebViewBorder, kDarkFrame},
-          {kColorBraveSplitViewMenuItemIcon, nala::kColorIconDefault},
-          {kColorBraveSplitViewUrl, nala::kColorTextTertiary},
       });
+  AddBraveTabThemeColorMixer(provider, key);
+
   for (const auto& [color_id, default_color] : *kDefaultColorMap) {
     auto color =
         GetCustomColorOrDefaultColor(key.custom_theme, color_id, default_color);

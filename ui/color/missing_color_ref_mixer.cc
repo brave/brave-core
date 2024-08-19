@@ -48,6 +48,11 @@ void AddGenerated(ColorProvider* provider,
   mixer[kColorRefNeutral5] = {palette->neutral().get(5)};
   mixer[kColorRefNeutral35] = {palette->neutral().get(35)};
 
+  mixer[kColorRefNeutralVariant5] = {palette->neutral_variant().get(5)};
+  mixer[kColorRefNeutralVariant25] = {palette->neutral_variant().get(25)};
+  mixer[kColorRefNeutralVariant35] = {palette->neutral_variant().get(35)};
+  mixer[kColorRefNeutralVariant98] = {palette->neutral_variant().get(98)};
+
   mixer[kColorRefPrimary5] = {palette->primary().get(5)};
   mixer[kColorRefPrimary15] = {palette->primary().get(15)};
   mixer[kColorRefPrimary35] = {palette->primary().get(35)};
