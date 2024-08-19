@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index a8c87a5d595af314ff9592b5795346b6859ff60b..57d93cc87b253258694854f23662f6126c0f70d6 100644
+index a8c87a5d595af314ff9592b5795346b6859ff60b..b42edf0a54f2ec2e7ff132d85951b938a9dc7720 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -191,6 +191,7 @@ if (!is_android && !is_mac) {
@@ -44,7 +44,7 @@ index a8c87a5d595af314ff9592b5795346b6859ff60b..57d93cc87b253258694854f23662f612
        "--scm=0",
      ]
    }
-+  copy("brave_helper_plist") { deps = [ "//brave:brave_helper_plist" ] sources = [ "$root_gen_dir/brave/brave_helper_plist_tweaked.plist" ] outputs = [ "$root_gen_dir/chrome/{{source_file_part}}" ] } import("//brave/updater/config.gni") # For brave_enable_updater below.
++  copy("brave_helper_plist") { deps = [ "//brave:brave_helper_plist" ] sources = [ "$root_gen_dir/brave/brave_helper_plist_tweaked.plist" ] outputs = [ "$root_gen_dir/chrome/{{source_file_part}}" ] } import("//brave/updater/config.gni") # For build_omaha4 below.
  
    compile_entitlements("entitlements") {
      entitlements_templates = [ "app/app-entitlements.plist" ]
@@ -64,7 +64,7 @@ index a8c87a5d595af314ff9592b5795346b6859ff60b..57d93cc87b253258694854f23662f612
      if (enable_updater) {
        if (is_chrome_branded) {
          sources += [ "//third_party/updater/chrome_mac_universal_prod/cipd/${updater_product_full_name}.app" ]
-+      } else if (!brave_enable_updater) {} else if (!build_omaha4) { sources += [ "//build/mac_files/omaha4/${updater_product_full_name}.app" ]
++      } else if (!build_omaha4) { sources += [ "//build/mac_files/omaha4/${updater_product_full_name}.app" ]
        } else {
          sources += [ "$root_out_dir/${updater_product_full_name}.app" ]
  

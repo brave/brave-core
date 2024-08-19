@@ -5,8 +5,12 @@
 
 #include "chrome/browser/ui/webui/settings/browser_lifetime_handler.h"
 
+#if !BUILDFLAG(IS_MAC)
+#include "src/chrome/browser/ui/webui/settings/browser_lifetime_handler.cc"
+#else
+
+#include "brave/browser/mac/features.h"
 #include "brave/browser/sparkle_buildflags.h"
-#include "brave/updater/buildflags.h"
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #include "brave/browser/ui/webui/settings/brave_relaunch_handler_mac.h"
@@ -21,12 +25,11 @@ namespace settings {
 BrowserLifetimeHandler::~BrowserLifetimeHandler() {}
 
 void BrowserLifetimeHandler::HandleRelaunch(const base::Value::List& args) {
-#if BUILDFLAG(ENABLE_SPARKLE) && !BUILDFLAG(BRAVE_ENABLE_UPDATER)
-  if (brave_relaunch_handler::RelaunchOnMac()) {
-    return;
+  if (!ShouldUseSparkle() || !brave_relaunch_handler::RelaunchOnMac()) {
+    BrowserLifetimeHandler_ChromiumImpl::HandleRelaunch(args);
   }
-#endif
-  BrowserLifetimeHandler_ChromiumImpl::HandleRelaunch(args);
 }
 
 }  // namespace settings
+
+#endif  // !BUILDFLAG(IS_MAC)

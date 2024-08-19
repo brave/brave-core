@@ -20,12 +20,12 @@
 
 // macOS implementation of version update functionality, used by the WebUI
 // About/Help page.
-class VersionUpdaterMac : public VersionUpdater {
+class SparkleVersionUpdater : public VersionUpdater {
  public:
-  VersionUpdaterMac();
-  VersionUpdaterMac(const VersionUpdaterMac&) = delete;
-  VersionUpdaterMac& operator=(const VersionUpdaterMac&) = delete;
-  ~VersionUpdaterMac() override;
+  SparkleVersionUpdater();
+  SparkleVersionUpdater(const SparkleVersionUpdater&) = delete;
+  SparkleVersionUpdater& operator=(const SparkleVersionUpdater&) = delete;
+  ~SparkleVersionUpdater() override;
 
   // VersionUpdater implementation.
   void CheckForUpdate(StatusCallback status_callback,
@@ -59,7 +59,7 @@ class VersionUpdaterMac : public VersionUpdater {
   // The observer that will receive Keystone status updates.
   KeystoneObserver* __strong keystone_observer_;
 
-  base::WeakPtrFactory<VersionUpdaterMac> weak_factory_{this};
+  base::WeakPtrFactory<SparkleVersionUpdater> weak_factory_{this};
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_HELP_VERSION_UPDATER_MAC_H_
