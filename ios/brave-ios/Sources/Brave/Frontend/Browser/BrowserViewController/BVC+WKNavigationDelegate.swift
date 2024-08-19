@@ -1509,19 +1509,18 @@ extension BrowserViewController: CWVUIDelegate {
       return UIMenu(title: url.absoluteString.truncate(length: 100), children: actions)
     }
 
-    // FIXME: Link previews
-    //    let linkPreview: UIContextMenuContentPreviewProvider? = { [unowned self] in
-    //      if let tab = tabManager[webView] {
-    //        return LinkPreviewViewController(url: url, for: tab, browserController: self)
-    //      }
-    //      return nil
-    //    }
+    let linkPreview: UIContextMenuContentPreviewProvider? = { [unowned self] in
+      if let tab = tabManager[webView] {
+        return LinkPreviewViewController(url: url, for: tab, browserController: self)
+      }
+      return nil
+    }
 
-    //    let linkPreviewProvider = Preferences.General.enableLinkPreview.value ? linkPreview : nil
+    let linkPreviewProvider = Preferences.General.enableLinkPreview.value ? linkPreview : nil
     completionHandler(
       UIContextMenuConfiguration(
         identifier: nil,
-        previewProvider: nil,
+        previewProvider: linkPreviewProvider,
         actionProvider: actionProvider
       )
     )

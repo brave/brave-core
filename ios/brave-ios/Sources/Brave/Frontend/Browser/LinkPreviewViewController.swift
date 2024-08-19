@@ -26,19 +26,20 @@ class LinkPreviewViewController: UIViewController {
 
   override func viewDidLoad() {
     guard let parentTab = parentTab,
-      let tabWebView = parentTab.webView?.underlyingWebView
+      let tabWebView = parentTab.webView
     else {
       return
     }
 
     currentTab = Tab(
-      wkConfiguration: tabWebView.configuration,
-      configuration: parentTab.isPrivate ? .incognito() : .default(),
+      wkConfiguration: .init(),
+      configuration: tabWebView.configuration,
       type: parentTab.isPrivate ? .private : .regular,
       tabGeneratorAPI: nil
     ).then {
       $0.tabDelegate = browserController
       $0.navigationDelegate = browserController
+      // FIXME: This should probably be treated as a pre-render or bottom-sheet web view which typically don't have all tab helpers attached
       $0.createWebview()
       $0.webView?.scrollView.layer.masksToBounds = true
     }
