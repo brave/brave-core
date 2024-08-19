@@ -24,7 +24,7 @@
         android:persistent="false"/>
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="search_suggestions"
-        android:title="@string/improve_search_suggestions_title"
+        android:title="@string/show_search_suggestions_title"
         android:summary="@string/improve_search_suggestions_summary"
         android:persistent="false"
         android:order="4"/>
