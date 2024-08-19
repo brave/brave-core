@@ -9,7 +9,9 @@ import override_utils
 
 
 def _add_brave_metrics(options):
-    options.ExtendTimelineBasedMetric(['braveNavigationMetric'])
+    tracing_categories = options.config.chrome_trace_config.category_filter
+    tracing_categories.AddIncludedCategory('base')
+    options.ExtendTimelineBasedMetric(['braveTraceBasedMetric'])
     return options
 
 
