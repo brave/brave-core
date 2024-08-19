@@ -86,7 +86,7 @@ void AddBraveTabLightThemeColorMixer(ui::ColorProvider* provider,
   static const base::NoDestructor<base::flat_map<BraveColorIds, SkColor>>
       kDefaultColorMap({
           {kColorBraveVerticalTabActiveBackground,
-           mixer.GetResultColor(kColorTabBackgroundActiveFrameActive)},
+           mixer.GetResultColor(kColorTabBackgroundInactiveFrameActive)},
           {kColorBraveVerticalTabInactiveBackground,
            mixer.GetResultColor(kColorToolbar)},
           {kColorBraveVerticalTabSeparator,
@@ -127,7 +127,7 @@ void AddBraveTabDarkThemeColorMixer(ui::ColorProvider* provider,
   static const base::NoDestructor<base::flat_map<BraveColorIds, SkColor>>
       kDefaultColorMap({
           {kColorBraveVerticalTabActiveBackground,
-           mixer.GetResultColor(kColorTabBackgroundActiveFrameActive)},
+           mixer.GetResultColor(kColorTabBackgroundInactiveFrameActive)},
           {kColorBraveVerticalTabInactiveBackground,
            mixer.GetResultColor(kColorToolbar)},
           {kColorBraveVerticalTabSeparator,
