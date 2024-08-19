@@ -46,8 +46,8 @@ patches/**/*.patchinfo
 *.sln
 debug.log
 npm-debug.log
-.npmrc
-.env
+.npmrc*
+.env*
 *~
 CMakeLists.txt
 cmake-build-debug/
