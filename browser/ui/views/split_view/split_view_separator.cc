@@ -15,6 +15,7 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -182,6 +183,13 @@ void SplitViewSeparator::OnBoundsChanged(const gfx::Rect& previous_bounds) {
   ResizeArea::OnBoundsChanged(previous_bounds);
 
   LayoutMenuButton();
+}
+
+void SplitViewSeparator::OnPaintBackground(gfx::Canvas* canvas) {
+  auto* cp = GetColorProvider();
+  CHECK(cp);
+
+  canvas->FillRect(GetContentsBounds(), cp->GetColor(kColorToolbar));
 }
 
 void SplitViewSeparator::OnResize(int resize_amount, bool done_resizing) {
