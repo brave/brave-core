@@ -83,32 +83,34 @@ class BraveTabStyle : public TabStyleBase {
       bool hovered,
       const bool frame_active,
       const ui::ColorProvider& color_provider) const override {
-  switch (state) {
-    case TabStyleBase::TabSelectionState::kActive: {
-      constexpr ui::ColorId kActiveColorIds[2] = {
-          kColorTabBackgroundActiveFrameInactive,
-          kColorTabBackgroundActiveFrameActive};
-      return color_provider.GetColor(kActiveColorIds[frame_active]);
+    switch (state) {
+      case TabStyleBase::TabSelectionState::kActive: {
+        constexpr ui::ColorId kActiveColorIds[2] = {
+            kColorTabBackgroundActiveFrameInactive,
+            kColorTabBackgroundActiveFrameActive};
+        return color_provider.GetColor(kActiveColorIds[frame_active]);
+      }
+      case TabStyleBase::TabSelectionState::kSelected: {
+        constexpr ui::ColorId kSelectedColorIds[2][2] = {
+            {kColorTabBackgroundSelectedFrameInactive,
+             kColorTabBackgroundSelectedFrameActive},
+            {kColorTabBackgroundSelectedHoverFrameInactive,
+             kColorTabBackgroundSelectedHoverFrameActive}};
+        return color_provider.GetColor(
+            kSelectedColorIds[hovered][frame_active]);
+      }
+      case TabStyleBase::TabSelectionState::kInactive: {
+        constexpr ui::ColorId kInactiveColorIds[2][2] = {
+            {kColorTabBackgroundInactiveFrameInactive,
+             kColorTabBackgroundInactiveFrameActive},
+            {kColorTabBackgroundInactiveHoverFrameInactive,
+             kColorTabBackgroundInactiveHoverFrameActive}};
+        return color_provider.GetColor(
+            kInactiveColorIds[hovered][frame_active]);
+      }
+      default:
+        NOTREACHED_NORETURN();
     }
-    case TabStyleBase::TabSelectionState::kSelected: {
-      constexpr ui::ColorId kSelectedColorIds[2][2] = {
-          {kColorTabBackgroundSelectedFrameInactive,
-           kColorTabBackgroundSelectedFrameActive},
-          {kColorTabBackgroundSelectedHoverFrameInactive,
-           kColorTabBackgroundSelectedHoverFrameActive}};
-      return color_provider.GetColor(kSelectedColorIds[hovered][frame_active]);
-    }
-    case TabStyleBase::TabSelectionState::kInactive: {
-      constexpr ui::ColorId kInactiveColorIds[2][2] = {
-          {kColorTabBackgroundInactiveFrameInactive,
-           kColorTabBackgroundInactiveFrameActive},
-          {kColorTabBackgroundInactiveHoverFrameInactive,
-           kColorTabBackgroundInactiveHoverFrameActive}};
-      return color_provider.GetColor(kInactiveColorIds[hovered][frame_active]);
-    }
-    default:
-      NOTREACHED_NORETURN();
-  }
   }
 };
 
