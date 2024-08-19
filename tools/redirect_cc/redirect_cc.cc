@@ -22,7 +22,7 @@
 #if defined(REDIRECT_CC_AS_REWRAPPER)
 #include "base/base_paths.h"
 #include "base/path_service.h"
-#include "brave/tools/redirect_cc/rewrapper_buildflags.h"
+#include "brave/tools/redirect_cc/rewrapper_buildflags.h"  // nogncheck
 #else  // defined(REDIRECT_CC_AS_REWRAPPER)
 #include "base/environment.h"
 #endif  // defined(REDIRECT_CC_AS_REWRAPPER)

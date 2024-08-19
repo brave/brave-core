@@ -615,15 +615,18 @@ const util = {
     gnGenGuard.run((wasInterrupted) => {
       const doesBuildNinjaExist = fs.existsSync(path.join(outputDir, 'build.ninja'))
       const hasBuildArgsUpdated = util.writeGnBuildArgs(outputDir, buildArgs)
+      const shouldCheck = config.isCI
+      const internalOpts = shouldCheck ? ['--check'] : []
 
       const shouldRunGnGen =
         config.force_gn_gen ||
         !doesBuildNinjaExist ||
         hasBuildArgsUpdated ||
+        shouldCheck ||
         wasInterrupted
 
       if (shouldRunGnGen) {
-        util.run('gn', ['gen', outputDir, ...extraGnGenOpts], options)
+        util.run('gn', ['gen', outputDir, ...extraGnGenOpts, ...internalOpts], options)
       }
     })
   },
@@ -689,9 +692,6 @@ const util = {
       await util.buildNativeRedirectCC()
 
       const extraGnGenOpts = config.extraGnGenOpts ? [config.extraGnGenOpts] : []
-      if (config.isCI) {
-        extraGnGenOpts.push('--check')
-      }
       util.runGnGen(config.outputDir, config.buildArgs(), extraGnGenOpts, options)
     })
   },
