@@ -14,7 +14,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/json/json_reader.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
-#include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_helper.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "components/prefs/pref_service.h"
