@@ -10,5 +10,3 @@ brave_components_update_client_deps = [
 
 brave_components_update_client_public_deps =
     [ "//brave/components/update_client:buildflags" ]
-
-brave_components_update_client_deps += [ "//brave/updater:buildflags" ]

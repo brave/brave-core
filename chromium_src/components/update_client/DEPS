@@ -1,5 +1,4 @@
 include_rules = [
   "+brave/components/constants",
   "+brave/components/widevine/constants.h",
-  "+brave/updater/buildflags.h",
 ]

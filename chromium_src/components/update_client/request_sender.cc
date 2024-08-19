@@ -3,10 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/updater/buildflags.h"
-
-#if BUILDFLAG(BRAVE_ENABLE_UPDATER)
-
 // The code below replaces Ecdsa::Create(kKeyVersion, kKeyPubBytesBase64) by
 // Ecdsa::Create(kBraveKeyVersion, kBraveKeyPubBytesBase64) in upstream's
 // request_sender.cc.
@@ -51,11 +47,5 @@ class BraveEcdsa : public Ecdsa {
 }  // namespace client_update_protocol
 
 #define Ecdsa BraveEcdsa
-
-#endif  // BUILDFLAG(BRAVE_ENABLE_UPDATER)
-
 #include "src/components/update_client/request_sender.cc"
-
-#if BUILDFLAG(BRAVE_ENABLE_UPDATER)
 #undef Ecdsa
-#endif
