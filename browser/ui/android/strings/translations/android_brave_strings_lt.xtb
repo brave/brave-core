@@ -108,9 +108,10 @@
 <translation id="4692623383562244444">Paieškos sistemos</translation>
 <translation id="1468415711258933398">Standartinis skirtukas</translation>
 <translation id="3377025655491224618">Inkognito skirtukas</translation>
+<translation id="7304425663107214334">Rodyti naršyklės pasiūlymus</translation>
+<translation id="8982438328166986164">Remiantis jūsų žymomis ir naršymo istorija rodomi svetainių pasiūlymai.</translation>
+<translation id="1571106259128580884">Rodyti populiariausių svetainių pasiūlymus</translation>
 <translation id="9148058034647219655">Išeiti</translation>
-<translation id="4022987104439075738">IPFS tinklų sietuvas</translation>
-<translation id="2688519859165248360">Leidžia į IPFS išteklius patekti per IPFS tinklų sietuvą</translation>
 <translation id="8047754398610073499">Blokuoti pranešimus sutikti su slapukais</translation>
 <translation id="2621893359845808115">Blokuojami svetainių iškylantieji langai, kuriuose jūsų prašoma sutikti su slapukais arba juos atmesti toje svetainėje</translation>
 <translation id="7534079972563542000">„Unstoppable Domains“</translation>
@@ -142,9 +143,9 @@
 <translation id="2356070529366658676">Paklausti</translation>
 <translation id="4176463684765177261">Pasyvinta</translation>
 <translation id="59174027418879706">Aktyvinta</translation>
-<translation id="6252490671914511928">Geriausios šiandienos istorijos visiškai privačiame sraute – tik jums.</translation>
+<translation id="6920492760024499150">Geriausios šiandienos istorijos privačiame sraute – tik jums.</translation>
 <translation id="8300751939969131609">Įjunkite „Brave“ naujienas ir nepraleiskite nė vienos istorijos</translation>
-<translation id="7266075701303521777">„Brave“ naujienas remia reklama – rodomos visiškai privačios ir anoniminės reklamos, pritaikytos jūsų įrenginiui.</translation>
+<translation id="7627131190984957214">„Brave“ naujienas remia reklama – rodomos privačios ir anoniminės reklamos, pritaikytos jūsų įrenginiui.</translation>
 <translation id="7699565323725789472">Sekite mėgstamus naujienų šaltinius viename sraute. Tiesiog atidarykite skirtuką „Brave“ naršyklėje, slinkite žemyn ir… viskas!\n„Brave“ naujienų funkcija palaikoma skelbimų. Jums rodomos privačios anoniminės reklamos.</translation>
 <translation id="1765217911817124376">Įjungti „Brave“ naujienas</translation>
 <translation id="8981973962043893066">Ieškoti svetainių, temų arba RSS srauto</translation>
@@ -233,7 +234,7 @@
 <translation id="7281027579943912834">Kai „Brave“ yra numatytoji naršyklė, kiekviena paliesta nuoroda bus apsaugota nuo reklamos. Kiekvienas puslapis, vaizdo įrašas ir srautas.</translation>
 <translation id="5148943178722443958">Padėkite tobulinti „Brave“.</translation>
 <translation id="6718362830686703942">Siųskite diagnostikos ataskaitas įvykus strigčiai.</translation>
-<translation id="1929905278861178845">Bendrinkite visiškai privačias ir anonimines įžvalgas apie produktus, pasakodami, kokias funkcijas naudoja „Brave“ naudotojai.</translation>
+<translation id="8616157231067364693">Bendrinkite privačias ir anonimines įžvalgas apie produktus, pasakodami, kokias funkcijas naudoja „Brave“ naudotojai.</translation>
 <translation id="2877653791257935258">Įrašykite svetainės pavadinimą arba URL</translation>
 <translation id="5329830149661250028">Pamatykite, kuo skiriasi „Brave“: jokios reklamos, jokių sekiklių, daug greičiau įkeliami puslapiai.</translation>
 <translation id="3941792073703079607">Pamatykite, kuo skiriasi „Brave“: blokuokite reklamą. Išsaugokite duomenis. Transliuokite greičiau.</translation>
@@ -276,7 +277,7 @@
 <translation id="1938402585819943124">Kitame ekrane pasirinkite „Brave“.</translation>
 <translation id="8926389886865778422">Neklauskite dar kartą</translation>
 <translation id="745974920645827035">Nepriklausoma paieška su geresniu privatumu</translation>
-<translation id="4717018805430015801">„Brave“ paieška neseka jūsų, jūsų užklausų ar paspaudimų.</translation>
+<translation id="2773167297815493692">„Brave“ Paieška jūsų neprofiliuoja.</translation>
 <translation id="5240031343741051161">Išbandykite „Brave“ paiešką</translation>
 <translation id="5234764350956374838">Atsisakyti</translation>
 <translation id="6639570430554986719">SAUSIS</translation>
@@ -315,15 +316,13 @@
 <translation id="3132642509209154999">Kodo galiojimas baigėsi. Sugeneruokite naują kitame įrenginyje ir bandykite dar kartą.</translation>
 <translation id="2859229680945501779">Šis kodas negalioja. Patikrinkite, ar jūsų įrenginyje teisingai nustatytas laikas ir laiko juosta.</translation>
 <translation id="3149880132460839085">„Brave Sync“</translation>
-<translation id="3680755684186855422">„Brave Sync“ skirta žymių duomenims privačiai sinchronizuoti tarp įvairiuose įrenginiuose įdiegtų „Brave“ naršyklių.</translation>
-<translation id="3735228155296883311">Tiesiog nuskaitykite kodą iš savo sinchronizavimo grandinės, kurią sukūrėte kitame įrenginyje. Taip pat galite pradėti naują sinchronizavimo grandinę.</translation>
+<translation id="348794064910142198">„Brave Sync“ leidžia privačiai sinchronizuoti žymų duomenis tarp „Brave“ naršyklių įvairiuose įrenginiuose.\n\nTiesiog nuskaitykite kodą iš savo sinchronizavimo grandinės, kurią sukūrėte kitame įrenginyje. Arba sukurkite naują sinchronizavimo grandinę.</translation>
 <translation id="2614069607859982576">Naudodami esamą sinchronizuotą įrenginį, atverkite „Brave“ nuostatas ir nueikite į „Nuostatos“ &gt; „Sinchronizavimas“. Pasirinkite „Pridėti naują įrenginį“ ir nuskaitykite ekrane rodomą QR kodą.</translation>
 <translation id="5241263629636958324">Nukopijuota į iškarpinę</translation>
 <translation id="5817918615728894473">Susieti</translation>
 <translation id="3429575397891106447">Sinchronizavimo parinktys</translation>
 <translation id="1680065323266179640">Ištrinti sinchronizuojamą paskyrą</translation>
-<translation id="3792563952903751704">Jei ištrinsite savo paskyrą, iš „Brave“ serverių bus pašalinti jūsų šifruoti duomenys, o visuose prijungtuose įrenginiuose bus išjungta sinchronizavimo funkcija. Vis dėlto nebus ištrinti duomenys, kurie laikomi vietoje, šiuose įrenginiuose.
-  Ištrinama bus visam laikui ir nebus galimybių duomenis atkurti. Jei nuspręsite vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti įrenginius po vieną.</translation>
+<translation id="8397325856045820212">Jei ištrinsite savo paskyrą, iš „Brave“ serverių bus pašalinti jūsų šifruoti duomenys, o visuose prijungtuose įrenginiuose bus išjungta sinchronizavimo funkcija. Vis dėlto šiuose įrenginiuose nebus ištrinti duomenys, kurie laikomi vietoje.\n\nIštrinama bus visam laikui ir nebus galimybių duomenis atkurti. Jei nuspręsite vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti įrenginius po vieną.</translation>
 <translation id="9064376100690171155">Visam laikui ištrinti paskyrą</translation>
 <translation id="2740516568641790390">Sinchronizuojama paskyra sėkmingai ištrinta</translation>
 <translation id="7006136453627651236">Nepavyko ištrinti sinchronizuojamos paskyros</translation>
@@ -333,12 +332,10 @@
 <translation id="1602067095281698985">Sudaryti naują sinchronizavimo grandinę</translation>
 <translation id="1475223680121592371">Pridėti mobilųjį įrenginį</translation>
 <translation id="2965377893636908578">Pridėti kompiuterį</translation>
-<translation id="6604289897677913048">Naudodami antrą įrenginį, nueikite į „Brave“ meniu „Nustatymai“ &gt; „Sinchronizavimas“ &gt; „Nuskaityti“.</translation>
-<translation id="8508856434435157945">Mobiliojo įrenginio dalyje „Nuostatos“ nueikite į „Brave Sync“ ir spustelėkite mygtuką „Nuskaityti sinchronizavimo kodą“. Naudodami kamerą nuskaitykite toliau esantį QR kodą.</translation>
-<translation id="2590683710114839102">Kompiuteryje nueikite į „Brave“ meniu „Nuostatos“ &gt; „Sinchronizavimas“. Pasirinkite „Įvesti sinchronizavimo grandinės kodą“.</translation>
+<translation id="4701589725270449523">Naudodami antrą įrenginį, nueikite į „Brave“ meniu „Nustatymai“ &gt; „Sinchronizavimas“ &gt; „Nuskaityti“.\n\nMobiliojo įrenginio dalyje „Nustatymai“ nueikite į „Brave Sync“ ir spustelėkite mygtuką „Nuskaityti sinchronizavimo kodą“. Naudodami kamerą nuskaitykite toliau esantį QR kodą.</translation>
+<translation id="67114562351518315">Kompiuteryje nueikite į „Brave“ meniu „Nuostatos“ &gt; „Sinchronizavimas“. Pasirinkite „Įvesti sinchronizavimo grandinės kodą“.\n\nPaskirties kompiuterio nuostatų dalyje nueikite į „Brave Sync“ ir spustelėkite mygtuką „Turiu sinchronizavimo kodą“.\nĮveskite toliau parodytus sinchronizavimo grandinės kodo žodžius.</translation>
 <translation id="65315202420929965">Nuskaitykite šį sinchronizavimo kodą</translation>
 <translation id="6764016175302339802">Elkitės su šiuo kodu kaip su slaptažodžiu. Jei jį sužinos kitas asmuo, galės skaityti ir keisti jūsų sinchronizuotus duomenis.</translation>
-<translation id="6707003343517029414">Paskirties kompiuterio nuostatų dalyje nueikite į „Brave Sync“ ir spustelėkite mygtuką „Turiu sinchronizavimo kodą“.\nĮveskite toliau parodytus sinchronizavimo grandinės kodo žodžius.</translation>
 <translation id="2731921493694251495">Įveskite sinchronizavimo grandinės kodą</translation>
 <translation id="2175927920773552910">QR kodas</translation>
 <translation id="8653433343015102968">Žodinis kodas</translation>
@@ -352,6 +349,9 @@
 <translation id="8131740175452115882">Patvirtinti</translation>
 <translation id="4973653569293835178">Naudosiu savo kamerą...</translation>
 <translation id="326454632686131209">Sinchronizuoti įrenginį</translation>
+<translation id="3122158728238634723">Sukurti naują kodą</translation>
+<translation id="4358805443781965194">Kodas nebegalioja. Sukurkite naują spustelėdami toliau pateiktą mygtuką.</translation>
+<translation id="318164877797885563">Šis laikinasis kodas galioja dar <ph name="TIME_AMOUNT"/></translation>
 <translation id="327726072512457161">Išeiti iš nuostatų</translation>
 <translation id="8050847734948770789">Aktyvinti „Brave Rewards“</translation>
 <translation id="9187185473011056079">Sutinku!</translation>
@@ -420,8 +420,6 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="8643377320501056697">Rodyti populiarias svetaines</translation>
 <translation id="7275773481201277457">Rodyti „Brave“ statistiką</translation>
 <translation id="8297488609722895137">Nuotraukos autorius <ph name="PHOTO_BY"/></translation>
-<translation id="4761229094276239865">Bakstelėdami „Pradėti naudotis „Brave Rewards“ sutinkate su <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="7136586167396205364">Slėpti remiamus vaizdus</translation>
 <translation id="2898634658146274982">Atidaryti išorines nuorodas naudojant „Brave“</translation>
 <translation id="5616508928556767259">„Brave“ žiniatinklio rodinyje atidaro nuorodas iš kitų programų. Pastaba: „Brave“ turi būti nustatyta kaip jūsų numatytoji naršyklė.</translation>
 <translation id="2394961582378297792">Atsijungta</translation>
@@ -442,15 +440,11 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="7961015016161918242">Niekada</translation>
 <translation id="1275213816424141989">Gal vėliau</translation>
 <translation id="4406937629441301400">Užsidirbkite žetonų už šio vaizdo peržiūrą ir perveskite juos kūrėjams. <ph name="LEARN_MORE"/></translation>
-<translation id="1992363542751124282">Gaukite žetonų už šio vaizdo peržiūrą. Naudodami „Brave Rewards“ palieskite „Pradėti“ ir gaukite savo dalį.</translation>
 <translation id="6632345639591919543">Už šio vaizdo peržiūrą uždirbate žetonų.\n<ph name="LEARN_MORE"/></translation>
-<translation id="1465733111003593696">Už šio vaizdo peržiūrą uždirbate žetonų.</translation>
-<translation id="7877201489035217175">Sužinoti daugiau apie remiamus vaizdus</translation>
 <translation id="8164992819127316581">Dabartinio mėnesio (<ph name="CURRENT_MONTH"/>) atlygio išmoka bus pradėta apdoroti <ph name="PAYOUT_DATE"/>.</translation>
 <translation id="33967210973550414">Dabartinio mėnesio (<ph name="CURRENT_MONTH"/>) atlygio išmoka apdorojama.<ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">Dabartinio mėnesio (<ph name="CURRENT_MONTH"/>) atlygio išmoka atlikta.<ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">Tikrinti būseną</translation>
-<translation id="828092975561478703">Už kiekvieną savo peržiūrėtą remiamą vaizdą gaunate 70 % pajamų žetonais. Su „Brave Ads“ visada galite kontroliuoti savo matomas reklamas.</translation>
 <translation id="3624048886326677117">Blokuoti sekiklius ir reklamas (agresyvus)</translation>
 <translation id="7151914815476509258">Blokuoti sekiklius ir reklamas (standartinis)</translation>
 <translation id="7384778069178817075">Leisti visus sekiklius ir reklamas</translation>
@@ -490,7 +484,6 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="5299848999918506028">Dėkojame!</translation>
 <translation id="76550953340008122">Dėkojame, kad pranešėte „Brave“ kūrėjams, jog su šia svetaine kažkas negerai. Pasistengsime ją sutvarkyti!</translation>
 <translation id="650318023204990401">Išplėstiniai valdikliai</translation>
-<translation id="1275664486910646411">Rodyti populiariausias svetaines automatiškai užpildant</translation>
 <translation id="5370478469168390143">Įrašyti duomenis internete</translation>
 <translation id="1118508688433541158">Naršykite sparčiau ir blokuokite reklamas naudodami „Brave“</translation>
 <translation id="7427391215172269363">Kasdien naršydamas saityną su „Brave“ taupau duomenis.</translation>
@@ -831,8 +824,6 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="3074127054582480056">Dėmesys</translation>
 <translation id="2280319752798785157">Mėnesinis indėlis</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
-<translation id="5802665280774361839">Rodyti automatinį užbaigimą adreso juostoje</translation>
-<translation id="8982438328166986164">Remiantis jūsų žymomis ir naršymo istorija rodomi svetainių pasiūlymai.</translation>
 <translation id="1241283133946520352">Tinklai</translation>
 <translation id="1062463687579789365">Piniginės tinklų tinkinimas</translation>
 <translation id="2512821599885971349">Pridėti tinklą</translation>
@@ -951,6 +942,13 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="7134370164002095282"><ph name="CURRENT"/> iš <ph name="SIZE"/></translation>
 <translation id="756701799684433105">Tvirtinti operaciją</translation>
 <translation id="6450792191436242818">Sistemos programa</translation>
+<translation id="5318067544026930166">Atrakinkite „Brave Wallet“ piniginę naudodami biometrinį autentifikavimą</translation>
+<translation id="2629767022373384291">Ar norėtumėte naudoti biometrinį autentifikavimą „Brave“ piniginei atrakinti?</translation>
+<translation id="4782919977106118997">Naudoti atrakinimą piršto atspaudu</translation>
+<translation id="2054995875643283428">Kol kas praleisti</translation>
+<translation id="2522605225061484799">Eiti į mano portfelį</translation>
+<translation id="1148624853678088576">Viskas parengta!</translation>
+<translation id="4131445988101719379">Jūsų „Brave“ piniginė paruošta naudoti</translation>
 <translation id="6252742184395380448">Konfigūravimo programa</translation>
 <translation id="5358970666412490132">Dalininkų programa</translation>
 <translation id="346636227344244984">Balsavimo programa</translation>
@@ -1200,7 +1198,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="7001163334415463127">1. Atverkite įrenginio nuostatas iš programų skydelio arba bakstelėdami toliau esantį mygtuką.</translation>
 <translation id="887443138775437899">2. Raskite „Brave“ VPN ir bakstelėkite nustatymų piktogramą dešinėje.</translation>
 <translation id="3776051499611941773">3. Perjunkite jungiklį<ph name="ALWAYS_ON_TUTORIAL_START"/>Visada įjungtas VPN<ph name="ALWAYS_ON_TUTORIAL_END"/>, kad jį įjungtumėte.</translation>
-<translation id="4776146737004271126">Atidaryti „Android“ nustatymus</translation>
+<translation id="4776146737004271126">Atidaryti „Android“ nuostatas</translation>
 <translation id="2728518864712716830">Naujinimas atsisiųstas.</translation>
 <translation id="8403338849301491865">Filtrų sąrašas sėkmingai atnaujintas</translation>
 <translation id="4650851936784160359">Filtrų sąrašo atnaujinti nepavyko. Bandykite dar kartą</translation>

@@ -109,9 +109,10 @@
 <translation id="4692623383562244444">Iskalniki</translation>
 <translation id="1468415711258933398">Standardni zavihek</translation>
 <translation id="3377025655491224618">Zavihek za način brez beleženja zgodovine</translation>
+<translation id="7304425663107214334">Pokaži predloge brskalnika</translation>
+<translation id="8982438328166986164">Prikazuje predloge spletnih mest na podlagi vaših zaznamkov in zgodovine brskanja.</translation>
+<translation id="1571106259128580884">Prikaži najbolj priljubljena spletna mesta</translation>
 <translation id="9148058034647219655">Zapri</translation>
-<translation id="4022987104439075738">Prehod IPFS</translation>
-<translation id="2688519859165248360">Omogoča navigacijo do virov IPFS prek prehoda IPFS</translation>
 <translation id="8047754398610073499">Blokiraj obvestila o soglasju za piškotke</translation>
 <translation id="2621893359845808115">Blokira pojavna okna spletnega mesta, ki vas prosijo, da sprejmete/zavrnete piškotke na njihovem spletnem mestu</translation>
 <translation id="7534079972563542000">Neustavljive domene</translation>
@@ -144,9 +145,9 @@
 <translation id="2356070529366658676">Vprašaj</translation>
 <translation id="4176463684765177261">Onemogočeno</translation>
 <translation id="59174027418879706">Omogočeno</translation>
-<translation id="6252490671914511928">Sveže novice z današnjega dne v popolnoma zasebnem viru, samo za vas.</translation>
+<translation id="6920492760024499150">Sveže novice z današnjega dne v zasebnem viru, samo za vas.</translation>
 <translation id="8300751939969131609">Vklopite novice Brave in nikoli ne zamudite zgodbe</translation>
-<translation id="7266075701303521777">Brave novice podpirajo oglasi s popolnoma zasebnimi in anonimiziranimi oglasi, ki se ujemajo v vaši napravi.</translation>
+<translation id="7627131190984957214">Brave novice podpirajo oglasi z zasebnimi in anonimiziranimi oglasi, ki se ujemajo v vaši napravi.</translation>
 <translation id="7699565323725789472">Sledite svojim priljubljenim virom v enem samem viru. Preprosto odprite zavihek v Brave, se pomaknite navzdol in … tukaj je!\nNovice Brave podpirajo oglasi s popolnoma zasebnimi in anonimiziranimi oglasi.</translation>
 <translation id="1765217911817124376">Vklopite Brave novice</translation>
 <translation id="8981973962043893066">Poiščite spletno mesto, temo ali vir RSS</translation>
@@ -235,7 +236,7 @@
 <translation id="7281027579943912834">S privzeto funkcijo Brave vsaka povezava, ki se je dotaknete, prejme Braveovo zaščito za blokiranje oglasov. Vsaka stran, videoposnetek in prenos.</translation>
 <translation id="5148943178722443958">Pomagajte izboljšati Brave.</translation>
 <translation id="6718362830686703942">Pošljite diagnostična poročila, če pride do okvare ali zamrznitve.</translation>
-<translation id="1929905278861178845">Delite popolnoma zasebne in anonimne vpoglede v izdelek o tem, katere funkcije uporabljajo uporabniki sistema Brave.</translation>
+<translation id="8616157231067364693">Delite zasebne in anonimne vpoglede v izdelek o tem, katere funkcije uporabljajo uporabniki sistema Brave.</translation>
 <translation id="2877653791257935258">Vnesite ime spletnega mesta ali URL</translation>
 <translation id="5329830149661250028">Oglejte si razliko med Brave in Brave: Brez oglasov. Brez sledilnikov. Veliko hitrejše nalaganje strani.</translation>
 <translation id="3941792073703079607">Oglejte si razliko Brave: Blokirajte oglase. Shranite podatke. Predvajajte hitreje.</translation>
@@ -278,7 +279,7 @@
 <translation id="1938402585819943124">Na naslednjem zaslonu izberite Brave.</translation>
 <translation id="8926389886865778422">Ne sprašuj več</translation>
 <translation id="745974920645827035">Neodvisno iskanje z boljšo zasebnostjo</translation>
-<translation id="4717018805430015801">Brave Search ne sledi vam, vašim poizvedbam ali vašim klikom.</translation>
+<translation id="2773167297815493692">Iskanje Brave vas ne spremlja.</translation>
 <translation id="5240031343741051161">Preizkusite iskanje Brave</translation>
 <translation id="5234764350956374838">Opusti</translation>
 <translation id="6639570430554986719">JANUAR</translation>
@@ -317,15 +318,13 @@
 <translation id="3132642509209154999">Ta koda je potekla. Ustvarite novo v drugi napravi in poskusite znova.</translation>
 <translation id="2859229680945501779">Ta koda ni veljavna. Preverite, ali sta ura in časovni pas na vaši napravi pravilno nastavljena.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
-<translation id="3680755684186855422">Brave Sync vam omogoča, da zasebno sinhronizirate podatke o zaznamkih med vašimi brskalniki Brave na različnih napravah.</translation>
-<translation id="3735228155296883311">Preprosto optično preberite kodo iz verige za sinhronizacijo, ki ste jo ustvarili v drugi napravi. Ali pa zaženite novo verigo sinhronizacije.</translation>
+<translation id="348794064910142198">Sinhronizacija Brave vam omogoča zasebno sinhronizacijo podatkov v zaznamkih med brskalniki Brave v različnih napravah.\n\nPreprosto skenirajte kodo iz verige sinhronizacije, ki ste jo ustvarili v drugi napravi. Ali pa ustvarite novo sinhronizacijsko verigo.</translation>
 <translation id="2614069607859982576">Z obstoječo sinhronizirano napravo odprite Brave nastavitve in se pomaknite do Nastavitve &gt; Sinhroniziraj. Izberite "Dodaj novo napravo" in skenirajte kodo QR, prikazano na zaslonu.</translation>
 <translation id="5241263629636958324">Kopirano v odložišče!</translation>
 <translation id="5817918615728894473">Seznani</translation>
 <translation id="3429575397891106447">Možnosti sinhronizacije</translation>
 <translation id="1680065323266179640">Izbris sinhronizacije računa</translation>
-<translation id="3792563952903751704">Če izbrišete svoj račun, boste s tem odstranili svoje šifrirane podatke s strežnikov Brave in onemogočili sinhronizacijo v vseh povezanih napravah. Ne boste pa izbrisali podatkov, ki so lokalno shranjeni v teh napravah.
-Ta izbris je trajen in podatkov ni mogoče obnoviti. Če se odločite za ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično znova dodati vsako napravo.</translation>
+<translation id="8397325856045820212">Če izbrišete svoj račun, boste s tem odstranili svoje šifrirane podatke s strežnikov Brave in onemogočili sinhronizacijo v vseh povezanih napravah. Ne boste pa izbrisali podatkov, ki so lokalno shranjeni v teh napravah.\n\nTa izbris je trajen in podatkov ni mogoče obnoviti. Če se odločite za ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično znova dodati vsako napravo.</translation>
 <translation id="9064376100690171155">Trajno izbriši račun</translation>
 <translation id="2740516568641790390">Sinhronizirani račun je bil uspešno izbrisan</translation>
 <translation id="7006136453627651236">Brisanje sinhroniziranega računa ni uspelo</translation>
@@ -335,12 +334,10 @@ Ta izbris je trajen in podatkov ni mogoče obnoviti. Če se odločite za ponovno
 <translation id="1602067095281698985">Začni novo sinhronizacijsko verigo</translation>
 <translation id="1475223680121592371">Dodaj novo napravo</translation>
 <translation id="2965377893636908578">Dodaj računalnik</translation>
-<translation id="6604289897677913048">Z uporabo drugega telefona ali tabličnega računalnika pojdite do možnosti Nastavitve Brave &gt; Sinhronizacija &gt; Optično branje.</translation>
-<translation id="8508856434435157945">Na svoji mobilni napravi pojdite do možnosti Sinhronizacija Brave v plošči z nastavitvami in kliknite gumb »Optično preberi sinhronizacijsko kodo«. Da optično preberete spodnjo QR-kodo, uporabite svojo kamero.</translation>
-<translation id="2590683710114839102">Na svojem računalniku pojdite do možnosti Nastavitve Brave &gt; Sinhronizacija. Izberite možnost »Vnesi kodo sinhronizacijske verige«.</translation>
+<translation id="4701589725270449523">V drugem telefonu ali tablici se pomaknite do nastavitev Brave &gt; Sinhroniziraj &gt; Optično preberi.\n\nV mobilni napravi se na plošči z nastavitvami pomaknite do možnosti Sinhronizacije Brave in kliknite gumb »Preberi kodo sinhronizacije«. S kamero optično preberite spodnjo kodo QR.</translation>
+<translation id="67114562351518315">Na računalniku se pomaknite do možnosti za nastavitve Brave &gt; Sinhronizacija. Izberite »Vnesite kodo sinhronizacijske verige«.\n\nV ciljnem računalniku se v nastavitvah pomaknite do Sinhronizacije Brave in kliknite gumb »Imam sinhronizacijsko kodo«.\nVnesite besedilno kodo sinhronizacijske verige, prikazano spodaj.</translation>
 <translation id="65315202420929965">Optično preberite to sinhronizacijsko kodo</translation>
 <translation id="6764016175302339802">To kodo obravnavajte kot geslo. Če do nje dostopa druga oseba, lahko prebere in spreminja vaše sinhronizirane podatke.</translation>
-<translation id="6707003343517029414">Na svojem računalniku pojdite do možnosti Sinhronizacija Brave v nastavitvah in kliknite gumb »Imam sinhronizacijsko kodo«.\nVnesi kodne besede sinhronizacijske verige, prikazane spodaj.</translation>
 <translation id="2731921493694251495">Vnesi kodo sinhronizacijske verige</translation>
 <translation id="2175927920773552910">Koda QR</translation>
 <translation id="8653433343015102968">Kodne besede</translation>
@@ -354,6 +351,9 @@ Ta izbris je trajen in podatkov ni mogoče obnoviti. Če se odločite za ponovno
 <translation id="8131740175452115882">Potrdi</translation>
 <translation id="4973653569293835178">Uporabil bom svojo kamero ...</translation>
 <translation id="326454632686131209">Sinhroniziraj napravo</translation>
+<translation id="3122158728238634723">Ustvari novo kodo</translation>
+<translation id="4358805443781965194">Koda je potekla. S klikom na spodnji gumb ustvarite novo.</translation>
+<translation id="318164877797885563">Ta začasna koda velja za naslednji <ph name="TIME_AMOUNT"/></translation>
 <translation id="327726072512457161">Izhod iz nastavitev</translation>
 <translation id="8050847734948770789">Omogoči storitev Brave Rewards</translation>
 <translation id="9187185473011056079">Želim sodelovati!</translation>
@@ -418,8 +418,6 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="8643377320501056697">Prikaži najbolj priljubljena spletna mesta</translation>
 <translation id="7275773481201277457">Pokaži Braveove statistike</translation>
 <translation id="8297488609722895137">Fotografija avtorja <ph name="PHOTO_BY"/></translation>
-<translation id="4761229094276239865">Če tapnete Začni uporabljati Brave reward, se strinjate s <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="7136586167396205364">Skrij sponzorirane slike</translation>
 <translation id="2898634658146274982">Odprite zunanje povezave v Brave</translation>
 <translation id="5616508928556767259">Odpre povezave iz drugih aplikacij v spletnem pogledu Brave. Opomba: Brave mora biti nastavljen kot privzeti brskalnik.</translation>
 <translation id="2394961582378297792">Odjavljeni</translation>
@@ -440,10 +438,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="7961015016161918242">Nikoli</translation>
 <translation id="1275213816424141989">Morda pozneje</translation>
 <translation id="4406937629441301400">Z ogledom te slike lahko zaslužite žetone, ki jih tako plačate ustvarjalcem. <ph name="LEARN_MORE"/></translation>
-<translation id="1992363542751124282">Prejmite žetone za ogled te slike. Tapnite Začni uporabljati Brave Rewards, da prejmete nagrado.</translation>
 <translation id="6632345639591919543">Z ogledom te slike služite žetone.\n<ph name="LEARN_MORE"/></translation>
-<translation id="1465733111003593696">Z ogledom te slike služite žetone.</translation>
-<translation id="7877201489035217175">Več informacij o sponzoriranih slikah</translation>
 <translation id="8164992819127316581">Izplačilo za <ph name="CURRENT_MONTH"/> nagrade se bo začelo obdelovati do
 <ph name="PAYOUT_DATE"/></translation>
 <translation id="33967210973550414">Izplačilo nagrad <ph name="CURRENT_MONTH"/>
@@ -451,7 +446,6 @@ je v teku.
 <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">Izplačilo nagrad <ph name="CURRENT_MONTH"/> je zaključeno. <ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">Preverite stanje</translation>
-<translation id="828092975561478703">Za vsako sponzorirano sliko, ki si jo ogledate, prejmete 70 % dohodka v obliki žetonov. Pri oglasih Brave  imate vedno popoln nadzor nad oglasi, ki si jih ogledujete.</translation>
 <translation id="3624048886326677117">Onemogoči sledilcem &amp; oglaševanje (agresivno)</translation>
 <translation id="7151914815476509258">Onemogoči sledilcem &amp; oglaševanje (standardno)</translation>
 <translation id="7384778069178817075">Dovoli vse sledilnike in oglase</translation>
@@ -491,7 +485,6 @@ je v teku.
 <translation id="5299848999918506028">Hvala!</translation>
 <translation id="76550953340008122">Hvala, ker ste obvestili razvijalce Brave, da je s to spletno stranjo nekaj narobe. Potrudili se bomo, da to popravimo!</translation>
 <translation id="650318023204990401">Napredne nastavitve</translation>
-<translation id="1275664486910646411">V samodejnem dokončanju prikaži najbolj priljubljena spletna mesta</translation>
 <translation id="5370478469168390143">Podatke shrani na spletu</translation>
 <translation id="1118508688433541158">Brskaj hitreje in blokiraj oglase s programom Brave</translation>
 <translation id="7427391215172269363">Vsak dan shranjujem podatke z brskanjem po spletu z Brave.</translation>
@@ -834,8 +827,6 @@ je v teku.
 <translation id="3074127054582480056">Pozornost</translation>
 <translation id="2280319752798785157">Mesečni prispevek</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
-<translation id="5802665280774361839">Pokaži samodokončanje v naslovni vrstici.</translation>
-<translation id="8982438328166986164">Prikazuje predloge spletnih mest na podlagi vaših zaznamkov in zgodovine brskanja.</translation>
 <translation id="1241283133946520352">Omrežja</translation>
 <translation id="1062463687579789365">Prilagajanje omrežij denarnice</translation>
 <translation id="2512821599885971349">Dodaj omrežje</translation>
@@ -954,6 +945,13 @@ je v teku.
 <translation id="7134370164002095282"><ph name="CURRENT"/> od <ph name="SIZE"/></translation>
 <translation id="756701799684433105">Odobri transakcijo</translation>
 <translation id="6450792191436242818">Program sistema</translation>
+<translation id="5318067544026930166">Denarnico Brave odklenite z biometrično avtentikacijo</translation>
+<translation id="2629767022373384291">Ali želite za odklepanje vaše denarnice Brave uporabiti biometrično avtentikacijo?</translation>
+<translation id="4782919977106118997">Uporabi odklepanje s prstnim odtisom</translation>
+<translation id="2054995875643283428">Zaenkrat to preskoči</translation>
+<translation id="2522605225061484799">Pojdi na moj portfelj</translation>
+<translation id="1148624853678088576">Vse je nared!</translation>
+<translation id="4131445988101719379">Vaša denarnica Brave je zdaj pripravljena za uporabo</translation>
 <translation id="6252742184395380448">Konfiguracijski program</translation>
 <translation id="5358970666412490132">Program deležev</translation>
 <translation id="346636227344244984">Program glasovanja</translation>

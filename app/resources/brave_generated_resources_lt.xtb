@@ -43,45 +43,22 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="7897433216002294926">„Tor“ <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Tai yra inkognito langas su „Tor“</translation>
 <translation id="1037341607922068025">Atverti inkognito langą su „Tor“</translation>
-<translation id="607982085107926247">Atidaryti „Tor: <ph name="ADDRESS"/></translation>
+<translation id="607982085107926247">Atidaryti „Tor“: <ph name="ADDRESS"/></translation>
 <translation id="496896260395129787">Ši „Brave“ sinchronizavimo paskyra buvo ištrinta iš kito įrenginio. Jei nenorėjote išjungti sinchronizavimo, tuomet turite<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>iš naujo sukurti paskyrą</translation>
 <translation id="6965382102122355670">Gerai</translation>
 <translation id="3975865347033939965">Nepavyko paleisti sinchronizavimo paslaugos, „Brave“ sinchronizavimas neveikia</translation>
 <translation id="4450893287417543264">Neberodyti</translation>
 <translation id="4595286989346610620">Patikrinkite išsamią informaciją</translation>
-<translation id="7691598647605453992">IPFS</translation>
-<translation id="3094628781200061820">Skelbti ir gauti failus iš IPFS</translation>
-<translation id="9220923434129933852">Skaityti ir keisti IPFS nustatymus</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Atidaryti naudojant .onion adresą: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Įdėti priverstinai</translation>
-<translation id="4901618511712685702">Importuoti į IPFS</translation>
-<translation id="6794469945030154569">Šis puslapis</translation>
-<translation id="5037852323412456577">Pasirinktas vaizdas</translation>
-<translation id="2715839724138372481">Pasirinktas vaizdo įrašas</translation>
-<translation id="4227945450504703638">Pasirinktas garsas</translation>
-<translation id="7895302206188277628">Susietas turinys</translation>
-<translation id="3654831858282189202">Publikuoti su IPNS raktu</translation>
-<translation id="1047401034925735299">Importuoti pažymėtą tekstą į IPFS</translation>
-<translation id="6925604404524625582">Importuoti ir kopijuoti nuorodą į IPFS momentinę kopiją</translation>
 <translation id="1434416574322382019">Naujas inkognito langas su „Tor“</translation>
 <translation id="4703780849509456860">Atverti nuorodą inkognito lange su „Tor“</translation>
 <translation id="3488584642074079080">Atverti nuorodą „Brave“ inkognito lange su „Tor“</translation>
-<translation id="186554175479803110">Importuoti ir bendrinti failą</translation>
-<translation id="3036649622769666520">Atidaryti failus</translation>
-<translation id="4408880250587950158">Importuoti ir bendrinti katalogą</translation>
-<translation id="8396273373598682323">Su failu</translation>
-<translation id="518600784989889917">Su katalogu</translation>
-<translation id="8147987711042435221">Atnaujinti IPNS</translation>
-<translation id="4491895534716990473">Importuoti pažymėtą tekstą į IPFS</translation>
-<translation id="8883166554766780543">Importuoti ir kopijuoti nuorodą į IPFS momentinę kopiją</translation>
-<translation id="709253338301411121">Importuoti ir bendrinti failą</translation>
-<translation id="7068360136237591149">Atidaryti failus</translation>
 <translation id="6313675821927505581">Naujas privatus langas su Tor</translation>
 <translation id="2638041073279639246">Atidaryti saitą privačiame lange su Tor</translation>
 <translation id="3425600262621021599">Atidaryti saitą Brave privačiame lange su Tor</translation>
-<translation id="3229091547987707389">Importuoti ir bendrinti katalogą</translation>
 <translation id="2545072023356206691">Nuo 2023 m. gruodžio 1 d. „Brave Dev“ kanalas nebegaus naršyklės naujinių. Naudotojams rekomenduojame pereiti prie „Brave“ versijų „Nightly“, „Beta“ arba „Release“.</translation>
 <translation id="474217410105706308">Nutildyti skirtuko garsą</translation>
 <translation id="2804710924397009224">Slėpti „Brave Rewards“ piktogramą</translation>
@@ -115,21 +92,21 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> skirtukai (-ų)</translation>
 <translation id="1307431692088049276">Nebeklauskite manęs</translation>
 <translation id="6919364924256365253">Neieškokite to „Google“ – „Bing“ nepadės. Naudokite „Brave“.</translation>
-<translation id="3313148036097793884">„Brave“ neseka jūsų, jūsų užklausų ar paspaudimų – ji yra 100 % nepriklausoma.</translation>
+<translation id="2640297688005939449">„Brave“ paieška neprofiliuoja jūsų – ji yra 100 % nepriklausoma.</translation>
 <translation id="7295094278358921487">Ieškokite ir rasite visa tai privačiai.</translation>
-<translation id="45040495135337202">„Brave“ neseka jūsų, jūsų užklausų ar paspaudimų. Be to, ji yra 100 % nepriklausoma nuo pažangiųjų technologijų.</translation>
+<translation id="3462465068145800637">„Brave“ paieška neprofiliuoja jūsų. Be to, ji yra 100 % nepriklausoma nuo pažangiųjų technologijų.</translation>
 <translation id="42032117189492785">Su DI susieta paieška su unikaliu indeksu.</translation>
 <translation id="8606416238399082160">Visiškai privatus, 100 % nepriklausomas ir su puikiomis DI funkcijomis.</translation>
 <translation id="7706528608480893054">DDG yra tik užmaskuota „Bing“. Laikas užtikrinti tikrą privatumą, geresnius rezultatus ir nepriklausomą indeksavimą. Laikas „Brave“ paieškai.</translation>
 <translation id="3818133234428578803">Atsisakykite ančiuko</translation>
-<translation id="14817360483752259">„Brave“ paieška neseka jūsų, jūsų užklausų ar paspaudimų. Ir (kitaip nei DDG) tai nėra tik užmaskuota „Bing.</translation>
+<translation id="14817360483752259">„Brave“ paieška neseka jūsų, jūsų užklausų ar paspaudimų. Ir (kitaip nei DDG) tai nėra tik užmaskuota „Bing“.</translation>
 <translation id="4381193110021038941">Gaukite geresnių rezultatų</translation>
 <translation id="3846545273704969734">Nepriklausomai patvirtinta, kad „Brave“ paieškos rezultatai yra geresni nei „Bing“ (arba „Bing“ klonų, pvz., „DuckDuckGo").</translation>
 <translation id="2841164160723712537">Pagerinkite paieškos rezultatus</translation>
-<translation id="4639001639513524869">Naudojant „Brave“ paiešką daugumos užklausų rezultatai yra geresni nei „DuckDuckGo. Be to, ji tikrai privati.</translation>
+<translation id="4639001639513524869">Naudojant „Brave“ paiešką daugumos užklausų rezultatai yra geresni nei „DuckDuckGo“. Be to, ji tikrai privati.</translation>
 <translation id="5240031343741051161">Išbandykite „Brave“ paiešką</translation>
 <translation id="5234764350956374838">Atsisakyti</translation>
-<translation id="9218430445555521422">Nustatyti kaip numatytąją</translation>
+<translation id="8722651357687610395">Nustatyti „Brave“ kaip numatytąją</translation>
 <translation id="2370739752330685659">Gal vėliau</translation>
 <translation id="5100490448228945668">Atmesti „Brave“ paieškos konversiją; paspauskite „Enter“, kad šis pasiūlymas būtų pašalintas</translation>
 <translation id="9194637241566114638">Padėkite tobulinti <ph name="SEARCH_NAME"/> siųsdami anoniminius naudojimo duomenis  <ph name="MORE_INFO"/></translation>
@@ -167,6 +144,10 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="5877900074358050101">Šoninės juostos elemento pavadinimas</translation>
 <translation id="1613695740874407223">Šoninės juostos elemento URL adresas</translation>
 <translation id="4877147287319222750">Pridėti į šoninę juostą</translation>
+<translation id="2422927186524098759">Šoninė juosta</translation>
+<translation id="5916664084637901428">Įjungta</translation>
+<translation id="5860033963881614850">Išjungta</translation>
+<translation id="2393250835562952455">Automatinis paslėpimas</translation>
 <translation id="5977931179408079967">Padėtis</translation>
 <translation id="3790384768741064842">Perkelti į dešinę</translation>
 <translation id="7444424316576061724">Perkelti į kairę</translation>
@@ -195,15 +176,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="8428213095426709021">Nustatymai</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 domenai</translation>
-<translation id="72868071984333667">Daugiau informacijos apie IPFS ir privatumą</translation>
-<translation id="1419682418471956530">Šį puslapį galima rasti IPFS tinkle. Ar norėtumėte įkelti IPFS puslapius naudodami „Brave“ integruotą palaikymą (per ipfs:// arba ipns://)?</translation>
-<translation id="7109885938715976444">Tik šį kartą</translation>
-<translation id="7473891865547856676">Ne, ačiū</translation>
-<translation id="2722425322672922644">Sužinoti, kaip tai veikia mano privatumą</translation>
-<translation id="5551268135482191097">Įkeliant IPFS URL įvyko klaida. Ar norite peradresuoti į pradinį URL?</translation>
-<translation id="4756627014339714615">Peradresuoti</translation>
-<translation id="1338274252864046652">Ar norite visada pradėti IPFS mazgą paleisdami naršyklę?</translation>
-<translation id="3435896845095436175">Įgalinti</translation>
 <translation id="5046066249040287308">„Brave“ piniginės paslaugų programos</translation>
 <translation id="4552520379838695057">Deja, šio puslapio nėra.</translation>
 <translation id="7299769530898469069">Išsaugotos versijos įkelti nepavyko</translation>
@@ -264,7 +236,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="2557899542277210112">Savo žymes pasieksite greičiau, jei įkelsite į žymių juostą.</translation>
 <translation id="1968543937259008435">Pasirengę geriausiam privatumui internete?</translation>
 <translation id="6817415381278637662">Nustatykite „Brave“ kaip savo numatytąją naršyklę, kad galėtumėte pasinaudoti „Brave“ privatumo apsauga visuose tinklalapiuose, kuriuos atveriate.</translation>
-<translation id="8722651357687610395">Nustatyti „Brave“ kaip numatytąją</translation>
 <translation id="7537601449003285327">Prisegti prie užduočių juostos</translation>
 <translation id="2307973900865360088">Prisegti prie „Dock“ juostos</translation>
 <translation id="961012016278832836">„Microsoft Edge Legacy“</translation>
@@ -277,15 +248,17 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="8373664339577369248">tinkinamas užsakymas</translation>
 <translation id="8120600068258956006">Įtraukti į grojaraštį</translation>
 <translation id="650694591627983430">Šiame puslapyje rasta medija</translation>
-<translation id="43751811163166570">Pridėta į<ph name="PLAYLIST_FOLDER_NAME"/></translation>
 <translation id="6900840851173033633">Deja, šiame puslapyje neradome jokios medijos.</translation>
+<translation id="5296010081025405662">Įtraukta į grojaraštį</translation>
 <translation id="4830689155681863580">Atidaryti grojaraštyje</translation>
 <translation id="4735626465866524761">Keisti aplanką</translation>
 <translation id="8101564000331197174">Pašalinti iš grojaraščio</translation>
 <translation id="838254185387128227">Daugiau medijos šiame puslapyje...</translation>
 <translation id="326641288623143307">Pridėti pažymėtus</translation>
+<translation id="4951645797020684601">Įtraukta į grojaraštį</translation>
 <translation id="5856970744810677796">Atidaryti grojaraštyje</translation>
 <translation id="5494357917532817933">Keisti aplanką</translation>
+<translation id="5181358966317519720">Pašalinti iš grojaraščio</translation>
 <translation id="333558915234875673">Daugiau medijos šiame puslapyje...</translation>
 <translation id="5145233969981669502">Pridėti pažymėtus</translation>
 <translation id="55252794453047936">Perkelti mediją</translation>
@@ -309,7 +282,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="1173894706177603556">Pervadinti</translation>
 <translation id="7765158879357617694">Perkelti</translation>
 <translation id="6648536728577053364">Šalinti autonominius duomenis</translation>
-<translation id="5181358966317519720">Pašalinti iš grojaraščio</translation>
 <translation id="2377705456080309463">Žiūrėti pirminį puslapį</translation>
 <translation id="158894735649719362">Linksmybės prasideda kai turite ką atkurti. Pridėkite mėgstamą mediją ir atkurkite bet kada ir bet kur. Net neprisijungus.</translation>
 <translation id="8422349592890097194">Kurti naują aplanką</translation>
@@ -377,7 +349,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="1013121820689882118">Spartusis skaitlys</translation>
 <translation id="2025435450953474282">Straipsniai automatiškai įkeliami skaitymo režimu, kad sutaupytumėte laiko</translation>
 <translation id="7984721311211272523">Išjungti nutildymo funkciją garsiakalbio piktogramų skirtuke</translation>
-<translation id="2422927186524098759">Šoninė juosta</translation>
 <translation id="832432428796481785">Rodyti šoninės juostos mygtuką</translation>
 <translation id="5581036754486769849">Leisti automatiškai pildyti inkognito languose</translation>
 <translation id="2262012219398520969">Informacija iš įprastų langų gali būti nuskaitoma / automatiškai pildoma inkognito languose</translation>
@@ -400,7 +371,6 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="6303294677342628402">Skydai</translation>
 <translation id="7133511168130368997">Blokuoti visame žiniatinklyje jus sekančius sekiklius ir reklamas.</translation>
 <translation id="2761825942249694703">Tai numatytosios skydo nuostatos. Jos taikomos visoms svetainėms, nebent atliekate pakeitimų tam tikros svetainės skydų skiltyje. Atlikus tokius pakeitimus nustatytos kitoms svetainėms nuostatos išliks tokios pačios.</translation>
-<translation id="1435116578479068303">Taip bus užblokuota dauguma reklamų svetainėse, išskyrus privatumo nepažeidžiančias „Brave“ reklamas – jos valdomos<ph name="BEGIN_LINK"/>„Brave“ atlygio<ph name="END_LINK"/> nuostatų dalyje.</translation>
 <translation id="8452536890042542134">Taip bus užblokuota dauguma reklamų svetainėse.</translation>
 <translation id="4800195524776354947">Skydų piktogramoje rodyti užblokuotų elementų skaičių</translation>
 <translation id="5510493033031835532">Automatiškai peradresuoti AMP puslapius</translation>
@@ -588,7 +558,6 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="842628013524824194">Įprastinis langas – paieškos sistema naudojama adreso juostoje</translation>
 <translation id="5324939009884545145">Privatus langas – paieškos sistema naudojama adreso juostoje</translation>
 <translation id="6864914031231797928">Leisti „Google“ prisijungti prie plėtinių</translation>
-<translation id="6554397389149987360">Naudodamas Hangouts komponentą įjunk ekrano bendrinimą ir kitas naršyklės funkcijas.</translation>
 <translation id="7878791177459550035">Medijos maršrutizatorius naršyklėje įgalina perdavimo funkciją.</translation>
 <translation id="2707635989000984973">Surasti „Unstoppable Domains“ domeną</translation>
 <translation id="1807158022157096592"><ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/>apie „Unstoppable Domains“ privatumo aspektus.</translation>
@@ -601,7 +570,7 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="951983619130191090">Padėkite kitiems prisijungti prie „Tor“ tinklo</translation>
 <translation id="2223668809371912019">Įdiekite plėtinį „Snowflake“ ir suteikite galimybę naudotojams, gyvenantiems šalyse, kur šis tinklas nepasiekiamas, prisijungti prie „Tor“ tinklo naudojant jūsų tinklo ryšį.</translation>
 <translation id="2959986444009520721">Naudokite tiltus</translation>
-<translation id="8416750895933172460">Tiltai padeda pasiekti „Tor“ tinklą tose vietose, kur „Tor“ yra užblokuota. Priklausomai nuo to, kur esate, vienas tiltas gali veikti geriau nei kiti.</translation>
+<translation id="271237727681958372">Tiltai padeda pasiekti „Tor“ tinklą tose vietose, kur „Tor“ yra užblokuota. Priklausomai nuo to, kur esate, vienas tiltas gali veikti geriau nei kiti.</translation>
 <translation id="7206799843254049470">„Tor“ ryšio nustatymai</translation>
 <translation id="3194502271166340944">Valdo, kaip per inkognito langus su „Tor“ prisijungiama prie „Tor“ tinklo</translation>
 <translation id="3717364961460790491">Nepavyko įdiegti „Snowflake“ plėtinio, reikalingo šiai funkcijai įgalinti. Patikrinkite interneto ryšį ir bandykite dar kartą.</translation>
@@ -619,7 +588,7 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="6936835573742749135">Nepavyko pateikti CAPTCHA užklausos. Bandykite dar kartą vėliau.</translation>
 <translation id="2653659639078652383">Pateikti</translation>
 <translation id="1294350054292274934">Ieškoti .onion adresų tik „Tor“ languose</translation>
-<translation id="1258903596167452221">„Onion“ paslaugos nebus pasiekiamos už „Tor“ langų ribų.</translation>
+<translation id="601227612175911475">„Onion“ paslaugos nebus pasiekiamos už „Tor“ langų ribų.</translation>
 <translation id="2896916411183256228">Naudoja WebTorrent rodyti srautus tiesiogiai naršyklėje. Palaiko srauto failus ir magneto saitus.</translation>
 <translation id="5249433283143453448">Naudokite „Widevine“ skaitmeninių teisių valdymo (DRM) komponentą, jei norite naršyklėje peržiūrėti apsaugotus transliuojamus vaizdo įrašus ir kitą turinį.</translation>
 <translation id="1314131187310290315">Deklaracijos V2 plėtiniai</translation>
@@ -653,19 +622,11 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="856371974127598760">Piniginės tinklai</translation>
 <translation id="5975930666279943472">Išvalyti piniginės operacijų ir operacijos numerių informaciją</translation>
 <translation id="5693968582510626466">Operacijų išvalymas gali būti naudingas kūrėjams arba norint išvalyti būseną vietiniame serveryje</translation>
-<translation id="4440478655766953083">Automatiškai prijungti NFT</translation>
-<translation id="464460032678285850">„Brave“ piniginėje esantys NFT automatiškai prijungiami prie vietos IPFS mazgo.
- Pastaba. Siekiant užtikrinti, kad jūsų vietos mazgas dalysis spartinančiosios atminties duomenimis ir prisegtais NFT su IPFS tinklu, gali būti paleistas IPFS demonas.</translation>
 <translation id="2326850911705720398">Nustatyti  iš naujo ir išvalyti piniginės duomenis</translation>
-<translation id="5887022857624190239">Išvalyti prisegtus NFT</translation>
-<translation id="204584113330893805">Prisegti NFT laikomi IPFS tinkle, kai paleidžiamas vietinis IPFS mazgas.
-    Šiuo metu turite <ph name="NFT_COUNT"/> prisegtus (-ų) NFT.</translation>
 <translation id="9216386092464743272">Ar tikrai norite iš naujo nustatyti visą savo piniginės operacijų ir operacijų numerių informaciją? Šią parinktį dažniausiai naudoja kūrėjai, turintys vietinį testavimo serverį. Jei norite patvirtinti, įrašykite „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
 <translation id="6369495274982305511">Ar tikrai norite iš naujo nustatyti piniginę? Jei piniginės atsarginė kopija nebus sukurta, nustatę iš naujo prarasite visus sąskaitos duomenis (įskaitant visas susijusias lėšas). Patvirtinkite įrašydami „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
-<translation id="4248533222660842025">Ar tikrai norite išvalyti savo prisegtus NFT? Kai kurie NFT gali būti prarasti visam laikui, jei IPFS tinkle nėra jokių kitų išteklių nuomotojų. Norėdami patvirtinti, įveskite „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
 <translation id="3752403403443723332">Jūsų piniginė atkurta.</translation>
 <translation id="594766067816395072">Jūsų piniginės operacijų informacija atkurta.</translation>
-<translation id="1615009913945115836">Jūsų prisegti NFT buvo nustatyti iš naujo.</translation>
 <translation id="57798285717509216">Prieš pasirašydami peržiūrėkite operacijų rezultatus. <ph name="BEGIN_LINK"/>&lt;u&gt;Sužinoti daugiau&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">„Ethereum“ tinklai</translation>
 <translation id="3504157706952484145">„Filecoin“ tinklai</translation>
@@ -691,7 +652,7 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="3047726704186619366">Piktogramų URL adresai</translation>
 <translation id="2487558607408469181">Blokų naršyklės URL adresai</translation>
 <translation id="2156993118928861787">Netinkamas adresas</translation>
-<translation id="6301398959353668507">Šis laukas negali būti tuščias.</translation>
+<translation id="2042467807419742999">Šis laukas negali būti tuščias.</translation>
 <translation id="7504462451153306677">Netinkamas formatas, grandinės ID yra teigiamas skaičius</translation>
 <translation id="650071759190249039">Vidinė klaida, nepavyko pridėti tinklo.</translation>
 <translation id="336035846712292194">Prašome įvesti visą informaciją apie vietinę valiutą</translation>
@@ -702,67 +663,46 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="232693303726691609">Rodyti / slėpti tinklą piniginės tinklų sąraše</translation>
 <translation id="7893578599666249602">Ar tikrai norite iš naujo nustatyti <ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">Ar norite atnaujinti esamą tinklą?</translation>
-<translation id="9170907049676078643">IPFS išteklių nustatymo metodas</translation>
-<translation id="1327977588028644528">Tinklų sietuvas</translation>
-<translation id="1195880978080389104">„Brave“ vietinis IPFS mazgas</translation>
-<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Sužinokite daugiau<ph name="END_LINK_MPL"/> apie „Brave“ vietinio IPFS mazgo ir tinklų sietuvo privatumo nuostatas.</translation>
-<translation id="4927734062756955434">IPFS viešojo tinklų sietuvo adresas</translation>
-<translation id="3707431725427930007">NFT viešas IPFS šliuzo adresas</translation>
-<translation id="8425213833346101688">Keisti</translation>
-<translation id="585868419599255817">IPFS atsarginis viešasis tinklų sietuvas</translation>
-<translation id="2618080188892567155">Automatiškai grįžti prie viešojo IPFS tinklų sietuvo, jei „Brave“ vietinio IPFS mazgo pasiekti neįmanoma.</translation>
-<translation id="8956391206920485238">Visada pradėti IPFS mazgą paleidžiant naršyklę?</translation>
-<translation id="6789104345873307368">Automatiškai nukreipti IPFS tinklo išteklių užklausas į sukonfigūruotą tinklų sietuvą.</translation>
-<translation id="4138306018048329894">IPFS išteklių, esančių trečiųjų šalių IPFS tinklo sietuvuose arba DNSLINK ištekliuose, užklausos bus nukreipiamos per pasirinktą vietinį arba nuotolinį tinklų sietuvą.
-Pastaba. Jei pasirenkamas vietinis mazgas, užklausos dėl išteklių bus teikiamos tiesiogiai iš jūsų kompiuterio, o IPFS tinklui kurį laiką gali būti teikiami talpykloje saugomi duomenys.</translation>
-<translation id="8068526464562249859">Paleidžiamas plėtinys „IPFS Companion“, skirtas „Brave“ IPFS funkcionalumui pagerinti, įskaitant prieigą prie dažniausių IPFS užduočių iš naršyklės valdymo juostos.</translation>
-<translation id="1251574393468476924">Maksimalus IPFS talpyklos dydis (GB)</translation>
-<translation id="2503497578400410320">IPFS duomenų saugyklos dydžio lanksti viršutinė riba.</translation>
-<translation id="6758961763875471084">Keisti kolegų sąrašą</translation>
-<translation id="5761731140570209168">Pridėti naują kolegų ryšio eilutę</translation>
-<translation id="7024553202001112871">Nustatykite savo IPNS raktus</translation>
-<translation id="951216659045543447">Pasirašykite turinį atitinkamu asmeniniu raktu ir paskelbkite jį IPNS</translation>
-<translation id="7611728475758612204">Raktai, kuriuos galima skelbti</translation>
-<translation id="911363100236037920">Įveskite naujo rakto pavadinimą</translation>
-<translation id="6358469157239228181">Šio pavadinimo naudoti negalima</translation>
-<translation id="2082206983920804886">Pasukti raktą</translation>
-<translation id="5078501082919354191">Negalima sustabdyti „Brave“ vietinio IPFS mazgo</translation>
-<translation id="5687424953196903465">Nepavyko paleisti „Brave“ vietinio IPFS mazgo</translation>
-<translation id="6476061084931271248">Paleiskite mazgą iš naujo, kad būtų pritaikyti pakeitimai</translation>
-<translation id="3754226427671882382">Mazgą paleisti iš naujo</translation>
-<translation id="949667118776341807">Pasukti</translation>
-<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
-<translation id="724513921936768901">Šis vardas negalioja</translation>
-<translation id="1295874070797049002">Eksportuoti raktą</translation>
-<translation id="3946479342297227860">Pašalinti raktą</translation>
-<translation id="1534091531114892221">Nustatyti IPFS kolegų aprašą</translation>
-<translation id="910215077892371264">Mazgas nepaleistas</translation>
-<translation id="616058968889448209">IPFS tarnybos paleidimo klaida, daugiau informacijos rasite <ph name="BEGIN_LINK"/>diagnostikos puslapyje<ph name="END_LINK"/></translation>
-<translation id="6912148685459054619">„<ph name="KEY_NAME"/>“ rakto importuoti nepavyko</translation>
-<translation id="3364053282600191535">„<ph name="KEY_NAME"/>“ rakto eksportuoti nepavyko</translation>
-<translation id="5840868269342837751">Pastaba. Gali būti, kad naršyklės tarpinio serverio ir DNS nuostatos tinklo užklausoms netaikomos.</translation>
-<translation id="8275038454117074363">Importuoti</translation>
-<translation id="3654980960391973513">Generuoti</translation>
-<translation id="5531501313997312487">Pradėti mazgą</translation>
-<translation id="557281710253742286">Nustatyti IPFS tinklų sietuvą</translation>
-<translation id="8571837315037233299">Tinklų sietuvo adresas</translation>
-<translation id="7703184801853248830">Netinkamas tinklų sietuvo adresas</translation>
-<translation id="7690058578502751948">„Brave“ galima naudoti tik IPFS tinklų sietuvą, kuriame įjungta kilmės vietos izoliavimo funkcija.</translation>
 <translation id="1643029991199044105">Paskiausiai naudotas korteles perjunkite klavišais Ctrl + Tab</translation>
 <translation id="2775956301559569472">Rodyti „Wayback Machine“ raginimus 404 puslapiuose</translation>
 <translation id="3095201688102519917">Įspėti prieš uždarant langą su keliais skirtukais</translation>
 <translation id="7120553802660696133">Užverti langą užveriant paskutinę kortelę</translation>
+<translation id="3394171693948989253">Rodyti viso ekrano priminimą išeinant paspausti „Esc“</translation>
 <translation id="6129027151000961048">„Leo“</translation>
 <translation id="2751872555001636931">Rodyti „Leo“ piktogramą šoninėje juostoje</translation>
 <translation id="8055509865174199683">Rodyti „Leo“ svetainių kontekstiniame meniu</translation>
 <translation id="1529674267267221673">„Leo“ bus rodoma kontekstiniame meniu, kai svetainėje spustelėsite dešiniu pelės klavišu. Tai nusiųs kontekstą iš dabartinio tinklalapio į „Leo“.</translation>
 <translation id="8172263161008556851">Rodyti pranešimų siūlymus pokalbyje</translation>
 <translation id="1014480593522400586">Išvalyti „Leo“ duomenis</translation>
-<translation id="8681157601856387010">Iš naujo nustatę „Leo“ asistentą, ateityje turėsite prisijungti prie „Brave Leo“, taip pat bus išvalyta jūsų pokalbių istorija. Kai pašalinsite savo pokalbių istoriją, bus pašalinti visi ankstesni jūsų pokalbiai su „Brave Leo“. Šio veiksmo atšaukti negalima.</translation>
+<translation id="6803758564561896401">Iš naujo nustatę „Leo“ asistentą, ateityje turėsite prisijungti prie „Brave
+Leo“, taip pat bus išvalyta jūsų pokalbių istorija. Kai pašalinsite savo
+pokalbių istoriją, bus pašalinti visi ankstesni jūsų pokalbiai su „Brave
+Leo“. Šio veiksmo atšaukti negalima.</translation>
 <translation id="5574059574002819179">Koreguoti automatinio užbaigimo pasiūlymus</translation>
 <translation id="8157373421434119674">Duomenų ir pokalbių istorija</translation>
 <translation id="614530507403667291">Numatytasis naujų pokalbių modelis</translation>
 <translation id="8826914609353373601">Tvarkykite premium prenumeratą</translation>
+<translation id="235457946228076038">Atsineškite savo modelį</translation>
+<translation id="8631951653187535788">Ar tikrai norite ištrinti šį modelį? Jei šis modelis naudojamas kokiame nors aktyviame pokalbyje, tas pokalbis bus pakeistas ir jame bus naudojamas numatytasis „Leo“ modelis.</translation>
+<translation id="1907126221851170941">Pridėti modelį</translation>
+<translation id="8346224718149026088">Redaguoti modelį</translation>
+<translation id="3468298837301810372">Etiketė</translation>
+<translation id="3553035516792776805">Modelio užklausos pavadinimas</translation>
+<translation id="7634775528597575156">Serverio galinis taškas</translation>
+<translation id="6374563306438145841">API raktas</translation>
+<translation id="8008271349880309090">Modelio pavadinimas, kuris bus rodomas modelio pasirinkimo meniu</translation>
+<translation id="7131172845656551327">Modelio pavadinimas, kaip jis turėtų būti rodomas užklausoje aptarnaujančiai sistemai, t. y. phi-3 (atkreipkite dėmesį, kad jei šis pavadinimas nesutampa su tuo, ko tikisi aptarnaujanti sistema, integracija neveiks).</translation>
+<translation id="3286410514484292784">URL, kuriame jūsų aptarnaujanti sistema klausosi užklausų. Jei nesate tikri, patikrinkite aptarnaujančios sistemos dokumentaciją. Pavyzdžiui, „Ollama“ atveju tai visada yra http://localhost:11434/v1/chat/completions.</translation>
+<translation id="1058790648388035953">Kai kurios aptarnaujančios sistemos gali reikalauti autentifikavimo duomenų, pavyzdžiui, API rakto arba prieigos žetono. Jie bus įtraukti į užklausos antraštę.</translation>
+<translation id="217141195370578385">„Brave“ nepatvirtina šių prašymų, perskaitykite pasirinkto paslaugų teikėjo privatumo sąlygas.</translation>
+<translation id="2645532768679870478">Saugiam duomenų perdavimui ne vietiniuose galiniuose taškuose turėtų būti naudojamas HTTPS protokolas.</translation>
+<translation id="8177205483022887785">Įvedėte netinkamą URL adresą. Įveskite tinkamą URL adresą.</translation>
+<translation id="5249539665306267943">Pridėti naują modelį</translation>
+<translation id="7265212806651512211">Dar neprijungėte modelio.</translation>
+<translation id="7304802428852949897">Jūsų modeliai</translation>
+<translation id="7435587476558117990">Prisijunkite savo arba trečiosios šalies prieglobos LLM prie „Leo“ ir naudokite jas naršyklėje.</translation>
+<translation id="1381050642750209119">Naudokite bet kurią su „OpenAI“ pokalbių protokolu suderinamą sistemą, pavyzdžiui, „Ollama“.</translation>
+<translation id="2642905648178380593">Įrašyti modelį</translation>
 <translation id="349846214503465941">Įjungti grojaraštį</translation>
 <translation id="7903608716704052878">Automatiškai pridėti failus, kad būtų galima peržiūrėti neprisijungus</translation>
 <translation id="4193768184502613558">Pasirinkus šią parinktį, medijos failai automatiškai padedami į atmintinę, tad galite juos leisti neprisijungę prie interneto.</translation>

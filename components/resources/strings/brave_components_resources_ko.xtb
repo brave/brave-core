@@ -1,9 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ko">
-<translation id="1800311840305731850">IPFS 페이지를 로드할 수 없습니다.</translation>
-<translation id="5712742401570874902">비공개 창에서는 IPFS 페이지를 표시할 수 없습니다.</translation>
-<translation id="5749639013106315553">IPFS가 비활성화되어 있습니다. 이 사이트를 열려면 설정에서 IPFS 해독 방법을 선택하세요.</translation>
 <translation id="5288293905681750318">트래커 &amp; 광고 차단됨</translation>
 <translation id="2313532038420432247">HTTPS 업그레이드</translation>
 <translation id="788493840831967104">시간 절약됨</translation>
@@ -67,7 +64,7 @@
 <translation id="780301667611848630">아니요, 괜찮습니다.</translation>
 <translation id="1230746063445072175">프라이버시를 한층 강화하고 싶으십니까?</translation>
 <translation id="6699628638740071563">Google에 이별을 고하세요.</translation>
-<translation id="2045455461902775806">Brave 검색은 편향된 결과를 내놓거나 검열하지 않으며, 사용자의 신원이나 검색어, 클릭 활동을 추적하지 않습니다.</translation>
+<translation id="5588534392045217394">Brave 검색은 편향된 결과를 내놓거나 검열하지 않으며, 사용자를 프로파일링하지 않습니다.</translation>
 <translation id="6811221529729056895">지금 Brave 검색 사용해보기</translation>
 <translation id="3446024864193919737">Brave (브레이브) 리워드 표시</translation>
 <translation id="5585019845078534178">카드</translation>
@@ -411,13 +408,9 @@
 <translation id="2799223571221894425">다시 시작</translation>
 <translation id="1110535155349301542">제거</translation>
 <translation id="8204292894173669182">저장된 항목에서 제거</translation>
-<translation id="5939518447894949180">초기화</translation>
-<translation id="3349204812119681938">Brave Rewards 초기화</translation>
 <translation id="5669281110673664811">제외 목록 지우기</translation>
 <translation id="1797334173232638045">고정된 사이트가 다음으로 이동됨</translation>
 <translation id="3074127054582480056">주의</translation>
-<translation id="4915997950539925115">초기화하면 현재 Brave Rewards 프로필이 삭제되고 Brave Rewards가 더 이상 활성화되지 않습니다. 나중에 Brave Rewards를 다시 활성화하면 새 프로필로 시작됩니다. 자세한 정보를 보려면 <ph name="LINK_BEGIN"/>초기화 관련 지원 문서<ph name="LINK_END"/>를 참조하세요.</translation>
-<translation id="4806029412510565611">내 현재 Brave Rewards 프로필과 Brave Rewards 데이터가 디바이스에서 삭제된다는 사실을 이해하며, <ph name="LINK_BEGIN"/>초기화 관련 지원 문서<ph name="LINK_END"/>를 읽었습니다.</translation>
 <translation id="3494964159182650590">보상 요약</translation>
 <translation id="2913994227901456490">[[numItems]]개 항목 모두 보기</translation>
 <translation id="6685434227783226855">내 후원금 보내기</translation>
@@ -503,76 +496,6 @@
 <translation id="4087894168792701548">일반 모드로 진행</translation>
 <translation id="5874287397425241890">이 웹사이트를 오프더레코드 모드로 보고 계십니다.</translation>
 <translation id="1036348656032585052">사용 중지</translation>
-<translation id="9020818404803201080">연결된 피어:</translation>
-<translation id="2903493209154104877">주소</translation>
-<translation id="3207122385716480167">레포 통계</translation>
-<translation id="2595187693729756455">노드 정보</translation>
-<translation id="5789886980848929155">IPFS 노드 상태</translation>
-<translation id="6599816589121202398">API</translation>
-<translation id="1327977588028644528">게이트웨이</translation>
-<translation id="2551123942222622809">스웜</translation>
-<translation id="5201810533706869030">개체</translation>
-<translation id="8028993641010258682">크기</translation>
-<translation id="7870625241353817260">StorageMax</translation>
-<translation id="3202131003361292969">경로</translation>
-<translation id="3798449238516105146">버전</translation>
-<translation id="2892680660204660712">피어 ID</translation>
-<translation id="7536543993364605970">에이전트 버전</translation>
-<translation id="3693482323085649439">노드가 실행되고 있습니다</translation>
-<translation id="6315833555896070573">노드가 실행되고 있지 않습니다</translation>
-<translation id="1272079795634619415">중지</translation>
-<translation id="5895138241574237353">다시 시작</translation>
-<translation id="6762417584993757344">설치되지 않음</translation>
-<translation id="4159076046325416152">IPFS 설치 중...</translation>
-<translation id="3854747677478661601">쓰레기 수집 쓸기 수행</translation>
-<translation id="7376842608449050673">쓰레기 수집 오류</translation>
-<translation id="8523162996646111972">(세부 사항)</translation>
-<translation id="6121825639998459476">설치 및 시작</translation>
-<translation id="72868071984333667">IPFS와 프라이버시에 대해 더 알아보기</translation>
-<translation id="3793279629218362523">피어 ID 및 IPNS 키 관리</translation>
-<translation id="6776260067907986254">내 노드</translation>
-<translation id="8999763401170835879">오류가 발생했습니다, 다시 시작하십시오</translation>
-<translation id="5433704526290922623">오류가 발생했습니다, 노드를 다시 설치하시기 바랍니다</translation>
-<translation id="8428368469058794536">IPFS 서비스</translation>
-<translation id="7691598647605453992">IPFS</translation>
-<translation id="8725066075913043281">다시 시도하세요</translation>
-<translation id="1886162073868201257">IPFS 서비스 시작 오류</translation>
-<translation id="5357895013476183089">IPFS가 연결되지 않음</translation>
-<translation id="7662930734991751511">Brave 로컬 IPFS 노드를 사용하여 IPFS 리소스를 로드할 수 없습니다.</translation>
-<translation id="1141556610026845297">요청된 IPFS 리소스를 로드하기 위해 로컬 IPFS 노드를 사용하는 데에 실패하였습니다. 대신 퍼블릭 게이트웨이를 사용하고, 나중에도 실패 시 자동으로 퍼블릭 게이트웨이로 폴백되도록 하려면 "계속" 버튼을 클릭해 주세요.</translation>
-<translation id="3373798179786163193">공용 게이트웨이로 계속 진행</translation>
-<translation id="1974060860693918893">고급</translation>
-<translation id="9096577886148726047">세부 정보 숨기기</translation>
-<translation id="182581792765792826">Brave 로컬 IPFS 노드가 시작되지 않았거나 현재 사용 가능한 연결된 피어가 없었기 때문에 Brave가 IPFS 리소스를 불러올 수 없었습니다. "계속"을 선택하는 경우, Brave는 Brave 로컬 IPFS 노드 사용에 실패할 때마다 기본 퍼블릭 게이트웨이로 자동 전환할 것입니다. 이 행동은 언제든지 Brave 설정에서 변경할 수 있습니다.</translation>
-<translation id="8026038288183400906">IPFS 기본 환경</translation>
-<translation id="2058855456574089690">IPFS 기본 환경 설정</translation>
-<translation id="4780526507945807546">Brave 로컬 IPFS 노드 사용</translation>
-<translation id="8148464361648742409">공용 게이트웨이 사용</translation>
-<translation id="5123478056123923857">IPFS(분산형 파일 시스템)는 피어 투 피어 데이터 저장 및 제공을 위한 공용 네트워크입니다. 이 프로토콜은 HTTP(S)와 개인정보 보호 고려 사항이 다릅니다.</translation>
-<translation id="1216911189668016151">귀하의 컴퓨터가 공용 네트워크에 기여하지만 귀하의 IP 주소 및 귀하가 요청하거나 제공하는 콘텐츠가 노출될 수 있습니다. IPFS를 통해 요청하신 콘텐츠는 검증을 거친 후 제공됩니다. 네트워크 요청이 브라우저 프록시와 DNS 설정을 사용하지 않을 수 있습니다.</translation>
-<translation id="8664689531113048642">공용 게이트웨이 운영자가 아닌 잠재적인 제3자 옵서버로부터 요청 중인 IP 주소와 콘텐츠를 보호합니다. 게이트웨이 운영자는 게이트웨이를 통해 사용자에게 제공된 콘텐츠가 사용자가 요청한 콘텐츠인지 확인할 책임이 있습니다.  또한, 사용자의 컴퓨터는 공용 IPFS 네트워크에 기여하지 않습니다.</translation>
-<translation id="3977809385703587108">다음에서 기본 환경 설정을 다시 변경할 수 있습니다:</translation>
-<translation id="3340978935015468852">설정</translation>
-<translation id="4148957013307229264">설치 중...</translation>
-<translation id="4219228508273972445">피어 탐색 중...</translation>
-<translation id="1902096227388293745">사용 가능한 피어가 없습니다. 다시 시도 중... (<ph name="ATTEMPTS_NUMBER"/> 시도 남음)</translation>
-<translation id="1675751799495331928">시도 제한을 초과했습니다. 나중에 다시 시도하세요.</translation>
-<translation id="4499666752625407848">업데이트 중에 오류가 발생했습니다.</translation>
-<translation id="62991515067726424">이 콘텐츠는 IPFS 프로토콜을 통해 로드되었습니다.</translation>
-<translation id="7263366446813126341">IPFS(분산형 파일 시스템)는 피어 투 피어 데이터 저장 및 제공을 위한 공용 네트워크입니다. 언제든지 Brave에 통합된 요소와 IPFS 설정 구성 방법에 대해 자세히 알아보세요.</translation>
-<translation id="3175567740517780285">IPFS 설정</translation>
-<translation id="8914505352873092008">IPFS 설정 페이지로 이동</translation>
-<translation id="3465468510001693544">IPFS 진단</translation>
-<translation id="2527518382346359563">IPFS 진단 페이지로 이동</translation>
-<translation id="8192016636169857406">IPFS 문서</translation>
-<translation id="6863052043162730918">IPFS 문서 페이지로 이동</translation>
-<translation id="3862600063748690056">IPFS 가져오기 완료됨</translation>
-<translation id="8263749381887932384">IPFS 가져오기가 일부 완료됨</translation>
-<translation id="2145699434318651911">IPFS 가져오기 실패</translation>
-<translation id="5525148540855044244">공유 가능 링크 복사됨: <ph name="SHAREABLE_LINK"/></translation>
-<translation id="3741998951694470470">가져올 데이터 가져오기 실패</translation>
-<translation id="7900950536120202771">IPFS 노드 내부 오류</translation>
-<translation id="1036635552229153800">데이터가 성공적으로 업로드되었지만 brave-import 디렉토리로 이동하지 않았습니다. 가져오기 설정 페이지에서 이 작업을 수동으로 수행할 수 있습니다.</translation>
 <translation id="572392919096807438">선택사항 저장</translation>
 <translation id="7978789143098237970">이 페이지를 닫을 때까지</translation>
 <translation id="3523195733429162409">24시간 동안</translation>
@@ -584,6 +507,10 @@
 <translation id="5770656036486891920">레거시 Google 로그인을 위해 <ph name="URL"/>에서 제3자 쿠키를 사용하려고 합니다.</translation>
 <translation id="6053826678715267477">Localhost 리소스 액세스 허용</translation>
 <translation id="2973562729984406132"><ph name="URL"/>에서 Localhost 리소스에 액세스하려고 함</translation>
+<translation id="5939518447894949180">초기화</translation>
+<translation id="3349204812119681938">Brave Rewards 초기화</translation>
+<translation id="4915997950539925115">초기화하면 현재 Brave Rewards 프로필이 삭제되고 Brave Rewards가 더 이상 활성화되지 않습니다. 나중에 Brave Rewards를 다시 활성화하면 새 프로필로 시작됩니다. 자세한 정보를 보려면 <ph name="LINK_BEGIN"/>초기화 관련 지원 문서<ph name="LINK_END"/>를 참조하세요.</translation>
+<translation id="4806029412510565611">내 현재 Brave Rewards 프로필과 Brave Rewards 데이터가 디바이스에서 삭제된다는 사실을 이해하며, <ph name="LINK_BEGIN"/>초기화 관련 지원 문서<ph name="LINK_END"/>를 읽었습니다.</translation>
 <translation id="7717357606512850995">상태 확인</translation>
 <translation id="6473937687348632190"><ph name="MONTH"/> 리워드 지급 완료.</translation>
 <translation id="1711367267038576241"><ph name="MONTH"/> 리워드 지급 처리 시작, <ph name="DATE"/> 완료 예정.</translation>
@@ -605,6 +532,13 @@
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {이번 달 Brave Rewards의 지원을 받는 제작자 #명을 방문하셨습니다.}
       other {이번 달 Brave Rewards의 지원을 받는 제작자 #명을 방문하셨습니다.}
+    }</translation>
+<translation id="3264975266761862670">받을 준비가 되셨나요?</translation>
+<translation id="2784412028126205842">결제 계정 연결</translation>
+<translation id="766126983336630294">{ADS_VIEWED, plural,
+      =0 {이번 달에 본 <ph name="COUNT_BEGIN"/>광고 #개<ph name="COUNT_END"/>}
+      =1 {이번 달에 본 <ph name="COUNT_BEGIN"/>광고 #개<ph name="COUNT_END"/>에 대한 대가를 지급받을 수 있습니다.}
+      other {이번 달에 본 <ph name="COUNT_BEGIN"/>광고 #개<ph name="COUNT_END"/>에 대한 대가를 지급받을 수 있습니다.}
     }</translation>
 <translation id="6067959437127691361">Brave Rewards를 사용하면 콘텐츠 제작자를 지원하고 BAT도 적립받을 수 있습니다.</translation>
 <translation id="944736176598169208">리워드</translation>
@@ -658,12 +592,23 @@
 <translation id="6945221475159498467">선택</translation>
 <translation id="3279158300746391749">URL 바 내 <ph name="BAT_ICON"/> BAT 아이콘을 눌러 시작하세요.</translation>
 <translation id="8465790416279415448">계속하면 <ph name="TOS_LINK_BEGIN"/>서비스 약관<ph name="TOS_LINK_END"/> 및 <ph name="PP_LINK_BEGIN"/>개인 정보 보호 정책<ph name="PP_LINK_END"/>에 동의하게 됩니다.</translation>
+<translation id="8981626318554555706">지역 선택</translation>
+<translation id="6923445315496949274">지역을 선택하세요. 그래야 지역에 맞는 옵션과 광고를 표시해드릴 수 있습니다.</translation>
+<translation id="840952951051929644">Rewards를 활성화하면 <ph name="TOS_LINK_BEGIN"/>이용 약관<ph name="TOS_LINK_END"/> 및 <ph name="PP_LINK_BEGIN"/>개인정보 보호정책<ph name="PP_LINK_END"/>에 동의하게 됩니다.</translation>
+<translation id="5259608623172605993">Brave에서 프라이빗 광고를 보고 대가 받기</translation>
+<translation id="3099020087817489135">특별 혜택 및 할인 받기</translation>
+<translation id="3991575120992914717">Brave Rewards 켜기</translation>
 <translation id="1015443539415537847">죄송합니다. Brave Rewards를 사용할 수 없습니다.</translation>
 <translation id="5007776270364097327">Brave Rewards를 사용할 수 없는 지역에 거주하고 계신 것 같습니다.</translation>
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">걱정하지 마세요.</translation>
 <translation id="5027616819996705541">프라이버시 보호 브라우징은 문제 없이 이용 가능합니다!</translation>
 <translation id="1886682615222609631">지금까지의 수익</translation>
+<translation id="7649070708921625228">도움말</translation>
+<translation id="6042308850641462728">더보기</translation>
+<translation id="6245259297588415877">제작자</translation>
+<translation id="1736419249208073774">탐색</translation>
+<translation id="932327136139879170">홈</translation>
 <translation id="3479552764303398839">나중에</translation>
 <translation id="4185473179105062442">자체 보호관리 암호화폐 주소로 BAT 직접 받기</translation>
 <translation id="5802986777701714573">매월 BAT 리워드를 받을 수 있는 새로운 방법이 추가되었습니다. 파트너 중 한 곳의 계정을 연결하거나 새로 추가된 자체 보호관리 옵션을 사용하여 적립을 시작하세요.</translation>
@@ -694,6 +639,7 @@
 <translation id="5562948772940025260">Brave Rewards 잔액을 사용하여 최대 <ph name="AMOUNT"/> BAT만 보낼 수 있습니다.</translation>
 <translation id="4827581232860040208">후원금을 보내는 중 문제 발생</translation>
 <translation id="3259723213051400722">다시 시도해 주세요.</translation>
+<translation id="8725066075913043281">다시 시도</translation>
 <translation id="5379685283876547860">후원금을 보냈습니다!</translation>
 <translation id="7063168612616047608">마음에 두는 제작자를 지원해주셔서 감사합니다.</translation>
 <translation id="1041398280582063935">지지하는 마음 공유하기</translation>
@@ -804,15 +750,34 @@
 <translation id="6954838107964168963">소유함</translation>
 <translation id="1976851706319678835">소유하지 않음</translation>
 <translation id="7372882109707907136">금액/24시간</translation>
+<translation id="8141607516466809432">브리징할 자산 선택</translation>
+<translation id="6517332033658428773">스왑 검토</translation>
+<translation id="8692596799753687794">견적 제공자 선택</translation>
+<translation id="463712644600982655">각 애그리게이터는 각자의 API에서 얻은 유동성을 사용하여 견적을 제공합니다. 다양한 거래소에서 가격 정보를 수집해 이 데이터를 기반으로 가격을 제공합니다.</translation>
+<translation id="3253225298092156258">사용할 수 없음</translation>
+<translation id="473775607612524610">업데이트</translation>
+<translation id="4389658703251593158">이 페어는 <ph name="PROVIDER_NAME"/>에 지원되지 않음</translation>
+<translation id="1176173785350238153">제공자 변경</translation>
+<translation id="1442774416207457340">라우팅</translation>
+<translation id="8669403359205745187">최대 슬리피지</translation>
+<translation id="4537396160118360541">제출하신 트랜잭션 가격과 체인상 트랜잭션 시점의 가격 간에 편차가 설정된 값보다 크면 트랜잭션이 실패합니다.</translation>
+<translation id="9102352924723221579">가격 영향이란 귀하의 거래가 시장 가격을 변화시킬 수 있는 정도입니다. 유동성이 낮은 몇몇 토큰은 거래에 더욱 민감하여 소규모 거래만으로도 가격이 크게 변화할 수 있습니다.</translation>
+<translation id="6830526162796484210">추천 값:</translation>
+<translation id="3882803104394170658">메인스트림 자산 페어: <ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="8918807203406722697">스테이블코인 페어: <ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="7056655731948492143">기타: <ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="6231782223312638214">추천</translation>
+<translation id="6484605214219822434">브리지 검토</translation>
+<translation id="3365052891357224017">예상 시간</translation>
+<translation id="7448445168067324096">환율</translation>
+<translation id="1888985051832898007"><ph name="ONE_TOKEN_VALUE"/>에 <ph name="EXCHANGE_VALUE"/></translation>
+<translation id="6728663400147327751">수신자</translation>
 <translation id="9209024278910716955">선택한 네트워크에 구매가 지원되지 않음</translation>
 <translation id="4982630604810554641">도메인 검색 중...</translation>
 <translation id="5467044307473123584">Brave는 오프체인 게이트웨어를 사용한 .eth 도메인 해석을 지원합니다.</translation>
 <translation id="4896417414446851895">ENS 주소를 입력하신 것 같습니다. 이 요청을 해석하려면 제3자 해석기를 사용해야 하므로 IP 주소와 도메인을 해당 제3자가 볼 수 있습니다.</translation>
 <translation id="8646078615727397565">ENS 도메인 사용</translation>
 <translation id="1191686659164947414">트랜잭션이 프론트런일 수 있음</translation>
-<translation id="8914256532272191486">여기서 정한 최대 슬리피지 액수 내에서 스왑이 실행됩니다. 예를 들어, 1% 슬리피지는 시장 상황에 따라 최대 1% 미만만 수락하겠다는 의미입니다.</translation>
-<translation id="632241521608275119">슬리피지 허용 오차</translation>
-<translation id="2493281414634883751">0.5% ~ 99%의 값 입력</translation>
 <translation id="4500473291496079954">만료까지 남은 기간</translation>
 <translation id="2236833281018938257">지갑 주소 또는 URL</translation>
 <translation id="928500657730628112">월렛 주소</translation>
@@ -829,7 +794,6 @@
 <translation id="6896758677409633944">복사하기</translation>
 <translation id="7885157704277298658">복사되었습니다!</translation>
 <translation id="6518133107902771759">확인</translation>
-<translation id="6042308850641462728">더보기</translation>
 <translation id="3157931365184549694">복구</translation>
 <translation id="414070570958255222">브라우저 네이티브. 자기 보호관리. 멀티체인.</translation>
 <translation id="1350120992777389959">보유한 암호화폐 및 NFT를 온전히 관리하세요. Brave 월렛은 이더리움, EVM 체인, Solana, Filecoin, 비트코인 등을 지원합니다.</translation>
@@ -892,6 +856,8 @@
 <translation id="1940465339426637378">자산</translation>
 <translation id="2236507293802791911">가시 자산</translation>
 <translation id="3188393374551744535">계정 잔액</translation>
+<translation id="4180024248473947674">주소 보기:</translation>
+<translation id="1251267447128999380"><ph name="BLOCKCHAIN_NETWORK_NAME"/> 탐색기</translation>
 <translation id="7525067979554623046">생성</translation>
 <translation id="4771176409524282426">계정 만들기</translation>
 <translation id="2471867767872178363"><ph name="BLOCKCHAIN_NETWORK"/> 계정 만들기</translation>
@@ -952,6 +918,7 @@
 <translation id="5138307340667775659">이미 귀하의 포트폴리오에 추가되어 있는 토큰입니다.</translation>
 <translation id="547122651977318828">토큰 ID(ERC721에만 해당)</translation>
 <translation id="7544552854944350190">토큰 ID 필요</translation>
+<translation id="1974060860693918893">고급</translation>
 <translation id="3842236145820483340">코인게코 ID</translation>
 <translation id="7642841516562576649">아이콘 URL</translation>
 <translation id="2144247757675997850">자산 추가</translation>
@@ -975,7 +942,6 @@
 <translation id="1448289340149908413">이더리움</translation>
 <translation id="1530109021798294736">메인넷</translation>
 <translation id="1613627717923045622">네트워크 테스트</translation>
-<translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
 <translation id="6749024162985917640">로컬호스트</translation>
 <translation id="3792938779249970121">계정 선택</translation>
@@ -1194,8 +1160,6 @@
 <translation id="9033453977881595182">토큰 ID</translation>
 <translation id="6332387008245531841">컨트랙트 주소</translation>
 <translation id="4790543031293959558">이미지 URL</translation>
-<translation id="3954354850384043518">진행 중</translation>
-<translation id="4350065043422286972">고정됨</translation>
 <translation id="4289540628985791613">개요</translation>
 <translation id="5585178186632632419">소유자</translation>
 <translation id="2686444421126615064">계정 보기</translation>
@@ -1290,6 +1254,7 @@
 <translation id="6736243959894955139">주소</translation>
 <translation id="3095940652251934233">문구</translation>
 <translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">버전</translation>
 <translation id="1313065465616456728">발급 시각</translation>
 <translation id="7902225556763260253">만료 시간</translation>
 <translation id="2471230424465522689">시작 날짜 미도래</translation>
@@ -1515,23 +1480,22 @@
 <translation id="4937657825850660613">절반</translation>
 <translation id="7639814793732182496">최대</translation>
 <translation id="6584782231358487640">금액 입력</translation>
-<translation id="821928941440539212">최고의 견적 찾는 중...</translation>
+<translation id="477281933640372562">견적 가져오는 중</translation>
 <translation id="5450317966495183014">수신(추산)</translation>
 <translation id="8747614139273050577">보내는 토큰</translation>
 <translation id="1726158192333401896">받는 토큰</translation>
+<translation id="765894671068292221"><ph name="COUNTDOWN_BEFORE"/><ph name="COUNTDOWN"/><ph name="COUNTDOWN_AFTER"/> 후 새 견적</translation>
 <translation id="3835223348537121988">잔액:</translation>
 <translation id="5709875713144853427">스왑할 토큰 선택</translation>
 <translation id="720404198240859011">잔액이 없는 토큰 표시</translation>
 <translation id="4886690455791686940">잔액이 없는 토큰 숨기기</translation>
 <translation id="615791330696335475">이름으로 토큰 검색</translation>
 <translation id="381485723922188688">옵션</translation>
-<translation id="6680650203439190394">요율</translation>
 <translation id="2538996898605796431">가격 영향</translation>
 <translation id="8007404171238546456">슬리피지 후 최소 수신액</translation>
 <translation id="767199001998615704">네트워크 수수료</translation>
-<translation id="7057870207229052478">Brave 수수료</translation>
+<translation id="28584716826670202">Brave 수수료 포함</translation>
 <translation id="3624518972158401291">무료</translation>
-<translation id="5038255447967558645">유동성 제공자</translation>
 <translation id="8450638959928932199">스왑하고 보내기</translation>
 <translation id="476816352791390168">추가 수수료 없음!</translation>
 <translation id="5319981934425923365">위 주소가 정확하다는 사실을 확인합니다.</translation>
@@ -1542,6 +1506,7 @@
 <translation id="8044899503464538266">느리게</translation>
 <translation id="3569512916300900704">평균</translation>
 <translation id="7019805045859631636">빠르게</translation>
+<translation id="632241521608275119">편차 허용치</translation>
 <translation id="6778140392042462129">거래소</translation>
 <translation id="6173494033320397682">다이렉트 라우팅만</translation>
 <translation id="2440960581098655899">다이렉트 라우팅만 사용하고 스플릿 트레이드 거래는 비활성화합니다.</translation>
@@ -1549,6 +1514,7 @@
 <translation id="2379187373676242615">코인게코보다 <ph name="VALUE"/>% 저렴</translation>
 <translation id="5351867352310722022">코인게코 대비 <ph name="VALUE"/>% 이내</translation>
 <translation id="7695501918490163821">코인게코보다 <ph name="VALUE"/>% 비쌈</translation>
+<translation id="6599816589121202398">API</translation>
 <translation id="7561262633951061138">최고</translation>
 <translation id="8060029310790625334">도움말 센터</translation>
 <translation id="3143110700666266545">이 앱은 다음 제3자 API를 사용합니다.</translation>
@@ -1562,29 +1528,6 @@
 <translation id="3797613444743816037">민트 주소</translation>
 <translation id="7951915459354237451">수수료 한도가 기본 수수료보다 낮게 설정되어 있습니다. 트랜잭션이 오래 걸리거나 실패할 수 있습니다.</translation>
 <translation id="2227702748249086756">예상 수수료를 가져올 수 없음</translation>
-<translation id="6580621526400120372">일부 NFT가 지원되지 않는 이유는 무엇인가요?</translation>
-<translation id="620930608106217992">몇몇 NFT 데이터는 AWS, Google Cloud 등의 중앙집중식 서버에 저장되어 있습니다. 이 경우에는 NFT 데이터를 IPFS 네트워크에 고정할 수 없습니다.</translation>
-<translation id="4637031024914696767">Brave에서 IPFS를 활성화하면 NFT가 자동으로 고정됩니다. NFT를 안전하게 백업할 수 있는 최고의 방법입니다.</translation>
-<translation id="2319971828691864975">IPFS 시작하기</translation>
-<translation id="7906328323880284538">NFT를 호스팅할 수 있는 가장 안전한 방법</translation>
-<translation id="214349569547787359">Brave에서 IPFS를 활성화하여 NFT 자동 백업</translation>
-<translation id="4819588096619503180">IPFS는 누구나 사용할 수 있는 커뮤니티 기반의 하드 드라이브 같은 스토리지 네트워크입니다. 차별점은 한 곳의 당국이 제어하는 것이 아닌 수많은 개인이 협력하여 IPFS에서 콘텐츠를 호스트한다는 것입니다. 무언가를 IPFS에 "고정"하면 해당 콘텐츠의 사본이 하나 이상 안전하게 저장됩니다. 그리고 한 사람라도 사본을 가지고 있는 한, 파일은 절대 사라지지 않습니다.<ph name="NEWLINE"/>Brave에서 IPFS를 활성화하면 NFT가 자동으로 고정됩니다. NFT를 안전하게 백업할 수 있는 최고의 방법입니다.</translation>
-<translation id="9160750213078764355">내 NFT 중 어떤 것이 적격인지 확인</translation>
-<translation id="6241155642582182934">Brave에서 IPFS를 활성화하면 NFT를 더욱 강력한 보안으로 자동 백업할 수 있습니다.</translation>
-<translation id="654964147165509548">NFT가 로컬 IPFS 노드에 고정되고 있는 중.</translation>
-<translation id="4910182786472608576"><ph name="PINNED"/> 지원 NFT가 로컬 IPFS 노드에 고정되고 있는 중.</translation>
-<translation id="1607117719941506821"><ph name="PINNABLE"/>개 NFT 지원 불가</translation>
-<translation id="7056553112112778467"><ph name="PINNABLE"/>개 NFT 지원 가능</translation>
-<translation id="6852656829524945421">고정할 수 없음</translation>
-<translation id="9019535252716288146">IPFS 노드 실행 중</translation>
-<translation id="5584313306739463968">로컬 IPFS 노드가 실행되고 있지 않음</translation>
-<translation id="7527548209942671618">로컬 IPFS 노드에 고정됨</translation>
-<translation id="5659058832308365026">NFT 데이터가 로컬 IPFS 노드에 고정되고 있는 중</translation>
-<translation id="4919133452617704550">로컬 IPFS 노드에 고정할 수 없음</translation>
-<translation id="4220102684162429566">가장 일반적인 이유:</translation>
-<translation id="451509325309455">NFT에 비IPFS 메타데이터 URL 문제가 있음</translation>
-<translation id="3827697793483899711">내부 IPFS 노드 문제</translation>
-<translation id="1992846713609432783">로컬 노드에 공간 부족</translation>
 <translation id="3225624966527491351">NFT 가져오기</translation>
 <translation id="9085765419770918643">아직 여기 NFT가 없습니다.</translation>
 <translation id="8445532667841598737">추가할 준비가 되셨나요? 아래 버튼을 클릭하면 가져옵니다.</translation>
@@ -1596,6 +1539,7 @@
 <translation id="6948667383954749033">정크 아님으로 표시</translation>
 <translation id="5810047320613496595">정크</translation>
 <translation id="7257605968082307175">정크로 표시</translation>
+<translation id="1255896809210433555">NFT 추가</translation>
 <translation id="7600335727434653744">Brave 월렛에서 제거하시겠습니까?</translation>
 <translation id="6657860743511185539">NFT가 Brave 월렛에서 제거되지만 블록체인상에는 남아 있습니다. 제거한 후에는 마음이 바뀌면 다시 수동으로 가져와야 합니다.</translation>
 <translation id="849880459530751909">NFT 편집</translation>
@@ -1653,6 +1597,25 @@
 <translation id="8488138412489236285">비밀번호 입력(있는 경우)</translation>
 <translation id="9166422618242592074">가져오기 유형</translation>
 <translation id="1913853014470037784">소유하지 않은 NFT 숨기기</translation>
+<translation id="6722771294390991852">컬렉션으로 그룹화</translation>
+<translation id="8775144690796719618">URL이 올바르지 않습니다.</translation>
+<translation id="8892896831704748782">Brave가 자동으로 감지한 NFT가 보이지 않거나 다른 사람이 소유한 것을 추적하고 싶다면 수동으로 가져오면 됩니다.</translation>
+<translation id="6301982082639804892">NFT를 월렛에 추가할 때 컨트랙트 주소는 NFT 컬렉션의 스마트 컨트랙트가 존재하는 블록체인상의 고유 주소입니다. 컨트랙트 주소는 마켓플레이스, 블록체인 탐색기 등에서 찾을 수 있습니다.</translation>
+<translation id="9033155463293614176">컬렉션 내 특정 NFT의 고유 식별자입니다.</translation>
+<translation id="2483152581664459180">NFT 메타데이터를 가져올 수 없음</translation>
+<translation id="6198624822546162700">이 NFT 조회</translation>
+<translation id="3415773516149065346">이 NFT를 소유하고 있지 않습니다. 월렛에 추가할 수 있지만 이것으로 어떤 트랜잭션도 할 수 없습니다.</translation>
+<translation id="7138457458706196245">예: <ph name="VALUE"/></translation>
+<translation id="2454691116905703258">NFT의 토큰 이름이란 특정 컬렉션 또는 프로젝트 내부 대체 불가능 토큰에 부여된 구체적인 이름을 의미합니다. 이 이름은 동일한 컬렉션 내부 NFT를 서로 구분하는 데 사용됩니다.</translation>
+<translation id="3212749868469431851">NFT 기호란 NFT 컬렉션 또는 프로젝트를 구분하는 데 사용되는 고유 식별자를 일컫습니다.</translation>
+<translation id="8198838794018761504">조회 전용</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="3417321754118442366">찾은 DApp 없음</translation>
+<translation id="4864082959618144988">활성 월렛</translation>
+<translation id="5445224754926400848"><ph name="VALUE"/> 방문</translation>
+<translation id="8355371587927005068">필터</translation>
+<translation id="803703704549420287">필터 지우기</translation>
+<translation id="1472675084647422956">자세히 보기</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
 <translation id="3745016858329272300">일반 정보</translation>
 <translation id="4045404575593562245">Tor 제어 이벤트</translation>
@@ -1700,7 +1663,6 @@
 <translation id="5104499318017527547">재미</translation>
 <translation id="2228584369802328636">게임</translation>
 <translation id="6941852195052765076">건강</translation>
-<translation id="932327136139879170">홈</translation>
 <translation id="2233040275795129413">라이프스타일</translation>
 <translation id="5178222043222938163">음악</translation>
 <translation id="1322083935398004629">정치</translation>
@@ -1734,6 +1696,7 @@
 <translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">빠른 명령</translation>
 <translation id="7481312909269577407">앞으로</translation>
+<translation id="1272079795634619415">중지</translation>
 <translation id="302781076327338683">캐시를 건너뛰고 새로고침</translation>
 <translation id="7211681214230730336">캐시를 삭제하고 새로고침</translation>
 <translation id="1779766957982586368">창 닫기</translation>
@@ -1814,7 +1777,7 @@
 <translation id="6263048902976129908">개발 도구 토글</translation>
 <translation id="1386786836007298307">전체화면 툴바 토글</translation>
 <translation id="461433814913785913">터치 바 커스터마이징</translation>
-<translation id="5835081019037947840">자바스크립트 Apple 이벤트 토글</translation>
+<translation id="4722786500079380710">자바스크립트 Apple 이벤트 토글</translation>
 <translation id="5825969867518399495">PWA 설치</translation>
 <translation id="7888244262238732644">관리 페이지 표시</translation>
 <translation id="8114712275882140856">URL 풀로 표시</translation>
@@ -1862,7 +1825,7 @@
 <translation id="522953399371747698">북마크바 숨기기</translation>
 <translation id="134184943774258988">모든 북마크 버튼 표시 여부 토글</translation>
 <translation id="2158862020143233462">Shields 토글</translation>
-<translation id="4610630726762318759">자바스크립트 토글</translation>
+<translation id="3010280727642018218">자바스크립트 토글</translation>
 <translation id="188822869499214197">재생목록 버블 표시</translation>
 <translation id="3202536111478033084">현재 출처상의 탭 그룹화</translation>
 <translation id="6002210667729577411">그룹을 새 창으로 이동</translation>
@@ -2032,6 +1995,7 @@
 <translation id="2370739752330685659">나중에</translation>
 <translation id="983013125018250242">레오 도구</translation>
 <translation id="49269513399674318">마이크 사용</translation>
+<translation id="3895031624234442305">맞춤 모델</translation>
 <translation id="6303294677342628402">보호</translation>
 <translation id="8458987127502506209">Brave Shields 활성화</translation>
 <translation id="7509914170164691086">다음에 대해 실드 <ph name="LINK_BEFORE"/>활성화됨<ph name="LINK_AFTER"/></translation>
@@ -2096,7 +2060,7 @@
 <translation id="5037676449506322593">모두 선택</translation>
 <translation id="5148943178722443958">Brave 개선에 참여.</translation>
 <translation id="1097073572755862978">충돌 또는 프리징이 발생하면 진단 보고서를 보냅니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="5099408825243658796">Brave 사용자가 사용 중인 기능에 대한 제품 인사이트를 프라이버시를 완전히 보호하며 익명으로 공유합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="6629244688368006959">Brave 사용자가 사용 중인 기능에 대한 제품 인사이트를 프라이빗하게 익명으로 공유합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">설정 완료</translation>
 <translation id="3141206739023333979">선택 여부는 언제든 Brave에서 <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/> 페이지로 이동하여 변경할 수 있습니다.</translation>
 <translation id="8321985064212130832"><ph name="LINK_BEFORE"/>개인정보 보호정책<ph name="LINK_AFTER"/> 전문 읽기</translation>
@@ -2169,14 +2133,12 @@ Brave에는 VPN 연결에서 DNS 쿼리가 생성되는 방식을 필터링하�
 하지만 이 헬퍼 서비스가 작동되고 있지 않은데, 보호받지 않는 상태로 두면 좋지 않습니다. 브라우저 내 DNS 설정을 변경하여 이 노출로부터 보호하도록 조치했습니다. VPN이 연결된 동안에는 이 설정이 적용되며 변경할 수 없습니다.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="8810743613883230732">WireGuard 연결에 문제가 있는 것 같습니다. 안정적인 VPN을 위해 IKEv2 폴백을 활성화하시겠습니까? 설정을 변경하기만 하면 됩니다.
+<translation id="7082498599369566941">WireGuard 연결에 문제가 있는 것 같습니다. 안정적인 VPN을 위해 IKEv2 폴백을 활성화하시겠습니까? 설정을 변경하기만 하면 됩니다.
 
 호환성 또는 구성에 도움이 필요하십니까? 지원팀에 문의하시면 친절히 안내해드리겠습니다.
 언제든 brave://settings/system 페이지에서 WireGuard로 되돌리실 수 있습니다.
 
-즐겁게 연결하시기 바랍니다!
-
-<ph name="LEARN_MORE"/></translation>
+즐겁게 연결하시기 바랍니다!</translation>
 <translation id="1657858090675311947">이 경고를 다시 표시하지 않습니다.</translation>
 <translation id="2740531572673183784">확인</translation>
 <translation id="7423206764347669977">설정 변경</translation>

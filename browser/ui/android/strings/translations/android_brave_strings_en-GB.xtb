@@ -108,9 +108,10 @@
 <translation id="4692623383562244444">Search engines</translation>
 <translation id="1468415711258933398">Standard tab</translation>
 <translation id="3377025655491224618">Private Tab</translation>
+<translation id="7304425663107214334">Show browser suggestions</translation>
+<translation id="8982438328166986164">Displays website suggestions based on your bookmarks and browsing history.</translation>
+<translation id="1571106259128580884">Show top sites suggestions</translation>
 <translation id="9148058034647219655">Exit</translation>
-<translation id="4022987104439075738">IPFS Gateway</translation>
-<translation id="2688519859165248360">Allows for navigation to IPFS resources through an IPFS Gateway</translation>
 <translation id="8047754398610073499">Block cookie consent notices</translation>
 <translation id="2621893359845808115">Blocks website pop-ups that ask you to accept/decline cookies on their site</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
@@ -142,9 +143,9 @@
 <translation id="2356070529366658676">Ask</translation>
 <translation id="4176463684765177261">Disabled</translation>
 <translation id="59174027418879706">Enabled</translation>
-<translation id="6252490671914511928">Today’s top stories in a completely private feed, just for you.</translation>
+<translation id="6920492760024499150">Today’s top stories in a private feed, just for you.</translation>
 <translation id="8300751939969131609">Turn on Brave News and never miss a story</translation>
-<translation id="7266075701303521777">Brave News is ad-supported with completely private and anonymised ads matched on your device.</translation>
+<translation id="7627131190984957214">Brave News is ad-supported with private and anonymised ads matched on your device.</translation>
 <translation id="7699565323725789472">Follow your favourite sources, in a single feed. Just open a tab in Brave, scroll down, and … voila!\nBrave News is ad-supported with private, anonymised ads.</translation>
 <translation id="1765217911817124376">Turn on Brave News</translation>
 <translation id="8981973962043893066">Search for site, topic or RSS feed</translation>
@@ -233,7 +234,7 @@
 <translation id="7281027579943912834">With Brave as default, every link you tap gets Brave's ad-block protection. Every page, video, and stream.</translation>
 <translation id="5148943178722443958">Help make Brave better.</translation>
 <translation id="6718362830686703942">Send diagnostic reports if you experience a crash or freeze.</translation>
-<translation id="1929905278861178845">Share completely private and anonymous product insights about what features are being used by Brave's users.</translation>
+<translation id="8616157231067364693">Share private and anonymous product insights about what features are being used by Brave's users.</translation>
 <translation id="2877653791257935258">Type a website name or URL</translation>
 <translation id="5329830149661250028">See the Brave difference: No ads. No trackers. Way faster page load.</translation>
 <translation id="3941792073703079607">See the Brave difference: Block ads. Save data. Stream faster.</translation>
@@ -276,7 +277,7 @@
 <translation id="1938402585819943124">Choose Brave on the next screen.</translation>
 <translation id="8926389886865778422">Don't ask again</translation>
 <translation id="745974920645827035">Independent search with better privacy</translation>
-<translation id="4717018805430015801">Brave Search doesn't track you, your queries, or your clicks.</translation>
+<translation id="2773167297815493692">Brave Search doesn't profile you.</translation>
 <translation id="5240031343741051161">Try Brave search</translation>
 <translation id="5234764350956374838">Dismiss</translation>
 <translation id="6639570430554986719">JANUARY</translation>
@@ -315,15 +316,13 @@
 <translation id="3132642509209154999">This code has expired. Please generate a new one on your other device and try again.</translation>
 <translation id="2859229680945501779">This code is invalid. Please check that the time and timezone are set correctly on your device.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
-<translation id="3680755684186855422">Brave Sync allows you to sync bookmarks data privately between your Brave Browsers on your various devices.</translation>
-<translation id="3735228155296883311">Simply scan the code from your sync chain that you created on another device, or start a new sync chain.</translation>
+<translation id="348794064910142198">Brave Sync allows you to sync bookmarks data privately between your Brave Browsers on your various devices.\n\nSimply scan the code from your sync chain that you created on another device. Or start a new sync chain.</translation>
 <translation id="2614069607859982576">Using existing synced device, open Brave Settings and navigate to Settings &gt; Sync. Choose "Add New Device" and scan the QR Code displayed on the screen.</translation>
 <translation id="5241263629636958324">Copied to Clipboard</translation>
 <translation id="5817918615728894473">Pair</translation>
 <translation id="3429575397891106447">Sync options</translation>
 <translation id="1680065323266179640">Delete Sync account</translation>
-<translation id="3792563952903751704">Deleting your account will remove your encrypted data from Brave servers and disable Sync on all of your connected devices. It will not however delete the data that is stored locally on those devices.
-  This deletion is permanent and there is no way to recover the data. Should you decide to start using Sync again, you will need to create a new account and re-add each device one by one.</translation>
+<translation id="8397325856045820212">Deleting your account will remove your encrypted data from Brave servers and disable Sync on all of your connected devices. It will not however delete the data that is stored locally on those devices.\n\nThis deletion is permanent and there is no way to recover the data. Should you decide to start using Sync again, you will need to create a new account and re-add each device one by one.</translation>
 <translation id="9064376100690171155">Permanently delete account</translation>
 <translation id="2740516568641790390">Sync account was deleted successfully</translation>
 <translation id="7006136453627651236">Failed to delete sync account</translation>
@@ -333,12 +332,10 @@
 <translation id="1602067095281698985">Start a new sync chain</translation>
 <translation id="1475223680121592371">Add a mobile device</translation>
 <translation id="2965377893636908578">Add a computer</translation>
-<translation id="6604289897677913048">Using a second phone or tablet, navigate to Brave Settings &gt; Sync &gt; Scan.</translation>
-<translation id="8508856434435157945">On your mobile device, navigate to Brave Sync in the Settings panel and click the button "Scan Sync Code". Use your camera to scan the QR code below.</translation>
-<translation id="2590683710114839102">On your computer, navigate to Brave Settings &gt; Sync. Choose "Enter a Sync Chain Code".</translation>
+<translation id="4701589725270449523">Using a second phone or tablet, navigate to Brave Settings &gt; Sync &gt; Scan.\n\nOn your mobile device, navigate to Brave Sync in the Settings panel and click the button "Scan Sync code". Use your camera to scan the QR code below.</translation>
+<translation id="67114562351518315">On your computer, navigate to Brave Settings &gt; Sync. Choose "Enter a Sync chain code".\n\nOn your target computer, navigate to Brave Sync in settings and click the button "I have a Sync code".\nEnter the Sync chain code words shown below.</translation>
 <translation id="65315202420929965">Scan this sync code</translation>
 <translation id="6764016175302339802">Treat this code like a password. If someone gets hold of it, they can read and modify your synced data.</translation>
-<translation id="6707003343517029414">On your target computer, navigate to Brave Sync in settings and click the button "I have a Sync Code".\nEnter the sync chain code words shown below.</translation>
 <translation id="2731921493694251495">Enter the sync chain code</translation>
 <translation id="2175927920773552910">QR Code</translation>
 <translation id="8653433343015102968">Code words</translation>
@@ -352,6 +349,9 @@
 <translation id="8131740175452115882">Confirm</translation>
 <translation id="4973653569293835178">I'll use my camera ...</translation>
 <translation id="326454632686131209">Sync device</translation>
+<translation id="3122158728238634723">Generate new code</translation>
+<translation id="4358805443781965194">Code expired. Generate a new one by clicking the button below.</translation>
+<translation id="318164877797885563">This temporary code is valid for the next <ph name="TIME_AMOUNT"/></translation>
 <translation id="327726072512457161">Settings exit</translation>
 <translation id="8050847734948770789">Enable Brave Rewards</translation>
 <translation id="9187185473011056079">I'm in!</translation>
@@ -416,8 +416,6 @@ Are you sure you want to do this?</translation>
 <translation id="8643377320501056697">Show Top Sites</translation>
 <translation id="7275773481201277457">Show Brave Stats</translation>
 <translation id="8297488609722895137">Photo by <ph name="PHOTO_BY"/></translation>
-<translation id="4761229094276239865">By tapping Start using Brave Rewards, you agree to the <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="7136586167396205364">Hide sponsored images</translation>
 <translation id="2898634658146274982">Open external links in Brave</translation>
 <translation id="5616508928556767259">Opens links from other apps in a Brave webview. Note: Brave must be set as your default browser.</translation>
 <translation id="2394961582378297792">Logged out</translation>
@@ -438,15 +436,11 @@ Are you sure you want to do this?</translation>
 <translation id="7961015016161918242">Never</translation>
 <translation id="1275213816424141989">Maybe later</translation>
 <translation id="4406937629441301400">Earn tokens for viewing this image and pay it forward to creators. <ph name="LEARN_MORE"/></translation>
-<translation id="1992363542751124282">Earn tokens for viewing this image. Tap Start using Brave Rewards to claim your share.</translation>
 <translation id="6632345639591919543">You're earning tokens for viewing this image.\n<ph name="LEARN_MORE"/></translation>
-<translation id="1465733111003593696">You're earning tokens for viewing this image.</translation>
-<translation id="7877201489035217175">Learn more about sponsored images</translation>
 <translation id="8164992819127316581">The payout for <ph name="CURRENT_MONTH"/> rewards will begin processing by <ph name="PAYOUT_DATE"/>.</translation>
 <translation id="33967210973550414">The payout for <ph name="CURRENT_MONTH"/> rewards is in progress. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">The payout for <ph name="CURRENT_MONTH"/> rewards has completed. <ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">Check status</translation>
-<translation id="828092975561478703">For every sponsored image you view, you receive 70% of the revenue in tokens. With Brave Ads, you're always in control of the ads you see.</translation>
 <translation id="3624048886326677117">Block trackers &amp; ads (Aggressive)</translation>
 <translation id="7151914815476509258">Block trackers &amp; ads (Standard)</translation>
 <translation id="7384778069178817075">Allow all trackers &amp; ads</translation>
@@ -486,7 +480,6 @@ Are you sure you want to do this?</translation>
 <translation id="5299848999918506028">Thank you!</translation>
 <translation id="76550953340008122">Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!</translation>
 <translation id="650318023204990401">Advanced controls</translation>
-<translation id="1275664486910646411">Show top sites in autocomplete</translation>
 <translation id="5370478469168390143">Save Data Online</translation>
 <translation id="1118508688433541158">Browse faster and block ads with Brave</translation>
 <translation id="7427391215172269363">Every day I save data by browsing the web with Brave.</translation>
@@ -827,8 +820,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="3074127054582480056">Attention</translation>
 <translation id="2280319752798785157">Monthly Contribution</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
-<translation id="5802665280774361839">Show autocomplete in address bar</translation>
-<translation id="8982438328166986164">Displays website suggestions based on your bookmarks and browsing history.</translation>
 <translation id="1241283133946520352">Networks</translation>
 <translation id="1062463687579789365">Wallet networks customisation</translation>
 <translation id="2512821599885971349">Add network</translation>
@@ -947,6 +938,13 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="7134370164002095282"><ph name="CURRENT"/> of <ph name="SIZE"/></translation>
 <translation id="756701799684433105">Approve transaction</translation>
 <translation id="6450792191436242818">System Program</translation>
+<translation id="5318067544026930166">Unlock Brave Wallet with biometric authentication</translation>
+<translation id="2629767022373384291">Would you like to use biometric authentication to unlock your Brave Wallet?</translation>
+<translation id="4782919977106118997">Use Fingerprint Unlock</translation>
+<translation id="2054995875643283428">Skip this for now</translation>
+<translation id="2522605225061484799">Go to my portfolio</translation>
+<translation id="1148624853678088576">You’re all set!</translation>
+<translation id="4131445988101719379">Your Brave Wallet is ready to use</translation>
 <translation id="6252742184395380448">Config Program</translation>
 <translation id="5358970666412490132">Stake Program</translation>
 <translation id="346636227344244984">Vote Program</translation>
