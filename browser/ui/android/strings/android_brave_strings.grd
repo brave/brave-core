@@ -497,6 +497,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR_SUMMARY" desc="Summary for a checkbox in Settings that controls whether to show autocompletion in the address bar.">
               Displays website suggestions based on your bookmarks and browsing history.
       </message>
+      <message name="IDS_SHOW_SEARCH_SUGGESTIONS_TITLE" desc="Title for a switch in Settings that controls URL and search autocompletion and informs the user about the data shared by this feature.">
+        Show search suggestions
+      </message>
       <message name="IDS_AUTOCOMPLETE_TOP_SITES_TITLE" desc="The label for settings switch controlling whether or not top sites show up in autocomplete">
         Show top sites suggestions
       </message>
