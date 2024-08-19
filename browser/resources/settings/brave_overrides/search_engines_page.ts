@@ -21,7 +21,7 @@ RegisterPolymerTemplateModifications({
             return;
         }
 
-        //moving addSearchEngine button below Active Search Engines list
+        // moving addSearchEngine button below Active Search Engines list
         activeEnginesList.after(addSearchEngineButton);
     }
 })
