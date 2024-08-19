@@ -438,11 +438,9 @@ struct BraveTranslateView: View {
         let currentLanguage = languageInfo.currentLanguage.languageCode?.identifier
       {
         Text(
-          "Translate From: \(Locale.current.localizedString(forIdentifier: pageLanguage) ?? pageLanguage) To: \(Locale.current.localizedString(forIdentifier: currentLanguage) ?? currentLanguage)"
+          "Translate From: \(Locale.current.localizedString(forIdentifier: pageLanguage) ?? pageLanguage) \nTo: \(Locale.current.localizedString(forIdentifier: currentLanguage) ?? currentLanguage)"
         )
       }
-
-      Text("Translate From: \(languageInfo.pageLanguage) To: \(languageInfo.currentLanguage)")
 
       Button {
         startTranslation?(self)
