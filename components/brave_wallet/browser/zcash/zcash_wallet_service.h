@@ -52,10 +52,13 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       KeyringService* keyring_service,
       PrefService* prefs,
       NetworkManager* network_manager,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      scoped_refptr<base::SequencedTaskRunner> background_task_runner);
 
-  ZCashWalletService(KeyringService* keyring_service,
-                     std::unique_ptr<ZCashRpc> zcash_rpc);
+  ZCashWalletService(
+      KeyringService* keyring_service,
+      std::unique_ptr<ZCashRpc> zcash_rpc,
+      scoped_refptr<base::SequencedTaskRunner> background_task_runner);
 
   ~ZCashWalletService() override;
 
@@ -194,6 +197,7 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   raw_ptr<KeyringService> keyring_service_;
   std::unique_ptr<ZCashRpc> zcash_rpc_;
+  scoped_refptr<base::SequencedTaskRunner> background_task_runner_;
 
   std::list<std::unique_ptr<ZCashCreateTransparentTransactionTask>>
       create_transaction_tasks_;

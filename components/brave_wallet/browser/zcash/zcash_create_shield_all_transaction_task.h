@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_SHIELD_ALL_TRANSACTION_TASK_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_SHIELD_ALL_TRANSACTION_TASK_H_
 
+#include <memory>
 #include <set>
 #include <string>
 
@@ -29,6 +30,7 @@ class ZCashCreateShieldAllTransactionTask {
 
   ZCashCreateShieldAllTransactionTask(
       ZCashWalletService* zcash_wallet_service,
+      scoped_refptr<base::SequencedTaskRunner> background_task_runner,
       const std::string& chain_id,
       const mojom::AccountIdPtr& account_id,
       ZCashWalletService::CreateTransactionCallback callback);
@@ -53,6 +55,7 @@ class ZCashCreateShieldAllTransactionTask {
   void OnSignatureApplied(std::unique_ptr<OrchardBundleManager> result);
 
   raw_ptr<ZCashWalletService> zcash_wallet_service_;  // Owns `this`.
+  scoped_refptr<base::SequencedTaskRunner> background_task_runner_;
   std::string chain_id_;
   mojom::AccountIdPtr account_id_;
 

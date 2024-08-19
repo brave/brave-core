@@ -5,6 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_shield_all_transaction_task.h"
 
+#include <utility>
+#include <vector>
+
+#include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -34,10 +38,12 @@ mojom::ZCashKeyIdPtr CreateOrchardInternalKeyId(
 
 ZCashCreateShieldAllTransactionTask::ZCashCreateShieldAllTransactionTask(
     ZCashWalletService* zcash_wallet_service,
+    scoped_refptr<base::SequencedTaskRunner> background_task_runner,
     const std::string& chain_id,
     const mojom::AccountIdPtr& account_id,
     ZCashWalletService::CreateTransactionCallback callback)
     : zcash_wallet_service_(zcash_wallet_service),
+      background_task_runner_(background_task_runner),
       chain_id_(chain_id),
       account_id_(account_id.Clone()),
       callback_(std::move(callback)) {}
@@ -179,8 +185,8 @@ void ZCashCreateShieldAllTransactionTask::CompleteTransaction() {
   auto sighash = ZCashSerializer::CalculateSignatureDigest(transaction_.value(),
                                                            std::nullopt);
 
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
+  background_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE,
       base::BindOnce(&ApplyOrchardSignatures, std::move(orchard_bundle_manager),
                      sighash),
       base::BindOnce(&ZCashCreateShieldAllTransactionTask::OnSignatureApplied,

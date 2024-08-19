@@ -128,8 +128,8 @@ BraveWalletService::BraveWalletService(
 
   if (IsZCashEnabled()) {
     zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
-        keyring_service(), profile_prefs, network_manager(),
-        url_loader_factory);
+        keyring_service(), profile_prefs, network_manager(), url_loader_factory,
+        base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}));
   }
 
   tx_service_ = std::make_unique<TxService>(
