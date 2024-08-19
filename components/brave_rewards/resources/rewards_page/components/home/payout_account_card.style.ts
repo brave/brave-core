@@ -8,10 +8,6 @@ import { color, effect, font } from '@brave/leo/tokens/css/variables'
 import { css, scopedCSS } from '../../lib/scoped_css'
 
 export const style = scopedCSS('payout-account-card', css`
-  & {
-    --content-card-section-padding: 16px;
-  }
-
   h4 {
     --leo-icon-size: 24px;
     --leo-icon-color: ${color.systemfeedback.successIcon};
@@ -110,6 +106,7 @@ export const style = scopedCSS('payout-account-card', css`
 
   .account-details {
     position: absolute;
+    z-index: 1;
     inset-block-start: calc(100% + 2px);
     inset-inline-end: 0;
     border: 1px solid ${color.divider.subtle};
@@ -170,7 +167,7 @@ export const style = scopedCSS('payout-account-card', css`
       font: ${font.default.regular};
 
       &:hover {
-        color: ${color.text.interactive};
+        --leo-icon-color: ${color.text.interactive};
       }
     }
   }

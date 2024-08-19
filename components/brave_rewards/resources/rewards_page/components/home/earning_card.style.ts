@@ -7,6 +7,10 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 import { css, scopedCSS } from '../../lib/scoped_css'
 
 export const style = scopedCSS('earning-card', css`
+  section {
+    padding: 8px 12px;
+  }
+
   .counter {
     padding: 24px 16px 16px;
     display: flex;

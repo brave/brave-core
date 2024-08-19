@@ -5,14 +5,20 @@
 
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_data_source.h"
 
+#include <memory>
+
 #include "base/feature_list.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/brave_rewards/resources/grit/rewards_page_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/webui_util.h"
+#include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -25,6 +31,18 @@ static constexpr webui::ResourcePath kResources[] = {
     {"favicon.ico", IDR_BRAVE_REWARDS_FAVICON}};
 
 static constexpr webui::LocalizedString kStrings[] = {
+    {"acAmountLabel", REWARDS_AC_AMOUNT_LABEL},
+    {"acAmountText", REWARDS_AC_AMOUNT_TEXT},
+    {"acAttentionLabel", REWARDS_AC_ATTENTION_LABEL},
+    {"acDisabledText", REWARDS_AC_DISABLED_TEXT},
+    {"acDisabledTitle", REWARDS_AC_DISABLED_TITLE},
+    {"acEmptyListText", REWARDS_AC_EMPTY_LIST_TEXT},
+    {"acInfoText", REWARDS_AC_INFO_TEXT},
+    {"acInfoTitle", REWARDS_AC_INFO_TITLE},
+    {"acNextContributionLabel", REWARDS_AC_NEXT_CONTRIBUTION_LABEL},
+    {"acSiteCountLabel", REWARDS_AC_SITE_COUNT_LABEL},
+    {"acSiteLabel", REWARDS_AC_SITE_LABEL},
+    {"acTitle", REWARDS_AC_TITLE},
     {"adsHistoryButtonLabel", IDS_REWARDS_ADS_HISTORY_BUTTON_LABEL},
     {"adsHistoryMarkInappropriateLabel",
      IDS_REWARDS_ADS_HISTORY_MARK_INAPPROPRIATE_LABEL},
@@ -113,6 +131,9 @@ static constexpr webui::LocalizedString kStrings[] = {
      IDS_REWARDS_AUTHORIZE_UPHOLD_INSUFFICIENT_CAPABILITIES_TEXT},
     {"authorizeUpholdInsufficientCapabilitiesTitle",
      IDS_REWARDS_AUTHORIZE_UPHOLD_INSUFFICIENT_CAPABILITIES_TITLE},
+    {"benefitsStoreSubtext", REWARDS_BENEFITS_STORE_SUBTEXT},
+    {"benefitsStoreText", REWARDS_BENEFITS_STORE_TEXT},
+    {"benefitsTitle", REWARDS_BENEFITS_TITLE},
     {"cancelButtonLabel", IDS_REWARDS_PANEL_CANCEL},
     {"closeButtonLabel", IDS_BRAVE_REWARDS_ONBOARDING_CLOSE},
     {"connectAccountSubtext", IDS_REWARDS_CONNECT_ACCOUNT_SUBTEXT},
@@ -178,18 +199,24 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"payoutAccountLoginText", IDS_REWARDS_PAYOUT_ACCOUNT_LOGIN_TEXT},
     {"payoutAccountTitle", IDS_REWARDS_PAYOUT_ACCOUNT_TITLE},
     {"payoutAccountTooltip", IDS_REWARDS_PAYOUT_ACCOUNT_TOOLTIP},
+    {"recurringListEmptyText", REWARDS_RECURRING_LIST_EMPTY_TEXT},
+    {"recurringNextContributionLabel",
+     REWARDS_RECURRING_NEXT_CONTRIBUTION_LABEL},
+    {"recurringTitle", REWARDS_RECURRING_TITLE},
+    {"removeButtonLabel", REWARDS_REMOVE_BUTTON_LABEL},
     {"resetButtonLabel", IDS_BRAVE_UI_RESET},
     {"resetConsentText", IDS_BRAVE_UI_REWARDS_RESET_CONSENT},
     {"resetRewardsText", IDS_BRAVE_UI_REWARDS_RESET_TEXT},
     {"resetRewardsTitle", IDS_BRAVE_UI_RESET_WALLET},
-    {"rewardsPageTitle", IDS_REWARDS_PAGE_TITLE}};
+    {"rewardsPageTitle", IDS_REWARDS_PAGE_TITLE},
+    {"showAllButtonLabel", REWARDS_SHOW_ALL_BUTTON_LABEL}};
 
 }  // namespace
 
 void CreateAndAddRewardsPageDataSource(content::WebUI& web_ui,
                                        const std::string& host) {
-  auto* source = content::WebUIDataSource::CreateAndAdd(
-      web_ui.GetWebContents()->GetBrowserContext(), host);
+  auto* browser_context = web_ui.GetWebContents()->GetBrowserContext();
+  auto* source = content::WebUIDataSource::CreateAndAdd(browser_context, host);
 
   webui::SetupWebUIDataSource(
       source, base::make_span(kRewardsPageGenerated, kRewardsPageGeneratedSize),
@@ -215,6 +242,11 @@ void CreateAndAddRewardsPageDataSource(content::WebUI& web_ui,
   source->AddBoolean(
       "animatedBackgroundEnabled",
       base::FeatureList::IsEnabled(features::kAnimatedBackgroundFeature));
+
+  content::URLDataSource::Add(
+      browser_context,
+      std::make_unique<FaviconSource>(Profile::FromWebUI(&web_ui),
+                                      chrome::FaviconUrlFormat::kFavicon2));
 }
 
 }  // namespace brave_rewards
