@@ -26,6 +26,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
@@ -91,6 +92,47 @@ class RewardsPageHandler::UpdateObserver
   void OnRewardsInitialized(RewardsService*) override {
     OnUpdate(UpdateSource::kRewards);
   }
+
+  void OnExcludedSitesChanged(RewardsService* rewards_service,
+                              std::string publisher_id,
+                              bool excluded) override {
+    OnUpdate(UpdateSource::kRewards);
+  }
+
+  void OnReconcileComplete(RewardsService* rewards_service,
+                           mojom::Result result,
+                           const std::string& contribution_id,
+                           double amount,
+                           mojom::RewardsType type,
+                           mojom::ContributionProcessor processor) override {
+    OnUpdate(UpdateSource::kRewards);
+  }
+
+  void OnPublisherListNormalized(
+      RewardsService* rewards_service,
+      std::vector<mojom::PublisherInfoPtr> list) override {
+    OnUpdate(UpdateSource::kRewards);
+  }
+
+  void OnStatementChanged(RewardsService* rewards_service) override {
+    OnUpdate(UpdateSource::kRewards);
+  }
+
+  void OnRecurringTipSaved(RewardsService* rewards_service,
+                           bool success) override {
+    OnUpdate(UpdateSource::kRewards);
+  }
+
+  void OnRecurringTipRemoved(RewardsService* rewards_service,
+                             bool success) override {
+    OnUpdate(UpdateSource::kRewards);
+  }
+
+  void OnTermsOfServiceUpdateAccepted() override {
+    OnUpdate(UpdateSource::kRewards);
+  }
+
+  void ReconcileStampReset() override { OnUpdate(UpdateSource::kRewards); }
 
   void OnRewardsWalletCreated() override { OnUpdate(UpdateSource::kRewards); }
 
@@ -249,6 +291,71 @@ void RewardsPageHandler::GetAvailableBalance(
 
   rewards_service_->FetchBalance(
       base::BindOnce(fetch_balance_callback, std::move(callback)));
+}
+
+void RewardsPageHandler::GetRecurringContributions(
+    GetRecurringContributionsCallback callback) {
+  rewards_service_->GetRecurringTips(std::move(callback));
+}
+
+void RewardsPageHandler::RemoveRecurringContribution(
+    const std::string& creator_id,
+    RemoveRecurringContributionCallback callback) {
+  rewards_service_->RemoveRecurringTip(creator_id);
+  std::move(callback).Run();
+}
+
+void RewardsPageHandler::GetAutoContributeSettings(
+    GetAutoContributeSettingsCallback callback) {
+  auto country_code = rewards_service_->GetCountryCode();
+  if (!IsAutoContributeSupportedForCountry(country_code)) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  auto settings = mojom::AutoContributeSettings::New();
+  settings->enabled = prefs_->GetBoolean(prefs::kAutoContributeEnabled);
+  settings->amount = prefs_->GetDouble(prefs::kAutoContributeAmount);
+  settings->next_auto_contribute_date =
+      static_cast<double>(prefs_->GetUint64(prefs::kNextReconcileStamp) * 1000);
+
+  std::move(callback).Run(std::move(settings));
+}
+
+void RewardsPageHandler::GetAutoContributeSites(
+    GetAutoContributeSitesCallback callback) {
+  auto filter = mojom::ActivityInfoFilter::New();
+  filter->order_by.push_back(
+      mojom::ActivityInfoFilterOrderPair::New("ai.percent", false));
+  filter->min_duration = prefs_->GetInteger(prefs::kMinVisitTime);
+  filter->reconcile_stamp = prefs_->GetUint64(prefs::kNextReconcileStamp);
+  filter->excluded = mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED;
+  filter->percent = 1;
+  filter->min_visits = prefs_->GetInteger(prefs::kMinVisits);
+
+  rewards_service_->GetActivityInfoList(0, 0, std::move(filter),
+                                        std::move(callback));
+}
+
+void RewardsPageHandler::SetAutoContributeEnabled(
+    bool enabled,
+    SetAutoContributeEnabledCallback callback) {
+  rewards_service_->SetAutoContributeEnabled(enabled);
+  std::move(callback).Run();
+}
+
+void RewardsPageHandler::SetAutoContributeAmount(
+    double amount,
+    SetAutoContributeAmountCallback callback) {
+  rewards_service_->SetAutoContributionAmount(amount);
+  std::move(callback).Run();
+}
+
+void RewardsPageHandler::RemoveAutoContributeSite(
+    const std::string& creator_id,
+    RemoveAutoContributeSiteCallback callback) {
+  rewards_service_->SetPublisherExclude(creator_id, true);
+  std::move(callback).Run();
 }
 
 void RewardsPageHandler::GetAdsSettings(GetAdsSettingsCallback callback) {

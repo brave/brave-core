@@ -27,3 +27,4 @@ export const mismatchedProviderAccountsURL = 'https://support.brave.com/hc/en-us
 export const braveStatusURL = 'https://status.brave.com/'
 export const adsLearnMoreURL = 'https://support.brave.com/hc/en-us/articles/360026361072-Brave-Ads-FAQ'
 export const braveSearchURL = 'https://search.brave.com'
+export const braveStoreURL = 'https://store.brave.com'

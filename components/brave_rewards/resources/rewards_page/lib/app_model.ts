@@ -57,6 +57,8 @@ export interface AdsHistoryItem {
 }
 
 export interface RewardsParameters {
+  autoContributeChoices: number[]
+  rate: number
   walletProviderRegions: Record<string, { allow: string[], block: string[] }>
 }
 
@@ -75,6 +77,41 @@ export type ConnectExternalWalletResult =
   'uphold-insufficient-capabilities' |
   'uphold-transaction-verification-failure'
 
+export type CreatorPlatform =
+  '' |
+  'twitter' |
+  'youtube' |
+  'twitch' |
+  'reddit' |
+  'vimeo' |
+  'github'
+
+export interface CreatorSite {
+  id: string
+  icon: string
+  name: string
+  url: string
+  platform: CreatorPlatform
+}
+
+export interface AutoContributeEntry {
+  site: CreatorSite
+  attention: number
+}
+
+export interface AutoContributeInfo {
+  enabled: boolean
+  amount: number
+  nextAutoContributeDate: number
+  entries: AutoContributeEntry[]
+}
+
+export interface RecurringContribution {
+  site: CreatorSite
+  amount: number
+  nextContributionDate: number
+}
+
 export interface AppState {
   loading: boolean
   openTime: number
@@ -84,6 +121,8 @@ export interface AppState {
   externalWallet: ExternalWallet | null
   balance: Optional<number>
   adsInfo: AdsInfo | null
+  autoContributeInfo: AutoContributeInfo | null
+  recurringContributions: RecurringContribution[]
   rewardsParameters: RewardsParameters | null
 }
 
@@ -111,6 +150,10 @@ export interface AppModel {
   getAdsHistory: () => Promise<AdsHistoryItem[]>
   setAdLikeStatus: (id: string, status: AdLikeStatus) => Promise<void>
   setAdInappropriate: (id: string, value: boolean) => Promise<void>
+  setAutoContributeEnabled: (enabled: boolean) => Promise<void>
+  setAutoContributeAmount: (amount: number) => Promise<void>
+  removeAutoContributeSite: (id: string) => Promise<void>
+  removeRecurringContribution: (id: string) => Promise<void>
 }
 
 export function defaultState(): AppState {
@@ -127,6 +170,8 @@ export function defaultState(): AppState {
     externalWallet: null,
     balance: new Optional(),
     adsInfo: null,
+    autoContributeInfo: null,
+    recurringContributions: [],
     rewardsParameters: null
   }
 }
@@ -173,6 +218,14 @@ export function defaultModel(): AppModel {
 
     async setAdLikeStatus(id, status) {},
 
-    async setAdInappropriate(id, value) {}
+    async setAdInappropriate(id, value) {},
+
+    async setAutoContributeEnabled(enabled) {},
+
+    async setAutoContributeAmount(amount) {},
+
+    async removeAutoContributeSite(id) {},
+
+    async removeRecurringContribution(id) {}
   }
 }

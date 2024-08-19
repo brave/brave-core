@@ -103,13 +103,12 @@ export const style = scopedCSS('app-frame', css`
 
   &.page-frame {
     display: flex;
+    block-size: 100cqb;
 
     .sidebar {
-      min-block-size: 100cqb;
-      flex: 0 1 250px;
+      flex: 0 0 250px;
       display: flex;
       flex-direction: column;
-      position: sticky;
       background: ${color.container.background};
     }
 
@@ -123,8 +122,10 @@ export const style = scopedCSS('app-frame', css`
     }
 
     .page-content {
-      flex: 1 0 auto;
-      margin: 16px;
+      flex: 1 1 auto;
+      padding: 16px;
+      overflow: hidden auto;
+      scrollbar-gutter: stable;
     }
 
     main {

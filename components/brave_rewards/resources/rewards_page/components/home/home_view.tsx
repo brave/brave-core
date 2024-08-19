@@ -5,16 +5,52 @@
 
 import * as React from 'react'
 
+import { useAppState } from '../../lib/app_model_context'
+import { useBreakpoint } from '../../lib/breakpoint'
 import { EarningCard } from './earning_card'
 import { PayoutAccountCard } from './payout_account_card'
+import { BenefitsCard } from './benefits_card'
+import { AutoContributeCard } from './auto_contribute_card'
+import { RecurringContributionCard } from './recurring_contribution_card'
 
 import { style } from './home_view.style'
 
 export function HomeView() {
+  const viewType = useBreakpoint()
+  const [externalWallet, embedder] = useAppState((state) => [
+    state.externalWallet,
+    state.embedder
+  ])
+
+  if (viewType === 'double' && externalWallet) {
+    return (
+      <div {...style}>
+        <EarningCard />
+        <div className='columns'>
+          <div>
+            <BenefitsCard />
+            <RecurringContributionCard />
+          </div>
+          <div>
+            <PayoutAccountCard />
+            <AutoContributeCard />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div {...style}>
       <EarningCard />
       <PayoutAccountCard />
+      <BenefitsCard />
+      {
+        !embedder.isBubble && <>
+          <AutoContributeCard />
+          <RecurringContributionCard />
+        </>
+      }
     </div>
   )
 }

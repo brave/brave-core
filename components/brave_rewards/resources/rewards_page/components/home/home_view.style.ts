@@ -9,7 +9,18 @@ export const style = scopedCSS('home-view', css`
   & {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
     gap: 8px;
+  }
+
+  .columns {
+    display: flex;
+    gap: 24px;
+
+    > * {
+      flex: 1 1 50%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
   }
 `)

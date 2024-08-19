@@ -55,7 +55,100 @@ export function createModel(): AppModel {
       url: ''
     },
     balance: optional(4.167),
+    autoContributeInfo: {
+      enabled: true,
+      amount: 7,
+      nextAutoContributeDate: Date.now(),
+      entries: [
+        {
+          site: {
+            id: '1',
+            icon: '',
+            name: 'The Verge',
+            url: 'https://brave.com',
+            platform: ''
+          },
+          attention: .4
+        },
+        {
+          site: {
+            id: '2',
+            icon: '',
+            name: 'Brave',
+            url: 'https://brave.com',
+            platform: ''
+          },
+          attention: .3
+        },
+        {
+          site: {
+            id: '3',
+            icon: '',
+            name: 'Brave',
+            url: 'https://brave.com',
+            platform: '',
+          },
+          attention: .3
+        },
+        {
+          site: {
+            id: '4',
+            icon: '',
+            name: 'Brave',
+            url: 'https://brave.com',
+            platform: ''
+          },
+          attention: .15
+        },
+        {
+          site: {
+            id: '5',
+            icon: '',
+            name: 'Brave',
+            url: 'https://brave.com',
+            platform: ''
+          },
+          attention: .1
+        },
+        {
+          site: {
+            id: '6',
+            icon: '',
+            name: 'Brave',
+            url: 'https://brave.com',
+            platform: ''
+          },
+          attention: .05
+        }
+      ]
+    },
+    recurringContributions: [
+      {
+        site: {
+          id: '1',
+          icon: '',
+          name: 'Alice',
+          url: 'https://brave.com',
+          platform: ''
+        },
+        amount: 2.5,
+        nextContributionDate: Date.now() - 10000
+      },
+      {
+        site: {
+          id: '2',
+          icon: '',
+          name: 'Bob',
+          url: 'https://brave.com',
+          platform: 'youtube'
+        },
+        amount: 1.5,
+        nextContributionDate: Date.now()
+      }
+    ],
     rewardsParameters: {
+      autoContributeChoices: [1, 2, 5, 10],
+      rate: .56,
       walletProviderRegions: {
         bitflyer: { allow: [], block: [] },
         gemini: { allow: [], block: ['US'] },
@@ -148,6 +241,33 @@ export function createModel(): AppModel {
           inappropriate: false
         }
       ]
+    },
+
+    async setAutoContributeEnabled(enabled) {
+      const { autoContributeInfo } = stateManager.getState()
+      autoContributeInfo!.enabled = enabled
+      stateManager.update({ autoContributeInfo })
+    },
+
+    async setAutoContributeAmount(amount) {
+      const { autoContributeInfo } = stateManager.getState()
+      autoContributeInfo!.amount = amount
+      stateManager.update({ autoContributeInfo })
+    },
+
+    async removeAutoContributeSite(id) {
+      const { autoContributeInfo } = stateManager.getState()
+      autoContributeInfo!.entries =
+        autoContributeInfo!.entries.filter((entry) => entry.site.id !== id)
+      stateManager.update({ autoContributeInfo })
+    },
+
+    async removeRecurringContribution(id) {
+      let { recurringContributions } = stateManager.getState()
+      recurringContributions = recurringContributions.filter((entry) => {
+        return entry.site.id !== id
+      })
+      stateManager.update({ recurringContributions })
     }
 
   }

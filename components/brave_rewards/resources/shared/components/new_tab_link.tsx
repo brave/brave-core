@@ -19,6 +19,7 @@ export const TabOpenerContext = React.createContext<TabOpener>(defaultTabOpener)
 
 interface Props {
   href: string
+  className?: string
   children: React.ReactNode
 }
 
@@ -39,6 +40,7 @@ export function NewTabLink (props: Props) {
     <a
       href={props.href}
       onClick={onClick}
+      className={props.className}
       target='_blank'
       rel='noopener noreferrer'
     >

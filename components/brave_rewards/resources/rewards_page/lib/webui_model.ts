@@ -37,6 +37,19 @@ function convertAdType(adType: AdType) {
   }
 }
 
+function parseCreatorPlatform(value: string) {
+  switch (value) {
+    case 'twitter':
+    case 'youtube':
+    case 'twitch':
+    case 'reddit':
+    case 'vimeo':
+    case 'github':
+      return value
+  }
+  return ''
+}
+
 function convertMojoTime(time: any) {
   return (Number(time?.internalValue) / 1000 - Date.UTC(1601, 0, 1)) || 0
 }
@@ -133,6 +146,51 @@ export function createModel(): AppModel {
     stateManager.update({ rewardsParameters })
   }
 
+  async function updateAutoContributeInfo() {
+    const [{ settings }, { sites }] = await Promise.all([
+      pageHandler.getAutoContributeSettings(),
+      pageHandler.getAutoContributeSites()
+    ])
+
+    if (!settings) {
+      stateManager.update({ autoContributeInfo: null })
+      return
+    }
+
+    stateManager.update({
+      autoContributeInfo: {
+        ...settings,
+        entries: sites.map((item) => ({
+          site: {
+            id: item.id,
+            icon: item.faviconUrl,
+            name: item.name,
+            url: item.url,
+            platform: parseCreatorPlatform(item.provider)
+          },
+          attention: item.percent / 100
+        }))
+      }
+    })
+  }
+
+  async function updateRecurringContributions() {
+    const { contributions } = await pageHandler.getRecurringContributions()
+    stateManager.update({
+      recurringContributions: contributions.map((item) => ({
+        site: {
+          id: item.id,
+          icon: item.faviconUrl,
+          name: item.name,
+          url: item.url,
+          platform: parseCreatorPlatform(item.provider)
+        },
+        amount: item.weight,
+        nextContributionDate: Number(item.reconcileStamp) * 1000
+      }))
+    })
+  }
+
   async function loadData() {
     const inBackground = (promise: Promise<unknown>) => null
 
@@ -142,6 +200,8 @@ export function createModel(): AppModel {
       updateExternalWallet(),
       inBackground(updateBalance()),
       updateAdsInfo(),
+      updateRecurringContributions(),
+      updateAutoContributeInfo(),
       updateRewardsParameters()
     ])
 
@@ -323,6 +383,25 @@ export function createModel(): AppModel {
       const detail = adsHistoryAdapter.getRawDetail(id)
       adsHistoryAdapter.setInappropriate(id, value)
       await pageHandler.toggleAdInappropriate(detail)
+    },
+
+    async setAutoContributeEnabled(enabled) {
+      await pageHandler.setAutoContributeEnabled(enabled)
+      updateAutoContributeInfo()
+    },
+
+    async setAutoContributeAmount(amount) {
+      await pageHandler.setAutoContributeAmount(amount)
+      updateAutoContributeInfo()
+    },
+
+    async removeAutoContributeSite(id) {
+      await pageHandler.removeAutoContributeSite(id)
+    },
+
+    async removeRecurringContribution(id) {
+      await pageHandler.removeRecurringContribution(id)
+      updateRecurringContributions()
     }
   }
 }
