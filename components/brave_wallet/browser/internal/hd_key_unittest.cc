@@ -463,7 +463,7 @@ TEST(HDKeyUnitTest, SetPublicKey) {
       "024d902e1a2fc7a8755ab5b694c575fce742c48d9ff192e63df5193e4c7afe1f9c";
   ASSERT_TRUE(base::HexStringToBytes(valid_pubkey, &bytes));
   ASSERT_EQ(bytes.size(), kSecp256k1PubkeySize);
-  key.SetPublicKey(base::make_span<kSecp256k1PubkeySize>(bytes));
+  key.SetPublicKey(*base::span(bytes).to_fixed_extent<kSecp256k1PubkeySize>());
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(key.public_key_)), valid_pubkey);
 }
 

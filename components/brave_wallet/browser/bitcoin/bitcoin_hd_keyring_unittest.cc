@@ -125,8 +125,8 @@ TEST(BitcoinHDKeyringUnitTest, SignMessage) {
   BitcoinHDKeyring keyring(*MnemonicToSeed(kMnemonicAbandonAbandon), false);
   std::vector<uint8_t> message(32, 0);
   EXPECT_EQ(
-      base::HexEncode(*keyring.SignMessage(0, BitcoinKeyId(0, 0),
-                                           base::make_span<32>(message))),
+      base::HexEncode(*keyring.SignMessage(
+          0, BitcoinKeyId(0, 0), *base::span(message).to_fixed_extent<32>())),
       "3044022009271D760CD433185513A7702C8D3BDB70B0FA1832AECFE19E43AB698C801966"
       "0220113A39099493C8DEE6E4735E89F3AD6D3C3382E3E61DBAA961390B0253DE6FAF");
 }

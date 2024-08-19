@@ -185,9 +185,7 @@ bool ZCashSerializer::SignTransparentPart(KeyringService* keyring_service,
         ZCashSerializer::CalculateSignatureDigest(tx, input);
 
     auto signature = keyring_service->SignMessageByZCashKeyring(
-        account_id, key_id,
-        base::make_span<kZCashDigestSize>(signature_digest.begin(),
-                                          signature_digest.end()));
+        account_id, key_id, base::span(signature_digest));
 
     if (!signature) {
       return false;
