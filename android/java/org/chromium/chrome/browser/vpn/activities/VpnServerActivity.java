@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.adapters.VpnServerAdapter;
+import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.ui.widget.Toast;
@@ -109,6 +110,12 @@ public class VpnServerActivity extends BraveVpnParentActivity {
                                             Toast.LENGTH_SHORT)
                                     .show();
                         } else {
+                            BraveVpnUtils.selectedServerRegion =
+                                    new BraveVpnServerRegion(
+                                            region.countryIsoCode,
+                                            region.name,
+                                            region.namePretty,
+                                            city.namePretty);
                             changeServerRegion();
                         }
                     }

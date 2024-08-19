@@ -53,8 +53,9 @@ public class VpnServerAdapter extends RecyclerView.Adapter<VpnServerAdapter.View
                             .getQuantityString(
                                     R.plurals.server_text, city.serverCount, city.serverCount);
             holder.cityServerText.setText((position == 0) ? city.name : cityServerText);
-            Log.e("brave_vpn", "hostname : " + BraveVpnPrefUtils.getHostname());
-            holder.serverRadioButton.setChecked(BraveVpnPrefUtils.getHostname().equals(city.name));
+            Log.e("brave_vpn", "hostname : " + BraveVpnPrefUtils.getHostnameDisplay());
+            holder.serverRadioButton.setChecked(
+                    BraveVpnPrefUtils.getHostnameDisplay().equals(city.namePretty));
             holder.serverSelectionItemLayout.setOnClickListener(
                     new View.OnClickListener() {
                         @Override
