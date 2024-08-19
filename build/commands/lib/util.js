@@ -615,6 +615,7 @@ const util = {
     gnGenGuard.run((wasInterrupted) => {
       const doesBuildNinjaExist = fs.existsSync(path.join(outputDir, 'build.ninja'))
       const hasBuildArgsUpdated = util.writeGnBuildArgs(outputDir, buildArgs)
+      const shouldCheck = extraGnGenOpts.includes('--check')
 
       const shouldRunGnGen =
         config.force_gn_gen ||
@@ -624,6 +625,8 @@ const util = {
 
       if (shouldRunGnGen) {
         util.run('gn', ['gen', outputDir, ...extraGnGenOpts], options)
+      } else if (shouldCheck) {
+        util.run('gn', ['check', outputDir], options)
       }
     })
   },
