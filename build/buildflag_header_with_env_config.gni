@@ -1,0 +1,53 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/env_config.gni")
+import("//build/buildflag_header.gni")
+
+# Prevent empty .env flags in official builds, but allow this to be configurable
+# for development.
+if (defined(env_config.allow_empty_env_config_flags)) {
+  allow_empty_env_config_flags = env_config.allow_empty_env_config_flags
+} else {
+  allow_empty_env_config_flags = !is_official_build
+}
+
+# Similar to buildflag_header(), but supports flags defined in .env file.
+#
+# For example, "sample_secret_key=iamsecret" in the .env file can be generated
+# into a buildflag header as `SAMPLE_SECRET_KEY="iamsecret"` using the
+# following:
+#
+#   env_config_flags = [ "SAMPLE_SECRET_KEY" ]
+#
+# The generator will match the lowercase version of the flag name in the .env
+# file. If the flag is not found in the .env file, it will be generated as an
+# empty string if this is allowed in the current configuration.
+template("buildflag_header_with_env_config") {
+  buildflag_header(target_name) {
+    forward_variables_from(invoker, "*", [ "env_config_flags" ])
+
+    if (defined(invoker.env_config_flags)) {
+      _extracted_env_config_flags = []
+
+      foreach(name, invoker.env_config_flags) {
+        if (defined(env_config[name])) {
+          _extracted_env_config_flags += [ "$name=\"${env_config[name]}\"" ]
+        } else {
+          assert(allow_empty_env_config_flags,
+                 "$name (or lowercase variant) is not set in " +
+                     string_join(" or ", env_config_files))
+          _extracted_env_config_flags += [ "$name=\"\"" ]
+        }
+      }
+
+      if (defined(flags)) {
+        flags += _extracted_env_config_flags
+      } else {
+        flags = _extracted_env_config_flags
+      }
+    }
+  }
+}
