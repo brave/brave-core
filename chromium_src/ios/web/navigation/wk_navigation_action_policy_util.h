@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_IOS_WEB_NAVIGATION_WK_NAVIGATION_ACTION_POLICY_UTIL_H_
 
 #import <Foundation/Foundation.h>
+#import <WebKit/WebKit.h>
 
 #include "src/ios/web/navigation/wk_navigation_action_policy_util.h"
 
@@ -15,9 +16,12 @@ class WebState;
 }
 
 namespace brave {
-bool ShouldBlockUniversalLinks(web::WebState* webState,
+void ShouldBlockUniversalLinks(web::WebState* webState,
                                NSURLRequest* request,
                                bool* forceBlockUniversalLinks);
-}
+void ShouldBlockJavaScript(web::WebState* webState,
+                           NSURLRequest* request,
+                           WKWebpagePreferences* preferences);
+}  // namespace brave
 
 #endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_NAVIGATION_WK_NAVIGATION_ACTION_POLICY_UTIL_H_

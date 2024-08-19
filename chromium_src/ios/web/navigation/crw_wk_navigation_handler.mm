@@ -26,6 +26,9 @@
 
 @end
 
+#define BRAVE_SHOULD_BLOCK_JAVASCRIPT                                          \
+  brave::ShouldBlockJavaScript(static_cast<web::WebState*>(self.webStateImpl), \
+                               action.request, preferences);
 #define BRAVE_SHOULD_BLOCK_UNIVERSAL_LINKS                            \
   brave::ShouldBlockUniversalLinks(                                   \
       static_cast<web::WebState*>(self.webStateImpl), action.request, \
@@ -58,6 +61,7 @@
 #undef BRAVE_HANDLE_LOAD_ERROR
 #undef BRAVE_PROCESS_AUTH_CHALLENGE
 #undef BRAVE_SHOULD_BLOCK_UNIVERSAL_LINKS
+#undef BRAVE_SHOULD_BLOCK_JAVASCRIPT
 
 @implementation CRWWKNavigationHandler (Brave)
 

@@ -156,6 +156,17 @@ class TabManagerNavDelegate: NSObject, CWVNavigationDelegate {
     return false
   }
 
+  func webView(_ webView: CWVWebView, shouldBlockJavaScriptFor request: URLRequest) -> Bool {
+    for delegate in delegates {
+      if let shouldBlock = delegate.webView?(webView, shouldBlockJavaScriptFor: request),
+        shouldBlock
+      {
+        return true
+      }
+    }
+    return false
+  }
+
   func webView(
     _ webView: CWVWebView,
     didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
