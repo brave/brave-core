@@ -41,6 +41,8 @@ source_set("hd_key") {
 if (enable_orchard) {
   source_set("orchard_bundle") {
     sources = [
+      "orchard_block_scanner.cc",
+      "orchard_block_scanner.h",
       "orchard_bundle_manager.cc",
       "orchard_bundle_manager.h",
     ]

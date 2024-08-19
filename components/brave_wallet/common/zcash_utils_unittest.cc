@@ -372,4 +372,21 @@ TEST(ZCashUtilsUnitTest, OutputZCashAddressSupported) {
       "tm9iMLAuYMzJ6jtFLcA7rzUmfreGuKvr7Ma", false));
 }
 
+TEST(ZCashUtilsUnitTest, RevertHex) {
+  EXPECT_FALSE(RevertHex("0x"));
+  EXPECT_FALSE(RevertHex("0xYY"));
+  EXPECT_FALSE(RevertHex("0xa"));
+  EXPECT_FALSE(RevertHex(""));
+  EXPECT_EQ(
+      RevertHex(
+          "000000000061ef6a26dcf7597a3ffddd087c23df5f44398d070dbd26a9699ae9")
+          .value(),
+      "0xe99a69a926bd0d078d39445fdf237c08ddfd3f7a59f7dc266aef610000000000");
+  EXPECT_EQ(
+      RevertHex(
+          "000000000049900203ce1cba81a36d29390ea40fc78cf4799e8139b96f3a8114")
+          .value(),
+      "0x14813a6fb939819e79f48cc70fa40e39296da381ba1cce030290490000000000");
+}
+
 }  // namespace brave_wallet

@@ -24,9 +24,15 @@ class GRrpcMessageStreamHandler
                       base::OnceClosure resume) override;
   void OnRetry(base::OnceClosure start_retry) override;
 
+  // Sets a limit for a signle GRPC message size in the steam
+  void set_message_data_limit(size_t new_limit) {
+    message_data_limit_ = new_limit;
+  }
+
  private:
   virtual bool ProcessMessage(std::string_view message) = 0;
 
+  size_t message_data_limit_ = 0;
   std::string data_;
   size_t retry_counter_ = 0;
 };

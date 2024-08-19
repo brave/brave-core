@@ -152,7 +152,10 @@ source_set("brave_wallet_unit_tests") {
   if (enable_orchard) {
     sources += [
       "//brave/components/brave_wallet/browser/internal/hd_key_zip32_unittest.cc",
+      "//brave/components/brave_wallet/browser/internal/orchard_block_scanner_unittest.cc",
       "//brave/components/brave_wallet/browser/internal/orchard_bundle_manager_unittest.cc",
+      "//brave/components/brave_wallet/browser/zcash/zcash_orchard_storage_unittest.cc",
+      "//brave/components/brave_wallet/browser/zcash/zcash_shield_sync_service_unittest.cc",
     ]
     deps +=
         [ "//brave/components/brave_wallet/browser/internal:orchard_bundle" ]
@@ -174,6 +177,8 @@ source_set("test_support") {
     "//brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h",
     "//brave/components/brave_wallet/browser/json_rpc_service_test_utils.cc",
     "//brave/components/brave_wallet/browser/json_rpc_service_test_utils.h",
+    "//brave/components/brave_wallet/browser/zcash/zcash_test_utils.cc",
+    "//brave/components/brave_wallet/browser/zcash/zcash_test_utils.h",
   ]
 
   deps = [

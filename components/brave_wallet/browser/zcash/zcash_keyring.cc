@@ -157,6 +157,21 @@ ZCashKeyring::GetOrchardRawBytes(const mojom::ZCashKeyId& key_id) {
                                                  OrchardAddressKind::External);
   return orchard_addr_bytes;
 }
+
+std::optional<OrchardFullViewKey> ZCashKeyring::GetOrchardFullViewKey(
+    const uint32_t& account_id) {
+  if (!orchard_key_) {
+    return std::nullopt;
+  }
+
+  auto esk = orchard_key_->DeriveHardenedChild(account_id);
+  if (!esk) {
+    return std::nullopt;
+  }
+
+  return esk->GetFullViewKey();
+}
+
 #endif
 
 std::unique_ptr<HDKey> ZCashKeyring::DeriveAccount(uint32_t index) const {

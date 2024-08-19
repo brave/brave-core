@@ -28,6 +28,10 @@ inline constexpr char kHardwareDerivationPath[] = "derivation_path";
 inline constexpr char kBitcoinNextReceiveIndex[] = "bitcoin.next_receive";
 inline constexpr char kBitcoinNextChangeIndex[] = "bitcoin.next_change";
 inline constexpr char kNextAccountIndex[] = "next_account_index";
+inline constexpr char kZcashAccountBirthdayBlockId[] =
+    "zcash.account_birthday.block_id";
+inline constexpr char kZcashAccountBirthdayBlockHash[] =
+    "zcash.account_birthday.block_hash";
 
 std::string KeyringIdPrefString(mojom::KeyringId keyring_id);
 

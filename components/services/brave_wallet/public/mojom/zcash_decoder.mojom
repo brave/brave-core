@@ -11,7 +11,7 @@ struct ZCashUtxo {
   int32 index;
   array<uint8> script;
   int64 value_zat;
-  uint64 height;
+  uint32 height;
 };
 
 struct GetAddressUtxosResponse {
@@ -19,7 +19,7 @@ struct GetAddressUtxosResponse {
 };
 
 struct BlockID {
-  uint64 height;
+  uint32 height;
   array<uint8> hash;
 };
 
@@ -35,18 +35,48 @@ struct RawTransaction {
 
 struct TreeState {
   string network;
-  uint64 height;
+  uint32 height;
   string hash;
   uint32 time;
   string saplingTree;
   string orchardTree;
 };
 
+struct CompactOrchardAction {
+  array<uint8, 32> nullifier;
+  array<uint8, 32> cmx;
+  array<uint8, 32> ephemeral_key;
+  array<uint8, 52> ciphertext;
+};
+
+struct ChainMetadata {
+  uint32 orchard_commitment_tree_size;
+};
+
+struct CompactTx {
+  uint64 index;
+  array<uint8> hash;
+  uint32 fee;
+  array<CompactOrchardAction> orchard_actions;
+};
+
+struct CompactBlock {
+  uint32 proto_version;
+  uint32 height;
+  array<uint8> hash;
+  array<uint8> prev_hash;
+  uint32 time;
+  array<uint8> header;
+  array<CompactTx> vtx;
+  ChainMetadata chain_metadata;
+};
+
 interface ZCashDecoder {
   ParseBlockID(string data) => (BlockID? value);
   ParseGetAddressUtxos(string data) => (GetAddressUtxosResponse? value);
   ParseSendResponse(string data) => (SendResponse? value);
-  ParseRawTransaction(string adata) => (RawTransaction? tx);
+  ParseRawTransaction(string data) => (RawTransaction? tx);
   ParseTreeState(string data) => (TreeState? tree_state);
+  ParseCompactBlocks(array<string> data) => (array<CompactBlock>? compact_blocks);
 };
 

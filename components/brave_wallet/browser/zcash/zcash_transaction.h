@@ -106,7 +106,7 @@ class ZCashTransaction {
     ~OrchardPart();
     OrchardPart(OrchardPart&& other);
     OrchardPart(const OrchardPart& other) = delete;
-    OrchardPart& operator=(const OrchardPart& other) = delete;
+    OrchardPart& operator=(const OrchardPart& other);
     OrchardPart& operator=(OrchardPart&& other);
     bool operator==(const OrchardPart& other) const;
     bool operator!=(const OrchardPart& other) const;

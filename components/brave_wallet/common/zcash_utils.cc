@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/f4_jumble.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/rust/lib.rs.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 #include "brave/third_party/bitcoin-core/src/src/bech32.h"
@@ -318,6 +319,18 @@ std::optional<std::string> ExtractOrchardPart(
     return std::nullopt;
   }
   return GetOrchardUnifiedAddress(bytes.value(), is_testnet);
+}
+
+std::optional<std::string> RevertHex(const std::string& hex) {
+  if (hex.empty()) {
+    return std::nullopt;
+  }
+  std::vector<uint8_t> bytes;
+  if (!PrefixedHexStringToBytes("0x" + hex, &bytes)) {
+    return std::nullopt;
+  }
+  std::reverse(bytes.begin(), bytes.end());
+  return ToHex(bytes);
 }
 
 std::optional<std::string> GetMergedUnifiedAddress(
