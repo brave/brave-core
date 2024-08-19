@@ -28,7 +28,7 @@ from telemetry.web_perf import timeline_based_measurement
 
 with SysPath(os.path.join(GetChromiumSrcDir(), 'brave', 'tools', 'perf')):
   from brave_page_sets.brave_loading_desktop_pages import (
-      BraveLoadingDesktopStorySet)
+      BraveLoadingDesktopStorySet, BraveMultitabLoadingDesktopStorySet)
 
 
 def CreateCoreTBMOptions(metric_list):
@@ -82,3 +82,23 @@ class LoadingDesktopBraveStartup(perf_benchmark.PerfBenchmark):
   @classmethod
   def Name(cls):
     return 'loading.desktop.brave.startup'
+
+
+@benchmark.Info(emails=['matuchin@brave.com'],
+                component='Blink>Loader',
+                documentation_url='https://bit.ly/loading-benchmarks')
+class LoadingDesktopBraveMultiTabStartup(perf_benchmark.PerfBenchmark):
+  """ A benchmark measuring loading performance of desktop sites. """
+  SUPPORTED_PLATFORM_TAGS = [platforms.DESKTOP]
+  SUPPORTED_PLATFORMS = [story.expectations.ALL_DESKTOP]
+
+  def CreateStorySet(self, _options):
+    return BraveMultitabLoadingDesktopStorySet(startup_delay=False)
+
+  def CreateCoreTimelineBasedMeasurementOptions(self):
+    return CreateCoreTBMOptions(
+        ['braveGeneralUmaMetric', 'braveStartupUmaMetric'])
+
+  @classmethod
+  def Name(cls):
+    return 'multitab.loading.desktop.brave'

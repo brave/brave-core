@@ -18,6 +18,13 @@
       ]
     },
     {
+      "name": "multitab.loading.desktop.brave",
+      "pageset-repeat": 1,
+      "stories": [
+        "example.com_cold",
+      ]
+    },
+    {
       "name": "system_health.common_desktop",
       "pageset-repeat": 1,
       "stories": [

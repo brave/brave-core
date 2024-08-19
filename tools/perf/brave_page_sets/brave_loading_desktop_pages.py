@@ -33,26 +33,22 @@ class DelayedSharedDesktopPageState(shared_page_state.SharedDesktopPageState):
     time.sleep(10)
 
 
-class BraveLoadingDesktopStorySet(story.StorySet):
-  """ Brave version of LoadingDesktopStorySet.
+class BaseBraveLoadingDesktopStorySet(story.StorySet):
+  """ Base class for Brave Loading Desktop Story Sets. """
 
-  See loading_desktop.py for details.
-  """
-
-  def __init__(self, startup_delay=False):
-    archive_data_file = GetPageSetsDataPath('brave_loading_desktop.json')
+  def __init__(self, archive_file_name, startup_delay=False):
+    archive_data_file = GetPageSetsDataPath(archive_file_name)
     super().__init__(archive_data_file=archive_data_file,
-                         cloud_storage_bucket=story.PARTNER_BUCKET)
-
-    # Passed as (story, name) tuple.
+                     cloud_storage_bucket=story.PARTNER_BUCKET)
+    self.startup_delay = startup_delay
     self.AddStories(['typical'],
                     [('https://example.com/', 'example.com'),
                      ('https://search.brave.com/', 'BraveSearch'),
                      ('https://en.wikipedia.org/wiki/HCard', 'wikipedia.com'),
                      ('https://www.economist.com/', 'Economist'),
-                     ('https://www.ign.com/', 'IGN')], startup_delay)
+                     ('https://www.ign.com/', 'IGN')])
 
-  def AddStories(self, tags, urls, startup_delay=False):
+  def AddStories(self, tags, urls):
     cache_temperatures = [
         cache_temperature_module.COLD, cache_temperature_module.WARM
     ]
@@ -69,16 +65,69 @@ class BraveLoadingDesktopStorySet(story.StorySet):
 
         page_tags = tags[:]
 
-        if startup_delay:
-          shared_page_state_class = DelayedSharedDesktopPageState
-        else:
-          shared_page_state_class = shared_page_state.SharedDesktopPageState
+        shared_page_state_class = (DelayedSharedDesktopPageState
+                                   if self.startup_delay else
+                                   shared_page_state.SharedDesktopPageState)
 
         self.AddStory(
-            page_cycler_story.PageCyclerStory(url,
-                                              self,
-                                              shared_page_state_class,
-                                              cache_temperature=temp,
-                                              tags=page_tags,
-                                              name=page_name,
-                                              perform_final_navigation=True))
+            self._create_story(url,
+                               self,
+                               shared_page_state_class,
+                               cache_temperature=temp,
+                               tags=page_tags,
+                               name=page_name,
+                               perform_final_navigation=True))
+
+  def _create_story(self, url, story_set, shared_page_state_class,
+                    cache_temperature, tags, name, perform_final_navigation):
+    """ Create a story instance. To be overridden in derived classes. """
+    raise NotImplementedError
+
+
+class BraveLoadingDesktopStorySet(BaseBraveLoadingDesktopStorySet):
+  """ Brave version of LoadingDesktopStorySet with PageCyclerStory.
+
+    See loading_desktop.py for details.
+    """
+
+  def __init__(self, startup_delay=False):
+    super().__init__('brave_loading_desktop.json', startup_delay)
+
+  def _create_story(self, url, story_set, shared_page_state_class,
+                    cache_temperature, tags, name, perform_final_navigation):
+    return page_cycler_story.PageCyclerStory(
+        url,
+        story_set,
+        shared_page_state_class,
+        cache_temperature=cache_temperature,
+        tags=tags,
+        name=name,
+        perform_final_navigation=perform_final_navigation)
+
+
+class BraveMultitabLoadingDesktopStorySet(BaseBraveLoadingDesktopStorySet):
+  """ Brave version of LoadingDesktopStorySet with MultiTab story. """
+
+  def __init__(self, startup_delay=False):
+    super().__init__('brave_loading_desktop.json', startup_delay)
+
+  class MultiTabStory(page_cycler_story.PageCyclerStory):
+    """ A story that opens multiple tabs. """
+    TAB_COUNT = 10
+
+    def RunPageInteractions(self, action_runner):
+      tabs = action_runner.tab.browser.tabs
+      tabs[0].Navigate(self.url)
+      for _ in range(1, self.TAB_COUNT):
+        new_tab = tabs.New()
+        new_tab.action_runner.Navigate(self.url)
+
+  def _create_story(self, url, story_set, shared_page_state_class,
+                    cache_temperature, tags, name, perform_final_navigation):
+    return self.MultiTabStory(url,
+                              story_set,
+                              shared_page_state_class,
+                              cache_temperature=cache_temperature,
+                              tags=tags,
+                              name=name,
+                              perform_final_navigation=perform_final_navigation)
