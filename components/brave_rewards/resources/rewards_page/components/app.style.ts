@@ -13,13 +13,11 @@ import backgroundStatic from '../assets/background_static.svg'
 import backgroundAnimatedDark from '../assets/background_animated_dark.svg'
 import backgroundStaticDark from '../assets/background_static_dark.svg'
 
-import panelBackground from '../assets/panel_background.svg'
-import panelBackgroundDark from '../assets/panel_background_dark.svg'
-
 import rewardsLogoImage from '../assets/rewards_logo.svg'
 import rewardsLogoImageDark from '../assets/rewards_logo_dark.svg'
 
 import selectCaret from '../assets/select_caret.svg'
+import selectCaretDark from '../assets/select_caret_dark.svg'
 
 export const style = scopedCSS('app', css`
   & {
@@ -38,7 +36,7 @@ export const style = scopedCSS('app', css`
 
   &.is-bubble {
     width: 392px;
-    min-height: 550px;
+    min-height: 600px;
     max-height: calc(var(--app-screen-height, 950px) - 80px);
   }
 
@@ -70,20 +68,6 @@ export const style = scopedCSS('app', css`
     }
   }
 
-  .panel-background {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    background-image: url(${panelBackground});
-    background-repeat: no-repeat;
-    background-position: center 15px;
-    background-size: 392px auto;
-
-    @media (prefers-color-scheme: dark) {
-      background-image: url(${panelBackgroundDark});
-    }
-  }
-
   .loading {
     position: fixed;
     inset: 0 0 10% 0;
@@ -110,6 +94,7 @@ addStyles('app-global-styles', css`
   @scope (${style.selector}) {
     & {
       font: ${font.default.regular};
+      color: ${color.text.primary};
     }
 
     a {
@@ -132,9 +117,15 @@ addStyles('app-global-styles', css`
     }
 
     select {
+      --select-caret-background-image: url(${selectCaret});
+
+      @media (prefers-color-scheme: dark) {
+        --select-caret-background-image: url(${selectCaretDark});
+      }
+
       appearance: none;
       background:
-        url(${selectCaret}) calc(100% - 12px) center no-repeat,
+        var(--select-caret-background-image) calc(100% - 12px) center no-repeat,
         ${color.container.highlight};
       background-size: 12px;
       border-radius: 8px;
@@ -182,14 +173,13 @@ addStyles('app-global-styles', css`
       border-radius: 16px;
       padding: 4px;
       background-color: rgb(from ${color.container.background} r g b / 55%);
-      backdrop-filter: blur(18px);
       display: flex;
       flex-direction: column;
       gap: 4px;
 
       section {
         border-radius: 12px;
-        padding: 8px 12px;
+        padding: var(--content-card-section-padding, 8px 12px);
         background: ${color.container.background};
         width: 100%;
       }

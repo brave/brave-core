@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { ExternalWallet, ExternalWalletProvider } from '../../shared/lib/external_wallet'
+import { Optional } from '../../shared/lib/optional'
 
 interface EmbedderInfo {
   isBubble: boolean
@@ -81,6 +82,7 @@ export interface AppState {
   paymentId: string
   countryCode: string
   externalWallet: ExternalWallet | null
+  balance: Optional<number>
   adsInfo: AdsInfo | null
   rewardsParameters: RewardsParameters | null
 }
@@ -123,6 +125,7 @@ export function defaultState(): AppState {
     paymentId: '',
     countryCode: '',
     externalWallet: null,
+    balance: new Optional(),
     adsInfo: null,
     rewardsParameters: null
   }

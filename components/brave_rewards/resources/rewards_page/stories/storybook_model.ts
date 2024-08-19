@@ -7,6 +7,7 @@ import { createStateManager } from '../../shared/lib/state_manager'
 import { createLocaleContextForTesting } from '../../shared/lib/locale_context'
 import { AppModel, AppState, defaultState, defaultModel } from '../lib/app_model'
 import { localeStrings } from '../lib/locale_strings'
+import { optional } from '../../shared/lib/optional'
 
 function delay(ms: number) {
   return new Promise((resolve) => {
@@ -48,11 +49,12 @@ export function createModel(): AppModel {
       autoDetectedSubdivision: 'US-NY'
     },
     externalWallet: {
-      provider: 'uphold',
+      provider: 'solana',
       name: 'Test Account',
       authenticated: true,
       url: ''
     },
+    balance: optional(4.167),
     rewardsParameters: {
       walletProviderRegions: {
         bitflyer: { allow: [], block: [] },

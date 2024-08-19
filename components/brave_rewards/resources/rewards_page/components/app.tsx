@@ -159,9 +159,7 @@ export function App() {
       <AppErrorBoundary>
         {renderContent()}
       </AppErrorBoundary>
-      <div className='background'>
-        {viewType === 'narrow' && <div className='panel-background' />}
-      </div>
+      <div className='background' />
     </div>
   )
 }
