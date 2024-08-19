@@ -278,14 +278,19 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
             return;
         }
         updateSummary(PREF_SERVER_HOST, BraveVpnPrefUtils.getHostnameDisplay());
-        updateSummary(PREF_SERVER_CHANGE_LOCATION, BraveVpnPrefUtils.getServerNamePretty());
+        updateSummary(PREF_SERVER_CHANGE_LOCATION, BraveVpnPrefUtils.getRegionNamePretty());
         if (!BraveVpnPrefUtils.getProductId().isEmpty()) {
-            String subscriptionStatus = String.format(
-                    InAppPurchaseWrapper.getInstance().isMonthlySubscription(
-                            BraveVpnPrefUtils.getProductId())
-                            ? getActivity().getResources().getString(R.string.monthly_subscription)
-                            : getActivity().getResources().getString(R.string.yearly_subscription),
-                    (BraveVpnPrefUtils.isTrialSubscription()
+            String subscriptionStatus =
+                    String.format(
+                            InAppPurchaseWrapper.getInstance()
+                                            .isMonthlySubscription(BraveVpnPrefUtils.getProductId())
+                                    ? getActivity()
+                                            .getResources()
+                                            .getString(R.string.monthly_subscription)
+                                    : getActivity()
+                                            .getResources()
+                                            .getString(R.string.yearly_subscription),
+                            (BraveVpnPrefUtils.isTrialSubscription()
                                     ? getActivity().getResources().getString(R.string.trial)
                                     : ""));
             updateSummary(PREF_SUBSCRIPTION_STATUS, subscriptionStatus);

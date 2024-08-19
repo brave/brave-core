@@ -5,33 +5,57 @@
 
 package org.chromium.chrome.browser.vpn.models;
 
+import androidx.annotation.NonNull;
+
 public class BraveVpnServerRegion {
-    private String mContinent;
     private String mCountryIsoCode;
-    private String mName;
-    private String mNamePretty;
+    private String mRegionName;
+    private String mRegionNamePretty;
+    private String mRegionCityNamePretty;
 
     public BraveVpnServerRegion(
-            String continent, String countryIsoCode, String name, String namePretty) {
-        this.mContinent = continent;
+            String countryIsoCode,
+            String regionName,
+            String regionNamePretty,
+            String regionCityNamePretty) {
         this.mCountryIsoCode = countryIsoCode;
-        this.mName = name;
-        this.mNamePretty = namePretty;
-    }
-
-    public String getContinent() {
-        return mContinent;
+        this.mRegionName = regionName;
+        this.mRegionNamePretty = regionNamePretty;
+        this.mRegionCityNamePretty = regionCityNamePretty;
     }
 
     public String getCountryIsoCode() {
         return mCountryIsoCode;
     }
 
-    public String getName() {
-        return mName;
+    public String getRegionName() {
+        return mRegionName;
     }
 
-    public String getNamePretty() {
-        return mNamePretty;
+    public String getRegionNamePretty() {
+        return mRegionNamePretty;
+    }
+
+    public String getRegionCityNamePretty() {
+        return mRegionCityNamePretty;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "BraveVpnServerRegion{"
+                + "mCountryIsoCode='"
+                + mCountryIsoCode
+                + '\''
+                + ", mRegionName='"
+                + mRegionName
+                + '\''
+                + ", mRegionNamePretty='"
+                + mRegionNamePretty
+                + '\''
+                + ", mRegionCityNamePretty='"
+                + mRegionCityNamePretty
+                + '\''
+                + '}';
     }
 }

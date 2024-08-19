@@ -56,6 +56,7 @@ public class BraveVpnUtils {
     public static boolean mUpdateProfileAfterSplitTunnel;
     public static BraveVpnServerRegion selectedServerRegion;
     public static Region selectedRegion;
+    public static Region selectedCity;
     private static ProgressDialog sProgressDialog;
 
     public static String IS_KILL_SWITCH = "is_kill_switch";
@@ -157,9 +158,10 @@ public class BraveVpnUtils {
                     if (timezones.getString(j).equals(currentTimezone)) {
                         BraveVpnServerRegion braveVpnServerRegion =
                                 new BraveVpnServerRegion(
-                                        region.getString("continent"),
-                                                region.getString("country-iso-code"),
-                                        region.getString("name"), region.getString("name-pretty"));
+                                        region.getString("country-iso-code"),
+                                        region.getString("name"),
+                                        region.getString("name-pretty"),
+                                        BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
                         return braveVpnServerRegion;
                     }
                 }
@@ -171,6 +173,7 @@ public class BraveVpnUtils {
     }
 
     public static Pair<String, String> getHostnameForRegion(String jsonHostnames) {
+        Log.e("brave_vpn", "jsonHostnames : " + jsonHostnames);
         jsonHostnames = "{\"hostnames\":" + jsonHostnames + "}";
         try {
             JSONObject result = new JSONObject(jsonHostnames);
@@ -255,8 +258,10 @@ public class BraveVpnUtils {
                 JSONObject server = servers.getJSONObject(i);
                 BraveVpnServerRegion vpnServerRegion =
                         new BraveVpnServerRegion(
-                                server.getString("continent"), server.getString("country-iso-code"),
-                                server.getString("name"), server.getString("name-pretty"));
+                                server.getString("country-iso-code"),
+                                server.getString("name"),
+                                server.getString("name-pretty"),
+                                BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
                 vpnServerRegions.add(vpnServerRegion);
             }
         } catch (JSONException e) {

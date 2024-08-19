@@ -96,6 +96,7 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        BraveVpnUtils.selectedServerRegion = null;
                         changeServerRegion();
                     }
                 });
