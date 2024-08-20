@@ -37,6 +37,7 @@
     &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,           \
     &brave_wallet::features::kNativeBraveWalletFeature,                 \
     &playlist::features::kPlaylist,                                     \
+    &download::features::kParallelDownloading,                          \
     &preferences::features::kBraveBackgroundVideoPlayback,              \
     &request_otr::features::kBraveRequestOTRTab,                        \
     &safe_browsing::features::kBraveAndroidSafeBrowsing,                \
