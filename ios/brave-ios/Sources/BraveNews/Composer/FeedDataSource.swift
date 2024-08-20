@@ -272,7 +272,7 @@ public class FeedDataSource: ObservableObject {
     assert(!resource.isLocalized || localeIdentifier != nil)
     let fileManager = FileManager.default
     let filename = resourceFilename(for: resource, localeIdentifier: localeIdentifier)
-    let cachedPath = cacheDirectoryURL?.appending(path: filename).path()
+    let cachedPath = cacheDirectoryURL?.appending(path: filename).path(percentEncoded: false)
     if let cachedPath = cachedPath,
       let attributes = try? fileManager.attributesOfItem(atPath: cachedPath),
       let date = attributes[.modificationDate] as? Date
@@ -337,7 +337,7 @@ public class FeedDataSource: ObservableObject {
       for: .applicationSupportDirectory,
       appending: Self.cacheFolderName,
       create: true
-    ).appending(path: name).path()
+    ).appending(path: name).path(percentEncoded: false)
     if loadExpiredData || !isResourceExpired(resource, localeIdentifier: localeIdentifier),
       let cachedPath = cachedPath,
       await fileManager.fileExists(atPath: cachedPath)
@@ -391,7 +391,7 @@ public class FeedDataSource: ObservableObject {
         create: true
       )
       let createdFile = await AsyncFileManager.default.createFile(
-        atPath: cachePath.appending(path: filename).path(),
+        atPath: cachePath.appending(path: filename).path(percentEncoded: false),
         contents: data
       )
       if !createdFile {

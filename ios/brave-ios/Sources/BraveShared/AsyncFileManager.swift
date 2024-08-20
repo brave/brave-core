@@ -268,7 +268,7 @@ extension AsyncFileManager {
       create: false
     )
     var directory = searchPathDirectory.appending(path: pathComponent)
-    let exists = await fileExists(atPath: directory.path())
+    let exists = await fileExists(atPath: directory.path(percentEncoded: false))
     if !exists && create {
       try await createDirectory(at: directory, withIntermediateDirectories: true)
       if excludeFromBackups {
@@ -318,7 +318,7 @@ extension AsyncFileManager {
   public func utf8Contents(
     at url: URL
   ) async -> String? {
-    guard let data = fileManager.contents(atPath: url.path()) else {
+    guard let data = fileManager.contents(atPath: url.path(percentEncoded: false)) else {
       return nil
     }
     return String(decoding: data, as: UTF8.self)

@@ -28,13 +28,16 @@ extension AsyncFileManager {
     lock: Bool
   ) async throws {
     let url = try url(for: .libraryDirectory, in: .userDomainMask).appending(path: path.value)
-    try await setAttributes([.posixPermissions: lock ? 0 : 0o755], ofItemAtPath: url.path())
+    try await setAttributes(
+      [.posixPermissions: lock ? 0 : 0o755],
+      ofItemAtPath: url.path(percentEncoded: false)
+    )
   }
 
   /// Returns whether or a given WebDataPath is currently locked
   func isWebDataLocked(atPath path: WebDataPath) async throws -> Bool {
     let url = try url(for: .libraryDirectory, in: .userDomainMask).appending(path: path.value)
-    let attributes = try await attributesOfItem(atPath: url.path())
+    let attributes = try await attributesOfItem(atPath: url.path(percentEncoded: false))
     if let posixPermissions = attributes[.posixPermissions] as? NSNumber {
       return posixPermissions == 0o755
     }
