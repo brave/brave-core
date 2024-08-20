@@ -29,6 +29,7 @@
            öğesine gidin ve yapılandırmanızın "proxy yok" veya "doğrudan" olarak ayarlandığından emin olun.</translation>
 <translation id="2765022094254723779">Brave ayrıca diğer <ph name="BEGIN_LINK_OSS"/>açık kaynak yazılımlardan<ph name="END_LINK_OSS"/> yararlanılarak geliştirilmiştir.</translation>
 <translation id="9156965752763025780">Değişiklikleriniz, Brave tekrar başlatıldığında geçerli olacak.</translation>
+<translation id="8828443087767259398">Brave'un eşlemeye devam edebilmesi için Bluetooth'a erişmesi gerekiyor. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">Brave, <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> açık kaynak projesiyle hazırlanmıştır.</translation>
 <translation id="4068928808254189629">Brave menüsü &gt;
           <ph name="SETTINGS_TITLE"/>
