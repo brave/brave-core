@@ -25,6 +25,7 @@ import org.chromium.brave_vpn.mojom.ServiceHandler;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.BraveVpnServiceFactoryAndroid;
 import org.chromium.chrome.browser.vpn.adapters.BraveVpnServerSelectionAdapter;
+import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -89,14 +90,21 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
         MaterialSwitch automaticSwitch =
                 (MaterialSwitch) findViewById(R.id.automatic_server_switch);
         boolean isAutomatic =
-                BraveVpnPrefUtils.getServerRegion()
+                BraveVpnPrefUtils.getRegionName()
                         .equals(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
         mServerRegionList.setVisibility(isAutomatic ? View.GONE : View.VISIBLE);
         automaticSwitch.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        BraveVpnUtils.selectedServerRegion = null;
+                        BraveVpnUtils.selectedServerRegion =
+                                new BraveVpnServerRegion(
+                                        "",
+                                        BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC,
+                                        "",
+                                        "",
+                                        BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC,
+                                        BraveVpnConstants.REGION_PRECISION_COUNTRY);
                         changeServerRegion();
                     }
                 });

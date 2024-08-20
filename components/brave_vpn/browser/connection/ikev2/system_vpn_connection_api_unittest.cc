@@ -11,6 +11,7 @@
 #include "base/run_loop.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_helper.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/connection_api_impl_sim.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"

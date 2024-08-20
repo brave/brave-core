@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
@@ -161,7 +162,9 @@ public class BraveVpnUtils {
                                         region.getString("country-iso-code"),
                                         region.getString("name"),
                                         region.getString("name-pretty"),
-                                        BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
+                                        "",
+                                        BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC,
+                                        BraveVpnConstants.REGION_PRECISION_COUNTRY);
                         return braveVpnServerRegion;
                     }
                 }
@@ -261,7 +264,9 @@ public class BraveVpnUtils {
                                 server.getString("country-iso-code"),
                                 server.getString("name"),
                                 server.getString("name-pretty"),
-                                BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
+                                "",
+                                BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC,
+                                BraveVpnConstants.REGION_PRECISION_COUNTRY);
                 vpnServerRegions.add(vpnServerRegion);
             }
         } catch (JSONException e) {

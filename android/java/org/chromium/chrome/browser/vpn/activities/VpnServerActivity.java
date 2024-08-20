@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.adapters.VpnServerAdapter;
@@ -37,7 +38,7 @@ public class VpnServerActivity extends BraveVpnParentActivity {
     private RecyclerView mServerRegionList;
 
     public interface OnCitySelection {
-        void onCityClick(Region city);
+        void onCityClick(Region city, int position);
     }
 
     private void initializeViews() {
@@ -99,11 +100,12 @@ public class VpnServerActivity extends BraveVpnParentActivity {
 
         mVpnServerAdapter = new VpnServerAdapter(VpnServerActivity.this);
         mVpnServerAdapter.setCities(cities);
+        mVpnServerAdapter.setRegion(region);
         mVpnServerAdapter.setOnCitySelection(
                 new OnCitySelection() {
                     @Override
-                    public void onCityClick(Region city) {
-                        if (BraveVpnPrefUtils.getServerRegion().equals(city.name)) {
+                    public void onCityClick(Region city, int position) {
+                        if (BraveVpnPrefUtils.getRegionName().equals(city.name)) {
                             Toast.makeText(
                                             VpnServerActivity.this,
                                             R.string.already_selected_the_server,
@@ -115,7 +117,11 @@ public class VpnServerActivity extends BraveVpnParentActivity {
                                             region.countryIsoCode,
                                             region.name,
                                             region.namePretty,
-                                            city.namePretty);
+                                            city.name,
+                                            city.namePretty,
+                                            position == 0
+                                                    ? BraveVpnConstants.REGION_PRECISION_COUNTRY
+                                                    : BraveVpnConstants.REGION_PRECISION_CITY);
                             changeServerRegion();
                         }
                     }

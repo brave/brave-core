@@ -60,6 +60,12 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
     private SelectedPlanType mSelectedPlanType = SelectedPlanType.YEARLY;
     private ProductDetails mProductDetails;
 
+    @Override
+    public void onResumeWithNative() {
+        super.onResumeWithNative();
+        BraveVpnUtils.dismissProgressDialog();
+    }
+
     private void initializeViews() {
         setContentView(R.layout.activity_vpn_paywall);
 

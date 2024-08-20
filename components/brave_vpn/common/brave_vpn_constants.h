@@ -46,6 +46,8 @@ inline constexpr char kTimezonesForRegions[] =
     "api/v1.1/servers/timezones-for-regions";
 inline constexpr char kHostnameForRegion[] =
     "api/v1.2/servers/hostnames-for-region";
+inline constexpr char kHostnameForRegionNew[] =
+    "api/v1.3/servers/hostnames-for-region";
 inline constexpr char kProfileCredential[] = "api/v1.1/register-and-create";
 inline constexpr char kCredential[] = "api/v1.3/device/";
 inline constexpr char kVerifyPurchaseToken[] = "api/v1.1/verify-purchase-token";

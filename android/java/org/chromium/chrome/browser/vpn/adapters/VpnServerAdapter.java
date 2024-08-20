@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.radiobutton.MaterialRadioButton;
 
-import org.chromium.base.Log;
 import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.activities.VpnServerActivity.OnCitySelection;
@@ -30,6 +29,7 @@ public class VpnServerAdapter extends RecyclerView.Adapter<VpnServerAdapter.View
     private final Context mContext;
     private List<Region> mCities = new ArrayList<>();
     private OnCitySelection mOnCitySelection;
+    private Region mRegion;
 
     public VpnServerAdapter(Context context) {
         this.mContext = context;
@@ -53,14 +53,15 @@ public class VpnServerAdapter extends RecyclerView.Adapter<VpnServerAdapter.View
                             .getQuantityString(
                                     R.plurals.server_text, city.serverCount, city.serverCount);
             holder.cityServerText.setText((position == 0) ? city.name : cityServerText);
-            Log.e("brave_vpn", "hostname : " + BraveVpnPrefUtils.getHostnameDisplay());
-            holder.serverRadioButton.setChecked(
-                    BraveVpnPrefUtils.getHostnameDisplay().equals(city.namePretty));
+            boolean isEnabled =
+                    BraveVpnPrefUtils.getRegionName().equals(mRegion.name)
+                            && BraveVpnPrefUtils.getRegionCityName().equals(city.name);
+            holder.serverRadioButton.setChecked(isEnabled);
             holder.serverSelectionItemLayout.setOnClickListener(
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mOnCitySelection.onCityClick(city);
+                            mOnCitySelection.onCityClick(city, holder.getAdapterPosition());
                         }
                     });
         }
@@ -69,6 +70,10 @@ public class VpnServerAdapter extends RecyclerView.Adapter<VpnServerAdapter.View
     @Override
     public int getItemCount() {
         return mCities.size();
+    }
+
+    public void setRegion(Region region) {
+        this.mRegion = region;
     }
 
     public void setCities(List<Region> cities) {

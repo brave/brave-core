@@ -99,6 +99,28 @@ void BraveVpnAPIRequest::GetHostnamesForRegion(ResponseCallback callback,
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
 }
 
+void BraveVpnAPIRequest::GetHostnamesForRegion(
+    ResponseCallback callback,
+    const std::string& region,
+    const std::string& region_precision) {
+  DCHECK(!region.empty());
+  static bool dump_sent = false;
+  if (!dump_sent && region.empty()) {
+    base::debug::DumpWithoutCrashing();
+    dump_sent = true;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&BraveVpnAPIRequest::OnGetResponse,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  GURL base_url = GetURLWithPath(kVpnHost, kHostnameForRegionNew);
+  base::Value::Dict dict;
+  dict.Set("region", region);
+  dict.Set("region-precision", region_precision);
+  std::string request_body = CreateJSONRequestBody(dict);
+  OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
+}
+
 void BraveVpnAPIRequest::GetProfileCredentials(
     ResponseCallback callback,
     const std::string& subscriber_credential,
