@@ -540,7 +540,7 @@ public class InAppPurchaseWrapper {
                     index + priceWithSymbol.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             priceSpannable.setSpan(
-                    new ForegroundColorSpan(context.getResources().getColor(android.R.color.white)),
+                    new ForegroundColorSpan(context.getColor(android.R.color.white)),
                     index,
                     index + priceWithSymbol.length(),
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -567,7 +567,7 @@ public class InAppPurchaseWrapper {
                     index + priceWithSymbol.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             priceSpannable.setSpan(
-                    new ForegroundColorSpan(context.getResources().getColor(android.R.color.white)),
+                    new ForegroundColorSpan(context.getColor(android.R.color.white)),
                     index,
                     index + priceWithSymbol.length(),
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
