@@ -185,7 +185,6 @@ public abstract class BraveVpnParentActivity
 
     @Override
     public void onGetHostnamesForRegion(String jsonHostNames, boolean isSuccess) {
-        Log.e("brave_vpn", "jsonHostNames : " + jsonHostNames);
         KeyPair keyPair = new KeyPair();
         mBraveVpnPrefModel.setClientPrivateKey(keyPair.getPrivateKey().toBase64());
         mBraveVpnPrefModel.setClientPublicKey(keyPair.getPublicKey().toBase64());

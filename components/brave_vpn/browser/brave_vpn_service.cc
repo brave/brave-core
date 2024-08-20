@@ -899,6 +899,14 @@ void BraveVpnService::GetHostnamesForRegion(ResponseCallback callback,
   api_request_->GetHostnamesForRegion(std::move(callback), region);
 }
 
+void BraveVpnService::GetHostnamesForRegion(
+    ResponseCallback callback,
+    const std::string& region,
+    const std::string& region_precision) {
+  api_request_->GetHostnamesForRegion(std::move(callback), region,
+                                      region_precision);
+}
+
 void BraveVpnService::GetProfileCredentials(
     ResponseCallback callback,
     const std::string& subscriber_credential,

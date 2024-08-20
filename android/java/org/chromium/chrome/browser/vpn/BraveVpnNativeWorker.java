@@ -127,8 +127,9 @@ public class BraveVpnNativeWorker {
         BraveVpnNativeWorkerJni.get().getTimezonesForRegions(mNativeBraveVpnNativeWorker);
     }
 
-    public void getHostnamesForRegion(String region) {
-        BraveVpnNativeWorkerJni.get().getHostnamesForRegion(mNativeBraveVpnNativeWorker, region);
+    public void getHostnamesForRegion(String region, String regionPrecision) {
+        BraveVpnNativeWorkerJni.get()
+                .getHostnamesForRegion(mNativeBraveVpnNativeWorker, region, regionPrecision);
     }
 
     public void getWireguardProfileCredentials(
@@ -191,7 +192,8 @@ public class BraveVpnNativeWorker {
 
         void getTimezonesForRegions(long nativeBraveVpnNativeWorker);
 
-        void getHostnamesForRegion(long nativeBraveVpnNativeWorker, String region);
+        void getHostnamesForRegion(
+                long nativeBraveVpnNativeWorker, String region, String regionPrecision);
 
         void getWireguardProfileCredentials(
                 long nativeBraveVpnNativeWorker,

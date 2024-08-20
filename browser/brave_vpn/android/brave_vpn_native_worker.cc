@@ -67,13 +67,15 @@ void BraveVpnNativeWorker::OnGetTimezonesForRegions(
 
 void BraveVpnNativeWorker::GetHostnamesForRegion(
     JNIEnv* env,
-    const base::android::JavaParamRef<jstring>& region) {
+    const base::android::JavaParamRef<jstring>& region,
+    const base::android::JavaParamRef<jstring>& region_precision) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->GetHostnamesForRegion(
         base::BindOnce(&BraveVpnNativeWorker::OnGetHostnamesForRegion,
                        weak_factory_.GetWeakPtr()),
-        base::android::ConvertJavaStringToUTF8(env, region));
+        base::android::ConvertJavaStringToUTF8(env, region),
+        base::android::ConvertJavaStringToUTF8(env, region_precision));
   }
 }
 

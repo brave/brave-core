@@ -32,7 +32,8 @@ class BraveVpnNativeWorker {
 
   void GetHostnamesForRegion(
       JNIEnv* env,
-      const base::android::JavaParamRef<jstring>& region);
+      const base::android::JavaParamRef<jstring>& region,
+      const base::android::JavaParamRef<jstring>& region_precision);
 
   void OnGetHostnamesForRegion(const std::string& hostname_json, bool success);
 

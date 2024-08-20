@@ -11,17 +11,23 @@ public class BraveVpnServerRegion {
     private String mCountryIsoCode;
     private String mRegionName;
     private String mRegionNamePretty;
+    private String mRegionCityName;
     private String mRegionCityNamePretty;
+    private String mRegionPrecision;
 
     public BraveVpnServerRegion(
             String countryIsoCode,
             String regionName,
             String regionNamePretty,
-            String regionCityNamePretty) {
+            String regionCityName,
+            String regionCityNamePretty,
+            String regionPrecision) {
         this.mCountryIsoCode = countryIsoCode;
         this.mRegionName = regionName;
         this.mRegionNamePretty = regionNamePretty;
+        this.mRegionCityName = regionCityName;
         this.mRegionCityNamePretty = regionCityNamePretty;
+        this.mRegionPrecision = regionPrecision;
     }
 
     public String getCountryIsoCode() {
@@ -36,8 +42,16 @@ public class BraveVpnServerRegion {
         return mRegionNamePretty;
     }
 
+    public String getRegionCityName() {
+        return mRegionCityName;
+    }
+
     public String getRegionCityNamePretty() {
         return mRegionCityNamePretty;
+    }
+
+    public String getRegionPrecision() {
+        return mRegionPrecision;
     }
 
     @NonNull
@@ -53,8 +67,15 @@ public class BraveVpnServerRegion {
                 + ", mRegionNamePretty='"
                 + mRegionNamePretty
                 + '\''
+                + ", mRegionCityName='"
+                + mRegionCityName
+                + '\''
                 + ", mRegionCityNamePretty='"
                 + mRegionCityNamePretty
+                + '\''
+                + '\''
+                + ", mRegionPrecision='"
+                + mRegionPrecision
                 + '\''
                 + '}';
     }
