@@ -2258,6 +2258,21 @@ Are you sure you want to do this?
     <message name="IDS_PLAN_TEXT_6" desc="Brave VPN plan text">
       Protect 5 devices on 1 subscription
     </message>
+    <message name="IDS_VPN_PAYWALL_TEXT_1" desc="Brave VPN paywall text">
+      Extra privacy &amp; security online
+    </message>
+    <message name="IDS_VPN_PAYWALL_TEXT_2" desc="Brave VPN paywall text">
+      Hide your IP &amp; change your location
+    </message>
+    <message name="IDS_VPN_PAYWALL_TEXT_3" desc="Brave VPN paywall text">
+      Hundreds of servers around the world
+    </message>
+    <message name="IDS_VPN_PAYWALL_TEXT_4" desc="Brave VPN paywall text">
+      Lightning-fast connection speeds
+    </message>
+    <message name="IDS_VPN_PAYWALL_TEXT_5" desc="Brave VPN paywall text">
+      Protect up to 10 devices with one plan
+    </message>
     <message name="IDS_TRIAL_TEXT" desc="Brave VPN plan text">
       All plans include a <ph name="TRIAL_DAYS">%1$s</ph>
     </message>
@@ -2274,19 +2289,19 @@ Are you sure you want to do this?
       Renews monthly
     </message>
     <message name="IDS_MONTHLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
-      <ph name="MONTHLY_AMOUNT">%1$s</ph> / mo.
+      <ph name="MONTHLY_AMOUNT">%1$s</ph> /month
     </message>
     <message name="IDS_ONE_YEAR" desc="Brave VPN plan text">
       One Year
     </message>
     <message name="IDS_RENEW_MONTHLY_SAVE" desc="Brave VPN plan text">
-      Renew annually <ph name="DISCOUNT_TEXT_START">&lt;discount_text&gt;</ph>save <ph name="PERCENTAGE_AMOUNT">%1$d</ph>%%<ph name="DISCOUNT_TEXT_END">&lt;/discount_text&gt;</ph>
+      Renews annually (<ph name="DISCOUNT_TEXT_START">&lt;discount_text&gt;</ph>save <ph name="PERCENTAGE_AMOUNT">%1$d</ph>%%<ph name="DISCOUNT_TEXT_END">&lt;/discount_text&gt;</ph>)
     </message>
     <message name="IDS_YEARLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
-      <ph name="YEARLY_AMOUNT">%1$s</ph> / yr.
+      <ph name="YEARLY_AMOUNT">%1$s</ph> /year
     </message>
     <message name="IDS_BRAVE_VPN_RENEWAL_TEXT" desc="Brave VPN plan text">
-      Subscriptions will be charged via your Google account. Any unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is cancelled at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\nBy using Brave, you agree to the Terms of Use and Privacy Policy.
+      Subscriptions will be charged via your Google account. Any unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is canceled at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\n\nBy using Brave, you agree to the Terms of Use and Privacy Policy.
     </message>
     <message name="IDS_ALREADY_PURCHASED" desc="Brave subscription plan page already purchased text">
       Already purchased on brave.com?

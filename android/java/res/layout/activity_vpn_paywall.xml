@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/brave_plan_bg"
+    android:background="@color/primitive_blurple_10"
     android:orientation="vertical"
     tools:context=".BraveVpnPlansActivity">
 
@@ -12,7 +16,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/BraveVpnToolbar"
+        android:theme="@style/VpnPaywallToolbar"
         android:minHeight="?attr/actionBarSize"/>
 
     <ScrollView
@@ -26,55 +30,105 @@
                 android:id="@+id/plan_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp"
                 android:orientation="vertical">
 
-                <org.chromium.chrome.browser.custom_layout.HeightWrappingViewPager
-                    android:id="@+id/vpn_plan_view_pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/vpn_plan_tab_layout"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/brave_plan_bg"
-                    android:layout_marginBottom="@dimen/vpn_plan_margin"
-                    app:tabBackground="@drawable/tab_selector"
-                    android:layout_gravity="bottom|center"
-                    app:tabGravity="center"
-                    app:tabIndicatorHeight="0dp"/>
+                    style="@style/DefaultRegular"
+                    android:textAlignment="textStart"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@android:color/white"
+                    android:drawablePadding="8dp"
+                    android:text="@string/vpn_paywall_text_1"
+                    app:drawableStartCompat="@drawable/ic_shield_done" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DefaultRegular"
+                    android:textAlignment="textStart"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@android:color/white"
+                    android:drawablePadding="8dp"
+                    android:text="@string/vpn_paywall_text_2"
+                    app:drawableStartCompat="@drawable/ic_shield_done" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DefaultRegular"
+                    android:textAlignment="textStart"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@android:color/white"
+                    android:drawablePadding="8dp"
+                    android:text="@string/vpn_paywall_text_3"
+                    app:drawableStartCompat="@drawable/ic_shield_done" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DefaultRegular"
+                    android:textAlignment="textStart"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@android:color/white"
+                    android:drawablePadding="8dp"
+                    android:text="@string/vpn_paywall_text_4"
+                    app:drawableStartCompat="@drawable/ic_shield_done" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DefaultRegular"
+                    android:textAlignment="textStart"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginBottom="16dp"
+                    android:textColor="@android:color/white"
+                    android:drawablePadding="8dp"
+                    android:text="@string/vpn_paywall_text_5"
+                    app:drawableStartCompat="@drawable/ic_shield_done" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginBottom="@dimen/vpn_plan_margin"
-                    android:background="@color/primitive_primary_80"/>
+                    android:background="@color/primitive_blurple_35"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    style="@style/DefaultRegular"
                     android:drawablePadding="8dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="4dp"
                     android:layout_marginHorizontal="16dp"
                     android:text="@string/powered_by"
                     android:textColor="@android:color/white"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="12dp"
-                    android:textSize="13sp"
+                    android:textAlignment="center"
                     app:drawableTint="@android:color/white"
                     app:drawableRightCompat="@drawable/ic_guardian" />
 
                 <TextView
                     android:id="@+id/trial_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    style="@style/DefaultRegular"
                     android:text="@string/trial_text"
                     android:layout_marginHorizontal="16dp"
+                    android:layout_marginBottom="16dp"
                     android:textColor="@android:color/white"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginBottom="@dimen/vpn_plan_margin"
-                    android:textSize="16sp"/>
+                    android:textAlignment="center" />
 
                 <LinearLayout
                     android:id="@+id/yearly_selector_layout"
@@ -82,9 +136,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:layout_marginHorizontal="16dp"
-                    android:paddingVertical="@dimen/vpn_plan_section_margin"
-                    android:paddingHorizontal="16dp"
-                    android:background="@drawable/vpn_plan_bg"
+                    android:padding="16dp"
+                    android:background="@drawable/vpn_paywall_bg"
                     android:orientation="horizontal"
                     android:baselineAligned="false">
 
@@ -99,13 +152,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/one_year"
+                            style="@style/LargeSemibold"
                             android:drawablePadding="6dp"
                             android:textColor="@android:color/white"
-                            android:layout_gravity="start"
-                            android:gravity="start"
                             android:textAlignment="textStart"
-                            android:layout_marginBottom="2dp"
-                            android:textSize="16sp"
                             app:drawableEndCompat="@drawable/ic_discount" />
 
                         <TextView
@@ -113,12 +163,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/renew_monthly_save"
-                            android:textColor="@android:color/white"
-                            android:layout_gravity="start"
-                            android:gravity="start"
+                            android:textColor="@color/primitive_blurple_95"
                             android:textAlignment="textStart"
-                            android:alpha="0.6"
-                            android:textSize="16sp"/>
+                            style="@style/DefaultRegular"/>
 
                     </LinearLayout>
                     <LinearLayout
@@ -142,13 +189,11 @@
                             <TextView
                                 android:id="@+id/yearly_subscription_amount_text"
                                 android:layout_width="wrap_content"
+                                style="@style/SmallRegular"
                                 android:layout_height="wrap_content"
-                                android:textColor="@android:color/white"
-                                android:layout_gravity="start"
-                                android:gravity="start"
+                                android:textColor="@color/primitive_blurple_95"
                                 android:textAlignment="textStart"
-                                android:layout_marginBottom="2dp"
-                                android:textSize="16sp"/>
+                                android:layout_marginBottom="2dp" />
 
                         </FrameLayout>
 
@@ -156,12 +201,9 @@
                             android:id="@+id/removed_value_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@android:color/white"
-                            android:layout_gravity="end"
-                            android:gravity="end"
-                            android:textAlignment="textEnd"
-                            android:alpha="0.6"
-                            android:textSize="16sp"/>
+                            android:textColor="@color/primitive_blurple_95"
+                            style="@style/SmallRegular"
+                            android:textAlignment="textEnd"/>
 
                     </LinearLayout>
 
@@ -171,13 +213,11 @@
                         android:id="@+id/monthly_selector_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginHorizontal="16dp"
                         android:baselineAligned="false"
-                        android:paddingVertical="@dimen/vpn_plan_section_margin"
-                        android:paddingHorizontal="16dp"
-                        android:background="@drawable/vpn_plan_bg"
+                        android:padding="16dp"
+                        android:background="@drawable/vpn_paywall_bg"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -193,22 +233,16 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/monthly_subscription"
                                 android:textColor="@android:color/white"
-                                android:layout_gravity="start"
-                                android:gravity="start"
-                                android:textAlignment="textStart"
-                                android:layout_marginBottom="2dp"
-                                android:textSize="16sp"/>
+                                style="@style/LargeSemibold"
+                                android:textAlignment="textStart"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/renews_monthly"
-                                android:textColor="@android:color/white"
-                                android:layout_gravity="start"
-                                android:gravity="start"
+                                android:textColor="@color/primitive_blurple_95"
                                 android:textAlignment="textStart"
-                                android:alpha="0.6"
-                                android:textSize="16sp"/>
+                                style="@style/DefaultRegular"/>
 
                         </LinearLayout>
 
@@ -228,11 +262,9 @@
                                 android:id="@+id/monthly_subscription_amount_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@android:color/white"
-                                android:layout_gravity="start"
-                                android:gravity="start"
-                                android:textAlignment="textStart"
-                                android:textSize="16sp"/>
+                                style="@style/SmallRegular"
+                                android:textColor="@color/primitive_blurple_95"
+                                android:textAlignment="textEnd"/>
 
                         </FrameLayout>
 
@@ -247,13 +279,12 @@
                     android:textColor="@color/primitive_primary_30"
                     android:textAlignment="textStart"
                     android:layout_gravity="center"
-                    android:gravity="center"
-                    android:textSize="14sp"/>
+                    android:gravity="center"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/HeadingH4"
+                    style="@style/DefaultSemibold"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginBottom="8dp"
                     android:text="@string/already_purchased"
@@ -264,9 +295,9 @@
                     android:id="@+id/refresh_credentials_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/HeadingH4"
+                    style="@style/DefaultSemibold"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="24dp"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="12dp"
                     android:textColor="@android:color/white"
@@ -281,20 +312,22 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/primitive_primary_70"/>
+        android:layout_marginTop="24dp"
+        android:background="@color/primitive_blurple_35"/>
 
     <android.widget.Button
         android:id="@+id/vpn_plan_action_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginHorizontal="16dp"
         android:background="@drawable/vpn_plan_action_gradient"
         android:clickable="true"
         android:focusable="true"
         android:paddingVertical="14dp"
         android:paddingHorizontal="20dp"
-        android:layout_marginVertical="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginHorizontal="16dp"
         android:textAllCaps="false"
         android:enabled="false"
         android:text="@string/try_7_days_for_free" 
