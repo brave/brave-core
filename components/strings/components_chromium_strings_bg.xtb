@@ -31,6 +31,8 @@
 и се уверете, че за конфигурацията ви е зададено „no proxy“ или „direct“.</translation>
 <translation id="2765022094254723779">Браузърът Brave е възможен и благодарение на друг <ph name="BEGIN_LINK_OSS"/>софтуер с отворен код<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Промените ви ще влязат в сила следващия път, когато стартирате отново Brave.</translation>
+<translation id="8828443087767259398">Brave се нуждае от достъп до Bluetooth, за да продължи
+сдвояването. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">Браузърът Brave е възможен благодарение на проекта с отворен код <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
 <translation id="4068928808254189629">Отворете
 менюто на Brave &gt;

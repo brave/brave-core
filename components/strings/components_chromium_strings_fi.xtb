@@ -31,6 +31,8 @@
           ja varmista, että asetus on "ei välityspalvelinta" tai "suora".</translation>
 <translation id="2765022094254723779">Muu <ph name="BEGIN_LINK_OSS"/>avoimen lähdekoodin ohjelmisto<ph name="END_LINK_OSS"/> tukee Braveia.</translation>
 <translation id="9156965752763025780">Muutokset tulevat voimaan, kun käynnistät Bravein seuraavan kerran.</translation>
+<translation id="8828443087767259398">Brave tarvitsee Bluetoothia jatkaakseen 
+ laiteparin muodostusta. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">Bravein mahdollistivat avoimen lähdekoodin projekti <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
 <translation id="4068928808254189629">Avaa
         Brave-valikko &gt;
