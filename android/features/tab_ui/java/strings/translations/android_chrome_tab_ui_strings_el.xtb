@@ -9,7 +9,6 @@
 <translation id="1197088940767939838">Πορτοκαλί</translation>
 <translation id="125153950246128346">Πατήστε για να δείτε μια άλλη καρτέλα</translation>
 <translation id="1273910660700874265">Επιλογές ομάδας καρτελών <ph name="TITLE_OF_GROUP"/></translation>
-<translation id="1322824555808364080">Πρόσκληση ατόμων</translation>
 <translation id="1419023007528516122">Με αυτή την ενέργεια θα διαγραφεί οριστικά η ομάδα από τη συσκευή σας</translation>
 <translation id="1486715732399361704">Μπορείτε να βρείτε εδώ όλες τις ομάδες καρτελών</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{Δημιουργήθηκε πριν από <ph name="NUM_MINS_ONE"/> λεπτό}other{Δημιουργήθηκε πριν από <ph name="NUM_MINS_MANY"/> λεπτά}}</translation>
@@ -64,9 +63,12 @@
 <translation id="4159784952369912983">Μοβ</translation>
 <translation id="4220650239473304853">{NUMBER_OF_TABS,plural, =1{Ανάπτυξη της ομάδας καρτελών <ph name="TITLE_OF_GROUP"/> με <ph name="TABS_COUNT_ONE"/> καρτέλα.}other{Ανάπτυξη της ομάδας καρτελών <ph name="TITLE_OF_GROUP"/> με <ph name="TABS_COUNT_MANY"/> καρτέλες.}}</translation>
 <translation id="427987768447457592">Νέα ομάδα καρτελών</translation>
+<translation id="4338724047016295066">Οι ανενεργές καρτέλες θα κλείσουν αυτόματα. Μπορείτε να τις βρείτε στο Ιστορικό ανά πάσα στιγμή.</translation>
+<translation id="4371591986692297148">Ανενεργή</translation>
 <translation id="4460014764210899310">Κατάργηση ομαδοποίησης</translation>
 <translation id="4648718555153979859">Οι καρτέλες σας ομαδοποιούνται εδώ</translation>
 <translation id="4686942373615810936">Δημιουργήθηκε μόλις τώρα</translation>
+<translation id="47070857600201406">{DAY_COUNT,plural, =1{Κλείσιμο μετά από 1 ημέρα}other{Κλείσιμο μετά από <ph name="DAY_COUNT_MANY"/> ημέρες}}</translation>
 <translation id="4777866634702576038">Να διαγραφεί η ομάδα καρτελών;</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> κριτική)}other{(<ph name="REVIEWS_COUNT_MANY"/> κριτικές)}}</translation>
 <translation id="4850886885716139402">Προβολή</translation>
@@ -88,6 +90,7 @@
 <translation id="5494920125229734069">Επιλογή όλων</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{Κλείσιμο ομάδας καρτελών με <ph name="TABS_COUNT_ONE"/> καρτέλα, χρώμα <ph name="COLOR_NAME"/>.}other{Κλείσιμο ομάδας καρτελών με <ph name="TABS_COUNT_MANY"/> καρτέλες, χρώμα <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="5556417849629758491">Δείτε πληροφορίες καταστήματος, η επιλογή είναι διαθέσιμη στο επάνω μέρος της οθόνης</translation>
+<translation id="5635915157654811450">{TAB_COUNT,plural, =1{Επαναφορά καρτέλας}other{Επαναφορά καρτελών}}</translation>
 <translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> σύνδεσμος από το Brave}other{<ph name="TABS_COUNT_MANY"/> σύνδεσμοι από το Brave}}</translation>
 <translation id="575494663145460764">Θέλετε να λαμβάνετε ειδοποιήσεις για πτώσεις τιμών;</translation>
 <translation id="58326064309361797">Σύρετε καρτέλες για να τις ομαδοποιήσετε.</translation>
@@ -103,6 +106,8 @@
 <translation id="6381032505162537930">Εδώ θα βρείτε τις ομάδες καρτελών</translation>
 <translation id="639823877092900621">{TABS_COUNT,plural, =1{Κατάργηση ομαδοποίησης <ph name="TABS_COUNT_ONE"/> επιλεγμένης καρτέλας}other{Κατάργηση ομαδοποίησης <ph name="TABS_COUNT_MANY"/> επιλεγμένων καρτελών}}</translation>
 <translation id="6422650314852876533">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> καρτέλα}other{<ph name="TABS_COUNT_MANY"/> καρτέλες}}</translation>
+<translation id="6527303717912515753">Κοινοποίηση</translation>
+<translation id="6542289363124393690">{DAY_COUNT,plural, =1{Μετά από μία ημέρα}other{Μετά από <ph name="DAY_COUNT_MANY"/> ημέρες}}</translation>
 <translation id="6549021453810473782">Προβολή πληροφοριών καταστήματος</translation>
 <translation id="6557858706263317126">+<ph name="HIDDEN_TABS_COUNT"/></translation>
 <translation id="6562820390860419811">Μετακίνηση καρτέλας αριστερά</translation>
@@ -119,6 +124,7 @@
 <translation id="7326879924029668159">Δείτε την πολιτική επιστροφής και άλλα.</translation>
 <translation id="7352298686197644113">Δείτε ποιο στοιχείο στις ανοικτές καρτέλες σας έχει τη χαμηλότερη τιμή.</translation>
 <translation id="7452985128687107478">Οι ομάδες καρτελών αποθηκεύονται και ενημερώνονται αυτόματα σε όλες τις συσκευές σας</translation>
+<translation id="747459581954555080">Επαναφορά όλων</translation>
 <translation id="753732157349120914">Εναλλαγή καρτελών</translation>
 <translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> έλεγχος από την Brave}other{<ph name="REVIEWS_COUNT_MANY"/> έλεγχοι από την Brave}}</translation>
 <translation id="7559245342362162951">Εμφάνιση καρτελών ομάδας σε πλέγμα πλήρους οθόνης</translation>
@@ -132,6 +138,7 @@
 <translation id="7885132941432959125">Μετακίνηση καρτέλας δεξιά</translation>
 <translation id="7939917283308035850">Επιλέχθηκε το <ph name="COLOR_NAME"/></translation>
 <translation id="7942349550061667556">Κόκκινο</translation>
+<translation id="7961015016161918242">Ποτέ</translation>
 <translation id="7966321538264951561">Παράβλεψη των προτάσεων.</translation>
 <translation id="799469866974412355">Νέα ομάδα από την άλλη συσκευή σας</translation>
 <translation id="8029301326595421733">Άνοιγμα σε πλήρες ύψος των πληροφοριών σχετικά με αυτό το κατάστημα</translation>
@@ -142,6 +149,8 @@
 <translation id="8338427544764842461">Οι ομάδες καρτελών αποθηκεύονται εδώ και ενημερώνονται σε όλες τις συνδεδεμένες συσκευές σας</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{Κλείσιμο <ph name="TABS_COUNT_ONE"/> επιλεγμένης καρτέλας}other{Κλείσιμο <ph name="TABS_COUNT_MANY"/> επιλεγμένων καρτελών}}</translation>
 <translation id="8398929769197326728">Νέος φάκελος - <ph name="CURRENT_TIMESTAMP_MS"/></translation>
+<translation id="8428213095426709021">Ρυθμίσεις</translation>
+<translation id="870736955561925754">Να κλείσει η καρτέλα και να διαγραφεί η ομάδα;</translation>
 <translation id="8714939927607906138">Χαμηλότερη τιμή</translation>
 <translation id="8730621377337864115">Ολοκληρώθηκε</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{Δημιουργήθηκε πριν από <ph name="NUM_MONTHS_ONE"/> μήνα}other{Δημιουργήθηκε πριν από <ph name="NUM_MONTHS_MANY"/> μήνες}}</translation>

@@ -13,7 +13,6 @@
 <translation id="7053983685419859001">തടയുക</translation>
 <translation id="7658239707568436148">റദ്ദാക്കൂ</translation>
 <translation id="5234764350956374838">ബഹിഷ്‌ക്കരിക്കുക</translation>
-<translation id="9218430445555521422">സ്ഥിരസ്ഥിതിയാക്കുക</translation>
 <translation id="8184318863960255706">കൂടുതൽ‍ വിവരങ്ങള്‍</translation>
 <translation id="780301667611848630">വേണ്ട നന്ദി</translation>
 <translation id="2770465223704140727">പട്ടികയില്‍‌ നിന്നും നീക്കംചെയ്യുക</translation>
@@ -22,13 +21,13 @@
 <translation id="1181037720776840403">നീക്കംചെയ്യൂ</translation>
 <translation id="4002066346123236978">ശീർഷകം</translation>
 <translation id="7400418766976504921">URL</translation>
+<translation id="5916664084637901428">ഓണാണ്</translation>
+<translation id="5860033963881614850">ഓഫാണ്</translation>
 <translation id="59174027418879706">പ്രാപ്‌തമാക്കി</translation>
 <translation id="4176463684765177261">അപ്രാപ്‌തമാക്കി</translation>
 <translation id="8712637175834984815">വിജയകരം</translation>
 <translation id="4394049700291259645">അപ്രാപ്‌തമാക്കുക</translation>
 <translation id="8428213095426709021">ക്രമീകരണങ്ങള്‍</translation>
-<translation id="7473891865547856676">വേണ്ട, നന്ദി</translation>
-<translation id="3435896845095436175">തയ്യാറാക്കുക</translation>
 <translation id="4474155171896946103">എല്ലാ ടാബുകളും ബുക്ക്‌മാര്‍‌ക്ക് ചെയ്യുക...</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{ടാബ് മ്യൂട്ട് ചെയ്യുക}other{ടാബുകൾ മ്യൂട്ട് ചെയ്യുക}}</translation>
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{ടാബ് അൺമ്യൂട്ട് ചെയ്യുക}other{ടാബുകൾ അൺമ്യൂട്ട് ചെയ്യുക}}</translation>
@@ -106,7 +105,5 @@
 <translation id="2653659639078652383">സമര്‍പ്പിക്കൂ</translation>
 <translation id="8137559199583651773">വിപുലീകരണങ്ങള്‍ നിയന്ത്രിക്കുക</translation>
 <translation id="5840822070878669614">Brave വെബ് സ്‌റ്റോർ തുറക്കുക</translation>
-<translation id="1327977588028644528">ഗേറ്റ്‌വേ</translation>
-<translation id="8425213833346101688">മാറ്റുക</translation>
-<translation id="8275038454117074363">ഇറക്കുമതിചെയ്യുക</translation>
+<translation id="3468298837301810372">ലേബല്‍‌</translation>
 </translationbundle>

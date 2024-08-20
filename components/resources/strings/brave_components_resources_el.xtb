@@ -1,9 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="el">
-<translation id="1800311840305731850">Δεν είναι δυνατή η φόρτωση της σελίδας IPFS.</translation>
-<translation id="5712742401570874902">Δεν επιτρέπονται οι σελίδες IPFS στα ιδιωτικά παράθυρα.</translation>
-<translation id="5749639013106315553">Το IPFS είναι απενεργοποιημένο. Επιλέξτε τη μέθοδο επίλυσης IPFS στις ρυθμίσεις για να ανοίξετε αυτόν τον ιστότοπο.</translation>
 <translation id="5288293905681750318">Ιχνηλάτες &amp; διαφημίσεις που αποκλείστηκαν</translation>
 <translation id="2313532038420432247">Αναβαθμίσεις HTTPS</translation>
 <translation id="788493840831967104">Χρόνος που εξοικονομήθηκε</translation>
@@ -67,7 +64,7 @@
 <translation id="780301667611848630">Όχι, ευχαριστώ</translation>
 <translation id="1230746063445072175">Θέλετε ακόμα καλύτερη ιδιωτικότητα;</translation>
 <translation id="6699628638740071563">Ήρθε η ώρα να εγκαταλείψετε το Google.</translation>
-<translation id="2045455461902775806">Η αναζήτηση Brave δεν προκαταλαμβάνει ούτε λογοκρίνει τα αποτελέσματα και δεν παρακολουθεί εσάς, τα ερωτήματά σας ή τα κλικ σας.</translation>
+<translation id="5588534392045217394">Η αναζήτηση Brave δεν προκαταλαμβάνει ούτε λογοκρίνει τα αποτελέσματα και δεν σκιαγραφεί το προφίλ σας.</translation>
 <translation id="6811221529729056895">Δοκιμάστε την Αναζήτηση Brave τώρα</translation>
 <translation id="3446024864193919737">Εμφάνιση Ανταμοιβών Brave</translation>
 <translation id="5585019845078534178">Κάρτες</translation>
@@ -411,13 +408,9 @@
 <translation id="2799223571221894425">Επανεκκίνηση</translation>
 <translation id="1110535155349301542">κατάργηση</translation>
 <translation id="8204292894173669182">Κατάργηση από τα αποθηκευμένα</translation>
-<translation id="5939518447894949180">Επαναφορά</translation>
-<translation id="3349204812119681938">Επαναφορά Ανταμοιβών Brave</translation>
 <translation id="5669281110673664811">Εκκαθάριση λίστας εξαιρουμένων</translation>
 <translation id="1797334173232638045">Οι καρφιτσωμένοι ιστότοποι έχουν μεταφερθεί στο</translation>
 <translation id="3074127054582480056">Προσοχή</translation>
-<translation id="4915997950539925115">Με την επαναφορά, το τρέχον προφίλ σας στις Ανταμοιβές Brave θα διαγραφεί και οι Ανταμοιβές Brave δεν θα είναι πλέον ενεργοποιημένες. Εάν ενεργοποιήσετε ξανά τις Ανταμοιβές Brave αργότερα, θα ξεκινήσετε με ένα νέο προφίλ. Διαβάστε το<ph name="LINK_BEGIN"/> βοηθητικό άρθρο σχετικά με την επαναφορά<ph name="LINK_END"/> για περισσότερες λεπτομέρειες.</translation>
-<translation id="4806029412510565611">Κατανοώ ότι το τρέχον προφίλ μου στις Ανταμοιβές Brave και τα δεδομένα Ανταμοιβών Brave θα διαγραφούν από τη συσκευή μου και έχω διαβάσει το <ph name="LINK_BEGIN"/>άρθρο υποστήριξης σχετικά με την επαναφορά<ph name="LINK_END"/>.</translation>
 <translation id="3494964159182650590">Σύνοψη Ανταμοιβών</translation>
 <translation id="2913994227901456490">Εμφάνιση και των [[numItems]] αντικειμένων</translation>
 <translation id="6685434227783226855">Αποστολή της Συνεισφοράς μου</translation>
@@ -503,76 +496,6 @@
 <translation id="4087894168792701548">Συνεχίστε με κανονική λειτουργία</translation>
 <translation id="5874287397425241890">Κάντε περιήγηση σε αυτόν τον ιστότοπο σε Ανεπίσημη λειτουργία.</translation>
 <translation id="1036348656032585052">Απενεργοποίηση</translation>
-<translation id="9020818404803201080">Συνδεδεμένοι ομότιμοι:</translation>
-<translation id="2903493209154104877">Διευθύνσεις</translation>
-<translation id="3207122385716480167">Στατιστικά Αποθετηρίου</translation>
-<translation id="2595187693729756455">Πληροφορίες κόμβου</translation>
-<translation id="5789886980848929155">Κατάσταση κόμβου IPFS</translation>
-<translation id="6599816589121202398">API</translation>
-<translation id="1327977588028644528">Πύλη</translation>
-<translation id="2551123942222622809">Πλήθος</translation>
-<translation id="5201810533706869030">Αντικείμενα</translation>
-<translation id="8028993641010258682">Μέγεθος</translation>
-<translation id="7870625241353817260">Μέγιστη αποθήκευση</translation>
-<translation id="3202131003361292969">Διαδρομή</translation>
-<translation id="3798449238516105146">Έκδοση</translation>
-<translation id="2892680660204660712">Αναγνωριστικό ομότιμου</translation>
-<translation id="7536543993364605970">Έκδοση εκπροσώπου</translation>
-<translation id="3693482323085649439">Ο κόμβος εκτελείται</translation>
-<translation id="6315833555896070573">Ο κόμβος δεν εκτελείται</translation>
-<translation id="1272079795634619415">Διακοπή</translation>
-<translation id="5895138241574237353">Επανεκκίνηση</translation>
-<translation id="6762417584993757344">Δεν έχει εγκατασταθεί</translation>
-<translation id="4159076046325416152">Εγκατάσταση IPFS...</translation>
-<translation id="3854747677478661601">Εκτελέστε μια σάρωση συλλογής απορριφθέντων</translation>
-<translation id="7376842608449050673">Σφάλμα συλλογής απορριφθέντων στοιχείων</translation>
-<translation id="8523162996646111972">(λεπτομέρειες)</translation>
-<translation id="6121825639998459476">Εγκαταστήστε και ξεκινήστε</translation>
-<translation id="72868071984333667">Μάθετε περισσότερα για το IPFS και το απόρρητο</translation>
-<translation id="3793279629218362523">Διαχείριση κλειδιών αναγνωριστικού ομότιμου και IPNS</translation>
-<translation id="6776260067907986254">Ο κόμβος μου</translation>
-<translation id="8999763401170835879">Παρουσιάστηκε σφάλμα, δοκιμάστε να ξεκινήσετε ξανά</translation>
-<translation id="5433704526290922623">Παρουσιάστηκε σφάλμα, δοκιμάστε να εγκαταστήσετε ξανά τον κόμβο</translation>
-<translation id="8428368469058794536">Υπηρεσία IPFS</translation>
-<translation id="7691598647605453992">IPFS</translation>
-<translation id="8725066075913043281">Προσπαθήστε ξανά</translation>
-<translation id="1886162073868201257">Σφάλμα εκκίνησης Υπηρεσίας IPFS</translation>
-<translation id="5357895013476183089">Δεν έγινε σύνδεση IPFS</translation>
-<translation id="7662930734991751511">Δεν είναι δυνατή η φόρτωση πόρων του IPFS χρησιμοποιώντας τον τοπικό κόμβο IPFS του Brave</translation>
-<translation id="1141556610026845297">Αποτυχία χρήσης του τοπικού κόμβου IPFS για φόρτωση των απαιτούμενων πόρων IPFS. Κάντε κλικ στο κουμπί "Συνέχεια" για να χρησιμοποιήσετε τη δημόσια πύλη και για να επιστρέφετε αυτόματα στη δημόσια πύλη στο μέλλον.</translation>
-<translation id="3373798179786163193">Συνέχεια με Δημόσια πύλη</translation>
-<translation id="1974060860693918893">Για προχωρημένους</translation>
-<translation id="9096577886148726047">Απόκρυψη επιλογών για προχωρημένους</translation>
-<translation id="182581792765792826">Το Brave δεν μπορεί να φορτώσει τους απαιτούμενους πόρους IPFS είτε επειδή ο τοπικός κόμβος IPFS του Brave δεν ξεκίνησε είτε επειδή δεν υπάρχουν συνδεδεμένοι ισότιμοι πόροι αυτήν τη στιγμή. Εάν επιλέξετε "Συνέχεια", το Brave θα επιστρέφει αυτόματα στην προεπιλεγμένη δημόσια πύλη κάθε φορά που η χρήση του τοπικού κόμβου Brave IPFS αποτυγχάνει. Μπορείτε να αλλάξετε αυτήν τη συμπεριφορά σε οποιοδήποτε σημείο στις ρυθμίσεις Brave.</translation>
-<translation id="8026038288183400906">Προτίμηση IPFS</translation>
-<translation id="2058855456574089690">Ορίστε την προτίμησή σας IPFS</translation>
-<translation id="4780526507945807546">Χρήση τοπικού κόμβου IPFS του Brave</translation>
-<translation id="8148464361648742409">Χρησιμοποιήστε μια δημόσια πύλη</translation>
-<translation id="5123478056123923857">Το IPFS (InterPlanetary File System) είναι το δημόσιο δίκτυο για αποθήκευση και παράδοση δεδομένων peer-to-peer. Αυτό το πρωτόκολλο έχει διαφορετικές εκτιμήσεις απορρήτου από το HTTP(S).</translation>
-<translation id="1216911189668016151">Ο υπολογιστής σας συνεισφέρει στο δημόσιο δίκτυο, αλλά η διεύθυνση IP σας και οποιοδήποτε περιεχόμενο ζητάτε ή παρέχετε ενδέχεται να εκτεθούν. Το περιεχόμενο που ζητάτε μέσω IPFS επαληθεύεται πριν σας εμφανιστεί. Τα αιτήματα δικτύου ενδέχεται να μη χρησιμοποιούν ρυθμίσεις διακομιστή μεσολάβησης και DNS του προγράμματος περιήγησης.</translation>
-<translation id="8664689531113048642">Προστατεύει τη διεύθυνση IP σας και το περιεχόμενο που ζητάτε από πιθανούς τρίτους παρατηρητές, αλλά όχι από τον φορέα δημόσιας πύλης. Ο διαχειριστής πύλης είναι υπεύθυνος να διασφαλίσει ότι το περιεχόμενο που σας παρέχεται μέσω μιας πύλης είναι το περιεχόμενο που ζητήσατε. Επίσης, ο υπολογιστής σας δεν συνεισφέρει στο δημόσιο δίκτυο IPFS.</translation>
-<translation id="3977809385703587108">Μπορείτε να αλλάξετε ξανά τις προτιμήσεις σας στις</translation>
-<translation id="3340978935015468852">ρυθμίσεις</translation>
-<translation id="4148957013307229264">Εγκατάσταση...</translation>
-<translation id="4219228508273972445">Εντοπισμός ομοτίμων...</translation>
-<translation id="1902096227388293745">Δεν υπάρχουν διαθέσιμοι ομότιμοι, γίνεται νέα προσπάθεια... (<ph name="ATTEMPTS_NUMBER"/> προσπάθειες απομένουν)</translation>
-<translation id="1675751799495331928">Έχουμε ξεπεράσει το όριο των προσπαθειών, δοκιμάστε πάλι αργότερα.</translation>
-<translation id="4499666752625407848">Παρουσιάστηκε σφάλμα κατά τη διάρκεια μιας ενημέρωσης.</translation>
-<translation id="62991515067726424">Έγινε φόρτωση του περιεχομένου μέσω του πρωτοκόλλου IFPS</translation>
-<translation id="7263366446813126341">Το IFPS (InterPlanetary File System) είναι το δημόσιο δίκτυο για αποθήκευση και παράδοση ομότιμων δεδομένων. Μπορείτε να μάθετε περισσότερα για την ενσωμάτωση του Brave ή να διαμορφώσετε τις ρυθμίσεις του IPFS οποιαδήποτε στιγμή.</translation>
-<translation id="3175567740517780285">Ρυθμίσεις IPFS</translation>
-<translation id="8914505352873092008">Μετάβαση στη σελίδα ρυθμίσεων IPFS</translation>
-<translation id="3465468510001693544">Διαγνωστικά IPFS</translation>
-<translation id="2527518382346359563">Μετάβαση στη σελίδα διαγνωστικών  IPFS</translation>
-<translation id="8192016636169857406">Έγγραφα IPFS</translation>
-<translation id="6863052043162730918">Μετάβαση στη σελίδα εγγράφων IPFS</translation>
-<translation id="3862600063748690056">Η εισαγωγή σε IPFS ολοκληρώθηκε</translation>
-<translation id="8263749381887932384">Η εισαγωγή σε IPFS έχει ολοκληρωθεί μερικώς</translation>
-<translation id="2145699434318651911">Η εισαγωγή σε IPFS απέτυχε</translation>
-<translation id="5525148540855044244">Έγινε αντιγραφή του κοινόχρηστου συνδέσμου: <ph name="SHAREABLE_LINK"/></translation>
-<translation id="3741998951694470470">Αποτυχία ανάκτησης δεδομένων για εισαγωγή</translation>
-<translation id="7900950536120202771">Εσωτερικό σφάλμα κόμβου IPFS</translation>
-<translation id="1036635552229153800">Τα δεδομένα μετααφορτώθηκαν επιτυχώς, αλλά δεν μετακινήθηκαν στον κατάλογο εισαγωγής brave-import. Μπορείτε να μετακινήσετε τα δεδομένα μη αυτόματα από τη σελίδα ρυθμίσεων εισαγωγής.</translation>
 <translation id="572392919096807438">Να γίνεται απομνημόνευση της απόφασής μου</translation>
 <translation id="7978789143098237970">μέχρι να κλείσω αυτόν τον ιστότοπο</translation>
 <translation id="3523195733429162409">για 24 ώρες</translation>
@@ -584,6 +507,10 @@
 <translation id="5770656036486891920">Ο ιστότοπος <ph name="URL"/> θέλει να χρησιμοποιήσει cookie τρίτου μέρους για σύνδεση μέσω Google παλαιού τύπου</translation>
 <translation id="6053826678715267477">Να επιτρέπεται η πρόσβαση σε πηγές τοπικού υπολογιστή</translation>
 <translation id="2973562729984406132">Ο ιστότοπος <ph name="URL"/> επιθυμεί να αποκτήσει πρόσβαση σε πηγές τοπικού υπολογιστή</translation>
+<translation id="5939518447894949180">Επαναφορά</translation>
+<translation id="3349204812119681938">Επαναφορά Ανταμοιβών Brave</translation>
+<translation id="4915997950539925115">Με την επαναφορά, το τρέχον προφίλ σας στις Ανταμοιβές Brave θα διαγραφεί και οι Ανταμοιβές Brave δεν θα είναι πλέον ενεργοποιημένες. Εάν ενεργοποιήσετε ξανά τις Ανταμοιβές Brave αργότερα, θα ξεκινήσετε με ένα νέο προφίλ. Διαβάστε το<ph name="LINK_BEGIN"/> βοηθητικό άρθρο σχετικά με την επαναφορά<ph name="LINK_END"/> για περισσότερες λεπτομέρειες.</translation>
+<translation id="4806029412510565611">Κατανοώ ότι το τρέχον προφίλ μου στις Ανταμοιβές Brave και τα δεδομένα Ανταμοιβών Brave θα διαγραφούν από τη συσκευή μου και έχω διαβάσει το <ph name="LINK_BEGIN"/>άρθρο υποστήριξης σχετικά με την επαναφορά<ph name="LINK_END"/>.</translation>
 <translation id="7717357606512850995">Έλεγχος κατάστασης</translation>
 <translation id="6473937687348632190">Η πληρωμή για τις ανταμοιβές <ph name="MONTH"/>έχει ολοκληρωθεί.</translation>
 <translation id="1711367267038576241">Η επεξεργασία της πληρωμής σας για τις ανταμοιβές <ph name="MONTH"/> θα ξεκινήσει έως τις <ph name="DATE"/>.</translation>
@@ -605,6 +532,13 @@
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {Αυτόν τον μήνα επισκεφτήκατε # δημιουργό που υποστηρίζεται από τις Ανταμοιβές Brave}
       other {Αυτόν τον μήνα επισκεφτήκατε # δημιουργούς που υποστηρίζονται από τις Ανταμοιβές Brave}
+    }</translation>
+<translation id="3264975266761862670">Έτοιμοι να αρχίσετε να κερδίζετε;</translation>
+<translation id="2784412028126205842">Σύνδεση λογαριασμού πληρωμών</translation>
+<translation id="766126983336630294">{ADS_VIEWED, plural,
+      =0 {Είδατε <ph name="COUNT_BEGIN"/># διαφημίσεις<ph name="COUNT_END"/> αυτόν τον μήνα}
+      =1 {Θα μπορούσατε να πληρώνεστε για τη <ph name="COUNT_BEGIN"/># διαφήμιση<ph name="COUNT_END"/> που είδατε αυτόν τον μήνα.}
+      other {Θα μπορούσατε να πληρώνεστε για τις <ph name="COUNT_BEGIN"/># διαφημίσεις<ph name="COUNT_END"/> που είδατε αυτόν τον μήνα.}
     }</translation>
 <translation id="6067959437127691361">Η χρήση των Ανταμοιβών Brave συμβάλλει στην υποστήριξη των δημιουργών περιεχομένου και σας επιτρέπει να κερδίζετε BAT.</translation>
 <translation id="944736176598169208">Ανταμοιβές</translation>
@@ -658,12 +592,23 @@
 <translation id="6945221475159498467">Επιλογή</translation>
 <translation id="3279158300746391749">Πατήστε το εικονίδιο BAT <ph name="BAT_ICON"/> στη γραμμή της διεύθυνσης URL, για να ξεκινήσετε.</translation>
 <translation id="8465790416279415448">Συνεχίζοντας, συμφωνείτε με τους <ph name="TOS_LINK_BEGIN"/>Όρους υπηρεσίας<ph name="TOS_LINK_END"/> και την <ph name="PP_LINK_BEGIN"/>Πολιτική απορρήτου<ph name="PP_LINK_END"/>.</translation>
+<translation id="8981626318554555706">Επιλέξτε την περιοχή σας</translation>
+<translation id="6923445315496949274">Επιλέξτε την περιοχή σας, για να σας δείξουμε τις σωστές επιλογές και διαφημίσεις για την περιοχή σας.</translation>
+<translation id="840952951051929644">Με την ενεργοποίηση των Ανταμοιβών, συμφωνείτε με τους <ph name="TOS_LINK_BEGIN"/>Όρους υπηρεσίας<ph name="TOS_LINK_END"/> και την <ph name="PP_LINK_BEGIN"/>Πολιτική απορρήτου<ph name="PP_LINK_END"/>.</translation>
+<translation id="5259608623172605993">Πληρωθείτε για τις ιδιωτικές διαφημίσεις που βλέπετε στο Brave</translation>
+<translation id="3099020087817489135">Απολαύστε ειδικά οφέλη και εκπτώσεις</translation>
+<translation id="3991575120992914717">Ενεργοποίηση Ανταμοιβών Brave</translation>
 <translation id="1015443539415537847">Δυστυχώς, οι Ανταμοιβές Brave δεν είναι διαθέσιμες</translation>
 <translation id="5007776270364097327">Δυστυχώς, φαίνεται ότι βρίσκεστε σε μια περιοχή όπου οι Ανταμοιβές Brave δεν είναι διαθέσιμες.</translation>
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Μάθετε περισσότερα<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">Μην ανησυχείτε.</translation>
 <translation id="5027616819996705541">Μπορείτε ακόμα να περιηγηθείτε ιδιωτικά!</translation>
 <translation id="1886682615222609631">Κέρδη έως τώρα</translation>
+<translation id="7649070708921625228">Βοήθεια</translation>
+<translation id="6042308850641462728">Περισσότερα</translation>
+<translation id="6245259297588415877">Δημιουργοί</translation>
+<translation id="1736419249208073774">Εξερεύνηση</translation>
+<translation id="932327136139879170">Αρχική σελίδα</translation>
 <translation id="3479552764303398839">Όχι τώρα</translation>
 <translation id="4185473179105062442">Λάβετε BAT απευθείας σε μια διεύθυνση αυτοφύλαξης κρυπτονομισμάτων</translation>
 <translation id="5802986777701714573">Προσθέσαμε έναν νέο τρόπο για να λαμβάνετε τις μηνιαίες σας ανταμοιβές BAT. Συνδέστε έναν λογαριασμό από έναν από τους συνεργάτες μας ή χρησιμοποιήστε τη νέα επιλογή αυτοφύλαξης για να αρχίσετε να κερδίζετε τώρα.</translation>
@@ -694,6 +639,7 @@
 <translation id="5562948772940025260">Μπορείτε μόνο να στείλετε έως <ph name="AMOUNT"/> BAT χρησιμοποιώντας το υπόλοιπό σας στις Ανταμοιβές Brave.</translation>
 <translation id="4827581232860040208">Παρουσιάστηκε πρόβλημα κατά την αποστολή της συνεισφοράς σας</translation>
 <translation id="3259723213051400722">Προσπαθήστε πάλι.</translation>
+<translation id="8725066075913043281">Προσπαθήστε ξανά</translation>
 <translation id="5379685283876547860">Η συνεισφορά έχει σταλεί!</translation>
 <translation id="7063168612616047608">Σας ευχαριστουμε που υποστηρίζετε τους αγαπημένους σας δημιουργούς</translation>
 <translation id="1041398280582063935">Μοιραστείτε την υποστήριξή σας</translation>
@@ -804,15 +750,34 @@
 <translation id="6954838107964168963">Σας ανήκουν</translation>
 <translation id="1976851706319678835">Δεν σας ανήκουν</translation>
 <translation id="7372882109707907136">Ποσό/ 24 ώρες</translation>
+<translation id="8141607516466809432">Επιλογή στοιχείου για γεφύρωμα</translation>
+<translation id="6517332033658428773">Αναθεώρηση ανταλλαγής</translation>
+<translation id="8692596799753687794">Επιλογή παρόχου προσφοράς</translation>
+<translation id="463712644600982655">Κάθε αθροιστής παρέχει προσφορές με χρήση ρευστότητας από το API του. Συλλέγουν πληροφορίες τιμών από διάφορα ανταλλακτήρια και προσφέρουν τις τιμές με βάση αυτά τα δεδομένα.</translation>
+<translation id="3253225298092156258">Μη διαθέσιμο</translation>
+<translation id="473775607612524610">Ενημέρωση</translation>
+<translation id="4389658703251593158">Η συγκεκριμένη σύζευξη δεν υποστηρίζεται από τον πάροχο <ph name="PROVIDER_NAME"/></translation>
+<translation id="1176173785350238153">Αλλαγή παρόχου</translation>
+<translation id="1442774416207457340">Δρομολόγηση</translation>
+<translation id="8669403359205745187">Μέγιστη πτώση απόδοσης</translation>
+<translation id="4537396160118360541">Όταν η απόκλιση μεταξύ της τιμής της συναλλαγής που υποβάλατε και της τιμής κατά τη στιγμή της συναλλαγής σε αλυσίδα είναι μεγαλύτερη από αυτήν την καθορισμένη τιμή, η συναλλαγή θα αποτύχει.</translation>
+<translation id="9102352924723221579">Η επίδραση τιμών είναι το πόσο η συναλλαγή σας μπορεί να μετακινήσει την τιμή της αγοράς. Ορισμένα token με χαμηλή ρευστότητα είναι πιο ευαίσθητα σε συναλλαγές, επομένως ακόμα και οι μικρότερες συναλλαγές μπορούν να μετατοπίσουν πολύ την τιμή.</translation>
+<translation id="6830526162796484210">Προτεινόμενες τιμές:</translation>
+<translation id="3882803104394170658">Δημοφιλή ζεύγη στοιχείων: <ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="8918807203406722697">Ζεύγη σταθερού νομίσματος: <ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="7056655731948492143">Άλλα: <ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="6231782223312638214">Προτεινόμενα</translation>
+<translation id="6484605214219822434">Έλεγχος γέφυρας</translation>
+<translation id="3365052891357224017">Εκτιμ. χρόνος</translation>
+<translation id="7448445168067324096">Συναλλαγματική ισοτιμία</translation>
+<translation id="1888985051832898007"><ph name="ONE_TOKEN_VALUE"/> για <ph name="EXCHANGE_VALUE"/></translation>
+<translation id="6728663400147327751">Παραλήπτης</translation>
 <translation id="9209024278910716955">Η αγορά δεν υποστηρίζεται για το επιλεγμένο δίκτυο</translation>
 <translation id="4982630604810554641">Αναζήτηση τομέα...</translation>
 <translation id="5467044307473123584">Το Brave υποστηρίζει τη χρήση πυλών εκτός αλυσίδας για την επίλυση τομέων .eth.</translation>
 <translation id="4896417414446851895">Φαίνεται ότι εισαγάγατε μια διεύθυνση ENS. Θα χρειαστεί να χρησιμοποιήσουμε μια υπηρεσία επίλυσης τρίτου μέρους για την επίλυση αυτού του αιτήματος, η οποία ενδέχεται να μπορεί να δει τη διεύθυνση IP και τον τομέα σας.</translation>
 <translation id="8646078615727397565">Χρήση τομέα ENS</translation>
 <translation id="1191686659164947414">Η συναλλαγή ενδέχεται να είναι προϊόν front running (προπορευόμενη συναλλαγή)</translation>
-<translation id="8914256532272191486">Η ανταλλαγή σας θα πραγματοποιηθεί εντός του μέγιστου ποσοστού πτώσης απόδοσης που καθορίζετε εδώ. Για παράδειγμα, μια πτώση απόδοσης 1% σημαίνει ότι είστε πρόθυμοι να αποδεχθείτε έως και 1% λιγότερο λόγω των συνθηκών της αγοράς.</translation>
-<translation id="632241521608275119">Ανοχή πτώσης απόδοσης</translation>
-<translation id="2493281414634883751">Εισαγάγετε μια τιμή μεταξύ 0,5% και 99%</translation>
 <translation id="4500473291496079954">Λήγει σε</translation>
 <translation id="2236833281018938257">Διεύθυνση πορτοφολιού ή διεύθυνση URL</translation>
 <translation id="928500657730628112">Διεύθυνση πορτοφολιού</translation>
@@ -829,7 +794,6 @@
 <translation id="6896758677409633944">Αντιγραφή</translation>
 <translation id="7885157704277298658">Έγινε αντιγραφή!</translation>
 <translation id="6518133107902771759">Επαλήθευση</translation>
-<translation id="6042308850641462728">Περισσότερα</translation>
 <translation id="3157931365184549694">Επαναφορά</translation>
 <translation id="414070570958255222">Εγγενές στο πρόγραμμα περιήγησης. Με αυτοφύλαξη. Και πολλές αλυσίδες.</translation>
 <translation id="1350120992777389959">Πάρτε τον έλεγχο των κρυπτονομισμάτων και των NFT σας. Το Πορτοφόλι Brave υποστηρίζει Ethereum, αλυσίδες EVM, Solana, Filecoin, Bitcoin και άλλα.</translation>
@@ -892,6 +856,8 @@
 <translation id="1940465339426637378">Στοιχεία κεφαλαίου</translation>
 <translation id="2236507293802791911">Ορατά στοιχεία</translation>
 <translation id="3188393374551744535">Υπόλοιπο λογαριασμού</translation>
+<translation id="4180024248473947674">Προβολή διεύθυνσης στον:</translation>
+<translation id="1251267447128999380"><ph name="BLOCKCHAIN_NETWORK_NAME"/> Εξερευνητή</translation>
 <translation id="7525067979554623046">Δημιουργία</translation>
 <translation id="4771176409524282426">Δημιουργία λογαριασμού</translation>
 <translation id="2471867767872178363">Δημιουργία λογαριασμού <ph name="BLOCKCHAIN_NETWORK"/></translation>
@@ -952,6 +918,7 @@
 <translation id="5138307340667775659">Αυτό το διακριτικό έχει ήδη προστεθεί στο χαρτοφυλάκιό σας.</translation>
 <translation id="547122651977318828">Αναγνωριστικό token (μόνο για το ERC721)</translation>
 <translation id="7544552854944350190">Απαιτείται αναγνωριστικό token</translation>
+<translation id="1974060860693918893">Για προχωρημένους</translation>
 <translation id="3842236145820483340">Αναγνωριστικό Coingecko</translation>
 <translation id="7642841516562576649">Διεύθυνση URL εικονιδίου</translation>
 <translation id="2144247757675997850">Προσθήκη περιουσιακού στοιχείου</translation>
@@ -975,7 +942,6 @@
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="1613627717923045622">Δοκιμή δικτύου</translation>
-<translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
 <translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">Επιλογή λογαριασμού</translation>
@@ -1194,8 +1160,6 @@
 <translation id="9033453977881595182">Αναγνωριστικό token</translation>
 <translation id="6332387008245531841">Διεύθυνση συμβολαίου</translation>
 <translation id="4790543031293959558">Διεύθυνση URL εικόνας</translation>
-<translation id="3954354850384043518">Σε εξέλιξη</translation>
-<translation id="4350065043422286972">Καρφιτσωμένο</translation>
 <translation id="4289540628985791613">Επισκόπηση</translation>
 <translation id="5585178186632632419">Κάτοχος</translation>
 <translation id="2686444421126615064">Προβολή λογαριασμού</translation>
@@ -1290,6 +1254,7 @@
 <translation id="6736243959894955139">Διεύθυνση</translation>
 <translation id="3095940652251934233">Δήλωση</translation>
 <translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Έκδοση</translation>
 <translation id="1313065465616456728">Εκδόθηκε στις</translation>
 <translation id="7902225556763260253">Ώρα λήξης</translation>
 <translation id="2471230424465522689">Όχι πριν από</translation>
@@ -1515,23 +1480,22 @@
 <translation id="4937657825850660613">Μισό</translation>
 <translation id="7639814793732182496">Μέγ.</translation>
 <translation id="6584782231358487640">Εισαγάγετε ποσό</translation>
-<translation id="821928941440539212">Εύρεση της καλύτερης προσφοράς...</translation>
+<translation id="477281933640372562">Γίνεται λήψη προσφοράς</translation>
 <translation id="5450317966495183014">Λήψη (εκτ.)</translation>
 <translation id="8747614139273050577">Από token</translation>
 <translation id="1726158192333401896">Σε token</translation>
+<translation id="765894671068292221">Νέα προσφορά σε <ph name="COUNTDOWN_BEFORE"/><ph name="COUNTDOWN"/><ph name="COUNTDOWN_AFTER"/></translation>
 <translation id="3835223348537121988">Υπόλοιπο:</translation>
 <translation id="5709875713144853427">Επιλέξτε διακτιτικό για ανταλλαγή</translation>
 <translation id="720404198240859011">Εμφάνιση διακριτικών χωρίς υπόλοιπο</translation>
 <translation id="4886690455791686940">Απόκρυψη μηδενικού υπολοίπου</translation>
 <translation id="615791330696335475">Επιλογή διακριτικού με βάση το όνομα</translation>
 <translation id="381485723922188688">Επιλογή</translation>
-<translation id="6680650203439190394">Τιμή</translation>
 <translation id="2538996898605796431">Επίδραση τιμών</translation>
 <translation id="8007404171238546456">Ελάχιστον ληφθέν ποσό κατόπιν πτώσης απόδοσης</translation>
 <translation id="767199001998615704">Τέλος δικτύου</translation>
-<translation id="7057870207229052478">Τέλος Brave</translation>
+<translation id="28584716826670202">Περιλαμβάνεται τέλος Brave</translation>
 <translation id="3624518972158401291">Δωρεάν</translation>
-<translation id="5038255447967558645">Πάροχος ρευστότητας</translation>
 <translation id="8450638959928932199">Ανταλλαγή και αποστολή</translation>
 <translation id="476816352791390168">ΧΩΡΙΣ πρόσθετα τέλη!</translation>
 <translation id="5319981934425923365">Επιβεβαιώνω ότι η παραπάνω διεύθυνση είναι σωστή</translation>
@@ -1542,6 +1506,7 @@
 <translation id="8044899503464538266">Αργά</translation>
 <translation id="3569512916300900704">Μέσος Όρος</translation>
 <translation id="7019805045859631636">Γρήγορα</translation>
+<translation id="632241521608275119">Ανοχή πτώσης απόδοσης</translation>
 <translation id="6778140392042462129">Ανταλλακτήρια</translation>
 <translation id="6173494033320397682">Μόνο άμεση διαδρομή</translation>
 <translation id="2440960581098655899">Διασφαλίζει αποκλειστικά άμεση δρομολόγηση και, επίσης, απενεργοποιεί τις συναλλαγές διάσπασης</translation>
@@ -1549,6 +1514,7 @@
 <translation id="2379187373676242615"><ph name="VALUE"/>% φθηνότερο από το CoinGecko</translation>
 <translation id="5351867352310722022">Εντός του <ph name="VALUE"/>% του CoinGecko</translation>
 <translation id="7695501918490163821"><ph name="VALUE"/>% πιο ακριβό από το CoinGecko</translation>
+<translation id="6599816589121202398">API</translation>
 <translation id="7561262633951061138">Καλύτερη</translation>
 <translation id="8060029310790625334">Κέντρο βοήθειας:</translation>
 <translation id="3143110700666266545">Αυτή η εφαρμογή χρησιμοποιεί τα ακόλουθα API τρίτου μέρους:</translation>
@@ -1562,29 +1528,6 @@
 <translation id="3797613444743816037">Διεύθυνση νομισματοκοπείου</translation>
 <translation id="7951915459354237451">Το όριο τελών είναι χαμηλότερο από το βασικό τέλος. Η συναλλαγή σας ίσως αργήσει πολύ ή αποτύχει.</translation>
 <translation id="2227702748249086756">Δεν είναι δυνατή η ανάκτηση των εκτιμώμενων τελών</translation>
-<translation id="6580621526400120372">Γιατί κάποια NFT δεν πληρούν τις προϋποθέσεις;</translation>
-<translation id="620930608106217992">Κάποια δεδομένα NFT αποθηκεύονται σε αποκεντρωμένους διακομιστές. όπως οι  AWS, Google Cloud κ.λπ. Σε ανάλογη περίπτωση, δεν είναι δυνατό το καρφίτσωμα των δεδομένων σας NFT στο δίκτυο IPFS.</translation>
-<translation id="4637031024914696767">Με την ενεργοποίηση του IPFS στο Brave, τα NFT θα καρφιτσώνονται αυτόματα. Είναι ο καλύτερος τρόπος για ασφαλή δημιουργία αντιγράφων ασφαλείας των NFT σας.</translation>
-<translation id="2319971828691864975">Ξεκινήστε με το IPFS</translation>
-<translation id="7906328323880284538">Ο ταχύτερος τρόπος φιλοξενίας NFT</translation>
-<translation id="214349569547787359">Ενεργοποιήστε το IPFS στο Brave για αυτόματη δημιουργία αντιγράφων ασφαλείας των NFT σας.</translation>
-<translation id="4819588096619503180">Το IPFS είναι ένα δίκτυο αποθήκευσης που βασίζεται στην κοινότητα, όπως ένας σκληρός δίσκος που μπορεί να χρησιμοποιήσει οποιοσδήποτε. Αλλά, αντί να ελέγχεται από μια αρχή, χιλιάδες άνθρωποι δουλεύουν μαζί ώστε να φιλοξενηθεί περιεχόμενο στο IPFS. Όταν "καρφιτσώνετε" κάτι στο IPFS, εξασφαλίζετε ότι τουλάχιστον ένα αντίγραφο αυτού του περιεχομένου έχει αποθηκευτεί με ασφάλεια. Και εφόσον ένα άτομο έχει αντίγραφο, το αρχείο δεν μπορεί να εξαφανιστεί ποτέ.<ph name="NEWLINE"/>Με την ενεργοποίηση του IPFS στο Brave, τα NFT σας θα καρφιτσώνονται αυτόματα. Είναι ο καλύτερος τρόπος για ασφαλή δημιουργία αντιγράφων ασφαλείας των NFT σας.</translation>
-<translation id="9160750213078764355">Προβολή των κατάλληλων NFT</translation>
-<translation id="6241155642582182934">Ενεργοποιήστε το IPFS στο Brave για αυτόματη δημιουργία αντιγράφων ασφαλείας των NFT σας για επιπλέον ασφάλεια.</translation>
-<translation id="654964147165509548">Τα  NFT καρφιτσώθηκαν στον τοπικό κόμβο IPFS.</translation>
-<translation id="4910182786472608576">Ο χρήστης <ph name="PINNED"/> υποστήριξε ότι τα NFT καρφιτσώθηκαν στον τοπικό κόμβο IPFS.</translation>
-<translation id="1607117719941506821"><ph name="PINNABLE"/> NFT πληρούν τις προϋποθέσεις</translation>
-<translation id="7056553112112778467">Τα NFT <ph name="PINNABLE"/> πληρούν τις προϋποθέσεις</translation>
-<translation id="6852656829524945421">Δεν είναι δυνατό το καρφίτσωμα</translation>
-<translation id="9019535252716288146">Εκτελείτε έναν κόμβο IPFS</translation>
-<translation id="5584313306739463968">Ο τοπικός κόμβος IPFS δεν εκτελείται</translation>
-<translation id="7527548209942671618">Καρφιτσώθηκε στον τοπικό σας κόμβο IPFS</translation>
-<translation id="5659058832308365026">Γίνεται καρφίτσωμα των δεδομένων NFT στον τοπικό σας κόμβο IPFS</translation>
-<translation id="4919133452617704550">Δεν μπορεί να καρφιτσωθεί στον τοπικό σας κόμβο IPFS</translation>
-<translation id="4220102684162429566">Οι πιο συνήθεις λόγοι:</translation>
-<translation id="451509325309455">Το NFT αντιμετωπίζει προβλήματα URL μεταδεδομένων χωρίς IPFS</translation>
-<translation id="3827697793483899711">Προβλήματα εσωτερικού κόμβου IPFS</translation>
-<translation id="1992846713609432783">Δεν υπάρχει αρκετός χώρος στον τοπικό κόμβο</translation>
 <translation id="3225624966527491351">Εισαγωγή NFT</translation>
 <translation id="9085765419770918643">Δεν υπάρχουν NFT εδώ ακόμη.</translation>
 <translation id="8445532667841598737">Είστε έτοιμοι να προσθέσετε ορισμένα; Κάντε απλώς κλικ στο κουμπί παρακάτω για εισαγωγή.</translation>
@@ -1596,6 +1539,7 @@
 <translation id="6948667383954749033">Επισήμανση ως μη ανεπιθύμητου</translation>
 <translation id="5810047320613496595">Ανεπιθύμητα</translation>
 <translation id="7257605968082307175">Επισήμανση ως ανεπιθύμητου</translation>
+<translation id="1255896809210433555">Προσθήκη NFT</translation>
 <translation id="7600335727434653744">Κατάργηση από το πορτοφόλι Brave;</translation>
 <translation id="6657860743511185539">Το NFT θα αφαιρεθεί από το Πορτοφόλι Brave, αλλά θα παραμείνει στο blockchain. Εάν το αφαιρέσετε και μετά αλλάξετε γνώμη, θα χρειαστεί να το εισαγάγετε ξανά μη αυτόματα.</translation>
 <translation id="849880459530751909">Επεξεργασία NFT</translation>
@@ -1653,6 +1597,25 @@
 <translation id="8488138412489236285">Εισαγάγετε κωδικό πρόσβασης (αν ισχύει)</translation>
 <translation id="9166422618242592074">Τύπος εισαγωγής</translation>
 <translation id="1913853014470037784">Απόκρυψη NFT που δεν σας ανήκουν</translation>
+<translation id="6722771294390991852">Ομαδοποίηση κατά συλλογή</translation>
+<translation id="8775144690796719618">Μη έγκυρη διεύθ. URL</translation>
+<translation id="8892896831704748782">Εάν δεν μπορείτε να δείτε ένα NFT που εντοπίστηκε αυτόματα από το Brave ή θέλετε να παρακολουθήσετε ένα NFT που ανήκει σε άλλα άτομα, μπορείτε να το εισαγάγετε μη αυτόματα.</translation>
+<translation id="6301982082639804892">Η διεύθυνση συμβολαίου κατά την προσθήκη ενός NFT σε ένα πορτοφόλι, είναι η μοναδική διεύθυνση στο blockchain όπου ενυπάρχει το έξυπνο συμβόλαιο για τη συλλογή NFT. Μπορείτε να βρείτε τη διεύθυνση συμβολαίου από την αγορά ή τους εξερευνητές blockchain κ.λπ.</translation>
+<translation id="9033155463293614176">Το μοναδικό αναγνωριστικό για το συγκεκριμένο NFT στη συλλογή.</translation>
+<translation id="2483152581664459180">Δεν είναι δυνατή η ανάκτηση μεταδεδομένων NFT</translation>
+<translation id="6198624822546162700">Παρακολουθήστε αυτό το NFT</translation>
+<translation id="3415773516149065346">Δεν σας ανήκει αυτό το NFT. Ενώ μπορείτε ακόμα να το προσθέσετε στο πορτοφόλι σας, δεν θα μπορείτε να κάνετε συναλλαγές με αυτό.</translation>
+<translation id="7138457458706196245">π.χ. <ph name="VALUE"/></translation>
+<translation id="2454691116905703258">Το όνομα token για ένα NFT αναφέρεται στο συγκεκριμένο όνομα που δόθηκε σε ένα non-fungible token εντός μίας συγκεκριμένης συλλογής ή πρότζεκτ. Αυτό το όνομα ξεχωρίζει έναν NFT από ένα άλλο στην ίδια συλλογή.</translation>
+<translation id="3212749868469431851">Το σύμβολο NFT αναφέρεται στο μοναδικό αναγνωριστικό που χρησιμοποιείται για να ξεχωρίζει η συλλογή NFT ή το πρότζεκτ.</translation>
+<translation id="8198838794018761504">Μόνο για παρακολούθηση</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="3417321754118442366">Δεν βρέθηκαν DApp</translation>
+<translation id="4864082959618144988">Ενεργά πορτοφόλια</translation>
+<translation id="5445224754926400848">Επίσκεψη <ph name="VALUE"/></translation>
+<translation id="8355371587927005068">Φίλτρα</translation>
+<translation id="803703704549420287">Εκκαθάριση φίλτρων</translation>
+<translation id="1472675084647422956">Εμφάνιση περισσότερων</translation>
 <translation id="3155170474926428993">Άνοιγμα Tor</translation>
 <translation id="3745016858329272300">Γενικές πληροφορίες</translation>
 <translation id="4045404575593562245">Συμβάντα ελέγχου Tor</translation>
@@ -1700,7 +1663,6 @@
 <translation id="5104499318017527547">Διασκέδαση</translation>
 <translation id="2228584369802328636">Gaming</translation>
 <translation id="6941852195052765076">Υγεία</translation>
-<translation id="932327136139879170">Αρχική σελίδα</translation>
 <translation id="2233040275795129413">Lifestyle</translation>
 <translation id="5178222043222938163">Μουσική</translation>
 <translation id="1322083935398004629">Πολιτική</translation>
@@ -1734,6 +1696,7 @@
 <translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">Γρήγορες εντολές</translation>
 <translation id="7481312909269577407">Προώθηση</translation>
+<translation id="1272079795634619415">Διακοπή</translation>
 <translation id="302781076327338683">Επανάληψη φόρτωσης παράκαμψης προσωρινής μνήμης</translation>
 <translation id="7211681214230730336">Επανάληψη φόρτωσης εκκαθάρισης προσωρινής μνήμης</translation>
 <translation id="1779766957982586368">Κλείσιμο παραθύρου</translation>
@@ -1814,7 +1777,7 @@
 <translation id="6263048902976129908">Εναλλαγή εργαλείων προγραμματισμού</translation>
 <translation id="1386786836007298307">Εναλλαγή πλήρους οθόνης γραμμής εργαλείων</translation>
 <translation id="461433814913785913">Προσαρμογή Touch bar</translation>
-<translation id="5835081019037947840">Εναλλαγή συμβάντων javascript apple</translation>
+<translation id="4722786500079380710">Εναλλαγή συμβάντων JavaScript Apple</translation>
 <translation id="5825969867518399495">Εγκατάσταση PWA</translation>
 <translation id="7888244262238732644">Εμφάνιση σελίδας διαχείρισης</translation>
 <translation id="8114712275882140856">Εμφάνιση πλήρων διευθύνσεων URL</translation>
@@ -1862,7 +1825,7 @@
 <translation id="522953399371747698">Απόκρυψη γραμμής σελιδοδεικτών</translation>
 <translation id="134184943774258988">Εμφάνιση ή απόκρυψη του κουμπιού «Όλοι οι σελιδοδείκτες»</translation>
 <translation id="2158862020143233462">Εναλλαγή ασπίδων</translation>
-<translation id="4610630726762318759">Εναλλαγή javascript</translation>
+<translation id="3010280727642018218">Εναλλαγή JavaScript</translation>
 <translation id="188822869499214197">Εμφάνιση φυσαλίδας λίστας αναπαραγωγής</translation>
 <translation id="3202536111478033084">Ομαδοποίηση καρτελών στην τρέχουσα προέλευση</translation>
 <translation id="6002210667729577411">Μετακίνηση ομάδας σε άλλο παράθυρο</translation>
@@ -2032,6 +1995,7 @@
 <translation id="2370739752330685659">Ίσως αργότερα</translation>
 <translation id="983013125018250242">Εργαλεία του Leo</translation>
 <translation id="49269513399674318">Χρήση μικροφώνου</translation>
+<translation id="3895031624234442305">Προσαρμοσμένο μοντέλο</translation>
 <translation id="6303294677342628402">Ασπίδες</translation>
 <translation id="8458987127502506209">Ενεργοποίηση Ασπίδων Brave</translation>
 <translation id="7509914170164691086">Οι Ασπίδες είναι ΕΝΕΡΓΟΠΟΙΗΜΕΝΕΣ <ph name="LINK_BEFORE"/>για<ph name="LINK_AFTER"/></translation>
@@ -2096,7 +2060,7 @@
 <translation id="5037676449506322593">Επιλογή όλων</translation>
 <translation id="5148943178722443958">Βοηθήστε μας να κάνουμε το Brave καλύτερο.</translation>
 <translation id="1097073572755862978">Στείλτε αναφορές διαγνωστικών, σε περίπτωση σφάλματος ή παγώματος. <ph name="LINK_BEFORE"/>Μάθετε περισσότερα.<ph name="LINK_AFTER"/></translation>
-<translation id="5099408825243658796">Κοινοποιήστε εντελώς ιδιωτικές και ανώνυμες πληροφορίες σχετικά με ποιες λειτουργίες χρησιμοποιούνται από τους χρήστες του Brave. <ph name="LINK_BEFORE"/>Μάθετε περισσότερα.<ph name="LINK_AFTER"/></translation>
+<translation id="6629244688368006959">Κοινοποιήστε ιδιωτικές και ανώνυμες πληροφορίες σχετικά με ποιες λειτουργίες χρησιμοποιούνται από τους χρήστες του Brave. <ph name="LINK_BEFORE"/>Μάθετε περισσότερα.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Η ρύθμιση ολοκληρώθηκε</translation>
 <translation id="3141206739023333979">Αλλάξτε αυτές τις επιλογές ανά πάσα στιγμή στο Brave στο <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Διαβάστε ολόκληρη την <ph name="LINK_BEFORE"/>Πολιτική απορρήτου<ph name="LINK_AFTER"/></translation>
@@ -2168,14 +2132,12 @@
 
 Ωστόσο, παρατηρήσαμε ότι αυτό το πρόγραμμα βοήθειας δεν εκτελείται - και δεν θέλουμε να σας αφήσουμε απροστάτευτους. Αλλάξαμε τις ρυθμίσεις DNS στο πρόγραμμα περιήγησης για να προστατευτείτε από αυτήν την αποκάλυψη. Οι ρυθμίσεις θα παραμείνουν σε ισχύ και θα κλειδωθούν όσο είναι συνδεδεμένο το VPN.
 <ph name="LEARN_MORE"/></translation>
-<translation id="8810743613883230732">Φαίνεται ότι υπάρχουν προβλήματα με τη σύνδεση WireGuard. Θέλετε να ενεργοποιήσετε τη μετάπτωση IKEv2 για αξιόπιστο VPN; Απλώς αλλάξτε τις ρυθμίσεις.
+<translation id="7082498599369566941">Φαίνεται ότι υπάρχουν προβλήματα με τη σύνδεση WireGuard. Θέλετε να ενεργοποιήσετε τη μετάπτωση IKEv2 για αξιόπιστο VPN; Απλώς αλλάξτε τις ρυθμίσεις.
 
 Χρειάζεστε βοήθεια με τη συμβατότητα ή τη διαμόρφωση; Επικοινωνήστε με την ομάδα υποστήριξης, η οποία θα χαρεί να βοηθήσει.
 Μπορείτε να επιστρέψετε όποτε θέλετε στο WireGuard, στη διεύθυνση brave://settings/system.
 
-Πάμε να σας συνδέσουμε!
-
-<ph name="LEARN_MORE"/></translation>
+Πάμε να σας συνδέσουμε!</translation>
 <translation id="1657858090675311947">Να μη λαμβάνω προειδοποίηση εκ νέου για αυτό το ζήτημα.</translation>
 <translation id="2740531572673183784">ΟK</translation>
 <translation id="7423206764347669977">Αλλαγή των ρυθμίσεων</translation>

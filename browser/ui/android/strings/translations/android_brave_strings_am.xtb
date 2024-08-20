@@ -106,9 +106,8 @@
 <translation id="4692623383562244444">የፍለጋ ፕሮግራሞች</translation>
 <translation id="1468415711258933398">መደበኛ ትር</translation>
 <translation id="3377025655491224618">የግል ትር</translation>
+<translation id="8982438328166986164">በእርስዎ ዕልባቶች እና የአሰሳ ታሪክ ላይ በመመስረት የድር ጣቢያ ጥቆማዎችን ያሳያል።</translation>
 <translation id="9148058034647219655">ውጣ</translation>
-<translation id="4022987104439075738">የ IPFS ጌትዌይ</translation>
-<translation id="2688519859165248360">በ IPFS መግቢያ በኩል ወደ IPFS ሀብቶች ለመድረስ ይፈቅዳል</translation>
 <translation id="8047754398610073499">የኩኪ አግድ ፈቃድ ማስታወቂያዎች</translation>
 <translation id="2621893359845808115">በጣቢያቸው ላይ ኩኪዎችን ይቀበሉ/አይቀበሉ የሚጠይቁ የድር ጣቢያ ብቅ-ባዮችን ያግዳል።</translation>
 <translation id="7534079972563542000">የማይቆሙ ጎራዎች</translation>
@@ -140,9 +139,7 @@
 <translation id="2356070529366658676">ጠይቅ</translation>
 <translation id="4176463684765177261">ተሰናክሏል</translation>
 <translation id="59174027418879706">ነቅቷል</translation>
-<translation id="6252490671914511928">የዛሬ ግምባር ቀደም ታሪኮች ሙሉ ለሙሉ የግል በሆነ አቀራረብ፣ ለእርስዎ ብቻ።</translation>
 <translation id="8300751939969131609">Brave News ያብሩት፣ እና ማንኛውም ታሪክ አያምልጥዎ</translation>
-<translation id="7266075701303521777">Brave ዜና በማስታወቂያ የተደገፈ እና በመሳሪያዎ ላይ ሙሉ ለሙሉ ግላዊነቱ የተዛመደ እና ስም-አልባ በሆነ መልክ በማስታወቂያ የተደገፈ ነው።</translation>
 <translation id="7699565323725789472">ተወዳጅ ምንጮችዎን በአንድ መረጃ መጋቢ ውስጥ ይከተሉ። በቀላሉ በ Brave ውስጥ ትር ይክፈቱ፣ ወደ ታች ይውረዱ እና… ይኸው!\nየ Brave ዜና ግላዊ እና በማያጋልጡ ማስታወቂያዎች የተደገፈ ነው።</translation>
 <translation id="1765217911817124376">የ Brave ዜናዎች ን ያንቁ</translation>
 <translation id="8981973962043893066">ጣቢያ፣ ርዕስ ወይም RSS ግብአት ይፈልጉ</translation>
@@ -231,7 +228,6 @@
 <translation id="7281027579943912834">Brave በነባሪነት ሲጠቀሙ፣  እያንዳንዷ የሚንኳት ማገናኛ የ Brave የማስታወቂያ እገዳ ጥበቃን ታገኛለች። እያንዳንዱ ገጽ፣ ቪዲዮ እና ዥረት።</translation>
 <translation id="5148943178722443958">Brave ይበልጥ የተሻለ እንዲሆን ያግዙ።</translation>
 <translation id="6718362830686703942">ብልሽት ወይም የማንቀሳቀስ ችግሮች ካጋጠምዎ፣ የምርመራ ሪፖርቶችን ይላኩ።</translation>
-<translation id="1929905278861178845">በBrave ተጠቃሚዎች ምን አይነት ባህሪያት ጥቅም ላይ እየዋሉ እንደሆነ ሙሉ ለሙሉ የግል የሆነ እና ማንነት የማያሳውቅ የምርት ግንዛቤዎችን ያጋሩ።</translation>
 <translation id="2877653791257935258">የድር ጣቢያ ስም ወይም ዩአርኤል ይተይቡ</translation>
 <translation id="5329830149661250028">የBrave ልዩነትን ይመልከቱ፦ ምንም ማስታወቂያዎች የሉም። ምንም መከታተያዎች የሉም። ይበልጥ ፈጣን የገጽ ጭነት።</translation>
 <translation id="3941792073703079607">የ Brave ልዩነት ይመልከቱ፡ ማስታወቂያዎችን ማገድ። ውሂብ መቆጠብ። ቪድዮዎችን መስመር ላይ በፍጥነት መመልከት።</translation>
@@ -274,7 +270,6 @@
 <translation id="1938402585819943124">በሚቀጥለው ማያ ላይ ብሬቭን ይምረጡ።</translation>
 <translation id="8926389886865778422">ደግመው አይጠይቁ</translation>
 <translation id="745974920645827035">ገለልተኛ ፍለጋ በተሻለ ግላዊነት</translation>
-<translation id="4717018805430015801">Brave ፍለጋ እርስዎን፣ መጠይቆችዎን ወይም ጠቅታዎችዎን አይከታተልም።</translation>
 <translation id="5240031343741051161">ብሬቭ ፍለጋን ይሞክሩ</translation>
 <translation id="5234764350956374838">አሰናብት</translation>
 <translation id="6639570430554986719">ጥር</translation>
@@ -313,15 +308,11 @@
 <translation id="3132642509209154999">ይህ ኮድ ጊዜው አልፎበታል። እባክዎ በሌላኛው መሳሪያዎ ላይ አዲስ ይፍጠሩና እንደገና ይሞክሩ።</translation>
 <translation id="2859229680945501779">ይህ ኮድ ልክ ያልሆነ ነው። እባክዎ ሰዓቱ እና የሰዓት ዞን በመሳሪያዎ ላይ በትክክል መዘጋጀታቸውን ያረጋግጡ።</translation>
 <translation id="3149880132460839085">የብሬቭ ማመሳሰል</translation>
-<translation id="3680755684186855422">የብሬቭ ማመሳሰል በተለያዩ መሳሪያዎች ላይ በብሬቭ አሳሾችዎ መካከል የዕልባቶችዎን ውሂብ በግል እንዲያመሳስሉ ያስችልዎታል፡፡</translation>
-<translation id="3735228155296883311">በሌላ መሳሪያ ላይ የፈጠሩትን ኮድ ከማመሳሰያ ሰንሰለት ስካን ያድርጉ። ወይም አዲስ የማመሳሰያ ሰንሰለት ይጀምሩ።</translation>
 <translation id="2614069607859982576">አሁን ያለውን የተማሳሰለ መሳሪያ በመጠቀም፣ የ Brave ቅንብሮችን ከፍተው ወደ ቅንብሮች &gt; አስምር ይሂዱና ያመሳስሉ። "መሳሪያ አክል" የሚለውን መርጠው በማያው ላይ የሚታየውን የ QR ኮድ ስካን ያድርጉ።</translation>
 <translation id="5241263629636958324">ወደ ቅንጥብ ሰሌዳ ተገልብጧል</translation>
 <translation id="5817918615728894473">አጣምር</translation>
 <translation id="3429575397891106447">የማመሳሰል አማራጮች</translation>
 <translation id="1680065323266179640">የማመሳሰል መለያን ሰርዝ</translation>
-<translation id="3792563952903751704">መለያዎን መሰረዝ የተመሰጠረውን ውሂብዎን ከ Brave አገልጋዮች ያስወግዳል እና በሁሉም የተገናኙ መሳሪያዎችህ ላይ ማመሳሰልን ያሰናክላል። ግን በእነዚያ መሳሪያዎች ላይ በአካባቢው የተከማቸውን ውሂብ አይሰርዝም።
-  ይህ ስረዛ ዘላቂ ሲሆን ውሂቡን መልሶ ለማግኘት ምንም መንገድ የለም። ማመሳሰልን እንደገና ለመጠቀም ከወሰኑ አዲስ መለያ መፍጠርና እያንዳንዱን መሳሪያ አንድ በአንድ እንደገና ማከል ያስፈልግዎታል።</translation>
 <translation id="9064376100690171155">መለያውን እስከመጨረሻው ሰርዝ</translation>
 <translation id="2740516568641790390">የማመሳሰያ መለያ በተሳካ ሁኔታ እንዲጠፋ ተደርጓል</translation>
 <translation id="7006136453627651236">የማመሳሰያ መለያን ማጥፋት አልተቻለም</translation>
@@ -331,12 +322,8 @@
 <translation id="1602067095281698985">አዲስ የማመሳሰል ሰንሰለት ይጀምሩ</translation>
 <translation id="1475223680121592371">የሞባይል መሳሪያ አክል</translation>
 <translation id="2965377893636908578">ኮምፒዩተር አክል</translation>
-<translation id="6604289897677913048">ሁለተኛ ስልክ ወይም ታብሌትን በመጠቀም የ Brave ቅንብሮች ዳስስ &gt; አሳምር &gt; ስካን።</translation>
-<translation id="8508856434435157945">በሞባይል መሳሪያዎ ላይ በቅንብሮች ፓነል ውስጥ ወደ Brave Sync ይሂዱ እና "የማመሳሰያ ኮድ ስካን አድርግ" የሚለው ቁልፍ ላይ ጠቅ ያድርጉ። ከታች ያለውን የ QR ኮድ ስካን ለማድረግ ካሜራዎን ይጠቀሙ።</translation>
-<translation id="2590683710114839102">ኮምፒዩተርዎ ላይ፣ ወደ Brave ቅንብሮች እና amp; gt; ይሂዱ፣ ያመሳስሉ። "የማመሳሰል ሰንሰለት ኮድን አስገባ" የሚለውን ይምረጡ።</translation>
 <translation id="65315202420929965">ይህን የማሰመሪያ ኮድ ስካን አድርግ</translation>
 <translation id="6764016175302339802">ይህን ኮድ እንደ ይለፍ ቃል ያዙት። አንድ ሰው ከደረሰበት፣ የተመሳሰለ ውሂብዎን ሊያነብ እና ሊያሻሽል ይችላል።</translation>
-<translation id="6707003343517029414">ታላሚ በሆነው ኮምፒውተር ላይ፣ ቅንብር ውስጥ ወደ Brave Sync ይሂዱ እና "የተመሳሰለ ኮድ አለኝ" የሚለውን ቁልፍ ይጫኑ ።\nከታች የሚታዩትን የማመሳሰል ሰንሰለት ኮድ ቃላትን ያስገቡ።</translation>
 <translation id="2731921493694251495">የማመሳሰል ሰንሰለት ኮድ አስገባ</translation>
 <translation id="2175927920773552910">QR ኮድ</translation>
 <translation id="8653433343015102968">የኮድ ቃላት</translation>
@@ -414,8 +401,6 @@
 <translation id="8643377320501056697">ከፍተኛ ጣቢያዎችን አሳይ</translation>
 <translation id="7275773481201277457">የ Brave ስታቲስቲክስ አሳይ</translation>
 <translation id="8297488609722895137">ፎቶ በ <ph name="PHOTO_BY"/></translation>
-<translation id="4761229094276239865">የ Brave ወሮታዎች ጀምር የሚለውን ጠቅ በማድረግ በ <ph name="TERMS_OF_SERVICE"/>ተስማምተዋል።</translation>
-<translation id="7136586167396205364">ስፖንሰር የተደረጉ ምስሎችን ደብቅ</translation>
 <translation id="2898634658146274982">የውጭ አገናኞችን በBrave ላይ ክፈት</translation>
 <translation id="5616508928556767259">ከሌሎች መተግበሪያዎች የሚመጡ አገናኞችን በBrave የገጽ እይታ ውስጥ ይከፍታል። ማስታወሻ፡ Brave እንደ ነባሪ አሳሽዎ መዘጋጀት አለብዎት።</translation>
 <translation id="2394961582378297792">ወጥቷል</translation>
@@ -436,15 +421,11 @@
 <translation id="7961015016161918242">በፍጹም</translation>
 <translation id="1275213816424141989">ምናልባት በኋላ</translation>
 <translation id="4406937629441301400">ይህን ምስል ለማየትና ወደ ፈጣሪዎች ለማስተላለፍ ማስመሰያዎች ያግኙ። <ph name="LEARN_MORE"/></translation>
-<translation id="1992363542751124282">ይህንን ምስል ስላዩ ማስመሰያዎች ያግኙ። ድርሻዎን ለመጠየቅ የ Brave ወሮታዎች መጠቀም ጀምር የሚለውን ጠቅ ያድርጉ።</translation>
 <translation id="6632345639591919543">ይህን ምስል በማየትዎ ቶክኖችን እያገኙ ነው።\n<ph name="LEARN_MORE"/></translation>
-<translation id="1465733111003593696">ይህን ምስል በማየትዎ ቶክንስ እያገኙ ነው።</translation>
-<translation id="7877201489035217175">ስፖንሰር ስለተደረጉ ምስሎች ተጨማሪ ይወቁ</translation>
 <translation id="8164992819127316581">የ <ph name="CURRENT_MONTH"/> ሽልማቶች ክፍያ በ <ph name="PAYOUT_DATE"/>መስራት ይጀምራል።</translation>
 <translation id="33967210973550414">የ <ph name="CURRENT_MONTH"/> ሽልማቶች ክፍያ በሂደት ላይ ነው። <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">የ <ph name="CURRENT_MONTH"/> ሽልማቶች ክፍያ ተጠናቅቋል።<ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">ሁኔታን ያረጋግጡ</translation>
-<translation id="828092975561478703">እርስዎ ለሚያዩት እያንዳንዱ ስፖንሰር የተደረገ ምስል፣ ከገቢው ላይ 70% በቶክንስ ያገኛሉ። በ Brave ማስታወቂያዎች አማካይነት፣ ምንጊዜም የሚያዩዋቸውን ማስታወቂያዎች መቆጣጠር ይችላሉ።</translation>
 <translation id="3624048886326677117">መከታተያዎችን አግድ &amp; ማስታወቂያዎች (ጠበኛ)</translation>
 <translation id="7151914815476509258">መከታተያዎችን አግድ &amp; ማስታወቂያዎች (መደበኛ)</translation>
 <translation id="7384778069178817075">ሁሉንም ተከታታዮች &amp; ማስታወቂያዎች ፍቀድ</translation>
@@ -484,7 +465,6 @@
 <translation id="5299848999918506028">እናመሰግናለን!</translation>
 <translation id="76550953340008122">ይህ ጽ የሆነ ችግር ያለበት መሆኑን የ Brave አዘጋጆች እንዲያውቁ በማድረግዎ እናመሰግናለን። ችግሩን ለመፍታት የተቻለንን ጥረት እናደርጋለን!</translation>
 <translation id="650318023204990401">የጎለበቱ ቁጥጥሮች</translation>
-<translation id="1275664486910646411">ምርጥ ጣቢያዎችን በራስ-አጠናቅቅ አሳይ</translation>
 <translation id="5370478469168390143">በመስመር ላይ ውሂብ ይቆጥቡ</translation>
 <translation id="1118508688433541158">በፍጥነት ያስሱ እና በ Brave ማስታወቂያዎችን ያግዱ</translation>
 <translation id="7427391215172269363">ሁሉ ግዜ ድርን በ Brave ተጠቅሜ በማምጣት ዳታ እቆጥባለሁ።</translation>
@@ -815,8 +795,6 @@
 <translation id="3074127054582480056">ያስተውሉ</translation>
 <translation id="2280319752798785157">ወርሐዊ መዋጮ</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
-<translation id="5802665280774361839">በአድራሻ አሞሌው ውስጥ ራስ-ሰር ማጠናቀቅን አሳይ</translation>
-<translation id="8982438328166986164">በእርስዎ ዕልባቶች እና የአሰሳ ታሪክ ላይ በመመስረት የድር ጣቢያ ጥቆማዎችን ያሳያል።</translation>
 <translation id="1241283133946520352">አውታረ መረቦች</translation>
 <translation id="1062463687579789365">የዋሌት ኔትዎርኮችን ማበጀት</translation>
 <translation id="2512821599885971349">አውታረ መረብ አክል</translation>

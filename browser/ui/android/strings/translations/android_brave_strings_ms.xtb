@@ -108,9 +108,10 @@
 <translation id="4692623383562244444">Enjin carian</translation>
 <translation id="1468415711258933398">Tab Standard</translation>
 <translation id="3377025655491224618">Tab Peribadi</translation>
+<translation id="7304425663107214334">Tunjukkan cadangan pelayar</translation>
+<translation id="8982438328166986164">Memaparkan cadangan tapak web berdasarkan penanda halaman dan sejarah penyemakan imbas anda.</translation>
+<translation id="1571106259128580884">Tunjukkan cadangan laman teratas</translation>
 <translation id="9148058034647219655">Keluar</translation>
-<translation id="4022987104439075738">Gerbang IPFS</translation>
-<translation id="2688519859165248360">Membolehkan navigasi ke sumber IPFS melalui Get Laluan IPFS</translation>
 <translation id="8047754398610073499">Notis persetujuan kuki sekatan</translation>
 <translation id="2621893359845808115">Sekat tetingkap timbul laman web yang meminta anda menerima / menolak kuki di laman mereka</translation>
 <translation id="7534079972563542000">Domain yang tidak dapat Dihentikan</translation>
@@ -142,9 +143,9 @@
 <translation id="2356070529366658676">Tanya</translation>
 <translation id="4176463684765177261">Dilumpuhkan</translation>
 <translation id="59174027418879706">Didayakan</translation>
-<translation id="6252490671914511928">Cerita popular hari ini dalam suapan peribadi sepenuhnya, hanya untuk anda.</translation>
+<translation id="6920492760024499150">Cerita popular hari ini dalam suapan peribadi, hanya untuk anda.</translation>
 <translation id="8300751939969131609">Hidupkan Berita Brave dan sentiasa ikuti kisah terkini</translation>
-<translation id="7266075701303521777">Berita Brave disokong iklan dengan iklan peribadi dan tanpa nama sepenuhnya yang dipadankan pada peranti anda.</translation>
+<translation id="7627131190984957214">Berita Brave disokong iklan dengan iklan peribadi dan tanpa nama yang dipadankan pada peranti anda.</translation>
 <translation id="7699565323725789472">Ikuti sumber kegemaran anda dalam suapan tunggal. Hanya buka tab dalam Brave, tatal ke bawah dan… lihatlah!\nBerita Brave disokong iklan dengan iklan peribadi dan tanpa nama.</translation>
 <translation id="1765217911817124376">Hidupkan Berita Brave</translation>
 <translation id="8981973962043893066">Cari laman, topik atau suapan RSS</translation>
@@ -233,7 +234,7 @@
 <translation id="7281027579943912834">Dengan Brave sebagai pelayar lalai, setiap pautan yang anda ketik mendapat perlindungan sekatan iklan Brave. Setiap halaman, video dan strim.</translation>
 <translation id="5148943178722443958">Bantu usaha menambah baik Brave.</translation>
 <translation id="6718362830686703942">Hantar laporan diagnostik jika anda mengalami ranap atau beku.</translation>
-<translation id="1929905278861178845">Kongsikan cerapan produk yang bersifat peribadi dan awanama sepenuhnya tentang jenis ciri yang digunakan oleh pengguna Brave.</translation>
+<translation id="8616157231067364693">Kongsikan cerapan produk yang bersifat peribadi dan tanpa nama tentang jenis ciri yang digunakan oleh pengguna Brave.</translation>
 <translation id="2877653791257935258">Taipkan nama tapak web atau URL</translation>
 <translation id="5329830149661250028">Lihat perbezaan Brave: Tanpa iklan. Tanpa penjejak. Pemuatan halaman lebih pantas.</translation>
 <translation id="3941792073703079607">Lihat perbezaan Brave: Sekat iklan. Simpan data. Strim lebih pantas.</translation>
@@ -276,7 +277,7 @@
 <translation id="1938402585819943124">Pilih Brave pada skrin berikutnya.</translation>
 <translation id="8926389886865778422">Jangan tanya lagi</translation>
 <translation id="745974920645827035">Carian bebas dengan privasi yang lebih terjamin</translation>
-<translation id="4717018805430015801">Carian Brave tidak menjejaki anda, pertanyaan anda atau klikan anda.</translation>
+<translation id="2773167297815493692">Carian Brave tidak mengumpulkan profil anda.</translation>
 <translation id="5240031343741051161">Cuba Carian Brave</translation>
 <translation id="5234764350956374838">Singkirkan</translation>
 <translation id="6639570430554986719">JANUARI</translation>
@@ -315,15 +316,13 @@
 <translation id="3132642509209154999">Kod ini telah tamat tempoh. Sila jana yang baharu pada peranti anda yang lain dan cuba lagi.</translation>
 <translation id="2859229680945501779">Kod ini tidak sah. Sila periksa bahawa masa dan zon masa ditetapkan dengan betul pada peranti anda.</translation>
 <translation id="3149880132460839085">Segerak Brave</translation>
-<translation id="3680755684186855422">Segerak Brave membolehkan anda menyegerakkan data penanda buku secara peribadi antara Pelayar Brave anda pada pelbagai peranti anda.</translation>
-<translation id="3735228155296883311">Cuma imbas kod daripada rantaian penyegerakan yang anda telah cipta di peranti lain. Atau mulakan rantaian penyegerakan baru.</translation>
+<translation id="348794064910142198">Penyegerakan Brave membolehkan anda menyegerakkan data penanda halaman secara peribadi antara Pelayar Brave anda pada berbilang peranti anda.\n\nHanya imbas kod daripada rantaian penyegerakan yang anda cipta pada peranti lain. Atau, mulakan rantaian penyegerakan baharu.</translation>
 <translation id="2614069607859982576">Menggunakan peranti diselaras sedia ada, buka Tetapan Brave dan pergi ke Tetapan &gt; Selaras. Pilih "Tambah Peranti Baru" dan imbas paparan Kod QR di skrin.</translation>
 <translation id="5241263629636958324">Disalin ke Papan Klip</translation>
 <translation id="5817918615728894473">Gandingkan</translation>
 <translation id="3429575397891106447">Pilihan Segerak</translation>
 <translation id="1680065323266179640">Padam akaun Segerak</translation>
-<translation id="3792563952903751704">Pemadaman akaun anda akan mengalih keluar data tersulit anda daripada pelayan Brave dan menyahdayakan Segerak pada semua peranti anda yang bersambung. Tindakan ini tidak akan memadamkan data yang disimpan secara setempat pada peranti tersebut.
-Pemadaman ini bersifat kekal dan tiada cara untuk memulihkan data tersebut. Sekiranya anda memutuskan untuk mula menggunakan Segerak sekali lagi, anda perlu mencipta akaun baharu dan menambah semula peranti satu persatu.</translation>
+<translation id="8397325856045820212">Tindakan memadamkan akaun anda akan mengalih keluar data anda yang disulitkan daripada pelayan Brave dan menyahdayakan Segerak pada semua peranti tersambung anda. Walau bagaimanapun, tindakan ini tidak memadamkan data yang disimpan secara setempat pada peranti tersebut.\n\nPemadaman ini bersifat kekal dan tiada cara untuk memulihkan data. Jika anda memutuskan untuk menggunakan semula Segerak, anda perlu mencipta akaun baharu dan menambahkan setiap peranti satu demi satu.</translation>
 <translation id="9064376100690171155">Padam akaun secara kekal</translation>
 <translation id="2740516568641790390">Akaun segerak telah berjaya dipadamkan</translation>
 <translation id="7006136453627651236">Gagal untuk memadamkan akaun segerak</translation>
@@ -333,12 +332,10 @@ Pemadaman ini bersifat kekal dan tiada cara untuk memulihkan data tersebut. Seki
 <translation id="1602067095281698985">Mulakan rantaian segerak baharu</translation>
 <translation id="1475223680121592371">Tambah Peranti Mudah Alih</translation>
 <translation id="2965377893636908578">Tambah Komputer</translation>
-<translation id="6604289897677913048">Menggunakan telefon atau tablet kedua, kemudi ke Tetapan Brave &gt; Segerak &gt; Imbas.</translation>
-<translation id="8508856434435157945">Di peranti mudah alih anda, pergi ke Penyegerakan Brave melalui panel Tetapan dan klik butang "Imbas Kod Penyegerakan". Gunakan kamera anda untuk mengimbas Kod QR di bawah.</translation>
-<translation id="2590683710114839102">Di komputer anda, pergi ke Tetapan &gt; Penyegerakan Brave. Pilih "Masukkan Kod Rantaian Penyegerakan".</translation>
+<translation id="4701589725270449523">Menggunakan telefon atau tablet lain, navigasi ke Tetapan Brave &gt; Segerak &gt; Imbas.\n\nPada peranti mudah alih anda, navigasi ke Penyegerakan Brave dalam panel Tetapan dan klik butang  "Imbas Kod Penyegerakan". Gunakan kamera anda untuk mengimbas Kod QR di bawah.</translation>
+<translation id="67114562351518315">Pada komputer anda, navigasi ke Tetapan Brave &gt; Segerak. Pilih "Masukkan Kod Rantaian Penyegerakan".\n\nPada komputer sasaran anda, navigasi  ke Penyegerakan Brave melalui tetapan dan klik butang "Saya mempunyai Kod Penyegerakan".\nMasukkan perkataan kod rantaian penyegerakan yang ditunjukkan di bawah.</translation>
 <translation id="65315202420929965">Imbas kod penyegerakan ini</translation>
 <translation id="6764016175302339802">Simpan kod ini seperti kata laluan. Jika orang lain mengetahuinya, mereka boleh membaca dan mengubah suai data segerak anda.</translation>
-<translation id="6707003343517029414">Di komputer sasaran anda, pergi ke Penyegerakan Brave melalui tetapan dan klik butang "Saya mempunyai Kod Penyegerakan".\nMasukkan perkataan kod rantaian penyegerakan yang ditunjukkan di bawah.</translation>
 <translation id="2731921493694251495">Masukkan kod rantaian penyegerakan</translation>
 <translation id="2175927920773552910">Kod QR</translation>
 <translation id="8653433343015102968">Perkataan Kod</translation>
@@ -352,6 +349,9 @@ Pemadaman ini bersifat kekal dan tiada cara untuk memulihkan data tersebut. Seki
 <translation id="8131740175452115882">Sahkan</translation>
 <translation id="4973653569293835178">Saya akan gunakan kamera saya...</translation>
 <translation id="326454632686131209">Segerakkan peranti</translation>
+<translation id="3122158728238634723">Jana Kod Baharu</translation>
+<translation id="4358805443781965194">Kod telah tamat tempoh. Jana kod baharu dengan mengklik butang di bawah.</translation>
+<translation id="318164877797885563">Kod sementara ini sah selama <ph name="TIME_AMOUNT"/> seterusnya</translation>
 <translation id="327726072512457161">Keluar Tetapan</translation>
 <translation id="8050847734948770789">Aktifkan Brave Rewards</translation>
 <translation id="9187185473011056079">Saya ingin turut serta!</translation>
@@ -416,8 +416,6 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="8643377320501056697">Tunjukkan Tapak Teratas</translation>
 <translation id="7275773481201277457">Tunjukkan Statistik Brave</translation>
 <translation id="8297488609722895137">Gambar oleh <ph name="PHOTO_BY"/></translation>
-<translation id="4761229094276239865">Dengan mengetik Mula Menggunakan Ganjaran Brave, anda bersetuju dengan <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="7136586167396205364">Sembunyikan Imej Yang Ditaja</translation>
 <translation id="2898634658146274982">Buka pautan luaran dalam Brave</translation>
 <translation id="5616508928556767259">Buka pautan daripada apl lain dalam paparan web Brave. Nota: Brave mesti ditetapkan sebagai penyemak imbas lalai anda.</translation>
 <translation id="2394961582378297792">Dilog keluar</translation>
@@ -438,15 +436,11 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="7961015016161918242">Tidak sama sekali</translation>
 <translation id="1275213816424141989">Mungkin Kemudian</translation>
 <translation id="4406937629441301400">Dapatkan token kerana melihat imej ini dan bayarkannya kepada pencipta. <ph name="LEARN_MORE"/></translation>
-<translation id="1992363542751124282">Dapatkan token untuk melihat imej ini. Ketik Mula untuk menggunakan Ganjaran Brave untuk menuntut bahagian anda.</translation>
 <translation id="6632345639591919543">Anda memperoleh token kerana melihat imej ini.\n<ph name="LEARN_MORE"/></translation>
-<translation id="1465733111003593696">Anda memperoleh token untuk melihat imej ini.</translation>
-<translation id="7877201489035217175">Ketahui selanjutnya tentang imej-imej ditaja</translation>
 <translation id="8164992819127316581">Bayaran untuk ganjaran <ph name="CURRENT_MONTH"/> akan mula diproses selewat-lewatnya <ph name="PAYOUT_DATE"/>.</translation>
 <translation id="33967210973550414">Bayaran untuk ganjaran <ph name="CURRENT_MONTH"/> sedang diproses. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">Bayaran untuk ganjaran <ph name="CURRENT_MONTH"/> sudah selesai. <ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">Periksa status</translation>
-<translation id="828092975561478703">Untuk setiap imej ditaja yang anda lihat, anda menerima 70% daripada hasilnya dalam bentuk token. Dengan Iklan Brave, anda sentiasa berada dalam kawalan atas iklan-iklan yang anda lihat.</translation>
 <translation id="3624048886326677117">Sekat penjejak &amp; iklan (Agresif)</translation>
 <translation id="7151914815476509258">Sekat penjejak &amp; iklan (Standard)</translation>
 <translation id="7384778069178817075">Benarkan semua penjejak &amp; iklan</translation>
@@ -486,7 +480,6 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="5299848999918506028">Terima kasih!</translation>
 <translation id="76550953340008122">Terima kasih kerana memberitahu pembangun Brave bahawa terdapat sesuatu yang tidak kena dengan laman ini. Kami akan melakukan yang terbaik untuk memperbaikinya!</translation>
 <translation id="650318023204990401">Kawalan lanjutan</translation>
-<translation id="1275664486910646411">Paparkan laman teratas dalam autolengkap</translation>
 <translation id="5370478469168390143">Simpan Data Dalam Talian</translation>
 <translation id="1118508688433541158">Layar dengan lebih pantas dan sekat iklan dengan Brave</translation>
 <translation id="7427391215172269363">Setiap hari saya menjimatkan data dengan melayari Web dengan Brave.</translation>
@@ -827,8 +820,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="3074127054582480056">Perhatian</translation>
 <translation id="2280319752798785157">Sumbangan Bulanan</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
-<translation id="5802665280774361839">Tunjukkan autolengkap dalam bar alamat</translation>
-<translation id="8982438328166986164">Memaparkan cadangan tapak web berdasarkan penanda halaman dan sejarah penyemakan imbas anda.</translation>
 <translation id="1241283133946520352">Rangkaian</translation>
 <translation id="1062463687579789365">Penyesuaian rangkaian dompet</translation>
 <translation id="2512821599885971349">Tambahkan rangkaian</translation>
@@ -947,6 +938,13 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="7134370164002095282"><ph name="CURRENT"/> daripada <ph name="SIZE"/></translation>
 <translation id="756701799684433105">Luluskan transaksi</translation>
 <translation id="6450792191436242818">Atur Cara Sistem</translation>
+<translation id="5318067544026930166">Buka kunci Dompet Brave dengan pengesahan biometrik</translation>
+<translation id="2629767022373384291">Adakah anda ingin menggunakan pengesahan biometrik untuk membuka kunci Dompet Brave anda?</translation>
+<translation id="4782919977106118997">Gunakan Buka Kunci Cap Jari</translation>
+<translation id="2054995875643283428">Langkau buat sekarang</translation>
+<translation id="2522605225061484799">Sila ke portfolio saya</translation>
+<translation id="1148624853678088576">Anda sudah bersedia!</translation>
+<translation id="4131445988101719379">Dompet Brave anda sedia digunakan.</translation>
 <translation id="6252742184395380448">Konfigurasikan Atur Cara</translation>
 <translation id="5358970666412490132">Atur Cara Kepentingan</translation>
 <translation id="346636227344244984">Atur Cara Undi</translation>

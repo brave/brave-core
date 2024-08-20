@@ -108,9 +108,10 @@
 <translation id="4692623383562244444">Busca motors</translation>
 <translation id="1468415711258933398">Pestanya estàndard</translation>
 <translation id="3377025655491224618">Pestanya d'incògnit</translation>
+<translation id="7304425663107214334">Mostra els suggeriments del navegador</translation>
+<translation id="8982438328166986164">Mostra suggerències de llocs web basades en els teus marcadors i historial de navegació.</translation>
+<translation id="1571106259128580884">Mostra els suggeriments dels llocs principals</translation>
 <translation id="9148058034647219655">Surt</translation>
-<translation id="4022987104439075738">Porta d'enllaç IPFS</translation>
-<translation id="2688519859165248360">Permet la navegació a recursos d'IPFS mitjançant una passarel·la d'IPFS</translation>
 <translation id="8047754398610073499">Bloqueja els avisos de consentiment de les galetes</translation>
 <translation id="2621893359845808115">Bloca les finestres emergents del lloc web que et demanen que acceptis / rebutgis les galetes del seu lloc</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
@@ -142,9 +143,9 @@
 <translation id="2356070529366658676">Pregunta-ho</translation>
 <translation id="4176463684765177261">Desactivat</translation>
 <translation id="59174027418879706">Activat</translation>
-<translation id="6252490671914511928">Les històries més destacades d'avui a un feed completament privat, només per a tu.</translation>
+<translation id="6920492760024499150">Les històries més destacades d'avui a un feed privat, només per a tu.</translation>
 <translation id="8300751939969131609">Activa Notícies de Brave, i no et perdis mai una història</translation>
-<translation id="7266075701303521777">Les notícies de Brave estan patrocinades amb anuncis completament privats i anònims que coincideixin amb el dispositiu.</translation>
+<translation id="7627131190984957214">Les Notícies de Brave estan patrocinades amb anuncis privats i anònims que coincidexin amb el dispositiu.</translation>
 <translation id="7699565323725789472">Segueix les teves fonts preferides, en un únic canal. Obre una pestanya a Brave, desplaça't cap avall i… voilà!\nNotícies de Brave és un servei finançat a través de publicitat amb anuncis privats i anonimitzats.</translation>
 <translation id="1765217911817124376">Activa Notícies de Brave</translation>
 <translation id="8981973962043893066">Cerca per lloc, tema o canal RSS</translation>
@@ -233,7 +234,7 @@
 <translation id="7281027579943912834">Amb Brave per defecte, cada enllaç que toquis té la protecció de bloqueig d'anuncis de Brave. Cada pàgina, vídeo i flux.</translation>
 <translation id="5148943178722443958">Ajuda a millorar Brave.</translation>
 <translation id="6718362830686703942">Envia informes de diagnòstic si es produeix un bloqueig o una congelació.</translation>
-<translation id="1929905278861178845">Comparteix informació de productes de manera totalment anònima i privada sobre quines funcions estan fent servir els usuaris de Brave.</translation>
+<translation id="8616157231067364693">Compartiu la informació privada i anònima de productes sobre quines funcions fan servir els usuaris de Brave.</translation>
 <translation id="2877653791257935258">Introdueix el nom o l'URL d'un lloc web</translation>
 <translation id="5329830149661250028">Nota la diferència de Brave: sense anuncis, sense rastrejadors, amb una càrrega de pàgina molt més ràpida.</translation>
 <translation id="3941792073703079607">Vegis la diferència Brave: bloqueja els anuncis. Guarda les dades. Transmet més ràpid.</translation>
@@ -276,7 +277,7 @@
 <translation id="1938402585819943124">Selecciona Brave a la pantalla següent.</translation>
 <translation id="8926389886865778422">No m'ho tornis a preguntar</translation>
 <translation id="745974920645827035">Cerca independent amb millor privacitat</translation>
-<translation id="4717018805430015801">El cercador de Brave no fa un seguiment de tu, de les teves consultes ni dels teus clics.</translation>
+<translation id="2773167297815493692">El cercador de Brave no crea un perfil vostre.</translation>
 <translation id="5240031343741051161">Prova el cercador de Brave</translation>
 <translation id="5234764350956374838">Omet</translation>
 <translation id="6639570430554986719">GENER</translation>
@@ -315,15 +316,13 @@
 <translation id="3132642509209154999">Aquest codi ha caducat. Genera'n un de nou a l'altre dispositiu i torna-ho a provar.</translation>
 <translation id="2859229680945501779">Aquest codi no és vàlid. Comprova que l'hora i la zona horària s'han establert correctament al teu dispositiu.</translation>
 <translation id="3149880132460839085">Sincronització de Brave</translation>
-<translation id="3680755684186855422">La sincronització de Brave et permet sincronitzar les dades de les adreces d'interès de manera privada entre els navegadors Brave dels teus dispositius.</translation>
-<translation id="3735228155296883311">Només has de cercar el codi des de la cadena de sincronització que has creat en un altre dispositiu. O inicia una nova cadena de sincronització.</translation>
+<translation id="348794064910142198">La sincronització de Brave us permet sincronitzar les dades de les adreces d'interès de manera privada entre els navegadors Brave dels teus dispositius.\n\nNomés heu de cercar el codi des de la cadena de sincronització que heu creat en un altre dispositiu. O inicieu una nova cadena de sincronització.</translation>
 <translation id="2614069607859982576">Utilitzant un dispositiu ja sincronitzat, obre la Configuració de Brave i ves a Configuració &gt; Sincronització. Selecciona 'Afegeix Nou Dispositiu' i escaneja el codi QR en pantalla.</translation>
 <translation id="5241263629636958324">Copiat al portapapers</translation>
 <translation id="5817918615728894473">Vincula</translation>
 <translation id="3429575397891106447">Opcions de sincronització</translation>
 <translation id="1680065323266179640">Suprimeix el compte de sincronització</translation>
-<translation id="3792563952903751704">Si suprimeixes el teu compte, se suprimiran les teves dades xifrades dels servidors Brave i es desactivarà la sincronització en tots els dispositius connectats. No obstant això, no eliminarà les dades que s'emmagatzemen localment en aquests dispositius.
-Aquesta supressió és permanent i no hi ha manera de recuperar les dades. Si decideixes començar a utilitzar la sincronització de nou, hauràs de crear un compte nou i tornar a afegir cada dispositiu un per un.</translation>
+<translation id="8397325856045820212">Si suprimiu el compte, se suprimiran les vostres dades xifrades dels servidors Brave i es desactivarà la sincronització en tots els dispositius connectats. No obstant això, no s'eliminaran les dades que s'emmagatzemen localment en aquests dispositius.\n\nAquesta supressió és permanent i no hi ha manera de recuperar les dades. Si decidiu començar a utilitzar de nou la sincronització, haureu de crear un compte nou i tornar a afegir cada dispositiu un per un.</translation>
 <translation id="9064376100690171155">Suprimeix el compte permanentment</translation>
 <translation id="2740516568641790390">El compte de sincronització s'ha suprimit correctament</translation>
 <translation id="7006136453627651236">No s'ha pogut suprimir el compte de sincronització</translation>
@@ -333,12 +332,10 @@ Aquesta supressió és permanent i no hi ha manera de recuperar les dades. Si de
 <translation id="1602067095281698985">Inicia una cadena de sincronització nova</translation>
 <translation id="1475223680121592371">Afegeix un dispositiu mòbil</translation>
 <translation id="2965377893636908578">Afegeix un ordinador</translation>
-<translation id="6604289897677913048">Utilitzant un segon telèfon o tauleta, vés a la configuració de Brave Cercar &gt; Sincronització&gt;.</translation>
-<translation id="8508856434435157945">Ves a la configuració del teu dispositiu mòbil i entra a Sincronització Brave i fes clic al botó Cerca el codi de sincronització. Utilitza la càmera per cercar el codi QR següent.</translation>
-<translation id="2590683710114839102">A l'ordinador, navega a la configuració de Brave &gt; Sincronització. Selecciona "Introduir un codi de cadena de sincronització".</translation>
+<translation id="4701589725270449523">Utilitzant un segon telèfon o tauleta, navegueu a la configuració de Brave &gt; Sincronitza &gt; Escaneja.\n\nAneu a la configuració del vostre dispositiu mòbil i entreu a Sincronització de Brave i feu clic al botó "Escaneja el codi de sincronització". Feu servir la càmera per escanejar el codi QR següent.</translation>
+<translation id="67114562351518315">A l'ordinador, navegueu a la configuració de Brave &gt; Sincronització. Seleccioneu "Introdueix un codi de cadena de sincronització".\n\nAneu a la configuració del vostre ordinador de destinació, entreu a sincronització de Brave i feu clic al botó "Tinc un codi de sincronització".\nIntroduïu les paraules del codi de cadena de sincronització que es mostren a sota.</translation>
 <translation id="65315202420929965">Cerca aquest codi de sincronització</translation>
 <translation id="6764016175302339802">Tracta aquest codi com una contrasenya. Si algú l'obté, podrà llegir i modificar les teves dades sincronitzades.</translation>
-<translation id="6707003343517029414">Ves a la configuració del teu ordinador de destinació, entra a sincronització de Brave i clica al botó Tinc un codi de sincronització.\nIntrodueix les paraules del codi de cadena de sincronització que es mostren a sota.</translation>
 <translation id="2731921493694251495">Introdueix el codi de cadena de sincronització</translation>
 <translation id="2175927920773552910">Codi QR</translation>
 <translation id="8653433343015102968">Paraules del codi</translation>
@@ -352,6 +349,9 @@ Aquesta supressió és permanent i no hi ha manera de recuperar les dades. Si de
 <translation id="8131740175452115882">Confirma</translation>
 <translation id="4973653569293835178">Utilitzaré la meva càmera...</translation>
 <translation id="326454632686131209">Sincronitza el dispositiu</translation>
+<translation id="3122158728238634723">Genera un codi nou</translation>
+<translation id="4358805443781965194">El codi ha caducat. Genera'n un de nou clicant al botó següent.</translation>
+<translation id="318164877797885563">Aquest codi temporal és vàlid durant <ph name="TIME_AMOUNT"/></translation>
 <translation id="327726072512457161">Surt de la configuració</translation>
 <translation id="8050847734948770789">Activa Recompenses de Brave</translation>
 <translation id="9187185473011056079">Ho accepto</translation>
@@ -416,8 +416,6 @@ Segur que vols continuar?</translation>
 <translation id="8643377320501056697">Mostra llocs destacats</translation>
 <translation id="7275773481201277457">Mostra estadístiques de Brave</translation>
 <translation id="8297488609722895137">Foto de <ph name="PHOTO_BY"/></translation>
-<translation id="4761229094276239865">Si toqueu Començar a utilitzar Recompenses Brave, esteu acceptant els <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="7136586167396205364">Amaga imatges patrocinades</translation>
 <translation id="2898634658146274982">Obre els enllaços externs a Brave</translation>
 <translation id="5616508928556767259">Obre enllaços des d'altres aplicacions en una vista web de Brave. Nota: Cal establir Brave com a navegador predeterminat.</translation>
 <translation id="2394961582378297792">Sessió tancada</translation>
@@ -438,15 +436,11 @@ Segur que vols continuar?</translation>
 <translation id="7961015016161918242">Mai</translation>
 <translation id="1275213816424141989">Potser més tard</translation>
 <translation id="4406937629441301400">Guanya tokens per mirar aquesta imatge i paga'ls als creadors. <ph name="LEARN_MORE"/></translation>
-<translation id="1992363542751124282">Guanya tokens per mirar aquesta imatge. Clica Començar a utilitzar Recompenses de Brave per a reclamar la teva part.</translation>
 <translation id="6632345639591919543">Estàs guanyant tokens per a veure aquesta imatge.\n<ph name="LEARN_MORE"/></translation>
-<translation id="1465733111003593696">Per veure aquesta imatge guanya tokens.</translation>
-<translation id="7877201489035217175">Obté més informació sobre les imatges patrocinades.</translation>
 <translation id="8164992819127316581">El pagament de les recompenses de <ph name="CURRENT_MONTH"/> començarà a processar-se el <ph name="PAYOUT_DATE"/>.</translation>
 <translation id="33967210973550414">El pagament de les recompenses de <ph name="CURRENT_MONTH"/> s'està processant.<ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">S'ha completat el pagament de les recompenses de <ph name="CURRENT_MONTH"/>. <ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">Comprova l'estatus</translation>
-<translation id="828092975561478703">Per a cada imatge patrocinada que vegis, rebràs el 70% dels ingressos en tokens. Amb els Anuncis de Brave, sempre controlaràs els anuncis que vegis.</translation>
 <translation id="3624048886326677117">Bloqueja els rastrejadors i els anuncis (Agressiu)</translation>
 <translation id="7151914815476509258">Bloqueja els rastrejadors i els anuncis (Estàndard)</translation>
 <translation id="7384778069178817075">Permet tots els rastrejadors i anuncis</translation>
@@ -486,7 +480,6 @@ Segur que vols continuar?</translation>
 <translation id="5299848999918506028">Gràcies!</translation>
 <translation id="76550953340008122">Gràcies per fer saber als desenvolupadors de Brave que hi ha un problema amb aquesta web. Farem tot el que puguem per arreglar-lo!</translation>
 <translation id="650318023204990401">Controls avançats</translation>
-<translation id="1275664486910646411">Ensenya els llocs principals a la compleció automàtica</translation>
 <translation id="5370478469168390143">Guarda les dades en línia</translation>
 <translation id="1118508688433541158">Navega més ràpid i bloqueja anuncis amb Brave</translation>
 <translation id="7427391215172269363">Cada dia estalvio dades navegant la web amb Brave.</translation>
@@ -827,8 +820,6 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="3074127054582480056">Atenció</translation>
 <translation id="2280319752798785157">Contribució mensual</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
-<translation id="5802665280774361839">Mostra Autocompletar a la barra d'adreces</translation>
-<translation id="8982438328166986164">Mostra suggerències de llocs web basades en els teus marcadors i historial de navegació.</translation>
 <translation id="1241283133946520352">Xarxes</translation>
 <translation id="1062463687579789365">Personalització de les xarxes de la cartera</translation>
 <translation id="2512821599885971349">Afegeix una xarxa</translation>
@@ -947,6 +938,13 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="7134370164002095282"><ph name="CURRENT"/> de <ph name="SIZE"/></translation>
 <translation id="756701799684433105">Aprova la transacció</translation>
 <translation id="6450792191436242818">Programa del sistema</translation>
+<translation id="5318067544026930166">Desbloqueja la cartera de Brave amb autenticació biomètrica</translation>
+<translation id="2629767022373384291">Us agradaria fer servir l'autenticació biomètrica per desbloquejar la cartera de Brave?</translation>
+<translation id="4782919977106118997">Utilitza Desbloqueig amb l'empremta</translation>
+<translation id="2054995875643283428">Omet això de moment</translation>
+<translation id="2522605225061484799">Vaig a la meva cartera</translation>
+<translation id="1148624853678088576">Ja esteu llest!</translation>
+<translation id="4131445988101719379">La cartera de Brave ja es pot utilitzar</translation>
 <translation id="6252742184395380448">Programa de configuració</translation>
 <translation id="5358970666412490132">Programa d'inversions</translation>
 <translation id="346636227344244984">Programa de vots</translation>

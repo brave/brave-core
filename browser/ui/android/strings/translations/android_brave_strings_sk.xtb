@@ -108,9 +108,10 @@
 <translation id="4692623383562244444">Vyhľadávače</translation>
 <translation id="1468415711258933398">Štandardná karta</translation>
 <translation id="3377025655491224618">Karta Inkognito</translation>
+<translation id="7304425663107214334">Zobraziť návrh prehliadača</translation>
+<translation id="8982438328166986164">Zobrazuje návrhy webových stránok na základe vašich záložiek a histórie prehliadania.</translation>
+<translation id="1571106259128580884">Zobraziť najlepšie návrhy stránok</translation>
 <translation id="9148058034647219655">Ukončiť</translation>
-<translation id="4022987104439075738">Brána IPFS</translation>
-<translation id="2688519859165248360">Umožňuje prechod k zdrojom IPFS cez bránu IPFS</translation>
 <translation id="8047754398610073499">Blokovať upozornenia na súhlas so súbormi cookie</translation>
 <translation id="2621893359845808115">Blokuje vyskakovacie okná webových stránok, ktoré vás žiadajú o prijatie/odmietnutie súborov cookie na ich stránke</translation>
 <translation id="7534079972563542000">Nezastaviteľné domény</translation>
@@ -142,9 +143,9 @@
 <translation id="2356070529366658676">Opýtať sa</translation>
 <translation id="4176463684765177261">Deaktivované</translation>
 <translation id="59174027418879706">Aktivovaný</translation>
-<translation id="6252490671914511928">Najlepšie príbehy dneška v úplne súkromnom informačnom kanáli, a to len pre vás.</translation>
+<translation id="6920492760024499150">Výber dnešných najlepších príbehov v súkromnom informačnom kanáli – iba pre vás.</translation>
 <translation id="8300751939969131609">Zapnite si Brave News, aby vám nikdy nič neuniklo</translation>
-<translation id="7266075701303521777">Novinky Brave sú podporované reklamami s úplne súkromnýmí a anonymizovanými reklamami zhodnými na vašom zariadení.</translation>
+<translation id="7627131190984957214">Novinky Brave sú podporované súkromnými a anonymizovanými reklamami zhodných s vaším zariadením.</translation>
 <translation id="7699565323725789472">Sledujte svoje obľúbené zdroje v jednom kanáli. Stačí otvoriť kartu v prehliadači Brave, posunúť zobrazenie nadol a… hotovo!\nSlužba Brave News je podporovaná pomocou súkromných anonymných reklám.</translation>
 <translation id="1765217911817124376">Zapnúť novinky Brave</translation>
 <translation id="8981973962043893066">Vyhľadávanie stránok, tém alebo kanálov RSS</translation>
@@ -233,7 +234,7 @@
 <translation id="7281027579943912834">Keď je Brave predvolený, každý odkaz, na ktorý klepnete, získa ochranu proti blokovaniu reklám Brave. Každá stránka, video a stream.</translation>
 <translation id="5148943178722443958">Pomôžte zlepšiť prehliadač Brave.</translation>
 <translation id="6718362830686703942">Odošlite diagnostické správy, ak dôjde k zlyhaniu alebo zamrznutiu.</translation>
-<translation id="1929905278861178845">Zdieľajte absolútne súkromné a anonymné informácie o produktoch, ktoré používatelia Brave používajú.</translation>
+<translation id="8616157231067364693">Zdieľajte súkromné a anonymné informácie o produktoch, ktoré používatelia Brave používajú.</translation>
 <translation id="2877653791257935258">Zadajte názov webovej lokality alebo adresu URL</translation>
 <translation id="5329830149661250028">Všimnite si rozdiel pri používaní prehliadača Brave: Žiadne reklamy. Žiadne sledovacie nástroje. Oveľa rýchlejšie načítanie stránok.</translation>
 <translation id="3941792073703079607">Pozrite si rozdiel Brave: Blokovanie reklám. Uloženie dát. Rýchlejšie streamovanie.</translation>
@@ -276,7 +277,7 @@
 <translation id="1938402585819943124">Zvoľte prehliadač Brave na ďalšej obrazovke.</translation>
 <translation id="8926389886865778422">Túto otázku už nezobrazovať</translation>
 <translation id="745974920645827035">Nezávislé vyhľadávanie s lepším súkromím</translation>
-<translation id="4717018805430015801">Vyhľadávanie Brave nesleduje vás, vaše dopyty ani kliknutia.</translation>
+<translation id="2773167297815493692">Vyhľadávanie Brave vás neprofiluje.</translation>
 <translation id="5240031343741051161">Vyskúšajte nástroj Brave Search</translation>
 <translation id="5234764350956374838">Zatvoriť</translation>
 <translation id="6639570430554986719">JANUÁR</translation>
@@ -315,15 +316,13 @@
 <translation id="3132642509209154999">Platnosť kódu vypršala. Vygenerujte na svojom zariadení nový kód a skúste to znova.</translation>
 <translation id="2859229680945501779">Tento kód je neplatný. Skontrolujte, či je vo vašom zariadení správne nastavený čas a časové pásmo.</translation>
 <translation id="3149880132460839085">Synchronizácia Brave</translation>
-<translation id="3680755684186855422">Synchronizácia Brave vám umožňuje súkromne synchronizovať údaje medzi prehliadačmi Brave na rôznych zariadeniach.</translation>
-<translation id="3735228155296883311">Jednoducho naskenujte kód zo synchronizačného reťazca, ktorý ste vytvorili na inom zariadení alebo spustite nový synchronizačný reťazec.</translation>
+<translation id="348794064910142198">Synchronizácia Brave vám umožňuje súkromne synchronizovať údaje o záložkách medzi vašimi prehliadačmi Brave v rôznych zariadeniach.\n\nJednoducho naskenujte kód zo synchronizačného reťazca, ktorý ste vytvorili v inom zariadení alebo spustite nový synchronizačný reťazec.</translation>
 <translation id="2614069607859982576">Pomocou existujúceho zosynchronizovaného zariadenia otvorte nastavenia Brave a choďte do nastavení &gt; Sync. Vyberte "Pridať nové zariadenie" a naskenujte QR kód, ktorý sa vám zobrazí na obrazovke.</translation>
 <translation id="5241263629636958324">Zkopírováno do schránky</translation>
 <translation id="5817918615728894473">Párovať</translation>
 <translation id="3429575397891106447">Možnosti synchronizácie</translation>
 <translation id="1680065323266179640">Zmazať Synchronizačný účet</translation>
-<translation id="3792563952903751704">Vymazanie účtu vymaže vaše šifrované údaje z Brave serverov a znemožní Synchronizáciu na všetkých vašich pripojených zariadeniach. Nezmaže však údaje uložené na týchto zariadeniach lokálne.
-  Vymazanie je trvalé a údaje sa nedajú obnoviť. Ak sa rozhodnete znova používať Synchronizáciu, budete musieť vytvoriť nový účet a znova pridať po jednom všetky zariadenia.</translation>
+<translation id="8397325856045820212">Vymazanie účtu vymaže vaše šifrované údaje zo serverov Brave a deaktivuje synchronizáciu na všetkých vašich pripojených zariadeniach. Nezmaže však údaje uložené na týchto zariadeniach lokálne.\n\nVymazanie je trvalé a údaje sa nedajú obnoviť. Ak sa rozhodnete znova spustiť synchronizáciu, budete musieť vytvoriť nový účet a znova pridať postupne všetky zariadenia.</translation>
 <translation id="9064376100690171155">Natrvalo zmazať účet</translation>
 <translation id="2740516568641790390">Synchronizovaný účet bol úspešne odstránený</translation>
 <translation id="7006136453627651236">Nepodarilo sa odstrániť synchronizovaný účet</translation>
@@ -333,12 +332,10 @@
 <translation id="1602067095281698985">Spustiť nový synchronizačný reťazec</translation>
 <translation id="1475223680121592371">Pridať mobilné zariadenie</translation>
 <translation id="2965377893636908578">Pridať počítač</translation>
-<translation id="6604289897677913048">Pomocou druhého telefónu alebo tabletu prejdite do Nastavení Brave &gt; Sync &gt; Scan.</translation>
-<translation id="8508856434435157945">Na vašom mobilnom zariadení prejdite v paneli Nastavenia na položku Synchronizácia Brave a kliknite na tlačidlo „Naskenovať synchronizačný kód“. Pomocou fotoaparátu naskenujte QR kód uvedený nižšie.</translation>
-<translation id="2590683710114839102">V počítači prejdite na položku Nastavenia Brave &gt; Sync. Vyberte možnosť "Zadať kód synchronizačného reťazca."</translation>
+<translation id="4701589725270449523">Pomocou druhého telefónu alebo tabletu prejdite do časti Nastavenia Brave &gt; Synchronizácia &gt; Skenovať.\n\nNa vašom mobilnom zariadení prejdite do časti Synchronizácia Brave v paneli Nastavenia a kliknite na tlačidlo „Skenovať synchronizačný kód“. Na naskenovanie QR kódu použite fotoaparát.</translation>
+<translation id="67114562351518315">Na počítači prejdite do časti Nastavenia Brave &gt; Synchronizácia. Vyberte „Zadať kód sychronizačného reťazca“.\n\nNa svojom cieľovom počítači prejdiste do časti Synchronizácia Branve v nastaveniach a kliknite na tlačidlo „Mám synchronizačný kód“.\nZadajte slová kódu synchronizačného reťazca, ako je znázornené nižšie.</translation>
 <translation id="65315202420929965">Naskenujte tento synchronizačný kód</translation>
 <translation id="6764016175302339802">Zaobchádzajte s týmto kódom ako s heslom. Ak ho niekto získa, môže si prečítať a upraviť vaše synchronizované údaje.</translation>
-<translation id="6707003343517029414">Na cieľovom počítači prejdite v nastaveniach na možnosť Synchronizácia Brave a kliknite na tlačidlo „Mám synchronizačný kód“.\nZadajte nižšie uvedený kód synchronizačného reťazca.</translation>
 <translation id="2731921493694251495">Zadajte kód synchronizačného reťazca</translation>
 <translation id="2175927920773552910">QR kód</translation>
 <translation id="8653433343015102968">Kódy</translation>
@@ -352,6 +349,9 @@
 <translation id="8131740175452115882">Potvrdit</translation>
 <translation id="4973653569293835178">Použijem svoj fotoaparát ...</translation>
 <translation id="326454632686131209">Synchronizovať zariadenie</translation>
+<translation id="3122158728238634723">Vygenerovať nový kód</translation>
+<translation id="4358805443781965194">Kód vypršal. Vytvorte si nový kliknutím na tlačidlo nižšie.</translation>
+<translation id="318164877797885563">Dočasný kód je platný <ph name="TIME_AMOUNT"/></translation>
 <translation id="327726072512457161">Ukončiť nastavenia</translation>
 <translation id="8050847734948770789">Povoliť odmeny Brave</translation>
 <translation id="9187185473011056079">Chcem sa zapojiť!</translation>
@@ -416,8 +416,6 @@ Naozaj chcete pokračovať?</translation>
 <translation id="8643377320501056697">Zobraziť top stránky</translation>
 <translation id="7275773481201277457">Zobraziť štatistiky Brave</translation>
 <translation id="8297488609722895137">Fotografia od <ph name="PHOTO_BY"/></translation>
-<translation id="4761229094276239865">Klepnutím na Začať používať Odmeny Brave vyjadrujete súhlas s <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="7136586167396205364">Skryť sponzorované obrázky</translation>
 <translation id="2898634658146274982">Otvoriť externé prepojenia v prehliadači Brave</translation>
 <translation id="5616508928556767259">Otvorí prepojenia z iných aplikácií vo webovom zobrazení prehliadača Brave. Poznámka: prehliadač Brave musí byť nastavený ako predvolený prehliadač.</translation>
 <translation id="2394961582378297792">Odhlásené</translation>
@@ -438,15 +436,11 @@ Naozaj chcete pokračovať?</translation>
 <translation id="7961015016161918242">Nikdy</translation>
 <translation id="1275213816424141989">Možno neskôr</translation>
 <translation id="4406937629441301400">Získanie tokenov za prezeranie tohto obrázka a ich vyplatenie tvorcom.  <ph name="LEARN_MORE"/></translation>
-<translation id="1992363542751124282">Zarobte žetóny za prezeranie tohto obrázka. Klepnutím na Začať používať Odmeny Brave získajte svoj podiel.</translation>
 <translation id="6632345639591919543">Získavate tokeny za prezeranie tohto obrázka.\n<ph name="LEARN_MORE"/></translation>
-<translation id="1465733111003593696">Zarábate tokeny za prezeranie tohto obrázka.</translation>
-<translation id="7877201489035217175">Viac informácií o sponzorovaných obrázkoch</translation>
 <translation id="8164992819127316581">Výplata odmien <ph name="CURRENT_MONTH"/> sa začne spracovávať do <ph name="PAYOUT_DATE"/>.</translation>
 <translation id="33967210973550414">Výplata odmien <ph name="CURRENT_MONTH"/> práve prebieha. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">Výplata odmien <ph name="CURRENT_MONTH"/> bola ukončená. <ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">Skontrolovať stav</translation>
-<translation id="828092975561478703">Za každý sponzorovaný obrázok, ktorý ste si pozerali, dostanete 70 % z príjmu v tokenoch. Pomocou Brave reklamy máte vždy kontrolu nad zobrazenými reklamami.</translation>
 <translation id="3624048886326677117">Blokovať trackery &amp; a reklamy (agresívne)</translation>
 <translation id="7151914815476509258">Blokovať trackery &amp; a reklamy (štandardne)</translation>
 <translation id="7384778069178817075">Povoliť všetky sledovače &amp; reklamy</translation>
@@ -486,7 +480,6 @@ Naozaj chcete pokračovať?</translation>
 <translation id="5299848999918506028">Ďakujeme!</translation>
 <translation id="76550953340008122">Ďakujeme, že ste vývojárom Brave oznámili, že na tejto stránke je niečo chybné. Urobíme všetko pre to, aby sme to napravili!</translation>
 <translation id="650318023204990401">Pokročilé ovládanie</translation>
-<translation id="1275664486910646411">Zobraziť najlepšie stránky v automatickom dopĺňaní</translation>
 <translation id="5370478469168390143">Uložiť dáta online</translation>
 <translation id="1118508688433541158">Prehliadajte rýchlejšie a blokujte reklamy pomocou služby Brave</translation>
 <translation id="7427391215172269363">Každý deň šetrím dáta prehliadaním webu cez Brave.</translation>
@@ -827,8 +820,6 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="3074127054582480056">Pozornosť</translation>
 <translation id="2280319752798785157">Mesačný príspevok</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
-<translation id="5802665280774361839">Zobraziť automatické dopĺňanie na paneli s adresou</translation>
-<translation id="8982438328166986164">Zobrazuje návrhy webových stránok na základe vašich záložiek a histórie prehliadania.</translation>
 <translation id="1241283133946520352">Sítě</translation>
 <translation id="1062463687579789365">Prispôsobenie sietí peňaženiek</translation>
 <translation id="2512821599885971349">Pridať sieť</translation>
@@ -947,6 +938,13 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="7134370164002095282"><ph name="CURRENT"/> z <ph name="SIZE"/></translation>
 <translation id="756701799684433105">Schváliť transakciu</translation>
 <translation id="6450792191436242818">Systémový program</translation>
+<translation id="5318067544026930166">Odomknúť peňaženku Brave pomocou biometrického overovania</translation>
+<translation id="2629767022373384291">Chcete používať biometrické overovanie na otvorenie peňaženky Brave?</translation>
+<translation id="4782919977106118997">Použiť odtlačok prsta na odomknutie</translation>
+<translation id="2054995875643283428">Teraz preskočiť</translation>
+<translation id="2522605225061484799">Prejsť do môjho portfólia</translation>
+<translation id="1148624853678088576">Všetko je pripravené!</translation>
+<translation id="4131445988101719379">Vaša peňaženka Brave je pripravená na použitie</translation>
 <translation id="6252742184395380448">Konfiguračný program</translation>
 <translation id="5358970666412490132">Program s podielmi</translation>
 <translation id="346636227344244984">Program hlasovania</translation>

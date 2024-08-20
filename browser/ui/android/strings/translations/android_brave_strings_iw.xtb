@@ -108,9 +108,10 @@
 <translation id="4692623383562244444">מנועי חיפוש</translation>
 <translation id="1468415711258933398">לשונית רגילה</translation>
 <translation id="3377025655491224618">כרטיסייה פרטית</translation>
+<translation id="7304425663107214334">הצג את הצעות הדפדפן</translation>
+<translation id="8982438328166986164">מציג הצעות לאתרים בהתבסס על הסימניות ועל היסטוריית הגלישה שלך.</translation>
+<translation id="1571106259128580884">הצג הצעות של האתרים הטובים ביותר</translation>
 <translation id="9148058034647219655">יציאה</translation>
-<translation id="4022987104439075738">שער IPFS</translation>
-<translation id="2688519859165248360">מאפשר ניווט למשאבי IPFS  דרך IPFS Gateway.</translation>
 <translation id="8047754398610073499">חסימת הודעות הסכמה לקובצי Cookie</translation>
 <translation id="2621893359845808115">חסום חלונות קופצים של אתרים שמבקשים ממך לקבל/לדחות קובצי Cookie באתר שלהם</translation>
 <translation id="7534079972563542000">דומיינים בלתי ניתנים לעצירה</translation>
@@ -142,9 +143,9 @@
 <translation id="2356070529366658676">שאל</translation>
 <translation id="4176463684765177261">מושבת</translation>
 <translation id="59174027418879706">מאופשר</translation>
-<translation id="6252490671914511928">הסיפורים החמים של היום בפיד פרטי לחלוטין, במיוחד בשבילך.</translation>
+<translation id="6920492760024499150">הסיפורים המוצלחים ביותר להיום בפיד פרטי, במיוחד עבורכם.</translation>
 <translation id="8300751939969131609">הפעל Brave News, ולא תפספס אף סיפור לעולם</translation>
-<translation id="7266075701303521777">חדשות Brave נתמכות באמצעות פרסומות אנונימיות ופרטיות לחלוטין שהותאמו למכשירך.</translation>
+<translation id="7627131190984957214">Brave חדשות נתמכות על ידי מודעות עם מודעות פרטיות ואנונימיות שהותאמו עבור המכשיר שלכם.</translation>
 <translation id="7699565323725789472">עקבו אחר המקורות המועדפים עליכם, בפיד יחיד. פשוט פותחים כרטיסייה ב-Brave, גוללים למטה ו… הנה!\nBrave News ממומנת באמצעות מודעות פרטיות ואנונימיות.</translation>
 <translation id="1765217911817124376">הפעל את חדשות Brave</translation>
 <translation id="8981973962043893066">חפשו אתר, נושא או הזנת RSS</translation>
@@ -233,7 +234,7 @@
 <translation id="7281027579943912834">עם Brave כברירת מחדל, כל קישור שאתה מקיש מקבל את הגנת חסימת המודעות של Brave. כל עמוד, סרטון וזרם.</translation>
 <translation id="5148943178722443958">עזרו לנו להפוך את Brave לטוב יותר.</translation>
 <translation id="6718362830686703942">שלחו דוחות אבחון, במידה וחוויתם קריסה או הקפאה.</translation>
-<translation id="1929905278861178845">שתפו באופן פרטי ואנונימי לחלוטין תובנות לגבי הפיצ׳רים בהם המשתמשים של Brave עושים שימוש.</translation>
+<translation id="8616157231067364693">שתפו תובנות בנוגע למוצרים באופן פרטי ואנונימי בכל מה שקשור לתכונות שבהן משתמשי Brave עושים שימוש.</translation>
 <translation id="2877653791257935258">יש להקליד שם או כתובת אתר</translation>
 <translation id="5329830149661250028">ראו את ההבדל עם Brave: אין פרסומות. אין מעקב. טעינת עמודים מהירה בהרבה.</translation>
 <translation id="3941792073703079607">ראה את ההבדל של Brave: חסימת מודעות. שמירת מידע. הזרמה מהירה יותר.</translation>
@@ -276,7 +277,7 @@
 <translation id="1938402585819943124">בחר Brave במסך הבא.</translation>
 <translation id="8926389886865778422">אל תשאל שוב</translation>
 <translation id="745974920645827035">חיפוש עצמאי עם פרטיות טובה יותר</translation>
-<translation id="4717018805430015801">Brave Search אינו עוקב אחריך, אחרי השאילתות שלך או הקליקים שלך.</translation>
+<translation id="2773167297815493692">Brave חיפוש לא יוצר עבורכם פרופיל.</translation>
 <translation id="5240031343741051161">שווה לנסות את Brave Search</translation>
 <translation id="5234764350956374838">סגור</translation>
 <translation id="6639570430554986719">ינואר</translation>
@@ -315,15 +316,13 @@
 <translation id="3132642509209154999">פג תוקפו של הקוד. יש לייצור קוד חדש במכשיר השני ולנסות שוב.</translation>
 <translation id="2859229680945501779">קוד זה אינו חוקי. אנא בדקו שהזמן ואזור הזמן מוגדרים כהלכה במכשיר שלכם.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
-<translation id="3680755684186855422">Brave Sync מאפשר לכם לסנכרן נתוני סימניות בפרטיות בין דפדפני Brave במכשירים השונים שלכם.</translation>
-<translation id="3735228155296883311">פשוט סרק/י את הקוד משרשרת הסנכרון שיצרת במכשיר אחר. או התחל/י שרשרת סנכרון חדשה.</translation>
+<translation id="348794064910142198">סנכרון Brave מאפשר לכם לסנכרן נתוני סימניות באופן פרטי בין דפדפני Brave שלכם בין המכשירים שלכם.\n\nפשוט סרקו את הקוד משרשרת הסנכרון שיצרתם במכשיר אחר. או צרו שרשרת סנכרון חדשה.</translation>
 <translation id="2614069607859982576">באמצעות מכשיר מסונכרן קיים, פתחו את הגדרות Brave ונווטו אל הגדרות &gt; סנכרון. בחרו "הוסף מכשיר חדש" וסרקו את קוד ה-QR המוצג על המסך.</translation>
 <translation id="5241263629636958324">הועתק ללוח</translation>
 <translation id="5817918615728894473">התאם</translation>
 <translation id="3429575397891106447">סנכרון אפשרויות</translation>
 <translation id="1680065323266179640">מחק חשבון מסונכרן</translation>
-<translation id="3792563952903751704">מחיקת החשבון שלך תסיר את הנתונים המוצפנים שלך משרתי Brave ותשבית את הסנכרון בכל המכשירים המחוברים שלך. עם זאת, זה לא ימחק את הנתונים המאוחסנים באופן מקומי במכשירים אלה.
-המחיקה הזו היא לצמיתות ואין דרך לשחזר את הנתונים. אם תחליט להתחיל להשתמש שוב בסינכרון, תצטרך ליצור חשבון חדש ולהוסיף מחדש כל מכשיר אחד אחד.</translation>
+<translation id="8397325856045820212">מחיקת החשבון שלכם תסיר את הנתונים המוצפנים שלכם משרתי Brave ותשבית את הסנכרון בכל המכשירים המחוברים שלכם. יחד עם זאת, היא לא תמחק את הנתונים המאוחסנים באופן מקומי במכשירים אלה.\n\nמחיקה זאת תתבצע לצמיתות ולא תהיה שום דרך לשחזר את הנתונים. במידה ותחליטו לחזור להשתמש בסנכרון, תצטרכו ליצור חשבון חדש ולהוסיף מחדש את כל אחד מהמכשירים.</translation>
 <translation id="9064376100690171155">מחק חשבון לצמיתות</translation>
 <translation id="2740516568641790390">החשבון המסונכרן נמחק בהצלחה</translation>
 <translation id="7006136453627651236">מחיקת החשבון המסונכרן נכשל</translation>
@@ -333,12 +332,10 @@
 <translation id="1602067095281698985">התחילו שרשרת סנכרון חדשה</translation>
 <translation id="1475223680121592371">הוסף מכשיר נייד</translation>
 <translation id="2965377893636908578">הוסף מחשב</translation>
-<translation id="6604289897677913048">תוך שימוש בטלפון או טאבלט שני, נווט/י אל הגדרות Brave  &gt; סנכרן &gt; סרוק.</translation>
-<translation id="8508856434435157945">במכשיר הנייד שלך, יש לנווט אל Brave Sync בפאנל ההגדרות וללחוץ על הכפתור "סרוק קוד סנכרון". יש להשתמש במצלמה כדי לסרוק את קוד ה-QR מטה.</translation>
-<translation id="2590683710114839102">במחשבך נווט/י אל הגדרות Brave &gt; סנכרן. בחר/י את "הזן קוד שרשרת סנכרון".</translation>
+<translation id="4701589725270449523">באמצעות בטלפון או טאבלט נוסף, עברו אל הגדרות &gt; סנכרון &gt; סריקה ב-Brave.\n\nבטלפון הנייד שלכם, עברו אל סנכרון Brave בלוח ההגדרות ולחצו על הלחצן "קוד סנכרון סריקה". השתמשו במצלמה שלכם כדי לסנכרן את קוד ה-QR המופיע מטה.</translation>
+<translation id="67114562351518315">במחשב שלכם, עברו אל הגדרות &gt; סנכרון Brave. בחרו באפשרות "הזינו קוד שרשרת סנכרון".\n\nבמחשב היעד שלכם, עברו אל סנכרון Brave תחת הגדרות ולחצו על הלחצן "יש לי קוד סנכרון".\nהזינו את מילות קוד שרשרת הסנכרון המופיעות מטה.</translation>
 <translation id="65315202420929965">סרוק את קוד סנכרון זה</translation>
 <translation id="6764016175302339802">התייחס לקוד זה כמו אל סיסמה. אם מישהו ישים את ידו עליו, הוא יוכל לקרוא ולשנות את המידע המסונכרן שלך.</translation>
-<translation id="6707003343517029414">במחשב המטרה שלך, נווט/י אל סנכרון Brave בהגדרות ולחצ/י על הכפתור "יש לי קוד סנכרון".\nהזנ/י את מילות קוד שרשרת הסינכרון המוצגות להלן.</translation>
 <translation id="2731921493694251495">הזנ/י את קוד שרשרת הסנכרון</translation>
 <translation id="2175927920773552910">קוד QR</translation>
 <translation id="8653433343015102968">מילות קוד</translation>
@@ -352,6 +349,9 @@
 <translation id="8131740175452115882">אישור</translation>
 <translation id="4973653569293835178">אני אשתמש במצלמה שלי...</translation>
 <translation id="326454632686131209">סנכרן מכשיר</translation>
+<translation id="3122158728238634723">צרו קוד חדש</translation>
+<translation id="4358805443781965194">פג תוקף הקוד. צרו קוד חדש באמצעות לחיצה על הלחצן המופיע מטה.</translation>
+<translation id="318164877797885563">קוד זמני זה תקף למשך <ph name="TIME_AMOUNT"/></translation>
 <translation id="327726072512457161">יציאה מהגדרות</translation>
 <translation id="8050847734948770789">הפעל תגמולי גלישה</translation>
 <translation id="9187185473011056079">אני בפנים!</translation>
@@ -417,8 +417,6 @@
 <translation id="8643377320501056697">הצג אתרים מובילים</translation>
 <translation id="7275773481201277457">הצג סטטיסטיקות Brave</translation>
 <translation id="8297488609722895137">תמונה מאת <ph name="PHOTO_BY"/></translation>
-<translation id="4761229094276239865">על ידי לחיצה על התחל להשתמש ב-Brave Rewards, הנך מסכימ/ה ל<ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="7136586167396205364">הסתר תמונות ממומנות</translation>
 <translation id="2898634658146274982">פתח קישורים חיצוניים ב- Brave</translation>
 <translation id="5616508928556767259">פותח קישורים מיישומים אחרים בBrave webview. הערה: יש להגדיר את Brave כדפדפן ברירת המחדל שלך.</translation>
 <translation id="2394961582378297792">התנתק</translation>
@@ -439,15 +437,11 @@
 <translation id="7961015016161918242">אף פעם</translation>
 <translation id="1275213816424141989">אולי אחר כך</translation>
 <translation id="4406937629441301400">הרווח/י טוקנים עבור צפייה בתמונה זו ושלמ/י זאת הלאה ליוצרים. <ph name="LEARN_MORE"/></translation>
-<translation id="1992363542751124282">הרוויחו טוקנים עבור צפייה בתמונה זו. לחצו על התחל להשתמש ב-Brave Rewards כדי לתבוע את חלקכם.</translation>
 <translation id="6632345639591919543">הנך מרוויח/ה טוקנים עבור צפייה בתמונה זו. \n<ph name="LEARN_MORE"/></translation>
-<translation id="1465733111003593696">הנך מרוויח/ה טוקנים עבור צפייה בתמונה זו.</translation>
-<translation id="7877201489035217175">למד/י עוד על תמונות ממומנות</translation>
 <translation id="8164992819127316581">התשלום עבור הפרסים של <ph name="CURRENT_MONTH"/>יתחיל להתבצע עד <ph name="PAYOUT_DATE"/></translation>
 <translation id="33967210973550414">התשלום עבור הפרסים של<ph name="CURRENT_MONTH"/>נמצא בעיצומו של תהליך <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">התשלום עבור הפרסים של <ph name="CURRENT_MONTH"/> הושלם. <ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">בדקו את המצב</translation>
-<translation id="828092975561478703">עבור כל תמונה ממומנת בה את/ה צופה, את/ה מקבל/י 70% מההכנסות בטוקנים. עם Brave Ads את/ה תמיד שולט/ת בפרסומות שאת/ה רואה.</translation>
 <translation id="3624048886326677117">חסום עוקבים ופרסומות (אגרסיבי)</translation>
 <translation id="7151914815476509258">חסום עוקבים ופרסומות (סטנדרטי)</translation>
 <translation id="7384778069178817075">אפשר את כל העוקבים  &amp; הפרסומות</translation>
@@ -487,7 +481,6 @@
 <translation id="5299848999918506028">תודה!</translation>
 <translation id="76550953340008122">תודה שהודעת למפתחים של Brave שמשהו לא תקין באתר זה. אנו נעשה כמיטב יכולתנו לתקן זאת!</translation>
 <translation id="650318023204990401">בקרות מתקדמות</translation>
-<translation id="1275664486910646411">הצג אתרים מובילים בהשלמה האוטומטית</translation>
 <translation id="5370478469168390143">שמור נתונים באופן מקוון</translation>
 <translation id="1118508688433541158">גלשו במהירות רבה יותר וחסמו פרסומות עם Brave</translation>
 <translation id="7427391215172269363">אני חוסך בצריכת נתונים כל יום בזכות הגלישה ב-Brave.</translation>
@@ -828,8 +821,6 @@
 <translation id="3074127054582480056">שימו לב</translation>
 <translation id="2280319752798785157">תרומה חודשית</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
-<translation id="5802665280774361839">הצג השלמה אוטומטית בשורת הכתובת</translation>
-<translation id="8982438328166986164">מציג הצעות לאתרים בהתבסס על הסימניות ועל היסטוריית הגלישה שלך.</translation>
 <translation id="1241283133946520352">רשתות</translation>
 <translation id="1062463687579789365">התאמה אישית של רשתות הארנק</translation>
 <translation id="2512821599885971349">הוספת רשת</translation>
@@ -948,6 +939,13 @@
 <translation id="7134370164002095282"><ph name="CURRENT"/> של <ph name="SIZE"/></translation>
 <translation id="756701799684433105">אישור עסקה</translation>
 <translation id="6450792191436242818">תוכנית מערכת</translation>
+<translation id="5318067544026930166">פתחו את נעילת ארנק Brave באמצעות אימות ביומטרי</translation>
+<translation id="2629767022373384291">האם ברצונכם להשתמש באימות ביומטרי כדי לפתוח את נעילת ארנק Brave?</translation>
+<translation id="4782919977106118997">השתמשו בפתיחת נעילה באמצעות טביעת אצבע</translation>
+<translation id="2054995875643283428">דלגו על שלב זה לעת עתה</translation>
+<translation id="2522605225061484799">עבור אל הפורטפוליו שלי</translation>
+<translation id="1148624853678088576">אתה סיימת</translation>
+<translation id="4131445988101719379">ארנק Brave מוכן לשימוש</translation>
 <translation id="6252742184395380448">תוכנית הגדרות</translation>
 <translation id="5358970666412490132">תוכנית סיכויים</translation>
 <translation id="346636227344244984">תוכנית הצבעות</translation>

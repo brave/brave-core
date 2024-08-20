@@ -9,7 +9,6 @@
 <translation id="1197088940767939838">ਸੰਤਰੀ</translation>
 <translation id="125153950246128346">ਕਿਸੇ ਹੋਰ ਟੈਬ ਨੂੰ ਦੇਖਣ ਲਈ ਟੈਪ ਕਰੋ</translation>
 <translation id="1273910660700874265"><ph name="TITLE_OF_GROUP"/> ਟੈਬ ਗਰੁੱਪ ਦੇ ਵਿਕਲਪ</translation>
-<translation id="1322824555808364080">ਲੋਕਾਂ ਨੂੰ ਸੱਦਾ ਦਿਓ</translation>
 <translation id="1419023007528516122">ਇਸ ਨਾਲ ਗਰੁੱਪ ਤੁਹਾਡੇ ਡੀਵਾਈਸ ਤੋਂ ਪੱਕੇ ਤੌਰ 'ਤੇ ਮਿਟ ਜਾਵੇਗਾ</translation>
 <translation id="1486715732399361704">ਤੁਸੀਂ ਇੱਥੇ ਆਪਣੇ ਸਾਰੇ ਟੈਬ ਗਰੁੱਪਾਂ ਨੂੰ ਦੇਖ ਸਕਦੇ ਹੋ</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{<ph name="NUM_MINS_ONE"/> ਮਿੰਟ ਪਹਿਲਾਂ ਬਣਾਇਆ ਗਿਆ}one{<ph name="NUM_MINS_MANY"/> ਮਿੰਟ ਪਹਿਲਾਂ ਬਣਾਇਆ ਗਿਆ}other{<ph name="NUM_MINS_MANY"/> ਮਿੰਟ ਪਹਿਲਾਂ ਬਣਾਇਆ ਗਿਆ}}</translation>
@@ -66,9 +65,12 @@
 <translation id="4159784952369912983">ਜਾਮਨੀ</translation>
 <translation id="4220650239473304853">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> ਟੈਬ ਵਾਲੇ <ph name="TITLE_OF_GROUP"/> ਟੈਬ ਗਰੁੱਪ ਦਾ ਵਿਸਤਾਰ ਕਰੋ।}one{<ph name="TABS_COUNT_MANY"/> ਟੈਬ ਵਾਲੇ <ph name="TITLE_OF_GROUP"/> ਟੈਬ ਗਰੁੱਪ ਦਾ ਵਿਸਤਾਰ ਕਰੋ।}other{<ph name="TABS_COUNT_MANY"/> ਟੈਬਾਂ ਵਾਲੇ <ph name="TITLE_OF_GROUP"/> ਟੈਬ ਗਰੁੱਪ ਦਾ ਵਿਸਤਾਰ ਕਰੋ।}}</translation>
 <translation id="427987768447457592">ਨਵਾਂ ਟੈਬ ਗਰੁੱਪ</translation>
+<translation id="4338724047016295066">ਅਕਿਰਿਆਸ਼ੀਲ ਟੈਬਾਂ ਸਵੈਚਲਿਤ ਤੌਰ 'ਤੇ ਬੰਦ ਹੋ ਜਾਣਗੀਆਂ। ਤੁਸੀਂ ਉਨ੍ਹਾਂ ਨੂੰ ਕਿਸੇ ਵੀ ਵੇਲੇ ਇਤਿਹਾਸ ਵਿੱਚ ਲੱਭ ਸਕਦੇ ਹੋ।</translation>
+<translation id="4371591986692297148">ਅਕਿਰਿਆਸ਼ੀਲ</translation>
 <translation id="4460014764210899310">ਗਰੁੱਪ ਹਟਾਓ</translation>
 <translation id="4648718555153979859">ਤੁਹਾਡੀਆਂ ਟੈਬਾਂ ਇੱਥੇ ਇਕੱਠੇ ਗਰੁੱਪਬੱਧ ਕੀਤੀਆਂ ਜਾਂਦੀਆਂ ਹਨ</translation>
 <translation id="4686942373615810936">ਹੁਣੇ ਬਣਾਇਆ ਗਿਆ</translation>
+<translation id="47070857600201406">{DAY_COUNT,plural, =1{1 ਦਿਨ ਬਾਅਦ ਬੰਦ ਕਰੋ}one{<ph name="DAY_COUNT_MANY"/> ਦਿਨ ਬਾਅਦ ਬੰਦ ਕਰੋ}other{<ph name="DAY_COUNT_MANY"/> ਦਿਨਾਂ ਬਾਅਦ ਬੰਦ ਕਰੋ}}</translation>
 <translation id="4777866634702576038">ਕੀ ਟੈਬ ਗਰੁੱਪ ਨੂੰ ਮਿਟਾਉਣਾ ਹੈ?</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> ਸਮੀਖਿਆ)}one{(<ph name="REVIEWS_COUNT_MANY"/> ਸਮੀਖਿਆ)}other{(<ph name="REVIEWS_COUNT_MANY"/> ਸਮੀਖਿਆਵਾਂ)}}</translation>
 <translation id="4850886885716139402">ਦੇਖੋ</translation>
@@ -90,6 +92,7 @@
 <translation id="5494920125229734069">ਸਾਰੇ ਚੁਣੋ</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{<ph name="COLOR_NAME"/> ਰੰਗ ਅਤੇ <ph name="TABS_COUNT_ONE"/> ਟੈਬ ਵਾਲੇ ਟੈਬ ਗਰੁੱਪ ਨੂੰ ਬੰਦ ਕਰੋ।}one{<ph name="COLOR_NAME"/> ਰੰਗ ਅਤੇ <ph name="TABS_COUNT_MANY"/> ਟੈਬ ਵਾਲੇ ਟੈਬ ਗਰੁੱਪ ਨੂੰ ਬੰਦ ਕਰੋ।}other{<ph name="COLOR_NAME"/> ਰੰਗ ਅਤੇ <ph name="TABS_COUNT_MANY"/> ਟੈਬਾਂ ਵਾਲੇ ਟੈਬ ਗਰੁੱਪ ਨੂੰ ਬੰਦ ਕਰੋ।}}</translation>
 <translation id="5556417849629758491">ਸਟੋਰ ਦੀ ਜਾਣਕਾਰੀ ਦੇਖੋ, ਇਹ ਵਿਕਲਪ ਸਕ੍ਰੀਨ ਦੇ ਸਿਖਰ ਦੇ ਨੇੜੇ ਉਪਲਬਧ ਹੈ</translation>
+<translation id="5635915157654811450">{TAB_COUNT,plural, =1{ਟੈਬ ਮੁੜ-ਬਹਾਲ ਕਰੋ}one{ਟੈਬ ਮੁੜ-ਬਹਾਲ ਕਰੋ}other{ਟੈਬਾਂ ਮੁੜ-ਬਹਾਲ ਕਰੋ}}</translation>
 <translation id="3225229609960545342">{TABS_COUNT,plural, =1{Brave ਤੋਂ <ph name="TABS_COUNT_ONE"/> ਲਿੰਕ}one{Brave ਤੋਂ <ph name="TABS_COUNT_MANY"/> ਲਿੰਕ}other{Brave ਤੋਂ <ph name="TABS_COUNT_MANY"/> ਲਿੰਕ}}</translation>
 <translation id="575494663145460764">ਕੀਮਤ ਘਟਣ 'ਤੇ ਅਲਰਟ ਪ੍ਰਾਪਤ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?</translation>
 <translation id="58326064309361797">ਟੈਬਾਂ ਨੂੰ ਇਕੱਠਾ ਕਰਨ ਲਈ ਉਹਨਾਂ ਨੂੰ ਘਸੀਟੋ</translation>
@@ -105,6 +108,8 @@
 <translation id="6381032505162537930">ਤੁਹਾਡੇ ਆਪਣੇ ਟੈਬ ਗਰੁੱਪ ਇੱਥੇ ਦਿਖਾਈ ਦੇਣਗੇ</translation>
 <translation id="639823877092900621">{TABS_COUNT,plural, =1{ਚੁਣੀ ਗਈ <ph name="TABS_COUNT_ONE"/> ਟੈਬ ਨੂੰ ਅਣ-ਗਰੁੱਪਬੱਧ ਕਰੋ}one{ਚੁਣੀ ਗਈ <ph name="TABS_COUNT_MANY"/> ਟੈਬ ਨੂੰ ਅਣ-ਗਰੁੱਪਬੱਧ ਕਰੋ}other{ਚੁਣੀਆਂ ਗਈਆਂ <ph name="TABS_COUNT_MANY"/> ਟੈਬਾਂ ਨੂੰ ਅਣ-ਗਰੁੱਪਬੱਧ ਕਰੋ}}</translation>
 <translation id="6422650314852876533">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ਟੈਬ}one{<ph name="TABS_COUNT_MANY"/> ਟੈਬ}other{<ph name="TABS_COUNT_MANY"/> ਟੈਬਾਂ}}</translation>
+<translation id="6527303717912515753">ਸ਼ੇਅਰ ਕਰੋ</translation>
+<translation id="6542289363124393690">{DAY_COUNT,plural, =1{1 ਦਿਨ ਬਾਅਦ}one{<ph name="DAY_COUNT_MANY"/> ਦਿਨ ਬਾਅਦ}other{<ph name="DAY_COUNT_MANY"/> ਦਿਨਾਂ ਬਾਅਦ}}</translation>
 <translation id="6549021453810473782">ਸਟੋਰ ਜਾਣਕਾਰੀ ਦੇਖੋ</translation>
 <translation id="6557858706263317126">+<ph name="HIDDEN_TABS_COUNT"/></translation>
 <translation id="6562820390860419811">ਟੈਬ ਨੂੰ ਖੱਬੇ ਪਾਸੇ ਲਿਜਾਓ</translation>
@@ -121,6 +126,7 @@
 <translation id="7326879924029668159">ਵਾਪਸੀ ਸੰਬੰਧੀ ਨੀਤੀ ਅਤੇ ਹੋਰ ਚੀਜ਼ਾਂ ਦੇਖੋ</translation>
 <translation id="7352298686197644113">ਦੇਖੋ ਕਿ ਤੁਹਾਡੇ ਖੁੱਲ੍ਹੇ ਟੈਬਾਂ ਵਿੱਚ ਕਿਹੜੀ ਆਈਟਮ ਦੀ ਕੀਮਤ ਘੱਟ ਹੈ</translation>
 <translation id="7452985128687107478">ਟੈਬ ਗਰੁੱਪ ਸਵੈਚਲਿਤ ਤੌਰ 'ਤੇ ਤੁਹਾਡੇ ਸਾਰੇ ਡੀਵਾਈਸਾਂ 'ਤੇ ਰੱਖਿਅਤ ਅਤੇ ਅੱਪਡੇਟ ਹੁੰਦੇ ਹਨ</translation>
+<translation id="747459581954555080">ਸਾਰੇ ਰੀਸਟੋਰ ਕਰੋ</translation>
 <translation id="753732157349120914">ਟੈਬ ਸਵਿੱਚਰ</translation>
 <translation id="1068242749670180460">{REVIEWS,plural, =1{Brave ਤੋਂ <ph name="REVIEWS_COUNT_ONE"/> ਸਮੀਖਿਆ}one{Brave ਤੋਂ <ph name="REVIEWS_COUNT_MANY"/> ਸਮੀਖਿਆ}other{Brave ਤੋਂ <ph name="REVIEWS_COUNT_MANY"/> ਸਮੀਖਿਆਵਾਂ}}</translation>
 <translation id="7559245342362162951">ਪੂਰੀ-ਸਕ੍ਰੀਨ ਗ੍ਰਿਡ ਵਿੱਚ ਗਰੁੱਪ ਦੀਆਂ ਟੈਬਾਂ ਦਿਖਾਓ</translation>
@@ -134,6 +140,7 @@
 <translation id="7885132941432959125">ਟੈਬ ਨੂੰ ਸੱਜੇ ਲਿਜਾਓ</translation>
 <translation id="7939917283308035850"><ph name="COLOR_NAME"/> ਨੂੰ ਨਹੀਂ ਚੁਣਿਆ ਗਿਆ</translation>
 <translation id="7942349550061667556">ਲਾਲ</translation>
+<translation id="7961015016161918242">ਕਦੇ ਨਹੀਂ</translation>
 <translation id="7966321538264951561">ਸੁਝਾਵਾਂ ਨੂੰ ਖਾਰਜ ਕਰੋ।</translation>
 <translation id="799469866974412355">ਤੁਹਾਡੇ ਹੋਰ ਡੀਵਾਈਸ ਤੋਂ ਨਵਾਂ ਗਰੁੱਪ</translation>
 <translation id="8029301326595421733">ਇਸ ਸਟੋਰ ਸੰਬੰਧੀ ਜਾਣਕਾਰੀ ਵਾਲੀ ਸਕ੍ਰੀਨ ਪੂਰੀ ਉਚਾਈ ਤੱਕ ਖੁੱਲ੍ਹੀ ਹੈ</translation>
@@ -144,6 +151,8 @@
 <translation id="8338427544764842461">ਤੁਹਾਡੇ ਟੈਬ ਗਰੱਪ ਇੱਥੇ ਰੱਖਿਅਤ ਕੀਤੇ ਜਾਂਦੇ ਹਨ ਅਤੇ ਤੁਹਾਡੇ ਸਾਰੇ ਸਾਈਨ-ਇਨ ਕੀਤੇ ਡੀਵਾਈਸਾਂ 'ਤੇ ਅੱਪਡੇਟ ਹੋ ਜਾਂਦੇ ਹਨ</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{ਚੁਣੀ ਹੋਈ <ph name="TABS_COUNT_ONE"/> ਟੈਬ ਬੰਦ ਕਰੋ}one{ਚੁਣੀ ਹੋਈ <ph name="TABS_COUNT_MANY"/> ਟੈਬ ਬੰਦ ਕਰੋ}other{ਚੁਣੀਆਂ ਹੋਈਆਂ <ph name="TABS_COUNT_MANY"/> ਟੈਬਾਂ ਬੰਦ ਕਰੋ}}</translation>
 <translation id="8398929769197326728">ਨਵਾਂ ਫੋਲਡਰ - <ph name="CURRENT_TIMESTAMP_MS"/></translation>
+<translation id="8428213095426709021">ਸੈਟਿੰਗਾਂ</translation>
+<translation id="870736955561925754">ਕੀ ਟੈਬ ਬੰਦ ਕਰ ਕੇ ਗਰੁੱਪ ਨੂੰ ਮਿਟਾਉਣਾ ਹੈ?</translation>
 <translation id="8714939927607906138">ਘੱਟ ਕੀਮਤ</translation>
 <translation id="8730621377337864115">ਹੋ ਗਿਆ</translation>
 <translation id="6687920250729800417">ਇਨ੍ਹਾਂ ਇਨਕੋਗਨਿਟੋ ਟੈਬਾਂ ਵਿਚਲੀ ਤੁਹਾਡੀ ਸਰਗਰਮੀ ਨੂੰ ਇਸ ਡੀਵਾਈਸ ਤੋਂ ਹਟਾ ਦਿੱਤਾ ਜਾਵੇਗਾ</translation>

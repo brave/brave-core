@@ -108,9 +108,10 @@
 <translation id="4692623383562244444">搜尋引擎</translation>
 <translation id="1468415711258933398">標準分頁</translation>
 <translation id="3377025655491224618">隱私瀏覽分頁</translation>
+<translation id="7304425663107214334">顯示瀏覽器建議</translation>
+<translation id="8982438328166986164">根據您的書籤和瀏覽記錄顯示網站建議。</translation>
+<translation id="1571106259128580884">顯示熱門網站建議</translation>
 <translation id="9148058034647219655">結束</translation>
-<translation id="4022987104439075738">IPFS 閘道器</translation>
-<translation id="2688519859165248360">允許透過 IPFS 閘道器瀏覽至 IPFS 資源</translation>
 <translation id="8047754398610073499">攔截 cookie 同意通知</translation>
 <translation id="2621893359845808115">攔截要求您接受/拒絕網站 cookie 的彈出式視窗</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
@@ -142,9 +143,9 @@
 <translation id="2356070529366658676">詢問</translation>
 <translation id="4176463684765177261">已停用</translation>
 <translation id="59174027418879706">已啟用</translation>
-<translation id="6252490671914511928">在完全私密的動態中查看今日熱門報導，內容專為您打造。</translation>
+<translation id="6920492760024499150">Today 的重點消息是不公開的摘要，專屬於您。</translation>
 <translation id="8300751939969131609">開啟 Brave 新聞，絕不錯過每一條消息</translation>
-<translation id="7266075701303521777">Brave 新聞有廣告支援，能提供完全私密和匿名的廣告，與您的裝置相符。</translation>
+<translation id="7627131190984957214">Brave 新聞支援廣告功能，能在裝置上提供符合個人喜好的廣告，內容不公開並匿名處理。</translation>
 <translation id="7699565323725789472">透過單一摘要關注您喜愛的來源。只要在 Brave 中開啟分頁、向下捲動，一切搞定！\nBrave News 可支援匿名投放私人廣告。</translation>
 <translation id="1765217911817124376">開啟 Brave 新聞</translation>
 <translation id="8981973962043893066">搜尋網站、主題或 RSS 摘要</translation>
@@ -233,7 +234,7 @@
 <translation id="7281027579943912834">將 Brave 設為預設瀏覽器，您點按的每個連結都會受到 Brave 的廣告封鎖保護。所有頁面、影片和串流都能受益。</translation>
 <translation id="5148943178722443958">協助提升 Brave 品質。</translation>
 <translation id="6718362830686703942">系統當機或停止回應時傳送診斷報告。</translation>
-<translation id="1929905278861178845">分享完全不公開和匿名的產品深入分析，說明 Brave 使用者正在使用哪些功能。</translation>
+<translation id="8616157231067364693">分享不公開的匿名產品深入分析，指出 Brave 使用者正在使用哪些功能。</translation>
 <translation id="2877653791257935258">輸入網站名稱或 URL</translation>
 <translation id="5329830149661250028">瞭解 Brave 的差異之處：沒有廣告、沒有追蹤器，而且頁面載入速度更快。</translation>
 <translation id="3941792073703079607">看看 Brave 的不同之處：封鎖廣告，節省數據，加速串流。</translation>
@@ -276,7 +277,7 @@
 <translation id="1938402585819943124">在下一個畫面中選擇 Brave。</translation>
 <translation id="8926389886865778422">不再詢問這個問題</translation>
 <translation id="745974920645827035">進行獨立搜尋時，隱私可受到更完善的保護</translation>
-<translation id="4717018805430015801">Brave 搜尋不會追蹤您、您的查詢內容或點擊項目。</translation>
+<translation id="2773167297815493692">Brave 搜尋不會建立您的使用者輪廓。</translation>
 <translation id="5240031343741051161">尝试Brave搜索</translation>
 <translation id="5234764350956374838">關閉</translation>
 <translation id="6639570430554986719">一月</translation>
@@ -315,15 +316,13 @@
 <translation id="3132642509209154999">此代碼已過期，請在其他裝置上產生新的代碼，然後再試一次。</translation>
 <translation id="2859229680945501779">此程式碼無效。請確認您的裝置已正確設定時間和時區。</translation>
 <translation id="3149880132460839085">Brave 同步</translation>
-<translation id="3680755684186855422">Brave 同步可讓您在多個裝置上，以私密方式同步各 Brave 瀏覽器之間的書籤資料。</translation>
-<translation id="3735228155296883311">只需掃描在另一台裝置上建立的同步鏈代碼即可，也可開始新的同步鏈。</translation>
+<translation id="348794064910142198">您可以使用 Brave 同步，在多種裝置的 Brave 瀏覽器間自行同步書籤資料。\n\n只要掃描在另一部裝置上建立的同步鏈代碼即可，或建立新的同步鏈。</translation>
 <translation id="2614069607859982576">在已同步的現有裝置上，打開「Brave 設定」頁面，前往「設定」&gt;「同步」，再選擇「新增裝置」並掃描畫面顯示的 QR Code。</translation>
 <translation id="5241263629636958324">已複製到剪貼簿</translation>
 <translation id="5817918615728894473">配對</translation>
 <translation id="3429575397891106447">同步處理選項</translation>
 <translation id="1680065323266179640">刪除同步帳戶</translation>
-<translation id="3792563952903751704">刪除帳戶會從 Brave 伺服器移除加密資料，且所有連結的裝置都會停用 Sync。不過，儲存在這些本機裝置的資料不會刪除。
-刪除帳戶是永久性操作，無法復原。如果您決定再次使用 Sync，您將需要建立新帳戶，並逐一重新新增每部裝置。</translation>
+<translation id="8397325856045820212">一旦您刪除帳戶，您的加密資料就會從 Brave 伺服器移除，而您所有已連線的裝置也會停用同步。不過，不會刪除儲存於這些裝置上的資料。\n\n刪除帳戶是永久性操作，無法復原。如果您決定再次使用同步，您必須建立新帳戶，並逐一重新新增每部裝置。</translation>
 <translation id="9064376100690171155">永久刪除帳戶</translation>
 <translation id="2740516568641790390">已成功刪除同步帳戶</translation>
 <translation id="7006136453627651236">無法刪除同步帳戶</translation>
@@ -333,12 +332,10 @@
 <translation id="1602067095281698985">開始全新同步鏈結</translation>
 <translation id="1475223680121592371">添加行動裝置</translation>
 <translation id="2965377893636908578">添加電腦</translation>
-<translation id="6604289897677913048">使用別的手機或平板電腦，前往「Brave 設定」&gt;「同步」&gt;「掃瞄」。</translation>
-<translation id="8508856434435157945">在你的行動裝置上，點選「設定」面板中的「Brave 同步」，然後點擊「掃描同步代碼」按鈕，再使用相機掃描下方的 QR 碼。</translation>
-<translation id="2590683710114839102">在你的電腦上，前往「Brave 設定」&gt;「同步」，然後選擇「輸入同步鏈代碼」。</translation>
+<translation id="4701589725270449523">使用另一部手機或平板電腦，瀏覽到「Brave 設定」&gt;「同步」&gt;「掃描」。\n\n在行動裝置上，瀏覽到「設定」面板的「Brave 同步」，然後按一下「掃描同步代碼」按鈕。使用相機掃描下方 QR 碼。</translation>
+<translation id="67114562351518315">在電腦上瀏覽到「Brave 設定」&gt;「同步」。選擇「輸入同步鏈代碼」。\n\n在目標電腦上瀏覽到「設定」中的「Brave 同步」，然後按一下「我有同步代碼」。\n輸入下方顯示的同步鏈代碼文字。</translation>
 <translation id="65315202420929965">掃描此同步碼</translation>
 <translation id="6764016175302339802">請將此代碼視作密碼看待。萬一落入他人手中，他們可以讀取並修改你的同步數據。</translation>
-<translation id="6707003343517029414">在目標電腦上，點選設定頁上的「Brave 同步」，然後點擊「我有同步代碼」按鈕。\n輸入如下所示的同步鏈代碼字。</translation>
 <translation id="2731921493694251495">輸入同步鏈代碼</translation>
 <translation id="2175927920773552910">QR 碼</translation>
 <translation id="8653433343015102968">代碼字</translation>
@@ -352,6 +349,9 @@
 <translation id="8131740175452115882">確認</translation>
 <translation id="4973653569293835178">使用我的相機……</translation>
 <translation id="326454632686131209">同步裝置</translation>
+<translation id="3122158728238634723">產生新代碼</translation>
+<translation id="4358805443781965194">代碼已過期。請點選下方按鈕來產生新代碼。</translation>
+<translation id="318164877797885563">這組臨時代碼於接下來 <ph name="TIME_AMOUNT"/>內有效。</translation>
 <translation id="327726072512457161">設定退出</translation>
 <translation id="8050847734948770789">啟用 Brave Rewards</translation>
 <translation id="9187185473011056079">我想加入！</translation>
@@ -416,8 +416,6 @@
 <translation id="8643377320501056697">顯示頂部網站</translation>
 <translation id="7275773481201277457">顯示 Brave 統計</translation>
 <translation id="8297488609722895137">攝影者：<ph name="PHOTO_BY"/></translation>
-<translation id="4761229094276239865">透過點擊「開始使用 Brave Rewards」，即表示您同意 <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="7136586167396205364">隱藏贊助圖片</translation>
 <translation id="2898634658146274982">在 Brave 中開啟外部連結</translation>
 <translation id="5616508928556767259">在 Brave Web 檢視中開啟來自其他應用程式的連結。注意：您必須將 Brave 設定為預設瀏覽器。</translation>
 <translation id="2394961582378297792">已登出</translation>
@@ -438,15 +436,11 @@
 <translation id="7961015016161918242">一律不要</translation>
 <translation id="1275213816424141989">晚點再說</translation>
 <translation id="4406937629441301400">查看此圖像以賺取代幣，並支付給創作者。<ph name="LEARN_MORE"/></translation>
-<translation id="1992363542751124282">賺取代幣以檢視此圖片。點擊「開始使用 Brave Rewards」來領取您的那一份。</translation>
 <translation id="6632345639591919543">藉由查看這張圖像，您可以賺取代幣.\n<ph name="LEARN_MORE"/></translation>
-<translation id="1465733111003593696">藉由查看此圖像，您可以賺取代幣</translation>
-<translation id="7877201489035217175">了解更多關於受贊助圖像</translation>
 <translation id="8164992819127316581"><ph name="CURRENT_MONTH"/>獎勵的支付將於 <ph name="PAYOUT_DATE"/>前開始處理。</translation>
 <translation id="33967210973550414"><ph name="CURRENT_MONTH"/>獎勵的支付正在處理中。<ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314"><ph name="CURRENT_MONTH"/>獎勵的支付已完成。<ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">查看狀態</translation>
-<translation id="828092975561478703">每一張您所查看的被贊助影像，您將收到 70% 的代幣收益。在 Brave Ads，你總是能夠控制您所看到的廣告。</translation>
 <translation id="3624048886326677117">封鎖追蹤程式 &amp; 廣告（積極）</translation>
 <translation id="7151914815476509258">封鎖追蹤程式 &amp; 廣告（標準）</translation>
 <translation id="7384778069178817075">允許所有追蹤器與廣告</translation>
@@ -486,7 +480,6 @@
 <translation id="5299848999918506028">感謝！</translation>
 <translation id="76550953340008122">感謝讓 Brave 開發者知道此網站會壞掉。我們將會盡力修復它。</translation>
 <translation id="650318023204990401">進階控制</translation>
-<translation id="1275664486910646411">在自動完成中顯示熱門網站</translation>
 <translation id="5370478469168390143">降低線上使用流量</translation>
 <translation id="1118508688433541158">使用 Brave 瀏覽更快並封鎖廣告</translation>
 <translation id="7427391215172269363">我每日都會透過 Brave 瀏覽網路來節省流量。</translation>
@@ -827,8 +820,6 @@
 <translation id="3074127054582480056">注意</translation>
 <translation id="2280319752798785157">每月貢獻</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
-<translation id="5802665280774361839">在網址列顯示自動完成</translation>
-<translation id="8982438328166986164">根據您的書籤和瀏覽記錄顯示網站建議。</translation>
 <translation id="1241283133946520352">網路</translation>
 <translation id="1062463687579789365">錢包網路自訂項目</translation>
 <translation id="2512821599885971349">新增網路</translation>
@@ -947,6 +938,13 @@
 <translation id="7134370164002095282"><ph name="CURRENT"/> / <ph name="SIZE"/></translation>
 <translation id="756701799684433105">核准交易</translation>
 <translation id="6450792191436242818">系統程式</translation>
+<translation id="5318067544026930166">使用生物辨識驗證功能解鎖 Brave 錢包</translation>
+<translation id="2629767022373384291">您要使用生物辨識驗證功能解鎖 Brave 錢包嗎？</translation>
+<translation id="4782919977106118997">使用指紋解鎖</translation>
+<translation id="2054995875643283428">暫時略過</translation>
+<translation id="2522605225061484799">前往我的投資組合</translation>
+<translation id="1148624853678088576">您已準備就緒！</translation>
+<translation id="4131445988101719379">您的 Brave 錢包已可使用</translation>
 <translation id="6252742184395380448">設定程式</translation>
 <translation id="5358970666412490132">權益程式</translation>
 <translation id="346636227344244984">投票程式</translation>

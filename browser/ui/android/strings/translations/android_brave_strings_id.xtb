@@ -108,9 +108,10 @@
 <translation id="4692623383562244444">Mesin pencari</translation>
 <translation id="1468415711258933398">Tab Standar</translation>
 <translation id="3377025655491224618">Tab Privat</translation>
+<translation id="7304425663107214334">Tampilkan saran peramban</translation>
+<translation id="8982438328166986164">Menampilkan usulan situs web berdasarkan markah dan riwayat penelusuran Anda.</translation>
+<translation id="1571106259128580884">Tampilkan saran situs teratas</translation>
 <translation id="9148058034647219655">Keluar</translation>
-<translation id="4022987104439075738">Gateway IPFS</translation>
-<translation id="2688519859165248360">Memungkinkan navigasi untuk sumber daya IFFS melalui Gerbang IPFS</translation>
 <translation id="8047754398610073499">Pemberitahuan izin pemblokiran kuki</translation>
 <translation id="2621893359845808115">Memblokir pesan timbul situs web yang meminta Anda untuk menerima/menolak kuki di situs mereka</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
@@ -142,9 +143,9 @@
 <translation id="2356070529366658676">Tanya</translation>
 <translation id="4176463684765177261">Dinonaktifkan</translation>
 <translation id="59174027418879706">Diaktifkan</translation>
-<translation id="6252490671914511928">Kisah terpopuler hari ini dalam umpan yang benar-benar privat, hanya untuk Anda.</translation>
+<translation id="6920492760024499150">Kisah terpopuler hari ini dalam umpan privat, hanya untuk Anda.</translation>
 <translation id="8300751939969131609">Aktifkan Berita Brave, dan jangan lewatkan cerita apa pun</translation>
-<translation id="7266075701303521777">Brave News didukung iklan dengan iklan yang sepenuhnya privat dan anonim yang disesuaikan pada perangkat Anda.</translation>
+<translation id="7627131190984957214">Berita Brave didukung iklan dengan iklan privat dan anonim yang disesuaikan pada perangkat Anda.</translation>
 <translation id="7699565323725789472">Ikuti sumber favorit Anda, dalam umpan tunggal. Cukup buka tab di Brave, gulir turun, dan… tara!\nBerita Brave didukung iklan dengan iklan privat dan anonim.</translation>
 <translation id="1765217911817124376">Aktifkan Brave News</translation>
 <translation id="8981973962043893066">Cari situs, topik, atau umpan RSS</translation>
@@ -233,7 +234,7 @@
 <translation id="7281027579943912834">Dengan Brave sebagai bawaan, setiap tautan yang Anda ketuk mendapat perlindungan pemblokiran iklan Brave. Setiap halaman, video, dan aliran.</translation>
 <translation id="5148943178722443958">Bantulah membuat Brave lebih baik.</translation>
 <translation id="6718362830686703942">Kirimkan laporan diagnostik jika Anda mengalami kerusakan atau kebekuan.</translation>
-<translation id="1929905278861178845">Bagikanlah wawasan produk secara privat dan anonim tentang fitur-fitur apa saja yang digunakan pengguna Brave.</translation>
+<translation id="8616157231067364693">Bagikanlah wawasan produk secara privat dan anonim tentang fitur-fitur yang digunakan pengguna Brave.</translation>
 <translation id="2877653791257935258">Ketik nama atau URL situs web</translation>
 <translation id="5329830149661250028">Lihatlah perbedaan Brave: Tanpa iklan. Tanpa pelacak. Pemuatan halaman yang jauh lebih cepat.</translation>
 <translation id="3941792073703079607">Lihat perbedaan Brave: Memblokir iklan. Menyimpan data. Aliran lebih cepat.</translation>
@@ -276,7 +277,7 @@
 <translation id="1938402585819943124">Pilih Brave di layar berikutnya.</translation>
 <translation id="8926389886865778422">Jangan tanya lagi</translation>
 <translation id="745974920645827035">Pencarian independen dengan privasi yang lebih baik</translation>
-<translation id="4717018805430015801">Pencarian Brave tidak melacak Anda, pertanyaan Anda, atau klik Anda.</translation>
+<translation id="2773167297815493692">Pencarian Brave tidak membuat profil Anda.</translation>
 <translation id="5240031343741051161">Coba Pencarian Brave</translation>
 <translation id="5234764350956374838">Tutup</translation>
 <translation id="6639570430554986719">JANUARI</translation>
@@ -315,15 +316,13 @@
 <translation id="3132642509209154999">Kode ini telah kedaluwarsa. Silakan menghasilkan yang baru pada perangkat Anda dan coba lagi.</translation>
 <translation id="2859229680945501779">Kode ini tidak valid. Silakan periksa bahwa waktu dan zona waktu telah ditetapkan dengan tepat di peranti Anda.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
-<translation id="3680755684186855422">Brave Sync memungkinkan Anda menyinkronkan data markah secara pribadi antarperamban Brave pada berbagai perangkat.</translation>
-<translation id="3735228155296883311">Cukup pindai kode dari untai sinkronisasi yang Anda buat di perangkat lain. Atau memulai rantai sinkronisasi baru.</translation>
+<translation id="348794064910142198">Sinkronisasi Brave memungkinkan Anda untuk melakukan sinkronisasi data markah secara privat antar Peramban Brave Anda di berbagai perangkat Anda.\n\nCukup memindai kode dari rantai sinkronisasi Anda yang dibuat di perangkat lain. Atau mulai rantai sinkronisasi baru.</translation>
 <translation id="2614069607859982576">Dengan perangkat yang disinkronkan yang ada, buka Pengaturan Brave dan navigasikan ke Pengaturan &gt; Sink. Pilih "Tambahkan Perangkat Baru" dan pindai Kode QR yang ditampilkan di layar.</translation>
 <translation id="5241263629636958324">Disalin ke papan klip</translation>
 <translation id="5817918615728894473">Hubungkan</translation>
 <translation id="3429575397891106447">Opsi Sinkronisasi</translation>
 <translation id="1680065323266179640">Hapus akun sinkronisasi</translation>
-<translation id="3792563952903751704">Menghapus akun Anda akan menghapus data Anda yang terenkripsi dari peladen Brave dan menonaktifkan Sinkronisasi dari semua perangkat Anda yang terhubung. Namun hal ini tidak akan menghapus data yang disimpan secara lokal pada perangkat-perangkat tersebut.
-Penghapusan ini bersifat permanen dan data tidak akan mungkin dipulihkan. Jika Anda memutuskan untuk kembali menggunakan Sinkronisasi, Anda perlu membuat akun baru dan menambahkan ulang setiap perangkat satu per satu.</translation>
+<translation id="8397325856045820212">Menghapus akun Anda akan menghapus data Anda yang terenkripsi dari peladen Brave dan menonaktifkan Sinkronisasi dari semua perangkat Anda yang terhubung. Namun hal ini tidak akan menghapus data yang disimpan secara lokal di perangkat-perangkat ini.\n\nPenghapusan ini bersifat permanen dan tidak ada cara sama sekali untuk memulihkan data. Jika Anda memutuskan untuk mulai menggunakan Sinkronisasi lagi, Anda perlu membuat akun baru dan menambahkan kembali setiap perangkat satu demi satu.</translation>
 <translation id="9064376100690171155">Hapus akun secara permanen</translation>
 <translation id="2740516568641790390">Sinkronisasi akun telah berhasil dihapus</translation>
 <translation id="7006136453627651236">Gagal menghapus sinkronisasi akun</translation>
@@ -333,12 +332,10 @@ Penghapusan ini bersifat permanen dan data tidak akan mungkin dipulihkan. Jika A
 <translation id="1602067095281698985">Mulai rantai sinkronisasi baru</translation>
 <translation id="1475223680121592371">Tambah Ponsel</translation>
 <translation id="2965377893636908578">Tambah Komputer</translation>
-<translation id="6604289897677913048">Menggunakan ponsel atau tablet kedua, buka Pengaturan Brave &gt; Sync &gt; Pindai.</translation>
-<translation id="8508856434435157945">Di perangkat ponsel, kunjungi Brave Sync dari panel Pengaturan dan klik tombol "Pindai Kode Sinkronisasi". Gunakan kamera Anda untuk memindai kode QR berikut.</translation>
-<translation id="2590683710114839102">Di komputer Anda, pilih Pengaturan Brave &gt; Sync. Pilih "Masukkan Rangkaian Kode Penyinkron".</translation>
+<translation id="4701589725270449523">Menggunakan telepon atau tablet kedua, navigasikanlah ke Pengaturan &gt; Sinkronisasi &gt; Pemindaian Brave.\n\nPada perangkat seluler Anda, navigasikanlah ke Sinkronisasi Brave pada panel Pengaturan dan klik tombol "Pindai Kode Sinkronisasi". Gunakanlah kamera Anda untuk memindai Kode QR di bawah ini.</translation>
+<translation id="67114562351518315">Di komputer Anda, navigasikanlah ke Pengaturan &gt; Sinkronisasi Brave. Pilih "Masukkan Kode Rantai Sinkronisasi".\n\nPada komputer target Anda, navigasikan ke Sinkronisasi Brave di pengaturan dan klik tombol "Saya memiliki Kode Sinkronisasi".\nMasukkan kata kode rantai sinkronisasi yang ditunjukkan di bawah.</translation>
 <translation id="65315202420929965">Pindai kode sinkronisasi ini</translation>
 <translation id="6764016175302339802">Perlakukan kode ini seperti kata sandi. Jika seseorang mengetahuinya, mereka bisa membaca dan memodifikasi data Anda yang disinkronkan.</translation>
-<translation id="6707003343517029414">Di komputer tujuan Anda, buka Brave Sync di dalam Pengaturan dan klik tombol "Saya punya Kode Sinkronisasi".\nMasukkan kata-kata kode sinkronisasi yang ditampilkan di bawah ini.</translation>
 <translation id="2731921493694251495">Masukkan kode rantai sinkronisasi</translation>
 <translation id="2175927920773552910">Kode QR</translation>
 <translation id="8653433343015102968">Kata-Kata Kode</translation>
@@ -352,6 +349,9 @@ Penghapusan ini bersifat permanen dan data tidak akan mungkin dipulihkan. Jika A
 <translation id="8131740175452115882">Konfirmasi</translation>
 <translation id="4973653569293835178">Saya akan menggunakan kamera saya...</translation>
 <translation id="326454632686131209">Sinkronisasikan perangkat</translation>
+<translation id="3122158728238634723">Hasilkan Kode Baru</translation>
+<translation id="4358805443781965194">Kode kedaluwarsa. Buat kode baru dengan mengeklik tombol di bawah ini.</translation>
+<translation id="318164877797885563">Kode sementara ini valid untuk <ph name="TIME_AMOUNT"/> ke depan</translation>
 <translation id="327726072512457161">Pengaturan keluar</translation>
 <translation id="8050847734948770789">Aktifkan Brave Rewards</translation>
 <translation id="9187185473011056079">Saya ikut!</translation>
@@ -416,8 +416,6 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="8643377320501056697">Tampilkan Situs Teratas</translation>
 <translation id="7275773481201277457">Tampilkan Statistik Brave</translation>
 <translation id="8297488609722895137">Foto oleh <ph name="PHOTO_BY"/></translation>
-<translation id="4761229094276239865">Dengan mengetuk Mulai Gunakan Brave Rewards, Anda menyetujui <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="7136586167396205364">Sembunyikan Gambar Bersponsor</translation>
 <translation id="2898634658146274982">Buka tautan eksternal di Brave</translation>
 <translation id="5616508928556767259">Buka tautan dari aplikasi lain di tampilan web Brave. Catatan: Brave harus ditetapkan sebagai peramban bawaan.</translation>
 <translation id="2394961582378297792">Keluar</translation>
@@ -438,15 +436,11 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="7961015016161918242">Jangan pernah</translation>
 <translation id="1275213816424141989">Mungkin Nanti</translation>
 <translation id="4406937629441301400">Dapatkan token dengan melihat gambar ini dan berikan kebaikan pada kreator. <ph name="LEARN_MORE"/></translation>
-<translation id="1992363542751124282">Dapatkan token untuk melihat gambar ini. Ketuk Mulai Gunakan Brave Rewards untuk mendapatkan imbalan Anda.</translation>
 <translation id="6632345639591919543">Anda memperoleh token karena melihat gambar ini.\n<ph name="LEARN_MORE"/></translation>
-<translation id="1465733111003593696">Anda memperoleh token dari melihat gambar ini.</translation>
-<translation id="7877201489035217175">Pelajari lebih jauh tentang gambar sponsor</translation>
 <translation id="8164992819127316581">Pembayaran imbalan <ph name="CURRENT_MONTH"/> akan mulai diproses sebelum <ph name="PAYOUT_DATE"/>.</translation>
 <translation id="33967210973550414">Pembayaran imbalan  <ph name="CURRENT_MONTH"/> sedang diproses. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">Pembayaran imbalan <ph name="CURRENT_MONTH"/> telah selesai. <ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">Periksa status</translation>
-<translation id="828092975561478703">Untuk setiap gambar sponsor yang dilihat, Anda menerima 70% dari pemasukan dalam bentuk token. Dengan Brave Ads, Anda selalu memegang kendali untuk iklan yang Anda lihat.</translation>
 <translation id="3624048886326677117">Memblokir pelacak &amp; iklan (Agresif)</translation>
 <translation id="7151914815476509258">Memblokir pelacak &amp; iklan (Standar)</translation>
 <translation id="7384778069178817075">Izinkan semua pelacak &amp; iklan</translation>
@@ -486,7 +480,6 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="5299848999918506028">Terima kasih!</translation>
 <translation id="76550953340008122">Terima kasih telah memberi tahu pengembang Brave tentang masalah dengan situs ini. Kami akan berusaha sebaik mungkin untuk memperbaikinya!</translation>
 <translation id="650318023204990401">Kontrol lanjutan</translation>
-<translation id="1275664486910646411">Tampilkan situs teratas di isi otomatis</translation>
 <translation id="5370478469168390143">Simpan Data Online</translation>
 <translation id="1118508688433541158">Ramban lebih cepat dan blokir iklan dengan Brave</translation>
 <translation id="7427391215172269363">Setiap hari saya menghemat data dengan menelusuri web menggunakan Brave.</translation>
@@ -827,8 +820,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="3074127054582480056">Atensi</translation>
 <translation id="2280319752798785157">Kontribusi Bulanan</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
-<translation id="5802665280774361839">Tampilkan melengkapi-otomatis di bilah alamat</translation>
-<translation id="8982438328166986164">Menampilkan usulan situs web berdasarkan markah dan riwayat penelusuran Anda.</translation>
 <translation id="1241283133946520352">Jaringan</translation>
 <translation id="1062463687579789365">Kustomisasi jaringan dompet</translation>
 <translation id="2512821599885971349">Tambahkan jaringan</translation>
@@ -947,6 +938,13 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="7134370164002095282"><ph name="CURRENT"/> dari <ph name="SIZE"/></translation>
 <translation id="756701799684433105">Setujui transaksi</translation>
 <translation id="6450792191436242818">Program Sistem</translation>
+<translation id="5318067544026930166">Buka Dompet Brave dengan autentikasi biometrik</translation>
+<translation id="2629767022373384291">Apakah Anda ingin menggunakan autentikasi biometrik untuk membuka kunci Dompet Brave Anda?</translation>
+<translation id="4782919977106118997">Menggunakan Pembuka Kunci Sidik Jari</translation>
+<translation id="2054995875643283428">Lewati ini untuk saat ini</translation>
+<translation id="2522605225061484799">Buka portofolio saya</translation>
+<translation id="1148624853678088576">Anda kini sudah siap!</translation>
+<translation id="4131445988101719379">Dompet Brave Anda siap digunakan</translation>
 <translation id="6252742184395380448">Program Konfigurasi</translation>
 <translation id="5358970666412490132">Program Taruhan</translation>
 <translation id="346636227344244984">Program Pemberian Suara</translation>

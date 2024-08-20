@@ -50,38 +50,15 @@
 <translation id="3975865347033939965">동기화 서비스를 시작할 수 없습니다. Brave Sync가 미실행 중입니다.</translation>
 <translation id="4450893287417543264">다시 표시하지 않음</translation>
 <translation id="4595286989346610620">세부정보 확인</translation>
-<translation id="7691598647605453992">IPFS</translation>
-<translation id="3094628781200061820">IPFS에서 게시 및 파일 받기</translation>
-<translation id="9220923434129933852">IPFS 설정 읽기 및 수정</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">.onion 주소를 사용하여 열기: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">강제 붙여넣기</translation>
-<translation id="4901618511712685702">IPFS로 가져오기</translation>
-<translation id="6794469945030154569">이 페이지</translation>
-<translation id="5037852323412456577">선택한 이미지</translation>
-<translation id="2715839724138372481">선택한 동영상</translation>
-<translation id="4227945450504703638">선택한 오디오</translation>
-<translation id="7895302206188277628">연결된 콘텐츠</translation>
-<translation id="3654831858282189202">IPNS 키로 게시</translation>
-<translation id="1047401034925735299">선택한 텍스트를 IPFS로 가져오기</translation>
-<translation id="6925604404524625582">IPFS 스냅샷 링크 가져오기 및 복사</translation>
 <translation id="1434416574322382019">Tor와 함께하는 새로운 비공개 윈도우</translation>
 <translation id="4703780849509456860">Tor와 함께 비공개 윈도우에서 링크 열기</translation>
 <translation id="3488584642074079080">Brave 비공개 창의 링크를 Tor로 열기</translation>
-<translation id="186554175479803110">파일 가져오기 및 공유</translation>
-<translation id="3036649622769666520">파일 열기</translation>
-<translation id="4408880250587950158">디렉토리 가져오기 및 공유</translation>
-<translation id="8396273373598682323">파일 이용</translation>
-<translation id="518600784989889917">디렉토리 이용</translation>
-<translation id="8147987711042435221">IPNS 업데이트</translation>
-<translation id="4491895534716990473">선택한 텍스트를 IPFS로 가져오기</translation>
-<translation id="8883166554766780543">IPFS 스냅샷 링크 가져오기 및 복사</translation>
-<translation id="709253338301411121">파일 가져오기 및 공유</translation>
-<translation id="7068360136237591149">파일 열기</translation>
 <translation id="6313675821927505581">Tor를 이용한 새로운 비공개 윈도우</translation>
 <translation id="2638041073279639246">Tor를 이용해 비공개 윈도우에서 링크 열기</translation>
 <translation id="3425600262621021599">Tor를 이용해 Brave 비공개 윈도우에서 링크 열기</translation>
-<translation id="3229091547987707389">디렉토리 가져오기 및 공유</translation>
 <translation id="2545072023356206691">2023년 12월 1일부터 Brave Dev 채널이 더 이상 브라우저 업데이트를 수신하지 않습니다. 기존 이용자는 Brave Nightly, Beta 또는 Release 버전으로 전환하기를 권장합니다.</translation>
 <translation id="474217410105706308">탭 음소거</translation>
 <translation id="2804710924397009224">Brave Rewards 아이콘 숨기기</translation>
@@ -115,9 +92,9 @@
 <translation id="2571596981920752023">탭 <ph name="NUMBER_OF_TABS"/>개</translation>
 <translation id="1307431692088049276">다시 묻지 않기</translation>
 <translation id="6919364924256365253">Google과 Bing은 저리 가고, Brave는 어서 오고.</translation>
-<translation id="3313148036097793884">Brave는 사용자 개인, 검색어, 클릭 내역을 추적하지 않습니다. 그리고 100% 독립적입니다.</translation>
+<translation id="2640297688005939449">Brave는 사용자를 프로파일링하지 않습니다. 그리고 100% 독립적입니다.</translation>
 <translation id="7295094278358921487">검색하고 찾는 걸 남들은 알 수 없도록.</translation>
-<translation id="45040495135337202">Brave는 사용자 개인, 검색어, 클릭 내역을 추적하지 않습니다. 그리고 빅테크 기업으로부터 100% 독립적입니다.</translation>
+<translation id="3462465068145800637">Brave는 사용자를 프로파일링하지 않습니다. 그리고 빅테크 기업으로부터 100% 독립적입니다.</translation>
 <translation id="42032117189492785">고유한 색인을 갖춘 AI 기반 검색.</translation>
 <translation id="8606416238399082160">프라이버시 완벽 보호, 100% 독립적, 뛰어난 AI 기능.</translation>
 <translation id="7706528608480893054">DDG는 모양만 다른 Bing일 뿐입니다. 진정한 프라이버시, 더 나은 결과, 독립된 색인을 이용할 때입니다. Brave 검색을 이용하세요.</translation>
@@ -129,7 +106,7 @@
 <translation id="4639001639513524869">Brave 검색은 DuckDuckGo보다 대부분의 검색어에서 결과가 더 뛰어납니다. 그리고 완벽하게 프라이버시를 보호합니다.</translation>
 <translation id="5240031343741051161">Brave Search 이용하기</translation>
 <translation id="5234764350956374838">숨기기</translation>
-<translation id="9218430445555521422">기본 브라우저로 설정</translation>
+<translation id="8722651357687610395">Brave를 기본으로 설정</translation>
 <translation id="2370739752330685659">나중에</translation>
 <translation id="5100490448228945668">Brave 검색 전환을 닫고 Enter를 누르면 이 추천 항목을 제거합니다.</translation>
 <translation id="9194637241566114638">익명 사용 데이터를 보내 <ph name="SEARCH_NAME"/> 개선을 돕습니다.  <ph name="MORE_INFO"/></translation>
@@ -167,6 +144,10 @@
 <translation id="5877900074358050101">사이드바 항목 제목</translation>
 <translation id="1613695740874407223">사이드바 항목 URL</translation>
 <translation id="4877147287319222750">사이드바에 추가</translation>
+<translation id="2422927186524098759">사이드바</translation>
+<translation id="5916664084637901428">사용</translation>
+<translation id="5860033963881614850">사용 안함</translation>
+<translation id="2393250835562952455">자동 숨기기</translation>
 <translation id="5977931179408079967">위치</translation>
 <translation id="3790384768741064842">오른쪽으로 이동</translation>
 <translation id="7444424316576061724">왼쪽으로 이동</translation>
@@ -195,15 +176,6 @@
 <translation id="8428213095426709021">설정</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 도메인</translation>
-<translation id="72868071984333667">IPFS와 프라이버시에 대해 더 알아보기</translation>
-<translation id="1419682418471956530">이 페이지는 IPFS 네트워크상에서 사용할 수 있습니다. Brave 내장 지원 기능을 사용하여 (ipfs:// 또는 ipns://을 통해) IPFS 페이지를 로드하시겠습니까?</translation>
-<translation id="7109885938715976444">이번 한 번만</translation>
-<translation id="7473891865547856676">건너뛰기</translation>
-<translation id="2722425322672922644">프라이버시에 끼치는 영향 알아보기</translation>
-<translation id="5551268135482191097">IPFS URL 로드 중에 오류가 발생했습니다. 원래 URL로 리디렉션하시겠습니까?</translation>
-<translation id="4756627014339714615">리디렉션</translation>
-<translation id="1338274252864046652">브라우저 시작 시에 항상 IPFS 노드를 시작하시겠습니까?</translation>
-<translation id="3435896845095436175">사용</translation>
 <translation id="5046066249040287308">Brave 월렛 유틸리티 서비스</translation>
 <translation id="4552520379838695057">죄송합니다. 해당 페이지가 없습니다.</translation>
 <translation id="7299769530898469069">저장된 버전을 로드할 수 없음</translation>
@@ -264,7 +236,6 @@
 <translation id="2557899542277210112">빠르게 액세스하려면, 북마크 바에 북마크를 배치하세요.</translation>
 <translation id="1968543937259008435">가장 철저한 온라인 프라이버시를 접할 준비가 되셨나요?</translation>
 <translation id="6817415381278637662">Brave를 기본 브라우저로 설정하여, 모든 웹페이지에서 Brave의 프라이버시 보호 기능을 마음껏 누리세요.</translation>
-<translation id="8722651357687610395">Brave를 기본으로 설정</translation>
 <translation id="7537601449003285327">작업 표시줄에 고정</translation>
 <translation id="2307973900865360088">도크에 고정</translation>
 <translation id="961012016278832836">Microsoft Edge 레거시</translation>
@@ -277,15 +248,17 @@
 <translation id="8373664339577369248">맞춤 순서</translation>
 <translation id="8120600068258956006">재생목록에 추가</translation>
 <translation id="650694591627983430">이 페이지에서 찾은 미디어</translation>
-<translation id="43751811163166570"><ph name="PLAYLIST_FOLDER_NAME"/>에 추가됨</translation>
 <translation id="6900840851173033633">이 페이지에서 미디어를 찾을 수 없습니다.</translation>
+<translation id="5296010081025405662">재생목록에 추가</translation>
 <translation id="4830689155681863580">재생목록에서 열기</translation>
 <translation id="4735626465866524761">폴더 변경</translation>
 <translation id="8101564000331197174">재생목록에서 제거</translation>
 <translation id="838254185387128227">이 페이지상의 미디어 더 보기...</translation>
 <translation id="326641288623143307">선택 항목 추가</translation>
+<translation id="4951645797020684601">재생목록에 추가됨</translation>
 <translation id="5856970744810677796">재생목록에서 열기</translation>
 <translation id="5494357917532817933">폴더 변경</translation>
+<translation id="5181358966317519720">재생목록에서 제거</translation>
 <translation id="333558915234875673">이 페이지상의 미디어 더 보기...</translation>
 <translation id="5145233969981669502">선택 항목 추가</translation>
 <translation id="55252794453047936">미디어 이동</translation>
@@ -309,7 +282,6 @@
 <translation id="1173894706177603556">이름 바꾸기</translation>
 <translation id="7765158879357617694">이동</translation>
 <translation id="6648536728577053364">오프라인 데이터 제거</translation>
-<translation id="5181358966317519720">재생목록에서 제거</translation>
 <translation id="2377705456080309463">원본 페이지 보기</translation>
 <translation id="158894735649719362">재생할 것이 있을 때 재미가 시작됩니다. 즐겨 보는 미디어를 추가하고 언제 어디서든 심지어 오프라인에서도 재생하세요.</translation>
 <translation id="8422349592890097194">새 폴더 만들기</translation>
@@ -377,7 +349,6 @@
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">기사가 리더 모드로 자동 로드되어 시간 절약</translation>
 <translation id="7984721311211272523">탭 스피커 아이콘에서 음소거 기능 비활성화</translation>
-<translation id="2422927186524098759">사이드바</translation>
 <translation id="832432428796481785">사이드바 버튼 표시</translation>
 <translation id="5581036754486769849">비공개 창 내 자동완성 허용</translation>
 <translation id="2262012219398520969">일반 창에 있는 정보를 읽어 비공개 창 내에서 자동완성할 수 있습니다.</translation>
@@ -400,7 +371,6 @@
 <translation id="6303294677342628402">보호</translation>
 <translation id="7133511168130368997">웹에서 귀하를 따라오는 추적기 및 광고를 차단하세요.</translation>
 <translation id="2761825942249694703">이는 기본 Shields 설정입니다. 특정 사이트에 대해 Shields 패널에서 무언가를 바꾸지 않는 한 모든 웹사이트에 적용됩니다. 이를 바꾼다고 해도 기존 사이트별 설정에는 영향을 미치지 않습니다.</translation>
-<translation id="1435116578479068303">이렇게 하면 <ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/> 설정에서 관리하는 Brave Private Ads가 아닌 대부분의 광고가 웹사이트에서 차단됩니다.</translation>
 <translation id="8452536890042542134">대부분의 광고가 웹사이트에서 차단됩니다.</translation>
 <translation id="4800195524776354947">방패 아이콘에 차단된 항목 수 표시</translation>
 <translation id="5510493033031835532">AMP 페이지 자동 리디렉션</translation>
@@ -588,7 +558,6 @@
 <translation id="842628013524824194">일반 창 - 주소 표시줄에 검색 엔진 사용</translation>
 <translation id="5324939009884545145">비공개 창 - 주소 표시줄에 검색 엔진 사용</translation>
 <translation id="6864914031231797928">확장 프로그램에 대한 Google 로그인 허용</translation>
-<translation id="6554397389149987360">화면 공유와 다른 기능들을 브라우저에서 사용하시려면 행아웃 요소들을 사용하세요.</translation>
 <translation id="7878791177459550035">미디어 라우터가 브라우저 내  전송 기능을 활성화합니다.</translation>
 <translation id="2707635989000984973">Unstoppable Domains 도메인 이름 해석</translation>
 <translation id="1807158022157096592">Unstoppable Domains 개인정보 보호 고려 사항에 대해 <ph name="BEGIN_LINK"/>자세히 알아보세요<ph name="END_LINK"/>.</translation>
@@ -601,7 +570,7 @@
 <translation id="951983619130191090">다른 사람들이 Tor 네트워크에 연결할 수 있도록 자발적으로 돕기</translation>
 <translation id="2223668809371912019">Snowflake 확장 프로그램을 활성화하면 검열 국가에 있는 사용자들이 귀하의 네트워크 연결을 통해 Tor 네트워크에 연결할 수 있습니다.</translation>
 <translation id="2959986444009520721">Bridges 사용</translation>
-<translation id="8416750895933172460">브리지는 Tor가 차단된 장소에서 Tor 네트워크에 액세스하는 데 도움을 줍니다. 현재 위치에 따라 다른 것보다 가장 나은 브리지 하나가 선택됩니다.</translation>
+<translation id="271237727681958372">브리지는 Tor가 차단된 장소에서 Tor 네트워크에 액세스하는 데 도움을 줍니다. 현재 위치에 따라 다른 것보다 가장 나은 브리지 하나가 선택됩니다.</translation>
 <translation id="7206799843254049470">Tor 연결 설정</translation>
 <translation id="3194502271166340944">Tor가 있는 비공개 창이 Tor 네트워크에 연결되는 방법 제어</translation>
 <translation id="3717364961460790491">이 기능에 필요한 Snowflake 확장 프로그램을 다운로드할 수 없습니다. 인터넷 연결 상태를 확인하고 다시 시도하세요.</translation>
@@ -619,7 +588,7 @@
 <translation id="6936835573742749135">CAPTCHA를 요청할 수 없습니다. 다시 시도하세요.</translation>
 <translation id="2653659639078652383">제출</translation>
 <translation id="1294350054292274934">Tor 창에서만 .onion 주소 해석</translation>
-<translation id="1258903596167452221">Onion 서비스는 Tor 창 외부에서 사용할 수 없습니다.</translation>
+<translation id="601227612175911475">Onion 서비스는 Tor 창 외부에서 사용할 수 없습니다.</translation>
 <translation id="2896916411183256228">브라우저에 직접 토렌트를 표시하려면 웹 토렌트를 사용하세요. 토렌트 파일들과 마그넷 링크들을 지원하세요.</translation>
 <translation id="5249433283143453448">Widevine 디지털 권리 관리(DRM) 구성 요소 사용으로 브라우저에서 보호된 스트리밍 동영상 및 기타 콘텐츠를 볼 수 있습니다.</translation>
 <translation id="1314131187310290315">Manifest V2 확장 프로그램</translation>
@@ -653,19 +622,11 @@
 <translation id="856371974127598760">월렛 네트워크</translation>
 <translation id="5975930666279943472">월렛 트랜잭션 및 임시 정보 지우기</translation>
 <translation id="5693968582510626466">트랜잭션 지우기는 개발자가 로컬 서버에서 상태를 지울 때 유용합니다.</translation>
-<translation id="4440478655766953083">자동으로 NFT 고정</translation>
-<translation id="464460032678285850">Brave 월렛에 추가된 NFT가 자동으로 로컬 IPFS 노드에 고정됩니다.
-    참고: 고정 목적으로 IPFS 대몬이 시작되어, 로컬 노드가 캐시된 데이터와 고정된 NFT를 IPFS 네트워크로 공유합니다.</translation>
 <translation id="2326850911705720398">초기화하고 월렛 데이터 지우기</translation>
-<translation id="5887022857624190239">고정된 NFT 지우기</translation>
-<translation id="204584113330893805">고정된 NFT는 로컬 IPFS 노드가 시작될 때 IPFS 네트워크에 호스팅됩니다.
-    현재 고정된 NFT가 <ph name="NFT_COUNT"/>개 있습니다.</translation>
 <translation id="9216386092464743272">월렛 트랜잭션 및 임시 정보를 초기화하시겠습니까? 이 옵션은 주로 로컬 테스트 서버를 운용하는 개발자가 사용합니다. 확인하려면 "<ph name="CONFIRMATION_PHRASE"/>"를 직접 입력하세요.</translation>
 <translation id="6369495274982305511">월렛을 초기화하시겠습니까? 월렛이 백업되어 있지 않은 경우 초기화하면 모든 계정 데이터(그 안에 담긴 자금 포함)를 잃을 수 있습니다. 확인하려면 "<ph name="CONFIRMATION_PHRASE"/>"를 직접 입력하세요.</translation>
-<translation id="4248533222660842025">고정된 NFT를 지우시겠습니까? IPFS 네트워크 내에 다른 호스트가 없는 NFT는 영원히 소실될 수 있습니다. 확인하려면 "<ph name="CONFIRMATION_PHRASE"/>"를 직접 입력하세요.</translation>
 <translation id="3752403403443723332">월렛이 초기화되었습니다.</translation>
 <translation id="594766067816395072">월렛 트랜잭션 정보가 초기화되었습니다.</translation>
-<translation id="1615009913945115836">고정된 NFT가 초기화되었습니다.</translation>
 <translation id="57798285717509216">서명 전에 트랜잭션 결과를 봅니다. <ph name="BEGIN_LINK"/>&lt;u&gt;자세히 알아보기&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">이더리움 네트워크</translation>
 <translation id="3504157706952484145">Filecoin 네트워크</translation>
@@ -691,7 +652,7 @@
 <translation id="3047726704186619366">아이콘 URL</translation>
 <translation id="2487558607408469181">블록 탐색기 URL</translation>
 <translation id="2156993118928861787">올바르지 않은 주소</translation>
-<translation id="6301398959353668507">이 필드는 비워 둘 수 없습니다.</translation>
+<translation id="2042467807419742999">이 필드는 비워 둘 수 없습니다.</translation>
 <translation id="7504462451153306677">유효하지 않은 형식입니다. 체인 ID는 양수입니다.</translation>
 <translation id="650071759190249039">내부 오류. 네트워크를 추가할 수 없습니다.</translation>
 <translation id="336035846712292194">네이티브 통화에 대한 모든 정보를 입력하세요.</translation>
@@ -702,63 +663,18 @@
 <translation id="232693303726691609">월렛 네트워크 목록에 네트워크 표시/숨기기</translation>
 <translation id="7893578599666249602"><ph name="KEY_NAME"/>을(를) 초기화하시겠습니까?</translation>
 <translation id="2618193846561624884">기존 네트워크를 업데이트하시겠습니까?</translation>
-<translation id="9170907049676078643">IPFS 리소스 리졸빙에 사용하는 방법</translation>
-<translation id="1327977588028644528">게이트웨이</translation>
-<translation id="1195880978080389104">Brave 로컬 IPFS 노드</translation>
-<translation id="2178402446227616866">Brave 로컬 IPFS 노드 및 게이트웨이 개인정보 보호 고려 사항에 대해 <ph name="BEGIN_LINK_MPL"/>자세히 알아보세요<ph name="END_LINK_MPL"/>.</translation>
-<translation id="4927734062756955434">IPFS 퍼블릭 게이트웨이 주소</translation>
-<translation id="3707431725427930007">NFT용 IPFS 퍼블릭 게이트웨이 주소</translation>
-<translation id="8425213833346101688">변경</translation>
-<translation id="585868419599255817">IPFS 공용 게이트웨이 대체</translation>
-<translation id="2618080188892567155">Brave 로컬 IPFS 노드에 접근할 수 없는 경우에 퍼블릭 IPFS 게이트웨이로 자동 전환합니다.</translation>
-<translation id="8956391206920485238">브라우저를 시작할 때 항상 IPFS 노드를 시작하시겠습니까?</translation>
-<translation id="6789104345873307368">IPFS 네트워크 리소스 요청을 구성된 게이트웨이로 자동 리디렉션합니다.</translation>
-<translation id="4138306018048329894">제3자 IPFS 게이트웨이가 호스트하는 IPFS 리소스 또는 DNSLINK 리소스 요청은 선택한 로컬 또는 원격 게이트웨이를 통해 라우팅됩니다.
-    참고: 로컬 노드가 선택되면 리소스가 귀하의 컴퓨터에서 바로 요청되며, 경우에 따라 캐시된 데이터가 IPFS 네트워크에 제공될 수 있습니다.</translation>
-<translation id="8068526464562249859">브라우저 바에서 공통 IPFS 태스크에 접근할 수 있는 기능 등 Brave에서의 보다 향상된 IPFS 지원을 위해 IPFS 컴패니언 확장 기능을 사용합니다.</translation>
-<translation id="1251574393468476924">최대 IPFS 캐시 사이즈(GB)</translation>
-<translation id="2503497578400410320">IPFS 저장소의 데이터 저장 크기에 대한 소프트 상한.</translation>
-<translation id="6758961763875471084">피어 목록 수정</translation>
-<translation id="5761731140570209168">새 피어 연결 문자열 추가</translation>
-<translation id="7024553202001112871">IPNS 키 설정</translation>
-<translation id="951216659045543447">해당 비공개 키로 콘텐츠에 서명하고 IPNS에 게시</translation>
-<translation id="7611728475758612204">키 게시 가능</translation>
-<translation id="911363100236037920">새 키 이름 입력</translation>
-<translation id="6358469157239228181">사용할 수 없는 이름</translation>
-<translation id="2082206983920804886">키 로테이션</translation>
-<translation id="5078501082919354191">Brave 로컬 IPFS 노드를 중지할 수 없음</translation>
-<translation id="5687424953196903465">Brave 로컬 IPFS 노드를 시작할 수 없음</translation>
-<translation id="6476061084931271248">변경사항을 적용하려면 노드 재시작 필요</translation>
-<translation id="3754226427671882382">노드 재시작</translation>
-<translation id="949667118776341807">로테이션</translation>
-<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
-<translation id="724513921936768901">유효하지 않은 이름</translation>
-<translation id="1295874070797049002">키 내보내기</translation>
-<translation id="3946479342297227860">키 제거</translation>
-<translation id="1534091531114892221">IPFS 피어 설명 설정</translation>
-<translation id="910215077892371264">노드가 시작되지 않음</translation>
-<translation id="616058968889448209">IPFS 서비스 런처 오류. 자세한 정보는 <ph name="BEGIN_LINK"/>진단 페이지<ph name="END_LINK"/>에서 확인하세요.</translation>
-<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' 키 가져오기 실패</translation>
-<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' 키 내보내기 실패</translation>
-<translation id="5840868269342837751">참고: 네트워크 요청이 브라우저 프록시와 DNS 설정을 사용하지 않을 수 있습니다.</translation>
-<translation id="8275038454117074363">가져오기</translation>
-<translation id="3654980960391973513">생성</translation>
-<translation id="5531501313997312487">노드 시작</translation>
-<translation id="557281710253742286">IPFS 게이트웨이 설정</translation>
-<translation id="8571837315037233299">게이트웨이 주소</translation>
-<translation id="7703184801853248830">유효하지 않은 게이트웨이 주소</translation>
-<translation id="7690058578502751948">원본 격리가 활성화된 유효한 IPFS 게이트웨이만 Brave에서 사용 가능</translation>
 <translation id="1643029991199044105">Ctrl-Tab을 사용하여 가장 최근에 사용한 탭 순환</translation>
 <translation id="2775956301559569472">404 페이지에 Wayback Machine 프롬프트 표시</translation>
 <translation id="3095201688102519917">탭 여러 개가 있는 창을 닫기 전에 경고</translation>
 <translation id="7120553802660696133">마지막 탭을 닫으면 창 닫기</translation>
+<translation id="3394171693948989253">전체화면 알림 표시, 나가려면 Esc 누르기</translation>
 <translation id="6129027151000961048">레오</translation>
 <translation id="2751872555001636931">사이드바에 레오 아이콘 표시</translation>
 <translation id="8055509865174199683">웹사이트의 컨텍스트 메뉴에 레오 표시</translation>
 <translation id="1529674267267221673">웹사이트에서 우클릭하면 나오는 컨텍스트 메뉴에 레오가 표시됩니다. 현재 웹페이지의 컨텍스트를 레오로 보낼 수 있습니다.</translation>
 <translation id="8172263161008556851">대화 내에 추천 프롬프트 표시</translation>
 <translation id="1014480593522400586">레오 데이터 지우기</translation>
-<translation id="8681157601856387010">레오 어시스턴트를 초기화하면 나중에 Brave 레오 사용에 다시
+<translation id="6803758564561896401">레오 어시스턴트를 초기화하면 나중에 Brave 레오 사용에 다시
 동의해야 하며 채팅 기록이 지워집니다. 채팅 내역이 지워지면
 Brave 레오와 나눴던 모든 대화가 삭제됩니다.
 이 작업은 번복할 수 없습니다.</translation>
@@ -766,6 +682,27 @@ Brave 레오와 나눴던 모든 대화가 삭제됩니다.
 <translation id="8157373421434119674">데이터 및 채팅 기록</translation>
 <translation id="614530507403667291">새 대화의 기본 모델</translation>
 <translation id="8826914609353373601">프리미엄 구독 관리</translation>
+<translation id="235457946228076038">소유한 모델 가져오기</translation>
+<translation id="8631951653187535788">이 모델을 삭제하시겠습니까? 이 모델이 사용되고 있는 활성 대화가 있으면 해당 대화는 레오 기본 모델을 사용하도록 변경됩니다.</translation>
+<translation id="1907126221851170941">모델 추가</translation>
+<translation id="8346224718149026088">모델 편집</translation>
+<translation id="3468298837301810372">라벨</translation>
+<translation id="3553035516792776805">모델 요청 이름</translation>
+<translation id="7634775528597575156">서버 엔드포인트</translation>
+<translation id="6374563306438145841">API 키</translation>
+<translation id="8008271349880309090">모델 선택 메뉴에 표시되는 모델의 이름</translation>
+<translation id="7131172845656551327">서버 측 프레임워크로의 요청에 표시되는 모델의 이름. 예: phi-3 (이 이름이 서버 측 프레임워크에서 기대하는 것과 정확하게 일치하지 않으면 통합이 작동하지 않음)</translation>
+<translation id="3286410514484292784">서버 측 프레임워크가 요청을 수신하는 URL입니다. 잘 모르겠으면 서버 측 프레임워크 문서를 확인하시기 바랍니다. 예를 들어, Ollama의 경우 항상 http://localhost:11434/v1/chat/completions입니다.</translation>
+<translation id="1058790648388035953">몇몇 서버 측 프레임워크가 API 키나 액세스 토큰 등, 인증 자격증명을 요구할 수 있습니다. 요청 헤더에 추가됩니다.</translation>
+<translation id="217141195370578385">Brave는 이들 요청을 프록시하지 않습니다. 선택된 제공자의 프라이버시 조항을 읽으세요.</translation>
+<translation id="2645532768679870478">안전한 데이터 전송을 위해서는 비로컬 엔드포인트에 HTTPS 프로토콜이 채용되어 있어야 합니다.</translation>
+<translation id="8177205483022887785">유효하지 않은 URL을 입력했습니다. 유효한 URL을 입력하세요.</translation>
+<translation id="5249539665306267943">새 모델 추가</translation>
+<translation id="7265212806651512211">아직 연결한 모델이 없습니다.</translation>
+<translation id="7304802428852949897">내 모델</translation>
+<translation id="7435587476558117990">자체 호스팅 또는 타사 호스팅 LLM을 레오에 연결하면 브라우저 내에서 사용할 수 있습니다.</translation>
+<translation id="1381050642750209119">Ollama 등, OpenAI Chat 프로토콜 호환 프레임워크를 사용하세요.</translation>
+<translation id="2642905648178380593">모델 저장</translation>
 <translation id="349846214503465941">재생목록 활성화</translation>
 <translation id="7903608716704052878">파일을 오프라인 보기용으로 자동 추가</translation>
 <translation id="4193768184502613558">이 옵션을 선택하면 미디어 파일을 자동으로 캐싱하여 인터넷 연결이 끊어진 상태에서도 재생할 수 있습니다.</translation>

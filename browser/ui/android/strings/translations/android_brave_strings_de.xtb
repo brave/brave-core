@@ -108,9 +108,10 @@
 <translation id="4692623383562244444">Suchmaschinen</translation>
 <translation id="1468415711258933398">Standard-Registerkarte</translation>
 <translation id="3377025655491224618">Privater Tab</translation>
+<translation id="7304425663107214334">Browser-Empfehlungen anzeigen</translation>
+<translation id="8982438328166986164">Zeigt Website-Vorschläge basierend auf Ihren Lesezeichen und Ihrem Browserverlauf an.</translation>
+<translation id="1571106259128580884">Empfehlungen für Top-Seiten anzeigen</translation>
 <translation id="9148058034647219655">Beenden</translation>
-<translation id="4022987104439075738">IPFS-Gateway</translation>
-<translation id="2688519859165248360">Ermöglicht die Navigation zum IPFS über ein IPFS-Gateway</translation>
 <translation id="8047754398610073499">Cookie-Einwilligungshinweise blockieren</translation>
 <translation id="2621893359845808115">Blockiert Website-Pop-ups, mit denen Sie darum geben werden, Cookies auf der Website zu akzeptieren bzw. abzulehnen</translation>
 <translation id="7534079972563542000">Unaufhaltsame Domains</translation>
@@ -142,9 +143,9 @@
 <translation id="2356070529366658676">Fragen</translation>
 <translation id="4176463684765177261">Deaktiviert</translation>
 <translation id="59174027418879706">Aktiviert</translation>
-<translation id="6252490671914511928">Die wichtigsten Themen des Tages in einem absolut privaten Feed, nur für Sie zusammengestellt.</translation>
+<translation id="6920492760024499150">Die wichtigsten Themen des Tages in einem privaten Feed, nur für Sie zusammengestellt.</translation>
 <translation id="8300751939969131609">Aktivieren Sie die Brave-Nachrichten, um keine Storys zu verpassen</translation>
-<translation id="7266075701303521777">Brave-Nachrichten werden werbefinanziert mit vollständig privaten und anonymisierten Anzeigen, die auf Ihrem Gerät abgeglichen werden.</translation>
+<translation id="7627131190984957214">Brave-Nachrichten ist werbeunterstützt mit privaten und anonymisierten Anzeigen, die auf Ihr Gerät abgestimmt sind.</translation>
 <translation id="7699565323725789472">Folgen Sie Ihren Lieblingsquellen in einem einzigen Feed. Öffnen Sie einfach einen Tab in Brave, scrollen Sie nach unten und … voilà!\nBrave-Nachrichten werden von privaten, anonymisierten Anzeigen finanziert.</translation>
 <translation id="1765217911817124376">Brave News aktivieren</translation>
 <translation id="8981973962043893066">Website, Thema oder RSS-Feed suchen</translation>
@@ -233,7 +234,7 @@
 <translation id="7281027579943912834">Mit Brave als Standardbrowser erhält jeder Link, auf den Sie tippen, den Werbeblockerschutz von Brave. Jede Seite, jedes Video und jeder Stream.</translation>
 <translation id="5148943178722443958">Brave mit Ihrer Hilfe verbessern.</translation>
 <translation id="6718362830686703942">Senden Sie einen Diagnosebericht, wenn Brave abstürzt oder hängen bleibt.</translation>
-<translation id="1929905278861178845">Teilen Sie vollständig private und anonyme Produkteinblicke darüber, welche Funktionen von Brave-Benutzern verwendet werden.</translation>
+<translation id="8616157231067364693">Teilen Sie private und anonyme Produkteinblicke darüber, welche Funktionen von Brave-Benutzern verwendet werden.</translation>
 <translation id="2877653791257935258">Geben Sie einen Namen einer Website oder eine URL ein.</translation>
 <translation id="5329830149661250028">Entdecken Sie den Unterschied mit Brave: Keine Werbung. Keine Tracker. Viel schnelleres Laden von Websites.</translation>
 <translation id="3941792073703079607">Sehen Sie sich den Unterschied mit Brave an: Anzeigen blockieren. Daten speichern. Schneller streamen.</translation>
@@ -276,7 +277,7 @@
 <translation id="1938402585819943124">Wählen Sie auf dem nächsten Bildschirm Brave.</translation>
 <translation id="8926389886865778422">Nicht mehr fragen</translation>
 <translation id="745974920645827035">Unabhängige Suche mit besserem Datenschutz</translation>
-<translation id="4717018805430015801">Die Brave-Suche verfolgt Ihre Aktivitäten, Anfragen oder Klicks nicht nach.</translation>
+<translation id="2773167297815493692">Die Brave-Suche profiliert sie nicht.</translation>
 <translation id="5240031343741051161">Probiere Brave Search</translation>
 <translation id="5234764350956374838">Schließen</translation>
 <translation id="6639570430554986719">JANUAR</translation>
@@ -315,15 +316,13 @@
 <translation id="3132642509209154999">Der Code ist abgelaufen. Bitte erstellen Sie auf Ihrem anderen Gerät einen neuen Code und versuchen Sie es erneut.</translation>
 <translation id="2859229680945501779">Dieser Code ist ungültig. Bitte überprüfen Sie, ob Uhrzeit und Zeitzone auf Ihrem Gerät richtig eingestellt sind.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
-<translation id="3680755684186855422">Mit Brave Sync können Sie Lesezeichendaten privat zwischen Ihren Brave-Browsern auf Ihren verschiedenen Geräten synchronisieren.</translation>
-<translation id="3735228155296883311">Scannen Sie einfach den Code aus Ihrer Synchronisierungskette, die Sie auf einem anderen Gerät erstellt haben. Oder starten Sie eine neue Synchronisierungskette.</translation>
+<translation id="348794064910142198">Mit Brave Sync können Sie Lesezeichendaten privat zwischen Ihren Brave-Browsern auf Ihren verschiedenen Geräten synchronisieren.\n\nScannen Sie einfach den Code Ihrer Synchronisierungskette, die Sie auf einem anderen Gerät erstellt haben, oder starten Sie eine neue Synchronisierungskette.</translation>
 <translation id="2614069607859982576">Während Sie die existierenden synchronisierten Geräte verwenden, öffnen Sie die Brave-Einstellungen &gt; Sync. Wählen Sie "Neues Gerät Hinzufügen" und scannen Sie den QR-Code, der auf dem Bildschirm angezeigt wird.</translation>
 <translation id="5241263629636958324">In die Zwischenablage kopiert</translation>
 <translation id="5817918615728894473">Koppeln</translation>
 <translation id="3429575397891106447">Synchronisierungs-Optionen</translation>
 <translation id="1680065323266179640">Synchronisierungskonto löschen</translation>
-<translation id="3792563952903751704">Wenn Sie Ihr Konto löschen, werden Ihre verschlüsselten Daten von den Brave-Servern entfernt und die Synchronisierung auf allen Ihren verknüpften Geräten deaktiviert. Die lokal auf diesen Geräten gespeicherten Daten werden dabei jedoch nicht gelöscht.
-  Diese Löschung ist dauerhaft und die Daten können nicht wiederhergestellt werden. Falls Sie die Synchronisierung wieder verwenden möchten, müssen Sie ein neues Konto erstellen und jedes Gerät einzeln hinzufügen.</translation>
+<translation id="8397325856045820212">Wenn Sie Ihr Konto löschen, werden Ihre verschlüsselten Daten von den Brave-Servern entfernt und die Synchronisierung auf allen verbundenen Geräten deaktiviert. Die Daten, die lokal auf diesen Geräten gespeichert sind, werden jedoch nicht gelöscht.\n\nDiese Löschung ist dauerhaft und es gibt keine Möglichkeit, die Daten wiederherzustellen. Sollten Sie sich entscheiden, Sync wieder zu verwenden, müssen Sie ein neues Konto erstellen und jedes Gerät einzeln erneut hinzufügen.</translation>
 <translation id="9064376100690171155">Konto unwiderruflich löschen</translation>
 <translation id="2740516568641790390">Synchronisierungskonto erfolgreich gelöscht</translation>
 <translation id="7006136453627651236">Synchronisierungskonto nicht gelöscht</translation>
@@ -333,12 +332,10 @@
 <translation id="1602067095281698985">Eine neue Sync-Kette beginnen</translation>
 <translation id="1475223680121592371">Mobilgerät hinzufügen</translation>
 <translation id="2965377893636908578">Computer hinzufügen</translation>
-<translation id="6604289897677913048">Gehen Sie auf einen zweiten Telefon oder Tablet zu den Brave-Einstellungen &gt; Sync &gt; Scan.</translation>
-<translation id="8508856434435157945">Navigieren Sie auf Ihrem Mobilgerät im Einstellungsbereich zu Brave Sync und klicken Sie auf die Schaltfläche "Synchronisierungscode scannen". Verwenden Sie Ihre Kamera, um den folgenden QR-Code zu scannen.</translation>
-<translation id="2590683710114839102">Gehen Sie auf Ihrem Computer zu Einstellungen &gt; Sync. Wählen Sie „Einen Synchronisierungskettencode eingeben".</translation>
+<translation id="4701589725270449523">Gehen Sie mit einem zweiten Telefon oder Tablet in die Brave-Einstellungen &gt; Sync &gt; Scannen.\n\nGehen Sie dann auf Ihrem Mobilgerät im Einstellungsbereich zu Brave Sync und klicken Sie auf die Schaltfläche „Synchronisierungscode scannen“. Scannen Sie mit Ihrer Kamera dann den QR-Code unten.</translation>
+<translation id="67114562351518315">Gehen Sie auf Ihrem Computer in die Brave-Einstellungen &gt; Sync. Wählen Sie „Synchronisierungskettencode eingeben“.\n\nGehen Sie auf Ihrem Zielcomputer in den Einstellungen zu Brave Sync und klicken Sie auf die Schaltfläche „Ich habe einen Sync-Code“.\nGeben Sie die unten gezeigten Wörter als Synchronisierungskettencode ein.</translation>
 <translation id="65315202420929965">Scannen Sie diesen Synchronisierungscode</translation>
 <translation id="6764016175302339802">Behandeln Sie diesen Code wie ein Passwort. Sollte jemand darauf Zugriff erhalten, kann diese Person Ihre synchronisierten Daten lesen und bearbeiten.</translation>
-<translation id="6707003343517029414">Navigieren Sie auf Ihrem Zielcomputer in den Einstellungen zu Brave Sync und klicken Sie auf die Schaltfläche „Ich habe einen Synchronisierungscode". \nGeben Sie die unten gezeigten Codewörter der Synchronisierungskette ein.</translation>
 <translation id="2731921493694251495">Geben Sie den Synchronisierungskettencode ein</translation>
 <translation id="2175927920773552910">QR-Code</translation>
 <translation id="8653433343015102968">Codewörter</translation>
@@ -352,6 +349,9 @@
 <translation id="8131740175452115882">Bestätigen</translation>
 <translation id="4973653569293835178">Ich verwende meine Kamera ...</translation>
 <translation id="326454632686131209">Gerät synchronisieren</translation>
+<translation id="3122158728238634723">Neuen Code generieren</translation>
+<translation id="4358805443781965194">Der Code ist abgelaufen. Generieren Sie einen neuen, indem Sie auf die Schaltfläche unten klicken.</translation>
+<translation id="318164877797885563">Dieser temporäre Code gilt für <ph name="TIME_AMOUNT"/></translation>
 <translation id="327726072512457161">Einstellungen verlassen</translation>
 <translation id="8050847734948770789">Brave Rewards aktivieren</translation>
 <translation id="9187185473011056079">Ich bin dabei!</translation>
@@ -416,8 +416,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="8643377320501056697">Die führenden Seiten anzeigen</translation>
 <translation id="7275773481201277457">Brave-Statistiken anzeigen</translation>
 <translation id="8297488609722895137">Foto von <ph name="PHOTO_BY"/></translation>
-<translation id="4761229094276239865">Durch Tippen auf Brave Rewards jetzt nutzen, stimmen Sie den <ph name="TERMS_OF_SERVICE"/> zu.</translation>
-<translation id="7136586167396205364">Gesponserte Bilder ausblenden</translation>
 <translation id="2898634658146274982">Externe Links in Brave öffnen</translation>
 <translation id="5616508928556767259">Öffnet Links aus anderen Apps in einer Brave-Webansicht. Hinweis: Brave muss als Standardbrowser festgelegt sein.</translation>
 <translation id="2394961582378297792">Abgemeldet</translation>
@@ -438,15 +436,11 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="7961015016161918242">Nie</translation>
 <translation id="1275213816424141989">Vielleicht später</translation>
 <translation id="4406937629441301400">Verdienen Sie Tokens für das Ansehen dieses Bildes und zahlen Sie sie an die Ersteller weiter. <ph name="LEARN_MORE"/></translation>
-<translation id="1992363542751124282">Verdienen Sie Token durch Ansicht dieses Bildes. Tippen Sie auf Brave Rewards jetzt nutzen, um Ihren Anteil einzufordern.</translation>
 <translation id="6632345639591919543">Sie verdienen Tokens für das Ansehen dieses Bildes.\n<ph name="LEARN_MORE"/></translation>
-<translation id="1465733111003593696">Sie verdienen Tokens für das Ansehen dieses Bildes.</translation>
-<translation id="7877201489035217175">Mehr über gesponserte Bilder erfahren</translation>
 <translation id="8164992819127316581">Die Auszahlung der Belohnungen vom<ph name="CURRENT_MONTH"/> wird bis zum <ph name="PAYOUT_DATE"/> verarbeitet.</translation>
 <translation id="33967210973550414">Die Auszahlung der Belohnungen vom <ph name="CURRENT_MONTH"/> ist in Arbeit. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">Die Auszahlung der Belohnungen vom <ph name="CURRENT_MONTH"/> ist abgeschlossen. <ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">Status überprüfen</translation>
-<translation id="828092975561478703">Für jedes gesponserte Bild, das Sie sich ansehen, erhalten Sie 70 % der Einnahmen in Tokens. Mit Brave Ads haben Sie die Werbung, die Sie sehen, immer unter Kontrolle.</translation>
 <translation id="3624048886326677117">Tracker und Werbung blockieren (aggressiv)</translation>
 <translation id="7151914815476509258">Tracker und Werbung blockieren (Standard)</translation>
 <translation id="7384778069178817075">Alle Tracker &amp; Werbung zulassen</translation>
@@ -486,7 +480,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="5299848999918506028">Vielen Dank!</translation>
 <translation id="76550953340008122">Vielen Dank, dass Sie Braves Entwickler darüber informiert haben, dass auf dieser Website ein Fehler auftritt. Wir werden unser Bestes tun, um ihn zu beheben!</translation>
 <translation id="650318023204990401">Fortgeschrittene Steuerung</translation>
-<translation id="1275664486910646411">Wichtigste Websites in Autovervollständigung anzeigen</translation>
 <translation id="5370478469168390143">Daten online speichern</translation>
 <translation id="1118508688433541158">Browsen Sie schneller und blockieren Sie Anzeigen mit Brave</translation>
 <translation id="7427391215172269363">Ich spare jeden Tag Daten, indem ich mit Brave im Internet surfe.</translation>
@@ -827,8 +820,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="3074127054582480056">Achtung</translation>
 <translation id="2280319752798785157">Monatlicher Beitrag</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
-<translation id="5802665280774361839">Autovervollständigung in der Adressleiste anzeigen</translation>
-<translation id="8982438328166986164">Zeigt Website-Vorschläge basierend auf Ihren Lesezeichen und Ihrem Browserverlauf an.</translation>
 <translation id="1241283133946520352">Netzwerke</translation>
 <translation id="1062463687579789365">Anpassung der Wallet-Netzwerke</translation>
 <translation id="2512821599885971349">Netzwerk hinzufügen</translation>
@@ -947,6 +938,13 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="7134370164002095282"><ph name="CURRENT"/> von <ph name="SIZE"/></translation>
 <translation id="756701799684433105">Transaktion genehmigen</translation>
 <translation id="6450792191436242818">Systemprogramm</translation>
+<translation id="5318067544026930166">Brave-Wallet mit biometrischer Authentifizierung entsperren</translation>
+<translation id="2629767022373384291">Möchten Sie die biometrische Authentifizierung verwenden, um Ihre Brave-Wallet zu entsperren?</translation>
+<translation id="4782919977106118997">Entsperren per Fingerabdruck aktivieren</translation>
+<translation id="2054995875643283428">Erst einmal überspringen</translation>
+<translation id="2522605225061484799">Zu meinem Portfolio wechseln</translation>
+<translation id="1148624853678088576">Sie sind soweit!</translation>
+<translation id="4131445988101719379">Ihre Brave-Wallet ist jetzt einsatzbereit.</translation>
 <translation id="6252742184395380448">Konfigurationsprogramm</translation>
 <translation id="5358970666412490132">Einsatzprogramm</translation>
 <translation id="346636227344244984">Abstimmungsprogramm</translation>

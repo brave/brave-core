@@ -1,202 +1,202 @@
 {
   "appName": {
-    "message": "Brejv oznaka datoteke",
+    "message": "Brave ознака датотеке",
     "description": "The name of the extension."
   },
   "shields": {
-    "message": "Štitovi",
+    "message": "Штитови",
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "gore",
+    "message": "горе",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "dole",
+    "message": "доле",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
-    "message": "za ovu veb lokaciju",
+    "message": "за ову веб локацију",
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "Ako se stranica pojavi slomljena, pokušajte sa isljučenim štitovima",
+    "message": "Ако се страница појави сломљјена, покушајте са исљјученим штитовима",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Pregleđujete ovaj sajt bez zaštite privatnosti i bezbednosne zaštite od strane aplikacije Brave. Zar to ne funkcioniše ispravno sa „Shields up”?",
+    "message": "Преглеђујете овај сајт без заштите приватности и безбедносне заштите од стране апликације Brave. Зар то не функционише исправно са „Схиелдс уп”?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
-    "message": "Prijavite raskinutu vezu sa sajtom",
+    "message": "Пријавите раскинуту везу са сајтом",
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
-    "message": "Stavke je blokirane",
+    "message": "Ставке је блокиране",
     "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
   "itemBlocked": {
-    "message": "Stavka je blokirana",
+    "message": "Ставка је блокирана",
     "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
   "and": {
-    "message": "i",
+    "message": "и",
     "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
   "connectionsUpgraded": {
-    "message": "veze su nadograđene",
+    "message": "везе су надограђене",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
   "connectionUpgraded": {
-    "message": "veza je nadograđena",
+    "message": "веза је надограђена",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Višelokacijska praćenja blokirana",
+    "message": "Вишелокацијска праћењја блокирана",
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
-    "message": "Praćenja i reklame su blokirani",
+    "message": "Праћењја и рекламе су блокирани",
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Tragači i oglasi su blokirani (agresivno)",
+    "message": "Трагачи и огласи су блокирани (агресивно)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Tragači i oglasi su blokirani (standardno)",
+    "message": "Трагачи и огласи су блокирани (стандардно)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "Dozvoli sve tragače i oglase",
+    "message": "Дозволи све трагаче и огласе",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
-    "message": "Veze su nadograđene u HTTPS",
+    "message": "Везе су надограђене у ХТТПС",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
   "connectionUpgradedHTTPS": {
-    "message": "Veza je nadograđena u HTTPS",
+    "message": "Веза је надограђена у ХТТПС",
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {
-    "message": "Blokirane skripte",
+    "message": "Блокиране скрипте",
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Blokirani višelokacijski kolačići",
+    "message": "Блокирани вишелокацијски колачићи",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
-    "message": "Kolačići su blokirani",
+    "message": "Колачићи су блокирани",
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "Svi kolačići su omogućeni",
+    "message": "Сви колачићи су омогућени",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
-    "message": "Fingerprinting je blokiran",
+    "message": "Фингерпринтинг је блокиран",
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
-    "message": "Blokirano je beleženje posebnih obeležja (standard)",
+    "message": "Блокирано је бележењје посебних обележја (стандард)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Blokirano je beleženje posebnih obeležja (strogo, može da probija lokacije)",
+    "message": "Блокирано је бележењје посебних обележја (строго, може да пробија локације)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
-    "message": "Dozvoli sva beleženja posebnih obeležja",
+    "message": "Дозволи сва бележењја посебних обележја",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Pokušaji beleženja posebnih obeležja",
+    "message": "Покушаји бележењја посебних обележја",
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
-    "message": "Skripte na ovoj veb lokaciji",
+    "message": "Скрипте на овој веб локацији",
     "description": "Message for the script resources blocked panel"
   },
   "blockedScripts": {
-    "message": "Blokirane skripte",
+    "message": "Блокиране скрипте",
     "description": "Message for the script resources blocked"
   },
   "allowedScripts": {
-    "message": "Dozvoljene skripte",
+    "message": "Дозвољјене скрипте",
     "description": "Message for the script resources allowed"
   },
   "blockAll": {
-    "message": "Blokiraj sve",
+    "message": "Блокирај све",
     "description": "Message for the resources blocked *block all* option"
   },
   "allowAll": {
-    "message": "Dozvoli sve",
+    "message": "Дозволи све",
     "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
-    "message": "Blokiraj",
+    "message": "Блокирај",
     "description": "Message for the resources blocked *block* option"
   },
   "allow": {
-    "message": "Dozvoli",
+    "message": "Дозволи",
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
-    "message": "Blokirano jednom",
+    "message": "Блокирано једном",
     "description": "Message for the resources blocked *blocked once* option"
   },
   "allowedOnce": {
-    "message": "Dozvoljeno jednom",
+    "message": "Дозвољјено једном",
     "description": "Message for the resources blocked *allowed once* option"
   },
   "allowScriptsOnce": {
-    "message": "Dozvoli jednom skripte",
+    "message": "Дозволи једном скрипте",
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
-    "message": "Otkaži",
+    "message": "Откажи",
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"
   },
   "goBack": {
-    "message": "Idi nazad",
+    "message": "Иди назад",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   },
   "applyOnce": {
-    "message": "Primeni jednom",
+    "message": "Примени једном",
     "description": "Message for action in dynamic list of resources blocked to *apply once*"
   },
   "changeDefaults": {
-    "message": "Promenite podrazumevane vrednosti globalnog štita",
+    "message": "Промените подразумеване вредности глобалног штита",
     "description": "Message for the button action linking to the settings page"
   },
   "manageCustomFilters": {
-    "message": "Rukovanje prilagođenim filterima",
+    "message": "Руковањје прилагођеним филтерима",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
-    "message": "Blokiraj element",
+    "message": "Блокирај елемент",
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
-    "message": "Više opcija prikaza",
+    "message": "Више опција приказа",
     "description": "Message for the advanced view option"
   },
   "simpleView": {
-    "message": "Jednostavan prikaz",
+    "message": "Једноставан приказ",
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Sajtovi često uključuju kolačiće i skripte koji pokušavaju da identifikuju Vas i Vaš uređaj (često su ugrađeni u oglase). Žele da saznaju ko ste i pratite vas po vebu - prate šta radite na svakom sajtu. Brave blokira ove stvari tako da možete da pregledate a da Vas ne prate okolo.",
+    "message": "Сајтови често укљјучују колачиц́е и скрипте који покушавају да идентификују Вас и Ваш уређај (често су уграђени у огласе). Желе да сазнају ко сте и пратите вас по вебу - прате шта радите на сваком сајту. Brave блокира ове ствари тако да можете да прегледате а да Вас не прате около.",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {
-    "message": "Praćenja sajtova i ostale grozne stvari su blokirane",
+    "message": "Праћењја сајтова и остале грозне ствари су блокиране",
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
-    "message": "Promena postavki Shield-a u ovom prikazu može uticati na kompatibilnost sa vebom na ovom sajtu.",
+    "message": "Промена поставки Схиелд-а у овом приказу може утицати на компатибилност са вебом на овом сајту.",
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {
@@ -204,7 +204,7 @@
     "description": "Message for the button that confirms the advanced view"
   },
   "learnMore": {
-    "message": "Nauči više",
+    "message": "Научи више",
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
@@ -216,11 +216,11 @@
     "description": "Message for removing an extension from Brave"
   },
   "addToChrome": {
-    "message": "Додај у Chrome",
+    "message": "Add to Chrome",
     "description": "Message for adding an extension to Chrome"
   },
   "removeFromChrome": {
-    "message": "Уклоните из Chrome-а",
+    "message": "Remove from Chrome",
     "description": "Message for removing an extension from Chrome"
   }
 }

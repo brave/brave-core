@@ -50,38 +50,15 @@
 <translation id="3975865347033939965">تعذر بدء تشغيل خدمة المزامنة، مزامنة Brave لا تعمل</translation>
 <translation id="4450893287417543264">لا تظهر مرة أخرى</translation>
 <translation id="4595286989346610620">تحقق من التفاصيل</translation>
-<translation id="7691598647605453992">IPFS</translation>
-<translation id="3094628781200061820">النشر واسترداد الملفات من IPFS</translation>
-<translation id="9220923434129933852">قراءة إعدادات IPFS وتعديلها</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">افتح باستخدام عنوان .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">فرض اللصق</translation>
-<translation id="4901618511712685702">استيراد إلى IPFS</translation>
-<translation id="6794469945030154569">هذه الصفحة</translation>
-<translation id="5037852323412456577">الصورة المحددة</translation>
-<translation id="2715839724138372481">الفيديو المحدد</translation>
-<translation id="4227945450504703638">الصوت المحدد</translation>
-<translation id="7895302206188277628">المحتوى ذو الصلة</translation>
-<translation id="3654831858282189202">النشر بواسطة مفتاح IPNS</translation>
-<translation id="1047401034925735299">استيراد النص المحدد إلى IPFS</translation>
-<translation id="6925604404524625582">الاستيراد ونسخ الرابط في صيغة لقطة من لقطات IPFS</translation>
 <translation id="1434416574322382019">نافذة جديدة وخاصة بـTor</translation>
 <translation id="4703780849509456860">افتح الرابط في نافذة خاصة بـ Tor</translation>
 <translation id="3488584642074079080">افتح الرابط في نافذة Brave الخاصة بـ Tor</translation>
-<translation id="186554175479803110">استيراد ملف ومشاركته</translation>
-<translation id="3036649622769666520">فتح الملفات</translation>
-<translation id="4408880250587950158">استيراد دليل ومشاركته</translation>
-<translation id="8396273373598682323">مع ملف</translation>
-<translation id="518600784989889917">مع دليل</translation>
-<translation id="8147987711042435221">تحديث IPNS</translation>
-<translation id="4491895534716990473">استيراد النص المحدد إلى شبكة IPFS</translation>
-<translation id="8883166554766780543">الاستيراد ونسخ الرابط في صيغة لقطة من لقطات IPFS</translation>
-<translation id="709253338301411121">استيراد ملف ومشاركته</translation>
-<translation id="7068360136237591149">فتح الملفات</translation>
 <translation id="6313675821927505581">نافذة خاصة جديدة من خلال Tor</translation>
 <translation id="2638041073279639246">افتح الرابط في نافذة خاصة، باستخدام Tor</translation>
 <translation id="3425600262621021599">افتح الرابط في نافذة Brave خاصة، باستخدام Tor</translation>
-<translation id="3229091547987707389">استيراد دليل ومشاركته</translation>
 <translation id="2545072023356206691">بدءًا من 1 ديسمبر 2023، لن تتلقى قناة Brave Dev تحديثات المتصفح بعد الآن. نوصي المستخدمين بالانتقال إلى إصدارات Nightly أو Beta أو Release من Brave.</translation>
 <translation id="474217410105706308">تجاهل علامة التبويب</translation>
 <translation id="2804710924397009224">إخفاء أيقونة مكافآت Brave</translation>
@@ -115,9 +92,9 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> علامة تبويب</translation>
 <translation id="1307431692088049276">لا تسألني مرةً أخرى</translation>
 <translation id="6919364924256365253">لا تستخدم Google في البحث. يتعذر استخدام Bing في البحث. لا يمكنك استخدام سوى Brave فحسب.</translation>
-<translation id="3313148036097793884">لا يتتبعك Brave أو يتتبع استفساراتك أو نقراتك. كما إنه مستقل تمامًا.</translation>
+<translation id="2640297688005939449">لا يقوم Brave Search بإنشاء ملف تعريف لك. كما أنه مستقل تمامًا.</translation>
 <translation id="7295094278358921487">ابحث وستحصل على نتائج. على نحو يتسم بالسرية والطابع الشخصي.</translation>
-<translation id="45040495135337202">لا يتتبعك Brave أو يتتبع استفساراتك أو نقراتك. كما إنه مستقل تمامًا عن شركات التكنولوجيا الكبيرة.</translation>
+<translation id="3462465068145800637">لا يقوم Brave Search بإنشاء ملف تعريف لك. كما أنه مستقل تمامًا عن شركات التكنولوجيا الكبرى.</translation>
 <translation id="42032117189492785">بحث مدعم بالذكاء الاصطناعي باستخدام فهرس فريد.</translation>
 <translation id="8606416238399082160">يتسم بخصوية كاملة، ومستقل تمامًا بنسبة 100%، ومزود بميزات الذكاء الاصطناعي الرائعة.</translation>
 <translation id="7706528608480893054">DDG هو مجرد Bing مخفي. حان الوقت للتمتع بخصوصية حقيقية ونتائج أفضل وفهرس مستقل. حان الوقت لـ Brave Search.</translation>
@@ -129,7 +106,7 @@
 <translation id="4639001639513524869">يتمتع Brave Search بنتائج أفضل من DuckDuckGo بالنسبة لمعظم الاستفسارات. كما يتمع بقدر حقيقي من الخصوصية.</translation>
 <translation id="5240031343741051161">تجربة البحث في Brave</translation>
 <translation id="5234764350956374838">رفض</translation>
-<translation id="9218430445555521422">تعيين كافتراضي</translation>
+<translation id="8722651357687610395">تعيين Brave كمتصفح افتراضي</translation>
 <translation id="2370739752330685659">ربما لاحقًا</translation>
 <translation id="5100490448228945668">قم برفض تحويل البحث في Brave، اضغط على Enter لإزالة هذا الاقتراح</translation>
 <translation id="9194637241566114638">ساعد في تحسين<ph name="SEARCH_NAME"/>عن طريق إرسال بيانات استخدام مجهولة الهوية.<ph name="MORE_INFO"/></translation>
@@ -167,6 +144,10 @@
 <translation id="5877900074358050101">عنوان عنصر الشريط الجانبي</translation>
 <translation id="1613695740874407223">عنوان URL لعنصر الشريط الجانبي</translation>
 <translation id="4877147287319222750">أضف إلى الشريط الجانبي</translation>
+<translation id="2422927186524098759">الشريط الجانبي</translation>
+<translation id="5916664084637901428">تشغيل</translation>
+<translation id="5860033963881614850">إيقاف</translation>
+<translation id="2393250835562952455">إخفاء تلقائي</translation>
 <translation id="5977931179408079967">موضع</translation>
 <translation id="3790384768741064842">نقل إلى اليمين</translation>
 <translation id="7444424316576061724">نقل إلى اليسار</translation>
@@ -195,15 +176,6 @@
 <translation id="8428213095426709021">الإعدادات</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">نطاقات Web3</translation>
-<translation id="72868071984333667">تعرف على المزيد حول IPFS والخصوصية</translation>
-<translation id="1419682418471956530">هذه الصفحة متاحة على شبكة IPFS. هل ترغب في تحميل صفحات IPFS باستخدام الدعم المدمج في Brave (عبر ipfs:// أو ipns://)؟</translation>
-<translation id="7109885938715976444">هذه المرة فقط</translation>
-<translation id="7473891865547856676">لا، شكرًا</translation>
-<translation id="2722425322672922644">تعرّف على كيفية تأثير ذلك على خصوصيتي</translation>
-<translation id="5551268135482191097">كان هناك خطأ في أثناء تحميل عنوان URL لـ IPFS. هل ترغب في إعادة التوجيه إلى عنوان URL الأصلي؟</translation>
-<translation id="4756627014339714615">إعادة التوجيه</translation>
-<translation id="1338274252864046652">هل ترغب في بدء عقدة IPFS دائمًا عند بدء تشغيل المتصفح؟</translation>
-<translation id="3435896845095436175">تمكين</translation>
 <translation id="5046066249040287308">خدمة الأداة المساعدة لمحفظة Brave</translation>
 <translation id="4552520379838695057">عذراً، هذه الصفحة مفقودة.</translation>
 <translation id="7299769530898469069">تعذر تحميل النسخة المحفوظة</translation>
@@ -264,7 +236,6 @@
 <translation id="2557899542277210112">ضع إشاراتك المرجعية على شريط الإشارات هنا للوصول إليها بسرعة.</translation>
 <translation id="1968543937259008435">هل أنت جاهز لخوض أفضل تجربة خصوصية عبر الإنترنت؟</translation>
 <translation id="6817415381278637662">قم بتعيين Brave كمتصفحك الافتراضي للحصول على حماية خصوصية Brave على كل صفحة ويب تفتحها.</translation>
-<translation id="8722651357687610395">تعيين Brave كمتصفح افتراضي</translation>
 <translation id="7537601449003285327">التثبيت على شريط المهام</translation>
 <translation id="2307973900865360088">حفظ في المرسى</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
@@ -277,15 +248,17 @@
 <translation id="8373664339577369248">طلب مخصص</translation>
 <translation id="8120600068258956006">إضافة إلى قائمة التشغيل</translation>
 <translation id="650694591627983430">الوسائط الموجودة في هذه الصفحة</translation>
-<translation id="43751811163166570">تمت الإضافة إلى <ph name="PLAYLIST_FOLDER_NAME"/></translation>
 <translation id="6900840851173033633">عذرًا، لم نتمكن من العثور على أي وسائط في هذه الصفحة.</translation>
+<translation id="5296010081025405662">تمت الإضافة إلى قائمة التشغيل</translation>
 <translation id="4830689155681863580">فتح في قائمة التشغيل</translation>
 <translation id="4735626465866524761">تغير المجلد</translation>
 <translation id="8101564000331197174">الإزالة من قائمة التشغيل</translation>
 <translation id="838254185387128227">يوجد مزيد من الوسائط على هذه الصفحة...</translation>
 <translation id="326641288623143307">إضافة الوسائط المحددة</translation>
+<translation id="4951645797020684601">تمت الإضافة إلى قائمة التشغيل</translation>
 <translation id="5856970744810677796">الفتح في قائمة التشغيل</translation>
 <translation id="5494357917532817933">تغيير المجلد</translation>
+<translation id="5181358966317519720">إزالة من قائمة التشغيل</translation>
 <translation id="333558915234875673">إضافة الوسائط المحددة</translation>
 <translation id="5145233969981669502">إضافة الوسائط المحددة</translation>
 <translation id="55252794453047936">نقل الوسائط</translation>
@@ -309,7 +282,6 @@
 <translation id="1173894706177603556">إعادة تسمية</translation>
 <translation id="7765158879357617694">نقل</translation>
 <translation id="6648536728577053364">إزالة البيانات دون اتصال بالإنترنت</translation>
-<translation id="5181358966317519720">إزالة من قائمة التشغيل</translation>
 <translation id="2377705456080309463">عرض الصفحة الأصلية</translation>
 <translation id="158894735649719362">يبدأ المرح عندما تملك شيئًا لتشغيله. أضف الوسائط المفضلة لديك وقم بتشغيلها في أي وقت وفي أي مكان. حتى دون الاتصال بالإنترنت.</translation>
 <translation id="8422349592890097194">انشاء مجلد جديد</translation>
@@ -378,7 +350,6 @@
 <translation id="1013121820689882118">قارئ السرعة</translation>
 <translation id="2025435450953474282">يتم تحميل المقالات تلقائيًا في وضع القارئ، مما يوفر لك الوقت</translation>
 <translation id="7984721311211272523">قم بتعطيل وظيفة كتم الصوت في أيقونات سماعات علامات التبويب</translation>
-<translation id="2422927186524098759">الشريط الجانبي</translation>
 <translation id="832432428796481785">إظهار زر الشريط الجانبي</translation>
 <translation id="5581036754486769849">السماح بالملء التلقائي في النوافذ الخاصة</translation>
 <translation id="2262012219398520969">يمكن قراءة/ملء المعلومات من النوافذ العادية تلقائيًا في النوافذ الخاصة</translation>
@@ -401,7 +372,6 @@
 <translation id="6303294677342628402">طرق الحماية</translation>
 <translation id="7133511168130368997">حظر برامج التتبع والإعلانات التي تتابعك عبر شبكة الويب.</translation>
 <translation id="2761825942249694703">هذه هي إعدادات Shields الافتراضية. تنطبق على جميع مواقع الويب ما لم تقم بتغيير شيء ما في لوحة Shields على موقع معين. لن يؤثر تغييرها على إعداداتك الحالية لكل موقع.</translation>
-<translation id="1435116578479068303">سيتسبب هذا في حظر معظم الإعلانات على مواقع الويب، وليست الإعلانات الخاصة بـ Brave؛ حيث يتم التحكم فيها في إعدادات<ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>.</translation>
 <translation id="8452536890042542134">سيتسبب هذا في حظر معظم الإعلانات على مواقع الويب،</translation>
 <translation id="4800195524776354947">إظهار عدد العناصر المحظورة على أيقونة Shields</translation>
 <translation id="5510493033031835532">إعادة توجيه صفحات AMP تلقائيًا</translation>
@@ -589,7 +559,6 @@
 <translation id="842628013524824194">نافذة عادية - تم استخدام محرك البحث في شريط العنوان</translation>
 <translation id="5324939009884545145">نافذة خاصة - تم استخدام محرك البحث في شريط العنوان</translation>
 <translation id="6864914031231797928">قم بالسماح بتسجيل الدخول إلى Google للحصول على الإضافات</translation>
-<translation id="6554397389149987360">يستخدم عنصر تطبيق Hangouts لتمكين مشاركة الشاشة وغيرها من الميزات في المتصفح.</translation>
 <translation id="7878791177459550035">موجّه الوسائط يتيح خاصية الإرسال في المتصفح.</translation>
 <translation id="2707635989000984973">حل أسماء النطاقات التي لا يمكن إيقافها</translation>
 <translation id="1807158022157096592"><ph name="BEGIN_LINK"/>اطلع على مزيد من المعلومات <ph name="END_LINK"/> حول اعتبارات خصوصية النطاقات التي لا يمكن إيقافها.</translation>
@@ -602,7 +571,7 @@
 <translation id="951983619130191090">التطوع لمساعدة الآخرين للاتصال بشبكة Tor</translation>
 <translation id="2223668809371912019">تمكين ملحق Snowflake للسماح للمستخدمين في البلدان الخاضعة للرقابة للاتصال بشبكة Tor عبر اتصالك بالشبكة.</translation>
 <translation id="2959986444009520721">استخدام الجسور</translation>
-<translation id="8416750895933172460">تساعدك الجسور في الوصول إلى شبكة Tor في المكان الذي يتم فيه حظر Tor. اعتمادًا على مكان تواجدك، قد يعمل جسر بشكلٍ أفضل من جسر آخر.</translation>
+<translation id="271237727681958372">تساعدك الجسور على الوصول إلى شبكة Tor في الأماكن التي يُحظر فيها استخدام Tor. وبناءً على موقعك، قد يعمل جسر واحد بشكل أفضل من غيره.</translation>
 <translation id="7206799843254049470">إعدادات اتصال Tor</translation>
 <translation id="3194502271166340944">أدوات التحكم في كيفية اتصال نوافذ التصفح المتخفٍ في متصفح Tor بشبكة Tor</translation>
 <translation id="3717364961460790491">يتعذر تنزيل ملحق Snowflake الضروري لهذه الوظيفة. يُرجى التحقق من اتصالك بالإنترنت وحاول مرة أخرى.</translation>
@@ -620,7 +589,7 @@
 <translation id="6936835573742749135">لا يمكن طلب اختبار CAPTCHA. حاول مرة أخرى لاحقًا.</translation>
 <translation id="2653659639078652383">إرسال</translation>
 <translation id="1294350054292274934">حل عناوين ‎.onion فقط في نوافذ متصفح Tor</translation>
-<translation id="1258903596167452221">لن تتاح خدمات Onion خارج نوافذ متصفح Tor.</translation>
+<translation id="601227612175911475">لن تكون خدمات Onion متاحة خارج نوافذ Tor.</translation>
 <translation id="2896916411183256228">استخدم WebTorrent لعرض ملفات التورنت مباشرة في المتصفح. تدعم ملفات التورنت والروابط المغناطيسية.</translation>
 <translation id="5249433283143453448">استخدم مكون Widevine لإدارة الحقوق الرقمية (DRM) لعرض دفق الفيديو المحمي والمحتويات الأخرى في المستعرض.</translation>
 <translation id="1314131187310290315">إضافات Manifest V2</translation>
@@ -654,19 +623,11 @@
 <translation id="856371974127598760">شبكات المحفظة</translation>
 <translation id="5975930666279943472">امسح تداولات المحفظة ومعلومات الرقم الخاص</translation>
 <translation id="5693968582510626466">قد يكون مسح التداولات مفيدًا للمطورين أو عند مسح الحالة على خادم محلي</translation>
-<translation id="4440478655766953083">تثبيت الرموز المميزة غير قابلة للاستبدال تلقائيًا</translation>
-<translation id="464460032678285850">قد يتم تثبيت الرموز المميزة غير قابلة للاستبدال (NFT) التي تتم إضافتها إلى Brave Wallet تلقائيًا في عقدة IPFS المحلية.
- ملاحظة: قد يتم بدء تشغيل البرنامج الخفي IPFS لأغراض التثبيت بحيث تشارك العقدة المحلية البيانات المخزنة مؤقتًا والرموز المميزة غير قابلة للاستبدال (NFT) المثبتة على شبكة IPFS.</translation>
 <translation id="2326850911705720398">إعادة تعيين بيانات المحفظة وحذفها</translation>
-<translation id="5887022857624190239">مسح الرموز المميزة غير القابلة للاستبدال المثبتة</translation>
-<translation id="204584113330893805">تتم استضافة الرموز المميزة غير القابلة للاستبدال المثبتة على شبكة IPFS عند تشغيل عقدة IPFS المحلية.
-    لديك <ph name="NFT_COUNT"/> من الرموز المميزة غير القابلة للاستبدال المثبّتة في الوقت الحالي.</translation>
 <translation id="9216386092464743272">هل أنت متأكد من أنك تريد إعادة ضبط جميع تداولات محفظتك ومعلومات الرقم السري؟ يستخدم هذا الخيار في الغالب من قبل المطورين الذين يقومون بتشغيل خادم اختبار محلي. اكتب "<ph name="CONFIRMATION_PHRASE"/>" للتأكيد.</translation>
 <translation id="6369495274982305511">هل أنت متأكد أنك تريد إعادة ضبط محفظتك؟ إذا لم يتم نسخ محفظتك احتياطيًا، فستؤدي إعادة التعيين إلى فقد جميع بيانات الحساب (بما في ذلك أي أموال مرتبطة). اكتب "<ph name="CONFIRMATION_PHRASE"/>" للتأكيد.</translation>
-<translation id="4248533222660842025">هل أنت متأكد من أنك تريد مسح الرموز المميزة غير القابلة للاستبدال المثبّتة؟ قد تُفقد بعض الرموز المميزة غير القابلة للاستبدال إلى الأبد إذا لم يوجد مستضيفون آخرون في شبكة IPFS. اكتب "<ph name="CONFIRMATION_PHRASE"/>" للتأكيد.</translation>
 <translation id="3752403403443723332">تم إعادة ضبط محفظتك</translation>
 <translation id="594766067816395072">تمت إعادة ضبط معلومات تداولات محفظتك.</translation>
-<translation id="1615009913945115836">تمت إعادة تعيين الرموز المميزة غير القابلة للاستبدال المُثبّتة الخاصة بك.</translation>
 <translation id="57798285717509216">الاطلاع على نتائج المعاملات قبل التوقيع. <ph name="BEGIN_LINK"/>&lt;u&gt;معرفة المزيد&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">شبكات الإيثيريوم</translation>
 <translation id="3504157706952484145">شبكات Filecoin</translation>
@@ -692,7 +653,7 @@
 <translation id="3047726704186619366">عناوين محدد موقع الموارد الموحد (URL) للأيقونات</translation>
 <translation id="2487558607408469181">منع عناوين URL (محدد موقع الموارد الموحد) للمستكشف</translation>
 <translation id="2156993118928861787">عنوان غير صالح</translation>
-<translation id="6301398959353668507">هذا الحقل لا يمكن أن يكون فارغًا.</translation>
+<translation id="2042467807419742999">لا يمكن أن يكون هذا الحقل فارغًا.</translation>
 <translation id="7504462451153306677">صيغة غير صالحة، معرف السلسلة رقم موجب</translation>
 <translation id="650071759190249039">خطأ داخلي، غير قادر على إضافة الشبكة.</translation>
 <translation id="336035846712292194">يُرجى ملء جميع المعلومات بشأن العملة المحلية</translation>
@@ -703,71 +664,46 @@
 <translation id="232693303726691609">إظهار/إخفاء الشبكة في قائمة شبكة المحفظة</translation>
 <translation id="7893578599666249602">هل تريد بالفعل إعادة تعيين<ph name="KEY_NAME"/>؟</translation>
 <translation id="2618193846561624884">هل تريد تحديث الشبكة الموجودة؟</translation>
-<translation id="9170907049676078643">طريقة حل موارد IPFS</translation>
-<translation id="1327977588028644528">المدخل</translation>
-<translation id="1195880978080389104">عقدة IPFS المحلية لمتصفح Brave</translation>
-<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>معرفة المزيد <ph name="END_LINK_MPL"/> حول اعتبارات خصوصية البوابة وعقدة IPFS المحلية لمتصفح Brave.</translation>
-<translation id="4927734062756955434">عنوان بوابة IPFS العام</translation>
-<translation id="3707431725427930007">عنوان بوابة IPFS العام الخاص بالرمز المميز غير القابل للاستبدال (NFT)</translation>
-<translation id="8425213833346101688">تغيير</translation>
-<translation id="585868419599255817">الرجوع لبوابة IPFS العامة</translation>
-<translation id="2618080188892567155">ارجع تلقائيًا إلى بوابة IPFS العامة إذا تعذر الوصول إلى عقدة IPFS المحلية لمتصفح Brave.</translation>
-<translation id="8956391206920485238">هل تريد بدء عقدة IPFS دومًا عند بدء تشغيل المتصفح؟</translation>
-<translation id="6789104345873307368">إعادة توجيه طلبات موارد شبكة IPFS تلقائيًا إلى البوابة التي تم تكوينها.</translation>
-<translation id="4138306018048329894">سيتم توجيه طلبات موارد IPFS المستضافة على بوابات IPFS التابعة لجهة خارجية أو موارد DNSLINK عبر عبر بوابة محددة محلية أو عن بُعد.
-ملاحظة: إذا تم تحديد العقدة المحلية، فسيتم طلب المورد مباشرة من جهاز الكمبيوتر الخاص بك وقد يتم توفير البيانات المخزنة مؤقتًا على شبكة IPFS لفترة من الزمن.</translation>
-<translation id="8068526464562249859">يستخدم امتداد IPFS Companion لدعم IPFS المحسن في Brave، بما في ذلك الوصول إلى مهام IPFS الشائعة من شريط المستعرض الخاص بك.</translation>
-<translation id="1251574393468476924">الحد الأقصى لحجم ذاكرة التخزين المؤقت IPFS (جيجابايت)</translation>
-<translation id="2503497578400410320">حد أعلى مرن لمساحة قاعدة البيانات الخاصة بالـ IPFS القابلة للحفظ.</translation>
-<translation id="6758961763875471084">تعديل قائمة الأقران</translation>
-<translation id="5761731140570209168">إضافة مقطع الاتصال لقرينك الجديد</translation>
-<translation id="7024553202001112871">إعداد مفاتيح IPNS الخاصة بك</translation>
-<translation id="951216659045543447">توقيع المحتوى بواسطة المفتاح الخاص المتوافق ونشره على IPNS</translation>
-<translation id="7611728475758612204">المفاتيح المتوفرة للنشر</translation>
-<translation id="911363100236037920">إدخال اسم للمفتاح الجديد</translation>
-<translation id="6358469157239228181">يتعذر استخدام هذا الاسم</translation>
-<translation id="2082206983920804886">تدوير المفتاح</translation>
-<translation id="5078501082919354191">غير قادر على إيقاف عقدة IPFS المحلية من متصفح Brave</translation>
-<translation id="5687424953196903465">غير قادر على إطلاق عقدة IPFS المحلية من Brave</translation>
-<translation id="6476061084931271248">إعادة تشغيل العقدة لتطبيق التغييرات</translation>
-<translation id="3754226427671882382">إعادة تشغيل العقدة</translation>
-<translation id="949667118776341807">تدوير</translation>
-<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
-<translation id="724513921936768901">هذا الاسم غير صالح</translation>
-<translation id="1295874070797049002">تصدير المفتاح</translation>
-<translation id="3946479342297227860">إزالة المفتاح</translation>
-<translation id="1534091531114892221">إعداد وصف الأقران لنظام الملفات اللامركزي</translation>
-<translation id="910215077892371264">لم يتم تشغيل العقدة</translation>
-<translation id="616058968889448209">خطأ في تشغيل خدمة IPFS، يتوفر المزيد من المعلومات على <ph name="BEGIN_LINK"/>صفحة التشخيص<ph name="END_LINK"/></translation>
-<translation id="6912148685459054619">فشل استيراد المفتاح '<ph name="KEY_NAME"/>'</translation>
-<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' key export failed
-فشل تصدير المفتاح</translation>
-<translation id="5840868269342837751">ملاحظة: قد لا تستخدم طلبات الشبكة الخادم الوكيل للمتصفح وإعدادات DNS.</translation>
-<translation id="8275038454117074363">الاستيراد</translation>
-<translation id="3654980960391973513">إنشاء</translation>
-<translation id="5531501313997312487">بدء العقدة</translation>
-<translation id="557281710253742286">تعيين بوابة IPFS</translation>
-<translation id="8571837315037233299">عنوان البوابة</translation>
-<translation id="7703184801853248830">عنوان البوابة غير صالح</translation>
-<translation id="7690058578502751948">يمكن فقط استخدام بوابة IPFS صالحة مع تمكين عزل Origin في Brave</translation>
 <translation id="1643029991199044105">تنقل عبر آخر علامات التبويب المستخدمة باستخدام Ctrl-Tab</translation>
 <translation id="2775956301559569472">عرض تنبيه "واي باك مشين" الفوري على صفحات 404</translation>
 <translation id="3095201688102519917">تحذيري قبل إغلاق النافذة بعلامات تبويب متعددة</translation>
 <translation id="7120553802660696133">أغلق النافذة عند إغلاق آخر علامة تبويب</translation>
+<translation id="3394171693948989253">إظهار تذكير ملء الشاشة للضغط على Esc عند الخروج</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">إظهار رمز Leo في الشريط الجانبي</translation>
 <translation id="8055509865174199683">إظهار مساعد Leo في قائمة السياقات على مواقع الويب</translation>
 <translation id="1529674267267221673">سيظهر مساعد Leo في قائمة السياقات عندما تنقر بزر الماوس الأيمن على موقع الويب. وسيؤدي ذلك إلى إرسال السياق من صفحة الويب الحالية إلى مساعد Leo.</translation>
 <translation id="8172263161008556851">إظهار المطالبات المقترحة في المحادثة</translation>
 <translation id="1014480593522400586">مسح بيانات Leo</translation>
-<translation id="8681157601856387010">ستتطلب إعادة ضبط مساعد Leo الاشتراك لاستخدام  Brave
-Leo في المستقبل وسيقوم أيضًا بمحو سجل الدردشة الخاص بك. محو
-سيمحو سجل الدردشة جميع محادثاتك السابقة مع Brave
-Leo. لا يمكن التراجع عن هذا الإجراء.</translation>
+<translation id="6803758564561896401">ستتطلب إعادة ضبط مساعد Leo منك الاشتراك لاستخدام Brave
+Leo في المستقبل وستقوم أيضًا بمحو سجل الدردشة الخاص بك. وسيؤدي مسح سجل
+الدردشة الخاص بك إلى حذف جميع محادثاتك السابقة مع Brave
+Leo. ولا يمكن التراجع عن هذا الإجراء.</translation>
 <translation id="5574059574002819179">ضبط اقتراحات الإكمال التلقائي</translation>
 <translation id="8157373421434119674">البيانات وتاريخ الدردشة</translation>
 <translation id="614530507403667291">النموذج التلقائي للمحادثات الجديدة</translation>
 <translation id="8826914609353373601">إدارة الاشتراك المميز</translation>
+<translation id="235457946228076038">أحضر النموذج الخاص بك</translation>
+<translation id="8631951653187535788">هل تريد بالتأكيد حذف هذا النموذج؟ إذا تم استخدام هذا النموذج في أي محادثة نشطة، فستتغير هذه المحادثة لاستخدام نموذج Leo الافتراضي.</translation>
+<translation id="1907126221851170941">إضافة نموذج</translation>
+<translation id="8346224718149026088">تحرير النموذج</translation>
+<translation id="3468298837301810372">التسمية</translation>
+<translation id="3553035516792776805">اسم طلب النموذج</translation>
+<translation id="7634775528597575156">نقطة نهاية الخادم</translation>
+<translation id="6374563306438145841">مفتاح API</translation>
+<translation id="8008271349880309090">اسم النموذج كما سيظهر في قائمة اختيار النموذج</translation>
+<translation id="7131172845656551327">اسم النموذج كما يجب أن يظهر في الطلب المقدم إلى إطار عمل العرض، على سبيل المثال phi-3 (لاحظ أنه إذا لم يتطابق هذا الاسم تمامًا مع ما يتوقعه إطار العمل المقدم، فلن يعمل الدمج)</translation>
+<translation id="3286410514484292784">عنوان url حيث يستمع إطار عمل العرض الخاص بك للطلبات. إذا لم تكن متأكدًا، فتحقق من وثائق إطار عمل العرض. على سبيل المثال بالنسبة لـ Ollama، يكون هذا دائمًا http://localhost:11434/v1/chat/completions</translation>
+<translation id="1058790648388035953">قد تتطلب بعض أطر عمل الخدمة بيانات اعتماد المصادقة، مثل مفتاح  واجهة برمجة التطبيقات (API) أو رمز الوصول. سيتم إضافة هذه البيانات إلى عنوان الطلب.</translation>
+<translation id="217141195370578385">لا يقوم Brave بتوكيل هذه الطلبات، ولذا يُرجى قراءة شروط الخصوصية الخاصة بمقدم الخدمة المختار.</translation>
+<translation id="2645532768679870478">ينبغي لنقاط النهاية غير المحلية استخدام بروتوكول HTTPS لنقل البيانات بشكل آمن.</translation>
+<translation id="8177205483022887785">لقد أدخلت عنوان URL غير صالح. يُرجى إدخال عنوان URL صالح.</translation>
+<translation id="5249539665306267943">إضافة نموذج جديد</translation>
+<translation id="7265212806651512211">لم تقم بتوصيل النموذج بعد.</translation>
+<translation id="7304802428852949897">النماذج الخاصة بك</translation>
+<translation id="7435587476558117990">قم بتوصيل LLM المستضاف ذاتيًا أو المستضاف بواسطة جهة خارجية بـ Leo واستخدمه داخل المتصفح.</translation>
+<translation id="1381050642750209119">استخدم أي إطار عمل متوافق مع بروتوكول دردشة OpenAI مثل Ollama.</translation>
+<translation id="2642905648178380593">حفظ النموذج</translation>
 <translation id="349846214503465941">تمكين قائمة التشغيل</translation>
 <translation id="7903608716704052878">إضافة الملفات تلقائيًا للعرض من دون الاتصال بالإنترنت</translation>
 <translation id="4193768184502613558">سيقوم هذا الخيار تلقائيًا بتخزين ملفات الوسائط مؤقتًا حتى تتمكن من تشغيلها من دون اتصال بالإنترنت.</translation>

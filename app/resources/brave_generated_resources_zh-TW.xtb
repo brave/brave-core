@@ -50,38 +50,15 @@
 <translation id="3975865347033939965">同步服務無法啟動，Brave 同步未執行</translation>
 <translation id="4450893287417543264">不要再顯示</translation>
 <translation id="4595286989346610620">查看詳情</translation>
-<translation id="7691598647605453992">IPFS</translation>
-<translation id="3094628781200061820">在 IPFS 發佈並擷取檔案</translation>
-<translation id="9220923434129933852">閱讀並修改 IPFS 設定</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">使用 .onion 位址開啟： <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">強制貼上</translation>
-<translation id="4901618511712685702">匯入至 IPFS</translation>
-<translation id="6794469945030154569">此頁面</translation>
-<translation id="5037852323412456577">選取的圖片</translation>
-<translation id="2715839724138372481">選取的影片</translation>
-<translation id="4227945450504703638">選取的音訊</translation>
-<translation id="7895302206188277628">連結的內容</translation>
-<translation id="3654831858282189202">使用 IPNS 金鑰發佈</translation>
-<translation id="1047401034925735299">將選取的文字匯入至 IPFS</translation>
-<translation id="6925604404524625582">匯入並複製連結至 IPFS 快拍圖像</translation>
 <translation id="1434416574322382019">以 Tor 開啟新私有窗口</translation>
 <translation id="4703780849509456860">使用 Tor 在隱私視窗中打開連結</translation>
 <translation id="3488584642074079080">使用 Tor 在隱私視窗中打開連結</translation>
-<translation id="186554175479803110">匯入並分享檔案</translation>
-<translation id="3036649622769666520">開啟檔案</translation>
-<translation id="4408880250587950158">匯入並分享目錄</translation>
-<translation id="8396273373598682323">發佈檔案</translation>
-<translation id="518600784989889917">發佈目錄</translation>
-<translation id="8147987711042435221">更新 IPNS</translation>
-<translation id="4491895534716990473">將選取的文字匯入至 IPFS</translation>
-<translation id="8883166554766780543">匯入並複製連結至 IPFS 快照</translation>
-<translation id="709253338301411121">匯入並分享檔案</translation>
-<translation id="7068360136237591149">開啟檔案</translation>
 <translation id="6313675821927505581">新的使用 Tor 的視窗</translation>
 <translation id="2638041073279639246">在使用 Tor 的隱私視窗中開啟連結</translation>
 <translation id="3425600262621021599">在使用 Tor 的 Brave 隱私視窗中開啟連結</translation>
-<translation id="3229091547987707389">匯入並分享目錄</translation>
 <translation id="2545072023356206691">從 2023 年 12 月 1 日開始，Brave Dev 頻道將不再接收瀏覽器更新。建議使用者改用 Brave Nightly、測試版或正式版。</translation>
 <translation id="474217410105706308">關閉分頁音訊</translation>
 <translation id="2804710924397009224">隱藏 Brave 獎賞圖標</translation>
@@ -115,9 +92,9 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> 個分頁</translation>
 <translation id="1307431692088049276">不要再問了</translation>
 <translation id="6919364924256365253">別再 Google。不用 Bing。選 Brave 就對了。</translation>
-<translation id="3313148036097793884">Brave 不會追蹤你、你的查詢內容或點擊紀錄。100% 獨立。</translation>
+<translation id="2640297688005939449">Brave 搜尋不會建立您的使用者輪廓，完全獨立運作。</translation>
 <translation id="7295094278358921487">搜了就有，隱密無痕。</translation>
-<translation id="45040495135337202">Brave 不會追蹤你、你的查詢內容或點擊紀錄，而且 100% 獨立於大型科技公司。</translation>
+<translation id="3462465068145800637">Brave 搜尋不會建立您的使用者輪廓，完全獨立於大型科技公司。</translation>
 <translation id="42032117189492785">AI 智慧搜尋，搭配獨一無二的索引方式。</translation>
 <translation id="8606416238399082160">完全隱私、100% 獨立，還具有強大的 AI 功能。</translation>
 <translation id="7706528608480893054">DDG 只是 Bing 的偽裝。實現真正隱私、更好的結果和獨立的索引的時候到了。使用 Brave 搜尋的時候到了。</translation>
@@ -129,7 +106,7 @@
 <translation id="4639001639513524869">Brave 搜尋在大多數查詢中比 DuckDuckGo 更好，並且是真正隱私的。</translation>
 <translation id="5240031343741051161">尝试Brave搜索</translation>
 <translation id="5234764350956374838">關閉</translation>
-<translation id="9218430445555521422">設定為預設</translation>
+<translation id="8722651357687610395">將 Brave 設為預設值</translation>
 <translation id="2370739752330685659">稍後再說</translation>
 <translation id="5100490448228945668">關閉 Brave 搜尋轉換功能，按 Enter 鍵即可移除此建議</translation>
 <translation id="9194637241566114638">匿名傳送使用情況的相關資料，協助改善 <ph name="SEARCH_NAME"/>。<ph name="MORE_INFO"/></translation>
@@ -167,6 +144,10 @@
 <translation id="5877900074358050101">側邊欄項目標題</translation>
 <translation id="1613695740874407223">側邊欄項目 URL</translation>
 <translation id="4877147287319222750">新增到側邊欄</translation>
+<translation id="2422927186524098759">側邊欄</translation>
+<translation id="5916664084637901428">開啟</translation>
+<translation id="5860033963881614850">關閉</translation>
+<translation id="2393250835562952455">自動隱藏</translation>
 <translation id="5977931179408079967">位置</translation>
 <translation id="3790384768741064842">移至右側</translation>
 <translation id="7444424316576061724">移至左側</translation>
@@ -195,15 +176,6 @@
 <translation id="8428213095426709021">設定</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 網域</translation>
-<translation id="72868071984333667">深入了解 IPFS 和隱私權</translation>
-<translation id="1419682418471956530">本頁面可在 IPFS 網路上存取。你想使用 Brave 內建的功能載入 IPFS 頁面嗎（透過 ipfs:// 或 ipns://）？</translation>
-<translation id="7109885938715976444">僅限此次</translation>
-<translation id="7473891865547856676">不用了，謝謝</translation>
-<translation id="2722425322672922644">瞭解這對我的隱私有何影響</translation>
-<translation id="5551268135482191097">載入 IPFS URL 時出現錯誤。要重新導向至原始 URL 嗎？</translation>
-<translation id="4756627014339714615">重新導向</translation>
-<translation id="1338274252864046652">要總是在瀏覽器啟動時啟動 IPFS 節點嗎？</translation>
-<translation id="3435896845095436175">啟用</translation>
 <translation id="5046066249040287308">Brave 錢包公用程式服務</translation>
 <translation id="4552520379838695057">抱歉，頁面遺失。</translation>
 <translation id="7299769530898469069">無法載入已儲存的版本</translation>
@@ -264,7 +236,6 @@
 <translation id="2557899542277210112">為了快速存取，請將您的書籤置於書籤列上。</translation>
 <translation id="1968543937259008435">準備好迎接最佳網路隱私防護了嗎？</translation>
 <translation id="6817415381278637662">快將 Brave 設為預設瀏覽器，在開啟每個網頁時享有 Brave 提供的隱私防護。</translation>
-<translation id="8722651357687610395">將 Brave 設為預設值</translation>
 <translation id="7537601449003285327">固定至工作列</translation>
 <translation id="2307973900865360088">保留於 Dock</translation>
 <translation id="961012016278832836">Microsoft Edge 舊版</translation>
@@ -277,15 +248,17 @@
 <translation id="8373664339577369248">自訂順序</translation>
 <translation id="8120600068258956006">新增至播放清單</translation>
 <translation id="650694591627983430">在此頁面上找到的媒體</translation>
-<translation id="43751811163166570">已加至<ph name="PLAYLIST_FOLDER_NAME"/></translation>
 <translation id="6900840851173033633">很抱歉，我們在此頁面上找不到任何媒體。</translation>
+<translation id="5296010081025405662">已新增至播放清單</translation>
 <translation id="4830689155681863580">在播放清單中開啟</translation>
 <translation id="4735626465866524761">更改資料夾</translation>
 <translation id="8101564000331197174">從播放清單中移除</translation>
 <translation id="838254185387128227">此頁面上的更多媒體...…</translation>
 <translation id="326641288623143307">加入選取的項目</translation>
+<translation id="4951645797020684601">已新增至播放清單</translation>
 <translation id="5856970744810677796">在播放清單中開啟</translation>
 <translation id="5494357917532817933">更改資料夾</translation>
+<translation id="5181358966317519720">從播放清單中移除</translation>
 <translation id="333558915234875673">此頁面上的更多媒體...…</translation>
 <translation id="5145233969981669502">加入選取的項目</translation>
 <translation id="55252794453047936">移動媒體</translation>
@@ -309,7 +282,6 @@
 <translation id="1173894706177603556">重新命名</translation>
 <translation id="7765158879357617694">移動</translation>
 <translation id="6648536728577053364">移除離線資料</translation>
-<translation id="5181358966317519720">從播放清單中移除</translation>
 <translation id="2377705456080309463">檢視原始頁面</translation>
 <translation id="158894735649719362">當您有可播放的內容時，樂趣就開始了。加入您喜愛的媒體，隨時隨地播放，即使離線也沒問題。</translation>
 <translation id="8422349592890097194">建立新資料夾</translation>
@@ -377,7 +349,6 @@
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">文章會自動以閱讀器模式載入，節省您的時間</translation>
 <translation id="7984721311211272523">在分頁喇叭圖示中停用靜音功能</translation>
-<translation id="2422927186524098759">側邊欄</translation>
 <translation id="832432428796481785">顯示側邊欄按鈕</translation>
 <translation id="5581036754486769849">在無痕式視窗中允許自動填入</translation>
 <translation id="2262012219398520969">可在無痕式視窗中讀取/自動填入一般視窗中的資訊</translation>
@@ -400,7 +371,6 @@
 <translation id="6303294677342628402">防護</translation>
 <translation id="7133511168130368997">封鎖在整個網路上追蹤您的追蹤器與廣告。</translation>
 <translation id="2761825942249694703">這些是預設的防護設定。它們會套用到所有的網頁，除非您在特定的網頁上於防護面板中修改了某些東西才會有所不同。變更這些不會影響您既有的每個網站的設定。</translation>
-<translation id="1435116578479068303">這會封鎖網站上的大部分廣告，但不會封鎖私人 Brave 廣告，如要對此進行控管，請前往 <ph name="BEGIN_LINK"/>Brave 獎勵<ph name="END_LINK"/> 設定。</translation>
 <translation id="8452536890042542134">這將封鎖網站上的大部分廣告。</translation>
 <translation id="4800195524776354947">在 Shields 圖示上顯示封鎖項目的數量</translation>
 <translation id="5510493033031835532">自動重新導向 AMP 頁面</translation>
@@ -589,7 +559,6 @@
 <translation id="842628013524824194">一般視窗 - 在網址列使用搜尋引擎</translation>
 <translation id="5324939009884545145">隱私視窗 - 在網址列使用搜尋引擎</translation>
 <translation id="6864914031231797928">允許延伸套件登入 Google</translation>
-<translation id="6554397389149987360">使用 Hangouts 元件來啟用畫面分享和其它瀏覽器功能。</translation>
 <translation id="7878791177459550035">媒體路由器可在瀏覽器中啟用投影功能。</translation>
 <translation id="2707635989000984973">解析 Unstoppable Domains 網域名稱</translation>
 <translation id="1807158022157096592"><ph name="BEGIN_LINK"/>深入瞭解<ph name="END_LINK"/> Unstoppable Domains 隱私權的相關考量。</translation>
@@ -602,7 +571,7 @@
 <translation id="951983619130191090">自願協助他人連線至 Tor 網路</translation>
 <translation id="2223668809371912019">啟用 Snowflake 擴充功能，允許設有審查制度國家/地區的使用者透過您的網路連線至 Tor 網路。</translation>
 <translation id="2959986444009520721">使用橋接器</translation>
-<translation id="8416750895933172460">橋接器可幫助您在 Tor 受封鎖的地方存取 Tor 網路。橋接器的效能可能會因為您所在的位置而有所不同。</translation>
+<translation id="271237727681958372">橋接器可幫助您在 Tor 遭封鎖的地方存取 Tor 網路。橋接器的效能可能會因為您所在的位置而有所不同。</translation>
 <translation id="7206799843254049470">Tor 連線設定</translation>
 <translation id="3194502271166340944">控制 Tor 私密視窗連結到 Tor 網路的方式</translation>
 <translation id="3717364961460790491">Snowflake 擴充功能是使用這項功能的必要項目，但目前無法下載。請檢查您的網際網路連線，並再試一次。</translation>
@@ -620,7 +589,7 @@
 <translation id="6936835573742749135">無法申請 CAPTCHA，請稍後再試。</translation>
 <translation id="2653659639078652383">提交</translation>
 <translation id="1294350054292274934">只在 Tor 視窗中解析 .onion 位址</translation>
-<translation id="1258903596167452221">Onion 服務在 Tor 視窗外將不可用。</translation>
+<translation id="601227612175911475">Onion 服務無法在 Tor 視窗外使用。</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在瀏覽器顯示種子檔案。支援種子檔案和磁力連結。</translation>
 <translation id="5249433283143453448">使用 Widevine 數位版權管理 (DRM) 元件以在瀏覽器中檢視受保護的串流影片與其他內容。</translation>
 <translation id="1314131187310290315">Manifest V2 擴充功能</translation>
@@ -654,19 +623,11 @@
 <translation id="856371974127598760">錢包網路</translation>
 <translation id="5975930666279943472">清除錢包交易和 nonce 資訊</translation>
 <translation id="5693968582510626466">清除交易對開發人員或清除本機伺服器上的狀態而言很實用</translation>
-<translation id="4440478655766953083">自動固定 NFT</translation>
-<translation id="464460032678285850">新增至 Brave 錢包的 NFT 可能會自動固定至本機 IPFS 節點。
-    注意：系統可能會為了固定而啟動 IPFS 常駐程式，因此您的本機節點會將快取資料和固定的 NFT 分享到 IPFS 網路。</translation>
 <translation id="2326850911705720398">重設並清除錢包資料</translation>
-<translation id="5887022857624190239">清除釘選的 NFT</translation>
-<translation id="204584113330893805">當啟動本機 IPFS 節點時，系統會將已釘選的 NFT 代管至 IPFS 網路。
-    您目前有 <ph name="NFT_COUNT"/> 個已釘選的 NFT。</translation>
 <translation id="9216386092464743272">您確定要重設所有錢包交易和 nonce 資訊嗎？執行本機測試伺服器的開發人員通常使用此選項。輸入「<ph name="CONFIRMATION_PHRASE"/>」以確認。</translation>
 <translation id="6369495274982305511">確定要重設錢包嗎？如果錢包未備份，重設將會導致您失去所有帳戶資料（包括任何關聯的資金）。鍵入「<ph name="CONFIRMATION_PHRASE"/>」以確認。</translation>
-<translation id="4248533222660842025">您確定要清除已釘選的 NFT 嗎？如果 IPFS 網路中沒有其他代管服務提供者，則部分 NFT 可能會永久遺失。請輸入「<ph name="CONFIRMATION_PHRASE"/>」以確認。</translation>
 <translation id="3752403403443723332">您的錢包已重設。</translation>
 <translation id="594766067816395072">您的錢包交易資訊已重設。</translation>
-<translation id="1615009913945115836">您的 NFT 已重設。</translation>
 <translation id="57798285717509216">請在簽署前查看交易結果。<ph name="BEGIN_LINK"/>&lt;u&gt;深入瞭解&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">以太坊網路</translation>
 <translation id="3504157706952484145">Filecoin 網路</translation>
@@ -692,7 +653,7 @@
 <translation id="3047726704186619366">圖示 URL</translation>
 <translation id="2487558607408469181">區塊瀏覽器 URL</translation>
 <translation id="2156993118928861787">錯誤的位址</translation>
-<translation id="6301398959353668507">這個欄位不能留空。</translation>
+<translation id="2042467807419742999">此欄位不得空白。</translation>
 <translation id="7504462451153306677">格式無效，區塊鏈 ID 必須是正數。</translation>
 <translation id="650071759190249039">內部錯誤，無法新增網路。</translation>
 <translation id="336035846712292194">請提供與原生貨幣相關的所有資訊</translation>
@@ -703,70 +664,45 @@
 <translation id="232693303726691609">在錢包網路清單中顯示/隱藏網路</translation>
 <translation id="7893578599666249602">您是否真的想要重設 <ph name="KEY_NAME"/>？</translation>
 <translation id="2618193846561624884">要更新現有網路嗎？</translation>
-<translation id="9170907049676078643">解析 IPFS 資源的方法</translation>
-<translation id="1327977588028644528">閘道</translation>
-<translation id="1195880978080389104">Brave 本機 IPFS 節點</translation>
-<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>深入瞭解<ph name="END_LINK_MPL"/> Brave 本機 IPFS 節點與閘道隱私注意事項。</translation>
-<translation id="4927734062756955434">IPFS 公用閘道器位址</translation>
-<translation id="3707431725427930007">NFT 的 IPFS 公用閘道位址</translation>
-<translation id="8425213833346101688">變更</translation>
-<translation id="585868419599255817">IPFS 公開閘道器汰退</translation>
-<translation id="2618080188892567155">如果無法連接 Brave 本機 IPFS 節點，自動回復公用 IPFS 閘道。</translation>
-<translation id="8956391206920485238">總是在瀏覽器啟動時啟動 IPFS 節點嗎？</translation>
-<translation id="6789104345873307368">自動將 IPFS 網路資源請求重新導向到設定的閘道器。</translation>
-<translation id="4138306018048329894">向第三方 IPFS 閘道或 DNSLINK 資源所代管的 IPFS 資源提出的請求，會透過您選取的本機或遠端閘道載入。
-注意：若已選取本機節點，資源請求會由電腦直接提出，並為 IPFS 網路提供快取資料一段時間。</translation>
-<translation id="8068526464562249859">在 Brave 使用 IPFS 隨附擴充功能以增強 IPFS 支援，包括從您的瀏覽器列存取一般的 IPFS 任務。</translation>
-<translation id="1251574393468476924">IPFS 快取大小上限 (GB)</translation>
-<translation id="2503497578400410320">IPFS 儲存庫 datastore 大小的軟上限。</translation>
-<translation id="6758961763875471084">修改對等清單</translation>
-<translation id="5761731140570209168">新增新的對等連線字串</translation>
-<translation id="7024553202001112871">設定 IPNS 金鑰</translation>
-<translation id="951216659045543447">透過對應的私鑰簽署內容並將其發佈到 IPNS</translation>
-<translation id="7611728475758612204">用於發佈的金鑰</translation>
-<translation id="911363100236037920">輸入新金鑰名稱</translation>
-<translation id="6358469157239228181">此名稱無法使用</translation>
-<translation id="2082206983920804886">旋轉金鑰</translation>
-<translation id="5078501082919354191">無法關閉 Brave 本機 IPFS 節點</translation>
-<translation id="5687424953196903465">無法啟動 Brave 本機 IPFS 節點</translation>
-<translation id="6476061084931271248">重新啟動節點，以套用變更</translation>
-<translation id="3754226427671882382">重新啟動節點</translation>
-<translation id="949667118776341807">旋轉</translation>
-<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
-<translation id="724513921936768901">此名稱無效</translation>
-<translation id="1295874070797049002">匯出金鑰</translation>
-<translation id="3946479342297227860">移除金鑰</translation>
-<translation id="1534091531114892221">設定 ipfs 對等描述</translation>
-<translation id="910215077892371264">節點未啟動</translation>
-<translation id="616058968889448209">IPFS 服務啟動錯誤，更多資訊請參閱<ph name="BEGIN_LINK"/>診斷頁面<ph name="END_LINK"/></translation>
-<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' 金鑰匯入失敗</translation>
-<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' 金鑰匯出失敗</translation>
-<translation id="5840868269342837751">注意：網路要求不得使用瀏覽器 Proxy 和 DNS 設定。</translation>
-<translation id="8275038454117074363">匯入</translation>
-<translation id="3654980960391973513">產生</translation>
-<translation id="5531501313997312487">啟動節點</translation>
-<translation id="557281710253742286">設定 IPFS 閘道器</translation>
-<translation id="8571837315037233299">閘道器位址</translation>
-<translation id="7703184801853248830">無效的閘道器位址</translation>
-<translation id="7690058578502751948">僅啟用了 Origin 隔離的有效 IPFS 閘道可用於 Brave</translation>
 <translation id="1643029991199044105">使用 Ctrl-Tab 循環瀏覽最近使用的分頁</translation>
 <translation id="2775956301559569472">在 404 頁面上顯示 Wayback Machine 提示</translation>
 <translation id="3095201688102519917">關閉已開啟多個分頁的視窗前顯示警告訊息</translation>
 <translation id="7120553802660696133">關閉最後一個分頁時關閉視窗</translation>
+<translation id="3394171693948989253">顯示全螢幕提醒，按 Esc 即可結束</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">在側邊欄顯示 Leo 圖示</translation>
 <translation id="8055509865174199683">在網站的內容選單中顯示 Leo</translation>
 <translation id="1529674267267221673">以滑鼠右鍵按一下網站，Leo 就會出現在內容選單中。這會將目前網頁的內容傳送給 Leo。</translation>
 <translation id="8172263161008556851">在對話中顯示建議的提示語</translation>
 <translation id="1014480593522400586">清除 Leo 資料</translation>
-<translation id="8681157601856387010">重設 Leo 助理將要求您選擇將來使用 Brave Leo，
-並且還會清除您的聊天記錄。
-清除聊天記錄將會刪除您之前的所有 Brave Leo 工作階段。
-此操作無法撤銷。</translation>
+<translation id="6803758564561896401">如果重設 Leo 助理，日後必須重新選擇加入才能再次使用 Brave Leo，
+您的聊天記錄也會一併清除。清除聊天記錄會刪除您先前與 Brave Leo 的對話。
+此動作無法復原。</translation>
 <translation id="5574059574002819179">調整自動完成建議</translation>
 <translation id="8157373421434119674">資料和聊天歷史記錄</translation>
 <translation id="614530507403667291">新對話的預設模式</translation>
 <translation id="8826914609353373601">管理付費訂閱</translation>
+<translation id="235457946228076038">使用自己的模型</translation>
+<translation id="8631951653187535788">確定要刪除這個模型？如果目前在任何進行中的對話使用這個模型，該對話會改用 Leo 的預設模型。</translation>
+<translation id="1907126221851170941">新增模型</translation>
+<translation id="8346224718149026088">編輯模型</translation>
+<translation id="3468298837301810372">標籤</translation>
+<translation id="3553035516792776805">模型要求名稱</translation>
+<translation id="7634775528597575156">伺服器端點</translation>
+<translation id="6374563306438145841">API 金鑰</translation>
+<translation id="8008271349880309090">模型名稱，這會顯示於選取模型選單</translation>
+<translation id="7131172845656551327">模型名稱，這應顯示於傳給服務架構 (如 phi-3) 的要求 (請注意，如果此名稱與服務架構預期的名稱不符，就無法整合)</translation>
+<translation id="3286410514484292784">您的服務架構會在這個 URL 聆聽要求。如果不確定，請查看服務架構文件，舉例而言 Ollama 的 URL 一律為 http://localhost:11434/v1/chat/completions</translation>
+<translation id="1058790648388035953">部分服務架構可能須要驗證認證，例如 API 金鑰或存取權杖。這些認證會新增至要求標頭。</translation>
+<translation id="217141195370578385">Brave 不會通過 Proxy 處理這些要求，請詳閱所選提供者的隱私權條款。</translation>
+<translation id="2645532768679870478">非本機端點應採用 HTTPS 通訊協定以安全傳輸資料。</translation>
+<translation id="8177205483022887785">您輸入了無效的 URL，請輸入有效的 URL。</translation>
+<translation id="5249539665306267943">新增模型</translation>
+<translation id="7265212806651512211">您尚未連結模型。</translation>
+<translation id="7304802428852949897">您的模型</translation>
+<translation id="7435587476558117990">將自我裝載或第三方託管大型語言模型 (LLM) 與 Leo 連結，並在瀏覽器中使用。</translation>
+<translation id="1381050642750209119">請使用與 OpenAI 聊天通訊協定相容的架構，例如 Ollama。</translation>
+<translation id="2642905648178380593">儲存模型</translation>
 <translation id="349846214503465941">啟用播放清單</translation>
 <translation id="7903608716704052878">自動加入檔案以供離線檢視</translation>
 <translation id="4193768184502613558">此選項將自動快取媒體檔，以讓您在沒有網路連線的情況下播放媒體檔。</translation>

@@ -51,38 +51,15 @@
 <translation id="3975865347033939965">सिंक सेवा शुरू नहीं की जा सकी, Brave सिंक काम नहीं कर रहा है</translation>
 <translation id="4450893287417543264">इसे दोबारा न दिखाएँ</translation>
 <translation id="4595286989346610620">ब्यौरा देखें</translation>
-<translation id="7691598647605453992">IPFS</translation>
-<translation id="3094628781200061820">IPFS से फ़ाइलें प्रकाशित और पुनर्प्राप्त करें</translation>
-<translation id="9220923434129933852">IPFS सेटिंग को पढ़ें और बदलाव करें</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">.onion एड्रेस के साथ खोलें: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">फ़ोर्स पेस्ट करें</translation>
-<translation id="4901618511712685702">IPFS में इम्पोर्ट करें</translation>
-<translation id="6794469945030154569">यह पेज</translation>
-<translation id="5037852323412456577">चुनी गई इमेज</translation>
-<translation id="2715839724138372481">चुना गया वीडियो</translation>
-<translation id="4227945450504703638">चुना गया ऑडियो</translation>
-<translation id="7895302206188277628">लिंक किया गया कंटेंट</translation>
-<translation id="3654831858282189202">IPNS की के साथ प्रकाशित करें</translation>
-<translation id="1047401034925735299">चुने गए टेक्स्ट IPFS में इम्पोर्ट करें</translation>
-<translation id="6925604404524625582">IPFS स्नैपशॉट में लिंक इम्पोर्ट और कॉपी करें</translation>
 <translation id="1434416574322382019">टोर के साथ नया गोपनीय विंडो</translation>
 <translation id="4703780849509456860">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
 <translation id="3488584642074079080">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
-<translation id="186554175479803110">एक फ़ाइल इम्पोर्ट और शेयर करें</translation>
-<translation id="3036649622769666520">फ़ाइलें खोलें</translation>
-<translation id="4408880250587950158">एक डायरेक्टरी इम्पोर्ट और शेयर करें</translation>
-<translation id="8396273373598682323">एक फ़ाइल के ज़रिए</translation>
-<translation id="518600784989889917">एक डायरेक्टरी के ज़रिए</translation>
-<translation id="8147987711042435221">IPNS अपडेट करें</translation>
-<translation id="4491895534716990473">चुने गए टेक्स्ट को IPFS में इम्पोर्ट करें</translation>
-<translation id="8883166554766780543">IPFS स्नैपशॉट के लिए लिंक इम्पोर्ट और कॉपी करें</translation>
-<translation id="709253338301411121">एक फ़ाइल इम्पोर्ट और शेयर करें</translation>
-<translation id="7068360136237591149">फ़ाइलें खोलें</translation>
 <translation id="6313675821927505581">Tor के साथ नई प्राइवेट विंडो</translation>
 <translation id="2638041073279639246">Tor के साथ प्राइवेट विंडो में लिंक खोलें</translation>
 <translation id="3425600262621021599">Tor के साथ ब्रेव प्राइवेट विंडो में लिंक खोलें</translation>
-<translation id="3229091547987707389">एक डायरेक्टरी इम्पोर्ट और शेयर करें</translation>
 <translation id="2545072023356206691">1 दिसंबर 2023 से, Brave Dev चैनल के लिए किसी तरह के ब्राउज़र अपडेट नहीं भेजे जाएँगे. हमारी सलाह है कि यूज़र Brave के Nightly, Beta या Release वर्ज़न को अपना लें.</translation>
 <translation id="474217410105706308">टैब म्यूट करें</translation>
 <translation id="2804710924397009224">Brave रिवार्ड्स आइकन छुपाएं</translation>
@@ -116,9 +93,9 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> टैब</translation>
 <translation id="1307431692088049276">मुझे फिर से मत पूछो</translation>
 <translation id="6919364924256365253">इसे Google न करें. Bing मुमकिन नहीं. सिर्फ़ Brave करें.</translation>
-<translation id="3313148036097793884">Brave आपको, आपके सवालों को या आपकी क्लिक को ट्रैक नहीं करता. यह टेक दिग्गजों से 100% आज़ाद है.</translation>
+<translation id="2640297688005939449">Brave सर्च आपकी प्रोफ़ाइल नहीं बनाता है. और यह 100% आज़ाद है.</translation>
 <translation id="7295094278358921487">सर्च करने पर मिलेगा. प्राइवेसी के साथ.</translation>
-<translation id="45040495135337202">Brave आपको, आपके सवालों को या आपकी क्लिक को ट्रैक नहीं करता. यह टेक दिग्गजों से 100% आज़ाद है.</translation>
+<translation id="3462465068145800637">Brave सर्च आपकी प्रोफ़ाइल नहीं बनाता है. यह टेक दिग्गजों से 100% आज़ाद है.</translation>
 <translation id="42032117189492785">यूनीक इंडेक्स के साथ AI समर्थित सर्च</translation>
 <translation id="8606416238399082160">पूरी तरह प्राइवेट, 100% आज़ाद और AI के शानदार फ़ीचर के साथ.</translation>
 <translation id="7706528608480893054">पर्दे के पीछे DDG भी Bing ही है. समय आ गया है असली प्राइवेसी, बेहतर नतीजे और स्वतंत्र इंडेक्स का. समय है Brave सर्च का.</translation>
@@ -130,7 +107,7 @@
 <translation id="4639001639513524869">ज़्यादातर खोज के लिए Brave सर्च के नतीजे DuckDuckGo से बेहतर हैं. और यह वाकई में प्राइवेट है.</translation>
 <translation id="5240031343741051161">Brave सर्च को आज़माएँ</translation>
 <translation id="5234764350956374838">खारिज करें</translation>
-<translation id="9218430445555521422">डिफ़ॉल्ट के रूप में सेट करें</translation>
+<translation id="8722651357687610395">Brave को डिफ़ॉल्ट के रूप में सेट करें</translation>
 <translation id="2370739752330685659">शायद बाद में</translation>
 <translation id="5100490448228945668">Brave सर्च में होने वाले कन्वर्ज़न को नामंज़ूर करें, इस सुझाव को हटाने के लिए एन्टर दबाएँ</translation>
 <translation id="9194637241566114638">इस्तेमाल से जुड़े गुमनाम डेटा को भेज कर <ph name="SEARCH_NAME"/> को बेहतर बनाने में मदद करें. <ph name="MORE_INFO"/></translation>
@@ -168,6 +145,10 @@
 <translation id="5877900074358050101">साइडबार आइटम का शीर्षक</translation>
 <translation id="1613695740874407223">साइडबार आइटम का url</translation>
 <translation id="4877147287319222750">साइडबार में जोड़ें</translation>
+<translation id="2422927186524098759">साइडबार</translation>
+<translation id="5916664084637901428">चालू</translation>
+<translation id="5860033963881614850">बंद</translation>
+<translation id="2393250835562952455">ऑटोहाईड</translation>
 <translation id="5977931179408079967">जगह</translation>
 <translation id="3790384768741064842">दाईं ओर ले जाएँ</translation>
 <translation id="7444424316576061724">बाईं ओर ले जाएँ</translation>
@@ -196,15 +177,6 @@
 <translation id="8428213095426709021">सेटिंग</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 डोमेन</translation>
-<translation id="72868071984333667">IPFS और गोपनीयता के बारे में और जानें</translation>
-<translation id="1419682418471956530">यह पेज IPFS नेटवर्क पर उपलब्ध है. क्या आप Brave में दिए गए सपोर्ट (ipfs:// या ipns:// के ज़रिए) का इस्तेमाल करके IPFS पेज को लोड करना चाहेंगे?</translation>
-<translation id="7109885938715976444">सिर्फ़ इस बार</translation>
-<translation id="7473891865547856676">जी रहने दें</translation>
-<translation id="2722425322672922644">यह जानें कि इससे मेरी प्राइवेसी पर क्या असर पड़ता है</translation>
-<translation id="5551268135482191097">IPFS URL को लोड करते समय त्रुटि हुई। क्या आप मूल URL पर रीडायरेक्ट करना चाहते हैं?</translation>
-<translation id="4756627014339714615">रीडायरेक्ट करें</translation>
-<translation id="1338274252864046652">क्या आप हर बार खोलने पर ब्राउज़र IPFS नोड में चलाना चाहते हैं?</translation>
-<translation id="3435896845095436175">सक्षम करें</translation>
 <translation id="5046066249040287308">Brave वॉलेट यूटिलिटी सेवा</translation>
 <translation id="4552520379838695057">क्षमा करें, वह पेज गायब है।</translation>
 <translation id="7299769530898469069">सेव किया गया वर्ज़न लोड नहीं किया जा सका</translation>
@@ -265,7 +237,6 @@
 <translation id="2557899542277210112">त्वरित पहुँच के लिए, अपने बुकमार्क को यहाँ बुकमार्क बार पर रखें।</translation>
 <translation id="1968543937259008435">बेहतरीन ऑनलाइन गोपनीयता के लिए तैयार हैं?</translation>
 <translation id="6817415381278637662">Brave को अपने डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें ताकि आपको सभी वेब पेज पर Brave की गोपनीयता सुरक्षा मिले.</translation>
-<translation id="8722651357687610395">Brave को डिफ़ॉल्ट के रूप में सेट करें</translation>
 <translation id="7537601449003285327">टास्कबार में पिन करें</translation>
 <translation id="2307973900865360088">डॉक में रखें</translation>
 <translation id="961012016278832836">Microsoft Edge की लेगसी</translation>
@@ -278,15 +249,17 @@
 <translation id="8373664339577369248">कस्टम ऑर्डर</translation>
 <translation id="8120600068258956006">प्लेलिस्ट में जोड़ें</translation>
 <translation id="650694591627983430">इस पेज में मीडिया मिला</translation>
-<translation id="43751811163166570"><ph name="PLAYLIST_FOLDER_NAME"/> में डाले गए</translation>
 <translation id="6900840851173033633">हमें खेद है कि हमें इस पेज पर कोई भी मीडिया नहीं मिला।</translation>
+<translation id="5296010081025405662">प्लेलिस्ट में जोड़ा गया</translation>
 <translation id="4830689155681863580">प्लेलिस्ट में खोलें</translation>
 <translation id="4735626465866524761">फ़ोल्डर बदलें</translation>
 <translation id="8101564000331197174">प्लेलिस्ट से हटाएँ</translation>
 <translation id="838254185387128227">इस पेज पर और ज़्यादा मीडिया...</translation>
 <translation id="326641288623143307">चुने हुए को डालें</translation>
+<translation id="4951645797020684601">प्लेलिस्ट में जोड़ा गया</translation>
 <translation id="5856970744810677796">प्लेलिस्ट में खोलें</translation>
 <translation id="5494357917532817933">फ़ोल्डर बदलें</translation>
+<translation id="5181358966317519720">प्लेलिस्ट से हटाएँ</translation>
 <translation id="333558915234875673">इस पेज पर और ज़्यादा मीडिया...</translation>
 <translation id="5145233969981669502">चुने हुए को डालें</translation>
 <translation id="55252794453047936">मीडिया हटाएँ</translation>
@@ -310,7 +283,6 @@
 <translation id="1173894706177603556">नाम बदलें</translation>
 <translation id="7765158879357617694">ले जाएं</translation>
 <translation id="6648536728577053364">ऑफ़लाइन डेटा हटाएँ</translation>
-<translation id="5181358966317519720">प्लेलिस्ट से हटाएँ</translation>
 <translation id="2377705456080309463">मूल पेज देखें</translation>
 <translation id="158894735649719362">असली मज़ा तब शुरू होता है, जब आपके पास कुछ प्ले करने को हो. अपने पसंदीदा मीडिया शामिल करें और उन्हें कभी भी, कहीं से भी चलाएँ. ऑफ़लाइन रहकर भी.</translation>
 <translation id="8422349592890097194">नया फ़ोल्डर बनाएँ</translation>
@@ -411,7 +383,6 @@ Binance
 <translation id="1013121820689882118">स्पीडरीडर</translation>
 <translation id="2025435450953474282">लेख अपने आप रीडर मोड में लोड होते हैं, जिससे आपका समय बचता है</translation>
 <translation id="7984721311211272523">टैब स्पीकर के आइकन में म्यूट की सुविधा बंद करें</translation>
-<translation id="2422927186524098759">साइडबार</translation>
 <translation id="832432428796481785">साइडबार बटन दिखाएँ</translation>
 <translation id="5581036754486769849">प्राइवेट विंडो में अपने-आप भरने की इजाज़त दें</translation>
 <translation id="2262012219398520969">सामान्य विंडो की जानकारी को प्राइवेट विंडो से पढ़ा या अपने-आप भरा जा सकता है</translation>
@@ -434,7 +405,6 @@ Binance
 <translation id="6303294677342628402">सुरक्षा कवच</translation>
 <translation id="7133511168130368997">पूरे वेब पर आपके साथ रहने वाले ट्रैकर्स और विज्ञापनों को ब्लॉक करें।</translation>
 <translation id="2761825942249694703">ये डिफ़ॉल्ट शील्ड्स सेटिंग हैं। वे सभी वेबसाइटों पर लागू होते हैं जब तक आप किसी विशेष साइट के शील्ड्स पैनल मे कुछ बदलाव नही करते। इन्हें बदलने से आपकी मौजूदा प्रति-साइट सेटिंग प्रभावित नही होगी।</translation>
-<translation id="1435116578479068303">इससे साइट पर ज़्यादातर विज्ञापन ब्लॉक हो जाएँगे, लेकिन Brave प्राइवेट विज्ञापन नहीं होंगे — उन्हें <ph name="BEGIN_LINK"/>Brave रिवॉर्ड<ph name="END_LINK"/> सेटिंग में कंट्रोल किया जाता है.</translation>
 <translation id="8452536890042542134">यह वेबसाइट पर ज़्यादातर आइकन को ब्लॉक कर देगा.</translation>
 <translation id="4800195524776354947">शील्ड्स आइकन पर ब्लॉक किए गए वस्तुओं की संख्या दिखाएँ</translation>
 <translation id="5510493033031835532">AMP पेज को ऑटो-रीडाइरेक्ट करें</translation>
@@ -622,7 +592,6 @@ Binance
 <translation id="842628013524824194">सामान्य विंडो - एड्रेस बार में इस्तेमाल किया गया सर्च इंजन</translation>
 <translation id="5324939009884545145">प्राइवेट विंडो - एड्रेस बार में इस्तेमाल किया गया सर्च इंजन</translation>
 <translation id="6864914031231797928">एक्सटेंशन के लिए Google लॉगिन की अनुमति दें</translation>
-<translation id="6554397389149987360">ब्राउज़र में स्क्रीन साझा करने और अन्य सुविधाओं के लिए हैंगऑउट के घटकों का उपयोग करें।</translation>
 <translation id="7878791177459550035">मीडिया राउटर ब्राउज़र में कास्ट फीचर इनेबल करता है.</translation>
 <translation id="2707635989000984973">Unstoppable Domains के डोमेन नाम को हल करें</translation>
 <translation id="1807158022157096592">Unstoppable Domains के गोपनियता से जुड़े विचारों के बारे में <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/></translation>
@@ -635,7 +604,7 @@ Binance
 <translation id="951983619130191090">Tor नेटवर्क से जुड़ने में दूसरों की मदद के लिए सामने आएँ</translation>
 <translation id="2223668809371912019">जिन देशों में प्रतिबंध हैं, वहाँ के यूज़र आपके नेटवर्क कनेक्शन के ज़रिए Tor नेटवर्क से कनेक्ट कर पाएँ, इसके लिए Snowflake एक्सटेंशन चालू करें.</translation>
 <translation id="2959986444009520721">ब्रिज का इस्तेमाल करें</translation>
-<translation id="8416750895933172460">ब्रिज आपको उन जगहों पर Tor नेटवर्क को ऐक्सेस करने की सुविधा देते हैं, जहाँ Tor ब्लॉक है. आप कहाँ मौजूद हैं, इसके हिसाब से, एक ब्रिज दूसरे से बेहतर काम कर सकता है.</translation>
+<translation id="271237727681958372">ब्रिज आपको उन जगहों पर Tor नेटवर्क को ऐक्सेस करने की सुविधा देते हैं, जहां Tor ब्लॉक है. आप कहां मौजूद हैं, इसके हिसाब से, एक ब्रिज दूसरे से बेहतर काम कर सकता है.</translation>
 <translation id="7206799843254049470">Tor कनेक्शन सेटिंग</translation>
 <translation id="3194502271166340944">Tor वाली गोपनीय विंडोज़ Tor नेटवर्क से कैसे कनेक्ट करेगी, यह उसे कंट्रोल करता है</translation>
 <translation id="3717364961460790491">इस सुविधा के लिए ज़रूरी Snowflake एक्सटेंशन को डाउनलोड नहीं किया जा सका. अपने इंटरनेट कनेक्शन को जाँचें और फिर से कोशिश करें.</translation>
@@ -653,7 +622,7 @@ Binance
 <translation id="6936835573742749135">CAPTCHA का अनुरोध नहीं कर सकते. बाद में फिर से कोशिश करें.</translation>
 <translation id="2653659639078652383">सबमिट करें</translation>
 <translation id="1294350054292274934">Tor विंडोज़ में सिर्फ़ .onion पतों को ठीक करें</translation>
-<translation id="1258903596167452221">Tor विंडोज़ के बाहर Onion सेवाएं उपलब्ध नहीं होंगी।</translation>
+<translation id="601227612175911475">Tor विंडोज़ के बाहर Onion सर्विस मौजूद नहीं होंगी.</translation>
 <translation id="2896916411183256228">टोरेंट को सीधे अपने ब्राउज़र में देखने के लिए WebTorrent का उपयोग करें। टोरेंट फाइलों और मैग्नेट लिंक के लिए समर्थित।</translation>
 <translation id="5249433283143453448">वाइडवाइन डिजिटल राइट्सस मैनेजमेंट (डीआरएम) के आंशिक प्रयोग से आप स्ट्रीम किये गए गोपनीय वीडियो के साथ और भी दूसरे कंटेंट देख सकते हैं.</translation>
 <translation id="1314131187310290315">मैनिफ़ेस्ट V2 एक्सटेंशन</translation>
@@ -687,19 +656,11 @@ Binance
 <translation id="856371974127598760">वॉलेट नेटवर्क</translation>
 <translation id="5975930666279943472">वॉलेट लेनदेन और गलत-सूचना साफ़ करें</translation>
 <translation id="5693968582510626466">ट्रांजेक्शन हटाने से स्थानीय सर्वर पर स्टेट क्लियर करते समय या डेवलपर्स के लिए उपयोगी हो सकता है</translation>
-<translation id="4440478655766953083">NFT अपने-आप पिन करना</translation>
-<translation id="464460032678285850">वे NFT जिन्हें Brave वॉलेट में जोड़ा गया है उन्हें लोकल IPFS नोड में अपने-आप जोड़ा जा सकता है।
-    नोट: IPFS डीमन को पिन करने के मकसद से चालू किया जा सकता है, जिससे आपका लोकल नोड कैश किए गए डेटा और पिन किए गए NFT को IPFS नेटवर्क से शेयर करेगा।</translation>
 <translation id="2326850911705720398">वॉलेट का डेटा रीसेट करें और मिटाएँ</translation>
-<translation id="5887022857624190239">पिन किए गए NFT मिटाएँ</translation>
-<translation id="204584113330893805">स्थानीय IPFS नोड लॉन्च होने पर, पिन किए गए NFT को IPFS नेटवर्क पर होस्ट किया जाता है।
-    इस समय आपके पास <ph name="NFT_COUNT"/> पिन किए गए NFT हैं।</translation>
 <translation id="9216386092464743272">क्या आप वाकई अपने सभी वॉलेट लेनदेन और गैर-सूचना को रीसेट करना चाहते हैं? यह विकल्प ज्यादातर लोकल टेस्ट सर्वर चलाने वाले डेवलपर्स द्वारा इस्तेमाल किया जाता है. कंफ़र्म करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
 <translation id="6369495274982305511">क्या आप वाकई अपने वॉलेट को रीसेट करना चाहते हैं? अगर आपके वॉलेट का बैकअप नहीं लिया गया है, तो रीसेट करने से अकाउंट का पूरा डेटा खो जाएगा (इससे जुड़े फ़ंड के साथ). कन्फ़र्म करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
-<translation id="4248533222660842025">क्या आप वाकई अपने पिन किए गए NFT को मिटाना चाहते हैं? अगर IPFS नेटवर्क में कोई अन्य होस्टर नहीं है, तो कुछ NFT हमेशा के लिए खो सकते हैं। पुष्टि करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें।</translation>
 <translation id="3752403403443723332">आपका वॉलेट रिसेट किया गया.</translation>
 <translation id="594766067816395072">आपकी वॉलेट लेन-देन की जानकारी रीसेट कर दी गई थी.</translation>
-<translation id="1615009913945115836">आपके पिन किए गए NFT रीसेट कर दिए गए थे।</translation>
 <translation id="57798285717509216">साइन करने से पहले लेनदेन के रिज़ल्ट देखें.<ph name="BEGIN_LINK"/>&lt;u&gt;Learn more&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">Ethereum नेटवर्क</translation>
 <translation id="3504157706952484145">Filecoin नेटवर्क</translation>
@@ -725,7 +686,7 @@ Binance
 <translation id="3047726704186619366">आइकन के URL</translation>
 <translation id="2487558607408469181">Explorer के URL ब्लॉक करें</translation>
 <translation id="2156993118928861787">अमान्य पता</translation>
-<translation id="6301398959353668507">यह फ़ील्ड खाली नहीं रह सकता</translation>
+<translation id="2042467807419742999">यह फ़ील्ड खाली नहीं रह सकता</translation>
 <translation id="7504462451153306677">अमान्य फ़ॉर्मैट, सीरीज़ आईडी एक पॉज़िटिव नंबर है</translation>
 <translation id="650071759190249039">आंतरिक गड़बड़ी, नेटवर्क नहीं जोड़ा जा सका.</translation>
 <translation id="336035846712292194">कृपया अपने देश की करंसी के बारे में सारी जानकारी भरें</translation>
@@ -736,70 +697,46 @@ Binance
 <translation id="232693303726691609">वॉलेट नेटवर्क लिस्ट में नेटवर्क दिखाएँ/छिपाएँ</translation>
 <translation id="7893578599666249602">क्या आप <ph name="KEY_NAME"/> को वाकई रीसेट करना चाहते हैं.</translation>
 <translation id="2618193846561624884">क्या आप मौजूदा नेटवर्क को अपडेट करना चाहते हैं?</translation>
-<translation id="9170907049676078643">IPFS संसाधनों को सुलझाने की विधि</translation>
-<translation id="1327977588028644528">गेटवे</translation>
-<translation id="1195880978080389104">Brave स्थानीय IPFS नोड</translation>
-<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Brave स्थानीय  IPFS नोड और गेटवे गोपनीयता विचारों के बारे में और <ph name="END_LINK_MPL"/> में जानें.</translation>
-<translation id="4927734062756955434">IPFS पब्लिक गेटवे पता</translation>
-<translation id="3707431725427930007">NFT के लिए IPFS पब्लिक गेटवे का पता</translation>
-<translation id="8425213833346101688">बदलें</translation>
-<translation id="585868419599255817">IPFS पब्लिक गेटवे फ़ॉलबैक</translation>
-<translation id="2618080188892567155">अगर आपके Brave स्थानीय नोड तक नहीं पहुँच सकता है, तो अपने आप सार्वजनिक IPFS गेटवे पर वापस चला जाएगा.</translation>
-<translation id="8956391206920485238">क्या आप ब्राउज़र शुरू करने पर IPFS नोड को हमेशा चालू करना चाहते हैं?</translation>
-<translation id="6789104345873307368">IPFS नेटवर्क के रिसोर्स के सभी अनुरोधों को कनफ़िगर किए गए गेटवे पर अपने आप रीडायरेक्ट करता है.</translation>
-<translation id="4138306018048329894">थर्ड-पार्टी IPFS गेटवे या DNSLINK रिसोर्स पर होस्ट किए गए IPFS रिसोर्स के अनुरोधों को चुने गए लोकल या रिमोट गेटवे के ज़रिए लाया जाएगा.
-ध्यान दें : अगर लोकल नोड चुना गया है, तो सीधे आपके कम्प्यूटर से रिसोर्स के लिए अनुरोध किया जाएगा और संभव है कि कुछ देर के लिए IPFS नेटवर्क को कैशे का डेटा मिल जाए.</translation>
-<translation id="8068526464562249859">आपके ब्राउज़र बार से सामान्य IPFS टास्क एक्सेस करने सहित Brave में बेहतर IPFS समर्थन के लिए IPFS Companion एक्सटेंशन का उपयोग करता है।</translation>
-<translation id="1251574393468476924">IPFS कैच का अधिकतम आकार (GB)</translation>
-<translation id="2503497578400410320">IPFS रिपॉजिटरी के डेटास्टोर के आकार के लिए एक नरम ऊपरी सीमा।</translation>
-<translation id="6758961763875471084">साथियों की सूची में बदलाव करें</translation>
-<translation id="5761731140570209168">नई सहकर्मी कनेक्शन स्ट्रिंग जोड़ें</translation>
-<translation id="7024553202001112871">अपना IPNS की सेट अप करें</translation>
-<translation id="951216659045543447">संबंधित निजी की द्वारा कंटेंट पर साइन करें और इसे IPNS पर प्रकाशित करें</translation>
-<translation id="7611728475758612204">प्रकाशन के लिए उपलब्ध की</translation>
-<translation id="911363100236037920">नई की के लिए नया नाम एंटर करें</translation>
-<translation id="6358469157239228181">यह नाम इस्तेमाल नहीं किया जा सकता</translation>
-<translation id="2082206983920804886">की घुमाएँ</translation>
-<translation id="5078501082919354191">Brave स्थानीय IPFS नोड को नहीं रोक पा रहे हैं</translation>
-<translation id="5687424953196903465">Brave स्थानीय IPFS नोड को लांच कर पा रहे हैं</translation>
-<translation id="6476061084931271248">बदलाव लागू करने के लिए नोड को रीस्टार्ट करें</translation>
-<translation id="3754226427671882382">नोड रीस्टार्ट करें</translation>
-<translation id="949667118776341807">घुमाएँ</translation>
-<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
-<translation id="724513921936768901">यह नाम इस्तेमाल नहीं किया जा सकता</translation>
-<translation id="1295874070797049002">की एक्सपोर्ट करें</translation>
-<translation id="3946479342297227860">की हटाएँ</translation>
-<translation id="1534091531114892221">IPFS साथियों का विवरण सेट करें</translation>
-<translation id="910215077892371264">नोड लांच नहीं किया गया</translation>
-<translation id="616058968889448209">IPFS सर्विस लांच एरर, <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/> पर अधिक जानकारी उपलब्ध है.</translation>
-<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' की इम्पोर्ट नहीं हो पाया</translation>
-<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' की इम्पोर्ट नहीं हो पाया</translation>
-<translation id="5840868269342837751">ध्यान दें : हो सकता है कि नेटवर्क के अनुरोध ब्राउज़र प्रॉक्सी और DNS सेटिंग का इस्तेमाल न करें.</translation>
-<translation id="8275038454117074363">आयात करें</translation>
-<translation id="3654980960391973513">जेनरेट करें</translation>
-<translation id="5531501313997312487">नोड चालू करें</translation>
-<translation id="557281710253742286">IPFS गेटवे सेट करें</translation>
-<translation id="8571837315037233299">गेटवे पता</translation>
-<translation id="7703184801853248830">अमान्य गेटवे पता</translation>
-<translation id="7690058578502751948">Brave में केवल एक वैध IPFS गेटवे का उपयोग किया जा सकता है जिसमें मूल अलगाव सक्षम है.</translation>
 <translation id="1643029991199044105">Ctrl-Tab के साथ सबसे हाल ही में इस्तेमाल किए गए टैब के माध्यम से साइकिल</translation>
 <translation id="2775956301559569472">404 पेजों पर वेबैक मशीन शीघ्र दिखाएं</translation>
 <translation id="3095201688102519917">कई सारे टैब वाली विंडो बंद करने से पहले मुझे बताएँ</translation>
 <translation id="7120553802660696133">आखिरी टैब को बंद करते समय विंडो को भी बंद करें</translation>
+<translation id="3394171693948989253">बाहर निकलने पर Esc दबाने के लिए फ़ुल स्क्रीन रिमाइंडर दिखाएं</translation>
 <translation id="6129027151000961048">लियो</translation>
 <translation id="2751872555001636931">साइडबार में लियो आइकन दिखाएँ</translation>
 <translation id="8055509865174199683">वेबसाइट पर संदर्भ मेनू में Leo को दिखाएँ</translation>
 <translation id="1529674267267221673">जब आप किसी वेबसाइट पर राइट क्लिक करेंगे, तब संदर्भ मेनू में Leo दिखने लगेगा। यह संदर्भ को मौजूदा वेब पेज से Leo पर भेज देगा।</translation>
 <translation id="8172263161008556851">सुझाए गए प्रॉम्प्ट को बातचीत में दिखाएँ</translation>
 <translation id="1014480593522400586">लियो का डेटा मिटाएँ</translation>
-<translation id="8681157601856387010">लियो असिस्टेंट को रीसेट करने का मतलब है कि आपको भविष्य में Brave 
+<translation id="6803758564561896401">लियो असिस्टेंट को रीसेट करने का मतलब है कि आपको भविष्य में Brave 
 Leo का इस्तेमाल करने के लिए ऑप्ट-इन करना होगा और यह आपकी 
-सभी पिछली चैट को मिटा देगा. पिछली चैट को मिटाने का मतलब है कि Brave 
-लियो के साथ की गई आपकी सभी बातचीत मिट जाएगी. इन्हें बाद में फिर से हासिल नहीं किया जा सकता.</translation>
+सभी पिछली चैट हिस्ट्री को डिलीट कर देगा. पिछली चैट हिस्ट्री को डिलीट करने का मतलब है कि Brave 
+लियो के साथ की गई आपकी सभी बातचीत डिलीट हो जाएगी. इन्हें बाद में फिर से हासिल नहीं किया जा सकता.</translation>
 <translation id="5574059574002819179">स्वत: पूर्ण सुझावों को एडजस्ट करें</translation>
 <translation id="8157373421434119674">डेटा और पिछले चैट</translation>
 <translation id="614530507403667291">नई बातचीत के लिए डिफ़ॉल्ट मॉडल</translation>
 <translation id="8826914609353373601">प्रीमियम सब्सक्रिप्शन मैनेज करें</translation>
+<translation id="235457946228076038">अपना ख़ुद का मॉडल लाएं</translation>
+<translation id="8631951653187535788">क्या आप वाकई इस मॉडल को डिलीट करना चाहते हैं? अगर यह मॉडल किसी सक्रिय बातचीत में इस्तेमाल किया जा रहा है, तो वह बातचीत Leo's के डिफ़ॉल्ट मॉडल का इस्तेमाल करने के लिए बदल जाएगी.</translation>
+<translation id="1907126221851170941">मॉडल जोड़ें</translation>
+<translation id="8346224718149026088">मॉडल में बदलाव करें</translation>
+<translation id="3468298837301810372">लेबल</translation>
+<translation id="3553035516792776805">मॉडल अनुरोध का नाम</translation>
+<translation id="7634775528597575156">सर्वर एंड पॉइंट</translation>
+<translation id="6374563306438145841">API  की</translation>
+<translation id="8008271349880309090">मॉडल का नाम जैसा कि वह मॉडल चुने मेनू में दिखाई देगा</translation>
+<translation id="7131172845656551327">मॉडल का नाम जैसा कि यह सर्विंग फ़्रेमवर्क के अनुरोध में दिखाई देना चाहिए, जैसे की, phi-3 (ध्यान दें कि अगर यह नाम सर्विंग फ़्रेमवर्क ज़रिए अपेक्षित नाम से बिल्कुल मेल नहीं खाता है, तो इंटीग्रेशन काम नहीं करेगा)</translation>
+<translation id="3286410514484292784">वह URL जहां आपका सर्विंग फ़्रेमवर्क अनुरोधों के लिए सुन रहा है. अगर आपको यकीन नहीं है, तो सर्विंग फ़्रेमवर्क के दस्तावेज़ देखें. जैसे की, Ollama के लिए, यह हमेशा http://localhost:11434/v1/chat/completions</translation>
+<translation id="1058790648388035953">कुछ काम करने वाले फ़्रेमवर्क को ऑथेंटिकेशन क्रेडेंशियल की ज़रुरत हो सकती है, जैसे कि API कीज़ या एक्सेस टोकन. इन्हें अनुरोध हेडर में जोड़ा जाएगा.</translation>
+<translation id="217141195370578385">Brave इन अनुरोधों को प्रॉक्सी नहीं करता है, कृपया चुने गए प्रोवाइडर की गोपनीयता शर्तें पढ़ें.</translation>
+<translation id="2645532768679870478">गैर-स्थानीय एन्डपॉइंट्स को सुरक्षित डेटा ट्रांसमिशन के लिए HTTPS प्रोटोकॉल का इस्तेमाल करना चाहिए.</translation>
+<translation id="8177205483022887785">आपने एक अमान्य URL डाला है. कृपया एक मान्य URL डालें.</translation>
+<translation id="5249539665306267943">नया मॉडल जोड़ें</translation>
+<translation id="7265212806651512211">आपने अभी तक मॉडल कनेक्ट नहीं किया है.</translation>
+<translation id="7304802428852949897">आपके मॉडल</translation>
+<translation id="7435587476558117990">अपने सेल्फ़-होस्टेड या थर्ड पार्टी ज़रिए होस्ट किए गए LLM को Leo से कनेक्ट करें और उन्हें ब्राउज़र में इस्तेमाल करें.</translation>
+<translation id="1381050642750209119">Ollama जैसे किसी भी OpenAI चैट प्रोटोकॉल कम्पैटिबल फ़्रेमवर्क का इस्तेमाल करें.</translation>
+<translation id="2642905648178380593">मॉडल सेव करें</translation>
 <translation id="349846214503465941">प्लेलिस्ट सक्षम करें</translation>
 <translation id="7903608716704052878">ऑफ़लाइन रूप से देखने के लिए फाइलें अपने आप जोड़ें</translation>
 <translation id="4193768184502613558">यह विकल्प अपने आप से मीडिया फ़ाइलों को कैश कर देगा, ताकि आप उन्हें इंटरनेट कनेक्शन के बिना चला सकें।</translation>

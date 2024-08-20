@@ -1,9 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="it">
-<translation id="1800311840305731850">Impossibile caricare la pagina IPFS.</translation>
-<translation id="5712742401570874902">Nelle finestre private le pagine IPFS non sono consentite.</translation>
-<translation id="5749639013106315553">IPFS è disattivato. Seleziona il metodo di risoluzione IPFS nelle impostazioni per aprire questo sito.</translation>
 <translation id="5288293905681750318">Indicatori &amp; annunci bloccati</translation>
 <translation id="2313532038420432247">Aggiornamenti HTTPS</translation>
 <translation id="788493840831967104">Tempo risparmiato</translation>
@@ -67,7 +64,7 @@
 <translation id="780301667611848630">No grazie</translation>
 <translation id="1230746063445072175">Vuoi una privacy ancora migliore?</translation>
 <translation id="6699628638740071563">È ora di abbandonare Google.</translation>
-<translation id="2045455461902775806">La Ricerca di Brave non è condizionata da pregiudizi, non censura i risultati e non tiene traccia di te, delle tue query o dei tuoi clic.</translation>
+<translation id="5588534392045217394">Ricerca Brave non è condizionata da pregiudizi, non censura i risultati e non effettua la profilazione dell’utente.</translation>
 <translation id="6811221529729056895">Prova la Ricerca di Brave</translation>
 <translation id="3446024864193919737">Mostra i premi Brave</translation>
 <translation id="5585019845078534178">Carte</translation>
@@ -411,13 +408,9 @@
 <translation id="2799223571221894425">Riavvia</translation>
 <translation id="1110535155349301542">rimuovi</translation>
 <translation id="8204292894173669182">Rimuovi dai salvati</translation>
-<translation id="5939518447894949180">Reimposta</translation>
-<translation id="3349204812119681938">Ripristina Ricompense di Brave</translation>
 <translation id="5669281110673664811">Cancella elenco esclusi</translation>
 <translation id="1797334173232638045">I siti bloccati sono stati spostati su</translation>
 <translation id="3074127054582480056">Attenzione</translation>
-<translation id="4915997950539925115">Se procedi alla reimpostazione, il tuo profilo Ricompense Brave attuale verrà eliminato e le Ricompense non saranno più attive. Riattivandole più avanti, verrà creato un nuovo profilo. Per maggiori dettagli, leggi <ph name="LINK_BEGIN"/>l’articolo dedicato alla reimpostazione<ph name="LINK_END"/>.</translation>
-<translation id="4806029412510565611">Sono consapevole che il mio attuale profilo Ricompense Brave e i dati di Ricompense Brave verranno eliminati dal mio dispositivo e ho letto l’<ph name="LINK_BEGIN"/>articolo di supporto sull’azzeramento<ph name="LINK_END"/>.</translation>
 <translation id="3494964159182650590">Riepilogo ricompense</translation>
 <translation id="2913994227901456490">Vedi tutti e [[numItems]] gli elementi</translation>
 <translation id="6685434227783226855">Invia il mio contributo</translation>
@@ -503,76 +496,6 @@
 <translation id="4087894168792701548">Procedi normalmente</translation>
 <translation id="5874287397425241890">Stai navigando in questo sito web in modalità confidenziale.</translation>
 <translation id="1036348656032585052">Disattiva</translation>
-<translation id="9020818404803201080">Colleghi connessi:</translation>
-<translation id="2903493209154104877">Indirizzi</translation>
-<translation id="3207122385716480167">Statistiche repository</translation>
-<translation id="2595187693729756455">Informazioni sul nodo</translation>
-<translation id="5789886980848929155">Stato del nodo IPFS</translation>
-<translation id="6599816589121202398">API</translation>
-<translation id="1327977588028644528">Gateway</translation>
-<translation id="2551123942222622809">Sciame</translation>
-<translation id="5201810533706869030">Oggetti</translation>
-<translation id="8028993641010258682">Dimensioni</translation>
-<translation id="7870625241353817260">ArchiviazioneMax</translation>
-<translation id="3202131003361292969">Percorso</translation>
-<translation id="3798449238516105146">Versione</translation>
-<translation id="2892680660204660712">ID peer</translation>
-<translation id="7536543993364605970">Versione dell'agente</translation>
-<translation id="3693482323085649439">Nodo attivo</translation>
-<translation id="6315833555896070573">Nodo non attivo</translation>
-<translation id="1272079795634619415">Interrompi</translation>
-<translation id="5895138241574237353">Riavvia</translation>
-<translation id="6762417584993757344">Non Installato</translation>
-<translation id="4159076046325416152">Installazione di IPFS...</translation>
-<translation id="3854747677478661601">Effettua un ciclo di garbage collection</translation>
-<translation id="7376842608449050673">Errore durante la garbage collection</translation>
-<translation id="8523162996646111972">(dettagli)</translation>
-<translation id="6121825639998459476">Installa e inizia</translation>
-<translation id="72868071984333667">Ulteriori informazioni su IPFS e privacy</translation>
-<translation id="3793279629218362523">Gestisci ID Peer e chiavi IPNS</translation>
-<translation id="6776260067907986254">Il mio nodo</translation>
-<translation id="8999763401170835879">Si è verificato un errore, prova ad avviare di nuovo</translation>
-<translation id="5433704526290922623">Si è verificato un errore, prova a installare di nuovo il nodo</translation>
-<translation id="8428368469058794536">Servizio IPFS</translation>
-<translation id="7691598647605453992">IPFS</translation>
-<translation id="8725066075913043281">Riprova</translation>
-<translation id="1886162073868201257">Errore di lancio del servizio IPFS</translation>
-<translation id="5357895013476183089">IPFS non connesso</translation>
-<translation id="7662930734991751511">Impossibile caricare le risorse IPFS usando il nodo IPFS locale di Brave</translation>
-<translation id="1141556610026845297">Impossibile utilizzare il nodo IPFS locale per caricare le risorse IPFS richieste. Fare clic sul pulsante "Procedi" per utilizzare invece il gateway pubblico e per tornare automaticamente al gateway pubblico in futuro.</translation>
-<translation id="3373798179786163193">Procedi con il Gateway Pubblico</translation>
-<translation id="1974060860693918893">Avanzate</translation>
-<translation id="9096577886148726047">Nascondi avanzato</translation>
-<translation id="182581792765792826">Brave non riesce a caricare le risorse IPFS richieste perché il nodo locale non si è avviato o perché al momento non ci sono peer connessi. Se scegli “Procedi”, Brave tornerà automaticamente al gateway pubblico predefinito ogni volta che non è possibile usare il nodo locale. Puoi modificare questo comportamento in qualsiasi momento nelle impostazioni di Brave.</translation>
-<translation id="8026038288183400906">Preferenze IPFS</translation>
-<translation id="2058855456574089690">Configura le tue preferenze per l'IPFS</translation>
-<translation id="4780526507945807546">Usa un nodo IPFS locale di Brave</translation>
-<translation id="8148464361648742409">Usa un gateway pubblico</translation>
-<translation id="5123478056123923857">IPFS ("InterPlanetary File System") è la rete pubblica di archiviazione e distribuzione peer-to-peer. Questo protocollo ha delle caratteristiche di privacy diverse da quello HTTP(S).</translation>
-<translation id="1216911189668016151">Il tuo computer contribuisce alla rete pubblica, ma il tuo indirizzo IP e tutti i contenuti che richiedi o fornisci potrebbero essere esposti. I contenuti che richiedi tramite IPFS vengono verificati prima di essere presentati al tuo computer. Le richieste di rete potrebbero non utilizzare il proxy del browser e le impostazioni DNS.</translation>
-<translation id="8664689531113048642">Protegge il tuo indirizzo IP e i contenuti che richiedi da eventuali osservatori esterni ma non dall'operatore del gateway pubblico. L'operatore del gateway si assicura che i contenuti che ti vengono presentati dal gateway siano sempre i contenuti che hai richiesto. Inoltre, il tuo computer non contribuisce alla rete IPFS pubblica.</translation>
-<translation id="3977809385703587108">Puoi cambiare di nuovo le tue preferenze tra</translation>
-<translation id="3340978935015468852">impostazioni</translation>
-<translation id="4148957013307229264">Installazione...</translation>
-<translation id="4219228508273972445">Ricerca dei peer in corso...</translation>
-<translation id="1902096227388293745">Nessun peer disponibile, riprovo... (<ph name="ATTEMPTS_NUMBER"/> tentativi rimasti)</translation>
-<translation id="1675751799495331928">Abbiamo superato il limite di tentativi, riprova più tardi.</translation>
-<translation id="4499666752625407848">Si è verificato un errore durante un aggiornamento.</translation>
-<translation id="62991515067726424">Questo contenuto è stato caricato con protocollo IPFS</translation>
-<translation id="7263366446813126341">L’InterPlanetary File System (IPFS) è una rete pubblica per l’archiviazione e la consegna di dati peer-to-peer. In qualsiasi momento puoi trovare maggiori informazioni sull’integrazione di Brave o configurare le tue impostazioni IPFS.</translation>
-<translation id="3175567740517780285">Impostazioni IPFS</translation>
-<translation id="8914505352873092008">Vai alla pagina delle impostazioni IPFS</translation>
-<translation id="3465468510001693544">Diagnostica IPFS</translation>
-<translation id="2527518382346359563">Vai alla pagina della diagnostica IPFS</translation>
-<translation id="8192016636169857406">Documentazione IPFS</translation>
-<translation id="6863052043162730918">Vai alla pagina dei documenti IPFS</translation>
-<translation id="3862600063748690056">Importazione IPFS completata</translation>
-<translation id="8263749381887932384">Importazione IPFS parzialmente completata</translation>
-<translation id="2145699434318651911">Importazione IPFS non riuscita</translation>
-<translation id="5525148540855044244">Link di condivisione copiato: <ph name="SHAREABLE_LINK"/></translation>
-<translation id="3741998951694470470">Non siamo riusciti a recuperare i dati da importare</translation>
-<translation id="7900950536120202771">Errore interno del nodo IPFS</translation>
-<translation id="1036635552229153800">I dati sono stati caricati ma non sono stati spostati nella directory brave-import. Puoi spostarli manualmente andando alla pagina di impostazione delle importazioni.</translation>
 <translation id="572392919096807438">Memorizza la mia decisione</translation>
 <translation id="7978789143098237970">finché non chiudo questo sito</translation>
 <translation id="3523195733429162409">per 24 ore</translation>
@@ -584,6 +507,10 @@
 <translation id="5770656036486891920"><ph name="URL"/> vuole utilizzare cookie di terze parti per la vecchia versione del sign-in di Google</translation>
 <translation id="6053826678715267477">Consenti l’accesso alle risorse del localhost</translation>
 <translation id="2973562729984406132"><ph name="URL"/> vuole avere accesso alle risorse del localhost</translation>
+<translation id="5939518447894949180">Reimposta</translation>
+<translation id="3349204812119681938">Ripristina Ricompense di Brave</translation>
+<translation id="4915997950539925115">Se procedi alla reimpostazione, il tuo profilo Ricompense Brave attuale verrà eliminato e le Ricompense non saranno più attive. Riattivandole più avanti, verrà creato un nuovo profilo. Per maggiori dettagli, leggi <ph name="LINK_BEGIN"/>l’articolo dedicato alla reimpostazione<ph name="LINK_END"/>.</translation>
+<translation id="4806029412510565611">Sono consapevole che il mio attuale profilo Ricompense Brave e i dati di Ricompense Brave verranno eliminati dal mio dispositivo e ho letto l’<ph name="LINK_BEGIN"/>articolo di supporto sull’azzeramento<ph name="LINK_END"/>.</translation>
 <translation id="7717357606512850995">Verifica lo stato</translation>
 <translation id="6473937687348632190">Il pagamento delle ricompense di <ph name="MONTH"/> è stato completato.</translation>
 <translation id="1711367267038576241">Il pagamento delle ricompense di <ph name="MONTH"/> inizierà ad essere elaborato entro il giorno <ph name="DATE"/>.</translation>
@@ -605,6 +532,13 @@
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {Questo mese hai visitato # autore supportato da Ricompense Brave}
       other {Questo mese hai visitato # autori supportati da Ricompense Brave}
+    }</translation>
+<translation id="3264975266761862670">Sei pronto a iniziare a guadagnare?</translation>
+<translation id="2784412028126205842">Collega un conto di pagamento</translation>
+<translation id="766126983336630294">{ADS_VIEWED, plural,
+      =0 {Hai visto <ph name="COUNT_BEGIN"/># annunci<ph name="COUNT_END"/> questo mese}
+      =1 {Potresti ricevere del denaro per <ph name="COUNT_BEGIN"/># annuncio<ph name="COUNT_END"/> che hai visto questo mese.}
+      other {Potresti ricevere del denaro per <ph name="COUNT_BEGIN"/># annunci<ph name="COUNT_END"/> che hai visto questo mese.}
     }</translation>
 <translation id="6067959437127691361">Grazie a Ricompense Brave sostieni gli autori dei contenuti e guadagni BAT.</translation>
 <translation id="944736176598169208">Ricompense</translation>
@@ -658,12 +592,23 @@
 <translation id="6945221475159498467">Seleziona</translation>
 <translation id="3279158300746391749">Premi l’icona <ph name="BAT_ICON"/> BAT nella barra degli URL per iniziare.</translation>
 <translation id="8465790416279415448">Continuando accetti i <ph name="TOS_LINK_BEGIN"/>Termini di servizio<ph name="TOS_LINK_END"/> e l’<ph name="PP_LINK_BEGIN"/>Informativa sulla privacy<ph name="PP_LINK_END"/>.</translation>
+<translation id="8981626318554555706">Seleziona la tua area geografica</translation>
+<translation id="6923445315496949274">Seleziona la tua area geografica così potremo mostrarti le opzioni e gli annunci giusti per la tua area geografica.</translation>
+<translation id="840952951051929644">Attivando Ricompense, accetti i <ph name="TOS_LINK_BEGIN"/>Termini di servizio<ph name="TOS_LINK_END"/> e l’<ph name="PP_LINK_BEGIN"/>Informativa sulla privacy<ph name="PP_LINK_END"/>.</translation>
+<translation id="5259608623172605993">Ricevi denaro per gli annunci privati che vedi su Brave</translation>
+<translation id="3099020087817489135">Ricevi vantaggi e sconti speciali</translation>
+<translation id="3991575120992914717">Attiva Brave Rewards</translation>
 <translation id="1015443539415537847">Ci spiace, il programma Ricompense di Brave non è disponibile</translation>
 <translation id="5007776270364097327">Purtroppo nella tua area geografica il programma Ricompense di Brave non risulta disponibile.</translation>
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Scopri di più<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">Non preoccuparti.</translation>
 <translation id="5027616819996705541">Puoi ancora navigare in modalità privata!</translation>
 <translation id="1886682615222609631">Guadagni attuali</translation>
+<translation id="7649070708921625228">Guida</translation>
+<translation id="6042308850641462728">Altro</translation>
+<translation id="6245259297588415877">Autori</translation>
+<translation id="1736419249208073774">Esplora</translation>
+<translation id="932327136139879170">Home</translation>
 <translation id="3479552764303398839">Non adesso</translation>
 <translation id="4185473179105062442">Ricevi BAT direttamente a un indirizzo di criptovaluta self-custody</translation>
 <translation id="5802986777701714573">Abbiamo aggiunto una nuova modalità con cui puoi ricevere le ricompense BAT mensili. Collega un account da uno dei nostri partner o usa la nuova opzione self-custody per iniziare subito a guadagnare.</translation>
@@ -694,6 +639,7 @@
 <translation id="5562948772940025260">Non puoi inviare più di <ph name="AMOUNT"/> BAT prelevandoli dal saldo a tua disposizione su Ricompense Brave.</translation>
 <translation id="4827581232860040208">Si è verificato un problema nell’invio del tuo contributo</translation>
 <translation id="3259723213051400722">Riprova.</translation>
+<translation id="8725066075913043281">Prova di nuovo</translation>
 <translation id="5379685283876547860">Contributo inviato!</translation>
 <translation id="7063168612616047608">Grazie di aver sostenuto i tuoi autori preferiti</translation>
 <translation id="1041398280582063935">Condividi il tuo sostegno</translation>
@@ -804,15 +750,34 @@
 <translation id="6954838107964168963">In possesso</translation>
 <translation id="1976851706319678835">Non in possesso</translation>
 <translation id="7372882109707907136">Importo/24h</translation>
+<translation id="8141607516466809432">Scegli asset da trasferire</translation>
+<translation id="6517332033658428773">Rivedi cambio</translation>
+<translation id="8692596799753687794">Scegli il fornitore di quotazioni</translation>
+<translation id="463712644600982655">Ogni aggregatore fornisce quotazioni utilizzando la liquidità della propria API. Raccoglie informazioni sui prezzi da vari exchange e offre i prezzi sulla base di questi dati.</translation>
+<translation id="3253225298092156258">Non disponibile</translation>
+<translation id="473775607612524610">Aggiorna</translation>
+<translation id="4389658703251593158">Questa coppia non è supportata da <ph name="PROVIDER_NAME"/></translation>
+<translation id="1176173785350238153">Cambia fornitore</translation>
+<translation id="1442774416207457340">Percorso</translation>
+<translation id="8669403359205745187">Slippage massimo</translation>
+<translation id="4537396160118360541">Se lo scostamento tra il prezzo della transazione inviata e il prezzo al momento della transazione sulla catena è maggiore del valore fissato, la transazione non andrà a buon fine.</translation>
+<translation id="9102352924723221579">L’impatto del prezzo è la misura in cui la tua operazione potrebbe spostare il prezzo di mercato. Alcuni token con bassa liquidità sono più sensibili alle transazioni, pertanto anche le transazioni più piccole possono spostare il prezzo di molto.</translation>
+<translation id="6830526162796484210">Valori suggeriti:</translation>
+<translation id="3882803104394170658">Coppie di asset principali: <ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="8918807203406722697">Coppie di stablecoin:<ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="7056655731948492143">Altre: <ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="6231782223312638214">Suggerimenti</translation>
+<translation id="6484605214219822434">Rivedi bridge</translation>
+<translation id="3365052891357224017">Tempo stimato</translation>
+<translation id="7448445168067324096">Tasso di cambio</translation>
+<translation id="1888985051832898007"><ph name="ONE_TOKEN_VALUE"/> per <ph name="EXCHANGE_VALUE"/></translation>
+<translation id="6728663400147327751">Destinatario</translation>
 <translation id="9209024278910716955">Acquisto non supportato per la rete selezionata</translation>
 <translation id="4982630604810554641">Ricerca di un dominio…</translation>
 <translation id="5467044307473123584">Brave supporta l’utilizzo di gateway off-chain per risolvere i domini .eth.</translation>
 <translation id="4896417414446851895">Sembra che tu abbia inserito un indirizzo ENS. Per risolvere questa richiesta dovremo utilizzare un risolutore di terze parti che potrebbe vedere il tuo indirizzo IP e dominio.</translation>
 <translation id="8646078615727397565">Usa il dominio ENS</translation>
 <translation id="1191686659164947414">La transazione potrebbe essere anticipata</translation>
-<translation id="8914256532272191486">Lo scambio verrà eseguito considerando l’importo massimo di slippage che definisci qui. Ad esempio, 1% di slippage significa che sei disponibile ad accettare fino all’1% in meno a causa delle condizioni di mercato.</translation>
-<translation id="632241521608275119">Tolleranza di slippage</translation>
-<translation id="2493281414634883751">Inserisci un valore compreso tra 0,5% e 99%</translation>
 <translation id="4500473291496079954">Scade tra</translation>
 <translation id="2236833281018938257">Indirizzo o URL del portafoglio</translation>
 <translation id="928500657730628112">Indirizzo del portafoglio</translation>
@@ -829,7 +794,6 @@
 <translation id="6896758677409633944">Copia</translation>
 <translation id="7885157704277298658">Copiato!</translation>
 <translation id="6518133107902771759">Verifica</translation>
-<translation id="6042308850641462728">Altro</translation>
 <translation id="3157931365184549694">Ripristina</translation>
 <translation id="414070570958255222">Nativo per browser. Self-custody. E multi-chain.</translation>
 <translation id="1350120992777389959">Assumi il controllo delle tue criptovalute e dei tuoi NFT. Portafoglio Brave supporta Ethereum, catene EVM, Solana, Filecoin, Bitcoin e altro ancora.</translation>
@@ -892,6 +856,8 @@
 <translation id="1940465339426637378">Beni</translation>
 <translation id="2236507293802791911">Asset visibili</translation>
 <translation id="3188393374551744535">Saldo dell’account</translation>
+<translation id="4180024248473947674">Visualizza l’indirizzo su:</translation>
+<translation id="1251267447128999380">Esplortore di <ph name="BLOCKCHAIN_NETWORK_NAME"/></translation>
 <translation id="7525067979554623046">Crea</translation>
 <translation id="4771176409524282426">Crea account</translation>
 <translation id="2471867767872178363">Crea un conto <ph name="BLOCKCHAIN_NETWORK"/></translation>
@@ -952,6 +918,7 @@
 <translation id="5138307340667775659">Questo token è già stato aggiunto al portafoglio.</translation>
 <translation id="547122651977318828">ID token (solo per ERC721)</translation>
 <translation id="7544552854944350190">ID token richiesto</translation>
+<translation id="1974060860693918893">Avanzate</translation>
 <translation id="3842236145820483340">ID CoinGecko</translation>
 <translation id="7642841516562576649">URL icona</translation>
 <translation id="2144247757675997850">Aggiungi asset</translation>
@@ -975,7 +942,6 @@
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="1613627717923045622">Rete di test</translation>
-<translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
 <translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">Seleziona l'account</translation>
@@ -1194,8 +1160,6 @@
 <translation id="9033453977881595182">ID del token</translation>
 <translation id="6332387008245531841">Indirizzo di contatto</translation>
 <translation id="4790543031293959558">URL dell'immagine</translation>
-<translation id="3954354850384043518">In corso</translation>
-<translation id="4350065043422286972">Appuntato</translation>
 <translation id="4289540628985791613">Panoramica</translation>
 <translation id="5585178186632632419">Di proprietà di</translation>
 <translation id="2686444421126615064">Visualizza account</translation>
@@ -1290,6 +1254,7 @@
 <translation id="6736243959894955139">Indirizzo</translation>
 <translation id="3095940652251934233">Dichiarazione</translation>
 <translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Versione</translation>
 <translation id="1313065465616456728">Emissione:</translation>
 <translation id="7902225556763260253">Scadenza:</translation>
 <translation id="2471230424465522689">Non prima</translation>
@@ -1515,23 +1480,22 @@
 <translation id="4937657825850660613">Metà</translation>
 <translation id="7639814793732182496">Massimo</translation>
 <translation id="6584782231358487640">Inserisci un importo</translation>
-<translation id="821928941440539212">Stiamo cercando la quotazione migliore...</translation>
+<translation id="477281933640372562">Recupero quotazione</translation>
 <translation id="5450317966495183014">Ricevi (stima)</translation>
 <translation id="8747614139273050577">Da token</translation>
 <translation id="1726158192333401896">A token</translation>
+<translation id="765894671068292221">Nuova quotazione in <ph name="COUNTDOWN_BEFORE"/><ph name="COUNTDOWN"/><ph name="COUNTDOWN_AFTER"/></translation>
 <translation id="3835223348537121988">Saldo:</translation>
 <translation id="5709875713144853427">Seleziona un token da scambiare</translation>
 <translation id="720404198240859011">Mostra i token senza saldo</translation>
 <translation id="4886690455791686940">Nascondi il saldo a zero</translation>
 <translation id="615791330696335475">Cerca token per nome</translation>
 <translation id="381485723922188688">Opzione</translation>
-<translation id="6680650203439190394">Tasso</translation>
 <translation id="2538996898605796431">Impatto sul prezzo</translation>
 <translation id="8007404171238546456">Minimo ricevuto dopo lo slippage</translation>
 <translation id="767199001998615704">Commissione di rete</translation>
-<translation id="7057870207229052478">Commissione Brave</translation>
+<translation id="28584716826670202">Commissione di Brave inclusa</translation>
 <translation id="3624518972158401291">Gratis</translation>
-<translation id="5038255447967558645">Fornitore di liquidità</translation>
 <translation id="8450638959928932199">Scambia e invia</translation>
 <translation id="476816352791390168">NESSUNA commissione aggiuntiva!</translation>
 <translation id="5319981934425923365">Confermo che l’indirizzo qui sopra è corretto</translation>
@@ -1542,6 +1506,7 @@
 <translation id="8044899503464538266">Lenta</translation>
 <translation id="3569512916300900704">Media</translation>
 <translation id="7019805045859631636">Veloce</translation>
+<translation id="632241521608275119">Tolleranza di slippage</translation>
 <translation id="6778140392042462129">Borse</translation>
 <translation id="6173494033320397682">Solo cambi diretti</translation>
 <translation id="2440960581098655899">Assicura solo il routing diretto e disabilita anche il trading con split</translation>
@@ -1549,6 +1514,7 @@
 <translation id="2379187373676242615"><ph name="VALUE"/>% più economico di CoinGecko</translation>
 <translation id="5351867352310722022">Nello <ph name="VALUE"/>% di CoinGecko</translation>
 <translation id="7695501918490163821"><ph name="VALUE"/>% più caro di CoinGecko</translation>
+<translation id="6599816589121202398">API</translation>
 <translation id="7561262633951061138">Migliore</translation>
 <translation id="8060029310790625334">Centro assistenza</translation>
 <translation id="3143110700666266545">Questa app utilizza le seguenti API di terze parti:</translation>
@@ -1562,29 +1528,6 @@
 <translation id="3797613444743816037">Indirizzo Mint</translation>
 <translation id="7951915459354237451">Il limite previsto per le commissioni è inferiore alla commissione base. La transazione potrebbe richiedere molto tempo o non andare a buon fine.</translation>
 <translation id="2227702748249086756">Impossibile recuperare la stima delle commissioni</translation>
-<translation id="6580621526400120372">Perché alcuni NFT non sono idonei?</translation>
-<translation id="620930608106217992">Alcuni dati NFT sono archiviati su server centralizzati come AWS, Google Cloud, ecc. In questo caso, non è possibile collegare i dati NFT alla rete IPFS.</translation>
-<translation id="4637031024914696767">Attivando l’IPFS su Brave, i tuoi NFT saranno fissati automaticamente. È il modo migliore per fare in tutta sicurezza il backup degli NFT.</translation>
-<translation id="2319971828691864975">Inizia a utilizzare IPFS</translation>
-<translation id="7906328323880284538">Il modo più sicuro per ospitare gli NFT</translation>
-<translation id="214349569547787359">Attiva l’IPFS su Brave per avere il backup automatico dei tuoi NFT</translation>
-<translation id="4819588096619503180">L’IPFS è una rete di archiviazione a gestione comunitaria, simile a un hard disk utilizzabile da tutti. Invece di una singola autorità di controllo, ci sono migliaia di persone che collaborano per accogliere contenuti sull’IPFS. Quando “fissi” qualcosa sull’IPFS, ti stai assicurando che almeno una copia di quel contenuto venga archiviata in modo sicuro. E fintanto che qualcuno ne ha una copia, il file non può scomparire.<ph name="NEWLINE"/>Attivando l’IPFS su Brave, i tuoi NFT saranno fissati automaticamente. È il modo migliore per fare in tutta sicurezza il backup degli NFT.</translation>
-<translation id="9160750213078764355">Vedi quali dei miei NFT sono idonei</translation>
-<translation id="6241155642582182934">Attiva l’IPFS su Brave e avrai un livello di sicurezza in più, con il backup automatico dei tuoi NFT.</translation>
-<translation id="654964147165509548">Aggiunta degli NFT al nodo IPFS locale…</translation>
-<translation id="4910182786472608576"><ph name="PINNED"/> NFT supportati sono stati aggiunti al nodo IPFS locale.</translation>
-<translation id="1607117719941506821"><ph name="PINNABLE"/> NFT è ammissibile</translation>
-<translation id="7056553112112778467">Gli NFT <ph name="PINNABLE"/> sono idonei</translation>
-<translation id="6852656829524945421">Impossibile aggiungere</translation>
-<translation id="9019535252716288146">Stai eseguendo un nodo IPFS</translation>
-<translation id="5584313306739463968">Il nodo IPFS locale non è in esecuzione</translation>
-<translation id="7527548209942671618">Aggiunto al nodo IPFS locale</translation>
-<translation id="5659058832308365026">I dati NFT sono in corso di aggiunta al nodo IPFS locale</translation>
-<translation id="4919133452617704550">Impossibile aggiungere al nodo IPFS locale</translation>
-<translation id="4220102684162429566">I motivi più comuni:</translation>
-<translation id="451509325309455">L’NFT ha problemi di URL con i metadati non IPFS</translation>
-<translation id="3827697793483899711">Problemi con il nodo IPFS interno</translation>
-<translation id="1992846713609432783">Spazio insufficiente sul nodo locale</translation>
 <translation id="3225624966527491351">Importa NFT</translation>
 <translation id="9085765419770918643">Non ci sono ancora NFT.</translation>
 <translation id="8445532667841598737">Vuoi aggiungerne? Clicca il pulsante qui sotto per importarli.</translation>
@@ -1596,6 +1539,7 @@
 <translation id="6948667383954749033">Segna come non spazzatura</translation>
 <translation id="5810047320613496595">Spazzatura</translation>
 <translation id="7257605968082307175">Segna come spazzatura</translation>
+<translation id="1255896809210433555">Aggiungi NFT</translation>
 <translation id="7600335727434653744">Lo vuoi rimuovere dal Portafoglio di Brave?</translation>
 <translation id="6657860743511185539">NFT sarà rimosso dal Portafoglio di Brave ma resterà presente nella blockchain. Se lo cancelli ma poi cambi idea, dovrai reimportarlo manualmente.</translation>
 <translation id="849880459530751909">Modifica l’NFT</translation>
@@ -1653,6 +1597,25 @@
 <translation id="8488138412489236285">Inserisci password (se applicabile)</translation>
 <translation id="9166422618242592074">Importa tipo</translation>
 <translation id="1913853014470037784">Nascondi gli NFT che non possiedi</translation>
+<translation id="6722771294390991852">Raggruppa per collezione</translation>
+<translation id="8775144690796719618">URL non valido</translation>
+<translation id="8892896831704748782">Se non vedi un NFT rilevato automaticamente da Brave o se vuoi tenere traccia di un NFT di proprietà di altri, puoi importarlo manualmente.</translation>
+<translation id="6301982082639804892">Quando si aggiunge un NFT a un portafoglio, l’indirizzo del contratto è l’indirizzo unico sulla blockchain in cui risiede lo smart contract per la collezione di NFT. Puoi trovare l’indirizzo del contratto sul marketplace o sugli esploratori di blockchain, ecc.</translation>
+<translation id="9033155463293614176">L’identificatore unico per l’NFT specifico all’interno della collezione.</translation>
+<translation id="2483152581664459180">Impossibile recuperare i metadati dell’NFT</translation>
+<translation id="6198624822546162700">Segui questo NFT</translation>
+<translation id="3415773516149065346">Non possiedi questo NFT. Puoi comunque aggiungerlo al tuo portafoglio ma non potrai effettuare alcuna transazione con esso.</translation>
+<translation id="7138457458706196245">per es. <ph name="VALUE"/></translation>
+<translation id="2454691116905703258">Il nome del token per un NFT si riferisce al nome specifico dato a un token non fungibile di una particolare collezione o progetto. Questo nome distingue un NFT da un altro della stessa collezione.</translation>
+<translation id="3212749868469431851">Il simbolo NFT si riferisce all’identificativo unico utilizzato per distinguere la collezione o il progetto di NFT.</translation>
+<translation id="8198838794018761504">Solo monitoraggio</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="3417321754118442366">Nessuna DApp trovata</translation>
+<translation id="4864082959618144988">Portafogli attivi</translation>
+<translation id="5445224754926400848">Visita <ph name="VALUE"/></translation>
+<translation id="8355371587927005068">Filtri</translation>
+<translation id="803703704549420287">Cancella i filtri</translation>
+<translation id="1472675084647422956">Mostra altro</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Informazioni generali</translation>
 <translation id="4045404575593562245">Eventi di controllo di Tor</translation>
@@ -1700,7 +1663,6 @@
 <translation id="5104499318017527547">Divertimento</translation>
 <translation id="2228584369802328636">Gaming</translation>
 <translation id="6941852195052765076">Salute</translation>
-<translation id="932327136139879170">Home page</translation>
 <translation id="2233040275795129413">Lifestyle</translation>
 <translation id="5178222043222938163">Musica</translation>
 <translation id="1322083935398004629">Politica</translation>
@@ -1734,6 +1696,7 @@
 <translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">Comandi rapidi</translation>
 <translation id="7481312909269577407">Avanti</translation>
+<translation id="1272079795634619415">Interrompi</translation>
 <translation id="302781076327338683">Ricarica bypassando la cache</translation>
 <translation id="7211681214230730336">Ricarica svuotando la cache</translation>
 <translation id="1779766957982586368">Chiudi la finestra</translation>
@@ -1814,7 +1777,7 @@
 <translation id="6263048902976129908">Attiva/disattiva gli strumenti di sviluppo</translation>
 <translation id="1386786836007298307">Attiva/disattiva la barra degli strumenti a schermo intero</translation>
 <translation id="461433814913785913">Personalizza la touch bar</translation>
-<translation id="5835081019037947840">Attiva/disattiva gli eventi Javascript relativi ad Apple</translation>
+<translation id="4722786500079380710">Attiva/disattiva gli eventi JavaScript relativi ad Apple</translation>
 <translation id="5825969867518399495">Installa PWA</translation>
 <translation id="7888244262238732644">Mostra la pagina di gestione</translation>
 <translation id="8114712275882140856">Mostra URL completi</translation>
@@ -1862,7 +1825,7 @@
 <translation id="522953399371747698">Nascondi la barra dei segnalibri</translation>
 <translation id="134184943774258988">Cambia la visibilità del pulsante Tutti i preferiti</translation>
 <translation id="2158862020143233462">Attiva/disattiva protezioni</translation>
-<translation id="4610630726762318759">Attiva/disattiva javascript</translation>
+<translation id="3010280727642018218">Attiva/disattiva JavaScript</translation>
 <translation id="188822869499214197">Mostra la bolla della playlist</translation>
 <translation id="3202536111478033084">Raggruppa le schede secondo l’origine attuale</translation>
 <translation id="6002210667729577411">Sposta il gruppo in una nuova finestra</translation>
@@ -2032,6 +1995,7 @@
 <translation id="2370739752330685659">Forse più tardi</translation>
 <translation id="983013125018250242">Strumenti Leo</translation>
 <translation id="49269513399674318">Usa il microfono</translation>
+<translation id="3895031624234442305">Modelli personalizzati</translation>
 <translation id="6303294677342628402">Protezioni</translation>
 <translation id="8458987127502506209">Abilita Protezioni Brave</translation>
 <translation id="7509914170164691086">Le Protezioni sono <ph name="LINK_BEFORE"/>ATTIVE<ph name="LINK_AFTER"/> per</translation>
@@ -2096,7 +2060,7 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="5037676449506322593">Seleziona tutto</translation>
 <translation id="5148943178722443958">Contribuisci a migliorare Brave.</translation>
 <translation id="1097073572755862978">In caso di arresto anomalo o blocco, invia dei resoconti diagnostici. <ph name="LINK_BEFORE"/>Scopri di più.<ph name="LINK_AFTER"/></translation>
-<translation id="5099408825243658796">Condividi informazioni di prodotto totalmente private e anonime per farci sapere quali sono le funzioni usate dagli utenti di Brave. <ph name="LINK_BEFORE"/>Scopri di più.<ph name="LINK_AFTER"/></translation>
+<translation id="6629244688368006959">Condividi informazioni di prodotto totalmente private e anonime per farci sapere quali sono le funzioni usate dagli utenti di Brave. <ph name="LINK_BEFORE"/>Scopri di più.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Configurazione completata</translation>
 <translation id="3141206739023333979">Puoi modificare queste impostazioni quando vuoi su Brave andando su <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Leggi per intero l’<ph name="LINK_BEFORE"/>informativa sulla privacy<ph name="LINK_AFTER"/></translation>
@@ -2169,14 +2133,12 @@ Brave offre un servizio che ti protegge da tale rischio filtrando le query DNS s
 Abbiamo però notato che questo servizio non sta funzionando, e non vogliamo lasciarti senza protezione. Abbiamo modificato le impostazioni del DNS nel browser per proteggerti da tale rischio. Durante la navigazione le impostazioni resteranno in vigore e bloccate.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="8810743613883230732">Sembra ci siano problemi con la connessione WireGuard. Vuoi attivare la riserva IKEv2 per una VPN affidabile? Basta cambiare le impostazioni.
+<translation id="7082498599369566941">Sembra ci siano problemi con la connessione WireGuard. Vuoi attivare la riserva IKEv2 per una VPN affidabile? Basta cambiare le impostazioni.
 
 Hai bisogno di aiuto per la compatibilità o la configurazione? Contatta il nostro team di supporto, siamo sempre pronti ad aiutarti.
 Se vuoi, puoi sempre tornare a WireGuard su brave://settings/system.
 
-Ti aiutiamo a connetterti!
-
-<ph name="LEARN_MORE"/></translation>
+Ti aiutiamo a connetterti!</translation>
 <translation id="1657858090675311947">Non avvisarmi più in merito a questo.</translation>
 <translation id="2740531572673183784">OK</translation>
 <translation id="7423206764347669977">Cambia le impostazioni</translation>

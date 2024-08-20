@@ -50,38 +50,15 @@
 <translation id="3975865347033939965">Syncサービスを開始できませんでした。</translation>
 <translation id="4450893287417543264">次回から表示しない</translation>
 <translation id="4595286989346610620">詳細を確認する</translation>
-<translation id="7691598647605453992">IPFS</translation>
-<translation id="3094628781200061820">公開してファイルをIPFSから取得</translation>
-<translation id="9220923434129933852">IPFS設定を確認・変更</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">.onionアドレスで開く: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">強制ペースト</translation>
-<translation id="4901618511712685702">IPFSにインポート</translation>
-<translation id="6794469945030154569">このページ</translation>
-<translation id="5037852323412456577">選択された画像</translation>
-<translation id="2715839724138372481">選択された動画</translation>
-<translation id="4227945450504703638">選択された音声</translation>
-<translation id="7895302206188277628">リンクされたコンテンツ</translation>
-<translation id="3654831858282189202">IPNSキーで公開</translation>
-<translation id="1047401034925735299">選択したテキストをIPFSにインポート</translation>
-<translation id="6925604404524625582">インポートしてリンクをIPFSスナップショットにコピー</translation>
 <translation id="1434416574322382019">新しいプライベートウィンドウ+Tor</translation>
 <translation id="4703780849509456860">トーアのプライベートウィンドウでリンクを開く</translation>
 <translation id="3488584642074079080">Braveプライベートウィンドウ+Tor でリンクを開く</translation>
-<translation id="186554175479803110">ファイルをインポートおよび共有</translation>
-<translation id="3036649622769666520">ファイルを開く</translation>
-<translation id="4408880250587950158">ディレクトリをインポートおよび共有</translation>
-<translation id="8396273373598682323">ファイルあり</translation>
-<translation id="518600784989889917">ディレクトリあり</translation>
-<translation id="8147987711042435221">IPNSを更新</translation>
-<translation id="4491895534716990473">選択したテキストをIPFSにインポート</translation>
-<translation id="8883166554766780543">インポートしてリンクをIPFSスナップショットにコピー</translation>
-<translation id="709253338301411121">ファイルをインポートおよび共有</translation>
-<translation id="7068360136237591149">ファイルを開く</translation>
 <translation id="6313675821927505581">Torで新しいプライベートウィンドウを開く</translation>
 <translation id="2638041073279639246">Torのプライベートウィンドウでリンクを開きます</translation>
 <translation id="3425600262621021599">Torのプライベートウィンドウで Brave内のリンクを開く</translation>
-<translation id="3229091547987707389">ディレクトリをインポートおよびシェア</translation>
 <translation id="2545072023356206691">2023年12月1日から、Brave Devチャンネルはブラウザアップデートを受け取らなくなります。Nightly、Beta、またはRelease版のBraveに移行をお勧めします。</translation>
 <translation id="474217410105706308">タブをミュート</translation>
 <translation id="2804710924397009224">Brave Rewards アイコンを非表示にします</translation>
@@ -115,9 +92,9 @@
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/>個のタブ</translation>
 <translation id="1307431692088049276">次回から質問しない</translation>
 <translation id="6919364924256365253">GoogleもBingも卒業。これからはBraveで。</translation>
-<translation id="3313148036097793884">Braveは、あなた自身の情報やクエリ、またはクリックを追跡しません。100％独立した独自のシステムです。</translation>
+<translation id="2640297688005939449">Brave検索はユーザー情報をプロファイリングしません。100％独立した独自のシステムです。</translation>
 <translation id="7295094278358921487">見たいデータをプライベートで検索</translation>
-<translation id="45040495135337202">Braveは、あなた自身の情報やクエリ、またはクリックを追跡しません。大手テック企業からは100％独立した独自のシステムです。</translation>
+<translation id="3462465068145800637">Brave検索はユーザー情報をプロファイリングしません。大手テック企業からは100％独立した独自のシステムです。</translation>
 <translation id="42032117189492785">独自のインデックスでAIを取り入れた検索を。</translation>
 <translation id="8606416238399082160">完全プライベート、100％独立型、優れたAI機能も搭載。</translation>
 <translation id="7706528608480893054">個人情報を収集しないことで知られるDDGですが、本質的にはこれまでと何ら変わりはありません。Brave検索は、本当の意味でのプライバシーとより良い検索結果、独立したインデックスをすべての方に提供します。</translation>
@@ -129,7 +106,7 @@
 <translation id="4639001639513524869">Brave検索はほとんどのクエリで他社エンジンよりも優れた結果を提供します。しかも、完全プライベート。</translation>
 <translation id="5240031343741051161">Brave Searchを試してみる</translation>
 <translation id="5234764350956374838">表示しない</translation>
-<translation id="9218430445555521422">デフォルトとして設定</translation>
+<translation id="8722651357687610395">Braveをデフォルトに設定</translation>
 <translation id="2370739752330685659">あとで</translation>
 <translation id="5100490448228945668">Brave 検索への切り替えを無効にします。[Enter] キーを押してこの提案を消します。</translation>
 <translation id="9194637241566114638"><ph name="SEARCH_NAME"/>を改善するために、匿名の使用データを送信してください。 <ph name="MORE_INFO"/></translation>
@@ -167,6 +144,10 @@
 <translation id="5877900074358050101">サイドバーアイテムのタイトル</translation>
 <translation id="1613695740874407223">サイドバーアイテムのURL</translation>
 <translation id="4877147287319222750">サイドバーに追加</translation>
+<translation id="2422927186524098759">サイドバー</translation>
+<translation id="5916664084637901428">オン</translation>
+<translation id="5860033963881614850">オフ</translation>
+<translation id="2393250835562952455">自動で非表示</translation>
 <translation id="5977931179408079967">位置</translation>
 <translation id="3790384768741064842">右に移動</translation>
 <translation id="7444424316576061724">左に移動</translation>
@@ -195,15 +176,6 @@
 <translation id="8428213095426709021">設定</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3ドメイン</translation>
-<translation id="72868071984333667">IPFSとプライバシーについて詳しくは知る</translation>
-<translation id="1419682418471956530">このページはIPFSネットワークで利用可能です。Braveの組み込みサポート　(ipfs://またはipns://経由) を使用してIPFSページを読み込みますか？</translation>
-<translation id="7109885938715976444">今回のみ</translation>
-<translation id="7473891865547856676">スキップ</translation>
-<translation id="2722425322672922644">これによるプライバシーへの影響について確認</translation>
-<translation id="5551268135482191097">IPFSのURLの読み込みにエラーが発生しました。元のURLにリダイレクトしますか？</translation>
-<translation id="4756627014339714615">リダイレクト</translation>
-<translation id="1338274252864046652">ブラウザ起動時に常にIPFSノードを起動しますか？</translation>
-<translation id="3435896845095436175">有効にする</translation>
 <translation id="5046066249040287308">Braveウォレットユーティリティサービス</translation>
 <translation id="4552520379838695057">申し訳ございません、そのページはありません。</translation>
 <translation id="7299769530898469069">保存されたバージョンを読み込めません</translation>
@@ -264,7 +236,6 @@
 <translation id="2557899542277210112">クイックアクセスするには、このページをブックマークバーにブックマークしてください。</translation>
 <translation id="1968543937259008435">オンライン上のプライバシーを確保しましょう</translation>
 <translation id="6817415381278637662">Braveをデフォルトのブラウザに設定すると、訪問するすべてのウェブページでBraveプライバシー保護を利用できます。</translation>
-<translation id="8722651357687610395">Braveをデフォルトに設定</translation>
 <translation id="7537601449003285327">タスクバーにピン留めする</translation>
 <translation id="2307973900865360088">Dockにキープ</translation>
 <translation id="961012016278832836">Microsoft Edgeレガシー</translation>
@@ -277,15 +248,17 @@
 <translation id="8373664339577369248">カスタムオーダー</translation>
 <translation id="8120600068258956006">プレイリストに追加</translation>
 <translation id="650694591627983430">このページでメディアが見つかりました</translation>
-<translation id="43751811163166570"><ph name="PLAYLIST_FOLDER_NAME"/>に追加しました</translation>
 <translation id="6900840851173033633">このページでメディアが見つかりませんでした。</translation>
+<translation id="5296010081025405662">プレイリストに追加しました</translation>
 <translation id="4830689155681863580">プレイリストで開く</translation>
 <translation id="4735626465866524761">フォルダを変更</translation>
 <translation id="8101564000331197174">プレイリストから削除</translation>
 <translation id="838254185387128227">このページのその他のメディア...</translation>
 <translation id="326641288623143307">選択項目を追加</translation>
+<translation id="4951645797020684601">プレイリストに追加しました</translation>
 <translation id="5856970744810677796">プレイリストで開く</translation>
 <translation id="5494357917532817933">フォルダを変更</translation>
+<translation id="5181358966317519720">プレイリストから削除</translation>
 <translation id="333558915234875673">このページのその他のメディア...</translation>
 <translation id="5145233969981669502">選択項目を追加</translation>
 <translation id="55252794453047936">メディアを移動</translation>
@@ -309,7 +282,6 @@
 <translation id="1173894706177603556">名前を変更</translation>
 <translation id="7765158879357617694">移動</translation>
 <translation id="6648536728577053364">オフラインデータを削除</translation>
-<translation id="5181358966317519720">プレイリストから削除</translation>
 <translation id="2377705456080309463">元のページを表示</translation>
 <translation id="158894735649719362">音があると楽しさが広がります。お気に入りのメディアを追加して、いつでもどこでも再生。オフラインのときでも視聴を楽しみましょう。</translation>
 <translation id="8422349592890097194">新しいフォルダを作成</translation>
@@ -377,7 +349,6 @@
 <translation id="1013121820689882118">Speedreader</translation>
 <translation id="2025435450953474282">記事が自動的にリーダーモードで読み込まれるため、時間を節約できます</translation>
 <translation id="7984721311211272523">タブのスピーカーアイコンでミュート機能を無効にする</translation>
-<translation id="2422927186524098759">サイドバー</translation>
 <translation id="832432428796481785">サイドバーのボタンを表示</translation>
 <translation id="5581036754486769849">プライベートウィンドウでオートフィルを許可</translation>
 <translation id="2262012219398520969">通常のウィンドウの情報をプライベートウィンドウで読み取り / 自動入力できます</translation>
@@ -400,7 +371,6 @@
 <translation id="6303294677342628402">Shields</translation>
 <translation id="7133511168130368997">しつこく追跡してくるトラッカーや不快な広告をブロックできます。</translation>
 <translation id="2761825942249694703">これはShieldsのデフォルト設定です。特定のサイト上のShieldsパネルで変更しない限り、すべてのウェブサイトにこの設定が適用されます。この設定を変更しても、既存のサイト設定には影響しません。</translation>
-<translation id="1435116578479068303">ウェブサイト上のほとんどの広告をブロックします。ただし、<ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>の設定で制御されるBraveプライベート広告はブロックされません。</translation>
 <translation id="8452536890042542134">ウェブサイト上でほとんどの広告をブロックします。</translation>
 <translation id="4800195524776354947">シールドアイコン上でブロックされているアイテムの数を表示</translation>
 <translation id="5510493033031835532">AMPページを自動でリダイレクト</translation>
@@ -418,8 +388,8 @@
 <translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
 <translation id="3357319404342882895">厳格</translation>
 <translation id="8823559166155093873">クッキーをブロック</translation>
-<translation id="6196640612572343990">サードパーティの Cookie をブロックする</translation>
-<translation id="5657156137487675418">全てのクッキーを許可する</translation>
+<translation id="6196640612572343990">3rdパーティクッキーをブロック</translation>
+<translation id="5657156137487675418">すべてのクッキーを許可する</translation>
 <translation id="6883611015375728278">すべてのクッキーをブロック</translation>
 <translation id="7390783310074170337">デフォルト表示</translation>
 <translation id="130615081792797568">簡略表示</translation>
@@ -588,7 +558,6 @@
 <translation id="842628013524824194">標準ウィンドウ - アドレスバーで使用される検索エンジン</translation>
 <translation id="5324939009884545145">プライベートウィンドウ - アドレスバーで使用される検索エンジン</translation>
 <translation id="6864914031231797928">拡張機能のGoogleログインを許可する</translation>
-<translation id="6554397389149987360">ハングアウトコンポーネントでスクリーン共有やその他の機能を有効にします</translation>
 <translation id="7878791177459550035">メディアルーターは、ブラウザのキャスト機能を有効にします。</translation>
 <translation id="2707635989000984973">Unstoppable Domainsのドメイン名を解決</translation>
 <translation id="1807158022157096592"><ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>でUnstoppable Domainsのプライバシーに関する考慮事項をご確認ください。</translation>
@@ -601,7 +570,7 @@
 <translation id="951983619130191090">他のユーザーがTorネットワークに接続するヘルプをボランティアとして提供</translation>
 <translation id="2223668809371912019">Snowflakeエクステンションを有効にして、検閲された国のユーザーがあなたのネットワーク接続を介してTorネットワークに接続できるようにします。</translation>
 <translation id="2959986444009520721">ブリッジの使用</translation>
-<translation id="8416750895933172460">ブリッジは、Torがブロックされている場所でTorネットワークにアクセスするのに役立ちます。いる場所によって、よく機能するブリッジが異なる場合があります。</translation>
+<translation id="271237727681958372">ブリッジは、Torがブロックされている場所でTorネットワークにアクセスするのに役立ちます。いる場所によって、よく機能するブリッジが異なる場合があります。</translation>
 <translation id="7206799843254049470">Tor接続設定</translation>
 <translation id="3194502271166340944">プライベートウィンドウのTorネットワークへの接続方法を制御します。</translation>
 <translation id="3717364961460790491">この機能に必要なSnowflakeエクステンションをダウンロードすることができませんでした。インターネット接続をご確認の上、再度お試しください。</translation>
@@ -619,7 +588,7 @@
 <translation id="6936835573742749135">CAPTCHAを要求できません。後で再試行してください。</translation>
 <translation id="2653659639078652383">送信</translation>
 <translation id="1294350054292274934">Torウィンドウで.onionアドレスのみを解決</translation>
-<translation id="1258903596167452221">OnionサービスはTorウィンドウの外では利用できません。</translation>
+<translation id="601227612175911475">OnionサービスはTorウィンドウの外では利用できません。</translation>
 <translation id="2896916411183256228">WebTorrentを有効にして、直接Torrentファイルやマグネットリンクを表示</translation>
 <translation id="5249433283143453448">Widevineデジタル著作権管理 (DRM) コンポーネントを使用して、保護されたストリーミング動画と他のコンテンツをブラウザで表示しましょう。</translation>
 <translation id="1314131187310290315">Manifest V2拡張機能</translation>
@@ -653,19 +622,11 @@
 <translation id="856371974127598760">ウォレットネットワーク</translation>
 <translation id="5975930666279943472">ウォレットのトランザクションとノンス情報をクリア</translation>
 <translation id="5693968582510626466">トランザクションのクリアは、ウォレットを使用する開発時や、ローカルサーバーの状態をクリアするときなどに使用します。</translation>
-<translation id="4440478655766953083">NFTを自動でピン留めする</translation>
-<translation id="464460032678285850">Braveウォレットに追加されたNFTは、自動的にローカルIPFSノードにピン留めされる場合があります。
-注：ピン留めのためにIPFSデーモンが起動することがあり、ローカルノードがIPFSネットワークにキャッシュされたデータとピン留めのNFTを共有します。</translation>
 <translation id="2326850911705720398">ウォレットのデータをリセット＆クリア</translation>
-<translation id="5887022857624190239">ピン留めされたNFTをクリアする</translation>
-<translation id="204584113330893805">ピン留めされたNFTは、ローカルIPFSノードが起動したときにIPFSネットワークにホストされます。
-現在、<ph name="NFT_COUNT"/>のピン留めされたNFTがあります。</translation>
 <translation id="9216386092464743272">ウォレットのトランザクションとノンス情報をすべてリセットしてもよろしいですか？このオプションは、ローカルでテストサーバーを実行している開発者が主に使用します。確認して実行するには「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
 <translation id="6369495274982305511">ウォレットをリセットしてよろしいですか？ウォレットがバックアップされていない場合、リセットすると、（紐づく資金を含む）すべてのアカウントデータ が失われます。確認のために「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
-<translation id="4248533222660842025">ピン留めされたNFTをクリアしてもよろしいですか？IPFSネットワーク上に他のホストが存在しない場合、NFTの一部は永遠に失われる可能性があります。「<ph name="CONFIRMATION_PHRASE"/>」と入力して確定してください。</translation>
 <translation id="3752403403443723332">ウォレットをリセットしました。</translation>
 <translation id="594766067816395072">ウォレットのトランザクション情報をリセットしました。</translation>
-<translation id="1615009913945115836">ピン留めされたNFTがリセットされました。</translation>
 <translation id="57798285717509216">署名する前のトランザクション結果を表示します。 <ph name="BEGIN_LINK"/>&lt;u&gt;詳細はこちら&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">Ethereumネットワーク</translation>
 <translation id="3504157706952484145">Filecoinネットワーク</translation>
@@ -691,7 +652,7 @@
 <translation id="3047726704186619366">アイコンURL</translation>
 <translation id="2487558607408469181">ブロックエクスプローラーURL</translation>
 <translation id="2156993118928861787">アドレスが無効です。</translation>
-<translation id="6301398959353668507">この項目は必須です。</translation>
+<translation id="2042467807419742999">この項目は必須です。</translation>
 <translation id="7504462451153306677">形式が無効です。チェーンIDは正の数にしてください</translation>
 <translation id="650071759190249039">内部エラーが発生しました。ネットワークを追加できません。</translation>
 <translation id="336035846712292194">ネイティブ通貨についての情報をすべて入力してください</translation>
@@ -702,63 +663,18 @@
 <translation id="232693303726691609">ウォレットネットワークリストでネットワークを表示または非表示にします</translation>
 <translation id="7893578599666249602"><ph name="KEY_NAME"/>をリセットしますか？</translation>
 <translation id="2618193846561624884">既存のネットワークを更新しますか？</translation>
-<translation id="9170907049676078643">IPFSリソースを解決する方法</translation>
-<translation id="1327977588028644528">ゲートウェイ</translation>
-<translation id="1195880978080389104">BraveローカルIPFSノード</translation>
-<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>こちら<ph name="END_LINK_MPL"/>からBraveローカルIPFSノードとゲートウェイのプライバシーに関連する考慮事項を確認できます。</translation>
-<translation id="4927734062756955434">IPFSパブリックゲートウェイアドレス</translation>
-<translation id="3707431725427930007">NFT用IPFSパブリックゲートウェイアドレス</translation>
-<translation id="8425213833346101688">変更</translation>
-<translation id="585868419599255817">IPFSパブリックゲートウェイのフォールバック</translation>
-<translation id="2618080188892567155">BraveのローカルIPFSノードに到達できない場合は、自動的にパブリックIPFSゲートウェイにフォールバックします。</translation>
-<translation id="8956391206920485238">ブラウザ起動時に常にIPFSノードを起動しますか？</translation>
-<translation id="6789104345873307368">IPFSネットワークリソースへのリクエストを、設定されたゲートウェイに自動的にリダイレクトします。</translation>
-<translation id="4138306018048329894">サードパーティのIPFSゲートウェイまたはDNSLINKリソースでホストされているIPFSリソースへのリクエストは、選択したローカルまたはリモートゲートウェイを介してルーティングされます。
-注: ローカルノードを選択した場合、リソースはお使いのコンピュータから直接要求され、しばらくの間はキャッシュされたデータがIPFSネットワークに提供される可能性があります。</translation>
-<translation id="8068526464562249859">ブラウザーバーからの一般的なIPFSタスクにアクセスするなど、BraveでのIPFSサポートを強化するために「IPFS Companion」拡張機能を使用します。</translation>
-<translation id="1251574393468476924">最大IPFSキャッシュサイズ（GB）</translation>
-<translation id="2503497578400410320">IPFSリポジトリのデータストアのサイズに対するソフトな上限。</translation>
-<translation id="6758961763875471084">ピアリストを修正</translation>
-<translation id="5761731140570209168">ピア接続文字列を新規追加</translation>
-<translation id="7024553202001112871">IPNSキーを設定</translation>
-<translation id="951216659045543447">対応する秘密キーでコンテンツに署名しIPNSへ公開</translation>
-<translation id="7611728475758612204">公開用キーを利用可能</translation>
-<translation id="911363100236037920">新しいキーの名前を入力</translation>
-<translation id="6358469157239228181">この名前は使用できません</translation>
-<translation id="2082206983920804886">キーのローテーション</translation>
-<translation id="5078501082919354191">BraveローカルIPFSノードを停止できません</translation>
-<translation id="5687424953196903465">BraveローカルIPFSノードを起動できません</translation>
-<translation id="6476061084931271248">変更を適用するにはノードを再起動します</translation>
-<translation id="3754226427671882382">ノードを再起動</translation>
-<translation id="949667118776341807">ローテーション</translation>
-<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
-<translation id="724513921936768901">この名前は無効です</translation>
-<translation id="1295874070797049002">キーのエクスポート</translation>
-<translation id="3946479342297227860">キーを削除</translation>
-<translation id="1534091531114892221">IPFSピアの説明を設定</translation>
-<translation id="910215077892371264">ノードが起動されていません</translation>
-<translation id="616058968889448209">IPFSサービス起動エラー。詳細は<ph name="BEGIN_LINK"/>診断ページ<ph name="END_LINK"/>を参照</translation>
-<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' キーのインポートに失敗しました</translation>
-<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' キーのエクスポートに失敗しました</translation>
-<translation id="5840868269342837751">注: ネットワークリクエストでは、ブラウザのプロキシやDNS設定が使用されない場合があります。</translation>
-<translation id="8275038454117074363">追加</translation>
-<translation id="3654980960391973513">生成</translation>
-<translation id="5531501313997312487">ノードの開始</translation>
-<translation id="557281710253742286">IPFSゲートウェイを設定します</translation>
-<translation id="8571837315037233299">ゲートウェイアドレス</translation>
-<translation id="7703184801853248830">無効なゲートウェイアドレス</translation>
-<translation id="7690058578502751948">Brave で使用できるのは、オリジンアイソレーションが有効になっている有効な IPFS ゲートウェイのみです。</translation>
 <translation id="1643029991199044105">Ctrl-Tabを使用し、タブを直近使用したものの中で切り替える</translation>
 <translation id="2775956301559569472">404ページ上に「Wayback Machine (ウェイバックマシン)」プロンプトを表示する</translation>
 <translation id="3095201688102519917">複数のタブでウィンドウを閉じる前に警告を表示する</translation>
 <translation id="7120553802660696133">最後のタブを閉じる際にウィンドウを閉じる</translation>
+<translation id="3394171693948989253">終了時にEscを押すよう、全画面でリマインダーを表示</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">サイドバーにLeoアイコンを表示</translation>
 <translation id="8055509865174199683">ウェブサイトのコンテキストメニューにLeoを表示</translation>
 <translation id="1529674267267221673">ウェブサイトを右クリックすると、コンテキストメニューにLeoが表示されます。これにより、現在のウェブページのコンテキストがLeoに送信されます。</translation>
 <translation id="8172263161008556851">会話でおすすめのプロンプトを表示</translation>
 <translation id="1014480593522400586">Leoのデータを消去</translation>
-<translation id="8681157601856387010">Leoアシスタントをリセットすると、今後Brave 
+<translation id="6803758564561896401">Leoアシスタントをリセットすると、今後Brave 
 Leoの利用をオプトインする必要があります。チャット履歴も消去されます。
 チャット履歴を消去すると、Brave 
 Leoとの会話がすべて削除されます。この操作を元に戻すことはできません。</translation>
@@ -766,6 +682,27 @@ Leoとの会話がすべて削除されます。この操作を元に戻すこ�
 <translation id="8157373421434119674">データ＆チャット履歴</translation>
 <translation id="614530507403667291">新しい会話向けデフォルトモデル</translation>
 <translation id="8826914609353373601">プレミアムサブスクリプションを管理</translation>
+<translation id="235457946228076038">モデルを自由にカスタマイズ</translation>
+<translation id="8631951653187535788">このモデルを削除しますか？このモデルがアクティブな会話で使用されている場合、その会話はLeoのデフォルトモデルを使用するよう変更されます。</translation>
+<translation id="1907126221851170941">モデルを追加</translation>
+<translation id="8346224718149026088">モデルを編集</translation>
+<translation id="3468298837301810372">ラベル</translation>
+<translation id="3553035516792776805">モデルのリクエスト名</translation>
+<translation id="7634775528597575156">サーバーのエンドポイント</translation>
+<translation id="6374563306438145841">APIキー</translation>
+<translation id="8008271349880309090">モデル名はモデル選択メニューに表示されます。</translation>
+<translation id="7131172845656551327">サービングフレームワークへのリクエストで表示されるモデル名。例: phi-3 (この名前がサービングフレームワークでの想定値と正確に一致しない場合、統合が機能しないためご注意ください)</translation>
+<translation id="3286410514484292784">サービングフレームワークがリクエストをリッスンする URL。不明点がある場合は、サービングフレームワークのドキュメントを確認してください。英: Ollama の場合は、常に「http://localhost:11434/v1/chat/completions」となります。</translation>
+<translation id="1058790648388035953">サービングフレームワークによっては、APIキーやアクセストークンなどの認証情報を必要とする場合があります。これらはリクエストヘッダーに追加されます。</translation>
+<translation id="217141195370578385">Braveはこれらのリクエストのプロキシを行いません。選択したプロバイダーのプライバシー規約をお読みください。</translation>
+<translation id="2645532768679870478">非ローカルのエンドポイントには、安全なデータ伝送のためにHTTPSプロトコルを採用してください。</translation>
+<translation id="8177205483022887785">入力されたURLが無効です。有効なURLを入力してください。</translation>
+<translation id="5249539665306267943">新しいモデルを追加</translation>
+<translation id="7265212806651512211">まだモデルが接続されていません。</translation>
+<translation id="7304802428852949897">モデル</translation>
+<translation id="7435587476558117990">セルフまたはサードパーティによりホストされたLLMをLeoに接続し、ブラウザ内で使用します。</translation>
+<translation id="1381050642750209119">OllamaのようなOpenAI Chat Protocol互換のフレームワークを使用してください。</translation>
+<translation id="2642905648178380593">モデルを保存</translation>
 <translation id="349846214503465941">プレイリストを有効にする</translation>
 <translation id="7903608716704052878">オフラインでの閲覧用に自動でファイルを追加</translation>
 <translation id="4193768184502613558">このオプションは、メディアファイルを自動的にキャッシュし、インターネット接続がなくても再生できるようにします。</translation>

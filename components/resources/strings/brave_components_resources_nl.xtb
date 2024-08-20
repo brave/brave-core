@@ -1,9 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="nl">
-<translation id="1800311840305731850">IPFS-pagina kan niet worden geladen.</translation>
-<translation id="5712742401570874902">IPFS-pagina's zijn niet toegestaan in privévensters.</translation>
-<translation id="5749639013106315553">IPFS is uitgeschakeld. Selecteer 'IPFS-oplosmethode' in instellingen om deze site te openen.</translation>
 <translation id="5288293905681750318">Trackers &amp; advertenties geblokkeerd</translation>
 <translation id="2313532038420432247">HTTPS Opwaarderingen</translation>
 <translation id="788493840831967104">Bespaarde tijd</translation>
@@ -60,7 +57,6 @@
 <translation id="780301667611848630">Nee, bedankt</translation>
 <translation id="1230746063445072175">Wilt u nog meer privacy?</translation>
 <translation id="6699628638740071563">Het is tijd om Google aan de kant te zetten.</translation>
-<translation id="2045455461902775806">Brave Zoeken beïnvloedt of censureert de zoekresultaten niet, noch volgt het u, uw zoekopdrachten of uw klikken.</translation>
 <translation id="6811221529729056895">Probeer Brave Zoeken nu</translation>
 <translation id="3446024864193919737">Brave Rewards tonen</translation>
 <translation id="5585019845078534178">Kaarten</translation>
@@ -404,13 +400,9 @@
 <translation id="2799223571221894425">Opnieuw starten</translation>
 <translation id="1110535155349301542">verwijder</translation>
 <translation id="8204292894173669182">Verwijderen uit opgeslagen</translation>
-<translation id="5939518447894949180">Resetten</translation>
-<translation id="3349204812119681938">Brave Rewards opnieuw instellen</translation>
 <translation id="5669281110673664811">Exclusielijst wissen</translation>
 <translation id="1797334173232638045">Je vastgepinde sites zijn verplaatst naar</translation>
 <translation id="3074127054582480056">Opgelet</translation>
-<translation id="4915997950539925115">Als u kiest voor 'opnieuw instellen', wordt uw huidige profiel van Brave Beloningen verwijderd en is Brave Beloningen niet meer ingeschakeld. Als u Brave Beloningen later opnieuw inschakelt, begint u opnieuw met een nieuw profiel. Lees ons <ph name="LINK_BEGIN"/>ondersteuningsartikel over opnieuw instellen<ph name="LINK_END"/> voor meer informatie.</translation>
-<translation id="4806029412510565611">Ik begrijp dat mijn huidige Brave Beloningen-profiel en Brave Beloningen-gegevens worden verwijderd van mijn apparaat en ik heb het <ph name="LINK_BEGIN"/>ondersteuningsartikel over opnieuw instellen<ph name="LINK_END"/> gelezen.</translation>
 <translation id="3494964159182650590">Overzicht van de Beloningen</translation>
 <translation id="2913994227901456490">Bekijk alle [[numItems]] artikels</translation>
 <translation id="6685434227783226855">Mijn bijdrage verzenden</translation>
@@ -496,76 +488,6 @@
 <translation id="4087894168792701548">Normaal doorgaan</translation>
 <translation id="5874287397425241890">U browset deze website in off-the-record-modus.</translation>
 <translation id="1036348656032585052">Uitschakelen</translation>
-<translation id="9020818404803201080">Verbonden peers:</translation>
-<translation id="2903493209154104877">Adressen</translation>
-<translation id="3207122385716480167">Repo-statistieken</translation>
-<translation id="2595187693729756455">Node-info</translation>
-<translation id="5789886980848929155">Status IPFS-knooppunt</translation>
-<translation id="6599816589121202398">API</translation>
-<translation id="1327977588028644528">Gateway</translation>
-<translation id="2551123942222622809">Swarm</translation>
-<translation id="5201810533706869030">Objecten</translation>
-<translation id="8028993641010258682">Grootte</translation>
-<translation id="7870625241353817260">StorageMax</translation>
-<translation id="3202131003361292969">Pad</translation>
-<translation id="3798449238516105146">Versie</translation>
-<translation id="2892680660204660712">Peer-ID</translation>
-<translation id="7536543993364605970">Agent-versie</translation>
-<translation id="3693482323085649439">Node is actief</translation>
-<translation id="6315833555896070573">Node is niet actief</translation>
-<translation id="1272079795634619415">Stop</translation>
-<translation id="5895138241574237353">Opnieuw starten</translation>
-<translation id="6762417584993757344">Niet geïnstalleerd</translation>
-<translation id="4159076046325416152">Bezig met installeren van IPFS...</translation>
-<translation id="3854747677478661601">Voer een afvalinzamelingsoperatie uit</translation>
-<translation id="7376842608449050673">Fout bij afvalinzameling</translation>
-<translation id="8523162996646111972">(details)</translation>
-<translation id="6121825639998459476">installeren en starten</translation>
-<translation id="72868071984333667">Meer informatie over IPFS en privacy</translation>
-<translation id="3793279629218362523">ID van peer en IPNS-sleutels beheren</translation>
-<translation id="6776260067907986254">Mijn Node</translation>
-<translation id="8999763401170835879">Er is een fout opgetreden, probeer opnieuw te starten</translation>
-<translation id="5433704526290922623">Er is een fout opgetreden, probeer de node opnieuw te installeren</translation>
-<translation id="8428368469058794536">IPFS-service</translation>
-<translation id="7691598647605453992">IPFS</translation>
-<translation id="8725066075913043281">Probeer opnieuw</translation>
-<translation id="1886162073868201257">Fout bij opstarten de IPFS-service</translation>
-<translation id="5357895013476183089">IPFS niet verbonden</translation>
-<translation id="7662930734991751511">Kan IPFS-bronnen niet laden door middel van een lokaal IPFS-knooppunt van Brave</translation>
-<translation id="1141556610026845297">Het is niet gelukt om het lokale IPFS-knooppunt te gebruiken om de gevraagde IPFS-bronnen te laden. Klik op de knop 'Proceed' om in plaats daarvan de openbare gateway te gebruiken en om in de toekomst automatisch terug te vallen op de openbare gateway.</translation>
-<translation id="3373798179786163193">Ga door met publieke poort</translation>
-<translation id="1974060860693918893">Geavanceerd</translation>
-<translation id="9096577886148726047">Geavanceerd verbergen</translation>
-<translation id="182581792765792826">Brave kan de gevraagde IPFS-bronnen niet laden omdat het lokale IPFS-knooppunt van Brave niet is gestart, of omdat er op dit moment geen aangesloten peers beschikbaar zijn. Als u kiest voor 'Doorgaan', zal Brave automatisch terugvallen op de standaard openbare gateway wanneer het gebruik van het lokale IPFS-knooppunt van Brave is mislukt. U kunt dit op elk gewenst moment in uw Brave-instellingen wijzigen.</translation>
-<translation id="8026038288183400906">IPFS-voorkeur</translation>
-<translation id="2058855456574089690">Stel uw IPFS-voorkeur in</translation>
-<translation id="4780526507945807546">Een lokaal IPFS-knooppunt van Brave gebruiken</translation>
-<translation id="8148464361648742409">Gebruik een publieke gateway</translation>
-<translation id="5123478056123923857">IPFS (InterPlanetary File System) is het openbare netwerk voor peer-to-peer gegevensopslag en -overdracht. Dit protocol maakt gebruik van andere privacy-overwegingen dan HTTP(S).</translation>
-<translation id="1216911189668016151">Uw computer is onderdeel van het openbare netwerk, maar uw IP-adres en de inhoud die u opvraagt of verstrekt zijn mogelijk zichtbaar. Inhoud die u via IPFS opvraagt wordt geverifieerd voordat deze aan u wordt aangeboden. Netwerkverzoeken gebruiken mogelijk geen proxy- en DNS-browserinstellingen.</translation>
-<translation id="8664689531113048642">Beschermt uw IP-adres en de inhoud die u opvraagt van mogelijke externe waarnemers, maar niet van de beheerder van de publieke gateway. De beheerder van de gateway is er verantwoordelijk voor dat de inhoud die via een gateway aan u wordt aangeboden, ook de inhoud is die u hebt opgevraagd. Ook draagt uw computer niet bij aan het openbare IPFS-netwerk.</translation>
-<translation id="3977809385703587108">U kunt uw voorkeuren opnieuw wijzigen in</translation>
-<translation id="3340978935015468852">instellingen</translation>
-<translation id="4148957013307229264">Bezig mer installeren...</translation>
-<translation id="4219228508273972445">Op zoek naar peers...</translation>
-<translation id="1902096227388293745">Geen peers beschikbaar, bezig met opnieuw proberen... (<ph name="ATTEMPTS_NUMBER"/> attemps left)</translation>
-<translation id="1675751799495331928">We hebben het maximum aantal pogingen overschreden, probeer het later nog eens.</translation>
-<translation id="4499666752625407848">Er is een fout opgetreden tijdens een update.</translation>
-<translation id="62991515067726424">Deze inhoud is geladen met het IPFS-protocol</translation>
-<translation id="7263366446813126341">InterPlanetary File System (IPFS) is een openbaar netwerk voor peer-to-peer gegevensopslag en -overdracht. Je kunt te allen tijde meer informatie krijgen over de integratie van Brave of je IPFS-instellingen aanpassen.</translation>
-<translation id="3175567740517780285">IPFS-instellingen</translation>
-<translation id="8914505352873092008">Ga naar de IPFS-instellingenpagina</translation>
-<translation id="3465468510001693544">IPFS-diagnostiek</translation>
-<translation id="2527518382346359563">Ga naar de IPFS-diagnostiekpagina</translation>
-<translation id="8192016636169857406">IPFS-documenten</translation>
-<translation id="6863052043162730918">Ga naar de IPFS-documentenpagina</translation>
-<translation id="3862600063748690056">IPFS-import voltooid</translation>
-<translation id="8263749381887932384">IPFS-import gedeeltelijk voltooid</translation>
-<translation id="2145699434318651911">IPFS-import mislukt</translation>
-<translation id="5525148540855044244">Deelbare koppeling gekopieerd: <ph name="SHAREABLE_LINK"/></translation>
-<translation id="3741998951694470470">Kan gegevens voor import niet ophalen</translation>
-<translation id="7900950536120202771">Interne fout bij IPFS-knooppunt</translation>
-<translation id="1036635552229153800">De gegevens zijn geüpload maar zijn niet naar de importmap van Brave verplaatst. Je kunt dit handmatig doen via de pagina voor instellingen van importeren.</translation>
 <translation id="572392919096807438">Mijn keuze onthouden</translation>
 <translation id="7978789143098237970">totdat ik de website sluit</translation>
 <translation id="3523195733429162409">voor 24 uur</translation>
@@ -577,6 +499,10 @@
 <translation id="5770656036486891920"><ph name="URL"/> wil cookies van derden gebruiken voor een verouderd Google-inlogproces.</translation>
 <translation id="6053826678715267477">Toegang tot localhost-resources toestaan</translation>
 <translation id="2973562729984406132"><ph name="URL"/> wil toegang tot localhost-resources</translation>
+<translation id="5939518447894949180">Resetten</translation>
+<translation id="3349204812119681938">Brave Rewards opnieuw instellen</translation>
+<translation id="4915997950539925115">Als u kiest voor 'opnieuw instellen', wordt uw huidige profiel van Brave Beloningen verwijderd en is Brave Beloningen niet meer ingeschakeld. Als u Brave Beloningen later opnieuw inschakelt, begint u opnieuw met een nieuw profiel. Lees ons <ph name="LINK_BEGIN"/>ondersteuningsartikel over opnieuw instellen<ph name="LINK_END"/> voor meer informatie.</translation>
+<translation id="4806029412510565611">Ik begrijp dat mijn huidige Brave Beloningen-profiel en Brave Beloningen-gegevens worden verwijderd van mijn apparaat en ik heb het <ph name="LINK_BEGIN"/>ondersteuningsartikel over opnieuw instellen<ph name="LINK_END"/> gelezen.</translation>
 <translation id="7717357606512850995">Status controleren</translation>
 <translation id="6473937687348632190">De uitbetaling van beloningen voor <ph name="MONTH"/> is voltooid.</translation>
 <translation id="1711367267038576241">De verwerking van uw uitbetaling van beloningen voor <ph name="MONTH"/> begint vanaf <ph name="DATE"/>.</translation>
@@ -598,6 +524,7 @@
       =1 {U hebt deze maand # ontwikkelaar bezocht die wordt ondersteund via Brave Beloningen}
       other {U hebt deze maand # ontwikkelaars bezocht die worden ondersteund via Brave Beloningen}
     }</translation>
+<translation id="3264975266761862670">Klaar om te beginnen met verdienen?</translation>
 <translation id="6067959437127691361">Brave Beloningen helpt contentontwikkelaars te ondersteunen en u kunt er BAT mee verdienen.</translation>
 <translation id="944736176598169208">Beloningen</translation>
 <translation id="2359808026110333948">Doorgaan met</translation>
@@ -656,6 +583,11 @@
 <translation id="4214852687527104244">Maakt u zich geen zorgen.</translation>
 <translation id="5027616819996705541">U kunt nog altijd privé browsen!</translation>
 <translation id="1886682615222609631">Verdiensten tot nu toe</translation>
+<translation id="7649070708921625228">Hulp</translation>
+<translation id="6042308850641462728">Meer</translation>
+<translation id="6245259297588415877">Creators</translation>
+<translation id="1736419249208073774">Verkennen</translation>
+<translation id="932327136139879170">Startpagina</translation>
 <translation id="3479552764303398839">Niet nu</translation>
 <translation id="4185473179105062442">BAT rechtstreeks ontvangen op een cryptoadres in eigen beheer</translation>
 <translation id="5802986777701714573">We hebben een nieuwe manier toegevoegd waarop u uw maandelijkse BAT-beloningen kunt ontvangen. Verbind een account van een van onze partners of gebruik de nieuwe optie voor eigen beheer om nu te beginnen met verdienen.</translation>
@@ -686,6 +618,7 @@
 <translation id="5562948772940025260">U kunt met het saldo van uw Brave Beloningen tot <ph name="AMOUNT"/> BAT versturen.</translation>
 <translation id="4827581232860040208">Er is een probleem opgetreden bij het versturen van uw bijdrage</translation>
 <translation id="3259723213051400722">Probeer het opnieuw.</translation>
+<translation id="8725066075913043281">Try again</translation>
 <translation id="5379685283876547860">Bijdrage verstuurd!</translation>
 <translation id="7063168612616047608">Bedankt dat u uw favoriete makers steunt</translation>
 <translation id="1041398280582063935">Uw steun delen</translation>
@@ -791,15 +724,14 @@
 <translation id="5292796745632149097">Verzenden naar</translation>
 <translation id="7022684620581223496">Ongeldige domeinextensie.</translation>
 <translation id="7099260104593926742">Marktprijs</translation>
+<translation id="473775607612524610">Updaten</translation>
+<translation id="6231782223312638214">Voorgesteld</translation>
 <translation id="9209024278910716955">Aankoop niet ondersteund voor geselecteerd netwerk</translation>
 <translation id="4982630604810554641">Zoeken naar domein...</translation>
 <translation id="5467044307473123584">Brave ondersteunt het gebruik van gateways buiten de blockchain om .eth-domeinen om te zetten.</translation>
 <translation id="4896417414446851895">U hebt een ENS-adres ingevoerd. We hebben een omzetter van een derde partij nodig om deze aanvraag om te zetten. Deze omzetter kan mogelijk uw IP-adres en domein zien.</translation>
 <translation id="8646078615727397565">ENS-domein gebruiken</translation>
 <translation id="1191686659164947414">Frontrunning van transactie is mogelijk</translation>
-<translation id="8914256532272191486">Uw transactie zal worden uitgevoerd binnen de maximale risicomarge die u hier definieert. 1% risico betekent bijvoorbeeld dat u bereid bent om maximaal 1% minder te accepteren als gevolg van marktomstandigheden.</translation>
-<translation id="632241521608275119">Risicotolerantie</translation>
-<translation id="2493281414634883751">Voer een waarde in tussen de 0,5% en 99%</translation>
 <translation id="4500473291496079954">Vervalt over</translation>
 <translation id="2236833281018938257">Wallet-adres of URL</translation>
 <translation id="928500657730628112">Wallet-adres</translation>
@@ -816,7 +748,6 @@
 <translation id="6896758677409633944">Kopiëer</translation>
 <translation id="7885157704277298658">Gekopieerd.</translation>
 <translation id="6518133107902771759">Verifieer</translation>
-<translation id="6042308850641462728">Meer</translation>
 <translation id="3157931365184549694">Herstel</translation>
 <translation id="414070570958255222">Direct in uw browser. Eigen beheer. En multi-chain.</translation>
 <translation id="1350120992777389959">Neem de controle over uw crypto en NFT's. Brave Wallet ondersteunt Ethereum, EVM-chains, Solana, Filecoin, Bitcoin en meer.</translation>
@@ -938,6 +869,7 @@
 <translation id="5138307340667775659">Dit token is al toegevoegd aan uw portfolio.</translation>
 <translation id="547122651977318828">Token-ID (alleen voor ERC721)</translation>
 <translation id="7544552854944350190">Token-ID is vereist</translation>
+<translation id="1974060860693918893">Geavanceerd</translation>
 <translation id="3842236145820483340">Coingecko-ID</translation>
 <translation id="7642841516562576649">Pictogram-URL</translation>
 <translation id="2144247757675997850">Asset toevoegen</translation>
@@ -960,7 +892,6 @@
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="1613627717923045622">Netwerk testen</translation>
-<translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
 <translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">Account selecteren</translation>
@@ -1179,8 +1110,6 @@
 <translation id="9033453977881595182">Token-ID</translation>
 <translation id="6332387008245531841">Contractadres</translation>
 <translation id="4790543031293959558">Afbeeldings-URL</translation>
-<translation id="3954354850384043518">In behandeling</translation>
-<translation id="4350065043422286972">Vastgezet</translation>
 <translation id="4289540628985791613">Overzicht</translation>
 <translation id="5585178186632632419">Eigendom van</translation>
 <translation id="2686444421126615064">Account bekijken</translation>
@@ -1275,6 +1204,7 @@
 <translation id="6736243959894955139">Adres</translation>
 <translation id="3095940652251934233">Statement</translation>
 <translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Versie</translation>
 <translation id="1313065465616456728">Verleend om</translation>
 <translation id="7902225556763260253">Vervaltijd</translation>
 <translation id="2471230424465522689">Niet voor</translation>
@@ -1500,7 +1430,6 @@
 <translation id="4937657825850660613">Helft</translation>
 <translation id="7639814793732182496">Max</translation>
 <translation id="6584782231358487640">Voer een bedrag in</translation>
-<translation id="821928941440539212">De beste offerte zoeken...</translation>
 <translation id="5450317966495183014">Ontvangen (ong.)</translation>
 <translation id="8747614139273050577">Van token</translation>
 <translation id="1726158192333401896">Naar token</translation>
@@ -1510,13 +1439,10 @@
 <translation id="4886690455791686940">Nulsaldo verbergen</translation>
 <translation id="615791330696335475">Zoek token op naam</translation>
 <translation id="381485723922188688">Optie</translation>
-<translation id="6680650203439190394">Snelheid</translation>
 <translation id="2538996898605796431">Prijseffect</translation>
 <translation id="8007404171238546456">Minimaal te ontvangen na slippage</translation>
 <translation id="767199001998615704">Netwerkkosten</translation>
-<translation id="7057870207229052478">Brave-kosten</translation>
 <translation id="3624518972158401291">Gratis</translation>
-<translation id="5038255447967558645">Liquiditeitsverschaffer</translation>
 <translation id="8450638959928932199">Ruilen en verzenden</translation>
 <translation id="476816352791390168">GEEN extra kosten!</translation>
 <translation id="5319981934425923365">Ik bevestig dat het bovenstaande adres juist is</translation>
@@ -1527,6 +1453,7 @@
 <translation id="8044899503464538266">Slow</translation>
 <translation id="3569512916300900704">Average</translation>
 <translation id="7019805045859631636">Snel</translation>
+<translation id="632241521608275119">Risicotolerantie</translation>
 <translation id="6778140392042462129">Wisselkoersen</translation>
 <translation id="6173494033320397682">Alleen rechtstreeks</translation>
 <translation id="2440960581098655899">Alleen directe routering wordt verzekerd en handel via gesplitste routes wordt uitgeschakeld</translation>
@@ -1534,6 +1461,7 @@
 <translation id="2379187373676242615"><ph name="VALUE"/>% goedkoper dan CoinGecko</translation>
 <translation id="5351867352310722022">Binnen <ph name="VALUE"/>% van CoinGecko</translation>
 <translation id="7695501918490163821"><ph name="VALUE"/>% duurder dan CoinGecko</translation>
+<translation id="6599816589121202398">API</translation>
 <translation id="7561262633951061138">Beste</translation>
 <translation id="8060029310790625334">Helpcentrum</translation>
 <translation id="3143110700666266545">Deze app gebruikt de volgende API's van derde partijen:</translation>
@@ -1547,29 +1475,6 @@
 <translation id="3797613444743816037">Mintadres</translation>
 <translation id="7951915459354237451">Kostenlimiet is lager ingesteld dan de basiskosten. Het kan lang duren voordat uw transactie wordt verwerkt of de transactie mislukt.</translation>
 <translation id="2227702748249086756">Kan schatting van kosten niet ophalen</translation>
-<translation id="6580621526400120372">Waarom komen niet alle NFT's in aanmerking?</translation>
-<translation id="620930608106217992">Sommige NFT-gegevens worden opgeslagen op gecentraliseerde servers, zoals AWS, Google Cloud, etc. In dit geval is het niet mogelijk uw NFT-gegevens vast te zetten op het IPFS-netwerk.</translation>
-<translation id="4637031024914696767">Door in Brave IPFS in te schakelen, worden uw NFT's automatisch vastgezet. Dit is de beste manier om een veilige back-up te maken van uw NFT's.</translation>
-<translation id="2319971828691864975">Ga aan de slag met IPFS</translation>
-<translation id="7906328323880284538">De veiligste manier om NFT's te hosten</translation>
-<translation id="214349569547787359">Schakel in Brave IPFS in om automatisch een back-up te maken van uw NFT's</translation>
-<translation id="4819588096619503180">IPFS is een door de community onderhouden opslagnetwerk, vergelijkbaar met een harde schijf die iedereen kan gebruiken. Maar in plaats van dat één autoriteit de touwtjes in handen heeft, werken er duizenden individuen samen om content te hosten op IPFS. Wanneer u iets "vastzet" op IPFS zorgt u ervoor dat er minimaal één kopie van die content veilig is opgeslagen. En zolang er één persoon een kopie heeft, kan het bestand niet verdwijnen.<ph name="NEWLINE"/>Door in Brave IPFS in te schakelen, worden uw NFT's automatisch vastgezet. Dit is de beste manier om een veilige back-up te maken van uw NFT's.</translation>
-<translation id="9160750213078764355">Bekijk welke van mijn NFT's in aanmerking komen</translation>
-<translation id="6241155642582182934">Schakel in Brave IPFS in om automatisch een back-up te maken van uw NFT's voor extra veiligheid.</translation>
-<translation id="654964147165509548">NFT's worden vastgemaakt aan uw lokale IPFS-node.</translation>
-<translation id="4910182786472608576">NFT's die worden ondersteund door <ph name="PINNED"/> worden vastgemaakt aan uw lokale IPFS-node.</translation>
-<translation id="1607117719941506821"><ph name="PINNABLE"/> NFT komt niet in aanmerking</translation>
-<translation id="7056553112112778467"><ph name="PINNABLE"/> NFT's komen in aanmerking</translation>
-<translation id="6852656829524945421">Kan niet vastzetten</translation>
-<translation id="9019535252716288146">U heeft een actieve IPFS-node</translation>
-<translation id="5584313306739463968">Lokale IPFS-node is niet actief</translation>
-<translation id="7527548209942671618">Vastgezet op uw lokale IPFS-node</translation>
-<translation id="5659058832308365026">NFT-data worden vastgezet op uw lokale IPFS-node</translation>
-<translation id="4919133452617704550">Kan niet worden vastgezet op uw lokale IPFS-node</translation>
-<translation id="4220102684162429566">Meest voorkomende redenen:</translation>
-<translation id="451509325309455">NFT heeft niet-IPFS-gerelateerde URL-problemen met metagegevens</translation>
-<translation id="3827697793483899711">Interne IPFS-nodeproblemen</translation>
-<translation id="1992846713609432783">Niet genoeg ruimte beschikbaar op lokale node</translation>
 <translation id="3225624966527491351">NFT importeren</translation>
 <translation id="9085765419770918643">Hier zijn nog geen NFT's.</translation>
 <translation id="8445532667841598737">Bent u er klaar voor om NFT's te gaan toevoegen? Klik dan op de onderstaande knop om ze te importeren.</translation>
@@ -1581,6 +1486,7 @@
 <translation id="6948667383954749033">Markeren als ongewenst ongedaan maken</translation>
 <translation id="5810047320613496595">Ongewenst</translation>
 <translation id="7257605968082307175">Markeren als ongewenst</translation>
+<translation id="1255896809210433555">NFT toevoegen</translation>
 <translation id="7600335727434653744">Verwijderen uit Brave Wallet?</translation>
 <translation id="6657860743511185539">De NFT wordt verwijderd uit de Brave Wallet, maar blijft op de blockchain. Als u hem verwijdert en later van gedachten verandert, moet u hem handmatig weer invoeren.</translation>
 <translation id="849880459530751909">NFT bewerken</translation>
@@ -1634,6 +1540,9 @@
 <translation id="6405354572620970908">Dit verzoek lijkt gevaarlijk en maakt u mogelijk kwetsbaar voor diefstal. Ga niet verder, tenzij u de app vertrouwt.</translation>
 <translation id="786261184916565476">We hebben <ph name="VALUE"/> problemen gevonden.</translation>
 <translation id="2826600321627372011">Geen routes gevonden</translation>
+<translation id="8775144690796719618">Ongeldige URL</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="1472675084647422956">Meer weergeven</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Algemene informatie</translation>
 <translation id="4045404575593562245">Tor-controlegebeurtenissen</translation>
@@ -1681,7 +1590,6 @@
 <translation id="5104499318017527547">Plezier</translation>
 <translation id="2228584369802328636">Gamen</translation>
 <translation id="6941852195052765076">Gezondheid</translation>
-<translation id="932327136139879170">Homepage</translation>
 <translation id="2233040275795129413">Lifestyle</translation>
 <translation id="5178222043222938163">Muziek</translation>
 <translation id="1322083935398004629">Politiek</translation>
@@ -1715,6 +1623,7 @@
 <translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">Snelle opdrachten</translation>
 <translation id="7481312909269577407">Vooruit</translation>
+<translation id="1272079795634619415">Stop</translation>
 <translation id="302781076327338683">Opnieuw laden en cache omzeilen</translation>
 <translation id="7211681214230730336">Opnieuw laden en cache wissen</translation>
 <translation id="1779766957982586368">Venster sluiten</translation>
@@ -1795,7 +1704,6 @@
 <translation id="6263048902976129908">Dev-tools in-/uitschakelen</translation>
 <translation id="1386786836007298307">Werkbalk volledig scherm in-/uitschakelen</translation>
 <translation id="461433814913785913">Aanraakbalk personaliseren</translation>
-<translation id="5835081019037947840">Javascript Apple-evenementen in-/uitschakelen</translation>
 <translation id="5825969867518399495">PWA installeren</translation>
 <translation id="7888244262238732644">Beheerpagina weergeven</translation>
 <translation id="8114712275882140856">Volledige URL's weergeven</translation>
@@ -1843,7 +1751,6 @@
 <translation id="522953399371747698">Bladwijzerbalk verbergen</translation>
 <translation id="134184943774258988">Zichtbaarheid van de knop Alle bladwijzers in-/uitschakelen</translation>
 <translation id="2158862020143233462">Schilden in-/uitschakelen</translation>
-<translation id="4610630726762318759">Javascript in-/uitschakelen</translation>
 <translation id="188822869499214197">Playlistballon weergeven</translation>
 <translation id="3202536111478033084">Tabbladen groeperen op huidige oorspronkelijke locatie</translation>
 <translation id="6002210667729577411">Groep naar nieuw venster verplaatsen</translation>
@@ -2073,7 +1980,6 @@
 <translation id="5037676449506322593">Alles selecteren</translation>
 <translation id="5148943178722443958">Help ons Brave beter te maken.</translation>
 <translation id="1097073572755862978">Verzend diagnostische rapporten als uw systeem crasht of vastloopt. <ph name="LINK_BEFORE"/>Meer informatie.<ph name="LINK_AFTER"/></translation>
-<translation id="5099408825243658796">Deel volledig privé en anoniem productinzichten over functies die worden gebruikt door gebruikers van Brave. <ph name="LINK_BEFORE"/>Meer informatie.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Set-up voltooid</translation>
 <translation id="3141206739023333979">Verander uw keuzes wanneer u wilt op <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Lees ons volledige <ph name="LINK_BEFORE"/>privacybeleid<ph name="LINK_AFTER"/></translation>
@@ -2144,14 +2050,6 @@
 Brave heeft een hulpservice die u hiertegen beschermt door te filteren hoe DNS-query's worden gemaakt op uw VPN-verbinding.
 
 We hebben echter gemerkt dat deze hulpservice niet actief is en we willen u toch beschermen. Daarom hebben we de DNS-instelling in de browser veranderd, zodat u toch beschermd bent. De instellingen blijven van kracht en vergrendeld zolang VPN aanstaat.
-
-<ph name="LEARN_MORE"/></translation>
-<translation id="8810743613883230732">Zo te zien zijn er enkele problemen met de verbinding met WireGuard. Wilt u IKEv2-terugval inschakelen voor een betrouwbare VPN-verbinding? U hoeft alleen maar de instellingen te wijzigen.
-
-Hulp nodig met comptabiliteit of configuratie? Neem contact op met ons vriendelijke ondersteuningsteam.
-U kunt de instellingen altijd weer terugzetten naar WireGuard op brave://settings/system.
-
-Laten we een verbinding instellen!
 
 <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Deze waarschuwing niet meer weergeven.</translation>

@@ -108,9 +108,10 @@
 <translation id="4692623383562244444">검색 엔진</translation>
 <translation id="1468415711258933398">일반 탭</translation>
 <translation id="3377025655491224618">비공개 탭</translation>
+<translation id="7304425663107214334">브라우저 추천 항목 표시</translation>
+<translation id="8982438328166986164">북마크 및 인터넷 사용 기록을 기반으로 한 추천 웹사이트를 표시합니다.</translation>
+<translation id="1571106259128580884">인기 사이트 추천 항목 표시</translation>
 <translation id="9148058034647219655">나가기</translation>
-<translation id="4022987104439075738">IPFS 게이트웨이</translation>
-<translation id="2688519859165248360">IPFS 게이트웨이를 통한 IPFS 리소스 탐색 허용</translation>
 <translation id="8047754398610073499">쿠키 동의 문구 차단</translation>
 <translation id="2621893359845808115">사이트에서 쿠키를 수락/거부하겠냐는 웹사이트 팝업 차단</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
@@ -142,9 +143,9 @@
 <translation id="2356070529366658676">확인</translation>
 <translation id="4176463684765177261">사용 중지</translation>
 <translation id="59174027418879706">사용함</translation>
-<translation id="6252490671914511928">오늘의 주요 스토리가 완전 맞춤형 비공개 피드에 제공됩니다.</translation>
+<translation id="6920492760024499150">오늘의 인기 스토리는 맞춤식으로 제공되는 프라이빗 피드입니다.</translation>
 <translation id="8300751939969131609">Brave News를 켜고 스토리를 놓치지 마세요</translation>
-<translation id="7266075701303521777">Brave News는 광고의 도움으로 제공되는 서비스로, 기기에 맞춘 비공개 익명 광고를 표시합니다.</translation>
+<translation id="7627131190984957214">Brave News는 귀하의 기기에 맞는 프라이빗한 익명 광고의 도움으로 제공됩니다.</translation>
 <translation id="7699565323725789472">좋아하는 소스를 피드 한 곳에서 팔로우하세요. Brave에서 탭을 열고 아래로 스크롤하면, 다 보이죠!\nBrave News는 프라이버시를 보호하는 익명 광고의 도움으로 서비스가 유지됩니다.</translation>
 <translation id="1765217911817124376">Brave News 켜기</translation>
 <translation id="8981973962043893066">사이트, 주제, RSS 피드 검색</translation>
@@ -233,7 +234,7 @@
 <translation id="7281027579943912834">Brave를 기본 브라우저로 설정하면 탭하는 모든 링크에서 Brave의 광고 차단으로 보호. 어떤 페이지, 비디오, 스트림에서도.</translation>
 <translation id="5148943178722443958">Brave 개선에 참여.</translation>
 <translation id="6718362830686703942">충돌 또는 프리징이 발생하면 진단 보고서를 보냅니다.</translation>
-<translation id="1929905278861178845">Brave 사용자가 사용하는 기능에 대한 제품 인사이트를 완전히 비공개 익명으로 보냅니다.</translation>
+<translation id="8616157231067364693">Brave 사용자가 사용하고 있는 기능에 대한 프라이빗 익명 제품 인사이트를 공유합니다.</translation>
 <translation id="2877653791257935258">웹사이트 이름 또는 URL 입력</translation>
 <translation id="5329830149661250028">Brave의 차별점: 광고 없음. 트래커 없음. 더욱 빠른 페이지 로드.</translation>
 <translation id="3941792073703079607">Brave의 특장점: 광고 차단. 데이터 절약. 더 빠른 스트리밍.</translation>
@@ -276,7 +277,7 @@
 <translation id="1938402585819943124">다음 화면에서 Brave를 선택하세요.</translation>
 <translation id="8926389886865778422">이 메시지 그만 보기</translation>
 <translation id="745974920645827035">프라이버시가 한층 강화된 독립적 검색</translation>
-<translation id="4717018805430015801">Brave 검색은 사용자의 신원이나 검색어, 클릭 활동을 추적하지 않습니다.</translation>
+<translation id="2773167297815493692">Brave 검색은 사용자를 프로파일링하지 않습니다.</translation>
 <translation id="5240031343741051161">Brave Search 이용하기</translation>
 <translation id="5234764350956374838">숨기기</translation>
 <translation id="6639570430554986719">1월</translation>
@@ -315,15 +316,13 @@
 <translation id="3132642509209154999">만료된 코드입니다. 다른 기기에서 새 코드를 생성하고 다시 시도하세요.</translation>
 <translation id="2859229680945501779">유효하지 않은 코드입니다. 디바이스에 시간과 시간대가 제대로 설정되어 있는지 확인하세요.</translation>
 <translation id="3149880132460839085">Brave 동기화</translation>
-<translation id="3680755684186855422">Brave 동기화를 사용하면 이용하시는 여러 기기의 Brave 브라우저 간에 비공개로 북마크 데이터를 동기화할 수 있습니다.</translation>
-<translation id="3735228155296883311">다른 기기에서 생성한 동기화 체인의 코드를 스캔하세요. 또는 새로운 동기화 체인을 시작하세요.</translation>
+<translation id="348794064910142198">Brave Sync를 사용하면 다양한 기기에 설치된 Brave 브라우저 간에 북마크 데이터를 프라이빗하게 동기화할 수 있습니다.\n\n다른 기기에서 만든 동기화 체인에서 코드를 스캔하면 됩니다. 또는 새 동기화 체인을 시작하세요.</translation>
 <translation id="2614069607859982576">기존 동기화된 장치를 사용하여 Brave 설정을 열고 설정 &gt; 동기화로 이동하세요. "새 장치 추가"를 선택하여 화면에 표시된 QR 코드를 스캔하세요.</translation>
 <translation id="5241263629636958324">클립보드에 복사되었습니다</translation>
 <translation id="5817918615728894473">페어링</translation>
 <translation id="3429575397891106447">동기화 옵션</translation>
 <translation id="1680065323266179640">동기화 계정 삭제</translation>
-<translation id="3792563952903751704">계정을 삭제하면 암호화된 데이터가 Brave 서버에서 제거되고 연결된 모든 디바이스에서 동기화가 비활성화됩니다. 이들 디바이스에 로컬로 저장된 데이터는 삭제되지 않습니다.
-삭제는 영구적이며 데이터를 복구할 수 있는 방법이 없습니다. 동기화를 다시 시작하려면 새 계정을 만들고 디바이스 하나씩 다시 추가해야 합니다.</translation>
+<translation id="8397325856045820212">계정을 삭제하면 암호화된 데이터가 Brave 서버에서 제거되고 연결된 모든 디바이스에서 동기화가 비활성화됩니다. 단, 기기 로컬 공간에 저장된 데이터는 삭제되지 않습니다.\n\n삭제는 영구적이며 데이터를 복구할 수 있는 방법이 없습니다. 동기화를 다시 시작하려면 새 계정을 만들고 디바이스 하나씩 다시 추가해야 합니다.</translation>
 <translation id="9064376100690171155">계정 영구 삭제</translation>
 <translation id="2740516568641790390">동기화 계정 삭제 성공</translation>
 <translation id="7006136453627651236">동기화 계정 삭제 실패</translation>
@@ -333,12 +332,10 @@
 <translation id="1602067095281698985">새로운 동기화 체인 시작</translation>
 <translation id="1475223680121592371">모바일 기기에 추가</translation>
 <translation id="2965377893636908578">컴퓨터 추가</translation>
-<translation id="6604289897677913048">보조 휴대폰이나 태블릿을 사용해 Brave 설정 &gt; 동기화 &gt; 스캔으로 이동하세요.</translation>
-<translation id="8508856434435157945">휴대 기기의 설정 패널에서 Brave 동기화로 이동하고 "동기화 코드 스캔" 버튼을 클릭하세요. 카메라를 사용해 아래의 QR 코드를 스캔하세요.</translation>
-<translation id="2590683710114839102">컴퓨터에서 Brave Settings &gt; 동기화로 이동하세요. "동기화 체인 코드 입력"을 선택하세요.</translation>
+<translation id="4701589725270449523">보조 휴대폰이나 태블릿을 사용해 Brave 설정 &gt; 동기화 &gt; 스캔으로 이동합니다.\n\n모바일 기기의 설정 패널에서 Brave 동기화로 이동하고 "동기화 코드 스캔" 버튼을 클릭합니다. 카메라를 사용해 아래의 QR 코드를 스캔합니다.</translation>
+<translation id="67114562351518315">컴퓨터에서 Brave 설정 &gt; 동기화로 이동합니다. "동기화 체인 코드 입력"을 선택합니다.\n\n대상 컴퓨터에서 설정의 Brave 동기화로 이동해 "저는 동기화 코드가 있습니다" 버튼을 클릭합니다.\n아래 동기화 체인 코드 단어를 입력합니다.</translation>
 <translation id="65315202420929965">이 동기화 코드 스캔</translation>
 <translation id="6764016175302339802">이 코드를 비밀번호처럼 안전하게 보관하세요. 이 코드를 손에 넣는 사람은 동기화 데이터를 조회하고 수정할 수 있습니다.</translation>
-<translation id="6707003343517029414">대상 컴퓨터에서 설정의 Brave 동기화로 이동해 "저는 동기화 코드를 갖고 있습니다" 버튼을 클릭하세요.\n아래 동기화 체인 코드 낱말을 입력하세요.</translation>
 <translation id="2731921493694251495">동기화 체인 코드 입력</translation>
 <translation id="2175927920773552910">QR 코드</translation>
 <translation id="8653433343015102968">코드 낱말</translation>
@@ -352,6 +349,9 @@
 <translation id="8131740175452115882">승인</translation>
 <translation id="4973653569293835178">내 카메라를 사용하겠습니다...</translation>
 <translation id="326454632686131209">기기 동기화</translation>
+<translation id="3122158728238634723">새 코드 생성</translation>
+<translation id="4358805443781965194">코드가 만료되었습니다. 아래 버튼을 클릭하여 새로 생성하세요.</translation>
+<translation id="318164877797885563">임시 코드는 앞으로 <ph name="TIME_AMOUNT"/>간 유효합니다.</translation>
 <translation id="327726072512457161">설정 나가기</translation>
 <translation id="8050847734948770789">Brave 리워드 사용</translation>
 <translation id="9187185473011056079">좋아요!</translation>
@@ -416,8 +416,6 @@
 <translation id="8643377320501056697">탑 사이트 보기</translation>
 <translation id="7275773481201277457">Brave Stats 보기</translation>
 <translation id="8297488609722895137"><ph name="PHOTO_BY"/>의 사진</translation>
-<translation id="4761229094276239865">Brave Rewards 사용 시작을 탭하면 <ph name="TERMS_OF_SERVICE"/>에 동의하는 것입니다.</translation>
-<translation id="7136586167396205364">스폰서 이미지 숨기기</translation>
 <translation id="2898634658146274982">Brave에서 외부 링크 열기</translation>
 <translation id="5616508928556767259">Brave 웹 보기에서 다른 앱 링크를 엽니다. 참고: Brave가 기본 그라우저로 설정되어 있어야 합니다.</translation>
 <translation id="2394961582378297792">로그아웃됨</translation>
@@ -438,15 +436,11 @@
 <translation id="7961015016161918242">사용하지 않음</translation>
 <translation id="1275213816424141989">나중에</translation>
 <translation id="4406937629441301400">이 이미지를 볼 수 있는 토큰을 획득하여 제작자에게 전달하세요. <ph name="LEARN_MORE"/></translation>
-<translation id="1992363542751124282">이 이미지를 보는 것에 대한 토큰을 받으세요. Brave Rewards 사용 시작을 탭하여 몫을 요청하세요.</translation>
 <translation id="6632345639591919543">이 이미지를 보기 위해 토큰을 획득하고 있습니다.\n<ph name="LEARN_MORE"/></translation>
-<translation id="1465733111003593696">이 이미지를 보기 위해 토큰을 획득하고 있습니다.</translation>
-<translation id="7877201489035217175">스폰서 이미지에 대해 자세히 알아보기</translation>
 <translation id="8164992819127316581"><ph name="CURRENT_MONTH"/> 리워드 지급 처리가 <ph name="PAYOUT_DATE"/> 전에 시작됩니다.</translation>
 <translation id="33967210973550414"><ph name="CURRENT_MONTH"/> 리워드 지급 처리 중입니다. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314"><ph name="CURRENT_MONTH"/> 리워드 지급이 완료되었습니다. <ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">상태 확인</translation>
-<translation id="828092975561478703">스폰서 이미지를 볼 때마다 수익의 70%를 토큰으로 받습니다. Brave 광고를 통해 항상 표시되는 광고를 관리할 수 있습니다.</translation>
 <translation id="3624048886326677117">트래커 및 광고 차단(공격적)</translation>
 <translation id="7151914815476509258">트래커 및 광고 차단(표준)</translation>
 <translation id="7384778069178817075">모든 트래커 &amp; 광고 허용</translation>
@@ -486,7 +480,6 @@
 <translation id="5299848999918506028">감사합니다!</translation>
 <translation id="76550953340008122">이 사이트에 문제가 있다는 것을 Brave (브레이브) 개발자에게 알려 주셔서 감사합니다. 최선을 다해 문제를 해결하겠습니다!</translation>
 <translation id="650318023204990401">고급 컨트롤</translation>
-<translation id="1275664486910646411">자동 완성에서 상위 사이트 표시</translation>
 <translation id="5370478469168390143">데이터 온라인 저장</translation>
 <translation id="1118508688433541158">Brave 사용으로 더 빠른 검색 및 광고 차단</translation>
 <translation id="7427391215172269363">매일 Brave로 웹 브라우징을 하여 데이터를 절약하고 있어요.</translation>
@@ -827,8 +820,6 @@
 <translation id="3074127054582480056">주의</translation>
 <translation id="2280319752798785157">매월 기부금</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
-<translation id="5802665280774361839">주소 표시줄에 자동 완성 표시</translation>
-<translation id="8982438328166986164">북마크 및 인터넷 사용 기록을 기반으로 한 추천 웹사이트를 표시합니다.</translation>
 <translation id="1241283133946520352">네트워크</translation>
 <translation id="1062463687579789365">월렛 네트워크 사용자 지정</translation>
 <translation id="2512821599885971349">네트워크 추가</translation>
@@ -947,6 +938,13 @@
 <translation id="7134370164002095282"><ph name="CURRENT"/> / <ph name="SIZE"/></translation>
 <translation id="756701799684433105">트랜잭션 승인</translation>
 <translation id="6450792191436242818">시스템 프로그램</translation>
+<translation id="5318067544026930166">생체인식 인증으로 Brave 월렛 잠금 해제</translation>
+<translation id="2629767022373384291">Brave 월렛을 잠금 해제하는 데 생체인식 인증을 사용하시겠습니까?</translation>
+<translation id="4782919977106118997">지문 잠금 해제 사용</translation>
+<translation id="2054995875643283428">지금은 건너뛰기</translation>
+<translation id="2522605225061484799">내 포트폴리오로 이동</translation>
+<translation id="1148624853678088576">다 끝났습니다!</translation>
+<translation id="4131445988101719379">Brave 월렛 사용 준비 완료</translation>
 <translation id="6252742184395380448">구성 프로그램</translation>
 <translation id="5358970666412490132">스테이크 프로그램</translation>
 <translation id="346636227344244984">투표 프로그램</translation>

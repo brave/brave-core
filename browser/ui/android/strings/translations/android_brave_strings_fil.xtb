@@ -108,9 +108,10 @@
 <translation id="4692623383562244444">Mga search engine</translation>
 <translation id="1468415711258933398">Karaniwang Tab</translation>
 <translation id="3377025655491224618">Pribadong Tab</translation>
+<translation id="7304425663107214334">Ipakita ang mga mungkahi sa browser</translation>
+<translation id="8982438328166986164">Ipinapakita ang mga suhestiyong website batay sa iyong mga bookmark at browsing history.</translation>
+<translation id="1571106259128580884">Ipakita ang mga nangungunang mungkahi sa site</translation>
 <translation id="9148058034647219655">Lumabas</translation>
-<translation id="4022987104439075738">IPFS Gateway</translation>
-<translation id="2688519859165248360">Nagbibigay-daan sa pag-navigate sa mga resource ng IPFS sa pamamagitan ng IPFS Gateway</translation>
 <translation id="8047754398610073499">I-block ang mga abiso sa pahintulot sa cookie</translation>
 <translation id="2621893359845808115">I-block ang mga pop-up sa website na hinihiling sa iyong tanggapin / tanggihan ang cookies sa site ng mga ito</translation>
 <translation id="7534079972563542000">Mga Hindi Napipigilang Domain</translation>
@@ -142,9 +143,9 @@
 <translation id="2356070529366658676">Magtanong</translation>
 <translation id="4176463684765177261">Hindi Pinagana</translation>
 <translation id="59174027418879706">Naka-enable</translation>
-<translation id="6252490671914511928">Mga nangungunang kuwento ngayong araw sa ganap na pribadong feed, para lang sa iyo.</translation>
+<translation id="6920492760024499150">Mga nangungunang kuwento ngayon sa private feed, para lang sa iyo.</translation>
 <translation id="8300751939969131609">I-on ang Brave News, at huwag magpalampas ng kuwento</translation>
-<translation id="7266075701303521777">Ang Balita sa Brave ay sinusuportahan ng ad na may mga ganap na pribado at naka-anonymize na ad na tumutugma sa iyong device.</translation>
+<translation id="7627131190984957214">Sinusuportahan ng ad ang Brave News na may private at walang pagkakakilanlang ad na tugma sa iyong device.</translation>
 <translation id="7699565323725789472">I-follow ang mga paborito mong source, sa iisang feed. Magbukas lang ng tab sa Brave, mag-scroll pababa, at… voila!\nAng Brave News ay suportado ng ad na may mga pribado at naka-anonymize na ad.</translation>
 <translation id="1765217911817124376">I-on ang Brave News</translation>
 <translation id="8981973962043893066">Maghanap ng site, paksa, o RSS feed</translation>
@@ -233,7 +234,7 @@
 <translation id="7281027579943912834">Kapag default ang Brave, ang bawat link na ita-tap mo ay magkakaroon ng proteksyon sa pag-block ng ad ng Brave. Bawat page, video, at stream.</translation>
 <translation id="5148943178722443958">Tumulong na pagandahin ang Brave.</translation>
 <translation id="6718362830686703942">Magpadala ng mga diagnostic report kung nakakaranas ka ng pag-crash o pag-freeze.</translation>
-<translation id="1929905278861178845">Mag-share ng mga ganap na pribado at anonymous na insight sa produkto tungkol sa kung anong mga feature ang ginagamit ng mga user ng Brave.</translation>
+<translation id="8616157231067364693">Magbahagi ng prvate at walang pagkakakilanlang kaisipan sa produkto tungkol sa kung anong mga feature ang ginagamit ng mga user ng Brave.</translation>
 <translation id="2877653791257935258">Mag-type ng pangalan ng website o URL</translation>
 <translation id="5329830149661250028">Makita ang pagkakaiba ng Brave: Walag mga ad. Walang mga tracker. Mas mabilis na pag-load ng page.</translation>
 <translation id="3941792073703079607">Tingnan ang pagkakaiba ng Brave: Mag-block ng mga ad. Makatipid sa data. Mag-stream nang mas mabilis.</translation>
@@ -276,7 +277,7 @@
 <translation id="1938402585819943124">Piliin ang Brave sa susunod na screen.</translation>
 <translation id="8926389886865778422">Huwag nang itanong ulit</translation>
 <translation id="745974920645827035">Independiyenteng paghahanap na may mas mahusay na privacy</translation>
-<translation id="4717018805430015801">Ang Brave Search ay hindi nagsusubaybay sa iyo, sa iyong mga query, o sa iyong mga pag-click.</translation>
+<translation id="2773167297815493692">Hindi ka pino-profile ng Brave Search</translation>
 <translation id="5240031343741051161">Subukan ang Brave Search</translation>
 <translation id="5234764350956374838">I-dismiss</translation>
 <translation id="6639570430554986719">ENERO</translation>
@@ -315,15 +316,13 @@
 <translation id="3132642509209154999">Nag-expire na ang code. Bumuo ng bago sa iba mong device at subukan ulit.</translation>
 <translation id="2859229680945501779">Ang code na ito ay hindi wasto. Pakitingnan kung ang oras at timezone ay nakaset nang tama sa iyong device.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
-<translation id="3680755684186855422">Nagbibigay-daan sa iyo ang Brave Sync na pribadong mag-sync ng data ng mga bookmark sa pagitan ng iyong mga Brave Browser sa iba't ibang device mo.</translation>
-<translation id="3735228155296883311">I-scan lang ang code mula sa iyong chain ng pag-sync na ginawa mo sa isa pang device. O magsimula ng bagong chain ng pag-sync.</translation>
+<translation id="348794064910142198">Binibigyang-daan ka ng Brave Sync walang pagkakakilanlang mag-sync ng data ng mga bookmark sa pagitan mo at ng iyong Mga Brave Browser sa iba't ibang device mo.\n\nMag-scan lang ng code mula sa sync chain na ginawa mo sa ibang device. O magsimula ng bagong sync chain.</translation>
 <translation id="2614069607859982576">Gamit ang kasalukuyang naka-sync na device, buksan ang Mga Setting ng Brave at mag-navigate sa Mga Setting &gt; I-sync. Piliin ang "Magdagdag ng Bagong Device" at i-scan ang QR Code na ipinapakita sa screen.</translation>
 <translation id="5241263629636958324">Nakopya sa Clipboard</translation>
 <translation id="5817918615728894473">Ipares</translation>
 <translation id="3429575397891106447">I-sync ang Mga Opsyon</translation>
 <translation id="1680065323266179640">I-delete ang Sync account</translation>
-<translation id="3792563952903751704">Kapag nag-delete ka ng account, matatanggal ang naka-encrypt mong data mula sa mga server ng Brave at madi-disable ang Sync sa lahat ng nakakonekta mong device. Gayunpaman, hindi nito ide-delete ang data na lokal na naka-store sa mga device na iyon.
-  Ang pag-delete na ito ay permanente at hindi na mare-recover ang data. Kung gusto mong magsimulang muli gamit ang Sync, kailangan mong gumawa ng bagong account at idagdag nang isa-isa ang bawat telepono o tablet.</translation>
+<translation id="8397325856045820212">Sa pag-delete ng account mo, aalisin nito ang naka-encrypt na data mo mula sa mga server ng Brave at i-disable ang Sync sa lahat ng nakakonektang device mo. Gayunpaman, hindi nito ide-delete ang data na lokal na naka-store sa mga device na iyon.\n\nPermanente ang pag-delete na ito at hindi na puwedeng ma-recovr ang data. Kung gusto mong simulang gamitin ulit ang Sync, kakailanganin mo ng bagong account at isa-isang i-add ulit ang bawat device.</translation>
 <translation id="9064376100690171155">Permanenteng i-delete ang account</translation>
 <translation id="2740516568641790390">Na-delete na ang sync account</translation>
 <translation id="7006136453627651236">Hindi na-delete ang sync account</translation>
@@ -333,12 +332,10 @@
 <translation id="1602067095281698985">Magsimula ng bagong chain ng pag-sync</translation>
 <translation id="1475223680121592371">Magdagdag ng Mobile Device</translation>
 <translation id="2965377893636908578">Magdagdag ng Computer</translation>
-<translation id="6604289897677913048">Gamit ang pangalawang telepono o tablet, mag-navigate sa Mga Setting ng Brave &gt; Mag-sync &gt; I-scan.</translation>
-<translation id="8508856434435157945">Sa iyong mobile device, mag-navigate sa Brave Sync sa panel na Mga Setting at i-click ang button na "I-scan ang Code ng Pag-sync." Gamitin ang iyong camera para i-scan ang QR Code sa ibaba.</translation>
-<translation id="2590683710114839102">Sa iyong computer, mag-navigate sa Mga Setting ng Brave &gt; Mag-sync. Piliin ang "Maglagay ng Code ng Chain ng Pag-sync."</translation>
+<translation id="4701589725270449523">Gamit ang ikalawang telepono o tablet, mag-navigate sa Mga Setting ng Brave &gt; I-sync &gt; I-scan.\n\nSa mobile device mo, mag-navigate sa Brave Sync sa panel ng Mga Setting at i-click ang button "I-scan ang Sync Code." Gamitin ang camera mo para i-scan ang QR Code sa ibaba.</translation>
+<translation id="67114562351518315">Sa computer mo, mag-navigate sa Mga Setting ng Brave &gt; I-sync. Piliin ang "Maglagay ng Sync chain Code."\n\nSa target na computer mo, mag-navigate sa Brave Sync sa mga setting at i-click ang button na " Mayroon akong Sync Code."\nIlagay ang mga salita ng sync chain code na ipinapakita sa ibaba.</translation>
 <translation id="65315202420929965">I-scan ang code na ito ng pag-sync</translation>
 <translation id="6764016175302339802">Ituring ang code na ito gaya ng password. Kung may ibang makakaalam nito, maaari nilang basahin at baguhin ang iyong naka-sync na data.</translation>
-<translation id="6707003343517029414">Sa iyong target na computer, mag-navigate sa Brave Sync sa mga setting at i-click ang button na "Mayroon akong Code ng Pag-sync".\nIlagay ang mga code word ng chain ng pag-sync na ipinapakita sa ibaba.</translation>
 <translation id="2731921493694251495">Ilagay ang code ng chain ng pag-sync</translation>
 <translation id="2175927920773552910">QR Code</translation>
 <translation id="8653433343015102968">Mga Code Word</translation>
@@ -352,6 +349,9 @@
 <translation id="8131740175452115882">Kumpirmahin</translation>
 <translation id="4973653569293835178">Gagamitin ko ang aking camera...</translation>
 <translation id="326454632686131209">I-sync ang device</translation>
+<translation id="3122158728238634723">Mag-generate ng Bagong Code</translation>
+<translation id="4358805443781965194">Nag-expire na ang code. Mag-generate ng bago sa pamamagitan ng pag-click sa button sa ibaba.</translation>
+<translation id="318164877797885563">Valid ang pansamantalang code na ito para sa susunod na <ph name="TIME_AMOUNT"/></translation>
 <translation id="327726072512457161">Lumabas sa Mga Setting</translation>
 <translation id="8050847734948770789">I-enable ang Mga Reward ng Brave</translation>
 <translation id="9187185473011056079">OK!</translation>
@@ -416,8 +416,6 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="8643377320501056697">Ipakita ang Mga Nangungunang Site</translation>
 <translation id="7275773481201277457">Ipakita ang Mga Istatistika ng Brave</translation>
 <translation id="8297488609722895137">Larawan ni <ph name="PHOTO_BY"/></translation>
-<translation id="4761229094276239865">Sa pamamagitan ng pag-tap sa Simulang gamitin ang Mga Reward ng Brave, sumasang-ayon ka sa <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="7136586167396205364">Itago ang Mga Naka-sponsor na Larawan</translation>
 <translation id="2898634658146274982">Buksan ang mga external na link sa Brave</translation>
 <translation id="5616508928556767259">Binubuksan ang mga link mula sa iba pang app sa Brave webview. Tandaan: Dapat itakda ang Brave bilang iyong default na browser.</translation>
 <translation id="2394961582378297792">Na-log out</translation>
@@ -438,15 +436,11 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="7961015016161918242">Hindi Kailanman</translation>
 <translation id="1275213816424141989">Sa Ibang Pagkakataon Siguro</translation>
 <translation id="4406937629441301400">Kumita ng mga token para sa pagtingin sa larawang ito at ipasa ito sa mga creator. <ph name="LEARN_MORE"/></translation>
-<translation id="1992363542751124282">Makakuha ng mga token sa pagtingin sa larawang ito. I-tap ang Simulang gamitin ang Brave Rewards para i-claim ang iyong bahagi.</translation>
 <translation id="6632345639591919543">Kumikita ka ng mga token para sa pagtingin sa larawang ito.\n<ph name="LEARN_MORE"/></translation>
-<translation id="1465733111003593696">Kumikita ka ng mga token para sa pagtingin sa larawang ito.</translation>
-<translation id="7877201489035217175">Matuto pa tungkol sa mga sponsored na larawan</translation>
 <translation id="8164992819127316581">Ang payout para sa mga reward sa <ph name="CURRENT_MONTH"/> ay sisimulang iproseso sa <ph name="PAYOUT_DATE"/>.</translation>
 <translation id="33967210973550414">Kasalukuyang isinasagawa ang payout para sa mga reward sa <ph name="CURRENT_MONTH"/>. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">Natapos na ang payout para sa mga reward sa <ph name="CURRENT_MONTH"/>. <ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">I-check ang kalagayan</translation>
-<translation id="828092975561478703">Para sa bawat sponsored na larawang titingnan mo, tatanggap ka ng 70% ng kita sa mga token. Sa Brave Ads, ikaw ang palaging may kontrol sa mga ad na nakikita mo.</translation>
 <translation id="3624048886326677117">I-block ang mga tracker at ads (Agresibo)</translation>
 <translation id="7151914815476509258">I-block ang trackers at ads (Standard)</translation>
 <translation id="7384778069178817075">Payagan ang lahat ng tracker at ad</translation>
@@ -486,7 +480,6 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="5299848999918506028">Salamat!</translation>
 <translation id="76550953340008122">Salamat sa pagbibigay-alam sa mga developer ng Brave na may problema sa site na ito. Gagawin namin ang buong makakaya namin para ayusin ito!</translation>
 <translation id="650318023204990401">Mga advanced na kontrol</translation>
-<translation id="1275664486910646411">Magpakita ng mga nangungunang site sa autocomplete</translation>
 <translation id="5370478469168390143">Mag-save ng Data Online</translation>
 <translation id="1118508688433541158">Mag-browse nang mas mabilis at mag-block ng ads gamit ang Brave</translation>
 <translation id="7427391215172269363">Araw-araw, nakakatipid ako ng data sa pamamagitan ng pag-browse sa Web gamit ang Brave.</translation>
@@ -827,8 +820,6 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="3074127054582480056">Atensyon</translation>
 <translation id="2280319752798785157">Buwanang Kontribusyon</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
-<translation id="5802665280774361839">Ipakita ang awtomatikong pagkumpleto sa address bar.</translation>
-<translation id="8982438328166986164">Ipinapakita ang mga suhestiyong website batay sa iyong mga bookmark at browsing history.</translation>
 <translation id="1241283133946520352">Mga Network</translation>
 <translation id="1062463687579789365">Pag-customize ng mga network ng wallet</translation>
 <translation id="2512821599885971349">Magdagdag ng network</translation>
@@ -947,6 +938,13 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="7134370164002095282"><ph name="CURRENT"/> sa <ph name="SIZE"/></translation>
 <translation id="756701799684433105">Aprubahan ang transaksyon</translation>
 <translation id="6450792191436242818">System Program</translation>
+<translation id="5318067544026930166">I-unlock ang Brave Wallet gamit ang biometric authentication</translation>
+<translation id="2629767022373384291">Gusto mo bang gamitin ang biometric authentication mo para i-unlock ang Brave Wallet mo?</translation>
+<translation id="4782919977106118997">Gamitin ang Fingerprint Unlock</translation>
+<translation id="2054995875643283428">Laktawan ito sa ngayon</translation>
+<translation id="2522605225061484799">Pumunta sa portfolio ko</translation>
+<translation id="1148624853678088576">Handa ka na!</translation>
+<translation id="4131445988101719379">Madaling gamitin ang Brave Wallet mo</translation>
 <translation id="6252742184395380448">Config Program</translation>
 <translation id="5358970666412490132">Stake Program</translation>
 <translation id="346636227344244984">Program ng Pagboto</translation>
