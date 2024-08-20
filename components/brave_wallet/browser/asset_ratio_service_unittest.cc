@@ -72,13 +72,10 @@ class AssetRatioServiceUnitTest : public testing::Test {
     return shared_url_loader_factory_;
   }
 
-  void SetInterceptor(const std::string& content,
-                      const std::string expected_header = "") {
+  void SetInterceptor(const std::string& content) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, content, expected_header](const network::ResourceRequest& request) {
+        [&, content](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
-          std::string header;
-          request.headers.GetHeader("Authorization", &header);
           url_loader_factory_.AddResponse(request.url.spec(), content);
         }));
   }
