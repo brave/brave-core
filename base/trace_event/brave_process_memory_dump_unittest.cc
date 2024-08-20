@@ -10,7 +10,7 @@ namespace base::trace_event {
 
 TEST(BraveProcessMemoryDumpTest, IsMemoryAllocatorDumpNameInAllowlist) {
   // reset the test allow list leftover from other suites
-  SetAllocatorDumpNameAllowlistForTesting(nullptr);
+  SetAllocatorDumpNameAllowlistForTesting({});
   // This is to ensure we capture upstream name pattern changes in
   // value_store::LeveldbValueStore::OnMemoryDump
   ASSERT_TRUE(IsMemoryAllocatorDumpNameInAllowlist(
