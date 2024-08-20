@@ -6,6 +6,7 @@
 'use strict'
 
 const path = require('path')
+const { spawn, spawnSync } = require('child_process')
 const fs = require('fs')
 const assert = require('assert')
 const dotenv = require('dotenv')
@@ -68,6 +69,10 @@ const getEnvConfig = (key, default_value = undefined) => {
             : path.join(path.dirname(envConfigPath), newEnvConfigPath)
           : null
       }
+    } else if (process.platform === 'linux') {
+        // Run once only: secret-tool store --label=dotenv dotenv - <.env && rm .env
+        const dotenvText = spawnSync('secret-tool', ['lookup', 'Title', 'dotenv']).stdout
+        dotenv.populate(envConfig, dotenv.parse(Buffer.from(dotenvText)))
     }
 
     // Convert 'true' and 'false' strings into booleans.
