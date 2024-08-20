@@ -31,6 +31,8 @@
           és gondoskodjon róla, hogy a konfiguráció beállítása „nincs proxy” vagy „közvetlen” legyen.</translation>
 <translation id="2765022094254723779">A Braveot létrejöttéhez más <ph name="BEGIN_LINK_OSS"/>nyílt forráskódú szoftverek<ph name="END_LINK_OSS"/> is hozzájárultak.</translation>
 <translation id="9156965752763025780">Módosításai a Brave újraindítása után lépnek érvénybe.</translation>
+<translation id="8828443087767259398">A Bravenak Bluetooth-hozzáférésre van szükséges a párosítás 
+ folytatásához. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">A Brave a <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> nyílt forráskódú projektnek köszönhetően jött létre.</translation>
 <translation id="4068928808254189629">Lépjen ide:
         Brave menü &gt;
