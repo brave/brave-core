@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,6 +40,7 @@ public class BraveWalletNetworksPreference extends Preference
     private RecyclerView mRecyclerView;
     @Nullable private BraveWalletAddNetworksFragment.Listener mListener;
     private JsonRpcService mJsonRpcService;
+    private Fragment mPreferenceFragment;
 
     public BraveWalletNetworksPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -68,14 +70,23 @@ public class BraveWalletNetworksPreference extends Preference
     }
 
     public void destroy() {
-        mJsonRpcService.close();
+        if (mJsonRpcService != null) {
+            mJsonRpcService.close();
+            mJsonRpcService = null;
+        }
     }
 
     @Override
     public void onConnectionError(MojoException e) {
-        mJsonRpcService.close();
-        mJsonRpcService = null;
-        initJsonRpcService();
+        if (mJsonRpcService != null) {
+            mJsonRpcService.close();
+            mJsonRpcService = null;
+        }
+        if (mPreferenceFragment != null) {
+            // TODO: remove when https://github.com/brave/brave-browser/issues/27887
+            // will be resolved.
+            mPreferenceFragment.requireActivity().recreate();
+        }
     }
 
     @Override
@@ -231,5 +242,9 @@ public class BraveWalletNetworksPreference extends Preference
         }
 
         mJsonRpcService = BraveWalletServiceFactory.getInstance().getJsonRpcService(this);
+    }
+
+    public void setPreferenceFragment(@NonNull final Fragment preferenceFragment) {
+        mPreferenceFragment = preferenceFragment;
     }
 }
