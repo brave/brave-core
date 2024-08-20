@@ -108,9 +108,10 @@
 <translation id="4692623383562244444">Keresőmotorok</translation>
 <translation id="1468415711258933398">Szabványos fül</translation>
 <translation id="3377025655491224618">Privát lap</translation>
+<translation id="7304425663107214334">A böngésző javaslatainak megjelenítése</translation>
+<translation id="8982438328166986164">A könyvjelzői és böngészési előzményei alapján ajánlott weboldalak megjelenítése.</translation>
+<translation id="1571106259128580884">A legnépszerűbb webhelyekre vonatkozó javaslatok megjelenítése</translation>
 <translation id="9148058034647219655">Kilépés</translation>
-<translation id="4022987104439075738">IPFS-átjáró</translation>
-<translation id="2688519859165248360">Egy IPFS gatewayen keresztül lehetővé teszi az IPFS forrásokhoz való eljutást</translation>
 <translation id="8047754398610073499">Cookie-khoz való hozzájárulással kapcsolatos értesítések letiltása</translation>
 <translation id="2621893359845808115">Blokkolja a webhelyek felugró ablakait, amelyek a cookie-k elfogadásáról/elutasításáról kérdezik a webhelyükön.</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
@@ -142,9 +143,9 @@
 <translation id="2356070529366658676">Kérdés</translation>
 <translation id="4176463684765177261">Kikapcsolva</translation>
 <translation id="59174027418879706">Engedélyezve</translation>
-<translation id="6252490671914511928">A nap legfontosabb történetei egy teljesen privát hírcsatornán, csak Önnek.</translation>
+<translation id="6920492760024499150">A mai nap legfontosabb eseményei privát hírfolyamban, csak az Ön számára.</translation>
 <translation id="8300751939969131609">A Brave-hírek bekapcsolásával egyetlen történetről sem marad le</translation>
-<translation id="7266075701303521777">A Brave Hírek hirdetések által támogatott, a teljesen privát és anonimizált hirdetések pedig az eszközén kerülnek kiválasztásra.</translation>
+<translation id="7627131190984957214">A Brave Híreket privát és anonimizált hirdetésekkel tartjuk fenn, amelyek illeszkednek az Ön készülékéhez.</translation>
 <translation id="7699565323725789472">Kövesse a kedvenc forrásait, egy csatornán. Csak nyisson meg egy lapot a Brave-ben, görgessen le, és tessék!\nA Brave híreket teljesen privát és anonim hirdetések támogatják.</translation>
 <translation id="1765217911817124376">A Brave News bekapcsolása</translation>
 <translation id="8981973962043893066">Keresés oldalra, témára vagy RSS-csatornára</translation>
@@ -233,7 +234,7 @@
 <translation id="7281027579943912834">Ha a Brave-et használja alapértelmezett böngészőként, a Brave hirdetésblokkoló védelme minden megnyitott hivatkozásra kiterjed – minden weblapra, videóra és adatfolyamra.</translation>
 <translation id="5148943178722443958">Segítsen a Brave továbbfejlesztésében.</translation>
 <translation id="6718362830686703942">Küldjön diagnosztikai jelentéseket, amikor a rendszer összeomlik vagy lefagy.</translation>
-<translation id="1929905278861178845">Osszon meg termékadatokat a Brave felhasználói által használt funkciókról teljesen privát és anonim módon.</translation>
+<translation id="8616157231067364693">Osszon meg privát és anonim termékinformációkat arról, hogy milyen funkciókat használnak a Brave felhasználói.</translation>
 <translation id="2877653791257935258">Adja meg a weboldal nevét vagy URL-jét</translation>
 <translation id="5329830149661250028">A Brave-vel más: Nincsenek reklámok. Nincsenek nyomkövetők. Sokkal gyorsabban töltenek be az oldalak.</translation>
 <translation id="3941792073703079607">A Brave-vel a különbség szembeötlő: blokkolja a hirdetéseket, csökkenti az adatforgalmat és felgyorsítja a streamelést.</translation>
@@ -276,7 +277,7 @@
 <translation id="1938402585819943124">Válassza ki a Brave-et a következő képernyőként.</translation>
 <translation id="8926389886865778422">Többször ne figyelmeztessen</translation>
 <translation id="745974920645827035">Független keresés jobb adatvédelemmel</translation>
-<translation id="4717018805430015801">A Brave keresője nem követi nyomon Önt, a lekérdezéseit vagy a kattintásait.</translation>
+<translation id="2773167297815493692">A Brave Keresés nem készít Önről profilt.</translation>
 <translation id="5240031343741051161">A Brave kereső kipróbálása</translation>
 <translation id="5234764350956374838">Elvetés</translation>
 <translation id="6639570430554986719">JANUÁR</translation>
@@ -315,15 +316,13 @@
 <translation id="3132642509209154999">Ez a kód lejárt. Generáljon egy újat a másik eszközén, majd próbálja újra.</translation>
 <translation id="2859229680945501779">Ez a kód érvénytelen. Ellenőrizze, hogy az eszköze idő- és időzóna-beállításai helyesek-e.</translation>
 <translation id="3149880132460839085">Brave szinkronizáció</translation>
-<translation id="3680755684186855422">A Brave szinkronizáció lehetővé teszi a Brave böngészők között a könyvjelzők adatainak titkosított szinkronizációját az Ön különböző eszközein</translation>
-<translation id="3735228155296883311">Egyszerűen olvassa be a kódot egy másik készüléken létrehozott szinkronizálási láncról. Indíthat új szinkronizálási láncot is.</translation>
+<translation id="348794064910142198">A Brave Szinkronizálás lehetővé teszi Önnek a könyvjelzők adatainak privát szinkronizálását a különböző eszközein lévő Brave böngészői között.\n\nEgyszerűen szkennelje be a kódot a szinkronizálási láncból, amelyet egy másik eszközön hozott létre. Új szinkronizálási láncot is indíthat.</translation>
 <translation id="2614069607859982576">Már szinkronizált készüléket használva nyisd meg a Brave beállításait, és navigálj a Beállítások és szinkronizálásra. Válaszd az „Új készülék hozzáadása” pontot, és olvasd be a képernyőn megjelenő QR-kódot.</translation>
 <translation id="5241263629636958324">Vágólapra másolva</translation>
 <translation id="5817918615728894473">Párosítás</translation>
 <translation id="3429575397891106447">Szinkronizálási beállítások</translation>
 <translation id="1680065323266179640">Szinkronizálási fiók törlése</translation>
-<translation id="3792563952903751704">Ha törli a fiókját, azzal eltávolítja a Brave szerverein található titkosított adatait, és letiltja a Szinkronizálást az összes csatlakoztatott eszközén. Az ezeken az eszközökön helyileg tárolt adatokat azonban ezúton nem törli.
-  Ez a törlés végleges, és az adatok nem állíthatók vissza semmilyen módon. Ha a jövőben ismét szeretné használni a Szinkronizálást, új fiókot kell létrehoznia, és egyenként kell újra hozzáadnia az összes eszközt.</translation>
+<translation id="8397325856045820212">A fiók törlése törli a titkosított adatokat a Brave szervereiről, és kikapcsolja a szinkronizálást az összes csatlakoztatott eszközén. A helyileg tárolt adatokat azonban nem törli le ezeken az eszközökön.\n\nA törlés végleges, és az adatok helyreállítására nincs mód. Ha úgy dönt, hogy újra használni szeretné a szinkronizálást, új fiókot kell létrehoznia, és minden egyes eszközt egyesével újra hozzá kell adnia.</translation>
 <translation id="9064376100690171155">Fiók végleges törlése</translation>
 <translation id="2740516568641790390">Szinkronizációs fiók sikeresen törölve</translation>
 <translation id="7006136453627651236">Szinkronizációs fiók törlése sikertelen</translation>
@@ -333,12 +332,10 @@
 <translation id="1602067095281698985">Új szinkronizációs lánc indítása</translation>
 <translation id="1475223680121592371">Mobilkészülék hozzáadása</translation>
 <translation id="2965377893636908578">Számítógép hozzáadása</translation>
-<translation id="6604289897677913048">Egy második telefonnal vagy táblagéppel navigáljon a Brave Beállítások &gt; Szinkronizálás &gt; Beolvasás pontra.</translation>
-<translation id="8508856434435157945">Navigáljon mobilkészülékén a Brave szinkronizálásra a Beállítások panelben, majd kattintson a „Szinkronizálási kód beolvasása” gombra. Kamerájával olvassa be az alábbi QR-kódot.</translation>
-<translation id="2590683710114839102">Számítógépén navigáljon a Brave beállítások &gt; Szinkronizálás menübe. Válassza a „Szinkronizálásilánc-kód beírása” pontot.</translation>
+<translation id="4701589725270449523">Egy másik telefont vagy táblagépet használva nyissa meg a Brave beállítások, szinkronizálás és szkennelés menüpontot.\n\nA mobileszközén lépjen a Beállítások panelen a Brave szinkronizálás menüpontra, és érintse meg a „Szinkronizálási kód beolvasása” gombot. Olvassa be a kamerával az alábbi QR-kódot.</translation>
+<translation id="67114562351518315">A számítógépen lépjen a Brave beállítások és szinkronizálás menüpontba. Válassza ki a „Szinkronizálási lánckód megadása” lehetőséget.\n\nA célszámítógépen nyissa meg a Brave szinkronizálás pontot a beállításokban, és kattintson a „Van szinkronizálási kódom” gombra.\nAdja meg a szinkronizálási lánc alább látható kódszavait.</translation>
 <translation id="65315202420929965">Szinkronizálási kód szkennelése</translation>
 <translation id="6764016175302339802">Kezelje ezt a kódot jelszóként. Ha valaki megszerzi, elolvashatja és módosíthatja az ön szinkronizált adatait.</translation>
-<translation id="6707003343517029414">A célszámítógépen navigáljon a Brave szinkronizálás beállításaiba, és kattintson a „Van egy szinkronizálási kódom” pontra.\nÍrja be az alább látható szinkronizálásilánc-kód szavait.</translation>
 <translation id="2731921493694251495">Írja be a szinkronizálásilánc-kódot</translation>
 <translation id="2175927920773552910">QR-kód</translation>
 <translation id="8653433343015102968">Kódszavak</translation>
@@ -352,6 +349,9 @@
 <translation id="8131740175452115882">Megerősítés</translation>
 <translation id="4973653569293835178">Kamerámat használom...</translation>
 <translation id="326454632686131209">Készülék szinkronizálása</translation>
+<translation id="3122158728238634723">Új kód generálása</translation>
+<translation id="4358805443781965194">A kód lejárt. Generáljon egy újat az alábbi gombra kattintva.</translation>
+<translation id="318164877797885563">Az ideiglenes kód a következő időtartamban érvényes: <ph name="TIME_AMOUNT"/></translation>
 <translation id="327726072512457161">Kilépés a beállításokból</translation>
 <translation id="8050847734948770789">Brave jutalmak engedélyezése</translation>
 <translation id="9187185473011056079">Benne vagyok!</translation>
@@ -416,8 +416,6 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="8643377320501056697">Legjobb oldalak mutatása</translation>
 <translation id="7275773481201277457">Brave statisztikák mutatása</translation>
 <translation id="8297488609722895137">A fénykép készítője: <ph name="PHOTO_BY"/></translation>
-<translation id="4761229094276239865">A Brave Rewards használatára kattintva elfogadja a <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="7136586167396205364">Szponzorált képek elrejtése</translation>
 <translation id="2898634658146274982">Külső hivatkozások megnyitása a Brave-ben</translation>
 <translation id="5616508928556767259">A más alkalmazásból származó hivatkozásokat Brave webes nézetben nyitja meg. Megjegyzés: ehhez a Brave-nek kell lennie az alapértelmezett böngészőnek.</translation>
 <translation id="2394961582378297792">Kijelentkezett</translation>
@@ -438,15 +436,11 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="7961015016161918242">Soha</translation>
 <translation id="1275213816424141989">Talán később</translation>
 <translation id="4406937629441301400">Nézd meg ezt a képet, és szerezz tokeneket, majd küldd tovább az alkotóknak. <ph name="LEARN_MORE"/></translation>
-<translation id="1992363542751124282">Szerezzen tokeneket a kép megtekintésével. A része megszerzéséhez kattintson a Brave Rewards használatára.</translation>
 <translation id="6632345639591919543">A kép megnézésével tokeneket szerzel.\n<ph name="LEARN_MORE"/></translation>
-<translation id="1465733111003593696">A kép megnézésével tokeneket szerzel.</translation>
-<translation id="7877201489035217175">Tudj meg többet a szponzorált képekről</translation>
 <translation id="8164992819127316581">A(z) <ph name="CURRENT_MONTH"/> havi jutalmak kifizetésének feldolgozása <ph name="PAYOUT_DATE"/> dátummal kezdődik.</translation>
 <translation id="33967210973550414">A(z) <ph name="CURRENT_MONTH"/> havi jutalmak kifizetésének feldolgozása folyamatban van. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">A(z) <ph name="CURRENT_MONTH"/> havi jutalmak kifizetésének feldolgozása befejeződött. <ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">Állapot ellenőrzése</translation>
-<translation id="828092975561478703">Minden megnézett szponzorált képért a bevétel 70%-át kapod tokenben. A Brave Ads-szel mindig te irányítod, hogy milyen reklámot nézel.</translation>
 <translation id="3624048886326677117">Nyomkövetők és hirdetések letiltása (agresszív)</translation>
 <translation id="7151914815476509258">Nyomkövetők és hirdetések letiltása (standard)</translation>
 <translation id="7384778069178817075">Összes követő és reklám engedélyezve</translation>
@@ -486,7 +480,6 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="5299848999918506028">Köszönjük!</translation>
 <translation id="76550953340008122">Köszönjük, hogy értesítette a Brave fejlesztőit arról, hogy valami hiba van az oldalon. Mindent megteszünk, hogy kijavítsuk!</translation>
 <translation id="650318023204990401">Speciális vezérlők</translation>
-<translation id="1275664486910646411">Mutassa a legnépszerűbb oldalakat az automatikus kiegészítésben</translation>
 <translation id="5370478469168390143">Adatok mentése online</translation>
 <translation id="1118508688433541158">Böngésszen gyorsabban, és blokkolja a hirdetéseket a Brave segítségével.</translation>
 <translation id="7427391215172269363">Minden nap spórolok az adatforgalmon, amikor a Brave-vel böngészek az interneten.</translation>
@@ -827,8 +820,6 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="3074127054582480056">Figyelem</translation>
 <translation id="2280319752798785157">Havi hozzájárulás</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
-<translation id="5802665280774361839">Mutassa az automatikus kiegészítést a címsorban</translation>
-<translation id="8982438328166986164">A könyvjelzői és böngészési előzményei alapján ajánlott weboldalak megjelenítése.</translation>
 <translation id="1241283133946520352">Hálózatok</translation>
 <translation id="1062463687579789365">Pénztárca-hálózatok testreszabása</translation>
 <translation id="2512821599885971349">Hálózat hozzáadása</translation>
@@ -947,6 +938,13 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="7134370164002095282"><ph name="CURRENT"/>/<ph name="SIZE"/></translation>
 <translation id="756701799684433105">Tranzakció jóváhagyása</translation>
 <translation id="6450792191436242818">System Program (Rendszerprogram)</translation>
+<translation id="5318067544026930166">A Brave Pénztárca feloldása biometrikus hitelesítéssel</translation>
+<translation id="2629767022373384291">Szeretne biometrikus hitelesítést használni a Brave pénztárcája feloldásához?</translation>
+<translation id="4782919977106118997">Feloldás ujjlenyomattal</translation>
+<translation id="2054995875643283428">Most kihagyom</translation>
+<translation id="2522605225061484799">Ugrás a saját portfólióra</translation>
+<translation id="1148624853678088576">Minden készen áll!</translation>
+<translation id="4131445988101719379">Brave-pénztárcája készen áll a használatra</translation>
 <translation id="6252742184395380448">Config Program (Konfig. program)</translation>
 <translation id="5358970666412490132">Stake Program (Kockázati program)</translation>
 <translation id="346636227344244984">Vote Program (Szavazási program)</translation>

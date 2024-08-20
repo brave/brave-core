@@ -9,7 +9,6 @@
 <translation id="1197088940767939838">Orange</translation>
 <translation id="125153950246128346">Tippen, um einen anderen Tab zu sehen</translation>
 <translation id="1273910660700874265">Optionen für Tapgruppe „<ph name="TITLE_OF_GROUP"/>“</translation>
-<translation id="1322824555808364080">Andere einladen</translation>
 <translation id="1419023007528516122">Dadurch wird die Gruppe endgültig von deinem Gerät gelöscht</translation>
 <translation id="1486715732399361704">Hier findest du alle deine Tabgruppen</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{Vor <ph name="NUM_MINS_ONE"/> Minute erstellt}other{Vor <ph name="NUM_MINS_MANY"/> Minuten erstellt}}</translation>
@@ -64,9 +63,12 @@
 <translation id="4159784952369912983">Violett</translation>
 <translation id="4220650239473304853">{NUMBER_OF_TABS,plural, =1{Tabgruppe „<ph name="TITLE_OF_GROUP"/>“ mit <ph name="TABS_COUNT_ONE"/> Tab maximieren.}other{Tabgruppe „<ph name="TITLE_OF_GROUP"/>“ mit <ph name="TABS_COUNT_MANY"/> Tabs maximieren.}}</translation>
 <translation id="427987768447457592">Neue Tabgruppe</translation>
+<translation id="4338724047016295066">Inaktive Tabs werden automatisch geschlossen. Du kannst sie jederzeit im Verlauf finden.</translation>
+<translation id="4371591986692297148">Inaktiv</translation>
 <translation id="4460014764210899310">Gruppierung aufheben</translation>
 <translation id="4648718555153979859">Deine Tabs werden hier in Gruppen zusammengefasst</translation>
 <translation id="4686942373615810936">Gerade eben erstellt</translation>
+<translation id="47070857600201406">{DAY_COUNT,plural, =1{Nach 1 Tag schließen}other{Nach <ph name="DAY_COUNT_MANY"/> Tagen schließen}}</translation>
 <translation id="4777866634702576038">Tabgruppe löschen?</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> Rezension)}other{(<ph name="REVIEWS_COUNT_MANY"/> Rezensionen)}}</translation>
 <translation id="4850886885716139402">Anzeigen</translation>
@@ -88,6 +90,7 @@
 <translation id="5494920125229734069">Alle auswählen</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{Tabgruppe mit <ph name="TABS_COUNT_ONE"/> Tab schließen, Farbe: <ph name="COLOR_NAME"/>.}other{Tabgruppe mit <ph name="TABS_COUNT_MANY"/> Tabs schließen, Farbe: <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="5556417849629758491">Geschäftsinformationen anzeigen, Option ist oben auf dem Bildschirm verfügbar</translation>
+<translation id="5635915157654811450">{TAB_COUNT,plural, =1{Tab wiederherstellen}other{Tabs wiederherstellen}}</translation>
 <translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> Link aus Brave}other{<ph name="TABS_COUNT_MANY"/> Links aus Brave}}</translation>
 <translation id="575494663145460764">Benachrichtigungen bei Preisnachlässen erhalten?</translation>
 <translation id="58326064309361797">Tabs zum Gruppieren ziehen</translation>
@@ -103,6 +106,8 @@
 <translation id="6381032505162537930">Hier werden deine Tabgruppen angezeigt</translation>
 <translation id="639823877092900621">{TABS_COUNT,plural, =1{Gruppierung des <ph name="TABS_COUNT_ONE"/> ausgewählten Tabs aufheben}other{Gruppierung der <ph name="TABS_COUNT_MANY"/> ausgewählten Tabs aufheben}}</translation>
 <translation id="6422650314852876533">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> Tab}other{<ph name="TABS_COUNT_MANY"/> Tabs}}</translation>
+<translation id="6527303717912515753">Teilen</translation>
+<translation id="6542289363124393690">{DAY_COUNT,plural, =1{Nach 1 Tag}other{Nach <ph name="DAY_COUNT_MANY"/> Tagen}}</translation>
 <translation id="6549021453810473782">Händlerinfo anzeigen</translation>
 <translation id="6557858706263317126">+ <ph name="HIDDEN_TABS_COUNT"/></translation>
 <translation id="6562820390860419811">Tab nach links bewegen</translation>
@@ -119,6 +124,7 @@
 <translation id="7326879924029668159">Rückgabebedingungen und mehr</translation>
 <translation id="7352298686197644113">Sieh nach, welcher Artikel auf deinen geöffneten Tabs zu einem günstigeren Preis erhältlich ist</translation>
 <translation id="7452985128687107478">Tabgruppen werden automatisch auf allen deinen Geräten gespeichert und aktualisiert</translation>
+<translation id="747459581954555080">Alle wiederherstellen</translation>
 <translation id="753732157349120914">Tab-Wechsler</translation>
 <translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> Rezension von Brave}other{<ph name="REVIEWS_COUNT_MANY"/> Rezensionen von Brave}}</translation>
 <translation id="7559245342362162951">Tabs der Gruppe in Vollbildraster anzeigen</translation>
@@ -132,6 +138,7 @@
 <translation id="7885132941432959125">Tab nach rechts verschieben</translation>
 <translation id="7939917283308035850"><ph name="COLOR_NAME"/> nicht ausgewählt</translation>
 <translation id="7942349550061667556">Rot</translation>
+<translation id="7961015016161918242">Nie</translation>
 <translation id="7966321538264951561">Vorschläge ablehnen.</translation>
 <translation id="799469866974412355">Neue Gruppe von deinem anderen Gerät</translation>
 <translation id="8029301326595421733">Informationen zu diesem Händler sind vollständig geöffnet</translation>
@@ -142,6 +149,8 @@
 <translation id="8338427544764842461">Deine Tabgruppen werden hier gespeichert und auf allen deinen angemeldeten Geräten aktualisiert</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ausgewählten Tab schließen}other{<ph name="TABS_COUNT_MANY"/> ausgewählte Tabs schließen}}</translation>
 <translation id="8398929769197326728">Neuer Ordner – <ph name="CURRENT_TIMESTAMP_MS"/></translation>
+<translation id="8428213095426709021">Einstellungen</translation>
+<translation id="870736955561925754">Tab schließen und Gruppe löschen?</translation>
 <translation id="8714939927607906138">Günstigerer Preis</translation>
 <translation id="8730621377337864115">Fertig</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{Vor <ph name="NUM_MONTHS_ONE"/> Monat erstellt}other{Vor <ph name="NUM_MONTHS_MANY"/> Monaten erstellt}}</translation>
