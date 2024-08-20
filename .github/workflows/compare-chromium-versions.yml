@@ -1,0 +1,48 @@
+name: Compare Chromium versions
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  compare-chromium-versions:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      PR_SHA: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - run: |
+          # Comparing Chromium versions between the PR branch and the target branch
+          shopt -s inherit_errexit
+          set -eEo pipefail
+
+          chromium_ver() { curl -fsS "https://raw.githubusercontent.com/${GITHUB_REPOSITORY:?}/${1:?}/package.json"|jq -r .config.projects.chrome.tag; }
+
+          pr_ver="$(chromium_ver "${PR_SHA:?}")"
+          target_ver="$(chromium_ver "${GITHUB_BASE_REF:?}")"
+          pfx="Target branch Chromium version"
+
+          status() { echo "::${1:?}::${2:?}"; echo "$2" >"${GITHUB_STEP_SUMMARY:?}"; }
+          label() { gh pr edit "${PR_NUMBER:?}" -R "${GITHUB_REPOSITORY:?}" "--${1:?}-label" chromium-version-mismatch >/dev/null; }
+          success() { status notice "${pfx:?} ${1:?}: CI ✅ | Merge ✅"; label remove; }
+          failure() {
+              case "${1:?}" in runci) ci=✅; label remove;; *) ci=🚫; label add;; esac
+              status error "${pfx:?} ${2:?}: CI $ci | Merge 🚫"
+              exit 2
+          }
+
+          echo "::notice::PR branch: ${pr_ver:?}, target branch: ${target_ver:?}"
+
+          if [[ "$pr_ver" == "$target_ver" ]]; then
+              success match
+          elif [[ "$(sort -V <<<"$target_ver"$'\n'"$pr_ver"|tail -n1)" == "$pr_ver" ]]; then
+              success older
+          elif [[ "${pr_ver%%.*}" == "${target_ver%%.*}" ]]; then
+              failure runci "major match only"
+          else
+              failure blockci mismatch
+          fi
