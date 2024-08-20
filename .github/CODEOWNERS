@@ -10,6 +10,13 @@ DEPS @brave/deps-reviewers
 script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
 
+# BraveBrowserProcess public interface
+browser/brave_browser_process.h @bridiver
+
+# BraveComponent is deprecated
+components/brave_component_updater/browser/brave_component.h @bridiver @antonok-edm
+components/brave_component_updater/browser/local_data_files_observer.h @bridiver @antonok-edm
+
 # Renderer code
 **/renderer/**/* @brave/renderer-reviewers
 

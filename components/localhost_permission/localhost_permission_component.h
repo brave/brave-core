@@ -12,6 +12,7 @@
 #include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
+#include "url/gurl.h"
 
 using brave_component_updater::LocalDataFilesObserver;
 using brave_component_updater::LocalDataFilesService;
