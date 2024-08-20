@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -59,12 +60,17 @@ inline constexpr char kUsageWeeklySidebarEnabledBHistogramName[] =
     "Brave.AIChat.UsageWeekly.SidebarEnabledB";
 inline constexpr char kChatCountNebulaHistogramName[] =
     "Brave.AIChat.ChatCount.Nebula";
+inline constexpr char kMostUsedEntryPointHistogramName[] =
+    "Brave.AIChat.MostUsedEntryPoint";
 
-enum class AcquisitionSource {
-  kOmnibox = 0,
+enum class EntryPoint {
+  kOmniboxItem = 0,
   kSidebar = 1,
   kContextMenu = 2,
-  kMaxValue = kContextMenu
+  kToolbarButton = 3,
+  kMenuItem = 4,
+  kOmniboxCommand = 5,
+  kMaxValue = kOmniboxCommand
 };
 
 enum class ContextMenuAction {
@@ -106,9 +112,8 @@ class AIChatMetrics {
   void RecordOmniboxSearchQuery();
 
   void RecordContextMenuUsage(ContextMenuAction action);
+  void HandleOpenViaEntryPoint(EntryPoint entry_point);
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-
-  void HandleOpenViaSidebar();
 
   void OnPremiumStatusUpdated(bool is_new_user,
                               mojom::PremiumStatus premium_status,
@@ -121,12 +126,13 @@ class AIChatMetrics {
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   void ReportOmniboxCounts();
   void ReportContextMenuMetrics();
+  void ReportEntryPointUsageMetric();
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
   bool is_enabled_ = false;
   bool is_premium_ = false;
   bool premium_check_in_progress_ = false;
-  std::optional<AcquisitionSource> acquisition_source_ = std::nullopt;
+  std::optional<EntryPoint> acquisition_source_ = std::nullopt;
 
   WeeklyStorage chat_count_storage_;
   WeeklyStorage prompt_count_storage_;
@@ -136,6 +142,9 @@ class AIChatMetrics {
 
   TimePeriodStorage omnibox_open_storage_;
   TimePeriodStorage omnibox_autocomplete_storage_;
+
+  base::flat_map<EntryPoint, std::unique_ptr<WeeklyStorage>>
+      entry_point_storages_;
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
   base::OneShotTimer report_debounce_timer_;

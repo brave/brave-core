@@ -527,7 +527,7 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
       ai_chat::AIChatMetrics* metrics =
           g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
       CHECK(metrics);
-      metrics->HandleOpenViaSidebar();
+      metrics->HandleOpenViaEntryPoint(ai_chat::EntryPoint::kSidebar);
     }
 #endif
     controller->ActivatePanelItem(item_model.built_in_item_type);

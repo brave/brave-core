@@ -8,6 +8,9 @@
 #include <memory>
 
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -74,6 +77,11 @@ AIChatButton::~AIChatButton() = default;
 
 void AIChatButton::ButtonPressed() {
   chrome::ExecuteCommand(&browser_.get(), IDC_TOGGLE_AI_CHAT);
+
+  ai_chat::AIChatMetrics* metrics =
+      g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
+  CHECK(metrics);
+  metrics->HandleOpenViaEntryPoint(ai_chat::EntryPoint::kToolbarButton);
 }
 
 BEGIN_METADATA(AIChatButton)

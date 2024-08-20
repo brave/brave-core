@@ -47,29 +47,33 @@ constexpr char kImproveActionKey[] = "improve";
 constexpr char kChangeToneActionKey[] = "tone";
 constexpr char kChangeLengthActionKey[] = "length";
 
-const char* GetContextMenuActionKey(ContextMenuAction action) {
-  switch (action) {
-    case ContextMenuAction::kSummarize:
-      return kSummarizeActionKey;
-    case ContextMenuAction::kExplain:
-      return kExplainActionKey;
-    case ContextMenuAction::kParaphrase:
-      return kParaphraseActionKey;
-    case ContextMenuAction::kCreateTagline:
-      return kCreateTaglineActionKey;
-    case ContextMenuAction::kCreateSocialMedia:
-      return kCreateSocialMediaActionKey;
-    case ContextMenuAction::kImprove:
-      return kImproveActionKey;
-    case ContextMenuAction::kChangeTone:
-      return kChangeToneActionKey;
-    case ContextMenuAction::kChangeLength:
-      return kChangeLengthActionKey;
-    default:
-      NOTREACHED_IN_MIGRATION();
-      return nullptr;
-  }
-}
+constexpr char kOmniboxItemEntryPointKey[] = "omnibox_item";
+constexpr char kSidebarEntryPointKey[] = "sidebar";
+constexpr char kContextMenuEntryPointKey[] = "context_menu";
+constexpr char kToolbarButtonEntryPointKey[] = "toolbar_button";
+constexpr char kMenuItemEntryPointKey[] = "menu_item";
+constexpr char kOmniboxCommandEntryPointKey[] = "omnibox_command";
+
+constexpr auto kContextMenuActionKeys =
+    base::MakeFixedFlatMap<ContextMenuAction, const char*>(
+        {{ContextMenuAction::kSummarize, kSummarizeActionKey},
+         {ContextMenuAction::kExplain, kExplainActionKey},
+         {ContextMenuAction::kParaphrase, kParaphraseActionKey},
+         {ContextMenuAction::kCreateTagline, kCreateTaglineActionKey},
+         {ContextMenuAction::kCreateSocialMedia, kCreateSocialMediaActionKey},
+         {ContextMenuAction::kImprove, kImproveActionKey},
+         {ContextMenuAction::kChangeTone, kChangeToneActionKey},
+         {ContextMenuAction::kChangeLength, kChangeLengthActionKey}});
+
+constexpr auto kEntryPointKeys =
+    base::MakeFixedFlatMap<EntryPoint, const char*>(
+        {{EntryPoint::kOmniboxItem, kOmniboxItemEntryPointKey},
+         {EntryPoint::kSidebar, kSidebarEntryPointKey},
+         {EntryPoint::kContextMenu, kContextMenuEntryPointKey},
+         {EntryPoint::kToolbarButton, kToolbarButtonEntryPointKey},
+         {EntryPoint::kMenuItem, kMenuItemEntryPointKey},
+         {EntryPoint::kOmniboxCommand, kOmniboxCommandEntryPointKey}});
+
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 void ReportHistogramForSidebarExperiment(
@@ -132,12 +136,17 @@ AIChatMetrics::AIChatMetrics(PrefService* local_state)
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
       local_state_(local_state) {
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-  for (int i = static_cast<int>(ContextMenuAction::kSummarize);
-       i <= static_cast<int>(ContextMenuAction::kMaxValue); i++) {
+  for (int i = 0; i <= static_cast<int>(ContextMenuAction::kMaxValue); i++) {
     ContextMenuAction action = static_cast<ContextMenuAction>(i);
     context_menu_usage_storages_[action] = std::make_unique<WeeklyStorage>(
         local_state_, prefs::kBraveChatP3AContextMenuUsages,
-        GetContextMenuActionKey(action));
+        kContextMenuActionKeys.at(action));
+  }
+  for (int i = 0; i <= static_cast<int>(EntryPoint::kMaxValue); i++) {
+    EntryPoint entry_point = static_cast<EntryPoint>(i);
+    entry_point_storages_[entry_point] = std::make_unique<WeeklyStorage>(
+        local_state_, prefs::kBraveChatP3AContextMenuUsages,
+        kEntryPointKeys.at(entry_point));
   }
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 }
@@ -211,7 +220,7 @@ void AIChatMetrics::RecordReset() {
   UMA_HISTOGRAM_EXACT_LINEAR(kEnabledHistogramName,
                              std::numeric_limits<int>::max() - 1, 3);
   UMA_HISTOGRAM_EXACT_LINEAR(kAcquisitionSourceHistogramName,
-                             std::numeric_limits<int>::max() - 1, 3);
+                             std::numeric_limits<int>::max() - 1, 6);
 }
 
 void AIChatMetrics::OnPremiumStatusUpdated(bool is_new_user,
@@ -249,7 +258,7 @@ void AIChatMetrics::RecordNewPrompt() {
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 void AIChatMetrics::RecordOmniboxOpen() {
-  acquisition_source_ = AcquisitionSource::kOmnibox;
+  HandleOpenViaEntryPoint(EntryPoint::kOmniboxItem);
   omnibox_open_storage_.AddDelta(1);
   omnibox_autocomplete_storage_.AddDelta(1);
   ReportOmniboxCounts();
@@ -261,17 +270,23 @@ void AIChatMetrics::RecordOmniboxSearchQuery() {
 }
 
 void AIChatMetrics::RecordContextMenuUsage(ContextMenuAction action) {
-  acquisition_source_ = AcquisitionSource::kContextMenu;
+  HandleOpenViaEntryPoint(EntryPoint::kContextMenu);
   context_menu_usage_storages_[action]->AddDelta(1);
   local_state_->SetTime(prefs::kBraveChatP3ALastContextMenuUsageTime,
                         base::Time::Now());
   ReportContextMenuMetrics();
 }
-#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
-void AIChatMetrics::HandleOpenViaSidebar() {
-  acquisition_source_ = AcquisitionSource::kSidebar;
+void AIChatMetrics::HandleOpenViaEntryPoint(EntryPoint entry_point) {
+  acquisition_source_ = entry_point;
+
+  auto* storage = entry_point_storages_.at(entry_point).get();
+  CHECK(storage);
+  storage->AddDelta(1u);
+
+  ReportEntryPointUsageMetric();
 }
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 void AIChatMetrics::ReportAllMetrics() {
   periodic_report_timer_.Start(
@@ -282,6 +297,7 @@ void AIChatMetrics::ReportAllMetrics() {
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   ReportOmniboxCounts();
   ReportContextMenuMetrics();
+  ReportEntryPointUsageMetric();
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 }
 
@@ -403,6 +419,31 @@ void AIChatMetrics::ReportContextMenuMetrics() {
                                   7);
   }
 }
+
+void AIChatMetrics::ReportEntryPointUsageMetric() {
+  if (!is_enabled_) {
+    return;
+  }
+
+  uint64_t entry_point_total_max = 0;
+  std::optional<EntryPoint> most_used_entry_point;
+
+  for (int i = 0; i <= static_cast<int>(EntryPoint::kMaxValue); i++) {
+    EntryPoint entry_point = static_cast<EntryPoint>(i);
+    uint64_t entry_point_total =
+        entry_point_storages_[entry_point]->GetWeeklySum();
+    if (entry_point_total > entry_point_total_max) {
+      most_used_entry_point = entry_point;
+      entry_point_total_max = entry_point_total;
+    }
+  }
+
+  if (most_used_entry_point) {
+    UMA_HISTOGRAM_ENUMERATION(kMostUsedEntryPointHistogramName,
+                              *most_used_entry_point);
+  }
+}
+
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 }  // namespace ai_chat
