@@ -22,7 +22,7 @@
 
 - (void)checkForUpdates;
 
-- (void)relaunch;
+- (BOOL)relaunch;
 
 - (AutoupdateStatus)recentStatus;
 

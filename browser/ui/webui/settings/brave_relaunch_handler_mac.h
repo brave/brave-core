@@ -8,7 +8,7 @@
 
 namespace brave_relaunch_handler {
 
-void RelaunchOnMac();
+bool RelaunchOnMac();
 
 }  // namespace brave_relaunch_handler
 

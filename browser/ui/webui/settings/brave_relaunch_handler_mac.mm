@@ -9,8 +9,9 @@
 
 namespace brave_relaunch_handler {
 
-void RelaunchOnMac() {
-  [[SparkleGlue sharedSparkleGlue] relaunch];
+bool RelaunchOnMac() {
+  return [SparkleGlue sharedSparkleGlue] &&
+         [[SparkleGlue sharedSparkleGlue] relaunch];
 }
 
 }  // namespace brave_relaunch_handler
