@@ -145,8 +145,6 @@ class KeyringServiceUnitTest : public testing::Test {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, content](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
-          std::string header;
-          request.headers.GetHeader("Authorization", &header);
           url_loader_factory_.AddResponse(request.url.spec(), content);
         }));
   }

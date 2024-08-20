@@ -78,10 +78,10 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
         [&, content, http_status,
          request_payload_callback](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
-          std::string header;
-          EXPECT_TRUE(request.headers.GetHeader(
-              brave_wallet::kMeldRpcVersionHeader, &header));
-          EXPECT_FALSE(header.empty());
+          auto header =
+              request.headers.GetHeader(brave_wallet::kMeldRpcVersionHeader);
+          EXPECT_TRUE(header);
+          EXPECT_FALSE(header->empty());
 
           if (request_payload_callback) {
             std::string request_string(request.request_body->elements()

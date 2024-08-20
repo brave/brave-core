@@ -1095,24 +1095,22 @@ class JsonRpcServiceUnitTest : public testing::Test {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [=, this](const network::ResourceRequest& request) {
           EXPECT_EQ(request.url, expected_url);
-          std::string header_value;
-          EXPECT_EQ(request.headers.GetHeader("X-Eth-Method", &header_value),
-                    !expected_method.empty());
+          std::string header_value =
+              request.headers.GetHeader("X-Eth-Method").value_or("");
           EXPECT_EQ(expected_method, header_value);
           if (expected_method == "eth_blockNumber") {
-            EXPECT_TRUE(
-                request.headers.GetHeader("X-Eth-Block", &header_value));
+            header_value =
+                request.headers.GetHeader("X-Eth-Block").value_or("");
             EXPECT_EQ(expected_cache_header, header_value);
           } else if (expected_method == "eth_getBlockByNumber") {
-            EXPECT_EQ(
-                request.headers.GetHeader("X-eth-get-block", &header_value),
-                !expected_cache_header.empty());
+            header_value =
+                request.headers.GetHeader("X-eth-get-block").value_or("");
             EXPECT_EQ(expected_cache_header, header_value);
           }
 
           if (IsEndpointUsingBraveWalletProxy(request.url)) {
-            EXPECT_TRUE(
-                request.headers.GetHeader("x-brave-key", &header_value));
+            header_value =
+                request.headers.GetHeader("x-brave-key").value_or("");
             EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
           } else {
             EXPECT_FALSE(request.headers.HasHeader("x-brave-key"));
@@ -1128,21 +1126,20 @@ class JsonRpcServiceUnitTest : public testing::Test {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [=, this](const network::ResourceRequest& request) {
           EXPECT_EQ(request.url, expected_url);
-          std::string header_value;
 
           if (IsEndpointUsingBraveWalletProxy(request.url)) {
-            EXPECT_TRUE(
-                request.headers.GetHeader("x-brave-key", &header_value));
-            EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY), header_value);
+            EXPECT_EQ(BUILDFLAG(BRAVE_SERVICES_KEY),
+                      request.headers.GetHeader("x-brave-key").value_or(""));
           } else {
             EXPECT_FALSE(request.headers.HasHeader("x-brave-key"));
           }
 
-          ASSERT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
-          ASSERT_TRUE(json_rsp_map.contains(header_value));
+          auto header_value = request.headers.GetHeader("X-Eth-Method");
+          ASSERT_TRUE(header_value);
+          ASSERT_TRUE(json_rsp_map.contains(*header_value));
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(),
-                                          json_rsp_map.at(header_value));
+                                          json_rsp_map.at(*header_value));
         }));
   }
 

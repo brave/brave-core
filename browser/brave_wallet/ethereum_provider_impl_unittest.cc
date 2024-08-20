@@ -2216,13 +2216,13 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribe) {
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
 
-        std::string header_value;
-        EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
+        auto header_value = request.headers.GetHeader("X-Eth-Method");
+        ASSERT_TRUE(header_value);
         std::string content;
-        if (header_value == "eth_blockNumber" ||
-            header_value == "getBlockHeight") {
+        if (*header_value == "eth_blockNumber" ||
+            *header_value == "getBlockHeight") {
           content = R"({"id":1,"jsonrpc":"2.0","result":"0x131131"})";
-        } else if (header_value == "eth_getBlockByNumber") {
+        } else if (*header_value == "eth_getBlockByNumber") {
           content = R"({"id":1,"jsonrpc":"2.0","result":{"difficulty":"0x1"}})";
         }
         url_loader_factory_.AddResponse(request.url.spec(), content);
@@ -2311,10 +2311,10 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogs) {
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
 
-        std::string header_value;
-        EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
+        auto header_value = request.headers.GetHeader("X-Eth-Method");
+        ASSERT_TRUE(header_value);
         std::string content;
-        if (header_value == "eth_getLogs") {
+        if (*header_value == "eth_getLogs") {
           content =
               R"({"id":1,"jsonrpc":"2.0","result":[{"address":"0x91",
               "blockHash":"0xe8","blockNumber":"0x10","data":"0x0067",
@@ -2387,10 +2387,10 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogsFiltered) {
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
 
-        std::string header_value;
-        EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
+        auto header_value = request.headers.GetHeader("X-Eth-Method");
+        ASSERT_TRUE(header_value);
 
-        if (header_value == "eth_getLogs") {
+        if (*header_value == "eth_getLogs") {
           const std::optional<base::Value> req_body_payload =
               base::JSONReader::Read(
                   R"({"id":1,"jsonrpc":"2.0","method":"eth_getLogs","params":

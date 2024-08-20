@@ -1457,9 +1457,9 @@ TEST_F(EthTxManagerUnitTest,
   url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
       [this](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
-        std::string header_value;
-        EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
-        if (header_value == "eth_getBlockByNumber") {
+        auto header_value = request.headers.GetHeader("X-Eth-Method");
+        ASSERT_TRUE(header_value);
+        if (*header_value == "eth_getBlockByNumber") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -1468,7 +1468,7 @@ TEST_F(EthTxManagerUnitTest,
               },
               "id": 1
             })");
-        } else if (header_value == "eth_feeHistory") {
+        } else if (*header_value == "eth_feeHistory") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -1525,9 +1525,9 @@ TEST_F(EthTxManagerUnitTest,
   url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
       [this](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
-        std::string header_value;
-        EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
-        if (header_value == "eth_getBlockByNumber") {
+        auto header_value = request.headers.GetHeader("X-Eth-Method");
+        ASSERT_TRUE(header_value);
+        if (*header_value == "eth_getBlockByNumber") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -1536,7 +1536,7 @@ TEST_F(EthTxManagerUnitTest,
               },
               "id": 1
             })");
-        } else if (header_value == "eth_feeHistory") {
+        } else if (*header_value == "eth_feeHistory") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -1547,7 +1547,7 @@ TEST_F(EthTxManagerUnitTest,
               "id": 1
             }
           )");
-        } else if (header_value == "eth_estimateGas") {
+        } else if (*header_value == "eth_estimateGas") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -1598,9 +1598,9 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionFeeHistoryFailed) {
   url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
       [this](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
-        std::string header_value;
-        EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
-        if (header_value == "eth_feeHistory") {
+        auto header_value = request.headers.GetHeader("X-Eth-Method");
+        ASSERT_TRUE(header_value);
+        if (*header_value == "eth_feeHistory") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
@@ -1925,17 +1925,17 @@ TEST_F(EthTxManagerUnitTest, TestSubmittedToConfirmed) {
   url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
       [this](const network::ResourceRequest& request) {
         url_loader_factory_.ClearResponses();
-        std::string header_value;
-        EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
-        LOG(ERROR) << "Header value is: " << header_value;
-        if (header_value == "eth_blockNumber") {
+        auto header_value = request.headers.GetHeader("X-Eth-Method");
+        ASSERT_TRUE(header_value);
+        LOG(ERROR) << "Header value is: " << *header_value;
+        if (*header_value == "eth_blockNumber") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc":"2.0",
               "result":"0x65a8db",
               "id":1
             })");
-        } else if (header_value == "eth_getTransactionReceipt") {
+        } else if (*header_value == "eth_getTransactionReceipt") {
           url_loader_factory_.AddResponse(request.url.spec(), R"(
             {
               "jsonrpc": "2.0",
