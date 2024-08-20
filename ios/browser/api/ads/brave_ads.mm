@@ -17,6 +17,7 @@
 #include "base/files/file_util.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
@@ -83,6 +84,7 @@
 
 namespace {
 
+constexpr char kClearDataHistogramName[] = "Brave.Ads.ClearData";
 constexpr int kComponentUpdaterManifestSchemaVersion = 1;
 constexpr char kAdsDatabaseFilename[] = "Ads.db";
 constexpr NSString* kComponentUpdaterMetadataPrefKey =
@@ -1687,6 +1689,7 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
   // Ensure the Brave Ads service is stopped before clearing data.
   CHECK(![self isServiceRunning]);
 
+  UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
   self.profilePrefService->ClearPrefsWithPrefixSilently("brave.brave_ads");
 
   base::FilePath storage_path(base::SysNSStringToUTF8(self.storagePath));
