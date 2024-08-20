@@ -8,10 +8,7 @@
 
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
-#include "ui/color/color_provider.h"
-#include "ui/gfx/color_utils.h"
 #include "ui/gfx/geometry/insets.h"
 
 // A subclass of TabStyle used to customize tab layout and visuals. It is
@@ -77,35 +74,6 @@ class BraveTabStyle : public TabStyleBase {
   }
 
   int GetSeparatorCornerRadius() const override { return 0; }
-
-  SkColor GetTabBackgroundColor(
-      const TabStyleBase::TabSelectionState state,
-      bool hovered,
-      const bool frame_active,
-      const ui::ColorProvider& color_provider) const override {
-    const SkColor active_color = color_provider.GetColor(
-        frame_active ? kColorTabBackgroundActiveFrameActive
-                     : kColorTabBackgroundActiveFrameInactive);
-    const SkColor inactive_color = color_provider.GetColor(
-        frame_active ? kColorTabBackgroundInactiveFrameActive
-                     : kColorTabBackgroundInactiveFrameInactive);
-
-    if (hovered) {
-      return active_color;
-    }
-
-    switch (state) {
-      case TabStyleBase::TabSelectionState::kActive:
-        return active_color;
-      case TabStyleBase::TabSelectionState::kSelected:
-        return color_utils::AlphaBlend(active_color, inactive_color,
-                                       TabStyleBase::GetSelectedTabOpacity());
-      case TabStyleBase::TabSelectionState::kInactive:
-        return inactive_color;
-      default:
-        NOTREACHED_NORETURN();
-    }
-  }
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STYLE_H_
