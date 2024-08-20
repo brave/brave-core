@@ -100,6 +100,12 @@ template("transpile_web_ui") {
       "//brave/components/webpack:generate_tsconfig",
     ]
     if (defined(invoker.deps)) {
+      # If there are any mojo js bindings deps make sure to build mojo js
+      # bindings first
+      has_mojo_js_deps = filter_include(invoker.deps, [ "*:mojom_js" ])
+      if (has_mojo_js_deps != []) {
+        deps += [ "//mojo/public/js:bindings_module" ]
+      }
       deps += invoker.deps
     }
 
