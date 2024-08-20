@@ -1,9 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="uk">
-<translation id="1800311840305731850">Неможливо завантажити сторінку IPFS.</translation>
-<translation id="5712742401570874902">Сторінки IPFS не дозволені в приватних вікнах.</translation>
-<translation id="5749639013106315553">IPFS вимкнено. Виберіть метод вирішення IPFS у налаштуваннях, щоб відкрити цей сайт.</translation>
 <translation id="5288293905681750318">Заблоковано стеження і рекламу</translation>
 <translation id="2313532038420432247">Покращення HTTPS</translation>
 <translation id="788493840831967104">Часу збережено</translation>
@@ -62,12 +59,12 @@
 <translation id="6849526088357652209">Налаштувати доступні пошукові системи</translation>
 <translation id="5131747739868436035">Приховати пошук</translation>
 <translation id="423209533815462685">Увімкнути пошукові пропозиції?</translation>
-<translation id="2086952631598737687">Під час пошуку надрукований текст надсилатиметься до пошукової системи, щоб отримати ліпші пропозиції.</translation>
+<translation id="2086952631598737687">Під час пошуку введений текст надсилатиметься до пошукової системи для покращення пропозицій.</translation>
 <translation id="3435896845095436175">Увімкнути</translation>
 <translation id="780301667611848630">Ні, дякую</translation>
 <translation id="1230746063445072175">Хочете покращити конфіденційність?</translation>
 <translation id="6699628638740071563">Настав час відмовитися від Google.</translation>
-<translation id="2045455461902775806">Пошук Brave не корегує та не цензурує результати, а також не відстежує ваші дії, запити або натискання.</translation>
+<translation id="5588534392045217394">Пошук Brave не містить упереджень, не цензурує результати та не створює ваш профіль.</translation>
 <translation id="6811221529729056895">Спробуйте пошук Brave зараз</translation>
 <translation id="3446024864193919737">Показувати нагороди Brave</translation>
 <translation id="5585019845078534178">Картки</translation>
@@ -95,13 +92,13 @@
 <translation id="4108314971463891922">Стежити</translation>
 <translation id="3861486700625780712">Не стежити</translation>
 <translation id="8909741410750517071">Натисніть 1 раз и стежте за цим джерелом.</translation>
-<translation id="1982678174789043774">Отримуйте останні новини за допомогою Brave News.</translation>
+<translation id="1982678174789043774">Отримуйте найновіші матеріали в Новинах Brave.</translation>
 <translation id="7894417427965898400">Керувати стрічками</translation>
 <translation id="9164544612367905452">Отримуємо контент…</translation>
 <translation id="1276592121036104130">Завантажити новий контент</translation>
-<translation id="2875288128871360696">Прокрутити Brave News</translation>
-<translation id="8510120023634509743">Скинути джерела Brave News</translation>
-<translation id="75825199302994272">Скинути всі ваші налаштування дописувача в Brave News до їхніх стандартних значень?</translation>
+<translation id="2875288128871360696">Прокрутити до Новин Brave</translation>
+<translation id="8510120023634509743">Скинути джерела Новин Brave</translation>
+<translation id="75825199302994272">Відновити типові налаштування джерел Новин Brave?</translation>
 <translation id="954001034349395856">Усі джерела</translation>
 <translation id="8890516388109605451">Джерела</translation>
 <translation id="5158129253322921540">Відключити контент <ph name="PUBLISHER_NAME"/></translation>
@@ -191,7 +188,7 @@
 <translation id="8289546216379862569">Пошук рекламних оголошень</translation>
 <translation id="4758111936363146244">Рекламні оголошення в пошуковій службі Brave можна переглянути тут:<ph name="BEGIN_LINK"/>Пошук Brave <ph name="END_LINK"/>.</translation>
 <translation id="7596536223419118193">Поки що ви не можете заробляти BAT на рекламі в службі «Пошук Brave», але ви можете підтримати Brave, увімкнувши її.</translation>
-<translation id="6390952132783970876">Реклама в новинах Brave</translation>
+<translation id="6390952132783970876">Реклама в Новинах Brave</translation>
 <translation id="7516281787184495886">Новини Brave містять рекламу, яку не можна вимкнути самостійно.</translation>
 <translation id="8008378848677625233">Новини Brave наразі вимкнено.</translation>
 <translation id="6112368337882254910">Зробити автоматичний внесок</translation>
@@ -411,13 +408,9 @@
 <translation id="2799223571221894425">Перезапустити</translation>
 <translation id="1110535155349301542">видалити</translation>
 <translation id="8204292894173669182">Видалити зі Збереженого</translation>
-<translation id="5939518447894949180">Скинути</translation>
-<translation id="3349204812119681938">Скинути нагороди Brave</translation>
 <translation id="5669281110673664811">Очистити список винятків</translation>
 <translation id="1797334173232638045">Закріплені сайти було переміщено до</translation>
 <translation id="3074127054582480056">Увага</translation>
-<translation id="4915997950539925115">Під час скидання налаштувань поточний профіль Винагороди Brave буде видалено, а функцію Винагороди Brave деактивовано. Якщо в майбутньому ви ввімкнете Винагороди Brave, буде створено новий профіль. Ознайомтеся з нашою <ph name="LINK_BEGIN"/>статтею щодо скидання налаштувань<ph name="LINK_END"/>, щоб дізнатися більше.</translation>
-<translation id="4806029412510565611">Я розумію, що мій поточний профіль Brave Rewards і дані Brave Rewards буде видалено з пристрою. Я також прочитав (-ла) <ph name="LINK_BEGIN"/>статтю щодо скидання налаштувань<ph name="LINK_END"/>.</translation>
 <translation id="3494964159182650590">Підсумок винагород</translation>
 <translation id="2913994227901456490">Дивитись усі об’єкти ([[numItems]])</translation>
 <translation id="6685434227783226855">Надіслати внесок</translation>
@@ -503,76 +496,6 @@
 <translation id="4087894168792701548">Продовжити у звичайному режимі</translation>
 <translation id="5874287397425241890">Ви переглядаєте цей сайт у приватному режимі.</translation>
 <translation id="1036348656032585052">Вимкнути</translation>
-<translation id="9020818404803201080">Підключені вузли:</translation>
-<translation id="2903493209154104877">Адреси</translation>
-<translation id="3207122385716480167">Статистика репозиторію</translation>
-<translation id="2595187693729756455">Дані про вузол</translation>
-<translation id="5789886980848929155">Статус вузла IPFS</translation>
-<translation id="6599816589121202398">API</translation>
-<translation id="1327977588028644528">Шлюз</translation>
-<translation id="2551123942222622809">Рій</translation>
-<translation id="5201810533706869030">Об'єкти</translation>
-<translation id="8028993641010258682">Розмір</translation>
-<translation id="7870625241353817260">Пам'ятьМакс</translation>
-<translation id="3202131003361292969">Шлях</translation>
-<translation id="3798449238516105146">Версія</translation>
-<translation id="2892680660204660712">Ідентифікатор вузлів</translation>
-<translation id="7536543993364605970">Версія агента</translation>
-<translation id="3693482323085649439">Вузол працює</translation>
-<translation id="6315833555896070573">Вузол не працює</translation>
-<translation id="1272079795634619415">Зупинити</translation>
-<translation id="5895138241574237353">Перезапустити</translation>
-<translation id="6762417584993757344">Не встановлено</translation>
-<translation id="4159076046325416152">Встановлюємо IPFS...</translation>
-<translation id="3854747677478661601">Виконати розгортку збору сміття</translation>
-<translation id="7376842608449050673">Помилка збирання сміття</translation>
-<translation id="8523162996646111972">(подробиці)</translation>
-<translation id="6121825639998459476">Установити і почати</translation>
-<translation id="72868071984333667">Дізнайтесь більше про IPFS та конфіденційність</translation>
-<translation id="3793279629218362523">Керування ідентифікатором піру й ключами IPNS</translation>
-<translation id="6776260067907986254">Мій вузол</translation>
-<translation id="8999763401170835879">Сталася помилка. Будь ласка, спробуйте запустити ще раз</translation>
-<translation id="5433704526290922623">Сталася помилка, будь ласка, спробуйте встановити вузол ще раз</translation>
-<translation id="8428368469058794536">Служба IPFS</translation>
-<translation id="7691598647605453992">IPFS</translation>
-<translation id="8725066075913043281">Спробувати ще раз</translation>
-<translation id="1886162073868201257">Помилка запуску служби IPFS</translation>
-<translation id="5357895013476183089">IPFS не під'єднаний</translation>
-<translation id="7662930734991751511">Не вдається завантажити ресурси IPFS за допомогою локального вузла IPFS Brave</translation>
-<translation id="1141556610026845297">Не вдалось використати локальний вузол IPFS, щоб завантажити запитувані ресурси. Натисніть на кнопку "Продовжити", щоб натомість скористатись відкритим шлюзом і автоматично переходити на нього у майбутньому.</translation>
-<translation id="3373798179786163193">Продовжити через відкритий шлюз</translation>
-<translation id="1974060860693918893">Розширені</translation>
-<translation id="9096577886148726047">Сховати розширені</translation>
-<translation id="182581792765792826">Brave не вдається завантажити запитувані ресурси IPFS, оскільки локальний вузол IPFS Brave не запустився або з’єднаних вузлів наразі немає. Якщо ви виберете варіант «Продовжити», Brave автоматично переходитиме на стандартний відкритий шлюз щоразу, коли нам не вдаватиметься скористатися локальним вузлом IPFS Brave. Це налаштування можна будь-коли змінити в налаштуваннях Brave.</translation>
-<translation id="8026038288183400906">Перевага IPFS</translation>
-<translation id="2058855456574089690">Установіть свою перевагу IPFS</translation>
-<translation id="4780526507945807546">Використати локальний вузол IPFS Brave</translation>
-<translation id="8148464361648742409">Використати публічний шлюз</translation>
-<translation id="5123478056123923857">IPFS (InterPlanetary File System) - це загальнодоступна мережа для однорангового зберігання та доставки даних. Цей протокол має інші міркування щодо конфіденційності, ніж HTTP(S).</translation>
-<translation id="1216911189668016151">Ваш комп’ютер робить внесок у загальнодоступну мережу, але ваша IP-адреса та будь-який вміст, який ви запитуєте чи надаєте, можуть бути розкриті. Уміст, який ви запитуєте через IPFS, перевіряється перед потраплянням до вас. Мережеві запити не можуть використовувати налаштування проксі-сервера та DNS браузера.</translation>
-<translation id="8664689531113048642">Захищає вашу IP-адресу та вміст, який ви вимагаєте від потенційних сторонніх спостерігачів, але не від оператора загальнодоступних шлюзів. Оператор шлюзу несе відповідальність за те, щоб вміст, який вам подається через шлюз, був вмістом, який ви запитували. Крім того, ваш комп'ютер не входить до загальнодоступної мережі IPFS.</translation>
-<translation id="3977809385703587108">Ви зможете знову змінити свої налаштування через</translation>
-<translation id="3340978935015468852">налаштування</translation>
-<translation id="4148957013307229264">Встановлюємо...</translation>
-<translation id="4219228508273972445">Пошук пірів...</translation>
-<translation id="1902096227388293745">Немає доступних вузлів, повторюємо... (<ph name="ATTEMPTS_NUMBER"/> спроб лишилося)</translation>
-<translation id="1675751799495331928">Ви перевищили максимальну кількість спроб, повторіть пізніше.</translation>
-<translation id="4499666752625407848">Під час оновлення сталася помилка.</translation>
-<translation id="62991515067726424">Цей уміст було завантажено за допомогою протоколу  IPFS</translation>
-<translation id="7263366446813126341">Файлова система InterPlanetary (IPFS) — це загальнодоступна мережа для однорангового зберігання та надсилання даних. Ви можете дізнатися більше про інтеграцію у Brave або налаштувати систему IPFS будь-якої миті.</translation>
-<translation id="3175567740517780285">Налаштування IPFS</translation>
-<translation id="8914505352873092008">Перейти на сторінку налаштувань IPFS</translation>
-<translation id="3465468510001693544">Діагностика IPFS</translation>
-<translation id="2527518382346359563">Перейти на сторінку діагностики IPFS</translation>
-<translation id="8192016636169857406">Документи IPFS</translation>
-<translation id="6863052043162730918">Перейти на сторінку документації IPFS</translation>
-<translation id="3862600063748690056">Імпорт IPFS завершено</translation>
-<translation id="8263749381887932384">Частковий імпорт IPFS завершено</translation>
-<translation id="2145699434318651911">Не вдалося імпортувати IPFS</translation>
-<translation id="5525148540855044244">Посилання для спільного використання скопійовано: <ph name="SHAREABLE_LINK"/></translation>
-<translation id="3741998951694470470">Не вдалося отримати дані для імпорту</translation>
-<translation id="7900950536120202771">Внутрішня помилка IPFS-вузла</translation>
-<translation id="1036635552229153800">Дані були успішно завантажені, але не переміщені в каталог brave-import. Це можна зробити вручну на сторінці налаштувань імпорту.</translation>
 <translation id="572392919096807438">Запам’ятати моє рішення</translation>
 <translation id="7978789143098237970">поки я не закрию цю сторінку</translation>
 <translation id="3523195733429162409">на 24 години</translation>
@@ -584,6 +507,10 @@
 <translation id="5770656036486891920">Сайт <ph name="URL"/> запитує дозвіл на використання сторонніх файлів cookie для застарілої системи входу Google</translation>
 <translation id="6053826678715267477">Дозволити доступ до ресурсів локального хоста</translation>
 <translation id="2973562729984406132">Сайт <ph name="URL"/> хоче отримати доступ до ресурсів локального хоста</translation>
+<translation id="5939518447894949180">Скинути</translation>
+<translation id="3349204812119681938">Скинути нагороди Brave</translation>
+<translation id="4915997950539925115">Під час скидання налаштувань поточний профіль Винагороди Brave буде видалено, а функцію Винагороди Brave деактивовано. Якщо в майбутньому ви ввімкнете Винагороди Brave, буде створено новий профіль. Ознайомтеся з нашою <ph name="LINK_BEGIN"/>статтею щодо скидання налаштувань<ph name="LINK_END"/>, щоб дізнатися більше.</translation>
+<translation id="4806029412510565611">Я розумію, що мій поточний профіль Brave Rewards і дані Brave Rewards буде видалено з пристрою. Я також прочитав (-ла) <ph name="LINK_BEGIN"/>статтю щодо скидання налаштувань<ph name="LINK_END"/>.</translation>
 <translation id="7717357606512850995">Перевірити статус</translation>
 <translation id="6473937687348632190">Виплату винагород за <ph name="MONTH"/> завершено.</translation>
 <translation id="1711367267038576241">Виплата винагород за <ph name="MONTH"/> продовжиться до <ph name="DATE"/>.</translation>
@@ -599,12 +526,19 @@
 <translation id="3026978804849658576">Переглянути виписку</translation>
 <translation id="1848737374354350807">Баланс</translation>
 <translation id="6516984207843289176">Прив’язати рахунок</translation>
-<translation id="1150455801874605865"><ph name="BOLD_BEGIN"/>Готові почати заробляти?<ph name="BOLD_END"/> Підключіть рахунок, на який ми надсилатимемо ваш заробіток.</translation>
+<translation id="1150455801874605865"><ph name="BOLD_BEGIN"/>Готові почати заробляти?<ph name="BOLD_END"/> Під’єднайте рахунок, на який ми надсилатимемо ваш заробіток.</translation>
 <translation id="902298128239575729">Надсилайте внески за допомогою програми «Винагороди Brave‎»</translation>
 <translation id="6276721355724491595">Ви зможете надсилати внески на вимогу улюбленим авторам з вашого балансу в програмі «Винагороди Brave‎», щойно підключите депозитарний рахунок.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {Відвідано авторів з підтримкою Brave Rewards за цей місяць: #}
       other {Відвідано авторів з підтримкою Brave Rewards за цей місяць: #}
+    }</translation>
+<translation id="3264975266761862670">Готові почати заробляти?</translation>
+<translation id="2784412028126205842">Прив’яжіть платіжний рахунок</translation>
+<translation id="766126983336630294">{ADS_VIEWED, plural,
+      =0 {Ви переглянули <ph name="COUNT_BEGIN"/>#  рекламних оголошень<ph name="COUNT_END"/> цього місяця}
+      =1 {Ви можете отримати плату за <ph name="COUNT_BEGIN"/># рекламне оголошення<ph name="COUNT_END"/>, яке переглянули цього місяця.}
+      other {Ви можете отримати плату за <ph name="COUNT_BEGIN"/># рекламних оголошень<ph name="COUNT_END"/>, які переглянули цього місяця.}
     }</translation>
 <translation id="6067959437127691361">Brave Rewards дає змогу підтримувати авторів умісту та заробляти BAT.</translation>
 <translation id="944736176598169208">Винагороди</translation>
@@ -658,12 +592,23 @@
 <translation id="6945221475159498467">Вибрати</translation>
 <translation id="3279158300746391749">Натисніть значок BAT <ph name="BAT_ICON"/> у рядку URL-адреси, щоб почати.</translation>
 <translation id="8465790416279415448">Продовжуючи, ви погоджуєтесь з <ph name="TOS_LINK_BEGIN"/>Умовами надання послуг<ph name="TOS_LINK_END"/> та <ph name="PP_LINK_BEGIN"/>Політикою конфіденційності<ph name="PP_LINK_END"/>.</translation>
+<translation id="8981626318554555706">Виберіть свій регіон</translation>
+<translation id="6923445315496949274">Виберіть свій регіон, щоб ми могли показувати вам правильні варіанти та рекламні оголошення для вашого регіону.</translation>
+<translation id="840952951051929644">Увімкнувши «Винагороди», ви погоджуєтеся з положеннями <ph name="TOS_LINK_BEGIN"/>Умов використання<ph name="TOS_LINK_END"/> та <ph name="PP_LINK_BEGIN"/>Політики приватності<ph name="PP_LINK_END"/>.</translation>
+<translation id="5259608623172605993">Отримуйте плату за перегляд приватної реклами в Brave</translation>
+<translation id="3099020087817489135">Отримуйте спеціальні переваги та знижки</translation>
+<translation id="3991575120992914717">Увімкнути Brave Rewards</translation>
 <translation id="1015443539415537847">На жаль, Brave Rewards недоступний</translation>
 <translation id="5007776270364097327">Схоже у вашому регіоні не підтримується Brave Rewards.</translation>
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Дізнатися більше<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">Не хвилюйтеся.</translation>
 <translation id="5027616819996705541">Ви досі можете переглядати вебсторінки в приватному режимі!</translation>
 <translation id="1886682615222609631">Поточні заробітки</translation>
+<translation id="7649070708921625228">Довідка</translation>
+<translation id="6042308850641462728">Більше</translation>
+<translation id="6245259297588415877">Автори</translation>
+<translation id="1736419249208073774">Огляд</translation>
+<translation id="932327136139879170">Домашня сторінка</translation>
 <translation id="3479552764303398839">Не зараз</translation>
 <translation id="4185473179105062442">Отримуйте BAT безпосередньо на адресу некастодіального гаманця</translation>
 <translation id="5802986777701714573">Ми додали новий спосіб отримання щомісячних винагород BAT. Під’єднайте обліковий запис одного з наших партнерів, або скористайтеся новою можливістю некастодіального гаманця, щоб почати заробляти вже зараз.</translation>
@@ -694,6 +639,7 @@
 <translation id="5562948772940025260">Ви можете надіслати щонайбільше <ph name="AMOUNT"/> BAT за допомогою балансу «Винагород Brave‎».</translation>
 <translation id="4827581232860040208">Під час надсилання внеску виникла проблема</translation>
 <translation id="3259723213051400722">Спробуйте ще раз.</translation>
+<translation id="8725066075913043281">Повторити спробу</translation>
 <translation id="5379685283876547860">Внесок надіслано!</translation>
 <translation id="7063168612616047608">Дякуємо, що підтримуєте улюблених авторів</translation>
 <translation id="1041398280582063935">Поділіться своєю підтримкою</translation>
@@ -790,7 +736,7 @@
 <translation id="2329227154184107678">Перевірити замовлення</translation>
 <translation id="3220443877821207794">Підтвердити відправку</translation>
 <translation id="8530071505111489657">Немає доступних токенів</translation>
-<translation id="9021834401351805394">Шукайте за ім’ям або вставте адресу</translation>
+<translation id="9021834401351805394">Шукайте за назвою або вставте адресу</translation>
 <translation id="5009335307032488349">Пошук NFT за назвою, ID</translation>
 <translation id="8667560635828712526">Вибрати актив</translation>
 <translation id="4853960199138416955">Гаманець Brave наразі не підтримує Bitcoin NFT (ординали). Надсилаючи BTC з адреси, що має ординали, можна ненавмисно їх передати.</translation>
@@ -799,20 +745,39 @@
 <translation id="4504682768625050939">Уведіть публічну адресу або домен.</translation>
 <translation id="5292796745632149097">Кому надіслати:</translation>
 <translation id="7022684620581223496">Недійсне розширення домену.</translation>
-<translation id="7620616707541471029">Виберіть обліковий запис, щоб продовжити</translation>
+<translation id="7620616707541471029">Виберіть рахунок, щоб продовжити</translation>
 <translation id="7099260104593926742">Ринкова ціна</translation>
 <translation id="6954838107964168963">Придбане</translation>
 <translation id="1976851706319678835">Не придбане</translation>
 <translation id="7372882109707907136">Кількість / 24 год</translation>
+<translation id="8141607516466809432">Виберіть актив, щоб додати міст</translation>
+<translation id="6517332033658428773">Переглянути своп</translation>
+<translation id="8692596799753687794">Виберіть постачальника розцінки</translation>
+<translation id="463712644600982655">Кожен агрегатор надає розцінки, використовуючи ліквідність зі свого API. Вони збирають інформацію про ціни з різних бірж і пропонують ціни на основі цих даних.</translation>
+<translation id="3253225298092156258">Недоступно</translation>
+<translation id="473775607612524610">Оновити</translation>
+<translation id="4389658703251593158">Ця пара не підтримується <ph name="PROVIDER_NAME"/></translation>
+<translation id="1176173785350238153">Змінити постачальника</translation>
+<translation id="1442774416207457340">Маршрут</translation>
+<translation id="8669403359205745187">Максимальне прослизання</translation>
+<translation id="4537396160118360541">Якщо відхилення між ціною транзакції, яку ви надіслали, і ціною на момент транзакції в ланцюжку перевищує це встановлене значення, транзакція не вдасться.</translation>
+<translation id="9102352924723221579">Вплив ціни — це те, наскільки ваша угода може змінити ринкову ціну. Деякі токени з низькою ліквідністю більш чутливі до угод, тому навіть менші угоди можуть сильно змінити ціну.</translation>
+<translation id="6830526162796484210">Рекомендовані значення:</translation>
+<translation id="3882803104394170658">Пари активів мейнстриму: <ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="8918807203406722697">Пари стейблкойнів: <ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="7056655731948492143">Інші: <ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="6231782223312638214">Рекомендовані</translation>
+<translation id="6484605214219822434">Перевірити міст</translation>
+<translation id="3365052891357224017">Розрахунковий час</translation>
+<translation id="7448445168067324096">Обмінний курс</translation>
+<translation id="1888985051832898007"><ph name="ONE_TOKEN_VALUE"/> за <ph name="EXCHANGE_VALUE"/></translation>
+<translation id="6728663400147327751">Отримувач</translation>
 <translation id="9209024278910716955">Покупки не підтримуються для вибраної мережі</translation>
 <translation id="4982630604810554641">Пошук домену...</translation>
 <translation id="5467044307473123584">Brave підтримує використання позамережевих шлюзів для вирішення доменів .eth.</translation>
 <translation id="4896417414446851895">Схоже, ви ввели ENS-адресу. Для вирішення цього запиту буде використано сторонній засіб, який отримає доступ до інформації про вашу IP-адресу та домену.</translation>
 <translation id="8646078615727397565">Використати домен мережі ENS</translation>
 <translation id="1191686659164947414">До транзакції може застосовуватися фронтранінг</translation>
-<translation id="8914256532272191486">Ваш своп буде виконано в межах максимального прослизання, встановленого вами. Наприклад, прослизання в 1% означає, що ви можете прийняти на 1% менше, у зв’язку з ринковими умовами.</translation>
-<translation id="632241521608275119">Толерантність до прослизання</translation>
-<translation id="2493281414634883751">Введіть значення від 0,5% до 99%</translation>
 <translation id="4500473291496079954">Спливає через</translation>
 <translation id="2236833281018938257">Адреса чи URL гаманця</translation>
 <translation id="928500657730628112">Адреса гаманця</translation>
@@ -829,7 +794,6 @@
 <translation id="6896758677409633944">Копіювати</translation>
 <translation id="7885157704277298658">Скопійовано!</translation>
 <translation id="6518133107902771759">Перевірити</translation>
-<translation id="6042308850641462728">Більше</translation>
 <translation id="3157931365184549694">Відновити</translation>
 <translation id="414070570958255222">Інтегрований у браузер. Некастодіальний. Мультимережевий.</translation>
 <translation id="1350120992777389959">Візьміть під контроль криптовалюту й NFT. Гаманець Brave підтримує Ethereum, мережі EVM, Solana, Filecoin, Bitcoin тощо.</translation>
@@ -892,6 +856,8 @@
 <translation id="1940465339426637378">Файли</translation>
 <translation id="2236507293802791911">Видимі активи</translation>
 <translation id="3188393374551744535">Залишок на рахунку</translation>
+<translation id="4180024248473947674">Переглянути адресу на:</translation>
+<translation id="1251267447128999380"><ph name="BLOCKCHAIN_NETWORK_NAME"/> Explorer</translation>
 <translation id="7525067979554623046">Створити</translation>
 <translation id="4771176409524282426">Створити обліковий запис</translation>
 <translation id="2471867767872178363">Створіть обліковий запис <ph name="BLOCKCHAIN_NETWORK"/></translation>
@@ -952,13 +918,14 @@
 <translation id="5138307340667775659">Цей токен вже додано до вашого портфелю.</translation>
 <translation id="547122651977318828">Ідентифікатор токена (лише для ERC721)</translation>
 <translation id="7544552854944350190">Потрібен ідентифікатор токена</translation>
+<translation id="1974060860693918893">Додатково</translation>
 <translation id="3842236145820483340">Ідентифікатор Coingecko</translation>
 <translation id="7642841516562576649">URL-адреса значка</translation>
 <translation id="2144247757675997850">Додати актив</translation>
 <translation id="453788800165937690">ПОПЕРЕДЖЕННЯ. Ніколи не надавайте закритий ключ іншим особам. Будь-хто, у кого є цей ключ, може назавжди привласнити ваші активи.</translation>
 <translation id="2416098547200943834">ПРИМІТКА: приватний ключ надається як файл JSON у шістнадцятковому кодуванні й містить приватний ключ та інформацію про протокол. <ph name="LINK_START"/>Детальніше<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">ПРИМІТКА: приватний ключ має надаватися як файл JSON у шістнадцятковому кодуванні й містити приватний ключ та інформацію про протокол. <ph name="LINK_START"/>Детальніше<ph name="LINK_END"/>.</translation>
-<translation id="1505724566145200403">ПРИМІТКА. Підтримуються розширені клавіші лише zprv (або vprv для Testnet).</translation>
+<translation id="1505724566145200403">ПРИМІТКА. Підтримуються лише розширені ключі zprv (або vprv для Testnet).</translation>
 <translation id="42126664696688958">Експортувати</translation>
 <translation id="1366855498335432549">Внести депозит</translation>
 <translation id="790104325876206743">Налаштування облікового запису</translation>
@@ -967,15 +934,14 @@
 <translation id="2902856457593699108">Показати ключ</translation>
 <translation id="8033497299373164724">Приховати ключ</translation>
 <translation id="2702143907607790516">Не вдалось оновити ім’я облікового запису, спробуйте ще раз.</translation>
-<translation id="3318280255740629162">25 %</translation>
-<translation id="2636487255623744079">50 %</translation>
-<translation id="8654192805213365413">75 %</translation>
-<translation id="3512100619724810532">100 %</translation>
+<translation id="3318280255740629162">25%</translation>
+<translation id="2636487255623744079">50%</translation>
+<translation id="8654192805213365413">75%</translation>
+<translation id="3512100619724810532">100%</translation>
 <translation id="5398538976202345089">Мережа не підтримується</translation>
 <translation id="1448289340149908413">Ethereum</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="1613627717923045622">Перевірити мережу</translation>
-<translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Сеполія</translation>
 <translation id="6749024162985917640">Локальний хост</translation>
 <translation id="3792938779249970121">Вибір облікового запису</translation>
@@ -1194,8 +1160,6 @@
 <translation id="9033453977881595182">Ідентифікатор токена</translation>
 <translation id="6332387008245531841">Адреса контракту</translation>
 <translation id="4790543031293959558">URL-адреса зображення</translation>
-<translation id="3954354850384043518">Завантаження триває</translation>
-<translation id="4350065043422286972">Закріплено</translation>
 <translation id="4289540628985791613">Огляд</translation>
 <translation id="5585178186632632419">Власник / власниця</translation>
 <translation id="2686444421126615064">Переглянути обліковий запис</translation>
@@ -1290,6 +1254,7 @@
 <translation id="6736243959894955139">Адреса</translation>
 <translation id="3095940652251934233">Виписка</translation>
 <translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">Версія</translation>
 <translation id="1313065465616456728">Видано:</translation>
 <translation id="7902225556763260253">Закінчення терміну дії</translation>
 <translation id="2471230424465522689">Не раніше</translation>
@@ -1515,23 +1480,22 @@
 <translation id="4937657825850660613">Половина</translation>
 <translation id="7639814793732182496">Максимум</translation>
 <translation id="6584782231358487640">Уведіть суму</translation>
-<translation id="821928941440539212">Пошук найкращої ціни…</translation>
+<translation id="477281933640372562">Отримання розцінки</translation>
 <translation id="5450317966495183014">Отримання (прибл.)</translation>
 <translation id="8747614139273050577">З токена</translation>
 <translation id="1726158192333401896">На токен</translation>
+<translation id="765894671068292221">Нова розцінка через <ph name="COUNTDOWN_BEFORE"/><ph name="COUNTDOWN"/><ph name="COUNTDOWN_AFTER"/></translation>
 <translation id="3835223348537121988">Баланс:</translation>
 <translation id="5709875713144853427">Виберіть токен для свопу</translation>
 <translation id="720404198240859011">Показати токени без коштів</translation>
 <translation id="4886690455791686940">Приховати нульовий залишок</translation>
 <translation id="615791330696335475">Пошук токенів за назвою</translation>
 <translation id="381485723922188688">Опція</translation>
-<translation id="6680650203439190394">Курс</translation>
 <translation id="2538996898605796431">Вплив на ціну</translation>
 <translation id="8007404171238546456">Мінімум після прослизання</translation>
 <translation id="767199001998615704">Комісія в мережі</translation>
-<translation id="7057870207229052478">Комісія Brave</translation>
+<translation id="28584716826670202">Включено збір Brave</translation>
 <translation id="3624518972158401291">Безкоштовно</translation>
-<translation id="5038255447967558645">Постачальник ліквідності</translation>
 <translation id="8450638959928932199">Своп і надсилання</translation>
 <translation id="476816352791390168">БЕЗ додаткових комісій!</translation>
 <translation id="5319981934425923365">Підтверджую, що вказана вище адреса правильна</translation>
@@ -1542,13 +1506,15 @@
 <translation id="8044899503464538266">Повільна</translation>
 <translation id="3569512916300900704">У середньому</translation>
 <translation id="7019805045859631636">Швидка</translation>
+<translation id="632241521608275119">Толерантність до прослизання</translation>
 <translation id="6778140392042462129">Біржі</translation>
 <translation id="6173494033320397682">Тільки прямий маршрут</translation>
 <translation id="2440960581098655899">Буде застраховано лише прямий маршрут, а також відключено розділену торгівлю</translation>
 <translation id="6245314729809503023">Brave використовує перші 60 токенів для проміжної маршрутизації для оптимізації продуктивності</translation>
-<translation id="2379187373676242615">На <ph name="VALUE"/> % дешевше за CoinGecko</translation>
-<translation id="5351867352310722022">У межах <ph name="VALUE"/> % від вартості в CoinGecko</translation>
-<translation id="7695501918490163821">На <ph name="VALUE"/> % дорожче за CoinGecko</translation>
+<translation id="2379187373676242615">На <ph name="VALUE"/>% дешевше за CoinGecko</translation>
+<translation id="5351867352310722022">У межах <ph name="VALUE"/>% від CoinGecko</translation>
+<translation id="7695501918490163821">На <ph name="VALUE"/>% дорожче за CoinGecko</translation>
+<translation id="6599816589121202398">API</translation>
 <translation id="7561262633951061138">Найкращий варіант</translation>
 <translation id="8060029310790625334">Довідковий центр</translation>
 <translation id="3143110700666266545">Ця програма використовує такі сторонні API:</translation>
@@ -1562,29 +1528,6 @@
 <translation id="3797613444743816037">Адреса мінту</translation>
 <translation id="7951915459354237451">Ліміт комісії встановлено нижче базової комісії. Ваша транзакція може зайняти багато часу або не вдасться.</translation>
 <translation id="2227702748249086756">Не вдалось розрахувати приблизну вартість послуг</translation>
-<translation id="6580621526400120372">Чому деякі NFT не відповідають критеріям?</translation>
-<translation id="620930608106217992">Частина NFT-даних зберігається на централізованих серверах, таких як AWS, Google Cloud тощо. У цьому разі прикріпити ваші NFT-дані до IPFS-мережі неможливо.</translation>
-<translation id="4637031024914696767">Якщо ввімкнути IPFS у Brave, NFT закріплюватимуться автоматично. Це найкращий спосіб безпечного резервного копіювання NFT.</translation>
-<translation id="2319971828691864975">Початок роботи з IPFS</translation>
-<translation id="7906328323880284538">Найбезпечніший спосіб зберігання NFT</translation>
-<translation id="214349569547787359">Увімкніть IPFS у Brave для автоматичного резервного копіювання NFT</translation>
-<translation id="4819588096619503180">IPFS — це мережа зберігання даних, якою керує спільнота. Це щось на кшталт жорсткого диска, яким може користуватися кожен. Вона не контролюватися одним органом, натомість тисячі людей працюють разом над розміщенням умісту в IPFS. Коли ви «прикріплюєте‎» щось в IPFS, у вас є гарантія того, що принаймні одну копію цього вмісту буде надійно збережено. І поки копія є в однієї людини, файл ніколи не зникне.<ph name="NEWLINE"/>Якщо ввімкнути IPFS у браузері Brave, NFT закріплюватимуться автоматично. Це найкращий спосіб безпечного резервного копіювання NFT.</translation>
-<translation id="9160750213078764355">Дізнатися, які з моїх NFT відповідають вимогам</translation>
-<translation id="6241155642582182934">Увімкніть IPFS у Brave, щоб автоматично створювати резервні копії NFT для підвищення рівня безпеки.</translation>
-<translation id="654964147165509548">NFT прикріплюються до локального IPFS-вузла.</translation>
-<translation id="4910182786472608576"><ph name="PINNED"/> підтримуваних NFT прикріплено до вашого локального вузла IPFS.</translation>
-<translation id="1607117719941506821">NFT <ph name="PINNABLE"/> відповідає критеріям</translation>
-<translation id="7056553112112778467">NFT <ph name="PINNABLE"/> відповідають критеріям</translation>
-<translation id="6852656829524945421">Не вдалося прикріпити</translation>
-<translation id="9019535252716288146">IPFS-вузол запущено</translation>
-<translation id="5584313306739463968">Локальний IPFS-вузол не запущено</translation>
-<translation id="7527548209942671618">Прикріплено до локального IPFS-вузла</translation>
-<translation id="5659058832308365026">NFT-дані прикріплюються до локального IPFS-вузла</translation>
-<translation id="4919133452617704550">Неможливо прикріпити до локального IPFS-вузла</translation>
-<translation id="4220102684162429566">Найбільш поширені причини:</translation>
-<translation id="451509325309455">NFT має проблеми з URL метаданих, не пов’язаних з IPFS</translation>
-<translation id="3827697793483899711">Проблеми з внутрішнім вузлом IPFS</translation>
-<translation id="1992846713609432783">Недостатньо місця на локальному вузлі</translation>
 <translation id="3225624966527491351">Імпортувати NFT</translation>
 <translation id="9085765419770918643">Поки що тут немає NFT.</translation>
 <translation id="8445532667841598737">Хочете додати? Просто натисніть кнопку нижче для імпортування.</translation>
@@ -1596,6 +1539,7 @@
 <translation id="6948667383954749033">Позначити як не спам</translation>
 <translation id="5810047320613496595">Спам</translation>
 <translation id="7257605968082307175">Позначити як спам</translation>
+<translation id="1255896809210433555">Додавання NFT</translation>
 <translation id="7600335727434653744">Видалити з гаманця Brave?</translation>
 <translation id="6657860743511185539">NFT буде видалено з гаманця Brave, але залишено в блокчейні. Якщо ви видалите його, а потім передумаєте, потрібно буде виконати імпорт уручну.</translation>
 <translation id="849880459530751909">Редагувати NFT</translation>
@@ -1649,10 +1593,29 @@
 <translation id="6405354572620970908">Цей запит видається зловмисним і може залишити вас вразливими до крадіжки. Не продовжуйте, якщо не довіряєте застосунку.</translation>
 <translation id="786261184916565476">Ми знайшли таку кількість проблем: <ph name="VALUE"/>.</translation>
 <translation id="2826600321627372011">Маршрутів не знайдено</translation>
-<translation id="2451778499022193433">Максимальна допустима кількість символів в назві рахунку: <ph name="VALUE"/></translation>
-<translation id="8488138412489236285">Уведіть пароль (якщо потрібно)</translation>
+<translation id="2451778499022193433">Максимальна кількість символів у назві рахунку: <ph name="VALUE"/></translation>
+<translation id="8488138412489236285">Введіть пароль (якщо потрібно)</translation>
 <translation id="9166422618242592074">Тип імпорту</translation>
 <translation id="1913853014470037784">Приховати не придбані NFT</translation>
+<translation id="6722771294390991852">Групувати за колекцією</translation>
+<translation id="8775144690796719618">Недійсна URL-адреса</translation>
+<translation id="8892896831704748782">Якщо ви не бачите NFT, автоматично виявлений Brave, або хочете відстежувати NFT, який належить іншим, можна імпортувати його вручну.</translation>
+<translation id="6301982082639804892">Адреса контракту під час додавання NFT до гаманця — це унікальна адреса в блокчейні, де міститься смартконтракт для колекції NFT. Ви можете знайти адресу контракту на ринку або в диспетчерах блокчейнів тощо.</translation>
+<translation id="9033155463293614176">Унікальний ідентифікатор конкретного NFT в колекції.</translation>
+<translation id="2483152581664459180">Не вдалось отримати метадані NFT</translation>
+<translation id="6198624822546162700">Переглянути цей NFT</translation>
+<translation id="3415773516149065346">Ви не є власником цього NFT. Ви все ще можете додати його до свого гаманця, але не зможете здійснювати з ним жодних транзакцій.</translation>
+<translation id="7138457458706196245">наприклад, <ph name="VALUE"/></translation>
+<translation id="2454691116905703258">Ім’я токена для NFT стосується конкретного імені, наданого незамінному токену в конкретній колекції чи проєкті. Це ім’я відрізняє один NFT від іншого в одній колекції.</translation>
+<translation id="3212749868469431851">Символ NFT стосується унікального ідентифікатора, який використовується, щоб розрізняти колекцію або проєкт NFT.</translation>
+<translation id="8198838794018761504">Лише для перегляду</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="3417321754118442366">Децентралізовані додатки не знайдено</translation>
+<translation id="4864082959618144988">Активні гаманці</translation>
+<translation id="5445224754926400848">Перейти в <ph name="VALUE"/></translation>
+<translation id="8355371587927005068">Фільтри</translation>
+<translation id="803703704549420287">Очистити фільтри</translation>
+<translation id="1472675084647422956">Показати більше</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Загальна інформація</translation>
 <translation id="4045404575593562245">Події управління Tor</translation>
@@ -1661,10 +1624,10 @@
 <translation id="6951743416068151209">URI проксі-сервера Tor</translation>
 <translation id="1671503397662036257">Статус з'єднання Tor</translation>
 <translation id="6024292492796847324">Прогресс ініціалізації Tor</translation>
-<translation id="8300751939969131609">Увімкніть Brave News, щоб не пропустити жодної новини</translation>
+<translation id="8300751939969131609">Увімкніть Новини Brave, щоб завжди бути в курсі подій</translation>
 <translation id="7758665172236842395">Підпишіться на обрані ресурси, щоб переглядати їх в одній стрічці. Просто відкрийте вкладку в Brave, прокрутіть її донизу… готово!</translation>
-<translation id="2376542729617592331">У Brave News підтримується реклама, що підбирається із дотриманням конфіденційності й анонімності користувача. <ph name="LINK_START"/>Дізнатися більше.<ph name="LINK_END"/>.</translation>
-<translation id="1765217911817124376">Увімкнути новини Brave</translation>
+<translation id="2376542729617592331">Новини Brave підтримуються приватною, анонімізованою рекламою. <ph name="LINK_START"/>Докладніше.<ph name="LINK_END"/>.</translation>
+<translation id="1765217911817124376">Увімкнути Новини Brave</translation>
 <translation id="6265592479622441247">Назад на <ph name="BEGIN_BOLD"/>панель керування<ph name="END_BOLD"/></translation>
 <translation id="8981973962043893066">Пошук сайту, теми чи стрічки RSS</translation>
 <translation id="1498364270401875204">Канали</translation>
@@ -1683,7 +1646,7 @@
 <translation id="4750394297954878236">Пропозиції</translation>
 <translation id="7436846601026966360">Деякі джерела, які можуть вам сподобатися. Пропозиції є анонімними, а підбирання джерел виконується лише на вашому пристрої.</translation>
 <translation id="7950715913905993008">Ой…</translation>
-<translation id="7158100730468448581">Brave News не вдалось отримати контент.</translation>
+<translation id="7158100730468448581">Не вдалось отримати контент Новин Brave.</translation>
 <translation id="2665462122884195298">Ваша стрічка порожня</translation>
 <translation id="8461269982440806387">Підпишіться на видавців і канали, щоб бачити їх у стрічці.</translation>
 <translation id="1685574186123115251">Додати джерела контенту</translation>
@@ -1700,7 +1663,6 @@
 <translation id="5104499318017527547">Розваги</translation>
 <translation id="2228584369802328636">Ігри</translation>
 <translation id="6941852195052765076">Здоров’я</translation>
-<translation id="932327136139879170">Домашня сторінка</translation>
 <translation id="2233040275795129413">Спосіб життя</translation>
 <translation id="5178222043222938163">Музика</translation>
 <translation id="1322083935398004629">Політика</translation>
@@ -1734,6 +1696,7 @@
 <translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">Швидкі команди</translation>
 <translation id="7481312909269577407">Переслати</translation>
+<translation id="1272079795634619415">Зупинити</translation>
 <translation id="302781076327338683">Перезавантажити з обходом кешу</translation>
 <translation id="7211681214230730336">Перезавантажити з очищенням кешу</translation>
 <translation id="1779766957982586368">Закрити вікно</translation>
@@ -1814,7 +1777,7 @@
 <translation id="6263048902976129908">Увімкнути / вимкнути інструменти розробника</translation>
 <translation id="1386786836007298307">Увімкнути / вимкнути панель інструментів повноекранного режиму</translation>
 <translation id="461433814913785913">Налаштувати панель дотиків</translation>
-<translation id="5835081019037947840">Увімкнути / вимкнути події Apple JavaScript</translation>
+<translation id="4722786500079380710">Перемкнути JavaScript від Apple Events</translation>
 <translation id="5825969867518399495">Установити PWA</translation>
 <translation id="7888244262238732644">Показати сторінку керування</translation>
 <translation id="8114712275882140856">Показувати повні URL-адреси</translation>
@@ -1854,7 +1817,7 @@
 <translation id="6105745639559695088">Показати / приховати бічну панель</translation>
 <translation id="3488252265135539275">Показати / приховати вертикальні вкладки</translation>
 <translation id="7134064542341959603">Показати / приховати заголовок вікна вертикальних вкладок</translation>
-<translation id="3067105725259639716">Налаштувати новини Brave</translation>
+<translation id="3067105725259639716">Налаштувати Новини Brave</translation>
 <translation id="6286510487460330478">Налаштувати ярлики</translation>
 <translation id="9214819486716388964">Показати Brave Talk</translation>
 <translation id="5950760360751948276">Завжди показувати панель закладок</translation>
@@ -1862,7 +1825,7 @@
 <translation id="522953399371747698">Приховати панель закладок</translation>
 <translation id="134184943774258988">Змінити видимість кнопки «Усі закладки»</translation>
 <translation id="2158862020143233462">Увімкнути / вимкнути щити</translation>
-<translation id="4610630726762318759">Увімкнути / вимкнути JavaScript</translation>
+<translation id="3010280727642018218">Перемкнути JavaScript</translation>
 <translation id="188822869499214197">Показати спливаючу підказку списку відтворення</translation>
 <translation id="3202536111478033084">Групувати вкладки за поточним походженням</translation>
 <translation id="6002210667729577411">Перемістити групу в нове вікно</translation>
@@ -1935,7 +1898,7 @@
 <translation id="7921782882718083488">Отримати короткий опис сторінки</translation>
 <translation id="7932221068776853847">Від’єднайтеся, що зупинити надсилання вмісту цієї сторінки до Leo й почати нову розмову</translation>
 <translation id="1167803637855350748">Під час підключення до Leo сталася помилка мережі, перевірте підключення й повторіть спробу.</translation>
-<translation id="1996126325390835277">Досягнуто ліміту частоти рівня преміум. Повторіть спробу за кілька годин.</translation>
+<translation id="1996126325390835277">Досягнуто ліміту для рівня преміум. Повторіть спробу за кілька годин.</translation>
 <translation id="7144878232160441200">Спробувати знову</translation>
 <translation id="8570488829560315702">Привіт, я Leo. Я повністю хостинговий ШІ-помічник від Brave. Я працюю на базі моделі Llama 3 8B, створеної компанією Meta для ефективної роботи та застосування в багатьох сценаріях використання.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Привіт, я Leo. Я повністю хостинговий ШІ-помічник від Brave. Я працюю на базі моделі Mixtral 8x7B, створеної компанією Mistral AI для виконання складних завдань. <ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
@@ -1953,7 +1916,7 @@
 <translation id="6637015365469044269">Передплатити зараз</translation>
 <translation id="5543505256451301851">Спробувати безплатно протягом 7 днів</translation>
 <translation id="849535826888024304">Досягнуто обмеження відповідей</translation>
-<translation id="2252128900328632803">Досягнуто ліміту частоти для Leo. Розблокуйте вищу частоту відповідей, передплативши Premium, або повторіть спробу пізніше.</translation>
+<translation id="2252128900328632803">Досягнуто ліміту для Leo. Розблокуйте вищу частоту відповідей, передплативши Premium, або повторіть спробу пізніше.</translation>
 <translation id="4173478269537830374">Досліджуйте різні ШІ-моделі</translation>
 <translation id="3245401959451976966">Розкрийте свій творчий потенціал</translation>
 <translation id="4165928407303989823">Будьте в темі</translation>
@@ -2032,6 +1995,7 @@
 <translation id="2370739752330685659">Можливо, пізніше</translation>
 <translation id="983013125018250242">Інструменти Leo</translation>
 <translation id="49269513399674318">Використовувати мікрофон</translation>
+<translation id="3895031624234442305">Користувацькі моделі</translation>
 <translation id="6303294677342628402">Щити</translation>
 <translation id="8458987127502506209">Увімкнути щити Brave</translation>
 <translation id="7509914170164691086">Щити увімкнено <ph name="LINK_BEFORE"/>для <ph name="LINK_AFTER"/></translation>
@@ -2098,7 +2062,7 @@
 <translation id="5037676449506322593">Вибрати все</translation>
 <translation id="5148943178722443958">Допоможіть поліпшити Brave.</translation>
 <translation id="1097073572755862978">Надсилайте діагностичні звіти за аварійного завершення роботи чи зависання. <ph name="LINK_BEFORE"/>Детальніше.<ph name="LINK_AFTER"/></translation>
-<translation id="5099408825243658796">Діліться цілком приватними й анонімними відомостями про те, які функції використовуються користувачами Brave. <ph name="LINK_BEFORE"/>Детальніше.<ph name="LINK_AFTER"/></translation>
+<translation id="6629244688368006959">Діліться приватними й анонімними відомостями про те, які функції використовують користувачі Brave. <ph name="LINK_BEFORE"/>Детальніше.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Налаштування завершено</translation>
 <translation id="3141206739023333979">Ці налаштування можна будь-коли змінити в Brave, перейшовши до розділу <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
 <translation id="8321985064212130832">Прочитати <ph name="LINK_BEFORE"/>Політику конфіденційности<ph name="LINK_AFTER"/> повністю</translation>
@@ -2121,7 +2085,7 @@
 <translation id="745054660363064771">Не вдається встановити з’єднання із сервером</translation>
 <translation id="3936826714240735937">Вибрати інший сервер</translation>
 <translation id="1305433007676951913"><ph name="PRODUCT_NAME"/> не може встановити зв’язок із сервером <ph name="REGION_NAME"/>. Ви можете повторити спробу або спробувати інший сервер.</translation>
-<translation id="8703188411226330709">Розпочати безкоштовний пробний період</translation>
+<translation id="8703188411226330709">Розпочати безплатний пробний період</translation>
 <translation id="1024255913009642477">Уже придбали VPN?</translation>
 <translation id="8814357473522731680">Надано</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
@@ -2171,14 +2135,12 @@ Brave має допоміжну службу, яка захищає вас ві�
 Однак ми помітили, що ця допоміжна служба не працює — і ми не хочемо, щоб ви залишилися незахищеними. Ми змінили налаштування DNS у браузері, щоб захистити вас від цієї загрози. Налаштування залишатимуться чинними та недоступними для змінення, поки підключено VPN.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="8810743613883230732">Схоже, виникли проблеми зі з’‎єднанням через WireGuard. Увімкнути резервне з’‎єднання через IKEv2 для забезпечення стабільної роботи VPN? Для цього просто змініть налаштування.
+<translation id="7082498599369566941">Схоже, виникли проблеми зі з’‎єднанням через WireGuard. Хочете ввімкнути резервне з’‎єднання через IKEv2 для забезпечення стабільної роботи VPN? Для цього просто змініть налаштування.
 
 Потрібна допомога із сумісністю або налаштуваннями? Зверніться до нашої дружньої команди підтримки.
-Ви завжди можете змінити протокол з’‎єднання на WireGuard у цьому розділі: brave://settings/system.
+Ви завжди можете змінити протокол з’‎єднання на WireGuard у розділі: brave://settings/system.
 
-Ми допоможемо вам установити з’‎єднання!
-
-<ph name="LEARN_MORE"/></translation>
+Ми допоможемо вам установити з’‎єднання!</translation>
 <translation id="1657858090675311947">Більше не попереджати мене про це.</translation>
 <translation id="2740531572673183784">OK</translation>
 <translation id="7423206764347669977">Змінити налаштування</translation>

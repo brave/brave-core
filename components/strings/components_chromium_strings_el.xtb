@@ -33,6 +33,8 @@
           "χωρίς διακομιστή μεσολάβησης" ή "άμεση".</translation>
 <translation id="2765022094254723779">Το Brave υλοποιήθηκε με τη βοήθεια και άλλων <ph name="BEGIN_LINK_OSS"/>λογισμικών ανοικτού κώδικα<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Οι αλλαγές που πραγματοποιήσατε θα ισχύσουν την επόμενη φορά που θα εκκινήσετε το Brave.</translation>
+<translation id="8828443087767259398">Το Brave χρειάζεται πρόσβαση στο Bluetooth για να συνεχιστεί 
+ η σύζευξη. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">Το Brave υλοποιήθηκε με το έργο ανοικτού κώδικα <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
 <translation id="4068928808254189629">Μεταβείτε
         στο μενού του Brave &gt;

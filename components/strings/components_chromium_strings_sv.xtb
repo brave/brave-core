@@ -31,6 +31,8 @@
           och kontrollera att "ingen proxy" eller "direkt" har angetts i konfigurationen</translation>
 <translation id="2765022094254723779">Brave möjliggörs även av andra <ph name="BEGIN_LINK_OSS"/>program med öppen källkod<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Ändringarna tillämpas nästa gång du startar om Brave.</translation>
+<translation id="8828443087767259398">Brave behöver åtkomst för Bluetooth för att fortsätta 
+ parkoppla. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">Brave finns tack vare det öppna källkodsprojektet <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
 <translation id="4068928808254189629">Öppna
         Brave-menyn &gt;

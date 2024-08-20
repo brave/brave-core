@@ -31,6 +31,8 @@
           र तपाइँको विन्यास "प्रोक्सी छैन" वand make sure your configuration is set to "no proxy" or "direct."</translation>
 <translation id="2765022094254723779">Brave बनाउँदा <ph name="BEGIN_LINK_OSS"/>खुला स्रोतका अन्य सफ्टवेयर<ph name="END_LINK_OSS"/>को पनि मद्दत लिइएको छ।</translation>
 <translation id="9156965752763025780">तपाईंले अर्को पटक Brave लाई पुन: लन्च गर्दा तपाईंका परिवर्तनहरू प्रभावमा आउनेछन्।</translation>
+<translation id="8828443087767259398">कनेक्ट गर्ने प्रक्रिया जारी राख्न Brave लाई ब्लुटुथ प्रयोग गर्ने अनुमति
+ दिनु पर्ने हुन्छ। <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">Brave बनाउँदा <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> खुला स्रोतको परियोजनाको मद्दत लिइएको छ।</translation>
 <translation id="4068928808254189629">जानुहोस्
           Brave मेनुमा &gt;
