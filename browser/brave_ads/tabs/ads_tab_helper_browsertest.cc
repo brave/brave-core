@@ -40,6 +40,8 @@ constexpr char kUrlDomain[] = "example.com";
 constexpr char kUrlPath[] = "/brave_ads/basic_page.html";
 constexpr char kSinglePageApplicationUrlPath[] =
     "/brave_ads/single_page_application.html";
+constexpr char k500ErrorPagePath[] = "/500_error_page.html";
+constexpr char k404ErrorPagePath[] = "/404_error_page.html";
 
 AdsTabHelper* GetActiveAdsTabHelper(Browser* browser) {
   auto* web_contents = browser->tab_strip_model()->GetActiveWebContents();
@@ -58,6 +60,8 @@ class AdsTabHelperTest : public CertVerifierBrowserTest {
     const base::FilePath test_data_dir =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
     https_server_.ServeFilesFromDirectory(test_data_dir);
+    https_server_.RegisterRequestHandler(base::BindRepeating(
+        &AdsTabHelperTest::HandleRequest, base::Unretained(this)));
     ASSERT_TRUE(https_server_.Start());
 
     GetActiveAdsTabHelper(browser())->SetAdsServiceForTesting(&ads_service());
@@ -68,6 +72,28 @@ class AdsTabHelperTest : public CertVerifierBrowserTest {
   net::EmbeddedTestServer& https_server() { return https_server_; }
 
   AdsServiceMock& ads_service() { return ads_service_mock_; }
+
+  std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
+      const net::test_server::HttpRequest& request) {
+    if (base::Contains(request.relative_url, k500ErrorPagePath)) {
+      // Return a 500 error without any content, causing the error page to be
+      // displayed.
+      auto response = std::make_unique<net::test_server::BasicHttpResponse>();
+      response->set_code(net::HTTP_INTERNAL_SERVER_ERROR);
+      return response;
+    }
+
+    if (base::Contains(request.relative_url, k404ErrorPagePath)) {
+      // Return a 404 error with HTML content.
+      auto response = std::make_unique<net::test_server::BasicHttpResponse>();
+      response->set_code(net::HTTP_NOT_FOUND);
+      response->set_content_type("text/html");
+      response->set_content("<html><body>Not Found</body></html>");
+      return response;
+    }
+
+    return nullptr;
+  }
 
  private:
   net::EmbeddedTestServer https_server_{
@@ -151,6 +177,69 @@ IN_PROC_BROWSER_TEST_F(AdsTabHelperTest, LoadSinglePageApplication) {
 
   text_content_run_loop.Run();
   html_content_run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(AdsTabHelperTest, NotifyTabDidChange) {
+  base::RunLoop tab_did_change_run_loop;
+  EXPECT_CALL(
+      ads_service(),
+      NotifyTabDidChange(/*tab_id=*/_, /*redirect_chain=*/_,
+                         /*is_new_navigation=*/true, /*is_restoring=*/false,
+                         /*is_error_page_=*/false, /*is_visible=*/_))
+      .WillRepeatedly(RunClosure(tab_did_change_run_loop.QuitClosure()));
+
+  const GURL url = https_server().GetURL(kUrlDomain, kUrlPath);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  tab_did_change_run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(AdsTabHelperTest,
+                       NotifyTabDidChangeForServerErrorResponsePage) {
+  // Mock unexpected NotifyTabDidChange calls to NotifyTabDidChange on browser
+  // test startup.
+  EXPECT_CALL(ads_service(),
+              NotifyTabDidChange(/*tab_id=*/_, /*redirect_chain=*/_,
+                                 /*is_new_navigation=*/_, /*is_restoring=*/_,
+                                 /*is_error_page_=*/_, /*is_visible=*/_))
+      .Times(testing::AnyNumber());
+
+  base::RunLoop tab_did_change_run_loop;
+  EXPECT_CALL(
+      ads_service(),
+      NotifyTabDidChange(/*tab_id=*/_, /*redirect_chain=*/_,
+                         /*is_new_navigation=*/true, /*is_restoring=*/false,
+                         /*is_error_page_=*/true, /*is_visible=*/_))
+      .WillRepeatedly(RunClosure(tab_did_change_run_loop.QuitClosure()));
+
+  const GURL url = https_server().GetURL(kUrlDomain, k500ErrorPagePath);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  tab_did_change_run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(AdsTabHelperTest,
+                       NotifyTabDidChangeForClientErrorResponsePage) {
+  // Mock unexpected NotifyTabDidChange calls to NotifyTabDidChange on browser
+  // test startup.
+  EXPECT_CALL(ads_service(),
+              NotifyTabDidChange(/*tab_id=*/_, /*redirect_chain=*/_,
+                                 /*is_new_navigation=*/_, /*is_restoring=*/_,
+                                 /*is_error_page_=*/_, /*is_visible=*/_))
+      .Times(testing::AnyNumber());
+
+  base::RunLoop tab_did_change_run_loop;
+  EXPECT_CALL(
+      ads_service(),
+      NotifyTabDidChange(/*tab_id=*/_, /*redirect_chain=*/_,
+                         /*is_new_navigation=*/true, /*is_restoring=*/false,
+                         /*is_error_page_=*/true, /*is_visible=*/_))
+      .WillRepeatedly(RunClosure(tab_did_change_run_loop.QuitClosure()));
+
+  const GURL url = https_server().GetURL(kUrlDomain, k404ErrorPagePath);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  tab_did_change_run_loop.Run();
 }
 
 IN_PROC_BROWSER_TEST_F(AdsTabHelperTest, IncognitoBrowser) {
