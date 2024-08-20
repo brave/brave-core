@@ -52,38 +52,15 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="3975865347033939965">Storitve sinhronizacije ni bilo mogoče zagnati, Brave Sync se ne izvaja</translation>
 <translation id="4450893287417543264">Ne prikazuj več</translation>
 <translation id="4595286989346610620">Preverite podrobnosti</translation>
-<translation id="7691598647605453992">IPFS</translation>
-<translation id="3094628781200061820">Objavite in pridobite datoteke iz IPFS</translation>
-<translation id="9220923434129933852">Preberite in spremenite nastavitve IPFS</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="2269780537090240241">Odpiranje s pomočjo naslova .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Vseeno prilepi</translation>
-<translation id="4901618511712685702">Uvozi v IPFS</translation>
-<translation id="6794469945030154569">Ta stran</translation>
-<translation id="5037852323412456577">Izbrana slika</translation>
-<translation id="2715839724138372481">Izbran video</translation>
-<translation id="4227945450504703638">Izbrana raba zvoka</translation>
-<translation id="7895302206188277628">Izbrana vsebina</translation>
-<translation id="3654831858282189202">Objavi s ključem IPNS</translation>
-<translation id="1047401034925735299">Uvozi izbrano besedilo v IPFS</translation>
-<translation id="6925604404524625582">Uvozi in kopiraj povezavo do posnetka IPFS</translation>
 <translation id="1434416574322382019">Novo zasebno okno v brskalniku Tor</translation>
 <translation id="4703780849509456860">Odpri povezavo v zasebnem oknu v brskalniku Tor</translation>
 <translation id="3488584642074079080">Odpri povezavo v zasebnem oknu Brave v brskalniku Tor</translation>
-<translation id="186554175479803110">Uvozite in delite datoteko</translation>
-<translation id="3036649622769666520">Odprite datoteke</translation>
-<translation id="4408880250587950158">Uvozite imenik in ga dajte v skupno rabo</translation>
-<translation id="8396273373598682323">Z datoteko</translation>
-<translation id="518600784989889917">Z imenikom</translation>
-<translation id="8147987711042435221">Posodobite IPNS</translation>
-<translation id="4491895534716990473">Izvozi izbrano besedilo v IPFS</translation>
-<translation id="8883166554766780543">Uvoz in kopiranje povezave do posnetka IPFS</translation>
-<translation id="709253338301411121">Uvozite datoteko in jo dajte v skupno rabo</translation>
-<translation id="7068360136237591149">Odprite datoteke</translation>
 <translation id="6313675821927505581">Novo zasebno okno z uporabo brskalnika Tor</translation>
 <translation id="2638041073279639246">Odpri povezavo v zasebnem oknu z uporabo brskalnika Tor</translation>
 <translation id="3425600262621021599">Odpri povezave v zasebnem oknu Brave z uporabo brskalnika Tor</translation>
-<translation id="3229091547987707389">Uvozite imenik in ga dajte v skupno rabo</translation>
 <translation id="2545072023356206691">Od 1. decembra 2023 kanal Brave Dev ne bo več prejemal posodobitev brskalnika. Uporabnikom priporočamo, da se preselijo na Nightly, Beta ali Release različice Brave.</translation>
 <translation id="474217410105706308">Izklop zvoka zavihka</translation>
 <translation id="2804710924397009224">Skrij ikono storitve Brave Rewards</translation>
@@ -117,9 +94,9 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> zavihkov</translation>
 <translation id="1307431692088049276">Ne sprašuj več</translation>
 <translation id="6919364924256365253">Pustite Google. Pozabite Bing. Uporabite Brave.</translation>
-<translation id="3313148036097793884">Brave ne sledi vam, vašim poizvedbam ali vašim klikom. In je 100-odstotno neodvisen.</translation>
+<translation id="2640297688005939449">Iskanje Brave vam ne sledi. In je 100-odstotno neodvisno.</translation>
 <translation id="7295094278358921487">Iščite in našli boste. Zasebno.</translation>
-<translation id="45040495135337202">Brave ne sledi vam, vašim poizvedbam ali vašim klikom. In je 100-odstotno neodvisen od velikanov tehnologije.</translation>
+<translation id="3462465068145800637">Iskanje Brave vam ne sledi. In je 100-odstotno neodvisno od velikanov tehnologije.</translation>
 <translation id="42032117189492785">Iskanje s pomočjo umetne inteligence in z edinstvenim indeksom.</translation>
 <translation id="8606416238399082160">Popolnoma zasebno, 100-odstotno neodvisno in z odličnimi funkcijami umetne inteligence.</translation>
 <translation id="7706528608480893054">DDG je zgolj Bing pod krinko. Čas je za resnično zasebnost, boljše rezultate in neodvisen indeks. Čas je za iskanje z Brave.</translation>
@@ -131,7 +108,7 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="4639001639513524869">Iskanje z Brave za večino poizvedb nudi boljše rezultate kot DuckDuckGo. In iskanje je resnično zasebno.</translation>
 <translation id="5240031343741051161">Preizkusite iskanje Brave</translation>
 <translation id="5234764350956374838">Opusti</translation>
-<translation id="9218430445555521422">Nastavi kot privzeto</translation>
+<translation id="8722651357687610395">Privzeto nastavite Brave</translation>
 <translation id="2370739752330685659">Morda pozneje</translation>
 <translation id="5100490448228945668">Zavrnite pretvorbo iskanja Brave, pritisnite tipko Enter, da odstranite ta predlog</translation>
 <translation id="9194637241566114638">Pomagajte izboljšati <ph name="SEARCH_NAME"/> s pošiljanjem anonimnih podatkov o uporabi.  <ph name="MORE_INFO"/></translation>
@@ -169,6 +146,10 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="5877900074358050101">Naslov elementa v stranski vrstici</translation>
 <translation id="1613695740874407223">URL naslov elementa v stranski vrstici</translation>
 <translation id="4877147287319222750">Dodaj v stransko vrstico</translation>
+<translation id="2422927186524098759">Stranska vrstica</translation>
+<translation id="5916664084637901428">Vklopljeno</translation>
+<translation id="5860033963881614850">Izklopljeno</translation>
+<translation id="2393250835562952455">Samodejno skrij</translation>
 <translation id="5977931179408079967">Položaj</translation>
 <translation id="3790384768741064842">Premik v desno</translation>
 <translation id="7444424316576061724">Premik v levo</translation>
@@ -197,15 +178,6 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="8428213095426709021">Nastavitve</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Domene Web3</translation>
-<translation id="72868071984333667">Preberite več o IPFS in zasebnosti</translation>
-<translation id="1419682418471956530">Ta stran je na voljo v omrežju IPFS. Ali želite naložiti strani IPFS z vgrajeno podporo Brave (prek ipfs:// ali ipns://)?</translation>
-<translation id="7109885938715976444">Samo tokrat</translation>
-<translation id="7473891865547856676">Ne, hvala</translation>
-<translation id="2722425322672922644">Preberite, kako to vpliva na vašo zasebnost</translation>
-<translation id="5551268135482191097">Pri nalaganju naslova URL sistema IPFS je prišlo do napake. Ali želite preusmeriti na prvotni naslov URL?</translation>
-<translation id="4756627014339714615">Preusmeri</translation>
-<translation id="1338274252864046652">Želite ob zagonu brskalnika vedno zagnati vozlišče IPFS?</translation>
-<translation id="3435896845095436175">Omogoči</translation>
 <translation id="5046066249040287308">Uporabna storitev Denarnice Brave</translation>
 <translation id="4552520379838695057">Ta stran manjka.</translation>
 <translation id="7299769530898469069">Ni mogoče naložiti shranjene različice</translation>
@@ -266,7 +238,6 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="2557899542277210112">Za hitrejši dostop zaznamke shranite tukaj, v vrstici za zaznamke.</translation>
 <translation id="1968543937259008435">Ste pripravljeni na najboljšo zasebnost na spletu?</translation>
 <translation id="6817415381278637662">Brave nastavite kot privzeti brskalnik, da se na vsaki odprti spletni strani prikaže Brave zaščita zasebnosti.</translation>
-<translation id="8722651357687610395">Privzeto nastavite Brave</translation>
 <translation id="7537601449003285327">Pripenjanje v opravilno vrstico</translation>
 <translation id="2307973900865360088">Obdrži zasidrano</translation>
 <translation id="961012016278832836">Starejši Microsoft Edge</translation>
@@ -279,15 +250,17 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="8373664339577369248">naročilo po meri</translation>
 <translation id="8120600068258956006">Dodaj na seznam predvajanja</translation>
 <translation id="650694591627983430">Mediji, najdeni na tej strani</translation>
-<translation id="43751811163166570">Dodano <ph name="PLAYLIST_FOLDER_NAME"/></translation>
 <translation id="6900840851173033633">Žal na tej strani nismo našli nobenega medija.</translation>
+<translation id="5296010081025405662">Dodano na seznam predvajanja</translation>
 <translation id="4830689155681863580">Odpri na seznamu predvajanja</translation>
 <translation id="4735626465866524761">Spremeni mapo</translation>
 <translation id="8101564000331197174">Odstrani s seznama predvajanja</translation>
 <translation id="838254185387128227">Več medijev na tej strani ...</translation>
 <translation id="326641288623143307">Dodaj izbrano</translation>
+<translation id="4951645797020684601">Dodano na seznam predvajanja</translation>
 <translation id="5856970744810677796">Odpri na seznamu predvajanja</translation>
 <translation id="5494357917532817933">Spremeni mapo</translation>
+<translation id="5181358966317519720">Odstrani s seznama predvajanja</translation>
 <translation id="333558915234875673">Več medijev na tej strani ...</translation>
 <translation id="5145233969981669502">Dodaj izbrano</translation>
 <translation id="55252794453047936">Premakni medije</translation>
@@ -311,7 +284,6 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="1173894706177603556">Preimenuj</translation>
 <translation id="7765158879357617694">Premakni</translation>
 <translation id="6648536728577053364">Odstrani podatke brez povezave</translation>
-<translation id="5181358966317519720">Odstrani s seznama predvajanja</translation>
 <translation id="2377705456080309463">Poglej izvirno stran</translation>
 <translation id="158894735649719362">Zabava se začne, ko imate kaj igrati. Dodajte svojo najljubšo predstavnost in predvajajte kadarkoli in kjer koli. Tudi brez povezave.</translation>
 <translation id="8422349592890097194">Ustvari novo mapo</translation>
@@ -380,7 +352,6 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="1013121820689882118">Hitri bralnik</translation>
 <translation id="2025435450953474282">Članki se samodejno naložijo v načinu bralnika in vam prihranijo čas</translation>
 <translation id="7984721311211272523">Onemogočite funkcijo izklopa zvoka s pomočjo ikon zvočnikov v zavihkih</translation>
-<translation id="2422927186524098759">Stranska vrstica</translation>
 <translation id="832432428796481785">Prikaz gumba za stransko vrstico</translation>
 <translation id="5581036754486769849">Dovoli samodejno izpolnjevanje v zasebnih oknih</translation>
 <translation id="2262012219398520969">Podatke iz običajnih oken je mogoče prebrati/samodejno izpolniti v zasebnih oknih</translation>
@@ -403,7 +374,6 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="6303294677342628402">Ščiti</translation>
 <translation id="7133511168130368997">Blokirajte sledilce in oglase, ki vas spremljajo po spletu.</translation>
 <translation id="2761825942249694703">To so privzete nastavitve Ščita. Uporabljajo se za vsa spletna mesta, razen če nekaj spremenite na plošči Ščit na določenem spletnem mestu. Če jih spremenite, to ne bo vplivalo na vaše obstoječe nastavitve za spletno mesto.</translation>
-<translation id="1435116578479068303">To bo blokiralo večino oglasov na spletnih mestih, ne pa tudi zasebnih oglasov Brave — ti so pod nadzorom v nastavitvah <ph name="BEGIN_LINK"/>nagrad Brave<ph name="END_LINK"/>.</translation>
 <translation id="8452536890042542134">S tem boste blokirali večino oglasov v spletnih mestih.</translation>
 <translation id="4800195524776354947">Pokaži število blokiranih elementov na ikoni Shields</translation>
 <translation id="5510493033031835532">Samodejno preusmerjanje strani AMP</translation>
@@ -591,7 +561,6 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="842628013524824194">Običajno okno - iskalnik, ki se uporablja v naslovni vrstici</translation>
 <translation id="5324939009884545145">Zasebno okno - iskalnik, ki se uporablja v naslovni vrstici</translation>
 <translation id="6864914031231797928">Dovoli Googlovo prijavo za razširitve</translation>
-<translation id="6554397389149987360">Uporabi komponento Hangouts za omogočanje skupne rabe zaslona in drugih funkcij v brskalniku.</translation>
 <translation id="7878791177459550035">Predstavnostni usmerjevalnik omogoča funkcijo oddajanja v brskalniku.</translation>
 <translation id="2707635989000984973">Razrešite domenska imena neustavljivih domen</translation>
 <translation id="1807158022157096592"><ph name="BEGIN_LINK"/>Preberite več<ph name="END_LINK"/> o vprašanjih zasebnosti neustavljivih domen.</translation>
@@ -604,7 +573,7 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="951983619130191090">Prostovoljno pomagajte drugim pri povezovanju z omrežjem Tor</translation>
 <translation id="2223668809371912019">Omogočite razširitev Snowflake, da uporabnikom v cenzuriranih državah omogočite povezavo z omrežjem Tor prek vaše omrežne povezave.</translation>
 <translation id="2959986444009520721">Uporabi Mostove</translation>
-<translation id="8416750895933172460">Mostovi vam pomagajo pri dostopu do omrežja Tor v krajih, kjer je omrežje Tor blokirano. Glede na to, kje se nahajate, lahko en most deluje bolje kot drugi.</translation>
+<translation id="271237727681958372">Mostovi vam pomagajo pri dostopu do omrežja Tor v krajih, kjer je omrežje Tor blokirano. Glede na to, kje se nahajate, lahko en most deluje bolje kot drugi.</translation>
 <translation id="7206799843254049470">Nastavitve povezave Tor</translation>
 <translation id="3194502271166340944">Nadzoruje, kako se zasebni Windows s Torom poveže z omrežjem Tor</translation>
 <translation id="3717364961460790491">Razširitve Snowflake, ki je potrebna za to funkcionalnost, ni bilo mogoče prenesti. Preverite internetno povezavo in poskusite znova.</translation>
@@ -622,7 +591,7 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="6936835573742749135">Ni mogoče zahtevati CAPTCHA. Poskusi znova kasneje.</translation>
 <translation id="2653659639078652383">Pošlji</translation>
 <translation id="1294350054292274934">Samo razreši naslove .onion v oknih Tor</translation>
-<translation id="1258903596167452221">Storitve Onion ne bodo na voljo zunaj oken Tor.</translation>
+<translation id="601227612175911475">Storitve Onion ne bodo na voljo zunaj oken Tor.</translation>
 <translation id="2896916411183256228">Uporablja WebTorrent za prikaz torrentov, neposredno v brskalniku. Podpira datoteke torrent in povezave magnet.</translation>
 <translation id="5249433283143453448">Za ogled zaščitenega pretočnega videa in druge vsebine v brskalniku uporabite komponento Widevine za upravljanje digitalnih pravic (DRM).</translation>
 <translation id="1314131187310290315">Razširitve Manifest V2</translation>
@@ -656,19 +625,11 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="856371974127598760">Omrežja denarnice</translation>
 <translation id="5975930666279943472">Počistite podatke o transakcijah denarnice in številu nonce</translation>
 <translation id="5693968582510626466">Transakcije brisanja so lahko uporabne za razvijalce ali pri čiščenju stanja na lokalnem strežniku</translation>
-<translation id="4440478655766953083">Samodejno pripni podatke NFT</translation>
-<translation id="464460032678285850">Podatke NFT, ki so dodani v denarnico Brave, je moč samodejno pripeti na lokalno vozlišče IPFS.
-    Opomba: IPFS se lahko zažene za namene pripenjanja, tako da bo vaše lokalno vozlišče delilo predhodno pomnjene podatke in pripete podatke NFT v omrežje IPFS.</translation>
 <translation id="2326850911705720398">Reset and clear wallet data</translation>
-<translation id="5887022857624190239">Počisti pripete NFT-je</translation>
-<translation id="204584113330893805">Pripeti NFT-ji gostujejo v omrežju IPFS, ko se zažene lokalno vozlišče IPFS.
-    Trenutno imate <ph name="NFT_COUNT"/> pripetih NFT-jev.</translation>
 <translation id="9216386092464743272">Ali ste prepričani, da želite ponastaviti vse podatke o transakcijah v denarnici in nonce? To možnost večinoma uporabljajo razvijalci, ki izvajajo lokalni testni strežnik. Vpišite "<ph name="CONFIRMATION_PHRASE"/>" in potrdite.</translation>
 <translation id="6369495274982305511">Ali ste prepričani, da želite ponastaviti denarnico? Če vaša denarnica ni varnostno kopirana, bo ponastavitev povzročila, da izgubite vse podatke o računu (vključno s pripadajočimi sredstvi). Vnesite "<ph name="CONFIRMATION_PHRASE"/>", da potrdite.</translation>
-<translation id="4248533222660842025">Ali ste prepričani, da želite počistiti svoje pripete NFT-je? Nekateri NFT-ji so lahko za vedno izgubljeni, če v omrežju IPFS ni drugih gostiteljev. Vnesite "<ph name="CONFIRMATION_PHRASE"/>" za potrditev.</translation>
 <translation id="3752403403443723332">Vaša denarnica je bila ponastavljena.</translation>
 <translation id="594766067816395072">Podatki o transakciji v denarnici so bili ponastavljeni.</translation>
-<translation id="1615009913945115836">Vaši pripeti NFT-ji so bili ponastavljeni.</translation>
 <translation id="57798285717509216">Pred podpisom si oglejte rezultate transakcij.<ph name="BEGIN_LINK"/>&lt;u&gt;Learn more&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">Omrežja Ethereum</translation>
 <translation id="3504157706952484145">Omrežja Filecoin</translation>
@@ -694,7 +655,7 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="3047726704186619366">URL-ji ikon</translation>
 <translation id="2487558607408469181">URL-ji raziskovalca blokov</translation>
 <translation id="2156993118928861787">Neveljaven naslov</translation>
-<translation id="6301398959353668507">To polje ne sme biti prazno.</translation>
+<translation id="2042467807419742999">To polje ne sme biti prazno.</translation>
 <translation id="7504462451153306677">Neveljavna oblika, ID verige je pozitivno število</translation>
 <translation id="650071759190249039">Notranja napaka, ni mogoče dodati omrežja.</translation>
 <translation id="336035846712292194">Izpolnite vse podatke o domači valuti</translation>
@@ -705,63 +666,18 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="232693303726691609">Pokaži/skrij omrežje na seznamu omrežij denarnice</translation>
 <translation id="7893578599666249602">Ali res želite ponastaviti <ph name="KEY_NAME"/>?</translation>
 <translation id="2618193846561624884">Ali želite posodobiti obstoječe omrežje?</translation>
-<translation id="9170907049676078643">Metoda za reševanje virov IPFS</translation>
-<translation id="1327977588028644528">Prehod</translation>
-<translation id="1195880978080389104">Lokalno vozlišče Brave IPFS</translation>
-<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Več<ph name="END_LINK_MPL"/> o storitvi Brave glede lokalnega vozlišča IPFS in pomislekih glede zasebnosti prehodov.</translation>
-<translation id="4927734062756955434">Naslov javnega prehoda IPFS</translation>
-<translation id="3707431725427930007">Naslov javnega prehoda IPFS za NFT</translation>
-<translation id="8425213833346101688">Spremeni</translation>
-<translation id="585868419599255817">Nadomestni javni prehod IPFS</translation>
-<translation id="2618080188892567155">Samodejno se vrnite nazaj na javni prehod IPFS, če vašega lokalnega vozlišča IPFS Brave ni mogoče doseči.</translation>
-<translation id="8956391206920485238">Vedno zaženi vozlišče IPFS ob zagonu brskalnika?</translation>
-<translation id="6789104345873307368">Samodejno preusmeri zahteve za omrežne vire IPFS na konfigurirani prehod.</translation>
-<translation id="4138306018048329894">Zahteve za vire IPFS, ki gostujejo na prehodih IPFS ali virih DNSLINK tretjih oseb, bodo usmerjene prek izbranega lokalnega ali oddaljenega prehoda.
-    Opomba: če je izbrano lokalno vozlišče, bo vir zahtevan neposredno iz vašega računalnika, predpomnjeni podatki pa se lahko nekaj časa posredujejo omrežju IPFS.</translation>
-<translation id="8068526464562249859">Uporablja razširitev IPFS Companion za izboljšano podporo IPFS v programu Brave, vključno z dostopom do pogostih nalog IPFS iz vrstice brskalnika.</translation>
-<translation id="1251574393468476924">Največja velikost predpomnilnika IPFS (GB)</translation>
-<translation id="2503497578400410320">Mehka zgornja meja za velikost shrambe podatkov repozitorija IPFS.</translation>
-<translation id="6758961763875471084">Spremenite seznam omrežnih vrstnikov</translation>
-<translation id="5761731140570209168">Dodaj nov niz povezave enakovrednih omrežij</translation>
-<translation id="7024553202001112871">Nastavite IPNS ključe</translation>
-<translation id="951216659045543447">Vsebino podpišite z ustreznim zasebnim ključem in jo objavite v IPNS</translation>
-<translation id="7611728475758612204">Ključi, ki so na voljo za objavo</translation>
-<translation id="911363100236037920">Vnesite ime novega ključa</translation>
-<translation id="6358469157239228181">Tega imena ni mogoče uporabiti</translation>
-<translation id="2082206983920804886">Obrni ključ</translation>
-<translation id="5078501082919354191">Lokalnega vozlišča IPFS Brave ni mogoče ustaviti</translation>
-<translation id="5687424953196903465">Lokalnega vozlišča IPFS Brave ni mogoče zagnati</translation>
-<translation id="6476061084931271248">Znova zaženite vozlišče, da uveljavite spremembe</translation>
-<translation id="3754226427671882382">Znova zaženite vozlišče</translation>
-<translation id="949667118776341807">Obrnite</translation>
-<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
-<translation id="724513921936768901">To ime ni veljavno</translation>
-<translation id="1295874070797049002">Izvozi ključ</translation>
-<translation id="3946479342297227860">Odstrani ključ</translation>
-<translation id="1534091531114892221">Nastavite opis vrstnikov ipfs</translation>
-<translation id="910215077892371264">Vozlišče se ni zagnalo</translation>
-<translation id="616058968889448209">Napaka pri zagonu storitve IPFS, več informacij je na voljo na <ph name="BEGIN_LINK"/>diagnostični strani<ph name="END_LINK"/></translation>
-<translation id="6912148685459054619">Uvoz '<ph name="KEY_NAME"/>' ni uspešen</translation>
-<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' izvoz ključa ni uspel</translation>
-<translation id="5840868269342837751">Opomba: Omrežne zahteve ne smejo uporabljati nastavitev posredniškega strežnika in DNS v brskalniku.</translation>
-<translation id="8275038454117074363">Uvoz</translation>
-<translation id="3654980960391973513">Generiraj</translation>
-<translation id="5531501313997312487">Zaženi vozlišče</translation>
-<translation id="557281710253742286">Nastavite prehod IPFS</translation>
-<translation id="8571837315037233299">Naslov prehoda</translation>
-<translation id="7703184801853248830">Neveljaven naslov prehoda</translation>
-<translation id="7690058578502751948">V Brave lahko uporabite samo veljaven prehod IPFS z omogočeno izolacijo za Origin</translation>
 <translation id="1643029991199044105">S Ctrl-Tab se pomikajte po zadnjih uporabljenih zavihkih</translation>
 <translation id="2775956301559569472">Prikaži poziv računalnika Wayback na 404 straneh</translation>
 <translation id="3095201688102519917">Opozori me pred zaprtjem okna z več zavihki</translation>
 <translation id="7120553802660696133">Zapri okno, ko se zapre zadnji zavihek</translation>
+<translation id="3394171693948989253">Ob izhodu prikaži celozaslonski opomnik za pritisk tipke Esc</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Pokaži ikono Leo v stranski vrstici</translation>
 <translation id="8055509865174199683">Prikaži Leo v kontekstnem meniju na spletnih mestih</translation>
 <translation id="1529674267267221673">Leo se prikaže v kontekstnem meniju, ko z desno tipko miške kliknete na spletno mesto. To bo v program Leo poslalo kontekst iz trenutne spletne strani.</translation>
 <translation id="8172263161008556851">Pokaži predlagane pozive v pogovoru</translation>
 <translation id="1014480593522400586">Počisti podatke Leo</translation>
-<translation id="8681157601856387010">Če ponastavite pomočnika Leo, se boste morali prijaviti za uporabo Brave
+<translation id="6803758564561896401">Če ponastavite pomočnika Leo, se boste morali prijaviti za uporabo Brave
 Leo v prihodnosti in bo počistil tudi vašo zgodovino klepetov. Čiščenje vašega
 zgodovina klepetov bo izbrisala vse vaše prejšnje pogovore z Brave
 Leo. Tega dejanja ni mogoče razveljaviti.</translation>
@@ -769,6 +685,27 @@ Leo. Tega dejanja ni mogoče razveljaviti.</translation>
 <translation id="8157373421434119674">Podatki in zgodovina klepeta</translation>
 <translation id="614530507403667291">Privzeti model za nove pogovore</translation>
 <translation id="8826914609353373601">Upravljanje premium naročnine</translation>
+<translation id="235457946228076038">Prinesite svoj model</translation>
+<translation id="8631951653187535788">Ali ste prepričani, da želite ta model izbrisati? Če se ta model uporablja v katerem koli aktivnem pogovoru, se bo ta pogovor spremenil tako, da bo uporabljal privzeti model Leo.</translation>
+<translation id="1907126221851170941">Dodaj model</translation>
+<translation id="8346224718149026088">Uredi model</translation>
+<translation id="3468298837301810372">Oznaka</translation>
+<translation id="3553035516792776805">Ime zahteve za model</translation>
+<translation id="7634775528597575156">Končna točka strežnika</translation>
+<translation id="6374563306438145841">Ključ API</translation>
+<translation id="8008271349880309090">Ime modela, kot bo prikazano v meniju za izbiro modela</translation>
+<translation id="7131172845656551327">Ime modela, kot bi moralo biti prikazano v zahtevi za strežno ogrodje, tj. phi-3 (upoštevajte, da integracija ne bo delovala, če se to ime ne ujema natančno s pričakovanji strežnega ogrodja)</translation>
+<translation id="3286410514484292784">URL, kjer vaše strežno ogrodje posluša zahteve. Če niste prepričani, preverite dokumentacijo strežnega ogrodja. Za npr. Ollamo je to vedno http://localhost:11434/v1/chat/completions</translation>
+<translation id="1058790648388035953">Nekatera strežna ogrodja utegnejo zahtevati poverilnice za preverjanje pristnosti, kot je ključ API ali žeton za dostop. Dodane bodo v glavo zahteve.</translation>
+<translation id="217141195370578385">Brave teh zahtev ne posreduje, preberite pogoje zasebnosti izbranega ponudnika.</translation>
+<translation id="2645532768679870478">Nelokalne končne točke morajo za varen prenos podatkov uporabljati protokol HTTPS.</translation>
+<translation id="8177205483022887785">Vnesli ste neveljaven URL. Vnesite veljaven URL.</translation>
+<translation id="5249539665306267943">Dodaj nov model</translation>
+<translation id="7265212806651512211">Niste še povezali modela.</translation>
+<translation id="7304802428852949897">Vaši modeli</translation>
+<translation id="7435587476558117990">LLM, ki jih gostite sami ali tretja oseba, povežite na Leo in jih uporabite v brskalniku.</translation>
+<translation id="1381050642750209119">Uporabite kateri koli okvir, združljiv s protokolom OpenAI Chat Protocol, kot je Ollama.</translation>
+<translation id="2642905648178380593">Shrani model</translation>
 <translation id="349846214503465941">Omogoči seznam predvajanja</translation>
 <translation id="7903608716704052878">Samodejno dodajanje datotek za ogled brez povezave</translation>
 <translation id="4193768184502613558">Ta možnost samodejno shrani medijske datoteke v predpomnilnik, da jih lahko predvajate brez internetne povezave.</translation>

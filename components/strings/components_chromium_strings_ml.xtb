@@ -30,6 +30,8 @@
           നിങ്ങളുടെ കോൺഫിഗറേഷൻ ''പ്രോക്‌സി അല്ല'' അല്ലെങ്കിൽ ''നേരിട്ട് '' എന്നതിലേക്ക് സജ്ജമാക്കിയിട്ടുണ്ടെന്ന് ഉറപ്പാക്കുക.</translation>
 <translation id="2765022094254723779">Brave സാധ്യമാക്കിയത് മറ്റ് <ph name="BEGIN_LINK_OSS"/>ഓപ്പൺ സോഴ്‌സ് സോഫ്റ്റ്‌വെയറുകൾ<ph name="END_LINK_OSS"/> കൂടി ഉപയോഗിച്ചാണ്.</translation>
 <translation id="9156965752763025780">നിങ്ങളുടെ മാറ്റങ്ങൾ അടുത്ത തവണ Brave വീണ്ടും ആരംഭിക്കുമ്പോൾ പ്രാബല്യത്തിൽ വരും.</translation>
+<translation id="8828443087767259398">ജോടിയാക്കൽ തുടരാൻ Brave-ന് Bluetooth ആക്സസ് 
+ ആവശ്യമാണ്. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">Brave സാധ്യമാക്കിയത് <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> ഓപ്പൺ സോഴ്‌സ് പ്രോജക്റ്റ് ഉപയോഗിച്ചാണ്.</translation>
 <translation id="4068928808254189629">Brave മെനു &gt;
           <ph name="SETTINGS_TITLE"/>

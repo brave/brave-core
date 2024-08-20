@@ -108,9 +108,10 @@
 <translation id="4692623383562244444">Arama motorları</translation>
 <translation id="1468415711258933398">Standart Sekme</translation>
 <translation id="3377025655491224618">Gizli Sekme</translation>
+<translation id="7304425663107214334">Tarayıcı önerilerini göster</translation>
+<translation id="8982438328166986164">Yer imlerinize ve tarayıcı geçmişinize göre web sitesi önerileri gösterir.</translation>
+<translation id="1571106259128580884">Popüler site önerilerini göster</translation>
 <translation id="9148058034647219655">Çıkış</translation>
-<translation id="4022987104439075738">IPFS Geçidi</translation>
-<translation id="2688519859165248360">Bir IPFS Ağ Geçidi aracılığıyla IPFS kaynaklarına gitmeye izin verir</translation>
 <translation id="8047754398610073499">Çerez onay bildirimlerini engelle</translation>
 <translation id="2621893359845808115">Sitelerinde çerezleri kabul etmenizi / reddetmenizi isteyen web site açılır pencerelerini engeller</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
@@ -142,9 +143,9 @@
 <translation id="2356070529366658676">Sor</translation>
 <translation id="4176463684765177261">Devre dışı</translation>
 <translation id="59174027418879706">Etkin</translation>
-<translation id="6252490671914511928">Bugünün en çok okunan hikayeleri tamamen özel bir akışta, yalnızca sizin için.</translation>
+<translation id="6920492760024499150">Bugünün en çok okunan hikayeleri özel bir akışta, yalnızca sizin için.</translation>
 <translation id="8300751939969131609">Brave News'i açın ve hiçbir haberi kaçırmayın</translation>
-<translation id="7266075701303521777">Brave Haberleri cihazınızda eşleştirilen tamamen gizli ve anonim reklamlarla desteklenir.</translation>
+<translation id="7627131190984957214">Brave Haberleri cihazınızda eşleştirilen gizli ve anonim reklamlarla desteklenir.</translation>
 <translation id="7699565323725789472">Favori kaynaklarınızı tek akıştan takip edin. Sadece Brave'de bir sekme açın, aşağı kaydırın ve… işte oldu!\nBrave News, gizli ve anonimleştirilmiş reklamlarla desteklenir.</translation>
 <translation id="1765217911817124376">Brave Haberleri'ni aç</translation>
 <translation id="8981973962043893066">Site, konu veya RSS akışı için arama yapın</translation>
@@ -233,7 +234,7 @@
 <translation id="7281027579943912834">Varsayılan olarak Brave'i seçtiğiniz zaman, tıkladığınız her bağlantı Brave'in reklam engelleme korumasına sahip olur. Her sayfa, video ve akış.</translation>
 <translation id="5148943178722443958">Brave'i daha iyi hale getirmeye yardım edin.</translation>
 <translation id="6718362830686703942">Kilitlenme veya çökme yaşarsanız tanı raporu gönderin.</translation>
-<translation id="1929905278861178845">Brave kullanıcılarının hangi özellikleri kullandıklarına dair tamamen gizli ve anonim ürün içgörülerini paylaşın.</translation>
+<translation id="8616157231067364693">Brave kullanıcılarının hangi özellikleri kullandıklarına dair gizli ve anonim ürün içgörülerini paylaşın.</translation>
 <translation id="2877653791257935258">Bir web sitesi adı ya da URL yazın</translation>
 <translation id="5329830149661250028">Brave'in farkını görün: Reklam yok. İzleyiciler yok. Sayfa yüklemesi çok daha hızlı.</translation>
 <translation id="3941792073703079607">Brave farkını görün: Reklamları engelleyin. Verileri kaydedin. Daha hızlı yayın yapın.</translation>
@@ -276,7 +277,7 @@
 <translation id="1938402585819943124">Bir sonraki ekranda Brave'i seçin.</translation>
 <translation id="8926389886865778422">Bir daha sorma</translation>
 <translation id="745974920645827035">Daha iyi gizlilik ile bağımsız arama</translation>
-<translation id="4717018805430015801">Brave Arama sizi, sorgularınızı veya tıklamalarınızı takip etmez.</translation>
+<translation id="2773167297815493692">Brave Arama, profilinizi çıkarmaz.</translation>
 <translation id="5240031343741051161">Brave Arama'yı deneyin</translation>
 <translation id="5234764350956374838">Dismiss</translation>
 <translation id="6639570430554986719">OCAK</translation>
@@ -315,15 +316,13 @@
 <translation id="3132642509209154999">Bu kodun süresi dolmuş. Lütfen diğer cihazınızda yeni bir kod oluşturun ve tekrar deneyin.</translation>
 <translation id="2859229680945501779">Bu kod geçersiz. Lütfen cihazınızdaki saatin ve saat diliminin doğru şekilde ayarlandığını teyit edin.</translation>
 <translation id="3149880132460839085">Brave Senkronizasyonu</translation>
-<translation id="3680755684186855422">Brave Senkronizasyonu, yer imleri verilerini çeşitli cihazlarınızdaki Brave Tarayıcılarınız arasında özel olarak senkronize etmenize izin verir.</translation>
-<translation id="3735228155296883311">Başka bir cihazda oluşturduğunuz eşitleme zincirinizden alınan kodu taramanız yeterlidir. Ya da yeni bir eşitleme zinciri başlatın.</translation>
+<translation id="348794064910142198">Brave Senkronizasyonu, yer işareti verilerinizi farklı cihazlarınızdaki Brave Tarayıcıları arasında gizli bir şekilde taşımanıza olanak tanır.\n\nSenkronizasyon zincirinizde oluşturduğunuz kodu başka bir cihazda taratmanız yeterli. Veya yeni bir senkronizasyon zinciri oluşturabilirsiniz.</translation>
 <translation id="2614069607859982576">Mevcut eşitlenmiş cihazı kullnarak, Brave Ayarlarını açın ve Eşitleme &gt; Ayarlarına gidin. "Yeni Cihaz Ekle"yi seçin ve ekranda gösterilen QR Kodunu tarayın.</translation>
 <translation id="5241263629636958324">Panoya kopyalandı</translation>
 <translation id="5817918615728894473">Eşle</translation>
 <translation id="3429575397891106447">Senkronizasyon Seçenekleri</translation>
 <translation id="1680065323266179640">Senkronizasyon hesabını sil</translation>
-<translation id="3792563952903751704">Hesabınızı silmek, şifrelenmiş verilerinizi Brave sunucularından kaldırır ve bağlı tüm cihazlarınızda Senkronizasyonu devre dışı bırakır. Ancak bu işlem, bu cihazlarda yerel olarak depolanan verileri silmez.
-  Silme işlemi kalıcıdır ve verileri kurtarmanın hiçbir yolu yoktur. Senkronizasyonu tekrar kullanmaya karar verirseniz, yeni bir hesap oluşturmanız ve tüm cihazları tek tek yeniden eklemeniz gerekecektir.</translation>
+<translation id="8397325856045820212">Hesabınızı silmek, şifrelenmiş verilerinizi Brave sunucularından kaldırır ve bağlı tüm cihazlarınızda Senkronizasyonu devre dışı bırakır. Ancak bu cihazlarda yerel olarak depolanan verileri silmez.\n\nBu silme işlemi kalıcıdır ve verilerinizi geri getirmenin yolu yoktur. Senkronizasyonu tekrar kullanmak isterseniz yeni bir hesap oluşturmanız ve her bir cihazı tek tek yeniden eklemeniz gerekecektir.</translation>
 <translation id="9064376100690171155">Hesabı kalıcı olarak sil</translation>
 <translation id="2740516568641790390">Senkronizasyon hesabı başarıyla silindi</translation>
 <translation id="7006136453627651236">Senkronizasyon hesabı silinemedi</translation>
@@ -333,12 +332,10 @@
 <translation id="1602067095281698985">Yeni bir senkronizasyon zinciri başlat</translation>
 <translation id="1475223680121592371">Mobil Bir Cihaz Ekle</translation>
 <translation id="2965377893636908578">Bir Bilgisayar Ekle</translation>
-<translation id="6604289897677913048">İkinci bir telefon veya tablet kullanırken Brave Ayarları &gt; Eşitleme &gt; Tara'ya gidin.</translation>
-<translation id="8508856434435157945">Mobil cihazınızda Ayarlar bölümünde Brave Eşitleme'ye gidin ve "Eşitleme Kodunu Tara" düğmesine tıklayın. Aşağıdaki QR Kodunu taramak için kameranızı kullanın.</translation>
-<translation id="2590683710114839102">Bilgisayarınızda Brave Ayarları &gt; Eşitle konumuna gidin. "Bir Eşitleme Zincir Kodu Girin"i seçin.</translation>
+<translation id="4701589725270449523">İkinci bir telefon veya tableti kullanarak, Brave Ayarları &gt; Senkronizasyon &gt; Tara menüsüne gidin.\n\nMobil cihazınızda Ayarlar bölümünde Brave Senkronizasyonu'na gidin ve "Senkronizasyon Kodunu Tara" düğmesine tıklayın. Aşağıdaki QR Kodunu taramak için kameranızı kullanın.</translation>
+<translation id="67114562351518315">Bilgisayarınızda, Brave Ayarları &gt; Senkronizasyon menüsüne gidin. "Bir Senkronizasyon Zinciri Kodu Gir" menüsünü seçin.\n\nHedef bilgisayarınızda ayarlarda Brave Senkronizasyonu'na gidin ve "Bir Senkronizasyon Kodum Var" düğmesine tıklayın.\nAşağıda gösterilen senkronizasyon zinciri kodunu girin.</translation>
 <translation id="65315202420929965">Bu eşitleme kodunu tarayın</translation>
 <translation id="6764016175302339802">Bu koda bir şifreymiş gibi davranın. Birisi kodu ele geçirirse, eşitlenen verilerinizi okuyup değiştirebilir.</translation>
-<translation id="6707003343517029414">Hedef bilgisayarınızda ayarlarda Brave Eşitleme'ye gidin ve "Bir Eşitleme Kodum Var" düğmesine tıklayın.\nAşağıda gösterilen eşitleme zinciri kodunu girin.</translation>
 <translation id="2731921493694251495">Eşitleme zinciri kodunu girin</translation>
 <translation id="2175927920773552910">QR Kodu</translation>
 <translation id="8653433343015102968">Kod Sözcükleri</translation>
@@ -352,6 +349,9 @@
 <translation id="8131740175452115882">Onayla</translation>
 <translation id="4973653569293835178">Kameramı kullanacağım...</translation>
 <translation id="326454632686131209">Cihazı eşitle</translation>
+<translation id="3122158728238634723">Yeni Kod Oluştur</translation>
+<translation id="4358805443781965194">Kodun süresi doldu. Aşağıdaki butona tıklayarak yeni bir tane oluşturun.</translation>
+<translation id="318164877797885563">Bu kalıcı kod, önümüzdeki <ph name="TIME_AMOUNT"/> boyunca geçerli olacaktır</translation>
 <translation id="327726072512457161">Ayarlardan çıkış</translation>
 <translation id="8050847734948770789">Brave Ödülleri'ni Etkinleştir</translation>
 <translation id="9187185473011056079">Ben varım!</translation>
@@ -417,8 +417,6 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="8643377320501056697">En Popüler Siteleri Göster</translation>
 <translation id="7275773481201277457">Brave İstatistiklerini Göster</translation>
 <translation id="8297488609722895137">Photo by <ph name="PHOTO_BY"/></translation>
-<translation id="4761229094276239865">Cesur Ödüllerini Kullanmaya Başla düğmesine dokunarak <ph name="TERMS_OF_SERVICE"/>'yi kabul etmiş olursunuz.</translation>
-<translation id="7136586167396205364">Sponsorlu Resimleri Gizle</translation>
 <translation id="2898634658146274982">Harici linkleri Brave'de aç</translation>
 <translation id="5616508928556767259">Diğer uygulamalardaki bağlantıları Brave web görünümünde açar. Not: Varsayılan tarayıcınız Brave olmalıdır.</translation>
 <translation id="2394961582378297792">Oturum kapatıldı</translation>
@@ -439,15 +437,11 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="7961015016161918242">Hiçbir Zaman</translation>
 <translation id="1275213816424141989">Belki Daha Sonra</translation>
 <translation id="4406937629441301400">Bu görseli görüntülediğiniz için jeton kazanın, ödemesini oluşturuculara yapın. <ph name="LEARN_MORE"/></translation>
-<translation id="1992363542751124282">Bu resmi görüntülemek için jeton kazanın. Payınızı talep etmek için Brave Ödülleri'ni kullanmaya Başla tuşuna dokunun.</translation>
 <translation id="6632345639591919543">Bu görseli görüntülediğiniz için jeton kazanıyorsunuz.\n<ph name="LEARN_MORE"/></translation>
-<translation id="1465733111003593696">Bu görseli görüntülediğiniz için jeton kazanıyorsunuz.</translation>
-<translation id="7877201489035217175">Sponsorlu görseller hakkında daha fazla bilgi edinin</translation>
 <translation id="8164992819127316581"><ph name="CURRENT_MONTH"/> ödülleri için ödemenin işlenmesi, <ph name="PAYOUT_DATE"/> itibarıyla başlayacaktır.</translation>
 <translation id="33967210973550414"><ph name="CURRENT_MONTH"/> ödülleri için ödemelerin işlenmesi devam ediyor. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314"><ph name="CURRENT_MONTH"/> ödülleri için ödemeler tamamlandı. <ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">Durumu kontrol et</translation>
-<translation id="828092975561478703">Görüntülediğiniz her sponsırlu görsel için gelirin %70'ini jeton olarak alırsınız. Brave Ads ile gördüğünüz reklamların kontrolü her zaman sizde.</translation>
 <translation id="3624048886326677117">İzleyicileri &amp; reklamları engelle (Agresif)</translation>
 <translation id="7151914815476509258">İzleyicileri &amp; reklamları engelle (Standart)</translation>
 <translation id="7384778069178817075">Tüm izleyicilere &amp; reklamlara izin ver</translation>
@@ -487,7 +481,6 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="5299848999918506028">Teşekkür ederiz!</translation>
 <translation id="76550953340008122">Bu sitede yanlış bir şeyler olduğunu Brave geliştiricilerine bildirdiğiniz için teşekkür ederiz. Düzeltmek için elimizden geleni yapacağız!</translation>
 <translation id="650318023204990401">Gelişmiş kontroller</translation>
-<translation id="1275664486910646411">Otomatik tamamlamada en popüler siteleri göster</translation>
 <translation id="5370478469168390143">Çevrimiçi Verileri Kaydet</translation>
 <translation id="1118508688433541158">Brave ile daha hızlı gezinin ve reklamları engelleyin</translation>
 <translation id="7427391215172269363">İnternette Brave'le gezinerek her gün veriden tasarruf ediyorum.</translation>
@@ -828,8 +821,6 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="3074127054582480056">Dikkat</translation>
 <translation id="2280319752798785157">Aylık Katkı</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
-<translation id="5802665280774361839">Adres çubuğunda otomatik tamamlamayı göster</translation>
-<translation id="8982438328166986164">Yer imlerinize ve tarayıcı geçmişinize göre web sitesi önerileri gösterir.</translation>
 <translation id="1241283133946520352">Ağlar</translation>
 <translation id="1062463687579789365">Cüzdan ağları kişiselleştirme</translation>
 <translation id="2512821599885971349">Ağ ekle</translation>
@@ -948,6 +939,13 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="7134370164002095282"><ph name="CURRENT"/> / <ph name="SIZE"/></translation>
 <translation id="756701799684433105">İşlemi onayla</translation>
 <translation id="6450792191436242818">Sistem Programı</translation>
+<translation id="5318067544026930166">Brave Cüzdanı'nın kilidini biyometrik kimlik doğrulama ile aç</translation>
+<translation id="2629767022373384291">Brave Cüzdanı'nın kilidini açmak için biyometrik kimlik doğrulamayı kullanmak ister misiniz?</translation>
+<translation id="4782919977106118997">Parmak İziyle Kilit Açmayı Kullan</translation>
+<translation id="2054995875643283428">Bunu şimdilik atla</translation>
+<translation id="2522605225061484799">Portföyüme git</translation>
+<translation id="1148624853678088576">Artık hazırsınız!</translation>
+<translation id="4131445988101719379">Brave Cüzdanınız kullanıma hazır</translation>
 <translation id="6252742184395380448">Konfig Programı</translation>
 <translation id="5358970666412490132">Paydaş Programı</translation>
 <translation id="346636227344244984">Oy Programı</translation>

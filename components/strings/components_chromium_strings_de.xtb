@@ -14,6 +14,7 @@
 <translation id="8619622797841001082">Gehe zum Brave-Menü &gt; „<ph name="SETTINGS_TITLE"/>“ &gt; „<ph name="ADVANCED_TITLE"/>“ &gt; „<ph name="PROXIES_TITLE"/>“ und vergewissere dich, dass in deiner Konfiguration die Einstellung „Kein Proxy“ oder „Direkt“ verwendet wird.</translation>
 <translation id="2765022094254723779">Brave wird auch durch andere <ph name="BEGIN_LINK_OSS"/>Open-Source-Software<ph name="END_LINK_OSS"/> ermöglicht.</translation>
 <translation id="9156965752763025780">Deine Änderungen werden beim nächsten Neustart von Brave wirksam.</translation>
+<translation id="8828443087767259398">Brave benötigt Zugriff auf Bluetooth, um mit der Koppelung fortzufahren. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">Brave wird durch das Open-Source-Projekt <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> ermöglicht.</translation>
 <translation id="4068928808254189629">Öffne
           das Brave-Menü &gt;

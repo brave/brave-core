@@ -23,10 +23,6 @@
 <translation id="1037341607922068025">Tor உடனான மறைநிலைச் சாளரத்தை திற</translation>
 <translation id="6965382102122355670">சரி</translation>
 <translation id="4450893287417543264">மீண்டும் காட்டாதே</translation>
-<translation id="6794469945030154569">இப்பக்கம்</translation>
-<translation id="5037852323412456577">தேர்ந்த படம்</translation>
-<translation id="2715839724138372481">தேர்ந்த காணொளி</translation>
-<translation id="4227945450504703638">தேர்ந்த ஒலி</translation>
 <translation id="1434416574322382019">Tor உடனான புது மறைநிலைச் சாளரம்</translation>
 <translation id="4703780849509456860">Tor உடனான மறைநிலைச் சாளரத்தில் தொடுப்பை திற</translation>
 <translation id="3488584642074079080">Tor உடனான பிரேவ் மறைநிலைச் சாளரத்தில் தொடுப்பை திற</translation>
@@ -44,7 +40,7 @@
 <translation id="7658239707568436148">ரத்துசெய்</translation>
 <translation id="1307431692088049276">என்னிடம் மீண்டும் கேட்காதே</translation>
 <translation id="5234764350956374838">நிராகரி</translation>
-<translation id="9218430445555521422">இயல்புநிலையாக அமை</translation>
+<translation id="8722651357687610395">இயல்புநிலையாக பிரேவை அமை</translation>
 <translation id="8184318863960255706">மேலும் தகவல்</translation>
 <translation id="780301667611848630">தேவையில்லை</translation>
 <translation id="2770465223704140727">பட்டியலிலிருந்து நீக்கு</translation>
@@ -64,6 +60,8 @@
 <translation id="5877900074358050101">பக்கப்பட்டை உருப்படி தலைப்பு</translation>
 <translation id="1613695740874407223">பக்கப்பட்டை உருப்படி உரலி</translation>
 <translation id="4877147287319222750">பக்கப்பட்டையில் சேர்</translation>
+<translation id="5916664084637901428">இயக்கு</translation>
+<translation id="5860033963881614850">முடக்கத்தில்</translation>
 <translation id="8981254605840444865">அமைப்புகளை காட்டு</translation>
 <translation id="59174027418879706">செயலாக்கப்பட்டது</translation>
 <translation id="4176463684765177261">முடக்கப்பட்டது</translation>
@@ -72,8 +70,6 @@
 <translation id="8712637175834984815">புரிந்தது</translation>
 <translation id="4394049700291259645">முடக்கு</translation>
 <translation id="8428213095426709021">அமைப்புகள்</translation>
-<translation id="7473891865547856676">வேண்டாம் நன்றி</translation>
-<translation id="3435896845095436175">இயக்கு</translation>
 <translation id="4552520379838695057">மன்னிக்கவும், அப்பக்கம் காணவில்லை.</translation>
 <translation id="4474155171896946103">எல்லா தாவல்களையும் புத்தகக்குறியிடு...</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{தாவலின் ஒலியை முடக்கு}other{தாவல்களின் ஒலியை முடக்கு}}</translation>
@@ -95,7 +91,6 @@
 <translation id="796831669370432378">புத்தகக்குறி சேர்க்க, முகவரி பட்டைக்கு அடுத்துள்ள புத்தகக்குறி பொத்தானை சொடுக்கு</translation>
 <translation id="8487693399751278191">இப்போது புத்தகக்குறிகளை இறக்கு...</translation>
 <translation id="2557899542277210112">விரைவு அணுகலுக்கு, உமது புத்தகக்குறிகளை இங்கே புத்தகக்குறி பட்டையில் வை.</translation>
-<translation id="8722651357687610395">இயல்புநிலையாக பிரேவை அமை</translation>
 <translation id="7537601449003285327">பணிப்பட்டியில் பொருத்து</translation>
 <translation id="385051799172605136">முந்தைய பக்கம்</translation>
 <translation id="5317780077021120954">சேமி</translation>
@@ -228,10 +223,4 @@
 <translation id="7059127752542505809">உரலியை உள்ளிடு</translation>
 <translation id="3047726704186619366">படவுரு உரலிகள்</translation>
 <translation id="2156993118928861787">செல்லாத முகவரி</translation>
-<translation id="1327977588028644528">கேட்வே</translation>
-<translation id="8425213833346101688">மாற்று</translation>
-<translation id="1295874070797049002">விசையை ஏற்றுமதிசெய்</translation>
-<translation id="3946479342297227860">விசையை நீக்கு</translation>
-<translation id="8275038454117074363">இறக்குமதி செய்</translation>
-<translation id="3654980960391973513">உருவாக்கு</translation>
 </translationbundle>
