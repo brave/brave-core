@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      PR_NUMBER: ${{ github.event.number }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
       PR_SHA: ${{ github.event.pull_request.head.sha }}
     steps:
       - run: |
