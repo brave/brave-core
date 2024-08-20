@@ -48,6 +48,8 @@ debug.log
 npm-debug.log
 .npmrc*
 .env*
+engflow.crt
+*.key
 *~
 CMakeLists.txt
 cmake-build-debug/
