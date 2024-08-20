@@ -29,7 +29,11 @@ jobs:
           status() { echo "::${1:?}::${2:?}"; echo "$2" >"${GITHUB_STEP_SUMMARY:?}"; }
           label() { gh pr edit "${PR_NUMBER:?}" -R "${GITHUB_REPOSITORY:?}" "--${1:?}-label" chromium-version-mismatch >/dev/null; }
           success() { status notice "${pfx:?} ${1:?}: CI ✅ | Merge ✅"; label remove; }
-          failure() { case "${1:?}" in runci) ci=✅; label remove;; *) ci=🚫; label add;; esac; status error "${pfx:?} ${2:?}: CI $ci | Merge 🚫"; exit 2; }
+          failure() {
+              case "${1:?}" in runci) ci=✅; label remove;; *) ci=🚫; label add;; esac
+              status error "${pfx:?} ${2:?}: CI $ci | Merge 🚫"
+              exit 2
+          }
 
           echo "::notice::PR branch: ${pr_ver:?}, target branch: ${target_ver:?}"
 
