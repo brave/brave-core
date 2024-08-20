@@ -173,12 +173,6 @@ misc_metrics::ProcessMiscMetrics*
 TestingBraveBrowserProcess::process_misc_metrics() {
   return nullptr;
 }
-#if BUILDFLAG(ENABLE_AI_CHAT)
-ai_chat::LeoLocalModelsUpdater*
-TestingBraveBrowserProcess::leo_local_models_updater() {
-  return nullptr;
-}
-#endif
 
 void TestingBraveBrowserProcess::SetAdBlockService(
     std::unique_ptr<brave_shields::AdBlockService> service) {

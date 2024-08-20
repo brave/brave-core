@@ -40,7 +40,6 @@ source_set("browser_tests") {
       "ai_chat_profile_browsertest.cc",
       "ai_chat_render_view_context_menu_browsertest.cc",
       "ai_chat_ui_browsertest.cc",
-      "leo_local_models_updater_browsertest.cc",
       "page_content_fetcher_browsertest.cc",
     ]
     deps = [

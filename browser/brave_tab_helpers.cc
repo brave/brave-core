@@ -24,7 +24,6 @@
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/browser/ui/brave_ui_features.h"
-#include "brave/components/ai_chat/core/browser/leo_local_models_updater.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -151,7 +150,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
         g_brave_browser_process->process_misc_metrics()
             ? g_brave_browser_process->process_misc_metrics()->ai_chat_metrics()
             : nullptr,
-        g_brave_browser_process->leo_local_models_updater(),
         skus_service_getter, g_browser_process->local_state(),
         std::string(version_info::GetChannelString(chrome::GetChannel())));
   }

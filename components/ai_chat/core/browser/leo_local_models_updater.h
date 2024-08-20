@@ -7,68 +7,79 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_LEO_LOCAL_MODELS_UPDATER_H_
 
 #include <string>
+#include <vector>
 
-#include "base/files/file_path.h"
-#include "base/observer_list.h"
-#include "base/observer_list_types.h"
-#include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "base/no_destructor.h"
+#include "components/component_updater/component_installer.h"
 
-class LeoLocalModelsUpdaterTest;
+namespace component_updater {
+class ComponentUpdateService;
+}  // namespace component_updater
 
 namespace ai_chat {
 
 extern const char kUniversalQAModelName[];
 
-// A component updater for downloading local models for Leo.
-class LeoLocalModelsUpdater : public brave_component_updater::BraveComponent {
+class LeoLocalModelsComponentInstallerPolicy
+    : public ::component_updater::ComponentInstallerPolicy {
  public:
-  class Observer : public base::CheckedObserver {
-   public:
-    virtual void OnLeoLocalModelsReady() {}
+  LeoLocalModelsComponentInstallerPolicy();
+  LeoLocalModelsComponentInstallerPolicy(
+      const LeoLocalModelsComponentInstallerPolicy&) = delete;
+  LeoLocalModelsComponentInstallerPolicy& operator=(
+      const LeoLocalModelsComponentInstallerPolicy&) = delete;
+  ~LeoLocalModelsComponentInstallerPolicy() override;
 
-   protected:
-    ~Observer() override = default;
-  };
+  static void DeleteComponent();
 
-  LeoLocalModelsUpdater(BraveComponent::Delegate* component_delegate,
-                        const base::FilePath& user_data_dir);
-  LeoLocalModelsUpdater(const LeoLocalModelsUpdater&) = delete;
-  LeoLocalModelsUpdater& operator=(const LeoLocalModelsUpdater&) = delete;
-  ~LeoLocalModelsUpdater() override;
-
-  virtual void Register();
-  // Method for deleting component updater directory. Path is relative to
-  // user_data_dir passed in the constructor. If the user_data_dir is empty, it
-  // won't have any effect.
-  void Cleanup(base::OnceCallback<void(bool)> reply_callback = {});
-
-  virtual const base::FilePath& GetUniversalQAModel() const;
-
-  void AddObserver(Observer* observer);
-  void RemoveObserver(Observer* observer);
-
- protected:
-  void OnComponentReady(const std::string& component_id,
-                        const base::FilePath& install_dir,
-                        const std::string& manifest) override;
+  void ComponentReadyForTesting(const base::Version& version,
+                                const base::FilePath& install_dir,
+                                base::Value::Dict manifest);
 
  private:
-  friend class ::LeoLocalModelsUpdaterTest;
+  // ComponentInstallerPolicy::
+  bool VerifyInstallation(const base::Value::Dict& manifest,
+                          const base::FilePath& install_dir) const override;
+  bool SupportsGroupPolicyEnabledComponentUpdates() const override;
+  bool RequiresNetworkEncryption() const override;
+  update_client::CrxInstaller::Result OnCustomInstall(
+      const base::Value::Dict& manifest,
+      const base::FilePath& install_dir) override;
+  void OnCustomUninstall() override;
+  void ComponentReady(const base::Version& version,
+                      const base::FilePath& install_dir,
+                      base::Value::Dict manifest) override;
+  base::FilePath GetRelativeInstallDir() const override;
+  void GetHash(std::vector<uint8_t>* hash) const override;
+  std::string GetName() const override;
+  update_client::InstallerAttributes GetInstallerAttributes() const override;
+  bool IsBraveComponent() const override;
+};
 
-  static void SetComponentIdAndBase64PublicKeyForTest(
-      const std::string& component_id,
-      const std::string& component_base64_public_key);
-  static void SetUserDataDirForTest(const base::FilePath& user_data_dir);
-  static std::string g_component_id_;
-  static std::string g_component_base64_public_key_;
-  static base::FilePath g_user_data_dir_for_test_;
+class LeoLocalModelsUpdaterState {
+ public:
+  static LeoLocalModelsUpdaterState* GetInstance();
 
-  bool registered_ = false;
+  LeoLocalModelsUpdaterState(const LeoLocalModelsUpdaterState&) = delete;
+  LeoLocalModelsUpdaterState& operator=(const LeoLocalModelsUpdaterState&) =
+      delete;
 
-  base::ObserverList<Observer> observers_;
-  base::FilePath user_data_dir_;
+  void SetInstallDir(const base::FilePath& install_dir);
+  const base::FilePath& GetInstallDir() const;
+
+  const base::FilePath& GetUniversalQAModel() const;
+
+ private:
+  friend base::NoDestructor<LeoLocalModelsUpdaterState>;
+  LeoLocalModelsUpdaterState();
+  ~LeoLocalModelsUpdaterState();
+
+  base::FilePath install_dir_;
   base::FilePath universal_qa_model_path_;
 };
+
+void ManageLeoLocalModelsComponentRegistration(
+    component_updater::ComponentUpdateService* cus);
 
 }  // namespace ai_chat
 
