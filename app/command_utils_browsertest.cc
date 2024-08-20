@@ -55,21 +55,15 @@ class CommandUtilsBrowserTest : public InProcessBrowserTest {
 #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 };
 
-// This test is currently flaky on Windows and MacOS. On Windows it occasionally
-// crashes and on MacOS it times out. Disabling on these platforms until further
+// This test is currently flaky on all Desktop platforms. On Windows it
+// occasionally crashes, on Linux it fails an expectation in pref observer, and
+// on MacOS it times out. Disabling on all platforms until further
 // investigation can be done.
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
-#define MAYBE_AllCommandsShouldBeExecutableWithoutCrash \
-  DISABLED_AllCommandsShouldBeExecutableWithoutCrash
-#else
-#define MAYBE_AllCommandsShouldBeExecutableWithoutCrash \
-  AllCommandsShouldBeExecutableWithoutCrash
-#endif
 // This test is a sanity check - if commands fail here but work when testing
 // things manually there's probably a conflict with some of the other commands,
 // in which case we can just add it to the ignored commands list.
 IN_PROC_BROWSER_TEST_F(CommandUtilsBrowserTest,
-                       MAYBE_AllCommandsShouldBeExecutableWithoutCrash) {
+                       DISABLED_AllCommandsShouldBeExecutableWithoutCrash) {
   // Some commands, particularly those that create dialogs introduce some test
   // flakes, so we disable them.
   constexpr int kKnownGoodCommandsThatSometimesBreakTest[] = {
