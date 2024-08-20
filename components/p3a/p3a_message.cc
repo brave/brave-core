@@ -18,7 +18,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
-#include "brave/components/l10n/common/country_code_util.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/prefs.h"
 #include "brave/components/p3a/uploader.h"
 #include "brave/components/version_info/version_info.h"
@@ -209,12 +209,9 @@ void MessageMetainfo::Init(PrefService* local_state,
 
   country_code_from_timezone =
       base::ToUpperASCII(base::CountryCodeForCurrentTimezone());
-  if (local_state->FindPreference(brave_l10n::prefs::kCountryCode)) {
-    // Since the country code pref is not available in unit tests,
-    // only load it if it's available.
-    country_code_from_locale_raw = brave_l10n::GetCountryCode(local_state);
-    country_code_from_locale = country_code_from_locale_raw;
-  }
+  country_code_from_locale_raw = brave_l10n::GetDefaultISOCountryCodeString();
+  country_code_from_locale = country_code_from_locale_raw;
+
   MaybeStripCountry();
 
   Update();
