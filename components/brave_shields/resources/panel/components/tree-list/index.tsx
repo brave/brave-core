@@ -14,7 +14,7 @@ import {
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import Button from '$web-components/button'
 import getPanelBrowserAPI from '../../api/panel_browser_api'
-import { ToggleListContainer, ScriptsInfo, Footer, ScriptsList } from './style'
+import { ToggleListContainer, ScriptsInfo, Footer, ScriptsList, ListDescription } from './style'
 import { ContentSettingsType } from 'gen/components/content_settings/core/common/content_settings_types.mojom.m.js';
 
 import Toggle from '../../../../../web-components/toggle'
@@ -204,7 +204,8 @@ const handleLearnMoreClick = () => {
 export function ToggleList (props: {
   webcompatSettings: WebcompatSettingsMap,
   totalBlockedTitle: string,
-  learnMoreText: string
+  learnMoreText: string,
+  listDescription: string
 }) {
   const { siteBlockInfo, getSiteSettings } = React.useContext(DataContext)
   const invokedWebcompatList = siteBlockInfo?.invokedWebcompatList;
@@ -218,8 +219,9 @@ export function ToggleList (props: {
     <ScriptsInfo>
       <span id='active-protection-count'>{count}</span>
       <span>{props.totalBlockedTitle}</span>
-      <span><a href="#" onClick={handleLearnMoreClick}>{props.learnMoreText}</a></span>
     </ScriptsInfo>
+    <ListDescription>{props.listDescription}</ListDescription>
+    <ListDescription><a href="#" onClick={handleLearnMoreClick}>{props.learnMoreText}</a></ListDescription>
     <ToggleListContainer>
       {entries.map(([name, value]: [string, number]) => (
         <label key={name}>

@@ -80,6 +80,11 @@ export const ScriptsInfo = styled.div`
     }
 `
 
+export const ListDescription = styled.div`
+  background-color: ${(p) => p.theme.color.background01};
+  padding: 0px 17px 16px 17px;
+`
+
 export const ScriptsList = styled.div`
     padding: 10px 17px 10px 17px;
 `
