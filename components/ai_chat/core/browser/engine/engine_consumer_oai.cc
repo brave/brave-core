@@ -139,7 +139,9 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
     const std::string& question,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
-  const std::string& truncated_text = text.substr(0, max_page_content_length_);
+  std::string truncated_text;
+  base::TruncateUTF8ToByteSize(text, max_page_content_length_, &truncated_text);
+
   std::string rewrite_prompt = base::ReplaceStringPlaceholders(
       l10n_util::GetStringUTF8(
           IDS_AI_CHAT_LLAMA2_GENERATE_REWRITE_SUGGESTION_PROMPT),
@@ -163,8 +165,10 @@ void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
     const bool& is_video,
     const std::string& page_content,
     SuggestedQuestionsCallback callback) {
-  const std::string& truncated_page_content =
-      page_content.substr(0, max_page_content_length_);
+  std::string truncated_page_content;
+  base::TruncateUTF8ToByteSize(page_content, max_page_content_length_,
+                               &truncated_page_content);
+
   std::string content_segment = base::ReplaceStringPlaceholders(
       l10n_util::GetStringUTF8(is_video
                                    ? IDS_AI_CHAT_CLAUDE_VIDEO_PROMPT_SEGMENT
@@ -247,13 +251,18 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
 
   std::optional<std::string> selected_text = std::nullopt;
   if (last_turn->selected_text.has_value()) {
-    selected_text =
-        last_turn->selected_text->substr(0, max_page_content_length_);
+    std::string output_text;
+    base::TruncateUTF8ToByteSize(last_turn->selected_text.value(),
+                                 max_page_content_length_, &output_text);
+    selected_text = output_text;
   }
 
-  const std::string& truncated_page_content = page_content.substr(
-      0, selected_text ? max_page_content_length_ - selected_text->size()
-                       : max_page_content_length_);
+  std::string truncated_page_content;
+  base::TruncateUTF8ToByteSize(
+      page_content,
+      selected_text ? max_page_content_length_ - selected_text->size()
+                    : max_page_content_length_,
+      &truncated_page_content);
 
   base::Value::List messages = BuildMessages(
       truncated_page_content, selected_text, is_video, conversation_history);

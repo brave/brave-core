@@ -153,8 +153,9 @@ ConversationEvent
 EngineConsumerConversationAPI::GetAssociatedContentConversationEvent(
     const std::string& content,
     const bool is_video) {
-  const std::string& truncated_page_content =
-      content.substr(0, max_page_content_length_);
+  std::string truncated_page_content;
+  base::TruncateUTF8ToByteSize(content, max_page_content_length_,
+                               &truncated_page_content);
 
   ConversationEvent event;
   event.role = mojom::CharacterType::HUMAN;
