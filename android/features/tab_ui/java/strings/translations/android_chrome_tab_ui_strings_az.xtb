@@ -9,7 +9,6 @@
 <translation id="1197088940767939838">Narıncı</translation>
 <translation id="125153950246128346">Başqa taba baxmaq üçün klikləyin</translation>
 <translation id="1273910660700874265"><ph name="TITLE_OF_GROUP"/> tab qrupu seçimləri</translation>
-<translation id="1322824555808364080">İnsanlar dəvət edin</translation>
 <translation id="1419023007528516122">Bununla qrup cihazdan həmişəlik silinəcək</translation>
 <translation id="1486715732399361704">Bütün tab qruplarını burada tapa bilərsiniz</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{<ph name="NUM_MINS_ONE"/> dəqiqə əvvəl yaradıldı}other{<ph name="NUM_MINS_MANY"/> dəqiqə əvvəl yaradıldı}}</translation>
@@ -66,9 +65,12 @@
 <translation id="4159784952369912983">Bənövşəyi</translation>
 <translation id="4220650239473304853">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> tab olan <ph name="TITLE_OF_GROUP"/> tab qrupunu genişləndirin.}other{<ph name="TABS_COUNT_MANY"/> tab olan <ph name="TITLE_OF_GROUP"/> tab qrupunu genişləndirin.}}</translation>
 <translation id="427987768447457592">Yeni tab qrupu</translation>
+<translation id="4338724047016295066">Deaktiv tablar avtomatik bağlı olacaq. Onları Tarixçədə tapa bilərsiniz.</translation>
+<translation id="4371591986692297148">Fəaliyyətsiz</translation>
 <translation id="4460014764210899310">Qruplaşdırma olmasın</translation>
 <translation id="4648718555153979859">Tablar burada qruplaşdırılır</translation>
 <translation id="4686942373615810936">İndicə yaradıldı</translation>
+<translation id="47070857600201406">{DAY_COUNT,plural, =1{1 gün sonra bağlayın}other{<ph name="DAY_COUNT_MANY"/> gün sonra bağlayın}}</translation>
 <translation id="4777866634702576038">Tab qrupu silinsin?</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> rəy)}other{(<ph name="REVIEWS_COUNT_MANY"/> rəy)}}</translation>
 <translation id="4850886885716139402">Görünüş</translation>
@@ -90,6 +92,7 @@
 <translation id="5494920125229734069">Hamısını seçin</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> tabdan ibarət tab qrupunu bağlayın, rəng <ph name="COLOR_NAME"/>.}other{<ph name="TABS_COUNT_MANY"/> tabdan ibarət tab qrupunu bağlayın, rəng <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="5556417849629758491">Mağaza məlumatlarına baxın, seçim ekranın yuxarı hissəsində əlçatandır</translation>
+<translation id="5635915157654811450">{TAB_COUNT,plural, =1{Tabı bərpa edin}other{Tabları bərpa edin}}</translation>
 <translation id="3225229609960545342">{TABS_COUNT,plural, =1{Brave'dan <ph name="TABS_COUNT_ONE"/> keçid}other{Brave'dan <ph name="TABS_COUNT_MANY"/> keçid}}</translation>
 <translation id="575494663145460764">Qiymət endirimləri üçün xəbərdarlıq alınsın?</translation>
 <translation id="58326064309361797">Tabları qruplaşdırmaq üçün sürüşdürün</translation>
@@ -105,6 +108,8 @@
 <translation id="6381032505162537930">Tab qruplarınız burada tapa bilərsiniz</translation>
 <translation id="639823877092900621">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> seçilmiş tabı ayırın}other{<ph name="TABS_COUNT_MANY"/> seçilmiş tabı ayırın}}</translation>
 <translation id="6422650314852876533">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> tab}other{<ph name="TABS_COUNT_MANY"/> tab}}</translation>
+<translation id="6527303717912515753">Paylaşın</translation>
+<translation id="6542289363124393690">{DAY_COUNT,plural, =1{1 gün sonra}other{<ph name="DAY_COUNT_MANY"/> gün sonra}}</translation>
 <translation id="6549021453810473782">Mağaza məlumatlarına baxın</translation>
 <translation id="6557858706263317126">+<ph name="HIDDEN_TABS_COUNT"/></translation>
 <translation id="6562820390860419811">Tabı sola daşıyın</translation>
@@ -121,6 +126,7 @@
 <translation id="7326879924029668159">Qaytarma siyasətinə və digər məlumatlara baxın</translation>
 <translation id="7352298686197644113">Açıq tablarda hansı əşyanın qiymətinin daha aşağı olduğuna baxın</translation>
 <translation id="7452985128687107478">Tab qrupları bütün cihazlarınızda avtomatik olaraq yaddaşda saxlanılır və güncəllənir</translation>
+<translation id="747459581954555080">Hamısını bərpa edin</translation>
 <translation id="753732157349120914">Tab Keçiricisi</translation>
 <translation id="1068242749670180460">{REVIEWS,plural, =1{Brave'dan <ph name="REVIEWS_COUNT_ONE"/> rəy}other{Brave'dan <ph name="REVIEWS_COUNT_MANY"/> rəy}}</translation>
 <translation id="7559245342362162951">Qrup tabını tam ekran cədvəlində göstərin</translation>
@@ -134,6 +140,7 @@
 <translation id="7885132941432959125">Tabı sağa daşıyın</translation>
 <translation id="7939917283308035850"><ph name="COLOR_NAME"/> Seçilməyib</translation>
 <translation id="7942349550061667556">Qırmızı</translation>
+<translation id="7961015016161918242">Heç vaxt</translation>
 <translation id="7966321538264951561">Təkliflərdən imtina edin.</translation>
 <translation id="799469866974412355">Digər cihazdan yeni qrup</translation>
 <translation id="8029301326595421733">Bu mağaza haqqında məlumatlar tam hündürlükdə açılıb</translation>
@@ -144,6 +151,8 @@
 <translation id="8338427544764842461">Tab qruplarınız burada yaddaşda saxlanılır və bütün giriş edilmiş cihazlarınızda yenilənir</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{Seçilmiş <ph name="TABS_COUNT_ONE"/> tabeli bağlayın}other{Seçilmiş <ph name="TABS_COUNT_MANY"/> tabeli bağlayın}}</translation>
 <translation id="8398929769197326728">Yeni Qovluq - <ph name="CURRENT_TIMESTAMP_MS"/></translation>
+<translation id="8428213095426709021">Ayarlar</translation>
+<translation id="870736955561925754">Tab bağlansın və tab qrupu silinsin?</translation>
 <translation id="8714939927607906138">Aşağı qiymət</translation>
 <translation id="8730621377337864115">Tamamdır</translation>
 <translation id="6687920250729800417">Bu Anonim tablardakı fəaliyyət bu cihazdan silinəcək</translation>

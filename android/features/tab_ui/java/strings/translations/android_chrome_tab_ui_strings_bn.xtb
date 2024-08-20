@@ -9,7 +9,6 @@
 <translation id="1197088940767939838">কমলা</translation>
 <translation id="125153950246128346">অন্য ট্যাব দেখতে ট্যাপ করুন</translation>
 <translation id="1273910660700874265"><ph name="TITLE_OF_GROUP"/> ট্যাব গ্রুপের বিকল্প</translation>
-<translation id="1322824555808364080">লোকজনকে আমন্ত্রণ জানান</translation>
 <translation id="1419023007528516122">এর ফলে আপনার ডিভাইস থেকে গ্রুপ স্থায়ীভাবে মুছে যাবে</translation>
 <translation id="1486715732399361704">আপনি সব ট্যাব গ্রুপ এখানে দেখতে পারবেন</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{<ph name="NUM_MINS_ONE"/> মিনিট আগে তৈরি করা হয়েছে}one{<ph name="NUM_MINS_MANY"/> মিনিট আগে তৈরি করা হয়েছে}other{<ph name="NUM_MINS_MANY"/> মিনিট আগে তৈরি করা হয়েছে}}</translation>
@@ -64,9 +63,12 @@
 <translation id="4159784952369912983">বেগুনি</translation>
 <translation id="4220650239473304853">{NUMBER_OF_TABS,plural, =1{<ph name="TITLE_OF_GROUP"/> ট্যাব গ্রুপ বন্ধ করুন যেটিতে <ph name="TABS_COUNT_ONE"/>টি ট্যাব আছে।}one{<ph name="TITLE_OF_GROUP"/> ট্যাব গ্রুপ বন্ধ করুন যেটিতে <ph name="TABS_COUNT_MANY"/>টি ট্যাব আছে।}other{<ph name="TITLE_OF_GROUP"/> ট্যাব গ্রুপ বন্ধ করুন যেটিতে <ph name="TABS_COUNT_MANY"/>টি ট্যাব আছে।}}</translation>
 <translation id="427987768447457592">নতুন ট্যাব গ্রুপ</translation>
+<translation id="4338724047016295066">ইনঅ্যাক্টিভ ট্যাব অটোমেটিক বন্ধ হয়ে যাবে। আপনি সব সময় এগুলি ইতিহাসে দেখতে পাবেন।</translation>
+<translation id="4371591986692297148">চালু নেই</translation>
 <translation id="4460014764210899310">আলাদা করুন</translation>
 <translation id="4648718555153979859">আপনার ট্যাবগুলি এখানে একসাথে গ্রুপ করা আছে</translation>
 <translation id="4686942373615810936">এইমাত্র তৈরি করা হয়েছে</translation>
+<translation id="47070857600201406">{DAY_COUNT,plural, =1{১ দিন পরে বন্ধ হয়ে যাবে}one{<ph name="DAY_COUNT_MANY"/> দিন পরে বন্ধ হয়ে যাবে}other{<ph name="DAY_COUNT_MANY"/> দিন পরে বন্ধ হয়ে যাবে}}</translation>
 <translation id="4777866634702576038">ট্যাব গ্রুপ মুছবেন?</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/>টি রিভিউ)}one{(<ph name="REVIEWS_COUNT_MANY"/>টি রিভিউ)}other{(<ph name="REVIEWS_COUNT_MANY"/>টি রিভিউ)}}</translation>
 <translation id="4850886885716139402">দেখুন</translation>
@@ -88,6 +90,7 @@
 <translation id="5494920125229734069">সকল বেছে নিন</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/>টি ট্যাব, <ph name="COLOR_NAME"/> কালার সহ, ট্যাব গ্রুপ বন্ধ করুন।}one{<ph name="TABS_COUNT_MANY"/>টি ট্যাব, <ph name="COLOR_NAME"/> কালার সহ, ট্যাব গ্রুপ বন্ধ করুন।}other{<ph name="TABS_COUNT_MANY"/>টি ট্যাব, <ph name="COLOR_NAME"/> কালার সহ, ট্যাব গ্রুপ বন্ধ করুন।}}</translation>
 <translation id="5556417849629758491">স্টোর সংক্রান্ত তথ্য দেখুন, স্ক্রিনের সবচেয়ে উপরের অংশে এই বিকল্প উপলভ্য আছে</translation>
+<translation id="5635915157654811450">{TAB_COUNT,plural, =1{ট্যাব ফিরিয়ে আনুন}one{ট্যাব ফিরিয়ে আনুন}other{ট্যাব ফিরিয়ে আনুন}}</translation>
 <translation id="3225229609960545342">{TABS_COUNT,plural, =1{Brave থেকে <ph name="TABS_COUNT_ONE"/>টি লিঙ্ক}one{Brave থেকে <ph name="TABS_COUNT_MANY"/>টি লিঙ্ক}other{Brave থেকে <ph name="TABS_COUNT_MANY"/>টি লিঙ্ক}}</translation>
 <translation id="575494663145460764">দাম কমার বিজ্ঞপ্তি পেয়েছেন?</translation>
 <translation id="58326064309361797">ট্যাবগুলি গ্রুপ করতে ড্র্যাগ করুন</translation>
@@ -103,6 +106,8 @@
 <translation id="6381032505162537930">আপনার ট্যাব গ্রুপ এখানে দেখতে পাবেন</translation>
 <translation id="639823877092900621">{TABS_COUNT,plural, =1{বেছে নেওয়া <ph name="TABS_COUNT_ONE"/>টি ট্যাব আনগ্রুপ করুন}one{বেছে নেওয়া <ph name="TABS_COUNT_MANY"/>টি ট্যাব আনগ্রুপ করুন}other{বেছে নেওয়া <ph name="TABS_COUNT_MANY"/>টি ট্যাব আনগ্রুপ করুন}}</translation>
 <translation id="6422650314852876533">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/>টি ট্যাব}one{<ph name="TABS_COUNT_MANY"/>টি ট্যাব}other{<ph name="TABS_COUNT_MANY"/>টি ট্যাব}}</translation>
+<translation id="6527303717912515753">শেয়ার করুন</translation>
+<translation id="6542289363124393690">{DAY_COUNT,plural, =1{১ দিন পরে}one{<ph name="DAY_COUNT_MANY"/> দিন পরে}other{<ph name="DAY_COUNT_MANY"/> দিন পরে}}</translation>
 <translation id="6549021453810473782">স্টোর সংক্রান্ত তথ্য দেখুন</translation>
 <translation id="6557858706263317126">আরও <ph name="HIDDEN_TABS_COUNT"/></translation>
 <translation id="6562820390860419811">বাঁদিকে ট্যাব সরান</translation>
@@ -119,6 +124,7 @@
 <translation id="7326879924029668159">ফেরত দেওয়ার নীতি এবং আরও অনেক কিছু দেখুন</translation>
 <translation id="7352298686197644113">কোন আইটেমের দাম কম তা খোলা থাকা ট্যাবগুলিতে দেখুন</translation>
 <translation id="7452985128687107478">আপনার সবকটি ডিভাইস জুড়ে ট্যাব গ্রুপ অটোমেটিক সেভ এবং আপডেট হয়</translation>
+<translation id="747459581954555080">সকল পুনরুদ্ধার করুন</translation>
 <translation id="753732157349120914">ট্যাব পাল্টানোর ফিচার</translation>
 <translation id="1068242749670180460">{REVIEWS,plural, =1{Brave-এর তরফ থেকে <ph name="REVIEWS_COUNT_ONE"/>টি রিভিউ}one{Brave-এর তরফ থেকে <ph name="REVIEWS_COUNT_MANY"/>টি রিভিউ}other{Brave-এর তরফ থেকে <ph name="REVIEWS_COUNT_MANY"/>টি রিভিউ}}</translation>
 <translation id="7559245342362162951">ফুলস্ক্রিন গ্রিডে গ্রুপের ট্যাব দেখুন</translation>
@@ -132,6 +138,7 @@
 <translation id="7885132941432959125">ডানদিকে ট্যাব সরান</translation>
 <translation id="7939917283308035850"><ph name="COLOR_NAME"/> বেছে নেওয়া হয়নি</translation>
 <translation id="7942349550061667556">লাল</translation>
+<translation id="7961015016161918242">কখনই নয়</translation>
 <translation id="7966321538264951561">সাজেশন বাতিল করুন।</translation>
 <translation id="799469866974412355">আপনার অন্য ডিভাইসে থাকা নতুন গ্রুপ</translation>
 <translation id="8029301326595421733">সম্পূর্ণ খোলা স্টোরের বিষয়ে তথ্য</translation>
@@ -142,6 +149,8 @@
 <translation id="8338427544764842461">আপনার ট্যাব গ্রুপ এখানে সেভ করা হয়েছে এবং আপনার সবকটি সাইন-ইন করা ডিভাইসে আপডেট হয়ে যায়</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{বেছে নেওয়া ট্যাবের মধ্যে <ph name="TABS_COUNT_ONE"/>টি ট্যাব বন্ধ আছে}one{বেছে নেওয়া ট্যাবের মধ্যে <ph name="TABS_COUNT_MANY"/>টি ট্যাব বন্ধ আছে}other{বেছে নেওয়া ট্যাবের মধ্যে <ph name="TABS_COUNT_MANY"/>টি ট্যাব বন্ধ আছে}}</translation>
 <translation id="8398929769197326728">নতুন ফোল্ডার - <ph name="CURRENT_TIMESTAMP_MS"/></translation>
+<translation id="8428213095426709021">সেটিংস</translation>
+<translation id="870736955561925754">ট্যাব বন্ধ করে গ্রুপ মুছে দেবেন?</translation>
 <translation id="8714939927607906138">খুব কম দামে</translation>
 <translation id="8730621377337864115">হয়ে গেছে</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> মাস আগে তৈরি করা হয়েছে}one{<ph name="NUM_MONTHS_MANY"/> মাস আগে তৈরি করা হয়েছে}other{<ph name="NUM_MONTHS_MANY"/> মাস আগে তৈরি করা হয়েছে}}</translation>

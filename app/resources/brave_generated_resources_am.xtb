@@ -49,37 +49,14 @@
 <translation id="3975865347033939965">የማመሳሰል አገልግሎት ሊጀመር አልቻለም፣ Brave Sync እየሰራ አይደለም።</translation>
 <translation id="4450893287417543264">እንደገና አታሳይ</translation>
 <translation id="4595286989346610620">ዝርዝሮችን ይፈትሹ</translation>
-<translation id="7691598647605453992">IPFS</translation>
-<translation id="3094628781200061820">ፋይሎችን ከ IPFS ያትሙ እና ሰርስሮ ያውጡ</translation>
-<translation id="9220923434129933852">የIPFS ቅንብሮችን ያንብቡ እና ያሻሽሉ</translation>
 <translation id="7398397225367092613">.onion</translation>
 <translation id="4759098689276706664">በግድ ለጥፍ</translation>
-<translation id="4901618511712685702">ወደ IPFS ያስመጡ</translation>
-<translation id="6794469945030154569">ይህ ገጽ</translation>
-<translation id="5037852323412456577">የተመረጠ ምስል</translation>
-<translation id="2715839724138372481">የተመረጠ ቪዲዮ</translation>
-<translation id="4227945450504703638">የተመረጠ ድምጽ</translation>
-<translation id="7895302206188277628">የተገናኘ ይዘት</translation>
-<translation id="3654831858282189202">በ IPNS ቁልፍ ያትሙ</translation>
-<translation id="1047401034925735299">የተመረጠውን ጽሑፍ ወደ IPFS ያስመጡ</translation>
-<translation id="6925604404524625582">ወደ IPFS ቅጽበታዊ ገጽ እይታ የሚልከውን ማስፈንጠሪያ ያስመጡ እና ይቅዱ</translation>
 <translation id="1434416574322382019">አዲስ የግል መስኮት በ Brave</translation>
 <translation id="4703780849509456860">Torን በመጠቀም ሊንኩን በግል መስኮት ይክፈቱ።</translation>
 <translation id="3488584642074079080">Torን በመጠቀም ሊንኩን በ Brave የግል መስኮት ይክፈቱ።</translation>
-<translation id="186554175479803110">ፋይል አስመጣ እና አጋራ</translation>
-<translation id="3036649622769666520">ፋይሎችን ክፈት</translation>
-<translation id="4408880250587950158">ማውጫ አስመጣ እና አጋራ</translation>
-<translation id="8396273373598682323">ከፋይል ጋር</translation>
-<translation id="518600784989889917">ከማውጫ ጋር</translation>
-<translation id="8147987711042435221">አይፒኤንኤስን አዘምን</translation>
-<translation id="4491895534716990473">የተመረጠውን ጽሑፍ ወደ IPFS ያስመጡ</translation>
-<translation id="8883166554766780543">ወደ IPFS ቅጽበታዊ ገጽ እይታ የሚልከውን ማስፈንጠሪያ ያስመጡ እና ይቅዱ</translation>
-<translation id="709253338301411121">ፋይል አስመጣ እና አጋራ</translation>
-<translation id="7068360136237591149">ፋይሎች ክፈት</translation>
 <translation id="6313675821927505581">አዲስ የግል መስኮት በ Brave</translation>
 <translation id="2638041073279639246">Torን በመጠቀም ሊንኩን በግል መስኮት ይክፈቱ።</translation>
 <translation id="3425600262621021599">Torን በመጠቀም ሊንኩን በ Brave የግል መስኮት ይክፈቱ።</translation>
-<translation id="3229091547987707389">ማውጫ አስመጣ እና አጋራ</translation>
 <translation id="2545072023356206691">ከዲሴምበር 1፣ 2023 ጀምሮ የBrave Dev ቻናል ከእንግዲህ የአሳሽ ዝማኔዎችን አይቀበልም። ተጠቃሚዎች ወደ የሌሊት፣ ቅድመ-ይሁንታ ወይም የBrave ስሪቶች እንዲሰደዱ እንመክራለን።</translation>
 <translation id="474217410105706308">ትር ላይ ድምጸ-ከል አድርግ</translation>
 <translation id="2804710924397009224">የ Brave ሽልማቶችን አዶ ደብቅ</translation>
@@ -113,14 +90,12 @@
 ትሮች</translation>
 <translation id="1307431692088049276">በድጋሚ አትጠየቀኝ</translation>
 <translation id="6919364924256365253">Google አያድርጉት። Bing ማድረግ አይችሉም። ዝም ብለው Brave ያድርጉት።</translation>
-<translation id="3313148036097793884">Brave እርስዎን፣ መጠይቆችዎን ወይም ጠቅታዎችዎን አይከታተልም። እና 100% ገለልተኛ ነው።</translation>
 <translation id="7295094278358921487">ይፈልጉ እና ያገኛሉ። በግላዊነት።</translation>
-<translation id="45040495135337202">Brave እርስዎን፣ መጠይቆችዎን ወይም ጠቅታዎችዎን አይከታተልም። እና 100% ከBig Tech ነፃ ነው።</translation>
 <translation id="42032117189492785">በAI-የታገዘ ፍለጋ ከልዩ መረጃ ጠቋሚ ጋር።</translation>
 <translation id="8606416238399082160">ሙሉ በሙሉ ግላዊ፣ 100% ገለልተኛ እና ከምርጥ AI ባህሪያት ጋር።</translation>
 <translation id="5240031343741051161">ብሬቭ ፍለጋን ይሞክሩ</translation>
 <translation id="5234764350956374838">አሰናብት</translation>
-<translation id="9218430445555521422">እንደወረደ አዘጋጀው</translation>
+<translation id="8722651357687610395">Brave እንደወረደ አዘጋጀው</translation>
 <translation id="2370739752330685659">ምናልባት በኋላ</translation>
 <translation id="5100490448228945668">የ Brave ፍለጋ ልወጣን አሰናብት፣ ይህን ጥቆማ ለማስወገድ Enter የሚለውን ተጫን</translation>
 <translation id="9194637241566114638">ስም-አልባ የአጠቃቀም ዳታዎችን በመላክ <ph name="MORE_INFO"/><ph name="SEARCH_NAME"/> በማሻሻል ላይ ድጋፍ ያድርጉ።</translation>
@@ -155,6 +130,9 @@
 <translation id="5877900074358050101">የጎን አምድ ንጥል ርዕስ</translation>
 <translation id="1613695740874407223">የጎን አምድ ንጥል url</translation>
 <translation id="4877147287319222750">ወደ Sidebar ያክሉ</translation>
+<translation id="2422927186524098759">የጎን አሞሌ</translation>
+<translation id="5916664084637901428">በርቷል</translation>
+<translation id="5860033963881614850">አጥፋ</translation>
 <translation id="5977931179408079967">አቀማመጥ</translation>
 <translation id="3790384768741064842">ወደ ቀኝ ውሰድ</translation>
 <translation id="7444424316576061724">ወደ ግራ ውሰድ</translation>
@@ -183,15 +161,6 @@
 <translation id="8428213095426709021">ቅንብሮች</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 ጎራዎች</translation>
-<translation id="72868071984333667">ስለ IPFS እና ግላዊነት የበለጠ ይወቁ</translation>
-<translation id="1419682418471956530">ይህ ገጽ በIPFS አውታረመረብ ላይ ይገኛል። የBrave አብሮገነብ ድጋፍን (ipfs:// ወይም ipns://) በመጠቀም የIPFS ገጾችን መጫን ይፈልጋሉ?</translation>
-<translation id="7109885938715976444">አሁን ብቻ</translation>
-<translation id="7473891865547856676">አይ፣ አመሰግናለሁ</translation>
-<translation id="2722425322672922644">ይህ ግላዊነቴን እንዴት እንደሚነካው ልማር</translation>
-<translation id="5551268135482191097">IPFS ዩአርኤልን መጫን ላይ ስህተት ነበር። ወደ ዋናው ዩአርኤል ዳግም ማዞር ይፈልጋሉ?</translation>
-<translation id="4756627014339714615">ዳግም አዙር</translation>
-<translation id="1338274252864046652">በአሳሽ ማስጀመር ላይ ሁልጊዜ የIPFS ኖድን ማስጀመር ይፈልጋሉ?</translation>
-<translation id="3435896845095436175">አንቃ</translation>
 <translation id="5046066249040287308">የ Brave Wallet መገልገያ አገልግሎት</translation>
 <translation id="4552520379838695057">ይቅርታ፣ ይህ ገጽ ይጎድላል።</translation>
 <translation id="2609895996619941644">የተቀመጠ ስሪት በ Wayback ማሽን ላይ መኖሩን ለማጣራት ይፈልጋሉ?</translation>
@@ -249,7 +218,6 @@
 <translation id="2557899542277210112">ለፈጣን ተደራሽነት፣ ዕልባቶችዎን እዚህ የዕልባቶች ትር አሞሌ ላይ ያስቀምጡ።</translation>
 <translation id="1968543937259008435">በኦንላይን ላይ ያለ ለምርጥ ግላዊነት ዝግጁ ነዎት?</translation>
 <translation id="6817415381278637662">በከፈቱት በእያንዳንዱ ድረ-ገጽ ላይ የ Brave ን ግላዊነት ጥበቃ ለማግኘት Brave ን እንደ ነባሪ አሳሽዎ አድርገው ያቀናብሩ።</translation>
-<translation id="8722651357687610395">Braveን እንደ ነባሪ አድርገው ያቀናብሩት</translation>
 <translation id="7537601449003285327">ከተግባር አሞሌ ጋር አያይዝ</translation>
 <translation id="2307973900865360088">የአርማዎች አሞሌ ውስጥ አቆይ</translation>
 <translation id="961012016278832836">የማይክሮሶፍት ኤጅ ቅርስ</translation>
@@ -262,7 +230,6 @@
 <translation id="8373664339577369248">የተለየ ትዕዛዝ</translation>
 <translation id="8120600068258956006">ወደ አጫዋች ዝርዝር አክል</translation>
 <translation id="650694591627983430">በዚህ ገጽ ላይ የሚገኝ ሚዲያ</translation>
-<translation id="43751811163166570">ወደ <ph name="PLAYLIST_FOLDER_NAME"/> ታክሏል</translation>
 <translation id="6900840851173033633">ይቅርታ፣ በዚህ ገጽ ላይ ምንም ሚዲያ ማግኘት አልቻልንም።</translation>
 <translation id="4830689155681863580">በአጫዋች ዝርዝሩ ክፈት</translation>
 <translation id="4735626465866524761">አቃፊ ቀይር</translation>
@@ -271,6 +238,7 @@
 <translation id="326641288623143307">የተመረጠውን አክል</translation>
 <translation id="5856970744810677796">በአጫዋች ዝርዝር ክፈት</translation>
 <translation id="5494357917532817933">አቃፊ ቀይር</translation>
+<translation id="5181358966317519720">ከአጫዋች ዝርዝር  አስወግድ</translation>
 <translation id="333558915234875673">በዚህ ገጽ ላይ ያለ ተጨማሪ ሚዲያ...</translation>
 <translation id="5145233969981669502">የተመረጠውን አክል</translation>
 <translation id="55252794453047936">ሚዲያን አንቀሳቅስ</translation>
@@ -294,7 +262,6 @@
 <translation id="1173894706177603556">ዳግም ሰይም</translation>
 <translation id="7765158879357617694">ውሰድ</translation>
 <translation id="6648536728577053364">የኦፍላይን ውሂብን አስወግድ</translation>
-<translation id="5181358966317519720">ከአጫዋች ዝርዝር  አስወግድ</translation>
 <translation id="2377705456080309463">ዋና ገጽን አሳይ</translation>
 <translation id="158894735649719362">ጨዋታው የሚጀምረው መጫወት የሚፈልጉት አንዳንድ ነገር ሲኖርዎት ነው። በማንኛውም ጊዜ፣ በየትኛውም ቦታ የእርስዎን ተወዳጅ ሚዲያ እና የበስተኋላ አጫዋች ያክሉ። ከመስመር ውጪ እንኳን ሳይቀር።</translation>
 <translation id="8422349592890097194">አዲስ አቃፊ ይፍጠሩ</translation>
@@ -361,7 +328,6 @@
 <translation id="1013121820689882118">የፍጥነት አንባቢን</translation>
 <translation id="2025435450953474282">ጽሑፎች ጊዜዎን ለመቆጠብ በራስ-ሰር በአንባቢ ሁነታ ይጫናሉ</translation>
 <translation id="7984721311211272523">በትር ድምጽ ማጉያ አዶዎች ውስጥ ድምጸ-ከል ተግባርን ያሰናክሉ።</translation>
-<translation id="2422927186524098759">የጎን አሞሌ</translation>
 <translation id="832432428796481785">የጎን አሞሌን አሳይ</translation>
 <translation id="5581036754486769849">በግል መስኮቶች ውስጥ በራስሰር-መሙላት ፍቀድ</translation>
 <translation id="2262012219398520969">ከመደበኛ መስኮቶች የሚገኘው መረጃ በግል መስኮቶች ውስጥ ሊነበብ/በራስሰር ሊሞላ ይችላል።</translation>
@@ -383,7 +349,6 @@
 <translation id="6303294677342628402">መከላከያዎች</translation>
 <translation id="7133511168130368997">በድረ ገጽ ውስጥ የሚከተሉህን ተከታታዮችና ማስታወቂያዎች አግድ።</translation>
 <translation id="2761825942249694703">እነዚህ ነባሪ የጋሻ ቅንብሮች ናቸው። በአንድ የተወሰነ ድረ ገጽ ውስጥ በጋሻዎች ውስን ቦታ ውስጥ የቀየሩት ነገር ከሌለ በስተቀር በሁሉም ድረ ገጾች ላይ ተግባራዊ ይሆናሉ። እነዚህን መቀየር ነባር የድረ ገጽ ቅንብሮችዎ ላይ ተጽእኖ አያሳድርም።</translation>
-<translation id="1435116578479068303">ይህ በድህረ ገጾች ላይ የሚገኙ አብዛኛዎቹን ማስታወቂያዎች የሚያገድ ሆኖ፣ ነገር ግን የ Brave Private Adsን አያግድም — እነዚያን መቆጣጠር የሚቻለው በ <ph name="BEGIN_LINK"/>Brave ሽልማቶች<ph name="END_LINK"/> ማቀናበሪያ ነው።</translation>
 <translation id="8452536890042542134">ይህ በድረ-ገጾች ላይ ያሉትን አብዛኛዎቹን ማስታወቂያዎች ያግዳል።</translation>
 <translation id="4800195524776354947">የታገዱ ንጥሎችን በጋሻዎች አዶ ላይ አሳይ</translation>
 <translation id="5510493033031835532">የ AMP ገጾችን በራስ ሰር አዙር</translation>
@@ -562,7 +527,6 @@
 <translation id="842628013524824194">መደበኛ መስኮት - በአድራሻ ማስገቢያው ውስጥ ጥቅም ላይ የሚውል የፍለጋ ኤንጅን</translation>
 <translation id="5324939009884545145">የግል መስኮት - በአድራሻ ማስገቢያው ውስጥ ጥቅም ላይ የዋለው የፍለጋ ኤንጅን</translation>
 <translation id="6864914031231797928">ለቅጥያዎች የ Google በመለያ መግቢያዎችን ፍቀድ</translation>
-<translation id="6554397389149987360">በማሰሻው ላይ የማያ መጋራትን እና ሌሎች ባህሪያትን ለመጠቀም የ Hangouts ክፍሎችን ይጠቀሙ።</translation>
 <translation id="7878791177459550035">የሚዲያ ራውተር በአሳሽ ውስጥ የcast ባህሪ እንዲሰራ ያደርጋል።</translation>
 <translation id="2707635989000984973">የማይቆሙ ጎራዎች የጎራ ስሞችን መፍታት</translation>
 <translation id="1807158022157096592"><ph name="BEGIN_LINK"/>ስለ<ph name="END_LINK"/> የማይቆሙ ጎራዎች የግላዊነት ጥበቃዎች ተጨማሪ መረጃን ያግኙ።</translation>
@@ -575,7 +539,6 @@
 <translation id="951983619130191090">ሌሎች ከቶር አውታረመረብ ጋር እንዲገናኙ ለመርዳት በጎ ፈቃደኞች ይሁኑ</translation>
 <translation id="2223668809371912019">ሳንሱር የተደረገባቸው አገሮች ተጠቃሚዎች በአውታረ መረብ ግንኙነትዎ ከ Tor ኔትወርክ ጋር እንዲገናኙ ለመፍቀድ የ Snowflake ቅጥያውን ያንቁ።</translation>
 <translation id="2959986444009520721">ድልድዮችን ተጠቀም</translation>
-<translation id="8416750895933172460">ብሪጅስ Tor በታገደባቸው ቦታዎች ላይ የ Tor አውታረ መረብን እንዲጠቀሙ የሚያግዙ ናቸው። እንደ እሚገኙበት አከባቢ፣ አንድ ድልድይ ከሌሎቹ የበለጠ ሊሰራ ይችላል።</translation>
 <translation id="7206799843254049470">የቶር ግንኙነት ቅንብሮች</translation>
 <translation id="3194502271166340944">ቶር ያላቸው የግል መስኮቶች እንዴት ከቶር ኔትወርክ ጋር እንደሚገናኙ ይቆጣጠራል</translation>
 <translation id="3717364961460790491">ለዚህ ተግባር አስፈላጊ የሆነው የ Snowflake ቅጥያ ሊወርድ አልቻለም። እባክዎ የበይነመረብ ግንኙነትዎን ያረጋግጡ እና እንደገና ይሞክሩ።</translation>
@@ -593,7 +556,6 @@
 <translation id="6936835573742749135">CAPTCHA መጠየቅ አልተቻለም። ቆይተው እንደገና ይሞክሩ።</translation>
 <translation id="2653659639078652383">አስገባ</translation>
 <translation id="1294350054292274934">.onion አድራሻዎችን ብቻ በTor መስኮቶች ውስጥ ፍታ</translation>
-<translation id="1258903596167452221">የOnion አገልግሎቶች ከTor መስኮቶች ውጭ አይገኙም።</translation>
 <translation id="2896916411183256228">WebTorrent ን በመጠቀም በቀጥታ ቶረንቶችን ማሰሻ ላይ ያሳያል። ለቶረንት ፋይሎች እና ማግኔት ሊንኮች ድጋፍ ያደርጋል።</translation>
 <translation id="5249433283143453448">በአሳሹ ውስጥ ያለ ጥበቃ የተደረገለት የቀጥታ ቪዲዮን እና ሌላ ይዘት ን ለመመልከት የ Widevine ዲጂታል መብቶች መተዳደሪያ (DRM) ክፍሉን ይጠቀሙ።</translation>
 <translation id="1314131187310290315">Manifest V2 ቅጥያዎች</translation>
@@ -627,19 +589,11 @@
 <translation id="856371974127598760">የኪስ ቦርሳ አውታረ መረቦች</translation>
 <translation id="5975930666279943472">የኪስ ቦርሳ ግብይት እና የአንድ ጊዜ መረጃ ያጽዱ</translation>
 <translation id="5693968582510626466">ግብይቶችን ማጽዳት ለገንቢዎች ጠቃሚ ሊሆን ይችላል ወይም ሁኔታን በአካባቢያዊ ሰርቨር ላይ ሲያጸዱ</translation>
-<translation id="4440478655766953083">በራስ ሰር NFTsን አያይዝ</translation>
-<translation id="464460032678285850">ወደ Brave Wallet የታከሉ NFTs ወደ አካባቢያዊ የIPFS ኖድ በራስ ሰር ሊያያዙ ይችላሉ።
-    ማስታወሻ፦ IPFS daemon የእርስዎ አካባቢያዊ ኖድ ካችድ ውሂብን እንዲያጋራ እና NFTs ወደ IPFS አውታረመረብ እንዲያያይዝ፣ ለማያያዝ ሂደቶች ሊጀምር ይችላል።</translation>
 <translation id="2326850911705720398">የዋሌት ውሂብን አጥፋና ዳግም አስጀምር</translation>
-<translation id="5887022857624190239">የተሰኩ NFTs ን አጽዳ</translation>
-<translation id="204584113330893805">አካባቢያዊ IPFS ኖድ ሲጀመር የተሰኩ NFTs ወደ IPFS አውታረ መረብ ይስተናገዳሉ።
-    በአሁኑ ጊዜ <ph name="NFT_COUNT"/> የተሰኩ NFTs አሉዎት።</translation>
 <translation id="9216386092464743272">እርግጠኛ ነዎት ሁሉንም የኪስ ቦርሳ ግብይትዎን እና ምንም መረጃ እንደገና ማስጀመር ይፈልጋሉ? ይህ አማራጭ በአብዛኛው የሚጠቀመው የአካባቢያዊ የሙከራ አገልጋይ በሚያሄዱ ገንቢዎች ነው። ለማረጋገጥ "<ph name="CONFIRMATION_PHRASE"/>" ብለው ይተይቡ።</translation>
 <translation id="6369495274982305511">እርግጠኛ ነዎት ዋሌትዎን ዳግም ማስጀመር ይፈልጋሉ? የዋሌትዎ ምትኬ ካልተቀመጠ፣ ዳግም ማስጀመር ሁሉንም የመለያ ውሂቦች (ማንኛውም ተዛማጅ ገንዘቦችን ጨምሮ) እንዲያጡ ያደርግዎታል። ለማረጋገጥ "<ph name="CONFIRMATION_PHRASE"/>" ይጻፉ።</translation>
-<translation id="4248533222660842025">እርግጠኛ ነዎት የተሰኩ NFTs ን ማጽዳት ይፈልጋሉ? በ IPFS አውታረመረብ ውስጥ ሌሎች አስተናጋጆች ከሌሉ አንዳንድ NFTs ለዘለዓለም ሊጠፉ ይችላሉ። ለማረጋገጥ "<ph name="CONFIRMATION_PHRASE"/>" ይተይቡ።</translation>
 <translation id="3752403403443723332">ዋሌትዎ ዳግም ተጀምሯል።</translation>
 <translation id="594766067816395072">የዋሌትዎ የግብይት መረጃ ዳግም ተጀምሯል።</translation>
-<translation id="1615009913945115836">የእርስዎ የተሰኩ NFTs ዳግም ተጀምረዋል።</translation>
 <translation id="57798285717509216">ከመፈረምዎ በፊት የግብይቶች ውጤቶችን ይመልከቱ።<ph name="BEGIN_LINK"/>&lt;u&gt;Learn more&lt;/u&gt;<ph name="END_LINK"/></translation>
 <translation id="4226543734057230801">የ Ethereum አውታረ መረቦች</translation>
 <translation id="3504157706952484145">የ Filecoin አውታረ መረቦች</translation>
@@ -665,7 +619,6 @@
 <translation id="3047726704186619366">ኣይከን URLs</translation>
 <translation id="2487558607408469181">አሳሽ URLs ን አግድ</translation>
 <translation id="2156993118928861787">ልክ ያልሆነ አድራሻ</translation>
-<translation id="6301398959353668507">ይህ መስክ ባዶ ሊሆን አይችልም።</translation>
 <translation id="7504462451153306677">ልክ ያልሆነ ቅርጸት፣ የሰንሰለቱ መታወቂያ አወንታዊ ቁጥር ነው።</translation>
 <translation id="650071759190249039">የውስጥ ስህተት፣ አውታረ መረብ ማከል አልተቻለም።</translation>
 <translation id="336035846712292194">እባክዎ ስለ የአከባቢው የመገበያያ ገንዘብ ሁሉንም መረጃ ይሙሉ</translation>
@@ -676,52 +629,6 @@
 <translation id="232693303726691609">አውታረ መረብን በዋሌት አውታረ መረብ ዝርዝር ውስጥ አሳይ/ደብቅ</translation>
 <translation id="7893578599666249602">በእውነት <ph name="KEY_NAME"/>ን ዳግም ማስጀመር ይፈልጋሉ?</translation>
 <translation id="2618193846561624884">አሁን ያለውን አውታረ መረብ ማዘመን ይፈልጋሉ?</translation>
-<translation id="9170907049676078643">የ IPFS ሀብቶችን የፍታት ዘዴ</translation>
-<translation id="1327977588028644528">አግባቢ ፍኖት</translation>
-<translation id="1195880978080389104">Brave local IPFS ኖድ</translation>
-<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>የበለጠ ይወቁ<ph name="END_LINK_MPL"/> ስለ IPFS local node እና gateway ግላዊነትን በተመለከተ ታሳቢ የሚደረጉ ጉዳዮች።</translation>
-<translation id="4927734062756955434">የ IPFS የህዝብ አግባቢ ፍኖት አድራሻ</translation>
-<translation id="3707431725427930007">የ IPFS የህዝብ የመግቢያ አድራሻ ለ NFT</translation>
-<translation id="8425213833346101688">ለውጥ</translation>
-<translation id="585868419599255817">የ IPFS የህዝብ መግቢያ ማምለጫ</translation>
-<translation id="2618080188892567155">የ Brave local IPFS ኖድ መገኘት ካልቻለ በራስ-ሰር አሠራር ወደ ህዝብ IPFS አግባቢ ፍኖት ይመለሳሉ።</translation>
-<translation id="8956391206920485238">በአሳሽ ማስጀመር ላይ ሁልጊዜ የIPFS ኖድ ይጀምር?</translation>
-<translation id="6789104345873307368">የIPFS አውታረ መረብ ግብዓቶችን ጥያቄዎችን በራስ ሰር ወደ ተዋቀረው መግቢያ መንገድ አዙር።</translation>
-<translation id="4138306018048329894">በሶስተኛ ወገን IPFS መግቢያ መንገዶች ወይም DNSLINK ሃብቶች የሚስተናገዱ የIPFS ሃብቶች ጥያቄዎች በተመረጠው የአካባቢ ወይም የርቀት መግቢያ በር በኩል ይተላለፋሉ።
-ማሳሰቢያ፦ የአካባቢ መስቀለኛ መንገድ ከተመረጠ ሃብቱ በቀጥታ ከኮምፒዩተርዎ ይጠየቃል እና የተሸጎጠ ውሂብ ለተወሰነ ጊዜ ለIPFS አውታረመረብ ሊቀርብ ይችላል።</translation>
-<translation id="8068526464562249859">ከአሳሽዎ አሞሌ የተለመዱ የ IPFS ተግባሮችን ማግኘት ጨምሮ በ Brave ውስጥ ለተሻሻለው የ IPFS ድጋፍ የ IPFS ኮምፓኒየን ቅጥያን ይጠቀማል።</translation>
-<translation id="1251574393468476924">ከፍተኛ የIPFS መሸጎጫ መጠን (ጊባ)</translation>
-<translation id="2503497578400410320">የሶፍት የላይኛው ወሰን ለIPFS ማከማቻ የውሂብ መደብር መጠን</translation>
-<translation id="6758961763875471084">የአቻ ዝርዝርን ያስተካክሉ</translation>
-<translation id="5761731140570209168">የአዲስ አቻ ግንኙነት ስትሪንግ ያክሉ</translation>
-<translation id="7024553202001112871">የ IPNS ቁልፎችዎን ያዋቅሩ</translation>
-<translation id="951216659045543447">ይዘቱን በተዛማጅ የግል ቁልፍ ይፈርሙና ወደ IPNS ያትሙ</translation>
-<translation id="7611728475758612204">ለህትመት የሚሆኑ ቁልፎች</translation>
-<translation id="911363100236037920">ለአዲሱ ቁልፍ ስም ያስገቡ</translation>
-<translation id="6358469157239228181">ይህ ስም መጠቀም አይቻልም</translation>
-<translation id="2082206983920804886">ቁልፉን ያሽከርክሩ</translation>
-<translation id="5078501082919354191">Brave local IPFS ኖድ ማስቆም አልተቻለም</translation>
-<translation id="5687424953196903465">Brave local IPFS ኖድ ማስጀመር አልተቻለም</translation>
-<translation id="6476061084931271248">ለውጦችን ለመተግበር መሳሪያዎን ዳግም ያስጀምሩ።</translation>
-<translation id="3754226427671882382">እንደገና ማስጅመሪያ ኖድ</translation>
-<translation id="949667118776341807">ያሽከርክሩ</translation>
-<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
-<translation id="724513921936768901">ይህ ስም ትክክለኛ አይደለም</translation>
-<translation id="1295874070797049002">ቁልፉን ይላኩ</translation>
-<translation id="3946479342297227860">ቁልፉን አስወግድ</translation>
-<translation id="1534091531114892221">የ ipfs የአቻዎች መግለጫን ያዘጋጁ</translation>
-<translation id="910215077892371264">የተገናኘው መሳሪያዎ አልተነሳም</translation>
-<translation id="616058968889448209">የ IPFS አገልግሎት ማስጀመሪያ ስህተት ፣ ተጨማሪ መረጃ በ <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
-<translation id="6912148685459054619">'<ph name="KEY_NAME"/>' ቁልፍን ማስመጣት አልተሳካም</translation>
-<translation id="3364053282600191535">'<ph name="KEY_NAME"/>' ቁልፍ መላክ አልተሳካም</translation>
-<translation id="5840868269342837751">ማሳሰቢያ፡ የአውታረ መረብ ጥያቄዎች የአሳሽ ፕሮክሲ እና የዲ.ኤን.ኤስ ቅንብሮችን ላይጠቀሙ ይችላሉ።</translation>
-<translation id="8275038454117074363">ያስመጡ</translation>
-<translation id="3654980960391973513">ይፍጠሩ</translation>
-<translation id="5531501313997312487">የተገናኝ መሳሪያዎን ያስጀምሩ</translation>
-<translation id="557281710253742286">የ IPFS  አግባቢ ፍኖትን ያስተካክሉ</translation>
-<translation id="8571837315037233299">አግባቢ ፍኖት አድራሻ</translation>
-<translation id="7703184801853248830">ልክ ያልሆነ የአግባቢ ፍኖት አድራሻ</translation>
-<translation id="7690058578502751948">በBrave ውስጥ ጥቅም ላይ መዋል የሚችለው ትክክለኛ IPFS መግቢያ ከመነሻ ማግለል ጋር ብቻ ነው።</translation>
 <translation id="1643029991199044105">የ Ctrl-Tab ትር በመጠቀም በጣም በቅርብ ጊዜ በተጠቀሙባቸው ትሮች ውስጥ ይቃኙ</translation>
 <translation id="2775956301559569472">የ Wayback ማሽን ስንዱን 404 ገጾች ላይ አሳይ</translation>
 <translation id="3095201688102519917">በርካታ ትሮች ያሉት መስኮት ከመዝጋቱ በፊት አስጠንቅቀኝ</translation>
@@ -732,10 +639,6 @@
 <translation id="1529674267267221673">Leo አንድ የድር ጣቢያ ላይ በቀኝ ጠቅ ሲያደርጉ በአውድ ምናሌው ውስጥ ይታያል። ይህም አውድን ከአሁኑ ድረ-ገጽ ወደ Leo ይልካል።</translation>
 <translation id="8172263161008556851">በውይይቱ ውስጥ የተጠቆሙ ጥያቄዎችን አሳይ</translation>
 <translation id="1014480593522400586">የLeo ውሂብን አፅዳ</translation>
-<translation id="8681157601856387010">የLeo ረዳትን ዳግም በማስጀመር  የBrave
-Leoን በመጠቀም ወደፊት ለመግባት እና የእርስዎን የጭውውት ታሪክ ለማጽዳት ይጠይቅዎታል። የእርስዎን
-የጭውውት ታሪክ ማጽዳት ከBrave ጋር የእርስዎን የቀድሞ ውይይቶች በሙሉ ያጠፋል
-። ይህ ተግባር ሊቀለበስ አይችልም።</translation>
 <translation id="5574059574002819179">በራስ-መጠናቀቅ የሚየስችሉ የአስተያየት ጥቆማዎችን ያስተካክሉ</translation>
 <translation id="8157373421434119674">ውሂብ እና የጭውውት ታሪክ</translation>
 <translation id="614530507403667291">ነባሪ ሞዴል ለአዳዲስ ውይይቶች</translation>

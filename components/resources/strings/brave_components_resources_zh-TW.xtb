@@ -1,9 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-TW">
-<translation id="1800311840305731850">無法載入 IPFS 頁面。</translation>
-<translation id="5712742401570874902">不允許以無痕式視窗開啟 IPFS 頁面。</translation>
-<translation id="5749639013106315553">IPFS 已停用。在設定中選擇 IPFS 解析方法以開啟此網站。</translation>
 <translation id="5288293905681750318">被封鎖的追蹤器與廣告</translation>
 <translation id="2313532038420432247">HTTPS 升級</translation>
 <translation id="788493840831967104">節省的時間</translation>
@@ -67,7 +64,7 @@
 <translation id="780301667611848630">不用了，謝謝</translation>
 <translation id="1230746063445072175">想要進一步捍衛隱私嗎？</translation>
 <translation id="6699628638740071563">該是捨棄 Google 的時候了。</translation>
-<translation id="2045455461902775806">Brave 搜尋不會偏重任何搜尋結果或審查內容，也不會追蹤您、您的查詢內容或點擊項目。</translation>
+<translation id="5588534392045217394">Brave 搜尋不會偏重任何搜尋結果或審查內容，也不會建立您的使用者輪廓。</translation>
 <translation id="6811221529729056895">立即試用 Brave 搜尋</translation>
 <translation id="3446024864193919737">顯示 Brave Rewards</translation>
 <translation id="5585019845078534178">卡片</translation>
@@ -411,13 +408,9 @@
 <translation id="2799223571221894425">重新啟動</translation>
 <translation id="1110535155349301542">移除</translation>
 <translation id="8204292894173669182">從已儲存的項目移除</translation>
-<translation id="5939518447894949180">重設</translation>
-<translation id="3349204812119681938">重設 Brave Rewards</translation>
 <translation id="5669281110673664811">清除排除清單</translation>
 <translation id="1797334173232638045">已固定的網站已移往以下地點：</translation>
 <translation id="3074127054582480056">注意</translation>
-<translation id="4915997950539925115">重設會刪除目前的 Brave 獎勵個人資料，並停用 Brave 獎勵。如果您之後重新啟用，您必須重新建立 Brave 獎勵個人資料。如需詳細資訊，請參閱<ph name="LINK_BEGIN"/>重設的支援文章<ph name="LINK_END"/>。</translation>
-<translation id="4806029412510565611">我瞭解目前的 Brave Rewards 個人資料和 Brave Rewards 資料將從我的裝置刪除，我已詳閱<ph name="LINK_BEGIN"/>與重設相關的支援文章<ph name="LINK_END"/>。</translation>
 <translation id="3494964159182650590">Rewards 摘要</translation>
 <translation id="2913994227901456490">查看全部 [[numItems]] 個項目</translation>
 <translation id="6685434227783226855">捐款</translation>
@@ -503,76 +496,6 @@
 <translation id="4087894168792701548">正常進行</translation>
 <translation id="5874287397425241890">您正在以停止記錄模式造訪此網站。</translation>
 <translation id="1036348656032585052">關閉</translation>
-<translation id="9020818404803201080">已連線的同儕：</translation>
-<translation id="2903493209154104877">地址</translation>
-<translation id="3207122385716480167">倉庫統計</translation>
-<translation id="2595187693729756455">節點資訊</translation>
-<translation id="5789886980848929155">IPFS 節點狀態</translation>
-<translation id="6599816589121202398">API</translation>
-<translation id="1327977588028644528">閘道</translation>
-<translation id="2551123942222622809">Swarm</translation>
-<translation id="5201810533706869030">物件</translation>
-<translation id="8028993641010258682">大小</translation>
-<translation id="7870625241353817260">StorageMax</translation>
-<translation id="3202131003361292969">路徑</translation>
-<translation id="3798449238516105146">版本</translation>
-<translation id="2892680660204660712">Peer ID</translation>
-<translation id="7536543993364605970">代理程式版本</translation>
-<translation id="3693482323085649439">節點正在執行中</translation>
-<translation id="6315833555896070573">節點不在執行中</translation>
-<translation id="1272079795634619415">停止</translation>
-<translation id="5895138241574237353">重新啟動</translation>
-<translation id="6762417584993757344">未安裝</translation>
-<translation id="4159076046325416152">正在安裝 IPFS...</translation>
-<translation id="3854747677478661601">執行廢棄項目收集清理</translation>
-<translation id="7376842608449050673">廢棄項目收集錯誤</translation>
-<translation id="8523162996646111972">（詳細資料）</translation>
-<translation id="6121825639998459476">安裝並啟動</translation>
-<translation id="72868071984333667">深入了解 IPFS 和隱私權</translation>
-<translation id="3793279629218362523">管理 Peer ID 與 IPNS 金鑰</translation>
-<translation id="6776260067907986254">我的節點</translation>
-<translation id="8999763401170835879">出現了錯誤，請試著再啟動一次</translation>
-<translation id="5433704526290922623">出現了錯誤，請試著再次安裝節點</translation>
-<translation id="8428368469058794536">IPFS 服務</translation>
-<translation id="7691598647605453992">IPFS</translation>
-<translation id="8725066075913043281">再試一次</translation>
-<translation id="1886162073868201257">IPFS 服務啟動錯誤</translation>
-<translation id="5357895013476183089">找不到 IPFS</translation>
-<translation id="7662930734991751511">無法使用 Brave 本機 IPFS 節點載入 IPFS 資源</translation>
-<translation id="1141556610026845297">無法使用本地 IPFS 節點來載入要求的 IPFS 資源。按一下「繼續」按鈕以改用公用閘道器，並在未來自動返回公用閘道器。</translation>
-<translation id="3373798179786163193">以公開閘道器繼續</translation>
-<translation id="1974060860693918893">進階</translation>
-<translation id="9096577886148726047">隱藏進階</translation>
-<translation id="182581792765792826">Brave 無法載入要求的 IPFS 資源，因為 Brave 本機 IPFS 節點未啟動，或目前沒有已連接的同儕節點可用。若您選擇「繼續」，每當使用 Brave 本機 IPFS 節點失敗時，Brave 將會自動回復預設的公用閘道。您可以隨時在 Brave 設定中變更此行為。</translation>
-<translation id="8026038288183400906">IPFS 喜好設定</translation>
-<translation id="2058855456574089690">設定您的 IPFS 喜好設定</translation>
-<translation id="4780526507945807546">使用 Brave 本機 IPFS 節點</translation>
-<translation id="8148464361648742409">使用公共閘道</translation>
-<translation id="5123478056123923857">IPFS（星際檔案系統）是用於點對點資料儲存和傳送的公共網絡。此通訊協定與 HTTP（S）具有不同的隱私權考量。</translation>
-<translation id="1216911189668016151">您的電腦參與公共網絡，但是您的 IP 位址和您要求或提供的任何內容可能遭洩漏。透過 IPFS 要求的內容，在提供給您之前已經過驗證。網路要求不得使用瀏覽器 Proxy 和 DNS 設定。</translation>
-<translation id="8664689531113048642">保護您向潛在的第三方觀察者，而不是公共閘道營運商，要求的 IP 位址和內容。 閘道營運商負責確保透過閘道提供給您的內容，是您請求的內容。此外，您的電腦不參與公共 IPFS 網絡。</translation>
-<translation id="3977809385703587108">您可以再次變更您的喜好設定，透過</translation>
-<translation id="3340978935015468852">設定</translation>
-<translation id="4148957013307229264">正在安裝...</translation>
-<translation id="4219228508273972445">正在尋找用戶群...</translation>
-<translation id="1902096227388293745">沒有可用的同儕節點，正在重試...（剩下 <ph name="ATTEMPTS_NUMBER"/> 次嘗試次數）</translation>
-<translation id="1675751799495331928">我們已超過嘗試次數的限制，請稍後再試。</translation>
-<translation id="4499666752625407848">更新期間發生錯誤。</translation>
-<translation id="62991515067726424">此內容已透過 IPFS 通訊協定載入</translation>
-<translation id="7263366446813126341">星際檔案系統 (IPFS) 是用於點對點資料儲存和傳送的公用網路。您可以深入瞭解 Brave 的整合或隨時設定 IPFS 設定。</translation>
-<translation id="3175567740517780285">IPFS 設定</translation>
-<translation id="8914505352873092008">前往 IPFS 設定頁面</translation>
-<translation id="3465468510001693544">IPFS 診斷</translation>
-<translation id="2527518382346359563">前往 IPFS 診斷頁面</translation>
-<translation id="8192016636169857406">IPFS 文件</translation>
-<translation id="6863052043162730918">前往 IPFS 文件頁面</translation>
-<translation id="3862600063748690056">IPFS 匯入完成</translation>
-<translation id="8263749381887932384">IPFS 匯入部分完成</translation>
-<translation id="2145699434318651911">IPFS 匯入失敗</translation>
-<translation id="5525148540855044244">已複製可分享的連結：<ph name="SHAREABLE_LINK"/></translation>
-<translation id="3741998951694470470">無法擷取要匯入的資料</translation>
-<translation id="7900950536120202771">IPFS 節點內部錯誤</translation>
-<translation id="1036635552229153800">資料已成功上傳，但未移動至 brave-import 目錄。您可以在匯入設定頁面手動執行此動作。</translation>
 <translation id="572392919096807438">記住我的決定</translation>
 <translation id="7978789143098237970">直到我關閉此網站</translation>
 <translation id="3523195733429162409">24 小時</translation>
@@ -584,6 +507,10 @@
 <translation id="5770656036486891920"><ph name="URL"/> 想要使用第三方 Cookie 進行舊版 Google 登入</translation>
 <translation id="6053826678715267477">允許存取本地主機資源</translation>
 <translation id="2973562729984406132"><ph name="URL"/> 想存取本地主機資源</translation>
+<translation id="5939518447894949180">重設</translation>
+<translation id="3349204812119681938">重設 Brave Rewards</translation>
+<translation id="4915997950539925115">重設會刪除目前的 Brave 獎勵個人資料，並停用 Brave 獎勵。如果您之後重新啟用，您必須重新建立 Brave 獎勵個人資料。如需詳細資訊，請參閱<ph name="LINK_BEGIN"/>重設的支援文章<ph name="LINK_END"/>。</translation>
+<translation id="4806029412510565611">我瞭解目前的 Brave Rewards 個人資料和 Brave Rewards 資料將從我的裝置刪除，我已詳閱<ph name="LINK_BEGIN"/>與重設相關的支援文章<ph name="LINK_END"/>。</translation>
 <translation id="7717357606512850995">查看狀態</translation>
 <translation id="6473937687348632190"><ph name="MONTH"/>獎勵的支付已經完成。</translation>
 <translation id="1711367267038576241"><ph name="MONTH"/>獎勵的支付將於<ph name="DATE"/>前開始處理。</translation>
@@ -605,6 +532,13 @@
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
       =1 {這個月您已造訪 # 個 Brave Rewards 支持的創作者}
       other {這個月您已造訪 # 個 Brave Rewards 支持的創作者}
+    }</translation>
+<translation id="3264975266761862670">準備好開始賺取收益了嗎？</translation>
+<translation id="2784412028126205842">連結支付帳戶</translation>
+<translation id="766126983336630294">{ADS_VIEWED, plural,
+      =0 {您本月看過 <ph name="COUNT_BEGIN"/># 則廣告}
+      =1 {您可獲得本月看過 <ph name="COUNT_BEGIN"/># 則廣告<ph name="COUNT_END"/>的報酬。}
+      other {您可獲得本月看過 <ph name="COUNT_BEGIN"/># 則廣告<ph name="COUNT_END"/>的報酬。}
     }</translation>
 <translation id="6067959437127691361">使用 Brave Rewards 不僅能支持內容創作者，還可賺取 BAT。</translation>
 <translation id="944736176598169208">獎勵</translation>
@@ -658,12 +592,23 @@
 <translation id="6945221475159498467">選擇</translation>
 <translation id="3279158300746391749">按下 URL 欄中的 <ph name="BAT_ICON"/> BAT 圖示即可開始。</translation>
 <translation id="8465790416279415448">繼續操作即表示您同意《<ph name="TOS_LINK_BEGIN"/>服務條款<ph name="TOS_LINK_END"/>》與《<ph name="PP_LINK_BEGIN"/>隱私權政策<ph name="PP_LINK_END"/>》。</translation>
+<translation id="8981626318554555706">選擇您的地區</translation>
+<translation id="6923445315496949274">選擇您所在的地區，我們將向您顯示合適的選項和廣告。</translation>
+<translation id="840952951051929644">啟用獎勵即表示您同意《<ph name="TOS_LINK_BEGIN"/>服務條款<ph name="TOS_LINK_END"/>》與《<ph name="PP_LINK_BEGIN"/>隱私權政策<ph name="PP_LINK_END"/>》。</translation>
+<translation id="5259608623172605993">在 Brave 中看私人廣告，獲得報酬</translation>
+<translation id="3099020087817489135">享有特別福利和折扣</translation>
+<translation id="3991575120992914717">啟用 Brave Rewards</translation>
 <translation id="1015443539415537847">很抱歉，Brave 獎勵目前無法使用</translation>
 <translation id="5007776270364097327">很抱歉，您所在的區域目前似乎無法使用 Brave 獎勵。</translation>
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>深入瞭解<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">別擔心。</translation>
 <translation id="5027616819996705541">您在瀏覽網頁時，仍能保有個人隱私！</translation>
 <translation id="1886682615222609631">迄今為止的收益</translation>
+<translation id="7649070708921625228">說明</translation>
+<translation id="6042308850641462728">更多</translation>
+<translation id="6245259297588415877">創作者</translation>
+<translation id="1736419249208073774">探索</translation>
+<translation id="932327136139879170">首頁</translation>
 <translation id="3479552764303398839">現在不要</translation>
 <translation id="4185473179105062442">在自行保管的加密位址直接收取 BAT</translation>
 <translation id="5802986777701714573">我們已為您新增一種收取每月 BAT 獎勵的新方式。只要連結任一合作夥伴的帳戶或使用全新的自行保管選項，就能立即開始賺取收益。</translation>
@@ -694,6 +639,7 @@
 <translation id="5562948772940025260">如要使用 Brave Rewards 餘額，您最多只能捐出 <ph name="AMOUNT"/> BAT。</translation>
 <translation id="4827581232860040208">捐款時發生問題</translation>
 <translation id="3259723213051400722">請再試一次。</translation>
+<translation id="8725066075913043281">再試一次</translation>
 <translation id="5379685283876547860">捐款完成！</translation>
 <translation id="7063168612616047608">感謝您支持喜愛的創作者</translation>
 <translation id="1041398280582063935">分享您對創作者的支持</translation>
@@ -804,15 +750,34 @@
 <translation id="6954838107964168963">已擁有</translation>
 <translation id="1976851706319678835">未擁有</translation>
 <translation id="7372882109707907136">數量/24小時</translation>
+<translation id="8141607516466809432">選擇要橋接的資產</translation>
+<translation id="6517332033658428773">審查交換</translation>
+<translation id="8692596799753687794">選擇報價提供者</translation>
+<translation id="463712644600982655">每個聚合器會使用其 API 的流動性來提供報價。聚合器會收集多個交易所的價格資訊，並根據這項資料提供價格。</translation>
+<translation id="3253225298092156258">無法選擇</translation>
+<translation id="473775607612524610">更新</translation>
+<translation id="4389658703251593158"><ph name="PROVIDER_NAME"/> 不支援這個交易對</translation>
+<translation id="1176173785350238153">變更提供者</translation>
+<translation id="1442774416207457340">路由</translation>
+<translation id="8669403359205745187">滑動價差上限</translation>
+<translation id="4537396160118360541">您提交的交易價格和在區塊鏈上交易時的價格差異大於此設定值時，交易會失敗。</translation>
+<translation id="9102352924723221579">價格影響是指您的交易可能對市場價格產生多大影響。部分流動性低的代幣對交易更敏感，即使少量交易也可能大幅影響價格。</translation>
+<translation id="6830526162796484210">建議的值：</translation>
+<translation id="3882803104394170658">主流資產對：<ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="8918807203406722697">穩定幣對：<ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="7056655731948492143">其他：<ph name="SLIPPAGE_PERCENT"/>%</translation>
+<translation id="6231782223312638214">建議</translation>
+<translation id="6484605214219822434">審查橋接</translation>
+<translation id="3365052891357224017">預估時間</translation>
+<translation id="7448445168067324096">匯率</translation>
+<translation id="1888985051832898007"><ph name="ONE_TOKEN_VALUE"/> 比 <ph name="EXCHANGE_VALUE"/></translation>
+<translation id="6728663400147327751">接收人</translation>
 <translation id="9209024278910716955">特定網路不支援購買程序</translation>
 <translation id="4982630604810554641">正在搜尋網域…</translation>
 <translation id="5467044307473123584">Brave 支援使用鏈下交易閘道解析 .eth 網域。</translation>
 <translation id="4896417414446851895">您似乎輸入的是 ENS 位址。我們需要使用第三方解析程式來解析此要求，這麼做可能會看見您的 IP 位址和網域。</translation>
 <translation id="8646078615727397565">使用 ENS 網域</translation>
 <translation id="1191686659164947414">交易可能超前</translation>
-<translation id="8914256532272191486">兌換作業只會在此處定義的最大價差內執行，例如 1% 的價差即表示您願意接受最高 1% 的價格落差。</translation>
-<translation id="632241521608275119">滑點容許範圍</translation>
-<translation id="2493281414634883751">請輸入介於 0.5% 到 99% 的值</translation>
 <translation id="4500473291496079954">到期時間</translation>
 <translation id="2236833281018938257">錢包位址或 URL</translation>
 <translation id="928500657730628112">錢包位址</translation>
@@ -829,7 +794,6 @@
 <translation id="6896758677409633944">複製</translation>
 <translation id="7885157704277298658">已複製！</translation>
 <translation id="6518133107902771759">驗證</translation>
-<translation id="6042308850641462728">更多</translation>
 <translation id="3157931365184549694">還原</translation>
 <translation id="414070570958255222">瀏覽器原生、自行保管，並採用多鏈機制。</translation>
 <translation id="1350120992777389959">掌控您的加密貨幣和 NFT。Brave 錢包支援以太坊、EVM 鏈、Solana、Filecoin、比特幣等。</translation>
@@ -892,6 +856,8 @@
 <translation id="1940465339426637378">資產</translation>
 <translation id="2236507293802791911">可見資產</translation>
 <translation id="3188393374551744535">帳戶餘額</translation>
+<translation id="4180024248473947674">在以下瀏覽器查看地址：</translation>
+<translation id="1251267447128999380"><ph name="BLOCKCHAIN_NETWORK_NAME"/> 瀏覽器</translation>
 <translation id="7525067979554623046">建立</translation>
 <translation id="4771176409524282426">建立帳戶</translation>
 <translation id="2471867767872178363">建立 <ph name="BLOCKCHAIN_NETWORK"/> 帳戶</translation>
@@ -952,6 +918,7 @@
 <translation id="5138307340667775659">此代幣被加入您的資產。</translation>
 <translation id="547122651977318828">代幣 ID (僅適用於 ERC721)</translation>
 <translation id="7544552854944350190">代幣 ID 必填</translation>
+<translation id="1974060860693918893">進階</translation>
 <translation id="3842236145820483340">CoinGecko ID</translation>
 <translation id="7642841516562576649">圖示 URL</translation>
 <translation id="2144247757675997850">新增資產</translation>
@@ -975,7 +942,6 @@
 <translation id="1448289340149908413">以太坊</translation>
 <translation id="1530109021798294736">主網</translation>
 <translation id="1613627717923045622">測試網路</translation>
-<translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
 <translation id="6749024162985917640">本地主機</translation>
 <translation id="3792938779249970121">選擇帳戶</translation>
@@ -1194,8 +1160,6 @@
 <translation id="9033453977881595182">代幣 ID</translation>
 <translation id="6332387008245531841">合約位址</translation>
 <translation id="4790543031293959558">圖片 URL</translation>
-<translation id="3954354850384043518">下載中</translation>
-<translation id="4350065043422286972">已固定</translation>
 <translation id="4289540628985791613">總覽</translation>
 <translation id="5585178186632632419">擁有者：</translation>
 <translation id="2686444421126615064">檢視障戶</translation>
@@ -1290,6 +1254,7 @@
 <translation id="6736243959894955139">帳戶位址</translation>
 <translation id="3095940652251934233">聲明</translation>
 <translation id="308268297242056490">URI</translation>
+<translation id="3798449238516105146">版本</translation>
 <translation id="1313065465616456728">發行時間</translation>
 <translation id="7902225556763260253">失效時間</translation>
 <translation id="2471230424465522689">不早於</translation>
@@ -1515,23 +1480,22 @@
 <translation id="4937657825850660613">一半</translation>
 <translation id="7639814793732182496">最大值</translation>
 <translation id="6584782231358487640">輸入金額</translation>
-<translation id="821928941440539212">正在尋找最佳報價...</translation>
+<translation id="477281933640372562">正在擷取報價</translation>
 <translation id="5450317966495183014">接收 (預估值)</translation>
 <translation id="8747614139273050577">持有代幣</translation>
 <translation id="1726158192333401896">兌換代幣</translation>
+<translation id="765894671068292221"><ph name="COUNTDOWN_BEFORE"/><ph name="COUNTDOWN"/><ph name="COUNTDOWN_AFTER"/> 後提供新報價</translation>
 <translation id="3835223348537121988">餘額：</translation>
 <translation id="5709875713144853427">選取要交換的代幣</translation>
 <translation id="720404198240859011">顯示沒有餘額的代幣</translation>
 <translation id="4886690455791686940">隱藏餘額歸零的代幣</translation>
 <translation id="615791330696335475">依名稱搜尋代幣</translation>
 <translation id="381485723922188688">選項</translation>
-<translation id="6680650203439190394">匯率</translation>
 <translation id="2538996898605796431">價格影響</translation>
 <translation id="8007404171238546456">滑價後收到的最低金額</translation>
 <translation id="767199001998615704">網路費</translation>
-<translation id="7057870207229052478">Brave 費</translation>
+<translation id="28584716826670202">含 Brave 費用</translation>
 <translation id="3624518972158401291">免費</translation>
-<translation id="5038255447967558645">流動性提供者</translation>
 <translation id="8450638959928932199">交換並傳送</translation>
 <translation id="476816352791390168">不收取額外費用！</translation>
 <translation id="5319981934425923365">我確認上方的位址正確無誤</translation>
@@ -1542,6 +1506,7 @@
 <translation id="8044899503464538266">慢</translation>
 <translation id="3569512916300900704">平均</translation>
 <translation id="7019805045859631636">快</translation>
+<translation id="632241521608275119">滑點容許範圍</translation>
 <translation id="6778140392042462129">交易所</translation>
 <translation id="6173494033320397682">僅限直接路由</translation>
 <translation id="2440960581098655899">確保只採用直接路由，並停用分割交易</translation>
@@ -1549,6 +1514,7 @@
 <translation id="2379187373676242615">比 CoinGecko 便宜 <ph name="VALUE"/>%</translation>
 <translation id="5351867352310722022">與 CoinGecko 相差不到 <ph name="VALUE"/>%</translation>
 <translation id="7695501918490163821">比 CoinGecko 貴 <ph name="VALUE"/>%</translation>
+<translation id="6599816589121202398">API</translation>
 <translation id="7561262633951061138">最佳</translation>
 <translation id="8060029310790625334">帮助中心</translation>
 <translation id="3143110700666266545">此應用程式使用以下第三方 API：</translation>
@@ -1562,29 +1528,6 @@
 <translation id="3797613444743816037">Mint 地址</translation>
 <translation id="7951915459354237451">費用限制設定為低於基本費用。您的交易可能需要處理很久的時間或失敗。</translation>
 <translation id="2227702748249086756">無法擷取預估費用</translation>
-<translation id="6580621526400120372">為什麼有些 NFT 不符合條件？</translation>
-<translation id="620930608106217992">一些 NFT 資料儲存於 AWS、Google Cloud 等集中式伺服器。在此情況下無法將您的 NFT 資料固定至 IPFS 網路。</translation>
-<translation id="4637031024914696767">在 Brave 啟用 IPFS 後，您的 NFT 就會自動固定到 IPFS。這是備份 NFT 最安全的方式。</translation>
-<translation id="2319971828691864975">開始使用 IPFS</translation>
-<translation id="7906328323880284538">最安全的 NFT 代管方式</translation>
-<translation id="214349569547787359">在 Brave 啟用 IPFS 即可自動備份 NFT</translation>
-<translation id="4819588096619503180">IPFS 是一種社群導向的儲存網路，就像是所有人都能使用的硬碟。不同的是，這個網路並非由單一授權方所監管，而是由數千名使用者共同托管 IPFS 上的內容。當您將內容「固定」到 IPFS，就能確保內容至少有份複本已安全儲存。只要有人保管一份複本，檔案就永遠不會消失。<ph name="NEWLINE"/>在 Brave 啟用 IPFS 後，您的 NFT 就會自動固定到 IPFS。這是備份 NFT 最安全的方式。</translation>
-<translation id="9160750213078764355">查看我有哪些 NFT 符合資格</translation>
-<translation id="6241155642582182934">在 Brave 啟用 IPFS 即可自動備份 NFT，增添安全保障。</translation>
-<translation id="654964147165509548">NFT 會釘選到您的本機 IPFS 節點。</translation>
-<translation id="4910182786472608576"><ph name="PINNED"/> 支援的 NFT 會釘選到您的本機 IPFS 節點。</translation>
-<translation id="1607117719941506821"><ph name="PINNABLE"/> 個 NFT 符合條件</translation>
-<translation id="7056553112112778467"><ph name="PINNABLE"/> NFT 符合資格</translation>
-<translation id="6852656829524945421">無法固定</translation>
-<translation id="9019535252716288146">您的 IPFS 節點正在執行中</translation>
-<translation id="5584313306739463968">目前未執行本機 IFPS 節點</translation>
-<translation id="7527548209942671618">已固定至您的本機 IPFS 節點</translation>
-<translation id="5659058832308365026">正在將 NFT 資料固定至您的本機 IPFS 節點</translation>
-<translation id="4919133452617704550">無法固定至您的本機 IPFS 節點</translation>
-<translation id="4220102684162429566">最常見的原因：</translation>
-<translation id="451509325309455">NFT 具有非 IPFS 中繼資料 URL 問題</translation>
-<translation id="3827697793483899711">內部 IPFS 節點問題</translation>
-<translation id="1992846713609432783">本機節點的空間不足</translation>
 <translation id="3225624966527491351">匯入 NFT</translation>
 <translation id="9085765419770918643">此處目前沒有任何 NFT。</translation>
 <translation id="8445532667841598737">準備好新增 NFT 了嗎？按下方按鈕即可匯入。</translation>
@@ -1596,6 +1539,7 @@
 <translation id="6948667383954749033">標示為非垃圾項目</translation>
 <translation id="5810047320613496595">垃圾項目</translation>
 <translation id="7257605968082307175">標示為垃圾項目</translation>
+<translation id="1255896809210433555">新增 NFT</translation>
 <translation id="7600335727434653744">從 Brave 錢包中移除？</translation>
 <translation id="6657860743511185539">NFT 將從 Brave 錢包中移除，但仍保留在區塊鏈上。如果您在移除後改變主意，則需要再次手動匯入。</translation>
 <translation id="849880459530751909">編輯 NFT</translation>
@@ -1653,6 +1597,25 @@
 <translation id="8488138412489236285">輸入密碼（若適用）</translation>
 <translation id="9166422618242592074">匯入類型</translation>
 <translation id="1913853014470037784">隱藏未擁有的 NFT</translation>
+<translation id="6722771294390991852">依系列分組</translation>
+<translation id="8775144690796719618">網址無效</translation>
+<translation id="8892896831704748782">如果看不到 Brave 自動偵測到的 NFT，或想追蹤其他人擁有的 NFT，您可以手動匯入。</translation>
+<translation id="6301982082639804892">在錢包中新增 NFT 時的合約地址，是 NFT 系列智慧合約所在區塊鏈上的專屬地址。您可以在市場或區塊鏈瀏覽器等找到合約地址。</translation>
+<translation id="9033155463293614176">系列中特定 NFT 的專屬識別碼。</translation>
+<translation id="2483152581664459180">無法擷取 NFT 中繼資料</translation>
+<translation id="6198624822546162700">觀看這個 NFT</translation>
+<translation id="3415773516149065346">您並未擁有這個 NFT。您仍可將其新增至錢包，但無法交易。</translation>
+<translation id="7138457458706196245">如 <ph name="VALUE"/></translation>
+<translation id="2454691116905703258">NFT 的代幣名稱是指特定系列或專案中非同質化代幣的特定名稱。這個名稱會區別同一系列中的 NFT。</translation>
+<translation id="3212749868469431851">NFT 符號是指用來區別 NFT 系列或專案的專屬識別碼。</translation>
+<translation id="8198838794018761504">僅供觀看</translation>
+<translation id="193368604235852218">Web3</translation>
+<translation id="3417321754118442366">找不到 DApp</translation>
+<translation id="4864082959618144988">可用錢包</translation>
+<translation id="5445224754926400848">前往 <ph name="VALUE"/></translation>
+<translation id="8355371587927005068">篩選條件</translation>
+<translation id="803703704549420287">清除篩選條件</translation>
+<translation id="1472675084647422956">顯示較多</translation>
 <translation id="3155170474926428993">Tor 啟動程式</translation>
 <translation id="3745016858329272300">一般資訊</translation>
 <translation id="4045404575593562245">Tor 控制事件</translation>
@@ -1700,7 +1663,6 @@
 <translation id="5104499318017527547">趣聞</translation>
 <translation id="2228584369802328636">遊戲</translation>
 <translation id="6941852195052765076">保健養生</translation>
-<translation id="932327136139879170">首頁</translation>
 <translation id="2233040275795129413">生活風格</translation>
 <translation id="5178222043222938163">音樂</translation>
 <translation id="1322083935398004629">政治</translation>
@@ -1734,6 +1696,7 @@
 <translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">快速指令</translation>
 <translation id="7481312909269577407">往前</translation>
+<translation id="1272079795634619415">停止</translation>
 <translation id="302781076327338683">重新載入略過快取</translation>
 <translation id="7211681214230730336">重新載入清除快取</translation>
 <translation id="1779766957982586368">關閉視窗</translation>
@@ -1814,7 +1777,7 @@
 <translation id="6263048902976129908">開發工具切換</translation>
 <translation id="1386786836007298307">切換全螢幕工具列</translation>
 <translation id="461433814913785913">自訂觸控列</translation>
-<translation id="5835081019037947840">切換 JavaScript Apple 事件</translation>
+<translation id="4722786500079380710">切換 JavaScript Apple Event</translation>
 <translation id="5825969867518399495">安裝 PWA</translation>
 <translation id="7888244262238732644">顯示管理頁面</translation>
 <translation id="8114712275882140856">顯示完整 URL</translation>
@@ -1862,7 +1825,7 @@
 <translation id="522953399371747698">隱藏書籤列</translation>
 <translation id="134184943774258988">切換所有書籤按鈕的顯示方式</translation>
 <translation id="2158862020143233462">切換防護</translation>
-<translation id="4610630726762318759">切換 JavaScript</translation>
+<translation id="3010280727642018218">切換 JavaScript</translation>
 <translation id="188822869499214197">顯示播放清單泡泡</translation>
 <translation id="3202536111478033084">依目前網域將標籤分組</translation>
 <translation id="6002210667729577411">將群組移到新視窗</translation>
@@ -2032,6 +1995,7 @@
 <translation id="2370739752330685659">稍後再說</translation>
 <translation id="983013125018250242">Leo 工具</translation>
 <translation id="49269513399674318">使用麥克風</translation>
+<translation id="3895031624234442305">自訂模型</translation>
 <translation id="6303294677342628402">屏蔽</translation>
 <translation id="8458987127502506209">啟用 Brave 防護</translation>
 <translation id="7509914170164691086">Shields 已<ph name="LINK_BEFORE"/>啟用<ph name="LINK_AFTER"/>：</translation>
@@ -2096,7 +2060,7 @@
 <translation id="5037676449506322593">全選</translation>
 <translation id="5148943178722443958">協助提升 Brave 品質。</translation>
 <translation id="1097073572755862978">系統當機或停止回應時傳送診斷報告。<ph name="LINK_BEFORE"/>深入瞭解<ph name="LINK_AFTER"/></translation>
-<translation id="5099408825243658796">分享完全不公開的匿名產品深入分析，指出 Brave 使用者正在使用哪些功能。<ph name="LINK_BEFORE"/>深入瞭解<ph name="LINK_AFTER"/></translation>
+<translation id="6629244688368006959">分享不公開的匿名產品深入分析，指出 Brave 使用者正在使用哪些功能。<ph name="LINK_BEFORE"/>深入瞭解<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">設定完成</translation>
 <translation id="3141206739023333979">您可隨時在 Brave 變更這些選擇，網址為：<ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>。</translation>
 <translation id="8321985064212130832">詳閱我們的<ph name="LINK_BEFORE"/>隱私權政策<ph name="LINK_AFTER"/></translation>
@@ -2169,14 +2133,12 @@ Brave 的協助程式服務可過濾對您 VPN 連線執行 DNS 查詢的方式�
 然而，我們發現目前並未執行此協助程式服務，且不希望讓您處於未受保護的狀態。我們已變更瀏覽器的 DNS 設定，保護您免於此類揭露。這些設定會在 VPN 連線期間有效且無法修改。
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="8810743613883230732">WireGuard 的連線似乎存在一些問題。想要啟用 IKEv2 後備功能以獲得可靠的 VPN 嗎？只需變更設定即可。
+<translation id="7082498599369566941">WireGuard 的連線似乎發生一些問題。想要啟用 IKEv2 後備功能以獲得可靠的 VPN 嗎？只需變更設定即可。
 
 在相容性或設定方面需要幫助嗎？請聯繫我們親切的支援團隊。
-您可以隨時透過 brave://settings/system 恢復到 WireGuard。
+您可以隨時透過 brave://settings/system 恢復為 WireGuard。
 
-讓我們為您連線吧！
-
-<ph name="LEARN_MORE"/></translation>
+讓我們為您連線吧！</translation>
 <translation id="1657858090675311947">不必再警告我這項風險。</translation>
 <translation id="2740531572673183784">Ok</translation>
 <translation id="7423206764347669977">變更設定</translation>

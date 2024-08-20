@@ -9,7 +9,6 @@
 <translation id="1197088940767939838">ទឹក​ក្រូច</translation>
 <translation id="125153950246128346">ចុចដើម្បីមើល​ផ្ទាំងផ្សេងទៀត</translation>
 <translation id="1273910660700874265">ជម្រើសក្រុមផ្ទាំង <ph name="TITLE_OF_GROUP"/></translation>
-<translation id="1322824555808364080">អញ្ជើញ​មនុស្ស</translation>
 <translation id="1419023007528516122">ការធ្វើបែបនេះ​នឹងលុប​ក្រុមនេះ​ចេញពី​ឧបករណ៍​របស់អ្នក​ជាអចិន្ត្រៃយ៍</translation>
 <translation id="1486715732399361704">អ្នកអាច​រកឃើញ​ក្រុមផ្ទាំង​ទាំងអស់​របស់អ្នក​នៅទីនេះ</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{បានបង្កើត <ph name="NUM_MINS_ONE"/> នាទីមុន}other{បានបង្កើត <ph name="NUM_MINS_MANY"/> នាទីមុន}}</translation>
@@ -66,9 +65,12 @@
 <translation id="4159784952369912983">ស្វាយ</translation>
 <translation id="4220650239473304853">{NUMBER_OF_TABS,plural, =1{ពង្រីក​ក្រុមផ្ទាំង <ph name="TITLE_OF_GROUP"/> ដែលមាន <ph name="TABS_COUNT_ONE"/> ផ្ទាំង។}other{ពង្រីក​ក្រុមផ្ទាំង <ph name="TITLE_OF_GROUP"/> ដែលមាន <ph name="TABS_COUNT_MANY"/> ផ្ទាំង។}}</translation>
 <translation id="427987768447457592">ក្រុមផ្ទាំងថ្មី</translation>
+<translation id="4338724047016295066">ផ្ទាំងអសកម្មនឹងត្រូវបានបិទដោយស្វ័យប្រវត្តិ។ អ្នកអាចស្វែងរកផ្ទាំងទាំងនោះនៅក្នុង "ប្រវត្តិ" បានជានិច្ច។</translation>
+<translation id="4371591986692297148">អសកម្ម​</translation>
 <translation id="4460014764210899310">បំបែក​ក្រុម</translation>
 <translation id="4648718555153979859">ផ្ទាំងរបស់អ្នកត្រូវ​បានដាក់ជាក្រុម​រួមគ្នានៅទីនេះ</translation>
 <translation id="4686942373615810936">ទើប​បាន​បង្កើត​អម្បាញ់​មិញ</translation>
+<translation id="47070857600201406">{DAY_COUNT,plural, =1{បិទក្រោយពេល 1 ថ្ងៃ}other{បិទក្រោយពេល <ph name="DAY_COUNT_MANY"/> ថ្ងៃ}}</translation>
 <translation id="4777866634702576038">លុបក្រុមផ្ទាំងឬ?</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(មតិវាយតម្លៃ <ph name="REVIEWS_COUNT_ONE"/>)}other{(មតិវាយតម្លៃ <ph name="REVIEWS_COUNT_MANY"/>)}}</translation>
 <translation id="4850886885716139402">មើល</translation>
@@ -90,6 +92,7 @@
 <translation id="5494920125229734069">ជ្រើសរើសទាំងអស់</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{បិទ​ក្រុមផ្ទាំង​ដែលមាន <ph name="TABS_COUNT_ONE"/> ផ្ទាំង ពណ៌<ph name="COLOR_NAME"/>។}other{បិទ​ក្រុមផ្ទាំង​ដែលមាន <ph name="TABS_COUNT_MANY"/> ផ្ទាំង ពណ៌<ph name="COLOR_NAME"/>។}}</translation>
 <translation id="5556417849629758491">មើលព័ត៌មានអំពីហាង ជម្រើសមាននៅជិតផ្នែកខាងលើអេក្រង់</translation>
+<translation id="5635915157654811450">{TAB_COUNT,plural, =1{ស្ដារផ្ទាំង}other{ស្ដារផ្ទាំង}}</translation>
 <translation id="3225229609960545342">{TABS_COUNT,plural, =1{តំណ <ph name="TABS_COUNT_ONE"/> ពី Brave}other{តំណ <ph name="TABS_COUNT_MANY"/> ពី Brave}}</translation>
 <translation id="575494663145460764">ទទួលបានការជូនដំណឹងអំពីការធ្លាក់ថ្លៃឬ?</translation>
 <translation id="58326064309361797">អូសផ្ទាំង​នានា ដើម្បី​ដាក់ផ្ទាំង​ទាំងនោះ​ជាក្រុម</translation>
@@ -105,6 +108,8 @@
 <translation id="6381032505162537930">អ្នកនឹងឃើញក្រុមផ្ទាំងរបស់អ្នកនៅទីនេះ</translation>
 <translation id="639823877092900621">{TABS_COUNT,plural, =1{បំបែក​ក្រុម​ផ្ទាំង​ដែល​បាន​ជ្រើសរើស <ph name="TABS_COUNT_ONE"/>}other{បំបែកក្រុម​ផ្ទាំង​ដែល​បាន​ជ្រើសរើស <ph name="TABS_COUNT_MANY"/>}}</translation>
 <translation id="6422650314852876533">{TABS_COUNT,plural, =1{ផ្ទាំង <ph name="TABS_COUNT_ONE"/>}other{ផ្ទាំង <ph name="TABS_COUNT_MANY"/>}}</translation>
+<translation id="6527303717912515753">ចែករំលែក</translation>
+<translation id="6542289363124393690">{DAY_COUNT,plural, =1{ក្រោយពេល 1 ថ្ងៃ}other{ក្រោយពេល <ph name="DAY_COUNT_MANY"/> ថ្ងៃ}}</translation>
 <translation id="6549021453810473782">មើលព័ត៌មានអំពីហាង</translation>
 <translation id="6557858706263317126">+<ph name="HIDDEN_TABS_COUNT"/></translation>
 <translation id="6562820390860419811">ផ្លាស់ទី​ផ្ទាំង​ទៅ​ខាងឆ្វេង</translation>
@@ -121,6 +126,7 @@
 <translation id="7326879924029668159">មើលគោលការណ៍បញ្ជូនទំនិញមកវិញ និងអ្វីៗជាច្រើនទៀត</translation>
 <translation id="7352298686197644113">មើលថាតើ​ទំនិញមួយ​ណានៅក្នុងផ្ទាំងដែលអ្នក​កំពុង​បើក​មានតម្លៃ​ទាបជាងមុន</translation>
 <translation id="7452985128687107478">ក្រុមផ្ទាំងរក្សាទុក និងធ្វើបច្ចុប្បន្នភាពដោយស្វ័យប្រវត្តិនៅលើគ្រប់ឧបករណ៍របស់អ្នក</translation>
+<translation id="747459581954555080">ស្តារទាំងអស់</translation>
 <translation id="753732157349120914">មុខងារប្ដូរផ្ទាំង</translation>
 <translation id="1068242749670180460">{REVIEWS,plural, =1{ការវាយតម្លៃ <ph name="REVIEWS_COUNT_ONE"/> ពី Brave}other{ការវាយតម្លៃ <ph name="REVIEWS_COUNT_MANY"/> ពី Brave}}</translation>
 <translation id="7559245342362162951">បង្ហាញផ្ទាំង​របស់ក្រុមនៅក្នុងក្រឡា​ពេញ​អេក្រង់</translation>
@@ -134,6 +140,7 @@
 <translation id="7885132941432959125">ផ្លាស់ទី​ផ្ទាំង​ទៅ​ខាងស្ដាំ</translation>
 <translation id="7939917283308035850">មិនបាន​ជ្រើសរើសពណ៌<ph name="COLOR_NAME"/>ទេ</translation>
 <translation id="7942349550061667556">ក្រហម</translation>
+<translation id="7961015016161918242">មិនដែល</translation>
 <translation id="7966321538264951561">ច្រានចោល​ការណែនាំ​។</translation>
 <translation id="799469866974412355">ក្រុមថ្មីពីឧបករណ៍ផ្សេងទៀតរបស់អ្នក</translation>
 <translation id="8029301326595421733">បានបើក​ព័ត៌មានអំពី​ហាងនេះ​ពេញអេក្រង់</translation>
@@ -144,6 +151,8 @@
 <translation id="8338427544764842461">ក្រុមផ្ទាំងរបស់អ្នកត្រូវបានរក្សាទុកនៅទីនេះ និងទទួលបានការធ្វើបច្ចុប្បន្នភាពលើគ្រប់ឧបករណ៍ដែល​ចូលគណនីរបស់អ្នក</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{បិទ​ផ្ទាំង​ដែលបាន​ជ្រើសរើស <ph name="TABS_COUNT_ONE"/>}other{បិទ​ផ្ទាំង​ដែលបាន​ជ្រើសរើស <ph name="TABS_COUNT_MANY"/>}}</translation>
 <translation id="8398929769197326728">ថតថ្មី - <ph name="CURRENT_TIMESTAMP_MS"/></translation>
+<translation id="8428213095426709021">ការកំណត់</translation>
+<translation id="870736955561925754">បិទផ្ទាំង និងលុបក្រុមឬ?</translation>
 <translation id="8714939927607906138">តម្លៃ​ទាប​ជាង​មុន</translation>
 <translation id="8730621377337864115">រួចរាល់</translation>
 <translation id="6687920250729800417">សកម្មភាព​របស់អ្នក​នៅក្នុង​ផ្ទាំងឯកជន​ទាំងនេះ​នឹងត្រូវបាន​ដកចេញពី​ឧបករណ៍នេះ</translation>

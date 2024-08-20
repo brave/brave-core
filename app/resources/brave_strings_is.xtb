@@ -14,29 +14,35 @@ Sumir eiginleikar kunna að vera óaðgengilegir og breytingar á kjörstillingu
 <translation id="5468853758063275923">Brave er sjálfgefni vafrinn þinn</translation>
 <translation id="8522292744959221145"><ph name="BEGIN_LINK"/>Skráðu þig inn á Brave<ph name="END_LINK"/> til að athuga hvort aðgangsorðin þín séu óhult fyrir öryggisbrotum og öðrum öryggisvandamálum.</translation>
 <translation id="2627788872035182013">Smelltu á Brave-valmyndina</translation>
+<translation id="1184145431117212167">Uppsetning mistókst því að þín útgáfa af Windows er ekki studd.</translation>
 <translation id="8541922081612557424">Um Brave</translation>
 <translation id="6213288206540454953">Leyfðu skjáupptöku í Brave í kerfisstillingunum til að deila glugganum þínum.</translation>
 <translation id="1203500561924088507">Takk fyrir að setja upp. Þú þarft að endurræsa vafrann áður en þú getur notað <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="8799570501820813406">Meðan þessi flipi var óvirkur var losað um minni til að gera Brave hraðari. Þú getur valið að undanskilja þetta vefsvæði alltaf frá því að vera óvirkt.</translation>
 <translation id="8767381092474532098">Brave lokaði á þetta niðurhal vegna þess að skráin er hættuleg</translation>
 <translation id="3256289531845594061">Þegar þú skráir þig inn í Brave-þjónustu á borð við Gmail eða YouTube með <ph name="USER_EMAIL"/> geturðu skráð þig sjálfkrafa inn í Brave með sama reikningi</translation>
+<translation id="1290883685122687410">Villa við uppsetningu: <ph name="METAINSTALLER_EXIT_CODE"/>. <ph name="WINDOWS_ERROR"/></translation>
 <translation id="4798342026247191171">Settu upp nýja Brave prófílinn þinn</translation>
+<translation id="878572309106296578">Brave þarf aðgang að Bluetooth til að kanna 
+ Bluetooth-tæki. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="108284536240904209">Eyða einnig gögnum úr Brave (<ph name="URL"/>)</translation>
 <translation id="8132634101975074716">Þú ert skráð(ur) inn á Brave!</translation>
 <translation id="1586284627848250203">Fá hjálp með Brave for Testing</translation>
 <translation id="1497802159252041924">Uppsetningarvilla: <ph name="INSTALL_ERROR"/></translation>
 <translation id="5147525139567260139">Deila Brave flipa</translation>
 <translation id="1530633922026945685">Brave þarf leyfi til að nota myndavélina til að búa til þrívíddarkort af umhverfinu</translation>
+<translation id="9125033103884432">{NUM_EXTENSIONS,plural, =1{Þessi viðbót er ekki lengur studd. Brave mælir með að þú fjarlægir hana.}one{Þessi viðbót er ekki lengur studd. Brave mælir með að þú fjarlægir hana.}other{Þessar viðbætur eru ekki lengur studdar. Brave mælir með að þú fjarlægir þær.}}</translation>
 <translation id="6570689355868013775">Öryggisverkfæri Brave</translation>
 <translation id="6198411733024382246">Brave þarf að staðfesta að þetta sért þú svo að þú getir vistað tiltekin gögn á Brave-reikningnum þínum og notað þau í öllum tækjunum þínum. Gögnin verða áfram í þessu tæki ef þú skráir þig út.</translation>
+<translation id="1902837727299679178">Brave vill eyða gögnum Aðgangsorðastjórnunar. Sláðu inn Windows-aðgangsorðið þitt til að leyfa það.</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Kerfisstjórinn þinn gerir kröfu um að þú endurræsir Brave til að setja upp uppfærslu}=1{Kerfisstjórinn þinn gerir kröfu um að þú endurræsir Brave til að setja upp uppfærslu. Huliðsglugginn enduropnast ekki.}one{Kerfisstjórinn þinn gerir kröfu um að þú endurræsir Brave til að setja upp uppfærslu. # huliðsgluggi enduropnast ekki.}other{Kerfisstjórinn þinn gerir kröfu um að þú endurræsir Brave til að setja upp uppfærslu. # huliðsgluggar enduropnast ekki.}}</translation>
 <translation id="4449148723378534338">Farðu yfir helstu öryggis- og persónuverndarstýringar í Brave</translation>
 <translation id="5359574361379286250">Ef þú vilt aðeins nota þennan reikning einu sinni geturðu notað <ph name="GUEST_LINK_BEGIN"/>gestastillingu<ph name="GUEST_LINK_END"/> í Brave vafra. Ef þú vilt bæta við reikningi fyrir einhvern annan skaltu <ph name="LINK_BEGIN"/>bæta við nýjum einstaklingi<ph name="LINK_END"/> í <ph name="DEVICE_TYPE"/>.
 
 Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á þessum reikningi. Þú getur haft umsjón með Brave reikningunum þínum í <ph name="SETTINGS_LINK_BEGIN"/>stillingum<ph name="SETTINGS_LINK_END"/>.</translation>
 <translation id="1640672724030957280">Sækir...</translation>
-<translation id="5616153642055197778">Nýrri og öruggari útgáfa af Brave er í boði.</translation>
 <translation id="2913217021115517297">Til að hjálpa til við að bæta þessa eiginleika sendir Brave upplýsingar um notkun þína á þeim til Brave. Mennskir yfirlesarar kunna að lesa, vinna úr og skrifa skýringar við þessi gögn.</translation>
+<translation id="1722488837206509557">Þetta gerir þér kleift að velja á milli tiltækra tækja og efnis á skjá þeirra.</translation>
 <translation id="5846727201643228411">Þú getur séð og fjarlægt áhugasvið sem vefsvæði nota til að birta þér auglýsingar. Brave áætlar áhugasvið þín út frá nýlegum vafraferli þínum.</translation>
 <translation id="8004287232784878841">Brave mun eyða vefskoðunargögnum bráðlega</translation>
 <translation id="4197839351786449392">Brave mun reyna að uppfæra flettingar þínar í HTTPS</translation>
@@ -44,14 +50,12 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="5524150602137990006">Ef HTTPS er ekki í boði mun Brave notast við ótrygga tengingu án þess að vara þig við</translation>
 <translation id="6797402139308059782">Leyfa Brave að keyra í bakgrunni</translation>
 <translation id="1448049584457347995">Til að gera Brave öruggara höfum við slökkt á vissum viðbótum sem ekki eru á skrá hjá <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> og kann að hafa verið bætt við án þinnar vitneskju.</translation>
-<translation id="8218392511887683067">Á meðan þú ert innskráð(ur) geturðu notað aðgangsorðin þín og fleira af Brave-reikningnum þínum í Brave</translation>
 <translation id="5875673934455379806">Setja Brave upp aftur</translation>
 <translation id="4529028207655448215">Brave er að reyna að <ph name="AUTHENTICATION_PURPOSE"/></translation>
 <translation id="3541642064306182066"><ph name="BEGIN_LINK"/>Skráðu þig út af Brave<ph name="END_LINK"/> til að eyða vefskoðunargögnum aðeins úr þessu tæki en ekki af Brave-reikningnum þínum.</translation>
 <translation id="2176087127109773485">Þú getur stjórnað innskráðum Brave reikningum þínum. Brave reikningarnir þínir eru notaðir fyrir Brave vafrann, Play Store, Gmail og fleira. Ef þú vilt bæta við reikningi fyrir einhvern annan, t.d. fjölskyldumeðlim, skaltu frekar bæta nýjum einstaklingi við <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Frekari upplýsingar<ph name="LINK_END"/></translation>
 <translation id="6888366668010117849">Vefsvæði geta vistað upplýsingar um áhugasvið þín í Brave. Ef þú heimsækir til dæmis vefsvæði til að kaupa skó fyrir maraþonhlaup kann vefsvæðið að skilgreina maraþonhlaup sem áhugasvið þitt. Ef þú heimsækir svo annað vefsvæði síðar meir til að skrá þig í hlaup getur viðkomandi vefsvæði birt þér auglýsingu um hlaupaskó í samræmi við áhugasvið þitt.</translation>
 <translation id="4528406859989804913">Þú ert að skrá þig inn með stýrðum reikningi og veitir stjórnanda hans vald yfir Brave prófílnum þínum. Brave gögnin þín, s.s. forrit, bókamerki, ferill, aðgangsorð og aðrar stillingar, verða tengd varanlega við <ph name="USER_NAME"/>. Þú getur eytt þessum gögnum á stjórnborði Brave reikninga en getur ekki tengt þau öðrum reikningi. Þér er frjálst að búa til nýjan prófíl til að halda fyrirliggjandi Brave gögnum aðskildum. <ph name="LEARN_MORE"/></translation>
-<translation id="3025534653492545740">Skráðu þig inn á Brave til að nota þessa viðbót sem <ph name="USER_EMAIL_ADDRESS"/>.\nÞú getur líka notað og vistað aðgangsorðin þín og fleira af Brave-reikningnum þínum.</translation>
 <translation id="3739288578188828252">Þegar þú skrifar í veffangastikuna eða leitarreitinn sendir Brave það sem þú skrifar á Google Drive til að fá tillögur að atriðum. Slökkt er á þessu í huliðsstillingu.</translation>
 <translation id="1649714546770135458">Með því að slökkva á þessu geturðu skráð þig inn á Brave vefsvæði eins og Gmail án þess að skrá þig inn í Brave</translation>
 <translation id="189297655255130768">Brave svarar ekki. Viltu endurræsa núna?</translation>
@@ -63,7 +67,6 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="2018879682492276940">Uppsetning mistókst. Reyndu aftur.</translation>
 <translation id="831418749472885028"><ph name="BEGIN_LINK"/>Skráðu þig inn á Brave<ph name="END_LINK"/> til að athuga hvort hin aðgangsorðin þín séu óhult fyrir öryggisbrotum og öðrum öryggisvandamálum.</translation>
 <translation id="5499149312981370855">Veldu hvort að Brave ferill eigi að fylgja með til að fá sérsniðnari upplifun í Brave þjónustum</translation>
-<translation id="5860368714755652118">Skráðu þig inn í Brave til að vista og nota aðgangsorðin þín og fleira í öllum tækjunum þínum. Þetta aðgangsorð verður vistað á Brave-reikningnum þínum eftir að þú skráir þig inn.</translation>
 <translation id="2472891440303445472">Brave lokaði á þetta niðurhal vegna þess að skráin er blekkjandi og gæti gert óvæntar breytingar á tækinu þínu</translation>
 <translation id="849607431499549468">Upplýsingar um hvernig Brave stjórnar rótarvottorðum sínum</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Fyrirtækið eyðir vefskoðunargögnum sjálfkrafa þegar Brave er ekki notað í 1 mínútu. Þetta getur falið í sér feril, sjálfvirka útfyllingu og niðurhal. Flipar verða áfram opnir.}one{Fyrirtækið eyðir vefskoðunargögnum sjálfkrafa þegar Brave er ekki notað í # mínútu. Þetta getur falið í sér feril, sjálfvirka útfyllingu og niðurhal. Flipar verða áfram opnir.}other{Fyrirtækið eyðir vefskoðunargögnum sjálfkrafa þegar Brave er ekki notað í # mínútur. Þetta getur falið í sér feril, sjálfvirka útfyllingu og niðurhal. Flipar verða áfram opnir.}}</translation>
@@ -74,6 +77,7 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="2174917724755363426">Uppsetningunni er ekki lokið. Ertu viss um að þú viljir hætta við?</translation>
 <translation id="8745514854244955877">Brave – innskráning á net – <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Villa við uppfærsluleit: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
+<translation id="2058539073923004395">Fjarlægja reikning úr Brave</translation>
 <translation id="6677253423995557759">Skaðlegt vefsvæði. Brave fjarlægði tilkynningar.</translation>
 <translation id="937700699752351322">Þú hefur ekki skoðað vefsvæðið nýlega. Brave fjarlægði <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/></translation>
 <translation id="5659384504794665581">Ef nokkrir eru um sömu tölvu geta vinir og fjölskyldumeðlimir vafrað hver á sínum prófíl og sett Brave upp eins og hverjum og einum líkar best.</translation>
@@ -81,6 +85,8 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="7682239218279776307">Þegar kveikt er á Brave forhleður það síður sem gerir skoðun og leit hraðari.</translation>
 <translation id="9095263438435683933">Til að senda númer héðan í Android símann þinn skaltu skrá þig inn á Brave í báðum tækjunum.</translation>
 <translation id="2359808026110333948">Halda áfram</translation>
+<translation id="6485997157403727556">Viðbótin „<ph name="EXTENSION_NAME"/>“ vill að þú skráir þig inn á Brave</translation>
+<translation id="8491912023989916905">Skráðu þig inn á Brave til að nota þessa viðbót sem <ph name="USER_EMAIL_ADDRESS"/>.</translation>
 <translation id="8418845734693287262">ChromeOS gat ekki samstillt gögnin vegna þess að innskráningarupplýsingar reikningsins þíns eru úreltar.</translation>
 <translation id="5617265241715541684">{NUM_DEVICES,plural, =0{Ein eða fleiri Brave-viðbætur fengu aðgang að 1 HID-tæki}=1{Ein eða fleiri Brave-viðbætur hafa aðgang að 1 HID-tæki}one{Ein eða fleiri Brave-viðbætur hafa aðgang að # HID-tæki}other{Ein eða fleiri Brave-viðbætur hafa aðgang að # HID-tækjum}}</translation>
 <translation id="1248225940185478633">Brave verður að fá leyfi fyrir myndavél og hljóðnema fyrir þetta vefsvæði</translation>
@@ -93,6 +99,7 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="70183448213529602">Brave er að reyna að skipta núverandi aðgangsorðum út. Sláðu inn Windows-aðgangsorðið þitt til að leyfa það.</translation>
 <translation id="7798069806040634998">Brave þarf aðgang að geymslu til að geta sótt skrár</translation>
 <translation id="8447483940522230788">Hjálparforrit Brave</translation>
+<translation id="3830890663494219270">Skráðu þig inn á Brave til að fá aðgang að aðgangsorðum og fleiru í öllum tækjunum þínum</translation>
 <translation id="7291143854620707672">Stjórnandi vinnuprófíla getur fjarlægt öll Brave gögn sem verða til við notkun þessa prófíls (þ.m.t. bókamerki, feril, aðgangsorð og aðrar stillingar). <ph name="LEARN_MORE"/></translation>
 <translation id="6252796827759111076">Halda áfram að nota Brave</translation>
 <translation id="259935314519650377">Ekki tókst að vista uppsetningarforrit sem var sótt í skyndiminni. Villa: <ph name="UNPACK_CACHING_ERROR_CODE"/>.</translation>
@@ -118,6 +125,7 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="2945997411976714835">Uppsetningarvilla: Ekki tókst að ræsa ferli uppsetningarforrits.</translation>
 <translation id="8208853227947884571">Brave er uppfært</translation>
 <translation id="5122472867956731189">Ef vefsvæði reynir að stela aðgangsorðinu þínu, eða ef þú sækir skaðlega skrá, gæti Brave einnig sent vefslóðir í örugga vefskoðun, þar á meðal hluta af innihaldi síðna</translation>
+<translation id="500707801149472925">Brave getur óvirkjað þessa flipa til að bæta upplifunina þína í vafranum og losa um gögn.</translation>
 <translation id="4202995875619419215">Opna <ph name="URL"/> í nýjum flipa í Brave.</translation>
 <translation id="8755404239607088219">Brave getur ekki athugað aðgangsorðin þín. Reyndu aftur síðar.</translation>
 <translation id="8880183781256147665">Bætir við Brave...</translation>
@@ -128,6 +136,7 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="5320085753638900910">Vafraferillinn þinn hefur áhrif á auglýsingarnar sem þú sérð og áhugasviðin sem eru áætluð hér fyrir neðan. Til að gæta persónuverndar þinnar eyðir Brave áhugamálunum þínum sjálfkrafa mánaðarlega. Áhugasvið verða hugsanlega endurnýjuð nema þú fjarlægir þau.</translation>
 <translation id="7365690458036015383">Uppsetningarforritinu mistókst að afþjappa safnskránni. Sæktu Brave aftur.</translation>
 <translation id="8919461291440820124">Brave er að nota hljóðnemann þinn.</translation>
+<translation id="8372436892102763334">Þessi flipi notar aukagögn. Leyfðu Brave að óvirkja hann til að bæta afköstin.</translation>
 <translation id="4805806622840861220">Endurræsa Brave</translation>
 <translation id="6554952862405000915">Opna ten&amp;gil í huliðsglugga í Brave</translation>
 <translation id="1742948938503172561">Sérsníddu nýja Brave prófílinn þinn</translation>
@@ -141,9 +150,9 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="3286538390144397061">Endurræsa núna</translation>
 <translation id="2339258256897053758">Lykla vantar fyrir forritaskil Brave. Sumir eiginleikar Brave verða óvirkir.</translation>
 <translation id="8926637909431618259">Halda áfram að keyra bakgrunnsforrit þegar Brave er lokað</translation>
+<translation id="2709673990621360298">Þú getur notað Brave á meðan við setjum reikningsaðganginn upp. Hugsanlega geturðu ekki opnað sum tilföng fyrr en uppsetningu lýkur.</translation>
 <translation id="518125528057094977">Brave varar þig við áður en vefsvæði með ótrygga tengingu er hlaðið</translation>
 <translation id="8652321858775514885">Þegar þú lokar öllum Brave-gluggum skráistu út af flestum vefsvæðum, að undanskildum Brave-reikningnum þínum ef þú ert skráð(ur) inn á Brave. <ph name="SETTINGS_LINK"/> til að leyfa vefsvæðum að muna eftir þér.</translation>
-<translation id="2941622079832955978">Viðbótin „<ph name="EXTENSION_NAME"/>“ vill að þú skráir þig inn á Brave</translation>
 <translation id="2711887072399498551">Brave prófíll með þessum reikningi er þegar til</translation>
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">Skipta yfir í Brave prófíl sem er til?</translation>
@@ -156,6 +165,7 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="1447863765638888625"><ph name="EXISTING_USER"/> er þegar innskráð(ur).  Til að halda vefskoðun aðskilinni skaltu skrá þig inn á Brave með þínum eigin prófíl sem <ph name="USER_EMAIL_ADDRESS"/>.</translation>
 <translation id="4061445349373849749">Til að gæta persónuverndar þinnar eyðum við áhugasviðunum þínum sem eru eldri en 4 vikna sjálfkrafa. Áhugasvið kann að birtast aftur á listanum þegar þú heldur áfram að vafra. Þú getur einnig fjarlægt áhugasvið sem þú vilt ekki að Brave taki tillit til.</translation>
 <translation id="691208314680168371">Vafraferillinn þinn, skrá yfir vefsvæði sem þú hefur opnað með Brave í þessu tæki.</translation>
+<translation id="3597003331831379823">Ekki tókst að hefja uppsetningu með auknum heimildum. <ph name="METAINSTALLER_ERROR"/></translation>
 <translation id="669092380621816981">Vefskoðunargögnum þessa aðila verður eytt úr þessu tæki. Skráðu þig inn í Brave sem <ph name="USER_EMAIL"/> til að endurheimta gögn.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Ný útgáfa af Brave er í boði og hún verður notuð um leið og þú endurræsir.}=1{Ný útgáfa af Brave er í boði og hún verður notuð um leið og þú endurræsir. Huliðsglugginn enduropnast ekki.}one{Ný útgáfa af Brave er í boði og hún verður notuð um leið og þú endurræsir. # huliðsgluggi enduropnast ekki.}other{Ný útgáfa af Brave er í boði og hún verður notuð um leið og þú endurræsir. # huliðsgluggar enduropnast ekki.}}</translation>
 <translation id="7029305463989165490">Til að senda númer úr <ph name="ORIGIN"/> í Android símann þinn skaltu skrá þig inn á Brave í báðum tækjunum.</translation>
@@ -167,7 +177,6 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="1807774211756215222">Opna &amp;tengil í nýjum Brave flipa</translation>
 <translation id="387105482057676379">Tengdu Brave við aðrar Brave-þjónustur til að sérsníða upplifun þína og fleira</translation>
 <translation id="3867175562099983425">Stjórna Brave-prófílum</translation>
-<translation id="2106568569080763501">Með Brave geturðu smellt á símanúmer á vefnum og hringt í það með Skype!</translation>
 <translation id="308146532933302843">Kynntu þér hvers vegna Brave lokar á sumt niðurhal</translation>
 <translation id="2189149060536531804">Brave lætur þig vita ef þú þarft að yfirfara eitthvað</translation>
 <translation id="6324134303015966238">Brave forhleður síðum sem er líklegt að þú munir skoða svo þær hlaðist fyrr þegar þú opnar þær</translation>
@@ -198,6 +207,7 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="2871190378186459992">Uppgötvaðu frábær forrit, leiki, viðbætur og þemu fyrir Brave.</translation>
 <translation id="5757460455745382269">Þetta er tungumál viðmótsins í Brave</translation>
 <translation id="4222932583846282852">Hættir við...</translation>
+<translation id="4224210481850767180">Hætt hefur verið við uppsetninguna.</translation>
 <translation id="1853997773668795891">Tengja Brave gögnin þín við þennan reikning?</translation>
 <translation id="4732930052828648898">Varar þig við hættulegum vefsvæðum, jafnvel þeim sem Brave hafði enga vitneskju um, með því að greina fleiri gögn frá vefsvæðum en hefðbundin vörn. Þú getur valið að sleppa Brave-viðvörunum.</translation>
 <translation id="2201661640076600072">Skrá út af Brave</translation>
@@ -209,8 +219,10 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="1068681683510904753"><ph name="MANAGER"/> krefst þess að þú lesir og samþykkir eftirfarandi þjónustuskilmála áður en þú notar þetta tæki. Þessir skilmálar auka ekki við, breyta eða takmarka skilmála ChromeOS.</translation>
 <translation id="9183662282810237335">Viltu samt loka Brave?</translation>
 <translation id="4065288863231444640">Leyfa Brave að keyra í bakgrunni</translation>
+<translation id="1749140836512789834">{NUM_EXTENSIONS,plural, =1{Brave mælir með að þú fjarlægir hana. <ph name="BEGIN_LINK"/>Nánar um studdar viðbætur<ph name="END_LINK"/>}one{Brave mælir með að þú fjarlægir þær. <ph name="BEGIN_LINK"/>Nánar um studdar viðbætur<ph name="END_LINK"/>}other{Brave mælir með að þú fjarlægir þær. <ph name="BEGIN_LINK"/>Nánar um studdar viðbætur<ph name="END_LINK"/>}}</translation>
 <translation id="8148611988012584308">Sérsníða og stjórna Brave</translation>
 <translation id="4427306783828095590">Aukin vernd gengur lengra í að loka á vefveiðar og spilliforrit</translation>
+<translation id="4434353761996769206">Uppsetningarvilla: <ph name="INSTALLER_ERROR"/></translation>
 <translation id="6786534271003695094">Um Brave for Testing</translation>
 <translation id="4501471624619070934">Uppsetning mistókst vegna þess að aðgangur er takmarkaður í landinu.</translation>
 <translation id="8594994021633965927">Þessi viðbót hefur ekki gefið út vinnureglur um persónuvernd, svo sem hvernig hún safnar og notar gögn. Brave mælir með að þú fjarlægir hana.</translation>
@@ -218,6 +230,7 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="137732229629632648">Brave þarfnast heimildar til að kortleggja umhverfið þitt og rekja handahreyfingarnar þínar</translation>
 <translation id="5036046007335188949">Þú ert þegar skráð(ur) inn sem <ph name="USER_EMAIL_ADDRESS"/> á öðrum Brave-prófíl</translation>
 <translation id="2633397153656205379">Brave uppfærðist ekki þar sem eitthvað fór úrskeiðis. <ph name="BEGIN_LINK"/>Lagaðu uppfærsluvandamál Brave og uppfærslur sem mistókust.<ph name="END_LINK"/></translation>
+<translation id="3275149320720837338">Brave getur óvirkjað þennan flipa til að bæta upplifunina í vafranum og auka hraða.</translation>
 <translation id="3679799810790990472">Halda áfram á nýjum Brave prófíl?</translation>
 <translation id="4567424176335768812">Þú ert skráð(ur) inn sem <ph name="USER_EMAIL_ADDRESS"/>. Nú hefur þú aðgang að bókamerkjunum þínum, vefferlinum þínum og öðrum stillingum í öllum tækjum sem þú ert skráð(ur) inn á.</translation>
 <translation id="8669339108356170796">Brave lokaði á þetta niðurhal vegna þess að þú slökktir á öruggri vefskoðun og ekki er hægt að staðfesta skrána</translation>
@@ -231,6 +244,7 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="8142245354207161805">Annað Brave ferli (<ph name="PROCESS_ID"/>) virðist vera að nota þennan prófíl í annarri tölvu (<ph name="HOST_NAME"/>). Brave hefur læst prófílnum svo hann skemmist ekki. Ef þú ert viss um að engin önnur ferli séu að nota þennan prófíl geturðu tekið hann úr lás og endurræst Brave.</translation>
 <translation id="4680828127924988555">Hætta við uppsetningu</translation>
 <translation id="2014343159590733363">Einhver Brave-gögn hafa ekki enn verið vistuð á Brave-reikningnum þínum. Prófaðu að bíða í nokkrar mínútur áður en þú skráir þig út. Ef þú skráir þig út núna verður þessum gögnum eytt.</translation>
+<translation id="2408746614080689238">Á meðan þú ert innskráð(ur) geturðu notað aðgangsorðin þín og fleira af Brave-reikningnum þínum í Brave. <ph name="SHORTCUT"/> getur breytt stillingum þínum fyrir Brave-þjónustur.</translation>
 <translation id="847561904663814268">Einhver skráði sig inn á Brave úr þessari tölvu sem <ph name="ACCOUNT_EMAIL_LAST"/>. Stofnaðu nýjan notanda í Brave til að halda þínum upplýsingum aðskildum frá hinum notandanum.</translation>
 <translation id="4724676981607797757">Uppsetning mistókst vegna villu sem tengist óstuddri samskiptareglu.</translation>
 <translation id="3834935463915107022">Viltu samt loka Brave?</translation>
@@ -243,15 +257,18 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="711601904575862069">Endurræstu til að uppfæra &amp;Brave</translation>
 <translation id="8794694805872287186">Til að fá frekari uppfærslur á Brave þarftu macOS 11 eða nýrri útgáfu. Þessi tölva notar macOS 10.15.</translation>
 <translation id="8797356639448065696">Brave er í bakgrunnsstillingu.</translation>
+<translation id="1895567721497166950">Smelltu til að loka innskráningarglugga Brave</translation>
 <translation id="7406627712452599344">Gestir geta notað Brave án þess að skilja eftir sig nokkur spor.</translation>
 <translation id="5952898964075639679">Bættu þér við Brave</translation>
 <translation id="8112581848375017126">Brave er að kanna nýja eiginleika sem gera vefsvæðum kleift að skila sömu vafraupplifun án þess að nota jafnmikið af upplýsingum frá þér</translation>
+<translation id="8157129267754368853">Brave-reikningur þarfnast endurauðkenningar</translation>
 <translation id="9078804073692109646">Engin vistuð aðgangsorð. Brave getur athugað aðgangsorðin þín þegar þú vistar þau.</translation>
 <translation id="6234515504547364178">Skrá út af Brave</translation>
 <translation id="729580998737807583"><ph name="EXISTING_USER"/> er þegar innskráð(ur) á þennan Brave prófíl. Þetta mun búa til nýjan Brave prófíl fyrir <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="8586264863973514035">Endurræstu Brave til að breytingarnar taki gildi</translation>
 <translation id="5994282802285556682">Þegar vafrað er í huliðsstillingu mun Brave vara þig við áður en vefsvæði með ótrygga tengingu er hlaðið</translation>
 <translation id="300369155175407115">Þegar kveikt er á prufuútgáfum og Brave hefur skráð þig af handahófi í virka prufuútgáfu hefur vafraferillinn þinn áhrif á auglýsingarnar sem þú sérð og áhugasviðin sem eru áætluð hér fyrir neðan. Til að gæta persónuverndar þinnar eyðir Brave áhugamálunum þínum sjálfkrafa mánaðarlega.</translation>
+<translation id="6296746404132250684">Skrá inn í Brave sem <ph name="USER_EMAIL"/></translation>
 <translation id="7573068992266397941">Brave fann öryggistillögur sem þú þarft að fara yfir</translation>
 <translation id="8174413867995118050">Aðrir Brave-prófílar</translation>
 <translation id="7708394612738038097">Þú ert að skrá þig inn með stýrðum reikningi og veitir stjórnanda hans vald yfir Brave prófílnum þínum. Brave gögnin þín, s.s. forrit, bókamerki, ferill, aðgangsorð og aðrar stillingar, verða tengd varanlega við <ph name="USER_NAME"/>. Þú getur eytt þessum gögnum á stjórnborði Brave reikninga en getur ekki tengt þau öðrum reikningi. <ph name="LEARN_MORE"/></translation>
@@ -260,7 +277,6 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="5154625106151193600">Kynntu þér hvers vegna Brave lokar á sumar skrár</translation>
 <translation id="1786715389543715322">Uppfærir Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Leyfa innskráningu í Brave</translation>
-<translation id="5536657158619734169">Ný útgáfa af Brave er í boði.</translation>
 <translation id="5267531627648004734">Fjarlægja úr Brave</translation>
 <translation id="239760341987199724">Stilla Brave sem sjálfgefinn vafra</translation>
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - tilraunaútgáfa Brave</translation>
@@ -286,6 +302,7 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="5895138241574237353">Endurræsa</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – innskráning á net</translation>
 <translation id="5924017743176219022">Tengist internetinu…</translation>
+<translation id="690491870562219491">Brave getur óvirkjað þennan flipa til að bæta upplifunina í vafranum og losa um gögn.</translation>
 <translation id="5941711191222866238">Minnka</translation>
 <translation id="3613110494561632737">Ef Brave hefur skráð þig af handahófi í virka prufuútgáfu hefur vafraferillinn þinn áhrif á auglýsingarnar sem þú sérð og áhugasviðin sem eru áætluð hér fyrir neðan. Til að gæta persónuverndar þinnar eyðir Brave áhugamálunum þínum sjálfkrafa mánaðarlega. Áhugasvið verða endurnýjuð nema þú fjarlægir þau.</translation>
 <translation id="4357808717322635817">{COUNT,plural, =1{Fyrirtækið lokar Brave sjálfkrafa eftir aðgerðaleysi í 1 mínútu.}one{Fyrirtækið lokar Brave sjálfkrafa eftir aðgerðaleysi í # mínútu.}other{Fyrirtækið lokar Brave sjálfkrafa eftir aðgerðaleysi í # mínútur.}}</translation>
@@ -294,7 +311,6 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="6003112304606738118">Sækir... <ph name="HOURS"/> klst. eftir</translation>
 <translation id="1663358621471164569">Þú getur opnað bókamerki, lestrarstillingu og fleira úr valmynd Brave efst til hægri</translation>
 <translation id="6040143037577758943">Loka</translation>
-<translation id="505042220086416644">Ný útgáfa af Brave er í boði, og hún er hraðari en nokkru sinni fyrr.</translation>
 <translation id="700488072601322385">Til að vernda gögnin þín skaltu leyfa Brave að fjarlægja heimildir vefsvæða sem þú hefur ekki opnað nýlega. Stöðvar ekki tilkynningar.</translation>
 <translation id="9071554113102421877">&amp;Opna í Brave</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> hefur verið bætt við Brave</translation>
@@ -320,6 +336,7 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="5019879183386042809">Gera Brave að sjálfgefnum vafra</translation>
 <translation id="428541510811554120">Brave getur ekki athugað með uppfærslur. Athugaðu nettenginguna þína.</translation>
 <translation id="7445061995866044926">Skrá út af Brave?</translation>
+<translation id="4659866260728515512">Þessir flipar nota aukagögn. Leyfðu Brave að óvirkja þá til að bæta afköstin.</translation>
 <translation id="6806912298071949921">Sérsníða Brave prófílinn þinn</translation>
 <translation id="3792238845239580301">Gefðu Brave prófílnum þínum heiti</translation>
 <translation id="5874208157501051620">Viðbót vill að þú skráir þig inn á Brave</translation>
@@ -328,6 +345,7 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="6327105987658262776">Uppfærsla er ekki tiltæk.</translation>
 <translation id="1819119299840995223">Önnur aðgerð er í gangi í Brave. Reyndu aftur síðar.</translation>
 <translation id="8616874628011103667">Nú er auðveldara að nota Brave með Brave reikningnum þínum og í samnýttum tölvum.</translation>
+<translation id="2727290586877408122">Brave getur óvirkjað þessa flipa til að bæta upplifunina þína í vafranum og halda hraða.</translation>
 <translation id="4264606872840545968">Brave-flýtilykill</translation>
 <translation id="6890616081898535725">Brave lokaði á þetta niðurhal vegna þess að skráin er ekki sótt oft og gæti verið hættuleg</translation>
 <translation id="335632367599648646">Viltu örugglega fjarlægja Brave?</translation>
@@ -339,10 +357,12 @@ Heimildir sem þú hefur þegar veitt vefsvæðum og forritum kunna að gilda á
 <translation id="638302211119176182">Brave forhleður fleiri síðum sem er líklegt að þú munir skoða svo þær hlaðist fyrr þegar þú opnar þær</translation>
 <translation id="890319829408077946">Slökkt • Brave getur ekki staðfest hvaðan þessi viðbót kemur</translation>
 <translation id="1684121725014454063">Velkomin(n) í Brave prófíla</translation>
+<translation id="7906693299331092358">Fjarlægja reikning úr Brave</translation>
 <translation id="2675662665675552980">Stýrir því einnig hvaða síða birtist þegar þú ræsir Brave.</translation>
 <translation id="648319183876919572">Enn öruggari vefskoðun gerir viðbótarráðstafanir til að vernda þig gegn skaðlegum vefsvæðum og niðurhali</translation>
 <translation id="5590013613412457132">Fjarlægja Brave</translation>
 <translation id="7185585387858242335">Flýtileiðir opnast í Brave</translation>
+<translation id="5324409579559361527">Á meðan þú ert innskráð(ur) geturðu notað aðgangsorðin þín og fleira af Brave-reikningnum þínum í Brave. Þú getur breytt þessu hvenær sem er í stillingunum.</translation>
 <translation id="3617744907966785605">Fyrirtækið þitt lokar Brave eftir aðgerðaleysi í <ph name="TIMEOUT_DURATION"/>. Vefskoðunargögnum var eytt. Þetta getur falið í sér feril, sjálfvirka útfyllingu og niðurhal.</translation>
 <translation id="8646609321956191980">Á hverjum prófíl eru geymdar Brave upplýsingar á borð við bókamerki, feril, aðgangsorð og fleira</translation>
 <translation id="6756656512757374876">Nánar um <ph name="BEGIN_LINK"/>hvernig Brave heldur gögnunum þínum leyndum<ph name="END_LINK"/></translation>
@@ -371,9 +391,6 @@ Sumir eiginleikar kunna að verða óaðgengilegir. Tilgreindu aðra prófílam�
 <translation id="684888714667046800">Ekki er hægt að tengjast internetinu. Ef þú notar eldvegg skaltu tryggja að <ph name="PRODUCT_EXE_NAME"/> sé á hvíta listanum.</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="3028928628792374067">Brave komst að því að „<ph name="EXTENSION_NAME"/>“ inniheldur spilliforrit</translation>
-<translation id="2301993384336631869">Brave var uppfært en þú hefur ekki notað það í a.m.k. 30 daga.</translation>
-<translation id="8828443087767259398">Brave þarf Bluetooth-aðgang til að halda pörun 
- áfram. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="126871877963043118">Þegar kveikt er á prufuútgáfum gera auglýsingamælingar vefsvæðum sem þú opnar kleift að biðja Brave um upplýsingar sem hjálpa vefsvæðinu að mæla afköst auglýsinga þess. Auglýsingamælingar takmarka rakningu á milli vefsvæða með því að flytja eins lítið magn upplýsinga á milli vefsvæða og mögulegt er.</translation>
 <translation id="4392161457256085190">Seinna getur vefsvæði sem þú opnar beðið Brave um að sýna áhugasvið þitt til að hægt sé að sérsníða auglýsingarnar sem þú sérð. Brave getur deilt allt að 3 áhugasviðum.</translation>
 <translation id="4624945300945265642">Opna tengil í &amp;huliðsglugga í Brave</translation>
@@ -388,7 +405,7 @@ Sumir eiginleikar kunna að verða óaðgengilegir. Tilgreindu aðra prófílam�
 <translation id="1705567146636171298">Uppfæra Brave</translation>
 <translation id="5499063270485366718">Ef gagnlega lýsingu vantar við mynd reynir Brave að útvega þér lýsingu. Til að búa til lýsingar eru myndir sendar til Brave.</translation>
 <translation id="5966368554860795750">Sérsníða Brave for Testing</translation>
-<translation id="7480407433243054688">Skráðu þig inn í Brave til að vista og nota aðgangsorðin þín og fleira í öllum tækjunum þínum</translation>
+<translation id="375314543563594498">Fjarlægja <ph name="EXTENSION_NAME"/> úr Brave</translation>
 <translation id="2332301637111071062">Fyrirtækið þitt eyðir Brave-gögnum þegar þau eru ekki notuð í <ph name="TIMEOUT_DURATION"/>. Þetta getur falið í sér feril, sjálfvirka útfyllingu og niðurhal.</translation>
 <translation id="1008530050039597147">Brave verður að fá leyfi fyrir myndavél fyrir þetta vefsvæði</translation>
 <translation id="1197672524850678392">Ekki var hægt að ræsa Brave. Reyndu aftur.</translation>
@@ -406,6 +423,7 @@ Brave getur ekki endurheimt stillingarnar þínar.</translation>
 <translation id="3511996232906761537">Hér er vefefnið þitt, bókamerkin og annað dót úr Brave.</translation>
 <translation id="5380963249588143069">Kerfisstjórinn hefur stillt Brave Brave á að opna <ph name="ALTERNATIVE_BROWSER_NAME"/> til að fá aðgang að <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="8580803879249090057">Brave lokaði á þetta niðurhal vegna þess að skráin getur skaðað persónulega reikninga og samfélagsmiðlareikninga þína, þar á meðal <ph name="USER_EMAIL"/></translation>
+<translation id="4631170166710903214">Þessi viðbót er ekki lengur studd. Brave mælir með að þú fjarlægir hana þess í stað.</translation>
 <translation id="38294420683216447">Þú getur aðskilið allt efnið þitt á Brave með Brave prófílum. Á þann hátt er auðveldara að skipta á milli vinnu og afþreyingar.</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="2034072705932785495">Brave þarf leyfi til að nota myndavélina á þessu vefsvæði</translation>
@@ -454,13 +472,14 @@ Brave getur ekki endurheimt stillingarnar þínar.</translation>
 <translation id="7792526144795244436">Skrá þig inn á Brave með nýjum prófíl?</translation>
 <translation id="8622246347342688645">Brave getur ekki athugað aðgangsorðin þín því þú ert ekki skráð(ur) inn</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave varar þig við<ph name="END_LINK"/> ótraustum vefsvæðum og niðurhali</translation>
-<translation id="89367911614620585">Þessi skrá gæti verið hættuleg, þannig Brave útilokaði hana.</translation>
 <translation id="6098476632210317894">Fyrirtækið þitt lokar Brave eftir aðgerðaleysi í <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="3360368475735266712">Skráðu þig inn til að samstilla Brave í tækjunum þínum og gera það að þínu</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> var áður að nota Brave</translation>
 <translation id="3098618823450433881">Til að fá aðgang að efni Brave vafrans í öllum tækjunum þínum skaltu skrá þig inn og kveikja á samstillingu.</translation>
 <translation id="2569754604093464025">Til að fá frekari uppfærslur á Brave þarftu Windows 10 eða nýrri útgáfu. Þessi tölva notar Windows 8.</translation>
+<translation id="7296197595428914424">Skráðu þig inn á Brave til að fá aðgang að aðgangsorðum og fleiru í öllum tækjunum þínum. Þetta aðgangsorð verður vistað á Brave-reikningnum þínum eftir að þú skráir þig inn.</translation>
 <translation id="9098234372282930719">Þú þarft að endurræsa Brave í kjölfarið.</translation>
+<translation id="1327729221471951979">Brave mælir með að þú fjarlægir hana. <ph name="BEGIN_LINK"/>Nánar um studdar viðbætur<ph name="END_LINK"/></translation>
 <translation id="8577108764439626300">Útgefandi þessarar viðbótar afturkallaði hana og hún kann að vera óörugg. Fjarlægðu hana úr Brave svo hún geti ekki lengur séð og breytt gögnum á vefsvæðum sem þú heimsækir, þ.m.t. persónuupplýsingum þínum.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Endurræstu Brave innan dags}one{Endurræstu Brave innan # dags}other{Endurræstu Brave innan # daga}}</translation>
 <translation id="6914496861676471566">Uppsetningarsafnskráin er skemmd eða ógild. Sæktu Brave aftur.</translation>
