@@ -13,6 +13,7 @@
 #include "base/files/file_path.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "url/gurl.h"
 
 namespace https_upgrade_exceptions {
 

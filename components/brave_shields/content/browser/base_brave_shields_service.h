@@ -8,18 +8,13 @@
 
 #include <stdint.h>
 
-#include <memory>
 #include <string>
 // TODO(brave): <mutex> is an unapproved C++11 header
 #include <mutex>  // NOLINT
 
-#include "base/files/file_path.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
-
-using brave_component_updater::BraveComponent;
 
 namespace brave_shields {
 

@@ -13,12 +13,24 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
-#include "components/component_updater/component_updater_service.h"
+#include "components/update_client/update_client.h"
 
 class PrefService;
 
+namespace brave_ads {
+class ResourceComponentRegistrar;
+}
+
+namespace tor {
+class BraveTorPluggableTransportUpdater;
+class BraveTorClientUpdater;
+}  // namespace tor
+
 namespace brave_component_updater {
 
+class LocalDataFilesService;
+
+// DEPRECATED: Use ComponentInstallerPolicy instead.
 class BraveComponent {
  public:
   using ReadyCallback = base::RepeatingCallback<void(const base::FilePath&,
@@ -48,7 +60,6 @@ class BraveComponent {
     virtual PrefService* local_state() = 0;
   };
 
-  explicit BraveComponent(Delegate* delegate);
   BraveComponent(const BraveComponent&) = delete;
   BraveComponent& operator=(const BraveComponent&) = delete;
   virtual ~BraveComponent();
@@ -74,6 +85,12 @@ class BraveComponent {
   Delegate* delegate();
 
  private:
+  friend class brave_ads::ResourceComponentRegistrar;
+  friend class tor::BraveTorPluggableTransportUpdater;
+  friend class tor::BraveTorClientUpdater;
+  friend class LocalDataFilesService;
+
+  explicit BraveComponent(Delegate* delegate);
   static void OnComponentRegistered(Delegate* delegate,
                                     const std::string& component_id);
   void OnComponentReadyInternal(const std::string& component_id,

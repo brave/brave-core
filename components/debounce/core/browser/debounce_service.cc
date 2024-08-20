@@ -11,10 +11,10 @@
 
 #include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
-#include "base/logging.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/debounce/core/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "url/gurl.h"
 #include "url/origin.h"
 
 namespace debounce {
