@@ -46,10 +46,10 @@ static const ax::mojom::Role kRolesToSkip[]{
     ax::mojom::Role::kComplementary,
     ax::mojom::Role::kContentInfo,
     ax::mojom::Role::kFooter,
-    ax::mojom::Role::kFooterAsNonLandmark,
     ax::mojom::Role::kImage,
     ax::mojom::Role::kLabelText,
     ax::mojom::Role::kNavigation,
+    ax::mojom::Role::kSectionFooter,
     /* input elements */
     ax::mojom::Role::kTextField,
     ax::mojom::Role::kTextFieldWithComboBox,
