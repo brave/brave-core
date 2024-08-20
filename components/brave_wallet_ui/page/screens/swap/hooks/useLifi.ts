@@ -72,7 +72,8 @@ export function useLifi({
         const swapParamsUnion: BraveWallet.SwapTransactionParamsUnion = {
           lifiTransactionParams: step,
           jupiterTransactionParams: undefined,
-          zeroExTransactionParams: undefined
+          zeroExTransactionParams: undefined,
+          squidTransactionParams: undefined
         }
 
         transactionResponse = await generateSwapTransaction(

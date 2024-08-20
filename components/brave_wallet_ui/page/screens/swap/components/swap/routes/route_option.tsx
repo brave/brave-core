@@ -182,9 +182,9 @@ export const RouteOption = (props: Props) => {
           gap='4px'
         >
           {option.tags.length > 0 &&
-            option.tags.map((tag) => (
+            option.tags.map((tag, idx) => (
               <Label
-                key={tag}
+                key={idx}
                 color={tag === 'CHEAPEST' ? 'purple' : 'blue'}
               >
                 {getLocale(
@@ -293,7 +293,7 @@ export const RouteOption = (props: Props) => {
             <Lines />
             {Array.from(option.sources)
               .reverse()
-              .map((source) => {
+              .map((source, idx) => {
                 const lpIcon = getLPIcon(source)
                 const descriptionString = getLocale(
                   'braveWalletExchangeViaProvider'
@@ -311,7 +311,7 @@ export const RouteOption = (props: Props) => {
                     fullWidth={true}
                     alignItems='flex-start'
                     margin='12px 0px 12px 4px'
-                    key={source.name}
+                    key={idx}
                   >
                     <Row justifyContent='flex-start'>
                       <LPIconWrapper
@@ -371,10 +371,10 @@ export const RouteOption = (props: Props) => {
                     {source.includedSteps &&
                       Array.from(source.includedSteps)
                         .reverse()
-                        .map((step) => (
+                        .map((step, idx) => (
                           <RouteStep
                             step={step}
-                            key={step.id}
+                            key={idx}
                           />
                         ))}
                   </Column>

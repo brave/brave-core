@@ -61,6 +61,8 @@ export function ConfirmSwapTransaction() {
   const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
     useGetActiveOriginQuery()
 
+  console.log(selectedPendingTransaction)
+
   // computed
   const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
   const isBridgeTx = selectedPendingTransaction
@@ -112,7 +114,6 @@ export function ConfirmSwapTransaction() {
 
       <Origin originInfo={originInfo} />
 
-
       <SwapBase
         sellToken={sellToken}
         buyToken={buyToken}
@@ -132,7 +133,6 @@ export function ConfirmSwapTransaction() {
         toChainId={selectedPendingTransaction?.swapInfo?.toChainId}
         toCoin={selectedPendingTransaction?.swapInfo?.toCoin}
       />
-
 
       <PendingTransactionNetworkFeeAndSettings
         onToggleAdvancedTransactionSettings={

@@ -1064,14 +1064,16 @@ export const SwapProviderNameMapping = {
   [BraveWallet.SwapProvider.kAuto]: 'Auto',
   [BraveWallet.SwapProvider.kJupiter]: 'Jupiter',
   [BraveWallet.SwapProvider.kZeroEx]: '0x',
-  [BraveWallet.SwapProvider.kLiFi]: 'LI.FI'
+  [BraveWallet.SwapProvider.kLiFi]: 'LI.FI',
+  [BraveWallet.SwapProvider.kSquid]: 'Squid'
 }
 
 export const SupportedSwapProviders = [
   BraveWallet.SwapProvider.kAuto,
   BraveWallet.SwapProvider.kJupiter,
   BraveWallet.SwapProvider.kZeroEx,
-  BraveWallet.SwapProvider.kLiFi
+  BraveWallet.SwapProvider.kLiFi,
+  BraveWallet.SwapProvider.kSquid
 ]
 
 export type StorybookTransactionTypes = 'Send' | 'Swap' | 'Bridge' | 'Approve'

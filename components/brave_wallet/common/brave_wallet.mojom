@@ -211,7 +211,7 @@ interface SolanaProvider {
 
   // Optional {onlyIfTrusted: true}, when that flag is enable, we will only
   // connect and emit a connect event if the application is trusted.
-  // It will returns base58 encoded public key when success
+  // It will returns base58 encoded pu blic key when success
   Connect(mojo_base.mojom.DictionaryValue? arg)
     => (SolanaProviderError error, string error_message, string public_key);
   Disconnect();
@@ -412,7 +412,8 @@ enum SwapProvider {
   kAuto,
   kLiFi,
   kZeroEx,
-  kJupiter
+  kJupiter,
+  kSquid
 };
 
 struct SwapQuoteParams {
@@ -442,18 +443,21 @@ union SwapTransactionParamsUnion {
   JupiterTransactionParams jupiter_transaction_params;
   SwapQuoteParams zero_ex_transaction_params;
   LiFiStep lifi_transaction_params;
+  SwapQuoteParams squid_transaction_params;
 };
 
 union SwapQuoteUnion {
   JupiterQuote jupiter_quote;
   ZeroExQuote zero_ex_quote;
   LiFiQuote lifi_quote;
+  SquidQuote squid_quote;
 };
 
 union SwapTransactionUnion {
   string jupiter_transaction;
   ZeroExQuote zero_ex_transaction;
   LiFiTransactionUnion lifi_transaction;
+  SquidTransactionUnion squid_transaction;
 };
 
 struct ZeroExSource {
@@ -518,6 +522,7 @@ union SwapErrorUnion {
   JupiterError jupiter_error;
   ZeroExError zero_ex_error;
   LiFiError lifi_error;
+  SquidError squid_error;
 };
 
 // Structs to model Jupiter (swap) HTTP API interactions
@@ -711,17 +716,17 @@ struct LiFiQuote {
 
 union LiFiTransactionUnion {
   string solana_transaction;
-  LiFiEVMTransaction evm_transaction;
+  LiFiEvmTransaction evm_transaction;
 };
 
-struct LiFiEVMTransaction {
+struct LiFiEvmTransaction {
   string data;
   string from;
   string to;
-  string chain_id;
   string value;
-  string gas_price;
   string gas_limit;
+  string gas_price;
+  string chain_id;
 };
 
 enum LifiToolErrorCode {
@@ -777,6 +782,87 @@ struct LifiToolError {
 struct LiFiError {
   string message;
   LiFiErrorCode code;
+};
+
+// Squid types
+
+enum SquidActionType {
+  kWrap,
+  kUnwrap,
+  kSwap,
+  kBridge,
+  kUnknown
+};
+
+struct SquidAction {
+  SquidActionType type;
+  string description;
+  string provider;
+  string logo_uri;
+
+  string from_amount;
+  BlockchainToken from_token;
+
+  string to_amount;
+  string to_amount_min;
+  BlockchainToken to_token;
+};
+
+struct SquidGasCost {
+  string amount;
+  string gas_limit;
+  BlockchainToken token;
+};
+
+struct SquidFeeCost {
+  string amount;
+  string description;
+  string name;
+  BlockchainToken token;
+};
+
+struct SquidQuote {
+  array<SquidAction> actions;
+  string aggregate_price_impact;
+  string aggregate_slippage;
+  string estimated_route_duration;
+  string exchange_rate;
+  array<SquidFeeCost> fee_costs;
+  array<SquidGasCost> gas_costs;
+  bool is_boost_supported;
+  string from_amount;
+  BlockchainToken from_token;
+  string to_amount;
+  string to_amount_min;
+  BlockchainToken to_token;
+  string allowance_target;
+};
+
+enum SquidErrorType {
+  kBadRequest,
+  kSchemaValidationError,
+  kUnknownError
+};
+
+struct SquidError {
+  string message;
+  SquidErrorType type;
+};
+
+union SquidTransactionUnion {
+  SquidEvmTransaction evm_transaction;
+};
+
+struct SquidEvmTransaction {
+  string data;
+  string target;
+  string value;
+  string gas_limit;
+  string gas_price;
+  string last_base_fee_per_gas;
+  string max_fee_per_gas;
+  string max_priority_fee_per_gas;
+  string chain_id;
 };
 
 enum SwapDiscountCode {
@@ -1372,6 +1458,7 @@ const string kWemixMainnetChainId = "0x457";
 const string kXaiMainnetChainId = "0xa1337";
 const string kZetaChainMainnetChainId = "0x1b58";
 const string kZilliqaEVMChainId = "0x8001";
+const string kScrollChainId = "0x82750";
 
 const string kBatTokenContractAddress = "0x0D8775F648430679A709E98d2b0Cb6250d2887EF";
 
