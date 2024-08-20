@@ -61,10 +61,6 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/browser/leo_local_models_updater.h"
-#endif
-
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
 #endif
@@ -513,17 +509,3 @@ BraveBrowserProcessImpl::process_misc_metrics() {
   }
   return process_misc_metrics_.get();
 }
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-ai_chat::LeoLocalModelsUpdater*
-BraveBrowserProcessImpl::leo_local_models_updater() {
-  if (!leo_local_models_updater_) {
-    base::FilePath user_data_dir =
-        base::PathService::CheckedGet(chrome::DIR_USER_DATA);
-    leo_local_models_updater_ =
-        std::make_unique<ai_chat::LeoLocalModelsUpdater>(
-            brave_component_updater_delegate(), user_data_dir);
-  }
-  return leo_local_models_updater_.get();
-}
-#endif

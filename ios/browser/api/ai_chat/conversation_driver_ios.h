@@ -16,7 +16,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/ai_chat/core/browser/conversation_driver.h"
-#include "brave/components/ai_chat/core/browser/leo_local_models_updater.h"
 #include "brave/ios/browser/skus/skus_service_factory.h"
 
 @protocol AIChatDelegate;
@@ -25,7 +24,6 @@ class PrefService;
 
 namespace ai_chat {
 class AIChatMetrics;
-class LeoLocalModelsUpdater;
 
 class ConversationDriverIOS : public ConversationDriver,
                               ConversationDriver::Observer {
@@ -35,7 +33,6 @@ class ConversationDriverIOS : public ConversationDriver,
       PrefService* local_state_prefs,
       ModelService* model_service,
       AIChatMetrics* ai_chat_metrics,
-      LeoLocalModelsUpdater* leo_local_models_updater,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
           skus_service_getter,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -46,7 +43,6 @@ class ConversationDriverIOS : public ConversationDriver,
       PrefService* local_state_prefs,
       ModelService* model_service,
       AIChatMetrics* ai_chat_metrics,
-      LeoLocalModelsUpdater* leo_local_models_updater,
       std::unique_ptr<AIChatCredentialManager> credential_manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::string_view channel_string,

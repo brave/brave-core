@@ -11,7 +11,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 #define BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_H_
 
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -19,12 +18,6 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "extensions/buildflags/buildflags.h"
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-namespace ai_chat {
-class LeoLocalModelsUpdater;
-}
-#endif
 
 namespace brave {
 class BraveReferralsService;
@@ -144,9 +137,6 @@ class BraveBrowserProcess {
 #endif
   virtual brave_ads::ResourceComponent* resource_component() = 0;
   virtual misc_metrics::ProcessMiscMetrics* process_misc_metrics() = 0;
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  virtual ai_chat::LeoLocalModelsUpdater* leo_local_models_updater() = 0;
-#endif
 };
 
 extern BraveBrowserProcess* g_brave_browser_process;

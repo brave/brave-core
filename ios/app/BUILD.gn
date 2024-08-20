@@ -26,6 +26,7 @@ source_set("app") {
 
   deps = [
     "//base",
+    "//brave/components/ai_chat/core/browser",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_sync:constants",
     "//brave/components/brave_wallet/browser",

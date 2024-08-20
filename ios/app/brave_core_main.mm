@@ -18,6 +18,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/components/ai_chat/core/browser/leo_local_models_updater.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -346,6 +347,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   brave_wallet::WalletDataFilesInstaller::GetInstance()
       .MaybeRegisterWalletDataFilesComponent(
           cus, GetApplicationContext()->GetLocalState());
+  ai_chat::ManageLeoLocalModelsComponentRegistration(cus);
 }
 
 + (void)setLogHandler:(BraveCoreLogHandler)logHandler {

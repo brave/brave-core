@@ -88,9 +88,6 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
       std::unique_ptr<brave_vpn::BraveVPNConnectionManager> manager);
 #endif
   misc_metrics::ProcessMiscMetrics* process_misc_metrics() override;
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  ai_chat::LeoLocalModelsUpdater* leo_local_models_updater() override;
-#endif
 
   // Populate the mock process with services. Consumer is responsible for
   // cleaning these up after completion of a test.
