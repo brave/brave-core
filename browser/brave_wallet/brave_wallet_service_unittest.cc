@@ -3267,6 +3267,139 @@ TEST_F(BraveWalletServiceUnitTest, MaybeMigrateCompressedNfts) {
   EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletIsCompressedNftMigrated));
 }
 
+TEST_F(BraveWalletServiceUnitTest, MaybeMigrateSPLNfts) {
+  GetPrefs()->SetBoolean(kBraveWalletIsSPLTokenProgramMigrated, false);
+
+  std::vector<mojom::BlockchainTokenPtr> tokens;
+  GetUserAssets(mojom::kSolanaMainnet, mojom::CoinType::SOL, &tokens);
+  EXPECT_EQ(tokens.size(), 1u);
+  EXPECT_FALSE(tokens[0]->is_nft);
+
+  // SPL NFT that's marked as kUnsupported SPL token program before migration
+  // should be migrated to kUnknown.
+  auto nft_unsupported = mojom::BlockchainToken::New();
+  nft_unsupported->contract_address =
+      "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW";
+  nft_unsupported->name = "Solana NFT";
+  nft_unsupported->logo = "solana.png";
+  nft_unsupported->is_compressed = false;
+  nft_unsupported->is_erc20 = false;
+  nft_unsupported->is_erc721 = false;
+  nft_unsupported->is_erc1155 = false;
+  nft_unsupported->is_nft = true;
+  nft_unsupported->is_spam = false;
+  nft_unsupported->symbol = "SOLNFT";
+  nft_unsupported->decimals = 0;
+  nft_unsupported->visible = true;
+  nft_unsupported->chain_id = mojom::kSolanaMainnet;
+  nft_unsupported->coin = mojom::CoinType::SOL;
+  nft_unsupported->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
+  auto added_nft_unsupported =
+      ::brave_wallet::AddUserAsset(GetPrefs(), std::move(nft_unsupported));
+  ASSERT_TRUE(added_nft_unsupported);
+
+  // Non-NFT asset, should remain unchanged.
+  auto non_nft = mojom::BlockchainToken::New();
+  non_nft->contract_address = "F7E9L2tuxC9TQ6TMEFPNztefr9qiq6EnuJA1KgDWcpeZ";
+  non_nft->name = "Solana Token";
+  non_nft->logo = "solana_token.png";
+  non_nft->is_compressed = false;
+  non_nft->is_erc20 = true;
+  non_nft->is_erc721 = false;
+  non_nft->is_erc1155 = false;
+  non_nft->is_nft = false;
+  non_nft->is_spam = false;
+  non_nft->symbol = "SOLTOKEN";
+  non_nft->decimals = 0;
+  non_nft->visible = true;
+  non_nft->chain_id = mojom::kSolanaMainnet;
+  non_nft->coin = mojom::CoinType::SOL;
+  non_nft->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
+  auto added_non_nft =
+      ::brave_wallet::AddUserAsset(GetPrefs(), std::move(non_nft));
+  ASSERT_TRUE(added_non_nft);
+
+  // SPL NFT already marked with a different program (e.g., kUnknown), should
+  // remain unchanged.
+  auto nft_known_program = mojom::BlockchainToken::New();
+  nft_known_program->contract_address =
+      "B29EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeX";
+  nft_known_program->name = "Known Program NFT";
+  nft_known_program->logo = "known_program.png";
+  nft_known_program->is_compressed = false;
+  nft_known_program->is_erc20 = false;
+  nft_known_program->is_erc721 = false;
+  nft_known_program->is_erc1155 = false;
+  nft_known_program->is_nft = true;
+  nft_known_program->is_spam = false;
+  nft_known_program->symbol = "KNOWNFT";
+  nft_known_program->decimals = 0;
+  nft_known_program->visible = true;
+  nft_known_program->chain_id = mojom::kSolanaMainnet;
+  nft_known_program->coin = mojom::CoinType::SOL;
+  nft_known_program->spl_token_program = mojom::SPLTokenProgram::kUnknown;
+  auto added_nft_known_program =
+      ::brave_wallet::AddUserAsset(GetPrefs(), std::move(nft_known_program));
+  ASSERT_TRUE(added_nft_known_program);
+
+  // Case 4: Non-SOL NFT that should not be changed.
+  auto non_sol_nft = mojom::BlockchainToken::New();
+  non_sol_nft->contract_address = "0xAF5AD1e10926C0eE4aF4EDAc61Dd60E853753f8A";
+  non_sol_nft->name = "Non-SOL NFT";
+  non_sol_nft->logo = "non_sol_nft.png";
+  non_sol_nft->is_compressed = false;
+  non_sol_nft->is_erc20 = false;
+  non_sol_nft->is_erc721 = true;
+  non_sol_nft->is_erc1155 = false;
+  non_sol_nft->is_nft = true;
+  non_sol_nft->is_spam = false;
+  non_sol_nft->symbol = "NONSOLNFT";
+  non_sol_nft->decimals = 0;
+  non_sol_nft->visible = true;
+  non_sol_nft->chain_id = mojom::kMainnetChainId;
+  non_sol_nft->coin = mojom::CoinType::ETH;
+  non_sol_nft->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
+  non_sol_nft->token_id = "0x1";
+  auto added_non_sol_nft =
+      ::brave_wallet::AddUserAsset(GetPrefs(), std::move(non_sol_nft));
+  ASSERT_TRUE(added_non_sol_nft);
+
+  // Run the migration.
+  service_->MaybeMigrateSPLTokenProgram();
+  task_environment_.RunUntilIdle();
+
+  // Verify that the NFT marked as kUnsupported is now set to kUnknown.
+  GetUserAssets(mojom::kSolanaMainnet, mojom::CoinType::SOL, &tokens);
+  EXPECT_EQ(tokens.size(), 4u);  // Initial token + 3 added assets on Solana
+  EXPECT_EQ(tokens[1]->contract_address,
+            "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW");
+  EXPECT_TRUE(tokens[1]->is_nft);
+  EXPECT_EQ(tokens[1]->spl_token_program, mojom::SPLTokenProgram::kUnknown);
+
+  // Verify that the non-NFT token's SPLTokenProgram remains unchanged.
+  EXPECT_EQ(tokens[2]->contract_address,
+            "F7E9L2tuxC9TQ6TMEFPNztefr9qiq6EnuJA1KgDWcpeZ");
+  EXPECT_FALSE(tokens[2]->is_nft);
+  EXPECT_EQ(tokens[2]->spl_token_program, mojom::SPLTokenProgram::kUnsupported);
+
+  // Verify that the NFT already with a known program remains unchanged.
+  EXPECT_EQ(tokens[3]->contract_address,
+            "B29EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeX");
+  EXPECT_TRUE(tokens[3]->is_nft);
+  EXPECT_EQ(tokens[3]->spl_token_program, mojom::SPLTokenProgram::kUnknown);
+
+  // Verify that the non-SOL NFT remains unchanged.
+  GetUserAssets(mojom::kMainnetChainId, mojom::CoinType::ETH, &tokens);
+  EXPECT_EQ(tokens.size(), 3u);
+  EXPECT_EQ(tokens[2]->contract_address,
+            "0xAF5AD1e10926C0eE4aF4EDAc61Dd60E853753f8A");
+  EXPECT_TRUE(tokens[2]->is_nft);
+  EXPECT_EQ(tokens[2]->spl_token_program, mojom::SPLTokenProgram::kUnsupported);
+
+  // Migration should be marked as done.
+  EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletIsSPLTokenProgramMigrated));
+}
+
 TEST_F(BraveWalletServiceUnitTest, GetCountryCode) {
   const struct {
     const int country_code;

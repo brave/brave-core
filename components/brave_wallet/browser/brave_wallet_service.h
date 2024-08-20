@@ -90,6 +90,7 @@ class BraveWalletService : public KeyedService,
   static void MigrateAssetsPrefToList(PrefService* prefs);
   static void MigrateEip1559ForCustomNetworks(PrefService* prefs);
   void MaybeMigrateCompressedNfts();
+  void MaybeMigrateSPLTokenProgram();
 
   // mojom::BraveWalletService:
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletServiceObserver>

@@ -106,6 +106,10 @@ inline constexpr char kBraveWalletEip1559ForCustomNetworksMigrated[] =
 inline constexpr char kBraveWalletIsCompressedNftMigrated[] =
     "brave.wallet.is_compressed_nft_migrated";
 
+// 08/2024 to mark fix existign SPL tokens marked as unsupported
+inline constexpr char kBraveWalletIsSPLTokenProgramMigrated[] =
+    "brave.wallet.is_spl_token_program_migrated";
+
 // 06/2023
 inline constexpr char kBraveWalletSelectedCoinDeprecated[] =
     "brave.wallet.selected_coin";
