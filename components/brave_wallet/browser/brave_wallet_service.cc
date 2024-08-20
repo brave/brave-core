@@ -197,6 +197,10 @@ BraveWalletService::BraveWalletService(
 
   // Added 05/2024 to label compressed nfts as such.
   BraveWalletService::MaybeMigrateCompressedNfts();
+
+  // Added 08/2024 to reset spl_token_program for SPL tokens incorrectly marked
+  // as unsupported.
+  BraveWalletService::MaybeMigrateSPLTokenProgram();
 }
 
 BraveWalletService::BraveWalletService() : weak_ptr_factory_(this) {}
@@ -969,6 +973,25 @@ void BraveWalletService::OnGetNftsForCompressedMigration(
   }
 
   profile_prefs_->SetBoolean(kBraveWalletIsCompressedNftMigrated, true);
+}
+
+void BraveWalletService::MaybeMigrateSPLTokenProgram() {
+  if (profile_prefs_->GetBoolean(kBraveWalletIsSPLTokenProgramMigrated)) {
+    return;
+  }
+
+  // Get all solana SPL NFTs that are marked incorrectly as unsupported
+  // and reset their spl_token_program to unknown.
+  for (const auto& item : ::brave_wallet::GetAllUserAssets(profile_prefs_)) {
+    if (item->is_nft &&
+        item->spl_token_program == mojom::SPLTokenProgram::kUnsupported &&
+        IsSPLToken(item)) {
+      SetAssetSPLTokenProgram(profile_prefs_, item,
+                              mojom::SPLTokenProgram::kUnknown);
+    }
+  }
+
+  profile_prefs_->SetBoolean(kBraveWalletIsSPLTokenProgramMigrated, true);
 }
 
 void BraveWalletService::OnWalletUnlockPreferenceChanged(

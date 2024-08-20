@@ -294,6 +294,9 @@ void RegisterProfilePrefsForMigration(
 
   // Added 07/2024
   registry->RegisterBooleanPref(kBraveWalletGoerliNetworkMigrated, false);
+
+  // Added 08/2024
+  registry->RegisterBooleanPref(kBraveWalletIsSPLTokenProgramMigrated, false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
