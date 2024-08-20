@@ -336,8 +336,8 @@ void ToggleActiveTabAudioMute(Browser* browser) {
   }
 
   bool mute_tab = !contents->IsAudioMuted();
-  chrome::SetTabAudioMuted(contents, mute_tab, TabMutedReason::AUDIO_INDICATOR,
-                           std::string());
+  SetTabAudioMuted(contents, mute_tab, TabMutedReason::AUDIO_INDICATOR,
+                   std::string());
 }
 
 void ToggleSidebarPosition(Browser* browser) {
