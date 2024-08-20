@@ -31,6 +31,7 @@
           の順に移動して、設定が [プロキシなし] または [直接] になっていることを確認します。</translation>
 <translation id="2765022094254723779">Brave の実現には、他の<ph name="BEGIN_LINK_OSS"/>オープンソース ソフトウェア<ph name="END_LINK_OSS"/>もかかわっています。</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
+<translation id="8828443087767259398">Brave でペアリングを続行するには、Bluetooth へのアクセスが必要です。<ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">Brave は、<ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> のオープンソース プロジェクトによって実現しました。</translation>
 <translation id="4068928808254189629">Brave メニュー &gt;
           <ph name="SETTINGS_TITLE"/>

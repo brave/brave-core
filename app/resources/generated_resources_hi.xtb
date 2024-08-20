@@ -527,7 +527,7 @@
 <translation id="1383381142702995121">इस एक्सटेंशन को मैनेज करें</translation>
 <translation id="1383597849754832576">स्पीच फ़ाइलें डाउनलोड नहीं की जा सकतीं. कुछ देर बाद कोशिश करें.</translation>
 <translation id="1383861834909034572">पूरा होने पर खुल रहा है</translation>
-<translation id="1383876407941801731">Search</translation>
+<translation id="1383876407941801731">खोजें</translation>
 <translation id="6782559435608225642">अन्य भाषाओं वाली वेबसाइटों को Brave Translate की सुविधा दें</translation>
 <translation id="1384959399684842514">डाउनलोड रोका गया</translation>
 <translation id="1388253969141979417">आपका माइक्रोफ़ोन इस्तेमाल करने की अनुमति है</translation>
@@ -693,7 +693,7 @@
 <translation id="1500297251995790841">अज्ञात डिवाइस [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
 <translation id="1500720779546450982">मुझे साइट पर भरोसा है (<ph name="SITE_URL"/>)</translation>
 <translation id="6440894523770886280">ऐसे 'Brave ऐप्स' के बारे में ज़्यादा जानें जो अब उपलब्ध नहीं हैं</translation>
-<translation id="1501480321619201731">समूह मिटाएं</translation>
+<translation id="1501480321619201731">ग्रुप मिटाएं</translation>
 <translation id="4632223202473558409">Brave को इस्तेमाल के आंकड़े अपने-आप भेजता है. डिवाइस की सेटिंग में जाकर, क्रैश रिपोर्ट बनाने की सुविधा को चालू या बंद किया जा सकता है.</translation>
 <translation id="1503556098270577657">अपने Android फ़ोन का इस्तेमाल करके <ph name="USER_EMAIL"/> से साइन इन किया है</translation>
 <translation id="150411034776756821"><ph name="SITE"/> को निकालें</translation>

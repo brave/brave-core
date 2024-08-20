@@ -31,6 +31,8 @@
           y asegúrate de que esté seleccionada la opción de configuración sin proxy o directa.</translation>
 <translation id="2765022094254723779">Brave también se ha podido crear gracias a otro <ph name="BEGIN_LINK_OSS"/>software libre<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Los cambios se aplicarán la próxima vez que reinicies Brave.</translation>
+<translation id="8828443087767259398">Brave necesita acceso al Bluetooth para continuar 
+ con la vinculación. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">Brave se ha podido crear gracias al proyecto de software libre <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
 <translation id="4068928808254189629">Accede al
           menú de Brave &gt;

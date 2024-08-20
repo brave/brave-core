@@ -31,6 +31,8 @@
           وتأكد من ضبط الإعداد على "بلا خادم وكيل" أو "مباشر."</translation>
 <translation id="2765022094254723779">‏أصبح Brave متاحًا من خلال <ph name="BEGIN_LINK_OSS"/>برنامج آخر مفتوح المصدر<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">‏ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل Brave.</translation>
+<translation id="8828443087767259398">‏يجب منح Brave الإذن بالوصول إلى البلوتوث لمواصلة عملية 
+الإقران. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">‏أصبح Brave متاحًا من خلال مشروع <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> المفتوح المصدر.</translation>
 <translation id="4068928808254189629">‏انتقل إلى
         قائمة Brave &gt;

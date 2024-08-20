@@ -31,6 +31,8 @@
           at tiyaking nakatakda sa "walang proxy" o "direkta" ang iyong configuration.</translation>
 <translation id="2765022094254723779">Nagiging posible rin ang Brave sa pamamagitan ng iba pang <ph name="BEGIN_LINK_OSS"/>open source na software<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Magkakabisa ang iyong mga pagbabago sa susunod na ilunsad mong muli ang Brave.</translation>
+<translation id="8828443087767259398">Nangangailangan ang Brave ng access sa Bluetooth para magpatuloy sa 
+ pagpapares. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">Nagiging posible ang Brave sa pamamagitan ng <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> open source project.</translation>
 <translation id="4068928808254189629">Pumunta
           sa menu ng Brave &gt;

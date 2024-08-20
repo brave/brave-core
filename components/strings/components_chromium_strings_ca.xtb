@@ -31,6 +31,8 @@
           i assegureu-vos que la configuració estigui definida sense servidor intermediari o com a directa.</translation>
 <translation id="2765022094254723779">Brave també és possible gràcies a un altre <ph name="BEGIN_LINK_OSS"/>programari lliure<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Els canvis s'aplicaran la propera vegada que reinicieu Brave.</translation>
+<translation id="8828443087767259398">Brave necessita accedir al Bluetooth per continuar 
+ amb la vinculació. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">Brave és possible gràcies al projecte de codi obert de <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
 <translation id="4068928808254189629">Aneu al
         menú de Brave &gt;

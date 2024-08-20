@@ -31,6 +31,8 @@
           i provjerite je li vaša konfiguracija postavljena na "bez proksi servera" ili "direktno".</translation>
 <translation id="2765022094254723779">Brave su omogućili i drugi <ph name="BEGIN_LINK_OSS"/>softveri otvorenog koda<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Vaše promjene će stupiti na snagu kada sljedeći put budete ponovo pokrenuli Brave.</translation>
+<translation id="8828443087767259398">Braveu je potreban pristup Bluetoothu da nastavi s
+uparivanjem. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">Brave je omogućio <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> projekat otvorenog koda.</translation>
 <translation id="4068928808254189629">Idite na
           meni u Braveu &gt;

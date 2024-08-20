@@ -31,6 +31,8 @@ LAN Тохиргоонууд руу орж
 тохиргоогоо "ямар ч прокси байхгүй" эсвэл "шууд" гэж зааж өгсөн байгаа эсэхийг шалгана уу.</translation>
 <translation id="2765022094254723779">Brave-г мөн <ph name="BEGIN_LINK_OSS"/>нээлттэй эх кодтой бусад программ хангамжаар<ph name="END_LINK_OSS"/> боломжтой болгосон.</translation>
 <translation id="9156965752763025780">Таныг Brave дахин эхлүүлэхэд өөрчлөлт идэвхжинэ.</translation>
+<translation id="8828443087767259398">Үргэлжлүүлэн хослуулахын тулд Brave-д Bluetooth-н 
+ хандалт шаардлагатай. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">Brave-г мөн <ph name="BEGIN_LINK_CHROMIUM"/>Brave-н<ph name="END_LINK_CHROMIUM"/> нээлттэй эх кодын төслөөр боломжтой болгосон.</translation>
 <translation id="4068928808254189629">Brave цэс&gt; рүү орж
           <ph name="SETTINGS_TITLE"/>
