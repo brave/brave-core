@@ -114,9 +114,8 @@ namespace {
 std::optional<bool> g_download_confirm_return_allow_for_testing;
 
 bool IsUnsupportedCommand(int command_id, Browser* browser) {
-  return chrome::IsRunningInForcedAppMode() &&
-         !chrome::IsCommandAllowedInAppMode(command_id,
-                                            browser->is_type_popup());
+  return IsRunningInForcedAppMode() &&
+         !IsCommandAllowedInAppMode(command_id, browser->is_type_popup());
 }
 
 // A control separator that is displayed when the sidebar is displayed adjacent
