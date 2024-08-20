@@ -51,13 +51,6 @@ constexpr std::string_view kBravePinsJson = R"brave_pins_json({
     { "name": "gaia.brave.com", "pins": "brave"},
     { "name": "go-updater.brave.com", "pins": "brave"},
     { "name": "mobile-data.s3.brave.com", "pins": "brave"},
-    { "name": "p2a.brave.com", "pins": "brave"},
-    { "name": "p2a-json.brave.com", "pins": "brave"},
-    { "name": "p3a.brave.com", "pins": "brave"},
-    { "name": "p3a-creative.brave.com", "pins": "brave"},
-    { "name": "p3a-json.brave.com", "pins": "brave"},
-    { "name": "p3a.bravesoftware.com", "pins": "brave"},
-    { "name": "p3a-dev.bravesoftware.com", "pins": "brave"},
     { "name": "pcdn.brave.com", "pins": "brave"},
     { "name": "redirector.brave.com", "pins": "brave"},
     { "name": "safebrowsing.brave.com", "pins": "brave"},
@@ -72,6 +65,17 @@ constexpr std::string_view kBravePinsJson = R"brave_pins_json({
     { "name": "translate.brave.com", "pins": "brave"},
     { "name": "translate-static.brave.com", "pins": "brave"},
     { "name": "variations.brave.com", "pins": "brave"},
+
+    // P2A/P3A
+    { "name": "collector.bsg.brave.com", "pins": "brave"},
+    { "name": "p2a.brave.com", "pins": "brave"},
+    { "name": "p2a-json.brave.com", "pins": "brave"},
+    { "name": "p3a.brave.com", "pins": "brave"},
+    { "name": "p3a-creative.brave.com", "pins": "brave"},
+    { "name": "p3a-json.brave.com", "pins": "brave"},
+    { "name": "p3a.bravesoftware.com", "pins": "brave"},
+    { "name": "p3a-dev.bravesoftware.com", "pins": "brave"},
+    { "name": "star-randsrv.bsg.brave.com", "pins": "brave"},
 
     // Creators
     { "name": "creators.basicattentiontoken.org", "pins": "brave"},
