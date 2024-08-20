@@ -1069,6 +1069,10 @@ extension BrowserViewController: WKNavigationDelegate {
       if tab.walletEthProvider != nil {
         tab.emitEthereumEvent(.connect)
       }
+
+      if let lastCommittedURL = tab.committedURL {
+        maybeRecordBraveSearchDailyUsage(url: lastCommittedURL)
+      }
     }
 
     // Added this method to determine long press menu actions better
