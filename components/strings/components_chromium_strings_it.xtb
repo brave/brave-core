@@ -31,6 +31,7 @@
           e verifica che la configurazione sia impostata su "nessun proxy" o "diretta".</translation>
 <translation id="2765022094254723779">La realizzazione di Brave è stata possibile anche grazie ad altri <ph name="BEGIN_LINK_OSS"/>software open source<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Le modifiche verranno applicate al prossimo riavvio di Brave.</translation>
+<translation id="8828443087767259398">Brave richiede l'accesso al Bluetooth per continuare l'accoppiamento. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6477625882876869143">La realizzazione di Brave è stata possibile grazie al progetto open source <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
 <translation id="4068928808254189629">Seleziona il menu Brave &gt; <ph name="SETTINGS_TITLE"/> &gt; <ph name="ADVANCED_TITLE"/> e deseleziona "<ph name="NO_PREFETCH_DESCRIPTION"/>".
 Se il problema non si risolve, dovresti riselezionare questa opzione per ottenere prestazioni migliori.</translation>
