@@ -51,6 +51,7 @@ function Container () {
           webcompatSettings={ siteSettings?.webcompatSettings }
           totalBlockedTitle={getLocale('braveShieldsFingerprintingProtectionsAppliedLabel')}
           learnMoreText={getLocale('braveShieldsLearnMoreLinkText')}
+          listDescription={getLocale('braveShieldsFingerprintingListDescription')}
       />
     }
   }

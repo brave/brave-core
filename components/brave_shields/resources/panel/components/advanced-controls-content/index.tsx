@@ -219,7 +219,7 @@ function AdvancedControlsContent () {
               onClick={() => setViewType?.(ViewType.FingerprintList)}
               disabled={invokedWebcompatListCount <= 0 || siteSettings?.fingerprintMode === FingerprintMode.ALLOW_MODE}
             >
-              {invokedWebcompatListCount > 99 ? '99+' : invokedWebcompatListCount}
+              &gt;
             </S.CountButton>
         </S.ControlGroup>
         <S.ControlGroup>
