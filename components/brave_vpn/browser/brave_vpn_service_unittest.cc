@@ -304,7 +304,7 @@ class BraveVPNServiceTest : public testing::Test {
                                                    ->GetRegionDataManager()
                                                    .GetDeviceRegion(),
                                                regions())) {
-      return std::move(*region_ptr);
+      return (*region_ptr).Clone();
     }
     return mojom::Region();
   }
@@ -319,7 +319,7 @@ class BraveVPNServiceTest : public testing::Test {
     service_->OnCredentialSummary(domain, MakeSkusResult(summary));
   }
 
-  const std::vector<mojom::Region>& regions() const {
+  const std::vector<mojom::RegionPtr>& regions() const {
     return GetBraveVPNConnectionManager()->GetRegionDataManager().GetRegions();
   }
 

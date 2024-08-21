@@ -244,12 +244,12 @@ class SystemVPNConnectionAPIUnitTest : public testing::Test {
                                                    ->GetRegionDataManager()
                                                    .GetDeviceRegion(),
                                                regions())) {
-      return std::move(*region_ptr);
+      return (*region_ptr).Clone();
     }
     return mojom::Region();
   }
 
-  const std::vector<mojom::Region>& regions() {
+  const std::vector<mojom::RegionPtr>& regions() {
     return GetBraveVPNConnectionManager()->GetRegionDataManager().GetRegions();
   }
 

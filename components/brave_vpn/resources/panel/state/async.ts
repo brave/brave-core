@@ -5,10 +5,9 @@
 
 import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../../common/AsyncActionHandler'
-import getPanelBrowserAPI, { ConnectionState, PurchasedState } from '../api/panel_browser_api'
+import getPanelBrowserAPI, { ConnectionState, PurchasedState , REGION_PRECISION_CITY_BY_COUNTRY } from '../api/panel_browser_api'
 import * as Actions from './actions'
 import { RootState } from './store'
-import { REGION_PRECISION_CITY_BY_COUNTRY } from '../../api/panel_browser_api'
 
 const handler = new AsyncActionHandler()
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
