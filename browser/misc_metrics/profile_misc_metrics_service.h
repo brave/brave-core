@@ -10,26 +10,13 @@
 
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/prefs/pref_change_registrar.h"
 
-class SearchEngineTracker;
-
-namespace autofill {
-class PersonalDataManager;
-}
+class PrefService;
 
 namespace content {
 class BrowserContext;
 }  // namespace content
-
-#if !BUILDFLAG(IS_ANDROID)
-namespace extensions {
-class ExtensionRegistry;
-}  // namespace extensions
-#endif
-
-namespace history {
-class HistoryService;
-}  // namespace history
 
 namespace misc_metrics {
 
@@ -37,10 +24,14 @@ namespace misc_metrics {
 class MiscAndroidMetrics;
 #else
 class ExtensionMetrics;
+class ThemeMetrics;
 #endif
 class AutofillMetrics;
 class LanguageMetrics;
 class PageMetrics;
+
+constexpr char kSearchSuggestEnabledHistogramName[] =
+    "Brave.Search.SearchSuggest";
 
 class ProfileMiscMetricsService : public KeyedService {
  public:
@@ -59,6 +50,11 @@ class ProfileMiscMetricsService : public KeyedService {
 #endif
 
  private:
+  void ReportSimpleMetrics();
+
+  raw_ptr<PrefService> profile_prefs_;
+  PrefChangeRegistrar pref_change_registrar_;
+
   std::unique_ptr<AutofillMetrics> autofill_metrics_ = nullptr;
   std::unique_ptr<LanguageMetrics> language_metrics_ = nullptr;
   std::unique_ptr<PageMetrics> page_metrics_ = nullptr;
@@ -66,6 +62,7 @@ class ProfileMiscMetricsService : public KeyedService {
   std::unique_ptr<MiscAndroidMetrics> misc_android_metrics_ = nullptr;
 #else
   std::unique_ptr<ExtensionMetrics> extension_metrics_ = nullptr;
+  std::unique_ptr<ThemeMetrics> theme_metrics_ = nullptr;
 #endif
 };
 

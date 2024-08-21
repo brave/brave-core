@@ -5,6 +5,8 @@
 
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 
+#include "base/metrics/histogram_macros.h"
+#include "brave/browser/misc_metrics/theme_metrics.h"
 #include "brave/components/misc_metrics/autofill_metrics.h"
 #include "brave/components/misc_metrics/language_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
@@ -14,6 +16,9 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/themes/theme_service_factory.h"
+#include "chrome/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 
@@ -30,10 +35,11 @@ namespace misc_metrics {
 
 ProfileMiscMetricsService::ProfileMiscMetricsService(
     content::BrowserContext* context) {
-  auto* profile_prefs = user_prefs::UserPrefs::Get(context);
+  profile_prefs_ = user_prefs::UserPrefs::Get(context);
   auto* local_state = g_browser_process->local_state();
-  if (profile_prefs) {
-    language_metrics_ = std::make_unique<LanguageMetrics>(profile_prefs);
+  if (profile_prefs_) {
+    language_metrics_ = std::make_unique<LanguageMetrics>(profile_prefs_);
+    pref_change_registrar_.Init(profile_prefs_);
   }
   auto* history_service = HistoryServiceFactory::GetForProfile(
       Profile::FromBrowserContext(context), ServiceAccessType::EXPLICIT_ACCESS);
@@ -56,6 +62,17 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
   if (extension_registry) {
     extension_metrics_ = std::make_unique<ExtensionMetrics>(extension_registry);
   }
+  auto* theme_service =
+      ThemeServiceFactory::GetForProfile(Profile::FromBrowserContext(context));
+  if (theme_service) {
+    theme_metrics_ = std::make_unique<ThemeMetrics>(theme_service);
+  }
+  if (profile_prefs_) {
+    pref_change_registrar_.Add(
+        prefs::kSearchSuggestEnabled,
+        base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
+                            base::Unretained(this)));
+  }
 #endif
   auto* personal_data_manager =
       autofill::PersonalDataManagerFactory::GetInstance()->GetForBrowserContext(
@@ -64,6 +81,7 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
     autofill_metrics_ =
         std::make_unique<AutofillMetrics>(personal_data_manager);
   }
+  ReportSimpleMetrics();
 }
 
 ProfileMiscMetricsService::~ProfileMiscMetricsService() = default;
@@ -85,5 +103,14 @@ MiscAndroidMetrics* ProfileMiscMetricsService::GetMiscAndroidMetrics() {
   return misc_android_metrics_.get();
 }
 #endif
+
+void ProfileMiscMetricsService::ReportSimpleMetrics() {
+  if (!profile_prefs_) {
+    return;
+  }
+  UMA_HISTOGRAM_BOOLEAN(
+      kSearchSuggestEnabledHistogramName,
+      profile_prefs_->GetBoolean(prefs::kSearchSuggestEnabled));
+}
 
 }  // namespace misc_metrics

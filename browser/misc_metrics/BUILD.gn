@@ -12,10 +12,6 @@ source_set("unit_tests") {
     "uptime_monitor_unittest.cc",
   ]
 
-  if (!is_android) {
-    sources += [ "extension_metrics_unittest.cc" ]
-  }
-
   deps = [
     "//base",
     "//base/test:test_support",
@@ -28,6 +24,18 @@ source_set("unit_tests") {
     "//components/prefs:test_support",
     "//testing/gtest",
   ]
+
+  if (!is_android) {
+    sources += [
+      "extension_metrics_unittest.cc",
+      "theme_metrics_unittest.cc",
+    ]
+
+    deps += [
+      "//brave/browser/themes",
+      "//chrome/browser/themes",
+    ]
+  }
 }
 
 source_set("browser_tests") {

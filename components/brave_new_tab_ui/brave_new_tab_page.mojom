@@ -97,5 +97,5 @@ interface NewTabMetrics {
   // Report the default engine for the NTP search widget.
   ReportNTPSearchDefaultEngine(int64? prepopulate_id);
   // Report a usage of the NTP search widget.
-  ReportNTPSearchUsage();
+  ReportNTPSearchUsage(int64 prepopulate_id);
 };

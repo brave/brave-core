@@ -14,6 +14,7 @@
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "extensions/browser/extension_registry_factory.h"
 #else
 #include "brave/browser/search_engines/search_engine_tracker.h"
@@ -42,6 +43,7 @@ ProfileMiscMetricsServiceFactory::ProfileMiscMetricsServiceFactory()
           BrowserContextDependencyManager::GetInstance()) {
 #if !BUILDFLAG(IS_ANDROID)
   DependsOn(extensions::ExtensionRegistryFactory::GetInstance());
+  DependsOn(ThemeServiceFactory::GetInstance());
 #else
   DependsOn(SearchEngineTrackerFactory::GetInstance());
 #endif

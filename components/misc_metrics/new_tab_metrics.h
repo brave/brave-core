@@ -20,6 +20,8 @@ inline constexpr char kNTPSearchEngineHistogramName[] =
     "Brave.Search.WidgetDefault";
 inline constexpr char kNTPSearchUsageHistogramName[] =
     "Brave.Search.WidgetUsage";
+inline constexpr char kNTPGoogleWidgetUsageHistogramName[] =
+    "Brave.Search.GoogleWidgetUsage";
 
 class NewTabMetrics : public brave_new_tab_page::mojom::NewTabMetrics {
  public:
@@ -37,7 +39,7 @@ class NewTabMetrics : public brave_new_tab_page::mojom::NewTabMetrics {
   // brave_new_tab_page::mojom::NewTabMetrics:
   void ReportNTPSearchDefaultEngine(
       std::optional<int64_t> prepopulate_id) override;
-  void ReportNTPSearchUsage() override;
+  void ReportNTPSearchUsage(int64_t prepopulate_id) override;
 
  private:
   void ReportCounts();
