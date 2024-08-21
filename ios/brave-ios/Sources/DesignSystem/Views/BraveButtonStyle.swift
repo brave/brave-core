@@ -55,6 +55,7 @@ public struct BraveFilledButtonStyle: ButtonStyle {
       )
       .clipShape(clipShape)
       .contentShape(clipShape)
+      .hoverEffect()
       .animation(.linear(duration: 0.15), value: isEnabled)
   }
 }

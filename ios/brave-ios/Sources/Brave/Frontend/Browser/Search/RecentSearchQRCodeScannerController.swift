@@ -16,7 +16,11 @@ class RecentSearchQRCodeScannerController: UIViewController {
   private var onDidScan: (_ string: String) -> Void
 
   public static var hasCameraSupport: Bool {
-    !AVCaptureDevice.DiscoverySession(
+    if ProcessInfo.processInfo.isiOSAppOnVisionOS {
+      // Apps on VisionOS can't access the main camera
+      return false
+    }
+    return !AVCaptureDevice.DiscoverySession(
       deviceTypes: [.builtInWideAngleCamera],
       mediaType: .video,
       position: .back

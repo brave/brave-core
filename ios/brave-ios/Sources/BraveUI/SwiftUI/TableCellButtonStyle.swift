@@ -9,6 +9,7 @@ import SwiftUI
 /// A button style that mimics a table cell being highlighted in the background
 public struct TableCellButtonStyle: ButtonStyle {
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
+
   public init() {}
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label
@@ -17,5 +18,6 @@ public struct TableCellButtonStyle: ButtonStyle {
         Color(colorScheme == .dark ? .white : .black)
           .opacity(configuration.isPressed ? 0.1 : 0.0)
       )
+      .hoverEffect(.highlight)
   }
 }

@@ -134,6 +134,7 @@ struct WalletSegmentedControl<Item: WalletSegmentedControlItem>: View {
       .dynamicTypeSize(dynamicTypeRange)
       .allowsHitTesting(false)
       .frame(width: itemWidth)
+      .hoverEffect()
   }
 
   private var dragGesture: some Gesture {
