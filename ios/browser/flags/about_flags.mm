@@ -21,6 +21,7 @@
 #include "build/build_config.h"
 #include "components/flags_ui/feature_entry_macros.h"
 #include "components/flags_ui/flags_state.h"
+#include "net/base/features.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
@@ -74,16 +75,25 @@
                                  kBraveWalletTransactionSimulationsFeature),  \
       })
 
-#define BRAVE_SHIELDS_FEATURE_ENTRIES                                    \
-  EXPAND_FEATURE_ENTRIES({                                               \
-      "brave-shred",                                                     \
-      "Enable Brave 'Shred' Feature",                                    \
-      "Enable the Brave ‘Shred’ feature which will allow a user to " \
-      "easily delete all site data on demand or automatically when "     \
-      "closing a site or terminating the application.",                  \
-      flags_ui::kOsIos,                                                  \
-      FEATURE_VALUE_TYPE(brave_shields::features::kBraveShredFeature),   \
-  })
+#define BRAVE_SHIELDS_FEATURE_ENTRIES                                        \
+  EXPAND_FEATURE_ENTRIES(                                                    \
+      {                                                                      \
+          "brave-shred",                                                     \
+          "Enable Brave 'Shred' Feature",                                    \
+          "Enable the Brave ‘Shred’ feature which will allow a user to " \
+          "easily delete all site data on demand or automatically when "     \
+          "closing a site or terminating the application.",                  \
+          flags_ui::kOsIos,                                                  \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBraveShredFeature),   \
+      },                                                                     \
+      {                                                                      \
+          "https-by-default",                                                \
+          "Use HTTPS by Default",                                            \
+          "Attempt to connect to all websites using HTTPS before falling "   \
+          "back to HTTP.",                                                   \
+          flags_ui::kOsIos,                                                  \
+          FEATURE_VALUE_TYPE(net::features::kBraveHttpsByDefault),           \
+      })
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #define BRAVE_AI_CHAT                                          \

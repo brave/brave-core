@@ -26,6 +26,7 @@
 #include "brave/ios/browser/playlist/features.h"
 #import "build/blink_buildflags.h"
 #include "build/build_config.h"
+#include "net/base/features.h"
 
 @interface Feature () {
   const base::Feature* _feature;
@@ -295,6 +296,10 @@
 
 + (Feature*)kNewPlaylistUI {
   return [[Feature alloc] initWithFeature:&playlist::features::kNewPlaylistUI];
+}
+
++ (Feature*)kBraveHttpsByDefault {
+  return [[Feature alloc] initWithFeature:&net::features::kBraveHttpsByDefault];
 }
 
 @end

@@ -29,6 +29,7 @@ source_set("features") {
     "//brave/components/skus/common:common",
     "//brave/ios/browser/playlist",
     "//build:blink_buildflags",
+    "//net",
   ]
 
   frameworks = [ "Foundation.framework" ]
