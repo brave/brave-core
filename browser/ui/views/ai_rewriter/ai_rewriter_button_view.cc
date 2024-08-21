@@ -109,15 +109,14 @@ void AIRewriterButtonView::Show(const gfx::Rect& rect) {
       chrome::FindBrowserWithTab(web_contents()));
   CHECK(browser_view);
 
-  auto top = browser_view->toolbar()->bounds().bottom();
+  auto offset =
+      browser_view->contents_container()->bounds().OffsetFromOrigin();
 
-  constexpr int kPaddingY = 8;
-  constexpr int kPaddingX = 20;
-
+  constexpr int kPaddingY = -8;
   auto size = GetPreferredSize();
-  auto pos = rect.origin();
-  pos.Offset(GetPreferredSize().width() + kPaddingX,
-             top - GetPreferredSize().height() / 2 - kPaddingY);
+  auto pos = rect.origin() + offset;
+  pos.Offset(GetPreferredSize().width() / 2,
+             -GetPreferredSize().height() / 2 + kPaddingY);
   GetWidget()->SetBounds(gfx::Rect(pos, size));
 }
 
