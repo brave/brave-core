@@ -360,8 +360,6 @@ extension BrowserViewController: CWVNavigationDelegate {
         )
       {
         tab.isInternalRedirect = true
-        tab.loadRequest(modifiedRequest)
-
         if let url = modifiedRequest.url {
           Self.log.debug(
             "Redirected to `\(url.absoluteString, privacy: .private)`"
@@ -373,6 +371,9 @@ extension BrowserViewController: CWVNavigationDelegate {
           state,
           "Redirected navigation"
         )
+        DispatchQueue.main.async {
+          tab.loadRequest(modifiedRequest)
+        }
         return .cancel
       } else {
         tab?.isInternalRedirect = false
