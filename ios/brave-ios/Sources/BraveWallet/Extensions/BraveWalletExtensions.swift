@@ -315,7 +315,7 @@ extension BraveWallet.TransactionInfo {
     }
   }
 
-  var solTxFee: UInt64? {
+  var solEstimatedTxFeeFromTxData: UInt64? {
     guard let fee = txDataUnion.solanaTxData?.feeEstimation
     else { return nil }
     let priorityFee =
