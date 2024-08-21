@@ -61,7 +61,7 @@ class UserAgentBuilderTests: XCTestCase {
       """
       Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) \
       AppleWebKit/605.1.15 (KHTML, like Gecko) \
-      Version/17.5 \
+      Version/17.6.1 \
       Safari/605.1.15
       """
 
@@ -148,15 +148,15 @@ class UserAgentBuilderTests: XCTestCase {
 
     // MARK: - iOS 17
     let iPhone_safari_17_UA = """
-      Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
-      Version/17.5 \
+      Mozilla/5.0 (iPhone; CPU iPhone OS 17_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
+      Version/17.6.1 \
       Mobile/15E148 \
       Safari/604.1
       """
 
     let iPad_safari_17_UA = """
-      Mozilla/5.0 (iPad; CPU OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
-      Version/17.5 \
+      Mozilla/5.0 (iPad; CPU OS 17_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) \
+      Version/17.6.1 \
       Mobile/15E148 \
       Safari/604.1
       """
@@ -336,7 +336,7 @@ class UserAgentBuilderTests: XCTestCase {
       """
       Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) \
       AppleWebKit/605.1.15 (KHTML, like Gecko) \
-      Version/17.5 \
+      Version/17.6.1 \
       Safari/605.1.15
       """
 
