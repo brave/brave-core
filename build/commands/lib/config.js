@@ -72,7 +72,9 @@ const getEnvConfig = (key, default_value = undefined) => {
     } else if (process.platform === 'linux') {
         // Run once only: secret-tool store --label=dotenv dotenv - <.env && rm .env
         const dotenvText = spawnSync('secret-tool', ['lookup', 'Title', 'dotenv']).stdout
-        dotenv.populate(envConfig, dotenv.parse(Buffer.from(dotenvText)))
+        const msg = dotenvText != '' ? 'got .env' : 'failed to get .env'
+        dotenv.populate(envConfig, dotenv.parse(dotenvText))
+        console.log(`brave-core .env does not exist, ${msg} from a libsecret-compatible secret service`)
     }
 
     // Convert 'true' and 'false' strings into booleans.
