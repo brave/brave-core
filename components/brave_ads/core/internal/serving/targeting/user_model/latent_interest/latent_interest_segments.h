@@ -10,7 +10,7 @@
 
 namespace brave_ads {
 
-SegmentList BuildLatentInterestSegments();
+void BuildLatentInterestSegments(BuildSegmentsCallback callback);
 
 }  // namespace brave_ads
 

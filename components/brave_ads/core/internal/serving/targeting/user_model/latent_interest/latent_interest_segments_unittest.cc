@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/latent_interest/latent_interest_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/targeting_test_helper.h"
@@ -31,21 +32,19 @@ TEST_F(BraveAdsLatentInterestSegmentsTest, BuildLatentInterestSegments) {
   // Arrange
   targeting_helper_->MockLatentInterest();
 
-  // Act
-  const SegmentList latent_interest_segments = BuildLatentInterestSegments();
-
-  // Assert
-  EXPECT_EQ(test::TargetingHelper::LatentInterestExpectation().segments,
-            latent_interest_segments);
+  // Act & Assert
+  base::MockCallback<BuildSegmentsCallback> callback;
+  EXPECT_CALL(callback,
+              Run(test::TargetingHelper::LatentInterestExpectation().segments));
+  BuildLatentInterestSegments(callback.Get());
 }
 
 TEST_F(BraveAdsLatentInterestSegmentsTest,
        BuildLatentInterestSegmentsIfNoTargeting) {
-  // Act
-  const SegmentList latent_interest_segments = BuildLatentInterestSegments();
-
-  // Assert
-  EXPECT_THAT(latent_interest_segments, ::testing::IsEmpty());
+  // Act & Assert
+  base::MockCallback<BuildSegmentsCallback> callback;
+  EXPECT_CALL(callback, Run(/*segments=*/::testing::IsEmpty()));
+  BuildLatentInterestSegments(callback.Get());
 }
 
 TEST_F(BraveAdsLatentInterestSegmentsTest,
@@ -53,11 +52,10 @@ TEST_F(BraveAdsLatentInterestSegmentsTest,
   // Arrange
   targeting_helper_->MockLatentInterest();
 
-  // Act
-  const SegmentList latent_interest_segments = BuildLatentInterestSegments();
-
-  // Assert
-  EXPECT_THAT(latent_interest_segments, ::testing::IsEmpty());
+  // Act & Assert
+  base::MockCallback<BuildSegmentsCallback> callback;
+  EXPECT_CALL(callback, Run(/*segments=*/::testing::IsEmpty()));
+  BuildLatentInterestSegments(callback.Get());
 }
 
 }  // namespace brave_ads

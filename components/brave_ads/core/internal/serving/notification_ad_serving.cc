@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving.h"
 
+#include <utility>
+
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
@@ -80,7 +82,7 @@ void NotificationAdServing::MaybeServeAd() {
     return FailedToServeAd();
   }
 
-  GetEligibleAds();
+  GetUserModel();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -102,14 +104,18 @@ base::expected<void, std::string> NotificationAdServing::CanServeAd() const {
   return base::ok();
 }
 
-void NotificationAdServing::GetEligibleAds() {
-  const UserModelInfo user_model = BuildUserModel();
+void NotificationAdServing::GetUserModel() {
+  BuildUserModel(base::BindOnce(&NotificationAdServing::GetEligibleAds,
+                                weak_factory_.GetWeakPtr()));
+}
 
+void NotificationAdServing::GetEligibleAds(UserModelInfo user_model) {
   NotifyOpportunityAroseToServeNotificationAd(user_model.interest.segments);
 
   eligible_ads_->GetForUserModel(
-      user_model, base::BindOnce(&NotificationAdServing::GetEligibleAdsCallback,
-                                 weak_factory_.GetWeakPtr()));
+      std::move(user_model),
+      base::BindOnce(&NotificationAdServing::GetEligibleAdsCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void NotificationAdServing::GetEligibleAdsCallback(

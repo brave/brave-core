@@ -7,9 +7,11 @@
 
 #include <memory>
 
+#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/resources/language_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/interest/interest_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/targeting_test_helper.h"
@@ -37,20 +39,18 @@ TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegments) {
   // Arrange
   targeting_helper_->MockInterest();
 
-  // Act
-  const SegmentList interest_segments = BuildInterestSegments();
-
-  // Assert
-  EXPECT_EQ(test::TargetingHelper::InterestExpectation().segments,
-            interest_segments);
+  // Act & Assert
+  base::MockCallback<BuildSegmentsCallback> callback;
+  EXPECT_CALL(callback,
+              Run(test::TargetingHelper::InterestExpectation().segments));
+  BuildInterestSegments(callback.Get());
 }
 
 TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegmentsIfNoTargeting) {
-  // Act
-  const SegmentList interest_segments = BuildInterestSegments();
-
-  // Assert
-  EXPECT_THAT(interest_segments, ::testing::IsEmpty());
+  // Act & Assert
+  base::MockCallback<BuildSegmentsCallback> callback;
+  EXPECT_CALL(callback, Run(/*segments=*/::testing::IsEmpty()));
+  BuildInterestSegments(callback.Get());
 }
 
 TEST_F(BraveAdsInterestSegmentsTest,
@@ -61,11 +61,10 @@ TEST_F(BraveAdsInterestSegmentsTest,
 
   targeting_helper_->MockInterest();
 
-  // Act
-  const SegmentList interest_segments = BuildInterestSegments();
-
-  // Assert
-  EXPECT_THAT(interest_segments, ::testing::IsEmpty());
+  // Act & Assert
+  base::MockCallback<BuildSegmentsCallback> callback;
+  EXPECT_CALL(callback, Run(/*segments=*/::testing::IsEmpty()));
+  BuildInterestSegments(callback.Get());
 }
 
 }  // namespace brave_ads

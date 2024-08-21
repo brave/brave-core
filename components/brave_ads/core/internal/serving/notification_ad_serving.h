@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_delegate.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 namespace base {
@@ -59,7 +60,9 @@ class NotificationAdServing final : public AdsClientNotifierObserver {
 
   bool IsSupported() const { return !!eligible_ads_; }
 
-  void GetEligibleAds();
+  void GetUserModel();
+
+  void GetEligibleAds(UserModelInfo user_model);
   void GetEligibleAdsCallback(const CreativeNotificationAdList& creative_ads);
 
   void UpdateMaximumAdsPerHour();
