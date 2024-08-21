@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
@@ -40,6 +41,8 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
     private LinearLayout mServerSelectionListLayout;
     private ProgressBar mServerSelectionProgress;
     private RecyclerView mServerRegionList;
+    private TextView mServersSectionText;
+    private MaterialSwitch mAutomaticSwitch;
 
     private ServiceHandler mServiceHandler;
 
@@ -86,29 +89,28 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
 
         mServerRegionList = (RecyclerView) findViewById(R.id.server_selection_list);
 
-        LinearLayout automaticLayout = (LinearLayout) findViewById(R.id.automatic_server_layout);
-        MaterialSwitch automaticSwitch =
-                (MaterialSwitch) findViewById(R.id.automatic_server_switch);
-        boolean isAutomatic =
-                BraveVpnPrefUtils.getRegionName()
-                        .equals(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
-        mServerRegionList.setVisibility(isAutomatic ? View.GONE : View.VISIBLE);
-        automaticSwitch.setOnClickListener(
+        mServersSectionText = (TextView) findViewById(R.id.servers_section_text);
+        mAutomaticSwitch = (MaterialSwitch) findViewById(R.id.automatic_server_switch);
+        mAutomaticSwitch.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        BraveVpnUtils.selectedServerRegion =
-                                new BraveVpnServerRegion(
-                                        "",
-                                        BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC,
-                                        "",
-                                        "",
-                                        BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC,
-                                        BraveVpnConstants.REGION_PRECISION_COUNTRY);
-                        changeServerRegion();
+                        if (mAutomaticSwitch.isChecked()) {
+                            BraveVpnUtils.selectedServerRegion =
+                                    new BraveVpnServerRegion(
+                                            "",
+                                            BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC,
+                                            "",
+                                            getString(R.string.optimal_text),
+                                            getString(R.string.optimal_desc),
+                                            BraveVpnConstants.REGION_PRECISION_COUNTRY);
+                            changeServerRegion();
+                        }
+
+                        BraveVpnPrefUtils.setAutomaticServerSelection(mAutomaticSwitch.isChecked());
+                        updateAutomaticSelection(mAutomaticSwitch.isChecked());
                     }
                 });
-
         mServerSelectionListLayout = (LinearLayout) findViewById(R.id.server_selection_list_layout);
         mServerSelectionProgress = (ProgressBar) findViewById(R.id.server_selection_progress);
 
@@ -132,6 +134,14 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
                     }
                 });
         mServerRegionList.setLayoutManager(linearLayoutManager);
+        boolean isAutomatic = BraveVpnPrefUtils.isAutomaticServerSelection();
+        updateAutomaticSelection(isAutomatic);
+        mAutomaticSwitch.setChecked(isAutomatic);
+    }
+
+    private void updateAutomaticSelection(boolean isAutomatic) {
+        mServerRegionList.setVisibility(isAutomatic ? View.GONE : View.VISIBLE);
+        mServersSectionText.setVisibility(isAutomatic ? View.GONE : View.VISIBLE);
     }
 
     @Override

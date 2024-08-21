@@ -11,7 +11,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 import android.util.Pair;
 
 import androidx.fragment.app.FragmentActivity;
@@ -26,6 +25,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.brave_vpn.mojom.Region;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
@@ -44,7 +44,6 @@ import org.chromium.gms.ChromiumPlayServicesAvailability;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class BraveVpnUtils {
@@ -162,8 +161,10 @@ public class BraveVpnUtils {
                                         region.getString("country-iso-code"),
                                         region.getString("name"),
                                         region.getString("name-pretty"),
-                                        "",
-                                        BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC,
+                                        ContextUtils.getApplicationContext()
+                                                .getString(R.string.optimal_text),
+                                        ContextUtils.getApplicationContext()
+                                                .getString(R.string.optimal_desc),
                                         BraveVpnConstants.REGION_PRECISION_COUNTRY);
                         return braveVpnServerRegion;
                     }
@@ -176,7 +177,6 @@ public class BraveVpnUtils {
     }
 
     public static Pair<String, String> getHostnameForRegion(String jsonHostnames) {
-        Log.e("brave_vpn", "jsonHostnames : " + jsonHostnames);
         jsonHostnames = "{\"hostnames\":" + jsonHostnames + "}";
         try {
             JSONObject result = new JSONObject(jsonHostnames);
@@ -246,33 +246,6 @@ public class BraveVpnUtils {
             Log.e(TAG, "BraveVpnUtils -> getPaymentState JSONException error " + e);
         }
         return 0;
-    }
-
-    public static List<BraveVpnServerRegion> getServerLocations(String jsonServerLocations) {
-        List<BraveVpnServerRegion> vpnServerRegions = new ArrayList<>();
-        if (TextUtils.isEmpty(jsonServerLocations)) {
-            return vpnServerRegions;
-        }
-        jsonServerLocations = "{\"servers\":" + jsonServerLocations + "}";
-        try {
-            JSONObject result = new JSONObject(jsonServerLocations);
-            JSONArray servers = result.getJSONArray("servers");
-            for (int i = 0; i < servers.length(); i++) {
-                JSONObject server = servers.getJSONObject(i);
-                BraveVpnServerRegion vpnServerRegion =
-                        new BraveVpnServerRegion(
-                                server.getString("country-iso-code"),
-                                server.getString("name"),
-                                server.getString("name-pretty"),
-                                "",
-                                BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC,
-                                BraveVpnConstants.REGION_PRECISION_COUNTRY);
-                vpnServerRegions.add(vpnServerRegion);
-            }
-        } catch (JSONException e) {
-            Log.e(TAG, "BraveVpnUtils -> getServerLocations JSONException error " + e);
-        }
-        return vpnServerRegions;
     }
 
     public static void resetProfileConfiguration(Activity activity) {

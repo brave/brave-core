@@ -14,7 +14,6 @@ import android.util.Pair;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import org.chromium.base.Log;
 import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
@@ -91,12 +90,6 @@ public class BraveVpnApiResponseUtils {
                                 ? region
                                 : serverRegion;
             }
-
-            Log.e("brave_vpn", "handleOnGetTimezonesForRegions : region :" + region);
-            Log.e(
-                    "brave_vpn",
-                    "handleOnGetTimezonesForRegions : braveVpnServerRegion.getRegionPrecision() :"
-                            + braveVpnServerRegion.getRegionPrecision());
             region =
                     (braveVpnServerRegion
                                     .getRegionPrecision()

@@ -1,4 +1,4 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -94,8 +94,8 @@ public class VpnServerActivity extends BraveVpnParentActivity {
         List<Region> cities = new ArrayList<Region>(Arrays.asList(region.cities));
 
         Region optimalRegion = new Region();
-        optimalRegion.namePretty = getString(R.string.optimal_text);
         optimalRegion.name = getString(R.string.optimal_desc);
+        optimalRegion.namePretty = getString(R.string.optimal_text);
         cities.add(0, optimalRegion);
 
         mVpnServerAdapter = new VpnServerAdapter(VpnServerActivity.this);

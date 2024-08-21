@@ -35,6 +35,7 @@ public class BraveVpnPrefUtils {
     private static final String PREF_BRAVE_VPN_SERVER_CITY_NAME = "server_city_name";
     private static final String PREF_BRAVE_VPN_SERVER_CITY_NAME_PRETTY = "server_city_name_pretty";
     private static final String PREF_BRAVE_VPN_SERVER_PRECISION = "server_precision";
+    private static final String VPN_AUTOMATIC_SERVER_SELECTION = "vpn_automatic_server_selection";
 
     private static final String PREF_BRAVE_VPN_RESET_CONFIGURATION =
             "brave_vpn_reset_configuration";
@@ -97,6 +98,16 @@ public class BraveVpnPrefUtils {
     public static void setResetConfiguration(boolean newValue) {
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(PREF_BRAVE_VPN_RESET_CONFIGURATION, newValue);
+    }
+
+    public static boolean isAutomaticServerSelection() {
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(VPN_AUTOMATIC_SERVER_SELECTION, false);
+    }
+
+    public static void setAutomaticServerSelection(boolean newValue) {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(VPN_AUTOMATIC_SERVER_SELECTION, newValue);
     }
 
     public static void setHostname(String value) {
