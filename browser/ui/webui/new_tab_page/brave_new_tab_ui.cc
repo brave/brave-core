@@ -28,6 +28,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/browser/themes/theme_syncable_service.h"
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/strings/grit/components_strings.h"
@@ -72,9 +73,10 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
 
   AddBackgroundColorToSource(source, web_contents);
 
-  source->AddBoolean("featureCustomBackgroundEnabled",
-                     !profile->GetPrefs()->IsManagedPreference(
-                         prefs::kNtpCustomBackgroundDict));
+  source->AddBoolean(
+      "featureCustomBackgroundEnabled",
+      !profile->GetPrefs()->IsManagedPreference(GetThemePrefNameInMigration(
+          ThemePrefInMigration::kNtpCustomBackgroundDict)));
 
   // Let frontend know about feature flags
   source->AddBoolean("featureFlagBraveNewsPromptEnabled",
