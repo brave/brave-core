@@ -244,9 +244,7 @@ extension BrowserViewController: CWVNavigationDelegate {
             $0.name.caseInsensitiveCompare("alternativeDistributionPackage") == .orderedSame
           })?.value?.asURL,
           navigationAction.navigationType.isMainFrame,
-          //           navigationAction.sourceFrame.isMainFrame,
-          //           adpURL.baseDomain == navigationAction.sourceFrame.request.url?.baseDomain
-          adpURL.baseDomain == navigationAction.request.url?.baseDomain  // FIXME: Test
+          adpURL.baseDomain == webView.lastCommittedURL?.baseDomain
         {
           return .allow
         }
