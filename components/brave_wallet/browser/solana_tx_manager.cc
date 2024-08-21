@@ -867,16 +867,17 @@ void SolanaTxManager::MakeBubbleGumProgramTransferTxData(
     const std::string& to_wallet_address,
     MakeBubbleGumProgramTransferTxDataCallback callback) {
   // Get asset and proof data from SimpleHash
-  auto internal_callback =
-      base::BindOnce(&SolanaTxManager::OnFetchCompressedNftProof,
-                     weak_ptr_factory_.GetWeakPtr(), from_wallet_address,
-                     to_wallet_address, std::move(callback));
+  auto internal_callback = base::BindOnce(
+      &SolanaTxManager::OnFetchCompressedNftProof,
+      weak_ptr_factory_.GetWeakPtr(), token_address, from_wallet_address,
+      to_wallet_address, std::move(callback));
 
   json_rpc_service_->FetchSolCompressedNftProofData(
       token_address, std::move(internal_callback));
 }
 
 void SolanaTxManager::OnFetchCompressedNftProof(
+    const std::string& token_address,
     const std::string& from_wallet_address,
     const std::string& to_wallet_address,
     MakeBubbleGumProgramTransferTxDataCallback callback,
@@ -899,14 +900,15 @@ void SolanaTxManager::OnFetchCompressedNftProof(
   // Get the Merkle tree account
   auto internal_callback =
       base::BindOnce(&SolanaTxManager::OnGetMerkleTreeAccountInfo,
-                     weak_ptr_factory_.GetWeakPtr(), to_wallet_address, *proof,
-                     std::move(callback));
+                     weak_ptr_factory_.GetWeakPtr(), token_address,
+                     to_wallet_address, *proof, std::move(callback));
 
   json_rpc_service_->GetSolanaAccountInfo(
       mojom::kSolanaMainnet, proof->merkle_tree, std::move(internal_callback));
 }
 
 void SolanaTxManager::OnGetMerkleTreeAccountInfo(
+    const std::string& token_address,
     const std::string& to_wallet_address,
     const SolCompressedNftProofData& proof,
     MakeBubbleGumProgramTransferTxDataCallback callback,
@@ -961,6 +963,7 @@ void SolanaTxManager::OnGetMerkleTreeAccountInfo(
   SolanaTransaction transaction(std::move(*msg));
   transaction.set_to_wallet_address(to_wallet_address);
   transaction.set_tx_type(mojom::TransactionType::SolanaCompressedNftTransfer);
+  transaction.set_token_address(token_address);
   auto tx_data = transaction.ToSolanaTxData();
   DCHECK(tx_data);
   std::move(callback).Run(std::move(tx_data),
@@ -1120,7 +1123,7 @@ void SolanaTxManager::OnGetAccountInfo(
 
   SolanaTransaction transaction(std::move(*msg));
   transaction.set_to_wallet_address(to_wallet_address);
-  transaction.set_spl_token_mint_address(spl_token_mint_address);
+  transaction.set_token_address(spl_token_mint_address);
   transaction.set_amount(amount);
   transaction.set_tx_type(
       create_associated_token_account

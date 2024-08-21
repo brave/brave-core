@@ -412,7 +412,7 @@ export const findTransactionToken = <
   // Solana SPL
   if (isSolanaSplTransaction(tx)) {
     return findTokenByContractAddress(
-      tx.txDataUnion.solanaTxData.splTokenMintAddress ?? '',
+      tx.txDataUnion.solanaTxData.tokenAddress ?? '',
       tokensList
     )
   }
