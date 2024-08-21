@@ -6,6 +6,7 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 
 #include "base/metrics/histogram_macros.h"
+#include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/misc_metrics/theme_metrics.h"
 #include "brave/components/misc_metrics/autofill_metrics.h"
 #include "brave/components/misc_metrics/language_metrics.h"
@@ -47,9 +48,10 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
       HostContentSettingsMapFactory::GetForProfile(context);
   auto* bookmark_model = BookmarkModelFactory::GetForBrowserContext(context);
   if (history_service && host_content_settings_map) {
-    page_metrics_ =
-        std::make_unique<PageMetrics>(local_state, host_content_settings_map,
-                                      history_service, bookmark_model);
+    page_metrics_ = std::make_unique<PageMetrics>(
+        local_state, host_content_settings_map, history_service, bookmark_model,
+        base::BindRepeating(&brave_stats::GetFirstRunTime,
+                            base::Unretained(local_state)));
   }
 #if BUILDFLAG(IS_ANDROID)
   auto* search_engine_tracker =

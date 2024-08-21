@@ -34,6 +34,7 @@ constexpr const int kDomainsLoadedBuckets[] = {0, 4, 10, 30, 50, 100};
 constexpr const int kFailedHTTPSUpgradeBuckets[] = {0, 25, 50, 100, 300, 700};
 constexpr const int kBookmarkCountBuckets[] = {0,   5,    20,   100,
                                                500, 1000, 5000, 10000};
+constexpr const int kFirstPageLoadTimeBuckets[] = {5, 10, 60, 240, 1440};
 
 constexpr base::TimeDelta kReportInterval = base::Minutes(30);
 constexpr base::TimeDelta kInitReportDelay = base::Seconds(30);
@@ -50,10 +51,12 @@ using HttpsEvent = security_interstitials::https_only_mode::Event;
 PageMetrics::PageMetrics(PrefService* local_state,
                          HostContentSettingsMap* host_content_settings_map,
                          history::HistoryService* history_service,
-                         bookmarks::BookmarkModel* bookmark_model)
+                         bookmarks::BookmarkModel* bookmark_model,
+                         FirstRunTimeCallback first_run_time_callback)
     : local_state_(local_state),
       host_content_settings_map_(host_content_settings_map),
-      history_service_(history_service) {
+      history_service_(history_service),
+      first_run_time_callback_(first_run_time_callback) {
   DCHECK(local_state);
   DCHECK(history_service);
 
@@ -136,6 +139,13 @@ void PageMetrics::IncrementPagesLoadedCount(bool is_reload) {
   if (is_reload) {
     pages_reloaded_storage_->AddDelta(1);
   } else {
+    if (first_run_time_.is_null()) {
+      first_run_time_ = first_run_time_callback_.Run();
+    }
+    if (first_run_time_ + base::Days(7) > base::Time::Now() &&
+        pages_loaded_storage_->GetWeeklySum() == 0) {
+      ReportFirstPageLoadTime();
+    }
     pages_loaded_storage_->AddDelta(1);
   }
 }
@@ -262,6 +272,13 @@ void PageMetrics::ReportFailedHTTPSUpgrades() {
   p3a_utils::RecordToHistogramBucket(kFailedHTTPSUpgradesHistogramName,
                                      kFailedHTTPSUpgradeBuckets,
                                      percentage * 100);
+}
+
+void PageMetrics::ReportFirstPageLoadTime() {
+  auto minutes_since_load = (base::Time::Now() - first_run_time_).InMinutes();
+  p3a_utils::RecordToHistogramBucket(kFirstPageLoadTimeHistogramName,
+                                     kFirstPageLoadTimeBuckets,
+                                     minutes_since_load);
 }
 
 void PageMetrics::OnDomainDiversityResult(

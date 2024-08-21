@@ -3,11 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/misc_metrics/page_metrics.h"
+
 #include <memory>
 
 #include "base/strings/string_number_conversions.h"
+#include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
-#include "brave/components/misc_metrics/page_metrics.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
@@ -42,10 +44,12 @@ class PageMetricsUnitTest : public testing::Test {
     history_service_ = HistoryServiceFactory::GetForProfile(
         profile_.get(), ServiceAccessType::EXPLICIT_ACCESS);
     misc_metrics::PageMetrics::RegisterPrefs(local_state_.registry());
+    first_run_time_ = base::Time::Now();
     page_metrics_service_ = std::make_unique<PageMetrics>(
         &local_state_,
         HostContentSettingsMapFactory::GetForProfile(profile_.get()),
-        history_service_, bookmark_model_);
+        history_service_, bookmark_model_,
+        base::BindLambdaForTesting([&]() { return first_run_time_; }));
   }
 
  protected:
@@ -56,6 +60,7 @@ class PageMetricsUnitTest : public testing::Test {
   std::unique_ptr<PageMetrics> page_metrics_service_;
   raw_ptr<history::HistoryService> history_service_;
   raw_ptr<bookmarks::BookmarkModel> bookmark_model_;
+  base::Time first_run_time_;
 };
 
 TEST_F(PageMetricsUnitTest, DomainsLoadedCount) {
@@ -157,6 +162,44 @@ TEST_F(PageMetricsUnitTest, BookmarkCount) {
   task_environment_.FastForwardBy(base::Minutes(30));
   histogram_tester_.ExpectBucketCount(kBookmarkCountHistogramName, 2, 1);
   histogram_tester_.ExpectTotalCount(kBookmarkCountHistogramName, 3);
+}
+
+TEST_F(PageMetricsUnitTest, FirstPageLoadTimeImmediate) {
+  task_environment_.FastForwardBy(base::Minutes(1));
+  histogram_tester_.ExpectTotalCount(kFirstPageLoadTimeHistogramName, 0);
+
+  page_metrics_service_->IncrementPagesLoadedCount(false);
+  histogram_tester_.ExpectUniqueSample(kFirstPageLoadTimeHistogramName, 0, 1);
+
+  task_environment_.FastForwardBy(base::Hours(2));
+
+  page_metrics_service_->IncrementPagesLoadedCount(false);
+  histogram_tester_.ExpectUniqueSample(kFirstPageLoadTimeHistogramName, 0, 1);
+}
+
+TEST_F(PageMetricsUnitTest, FirstPageLoadTimeLater) {
+  task_environment_.FastForwardBy(base::Minutes(30));
+  histogram_tester_.ExpectTotalCount(kFirstPageLoadTimeHistogramName, 0);
+
+  page_metrics_service_->IncrementPagesLoadedCount(false);
+  histogram_tester_.ExpectUniqueSample(kFirstPageLoadTimeHistogramName, 2, 1);
+
+  task_environment_.FastForwardBy(base::Days(2));
+
+  page_metrics_service_->IncrementPagesLoadedCount(false);
+  histogram_tester_.ExpectUniqueSample(kFirstPageLoadTimeHistogramName, 2, 1);
+
+  task_environment_.FastForwardBy(base::Days(8));
+  page_metrics_service_->IncrementPagesLoadedCount(false);
+  histogram_tester_.ExpectUniqueSample(kFirstPageLoadTimeHistogramName, 2, 1);
+}
+
+TEST_F(PageMetricsUnitTest, FirstPageLoadTimeTooLate) {
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kFirstPageLoadTimeHistogramName, 0);
+
+  page_metrics_service_->IncrementPagesLoadedCount(false);
+  histogram_tester_.ExpectTotalCount(kFirstPageLoadTimeHistogramName, 0);
 }
 
 }  // namespace misc_metrics
