@@ -68,6 +68,11 @@ public struct AIChatView: View {
       && !(model.premiumStatus != .active && model.isCurrentModelPremium)
   }
 
+  private var isEditingMessageAllowed: Bool {
+    editingTurnIndex == nil && !model.requestInProgress && model.suggestionsStatus != .isGenerating
+      && model.apiError != .contextLimitReached
+  }
+
   public init(
     model: AIChatViewModel,
     speechRecognizer: SpeechRecognizer,
@@ -152,16 +157,16 @@ public struct AIChatView: View {
                             isEditingMessage: editingTurnIndex == index,
                             focusedField: $focusedField,
                             cancelEditing: {
-                              self.editingTurnIndex = nil
                               self.focusedField = nil
+                              self.editingTurnIndex = nil
                             },
                             submitEditedText: { editedText in
+                              self.focusedField = nil
+                              self.editingTurnIndex = nil
                               self.model.modifyConversation(
                                 turnId: UInt(index),
                                 newText: editedText
                               )
-                              self.editingTurnIndex = nil
-                              self.focusedField = nil
                             }
                           )
                           .padding()
@@ -196,7 +201,22 @@ public struct AIChatView: View {
                           AIChatResponseMessageView(
                             turn: turn,
                             isEntryInProgress: index == model.conversationHistory.count - 1
-                              && model.requestInProgress
+                              && model.requestInProgress,
+                            lastEdited: turn.edits?.last?.createdTime,
+                            isEditingMessage: editingTurnIndex == index,
+                            focusedField: $focusedField,
+                            cancelEditing: {
+                              self.focusedField = nil
+                              self.editingTurnIndex = nil
+                            },
+                            submitEditedText: { editedText in
+                              self.focusedField = nil
+                              self.editingTurnIndex = nil
+                              self.model.modifyConversation(
+                                turnId: UInt(index),
+                                newText: editedText
+                              )
+                            }
                           )
                           .padding()
                           .background(Color(braveSystemName: .containerBackground))
@@ -433,7 +453,7 @@ public struct AIChatView: View {
     turn: AiChat.ConversationTurn
   ) -> some View {
     if turn.characterType == .human {
-      if editingTurnIndex == nil {
+      if isEditingMessageAllowed {
         AIChatResponseMessageViewContextMenuButton(
           title: Strings.AIChat.responseContextMenuEditPromptTitle,
           icon: Image(braveSystemName: "leo.edit.pencil"),
@@ -455,6 +475,17 @@ public struct AIChatView: View {
           }
         }
       )
+
+      if isEditingMessageAllowed {
+        AIChatResponseMessageViewContextMenuButton(
+          title: Strings.AIChat.responseContextMenuEditAnswerTitle,
+          icon: Image(braveSystemName: "leo.edit.pencil"),
+          onSelected: {
+            editingTurnIndex = turnIndex
+            focusedField = .editing
+          }
+        )
+      }
 
       AIChatResponseMessageViewContextMenuButton(
         title: Strings.AIChat.responseContextMenuCopyTitle,
@@ -706,7 +737,12 @@ struct AIChatView_Preview: PreviewProvider {
                   createdTime: Date.now,
                   edits: nil
                 ),
-              isEntryInProgress: false
+              isEntryInProgress: false,
+              lastEdited: nil,
+              isEditingMessage: false,
+              focusedField: $focusedField,
+              cancelEditing: {},
+              submitEditedText: { _ in }
             )
             .padding()
             .background(Color(braveSystemName: .containerBackground))
