@@ -633,15 +633,6 @@ enum TransactionParser {
           assetRatios[txNetwork.nativeToken.assetRatioId.lowercased(), default: 0]
             * (Double(fromValueFormatted) ?? 0)
         ) ?? "$0.00"
-      var solTxFee: UInt64? = solEstimatedTxFee
-      if transaction.txStatus != .unapproved,
-        let fee = transaction.txDataUnion.solanaTxData?.feeEstimation
-      {
-        let priorityFee =
-          (UInt64(fee.computeUnits) * fee.feePerComputeUnit)
-          / BraveWallet.MicroLamportsPerLamport
-        solTxFee = fee.baseFee + priorityFee
-      }
       // Example:
       // Send 0.1234 SOL
       //
@@ -671,7 +662,8 @@ enum TransactionParser {
               from: transaction,
               network: txNetwork,
               assetRatios: assetRatios,
-              solEstimatedTxFee: solTxFee,
+              solEstimatedTxFee: transaction.txStatus == .unapproved
+                ? solEstimatedTxFee : transaction.solTxFee,
               currencyFormatter: currencyFormatter
             )
           )
@@ -723,15 +715,6 @@ enum TransactionParser {
           }
         }
       }
-      var solTxFee: UInt64? = solEstimatedTxFee
-      if transaction.txStatus != .unapproved,
-        let fee = transaction.txDataUnion.solanaTxData?.feeEstimation
-      {
-        let priorityFee =
-          (UInt64(fee.computeUnits) * fee.feePerComputeUnit)
-          / BraveWallet.MicroLamportsPerLamport
-        solTxFee = fee.baseFee + priorityFee
-      }
       // Example:
       // Send 0.1234 SMB
       //
@@ -761,7 +744,8 @@ enum TransactionParser {
               from: transaction,
               network: txNetwork,
               assetRatios: assetRatios,
-              solEstimatedTxFee: solTxFee,
+              solEstimatedTxFee: transaction.txStatus == .unapproved
+                ? solEstimatedTxFee : transaction.solTxFee,
               currencyFormatter: currencyFormatter
             )
           )
@@ -861,16 +845,6 @@ enum TransactionParser {
         }
       }
 
-      var solTxFee: UInt64? = solEstimatedTxFee
-      if transaction.txStatus != .unapproved,
-        let fee = transaction.txDataUnion.solanaTxData?.feeEstimation
-      {
-        let priorityFee =
-          (UInt64(fee.computeUnits) * fee.feePerComputeUnit)
-          / BraveWallet.MicroLamportsPerLamport
-        solTxFee = fee.baseFee + priorityFee
-      }
-
       let solanaTxDetails: SolanaTxDetails = .init(
         fromValue: fromValue,
         fromAmount: fromAmount,
@@ -879,7 +853,8 @@ enum TransactionParser {
           from: transaction,
           network: txNetwork,
           assetRatios: assetRatios,
-          solEstimatedTxFee: solTxFee,
+          solEstimatedTxFee: transaction.txStatus == .unapproved
+            ? solEstimatedTxFee : transaction.solTxFee,
           currencyFormatter: currencyFormatter
         ),
         instructions: parsedInstructions
