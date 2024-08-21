@@ -27,6 +27,10 @@ struct BLINK_COMMON_EXPORT StructTraits<blink::mojom::WebPreferencesDataView,
     return r.force_cosmetic_filtering;
   }
 
+  static bool brave_rewards_enabled(const blink::web_pref::WebPreferences& r) {
+    return r.brave_rewards_enabled;
+  }
+
   static bool Read(blink::mojom::WebPreferencesDataView r,
                    blink::web_pref::WebPreferences* out);
 };

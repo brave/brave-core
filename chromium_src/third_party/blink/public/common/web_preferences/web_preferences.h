@@ -26,6 +26,7 @@ struct BLINK_COMMON_EXPORT WebPreferences : public WebPreferences_ChromiumImpl {
   WebPreferences& operator=(WebPreferences&& other);
 
   bool force_cosmetic_filtering = false;
+  bool brave_rewards_enabled = false;
 };
 
 }  // namespace web_pref

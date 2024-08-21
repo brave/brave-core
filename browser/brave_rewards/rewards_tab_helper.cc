@@ -5,13 +5,13 @@
 
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 
+#include <utility>
+
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/components/brave_rewards/browser/publisher_utils.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/common/publisher_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/sessions/content/session_tab_helper.h"
-#include "content/public/browser/navigation_entry.h"
-#include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -51,7 +51,8 @@ RewardsTabHelper::RewardsTabHelper(content::WebContents* web_contents)
 #if !BUILDFLAG(IS_ANDROID)
       browser_list_observer_(new BraveBrowserListObserver(this)),
 #endif
-      tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)) {
+      tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)),
+      creator_detection_receivers_(web_contents, this) {
   if (tab_id_.is_valid()) {
     rewards_service_ = RewardsServiceFactory::GetForProfile(
         Profile::FromBrowserContext(GetWebContents().GetBrowserContext()));
@@ -73,6 +74,20 @@ RewardsTabHelper::~RewardsTabHelper() {
 #if !BUILDFLAG(IS_ANDROID)
   BrowserList::RemoveObserver(browser_list_observer_.get());
 #endif
+}
+
+void RewardsTabHelper::BindCreatorDetectionHost(
+    mojo::PendingAssociatedReceiver<mojom::CreatorDetectionHost> receiver,
+    content::RenderFrameHost* rfh) {
+  auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
+  if (!web_contents) {
+    return;
+  }
+  auto* tab_helper = RewardsTabHelper::FromWebContents(web_contents);
+  if (!tab_helper) {
+    return;
+  }
+  tab_helper->creator_detection_receivers_.Bind(rfh, std::move(receiver));
 }
 
 void RewardsTabHelper::AddObserver(Observer* observer) {
@@ -102,15 +117,9 @@ void RewardsTabHelper::DidFinishLoad(
   rewards_service_->OnLoad(tab_id_, validated_url);
 }
 
-void RewardsTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
-  if (!handle->IsInMainFrame() || !handle->HasCommitted() ||
-      handle->IsDownload()) {
-    return;
-  }
-
+void RewardsTabHelper::PrimaryPageChanged(content::Page& page) {
   auto id = GetPublisherIdFromURL(GetWebContents().GetLastCommittedURL());
   SetPublisherIdForTab(id ? *id : "");
-
   MaybeSavePublisherInfo();
 
   if (rewards_service_) {
@@ -192,13 +201,41 @@ void RewardsTabHelper::OnRewardsInitialized(RewardsService* rewards_service) {
   }
 }
 
+void RewardsTabHelper::OnCreatorDetected(const std::string& id,
+                                         const std::string& name,
+                                         const std::string& url,
+                                         const std::string& image_url) {
+  SetPublisherIdForTab(id);
+
+  if (rewards_service_ && !id.empty()) {
+    // When a creator has been detected for the current tab (e.g. by a script
+    // injected from a render frame observer), we must send the creator data to
+    // the utility process so that the "publisher_info" database table can be
+    // populated. We must also notify utility process that a "page view" has
+    // started for this creator.
+    auto visit = mojom::VisitData::New();
+    visit->tab_id = static_cast<uint32_t>(tab_id_.id());
+    visit->domain = id;
+    visit->name = name;
+    visit->path = "";
+    visit->url = url;
+    visit->favicon_url = image_url;
+    if (auto platform = GetMediaPlatformFromPublisherId(id)) {
+      visit->provider = *platform;
+    }
+    rewards_service_->GetPublisherActivityFromUrl(visit->Clone());
+    rewards_service_->OnShow(tab_id_);
+    rewards_service_->OnLoad(std::move(visit));
+  }
+}
+
 void RewardsTabHelper::MaybeSavePublisherInfo() {
   if (!rewards_service_) {
     return;
   }
 
   // The Rewards system currently assumes that the |publisher_info| table is
-  // populated by calling `GetPublisherActivityFromUrl` as the user nativates
+  // populated by calling `GetPublisherActivityFromUrl` as the user navigates
   // the web. Previously, this was accomplished within the background script of
   // the Rewards extension.
   rewards_service_->GetPublisherActivityFromUrl(

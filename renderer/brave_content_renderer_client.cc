@@ -10,6 +10,8 @@
 #include "base/feature_list.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/common/features.h"
+#include "brave/components/brave_rewards/renderer/creator_detection_agent.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -149,6 +151,13 @@ void BraveContentRendererClient::RenderFrameCreated(
     new brave_wallet::BraveWalletRenderFrameObserver(
         render_frame,
         base::BindRepeating(&BraveRenderThreadObserver::GetDynamicParams));
+  }
+
+  if (base::FeatureList::IsEnabled(
+          brave_rewards::features::kPlatformCreatorDetectionFeature) &&
+      !ChromeRenderThreadObserver::is_incognito_process()) {
+    new brave_rewards::CreatorDetectionAgent(render_frame,
+                                             ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 
   new script_injector::ScriptInjectorRenderFrameObserver(render_frame);

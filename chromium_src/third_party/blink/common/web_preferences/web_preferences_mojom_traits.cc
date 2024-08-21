@@ -23,6 +23,7 @@ bool StructTraits<blink::mojom::WebPreferencesDataView,
     return false;
   }
   out->force_cosmetic_filtering = data.force_cosmetic_filtering();
+  out->brave_rewards_enabled = data.brave_rewards_enabled();
   return true;
 }
 

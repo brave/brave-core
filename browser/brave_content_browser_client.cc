@@ -20,6 +20,8 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_rewards/rewards_tab_helper.h"
+#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_shields/brave_farbling_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
@@ -44,6 +46,7 @@
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_navigation_throttle.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/browser/brave_search_default_host_private.h"
 #include "brave/components/brave_search/browser/brave_search_fallback_host.h"
@@ -555,6 +558,16 @@ void BraveContentBrowserClient::
             std::move(receiver), render_frame_host);
       },
       &render_frame_host));
+
+  associated_registry.AddInterface<brave_rewards::mojom::CreatorDetectionHost>(
+      base::BindRepeating(
+          [](content::RenderFrameHost* render_frame_host,
+             mojo::PendingAssociatedReceiver<
+                 brave_rewards::mojom::CreatorDetectionHost> receiver) {
+            brave_rewards::RewardsTabHelper::BindCreatorDetectionHost(
+                std::move(receiver), render_frame_host);
+          },
+          &render_frame_host));
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   associated_registry.AddInterface<speedreader::mojom::SpeedreaderHost>(
@@ -1323,6 +1336,12 @@ void BraveContentBrowserClient::OverrideWebkitPrefs(WebContents* web_contents,
     web_prefs->force_cosmetic_filtering = true;
   }
 #endif
+
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  web_prefs->brave_rewards_enabled =
+      brave_rewards::IsSupportedForProfile(profile) &&
+      profile->GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled);
 }
 
 blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {
