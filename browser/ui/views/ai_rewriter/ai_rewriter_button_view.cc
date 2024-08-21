@@ -41,12 +41,15 @@
 
 namespace ai_rewriter {
 
+namespace {
+constexpr int kButtonRadius = 12;
+}
+
 AIRewriterButtonView::AIRewriterButtonView(Browser* browser,
                                            content::WebContents* contents)
     : content::WebContentsObserver(contents) {
   tab_strip_observation_.Observe(browser->tab_strip_model());
 
-  constexpr int kButtonRadius = 12;
   views::Builder<AIRewriterButtonView>(this)
       .SetBackground(
           views::CreateRoundedRectBackground(SK_ColorWHITE, kButtonRadius))
@@ -91,7 +94,7 @@ base::WeakPtr<AIRewriterButton> AIRewriterButtonView::MaybeCreateButton(
   params.activatable = views::Widget::InitParams::Activatable::kNo;
   params.delegate = button;
   params.shadow_type = views::Widget::InitParams::ShadowType::kDrop;
-  params.corner_radius = 12;
+  params.corner_radius = kButtonRadius;
   params.autosize = true;
 
   auto* widget = new views::Widget();
@@ -109,8 +112,7 @@ void AIRewriterButtonView::Show(const gfx::Rect& rect) {
       chrome::FindBrowserWithTab(web_contents()));
   CHECK(browser_view);
 
-  auto offset =
-      browser_view->contents_container()->bounds().OffsetFromOrigin();
+  auto offset = browser_view->contents_container()->bounds().OffsetFromOrigin();
 
   constexpr int kPaddingY = -8;
   auto size = GetPreferredSize();
