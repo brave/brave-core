@@ -41,21 +41,31 @@ class BraveBrowsingDataRemoverBrowserTest : public InProcessBrowserTest {
         &completion_observer);
     completion_observer.BlockUntilCompletion();
   }
+
+  void KeepSyncGuidAfterClear(uint64_t remove_mask) {
+    // Setup sync prefs including cache_id
+    signin::GaiaIdHash gaia_id_hash =
+        signin::GaiaIdHash::FromGaiaId("user_gaia_id");
+    syncer::SyncTransportDataPrefs sync_transport_data_prefs(
+        browser()->profile()->GetPrefs(), gaia_id_hash);
+    sync_transport_data_prefs.SetCacheGuid(GenerateCacheGUID());
+    EXPECT_FALSE(sync_transport_data_prefs.GetCacheGuid().empty());
+
+    // Clear cookies/storage
+    RemoveAndWait(remove_mask);
+
+    // Ensure cache guid wasn't dropped
+    EXPECT_FALSE(sync_transport_data_prefs.GetCacheGuid().empty());
+  }
 };
 
 IN_PROC_BROWSER_TEST_F(BraveBrowsingDataRemoverBrowserTest,
                        KeepSyncGuidAfterClearCookies) {
-  // Setup sync prefs including cache_id
-  signin::GaiaIdHash gaia_id_hash =
-      signin::GaiaIdHash::FromGaiaId("user_gaia_id");
-  syncer::SyncTransportDataPrefs sync_transport_data_prefs(
-      browser()->profile()->GetPrefs(), gaia_id_hash);
-  sync_transport_data_prefs.SetCacheGuid(GenerateCacheGUID());
-  EXPECT_FALSE(sync_transport_data_prefs.GetCacheGuid().empty());
+  KeepSyncGuidAfterClear(content::BrowsingDataRemover::DATA_TYPE_COOKIES);
+}
 
-  // Clear cookies
-  RemoveAndWait(content::BrowsingDataRemover::DATA_TYPE_COOKIES);
-
-  // Ensure cache guid wasn't dropped
-  EXPECT_FALSE(sync_transport_data_prefs.GetCacheGuid().empty());
+IN_PROC_BROWSER_TEST_F(BraveBrowsingDataRemoverBrowserTest,
+                       KeepSyncGuidAfterClearOnStoragePartition) {
+  KeepSyncGuidAfterClear(
+      content::BrowsingDataRemover::DATA_TYPE_ON_STORAGE_PARTITION);
 }
