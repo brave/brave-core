@@ -2160,6 +2160,14 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
                         "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessorBase"));
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/tasks/tab_management/TabSwitcherPane",
+                        "org/chromium/chrome/browser/tasks/tab_management/BraveTabSwitcherPaneBase")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/tasks/tab_management/IncognitoTabSwitcherPane",
+                        "org/chromium/chrome/browser/tasks/tab_management/BraveTabSwitcherPaneBase")); // presubmit: ignore-long-line
     }
 
     private boolean classExists(String className) {

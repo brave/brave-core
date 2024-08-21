@@ -102,6 +102,7 @@ public class BraveClassAdapter {
         chain = new BraveSwipeRefreshHandlerClassAdapter(chain);
         chain = new BraveSystemAccountManagerDelegateAdapter(chain);
         chain = new BraveTabGroupUiCoordinatorClassAdapter(chain);
+        chain = new BraveTabSwitcherPaneBaseClassAdapter(chain);
         chain = new BraveTabHelpersClassAdapter(chain);
         chain = new BraveTabUiThemeProviderClassAdapter(chain);
         chain = new BraveTabUiThemeUtilsClassAdapter(chain);
