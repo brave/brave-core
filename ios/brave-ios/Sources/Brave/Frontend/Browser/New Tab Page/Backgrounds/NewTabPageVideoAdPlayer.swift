@@ -59,6 +59,7 @@ class NewTabPageVideoAdPlayer {
   func createPlayer() {
     let item = AVPlayerItem(url: backgroundVideoPath)
     player = AVPlayer(playerItem: item)
+    player?.actionAtItemEnd = .pause
   }
 
   func startPlayback() {
@@ -70,6 +71,10 @@ class NewTabPageVideoAdPlayer {
       didStartPlaybackEvent?()
 
       addMediaObservers()
+
+      if isPlaylistActive() {
+        PlaylistCoordinator.shared.mediaPlayer?.pause()
+      }
 
       player?.isMuted = false
       player?.play()
@@ -178,8 +183,8 @@ class NewTabPageVideoAdPlayer {
       self.frameRate = Double(frameRate)
     }
 
-    if !shouldAutoplay {
-      finishAutoplayIfNeeded()
+    if !shouldAutoplay || isPlaylistActive() {
+      finishAutoplayIfNeeded(didStartAutoplay: false)
       return
     }
 
@@ -204,7 +209,7 @@ class NewTabPageVideoAdPlayer {
     player?.play()
   }
 
-  private func finishAutoplayIfNeeded(shouldSeekToStopFrame: Bool = true) {
+  private func finishAutoplayIfNeeded(shouldSeekToStopFrame: Bool = true, didStartAutoplay: Bool = true) {
     if didFinishAutoplay {
       return
     }
@@ -218,7 +223,9 @@ class NewTabPageVideoAdPlayer {
       seekToStopFrame()
     }
 
-    stopBackgroundAudioDuringPlayback()
+    if didStartAutoplay {
+      pauseBackgroundAudioDuringPlayback()
+    }
 
     didFinishAutoplayEvent?()
   }
@@ -287,7 +294,7 @@ class NewTabPageVideoAdPlayer {
     try? AVAudioSession.sharedInstance().setActive(true)
   }
 
-  private func stopBackgroundAudioDuringPlayback() {
+  private func pauseBackgroundAudioDuringPlayback() {
     try? AVAudioSession.sharedInstance().setActive(false)
     try? AVAudioSession.sharedInstance().setCategory(
       .playback,
@@ -295,6 +302,10 @@ class NewTabPageVideoAdPlayer {
       policy: .default,
       options: []
     )
+  }
+
+  private func isPlaylistActive() -> Bool {
+    return PlaylistCoordinator.shared.playlistController != nil
   }
 
   private func parseStopFrameFromFilename(filename: String) -> Double? {
