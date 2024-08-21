@@ -15,6 +15,7 @@ brave_browser_autocomplete_deps = [
   "//base",
   "//brave/common",
   "//brave/components/brave_webtorrent/browser/buildflags",
+  "//brave/components/omnibox/buildflags",
   "//chrome/browser/profiles:profile",
 ]
 
