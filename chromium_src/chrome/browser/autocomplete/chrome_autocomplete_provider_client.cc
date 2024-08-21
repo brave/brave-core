@@ -100,6 +100,8 @@ bool ChromeAutocompleteProviderClient::IsLeoProviderEnabled() {
 #endif
 }
 
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
 std::u16string ChromeAutocompleteProviderClient::GetClipboardText() const {
 #if !BUILDFLAG(IS_ANDROID)
   return ::GetClipboardText(/*notify_if_restricted*/ false);
@@ -107,5 +109,3 @@ std::u16string ChromeAutocompleteProviderClient::GetClipboardText() const {
   return u"";
 #endif
 }
-
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)

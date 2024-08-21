@@ -20,12 +20,16 @@
 #define GetInMemoryDatabase                           \
   GetInMemoryDatabase() override;                     \
   void OpenLeo(const std::u16string& query) override; \
-  std::u16string GetClipboardText() const override;   \
   bool IsLeoProviderEnabled
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
+#define GetAcceptLanguages             \
+  GetAcceptLanguages() const override; \
+  std::u16string GetClipboardText
+
 #include "src/chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"  // IWYU pragma: export
 
+#undef GetAcceptLanguages
 #undef GetInMemoryDatabase
 #undef GetAutocompleteClassifier
 
