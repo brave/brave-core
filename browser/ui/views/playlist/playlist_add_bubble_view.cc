@@ -186,7 +186,6 @@ void PlaylistAddBubbleView::InitListView() {
   SetButtonEnabled(ui::DIALOG_BUTTON_OK, true);
   SetButtonEnabled(ui::DIALOG_BUTTON_CANCEL, true);
 
-  scroll_view_->SetPreferredSize(std::nullopt);
   scroll_view_->SetPreferredSize(
       gfx::Size(kWidth, scroll_view_->GetPreferredSize().height()));
   if (GetWidget()) {
