@@ -478,7 +478,7 @@ public struct AIChatView: View {
 
       if isEditingMessageAllowed {
         AIChatResponseMessageViewContextMenuButton(
-          title: "Edit Answer",
+          title: Strings.AIChat.responseContextMenuEditAnswerTitle,
           icon: Image(braveSystemName: "leo.edit.pencil"),
           onSelected: {
             editingTurnIndex = turnIndex

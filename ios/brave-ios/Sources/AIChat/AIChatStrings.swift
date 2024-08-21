@@ -790,6 +790,13 @@ extension Strings {
       value: "Edit Prompt",
       comment: "The title for editing user prompt action from context menu"
     )
+    public static let responseContextMenuEditAnswerTitle = NSLocalizedString(
+      "aichat.responseContextMenuEditAnswerTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Edit Answer",
+      comment: "The title for editing AI response action from context menu"
+    )
     public static let responseContextMenuRegenerateTitle = NSLocalizedString(
       "aichat.responseContextMenuRegenerateTitle",
       tableName: "BraveLeo",
