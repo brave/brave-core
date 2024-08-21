@@ -15,6 +15,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/synchronization/lock.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/types/expected.h"
 #include "third_party/tflite_support/src/tensorflow_lite_support/cc/task/text/text_embedder.h"
@@ -100,6 +101,10 @@ class TextEmbedder {
   size_t text_hash_ = 0;
   std::vector<std::string> segments_;
   std::vector<tflite::task::processor::EmbeddingResult> embeddings_;
+
+  // Lock used to ensure mutual exclusive access to |tflite_text_embedder_|
+  // when setting unique_ptr and accessing it from |owner_task_runner_|.
+  mutable base::Lock lock_;
   std::unique_ptr<tflite::task::text::TextEmbedder> tflite_text_embedder_;
 
   const base::FilePath model_path_;

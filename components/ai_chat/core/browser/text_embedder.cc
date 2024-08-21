@@ -55,6 +55,8 @@ TextEmbedder::TextEmbedder(
 TextEmbedder::~TextEmbedder() = default;
 
 bool TextEmbedder::IsInitialized() const {
+  DCHECK(owner_task_runner_->RunsTasksInCurrentSequence());
+  base::AutoLock auto_lock(lock_);
   return tflite_text_embedder_ != nullptr;
 }
 
@@ -91,6 +93,7 @@ void TextEmbedder::InitializeEmbedder(InitializeCallback callback) {
     return;
   }
 
+  base::AutoLock auto_lock(lock_);
   tflite_text_embedder_ = std::move(maybe_text_embedder.value());
   std::move(callback).Run(true);
 }
@@ -119,6 +122,7 @@ void TextEmbedder::GetTopSimilarityWithPromptTilContextLimit(
 
 void TextEmbedder::CancelAllTasks() {
   DCHECK(owner_task_runner_->RunsTasksInCurrentSequence());
+  base::AutoLock auto_lock(lock_);
   // Calling from owner task runner intentionally so we can stop tflite
   // interpretor running on embedder task runner.
   if (tflite_text_embedder_) {
