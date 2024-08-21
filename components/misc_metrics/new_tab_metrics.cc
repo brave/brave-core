@@ -90,7 +90,11 @@ void NewTabMetrics::ReportNTPSearchDefaultEngine(
   UMA_HISTOGRAM_ENUMERATION(kNTPSearchEngineHistogramName, search_engine);
 }
 
-void NewTabMetrics::ReportNTPSearchUsage() {
+void NewTabMetrics::ReportNTPSearchUsage(int64_t prepopulate_id) {
+  if (prepopulate_id ==
+      BravePrepopulatedEngineID::PREPOPULATED_ENGINE_ID_GOOGLE) {
+    UMA_HISTOGRAM_BOOLEAN(kNTPGoogleWidgetUsageHistogramName, true);
+  }
   usage_storage_.AddDelta(1);
   ReportCounts();
 }

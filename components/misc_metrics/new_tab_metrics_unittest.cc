@@ -51,13 +51,15 @@ TEST_F(NewTabMetricsTest, ReportNTPSearchDefaultEngine) {
 
 TEST_F(NewTabMetricsTest, ReportNTPSearchUsage) {
   for (int i = 0; i < 10; ++i) {
-    metrics_->ReportNTPSearchUsage();
+    metrics_->ReportNTPSearchUsage(
+        BravePrepopulatedEngineID::PREPOPULATED_ENGINE_ID_BRAVE);
   }
   histogram_tester_.ExpectUniqueSample(kNTPSearchUsageHistogramName, 0, 10);
   histogram_tester_.ExpectTotalCount(kNTPSearchUsageHistogramName, 10);
 
   for (int i = 0; i < 5; ++i) {
-    metrics_->ReportNTPSearchUsage();
+    metrics_->ReportNTPSearchUsage(
+        BravePrepopulatedEngineID::PREPOPULATED_ENGINE_ID_BRAVE);
   }
 
   histogram_tester_.ExpectBucketCount(kNTPSearchUsageHistogramName, 1, 5);
@@ -70,6 +72,16 @@ TEST_F(NewTabMetricsTest, ReportNTPSearchUsage) {
 
   task_environment_.FastForwardBy(base::Days(7));
   histogram_tester_.ExpectTotalCount(kNTPSearchUsageHistogramName, 21);
+}
+
+TEST_F(NewTabMetricsTest, ReportGoogleNTPSearchUsage) {
+  metrics_->ReportNTPSearchUsage(
+      BravePrepopulatedEngineID::PREPOPULATED_ENGINE_ID_BRAVE);
+  histogram_tester_.ExpectTotalCount(kNTPGoogleWidgetUsageHistogramName, 0);
+  metrics_->ReportNTPSearchUsage(
+      BravePrepopulatedEngineID::PREPOPULATED_ENGINE_ID_GOOGLE);
+  histogram_tester_.ExpectUniqueSample(kNTPGoogleWidgetUsageHistogramName, 1,
+                                       1);
 }
 
 }  // namespace misc_metrics
