@@ -118,6 +118,8 @@ addStyles('app-global-styles', css`
 
     select {
       --select-caret-background-image: url(${selectCaret});
+      --select-caret-background-offset: 12px;
+      --select-background-color: ${color.container.highlight};
 
       @media (prefers-color-scheme: dark) {
         --select-caret-background-image: url(${selectCaretDark});
@@ -125,14 +127,23 @@ addStyles('app-global-styles', css`
 
       appearance: none;
       background:
-        var(--select-caret-background-image) calc(100% - 12px) center no-repeat,
-        ${color.container.highlight};
+        var(--select-caret-background-image)
+          calc(100% - var(--select-caret-background-offset)) center no-repeat,
+        var(--select-background-color);
       background-size: 12px;
       border-radius: 8px;
       border: 1px solid color-mix(in srgb, #fff, #1b1b1f 25%);
       color: inherit;
       font: inherit;
       padding: 8px 36px 8px 11px;
+
+      &.subtle {
+        --select-background-color: transparent;
+        --select-caret-background-offset: 4px;
+        border: none;
+        border-radius: 4px;
+        padding: 0 28px 0 4px;
+      }
     }
 
     leo-toggle:disabled {
@@ -179,7 +190,6 @@ addStyles('app-global-styles', css`
 
       section {
         border-radius: 12px;
-        padding: var(--content-card-section-padding, 8px 12px);
         background: ${color.container.background};
         width: 100%;
       }

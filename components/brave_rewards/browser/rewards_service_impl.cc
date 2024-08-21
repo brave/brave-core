@@ -53,6 +53,7 @@
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/rewards_database.h"
@@ -1417,7 +1418,7 @@ void RewardsServiceImpl::GetClientCountryCode(
 void RewardsServiceImpl::IsAutoContributeSupportedForClient(
     IsAutoContributeSupportedForClientCallback callback) {
   const auto country_code = GetCountryCode();
-  std::move(callback).Run(country_code != "JP" && country_code != "IN");
+  std::move(callback).Run(IsAutoContributeSupportedForCountry(country_code));
 }
 
 void RewardsServiceImpl::GetPublisherMinVisitTime(
