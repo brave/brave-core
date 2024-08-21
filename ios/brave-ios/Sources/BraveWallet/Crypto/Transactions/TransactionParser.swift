@@ -674,7 +674,7 @@ enum TransactionParser {
       .solanaCompressedNftTransfer:
       guard let amount = transaction.txDataUnion.solanaTxData?.amount,
         let toAddress = transaction.txDataUnion.solanaTxData?.toWalletAddress,
-        let splTokenMintAddress = transaction.txDataUnion.solanaTxData?.splTokenMintAddress
+        let splTokenMintAddress = transaction.txDataUnion.solanaTxData?.tokenAddress
       else {
         return nil
       }
@@ -1361,7 +1361,7 @@ extension BraveWallet.TransactionInfo {
         return [erc721ContractAddress]
       }
     case .solanaSplTokenTransfer, .solanaSplTokenTransferWithAssociatedTokenAccountCreation:
-      if let splTokenMintAddress = txDataUnion.solanaTxData?.splTokenMintAddress {
+      if let splTokenMintAddress = txDataUnion.solanaTxData?.tokenAddress {
         return [splTokenMintAddress]
       }
     case .ethSend, .erc1155SafeTransferFrom, .other:
