@@ -297,8 +297,8 @@ std::string GetDescriptionFromAppcastItem(id item) {
 
   AutoupdateStatus status;
   if (_updateWillBeInstalledOnQuit) {
-    // If an update was successfully installed and this object saw it happen,
-    // then don't even bother comparing versions.
+    // If this object was notified that an update will be installed, then don't
+    // even bother to compare versions.
     status = kAutoupdateInstalled;
   } else {
     NSString* currentVersion = base::SysUTF8ToNSString(chrome::kChromeVersion);
