@@ -884,3 +884,9 @@
 -keep class org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider {
     *** getToolbarSidePaddingForNtp(...);
 }
+
+-keep class org.chromium.chrome.browser.tasks.tab_management.BraveTabSwitcherPaneBase
+
+-keep class org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPane
+
+-keep class org.chromium.chrome.browser.tasks.tab_management.IncognitoTabSwitcherPane
