@@ -807,6 +807,12 @@ void SidebarContainerView::OnEntryWillDeregister(SidePanelRegistry* registry,
   panel_entry_observations_.RemoveObservation(entry);
 }
 
+void SidebarContainerView::OnRegistryDestroying(SidePanelRegistry* registry) {
+  if (panel_registry_observations_.IsObservingSource(registry)) {
+    StopObservingContextualSidePanelRegistry(registry);
+  }
+}
+
 void SidebarContainerView::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
@@ -827,16 +833,29 @@ void SidebarContainerView::OnTabStripModelChanged(
   }
 
   if (change.type() == TabStripModelChange::kRemoved) {
-    for (const auto& contents : change.GetRemove()->contents) {
-      StopObservingContextualSidePanelRegistry(contents.contents);
+    bool removed_for_deletion =
+        (change.GetRemove()->contents[0].remove_reason ==
+         TabStripModelChange::RemoveReason::kDeleted);
+    // If the tab is removed for deletion the side panel registry has already
+    // been destroyed. We stop observing that registry in
+    // SidePanelRegistryObserver::OnRegistryDestroying override above.
+    if (!removed_for_deletion) {
+      for (const auto& contents : change.GetRemove()->contents) {
+        StopObservingContextualSidePanelRegistry(contents.contents);
+      }
+      return;
     }
-    return;
   }
 }
 
 void SidebarContainerView::StopObservingContextualSidePanelRegistry(
     content::WebContents* contents) {
   auto* registry = SidePanelRegistry::GetDeprecated(contents);
+  StopObservingContextualSidePanelRegistry(registry);
+}
+
+void SidebarContainerView::StopObservingContextualSidePanelRegistry(
+    SidePanelRegistry* registry) {
   if (!registry) {
     return;
   }
