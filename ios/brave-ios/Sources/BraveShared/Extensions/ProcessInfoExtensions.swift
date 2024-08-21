@@ -6,19 +6,25 @@
 import Foundation
 import LocalAuthentication
 
+private let _isiOSAppOnVisionOS: Bool = {
+  #if targetEnvironment(simulator)
+  return ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"]?.hasPrefix(
+    "RealityDevice"
+  ) ?? false
+  #else
+  if #available(iOS 17.0, *) {
+    // Vision Pro ships with iOS 17.0 so this will always execute
+    let authContext = LAContext()
+    _ = authContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+    return authContext.biometryType == .opticID
+      || NSClassFromString("UIWindowSceneGeometryPreferencesVision") != nil
+  }
+  return false
+  #endif
+}()
+
 extension ProcessInfo {
   public var isiOSAppOnVisionOS: Bool {
-    #if targetEnvironment(simulator)
-    return environment["SIMULATOR_MODEL_IDENTIFIER"]?.hasPrefix("RealityDevice") ?? false
-    #else
-    if #available(iOS 17.0, *) {
-      // Vision Pro ships with iOS 17.0 so this will always execute
-      let authContext = LAContext()
-      _ = authContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
-      return authContext.biometryType == .opticID
-        || NSClassFromString("UIWindowSceneGeometryPreferencesVision") != nil
-    }
-    return false
-    #endif
+    return _isiOSAppOnVisionOS
   }
 }
