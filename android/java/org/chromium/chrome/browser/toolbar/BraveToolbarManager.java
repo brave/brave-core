@@ -364,7 +364,11 @@ public class BraveToolbarManager extends ToolbarManager {
                         recordNewTabClick();
                         ((ChromeActivity) mActivity)
                                 .getMenuOrKeyboardActionController()
-                                .onMenuOrKeyboardAction(R.id.new_tab_menu_id, false);
+                                .onMenuOrKeyboardAction(
+                                        mIncognitoStateProvider.isIncognitoSelected()
+                                                ? R.id.new_incognito_tab_menu_id
+                                                : R.id.new_tab_menu_id,
+                                        false);
                     };
 
             assert (mBottomControlsCoordinatorSupplier.get()
