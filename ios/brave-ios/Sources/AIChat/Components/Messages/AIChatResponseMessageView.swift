@@ -33,6 +33,11 @@ struct AIChatResponseMessageViewContextMenuButton: View {
 struct AIChatResponseMessageView: View {
   var turn: AiChat.ConversationTurn
   var isEntryInProgress: Bool
+  let lastEdited: Date?
+  let isEditingMessage: Bool
+  var focusedField: FocusState<AIChatView.Field?>.Binding
+  let cancelEditing: () -> Void
+  let submitEditedText: (String) -> Void
 
   @Environment(\.colorScheme)
   private var colorScheme
@@ -60,18 +65,34 @@ struct AIChatResponseMessageView: View {
       }) == true
   }
 
+  private var messageTextToEdit: String {
+    guard let events = (turn.edits?.last ?? turn).events else { return "" }
+    return
+      events
+      .compactMap({ $0.completionEvent?.completion })
+      .joined(separator: "")
+  }
+
   var body: some View {
+    if isEditingMessage {
+      AIChatEditingMessageView(
+        isUser: false,
+        existingText: messageTextToEdit,
+        focusedField: focusedField,
+        isEdited: lastEdited != nil,
+        cancel: cancelEditing,
+        submitEditedText: submitEditedText
+      )
+    } else {
+      messageView
+    }
+  }
+
+  var messageView: some View {
     VStack(alignment: .leading) {
-      HStack {
-        AIChatProductIcon(containerShape: Circle(), padding: 6.0)
-          .font(.callout)
+      AIChatMessageHeaderView(isUser: false, isEdited: lastEdited != nil)
 
-        Text(Strings.AIChat.leoAssistantNameTitle)
-          .font(.body.weight(.semibold))
-          .foregroundStyle(Color(braveSystemName: .textTertiary))
-      }
-
-      ForEach(turn.events ?? [], id: \.self) { event in
+      ForEach((turn.edits?.last ?? turn)?.events ?? [], id: \.self) { event in
         if event.tag == .completionEvent {
           renderMarkdown(text: event.completionEvent?.completion ?? "")
         } else if event.tag == .searchStatusEvent && isEntryInProgress && !hasCompletionStarted {
@@ -106,6 +127,13 @@ struct AIChatResponseMessageView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.top)
+      }
+
+      if let lastEdited {
+        AIChatMessageEditedLabelView(
+          lastEdited: lastEdited
+        )
+        .padding(.top, 8)
       }
     }
     .fixedSize(horizontal: false, vertical: true)
@@ -291,6 +319,9 @@ struct AIChatResponseMessageViewContextMenuButton_Previews: PreviewProvider {
 }
 
 struct AIChatResponseMessageView_Previews: PreviewProvider {
+
+  @FocusState static var focusedField: AIChatView.Field?
+
   static var previews: some View {
     AIChatResponseMessageView(
       turn:
@@ -305,7 +336,12 @@ struct AIChatResponseMessageView_Previews: PreviewProvider {
           createdTime: Date.now,
           edits: nil
         ),
-      isEntryInProgress: false
+      isEntryInProgress: false,
+      lastEdited: Date(),
+      isEditingMessage: false,
+      focusedField: $focusedField,
+      cancelEditing: {},
+      submitEditedText: { _ in }
     )
     .previewLayout(.sizeThatFits)
   }

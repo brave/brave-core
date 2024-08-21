@@ -16,7 +16,8 @@ struct AIChatUserMessageView: View {
 
   var body: some View {
     if isEditingMessage {
-      EditingUserMessageView(
+      AIChatEditingMessageView(
+        isUser: true,
         existingText: message,
         focusedField: focusedField,
         isEdited: lastEdited != nil,
@@ -61,132 +62,27 @@ struct AIChatUserMessageView_Previews: PreviewProvider {
 }
 #endif
 
-private struct UserHeaderView: View {
-
-  let isEdited: Bool
-
-  var body: some View {
-    HStack {
-      Image(braveSystemName: "leo.user.circle")
-        .renderingMode(.template)
-        .foregroundStyle(Color(braveSystemName: .iconDefault))
-        .padding(8.0)
-        .background(Color(braveSystemName: .containerHighlight), in: Circle())
-
-      Text(Strings.AIChat.youMessageTitle)
-        .font(.body.weight(.semibold))
-        .foregroundStyle(Color(braveSystemName: .textTertiary))
-
-      if isEdited {
-        Spacer()
-
-        AIChatEditedBadgeView()
-      }
-    }
-  }
-}
-
 private struct SentUserMessageView: View {
   var message: String
   let lastEdited: Date?
 
-  private var lastEditedTime: String? {
-    guard let lastEdited else { return nil }
-    let formatter = DateFormatter()
-    formatter.dateFormat = "MMM d yyyy - h:mm a"
-    return formatter.string(from: lastEdited)
-  }
-
   var body: some View {
     VStack(alignment: .leading) {
-      UserHeaderView(isEdited: lastEdited != nil)
+      AIChatMessageHeaderView(isUser: true, isEdited: lastEdited != nil)
 
-      VStack(alignment: .leading, spacing: 16) {
-        Text(message)
-          .font(.subheadline)
-          .foregroundStyle(Color(braveSystemName: .textPrimary))
-          .multilineTextAlignment(.leading)
-          .frame(maxWidth: .infinity, alignment: .leading)
-          .fixedSize(horizontal: false, vertical: true)
+      Text(message)
+        .font(.subheadline)
+        .foregroundStyle(Color(braveSystemName: .textPrimary))
+        .multilineTextAlignment(.leading)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .fixedSize(horizontal: false, vertical: true)
 
-        if let lastEditedTime {
-          HStack {
-            Image(braveSystemName: "leo.edit.pencil")
-              .foregroundStyle(Color(braveSystemName: .iconDefault))
-            Text(Strings.AIChat.editedMessageCaption)
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
-            Text(lastEditedTime)
-              .underline()
-              .foregroundStyle(Color(braveSystemName: .textTertiary))
-          }
-          .font(.caption)
-        }
-      }
-    }
-  }
-}
-
-private struct EditingUserMessageView: View {
-
-  let existingText: String
-  @State private var text: String
-  var focusedField: FocusState<AIChatView.Field?>.Binding
-  let isEdited: Bool
-  let cancel: () -> Void
-  let submitEditedText: (String) -> Void
-
-  @ScaledMetric private var buttonSize: CGFloat = 28
-
-  init(
-    existingText: String,
-    focusedField: FocusState<AIChatView.Field?>.Binding,
-    isEdited: Bool,
-    cancel: @escaping () -> Void,
-    submitEditedText: @escaping (String) -> Void
-  ) {
-    self.existingText = existingText
-    self._text = State(wrappedValue: existingText)
-    self.focusedField = focusedField
-    self.isEdited = isEdited
-    self.cancel = cancel
-    self.submitEditedText = submitEditedText
-  }
-
-  var body: some View {
-    VStack(alignment: .leading) {
-      UserHeaderView(isEdited: isEdited)
-
-      HStack {
-        TextField("", text: $text, axis: .vertical)
-          .focused(focusedField, equals: .editing)
-        Button(
-          action: cancel,
-          label: {
-            Image(braveSystemName: "leo.close")
-              .foregroundStyle(Color(braveSystemName: .iconDefault))
-              .frame(width: buttonSize, height: buttonSize)
-              .contentShape(Rectangle())
-          }
+      if let lastEdited {
+        AIChatMessageEditedLabelView(
+          lastEdited: lastEdited
         )
-        Button(
-          action: { submitEditedText(text) },
-          label: {
-            Image(braveSystemName: "leo.check.normal")
-              .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
-              .frame(width: buttonSize, height: buttonSize)
-              .background(
-                Color(braveSystemName: .buttonBackground)
-                  .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-              )
-              .contentShape(Rectangle())
-          }
-        )
+        .padding(.top, 8)
       }
-      .padding(8)
-      .background(
-        RoundedRectangle(cornerRadius: 8, style: .continuous)
-          .stroke(Color(braveSystemName: .dividerSubtle), lineWidth: 1)
-      )
     }
   }
 }
