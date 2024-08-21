@@ -33,6 +33,13 @@
       ]
     },
     {
+      "name": "system_health.memory_desktop",
+      "pageset-repeat": 1,
+      "stories": [
+        "load:site:multitab:brave:2023",
+      ]
+    },
+    {
       "name": "speedometer2",
       "pageset-repeat": 1,
     },

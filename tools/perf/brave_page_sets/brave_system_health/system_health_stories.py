@@ -47,6 +47,25 @@ class _BraveLoadingStory(system_health_story.SystemHealthStory):
     return 'Load %s' % cls.URL
 
 
+class _BraveMultiTabLoadingStory(_BraveLoadingStory):
+
+  TABS_COUNT = 5
+
+  def RunPageInteractions(self, action_runner):
+    def load_and_measure(action_runner):
+        action_runner.tab.WaitForDocumentReadyStateToBeComplete()
+        self._DidLoadDocument(action_runner)
+        self._Measure(action_runner)
+
+    tabs = action_runner.tab.browser.tabs
+    load_and_measure(action_runner)
+
+    for _ in range (1, self.TABS_COUNT):
+        new_tab = tabs.New()
+        new_tab.action_runner.Navigate(self.url)
+        load_and_measure(new_tab.action_runner)
+
+
 class LoadExampleStory2023(_BraveLoadingStory):
   NAME = 'load:site:example:2023'
   URL = 'https://example.com'
@@ -103,4 +122,10 @@ class LoadCNNStory2023(_BraveLoadingStory):
 class LoadBBCStory2023(_BraveLoadingStory):
   NAME = 'load:site:bbc:2023'
   URL = 'https://www.bbc.com/'
+  TAGS = [story_tags.YEAR_2023]
+
+
+class LoadBraveMultitabStory2023(_BraveMultiTabLoadingStory):
+  NAME = 'load:site:multitab:brave:2023'
+  URL = 'https://www.brave.com/'
   TAGS = [story_tags.YEAR_2023]
