@@ -282,10 +282,6 @@ void SplitViewTabStripModelAdapter::TabGroupedStateChanged(
     std::optional<tab_groups::TabGroupId> group,
     content::WebContents* contents,
     int index) {
-  // TODO: We need to figure out the cases in which we are getting an invalid
-  // value and fix the root cause if possible.
-  // Currently, we are aware that we encounter an invalid state when closing a
-  // window with a grouped tab.
   if (!model_->ContainsIndex(index)) {
     return;
   }
