@@ -126,6 +126,7 @@ class SidebarContainerView
                          SidePanelEntry* entry) override;
   void OnEntryWillDeregister(SidePanelRegistry* registry,
                              SidePanelEntry* entry) override;
+  void OnRegistryDestroying(SidePanelRegistry* registry) override;
 
   // TabStripModelObserver:
   void OnTabStripModelChanged(
@@ -184,6 +185,7 @@ class SidebarContainerView
   void StartObservingContextualSidePanelRegistry(
       content::WebContents* contents);
   void StopObservingContextualSidePanelRegistry(content::WebContents* contents);
+  void StopObservingContextualSidePanelRegistry(SidePanelRegistry* registry);
 
   raw_ptr<BraveBrowser> browser_ = nullptr;
   raw_ptr<SidePanelCoordinator> side_panel_coordinator_ = nullptr;
