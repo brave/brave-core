@@ -50,6 +50,7 @@ npm-debug.log
 .env*
 engflow.crt
 *.key
+privkey.pem
 *~
 CMakeLists.txt
 cmake-build-debug/
