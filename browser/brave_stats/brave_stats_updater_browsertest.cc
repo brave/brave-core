@@ -248,11 +248,10 @@ class BraveStatsUpdaterReferralCodeBrowserTest
     BraveStatsUpdaterBrowserTest::SetUp();
   }
 
-  int WritePromoCodeFile(const base::FilePath& promo_code_file,
-                         const std::string& referral_code) {
+  void WritePromoCodeFile(const base::FilePath& promo_code_file,
+                          const std::string& referral_code) {
     base::ScopedAllowBlockingForTesting allow_blocking;
-    return base::WriteFile(promo_code_file, referral_code.c_str(),
-                           referral_code.size());
+    base::WriteFile(promo_code_file, referral_code);
   }
 
   const std::string referral_code() { return "FOO123"; }
