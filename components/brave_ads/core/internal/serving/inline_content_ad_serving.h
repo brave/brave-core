@@ -16,6 +16,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_delegate.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 
 namespace brave_ads {
@@ -44,16 +45,21 @@ class InlineContentAdServing final {
   }
 
   void MaybeServeAd(const std::string& dimensions,
-                    MaybeServeInlineContentAdCallback callback) const;
+                    MaybeServeInlineContentAdCallback callback);
 
  private:
   base::expected<void, std::string> CanServeAd() const;
 
   bool IsSupported() const { return !!eligible_ads_; }
 
+  void GetUserModel(int32_t tab_id,
+                    const std::string& dimensions,
+                    MaybeServeInlineContentAdCallback callback);
+
   void GetEligibleAds(int32_t tab_id,
                       const std::string& dimensions,
-                      MaybeServeInlineContentAdCallback callback) const;
+                      MaybeServeInlineContentAdCallback callback,
+                      UserModelInfo user_model) const;
   void GetEligibleAdsCallback(
       int32_t tab_id,
       const std::string& dimensions,

@@ -6,11 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_TARGETING_USER_MODEL_USER_MODEL_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_TARGETING_USER_MODEL_USER_MODEL_BUILDER_H_
 
+#include "base/functional/callback.h"
+
 namespace brave_ads {
 
 struct UserModelInfo;
 
-UserModelInfo BuildUserModel();
+using BuildUserModelCallback = base::OnceCallback<void(UserModelInfo)>;
+
+void BuildUserModel(BuildUserModelCallback callback);
 
 }  // namespace brave_ads
 

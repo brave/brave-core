@@ -9,9 +9,13 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback.h"
+
 namespace brave_ads {
 
 using SegmentList = std::vector<std::string>;
+
+using BuildSegmentsCallback = base::OnceCallback<void(const SegmentList&)>;
 
 }  // namespace brave_ads
 

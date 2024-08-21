@@ -15,6 +15,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_delegate.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 
 namespace brave_ads {
@@ -42,14 +43,17 @@ class NewTabPageAdServing final {
     delegate_ = delegate;
   }
 
-  void MaybeServeAd(MaybeServeNewTabPageAdCallback callback) const;
+  void MaybeServeAd(MaybeServeNewTabPageAdCallback callback);
 
  private:
   base::expected<void, std::string> CanServeAd() const;
 
   bool IsSupported() const { return !!eligible_ads_; }
 
-  void GetEligibleAds(MaybeServeNewTabPageAdCallback callback) const;
+  void GetUserModel(MaybeServeNewTabPageAdCallback callback);
+
+  void GetEligibleAds(MaybeServeNewTabPageAdCallback callback,
+                      UserModelInfo user_model) const;
   void GetEligibleAdsCallback(
       MaybeServeNewTabPageAdCallback callback,
       const CreativeNewTabPageAdList& creative_ads) const;
