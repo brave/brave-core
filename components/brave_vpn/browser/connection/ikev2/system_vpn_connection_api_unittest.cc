@@ -244,7 +244,7 @@ class SystemVPNConnectionAPIUnitTest : public testing::Test {
                                                    ->GetRegionDataManager()
                                                    .GetDeviceRegion(),
                                                regions())) {
-      return *region_ptr;
+      return std::move(*region_ptr);
     }
     return mojom::Region();
   }

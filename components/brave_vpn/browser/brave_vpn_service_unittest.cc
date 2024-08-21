@@ -23,6 +23,7 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_helper.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/features.h"
@@ -303,7 +304,7 @@ class BraveVPNServiceTest : public testing::Test {
                                                    ->GetRegionDataManager()
                                                    .GetDeviceRegion(),
                                                regions())) {
-      return *region_ptr;
+      return std::move(*region_ptr);
     }
     return mojom::Region();
   }

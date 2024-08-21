@@ -53,15 +53,6 @@ public class BraveVpnPrefUtils {
     public static final String PREF_SESSION_START_TIME = "brave_vpn_session_start_time";
     public static final String PREF_SESSION_END_TIME = "brave_vpn_session_end_time";
     private static final String PREF_LINK_SUBSCRIPTION_DIALOG = "link_subscription_dialog";
-    private static final String PREF_VPN_ISO_CODE_UPGRADE = "vpn_iso_code_upgrade";
-
-    public static boolean isIsoCodeUpgradeDone() {
-        return ChromeSharedPreferences.getInstance().readBoolean(PREF_VPN_ISO_CODE_UPGRADE, false);
-    }
-
-    public static void setIsoCodeUpgrade(boolean newValue) {
-        ChromeSharedPreferences.getInstance().writeBoolean(PREF_VPN_ISO_CODE_UPGRADE, newValue);
-    }
 
     public static boolean isLinkSubscriptionDialogShown() {
         return ChromeSharedPreferences.getInstance()
