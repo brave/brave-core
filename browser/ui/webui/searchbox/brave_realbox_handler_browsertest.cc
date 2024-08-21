@@ -7,14 +7,18 @@
 #include <string>
 
 #include "base/time/time.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/searchbox/realbox_handler.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/search_test_utils.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_match_type.h"
 #include "components/omnibox/browser/omnibox_client.h"
 #include "components/omnibox/browser/omnibox_controller.h"
+#include "components/search_engines/template_url_service.h"
 #include "components/url_formatter/spoof_checks/idna_metrics.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
@@ -50,11 +54,24 @@ class BraveRealboxHandlerTest : public InProcessBrowserTest {
     content::WaitForLoadStop(contents());
   }
 
- private:
+  testing::AssertionResult VerifyTemplateURLServiceLoad() {
+    auto* profile = browser()->profile();
+    auto* service = TemplateURLServiceFactory::GetForProfile(profile);
+    if (service->loaded()) {
+      return testing::AssertionSuccess();
+    }
+    search_test_utils::WaitForTemplateURLServiceToLoad(service);
+    if (service->loaded()) {
+      return testing::AssertionSuccess();
+    }
+    return testing::AssertionFailure() << "TemplateURLService isn't loaded";
+  }
 };
 
 IN_PROC_BROWSER_TEST_F(BraveRealboxHandlerTest, BraveSearchUsesNewTabSource) {
   EXPECT_EQ(GURL("about:blank"), contents()->GetVisibleURL());
+  EXPECT_TRUE(VerifyTemplateURLServiceLoad());
+
   OnAutocompleteAccept(
       GURL("https://search.brave.com/search?q=hello+world&source=desktop"),
       u":br");
@@ -65,6 +82,7 @@ IN_PROC_BROWSER_TEST_F(BraveRealboxHandlerTest, BraveSearchUsesNewTabSource) {
 IN_PROC_BROWSER_TEST_F(BraveRealboxHandlerTest,
                        BraveSearchNoKeywordIsUnaffected) {
   EXPECT_EQ(GURL("about:blank"), contents()->GetVisibleURL());
+  EXPECT_TRUE(VerifyTemplateURLServiceLoad());
 
   GURL match_url(
       "https://search.brave.com/search?q=hello+world&source=desktop");
@@ -74,6 +92,7 @@ IN_PROC_BROWSER_TEST_F(BraveRealboxHandlerTest,
 
 IN_PROC_BROWSER_TEST_F(BraveRealboxHandlerTest, NonBraveSearchIsUnaffected) {
   EXPECT_EQ(GURL("about:blank"), contents()->GetVisibleURL());
+  EXPECT_TRUE(VerifyTemplateURLServiceLoad());
 
   GURL match_url(
       "https://search.brave.com/search?q=hello+world&source=desktop");
