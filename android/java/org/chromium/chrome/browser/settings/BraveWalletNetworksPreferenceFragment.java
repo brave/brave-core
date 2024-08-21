@@ -67,6 +67,7 @@ public class BraveWalletNetworksPreferenceFragment extends BravePreferenceFragme
                 findPreference(PREF_BRAVE_WALLET_NETWORKS_ADD);
         if (braveWalletNetworksPreference != null) {
             braveWalletNetworksPreference.setListener(this);
+            braveWalletNetworksPreference.setPreferenceFragment(this);
         }
     }
 
@@ -85,15 +86,12 @@ public class BraveWalletNetworksPreferenceFragment extends BravePreferenceFragme
     @NonNull
     @Override
     public RecyclerView.LayoutManager onCreateLayoutManager() {
-        final LinearLayoutManager linearLayoutManager =
-                new LinearLayoutManager(requireContext()) {
-                    @Override
-                    public boolean canScrollVertically() {
-                        return false;
-                    }
-                };
-
-        return linearLayoutManager;
+        return new LinearLayoutManager(requireContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
     }
 
     @Override
