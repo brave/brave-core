@@ -18,6 +18,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
@@ -99,6 +100,7 @@ namespace {
 constexpr int kMaximumNumberOfTimesToRetryNetworkRequests = 1;
 
 constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
+constexpr char kClearDataHistogramName[] = "Brave.Ads.ClearData";
 
 int ResourceBundleId(const std::string& name) {
   if (name == kCatalogJsonSchemaDataResourceName) {
@@ -1178,6 +1180,7 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
 }
 
 void AdsServiceImpl::ClearData() {
+  UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
   ShutdownAndClearData();
 }
 
