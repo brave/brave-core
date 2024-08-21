@@ -19,7 +19,7 @@ void AttemptRestart() {
     return;
   }
 #endif
-  return AttemptRestart_ChromiumImpl();
+  AttemptRestart_ChromiumImpl();
 }
 
 }  // namespace chrome
