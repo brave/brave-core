@@ -107,6 +107,7 @@ bool SetAssetSPLTokenProgram(PrefService* prefs,
                              mojom::SPLTokenProgram program);
 bool SetAssetCompressed(PrefService* prefs,
                         const mojom::BlockchainTokenPtr& token);
+
 base::Value::List GetDefaultUserAssets();
 
 std::string GetPrefKeyForCoinType(mojom::CoinType coin);
