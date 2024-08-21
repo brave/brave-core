@@ -17,6 +17,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/themes/theme_syncable_service.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/url_constants.h"
 #include "components/prefs/pref_service.h"
@@ -72,8 +73,8 @@ void BraveNTPCustomBackgroundServiceDelegate::MigrateCustomImage(
 
 bool BraveNTPCustomBackgroundServiceDelegate::IsCustomImageBackgroundEnabled()
     const {
-  if (profile_->GetPrefs()->IsManagedPreference(
-          prefs::kNtpCustomBackgroundDict)) {
+  if (profile_->GetPrefs()->IsManagedPreference(GetThemePrefNameInMigration(
+          ThemePrefInMigration::kNtpCustomBackgroundDict))) {
     return false;
   }
 
