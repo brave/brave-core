@@ -61,7 +61,6 @@ namespace chrome {
 namespace android {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kAddToHomescreenIPH, base::FEATURE_DISABLED_BY_DEFAULT},
     {kIncognitoReauthenticationForAndroid, base::FEATURE_ENABLED_BY_DEFAULT},
     {kMagicStackAndroid, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSurfacePolish, base::FEATURE_DISABLED_BY_DEFAULT},
