@@ -13,8 +13,8 @@
 #include "ios/chrome/browser/autocomplete/model/autocomplete_classifier_factory.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #include "ios/chrome/browser/shared/model/prefs/pref_names.h"
+#include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "net/base/apple/url_conversions.h"
 
 namespace brave {

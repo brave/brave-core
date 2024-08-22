@@ -16,7 +16,7 @@
 #include "ios/chrome/browser/favicon/model/favicon_service_factory.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
+#include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "ios/web/favicon/favicon_util.h"
 #include "ios/web/js_messaging/web_view_js_utils.h"
 #import "ios/web/navigation/navigation_context_impl.h"
