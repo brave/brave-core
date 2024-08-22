@@ -393,6 +393,8 @@ base::Value::Dict SolanaTransaction::ToValue() const {
   base::Value::Dict dict;
   dict.Set("message", message_.ToValue());
   dict.Set("to_wallet_address", to_wallet_address_);
+  // We use the old key, spl_token_mint_address, for backwards compatibility
+  // with when it didn't also represent compressed NFT identifiers.
   dict.Set("spl_token_mint_address", token_address_);
   dict.Set("tx_type", static_cast<int>(tx_type_));
   dict.Set("lamports", base::NumberToString(lamports_));
@@ -470,12 +472,13 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromValue(
   }
   tx->set_to_wallet_address(*to_wallet_address);
 
-  const auto* spl_token_mint_address =
-      value.FindString("spl_token_mint_address");
-  if (!spl_token_mint_address) {
+  // We use spl_token_mint_address as for backwards compatibility
+  // with when it didn't also represent compressed NFT identifiers.
+  const auto* token_address = value.FindString("spl_token_mint_address");
+  if (!token_address) {
     return nullptr;
   }
-  tx->set_token_address(*spl_token_mint_address);
+  tx->set_token_address(*token_address);
 
   auto tx_type = value.FindInt("tx_type");
   if (!tx_type) {

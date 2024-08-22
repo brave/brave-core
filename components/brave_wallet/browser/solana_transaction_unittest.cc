@@ -632,7 +632,7 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
           ]
         },
         "to_wallet_address": "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV",
-        "token_mint_address": "",
+        "spl_token_mint_address": "",
         "lamports": "10000000",
         "amount": "0",
         "tx_type": 6,
