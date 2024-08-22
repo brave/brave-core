@@ -8,22 +8,33 @@
 #include "brave/browser/sparkle_buildflags.h"
 
 #if BUILDFLAG(ENABLE_SPARKLE)
+
 #include "brave/browser/ui/webui/settings/brave_relaunch_handler_mac.h"
-#endif
 
 #define AttemptRestart AttemptRestart_ChromiumImpl
+#define RelaunchIgnoreUnloadHandlers RelaunchIgnoreUnloadHandlers_ChromiumImpl
+
 #include "src/chrome/browser/lifetime/application_lifetime_desktop.cc"
+
+#undef RelaunchIgnoreUnloadHandlers
 #undef AttemptRestart
 
 namespace chrome {
 
 void AttemptRestart() {
-#if BUILDFLAG(ENABLE_SPARKLE)
-  if (brave_relaunch_handler::RelaunchOnMac()) {
-    return;
+  if (!brave_relaunch_handler::RelaunchOnMac()) {
+    AttemptRestart_ChromiumImpl();
   }
-#endif
-  AttemptRestart_ChromiumImpl();
+}
+
+void RelaunchIgnoreUnloadHandlers() {
+  if (!brave_relaunch_handler::RelaunchOnMac()) {
+    RelaunchIgnoreUnloadHandlers_ChromiumImpl();
+  }
 }
 
 }  // namespace chrome
+
+#else
+#include "src/chrome/browser/lifetime/application_lifetime_desktop.cc"
+#endif  // BUILDFLAG(ENABLE_SPARKLE)
