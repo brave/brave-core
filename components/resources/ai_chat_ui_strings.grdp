@@ -385,4 +385,7 @@
   <message name="IDS_AI_CHAT_START_CONVERSATION_LABEL" desc="A label for when user starts a new conversation">
     Start new conversation
   </message>
+  <message name="IDS_AI_CHAT_CONVERSATION_LIST_UNTITLED" desc="Label for untitled conversations in AI Chat">
+    New chat
+  </message>
 </grit-part>

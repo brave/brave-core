@@ -121,11 +121,18 @@ struct CompletionEvent {
   string completion;
 };
 
+struct ConversationTitleEvent {
+  string title;
+};
+
 // Events that occur during a conversation turn (only assistant for now)
 union ConversationEntryEvent {
   CompletionEvent completion_event;
   SearchQueriesEvent search_queries_event;
   SearchStatusEvent search_status_event;
+  // ConversationTitleEvent doesn't actually get added to the
+  // conversation entry, but is used to title the conversation itself.
+  ConversationTitleEvent conversation_title_event;
 };
 
 // Represents a single turn in a conversation.
@@ -229,7 +236,13 @@ struct ActionGroup {
 
 struct Conversation {
   string uuid;
+  // Set by the LLM or the user
   string title;
+  // First few characters of content, used if title isn't set
+  // or where more context is needed.
+  string summary;
+  mojo_base.mojom.Time created_time;
+  // If there are entries and the conversation should be selectable
   bool has_content;
 };
 
@@ -250,6 +263,8 @@ interface Service {
   // it and it's been some time since the user started using the feature).
   GetCanShowPremiumPrompt() => (bool can_show);
   DismissPremiumPrompt();
+
+  DeleteConversation(string id);
 
   // Send events to the UI
   BindObserver(pending_remote<ServiceObserver> ui);
@@ -304,6 +319,8 @@ interface AIChatUIHandler {
 
 // UI-side handler for whole AI Chat UI
 interface ChatUI {
+  // Initial Data
+  SetInitialData(bool is_standalone);
   // Notifies that the default conversation for the
   // panel has changed. e.g. Tab navigation with AIChat open in sidebar.
   OnNewDefaultConversation();
@@ -380,6 +397,11 @@ interface ConversationHandler {
       string rating_id, bool send_hostname) => (bool is_success);
 };
 
+interface ConversationEntriesHandler {
+  // Get all visible history entries, including in-progress responses
+  GetConversationHistory() => (array<ConversationTurn> conversation_history);
+};
+
 interface ConversationUI {
   // TODO(petemill): Provide single entry that's been updated so that we don't
   // need to fetch (and clone) all conversation entries each time text is added
@@ -401,6 +423,7 @@ interface ConversationUI {
   // |is_fetching| will be |true|.
   OnAssociatedContentInfoChanged(SiteInfo info, bool should_send_page_contents);
   OnFaviconImageDataChanged();
+  OnConversationDeleted();
 };
 
 [EnableIf=is_android]

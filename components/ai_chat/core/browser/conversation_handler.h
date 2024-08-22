@@ -134,6 +134,8 @@ class ConversationHandler : public mojom::ConversationHandler,
 
     // Called when a mojo client connects or disconnects
     virtual void OnClientConnectionChanged(ConversationHandler* handler) {}
+    virtual void OnConversationTitleChanged(ConversationHandler* handler,
+                                std::string title) {}
   };
 
   ConversationHandler(
@@ -157,6 +159,7 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   bool IsAnyClientConnected();
   bool HasAnyHistory();
+  void OnConversationDeleted();
 
   // Called when the associated content is destroyed or navigated away. If
   // it's a navigation, the AssociatedContentDelegate will set itself to a new
@@ -309,7 +312,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnHistoryUpdate();
   void OnSuggestedQuestionsChanged();
   void OnAssociatedContentInfoChanged();
+  void OnConversationEntriesChanged();
   void OnClientConnectionChanged();
+  void OnConversationTitleChanged(std::string title);
   void OnConversationUIConnectionChanged(mojo::RemoteSetElementId id);
   void OnAssociatedContentFaviconImageDataChanged();
   void OnAPIRequestInProgressChanged();

@@ -72,14 +72,9 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
-  } else {
-    // TODO(petemill): Enable conversation without the TabHelper now that
-    // all conversation logic is extracted to ConversationHandler.
-    NOTIMPLEMENTED();
-  }
-
-  favicon_service_ = FaviconServiceFactory::GetForProfile(
+    favicon_service_ = FaviconServiceFactory::GetForProfile(
       profile_, ServiceAccessType::EXPLICIT_ACCESS);
+  }
 }
 
 AIChatUIPageHandler::~AIChatUIPageHandler() = default;
@@ -192,13 +187,17 @@ void AIChatUIPageHandler::CloseUI() {
 void AIChatUIPageHandler::SetChatUI(
     mojo::PendingRemote<mojom::ChatUI> chat_ui) {
   chat_ui_.Bind(std::move(chat_ui));
+  chat_ui_->SetInitialData(active_chat_tab_helper_ == nullptr);
 }
 
 void AIChatUIPageHandler::BindRelatedConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   if (!active_chat_tab_helper_) {
-    // No initial conversation for standalone page
+    ConversationHandler* conversation =
+        AIChatServiceFactory::GetForBrowserContext(profile_)
+            ->CreateConversation();
+    conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
     return;
   }
 
