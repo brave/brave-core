@@ -95,7 +95,7 @@ export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
         signatures: []
       },
       feeEstimation: undefined,
-      splTokenMintAddress: '',
+      tokenAddress: '',
       staticAccountKeys: [],
       toWalletAddress: mockSolanaAccountInfo.address,
       txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer,
@@ -456,7 +456,7 @@ export const createMockTransactionInfo = (arg: {
 
   if (coinType === BraveWallet.CoinType.SOL) {
     txBase.txDataUnion.solanaTxData = txBase.txDataUnion.solanaTxData!
-    txBase.txDataUnion.solanaTxData.splTokenMintAddress =
+    txBase.txDataUnion.solanaTxData.tokenAddress =
       sendApproveOrSellAssetContractAddress
   }
 
