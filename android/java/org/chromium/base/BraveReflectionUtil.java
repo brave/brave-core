@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class BraveReflectionUtil {
-    private static String TAG = "BraveReflectionUtil";
+    private static final String TAG = "BraveReflectionUtil";
 
     // NOTE: For each method for invocation add appropriate test to `testMethodsForInvocationExist`
     // method in 'brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java' file with
@@ -67,11 +67,11 @@ public class BraveReflectionUtil {
         return null;
     }
 
-    public static void setIntField(Class ownerClass, String fieldName, Object obj, int newValue) {
+    public static void setField(Class ownerClass, String fieldName, Object obj, Object newValue) {
         try {
             Field field = ownerClass.getDeclaredField(fieldName);
-            if (!field.isAccessible()) field.setAccessible(true);
-            field.setInt(obj, newValue);
+            field.setAccessible(true);
+            field.set(obj, newValue);
         } catch (NoSuchFieldException e) {
             Log.e(TAG, "Field not found: " + e);
             assert (false);
