@@ -28,6 +28,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 #endif
 #if BUILDFLAG(IS_MAC)
     {kUseChromiumUpdater, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kImmersiveFullscreen, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
 #if !BUILDFLAG(IS_ANDROID)
     {kWebAppUniversalInstall, base::FEATURE_DISABLED_BY_DEFAULT},
