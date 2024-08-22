@@ -177,6 +177,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
 #if BUILDFLAG(IS_MAC)
       &features::kUseChromiumUpdater,
+      &features::kImmersiveFullscreen,
 #endif
 #if !BUILDFLAG(IS_ANDROID)
       &features::kUseMoveNotCopyInMergeTreeUpdate,
