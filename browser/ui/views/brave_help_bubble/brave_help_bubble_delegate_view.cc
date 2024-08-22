@@ -11,6 +11,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/scoped_canvas.h"
 #include "ui/views/border.h"
@@ -145,7 +146,7 @@ BraveHelpBubbleDelegateView::BraveHelpBubbleDelegateView(
     View* anchor_view,
     const std::string& text)
     : BubbleDialogDelegateView(anchor_view, BubbleBorder::Arrow::TOP_CENTER) {
-  SetButtons(ui::DIALOG_BUTTON_NONE);
+  SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   set_shadow(BubbleBorder::Shadow::STANDARD_SHADOW);
   set_corner_radius(10);
   set_color(kBgColor);

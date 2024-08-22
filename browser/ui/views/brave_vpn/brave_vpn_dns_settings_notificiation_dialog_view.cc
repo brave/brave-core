@@ -16,6 +16,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/link.h"
 #include "ui/views/controls/styled_label.h"
@@ -62,8 +63,8 @@ BraveVpnDnsSettingsNotificiationDialogView::
       views::BoxLayout::Orientation::kVertical,
       gfx::Insets::TLBR(kTopPadding, kPadding, kBottomPadding, kPadding),
       kChildSpacing));
-  SetButtons(ui::DIALOG_BUTTON_OK);
-  SetButtonLabel(ui::DIALOG_BUTTON_OK,
+  SetButtons(static_cast<int>(ui::mojom::DialogButton::kOk));
+  SetButtonLabel(ui::mojom::DialogButton::kOk,
                  l10n_util::GetStringUTF16(
                      IDS_BRAVE_VPN_DNS_SETTINGS_NOTIFICATION_DIALOG_OK_TEXT));
 

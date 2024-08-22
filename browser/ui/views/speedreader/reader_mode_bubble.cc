@@ -16,6 +16,7 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/color/color_id.h"
 #include "ui/events/event.h"
 #include "ui/gfx/geometry/insets.h"
@@ -47,7 +48,7 @@ ReaderModeBubble::ReaderModeBubble(views::View* anchor_view,
       tab_helper_(tab_helper) {
   DCHECK(GetSpeedreaderService());
 
-  SetButtons(ui::DialogButton::DIALOG_BUTTON_NONE);
+  SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   set_margins(gfx::Insets(0));
 }
 
