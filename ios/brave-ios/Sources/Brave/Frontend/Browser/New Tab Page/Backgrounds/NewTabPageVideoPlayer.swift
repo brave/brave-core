@@ -45,7 +45,6 @@ class NewTabPageVideoPlayer {
 
   init(_ backgroundVideoPath: URL) {
     self.backgroundVideoPath = backgroundVideoPath
-    createPlayer()
   }
 
   deinit {

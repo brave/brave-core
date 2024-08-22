@@ -73,7 +73,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
   private let playButton = PlayButton().then {
     $0.isHidden = true
   }
-  private var shouldShowPlayButton = false
+  private var isVideoBackground = false
   private var playButtonGestureRecognizer: UITapGestureRecognizer?
 
   /// The parent safe area insets (since UICollectionView doesn't feed down
@@ -175,6 +175,11 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     tappedBackgroundDuringAutoplay?()
   }
 
+  func resetVideoBackgroundButtons() {
+    isVideoBackground = false
+    updatePlayButtonVisibility()
+  }
+
   func videoAutoplayStarted() {
     let tapGesture = UITapGestureRecognizer(
       target: self,
@@ -185,7 +190,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
   }
 
   func videoAutoplayFinished() {
-    shouldShowPlayButton = true
+    isVideoBackground = true
     updatePlayButtonVisibility()
 
     if let playButtonGestureRecognizer = playButtonGestureRecognizer {
@@ -201,7 +206,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     if isLandscape && UIDevice.isPhone {
       playButton.isHidden = true
     } else {
-      playButton.isHidden = !shouldShowPlayButton
+      playButton.isHidden = !isVideoBackground
     }
   }
 

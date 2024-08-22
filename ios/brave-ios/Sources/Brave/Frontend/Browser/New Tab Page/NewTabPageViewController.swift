@@ -257,7 +257,18 @@ class NewTabPageViewController: UIViewController {
     }
 
     background.changed = { [weak self] in
-      self?.setupBackgroundImage()
+      guard let self else { return }
+      setupBackgroundImage()
+
+      let isTabVisible = viewIfLoaded?.window != nil
+      setupBackgroundVideoIfNeeded(shouldCreatePlayer: isTabVisible)
+      // Load the video asset here, as viewDidAppear is not called when the view
+      // is already visible
+      if isTabVisible {
+        videoPlayer?.loadAndAutoplayVideoAssetIfNeeded(
+          shouldAutoplay: false
+        )
+      }
     }
 
     Preferences.BraveNews.isEnabled.observe(from: self)
@@ -330,7 +341,7 @@ class NewTabPageViewController: UIViewController {
     }
 
     setupBackgroundImage()
-    setupBackgroundVideoIfNeeded()
+    setupBackgroundVideoIfNeeded(shouldCreatePlayer: true)
     backgroundView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -394,7 +405,6 @@ class NewTabPageViewController: UIViewController {
       self?.reportSponsoredBackgroundEvent(.viewedImpression)
     }
 
-    setupBackgroundVideoIfNeeded()
     videoPlayer?.loadAndAutoplayVideoAssetIfNeeded(
       shouldAutoplay: shouldShowBackgroundVideo()
     )
@@ -487,20 +497,22 @@ class NewTabPageViewController: UIViewController {
     )
   }
 
-  func setupBackgroundVideoIfNeeded() {
+  func setupBackgroundVideoIfNeeded(shouldCreatePlayer: Bool) {
     videoButtonsView.isHidden = true
 
-    // Setup the background video only if:
-    // - it hasn't been setup before
-    // - the current NTP background is a video
-    guard videoPlayer == nil,
-      let backgroundVideoPath = background.backgroundVideoPath
-    else {
+    guard let backgroundVideoPath = background.backgroundVideoPath else {
+      videoPlayer = nil
+      backgroundView.resetPlayerLayer()
+      backgroundButtonsView.resetVideoBackgroundButtons()
       return
     }
 
     gradientView.isHidden = false
     videoPlayer = NewTabPageVideoPlayer(backgroundVideoPath)
+    if shouldCreatePlayer {
+      videoPlayer?.createPlayer()
+    }
+
     backgroundView.setupPlayerLayer(backgroundVideoPath, player: videoPlayer?.player)
 
     videoButtonsView.tappedBackgroundVideo = { [weak videoPlayer] in
