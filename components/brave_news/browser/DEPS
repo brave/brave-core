@@ -1,7 +1,9 @@
 include_rules = [
   "+net",
   "+content/public/browser/browser_thread.h",
+  "+services/data_decoder/public",
   "+services/network/public",
   "+services/network/public/mojom",
   "+third_party/re2",
+  "+ui/gfx/codec",
 ]

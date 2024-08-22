@@ -39,6 +39,7 @@
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
+#include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/locales_helper.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
@@ -54,8 +55,11 @@
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "net/base/network_change_notifier.h"
+#include "services/data_decoder/public/cpp/decode_image.h"
+#include "services/data_decoder/public/mojom/image_decoder.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "ui/gfx/codec/webp_codec.h"
 
 namespace brave_news {
 namespace {
@@ -449,11 +453,10 @@ void BraveNewsController::RemoveDirectFeed(const std::string& publisher_id) {
 
 void BraveNewsController::GetImageData(const GURL& padded_image_url,
                                        GetImageDataCallback callback) {
-  VLOG(2) << __FUNCTION__ << " " << padded_image_url.spec();
+  DVLOG(4) << __FUNCTION__ << " " << padded_image_url.spec();
   // Validate
   if (!padded_image_url.is_valid()) {
-    std::optional<std::vector<uint8_t>> args;
-    std::move(callback).Run(std::move(args));
+    std::move(callback).Run(std::nullopt);
     return;
   }
   // Use file ending to determine if response
@@ -463,39 +466,84 @@ void BraveNewsController::GetImageData(const GURL& padded_image_url,
   const std::string ending = ".pad";
   if (file_name.length() >= file_name.max_size() - 1 ||
       file_name.length() <= ending.length()) {
-    std::optional<std::vector<uint8_t>> args;
-    std::move(callback).Run(std::move(args));
+    std::move(callback).Run(std::nullopt);
     return;
   }
   const bool is_padded =
       (file_name.compare(file_name.length() - ending.length(), ending.length(),
                          ending) == 0);
-  VLOG(3) << "is padded: " << is_padded;
+  DVLOG(4) << "is padded: " << is_padded;
+  // Ensure we don't de-pad non PCDN images
+  if (is_padded && !padded_image_url.DomainIs(GetMatchingPCDNHostname())) {
+    DLOG(ERROR) << "Encountered a padded URL apparently not from PCDN: "
+                << padded_image_url.spec();
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
   // Make the request
   private_cdn_request_helper_.DownloadToString(
       padded_image_url,
+      base::BindOnce(&BraveNewsController::OnGetImageDataFetched,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     is_padded));
+}
+
+void BraveNewsController::OnGetImageDataFetched(GetImageDataCallback callback,
+                                                const bool is_padded,
+                                                const int response_code,
+                                                const std::string& body) {
+  // Handle the response
+  DVLOG(4) << "getimagedata response code: " << response_code;
+  // Attempt to remove byte padding if applicable
+  std::string_view body_payload(body.data(), body.size());
+  if (response_code != 200 ||
+      (is_padded &&
+       !brave::PrivateCdnHelper::GetInstance()->RemovePadding(&body_payload))) {
+    // Byte padding removal failed
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  // Download (and optional unpadding) was successful
+  std::vector<uint8_t> image_bytes(body_payload.begin(), body_payload.end());
+  if (is_padded) {
+    // Padded images are already re-encoded on the PCDN
+    std::move(callback).Run(std::move(image_bytes));
+    return;
+  }
+  // For security purposes, decode and re-encode the image,
+  // and don't just pass the bytes straight to WebUI.
+  data_decoder::DecodeImage(
+      &data_decoder_, image_bytes, data_decoder::mojom::ImageCodec::kDefault,
+      /*shrink_to_fit=*/true, data_decoder::kDefaultMaxSizeInBytes,
+      /*desired_image_frame_size=*/gfx::Size(),
+      base::BindOnce(&BraveNewsController::OnGetImageDataDecoded,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void BraveNewsController::OnGetImageDataDecoded(GetImageDataCallback callback,
+                                                const SkBitmap& decoded_image) {
+  if (decoded_image.isNull()) {
+    DVLOG(1) << "Failed to decode image";
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  // Encode on a thread and reply
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      {base::TaskPriority::USER_VISIBLE,
+       base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
       base::BindOnce(
-          [](GetImageDataCallback callback, const bool is_padded,
-             const int response_code, const std::string& body) {
-            // Handle the response
-            VLOG(3) << "getimagedata response code: " << response_code;
-            // Attempt to remove byte padding if applicable
-            std::string_view body_payload(body.data(), body.size());
-            if (response_code < 200 || response_code >= 300 ||
-                (is_padded &&
-                 !brave::PrivateCdnHelper::GetInstance()->RemovePadding(
-                     &body_payload))) {
-              // Byte padding removal failed
-              std::move(callback).Run(std::nullopt);
-              return;
+          [](const SkBitmap& bitmap) {
+            std::vector<uint8_t> encoded;
+            const bool success =
+                gfx::WebpCodec::Encode(bitmap, /*quality=*/90, &encoded);
+            if (success) {
+              return encoded;
             }
-            // Download (and optional unpadding) was successful,
-            // uint8Array will be easier to move over mojom.
-            std::vector<uint8_t> image_bytes(body_payload.begin(),
-                                             body_payload.end());
-            std::move(callback).Run(image_bytes);
+            return std::vector<uint8_t>();
           },
-          std::move(callback), is_padded));
+          std::move(decoded_image)),
+      std::move(callback));
 }
 
 void BraveNewsController::GetFavIconData(const std::string& publisher_id,

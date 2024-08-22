@@ -27,7 +27,10 @@ buildflag_header("buildflags") {
   ]
 
   # Consumers should use the brave_domains helper functions.
-  visibility = [ ":*" ]
+  visibility = [
+    ":*",
+    "//brave/components/brave_news/browser/test:*",
+  ]
 }
 
 source_set("unit_tests") {
