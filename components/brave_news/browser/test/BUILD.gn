@@ -26,11 +26,14 @@ source_set("brave_news_unit_tests") {
     "//brave/components/brave_news/browser/publishers_parsing_unittest.cc",
     "//brave/components/brave_news/browser/suggestions_controller_unittest.cc",
     "//brave/components/brave_news/browser/topics_fetcher_unittest.cc",
+    "//brave/components/brave_news/browser/urls_unittest.cc",
   ]
 
   deps = [
     ":brave_news_unit_tests_support",
     "//base/test:test_support",
+    "//brave/brave_domains",
+    "//brave/brave_domains:buildflags",
     "//brave/components/api_request_helper",
     "//brave/components/brave_news/browser",
     "//brave/components/brave_news/common",
