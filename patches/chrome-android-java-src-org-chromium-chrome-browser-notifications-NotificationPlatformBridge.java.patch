@@ -1,16 +1,7 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
-index 433eced889ce874ebd31f6ccf048a92e543eeb17..31b810285eea508a7b6b1baeefe492968e72384c 100644
+index 433eced889ce874ebd31f6ccf048a92e543eeb17..8a159ea859a61e366080e9d8faf42666b0c2500b 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
-@@ -100,7 +100,7 @@ public class NotificationPlatformBridge {
-     // TODO(crbug.com/41494393): Fine tune this duration, and possibly turn it off for A11Y users.
-     private static final long PROVISIONAL_UNSUBSCRIBE_DURATION_MS = 10 * 1000;
- 
--    private static NotificationPlatformBridge sInstance;
-+    protected static NotificationPlatformBridge sInstance;
- 
-     private static BaseNotificationManagerProxy sNotificationManagerOverride;
- 
 @@ -135,7 +135,7 @@ public class NotificationPlatformBridge {
      private TrustedWebActivityClient mTwaClient;
  
@@ -20,24 +11,12 @@ index 433eced889ce874ebd31f6ccf048a92e543eeb17..31b810285eea508a7b6b1baeefe49296
          public final String notificationId;
          public final @NotificationType int notificationType;
          public final String origin;
-@@ -239,7 +239,7 @@ public class NotificationPlatformBridge {
-         return notificationManager;
-     }
- 
--    private NotificationPlatformBridge(long nativeNotificationPlatformBridge) {
-+    protected NotificationPlatformBridge(long nativeNotificationPlatformBridge) {
-         mNativeNotificationPlatformBridge = nativeNotificationPlatformBridge;
-         Context context = ContextUtils.getApplicationContext();
-         mNotificationManager = createNotificationManagerProxy(context);
-@@ -886,7 +886,11 @@ public class NotificationPlatformBridge {
+@@ -886,7 +886,7 @@ public class NotificationPlatformBridge {
                  .storeNotificationResourcesIfSuspended(notification);
      }
  
-+<<<<<<< ours
-     private static NotificationBuilderBase prepareNotificationBuilder(
-+=======
-+    protected NotificationBuilderBase prepareNotificationBuilder(
-+>>>>>>> theirs
+-    private static NotificationBuilderBase prepareNotificationBuilder(
++    protected static NotificationBuilderBase prepareNotificationBuilder(
              NotificationIdentifyingAttributes identifyingAttributes,
              boolean vibrateEnabled,
              String title,

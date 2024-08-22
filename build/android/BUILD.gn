@@ -228,7 +228,6 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/day_zero/DayZeroHelper.java",
     "//brave/android/java/org/chromium/chrome/browser/informers/BraveSyncAccountDeletedInformer.java",
     "//brave/android/java/org/chromium/chrome/browser/misc_metrics/MiscAndroidMetricsFactory.java",
-    "//brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationPlatformBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/notifications/channels/BraveSiteChannelsManagerBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/ntp_background_images/NTPBackgroundImagesBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceFactoryAndroid.java",
