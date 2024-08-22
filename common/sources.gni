@@ -3,8 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//extensions/buildflags/buildflags.gni")
-
 brave_chrome_common_sources = [
   "//brave/common/brave_channel_info.cc",
   "//brave/common/brave_channel_info.h",
@@ -33,28 +31,6 @@ if (is_android) {
 
 if (!is_android && !is_ios) {
   brave_chrome_common_deps += [ "//brave/common/importer" ]
-}
-
-if (enable_extensions) {
-  brave_chrome_common_sources += [
-    "//brave/common/extensions/brave_extensions_api_provider.cc",
-    "//brave/common/extensions/brave_extensions_api_provider.h",
-    "//brave/common/extensions/brave_extensions_client.cc",
-    "//brave/common/extensions/brave_extensions_client.h",
-  ]
-
-  brave_chrome_common_deps += [
-    "//brave/components/brave_component_updater/browser",
-    "//brave/components/https_upgrade_exceptions/browser",
-    "//components/component_updater",
-    "//extensions/common:common_constants",
-  ]
-
-  brave_chrome_common_public_deps += [
-    "extensions/api",
-    "//brave/common/extensions/api",
-    "//brave/common/extensions/api:extensions_features",
-  ]
 }
 
 if (!is_ios) {
