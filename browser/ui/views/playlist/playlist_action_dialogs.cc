@@ -25,6 +25,7 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "ui/base/cursor/cursor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/controls/textfield/textfield.h"
@@ -312,9 +313,9 @@ PlaylistNewPlaylistDialog::PlaylistNewPlaylistDialog(
           views::BoxLayout::CrossAxisAlignment::kStretch);
   SetTitle(l10n_util::GetStringUTF16(IDS_PLAYLIST_NEW_PLAYLIST_DIALOG_TITLE));
   SetButtonLabel(
-      ui::DIALOG_BUTTON_OK,
+      ui::mojom::DialogButton::kOk,
       l10n_util::GetStringUTF16(IDS_PLAYLIST_NEW_PLAYLIST_DIALOG_OK));
-  SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
+  SetButtonEnabled(ui::mojom::DialogButton::kOk, false);
 
   auto create_container = [](views::View* parent, int container_label_string_id,
                              int container_label_color_id,
@@ -389,11 +390,12 @@ views::View* PlaylistNewPlaylistDialog::GetInitiallyFocusedView() {
 void PlaylistNewPlaylistDialog::ContentsChanged(
     views::Textfield* sender,
     const std::u16string& new_contents) {
-  if (new_contents.size() == IsDialogButtonEnabled(ui::DIALOG_BUTTON_OK)) {
+  if (new_contents.size() ==
+      IsDialogButtonEnabled(ui::mojom::DialogButton::kOk)) {
     return;
   }
 
-  SetButtonEnabled(ui::DIALOG_BUTTON_OK, new_contents.size());
+  SetButtonEnabled(ui::mojom::DialogButton::kOk, new_contents.size());
   DialogModelChanged();
 }
 
@@ -436,11 +438,12 @@ bool PlaylistMoveDialog::CanMoveItems(
 
 void PlaylistMoveDialog::ContentsChanged(views::Textfield* sender,
                                          const std::u16string& new_contents) {
-  if (new_contents.size() == IsDialogButtonEnabled(ui::DIALOG_BUTTON_OK)) {
+  if (new_contents.size() ==
+      IsDialogButtonEnabled(ui::mojom::DialogButton::kOk)) {
     return;
   }
 
-  SetButtonEnabled(ui::DIALOG_BUTTON_OK, new_contents.size());
+  SetButtonEnabled(ui::mojom::DialogButton::kOk, new_contents.size());
   DialogModelChanged();
 }
 
@@ -583,7 +586,7 @@ void PlaylistMoveDialog::EnterChoosePlaylistMode() {
   }
   list_view_->SetSelected({candidate_playlist_id});
 
-  SetButtonLabel(ui::DIALOG_BUTTON_OK,
+  SetButtonLabel(ui::mojom::DialogButton::kOk,
                  l10n_util::GetStringUTF16(IDS_PLAYLIST_MOVE_MEDIA_DIALOG_OK));
 
   // AcceptCallback is invoked by the base class so it's okay to bind
@@ -619,8 +622,8 @@ void PlaylistMoveDialog::EnterCreatePlaylistMode() {
   new_playlist_name_textfield_->set_controller(this);
   new_playlist_name_textfield_->RequestFocus();
 
-  SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
-  SetButtonLabel(ui::DIALOG_BUTTON_OK,
+  SetButtonEnabled(ui::mojom::DialogButton::kOk, false);
+  SetButtonLabel(ui::mojom::DialogButton::kOk,
                  l10n_util::GetStringUTF16(
                      IDS_PLAYLIST_MOVE_MEDIA_DIALOG_CREATE_AND_MOVE));
 
@@ -735,7 +738,7 @@ PlaylistRemovePlaylistConfirmDialog::PlaylistRemovePlaylistConfirmDialog(
   SetTitle(
       l10n_util::GetStringUTF16(IDS_PLAYLIST_REMOVE_PLAYLIST_DIALOG_TITLE));
   SetButtonLabel(
-      ui::DIALOG_BUTTON_OK,
+      ui::mojom::DialogButton::kOk,
       l10n_util::GetStringUTF16(IDS_PLAYLIST_REMOVE_PLAYLIST_DIALOG_OK));
 
   auto* description =

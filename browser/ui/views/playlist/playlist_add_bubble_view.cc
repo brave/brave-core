@@ -23,6 +23,7 @@
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/base/ui_base_types.h"
 #include "ui/gfx/animation/animation.h"
 #include "ui/gfx/animation/animation_delegate.h"
@@ -140,10 +141,10 @@ PlaylistAddBubbleView::PlaylistAddBubbleView(
 
   loading_spinner_ = AddChildView(std::make_unique<LoadingSpinner>());
 
-  SetButtonLabel(ui::DialogButton::DIALOG_BUTTON_OK,
+  SetButtonLabel(ui::mojom::DialogButton::kOk,
                  l10n_util::GetStringUTF16(IDS_PLAYLIST_ADD_SELECTED));
-  SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
-  SetButtonEnabled(ui::DIALOG_BUTTON_CANCEL, false);
+  SetButtonEnabled(ui::mojom::DialogButton::kOk, false);
+  SetButtonEnabled(ui::mojom::DialogButton::kCancel, false);
 
   if (!tab_helper_->is_adding_items()) {
     InitListView();
@@ -162,7 +163,7 @@ void PlaylistAddBubbleView::OnAddedItemFromTabHelper(
     AddChildView(std::make_unique<views::Label>(
         l10n_util::GetStringUTF16(IDS_PLAYLIST_MEDIA_NOT_FOUND_IN_THIS_PAGE)));
     loading_spinner_->SetVisible(false);
-    SetButtonEnabled(ui::DIALOG_BUTTON_CANCEL, true);
+    SetButtonEnabled(ui::mojom::DialogButton::kCancel, true);
     return SizeToContents();
   }
 
@@ -183,8 +184,8 @@ void PlaylistAddBubbleView::InitListView() {
 
   SetAcceptCallbackWithClose(base::BindRepeating(
       &PlaylistAddBubbleView::AddSelected, base::Unretained(this)));
-  SetButtonEnabled(ui::DIALOG_BUTTON_OK, true);
-  SetButtonEnabled(ui::DIALOG_BUTTON_CANCEL, true);
+  SetButtonEnabled(ui::mojom::DialogButton::kOk, true);
+  SetButtonEnabled(ui::mojom::DialogButton::kCancel, true);
 
   scroll_view_->SetPreferredSize(std::nullopt);
   scroll_view_->SetPreferredSize(
@@ -199,8 +200,8 @@ bool PlaylistAddBubbleView::AddSelected() {
     return true;
   }
 
-  SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
-  SetButtonEnabled(ui::DIALOG_BUTTON_CANCEL, false);
+  SetButtonEnabled(ui::mojom::DialogButton::kOk, false);
+  SetButtonEnabled(ui::mojom::DialogButton::kCancel, false);
   scroll_view_->SetVisible(false);
   loading_spinner_->SetVisible(true);
   SizeToContents();
@@ -218,8 +219,8 @@ bool PlaylistAddBubbleView::AddSelected() {
 
 void PlaylistAddBubbleView::OnSelectionChanged() {
   if (bool has_selected = list_view_->HasSelected();
-      has_selected != IsDialogButtonEnabled(ui::DIALOG_BUTTON_OK)) {
-    SetButtonEnabled(ui::DIALOG_BUTTON_OK, has_selected);
+      has_selected != IsDialogButtonEnabled(ui::mojom::DialogButton::kOk)) {
+    SetButtonEnabled(ui::mojom::DialogButton::kOk, has_selected);
   }
 }
 
