@@ -18,6 +18,7 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
+#include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/border.h"
@@ -73,7 +74,7 @@ SplitViewMenuBubble::SplitViewMenuBubble(Browser* browser, views::View* anchor)
   set_margins(gfx::Insets::VH(4, 0));
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical);
-  SetButtons(ui::DIALOG_BUTTON_NONE);
+  SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   SetCloseCallback(
       base::BindOnce(&SplitViewMenuBubble::OnClose, base::Unretained(this)));
 

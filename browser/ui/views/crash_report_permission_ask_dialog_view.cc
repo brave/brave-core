@@ -27,6 +27,7 @@
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
+#include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/views/background.h"
@@ -81,11 +82,11 @@ CrashReportPermissionAskDialogView::CrashReportPermissionAskDialogView(
     Browser* browser) {
   set_should_ignore_snapping(true);
 
-  SetButtonLabel(ui::DIALOG_BUTTON_OK,
+  SetButtonLabel(ui::mojom::DialogButton::kOk,
                  brave_l10n::GetLocalizedResourceUTF16String(
                      IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_OK_BUTTON_LABEL));
   SetButtonLabel(
-      ui::DIALOG_BUTTON_CANCEL,
+      ui::mojom::DialogButton::kCancel,
       brave_l10n::GetLocalizedResourceUTF16String(
           IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_CANCEL_BUTTON_LABEL));
   SetAcceptCallback(

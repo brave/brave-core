@@ -18,6 +18,7 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/grit/branded_strings.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/gfx/font.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/views/controls/button/checkbox.h"
@@ -97,10 +98,10 @@ BraveFirstRunDialog::BraveFirstRunDialog(base::RepeatingClosure quit_runloop)
 #if BUILDFLAG(IS_LINUX)
   SetTitle(IDS_FIRST_RUN_DIALOG_WINDOW_TITLE);
 #endif
-  SetButtonLabel(ui::DIALOG_BUTTON_OK,
+  SetButtonLabel(ui::mojom::DialogButton::kOk,
                  brave_l10n::GetLocalizedResourceUTF16String(
                      IDS_FIRSTRUN_DLG_OK_BUTTON_LABEL));
-  SetButtonLabel(ui::DIALOG_BUTTON_CANCEL,
+  SetButtonLabel(ui::mojom::DialogButton::kCancel,
                  brave_l10n::GetLocalizedResourceUTF16String(
                      IDS_FIRSTRUN_DLG_CANCEL_BUTTON_LABEL));
 

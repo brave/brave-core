@@ -25,6 +25,7 @@
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/gfx/font_list.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/views/controls/button/checkbox.h"
@@ -106,10 +107,10 @@ WindowClosingConfirmDialogView::WindowClosingConfirmDialogView(
       response_callback_(std::move(response_callback)),
       prefs_(browser->profile()->GetOriginalProfile()->GetPrefs()) {
   set_should_ignore_snapping(true);
-  SetButtonLabel(ui::DIALOG_BUTTON_OK,
+  SetButtonLabel(ui::mojom::DialogButton::kOk,
                  l10n_util::GetStringUTF16(
                      IDS_WINDOW_CLOSING_CONFIRM_DLG_OK_BUTTON_LABEL));
-  SetButtonLabel(ui::DIALOG_BUTTON_CANCEL,
+  SetButtonLabel(ui::mojom::DialogButton::kCancel,
                  l10n_util::GetStringUTF16(
                      IDS_WINDOW_CLOSING_CONFIRM_DLG_CANCEL_BUTTON_LABEL));
   RegisterWindowClosingCallback(base::BindOnce(
