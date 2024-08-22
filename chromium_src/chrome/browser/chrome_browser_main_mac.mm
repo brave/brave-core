@@ -4,13 +4,16 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/mac/keystone_glue.h"
-#include "chrome/browser/updater/browser_updater_client_util.h"
+#include "ui/base/resource/resource_bundle.h"
 
-#define EnsureUpdater                                        \
+namespace {
+void DoNothing() {}
+}  // namespace
+
+#define HasSharedInstance() HasSharedInstance());            \
   [[KeystoneGlue defaultKeystoneGlue] registerWithKeystone]; \
-  if (false)                                                 \
-  EnsureUpdater
+  DoNothing(
 
 #include "src/chrome/browser/chrome_browser_main_mac.mm"
 
-#undef EnsureUpdater
+#undef HasSharedInstance
