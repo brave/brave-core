@@ -10,6 +10,8 @@ import Icon from '@brave/leo/react/icon'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Button from '@brave/leo/react/button'
 import { useAIChat } from '../../state/ai_chat_context'
+import { getLocale } from '$web-common/locale'
+import getAPI from '../../api'
 
 interface SimpleInputProps {
   text?: string
@@ -54,6 +56,7 @@ interface DisplayTitleProps {
   title: string
   description?: string
   onEditTitle?: () => void
+  onDelete?: () => void
 }
 
 function DisplayTitle(props: DisplayTitleProps) {
@@ -88,7 +91,7 @@ function DisplayTitle(props: DisplayTitleProps) {
               <div>Rename</div>
             </div>
           </leo-menu-item>
-          <leo-menu-item>
+          <leo-menu-item onClick={props.onDelete}>
             <div className={styles.optionsMenuItmWithIcon}>
               <Icon name='trash' />
               <div>Delete</div>
@@ -102,7 +105,6 @@ function DisplayTitle(props: DisplayTitleProps) {
 
 interface SidebarNavProps {
   enableBackButton?: boolean
-  isConversationListOpen: boolean
   setIsConversationListOpen: (value: boolean) => unknown
 }
 
@@ -118,12 +120,12 @@ export default function SidebarNav(props: SidebarNavProps) {
           [styles.noBorder]: !props.enableBackButton
         })}
       >
-        {props.enableBackButton && (
+        {!aiChatContext.isStandalone && props.enableBackButton && (
           <Button
             kind='plain-faint'
             fab
             onClick={() => {
-              props.setIsConversationListOpen(false)
+              props.setIsConversationListOpen?.(false)
             }}
           >
             <Icon name='arrow-left' />
@@ -150,13 +152,13 @@ export default function SidebarNav(props: SidebarNavProps) {
                     })}
                     onClick={() => {
                       aiChatContext.onSelectConversationId(item.uuid)
-                      props.setIsConversationListOpen(false)
+                      props.setIsConversationListOpen?.(false)
                     }}
                   >
                     {editingIndex === index ? (
                       <div className={styles.editibleTitle}>
                         <SimpleInput
-                          text={item.uuid}
+                          text={item.title}
                           onBlur={() => setEditingIndex(null)}
                           onSubmit={(value) => {
                             console.log(value)
@@ -166,9 +168,10 @@ export default function SidebarNav(props: SidebarNavProps) {
                       </div>
                     ) : (
                       <DisplayTitle
-                        title={item.uuid}
+                        title={item.title ? item.title : item.summary ? item.summary : getLocale('conversationListUntitled')}
                         description={''}
                         onEditTitle={() => setEditingIndex(index)}
+                        onDelete={() => getAPI().Service.deleteConversation(item.uuid)}
                       />
                     )}
                   </div>

@@ -11,6 +11,8 @@ import { loadTimeData } from '$web-common/loadTimeData'
 interface Props {
   // Which conversation to higlight in list
   selectedConversationUuid?: string
+  // Whether there is a specific conversation selected
+  isDefaultConversation: boolean
   // Create a new conversation and use it
   onNewConversation: () => unknown
   // Select a new conversation
@@ -25,6 +27,7 @@ export interface AIChatContext extends Props {
   isPremiumUserDisconnected: boolean
   canShowPremiumPrompt?: boolean
   isMobile: boolean
+  isStandalone?: boolean
   isHistoryEnabled: boolean
   allActions: mojom.ActionGroup[]
   goPremium: () => void
@@ -36,6 +39,7 @@ export interface AIChatContext extends Props {
 }
 
 const defaultContext: AIChatContext = {
+  isDefaultConversation: true,
   visibleConversations: [],
   hasAcceptedAgreement: Boolean(loadTimeData.getBoolean('hasAcceptedAgreement')),
   isPremiumStatusFetching: true,
@@ -133,6 +137,7 @@ export function AIChatContextProvider(props: React.PropsWithChildren<Props>) {
   const store: AIChatContext = {
     ...context,
     ...props,
+    isStandalone: getAPI().isStandalone,
     goPremium: () => UIHandler.goPremium(),
     managePremium: () => UIHandler.managePremium(),
     dismissPremiumPrompt: () => Service.dismissPremiumPrompt(),
