@@ -16,7 +16,9 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.hub.ResourceButtonData;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
+import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelFilter;
+import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.tab_ui.R;
 
 import java.util.function.DoubleConsumer;
@@ -25,18 +27,22 @@ public class BraveIncognitoTabSwitcherPane extends IncognitoTabSwitcherPane {
 
     public BraveIncognitoTabSwitcherPane(
             @NonNull Context context,
+            @NonNull OneshotSupplier<ProfileProvider> profileProviderSupplier,
             @NonNull TabSwitcherPaneCoordinatorFactory factory,
             @NonNull Supplier<TabModelFilter> incognitoTabModelFilterSupplier,
             @NonNull OnClickListener newTabButtonClickListener,
             @Nullable OneshotSupplier<IncognitoReauthController> incognitoReauthControllerSupplier,
-            @NonNull DoubleConsumer onToolbarAlphaChange) {
+            @NonNull DoubleConsumer onToolbarAlphaChange,
+            @NonNull UserEducationHelper userEducationHelper) {
         super(
                 context,
+                profileProviderSupplier,
                 factory,
                 incognitoTabModelFilterSupplier,
                 newTabButtonClickListener,
                 incognitoReauthControllerSupplier,
-                onToolbarAlphaChange);
+                onToolbarAlphaChange,
+                userEducationHelper);
 
         ResourceButtonData newReferenceButtonData =
                 new ResourceButtonData(
