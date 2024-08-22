@@ -907,7 +907,7 @@ void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
       kColorTabBackgroundActiveFrameActive};
 
   auto divider_color =
-      leo::GetColor(leo::Color::kColorDividerStrong,
+      leo::GetColor(leo::Color::kColorDividerSubtle,
                     key.color_mode == ui::ColorProviderKey::ColorMode::kDark
                         ? leo::Theme::kDark
                         : leo::Theme::kLight);
