@@ -389,4 +389,31 @@ TEST(ZCashUtilsUnitTest, RevertHex) {
       "0x14813a6fb939819e79f48cc70fa40e39296da381ba1cce030290490000000000");
 }
 
+TEST(ZCashUtilsUnitTest, OrchardMemo) {
+  EXPECT_FALSE(ToOrchardMemo(std::nullopt));
+  EXPECT_FALSE(OrchardMemoToVec(std::nullopt));
+  {
+    OrchardMemo memo;
+    memo.fill(1);
+    EXPECT_EQ(OrchardMemoToVec(memo),
+              std::vector<uint8_t>(kOrchardMemoSize, 1));
+  }
+
+  {
+    OrchardMemo memo;
+    memo.fill(2);
+    EXPECT_EQ(memo,
+              ToOrchardMemo(std::vector<uint8_t>(kOrchardMemoSize, 2)).value());
+  }
+
+  {
+    OrchardMemo memo;
+    memo.fill(1);
+    memo.back() = 0;
+    EXPECT_EQ(memo,
+              *ToOrchardMemo(std::vector<uint8_t>(kOrchardMemoSize - 1, 1)));
+  }
+  EXPECT_FALSE(ToOrchardMemo(std::vector<uint8_t>(kOrchardMemoSize + 1, 1)));
+}
+
 }  // namespace brave_wallet

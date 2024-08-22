@@ -481,7 +481,7 @@ void ZCashRpc::GetTransaction(const std::string& chain_id,
       url_loader_factory_.get(),
       base::BindOnce(&ZCashRpc::OnGetTransactionResponse,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback), it),
-      kMaxBodySize);
+      200000 /* custom amount since transaction may contain orchard part */);
 }
 
 void ZCashRpc::GetCompactBlocks(const std::string& chain_id,

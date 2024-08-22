@@ -777,6 +777,7 @@ export const transactionEndpoints = ({
 
           const zecTxData: BraveWallet.ZecTxData = {
             to: payload.to,
+            memo: undefined,
             amount: BigInt(payload.value),
             fee: BigInt(0),
             inputs: [],

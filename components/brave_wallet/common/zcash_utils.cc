@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/containers/span.h"
+#include "base/debug/stack_trace.h"
 #include "base/numerics/byte_conversions.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
@@ -18,6 +19,7 @@
 #include "brave/components/brave_wallet/common/f4_jumble.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/rust/lib.rs.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 #include "brave/third_party/bitcoin-core/src/src/bech32.h"
@@ -116,6 +118,42 @@ DecodedZCashAddress& DecodedZCashAddress::operator=(
 DecodedZCashAddress::DecodedZCashAddress(DecodedZCashAddress&& other) = default;
 DecodedZCashAddress& DecodedZCashAddress::operator=(
     DecodedZCashAddress&& other) = default;
+
+base::Value::Dict OrchardOutput::ToValue() const {
+  base::Value::Dict dict;
+
+  dict.Set("address", base::HexEncode(addr.data(), addr.size()));
+  dict.Set("amount", base::NumberToString(value));
+  if (memo) {
+    dict.Set("memo", base::HexEncode(memo.value()));
+  }
+
+  return dict;
+}
+
+// static
+std::optional<OrchardOutput> OrchardOutput::FromValue(
+    const base::Value::Dict& value) {
+  OrchardOutput result;
+  if (!ReadHexByteArrayTo<kOrchardRawBytesSize>(value, "address",
+                                                result.addr)) {
+    return std::nullopt;
+  }
+
+  if (!ReadUint32StringTo(value, "amount", result.value)) {
+    return std::nullopt;
+  }
+
+  if (value.contains("memo")) {
+    auto memo = OrchardMemo();
+    if (!ReadHexByteArrayTo<kOrchardMemoSize>(value, "memo", memo)) {
+      return std::nullopt;
+    }
+    result.memo = memo;
+  }
+
+  return result;
+}
 
 bool OutputZCashAddressSupported(const std::string& address, bool is_testnet) {
   auto decoded_address = DecodeZCashAddress(address);
@@ -368,6 +406,31 @@ std::optional<std::string> GetOrchardUnifiedAddress(
           ZCashAddrType::kOrchard,
           std::vector<uint8_t>(orchard_part.begin(), orchard_part.end()))},
       testnet);
+}
+
+std::optional<OrchardMemo> ToOrchardMemo(
+    std::optional<std::vector<uint8_t>> input) {
+  if (!input) {
+    return std::nullopt;
+  }
+
+  if (input->size() > kOrchardMemoSize) {
+    return std::nullopt;
+  }
+
+  std::array<uint8_t, kOrchardMemoSize> output;
+  output.fill(0);
+  base::ranges::copy(*input, output.begin());
+  return output;
+}
+
+std::optional<std::vector<uint8_t>> OrchardMemoToVec(
+    std::optional<OrchardMemo> memo) {
+  if (!memo) {
+    return std::nullopt;
+  }
+
+  return std::vector<uint8_t>{memo->begin(), memo->end()};
 }
 
 }  // namespace brave_wallet

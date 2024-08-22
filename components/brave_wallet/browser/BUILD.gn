@@ -238,6 +238,10 @@ static_library("browser") {
     "zcash/zcash_serializer.h",
     "zcash/zcash_transaction.cc",
     "zcash/zcash_transaction.h",
+    "zcash/zcash_transaction_complete_manager.cc",
+    "zcash/zcash_transaction_complete_manager.h",
+    "zcash/zcash_transaction_utils.cc",
+    "zcash/zcash_transaction_utils.h",
     "zcash/zcash_tx_manager.cc",
     "zcash/zcash_tx_manager.h",
     "zcash/zcash_tx_meta.cc",
@@ -304,8 +308,8 @@ static_library("browser") {
 
   if (enable_orchard) {
     sources += [
-      "zcash/zcash_create_shield_all_transaction_task.cc",
-      "zcash/zcash_create_shield_all_transaction_task.h",
+      "zcash/zcash_create_shield_transaction_task.cc",
+      "zcash/zcash_create_shield_transaction_task.h",
       "zcash/zcash_orchard_storage.cc",
       "zcash/zcash_orchard_storage.h",
       "zcash/zcash_shield_sync_service.cc",
