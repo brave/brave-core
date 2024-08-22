@@ -1,46 +1,30 @@
 /**
- * Copyright (c) 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
+ * Copyright (c) 2019 The Brave Authors. All rights reserved. This Source Code Form is subject to
+ * the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with
+ * this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
-
 package org.chromium.chrome.browser.notifications;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 
-import org.jni_zero.CalledByNative;
+import androidx.annotation.VisibleForTesting;
 
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.ContextUtils;
+import org.chromium.chrome.browser.notifications.NotificationPlatformBridge.NotificationIdentifyingAttributes;
 
-public class BraveNotificationPlatformBridge extends NotificationPlatformBridge {
+public class BraveNotificationPlatformBridge {
     private static final int[] EMPTY_VIBRATION_PATTERN = new int[0];
 
-    private @NotificationType int mNotificationType;
-
-    @CalledByNative
-    private static BraveNotificationPlatformBridge create(long nativeNotificationPlatformBridge) {
-        if (sInstance != null) {
-            throw new IllegalStateException(
-                "There must only be a single NotificationPlatformBridge.");
-        }
-
-        sInstance = new BraveNotificationPlatformBridge(nativeNotificationPlatformBridge);
-        return (BraveNotificationPlatformBridge) sInstance;
-    }
-
-    private BraveNotificationPlatformBridge(long nativeNotificationPlatformBridge) {
-        super(nativeNotificationPlatformBridge);
-    }
-
-    static boolean dispatchNotificationEvent(Intent intent) {
+    public static boolean dispatchNotificationEvent(Intent intent) {
         if (NotificationPlatformBridge.dispatchNotificationEvent(intent)) {
             @NotificationType
-            int notificationType = intent.getIntExtra(
-                    NotificationConstants.EXTRA_NOTIFICATION_TYPE, NotificationType.WEB_PERSISTENT);
+            int notificationType =
+                    intent.getIntExtra(
+                            NotificationConstants.EXTRA_NOTIFICATION_TYPE,
+                            NotificationType.WEB_PERSISTENT);
             if (notificationType == NotificationType.BRAVE_ADS
                     && NotificationConstants.ACTION_CLICK_NOTIFICATION.equals(intent.getAction())) {
                 bringToForeground();
@@ -65,8 +49,7 @@ public class BraveNotificationPlatformBridge extends NotificationPlatformBridge 
         }
     }
 
-    @Override
-    protected NotificationBuilderBase prepareNotificationBuilder(
+    public static NotificationBuilderBase prepareNotificationBuilder(
             NotificationIdentifyingAttributes identifyingAttributes,
             boolean vibrateEnabled,
             String title,
@@ -79,14 +62,12 @@ public class BraveNotificationPlatformBridge extends NotificationPlatformBridge 
             boolean renotify,
             boolean silent,
             ActionInfo[] actions) {
-        mNotificationType = identifyingAttributes.notificationType;
-
-        if (mNotificationType == NotificationType.BRAVE_ADS) {
+        if (identifyingAttributes.notificationType == NotificationType.BRAVE_ADS) {
             vibrationPattern = EMPTY_VIBRATION_PATTERN;
         }
 
         NotificationBuilderBase result =
-                super.prepareNotificationBuilder(
+                NotificationPlatformBridge.prepareNotificationBuilder(
                         identifyingAttributes,
                         vibrateEnabled,
                         title,
@@ -104,9 +85,15 @@ public class BraveNotificationPlatformBridge extends NotificationPlatformBridge 
                 : "Bytecode changes for BraveNotificationBuilder were not applied!";
         if (result instanceof BraveNotificationBuilder) {
             ((BraveNotificationBuilder) result)
-                    .setIsBraveNotification(mNotificationType == NotificationType.BRAVE_ADS);
+                    .setIsBraveNotification(
+                            identifyingAttributes.notificationType == NotificationType.BRAVE_ADS);
         }
 
         return result;
+    }
+
+    @VisibleForTesting
+    public static Class<ActionInfo[]> getActionInfoArrayClass() {
+        return ActionInfo[].class;
     }
 }

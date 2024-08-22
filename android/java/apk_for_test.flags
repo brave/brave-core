@@ -885,6 +885,11 @@
     *** getToolbarSidePaddingForNtp(...);
 }
 
+-keep class org.chromium.chrome.browser.notifications.NotificationPlatformBridge {
+    *** dispatchNotificationEvent(...);
+    *** prepareNotificationBuilder(...);
+}
+
 -keep class org.chromium.chrome.browser.tasks.tab_management.BraveTabSwitcherPaneBase
 
 -keep class org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPane
