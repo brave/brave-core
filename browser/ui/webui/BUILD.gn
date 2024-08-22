@@ -16,6 +16,7 @@ source_set("browser_tests") {
 
   deps = [
     "//base",
+    "//chrome/browser/search_engines",
     "//chrome/browser/ui",
     "//chrome/test",
     "//chrome/test:test_support",
