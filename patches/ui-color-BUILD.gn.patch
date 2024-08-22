@@ -1,5 +1,5 @@
 diff --git a/ui/color/BUILD.gn b/ui/color/BUILD.gn
-index 01a987da95c4a..0fb8054d8d54a 100644
+index 01a987da95c4aa108fb947de901235bcef7c2239..0fb8054d8d54af64d67e4e1520015e3f3978fd68 100644
 --- a/ui/color/BUILD.gn
 +++ b/ui/color/BUILD.gn
 @@ -85,6 +85,7 @@ component("color") {
