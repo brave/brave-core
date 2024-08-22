@@ -314,6 +314,15 @@ extension BraveWallet.TransactionInfo {
       return .eth
     }
   }
+
+  var solEstimatedTxFeeFromTxData: UInt64? {
+    guard let fee = txDataUnion.solanaTxData?.feeEstimation
+    else { return nil }
+    let priorityFee =
+      (UInt64(fee.computeUnits) * fee.feePerComputeUnit)
+      / BraveWallet.MicroLamportsPerLamport
+    return fee.baseFee + priorityFee
+  }
 }
 
 extension BraveWallet.NetworkInfo {

@@ -662,7 +662,8 @@ enum TransactionParser {
               from: transaction,
               network: txNetwork,
               assetRatios: assetRatios,
-              solEstimatedTxFee: solEstimatedTxFee,
+              solEstimatedTxFee: transaction.txStatus == .unapproved
+                ? solEstimatedTxFee : transaction.solEstimatedTxFeeFromTxData,
               currencyFormatter: currencyFormatter
             )
           )
@@ -743,7 +744,8 @@ enum TransactionParser {
               from: transaction,
               network: txNetwork,
               assetRatios: assetRatios,
-              solEstimatedTxFee: solEstimatedTxFee,
+              solEstimatedTxFee: transaction.txStatus == .unapproved
+                ? solEstimatedTxFee : transaction.solEstimatedTxFeeFromTxData,
               currencyFormatter: currencyFormatter
             )
           )
@@ -851,7 +853,8 @@ enum TransactionParser {
           from: transaction,
           network: txNetwork,
           assetRatios: assetRatios,
-          solEstimatedTxFee: solEstimatedTxFee,
+          solEstimatedTxFee: transaction.txStatus == .unapproved
+            ? solEstimatedTxFee : transaction.solEstimatedTxFeeFromTxData,
           currencyFormatter: currencyFormatter
         ),
         instructions: parsedInstructions
