@@ -22,10 +22,11 @@ BrowserLifetimeHandler::~BrowserLifetimeHandler() {}
 
 void BrowserLifetimeHandler::HandleRelaunch(const base::Value::List& args) {
 #if BUILDFLAG(ENABLE_SPARKLE) && !BUILDFLAG(BRAVE_ENABLE_UPDATER)
-  brave_relaunch_handler::RelaunchOnMac();
-#else
-  BrowserLifetimeHandler_ChromiumImpl::HandleRelaunch(args);
+  if (brave_relaunch_handler::RelaunchOnMac()) {
+    return;
+  }
 #endif
+  BrowserLifetimeHandler_ChromiumImpl::HandleRelaunch(args);
 }
 
 }  // namespace settings
