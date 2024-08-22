@@ -154,7 +154,8 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"toolsMenuButtonLabel", IDS_AI_CHAT_LEO_TOOLS_BUTTON_LABEL},
       {"useMicButtonLabel", IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL},
       {"menuTitleCustomModels", IDS_AI_CHAT_MENU_TITLE_CUSTOM_MODELS},
-      {"startConversationLabel", IDS_AI_CHAT_START_CONVERSATION_LABEL}};
+      {"startConversationLabel", IDS_AI_CHAT_START_CONVERSATION_LABEL},
+      {"conversationListUntitled", IDS_AI_CHAT_CONVERSATION_LIST_UNTITLED}};
 
   return kLocalizedStrings;
 }

@@ -7,21 +7,14 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import styles from './style.module.scss'
-import getPageHandlerInstance from '../../api/page_handler'
 import Main from '../main'
 import SidebarHeader from '../header'
 import SidebarNav from '../sidebar_nav'
-import ConversationSkeleton from '../conversation_skeleton'
 import FeatureMenu from '../feature_button_menu'
-
-function AsyncMain() {
-  const [s] = React.useState(false)
-  // eslint-disable-next-line @typescript-eslint/no-throw-literal
-  if (!s) throw new Promise(() => {})
-  return <Main />
-}
+import { useAIChat } from '../../state/ai_chat_context'
 
 export default function FullScreen() {
+  const aiChatContext = useAIChat()
   const asideAnimationRef = React.useRef<Animation | null>()
   const controllerRef = React.useRef(new AbortController())
   const [isOpen, setIsOpen] = React.useState(false)
@@ -67,7 +60,7 @@ export default function FullScreen() {
   }
 
   const handleEraseClick = () => {
-    getPageHandlerInstance().pageHandler.clearConversationHistory()
+    aiChatContext.onNewConversation()
   }
 
   return (
@@ -90,7 +83,9 @@ export default function FullScreen() {
               >
                 <Icon name='erase' />
               </Button>
-              <FeatureMenu />
+              <FeatureMenu  setIsConversationListOpen={function (value: boolean): unknown {
+                throw new Error('Function not implemented.')
+              } } />
             </>
           )}
         </div>
@@ -101,15 +96,13 @@ export default function FullScreen() {
           {shouldRender && (
             <>
               <SidebarHeader />
-              <SidebarNav />
+              <SidebarNav setIsConversationListOpen={setIsOpen} />
             </>
           )}
         </aside>
       </div>
       <div className={styles.content}>
-        <React.Suspense fallback={<ConversationSkeleton />}>
-          <AsyncMain />
-        </React.Suspense>
+        <Main />
       </div>
     </div>
   )
