@@ -157,6 +157,7 @@ base::Value::List ConversationEventsToList(
 GURL GetEndpointUrl(bool premium, const std::string& path) {
   CHECK(!path.starts_with("/"));
 
+#if !defined(OFFICIAL_BUILD)
   // If a runtime AI Chat URL is provided, use it.
   std::string ai_chat_url =
       base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
@@ -166,6 +167,7 @@ GURL GetEndpointUrl(bool premium, const std::string& path) {
     CHECK(url.is_valid()) << "Invalid API Url: " << url.spec();
     return url;
   }
+#endif
 
   auto* prefix = premium ? "ai-chat-premium.bsg" : "ai-chat.bsg";
   auto hostname = brave_domains::GetServicesDomain(
