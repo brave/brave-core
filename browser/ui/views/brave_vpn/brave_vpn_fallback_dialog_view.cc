@@ -21,6 +21,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/link.h"
 #include "ui/views/controls/styled_label.h"
@@ -63,12 +64,13 @@ BraveVpnFallbackDialogView::BraveVpnFallbackDialogView(Browser* browser)
       views::BoxLayout::Orientation::kVertical,
       gfx::Insets::TLBR(kTopPadding, kPadding, kBottomPadding, kPadding),
       kChildSpacing));
-  SetButtons(ui::DIALOG_BUTTON_OK | ui::DIALOG_BUTTON_CANCEL);
+  SetButtons(static_cast<int>(ui::mojom::DialogButton::kOk) |
+             static_cast<int>(ui::mojom::DialogButton::kCancel));
   SetButtonLabel(
-      ui::DIALOG_BUTTON_OK,
+      ui::mojom::DialogButton::kOk,
       l10n_util::GetStringUTF16(IDS_BRAVE_VPN_FALLBACK_DIALOG_OK_TEXT));
   SetButtonLabel(
-      ui::DIALOG_BUTTON_CANCEL,
+      ui::mojom::DialogButton::kCancel,
       l10n_util::GetStringUTF16(IDS_BRAVE_VPN_FALLBACK_DIALOG_CANCEL_TEXT));
   SetAcceptCallback(base::BindOnce(&BraveVpnFallbackDialogView::OnAccept,
                                    base::Unretained(this)));
