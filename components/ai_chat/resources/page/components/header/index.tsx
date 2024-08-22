@@ -7,17 +7,12 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import getAPI from '../../api'
-import FeatureButtonMenu from '../feature_button_menu'
+import FeatureButtonMenu, { Props as FeatureButtonMenuProps } from '../feature_button_menu'
 import styles from './style.module.scss'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 
-interface Props {
-  isConversationListOpen: boolean
-  setIsConversationListOpen: (value: boolean) => unknown
-}
-
-interface PageTitleHeaderProps extends Props {
+interface PageTitleHeaderProps extends FeatureButtonMenuProps {
   title?: string
 }
 
@@ -25,7 +20,7 @@ export function PageTitleHeader(props: PageTitleHeaderProps) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
-  const shouldDisplayEraseAction =
+  const shouldDisplayEraseAction = !aiChatContext.isStandalone &&
     conversationContext.conversationHistory.length >= 1
 
   const handleEraseClick = () => {
@@ -34,7 +29,7 @@ export function PageTitleHeader(props: PageTitleHeaderProps) {
 
   return (
     <div className={styles.header}>
-      {props.title ? (
+      {(props.title && !aiChatContext.isStandalone) ? (
         <div className={styles.pageTitle}>
           <Button
             kind='plain-faint'
@@ -74,7 +69,7 @@ export function PageTitleHeader(props: PageTitleHeaderProps) {
                 title='Erase conversation history'
                 onClick={handleEraseClick}
               >
-                <Icon name='erase' />
+                <Icon name={aiChatContext.isHistoryEnabled ? 'plus-add' : 'erase'} />
               </Button>
             )}
             <FeatureButtonMenu {...props} />
@@ -95,7 +90,7 @@ export function PageTitleHeader(props: PageTitleHeaderProps) {
   )
 }
 
-export default function SidebarHeader(props: Props) {
+export default function SidebarHeader(props: FeatureButtonMenuProps) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
@@ -129,7 +124,7 @@ export default function SidebarHeader(props: Props) {
                 title='Erase conversation history'
                 onClick={handleEraseClick}
               >
-                <Icon name='erase' />
+                <Icon name='plus-add' />
               </Button>
             )}
             <FeatureButtonMenu {...props} />
