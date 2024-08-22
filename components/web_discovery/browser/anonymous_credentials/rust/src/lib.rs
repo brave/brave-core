@@ -1,13 +1,56 @@
-/* Copyright (c) 2024 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-use anonymous_credentials::{
-    CredentialBIG as InternalCredentialBIG, CredentialManager as InternalCredentialManager,
-    GroupPublicKey as InternalGroupPublicKey, JoinResponse as InternalJoinResponse, Result,
-    UserCredentials as InternalUserCredentials,
+//! Partial implementation of Direct Anonymous Attestation (DAA) for the Web Discovery Project.
+//! Only signer functions are available. Performs the same elliptic curve operations as the [original C library](https://github.com/whotracksme/anonymous-credentials).
+//!
+//! bn254 is the only supported curve for this library.
+
+mod data;
+mod join;
+mod manager;
+mod sign;
+mod util;
+
+use crate::data::{
+    BIG_SIZE, ECP2_COMPAT_SIZE, ECP_PROOF_SIZE, ECP_SIZE, GROUP_PUBLIC_KEY_SIZE,
+    JOIN_RESPONSE_SIZE, USER_CREDENTIALS_SIZE,
 };
+use thiserror::Error;
+
+use crate::data::{
+    CredentialBIG as InternalCredentialBIG, GroupPublicKey as InternalGroupPublicKey,
+    JoinResponse as InternalJoinResponse, UserCredentials as InternalUserCredentials,
+};
+use crate::manager::CredentialManager as InternalCredentialManager;
+
+#[derive(Error, Debug)]
+pub enum CredentialError {
+    #[error("ECP should be {0} bytes", ECP_SIZE)]
+    BadECP,
+    #[error("ECP2 should be {0} bytes", ECP2_COMPAT_SIZE)]
+    BadECP2,
+    #[error("BIG should be {0} bytes", BIG_SIZE)]
+    BadBIG,
+    #[error("ECP proof should be {0} bytes", ECP_PROOF_SIZE)]
+    BadECPProof,
+    #[error("User credentials should be {0} bytes", USER_CREDENTIALS_SIZE)]
+    BadUserCredentials,
+    #[error("Join response should be {0} bytes", JOIN_RESPONSE_SIZE)]
+    BadJoinResponse,
+    #[error("Group public key should be {0} bytes", GROUP_PUBLIC_KEY_SIZE)]
+    GroupPublicKeyLength,
+    #[error("Join response validation failed")]
+    JoinResponseValidation,
+    #[error("Private key and/or credentials not set")]
+    CredentialsNotSet,
+    #[error("Group public key verification failed")]
+    BadGroupPublicKey,
+}
+
+pub type Result<T> = std::result::Result<T, CredentialError>;
 
 #[cxx::bridge(namespace = "anonymous_credentials")]
 mod ffi {

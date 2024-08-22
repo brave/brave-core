@@ -5,11 +5,11 @@ edition = "2021"
 authors = ["Darnell Andries <dandries@brave.com>"]
 description = "Implementation of Direct Anonymous Attestation for the Web Discovery Project"
 license = "MPL-2.0"
-repository = "https://github.com/brave-experiments/anonymous-credentials-rs"
 keywords = ["daa", "credentials", "bn254"]
 categories = ["cryptography"]
 
 [dependencies]
+cxx = "1"
 lazy_static = "1.4"
 rand = "0.8"
 brave-miracl = { version = "0.1", features = ["std"] }
@@ -17,3 +17,7 @@ thiserror = "1.0"
 
 [dev-dependencies]
 hex = "0.4"
+
+[lib]
+name = "anonymous_credentials"
+crate-type = ["rlib"]

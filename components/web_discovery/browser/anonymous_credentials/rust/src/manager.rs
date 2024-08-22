@@ -3,49 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-//! Partial implementation of Direct Anonymous Attestation (DAA) for the Web Discovery Project.
-//! Only signer functions are available. Performs the same elliptic curve operations as the [original C library](https://github.com/whotracksme/anonymous-credentials).
-//!
-//! bn254 is the only supported curve for this library.
-
-mod data;
-mod join;
-mod sign;
-mod util;
-
 use brave_miracl::rand::RAND;
 use rand::{rngs::OsRng, RngCore};
-use thiserror::Error;
 
-pub use self::data::*;
-use self::join::{finish_join, start_join};
-use self::sign::sign;
-
-#[derive(Error, Debug)]
-pub enum CredentialError {
-    #[error("ECP should be {0} bytes", ECP_SIZE)]
-    BadECP,
-    #[error("ECP2 should be {0} bytes", ECP2_COMPAT_SIZE)]
-    BadECP2,
-    #[error("BIG should be {0} bytes", BIG_SIZE)]
-    BadBIG,
-    #[error("ECP proof should be {0} bytes", ECP_PROOF_SIZE)]
-    BadECPProof,
-    #[error("User credentials should be {0} bytes", USER_CREDENTIALS_SIZE)]
-    BadUserCredentials,
-    #[error("Join response should be {0} bytes", JOIN_RESPONSE_SIZE)]
-    BadJoinResponse,
-    #[error("Group public key should be {0} bytes", GROUP_PUBLIC_KEY_SIZE)]
-    GroupPublicKeyLength,
-    #[error("Join response validation failed")]
-    JoinResponseValidation,
-    #[error("Private key and/or credentials not set")]
-    CredentialsNotSet,
-    #[error("Group public key verification failed")]
-    BadGroupPublicKey,
-}
-
-pub type Result<T> = std::result::Result<T, CredentialError>;
+use crate::data::*;
+use crate::join::{finish_join, start_join};
+use crate::sign::sign;
+use crate::{CredentialError, Result};
 
 /// Creates and manages Direct Anonymous Attestation credentials
 /// using the bn254 curve.

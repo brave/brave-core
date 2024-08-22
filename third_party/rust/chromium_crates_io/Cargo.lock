@@ -105,17 +105,10 @@ name = "anonymous-credentials"
 version = "0.1.4"
 dependencies = [
  "brave-miracl",
+ "cxx",
  "lazy_static",
  "rand 0.8.5",
  "thiserror",
-]
-
-[[package]]
-name = "anonymous-credentials-cxx"
-version = "0.1.0"
-dependencies = [
- "anonymous-credentials",
- "cxx",
 ]
 
 [[package]]
@@ -396,7 +389,7 @@ name = "chromium"
 version = "0.1.0"
 dependencies = [
  "adblock-cxx",
- "anonymous-credentials-cxx",
+ "anonymous-credentials",
  "brave-news-cxx",
  "brave_wallet",
  "challenge-bypass-ristretto-cxx",
