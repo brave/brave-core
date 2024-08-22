@@ -1,0 +1,17 @@
+diff --git a/device/fido/features.cc b/device/fido/features.cc
+index 895f5d48ba80396640e0b79ebb479d683f1684ad..1efc4ad09f01027b313b0c6d13b518d854de73ef 100644
+--- a/device/fido/features.cc
++++ b/device/fido/features.cc
+@@ -151,10 +151,10 @@ BASE_FEATURE(kWebAuthnCredProtectWin10BugWorkaround,
+              "WebAuthenticationCredProtectWin10BugWorkaround",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+-// Default enabled in M126. Remove in or after M129.
++// Default disabled as it was found to be buggy in M129.
+ BASE_FEATURE(kWebAuthnICloudRecoveryKey,
+              "WebAuthenticationICloudRecoveryKey",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // Not yet default enabled and not intended to be. Remove after M128 is Stable.
+ BASE_FEATURE(kWebAuthnCacheSecurityDomain,
