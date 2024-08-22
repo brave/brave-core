@@ -12,6 +12,7 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/resources/grit/brave_news_internals_generated_map.h"
+#include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 
@@ -29,6 +30,18 @@ WEB_UI_CONTROLLER_TYPE_IMPL(BraveNewsInternalsUI)
 
 void BraveNewsInternalsUI::BindInterface(
     mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* controller =
+      brave_news::BraveNewsControllerFactory::GetForBrowserContext(profile);
+  if (!controller) {
+    return;
+  }
+
+  controller->Bind(std::move(receiver));
+}
+
+void BraveNewsInternalsUI::BindInterface(
+    mojo::PendingReceiver<brave_news::mojom::BraveNewsInternals> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
   auto* controller =
       brave_news::BraveNewsControllerFactory::GetForBrowserContext(profile);

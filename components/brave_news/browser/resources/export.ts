@@ -1,4 +1,6 @@
-import getBraveNewsController, { Channel, Publisher, PublisherType, UserEnabled } from "./shared/api";
+import getBraveNewsController, { BraveNewsInternals, Channel, Publisher, PublisherType, UserEnabled } from "./shared/api";
+
+const internalsApi = BraveNewsInternals.getRemote()
 
 export const getExportData = async () => {
     const api = getBraveNewsController()
@@ -11,7 +13,7 @@ export const getExportData = async () => {
         .map(c => c.channelName)
 
     const { suggestedPublisherIds } = await api.getSuggestedPublisherIds()
-    const history: string[] = []
+    const { urls: history } = await internalsApi.getVisitedSites()
 
     return `# locale
 ${locale}

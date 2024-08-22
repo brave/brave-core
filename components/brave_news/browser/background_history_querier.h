@@ -9,12 +9,15 @@
 #include "base/functional/callback_forward.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "components/history/core/browser/history_service.h"
+#include "components/history/core/browser/history_types.h"
 
 namespace brave_news {
 
 using QueryHistoryCallback = history::HistoryService::QueryHistoryCallback;
 using BackgroundHistoryQuerier =
     base::RepeatingCallback<void(QueryHistoryCallback)>;
+
+history::QueryOptions GetQueryOptions();
 
 // Creates a function for querying history from a non-main thread. This lets
 // us lazily pull a recent snapshot of history into our worker sequence.
