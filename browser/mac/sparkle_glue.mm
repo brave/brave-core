@@ -58,7 +58,7 @@ std::string GetDescriptionFromAppcastItem(id item) {
   SUUpdater* __strong _su_updater;
 
   BOOL _registered;
-  BOOL _updateSuccessfullyInstalled;
+  BOOL _updateWillBeInstalledOnQuit;
 
   NSString* __strong _appPath;
   NSString* __strong _new_version;
@@ -168,7 +168,7 @@ std::string GetDescriptionFromAppcastItem(id item) {
   // We don't know currently installed version from property list because
   // sparkle updates it when relaunching.
   // So, caching version when new candidate is found and use it.
-  if (_updateSuccessfullyInstalled) {
+  if (_updateWillBeInstalledOnQuit) {
     return _new_version;
   }
 
@@ -192,9 +192,13 @@ std::string GetDescriptionFromAppcastItem(id item) {
   [_su_updater checkForUpdatesInBackgroundWithoutUi];
 }
 
-- (void)relaunch {
-  [_su_updater.driver installWithToolAndRelaunch:YES
-                         displayingUserInterface:NO];
+- (BOOL)relaunch {
+  if (_updateWillBeInstalledOnQuit && _su_updater.driver) {
+    [_su_updater.driver installWithToolAndRelaunch:YES
+                           displayingUserInterface:NO];
+    return true;
+  }
+  return false;
 }
 
 - (void)checkForUpdatesInBackground {
@@ -292,9 +296,9 @@ std::string GetDescriptionFromAppcastItem(id item) {
   DCHECK(NSThread.isMainThread);
 
   AutoupdateStatus status;
-  if (_updateSuccessfullyInstalled) {
-    // If an update was successfully installed and this object saw it happen,
-    // then don't even bother comparing versions.
+  if (_updateWillBeInstalledOnQuit) {
+    // If this object was notified that an update will be installed, then don't
+    // even bother to compare versions.
     status = kAutoupdateInstalled;
   } else {
     NSString* currentVersion = base::SysUTF8ToNSString(chrome::kChromeVersion);
@@ -308,7 +312,7 @@ std::string GetDescriptionFromAppcastItem(id item) {
     } else {
       // If the version on disk doesn't match what's currently running, an
       // update must have been applied in the background, without this app's
-      // direct participation.  Leave _updateSuccessfullyInstalled alone
+      // direct participation.  Leave _updateWillBeInstalledOnQuit alone
       // because there's no direct knowledge of what actually happened.
       status = kAutoupdateInstalled;
     }
@@ -386,7 +390,7 @@ std::string GetDescriptionFromAppcastItem(id item) {
   VLOG(0) << "brave update: will install update on quit with " +
              GetDescriptionFromAppcastItem(item);
 
-  _updateSuccessfullyInstalled = YES;
+  _updateWillBeInstalledOnQuit = YES;
 
   [self determineUpdateStatusAsync];
 }

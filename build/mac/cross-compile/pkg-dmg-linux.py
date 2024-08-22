@@ -29,7 +29,7 @@ def main():
     assert args.source == '/var/empty', 'Only --source=/var/empty is supported.'
     to_copy = list(map(parse_copy_arg, args.copy))
     required_size = sum(get_size(tpl[0]) for tpl in to_copy)
-    safe_size_mb = required_size // 2**20 + 20
+    safe_size_mb = required_size // 2**20 + 25
     with TemporaryDirectory(dir=args.tempdir) as tmp:
         image = join(tmp, 'image.hfs')
         run_with_output([
