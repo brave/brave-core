@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/bookmarks/exporter/brave_bookmarks_exporter.h"
-#include "brave/ios/browser/api/bookmarks/brave_bookmarks_api.h"
 
 #include <functional>
 #include <vector>
@@ -22,6 +21,7 @@
 #include "base/uuid.h"
 #include "base/values.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "brave/ios/browser/api/bookmarks/brave_bookmarks_api.h"
 #include "brave/ios/browser/api/bookmarks/exporter/bookmark_html_writer.h"
 #include "brave/ios/browser/api/bookmarks/exporter/bookmarks_encoder.h"
 #include "components/bookmarks/browser/bookmark_node.h"
@@ -29,7 +29,7 @@
 #include "components/strings/grit/components_strings.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
+#include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
 #import "net/base/apple/url_conversions.h"

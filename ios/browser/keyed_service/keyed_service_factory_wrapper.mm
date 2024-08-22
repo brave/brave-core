@@ -8,7 +8,7 @@
 #include "base/notreached.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
+#include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "ios/web/public/thread/web_thread.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)

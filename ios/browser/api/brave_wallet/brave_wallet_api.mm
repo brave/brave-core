@@ -20,7 +20,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "ios/chrome/browser/content_settings/model/host_content_settings_map_factory.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
+#include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "ios/web/public/thread/web_thread.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "ui/base/resource/resource_bundle.h"

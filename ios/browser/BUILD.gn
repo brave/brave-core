@@ -68,6 +68,7 @@ source_set("browser") {
     "//ios/chrome/browser/shared/model/browser_state",
     "//ios/chrome/browser/shared/model/paths",
     "//ios/chrome/browser/shared/model/prefs",
+    "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/browser/shared/model/url:constants",
     "//ios/chrome/browser/web/model:web_internal",
     "//ios/components/webui:url_constants",
