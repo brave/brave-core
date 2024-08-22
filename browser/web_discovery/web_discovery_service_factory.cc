@@ -17,17 +17,6 @@
 
 namespace web_discovery {
 
-namespace {
-
-ProfileSelections GetProfileSelections() {
-  if (!base::FeatureList::IsEnabled(features::kBraveWebDiscoveryNative)) {
-    return ProfileSelections::BuildNoProfilesSelected();
-  }
-  return ProfileSelections::BuildForRegularProfile();
-}
-
-}  // namespace
-
 WebDiscoveryService* WebDiscoveryServiceFactory::GetForBrowserContext(
     content::BrowserContext* context) {
   return static_cast<WebDiscoveryService*>(
@@ -41,9 +30,16 @@ WebDiscoveryServiceFactory* WebDiscoveryServiceFactory::GetInstance() {
 
 WebDiscoveryServiceFactory::WebDiscoveryServiceFactory()
     : ProfileKeyedServiceFactory("WebDiscoveryService",
-                                 GetProfileSelections()) {}
+                                 CreateProfileSelections()) {}
 
 WebDiscoveryServiceFactory::~WebDiscoveryServiceFactory() = default;
+
+ProfileSelections WebDiscoveryServiceFactory::CreateProfileSelections() {
+  if (!base::FeatureList::IsEnabled(features::kBraveWebDiscoveryNative)) {
+    return ProfileSelections::BuildNoProfilesSelected();
+  }
+  return ProfileSelections::BuildForRegularProfile();
+}
 
 KeyedService* WebDiscoveryServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

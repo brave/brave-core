@@ -29,6 +29,8 @@ class WebDiscoveryServiceFactory : public ProfileKeyedServiceFactory {
   WebDiscoveryServiceFactory& operator=(const WebDiscoveryServiceFactory&) =
       delete;
 
+  static ProfileSelections CreateProfileSelections();
+
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
   bool ServiceIsCreatedWithBrowserContext() const override;

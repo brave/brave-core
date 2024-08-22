@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/web_discovery/browser/anonymous_credentials/rs/cxx/src/lib.rs.h"
+#include "brave/components/web_discovery/browser/anonymous_credentials/rust/src/lib.rs.h"
 #include "brave/components/web_discovery/browser/rsa.h"
 #include "crypto/rsa_private_key.h"
 
@@ -37,14 +37,13 @@ class BackgroundCredentialHelper {
   void SetRSAKey(std::unique_ptr<crypto::RSAPrivateKey> rsa_private_key);
   std::optional<GenerateJoinRequestResult> GenerateJoinRequest(
       std::string pre_challenge);
-  std::optional<std::string> FinishJoin(
-      std::string date,
-      std::vector<const uint8_t> group_pub_key,
-      std::vector<const uint8_t> gsk,
-      std::vector<const uint8_t> join_resp_bytes);
-  std::optional<std::vector<const uint8_t>> PerformSign(
-      std::vector<const uint8_t> msg,
-      std::vector<const uint8_t> basename,
+  std::optional<std::string> FinishJoin(std::string date,
+                                        std::vector<uint8_t> group_pub_key,
+                                        std::vector<uint8_t> gsk,
+                                        std::vector<uint8_t> join_resp_bytes);
+  std::optional<std::vector<uint8_t>> PerformSign(
+      std::vector<uint8_t> msg,
+      std::vector<uint8_t> basename,
       std::optional<std::vector<uint8_t>> gsk_bytes,
       std::optional<std::vector<uint8_t>> credential_bytes);
 

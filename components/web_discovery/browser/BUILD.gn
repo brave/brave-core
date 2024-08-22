@@ -28,7 +28,7 @@ component("browser") {
     "web_discovery_service.h",
   ]
   deps = [
-    "anonymous_credentials/rs/cxx:rust_lib",
+    "anonymous_credentials/rust:rust_lib",
     "//base",
     "//brave/brave_domains",
     "//brave/components/constants",

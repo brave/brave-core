@@ -162,12 +162,12 @@ TEST_F(WebDiscoveryCredentialManagerTest, LoadKeysFromStorage) {
 }
 
 TEST_F(WebDiscoveryCredentialManagerTest, Sign) {
-  std::vector<const uint8_t> message({0, 1, 2, 3, 4});
-  std::vector<const uint8_t> basename({5, 6, 7, 8, 9});
+  std::vector<uint8_t> message({0, 1, 2, 3, 4});
+  std::vector<uint8_t> basename({5, 6, 7, 8, 9});
   credential_manager_->Sign(
       message, basename,
       base::BindLambdaForTesting(
-          [&](const std::optional<std::vector<const uint8_t>> signature) {
+          [&](const std::optional<std::vector<uint8_t>> signature) {
             EXPECT_FALSE(signature);
           }));
   task_environment_.RunUntilIdle();
@@ -175,12 +175,12 @@ TEST_F(WebDiscoveryCredentialManagerTest, Sign) {
   credential_manager_->JoinGroups();
   task_environment_.RunUntilIdle();
 
-  base::flat_set<std::vector<const uint8_t>> signatures;
+  base::flat_set<std::vector<uint8_t>> signatures;
   for (size_t i = 0; i < 3; i++) {
     credential_manager_->Sign(
         message, basename,
         base::BindLambdaForTesting(
-            [&](const std::optional<std::vector<const uint8_t>> signature) {
+            [&](const std::optional<std::vector<uint8_t>> signature) {
               ASSERT_TRUE(signature);
               EXPECT_FALSE(signature->empty());
               EXPECT_FALSE(signatures.contains(*signature));
@@ -191,7 +191,7 @@ TEST_F(WebDiscoveryCredentialManagerTest, Sign) {
   credential_manager_->Sign(
       message, basename,
       base::BindLambdaForTesting(
-          [&](const std::optional<std::vector<const uint8_t>> signature) {
+          [&](const std::optional<std::vector<uint8_t>> signature) {
             EXPECT_FALSE(signature);
           }));
   task_environment_.RunUntilIdle();
