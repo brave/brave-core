@@ -6,13 +6,12 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 
+import Button from '@brave/leo/react/button'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import styled from 'styled-components'
-import FeedPage from './FeedPage'
-import SignalsPage from './SignalsPage'
-import InspectContext from './context'
-import FeedNavigation from './FeedNavigation'
+import { downloadExport, getExportData } from './export'
 import Variables from './Variables'
+import usePromise from '$web-common/usePromise'
 
 setIconBasePath('//resources/brave-icons')
 
@@ -29,13 +28,15 @@ const Grid = styled(Variables)`
 `
 
 function App() {
+  const { result: exportData } = usePromise(getExportData, [])
   return <Grid data-theme="dark">
-    <SignalsPage />
-    <FeedPage />
-    <FeedNavigation />
+    <Button onClick={downloadExport}>
+      Export
+    </Button>
+    <pre>
+      {exportData ?? '...'}
+    </pre>
   </Grid>
 }
 
-render(<InspectContext>
-  <App />
-</InspectContext>, document.getElementById('root'))
+render(<App />, document.getElementById('root'))
