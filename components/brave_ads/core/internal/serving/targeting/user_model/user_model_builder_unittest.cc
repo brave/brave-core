@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/metrics/field_trial_params.h"
+#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/resources/language_components_test_constants.h"
@@ -52,12 +53,16 @@ TEST_F(BraveAdsUserModelBuilderTest, BuildUserModel) {
   targeting_helper_->Mock();
 
   // Act & Assert
-  EXPECT_EQ(test::TargetingHelper::Expectation(), BuildUserModel());
+  base::MockCallback<BuildUserModelCallback> callback;
+  EXPECT_CALL(callback, Run(test::TargetingHelper::Expectation()));
+  BuildUserModel(callback.Get());
 }
 
 TEST_F(BraveAdsUserModelBuilderTest, BuildUserModelIfNoTargeting) {
   // Act & Assert
-  EXPECT_EQ(UserModelInfo{}, BuildUserModel());
+  base::MockCallback<BuildUserModelCallback> callback;
+  EXPECT_CALL(callback, Run(UserModelInfo{}));
+  BuildUserModel(callback.Get());
 }
 
 }  // namespace brave_ads

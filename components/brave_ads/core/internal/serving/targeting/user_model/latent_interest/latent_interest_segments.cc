@@ -5,10 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/latent_interest/latent_interest_segments.h"
 
+#include <utility>
+
+#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+
 namespace brave_ads {
 
-SegmentList BuildLatentInterestSegments() {
-  return {};
+void BuildLatentInterestSegments(BuildSegmentsCallback callback) {
+  std::move(callback).Run(/*segments=*/{});
 }
 
 }  // namespace brave_ads

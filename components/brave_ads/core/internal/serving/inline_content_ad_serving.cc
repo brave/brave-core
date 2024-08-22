@@ -42,7 +42,7 @@ InlineContentAdServing::~InlineContentAdServing() {
 
 void InlineContentAdServing::MaybeServeAd(
     const std::string& dimensions,
-    MaybeServeInlineContentAdCallback callback) const {
+    MaybeServeInlineContentAdCallback callback) {
   const auto result = CanServeAd();
   if (!result.has_value()) {
     BLOG(1, result.error());
@@ -57,7 +57,7 @@ void InlineContentAdServing::MaybeServeAd(
 
   NotifyOpportunityAroseToServeInlineContentAd();
 
-  GetEligibleAds(tab->id, dimensions, std::move(callback));
+  GetUserModel(tab->id, dimensions, std::move(callback));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -81,14 +81,22 @@ base::expected<void, std::string> InlineContentAdServing::CanServeAd() const {
   return base::ok();
 }
 
+void InlineContentAdServing::GetUserModel(
+    const int32_t tab_id,
+    const std::string& dimensions,
+    MaybeServeInlineContentAdCallback callback) {
+  BuildUserModel(base::BindOnce(&InlineContentAdServing::GetEligibleAds,
+                                weak_factory_.GetWeakPtr(), tab_id, dimensions,
+                                std::move(callback)));
+}
+
 void InlineContentAdServing::GetEligibleAds(
     const int32_t tab_id,
     const std::string& dimensions,
-    MaybeServeInlineContentAdCallback callback) const {
-  const UserModelInfo user_model = BuildUserModel();
-
+    MaybeServeInlineContentAdCallback callback,
+    UserModelInfo user_model) const {
   eligible_ads_->GetForUserModel(
-      user_model, dimensions,
+      std::move(user_model), dimensions,
       base::BindOnce(&InlineContentAdServing::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), tab_id, dimensions,
                      std::move(callback)));

@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -41,12 +42,11 @@ TEST_F(BraveAdsIntentSegmentsTest, BuildIntentSegments) {
 
   targeting_helper_->MockIntent();
 
-  // Act
-  const SegmentList intent_segments = BuildIntentSegments();
-
-  // Assert
-  EXPECT_EQ(test::TargetingHelper::IntentExpectation().segments,
-            intent_segments);
+  // Act & Assert
+  base::MockCallback<BuildSegmentsCallback> callback;
+  EXPECT_CALL(callback,
+              Run(test::TargetingHelper::IntentExpectation().segments));
+  BuildIntentSegments(callback.Get());
 }
 
 TEST_F(BraveAdsIntentSegmentsTest, BuildIntentSegmentsIfNoTargeting) {
@@ -54,11 +54,10 @@ TEST_F(BraveAdsIntentSegmentsTest, BuildIntentSegmentsIfNoTargeting) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kPurchaseIntentFeature);
 
-  // Act
-  const SegmentList intent_segments = BuildIntentSegments();
-
-  // Assert
-  EXPECT_THAT(intent_segments, ::testing::IsEmpty());
+  // Act & Assert
+  base::MockCallback<BuildSegmentsCallback> callback;
+  EXPECT_CALL(callback, Run(/*segments=*/::testing::IsEmpty()));
+  BuildIntentSegments(callback.Get());
 }
 
 TEST_F(BraveAdsIntentSegmentsTest,
@@ -69,11 +68,10 @@ TEST_F(BraveAdsIntentSegmentsTest,
 
   targeting_helper_->MockIntent();
 
-  // Act
-  const SegmentList intent_segments = BuildIntentSegments();
-
-  // Assert
-  EXPECT_THAT(intent_segments, ::testing::IsEmpty());
+  // Act & Assert
+  base::MockCallback<BuildSegmentsCallback> callback;
+  EXPECT_CALL(callback, Run(/*segments=*/::testing::IsEmpty()));
+  BuildIntentSegments(callback.Get());
 }
 
 }  // namespace brave_ads
