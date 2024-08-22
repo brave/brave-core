@@ -17,6 +17,7 @@ source_set("ui") {
     "//components/profile_metrics",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/browser_state",
+    "//ios/chrome/browser/shared/model/profile",
     "//ios/components/webui:url_constants",
     "//ios/web/js_messaging:js_messaging",
     "//ios/web/public/thread",
