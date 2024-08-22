@@ -16,7 +16,7 @@ namespace web_discovery {
 class CredentialSigner {
  public:
   using SignCallback =
-      base::OnceCallback<void(std::optional<std::vector<const uint8_t>>)>;
+      base::OnceCallback<void(std::optional<std::vector<uint8_t>>)>;
   virtual ~CredentialSigner() = default;
 
   // Returns true is a credential is available for the current date.
@@ -29,8 +29,8 @@ class CredentialSigner {
   // preventing Sybil attacks.
   // See signature_basename.h/cc for more information on how the basename
   // should be generated.
-  virtual void Sign(std::vector<const uint8_t> msg,
-                    std::vector<const uint8_t> basename,
+  virtual void Sign(std::vector<uint8_t> msg,
+                    std::vector<uint8_t> basename,
                     SignCallback callback) = 0;
 };
 

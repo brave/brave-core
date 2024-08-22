@@ -62,9 +62,9 @@ BackgroundCredentialHelper::GenerateJoinRequest(std::string pre_challenge) {
 
 std::optional<std::string> BackgroundCredentialHelper::FinishJoin(
     std::string date,
-    std::vector<const uint8_t> group_pub_key,
-    std::vector<const uint8_t> gsk,
-    std::vector<const uint8_t> join_resp_bytes) {
+    std::vector<uint8_t> group_pub_key,
+    std::vector<uint8_t> gsk,
+    std::vector<uint8_t> join_resp_bytes) {
   base::AssertLongCPUWorkAllowed();
   auto pub_key_result = anonymous_credentials::load_group_public_key(
       base::SpanToRustSlice(group_pub_key));
@@ -93,10 +93,9 @@ std::optional<std::string> BackgroundCredentialHelper::FinishJoin(
   return base::Base64Encode(finish_res.data);
 }
 
-std::optional<std::vector<const uint8_t>>
-BackgroundCredentialHelper::PerformSign(
-    std::vector<const uint8_t> msg,
-    std::vector<const uint8_t> basename,
+std::optional<std::vector<uint8_t>> BackgroundCredentialHelper::PerformSign(
+    std::vector<uint8_t> msg,
+    std::vector<uint8_t> basename,
     std::optional<std::vector<uint8_t>> gsk_bytes,
     std::optional<std::vector<uint8_t>> credential_bytes) {
   base::AssertLongCPUWorkAllowed();
@@ -122,7 +121,7 @@ BackgroundCredentialHelper::PerformSign(
     VLOG(1) << "Failed to sign: " << sig_res.error_message.c_str();
     return std::nullopt;
   }
-  return std::vector<const uint8_t>(sig_res.data.begin(), sig_res.data.end());
+  return std::vector<uint8_t>(sig_res.data.begin(), sig_res.data.end());
 }
 
 }  // namespace web_discovery

@@ -56,8 +56,8 @@ class CredentialManager : public CredentialSigner {
   // CredentialSigner:
   bool CredentialExistsForToday() override;
 
-  void Sign(std::vector<const uint8_t> msg,
-            std::vector<const uint8_t> basename,
+  void Sign(std::vector<uint8_t> msg,
+            std::vector<uint8_t> basename,
             SignCallback callback) override;
 
   // Uses a fixed seed in the anonymous credential manager
@@ -75,25 +75,25 @@ class CredentialManager : public CredentialSigner {
 
   void OnJoinRequestReady(
       std::string date,
-      std::vector<const uint8_t> group_pub_key,
+      std::vector<uint8_t> group_pub_key,
       std::optional<GenerateJoinRequestResult> generate_join_result);
 
   void OnJoinResponse(std::string date,
-                      std::vector<const uint8_t> group_pub_key,
-                      std::vector<const uint8_t> gsk,
+                      std::vector<uint8_t> group_pub_key,
+                      std::vector<uint8_t> gsk,
                       std::optional<std::string> response_body);
   void HandleJoinResponseStatus(const std::string& date, bool result);
   bool ProcessJoinResponse(const std::string& date,
-                           const std::vector<const uint8_t>& group_pub_key,
-                           const std::vector<const uint8_t>& gsk,
+                           const std::vector<uint8_t>& group_pub_key,
+                           const std::vector<uint8_t>& gsk,
                            const std::optional<std::string>& response_body);
   void OnCredentialsReady(std::string date,
-                          std::vector<const uint8_t> gsk,
+                          std::vector<uint8_t> gsk,
                           std::optional<std::string> credentials);
 
   void OnSignResult(std::string credential_date,
                     SignCallback callback,
-                    std::optional<std::vector<const uint8_t>> signed_message);
+                    std::optional<std::vector<uint8_t>> signed_message);
 
   const raw_ptr<PrefService> profile_prefs_;
   const raw_ptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;

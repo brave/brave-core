@@ -143,9 +143,6 @@ void CredentialManager::JoinGroups() {
 void CredentialManager::StartJoinGroup(
     const std::string& date,
     const std::vector<uint8_t>& group_pub_key) {
-  std::vector<const uint8_t> group_pub_key_const(group_pub_key.begin(),
-                                                 group_pub_key.end());
-
   auto challenge_elements = base::Value::List::with_capacity(2);
   challenge_elements.Append(*rsa_public_key_b64_);
   challenge_elements.Append(base::Base64Encode(group_pub_key));
@@ -158,12 +155,12 @@ void CredentialManager::StartJoinGroup(
       .WithArgs(pre_challenge)
       .Then(base::BindOnce(&CredentialManager::OnJoinRequestReady,
                            weak_ptr_factory_.GetWeakPtr(), date,
-                           group_pub_key_const));
+                           group_pub_key));
 }
 
 void CredentialManager::OnJoinRequestReady(
     std::string date,
-    std::vector<const uint8_t> group_pub_key,
+    std::vector<uint8_t> group_pub_key,
     std::optional<GenerateJoinRequestResult> generate_join_result) {
   if (!generate_join_result) {
     return;
@@ -183,9 +180,9 @@ void CredentialManager::OnJoinRequestReady(
     return;
   }
 
-  auto gsk = std::vector<const uint8_t>(
-      generate_join_result->start_join_result.gsk.begin(),
-      generate_join_result->start_join_result.gsk.end());
+  auto gsk =
+      std::vector<uint8_t>(generate_join_result->start_join_result.gsk.begin(),
+                           generate_join_result->start_join_result.gsk.end());
 
   auto resource_request = CreateResourceRequest(join_url_);
   resource_request->headers.SetHeader(kVersionHeader,
@@ -207,8 +204,8 @@ void CredentialManager::OnJoinRequestReady(
 
 void CredentialManager::OnJoinResponse(
     std::string date,
-    std::vector<const uint8_t> group_pub_key,
-    std::vector<const uint8_t> gsk,
+    std::vector<uint8_t> group_pub_key,
+    std::vector<uint8_t> gsk,
     std::optional<std::string> response_body) {
   bool result = ProcessJoinResponse(date, group_pub_key, gsk, response_body);
   if (!result) {
@@ -235,8 +232,8 @@ void CredentialManager::HandleJoinResponseStatus(const std::string& date,
 
 bool CredentialManager::ProcessJoinResponse(
     const std::string& date,
-    const std::vector<const uint8_t>& group_pub_key,
-    const std::vector<const uint8_t>& gsk,
+    const std::vector<uint8_t>& group_pub_key,
+    const std::vector<uint8_t>& gsk,
     const std::optional<std::string>& response_body) {
   CHECK(join_url_loaders_[date]);
   auto& url_loader = join_url_loaders_[date];
@@ -272,12 +269,10 @@ bool CredentialManager::ProcessJoinResponse(
     VLOG(1) << "Failed to decode join response base64";
     return false;
   }
-  std::vector<const uint8_t> join_resp_bytes_const(join_resp_bytes->begin(),
-                                                   join_resp_bytes->end());
 
   background_credential_helper_
       .AsyncCall(&BackgroundCredentialHelper::FinishJoin)
-      .WithArgs(date, group_pub_key, gsk, join_resp_bytes_const)
+      .WithArgs(date, group_pub_key, gsk, *join_resp_bytes)
       .Then(base::BindOnce(&CredentialManager::OnCredentialsReady,
                            weak_ptr_factory_.GetWeakPtr(), date, gsk));
   return true;
@@ -285,7 +280,7 @@ bool CredentialManager::ProcessJoinResponse(
 
 void CredentialManager::OnCredentialsReady(
     std::string date,
-    std::vector<const uint8_t> gsk,
+    std::vector<uint8_t> gsk,
     std::optional<std::string> credentials) {
   if (!credentials) {
     HandleJoinResponseStatus(date, false);
@@ -303,8 +298,8 @@ bool CredentialManager::CredentialExistsForToday() {
       .contains(FormatServerDate(base::Time::Now()));
 }
 
-void CredentialManager::Sign(std::vector<const uint8_t> msg,
-                             std::vector<const uint8_t> basename,
+void CredentialManager::Sign(std::vector<uint8_t> msg,
+                             std::vector<uint8_t> basename,
                              SignCallback callback) {
   auto today_date = FormatServerDate(base::Time::Now().UTCMidnight());
   const auto& anon_creds_dict =
@@ -345,7 +340,7 @@ void CredentialManager::Sign(std::vector<const uint8_t> msg,
 void CredentialManager::OnSignResult(
     std::string credential_date,
     SignCallback callback,
-    std::optional<std::vector<const uint8_t>> signed_message) {
+    std::optional<std::vector<uint8_t>> signed_message) {
   loaded_credential_date_ = credential_date;
   std::move(callback).Run(signed_message);
 }
