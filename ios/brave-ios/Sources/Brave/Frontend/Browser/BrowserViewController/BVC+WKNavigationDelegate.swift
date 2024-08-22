@@ -956,6 +956,7 @@ extension BrowserViewController: WKNavigationDelegate {
 
   public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
     guard let tab = tab(for: webView) else { return }
+    tab.upgradedHTTPSRequest = nil
 
     // Set the committed url which will also set tab.url
     tab.committedURL = webView.url
