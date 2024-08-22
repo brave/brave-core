@@ -89,7 +89,8 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         # Rust crates that are downloaded but not used (due to Cargo.toml
         # misconfigurations in other crates).
         os.path.join('brave', 'third_party', 'rust', 'valuable'),
-        os.path.join('brave', 'third_party', 'rust', 'windows_aarch64_gnullvm'),
+        os.path.join('brave', 'third_party', 'rust',
+                     'windows_aarch64_gnullvm'),
         os.path.join('brave', 'third_party', 'rust', 'windows_i686_gnu'),
         os.path.join('brave', 'third_party', 'rust', 'windows_x86_64_gnu'),
         os.path.join('brave', 'third_party', 'rust', 'windows_x86_64_gnullvm'),
@@ -104,6 +105,8 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         # Brave overrides to third-party code, also covered by main notice.
         os.path.join('brave', 'third_party', 'blink'),
         os.path.join('brave', 'third_party', 'libaddressinput'),
+        os.path.join('brave', 'third_party', 'tflite'),
+        os.path.join('brave', 'third_party', 'tflite_support'),
         os.path.join('brave', 'patches', 'third_party'),
         os.path.join('brave', 'third_party', 'polymer'),
         os.path.join('brave', 'third_party', 'lit'),

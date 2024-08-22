@@ -22,7 +22,9 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/leo_local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/text_embedder.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -170,7 +172,11 @@ class ConversationDriver : public ModelService::Observer {
     engine_ = std::move(engine_for_testing);
   }
   EngineConsumer* GetEngineForTesting() { return engine_.get(); }
-
+  void SetTextEmbedderForTesting(
+      std::unique_ptr<TextEmbedder, base::OnTaskRunnerDeleter> text_embedder) {
+    text_embedder_ = std::move(text_embedder);
+  }
+  TextEmbedder* GetTextEmbedderForTesting() { return text_embedder_.get(); }
   void SetChatHistoryForTesting(
       std::vector<mojom::ConversationTurnPtr> history) {
     chat_history_ = std::move(history);
@@ -219,6 +225,9 @@ class ConversationDriver : public ModelService::Observer {
                            UpdateOrCreateLastAssistantEntry_NotDelta);
   FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
                            UpdateOrCreateLastAssistantEntry_NotDeltaWithSearch);
+  FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, LeoLocalModelsUpdater);
+  FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedder);
+  FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedderInitialized);
 
   void InitEngine();
   void OnUserOptedIn();
@@ -230,6 +239,20 @@ class ConversationDriver : public ModelService::Observer {
                                   std::string page_content = "",
                                   bool is_video = false,
                                   std::string invalidation_token = "");
+  void OnTextEmbedderInitialized(
+      const std::string& input,
+      EngineConsumer::GenerationDataCallback data_received_callback,
+      EngineConsumer::GenerationCompletedCallback data_completed_callback,
+      std::string page_content,
+      bool is_video,
+      bool initialized);
+  void OnGetRefinedPageContent(
+      const std::string& input,
+      EngineConsumer::GenerationDataCallback data_received_callback,
+      EngineConsumer::GenerationCompletedCallback data_completed_callback,
+      std::string page_content,
+      bool is_video,
+      base::expected<std::string, std::string> refined_page_content);
 
   void GeneratePageContent(GetPageContentCallback callback);
   void OnGeneratePageContentComplete(int64_t navigation_id,
@@ -282,6 +305,7 @@ class ConversationDriver : public ModelService::Observer {
 
   // Page content
   std::string article_text_;
+  bool is_content_refined_ = false;
   std::string content_invalidation_token_;
   bool is_page_text_fetch_in_progress_ = false;
   bool is_print_preview_fallback_requested_ = false;
@@ -307,6 +331,8 @@ class ConversationDriver : public ModelService::Observer {
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Unknown;
 
   mojom::ConversationTurnPtr pending_conversation_entry_;
+
+  std::unique_ptr<TextEmbedder, base::OnTaskRunnerDeleter> text_embedder_;
 
   base::WeakPtrFactory<ConversationDriver> weak_ptr_factory_{this};
 };

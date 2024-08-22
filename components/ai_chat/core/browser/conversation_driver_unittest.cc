@@ -17,6 +17,8 @@
 #include "base/functional/overloaded.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/scoped_observation.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool.h"
 #include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
@@ -24,6 +26,7 @@
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/browser/text_embedder.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -152,21 +155,36 @@ class MockConversationDriver : public ConversationDriver {
   MOCK_METHOD(void, PrintPreviewFallback, (GetPageContentCallback), (override));
 };
 
+class MockTextEmbedder : public TextEmbedder {
+ public:
+  explicit MockTextEmbedder(
+      scoped_refptr<base::SequencedTaskRunner> task_runner)
+      : TextEmbedder(base::FilePath(), task_runner) {}
+  ~MockTextEmbedder() override = default;
+  MOCK_METHOD(bool, IsInitialized, (), (const, override));
+  MOCK_METHOD(void, Initialize, (InitializeCallback), (override));
+  MOCK_METHOD(
+      void,
+      GetTopSimilarityWithPromptTilContextLimit,
+      (const std::string&, const std::string&, uint32_t, TopSimilarityCallback),
+      (override));
+};
+
 }  // namespace
 
 class ConversationDriverUnitTest : public testing::Test {
  public:
-  ConversationDriverUnitTest() = default;
-  ~ConversationDriverUnitTest() override = default;
-
-  void SetUp() override {
+  ConversationDriverUnitTest() {
     // TODO(petemill): Mock the engine requests so that we are not dependent on
     // specific network API calls for any particular engine. This test only
     // specifies the completion API responses and so doesn't work with the
     // Conversation API engine.
     features_.InitAndEnableFeatureWithParameters(
         features::kAIChat, {{features::kConversationAPIEnabled.name, "false"}});
+  }
+  ~ConversationDriverUnitTest() override = default;
 
+  void SetUp() override {
     prefs::RegisterProfilePrefs(prefs_.registry());
     prefs::RegisterLocalStatePrefs(local_state_.registry());
     ModelService::RegisterProfilePrefs(prefs_.registry());
@@ -809,6 +827,160 @@ TEST_F(ConversationDriverUnitTest, ModifyConversation) {
                 ->get_completion_event()
                 ->completion,
             "answer2");
+}
+
+class PageContentRefineTest : public ConversationDriverUnitTest,
+                              public testing::WithParamInterface<bool> {
+ public:
+  PageContentRefineTest() {
+    scoped_feature_list_.InitWithFeatureState(features::kPageContentRefine,
+                                              GetParam());
+  }
+  void SetUp() override {
+    ConversationDriverUnitTest::SetUp();
+    embedder_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::TaskPriority::USER_BLOCKING});
+  }
+
+  bool IsPageContentRefineEnabled() { return GetParam(); }
+
+ protected:
+  scoped_refptr<base::SequencedTaskRunner> embedder_task_runner_;
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    PageContentRefineTest,
+    ::testing::Bool(),
+    [](const testing::TestParamInfo<PageContentRefineTest::ParamType>& info) {
+      return base::StringPrintf("PageContentRefine_%s",
+                                info.param ? "Enabled" : "Disabled");
+    });
+
+TEST_P(PageContentRefineTest, TextEmbedder) {
+  conversation_driver_->SetEngineForTesting(
+      std::make_unique<MockEngineConsumer>());
+  auto* mock_engine = static_cast<MockEngineConsumer*>(
+      conversation_driver_->GetEngineForTesting());
+
+  conversation_driver_->SetTextEmbedderForTesting(
+      std::unique_ptr<MockTextEmbedder, base::OnTaskRunnerDeleter>(
+          new MockTextEmbedder(embedder_task_runner_),
+          base::OnTaskRunnerDeleter(embedder_task_runner_)));
+  auto* mock_text_embedder = static_cast<MockTextEmbedder*>(
+      conversation_driver_->GetTextEmbedderForTesting());
+
+  if (IsPageContentRefineEnabled()) {
+    ON_CALL(*mock_text_embedder, IsInitialized)
+        .WillByDefault(testing::Return(true));
+  } else {
+    EXPECT_CALL(*mock_text_embedder, IsInitialized).Times(0);
+  }
+
+  uint32_t max_page_content_length = conversation_driver_->GetCurrentModel()
+                                         .options->get_leo_model_options()
+                                         ->max_page_content_length;
+  struct {
+    std::string prompt;
+    std::string page_content;
+    bool should_refine_page_content;
+  } test_cases[] = {
+      {"prompt", std::string(max_page_content_length - 1, 'A'), false},
+      {"prompt", std::string(max_page_content_length, 'A'), false},
+      {"prompt", std::string(max_page_content_length + 1, 'A'), true},
+      {l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE),
+       std::string(max_page_content_length + 1, 'A'), false},
+  };
+
+  for (const auto& test_case : test_cases) {
+    SCOPED_TRACE(testing::Message()
+                 << "Prompt: " << test_case.prompt
+                 << ", Page content length: " << test_case.page_content.length()
+                 << ", Should refine page content: "
+                 << test_case.should_refine_page_content);
+    if (test_case.should_refine_page_content && IsPageContentRefineEnabled()) {
+      EXPECT_CALL(*mock_text_embedder,
+                  GetTopSimilarityWithPromptTilContextLimit(_, _, _, _))
+          .Times(1);
+      EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
+          .Times(0);
+    } else {
+      EXPECT_CALL(*mock_text_embedder,
+                  GetTopSimilarityWithPromptTilContextLimit(_, _, _, _))
+          .Times(0);
+      EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
+          .Times(1);
+    }
+    conversation_driver_->PerformAssistantGeneration(
+        test_case.prompt, 0, test_case.page_content, false, "");
+  }
+}
+
+TEST_P(PageContentRefineTest, TextEmbedderInitialized) {
+  if (!IsPageContentRefineEnabled()) {
+    return;
+  }
+  conversation_driver_->SetEngineForTesting(
+      std::make_unique<MockEngineConsumer>());
+  auto* mock_engine = static_cast<MockEngineConsumer*>(
+      conversation_driver_->GetEngineForTesting());
+
+  conversation_driver_->SetTextEmbedderForTesting(
+      std::unique_ptr<MockTextEmbedder, base::OnTaskRunnerDeleter>(
+          new MockTextEmbedder(embedder_task_runner_),
+          base::OnTaskRunnerDeleter(embedder_task_runner_)));
+  auto* mock_text_embedder = static_cast<MockTextEmbedder*>(
+      conversation_driver_->GetTextEmbedderForTesting());
+  struct {
+    bool is_initialized;
+    bool initialize_result;
+  } test_cases[] = {
+      {true, false},  // Already initialized so initialize_result is ignored.
+      {false, false},
+      {false, true},
+  };
+
+  uint32_t max_page_content_length = conversation_driver_->GetCurrentModel()
+                                         .options->get_leo_model_options()
+                                         ->max_page_content_length;
+  for (const auto& test_case : test_cases) {
+    SCOPED_TRACE(testing::Message()
+                 << "IsInitialized: " << test_case.is_initialized
+                 << ", Initialize result: " << test_case.initialize_result);
+
+    ON_CALL(*mock_text_embedder, IsInitialized)
+        .WillByDefault(testing::Return(test_case.is_initialized));
+    if (test_case.is_initialized) {
+      EXPECT_CALL(*mock_text_embedder, Initialize).Times(0);
+      EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
+          .Times(0);
+      EXPECT_CALL(*mock_text_embedder,
+                  GetTopSimilarityWithPromptTilContextLimit(_, _, _, _))
+          .Times(1);
+    } else {
+      EXPECT_CALL(*mock_text_embedder, Initialize)
+          .WillOnce(
+              base::test::RunOnceCallback<0>(test_case.initialize_result));
+      if (!test_case.initialize_result) {
+        EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
+            .Times(1);
+        EXPECT_CALL(*mock_text_embedder,
+                    GetTopSimilarityWithPromptTilContextLimit(_, _, _, _))
+            .Times(0);
+      } else {
+        EXPECT_CALL(*mock_engine, GenerateAssistantResponse(_, _, _, _, _, _))
+            .Times(0);
+        EXPECT_CALL(*mock_text_embedder,
+                    GetTopSimilarityWithPromptTilContextLimit(_, _, _, _))
+            .Times(1);
+      }
+    }
+    conversation_driver_->PerformAssistantGeneration(
+        "prompt", 0, std::string(max_page_content_length + 1, 'A'), false, "");
+  }
 }
 
 }  // namespace ai_chat
