@@ -5,7 +5,9 @@
 
 #include "chrome/browser/lifetime/application_lifetime_desktop.h"
 
+#if BUILDFLAG(ENABLE_SPARKLE)
 #include "brave/browser/ui/webui/settings/brave_relaunch_handler_mac.h"
+#endif
 
 #define AttemptRestart AttemptRestart_ChromiumImpl
 #include "src/chrome/browser/lifetime/application_lifetime_desktop.cc"
@@ -14,7 +16,7 @@
 namespace chrome {
 
 void AttemptRestart() {
-#if BUILDFLAG(IS_MAC)
+#if BUILDFLAG(ENABLE_SPARKLE)
   if (brave_relaunch_handler::RelaunchOnMac()) {
     return;
   }
