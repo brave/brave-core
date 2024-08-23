@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShields
 import BraveUI
 import Data
@@ -38,19 +39,51 @@ struct DefaultShieldsViewView: View {
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
-      Picker(selection: $settings.httpsUpgradeLevel) {
-        ForEach(HTTPSUpgradeLevel.allCases) { level in
-          Text(level.localizedTitle)
-            .foregroundColor(Color(.secondaryBraveLabel))
-            .tag(level)
+      if FeatureList.kBraveHttpsByDefault.enabled {
+        if FeatureList.kHttpsOnlyMode.enabled {
+          Picker(selection: $settings.httpsUpgradeLevel) {
+            ForEach(HTTPSUpgradeLevel.allCases) { level in
+              Text(level.localizedTitle)
+                .foregroundColor(Color(.secondaryBraveLabel))
+                .tag(level)
+            }
+          } label: {
+            LabelView(
+              title: Strings.Shields.upgradeConnectionsToHTTPS,
+              subtitle: nil
+            )
+          }
+        } else {
+          ToggleView(
+            title: Strings.Shields.upgradeConnectionsToHTTPS,
+            toggle: Binding(
+              get: {
+                settings.httpsUpgradeLevel.isEnabled
+              },
+              set: { newValue in
+                settings.httpsUpgradeLevel =
+                  !newValue
+                  ? .disabled : (ShieldPreferences.httpsUpgradePriorEnabledLevel ?? .standard)
+              }
+            )
+          )
         }
-      } label: {
-        LabelView(
-          title: Strings.Shields.upgradeConnectionsToHTTPS,
-          subtitle: nil
+      } else {
+        ToggleView(
+          title: Strings.HTTPSEverywhere,
+          subtitle: Strings.HTTPSEverywhereDescription,
+          toggle: Binding(
+            get: {
+              settings.httpsUpgradeLevel.isEnabled
+            },
+            set: { newValue in
+              settings.httpsUpgradeLevel =
+                !newValue
+                ? .disabled : (ShieldPreferences.httpsUpgradePriorEnabledLevel ?? .standard)
+            }
+          )
         )
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
       ToggleView(
         title: Strings.autoRedirectAMPPages,
@@ -136,7 +169,7 @@ struct DefaultShieldsViewView: View {
       Text(Strings.shieldsDefaults)
     } footer: {
       Text(Strings.shieldsDefaultsFooter)
-    }
+    }.listRowBackground(Color(.secondaryBraveGroupedBackground))
   }
 
   private func toggleCookieSetting(with status: Bool) {
