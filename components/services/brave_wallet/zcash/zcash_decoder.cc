@@ -54,7 +54,7 @@ void ZCashDecoder::ParseGetAddressUtxos(const std::string& data,
                                         ParseGetAddressUtxosCallback callback) {
   ::zcash::GetAddressUtxosResponse result;
   auto serialized_message = ResolveSerializedMessage(data);
-  if (!serialized_message || serialized_message->empty() ||
+  if (!serialized_message ||
       !result.ParseFromString(serialized_message.value())) {
     std::move(callback).Run(nullptr);
     return;

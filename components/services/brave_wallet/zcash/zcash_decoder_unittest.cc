@@ -241,12 +241,19 @@ TEST_F(ZCashDecoderUnitTest, ParseGetAddressUtxos) {
                 Run(EqualsMojo(zcash::mojom::GetAddressUtxosResponsePtr())));
     decoder()->ParseGetAddressUtxos("123", callback.Get());
   }
+  // Empty protobuf body
+  {
+    base::MockCallback<ZCashDecoder::ParseGetAddressUtxosCallback> callback;
+    EXPECT_CALL(callback,
+                Run(EqualsMojo(zcash::mojom::GetAddressUtxosResponse::New())));
+    decoder()->ParseGetAddressUtxos(GetPrefixedProtobuf(""), callback.Get());
+  }
   // Protobuf prefix exists but data format is wrong
   {
     base::MockCallback<ZCashDecoder::ParseGetAddressUtxosCallback> callback;
     EXPECT_CALL(callback,
                 Run(EqualsMojo(zcash::mojom::GetAddressUtxosResponsePtr())));
-    decoder()->ParseGetAddressUtxos(GetPrefixedProtobuf(""), callback.Get());
+    decoder()->ParseGetAddressUtxos(GetPrefixedProtobuf("1"), callback.Get());
   }
   // Corrupted input
   {
