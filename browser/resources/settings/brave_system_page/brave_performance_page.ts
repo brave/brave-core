@@ -11,7 +11,8 @@ import {getTemplate} from './brave_performance_page.html.js'
 import {pageVisibility} from '../page_visibility.js'
 import {loadTimeData} from '../i18n_setup.js'
 import '../performance_page/battery_page.js'
-import '../performance_page/performance_page.js'
+import '../performance_page/memory_page.js'
+import '../performance_page/tab_discard/exception_list.js';
 
 /**
  * 'settings-brave-performance-page' is the settings page containing
