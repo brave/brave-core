@@ -33,6 +33,7 @@
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -80,7 +81,7 @@
 #include "brave/components/tor/tor_tab_helper.h"
 #endif
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
 #endif
 
@@ -151,7 +152,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
       web_contents);
   psst::PsstTabHelper::MaybeCreateForWebContents(
       web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 

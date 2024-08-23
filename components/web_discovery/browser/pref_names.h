@@ -9,8 +9,7 @@
 namespace web_discovery {
 
 // Profile prefs
-inline constexpr char kWebDiscoveryNativeEnabled[] =
-    "brave.web_discovery.wdp_native_enabled";
+inline constexpr char kWebDiscoveryEnabled[] = "brave.web_discovery_enabled";
 
 // The following pref values are used for generating
 // anonymous signatures for user submissions.

@@ -13,6 +13,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engine_choice/search_engine_choice_service_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -24,6 +25,7 @@
 #include "components/search_engines/search_engine_choice/search_engine_choice_service.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "content/public/test/browser_test.h"
+#include "extensions/buildflags/buildflags.h"
 
 class SearchEngineProviderP3ATest : public InProcessBrowserTest {
  public:
@@ -159,11 +161,12 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
   histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 8);
 }
 
+#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, WebDiscoveryEnabledP3A) {
   histogram_tester_->ExpectBucketCount(kWebDiscoveryEnabledMetric, 0, 1);
 
   PrefService* prefs = browser()->profile()->GetPrefs();
-  prefs->SetBoolean(kWebDiscoveryExtensionEnabled, true);
+  prefs->SetBoolean(kWebDiscoveryEnabled, true);
 
   histogram_tester_->ExpectBucketCount(kWebDiscoveryEnabledMetric, 1, 1);
 
@@ -171,9 +174,10 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, WebDiscoveryEnabledP3A) {
   prefs->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, true);
   histogram_tester_->ExpectBucketCount(kWebDiscoveryAndAdsMetric, 1, 1);
 
-  prefs->SetBoolean(kWebDiscoveryExtensionEnabled, false);
+  prefs->SetBoolean(kWebDiscoveryEnabled, false);
   histogram_tester_->ExpectBucketCount(kWebDiscoveryEnabledMetric, 0, 2);
 
   histogram_tester_->ExpectBucketCount(kWebDiscoveryAndAdsMetric, 0, 3);
   histogram_tester_->ExpectTotalCount(kWebDiscoveryAndAdsMetric, 4);
 }
+#endif

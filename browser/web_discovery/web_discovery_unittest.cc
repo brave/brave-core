@@ -104,7 +104,7 @@ class WebDiscoveryCTATest : public testing::Test {
 };
 
 TEST_F(WebDiscoveryCTATest, InitialDataTest) {
-  EXPECT_FALSE(prefs()->GetBoolean(kWebDiscoveryExtensionEnabled));
+  EXPECT_FALSE(prefs()->GetBoolean(kWebDiscoveryEnabled));
   const auto& info_value = prefs()->GetDict(kWebDiscoveryCTAState);
   EXPECT_TRUE(info_value.empty());
 
@@ -137,10 +137,10 @@ TEST_F(WebDiscoveryCTATest, ShouldShowInfoBarTest) {
   EXPECT_TRUE(ShouldShowWebDiscoveryInfoBar());
 
   // Don't show if already enabled.
-  prefs()->SetBoolean(kWebDiscoveryExtensionEnabled, true);
+  prefs()->SetBoolean(kWebDiscoveryEnabled, true);
   EXPECT_FALSE(ShouldShowWebDiscoveryInfoBar());
 
-  prefs()->SetBoolean(kWebDiscoveryExtensionEnabled, false);
+  prefs()->SetBoolean(kWebDiscoveryEnabled, false);
   EXPECT_TRUE(ShouldShowWebDiscoveryInfoBar());
 
   WebDiscoveryCTAState state = GetCurrentCTAState();

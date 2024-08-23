@@ -7,14 +7,8 @@
 
 #include "brave/browser/web_discovery/web_discovery_cta_util.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "components/infobars/core/infobar.h"
 #include "components/prefs/pref_service.h"
-
-#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-#include "brave/components/web_discovery/browser/pref_names.h"
-#include "brave/components/web_discovery/common/features.h"
-#endif
 
 WebDiscoveryInfoBarDelegate::WebDiscoveryInfoBarDelegate(PrefService* prefs)
     : prefs_(prefs) {}
@@ -48,13 +42,6 @@ void WebDiscoveryInfoBarDelegate::Close(bool dismiss) {
 }
 
 void WebDiscoveryInfoBarDelegate::EnableWebDiscovery() {
-  const char* pref_name = kWebDiscoveryExtensionEnabled;
-#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-  if (base::FeatureList::IsEnabled(
-          web_discovery::features::kBraveWebDiscoveryNative)) {
-    pref_name = web_discovery::kWebDiscoveryNativeEnabled;
-  }
-#endif
-  prefs_->SetBoolean(pref_name, true);
+  prefs_->SetBoolean(kWebDiscoveryEnabled, true);
   infobar()->RemoveSelf();
 }
