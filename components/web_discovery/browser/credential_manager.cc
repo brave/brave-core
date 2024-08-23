@@ -104,7 +104,7 @@ void CredentialManager::OnNewRSAKey(std::unique_ptr<RSAKeyInfo> key_info) {
   }
 
   rsa_public_key_b64_ = key_info->public_key_b64;
-  CHECK(key_info->key_pair && key_info->private_key_b64);
+  CHECK(key_info->private_key_b64);
 
   profile_prefs_->SetString(kCredentialRSAPrivateKey,
                             *key_info->private_key_b64);
