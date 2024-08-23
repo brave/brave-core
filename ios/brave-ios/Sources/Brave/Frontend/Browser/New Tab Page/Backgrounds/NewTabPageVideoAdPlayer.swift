@@ -72,8 +72,8 @@ class NewTabPageVideoAdPlayer {
 
       addMediaObservers()
 
-      if isPlaylistActive() {
-        PlaylistCoordinator.shared.mediaPlayer?.pause()
+      if PlaylistCoordinator.shared.isPictureInPictureActive {
+        PlaylistCoordinator.shared.pauseAllPlayback()
       }
 
       player?.isMuted = false
@@ -183,8 +183,8 @@ class NewTabPageVideoAdPlayer {
       self.frameRate = Double(frameRate)
     }
 
-    if !shouldAutoplay || isPlaylistActive() {
-      finishAutoplayIfNeeded(didStartAutoplay: false)
+    if !shouldAutoplay || PlaylistCoordinator.shared.isPictureInPictureActive {
+      finishAutoplayIfNeeded()
       return
     }
 
@@ -209,11 +209,15 @@ class NewTabPageVideoAdPlayer {
     player?.play()
   }
 
-  private func finishAutoplayIfNeeded(shouldSeekToStopFrame: Bool = true, didStartAutoplay: Bool = true) {
+  private func finishAutoplayIfNeeded(shouldSeekToStopFrame: Bool = true) {
     if didFinishAutoplay {
       return
     }
     didFinishAutoplay = true
+
+    // The autoplayPausedObserver is assigned a value only when autoplay has
+    // started.
+    let didStartAutoplay = autoplayPausedObserver != nil
 
     removeAutoplayPausedObserver()
     player?.currentItem?.forwardPlaybackEndTime = CMTime()
@@ -302,10 +306,6 @@ class NewTabPageVideoAdPlayer {
       policy: .default,
       options: []
     )
-  }
-
-  private func isPlaylistActive() -> Bool {
-    return PlaylistCoordinator.shared.playlistController != nil
   }
 
   private func parseStopFrameFromFilename(filename: String) -> Double? {
