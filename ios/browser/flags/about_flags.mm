@@ -21,6 +21,7 @@
 #include "build/build_config.h"
 #include "components/flags_ui/feature_entry_macros.h"
 #include "components/flags_ui/flags_state.h"
+#include "ios/components/security_interstitials/https_only_mode/feature.h"
 #include "net/base/features.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -93,6 +94,15 @@
           "back to HTTP.",                                                   \
           flags_ui::kOsIos,                                                  \
           FEATURE_VALUE_TYPE(net::features::kBraveHttpsByDefault),           \
+      },                                                                     \
+      {                                                                      \
+          "https-only-mode",                                                 \
+          "Enable HTTPS By Default Strict Mode",                             \
+          "Connect to all websites using HTTPS and display an intersitital " \
+          "to fallback to HTTP",                                             \
+          flags_ui::kOsIos,                                                  \
+          FEATURE_VALUE_TYPE(                                                \
+              security_interstitials::features::kHttpsOnlyMode),             \
       })
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
