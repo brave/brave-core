@@ -37,6 +37,11 @@ class NewTabPageBackgroundView: UIView {
     }
   }
 
+  func resetPlayerLayer() {
+    playerLayer.player = nil
+    playerLayer.removeFromSuperlayer()
+  }
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 
