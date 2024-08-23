@@ -53,7 +53,7 @@ class LoadingDesktopBrave(perf_benchmark.PerfBenchmark):
 
   def CreateCoreTimelineBasedMeasurementOptions(self):
     return CreateCoreTBMOptions(
-        ['braveGeneralUmaMetric', 'braveTraceBasedMetric'])
+        ['braveGeneralUmaMetric', 'braveNavigationMetric'])
 
   def WillRunStory(self, _story):
     time.sleep(10)
