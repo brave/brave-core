@@ -72,6 +72,8 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kUseDevUpdaterUrl;
 @property(class, nonatomic, readonly) Feature* kVerboseLoggingFeature;
 @property(class, nonatomic, readonly) Feature* kNewPlaylistUI;
+@property(class, nonatomic, readonly) Feature* kBraveHttpsByDefault;
+@property(class, nonatomic, readonly) Feature* kHttpsOnlyMode;
 @end
 
 NS_ASSUME_NONNULL_END

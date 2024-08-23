@@ -20,5 +20,6 @@ source_set("flags") {
     "//brave/components/skus/common",
     "//brave/ios/browser/playlist",
     "//components/flags_ui",
+    "//net",
   ]
 }
