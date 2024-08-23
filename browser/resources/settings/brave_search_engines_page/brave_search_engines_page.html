@@ -17,27 +17,14 @@
       sub-label="$i18n{searchSuggestDesc}">
   </settings-toggle-button>
 </template>
-<if expr="enable_extensions">
-<template is="dom-if" if="[[!isWebDiscoveryNativeEnabled_()]]" restamp>
-  <settings-toggle-button id="webDiscoveryEnabledExtension"
-      class="cr-row"
-      pref="{{prefs.brave.web_discovery_enabled}}"
-      label="$i18n{braveWebDiscoveryLabel}"
-      sub-label="$i18n{braveWebDiscoverySubLabel}"
-      learn-more-url="$i18n{webDiscoveryLearnMoreURL}">
-  </settings-toggle-button>
-</template>
-</if>
-<if expr="enable_web_discovery_native">
-<template is="dom-if" if="[[isWebDiscoveryNativeEnabled_()]]" restamp>
-  <settings-toggle-button id="webDiscoveryEnabledNative"
-      class="cr-row"
-      pref="{{prefs.brave.web_discovery.wdp_native_enabled}}"
-      label="$i18n{braveWebDiscoveryLabel}"
-      sub-label="$i18n{braveWebDiscoverySubLabel}"
-      learn-more-url="$i18n{webDiscoveryLearnMoreURL}">
-  </settings-toggle-button>
-</template>
+<if expr="enable_extensions or enable_web_discovery_native">
+<settings-toggle-button id="webDiscoveryEnabledExtension"
+    class="cr-row"
+    pref="{{prefs.brave.web_discovery_enabled}}"
+    label="$i18n{braveWebDiscoveryLabel}"
+    sub-label="$i18n{braveWebDiscoverySubLabel}"
+    learn-more-url="$i18n{webDiscoveryLearnMoreURL}">
+</settings-toggle-button>
 </if>
 <settings-toggle-button id="otherSearchEnginesEnabled"
     class="cr-row"

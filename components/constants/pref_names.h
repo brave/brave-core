@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_CONSTANTS_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_CONSTANTS_PREF_NAMES_H_
 
+#include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "extensions/buildflags/buildflags.h"
 
@@ -86,9 +87,8 @@ inline constexpr char kBraveShieldsSettingsVersion[] =
 inline constexpr char kDefaultBrowserPromptEnabled[] =
     "brave.default_browser_prompt_enabled";
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-inline constexpr char kWebDiscoveryExtensionEnabled[] =
-    "brave.web_discovery_enabled";
+#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+inline constexpr char kWebDiscoveryEnabled[] = "brave.web_discovery_enabled";
 #endif
 inline constexpr char kWebDiscoveryCTAState[] = "brave.web_discovery.cta_state";
 inline constexpr char kDontAskEnableWebDiscovery[] =

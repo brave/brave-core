@@ -87,5 +87,13 @@
     "matches": [
       "chrome://newtab/*"
     ]
-  }]
+  }],
+  "webDiscovery": {
+    "channel": "stable",
+    "component_extensions_auto_granted": false,
+    "contexts": ["privileged_extension"],
+    "allowlist": [
+      "A321D47A2B4CA86898167A55CA8B2E02385EA7CD"
+    ]
+  }
 }

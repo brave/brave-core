@@ -8,6 +8,7 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//build/config/ui.gni")
 import("//components/gcm_driver/config.gni")
@@ -34,6 +35,8 @@ source_set("extensions") {
     "api/rewards_notifications_api.h",
     "api/settings_private/brave_prefs_util.cc",
     "api/settings_private/brave_prefs_util.h",
+    "api/web_discovery_api.cc",
+    "api/web_discovery_api.h",
     "brave_component_loader.cc",
     "brave_component_loader.h",
     "brave_extension_management.cc",
@@ -80,6 +83,7 @@ source_set("extensions") {
     "//brave/components/ntp_widget_utils/browser",
     "//brave/components/sidebar/browser",
     "//brave/components/tor/buildflags",
+    "//brave/components/web_discovery/buildflags",
     "//chrome/browser/extensions",
     "//chrome/common",
     "//components/gcm_driver:gcm_buildflags",
@@ -102,6 +106,10 @@ source_set("extensions") {
 
   if (enable_speedreader) {
     deps += [ "//brave/components/speedreader" ]
+  }
+
+  if (enable_web_discovery_native) {
+    deps += [ "//brave/components/web_discovery/common" ]
   }
 
   # It seems like this brave_wallet_api should be renamed to ethereum_remote_client_api.

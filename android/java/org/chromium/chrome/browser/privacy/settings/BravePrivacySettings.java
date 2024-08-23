@@ -536,7 +536,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             BraveLocalState.commitPendingWrite();
         } else if (PREF_SEND_WEB_DISCOVERY.equals(key)) {
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                    .setBoolean(WebDiscoveryPrefs.WEB_DISCOVERY_NATIVE_ENABLED, (boolean) newValue);
+                    .setBoolean(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED, (boolean) newValue);
         } else if (PREF_SEND_CRASH_REPORTS.equals(key)) {
             UmaSessionStats.changeMetricsReportingConsent(
                     (boolean) newValue, ChangeMetricsReportingStateCalledFrom.UI_SETTINGS);
@@ -704,7 +704,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     getActivity().getResources().getString(R.string.send_web_discovery_summary));
             mSendWebDiscovery.setChecked(
                     UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                            .getBoolean(WebDiscoveryPrefs.WEB_DISCOVERY_NATIVE_ENABLED));
+                            .getBoolean(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED));
         }
 
         mSendCrashReports.setChecked(mPrivacyPrefManager.isUsageAndCrashReportingPermittedByUser());

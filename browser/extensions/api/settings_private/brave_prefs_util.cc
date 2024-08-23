@@ -76,10 +76,6 @@
 #include "brave/components/playlist/browser/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-#include "brave/components/web_discovery/browser/pref_names.h"
-#endif
-
 namespace extensions {
 
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
@@ -202,14 +198,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kNewTabPageShowsOptions] =
       settings_api::PrefType::kNumber;
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   // Web discovery prefs
-  (*s_brave_allowlist)[kWebDiscoveryExtensionEnabled] =
-      settings_api::PrefType::kBoolean;
-#endif
-#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-  (*s_brave_allowlist)[web_discovery::kWebDiscoveryNativeEnabled] =
-      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kWebDiscoveryEnabled] = settings_api::PrefType::kBoolean;
 #endif
   // Clear browsing data on exit prefs.
   (*s_brave_allowlist)[browsing_data::prefs::kDeleteBrowsingHistoryOnExit] =

@@ -47,11 +47,6 @@ class WebDiscoveryService : public KeyedService {
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
-  // Sets the extension preference to true if the preference for the native
-  // implementation is set to true and the feature is disabled.
-  // Relevant for a Griffin/variations rollback.
-  static void SetExtensionPrefIfNativeDisabled(PrefService* profile_prefs);
-
   // KeyedService:
   void Shutdown() override;
 

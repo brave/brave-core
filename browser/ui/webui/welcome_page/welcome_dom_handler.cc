@@ -12,6 +12,7 @@
 #include "brave/common/importer/importer_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/metrics/metrics_reporting_state.h"
 #include "chrome/browser/profiles/profile.h"
@@ -171,8 +172,8 @@ void WelcomeDOMHandler::HandleSetMetricsReportingEnabled(
 void WelcomeDOMHandler::HandleEnableWebDiscovery(
     const base::Value::List& args) {
   DCHECK(profile_);
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  profile_->GetPrefs()->SetBoolean(kWebDiscoveryExtensionEnabled, true);
+#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+  profile_->GetPrefs()->SetBoolean(kWebDiscoveryEnabled, true);
 #endif
 }
 

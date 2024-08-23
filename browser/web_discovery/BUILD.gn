@@ -28,7 +28,7 @@ if (enable_web_discovery_native) {
 }
 
 source_set("unit_tests") {
-  if (enable_extensions) {
+  if (enable_extensions || enable_web_discovery_native) {
     testonly = true
 
     sources = [ "web_discovery_unittest.cc" ]
@@ -49,7 +49,7 @@ source_set("unit_tests") {
 }
 
 source_set("browser_tests") {
-  if (enable_extensions) {
+  if (enable_extensions || enable_web_discovery_native) {
     testonly = true
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
