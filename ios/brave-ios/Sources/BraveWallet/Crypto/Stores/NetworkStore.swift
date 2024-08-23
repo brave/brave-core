@@ -158,6 +158,8 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
             if let selectedNetwork = await self?.rpcService.network(coin: account.coin, origin: nil)
             {
               self?.defaultSelectedChainId = selectedNetwork.chainId
+              self?.isSwapSupported =
+                await self?.swapService.isSwapSupported(chainId: selectedNetwork.chainId) ?? false
             }
           }
           if let origin = self?.origin, self?.selectedChainForOrigin.coin != account.coin {
