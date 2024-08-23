@@ -78,7 +78,15 @@ public actor GroupedAdBlockEngine {
     let version: String
 
     public var debugDescription: String {
-      return "`\(source.debugDescription)` v\(version)"
+      "`\(source.debugDescription)` v\(version)"
+    }
+
+    public func debugDescription(for engineType: GroupedAdBlockEngine.EngineType) -> String {
+      if source.onlyExceptions(for: engineType) {
+        return "\(self.debugDescription) (exceptions)"
+      } else {
+        return self.debugDescription
+      }
     }
   }
 
@@ -89,14 +97,7 @@ public actor GroupedAdBlockEngine {
 
     public func makeDebugDescription(for engineType: GroupedAdBlockEngine.EngineType) -> String {
       return infos.enumerated()
-        .map({
-          let string = " #\($0) \($1.debugDescription)"
-          if $1.source.onlyExceptions(for: engineType) {
-            return "\(string) (exceptions)"
-          } else {
-            return string
-          }
-        })
+        .map({ " #\($0) \($1.debugDescription(for: engineType))" })
         .joined(separator: "\n")
     }
   }

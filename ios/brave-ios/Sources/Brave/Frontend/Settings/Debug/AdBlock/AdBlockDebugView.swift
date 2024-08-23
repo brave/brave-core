@@ -59,8 +59,10 @@ private struct CompileContentBlockersSectionView: View {
       if let result {
         switch result {
         case .success(let averageTime):
-          Text("Average compile time: \(averageTime.formatted())")
-            .foregroundStyle(.green)
+          let formattedTime = averageTime.formatted(.units(allowed: [.seconds, .milliseconds]))
+          Text(
+            "Average compile time: \(formattedTime)"
+          ).foregroundStyle(.green)
         case .failure(let failure):
           Text("Failed to compile: \(String(describing: failure))")
             .foregroundStyle(.red)

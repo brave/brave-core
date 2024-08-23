@@ -74,16 +74,26 @@
                                  kBraveWalletTransactionSimulationsFeature),  \
       })
 
-#define BRAVE_SHIELDS_FEATURE_ENTRIES                                    \
-  EXPAND_FEATURE_ENTRIES({                                               \
-      "brave-shred",                                                     \
-      "Enable Brave 'Shred' Feature",                                    \
-      "Enable the Brave ‘Shred’ feature which will allow a user to " \
-      "easily delete all site data on demand or automatically when "     \
-      "closing a site or terminating the application.",                  \
-      flags_ui::kOsIos,                                                  \
-      FEATURE_VALUE_TYPE(brave_shields::features::kBraveShredFeature),   \
-  })
+#define BRAVE_SHIELDS_FEATURE_ENTRIES                                        \
+  EXPAND_FEATURE_ENTRIES(                                                    \
+      {                                                                      \
+          "brave-shred",                                                     \
+          "Enable Brave 'Shred' Feature",                                    \
+          "Enable the Brave ‘Shred’ feature which will allow a user to " \
+          "easily delete all site data on demand or automatically when "     \
+          "closing a site or terminating the application.",                  \
+          flags_ui::kOsIos,                                                  \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBraveShredFeature),   \
+      },                                                                     \
+      {                                                                      \
+          "brave-drop-slim-list",                                            \
+          "Drop 'Slim List'",                                                \
+          "Enabling this flag will use the full list instead of the slim "   \
+          "list for iOS content blockers (network blocking).",               \
+          flags_ui::kOsIos,                                                  \
+          FEATURE_VALUE_TYPE(                                                \
+              brave_shields::features::kBraveAdblockDropSlimList),           \
+      })
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #define BRAVE_AI_CHAT                                          \
