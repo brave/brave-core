@@ -66,7 +66,7 @@ AIRewriterButtonView::AIRewriterButtonView(Browser* browser,
                                  ui::ColorIds::kColorButtonForeground))
               .SetPreferredSize(gfx::Size(32, 32))
               .SetCallback(base::BindRepeating(
-                  [](AIRewriterButtonView* view) { view->OpenDialog(); },
+                  base::IgnoreResult(&AIRewriterButtonView::OpenDialog),
                   base::Unretained(this))))
       .BuildChildren();
 }
@@ -134,7 +134,7 @@ bool AIRewriterButtonView::IsShowing() const {
   return GetWidget()->IsVisible();
 }
 
-AIRewriterDialogDelegate* AIRewriterButtonView::OpenDialog() {
+ui::WebDialogDelegate* AIRewriterButtonView::OpenDialog() {
   auto* host = web_contents()->GetFocusedFrame()->GetRenderWidgetHost();
   CHECK(host);
 

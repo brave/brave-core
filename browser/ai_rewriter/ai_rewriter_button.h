@@ -15,12 +15,8 @@ class WebContents;
 
 namespace ai_rewriter {
 
-class AIRewriterDialogDelegate;
-
 class AIRewriterButton {
  public:
-  virtual AIRewriterDialogDelegate* OpenDialog() = 0;
-
   virtual void Show(const gfx::Rect& rect) = 0;
   virtual void Hide() = 0;
   virtual bool IsShowing() const = 0;

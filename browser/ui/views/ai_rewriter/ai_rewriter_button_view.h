@@ -47,9 +47,9 @@ class AIRewriterButtonView : public AIRewriterButton,
   static base::WeakPtr<AIRewriterButton> MaybeCreateButton(
       content::WebContents* contents);
 
+  ui::WebDialogDelegate* OpenDialog();
 
   // AIRewriterButton:
-  AIRewriterDialogDelegate* OpenDialog() override;
   void Show(const gfx::Rect& rect) override;
   void Hide() override;
   bool IsShowing() const override;

@@ -583,14 +583,16 @@ void BraveContentBrowserClient::
 #endif
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
-  associated_registry.AddInterface<ai_rewriter::mojom::AIRewriterButtonController>(
-      base::BindRepeating(
-          [](content::RenderFrameHost* rfh,
-             mojo::PendingAssociatedReceiver<
-                 ai_rewriter::mojom::AIRewriterButtonController> receiver) {
-            ai_rewriter::AIRewriterTabHelper::Bind(rfh, std::move(receiver));
-          },
-          &render_frame_host));
+  associated_registry
+      .AddInterface<ai_rewriter::mojom::AIRewriterButtonController>(
+          base::BindRepeating(
+              [](content::RenderFrameHost* rfh,
+                 mojo::PendingAssociatedReceiver<
+                     ai_rewriter::mojom::AIRewriterButtonController> receiver) {
+                ai_rewriter::AIRewriterTabHelper::Bind(rfh,
+                                                       std::move(receiver));
+              },
+              &render_frame_host));
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)

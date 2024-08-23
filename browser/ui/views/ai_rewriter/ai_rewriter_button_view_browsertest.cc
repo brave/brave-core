@@ -201,7 +201,7 @@ IN_PROC_BROWSER_TEST_F(AIRewriterButtonViewBrowserTest,
   auto button = tab_helper->button_for_testing();
   EXPECT_TRUE(button);
 
-  auto* dialog = button->OpenDialog();
+  auto* dialog = static_cast<AIRewriterButtonView*>(button.get())->OpenDialog();
   EXPECT_TRUE(dialog);
 }
 
