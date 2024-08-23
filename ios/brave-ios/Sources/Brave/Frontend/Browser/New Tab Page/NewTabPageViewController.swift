@@ -265,7 +265,7 @@ class NewTabPageViewController: UIViewController {
       // Load the video asset here, as viewDidAppear is not called when the view
       // is already visible
       if isTabVisible {
-        videoPlayer?.loadAndAutoplayVideoAssetIfNeeded(
+        videoAdPlayer?.loadAndAutoplayVideoAssetIfNeeded(
           shouldAutoplay: false
         )
       }
