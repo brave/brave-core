@@ -15,7 +15,7 @@ public class BraveReflectionUtil {
     // NOTE: For each method for invocation add appropriate test to `testMethodsForInvocationExist`
     // method in 'brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java' file with
     // checking parameter types.
-    public static Object InvokeMethod(
+    public static Object invokeMethod(
             Class methodOwner, Object obj, String method, Object... typesAndArgs) {
         try {
             Class<?>[] parameterTypes = null;
@@ -83,7 +83,7 @@ public class BraveReflectionUtil {
 
     // Types should be compatible after bytecode patching
     @SuppressWarnings("EqualsIncompatibleType")
-    public static Boolean EqualTypes(Class type1, Class type2) {
+    public static Boolean equalTypes(Class type1, Class type2) {
         return type1.equals(type2);
     }
 }

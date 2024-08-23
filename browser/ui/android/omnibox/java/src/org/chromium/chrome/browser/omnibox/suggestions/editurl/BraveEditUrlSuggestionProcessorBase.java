@@ -29,7 +29,7 @@ public abstract class BraveEditUrlSuggestionProcessorBase extends BaseSuggestion
      * See comment to `BraveEditUrlSuggestionProcessor.maybeUpdateSuggestionForCopyLink` for more details on why it may be changed.
      */
     public void onCopyLink(AutocompleteMatch suggestion) {
-        BraveReflectionUtil.InvokeMethod(
+        BraveReflectionUtil.invokeMethod(
                 EditUrlSuggestionProcessor.class,
                 this,
                 "onCopyLink",
