@@ -163,7 +163,7 @@ export const CardHeader = styled.div<{
   shadowOpacity?: number
   backgroundOpacity?: number
   isPanel?: boolean
-  isAndroid?: boolean
+  isMobile?: boolean
   useDarkBackground?: boolean
 }>`
   --shadow-opacity: ${(p) =>
@@ -187,7 +187,7 @@ export const CardHeader = styled.div<{
       ? 'var(--dark-background-color)'
       : leo.color.container.background};
   border-radius: ${(p) =>
-    p.isPanel || p.isAndroid ? '0px' : '24px 24px 0px 0px'};
+    p.isPanel || p.isMobile ? '0px' : '24px 24px 0px 0px'};
   width: 100%;
   padding: ${(p) => (p.isPanel ? '0px' : '0px 32px')};
   position: relative;

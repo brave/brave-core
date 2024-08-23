@@ -184,6 +184,11 @@
     "META": {"sizes": {"includes": [100]}},
     "includes": [63770],
   },
+  # This file is generated during the build.
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_ios_container/brave_wallet_ios_container.grd": {
+    "META": {"sizes": {"includes": [100]}},
+    "includes": [63780],
+  },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_deposit_page/brave_wallet_deposit_page.grd": {
     "META": {"sizes": {"includes": [100]}},
     "includes": [63870],

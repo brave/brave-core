@@ -206,11 +206,18 @@ export default class Amount {
     // Example: 1.0000000000 becomes 1.
     const trimmedResult = value.replace(/\.0*$|(\.\d*[1-9])0+$/, '$1')
 
-    // Format number with commas.
+    if (!commas) {
+      return trimmedResult
+    }
+
+    // Format number with commas. WebKit lacking lookbehind support.
     // https://stackoverflow.com/a/2901298/1946230
-    return commas
-      ? trimmedResult.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-      : trimmedResult
+    let parts = trimmedResult.toString().split(".")
+    if (parts.length === 0) {
+      return trimmedResult
+    }
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    return parts.join(".")
   }
 
   format(significantDigits?: number, commas: boolean = false): string {

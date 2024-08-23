@@ -1,0 +1,55 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//build/config/features.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+source_set("brave_wallet") {
+  sources = [
+    "blockchain_images_source.h",
+    "blockchain_images_source.mm",
+    "brave_wallet_page_ui.h",
+    "brave_wallet_page_ui.mm",
+    "nft_ui.h",
+    "nft_ui.mm",
+    "wallet_common_ui.h",
+    "wallet_common_ui.mm",
+    "wallet_handler.h",
+    "wallet_handler.mm",
+    "wallet_page_handler.h",
+    "wallet_page_handler.mm",
+  ]
+
+  deps = [
+    "//brave/components/brave_wallet/browser:browser",
+    "//brave/components/brave_wallet/browser:constants",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet_ui:resources",
+    "//brave/components/brave_wallet_ui/nft:nft_display_generated",
+    "//brave/components/brave_wallet_ui/page/ios:brave_wallet_ios_container_generated",
+    "//brave/components/constants:constants",
+    "//brave/components/l10n/common:common",
+    "//brave/components/resources:static_resources_grit",
+    "//brave/components/resources:strings_grit",
+    "//brave/ios/browser/brave_wallet:brave_wallet",
+    "//ios/chrome/browser/shared/model/browser_state:browser_state",
+    "//ios/components/webui:url_constants",
+    "//ios/web",
+    "//ios/web:resources",
+    "//ios/web/public",
+    "//ios/web/public/js_messaging",
+    "//ios/web/public/webui",
+    "//ios/web/webui",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/js:resources",
+    "//services/network/public/cpp",
+    "//services/service_manager/public/cpp",
+    "//third_party/abseil-cpp:absl",
+    "//ui/base",
+    "//ui/resources:webui_resources_grd_grit",
+  ]
+}

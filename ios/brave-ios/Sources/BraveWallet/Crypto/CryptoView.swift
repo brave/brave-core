@@ -157,33 +157,33 @@ public struct CryptoView: View {
                   }
                 )
               case .send:
-                SendTokenView(
+                SendContainerView(
                   keyringStore: keyringStore,
-                  networkStore: store.networkStore,
-                  sendTokenStore: store.openSendTokenStore(destination.initialToken),
+                  cryptoStore: store,
+                  destination: destination,
                   completion: { success in
                     if success {
                       store.closeWalletActionStores()
                       dismissAction()
                     }
                   },
-                  onDismiss: {
+                  dismissAction: {
                     store.closeWalletActionStores()
                     dismissAction()
                   }
                 )
               case .swap:
-                SwapCryptoView(
+                SwapContainerView(
                   keyringStore: keyringStore,
-                  networkStore: store.networkStore,
-                  swapTokensStore: store.openSwapTokenStore(destination.initialToken),
+                  cryptoStore: store,
+                  destination: destination,
                   completion: { success in
                     if success {
                       store.closeWalletActionStores()
                       dismissAction()
                     }
                   },
-                  onDismiss: {
+                  dismissAction: {
                     store.closeWalletActionStores()
                     dismissAction()
                   }
@@ -347,18 +347,18 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
               onDismiss: { cryptoStore.walletActionDestination = nil }
             )
           case .send:
-            SendTokenView(
+            SendContainerView(
               keyringStore: keyringStore,
-              networkStore: cryptoStore.networkStore,
-              sendTokenStore: cryptoStore.openSendTokenStore(action.initialToken),
-              onDismiss: { cryptoStore.walletActionDestination = nil }
+              cryptoStore: cryptoStore,
+              destination: action,
+              dismissAction: { cryptoStore.walletActionDestination = nil }
             )
           case .swap:
-            SwapCryptoView(
+            SwapContainerView(
               keyringStore: keyringStore,
-              networkStore: cryptoStore.networkStore,
-              swapTokensStore: cryptoStore.openSwapTokenStore(action.initialToken),
-              onDismiss: { cryptoStore.walletActionDestination = nil }
+              cryptoStore: cryptoStore,
+              destination: action,
+              dismissAction: { cryptoStore.walletActionDestination = nil }
             )
           case .deposit(let query):
             DepositTokenView(

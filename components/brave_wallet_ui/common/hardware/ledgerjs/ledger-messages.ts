@@ -3,12 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { loadTimeData } from '../../../../common/loadTimeData'
-import { FilecoinNetwork } from '../../../constants/types'
+import { BraveWallet, FilecoinNetwork } from '../../../constants/types'
 
-const braveWalletLedgerBridgeUrl = loadTimeData.getString(
-  'braveWalletLedgerBridgeUrl'
-)
+const braveWalletLedgerBridgeUrl = BraveWallet.UNTRUSTED_LEDGER_BRIDGE_URL
 export const LEDGER_BRIDGE_URL =
   braveWalletLedgerBridgeUrl.charAt(braveWalletLedgerBridgeUrl.length - 1) ===
   '/'

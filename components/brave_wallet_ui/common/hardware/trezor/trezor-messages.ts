@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { loadTimeData } from '../../../../common/loadTimeData'
+import { BraveWallet } from '../../../constants/types'
 import {
   Unsuccessful,
   EthereumSignTransaction,
@@ -14,9 +14,7 @@ import {
   EthereumSignTypedHash,
   MessageSignature
 } from './trezor-connect-types'
-export const kTrezorBridgeUrl = loadTimeData.getString(
-  'braveWalletTrezorBridgeUrl'
-)
+export const kTrezorBridgeUrl = BraveWallet.UNTRUSTED_TREZOR_BRIDGE_URL
 
 export enum TrezorCommand {
   Unlock = 'trezor-unlock',
