@@ -134,10 +134,6 @@ public class AIChatSubscriptionDetailModelView: ObservableObject {
     return nil
   }
 
-  var inAppPurchaseSubscriptionEnviroment: BraveStoreEnvironment {
-    storeSDK.environment
-  }
-
   var inAppPurchaseProductsLoaded: Bool {
     storeSDK.isLeoProductsLoaded
   }
