@@ -270,6 +270,7 @@ const Config = function () {
   this.brave_services_key_id = getEnvConfig(['brave_services_key_id']) || ''
   this.service_key_aichat = getEnvConfig(['service_key_aichat']) || ''
   this.braveIOSDeveloperOptionsCode = getEnvConfig(['brave_ios_developer_options_code']) || ''
+  this.service_key_stt = getEnvConfig(['service_key_stt']) || ''
 }
 
 Config.prototype.isReleaseBuild = function () {
@@ -447,6 +448,7 @@ Config.prototype.buildArgs = function () {
     enable_dangling_raw_ptr_feature_flag: false,
     brave_services_key_id: this.brave_services_key_id,
     service_key_aichat: this.service_key_aichat,
+    service_key_stt: this.service_key_stt,
   }
 
   if (!this.isBraveReleaseBuild()) {

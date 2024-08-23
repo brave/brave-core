@@ -1,0 +1,21 @@
+diff --git a/content/browser/url_loader_factory_getter.cc b/content/browser/url_loader_factory_getter.cc
+index 4571fbc6765e25b26b3e9007dc335c950a21c9cb..daea1bb69e0af9ed18678a6d1313b8d630aeab1d 100644
+--- a/content/browser/url_loader_factory_getter.cc
++++ b/content/browser/url_loader_factory_getter.cc
+@@ -17,6 +17,7 @@
+ #include "services/network/public/cpp/features.h"
+ #include "services/network/public/cpp/shared_url_loader_factory.h"
+ #include "services/network/public/mojom/network_service.mojom.h"
++#include "brave/services/network/public/cpp/system_request_handler.h"
+ 
+ namespace content {
+ 
+@@ -143,7 +144,7 @@ class ReconnectableURLLoaderFactoryForIOThread::URLLoaderFactoryForIOThread
+       override {
+     DCHECK(BrowserThread::CurrentlyOn(BrowserThread::IO));
+     factory_getter_->GetURLLoaderFactory()->CreateLoaderAndStart(
+-        std::move(receiver), request_id, options, url_request,
++        std::move(receiver), request_id, options, network::SystemRequestHandler::GetInstance()->OnBeforeSystemRequest(url_request),
+         std::move(client), traffic_annotation);
+   }
+ 

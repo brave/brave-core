@@ -7,6 +7,7 @@
 
 #include "brave/browser/net/brave_block_safebrowsing_urls.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
+#include "brave/browser/net/brave_speech_to_text_network_delegate_helper.h"
 #include "brave/browser/net/brave_static_redirect_network_delegate_helper.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/brave_services_key_helper.h"
@@ -42,6 +43,7 @@ network::ResourceRequest OnBeforeSystemRequest(
   if (!new_url.is_empty()) {
     patched_request.url = new_url;
   }
+  stt::OnBeforeURLRequest_SpoofSpeechToText(&patched_request);
   AddBraveServicesKeyHeader(&patched_request);
   return patched_request;
 }
