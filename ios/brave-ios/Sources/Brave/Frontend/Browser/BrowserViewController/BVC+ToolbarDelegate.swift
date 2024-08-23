@@ -259,6 +259,10 @@ extension BrowserViewController: TopToolbarDelegate {
       }
     }
   }
+  
+  func topToolbarDidPressTranslateButton(_ urlBar: TopToolbarView) {
+    
+  }
 
   @MainActor private func submitValidURL(
     _ text: String,
