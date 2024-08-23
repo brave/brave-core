@@ -359,6 +359,15 @@ extension Preferences {
   }
 
   fileprivate class func migrateHTTPSUpgradeLevel() {
+    // If the feature flag for https by default is off but we've already stored a user pref for it
+    // then assign that enabled level a preference so that if a user toggles HTTPS Everywhere off
+    // and on it will correctly set the underlying upgarde level to the level they had set when
+    // the feature flag was on.
+    if !FeatureList.kBraveHttpsByDefault.enabled || !FeatureList.kHttpsOnlyMode.enabled,
+      ShieldPreferences.httpsUpgradeLevel.isEnabled
+    {
+      ShieldPreferences.httpsUpgradePriorEnabledLevel = ShieldPreferences.httpsUpgradeLevel
+    }
     guard !Migration.httpsUpgradesLivelCompleted.value else { return }
 
     // Migrate old tracking protection setting to new BraveShields setting

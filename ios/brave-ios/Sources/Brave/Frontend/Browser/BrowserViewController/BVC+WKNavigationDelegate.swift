@@ -1831,7 +1831,7 @@ extension BrowserViewController: WKUIDelegate {
     }
 
     // Attempt to upgrade to HTTPS
-    if ShieldPreferences.httpsUpgradeLevel.isEnabled,
+    if FeatureList.kBraveHttpsByDefault.enabled, ShieldPreferences.httpsUpgradeLevel.isEnabled,
       let upgradedURL = braveCore.httpsUpgradeExceptionsService.upgradeToHTTPS(for: requestURL)
     {
       guard tab.upgradedHTTPSRequest?.url?.baseDomain != requestURL.baseDomain else {
@@ -1866,7 +1866,7 @@ extension BrowserViewController: WKUIDelegate {
       return nil
     }
 
-    if ShieldPreferences.httpsUpgradeLevel.isStrict,
+    if FeatureList.kHttpsOnlyMode.enabled, ShieldPreferences.httpsUpgradeLevel.isStrict,
       let url = originalURL.encodeEmbeddedInternalURL(for: .httpBlocked)
     {
       Self.log.debug(
