@@ -22,6 +22,7 @@ protocol TabLocationViewDelegate {
     _ tabLocationView: TabLocationView,
     action: PlaylistURLBarButton.MenuAction
   )
+  func tabLocationViewDidTapTranslateButton(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapReload(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapStop(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapVoiceSearch(_ tabLocationView: TabLocationView)
@@ -206,6 +207,14 @@ class TabLocationView: UIView {
     $0.tintColor = .white
     $0.addTarget(self, action: #selector(didTapPlaylistButton), for: .touchUpInside)
   }
+  
+  private(set) lazy var translateButton = TranslateURLBarButton(frame: .zero).then {
+    $0.accessibilityIdentifier = "TabToolbar.translateButton"
+    $0.isAccessibilityElement = true
+    $0.buttonState = .none
+    $0.tintColor = .white
+    $0.addTarget(self, action: #selector(didTapTranslateButton), for: .touchUpInside)
+  }
 
   private(set) lazy var walletButton = WalletURLBarButton(frame: .zero).then {
     $0.accessibilityIdentifier = "TabToolbar.walletButton"
@@ -290,7 +299,7 @@ class TabLocationView: UIView {
       $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
 
-    var trailingOptionSubviews: [UIView] = [walletButton, playlistButton]
+    var trailingOptionSubviews: [UIView] = [walletButton, playlistButton, translateButton]
     if isVoiceSearchAvailable {
       trailingOptionSubviews.append(voiceSearchButton)
     }
@@ -380,7 +389,7 @@ class TabLocationView: UIView {
 
   override var accessibilityElements: [Any]? {
     get {
-      return [urlDisplayLabel, placeholderLabel, readerModeButton, playlistButton, reloadButton]
+      return [urlDisplayLabel, placeholderLabel, readerModeButton, playlistButton, translateButton, reloadButton]
         .filter { !$0.isHidden }
     }
     set {
@@ -478,6 +487,10 @@ class TabLocationView: UIView {
 
   @objc func didTapPlaylistButton() {
     delegate?.tabLocationViewDidTapPlaylist(self)
+  }
+  
+  @objc func didTapTranslateButton() {
+    delegate?.tabLocationViewDidTapTranslateButton(self)
   }
 
   @objc func didTapStopReloadButton() {

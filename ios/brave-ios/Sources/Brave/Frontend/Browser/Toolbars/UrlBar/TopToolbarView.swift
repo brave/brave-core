@@ -21,6 +21,7 @@ protocol TopToolbarDelegate: AnyObject {
     _ urlBar: TopToolbarView,
     action: PlaylistURLBarButton.MenuAction
   )
+  func topToolbarDidPressTranslateButton(_ urlBar: TopToolbarView)
   func topToolbarDidEnterOverlayMode(_ topToolbar: TopToolbarView)
   func topToolbarDidLeaveOverlayMode(_ topToolbar: TopToolbarView)
   func topToolbarDidPressScrollToTop(_ topToolbar: TopToolbarView)
@@ -924,6 +925,10 @@ extension TopToolbarView: TabLocationViewDelegate {
     action: PlaylistURLBarButton.MenuAction
   ) {
     delegate?.topToolbarDidPressPlaylistMenuAction(self, action: action)
+  }
+  
+  func tabLocationViewDidTapTranslateButton(_ tabLocationView: TabLocationView) {
+    delegate?.topToolbarDidPressTranslateButton(self)
   }
 
   func tabLocationViewDidBeginDragInteraction(_ tabLocationView: TabLocationView) {
