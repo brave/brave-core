@@ -38,6 +38,7 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.components.web_discovery.WebDiscoveryPrefs;
 import org.chromium.gms.ChromiumPlayServicesAvailability;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -535,7 +536,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             BraveLocalState.commitPendingWrite();
         } else if (PREF_SEND_WEB_DISCOVERY.equals(key)) {
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                    .setBoolean(BravePref.WEB_DISCOVERY_NATIVE_ENABLED, (boolean) newValue);
+                    .setBoolean(WebDiscoveryPrefs.WEB_DISCOVERY_NATIVE_ENABLED, (boolean) newValue);
         } else if (PREF_SEND_CRASH_REPORTS.equals(key)) {
             UmaSessionStats.changeMetricsReportingConsent(
                     (boolean) newValue, ChangeMetricsReportingStateCalledFrom.UI_SETTINGS);
@@ -703,7 +704,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     getActivity().getResources().getString(R.string.send_web_discovery_summary));
             mSendWebDiscovery.setChecked(
                     UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                            .getBoolean(BravePref.WEB_DISCOVERY_NATIVE_ENABLED));
+                            .getBoolean(WebDiscoveryPrefs.WEB_DISCOVERY_NATIVE_ENABLED));
         }
 
         mSendCrashReports.setChecked(mPrivacyPrefManager.isUsageAndCrashReportingPermittedByUser());
