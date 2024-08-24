@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "extensions/common/extension_urls.h"
+
 #include "base/command_line.h"
 #include "brave/components/update_client/buildflags.h"
 #include "chrome/test/base/chrome_test_utils.h"
+#include "chrome/test/base/platform_browser_test.h"
 #include "components/component_updater/component_updater_switches.h"
 #include "content/public/test/browser_test.h"
-#include "extensions/common/extension_urls.h"
 
 using ExtensionUrlsBrowserTest = PlatformBrowserTest;
 

@@ -6,7 +6,7 @@
 #include "brave/grit/brave_theme_resources.h"
 #include "brave/grit/brave_unscaled_resources.h"
 #include "build/build_config.h"
-#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/platform_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "ui/base/resource/resource_bundle.h"
 
