@@ -8,6 +8,7 @@ source_set("browser_tests") {
 
   if (!is_android) {
     sources = [
+      "//brave/browser/browsing_data/brave_browsing_data_remover_browsertest.cc",
       "//brave/browser/browsing_data/brave_clear_browsing_data_browsertest.cc",
     ]
 
