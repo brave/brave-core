@@ -31,11 +31,13 @@
 #include "components/sync/engine/sync_engine.h"
 #define Initialize virtual Initialize
 #define ResetEngine virtual ResetEngine
+#define StopAndClear virtual StopAndClear
 
 #include "src/components/sync/service/sync_service_impl.h"  // IWYU pragma: export
 
 #undef ResetEngine
 #undef Initialize
+#undef StopAndClear
 
 #undef BRAVE_SYNC_SERVICE_IMPL_H_
 
