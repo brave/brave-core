@@ -34,7 +34,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   // SyncServiceImpl implementation
   bool IsSetupInProgress() const override;
-  void StopAndClear() override;
+  void StopAndClear(ResetEngineReason reset_engine_reason) override;
 
   // SyncEngineHost override.
   void OnEngineInitialized(bool success,
@@ -66,6 +66,11 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
       base::OnceCallback<void(const SyncProtocolError&)> callback);
 
   void SetJoinChainResultCallback(base::OnceCallback<void(bool)> callback);
+
+  // Calls `StopAndClear` with a specific listed reason, as the overriden
+  // function cannot be called from outside this class' scope.
+  void StopAndClearWithShutdownReason();
+  void StopAndClearWithResetLocalDataReason();
 
  private:
   friend class BraveSyncServiceImplTest;

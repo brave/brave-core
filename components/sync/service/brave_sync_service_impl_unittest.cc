@@ -299,7 +299,7 @@ TEST_F(BraveSyncServiceImplTest, StopAndClearForBraveSeed) {
   bool set_code_result = brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
   EXPECT_TRUE(set_code_result);
 
-  brave_sync_service_impl()->StopAndClear();
+  brave_sync_service_impl()->StopAndClearWithResetLocalDataReason();
 
   bool failed_to_decrypt = false;
   EXPECT_EQ(brave_sync_prefs()->GetSeed(&failed_to_decrypt), "");

@@ -72,7 +72,7 @@ bool BraveSyncServiceImpl::IsSetupInProgress() const {
          !user_settings_->IsInitialSyncFeatureSetupComplete();
 }
 
-void BraveSyncServiceImpl::StopAndClear() {
+void BraveSyncServiceImpl::StopAndClear(ResetEngineReason reset_engine_reason) {
   // StopAndClear is invoked during |SyncServiceImpl::Initialize| even if sync
   // is not enabled. This adds lots of useless lines into
   // `brave_sync_v2.diag.leave_chain_details`
@@ -81,7 +81,7 @@ void BraveSyncServiceImpl::StopAndClear() {
   }
   // Clear prefs before StopAndClear() to make NotifyObservers() be invoked
   brave_sync_prefs_.Clear();
-  SyncServiceImpl::StopAndClear();
+  SyncServiceImpl::StopAndClear(reset_engine_reason);
 }
 
 std::string BraveSyncServiceImpl::GetOrCreateSyncCode() {
@@ -143,7 +143,7 @@ void BraveSyncServiceImpl::OnSelfDeviceInfoDeleted(base::OnceClosure cb) {
   // Note that `ClearAllTrackedMetadataAndResetState` will only be called during
   // init when sync seed decryption key mismatched.
   if (GetTransportState() != TransportState::CONFIGURING) {
-    StopAndClear();
+    StopAndClear(ResetEngineReason::kResetLocalData);
   }
 
   std::move(cb).Run();
@@ -244,7 +244,7 @@ void BraveSyncServiceImpl::OnAccountDeleted(
     // The code below cleans all on an initiator device. Other devices in the
     // chain will be cleaned at BraveSyncServiceImpl::ResetEngine
     DCHECK(initiated_delete_account_);
-    BraveSyncServiceImpl::StopAndClear();
+    BraveSyncServiceImpl::StopAndClear(ResetEngineReason::kDisabledAccount);
   } else if (current_attempt < kMaxPermanentlyDeleteSyncAccountAttempts) {
     // Server responded failure, but we need to try more
     base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
@@ -305,14 +305,14 @@ std::unique_ptr<SyncEngine> BraveSyncServiceImpl::ResetEngine(
     brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
     brave_sync_prefs_.SetSyncAccountDeletedNoticePending(true);
     // Forcing stop and clear, because sync account was deleted
-    BraveSyncServiceImpl::StopAndClear();
+    BraveSyncServiceImpl::StopAndClear(ResetEngineReason::kResetLocalData);
   } else if (shutdown_reason == ShutdownReason::DISABLE_SYNC_AND_CLEAR_DATA &&
              reset_reason == ResetEngineReason::kDisabledAccount &&
              sync_disabled_by_admin_ && initiated_join_chain_) {
     brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
     // Forcing stop and clear, because we are trying to join the sync chain, but
     // sync account was deleted
-    BraveSyncServiceImpl::StopAndClear();
+    BraveSyncServiceImpl::StopAndClear(ResetEngineReason::kResetLocalData);
     // When it will be merged into master, iOS code will be a bit behind,
     // so don't expect join_chain_result_callback_ is set, but get CHECK back
     // once iOS changes will handle this
@@ -407,6 +407,14 @@ void BraveSyncServiceImpl::OnSelectedTypesPrefChange() {
   brave_sync::p3a::RecordEnabledTypes(
       GetUserSettings()->IsSyncEverythingEnabled(),
       GetUserSettings()->GetSelectedTypes());
+}
+
+void BraveSyncServiceImpl::StopAndClearWithShutdownReason() {
+  StopAndClear(ResetEngineReason::kShutdown);
+}
+
+void BraveSyncServiceImpl::StopAndClearWithResetLocalDataReason() {
+  StopAndClear(ResetEngineReason::kResetLocalData);
 }
 
 }  // namespace syncer

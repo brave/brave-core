@@ -32,7 +32,7 @@ bool StopSyncIfActive(Profile* profile, const char* func_name) {
     syncer::BraveSyncServiceImpl* sync_service =
         static_cast<syncer::BraveSyncServiceImpl*>(
             SyncServiceFactory::GetForProfile(profile));
-    sync_service->StopAndClear();
+    sync_service->StopAndClearWithShutdownReason();
   }
 
   return true;
