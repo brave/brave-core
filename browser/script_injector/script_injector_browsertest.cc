@@ -12,6 +12,7 @@
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/chrome_test_utils.h"
+#include "chrome/test/base/platform_browser_test.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
@@ -21,12 +22,6 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
-
-#if BUILDFLAG(IS_ANDROID)
-#include "chrome/test/base/android/android_browser_test.h"
-#else
-#include "chrome/test/base/in_process_browser_test.h"
-#endif
 
 namespace {
 

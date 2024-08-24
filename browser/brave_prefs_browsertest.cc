@@ -24,6 +24,7 @@
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/chrome_test_utils.h"
+#include "chrome/test/base/platform_browser_test.h"
 #include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/policy/core/common/policy_pref_names.h"
@@ -46,12 +47,9 @@
 #include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
-#if BUILDFLAG(IS_ANDROID)
-#include "chrome/test/base/android/android_browser_test.h"
-#else
+#if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/webui/bookmarks/bookmark_prefs.h"
 #include "chrome/browser/ui/webui/side_panel/bookmarks/bookmarks.mojom.h"
-#include "chrome/test/base/in_process_browser_test.h"
 #endif
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
