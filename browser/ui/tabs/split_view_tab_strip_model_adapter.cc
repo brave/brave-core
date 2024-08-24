@@ -189,7 +189,7 @@ void SplitViewTabStripModelAdapter::OnTabInserted(
                 return;
               }
 
-              if (UNLIKELY(index != adapter->model_->GetIndexOfTab(tab))) {
+              if (index != adapter->model_->GetIndexOfTab(tab)) [[unlikely]] {
                 // Index changed. Cancel the move.
                 return;
               }

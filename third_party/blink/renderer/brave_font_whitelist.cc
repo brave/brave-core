@@ -1978,7 +1978,7 @@ base::span<const std::string_view> GetMainFontWhitelist() {
 bool AllowFontByFamilyName(const AtomicString& family_name,
                            WTF::String default_language) {
   auto fontWhitelist = GetMainFontWhitelist();
-  if (UNLIKELY(g_simulate_empty_font_whitelist_for_testing)) {
+  if (g_simulate_empty_font_whitelist_for_testing) [[unlikely]] {
     return false;
   }
   if (fontWhitelist.empty()) {
