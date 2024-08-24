@@ -208,7 +208,7 @@ IN_PROC_BROWSER_TEST_F(CookieListOptInBrowserTest, FirstRun) {
                                     chrome::startup::IsFirstRun::kYes);
 
   creator.Launch(browser()->profile(), chrome::startup::IsProcessStartup::kNo,
-                 /*restore_tabbed_browser=*/true);
+                 nullptr, /*restore_tabbed_browser=*/true);
 
   Browser* new_browser = chrome::FindBrowserWithProfile(browser()->profile());
   ASSERT_TRUE(new_browser);
