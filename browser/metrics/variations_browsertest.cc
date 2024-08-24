@@ -6,15 +6,10 @@
 #include "base/feature_list.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/test/base/platform_browser_test.h"
 #include "components/variations/service/variations_field_trial_creator_base.h"
 #include "components/variations/variations_test_utils.h"
 #include "content/public/test/browser_test.h"
-
-#if BUILDFLAG(IS_ANDROID)
-#include "chrome/test/base/android/android_browser_test.h"
-#else
-#include "chrome/test/base/in_process_browser_test.h"
-#endif
 
 namespace variations {
 namespace {
