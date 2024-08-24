@@ -25,8 +25,9 @@
 #undef TabHoverCardBubbleView
 
 void TabHoverCardBubbleView_ChromiumImpl::BraveUpdateCardContent(
-    const Tab* tab) {
-  TabHoverCardBubbleView_ChromiumImpl::UpdateCardContent(tab);
+    const Tab* tab,
+    bool discarded) {
+  TabHoverCardBubbleView_ChromiumImpl::UpdateCardContent(tab, discarded);
   // Replace chrome:// with brave://. Since this is purely in the UI we can
   // just do a sub-string replacement instead of parsing into GURL.
   std::u16string domain = domain_label_->GetText();
@@ -35,8 +36,8 @@ void TabHoverCardBubbleView_ChromiumImpl::BraveUpdateCardContent(
   }
 }
 
-void TabHoverCardBubbleView::UpdateCardContent(const Tab* tab) {
-  BraveUpdateCardContent(tab);
+void TabHoverCardBubbleView::UpdateCardContent(const Tab* tab, bool discarded) {
+  BraveUpdateCardContent(tab, discarded);
 }
 
 void TabHoverCardBubbleView::SetTargetTabImage(gfx::ImageSkia preview_image) {
