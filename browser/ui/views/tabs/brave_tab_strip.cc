@@ -45,8 +45,9 @@
 #include "ui/gfx/canvas.h"
 #include "ui/views/layout/flex_layout.h"
 
-BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
-    : TabStrip(std::move(controller)) {}
+BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller,
+                             TabStripModel* model)
+    : TabStrip(std::move(controller), model) {}
 
 BraveTabStrip::~BraveTabStrip() = default;
 
