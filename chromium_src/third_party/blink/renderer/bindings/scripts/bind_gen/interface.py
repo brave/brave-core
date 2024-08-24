@@ -130,7 +130,7 @@ def _make_report_page_graph_binding_event(cg_context):
         assert False, "PageGraph unsupported binding type for: {}.{}".format(
             cg_context.class_like.identifier, cg_context.property_.identifier)
 
-    pattern = ("if (UNLIKELY(${page_graph_enabled})) {{\n"
+    pattern = ("if (${page_graph_enabled}) [[unlikely]] {{\n"
                "  probe::RegisterPageGraphBindingEvent("
                "${current_execution_context}, ${page_graph_binding_name}, "
                "PageGraphBindingType::k{_1}, "
@@ -228,7 +228,7 @@ def _append_report_page_graph_api_call_event(cg_context, expr):
     # but to only interact with it in cases where we know there will be
     # a context associated with it.
     pattern = (";\n"
-               "if (UNLIKELY(${page_graph_enabled})) {{\n"
+               "if (${page_graph_enabled}) [[unlikely]] {{\n"
                "  if (auto pg_scope = ScopedPageGraphCall();"
                "    pg_scope.has_value()) {{\n"
                "    auto pg_context = ${current_execution_context};\n"
