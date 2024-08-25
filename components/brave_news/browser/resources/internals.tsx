@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 
 import Button from '@brave/leo/react/button'
 import { setIconBasePath } from '@brave/leo/react/icon'
@@ -21,9 +21,6 @@ const Grid = styled(Variables)`
   padding: 16px;
   gap: 8px;
 
-  backdrop-filter: blur(64px);
-  background: rgba(255, 255, 255, 0.7);
-
   min-height: 100vh;
 `
 
@@ -39,4 +36,5 @@ function App() {
   </Grid>
 }
 
-render(<App />, document.getElementById('root'))
+createRoot(document.getElementById('root')!)
+  .render(<App />)
