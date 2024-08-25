@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/undo_tab_close_snackbar/UndoBarController.java b/chrome/android/java/src/org/chromium/chrome/browser/undo_tab_close_snackbar/UndoBarController.java
+index b0367689a7a34a3cfc39d7c16433df338a7f23bb..939198410e3f56b1ff67b3c12f0016de1c983448 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/undo_tab_close_snackbar/UndoBarController.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/undo_tab_close_snackbar/UndoBarController.java
+@@ -154,7 +154,7 @@ public class UndoBarController implements SnackbarManager.SnackbarController {
+      * @param closedTabs A list of tabs that were closed.
+      * @param isAllTabs Whether all tabs were closed.
+      */
+-    private void showUndoBar(List<Tab> closedTabs, boolean isAllTabs) {
++    protected void showUndoBar(List<Tab> closedTabs, boolean isAllTabs) {
+         if (closedTabs.isEmpty()) return;
+ 
+         boolean singleTab = closedTabs.size() == 1;
