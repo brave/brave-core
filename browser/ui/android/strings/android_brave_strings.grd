@@ -4063,6 +4063,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_UPDATE_FILTER_LIST_FAIL_TEXT" desc="Text to notify users for the failure of updating filterlist">
       Filter list could not be updated. Please try again
     </message>
+    <message name="IDS_SHOW_UNDO_ON_TAB_CLOSED" desc="Menu item to show undo button on tab closed">
+      Show undo button on tab closed
+    </message>
   </messages>
   </release>
 </grit>

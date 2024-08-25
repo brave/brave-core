@@ -79,6 +79,8 @@ public final class BravePreferenceKeys {
 
     public static final String DAY_ZERO_EXPT_FLAG = "day_zero_expt_flag";
 
+    public static final String SHOW_UNDO_ON_TAB_CLOSED = "show_undo_on_tab_closed";
+
     /*
      * Checks if preference key is used in Brave.
      * It's no op currently. We might reconsider
