@@ -8,8 +8,10 @@
 
 <template is="dom-if" if="[[showPerformancePage_()]]">
   <div class="cr-row title">$i18n{performancePageTitle}</div>
-  <settings-performance-page prefs="{{prefs}}">
-  </settings-performance-page>
+  <settings-memory-page prefs="{{prefs}}">
+  </settings-memory-page>
+  <tab-discard-exception-list id="exceptionList" prefs="{{prefs}}">
+  </tab-discard-exception-list>
 </template>
 
 <template is="dom-if" if="[[showBatteryPage_()]]">
