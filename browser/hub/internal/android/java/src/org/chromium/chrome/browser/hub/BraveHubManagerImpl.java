@@ -103,7 +103,7 @@ public class BraveHubManagerImpl extends HubManagerImpl {
     private void maybeUpdateBottomMarginForContainerView() {
         if (mIsTablet) return;
 
-        BraveReflectionUtil.InvokeMethod(
+        BraveReflectionUtil.invokeMethod(
                 HubManagerImpl.class, this, "ensureHubCoordinatorIsInitialized");
 
         HubContainerView containerView = getContainerView();

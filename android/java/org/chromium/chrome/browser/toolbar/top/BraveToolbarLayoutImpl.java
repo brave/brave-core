@@ -240,11 +240,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        if (BraveReflectionUtil.EqualTypes(this.getClass(), ToolbarTablet.class)) {
+        if (BraveReflectionUtil.equalTypes(this.getClass(), ToolbarTablet.class)) {
             ImageButton forwardButton = findViewById(R.id.forward_button);
             if (forwardButton != null) {
-                final Drawable forwardButtonDrawable = UiUtils.getTintedDrawable(getContext(),
-                        R.drawable.btn_right_tablet, R.color.default_icon_color_tint_list);
+                final Drawable forwardButtonDrawable =
+                        UiUtils.getTintedDrawable(
+                                getContext(),
+                                R.drawable.btn_right_tablet,
+                                R.color.default_icon_color_tint_list);
                 forwardButton.setImageDrawable(forwardButtonDrawable);
             }
         }
@@ -341,13 +344,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         // Initially show shields off image. Shields button state will be updated when tab is
         // shown and loading state is changed.
         updateBraveShieldsButtonState(null);
-        if (BraveReflectionUtil.EqualTypes(this.getClass(), ToolbarPhone.class)) {
+        if (BraveReflectionUtil.equalTypes(this.getClass(), ToolbarPhone.class)) {
             if (getMenuButtonCoordinator() != null && isMenuButtonOnBottom()) {
                 getMenuButtonCoordinator().setVisibility(false);
             }
         }
 
-        if (BraveReflectionUtil.EqualTypes(this.getClass(), CustomTabToolbar.class)) {
+        if (BraveReflectionUtil.equalTypes(this.getClass(), CustomTabToolbar.class)) {
             LinearLayout customActionButtons = findViewById(R.id.action_buttons);
             assert customActionButtons != null : "Something has changed in the upstream!";
             if (customActionButtons != null && mBraveShieldsButton != null) {
@@ -1487,7 +1490,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private boolean isCustomTab() {
-        return BraveReflectionUtil.EqualTypes(this.getClass(), CustomTabToolbar.class);
+        return BraveReflectionUtil.equalTypes(this.getClass(), CustomTabToolbar.class);
     }
 
     @Override
@@ -1537,7 +1540,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     public void onBottomToolbarVisibilityChanged(boolean isVisible) {
         mIsBottomToolbarVisible = isVisible;
-        if (BraveReflectionUtil.EqualTypes(this.getClass(), ToolbarPhone.class)
+        if (BraveReflectionUtil.equalTypes(this.getClass(), ToolbarPhone.class)
                 && getMenuButtonCoordinator() != null) {
             getMenuButtonCoordinator().setVisibility(!isVisible);
             ToggleTabStackButton toggleTabStackButton = findViewById(R.id.tab_switcher_button);
@@ -1602,8 +1605,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (BraveReflectionUtil.EqualTypes(this.getClass(), CustomTabToolbar.class)
-                || BraveReflectionUtil.EqualTypes(this.getClass(), ToolbarPhone.class)) {
+        if (BraveReflectionUtil.equalTypes(this.getClass(), CustomTabToolbar.class)
+                || BraveReflectionUtil.equalTypes(this.getClass(), ToolbarPhone.class)) {
             updateMenuButtonState();
             Tab tab = getToolbarDataProvider() != null ? getToolbarDataProvider().getTab() : null;
             if (tab != null && tab.getWebContents() != null) {

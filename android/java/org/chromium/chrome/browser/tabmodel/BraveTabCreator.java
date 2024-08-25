@@ -70,7 +70,7 @@ public class BraveTabCreator extends ChromeTabCreator {
                                     .cast(chromeTabbedActivity)
                                     .selectExistingTab(UrlConstants.NTP_URL);
                     if (tab != null) {
-                        BraveReflectionUtil.InvokeMethod(
+                        BraveReflectionUtil.invokeMethod(
                                 ChromeTabbedActivity.class, chromeTabbedActivity, "hideOverview");
                         return tab;
                     }

@@ -27,7 +27,7 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
                 return "autoplay_permission_list";
             default:
                 return (String)
-                        BraveReflectionUtil.InvokeMethod(
+                        BraveReflectionUtil.invokeMethod(
                                 SingleWebsiteSettings.class,
                                 null,
                                 "getPreferenceKey",
@@ -52,7 +52,7 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
         setUpLocalhostPreference(preference);
 
         // SingleWebsiteSettings.setupContentSettingsPreferences has its own for loop
-        BraveReflectionUtil.InvokeMethod(
+        BraveReflectionUtil.invokeMethod(
                 SingleWebsiteSettings.class, this, "setupContentSettingsPreferences");
     }
 
@@ -74,7 +74,7 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
                             : ContentSettingValues.BLOCK;
         }
         // Not possible to embargo AUTOPLAY.
-        BraveReflectionUtil.InvokeMethod(
+        BraveReflectionUtil.invokeMethod(
                 SingleWebsiteSettings.class,
                 this,
                 "setupContentSettingsPreference",
@@ -104,7 +104,7 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
                             ? ContentSettingValues.ASK
                             : ContentSettingValues.BLOCK;
         }
-        BraveReflectionUtil.InvokeMethod(
+        BraveReflectionUtil.invokeMethod(
                 SingleWebsiteSettings.class,
                 this,
                 "setupContentSettingsPreference",
@@ -135,7 +135,7 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
                             ? ContentSettingValues.ASK
                             : ContentSettingValues.BLOCK;
         }
-        BraveReflectionUtil.InvokeMethod(
+        BraveReflectionUtil.invokeMethod(
                 SingleWebsiteSettings.class,
                 this,
                 "setupContentSettingsPreference",

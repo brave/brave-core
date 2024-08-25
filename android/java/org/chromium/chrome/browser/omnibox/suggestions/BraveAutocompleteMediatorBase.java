@@ -48,7 +48,7 @@ class BraveAutocompleteMediatorBase {
             }
         }
 
-        BraveReflectionUtil.InvokeMethod(
+        BraveReflectionUtil.invokeMethod(
                 AutocompleteMediator.class,
                 this,
                 "loadUrlForOmniboxMatch",

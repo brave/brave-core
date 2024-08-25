@@ -54,6 +54,7 @@ public class BraveClassAdapter {
         chain = new BraveHomepageManagerClassAdapter(chain);
         chain = new BraveHubManagerImplClassAdapter(chain);
         chain = new BraveIdentityDiscControllerClassAdapter(chain);
+        chain = new BraveIncognitoTabSwitcherPaneClassAdapter(chain);
         chain = new BraveIntentHandlerClassAdapter(chain);
         chain = new BraveLauncherActivityClassAdapter(chain);
         chain = new BraveLaunchIntentDispatcherClassAdapter(chain);

@@ -1065,7 +1065,7 @@ public abstract class BraveActivity extends ChromeActivity
 
         Context app = ContextUtils.getApplicationContext();
         if (null != app
-                && BraveReflectionUtil.EqualTypes(this.getClass(), ChromeTabbedActivity.class)) {
+                && BraveReflectionUtil.equalTypes(this.getClass(), ChromeTabbedActivity.class)) {
             // Trigger BraveSyncWorker CTOR to make migration from sync v1 if sync is enabled
             BraveSyncWorker.get();
         }
@@ -2481,7 +2481,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
         // Call ChromeTabbedActivity's version.
         return (boolean)
-                BraveReflectionUtil.InvokeMethod(
+                BraveReflectionUtil.invokeMethod(
                         ChromeTabbedActivity.class,
                         this,
                         "maybeHandleUrlIntent",

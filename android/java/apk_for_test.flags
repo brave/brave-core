@@ -889,4 +889,10 @@
 
 -keep class org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPane
 
--keep class org.chromium.chrome.browser.tasks.tab_management.IncognitoTabSwitcherPane
+-keep class org.chromium.chrome.browser.tasks.tab_management.IncognitoTabSwitcherPane {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.tasks.tab_management.BraveIncognitoTabSwitcherPane {
+    public <init>(...);
+}

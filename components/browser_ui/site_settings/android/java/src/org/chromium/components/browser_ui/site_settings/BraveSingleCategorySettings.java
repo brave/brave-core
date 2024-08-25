@@ -33,15 +33,16 @@ public class BraveSingleCategorySettings extends BaseSiteSettingsFragment
         } else if (mCategory.getType() == SiteSettingsCategory.Type.BRAVE_LOCALHOST_ACCESS) {
             resource = R.string.website_settings_localhost_allow_exceptions;
         } else {
-            return (String) BraveReflectionUtil.InvokeMethod(
-                    SingleCategorySettings.class, this, "getAddExceptionDialogMessage");
+            return (String)
+                    BraveReflectionUtil.invokeMethod(
+                            SingleCategorySettings.class, this, "getAddExceptionDialogMessage");
         }
         assert resource > 0;
         return getString(resource);
     }
 
     public void resetList() {
-        BraveReflectionUtil.InvokeMethod(SingleCategorySettings.class, this, "resetList");
+        BraveReflectionUtil.invokeMethod(SingleCategorySettings.class, this, "resetList");
         BrowserContextHandle browserContextHandle =
                 getSiteSettingsDelegate().getBrowserContextHandle();
         boolean exception = false;

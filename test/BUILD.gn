@@ -1283,6 +1283,7 @@ if (is_android) {
       "//chrome/browser/contextmenu:java",
       "//chrome/browser/feed/android:java",
       "//chrome/browser/fullscreen/android:java",
+      "//chrome/browser/hub:java",
       "//chrome/browser/password_manager/android:java",
       "//chrome/browser/prefetch/android:java",
       "//chrome/browser/profiles/android:java",

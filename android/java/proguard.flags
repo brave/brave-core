@@ -76,3 +76,7 @@
 -keep class org.chromium.chrome.browser.hub.HubManagerImpl {
     *** ensureHubCoordinatorIsInitialized(...);
 }
+
+-keep class org.chromium.chrome.browser.tasks.tab_management.IncognitoTabSwitcherPane {
+    *** mReferenceButtonData;
+}

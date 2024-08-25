@@ -55,6 +55,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveHomepageManagerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveHubManagerImplClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveIdentityDiscControllerClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveIncognitoTabSwitcherPaneClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveIntentHandlerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveLaunchIntentDispatcherClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveLauncherActivityClassAdapter.java",
