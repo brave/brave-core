@@ -14,7 +14,6 @@
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
-#include "brave/node_modules/@brave/leo/tokens/skia/nala_color_id.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -182,7 +181,6 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorBookmarkBarForeground] = {kColorTabForegroundActiveFrameActive};
   mixer[ui::kColorBadgeBackground] = {SkColorSetRGB(95, 92, 241)};
   mixer[ui::kColorBadgeForeground] = {SkColorSetRGB(245, 244, 254)};
-  mixer[kColorDownloadShelfButtonText] = {gfx::kBraveGrey800};
   mixer[kColorForTest] = {kLightColorForTest};
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
@@ -228,7 +226,6 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorBookmarkBarForeground] = {kColorTabForegroundActiveFrameActive};
   mixer[ui::kColorBadgeBackground] = {SkColorSetRGB(135, 132, 244)};
   mixer[ui::kColorBadgeForeground] = {SkColorSetRGB(14, 14, 52)};
-  mixer[kColorDownloadShelfButtonText] = {SK_ColorWHITE};
   mixer[kColorForTest] = {kDarkColorForTest};
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
@@ -325,9 +322,9 @@ void AddBraveOmniboxLightThemeColorMixer(ui::ColorProvider* provider,
   //       GetOmniboxResultBackground(kColorOmniboxResultsBackground, /*dark*/
   //       false,
   //                                  /*incognito*/ false)};
-//   mixer[kColorOmniboxResultsBackgroundHovered] = {
-//       GetOmniboxResultBackground(kColorOmniboxResultsBackgroundHovered,
-//                                  /*dark*/ false, /*incognito*/ false)};
+  //   mixer[kColorOmniboxResultsBackgroundHovered] = {
+  //       GetOmniboxResultBackground(kColorOmniboxResultsBackgroundHovered,
+  //                                  /*dark*/ false, /*incognito*/ false)};
   mixer[kColorOmniboxResultsBackgroundSelected] = {
       GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
                                  /*dark*/ false, /*incognito*/ false)};
@@ -468,7 +465,6 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorDialogDontAskAgainButton] = {SkColorSetRGB(0x86, 0x8E, 0x96)};
   mixer[kColorDialogDontAskAgainButtonHovered] = {
       SkColorSetRGB(0x49, 0x50, 0x57)};
-  mixer[kColorSidebarAddBubbleBackground] = {SK_ColorWHITE};
   mixer[kColorSidebarAddBubbleHeaderText] = {SkColorSetRGB(0x17, 0x17, 0x1F)};
   mixer[kColorSidebarAddBubbleItemTextBackgroundHovered] = {
       SkColorSetRGB(0x4C, 0x54, 0xD2)};
@@ -546,7 +542,6 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorDialogDontAskAgainButton] = {SkColorSetRGB(0x84, 0x88, 0x9C)};
   mixer[kColorDialogDontAskAgainButtonHovered] = {
       SkColorSetRGB(0xC2, 0xC4, 0xCF)};
-  mixer[kColorSidebarAddBubbleBackground] = {gfx::kBraveGrey800};
   mixer[kColorSidebarAddBubbleHeaderText] = {SkColorSetRGB(0xF0, 0xF0, 0xFF)};
   mixer[kColorSidebarAddBubbleItemTextBackgroundHovered] = {
       SkColorSetRGB(0x4C, 0x54, 0xD2)};
@@ -624,6 +619,8 @@ void AddBraveThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarPanelHeaderTitle] = {nala::kColorTextPrimary};
   mixer[kColorSidebarPanelHeaderButton] = {nala::kColorIconDefault};
   mixer[kColorSidebarPanelHeaderButtonHovered] = {nala::kColorNeutral60};
+  mixer[kColorSidebarAddBubbleBackground] = {nala::kColorContainerBackground};
+  mixer[kColorDownloadShelfButtonText] = {nala::kColorTextPrimary};
 
   if (!HasCustomToolbarColor(key)) {
     mixer[kColorToolbarButtonActivated] = {nala::kColorIconInteractive};
