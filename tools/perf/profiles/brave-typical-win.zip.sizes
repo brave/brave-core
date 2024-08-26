@@ -1,24 +1,24 @@
-Total size 135559K
+Total size 135887K
 
-GROUP Adblock [8405K total]
-   121K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.196 [adcocjohghhfpidemphmcmlmhnfgikei]
-    52K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.8083 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1355K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.8641 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+GROUP Adblock [8443K total]
+   122K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.200 [adcocjohghhfpidemphmcmlmhnfgikei]
+    52K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.8209 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1364K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.8788 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
    142K Brave Ad Block Updater (Regional Catalog) 1.0.63 [gkboaolpopklhgplhaaiboijnklogmbc]
-  5699K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.7495 [iodkpdagapdfkphljnddpjlldadblomo]
+  5716K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.7609 [iodkpdagapdfkphljnddpjlldadblomo]
      6K Brave Ad Block Updater (Brave Experimental Adblock Rules (plaintext)) 1.0.36 [jcfckfokjmopfomnoebdkdhbhcgjfnbi]
-  1028K Brave Ad Block Updater (Resources) 1.0.97 [mfddibmblmbccpadfndgakiopmmhebop]
+  1037K Brave Ad Block Updater (Resources) 1.0.98 [mfddibmblmbccpadfndgakiopmmhebop]
 
 GROUP Ads [22975K total]
     72K Brave Ads Resources 1.0.102 [iblokdlgekdjophgeonmanpnjihcjkjj]
  22903K Brave Ads Resources 1.0.67 [ocilmpijebaopmdifcomolmpigakocmo]
 
-GROUP Ntp [13501K total]
+GROUP Ntp [13859K total]
  12803K Brave NTP background images 1.0.14 [aoojcmojmmcbpfgoecoadbdpnagfchel]
-   697K Brave NTP sponsored images 1.0.1692 [gccbbckogglekeggclmmekihdgdpdgoe]
+  1055K Brave NTP sponsored images 1.0.1699 [gccbbckogglekeggclmmekihdgdpdgoe]
 
 GROUP Other [160K total]
-   160K Brave Local Data Files Updater 1.0.862 [afalakplffnnnlkncjhbmahjfjhmlkal]
+   160K Brave Local Data Files Updater 1.0.875 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
 GROUP large_files [80301K total]
   3262K Default\Local Extension Settings\mnojpmjdmbbfmejpflffifhffcmidifd\000003.log
