@@ -128,7 +128,7 @@ void PlaylistContentsWrapper::ExitPictureInPicture() {
   PictureInPictureWindowManager::GetInstance()->ExitPictureInPicture();
 }
 
-void PlaylistContentsWrapper::AddNewContents(
+content::WebContents* PlaylistContentsWrapper::AddNewContents(
     content::WebContents* source,
     std::unique_ptr<content::WebContents> new_contents,
     const GURL& target_url,
@@ -136,7 +136,7 @@ void PlaylistContentsWrapper::AddNewContents(
     const blink::mojom::WindowFeatures& window_features,
     bool user_gesture,
     bool* was_blocked) {
-  static_cast<WebContentsDelegate*>(browser_view_->browser())
+  return static_cast<WebContentsDelegate*>(browser_view_->browser())
       ->AddNewContents(source, std::move(new_contents), target_url, disposition,
                        window_features, user_gesture, was_blocked);
 }
