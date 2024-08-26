@@ -16,6 +16,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/ipfs/ipfs_component_cleaner_delegate.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/test/base/testing_profile.h"
@@ -26,7 +27,7 @@
 
 #if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
 #include "base/path_service.h"
-#include "brave/components/ipfs/ipfs_component_cleaner.h"
+#include "brave/browser/ipfs/ipfs_component_cleaner_delegate_impl.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #endif  // !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
@@ -68,6 +69,8 @@ class IpfsUtilsUnitTest : public testing::Test {
     base::FilePath user_data_dir;
     ASSERT_TRUE(base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir));
     user_data_path_ = user_data_dir;
+    _ipfs_cleaner_delegate =
+        std::make_unique<ipfs::IpfsComponentCleanerDelegateImpl>();
 #endif  // !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
   }
 
@@ -76,11 +79,13 @@ class IpfsUtilsUnitTest : public testing::Test {
 #if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
   base::ScopedTempDir temp_dir_;
   base::FilePath user_data_path_;
+  std::unique_ptr<ipfs::IpfsComponentCleanerDelegate> _ipfs_cleaner_delegate;
 #endif  // !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
 };
 
 #if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
 TEST_F(IpfsUtilsUnitTest, DeleteIpfsComponentAndDataTest) {
+  EXPECT_TRUE(_ipfs_cleaner_delegate);
   EXPECT_FALSE(user_data_path_.empty());
   base::FilePath cache_folder =
       user_data_path_.Append(FILE_PATH_LITERAL("brave_ipfs"));
@@ -94,8 +99,8 @@ TEST_F(IpfsUtilsUnitTest, DeleteIpfsComponentAndDataTest) {
       cache_folder_subdir.Append(FILE_PATH_LITERAL("The file 01.txt"));
   CreateTextFile(cache_folder_subdir_file_01, L"12345678901234567890");
 
-  base::FilePath component_id_folder =
-      user_data_path_.Append(base::FilePath(ipfs::GetIpfsClientComponentId()));
+  base::FilePath component_id_folder = user_data_path_.Append(
+      base::FilePath(_ipfs_cleaner_delegate->GetIpfsClientComponentId()));
   base::CreateDirectory(component_id_folder);
   EXPECT_TRUE(base::PathExists(component_id_folder));
   base::FilePath component_id_folde_subdir =
@@ -106,7 +111,8 @@ TEST_F(IpfsUtilsUnitTest, DeleteIpfsComponentAndDataTest) {
       component_id_folde_subdir.Append(FILE_PATH_LITERAL("The file 01.txt"));
   CreateTextFile(component_id_folde_subdir_file_01, L"12345678901234567890");
 
-  ipfs::DeleteIpfsComponent(ipfs::GetIpfsClientComponentPath());
+  _ipfs_cleaner_delegate->DeleteIpfsComponent(
+      _ipfs_cleaner_delegate->GetIpfsClientComponentPath());
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(base::PathExists(cache_folder));
   EXPECT_FALSE(base::PathExists(component_id_folder));

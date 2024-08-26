@@ -9,10 +9,6 @@
 #include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 
-#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
-#include "brave/components/ipfs/ipfs_component_cleaner.h"
-#endif
-
 namespace {
 // Used to determine which method should be used to resolve ipfs:// and ipns:///
 // schemes, between:
@@ -109,7 +105,9 @@ void RegisterDeprecatedIpfsPrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kIPFSCompanionEnabled, false);
 }
 
-void ClearDeprecatedIpfsPrefs(PrefService* registry) {
+void ClearDeprecatedIpfsPrefs(
+    PrefService* registry,
+    std::unique_ptr<IpfsComponentCleanerDelegate> ipfs_cleaner_delegate) {
   registry->ClearPref(kIPFSEnabled);
   registry->ClearPref(kIPFSResolveMethod);
   registry->ClearPref(kIPFSAutoFallbackToGateway);
@@ -129,9 +127,10 @@ void ClearDeprecatedIpfsPrefs(PrefService* registry) {
   registry->ClearPref(kIPFSAutoRedirectDNSLink);
   registry->ClearPref(kIPFSCompanionEnabled);
 
-#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
-  ipfs::DeleteIpfsComponent(ipfs::GetIpfsClientComponentPath());
-#endif
+  if (ipfs_cleaner_delegate) {
+    ipfs_cleaner_delegate->DeleteIpfsComponent(
+        ipfs_cleaner_delegate->GetIpfsClientComponentPath());
+  }
 }
 
 }  // namespace ipfs

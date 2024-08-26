@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_IPFS_IPFS_PREFS_H_
 #define BRAVE_COMPONENTS_IPFS_IPFS_PREFS_H_
 
+#include <memory>
+
+#include "brave/components/ipfs/ipfs_component_cleaner_delegate.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -13,7 +16,9 @@ namespace ipfs {
 
 void RegisterDeprecatedIpfsPrefs(PrefRegistrySimple* registry);
 
-void ClearDeprecatedIpfsPrefs(PrefService* profile_prefs);
+void ClearDeprecatedIpfsPrefs(
+    PrefService* profile_prefs,
+    std::unique_ptr<IpfsComponentCleanerDelegate> ipfs_cleaner_delegate);
 
 }  // namespace ipfs
 

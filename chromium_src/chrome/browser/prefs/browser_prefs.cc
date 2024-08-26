@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+#include <utility>
+
 #include "brave/browser/brave_local_state_prefs.h"
 #include "brave/browser/brave_profile_prefs.h"
 #include "brave/browser/brave_rewards/rewards_prefs_util.h"
@@ -76,6 +79,10 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#endif
+
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ipfs/ipfs_component_cleaner_delegate_impl.h"
 #endif
 
 // This method should be periodically pruned of year+ old migrations.
@@ -187,8 +194,15 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   ai_chat::ModelService::MigrateProfilePrefs(profile_prefs);
 #endif
 
+  std::unique_ptr<ipfs::IpfsComponentCleanerDelegate> ipfs_component_cleaner;
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+  ipfs_component_cleaner =
+      std::make_unique<ipfs::IpfsComponentCleanerDelegateImpl>();
+#endif
+
   // Added 2024-05
-  ipfs::ClearDeprecatedIpfsPrefs(profile_prefs);
+  ipfs::ClearDeprecatedIpfsPrefs(profile_prefs,
+                                 std::move(ipfs_component_cleaner));
 
   // Added 2024-07
   profile_prefs->ClearPref(kHangoutsEnabled);

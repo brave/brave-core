@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ipfs/ipfs_component_cleaner.h"
+#include "brave/browser/ipfs/ipfs_component_cleaner_delegate_impl.h"
 
 #include "base/files/file_util.h"
 #include "base/path_service.h"
@@ -36,17 +36,21 @@ static const base::FilePath::StringPieceType kIpfsClientComponentId =
 
 namespace ipfs {
 
-base::FilePath::StringPieceType GetIpfsClientComponentId() {
+IpfsComponentCleanerDelegateImpl::~IpfsComponentCleanerDelegateImpl() = default;
+
+base::FilePath::StringPieceType
+IpfsComponentCleanerDelegateImpl::GetIpfsClientComponentId() {
   return kIpfsClientComponentId;
 }
 
-base::FilePath GetIpfsClientComponentPath() {
-  base::FilePath user_data_dir;
-  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+base::FilePath IpfsComponentCleanerDelegateImpl::GetIpfsClientComponentPath() {
+  base::FilePath user_data_dir =
+      base::PathService::CheckedGet(chrome::DIR_USER_DATA);
   return user_data_dir.Append(GetIpfsClientComponentId());
 }
 
-void DeleteIpfsComponent(const base::FilePath& component_path) {
+void IpfsComponentCleanerDelegateImpl::DeleteIpfsComponent(
+    const base::FilePath& component_path) {
   if (component_path.empty()) {
     return;
   }

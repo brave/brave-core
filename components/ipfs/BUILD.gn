@@ -21,10 +21,7 @@ static_library("ipfs") {
   ]
 
   if (!is_android && !is_ios) {
-    sources += [
-      "ipfs_component_cleaner.cc",
-      "ipfs_component_cleaner.h",
-    ]
+    sources += [ "ipfs_component_cleaner_delegate.h" ]
     deps += [ "//chrome/common:constants" ]
   }
 }
