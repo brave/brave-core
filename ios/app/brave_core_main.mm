@@ -44,6 +44,7 @@
 #include "brave/ios/browser/api/opentabs/brave_tabgenerator_api+private.h"
 #include "brave/ios/browser/api/p3a/brave_p3a_utils+private.h"
 #include "brave/ios/browser/api/password/brave_password_api+private.h"
+#include "brave/ios/browser/api/prefs/browser_prefs+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/api/web_image/web_image+private.h"
@@ -525,6 +526,11 @@ static bool CustomLogHandler(int severity,
         [[DeAmpPrefs alloc] initWithProfileState:_mainBrowserState->GetPrefs()];
   }
   return _deAmpPrefs;
+}
+
+- (BrowserPrefs*)browserPrefs {
+  return
+      [[BrowserPrefs alloc] initWithPrefService:_mainBrowserState->GetPrefs()];
 }
 
 - (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate {

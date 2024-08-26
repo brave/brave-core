@@ -130,6 +130,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       rewards: nil,
       tabGeneratorAPI: nil,
       historyAPI: nil,
+      browserPrefs: nil,
       privateBrowsingManager: privateBrowsingManager
     )
     privateBrowsingManager.isPrivateBrowsing = false

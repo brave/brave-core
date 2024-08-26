@@ -31,6 +31,7 @@ group("browser") {
     "api/opentabs",
     "api/p3a",
     "api/password",
+    "api/prefs",
     "api/session_restore",
     "api/storekit_receipt",
     "api/sync",

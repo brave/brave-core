@@ -150,6 +150,7 @@ class Tab: NSObject {
     }()
   }
 
+  private let browserPrefs: BrowserPrefs?
   private let _syncTab: BraveSyncTab?
   private let _faviconDriver: FaviconDriver?
   private var _walletEthProvider: BraveWalletEthereumProvider?
@@ -303,10 +304,6 @@ class Tab: NSObject {
   // It is reset to initial values when the page navigation is finished.
   var rewardsReportingState = RewardsTabChangeReportingState()
 
-  /// This is the request that was upgraded to HTTPS
-  /// This allows us to rollback the upgrade when we encounter a 4xx+
-  var upgradedHTTPSRequest: URLRequest?
-
   /// The tabs new tab page controller.
   ///
   /// Should be setup in BVC then assigned here for future use.
@@ -415,12 +412,14 @@ class Tab: NSObject {
     configuration: CWVWebViewConfiguration?,
     id: UUID = UUID(),
     type: TabType = .regular,
-    tabGeneratorAPI: BraveTabGeneratorAPI? = nil
+    tabGeneratorAPI: BraveTabGeneratorAPI? = nil,
+    browserPrefs: BrowserPrefs? = nil
   ) {
     self.wkConfiguration = wkConfiguration
     self.configuration = configuration
     self.favicon = Favicon.default
     self.id = id
+    self.browserPrefs = browserPrefs
     rewardsId = UInt32.random(in: 1...UInt32.max)
     nightMode = Preferences.General.nightModeEnabled.value
     _syncTab = tabGeneratorAPI?.createBraveSyncTab(isOffTheRecord: type == .private)
@@ -441,12 +440,14 @@ class Tab: NSObject {
     webView: TabWebView,
     id: UUID = UUID(),
     type: TabType = .regular,
-    tabGeneratorAPI: BraveTabGeneratorAPI? = nil
+    tabGeneratorAPI: BraveTabGeneratorAPI? = nil,
+    browserPrefs: BrowserPrefs? = nil
   ) {
     self.webView = webView
     self.favicon = Favicon.default
     self.id = id
     self.type = type
+    self.browserPrefs = browserPrefs
     rewardsId = UInt32.random(in: 1...UInt32.max)
     nightMode = Preferences.General.nightModeEnabled.value
     _syncTab = tabGeneratorAPI?.createBraveSyncTab(isOffTheRecord: type == .private)
@@ -466,14 +467,16 @@ class Tab: NSObject {
 
   func childPopupTab(
     configuration: CWVWebViewConfiguration,
-    tabGeneratorAPI: BraveTabGeneratorAPI? = nil
+    tabGeneratorAPI: BraveTabGeneratorAPI? = nil,
+    browserPrefs: BrowserPrefs? = nil
   ) -> Tab {
     return Tab(
       wkConfiguration: wkConfiguration!,
       configuration: configuration,
       id: UUID(),
       type: type,
-      tabGeneratorAPI: tabGeneratorAPI
+      tabGeneratorAPI: tabGeneratorAPI,
+      browserPrefs: browserPrefs
     )
   }
 
@@ -513,7 +516,7 @@ class Tab: NSObject {
       wkConfiguration!.allowsInlineMediaPlayback = true
       // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
       wkConfiguration!.ignoresViewportScaleLimits = true
-      wkConfiguration!.upgradeKnownHostsToHTTPS = ShieldPreferences.httpsUpgradeLevel.isEnabled
+      wkConfiguration!.upgradeKnownHostsToHTTPS = browserPrefs?.httpsUpgradesEnabled ?? true
       wkConfiguration!.enablePageTopColorSampling()
 
       if wkConfiguration!.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {

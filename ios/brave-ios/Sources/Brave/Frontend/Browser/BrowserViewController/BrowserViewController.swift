@@ -315,6 +315,7 @@ public class BrowserViewController: UIViewController {
       rewards: rewards,
       tabGeneratorAPI: braveCore.tabGeneratorAPI,
       historyAPI: braveCore.historyAPI,
+      browserPrefs: braveCore.browserPrefs,
       privateBrowsingManager: privateBrowsingManager
     )
 
@@ -2604,7 +2605,6 @@ extension BrowserViewController: TabDelegate {
       ReaderModeScriptHandler(tab: tab),
       SessionRestoreScriptHandler(tab: tab),
       BlockedDomainScriptHandler(tab: tab),
-      HTTPBlockedScriptHandler(tab: tab, tabManager: tabManager),
       PrintScriptHandler(browserController: self, tab: tab),
       CustomSearchScriptHandler(tab: tab),
       DarkReaderScriptHandler(tab: tab),

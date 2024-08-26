@@ -97,6 +97,7 @@ class TabManager: NSObject {
   private var syncTabsTask: DispatchWorkItem?
   private var metricsHeartbeat: Timer?
   private let historyAPI: BraveHistoryAPI?
+  private let browserPrefs: BrowserPrefs?
   public let privateBrowsingManager: PrivateBrowsingManager
   private var forgetTasks: [TabType: [String: Task<Void, Error>]] = [:]
 
@@ -120,6 +121,7 @@ class TabManager: NSObject {
     rewards: BraveRewards?,
     tabGeneratorAPI: BraveTabGeneratorAPI?,
     historyAPI: BraveHistoryAPI?,
+    browserPrefs: BrowserPrefs?,
     privateBrowsingManager: PrivateBrowsingManager
   ) {
     assert(Thread.isMainThread)
@@ -130,6 +132,7 @@ class TabManager: NSObject {
     self.rewards = rewards
     self.tabGeneratorAPI = tabGeneratorAPI
     self.historyAPI = historyAPI
+    self.browserPrefs = browserPrefs
     self.privateBrowsingManager = privateBrowsingManager
     self.tabEventHandlers = TabEventHandlers.create(with: prefs)
     super.init()
@@ -464,7 +467,8 @@ class TabManager: NSObject {
   ) -> Tab {
     let popup = parentTab.childPopupTab(
       configuration: configuration,
-      tabGeneratorAPI: tabGeneratorAPI
+      tabGeneratorAPI: tabGeneratorAPI,
+      browserPrefs: browserPrefs
     )
     configureTab(
       popup,
@@ -556,7 +560,8 @@ class TabManager: NSObject {
       configuration: nil,
       id: tabId,
       type: type,
-      tabGeneratorAPI: tabGeneratorAPI
+      tabGeneratorAPI: tabGeneratorAPI,
+      browserPrefs: browserPrefs
     )
     configureTab(
       tab,

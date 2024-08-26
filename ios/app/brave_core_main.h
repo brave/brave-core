@@ -28,6 +28,7 @@
 @class AIChat;
 @class HTTPSUpgradeExceptionsService;
 @class DefaultHostContentSettings;
+@class BrowserPrefs;
 @protocol AIChatDelegate;
 @protocol IpfsAPI;
 
@@ -101,6 +102,8 @@ OBJC_EXPORT
 @property(readonly) BraveP3AUtils* p3aUtils;
 
 @property(readonly) DeAmpPrefs* deAmpPrefs;
+
+@property(readonly) BrowserPrefs* browserPrefs;
 
 @property(readonly) NTPBackgroundImagesService* backgroundImagesService;
 

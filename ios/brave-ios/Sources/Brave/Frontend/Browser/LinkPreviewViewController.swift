@@ -35,7 +35,8 @@ class LinkPreviewViewController: UIViewController {
       wkConfiguration: .init(),
       configuration: tabWebView.configuration,
       type: parentTab.isPrivate ? .private : .regular,
-      tabGeneratorAPI: nil
+      tabGeneratorAPI: nil,
+      browserPrefs: browserController?.braveCore.browserPrefs
     ).then {
       $0.tabDelegate = browserController
       $0.navigationDelegate = browserController

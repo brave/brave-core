@@ -497,7 +497,6 @@ var braveTarget: PackageDescription.Target = .target(
     .copy("Assets/Fonts/NewYorkMedium-Regular.otf"),
     .copy("Assets/Fonts/NewYorkMedium-RegularItalic.otf"),
     .copy("Assets/Interstitial Pages/Pages/BlockedDomain.html"),
-    .copy("Assets/Interstitial Pages/Pages/HTTPBlocked.html"),
     .copy("Assets/Interstitial Pages/Pages/Web3Domain.html"),
     .copy("Assets/Interstitial Pages/Images/Carret.png"),
     .copy("Assets/Interstitial Pages/Images/Clock.svg"),
