@@ -347,8 +347,6 @@ Config.prototype.buildArgs = function () {
     sardine_client_id: this.sardineClientId,
     sardine_client_secret: this.sardineClientSecret,
     is_asan: this.isAsan(),
-    enable_rust: true,
-    enable_rust_json: true,
     enable_full_stack_frames_for_profiling: this.isAsan(),
     v8_enable_verify_heap: this.isAsan(),
     disable_fieldtrial_testing_config: true,
