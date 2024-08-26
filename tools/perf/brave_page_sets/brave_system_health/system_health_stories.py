@@ -88,10 +88,10 @@ class LoadWikipediaStory2023(_BraveLoadingStory):
     super()._DidLoadDocument(action_runner)
 
 
-class LoadTwitterStory2023(_BraveLoadingStory):
-  NAME = 'load:site:twitter:2023'
+class LoadTwitterStory2024(_BraveLoadingStory):
+  NAME = 'load:site:twitter:2024'
   URL = 'https://x.com/SpaceX'
-  TAGS = [story_tags.YEAR_2023]
+  TAGS = [story_tags.YEAR_2024]
 
 
 class LoadCNNStory2023(_BraveLoadingStory):
@@ -106,32 +106,32 @@ class LoadBBCStory2023(_BraveLoadingStory):
   TAGS = [story_tags.YEAR_2023]
 
 
-class LoadHackernewsStory2023(_BraveLoadingStory):
-  NAME = 'load:site:hackernews:2023'
+class LoadHackernewsStory2024(_BraveLoadingStory):
+  NAME = 'load:site:hackernews:2024'
   URL = 'https://news.ycombinator.com/'
   SCROLL_PAGE = False
-  TAGS = [story_tags.YEAR_2023]
+  TAGS = [story_tags.YEAR_2024]
 
 
-class LoadPinterestStory2023(_BraveLoadingStory):
-  NAME = 'load:site:pinterest:2023'
+class LoadPinterestStory2024(_BraveLoadingStory):
+  NAME = 'load:site:pinterest:2024'
   URL = 'https://www.pinterest.com/search/pins/?q=home%20decor'
-  TAGS = [story_tags.YEAR_2023]
+  TAGS = [story_tags.YEAR_2024]
 
 
-class LoadIMDBStory2023(_BraveLoadingStory):
-  NAME = 'load:site:imdb:2023'
+class LoadIMDBStory2024(_BraveLoadingStory):
+  NAME = 'load:site:imdb:2024'
   URL = 'https://www.imdb.com/what-to-watch/popular/'
-  TAGS = [story_tags.YEAR_2023]
+  TAGS = [story_tags.YEAR_2024]
 
 
-class LoadAmazonStory2023(_BraveLoadingStory):
-  NAME = 'load:site:amazon:2023'
+class LoadAmazonStory2024(_BraveLoadingStory):
+  NAME = 'load:site:amazon:2024'
   URL = 'https://www.amazon.com/gp/new-releases/'
-  TAGS = [story_tags.YEAR_2023]
+  TAGS = [story_tags.YEAR_2024]
 
 
-class LoadBraveNewsStory2023(_BraveLoadingStory):
-  NAME = 'load:ntp:brave_news:2023'
+class LoadBraveNewsStory2024(_BraveLoadingStory):
+  NAME = 'load:ntp:brave_news:2024'
   URL = 'chrome://newtab/'
-  TAGS = [story_tags.YEAR_2023]
+  TAGS = [story_tags.YEAR_2024]

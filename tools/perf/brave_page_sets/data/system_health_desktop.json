@@ -9,10 +9,10 @@
         "load:media:youtube:2018": {
             "DEFAULT": "system_health_desktop_81f7c27d9f.wprgo"
         },
-        "load:ntp:brave_news:2023": {
+        "load:ntp:brave_news:2024": {
             "DEFAULT": "system_health_desktop_8c7c864e79.wprgo"
         },
-        "load:site:amazon:2023": {
+        "load:site:amazon:2024": {
             "DEFAULT": "system_health_desktop_8c7c864e79.wprgo"
         },
         "load:site:bbc:2023": {
@@ -30,13 +30,13 @@
         "load:site:google:2023": {
             "DEFAULT": "system_health_desktop_8c7c864e79.wprgo"
         },
-        "load:site:hackernews:2023": {
+        "load:site:hackernews:2024": {
             "DEFAULT": "system_health_desktop_8c7c864e79.wprgo"
         },
-        "load:site:imdb:2023": {
+        "load:site:imdb:2024": {
             "DEFAULT": "system_health_desktop_8c7c864e79.wprgo"
         },
-        "load:site:pinterest:2023": {
+        "load:site:pinterest:2024": {
             "DEFAULT": "system_health_desktop_8c7c864e79.wprgo"
         },
         "load:site:twitter:2023": {
