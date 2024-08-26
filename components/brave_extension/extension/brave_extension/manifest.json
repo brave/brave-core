@@ -22,14 +22,6 @@
     ],
     "persistent": true
   },
-  "externally_connectable": {
-    "ids": [
-      "*"
-    ],
-    "matches": [
-      "chrome://newtab/*"
-    ]
-  },
   "content_scripts": [
     {
       "matches": [
