@@ -206,8 +206,6 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorNewTabPageBackground] = {kBraveNewTabBackgroundLight};
-  mixer[kColorTabBackgroundInactiveFrameActive] = {ui::kColorFrameActive};
-  mixer[kColorTabBackgroundInactiveFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorTabStrokeFrameActive] = {SkColorSetA(SK_ColorBLACK, 0.07 * 255)};
   mixer[kColorTabStrokeFrameInactive] = {kColorTabStrokeFrameActive};
   mixer[kColorToolbarButtonIconInactive] = {
@@ -251,8 +249,6 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorNewTabPageBackground] = {kBraveNewTabBackgroundDark};
-  mixer[kColorTabBackgroundInactiveFrameActive] = {ui::kColorFrameActive};
-  mixer[kColorTabBackgroundInactiveFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorTabStrokeFrameActive] = {kColorToolbar};
   mixer[kColorTabStrokeFrameInactive] = {kColorToolbar};
   mixer[kColorToolbarButtonIconInactive] = {
@@ -749,7 +745,9 @@ void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabBackgroundActiveFrameActive] = {
       nala::kColorDesktopbrowserTabbarActiveTabHorizontal};
   mixer[kColorTabBackgroundActiveFrameInactive] = {
-      nala::kColorDesktopbrowserTabbarBackground};
+      nala::kColorDesktopbrowserTabbarActiveTabHorizontal};
+  mixer[kColorTabBackgroundInactiveFrameActive] = {ui::kColorFrameActive};
+  mixer[kColorTabBackgroundInactiveFrameInactive] = {ui::kColorFrameInactive};
 
   mixer[kColorTabDividerFrameInactive] = {nala::kColorDividerStrong};
   mixer[kColorTabDividerFrameActive] = {nala::kColorDividerStrong};
