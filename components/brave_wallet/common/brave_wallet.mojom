@@ -777,9 +777,6 @@ struct SwapFees {
   SwapDiscountCode discount_code;
 };
 
-const string kLedgerHardwareVendor = "Ledger";
-const string kTrezorHardwareVendor = "Trezor";
-
 enum KeyringId {
   kDefault = 0,
   kSolana = 1,
@@ -802,11 +799,16 @@ enum FilecoinAddressProtocol {
   DELEGATED = 4
 };
 
+enum HardwareVendor {
+  kLedger = 1,
+  kTrezor = 2
+};
+
 struct HardwareWalletAccount {
   string address;
   string derivation_path;
   string name;
-  string hardware_vendor;
+  HardwareVendor hardware_vendor;
   string device_id;
   CoinType coin;
   KeyringId keyring_id;
@@ -814,7 +816,7 @@ struct HardwareWalletAccount {
 
 struct HardwareInfo {
   string path;
-  string vendor;
+  HardwareVendor vendor;
   string device_id;
 };
 
@@ -862,6 +864,7 @@ struct WalletInfo {
   bool is_wallet_backed_up;
   bool is_bitcoin_enabled;
   bool is_bitcoin_import_enabled;
+  bool is_bitcoin_ledger_enabled;
   bool is_z_cash_enabled;
   bool is_ankr_balances_feature_enabled;
   bool is_transaction_simulations_feature_enabled;
@@ -1684,6 +1687,9 @@ interface BitcoinWalletService {
   // Fetches BitcoinBalance struct for all addresses associated with account_id.
   // Now includes both confirmed and mempool utxos.
   GetBalance(AccountId account_id) => (BitcoinBalance? balance, string? error_message);
+
+  // Checks balance of possible hw account.
+  GetExtendedKeyAccountBalance(string chain_id, string extended_key) => (BitcoinBalance? balance, string? error_message);
 
   // These are parts of wallet internals api(brave://wallet/dev-bitcoin)
   RunDiscovery(AccountId account_id, bool change) => (BitcoinAddress? address, string? error_message);

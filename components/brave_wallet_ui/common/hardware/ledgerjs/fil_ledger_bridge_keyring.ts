@@ -2,14 +2,15 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
-import { BraveWallet, FilecoinNetwork } from '../../../constants/types'
-import { getPathForFilLedgerIndex } from '../../../utils/derivation_path_utils'
-import { getCoinTypeName } from '../../../utils/asset-utils'
 import { LedgerFilecoinKeyring } from '../interfaces'
 import {
+  AccountFromDevice,
+  HardwareImportScheme,
+  DerivationSchemes,
   GetAccountsHardwareOperationResult,
   SignHardwareOperationResult
 } from '../types'
+import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import {
   FilGetAccountResponse,
   FilGetAccountResponsePayload,
@@ -29,25 +30,29 @@ export default class FilecoinLedgerBridgeKeyring
     super(onAuthorized)
   }
 
+  bridgeType = (): BridgeType => {
+    return BridgeTypes.FilLedger
+  }
+
   getAccounts = async (
     from: number,
-    to: number,
-    network: FilecoinNetwork
+    count: number,
+    scheme: HardwareImportScheme
   ): Promise<GetAccountsHardwareOperationResult> => {
     const result = await this.unlock()
     if (!result.success) {
       return result
     }
 
-    from = from < 0 ? 0 : from
-    let accounts = []
+    const isTestnet =
+      scheme.derivationScheme === DerivationSchemes.FilLedgerTestnet
 
     const data = await this.sendCommand<FilGetAccountResponse>({
       command: LedgerCommand.GetAccount,
       id: LedgerCommand.GetAccount,
       from: from,
-      to: to,
-      network: network,
+      count: count,
+      isTestnet,
       origin: window.origin
     })
 
@@ -68,29 +73,15 @@ export default class FilecoinLedgerBridgeKeyring
     }
     const responsePayload = data.payload as FilGetAccountResponsePayload
 
+    let accounts: AccountFromDevice[] = []
     for (let i = 0; i < responsePayload.accounts.length; i++) {
       accounts.push({
         address: responsePayload.accounts[i],
-        derivationPath: this.getPathForIndex(from + i, network),
-        name: getCoinTypeName(this.coin()) + ' ' + this.type(),
-        hardwareVendor: this.type(),
-        deviceId: responsePayload.deviceId,
-        coin: this.coin(),
-        keyringId: this.keyringId(network)
+        derivationPath: scheme.pathTemplate(from + i)
       })
     }
 
     return { success: true, payload: accounts }
-  }
-
-  coin = (): BraveWallet.CoinType => {
-    return BraveWallet.CoinType.FIL
-  }
-
-  keyringId = (network: FilecoinNetwork): BraveWallet.KeyringId => {
-    return network === BraveWallet.FILECOIN_MAINNET
-      ? BraveWallet.KeyringId.kFilecoin
-      : BraveWallet.KeyringId.kFilecoinTestnet
   }
 
   signTransaction = async (
@@ -138,6 +129,4 @@ export default class FilecoinLedgerBridgeKeyring
       }
     }
   }
-
-  private readonly getPathForIndex = getPathForFilLedgerIndex
 }

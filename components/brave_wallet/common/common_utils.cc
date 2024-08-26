@@ -46,6 +46,11 @@ bool IsBitcoinImportEnabled() {
                                    features::kBraveWalletBitcoinImportFeature);
 }
 
+bool IsBitcoinLedgerEnabled() {
+  return IsBitcoinEnabled() && base::FeatureList::IsEnabled(
+                                   features::kBraveWalletBitcoinLedgerFeature);
+}
+
 bool IsZCashEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletZCashFeature);
 }

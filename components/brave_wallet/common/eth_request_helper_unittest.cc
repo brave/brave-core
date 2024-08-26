@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/common/eth_request_helper.h"
+
 #include <memory>
 #include <utility>
 #include <vector>
@@ -15,7 +17,6 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -172,38 +173,6 @@ TEST(EthResponseHelperUnitTest, ParseEthTransaction1559Params) {
 }
 
 TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
-  const std::string ledger_address =
-      "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C9";
-  const std::string trezor_address =
-      "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51CA";
-  const std::string hw_address = "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51CC";
-
-  mojom::AccountInfoPtr primary_account = mojom::AccountInfo::New(
-      MakeAccountId(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
-                    mojom::AccountKind::kDerived,
-                    "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8"),
-      "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8", "primary", nullptr);
-  mojom::AccountInfoPtr ledger_account = mojom::AccountInfo::New(
-      MakeAccountId(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
-                    mojom::AccountKind::kHardware, ledger_address),
-      ledger_address, "ledger",
-      mojom::HardwareInfo::New("m/44'/60'/1'/0/0", "Ledger", "123"));
-  mojom::AccountInfoPtr trezor_account = mojom::AccountInfo::New(
-      MakeAccountId(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
-                    mojom::AccountKind::kHardware, trezor_address),
-      trezor_address, "trezor",
-      mojom::HardwareInfo::New("m/44'/60'/1'/0/0", "Trezor", "123"));
-  mojom::AccountInfoPtr hw_account = mojom::AccountInfo::New(
-      MakeAccountId(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
-                    mojom::AccountKind::kHardware, hw_address),
-      hw_address, "hw",
-      mojom::HardwareInfo::New("m/44'/60'/1'/0/0", "Hardware", "123"));
-  std::vector<mojom::AccountInfoPtr> account_infos;
-  account_infos.push_back(primary_account.Clone());
-  account_infos.push_back(ledger_account.Clone());
-  account_infos.push_back(trezor_account.Clone());
-  account_infos.push_back(hw_account.Clone());
-
   // Test both EIP1559 and legacy gas fee fields are specified.
   std::string json(
       R"({
@@ -223,23 +192,7 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
   auto tx_data = ParseEthTransaction1559Params(json, &from);
 
   ASSERT_TRUE(tx_data);
-  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(),
-                                 true /* network_supports_eip1559 */,
-                                 account_infos, primary_account->account_id));
-  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
-                                 ledger_account->account_id));
-  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
-                                 trezor_account->account_id));
-  // From is not found in the account infos, can happen when keyring is locked.
-  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(),
-                                 true /* network_supports_eip1559 */, {},
-                                 primary_account->account_id));
-  // Network doesn't support EIP1559
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos,
-                                  primary_account->account_id));
-  // Keyring doesn't support EIP1559
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
-                                  hw_account->account_id));
+  EXPECT_TRUE(ShouldCreate1559Tx(*tx_data));
 
   // Test only EIP1559 gas fee fields are specified.
   json =
@@ -258,11 +211,7 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
 
   tx_data = ParseEthTransaction1559Params(json, &from);
   ASSERT_TRUE(tx_data);
-  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(),
-                                 true /* network_supports_eip1559 */,
-                                 account_infos, primary_account->account_id));
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos,
-                                  primary_account->account_id));
+  EXPECT_TRUE(ShouldCreate1559Tx(*tx_data));
 
   // Test only legacy gas field is specified.
   json =
@@ -279,11 +228,7 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
       })";
   tx_data = ParseEthTransaction1559Params(json, &from);
   ASSERT_TRUE(tx_data);
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(),
-                                  true /* network_supports_eip1559 */,
-                                  account_infos, primary_account->account_id));
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos,
-                                  primary_account->account_id));
+  EXPECT_FALSE(ShouldCreate1559Tx(*tx_data));
 
   // Test no gas fee fields are specified.
   json =
@@ -298,24 +243,7 @@ TEST(EthResponseHelperUnitTest, ShouldCreate1559Tx) {
       })";
   tx_data = ParseEthTransaction1559Params(json, &from);
   ASSERT_TRUE(tx_data);
-  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
-                                 primary_account->account_id));
-  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
-                                 ledger_account->account_id));
-  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
-                                 trezor_account->account_id));
-  // From is not found in the account infos, can happen when keyring is locked.
-  EXPECT_TRUE(ShouldCreate1559Tx(tx_data.Clone(),
-                                 true /* network_supports_eip1559 */, {},
-                                 primary_account->account_id));
-
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos,
-                                  primary_account->account_id));
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), false, account_infos,
-                                  primary_account->account_id));
-  // Keyring does't support EIP1559
-  EXPECT_FALSE(ShouldCreate1559Tx(tx_data.Clone(), true, account_infos,
-                                  hw_account->account_id));
+  EXPECT_TRUE(ShouldCreate1559Tx(*tx_data));
 }
 
 TEST(EthResponseHelperUnitTest, ParseEthSignParams) {

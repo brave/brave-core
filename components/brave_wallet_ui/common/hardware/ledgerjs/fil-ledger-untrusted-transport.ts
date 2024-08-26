@@ -9,7 +9,6 @@ import {
   LedgerProvider,
   TransportWrapper
 } from '@glif/filecoin-wallet-provider'
-import { BraveWallet } from '../../../constants/types'
 import {
   FilGetAccountCommand,
   FilGetAccountResponse,
@@ -27,7 +26,6 @@ export class FilecoinLedgerUntrustedMessagingTransport //
 {
   transportWrapper?: TransportWrapper
   provider?: LedgerProvider
-  deviceId: string
 
   constructor(targetWindow: Window, targetUrl: string) {
     super(targetWindow, targetUrl)
@@ -61,14 +59,10 @@ export class FilecoinLedgerUntrustedMessagingTransport //
         }
       }
 
-      const coinType =
-        command.network === BraveWallet.FILECOIN_TESTNET
-          ? CoinType.TEST
-          : CoinType.MAIN
       const accounts = await this.provider!.getAccounts(
         command.from,
-        command.to,
-        coinType
+        command.from + command.count,
+        command.isTestnet ? CoinType.TEST : CoinType.MAIN
       )
 
       return {
@@ -77,8 +71,7 @@ export class FilecoinLedgerUntrustedMessagingTransport //
         origin: command.origin,
         payload: {
           success: true,
-          accounts: accounts,
-          deviceId: this.deviceId
+          accounts: accounts
         }
       }
     } catch (e) {
@@ -165,9 +158,6 @@ export class FilecoinLedgerUntrustedMessagingTransport //
       if (!(await provider.ready())) {
         return false
       }
-
-      let accounts = await provider.getAccounts(0, 1, CoinType.TEST)
-      this.deviceId = accounts[0]
 
       this.provider = provider
 

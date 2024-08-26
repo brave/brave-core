@@ -37,6 +37,7 @@ bool IsZCashKeyring(mojom::KeyringId keyring_id);
 bool IsNativeWalletEnabled();
 bool IsBitcoinEnabled();
 bool IsBitcoinImportEnabled();
+bool IsBitcoinLedgerEnabled();
 bool IsZCashEnabled();
 bool IsZCashShieldedTransactionsEnabled();
 bool IsAnkrBalancesEnabled();

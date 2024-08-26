@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { BraveWallet } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import {
   kTrezorBridgeUrl,
@@ -23,14 +22,11 @@ import TrezorBridgeKeyring from './trezor_bridge_keyring'
 import { TrezorBridgeTransport } from './trezor-bridge-transport'
 import { TrezorCommandHandler } from './trezor-command-handler'
 import { getMockedTransactionInfo } from '../../constants/mocks'
-import {
-  HardwareOperationResult,
-  SignHardwareOperationResult
-} from '../../hardware_operations'
 import { Unsuccessful } from './trezor-connect-types'
 import {
-  SignHardwareMessageOperationResult,
-  TrezorDerivationPaths
+  EthTrezorDefaultHardwareImportScheme,
+  HardwareOperationResult,
+  SignHardwareOperationResult
 } from '../types'
 
 const createTransport = (
@@ -263,13 +259,6 @@ test('Unlock device success', () => {
   return expect(hardwareKeyring.unlock()).resolves.toStrictEqual(expected)
 })
 
-test('Check trezor bridge type', () => {
-  const hardwareKeyring = new TrezorBridgeKeyring()
-  return expect(hardwareKeyring.type()).toStrictEqual(
-    BraveWallet.TREZOR_HARDWARE_VENDOR
-  )
-})
-
 test('Bridge not ready', () => {
   const hardwareKeyring = new TrezorBridgeKeyring()
   let hardwareTransport = createTransport(
@@ -344,7 +333,7 @@ test('Extract accounts from locked device', () => {
     { success: true, payload: [] }
   )
   return expect(
-    hardwareKeyring.getAccounts(-2, 1, TrezorDerivationPaths.Default)
+    hardwareKeyring.getAccounts(0, 1, EthTrezorDefaultHardwareImportScheme)
   ).resolves.toStrictEqual({
     success: false,
     error: getLocale('braveWalletUnlockError'),
@@ -364,7 +353,7 @@ test('Extracting accounts from unlocked device fail to access bridge', () => {
     response
   )
   return expect(
-    hardwareKeyring.getAccounts(-2, 1, TrezorDerivationPaths.Default)
+    hardwareKeyring.getAccounts(0, 1, EthTrezorDefaultHardwareImportScheme)
   ).resolves.toStrictEqual({
     error: response.payload.error,
     success: response.success,
@@ -393,32 +382,18 @@ test('Extract accounts from unlocked device returned success', () => {
     { success: true },
     { success: true, payload: accounts }
   )
-  hardwareKeyring.getHashFromAddress = async (address: string) => {
-    return address === '0x2F015C60E0be116B1f0CD534704Db9c92118FB6A'
-      ? '5454545'
-      : '111'
-  }
+
   return expect(
-    hardwareKeyring.getAccounts(-2, 1, TrezorDerivationPaths.Default)
+    hardwareKeyring.getAccounts(0, 2, EthTrezorDefaultHardwareImportScheme)
   ).resolves.toStrictEqual({
     payload: [
       {
         'address': '0x2F015C60E0be116B1f0CD534704Db9c92118FB6A',
-        'derivationPath': "m/44'/60'/0'/0/0",
-        'deviceId': '5454545',
-        'hardwareVendor': 'Trezor',
-        'name': 'Trezor',
-        'coin': BraveWallet.CoinType.ETH,
-        'keyringId': BraveWallet.KeyringId.kDefault
+        'derivationPath': "m/44'/60'/0'/0/0"
       },
       {
         'address': '0x8e926dF9926746ba352F4d479Fb5DE47382e83bE',
-        'derivationPath': "m/44'/60'/0'/0/1",
-        'deviceId': '5454545',
-        'hardwareVendor': 'Trezor',
-        'name': 'Trezor',
-        'coin': BraveWallet.CoinType.ETH,
-        'keyringId': BraveWallet.KeyringId.kDefault
+        'derivationPath': "m/44'/60'/0'/0/1"
       }
     ],
     success: true
@@ -446,32 +421,22 @@ test('Extracting accounts from unlocked device returned success without zero ind
     { success: true },
     { success: true, payload: accounts }
   )
-  hardwareKeyring.getHashFromAddress = async (address: string) => {
-    return address === '0x2F015C60E0be116B1f0CD534704Db9c92118FB6A'
-      ? '5454545'
-      : '111'
-  }
+
   return expect(
-    hardwareKeyring.getAccounts(1, 2, TrezorDerivationPaths.Default)
+    hardwareKeyring.getAccounts(0, 2, EthTrezorDefaultHardwareImportScheme)
   ).resolves.toStrictEqual({
     payload: [
       {
+        'address': '0x2F015C60E0be116B1f0CD534704Db9c92118FB6A',
+        'derivationPath': "m/44'/60'/0'/0/0"
+      },
+      {
         'address': '0x8e926dF9926746ba352F4d479Fb5DE47382e83bE',
-        'derivationPath': "m/44'/60'/0'/0/1",
-        'deviceId': '5454545',
-        'hardwareVendor': 'Trezor',
-        'name': 'Trezor',
-        'coin': BraveWallet.CoinType.ETH,
-        'keyringId': BraveWallet.KeyringId.kDefault
+        'derivationPath': "m/44'/60'/0'/0/1"
       }
     ],
     success: true
   })
-})
-
-test('Extract accounts from unknown device', () => {
-  const hardwareKeyring = createTrezorKeyringWithTransport({ success: true })
-  return expect(hardwareKeyring.getAccounts(-2, 1, 'unknown')).rejects.toThrow()
 })
 
 test('Add unlock command handler', () => {

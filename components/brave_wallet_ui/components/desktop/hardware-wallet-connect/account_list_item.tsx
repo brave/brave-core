@@ -31,7 +31,7 @@ import {
 } from './hardware_wallet_connect.styles'
 
 interface AccountListItemProps {
-  account: BraveWallet.HardwareWalletAccount
+  address: string
   onSelect: () => void
   selected: boolean
   disabled: boolean
@@ -49,7 +49,7 @@ interface AccountListItemProps {
 }
 
 export const AccountListItem = ({
-  account,
+  address,
   onSelect,
   selected,
   disabled,
@@ -60,11 +60,11 @@ export const AccountListItem = ({
     useGetHardwareAccountDiscoveryBalanceQuery({
       coin: balanceAsset.coin,
       chainId: balanceAsset.chainId,
-      address: account.address
+      address: address
     })
 
   // memos
-  const orb = useAddressOrb(account.address)
+  const orb = useAddressOrb(address)
 
   const balance = React.useMemo(() => {
     if (
@@ -95,7 +95,7 @@ export const AccountListItem = ({
             mode='default'
             placement='top'
           >
-            <div>{reduceAddress(account.address)}</div>
+            <div>{reduceAddress(address)}</div>
           </Tooltip>
         </AddressBalanceWrapper>
         {isLoadingBalance ? (

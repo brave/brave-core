@@ -142,6 +142,16 @@ bitcoin_rpc::AddressStats BitcoinTestRpcServer::TransactedAddressStats(
   return stats;
 }
 
+bitcoin_rpc::AddressStats BitcoinTestRpcServer::BalanceAddressStats(
+    const std::string& address,
+    uint64_t balance) {
+  bitcoin_rpc::AddressStats stats = TransactedAddressStats(address);
+  stats.chain_stats.tx_count = "1";
+  stats.chain_stats.funded_txo_sum = base::NumberToString(balance + 1000);
+  stats.chain_stats.spent_txo_sum = "1000";
+  return stats;
+}
+
 bitcoin_rpc::AddressStats BitcoinTestRpcServer::MempoolAddressStats(
     const std::string& address,
     uint64_t funded,
@@ -323,6 +333,13 @@ void BitcoinTestRpcServer::AddTransactedAddress(
     const mojom::BitcoinAddressPtr& address) {
   address_stats_map()[address->address_string] =
       TransactedAddressStats(address->address_string);
+}
+
+void BitcoinTestRpcServer::AddBalanceAddress(
+    const mojom::BitcoinAddressPtr& address,
+    uint64_t balance) {
+  address_stats_map()[address->address_string] =
+      BalanceAddressStats(address->address_string, balance);
 }
 
 void BitcoinTestRpcServer::AddMempoolBalance(

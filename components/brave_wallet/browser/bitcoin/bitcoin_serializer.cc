@@ -51,8 +51,8 @@ const std::vector<uint8_t>& DummySignature() {
 
 const std::vector<uint8_t>& DummyPubkey() {
   static std::vector<uint8_t> dummy_pubkey = []() {
-    constexpr size_t kLenght = 33;
-    std::vector<uint8_t> result(kLenght, 0);
+    constexpr size_t kLength = 33;
+    std::vector<uint8_t> result(kLength, 0);
     return result;
   }();
   return dummy_pubkey;
@@ -71,8 +71,8 @@ void PushOutpoint(const BitcoinTransaction::Outpoint& outpoint,
   stream.Push32AsLE(outpoint.index);
 }
 
-void PushScriptCodeForSigninig(const DecodedBitcoinAddress& decoded_address,
-                               BtcLikeSerializerStream& stream) {
+void PushScriptCodeForSigning(const DecodedBitcoinAddress& decoded_address,
+                              BtcLikeSerializerStream& stream) {
   // TODO(apaymyshev): support more.
   DCHECK_EQ(decoded_address.address_type,
             BitcoinAddressType::kWitnessV0PubkeyHash);
@@ -133,7 +133,7 @@ void SerializeInputs(const BitcoinTransaction& tx,
   stream.PushVarInt(tx.inputs().size());
   for (const auto& input : tx.inputs()) {
     PushOutpoint(input.utxo_outpoint, stream);
-    // TODO(apaymsyhev): we support only segwit inputs by now, so script_sig
+    // TODO(apaymyshev): we support only segwit inputs by now, so script_sig
     // should be emtpy.
     DCHECK(input.script_sig.empty());
     stream.PushSizeAndBytes(input.script_sig);
@@ -335,10 +335,10 @@ std::optional<SHA256HashArray> BitcoinSerializer::SerializeInputForSign(
   stream.PushBytes(HashPrevouts(tx));  // 2.
   stream.PushBytes(HashSequence(tx));  // 3.
 
-  PushOutpoint(input.utxo_outpoint, stream);            // 4
-  PushScriptCodeForSigninig(*decoded_address, stream);  // 5.
-  stream.Push64AsLE(input.utxo_value);                  // 6.
-  stream.Push32AsLE(input.n_sequence());                // 7.
+  PushOutpoint(input.utxo_outpoint, stream);           // 4
+  PushScriptCodeForSigning(*decoded_address, stream);  // 5.
+  stream.Push64AsLE(input.utxo_value);                 // 6.
+  stream.Push32AsLE(input.n_sequence());               // 7.
 
   stream.PushBytes(HashOutputs(tx));     // 8.
   stream.Push32AsLE(tx.locktime());      // 9.
@@ -397,7 +397,7 @@ uint32_t BitcoinSerializer::CalcInputVBytesInTransaction(
 // static
 uint32_t BitcoinSerializer::CalcTransactionWeight(const BitcoinTransaction& tx,
                                                   bool dummy_signatures) {
-  // TODO(apaymsyhev): we support only segwit inputs by now, so script_sig
+  // TODO(apaymyshev): we support only segwit inputs by now, so script_sig
   // should be emtpy.
   for (const auto& input : tx.inputs()) {
     DCHECK(input.script_sig.empty());

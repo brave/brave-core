@@ -305,12 +305,10 @@ void EthereumProviderImpl::SendOrSignTransactionInternal(
   if (!account_id) {
     return;
   }
-
-  if (ShouldCreate1559Tx(tx_data_1559.Clone(),
-                         brave_wallet_service_->network_manager()
-                             ->IsEip1559Chain(chain->chain_id)
-                             .value_or(false),
-                         keyring_service_->GetAllAccountInfos(), account_id)) {
+  const bool is_eip_1559_network = brave_wallet_service_->network_manager()
+                                       ->IsEip1559Chain(chain->chain_id)
+                                       .value_or(false);
+  if (is_eip_1559_network && ShouldCreate1559Tx(*tx_data_1559)) {
     // Set chain_id to current chain_id.
     tx_data_1559->chain_id = chain->chain_id;
     tx_service_->AddUnapprovedTransactionWithOrigin(

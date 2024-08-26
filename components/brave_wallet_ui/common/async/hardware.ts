@@ -3,18 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { assertNotReached } from 'chrome://resources/js/assert.js'
 import {
   SignHardwareTransactionType,
   SignHardwareOperationResult,
-  LedgerDerivationPaths,
-  SolDerivationPaths,
-  TrezorDerivationPaths,
-  HardwareWalletConnectOpts
+  FetchHardwareWalletAccountsProps,
+  GetAccountsHardwareOperationResult
 } from '../hardware/types'
 import { StatusCodes as LedgerStatusCodes } from '@ledgerhq/errors'
 import { getLocale } from '../../../common/locale'
 import type WalletApiProxy from '../../common/wallet_api_proxy'
-import { getAPIProxy } from './bridge'
 import {
   getHardwareKeyring,
   getLedgerEthereumHardwareKeyring,
@@ -27,10 +25,8 @@ import { TrezorErrorsCodes } from '../hardware/trezor/trezor-messages'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import EthereumLedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
-import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
 import {
   BraveWallet,
-  HardwareVendor,
   HardwareWalletResponseCodeType,
   SerializableTransactionInfo
 } from '../../constants/types'
@@ -287,7 +283,7 @@ export async function signLedgerSolanaTransaction(
 }
 
 export async function signMessageWithHardwareKeyring(
-  vendor: HardwareVendor,
+  vendor: BraveWallet.HardwareVendor,
   path: string,
   messageData: Omit<BraveWallet.SignMessageRequest, 'originInfo'>
 ): Promise<SignHardwareOperationResult> {
@@ -348,32 +344,26 @@ export async function signMessageWithHardwareKeyring(
 }
 
 export async function signRawTransactionWithHardwareKeyring(
-  vendor: HardwareVendor,
+  vendor: BraveWallet.HardwareVendor,
   path: string,
   message: BraveWallet.ByteArrayStringUnion,
-  coin: BraveWallet.CoinType,
   onAuthorized?: () => void
 ): Promise<SignHardwareOperationResult> {
-  const deviceKeyring = getHardwareKeyring(vendor, coin, onAuthorized)
+  const deviceKeyring = getHardwareKeyring(
+    vendor,
+    BraveWallet.CoinType.SOL,
+    onAuthorized
+  )
 
   if (deviceKeyring instanceof SolanaLedgerBridgeKeyring && message.bytes) {
     return deviceKeyring.signTransaction(path, Buffer.from(message.bytes))
-  } else if (
-    deviceKeyring instanceof TrezorBridgeKeyring ||
-    deviceKeyring instanceof EthereumLedgerBridgeKeyring ||
-    deviceKeyring instanceof FilecoinLedgerBridgeKeyring
-  ) {
-    return {
-      success: false,
-      error: getLocale('braveWalletHardwareOperationUnsupportedError')
-    }
   }
 
-  return { success: false, error: getLocale('braveWalletUnknownKeyringError') }
+  assertNotReached(`Unsupported  vendor ${vendor}`)
 }
 
 export async function cancelHardwareOperation(
-  vendor: HardwareVendor,
+  vendor: BraveWallet.HardwareVendor,
   coin: BraveWallet.CoinType
 ) {
   const deviceKeyring = getHardwareKeyring(vendor, coin)
@@ -386,74 +376,13 @@ export async function cancelHardwareOperation(
   }
 }
 
-export const onConnectHardwareWallet = async (
-  opts: HardwareWalletConnectOpts
-): Promise<BraveWallet.HardwareWalletAccount[]> => {
+export const loadAccountsFromDevice = async (
+  opts: FetchHardwareWalletAccountsProps
+): Promise<GetAccountsHardwareOperationResult> => {
   const keyring = getHardwareKeyring(
-    opts.hardware,
-    opts.coin,
+    opts.scheme.vendor,
+    opts.scheme.coin,
     opts.onAuthorized
   )
-
-  const isLedger = keyring instanceof EthereumLedgerBridgeKeyring
-  const isTrezor = keyring instanceof TrezorBridgeKeyring
-  if ((isLedger || isTrezor) && opts.scheme) {
-    const result = isLedger
-      ? await keyring.getAccounts(
-          opts.startIndex,
-          opts.stopIndex,
-          opts.scheme as LedgerDerivationPaths
-        )
-      : await keyring.getAccounts(
-          opts.startIndex,
-          opts.stopIndex,
-          opts.scheme as TrezorDerivationPaths
-        )
-
-    if (result.payload) {
-      return result.payload
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-throw-literal
-    throw result.error
-  } else if (keyring instanceof FilecoinLedgerBridgeKeyring && opts.network) {
-    const result = await keyring.getAccounts(
-      opts.startIndex,
-      opts.stopIndex,
-      opts.network
-    )
-
-    if (result.payload) {
-      return result.payload
-    }
-    // eslint-disable-next-line @typescript-eslint/no-throw-literal
-    throw result.error
-  } else if (
-    keyring instanceof SolanaLedgerBridgeKeyring &&
-    opts.network &&
-    opts.scheme
-  ) {
-    const result = await keyring.getAccounts(
-      opts.startIndex,
-      opts.stopIndex,
-      opts.scheme as SolDerivationPaths
-    )
-
-    if (result.payload) {
-      const { braveWalletService } = getAPIProxy()
-      const addressesEncoded = await braveWalletService.base58Encode(
-        result.payload.map((hardwareAccount) => [
-          ...(hardwareAccount.addressBytes || [])
-        ])
-      )
-      for (let i = 0; i < result.payload.length; i++) {
-        result.payload[i].address = addressesEncoded.addresses[i]
-      }
-      return result.payload
-    }
-    // eslint-disable-next-line @typescript-eslint/no-throw-literal
-    throw result.error
-  }
-
-  return []
+  return await keyring.getAccounts(opts.startIndex, opts.count, opts.scheme)
 }

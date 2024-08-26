@@ -1691,7 +1691,8 @@ TEST_F(SolanaTxManagerUnitTest, GetTransactionMessageToSign) {
   std::vector<mojom::HardwareWalletAccountPtr> hw_infos;
   hw_infos.push_back(mojom::HardwareWalletAccount::New(
       "89DzXVKJ79xf9MkzTxatQESh5fcvsqBo9fCsbAXkCaZE", "path", "name 1",
-      "Ledger", "device1", mojom::CoinType::SOL, mojom::KeyringId::kSolana));
+      mojom::HardwareVendor::kLedger, "device1", mojom::CoinType::SOL,
+      mojom::KeyringId::kSolana));
   auto from = keyring_service_->AddHardwareAccountsSync(std::move(hw_infos))[0]
                   ->account_id->Clone();
   const std::string to = "148FvZU6e67eSB12wv7fXCH5FsTDW8tsxXo3nFuZhfCF";
@@ -1735,7 +1736,8 @@ TEST_F(SolanaTxManagerUnitTest, ProcessSolanaHardwareSignature) {
   std::vector<mojom::HardwareWalletAccountPtr> hw_infos;
   hw_infos.push_back(mojom::HardwareWalletAccount::New(
       "89DzXVKJ79xf9MkzTxatQESh5fcvsqBo9fCsbAXkCaZE", "path", "name 1",
-      "Ledger", "device1", mojom::CoinType::SOL, mojom::KeyringId::kSolana));
+      mojom::HardwareVendor::kLedger, "device1", mojom::CoinType::SOL,
+      mojom::KeyringId::kSolana));
   auto from = keyring_service_->AddHardwareAccountsSync(std::move(hw_infos))[0]
                   ->account_id.Clone();
   const std::string to = "148FvZU6e67eSB12wv7fXCH5FsTDW8tsxXo3nFuZhfCF";

@@ -6,16 +6,16 @@
 import styled from 'styled-components'
 import { LoaderIcon } from 'brave-ui/components/icons'
 import * as leo from '@brave/leo/tokens/css/variables'
-import { HardwareVendor } from '../../../constants/types'
 import Checkbox from '@brave/leo/react/checkbox'
 
 import TrezorLight from './images/trezor_light.svg'
 import TrezorDark from './images/trezor_dark.svg'
 import LedgerLight from './images/ledger_light.svg'
 import LedgerDark from './images/ledger_dark.svg'
+import { BraveWallet } from '../../../constants/types'
 
 export const HardwareWalletGraphic = styled.div<{
-  hardwareVendor: HardwareVendor
+  hardwareVendor: BraveWallet.HardwareVendor
 }>`
   display: flex;
   flex-direction: column;
@@ -24,11 +24,19 @@ export const HardwareWalletGraphic = styled.div<{
   height: 179px;
 
   background-image: ${(p) =>
-    `url(${p.hardwareVendor === 'Trezor' ? TrezorLight : LedgerLight})`};
+    `url(${
+      p.hardwareVendor === BraveWallet.HardwareVendor.kTrezor
+        ? TrezorLight
+        : LedgerLight
+    })`};
 
   @media (prefers-color-scheme: dark) {
     background-image: ${(p) =>
-      `url(${p.hardwareVendor === 'Trezor' ? TrezorDark : LedgerDark})`};
+      `url(${
+        p.hardwareVendor === BraveWallet.HardwareVendor.kTrezor
+          ? TrezorDark
+          : LedgerDark
+      })`};
   }
   background-color: ${leo.color.container.background};
   background-size: contain;

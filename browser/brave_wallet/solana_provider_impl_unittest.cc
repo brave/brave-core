@@ -193,8 +193,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
   mojom::AccountInfoPtr AddHardwareAccount(const std::string& address) {
     std::vector<mojom::HardwareWalletAccountPtr> hw_accounts;
     hw_accounts.push_back(mojom::HardwareWalletAccount::New(
-        address, "m/44'/501'/0'/0", "name 1", "Ledger", "device1",
-        mojom::CoinType::SOL, mojom::kSolanaKeyringId));
+        address, "m/44'/501'/0'/0", "name 1", mojom::HardwareVendor::kLedger,
+        "device1", mojom::CoinType::SOL, mojom::kSolanaKeyringId));
 
     auto added_accounts =
         keyring_service_->AddHardwareAccountsSync(std::move(hw_accounts));
@@ -781,7 +781,7 @@ TEST_F(SolanaProviderImplUnitTest, SignMessage) {
   mojom::SolanaProviderError error;
   std::string error_message;
 
-  // Disconnected state will be rejcted.
+  // Disconnected state will be rejected.
   ASSERT_FALSE(IsConnected());
   std::string signature =
       SignMessage({1, 2, 3, 4}, std::nullopt, &error, &error_message);
@@ -868,7 +868,7 @@ TEST_F(SolanaProviderImplUnitTest, SignMessage_Hardware) {
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
 
-  // Hareware signing has error.
+  // Hardware signing has error.
   signature = SignMessage(mock_msg, std::nullopt, &error, &error_message, true,
                           true, mock_hw_sig.Clone(), "error");
   EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
@@ -923,7 +923,7 @@ TEST_F(SolanaProviderImplUnitTest, SignTransactionAPIs) {
   SetSelectedAccount(added_account->account_id);
   Navigate(GURL("https://brave.com"));
 
-  // Disconnected state will be rejcted.
+  // Disconnected state will be rejected.
   ASSERT_FALSE(IsConnected());
   auto value = SignAndSendTransaction(
       kEncodedSerializedMsg, mojom::SolanaProviderError::kUnauthorized,
@@ -1017,7 +1017,7 @@ TEST_F(SolanaProviderImplUnitTest, SignTransactionAPIs_Hardware) {
       l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), true, false);
   EXPECT_TRUE(signed_txs.empty());
 
-  // Hardware signning has error.
+  // Hardware signing has error.
   signed_tx = SignTransaction(encoded_serialized_msg,
                               mojom::SolanaProviderError::kInternalError,
                               "error", true, true, nullptr, "error");

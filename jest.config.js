@@ -115,6 +115,9 @@ module.exports = {
     ),
     'chrome://interstitials\\/(.*)': getBuildOutputPathList(
       'gen/components/security_interstitials/core/$1'
-    )
+    ),
+    // workaround for https://github.com/LedgerHQ/ledger-live/issues/763
+    '@ledgerhq/devices/hid-framing':
+      '<rootDir>/node_modules/@ledgerhq/devices/lib/hid-framing'
   }
 }

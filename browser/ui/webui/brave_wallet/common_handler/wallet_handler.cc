@@ -38,8 +38,8 @@ void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
   std::move(callback).Run(mojom::WalletInfo::New(
       keyring_service->IsWalletCreatedSync(), keyring_service->IsLockedSync(),
       keyring_service->IsWalletBackedUpSync(), IsBitcoinEnabled(),
-      IsBitcoinImportEnabled(), IsZCashEnabled(), IsAnkrBalancesEnabled(),
-      IsTransactionSimulationsEnabled()));
+      IsBitcoinImportEnabled(), IsBitcoinLedgerEnabled(), IsZCashEnabled(),
+      IsAnkrBalancesEnabled(), IsTransactionSimulationsEnabled()));
 }
 
 }  // namespace brave_wallet

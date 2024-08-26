@@ -24,10 +24,7 @@ mojom::TxDataPtr ParseEthTransactionParams(const std::string& json,
                                            std::string* from);
 mojom::TxData1559Ptr ParseEthTransaction1559Params(const std::string& json,
                                                    std::string* from);
-bool ShouldCreate1559Tx(mojom::TxData1559Ptr tx_data_1559,
-                        bool network_supports_eip1559,
-                        const std::vector<mojom::AccountInfoPtr>& account_infos,
-                        const mojom::AccountIdPtr& account_id);
+bool ShouldCreate1559Tx(const mojom::TxData1559& tx_data_1559);
 
 bool NormalizeEthRequest(const std::string& input_json,
                          std::string* output_json);

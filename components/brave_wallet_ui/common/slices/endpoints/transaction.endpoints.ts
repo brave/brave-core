@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { assert } from 'chrome://resources/js/assert.js'
 import { mapLimit } from 'async'
 
 // types
@@ -12,7 +13,6 @@ import {
   ER20TransferParams,
   ERC721TransferFromParams,
   ETHFilForwarderTransferFromParams,
-  HardwareVendor,
   SendBtcTransactionParams,
   SendEthTransactionParams,
   SendFilTransactionParams,
@@ -481,6 +481,8 @@ export const transactionEndpoints = ({
           const { data: api } = baseQuery(undefined)
           const { braveWalletService, panelHandler } = api
 
+          assert(arg.account.accountId.coin === BraveWallet.CoinType.SOL)
+
           if (!isHardwareAccount(arg.account.accountId)) {
             const errorString = getLocale('braveWalletHardwareAccountNotFound')
 
@@ -516,10 +518,9 @@ export const transactionEndpoints = ({
           }
 
           const signed = await signRawTransactionWithHardwareKeyring(
-            info.vendor as unknown as HardwareVendor,
+            info.vendor,
             info.path,
             arg.request.rawMessage,
-            arg.account.accountId.coin,
             () => {
               // dismiss hardware connect screen
               store.dispatch(PanelActions.navigateToMain())
@@ -661,10 +662,9 @@ export const transactionEndpoints = ({
 
           for (const rawMessage of arg.request.rawMessages) {
             const signed = await signRawTransactionWithHardwareKeyring(
-              info.vendor as unknown as HardwareVendor,
+              info.vendor,
               info.path,
               rawMessage,
-              arg.account.accountId.coin,
               () => {
                 // dismiss hardware connect screen
                 store.dispatch(PanelActions.navigateToMain())
@@ -1234,7 +1234,7 @@ export const transactionEndpoints = ({
             navigateToConnectHardwareWallet(apiProxy.panelHandler, store)
           }
 
-          if (hardwareAccount.vendor === BraveWallet.LEDGER_HARDWARE_VENDOR) {
+          if (hardwareAccount.vendor === BraveWallet.HardwareVendor.kLedger) {
             let success, error, code
             switch (foundAccount.accountId.coin) {
               case BraveWallet.CoinType.ETH:
@@ -1321,7 +1321,7 @@ export const transactionEndpoints = ({
               )
             }
           } else if (
-            hardwareAccount.vendor === BraveWallet.TREZOR_HARDWARE_VENDOR
+            hardwareAccount.vendor === BraveWallet.HardwareVendor.kTrezor
           ) {
             const { success, error, deviceError } = await signTrezorTransaction(
               apiProxy,

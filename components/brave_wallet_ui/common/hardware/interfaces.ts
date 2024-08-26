@@ -3,31 +3,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { SerializableTransactionInfo } from '../../constants/types'
 import {
-  BraveWallet,
-  FilecoinNetwork,
-  HardwareVendor,
-  SerializableTransactionInfo
-} from '../../constants/types'
-import {
+  HardwareImportScheme,
   GetAccountsHardwareOperationResult,
   HardwareOperationResult,
   SignHardwareOperationResult
 } from './types'
+import { BridgeType } from './untrusted_shared_types'
 
 export abstract class HardwareKeyring {
-  abstract coin(): BraveWallet.CoinType
-  abstract keyringId(network?: string): BraveWallet.KeyringId
-  abstract type(): HardwareVendor
+  abstract bridgeType(): BridgeType
+  abstract getAccounts(
+    from: number,
+    count: number,
+    scheme: HardwareImportScheme
+  ): Promise<GetAccountsHardwareOperationResult>
   abstract unlock(): Promise<HardwareOperationResult>
 }
 
 export abstract class TrezorKeyring extends HardwareKeyring {
-  abstract getAccounts(
-    from: number,
-    to: number,
-    scheme: string
-  ): Promise<GetAccountsHardwareOperationResult>
   abstract signTransaction(
     path: string,
     txInfo: SerializableTransactionInfo,
@@ -45,11 +40,6 @@ export abstract class TrezorKeyring extends HardwareKeyring {
 }
 
 export abstract class LedgerEthereumKeyring extends HardwareKeyring {
-  abstract getAccounts(
-    from: number,
-    to: number,
-    scheme: string
-  ): Promise<GetAccountsHardwareOperationResult>
   abstract signPersonalMessage(
     path: string,
     address: string,
@@ -67,24 +57,16 @@ export abstract class LedgerEthereumKeyring extends HardwareKeyring {
 }
 
 export abstract class LedgerFilecoinKeyring extends HardwareKeyring {
-  abstract getAccounts(
-    from: number,
-    to: number,
-    network: FilecoinNetwork
-  ): Promise<GetAccountsHardwareOperationResult>
   abstract signTransaction(
     message: string
   ): Promise<SignHardwareOperationResult>
 }
 
 export abstract class LedgerSolanaKeyring extends HardwareKeyring {
-  abstract getAccounts(
-    from: number,
-    to: number,
-    scheme: string
-  ): Promise<GetAccountsHardwareOperationResult>
   abstract signTransaction(
     path: string,
     rawTxBytes: Buffer
   ): Promise<SignHardwareOperationResult>
 }
+
+export abstract class LedgerBitcoinKeyring extends HardwareKeyring {}

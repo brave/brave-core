@@ -88,7 +88,7 @@ export const Accounts = () => {
     const foundTrezorAccounts = accounts.filter((account) => {
       return (
         account.accountId.kind === BraveWallet.AccountKind.kHardware &&
-        account.hardware?.vendor === BraveWallet.TREZOR_HARDWARE_VENDOR
+        account.hardware?.vendor === BraveWallet.HardwareVendor.kTrezor
       )
     })
     return groupAccountsById(foundTrezorAccounts, 'deviceId')
@@ -98,7 +98,7 @@ export const Accounts = () => {
     const foundLedgerAccounts = accounts.filter((account) => {
       return (
         account.accountId.kind === BraveWallet.AccountKind.kHardware &&
-        account.hardware?.vendor === BraveWallet.LEDGER_HARDWARE_VENDOR
+        account.hardware?.vendor === BraveWallet.HardwareVendor.kLedger
       )
     })
     return groupAccountsById(foundLedgerAccounts, 'deviceId')

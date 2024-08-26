@@ -26,6 +26,7 @@ enum class ExtendedKeyVersion {
   // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#serialization-format
   kXprv = 0x0488ade4,
   kXpub = 0x0488b21e,
+  kTpub = 0x043587cf,
 
   // https://github.com/bitcoin/bips/blob/master/bip-0049.mediawiki#extended-key-version
   kYprv = 0x049d7878,

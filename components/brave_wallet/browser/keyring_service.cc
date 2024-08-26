@@ -56,11 +56,13 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "crypto/random.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 namespace {
+
+constexpr char kLedgerPrefValue[] = "Ledger";
+constexpr char kTrezorPrefValue[] = "Trezor";
 
 std::string GetAccountName(size_t number) {
   return l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_NUMBERED_ACCOUNT_NAME,
@@ -71,7 +73,7 @@ mojom::AccountInfoPtr MakeAccountInfoForHardwareAccount(
     const std::string& address,
     const std::string& name,
     const std::string& derivation_path,
-    const std::string& hardware_vendor,
+    mojom::HardwareVendor hardware_vendor,
     const std::string& device_id,
     mojom::KeyringId keyring_id) {
   return mojom::AccountInfo::New(
@@ -90,10 +92,16 @@ void SerializeHardwareAccounts(const std::string& device_id,
     std::string address = account.first;
     const base::Value::Dict& dict = account.second.GetDict();
 
-    std::string hardware_vendor;
+    mojom::HardwareVendor hardware_vendor = mojom::HardwareVendor::kLedger;
     const std::string* hardware_value = dict.FindString(kHardwareVendor);
     if (hardware_value) {
-      hardware_vendor = *hardware_value;
+      if (*hardware_value == kLedgerPrefValue) {
+        hardware_vendor = mojom::HardwareVendor::kLedger;
+      } else if (*hardware_value == kTrezorPrefValue) {
+        hardware_vendor = mojom::HardwareVendor::kTrezor;
+      } else {
+        continue;
+      }
     }
 
     std::string name;
@@ -1354,12 +1362,17 @@ std::vector<mojom::AccountInfoPtr> KeyringService::AddHardwareAccountsSync(
   for (const auto& info : infos) {
     const mojom::CoinType coin = info->coin;
     mojom::KeyringId keyring_id = info->keyring_id;
-    const std::string& hardware_vendor = info->hardware_vendor;
+    DCHECK(info->hardware_vendor == mojom::HardwareVendor::kLedger ||
+           info->hardware_vendor == mojom::HardwareVendor::kTrezor);
+    std::string hardware_vendor_string =
+        info->hardware_vendor == mojom::HardwareVendor::kLedger
+            ? kLedgerPrefValue
+            : kTrezorPrefValue;
     const std::string& device_id = info->device_id;
 
     base::Value::Dict hw_account;
     hw_account.Set(kAccountName, info->name);
-    hw_account.Set(kHardwareVendor, hardware_vendor);
+    hw_account.Set(kHardwareVendor, hardware_vendor_string);
     hw_account.Set(kHardwareDerivationPath, info->derivation_path);
     hw_account.Set(kCoinType, static_cast<int>(coin));
 
@@ -1371,7 +1384,7 @@ std::vector<mojom::AccountInfoPtr> KeyringService::AddHardwareAccountsSync(
         ->Set(info->address, std::move(hw_account));
 
     auto account_info = MakeAccountInfoForHardwareAccount(
-        info->address, info->name, info->derivation_path, hardware_vendor,
+        info->address, info->name, info->derivation_path, info->hardware_vendor,
         info->device_id, keyring_id);
 
     accounts_added.push_back(std::move(account_info));

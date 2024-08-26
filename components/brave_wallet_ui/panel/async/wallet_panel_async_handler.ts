@@ -10,8 +10,7 @@ import {
   BraveWallet,
   WalletPanelState,
   PanelState,
-  PanelTypes,
-  HardwareVendor
+  PanelTypes
 } from '../../constants/types'
 import { ShowConnectToSitePayload } from '../constants/action_types'
 import { cancelHardwareOperation } from '../../common/async/hardware'
@@ -64,7 +63,7 @@ handler.on(
       // eslint-disable-next-line max-len
       // eslint-disable @typescript-eslint/no-unnecessary-type-assertion
       await cancelHardwareOperation(
-        payload.hardware.vendor as HardwareVendor,
+        payload.hardware.vendor,
         payload.accountId.coin
       )
     }
