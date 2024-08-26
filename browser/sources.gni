@@ -294,8 +294,6 @@ if (is_mac) {
     "//brave/browser/brave_browser_main_parts_mac.mm",
     "//brave/browser/brave_shell_integration_mac.h",
     "//brave/browser/brave_shell_integration_mac.mm",
-    "//brave/browser/mac/features.cc",
-    "//brave/browser/mac/features.h",
     "//brave/browser/mac/keystone_glue.h",
     "//brave/browser/mac/keystone_glue.mm",
     "//brave/browser/mac/keystone_registration.h",
