@@ -30,7 +30,7 @@ public class BraveAutocompleteCoordinator {
             Context context, MVCListAdapter.ModelList modelList, boolean forcePhoneStyleOmnibox) {
         ViewProvider<SuggestionListViewHolder> provider =
                 (ViewProvider<SuggestionListViewHolder>)
-                        BraveReflectionUtil.InvokeMethod(
+                        BraveReflectionUtil.invokeMethod(
                                 AutocompleteCoordinator.class,
                                 this,
                                 "createViewProvider",

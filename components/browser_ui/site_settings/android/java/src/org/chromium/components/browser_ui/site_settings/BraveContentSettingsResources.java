@@ -58,7 +58,7 @@ public class BraveContentSettingsResources extends ContentSettingsResources {
         }
 
         return (ResourceItem)
-                BraveReflectionUtil.InvokeMethod(
+                BraveReflectionUtil.invokeMethod(
                         ContentSettingsResources.class,
                         null,
                         "getResourceItem",

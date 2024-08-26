@@ -834,7 +834,7 @@ public class BraveRewardsPanel
                         @Override
                         public void onClick(View v) {
                             mBraveRewardsNativeWorker.deleteNotification(mCurrentNotificationId);
-                            assert (BraveReflectionUtil.EqualTypes(
+                            assert (BraveReflectionUtil.equalTypes(
                                     mActivity.getClass(), BraveActivity.class));
                             BraveActivity.class
                                     .cast(mActivity)
