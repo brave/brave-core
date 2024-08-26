@@ -23,13 +23,13 @@
 namespace chrome {
 
 void AttemptRestart() {
-  if (ShouldUseOmaha4() || !brave_relaunch_handler::RelaunchOnMac()) {
+  if (brave::ShouldUseOmaha4() || !brave_relaunch_handler::RelaunchOnMac()) {
     AttemptRestart_ChromiumImpl();
   }
 }
 
 void RelaunchIgnoreUnloadHandlers() {
-  if (ShouldUseOmaha4() || !brave_relaunch_handler::RelaunchOnMac()) {
+  if (brave::ShouldUseOmaha4() || !brave_relaunch_handler::RelaunchOnMac()) {
     RelaunchIgnoreUnloadHandlers_ChromiumImpl();
   }
 }
