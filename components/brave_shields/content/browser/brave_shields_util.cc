@@ -396,6 +396,12 @@ bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
     return false;
   }
 
+  // Don't reduce language if there's a webcompat exception
+  if (brave_shields::IsWebcompatEnabled(
+          map, ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE, url)) {
+    return false;
+  }
+
   return true;
 }
 
