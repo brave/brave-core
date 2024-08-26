@@ -1,8 +1,8 @@
 diff --git a/crypto/unexportable_key_metrics.cc b/crypto/unexportable_key_metrics.cc
-index c7a37d4a2f159a61c06e2be00f8908beb3de1b83..772a825f4d3025d127212d916eb01a0e816a92e8 100644
+index 75a14cebd19b95ff5c8a951031cadf2235df6edc..7460bc7fddd13370fc8c935d88267161170ef494 100644
 --- a/crypto/unexportable_key_metrics.cc
 +++ b/crypto/unexportable_key_metrics.cc
-@@ -30,6 +30,7 @@ enum class KeyType {
+@@ -23,6 +23,7 @@ enum class KeyType {
  };
  
  const SignatureVerifier::SignatureAlgorithm kAllAlgorithms[] = {
@@ -10,7 +10,7 @@ index c7a37d4a2f159a61c06e2be00f8908beb3de1b83..772a825f4d3025d127212d916eb01a0e
      SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256,
      SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA256,
  };
-@@ -139,6 +140,7 @@ internal::TPMSupport MeasureVirtualTpmOperations() {
+@@ -116,6 +117,7 @@ internal::TPMSupport MeasureVirtualTpmOperations() {
    if (algo) {
      switch (*algo) {
        case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:
@@ -18,7 +18,7 @@ index c7a37d4a2f159a61c06e2be00f8908beb3de1b83..772a825f4d3025d127212d916eb01a0e
          supported_virtual_algo = internal::TPMSupport::kECDSA;
          break;
        case SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA256:
-@@ -218,6 +220,7 @@ void MeasureTpmOperationsInternal(UnexportableKeyProvider::Config config) {
+@@ -195,6 +197,7 @@ void MeasureTpmOperationsInternal(UnexportableKeyProvider::Config config) {
    if (algo) {
      switch (*algo) {
        case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:
@@ -26,3 +26,11 @@ index c7a37d4a2f159a61c06e2be00f8908beb3de1b83..772a825f4d3025d127212d916eb01a0e
          supported_algo = internal::TPMSupport::kECDSA;
          break;
        case SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA256:
+@@ -296,6 +299,7 @@ std::string AlgorithmToString(SignatureVerifier::SignatureAlgorithm algorithm) {
+     case SignatureVerifier::SignatureAlgorithm::RSA_PSS_SHA256:
+       return "RSA";
+     case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:
++    BRAVE_UNEXPORTED_KEY_METRICS_ALGORITHM_TO_STRING
+       return "ECDSA";
+   }
+ }
