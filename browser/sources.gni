@@ -351,10 +351,10 @@ if (enable_ai_chat) {
 }
 
 if (enable_ai_rewriter) {
-  brave_chrome_browser_deps += [ "//brave/components/ai_rewriter/common" ]
+  brave_chrome_browser_deps += [ "//brave/components/ai_rewriter/common" ] +
+                               brave_browser_ai_rewriter_deps
 
   brave_chrome_browser_sources += brave_browser_ai_rewriter_sources
-  brave_chrome_browser_deps += brave_browser_ai_rewriter_deps
 }
 
 if (enable_brave_vpn) {

@@ -79,7 +79,7 @@ void AIRewriterButtonPositioner::UpdateButton(blink::WebDocument document,
     return;
   }
 
-  // Focus is the clicked carat position, anchor is the current mouse position.
+  // Focus is the clicked caret position, anchor is the current mouse position.
   gfx::Rect anchor;
   gfx::Rect focus;
   frame->LocalRoot()->FrameWidget()->CalculateSelectionBounds(anchor, focus);
