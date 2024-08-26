@@ -33,7 +33,7 @@ class BraveEcdsa : public Ecdsa {
  public:
   static std::unique_ptr<Ecdsa> Create(int key_version,
                                        const std::string_view& public_key) {
-    if (ShouldUseOmaha4()) {
+    if (brave::ShouldUseOmaha4()) {
       std::string base64_decoded = GetKey(kBraveKeyPubBytesBase64);
       return Ecdsa::Create(kBraveKeyVersion, base64_decoded);
     } else {

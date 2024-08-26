@@ -21,7 +21,7 @@ namespace settings {
 BrowserLifetimeHandler::~BrowserLifetimeHandler() {}
 
 void BrowserLifetimeHandler::HandleRelaunch(const base::Value::List& args) {
-  if (ShouldUseOmaha4() || !brave_relaunch_handler::RelaunchOnMac()) {
+  if (brave::ShouldUseOmaha4() || !brave_relaunch_handler::RelaunchOnMac()) {
     BrowserLifetimeHandler_ChromiumImpl::HandleRelaunch(args);
   }
 }

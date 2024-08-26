@@ -7,14 +7,14 @@
 
 #include "brave/browser/sparkle_buildflags.h"
 
-namespace {
+namespace brave {
 
 BASE_FEATURE(kBraveUseOmaha4,
              "BraveUseOmaha4",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-}
-
 bool ShouldUseOmaha4() {
   return base::FeatureList::IsEnabled(kBraveUseOmaha4);
 }
+
+}  // namespace brave
