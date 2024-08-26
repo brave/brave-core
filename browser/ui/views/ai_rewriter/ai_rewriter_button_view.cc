@@ -15,12 +15,15 @@
 #include "brave/browser/ai_rewriter/ai_rewriter_button.h"
 #include "brave/browser/ui/ai_rewriter/ai_rewriter_dialog_delegate.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "content/public/browser/page.h"
 #include "content/public/browser/render_widget_host.h"
@@ -30,12 +33,15 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
 #include "ui/color/color_id.h"
+#include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
+#include "ui/views/animation/ink_drop.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/button/label_button.h"
+#include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/widget/widget.h"
 
@@ -51,23 +57,33 @@ AIRewriterButtonView::AIRewriterButtonView(Browser* browser,
   tab_strip_observation_.Observe(browser->tab_strip_model());
 
   views::Builder<AIRewriterButtonView>(this)
-      .SetBackground(
-          views::CreateRoundedRectBackground(SK_ColorWHITE, kButtonRadius))
-      .SetBorder(views::CreateRoundedRectBorder(1, kButtonRadius, SK_ColorGRAY))
+      .SetBackground(views::CreateThemedRoundedRectBackground(kColorToolbar,
+                                                              kButtonRadius))
+      .SetBorder(views::CreateThemedRoundedRectBorder(
+          1, kButtonRadius, nala::kColorDividerSubtle))
       .SetLayoutManager(std::make_unique<views::FillLayout>())
       .AddChild(
           views::Builder<views::LabelButton>()
               .SetImageModel(
                   views::LabelButton::ButtonState::STATE_NORMAL,
-                  ui::ImageModel::FromVectorIcon(kLeoProductBraveLeoIcon))
-              .SetImageModel(views::LabelButton::ButtonState::STATE_HOVERED,
-                             ui::ImageModel::FromVectorIcon(
-                                 kLeoProductBraveLeoIcon,
-                                 ui::ColorIds::kColorButtonForeground))
+                  ui::ImageModel::FromVectorIcon(kLeoProductBraveLeoIcon,
+                                                 kColorToolbarButtonIcon))
+              .SetImageModel(
+                  views::LabelButton::ButtonState::STATE_HOVERED,
+                  ui::ImageModel::FromVectorIcon(
+                      kLeoProductBraveLeoIcon, kColorToolbarButtonIconHovered))
               .SetPreferredSize(gfx::Size(32, 32))
               .SetCallback(base::BindRepeating(
                   base::IgnoreResult(&AIRewriterButtonView::OpenDialog),
-                  base::Unretained(this))))
+                  base::Unretained(this)))
+              .CustomConfigure(base::BindOnce([](views::LabelButton* button) {
+                views::InkDrop::Get(button)->SetMode(
+                    views::InkDropHost::InkDropMode::ON);
+                CreateToolbarInkdropCallbacks(button, kColorToolbarInkDropHover,
+                                              kColorToolbarInkDropRipple);
+                views::InstallRoundRectHighlightPathGenerator(
+                    button, gfx::Insets(), kButtonRadius);
+              })))
       .BuildChildren();
 }
 
