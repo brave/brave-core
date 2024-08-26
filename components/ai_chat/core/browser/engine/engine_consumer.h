@@ -82,6 +82,11 @@ class EngineConsumer {
   }
 
  protected:
+  // Check if we should call GenerationCompletedCallback early based on the
+  // conversation history. Ex. empty history, or if the last entry is not a
+  // human message except page refine event.
+  bool CanPerformCompletionRequest(
+      const ConversationHistory& conversation_history) const;
   int max_page_content_length_ = 0;
 };
 

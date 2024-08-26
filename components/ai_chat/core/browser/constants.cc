@@ -106,6 +106,8 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"gotItButtonLabel", IDS_CHAT_UI_GOT_IT_BUTTON_LABEL},
       {"pageContentTooLongWarning", IDS_CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING},
       {"pageContentRefinedWarning", IDS_CHAT_UI_PAGE_CONTENT_REFINED_WARNING},
+      {"pageContentRefinedInProgress",
+       IDS_CHAT_UI_PAGE_CONTENT_REFINED_IN_PROGRESS},
       {"errorConversationEnd", IDS_CHAT_UI_CONVERSATION_END_ERROR},
       {"searchInProgress", IDS_CHAT_UI_SEARCH_IN_PROGRESS},
       {"searchQueries", IDS_CHAT_UI_SEARCH_QUERIES},

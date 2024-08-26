@@ -97,13 +97,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     const std::string& human_input,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
-  if (conversation_history.empty()) {
-    std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
-    return;
-  }
-
-  const mojom::ConversationTurnPtr& last_turn = conversation_history.back();
-  if (last_turn->character_type != mojom::CharacterType::HUMAN) {
+  if (!CanPerformCompletionRequest(conversation_history)) {
     std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
     return;
   }
@@ -128,6 +122,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     const std::string& text = (message->edits && !message->edits->empty())
                                   ? message->edits->back()->text
                                   : message->text;
+    const auto& last_turn = conversation_history.back();
     event.content = (message == last_turn) ? human_input : text;
 
     // TODO(petemill): Shouldn't the server handle the map of mojom::ActionType
