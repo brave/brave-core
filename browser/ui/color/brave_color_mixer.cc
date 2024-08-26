@@ -37,11 +37,6 @@
 
 namespace {
 
-// Location bar colors
-constexpr SkColor kPrivateLocationBarBgBase = kPrivateFrame;
-constexpr SkColor kLightLocationBarBgBase = SK_ColorWHITE;
-constexpr SkColor kDarkLocationBarBgBase = kDarkFrame;
-
 // Copied from //chrome/browser/ui/omnibox//omnibox_theme.h
 // As below values are not changed for several years, it would be safe to copy.
 // Can't include //chrome/browser/ui/omnibox in here due to circular deps.
@@ -328,18 +323,6 @@ void AddBraveColorMixerForAllThemes(ui::ColorProvider* provider,
 }
 
 }  // namespace
-
-SkColor GetLocationBarBackground(bool dark, bool priv) {
-  if (priv) {
-    return kPrivateLocationBarBgBase;
-  }
-
-  if (dark) {
-    return kDarkLocationBarBgBase;
-  }
-
-  return kLightLocationBarBgBase;
-}
 
 void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
                                        const ui::ColorProviderKey& key) {
@@ -689,16 +672,15 @@ void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
                                            const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  mixer[kColorToolbarBackgroundSubtleEmphasis] = {GetLocationBarBackground(
-      /*dark*/ false, /*private*/ true)};
+  mixer[kColorToolbarBackgroundSubtleEmphasis] = {kPrivateFrame};
   mixer[kColorToolbarBackgroundSubtleEmphasisHovered] = {
       kColorToolbarBackgroundSubtleEmphasis};
   mixer[kColorOmniboxText] = {kDarkOmniboxText};
 
-  mixer[kColorOmniboxResultsBackground] = {kPrivateLocationBarBgBase};
+  mixer[kColorOmniboxResultsBackground] = {kPrivateFrame};
   if (IsHighContrast()) {
     mixer[kColorOmniboxResultsBackground] = {
-        color_utils::HSLShift(kPrivateLocationBarBgBase, {-1, -1, 0.45})};
+        color_utils::HSLShift(kPrivateFrame, {-1, -1, 0.45})};
   }
 
   AddOmniboxHoverSelect(mixer);
