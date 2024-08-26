@@ -31,7 +31,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
         url.startsWith('chrome-untrusted://');
     }
 
-    function braveTraceBasedMetric(histograms, model) {
+    function braveNavigationMetric(histograms, model) {
       const chromeHelper = model.getOrCreateHelper(
         tr.model.helpers.ChromeModelHelper);
 
@@ -47,13 +47,9 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
         histogram.addSample(sample);
 
       };
-      let launchProcessCount = 0;
       for (const helper of chromeHelper.browserHelpers) {
         helper.iterAllThreads(function (thread) {
-          for (const slice of thread.sliceGroup.slices) {
-            if ((slice.title === 'LaunchProcess' || slice.title === 'LaunchElevatedProcess')) {
-              launchProcessCount++;
-            }
+          for (const slice of thread.asyncSliceGroup.slices) {
             if (slice.title === 'Navigation StartToCommit' &&
               !isSpecialUrl(slice.args.URL)) {
               addSample(
@@ -64,18 +60,14 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
           }
         });
       }
-      addSample(
-        'LaunchProcessCount',
-        tr.b.Unit.byName.unitlessNumber_smallerIsBetter,
-        launchProcessCount);
     }
 
-    tr.metrics.MetricRegistry.register(braveTraceBasedMetric, {
+    tr.metrics.MetricRegistry.register(braveNavigationMetric, {
       requiredCategories: ['benchmark'],
     });
 
     return {
-      braveTraceBasedMetric,
+      braveNavigationMetric,
     };
   });
 </script>
