@@ -620,6 +620,7 @@ provideStrings({
   braveWalletOthers: 'Others: $1%',
   braveWalletSuggested: 'Suggested',
   braveWalletCustom: 'Custom',
+  braveWalletOnNetwork: 'on $1',
 
   // Buy
   braveWalletBuyTitle: 'Test faucet',
