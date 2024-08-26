@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CWVWebView (Internal)
 @property(readonly) web::WebState* webState;
++ (BOOL)_isRestoreDataValid:(NSData*)data;
 @end
 
 NS_ASSUME_NONNULL_END

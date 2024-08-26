@@ -14,4 +14,21 @@
   return _webState.get();
 }
 
++ (BOOL)_isRestoreDataValid:(NSData*)data {
+  NSError* error = nil;
+  NSKeyedUnarchiver* coder =
+      [[NSKeyedUnarchiver alloc] initForReadingFromData:data error:&error];
+  if (error) {
+    return NO;
+  }
+  coder.requiresSecureCoding = NO;
+  CWVWebViewProtobufStorage* cachedProtobufStorage =
+      base::apple::ObjCCastStrict<CWVWebViewProtobufStorage>(
+          [coder decodeObjectForKey:kProtobufStorageKey]);
+  CRWSessionStorage* cachedSessionStorage =
+      base::apple::ObjCCastStrict<CRWSessionStorage>(
+          [coder decodeObjectForKey:kSessionStorageKey]);
+  return (cachedProtobufStorage != nil || cachedSessionStorage != nil);
+}
+
 @end

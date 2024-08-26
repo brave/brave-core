@@ -32,6 +32,10 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
 
 @implementation CWVWebView (Extras)
 
++ (BOOL)isRestoreDataValid:(NSData*)data {
+  return [self _isRestoreDataValid:data];
+}
+
 // Converts base::Value expected to be a dictionary or list to NSDictionary or
 // NSArray, respectively.
 id NSObjectFromCollectionValue(const base::Value* value) {

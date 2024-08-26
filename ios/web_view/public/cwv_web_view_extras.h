@@ -24,6 +24,12 @@ NS_ASSUME_NONNULL_BEGIN
 CWV_EXPORT
 @interface CWVWebView (Extras)
 
+/// Determines if the data used to restore a CWVWebView is a WebState cache and
+/// is valid.
+///
+/// Used for migration purposes, can be removed in the future
++ (BOOL)isRestoreDataValid:(NSData*)data;
+
 - (void)updateScripts;
 - (void)createPDF:(void (^)(NSData* _Nullable))completionHandler;
 - (void)takeSnapshotWithRect:(CGRect)rect

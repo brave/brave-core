@@ -627,6 +627,7 @@ class Tab: NSObject {
     // we extract the information needed to restore the tabs and create a NSURLRequest with the custom session restore URL
     // to trigger the session restore via custom handlers
     if let sessionInfo = restorationData,
+      CWVWebView.isRestoreDataValid(sessionInfo.interactionState),
       let coder = try? NSKeyedUnarchiver(forReadingFrom: sessionInfo.interactionState)
     {
       restoring = true

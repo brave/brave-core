@@ -1315,7 +1315,9 @@ class TabManager: NSObject {
 
     // Tab was created with no active webview session data.
     // Restore tab data from Core-Data URL, and configure it.
-    if sessionTab.interactionState.isEmpty {
+    if sessionTab.interactionState.isEmpty
+      || !CWVWebView.isRestoreDataValid(sessionTab.interactionState)
+    {
       tab.navigationDelegate = navDelegate
 
       if let tabURL = sessionTab.url {
