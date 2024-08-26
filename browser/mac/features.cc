@@ -15,14 +15,6 @@ BASE_FEATURE(kBraveUseOmaha4,
 
 }
 
-bool ShouldUseSparkle() {
-#if BUILDFLAG(ENABLE_SPARKLE)
-  return !ShouldUseOmaha4();
-#else
-  return false;
-#endif
-}
-
 bool ShouldUseOmaha4() {
   return base::FeatureList::IsEnabled(kBraveUseOmaha4);
 }

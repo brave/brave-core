@@ -14,8 +14,6 @@ BASE_DECLARE_FEATURE(kBraveUseOmaha4);
 
 }
 
-bool ShouldUseSparkle();
-
 bool ShouldUseOmaha4();
 
 #endif  // BRAVE_BROWSER_MAC_FEATURES_H_
