@@ -38,6 +38,7 @@ class COMPONENT_EXPORT(AI_REWRITER_RENDERER) AIRewriterButtonPositioner
   void DidCreateDocumentElement() override;
   void OnDestruct() override;
   void DidChangeScrollOffset() override;
+  void FocusedElementChanged(const blink::WebElement& element) override;
 
  private:
   void UpdateButton(blink::WebDocument document, blink::WebDOMEvent event);

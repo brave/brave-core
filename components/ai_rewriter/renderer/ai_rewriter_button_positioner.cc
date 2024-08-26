@@ -50,6 +50,12 @@ void AIRewriterButtonPositioner::DidChangeScrollOffset() {
                blink::WebDOMEvent());
 }
 
+void AIRewriterButtonPositioner::FocusedElementChanged(
+    const blink::WebElement& element) {
+  UpdateButton(render_frame()->GetWebFrame()->GetDocument(),
+               blink::WebDOMEvent());
+}
+
 void AIRewriterButtonPositioner::UpdateButton(blink::WebDocument document,
                                               blink::WebDOMEvent event) {
   if (document.IsNull()) {
