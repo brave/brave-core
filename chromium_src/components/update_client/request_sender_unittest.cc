@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "src/components/update_client/request_sender_unittest.cc"
+
 #include "base/functional/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/update_client/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-#include "src/components/update_client/request_sender_unittest.cc"
 
 namespace update_client {
 
@@ -45,7 +45,8 @@ TEST_F(BraveRequestSenderTest, DoesntUseBraveCUPKeyByDefault) {
 }
 
 TEST_F(BraveRequestSenderTest, UsesBraveCUPKeyWhenOmaha4IsEnabled) {
-  scoped_feature_list_.InitAndEnableFeature(brave::update_client::kBraveUseOmaha4);
+  scoped_feature_list_.InitAndEnableFeature(
+      brave::update_client::kBraveUseOmaha4);
   EXPECT_TRUE(UsesBraveCUPKey());
 }
 
