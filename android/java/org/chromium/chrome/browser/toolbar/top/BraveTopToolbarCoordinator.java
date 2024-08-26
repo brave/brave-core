@@ -129,7 +129,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             // ContextUtils.getApplicationContext() does not respect Dark theme,
             // we must get ToolbarPhone context.
             Object toolbarContext =
-                    BraveReflectionUtil.InvokeMethod(
+                    BraveReflectionUtil.invokeMethod(
                             android.view.View.class, mBraveToolbarLayout, "getContext");
 
             assert toolbarContext instanceof Context;
@@ -139,7 +139,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                     ((Context) toolbarContext)
                             .getColor(R.color.location_bar_background_color_for_ntp);
 
-            BraveReflectionUtil.setIntField(
+            BraveReflectionUtil.setField(
                     ToolbarPhone.class,
                     "mLocationBarBackgroundColorForNtp",
                     mBraveToolbarLayout,
@@ -154,7 +154,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                     ((Context) toolbarContext).getColor(R.color.toolbar_background_color_for_ntp);
 
             if (!ColorUtils.inNightMode((Context) toolbarContext)) {
-                BraveReflectionUtil.setIntField(
+                BraveReflectionUtil.setField(
                         ToolbarPhone.class,
                         "mToolbarBackgroundColorForNtp",
                         mBraveToolbarLayout,

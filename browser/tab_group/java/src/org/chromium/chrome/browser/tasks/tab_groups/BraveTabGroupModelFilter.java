@@ -38,7 +38,7 @@ public abstract class BraveTabGroupModelFilter extends TabModelFilter {
         }
         // Otherwise just call parent.
         return (boolean)
-                BraveReflectionUtil.InvokeMethod(
+                BraveReflectionUtil.invokeMethod(
                         TabGroupModelFilter.class, this, "shouldUseParentIds", Tab.class, tab);
     }
 
@@ -49,7 +49,7 @@ public abstract class BraveTabGroupModelFilter extends TabModelFilter {
 
     private static Token getOrCreateTabGroupId(@NonNull Tab tab) {
         return (Token)
-                BraveReflectionUtil.InvokeMethod(
+                BraveReflectionUtil.invokeMethod(
                         TabGroupModelFilter.class, null, "getOrCreateTabGroupId", Tab.class, tab);
     }
 }
