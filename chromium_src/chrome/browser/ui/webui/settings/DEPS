@@ -1,5 +1,0 @@
-specific_include_rules = {
-  "browser_lifetime_handler\.*cc": [
-    "+brave/components/update_client/features.h",
-   ]
-}

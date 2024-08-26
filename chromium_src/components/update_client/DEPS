@@ -1,5 +1,5 @@
 include_rules = [
   "+brave/components/constants",
+  "+brave/components/update_client",
   "+brave/components/widevine/constants.h",
-  "+brave/components/update_client/features.h",
 ]
