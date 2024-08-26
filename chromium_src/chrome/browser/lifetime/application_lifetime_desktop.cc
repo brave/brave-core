@@ -9,6 +9,7 @@
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 
+#include "brave/browser/mac/features.h"
 #include "brave/browser/ui/webui/settings/brave_relaunch_handler_mac.h"
 
 #define AttemptRestart AttemptRestart_ChromiumImpl
@@ -22,13 +23,13 @@
 namespace chrome {
 
 void AttemptRestart() {
-  if (!brave_relaunch_handler::RelaunchOnMac()) {
+  if (ShouldUseOmaha4() || !brave_relaunch_handler::RelaunchOnMac()) {
     AttemptRestart_ChromiumImpl();
   }
 }
 
 void RelaunchIgnoreUnloadHandlers() {
-  if (!brave_relaunch_handler::RelaunchOnMac()) {
+  if (ShouldUseOmaha4() || !brave_relaunch_handler::RelaunchOnMac()) {
     RelaunchIgnoreUnloadHandlers_ChromiumImpl();
   }
 }

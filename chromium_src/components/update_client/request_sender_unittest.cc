@@ -30,7 +30,7 @@ TEST_F(RequestSenderTest, UsesBraveCUPKey) {
   GURL request_url = std::get<2>(post_interceptor_->GetRequests()[0]);
   // It's hard to check the key contents. But it is easy to check the key
   // version. Ours differs from upstream. So we can use this as a proxy check
-  // that our key is indeed being used.
+  // that our key (which currently has version 1) is indeed being used.
   EXPECT_NE(request_url.query().find("cup2key=1:"), std::string::npos)
       << request_url.query();
 }
