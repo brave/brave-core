@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/mac/features.h"
+#include "brave/components/update_client/features.h"
+#include "build/build_config.h"
 
-#include "brave/browser/sparkle_buildflags.h"
+static_assert(BUILDFLAG(IS_MAC), "Currently for macOS only");
 
-namespace brave {
+namespace brave::update_client {
 
 BASE_FEATURE(kBraveUseOmaha4,
              "BraveUseOmaha4",
@@ -17,4 +18,4 @@ bool ShouldUseOmaha4() {
   return base::FeatureList::IsEnabled(kBraveUseOmaha4);
 }
 
-}  // namespace brave
+}  // namespace brave::update_client

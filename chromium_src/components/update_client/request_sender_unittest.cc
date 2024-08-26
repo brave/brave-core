@@ -12,7 +12,10 @@ namespace update_client {
 
 class RequestSenderTest;
 
-TEST_F(RequestSenderTest, UsesBraveCUPKey) {
+class BraveRequestSenderTest : public RequestSenderTest {};
+
+TEST_F(BraveRequestSenderTest, UsesBraveCUPKey) {
+  // scoped_feature_list_.InitAndEnableFeature();
   EXPECT_TRUE(post_interceptor_->ExpectRequest(
       std::make_unique<PartialMatch>("test"),
       GetTestFilePath("updatecheck_reply_1.json")));

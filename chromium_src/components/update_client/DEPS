@@ -2,9 +2,3 @@ include_rules = [
   "+brave/components/constants",
   "+brave/components/widevine/constants.h",
 ]
-
-specific_include_rules = {
-  "request_sender\.cc": [
-    "+brave/browser/mac/features.h",
-  ],
-}

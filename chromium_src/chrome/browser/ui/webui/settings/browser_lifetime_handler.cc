@@ -5,12 +5,12 @@
 
 #include "chrome/browser/ui/webui/settings/browser_lifetime_handler.h"
 
-#if !BUILDFLAG(IS_MAC)
-#include "src/chrome/browser/ui/webui/settings/browser_lifetime_handler.cc"
-#else
+#include "brave/browser/sparkle_buildflags.h"
+#include "brave/components/update_client/features.h"
 
-#include "brave/browser/mac/features.h"
+#if BUILDFLAG(ENABLE_SPARKLE)
 #include "brave/browser/ui/webui/settings/brave_relaunch_handler_mac.h"
+#endif
 
 #define BrowserLifetimeHandler BrowserLifetimeHandler_ChromiumImpl
 #include "src/chrome/browser/ui/webui/settings/browser_lifetime_handler.cc"
@@ -21,11 +21,12 @@ namespace settings {
 BrowserLifetimeHandler::~BrowserLifetimeHandler() {}
 
 void BrowserLifetimeHandler::HandleRelaunch(const base::Value::List& args) {
-  if (brave::ShouldUseOmaha4() || !brave_relaunch_handler::RelaunchOnMac()) {
-    BrowserLifetimeHandler_ChromiumImpl::HandleRelaunch(args);
+#if BUILDFLAG(ENABLE_SPARKLE)
+  if (!brave::update_client::ShouldUseOmaha4() && brave_relaunch_handler::RelaunchOnMac()) {
+    return;
   }
+#endif
+  BrowserLifetimeHandler_ChromiumImpl::HandleRelaunch(args);
 }
 
 }  // namespace settings
-
-#endif  // BUILDFLAG(IS_MAC)

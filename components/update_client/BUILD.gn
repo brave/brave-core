@@ -22,3 +22,11 @@ buildflag_header("buildflags") {
     "UPDATER_PROD_ENDPOINT=\"$updater_prod_endpoint\"",
   ]
 }
+
+source_set("update_client") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+  deps = [ "//base" ]
+}
