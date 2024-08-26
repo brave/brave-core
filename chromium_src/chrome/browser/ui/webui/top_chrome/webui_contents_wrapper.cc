@@ -23,25 +23,26 @@
       base::WeakPtr<content::WebContentsDelegate> browser_delegate) {         \
     browser_delegate_ = std::move(browser_delegate);                          \
   }                                                                           \
-  void WebUIContentsWrapper::AddNewContents(                                 \
+  content::WebContents* WebUIContentsWrapper::AddNewContents(                 \
       content::WebContents* source,                                           \
       std::unique_ptr<content::WebContents> new_contents,                     \
       const GURL& target_url, WindowOpenDisposition disposition,              \
       const blink::mojom::WindowFeatures& window_features, bool user_gesture, \
       bool* was_blocked) {                                                    \
     if (!browser_delegate_) {                                                 \
-      return;                                                                 \
+      return nullptr;                                                         \
     }                                                                         \
     auto* raw_popup_contents = new_contents.get();                            \
-    browser_delegate_->AddNewContents(                                        \
+    auto* contents = browser_delegate_->AddNewContents(                       \
         source, std::move(new_contents), target_url,                          \
         WindowOpenDisposition::NEW_POPUP, window_features, user_gesture,      \
         was_blocked);                                                         \
     auto tab_id =                                                             \
         sessions::SessionTabHelper::IdForTab(raw_popup_contents).id();        \
     popup_ids_.push_back(tab_id);                                             \
+    return contents;                                                          \
   }                                                                           \
-  void WebUIContentsWrapper::ClearPopupIds() {                               \
+  void WebUIContentsWrapper::ClearPopupIds() {                                \
     popup_ids_.clear();                                                       \
   }                                                                           \
   void WebUIContentsWrapper::PrimaryPageChanged
