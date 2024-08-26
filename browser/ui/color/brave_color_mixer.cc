@@ -89,6 +89,32 @@ SkColor PickSimilarColorToToolbar(const ui::ColorProviderKey& key,
 }
 #endif
 
+bool IsHighContrast() {
+#if !defined(USE_AURA)
+  ui::NativeTheme* native_theme = nullptr;
+#else
+  // For high contrast, selected rows use inverted colors to stand out more.
+  ui::NativeTheme* native_theme = ui::NativeTheme::GetInstanceForNativeUi();
+#endif  // !defined(USE_AURA)
+  return native_theme && native_theme->UserHasContrastPreference();
+}
+
+SkColor BlendIdTowardsMaxContrast(SkColor color, float opacity) {
+  return color_utils::BlendTowardMaxContrast(color,
+                                             base::ClampRound(opacity * 0xff));
+}
+
+// Hover/Select for the Omnibox are based on opacity and the result color. The
+// calculation is always the same.
+void AddOmniboxHoverSelect(ui::ColorMixer& mixer) {
+  mixer[kColorOmniboxResultsBackgroundHovered] = {BlendIdTowardsMaxContrast(
+      mixer.GetResultColor(kColorOmniboxResultsBackground),
+      kOmniboxOpacityHovered)};
+  mixer[kColorOmniboxResultsBackgroundSelected] = {BlendIdTowardsMaxContrast(
+      mixer.GetResultColor(kColorOmniboxResultsBackground),
+      kOmniboxOpacitySelected)};
+}
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 void AddBraveVpnColorMixer(ui::ColorProvider* provider,
                            const ui::ColorProviderKey& key) {
@@ -301,62 +327,6 @@ void AddBraveColorMixerForAllThemes(ui::ColorProvider* provider,
   mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
 }
 
-void AddBraveOmniboxLightThemeColorMixer(ui::ColorProvider* provider,
-                                         const ui::ColorProviderKey& key) {
-  ui::ColorMixer& mixer = provider->AddMixer();
-
-  // Apply bravified color when there is no custom theme.
-  mixer[kColorToolbarBackgroundSubtleEmphasis] = {
-      nala::kColorDesktopbrowserOmnibarBackgroundDesktop};
-  // Use same color for normal & hover location bar background.
-  // Instead, shadow is set when hovered.
-  mixer[kColorToolbarBackgroundSubtleEmphasisHovered] = {
-      kColorToolbarBackgroundSubtleEmphasis};
-
-  mixer[kColorOmniboxText] = {nala::kColorTextPrimary};
-  mixer[kColorOmniboxResultsBackground] = {
-      nala::kColorDesktopbrowserOmnibarBackgroundActive};
-  mixer[kColorOmniboxResultsBackgroundHovered] = {
-      nala::kColorDesktopbrowserOmnibarBackgroundSelectedItem};
-  //   mixer[kColorOmniboxResultsBackground] = {
-  //       GetOmniboxResultBackground(kColorOmniboxResultsBackground, /*dark*/
-  //       false,
-  //                                  /*incognito*/ false)};
-  //   mixer[kColorOmniboxResultsBackgroundHovered] = {
-  //       GetOmniboxResultBackground(kColorOmniboxResultsBackgroundHovered,
-  //                                  /*dark*/ false, /*incognito*/ false)};
-  mixer[kColorOmniboxResultsBackgroundSelected] = {
-      GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
-                                 /*dark*/ false, /*incognito*/ false)};
-  mixer[kColorOmniboxResultsFocusIndicator] = {
-      ui::kColorFocusableBorderFocused};
-  mixer[kColorOmniboxResultsUrlSelected] = {kColorOmniboxResultsUrl};
-}
-
-void AddBraveOmniboxDarkThemeColorMixer(ui::ColorProvider* provider,
-                                        const ui::ColorProviderKey& key) {
-  ui::ColorMixer& mixer = provider->AddMixer();
-
-  // Apply bravified color when there is no custom theme.
-  mixer[kColorToolbarBackgroundSubtleEmphasis] = {
-      nala::kColorDesktopbrowserOmnibarBackgroundDesktop};
-  mixer[kColorToolbarBackgroundSubtleEmphasisHovered] = {
-      kColorToolbarBackgroundSubtleEmphasis};
-  mixer[kColorOmniboxText] = {kDarkOmniboxText};
-
-  mixer[kColorOmniboxResultsBackground] = {GetOmniboxResultBackground(
-      kColorOmniboxResultsBackground, /*dark*/ true, /*incognito*/ false)};
-  mixer[kColorOmniboxResultsBackgroundHovered] = {
-      GetOmniboxResultBackground(kColorOmniboxResultsBackgroundHovered,
-                                 /*dark*/ true, /*incognito*/ false)};
-  mixer[kColorOmniboxResultsBackgroundSelected] = {
-      GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
-                                 /*dark*/ true, /*incognito*/ false)};
-  mixer[kColorOmniboxResultsFocusIndicator] = {
-      ui::kColorFocusableBorderFocused};
-  mixer[kColorOmniboxResultsUrlSelected] = {kColorOmniboxResultsUrl};
-}
-
 }  // namespace
 
 SkColor GetLocationBarBackground(bool dark, bool priv) {
@@ -369,37 +339,6 @@ SkColor GetLocationBarBackground(bool dark, bool priv) {
   }
 
   return kLightLocationBarBgBase;
-}
-
-// Omnibox result bg colors
-SkColor GetOmniboxResultBackground(int id, bool dark, bool priv) {
-#if !defined(USE_AURA)
-  ui::NativeTheme* native_theme = nullptr;
-#else
-  // For high contrast, selected rows use inverted colors to stand out more.
-  ui::NativeTheme* native_theme = ui::NativeTheme::GetInstanceForNativeUi();
-#endif  // !defined(USE_AURA)
-  bool high_contrast =
-      native_theme && native_theme->UserHasContrastPreference();
-  float omnibox_opacity = 0.0f;
-  if (id == kColorOmniboxResultsBackgroundHovered) {
-    omnibox_opacity = kOmniboxOpacityHovered;
-  } else if (id == kColorOmniboxResultsBackgroundSelected) {
-    omnibox_opacity = kOmniboxOpacitySelected;
-  }
-
-  SkColor color;
-  if (priv) {
-    color = high_contrast ? color_utils::HSLShift(kPrivateLocationBarBgBase,
-                                                  {-1, -1, 0.45})
-                          : kPrivateLocationBarBgBase;
-  } else if (dark) {
-    color = high_contrast ? gfx::kGoogleGrey900 : kDarkLocationBarBgBase;
-  } else {
-    color = SK_ColorWHITE;
-  }
-  return color_utils::BlendTowardMaxContrast(
-      color, base::ClampRound(omnibox_opacity * 0xff));
 }
 
 void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
@@ -756,14 +695,14 @@ void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
       kColorToolbarBackgroundSubtleEmphasis};
   mixer[kColorOmniboxText] = {kDarkOmniboxText};
 
-  mixer[kColorOmniboxResultsBackground] = {GetOmniboxResultBackground(
-      kColorOmniboxResultsBackground, /*dark*/ false, /*incognito*/ true)};
-  mixer[kColorOmniboxResultsBackgroundHovered] = {
-      GetOmniboxResultBackground(kColorOmniboxResultsBackgroundHovered,
-                                 /*dark*/ false, /*incognito*/ true)};
-  mixer[kColorOmniboxResultsBackgroundSelected] = {
-      GetOmniboxResultBackground(kColorOmniboxResultsBackgroundSelected,
-                                 /*dark*/ false, /*incognito*/ true)};
+  mixer[kColorOmniboxResultsBackground] = {kPrivateLocationBarBgBase};
+  if (IsHighContrast()) {
+    mixer[kColorOmniboxResultsBackground] = {
+        color_utils::HSLShift(kPrivateLocationBarBgBase, {-1, -1, 0.45})};
+  }
+
+  AddOmniboxHoverSelect(mixer);
+
   mixer[kColorPageInfoBackground] = {SK_ColorTRANSPARENT};
 }
 
@@ -788,11 +727,32 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
     return;
   }
 
+  // Apply bravified color when there is no custom theme.
+  mixer[kColorToolbarBackgroundSubtleEmphasis] = {
+      nala::kColorDesktopbrowserOmnibarBackgroundDesktop};
+
+  // Use same color for normal & hover location bar background.
+  // Instead, shadow is set when hovered.
+  mixer[kColorToolbarBackgroundSubtleEmphasisHovered] = {
+      kColorToolbarBackgroundSubtleEmphasis};
+
+  mixer[kColorOmniboxText] = {nala::kColorTextPrimary};
   mixer[kColorOmniboxResultsUrl] = {nala::kColorTextInteractive};
 
-  key.color_mode == ui::ColorProviderKey::ColorMode::kDark
-      ? AddBraveOmniboxDarkThemeColorMixer(provider, key)
-      : AddBraveOmniboxLightThemeColorMixer(provider, key);
+  mixer[kColorOmniboxResultsBackground] = {
+      nala::kColorDesktopbrowserOmnibarBackgroundActive};
+
+  // High contrast mode has a more contrasting grey in dark mode.
+  if (IsHighContrast() &&
+      key.color_mode == ui::ColorProviderKey::ColorMode::kDark) {
+    mixer[kColorOmniboxResultsBackground] = {gfx::kGoogleGrey900};
+  }
+
+  AddOmniboxHoverSelect(mixer);
+
+  mixer[kColorOmniboxResultsFocusIndicator] = {
+      ui::kColorFocusableBorderFocused};
+  mixer[kColorOmniboxResultsUrlSelected] = {kColorOmniboxResultsUrl};
 }
 
 void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
