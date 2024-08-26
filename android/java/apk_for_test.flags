@@ -673,9 +673,9 @@
 }
 
 -keep class org.chromium.chrome.browser.logo.LogoMediator {
+    <init>(...);
     *** mLogoModel;
     *** mShouldShowLogo;
-    public <init>(...);
     *** updateVisibility(...);
 }
 
