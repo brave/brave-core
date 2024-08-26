@@ -817,11 +817,15 @@ void SidebarContainerView::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
-  // Need to [de]register contextual registry when tab is replaced.
   if ((change.type() == TabStripModelChange::kReplaced)) {
-    auto* replace = change.GetReplace();
-    StartObservingContextualSidePanelRegistry(replace->new_contents);
-    StopObservingContextualSidePanelRegistry(replace->old_contents);
+    // Pre-cr129's change
+    // https://chromium.googlesource.com/chromium/src/+/2fd6b53ce, we would
+    // handle shared pinned tab moving from one window to another here by
+    // starting to observe the new contents registry and stoping observing the
+    // old contents registry. But since the registry is no longer associated
+    // with the contents and is now associated with the tab instead we don't
+    // need to do the swap here. However, we may need to take some action here
+    // to fix https://github.com/brave/brave-browser/issues/40681.
     return;
   }
 
