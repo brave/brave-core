@@ -12,10 +12,11 @@ import Shared
 import SnapKit
 import UIKit
 
-/// New Tab Page video player?. The class is responsible for managing the video
-/// playback on the New Tab Page. It handles events such as play finished,
-/// played 25 percent, autoplay finished, play cancelled, and video loaded.
-class NewTabPageVideoPlayer {
+// The NewTabPageVideoAdPlayer class is responsible for handling video ads on a
+// new tab page. It sets up the video player, controls playback (play, pause,
+// stop), and manages user interactions. The class also listens for events like
+// video start, pause, and completion, and tracks ad performance metrics.
+class NewTabPageVideoAdPlayer {
   var didStartAutoplayEvent: (() -> Void)?
   var didFinishAutoplayEvent: (() -> Void)?
   var didStartPlaybackEvent: (() -> Void)?
@@ -31,7 +32,7 @@ class NewTabPageVideoPlayer {
 
   private var media25TimeObserver: Any?
   private var media100TimeObserver: Any?
-  private var autoplayFinishedObserver: NSKeyValueObservation?
+  private var autoplayPausedObserver: NSKeyValueObservation?
 
   private let kMaxAutoplayDurationInSeconds = 6.0
   private let kStopFramePositionAdjustment = 0.5
@@ -52,13 +53,13 @@ class NewTabPageVideoPlayer {
   }
 
   func resetPlayer() {
-    removeObservers()
     player = nil
   }
 
   func createPlayer() {
     let item = AVPlayerItem(url: backgroundVideoPath)
     player = AVPlayer(playerItem: item)
+    player?.actionAtItemEnd = .pause
   }
 
   func startPlayback() {
@@ -70,6 +71,10 @@ class NewTabPageVideoPlayer {
       didStartPlaybackEvent?()
 
       addMediaObservers()
+
+      if PlaylistCoordinator.shared.isPictureInPictureActive {
+        PlaylistCoordinator.shared.pauseAllPlayback()
+      }
 
       player?.isMuted = false
       player?.play()
@@ -178,7 +183,7 @@ class NewTabPageVideoPlayer {
       self.frameRate = Double(frameRate)
     }
 
-    if !shouldAutoplay {
+    if !shouldAutoplay || PlaylistCoordinator.shared.isPictureInPictureActive {
       finishAutoplayIfNeeded()
       return
     }
@@ -196,7 +201,9 @@ class NewTabPageVideoPlayer {
 
     didStartAutoplayEvent?()
 
-    addAutoplayFinishedObserver()
+    addAutoplayPausedObserver()
+
+    allowBackgroundAudioDuringAutoplay()
 
     player?.isMuted = true
     player?.play()
@@ -208,12 +215,20 @@ class NewTabPageVideoPlayer {
     }
     didFinishAutoplay = true
 
-    removeAutoplayFinishedObserver()
+    // The autoplayPausedObserver is assigned a value only when autoplay has
+    // started.
+    let didStartAutoplay = autoplayPausedObserver != nil
+
+    removeAutoplayPausedObserver()
     player?.currentItem?.forwardPlaybackEndTime = CMTime()
     player?.pause()
 
     if shouldSeekToStopFrame {
       seekToStopFrame()
+    }
+
+    if didStartAutoplay {
+      pauseBackgroundAudioDuringPlayback()
     }
 
     didFinishAutoplayEvent?()
@@ -258,8 +273,8 @@ class NewTabPageVideoPlayer {
     media100TimeObserver = nil
   }
 
-  private func addAutoplayFinishedObserver() {
-    autoplayFinishedObserver = player?.observe(\.timeControlStatus) {
+  private func addAutoplayPausedObserver() {
+    autoplayPausedObserver = player?.observe(\.timeControlStatus) {
       [weak self] (player, _) in
       if player.timeControlStatus == .paused {
         self?.finishAutoplayIfNeeded()
@@ -267,15 +282,30 @@ class NewTabPageVideoPlayer {
     }
   }
 
-  private func removeAutoplayFinishedObserver() {
-    autoplayFinishedObserver?.invalidate()
-    autoplayFinishedObserver = nil
+  private func removeAutoplayPausedObserver() {
+    autoplayPausedObserver?.invalidate()
+    autoplayPausedObserver = nil
   }
 
   private func removeObservers() {
-    removeAutoplayFinishedObserver()
+    removeAutoplayPausedObserver()
     removeMedia25Observer()
     removeMedia100Observer()
+  }
+
+  private func allowBackgroundAudioDuringAutoplay() {
+    try? AVAudioSession.sharedInstance().setCategory(.playback, options: [.mixWithOthers])
+    try? AVAudioSession.sharedInstance().setActive(true)
+  }
+
+  private func pauseBackgroundAudioDuringPlayback() {
+    try? AVAudioSession.sharedInstance().setActive(false)
+    try? AVAudioSession.sharedInstance().setCategory(
+      .playback,
+      mode: .default,
+      policy: .default,
+      options: []
+    )
   }
 
   private func parseStopFrameFromFilename(filename: String) -> Double? {

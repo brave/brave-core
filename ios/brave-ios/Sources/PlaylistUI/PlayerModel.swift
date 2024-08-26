@@ -165,7 +165,7 @@ public final class PlayerModel: ObservableObject {
     player.play()
   }
 
-  func pause() {
+  public func pause() {
     if !isPlaying {
       return
     }
