@@ -523,7 +523,8 @@ export const tokenBalancesEndpoints = ({
       ) => {
         try {
           // apiProxy
-          const { jsonRpcService } = baseQuery(undefined).data
+          const { jsonRpcService, bitcoinWalletService } =
+            baseQuery(undefined).data
 
           switch (coin) {
             case BraveWallet.CoinType.SOL: {
@@ -559,6 +560,23 @@ export const tokenBalancesEndpoints = ({
 
               return {
                 data: Amount.normalize(balance)
+              }
+            }
+
+            case BraveWallet.CoinType.BTC: {
+              const { balance, errorMessage } =
+                await bitcoinWalletService.getExtendedKeyAccountBalance(
+                  chainId,
+                  address
+                )
+              if (errorMessage) {
+                console.log(`getBalance error: ${errorMessage}`)
+                return {
+                  error: errorMessage
+                }
+              }
+              return {
+                data: Amount.normalize(balance?.totalBalance.toString() || '0')
               }
             }
 

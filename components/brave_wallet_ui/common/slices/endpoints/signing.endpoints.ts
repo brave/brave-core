@@ -6,7 +6,6 @@
 // types
 import {
   BraveWallet,
-  HardwareVendor,
   HardwareWalletResponseCodeType
 } from '../../../constants/types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
@@ -189,9 +188,7 @@ export const signingEndpoints = ({
           }
 
           const signed = await signMessageWithHardwareKeyring(
-            // eslint-disable-next-line max-len
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-            info.vendor as HardwareVendor,
+            info.vendor,
             info.path,
             arg.request
           )
@@ -210,7 +207,7 @@ export const signingEndpoints = ({
             }
 
             const deviceError =
-              info.vendor === BraveWallet.TREZOR_HARDWARE_VENDOR
+              info.vendor === BraveWallet.HardwareVendor.kTrezor
                 ? dialogErrorFromTrezorErrorCode(signed.code)
                 : dialogErrorFromLedgerErrorCode(signed.code)
 

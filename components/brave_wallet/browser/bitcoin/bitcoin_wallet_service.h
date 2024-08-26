@@ -15,6 +15,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_discover_account_task.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
@@ -28,15 +29,6 @@ class CreateTransactionTask;
 class DiscoverNextUnusedAddressTask;
 class KeyringService;
 class NetworkManager;
-
-struct DiscoveredBitcoinAccount {
-  mojom::KeyringId keyring_id = mojom::KeyringId::kBitcoin84;
-  uint32_t account_index = 0;
-  uint32_t next_unused_receive_index = 0;
-  uint32_t next_unused_change_index = 0;
-
-  bool operator==(const DiscoveredBitcoinAccount& other) const;
-};
 
 class BitcoinWalletService : public mojom::BitcoinWalletService,
                              public KeyringServiceObserverBase {
@@ -55,6 +47,10 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
   // mojom::BitcoinWalletService:
   void GetBalance(mojom::AccountIdPtr account_id,
                   GetBalanceCallback callback) override;
+  void GetExtendedKeyAccountBalance(
+      const std::string& chain_id,
+      const std::string& extended_key,
+      GetExtendedKeyAccountBalanceCallback callback) override;
   void GetBitcoinAccountInfo(mojom::AccountIdPtr account_id,
                              GetBitcoinAccountInfoCallback callback) override;
   mojom::BitcoinAccountInfoPtr GetBitcoinAccountInfoSync(
@@ -98,11 +94,11 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
                                  bool change,
                                  DiscoverNextUnusedAddressCallback callback);
 
-  using DiscoverAccountCallback = base::OnceCallback<void(
-      base::expected<DiscoveredBitcoinAccount, std::string>)>;
-  void DiscoverAccount(mojom::KeyringId keyring_id,
-                       uint32_t account_index,
-                       DiscoverAccountCallback callback);
+  using DiscoverWalletAccountCallback =
+      DiscoverWalletAccountTask::DiscoverAccountCallback;
+  void DiscoverWalletAccount(mojom::KeyringId keyring_id,
+                             uint32_t account_index,
+                             DiscoverWalletAccountCallback callback);
 
   bitcoin_rpc::BitcoinRpc& bitcoin_rpc() { return *bitcoin_rpc_; }
   KeyringService* keyring_service() { return keyring_service_; }
@@ -132,7 +128,17 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
       GetTransactionStatusCallback callback,
       base::expected<bitcoin_rpc::Transaction, std::string> transaction);
 
+  void OnDiscoverWalletAccountDone(
+      DiscoverWalletAccountTask* task,
+      DiscoverWalletAccountCallback callback,
+      base::expected<DiscoveredBitcoinAccount, std::string> result);
+  void OnGetExtendedKeyAccountBalanceDone(
+      DiscoverExtendedKeyAccountTask* task,
+      GetExtendedKeyAccountBalanceCallback callback,
+      base::expected<DiscoveredBitcoinAccount, std::string> result);
+
   void OnImportedAccountDiscoveryDone(
+      DiscoverWalletAccountTask* task,
       mojom::AccountIdPtr account_id,
       base::expected<DiscoveredBitcoinAccount, std::string> result);
 
@@ -143,6 +149,11 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
   raw_ptr<KeyringService> keyring_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::list<std::unique_ptr<CreateTransactionTask>> create_transaction_tasks_;
+  std::list<std::unique_ptr<DiscoverWalletAccountTask>>
+      discover_wallet_account_tasks_;
+  std::list<std::unique_ptr<DiscoverExtendedKeyAccountTask>>
+      discover_extended_key_account_tasks_;
+
   mojo::ReceiverSet<mojom::BitcoinWalletService> receivers_;
   std::unique_ptr<bitcoin_rpc::BitcoinRpc> bitcoin_rpc_;
   bool arrange_transactions_for_testing_ = false;

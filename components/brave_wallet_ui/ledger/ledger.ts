@@ -3,22 +3,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { BraveWallet } from '../constants/types'
 import {
   LedgerCommand,
   LEDGER_BRIDGE_URL
 } from '../common/hardware/ledgerjs/ledger-messages'
+import {
+  BridgeType,
+  BridgeTypes
+} from '../common/hardware/untrusted_shared_types'
 import { LedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/ledger-untrusted-transport'
 import { SolanaLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/sol-ledger-untrusted-transport'
 import { EthereumLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/eth-ledger-untrusted-transport'
 import { FilecoinLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/fil-ledger-untrusted-transport'
+import { BitcoinLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/btc_ledger_untrusted_transport'
 
 const setUpAuthorizeButtonListener = (
   targetUrl: string,
-  coinType: BraveWallet.CoinType
+  bridgeType: string
 ) => {
   const untrustedMessagingTransport = getUntrustedMessagingTransport(
-    coinType,
+    bridgeType,
     targetUrl
   )
   window.addEventListener('DOMContentLoaded', (event) => {
@@ -38,33 +42,38 @@ const setUpAuthorizeButtonListener = (
 }
 
 const getUntrustedMessagingTransport = (
-  coinType: BraveWallet.CoinType,
+  bridgeType: string,
   targetUrl: string
 ): LedgerUntrustedMessagingTransport => {
-  switch (coinType) {
-    case BraveWallet.CoinType.SOL:
+  switch (bridgeType as BridgeType) {
+    case BridgeTypes.SolLedger:
       return new SolanaLedgerUntrustedMessagingTransport(
         window.parent,
         targetUrl
       )
-    case BraveWallet.CoinType.ETH:
+    case BridgeTypes.EthLedger:
       return new EthereumLedgerUntrustedMessagingTransport(
         window.parent,
         targetUrl
       )
-    case BraveWallet.CoinType.FIL:
+    case BridgeTypes.FilLedger:
       return new FilecoinLedgerUntrustedMessagingTransport(
         window.parent,
         targetUrl
       )
+    case BridgeTypes.BtcLedger:
+      return new BitcoinLedgerUntrustedMessagingTransport(
+        window.parent,
+        targetUrl
+      )
     default:
-      throw new Error('Invalid coinType.')
+      throw new Error(`Invalid bridgeType ${bridgeType}`)
   }
 }
 
 const params = new URLSearchParams(window.location.search)
 const targetUrl = params.get('targetUrl')
-const coinType = Number(params.get('coinType'))
-if (targetUrl && coinType) {
-  setUpAuthorizeButtonListener(targetUrl, coinType)
+const bridgeType = params.get('bridgeType')
+if (targetUrl && bridgeType) {
+  setUpAuthorizeButtonListener(targetUrl, bridgeType)
 }

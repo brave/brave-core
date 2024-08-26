@@ -7,7 +7,7 @@ import * as React from 'react'
 import { Redirect, useHistory, useParams } from 'react-router'
 
 // utils
-import { HardwareVendor, WalletRoutes } from '../../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 import {
   CreateAccountOptions //
 } from '../../../../options/create-account-options'
@@ -37,7 +37,7 @@ export const OnboardingSelectWalletDevice = () => {
 
   // state
   const [selectedHardwareWallet, setSelectedHardwareWallet] =
-    React.useState<HardwareVendor>()
+    React.useState<BraveWallet.HardwareVendor>()
 
   const selectedAccountType =
     accountTypeName !== ''

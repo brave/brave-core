@@ -75,7 +75,10 @@ void PrintTo(const BlockchainTokenPtr& token, ::std::ostream* os) {
 
 void PrintTo(const BitcoinBalancePtr& balance, ::std::ostream* os) {
   *os << balance->total_balance << "/" << balance->available_balance << "/"
-      << balance->pending_balance;
+      << balance->pending_balance << std::endl;
+  for (auto& address : balance->balances) {
+    *os << address.first << "=" << address.second << std::endl;
+  }
 }
 
 void PrintTo(const BitcoinKeyId& key_id, ::std::ostream* os) {

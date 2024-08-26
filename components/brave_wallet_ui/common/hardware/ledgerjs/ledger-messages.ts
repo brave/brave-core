@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { loadTimeData } from '../../../../common/loadTimeData'
-import { FilecoinNetwork } from '../../../constants/types'
 
 const braveWalletLedgerBridgeUrl = loadTimeData.getString(
   'braveWalletLedgerBridgeUrl'
@@ -24,7 +23,7 @@ export enum LedgerCommand {
   AuthorizationSuccess = 'authorization-success' // Sent by the frame to the parent context
 }
 
-// LedgerBrigeErrorCodes are errors related to the configuring
+// LedgerBridgeErrorCodes are errors related to the configuring
 // and running of postMessages between window objects
 export enum LedgerBridgeErrorCodes {
   BridgeNotReady = 0,
@@ -78,6 +77,7 @@ export type LedgerFrameCommand =
   | SolLedgerFrameCommand
   | EthLedgerFrameCommand
   | FilLedgerFrameCommand
+  | BtcLedgerFrameCommand
 export type LedgerFrameResponse =
   | UnlockResponse
   | SolLedgerFrameResponse
@@ -127,7 +127,6 @@ export type SolLedgerFrameResponse =
 // GetAccounts command
 export type FilGetAccountResponsePayload = LedgerResponsePayload & {
   accounts: string[]
-  deviceId: string
 }
 
 export type FilGetAccountResponse = CommandMessage & {
@@ -137,8 +136,8 @@ export type FilGetAccountResponse = CommandMessage & {
 export type FilGetAccountCommand = CommandMessage & {
   command: LedgerCommand.GetAccount
   from: number
-  to: number
-  network: FilecoinNetwork
+  count: number
+  isTestnet: boolean
 }
 
 export interface FilLotusMessage {
@@ -183,6 +182,37 @@ export type FilLedgerFrameCommand =
 export type FilLedgerFrameResponse =
   | FilGetAccountResponse
   | FilSignTransactionResponse
+
+export type BtcGetAccountCommand = CommandMessage & {
+  command: LedgerCommand.GetAccount
+  path: string
+  xpubVersion: number
+}
+export type BtcSignTransactionCommand = CommandMessage & {
+  command: LedgerCommand.SignTransaction
+  path: string
+  rawTxBytes: Buffer
+}
+
+export type BtcGetAccountResponsePayload = LedgerResponsePayload & {
+  xpub: string
+}
+export type BtcGetAccountResponse = CommandMessage & {
+  payload: BtcGetAccountResponsePayload | LedgerError
+}
+export type BtcSignTransactionResponsePayload = LedgerResponsePayload & {
+  signature: Buffer
+}
+export type BtcSignTransactionResponse = CommandMessage & {
+  payload: BtcSignTransactionResponsePayload | LedgerError
+}
+
+export type BtcLedgerFrameCommand =
+  | BtcGetAccountCommand
+  | BtcSignTransactionCommand
+export type BtcLedgerFrameResponse =
+  | BtcGetAccountResponse
+  | BtcSignTransactionResponse
 
 // Ethereum
 // GetAccounts command
