@@ -28,6 +28,8 @@
 #include "brave/ios/browser/playlist/features.h"
 #import "build/blink_buildflags.h"
 #include "build/build_config.h"
+#include "ios/components/security_interstitials/https_only_mode/feature.h"
+#include "net/base/features.h"
 
 @interface Feature () {
   const base::Feature* _feature;
@@ -301,6 +303,15 @@
 
 + (Feature*)kNewPlaylistUI {
   return [[Feature alloc] initWithFeature:&playlist::features::kNewPlaylistUI];
+}
+
++ (Feature*)kBraveHttpsByDefault {
+  return [[Feature alloc] initWithFeature:&net::features::kBraveHttpsByDefault];
+}
+
++ (Feature*)kHttpsOnlyMode {
+  return [[Feature alloc]
+      initWithFeature:&security_interstitials::features::kHttpsOnlyMode];
 }
 
 @end
