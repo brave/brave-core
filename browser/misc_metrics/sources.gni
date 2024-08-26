@@ -20,20 +20,6 @@ brave_browser_misc_metrics_sources = [
   "//brave/browser/misc_metrics/uptime_monitor.h",
 ]
 
-if (!is_android) {
-  brave_browser_misc_metrics_sources += [
-    "//brave/browser/misc_metrics/extension_metrics.cc",
-    "//brave/browser/misc_metrics/extension_metrics.h",
-    "//brave/browser/misc_metrics/vertical_tab_metrics.cc",
-    "//brave/browser/misc_metrics/vertical_tab_metrics.h",
-  ]
-} else {
-  brave_browser_misc_metrics_sources += [
-    "//brave/browser/misc_metrics/misc_android_metrics.cc",
-    "//brave/browser/misc_metrics/misc_android_metrics.h",
-  ]
-}
-
 brave_browser_misc_metrics_deps = [
   "//brave/browser:browser_process",
   "//brave/browser/profiles:util",
@@ -45,6 +31,23 @@ brave_browser_misc_metrics_deps = [
   "//components/keyed_service/core",
   "//content/public/browser",
 ]
+
+if (!is_android) {
+  brave_browser_misc_metrics_sources += [
+    "//brave/browser/misc_metrics/extension_metrics.cc",
+    "//brave/browser/misc_metrics/extension_metrics.h",
+    "//brave/browser/misc_metrics/theme_metrics.cc",
+    "//brave/browser/misc_metrics/theme_metrics.h",
+    "//brave/browser/misc_metrics/vertical_tab_metrics.cc",
+    "//brave/browser/misc_metrics/vertical_tab_metrics.h",
+  ]
+  brave_browser_misc_metrics_deps += [ "//brave/browser/themes" ]
+} else {
+  brave_browser_misc_metrics_sources += [
+    "//brave/browser/misc_metrics/misc_android_metrics.cc",
+    "//brave/browser/misc_metrics/misc_android_metrics.h",
+  ]
+}
 
 if (enable_ai_chat) {
   brave_browser_misc_metrics_deps +=
