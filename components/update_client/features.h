@@ -8,12 +8,12 @@
 
 #include "base/feature_list.h"
 
-namespace brave {
+namespace brave::update_client {
 
 BASE_DECLARE_FEATURE(kBraveUseOmaha4);
 
 bool ShouldUseOmaha4();
 
-}  // namespace brave
+}  // namespace brave::update_client
 
 #endif  // BRAVE_BROWSER_MAC_FEATURES_H_

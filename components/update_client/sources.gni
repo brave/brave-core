@@ -6,6 +6,7 @@
 brave_components_update_client_deps = [
   "//brave/components/constants",
   "//brave/components/widevine:constants",
+  "//brave/components/update_client",
 ]
 
 brave_components_update_client_public_deps =

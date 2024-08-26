@@ -12,7 +12,7 @@
 // request_sender.cc when ShouldUseOmaha4() returns true.
 
 #include "base/base64.h"
-#include "brave/browser/mac/features.h"
+#include "brave/components/update_client/features.h"
 #include "components/client_update_protocol/ecdsa.h"
 #include "components/update_client/request_sender.h"
 
@@ -33,7 +33,7 @@ class BraveEcdsa : public Ecdsa {
  public:
   static std::unique_ptr<Ecdsa> Create(int key_version,
                                        const std::string_view& public_key) {
-    if (brave::ShouldUseOmaha4()) {
+    if (brave::update_client::ShouldUseOmaha4()) {
       std::string base64_decoded = GetKey(kBraveKeyPubBytesBase64);
       return Ecdsa::Create(kBraveKeyVersion, base64_decoded);
     } else {
