@@ -9,8 +9,8 @@
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 
-#include "brave/browser/mac/features.h"
 #include "brave/browser/ui/webui/settings/brave_relaunch_handler_mac.h"
+#include "brave/components/update_client/features.h"
 
 #define AttemptRestart AttemptRestart_ChromiumImpl
 #define RelaunchIgnoreUnloadHandlers RelaunchIgnoreUnloadHandlers_ChromiumImpl
