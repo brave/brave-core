@@ -1334,6 +1334,7 @@ source_set("ui") {
     deps += [
       "//brave/components/playlist/browser",
       "//brave/components/playlist/browser/resources:generated_resources",
+      "//chrome/browser/picture_in_picture",
       "//chrome/browser/ui/exclusive_access",
       "//components/user_prefs",
     ]
