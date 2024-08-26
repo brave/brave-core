@@ -65,6 +65,7 @@ import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.hub.ResourceButtonData;
 import org.chromium.chrome.browser.keyboard_accessory.ManualFillingComponentSupplier;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -100,6 +101,7 @@ import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
+import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPaneCoordinatorFactory;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
@@ -165,6 +167,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.function.DoubleConsumer;
 import java.util.function.Function;
 
 /**
@@ -1691,6 +1694,17 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragmentAdvanced", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/browsing_data/BraveClearBrowsingDataFragmentAdvanced")); // presubmit: ignore-long-line
+
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/tasks/tab_management/IncognitoTabSwitcherPane",
+                        "org/chromium/chrome/browser/tasks/tab_management/BraveIncognitoTabSwitcherPane", // presubmit: ignore-long-line
+                        Context.class,
+                        TabSwitcherPaneCoordinatorFactory.class,
+                        Supplier.class,
+                        View.OnClickListener.class,
+                        OneshotSupplier.class,
+                        DoubleConsumer.class));
     }
 
     @Test
@@ -2034,6 +2048,12 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/ui/system/StatusBarColorController",
                         "mBackgroundColorForNtp"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/tasks/tab_management/IncognitoTabSwitcherPane",
+                        "mReferenceButtonData",
+                        true,
+                        ResourceButtonData.class));
     }
 
     @Test

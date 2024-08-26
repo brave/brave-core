@@ -9,6 +9,6 @@ import org.chromium.base.BraveReflectionUtil;
 
 public class BraveExportFlow extends ExportFlow {
     public void runSharePasswordsIntent() {
-        BraveReflectionUtil.InvokeMethod(ExportFlow.class, this, "runCreateFileOnDiskIntent");
+        BraveReflectionUtil.invokeMethod(ExportFlow.class, this, "runCreateFileOnDiskIntent");
     }
 }
