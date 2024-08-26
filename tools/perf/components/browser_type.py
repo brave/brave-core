@@ -12,6 +12,7 @@ import sys
 import tempfile
 
 import components.git_tools as git_tools
+import components.path_util as path_util
 
 from distutils.dir_util import copy_tree
 from enum import Enum

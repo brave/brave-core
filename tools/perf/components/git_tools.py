@@ -86,6 +86,7 @@ def GetFileAtRevision(filepath: str, revision: str) -> Optional[str]:
       output_to_debug=False)
   return content if success else None
 
+
 def Clone(url: str, branch: Optional[str], target_dir: str) -> None:
   args = ['git', 'clone', url, target_dir]
   if branch:
