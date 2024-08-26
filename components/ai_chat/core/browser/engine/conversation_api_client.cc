@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/command_line.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/memory/raw_ptr.h"
@@ -43,6 +44,7 @@ using ConversationEvent = ConversationAPIClient::ConversationEvent;
 using ConversationEventType = ConversationAPIClient::ConversationEventType;
 
 constexpr char kRemotePath[] = "v1/conversation";
+constexpr char kAIChatServerUrl[] = "ai-chat-server-url";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ai_chat", R"(
@@ -154,6 +156,18 @@ base::Value::List ConversationEventsToList(
 
 GURL GetEndpointUrl(bool premium, const std::string& path) {
   CHECK(!path.starts_with("/"));
+
+#if !defined(OFFICIAL_BUILD)
+  // If a runtime AI Chat URL is provided, use it.
+  std::string ai_chat_url =
+      base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          kAIChatServerUrl);
+  if (!ai_chat_url.empty()) {
+    GURL url = GURL(base::StrCat({ai_chat_url, "/", path}));
+    CHECK(url.is_valid()) << "Invalid API Url: " << url.spec();
+    return url;
+  }
+#endif
 
   auto* prefix = premium ? "ai-chat-premium.bsg" : "ai-chat.bsg";
   auto hostname = brave_domains::GetServicesDomain(
