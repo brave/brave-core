@@ -23,11 +23,11 @@ class Authenticator {
 
   }
 
-  class LoginDataError: Error {
-    let description: String
-    init(description: String) {
-      self.description = description
-    }
+  enum LoginDataError: Error {
+    case usernameOrPasswordFieldLeftBlank
+    case userCancelledAuthentication
+    case tooManyAttemptsFailed
+    case missingProtectionSpaceHostName
   }
 
   private static let maxAuthenticationAttempts = 3
@@ -41,7 +41,7 @@ class Authenticator {
     var credential = credential
     // If there have already been too many login attempts, we'll just fail.
     if previousFailureCount >= Authenticator.maxAuthenticationAttempts {
-      throw LoginDataError(description: "Too many attempts to open site")
+      throw LoginDataError.tooManyAttemptsFailed
     }
 
     // If we were passed an initial set of credentials from iOS, try and use them.
@@ -78,8 +78,7 @@ class Authenticator {
     protectionSpace: URLProtectionSpace
   ) async throws -> LoginData {
     if protectionSpace.host.isEmpty {
-      print("Unable to show a password prompt without a hostname")
-      throw LoginDataError(description: "Unable to show a password prompt without a hostname")
+      throw LoginDataError.missingProtectionSpaceHostName
     }
 
     return try await withCheckedThrowingContinuation { continuation in
@@ -111,7 +110,7 @@ class Authenticator {
         _ in
         guard let user = alert.textFields?[0].text, let pass = alert.textFields?[1].text else {
           continuation.resume(
-            throwing: LoginDataError(description: "Username and Password required")
+            throwing: LoginDataError.usernameOrPasswordFieldLeftBlank
           )
           return
         }
@@ -127,7 +126,7 @@ class Authenticator {
       // Add a cancel button.
       let cancel = UIAlertAction(title: Strings.authPromptAlertCancelButtonTitle, style: .cancel) {
         _ in
-        continuation.resume(throwing: LoginDataError(description: "Save password cancelled"))
+        continuation.resume(throwing: LoginDataError.userCancelledAuthentication)
       }
       alert.addAction(cancel, accessibilityIdentifier: "authenticationAlert.cancel")
 
