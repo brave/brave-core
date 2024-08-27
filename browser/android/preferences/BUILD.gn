@@ -19,6 +19,7 @@ source_set("preferences") {
 
   deps = [
     "//base",
+    "//brave/build/android:jni_headers",
     "//brave/common",
     "//brave/components/brave_referrals/common",
     "//brave/components/brave_rewards/common",
