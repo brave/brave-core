@@ -3,9 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
-#include "brave/browser/ui/brave_ui_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/webui_url_constants.h"
@@ -25,19 +23,11 @@ class BackgroundColorTabHelperBrowserTest
     : public InProcessBrowserTest,
       public testing::WithParamInterface<bool> {
  public:
-  BackgroundColorTabHelperBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        features::kBraveWorkaroundNewWindowFlash);
-  }
-
   content::WebContents* web_contents() {
     return chrome_test_utils::GetActiveWebContents(this);
   }
 
   bool IsDarkMode() { return GetParam(); }
-
- protected:
-  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_P(BackgroundColorTabHelperBrowserTest,
