@@ -5,9 +5,12 @@
 
 brave_components_update_client_deps = [
   "//brave/components/constants",
-  "//brave/components/update_client",
   "//brave/components/widevine:constants",
 ]
+
+if (is_mac) {
+  brave_components_update_client_deps += [ "//brave/components/update_client" ]
+}
 
 brave_components_update_client_public_deps =
     [ "//brave/components/update_client:buildflags" ]
