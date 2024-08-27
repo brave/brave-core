@@ -27,6 +27,7 @@
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/features.h"
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/skus_context_impl.h"
@@ -298,17 +299,6 @@ class BraveVPNServiceTest : public testing::Test {
 #if !BUILDFLAG(IS_ANDROID)
   bool& wait_region_data_ready() { return service_->wait_region_data_ready_; }
 
-  mojom::Region device_region() const {
-    if (auto region_ptr =
-            GetRegionPtrWithNameFromRegionList(GetBraveVPNConnectionManager()
-                                                   ->GetRegionDataManager()
-                                                   .GetDeviceRegion(),
-                                               regions())) {
-      return *(region_ptr.Clone());
-    }
-    return mojom::Region();
-  }
-
   skus::mojom::SkusResultPtr MakeSkusResult(const std::string& result) {
     return skus::mojom::SkusResult::New(skus::mojom::SkusResultCode::Ok,
                                         result);
@@ -533,6 +523,12 @@ class BraveVPNServiceTest : public testing::Test {
     EXPECT_TRUE(observer->GetPurchasedState().has_value());
     EXPECT_EQ(observer->GetPurchasedState().value(), state);
   }
+
+  void GetAllRegions(BraveVpnService::ResponseCallback callback) {
+    service_->api_request_->GetServerRegions(
+        std::move(callback), brave_vpn::mojom::kRegionPrecisionCityByCountry);
+  }
+
 #if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<BraveVPNConnectionManager> connection_manager_;
 #endif
@@ -548,6 +544,21 @@ class BraveVPNServiceTest : public testing::Test {
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   base::HistogramTester histogram_tester_;
 };
+
+TEST_F(BraveVPNServiceTest, ResponseSanitizingTest) {
+  // Give invalid json data as a server response and check sanitized(empty
+  // string) result is returned.
+  SetInterceptorResponse("{'invalid json':");
+  base::RunLoop loop;
+  GetAllRegions(base::BindOnce(
+      [](base::OnceClosure callback, const std::string& region_list,
+         bool success) {
+        EXPECT_TRUE(region_list.empty());
+        std::move(callback).Run();
+      },
+      loop.QuitClosure()));
+  loop.Run();
+}
 
 #if !BUILDFLAG(IS_ANDROID)
 TEST_F(BraveVPNServiceTest, SkusCredentialCacheTest) {

@@ -67,9 +67,9 @@ bool IsValidRegionValue(const base::Value::Dict& value) {
       !value.FindString(kRegionCountryIsoCodeKey) ||
       !value.FindString(kRegionPrecisionKey) ||
       !value.FindList(kRegionCitiesKey) ||
-      !value.FindString(kRegionLatitudeKey) ||
-      !value.FindString(kRegionLongitudeKey) ||
-      !value.FindString(kRegionServerCountKey)) {
+      !value.FindDouble(kRegionLatitudeKey) ||
+      !value.FindDouble(kRegionLongitudeKey) ||
+      !value.FindInt(kRegionServerCountKey)) {
     return false;
   }
 
