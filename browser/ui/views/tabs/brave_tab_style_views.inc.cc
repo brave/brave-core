@@ -274,16 +274,17 @@ TabStyle::SeparatorBounds BraveVerticalTabStyle::GetSeparatorBounds(
 
   // Note: `leading` bounds are used for rect corner radius calculation and so
   // must be non-empty, even if we don't want to show it.
+  constexpr int extra_vertical_space = 8;
   TabStyle::SeparatorBounds bounds;
-  bounds.leading = gfx::RectF(aligned_bounds.right(),
-                              (aligned_bounds.height() - size.height()) / 2,
-                              size.width(), size.height());
+  bounds.leading = gfx::RectF(
+      aligned_bounds.right(), (aligned_bounds.height() - size.height()) / 2,
+      size.width(), size.height() - extra_vertical_space);
   bounds.trailing = bounds.leading;
   bounds.trailing.set_x(aligned_bounds.right() - size.width());
 
   gfx::PointF origin(tab()->bounds().origin());
   origin.Scale(scale);
-  bounds.trailing.Offset(-origin.x(), -origin.y());
+  bounds.trailing.Offset(-origin.x(), -origin.y() + extra_vertical_space / 2);
   return bounds;
 }
 
