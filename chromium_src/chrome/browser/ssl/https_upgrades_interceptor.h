@@ -12,13 +12,8 @@
   MaybeCreateLoader_ChromiumImpl(__VA_ARGS__); \
   void MaybeCreateLoader(__VA_ARGS__)
 
-#define MaybeCreateLoaderForResponse(...)                 \
-  MaybeCreateLoaderForResponse_ChromiumImpl(__VA_ARGS__); \
-  bool MaybeCreateLoaderForResponse(__VA_ARGS__)
-
 #include "src/chrome/browser/ssl/https_upgrades_interceptor.h"  // IWYU pragma: export
 
 #undef MaybeCreateLoader
-#undef MaybeCreateLoaderForResponse
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SSL_HTTPS_UPGRADES_INTERCEPTOR_H_
