@@ -141,11 +141,31 @@ struct UrlResponseInfo {
 };
 
 struct DBTransactionInfo {
-  int32 version;
-  int32 compatible_version;
-  array<DBStatementInfo> statements;
+  // The list of actions to run within the transaction such as creating or
+  // opening the database, executing a statement, or migrating the database.
+  array<DBActionInfo> actions;
+
+  // Vacuum the database. This must be done after any other actions are run.
+  // The database is configured to auto-vacuum with some limitations, but it is
+  // good practice to run this action manually.
+  bool should_vacuum = false;
 };
 
+struct DBTransactionResultInfo {
+  enum ResultCode {
+    kSuccess,  // No error.
+    kDatabaseNotInitialized,
+    kFailedToInitializeMetaTable,
+    kFailedToOpenDatabase,
+    kMigrationError,
+    kTransactionError,
+    kStatementError
+  };
+
+  ResultCode result_code;
+
+  DBRowsUnion? rows_union;
+};
 
 enum DBBindColumnType {
   kInt,
@@ -181,47 +201,39 @@ union DBRowsUnion {
   DBColumnValueUnion column_value_union;
 };
 
-struct DBStatementInfo {
-  enum OperationType {
-    // Create or open the database.
-    kCreateOrOpen,
-
-    // Execute a statement with bound columns that return records.
-    kStep,
-
-    // Execute a statement with bound columns that does not return records.
-    kRun,
+struct DBActionInfo {
+  enum Type {
+    // Initialize the database table.
+    kInitialize,
 
     // Execute a statement that does not return records.
     kExecute,
 
-    // Migrate the database to the latest version.
-    kMigrate,
+    // Execute a statement with bound columns that does not return records.
+    kRunStatement,
 
-    // Vacuum the database after committing the transaction.
-    kVacuum
+    // Execute a statement with bound columns that return records.
+    kStepStatement,
+
+    // Migrate the database.
+    kMigrate
   };
 
-  OperationType operation_type;
-  string sql;
+  // The action type.
+  Type type;
+
+  // The SQL statement to execute.
+  string? sql;
+
+  // The SQL statement's bound column types. This is only used for
+  // `kStepStatement`.
   array<DBBindColumnType> bind_column_types;
+
+  // The SQL statement's bound columns. This is only used for `kRunStatement`
+  // and `kStepStatement`.
   array<DBBindColumnInfo> bind_columns;
 };
 
-struct DBStatementResultInfo {
-  enum ResultCode {
-    kSuccess,  // No error.
-    kUninitialized,
-    kFailedToInitializeMetaTable,
-    kFailedToOpenDatabase,
-    kMigrationError,
-    kTransactionError,
-    kStatementError
-  };
-
-  DBRowsUnion? rows_union;
-  ResultCode result_code;
-};
-
-// Silences presubmit on mojom check. This struct does not need to be [Stable].
+// Silences presubmit for mojom check for legacy types.
 struct DBCommandResponseInfo {};
+struct DBStatementResultInfo {};

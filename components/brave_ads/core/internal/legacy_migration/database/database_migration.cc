@@ -11,7 +11,6 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
@@ -33,8 +32,8 @@ namespace brave_ads::database {
 
 namespace {
 
-void MigrateToV44(mojom::DBTransactionInfo* const mojom_transaction) {
-  CHECK(mojom_transaction);
+void MigrateToV44(mojom::DBTransactionInfo* const mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
 
   // Normally, whether or not the database supports `auto_vacuum` must be
   // configured before the database file is actually created. However, when not
@@ -42,105 +41,102 @@ void MigrateToV44(mojom::DBTransactionInfo* const mojom_transaction) {
   // database may be changed by using the `auto_vacuum` pragmas and then
   // immediately VACUUMing the database.
 
-  Execute(mojom_transaction, "PRAGMA auto_vacuum = FULL;");
-  Vacuum(mojom_transaction);
+  Execute(mojom_db_transaction, "PRAGMA auto_vacuum = FULL;");
+  Vacuum(mojom_db_transaction);
 }
 
-void Migrate(mojom::DBTransactionInfo* mojom_transaction,
+void Migrate(mojom::DBTransactionInfo* mojom_db_transaction,
              const int to_version) {
-  CHECK(mojom_transaction);
+  CHECK(mojom_db_transaction);
 
   switch (to_version) {
     case 44: {
-      MigrateToV44(mojom_transaction);
+      MigrateToV44(mojom_db_transaction);
       break;
     }
   }
 }
 
-void MigrateToVersion(mojom::DBTransactionInfo* mojom_transaction,
+void MigrateToVersion(mojom::DBTransactionInfo* mojom_db_transaction,
                       const int to_version) {
-  CHECK(mojom_transaction);
+  CHECK(mojom_db_transaction);
 
   table::CreativeSetConversions creative_set_conversion_database_table;
-  creative_set_conversion_database_table.Migrate(mojom_transaction, to_version);
+  creative_set_conversion_database_table.Migrate(mojom_db_transaction,
+                                                 to_version);
 
   table::ConfirmationQueue confirmation_queue_database_table;
-  confirmation_queue_database_table.Migrate(mojom_transaction, to_version);
+  confirmation_queue_database_table.Migrate(mojom_db_transaction, to_version);
 
   table::AdEvents ad_events_database_table;
-  ad_events_database_table.Migrate(mojom_transaction, to_version);
+  ad_events_database_table.Migrate(mojom_db_transaction, to_version);
 
   table::Transactions transactions_database_table;
-  transactions_database_table.Migrate(mojom_transaction, to_version);
+  transactions_database_table.Migrate(mojom_db_transaction, to_version);
 
   table::AdHistory ad_history_database_table;
-  ad_history_database_table.Migrate(mojom_transaction, to_version);
+  ad_history_database_table.Migrate(mojom_db_transaction, to_version);
 
   table::Campaigns campaigns_database_table;
-  campaigns_database_table.Migrate(mojom_transaction, to_version);
+  campaigns_database_table.Migrate(mojom_db_transaction, to_version);
 
   table::Segments segments_database_table;
-  segments_database_table.Migrate(mojom_transaction, to_version);
+  segments_database_table.Migrate(mojom_db_transaction, to_version);
 
   table::Deposits deposits_database_table;
-  deposits_database_table.Migrate(mojom_transaction, to_version);
+  deposits_database_table.Migrate(mojom_db_transaction, to_version);
 
   table::CreativeNotificationAds creative_notification_ads_database_table;
-  creative_notification_ads_database_table.Migrate(mojom_transaction,
+  creative_notification_ads_database_table.Migrate(mojom_db_transaction,
                                                    to_version);
 
   table::CreativeInlineContentAds creative_inline_content_ads_database_table;
-  creative_inline_content_ads_database_table.Migrate(mojom_transaction,
+  creative_inline_content_ads_database_table.Migrate(mojom_db_transaction,
                                                      to_version);
 
   table::CreativeNewTabPageAds creative_new_tab_page_ads_database_table;
-  creative_new_tab_page_ads_database_table.Migrate(mojom_transaction,
+  creative_new_tab_page_ads_database_table.Migrate(mojom_db_transaction,
                                                    to_version);
 
   table::CreativeNewTabPageAdWallpapers
       creative_new_tab_page_ad_wallpapers_database_table;
-  creative_new_tab_page_ad_wallpapers_database_table.Migrate(mojom_transaction,
-                                                             to_version);
+  creative_new_tab_page_ad_wallpapers_database_table.Migrate(
+      mojom_db_transaction, to_version);
 
   table::CreativePromotedContentAds
       creative_promoted_content_ads_database_table;
-  creative_promoted_content_ads_database_table.Migrate(mojom_transaction,
+  creative_promoted_content_ads_database_table.Migrate(mojom_db_transaction,
                                                        to_version);
 
   table::CreativeAds creative_ads_database_table;
-  creative_ads_database_table.Migrate(mojom_transaction, to_version);
+  creative_ads_database_table.Migrate(mojom_db_transaction, to_version);
 
   table::GeoTargets geo_targets_database_table;
-  geo_targets_database_table.Migrate(mojom_transaction, to_version);
+  geo_targets_database_table.Migrate(mojom_db_transaction, to_version);
 
   table::Dayparts dayparts_database_table;
-  dayparts_database_table.Migrate(mojom_transaction, to_version);
+  dayparts_database_table.Migrate(mojom_db_transaction, to_version);
 
-  Migrate(mojom_transaction, to_version);
+  Migrate(mojom_db_transaction, to_version);
 }
 
 }  // namespace
 
 void MigrateFromVersion(const int from_version, ResultCallback callback) {
-  CHECK_LT(from_version, kVersion);
+  CHECK_LT(from_version, kVersionNumber);
 
-  mojom::DBTransactionInfoPtr mojom_transaction =
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
 
-  for (int i = from_version + 1; i <= kVersion; ++i) {
-    MigrateToVersion(&*mojom_transaction, i);
+  for (int i = from_version + 1; i <= kVersionNumber; ++i) {
+    MigrateToVersion(&*mojom_db_transaction, i);
   }
 
-  mojom_transaction->version = kVersion;
-  mojom_transaction->compatible_version = kCompatibleVersion;
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kMigrate;
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kMigrate;
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
-
-  RunTransaction(std::move(mojom_transaction), std::move(callback));
+  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }
 
 }  // namespace brave_ads::database

@@ -29,7 +29,7 @@ using UrlRequestCallback =
     base::OnceCallback<void(const mojom::UrlResponseInfo& url_response)>;
 
 using RunDBTransactionCallback = base::OnceCallback<void(
-    mojom::DBStatementResultInfoPtr mojom_statement_result)>;
+    mojom::DBTransactionResultInfoPtr mojom_db_transaction_result)>;
 
 using GetSiteHistoryCallback =
     base::OnceCallback<void(const SiteHistoryList& site_history)>;

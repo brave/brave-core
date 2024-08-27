@@ -26,9 +26,9 @@ class Deposits final : public TableInterface {
  public:
   void Save(const DepositInfo& deposit, ResultCallback callback);
 
-  void Insert(mojom::DBTransactionInfo* mojom_transaction,
+  void Insert(mojom::DBTransactionInfo* mojom_db_transaction,
               const CreativeAdList& creative_ads);
-  void Insert(mojom::DBTransactionInfo* mojom_transaction,
+  void Insert(mojom::DBTransactionInfo* mojom_db_transaction,
               const DepositInfo& deposit);
 
   void GetForCreativeInstanceId(const std::string& creative_instance_id,
@@ -38,14 +38,14 @@ class Deposits final : public TableInterface {
 
   std::string GetTableName() const override;
 
-  void Create(mojom::DBTransactionInfo* mojom_transaction) override;
-  void Migrate(mojom::DBTransactionInfo* mojom_transaction,
+  void Create(mojom::DBTransactionInfo* mojom_db_transaction) override;
+  void Migrate(mojom::DBTransactionInfo* mojom_db_transaction,
                int to_version) override;
 
  private:
-  std::string BuildInsertSql(mojom::DBStatementInfo* mojom_statement,
+  std::string BuildInsertSql(mojom::DBActionInfo* mojom_db_action,
                              const CreativeAdList& creative_ads) const;
-  std::string BuildInsertSql(mojom::DBStatementInfo* mojom_statement,
+  std::string BuildInsertSql(mojom::DBActionInfo* mojom_db_action,
                              const DepositInfo& deposit) const;
 };
 

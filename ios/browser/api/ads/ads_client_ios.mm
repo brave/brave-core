@@ -132,9 +132,9 @@ void AdsClientIOS::Log(const char* file,
 }
 
 void AdsClientIOS::RunDBTransaction(
-    brave_ads::mojom::DBTransactionInfoPtr mojom_transaction,
+    brave_ads::mojom::DBTransactionInfoPtr mojom_db_transaction,
     brave_ads::RunDBTransactionCallback callback) {
-  [bridge_ runDBTransaction:std::move(mojom_transaction)
+  [bridge_ runDBTransaction:std::move(mojom_db_transaction)
                    callback:std::move(callback)];
 }
 

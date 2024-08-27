@@ -106,8 +106,8 @@ interface BatAdsClient {
 
   ShowScheduledCaptcha(string payment_id, string captcha_id);
 
-  RunDBTransaction(brave_ads.mojom.DBTransactionInfo transaction) =>
-      (brave_ads.mojom.DBStatementResultInfo statement_result);
+  RunDBTransaction(brave_ads.mojom.DBTransactionInfo db_transaction) =>
+      (brave_ads.mojom.DBTransactionResultInfo db_transaction_result);
 
   RecordP2AEvents(array<string> events);
 

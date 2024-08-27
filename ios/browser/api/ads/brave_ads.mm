@@ -1422,19 +1422,20 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
 }
 
 - (void)runDBTransaction:
-            (brave_ads::mojom::DBTransactionInfoPtr)mojom_transaction
+            (brave_ads::mojom::DBTransactionInfoPtr)mojom_db_transaction
                 callback:(brave_ads::RunDBTransactionCallback)completion {
   __weak BraveAds* weakSelf = self;
-  adsDatabase.AsyncCall(&brave_ads::Database::RunTransaction)
-      .WithArgs(std::move(mojom_transaction))
+  adsDatabase.AsyncCall(&brave_ads::Database::RunDBTransaction)
+      .WithArgs(std::move(mojom_db_transaction))
       .Then(base::BindOnce(
           ^(brave_ads::RunDBTransactionCallback callback,
-            brave_ads::mojom::DBStatementResultInfoPtr mojom_statement_result) {
+            brave_ads::mojom::DBTransactionResultInfoPtr
+                mojom_db_transaction_result) {
             const auto strongSelf = weakSelf;
             if (!strongSelf || ![strongSelf isServiceRunning]) {
               return;
             }
-            std::move(callback).Run(std::move(mojom_statement_result));
+            std::move(callback).Run(std::move(mojom_db_transaction_result));
           },
           std::move(completion)));
 }

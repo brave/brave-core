@@ -13,7 +13,6 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 
@@ -23,9 +22,9 @@ namespace {
 
 constexpr char kTableName[] = "creative_new_tab_page_ad_wallpapers";
 
-size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
+size_t BindColumns(mojom::DBActionInfo* mojom_db_action,
                    const CreativeNewTabPageAdList& creative_ads) {
-  CHECK(mojom_statement);
+  CHECK(mojom_db_action);
   CHECK(!creative_ads.empty());
 
   size_t row_count = 0;
@@ -33,11 +32,11 @@ size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
   int index = 0;
   for (const auto& creative_ad : creative_ads) {
     for (const auto& wallpaper : creative_ad.wallpapers) {
-      BindColumnString(mojom_statement, index++,
+      BindColumnString(mojom_db_action, index++,
                        creative_ad.creative_instance_id);
-      BindColumnString(mojom_statement, index++, wallpaper.image_url.spec());
-      BindColumnInt(mojom_statement, index++, wallpaper.focal_point.x);
-      BindColumnInt(mojom_statement, index++, wallpaper.focal_point.y);
+      BindColumnString(mojom_db_action, index++, wallpaper.image_url.spec());
+      BindColumnInt(mojom_db_action, index++, wallpaper.focal_point.x);
+      BindColumnInt(mojom_db_action, index++, wallpaper.focal_point.y);
     }
 
     row_count += creative_ad.wallpapers.size();
@@ -49,9 +48,9 @@ size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
 }  // namespace
 
 void CreativeNewTabPageAdWallpapers::Insert(
-    mojom::DBTransactionInfo* mojom_transaction,
+    mojom::DBTransactionInfo* mojom_db_transaction,
     const CreativeNewTabPageAdList& creative_ads) {
-  CHECK(mojom_transaction);
+  CHECK(mojom_db_transaction);
 
   CreativeNewTabPageAdList filtered_creative_ads;
   base::ranges::copy_if(creative_ads, std::back_inserter(filtered_creative_ads),
@@ -63,20 +62,20 @@ void CreativeNewTabPageAdWallpapers::Insert(
     return;
   }
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type = mojom::DBStatementInfo::OperationType::kRun;
-  mojom_statement->sql =
-      BuildInsertSql(&*mojom_statement, filtered_creative_ads);
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kRunStatement;
+  mojom_db_action->sql =
+      BuildInsertSql(&*mojom_db_action, filtered_creative_ads);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
 void CreativeNewTabPageAdWallpapers::Delete(ResultCallback callback) const {
-  mojom::DBTransactionInfoPtr mojom_transaction =
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
 
-  DeleteTable(&*mojom_transaction, GetTableName());
+  DeleteTable(&*mojom_db_transaction, GetTableName());
 
-  RunTransaction(std::move(mojom_transaction), std::move(callback));
+  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }
 
 std::string CreativeNewTabPageAdWallpapers::GetTableName() const {
@@ -84,10 +83,10 @@ std::string CreativeNewTabPageAdWallpapers::GetTableName() const {
 }
 
 void CreativeNewTabPageAdWallpapers::Create(
-    mojom::DBTransactionInfo* const mojom_transaction) {
-  CHECK(mojom_transaction);
+    mojom::DBTransactionInfo* const mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
 
-  Execute(mojom_transaction, R"(
+  Execute(mojom_db_transaction, R"(
       CREATE TABLE creative_new_tab_page_ad_wallpapers (
         creative_instance_id TEXT NOT NULL,
         image_url TEXT NOT NULL,
@@ -103,13 +102,13 @@ void CreativeNewTabPageAdWallpapers::Create(
 }
 
 void CreativeNewTabPageAdWallpapers::Migrate(
-    mojom::DBTransactionInfo* mojom_transaction,
+    mojom::DBTransactionInfo* mojom_db_transaction,
     const int to_version) {
-  CHECK(mojom_transaction);
+  CHECK(mojom_db_transaction);
 
   switch (to_version) {
     case 43: {
-      MigrateToV43(mojom_transaction);
+      MigrateToV43(mojom_db_transaction);
       break;
     }
   }
@@ -118,22 +117,22 @@ void CreativeNewTabPageAdWallpapers::Migrate(
 ///////////////////////////////////////////////////////////////////////////////
 
 void CreativeNewTabPageAdWallpapers::MigrateToV43(
-    mojom::DBTransactionInfo* const mojom_transaction) {
-  CHECK(mojom_transaction);
+    mojom::DBTransactionInfo* const mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
 
   // We can safely recreate the table because it will be repopulated after
   // downloading the catalog.
-  DropTable(mojom_transaction, GetTableName());
-  Create(mojom_transaction);
+  DropTable(mojom_db_transaction, GetTableName());
+  Create(mojom_db_transaction);
 }
 
 std::string CreativeNewTabPageAdWallpapers::BuildInsertSql(
-    mojom::DBStatementInfo* mojom_statement,
+    mojom::DBActionInfo* mojom_db_action,
     const CreativeNewTabPageAdList& creative_ads) const {
-  CHECK(mojom_statement);
+  CHECK(mojom_db_action);
   CHECK(!creative_ads.empty());
 
-  const size_t row_count = BindColumns(mojom_statement, creative_ads);
+  const size_t row_count = BindColumns(mojom_db_action, creative_ads);
 
   return base::ReplaceStringPlaceholders(
       R"(

@@ -10,12 +10,12 @@
 
 namespace brave_ads::database {
 
-void TableInterface::Migrate(mojom::DBTransactionInfo* mojom_transaction,
+void TableInterface::Migrate(mojom::DBTransactionInfo* mojom_db_transaction,
                              const int to_version) {
-  CHECK(mojom_transaction);
+  CHECK(mojom_db_transaction);
 
-  if (to_version == kVersion) {
-    Create(mojom_transaction);
+  if (to_version == kVersionNumber) {
+    Create(mojom_db_transaction);
   }
 }
 

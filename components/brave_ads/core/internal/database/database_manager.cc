@@ -11,6 +11,7 @@
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
@@ -45,28 +46,26 @@ void DatabaseManager::RemoveObserver(DatabaseManagerObserver* const observer) {
 void DatabaseManager::CreateOrOpen(ResultCallback callback) {
   NotifyWillCreateOrOpenDatabase();
 
-  mojom::DBTransactionInfoPtr mojom_transaction =
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
-  mojom_transaction->version = database::kVersion;
-  mojom_transaction->compatible_version = database::kCompatibleVersion;
-
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kCreateOrOpen;
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kInitialize;
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
   GetAdsClient()->RunDBTransaction(
-      std::move(mojom_transaction),
+      std::move(mojom_db_transaction),
       base::BindOnce(&DatabaseManager::CreateOrOpenCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void DatabaseManager::CreateOrOpenCallback(
     ResultCallback callback,
-    mojom::DBStatementResultInfoPtr mojom_statement_result) {
-  if (!mojom_statement_result ||
-      mojom_statement_result->result_code !=
-          mojom::DBStatementResultInfo::ResultCode::kSuccess) {
+    mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
+  if (!mojom_db_transaction_result ||
+      mojom_db_transaction_result->result_code !=
+          mojom::DBTransactionResultInfo::ResultCode::kSuccess) {
     BLOG(0, "Failed to create or open database");
 
     NotifyFailedToCreateOrOpenDatabase();
@@ -74,12 +73,12 @@ void DatabaseManager::CreateOrOpenCallback(
     return std::move(callback).Run(/*success=*/false);
   }
 
-  CHECK(mojom_statement_result->rows_union);
-  CHECK_EQ(
-      mojom_statement_result->rows_union->get_column_value_union()->which(),
-      mojom::DBColumnValueUnion::Tag::kIntValue);
+  CHECK(mojom_db_transaction_result->rows_union);
+  CHECK_EQ(mojom_db_transaction_result->rows_union->get_column_value_union()
+               ->which(),
+           mojom::DBColumnValueUnion::Tag::kIntValue);
   const int from_version =
-      mojom_statement_result->rows_union->get_column_value_union()
+      mojom_db_transaction_result->rows_union->get_column_value_union()
           ->get_int_value();
 
   if (from_version == 0) {
@@ -92,10 +91,8 @@ void DatabaseManager::CreateOrOpenCallback(
   MaybeMigrate(from_version, std::move(callback));
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
 void DatabaseManager::Create(ResultCallback callback) const {
-  BLOG(1, "Create database for schema version " << database::kVersion);
+  BLOG(1, "Create database for schema version " << database::kVersionNumber);
 
   database::Create(base::BindOnce(&DatabaseManager::CreateCallback,
                                   weak_factory_.GetWeakPtr(),
@@ -104,7 +101,7 @@ void DatabaseManager::Create(ResultCallback callback) const {
 
 void DatabaseManager::CreateCallback(ResultCallback callback,
                                      const bool success) const {
-  const int to_version = database::kVersion;
+  const int to_version = database::kVersionNumber;
 
   if (!success) {
     // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
@@ -132,7 +129,7 @@ void DatabaseManager::CreateCallback(ResultCallback callback,
 
 void DatabaseManager::MaybeMigrate(const int from_version,
                                    ResultCallback callback) const {
-  const int to_version = database::kVersion;
+  const int to_version = database::kVersionNumber;
   if (from_version == to_version) {
     BLOG(1, "Database is up to date on schema version " << from_version);
     NotifyDatabaseIsReady();
@@ -162,7 +159,7 @@ void DatabaseManager::MaybeMigrate(const int from_version,
 void DatabaseManager::MigrateFromVersionCallback(const int from_version,
                                                  ResultCallback callback,
                                                  const bool success) const {
-  const int to_version = database::kVersion;
+  const int to_version = database::kVersionNumber;
 
   if (!success) {
     // TODO(https://github.com/brave/brave-browser/issues/32066): Detect

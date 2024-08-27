@@ -44,10 +44,10 @@ constexpr int kDefaultBatchSize = 50;
 
 constexpr base::TimeDelta kMaximumRetryDelay = base::Hours(1);
 
-void BindColumnTypes(mojom::DBStatementInfo* const mojom_statement) {
-  CHECK(mojom_statement);
+void BindColumnTypes(mojom::DBActionInfo* const mojom_db_action) {
+  CHECK(mojom_db_action);
 
-  mojom_statement->bind_column_types = {
+  mojom_db_action->bind_column_types = {
       mojom::DBBindColumnType::kString,  // transaction_id
       mojom::DBBindColumnType::kString,  // creative_instance_id
       mojom::DBBindColumnType::kString,  // type
@@ -65,9 +65,9 @@ void BindColumnTypes(mojom::DBStatementInfo* const mojom_statement) {
   };
 }
 
-size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
+size_t BindColumns(mojom::DBActionInfo* mojom_db_action,
                    const ConfirmationQueueItemList& confirmation_queue_items) {
-  CHECK(mojom_statement);
+  CHECK(mojom_db_action);
   CHECK(!confirmation_queue_items.empty());
 
   size_t row_count = 0;
@@ -93,57 +93,57 @@ size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
         RebuildConfirmationWithoutDynamicUserData(
             confirmation_queue_item.confirmation);
 
-    BindColumnString(mojom_statement, index++, confirmation.transaction_id);
+    BindColumnString(mojom_db_action, index++, confirmation.transaction_id);
 
-    BindColumnString(mojom_statement, index++,
+    BindColumnString(mojom_db_action, index++,
                      confirmation.creative_instance_id);
 
-    BindColumnString(mojom_statement, index++, ToString(confirmation.type));
+    BindColumnString(mojom_db_action, index++, ToString(confirmation.type));
 
-    BindColumnString(mojom_statement, index++, ToString(confirmation.ad_type));
+    BindColumnString(mojom_db_action, index++, ToString(confirmation.ad_type));
 
-    BindColumnTime(mojom_statement, index++,
+    BindColumnTime(mojom_db_action, index++,
                    confirmation.created_at.value_or(base::Time()));
 
     if (confirmation.reward) {
-      BindColumnString(mojom_statement, index++,
+      BindColumnString(mojom_db_action, index++,
                        confirmation.reward->token.EncodeBase64().value_or(""));
 
       BindColumnString(
-          mojom_statement, index++,
+          mojom_db_action, index++,
           confirmation.reward->blinded_token.EncodeBase64().value_or(""));
 
       BindColumnString(
-          mojom_statement, index++,
+          mojom_db_action, index++,
           confirmation.reward->unblinded_token.EncodeBase64().value_or(""));
 
       BindColumnString(
-          mojom_statement, index++,
+          mojom_db_action, index++,
           confirmation.reward->public_key.EncodeBase64().value_or(""));
 
-      BindColumnString(mojom_statement, index++,
+      BindColumnString(mojom_db_action, index++,
                        confirmation.reward->signature);
 
-      BindColumnString(mojom_statement, index++,
+      BindColumnString(mojom_db_action, index++,
                        confirmation.reward->credential_base64url);
     } else {
-      BindColumnString(mojom_statement, index++, "");
-      BindColumnString(mojom_statement, index++, "");
-      BindColumnString(mojom_statement, index++, "");
-      BindColumnString(mojom_statement, index++, "");
-      BindColumnString(mojom_statement, index++, "");
-      BindColumnString(mojom_statement, index++, "");
+      BindColumnString(mojom_db_action, index++, "");
+      BindColumnString(mojom_db_action, index++, "");
+      BindColumnString(mojom_db_action, index++, "");
+      BindColumnString(mojom_db_action, index++, "");
+      BindColumnString(mojom_db_action, index++, "");
+      BindColumnString(mojom_db_action, index++, "");
     }
 
     std::string user_data_json;
     CHECK(
         base::JSONWriter::Write(confirmation.user_data.fixed, &user_data_json));
-    BindColumnString(mojom_statement, index++, user_data_json);
+    BindColumnString(mojom_db_action, index++, user_data_json);
 
-    BindColumnTime(mojom_statement, index++,
+    BindColumnTime(mojom_db_action, index++,
                    confirmation_queue_item.process_at.value_or(base::Time()));
 
-    BindColumnInt(mojom_statement, index++,
+    BindColumnInt(mojom_db_action, index++,
                   confirmation_queue_item.retry_count);
 
     ++row_count;
@@ -153,34 +153,34 @@ size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
 }
 
 ConfirmationQueueItemInfo FromMojomRow(
-    const mojom::DBRowInfo* const mojom_row) {
-  CHECK(mojom_row);
+    const mojom::DBRowInfo* const mojom_db_row) {
+  CHECK(mojom_db_row);
 
   ConfirmationQueueItemInfo confirmation_queue_item;
 
   confirmation_queue_item.confirmation.transaction_id =
-      ColumnString(mojom_row, 0);
+      ColumnString(mojom_db_row, 0);
 
   confirmation_queue_item.confirmation.creative_instance_id =
-      ColumnString(mojom_row, 1);
+      ColumnString(mojom_db_row, 1);
 
   confirmation_queue_item.confirmation.type =
-      ToConfirmationType(ColumnString(mojom_row, 2));
+      ToConfirmationType(ColumnString(mojom_db_row, 2));
 
   confirmation_queue_item.confirmation.ad_type =
-      ToAdType(ColumnString(mojom_row, 3));
+      ToAdType(ColumnString(mojom_db_row, 3));
 
-  const base::Time created_at = ColumnTime(mojom_row, 4);
+  const base::Time created_at = ColumnTime(mojom_db_row, 4);
   if (!created_at.is_null()) {
     confirmation_queue_item.confirmation.created_at = created_at;
   }
 
-  const std::string token = ColumnString(mojom_row, 5);
-  const std::string blinded_token = ColumnString(mojom_row, 6);
-  const std::string unblinded_token = ColumnString(mojom_row, 7);
-  const std::string public_key = ColumnString(mojom_row, 8);
-  const std::string signature = ColumnString(mojom_row, 9);
-  const std::string credential_base64url = ColumnString(mojom_row, 10);
+  const std::string token = ColumnString(mojom_db_row, 5);
+  const std::string blinded_token = ColumnString(mojom_db_row, 6);
+  const std::string unblinded_token = ColumnString(mojom_db_row, 7);
+  const std::string public_key = ColumnString(mojom_db_row, 8);
+  const std::string signature = ColumnString(mojom_db_row, 9);
+  const std::string credential_base64url = ColumnString(mojom_db_row, 10);
   if (!token.empty() && !blinded_token.empty() && !unblinded_token.empty() &&
       !public_key.empty() && !signature.empty() &&
       !credential_base64url.empty()) {
@@ -204,37 +204,39 @@ ConfirmationQueueItemInfo FromMojomRow(
   }
 
   confirmation_queue_item.confirmation.user_data.fixed =
-      base::JSONReader::ReadDict(ColumnString(mojom_row, 11))
+      base::JSONReader::ReadDict(ColumnString(mojom_db_row, 11))
           .value_or(base::Value::Dict());
 
-  const base::Time process_at = ColumnTime(mojom_row, 12);
+  const base::Time process_at = ColumnTime(mojom_db_row, 12);
   if (!process_at.is_null()) {
     confirmation_queue_item.process_at = process_at;
   }
 
-  confirmation_queue_item.retry_count = ColumnInt(mojom_row, 13);
+  confirmation_queue_item.retry_count = ColumnInt(mojom_db_row, 13);
 
   return confirmation_queue_item;
 }
 
-void GetCallback(GetConfirmationQueueCallback callback,
-                 mojom::DBStatementResultInfoPtr mojom_statement_result) {
-  if (!mojom_statement_result ||
-      mojom_statement_result->result_code !=
-          mojom::DBStatementResultInfo::ResultCode::kSuccess) {
+void GetCallback(
+    GetConfirmationQueueCallback callback,
+    mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
+  if (!mojom_db_transaction_result ||
+      mojom_db_transaction_result->result_code !=
+          mojom::DBTransactionResultInfo::ResultCode::kSuccess) {
     BLOG(0, "Failed to get confirmation queue");
 
     return std::move(callback).Run(/*success=*/false,
                                    /*confirmations_queue_items=*/{});
   }
 
-  CHECK(mojom_statement_result->rows_union);
+  CHECK(mojom_db_transaction_result->rows_union);
 
   ConfirmationQueueItemList confirmation_queue_items;
 
-  for (const auto& mojom_row : mojom_statement_result->rows_union->get_rows()) {
+  for (const auto& mojom_db_row :
+       mojom_db_transaction_result->rows_union->get_rows()) {
     const ConfirmationQueueItemInfo confirmation_queue_item =
-        FromMojomRow(&*mojom_row);
+        FromMojomRow(&*mojom_db_row);
     if (!confirmation_queue_item.IsValid()) {
       // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
       // potential defects using `DumpWithoutCrashing`.
@@ -253,10 +255,10 @@ void GetCallback(GetConfirmationQueueCallback callback,
   std::move(callback).Run(/*success=*/true, confirmation_queue_items);
 }
 
-void MigrateToV36(mojom::DBTransactionInfo* const mojom_transaction) {
-  CHECK(mojom_transaction);
+void MigrateToV36(mojom::DBTransactionInfo* const mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
 
-  Execute(mojom_transaction, R"(
+  Execute(mojom_db_transaction, R"(
       CREATE TABLE confirmation_queue (
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         transaction_id TEXT NOT NULL,
@@ -276,23 +278,23 @@ void MigrateToV36(mojom::DBTransactionInfo* const mojom_transaction) {
       );)");
 
   // Optimize database query for `GetAll, and `GetNext`.
-  CreateTableIndex(mojom_transaction, /*table_name=*/"confirmation_queue",
+  CreateTableIndex(mojom_db_transaction, /*table_name=*/"confirmation_queue",
                    /*columns=*/{"process_at"});
 }
 
-void MigrateToV38(mojom::DBTransactionInfo* const mojom_transaction) {
-  CHECK(mojom_transaction);
+void MigrateToV38(mojom::DBTransactionInfo* const mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
 
   // The conversion queue is deprecated since all confirmations are now being
   // added to the confirmation queue.
-  DropTable(mojom_transaction, "conversion_queue");
+  DropTable(mojom_db_transaction, "conversion_queue");
 }
 
-void MigrateToV43(mojom::DBTransactionInfo* const mojom_transaction) {
-  CHECK(mojom_transaction);
+void MigrateToV43(mojom::DBTransactionInfo* const mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
 
   // Optimize database query for `Delete`, and `Retry`.
-  CreateTableIndex(mojom_transaction, /*table_name=*/"confirmation_queue",
+  CreateTableIndex(mojom_db_transaction, /*table_name=*/"confirmation_queue",
                    /*columns=*/{"transaction_id"});
 }
 
@@ -307,33 +309,33 @@ void ConfirmationQueue::Save(
     return std::move(callback).Run(/*success=*/true);
   }
 
-  mojom::DBTransactionInfoPtr mojom_transaction =
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
 
   const std::vector<ConfirmationQueueItemList> batches =
       SplitVector(confirmation_queue_items, batch_size_);
 
   for (const auto& batch : batches) {
-    Insert(&*mojom_transaction, batch);
+    Insert(&*mojom_db_transaction, batch);
   }
 
-  RunTransaction(std::move(mojom_transaction), std::move(callback));
+  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }
 
 void ConfirmationQueue::DeleteAll(ResultCallback callback) const {
-  mojom::DBTransactionInfoPtr mojom_transaction =
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
 
-  DeleteTable(&*mojom_transaction, GetTableName());
+  DeleteTable(&*mojom_db_transaction, GetTableName());
 
-  RunTransaction(std::move(mojom_transaction), std::move(callback));
+  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }
 
 void ConfirmationQueue::Delete(const std::string& transaction_id,
                                ResultCallback callback) const {
-  mojom::DBTransactionInfoPtr mojom_transaction =
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
-  Execute(&*mojom_transaction, R"(
+  Execute(&*mojom_db_transaction, R"(
               DELETE FROM
                 $1
               WHERE
@@ -341,7 +343,7 @@ void ConfirmationQueue::Delete(const std::string& transaction_id,
             )",
           {GetTableName(), transaction_id});
 
-  RunTransaction(std::move(mojom_transaction), std::move(callback));
+  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }
 
 void ConfirmationQueue::Retry(const std::string& transaction_id,
@@ -354,10 +356,10 @@ void ConfirmationQueue::Retry(const std::string& transaction_id,
 
   // Exponentially backoff `process_at` for the next retry up to
   // `kMaximumRetryDelay`.
-  mojom::DBTransactionInfoPtr mojom_transaction =
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
   Execute(
-      &*mojom_transaction, R"(
+      &*mojom_db_transaction, R"(
             UPDATE
               $1
             SET
@@ -374,16 +376,15 @@ void ConfirmationQueue::Retry(const std::string& transaction_id,
       {GetTableName(), TimeToSqlValueAsString(base::Time::Now()), retry_after,
        max_retry_delay, retry_after, max_retry_delay, transaction_id});
 
-  RunTransaction(std::move(mojom_transaction), std::move(callback));
+  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }
 
 void ConfirmationQueue::GetAll(GetConfirmationQueueCallback callback) const {
-  mojom::DBTransactionInfoPtr mojom_transaction =
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kStep;
-  mojom_statement->sql = base::ReplaceStringPlaceholders(
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kStepStatement;
+  mojom_db_action->sql = base::ReplaceStringPlaceholders(
       R"(
           SELECT
             transaction_id,
@@ -405,21 +406,20 @@ void ConfirmationQueue::GetAll(GetConfirmationQueueCallback callback) const {
           ORDER BY
             process_at ASC;)",
       {GetTableName()}, nullptr);
-  BindColumnTypes(&*mojom_statement);
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  BindColumnTypes(&*mojom_db_action);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
   GetAdsClient()->RunDBTransaction(
-      std::move(mojom_transaction),
+      std::move(mojom_db_transaction),
       base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void ConfirmationQueue::GetNext(GetConfirmationQueueCallback callback) const {
-  mojom::DBTransactionInfoPtr mojom_transaction =
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type =
-      mojom::DBStatementInfo::OperationType::kStep;
-  mojom_statement->sql = base::ReplaceStringPlaceholders(
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kStepStatement;
+  mojom_db_action->sql = base::ReplaceStringPlaceholders(
       R"(
           SELECT
             transaction_id,
@@ -443,11 +443,11 @@ void ConfirmationQueue::GetNext(GetConfirmationQueueCallback callback) const {
           LIMIT
             1;)",
       {GetTableName()}, nullptr);
-  BindColumnTypes(&*mojom_statement);
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  BindColumnTypes(&*mojom_db_action);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
   GetAdsClient()->RunDBTransaction(
-      std::move(mojom_transaction),
+      std::move(mojom_db_transaction),
       base::BindOnce(&GetCallback, std::move(callback)));
 }
 
@@ -456,10 +456,10 @@ std::string ConfirmationQueue::GetTableName() const {
 }
 
 void ConfirmationQueue::Create(
-    mojom::DBTransactionInfo* const mojom_transaction) {
-  CHECK(mojom_transaction);
+    mojom::DBTransactionInfo* const mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
 
-  Execute(mojom_transaction, R"(
+  Execute(mojom_db_transaction, R"(
       CREATE TABLE confirmation_queue (
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         transaction_id TEXT NOT NULL,
@@ -479,32 +479,32 @@ void ConfirmationQueue::Create(
       );)");
 
   // Optimize database query for `GetAll, and `GetNext` from schema 36.
-  CreateTableIndex(mojom_transaction, /*table_name=*/"confirmation_queue",
+  CreateTableIndex(mojom_db_transaction, /*table_name=*/"confirmation_queue",
                    /*columns=*/{"process_at"});
 
   // Optimize database query for `Delete`, and `Retry` from schema 43.
-  CreateTableIndex(mojom_transaction, /*table_name=*/"confirmation_queue",
+  CreateTableIndex(mojom_db_transaction, /*table_name=*/"confirmation_queue",
                    /*columns=*/{"transaction_id"});
 }
 
 void ConfirmationQueue::Migrate(
-    mojom::DBTransactionInfo* const mojom_transaction,
+    mojom::DBTransactionInfo* const mojom_db_transaction,
     const int to_version) {
-  CHECK(mojom_transaction);
+  CHECK(mojom_db_transaction);
 
   switch (to_version) {
     case 36: {
-      MigrateToV36(mojom_transaction);
+      MigrateToV36(mojom_db_transaction);
       break;
     }
 
     case 38: {
-      MigrateToV38(mojom_transaction);
+      MigrateToV38(mojom_db_transaction);
       break;
     }
 
     case 43: {
-      MigrateToV43(mojom_transaction);
+      MigrateToV43(mojom_db_transaction);
       break;
     }
   }
@@ -513,29 +513,29 @@ void ConfirmationQueue::Migrate(
 ///////////////////////////////////////////////////////////////////////////////
 
 void ConfirmationQueue::Insert(
-    mojom::DBTransactionInfo* mojom_transaction,
+    mojom::DBTransactionInfo* mojom_db_transaction,
     const ConfirmationQueueItemList& confirmation_queue_items) const {
-  CHECK(mojom_transaction);
+  CHECK(mojom_db_transaction);
 
   if (confirmation_queue_items.empty()) {
     return;
   }
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type = mojom::DBStatementInfo::OperationType::kRun;
-  mojom_statement->sql =
-      BuildInsertSql(&*mojom_statement, confirmation_queue_items);
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kRunStatement;
+  mojom_db_action->sql =
+      BuildInsertSql(&*mojom_db_action, confirmation_queue_items);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
 std::string ConfirmationQueue::BuildInsertSql(
-    mojom::DBStatementInfo* mojom_statement,
+    mojom::DBActionInfo* mojom_db_action,
     const ConfirmationQueueItemList& confirmation_queue_items) const {
-  CHECK(mojom_statement);
+  CHECK(mojom_db_action);
   CHECK(!confirmation_queue_items.empty());
 
   const size_t row_count =
-      BindColumns(mojom_statement, confirmation_queue_items);
+      BindColumns(mojom_db_action, confirmation_queue_items);
 
   return base::ReplaceStringPlaceholders(
       R"(

@@ -53,9 +53,9 @@ ios_objc_mojom_wrappers("brave_ads_mojom_wrappers") {
   mojom_target = "//brave/components/brave_ads/core/mojom"
   sources = [ "//brave/components/brave_ads/core/mojom/brave_ads.mojom" ]
   exclude_types = [
-    "DBStatementInfo",
+    "DBActionInfo",
     "DBBindColumnInfo",
-    "DBStatementResultInfo",
+    "DBTransactionResultInfo",
     "DBRowsUnion",
     "DBRowInfo",
     "DBTransactionInfo",

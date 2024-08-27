@@ -17,21 +17,21 @@ namespace brave_ads::database::table {
 
 class GeoTargets final : public TableInterface {
  public:
-  void Insert(mojom::DBTransactionInfo* mojom_transaction,
+  void Insert(mojom::DBTransactionInfo* mojom_db_transaction,
               const CreativeAdList& creative_ads);
 
   void Delete(ResultCallback callback) const;
 
   std::string GetTableName() const override;
 
-  void Create(mojom::DBTransactionInfo* mojom_transaction) override;
-  void Migrate(mojom::DBTransactionInfo* mojom_transaction,
+  void Create(mojom::DBTransactionInfo* mojom_db_transaction) override;
+  void Migrate(mojom::DBTransactionInfo* mojom_db_transaction,
                int to_version) override;
 
  private:
-  void MigrateToV43(mojom::DBTransactionInfo* mojom_transaction);
+  void MigrateToV43(mojom::DBTransactionInfo* mojom_db_transaction);
 
-  std::string BuildInsertSql(mojom::DBStatementInfo* mojom_statement,
+  std::string BuildInsertSql(mojom::DBActionInfo* mojom_db_action,
                              const CreativeAdList& creative_ads) const;
 };
 

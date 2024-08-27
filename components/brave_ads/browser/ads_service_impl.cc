@@ -1746,13 +1746,13 @@ void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
 }
 
 void AdsServiceImpl::RunDBTransaction(
-    mojom::DBTransactionInfoPtr mojom_transaction,
+    mojom::DBTransactionInfoPtr mojom_db_transaction,
     RunDBTransactionCallback callback) {
-  CHECK(mojom_transaction);
+  CHECK(mojom_db_transaction);
   CHECK(database_);
 
-  database_.AsyncCall(&Database::RunTransaction)
-      .WithArgs(std::move(mojom_transaction))
+  database_.AsyncCall(&Database::RunDBTransaction)
+      .WithArgs(std::move(mojom_db_transaction))
       .Then(std::move(callback));
 }
 

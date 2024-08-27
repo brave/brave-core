@@ -20,7 +20,8 @@ namespace {
 constexpr int kFreshInstallDatabaseVersion = 0;
 
 std::string TestParamToString(::testing::TestParamInfo<int> test_param) {
-  return base::StringPrintf("%d_to_%d", test_param.param, database::kVersion);
+  return base::StringPrintf("%d_to_%d", test_param.param,
+                            database::kVersionNumber);
 }
 
 }  // namespace
@@ -52,11 +53,13 @@ class BraveAdsDatabaseMigrationForNonRewardsTest
   }
 
   static bool IsTestingFreshInstall() {
-    return GetSchemaVersion() == kFreshInstallDatabaseVersion;
+    return GetSchemaVersion() <= database::kRazeDatabaseThresholdVersionNumber;
   }
 
   static bool IsTestingUpgrade() {
-    return !IsTestingFreshInstall() && GetSchemaVersion() < database::kVersion;
+    return !IsTestingFreshInstall() &&
+           GetSchemaVersion() > database::kRazeDatabaseThresholdVersionNumber &&
+           GetSchemaVersion() < database::kVersionNumber;
   }
 
   void MaybeMockDatabase() {
@@ -107,7 +110,7 @@ INSTANTIATE_TEST_SUITE_P(
     BraveAdsDatabaseMigrationForNonRewardsTest,
     ::testing::Range(
         kFreshInstallDatabaseVersion,
-        database::kVersion +
+        database::kVersionNumber +
             1),  // We add 1 because `::testing::Range` end is exclusive.
     TestParamToString);
 
