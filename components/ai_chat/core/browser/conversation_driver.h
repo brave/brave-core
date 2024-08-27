@@ -93,7 +93,8 @@ class ConversationDriver : public ModelService::Observer {
   void ChangeModel(const std::string& model_key);
   std::string GetDefaultModel();
   void SetDefaultModel(const std::string& model_key);
-  const mojom::Model& GetCurrentModel();
+  const mojom::Model& GetCurrentModel() const;
+  uint32_t GetMaxPageContentLength() const;
   const std::vector<mojom::ModelPtr>& GetModels();
   const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory();
   std::vector<mojom::ConversationTurnPtr> GetVisibleConversationHistory();
