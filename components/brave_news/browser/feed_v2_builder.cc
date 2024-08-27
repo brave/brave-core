@@ -31,9 +31,11 @@
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_generation_info.h"
 #include "brave/components/brave_news/browser/feed_sampling.h"
+#include "brave/components/brave_news/browser/peeking_card.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
@@ -150,6 +152,21 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(FeedGenerationInfo& info,
         mojom::Article::New(std::move(generated), is_discover)));
   }
 
+  return result;
+}
+
+// For the first card in the feed we have a special algorithm for generating the
+// peeking card.
+std::vector<mojom::FeedItemV2Ptr> GenerateInitialBlock(
+    FeedGenerationInfo& info) {
+  std::vector<mojom::FeedItemV2Ptr> result;
+
+  auto hero_picker = base::BindRepeating(&GetPeekingCard, info.subscriptions());
+  auto peek = info.PickAndConsume(hero_picker);
+  if (peek) {
+    result.push_back(mojom::FeedItemV2::NewArticle(
+        mojom::Article::New(std::move(peek), /*is_discover=*/false)));
+  }
   return result;
 }
 
@@ -472,8 +489,10 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(FeedGenerationInfo info,
   constexpr size_t kIterationsPerAd = 2;
   size_t blocks = 0;
   while (!info.GetArticleInfos().empty()) {
-    auto items = GenerateBlock(info, pick_hero, pick_article,
-                               /*inline_discovery_ratio=*/0);
+    auto items = feed->items.empty()
+                     ? GenerateInitialBlock(info)
+                     : GenerateBlock(info, pick_hero, pick_article,
+                                     /*inline_discovery_ratio=*/0);
     if (items.empty()) {
       break;
     }
@@ -513,6 +532,11 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
       info.raw_feed_items().size() == 0) {
     return feed;
   }
+
+  auto peek = GenerateInitialBlock(info);
+  DVLOG(1) << "Inserting peeking block generated from GenerateInitialBlock ("
+           << peek.size() << " items)";
+  add_items(peek);
 
   // Step 1: Generate a block
   // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.rkq699fwps0
@@ -970,6 +994,7 @@ void FeedV2Builder::GenerateFeed(const SubscriptionsSnapshot& subscriptions,
       subscriptions, std::move(settings),
       base::BindOnce(
           [](const base::WeakPtr<FeedV2Builder> builder,
+             const SubscriptionsSnapshot& subscriptions,
              mojom::FeedV2TypePtr type, FeedGenerator generate,
              BuildFeedCallback callback) {
             if (!builder) {
@@ -991,7 +1016,7 @@ void FeedV2Builder::GenerateFeed(const SubscriptionsSnapshot& subscriptions,
             }
 
             FeedGenerationInfo info(
-                locale, builder->raw_feed_items_, publishers,
+                subscriptions, locale, builder->raw_feed_items_, publishers,
                 std::move(channels), builder->signals_,
                 builder->suggested_publisher_ids_, builder->topics_);
 
@@ -1020,8 +1045,8 @@ void FeedV2Builder::GenerateFeed(const SubscriptionsSnapshot& subscriptions,
 
             std::move(callback).Run(std::move(feed));
           },
-          weak_ptr_factory_.GetWeakPtr(), std::move(type), std::move(generator),
-          std::move(callback)));
+          weak_ptr_factory_.GetWeakPtr(), subscriptions, std::move(type),
+          std::move(generator), std::move(callback)));
 }
 
 }  // namespace brave_news
