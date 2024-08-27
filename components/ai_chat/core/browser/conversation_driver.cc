@@ -1039,7 +1039,7 @@ void ConversationDriver::SubmitHumanConversationEntry(
         &ConversationDriver::PerformAssistantGeneration,
         weak_ptr_factory_.GetWeakPtr(), question_part, current_navigation_id_));
   } else {
-    // Now the conversation is committed, we can remove some unneccessary data
+    // Now the conversation is committed, we can remove some unecessary data
     // if we're not associated with a page.
     article_text_.clear();
     suggestions_.clear();
@@ -1062,12 +1062,17 @@ void ConversationDriver::PerformAssistantGeneration(
   auto data_completed_callback =
       base::BindOnce(&ConversationDriver::OnEngineCompletionComplete,
                      weak_ptr_factory_.GetWeakPtr(), current_navigation_id);
+
+  const auto& current_model = GetCurrentModel();
   bool should_refine_page_content =
       features::IsPageContentRefineEnabled() &&
-      page_content.length() > GetCurrentModel()
-                                  .options->get_leo_model_options()
-                                  ->max_page_content_length &&
+      page_content.length() >
+          (current_model.options->is_custom_model_options()
+               ? kCustomModelMaxPageContentLength
+               : current_model.options->get_leo_model_options()
+                     ->max_page_content_length) &&
       input != l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
+
   if (!text_embedder_ && should_refine_page_content) {
     base::FilePath universal_qa_model_path =
         LeoLocalModelsUpdaterState::GetInstance()->GetUniversalQAModel();
@@ -1084,8 +1089,7 @@ void ConversationDriver::PerformAssistantGeneration(
     if (text_embedder_->IsInitialized()) {
       text_embedder_->GetTopSimilarityWithPromptTilContextLimit(
           input, page_content,
-          GetCurrentModel()
-              .options->get_leo_model_options()
+          current_model.options->get_leo_model_options()
               ->max_page_content_length,
           base::BindOnce(&ConversationDriver::OnGetRefinedPageContent,
                          weak_ptr_factory_.GetWeakPtr(), input,
