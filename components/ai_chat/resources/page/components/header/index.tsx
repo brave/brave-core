@@ -14,6 +14,7 @@ import { useConversation } from '../../state/conversation_context'
 
 interface PageTitleHeaderProps extends FeatureButtonMenuProps {
   title?: string
+  ref?: React.Ref<HTMLDivElement>
 }
 
 export function PageTitleHeader(props: PageTitleHeaderProps) {
@@ -28,7 +29,7 @@ export function PageTitleHeader(props: PageTitleHeaderProps) {
   }
 
   return (
-    <div className={styles.header}>
+    <div className={styles.header} ref={props.ref}>
       {(props.title && !aiChatContext.isStandalone) ? (
         <div className={styles.pageTitle}>
           <Button
