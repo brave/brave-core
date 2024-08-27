@@ -14,6 +14,7 @@ import components.path_util as path_util
 from components.perf_test_utils import GetProcessOutput
 
 GH_BRAVE_CORE_GIT_URL = 'git@github.com:brave/brave-core.git'
+GH_BRAVE_VARIATIONS_GIT_URL = 'git@github.com:brave/brave-variations.git'
 GH_BRAVE_PERF_TEAM = 'brave/perf-team'
 
 
@@ -84,3 +85,19 @@ def GetFileAtRevision(filepath: str, revision: str) -> Optional[str]:
       cwd=path_util.GetBraveDir(),
       output_to_debug=False)
   return content if success else None
+
+
+def Clone(url: str, branch: Optional[str], target_dir: str) -> None:
+  args = ['git', 'clone', url, target_dir]
+  if branch:
+    args.extend(['--branch', branch])
+  GetProcessOutput(args, path_util.GetBraveDir(), check=True)
+
+
+def EnsureRepositoryUpdated(url: str, branch: str, directory: str) -> None:
+  if not os.path.exists(directory):
+    Clone(url, branch, directory)
+    return
+
+  GetProcessOutput(['git', 'fetch', url, branch], directory, check=True)
+  GetProcessOutput(['git', 'checkout', 'FETCH_HEAD'], directory, check=True)
