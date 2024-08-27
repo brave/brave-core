@@ -33,7 +33,7 @@ InstalledAndCriticalVersion GetInstalledVersionSynchronous() {
 #undef GetInstalledVersion
 
 void GetInstalledVersion(InstalledVersionCallback callback) {
-  if (brave::update_client::ShouldUseOmaha4()) {
+  if (brave::ShouldUseOmaha4()) {
     GetInstalledVersion_ChromiumImpl(std::move(callback));
   } else {
     std::move(callback).Run(GetInstalledVersionSynchronous());
