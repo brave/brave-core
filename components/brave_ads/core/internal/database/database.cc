@@ -50,13 +50,23 @@ mojom::DBTransactionResultInfoPtr Database::RunDBTransaction(
     return mojom_db_transaction_result;
   }
 
+  // Maybe raze the database. This must be done before any other database
+  // actions are run. All tables must be recreated after the raze action has
+  // completed.
+  mojom_db_transaction_result->result_code = MaybeRaze(&*mojom_db_transaction);
+  if (mojom_db_transaction_result->result_code !=
+      mojom::DBTransactionResultInfo::ResultCode::kSuccess) {
+    VLOG(0) << "Failed to raze database";
+    return mojom_db_transaction_result;
+  }
+
   // Run any actions within the transaction, such as creating or opening the
   // database, executing a statement, or migrating the database.
   mojom_db_transaction_result->result_code =
       RunDBActions(mojom_db_transaction, &*mojom_db_transaction_result);
   if (mojom_db_transaction_result->result_code !=
       mojom::DBTransactionResultInfo::ResultCode::kSuccess) {
-    VLOG(0) << "Failed due to database error: " << db_.GetErrorMessage();
+    VLOG(0) << "Failed run database actions";
     return mojom_db_transaction_result;
   }
 
@@ -136,6 +146,32 @@ mojom::DBTransactionResultInfo::ResultCode Database::RunDBActions(
   return mojom::DBTransactionResultInfo::ResultCode::kSuccess;
 }
 
+mojom::DBTransactionResultInfo::ResultCode Database::MaybeRaze(
+    const mojom::DBTransactionInfo* const mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
+
+  if (mojom_db_transaction->should_raze && !db_.Raze()) {
+    return mojom::DBTransactionResultInfo::ResultCode::kFailedToRazeDatabase;
+  }
+
+  if (!InitializeMetaTable()) {
+    return mojom::DBTransactionResultInfo::ResultCode::
+        kFailedToInitializeMetaTable;
+  }
+
+  return mojom::DBTransactionResultInfo::ResultCode::kSuccess;
+}
+
+bool Database::InitializeMetaTable() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  // Reset the meta table so that it can be reinitialized.
+  meta_table_.Reset();
+
+  return meta_table_.Init(&db_, database::kVersionNumber,
+                          database::kCompatibleVersionNumber);
+}
+
 bool Database::ShouldCreateTables() {
   if (is_initialized_) {
     // The database is already initialized, so the tables should already exist.
@@ -161,8 +197,7 @@ mojom::DBTransactionResultInfo::ResultCode Database::Initialize(
   const bool should_create_tables = ShouldCreateTables();
 
   if (!is_initialized_) {
-    if (!meta_table_.Init(&db_, database::kVersionNumber,
-                          database::kCompatibleVersionNumber)) {
+    if (!InitializeMetaTable()) {
       return mojom::DBTransactionResultInfo::ResultCode::
           kFailedToInitializeMetaTable;
     }
@@ -196,7 +231,7 @@ mojom::DBTransactionResultInfo::ResultCode Database::Execute(
   }
 
   if (!db_.Execute(*mojom_db_action->sql)) {
-    VLOG(0) << "Failed due to database error: " << db_.GetErrorMessage();
+    VLOG(0) << "Failed to execute SQL statement: " << *mojom_db_action->sql;
     return mojom::DBTransactionResultInfo::ResultCode::kStatementError;
   }
 
@@ -216,7 +251,7 @@ mojom::DBTransactionResultInfo::ResultCode Database::RunStatement(
   sql::Statement statement;
   statement.Assign(db_.GetUniqueStatement(*mojom_db_action->sql));
   if (!statement.is_valid()) {
-    VLOG(0) << "Failed due to database error: " << db_.GetErrorMessage();
+    VLOG(0) << "Failed due to invalid SQL statement: " << *mojom_db_action->sql;
     return mojom::DBTransactionResultInfo::ResultCode::kStatementError;
   }
 
@@ -225,7 +260,7 @@ mojom::DBTransactionResultInfo::ResultCode Database::RunStatement(
   }
 
   if (!statement.Run()) {
-    VLOG(0) << "Failed due to database error: " << db_.GetErrorMessage();
+    VLOG(0) << "Failed to run SQL statement: " << *mojom_db_action->sql;
     return mojom::DBTransactionResultInfo::ResultCode::kStatementError;
   }
 
@@ -247,7 +282,7 @@ mojom::DBTransactionResultInfo::ResultCode Database::StepStatement(
   sql::Statement statement;
   statement.Assign(db_.GetUniqueStatement(*mojom_db_action->sql));
   if (!statement.is_valid()) {
-    VLOG(0) << "Failed due to database error: " << db_.GetErrorMessage();
+    VLOG(0) << "Failed due to invalid SQL statement: " << *mojom_db_action->sql;
     return mojom::DBTransactionResultInfo::ResultCode::kStatementError;
   }
 

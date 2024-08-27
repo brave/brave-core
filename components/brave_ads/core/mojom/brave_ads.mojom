@@ -141,6 +141,10 @@ struct UrlResponseInfo {
 };
 
 struct DBTransactionInfo {
+  // Raze the database. This must be done before any other actions are run.
+  // All tables must be recreated after the raze action has completed.
+  bool should_raze = false;
+
   // The list of actions to run within the transaction such as creating or
   // opening the database, executing a statement, or migrating the database.
   array<DBActionInfo> actions;
@@ -155,6 +159,7 @@ struct DBTransactionResultInfo {
   enum ResultCode {
     kSuccess,  // No error.
     kDatabaseNotInitialized,
+    kFailedToRazeDatabase,
     kFailedToInitializeMetaTable,
     kFailedToOpenDatabase,
     kMigrationError,

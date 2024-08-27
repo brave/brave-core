@@ -39,6 +39,11 @@ class ADS_EXPORT Database final {
       const mojom::DBTransactionInfoPtr& mojom_db_transaction,
       mojom::DBTransactionResultInfo* mojom_db_transaction_result);
 
+  mojom::DBTransactionResultInfo::ResultCode MaybeRaze(
+      const mojom::DBTransactionInfo* mojom_db_transaction);
+
+  bool InitializeMetaTable();
+
   bool ShouldCreateTables();
   mojom::DBTransactionResultInfo::ResultCode Initialize(
       mojom::DBTransactionResultInfo* mojom_db_transaction_result);
