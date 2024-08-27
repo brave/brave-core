@@ -47,7 +47,7 @@ void CheckProcessExit(base::Process process, base::OnceClosure callback) {
 }  // namespace
 
 void DoPeriodicTasks(base::OnceClosure callback) {
-  if (brave::update_client::ShouldUseOmaha4()) {
+  if (brave::ShouldUseOmaha4()) {
     DoPeriodicTasks_ChromiumImpl(std::move(callback));
   } else if (keystone_glue::KeystoneEnabled()) {
     // The registration framework doesn't provide a mechanism to ask Keystone to

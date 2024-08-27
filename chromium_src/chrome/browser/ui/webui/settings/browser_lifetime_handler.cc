@@ -22,8 +22,7 @@ BrowserLifetimeHandler::~BrowserLifetimeHandler() {}
 
 void BrowserLifetimeHandler::HandleRelaunch(const base::Value::List& args) {
 #if BUILDFLAG(ENABLE_SPARKLE)
-  if (!brave::update_client::ShouldUseOmaha4() &&
-      brave_relaunch_handler::RelaunchOnMac()) {
+  if (!brave::ShouldUseOmaha4() && brave_relaunch_handler::RelaunchOnMac()) {
     return;
   }
 #endif

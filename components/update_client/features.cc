@@ -4,11 +4,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/update_client/features.h"
+
 #include "build/build_config.h"
 
 static_assert(BUILDFLAG(IS_MAC), "Currently for macOS only");
 
-namespace brave::update_client {
+namespace brave {
 
 BASE_FEATURE(kBraveUseOmaha4,
              "BraveUseOmaha4",
@@ -18,4 +19,4 @@ bool ShouldUseOmaha4() {
   return base::FeatureList::IsEnabled(kBraveUseOmaha4);
 }
 
-}  // namespace brave::update_client
+}  // namespace brave
