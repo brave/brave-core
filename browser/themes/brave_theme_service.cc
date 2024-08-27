@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "brave/browser/extensions/brave_theme_event_router.h"
+#include "chrome/browser/themes/theme_service.h"
 
 BraveThemeService::BraveThemeService(Profile* profile,
                                      const ThemeHelper& theme_helper)
@@ -17,6 +18,12 @@ BraveThemeService::BraveThemeService(Profile* profile,
 }
 
 BraveThemeService::~BraveThemeService() = default;
+
+// We replace the baseline theme with the grayscale theme - the default theme is
+// blue ish while ours is gray.
+bool BraveThemeService::GetIsGrayscale() const {
+  return ThemeService::GetIsGrayscale() || GetIsBaseline();
+}
 
 void BraveThemeService::SetBraveThemeEventRouterForTesting(
     extensions::BraveThemeEventRouter* mock_router) {
