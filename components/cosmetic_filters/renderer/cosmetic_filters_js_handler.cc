@@ -19,7 +19,6 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated_map.h"
-#include "components/content_settings/renderer/content_settings_agent_impl.h"
 #include "content/public/renderer/render_frame.h"
 #include "gin/arguments.h"
 #include "gin/function_template.h"
@@ -27,6 +26,7 @@
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
+#include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_css_origin.h"
 #include "third_party/blink/public/web/web_document.h"
@@ -172,6 +172,31 @@ int MakeUniquePerfId() {
 }
 
 constexpr const char TRACE_CATEGORY[] = "brave.adblock";
+
+// Gets content settings for a given frame's security origin, accounting for
+// intermediaries like `about:blank`.
+blink::WebContentSettingsClient* GetWebContentSettingsClient(
+    content::RenderFrame* render_frame) {
+  DCHECK(render_frame);
+
+  blink::WebLocalFrame* web_local_frame = render_frame->GetWebFrame();
+  while (web_local_frame) {
+    blink::WebContentSettingsClient* content_settings =
+        web_local_frame->GetContentSettingsClient();
+    if (content_settings && content_settings->HasContentSettingsRules()) {
+      return content_settings;
+    }
+
+    blink::WebFrame* parent_web_frame = web_local_frame->Parent();
+    if (!parent_web_frame || !parent_web_frame->IsWebLocalFrame()) {
+      return content_settings;
+    }
+
+    web_local_frame = static_cast<blink::WebLocalFrame*>(parent_web_frame);
+  }
+
+  return nullptr;
+}
 
 }  // namespace
 
@@ -371,9 +396,8 @@ bool CosmeticFiltersJSHandler::ProcessURL(
   if (!EnsureConnected() || url_.is_empty() || !url_.is_valid())
     return false;
 
-  auto* content_settings =
-      static_cast<content_settings::BraveContentSettingsAgentImpl*>(
-          content_settings::ContentSettingsAgentImpl::Get(render_frame_));
+  auto* content_settings = GetWebContentSettingsClient(render_frame_);
+  CHECK(content_settings);
 
   const bool force_cosmetic_filtering =
       render_frame_->GetBlinkPreferences().force_cosmetic_filtering;
