@@ -1,0 +1,29 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "base/test/scoped_feature_list.h"
+#include "brave/chromium_src/chrome/browser/ui/webui/help/version_updater_mac.h"
+#include "brave/components/update_client/features.h"
+#include "chrome/browser/ui/webui/help/version_updater.h"
+#include "testing/gtest/include/gtest/gtest.h"
+
+class BraveVersionUpdaterMacTest : public testing::Test {
+ protected:
+  bool UsesSparkle() {
+    std::unique_ptr<VersionUpdater> updater = VersionUpdater::Create(nullptr);
+    return SparkleVersionUpdater::IsSparkle(updater.get());
+  }
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+TEST_F(BraveVersionUpdaterMacTest, UsesSparkleByDefault) {
+  EXPECT_TRUE(UsesSparkle());
+}
+
+TEST_F(BraveVersionUpdaterMacTest, UsesOmaha4WhenEnabled) {
+  scoped_feature_list_.InitAndEnableFeature(
+      brave::update_client::kBraveUseOmaha4);
+  EXPECT_FALSE(UsesSparkle());
+}

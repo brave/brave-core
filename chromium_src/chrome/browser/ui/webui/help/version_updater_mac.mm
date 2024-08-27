@@ -209,3 +209,8 @@ void SparkleVersionUpdater::UpdateShowPromoteButton() {
                  : static_cast<VersionUpdater*>(new SparkleVersionUpdater()))
 #include "src/chrome/browser/ui/webui/help/version_updater_mac.mm"
 #undef WrapUnique
+
+bool SparkleVersionUpdater::IsSparkle(VersionUpdater* updater) {
+  const SparkleVersionUpdater* sparkle_updater = static_cast<const SparkleVersionUpdater*>(updater);
+  return sparkle_updater && sparkle_updater->type_marker_ == &SparkleVersionUpdater::IsSparkle;
+}
