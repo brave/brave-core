@@ -5,6 +5,10 @@
 
 #include "src/components/update_client/request_sender_unittest.cc"
 
+#include "build/build_config.h"
+
+#if BUILDFLAG(IS_MAC)
+
 #include "base/functional/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/update_client/features.h"
@@ -50,3 +54,5 @@ TEST_F(BraveRequestSenderTest, UsesBraveCUPKeyWhenOmaha4IsEnabled) {
 }
 
 }  // namespace update_client
+
+#endif  // BUILDFLAG(IS_MAC)
