@@ -12,7 +12,7 @@
 
 #define Init(...)                 \
   Init_ChromiumImpl(__VA_ARGS__); \
-  void Init(__VA_ARGS__)
+  virtual void Init(__VA_ARGS__)
 
 #include "src/chrome/browser/ui/tabs/public/tab_features.h"  // IWYU pragma: export
 #undef Init
