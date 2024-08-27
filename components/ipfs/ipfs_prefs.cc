@@ -105,9 +105,7 @@ void RegisterDeprecatedIpfsPrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kIPFSCompanionEnabled, false);
 }
 
-void ClearDeprecatedIpfsPrefs(
-    PrefService* registry,
-    std::unique_ptr<IpfsComponentCleanerDelegate> ipfs_cleaner_delegate) {
+void ClearDeprecatedIpfsPrefs(PrefService* registry) {
   registry->ClearPref(kIPFSEnabled);
   registry->ClearPref(kIPFSResolveMethod);
   registry->ClearPref(kIPFSAutoFallbackToGateway);
@@ -126,11 +124,6 @@ void ClearDeprecatedIpfsPrefs(
   registry->ClearPref(kIPFSAutoRedirectGateway);
   registry->ClearPref(kIPFSAutoRedirectDNSLink);
   registry->ClearPref(kIPFSCompanionEnabled);
-
-  if (ipfs_cleaner_delegate) {
-    ipfs_cleaner_delegate->DeleteIpfsComponent(
-        ipfs_cleaner_delegate->GetIpfsClientComponentPath());
-  }
 }
 
 }  // namespace ipfs

@@ -10,7 +10,7 @@ brave_browser_ipfs_deps = []
 
 if (!is_android && !is_ios) {
   brave_browser_ipfs_sources += [
-    "//brave/browser/ipfs/ipfs_component_cleaner_delegate_impl.cc",
-    "//brave/browser/ipfs/ipfs_component_cleaner_delegate_impl.h",
+    "//brave/browser/ipfs/ipfs_component_cleaner.cc",
+    "//brave/browser/ipfs/ipfs_component_cleaner.h",
   ]
 }

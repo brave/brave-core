@@ -67,6 +67,10 @@
 #include "extensions/browser/extension_system.h"
 #endif
 
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ipfs/ipfs_component_cleaner.h"
+#endif
+
 BraveBrowserMainParts::BraveBrowserMainParts(bool is_integration_test,
                                              StartupData* startup_data)
     : ChromeBrowserMainParts(is_integration_test, startup_data) {}
@@ -159,6 +163,10 @@ void BraveBrowserMainParts::PostBrowserStart() {
     }
   }
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+  ipfs::CleanupIpfsComponent();
+#endif
 }
 
 void BraveBrowserMainParts::PreShutdown() {

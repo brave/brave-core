@@ -19,9 +19,4 @@ static_library("ipfs") {
     "//net",
     "//url",
   ]
-
-  if (!is_android && !is_ios) {
-    sources += [ "ipfs_component_cleaner_delegate.h" ]
-    deps += [ "//chrome/common:constants" ]
-  }
 }
