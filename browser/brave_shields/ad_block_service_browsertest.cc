@@ -2569,6 +2569,34 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringIframeScriptlet) {
   ASSERT_EQ(true, EvalJs(contents, "show_ad"));
 }
 
+// Test scriptlet injection inside about:blank frames
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       CosmeticFilteringAboutBlankScriptlet) {
+  std::string scriptlet =
+      "(function() {"
+      "  window.sval = true;"
+      "})();";
+  UpdateAdBlockResources(
+      "[{"
+      "\"name\": \"set.js\","
+      "\"aliases\": [\"set.js\"],"
+      "\"kind\": {\"mime\": \"application/javascript\"},"
+      "\"content\": \"" +
+      base::Base64Encode(scriptlet) + "\"}]");
+  UpdateAdBlockInstanceWithRules("b.com##+js(set)");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  auto result = EvalJs(
+      contents, R"(document.getElementById('iframe').contentWindow.sval)");
+  ASSERT_TRUE(result.error.empty());
+  EXPECT_EQ(base::Value(true), result.value);
+}
+
 // Test cosmetic filtering on an element that already has an `!important`
 // marker on its `display` style.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
