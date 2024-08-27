@@ -147,65 +147,147 @@ class SystemVPNConnectionAPIUnitTest : public testing::Test {
       ])";
   }
 
+  // Use 6 countries data for test.
   std::string GetRegionsData() {
-    // Give 11 region data.
     return R"([
-        {
-          "continent": "europe",
-          "name": "eu-es",
-          "name-pretty": "Spain"
-        },
-        {
-          "continent": "south-america",
-          "name": "sa-br",
-          "name-pretty": "Brazil"
-        },
-        {
-          "continent": "europe",
-          "name": "eu-ch",
-          "name-pretty": "Switzerland"
-        },
-        {
-          "continent": "europe",
-          "name": "eu-de",
-          "name-pretty": "Germany"
-        },
-        {
-          "continent": "asia",
-          "name": "asia-sg",
-          "name-pretty": "Singapore"
-        },
-        {
-          "continent": "north-america",
-          "name": "ca-east",
-          "name-pretty": "Canada"
-        },
-        {
-          "continent": "asia",
-          "name": "asia-jp",
-          "name-pretty": "Japan"
-        },
-        {
-          "continent": "europe",
-          "name": "eu-en",
-          "name-pretty": "United Kingdom"
-        },
-        {
-          "continent": "europe",
-          "name": "eu-nl",
-          "name-pretty": "Netherlands"
-        },
-        {
-          "continent": "north-america",
-          "name": "us-west",
-          "name-pretty": "USA West"
-        },
-        {
-          "continent": "oceania",
-          "name": "au-au",
-          "name-pretty": "Australia"
-        }
-      ])";
+      {
+        "cities": [
+          {
+            "continent": "Oceania",
+            "country-iso-code": "AU",
+            "latitude": 151.2070530275259,
+            "longitude": -33.867749537753284,
+            "name": "au-syd",
+            "name-pretty": "Sydney",
+            "region-precision": "city",
+            "cities": [],
+            "server-count": 8
+          }
+        ],
+        "continent": "Oceania",
+        "country-iso-code": "AU",
+        "latitude": 133.79969396159765,
+        "longitude": -23.62305911440252,
+        "name": "ocn-aus",
+        "name-pretty": "Australia",
+        "region-precision": "country",
+        "server-count": 8
+      },
+      {
+        "cities": [
+          {
+            "continent": "Europe",
+            "country-iso-code": "AT",
+            "latitude": 16.361628116335655,
+            "longitude": 48.20392172247492,
+            "name": "eu-vie",
+            "name-pretty": "Vienna",
+            "region-precision": "city",
+            "cities": [],
+            "server-count": 10
+          }
+        ],
+        "continent": "Europe",
+        "country-iso-code": "AT",
+        "latitude": 13.833811946421187,
+        "longitude": 47.490394433887666,
+        "name": "eu-at",
+        "name-pretty": "Austria",
+        "region-precision": "country",
+        "server-count": 10
+      },
+      {
+        "cities": [
+          {
+            "continent": "Europe",
+            "country-iso-code": "BE",
+            "latitude": 4.374847958682745,
+            "longitude": 50.838778068842664,
+            "name": "eu-bx",
+            "name-pretty": "Brussels",
+            "region-precision": "city",
+            "cities": [],
+            "server-count": 10
+          }
+        ],
+        "continent": "Europe",
+        "country-iso-code": "BE",
+        "latitude": 4.733776325426172,
+        "longitude": 50.712750850845715,
+        "name": "eu-be",
+        "name-pretty": "Belgium",
+        "region-precision": "country",
+        "server-count": 10
+      },
+      {
+        "cities": [
+          {
+            "continent": "Asia",
+            "country-iso-code": "SG",
+            "latitude": 103.85019137019486,
+            "longitude": 1.2900135414450815,
+            "name": "sg-sg",
+            "name-pretty": "Singapore",
+            "region-precision": "city",
+            "cities": [],
+            "server-count": 10
+          }
+        ],
+        "continent": "Asia",
+        "country-iso-code": "SG",
+        "latitude": 103.7967572191037,
+        "longitude": 1.3827725407524207,
+        "name": "asia-sg",
+        "name-pretty": "Singapore",
+        "region-precision": "country",
+        "server-count": 10
+      },
+      {
+        "cities": [
+          {
+            "continent": "South-America",
+            "country-iso-code": "BR",
+            "latitude": -46.63611733672991,
+            "longitude": -23.547575340603583,
+            "name": "sa-sao",
+            "name-pretty": "Sao Paulo",
+            "region-precision": "city",
+            "cities": [],
+            "server-count": 5
+          }
+        ],
+        "continent": "South-America",
+        "country-iso-code": "BR",
+        "latitude": -48.99593985069093,
+        "longitude": -12.240989380800045,
+        "name": "sa-brz",
+        "name-pretty": "Brazil",
+        "region-precision": "country",
+        "server-count": 5
+      },
+      {
+        "cities": [
+          {
+            "continent": "North-America",
+            "country-iso-code": "CA",
+            "latitude": -79.39835761830456,
+            "longitude": 43.7064997964195,
+            "name": "ca-tor",
+            "name-pretty": "Toronto",
+            "region-precision": "city",
+            "cities": [],
+            "server-count": 5
+          }
+        ],
+        "continent": "North-America",
+        "country-iso-code": "CA",
+        "latitude": -103.18476973580967,
+        "longitude": 58.781368758466364,
+        "name": "na-can",
+        "name-pretty": "Canada",
+        "region-precision": "country",
+        "server-count": 5
+      }])";
   }
 
   BraveVPNConnectionManager* GetBraveVPNConnectionManager() const {
@@ -238,15 +320,15 @@ class SystemVPNConnectionAPIUnitTest : public testing::Test {
         .NeedToUpdateRegionData();
   }
 
-  mojom::Region device_region() {
+  mojom::RegionPtr device_region() {
     if (auto region_ptr =
             GetRegionPtrWithNameFromRegionList(GetBraveVPNConnectionManager()
                                                    ->GetRegionDataManager()
                                                    .GetDeviceRegion(),
                                                regions())) {
-      return *(region_ptr.Clone());
+      return region_ptr.Clone();
     }
-    return mojom::Region();
+    return nullptr;
   }
 
   const std::vector<mojom::RegionPtr>& regions() {
@@ -283,7 +365,7 @@ class SystemVPNConnectionAPIUnitTest : public testing::Test {
 
 TEST_F(SystemVPNConnectionAPIUnitTest, LoadRegionDataFromPrefsTest) {
   // Initially, prefs doesn't have region data.
-  EXPECT_EQ(mojom::Region(), device_region());
+  EXPECT_FALSE(device_region());
   EXPECT_TRUE(regions().empty());
 
   // Set proper data to store them in prefs.
@@ -292,7 +374,7 @@ TEST_F(SystemVPNConnectionAPIUnitTest, LoadRegionDataFromPrefsTest) {
   OnFetchTimezones(GetTimeZonesData(), true);
 
   // Check region data is set with above data.
-  EXPECT_FALSE(mojom::Region() == device_region());
+  EXPECT_TRUE(device_region());
   EXPECT_FALSE(regions().empty());
 
   // Clear region data from api instance.
@@ -306,7 +388,7 @@ TEST_F(SystemVPNConnectionAPIUnitTest, LoadRegionDataFromPrefsTest) {
 
 TEST_F(SystemVPNConnectionAPIUnitTest, RegionDataTest) {
   // Initially, prefs doesn't have region data.
-  EXPECT_EQ(mojom::Region(), device_region());
+  EXPECT_FALSE(device_region());
   EXPECT_TRUE(regions().empty());
 
   // Test invalid region data.
@@ -315,7 +397,7 @@ TEST_F(SystemVPNConnectionAPIUnitTest, RegionDataTest) {
 
   // Test valid region data parsing.
   OnFetchRegionList(GetRegionsData(), true);
-  const size_t kRegionCount = 11;
+  const size_t kRegionCount = 6;
   EXPECT_EQ(kRegionCount, regions().size());
 
   // First region in region list is set as a device region when fetch is failed.
@@ -328,7 +410,7 @@ TEST_F(SystemVPNConnectionAPIUnitTest, RegionDataTest) {
   SetFallbackDeviceRegion();
   SetTestTimezone("Asia/Seoul");
   OnFetchTimezones(GetTimeZonesData(), true);
-  EXPECT_EQ("asia-sg", device_region().name);
+  EXPECT_EQ("asia-sg", device_region()->name);
 
   // Test device region is not changed when invalid timezone is set.
   SetFallbackDeviceRegion();
