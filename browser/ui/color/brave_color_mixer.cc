@@ -833,6 +833,6 @@ void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorTabDividerFrameActive] =
       ui::AlphaBlend({nala::kColorDividerStrong},
-                     {kColorTabBackgroundInactiveFrameActive}, 0.5 * 0xff);
+                     {kColorTabBackgroundInactiveFrameActive}, 0.75 * 0xff);
   mixer[kColorTabDividerFrameInactive] = {kColorTabDividerFrameActive};
 }
