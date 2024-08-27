@@ -468,6 +468,7 @@ public struct InternalURL {
     case readermode = "reader-mode"
     case blocked
     case httpBlocked = "http-blocked"
+    case basicAuth = "basic-auth"
 
     func matches(_ string: String) -> Bool {
       return string.range(
@@ -554,6 +555,10 @@ public struct InternalURL {
 
   public var isReaderModePage: Bool {
     return InternalURL.Path.readermode.matches(url.path)
+  }
+
+  public var isBasicAuthURL: Bool {
+    return InternalURL.Path.basicAuth.matches(url.path)
   }
 
   public var originalURLFromErrorPage: URL? {
