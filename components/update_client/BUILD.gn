@@ -23,10 +23,12 @@ buildflag_header("buildflags") {
   ]
 }
 
-source_set("update_client") {
-  sources = [
-    "features.cc",
-    "features.h",
-  ]
-  deps = [ "//base" ]
+if (is_mac) {
+  source_set("update_client") {
+    sources = [
+      "features.cc",
+      "features.h",
+    ]
+    deps = [ "//base" ]
+  }
 }
