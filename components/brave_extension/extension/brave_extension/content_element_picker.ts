@@ -376,9 +376,6 @@ const onTargetSelected = (selected: Element | null, index: number): string => {
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
-    case 'elementPickerLaunch':
-      launchElementPicker()
-      break
     case 'quitElementPicker':
       quitElementPicker()
       break
@@ -421,3 +418,5 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }
   }
 })
+
+launchElementPicker()
