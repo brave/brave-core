@@ -10,7 +10,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/ai_chat/core/browser/leo_local_models_updater.h"
+#include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
@@ -46,7 +46,7 @@ void RegisterComponentsForUpdate(
   brave_wallet::WalletDataFilesInstaller::GetInstance()
       .MaybeRegisterWalletDataFilesComponent(
           cus, GetApplicationContext()->GetLocalState());
-  ai_chat::ManageLeoLocalModelsComponentRegistration(cus);
+  ai_chat::ManageLocalModelsComponentRegistration(cus);
 }
 }  // namespace
 

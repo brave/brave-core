@@ -1075,7 +1075,7 @@ void ConversationDriver::PerformAssistantGeneration(
       input != l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
   if (!text_embedder_ && should_refine_page_content) {
     base::FilePath universal_qa_model_path =
-        LeoLocalModelsUpdaterState::GetInstance()->GetUniversalQAModel();
+        LocalModelsUpdaterState::GetInstance()->GetUniversalQAModel();
     // Tasks in TextEmbedder are run on |embedder_task_runner|. The
     // text_embedder_ must be deleted on that sequence to guarantee that pending
     // tasks can safely be executed.
