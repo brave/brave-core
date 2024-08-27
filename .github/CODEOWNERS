@@ -19,6 +19,7 @@ components/brave_component_updater/browser/local_data_files_observer.h @bridiver
 
 # sources.gni
 **/sources.gni @brave/sources-gni-reviewers
+**/*_sources.gni @brave/sources-gni-reviewers
 
 # Renderer code
 **/renderer/**/* @brave/renderer-reviewers
