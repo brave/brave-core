@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/thread_pool.h"
@@ -48,6 +49,10 @@ std::optional<base::Time> OnboardingTabHelper::s_sentinel_time_for_testing_;
 // static
 void OnboardingTabHelper::MaybeCreateForWebContents(
     content::WebContents* web_contents) {
+  if (!g_browser_process->local_state()) {
+    CHECK_IS_TEST();
+    return;
+  }
   base::Time last_shields_icon_highlight_time =
       g_browser_process->local_state()->GetTime(
           onboarding::prefs::kLastShieldsIconHighlightTime);

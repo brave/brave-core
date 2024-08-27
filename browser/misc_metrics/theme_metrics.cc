@@ -5,6 +5,7 @@
 
 #include "brave/browser/misc_metrics/theme_metrics.h"
 
+#include "base/check_is_test.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/components/constants/pref_names.h"
@@ -16,10 +17,14 @@ namespace misc_metrics {
 
 ThemeMetrics::ThemeMetrics(ThemeService* theme_service)
     : theme_service_(theme_service) {
-  pref_change_registrar_.Init(g_browser_process->local_state());
-  pref_change_registrar_.Add(kBraveDarkMode,
-                             base::BindRepeating(&ThemeMetrics::ReportMetrics,
-                                                 base::Unretained(this)));
+  if (g_browser_process->local_state()) {
+    pref_change_registrar_.Init(g_browser_process->local_state());
+    pref_change_registrar_.Add(kBraveDarkMode,
+                               base::BindRepeating(&ThemeMetrics::ReportMetrics,
+                                                   base::Unretained(this)));
+  } else {
+    CHECK_IS_TEST();
+  }
   theme_observer_.Observe(theme_service_);
   ReportMetrics();
 }
