@@ -44,7 +44,9 @@ using ConversationEvent = ConversationAPIClient::ConversationEvent;
 using ConversationEventType = ConversationAPIClient::ConversationEventType;
 
 constexpr char kRemotePath[] = "v1/conversation";
+#if !defined(OFFICIAL_BUILD)
 constexpr char kAIChatServerUrl[] = "ai-chat-server-url";
+#endif
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ai_chat", R"(
