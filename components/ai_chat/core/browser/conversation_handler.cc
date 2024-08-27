@@ -321,7 +321,8 @@ const mojom::Model& ConversationHandler::GetCurrentModel() {
   return *model;
 }
 
-void ConversationHandler::GetConversationId(GetConversationIdCallback callback) {
+void ConversationHandler::GetConversationId(
+    GetConversationIdCallback callback) {
   std::move(callback).Run(metadata_->uuid);
 }
 

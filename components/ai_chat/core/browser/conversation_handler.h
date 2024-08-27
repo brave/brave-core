@@ -135,7 +135,7 @@ class ConversationHandler : public mojom::ConversationHandler,
     // Called when a mojo client connects or disconnects
     virtual void OnClientConnectionChanged(ConversationHandler* handler) {}
     virtual void OnConversationTitleChanged(ConversationHandler* handler,
-                                std::string title) {}
+                                            std::string title) {}
   };
 
   ConversationHandler(
