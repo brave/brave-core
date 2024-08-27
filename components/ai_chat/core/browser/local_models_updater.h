@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_LEO_LOCAL_MODELS_UPDATER_H_
-#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_LEO_LOCAL_MODELS_UPDATER_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_LOCAL_MODELS_UPDATER_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_LOCAL_MODELS_UPDATER_H_
 
 #include <string>
 #include <vector>
@@ -20,15 +20,15 @@ namespace ai_chat {
 
 extern const char kUniversalQAModelName[];
 
-class LeoLocalModelsComponentInstallerPolicy
+class LocalModelsComponentInstallerPolicy
     : public ::component_updater::ComponentInstallerPolicy {
  public:
-  LeoLocalModelsComponentInstallerPolicy();
-  LeoLocalModelsComponentInstallerPolicy(
-      const LeoLocalModelsComponentInstallerPolicy&) = delete;
-  LeoLocalModelsComponentInstallerPolicy& operator=(
-      const LeoLocalModelsComponentInstallerPolicy&) = delete;
-  ~LeoLocalModelsComponentInstallerPolicy() override;
+  LocalModelsComponentInstallerPolicy();
+  LocalModelsComponentInstallerPolicy(
+      const LocalModelsComponentInstallerPolicy&) = delete;
+  LocalModelsComponentInstallerPolicy& operator=(
+      const LocalModelsComponentInstallerPolicy&) = delete;
+  ~LocalModelsComponentInstallerPolicy() override;
 
   static void DeleteComponent();
 
@@ -56,12 +56,12 @@ class LeoLocalModelsComponentInstallerPolicy
   bool IsBraveComponent() const override;
 };
 
-class LeoLocalModelsUpdaterState {
+class LocalModelsUpdaterState {
  public:
-  static LeoLocalModelsUpdaterState* GetInstance();
+  static LocalModelsUpdaterState* GetInstance();
 
-  LeoLocalModelsUpdaterState(const LeoLocalModelsUpdaterState&) = delete;
-  LeoLocalModelsUpdaterState& operator=(const LeoLocalModelsUpdaterState&) =
+  LocalModelsUpdaterState(const LocalModelsUpdaterState&) = delete;
+  LocalModelsUpdaterState& operator=(const LocalModelsUpdaterState&) =
       delete;
 
   void SetInstallDir(const base::FilePath& install_dir);
@@ -70,17 +70,17 @@ class LeoLocalModelsUpdaterState {
   const base::FilePath& GetUniversalQAModel() const;
 
  private:
-  friend base::NoDestructor<LeoLocalModelsUpdaterState>;
-  LeoLocalModelsUpdaterState();
-  ~LeoLocalModelsUpdaterState();
+  friend base::NoDestructor<LocalModelsUpdaterState>;
+  LocalModelsUpdaterState();
+  ~LocalModelsUpdaterState();
 
   base::FilePath install_dir_;
   base::FilePath universal_qa_model_path_;
 };
 
-void ManageLeoLocalModelsComponentRegistration(
+void ManageLocalModelsComponentRegistration(
     component_updater::ComponentUpdateService* cus);
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_LEO_LOCAL_MODELS_UPDATER_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_LOCAL_MODELS_UPDATER_H_

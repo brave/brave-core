@@ -272,10 +272,17 @@ void ConversationDriver::SetDefaultModel(const std::string& model_key) {
   model_service_->SetDefaultModelKey(model_key);
 }
 
-const mojom::Model& ConversationDriver::GetCurrentModel() {
+const mojom::Model& ConversationDriver::GetCurrentModel() const {
   const mojom::Model* model = model_service_->GetModel(model_key_);
   DCHECK(model);
   return *model;
+}
+
+uint32_t ConversationDriver::GetMaxPageContentLength() const {
+  const auto& model = GetCurrentModel();
+  return model.options->is_custom_model_options()
+             ? kCustomModelMaxPageContentLength
+             : model.options->get_leo_model_options()->max_page_content_length;
 }
 
 const std::vector<mojom::ModelPtr>& ConversationDriver::GetModels() {
@@ -1064,13 +1071,11 @@ void ConversationDriver::PerformAssistantGeneration(
                      weak_ptr_factory_.GetWeakPtr(), current_navigation_id);
   bool should_refine_page_content =
       features::IsPageContentRefineEnabled() &&
-      page_content.length() > GetCurrentModel()
-                                  .options->get_leo_model_options()
-                                  ->max_page_content_length &&
+      page_content.length() > GetMaxPageContentLength() &&
       input != l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
   if (!text_embedder_ && should_refine_page_content) {
     base::FilePath universal_qa_model_path =
-        LeoLocalModelsUpdaterState::GetInstance()->GetUniversalQAModel();
+        LocalModelsUpdaterState::GetInstance()->GetUniversalQAModel();
     // Tasks in TextEmbedder are run on |embedder_task_runner|. The
     // text_embedder_ must be deleted on that sequence to guarantee that pending
     // tasks can safely be executed.
@@ -1083,10 +1088,7 @@ void ConversationDriver::PerformAssistantGeneration(
   if (text_embedder_ && should_refine_page_content) {
     if (text_embedder_->IsInitialized()) {
       text_embedder_->GetTopSimilarityWithPromptTilContextLimit(
-          input, page_content,
-          GetCurrentModel()
-              .options->get_leo_model_options()
-              ->max_page_content_length,
+          input, page_content, GetMaxPageContentLength(),
           base::BindOnce(&ConversationDriver::OnGetRefinedPageContent,
                          weak_ptr_factory_.GetWeakPtr(), input,
                          std::move(data_received_callback),
@@ -1115,10 +1117,7 @@ void ConversationDriver::OnTextEmbedderInitialized(
     bool initialized) {
   if (initialized) {
     text_embedder_->GetTopSimilarityWithPromptTilContextLimit(
-        input, page_content,
-        GetCurrentModel()
-            .options->get_leo_model_options()
-            ->max_page_content_length,
+        input, page_content, GetMaxPageContentLength(),
         base::BindOnce(&ConversationDriver::OnGetRefinedPageContent,
                        weak_ptr_factory_.GetWeakPtr(), input,
                        std::move(data_received_callback),
@@ -1245,11 +1244,7 @@ bool ConversationDriver::HasPendingConversationEntry() {
 }
 
 int ConversationDriver::GetContentUsedPercentage() {
-  auto& model = GetCurrentModel();
-  uint32_t max_page_content_length =
-      model.options->is_custom_model_options()
-          ? kCustomModelMaxPageContentLength
-          : model.options->get_leo_model_options()->max_page_content_length;
+  const auto max_page_content_length = GetMaxPageContentLength();
 
   if (max_page_content_length > static_cast<uint32_t>(article_text_.length())) {
     return 100;
