@@ -223,9 +223,9 @@ extension Strings {
       "aichat.introMessageLlamaModelDescription",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Llama 3 8b by Meta",
+      value: "Llama 3.1 8B by Meta",
       comment:
-        "The model and creator for intro message - Llama 3 8b is the model name -- Meta is the creator"
+        "The model and creator for intro message - Llama 3.1 8B is the model name -- Meta is the creator"
     )
     public static let introMessageMixtralModelDescription = NSLocalizedString(
       "aichat.introMessageMixtralModelDescription",
@@ -288,7 +288,7 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value:
-        "Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 3 8B, a model created by Meta to be performant and applicable to many use cases.",
+        "Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 3.1 8B, a model created by Meta to be performant and applicable to many use cases.",
       comment: "The model intro message when you first enter the chat assistant"
     )
     public static let introMessageMixtralMessageDescription = NSLocalizedString(
@@ -312,7 +312,7 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value:
-        "Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3 Sonnet, a model created by Anthropic to power conversational and text processing tasks.",
+        "Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3.5 Sonnet, a model created by Anthropic to power conversational and text processing tasks.",
       comment: "The model intro message when you first enter the chat assistant"
     )
     public static let introMessageGenericMessageDescription = NSLocalizedString(
