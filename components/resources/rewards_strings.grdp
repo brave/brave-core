@@ -818,65 +818,68 @@
     Your BAT earnings will be paid to this payout account.
   </message>
 
-  <message name="REWARDS_AC_AMOUNT_LABEL" desc="">
+  <message name="IDS_REWARDS_AC_AMOUNT_LABEL" desc="">
     You will send
   </message>
-  <message name="REWARDS_AC_AMOUNT_TEXT" desc="">
+  <message name="IDS_REWARDS_AC_AMOUNT_TEXT" desc="">
     Up to <ph name="AMOUNT">$1</ph> BAT
   </message>
-  <message name="REWARDS_AC_ATTENTION_LABEL" desc="">
+  <message name="IDS_REWARDS_AC_ATTENTION_LABEL" desc="">
     Attention
   </message>
-  <message name="REWARDS_AC_DISABLED_TEXT" desc="">
+  <message name="IDS_REWARDS_AC_DISABLED_TEXT" desc="">
     An automatic way to support websites and content creators, based on how much time you spend on their content.
   </message>
-  <message name="REWARDS_AC_DISABLED_TITLE" desc="">
+  <message name="IDS_REWARDS_AC_DISABLED_TITLE" desc="">
     Auto-Contribute is disabled
   </message>
-  <message name="REWARDS_AC_EMPTY_LIST_TEXT" desc="">
+  <message name="IDS_REWARDS_AC_EMPTY_LIST_TEXT" desc="">
     Verified creators that you visit will appear here as you browse.
   </message>
-  <message name="REWARDS_AC_INFO_TEXT" desc="">
+  <message name="IDS_REWARDS_AC_INFO_TEXT" desc="">
     Auto-contribute automatically sends monthly contributions to creators verified with Brave, based on how much time you spend on their content.
   </message>
-  <message name="REWARDS_AC_INFO_TITLE" desc="">
+  <message name="IDS_REWARDS_AC_INFO_TITLE" desc="">
     How does Auto-Contribute work?
   </message>
-  <message name="REWARDS_AC_NEXT_CONTRIBUTION_LABEL" desc="">
+  <message name="IDS_REWARDS_AC_NEXT_CONTRIBUTION_LABEL" desc="">
     Next contribution date
   </message>
-  <message name="REWARDS_AC_SITE_COUNT_LABEL" desc="">
+  <message name="IDS_REWARDS_AC_SITE_COUNT_LABEL" desc="">
     Sites viewed
   </message>
-  <message name="REWARDS_AC_SITE_LABEL" desc="">
+  <message name="IDS_REWARDS_AC_SITE_LABEL" desc="">
     Site
   </message>
-  <message name="REWARDS_AC_TITLE" desc="">
+  <message name="IDS_REWARDS_AC_TITLE" desc="">
     Auto-Contribute
   </message>
-  <message name="REWARDS_BENEFITS_STORE_SUBTEXT" desc="">
+  <message name="IDS_REWARDS_BENEFITS_STORE_SUBTEXT" desc="">
     Get Brave-branded products.
   </message>
-  <message name="REWARDS_BENEFITS_STORE_TEXT" desc="">
+  <message name="IDS_REWARDS_BENEFITS_STORE_TEXT" desc="">
     Brave merch store
   </message>
-  <message name="REWARDS_BENEFITS_TITLE" desc="">
+  <message name="IDS_REWARDS_BENEFITS_TITLE" desc="">
     Your benefits
   </message>
-  <message name="REWARDS_RECURRING_LIST_EMPTY_TEXT" desc="">
+  <message name="IDS_REWARDS_RECURRING_LIST_EMPTY_TEXT" desc="">
     You don't have any recurring contributions set up yet.
   </message>
-  <message name="REWARDS_RECURRING_NEXT_CONTRIBUTION_LABEL" desc="">
+  <message name="IDS_REWARDS_RECURRING_NEXT_CONTRIBUTION_LABEL" desc="">
     Next contribution:
   </message>
-  <message name="REWARDS_RECURRING_TITLE" desc="">
+  <message name="IDS_REWARDS_RECURRING_TITLE" desc="">
     Recurring Contributions
   </message>
-  <message name="REWARDS_REMOVE_BUTTON_LABEL" desc="">
+  <message name="IDS_REWARDS_REMOVE_BUTTON_LABEL" desc="">
     Remove
   </message>
-  <message name="REWARDS_SHOW_ALL_BUTTON_LABEL" desc="">
+  <message name="IDS_REWARDS_SHOW_ALL_BUTTON_LABEL" desc="">
     Show all
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_BUTTON_LABEL" desc="">
+    Contribute
   </message>
 
 </grit-part>

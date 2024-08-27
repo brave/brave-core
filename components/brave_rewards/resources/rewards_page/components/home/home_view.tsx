@@ -7,6 +7,7 @@ import * as React from 'react'
 
 import { useAppState } from '../../lib/app_model_context'
 import { useBreakpoint } from '../../lib/breakpoint'
+import { ContributeCard } from './contribute_card'
 import { EarningCard } from './earning_card'
 import { PayoutAccountCard } from './payout_account_card'
 import { BenefitsCard } from './benefits_card'
@@ -25,6 +26,7 @@ export function HomeView() {
   if (viewType === 'double' && externalWallet) {
     return (
       <div {...style}>
+        <ContributeCard />
         <EarningCard />
         <div className='columns'>
           <div>
@@ -42,6 +44,7 @@ export function HomeView() {
 
   return (
     <div {...style}>
+      <ContributeCard />
       <EarningCard />
       <PayoutAccountCard />
       <BenefitsCard />

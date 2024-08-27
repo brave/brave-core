@@ -8,11 +8,13 @@
 #include <utility>
 
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_data_source.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_web_ui_utils.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "content/public/common/url_constants.h"
@@ -42,6 +44,17 @@ class RewardsPageBubbleDelegate : public RewardsPageHandler::BubbleDelegate {
     if (auto* browser = chrome::FindLastActiveWithProfile(profile_.get())) {
       chrome::AddTabAt(browser, target_url, -1, true);
     }
+  }
+
+  std::string GetPublisherIdForActiveTab() override {
+    if (auto* browser = chrome::FindLastActiveWithProfile(profile_.get())) {
+      if (auto* contents = browser->tab_strip_model()->GetActiveWebContents()) {
+        if (auto* tab_helper = RewardsTabHelper::FromWebContents(contents)) {
+          return tab_helper->GetPublisherIdForTab();
+        }
+      }
+    }
+    return "";
   }
 
  private:

@@ -37,6 +37,7 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
     virtual ~BubbleDelegate() = default;
     virtual void ShowUI() = 0;
     virtual void OpenTab(const std::string& url) = 0;
+    virtual std::string GetPublisherIdForActiveTab() = 0;
   };
 
   RewardsPageHandler(mojo::PendingRemote<mojom::RewardsPage> page,
@@ -60,6 +61,10 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
   void GetExternalWalletProviders(
       GetExternalWalletProvidersCallback callback) override;
   void GetAvailableBalance(GetAvailableBalanceCallback callback) override;
+  void GetPublisherForActiveTab(
+      GetPublisherForActiveTabCallback callback) override;
+  void GetPublisherBannerForActiveTab(
+      GetPublisherBannerForActiveTabCallback callback) override;
   void GetRecurringContributions(
       GetRecurringContributionsCallback callback) override;
   void RemoveRecurringContribution(

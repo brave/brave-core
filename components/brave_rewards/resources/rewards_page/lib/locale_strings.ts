@@ -102,6 +102,7 @@ export const localeStrings = {
   connectText: 'To begin earning Basic Attention Token (BAT) rewards, connect an account. BAT you earn will be automatically transferred to your account every month.',
   connectTitle: 'Choose where you\'d like to receive BAT',
   continueButtonLabel: 'Continue',
+  contributeButtonLabel: 'Contribute',
   countrySelectPlaceholder: 'Select',
   countrySelectTitle: 'Select your region',
   countrySelectText: 'Select your region so we can show you the right options and ads for your region.',

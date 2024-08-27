@@ -293,6 +293,49 @@ void RewardsPageHandler::GetAvailableBalance(
       base::BindOnce(fetch_balance_callback, std::move(callback)));
 }
 
+void RewardsPageHandler::GetPublisherForActiveTab(
+    GetPublisherForActiveTabCallback callback) {
+  if (!bubble_delegate_) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  std::string publisher_id = bubble_delegate_->GetPublisherIdForActiveTab();
+  if (publisher_id.empty()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  auto get_publisher_callback = [](decltype(callback) callback,
+                                   mojom::Result result,
+                                   mojom::PublisherInfoPtr publisher_info) {
+    if (publisher_info->status == mojom::PublisherStatus::NOT_VERIFIED) {
+      publisher_info = nullptr;
+    }
+    std::move(callback).Run(std::move(publisher_info));
+  };
+
+  rewards_service_->GetPublisherInfo(
+      publisher_id,
+      base::BindOnce(get_publisher_callback, std::move(callback)));
+}
+
+void RewardsPageHandler::GetPublisherBannerForActiveTab(
+    GetPublisherBannerForActiveTabCallback callback) {
+  if (!bubble_delegate_) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  std::string publisher_id = bubble_delegate_->GetPublisherIdForActiveTab();
+  if (publisher_id.empty()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  rewards_service_->GetPublisherBanner(publisher_id, std::move(callback));
+}
+
 void RewardsPageHandler::GetRecurringContributions(
     GetRecurringContributionsCallback callback) {
   rewards_service_->GetRecurringTips(std::move(callback));
