@@ -6,11 +6,14 @@
 #include "src/ui/accessibility/accessibility_features.cc"
 
 #include "base/feature_override.h"
+#include "build/build_config.h"
 
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+#if !BUILDFLAG(IS_ANDROID)
+    {kPdfOcr, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif
     {kUseMoveNotCopyInMergeTreeUpdate, base::FEATURE_DISABLED_BY_DEFAULT},
-
 }});
 }  // namespace features
