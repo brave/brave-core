@@ -121,7 +121,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
       auto model = mojom::Model::New();
       model->key = "chat-claude-sonnet";
-      model->display_name = "Claude 3 Sonnet";
+      model->display_name = "Claude 3.5 Sonnet";
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -144,7 +144,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
 
       auto model = mojom::Model::New();
       model->key = "chat-basic";
-      model->display_name = "Llama 3 8b";
+      model->display_name = "Llama 3.1 8B";
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
