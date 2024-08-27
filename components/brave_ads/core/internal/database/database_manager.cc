@@ -11,12 +11,12 @@
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_creation.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_migration.h"
+#include "brave/components/brave_ads/core/internal/legacy_migration/database/database_raze.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
@@ -86,6 +86,10 @@ void DatabaseManager::CreateOrOpenCallback(
     return Create(std::move(callback));
   }
 
+  if (from_version <= database::kRazeDatabaseThresholdVersionNumber) {
+    return RazeAndCreate(from_version, std::move(callback));
+  }
+
   NotifyDidOpenDatabase();
 
   MaybeMigrate(from_version, std::move(callback));
@@ -125,6 +129,37 @@ void DatabaseManager::CreateCallback(ResultCallback callback,
   NotifyDatabaseIsReady();
 
   std::move(callback).Run(/*success=*/true);
+}
+
+void DatabaseManager::RazeAndCreate(const int from_version,
+                                    ResultCallback callback) {
+  BLOG(1, "Razing database for schema version " << from_version);
+
+  database::Raze(base::BindOnce(&DatabaseManager::RazeAndCreateCallback,
+                                weak_factory_.GetWeakPtr(), std::move(callback),
+                                from_version));
+}
+
+void DatabaseManager::RazeAndCreateCallback(ResultCallback callback,
+                                            const int from_version,
+                                            const bool success) const {
+  if (!success) {
+    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+    // potential defects using `DumpWithoutCrashing`.
+    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+                              "Failed to raze database");
+    SCOPED_CRASH_KEY_NUMBER("Issue32066", "from_sqlite_schema_version",
+                            from_version);
+    base::debug::DumpWithoutCrashing();
+
+    BLOG(0, "Failed to raze database for schema version " << from_version);
+
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  BLOG(1, "Razed database for schema version " << from_version);
+
+  Create(std::move(callback));
 }
 
 void DatabaseManager::MaybeMigrate(const int from_version,

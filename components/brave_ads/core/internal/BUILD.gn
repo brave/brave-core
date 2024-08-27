@@ -677,6 +677,8 @@ static_library("internal") {
     "legacy_migration/database/database_creation.h",
     "legacy_migration/database/database_migration.cc",
     "legacy_migration/database/database_migration.h",
+    "legacy_migration/database/database_raze.cc",
+    "legacy_migration/database/database_raze.h",
     "ml/data/data.cc",
     "ml/data/data.h",
     "ml/data/data_types.h",
