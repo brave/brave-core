@@ -1,5 +1,5 @@
-// A config used a base to record wpr files.
-// * update the browser version to the recent ones;
+// A config to be used as a base to record wpr files.
+// * update the browser version to the recent ones before run;
 // * the config should have only one benchmark enabled.
 {
   "configurations": [{
