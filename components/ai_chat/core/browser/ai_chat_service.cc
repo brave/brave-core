@@ -79,8 +79,8 @@ ConversationHandler* AIChatService::CreateConversation() {
   std::string conversation_uuid = uuid.AsLowercaseString();
   // Create the conversation metadata
   {
-    mojom::ConversationPtr conversation =
-        mojom::Conversation::New(conversation_uuid, "", "", base::Time::Now(), false);
+    mojom::ConversationPtr conversation = mojom::Conversation::New(
+        conversation_uuid, "", "", base::Time::Now(), false);
     conversations_.insert_or_assign(conversation_uuid, std::move(conversation));
   }
   mojom::Conversation* conversation =
@@ -305,7 +305,8 @@ void AIChatService::OnConversationEntriesChanged(
     if (entries.size() >= 2) {
       if (conversation->summary.size() < 70) {
         for (const auto& entry : entries) {
-          if (entry->character_type == mojom::CharacterType::ASSISTANT && !entry->text.empty()) {
+          if (entry->character_type == mojom::CharacterType::ASSISTANT &&
+              !entry->text.empty()) {
             conversation->summary = entry->text.substr(0, 70);
             notify = true;
             break;

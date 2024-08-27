@@ -75,7 +75,7 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
     favicon_service_ = FaviconServiceFactory::GetForProfile(
-      profile_, ServiceAccessType::EXPLICIT_ACCESS);
+        profile_, ServiceAccessType::EXPLICIT_ACCESS);
   }
 }
 
