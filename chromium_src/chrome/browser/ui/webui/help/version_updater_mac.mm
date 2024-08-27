@@ -211,6 +211,8 @@ void SparkleVersionUpdater::UpdateShowPromoteButton() {
 #undef WrapUnique
 
 bool SparkleVersionUpdater::IsSparkle(VersionUpdater* updater) {
-  const SparkleVersionUpdater* sparkle_updater = static_cast<const SparkleVersionUpdater*>(updater);
-  return sparkle_updater && sparkle_updater->type_marker_ == &SparkleVersionUpdater::IsSparkle;
+  const SparkleVersionUpdater* sparkle_updater =
+      static_cast<const SparkleVersionUpdater*>(updater);
+  return sparkle_updater &&
+         sparkle_updater->type_marker_ == &SparkleVersionUpdater::IsSparkle;
 }
