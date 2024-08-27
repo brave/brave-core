@@ -8,12 +8,12 @@
 
 #include "base/feature_list.h"
 
-namespace brave::update_client {
+namespace brave {
 
 BASE_DECLARE_FEATURE(kBraveUseOmaha4);
 
 bool ShouldUseOmaha4();
 
-}  // namespace brave::update_client
+}  // namespace brave
 
 #endif  // BRAVE_COMPONENTS_UPDATE_CLIENT_FEATURES_H_
