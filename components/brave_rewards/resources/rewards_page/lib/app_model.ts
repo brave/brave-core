@@ -94,6 +94,17 @@ export interface CreatorSite {
   platform: CreatorPlatform
 }
 
+export interface CreatorBanner {
+  title: string
+  description: string
+  background: string
+}
+
+export interface CreatorInfo {
+  site: CreatorSite
+  banner: CreatorBanner
+}
+
 export interface AutoContributeEntry {
   site: CreatorSite
   attention: number
@@ -124,6 +135,7 @@ export interface AppState {
   autoContributeInfo: AutoContributeInfo | null
   recurringContributions: RecurringContribution[]
   rewardsParameters: RewardsParameters | null
+  currentCreator: CreatorInfo | null
 }
 
 export type AppStateListener = (state: AppState) => void
@@ -172,7 +184,8 @@ export function defaultState(): AppState {
     adsInfo: null,
     autoContributeInfo: null,
     recurringContributions: [],
-    rewardsParameters: null
+    rewardsParameters: null,
+    currentCreator: null
   }
 }
 

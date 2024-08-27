@@ -154,6 +154,20 @@ export function createModel(): AppModel {
         gemini: { allow: [], block: ['US'] },
         uphold: { allow: [], block: [] }
       }
+    },
+    currentCreator: {
+      site: {
+        id: 'wikipedia.org',
+        platform: '',
+        url: 'https://wikipedia.org',
+        name: 'wikipedia.org',
+        icon: ''
+      },
+      banner: {
+        title: 'Wikipedia',
+        description: '',
+        background: ''
+      }
     }
   })
 
