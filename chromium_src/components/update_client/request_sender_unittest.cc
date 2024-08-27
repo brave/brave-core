@@ -16,7 +16,6 @@ class RequestSenderTest;
 
 class BraveRequestSenderTest : public RequestSenderTest {
  protected:
-  base::test::ScopedFeatureList scoped_feature_list_;
   bool UsesBraveCUPKey() {
     EXPECT_TRUE(post_interceptor_->ExpectRequest(
         std::make_unique<PartialMatch>("test"),
@@ -38,6 +37,7 @@ class BraveRequestSenderTest : public RequestSenderTest {
     // that our key (which currently has version 1) is indeed being used.
     return request_url.query().find("cup2key=1:") != std::string::npos;
   }
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 TEST_F(BraveRequestSenderTest, DoesntUseBraveCUPKeyByDefault) {

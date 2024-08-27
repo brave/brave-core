@@ -148,6 +148,12 @@ test("brave_unit_tests") {
     "//components/sync_device_info/device_info_sync_bridge_unittest.cc",
   ]
 
+  if (enable_sparkle) {
+    sources += [
+      "//brave/chromium_src/chrome/browser/ui/webui/help/brave_version_updater_mac_unittest.mm",
+    ]
+  }
+
   deps = [
     ":crypto_unittests",
     ":test_support",
