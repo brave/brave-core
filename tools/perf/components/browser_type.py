@@ -9,12 +9,16 @@ import os
 import re
 import shutil
 import sys
+import tempfile
+
+import components.git_tools as git_tools
+import components.path_util as path_util
+
 from distutils.dir_util import copy_tree
 from enum import Enum
 from typing import List, Optional, Tuple
 from dataclasses import dataclass
 
-import components.path_util as path_util
 from components.version import BraveVersion
 from components.common_options import CommonOptions
 from components.perf_test_utils import (DownloadArchiveAndUnpack, DownloadFile,
@@ -160,8 +164,6 @@ class BrowserType:
       return None
     if version is None:
       raise RuntimeError('version must be set to use Griffin trials')
-    if not common_options.variations_repo_dir:
-      raise RuntimeError('Set --variations-repo-dir to use Griffin trials')
     return _MakeTestingFieldTrials(artifacts_dir, version,
                                    common_options.variations_repo_dir)
 
@@ -230,8 +232,15 @@ class BraveBrowserTypeImpl(BrowserType):
     return os.path.join(out_dir, self.GetBinaryPath(target_os))
 
 
-def _MakeTestingFieldTrials(artifacts_dir: str, version: BraveVersion,
-                            variations_repo_dir: str) -> FieldTrialConfig:
+def _MakeTestingFieldTrials(
+    artifacts_dir: str, version: BraveVersion,
+    variations_repo_dir: Optional[str]) -> FieldTrialConfig:
+  if variations_repo_dir is None:
+    variations_repo_dir = os.path.join(tempfile.gettempdir(),
+                                       'brave-variations')
+    git_tools.EnsureRepositoryUpdated(git_tools.GH_BRAVE_VARIATIONS_GIT_URL,
+                                      'main', variations_repo_dir)
+
   combined_version: str = version.combined_version()
   logging.debug('Generating trials for combined_version %s', combined_version)
   target_path = os.path.join(artifacts_dir, 'fieldtrial_testing_config.json')

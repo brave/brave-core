@@ -101,12 +101,10 @@ def main():
       epilog=R'''
 To some launch tests locally:
 npm run perf_tests -- compare/compare_with_on_off_feature.json5
-     --variations-repo-dir=~/work/brave-variations
 
 On CI:
 npm run perf_tests -- smoke-brave.json5 v1.58.45
      --working-directory=e:\work\brave\src\out\100
-     --variations-repo-dir=e:\work\brave-variations
      --ci-mode
 ''')
   CommonOptions.add_parser_args(parser)
