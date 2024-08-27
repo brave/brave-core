@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/core/browser/leo_local_models_updater.h"
+#include "brave/components/ai_chat/core/browser/local_models_updater.h"
 
 #include <memory>
 #include <utility>
@@ -22,6 +22,8 @@ namespace ai_chat {
 
 namespace {
 constexpr base::FilePath::CharType kComponentInstallDir[] =
+    FILE_PATH_LITERAL("AIChatLocalModels");
+constexpr base::FilePath::CharType kDeprecatedComponentInstallDir[] =
     FILE_PATH_LITERAL("LeoLocalModels");
 constexpr const char kComponentName[] = "Leo Local Models Updater";
 constexpr const char kComponentId[] = "ejhejjmaoaohpghnblcdcjilndkangfe";
@@ -39,21 +41,28 @@ base::FilePath GetComponentDir() {
   return components_dir.Append(kComponentInstallDir);
 }
 
+base::FilePath GetDeprecatedComponentDir() {
+  base::FilePath components_dir =
+      base::PathService::CheckedGet(component_updater::DIR_COMPONENT_USER);
+
+  return components_dir.Append(kDeprecatedComponentInstallDir);
+}
+
 }  // namespace
 
 constexpr const char kUniversalQAModelName[] =
     "universal_sentence_encoder_qa_with_metadata.tflite";
 
-LeoLocalModelsComponentInstallerPolicy::
-    LeoLocalModelsComponentInstallerPolicy() = default;
-LeoLocalModelsComponentInstallerPolicy::
-    ~LeoLocalModelsComponentInstallerPolicy() = default;
+LocalModelsComponentInstallerPolicy::
+    LocalModelsComponentInstallerPolicy() = default;
+LocalModelsComponentInstallerPolicy::
+    ~LocalModelsComponentInstallerPolicy() = default;
 
-void LeoLocalModelsComponentInstallerPolicy::DeleteComponent() {
+void LocalModelsComponentInstallerPolicy::DeleteComponent() {
   base::DeletePathRecursively(GetComponentDir());
 }
 
-void LeoLocalModelsComponentInstallerPolicy::ComponentReadyForTesting(
+void LocalModelsComponentInstallerPolicy::ComponentReadyForTesting(
     const base::Version& version,
     const base::FilePath& install_dir,
     base::Value::Dict manifest) {
@@ -61,70 +70,70 @@ void LeoLocalModelsComponentInstallerPolicy::ComponentReadyForTesting(
   ComponentReady(version, install_dir, std::move(manifest));
 }
 
-bool LeoLocalModelsComponentInstallerPolicy::VerifyInstallation(
+bool LocalModelsComponentInstallerPolicy::VerifyInstallation(
     const base::Value::Dict& manifest,
     const base::FilePath& install_dir) const {
   return true;
 }
 
-bool LeoLocalModelsComponentInstallerPolicy::
+bool LocalModelsComponentInstallerPolicy::
     SupportsGroupPolicyEnabledComponentUpdates() const {
   return false;
 }
 
-bool LeoLocalModelsComponentInstallerPolicy::RequiresNetworkEncryption() const {
+bool LocalModelsComponentInstallerPolicy::RequiresNetworkEncryption() const {
   return false;
 }
 
 update_client::CrxInstaller::Result
-LeoLocalModelsComponentInstallerPolicy::OnCustomInstall(
+LocalModelsComponentInstallerPolicy::OnCustomInstall(
     const base::Value::Dict& manifest,
     const base::FilePath& install_dir) {
   return update_client::CrxInstaller::Result(update_client::InstallError::NONE);
 }
 
-void LeoLocalModelsComponentInstallerPolicy::OnCustomUninstall() {}
+void LocalModelsComponentInstallerPolicy::OnCustomUninstall() {}
 
-void LeoLocalModelsComponentInstallerPolicy::ComponentReady(
+void LocalModelsComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& install_dir,
     base::Value::Dict manifest) {
   if (install_dir.empty()) {
     return;
   }
-  LeoLocalModelsUpdaterState::GetInstance()->SetInstallDir(install_dir);
+  LocalModelsUpdaterState::GetInstance()->SetInstallDir(install_dir);
 }
 
-base::FilePath LeoLocalModelsComponentInstallerPolicy::GetRelativeInstallDir()
+base::FilePath LocalModelsComponentInstallerPolicy::GetRelativeInstallDir()
     const {
   return base::FilePath(kComponentInstallDir);
 }
 
-void LeoLocalModelsComponentInstallerPolicy::GetHash(
+void LocalModelsComponentInstallerPolicy::GetHash(
     std::vector<uint8_t>* hash) const {
   hash->assign(kPublicKeySHA256,
                kPublicKeySHA256 + std::size(kPublicKeySHA256));
 }
 
-std::string LeoLocalModelsComponentInstallerPolicy::GetName() const {
+std::string LocalModelsComponentInstallerPolicy::GetName() const {
   return kComponentName;
 }
 
 update_client::InstallerAttributes
-LeoLocalModelsComponentInstallerPolicy::GetInstallerAttributes() const {
+LocalModelsComponentInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
 }
 
-bool LeoLocalModelsComponentInstallerPolicy::IsBraveComponent() const {
+bool LocalModelsComponentInstallerPolicy::IsBraveComponent() const {
   return true;
 }
 
-LeoLocalModelsUpdaterState* LeoLocalModelsUpdaterState::GetInstance() {
-  static base::NoDestructor<LeoLocalModelsUpdaterState> instance;
+LocalModelsUpdaterState* LocalModelsUpdaterState::GetInstance() {
+  static base::NoDestructor<LocalModelsUpdaterState> instance;
   return instance.get();
 }
 
-void LeoLocalModelsUpdaterState::SetInstallDir(
+void LocalModelsUpdaterState::SetInstallDir(
     const base::FilePath& install_dir) {
   if (install_dir.empty()) {
     return;
@@ -133,27 +142,31 @@ void LeoLocalModelsUpdaterState::SetInstallDir(
   universal_qa_model_path_ = install_dir_.AppendASCII(kUniversalQAModelName);
 }
 
-const base::FilePath& LeoLocalModelsUpdaterState::GetInstallDir() const {
+const base::FilePath& LocalModelsUpdaterState::GetInstallDir() const {
   return install_dir_;
 }
 
-const base::FilePath& LeoLocalModelsUpdaterState::GetUniversalQAModel() const {
+const base::FilePath& LocalModelsUpdaterState::GetUniversalQAModel() const {
   return universal_qa_model_path_;
 }
 
-LeoLocalModelsUpdaterState::LeoLocalModelsUpdaterState() = default;
-LeoLocalModelsUpdaterState::~LeoLocalModelsUpdaterState() = default;
+LocalModelsUpdaterState::LocalModelsUpdaterState() = default;
+LocalModelsUpdaterState::~LocalModelsUpdaterState() = default;
 
-void ManageLeoLocalModelsComponentRegistration(
+void ManageLocalModelsComponentRegistration(
     component_updater::ComponentUpdateService* cus) {
+  // Migrate deprecated component dir
+  if (base::PathExists(GetDeprecatedComponentDir())) {
+    base::DeletePathRecursively(GetDeprecatedComponentDir());
+  }
   if (!ai_chat::features::IsAIChatEnabled() ||
       !ai_chat::features::IsPageContentRefineEnabled() || !cus) {
-    LeoLocalModelsComponentInstallerPolicy::DeleteComponent();
+    LocalModelsComponentInstallerPolicy::DeleteComponent();
     return;
   }
 
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<LeoLocalModelsComponentInstallerPolicy>());
+      std::make_unique<LocalModelsComponentInstallerPolicy>());
   installer->Register(
       // After Register, run the callback with component id.
       cus, base::BindOnce([]() {

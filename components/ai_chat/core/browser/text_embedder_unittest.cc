@@ -14,7 +14,7 @@
 #include "base/task/thread_pool.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
-#include "brave/components/ai_chat/core/browser/leo_local_models_updater.h"
+#include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/constants/brave_paths.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -32,7 +32,7 @@ class TextEmbedderUnitTest : public testing::Test {
     base::FilePath test_dir =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
     model_dir_ =
-        test_dir.AppendASCII("leo").AppendASCII("leo-local-models-updater");
+        test_dir.AppendASCII("leo").AppendASCII("local-models-updater");
     embedder_ = TextEmbedder::Create(
         base::FilePath(model_dir_.AppendASCII(kUniversalQAModelName)),
         embedder_task_runner_);

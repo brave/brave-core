@@ -22,7 +22,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/leo_local_models_updater.h"
+#include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/text_embedder.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
@@ -93,7 +93,8 @@ class ConversationDriver : public ModelService::Observer {
   void ChangeModel(const std::string& model_key);
   std::string GetDefaultModel();
   void SetDefaultModel(const std::string& model_key);
-  const mojom::Model& GetCurrentModel();
+  const mojom::Model& GetCurrentModel() const;
+  uint32_t GetMaxPageContentLength() const;
   const std::vector<mojom::ModelPtr>& GetModels();
   const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory();
   std::vector<mojom::ConversationTurnPtr> GetVisibleConversationHistory();
@@ -225,7 +226,7 @@ class ConversationDriver : public ModelService::Observer {
                            UpdateOrCreateLastAssistantEntry_NotDelta);
   FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
                            UpdateOrCreateLastAssistantEntry_NotDeltaWithSearch);
-  FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, LeoLocalModelsUpdater);
+  FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, LocalModelsUpdater);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedder);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedderInitialized);
 
