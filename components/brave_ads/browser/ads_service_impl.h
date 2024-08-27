@@ -350,7 +350,7 @@ class AdsServiceImpl final : public AdsService,
   void ShowScheduledCaptcha(const std::string& payment_id,
                             const std::string& captcha_id) override;
 
-  void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_transaction,
+  void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
                         RunDBTransactionCallback callback) override;
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple P2A

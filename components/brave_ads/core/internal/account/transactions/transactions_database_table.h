@@ -39,15 +39,15 @@ class Transactions final : public TableInterface {
 
   std::string GetTableName() const override;
 
-  void Create(mojom::DBTransactionInfo* mojom_transaction) override;
-  void Migrate(mojom::DBTransactionInfo* mojom_transaction,
+  void Create(mojom::DBTransactionInfo* mojom_db_transaction) override;
+  void Migrate(mojom::DBTransactionInfo* mojom_db_transaction,
                int to_version) override;
 
  private:
-  void Insert(mojom::DBTransactionInfo* mojom_transaction,
+  void Insert(mojom::DBTransactionInfo* mojom_db_transaction,
               const TransactionList& transactions);
 
-  std::string BuildInsertSql(mojom::DBStatementInfo* mojom_statement,
+  std::string BuildInsertSql(mojom::DBActionInfo* mojom_db_action,
                              const TransactionList& transactions) const;
 };
 

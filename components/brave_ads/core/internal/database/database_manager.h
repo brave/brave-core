@@ -35,7 +35,7 @@ class DatabaseManager final {
  private:
   void CreateOrOpenCallback(
       ResultCallback callback,
-      mojom::DBStatementResultInfoPtr mojom_statement_result);
+      mojom::DBTransactionResultInfoPtr mojom_db_transaction_result);
 
   void Create(ResultCallback callback) const;
   void CreateCallback(ResultCallback callback, bool success) const;

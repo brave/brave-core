@@ -31,33 +31,32 @@ class ADS_EXPORT Database final {
 
   ~Database();
 
-  mojom::DBStatementResultInfoPtr RunTransaction(
-      mojom::DBTransactionInfoPtr mojom_transaction);
+  mojom::DBTransactionResultInfoPtr RunDBTransaction(
+      mojom::DBTransactionInfoPtr mojom_db_transaction);
 
  private:
-  void RunTransactionImpl(mojom::DBTransactionInfoPtr mojom_transaction,
-                          mojom::DBStatementResultInfo* mojom_statement_result);
-
-  mojom::DBStatementResultInfo::ResultCode Initialize(
-      const mojom::DBTransactionInfo* mojom_transaction,
-      mojom::DBStatementResultInfo* mojom_statement_result);
-
-  mojom::DBStatementResultInfo::ResultCode Execute(
-      const mojom::DBStatementInfo* mojom_statement);
-
-  mojom::DBStatementResultInfo::ResultCode Run(
-      const mojom::DBStatementInfo* mojom_statement);
-
-  mojom::DBStatementResultInfo::ResultCode Step(
-      const mojom::DBStatementInfo* mojom_statement,
-      mojom::DBStatementResultInfo* mojom_statement_result);
-
-  mojom::DBStatementResultInfo::ResultCode Migrate(
-      const mojom::DBTransactionInfo* mojom_transaction);
+  mojom::DBTransactionResultInfo::ResultCode RunDBActions(
+      const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+      mojom::DBTransactionResultInfo* mojom_db_transaction_result);
 
   bool ShouldCreateTables();
+  mojom::DBTransactionResultInfo::ResultCode Initialize(
+      mojom::DBTransactionResultInfo* mojom_db_transaction_result);
 
-  int GetTablesCount();
+  mojom::DBTransactionResultInfo::ResultCode Execute(
+      const mojom::DBActionInfo* mojom_db_action);
+
+  mojom::DBTransactionResultInfo::ResultCode RunStatement(
+      const mojom::DBActionInfo* mojom_db_action);
+
+  mojom::DBTransactionResultInfo::ResultCode StepStatement(
+      const mojom::DBActionInfo* mojom_db_action,
+      mojom::DBTransactionResultInfo* mojom_db_transaction_result);
+
+  mojom::DBTransactionResultInfo::ResultCode Migrate();
+
+  mojom::DBTransactionResultInfo::ResultCode MaybeVacuum(
+      const mojom::DBTransactionInfo* mojom_db_transaction);
 
   void ErrorCallback(int error, sql::Statement* statement);
 
@@ -67,8 +66,8 @@ class ADS_EXPORT Database final {
   base::FilePath db_path_;
   sql::Database db_;
   sql::MetaTable meta_table_;
+
   bool is_initialized_ = false;
-  bool should_vacuum_ = false;
 
   std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
 

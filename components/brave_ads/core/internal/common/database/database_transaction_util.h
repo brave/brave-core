@@ -6,13 +6,33 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_DATABASE_DATABASE_TRANSACTION_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_DATABASE_DATABASE_TRANSACTION_UTIL_H_
 
+#include <string>
+#include <vector>
+
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 
 namespace brave_ads::database {
 
-void RunTransaction(mojom::DBTransactionInfoPtr mojom_transaction,
-                    ResultCallback callback);
+// Run a database transaction.
+void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
+                      ResultCallback callback);
+
+// Raze the database. This must be done before any other actions are run. All
+// tables must be recreated after the raze operation is completed.
+void Raze(mojom::DBTransactionInfo* mojom_db_transaction);
+
+// Execute a SQL statement.
+void Execute(mojom::DBTransactionInfo* mojom_db_transaction,
+             const std::string& sql);
+
+// Execute a SQL statement with placeholders.
+void Execute(mojom::DBTransactionInfo* mojom_db_transaction,
+             const std::string& sql,
+             const std::vector<std::string>& subst);
+
+// Vacuum the database. This must be done after any other actions are run.
+void Vacuum(mojom::DBTransactionInfo* mojom_db_transaction);
 
 }  // namespace brave_ads::database
 

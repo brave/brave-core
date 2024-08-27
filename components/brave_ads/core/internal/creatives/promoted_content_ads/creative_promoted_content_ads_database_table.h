@@ -72,18 +72,18 @@ class CreativePromotedContentAds final : public TableInterface {
 
   std::string GetTableName() const override;
 
-  void Create(mojom::DBTransactionInfo* mojom_transaction) override;
-  void Migrate(mojom::DBTransactionInfo* mojom_transaction,
+  void Create(mojom::DBTransactionInfo* mojom_db_transaction) override;
+  void Migrate(mojom::DBTransactionInfo* mojom_db_transaction,
                int to_version) override;
 
  private:
-  void MigrateToV43(mojom::DBTransactionInfo* mojom_transaction);
+  void MigrateToV43(mojom::DBTransactionInfo* mojom_db_transaction);
 
-  void Insert(mojom::DBTransactionInfo* mojom_transaction,
+  void Insert(mojom::DBTransactionInfo* mojom_db_transaction,
               const CreativePromotedContentAdList& creative_ads);
 
   std::string BuildInsertSql(
-      mojom::DBStatementInfo* mojom_statement,
+      mojom::DBActionInfo* mojom_db_action,
       const CreativePromotedContentAdList& creative_ads) const;
 
   int batch_size_;
