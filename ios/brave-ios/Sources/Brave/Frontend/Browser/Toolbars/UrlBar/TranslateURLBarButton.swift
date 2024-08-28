@@ -12,6 +12,7 @@ class TranslateURLBarButton: UIButton {
       updateAppearance()
     }
   }
+
   var unselectedTintColor: UIColor? {
     didSet {
       updateAppearance()
@@ -102,7 +103,7 @@ class TranslateURLBarButton: UIButton {
       }
     }
   }
-  
+
   enum TranslateState {
     case available
     case unavailable

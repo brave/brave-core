@@ -259,9 +259,25 @@ extension BrowserViewController: TopToolbarDelegate {
       }
     }
   }
-  
+
   func topToolbarDidPressTranslateButton(_ urlBar: TopToolbarView) {
-    
+    guard let tab = tabManager.selectedTab else { return }
+    if let scriptHandler = tab.getContentScript(name: BraveTranslateScriptHandler.scriptName)
+      as? BraveTranslateScriptHandler
+    {
+      scriptHandler.presentUI(on: self)
+
+      if tab.translationState == .active {
+        scriptHandler.revertTranslation()
+        updateTranslateURLBar(tab: tab, state: .available)
+      } else if tab.translationState != .active {
+        showTranslateOnboarding(tab: tab) {
+          [weak self, weak tab, weak scriptHandler] translateEnabled in
+          scriptHandler?.startTranslation()
+          self?.updateTranslateURLBar(tab: tab, state: .active)
+        }
+      }
+    }
   }
 
   @MainActor private func submitValidURL(
