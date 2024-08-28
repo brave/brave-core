@@ -5,6 +5,24 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# These tests fail because:
+# 1. UPDATER_DEV_ENDPOINT is empty which leads to
+# 2. BraveExtensionsClient having webstore_update_url_ as an empty GURL;
+# 3. The tests load an extension with an empty update url which causes
+# 4. ChromeContentVerifierDelegate::IsFromWebstore return true and causes
+# 5. ChromeContentVerifierDelegate::GetVerifierSourceType to get VerifyInfo as
+#    ENFORCE (instead of NONE in upstream test), which
+# 6. Causes eventual verification of extension's verified_contents.json file
+# 7. Which causes the file to be deleted because it's not valid.
+# 8. The tests fail because they expect the file to be present.
+-MV2/ExtensionProtocolsTest.MetadataFolder/0
+-MV3/ExtensionProtocolsTest.MetadataFolder/0
+
+# This test fails because BRAVE_FINGERPRINTING_V2 and BRAVE_HTTPS_UPGRADE don't
+# have readable names and aren't in the test's list of types that are expected
+# to have no name.
+-SafetyHubHandlerTest.RevokeAllContentSettingTypes
+
 # These tests crash because they call SyncServiceFactory's SetTestingFactory
 # with BrowserContextKeyedServiceFactory::TestingFactory after our
 # BraveSyncAlertsServiceFactory already subscribed to observe the previously
@@ -51,6 +69,8 @@
 -SiteAccessRequestsHelperUnittest.*
 
 # This test fails because the message it checks has Brave intead of Google.
+-CookieBrowsingDataCounterUtilsTest.CookieCounterResult
+-CookieBrowsingDataCounterUtilsTest.CookieCounterResultExplicitSigninDisabled
 -SaveCardBubbleControllerImplTestWithCvCStorageAndFilling.UploadCardSaveWithCvcDialogContent
 
 # This test crashes in SidebarContainerView::UpdateToolbarButtonVisibility
