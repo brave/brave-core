@@ -82,7 +82,6 @@ MockContentSettingsAgentImpl::MockContentSettingsAgentImpl(
     content::RenderFrame* render_frame)
     : BraveContentSettingsAgentImpl(
           render_frame,
-          false,
           std::make_unique<ContentSettingsAgentImpl::Delegate>()) {}
 
 void MockContentSettingsAgentImpl::BindContentSettingsManager(
