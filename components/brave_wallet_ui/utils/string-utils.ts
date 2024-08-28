@@ -190,12 +190,12 @@ export const capitalizeFirstLetter = (input: string) => {
 }
 
 export const reduceInt = (integerString: string) => {
-    if (integerString.length < 7) {
-        return integerString
-    }
+  if (integerString.length < 7) {
+    return integerString
+  }
 
-    const firstHalf = integerString.slice(0, 3)
-    const secondHalf = integerString.slice(-3)
-    const reduced = firstHalf.concat('...', secondHalf)
-    return reduced
+  const firstHalf = integerString.slice(0, 3)
+  const secondHalf = integerString.slice(-3)
+  const reduced = firstHalf.concat('...', secondHalf)
+  return reduced
 }

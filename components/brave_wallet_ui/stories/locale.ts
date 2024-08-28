@@ -582,7 +582,7 @@ provideStrings({
   braveWalletSelectAccount: 'Select account',
   braveWalletSearchAccount: 'Search accounts',
   braveWalletSelectNetwork: 'Select network',
-  braveWalletSelectAsset: 'Select from',
+  braveWalletSelectAsset: 'Select asset',
   braveWalletSearchAsset: 'Search coins',
   braveWalletSelectCurrency: 'Select currency',
   braveWalletSearchCurrency: 'Search currencies',
@@ -671,6 +671,30 @@ provideStrings({
   braveWalletBuyDisclaimer:
     'Financial and transaction data is processed by our onramp partners. ' +
     'Brave does not collect or have access to such data.',
+  braveWalletTransactionsPartner: 'Transactions partner',
+  braveWalletTransactionPartnerConsent:
+    'Brave Wallet uses Meld.io to help aggregate and surface various ' +
+    'crypto providers for your region. We will share information with ' +
+    'Meld.io to complete the transaction, including your wallet address ' +
+    'and country code. For more information please read Meld’s terms of use.',
+  braveWalletMeldTermsOfUse:
+    'I have read and agree to the $1Meld’s Terms of use$2',
+  braveWalletBestOption: 'Best Option',
+  braveWalletExchangeRateWithFees: 'Exchange rate with fees',
+  braveWalletFees: 'Fees',
+  braveWalletPriceCurrency: 'Price $1',
+  braveWalletBuyWithProvider: 'Buy with $1',
+  braveWalletAsset: 'Asset',
+  braveWalletSelected: 'Selected',
+  braveWalletNoAvailableCurrencies: 'No available currencies',
+  braveWalletGettingBestPrices: 'Getting best prices...',
+  braveWalletBuyAsset: 'Buy $1',
+  braveWalletNoProviderFound: 'No providers found for $1',
+  braveWalletTrySearchingForDifferentAsset:
+    'Try searching for a different asset.',
+  braveWalletNoResultsFound: 'No results found for $1',
+  braveWalletTryDifferentKeywords:
+    'Try using a different keyword or check your spelling.',
 
   // Fund Wallet Screen
   braveWalletFundWalletTitle:

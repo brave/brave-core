@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
+import { Route, Switch, BrowserRouter } from 'react-router-dom'
 
 import { initLocale } from 'brave-ui'
 
@@ -27,7 +27,7 @@ import {
   // eslint-disable-next-line import/no-named-default
   default as BraveCoreThemeProvider
 } from '../../../../../common/BraveCoreThemeProvider'
-import { FundWalletScreen } from '../../fund-wallet/fund-wallet'
+import { FundWalletScreen } from '../../fund-wallet/fund_wallet_v2'
 
 // Resources
 import { setIconBasePath } from '@brave/leo/react/icon'
@@ -41,7 +41,11 @@ export function AndroidFundWalletApp() {
           dark={walletDarkTheme}
           light={walletLightTheme}
         >
-          <FundWalletScreen isAndroid={true} />
+          <Switch>
+            <Route>
+              <FundWalletScreen isAndroid={true} />
+            </Route>
+          </Switch>
         </BraveCoreThemeProvider>
       </BrowserRouter>
     </Provider>

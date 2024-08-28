@@ -4,8 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import WalletPageStory from '../../../stories/wrappers/wallet-page-story-wrapper'
-import { FundWalletScreen } from './fund_wallet_v1'
+
+// Components
+import {
+  WalletPageStory //
+} from '../../../stories/wrappers/wallet-page-story-wrapper'
+import { FundWalletScreen } from './fund_wallet_v2'
 
 export const _FundWalletScreen = () => {
   return (
@@ -16,10 +20,10 @@ export const _FundWalletScreen = () => {
 }
 
 _FundWalletScreen.story = {
-  name: 'Fund Wallet Screen v1'
+  name: 'Fund Wallet Screen v2'
 }
 
 export default {
   component: _FundWalletScreen,
-  title: 'Fund Wallet Screen v1'
+  title: 'Fund Wallet Screen v2'
 }
