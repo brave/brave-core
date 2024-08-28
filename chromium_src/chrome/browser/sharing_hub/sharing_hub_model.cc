@@ -19,10 +19,6 @@
 
 namespace {
 
-int GetOriginalSharingHubCopyLinkID() {
-  return IDS_SHARING_HUB_COPY_LINK_LABEL;
-}
-
 bool ShouldAddCopyCleanLinkItem(content::BrowserContext* context) {
   auto* browser =
       chrome::FindBrowserWithProfile(Profile::FromBrowserContext(context));
@@ -45,7 +41,7 @@ int MaybeAddCopyCleanLinkItem(
         l10n_util::GetStringUTF16(IDS_COPY_CLEAN_LINK_SHARING_HUB), &kCopyIcon,
         "SharingHubDesktop.CopyURLSelected", IDS_LINK_COPIED);
   }
-  return GetOriginalSharingHubCopyLinkID();
+  return IDS_SHARING_HUB_COPY_LINK_LABEL;
 }
 
 }  // namespace
