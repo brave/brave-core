@@ -1,3 +1,5 @@
+window.__firefox__ = {};
+
 Object.defineProperty(window.__firefox__, "$<brave_translate_script>", {
   enumerable: false,
   configurable: false,

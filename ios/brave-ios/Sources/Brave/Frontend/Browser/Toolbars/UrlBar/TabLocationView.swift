@@ -190,15 +190,13 @@ class TabLocationView: UIView {
     return urlDisplayLabel
   }()
 
-  private(set) lazy var readerModeButton: ReaderModeButton = {
-    let readerModeButton = ReaderModeButton(frame: .zero)
-    readerModeButton.addTarget(self, action: #selector(didTapReaderModeButton), for: .touchUpInside)
-    readerModeButton.isAccessibilityElement = true
-    readerModeButton.imageView?.contentMode = .scaleAspectFit
-    readerModeButton.accessibilityLabel = Strings.tabToolbarReaderViewButtonAccessibilityLabel
-    readerModeButton.accessibilityIdentifier = "TabLocationView.readerModeButton"
-    return readerModeButton
-  }()
+  private(set) lazy var readerModeButton = ReaderModeButton(frame: .zero).then {
+    $0.addTarget(self, action: #selector(didTapReaderModeButton), for: .touchUpInside)
+    $0.isAccessibilityElement = true
+    $0.imageView?.contentMode = .scaleAspectFit
+    $0.accessibilityLabel = Strings.tabToolbarReaderViewButtonAccessibilityLabel
+    $0.accessibilityIdentifier = "TabLocationView.readerModeButton"
+  }
 
   private(set) lazy var playlistButton = PlaylistURLBarButton(frame: .zero).then {
     $0.accessibilityIdentifier = "TabToolbar.playlistButton"
@@ -207,12 +205,12 @@ class TabLocationView: UIView {
     $0.tintColor = .white
     $0.addTarget(self, action: #selector(didTapPlaylistButton), for: .touchUpInside)
   }
-  
+
   private(set) lazy var translateButton = TranslateURLBarButton(frame: .zero).then {
     $0.accessibilityIdentifier = "TabToolbar.translateButton"
     $0.isAccessibilityElement = true
-    $0.buttonState = .none
-    $0.tintColor = .white
+    $0.translateState = .unavailable
+    $0.imageView?.contentMode = .scaleAspectFit
     $0.addTarget(self, action: #selector(didTapTranslateButton), for: .touchUpInside)
   }
 
@@ -389,8 +387,11 @@ class TabLocationView: UIView {
 
   override var accessibilityElements: [Any]? {
     get {
-      return [urlDisplayLabel, placeholderLabel, readerModeButton, playlistButton, translateButton, reloadButton]
-        .filter { !$0.isHidden }
+      return [
+        urlDisplayLabel, placeholderLabel, readerModeButton, playlistButton, translateButton,
+        reloadButton,
+      ]
+      .filter { !$0.isHidden }
     }
     set {
       super.accessibilityElements = newValue
@@ -444,6 +445,8 @@ class TabLocationView: UIView {
     placeholderLabel.textColor = browserColors.textTertiary
     readerModeButton.unselectedTintColor = browserColors.iconDefault
     readerModeButton.selectedTintColor = browserColors.iconActive
+    translateButton.unselectedTintColor = browserColors.iconDefault
+    translateButton.selectedTintColor = browserColors.iconActive
 
     (urlDisplayLabel as! DisplayURLLabel).clippingFade.gradientLayer.colors = [
       browserColors.containerBackground,
@@ -488,7 +491,7 @@ class TabLocationView: UIView {
   @objc func didTapPlaylistButton() {
     delegate?.tabLocationViewDidTapPlaylist(self)
   }
-  
+
   @objc func didTapTranslateButton() {
     delegate?.tabLocationViewDidTapTranslateButton(self)
   }

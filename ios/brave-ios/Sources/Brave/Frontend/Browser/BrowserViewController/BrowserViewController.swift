@@ -1349,6 +1349,9 @@ public class BrowserViewController: UIViewController {
   /// Whether or not to show the playlist onboarding callout this session
   var shouldShowPlaylistOnboardingThisSession = true
 
+  /// Wheter or not to show the translate onboarding callout this session
+  var shouldShowTranslationOnboardingThisSession = true
+
   public func showQueuedAlertIfAvailable() {
     if let queuedAlertInfo = tabManager.selectedTab?.dequeueJavascriptAlertPrompt() {
       let alertController = queuedAlertInfo.alertController()
@@ -2678,9 +2681,11 @@ extension BrowserViewController: TabDelegate {
       tab.requestBlockingContentHelper,
     ]
 
+    let braveTranslateScriptHandler = BraveTranslateScriptHandler(tab: tab, delegate: self)
     injectedScripts.append(
-      BraveTranslateScriptHandler(tab: tab)
+      BraveTranslateScriptLanguageDetectionHandler(tab: tab, delegate: braveTranslateScriptHandler)
     )
+    injectedScripts.append(braveTranslateScriptHandler)
 
     #if canImport(BraveTalk)
     injectedScripts.append(
