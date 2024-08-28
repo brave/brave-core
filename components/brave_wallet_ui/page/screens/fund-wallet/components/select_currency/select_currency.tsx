@@ -7,23 +7,43 @@ import * as React from 'react'
 import { DialogProps } from '@brave/leo/react/dialog'
 import Icon from '@brave/leo/react/icon'
 
-// types
+// Selectors
+import {
+  useSafeUISelector //
+} from '../../../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../../../common/selectors'
+
+// Types
 import { MeldFiatCurrency } from '../../../../../constants/types'
 
-// styles
-import { Column, Row } from '../../../../../components/shared/style'
+// Utils
+import { getLocale } from '../../../../../../common/locale'
+
+// Components
+import {
+  BottomSheet //
+} from '../../../../../components/shared/bottom_sheet/bottom_sheet'
+
+// Styled Components
+import {
+  Column,
+  Row,
+  ScrollableColumn
+} from '../../../../../components/shared/style'
 import {
   CurrencyImage,
   CurrencyName,
   CurrencyCode,
   SearchInput,
-  SelectedLabel,
+  SelectedLabel
 } from './select_currency.style'
 import { ContainerButton, Dialog, DialogTitle } from '../shared/style'
 
 interface SelectCurrencyProps extends DialogProps {
   currencies: MeldFiatCurrency[]
   selectedCurrency?: MeldFiatCurrency
+  isOpen: boolean
+  onClose: () => void
   onSelectCurrency: (currency: MeldFiatCurrency) => void
 }
 
@@ -49,7 +69,9 @@ export const CurrencyListItem = ({
         justifyContent='flex-end'
         gap='16px'
       >
-        {isSelected && <SelectedLabel>Selected</SelectedLabel>}
+        {isSelected && (
+          <SelectedLabel>{getLocale('braveWalletSelected')}</SelectedLabel>
+        )}
         <CurrencyCode>{currency.currencyCode}</CurrencyCode>
       </Row>
     </ContainerButton>
@@ -57,12 +79,22 @@ export const CurrencyListItem = ({
 }
 
 export const SelectCurrency = (props: SelectCurrencyProps) => {
-  const { currencies, selectedCurrency, onSelectCurrency, ...rest } = props
+  const {
+    currencies,
+    selectedCurrency,
+    onSelectCurrency,
+    isOpen,
+    onClose,
+    ...rest
+  } = props
 
-  // state
+  // Selectors
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+
+  // State
   const [searchText, setSearchText] = React.useState('')
 
-  // memos
+  // Memos
   const searchResults = React.useMemo(() => {
     if (searchText === '') return currencies
 
@@ -74,52 +106,83 @@ export const SelectCurrency = (props: SelectCurrencyProps) => {
     })
   }, [currencies, searchText])
 
+  const selectCurrencyContent = React.useMemo(() => {
+    return (
+      <>
+        <DialogTitle slot='title'>
+          {getLocale('braveWalletSelectCurrency')}
+        </DialogTitle>
+        <Row
+          padding='24px 0 0 0'
+          slot='subtitle'
+        >
+          <SearchInput
+            placeholder={getLocale('braveWalletSearchCurrency')}
+            onInput={(e) => setSearchText(e.value)}
+          >
+            <Icon
+              name='search'
+              slot='left-icon'
+            />
+          </SearchInput>
+        </Row>
+        <Column
+          width='100%'
+          height='80vh'
+          justifyContent='flex-start'
+        >
+          {searchResults.length === 0 ? (
+            <Row
+              justifyContent='center'
+              alignItems='center'
+            >
+              {getLocale('braveWalletNoAvailableCurrencies')}
+            </Row>
+          ) : (
+            <ScrollableColumn>
+              {searchResults.map((currency) => (
+                <CurrencyListItem
+                  key={currency.currencyCode}
+                  currency={currency}
+                  onSelect={onSelectCurrency}
+                  isSelected={
+                    currency.currencyCode === selectedCurrency?.currencyCode
+                  }
+                />
+              ))}
+            </ScrollableColumn>
+          )}
+        </Column>
+      </>
+    )
+  }, [onSelectCurrency, searchResults, selectedCurrency])
+
+  if (isPanel) {
+    return (
+      <BottomSheet
+        onClose={onClose}
+        isOpen={isOpen}
+      >
+        <Column
+          fullWidth={true}
+          padding='0px 16px'
+          height='90vh'
+        >
+          {selectCurrencyContent}
+        </Column>
+      </BottomSheet>
+    )
+  }
+
   return (
     <Dialog
       {...rest}
+      isOpen={isOpen}
+      onClose={onClose}
       showClose
       size='mobile'
     >
-      <DialogTitle slot='title'>Select Currency</DialogTitle>
-      <Row
-        padding='24px 0 0 0'
-        slot='subtitle'
-      >
-        <SearchInput
-          placeholder='Search currency'
-          onInput={(e) => setSearchText(e.value)}
-        >
-          <Icon
-            name='search'
-            slot='left-icon'
-          />
-        </SearchInput>
-      </Row>
-      <Column
-        width='100%'
-        height='80vh'
-        justifyContent='flex-start'
-      >
-        {searchResults.length === 0 ? (
-          <Row
-            justifyContent='center'
-            alignItems='center'
-          >
-            No available currencies
-          </Row>
-        ) : (
-          searchResults.map((currency) => (
-            <CurrencyListItem
-              key={currency.currencyCode}
-              currency={currency}
-              onSelect={onSelectCurrency}
-              isSelected={
-                currency.currencyCode === selectedCurrency?.currencyCode
-              }
-            />
-          ))
-        )}
-      </Column>
+      {selectCurrencyContent}
     </Dialog>
   )
 }

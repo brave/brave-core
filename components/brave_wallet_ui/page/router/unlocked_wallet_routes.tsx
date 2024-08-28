@@ -5,11 +5,20 @@
 
 import * as React from 'react'
 import { Prompt, Route, Switch, useHistory } from 'react-router'
+import { Location } from 'history'
 
-// constants
+// Hooks
+import { useLocalStorage } from '../../common/hooks/use_local_storage'
+
+// Constants
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../common/constants/local-storage-keys'
+
+// Types
 import { WalletRoutes } from '../../constants/types'
 
-// components
+// Components
 import { CryptoView } from '../../components/desktop/views/crypto'
 import { WalletPageLayout } from '../../components/desktop/wallet-page-layout'
 import {
@@ -19,33 +28,33 @@ import {
   BackupWalletRoutes //
 } from '../screens/backup-wallet/backup-wallet.routes'
 import { DepositFundsScreen } from '../screens/fund-wallet/deposit-funds'
-import { FundWalletScreen } from '../screens/fund-wallet/fund_wallet_v1'
+import { FundWalletScreen } from '../screens/fund-wallet/fund_wallet_v2'
 import { SimplePageWrapper } from '../screens/page-screen.styles'
 import {
   OnboardingSuccess //
 } from '../screens/onboarding/onboarding_success/onboarding_success'
-import { PartnersConsentModal } from '../../components/desktop/popup-modals/partners_consent_modal/partners_consent_modal'
-import { Location } from 'history'
-import { useLocalStorage } from '../../common/hooks/use_local_storage'
-import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
+import {
+  PartnersConsentModal //
+} from '../../components/desktop/popup-modals/partners_consent_modal/partners_consent_modal'
 
 export const UnlockedWalletRoutes = ({
   sessionRoute
 }: {
   sessionRoute: WalletRoutes | undefined
 }) => {
-  // state
+  // State
   const [isModalOpen, setModalOpen] = React.useState(false)
   const [nextLocation, setNextLocation] = React.useState<Location | null>(null)
   const [shouldBlock, setShouldBlock] = React.useState(true)
 
-  // hooks
+  // Hooks
   const history = useHistory()
   const [acceptedTerms, setAcceptedTerms] = useLocalStorage(
     LOCAL_STORAGE_KEYS.HAS_ACCEPTED_PARTNER_TERMS,
     false
   )
 
+  // Methods
   const handleAccept = () => {
     setAcceptedTerms(true)
     setModalOpen(false)

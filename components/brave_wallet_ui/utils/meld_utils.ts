@@ -31,7 +31,39 @@ export const getTokenPriceFromRegistry = (
 }
 
 export const getAssetIdKey = (asset: MeldCryptoCurrency) => {
-  return `0x${parseInt(asset.chainId ?? '').toString(16)}-${asset.currencyCode}-${
-    asset.contractAddress
-  }`
+  return `0x${parseInt(asset.chainId ?? '').toString(16)}-${
+    asset.currencyCode
+  }-${asset.contractAddress}`
+}
+
+export const getMeldTokensCoinType = (
+  asset: Pick<MeldCryptoCurrency, 'chainCode'>
+) => {
+  switch (asset.chainCode) {
+    case 'BTC':
+      return BraveWallet.CoinType.BTC
+    case 'FIL':
+      return BraveWallet.CoinType.FIL
+    case 'ZEC':
+      return BraveWallet.CoinType.ZEC
+    case 'SOLANA':
+      return BraveWallet.CoinType.SOL
+    default:
+      return BraveWallet.CoinType.ETH
+  }
+}
+
+export const getMeldTokensChainId = (
+  asset: Pick<MeldCryptoCurrency, 'chainId' | 'chainCode'>
+) => {
+  switch (asset.chainCode) {
+    case 'BTC':
+      return BraveWallet.BITCOIN_MAINNET
+    case 'FIL':
+      return BraveWallet.FILECOIN_MAINNET
+    case 'ZEC':
+      return BraveWallet.Z_CASH_MAINNET
+    default:
+      return asset.chainId
+  }
 }

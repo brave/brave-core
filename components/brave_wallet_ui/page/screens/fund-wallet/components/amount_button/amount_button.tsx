@@ -5,22 +5,16 @@
 
 import * as React from 'react'
 
-// styles
-import { Column, Row } from '../../../../../components/shared/style'
-import {
-  CaretDown,
-  ControlsWrapper,
-  Label,
-  WrapperButton
-} from '../shared/style'
+// Styled Components
+import { Row } from '../../../../../components/shared/style'
+import { CaretDown, Label, WrapperButton } from '../shared/style'
 import {
   AmountEstimate,
   AmountInput,
-  AmountWrapper,
   CurrencyCode,
-  LabelWrapper,
-  FlipButton,
-  SwapVerticalIcon
+  SwapVerticalIcon,
+  Wrapper,
+  ButtonWrapper
 } from './amount_button.style'
 
 interface SelectAccountProps {
@@ -30,7 +24,6 @@ interface SelectAccountProps {
   estimatedCryptoAmount?: string
   onChange: (amount: string) => void
   onClick: () => void
-  onFlipAmounts?: () => void
 }
 
 export const AmountButton = ({
@@ -39,10 +32,9 @@ export const AmountButton = ({
   amount,
   estimatedCryptoAmount,
   onChange,
-  onClick,
-  onFlipAmounts
+  onClick
 }: SelectAccountProps) => {
-  // methods
+  // Methods
   const onInputChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       onChange(event.target.value)
@@ -51,44 +43,43 @@ export const AmountButton = ({
   )
 
   return (
-    <Column alignItems='flex-start'>
-      <Column alignItems='flex-start'>
-        <LabelWrapper>
-          <Label>{labelText}</Label>
-        </LabelWrapper>
-        <ControlsWrapper>
-          <AmountWrapper>
-            <Row>
-              <AmountInput
-                placeholder='0.0'
-                type='number'
-                spellCheck={false}
-                onChange={onInputChange}
-                value={amount}
-                hasError={false}
-                autoFocus={true}
-              />
-              <WrapperButton onClick={onClick}>
-                <Row gap='8px'>
-                  <CurrencyCode>{currencyCode}</CurrencyCode>
-                  <CaretDown />
-                </Row>
-              </WrapperButton>
+    <Wrapper>
+      <Label>{labelText}</Label>
+      <ButtonWrapper>
+        <Row
+          width='unset'
+          margin='0px 0px 12px 0px'
+        >
+          <AmountInput
+            placeholder='0.0'
+            type='number'
+            spellCheck={false}
+            onChange={onInputChange}
+            value={amount}
+            hasError={false}
+            autoFocus={true}
+          />
+          <WrapperButton onClick={onClick}>
+            <Row
+              gap='8px'
+              width='unset'
+            >
+              <CurrencyCode>{currencyCode}</CurrencyCode>
+              <CaretDown />
             </Row>
-            {estimatedCryptoAmount ? (
-              <Row
-                justifyContent='flex-end'
-                gap='4px'
-              >
-                <AmountEstimate>{estimatedCryptoAmount}</AmountEstimate>
-                <FlipButton onClick={onFlipAmounts}>
-                  <SwapVerticalIcon />
-                </FlipButton>
-              </Row>
-            ) : null}
-          </AmountWrapper>
-        </ControlsWrapper>
-      </Column>
-    </Column>
+          </WrapperButton>
+        </Row>
+        {estimatedCryptoAmount ? (
+          <Row
+            width='unset'
+            justifyContent='flex-end'
+            gap='4px'
+          >
+            <AmountEstimate>{estimatedCryptoAmount}</AmountEstimate>
+            <SwapVerticalIcon />
+          </Row>
+        ) : null}
+      </ButtonWrapper>
+    </Wrapper>
   )
 }

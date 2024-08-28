@@ -7,6 +7,9 @@ import styled from 'styled-components'
 import { font, color } from '@brave/leo/tokens/css/variables'
 import ProgressRing from '@brave/leo/react/progressRing'
 
+// Shared Styles
+import { Row } from '../../../../../components/shared/style'
+
 export const Wrapper = styled.div`
   position: fixed;
   top: 0;
@@ -67,3 +70,8 @@ export const AutoSizerStyle = {
   width: '100%',
   flex: 1
 }
+
+export const SearchAndNetworkFilterRow = styled(Row)`
+  background-color: ${color.container.highlight};
+  border-radius: 8px;
+`
