@@ -7,11 +7,6 @@ const NSSVG = 'http://www.w3.org/2000/svg'
 let pickerDiv: HTMLDivElement | null
 
 const api = {
-  getPickerHtml: async () => {
-    const url = chrome.runtime.getURL('elementPicker.html')
-    return (await fetch(url)).text()
-  },
-
   cosmeticFilterCreate: (selector: string) => {
     // host = '' means automatic resolution in in chrome.braveShields() impl.
     chrome.braveShields.addSiteCosmeticFilter('', selector)
@@ -287,10 +282,10 @@ const attachElementPicker = async () => {
   pickerDiv = document.createElement('div')
   const shadowRoot = pickerDiv.attachShadow({ mode: 'open' })
 
-  // getPickerHtml() is HTML loaded from a trusted source
-  // (Brave Extension backround page).
+  // Will be resolved by webpack to the file content.
+  // It's a trusted content so it's safe to use innerHTML.
   // eslint-disable-next-line no-unsanitized/property
-  shadowRoot.innerHTML = await api.getPickerHtml()
+  shadowRoot.innerHTML = require('./elementPicker.html?raw')
 
   const pickerCSSStyle: string = [
     'background: transparent',
