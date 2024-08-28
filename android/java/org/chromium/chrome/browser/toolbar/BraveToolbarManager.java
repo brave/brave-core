@@ -73,7 +73,6 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.desktop_windowing.DesktopWindowStateProvider;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
-import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
@@ -109,7 +108,6 @@ public class BraveToolbarManager extends ToolbarManager {
     private BottomSheetController mBottomSheetController;
     private TabContentManager mTabContentManager;
     private TabCreatorManager mTabCreatorManager;
-    private SnackbarManager mSnackbarManager;
     private Supplier<ModalDialogManager> mModalDialogManagerSupplier;
     private TabObscuringHandler mTabObscuringHandler;
     private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
@@ -172,7 +170,6 @@ public class BraveToolbarManager extends ToolbarManager {
             @NonNull DataSharingTabManager dataSharingTabManager,
             @NonNull TabContentManager tabContentManager,
             @NonNull TabCreatorManager tabCreatorManager,
-            @NonNull SnackbarManager snackbarManager,
             @NonNull
                     Supplier<MerchantTrustSignalsCoordinator>
                             merchantTrustSignalsCoordinatorSupplier,
@@ -220,7 +217,6 @@ public class BraveToolbarManager extends ToolbarManager {
                 dataSharingTabManager,
                 tabContentManager,
                 tabCreatorManager,
-                snackbarManager,
                 merchantTrustSignalsCoordinatorSupplier,
                 omniboxActionDelegate,
                 ephemeralTabCoordinatorSupplier,
@@ -290,7 +286,6 @@ public class BraveToolbarManager extends ToolbarManager {
                                     mCompositorViewHolder,
                                     mTabCreatorManager,
                                     mLayoutStateProviderSupplier,
-                                    mSnackbarManager,
                                     mModalDialogManagerSupplier.get());
 
             mContentDelegateSupplier.set(mTabGroupUi);
