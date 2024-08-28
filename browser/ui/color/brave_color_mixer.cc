@@ -312,6 +312,7 @@ void AddBraveColorMixerForAllThemes(ui::ColorProvider* provider,
   // color by their color mixers.
   mixer[kColorToolbarButtonActivated] = {SkColorSetRGB(0x7C, 0x91, 0xFF)};
   mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
+  mixer[kColorToolbarContentAreaSeparator] = {kColorToolbar};
 }
 
 }  // namespace
@@ -344,7 +345,6 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
   }
 
   mixer[kColorToolbar] = {ui::kColorSysBase};
-  mixer[kColorToolbarButtonIcon] = {ui::kColorSysOnBaseTonalContainer};
 
   key.color_mode == ui::ColorProviderKey::ColorMode::kDark
       ? AddChromeDarkThemeColorMixer(provider, key)
@@ -634,7 +634,6 @@ void AddPrivateThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorToolbarButtonIcon] = {nala::kColorPrimitivePrivateWindow70};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
-  mixer[kColorToolbarContentAreaSeparator] = {kColorToolbar};
   mixer[ui::kColorFrameActive] = {kPrivateFrame};
   mixer[ui::kColorFrameInactive] = {kPrivateFrame};
 }
@@ -697,6 +696,10 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
                                const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
+  mixer[kColorBraveOmniboxResultViewSeparator] = {nala::kColorDividerSubtle};
+
+  // We use a shadow for the Omnibox hover effect, rather than a color change.
+  mixer[kColorLocationBarBackgroundHovered] = {kColorLocationBarBackground};
   mixer[kColorPageInfoIconHover] = {
       ui::SetAlpha(kColorOmniboxText, std::ceil(0.10f * 255.0f))};
 
@@ -713,8 +716,7 @@ void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
   ui::ColorMixer& mixer = provider->AddMixer();
 
   mixer[kColorNewTabButtonFocusRing] = {ui::kColorFocusableBorderFocused};
-  mixer[kColorTabBackgroundActiveFrameActive] = {
-      nala::kColorDesktopbrowserTabbarActiveTabHorizontal};
+  mixer[kColorTabBackgroundActiveFrameActive] = {kColorToolbar};
   mixer[kColorTabBackgroundActiveFrameInactive] = {
       kColorTabBackgroundActiveFrameActive};
 
