@@ -42,13 +42,14 @@ void BraveVPNRegionDataManager::SetSelectedRegion(const std::string& name) {
   local_prefs_->SetString(prefs::kBraveVPNSelectedRegion, name);
 
   if (selected_region_changed_callback_) {
-    selected_region_changed_callback_.Run(name);
+    selected_region_changed_callback_.Run(GetSelectedRegion());
   }
 }
 
 std::string BraveVPNRegionDataManager::GetSelectedRegion() const {
-  DCHECK(!regions_.empty())
-      << "regions data must be prepared before panel asks.";
+  if (regions_.empty()) {
+    CHECK_IS_TEST();
+  }
 
   auto region_name = local_prefs_->GetString(prefs::kBraveVPNSelectedRegion);
   if (region_name.empty()) {
@@ -67,6 +68,23 @@ std::string BraveVPNRegionDataManager::GetDeviceRegion() const {
 
 void BraveVPNRegionDataManager::SetDeviceRegion(const std::string& name) {
   local_prefs_->SetString(prefs::kBraveVPNDeviceRegion, name);
+}
+
+std::string BraveVPNRegionDataManager::GetRegionPrecisionForName(
+    const std::string& name) const {
+  for (const auto& region : regions_) {
+    if (region->name == name) {
+      return brave_vpn::mojom::kRegionPrecisionCountry;
+    } else {
+      for (const auto& city : region->cities) {
+        if (city->name == name) {
+          return brave_vpn::mojom::kRegionPrecisionCity;
+        }
+      }
+    }
+  }
+
+  NOTREACHED_NORETURN();
 }
 
 void BraveVPNRegionDataManager::SetFallbackDeviceRegion() {

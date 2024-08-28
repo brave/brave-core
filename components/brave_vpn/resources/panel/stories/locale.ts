@@ -42,6 +42,11 @@ provideStrings({
     'Unable to check the status of your purchase. This is probably a network problem. Try again or contact support.',
   braveVpnSelectPanelBackButtonAriaLabel: 'Go to main',
   braveVpnSelectYourServer: 'Select your server',
+  braveVpnServerSelectionCountryInfo: '$1 cities - $2 servers',
+  braveVpnServerSelectionCityInfo: '$1 servers',
+  braveVpnServerSelectionAutomaticLabel: 'Automatic',
+  braveVpnServerSelectionOptimalLabel: 'Optimal',
+  braveVpnServerSelectionOptimalDesc: 'Use the best server available',
   braveVpnEditPaymentMethod: 'Edit payment method',
   braveVpnPaymentFailure: 'There was a problem with your payment',
   braveVpnPaymentFailureReason:

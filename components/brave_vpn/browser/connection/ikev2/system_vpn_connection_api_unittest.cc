@@ -321,13 +321,18 @@ class SystemVPNConnectionAPIUnitTest : public testing::Test {
   }
 
   mojom::RegionPtr device_region() {
+    const auto device_region_name = GetBraveVPNConnectionManager()
+                                        ->GetRegionDataManager()
+                                        .GetDeviceRegion();
+    if (device_region_name.empty() || regions().empty()) {
+      return nullptr;
+    }
+
     if (auto region_ptr =
-            GetRegionPtrWithNameFromRegionList(GetBraveVPNConnectionManager()
-                                                   ->GetRegionDataManager()
-                                                   .GetDeviceRegion(),
-                                               regions())) {
+            GetRegionPtrWithNameFromRegionList(device_region_name, regions())) {
       return region_ptr.Clone();
     }
+
     return nullptr;
   }
 
@@ -450,7 +455,7 @@ TEST_F(SystemVPNConnectionAPIUnitTest,
   test_api->CheckConnection();
 
   // Prepare valid connection info.
-  test_api->OnFetchHostnames("region-a", kHostNamesTestData, true);
+  test_api->OnFetchHostnames("eu-be", kHostNamesTestData, true);
   test_api->SetPreventCreationForTesting(true);
   test_api->OnGetProfileCredentials(kProfileCredentialData, true);
   EXPECT_TRUE(connection_info().IsValid());
@@ -468,9 +473,9 @@ TEST_F(SystemVPNConnectionAPIUnitTest, CreateOSVPNEntryWithInvalidInfoTest) {
 
   auto* test_api = GetConnectionAPI();
   test_api->CheckConnection();
-  local_state()->SetString(prefs::kBraveVPNSelectedRegion, "region-a");
+  local_state()->SetString(prefs::kBraveVPNSelectedRegion, "eu-be");
   // Prepare valid connection info.
-  test_api->OnFetchHostnames("region-a", kHostNamesTestData, true);
+  test_api->OnFetchHostnames("eu-be", kHostNamesTestData, true);
   test_api->SetPreventCreationForTesting(true);
   test_api->OnGetProfileCredentials(kProfileCredentialData, true);
   ResetConnectionInfo();
@@ -491,7 +496,7 @@ TEST_F(SystemVPNConnectionAPIUnitTest, NeedsConnectTest) {
 
   // Check ignore Connect() request while connecting or disconnecting is
   // in-progress.
-  local_state()->SetString(prefs::kBraveVPNSelectedRegion, "eu-es");
+  local_state()->SetString(prefs::kBraveVPNSelectedRegion, "eu-be");
   test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
   test_api->Connect();
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
@@ -537,13 +542,13 @@ TEST_F(SystemVPNConnectionAPIUnitTest, HostnamesTest) {
   auto* test_api = GetConnectionAPI();
   // Set valid hostnames list
   test_api->hostname_.reset();
-  test_api->OnFetchHostnames("region-a", kHostNamesTestData, true);
+  test_api->OnFetchHostnames("eu-be", kHostNamesTestData, true);
   // Check best one is picked from fetched hostname list.
   EXPECT_EQ("host-2.brave.com", test_api->hostname_->hostname);
 
   // Can't get hostname from invalid hostnames list
   test_api->hostname_.reset();
-  test_api->OnFetchHostnames("invalid-region-b", "", false);
+  test_api->OnFetchHostnames("eu-be", "", false);
   EXPECT_FALSE(test_api->hostname_);
 }
 
@@ -553,7 +558,7 @@ TEST_F(SystemVPNConnectionAPIUnitTest, ConnectionInfoTest) {
   // Check valid connection info is set when valid hostname and profile
   // credential are fetched.
   test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
-  test_api->OnFetchHostnames("region-a", kHostNamesTestData, true);
+  test_api->OnFetchHostnames("eu-be", kHostNamesTestData, true);
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 
   // To prevent real os vpn entry creation.
@@ -641,7 +646,7 @@ TEST_F(SystemVPNConnectionAPIUnitTest,
   auto* test_api = GetConnectionAPI();
 
   // Prepare valid connection info.
-  test_api->OnFetchHostnames("region-a", kHostNamesTestData, true);
+  test_api->OnFetchHostnames("eu-be", kHostNamesTestData, true);
   test_api->OnGetProfileCredentials(kProfileCredentialData, true);
 
   const std::string last_error = "Last error";

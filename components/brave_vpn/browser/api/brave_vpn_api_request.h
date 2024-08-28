@@ -37,8 +37,6 @@ class BraveVpnAPIRequest {
                         const std::string& region_precision);
   void GetTimezonesForRegions(ResponseCallback callback);
   void GetHostnamesForRegion(ResponseCallback callback,
-                             const std::string& region);
-  void GetHostnamesForRegion(ResponseCallback callback,
                              const std::string& region,
                              const std::string& region_precision);
   void GetProfileCredentials(ResponseCallback callback,

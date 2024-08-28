@@ -105,7 +105,7 @@ void ConnectionAPIImpl::FetchHostnamesForRegion(const std::string& name) {
   GetAPIRequest()->GetHostnamesForRegion(
       base::BindOnce(&ConnectionAPIImpl::OnFetchHostnames,
                      base::Unretained(this), name),
-      name);
+      name, manager_->GetRegionDataManager().GetRegionPrecisionForName(name));
 }
 
 void ConnectionAPIImpl::OnFetchHostnames(const std::string& region,

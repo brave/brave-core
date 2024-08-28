@@ -57,7 +57,10 @@ interface ServiceHandler {
   GetSelectedRegion() => (Region current_region);
 
   [EnableIfNot=is_android]
-  SetSelectedRegion(Region region);
+  SetSelectedRegion(Region? region);
+
+  [EnableIfNot=is_android]
+  ClearSelectedRegion();
 
   [EnableIfNot=is_android]
   GetProductUrls() => (ProductUrls urls);
@@ -131,6 +134,7 @@ struct Region {
   double latitude;
   double longitude;
   int32 server_count;
+  bool is_automatic;
 };
 
 const string kRegionPrecisionDefault = "default";

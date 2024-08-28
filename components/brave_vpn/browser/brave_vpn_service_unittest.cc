@@ -317,6 +317,20 @@ class BraveVPNServiceTest : public testing::Test {
     GetBraveVPNConnectionManager()->SetSelectedRegion(region);
   }
 
+  std::string GetSelectedRegion() {
+    return GetBraveVPNConnectionManager()
+        ->GetRegionDataManager()
+        .GetSelectedRegion();
+  }
+
+  std::string GetDeviceRegion() {
+    return GetBraveVPNConnectionManager()
+        ->GetRegionDataManager()
+        .GetDeviceRegion();
+  }
+
+  void ClearSelectedRegion() { service_->ClearSelectedRegion(); }
+
   void OnFetchRegionList(const std::string& region_list, bool success) {
     GetBraveVPNConnectionManager()->GetRegionDataManager().OnFetchRegionList(
         region_list, success);
@@ -780,6 +794,36 @@ TEST_F(BraveVPNServiceTest, SelectedRegionChangedUpdateTest) {
   base::RunLoop loop;
   observer.WaitSelectedRegionStateChange(loop.QuitClosure());
   loop.Run();
+}
+
+TEST_F(BraveVPNServiceTest, ClearSelectedRegionTest) {
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+
+  OnFetchRegionList(GetRegionsData(), true);
+  SetTestTimezone("Asia/Seoul");
+  OnFetchTimezones(GetTimeZonesData(), true);
+  {
+    base::RunLoop loop;
+    observer.WaitSelectedRegionStateChange(loop.QuitClosure());
+    loop.Run();
+  }
+
+  SetSelectedRegion("sa-br");
+  {
+    base::RunLoop loop;
+    observer.WaitSelectedRegionStateChange(loop.QuitClosure());
+    loop.Run();
+  }
+  EXPECT_NE(GetSelectedRegion(), GetDeviceRegion());
+
+  ClearSelectedRegion();
+  {
+    base::RunLoop loop;
+    observer.WaitSelectedRegionStateChange(loop.QuitClosure());
+    loop.Run();
+  }
+  EXPECT_EQ(GetSelectedRegion(), GetDeviceRegion());
 }
 
 // Check SetSelectedRegion is called when default device region is set.

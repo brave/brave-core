@@ -30,6 +30,7 @@ BraveVPN.setPanelBrowserApiForTesting({
     getAllRegions: () => Promise.resolve({ regions: mockRegionList }),
     getSelectedRegion: () => Promise.resolve({ currentRegion: mockRegionList[1] }),
     setSelectedRegion: doNothing,
+    clearSelectedRegion: doNothing,
     getProductUrls: () => Promise.resolve({
       urls: {
         feedback: 'https://example.com',

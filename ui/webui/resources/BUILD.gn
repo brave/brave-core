@@ -479,6 +479,7 @@ if (enable_brave_vpn_panel) {
     "country-ua.svg",
     "country-us.svg",
     "country-uy.svg",
+    "country-worldwide.svg",
     "country-za.svg",
   ]
 }

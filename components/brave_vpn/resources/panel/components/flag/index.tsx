@@ -68,7 +68,8 @@ const COUNTRIES = [
     'UA',
     'US',
     'UY',
-    'ZA'
+    'ZA',
+    `WORLDWIDE`
 ]
 
 function Flag(props: Props) {

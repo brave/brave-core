@@ -66,6 +66,15 @@ reducer.on(Actions.connectToNewRegion, (state, payload): RootState => {
   }
 })
 
+reducer.on(Actions.connectToNewRegionAutomatically,
+           (state, payload): RootState => {
+  return {
+    ...state,
+    isSelectingRegion: false,
+    hasError: false
+  }
+})
+
 reducer.on(Actions.toggleRegionSelector, (state, payload): RootState => {
   return {
     ...state,
