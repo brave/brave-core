@@ -123,6 +123,7 @@ class AdBlockService {
   AdBlockCustomFiltersProvider* custom_filters_provider();
 
   void EnableTag(const std::string& tag, bool enabled);
+  void AddUserCosmeticFilter(std::string filter);
 
   // Methods for brave://adblock-internals.
   using GetDebugInfoCallback =
@@ -172,8 +173,8 @@ class AdBlockService {
 
   std::unique_ptr<AdBlockDefaultResourceProvider> resource_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);
-  std::unique_ptr<AdBlockCustomFiltersProvider> custom_filters_provider_
-      GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<AdBlockCustomFiltersProvider> custom_filters_provider_;
+  // TODO//GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockLocalhostFiltersProvider> localhost_filters_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockComponentFiltersProvider> default_filters_provider_

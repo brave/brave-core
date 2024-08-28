@@ -18,11 +18,12 @@
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
-#include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated_map.h"
+#include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated.h"
 #include "content/public/renderer/render_frame.h"
 #include "gin/arguments.h"
 #include "gin/function_template.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
@@ -273,6 +274,12 @@ bool CosmeticFiltersJSHandler::OnIsFirstParty(const std::string& url_string) {
       url, url_, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
+void CosmeticFiltersJSHandler::OnAddSiteCosmeticFilter(
+    const std::string& selector) {
+  const auto host = url_.host();
+  cosmetic_filters_resources_->AddUserCosmeticFilter(host + "##" + selector);
+}
+
 void CosmeticFiltersJSHandler::AddJavaScriptObjectToFrame(
     v8::Local<v8::Context> context) {
   CHECK(render_frame_);
@@ -332,6 +339,11 @@ void CosmeticFiltersJSHandler::BindFunctionsToObject(
       base::BindRepeating(&CosmeticFiltersJSHandler::OnIsFirstParty,
                           base::Unretained(this)));
 
+  BindFunctionToObject(
+      isolate, javascript_object, "addSiteCosmeticFilter",
+      base::BindRepeating(&CosmeticFiltersJSHandler::OnAddSiteCosmeticFilter,
+                          base::Unretained(this)));
+
   if (perf_tracker_) {
     BindFunctionToObject(
         isolate, javascript_object, "onHandleMutationsBegin",
@@ -375,6 +387,10 @@ bool CosmeticFiltersJSHandler::EnsureConnected() {
     cosmetic_filters_resources_.set_disconnect_handler(
         base::BindOnce(&CosmeticFiltersJSHandler::OnRemoteDisconnect,
                        weak_ptr_factory_.GetWeakPtr()));
+    render_frame_->GetAssociatedInterfaceRegistry()
+        ->AddInterface<mojom::CosmeticFiltersJsHandler>(
+            base::BindRepeating(&CosmeticFiltersJSHandler::BindTabHelper,
+                                weak_ptr_factory_.GetWeakPtr()));
   }
 
   return cosmetic_filters_resources_.is_bound();
@@ -383,6 +399,25 @@ bool CosmeticFiltersJSHandler::EnsureConnected() {
 void CosmeticFiltersJSHandler::OnRemoteDisconnect() {
   cosmetic_filters_resources_.reset();
   EnsureConnected();
+}
+
+void CosmeticFiltersJSHandler::BindTabHelper(
+    mojo::PendingAssociatedReceiver<mojom::CosmeticFiltersJsHandler> receiver) {
+  receiver_.reset();
+  receiver_.Bind(std::move(receiver));
+}
+
+void CosmeticFiltersJSHandler::LaunchContentPicker() {
+  static base::NoDestructor<std::string> s_content_picker(LoadDataResource(
+      IDR_COSMETIC_FILTERS_BRAVE_COMPONENTS_BRAVE_EXTENSION_EXTENSION_BRAVE_EXTENSION_CONTENT_ELEMENT_PICKER_TS_BUNDLE_JS));
+  blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
+  if (web_frame->IsProvisional()) {
+    return;
+  }
+  web_frame->ExecuteScriptInIsolatedWorld(
+      isolated_world_id_,
+      blink::WebScriptSource(blink::WebString::FromUTF8(*s_content_picker)),
+      blink::BackForwardCacheAware::kAllow);
 }
 
 bool CosmeticFiltersJSHandler::ProcessURL(
@@ -699,7 +734,7 @@ void CosmeticFiltersJSHandler::ExecuteObservingBundleEntryPoint() {
                  url_.spec());
 
     static base::NoDestructor<std::string> s_observing_script(
-        LoadDataResource(kCosmeticFiltersGenerated[0].id));
+        LoadDataResource(IDR_COSMETIC_FILTERS_COSMETIC_FILTERS_BUNDLE_JS));
     bundle_injected_ = true;
 
     web_frame->ExecuteScriptInIsolatedWorld(

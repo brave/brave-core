@@ -30,6 +30,7 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browser_thread.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/origin.h"
 
@@ -343,6 +344,16 @@ void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
       FROM_HERE,
       base::BindOnce(&AdBlockEngine::EnableTag,
                      base::Unretained(default_engine_.get()), tag, enabled));
+}
+
+void AdBlockService::AddUserCosmeticFilter(std::string filter) {
+  auto* custom_filters_provider = custom_filters_provider_.get();
+  // TODO: fix custom_filters_provider is Unretained here
+  content::GetUIThreadTaskRunner()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&AdBlockCustomFiltersProvider::AddUserCosmeticFilter,
+                     base::Unretained(custom_filters_provider),
+                     std::move(filter)));
 }
 
 void AdBlockService::GetDebugInfoAsync(GetDebugInfoCallback callback) {

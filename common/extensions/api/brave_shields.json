@@ -28,6 +28,12 @@
         "type": "function",
         "description": "Opens brave://adblock for the purpose of adding, editing, or removing custom filters",
         "parameters": []
+      },
+      {
+        "name": "launchContentPicker",
+        "type": "function",
+        "description": "Launch cosmetic filter content picker to add user rules",
+        "parameters": []
       }
     ]
   }

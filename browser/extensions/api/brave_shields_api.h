@@ -34,6 +34,16 @@ class BraveShieldsOpenFilterManagementPageFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveShieldsLaunchContentPickerFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.launchContentPicker", UNKNOWN)
+
+ protected:
+  ~BraveShieldsLaunchContentPickerFunction() override {}
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

@@ -36,14 +36,7 @@ export function onContextMenuClicked (info: chrome.contextMenus.OnClickData, tab
       openFilterManagementPage()
       break
     case 'elementPickerMode': {
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs: [chrome.tabs.Tab]) => {
-          const tabId = tabs[0]?.id;
-          if (tabId !== undefined) {
-              chrome.scripting.executeScript({target : {tabId},
-              files : [ "out/content_element_picker.bundle.js" ],
-          })
-        }
-      })
+      chrome.braveShields.launchContentPicker();
       break
     }
     default: {

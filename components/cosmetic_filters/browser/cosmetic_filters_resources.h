@@ -41,6 +41,8 @@ class CosmeticFiltersResources final
                               const std::vector<std::string>& exceptions,
                               HiddenClassIdSelectorsCallback callback) override;
 
+  void AddUserCosmeticFilter(const std::string& filter) override;
+
   // Sends the renderer a response including whether or not to apply cosmetic
   // filtering to first party elements along with an initial set of rules and
   // scripts to apply for the given URL.
