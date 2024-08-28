@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/chromium_src/chrome/browser/ui/webui/help/version_updater_mac.h"
 #include "brave/components/update_client/features.h"
 #include "chrome/browser/ui/webui/help/version_updater.h"
+#include "chrome/browser/ui/webui/help/version_updater_mac.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 class BraveVersionUpdaterMacTest : public testing::Test {
