@@ -4,8 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+
+// Components
 import { PartnersConsentModal } from './partners_consent_modal'
-import WalletPageStory from '../../../../stories/wrappers/wallet-page-story-wrapper'
+import {
+  WalletPageStory //
+} from '../../../../stories/wrappers/wallet-page-story-wrapper'
 
 export const _PartnersConsentModal = () => {
   const [isOpen, setIsOpen] = React.useState(true)

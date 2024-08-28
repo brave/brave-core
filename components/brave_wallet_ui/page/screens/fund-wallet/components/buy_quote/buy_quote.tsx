@@ -6,17 +6,20 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-// types
+// Types
 import {
+  MeldCryptoCurrency,
   MeldCryptoQuote,
   MeldServiceProvider
 } from '../../../../../constants/types'
 
-// utils
+// Utils
 import Amount from '../../../../../utils/amount'
 import { toProperCase } from '../../../../../utils/string-utils'
+import { getLocale } from '../../../../../../common/locale'
+import { getAssetSymbol } from '../../../../../utils/meld_utils'
 
-// styles
+// Styled Components
 import {
   ProviderImage,
   ProviderName,
@@ -26,21 +29,23 @@ import {
   PaymentMethodIcon,
   CaratIcon,
   QuoteDetailsWrapper,
-  QuoteDetailsRow,
   QuoteDetailsLabel,
   QuoteDetailsValue,
   Divider,
   QuoteTotal,
   BuyButton,
-  BestOptionLabel
+  BestOptionLabel,
+  WrapperForPadding
 } from './buy_quote.style'
 import { Column, Row } from '../../../../../components/shared/style'
 
 interface BuyQuoteProps {
   quote: MeldCryptoQuote
   serviceProviders: MeldServiceProvider[]
+  isOpenOverride?: boolean
   isBestOption?: boolean
   isCreatingWidget: boolean
+  selectedAsset?: MeldCryptoCurrency
   onBuy: (quote: MeldCryptoQuote) => void
 }
 
@@ -49,6 +54,8 @@ export const BuyQuote = ({
   serviceProviders,
   isBestOption,
   isCreatingWidget,
+  selectedAsset,
+  isOpenOverride,
   onBuy
 }: BuyQuoteProps) => {
   const {
@@ -63,17 +70,22 @@ export const BuyQuote = ({
     paymentMethod
   } = quote
 
-  // state
-  const [isOpen, setIsOpen] = React.useState(true)
+  // State
+  const [isOpen, setIsOpen] = React.useState(isOpenOverride ?? false)
 
-  // computed
+  // Computed
   const formattedSourceAmount = new Amount(sourceAmount ?? '').formatAsFiat(
     sourceCurrencyCode,
     2
   )
+
+  const assetsSymbol = selectedAsset
+    ? getAssetSymbol(selectedAsset)
+    : destinationCurrencyCode
+
   const formattedCryptoAmount = new Amount(
     destinationAmount ?? ''
-  ).formatAsAsset(5, destinationCurrencyCode)
+  ).formatAsAsset(5, assetsSymbol)
 
   const formattedExchangeRate = new Amount(exchangeRate ?? '').formatAsFiat(
     '',
@@ -100,7 +112,6 @@ export const BuyQuote = ({
     <StyledWrapper isOpen={isOpen}>
       <Row
         justifyContent='space-between'
-        alignItems='flex-start'
         width='100%'
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -128,7 +139,7 @@ export const BuyQuote = ({
               <div slot='icon-before'>
                 <Icon name='thumb-up' />
               </div>
-              BEST OPTION
+              {getLocale('braveWalletBestOption')}
             </BestOptionLabel>
           ) : null}
           <PaymentMethodsWrapper>
@@ -148,39 +159,70 @@ export const BuyQuote = ({
           width='100%'
           gap='8px'
         >
-          <QuoteDetailsWrapper>
-            <QuoteDetailsRow>
-              <QuoteDetailsLabel>Exchange rate with fees</QuoteDetailsLabel>
-              <QuoteDetailsValue>
-                ≈ {formattedExchangeRate} {sourceCurrencyCode} /{' '}
-                {destinationCurrencyCode}
-              </QuoteDetailsValue>
-            </QuoteDetailsRow>
-            <QuoteDetailsRow>
-              <QuoteDetailsLabel>Price {sourceCurrencyCode}</QuoteDetailsLabel>
-              <QuoteDetailsValue>
-                ≈ {amountWithoutFees} {sourceCurrencyCode}
-              </QuoteDetailsValue>
-            </QuoteDetailsRow>
-            <QuoteDetailsRow>
-              <QuoteDetailsLabel>Fees</QuoteDetailsLabel>
-              <QuoteDetailsValue>
-                {formattedTotalFee} {sourceCurrencyCode}
-              </QuoteDetailsValue>
-            </QuoteDetailsRow>
-            <Divider />
-            <QuoteDetailsRow>
-              <QuoteTotal>Total</QuoteTotal>
-              <QuoteTotal>
-                {formattedSourceAmount} {sourceCurrencyCode}
-              </QuoteTotal>
-            </QuoteDetailsRow>
-          </QuoteDetailsWrapper>
+          <WrapperForPadding fullWidth={true}>
+            <QuoteDetailsWrapper
+              fullWidth={true}
+              gap='8px'
+            >
+              <Row
+                justifyContent='space-between'
+                gap='8px'
+              >
+                <QuoteDetailsLabel>
+                  {getLocale('braveWalletExchangeRateWithFees')}
+                </QuoteDetailsLabel>
+                <QuoteDetailsValue>
+                  ≈ {formattedExchangeRate} {sourceCurrencyCode} /{' '}
+                  {assetsSymbol}
+                </QuoteDetailsValue>
+              </Row>
+              <Row
+                justifyContent='space-between'
+                gap='8px'
+              >
+                <QuoteDetailsLabel>
+                  {getLocale('braveWalletPriceCurrency').replace(
+                    '$1',
+                    sourceCurrencyCode ?? ''
+                  )}
+                </QuoteDetailsLabel>
+                <QuoteDetailsValue>
+                  ≈ {amountWithoutFees} {sourceCurrencyCode}
+                </QuoteDetailsValue>
+              </Row>
+              <Row
+                justifyContent='space-between'
+                gap='8px'
+              >
+                <QuoteDetailsLabel>
+                  {getLocale('braveWalletFees')}
+                </QuoteDetailsLabel>
+                <QuoteDetailsValue>
+                  {formattedTotalFee} {sourceCurrencyCode}
+                </QuoteDetailsValue>
+              </Row>
+              <Divider />
+              <Row
+                justifyContent='space-between'
+                gap='8px'
+              >
+                <QuoteTotal>
+                  {getLocale('braveWalletConfirmTransactionTotal')}
+                </QuoteTotal>
+                <QuoteTotal>
+                  {formattedSourceAmount} {sourceCurrencyCode}
+                </QuoteTotal>
+              </Row>
+            </QuoteDetailsWrapper>
+          </WrapperForPadding>
           <BuyButton
             isLoading={isCreatingWidget}
             onClick={() => onBuy(quote)}
           >
-            Buy with {formattedProviderName}
+            {getLocale('braveWalletBuyWithProvider').replace(
+              '$1',
+              formattedProviderName
+            )}
             <div slot='icon-after'>
               <Icon name='launch' />
             </div>

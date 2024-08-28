@@ -4,10 +4,14 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { font, color } from '@brave/leo/tokens/css/variables'
-import { layoutPanelWidth } from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 import Input from '@brave/leo/react/input'
 import Label from '@brave/leo/react/label'
+import { font, color } from '@brave/leo/tokens/css/variables'
+
+// Shared Styles
+import {
+  layoutPanelWidth //
+} from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const SearchInput = styled(Input).attrs({
   mode: 'filled',
@@ -16,7 +20,6 @@ export const SearchInput = styled(Input).attrs({
   margin-top: 2px;
   width: 100%;
   padding-bottom: 8px;
-
   @media (max-width: ${layoutPanelWidth}px) {
     size: small;
   }

@@ -4,9 +4,17 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+
+// Mock Data
+import {
+  mockMeldCryptoCurrencies //
+} from '../../../../../common/constants/mocks'
+
+// Components
 import { SelectAssetButton } from './select_asset_button'
-import WalletPageStory from '../../../../../stories/wrappers/wallet-page-story-wrapper'
-import { mockMeldCryptoCurrencies } from '../../../../../common/constants/mocks'
+import {
+  WalletPageStory //
+} from '../../../../../stories/wrappers/wallet-page-story-wrapper'
 
 export const _SelectAssetButton = () => {
   return (

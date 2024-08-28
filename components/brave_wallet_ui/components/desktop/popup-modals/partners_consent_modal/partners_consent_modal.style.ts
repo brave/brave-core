@@ -7,6 +7,9 @@ import styled from 'styled-components'
 import Dialog from '@brave/leo/react/dialog'
 import { font, spacing, color } from '@brave/leo/tokens/css/variables'
 
+// Shared Styles
+import { WalletButton } from '../../../shared/style'
+
 export const TermsDialog = styled(Dialog)`
   --leo-dialog-backdrop-background: rgba(17, 18, 23, 0.35);
   --leo-dialog-backdrop-filter: blur(8px);
@@ -29,10 +32,17 @@ export const TermsLabel = styled.span`
   font: ${font.default.regular};
   margin: 0;
   padding: 0;
+`
 
-  & a {
-    color: ${color.text.interactive};
-    text-decoration: none;
-    font: ${font.default.semibold};
-  }
+export const TermsButton = styled(WalletButton)`
+  font-family: Poppins;
+  color: ${color.text.interactive};
+  text-decoration: none;
+  font: ${font.default.semibold};
+  background: none;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  margin: 0px;
+  padding: 0px;
 `

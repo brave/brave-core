@@ -5,21 +5,22 @@
 
 import * as React from 'react'
 
-// types
+// Types
 import { BraveWallet } from '../../../../../constants/types'
 
-// components
-import { CreateAccountIcon } from '../../../../../components/shared/create-account-icon/create-account-icon'
-
-// styles
-import { Column, Row } from '../../../../../components/shared/style'
+// Hooks
 import {
-  CaretDown,
-  ControlsWrapper,
-  ControlText,
-  Label,
-  WrapperButton
-} from '../shared/style'
+  useReceiveAddressQuery //
+} from '../../../../../common/slices/api.slice.extra'
+
+// Components
+import {
+  CreateAccountIcon //
+} from '../../../../../components/shared/create-account-icon/create-account-icon'
+
+// Styled Components
+import { Column, Row } from '../../../../../components/shared/style'
+import { CaretDown, ControlText, Label, WrapperButton } from '../shared/style'
 import { AccountAddress } from './select_account_button.style'
 
 interface SelectAccountProps {
@@ -33,28 +34,29 @@ export const SelectAccountButton = ({
   selectedAccount,
   onClick
 }: SelectAccountProps) => {
+  const { receiveAddress } = useReceiveAddressQuery(selectedAccount?.accountId)
+
   return (
     <Column alignItems='flex-start'>
       <WrapperButton onClick={onClick}>
         <Column alignItems='flex-start'>
           <Label>{labelText}</Label>
-          <ControlsWrapper>
-            <Row
-              justifyContent='flex-start'
-              gap='8px'
-              minHeight='40px'
-            >
-              <CreateAccountIcon
-                account={selectedAccount}
-                size='medium'
-              />
-              <ControlText>{selectedAccount?.name}</ControlText>
-            </Row>
+          <Row
+            justifyContent='flex-start'
+            gap='8px'
+            minHeight='40px'
+            margin='0px 0px 12px 0px'
+          >
+            <CreateAccountIcon
+              account={selectedAccount}
+              size='medium'
+            />
+            <ControlText>{selectedAccount?.name}</ControlText>
             <CaretDown />
-          </ControlsWrapper>
+          </Row>
         </Column>
       </WrapperButton>
-      <AccountAddress>{selectedAccount?.address}</AccountAddress>
+      <AccountAddress>{receiveAddress}</AccountAddress>
     </Column>
   )
 }

@@ -3,12 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { BuyQuote } from './buy_quote'
+
+// Types
+import { MeldCryptoQuote } from 'components/brave_wallet_ui/constants/types'
+
+// Mock Data
 import {
   mockMeldCryptoQuotes,
   mockServiceProviders
 } from '../../../../../common/constants/mocks'
-import { MeldCryptoQuote } from 'components/brave_wallet_ui/constants/types'
+
+// Components
+import { BuyQuote } from './buy_quote'
 
 export const _BuyQuote = () => {
   return (

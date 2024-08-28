@@ -5,7 +5,11 @@
 
 import styled from 'styled-components'
 import { color, font, spacing } from '@brave/leo/tokens/css/variables'
-import { layoutPanelWidth } from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+
+// Shared Styles
+import {
+  layoutPanelWidth //
+} from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const AccountName = styled.h3`
   color: ${color.text.primary};
@@ -28,7 +32,6 @@ export const AccountAddress = styled.span`
   color: ${color.text.secondary};
   font: ${font.xSmall.semibold};
   line-height: 16px;
-
   @media (max-width: ${layoutPanelWidth}) {
     background-color: transparent;
   }

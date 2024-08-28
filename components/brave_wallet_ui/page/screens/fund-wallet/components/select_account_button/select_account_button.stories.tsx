@@ -4,9 +4,15 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { SelectAccountButton } from './select_account_button'
-import WalletPageStory from '../../../../../stories/wrappers/wallet-page-story-wrapper'
+
+// Mock Data
 import { mockAccount } from '../../../../../common/constants/mocks'
+
+// Components
+import { SelectAccountButton } from './select_account_button'
+import {
+  WalletPageStory //
+} from '../../../../../stories/wrappers/wallet-page-story-wrapper'
 
 export const _SelectAccountButton = () => {
   return (

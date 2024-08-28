@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// Types
 import {
   MeldCountry,
   MeldCryptoCurrency,
@@ -10,28 +11,51 @@ import {
   MeldFilter,
   MeldCryptoQuote,
   MeldServiceProvider,
-  SupportedOnRampNetworks,
   MeldPaymentMethod,
   CryptoWidgetCustomerData,
   CryptoBuySessionData,
   MeldCryptoWidget
 } from '../../../constants/types'
+
+// Utils
 import { handleEndpointError } from '../../../utils/api-utils'
+import { getMeldTokensChainId } from '../../../utils/meld_utils'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 type GetCryptoQuotesArgs = {
   country: string
   sourceCurrencyCode: string
-  destionationCurrencyCode: string
+  destinationCurrencyCode: string
   amount: number
   account: string | null
-  paymentMethods: MeldPaymentMethod[]
+  paymentMethod: MeldPaymentMethod
+}
+
+type GetPaymentMethodsArg = {
+  country: string
+  sourceCurrencyCode: string
 }
 
 type CreateMeldBuyWidgetArgs = {
   sessionData: CryptoBuySessionData
   customerData: CryptoWidgetCustomerData
 }
+
+const supportedChains = [
+  'BTC',
+  'FIL',
+  'ZEC',
+  'ETH',
+  'SOLANA',
+  'FTM',
+  'BSC',
+  'POLYGON',
+  'OPTIMISM',
+  'AURORA',
+  'CELO',
+  'ARBITRUM',
+  'AVAXC'
+]
 
 export const meldIntegrationEndpoints = ({
   query,
@@ -90,16 +114,17 @@ export const meldIntegrationEndpoints = ({
             serviceProviders: undefined,
             paymentMethodTypes: undefined,
             statuses: undefined,
-            cryptoChains: undefined
+            cryptoChains: supportedChains.join(',')
           }
           const { fiatCurrencies: cryptoCurrencies, error } =
             await meldIntegrationService.getCryptoCurrencies(filter)
 
-          const supportedAssets = cryptoCurrencies?.filter((asset) =>
-            SupportedOnRampNetworks.includes(
-              '0x' + parseInt(asset?.chainId ?? '').toString(16)
-            )
-          )
+          const tokenList = cryptoCurrencies?.map((token) => {
+            return {
+              ...token,
+              chainId: getMeldTokensChainId(token)
+            }
+          })
 
           if (error) {
             return handleEndpointError(
@@ -110,7 +135,7 @@ export const meldIntegrationEndpoints = ({
           }
 
           return {
-            data: supportedAssets || []
+            data: tokenList || []
           }
         } catch (error) {
           return handleEndpointError(
@@ -121,30 +146,6 @@ export const meldIntegrationEndpoints = ({
         }
       },
       providesTags: ['MeldCryptoCurrencies']
-    }),
-    getDefaultCountry: query<string, void>({
-      queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
-        try {
-          const defaultCountry: string = await new Promise((resolve) => {
-            // TODO(william): implement this for wallet
-            // to avoid using braveRewards api
-            chrome.braveRewards.getDefaultCountry((defaultCountry) => {
-              resolve(defaultCountry)
-            })
-          })
-
-          return {
-            data: defaultCountry
-          }
-        } catch (error) {
-          return handleEndpointError(
-            endpoint,
-            'Error getting default country: ',
-            error
-          )
-        }
-      },
-      providesTags: ['DefaultCountryCode']
     }),
     getMeldCountries: query<MeldCountry[], void>({
       queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
@@ -237,18 +238,19 @@ export const meldIntegrationEndpoints = ({
           const {
             country,
             sourceCurrencyCode,
-            destionationCurrencyCode,
+            destinationCurrencyCode,
             amount,
-            account
+            account,
+            paymentMethod
           } = params
 
           const result = await meldIntegrationService.getCryptoQuotes(
             country,
             sourceCurrencyCode,
-            destionationCurrencyCode,
+            destinationCurrencyCode,
             amount,
             account,
-            null
+            paymentMethod.paymentMethod
           )
 
           return {
@@ -264,14 +266,14 @@ export const meldIntegrationEndpoints = ({
       },
       invalidatesTags: ['MeldCryptoQuotes']
     }),
-    getMeldPaymentMethods: query<MeldPaymentMethod[], void>({
-      queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
+    getMeldPaymentMethods: query<MeldPaymentMethod[], GetPaymentMethodsArg>({
+      queryFn: async (params, { endpoint }, _extraOptions, baseQuery) => {
         try {
           const { meldIntegrationService } = baseQuery(undefined).data
-
+          const { country, sourceCurrencyCode } = params
           const filter: MeldFilter = {
-            countries: undefined,
-            fiatCurrencies: undefined,
+            countries: country,
+            fiatCurrencies: sourceCurrencyCode,
             cryptoCurrencies: undefined,
             serviceProviders: undefined,
             paymentMethodTypes: undefined,

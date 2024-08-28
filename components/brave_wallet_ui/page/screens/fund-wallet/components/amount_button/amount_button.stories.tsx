@@ -4,11 +4,20 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+
+// Mock Data
+import {
+  mockMeldFiatCurrency //
+} from '../../../../../common/constants/mocks'
+
+// Components
 import { AmountButton } from './amount_button'
-import WalletPageStory from '../../../../../stories/wrappers/wallet-page-story-wrapper'
-import { mockMeldFiatCurrency } from '../../../../../common/constants/mocks'
+import {
+  WalletPageStory //
+} from '../../../../../stories/wrappers/wallet-page-story-wrapper'
 
 export const _AmountButton = () => {
+  // State
   const [amount, setAmount] = React.useState<string>('')
 
   return (
