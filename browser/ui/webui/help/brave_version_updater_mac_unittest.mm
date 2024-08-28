@@ -13,7 +13,9 @@ class BraveVersionUpdaterMacTest : public testing::Test {
  protected:
   bool UsesSparkle() {
     std::unique_ptr<VersionUpdater> updater = VersionUpdater::Create(nullptr);
-    return SparkleVersionUpdater::IsSparkle(updater.get());
+    bool result = false;
+    updater->GetIsSparkleForTesting(result);
+    return result;
   }
   base::test::ScopedFeatureList scoped_feature_list_;
 };
