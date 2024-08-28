@@ -642,7 +642,8 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   if (base::FeatureList::IsEnabled(
           brave_news::features::kBraveNewsFeedUpdate)) {
     registry.ForWebUI<BraveNewsInternalsUI>()
-        .Add<brave_news::mojom::BraveNewsController>();
+        .Add<brave_news::mojom::BraveNewsController>()
+        .Add<brave_news::mojom::BraveNewsInternals>();
   }
 #endif
 }
