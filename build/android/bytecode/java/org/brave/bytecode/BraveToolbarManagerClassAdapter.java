@@ -80,9 +80,6 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mTabCreatorManager");
         makeProtectedField(sToolbarManagerClassName, "mTabCreatorManager");
 
-        deleteField(sBraveToolbarManagerClassName, "mSnackbarManager");
-        makeProtectedField(sToolbarManagerClassName, "mSnackbarManager");
-
         deleteField(sBraveToolbarManagerClassName, "mModalDialogManagerSupplier");
         makeProtectedField(sToolbarManagerClassName, "mModalDialogManagerSupplier");
 

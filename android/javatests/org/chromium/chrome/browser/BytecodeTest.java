@@ -1114,7 +1114,6 @@ public class BytecodeTest {
                         DataSharingTabManager.class,
                         TabContentManager.class,
                         TabCreatorManager.class,
-                        SnackbarManager.class,
                         Supplier.class,
                         OmniboxActionDelegate.class,
                         Supplier.class,
@@ -1173,7 +1172,6 @@ public class BytecodeTest {
                         ViewGroup.class,
                         TabCreatorManager.class,
                         OneshotSupplier.class,
-                        SnackbarManager.class,
                         ModalDialogManager.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1864,9 +1862,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
                         "mTabCreatorManager"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/ToolbarManager", "mSnackbarManager"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
