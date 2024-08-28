@@ -17,6 +17,7 @@
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
+#include "content/public/browser/render_frame_host.h"
 
 namespace extensions::api {
 
@@ -25,6 +26,11 @@ BraveShieldsAddSiteCosmeticFilterFunction::Run() {
   std::optional<brave_shields::AddSiteCosmeticFilter::Params> params =
       brave_shields::AddSiteCosmeticFilter::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
+  if (params->host == "") {
+    if (const auto* rfh = render_frame_host()) {
+      params->host = rfh->GetLastCommittedURL().host();
+    }
+  }
 
   g_brave_browser_process->ad_block_service()
       ->custom_filters_provider()

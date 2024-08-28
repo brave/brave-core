@@ -13,8 +13,7 @@
     "256": "assets/img/icon-256.png"
   },
   "web_accessible_resources": [
-    "elementPicker.html",
-    "elementPicker.js"
+    "elementPicker.html"
   ],
   "background": {
     "scripts": [

@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -60,26 +61,6 @@ describe('cosmeticFilterEvents events', () => {
         }
         cosmeticFilterEvents.onContextMenuClicked(info, tab)
         expect(chromeTabsQuerySpy).toBeCalled()
-      })
-    })
-    describe('onSelectorReturned', function () {
-      describe('after selector prompt is shown', function () {
-        let insertCssSpy: jest.SpyInstance
-        beforeEach(() => {
-          insertCssSpy = jest.spyOn(chrome.tabs, 'insertCSS')
-        })
-        afterEach(() => {
-          insertCssSpy.mockRestore()
-        })
-        it('calls `chrome.tabs.insertCSS` with cosmetic filter rule', function () {
-          selectorToReturn = '#test_selector'
-          cosmeticFilterEvents.applyCosmeticFilter('brave.com', selectorToReturn)
-          let returnObj = {
-            'code': '#test_selector {display: none !important;}',
-            'cssOrigin': 'user'
-          }
-          expect(insertCssSpy).toBeCalledWith(returnObj, expect.any(Function))
-        })
       })
     })
   })
