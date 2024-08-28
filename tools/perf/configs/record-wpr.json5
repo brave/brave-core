@@ -1,0 +1,31 @@
+// A config to be used as a base to record wpr files.
+// * update the browser version to the recent ones before run;
+// * the config should have only one benchmark enabled.
+{
+  "configurations": [{
+    "browser-type": "brave",
+    "label": "brave",
+    "target": "v1.71.15",
+    "profile": "brave-typical-win",
+    "profile-rebase": "online",
+  },
+  {
+    "browser-type": "chromium",
+    "label": "chromium",
+    "target": "v1.71.15",
+    "profile": "chrome-typical-win",
+    "profile-rebase": "online",
+  },
+],
+  "benchmarks": [
+    {
+      "name": "desktop_system_health_story_set",
+      "stories": [
+        "load:site:",
+      ]
+    },
+    // {
+    //   "name": "jet_stream_21_story_set",
+    // }
+  ]
+}

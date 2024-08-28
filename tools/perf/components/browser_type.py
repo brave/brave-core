@@ -247,9 +247,8 @@ def _MakeTestingFieldTrials(
   revision_path = os.path.join(artifacts_dir, 'brave-variations-revision.txt')
 
   args = [
-      path_util.GetVpython3Path(),
-      'seed/fieldtrials_testing_config_generator.py', f'--output={target_path}',
-      f'--output-revision={revision_path}',
+      sys.executable, 'seed/fieldtrials_testing_config_generator.py',
+      f'--output={target_path}', f'--output-revision={revision_path}',
       f'--target-date={version.commit_date}',
       f'--target-version={combined_version}', '--target-channel=NIGHTLY'
   ]
