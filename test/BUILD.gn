@@ -148,12 +148,6 @@ test("brave_unit_tests") {
     "//components/sync_device_info/device_info_sync_bridge_unittest.cc",
   ]
 
-  if (enable_sparkle) {
-    sources += [
-      "//brave/browser/ui/webui/help/brave_version_updater_mac_unittest.mm",
-    ]
-  }
-
   deps = [
     ":crypto_unittests",
     ":test_support",
@@ -331,6 +325,10 @@ test("brave_unit_tests") {
 
   if (is_mac) {
     deps += [ "//brave/components/update_client" ]
+  }
+
+  if (enable_sparkle) {
+    deps += [ "//brave/browser/ui/webui:unit_tests" ]
   }
 
   if (enable_tor) {
