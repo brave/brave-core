@@ -36,7 +36,6 @@
 #include "brave/ios/browser/api/content_settings/default_host_content_settings_internal.h"
 #include "brave/ios/browser/api/de_amp/de_amp_prefs+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
-#include "brave/ios/browser/api/https_upgrade_exceptions/https_upgrade_exceptions_service+private.h"
 #include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
 #include "brave/ios/browser/api/ntp_background_images/ntp_background_images_service_ios+private.h"
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api+private.h"
@@ -134,8 +133,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) BraveP3AUtils* p3aUtils;
 @property(nonatomic) DeAmpPrefs* deAmpPrefs;
 @property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
-@property(nonatomic)
-    HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
 @property(nonatomic) DefaultHostContentSettings* defaultHostContentSettings;
 @end
 
@@ -477,14 +474,6 @@ static bool CustomLogHandler(int severity,
         [[BraveWalletAPI alloc] initWithBrowserState:_mainBrowserState];
   }
   return _braveWalletAPI;
-}
-
-- (HTTPSUpgradeExceptionsService*)httpsUpgradeExceptionsService {
-  if (!_httpsUpgradeExceptionsService) {
-    _httpsUpgradeExceptionsService =
-        [[HTTPSUpgradeExceptionsService alloc] init];
-  }
-  return _httpsUpgradeExceptionsService;
 }
 
 - (BraveStats*)braveStats {
