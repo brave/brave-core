@@ -9,6 +9,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
+import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
@@ -33,6 +34,7 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
             WindowAndroid windowAndroid,
             PropertyModel model,
             BottomControlsStacker controlsStacker,
+            BrowserStateBrowserControlsVisibilityDelegate browserControlsVisibilityDelegate,
             FullscreenManager fullscreenManager,
             TabObscuringHandler tabObscuringHandler,
             int bottomControlsHeight,
@@ -43,6 +45,7 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
                 windowAndroid,
                 model,
                 controlsStacker,
+                browserControlsVisibilityDelegate,
                 fullscreenManager,
                 tabObscuringHandler,
                 bottomControlsHeight,
