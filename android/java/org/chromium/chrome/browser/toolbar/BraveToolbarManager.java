@@ -30,6 +30,7 @@ import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_leo.BraveLeoActivity;
 import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
+import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.bottombar.ephemeraltab.EphemeralTabCoordinator;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
@@ -294,6 +295,10 @@ public class BraveToolbarManager extends ToolbarManager {
 
             mContentDelegateSupplier.set(mTabGroupUi);
 
+            BrowserStateBrowserControlsVisibilityDelegate controlsVisibilityDelegate =
+                    mBrowserControlsVisibilityManager.getBrowserVisibilityDelegate();
+            assert controlsVisibilityDelegate != null;
+
             mBottomControlsCoordinatorSupplier.set(
                     new BraveBottomControlsCoordinator(
                             mLayoutStateProviderSupplier,
@@ -317,6 +322,7 @@ public class BraveToolbarManager extends ToolbarManager {
                             mLayoutManager,
                             mCompositorViewHolder.getResourceManager(),
                             mBottomControlsStacker,
+                            controlsVisibilityDelegate,
                             mFullscreenManager,
                             mEdgeToEdgeControllerSupplier,
                             mBottomControls,
