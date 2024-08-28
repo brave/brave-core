@@ -266,10 +266,10 @@ TEST(TimeLimitedWordsTest, GetWordsCount) {
   EXPECT_EQ(TimeLimitedWords::GetWordsCount(kValidSyncCode), 24);
   // Empty case
   EXPECT_EQ(TimeLimitedWords::GetWordsCount(""), 0);
-  EXPECT_EQ(TimeLimitedWords::GetWordsCount("   "), 0);
+  EXPECT_EQ(TimeLimitedWords::GetWordsCount(" \n\t"), 0);
   // STR from desktop issue
   EXPECT_EQ(TimeLimitedWords::GetWordsCount("d  d"), 2);
-  // Previousely failed case
+  // Previously failed case
   EXPECT_EQ(TimeLimitedWords::GetWordsCount("a\nb\tc"), 3);
   // Additional leading and trailing whitespaces
   EXPECT_EQ(TimeLimitedWords::GetWordsCount(" \n \t A   B \t"), 2);
