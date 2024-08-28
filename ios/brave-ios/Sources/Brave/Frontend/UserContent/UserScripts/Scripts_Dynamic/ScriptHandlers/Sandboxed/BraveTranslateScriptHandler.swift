@@ -213,17 +213,17 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
 
   @MainActor
   func guessLanguage() async -> Locale.Language? {
-    await executeChromiumFunction("languageDetection.detectLanguage")
-
-    // Language was identified by the Translate Script
-    if let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier,
-      let pageLanguage = currentLanguageInfo.pageLanguage?.languageCode?.identifier
-    {
-      if currentLanguage == pageLanguage {
-        currentLanguageInfo.pageLanguage = nil
-      }
-      return currentLanguageInfo.pageLanguage
-    }
+    //    await executeChromiumFunction("languageDetection.detectLanguage")
+    //
+    //    // Language was identified by the Translate Script
+    //    if let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier,
+    //      let pageLanguage = currentLanguageInfo.pageLanguage?.languageCode?.identifier
+    //    {
+    //      if currentLanguage == pageLanguage {
+    //        currentLanguageInfo.pageLanguage = nil
+    //      }
+    //      return currentLanguageInfo.pageLanguage
+    //    }
 
     // Language identified via our own Javascript
     if let languageCode = await executePageFunction(name: "getPageLanguage") {
