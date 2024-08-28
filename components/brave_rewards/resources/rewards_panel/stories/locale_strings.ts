@@ -17,7 +17,7 @@ export const localeStrings = {
   learnMore: 'Learn more',
   publisherCountText: 'This month, you\'ve visited $1 creators supported by Brave Rewards',
   headerTitle: 'Brave Rewards',
-  headerText: 'You are helping support content creators',
+  headerText: 'You are helping support Brave and the BAT Community',
   rewardsSettings: 'Rewards settings',
   learnMoreAboutBAT: 'Learn more about earning BAT',
   summary: 'Summary',
