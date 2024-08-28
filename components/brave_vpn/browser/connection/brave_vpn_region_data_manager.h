@@ -48,6 +48,7 @@ class BraveVPNRegionDataManager {
   }
   void SetSelectedRegion(const std::string& name);
   std::string GetDeviceRegion() const;
+  std::string GetRegionPrecisionForName(const std::string& name) const;
 
  private:
   friend class BraveVPNServiceTest;

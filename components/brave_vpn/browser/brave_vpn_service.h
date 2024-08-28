@@ -101,6 +101,7 @@ class BraveVpnService :
   void Disconnect() override;
   void GetSelectedRegion(GetSelectedRegionCallback callback) override;
   void SetSelectedRegion(mojom::RegionPtr region) override;
+  void ClearSelectedRegion() override;
   void GetProductUrls(GetProductUrlsCallback callback) override;
   void CreateSupportTicket(const std::string& email,
                            const std::string& subject,
@@ -131,8 +132,6 @@ class BraveVpnService :
                      GetAllRegionsCallback callback) override;
 
   void GetTimezonesForRegions(ResponseCallback callback);
-  void GetHostnamesForRegion(ResponseCallback callback,
-                             const std::string& region);
   void GetHostnamesForRegion(ResponseCallback callback,
                              const std::string& region,
                              const std::string& region_precision);
@@ -199,6 +198,8 @@ class BraveVpnService :
   void OnPreferenceChanged(const std::string& pref_name);
 
   void UpdatePurchasedStateForSessionExpired(const std::string& env);
+  bool IsCurrentRegionSelectedAutomatically(
+      const brave_vpn::mojom::RegionPtr& region);
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   // KeyedService overrides:

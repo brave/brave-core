@@ -6,7 +6,13 @@
 import styled, { css } from 'styled-components'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css/variables'
+import {
+  color,
+  effect,
+  font,
+  radius,
+  spacing
+} from '@brave/leo/tokens/css/variables'
 
 export const Box = styled.div`
   width: 100%;
@@ -68,8 +74,10 @@ export const RegionList = styled.div`
   }
 `
 
-export const RegionContainer =
-    styled.div.attrs({ tabIndex: 0 }) <{ selected: boolean }>`
+export const RegionContainer = styled.div.attrs({ tabIndex: 0 })<{
+  selected: boolean
+  fillBackground: boolean
+}>`
   width: 296px;
   display: flex;
   flex-direction: column;
@@ -80,37 +88,29 @@ export const RegionContainer =
   background: ${color.container.background};
 
   ${(p) =>
-    p.selected
+    p.fillBackground &&
+    (p.selected
       ? css`
           border: 1px solid ${color.divider.interactive};
           background: ${color.container.interactive};
           box-shadow: ${effect.elevation['01']};
-
-          leo-button {
-            display: none;
-          }
         `
       : css`
           &:hover {
             background: ${color.container.highlight};
             box-shadow: ${effect.elevation['01']};
-
-            leo-button {
-              opacity: 1;
-              transition: opacity 0.3s;
-            }
           }
+        `)}
 
-          &:has(:focus) leo-button, &:focus-visible leo-button {
-            opacity: 1;
-          }
-        `}
+  & > :last-child {
+    border-bottom: none;
+  }
 `
 
-export const RegionConnect = styled(Button)`
+export const RegionConnect = styled(Button)<{ right: string }>`
   opacity: 0;
   position: absolute;
-  right: ${spacing.xl};
+  right: ${(p) => p.right};
 `
 
 export const RegionCountry = styled.div`
@@ -120,19 +120,85 @@ export const RegionCountry = styled.div`
   align-items: center;
   gap: ${spacing.m};
   align-self: stretch;
+
+  &:hover {
+    leo-button {
+      opacity: 1;
+      transition: opacity 0.3s;
+    }
+  }
+`
+
+export const RegionCountryLabel = styled.span<{ selected: boolean }>`
+  color: ${(p) => (p.selected ? color.text.interactive : color.text.primary)};
+  font: ${font.default.semibold};
+  text-align: start;
+  flex-grow: 1;
+`
+
+export const CountryInfo = styled.div`
+  display: flex;
+  padding-left: ${spacing.m};
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  flex: 1 0 0;
+`
+
+export const CountryServerInfo = styled.div<{ selected: boolean }>`
+  color: ${(p) => (p.selected ? color.text.interactive : color.text.secondary)};
+  font: ${font.small.regular};
+`
+
+export const RegionCity = styled.div<{ selected: boolean }>`
+  position: relative;
+  display: flex;
+  padding: ${spacing.l} ${spacing.xl};
+  justify-content: flex-start;
+  align-items: center;
+  align-self: stretch;
+  border-bottom: 1px solid ${color.divider.subtle};
+
+  ${(p) =>
+    p.selected
+      ? css`
+          background: ${color.container.interactive};
+        `
+      : css`
+          &:hover {
+            background: ${color.container.highlight};
+          }
+        `}
+
+  &:hover {
+    leo-button {
+      opacity: 1;
+      transition: opacity 0.3s;
+    }
+  }
+`
+
+export const RegionCityInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  flex: 1 0 0;
+`
+
+export const RegionCityLabel = styled.div<{ selected: boolean }>`
+  color: ${(p) => (p.selected ? color.text.interactive : color.text.primary)};
+  font: ${font.default.regular};
+`
+
+export const CityServerInfo = styled.div<{ selected: boolean }>`
+  color: ${(p) => (p.selected ? color.text.interactive : color.text.secondary)};
+  font: ${font.small.regular};
 `
 
 export const HeaderLabel = styled.span`
   color: ${color.text.primary};
   font: ${font.heading.h4};
-`
-
-export const RegionCountryLabel = styled.span`
-  color: ${color.text.primary};
-  font: ${font.default.semibold};
-  padding-left: ${spacing.m};
-  text-align: start;
-  flex-grow: 1;
 `
 
 export const StyledIcon = styled(Icon)`
@@ -141,7 +207,7 @@ export const StyledIcon = styled(Icon)`
 `
 
 export const StyledCheckBox = styled(Icon)`
-  --leo-icon-size: 16px;
+  --leo-icon-size: 20px;
   --leo-icon-color: ${color.text.interactive};
 `
 

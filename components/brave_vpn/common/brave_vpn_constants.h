@@ -39,13 +39,10 @@ inline constexpr char kSupportTicketPartnerClientIdKey[] = "partner-client-id";
 inline constexpr char kSupportTicketTimezoneKey[] = "timezone";
 
 inline constexpr char kVpnHost[] = "connect-api.guardianapp.com";
-inline constexpr char kAllServerRegions[] = "api/v1/servers/all-server-regions";
 inline constexpr char kServerRegionsWithCities[] =
     "api/v1.3/servers/all-server-regions/";
 inline constexpr char kTimezonesForRegions[] =
     "api/v1.1/servers/timezones-for-regions";
-inline constexpr char kHostnameForRegion[] =
-    "api/v1.2/servers/hostnames-for-region";
 inline constexpr char kHostnameForRegionNew[] =
     "api/v1.3/servers/hostnames-for-region";
 inline constexpr char kProfileCredential[] = "api/v1.1/register-and-create";

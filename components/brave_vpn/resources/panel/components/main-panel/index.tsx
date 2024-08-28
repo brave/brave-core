@@ -17,7 +17,8 @@ import ContactSupport from '../contact-support'
 import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
 import getPanelBrowserAPI, {
-  ConnectionState
+  ConnectionState,
+  REGION_PRECISION_COUNTRY
 } from '../../api/panel_browser_api'
 import Flag from '../flag'
 
@@ -85,6 +86,7 @@ function MainPanel() {
   const isSelectingRegion = useSelector((state) => state.isSelectingRegion)
   const connectionStatus = useSelector((state) => state.connectionStatus)
   const expired = useSelector((state) => state.expired)
+  const regions = useSelector((state) => state.regions)
 
   const onSelectRegionButtonClick = () => {
     dispatch(Actions.toggleRegionSelector(true))
@@ -95,6 +97,20 @@ function MainPanel() {
 
   const showContactSupport = () => setContactSupportVisible(true)
   const closeContactSupport = () => setContactSupportVisible(false)
+
+  const getCountryNameForCurrentRegion = () => {
+    if (currentRegion.regionPrecision === REGION_PRECISION_COUNTRY) {
+      return currentRegion.namePretty
+    }
+
+    for (let i = 0; i < regions.length; ++i) {
+      if (regions[i].cities.find((city) => city.name === currentRegion.name)) {
+        return regions[i].namePretty
+      }
+    }
+
+    return currentRegion.namePretty
+  }
 
   if (isContactSupportVisible) {
     return <ContactSupport onCloseContactSupport={closeContactSupport} />
@@ -117,6 +133,10 @@ function MainPanel() {
     return <ErrorPanel showContactSupport={showContactSupport} />
   }
 
+  const regionServerLabel =
+    currentRegion.regionPrecision === REGION_PRECISION_COUNTRY
+      ? getLocale('braveVpnServerSelectionOptimalLabel')
+      : currentRegion.namePretty
   return (
     <PanelBox>
       <S.PanelContent>
@@ -149,7 +169,10 @@ function MainPanel() {
           onClick={onSelectRegionButtonClick}
         >
           <Flag countryCode={currentRegion.countryIsoCode} />
-          <S.RegionLabel>{currentRegion?.namePretty}</S.RegionLabel>
+          <S.RegionInfo>
+            <S.RegionLabel>{getCountryNameForCurrentRegion()}</S.RegionLabel>
+            <S.RegionServerLabel>{regionServerLabel}</S.RegionServerLabel>
+          </S.RegionInfo>
           <S.StyledIcon name='carat-right' />
         </S.RegionSelectorButton>
       </S.PanelContent>

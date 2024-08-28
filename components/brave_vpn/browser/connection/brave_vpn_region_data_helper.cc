@@ -27,11 +27,21 @@ namespace brave_vpn {
 mojom::RegionPtr GetRegionPtrWithNameFromRegionList(
     const std::string& name,
     const std::vector<mojom::RegionPtr>& region_list) {
-  auto it = base::ranges::find(region_list, name, &mojom::Region::name);
-  if (it != region_list.end()) {
-    return it->Clone();
+  for (const auto& region : region_list) {
+    // Return if it's country precision.
+    if (region->name == name) {
+      return region.Clone();
+    } else {
+      for (const auto& city : region->cities) {
+        // Try to find from cities if |name| is country precision in |region|.
+        if (city->name == name) {
+          return city.Clone();
+        }
+      }
+    }
   }
-  return mojom::RegionPtr();
+
+  return nullptr;
 }
 
 base::Value::Dict GetValueFromRegionWithoutCity(
@@ -104,6 +114,9 @@ mojom::RegionPtr GetRegionFromValueWithoutCity(const base::Value::Dict& value) {
   if (auto server_count = value.FindInt(brave_vpn::kRegionServerCountKey)) {
     region->server_count = *server_count;
   }
+
+  // |is_automatic| is calculated in runtime.
+  region->is_automatic = false;
 
   return region;
 }
