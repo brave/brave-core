@@ -81,7 +81,19 @@ export function LimitedView () {
         <style.title>
           {getString('headerTitle')}
           <style.headerText>
-            {getString('headerText')}
+            {
+              formatMessage(getString('headerText'), {
+                tags: {
+                  $1: (content) =>
+                    <NewTabLink
+                      key='link'
+                      href='https://basicattentiontoken.org/DAO'
+                    >
+                      {content}
+                    </NewTabLink>
+                }
+              })
+            }
           </style.headerText>
         </style.title>
       </style.header>
