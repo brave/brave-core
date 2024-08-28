@@ -211,6 +211,8 @@ void SparkleVersionUpdater::UpdateShowPromoteButton() {
 #undef WrapUnique
 
 bool SparkleVersionUpdater::IsSparkle(VersionUpdater* updater) {
+  // It would be easier to use dynamic_cast here. But we cannot use it because
+  // there is no RTTI. So we use static_cast in combination with type_marker_.
   const SparkleVersionUpdater* sparkle_updater =
       static_cast<const SparkleVersionUpdater*>(updater);
   return sparkle_updater &&
