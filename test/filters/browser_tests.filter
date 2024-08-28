@@ -27,7 +27,7 @@
 -ZeroSuggestPrefetchTabHelperBrowserTestOnSRP.StartPrefetch
 -ZeroSuggestPrefetchTabHelperBrowserTestOnWeb.StartPrefetch
 
-# This test fails because the default search engine is Brave instead of Google.
+# These tests fail because the default search engine is Brave instead of Google.
 -DevToolsTest.TestOpenSearchResultsInNewTab
 -LensOverlayControllerBrowserTest.EnterprisePolicy
 
@@ -41,6 +41,12 @@
 
 # Optimization Guide is disabled
 -ChromeRenderFrameObserverTest.OptGuideGetsText
+-DependencyParserModelLoaderBrowserTest.*
+-OptimizationGuideInternalsPageBrowserTest.*
+-OptimizationGuideKeyedServiceBrowserTest.*
+-OptimizationGuideKeyedServiceEnterpriseBrowserTest.*
+-UserAnnotationsServiceBrowserTest.*
+-UserAnnotationsServiceExplicitAllowlistBrowserTest.*
 -VisualQueryClassifierAgentTest.StartClassification_InvalidModel
 -VisualQueryClassifierAgentTest.StartClassification_NoImages
 -VisualQueryClassifierAgentTest.StartClassification_SingleImageNonShoppy
@@ -135,15 +141,12 @@
 -All/FileSystemAccessPickerRequiresUserGestureTest.*
 -All/HostedAppJitTestBaseDefaultDisabled.JITDisabledTest
 -All/HostedAppJitTestBaseDefaultEnabled.JITDisabledTest
--All/ParameterizedWebAccessibleResourcesBrowserTest.DeclarativeNetRequest/*
 -DeveloperPrivateApiTest.InspectOffscreenDocument
 -DynamicOriginBrowserTest.DynamicUrl
 -DynamicOriginBrowserTest.InvalidDynamicResourceFailsToLoad
 -ExtensionWebRequestApiTestWithContextType.WebRequestRedirects/0 # Request id not the same
 -ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWithExtraHeaders/0 # request id not the same
 -ExtensionWebRequestApiWebTransportTest.Main
--FileSystemAccessBrowserSlowLoadTest.WaitUntilLoaded
--FileSystemAccessBrowserTestForWebUI.*
 -MojoFileSystemAccessBrowserTest.*
 -MojoWebUIControllerBrowserTest.*
 -OpenChannelToExtensionExploitTest.*
@@ -157,6 +160,7 @@
 -PersistentBackground/ContentScriptApiTestWithContextType.Messaging/0
 -PersistentBackground/DeclarativeContentApiTestWithContextType.RulesPersistence/0
 -PersistentBackground/ExtensionApiTabTestWithContextType.OnUpdated/0
+-PersistentBackground/ExtensionApiTabTestWithContextType.OnUpdatedDiscardedState/0
 -PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestBlocking/0
 -PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestRedirects
 -PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestRedirects/0 # Request id not the same
@@ -173,7 +177,7 @@
 -ServiceWorker/DeclarativeContentApiTestWithContextType.RulesPersistence/0
 -ServiceWorker/DeclarativeContentApiTestWithContextType.RulesPersistence/0
 -ServiceWorker/ExtensionApiTabTestWithContextType.OnUpdated/0
--ServiceWorker/ExtensionApiTabTestWithContextType.OnUpdated/0
+-ServiceWorker/ExtensionApiTabTestWithContextType.OnUpdatedDiscardedState/0
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirects/0
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirects/BackgroundResourceFetchDisabled
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirects/BackgroundResourceFetchEnabled
@@ -184,6 +188,8 @@
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/BackgroundResourceFetchEnabled
 -ServiceWorkerOnBeforeRequest/RedirectInfoWebRequestApiTest.VerifyInvalidUrlRedirection/0
 -ServiceWorkerOnHeadersReceived/RedirectInfoWebRequestApiTest.VerifyInvalidUrlRedirection/0
+-WebAccessibleResourcesBrowserRedirectTest.MV2
+-WebAccessibleResourcesBrowserRedirectTest.MV3
 -WebAccessibleResourcesBrowserTest.UseDynamicUrlInIframe
 
 # These tests fail because they expect the infobar count to be 1, but we
@@ -329,7 +335,7 @@
 -All/SafeBrowsingThreatDetailsPrerenderBrowserTest.*
 -All/SearchEngineTabHelperPrerenderingBrowserTest.*
 -All/TranslateManagerPrerenderBrowserTest.*
--All/WebUIContentsPreloadManagerBrowserTest.TriggerPreloadedUI/*
+-All/WebUIContentsPreloadManagerBrowserSmokeTest.TriggerPreloadedUIs/*
 -AppBannerManagerPrerenderBrowserTest.*
 -AutofillTestPrerendering.DeferWhilePrerendering
 -BookmarkBarPageLoadMetricsBrowserTest.NonBookmarkPrerenderTriggeredByEmbedderAndActivate
@@ -397,8 +403,7 @@
 -PrefetchProxyPrerenderBrowserTest.*
 -PrerenderAutofillTest.*
 -PrerenderBookmarkBarNavigationTest.PrerenderActivation
--PrerenderBookmarkBarOnHoverNavigationTest.PrerenderActivation
--PrerenderBookmarkBarOnHoverNavigationTest.PrerenderMouseExitedCancellationAndPrerenderActivation
+-PrerenderBookmarkBarOnHoverNavigationTest.Prerender*
 -PrerenderBookmarkBarOnPressedNavigationTest.PrerenderActivation
 -PrerenderBookmarkBarOnPressedNavigationTest.PrerenderNonHttps
 -PrerenderBookmarkBarOnPressedNavigationTestNoTestingConfig.PrerenderActivation
@@ -480,6 +485,7 @@
 
 # These tests fail because we disable privacy_sandbox::kTrackingProtectionContentSettingUbControl
 -All/PageInfoBubbleViewBrowserTestCookiesSubpage.ToggleForBlockingThirdPartyCookiesUpdatesTrackingProtectionException/*
+-All/PageInfoBubbleViewBrowserTestTrackingProtectionSubpage.ToggleForBlockingThirdPartyCookiesUpdatesTrackingProtectionException/*
 
 # These tests fail because we override privacy sandbox settings config
 -PrivacySandboxConsentConfirmationTest.*/*
@@ -514,6 +520,8 @@
 -All/SupervisedUserURLFilterTest.*
 -AuthenticatorDialogTest.InvokeUi*
 -AvatarToolbarButtonWithExplicitBrowserSigninBrowserTest.AccessibilityLabels
+-AvatarToolbarButtonWithImprovedSigninUIBrowserTest.PassphraseErrorSignedIn
+-AvatarToolbarButtonWithImprovedSigninUIBrowserTest.PassphraseErrorSyncing
 -ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsDisabledForUrlsBlockedByAsyncCheckerForChild
 -ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsDisabledForUrlsNotAccessibleForChild
 -ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsEnabledForUrlsAllowedByAsyncCheckerForChild
@@ -557,7 +565,7 @@
 -SupervisedUserBlockModeTest.Unblock
 -SupervisedUserIncognitoBrowserTest.SupervisedSignInClosesIncognito
 -SupervisedUserNavigationThrottleFencedFramesTest.*
--SupervisedUserNavigationThrottleOnlyEnabledForSupervisedUsers.*
+-SupervisedUserNavigationThrottleOnlyEnabledForSupervisedUsers.*/*
 -SupervisedUserNavigationThrottleTest.AllowFamiliesDotGoogleDotComAccess
 -SupervisedUserNavigationThrottleTest.BlockMainFrameWithInterstitial
 -SupervisedUserNavigationThrottleTest.DisallowPrerendering
@@ -621,6 +629,7 @@
 -All/UpdaterServiceCookiePrefsBrowserTest.NoSpecificBlockedCookieSpecs_AltRegularProfile/*
 -All/UpdaterServiceCookiePrefsBrowserTest.NoSpecificBlockedCookieSpecs_GuestProfile/*
 -All/UpdaterServiceCookiePrefsBrowserTest.NoSpecificBlockedCookieSpecs_IncognitoProfile/*
+-FirstPartySetsBrowserTestWithSiteLeavingSet.CookieDeleted
 -RequestStorageAccessForOriginBrowserTest.*
 -RequestStorageAccessForOriginEnabledBrowserTest.*
 -RequestStorageAccessForOriginWithCHIPSBrowserTest.*
@@ -781,6 +790,7 @@
 -All/DeclarativeNetRequestSubresourceWebBundlesBrowserTest.RequestRedirected/*
 -All/DeclarativeNetRequestSubresourceWebBundlesBrowserTest.WebBundleRequestCanceled/*
 -All/DeclarativeNetRequestSubresourceWebBundlesBrowserTest.WebBundleRequestRedirected/*
+-All/ParameterizedWebAccessibleResourcesBrowserTest.DeclarativeNetRequest/*
 -IsolatedWebAppBrowserCookieTest.*
 -IsolatedWebAppBrowserServiceWorkerTest.
 -IsolatedWebAppBrowserTest.*
@@ -845,6 +855,7 @@
 -ContextMenuFencedFrameTest.MenuContentsVerification_Fencedframe
 -ContextMenuFencedFrameTest.Save*
 -ContextMenuFencedFrameTestNoTestingConfig.AutomaticBeaconSentAfterContextMenuNavigation
+-ContextMenuLinkPreviewFencedFrameTest.LinkPreviewEntryIsDisabled*
 -DeclarativeNetRequestApiFencedFrameTest/DeclarativeNetRequestApiFencedFrameTest.*
 -ExtensionWebRequestApiFencedFrameTest.DeclarativeSendMessage
 -ExtensionWebRequestApiFencedFrameTest/ExtensionWebRequestApiFencedFrameTest.*
@@ -955,6 +966,7 @@
 -ForceSigninProfilePickerCreationFlowBrowserTest.ForceSigninSuccessful
 -GaiaRemoteConsentFlowParamBrowserTest.*
 -GraduatedComposeEnablingBrowserTest.GraduatedCompose
+-MoveBookmarksToAccountDialogTest.Show
 -PasswordRevampedManagementBubbleBrowserTest.InvokeUi_ManagePasswordBubbleWithRevampedDesign/*
 -PlusAddressServiceBrowserTest.VerifyShouldShowManualFallback
 -PlusAddressServiceBrowserTest.VerifySupportsPlusAddresses
@@ -985,6 +997,7 @@
 -IpProtectionConfigProviderBrowserTest.NetworkServiceCanRequestTokens
 -IpProtectionConfigProviderIdentityBrowserTest.BackoffTimeResetAfterProfileAvailabilityChange
 -IpProtectionConfigProviderUserSettingBrowserTest.OnIpProtectionEnabledChanged
+-IpProtectionCoreHostIdentityBrowserTest.BackoffTimeResetAfterProfileAvailabilityChange
 -KAnonymityServiceClientBrowserTest.TestJoin
 -KAnonymityServiceClientBrowserTest.TestQuery
 -ModelExecutionComposeLoggingDisabledTest.LoggingForFeatureNotEnabled
@@ -1023,7 +1036,7 @@
 -DisallowManagedProfileSignoutFeature/UserPolicySigninServiceTest.*
 
 # These tests fail because we disable DIPS via features::kDIPS
--All/DIPSBounceDetectorBFCacheTest.*
+-All/DIPSBounceDetectorBFCacheTest.*/*
 -All/DIPSDataDeletionBrowserTest.*
 -All/DIPSPrivacySandboxDataPreservationTest.*
 -All/DIPSPrivacySandboxDataTest.DontClearAttributionReportingApiData/*
@@ -1111,7 +1124,7 @@
 -ModelExecutionEnterprisePolicyBrowserTest.EnableWithoutLogging
 -ModelExecutionInternalsPageBrowserTest.LoggedInInternalsPage
 -NewTabPageUtilBrowserTest.EnableDriveByToT
--NewTabPageUtilEnableFlagBrowserTest.EnableDriveByFlag
+-NewTabPageUtilEnableFlagBrowserTest.*
 -NewTabPageUtilDisableFlagBrowserTest.*
 -PageContentAnnotationsServiceBrowserTest.*
 -PageContentAnnotationsServiceNoHistoryTest.*
@@ -1164,12 +1177,7 @@
 -HttpsUpgradesBrowserTest.NetErrorOnUpgrade_SecurityLevelWarning/HttpsFirstBalancedMode
 -HttpsUpgradesBrowserTest.NetErrorOnUpgrade_SecurityLevelWarning/HttpsFirstModeIncognito
 -HttpsUpgradesBrowserTest.NetErrorOnUpgrade_ShouldInterstitial/*
--HttpsUpgradesBrowserTest.NonDefaultPorts_NoWarnInBalancedMode/AllAutoHFM
--HttpsUpgradesBrowserTest.NonDefaultPorts_NoWarnInBalancedMode/HttpsFirstBalancedMode
--HttpsUpgradesBrowserTest.NonDefaultPorts_NoWarnInBalancedMode/HttpsFirstModeForTypicallySecureUsers
--HttpsUpgradesBrowserTest.NonDefaultPorts_NoWarnInBalancedMode/HttpsFirstModeIncognito
--HttpsUpgradesBrowserTest.NonDefaultPorts_NoWarnInBalancedMode/HttpsFirstModeWithSiteEngagement
--HttpsUpgradesBrowserTest.NonDefaultPorts_NoWarnInBalancedMode/None
+-HttpsUpgradesBrowserTest.NonDefaultPorts_NoWarnInBalancedMode/*
 -HttpsUpgradesBrowserTest.NonUniqueHost_RecordsMetrics/HttpsFirstModeIncognito
 -HttpsUpgradesBrowserTest.PreferHstsOverHttpsFirstMode/HttpsFirstModeIncognito
 -HttpsUpgradesBrowserTest.RedirectLoop_ShouldInterstitial/*
@@ -1177,12 +1185,7 @@
 -HttpsUpgradesBrowserTest.SlowHttps_ShouldInterstitial/*
 -HttpsUpgradesBrowserTest.TogglingSettingClearsAllowlist/AllFeatures
 -HttpsUpgradesBrowserTest.TogglingSettingClearsAllowlist/HttpsFirstBalancedMode
--HttpsUpgradesBrowserTest.UniqueSingleLabel_NoWarnInBalancedMode/AllAutoHFM
--HttpsUpgradesBrowserTest.UniqueSingleLabel_NoWarnInBalancedMode/HttpsFirstBalancedMode
--HttpsUpgradesBrowserTest.UniqueSingleLabel_NoWarnInBalancedMode/HttpsFirstModeForTypicallySecureUsers
--HttpsUpgradesBrowserTest.UniqueSingleLabel_NoWarnInBalancedMode/HttpsFirstModeIncognito
--HttpsUpgradesBrowserTest.UniqueSingleLabel_NoWarnInBalancedMode/HttpsFirstModeWithSiteEngagement
--HttpsUpgradesBrowserTest.UniqueSingleLabel_NoWarnInBalancedMode/None
+-HttpsUpgradesBrowserTest.UniqueSingleLabel_NoWarnInBalancedMode/*
 -HttpsUpgradesBrowserTest.URLsAutocompletedWithHttpSchemeAreUpgraded/*
 -HttpsUpgradesBrowserTest.URLsTypedWithHttpSchemeNoUpgrades/*
 -HttpsUpgradesBrowserTest.URLsTypedWithHttpSchemeNoUpgradesAllowlist/*
@@ -1317,6 +1320,9 @@
 # These tests fail because we disable kNtpChromeCartModule
 -CommerceHintFeatureDefaultWithGeoTest.EnableWithGeo
 -NewTabPageUtilBrowserTest.EnableCartByToT
+-NewTabPageUtilBrowserTest.EnableDriveByToT
+-NewTabPageUtilDisableFlagBrowserTest.DisableDriveByFlag
+-NewTabPageUtilEnableFlagBrowserTest.EnableDriveByFlag
 
 # These tests fail because we don't support the search companion.
 -CompanionPage*
@@ -1370,6 +1376,7 @@
 -AntiPhishingTelemetryBrowserTestWithThreatTypeAndIsolationSetting/AntiPhishingTelemetryBrowserTest.CheckReportCloseTabOnInterstitial/*
 -AntiPhishingTelemetryBrowserTestWithThreatTypeAndIsolationSetting/AntiPhishingTelemetryBrowserTest.CheckReportListsInteractions/*
 -AntiPhishingTelemetryBrowserTestWithThreatTypeAndIsolationSetting/AntiPhishingTelemetryBrowserTest.CheckReportListsInteractionsNoExplicitInterstitialDecision/*
+-SBNavigationObserverBrowserTest.VerifyNumberOfRecentNavigationsToCollect
 -WarningShownTimestampCSBRRDisabledBrowserTestWithThreatTypeAndIsolationSetting/WarningShownTimestampCSBRRDisabledBrowserTest.TimestampNotInCSBRRClickedThroughBlockingPage/*
 -WarningShownTimestampCSBRRDisabledBrowserTestWithThreatTypeAndIsolationSetting/WarningShownTimestampCSBRRDisabledBrowserTest.TimestampNotInFallbackCSBRRSent/*
 
@@ -1535,14 +1542,15 @@
 -ControlledFrameApiTest.*
 -ControlledFrameAvailabilityTest.Verify/*
 -ControlledFrameAvailableChannels/*
--ControlledFrameDialogBrowserTest.*
+-ControlledFrameDialogBrowserTest.*/*
+-ControlledFrameDisabledPermissionUsbTest.WebUSB/*
 -ControlledFrameNewWindowBrowserTest.*
--ControlledFrameWptBrowserTest.*
 -ControlledFramePermissionsPolicyTest.*
 -ControlledFramePermissionRequestTest.*
 -ControlledFramePermissionRequestWebHidTest.*
 -ControlledFrameWebSocketApiTest.*
 -ControlledFrameWebTransportApiTest.*
+-ControlledFrameWptBrowserTest.*
 -PromiseAPIs/ControlledFramePromiseApiTest.*
 
 # These tests fail because we disable Isolated Web Apps
@@ -1551,9 +1559,9 @@
 -BrowserNavigatorIwaNewTabTest.*
 -BrowserNavigatorIwaTest.*
 -BrowsingDataModelBrowserTest.IsolatedWebAppUsageInDefaultStoragePartitionModel
--ChromeDirectSocketsApiAvailabilityIsolatedWebAppsTest.WithFeatureState/*
+-ChromeDirectSocketsApiAvailabilityIsolatedWebAppsTest.*/*
 -ChromeDirectSocketsTcpIsolatedWebAppTest.TcpReadWrite
--ChromeDirectSocketsTcpServerIsolatedWebAppTest.TcpServerExchangePacketWithTcpSocket
+-ChromeDirectSocketsTcpServerIsolatedWebAppTest.*
 -ChromeDirectSocketsUdpIsolatedWebAppTest.UdpReadWrite
 -ChromeDirectSocketsUdpIsolatedWebAppTest.UdpServerReadWrite
 -ControlledFrameDisabledTest.*
@@ -1574,6 +1582,7 @@
 -IsolatedWebAppCspBrowserTest.*
 -IsolatedWebAppDevToolsTest.ErrorPage
 -IsolatedWebAppDevToolsTest.IwaIdentifiedAsApp
+-IsolatedWebAppDevToolsTest.IwaWithCorrectTitle
 -IsolatedWebAppErrorPageTest.SetsCorrectMessageForErrorCode
 -IsolatedWebAppErrorPageTest.UsesWebAppErrorPage
 -IsolatedWebAppExtensionBrowserTest.*
@@ -1589,8 +1598,9 @@
 -PopupAutomaticFullscreenTest.PopupFullscreenWithoutTransientActivation/*
 -SubAppsPermissionsPolicyBrowserTest.*
 -SubAppsServiceImplBrowserTest.*
--TabDesktopMediaListIwaTest.IwaNotVisibleInTabMediaList
--TabDesktopMediaListWithIwaIncludedTest.IwaVisibleInTabMediaListWhenFeatureIsDisabled
+-TabDesktopMediaListIwaTest.*
+-TabDesktopMediaListWithIwaIncludedTest.*
+-WebAppInternalsIwaInstallationBrowserTest.FetchUpdateManifestAndInstallIwa
 -WebAppTagIsolatedWebAppTest.IsolatedWebAppTaskCreated
 -WebAppTagIsolatedWebAppTest.IsolatedWebAppTaskTitleFallbackToAppName
 
@@ -1604,6 +1614,8 @@
 -StorageAccessHeadersWithFedCMBrowserTest.RetryHeader
 
 # This test fails because we disable FileSystemAccessAPI
+-FileSystemAccessBrowserSlowLoadTest.WaitUntilLoaded
+-FileSystemAccessBrowserTestForWebUI.*
 -FileSystemObserverTest.ErrorsAfterPermissionsAreRevoked
 -FileSystemObserverTest.StorageAccess*
 -PageInfoBubbleViewBrowserTest.InteractedWithFileSystemSubpage
@@ -1734,6 +1746,8 @@
 -All/NetworkRequestMetricsBrowserTest.*
 -All/NonIsolatedReportingBrowserTest.*
 -All/NoStatePrefetchBrowserTestHttpCache_DefaultAndDoubleKeyedHttpCache.*
+-All/NoStatePrefetchBrowserTestHttpCacheDefaultAndDoubleKeyed.LoadAfterPrefetch*/*
+-All/NoStatePrefetchBrowserTestHttpCacheDefaultAndDoubleKeyed.PrefetchCookie*/*
 -All/OtherFrameNavigationDownloadBrowserTest_AdFrame.*
 -All/PageLoadMetricsBackForwardCacheBrowserTest.*
 -All/PasswordBubbleBrowserTest.*
@@ -1916,6 +1930,7 @@
 -DownloadTest.*
 -DurableStorageBrowserTest.*
 -ECKIncognitoEncryptedMediaTest.*
+-EnterpriseReportingBrowserTest.*
 -EnterpriseReportingPrivateApiTest.*
 -EnterpriseReportingPrivateGetContextInfoBrowserTest.AffiliationIDs/*
 -ErrorPageOfflineTestWithAllowDinosaurTrue.*
@@ -2109,9 +2124,6 @@
 -OnDiskAppWithIncognitoProfile/NetworkContextConfigurationProxyOnStartBrowserTest.*
 -OnDiskAppWithIncognitoProfile/NetworkContextConfigurationProxySettingsBrowserTest.*
 -OnDiskAppWithIncognitoProfile/NetworkContextConfigurationReportingAndNelBrowserTest.*
--OptimizationGuideInternalsPageBrowserTest.*
--OptimizationGuideKeyedServiceBrowserTest.*
--OptimizationGuideKeyedServiceEnterpriseBrowserTest.*
 -OriginAgentClusterBrowserTest.*
 -OriginAgentClusterDisabledBrowserTest.*
 -OutOfProcessPPAPITest.HostResolverCrash_Basic
