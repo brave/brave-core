@@ -136,7 +136,8 @@ constexpr char kSnsDomainPattern[] = R"(^(?:[a-z0-9-]+\.)+sol$)";
 // domain-extensions.ts).
 constexpr char kUDPattern[] =
     "(?:[a-z0-9-]+)\\.(?:crypto|x|nft|dao|wallet|blockchain|bitcoin|zil|"
-    "altimist|anime|klever|manga|polygon|unstoppable|pudgy)";
+    "altimist|anime|klever|manga|polygon|unstoppable|pudgy|tball|stepn|secret|"
+    "raiin|pog|clay|metropolis|witg|ubu|kryptic|farms|dfz)";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("json_rpc_service", R"(
