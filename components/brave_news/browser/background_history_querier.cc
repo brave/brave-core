@@ -14,6 +14,13 @@
 
 namespace brave_news {
 
+history::QueryOptions GetQueryOptions() {
+  history::QueryOptions options;
+  options.max_count = 2000;
+  options.SetRecentDayRange(14);
+  return options;
+}
+
 BackgroundHistoryQuerier MakeHistoryQuerier(
     base::WeakPtr<history::HistoryService> history_service,
     base::RepeatingCallback<base::CancelableTaskTracker*()> get_tracker) {
@@ -43,9 +50,7 @@ BackgroundHistoryQuerier MakeHistoryQuerier(
                     return;
                   }
 
-                  history::QueryOptions options;
-                  options.max_count = 2000;
-                  options.SetRecentDayRange(14);
+                  auto options = GetQueryOptions();
                   service->QueryHistory(std::u16string(), options,
                                         std::move(callback), tracker);
                 },

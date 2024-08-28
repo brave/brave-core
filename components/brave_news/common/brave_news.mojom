@@ -272,6 +272,10 @@ interface ConfigurationListener {
   Changed(Configuration new_configuration);
 };
 
+interface BraveNewsInternals {
+  GetVisitedSites() => (array<string> urls);
+};
+
 // Browser-side handler
 interface BraveNewsController {
   // Gets the current locale.

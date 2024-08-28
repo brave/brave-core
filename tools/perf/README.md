@@ -35,15 +35,22 @@ SHA1=$(shasum -a 1 BUILD.gn | head -c 40); \
 `upload_to_google_storage.py --bucket=brave-telemetry <file>`
 the script will produce `.sha1` automatically.
 
-## How to update wpr
+## How to update or record WPR
 
-* `cd src/`;
-* Remove old downloaded wprs: `rm -rf ./brave/tools/perf/page_sets/data/*.wprgo`;
-* Record new wprs: `vpython3 tools/perf/record_wpr <benchmark_name> --browser=system  --story-filter <story-filter>`;
-* Upload the archives to the cloud storage: `ls ./brave/tools/perf/page_sets/data/*.wprgo | xargs <upload_cmd>`.
-* `cd brave`;
-* Review and commit new `.sha1` files (not `.wprgo`) plus new entries in
-  `./brave/tools/perf/page_sets_data/*.json`.
+Use `npm run perf_tests -- --mode record-wpr` instead of chromium `update_wpr` or `record_wpr`. It:
+
+* downloads and runs both Brave and Chromium, combine .wpr files (to capture all browser-specific requests);
+* adds pre-initialied profiles and Griffin/Finch experiments;
+* does some pre runs to ensure that everything is initialized (aka online profile rebase)
+* removes unwanted URLs from the final .wpr file.
+
+### Workflow
+
+* Prepare a config (use configs/record-wpr.json5 as a base). One benchmark or storySet = one .wpr.
+* Run `npm run perf_tests -- <config>.json5 --mode record-wpr --working-directory=.. --variations-repo-dir=..`;
+* Run the matching benchmark locally to tests the created .wpr;
+* Upload wpr files to the cloud storage: `ls ./brave/tools/perf/page_sets/data/*.wprgo | xargs <upload_cmd>`;
+* Commit the changes, including a new `.sha1` files, to brave-core.
 
 ## Updating profiles
 

@@ -47,7 +47,9 @@
 #include "components/favicon/core/favicon_service.h"
 #include "components/favicon_base/favicon_types.h"
 #include "components/history/core/browser/history_service.h"
+#include "components/history/core/browser/history_types.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
@@ -147,6 +149,12 @@ void BraveNewsController::Bind(
     mojo::PendingReceiver<mojom::BraveNewsController> receiver) {
   DVLOG(1) << __FUNCTION__;
   receivers_.Add(this, std::move(receiver));
+}
+
+void BraveNewsController::Bind(
+    mojo::PendingReceiver<mojom::BraveNewsInternals> receiver) {
+  DVLOG(1) << __FUNCTION__;
+  internals_receivers_.Add(this, std::move(receiver));
 }
 
 void BraveNewsController::ClearHistory() {
@@ -740,6 +748,23 @@ void BraveNewsController::OnDisplayAdView(
       /*intentional*/ base::DoNothing());
 
   news_metrics_.RecordWeeklyDisplayAdsViewedCount(true);
+}
+
+void BraveNewsController::GetVisitedSites(GetVisitedSitesCallback callback) {
+  auto options = GetQueryOptions();
+  history_service_->QueryHistory(
+      std::u16string(), options,
+      base::BindOnce(
+          [](GetVisitedSitesCallback callback, history::QueryResults results) {
+            std::vector<std::string> urls;
+            for (const auto& result : results) {
+              urls.push_back(result.url().spec());
+            }
+
+            std::move(callback).Run(std::move(urls));
+          },
+          std::move(callback)),
+      &task_tracker_);
 }
 
 void BraveNewsController::CheckForPublishersUpdate() {

@@ -22,6 +22,7 @@
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/initialization_promise.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -58,6 +59,7 @@ namespace brave_news {
 class BraveNewsController
     : public KeyedService,
       public mojom::BraveNewsController,
+      public mojom::BraveNewsInternals,
       public net::NetworkChangeNotifier::NetworkChangeObserver,
       public BraveNewsPrefManager::PrefObserver {
  public:
@@ -73,6 +75,7 @@ class BraveNewsController
 
   mojo::PendingRemote<mojom::BraveNewsController> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BraveNewsController> receiver);
+  void Bind(mojo::PendingReceiver<mojom::BraveNewsInternals> receiver);
 
   // Remove any cache that would identify user browsing history
   void ClearHistory();
@@ -142,6 +145,9 @@ class BraveNewsController
   void OnDisplayAdView(const std::string& item_id,
                        const std::string& creative_instance_id) override;
 
+  // mojom::BraveNewsInternals
+  void GetVisitedSites(GetVisitedSitesCallback callback) override;
+
   // net::NetworkChangeNotifier::NetworkChangeObserver:
   void OnNetworkChanged(
       net::NetworkChangeNotifier::ConnectionType type) override;
@@ -204,6 +210,7 @@ class BraveNewsController
                           BraveNewsPrefManager::PrefObserver>
       prefs_observation_{this};
   mojo::ReceiverSet<mojom::BraveNewsController> receivers_;
+  mojo::ReceiverSet<mojom::BraveNewsInternals> internals_receivers_;
   mojo::RemoteSet<mojom::PublishersListener> publishers_listeners_;
   mojo::RemoteSet<mojom::ChannelsListener> channels_listeners_;
   mojo::RemoteSet<mojom::FeedListener> feed_listeners_;

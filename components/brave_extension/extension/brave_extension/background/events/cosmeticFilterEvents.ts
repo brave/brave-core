@@ -78,8 +78,11 @@ export function onContextMenuClicked (info: chrome.contextMenus.OnClickData, tab
       break
     case 'elementPickerMode': {
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs: [chrome.tabs.Tab]) => {
-        if (tabs.length > 0) {
-          chrome.tabs.sendMessage(tabs[0].id!, { type: 'elementPickerLaunch' })
+          const tabId = tabs[0]?.id;
+          if (tabId !== undefined) {
+              chrome.scripting.executeScript({target : {tabId},
+              files : [ "out/content_element_picker.bundle.js" ],
+          })
         }
       })
       break

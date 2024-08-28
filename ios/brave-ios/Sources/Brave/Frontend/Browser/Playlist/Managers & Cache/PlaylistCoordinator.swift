@@ -230,6 +230,20 @@ public class PlaylistCoordinator: NSObject {
     }
   }
 
+  func pauseAllPlayback() {
+    if FeatureList.kNewPlaylistUI.enabled {
+      playerModel?.pause()
+    } else {
+      mediaPlayer?.pause()
+    }
+  }
+
+  var isPictureInPictureActive: Bool {
+    FeatureList.kNewPlaylistUI.enabled
+      ? playerModel?.isPictureInPictureActive == true
+      : mediaPlayer?.pictureInPictureController?.isPictureInPictureActive == true
+  }
+
   private func destroyPlayerModelIfUnused() {
     guard let playerModel else { return }
     // The player model should stay alive if any of these are true:

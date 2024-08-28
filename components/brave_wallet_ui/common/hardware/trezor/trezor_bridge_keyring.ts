@@ -9,11 +9,7 @@ import {
   toChecksumAddress,
   bufferToHex
 } from 'ethereumjs-util'
-import {
-  BraveWallet,
-  HardwareVendor,
-  SerializableTransactionInfo
-} from '../../../constants/types'
+import { SerializableTransactionInfo } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import {
   TrezorCommand,
@@ -32,31 +28,22 @@ import {
   SignTypedMessageResponsePayload
 } from './trezor-messages'
 import { sendTrezorCommand, closeTrezorBridge } from './trezor-bridge-transport'
-import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 import {
+  AccountFromDevice,
+  HardwareImportScheme,
   GetAccountsHardwareOperationResult,
   HardwareOperationResult,
-  SignHardwareOperationResult,
-  TrezorDerivationPaths
+  SignHardwareOperationResult
 } from '../types'
+import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import { Unsuccessful } from './trezor-connect-types'
 import { TrezorKeyring } from '../interfaces'
-import { getPathForTrezorIndex } from '../../../utils/derivation_path_utils'
 
 export default class TrezorBridgeKeyring implements TrezorKeyring {
   private unlocked: boolean = false
-  protected deviceId: string
 
-  type = (): HardwareVendor => {
-    return BraveWallet.TREZOR_HARDWARE_VENDOR
-  }
-
-  coin = (): BraveWallet.CoinType => {
-    return BraveWallet.CoinType.ETH
-  }
-
-  keyringId = (): BraveWallet.KeyringId => {
-    return BraveWallet.KeyringId.kDefault
+  bridgeType = (): BridgeType => {
+    return BridgeTypes.EthTrezor
   }
 
   isUnlocked = (): boolean => {
@@ -92,8 +79,8 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
 
   getAccounts = async (
     from: number,
-    to: number,
-    scheme: TrezorDerivationPaths
+    count: number,
+    scheme: HardwareImportScheme
   ): Promise<GetAccountsHardwareOperationResult> => {
     if (!this.isUnlocked()) {
       const unlocked = await this.unlock()
@@ -101,17 +88,11 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
         return unlocked
       }
     }
-    from = from >= 0 ? from : 0
     const paths = []
-    const addZeroPath = from > 0 || to < 0
-    if (addZeroPath) {
-      // Add zero address to calculate device id.
-      paths.push(this.getPathForIndex(0, TrezorDerivationPaths.Default))
+    for (let i = 0; i < count; i++) {
+      paths.push(scheme.pathTemplate(from + i))
     }
-    for (let i = from; i <= to; i++) {
-      paths.push(this.getPathForIndex(i, scheme))
-    }
-    return this.getAccountsFromDevice(paths, addZeroPath)
+    return this.getAccountsFromDevice(paths)
   }
 
   signTransaction = async (
@@ -233,24 +214,6 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
     return sendTrezorCommand<T>(command)
   }
 
-  private readonly getHashFromAddress = async (address: string) => {
-    return hardwareDeviceIdFromAddress(address)
-  }
-
-  private readonly getDeviceIdFromAccountsList = async (
-    accountsList: TrezorAccount[]
-  ) => {
-    const zeroPath = this.getPathForIndex(0, TrezorDerivationPaths.Default)
-    for (const value of accountsList) {
-      if (value.serializedPath !== zeroPath) {
-        continue
-      }
-      const address = this.publicKeyToAddress(value.publicKey)
-      return this.getHashFromAddress(address)
-    }
-    return ''
-  }
-
   private prepareTransactionPayload = (
     path: string,
     txInfo: SerializableTransactionInfo,
@@ -325,8 +288,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
   }
 
   private readonly getAccountsFromDevice = async (
-    paths: string[],
-    skipZeroPath: boolean
+    paths: string[]
   ): Promise<GetAccountsHardwareOperationResult> => {
     const requestedPaths = []
     for (const path of paths) {
@@ -351,25 +313,12 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
       return { success: false, error: unsuccess.error, code: unsuccess.code }
     }
 
-    let accounts = []
+    let accounts: AccountFromDevice[] = []
     const accountsList = response.payload as TrezorAccount[]
-    this.deviceId = await this.getDeviceIdFromAccountsList(accountsList)
-    const zeroPath = this.getPathForIndex(0, TrezorDerivationPaths.Default)
     for (const value of accountsList) {
-      // If requested addresses do not have zero indexed adress we add it
-      // intentionally to calculate device id and should not add it to
-      // returned accounts
-      if (skipZeroPath && value.serializedPath === zeroPath) {
-        continue
-      }
       accounts.push({
         address: this.publicKeyToAddress(value.publicKey),
-        derivationPath: value.serializedPath,
-        name: this.type(),
-        hardwareVendor: this.type(),
-        deviceId: this.deviceId,
-        coin: this.coin(),
-        keyringId: this.keyringId()
+        derivationPath: value.serializedPath
       })
     }
     return { success: true, payload: [...accounts] }
@@ -401,6 +350,4 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
         }
     }
   }
-
-  private readonly getPathForIndex = getPathForTrezorIndex
 }

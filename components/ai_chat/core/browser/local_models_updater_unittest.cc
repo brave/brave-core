@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/core/browser/leo_local_models_updater.h"
+#include "brave/components/ai_chat/core/browser/local_models_updater.h"
 
 #include <memory>
 #include <utility>
@@ -25,20 +25,22 @@
 
 namespace {
 constexpr base::FilePath::CharType kComponentInstallDir[] =
+    FILE_PATH_LITERAL("AIChatLocalModels");
+constexpr base::FilePath::CharType kDeprecatedComponentInstallDir[] =
     FILE_PATH_LITERAL("LeoLocalModels");
 constexpr const char kComponentId[] = "ejhejjmaoaohpghnblcdcjilndkangfe";
 }  // namespace
 
-class LeoLocalModelsUpdaterUnitTest : public testing::Test {
+class LocalModelsUpdaterUnitTest : public testing::Test {
  public:
-  LeoLocalModelsUpdaterUnitTest()
+  LocalModelsUpdaterUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
     feature_list_.InitWithFeatures(
         {ai_chat::features::kAIChat, ai_chat::features::kPageContentRefine},
         {});
   }
 
-  ~LeoLocalModelsUpdaterUnitTest() override = default;
+  ~LocalModelsUpdaterUnitTest() override = default;
 
   void SetUp() override {
     cus_ = std::make_unique<component_updater::MockComponentUpdateService>();
@@ -64,36 +66,47 @@ class LeoLocalModelsUpdaterUnitTest : public testing::Test {
   base::test::ScopedFeatureList feature_list_;
 };
 
-TEST_F(LeoLocalModelsUpdaterUnitTest, Register) {
+TEST_F(LocalModelsUpdaterUnitTest, Register) {
   EXPECT_CALL(*cus_, RegisterComponent(testing::_))
       .Times(1)
       .WillOnce(testing::Return(true));
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(1);
-  ai_chat::ManageLeoLocalModelsComponentRegistration(cus_.get());
+  ai_chat::ManageLocalModelsComponentRegistration(cus_.get());
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(LeoLocalModelsUpdaterUnitTest, ComponentReady) {
+TEST_F(LocalModelsUpdaterUnitTest, ComponentReady) {
   auto policy =
-      std::make_unique<ai_chat::LeoLocalModelsComponentInstallerPolicy>();
+      std::make_unique<ai_chat::LocalModelsComponentInstallerPolicy>();
   policy->ComponentReadyForTesting(base::Version("1.0.0"), install_dir_, {});
-  EXPECT_EQ(ai_chat::LeoLocalModelsUpdaterState::GetInstance()->GetInstallDir(),
+  EXPECT_EQ(ai_chat::LocalModelsUpdaterState::GetInstance()->GetInstallDir(),
             install_dir_);
 }
 
-TEST_F(LeoLocalModelsUpdaterUnitTest, DeleteComponent) {
+TEST_F(LocalModelsUpdaterUnitTest, DeleteComponent) {
   for (const auto& disable_feature : std::vector<base::test::FeatureRef>(
            {ai_chat::features::kAIChat,
             ai_chat::features::kPageContentRefine})) {
     SCOPED_TRACE(disable_feature->name);
+    base::CreateDirectory(install_dir_);
     base::test::ScopedFeatureList feature_list;
     feature_list.InitAndDisableFeature(*disable_feature);
     EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
     EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
         .Times(0);
-    ai_chat::ManageLeoLocalModelsComponentRegistration(cus_.get());
+    ai_chat::ManageLocalModelsComponentRegistration(cus_.get());
     EXPECT_FALSE(PathExists(install_dir_));
     task_environment_.RunUntilIdle();
   }
+}
+
+TEST_F(LocalModelsUpdaterUnitTest, DeprecatedComponentDir) {
+  auto component_dir =
+    base::PathService::CheckedGet(component_updater::DIR_COMPONENT_USER);
+  auto old_install_dir = component_dir.Append(kDeprecatedComponentInstallDir);
+  base::CreateDirectory(old_install_dir);
+  ai_chat::ManageLocalModelsComponentRegistration(cus_.get());
+  EXPECT_FALSE(PathExists(old_install_dir));
+  task_environment_.RunUntilIdle();
 }

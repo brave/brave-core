@@ -1525,23 +1525,25 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   // We don't need to create wallet to use hardwareaccounts
   std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      "0x111", "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
-      mojom::CoinType::ETH, mojom::kDefaultKeyringId));
+      "0x111", "m/44'/60'/1'/0/0", "name 1", mojom::HardwareVendor::kLedger,
+      "device1", mojom::CoinType::ETH, mojom::kDefaultKeyringId));
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      "0x264", "m/44'/461'/0'/0/0", "name 2", "Ledger", "device1",
-      mojom::CoinType::FIL, mojom::kFilecoinKeyringId));
+      "0x264", "m/44'/461'/0'/0/0", "name 2", mojom::HardwareVendor::kLedger,
+      "device1", mojom::CoinType::FIL, mojom::kFilecoinKeyringId));
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      "0xEA0", "m/44'/60'/2'/0/0", "name 3", "Ledger", "device2",
-      mojom::CoinType::ETH, mojom::kDefaultKeyringId));
+      "0xEA0", "m/44'/60'/2'/0/0", "name 3", mojom::HardwareVendor::kLedger,
+      "device2", mojom::CoinType::ETH, mojom::kDefaultKeyringId));
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      "0xFIL", "m/44'/461'/2'/0/0", "filecoin 1", "Ledger", "device2",
-      mojom::CoinType::FIL, mojom::kFilecoinKeyringId));
+      "0xFIL", "m/44'/461'/2'/0/0", "filecoin 1",
+      mojom::HardwareVendor::kLedger, "device2", mojom::CoinType::FIL,
+      mojom::kFilecoinKeyringId));
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      "0x222", "m/44'/60'/3'/0/0", "name 4", "Ledger", "device1",
-      mojom::CoinType::ETH, mojom::kDefaultKeyringId));
+      "0x222", "m/44'/60'/3'/0/0", "name 4", mojom::HardwareVendor::kLedger,
+      "device1", mojom::CoinType::ETH, mojom::kDefaultKeyringId));
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      "0xFILTEST", "m/44'/1'/2'/0/0", "filecoin testnet 1", "Ledger", "device2",
-      mojom::CoinType::FIL, mojom::kFilecoinTestnetKeyringId));
+      "0xFILTEST", "m/44'/1'/2'/0/0", "filecoin testnet 1",
+      mojom::HardwareVendor::kLedger, "device2", mojom::CoinType::FIL,
+      mojom::kFilecoinTestnetKeyringId));
   const auto new_accounts_func = [&] {
     std::vector<mojom::HardwareWalletAccountPtr> result;
     for (auto& a : new_accounts) {
@@ -1956,12 +1958,14 @@ TEST_F(KeyringServiceUnitTest, SelectHardwareAccount) {
   std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
   std::string hardware_account1 = "0x1111111111111111111111111111111111111111";
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      hardware_account1, "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
-      mojom::CoinType::ETH, mojom::kDefaultKeyringId));
+      hardware_account1, "m/44'/60'/1'/0/0", "name 1",
+      mojom::HardwareVendor::kLedger, "device1", mojom::CoinType::ETH,
+      mojom::kDefaultKeyringId));
   std::string hardware_account2 = "0x2222222222222222222222222222222222222222";
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      hardware_account2, "m/44'/60'/1'/0/0", "name 2", "Ledger", "device1",
-      mojom::CoinType::ETH, mojom::kDefaultKeyringId));
+      hardware_account2, "m/44'/60'/1'/0/0", "name 2",
+      mojom::HardwareVendor::kLedger, "device1", mojom::CoinType::ETH,
+      mojom::kDefaultKeyringId));
 
   auto imported = service.AddHardwareAccountsSync(std::move(new_accounts));
 
@@ -2084,8 +2088,9 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
   std::string hardware_account = "0x1111111111111111111111111111111111111111";
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      hardware_account, "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
-      mojom::CoinType::ETH, mojom::kDefaultKeyringId));
+      hardware_account, "m/44'/60'/1'/0/0", "name 1",
+      mojom::HardwareVendor::kLedger, "device1", mojom::CoinType::ETH,
+      mojom::kDefaultKeyringId));
   auto hw_account =
       service.AddHardwareAccountsSync(std::move(new_accounts))[0]->Clone();
   EXPECT_EQ(hw_account, service.GetSelectedWalletAccount());
@@ -2308,23 +2313,25 @@ TEST_F(KeyringServiceUnitTest, SetAccountName_HardwareAccounts) {
 
   std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      "0x111", "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
-      mojom::CoinType::ETH, mojom::kDefaultKeyringId));
+      "0x111", "m/44'/60'/1'/0/0", "name 1", mojom::HardwareVendor::kLedger,
+      "device1", mojom::CoinType::ETH, mojom::kDefaultKeyringId));
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      "0x264", "m/44'/461'/0'/0/0", "name 2", "Ledger", "device1",
-      mojom::CoinType::FIL, mojom::kFilecoinKeyringId));
+      "0x264", "m/44'/461'/0'/0/0", "name 2", mojom::HardwareVendor::kLedger,
+      "device1", mojom::CoinType::FIL, mojom::kFilecoinKeyringId));
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      "0xEA0", "m/44'/60'/2'/0/0", "name 3", "Ledger", "device2",
-      mojom::CoinType::ETH, mojom::kDefaultKeyringId));
+      "0xEA0", "m/44'/60'/2'/0/0", "name 3", mojom::HardwareVendor::kLedger,
+      "device2", mojom::CoinType::ETH, mojom::kDefaultKeyringId));
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      "0xFIL", "m/44'/461'/2'/0/0", "filecoin 1", "Ledger", "device2",
-      mojom::CoinType::FIL, mojom::kFilecoinKeyringId));
+      "0xFIL", "m/44'/461'/2'/0/0", "filecoin 1",
+      mojom::HardwareVendor::kLedger, "device2", mojom::CoinType::FIL,
+      mojom::kFilecoinKeyringId));
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      "0x222", "m/44'/60'/3'/0/0", "name 4", "Ledger", "device1",
-      mojom::CoinType::ETH, mojom::kDefaultKeyringId));
+      "0x222", "m/44'/60'/3'/0/0", "name 4", mojom::HardwareVendor::kLedger,
+      "device1", mojom::CoinType::ETH, mojom::kDefaultKeyringId));
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      "0xFILTEST", "m/44'/1'/2'/0/0", "filecoin testnet 1", "Ledger", "device2",
-      mojom::CoinType::FIL, mojom::kFilecoinTestnetKeyringId));
+      "0xFILTEST", "m/44'/1'/2'/0/0", "filecoin testnet 1",
+      mojom::HardwareVendor::kLedger, "device2", mojom::CoinType::FIL,
+      mojom::kFilecoinTestnetKeyringId));
 
   service.AddHardwareAccountsSync(std::move(new_accounts));
 
@@ -2364,17 +2371,17 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringHardwareAccountName) {
     const char* address;
     const char* derivation_path;
     const char* name;
-    const char* vendor;
+    mojom::HardwareVendor vendor;
     const char* device_id;
     const mojom::KeyringId keyring_id;
     mojom::CoinType coin;
   } hardware_accounts[] = {
-      {"0x111", "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
-       mojom::kDefaultKeyringId, mojom::CoinType::ETH},
-      {"0x264", "m/44'/60'/2'/0/0", "name 2", "Ledger", "device1",
-       mojom::kDefaultKeyringId, mojom::CoinType::ETH},
-      {"0xEA0", "m/44'/60'/3'/0/0", "name 3", "Ledger", "device2",
-       mojom::kDefaultKeyringId, mojom::CoinType::ETH}};
+      {"0x111", "m/44'/60'/1'/0/0", "name 1", mojom::HardwareVendor::kLedger,
+       "device1", mojom::kDefaultKeyringId, mojom::CoinType::ETH},
+      {"0x264", "m/44'/60'/2'/0/0", "name 2", mojom::HardwareVendor::kLedger,
+       "device1", mojom::kDefaultKeyringId, mojom::CoinType::ETH},
+      {"0xEA0", "m/44'/60'/3'/0/0", "name 3", mojom::HardwareVendor::kLedger,
+       "device2", mojom::kDefaultKeyringId, mojom::CoinType::ETH}};
 
   std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
   for (const auto& it : hardware_accounts) {
@@ -2383,7 +2390,7 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringHardwareAccountName) {
         it.coin, it.keyring_id));
   }
 
-  const std::string kUpdatedName = "Updated ledger accoount 2";
+  const std::string kUpdatedName = "Updated ledger account 2";
 
   // Fail when no hardware accounts.
   EXPECT_FALSE(SetAccountName(
@@ -3466,7 +3473,7 @@ TEST_F(KeyringServiceUnitTest, AccountsAdded) {
   std::vector<mojom::HardwareWalletAccountPtr> hardware_accounts;
   hardware_accounts.push_back(mojom::HardwareWalletAccount::New(
       "0x595a0583621FDe81A935021707e81343f75F9324", "m/44'/60'/1'/0/0",
-      "name 1", "Ledger", "device1", mojom::CoinType::ETH,
+      "name 1", mojom::HardwareVendor::kLedger, "device1", mojom::CoinType::ETH,
       mojom::kDefaultKeyringId));
   std::vector<mojom::AccountInfoPtr> added_hw_account;
   added_hw_account.push_back(mojom::AccountInfo::New(
@@ -3474,7 +3481,8 @@ TEST_F(KeyringServiceUnitTest, AccountsAdded) {
                     mojom::AccountKind::kHardware,
                     "0x595a0583621FDe81A935021707e81343f75F9324"),
       "0x595a0583621FDe81A935021707e81343f75F9324", "name 1",
-      mojom::HardwareInfo::New("m/44'/60'/1'/0/0", "Ledger", "device1")));
+      mojom::HardwareInfo::New("m/44'/60'/1'/0/0",
+                               mojom::HardwareVendor::kLedger, "device1")));
   EXPECT_CALL(observer, AccountsAdded(testing::Eq(std::ref(added_hw_account))));
   service.AddHardwareAccountsSync(std::move(hardware_accounts));
   observer.WaitAndVerify();

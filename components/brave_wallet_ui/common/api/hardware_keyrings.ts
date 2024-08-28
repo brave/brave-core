@@ -3,48 +3,50 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { assert } from 'chrome://resources/js/assert.js'
+import { assertNotReached } from 'chrome://resources/js/assert.js'
+import { BraveWallet } from '../../constants/types'
+
+import * as HWInterfaces from '../hardware/interfaces'
 import EthereumLedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridge_keyring'
 import SolanaLedgerBridgeKeyring from '../../common/hardware/ledgerjs/sol_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../../common/hardware/trezor/trezor_bridge_keyring'
-import { BraveWallet, HardwareVendor } from '../../constants/types'
-import * as HWInterfaces from '../hardware/interfaces'
 import FilecoinLedgerBridgeKeyring from '../../common/hardware/ledgerjs/fil_ledger_bridge_keyring'
-
-export type HardwareKeyring =
-  | HWInterfaces.LedgerEthereumKeyring
-  | HWInterfaces.TrezorKeyring
-  | HWInterfaces.LedgerFilecoinKeyring
-  | HWInterfaces.LedgerSolanaKeyring
+import BitcoinLedgerBridgeKeyring from '../hardware/ledgerjs/btc_ledger_bridge_keyring'
 
 // Lazy instances for keyrings
 let ethereumHardwareKeyring: EthereumLedgerBridgeKeyring
 let filecoinHardwareKeyring: FilecoinLedgerBridgeKeyring
 let solanaHardwareKeyring: SolanaLedgerBridgeKeyring
+let bitcoinHardwareKeyring: BitcoinLedgerBridgeKeyring
 let trezorHardwareKeyring: TrezorBridgeKeyring
 
 export function getHardwareKeyring(
-  type: HardwareVendor,
-  coin: BraveWallet.CoinType = BraveWallet.CoinType.ETH,
+  vendor: BraveWallet.HardwareVendor,
+  coin: BraveWallet.CoinType,
   onAuthorized?: () => void
 ):
   | EthereumLedgerBridgeKeyring
   | HWInterfaces.TrezorKeyring
   | FilecoinLedgerBridgeKeyring
-  | SolanaLedgerBridgeKeyring {
-  if (type === BraveWallet.LEDGER_HARDWARE_VENDOR) {
+  | SolanaLedgerBridgeKeyring
+  | BitcoinLedgerBridgeKeyring {
+  if (vendor === BraveWallet.HardwareVendor.kLedger) {
     if (coin === BraveWallet.CoinType.ETH) {
       return getLedgerEthereumHardwareKeyring(onAuthorized)
     } else if (coin === BraveWallet.CoinType.FIL) {
       return getLedgerFilecoinHardwareKeyring(onAuthorized)
     } else if (coin === BraveWallet.CoinType.SOL) {
       return getLedgerSolanaHardwareKeyring(onAuthorized)
+    } else if (coin === BraveWallet.CoinType.BTC) {
+      return getLedgerBitcoinHardwareKeyring(onAuthorized)
+    }
+  } else if (vendor === BraveWallet.HardwareVendor.kTrezor) {
+    if (coin === BraveWallet.CoinType.ETH) {
+      return getTrezorHardwareKeyring()
     }
   }
 
-  const trezorKeyring = getTrezorHardwareKeyring()
-  assert(type === trezorHardwareKeyring.type(), '')
-  return trezorKeyring
+  assertNotReached(`Unsupported coin ${coin} and vendor ${vendor}`)
 }
 
 export function getLedgerEthereumHardwareKeyring(
@@ -72,6 +74,15 @@ export function getLedgerSolanaHardwareKeyring(
     solanaHardwareKeyring = new SolanaLedgerBridgeKeyring(onAuthorized)
   }
   return solanaHardwareKeyring
+}
+
+export function getLedgerBitcoinHardwareKeyring(
+  onAuthorized?: () => void
+): BitcoinLedgerBridgeKeyring {
+  if (!bitcoinHardwareKeyring) {
+    bitcoinHardwareKeyring = new BitcoinLedgerBridgeKeyring(onAuthorized)
+  }
+  return bitcoinHardwareKeyring
 }
 
 export function getTrezorHardwareKeyring(): TrezorBridgeKeyring {

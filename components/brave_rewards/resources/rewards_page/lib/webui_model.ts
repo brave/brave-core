@@ -191,7 +191,39 @@ export function createModel(): AppModel {
     })
   }
 
+  async function updateCurrentCreator() {
+    const [{ publisherInfo }, { publisherBanner }] = await Promise.all([
+      pageHandler.getPublisherForActiveTab(),
+      pageHandler.getPublisherBannerForActiveTab()
+    ])
+
+    if (!publisherInfo) {
+      stateManager.update({ currentCreator: null })
+      return
+    }
+
+    stateManager.update({
+      currentCreator: {
+        site: {
+          id: publisherInfo.id,
+          icon: publisherInfo.faviconUrl,
+          name: publisherInfo.name,
+          url: publisherInfo.url,
+          platform: parseCreatorPlatform(publisherInfo.provider)
+        },
+        banner: {
+          title: publisherBanner?.title || '',
+          description: publisherBanner?.description || '',
+          background: publisherBanner?.background || ''
+        }
+      }
+    })
+  }
+
   async function loadData() {
+    // Discards the supplied promise so that the `Promise.all` below does not
+    // block on the result. Any calls that may be blocked on a network request
+    // should be wrapped with this decorator.
     const inBackground = (promise: Promise<unknown>) => null
 
     await Promise.all([
@@ -202,7 +234,8 @@ export function createModel(): AppModel {
       updateAdsInfo(),
       updateRecurringContributions(),
       updateAutoContributeInfo(),
-      updateRewardsParameters()
+      updateRewardsParameters(),
+      inBackground(updateCurrentCreator())
     ])
 
     stateManager.update({ loading: false })
@@ -214,13 +247,14 @@ export function createModel(): AppModel {
 
   // When displayed in a bubble, this page may be cached. In order to reset the
   // view state when the bubble is re-opened with cached contents, we update the
-  // "openTime" state when the document visibility changes.
+  // "openTime" state when the document visibility changes and reload data.
   if (isBubble) {
     document.addEventListener('visibilitychange', () => {
       const now = Date.now()
       const { openTime } = stateManager.getState()
       if (now - openTime > 100) {
         stateManager.update({ openTime: now })
+        loadData()
       }
     })
   }

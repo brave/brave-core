@@ -34,24 +34,6 @@
   }                                                                           \
   void HttpsUpgradesInterceptor::MaybeCreateLoader_ChromiumImpl(__VA_ARGS__)
 
-// Force pages that have upgraded to HTTPS to fall back to HTTP if we receive
-// an HTTP response code ()>= 400) on upgrade.
-#define MaybeCreateLoaderForResponse(...)                                   \
-  MaybeCreateLoaderForResponse(__VA_ARGS__) {                               \
-    network::URLLoaderCompletionStatus modified_status(status);             \
-    if (!(*response_head).is_null()) {                                      \
-      auto headers = (*response_head)->headers;                             \
-      if (headers && headers->response_code() >= 400) {                     \
-        modified_status.error_code = net::ERR_HTTP_RESPONSE_CODE_FAILURE;   \
-      }                                                                     \
-    }                                                                       \
-    return MaybeCreateLoaderForResponse_ChromiumImpl(                       \
-        modified_status, request, response_head, response_body, loader,     \
-        client_receiver, url_loader);                                       \
-  }                                                                         \
-  bool HttpsUpgradesInterceptor::MaybeCreateLoaderForResponse_ChromiumImpl( \
-      __VA_ARGS__)
-
 #define IsEnabled(FLAG)                                \
   IsEnabled(FLAG.name == features::kHttpsUpgrades.name \
                 ? net::features::kBraveHttpsByDefault  \
@@ -62,6 +44,5 @@
 #include "src/chrome/browser/ssl/https_upgrades_interceptor.cc"
 
 #undef MaybeCreateLoader
-#undef MaybeCreateLoaderForResponse
 #undef IsEnabled
 #undef IsLocalhost

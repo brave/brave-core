@@ -2,7 +2,7 @@
   "configurations": [{
     "dashboard-bot-name": "test-agent",
     "browser-type": "brave",
-    "profile": "brave-typical-win",
+    "profile": "brave-typical-mac",
     "extra-browser-args": ["--disable-features=CalculateNativeWinOcclusion"],
     "extra-benchmark-args": [],
     "save-artifacts": true,
@@ -21,7 +21,10 @@
       "name": "system_health.common_desktop",
       "pageset-repeat": 1,
       "stories": [
-        "load:chrome:blank",
+        "load:site:example:2023",
+        "load:site:twitter:2023",
+        "load:site:imdb:2024",
+        "load:ntp:brave_news:2024",
       ]
     },
     {
