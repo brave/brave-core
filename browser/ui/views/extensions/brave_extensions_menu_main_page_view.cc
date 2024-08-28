@@ -5,36 +5,23 @@
 
 #include "brave/browser/ui/views/extensions/brave_extensions_menu_main_page_view.h"
 
-#include <utility>
-
-#include "base/functional/bind.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/chrome_pages.h"
+#include "chrome/browser/ui/views/controls/hover_button.h"
 #include "chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h"
 #include "chrome/grit/generated_resources.h"
-#include "components/vector_icons/vector_icons.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
-#include "ui/gfx/geometry/insets.h"
-#include "ui/gfx/geometry/size.h"
-#include "ui/gfx/image/image.h"
-#include "ui/gfx/paint_vector_icon.h"
-#include "ui/views/background.h"
 #include "ui/views/controls/button/button.h"
-#include "ui/views/controls/button/image_button.h"
-#include "ui/views/controls/button/image_button_factory.h"
-#include "ui/views/controls/highlight_path_generator.h"
-#include "ui/views/view_class_properties.h"
 #include "ui/views/view_utils.h"
 
 BraveExtensionsMenuMainPageView::BraveExtensionsMenuMainPageView(
     Browser* browser,
     ExtensionsMenuHandler* menu_handler)
     : ExtensionsMenuMainPageView(browser, menu_handler) {
-  UpdateButtons(browser);
+  UpdateButtons();
 }
 
 BraveExtensionsMenuMainPageView::~BraveExtensionsMenuMainPageView() = default;
@@ -50,36 +37,18 @@ void BraveExtensionsMenuMainPageView::OnThemeChanged() {
       cp->GetColor(kColorBraveExtensionMenuIcon));
 }
 
-void BraveExtensionsMenuMainPageView::UpdateButtons(Browser* browser) {
-  // Swap the order of site setting toggle button and setting button
-  auto* parent = views::AsViewClass<views::FlexLayoutView>(
-      site_settings_toggle_->parent());
-  CHECK(parent) << "Parent has been changed, need to revisit";
-
-  auto index = *parent->GetIndexOf(site_settings_toggle_);
-  parent->ReorderChildView(site_settings_toggle_, index - 1);
-
-  // Recreate settings button. Notably, ColorTrackingVectorImageButton is not
-  // allowed to change the icon, so we need to recreate the button.
+void BraveExtensionsMenuMainPageView::UpdateButtons() {
+  // Settings is the last child of the menu.
+  size_t settings_button_index = children().size() - 1;
   auto* settings_button =
-      views::AsViewClass<views::ImageButton>(parent->children().at(index));
+      views::AsViewClass<HoverButton>(children().at(settings_button_index));
   CHECK(settings_button) << "Settings button has been changed, need to revisit";
-  CHECK_EQ(settings_button->GetTooltipText(),
+  CHECK_EQ(settings_button->GetText(),
            l10n_util::GetStringUTF16(IDS_MANAGE_EXTENSIONS))
       << "Settings button has been changed, need to revisit";
-  parent->RemoveChildViewT(settings_button);
-
-  auto new_setting_button = views::CreateVectorImageButtonWithNativeTheme(
-      base::BindRepeating(
-          [](Browser* browser) { chrome::ShowExtensions(browser); }, browser),
-      kLeoSettingsIcon, /*icon_size*/ 20);
-  new_setting_button->SetTooltipText(
-      l10n_util::GetStringUTF16(IDS_MANAGE_EXTENSIONS));
-  new_setting_button->SetProperty(views::kMarginsKey,
-                                  gfx::Insets().set_left(12));
-  new_setting_button->SizeToPreferredSize();
-  views::InstallCircleHighlightPathGenerator(new_setting_button.get());
-  parent->AddChildViewAt(std::move(new_setting_button), index);
+  settings_button->SetImageModel(
+      views::Button::STATE_NORMAL,
+      ui::ImageModel::FromVectorIcon(kLeoSettingsIcon));
 }
 
 BEGIN_METADATA(BraveExtensionsMenuMainPageView)
