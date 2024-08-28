@@ -38,7 +38,7 @@ class SparkleVersionUpdater : public VersionUpdater {
   // kAutoupdateStatusVersion.
   void UpdateStatus(NSDictionary* status);
 
-  static bool IsSparkle(VersionUpdater* updater);
+  void GetIsSparkleForTesting(bool& result) const override;
 
  private:
   // Update the visibility state of promote button.
@@ -60,8 +60,6 @@ class SparkleVersionUpdater : public VersionUpdater {
 
   // The observer that will receive Keystone status updates.
   KeystoneObserver* __strong keystone_observer_;
-
-  bool (*type_marker_)(VersionUpdater*) = &SparkleVersionUpdater::IsSparkle;
 
   base::WeakPtrFactory<SparkleVersionUpdater> weak_factory_{this};
 };
