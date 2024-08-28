@@ -11,6 +11,7 @@
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -51,6 +52,7 @@ ProfileMiscMetricsServiceFactory::ProfileMiscMetricsServiceFactory()
   DependsOn(HostContentSettingsMapFactory::GetInstance());
   DependsOn(autofill::PersonalDataManagerFactory::GetInstance());
   DependsOn(BookmarkModelFactory::GetInstance());
+  DependsOn(TemplateURLServiceFactory::GetInstance());
 }
 
 ProfileMiscMetricsServiceFactory::~ProfileMiscMetricsServiceFactory() = default;
