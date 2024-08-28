@@ -530,9 +530,8 @@ JNI_BraveSyncWorker_GetSeedHexFromQrJson(
 static int JNI_BraveSyncWorker_GetWordsCount(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& words) {
-  std::string str_words = base::android::ConvertJavaStringToUTF8(words);
-
-  return TimeLimitedWords::GetWordsCount(str_words);
+  return TimeLimitedWords::GetWordsCount(
+      base::android::ConvertJavaStringToUTF8(words));
 }
 
 }  // namespace android
