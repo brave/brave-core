@@ -62,7 +62,7 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
     case LOCATION_BAR_CHILD_CORNER_RADIUS:
       return 4;
     case TAB_SEPARATOR_HEIGHT: {
-      return 24;
+      return 16;
     }
     case TOOLBAR_BUTTON_HEIGHT: {
       return touch ? 48 : 28;

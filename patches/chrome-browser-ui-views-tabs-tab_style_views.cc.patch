@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index 65676013fece9815be2046fcbf554ca857ce896c..8a541ff9f709822fcec5612dd2839f641ad72e53 100644
+index 65676013fece9..3d3c8a6c02e7d 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
 @@ -138,6 +138,7 @@ class TabStyleViewsImpl : public TabStyleViews {
@@ -18,19 +18,7 @@ index 65676013fece9815be2046fcbf554ca857ce896c..8a541ff9f709822fcec5612dd2839f64
  
    SkPath path;
  
-@@ -668,9 +670,10 @@ TabStyle::SeparatorBounds TabStyleViewsImpl::GetSeparatorBounds(
-   TabStyle::SeparatorBounds separator_bounds;
- 
-   const int extra_vertical_space =
-+      2 * (
-       aligned_bounds.height() -
-       (separator_size.height() + separator_margin.bottom() +
--       separator_margin.top());
-+       separator_margin.top()));
- 
-   separator_bounds.leading = gfx::RectF(
-       aligned_bounds.x() + corner_radius - separator_margin.right() -
-@@ -1042,14 +1045,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -1042,14 +1044,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  
