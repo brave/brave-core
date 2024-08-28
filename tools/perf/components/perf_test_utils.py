@@ -5,9 +5,9 @@
 import logging
 import os
 import re
-import shutil
 import subprocess
 import tempfile
+import time
 import platform
 
 from threading import Timer
@@ -108,12 +108,19 @@ def GetProcessOutput(args: List[str],
 
 
 def DownloadFile(url: str, output: str):
-  logging.info('Downloading %s to %s', url, output)
-  try:
-    f = urlopen(url)
-  except Exception as e:
-    raise RuntimeError(f'Can\'t download {url}') from e
-  data = f.read()
+
+  def load_data():
+    for _ in range(3):
+      try:
+        logging.info('Downloading %s to %s', url, output)
+        f = urlopen(url)
+        return f.read()
+      except Exception:
+        logging.error('Download attempt failed')
+        time.sleep(5)
+    raise RuntimeError(f'Can\'t download {url}')
+
+  data = load_data()
   os.makedirs(os.path.dirname(output), exist_ok=True)
   with open(output, 'wb') as output_file:
     output_file.write(data)
