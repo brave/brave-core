@@ -3,16 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import { loadTimeData } from '../../../../common/loadTimeData'
+import { Untrusted } from '../untrusted_shared_types'
 import {
   Unsuccessful,
   EthereumSignTransaction,
   CommonParams,
   Success,
-  HDNodeResponse,
-  EthereumSignedTx,
   EthereumSignMessage,
-  EthereumSignTypedHash,
-  MessageSignature
+  EthereumSignTypedHash
 } from './trezor-connect-types'
 export const kTrezorBridgeUrl = loadTimeData.getString(
   'braveWalletTrezorBridgeUrl'
@@ -63,7 +61,7 @@ export type UnlockCommand = CommandMessage & {
 }
 
 // GetAccounts command
-export type TrezorGetAccountsResponse = Unsuccessful | Success<HDNodeResponse[]>
+export type TrezorGetAccountsResponse = Unsuccessful | Success<TrezorAccount[]>
 export type GetAccountsResponsePayload = CommandMessage & {
   payload: TrezorGetAccountsResponse
 }
@@ -79,7 +77,9 @@ export type SignTransactionCommand = CommandMessage & {
   command: TrezorCommand.SignTransaction
   payload: SignTransactionCommandPayload
 }
-export type SignTransactionResponse = Unsuccessful | Success<EthereumSignedTx>
+export type SignTransactionResponse =
+  | Unsuccessful
+  | Success<Untrusted.EthereumSignatureVRS>
 export type SignTransactionResponsePayload = CommandMessage & {
   payload: SignTransactionResponse
 }
@@ -90,7 +90,9 @@ export type SignMessageCommand = CommandMessage & {
   command: TrezorCommand.SignMessage
   payload: SignMessageCommandPayload
 }
-export type SignMessageResponse = Unsuccessful | Success<MessageSignature>
+export type SignMessageResponse =
+  | Unsuccessful
+  | Success<Untrusted.EthereumSignatureBytes>
 export type SignMessageResponsePayload = CommandMessage & {
   payload: SignMessageResponse
 }
@@ -102,7 +104,9 @@ export type SignTypedMessageCommand = CommandMessage & {
   command: TrezorCommand.SignTypedMessage
   payload: SignTypedMessageCommandPayload
 }
-export type SignTypedMessageResponse = Unsuccessful | Success<MessageSignature>
+export type SignTypedMessageResponse =
+  | Unsuccessful
+  | Success<Untrusted.EthereumSignatureBytes>
 export type SignTypedMessageResponsePayload = CommandMessage & {
   payload: SignTypedMessageResponse
 }

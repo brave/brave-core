@@ -10,9 +10,9 @@ import { BraveWallet } from '../../../constants/types'
 
 // mocks
 import {
+  mockSolanaAccount,
   mockSolDappSignAllTransactionsRequest,
-  mockSolDappSignAndSendTransactionRequest,
-  mockSolDappSignTransactionRequest
+  mockSolDappSignAndSendTransactionRequest
 } from '../../../common/constants/mocks'
 import {
   mockSolanaMainnetNetwork //
@@ -43,8 +43,7 @@ export const _SignAllSolanaTxPanel = {
             mockSolDappSignAndSendTransactionRequest.id
         }}
         walletApiDataOverrides={{
-          signTransactionRequests: [mockSolDappSignTransactionRequest],
-          signAllTransactionsRequests: [mockSolDappSignAllTransactionsRequest],
+          signSolTransactionsRequests: [mockSolDappSignAllTransactionsRequest],
           transactionInfos: [
             deserializeTransaction({
               ...mockSolDappSignAndSendTransactionRequest,
@@ -54,41 +53,13 @@ export const _SignAllSolanaTxPanel = {
         }}
       >
         <SignTransactionPanel
-          signMode={'signAllTxs'}
           isSigningDisabled={false}
           network={mockSolanaMainnetNetwork}
           queueNextSignTransaction={function (): void {
             throw new Error('Function not implemented.')
           }}
-          selectedQueueData={mockSolDappSignAllTransactionsRequest}
-          queueLength={1}
-          queueNumber={0}
-        />
-      </WalletPanelStory>
-    )
-  }
-}
-
-export const _SignSolanaTxPanel = {
-  render: () => {
-    return (
-      <WalletPanelStory
-        walletApiDataOverrides={{
-          signTransactionRequests: [mockSolDappSignTransactionRequest],
-          signAllTransactionsRequests: [mockSolDappSignAllTransactionsRequest],
-          transactionInfos: [
-            deserializeTransaction(mockSolDappSignAndSendTransactionRequest)
-          ]
-        }}
-      >
-        <SignTransactionPanel
-          signMode='signTx'
-          isSigningDisabled={false}
-          network={mockSolanaMainnetNetwork}
-          queueNextSignTransaction={function (): void {
-            throw new Error('Function not implemented.')
-          }}
-          selectedQueueData={mockSolDappSignTransactionRequest}
+          selectedRequest={mockSolDappSignAllTransactionsRequest}
+          signingAccount={mockSolanaAccount}
           queueLength={1}
           queueNumber={0}
         />
@@ -113,8 +84,8 @@ export const _SignInWithEthereumPanel = {
       <WalletPanelStory>
         <SignInWithEthereum
           data={mockSignMessageRequest}
-          onCancel={() => { }}
-          onSignIn={() => { }}
+          onCancel={() => {}}
+          onSignIn={() => {}}
         />
       </WalletPanelStory>
     )
@@ -122,7 +93,7 @@ export const _SignInWithEthereumPanel = {
 }
 
 export default {
-  title: "Sign Transaction Panel",
+  title: 'Sign Transaction Panel',
   parameters: {
     layout: 'centered'
   }

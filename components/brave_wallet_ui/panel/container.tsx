@@ -49,9 +49,8 @@ import {
   useGetPendingSignMessageErrorsQuery,
   useGetPendingSignMessageRequestsQuery,
   useGetPendingSwitchChainRequestQuery,
-  useGetPendingSignAllTransactionsRequestsQuery,
-  useGetPendingTokenSuggestionRequestsQuery,
-  useGetPendingSignTransactionRequestsQuery
+  useGetPendingSignSolTransactionsRequestsQuery,
+  useGetPendingTokenSuggestionRequestsQuery
 } from '../common/slices/api.slice'
 import {
   useAccountsQuery,
@@ -110,13 +109,9 @@ function Container() {
     isLoading: isLoadingPendingPublicKeyRequest
   } = useGetPendingGetEncryptionPublicKeyRequestQuery()
   const {
-    data: signTransactionRequests,
-    isLoading: isLoadingSignTransactionRequests
-  } = useGetPendingSignTransactionRequestsQuery()
-  const {
-    data: signAllTransactionsRequests,
-    isLoading: isLoadingSignAllTransactionsRequests
-  } = useGetPendingSignAllTransactionsRequestsQuery()
+    data: signSolTransactionsRequests,
+    isLoading: isLoadingSignSolTransactionsRequests
+  } = useGetPendingSignSolTransactionsRequestsQuery()
   const { data: signMessageData, isLoading: isLoadingSignMessageData } =
     useGetPendingSignMessageRequestsQuery()
   const {
@@ -134,8 +129,7 @@ function Container() {
   const isLoadingPendingActions =
     isLoadingPendingTransactions ||
     isLoadingPendingPublicKeyRequest ||
-    isLoadingSignTransactionRequests ||
-    isLoadingSignAllTransactionsRequests ||
+    isLoadingSignSolTransactionsRequests ||
     isLoadingSignMessageData ||
     isLoadingSignMessageErrorData ||
     isLoadingAddTokenRequests
@@ -199,8 +193,7 @@ function Container() {
     selectedAccount &&
     (selectedPendingTransaction ||
       signMessageData?.length ||
-      signAllTransactionsRequests?.length ||
-      signTransactionRequests?.length)
+      signSolTransactionsRequests?.length)
   ) {
     return (
       <PanelWrapper isLonger={false}>
@@ -314,15 +307,11 @@ function Container() {
     )
   }
 
-  if (signAllTransactionsRequests?.length || signTransactionRequests?.length) {
+  if (signSolTransactionsRequests?.length) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper padding='0px'>
-          <PendingSignatureRequestsPanel
-            signMode={
-              signAllTransactionsRequests?.length ? 'signAllTxs' : 'signTx'
-            }
-          />
+          <PendingSignatureRequestsPanel />
         </LongWrapper>
       </PanelWrapper>
     )

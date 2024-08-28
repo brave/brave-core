@@ -103,9 +103,7 @@ export const PendingTransactionPanel: React.FC<Props> = ({
       networkHasTxSimulationSupport &&
       selectedPendingTxCoinType === CoinTypes.ETH
       ? {
-          chainId: selectedPendingTransaction.chainId,
-          coinType: selectedPendingTxCoinType,
-          id: selectedPendingTransaction.id
+          txMetaId: selectedPendingTransaction.id
         }
       : skipToken
   )
@@ -120,9 +118,7 @@ export const PendingTransactionPanel: React.FC<Props> = ({
       networkHasTxSimulationSupport &&
       selectedPendingTxCoinType === CoinTypes.SOL
       ? {
-          chainId: selectedPendingTransaction.chainId,
-          id: selectedPendingTransaction.id,
-          mode: 'transactionInfo'
+          txMetaId: selectedPendingTransaction.id
         }
       : skipToken
   )

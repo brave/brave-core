@@ -4,10 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import BitcoinLedgerBridgeKeyring from './btc_ledger_bridge_keyring'
-import { MockLedgerTransport } from './ledger_bridge_keyring.test'
+import { MockLedgerTransport } from './mock_ledger_transport'
 import {
   BtcLedgerMainnetHardwareImportScheme,
-  GetAccountsHardwareOperationResult
+  HardwareOperationError,
+  HardwareOperationResultAccounts
 } from '../types'
 import {
   LedgerCommand,
@@ -32,8 +33,8 @@ const unlockErrorResponse: UnlockResponse = {
   command: LedgerCommand.Unlock,
   payload: {
     success: false,
-    message: 'LedgerError',
-    statusCode: 101
+    error: 'LedgerError',
+    code: 101
   }
 }
 
@@ -47,13 +48,16 @@ const unlockSuccessResponse: UnlockResponse = {
 test('getAccounts unlock error', async () => {
   const { keyring, transport } = createKeyring()
   transport.addSendCommandResponse(unlockErrorResponse)
-  const result: GetAccountsHardwareOperationResult = await keyring.getAccounts(
+  const result = await keyring.getAccounts(
     0,
     1,
     BtcLedgerMainnetHardwareImportScheme
   )
-  const expectedResult: GetAccountsHardwareOperationResult =
-    unlockErrorResponse.payload
+  const expectedResult: HardwareOperationError = {
+    success: false,
+    error: 'LedgerError',
+    code: 101
+  }
   expect(result).toEqual(expectedResult)
 })
 
@@ -88,9 +92,9 @@ test('getAccounts success', async () => {
     2,
     BtcLedgerMainnetHardwareImportScheme
   )
-  expect(result).toEqual({
+  const expectedResult: HardwareOperationResultAccounts = {
     success: true,
-    payload: [
+    accounts: [
       {
         address: 'xpub1',
         derivationPath: "84'/0'/0'"
@@ -100,7 +104,8 @@ test('getAccounts success', async () => {
         derivationPath: "84'/0'/1'"
       }
     ]
-  })
+  }
+  expect(result).toEqual(expectedResult)
 })
 
 test('getAccounts ledger error after successful unlock', async () => {
@@ -113,25 +118,22 @@ test('getAccounts ledger error after successful unlock', async () => {
     command: LedgerCommand.GetAccount,
     payload: {
       success: false,
-      message: 'LedgerError',
-      statusCode: 101
+      error: 'LedgerError',
+      code: 101
     }
   }
 
   transport.addSendCommandResponse(getAccountResponseLedgerError)
-  const result: GetAccountsHardwareOperationResult = await keyring.getAccounts(
+  const result = await keyring.getAccounts(
     0,
     1,
     BtcLedgerMainnetHardwareImportScheme
   )
 
-  expect(result).toEqual({
-    code: 101,
+  const expectedResult: HardwareOperationError = {
     success: false,
-    error: {
-      success: false,
-      message: 'LedgerError',
-      statusCode: 101
-    }
-  })
+    code: 101,
+    error: 'LedgerError'
+  }
+  expect(result).toEqual(expectedResult)
 })

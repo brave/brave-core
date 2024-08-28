@@ -14,6 +14,7 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -298,8 +299,8 @@ TEST(EthTransactionUnitTest, FromTxData) {
 
 TEST(EthTransactionUnitTest, ProcessVRS) {
   EthTransaction tx;
-  ASSERT_FALSE(tx.ProcessVRS("", "", ""));
-  ASSERT_FALSE(tx.ProcessVRS("00", "aefrwr", "342fds"));
+  ASSERT_FALSE(tx.ProcessVRS({}, {}, {}));
+  ASSERT_FALSE(tx.ProcessVRS({0}, {}, {}));
   EXPECT_EQ(tx.v(), (uint256_t)0);
   ASSERT_TRUE(tx.r().empty());
   ASSERT_TRUE(tx.s().empty());
@@ -309,7 +310,9 @@ TEST(EthTransactionUnitTest, ProcessVRS) {
       "0x93b9121e82df014428924df439ff044f89c205dd76a194f8b11f50d2eade744e";
   std::string s =
       "0x7aa705c9144742836b7fbbd0745c57f67b60df7b8d1790fe59f91ed8d2bfc11d";
-  ASSERT_TRUE(tx.ProcessVRS("0x00", r, s));
+  ASSERT_TRUE(tx.ProcessVRS(*PrefixedHexStringToBytes("0x00"),
+                            *PrefixedHexStringToBytes(r),
+                            *PrefixedHexStringToBytes(s)));
   EXPECT_EQ(tx.v(), (uint256_t)0);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.r())), r.substr(2));
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.s())), s.substr(2));
@@ -323,18 +326,13 @@ TEST(EthTransactionUnitTest, ProcessVRS) {
 
 TEST(EthTransactionUnitTest, ProcessVRSFail) {
   EthTransaction tx;
-  ASSERT_FALSE(tx.ProcessVRS("", "", ""));
-  ASSERT_FALSE(tx.ProcessVRS("00", "aefrwr", "342fds"));
+  ASSERT_FALSE(tx.ProcessVRS({}, {}, {}));
+  ASSERT_FALSE(tx.ProcessVRS({0}, {0}, {}));
+  ASSERT_FALSE(tx.ProcessVRS({0}, {}, {0}));
+  ASSERT_FALSE(tx.ProcessVRS({}, {}, {0}));
   EXPECT_EQ(tx.v(), (uint256_t)0);
   ASSERT_TRUE(tx.r().empty());
   ASSERT_TRUE(tx.s().empty());
-  tx.set_nonce(0u);
-
-  std::string r =
-      "93b9121e82df014428924df439ff044f89c205dd76a194f8b11f50d2eade744e";
-  std::string s =
-      "7aa705c9144742836b7fbbd0745c57f67b60df7b8d1790fe59f91ed8d2bfc11d";
-  ASSERT_FALSE(tx.ProcessVRS("0x00", r, s));
 }
 
 }  // namespace brave_wallet

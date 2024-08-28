@@ -9,7 +9,6 @@ import Btc from '@ledgerhq/hw-app-btc'
 import {
   BtcGetAccountCommand,
   BtcGetAccountResponse,
-  BtcGetAccountResponsePayload,
   LedgerCommand,
   UnlockResponse
 } from './ledger-messages'
@@ -42,23 +41,18 @@ export class BitcoinLedgerUntrustedMessagingTransport //
         path: command.path,
         xpubVersion: command.xpubVersion
       })
-      const getAccountResponsePayload: BtcGetAccountResponsePayload = {
-        success: true,
-        xpub: result
-      }
       const response: BtcGetAccountResponse = {
-        id: command.id,
-        command: command.command,
-        payload: getAccountResponsePayload,
-        origin: command.origin
+        ...command,
+        payload: { success: true, xpub: result }
       }
       return response
     } catch (error) {
       const response: BtcGetAccountResponse = {
-        id: command.id,
-        command: command.command,
-        payload: error,
-        origin: command.origin
+        ...command,
+        payload: {
+          success: false,
+          error: (error as Error).message
+        }
       }
       return response
     } finally {

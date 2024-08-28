@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import type { BraveWallet } from '../constants/types'
-
 /**
  * mojo unions must be an Object with only a single property defined.
  * This ensures that an object meets that requirement
@@ -22,10 +20,4 @@ export const toMojoUnion = <T extends {}>(
   return {
     [unionMemberKey]: union[unionMemberKey]
   } as T
-}
-
-export function toByteArrayStringUnion<
-  D extends keyof BraveWallet.ByteArrayStringUnion
->(unionItem: Pick<BraveWallet.ByteArrayStringUnion, D>) {
-  return Object.assign({}, unionItem) as BraveWallet.ByteArrayStringUnion
 }

@@ -32,14 +32,12 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OriginInfo;
-import org.chromium.brave_wallet.mojom.SignAllTransactionsRequest;
-import org.chromium.brave_wallet.mojom.SignTransactionRequest;
+import org.chromium.brave_wallet.mojom.SignSolTransactionsRequest;
 import org.chromium.brave_wallet.mojom.SolanaInstruction;
 import org.chromium.brave_wallet.mojom.SolanaTxData;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType;
 import org.chromium.chrome.browser.crypto_wallet.adapters.FragmentNavigationItemAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItem;
@@ -53,19 +51,17 @@ import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment {
+public class SignSolTransactionsFragment extends BaseDAppsBottomSheetDialogFragment {
     private static final String TAG = "SignTransaction";
 
     private static final String PARAM_ACITITY_TYPE = "sign_param";
     private List<NavigationItem> mTabTitles;
-    private List<SignTransactionRequest> mSignTransactionRequests;
-    private List<SignAllTransactionsRequest> mSignAllTransactionRequests;
+    private List<SignSolTransactionsRequest> mSignSolTransactionRequests;
     private ViewPager2 mViewPager;
     private TabLayout mTabLayout;
     private ImageView mAccountImage;
@@ -76,30 +72,19 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
     private TextView mWebSite;
     private ExecutorService mExecutor;
     private Handler mHandler;
-    private List<TwoLineItem> details;
+    private List<TwoLineItem> mDetails;
     private LinearLayout mWarningLl;
     private TextView mTxLearnMore;
     private TextView mTvTxCounter;
-    private ActivityType mActivityType;
     private WalletModel mWalletModel;
     private SignTx mSignTxStep = SignTx.SIGN_RISK;
     private int mTxRequestNumber;
-    private SignTransactionRequest mSignTransactionRequest;
-    private SignAllTransactionsRequest mSignAllTransactionsRequest;
+    private SignSolTransactionsRequest mSignSolTransactionsRequest;
     private Button mBtnCounterNext;
     private List<SolanaTxData> mTxDatas;
-    private final View.OnClickListener onNextTxClick =
-            v -> {
-                incrementCounter();
-                updateSignDataAndDetails();
-            };
 
-    public static SignTransactionFragment newInstance(ActivityType activityType) {
-        SignTransactionFragment fragment = new SignTransactionFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(PARAM_ACITITY_TYPE, activityType);
-        fragment.setArguments(args);
-        return fragment;
+    public static SignSolTransactionsFragment newInstance() {
+        return new SignSolTransactionsFragment();
     }
 
     @Override
@@ -107,12 +92,11 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         super.onCreate(savedInstanceState);
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
-        details = new ArrayList<>();
+        mDetails = new ArrayList<>();
         mTabTitles = new ArrayList<>();
         mTabTitles.add(
-                new NavigationItem(getString(R.string.details), new TwoLineItemFragment(details)));
-        mSignTransactionRequests = Collections.emptyList();
-        mSignAllTransactionRequests = Collections.emptyList();
+                new NavigationItem(getString(R.string.details), new TwoLineItemFragment(mDetails)));
+        mSignSolTransactionRequests = Collections.emptyList();
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
@@ -133,10 +117,8 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         mViewPager.setUserInputEnabled(false);
         FragmentNavigationItemAdapter adapter = new FragmentNavigationItemAdapter(this, mTabTitles);
         mViewPager.setAdapter(adapter);
-        new TabLayoutMediator(
-                        mTabLayout,
-                        mViewPager,
-                        (tab, position) -> tab.setText(mTabTitles.get(position).getTitle()))
+        new TabLayoutMediator(mTabLayout, mViewPager,
+                (tab, position) -> tab.setText(mTabTitles.get(position).getTitle()))
                 .attach();
 
         mTvTxCounter = view.findViewById(R.id.fragment_sign_tx_msg_tv_counter);
@@ -153,18 +135,13 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
 
     private void initComponents() {
         assert getArguments() != null;
-        mActivityType = (ActivityType) getArguments().getSerializable(PARAM_ACITITY_TYPE);
         updateTxPanelPerStep();
         fetchSignRequestData();
         Spanned associatedSPLTokenAccountInfo =
-                Utils.createSpanForSurroundedPhrase(
-                        requireContext(),
-                        R.string.learn_more,
-                        (v) -> {
-                            TabUtils.openUrlInNewTab(
-                                    false, WalletConstants.URL_SIGN_TRANSACTION_REQUEST);
-                            TabUtils.bringChromeTabbedActivityToTheTop(getActivity());
-                        });
+                Utils.createSpanForSurroundedPhrase(requireContext(), R.string.learn_more, (v) -> {
+                    TabUtils.openUrlInNewTab(false, WalletConstants.URL_SIGN_TRANSACTION_REQUEST);
+                    TabUtils.bringChromeTabbedActivityToTheTop(getActivity());
+                });
         mTxLearnMore.setMovementMethod(LinkMovementMethod.getInstance());
         mTxLearnMore.setText(associatedSPLTokenAccountInfo);
 
@@ -176,48 +153,31 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
                 v -> {
                     processRequest(false);
                 });
-        mTvTxCounter.setOnClickListener(onNextTxClick);
-        mBtnCounterNext.setOnClickListener(onNextTxClick);
+
+        mTvTxCounter.setOnClickListener(
+                v -> {
+                    incrementCounter();
+                    updateSignDataAndDetails();
+                });
+        mBtnCounterNext.setOnClickListener(
+                v -> {
+                    incrementCounter();
+                    updateSignDataAndDetails();
+                });
     }
 
     // Update tx counter UI based on the current value of mTxRequestNumber
     private void updateSignRequestData() {
-        if (!mSignTransactionRequests.isEmpty() && !mSignAllTransactionRequests.isEmpty()) {
+        if (mSignSolTransactionRequests.isEmpty()) {
             return;
         }
-        int size = 0;
-        AccountId fromAccountId = null;
-        @CoinType.EnumType int coin = CoinType.SOL;
-        String chainId = null;
-        OriginInfo originInfo = null;
-        switch (mActivityType) {
-            case SIGN_TRANSACTION:
-                if (mTxRequestNumber >= mSignTransactionRequests.size()) {
-                    mTxRequestNumber = 0;
-                }
-                mSignTransactionRequest = mSignTransactionRequests.get(mTxRequestNumber);
-                size = mSignTransactionRequests.size();
-                mTxDatas = Arrays.asList(TransactionUtils.safeSolData(mSignTransactionRequest));
-                coin = mSignTransactionRequest.coin;
-                fromAccountId = mSignTransactionRequest.fromAccountId;
-                originInfo = mSignTransactionRequest.originInfo;
-                chainId = mSignTransactionRequest.chainId;
-                break;
-            case SIGN_ALL_TRANSACTIONS:
-                if (mTxRequestNumber >= mSignAllTransactionRequests.size()) {
-                    mTxRequestNumber = 0;
-                }
-                mSignAllTransactionsRequest = mSignAllTransactionRequests.get(mTxRequestNumber);
-                size = mSignAllTransactionRequests.size();
-                mTxDatas = TransactionUtils.safeSolData(mSignAllTransactionsRequest);
-                coin = mSignAllTransactionsRequest.coin;
-                fromAccountId = mSignAllTransactionsRequest.fromAccountId;
-                originInfo = mSignAllTransactionsRequest.originInfo;
-                chainId = mSignAllTransactionsRequest.chainId;
-                break;
-            default: // Do nothing
+
+        if (mTxRequestNumber >= mSignSolTransactionRequests.size()) {
+            mTxRequestNumber = 0;
         }
-        if (size == 1) {
+        mSignSolTransactionsRequest = mSignSolTransactionRequests.get(mTxRequestNumber);
+        mTxDatas = TransactionUtils.safeSolData(mSignSolTransactionsRequest);
+        if (mSignSolTransactionRequests.size() == 1) {
             mTvTxCounter.setVisibility(View.GONE);
             mBtnCounterNext.setVisibility(View.GONE);
         } else {
@@ -227,10 +187,14 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
             }
         }
         mTvTxCounter.setText(
-                getString(R.string.brave_wallet_queue_of, (mTxRequestNumber + 1), size));
+                getString(
+                        R.string.brave_wallet_queue_of,
+                        (mTxRequestNumber + 1),
+                        mSignSolTransactionRequests.size()));
         updateActionState(mTxRequestNumber == 0);
-        updateAccount(fromAccountId);
-        updateNetwork(coin, chainId);
+        updateAccount(mSignSolTransactionsRequest.fromAccountId);
+        updateNetwork(CoinType.SOL, mSignSolTransactionsRequest.chainId);
+        OriginInfo originInfo = mSignSolTransactionsRequest.originInfo;
         if (originInfo != null && URLUtil.isValidUrl(originInfo.originSpec)) {
             mWebSite.setVisibility(View.VISIBLE);
             mWebSite.setText(Utils.geteTldSpanned(originInfo));
@@ -241,15 +205,15 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         if (mTxDatas == null || mTxDatas.isEmpty()) {
             return;
         }
-        details.clear();
+        mDetails.clear();
 
         for (SolanaTxData txData : mTxDatas) {
             for (SolanaInstruction solanaInstruction : txData.instructions) {
                 SolanaInstructionPresenter solanaInstructionPresenter =
                         new SolanaInstructionPresenter(solanaInstruction);
-                details.addAll(solanaInstructionPresenter.toTwoLineList(requireContext()));
+                mDetails.addAll(solanaInstructionPresenter.toTwoLineList(requireContext()));
                 if (mTxDatas.size() > 1 || txData.instructions.length > 1) {
-                    details.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());
+                    mDetails.add(new TwoLineItemRecyclerViewAdapter.TwoLineItemDivider());
                 }
             }
         }
@@ -259,22 +223,12 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
     }
 
     private void incrementCounter() {
-        switch (mActivityType) {
-            case SIGN_TRANSACTION:
-                if (mSignTransactionRequests.size() == 0) return;
-                if (mTxRequestNumber >= mSignTransactionRequests.size()) {
-                    mTxRequestNumber = 0;
-                    return;
-                }
-                break;
-            case SIGN_ALL_TRANSACTIONS:
-                if (mSignAllTransactionRequests.size() == 0) return;
-                if (mTxRequestNumber >= mSignAllTransactionRequests.size()) {
-                    mTxRequestNumber = 0;
-                    return;
-                }
-                break;
-            default: // Do nothing
+        if (mSignSolTransactionRequests.isEmpty()) {
+            return;
+        }
+        if (mTxRequestNumber >= mSignSolTransactionRequests.size()) {
+            mTxRequestNumber = 0;
+            return;
         }
         mTxRequestNumber++;
     }
@@ -284,45 +238,26 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         mBtCancel.setEnabled(isEnabled);
         mBtSign.setEnabled(isEnabled);
         if (isEnabled) {
-            mBtSign.setBackgroundTintList(
-                    ColorStateList.valueOf(
-                            ContextCompat.getColor(requireContext(), R.color.brave_action_color)));
+            mBtSign.setBackgroundTintList(ColorStateList.valueOf(
+                    ContextCompat.getColor(requireContext(), R.color.brave_action_color)));
 
         } else {
-            mBtSign.setBackgroundTintList(
-                    ColorStateList.valueOf(
-                            ContextCompat.getColor(requireContext(), R.color.modern_grey_700)));
+            mBtSign.setBackgroundTintList(ColorStateList.valueOf(
+                    ContextCompat.getColor(requireContext(), R.color.modern_grey_700)));
         }
     }
 
     private void fetchSignRequestData() {
-        switch (mActivityType) {
-            case SIGN_TRANSACTION:
-                mWalletModel
-                        .getDappsModel()
-                        .fetchSignTxRequest()
-                        .observe(
-                                getViewLifecycleOwner(),
-                                requests -> {
-                                    if (requests.size() == 0) return;
-                                    mSignTransactionRequests = requests;
-                                    updateSignDataAndDetails();
-                                });
-                break;
-            case SIGN_ALL_TRANSACTIONS:
-                mWalletModel
-                        .getDappsModel()
-                        .fetchSignAllTxRequest()
-                        .observe(
-                                getViewLifecycleOwner(),
-                                requests -> {
-                                    if (requests.size() == 0) return;
-                                    mSignAllTransactionRequests = requests;
-                                    updateSignDataAndDetails();
-                                });
-                break;
-            default: // Do nothing
-        }
+        mWalletModel
+                .getDappsModel()
+                .fetchSignSolTransactionsRequests()
+                .observe(
+                        getViewLifecycleOwner(),
+                        requests -> {
+                            if (requests.size() == 0) return;
+                            mSignSolTransactionRequests = requests;
+                            updateSignDataAndDetails();
+                        });
     }
 
     private void updateTxPanelPerStep() {
@@ -331,17 +266,15 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
             mTvTxCounter.setVisibility(View.GONE);
             mBtnCounterNext.setVisibility(View.GONE);
             mWarningLl.setVisibility(View.VISIBLE);
-            mBtSign.setBackgroundTintList(
-                    ColorStateList.valueOf(
-                            ContextCompat.getColor(requireContext(), R.color.brave_theme_error)));
+            mBtSign.setBackgroundTintList(ColorStateList.valueOf(
+                    ContextCompat.getColor(requireContext(), R.color.brave_theme_error)));
             mBtSign.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             mBtSign.setText(R.string.continue_text);
         } else if (mSignTxStep == SignTx.SIGN_TX) {
             mWarningLl.setVisibility(View.GONE);
             mViewPager.setVisibility(View.VISIBLE);
-            mBtSign.setBackgroundTintList(
-                    ColorStateList.valueOf(
-                            ContextCompat.getColor(requireContext(), R.color.brave_action_color)));
+            mBtSign.setBackgroundTintList(ColorStateList.valueOf(
+                    ContextCompat.getColor(requireContext(), R.color.brave_action_color)));
             mBtSign.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_key, 0, 0, 0);
             mBtSign.setText(R.string.brave_wallet_sign_message_positive_button_action);
         }
@@ -355,17 +288,10 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
             updateSignDataAndDetails();
             return;
         }
-        switch (mActivityType) {
-            case SIGN_TRANSACTION:
-                mWalletModel.getDappsModel().signTxRequest(isApproved, mSignTransactionRequest);
-                break;
-            case SIGN_ALL_TRANSACTIONS:
-                mWalletModel
-                        .getDappsModel()
-                        .signAllTxRequest(isApproved, mSignAllTransactionsRequest);
-                break;
-            default: // Do nothing
-        }
+
+        mWalletModel
+                .getDappsModel()
+                .notifySignSolTransactionsRequestProcessed(isApproved, mSignSolTransactionsRequest);
     }
 
     private void updateAccount(AccountId fromAccountId) {
@@ -375,22 +301,18 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         assert (fromAccountId.coin == CoinType.SOL);
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.getWalletModel()
-                    .getKeyringModel()
-                    .getAccounts(
-                            accountInfos -> {
-                                AccountInfo accountInfo =
-                                        Utils.findAccount(accountInfos, fromAccountId);
-                                if (accountInfo == null) {
-                                    return;
-                                }
-                                assert (accountInfo.address != null);
+            activity.getWalletModel().getKeyringModel().getAccounts(accountInfos -> {
+                AccountInfo accountInfo = Utils.findAccount(accountInfos, fromAccountId);
+                if (accountInfo == null) {
+                    return;
+                }
+                assert (accountInfo.address != null);
 
-                                Utils.setBlockiesBitmapResourceFromAccount(
-                                        mExecutor, mHandler, mAccountImage, accountInfo, true);
-                                String accountText = accountInfo.name + "\n" + accountInfo.address;
-                                mAccountName.setText(accountText);
-                            });
+                Utils.setBlockiesBitmapResourceFromAccount(
+                        mExecutor, mHandler, mAccountImage, accountInfo, true);
+                String accountText = accountInfo.name + "\n" + accountInfo.address;
+                mAccountName.setText(accountText);
+            });
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "updateAccount " + e);
         }
@@ -403,8 +325,7 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
             return;
         }
         LiveDataUtil.observeOnce(
-                mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks,
-                allNetworks -> {
+                mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks, allNetworks -> {
                     for (NetworkInfo networkInfo : allNetworks) {
                         if (networkInfo.coin == coin && networkInfo.chainId.equals(chainId)) {
                             mNetworkName.setText(networkInfo.chainName);
@@ -419,8 +340,5 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         updateSignDetails();
     }
 
-    private enum SignTx {
-        SIGN_RISK,
-        SIGN_TX
-    }
+    private enum SignTx { SIGN_RISK, SIGN_TX }
 }

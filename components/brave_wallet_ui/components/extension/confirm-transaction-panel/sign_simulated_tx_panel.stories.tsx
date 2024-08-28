@@ -34,14 +34,13 @@ export const _SignSimulatedTransactionPanel = {
         <PanelWrapper isLonger>
           <LongWrapper>
             <SignSimulatedTransactionPanel
-              signMode={'signTx'}
               txSimulation={mockReceiveSolSimulation}
               isSigningDisabled={false}
               network={mockSolanaMainnetNetwork}
               queueLength={1}
               queueNextSignTransaction={() => {}}
               queueNumber={1}
-              selectedQueueData={mockSolDappSignTransactionRequest}
+              signSolTransactionsRequest={mockSolDappSignTransactionRequest}
               signingAccount={mockAccount}
             />
           </LongWrapper>
@@ -59,14 +58,13 @@ export const _EmptySignSimulatedTransactionPanel = {
         <PanelWrapper isLonger>
           <LongWrapper>
             <SignSimulatedTransactionPanel
-              signMode={'signTx'}
               txSimulation={mockNoChangeSolSimulation}
               isSigningDisabled={false}
               network={mockSolanaMainnetNetwork}
               queueLength={1}
               queueNextSignTransaction={() => {}}
               queueNumber={1}
-              selectedQueueData={mockSolDappSignTransactionRequest}
+              signSolTransactionsRequest={mockSolDappSignTransactionRequest}
               signingAccount={mockAccount}
             />
           </LongWrapper>

@@ -3,12 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { SerializableTransactionInfo } from '../../constants/types'
+import { BraveWallet } from '../../constants/types'
 import {
   HardwareImportScheme,
-  GetAccountsHardwareOperationResult,
   HardwareOperationResult,
-  SignHardwareOperationResult
+  HardwareOperationResultEthereumSignatureVRS,
+  HardwareOperationResultAccounts,
+  HardwareOperationResultEthereumSignatureBytes,
+  HardwareOperationResultSolanaSignature,
+  HardwareOperationResultFilecoinSignature
 } from './types'
 import { BridgeType } from './untrusted_shared_types'
 
@@ -18,55 +21,56 @@ export abstract class HardwareKeyring {
     from: number,
     count: number,
     scheme: HardwareImportScheme
-  ): Promise<GetAccountsHardwareOperationResult>
+  ): Promise<HardwareOperationResultAccounts>
   abstract unlock(): Promise<HardwareOperationResult>
 }
 
 export abstract class TrezorKeyring extends HardwareKeyring {
   abstract signTransaction(
     path: string,
-    txInfo: SerializableTransactionInfo,
+    txid: string,
+    ethTxData1559: BraveWallet.TxData1559,
     chainId: string
-  ): Promise<SignHardwareOperationResult>
+  ): Promise<HardwareOperationResultEthereumSignatureVRS>
   abstract signPersonalMessage(
     path: string,
     message: string
-  ): Promise<SignHardwareOperationResult>
+  ): Promise<HardwareOperationResultEthereumSignatureBytes>
   abstract signEip712Message(
     path: string,
     domainSeparatorHex: string,
     hashStructMessageHex: string
-  ): Promise<SignHardwareOperationResult>
+  ): Promise<HardwareOperationResultEthereumSignatureBytes>
 }
 
 export abstract class LedgerEthereumKeyring extends HardwareKeyring {
+  abstract signTransaction(
+    path: string,
+    rawTxHex: string
+  ): Promise<HardwareOperationResultEthereumSignatureVRS>
   abstract signPersonalMessage(
     path: string,
     address: string,
     message: string
-  ): Promise<SignHardwareOperationResult>
-  abstract signTransaction(
-    path: string,
-    rawTxHex: string
-  ): Promise<SignHardwareOperationResult>
+  ): Promise<HardwareOperationResultEthereumSignatureBytes>
   abstract signEip712Message(
     path: string,
     domainSeparatorHex: string,
     hashStructMessageHex: string
-  ): Promise<SignHardwareOperationResult>
+  ): Promise<HardwareOperationResultEthereumSignatureBytes>
 }
 
 export abstract class LedgerFilecoinKeyring extends HardwareKeyring {
   abstract signTransaction(
     message: string
-  ): Promise<SignHardwareOperationResult>
+  ): Promise<HardwareOperationResultFilecoinSignature>
 }
 
 export abstract class LedgerSolanaKeyring extends HardwareKeyring {
   abstract signTransaction(
     path: string,
     rawTxBytes: Buffer
-  ): Promise<SignHardwareOperationResult>
+  ): Promise<HardwareOperationResultSolanaSignature>
 }
 
 export abstract class LedgerBitcoinKeyring extends HardwareKeyring {}

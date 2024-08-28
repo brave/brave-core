@@ -46,7 +46,7 @@ namespace {
 constexpr int kAddPriorityFeeComputeUnits = 300;
 // Minimum fee per compute units is 1 micro lamport.
 // There are 10^6 micro-lamports in one lamport.
-constexpr int kMininumFeePerComputeUnits = 1;
+constexpr int kMinimumFeePerComputeUnits = 1;
 // Add a 10% buffer to the compute units estimate returned by the simulation.
 constexpr double kComputeUnitsBufferMultiplier = 1.10;
 
@@ -149,7 +149,7 @@ void MergeGetTxFeeEstimationResponses(
   // If the call to fetch recent priority fees fails, we'll still propagate
   // the base fee and compute units, but use the default fee per compute unit.
   if (recent_priority_fees_it->error != mojom::SolanaProviderError::kSuccess) {
-    estimation->fee_per_compute_unit = kMininumFeePerComputeUnits;
+    estimation->fee_per_compute_unit = kMinimumFeePerComputeUnits;
     std::move(callback).Run(std::move(meta), std::move(estimation),
                             mojom::SolanaProviderError::kSuccess, "");
     return;
@@ -172,7 +172,7 @@ void MergeGetTxFeeEstimationResponses(
   }
 
   if (median == 0) {
-    estimation->fee_per_compute_unit = kMininumFeePerComputeUnits;
+    estimation->fee_per_compute_unit = kMinimumFeePerComputeUnits;
   } else {
     estimation->fee_per_compute_unit = median;
   }
@@ -365,8 +365,17 @@ void SolanaTxManager::OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
   meta->set_status(mojom::TransactionStatus::Approved);
   meta->tx()->message()->set_recent_blockhash(latest_blockhash);
   meta->tx()->message()->set_last_valid_block_height(last_valid_block_height);
-  meta->tx()->set_wired_tx(
-      meta->tx()->GetSignedTransaction(keyring_service_, meta->from()));
+  auto signed_transaction = meta->tx()->GetSignedTransactionBytes(
+      keyring_service_, meta->from(), nullptr);
+  if (!signed_transaction) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewSolanaProviderError(
+            mojom::SolanaProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+  meta->tx()->set_wired_tx(base::Base64Encode(*signed_transaction));
 
   if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
     std::move(callback).Run(
@@ -386,32 +395,30 @@ void SolanaTxManager::OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
 
 void SolanaTxManager::OnGetLatestBlockhashHardware(
     std::unique_ptr<SolanaTxMeta> meta,
-    GetTransactionMessageToSignCallback callback,
+    GetSolTransactionMessageToSignCallback callback,
     const std::string& latest_blockhash,
     uint64_t last_valid_block_height,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
   if (error != mojom::SolanaProviderError::kSuccess) {
-    std::move(callback).Run(nullptr);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
   meta->tx()->message()->set_recent_blockhash(latest_blockhash);
   meta->tx()->message()->set_last_valid_block_height(last_valid_block_height);
   if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
-    std::move(callback).Run(nullptr);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
   auto message_signers_pair = meta->tx()->GetSerializedMessage();
   if (!message_signers_pair) {
-    std::move(callback).Run(nullptr);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
-  auto& message_bytes = message_signers_pair->first;
-  std::move(callback).Run(
-      mojom::MessageToSignUnion::NewMessageBytes(std::move(message_bytes)));
+  std::move(callback).Run(message_signers_pair->first);
 }
 
 void SolanaTxManager::OnSendSolanaTransaction(
@@ -656,14 +663,14 @@ void SolanaTxManager::RetryTransaction(const std::string& tx_meta_id,
   std::move(callback).Run(true, meta->id(), "");
 }
 
-void SolanaTxManager::GetTransactionMessageToSign(
+void SolanaTxManager::GetSolTransactionMessageToSign(
     const std::string& tx_meta_id,
-    GetTransactionMessageToSignCallback callback) {
+    GetSolTransactionMessageToSignCallback callback) {
   std::unique_ptr<SolanaTxMeta> meta =
       GetSolanaTxStateManager()->GetSolanaTx(tx_meta_id);
   if (!meta || !meta->tx()) {
     VLOG(1) << __FUNCTION__ << "No transaction found with id:" << tx_meta_id;
-    std::move(callback).Run(nullptr);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -687,13 +694,13 @@ void SolanaTxManager::GetTransactionMessageToSign(
 
 void SolanaTxManager::OnGetBlockHeightForBlockhashHardware(
     std::unique_ptr<SolanaTxMeta> meta,
-    GetTransactionMessageToSignCallback callback,
+    GetSolTransactionMessageToSignCallback callback,
     const std::string& blockhash,
     uint64_t block_height,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
   if (error != mojom::SolanaProviderError::kSuccess) {
-    std::move(callback).Run(nullptr);
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
@@ -1285,7 +1292,7 @@ std::unique_ptr<SolanaTxMeta> SolanaTxManager::GetTxForTesting(
 
 void SolanaTxManager::ProcessSolanaHardwareSignature(
     const std::string& tx_meta_id,
-    const std::vector<uint8_t>& signature_bytes,
+    mojom::SolanaSignaturePtr hw_signature,
     ProcessSolanaHardwareSignatureCallback callback) {
   std::unique_ptr<SolanaTxMeta> meta =
       GetSolanaTxStateManager()->GetSolanaTx(tx_meta_id);
@@ -1299,7 +1306,7 @@ void SolanaTxManager::ProcessSolanaHardwareSignature(
   }
   std::optional<std::vector<std::uint8_t>> transaction_bytes =
       meta->tx()->GetSignedTransactionBytes(keyring_service_, meta->from(),
-                                            &signature_bytes);
+                                            hw_signature);
   if (!transaction_bytes) {
     std::move(callback).Run(
         false,

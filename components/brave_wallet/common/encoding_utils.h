@@ -20,6 +20,9 @@ bool Base58Decode(const std::string& str,
                   std::vector<uint8_t>* ret,
                   int len,
                   bool strict = true);
+std::optional<std::vector<uint8_t>> Base58Decode(const std::string& str,
+                                                 int len,
+                                                 bool strict = true);
 // A bridge function to call EncodeBase58 in bitcoin-core.
 std::string Base58Encode(const std::vector<uint8_t>& bytes);
 std::string Base58Encode(base::span<const uint8_t> bytes);

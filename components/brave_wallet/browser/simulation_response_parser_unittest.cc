@@ -1589,7 +1589,7 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaStateChanges) {
             "100.92");
   EXPECT_EQ(state_change_0_raw_info->diff->sign,
             mojom::BlowfishDiffSign::kPlus);
-  EXPECT_EQ(state_change_0_raw_info->diff->digits, 56573477ULL);
+  EXPECT_EQ(state_change_0_raw_info->diff->digits, "56573477");
 
   const auto& state_change_1 =
       simulation_response->expected_state_changes.at(1);
@@ -1617,7 +1617,7 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaStateChanges) {
             "0.99");
   EXPECT_EQ(state_change_1_raw_info->diff->sign,
             mojom::BlowfishDiffSign::kMinus);
-  EXPECT_EQ(state_change_1_raw_info->diff->digits, 2000000ULL);
+  EXPECT_EQ(state_change_1_raw_info->diff->digits, "2000000");
   EXPECT_EQ(state_change_1_raw_info->counterparty,
             "5wytVPbjLb2VCXbynhUQabEZZD2B6Wxrkvwm6v6Cuy5X");
 
@@ -1644,7 +1644,7 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaStateChanges) {
   EXPECT_FALSE(state_change_2_raw_info->asset->price);
   EXPECT_EQ(state_change_2_raw_info->diff->sign,
             mojom::BlowfishDiffSign::kPlus);
-  EXPECT_EQ(state_change_2_raw_info->diff->digits, 1525878906250000000ULL);
+  EXPECT_EQ(state_change_2_raw_info->diff->digits, "1525878906250000000");
 
   const auto& state_change_3 =
       simulation_response->expected_state_changes.at(3);
@@ -1675,7 +1675,7 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaStateChanges) {
             "1.01");
   EXPECT_EQ(state_change_3_raw_info->diff->sign,
             mojom::BlowfishDiffSign::kMinus);
-  EXPECT_EQ(state_change_3_raw_info->diff->digits, 1321ULL);
+  EXPECT_EQ(state_change_3_raw_info->diff->digits, "1321");
 
   const auto& state_change_4 =
       simulation_response->expected_state_changes.at(4);
@@ -1710,7 +1710,7 @@ TEST(SimulationResponseParserUnitTest, ParseSolanaStateChanges) {
             "1679331222");
   EXPECT_EQ(state_change_4_raw_info->asset->price->dollar_value_per_token,
             "100.92");
-  EXPECT_EQ(state_change_4_raw_info->sol_staked, 228895995552ULL);
+  EXPECT_EQ(state_change_4_raw_info->sol_staked, "228895995552");
 
   const auto& state_change_5 =
       simulation_response->expected_state_changes.at(5);

@@ -42,17 +42,17 @@ base::Value::Dict GetMetadata(const mojom::OriginInfoPtr& origin_info) {
 
 namespace evm {
 
-std::optional<std::pair<std::string, std::string>> EncodeScanTransactionParams(
-    const mojom::TransactionInfoPtr& tx_info) {
-  if (!tx_info || !tx_info->from_address) {
+std::optional<std::string> EncodeScanTransactionParams(
+    const mojom::TransactionInfo& tx_info) {
+  if (!tx_info.from_address) {
     return std::nullopt;
   }
 
   base::Value::Dict tx_object;
-  tx_object.Set("from", *tx_info->from_address);
+  tx_object.Set("from", *tx_info.from_address);
 
-  if (tx_info->tx_data_union->is_eth_tx_data_1559()) {
-    const auto& tx_data = tx_info->tx_data_union->get_eth_tx_data_1559();
+  if (tx_info.tx_data_union->is_eth_tx_data_1559()) {
+    const auto& tx_data = tx_info.tx_data_union->get_eth_tx_data_1559();
 
     // TODO(onyb): Convert hex to wei string
     //
@@ -93,8 +93,8 @@ std::optional<std::pair<std::string, std::string>> EncodeScanTransactionParams(
     } else {
       tx_object.Set("data", ToHex(tx_data->base_data->data));
     }
-  } else if (tx_info->tx_data_union->is_eth_tx_data()) {
-    const auto& tx_data = tx_info->tx_data_union->get_eth_tx_data();
+  } else if (tx_info.tx_data_union->is_eth_tx_data()) {
+    const auto& tx_data = tx_info.tx_data_union->get_eth_tx_data();
 
     tx_object.Set("value", tx_data->value);
 
@@ -119,15 +119,10 @@ std::optional<std::pair<std::string, std::string>> EncodeScanTransactionParams(
   base::Value::List tx_objects;
   tx_objects.Append(std::move(tx_object));
   params.Set("txObjects", std::move(tx_objects));
-  params.Set("metadata", GetMetadata(tx_info->origin_info));
-  params.Set("userAccount", *tx_info->from_address);
+  params.Set("metadata", GetMetadata(tx_info.origin_info));
+  params.Set("userAccount", *tx_info.from_address);
 
-  if (auto* user_account = params.FindString("userAccount")) {
-    return std::make_pair(GetJSON(base::Value(std::move(params))),
-                          *user_account);
-  }
-
-  return std::nullopt;
+  return GetJSON(base::Value(std::move(params)));
 }
 
 }  // namespace evm
@@ -136,14 +131,9 @@ namespace solana {
 
 namespace {
 
-std::optional<std::string> GetBase64TransactionFromTxDataUnion(
-    mojom::TxDataUnionPtr tx_data_union) {
-  if (!tx_data_union->is_solana_tx_data()) {
-    return std::nullopt;
-  }
-
-  auto tx = SolanaTransaction::FromSolanaTxData(
-      std::move(tx_data_union->get_solana_tx_data()));
+std::optional<std::string> GetBase64TransactionFromSolanaTxData(
+    mojom::SolanaTxDataPtr solana_tx_data) {
+  auto tx = SolanaTransaction::FromSolanaTxData(std::move(solana_tx_data));
 
   auto message_signers_pair = tx->GetSerializedMessage();
   if (!message_signers_pair) {
@@ -175,153 +165,86 @@ std::optional<std::string> GetBase64TransactionFromTxDataUnion(
 
 }  // namespace
 
-std::optional<bool> HasEmptyRecentBlockhash(
-    const mojom::SolanaTransactionRequestUnionPtr& request) {
-  if (!request) {
-    return std::nullopt;
+bool HasEmptyRecentBlockhash(
+    const mojom::SignSolTransactionsRequest& sign_sol_transactions_request) {
+  for (auto& solana_tx_data : sign_sol_transactions_request.tx_datas) {
+    if (solana_tx_data->recent_blockhash.empty()) {
+      return true;
+    }
   }
 
-  if (request->is_sign_transaction_request()) {
-    const auto& sign_transaction_request =
-        request->get_sign_transaction_request();
-
-    if (!sign_transaction_request->tx_data->is_solana_tx_data()) {
-      return std::nullopt;
-    }
-
-    return sign_transaction_request->tx_data->get_solana_tx_data()
-        ->recent_blockhash.empty();
-  } else if (request->is_sign_all_transactions_request()) {
-    const auto& sign_all_transactions_request =
-        request->get_sign_all_transactions_request();
-
-    for (auto& tx_data : sign_all_transactions_request->tx_datas) {
-      if (!tx_data->is_solana_tx_data()) {
-        return std::nullopt;
-      }
-
-      if (tx_data->get_solana_tx_data()->recent_blockhash.empty()) {
-        return true;
-      }
-    }
-
-    return false;
-  } else if (request->is_transaction_info()) {
-    const auto& tx_info = request->get_transaction_info();
-    if (!tx_info->tx_data_union->is_solana_tx_data()) {
-      return std::nullopt;
-    }
-
-    return tx_info->tx_data_union->get_solana_tx_data()
-        ->recent_blockhash.empty();
-  }
-
-  return std::nullopt;
+  return false;
 }
 
-void PopulateRecentBlockhash(mojom::SolanaTransactionRequestUnion& request,
+bool HasEmptyRecentBlockhash(const mojom::TransactionInfo& tx_info) {
+  CHECK(tx_info.tx_data_union->is_solana_tx_data());
+
+  return tx_info.tx_data_union->get_solana_tx_data()->recent_blockhash.empty();
+}
+
+void PopulateRecentBlockhash(
+    mojom::SignSolTransactionsRequest& sign_sol_transactions_request,
+    const std::string& recent_blockhash) {
+  for (auto& solana_tx_data : sign_sol_transactions_request.tx_datas) {
+    if (solana_tx_data->recent_blockhash.empty()) {
+      solana_tx_data->recent_blockhash = recent_blockhash;
+    }
+  }
+}
+
+void PopulateRecentBlockhash(mojom::TransactionInfo& tx_info,
                              const std::string& recent_blockhash) {
-  if (request.is_sign_transaction_request()) {
-    auto& sign_transaction_request = request.get_sign_transaction_request();
-    if (!sign_transaction_request->tx_data->is_solana_tx_data()) {
-      return;
-    }
-
-    if (sign_transaction_request->tx_data->get_solana_tx_data()
-            ->recent_blockhash.empty()) {
-      sign_transaction_request->tx_data->get_solana_tx_data()
-          ->recent_blockhash = recent_blockhash;
-    }
-  } else if (request.is_sign_all_transactions_request()) {
-    auto& sign_all_transactions_request =
-        request.get_sign_all_transactions_request();
-    for (auto& tx_data : sign_all_transactions_request->tx_datas) {
-      if (tx_data->is_solana_tx_data() &&
-          tx_data->get_solana_tx_data()->recent_blockhash.empty()) {
-        tx_data->get_solana_tx_data()->recent_blockhash = recent_blockhash;
-      }
-    }
-  } else if (request.is_transaction_info()) {
-    auto& tx_info = request.get_transaction_info();
-
-    if (tx_info->tx_data_union->get_solana_tx_data()
-            ->recent_blockhash.empty()) {
-      tx_info->tx_data_union->get_solana_tx_data()->recent_blockhash =
-          recent_blockhash;
-    }
+  CHECK(tx_info.tx_data_union->is_solana_tx_data());
+  if (tx_info.tx_data_union->get_solana_tx_data()->recent_blockhash.empty()) {
+    tx_info.tx_data_union->get_solana_tx_data()->recent_blockhash =
+        recent_blockhash;
   }
 }
 
-std::optional<std::pair<std::string, std::string>> EncodeScanTransactionParams(
-    const mojom::SolanaTransactionRequestUnionPtr& request) {
-  if (!request) {
-    return std::nullopt;
+std::optional<std::string> EncodeScanTransactionParams(
+    const mojom::SignSolTransactionsRequest& sign_sol_transactions_request) {
+  base::Value::List transactions;
+  for (auto& tx_data : sign_sol_transactions_request.tx_datas) {
+    auto serialized_tx = GetBase64TransactionFromSolanaTxData(tx_data.Clone());
+    if (!serialized_tx) {
+      return std::nullopt;
+    }
+
+    transactions.Append(*serialized_tx);
   }
 
   base::Value::Dict params;
+  params.Set("transactions", std::move(transactions));
+  params.Set("metadata",
+             GetMetadata(std::move(sign_sol_transactions_request.origin_info)));
+  params.Set("userAccount", sign_sol_transactions_request.from_address);
 
-  if (request->is_sign_transaction_request()) {
-    const auto& sign_transaction_request =
-        request->get_sign_transaction_request();
+  return GetJSON(base::Value(std::move(params)));
+}
 
-    auto serialized_tx = GetBase64TransactionFromTxDataUnion(
-        std::move(sign_transaction_request->tx_data));
-    if (!serialized_tx) {
-      return std::nullopt;
-    }
-
-    base::Value::List transactions;
-    transactions.Append(*serialized_tx);
-    params.Set("transactions", std::move(transactions));
-    params.Set("metadata", GetMetadata(sign_transaction_request->origin_info));
-    params.Set("userAccount", sign_transaction_request->from_address);
-  } else if (request->is_sign_all_transactions_request()) {
-    const auto& sign_all_transactions_request =
-        request->get_sign_all_transactions_request();
-
-    base::Value::List transactions;
-    for (auto& tx_data : sign_all_transactions_request->tx_datas) {
-      auto serialized_tx =
-          GetBase64TransactionFromTxDataUnion(std::move(tx_data));
-      if (!serialized_tx) {
-        return std::nullopt;
-      }
-
-      transactions.Append(*serialized_tx);
-    }
-
-    params.Set("transactions", std::move(transactions));
-    params.Set(
-        "metadata",
-        GetMetadata(std::move(sign_all_transactions_request->origin_info)));
-    params.Set("userAccount", sign_all_transactions_request->from_address);
-  } else if (request->is_transaction_info()) {
-    const auto& tx_info = request->get_transaction_info();
-    if (!tx_info->from_address) {
-      return std::nullopt;
-    }
-    auto serialized_tx =
-        GetBase64TransactionFromTxDataUnion(std::move(tx_info->tx_data_union));
-    if (!serialized_tx) {
-      return std::nullopt;
-    }
-
-    base::Value::List transactions;
-    transactions.Append(*serialized_tx);
-    params.Set("transactions", std::move(transactions));
-
-    params.Set("metadata", GetMetadata(tx_info->origin_info));
-    params.Set("userAccount", *tx_info->from_address);
-  } else {
+std::optional<std::string> EncodeScanTransactionParams(
+    const mojom::TransactionInfo& tx_info) {
+  if (!tx_info.from_address) {
+    return std::nullopt;
+  }
+  if (!tx_info.tx_data_union->is_solana_tx_data()) {
+    return std::nullopt;
+  }
+  auto serialized_tx = GetBase64TransactionFromSolanaTxData(
+      std::move(tx_info.tx_data_union->get_solana_tx_data()));
+  if (!serialized_tx) {
     return std::nullopt;
   }
 
-  if (auto* user_account = params.FindString("userAccount")) {
-    return std::make_pair(GetJSON(base::Value(std::move(params))),
-                          *user_account);
-  }
+  base::Value::List transactions;
+  transactions.Append(*serialized_tx);
 
-  return std::nullopt;
+  base::Value::Dict params;
+  params.Set("transactions", std::move(transactions));
+  params.Set("metadata", GetMetadata(tx_info.origin_info));
+  params.Set("userAccount", *tx_info.from_address);
+
+  return GetJSON(base::Value(std::move(params)));
 }
 
 }  // namespace solana
