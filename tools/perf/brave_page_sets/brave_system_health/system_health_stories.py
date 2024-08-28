@@ -49,21 +49,25 @@ class _BraveLoadingStory(system_health_story.SystemHealthStory):
 
 class _BraveMultiTabLoadingStory(_BraveLoadingStory):
 
-  TABS_COUNT = 5
+  TABS_COUNT = 10
 
   def RunPageInteractions(self, action_runner):
-    def load_and_measure(action_runner):
-        action_runner.tab.WaitForDocumentReadyStateToBeComplete()
-        self._DidLoadDocument(action_runner)
-        self._Measure(action_runner)
+
+    def load_and_wait(action_runner):
+      action_runner.tab.WaitForDocumentReadyStateToBeComplete()
+      self._DidLoadDocument(action_runner)
+      action_runner.Wait(5)
 
     tabs = action_runner.tab.browser.tabs
-    load_and_measure(action_runner)
+    load_and_wait(action_runner)
 
-    for _ in range (1, self.TABS_COUNT):
-        new_tab = tabs.New()
-        new_tab.action_runner.Navigate(self.url)
-        load_and_measure(new_tab.action_runner)
+    for count in range(1, self.TABS_COUNT):
+      new_tab = tabs.New()
+      new_tab.action_runner.Navigate(self.url)
+      load_and_wait(new_tab.action_runner)
+      # Measure only the last tab
+      if count == self.TABS_COUNT - 1:
+        self._Measure(new_tab.action_runner)
 
 
 class LoadExampleStory2023(_BraveLoadingStory):
@@ -125,7 +129,8 @@ class LoadBBCStory2023(_BraveLoadingStory):
   TAGS = [story_tags.YEAR_2023]
 
 
-class LoadBraveMultitabStory2023(_BraveMultiTabLoadingStory):
-  NAME = 'load:site:multitab:brave:2023'
-  URL = 'https://www.brave.com/'
+class MultiTabLoadExampleStory2023(_BraveMultiTabLoadingStory):
+  NAME = 'multitab_load:site:example.com:2023'
+  URL = 'https://example.com'
+  SCROLL_PAGE = False
   TAGS = [story_tags.YEAR_2023]
