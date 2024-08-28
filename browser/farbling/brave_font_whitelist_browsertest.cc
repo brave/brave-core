@@ -39,7 +39,6 @@ class MockContentSettingsAgentImpl : public BraveContentSettingsAgentImpl {
   explicit MockContentSettingsAgentImpl(content::RenderFrame* render_frame)
       : BraveContentSettingsAgentImpl(
             render_frame,
-            false,
             std::make_unique<ContentSettingsAgentImpl::Delegate>()) {}
 
   bool IsReduceLanguageEnabled() override { return true; }
