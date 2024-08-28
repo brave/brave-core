@@ -238,8 +238,8 @@ TEST_F(BraveNewsFeedBuildingTest, DirectFeedsShouldAlwaysBeDisplayed) {
 
   auto feed_item = mojom::FeedItem::NewArticle(mojom::Article::New(
       mojom::FeedItemMetadata::New(
-          "Technology", base::Time::Now(), "Title", "Description",
-          GURL("https://example.com/article"),
+          "Technology", std::vector<std::string>(), base::Time::Now(), "Title",
+          "Description", GURL("https://example.com/article"),
           "7bb5d8b3e2eee9d317f0568dcb094850fdf2862b2ed6d583c62b2245ea507ab8",
           mojom::Image::NewPaddedImageUrl(
               GURL("https://example.com/article/image")),
@@ -264,7 +264,7 @@ TEST_F(BraveNewsFeedBuildingTest, RemovesUserDisabledItems) {
 
   auto feed_item = mojom::FeedItem::NewArticle(mojom::Article::New(
       mojom::FeedItemMetadata::New(
-          "Technology", base::Time::Now(),
+          "Technology", std::vector<std::string>(), base::Time::Now(),
           "Expecting First Transfer Talk: How a busy Deadline Day unfolded",
           "The transfer window is closed and Saul Niguez is on his way to "
           "Chelsea, while Antoine Griezmann is set to go back to Atletico "
@@ -300,7 +300,7 @@ TEST_F(BraveNewsFeedBuildingTest, IncludesUserEnabledItems) {
 
   auto feed_item = mojom::FeedItem::NewArticle(mojom::Article::New(
       mojom::FeedItemMetadata::New(
-          "Technology", base::Time::Now(),
+          "Technology", std::vector<std::string>(), base::Time::Now(),
           "Expecting First Transfer Talk: How a busy Deadline Day unfolded",
           "The transfer window is closed and Saul Niguez is on his way to "
           "Chelsea, while Antoine Griezmann is set to go back to Atletico "
@@ -335,8 +335,8 @@ TEST_F(BraveNewsFeedBuildingTest, ChannelIsUsed) {
 
   auto feed_item = mojom::FeedItem::NewArticle(mojom::Article::New(
       mojom::FeedItemMetadata::New(
-          "Technology", base::Time::Now(), "Title", "Description",
-          GURL("https://example.com/article"),
+          "Technology", std::vector<std::string>(), base::Time::Now(), "Title",
+          "Description", GURL("https://example.com/article"),
           "7bb5d8b3e2eee9d317f0568dcb094850fdf2862b2ed6d583c62b2245ea507ab8",
           mojom::Image::NewPaddedImageUrl(
               GURL("https://example.com/article/image")),
