@@ -10,6 +10,7 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 import android.graphics.Paint;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.text.style.TextAppearanceSpan;
 import android.text.style.UnderlineSpan;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,11 +22,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
 
 import com.android.billingclient.api.ProductDetails;
-
-import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
@@ -33,12 +31,11 @@ import org.chromium.chrome.browser.billing.LinkSubscriptionUtils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
-import org.chromium.chrome.browser.vpn.adapters.BraveVpnPlanPagerAdapter;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.text.SpanApplier.SpanInfo;
 
-public class BraveVpnPlansActivity extends BraveVpnParentActivity {
+public class VpnPaywallActivity extends BraveVpnParentActivity {
     private ProgressBar mMonthlyPlanProgress;
     private ProgressBar mYearlyPlanProgress;
     private LinearLayout mPlanLayout;
@@ -76,7 +73,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     }
 
     private void initializeViews() {
-        setContentView(R.layout.activity_brave_vpn_plan);
+        setContentView(R.layout.activity_vpn_paywall);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -90,13 +87,6 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
 
         mYearlyPlanProgress = findViewById(R.id.yearly_plan_progress);
         mPlanLayout = findViewById(R.id.plan_layout);
-
-        ViewPager vpnPlanViewPager = findViewById(R.id.vpn_plan_view_pager);
-
-        BraveVpnPlanPagerAdapter braveVpnPlanPagerAdapter = new BraveVpnPlanPagerAdapter(this);
-        vpnPlanViewPager.setAdapter(braveVpnPlanPagerAdapter);
-        TabLayout vpnPlanTabLayout = findViewById(R.id.vpn_plan_tab_layout);
-        vpnPlanTabLayout.setupWithViewPager(vpnPlanViewPager, true);
 
         mRemovedValueText = findViewById(R.id.removed_value_tv);
         mRemovedValueText.setPaintFlags(
@@ -115,12 +105,12 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         SpannableString trialTextSpan = new SpannableString(trialFullString);
         int trialTextIndex = trialFullString.indexOf(day7TrialString);
         trialTextSpan.setSpan(
-                new android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
+                new UnderlineSpan(),
                 trialTextIndex,
                 trialFullString.length(),
                 SPAN_EXCLUSIVE_EXCLUSIVE);
         trialTextSpan.setSpan(
-                new UnderlineSpan(),
+                new TextAppearanceSpan(VpnPaywallActivity.this, R.style.DefaultSemibold),
                 trialTextIndex,
                 trialFullString.length(),
                 SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -143,7 +133,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                 v -> {
                     if (mProductDetails != null) {
                         InAppPurchaseWrapper.getInstance()
-                                .initiatePurchase(BraveVpnPlansActivity.this, mProductDetails);
+                                .initiatePurchase(VpnPaywallActivity.this, mProductDetails);
                     }
                 });
     }
@@ -153,7 +143,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         super.finishNativeInitialization();
         // Check for an active subscription to show restore
         BraveVpnUtils.showProgressDialog(
-                BraveVpnPlansActivity.this, getResources().getString(R.string.vpn_connect_text));
+                VpnPaywallActivity.this, getResources().getString(R.string.vpn_connect_text));
         mIsVerification = true;
         verifySubscription();
 
@@ -179,26 +169,27 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                                                     mProductDetails = monthlyProductDetails;
                                                     updateSelectedPlanView();
                                                 });
-                                        String monthlyFormattedPrice =
+                                        SpannableString monthlyFormattedPrice =
                                                 InAppPurchaseWrapper.getInstance()
                                                         .getFormattedProductPrice(
-                                                                monthlyProductDetails);
+                                                                VpnPaywallActivity.this,
+                                                                monthlyProductDetails,
+                                                                R.string
+                                                                        .monthly_subscription_amount);
                                         if (monthlyFormattedPrice != null) {
                                             mMonthlySubscriptionAmountText.setText(
-                                                    String.format(
-                                                            getResources()
-                                                                    .getString(
-                                                                            R.string
-                                                                                    .monthly_subscription_amount),
-                                                            monthlyFormattedPrice));
+                                                    monthlyFormattedPrice,
+                                                    TextView.BufferType.SPANNABLE);
                                             mMonthlyPlanProgress.setVisibility(View.GONE);
                                         }
-                                        String fullPrice =
+                                        SpannableString fullPrice =
                                                 InAppPurchaseWrapper.getInstance()
                                                         .getFormattedFullProductPrice(
+                                                                VpnPaywallActivity.this,
                                                                 monthlyProductDetails);
                                         if (fullPrice != null) {
-                                            mRemovedValueText.setText(fullPrice);
+                                            mRemovedValueText.setText(
+                                                    fullPrice, TextView.BufferType.SPANNABLE);
                                         }
                                     }
                                 });
@@ -223,18 +214,17 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                                                     mProductDetails = yearlyProductDetails;
                                                     updateSelectedPlanView();
                                                 });
-                                        String yearlyFormattedPrice =
+                                        SpannableString yearlyFormattedPrice =
                                                 InAppPurchaseWrapper.getInstance()
                                                         .getFormattedProductPrice(
-                                                                yearlyProductDetails);
+                                                                VpnPaywallActivity.this,
+                                                                yearlyProductDetails,
+                                                                R.string
+                                                                        .yearly_subscription_amount);
                                         if (yearlyFormattedPrice != null) {
                                             mYearlySubscriptionAmountText.setText(
-                                                    String.format(
-                                                            getResources()
-                                                                    .getString(
-                                                                            R.string
-                                                                                    .yearly_subscription_amount),
-                                                            yearlyFormattedPrice));
+                                                    yearlyFormattedPrice,
+                                                    TextView.BufferType.SPANNABLE);
                                             mYearlyPlanProgress.setVisibility(View.GONE);
                                         }
                                     }
@@ -266,12 +256,12 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     private void updateSelectedPlanView() {
         mYearlySelectorLayout.setBackgroundResource(
                 mSelectedPlanType == SelectedPlanType.YEARLY
-                        ? R.drawable.vpn_plan_selected_bg
-                        : R.drawable.vpn_plan_bg);
+                        ? R.drawable.vpn_paywall_selected_bg
+                        : R.drawable.vpn_paywall_bg);
         mMonthlySelectorLayout.setBackgroundResource(
                 mSelectedPlanType == SelectedPlanType.MONTHLY
-                        ? R.drawable.vpn_plan_selected_bg
-                        : R.drawable.vpn_plan_bg);
+                        ? R.drawable.vpn_paywall_selected_bg
+                        : R.drawable.vpn_paywall_bg);
     }
 
     @Override
@@ -304,7 +294,7 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         if (item.getItemId() == android.R.id.home) {
             finish();
         } else if (item.getItemId() == R.id.restore) {
-            BraveVpnUtils.openBraveVpnProfileActivity(BraveVpnPlansActivity.this);
+            BraveVpnUtils.openBraveVpnProfileActivity(VpnPaywallActivity.this);
         }
         return super.onOptionsItemSelected(item);
     }
