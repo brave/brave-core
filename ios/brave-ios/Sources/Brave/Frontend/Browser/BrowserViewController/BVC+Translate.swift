@@ -20,35 +20,6 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
     }
   }
 
-  func showTranslateToast(tab: Tab?, state: TranslateURLBarButton.TranslateState) {
-    updateTranslateURLBar(tab: tab, state: state)
-
-    guard let selectedTab = tabManager.selectedTab,
-      selectedTab === tab,
-      selectedTab.translationState == .available
-    else {
-      return
-    }
-
-    if (pendingToast as? TranslateToast) != nil {
-      return
-    }
-
-    pendingToast = TranslateToast(
-      completion: { [weak self] _ in
-        guard let self = self else {
-          return
-        }
-
-        self.pendingToast = nil
-      }
-    )
-
-    if let pendingToast = pendingToast {
-      show(toast: pendingToast, afterWaiting: .milliseconds(250), duration: .seconds(5))
-    }
-  }
-
   func showTranslateOnboarding(tab: Tab?, completion: @escaping (_ translateEnabled: Bool) -> Void)
   {
     // Do NOT show the translate onboarding popup if the tab isn't visible

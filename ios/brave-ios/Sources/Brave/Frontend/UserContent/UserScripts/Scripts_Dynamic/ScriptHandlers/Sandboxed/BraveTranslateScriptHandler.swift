@@ -14,7 +14,6 @@ import os.log
 
 protocol BraveTranslateScriptHandlerDelegate: NSObject {
   func updateTranslateURLBar(tab: Tab?, state: TranslateURLBarButton.TranslateState)
-  func showTranslateToast(tab: Tab?, state: TranslateURLBarButton.TranslateState)
   func showTranslateOnboarding(tab: Tab?, completion: @escaping (_ translateEnabled: Bool) -> Void)
 }
 
@@ -213,17 +212,17 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
 
   @MainActor
   func guessLanguage() async -> Locale.Language? {
-    //    await executeChromiumFunction("languageDetection.detectLanguage")
-    //
-    //    // Language was identified by the Translate Script
-    //    if let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier,
-    //      let pageLanguage = currentLanguageInfo.pageLanguage?.languageCode?.identifier
-    //    {
-    //      if currentLanguage == pageLanguage {
-    //        currentLanguageInfo.pageLanguage = nil
-    //      }
-    //      return currentLanguageInfo.pageLanguage
-    //    }
+        await executeChromiumFunction("languageDetection.detectLanguage")
+    
+        // Language was identified by the Translate Script
+        if let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier,
+          let pageLanguage = currentLanguageInfo.pageLanguage?.languageCode?.identifier
+        {
+          if currentLanguage == pageLanguage {
+            currentLanguageInfo.pageLanguage = nil
+          }
+          return currentLanguageInfo.pageLanguage
+        }
 
     // Language identified via our own Javascript
     if let languageCode = await executePageFunction(name: "getPageLanguage") {
@@ -388,12 +387,10 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
           pageLanguage != currentLanguage
         else {
           delegate.updateTranslateURLBar(tab: self.tab, state: .unavailable)
-          delegate.showTranslateToast(tab: self.tab, state: .unavailable)
           return
         }
 
         delegate.updateTranslateURLBar(tab: self.tab, state: .available)
-        delegate.showTranslateToast(tab: self.tab, state: .available)
       }
     }
 
