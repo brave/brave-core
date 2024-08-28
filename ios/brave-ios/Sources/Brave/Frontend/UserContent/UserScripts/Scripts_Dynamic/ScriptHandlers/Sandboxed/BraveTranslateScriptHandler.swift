@@ -249,8 +249,9 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
   }
 
   func startTranslation() {
-    Task { @MainActor in
-      guard let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier,
+    Task { @MainActor [weak self] in
+      guard let self = self,
+        let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier,
         let pageLanguage = currentLanguageInfo.pageLanguage?.languageCode?.identifier,
         currentLanguage != pageLanguage
       else {
@@ -268,6 +269,8 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
           currentLanguage == "zh" ? "zh-CN" : currentLanguage,
         ]
       )
+
+      self.delegate?.updateTranslateURLBar(tab: self.tab, state: .active)
     }
   }
 
@@ -281,6 +284,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
       }
 
       await executeChromiumFunction("translate.revertTranslation")
+      self.delegate?.updateTranslateURLBar(tab: self.tab, state: .available)
     }
   }
 
@@ -395,12 +399,6 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
 
     if body["command"] as? String == "status" {
       print(body)
-      //      errorCode: cr.googleTranslate.errorCode,
-      //      pageSourceLanguage: cr.googleTranslate.sourceLang,
-      //      translationTime: cr.googleTranslate.translationTime
-
-      //LanguageDetectionTextCaptured
-      //NavigationEventMessage
     }
 
     replyHandler(nil, nil)
