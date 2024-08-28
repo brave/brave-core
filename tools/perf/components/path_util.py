@@ -67,11 +67,6 @@ def GetAdbPath() -> str:
                       'platform-tools', 'adb')
 
 
-def GetVpython3Path() -> str:
-  return os.path.join(GetDepotToolsDir(),
-                      'vpython3.bat' if sys.platform == 'win32' else 'vpython3')
-
-
 def GetPageSetsDataPath(filename: str) -> str:
   return os.path.join(GetBravePerfDir(), 'brave_page_sets', 'data', filename)
 

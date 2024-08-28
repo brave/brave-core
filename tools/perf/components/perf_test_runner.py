@@ -26,7 +26,7 @@ def ReportToDashboardImpl(
     output_dir: str) -> Tuple[bool, List[str], Optional[str]]:
 
   args = [
-      path_util.GetVpython3Path(),
+      sys.executable,
       os.path.join(path_util.GetChromiumPerfDir(), 'process_perf_results.py')
   ]
   args.append(f'--configuration-name={dashboard_bot_name}')
@@ -139,7 +139,7 @@ class RunableConfiguration:
     assert out_dir is not None
     os.makedirs(out_dir, exist_ok=True)
     args = [
-        path_util.GetVpython3Path(),
+        sys.executable,
         os.path.join(path_util.GetSrcDir(), 'build', 'android',
                      'resource_sizes.py'), '--output-format=histograms',
         '--output-dir', out_dir, self.binary.binary_path
@@ -151,18 +151,44 @@ class RunableConfiguration:
 
     return success
 
+  def MakeRunBenchmarkArgs(self,
+                           benchmark_config: BenchmarkConfig) -> List[str]:
+    browser_args = []
+    binary = self.binary
+
+    # add benchmark and story info:
+    args = [benchmark_config.name]
+    args.append('--pageset-repeat=%d' % benchmark_config.pageset_repeat)
+    if len(benchmark_config.stories) > 0:
+      story_filter = '|'.join(benchmark_config.stories)
+      args.append(f'--story-filter=({story_filter})')
+
+    # process the binary-specific args:
+    args.extend(binary.get_run_benchmark_args())
+    browser_args.extend(self.binary.get_browser_args())
+
+    # process the extra args from json config:
+    args.extend(self.config.extra_benchmark_args)
+    browser_args.extend(self.config.extra_browser_args)
+
+    # Wrap browser_args:
+    if len(browser_args) > 0:
+      args.append('--extra-browser-args=' + ' '.join(browser_args))
+
+    return args
+
   def RunSingleTest(self,
                     config: RunnerConfig,
                     benchmark_config: BenchmarkConfig,
                     out_dir: str,
                     local_run: bool,
                     timeout: Optional[int] = None) -> bool:
-    args = [path_util.GetVpython3Path()]
+    args = [sys.executable]
     args.append(os.path.join(path_util.GetChromiumPerfDir(), 'run_benchmark'))
 
     benchmark_name = benchmark_config.name
     bench_out_dir = None
-    args.append(benchmark_name)
+    args.extend(self.MakeRunBenchmarkArgs(benchmark_config))
 
     if local_run:
       assert config.label is not None
@@ -188,23 +214,6 @@ class RunableConfiguration:
       assert bench_out_dir
       return custom_handler(bench_out_dir)
 
-    if self.binary.profile_dir:
-      args.append(f'--profile-dir={self.binary.profile_dir}')
-
-    if self.binary.telemetry_browser_type() is not None:
-      args.append(f'--browser={self.binary.telemetry_browser_type()}')
-    elif self.binary.binary_path is not None:
-      args.append('--browser=exact')
-      args.append(f'--browser-executable={self.binary.binary_path}')
-    else:
-      raise RuntimeError('Bad binary spec, no browser to run')
-
-    args.append('--pageset-repeat=%d' % benchmark_config.pageset_repeat)
-
-    if len(benchmark_config.stories) > 0:
-      for story in benchmark_config.stories:
-        args.append(f'--story={story}')
-
     # Optimize redownloading trace_processor_shell: if the file exists use it.
     is_win = sys.platform == 'win32'
     trace_processor_path = os.path.join(
@@ -213,20 +222,8 @@ class RunableConfiguration:
     if os.path.isfile(trace_processor_path):
       args.append(f'--trace-processor-path={trace_processor_path}')
 
-    extra_browser_args = deepcopy(config.extra_browser_args)
-    extra_browser_args.extend(config.browser_type.extra_browser_args)
-    if self.binary.field_trial_config:
-      extra_browser_args.append(
-          f'--field-trial-config={self.binary.field_trial_config.filename}')
-
-    args.extend(config.browser_type.extra_benchmark_args)
-    args.extend(config.extra_benchmark_args)
-
     if self.common_options.verbose:
       args.extend(['--show-stdout', '--verbose'])
-
-    if len(extra_browser_args) > 0:
-      args.append('--extra-browser-args=' + ' '.join(extra_browser_args))
 
     success, _ = perf_test_utils.GetProcessOutput(
         args, cwd=path_util.GetChromiumPerfDir(), timeout=timeout)

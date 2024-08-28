@@ -108,6 +108,10 @@ class _UpdateProfilePage(page_module.Page):
       t.WaitForDocumentReadyStateToBeInteractiveOrBetter()
       t.EvaluateJavaScript(
           'chrome.settingsPrivate.setPref("session.restore_on_startup", 5)')
+      t.EvaluateJavaScript(
+          'chrome.settingsPrivate.setPref("intl.accept_languages", "en-US")')
+      t.EvaluateJavaScript(
+          'chrome.settingsPrivate.setPref("intl.selected_languages", "en-US")')
       action_runner.Wait(2)
 
 

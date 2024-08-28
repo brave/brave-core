@@ -21,15 +21,20 @@
       "name": "system_health.common_desktop",
       "pageset-repeat": 1,
       "stories": [
-        "load:chrome:blank",
+        "load:site:example:2023",
+        "load:site:twitter:2023",
+        "load:site:imdb:2024",
+        "load:ntp:brave_news:2024",
       ]
     },
     {
       "name": "system_health.memory_desktop",
       "pageset-repeat": 1,
       "stories": [
-        "load:chrome:blank",
-        "load:media:youtube:2018",
+        "load:site:example:2023",
+        "load:site:twitter:2023",
+        "load:site:imdb:2024",
+        "load:ntp:brave_news:2024",
       ]
     },
     {

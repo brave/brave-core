@@ -6,13 +6,13 @@
 # pylint: disable=too-few-public-methods
 
 import os
-from typing import Optional
+from typing import List, Optional
 
 import components.path_util as path_util
 
 from components.android_tools import InstallApk
 from components.common_options import CommonOptions
-from components.browser_type import FieldTrialConfig
+from components.browser_type import BrowserType, FieldTrialConfig
 from components.perf_config import RunnerConfig
 from components.perf_profile import GetProfilePath
 
@@ -27,10 +27,12 @@ class BrowserBinary:
 
   profile_dir: Optional[str] = None
   field_trial_config: Optional[FieldTrialConfig] = None
+  _browser_type: BrowserType
 
-  def __init__(self, binary_path: Optional[str], android_package: Optional[str],
-               profile_dir: Optional[str],
+  def __init__(self, browser_type: BrowserType, binary_path: Optional[str],
+               android_package: Optional[str], profile_dir: Optional[str],
                field_trial_config: Optional[FieldTrialConfig]):
+    self._browser_type = browser_type
     self.binary_path = binary_path
     self.android_package = android_package
     self.profile_dir = profile_dir
@@ -56,6 +58,32 @@ class BrowserBinary:
       raise RuntimeError('No matching browser-type found ' +
                          self.android_package)
 
+  def get_run_benchmark_args(self) -> List[str]:
+    args: List[str] = []
+
+    # Specify the source profile to use:
+    if self.profile_dir:
+      args.append(f'--profile-dir={self.profile_dir}')
+
+    # Specify the browser binary to run:
+    if self.telemetry_browser_type() is not None:
+      args.append(f'--browser={self.telemetry_browser_type()}')
+    elif self.binary_path is not None:
+      args.append('--browser=exact')
+      args.append(f'--browser-executable={self.binary_path}')
+    else:
+      raise RuntimeError('Bad binary spec, no browser to run')
+
+    args.extend(self._browser_type.extra_benchmark_args)
+    return args
+
+  def get_browser_args(self) -> List[str]:
+    args: List[str] = []
+    if self.field_trial_config:
+      args.append(f'--field-trial-config={self.field_trial_config.filename}')
+
+    args.extend(self._browser_type.extra_browser_args)
+    return args
 
   def __str__(self) -> str:
     if self.binary_path:
@@ -100,11 +128,12 @@ def PrepareBinary(binary_dir: str, artifacts_dir: str, config: RunnerConfig,
 
   if not common_options.is_android:
     assert binary_location
-    return BrowserBinary(binary_location, None, profile_dir, field_trial_config)
+    return BrowserBinary(config.browser_type, binary_location, None,
+                         profile_dir, field_trial_config)
 
   if package is None:
     assert binary_location is not None
     assert binary_location.endswith('.apk')
 
-  return BrowserBinary(binary_location, package, profile_dir,
-                       field_trial_config)
+  return BrowserBinary(config.browser_type, binary_location, package,
+                       profile_dir, field_trial_config)

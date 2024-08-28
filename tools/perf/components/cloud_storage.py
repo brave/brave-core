@@ -7,8 +7,10 @@ import os
 from enum import Enum
 
 import components.perf_test_utils as perf_test_utils
+import components.path_util as path_util
 
-from download_from_google_storage import get_sha1
+with path_util.SysPath(path_util.GetDepotToolsDir()):
+  from download_from_google_storage import get_sha1
 
 _CLOUD_BUCKET = 'brave-perf-data'
 _CLOUD_HTTPS_URL = 'https://perf-data.s3.brave.com'
