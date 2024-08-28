@@ -22,7 +22,8 @@ struct FocusAdTrackerSliderContentView: View {
         LottieView(
           animation: .named(
             colorScheme == .dark ? "moving-ads-dark" : "moving-ads-light",
-            bundle: .module
+            bundle: .module,
+            subdirectory: "LottieAssets/\(Locale.current.region?.identifier == "JP" ? "ja" : "en")"
           )
         )
         .playing(loopMode: .loop)
@@ -65,7 +66,8 @@ struct FocusVideoAdSliderContentView: View {
     LottieView(
       animation: .named(
         colorScheme == .dark ? "novideo-ads-dark" : "novideo-ads-light",
-        bundle: .module
+        bundle: .module,
+        subdirectory: "LottieAssets/\(Locale.current.region?.identifier == "JP" ? "ja" : "en")"
       )
     )
     .playing(loopMode: .loop)

@@ -73,7 +73,8 @@ struct FocusSystemSettingsView: View {
       LottieView(
         animation: .named(
           colorScheme == .dark ? "browser-default-dark" : "browser-default-light",
-          bundle: .module
+          bundle: .module,
+          subdirectory: "LottieAssets/\(Locale.current.region?.identifier == "JP" ? "ja" : "en")"
         )
       )
       .playing(loopMode: .loop)

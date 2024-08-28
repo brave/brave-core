@@ -5,7 +5,6 @@
 
 import Foundation
 import Growth
-import Onboarding
 import Preferences
 import Shared
 
@@ -63,8 +62,8 @@ public struct FullScreenCalloutManager {
   /// It determines whether we should show show the designated callout or not and sets corresponding preferences accordingly.
   /// Returns true if the callout should be shown.
   public static func shouldShowCallout(calloutType: FullScreenCalloutType) -> Bool {
-    // If REgion is Japan check new focus onboarding is finished
-    if Locale.current.region?.identifier == "JP",
+    // If region is onboarding_region check new focus onboarding is finished
+    if Locale.current.isNewOnboardingRegion,
       !Preferences.FocusOnboarding.focusOnboardingFinished.value
     {
       return false
@@ -81,8 +80,8 @@ public struct FullScreenCalloutManager {
     var calloutDelayInterval = calloutType.period.days
 
     // Delay period 3 days that will be added to full screen callouts
-    // This will be the case as long as new onboarding is active for JAPAN
-    if Locale.current.region?.identifier == "JP" {
+    // This will be the case as long as new onboarding is active for onboarding_regions
+    if Locale.current.isNewOnboardingRegion {
       calloutDelayInterval += delayAmountJpOnboarding
     }
 

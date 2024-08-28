@@ -21,9 +21,9 @@ extension BrowserViewController {
   func presentOnboardingIntro() {
     if Preferences.DebugFlag.skipOnboardingIntro == true { return }
 
-    // If locale is JP, start the new onboarding process
+    // If locale is onboarding_region, start the new onboarding process
     // This will be the case as long as new onboarding is active for JAPAN
-    if Locale.current.region?.identifier == "JP" {
+    if Locale.current.isNewOnboardingRegion {
       presentFocusOnboarding()
     } else {
       presentOnboardingWelcomeScreen()
@@ -90,7 +90,7 @@ extension BrowserViewController {
 
     var controller: UIViewController & PopoverContentComponent
 
-    if Locale.current.region?.identifier != "JP" {
+    if !Locale.current.isNewOnboardingRegion {
       // Present the popover
       controller = WelcomeOmniBoxOnboardingController().then {
         $0.setText(
@@ -167,13 +167,13 @@ extension BrowserViewController {
 
   private func addNTPTutorialPage() {
     // The new onboarding will be only JP Region and this is part of old onboarding
-    guard Locale.current.region?.identifier != "JP" else {
+    guard !Locale.current.isNewOnboardingRegion else {
       return
     }
 
     // NTP Education screen should load after onboarding is finished and user is on locale JP
     let (educationPermitted, url) = (
-      Locale.current.region?.identifier == "JP", URL.brave.ntpTutorialPage
+      Locale.current.isNewOnboardingRegion, URL.brave.ntpTutorialPage
     )
 
     if educationPermitted {
