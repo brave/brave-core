@@ -46,6 +46,8 @@ inline constexpr char kFailedHTTPSUpgradesHistogramName[] =
     "Brave.Core.FailedHTTPSUpgrades.2";
 inline constexpr char kBookmarkCountHistogramName[] =
     "Brave.Core.BookmarkCount";
+inline constexpr char kFirstPageLoadTimeHistogramName[] =
+    "Brave.Core.FirstPageLoadTime";
 inline constexpr char kSearchBraveDailyHistogramName[] =
     "Brave.Search.BraveDaily";
 
@@ -53,10 +55,13 @@ inline constexpr char kSearchBraveDailyHistogramName[] =
 // failed HTTPS upgrades, and bookmarks.
 class PageMetrics {
  public:
+  using FirstRunTimeCallback = base::RepeatingCallback<base::Time(void)>;
+
   PageMetrics(PrefService* local_state,
               HostContentSettingsMap* host_content_settings_map,
               history::HistoryService* history_service,
-              bookmarks::BookmarkModel* bookmark_model);
+              bookmarks::BookmarkModel* bookmark_model,
+              FirstRunTimeCallback first_run_time_callback);
   ~PageMetrics();
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
@@ -73,6 +78,8 @@ class PageMetrics {
   void ReportPagesLoaded();
   void ReportFailedHTTPSUpgrades();
   void ReportBookmarkCount();
+
+  void ReportFirstPageLoadTime();
 
   void OnHttpsNavigationEvent(const char* histogram_name,
                               uint64_t name_hash,
@@ -108,6 +115,8 @@ class PageMetrics {
   raw_ptr<PrefService> local_state_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   raw_ptr<history::HistoryService> history_service_ = nullptr;
+  FirstRunTimeCallback first_run_time_callback_;
+  base::Time first_run_time_;
 
   base::WeakPtrFactory<PageMetrics> weak_ptr_factory_{this};
 };
