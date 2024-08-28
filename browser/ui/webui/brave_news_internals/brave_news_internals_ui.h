@@ -23,6 +23,8 @@ class BraveNewsInternalsUI : public content::WebUIController {
 
   void BindInterface(
       mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver);
+  void BindInterface(
+      mojo::PendingReceiver<brave_news::mojom::BraveNewsInternals> receiver);
 
  private:
   WEB_UI_CONTROLLER_TYPE_DECL();
