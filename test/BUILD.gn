@@ -149,7 +149,7 @@ test("brave_unit_tests") {
   ]
 
   if (enable_sparkle) {
-    sources += [ "//brave/chromium_src/chrome/browser/ui/webui/help/brave_version_updater_mac_unittest.mm" ]
+    sources += [ "//brave/browser/ui/webui/help/brave_version_updater_mac_unittest.mm" ]
   }
 
   deps = [
