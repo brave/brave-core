@@ -243,6 +243,7 @@ declare namespace chrome.windows {
 declare namespace chrome.braveShields {
   const addSiteCosmeticFilter: (cssSelector: string) => void
   const openFilterManagementPage: () => void
+  const launchContentPicker: () => void
 }
 
 declare namespace chrome.test {

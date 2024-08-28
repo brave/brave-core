@@ -12,7 +12,15 @@ interface CosmeticFiltersResources {
   HiddenClassIdSelectors(string input, array<string> exceptions) => (
       mojo_base.mojom.DictionaryValue result);
 
+  // Add a user filter from content_picker.
+  AddUserCosmeticFilter(string filter);
+
   [Sync]
   UrlCosmeticResources(string url, bool aggressive_blocking) => (
       mojo_base.mojom.Value result);
+};
+
+
+interface CosmeticFiltersJsHandler {
+  LaunchContentPicker();
 };

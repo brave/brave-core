@@ -9,12 +9,14 @@
 #include <utility>
 
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/common/extensions/api/brave_shields.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "content/public/browser/render_frame_host.h"
@@ -26,12 +28,13 @@ BraveShieldsAddSiteCosmeticFilterFunction::Run() {
   std::optional<brave_shields::AddSiteCosmeticFilter::Params> params =
       brave_shields::AddSiteCosmeticFilter::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
-  if (const auto* rfh = render_frame_host()) {
-    g_brave_browser_process->ad_block_service()
-        ->custom_filters_provider()
-        ->HideElementOnHost(params->css_selector,
-                            rfh->GetLastCommittedURL().host());
-  }
+  // TODO: remove the function
+  // if (const auto* rfh = render_frame_host()) {
+  //   g_brave_browser_process->ad_block_service()
+  //       ->custom_filters_provider()
+  //       ->HideElementOnHost(params->css_selector,
+  //                           rfh->GetLastCommittedURL().host());
+  // }
 
   return RespondNow(NoArguments());
 }
@@ -43,6 +46,21 @@ BraveShieldsOpenFilterManagementPageFunction::Run() {
     brave::ShowBraveAdblock(browser);
   }
 
+  return RespondNow(NoArguments());
+}
+
+ExtensionFunction::ResponseAction
+BraveShieldsLaunchContentPickerFunction::Run() {
+  if (auto* browser = chrome::FindLastActive()) {
+    auto* web_contents = browser->tab_strip_model()->GetActiveWebContents();
+    if (web_contents) {
+      auto* shields_tab_helper =
+          ::brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
+      if (shields_tab_helper) {
+        shields_tab_helper->LaunchContentPicker();
+      }
+    }
+  }
   return RespondNow(NoArguments());
 }
 
