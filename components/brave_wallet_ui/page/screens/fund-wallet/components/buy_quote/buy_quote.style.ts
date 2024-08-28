@@ -4,11 +4,16 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { color, font, spacing } from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import Label from '@brave/leo/react/label'
-import { layoutPanelWidth } from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+import { color, font, spacing } from '@brave/leo/tokens/css/variables'
+
+// Shared Styles
+import {
+  layoutPanelWidth //
+} from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+import { Column } from '../../../../../components/shared/style'
 
 export const StyledWrapper = styled.div<{ isOpen?: boolean }>`
   display: flex;
@@ -68,22 +73,18 @@ export const CaratIcon = styled(Icon)<{
   margin-left: 8px;
 `
 
-export const QuoteDetailsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: ${spacing.xl} ${spacing['2Xl']};
-  border-radius: 12px;
-  gap: 8px;
-  background-color: ${color.page.background};
+export const WrapperForPadding = styled(Column)`
   margin-top: ${spacing.xl};
+  padding-left: 56px;
+  @media (max-width: ${layoutPanelWidth}px) {
+    padding-left: 0px;
+  }
 `
 
-export const QuoteDetailsRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
+export const QuoteDetailsWrapper = styled(Column)`
+  padding: ${spacing.xl} ${spacing['2Xl']};
+  border-radius: 12px;
+  background-color: ${color.page.background};
 `
 
 export const QuoteDetailsLabel = styled.p`
@@ -128,4 +129,5 @@ export const BestOptionLabel = styled(Label).attrs({
 })`
   --leo-label-padding: 12px;
   color: ${color.text.primary};
+  text-transform: capitalize;
 `

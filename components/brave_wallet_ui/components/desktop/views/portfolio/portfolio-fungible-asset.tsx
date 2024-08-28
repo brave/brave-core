@@ -71,9 +71,7 @@ import {
 import {
   useScopedBalanceUpdater //
 } from '../../../../common/hooks/use-scoped-balance-updater'
-import {
-  useIsBuySupported //
-} from '../../../../common/hooks/use-multi-chain-buy-assets'
+import { useFindBuySupportedToken } from '../../../../common/hooks/use-multi-chain-buy-assets'
 import {
   useGetNetworkQuery,
   useGetTransactionsQuery,
@@ -224,8 +222,9 @@ export const PortfolioFungibleAsset = () => {
   )
 
   // custom hooks
-  const isAssetBuySupported =
-    useIsBuySupported(selectedAssetFromParams) && !isRewardsToken
+  const foundBuySupportedToken = useFindBuySupportedToken(
+    selectedAssetFromParams
+  )
 
   // memos
   /**
@@ -410,10 +409,10 @@ export const PortfolioFungibleAsset = () => {
   ])
 
   const onSelectBuy = React.useCallback(() => {
-    if (selectedAssetFromParams) {
-      history.push(makeFundWalletRoute(getAssetIdKey(selectedAssetFromParams)))
+    if (foundBuySupportedToken) {
+      history.push(makeFundWalletRoute(foundBuySupportedToken))
     }
-  }, [history, selectedAssetFromParams])
+  }, [history, foundBuySupportedToken])
 
   const onSelectDeposit = React.useCallback(() => {
     if (selectedAssetFromParams) {
@@ -490,7 +489,7 @@ export const PortfolioFungibleAsset = () => {
         />
         <Row padding='0px 20px'>
           <ButtonRow>
-            {isAssetBuySupported && (
+            {foundBuySupportedToken && !isRewardsToken && (
               <div>
                 <LeoSquaredButton onClick={onSelectBuy}>
                   {getLocale('braveWalletBuy')}

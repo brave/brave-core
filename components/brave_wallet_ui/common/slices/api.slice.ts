@@ -345,7 +345,6 @@ export const {
   useValidateUnifiedAddressQuery,
   useGetMeldFiatCurrenciesQuery,
   useGetMeldCryptoCurrenciesQuery,
-  useGetDefaultCountryQuery,
   useGetMeldCountriesQuery,
   useGetMeldServiceProvidersQuery,
   useGetMeldPaymentMethodsQuery,

@@ -4,21 +4,38 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query'
 
-// types
+// Queries
+import {
+  useGetNetworkQuery //
+} from '../../../../../common/slices/api.slice'
+
+// Types
 import { MeldCryptoCurrency } from '../../../../../constants/types'
 
-// styles
+// Utils
+import {
+  getAssetSymbol,
+  getMeldTokensCoinType
+} from '../../../../../utils/meld_utils'
+
+// Components
+import {
+  CreateNetworkIcon //
+} from '../../../../../components/shared/create-network-icon'
+
+// Styled Components
 import { Column, Row } from '../../../../../components/shared/style'
 import {
   AssetIcon,
   CaretDown,
-  ControlsWrapper,
   ControlText,
   Label,
-  WrapperButton
+  WrapperButton,
+  IconsWrapper,
+  NetworkIconWrapper
 } from '../shared/style'
-import { getAssetSymbol } from '../../../../../utils/meld_utils'
 
 interface SelectAssetButtonProps {
   labelText: string
@@ -29,6 +46,17 @@ interface SelectAssetButtonProps {
 export const SelectAssetButton = (props: SelectAssetButtonProps) => {
   const { labelText, selectedAsset, onClick } = props
 
+  // Queries
+  const { data: tokensNetwork } = useGetNetworkQuery(
+    selectedAsset?.chainId
+      ? {
+          chainId: selectedAsset.chainId,
+          coin: getMeldTokensCoinType(selectedAsset)
+        }
+      : skipToken
+  )
+
+  // Computed
   const assetSymbol = selectedAsset ? getAssetSymbol(selectedAsset) : ''
 
   return (
@@ -36,25 +64,34 @@ export const SelectAssetButton = (props: SelectAssetButtonProps) => {
       <WrapperButton onClick={onClick}>
         <Column alignItems='flex-start'>
           <Label>{labelText}</Label>
-          <ControlsWrapper>
-            <Row
-              justifyContent='flex-start'
-              gap='8px'
-              minWidth='94px'
-              minHeight='40px'
-            >
-              {selectedAsset && (
-                <>
+          <Row
+            justifyContent='flex-start'
+            gap='8px'
+            minWidth='94px'
+            minHeight='40px'
+          >
+            {selectedAsset && (
+              <>
+                <IconsWrapper>
                   <AssetIcon
                     size='40px'
                     src={`chrome://image?${selectedAsset?.symbolImageUrl}`}
                   />
-                  <ControlText>{assetSymbol}</ControlText>
-                </>
-              )}
-            </Row>
+                  {tokensNetwork && (
+                    <NetworkIconWrapper>
+                      <CreateNetworkIcon
+                        network={tokensNetwork}
+                        marginRight={0}
+                        size='tiny'
+                      />
+                    </NetworkIconWrapper>
+                  )}
+                </IconsWrapper>
+                <ControlText>{assetSymbol}</ControlText>
+              </>
+            )}
             <CaretDown />
-          </ControlsWrapper>
+          </Row>
         </Column>
       </WrapperButton>
     </Column>

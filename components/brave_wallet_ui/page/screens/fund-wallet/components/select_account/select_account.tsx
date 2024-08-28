@@ -3,30 +3,55 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { DialogProps } from '@brave/leo/react/dialog'
 import * as React from 'react'
+import { DialogProps } from '@brave/leo/react/dialog'
 import { spacing } from '@brave/leo/tokens/css/variables'
 
-// types
-import { BraveWallet } from '../../../../../constants/types'
+// Selectors
+import {
+  useSafeUISelector //
+} from '../../../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../../../common/selectors'
 
-// utils
+// Types
+import { BraveWallet, MeldCryptoCurrency } from '../../../../../constants/types'
+
+// Utils
 import { reduceAddress } from '../../../../../utils/reduce-address'
+import { getLocale } from '../../../../../../common/locale'
 
-// components
-import { CreateAccountIcon } from '../../../../../components/shared/create-account-icon/create-account-icon'
+// Components
+import {
+  CreateAccountIcon //
+} from '../../../../../components/shared/create-account-icon/create-account-icon'
+import {
+  BottomSheet //
+} from '../../../../../components/shared/bottom_sheet/bottom_sheet'
 
-// styles
+// Styled Components
 import { ContainerButton, Dialog, DialogTitle } from '../shared/style'
 import {
   Column,
-  Row
+  Row,
+  ScrollableColumn
 } from '../../../../../components/shared/style'
 import { AccountAddress, AccountName } from './select_account.style'
+import { getMeldTokensCoinType } from '../../../../../utils/meld_utils'
+
+const testnetAccountKeyringIds = [
+  BraveWallet.KeyringId.kBitcoin84Testnet,
+  BraveWallet.KeyringId.kBitcoinHardwareTestnet,
+  BraveWallet.KeyringId.kBitcoinImportTestnet,
+  BraveWallet.KeyringId.kFilecoinTestnet,
+  BraveWallet.KeyringId.kZCashTestnet
+]
 
 interface SelectAccountProps extends DialogProps {
   accounts: BraveWallet.AccountInfo[]
   selectedAccount?: BraveWallet.AccountInfo
+  selectedAsset?: MeldCryptoCurrency
+  isOpen: boolean
+  onClose: () => void
   onSelect: (account: BraveWallet.AccountInfo) => void
 }
 
@@ -37,9 +62,7 @@ interface AccountProps {
 
 export const Account = ({ account, onSelect }: AccountProps) => {
   return (
-    <ContainerButton
-      onClick={() => onSelect(account)}
-    >
+    <ContainerButton onClick={() => onSelect(account)}>
       <Row
         gap={spacing.xl}
         width='100%'
@@ -60,24 +83,71 @@ export const Account = ({ account, onSelect }: AccountProps) => {
 }
 
 export const SelectAccount = (props: SelectAccountProps) => {
-  const { accounts, ...rest } = props
+  const { accounts, selectedAsset, onSelect, isOpen, onClose, ...rest } = props
+
+  // Selectors
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+
+  // Memos
+  const accountByCoinType = React.useMemo(() => {
+    if (selectedAsset) {
+      return accounts.filter(
+        (account) =>
+          account.accountId.coin === getMeldTokensCoinType(selectedAsset) &&
+          !testnetAccountKeyringIds.includes(account.accountId.keyringId)
+      )
+    }
+    return accounts
+  }, [selectedAsset, accounts])
+
+  const selectAccountContent = React.useMemo(() => {
+    return (
+      <>
+        <DialogTitle slot='title'>
+          {getLocale('braveWalletSelectAccount')}
+        </DialogTitle>
+
+        <ScrollableColumn
+          padding={isPanel ? '0px 0px 12px 0px' : undefined}
+          margin={isPanel ? '12px 0px 0px 0px' : undefined}
+        >
+          {accountByCoinType.map((account) => (
+            <Account
+              key={account.accountId.uniqueKey}
+              account={account}
+              onSelect={onSelect}
+            />
+          ))}
+        </ScrollableColumn>
+      </>
+    )
+  }, [accountByCoinType, onSelect, isPanel])
+
+  if (isPanel) {
+    return (
+      <BottomSheet
+        onClose={onClose}
+        isOpen={isOpen}
+      >
+        <Column
+          fullWidth={true}
+          padding='0px 16px'
+          height='90vh'
+        >
+          {selectAccountContent}
+        </Column>
+      </BottomSheet>
+    )
+  }
 
   return (
     <Dialog
+      isOpen={isOpen}
+      onClose={onClose}
       showClose
       {...rest}
     >
-      <DialogTitle slot='title'>Select Account</DialogTitle>
-
-      <Column width='100%'>
-        {accounts.map((account) => (
-          <Account
-            key={account.accountId.uniqueKey}
-            account={account}
-            onSelect={props.onSelect}
-          />
-        ))}
-      </Column>
+      {selectAccountContent}
     </Dialog>
   )
 }

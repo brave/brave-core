@@ -4,11 +4,33 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { color, font } from '@brave/leo/tokens/css/variables'
-import { AmountInput as Input } from '../../../composer_ui/shared_composer.style'
-import { layoutPanelWidth } from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 import Icon from '@brave/leo/react/icon'
-import Button from '@brave/leo/react/button'
+import { color, font } from '@brave/leo/tokens/css/variables'
+
+// Shared Styles
+import { Column } from '../../../../../components/shared/style'
+import { AmountInput as Input } from '../../../composer_ui/shared_composer.style'
+import {
+  layoutPanelWidth //
+} from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+
+export const Wrapper = styled(Column)`
+  align-items: flex-end;
+  @media (max-width: ${layoutPanelWidth}px) {
+    align-items: flex-start;
+    width: 100%;
+  }
+`
+
+export const ButtonWrapper = styled(Column)`
+  align-items: flex-end;
+  @media (max-width: ${layoutPanelWidth}px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+`
 
 export const CurrencyCode = styled.span`
   color: ${color.text.primary};
@@ -23,51 +45,19 @@ export const AmountInput = styled(Input).attrs({
 })`
   color: ${color.text.primary};
   font: ${font.heading.h1};
-`
-
-export const LabelWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  gap: 8px;
-  justify-content: flex-end;
-
-  @media (max-width: ${layoutPanelWidth}px) {
-    justify-content: flex-start;
-  }
-`
-
-export const AmountWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  width: 100%;
-  align-items: center;
-  gap: 8px;
-
-  @media (max-width: ${layoutPanelWidth}px) {
-    grid-template-columns: 2fr 1fr;
-    gap: 16px;
-  }
+  text-align: left;
+  width: 60px;
 `
 
 export const AmountEstimate = styled.span`
   color: ${color.text.interactive};
   font: ${font.default.semibold};
-
   @media (max-width: ${layoutPanelWidth}px) {
     font: ${font.default.regular};
   }
 `
 
-export const FlipButton = styled(Button).attrs({
-  kind: 'plain',
-  size: 'tiny'
-})`
-  --leo-button-padding: 0;
-  flex: 0;
-`
-
 export const SwapVerticalIcon = styled(Icon).attrs({ name: 'swap-vertical' })`
   --leo-icon-color: ${color.icon.interactive};
   --leo-icon-size: 20px;
-  cursor: pointer;
 `
