@@ -10,15 +10,22 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
+#include "chrome/browser/search_engine_choice/search_engine_choice_service_factory.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
 #include "components/bookmarks/test/bookmark_test_helpers.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
+#include "components/search_engines/search_engine_choice/search_engine_choice_service.h"
+#include "components/search_engines/template_url_prepopulate_data.h"
+#include "components/search_engines/template_url_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -35,6 +42,13 @@ class PageMetricsUnitTest : public testing::Test {
                               HistoryServiceFactory::GetDefaultFactory());
     builder.AddTestingFactory(BookmarkModelFactory::GetInstance(),
                               BookmarkModelFactory::GetDefaultFactory());
+    builder.AddTestingFactory(
+        TemplateURLServiceFactory::GetInstance(),
+        base::BindRepeating(&TemplateURLServiceFactory::BuildInstanceFor));
+    builder.AddTestingFactory(
+        search_engines::SearchEngineChoiceServiceFactory::GetInstance(),
+        search_engines::SearchEngineChoiceServiceFactory::GetDefaultFactory());
+
     profile_ = builder.Build();
 
     bookmark_model_ =
@@ -43,13 +57,33 @@ class PageMetricsUnitTest : public testing::Test {
 
     history_service_ = HistoryServiceFactory::GetForProfile(
         profile_.get(), ServiceAccessType::EXPLICIT_ACCESS);
+    template_url_service_ =
+        TemplateURLServiceFactory::GetForProfile(profile_.get());
+    search_test_utils::WaitForTemplateURLServiceToLoad(template_url_service_);
+    search_engine_choice_service_ =
+        search_engines::SearchEngineChoiceServiceFactory::GetForProfile(
+            profile_.get());
+
     misc_metrics::PageMetrics::RegisterPrefs(local_state_.registry());
     first_run_time_ = base::Time::Now();
     page_metrics_service_ = std::make_unique<PageMetrics>(
         &local_state_,
         HostContentSettingsMapFactory::GetForProfile(profile_.get()),
-        history_service_, bookmark_model_,
+        history_service_, bookmark_model_, template_url_service_,
         base::BindLambdaForTesting([&]() { return first_run_time_; }));
+
+    auto google_prepopulate_data =
+        TemplateURLPrepopulateData::GetPrepopulatedEngine(
+            profile_->GetPrefs(), search_engine_choice_service_,
+            TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_GOOGLE);
+    auto brave_prepopulate_data =
+        TemplateURLPrepopulateData::GetPrepopulatedEngine(
+            profile_->GetPrefs(), search_engine_choice_service_,
+            TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
+    google_template_url_ =
+        std::make_unique<TemplateURL>(*google_prepopulate_data);
+    brave_template_url_ =
+        std::make_unique<TemplateURL>(*brave_prepopulate_data);
   }
 
  protected:
@@ -60,6 +94,13 @@ class PageMetricsUnitTest : public testing::Test {
   std::unique_ptr<PageMetrics> page_metrics_service_;
   raw_ptr<history::HistoryService> history_service_;
   raw_ptr<bookmarks::BookmarkModel> bookmark_model_;
+  raw_ptr<TemplateURLService> template_url_service_;
+
+  raw_ptr<search_engines::SearchEngineChoiceService>
+      search_engine_choice_service_;
+  std::unique_ptr<TemplateURL> google_template_url_;
+  std::unique_ptr<TemplateURL> brave_template_url_;
+
   base::Time first_run_time_;
 };
 
@@ -104,9 +145,13 @@ TEST_F(PageMetricsUnitTest, DomainsLoadedCount) {
 }
 
 TEST_F(PageMetricsUnitTest, PagesLoadedCount) {
+  template_url_service_->SetUserSelectedDefaultSearchProvider(
+      brave_template_url_.get());
+
   task_environment_.FastForwardBy(base::Seconds(30));
 
-  histogram_tester_.ExpectUniqueSample(kPagesLoadedHistogramName, 0, 1);
+  histogram_tester_.ExpectUniqueSample(kPagesLoadedBraveSearchHistogramName, 0,
+                                       1);
   histogram_tester_.ExpectUniqueSample(kPagesReloadedHistogramName, 0, 1);
 
   for (size_t i = 0; i < 6; i++) {
@@ -114,7 +159,8 @@ TEST_F(PageMetricsUnitTest, PagesLoadedCount) {
   }
 
   task_environment_.FastForwardBy(base::Minutes(30));
-  histogram_tester_.ExpectBucketCount(kPagesLoadedHistogramName, 1, 1);
+  histogram_tester_.ExpectBucketCount(kPagesLoadedBraveSearchHistogramName, 1,
+                                      1);
   histogram_tester_.ExpectUniqueSample(kPagesReloadedHistogramName, 0, 2);
 
   for (size_t i = 0; i < 30; i++) {
@@ -125,21 +171,43 @@ TEST_F(PageMetricsUnitTest, PagesLoadedCount) {
   }
 
   task_environment_.FastForwardBy(base::Minutes(30));
-  histogram_tester_.ExpectBucketCount(kPagesLoadedHistogramName, 2, 1);
+  histogram_tester_.ExpectBucketCount(kPagesLoadedBraveSearchHistogramName, 2,
+                                      1);
   histogram_tester_.ExpectBucketCount(kPagesReloadedHistogramName, 1, 1);
+
+  template_url_service_->SetUserSelectedDefaultSearchProvider(
+      google_template_url_.get());
+
+  histogram_tester_.ExpectUniqueSample(kPagesLoadedNonBraveSearchHistogramName,
+                                       INT_MAX - 1, 3);
+
+  task_environment_.FastForwardBy(base::Minutes(30));
+  histogram_tester_.ExpectBucketCount(kPagesLoadedNonBraveSearchHistogramName,
+                                      2, 1);
+  histogram_tester_.ExpectBucketCount(kPagesLoadedBraveSearchHistogramName,
+                                      INT_MAX - 1, 1);
+  histogram_tester_.ExpectBucketCount(kPagesReloadedHistogramName, 1, 2);
+
+  template_url_service_->SetUserSelectedDefaultSearchProvider(
+      brave_template_url_.get());
 
   for (size_t i = 0; i < 30; i++) {
     page_metrics_service_->IncrementPagesLoadedCount(false);
   }
 
   task_environment_.FastForwardBy(base::Minutes(30));
-  histogram_tester_.ExpectBucketCount(kPagesLoadedHistogramName, 3, 1);
-  histogram_tester_.ExpectBucketCount(kPagesReloadedHistogramName, 1, 2);
+  histogram_tester_.ExpectBucketCount(kPagesLoadedBraveSearchHistogramName, 3,
+                                      1);
+  histogram_tester_.ExpectBucketCount(kPagesReloadedHistogramName, 1, 3);
 
-  histogram_tester_.ExpectTotalCount(kPagesLoadedHistogramName, 4);
-  histogram_tester_.ExpectTotalCount(kPagesReloadedHistogramName, 4);
+  histogram_tester_.ExpectTotalCount(kPagesLoadedBraveSearchHistogramName, 5);
+  histogram_tester_.ExpectTotalCount(kPagesLoadedNonBraveSearchHistogramName,
+                                     5);
+  histogram_tester_.ExpectTotalCount(kPagesReloadedHistogramName, 5);
   task_environment_.FastForwardBy(base::Days(7));
-  EXPECT_GT(histogram_tester_.GetBucketCount(kPagesLoadedHistogramName, 0), 1);
+  EXPECT_GT(
+      histogram_tester_.GetBucketCount(kPagesLoadedBraveSearchHistogramName, 0),
+      1);
   EXPECT_GT(histogram_tester_.GetBucketCount(kPagesReloadedHistogramName, 0),
             1);
 }
