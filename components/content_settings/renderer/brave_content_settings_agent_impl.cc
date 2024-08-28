@@ -85,10 +85,8 @@ bool ShouldSkipResource(const GURL& resource_url) {
 
 BraveContentSettingsAgentImpl::BraveContentSettingsAgentImpl(
     content::RenderFrame* render_frame,
-    bool should_whitelist,
     std::unique_ptr<Delegate> delegate)
     : ContentSettingsAgentImpl(render_frame,
-                               should_whitelist,
                                std::move(delegate)) {
   render_frame->GetAssociatedInterfaceRegistry()
       ->AddInterface<brave_shields::mojom::BraveShields>(base::BindRepeating(
@@ -98,9 +96,9 @@ BraveContentSettingsAgentImpl::BraveContentSettingsAgentImpl(
 
 BraveContentSettingsAgentImpl::~BraveContentSettingsAgentImpl() = default;
 
-bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
+bool BraveContentSettingsAgentImpl::IsScriptTemporarilyAllowed(
     const GURL& script_url) {
-  // Check if scripts from this origin are temporily allowed or not.
+  // Check if scripts from this origin are temporarily allowed or not.
   // Also matches the full script URL to support data URL cases which we use
   // the full URL to allow it.
   if (!shields_settings_) {
@@ -117,7 +115,7 @@ bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
     if (main_frame && main_frame != render_frame()) {
       allow = static_cast<BraveContentSettingsAgentImpl*>(
                   ContentSettingsAgentImpl::Get(main_frame))
-                  ->IsScriptTemporilyAllowed(script_url);
+                  ->IsScriptTemporarilyAllowed(script_url);
     }
   }
   return allow;
@@ -156,12 +154,13 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
   const GURL secondary_url(url::Origin(frame->GetSecurityOrigin()).GetURL());
   bool allow = ContentSettingsAgentImpl::AllowScript(enabled_per_settings);
   auto is_shields_down = IsBraveShieldsDown(frame, secondary_url);
-  auto is_script_temprily_allowed = IsScriptTemporilyAllowed(secondary_url);
-  allow = allow || is_shields_down || is_script_temprily_allowed;
+  auto is_script_temporarily_allowed =
+      IsScriptTemporarilyAllowed(secondary_url);
+  allow = allow || is_shields_down || is_script_temporarily_allowed;
   if (!allow) {
     blocked_script_url_ = secondary_url;
   } else if (!is_shields_down) {
-    if (is_script_temprily_allowed) {
+    if (is_script_temporarily_allowed) {
       BraveSpecificDidAllowJavaScriptOnce(secondary_url);
     }
   }
@@ -196,21 +195,16 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
   bool allow = ContentSettingsAgentImpl::AllowScriptFromSource(
       enabled_per_settings, script_url);
 
-  // scripts with whitelisted protocols, such as chrome://extensions should
-  // be allowed
-  bool should_white_list = IsAllowlistedForContentSettings(
-      blink::WebSecurityOrigin::Create(script_url),
-      render_frame()->GetWebFrame()->GetDocument().Url());
   auto is_shields_down =
       IsBraveShieldsDown(render_frame()->GetWebFrame(), secondary_url);
-  auto is_script_temprily_allowed = IsScriptTemporilyAllowed(secondary_url);
-  allow = allow || should_white_list || is_shields_down ||
-          is_script_temprily_allowed;
+  auto is_script_temporarily_allowed =
+      IsScriptTemporarilyAllowed(secondary_url);
+  allow = allow || is_shields_down || is_script_temporarily_allowed;
 
   if (!allow) {
     blocked_script_url_ = secondary_url;
   } else if (!is_shields_down) {
-    if (is_script_temprily_allowed) {
+    if (is_script_temporarily_allowed) {
       BraveSpecificDidAllowJavaScriptOnce(secondary_url);
     }
   }
