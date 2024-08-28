@@ -38,7 +38,6 @@ class BraveContentSettingsAgentImpl
       public brave_shields::mojom::BraveShields {
  public:
   BraveContentSettingsAgentImpl(content::RenderFrame* render_frame,
-                                bool should_whitelist,
                                 std::unique_ptr<Delegate> delegate);
   BraveContentSettingsAgentImpl(const BraveContentSettingsAgentImpl&) = delete;
   BraveContentSettingsAgentImpl& operator=(
@@ -83,7 +82,7 @@ class BraveContentSettingsAgentImpl
   bool IsBraveShieldsDown(const blink::WebFrame* frame,
                           const GURL& secondary_url);
 
-  bool IsScriptTemporilyAllowed(const GURL& script_url);
+  bool IsScriptTemporarilyAllowed(const GURL& script_url);
 
   // brave_shields::mojom::BraveShields.
   void SetShieldsSettings(
