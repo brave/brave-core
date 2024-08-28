@@ -126,6 +126,11 @@ export function PayoutAccountCard() {
       <div
         className='account-details'
         onClick={(event) => event.stopPropagation()}
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') {
+            setShowDetails(false)
+          }
+        }}
       >
         <div className='header'>
           <div className='provider'>
