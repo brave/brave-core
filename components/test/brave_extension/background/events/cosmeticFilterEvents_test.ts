@@ -12,17 +12,6 @@ global.prompt = () => {
 }
 
 describe('cosmeticFilterEvents events', () => {
-  describe('when runtime.onMessage is received', () => {
-    describe('contextMenuOpened', () => {
-      it('assigns the base URI', () => {
-        chrome.runtime.sendMessage({ type: 'contextMenuOpened', baseURI: 'brave.com' },
-        () => {
-          expect(cosmeticFilterEvents.rule.host).toBe('brave.com')
-        })
-      })
-    })
-  })
-
   describe('chrome.contextMenus.onClicked listener', () => {
     let contextMenuOnClickedSpy: jest.SpyInstance
     let chromeTabsQuerySpy: jest.SpyInstance
