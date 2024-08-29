@@ -45,7 +45,6 @@ void CleanupIpfsComponent() {
   // Remove IPFS component
   base::ThreadPool::PostTask(
       FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
-      base::BindOnce(IgnoreResult(&base::DeletePathRecursively),
-                     GetIpfsClientComponentPath()));
+      base::GetDeletePathRecursivelyCallback(GetIpfsClientComponentPath()));
 }
 }  // namespace ipfs

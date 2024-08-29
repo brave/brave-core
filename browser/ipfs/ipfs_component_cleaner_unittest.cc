@@ -40,20 +40,6 @@ static const base::FilePath::StringPieceType kIpfsClientComponentId =
     FILE_PATH_LITERAL("oecghfpdmkjlhnfpmmjegjacfimiafjp");
 #endif
 #endif
-
-// Simple function to dump some text into a new file.
-void CreateTextFile(const base::FilePath& filename,
-                    const std::wstring& contents) {
-  std::wofstream file;
-#if BUILDFLAG(IS_WIN)
-  file.open(filename.value().c_str());
-#elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
-  file.open(filename.value());
-#endif  // BUILDFLAG(IS_WIN)
-  ASSERT_TRUE(file.is_open());
-  file << contents;
-  file.close();
-}
 }  // namespace
 
 class IpfsComponentCleanerUnitTest : public testing::Test {
@@ -89,7 +75,7 @@ TEST_F(IpfsComponentCleanerUnitTest, CleanIpfsComponent) {
   EXPECT_TRUE(base::PathExists(cache_folder_subdir));
   base::FilePath cache_folder_subdir_file_01 =
       cache_folder_subdir.Append(FILE_PATH_LITERAL("The file 01.txt"));
-  CreateTextFile(cache_folder_subdir_file_01, L"12345678901234567890");
+  base::WriteFile(cache_folder_subdir_file_01, "12345678901234567890");
 
   base::FilePath component_id_folder =
       user_data_path_.Append(base::FilePath(kIpfsClientComponentId));
@@ -101,7 +87,7 @@ TEST_F(IpfsComponentCleanerUnitTest, CleanIpfsComponent) {
   EXPECT_TRUE(base::PathExists(component_id_folde_subdir));
   base::FilePath component_id_folde_subdir_file_01 =
       component_id_folde_subdir.Append(FILE_PATH_LITERAL("The file 01.txt"));
-  CreateTextFile(component_id_folde_subdir_file_01, L"12345678901234567890");
+  base::WriteFile(component_id_folde_subdir_file_01, "12345678901234567890");
 
   ipfs::CleanupIpfsComponent();
   task_environment_.RunUntilIdle();
