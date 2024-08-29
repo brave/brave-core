@@ -86,10 +86,11 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
         if (fadingEdgeEnd != null) {
             fadingEdgeEnd.setVisibility(View.GONE);
         }
-        ChromeImageView toolbarRightButton = mToolbarView.findViewById(R.id.toolbar_right_button);
-        assert toolbarRightButton != null : "Something has changed in upstream.";
-        if (toolbarRightButton != null) {
-            toolbarRightButton.setImageResource(R.drawable.brave_new_group_tab);
+        ChromeImageView toolbarNewTabButton =
+                mToolbarView.findViewById(R.id.toolbar_new_tab_button);
+        assert toolbarNewTabButton != null : "Something has changed in upstream.";
+        if (toolbarNewTabButton != null) {
+            toolbarNewTabButton.setImageResource(R.drawable.brave_new_group_tab);
         }
     }
 
