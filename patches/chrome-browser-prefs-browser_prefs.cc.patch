@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 4f5f4ecfa46269682ff3c8ec9d3ae0410e193ebb..dff2332629cdd3ec8b8a31b8284c4ce32d191c4f 100644
+index 812bb38a0c53e8759138fbb34936f2112341f001..0c94fdd6828a7e628c901e1ac80fcf59fb5a1d8b 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1745,6 +1745,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1783,6 +1783,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
    registry->RegisterBooleanPref(prefs::kQRCodeGeneratorEnabled, true);
  
    // This is intentionally last.
@@ -10,7 +10,7 @@ index 4f5f4ecfa46269682ff3c8ec9d3ae0410e193ebb..dff2332629cdd3ec8b8a31b8284c4ce3
    RegisterLocalStatePrefsForMigration(registry);
  }
  
-@@ -2187,6 +2188,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -2223,6 +2224,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
    registry->RegisterDictionaryPref(prefs::kReportingEndpoints);
  
    registry->RegisterBooleanPref(prefs::kCompactModeEnabled, false);

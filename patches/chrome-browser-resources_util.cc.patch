@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources_util.cc b/chrome/browser/resources_util.cc
-index e32e86a4d9063714276f8764065ee52770dd558e..88ea2cd5eb50ba63902b4ede1e44902d952766d0 100644
+index 41f9ac9a70f6ff25313a4dd4628ade7b609d29c8..05a0bd95a7902c0271a896bb4b232b7407bdd62a 100644
 --- a/chrome/browser/resources_util.cc
 +++ b/chrome/browser/resources_util.cc
-@@ -50,6 +50,7 @@ class ThemeMap {
+@@ -55,6 +55,7 @@ class ThemeMap {
      for (size_t i = 0; i < kUiResourcesSize; ++i) {
        storage.emplace_back(kUiResources[i].path, kUiResources[i].id);
      }

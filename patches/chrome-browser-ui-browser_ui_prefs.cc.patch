@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_ui_prefs.cc b/chrome/browser/ui/browser_ui_prefs.cc
-index 0431762d4e72666e6d8f396c72a0c650bb8aff78..f22501c63293a7dd12c681cd6339df8ae7e73aff 100644
+index dc3191190654b7c9dfa32d5b0c92814c3b4d4480..2d00a9a5d0b30dceffbf769146a27ffbdbcbc9df 100644
 --- a/chrome/browser/ui/browser_ui_prefs.cc
 +++ b/chrome/browser/ui/browser_ui_prefs.cc
-@@ -96,7 +96,7 @@ void RegisterBrowserUserPrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -98,7 +98,7 @@ void RegisterBrowserUserPrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterBooleanPref(prefs::kWebAppCreateInQuickLaunchBar, true);
    registry->RegisterBooleanPref(
        translate::prefs::kOfferTranslateEnabled, true,

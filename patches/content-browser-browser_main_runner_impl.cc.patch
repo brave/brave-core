@@ -1,5 +1,5 @@
 diff --git a/content/browser/browser_main_runner_impl.cc b/content/browser/browser_main_runner_impl.cc
-index b0774e70e2cc67e0c9d6163b7d1efdc3de3c8fa1..33c6d76759c5d51db9b2b51a786c1267020f097f 100644
+index 0eb2ce105185ff67b7cab3570f1c31bf796e0895..4fbf792775909026a311fad7a28cdbca57a32a04 100644
 --- a/content/browser/browser_main_runner_impl.cc
 +++ b/content/browser/browser_main_runner_impl.cc
 @@ -19,6 +19,7 @@
@@ -10,7 +10,7 @@ index b0774e70e2cc67e0c9d6163b7d1efdc3de3c8fa1..33c6d76759c5d51db9b2b51a786c1267
  #include "build/build_config.h"
  #include "components/tracing/common/tracing_switches.h"
  #include "content/browser/browser_main_loop.h"
-@@ -106,7 +107,7 @@ int BrowserMainRunnerImpl::Initialize(MainFunctionParams parameters) {
+@@ -103,7 +104,7 @@ int BrowserMainRunnerImpl::Initialize(MainFunctionParams parameters) {
      auto created_main_parts_closure =
          std::move(parameters.created_main_parts_closure);
  

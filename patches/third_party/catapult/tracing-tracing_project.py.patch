@@ -1,8 +1,8 @@
 diff --git a/tracing/tracing_project.py b/tracing/tracing_project.py
-index 225b478a05d8273c5ffc856a9614d01a33c44ac2..8c4a0713f7b22da6905c1a6be2046012a5f1c65a 100644
+index 6d2d7327d7f041ca6725787d469710c80b40f0c5..b079c9ecf9d907af6ab0b00504901e779470bbd6 100644
 --- a/tracing/tracing_project.py
 +++ b/tracing/tracing_project.py
-@@ -134,6 +134,7 @@ class TracingProject(object):
+@@ -126,6 +126,7 @@ class TracingProject(object):
      self.source_paths.append(self.chai_path)
      self.source_paths.append(self.mocha_path)
      self.source_paths.append(self.oboe_path)
