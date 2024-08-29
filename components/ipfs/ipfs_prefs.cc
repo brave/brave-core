@@ -6,7 +6,6 @@
 #include "brave/components/ipfs/ipfs_prefs.h"
 
 #include "base/files/file_path.h"
-#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace {

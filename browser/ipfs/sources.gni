@@ -8,9 +8,14 @@ import("//build/config/features.gni")
 brave_browser_ipfs_sources = []
 brave_browser_ipfs_deps = []
 
-if (!is_android && !is_ios) {
+if (!is_android) {
   brave_browser_ipfs_sources += [
     "//brave/browser/ipfs/ipfs_component_cleaner.cc",
     "//brave/browser/ipfs/ipfs_component_cleaner.h",
+  ]
+  brave_browser_ipfs_deps += [
+    "//base",
+    "//build:buildflag_header_h",
+    "//chrome/common",
   ]
 }

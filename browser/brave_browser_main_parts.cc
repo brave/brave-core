@@ -51,6 +51,7 @@
 #include "brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h"
 #include "brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h"
 #include "brave/browser/infobars/sync_cannot_run_infobar_delegate.h"
+#include "brave/browser/ipfs/ipfs_component_cleaner.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/infobars/content/content_infobar_manager.h"
@@ -65,10 +66,6 @@
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "extensions/browser/extension_system.h"
-#endif
-
-#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ipfs/ipfs_component_cleaner.h"
 #endif
 
 BraveBrowserMainParts::BraveBrowserMainParts(bool is_integration_test,
@@ -164,9 +161,9 @@ void BraveBrowserMainParts::PostBrowserStart() {
   }
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   ipfs::CleanupIpfsComponent();
-#endif
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 void BraveBrowserMainParts::PreShutdown() {

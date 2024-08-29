@@ -5,23 +5,12 @@
 
 #include "brave/components/ipfs/ipfs_utils.h"
 
-#include <fstream>
-#include <memory>
 #include <string>
-#include <utility>
 #include <vector>
 
-#include "base/files/file_path.h"
-#include "base/files/file_util.h"
-#include "base/files/scoped_temp_dir.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
-#include "chrome/browser/prefs/browser_prefs.h"
-#include "chrome/browser/sync/sync_service_factory.h"
-#include "chrome/test/base/testing_profile.h"
-#include "components/sync_preferences/pref_service_mock_factory.h"
 #include "content/public/test/browser_task_environment.h"
-#include "net/base/url_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
