@@ -49,7 +49,6 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
             @NonNull DataSharingTabManager dataSharingTabManager,
             @NonNull TabModelSelector tabModelSelector,
             @NonNull TabContentManager tabContentManager,
-            @NonNull ViewGroup rootView,
             @NonNull TabCreatorManager tabCreatorManager,
             @NonNull OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             @NonNull ModalDialogManager modalDialogManager) {
@@ -64,7 +63,6 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
                 dataSharingTabManager,
                 tabModelSelector,
                 tabContentManager,
-                rootView,
                 tabCreatorManager,
                 layoutStateProviderSupplier,
                 modalDialogManager);
