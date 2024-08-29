@@ -22,7 +22,6 @@ import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -633,34 +632,30 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                         .show();
             }
         } else if (mConfirmCodeWordsButton == v) {
-            String[] words = mCodeWords.getText()
-                                     .toString()
-                                     .trim()
-                                     .replace("   ", " ")
-                                     .replace("\n", " ")
-                                     .split(" ");
-
-            String trimmedWords = TextUtils.join(" ", words);
-            String validationError = getWordsValidationString(trimmedWords);
+            String words = mCodeWords.getText().toString();
+            String validationError = getWordsValidationString(words);
             if (!validationError.isEmpty()) {
                 Log.e(TAG, "Confirm code words - wrong codephrase");
                 onSyncError(validationError);
                 return;
             }
 
-            String codephraseCandidate =
-                    getBraveSyncWorker().getPureWordsFromTimeLimited(trimmedWords);
+            String codephraseCandidate = getBraveSyncWorker().getPureWordsFromTimeLimited(words);
             assert codephraseCandidate != null && !codephraseCandidate.isEmpty();
 
-            showFinalSecurityWarning(FinalWarningFor.CODE_WORDS, () -> {
-                // We have the confirmation from user
-                // Code phrase looks valid, we can pass it down to sync system
-                mCodephrase = codephraseCandidate;
-                seedWordsReceived(mCodephrase, SyncInputType.JOIN);
-            }, () -> {});
+            showFinalSecurityWarning(
+                    FinalWarningFor.CODE_WORDS,
+                    () -> {
+                        // We have the confirmation from user
+                        // Code phrase looks valid, we can pass it down to sync system
+                        mCodephrase = codephraseCandidate;
+                        seedWordsReceived(mCodephrase, SyncInputType.JOIN);
+                    },
+                    () -> {});
         } else if (mEnterCodeWordsButton == v) {
-            getActivity().getWindow().setSoftInputMode(
-                    WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            getActivity()
+                    .getWindow()
+                    .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             if (null != mScrollViewSyncInitial) {
                 mScrollViewSyncInitial.setVisibility(View.GONE);
             }
@@ -684,31 +679,26 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             }
             getActivity().setTitle(R.string.brave_sync_code_words_title);
             if (null != mCodeWords && null != mBraveSyncWordCountTitle) {
-                mCodeWords.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void afterTextChanged(Editable s) {}
+                mCodeWords.addTextChangedListener(
+                        new TextWatcher() {
+                            @Override
+                            public void afterTextChanged(Editable s) {}
 
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    }
+                            @Override
+                            public void beforeTextChanged(
+                                    CharSequence s, int start, int count, int after) {}
 
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        int wordCount = mCodeWords.getText().toString().length();
-                        if (0 != wordCount) {
-                            String[] words = mCodeWords.getText()
-                                                     .toString()
-                                                     .trim()
-                                                     .replace("   ", " ")
-                                                     .replace("\n", " ")
-                                                     .split(" ");
-                            wordCount = words.length;
-                        }
-                        mBraveSyncWordCountTitle.setText(
-                                getString(R.string.brave_sync_word_count_text, wordCount));
-                        mBraveSyncWordCountTitle.invalidate();
-                    }
-                });
+                            @Override
+                            public void onTextChanged(
+                                    CharSequence s, int start, int before, int count) {
+                                int wordCount =
+                                        getBraveSyncWorker()
+                                                .getWordsCount(mCodeWords.getText().toString());
+                                mBraveSyncWordCountTitle.setText(
+                                        getString(R.string.brave_sync_word_count_text, wordCount));
+                                mBraveSyncWordCountTitle.invalidate();
+                            }
+                        });
             }
         } else if (mShowCategoriesButton == v) {
             SettingsLauncher settingsLauncher = new SettingsLauncherImpl();

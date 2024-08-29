@@ -58,7 +58,7 @@ export class SettingsBraveSyncCodeDialogElement extends SettingsBraveSyncCodeDia
       },
       syncCodeWordCount_: {
         type: Number,
-        computed: 'computeSyncCodeWordCount_(syncCode)'
+        value: 0
       },
       hasCopiedSyncCode_: {
         type: Boolean,
@@ -74,6 +74,7 @@ export class SettingsBraveSyncCodeDialogElement extends SettingsBraveSyncCodeDia
   static get observers() {
     return [
       'getQRCode_(syncCode, codeType)',
+      'computeSyncCodeWordCount_(syncCode, codeType)',
     ];
   }
 
@@ -87,11 +88,17 @@ export class SettingsBraveSyncCodeDialogElement extends SettingsBraveSyncCodeDia
 
   syncBrowserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance();
 
-  computeSyncCodeWordCount_() {
-    if (!this.syncCode) {
-      return 0
+  async computeSyncCodeWordCount_() {
+    if (this.codeType !== 'input') {
+      return
     }
-    return this.syncCode.trim().split(' ').length
+
+    if (!this.syncCode) {
+      return
+    }
+
+    this.syncCodeWordCount_ =
+      await this.syncBrowserProxy_.getWordsCount(this.syncCode)
   }
 
   isCodeType(askingType: string) {
