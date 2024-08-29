@@ -24,6 +24,7 @@
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/text_embedder.h"
@@ -155,8 +156,8 @@ class MockConversationDriver : public ConversationDriver {
               (override));
   MOCK_METHOD(void, PrintPreviewFallback, (GetPageContentCallback), (override));
   MOCK_METHOD(void,
-              FetchSearchQuerySummary,
-              (FetchSearchQuerySummaryCallback),
+              GetSearchSummarizerKey,
+              (mojom::PageContentExtractor::GetSearchSummarizerKeyCallback),
               (override));
 };
 
@@ -248,6 +249,17 @@ class ConversationDriverUnitTest : public testing::Test {
         mojom::ConversationTurnVisibility::VISIBLE, "summary", std::nullopt,
         std::move(events), base::Time::Now(), std::nullopt, true));
     conversation_driver_->SetChatHistoryForTesting(std::move(history));
+  }
+
+  void SetSearchQuerySummaryInterceptor(bool empty = false) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, empty](const network::ResourceRequest& request) {
+          std::string rsp =
+              empty ? R"({"conversation": []})" : R"({"conversation": [
+                    {"query": "query", "answer": [{"text": "summary"}]}]})";
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(), rsp);
+        }));
   }
 
  protected:
@@ -1011,9 +1023,9 @@ TEST_F(ConversationDriverUnitTest, MaybeFetchOrClearSearchQuerySummary) {
   ON_CALL(*conversation_driver_, GetPageURL)
       .WillByDefault(
           testing::Return(GURL("https://search.brave.com/search?q=test")));
-  EXPECT_CALL(*conversation_driver_, FetchSearchQuerySummary)
-      .WillOnce(base::test::RunOnceCallback<0>(
-          SearchQuerySummary("query", "summary")));
+  EXPECT_CALL(*conversation_driver_, GetSearchSummarizerKey)
+      .WillOnce(base::test::RunOnceCallback<0>("key"));
+  SetSearchQuerySummaryInterceptor();
   MockConversationDriverObserver observer(conversation_driver_.get());
   EXPECT_CALL(observer, OnHistoryUpdate()).Times(1);  // From fetch.
 
@@ -1047,6 +1059,25 @@ TEST_F(ConversationDriverUnitTest, MaybeFetchOrClearSearchQuerySummary) {
   }
 }
 
+TEST_F(ConversationDriverUnitTest, MaybeFetchOrClearSearchQuerySummary_NoKey) {
+  EmulateUserOptedIn();
+  ASSERT_TRUE(conversation_driver_->should_send_page_contents_);
+
+  ON_CALL(*conversation_driver_, GetPageURL)
+      .WillByDefault(
+          testing::Return(GURL("https://search.brave.com/search?q=test")));
+  EXPECT_CALL(*conversation_driver_, GetSearchSummarizerKey)
+      .WillOnce(base::test::RunOnceCallback<0>(std::nullopt));
+  MockConversationDriverObserver observer(conversation_driver_.get());
+  EXPECT_CALL(observer, OnHistoryUpdate()).Times(0);
+
+  conversation_driver_->MaybeFetchOrClearSearchQuerySummary();
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(conversation_driver_.get());
+  testing::Mock::VerifyAndClearExpectations(&observer);
+  EXPECT_TRUE(conversation_driver_->GetConversationHistory().empty());
+}
+
 TEST_F(ConversationDriverUnitTest,
        MaybeFetchOrClearSearchQuerySummary_NoResult) {
   EmulateUserOptedIn();
@@ -1055,8 +1086,9 @@ TEST_F(ConversationDriverUnitTest,
   ON_CALL(*conversation_driver_, GetPageURL)
       .WillByDefault(
           testing::Return(GURL("https://search.brave.com/search?q=test")));
-  EXPECT_CALL(*conversation_driver_, FetchSearchQuerySummary)
-      .WillOnce(base::test::RunOnceCallback<0>(std::nullopt));
+  EXPECT_CALL(*conversation_driver_, GetSearchSummarizerKey)
+      .WillOnce(base::test::RunOnceCallback<0>("key"));
+  SetSearchQuerySummaryInterceptor(true);
   MockConversationDriverObserver observer(conversation_driver_.get());
   EXPECT_CALL(observer, OnHistoryUpdate()).Times(0);
 
@@ -1078,7 +1110,7 @@ TEST_F(ConversationDriverUnitTest,
   ON_CALL(*conversation_driver_, GetPageURL)
       .WillByDefault(
           testing::Return(GURL("https://search.brave.com/search?q=test")));
-  EXPECT_CALL(*conversation_driver_, FetchSearchQuerySummary).Times(0);
+  EXPECT_CALL(*conversation_driver_, GetSearchSummarizerKey).Times(0);
   MockConversationDriverObserver observer(conversation_driver_.get());
   EXPECT_CALL(observer, OnHistoryUpdate()).Times(1);  // From clear.
 
@@ -1102,7 +1134,7 @@ TEST_F(ConversationDriverUnitTest,
   ON_CALL(*conversation_driver_, GetPageURL)
       .WillByDefault(
           testing::Return(GURL("https://search.brave.com/search?q=test")));
-  EXPECT_CALL(*conversation_driver_, FetchSearchQuerySummary).Times(0);
+  EXPECT_CALL(*conversation_driver_, GetSearchSummarizerKey).Times(0);
   MockConversationDriverObserver observer(conversation_driver_.get());
   EXPECT_CALL(observer, OnHistoryUpdate()).Times(1);  // From clear.
 
@@ -1124,7 +1156,7 @@ TEST_F(ConversationDriverUnitTest,
   // query and summary will be cleared.
   ON_CALL(*conversation_driver_, GetPageURL)
       .WillByDefault(testing::Return(GURL("https://search.brave.com")));
-  EXPECT_CALL(*conversation_driver_, FetchSearchQuerySummary).Times(0);
+  EXPECT_CALL(*conversation_driver_, GetSearchSummarizerKey).Times(0);
   MockConversationDriverObserver observer(conversation_driver_.get());
   EXPECT_CALL(observer, OnHistoryUpdate()).Times(1);  // From clear.
 
@@ -1145,7 +1177,7 @@ TEST_F(ConversationDriverUnitTest,
   // and staged query and summary will be cleared.
   ON_CALL(*conversation_driver_, GetPageURL)
       .WillByDefault(testing::Return(GURL("https://search.brave.com")));
-  EXPECT_CALL(*conversation_driver_, FetchSearchQuerySummary).Times(0);
+  EXPECT_CALL(*conversation_driver_, GetSearchSummarizerKey).Times(0);
   MockConversationDriverObserver observer(conversation_driver_.get());
   EXPECT_CALL(observer, OnHistoryUpdate()).Times(1);  // From clear.
 
@@ -1161,9 +1193,9 @@ TEST_F(ConversationDriverUnitTest,
   ON_CALL(*conversation_driver_, GetPageURL)
       .WillByDefault(
           testing::Return(GURL("https://search.brave.com/search?q=test")));
-  EXPECT_CALL(*conversation_driver_, FetchSearchQuerySummary)
-      .WillOnce(base::test::RunOnceCallback<0>(
-          SearchQuerySummary("query", "summary")));
+  EXPECT_CALL(*conversation_driver_, GetSearchSummarizerKey)
+      .WillOnce(base::test::RunOnceCallback<0>("key"));
+  SetSearchQuerySummaryInterceptor();
   EXPECT_CALL(observer, OnHistoryUpdate()).Times(2);  // From clear and fetch.
   // MaybeFetchOrClearSearchQuerySummary would be triggered by below.
   conversation_driver_->OnNewPage(conversation_driver_->current_navigation_id_ +
@@ -1171,7 +1203,9 @@ TEST_F(ConversationDriverUnitTest,
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(conversation_driver_.get());
   testing::Mock::VerifyAndClearExpectations(&observer);
-  EXPECT_EQ(conversation_driver_->GetConversationHistory().size(), 2u);
+  ASSERT_EQ(conversation_driver_->GetConversationHistory().size(), 2u);
+  EXPECT_EQ(conversation_driver_->GetConversationHistory()[0]->text, "query");
+  EXPECT_EQ(conversation_driver_->GetConversationHistory()[1]->text, "summary");
 }
 
 TEST_F(ConversationDriverUnitTest,
@@ -1186,7 +1220,7 @@ TEST_F(ConversationDriverUnitTest,
   ON_CALL(*conversation_driver_, GetPageURL)
       .WillByDefault(
           testing::Return(GURL("https://search.brave.com/search?q=test")));
-  EXPECT_CALL(*conversation_driver_, FetchSearchQuerySummary).Times(0);
+  EXPECT_CALL(*conversation_driver_, GetSearchSummarizerKey).Times(0);
   MockConversationDriverObserver observer(conversation_driver_.get());
   EXPECT_CALL(observer, OnHistoryUpdate()).Times(0);
   // MaybeFetchOrClearSearchQuerySummary would be triggered by below.
@@ -1197,13 +1231,34 @@ TEST_F(ConversationDriverUnitTest,
   EXPECT_EQ(conversation_driver_->GetConversationHistory().size(), 2u);
 
   // No fetch should be called when conversation is active again.
-  EXPECT_CALL(*conversation_driver_, FetchSearchQuerySummary).Times(0);
+  EXPECT_CALL(*conversation_driver_, GetSearchSummarizerKey).Times(0);
   conversation_driver_->OnConversationActiveChanged(true);
   EXPECT_CALL(observer, OnHistoryUpdate()).Times(0);
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(conversation_driver_.get());
   testing::Mock::VerifyAndClearExpectations(&observer);
   EXPECT_EQ(conversation_driver_->GetConversationHistory().size(), 2u);
+}
+
+TEST_F(ConversationDriverUnitTest, ParseSearchQuerySummaryResponse) {
+  struct {
+    std::string response;
+    std::optional<SearchQuerySummary> expected_query_summary;
+  } test_cases[] = {
+      {"{}", std::nullopt},
+      {R"({"conversation": []})", std::nullopt},  // empty conversation
+      {R"({"conversation": [{"query": "q","answer": []}]})",
+       std::nullopt},  // empty answer
+      {R"({"conversation": [{"query": "q", "answer": [{"text": "t"}]}]})",
+       SearchQuerySummary("q", "t")},
+  };
+
+  for (const auto& test_case : test_cases) {
+    SCOPED_TRACE(testing::Message() << test_case.response);
+    auto query_summary = conversation_driver_->ParseSearchQuerySummaryResponse(
+        base::test::ParseJson(test_case.response));
+    EXPECT_EQ(query_summary, test_case.expected_query_summary);
+  }
 }
 
 }  // namespace ai_chat
