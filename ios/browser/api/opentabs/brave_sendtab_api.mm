@@ -20,6 +20,9 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
     syncer::DeviceInfo::FormFactor deviceType) {
   switch (deviceType) {
     case syncer::DeviceInfo::FormFactor::kUnknown:
+    case syncer::DeviceInfo::FormFactor::kAutomotive:
+    case syncer::DeviceInfo::FormFactor::kWearable:
+    case syncer::DeviceInfo::FormFactor::kTv:
       return TargetDeviceTypeUnset;
     case syncer::DeviceInfo::FormFactor::kDesktop:
       return TargetDeviceTypePC;
