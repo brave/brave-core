@@ -283,7 +283,6 @@ public class BraveToolbarManager extends ToolbarManager {
                                     mDataSharingTabManager,
                                     mTabModelSelector,
                                     mTabContentManager,
-                                    mCompositorViewHolder,
                                     mTabCreatorManager,
                                     mLayoutStateProviderSupplier,
                                     mModalDialogManagerSupplier.get());
