@@ -50,11 +50,6 @@ private let KVOs: [KVOConstants] = [
   .visibleSSLStatus
 ]
 
-private let webViewKVOs: [KVOConstants] = [
-  ._sampledPageTopColor
-  //  .url,
-]
-
 public class BrowserViewController: UIViewController {
   let webViewContainer = UIView()
   private(set) lazy var screenshotHelper = ScreenshotHelper(tabManager: tabManager)
@@ -1989,8 +1984,6 @@ public class BrowserViewController: UIViewController {
           self.updateToolbarSecureContentState(tab.lastKnownSecureContentState)
         }
       }
-    case ._sampledPageTopColor:
-      updateStatusBarOverlayColor()
     default:
       assertionFailure("Unhandled KVO key: \(kp)")
     }
@@ -2589,16 +2582,6 @@ extension BrowserViewController: TabDelegate {
 
     // Observers that live as long as the tab. Make sure these are all cleared in willDeleteWebView below!
     KVOs.forEach { webView.addObserver(self, forKeyPath: $0.keyPath, options: .new, context: nil) }
-
-    // FIXME: Cant access the underlying web view here
-    //    webViewKVOs.forEach {
-    //      webView.underlyingWebView?.addObserver(
-    //        self,
-    //        forKeyPath: $0.keyPath,
-    //        options: .new,
-    //        context: nil
-    //      )
-    //    }
     webView.uiDelegate = self
 
     var injectedScripts: [TabContentScript] = [

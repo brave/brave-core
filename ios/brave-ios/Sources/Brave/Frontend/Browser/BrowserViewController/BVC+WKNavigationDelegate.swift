@@ -21,6 +21,32 @@ import UniformTypeIdentifiers
 import WebKit
 import os.log
 
+/// Observes a single change from the private API `_sampledPageTopColor`
+///
+/// This should only be installed at the start of a navigation as that will guarantee that the
+/// underlying `WKWebView` has already been created by `CRWWebController`
+class SampledTopPageColorNotifier: NSObject {
+  private let keyPath = "_sampl\("edPageTopC")olor"
+  private weak var webView: CWVWebView?
+  private let handler: (UIColor?) -> Void
+  init(webView: CWVWebView, handler: @escaping (UIColor?) -> Void) {
+    self.webView = webView
+    self.handler = handler
+    super.init()
+    webView.underlyingWebView?.addObserver(self, forKeyPath: keyPath, context: nil)
+  }
+  override func observeValue(
+    forKeyPath keyPath: String?,
+    of object: Any?,
+    change: [NSKeyValueChangeKey: Any]?,
+    context: UnsafeMutableRawPointer?
+  ) {
+    guard let webView, keyPath == self.keyPath else { return }
+    handler(webView.underlyingWebView?.sampledPageTopColor)
+    webView.underlyingWebView?.removeObserver(self, forKeyPath: self.keyPath)
+  }
+}
+
 extension URLRequest {
   /// Allow local requests only if the request is privileged.
   /// If the request is internal or unprivileged, we should deny it.
@@ -107,6 +133,12 @@ extension BrowserViewController: CWVNavigationDelegate {
       return
     }
     toolbarVisibilityViewModel.toolbarState = .expanded
+
+    if let tab = tabManager[webView] {
+      tab.sampledTopPageColorNotifier = SampledTopPageColorNotifier(webView: webView) { [weak self] color in
+        self?.updateStatusBarOverlayColor()
+      }
+    }
 
     // check if web view is loading a different origin than the one currently loaded
     if let selectedTab = tabManager.selectedTab,
@@ -731,6 +763,8 @@ extension BrowserViewController: CWVNavigationDelegate {
         await BraveSkusAccountLink.injectLocalStorage(webView: webView)
       }
     }
+    
+    tab.sampledTopPageColorNotifier = nil
 
     // Second attempt to inject results to the BraveSearch.
     // This will be called if we got fallback results faster than
