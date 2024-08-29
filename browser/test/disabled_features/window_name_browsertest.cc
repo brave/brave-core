@@ -61,7 +61,7 @@ class BraveWindowNameBrowserTest : public InProcessBrowserTest {
     frame->ExecuteJavaScriptForTests(
         base::ASCIIToUTF16("document.getElementById('" + id + "').href='" +
                            href + "';\n"),
-        base::NullCallback());
+        base::NullCallback(), content::ISOLATED_WORLD_ID_GLOBAL);
   }
 
   void Click(const std::string& id) {
@@ -69,7 +69,7 @@ class BraveWindowNameBrowserTest : public InProcessBrowserTest {
     content::RenderFrameHost* frame = web_contents()->GetPrimaryMainFrame();
     frame->ExecuteJavaScriptForTests(
         base::ASCIIToUTF16("document.getElementById('" + id + "').click();\n"),
-        base::NullCallback());
+        base::NullCallback(), content::ISOLATED_WORLD_ID_GLOBAL);
     observer.WaitForNavigationFinished();
   }
 };

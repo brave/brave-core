@@ -73,7 +73,7 @@ class EphemeralStorage1pDomainBlockBrowserTest
     content::RenderFrameHost* frame = web_contents->GetPrimaryMainFrame();
     frame->ExecuteJavaScriptForTests(
         base::ASCIIToUTF16("document.getElementById('" + id + "').click();\n"),
-        base::NullCallback());
+        base::NullCallback(), content::ISOLATED_WORLD_ID_GLOBAL);
   }
 
   void ClickAndWaitForNavigation(WebContents* web_contents,
