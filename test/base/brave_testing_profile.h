@@ -11,7 +11,9 @@
 class BraveTestingProfile : public TestingProfile {
  public:
   BraveTestingProfile();
-  BraveTestingProfile(const base::FilePath& path, Delegate* delegate);
+  BraveTestingProfile(const base::FilePath& path,
+                      Delegate* delegate,
+                      CreateMode create_mode);
   ~BraveTestingProfile() override = default;
 };
 
