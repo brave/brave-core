@@ -10,8 +10,9 @@
 #include "components/prefs/pref_service.h"
 
 BraveTestingProfile::BraveTestingProfile(const base::FilePath& path,
-                                         Delegate* delegate)
-    : TestingProfile(path, delegate) {}
+                                         Delegate* delegate,
+                                         CreateMode create_mode)
+    : TestingProfile(path, delegate, create_mode) {}
 
 BraveTestingProfile::BraveTestingProfile() : TestingProfile() {
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
