@@ -17,6 +17,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -42,14 +43,18 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
     language_metrics_ = std::make_unique<LanguageMetrics>(profile_prefs_);
     pref_change_registrar_.Init(profile_prefs_);
   }
+  auto* profile = Profile::FromBrowserContext(context);
   auto* history_service = HistoryServiceFactory::GetForProfile(
-      Profile::FromBrowserContext(context), ServiceAccessType::EXPLICIT_ACCESS);
+      profile, ServiceAccessType::EXPLICIT_ACCESS);
   auto* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(context);
   auto* bookmark_model = BookmarkModelFactory::GetForBrowserContext(context);
+  auto* template_url_service =
+      TemplateURLServiceFactory::GetForProfile(profile);
   if (history_service && host_content_settings_map) {
     page_metrics_ = std::make_unique<PageMetrics>(
         local_state, host_content_settings_map, history_service, bookmark_model,
+        template_url_service,
         base::BindRepeating(&brave_stats::GetFirstRunTime,
                             base::Unretained(local_state)));
   }
@@ -64,8 +69,7 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
   if (extension_registry) {
     extension_metrics_ = std::make_unique<ExtensionMetrics>(extension_registry);
   }
-  auto* theme_service =
-      ThemeServiceFactory::GetForProfile(Profile::FromBrowserContext(context));
+  auto* theme_service = ThemeServiceFactory::GetForProfile(profile);
   if (theme_service) {
     theme_metrics_ = std::make_unique<ThemeMetrics>(theme_service);
   }

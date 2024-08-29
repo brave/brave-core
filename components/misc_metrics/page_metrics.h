@@ -21,6 +21,7 @@
 class HostContentSettingsMap;
 class PrefRegistrySimple;
 class PrefService;
+class TemplateURLService;
 class WeeklyStorage;
 
 namespace browsing_data {
@@ -37,7 +38,10 @@ class HistoryService;
 
 namespace misc_metrics {
 
-inline constexpr char kPagesLoadedHistogramName[] = "Brave.Core.PagesLoaded.2";
+inline constexpr char kPagesLoadedNonBraveSearchHistogramName[] =
+    "Brave.Core.PagesLoaded.OtherSearchDefault";
+inline constexpr char kPagesLoadedBraveSearchHistogramName[] =
+    "Brave.Core.PagesLoaded.BraveSearchDefault";
 inline constexpr char kPagesReloadedHistogramName[] =
     "Brave.Core.PagesReloaded";
 inline constexpr char kDomainsLoadedHistogramName[] =
@@ -61,6 +65,7 @@ class PageMetrics {
               HostContentSettingsMap* host_content_settings_map,
               history::HistoryService* history_service,
               bookmarks::BookmarkModel* bookmark_model,
+              TemplateURLService* template_url_service,
               FirstRunTimeCallback first_run_time_callback);
   ~PageMetrics();
 
@@ -95,6 +100,8 @@ class PageMetrics {
   void OnBookmarkCountResult(
       std::unique_ptr<browsing_data::BrowsingDataCounter::Result> result);
 
+  bool IsBraveSearchDefault();
+
   std::unique_ptr<WeeklyStorage> pages_loaded_storage_;
   std::unique_ptr<WeeklyStorage> pages_reloaded_storage_;
   std::unique_ptr<WeeklyStorage> interstitial_allow_decisions_storage_;
@@ -115,6 +122,8 @@ class PageMetrics {
   raw_ptr<PrefService> local_state_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   raw_ptr<history::HistoryService> history_service_ = nullptr;
+  raw_ptr<TemplateURLService> template_url_service_ = nullptr;
+
   FirstRunTimeCallback first_run_time_callback_;
   base::Time first_run_time_;
 
