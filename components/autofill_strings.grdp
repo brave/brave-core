@@ -100,12 +100,12 @@
   <message name="IDS_AUTOFILL_ADDRESS_SUMMARY_SEPARATOR" desc="The separator character used in the summary of an address." formatter_data="android_java">
     , '''
   </message>
-
-  <!-- TODO(crbug.com/40270486): Make translatable once strings are finalized. -->
-  <message name="IDS_AUTOFILL_ADDRESS_TEST_DATA" desc="The text displayed as a secondary label in the test addresses devtools suggestion." translateable="false">
-    Address test data
+  <message name="IDS_AUTOFILL_DEVELOPER_TOOLS" desc="Displayed as the main text in the top level devtools suggestion.">
+    Developer tools
   </message>
-
+  <message name="IDS_AUTOFILL_TEST_ADDRESS_BY_COUNTRY" desc="The text displayed as the main text in the second level popup for a devtools suggestion. Used to give developers about which countries Autofill has test addresses available.">
+    Test address by country
+  </message>
   <message name="IDS_AUTOFILL_TEST_ADDRESS_SELECTED_A11Y_HINT" desc="Voice over text that is read out when a test address is accepted from the subpopup." translateable="false">
     Test address from <ph name="ENTRY_VOICEOVER">$1<ex>United states</ex></ph> selected.
   </message>
@@ -404,9 +404,6 @@
 
   <!-- Manual filling (keyboard accessory) strings -->
   <if expr="is_android">
-    <message name="IDS_MANUAL_FILLING_CREDIT_CARD_SHEET_TITLE" desc="Title shown at the top of a sheet where users can select indiviual data pieces (e.g., the cardholder name) related to their stored payment methods (e.g., credit cards) to fill that data piece into the focused form field. Sentence-cased.">
-      Payment methods
-    </message>
     <message name="IDS_MANUAL_FILLING_CREDIT_CARD_SHEET_ALL_ADDRESSES_LINK" desc="The text of the link in the address sheet that opens the address management section.">
       Manage payment methods
     </message>
