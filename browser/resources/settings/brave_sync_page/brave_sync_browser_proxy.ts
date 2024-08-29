@@ -53,6 +53,9 @@ export class BraveSyncBrowserProxy {
   permanentlyDeleteSyncAccount(): Promise<boolean>  {
     return sendWithPromise('SyncPermanentlyDeleteAccount');
   }
+  getWordsCount(syncCode: string): Promise<number> {
+    return sendWithPromise('SyncGetWordsCount', syncCode);
+  }
   static getInstance() {
     return instance || (instance = new BraveSyncBrowserProxy())
   }

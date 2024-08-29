@@ -40,6 +40,7 @@
 //    isInitialSyncFeatureSetupComplete
 
 using base::android::ConvertUTF8ToJavaString;
+using brave_sync::TimeLimitedWords;
 using content::BrowserThread;
 
 namespace {
@@ -407,11 +408,10 @@ int JNI_BraveSyncWorker_GetWordsValidationResult(
       base::android::ConvertJavaStringToUTF8(time_limited_words);
   DCHECK(!str_time_limited_words.empty());
 
-  auto pure_words_with_status =
-      brave_sync::TimeLimitedWords::Parse(str_time_limited_words);
+  auto pure_words_with_status = TimeLimitedWords::Parse(str_time_limited_words);
 
   if (pure_words_with_status.has_value()) {
-    using ValidationStatus = brave_sync::TimeLimitedWords::ValidationStatus;
+    using ValidationStatus = TimeLimitedWords::ValidationStatus;
     return static_cast<int>(ValidationStatus::kValid);
   }
   return static_cast<int>(pure_words_with_status.error());
@@ -425,8 +425,7 @@ JNI_BraveSyncWorker_GetPureWordsFromTimeLimited(
       base::android::ConvertJavaStringToUTF8(time_limited_words);
   DCHECK(!str_time_limited_words.empty());
 
-  auto pure_words_with_status =
-      brave_sync::TimeLimitedWords::Parse(str_time_limited_words);
+  auto pure_words_with_status = TimeLimitedWords::Parse(str_time_limited_words);
   DCHECK(pure_words_with_status.has_value());
 
   return base::android::ConvertUTF8ToJavaString(env,
@@ -440,8 +439,7 @@ static int64_t JNI_BraveSyncWorker_GetNotAfterFromFromTimeLimitedWords(
       base::android::ConvertJavaStringToUTF8(time_limited_words);
   DCHECK(!str_time_limited_words.empty());
 
-  auto not_after =
-      brave_sync::TimeLimitedWords::GetNotAfter(str_time_limited_words);
+  auto not_after = TimeLimitedWords::GetNotAfter(str_time_limited_words);
 
   return not_after.InMillisecondsSinceUnixEpoch() / 1000;
 }
@@ -501,8 +499,7 @@ JNI_BraveSyncWorker_GetTimeLimitedWordsFromPure(
       base::android::ConvertJavaStringToUTF8(pure_words);
   DCHECK(!str_pure_words.empty());
 
-  auto time_limited_words =
-      brave_sync::TimeLimitedWords::GenerateForNow(str_pure_words);
+  auto time_limited_words = TimeLimitedWords::GenerateForNow(str_pure_words);
 
   DCHECK(time_limited_words.has_value());
   return base::android::ConvertUTF8ToJavaString(env,
@@ -528,6 +525,13 @@ JNI_BraveSyncWorker_GetSeedHexFromQrJson(
   DCHECK(!GetWordsFromSeedHex(result).empty());
 
   return ConvertUTF8ToJavaString(env, result);
+}
+
+static int JNI_BraveSyncWorker_GetWordsCount(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& words) {
+  return TimeLimitedWords::GetWordsCount(
+      base::android::ConvertJavaStringToUTF8(words));
 }
 
 }  // namespace android
