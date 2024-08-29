@@ -159,12 +159,18 @@ public class BraveSyncWorker {
         BraveSyncWorkerJni.get().setJoinSyncChainCallback(mNativeBraveSyncWorker, callback);
     }
 
+    public int getWordsCount(String words) {
+        return BraveSyncWorkerJni.get().getWordsCount(words);
+    }
+
     @NativeMethods
     interface Natives {
         void init(BraveSyncWorker caller);
+
         void destroy(long nativeBraveSyncWorker);
 
         String getSyncCodeWords(long nativeBraveSyncWorker);
+
         void requestSync(long nativeBraveSyncWorker);
 
         String getSeedHexFromWords(String passphrase);
@@ -188,6 +194,8 @@ public class BraveSyncWorker {
         String getFormattedTimeDelta(long seconds);
 
         void saveCodeWords(long nativeBraveSyncWorker, String passphrase);
+
+        int getWordsCount(String words);
 
         void finalizeSyncSetup(long nativeBraveSyncWorker);
 
