@@ -48,6 +48,10 @@ class _BraveLoadingStory(system_health_story.SystemHealthStory):
 
 
 class _BraveMultiTabLoadingStory(_BraveLoadingStory):
+  """ Abstract base class for multi-tab System Health user stories.
+
+  We should only use this for `system_health.memory*` benchmarks.
+  """
 
   TABS_COUNT = 10
 
@@ -56,18 +60,19 @@ class _BraveMultiTabLoadingStory(_BraveLoadingStory):
     def load_and_wait(action_runner):
       action_runner.tab.WaitForDocumentReadyStateToBeComplete()
       self._DidLoadDocument(action_runner)
-      action_runner.Wait(5)
+      action_runner.Wait(1)
 
     tabs = action_runner.tab.browser.tabs
     load_and_wait(action_runner)
 
-    for count in range(1, self.TABS_COUNT):
+    new_tab = None
+    for _ in range(self.TABS_COUNT):
       new_tab = tabs.New()
       new_tab.action_runner.Navigate(self.url)
       load_and_wait(new_tab.action_runner)
-      # Measure only the last tab
-      if count == self.TABS_COUNT - 1:
-        self._Measure(new_tab.action_runner)
+    # Measure only the last tab
+    action_runner.Wait(5)
+    self._Measure(new_tab.action_runner)
 
 
 class LoadExampleStory2023(_BraveLoadingStory):
@@ -164,4 +169,4 @@ class MultiTabLoadExampleStory2023(_BraveMultiTabLoadingStory):
   NAME = 'multitab_load:site:example.com:2023'
   URL = 'https://example.com'
   SCROLL_PAGE = False
-  TAGS = [story_tags.YEAR_2023]
+  TAGS = [story_tags.YEAR_2024]

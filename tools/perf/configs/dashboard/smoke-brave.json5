@@ -37,7 +37,7 @@
     },
     {
       "name": "system_health.memory_desktop",
-      "pageset-repeat": 10,
+      "pageset-repeat": 1,
       "stories": [
         "multitab_load:site:example.com:2023",
       ]
