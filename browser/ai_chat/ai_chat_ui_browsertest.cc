@@ -68,31 +68,6 @@ std::unique_ptr<net::test_server::HttpResponse> HandleSearchQuerySummaryRequest(
     return response;
   }
 
-  if (query == "key=%7Bnot_object%7D") {
-    auto response = std::make_unique<net::test_server::BasicHttpResponse>();
-    response->set_code(net::HTTP_OK);
-    response->set_content_type("application/json");
-    response->set_content(R"(["not_object"])");
-    return response;
-  }
-
-  if (query == "key=%7Bempty_conversation%7D") {
-    auto response = std::make_unique<net::test_server::BasicHttpResponse>();
-    response->set_code(net::HTTP_OK);
-    response->set_content_type("application/json");
-    response->set_content(R"({"conversation": []})");
-    return response;
-  }
-
-  if (query == "key=%7Bempty_answer%7D") {
-    auto response = std::make_unique<net::test_server::BasicHttpResponse>();
-    response->set_code(net::HTTP_OK);
-    response->set_content_type("application/json");
-    response->set_content(R"({"conversation": [{"query": "test query",
-                                                  "answer": []}])");
-    return response;
-  }
-
   return nullptr;
 }
 
@@ -196,13 +171,15 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
                                const std::optional<ai_chat::SearchQuerySummary>&
                                    expected_search_query_summary) {
     SCOPED_TRACE(testing::Message() << location.ToString());
+
     base::RunLoop run_loop;
-    chat_tab_helper_->FetchSearchQuerySummary(base::BindLambdaForTesting(
-        [&](const std::optional<ai_chat::SearchQuerySummary>&
-                search_query_summary) {
-          EXPECT_EQ(search_query_summary, expected_search_query_summary);
-          run_loop.Quit();
-        }));
+    chat_tab_helper_->MaybeFetchOrClearSearchQuerySummary(
+        base::BindLambdaForTesting(
+            [&](const std::optional<ai_chat::SearchQuerySummary>&
+                    search_query_summary) {
+              EXPECT_EQ(search_query_summary, expected_search_query_summary);
+              run_loop.Quit();
+            }));
     run_loop.Run();
   }
 
@@ -332,47 +309,15 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewDisabled) {
   FetchPageContent(FROM_HERE, "");
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, FetchSearchQuerySummary) {
-  NavigateURL(https_server_.GetURL("search.brave.com", "/search?q=query"));
-
+IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, FetchSearchQuerySummary_NoMetaTag) {
   // Test when meta tag is not present, should return null result.
+  NavigateURL(https_server_.GetURL("search.brave.com", "/search?q=query"));
   FetchSearchQuerySummary(FROM_HERE, std::nullopt);
+  EXPECT_TRUE(chat_tab_helper_->GetConversationHistory().empty());
+}
 
-  // Test when summarizer-key meta tag is dynamically inserted, should return
-  // the search query summary from the mock response.
-  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
-                              "var meta = document.createElement('meta');"
-                              "meta.name = 'summarizer-key';"
-                              "meta.content = '{test_key}';"
-                              "document.head.appendChild(meta);");
-  FetchSearchQuerySummary(
-      FROM_HERE, ai_chat::SearchQuerySummary("test query", "test summary"));
-
-  // Test empty summarizer-key meta tag, should return null result.
-  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
-                              "document.querySelector('meta[name=summarizer-"
-                              "key').content = '';");
-  FetchSearchQuerySummary(FROM_HERE, std::nullopt);
-
-  // Mock search query summary response to test parsing.
-  // Replace the meta tag value to another key.
-  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
-                              "document.querySelector('meta[name=summarizer-"
-                              "key').content = '{not_object}';");
-  FetchSearchQuerySummary(FROM_HERE, std::nullopt);
-
-  // Replace the meta tag value to error case: conversation empty.
-  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
-                              "document.querySelector('meta[name=summarizer-"
-                              "key').content = '{empty_conversation}';");
-  FetchSearchQuerySummary(FROM_HERE, std::nullopt);
-
-  // Replace the meta tag value to error case: answer empty.
-  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
-                              "document.querySelector('meta[name=summarizer-"
-                              "key').content = '{empty_answer}';");
-  FetchSearchQuerySummary(FROM_HERE, std::nullopt);
-
+IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
+                       FetchSearchQuerySummary_NotBraveSearchSERP) {
   // Test non-brave search SERP URL, should return null result.
   NavigateURL(https_server_.GetURL("brave.com", "/search?q=query"));
   content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
@@ -381,4 +326,28 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, FetchSearchQuerySummary) {
                               "meta.content = '{test_key}';"
                               "document.head.appendChild(meta);");
   FetchSearchQuerySummary(FROM_HERE, std::nullopt);
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
+                       FetchSearchQuerySummary_EmptyMetaTag) {
+  // Test empty summarizer-key meta tag, should return null result.
+  NavigateURL(https_server_.GetURL("search.brave.com", "/search?q=query"));
+  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
+                              "document.querySelector('meta[name=summarizer-"
+                              "key').content = '';");
+  FetchSearchQuerySummary(FROM_HERE, std::nullopt);
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
+                       FetchSearchQuerySummary_DynamicMetaTag) {
+  // Test when summarizer-key meta tag is dynamically inserted, should return
+  // the search query summary from the mock response.
+  NavigateURL(https_server_.GetURL("search.brave.com", "/search?q=query"));
+  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
+                              "var meta = document.createElement('meta');"
+                              "meta.name = 'summarizer-key';"
+                              "meta.content = '{test_key}';"
+                              "document.head.appendChild(meta);");
+  FetchSearchQuerySummary(
+      FROM_HERE, ai_chat::SearchQuerySummary("test query", "test summary"));
 }

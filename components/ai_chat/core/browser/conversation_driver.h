@@ -28,6 +28,8 @@
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "services/data_decoder/public/cpp/data_decoder.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -202,14 +204,12 @@ class ConversationDriver : public ModelService::Observer {
 
   virtual void OnFaviconImageDataChanged();
 
+  // Get summarizer-key meta tag content from Brave Search SERP if exists.
+  virtual void GetSearchSummarizerKey(
+      mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback);
+
   using FetchSearchQuerySummaryCallback = base::OnceCallback<void(
       const std::optional<SearchQuerySummary>& search_query_summary)>;
-
-  // Get summarizer-key meta tag content from Brave Search SERP if exists and
-  // use it to fetch search query and summary from Brave search chatllm
-  // endpoint.
-  virtual void FetchSearchQuerySummary(
-      FetchSearchQuerySummaryCallback callback);
 
   // Fetch search query and summary from Brave Search SERP and add them to the
   // conversation history or clear the existing staged search query and summary
@@ -221,7 +221,10 @@ class ConversationDriver : public ModelService::Observer {
   //   4) conversation is active
   // Otherwise, it would clear the previously staged search query and summary
   // from the conversation history if it exists.
-  void MaybeFetchOrClearSearchQuerySummary();
+  // [callback] will be called with the search query summary if it was fetched,
+  // or with an empty optional otherwise.
+  void MaybeFetchOrClearSearchQuerySummary(
+      FetchSearchQuerySummaryCallback callback = base::DoNothing());
 
   // Implementer should call this when the content is updated in a way that
   // will not be detected by the on-demand techniques used by GetPageContent.
@@ -254,6 +257,8 @@ class ConversationDriver : public ModelService::Observer {
   FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
                            MaybeFetchOrClearSearchQuerySummary);
   FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           MaybeFetchOrClearSearchQuerySummary_NoKey);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
                            MaybeFetchOrClearSearchQuerySummary_NoResult);
   FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
                            MaybeFetchOrClearSearchQuerySummary_NotOptedIn);
@@ -267,17 +272,25 @@ class ConversationDriver : public ModelService::Observer {
   FRIEND_TEST_ALL_PREFIXES(
       ConversationDriverUnitTest,
       MaybeFetchOrClearSearchQuerySummary_OnConversationActiveChanged);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           ParseSearchQuerySummaryResponse);
 
   void InitEngine();
   void OnUserOptedIn();
   bool MaybePopPendingRequests();
   void MaybeSeedOrClearSuggestions();
 
+  void OnSearchSummarizerKeyFetched(FetchSearchQuerySummaryCallback callback,
+                                    int64_t navigation_id,
+                                    const std::optional<std::string>& key);
+  void OnSearchQuerySummaryFetched(FetchSearchQuerySummaryCallback callback,
+                                   int64_t navigation_id,
+                                   api_request_helper::APIRequestResult result);
+
   void ClearSearchQuerySummary();
-  void OnSearchQuerySummaryFetched(
-      int64_t navigation_id,
-      const std::optional<SearchQuerySummary>& search_query_summary);
   bool ShouldFetchSearchQuerySummary();
+  static std::optional<SearchQuerySummary> ParseSearchQuerySummaryResponse(
+      const base::Value& value);
 
   void PerformAssistantGeneration(const std::string& input,
                                   int64_t current_navigation_id,
@@ -378,6 +391,9 @@ class ConversationDriver : public ModelService::Observer {
   mojom::ConversationTurnPtr pending_conversation_entry_;
 
   std::unique_ptr<TextEmbedder, base::OnTaskRunnerDeleter> text_embedder_;
+
+  // Used for fetching search query summary.
+  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
 
   base::WeakPtrFactory<ConversationDriver> weak_ptr_factory_{this};
 };
