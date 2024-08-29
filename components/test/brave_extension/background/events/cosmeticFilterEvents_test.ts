@@ -16,8 +16,6 @@ describe('cosmeticFilterEvents events', () => {
     let contextMenuOnClickedSpy: jest.SpyInstance
     let chromeTabsQuerySpy: jest.SpyInstance
     let chromeTabsSendMessageSpy: jest.SpyInstance
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    let chromeBraveShieldsAddSiteCosmeticFilterSpy: jest.SpyInstance
     chrome.braveShields = {
       addSiteCosmeticFilter: () => { /* stub */ }
     }
@@ -25,7 +23,6 @@ describe('cosmeticFilterEvents events', () => {
       contextMenuOnClickedSpy = jest.spyOn(chrome.tabs, 'create')
       chromeTabsQuerySpy = jest.spyOn(chrome.tabs, 'query')
       chromeTabsSendMessageSpy = jest.spyOn(chrome.tabs, 'sendMessage')
-      chromeBraveShieldsAddSiteCosmeticFilterSpy = jest.spyOn(chrome.braveShields, 'addSiteCosmeticFilter')
     })
     afterEach(() => {
       contextMenuOnClickedSpy.mockRestore()

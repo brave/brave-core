@@ -26,15 +26,12 @@ BraveShieldsAddSiteCosmeticFilterFunction::Run() {
   std::optional<brave_shields::AddSiteCosmeticFilter::Params> params =
       brave_shields::AddSiteCosmeticFilter::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
-  if (params->host == "") {
-    if (const auto* rfh = render_frame_host()) {
-      params->host = rfh->GetLastCommittedURL().host();
-    }
+  if (const auto* rfh = render_frame_host()) {
+    g_brave_browser_process->ad_block_service()
+        ->custom_filters_provider()
+        ->HideElementOnHost(params->css_selector,
+                            rfh->GetLastCommittedURL().host());
   }
-
-  g_brave_browser_process->ad_block_service()
-      ->custom_filters_provider()
-      ->HideElementOnHost(params->css_selector, params->host);
 
   return RespondNow(NoArguments());
 }

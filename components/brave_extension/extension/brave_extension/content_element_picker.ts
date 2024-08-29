@@ -8,8 +8,7 @@ let pickerDiv: HTMLDivElement | null
 
 const api = {
   cosmeticFilterCreate: (selector: string) => {
-    // host = '' means automatic resolution in in chrome.braveShields() impl.
-    chrome.braveShields.addSiteCosmeticFilter('', selector)
+    chrome.braveShields.addSiteCosmeticFilter(selector)
 
     const styleId = 'brave-content-picker-style'
     let style = document.getElementById(styleId)
