@@ -8,7 +8,7 @@
 
 #define TranslateLanguageList TranslateLanguageList_ChromiumImpl
 #define SetResourceRequestsAllowed virtual SetResourceRequestsAllowed
-#include "src/components/translate/core/browser/translate_language_list.h"
+#include "src/components/translate/core/browser/translate_language_list.h"  // IWYU pragma: export
 #undef SetResourceRequestsAllowed
 #undef TranslateLanguageList
 
