@@ -159,6 +159,9 @@ struct ConversationTurn {
   // instead of the original turn text when submitting the turn to the AI
   // engine or displaying the most recent text to users.
   array<ConversationTurn>? edits;
+
+  // Whether the turn was generated from Brave Search SERP.
+  bool from_brave_search_SERP = false;
 };
 
 // Represents an AI engine model choice, usually for the user to choose for a

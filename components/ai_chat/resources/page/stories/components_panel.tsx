@@ -55,7 +55,8 @@ const HISTORY: mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: []
+    events: [],
+    fromBraveSearchSERP: false
   },
   {
     text: '',
@@ -65,7 +66,8 @@ const HISTORY: mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getCompletionEvent('The ways that animals move are just about as myriad as the animal kingdom itself. They walk, run, swim, crawl, fly and slither — and within each of those categories lies a tremendous number of subtly different movement types. A seagull and a *hummingbird* both have wings, but otherwise their flight techniques and abilities are poles apart. Orcas and **piranhas** both have tails, but they accomplish very different types of swimming. Even a human walking or running is moving their body in fundamentally different ways.')]
+    events: [getCompletionEvent('The ways that animals move are just about as myriad as the animal kingdom itself. They walk, run, swim, crawl, fly and slither — and within each of those categories lies a tremendous number of subtly different movement types. A seagull and a *hummingbird* both have wings, but otherwise their flight techniques and abilities are poles apart. Orcas and **piranhas** both have tails, but they accomplish very different types of swimming. Even a human walking or running is moving their body in fundamentally different ways.')],
+    fromBraveSearchSERP: false
   },
   {
     text: 'What is pointer compression?',
@@ -75,7 +77,8 @@ const HISTORY: mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: []
+    events: [],
+    fromBraveSearchSERP: false
   },
   {
     text: '',
@@ -85,7 +88,8 @@ const HISTORY: mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getCompletionEvent(`## How We Created an Accessible, Scalable Color Palette\n\nDuring the latter part of 2021, I reflected on the challenges we were facing at Modern Health. One recurring problem that stood out was our struggle to create new products with an unstructured color palette. This resulted in poor [communication](https://www.google.com) between designers and developers, an inconsistent product brand, and increasing accessibility problems.\n\n1. Inclusivity: our palette provides easy ways to ensure our product uses accessible contrasts.\n 2. Efficiency: our palette is diverse enough for our current and future product design, yet values are still predictable and constrained.\n 3. Reusability: our palette is on-brand but versatile. There are very few one-offs that fall outside the palette.\n\n This article shares the process I followed to apply these principles to develop a more adaptable color palette that prioritizes accessibility and is built to scale into all of our future product **design** needs.`)]
+    events: [getCompletionEvent(`## How We Created an Accessible, Scalable Color Palette\n\nDuring the latter part of 2021, I reflected on the challenges we were facing at Modern Health. One recurring problem that stood out was our struggle to create new products with an unstructured color palette. This resulted in poor [communication](https://www.google.com) between designers and developers, an inconsistent product brand, and increasing accessibility problems.\n\n1. Inclusivity: our palette provides easy ways to ensure our product uses accessible contrasts.\n 2. Efficiency: our palette is diverse enough for our current and future product design, yet values are still predictable and constrained.\n 3. Reusability: our palette is on-brand but versatile. There are very few one-offs that fall outside the palette.\n\n This article shares the process I followed to apply these principles to develop a more adaptable color palette that prioritizes accessibility and is built to scale into all of our future product **design** needs.`)],
+    fromBraveSearchSERP: false
   },
   {
     text: 'What is taylor series?',
@@ -95,7 +99,8 @@ const HISTORY: mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: []
+    events: [],
+    fromBraveSearchSERP: false
   },
   {
     text: '',
@@ -105,7 +110,8 @@ const HISTORY: mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getCompletionEvent('The partial sum formed by the first n + 1 terms of a Taylor series is a polynomial of degree n that is called the nth Taylor polynomial of the function. Taylor polynomials are approximations of a function, which become generally better as n increases.')]
+    events: [getCompletionEvent('The partial sum formed by the first n + 1 terms of a Taylor series is a polynomial of degree n that is called the nth Taylor polynomial of the function. Taylor polynomials are approximations of a function, which become generally better as n increases.')],
+    fromBraveSearchSERP: false
   },
   {
     text: 'Write a hello world program in c++',
@@ -115,7 +121,8 @@ const HISTORY: mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: []
+    events: [],
+    fromBraveSearchSERP: false
   },
   {
     text: '',
@@ -125,7 +132,8 @@ const HISTORY: mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getCompletionEvent("Hello! As a helpful and respectful AI assistant, I'd be happy to assist you with your question. However, I'm a text-based AI and cannot provide code in a specific programming language like C++. Instead, I can offer a brief explanation of how to write a \"hello world\" program in C++.\n\nTo write a \"hello world\" program in C++, you can use the following code:\n\n```c++\n#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world!\" << std::endl;\n    return 0;\n}\n```\nThis code will print \"Hello, world!\" and uses `iostream` std library. If you have any further questions or need more information, please don't hesitate to ask!")]
+    events: [getCompletionEvent("Hello! As a helpful and respectful AI assistant, I'd be happy to assist you with your question. However, I'm a text-based AI and cannot provide code in a specific programming language like C++. Instead, I can offer a brief explanation of how to write a \"hello world\" program in C++.\n\nTo write a \"hello world\" program in C++, you can use the following code:\n\n```c++\n#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world!\" << std::endl;\n    return 0;\n}\n```\nThis code will print \"Hello, world!\" and uses `iostream` std library. If you have any further questions or need more information, please don't hesitate to ask!")],
+    fromBraveSearchSERP: false
   },
   {
     text: 'Summarize this excerpt',
@@ -135,7 +143,8 @@ const HISTORY: mojom.ConversationTurn[] = [
     selectedText: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.',
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: []
+    events: [],
+    fromBraveSearchSERP: false
   },
   {
     text: '',
@@ -145,7 +154,8 @@ const HISTORY: mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getCompletionEvent('Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.')]
+    events: [getCompletionEvent('Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.')],
+    fromBraveSearchSERP: false
   },
   {
     text: 'Shorten this selected text',
@@ -155,7 +165,8 @@ const HISTORY: mojom.ConversationTurn[] = [
     selectedText: 'Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.',
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: []
+    events: [],
+    fromBraveSearchSERP: false
   },
   {
     text: '',
@@ -165,7 +176,8 @@ const HISTORY: mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getSearchStatusEvent(), getSearchEvent(['pointer compression', 'c++ language specification']), getCompletionEvent('Pointer compression is a memory optimization technique.')]
+    events: [getSearchStatusEvent(), getSearchEvent(['pointer compression', 'c++ language specification']), getCompletionEvent('Pointer compression is a memory optimization technique.')],
+    fromBraveSearchSERP: false
   },
   {
     text: 'Will an LTT store backpack fit in a Tesla Model Y frunk?',
@@ -181,10 +193,12 @@ const HISTORY: mojom.ConversationTurn[] = [
       selectedText: '',
       createdTime: { internalValue: BigInt('13278618001000000') },
       edits: [],
-      events: []
+      events: [],
+      fromBraveSearchSERP: false
     }],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: []
+    events: [],
+    fromBraveSearchSERP: false
   },
   {
     text: '',
@@ -194,7 +208,8 @@ const HISTORY: mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getSearchStatusEvent(), getSearchEvent(['LTT store backpack dimensions', 'Tesla Model Y frunk dimensions'])]
+    events: [getSearchStatusEvent(), getSearchEvent(['LTT store backpack dimensions', 'Tesla Model Y frunk dimensions'])],
+    fromBraveSearchSERP: false
   }
 ]
 

@@ -57,8 +57,14 @@ function Main() {
     siteInfo === null && // SiteInfo request has finished and this is a standalone conversation
     !context.isPremiumUser
 
+  const isLastTurnBraveSearchSERPSummary =
+    context.conversationHistory.at(-1)?.fromBraveSearchSERP ?? false
+
   const shouldDisplayNewChatIcon = context.conversationHistory.length >= 1
-  const showContextToggle = context.conversationHistory.length === 0 && siteInfo?.isContentAssociationPossible
+  const showContextToggle =
+    (context.conversationHistory.length === 0 ||
+      isLastTurnBraveSearchSERPSummary) &&
+    siteInfo?.isContentAssociationPossible
 
   let currentErrorElement = null
 
