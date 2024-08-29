@@ -201,6 +201,13 @@ CHAR_LIMIT guidelines:
       <message name="IDS_MENU_CLOSE_ALL_INCOGNITO_TABS" desc="Menu item for closing all open Private tabs. [CHAR_LIMIT=27]">
         Close Private tabs
       </message>
+      <message name="IDS_MENU_SWITCH_TO_INCOGNITO" desc="Menu item for switching to private.">
+        Switch to Private
+      </message>
+      <message name="IDS_MENU_SWITCH_OUT_OF_INCOGNITO" desc="Menu item for switching out of private.">
+        Switch out of Private
+      </message>
+
       <message name="IDS_MENU_OPEN_IN_INCOGNITO_CHROME" desc="Context sensitive menu item for opening a link in Brave in a Private tab. [CHAR_LIMIT=30]" translateable="false">
         Open in Private Brave
       </message>

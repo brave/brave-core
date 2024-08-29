@@ -136,6 +136,7 @@
   <message name="IDS_SETTINGS_ADVANCED_PROTECTION_PROGRAM_DESC" desc="Description of the Brave     Advanced Protection Program">
     Provides Brave’s strongest account security for profiles at risk of targeted attacks
   </message>
+
   <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_ENABLED_INCOGNITO_LABEL" desc="Label for radio button to enable HTTPS-First Mode in Private">
     See warnings before going to insecure sites in Private mode
   </message>
@@ -162,10 +163,10 @@
   <message name="IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_INCOGNITO_BULLET_2" desc="2 of 2 bullets that describes the 'Block third-party cookies in Private mode' option.">
     While in Private, sites can't use your cookies to see your browsing activity across sites. Your browsing activity isn't used for things like personalizing ads. Features on some sites may not work.
   </message>
-  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_BULLET_TWO_FPS" desc="Description for the first bullet of block third party cookies in Private radio toggle">
+  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_BULLET_TWO_RWS" desc="Description for the first bullet of block third party cookies in Private radio toggle">
     While in Private, sites can't use your cookies to see your browsing activity across sites, even related sites. Your browsing activity isn't used for things like personalizing ads. Features on some sites may not work.
   </message>
-  <message name="IDS_SETTINGS_COOKIES_FIRST_PARTY_SETS_TOGGLE_SUB_LABEL" desc="Sub-label for the toggle that allows the user to control first-party sets enabled sharing between related sites">
+  <message name="IDS_SETTINGS_COOKIES_RELATED_WEBSITE_SETS_TOGGLE_SUB_LABEL" desc="Sub-label for the toggle that allows the user to control related website sets enabled sharing between related sites">
     A company can define a group of sites that can use cookies to share your activity in the group. This is off in Private.
   </message>
   <message name="IDS_SETTINGS_TRACKING_PROTECTION_BULLET_ONE_DESCRIPTION" desc="Description of the first bullet for tracking protection settings. Explains what limiting third-party cookies means.">
