@@ -296,6 +296,7 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
   // Check that we haven't tried to update the language lists.
   auto* language_list =
       TranslateDownloadManager::GetInstance()->language_list();
+  language_list->RequestLanguageList();
   EXPECT_FALSE(language_list->HasOngoingLanguageListLoadingForTesting());
 
   // Check used urls.
