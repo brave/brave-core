@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index eb56c5390d21d973e59d9deb90433a0f793037b5..7a955e8558f04b57188fc327cc9be4dbc0fd2f7c 100644
+index 94bcf99cf9e89d149b606d0faa38056b8aea8d53..6bcd673127ee0cd861ab89e6bed99ed5e75b7b00 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -759,6 +759,7 @@ static_library("ui") {
+@@ -766,6 +766,7 @@ static_library("ui") {
      # TODO(crbug.com/353284909): Remove this circular dependency.
      "//chrome/browser/media/webrtc",
    ]
@@ -10,7 +10,7 @@ index eb56c5390d21d973e59d9deb90433a0f793037b5..7a955e8558f04b57188fc327cc9be4db
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -4003,7 +4004,10 @@ static_library("ui") {
+@@ -3867,7 +3868,10 @@ static_library("ui") {
        ]
        deps += [ "//chrome/updater/app/server/win:updater_legacy_idl" ]
      } else {

@@ -1,5 +1,5 @@
 diff --git a/media/capture/video/win/video_capture_device_mf_win.cc b/media/capture/video/win/video_capture_device_mf_win.cc
-index 780c79c5e1976d68480812c8862955a2829a8df3..4736824724984f1741fe46f415d6bcc1cac53154 100644
+index 8be7963a023194c54c8c88ebcacb65619c70424f..d349ed78110a9f08621e4ce89934bdaab5d46dab 100644
 --- a/media/capture/video/win/video_capture_device_mf_win.cc
 +++ b/media/capture/video/win/video_capture_device_mf_win.cc
 @@ -54,7 +54,7 @@ namespace media {

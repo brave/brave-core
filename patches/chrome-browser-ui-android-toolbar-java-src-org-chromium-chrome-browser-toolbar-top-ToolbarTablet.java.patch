@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-index 28ea730c9ff1cf90f7e4c46c23e1665389d282b7..4ec4534e330fd3dd6b7c78bec054486d4d3b932f 100644
+index a78210e6c74c4c6a9d7f1cf484ab2fd3ad77df64..1bcb9344df74fb16aea007caa41b0e1145acd3de 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-@@ -412,10 +412,12 @@ public class ToolbarTablet extends ToolbarLayout
+@@ -410,10 +410,12 @@ public class ToolbarTablet extends ToolbarLayout
              mOfflineDownloader.downloadPage(getContext(), getToolbarDataProvider().getTab());
              RecordUserAction.record("MobileToolbarDownloadPage");
          }

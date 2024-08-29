@@ -1,5 +1,5 @@
 diff --git a/components/sync/engine/syncer_proto_util.cc b/components/sync/engine/syncer_proto_util.cc
-index 2bae9480ee8f370b72333a3ad676b9277c9878b6..ffaa3fcaac6766d4bae88f195e43aff7475ec99d 100644
+index 295397216dadc98db104f34ef4f86939d649623c..d3638127d8a93f2fd6d3c260392d73a65b14e9af 100644
 --- a/components/sync/engine/syncer_proto_util.cc
 +++ b/components/sync/engine/syncer_proto_util.cc
 @@ -269,6 +269,7 @@ SyncerError SyncerProtoUtil::HandleClientToServerMessageResponse(
