@@ -96,6 +96,12 @@ std::string BraveDeviceInfo::GetDeviceTypeString() const {
       return "phone";
     case FormFactor::kTablet:
       return "tablet";
+    case FormFactor::kAutomotive:
+      return "tablet";
+    case FormFactor::kWearable:
+      return "tablet";
+    case FormFactor::kTv:
+      return "tablet";
   }
 }
 
