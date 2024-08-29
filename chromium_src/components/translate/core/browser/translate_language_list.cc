@@ -14,8 +14,9 @@
 namespace translate {
 
 void TranslateLanguageList::SetResourceRequestsAllowed(bool allowed) {
-  if (!ShouldUpdateLanguagesList())
+  if (!ShouldUpdateLanguagesList()) {
     allowed = false;
+  }
   TranslateLanguageList_ChromiumImpl::SetResourceRequestsAllowed(allowed);
 }
 
