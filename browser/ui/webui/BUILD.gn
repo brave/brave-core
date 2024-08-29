@@ -34,6 +34,9 @@ if (enable_sparkle) {
     sources = [ "help/brave_version_updater_mac_unittest.mm" ]
     deps = [
       "//base",
+      "//base/test:test_support",
+      "//brave/components/update_client",
+      "//chrome/browser/ui",
       "//testing/gtest",
     ]
   }
