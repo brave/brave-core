@@ -925,26 +925,6 @@ Config.prototype.update = function (options) {
     this.gClientFile = options.gclient_file
   }
 
-  if (options.brave_google_api_key) {
-    this.braveGoogleApiKey = options.brave_google_api_key
-  }
-
-  if (options.brave_safebrowsing_api_key) {
-    this.braveAndroidSafeBrowsingApiKey = options.brave_safebrowsing_api_key
-  }
-
-  if (options.brave_safetynet_api_key) {
-    this.braveSafetyNetApiKey = options.brave_safetynet_api_key
-  }
-
-  if (options.brave_google_api_endpoint) {
-    this.googleApiEndpoint = options.brave_google_api_endpoint
-  }
-
-  if (options.brave_infura_project_id) {
-    this.infuraProjectId = options.brave_infura_project_id
-  }
-
   if (options.bitflyer_production_client_id) {
     this.bitFlyerProductionClientId = options.bitflyer_production_client_id
   }
