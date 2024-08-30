@@ -15,9 +15,8 @@ namespace brave {
 // implements the happy path of switching from Sparkle to Omaha 4 for per-user
 // installations. It does not handle system-wide implementations, nor switching
 // from Omaha 4 back to Sparkle. When you do enable the feature in the future,
-// make sure that there are no old clients that suffer from the above
-// limitations. In practice, this will very likely mean that you will need to
-// rename the feature.
+// make sure that it is not enabled for any clients that suffer from the above
+// limitations.
 BASE_FEATURE(kBraveUseOmaha4Alpha,
              "BraveUseOmaha4Alpha",
              base::FEATURE_DISABLED_BY_DEFAULT);
