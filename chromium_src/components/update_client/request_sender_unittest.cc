@@ -49,7 +49,7 @@ TEST_F(BraveRequestSenderTest, DoesntUseBraveCUPKeyByDefault) {
 }
 
 TEST_F(BraveRequestSenderTest, UsesBraveCUPKeyWhenOmaha4IsEnabled) {
-  scoped_feature_list_.InitAndEnableFeature(brave::kBraveUseOmaha4);
+  scoped_feature_list_.InitAndEnableFeature(brave::kBraveUseOmaha4Alpha);
   EXPECT_TRUE(UsesBraveCUPKey());
 }
 
