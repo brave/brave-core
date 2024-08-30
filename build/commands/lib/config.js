@@ -925,46 +925,6 @@ Config.prototype.update = function (options) {
     this.gClientFile = options.gclient_file
   }
 
-  if (options.uphold_production_api_url) {
-    this.upholdProductionApiUrl = options.uphold_production_api_url
-  }
-
-  if (options.uphold_production_client_id) {
-    this.upholdProductionClientId = options.uphold_production_client_id
-  }
-
-  if (options.uphold_production_client_secret) {
-    this.upholdProductionClientSecret = options.uphold_production_client_secret
-  }
-
-  if (options.uphold_production_fee_address) {
-    this.upholdProductionFeeAddress = options.uphold_production_fee_address
-  }
-
-  if (options.uphold_production_oauth_url) {
-    this.upholdProductionOauthUrl = options.uphold_production_oauth_url
-  }
-
-  if (options.uphold_sandbox_api_url) {
-    this.upholdSandboxApiUrl = options.uphold_sandbox_api_url
-  }
-
-  if (options.uphold_sandbox_client_id) {
-    this.upholdSandboxClientId = options.uphold_sandbox_client_id
-  }
-
-  if (options.uphold_sandbox_client_secret) {
-    this.upholdSandboxClientSecret = options.uphold_sandbox_client_secret
-  }
-
-  if (options.uphold_sandbox_fee_address) {
-    this.upholdSandboxFeeAddress = options.uphold_sandbox_fee_address
-  }
-
-  if (options.uphold_sandbox_oauth_url) {
-    this.upholdSandboxOauthUrl = options.uphold_sandbox_oauth_url
-  }
-
   if (options.zebpay_production_api_url) {
     this.zebPayProductionApiUrl = options.zebpay_production_api_url
   }
