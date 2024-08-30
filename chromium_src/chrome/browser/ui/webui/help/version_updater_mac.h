@@ -7,11 +7,11 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_HELP_VERSION_UPDATER_MAC_H_
 
 #import <AppKit/AppKit.h>
-
 #include <string.h>
 
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/sparkle_buildflags.h"
 #include "chrome/browser/ui/webui/help/version_updater.h"
 #include "chrome/updater/update_service.h"
 #include "chrome/updater/updater_scope.h"
@@ -38,7 +38,9 @@ class SparkleVersionUpdater : public VersionUpdater {
   // kAutoupdateStatusVersion.
   void UpdateStatus(NSDictionary* status);
 
+#if BUILDFLAG(ENABLE_SPARKLE)
   void GetIsSparkleForTesting(bool& result) const override;
+#endif
 
  private:
   // Update the visibility state of promote button.
