@@ -72,18 +72,6 @@ class TranslateURLBarButton: UIButton {
     )
   }
 
-  override var intrinsicContentSize: CGSize {
-    var size = super.intrinsicContentSize
-    let toolbarTraitCollection = UITraitCollection(
-      preferredContentSizeCategory: traitCollection.toolbarButtonContentSizeCategory
-    )
-    size.width = UIFontMetrics(forTextStyle: .body).scaledValue(
-      for: 44,
-      compatibleWith: toolbarTraitCollection
-    )
-    return size
-  }
-
   var translateState: TranslateState {
     get {
       return _translateState
