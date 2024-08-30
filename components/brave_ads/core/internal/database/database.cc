@@ -21,6 +21,7 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 #include "sql/meta_table.h"
 #include "sql/recovery.h"
+#include "sql/sqlite_result_code.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
@@ -348,16 +349,27 @@ void Database::ErrorCallback(const int extended_error,
   if (!sql::Database::IsExpectedSqliteError(extended_error)) {
     DLOG(FATAL) << db_.GetErrorMessage();
 
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-    // potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_NUMBER("Issue32066", "sqlite_schema_version",
-                            database::kVersionNumber);
-    SCOPED_CRASH_KEY_STRING1024(
-        "Issue32066", "sqlite_diagnostic_info",
-        db_.GetDiagnosticInfo(extended_error, statement));
-    SCOPED_CRASH_KEY_STRING1024("Issue32066", "sqlite_error_message",
-                                db_.GetErrorMessage());
-    base::debug::DumpWithoutCrashing();
+    const sql::SqliteResultCode result_code =
+        sql::ToSqliteResultCode(extended_error);
+
+    if (result_code != sql::SqliteResultCode::kFullDisk &&
+        result_code != sql::SqliteResultCode::kIoRead &&
+        result_code != sql::SqliteResultCode::kIoWrite &&
+        result_code != sql::SqliteResultCode::kIoFsync &&
+        result_code != sql::SqliteResultCode::kIoTruncate) {
+      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
+      // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_NUMBER("Issue32066", "sqlite_schema_version",
+                              database::kVersionNumber);
+      SCOPED_CRASH_KEY_STRING1024(
+          "Issue32066", "sqlite_diagnostic_info",
+          db_.GetDiagnosticInfo(extended_error, statement));
+      SCOPED_CRASH_KEY_STRING1024("Issue32066", "sqlite_error_message",
+                                  db_.GetErrorMessage());
+      SCOPED_CRASH_KEY_NUMBER("Issue32066", "sqlite_result_code",
+                              static_cast<int>(result_code));
+      base::debug::DumpWithoutCrashing();
+    }
   }
 }
 

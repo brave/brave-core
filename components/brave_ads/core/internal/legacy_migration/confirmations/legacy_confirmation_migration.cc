@@ -9,7 +9,6 @@
 #include <string>
 #include <utility>
 
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder.h"
@@ -70,12 +69,6 @@ void MigrateConfirmationState(InitializeCallback callback) {
 
             if (!ConfirmationStateManager::GetInstance().FromJson(
                     mutable_json)) {
-              // TODO(https://github.com/brave/brave-browser/issues/32066):
-              // Detect potential defects using `DumpWithoutCrashing`.
-              SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                        "Failed to parse confirmation state");
-              base::debug::DumpWithoutCrashing();
-
               BLOG(0, "Failed to parse confirmation state");
 
               return FailedToMigrate(std::move(callback));
@@ -89,14 +82,6 @@ void MigrateConfirmationState(InitializeCallback callback) {
                     [](const std::string& json, InitializeCallback callback,
                        const bool success) {
                       if (!success) {
-                        // TODO(https://github.com/brave/brave-browser/issues/32066):
-                        // Detect potential defects using
-                        // `DumpWithoutCrashing`.
-                        SCOPED_CRASH_KEY_STRING64(
-                            "Issue32066", "failure_reason",
-                            "Failed to migrate confirmation state");
-                        base::debug::DumpWithoutCrashing();
-
                         BLOG(0, "Failed to migrate confirmation state");
 
                         return FailedToMigrate(std::move(callback));
@@ -128,14 +113,6 @@ void MigrateConfirmationState(InitializeCallback callback) {
                               [](InitializeCallback callback,
                                  const bool success) {
                                 if (!success) {
-                                  // TODO(https://github.com/brave/brave-browser/issues/32066):
-                                  // Detect potential defects using
-                                  // `DumpWithoutCrashing`.
-                                  SCOPED_CRASH_KEY_STRING64(
-                                      "Issue32066", "failure_reason",
-                                      "Failed to migrate confirmation state");
-                                  base::debug::DumpWithoutCrashing();
-
                                   BLOG(0,
                                        "Failed to migrate confirmation state");
 

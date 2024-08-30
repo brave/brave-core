@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpapers_database_table.h"
@@ -17,13 +16,7 @@ void DeleteCreativeNewTabPageAds() {
   const table::CreativeNewTabPageAds database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066):
-      // Detect potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                "Failed to delete creative new tab page ads");
-      base::debug::DumpWithoutCrashing();
-
-      return BLOG(0, "Failed to delete creative new tab page ads");
+      BLOG(0, "Failed to delete creative new tab page ads");
     }
   }));
 }
@@ -32,14 +25,7 @@ void DeleteCreativeNewTabPageAdWallpapers() {
   const table::CreativeNewTabPageAdWallpapers database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066):
-      // Detect potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_STRING64(
-          "Issue32066", "failure_reason",
-          "Failed to delete creative new tab page ad wallpapers");
-      base::debug::DumpWithoutCrashing();
-
-      return BLOG(0, "Failed to delete creative new tab page ad wallpapers");
+      BLOG(0, "Failed to delete creative new tab page ad wallpapers");
     }
   }));
 }
@@ -48,14 +34,6 @@ void SaveCreativeNewTabPageAds(const CreativeNewTabPageAdList& creative_ads) {
   table::CreativeNewTabPageAds database_table;
   database_table.Save(creative_ads, base::BindOnce([](const bool success) {
                         if (!success) {
-                          // TODO(https://github.com/brave/brave-browser/issues/32066):
-                          // Detect potential defects using
-                          // `DumpWithoutCrashing`.
-                          SCOPED_CRASH_KEY_STRING64(
-                              "Issue32066", "failure_reason",
-                              "Failed to save creative new tab page ads");
-                          base::debug::DumpWithoutCrashing();
-
                           return BLOG(
                               0, "Failed to save creative new tab page ads");
                         }

@@ -6,8 +6,6 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_util.h"
 
 #include "base/check_op.h"
-#include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_constants.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -44,12 +42,6 @@ std::optional<base::Value::Dict> MaybeBuildVerifiableConversionUserData(
       sealed_verifiable_conversion_envelope =
           SealVerifiableConversionEnvelope(*conversion.verifiable);
   if (!sealed_verifiable_conversion_envelope) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to seal verifiable conversion envelope");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(1, "Failed to seal verifiable conversion envelope for id "
                 << conversion.verifiable->id << " and "
                 << conversion.verifiable->advertiser_public_key_base64

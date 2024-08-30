@@ -104,24 +104,24 @@ void DatabaseManager::Create(ResultCallback callback) const {
 
 void DatabaseManager::CreateCallback(ResultCallback callback,
                                      const bool success) const {
-  const int to_version = database::kVersionNumber;
-
   if (!success) {
     // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
     // potential defects using `DumpWithoutCrashing`.
     SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                               "Failed to create database");
-    SCOPED_CRASH_KEY_NUMBER("Issue32066", "sqlite_schema_version", to_version);
+    SCOPED_CRASH_KEY_NUMBER("Issue32066", "sqlite_schema_version",
+                            database::kVersionNumber);
     base::debug::DumpWithoutCrashing();
 
-    BLOG(0, "Failed to create database for schema version " << to_version);
+    BLOG(0, "Failed to create database for schema version "
+                << database::kVersionNumber);
 
     NotifyFailedToCreateOrOpenDatabase();
 
     return std::move(callback).Run(/*success=*/false);
   }
 
-  BLOG(1, "Created database for schema version " << to_version);
+  BLOG(1, "Created database for schema version " << database::kVersionNumber);
 
   NotifyDidCreateDatabase();
 

@@ -7,7 +7,6 @@
 
 #include "base/check.h"
 #include "base/containers/adapters.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
@@ -219,12 +218,6 @@ void Conversions::ConvertCallback(
     const std::optional<VerifiableConversionInfo>& verifiable_conversion,
     const bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to record ad conversion event");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Failed to record ad conversion event");
 
     return NotifyFailedToConvertAd(ad_event.creative_instance_id);

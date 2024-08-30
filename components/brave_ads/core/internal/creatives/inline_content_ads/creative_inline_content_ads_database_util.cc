@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
 
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
@@ -16,13 +15,7 @@ void DeleteCreativeInlineContentAds() {
   const table::CreativeInlineContentAds database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066):
-      // Detect potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                "Failed to delete creative inline content ads");
-      base::debug::DumpWithoutCrashing();
-
-      return BLOG(0, "Failed to delete creative inline content ads");
+      BLOG(0, "Failed to delete creative inline content ads");
     }
   }));
 }
@@ -32,14 +25,6 @@ void SaveCreativeInlineContentAds(
   table::CreativeInlineContentAds database_table;
   database_table.Save(creative_ads, base::BindOnce([](const bool success) {
                         if (!success) {
-                          // TODO(https://github.com/brave/brave-browser/issues/32066):
-                          // Detect potential defects using
-                          // `DumpWithoutCrashing`.
-                          SCOPED_CRASH_KEY_STRING64(
-                              "Issue32066", "failure_reason",
-                              "Failed to save creative inline content ads");
-                          base::debug::DumpWithoutCrashing();
-
                           return BLOG(
                               0, "Failed to save creative inline content ads");
                         }

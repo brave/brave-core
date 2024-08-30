@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
@@ -174,12 +173,6 @@ base::Time NotificationAdServing::MaybeServeAdAfter(
 
 void NotificationAdServing::ServeAd(const NotificationAdInfo& ad) {
   if (!ad.IsValid()) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Invalid notification ad");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Failed to serve notification ad due to the ad being invalid");
 
     return FailedToServeAd();

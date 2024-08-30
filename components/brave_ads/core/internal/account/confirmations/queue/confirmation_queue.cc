@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
@@ -119,12 +118,6 @@ void ConfirmationQueue::SuccessfullyProcessedQueueItemCallback(
   NotifyDidProcessConfirmationQueue(confirmation);
 
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to delete confirmation queue item");
-    base::debug::DumpWithoutCrashing();
-
     return BLOG(0, "Failed to delete confirmation queue item");
   }
 
@@ -156,20 +149,8 @@ void ConfirmationQueue::FailedToProcessQueueItemCallback(
 
   if (!success) {
     if (should_retry) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066):
-      // Detect potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                "Failed to retry confirmation queue item");
-      base::debug::DumpWithoutCrashing();
-
       return BLOG(0, "Failed to retry confirmation queue item");
     }
-
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to delete confirmation queue item");
-    base::debug::DumpWithoutCrashing();
 
     return BLOG(0, "Failed to delete confirmation queue item");
   }

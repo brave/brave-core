@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
@@ -107,12 +106,6 @@ void NewTabPageAdServing::ServeAd(
     const NewTabPageAdInfo& ad,
     MaybeServeNewTabPageAdCallback callback) const {
   if (!ad.IsValid()) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Invalid new tab page ad");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Failed to serve new tab page ad due to the ad being invalid");
 
     return FailedToServeAd(std::move(callback));

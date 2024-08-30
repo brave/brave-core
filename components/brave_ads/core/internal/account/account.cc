@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/check_op.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
@@ -58,12 +57,6 @@ void Account::SetWallet(const std::string& payment_id,
   const std::optional<WalletInfo> wallet =
       ToWallet(payment_id, recovery_seed_base64);
   if (!wallet) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to initialize wallet");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Failed to initialize wallet");
 
     return NotifyFailedToInitializeWallet();
@@ -191,17 +184,6 @@ void Account::FailedToProcessDeposit(
     const std::string& creative_instance_id,
     const AdType ad_type,
     const ConfirmationType confirmation_type) const {
-  // TODO(https://github.com/brave/brave-browser/issues/32066):
-  // Detect potential defects using `DumpWithoutCrashing`.
-  SCOPED_CRASH_KEY_STRING64("Issue32066", "ad_type", ToString(ad_type));
-  SCOPED_CRASH_KEY_STRING64("Issue32066", "confirmation_type",
-                            ToString(confirmation_type));
-  SCOPED_CRASH_KEY_STRING64("Issue32066", "creative_instance_id",
-                            creative_instance_id);
-  SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                            "Failed to process deposit");
-  base::debug::DumpWithoutCrashing();
-
   BLOG(0, "Failed to process deposit for "
               << ad_type << " with creative instance id "
               << creative_instance_id << " and " << confirmation_type);
