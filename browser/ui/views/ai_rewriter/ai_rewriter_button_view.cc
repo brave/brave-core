@@ -121,11 +121,16 @@ base::WeakPtr<AIRewriterButton> AIRewriterButtonView::MaybeCreateButton(
 }
 
 void AIRewriterButtonView::Show(const gfx::Rect& rect) {
+  // Don't show the button if this isn't the currently active WebContents.
+  auto* browser = chrome::FindBrowserWithTab(web_contents());
+  if (browser->tab_strip_model()->GetActiveWebContents() != web_contents()) {
+    return;
+  }
+
   CHECK(GetWidget());
   GetWidget()->Show();
 
-  auto* browser_view = BrowserView::GetBrowserViewForBrowser(
-      chrome::FindBrowserWithTab(web_contents()));
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   CHECK(browser_view);
 
   auto offset = browser_view->contents_container()->bounds().OffsetFromOrigin();
