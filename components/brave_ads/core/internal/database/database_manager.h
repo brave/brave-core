@@ -30,16 +30,25 @@ class DatabaseManager final {
   void AddObserver(DatabaseManagerObserver* observer);
   void RemoveObserver(DatabaseManagerObserver* observer);
 
+  // Create or open the database.
   void CreateOrOpen(ResultCallback callback);
 
  private:
   void CreateOrOpenCallback(
       ResultCallback callback,
-      mojom::DBStatementResultInfoPtr mojom_statement_result);
+      mojom::DBTransactionResultInfoPtr mojom_db_transaction_result);
 
+  // Create the database from scratch.
   void Create(ResultCallback callback) const;
   void CreateCallback(ResultCallback callback, bool success) const;
 
+  // Raze the database and create it from scratch.
+  void RazeAndCreate(int from_version, ResultCallback callback);
+  void RazeAndCreateCallback(ResultCallback callback,
+                             int from_version,
+                             bool success) const;
+
+  // Migrate the database from `from_version` to the current version.
   void MaybeMigrate(int from_version, ResultCallback callback) const;
   void MigrateFromVersionCallback(int from_version,
                                   ResultCallback callback,

@@ -91,7 +91,7 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
                             const std::string& captcha_id) override;
 
   void RunDBTransaction(
-      brave_ads::mojom::DBTransactionInfoPtr mojom_transaction,
+      brave_ads::mojom::DBTransactionInfoPtr mojom_db_transaction,
       brave_ads::RunDBTransactionCallback callback) override;
 
   void RecordP2AEvents(const std::vector<std::string>& events) override;

@@ -13,14 +13,14 @@ namespace brave_ads::database {
 
 mojom::DBRowInfoPtr CreateRow(
     sql::Statement* const statement,
-    const std::vector<mojom::DBBindColumnType>& mojom_bind_column_types) {
+    const std::vector<mojom::DBBindColumnType>& mojom_db_bind_column_types) {
   CHECK(statement);
 
-  mojom::DBRowInfoPtr mojom_row = mojom::DBRowInfo::New();
+  mojom::DBRowInfoPtr mojom_db_row = mojom::DBRowInfo::New();
 
   int column = 0;
 
-  for (const auto& mojom_column_binding_type : mojom_bind_column_types) {
+  for (const auto& mojom_column_binding_type : mojom_db_bind_column_types) {
     mojom::DBColumnValueUnionPtr mojom_column_value_union;
     switch (mojom_column_binding_type) {
       case mojom::DBBindColumnType::kString: {
@@ -66,12 +66,12 @@ mojom::DBRowInfoPtr CreateRow(
       }
     }
 
-    mojom_row->column_values_union.push_back(
+    mojom_db_row->column_values_union.push_back(
         std::move(mojom_column_value_union));
     ++column;
   }
 
-  return mojom_row;
+  return mojom_db_row;
 }
 
 }  // namespace brave_ads::database

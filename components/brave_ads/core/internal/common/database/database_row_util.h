@@ -15,7 +15,7 @@ namespace brave_ads::database {
 
 [[nodiscard]] mojom::DBRowInfoPtr CreateRow(
     sql::Statement* statement,
-    const std::vector<mojom::DBBindColumnType>& mojom_bind_column_types);
+    const std::vector<mojom::DBBindColumnType>& mojom_db_bind_column_types);
 
 }  // namespace brave_ads::database
 
