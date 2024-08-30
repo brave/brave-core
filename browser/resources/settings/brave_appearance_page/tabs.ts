@@ -36,6 +36,9 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
     { value: 0, name: this.i18n('appearanceSettingsTabHoverModeTooltip') }
   ]
 
+  private isSharedPinnedTabsEnabled_() {
+    return loadTimeData.getBoolean('isSharedPinnedTabsEnabled')
+  }
 }
 
 customElements.define(SettingsBraveAppearanceTabsElement.is, SettingsBraveAppearanceTabsElement)

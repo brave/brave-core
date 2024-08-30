@@ -18,6 +18,7 @@
 #include "brave/browser/resources/settings/shortcuts_page/grit/commands_generated_map.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
@@ -211,6 +212,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "showCommandsInOmnibox",
       base::FeatureList::IsEnabled(features::kBraveCommandsInOmnibox));
+  html_source->AddBoolean(
+      "isSharedPinnedTabsEnabled",
+      base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs));
 }
 
 // static
