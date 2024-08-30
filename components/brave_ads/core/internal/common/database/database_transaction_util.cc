@@ -20,9 +20,7 @@ namespace {
 void RunDBTransactionCallback(
     ResultCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (!mojom_db_transaction_result ||
-      mojom_db_transaction_result->result_code !=
-          mojom::DBTransactionResultInfo::ResultCode::kSuccess) {
+  if (IsError(&*mojom_db_transaction_result)) {
     return std::move(callback).Run(/*success=*/false);
   }
 
@@ -30,6 +28,20 @@ void RunDBTransactionCallback(
 }
 
 }  // namespace
+
+bool IsSuccess(
+    const mojom::DBTransactionResultInfo* const mojom_db_transaction_result) {
+  return mojom_db_transaction_result != nullptr &&
+         mojom_db_transaction_result->status_code ==
+             mojom::DBTransactionResultInfo::StatusCode::kSuccess;
+}
+
+bool IsError(
+    const mojom::DBTransactionResultInfo* const mojom_db_transaction_result) {
+  return mojom_db_transaction_result == nullptr ||
+         mojom_db_transaction_result->status_code !=
+             mojom::DBTransactionResultInfo::StatusCode::kSuccess;
+}
 
 void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
                       ResultCallback callback) {

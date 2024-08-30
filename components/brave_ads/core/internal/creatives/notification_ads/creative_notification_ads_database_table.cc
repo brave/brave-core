@@ -171,9 +171,7 @@ void GetForSegmentsCallback(
     const SegmentList& segments,
     GetCreativeNotificationAdsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (!mojom_db_transaction_result ||
-      mojom_db_transaction_result->result_code !=
-          mojom::DBTransactionResultInfo::ResultCode::kSuccess) {
+  if (IsError(&*mojom_db_transaction_result)) {
     BLOG(0, "Failed to get creative notification ads");
 
     return std::move(callback).Run(/*success=*/false, segments,
@@ -189,9 +187,7 @@ void GetForSegmentsCallback(
 void GetAllCallback(
     GetCreativeNotificationAdsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (!mojom_db_transaction_result ||
-      mojom_db_transaction_result->result_code !=
-          mojom::DBTransactionResultInfo::ResultCode::kSuccess) {
+  if (IsError(&*mojom_db_transaction_result)) {
     BLOG(0, "Failed to get all creative notification ads");
 
     return std::move(callback).Run(/*success=*/false, /*segments=*/{},

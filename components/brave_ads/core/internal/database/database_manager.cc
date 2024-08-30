@@ -11,6 +11,7 @@
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
@@ -63,9 +64,7 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
 void DatabaseManager::CreateOrOpenCallback(
     ResultCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (!mojom_db_transaction_result ||
-      mojom_db_transaction_result->result_code !=
-          mojom::DBTransactionResultInfo::ResultCode::kSuccess) {
+  if (database::IsError(&*mojom_db_transaction_result)) {
     BLOG(0, "Failed to create or open database");
 
     NotifyFailedToCreateOrOpenDatabase();
@@ -167,7 +166,9 @@ void DatabaseManager::MaybeMigrate(const int from_version,
   const int to_version = database::kVersionNumber;
   if (from_version == to_version) {
     BLOG(1, "Database is up to date on schema version " << from_version);
+
     NotifyDatabaseIsReady();
+
     return std::move(callback).Run(/*success=*/true);
   }
 

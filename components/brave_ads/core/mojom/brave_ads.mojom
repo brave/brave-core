@@ -156,7 +156,7 @@ struct DBTransactionInfo {
 };
 
 struct DBTransactionResultInfo {
-  enum ResultCode {
+  enum StatusCode {
     kSuccess,  // No error.
     kDatabaseNotInitialized,
     kFailedToRazeDatabase,
@@ -167,7 +167,7 @@ struct DBTransactionResultInfo {
     kStatementError
   };
 
-  ResultCode result_code;
+  StatusCode status_code;
 
   DBRowsUnion? rows_union;
 };

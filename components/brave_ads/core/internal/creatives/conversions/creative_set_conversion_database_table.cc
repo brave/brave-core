@@ -107,9 +107,7 @@ CreativeSetConversionInfo FromMojomRow(
 void GetCallback(
     GetCreativeSetConversionsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (!mojom_db_transaction_result ||
-      mojom_db_transaction_result->result_code !=
-          mojom::DBTransactionResultInfo::ResultCode::kSuccess) {
+  if (IsError(&*mojom_db_transaction_result)) {
     BLOG(0, "Failed to get creative set conversions");
 
     return std::move(callback).Run(/*success=*/false,

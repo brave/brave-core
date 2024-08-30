@@ -14,6 +14,13 @@
 
 namespace brave_ads::database {
 
+// Returns true if the transaction result is a success.
+bool IsSuccess(
+    const mojom::DBTransactionResultInfo* mojom_db_transaction_result);
+
+// Returns true if the transaction result is an error.
+bool IsError(const mojom::DBTransactionResultInfo* mojom_db_transaction_result);
+
 // Run a database transaction.
 void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
                       ResultCallback callback);

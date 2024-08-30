@@ -181,9 +181,7 @@ void GetForCreativeInstanceIdCallback(
     const std::string& creative_instance_id,
     GetCreativeInlineContentAdCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (!mojom_db_transaction_result ||
-      mojom_db_transaction_result->result_code !=
-          mojom::DBTransactionResultInfo::ResultCode::kSuccess) {
+  if (IsError(&*mojom_db_transaction_result)) {
     BLOG(0, "Failed to get creative inline content ad");
 
     return std::move(callback).Run(/*success=*/false, creative_instance_id,
@@ -209,9 +207,7 @@ void GetForSegmentsAndDimensionsCallback(
     const SegmentList& segments,
     GetCreativeInlineContentAdsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (!mojom_db_transaction_result ||
-      mojom_db_transaction_result->result_code !=
-          mojom::DBTransactionResultInfo::ResultCode::kSuccess) {
+  if (IsError(&*mojom_db_transaction_result)) {
     BLOG(0, "Failed to get creative inline content ads");
 
     return std::move(callback).Run(/*success=*/false, segments,
@@ -227,9 +223,7 @@ void GetForSegmentsAndDimensionsCallback(
 void GetForDimensionsCallback(
     GetCreativeInlineContentAdsForDimensionsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (!mojom_db_transaction_result ||
-      mojom_db_transaction_result->result_code !=
-          mojom::DBTransactionResultInfo::ResultCode::kSuccess) {
+  if (IsError(&*mojom_db_transaction_result)) {
     BLOG(0, "Failed to get creative inline content ads");
 
     return std::move(callback).Run(/*success=*/false, /*creative_ad=*/{});
@@ -244,9 +238,7 @@ void GetForDimensionsCallback(
 void GetAllCallback(
     GetCreativeInlineContentAdsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (!mojom_db_transaction_result ||
-      mojom_db_transaction_result->result_code !=
-          mojom::DBTransactionResultInfo::ResultCode::kSuccess) {
+  if (IsError(&*mojom_db_transaction_result)) {
     BLOG(0, "Failed to get all creative inline content ads");
 
     return std::move(callback).Run(/*success=*/false, /*segments=*/{},

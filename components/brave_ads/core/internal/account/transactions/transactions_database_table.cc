@@ -106,9 +106,7 @@ TransactionInfo FromMojomRow(const mojom::DBRowInfo* const mojom_db_row) {
 void GetCallback(
     GetTransactionsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (!mojom_db_transaction_result ||
-      mojom_db_transaction_result->result_code !=
-          mojom::DBTransactionResultInfo::ResultCode::kSuccess) {
+  if (IsError(&*mojom_db_transaction_result)) {
     BLOG(0, "Failed to get transactions");
 
     return std::move(callback).Run(/*success=*/false, /*transactions=*/{});

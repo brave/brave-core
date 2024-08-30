@@ -192,9 +192,7 @@ void GetForCreativeInstanceIdCallback(
     const std::string& creative_instance_id,
     GetCreativeNewTabPageAdCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (!mojom_db_transaction_result ||
-      mojom_db_transaction_result->result_code !=
-          mojom::DBTransactionResultInfo::ResultCode::kSuccess) {
+  if (IsError(&*mojom_db_transaction_result)) {
     BLOG(0, "Failed to get creative new tab page ad");
 
     return std::move(callback).Run(/*success=*/false, creative_instance_id,
@@ -220,9 +218,7 @@ void GetForSegmentsCallback(
     const SegmentList& segments,
     GetCreativeNewTabPageAdsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (!mojom_db_transaction_result ||
-      mojom_db_transaction_result->result_code !=
-          mojom::DBTransactionResultInfo::ResultCode::kSuccess) {
+  if (IsError(&*mojom_db_transaction_result)) {
     BLOG(0, "Failed to get creative new tab page ads");
 
     return std::move(callback).Run(/*success=*/false, segments,
@@ -238,9 +234,7 @@ void GetForSegmentsCallback(
 void GetAllCallback(
     GetCreativeNewTabPageAdsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (!mojom_db_transaction_result ||
-      mojom_db_transaction_result->result_code !=
-          mojom::DBTransactionResultInfo::ResultCode::kSuccess) {
+  if (IsError(&*mojom_db_transaction_result)) {
     BLOG(0, "Failed to get all creative new tab page ads");
 
     return std::move(callback).Run(/*success=*/false, /*segments=*/{},
