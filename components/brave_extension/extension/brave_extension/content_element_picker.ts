@@ -5,6 +5,7 @@
 const NSSVG = 'http://www.w3.org/2000/svg'
 
 let pickerDiv: HTMLDivElement | null
+let shadowRoot: ShadowRoot | null
 
 const api = {
   cosmeticFilterCreate: (selector: string) => {
@@ -279,7 +280,7 @@ const attachElementPicker = () => {
   // "src" is a web accessible resource since the URI is chrome-extension://.
   // This ensures a malicious page cannot modify the iframe contents.
   pickerDiv = document.createElement('div')
-  const shadowRoot = pickerDiv.attachShadow({ mode: 'open' })
+  shadowRoot = pickerDiv.attachShadow({ mode: 'closed' })
 
   // Will be resolved by webpack to the file content.
   // It's a trusted content so it's safe to use innerHTML.
@@ -513,7 +514,6 @@ const launchElementPicker = (root: ShadowRoot) => {
 }
 
 const highlightElements = (coords: TargetRect[]) => {
-  const shadowRoot = pickerDiv?.shadowRoot
   if (!shadowRoot) return
   const svg = shadowRoot.getElementById('picker-ui')!
   const svgMask = shadowRoot.getElementById('highlight-mask')!
