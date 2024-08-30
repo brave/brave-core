@@ -925,42 +925,6 @@ Config.prototype.update = function (options) {
     this.gClientFile = options.gclient_file
   }
 
-  if (options.safebrowsing_api_endpoint) {
-    this.safeBrowsingApiEndpoint = options.safebrowsing_api_endpoint
-  }
-
-  if (options.updater_prod_endpoint) {
-    this.updaterDevEndpoint = options.updater_prod_endpoint
-  }
-
-  if (options.updater_dev_endpoint) {
-    this.updaterDevEndpoint = options.updater_dev_endpoint
-  }
-
-  if (options.webcompat_report_api_endpoint) {
-    this.webcompatReportApiEndpoint = options.webcompat_report_api_endpoint
-  }
-
-  if (options.rewards_grant_dev_endpoint) {
-    this.rewardsGrantDevEndpoint = options.rewards_grant_dev_endpoint
-  }
-
-  if (options.rewards_grant_staging_endpoint) {
-    this.rewardsGrantStagingEndpoint = options.rewards_grant_staging_endpoint
-  }
-
-  if (options.rewards_grant_prod_endpoint) {
-    this.rewardsGrantProdEndpoint = options.rewards_grant_prod_endpoint
-  }
-
-  if (options.brave_stats_api_key) {
-    this.braveStatsApiKey = options.brave_stats_api_key
-  }
-
-  if (options.brave_stats_updater_url) {
-    this.braveStatsUpdaterUrl = options.brave_stats_updater_url
-  }
-
   if (options.channel) {
     this.channel = options.channel
   } else if (this.buildConfig === 'Release') {
