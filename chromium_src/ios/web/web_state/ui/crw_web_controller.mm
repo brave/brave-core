@@ -77,6 +77,10 @@
 - (WKBackForwardList*)backForwardList {
   return (WKBackForwardList*)[[BackForwardList alloc] init];
 }
+
+- (NSString*)title {
+  return @"";
+}
 @end
 
 #pragma mark - CRWWebController
