@@ -214,9 +214,8 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ColorProviderTest) {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* cp = browser_view->GetColorProvider();
   SkColor frame_active_color = cp->GetColor(ui::kColorFrameActive);
-  SkColor nala_frame_color =
-      cp->GetColor(nala::kColorDesktopbrowserTabbarBackground);
-  EXPECT_EQ(nala_frame_color, frame_active_color);
+  SkColor material_frame_color = cp->GetColor(ui::kColorSysHeader);
+  EXPECT_EQ(material_frame_color, frame_active_color);
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Check frame color is not ours when theme extension is installed.
@@ -231,7 +230,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ColorProviderTest) {
 
   cp = browser_view->GetColorProvider();
   frame_active_color = cp->GetColor(ui::kColorFrameActive);
-  EXPECT_NE(nala_frame_color, frame_active_color);
+  EXPECT_NE(material_frame_color, frame_active_color);
 #endif
 
   auto* private_browser = CreateIncognitoBrowser();
