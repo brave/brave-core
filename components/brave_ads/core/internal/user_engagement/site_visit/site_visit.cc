@@ -7,7 +7,6 @@
 
 #include "base/check.h"
 #include "base/containers/contains.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
@@ -113,12 +112,6 @@ void SiteVisit::LandedOnPageCallback(const TabInfo& tab,
                                      const AdInfo& ad,
                                      const bool success) const {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to record ad page land event");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Failed to record ad page land event");
 
     return NotifyDidNotLandOnPage(tab, ad);

@@ -7,7 +7,6 @@
 
 #include "base/check.h"
 #include "base/containers/fixed_flat_map.h"
-#include "base/debug/crash_logging.h"
 #include "base/notreached.h"
 #include "base/types/cxx23_to_underlying.h"
 
@@ -50,7 +49,6 @@ AdType ToAdType(std::string_view value) {
     return ad_type;
   }
 
-  SCOPED_CRASH_KEY_STRING32("BraveAds", "unexpected_ad_type", value);
   NOTREACHED_NORETURN() << "Unexpected value for AdType: " << value;
 }
 

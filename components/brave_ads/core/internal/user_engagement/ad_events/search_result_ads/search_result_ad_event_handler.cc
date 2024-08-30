@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_builder.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"
@@ -37,12 +36,6 @@ void SearchResultAdEventHandler::FireEvent(
 
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
   if (!ad.IsValid()) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Invalid search result ad");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(1,
          "Failed to fire search result ad event due to the ad being invalid");
 
@@ -131,12 +124,6 @@ void SearchResultAdEventHandler::MaybeFireViewedEventCallback(
     FireSearchResultAdEventHandlerCallback callback,
     const bool success) const {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to save search result ad deposit");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Failed to save search result ad deposit");
 
     return FailedToFireEvent(ad,

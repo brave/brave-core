@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
@@ -104,14 +103,6 @@ void ClientStateManager::SaveState() {
   GetAdsClient()->Save(kClientJsonFilename, client_.ToJson(),
                        base::BindOnce([](const bool success) {
                          if (!success) {
-                           // TODO(https://github.com/brave/brave-browser/issues/32066):
-                           // Detect potential defects using
-                           // `DumpWithoutCrashing`.
-                           SCOPED_CRASH_KEY_STRING64(
-                               "Issue32066", "failure_reason",
-                               "Failed to save client state");
-                           base::debug::DumpWithoutCrashing();
-
                            return BLOG(0, "Failed to save client state");
                          }
 
@@ -130,12 +121,6 @@ void ClientStateManager::LoadCallback(InitializeCallback callback,
     SaveState();
   } else {
     if (!FromJson(*json)) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-      // potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                "Failed to parse client state");
-      base::debug::DumpWithoutCrashing();
-
       BLOG(1, "Failed to parse client state: " << *json);
 
       return std::move(callback).Run(/*success=*/false);

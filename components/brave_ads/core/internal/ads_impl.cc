@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ads_impl.h"
 
-#include <sstream>
 #include <utility>
 
 #include "base/debug/dump_without_crashing.h"
@@ -78,12 +77,6 @@ void AdsImpl::Initialize(mojom::WalletInfoPtr wallet,
   BLOG(1, "Initializing ads");
 
   if (is_initialized_) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-    // potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Already initialized ads");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(1, "Already initialized ads");
 
     return FailedToInitialize(std::move(callback));
@@ -94,12 +87,6 @@ void AdsImpl::Initialize(mojom::WalletInfoPtr wallet,
 
 void AdsImpl::Shutdown(ShutdownCallback callback) {
   if (!is_initialized_) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Shutdown failed as ads not initialized");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Shutdown failed as not initialized");
 
     return std::move(callback).Run(/*success=*/false);
@@ -227,15 +214,6 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
              PurgeOrphanedAdEventsForTypeCallback callback,
              const bool success) {
             if (!success) {
-              // TODO(https://github.com/brave/brave-browser/issues/32066):
-              // Detect potential defects using `DumpWithoutCrashing`.
-              std::stringstream ss;
-              ss << ad_type;
-              SCOPED_CRASH_KEY_STRING64("Issue32066", "ad_type", ss.str());
-              SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                        "Failed to purge orphaned ad events");
-              base::debug::DumpWithoutCrashing();
-
               BLOG(0, "Failed to purge orphaned ad events for " << ad_type);
             } else {
               BLOG(1, "Purged orphaned ad events for " << ad_type);
@@ -358,12 +336,6 @@ void AdsImpl::PurgeAllOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
                                                InitializeCallback callback,
                                                const bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-    // potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to purge all orphaned ad events");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Failed to purge all orphaned ad events");
 
     return FailedToInitialize(std::move(callback));
@@ -415,12 +387,6 @@ void AdsImpl::MigrateConfirmationStateCallback(mojom::WalletInfoPtr wallet,
   if (wallet) {
     new_wallet = ToWallet(wallet->payment_id, wallet->recovery_seed);
     if (!new_wallet) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-      // potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                "Invalid wallet");
-      base::debug::DumpWithoutCrashing();
-
       BLOG(0, "Invalid wallet");
 
       return FailedToInitialize(std::move(callback));

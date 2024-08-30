@@ -8,7 +8,6 @@
 #include <string>
 
 #include "base/check.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
@@ -34,12 +33,6 @@ void RebuildAdEventCache() {
 
         for (const auto& ad_event : ad_events) {
           if (!ad_event.IsValid()) {
-            // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-            // potential defects using `DumpWithoutCrashing`.
-            SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                      "Invalid ad event");
-            base::debug::DumpWithoutCrashing();
-
             BLOG(0, "Invalid ad event");
 
             continue;

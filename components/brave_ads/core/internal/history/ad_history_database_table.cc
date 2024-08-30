@@ -64,6 +64,16 @@ size_t BindColumns(mojom::DBActionInfo* mojom_db_action,
     if (!ad_history_item.IsValid()) {
       // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
       // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "ad_type",
+                                ToString(ad_history_item.type));
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "confirmation_type",
+                                ToString(ad_history_item.confirmation_type));
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "creative_instance_id",
+                                ad_history_item.creative_instance_id);
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "advertiser_id",
+                                ad_history_item.advertiser_id);
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "segment",
+                                ad_history_item.segment);
       SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                                 "Invalid ad history item");
       base::debug::DumpWithoutCrashing();
@@ -136,6 +146,16 @@ void GetCallback(
     if (!ad_history_item.IsValid()) {
       // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
       // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "ad_type",
+                                ToString(ad_history_item.type));
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "confirmation_type",
+                                ToString(ad_history_item.confirmation_type));
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "creative_instance_id",
+                                ad_history_item.creative_instance_id);
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "advertiser_id",
+                                ad_history_item.advertiser_id);
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "segment",
+                                ad_history_item.segment);
       SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                                 "Invalid ad history item");
       base::debug::DumpWithoutCrashing();

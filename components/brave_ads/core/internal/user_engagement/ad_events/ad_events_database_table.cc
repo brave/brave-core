@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
@@ -55,12 +54,6 @@ size_t BindColumns(mojom::DBActionInfo* mojom_db_action,
   int index = 0;
   for (const auto& ad_event : ad_events) {
     if (!ad_event.IsValid()) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-      // potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                "Invalid ad event");
-      base::debug::DumpWithoutCrashing();
-
       BLOG(0, "Invalid ad event");
 
       continue;
@@ -122,12 +115,6 @@ void GetCallback(
        mojom_db_transaction_result->rows_union->get_rows()) {
     const AdEventInfo ad_event = FromMojomRow(&*mojom_db_row);
     if (!ad_event.IsValid()) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-      // potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                "Invalid ad event");
-      base::debug::DumpWithoutCrashing();
-
       BLOG(0, "Invalid ad event");
 
       continue;
