@@ -26,6 +26,7 @@
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/renderer/chrome_render_thread_observer.h"
+#include "chrome/renderer/process_state.h"
 #include "chrome/renderer/url_loader_throttle_provider_impl.h"
 #include "content/public/renderer/render_thread.h"
 #include "third_party/blink/public/common/features.h"
@@ -159,7 +160,7 @@ void BraveContentRendererClient::RenderFrameCreated(
   }
 
   if (base::FeatureList::IsEnabled(skus::features::kSkusFeature) &&
-      !ChromeRenderThreadObserver::is_incognito_process()) {
+      !chrome::IsIncognitoProcess()) {
     new skus::SkusRenderFrameObserver(render_frame);
   }
 
@@ -183,7 +184,7 @@ void BraveContentRendererClient::RenderFrameCreated(
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
-      !ChromeRenderThreadObserver::is_incognito_process()) {
+      !chrome::IsIncognitoProcess()) {
     new playlist::PlaylistRenderFrameObserver(
         render_frame, base::BindRepeating([] {
           return BraveRenderThreadObserver::GetDynamicParams().playlist_enabled;
