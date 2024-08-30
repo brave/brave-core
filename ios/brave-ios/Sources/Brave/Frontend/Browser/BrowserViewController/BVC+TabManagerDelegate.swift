@@ -153,7 +153,22 @@ extension BrowserViewController: TabManagerDelegate {
         item: selected?.playlistItem
       )
     } else {
-      topToolbar.updateReaderModeState(ReaderModeState.unavailable)
+      topToolbar.updateReaderModeState(.unavailable)
+    }
+
+    if let translateScriptHandler = selected?.getContentScript(
+      name: BraveTranslateScriptHandler.scriptName
+    )
+      as? BraveTranslateScriptHandler
+    {
+      topToolbar.updateTranslateButtonState(selected?.translationState ?? .unavailable)
+      updatePlaylistURLBar(
+        tab: selected,
+        state: selected?.playlistItemState ?? .none,
+        item: selected?.playlistItem
+      )
+    } else {
+      topToolbar.updateTranslateButtonState(.unavailable)
     }
 
     updateScreenTimeUrl(tabManager.selectedTab?.url)

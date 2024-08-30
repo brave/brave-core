@@ -113,27 +113,24 @@ class TabLocationView: UIView {
   }
 
   private func updateLeadingItem() {
-    var leadingView: UIView?
-    defer { leadingItemView = leadingView }
+    // Hide all items
+    leadingItemStackView.arrangedSubviews.forEach {
+      $0.isHidden = true
+    }
+
     if !secureContentState.shouldDisplayWarning {
       // Consider reader mode
-      leadingView = readerModeState != .unavailable ? readerModeButton : nil
+      secureContentStateButton.configuration = secureContentStateButtonConfiguration
+      readerModeButton.isHidden = readerModeState == .unavailable
+
+      // Consider brave translate
+      translateButton.isHidden = translationState == .unavailable
       return
     }
 
-    let button = UIButton(
-      configuration: secureContentStateButtonConfiguration,
-      primaryAction: .init(handler: { [weak self] _ in
-        guard let self = self else { return }
-        self.delegate?.tabLocationViewDidTapSecureContentState(self)
-      })
-    )
-    button.configurationUpdateHandler = { [unowned self] btn in
-      btn.configuration = secureContentStateButtonConfiguration
-    }
-    button.tintAdjustmentMode = .normal
-    secureContentStateButton = button
-    leadingView = button
+    // Display security status
+    secureContentStateButton.configuration = secureContentStateButtonConfiguration
+    secureContentStateButton.isHidden = false
   }
 
   deinit {
@@ -166,6 +163,37 @@ class TabLocationView: UIView {
           withDuration: 0.1,
           animations: { () -> Void in
             self.readerModeButton.alpha = newReaderModeState == .unavailable ? 0 : 1
+          }
+        )
+      }
+    }
+  }
+
+  var translationState: TranslateURLBarButton.TranslateState {
+    get {
+      return translateButton.translateState
+    }
+    set(state) {
+      defer { updateLeadingItem() }
+      if state != self.translateButton.translateState {
+        let wasHidden = leadingItemView == nil
+        self.translateButton.translateState = state
+        if wasHidden != (state == TranslateURLBarButton.TranslateState.unavailable) {
+          UIAccessibility.post(notification: .layoutChanged, argument: nil)
+          if !translateButton.isHidden {
+            // Delay the Translation Button accessibility announcement briefly to prevent interruptions.
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+              UIAccessibility.post(
+                notification: .announcement,
+                argument: Strings.braveTranslateAvailableVoiceOverAnnouncement
+              )
+            }
+          }
+        }
+        UIView.animate(
+          withDuration: 0.1,
+          animations: { () -> Void in
+            self.translateButton.alpha = state == .unavailable ? 0 : 1
           }
         )
       }
@@ -260,22 +288,34 @@ class TabLocationView: UIView {
     $0.identifier = "url-layout-guide"
   }
 
-  private let leadingItemContainerView = UIView()
+  private let leadingItemStackView = UIStackView().then {
+    $0.alignment = .center
+    $0.insetsLayoutMarginsFromSafeArea = false
+  }
+
   private var leadingItemView: UIView? {
     willSet {
       leadingItemView?.removeFromSuperview()
     }
     didSet {
       if let leadingItemView {
-        leadingItemContainerView.addSubview(leadingItemView)
-        leadingItemView.snp.makeConstraints {
-          $0.edges.equalToSuperview()
-        }
+        leadingItemStackView.addArrangedSubview(leadingItemView)
       }
     }
   }
 
-  private(set) var secureContentStateButton: UIButton?
+  private(set) lazy var secureContentStateButton = UIButton(
+    configuration: secureContentStateButtonConfiguration,
+    primaryAction: .init(handler: { [weak self] _ in
+      guard let self = self else { return }
+      self.delegate?.tabLocationViewDidTapSecureContentState(self)
+    })
+  ).then {
+    $0.configurationUpdateHandler = { [unowned self] in
+      $0.configuration = secureContentStateButtonConfiguration
+    }
+    $0.tintAdjustmentMode = .normal
+  }
 
   private(set) lazy var progressBar = GradientProgressBar().then {
     $0.clipsToBounds = false
@@ -292,12 +332,16 @@ class TabLocationView: UIView {
 
     addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapLocationBar)))
 
-    readerModeButton.do {
+    let leadingItemSubviews: [UIView] = [
+      readerModeButton, translateButton, secureContentStateButton,
+    ]
+    leadingItemSubviews.forEach {
       $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
       $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+      leadingItemStackView.addArrangedSubview($0)
     }
 
-    var trailingOptionSubviews: [UIView] = [walletButton, playlistButton, translateButton]
+    var trailingOptionSubviews: [UIView] = [walletButton, playlistButton]
     if isVoiceSearchAvailable {
       trailingOptionSubviews.append(voiceSearchButton)
     }
@@ -314,7 +358,7 @@ class TabLocationView: UIView {
     addLayoutGuide(urlLayoutGuide)
 
     addSubview(contentView)
-    contentView.addSubview(leadingItemContainerView)
+    contentView.addSubview(leadingItemStackView)
     contentView.addSubview(urlDisplayLabel)
     contentView.addSubview(trailingTabOptionsStackView)
     contentView.addSubview(placeholderLabel)
@@ -330,7 +374,7 @@ class TabLocationView: UIView {
       $0.trailing.lessThanOrEqualTo(urlLayoutGuide)
     }
 
-    leadingItemContainerView.snp.makeConstraints {
+    leadingItemStackView.snp.makeConstraints {
       $0.leading.equalToSuperview()
       $0.top.bottom.equalToSuperview()
     }
@@ -342,7 +386,7 @@ class TabLocationView: UIView {
 
     urlLayoutGuide.snp.makeConstraints {
       $0.leading.greaterThanOrEqualTo(TabLocationViewUX.spacing * 2)
-      $0.leading.equalTo(leadingItemContainerView.snp.trailing).priority(.medium)
+      $0.leading.equalTo(leadingItemStackView.snp.trailing).priority(.medium)
       $0.trailing.equalTo(trailingTabOptionsStackView.snp.leading)
       $0.top.bottom.equalTo(self)
     }
@@ -401,7 +445,7 @@ class TabLocationView: UIView {
   override func layoutSubviews() {
     super.layoutSubviews()
 
-    secureContentStateButton?.setNeedsUpdateConfiguration()
+    secureContentStateButton.setNeedsUpdateConfiguration()
   }
 
   private func updateForTraitCollection() {
@@ -479,7 +523,7 @@ class TabLocationView: UIView {
     voiceSearchButton.isHidden = (url != nil) || !isVoiceSearchAvailable
     placeholderLabel.isHidden = url != nil
     urlDisplayLabel.isHidden = url == nil
-    leadingItemContainerView.isHidden = url == nil
+    leadingItemStackView.isHidden = url == nil
   }
 
   // MARK: Tap Actions

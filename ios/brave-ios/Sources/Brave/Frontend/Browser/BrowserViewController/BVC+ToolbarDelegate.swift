@@ -1025,8 +1025,7 @@ extension BrowserViewController: ToolbarDelegate {
   }
 
   func topToolbarDidTapSecureContentState(_ urlBar: TopToolbarView) {
-    guard let tab = tabManager.selectedTab, let url = tab.url,
-      let secureContentStateButton = urlBar.locationView.secureContentStateButton
+    guard let tab = tabManager.selectedTab, let url = tab.url
     else { return }
     let hasCertificate =
       (tab.webView?.serverTrust ?? (try? ErrorPageHelper.serverTrust(from: url))) != nil
@@ -1040,7 +1039,7 @@ extension BrowserViewController: ToolbarDelegate {
       }
     )
     let popoverController = PopoverController(content: pageSecurityView)
-    popoverController.present(from: secureContentStateButton, on: self)
+    popoverController.present(from: urlBar.locationView.secureContentStateButton, on: self)
   }
 
   func showBackForwardList() {

@@ -56,15 +56,20 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
     }
 
     do {
+      guard let delegate = delegate else {
+        replyHandler(nil, nil)
+        return
+      }
+
       let message = try JSONDecoder().decode(
         Message.self,
         from: JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
       )
 
       if message.hasNoTranslate {
-        delegate?.currentLanguageInfo.pageLanguage = delegate?.currentLanguageInfo.currentLanguage
+        delegate.currentLanguageInfo.pageLanguage = delegate.currentLanguageInfo.currentLanguage
       } else {
-        delegate?.currentLanguageInfo.pageLanguage = Locale.Language(identifier: message.htmlLang)
+        delegate.currentLanguageInfo.pageLanguage = Locale.Language(identifier: message.htmlLang)
       }
 
       replyHandler(nil, nil)
@@ -212,17 +217,17 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
 
   @MainActor
   func guessLanguage() async -> Locale.Language? {
-        await executeChromiumFunction("languageDetection.detectLanguage")
-    
-        // Language was identified by the Translate Script
-        if let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier,
-          let pageLanguage = currentLanguageInfo.pageLanguage?.languageCode?.identifier
-        {
-          if currentLanguage == pageLanguage {
-            currentLanguageInfo.pageLanguage = nil
-          }
-          return currentLanguageInfo.pageLanguage
-        }
+    await executeChromiumFunction("languageDetection.detectLanguage")
+
+    // Language was identified by the Translate Script
+    if let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier,
+      let pageLanguage = currentLanguageInfo.pageLanguage?.languageCode?.identifier
+    {
+      if currentLanguage == pageLanguage {
+        currentLanguageInfo.pageLanguage = nil
+      }
+      return currentLanguageInfo.pageLanguage
+    }
 
     // Language identified via our own Javascript
     if let languageCode = await executePageFunction(name: "getPageLanguage") {
@@ -301,6 +306,41 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     }
   }
 
+  @MainActor
+  private func updateTranslationStatus() async throws {
+    guard let pageLanguage = currentLanguageInfo.pageLanguage else {
+      delegate?.updateTranslateURLBar(tab: tab, state: .unavailable)
+      return
+    }
+
+    var isTranslationSupported = false
+
+    if #available(iOS 18.0, *) {
+      #if compiler(>=6.0) && !targetEnvironment(simulator)
+      isTranslationSupported = await BraveTranslateSessionApple.isTranslationSupported(
+        from: pageLanguage,
+        to: currentLanguageInfo.currentLanguage
+      )
+      #else
+      isTranslationSupported = await BraveTranslateSession.isTranslationSupported(
+        from: pageLanguage,
+        to: currentLanguageInfo.currentLanguage
+      )
+      #endif
+    } else {
+      isTranslationSupported = await BraveTranslateSession.isTranslationSupported(
+        from: pageLanguage,
+        to: currentLanguageInfo.currentLanguage
+      )
+    }
+
+    try Task.checkCancellation()
+    delegate?.updateTranslateURLBar(
+      tab: tab,
+      state: isTranslationSupported ? .available : .unavailable
+    )
+  }
+
   func userContentController(
     _ userContentController: WKUserContentController,
     didReceiveScriptMessage message: WKScriptMessage,
@@ -365,32 +405,17 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
       isTranslationReady = true
 
       Task { @MainActor [weak self] in
-        guard let self = self,
-          let delegate = self.delegate
-        else {
+        guard let self = self else {
           return
         }
 
-        //        await executeChromiumFunction("translate.installCallbacks")
-
         try Task.checkCancellation()
         let languageInfo = await getLanguageInfo()
-
-        try Task.checkCancellation()
         self.currentLanguageInfo.pageLanguage = languageInfo.pageLanguage
         self.currentLanguageInfo.currentLanguage = languageInfo.currentLanguage
 
         try Task.checkCancellation()
-
-        guard let pageLanguage = languageInfo.pageLanguage?.languageCode?.identifier,
-          let currentLanguage = languageInfo.currentLanguage.languageCode?.identifier,
-          pageLanguage != currentLanguage
-        else {
-          delegate.updateTranslateURLBar(tab: self.tab, state: .unavailable)
-          return
-        }
-
-        delegate.updateTranslateURLBar(tab: self.tab, state: .available)
+        try await updateTranslationStatus()
       }
     }
 
@@ -412,23 +437,21 @@ private enum BraveTranslateError: Error {
   case otherError
 }
 
-class BraveTranslateLanguageInfo: NSObject, ObservableObject {
+class BraveTranslateLanguageInfo: ObservableObject {
   @Published
   var currentLanguage: Locale.Language
 
   @Published
   var pageLanguage: Locale.Language?
 
-  override init() {
+  init() {
     currentLanguage = .init(identifier: Locale.current.identifier)
     pageLanguage = nil
-    super.init()
   }
 
   init(currentLanguage: Locale.Language, pageLanguage: Locale.Language?) {
     self.currentLanguage = currentLanguage
     self.pageLanguage = pageLanguage
-    super.init()
   }
 }
 
@@ -437,6 +460,18 @@ private class BraveTranslateSession {
     _ request: BraveTranslateScriptHandler.RequestMessage
   ) -> Bool {
     return request.url.path.starts(with: "/translate_a/")
+  }
+
+  class func isTranslationSupported(
+    from source: Locale.Language,
+    to target: Locale.Language
+  ) async -> Bool {
+    guard let sourceLanguage = source.languageCode?.identifier,
+      let targetLanguage = target.languageCode?.identifier
+    else {
+      return false
+    }
+    return sourceLanguage != targetLanguage
   }
 
   func translate(
@@ -462,6 +497,22 @@ private class BraveTranslateSessionApple: BraveTranslateSession {
 
   init(session: TranslationSession) {
     self.session = session
+  }
+
+  override class func isTranslationSupported(
+    from source: Locale.Language,
+    to target: Locale.Language
+  ) async -> Bool {
+    let availability = LanguageAvailability()
+    let status = await availability.status(from: source, to: target)
+    switch status {
+    case .installed, .supported:
+      return true
+    case .unsupported:
+      return false
+    @unknown default:
+      return false
+    }
   }
 
   override func translate(
@@ -502,7 +553,7 @@ private class BraveTranslateSessionApple: BraveTranslateSession {
 #endif
 
 private struct BraveTranslateContainerView: View {
-  var onTranslationSessionUpdated: ((BraveTranslateSession) -> Void)?
+  var onTranslationSessionUpdated: ((BraveTranslateSession) async -> Void)?
 
   @ObservedObject
   var languageInfo: BraveTranslateLanguageInfo
@@ -516,17 +567,17 @@ private struct BraveTranslateContainerView: View {
             .translationTask(
               .init(source: languageInfo.pageLanguage, target: languageInfo.currentLanguage),
               action: { session in
-                onTranslationSessionUpdated?(BraveTranslateSessionApple(session: session))
+                await onTranslationSessionUpdated?(BraveTranslateSessionApple(session: session))
               }
             )
           #else
           view.task {
-            onTranslationSessionUpdated?(BraveTranslateSession())
+            await onTranslationSessionUpdated?(BraveTranslateSession())
           }
           #endif
         } else {
           view.task {
-            onTranslationSessionUpdated?(BraveTranslateSession())
+            await onTranslationSessionUpdated?(BraveTranslateSession())
           }
         }
       })
