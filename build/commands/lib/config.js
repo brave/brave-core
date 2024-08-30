@@ -925,46 +925,6 @@ Config.prototype.update = function (options) {
     this.gClientFile = options.gclient_file
   }
 
-  if (options.gemini_production_api_url) {
-    this.geminiProductionApiUrl = options.gemini_production_api_url
-  }
-
-  if (options.gemini_production_client_id) {
-    this.geminiProductionClientId = options.gemini_production_client_id
-  }
-
-  if (options.gemini_production_client_secret) {
-    this.geminiProductionClientSecret = options.gemini_production_client_secret
-  }
-
-  if (options.gemini_production_fee_address) {
-    this.geminiProductionFeeAddress = options.gemini_production_fee_address
-  }
-
-  if (options.gemini_production_oauth_url) {
-    this.geminiProductionOauthUrl = options.gemini_production_oauth_url
-  }
-
-  if (options.gemini_sandbox_api_url) {
-    this.geminiSandboxApiUrl = options.gemini_sandbox_api_url
-  }
-
-  if (options.gemini_sandbox_client_id) {
-    this.geminiSandboxClientId = options.gemini_sandbox_client_id
-  }
-
-  if (options.gemini_sandbox_client_secret) {
-    this.geminiSandboxClientSecret = options.gemini_sandbox_client_secret
-  }
-
-  if (options.gemini_sandbox_fee_address) {
-    this.geminiSandboxFeeAddress = options.gemini_sandbox_fee_address
-  }
-
-  if (options.gemini_sandbox_oauth_url) {
-    this.geminiSandboxOauthUrl = options.gemini_sandbox_oauth_url
-  }
-
   if (options.uphold_production_api_url) {
     this.upholdProductionApiUrl = options.uphold_production_api_url
   }
