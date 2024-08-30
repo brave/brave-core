@@ -12,6 +12,8 @@
 
 namespace ai_chat {
 
+// Purpose of this throttle is to forbid loading of chrome-untrusted://chat
+// in tab.
 class AiChatThrottle : public content::NavigationThrottle {
  public:
   explicit AiChatThrottle(content::NavigationHandle* handle);
@@ -20,8 +22,6 @@ class AiChatThrottle : public content::NavigationThrottle {
   static std::unique_ptr<AiChatThrottle> MaybeCreateThrottleFor(
       content::NavigationHandle* navigation_handle);
 
-  // content::NavigationThrottle:
-  // ThrottleCheckResult WillProcessResponse() override;
   ThrottleCheckResult WillStartRequest() override;
   const char* GetNameForLogging() override;
 };
