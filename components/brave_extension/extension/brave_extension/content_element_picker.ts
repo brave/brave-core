@@ -275,7 +275,7 @@ const quitElementPicker = () => {
   document.removeEventListener('scroll', elementPickerViewportChanged)
 }
 
-const attachElementPicker = async () => {
+const attachElementPicker = () => {
   // "src" is a web accessible resource since the URI is chrome-extension://.
   // This ensures a malicious page cannot modify the iframe contents.
   pickerDiv = document.createElement('div')
@@ -542,4 +542,4 @@ const highlightElements = (coords: TargetRect[]) => {
   }
 }
 
-attachElementPicker().then(launchElementPicker)
+launchElementPicker(attachElementPicker())
