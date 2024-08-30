@@ -311,6 +311,26 @@ void AddBraveColorMixerForAllThemes(ui::ColorProvider* provider,
   // color by their color mixers.
   mixer[kColorToolbarButtonActivated] = {SkColorSetRGB(0x7C, 0x91, 0xFF)};
   mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
+
+  // Search conversion button in omnibox.
+  mixer[kColorSearchConversionButtonText] = {nala::kColorPrimary60};
+  mixer[kColorSearchConversionButtonBorder] = {nala::kColorPrimary20};
+  mixer[kColorSearchConversionButtonBackground] = {nala::kColorPrimary10};
+  mixer[kColorSearchConversionButtonBackgroundHovered] = {
+      nala::kColorPrimary20};
+  mixer[kColorSearchConversionButtonText] = {nala::kColorPrimary60};
+  mixer[kColorSearchConversionButtonCloseButton] = {
+      ui::AlphaBlend({nala::kColorIconInteractive},
+                     {kColorSearchConversionButtonBackground}, 0.5 * 0xff)};
+  mixer[kColorSearchConversionButtonCloseButtonHovered] = {
+      ui::AlphaBlend({nala::kColorIconInteractive},
+                     {kColorSearchConversionButtonBackground}, 0.7 * 0xff)};
+  mixer[kColorSearchConversionButtonCaratRight] = {
+      kColorSearchConversionButtonCloseButton};
+  mixer[kColorSearchConversionButtonShadow1] = {
+      SkColorSetA(SK_ColorBLACK, 0.05 * 255)};
+  mixer[kColorSearchConversionButtonShadow2] = {
+      SkColorSetA(SK_ColorBLACK, 0.1 * 255)};
 }
 
 }  // namespace

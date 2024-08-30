@@ -39,7 +39,16 @@
     E_CPONLY(kColorSearchConversionBannerTypeBackgroundBorderHovered) \
     E_CPONLY(kColorSearchConversionBannerTypeBackgroundGradientFrom)  \
     E_CPONLY(kColorSearchConversionBannerTypeBackgroundGradientTo)    \
-    E_CPONLY(kColorSearchConversionBannerTypeDescText)
+    E_CPONLY(kColorSearchConversionBannerTypeDescText)                \
+    E_CPONLY(kColorSearchConversionButtonBorder)                      \
+    E_CPONLY(kColorSearchConversionButtonBackground)                  \
+    E_CPONLY(kColorSearchConversionButtonBackgroundHovered)           \
+    E_CPONLY(kColorSearchConversionButtonText)                        \
+    E_CPONLY(kColorSearchConversionButtonCaratRight)                  \
+    E_CPONLY(kColorSearchConversionButtonCloseButton)                 \
+    E_CPONLY(kColorSearchConversionButtonCloseButtonHovered)          \
+    E_CPONLY(kColorSearchConversionButtonShadow1)                     \
+    E_CPONLY(kColorSearchConversionButtonShadow2)
 
 #define BRAVE_SIDEBAR_COLOR_IDS                               \
     E_CPONLY(kColorSidebarAddBubbleBackground)                \

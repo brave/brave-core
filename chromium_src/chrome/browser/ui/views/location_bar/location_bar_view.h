@@ -11,6 +11,7 @@
   friend class BraveLocationBarView;                             \
                                                                  \
  public:                                                         \
+  virtual views::View* GetSearchPromotionButton() const;         \
   virtual std::vector<views::View*> GetRightMostTrailingViews(); \
   virtual std::vector<views::View*> GetLeftMostTrailingViews();
 
