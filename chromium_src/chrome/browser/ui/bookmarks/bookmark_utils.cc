@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/bookmarks/bookmark_utils.h"
+#include "base/strings/string_util.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
@@ -16,6 +17,7 @@
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/gfx/color_utils.h"
+#include "url/gurl.h"
 
 namespace chrome {
 
@@ -40,6 +42,8 @@ void BraveToggleBookmarkBarState(content::BrowserContext* browser_context) {
 #define ShouldShowAppsShortcutInBookmarkBar \
   ShouldShowAppsShortcutInBookmarkBar_Unused
 
+#define FormatBookmarkURLForDisplay FormatBookmarkURLForDisplay_ChromiumImpl
+
 #if defined(TOOLKIT_VIEWS)
 #define GetBookmarkFolderIcon GetBookmarkFolderIcon_UnUsed
 #endif
@@ -54,6 +58,7 @@ void BraveToggleBookmarkBarState(content::BrowserContext* browser_context) {
 #undef ToggleBookmarkBarWhenVisible
 #undef IsAppsShortcutEnabled
 #undef ShouldShowAppsShortcutInBookmarkBar
+#undef FormatBookmarkURLForDisplay
 
 #if defined(TOOLKIT_VIEWS)
 #undef GetBookmarkFolderIcon
@@ -67,6 +72,16 @@ bool IsAppsShortcutEnabled(Profile* profile) {
 
 bool ShouldShowAppsShortcutInBookmarkBar(Profile* profile) {
   return false;
+}
+
+std::u16string FormatBookmarkURLForDisplay(const GURL& url) {
+  GURL replaced_url = url;
+  if (url.SchemeIs(content::kChromeUIScheme)) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(content::kBraveUIScheme);
+    replaced_url = url.ReplaceComponents(replacements);
+  }
+  return chrome::FormatBookmarkURLForDisplay_ChromiumImpl(replaced_url);
 }
 
 #if defined(TOOLKIT_VIEWS)
