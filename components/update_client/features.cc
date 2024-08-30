@@ -18,12 +18,12 @@ namespace brave {
 // make sure that there are no old clients that suffer from the above
 // limitations. In practice, this will very likely mean that you will need to
 // rename the feature.
-BASE_FEATURE(kBraveUseOmaha4,
-             "BraveUseOmaha4",
+BASE_FEATURE(kBraveUseOmaha4Alpha,
+             "BraveUseOmaha4Alpha",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool ShouldUseOmaha4() {
-  return base::FeatureList::IsEnabled(kBraveUseOmaha4);
+  return base::FeatureList::IsEnabled(kBraveUseOmaha4Alpha);
 }
 
 }  // namespace brave

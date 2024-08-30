@@ -10,7 +10,7 @@
 
 namespace brave {
 
-BASE_DECLARE_FEATURE(kBraveUseOmaha4);
+BASE_DECLARE_FEATURE(kBraveUseOmaha4Alpha);
 
 bool ShouldUseOmaha4();
 

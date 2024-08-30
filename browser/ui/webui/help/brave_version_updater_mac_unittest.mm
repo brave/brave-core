@@ -25,6 +25,6 @@ TEST_F(BraveVersionUpdaterMacTest, UsesSparkleByDefault) {
 }
 
 TEST_F(BraveVersionUpdaterMacTest, UsesOmaha4WhenEnabled) {
-  scoped_feature_list_.InitAndEnableFeature(brave::kBraveUseOmaha4);
+  scoped_feature_list_.InitAndEnableFeature(brave::kBraveUseOmaha4Alpha);
   EXPECT_FALSE(UsesSparkle());
 }
