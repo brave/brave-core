@@ -142,9 +142,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kChromeLabs,
       &features::kChromeStructuredMetrics,
       &features::kCookieDeprecationFacilitatedTesting,
-#if !BUILDFLAG(IS_ANDROID)
-      &features::kDesktopPWAsLinkCapturing,
-#endif
       &features::kDevToolsConsoleInsights,
       &features::kDigitalGoodsApi,
       &features::kDIPS,
@@ -167,6 +164,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kPrivacySandboxAdsAPIsOverride,
       &features::kPrivacySandboxAdsAPIsM1Override,
 #if !BUILDFLAG(IS_ANDROID)
+      &features::kPwaNavigationCapturing,
       &features::kReportPakFileIntegrity,
 #endif
       &features::kResourceTimingForCancelledNavigationInFrame,

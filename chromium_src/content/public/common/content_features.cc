@@ -25,6 +25,9 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kNotificationTriggers, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacySandboxAdsAPIsOverride, base::FEATURE_DISABLED_BY_DEFAULT},
     {kWebIdentityDigitalCredentials, base::FEATURE_DISABLED_BY_DEFAULT},
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+    {kPwaNavigationCapturing, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif
 #if BUILDFLAG(IS_ANDROID)
     {kWebNfc, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
