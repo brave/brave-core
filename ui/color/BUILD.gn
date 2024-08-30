@@ -23,8 +23,8 @@ source_set("brave_color_mixers") {
   sources = [
     "$target_gen_dir/nala/nala_color_mixer.cc",
     "$target_gen_dir/nala/nala_color_mixer.h",
-    "missing_color_ref_mixer.cc",
-    "missing_color_ref_mixer.h",
+    "brave_ref_color_mixer.cc",
+    "brave_ref_color_mixer.h",
   ]
 
   deps = [
