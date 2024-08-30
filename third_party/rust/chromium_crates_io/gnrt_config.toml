@@ -99,13 +99,6 @@ license_files = ['LICENSE']
 [crate.adss]
 license_files = ['LICENSE']
 
-[crate.aes]
-extra_kv = { raw_gn = '''
-if (target_os == "android" && target_cpu == "arm64") {
-      deps -= [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
-}
-''' }
-
 [crate.ansi_term]
 license_files = ['LICENCE']
 
@@ -248,17 +241,6 @@ build_script_outputs = [ "rules.rs" ]
 [crate.itoa]
 license_files = ['LICENSE-APACHE']
 
-# gnrt conditional for this dep is merely if (target_cpu == "arm64")
-[crate.keccak]
-extra_kv = { raw_gn = '''
-if (target_cpu == "x64" || target_cpu == "x86") {
-      deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
-}
-if (target_os == "android" && target_cpu == "arm64") {
-      deps -= [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
-}
-''' }
-
 [crate.libm]
 extra_kv = { rustenv = [ "OPT_LEVEL=0" ]}
 
@@ -350,13 +332,6 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.servo_arc]
 license_files = ['../../../../../common/licenses/Apache-2.0']
-
-[crate.sha2]
-extra_kv = { raw_gn = '''
-if (target_os == "android" && target_cpu == "arm64") {
-      deps -= [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
-}
-''' }
 
 [crate.signature]
 extra_input_roots = [ "../README.md" ]
