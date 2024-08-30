@@ -63,11 +63,9 @@ void AIRewriterButtonPositioner::UpdateButton(blink::WebDocument document,
   }
 
   auto* frame = document.GetFrame();
-  auto selection = frame->SelectionRange();
 
-  // Backwards selections have negative length, so use abs
-  if (selection.IsNull() || abs(selection.length()) < 2) {
-    // Hide button, not much is selected
+  // Hide button if nothing is selected.
+  if (!frame->HasSelection()) {
     button_->Hide();
     return;
   }
