@@ -195,6 +195,7 @@ export const feed: BraveNews.Feed = {
       isDiscover: true,
       data: {
         categoryName: 'Top News',
+        channels: ['Top News'],
         description: 'Here\'s everything you need to know about the Haunted Hallows event, including how to unlock the Batmobile.',
         image: { imageUrl: { url: 'https://placekitten.com/1360/912' }, paddedImageUrl: undefined },
         publishTime: { internalValue: BigInt('13278618001000000') },
@@ -222,6 +223,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Sports',
+                  'channels': ['Sports'],
                   'publishTime': {
                     internalValue: BigInt('13278621116000000')
                   },
@@ -257,6 +259,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Sports',
+                  'channels': ['Sports'],
                   'publishTime': {
                     internalValue: BigInt('13278620426000000')
                   },
@@ -292,6 +295,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Technology',
+                  'channels': ['Technology'],
                   'publishTime': {
                     internalValue: BigInt('13278621733000000')
                   },
@@ -322,6 +326,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Science',
+                  'channels': ['Science'],
                   'publishTime': {
                     internalValue: BigInt('13278621699000000')
                   },
@@ -356,6 +361,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: {
                 'data': {
                   'categoryName': 'Brave Partners',
+                  'channels': ['Brave Partners'],
                   'publishTime': {
                     internalValue: BigInt('13278621628000000')
                   },
@@ -392,6 +398,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Top News',
+                  'channels': ['Top News'],
                   'publishTime': {
                     internalValue: BigInt('13278621613000000')
                   },
@@ -422,6 +429,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Top News',
+                  'channels': ['Top News'],
                   'publishTime': {
                     internalValue: BigInt('13278621600000000')
                   },
@@ -452,6 +460,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Top News',
+                  'channels': ['Top News'],
                   'publishTime': {
                     internalValue: BigInt('13278621533000000')
                   },
@@ -487,6 +496,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Business',
+                  'channels': ['Business'],
                   'publishTime': {
                     internalValue: BigInt('13278621684000000')
                   },
@@ -522,6 +532,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Cars',
+                  'channels': ['Cars'],
                   'publishTime': {
                     internalValue: BigInt('13278621683000000')
                   },
@@ -557,6 +568,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Home',
+                  'channels': ['Home'],
                   'publishTime': {
                     internalValue: BigInt('13278621634000000')
                   },
@@ -587,6 +599,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Entertainment',
+                  'channels': ['Entertainment'],
                   'publishTime': {
                     internalValue: BigInt('13278621632000000')
                   },
@@ -622,6 +635,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Entertainment',
+                  'channels': ['Entertainment'],
                   'publishTime': {
                     internalValue: BigInt('13278621625000000')
                   },
@@ -652,6 +666,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Entertainment',
+                  'channels': ['Entertainment'],
                   'publishTime': {
                     internalValue: BigInt('13278621617000000')
                   },
@@ -691,6 +706,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Science',
+                  'channels': ['Science'],
                   'publishTime': {
                     internalValue: BigInt('13278621608000000')
                   },
@@ -726,6 +742,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Sports',
+                  'channels': ['Sports'],
                   'publishTime': {
                     internalValue: BigInt('13278621606000000')
                   },
@@ -761,6 +778,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Entertainment',
+                  'channels': ['Entertainment'],
                   'publishTime': {
                     internalValue: BigInt('13278621605000000')
                   },
@@ -791,6 +809,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Entertainment',
+                  'channels': ['Entertainment'],
                   'publishTime': {
                     internalValue: BigInt('13278618574000000')
                   },
@@ -821,6 +840,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Entertainment',
+                  'channels': ['Entertainment'],
                   'publishTime': {
                     internalValue: BigInt('13278617426000000')
                   },
@@ -856,6 +876,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Technology',
+                  'channels': ['Technology'],
                   'publishTime': {
                     internalValue: BigInt('13278621600000000')
                   },
@@ -886,6 +907,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Technology',
+                  'channels': ['Technology'],
                   'publishTime': {
                     internalValue: BigInt('13278621600000000')
                   },
@@ -921,6 +943,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Technology',
+                  'channels': ['Technology'],
                   'publishTime': {
                     internalValue: BigInt('13278621600000000')
                   },
@@ -955,6 +978,7 @@ export const feed: BraveNews.Feed = {
               deal: {
                 'data': {
                   'categoryName': 'Brave',
+                  'channels': ['Brave'],
                   'publishTime': {
                     internalValue: BigInt('13258305902000000')
                   },
@@ -985,6 +1009,7 @@ export const feed: BraveNews.Feed = {
               deal: {
                 'data': {
                   'categoryName': 'Brave',
+                  'channels': ['Brave'],
                   'publishTime': {
                     internalValue: BigInt('13258305902000000')
                   },
@@ -1015,6 +1040,7 @@ export const feed: BraveNews.Feed = {
               deal: {
                 'data': {
                   'categoryName': 'Brave',
+                  'channels': ['Brave'],
                   'publishTime': {
                     internalValue: BigInt('13258305902000000')
                   },
@@ -1051,6 +1077,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Top News',
+                  'channels': ['Top News'],
                   'publishTime': {
                     internalValue: BigInt('13278609481000000')
                   },
@@ -1086,6 +1113,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Health',
+                  'channels': ['Health'],
                   'publishTime': {
                     internalValue: BigInt('13278602700000000')
                   },
@@ -1116,6 +1144,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Entertainment',
+                  'channels': ['Entertainment'],
                   'publishTime': {
                     internalValue: BigInt('13278618011000000')
                   },
@@ -1155,6 +1184,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Sports',
+                  'channels': ['Sports'],
                   'publishTime': {
                     internalValue: BigInt('13278621600000000')
                   },
@@ -1190,6 +1220,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Culture',
+                  'channels': ['Culture'],
                   'publishTime': {
                     internalValue: BigInt('13278621600000000')
                   },
@@ -1225,6 +1256,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Business',
+                  'channels': ['Business'],
                   'publishTime': {
                     internalValue: BigInt('13278621593000000')
                   },
@@ -1255,6 +1287,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Sports',
+                  'channels': ['Sports'],
                   'publishTime': {
                     internalValue: BigInt('13278621564000000')
                   },
@@ -1289,6 +1322,7 @@ export const feed: BraveNews.Feed = {
               promotedArticle: {
                 'data': {
                   'categoryName': 'Brave Partners',
+                  'channels': ['Brave Partners'],
                   'publishTime': {
                     internalValue: BigInt('13278528021000000')
                   },
@@ -1325,6 +1359,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Brave',
+                  'channels': ['Brave'],
                   'publishTime': {
                     internalValue: BigInt('13276800071000000')
                   },
@@ -1355,6 +1390,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Brave',
+                  'channels': ['Brave'],
                   'publishTime': {
                     internalValue: BigInt('13276723068000000')
                   },
@@ -1385,6 +1421,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Brave',
+                  'channels': ['Brave'],
                   'publishTime': {
                     internalValue: BigInt('13276712102000000')
                   },
@@ -1420,6 +1457,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Entertainment',
+                  'channels': ['Entertainment'],
                   'publishTime': {
                     internalValue: BigInt('13278621540000000')
                   },
@@ -1455,6 +1493,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Business',
+                  'channels': ['Business'],
                   'publishTime': {
                     internalValue: BigInt('13278621540000000')
                   },
@@ -1490,6 +1529,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Top News',
+                  'channels': ['Top News'],
                   'publishTime': {
                     internalValue: BigInt('13278621508000000')
                   },
@@ -1520,6 +1560,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Health',
+                  'channels': ['Health'],
                   'publishTime': {
                     internalValue: BigInt('13278621506000000')
                   },
@@ -1555,6 +1596,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Business',
+                  'channels': ['Business'],
                   'publishTime': {
                     internalValue: BigInt('13278621467000000')
                   },
@@ -1585,6 +1627,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Top News',
+                  'channels': ['Top News'],
                   'publishTime': {
                     internalValue: BigInt('13278621435000000')
                   },
@@ -1624,6 +1667,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Technology',
+                  'channels': ['Technology'],
                   'publishTime': {
                     internalValue: BigInt('13278621421000000')
                   },
@@ -1659,6 +1703,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Business',
+                  'channels': ['Business'],
                   'publishTime': {
                     internalValue: BigInt('13278621420000000')
                   },
@@ -1694,6 +1739,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Culture',
+                  'channels': ['Culture'],
                   'publishTime': {
                     internalValue: BigInt('13278621400000000')
                   },
@@ -1724,6 +1770,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Culture',
+                  'channels': ['Culture'],
                   'publishTime': {
                     internalValue: BigInt('13278620323000000')
                   },
@@ -1754,6 +1801,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Culture',
+                  'channels': ['Culture'],
                   'publishTime': {
                     internalValue: BigInt('13278620305000000')
                   },
@@ -1789,6 +1837,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Sports',
+                  'channels': ['Sports'],
                   'publishTime': {
                     internalValue: BigInt('13278621373000000')
                   },
@@ -1819,6 +1868,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Top News',
+                  'channels': ['Top News'],
                   'publishTime': {
                     internalValue: BigInt('13278621361000000')
                   },
@@ -1854,6 +1904,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Technology',
+                  'channels': ['Technology'],
                   'publishTime': {
                     internalValue: BigInt('13278621350000000')
                   },
@@ -1888,6 +1939,7 @@ export const feed: BraveNews.Feed = {
               deal: {
                 'data': {
                   'categoryName': 'Brave',
+                  'channels': ['Brave'],
                   'publishTime': {
                     internalValue: BigInt('13256920996000000')
                   },
@@ -1918,6 +1970,7 @@ export const feed: BraveNews.Feed = {
               deal: {
                 'data': {
                   'categoryName': 'Brave',
+                  'channels': ['Brave'],
                   'publishTime': {
                     internalValue: BigInt('13256920996000000')
                   },
@@ -1948,6 +2001,7 @@ export const feed: BraveNews.Feed = {
               deal: {
                 'data': {
                   'categoryName': 'Brave',
+                  'channels': ['Brave'],
                   'publishTime': {
                     internalValue: BigInt('13256920996000000')
                   },
@@ -1984,6 +2038,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Cars',
+                  'channels': ['Cars'],
                   'publishTime': {
                     internalValue: BigInt('13278542934000000')
                   },
@@ -2019,6 +2074,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Business',
+                  'channels': ['Business'],
                   'publishTime': {
                     internalValue: BigInt('13278518400000000')
                   },
@@ -2049,6 +2105,7 @@ export const feed: BraveNews.Feed = {
                 isDiscover: true,
                 'data': {
                   'categoryName': 'Top News',
+                  'channels': ['Top News'],
                   'publishTime': {
                     internalValue: BigInt('13278596700000000')
                   },
