@@ -925,38 +925,6 @@ Config.prototype.update = function (options) {
     this.gClientFile = options.gclient_file
   }
 
-  if (options.bitflyer_production_client_id) {
-    this.bitFlyerProductionClientId = options.bitflyer_production_client_id
-  }
-
-  if (options.bitflyer_production_client_secret) {
-    this.bitFlyerProductionClientSecret = options.bitflyer_production_client_secret
-  }
-
-  if (options.bitflyer_production_fee_address) {
-    this.bitFlyerProductionFeeAddress = options.bitflyer_production_fee_address
-  }
-
-  if (options.bitflyer_production_url) {
-    this.bitFlyerProductionUrl = options.bitflyer_production_url
-  }
-
-  if (options.bitflyer_sandbox_client_id) {
-    this.bitFlyerSandboxClientId = options.bitflyer_sandbox_client_id
-  }
-
-  if (options.bitflyer_sandbox_client_secret) {
-    this.bitFlyerSandboxClientSecret = options.bitflyer_sandbox_client_secret
-  }
-
-  if (options.bitflyer_sandbox_fee_address) {
-    this.bitFlyerSandboxFeeAddress = options.bitflyer_sandbox_fee_address
-  }
-
-  if (options.bitflyer_sandbox_url) {
-    this.bitFlyerSandboxUrl = options.bitflyer_sandbox_url
-  }
-
   if (options.gemini_production_api_url) {
     this.geminiProductionApiUrl = options.gemini_production_api_url
   }
