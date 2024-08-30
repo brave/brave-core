@@ -16,20 +16,20 @@
 
   #rules-box {
     height: 8em;
-    padding: 5px;
     margin-bottom: 5px;
     background-color: #fff;
     border-radius: .1em;
-    overflow-y: auto;
-    overflow-wrap: break-word;
   }
 
   #rules-box>textarea {
+    box-sizing: border-box;
     height: 100%;
     width: 100%;
     resize: none;
     border: none;
+    padding: 5px;
     overflow: auto;
+    overflow-wrap: break-word;
   }
 
   section {
