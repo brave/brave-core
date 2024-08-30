@@ -1266,5 +1266,19 @@ extension Strings {
         comment:
           "The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc."
       )
+
+    public static let vpnOnMenuButtonTitle = NSLocalizedString(
+      "vpn.vpnOnMenuButtonTitle",
+      bundle: .module,
+      value: "VPN On",
+      comment: "The title shown on the menu when the VPN connection is connected"
+    )
+
+    public static let vpnOffMenuButtonTitle = NSLocalizedString(
+      "vpn.vpnOffMenuButtonTitle",
+      bundle: .module,
+      value: "VPN Off",
+      comment: "The title shown on the menu when the VPN connection is disconnected"
+    )
   }
 }

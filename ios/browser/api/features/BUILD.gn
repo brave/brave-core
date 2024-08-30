@@ -27,6 +27,7 @@ source_set("features") {
     "//brave/components/p3a:p3a",
     "//brave/components/skus/common:common",
     "//brave/ios/browser/playlist",
+    "//brave/ios/browser/ui/browser_menu:features",
     "//build:blink_buildflags",
     "//ios/components/security_interstitials/https_only_mode:feature",
     "//net",

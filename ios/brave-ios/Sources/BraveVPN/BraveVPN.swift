@@ -168,6 +168,10 @@ public class BraveVPN {
     helper.isConnected()
   }
 
+  public static var isConnecting: Bool {
+    helper.isConnecting()
+  }
+
   /// Returns the last used hostname for the vpn configuration.
   /// Returns nil if the hostname string is empty(due to some error when configuring it for example).
   public static var hostname: String? {
@@ -222,7 +226,7 @@ public class BraveVPN {
 
   /// Reconnects to the vpn.
   /// The vpn must be configured prior to that otherwise it does nothing.
-  public static func reconnect() {
+  public static func reconnect(completion: ((Bool) -> Void)? = nil) {
     if reconnectPending {
       logAndStoreError("Can't reconnect the vpn while another reconnect is pending.")
       return
@@ -230,14 +234,14 @@ public class BraveVPN {
 
     reconnectPending = true
 
-    connectToVPN()
+    connectToVPN(completion: completion)
   }
 
   /// Disconnects the vpn.
   /// The vpn must be configured prior to that otherwise it does nothing.
-  public static func disconnect(skipChecks: Bool = false) {
+  public static func disconnect(skipChecks: Bool = false, completion: ((Error?) -> Void)? = nil) {
     if skipChecks {
-      helper.disconnectVPN()
+      helper.disconnectVPN(completion: completion)
       return
     }
 
@@ -246,7 +250,7 @@ public class BraveVPN {
       return
     }
 
-    helper.disconnectVPN()
+    helper.disconnectVPN(completion: completion)
   }
 
   public static func connectToVPN(completion: ((Bool) -> Void)? = nil) {

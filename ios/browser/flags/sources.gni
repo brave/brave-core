@@ -16,6 +16,7 @@ brave_flags_deps = [
   "//brave/components/ntp_background_images/browser",
   "//brave/components/skus/common",
   "//brave/ios/browser/playlist",
+  "//brave/ios/browser/ui/browser_menu:features",
   "//components/flags_ui",
   "//net",
 ]
