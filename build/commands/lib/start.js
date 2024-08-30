@@ -84,6 +84,15 @@ const start = (passthroughArgs, buildConfig = config.defaultBuildConfig, options
     killSignal: 'SIGTERM'
   }
 
+  if (process.platform === 'darwin' && !config.isReleaseBuild()) {
+    // Disable 'accept incoming network connections' and 'keychain access'
+    // dialogs in MacOS. See //docs/mac_build_instructions.md for details.
+    braveArgs.push(
+      '--use-mock-keychain',
+      '--disable-features=DialMediaRouteProvider'
+    )
+  }
+
   let outputPath = options.output_path
   if (!outputPath) {
     outputPath = path.join(config.outputDir, 'brave')
