@@ -280,7 +280,7 @@ void SplitViewTabStripModelAdapter::TabPinnedStateChanged(
 
 void SplitViewTabStripModelAdapter::TabGroupedStateChanged(
     std::optional<tab_groups::TabGroupId> group,
-    content::WebContents* contents,
+    tabs::TabModel* tab,
     int index) {
   if (!model_->ContainsIndex(index)) {
     return;
