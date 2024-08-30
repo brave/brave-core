@@ -42,6 +42,11 @@ class _BraveLoadingStory(system_health_story.SystemHealthStory):
     if self.SCROLL_PAGE:
       action_runner.RepeatableBrowserDrivenScroll(repeat_count=4)
 
+    action_runner.Wait(2)
+    action_runner.Navigate(self.URL)
+    action_runner.Wait(4)
+
+
   @classmethod
   def GenerateStoryDescription(cls):
     return 'Load %s' % cls.URL
