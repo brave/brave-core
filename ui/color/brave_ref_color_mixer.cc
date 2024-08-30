@@ -11,6 +11,7 @@
 
 namespace ui {
 namespace {
+
 void AddBaseline(ColorProvider* provider) {
   auto& mixer = provider->AddMixer();
 
@@ -155,6 +156,7 @@ void AddGenerated(ColorProvider* provider,
   mixer[kColorRefTertiary35] = {palette->tertiary().get(35)};
   mixer[kColorRefTertiary98] = {palette->tertiary().get(98)};
 }
+
 }  // namespace
 
 void AddBraveRefColorMixer(ColorProvider* provider,
@@ -177,4 +179,5 @@ void AddBraveRefColorMixer(ColorProvider* provider,
     AddGenerated(provider, user_color, variant);
   }
 }
+
 }  // namespace ui
