@@ -20,6 +20,7 @@ BASE_DECLARE_FEATURE(kOmniboxBanner);
 extern const base::FeatureParam<std::string> kBannerType;
 
 BASE_DECLARE_FEATURE(kOmniboxDDGBanner);
+BASE_DECLARE_FEATURE(kOmniboxPromotionButton);
 
 BASE_DECLARE_FEATURE(kNTP);
 
