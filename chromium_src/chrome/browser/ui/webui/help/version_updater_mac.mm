@@ -210,6 +210,8 @@ void SparkleVersionUpdater::UpdateShowPromoteButton() {
 #include "src/chrome/browser/ui/webui/help/version_updater_mac.mm"
 #undef WrapUnique
 
+#if BUILDFLAG(ENABLE_SPARKLE)
 void SparkleVersionUpdater::GetIsSparkleForTesting(bool& result) const {
   result = true;
 }
+#endif
