@@ -17,8 +17,6 @@
 #include "url/origin.h"
 
 @interface HTTPSUpgradeExceptionsService () {
-  /// set of domain exceptions
-  std::set<std::string> exceptional_domains_;
 }
 
 @property(nonatomic) bool isHttpsByDefaultFeatureEnabled;
@@ -35,48 +33,20 @@
   return base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault);
 }
 
-- (NSURL*)upgradeToHTTPSForURL:(NSURL*)url {
+- (bool)canUpgradeToHTTPSForURL:(NSURL*)url {
   GURL gurl = net::GURLWithNSURL(url);
   if (![self isHttpsByDefaultFeatureEnabled]) {
-    return nil;
+    return false;
   }
 
   // Check url validity
   if (!gurl.SchemeIs("http") || !gurl.is_valid()) {
-    return nil;
+    return false;
   }
 
-  // Ensure we didn't add an exception for this domain
-  if (base::Contains(exceptional_domains_, gurl.host())) {
-    return nil;
-  }
-
-  // Finally ask the service if we should upgrade
   BraveApplicationContextImpl* braveContext =
       static_cast<BraveApplicationContextImpl*>(GetApplicationContext());
-  if (!braveContext->https_upgrade_exceptions_service()->CanUpgradeToHTTPS(
-          gurl)) {
-    return nil;
-  }
-
-  GURL::Replacements replacements;
-  replacements.SetSchemeStr("https");
-  GURL final_url = gurl.ReplaceComponents(replacements);
-
-  if (final_url.is_valid()) {
-    return net::NSURLWithGURL(final_url);
-  } else {
-    return nil;
-  }
-}
-
-- (void)addExceptionForURL:(NSURL*)url {
-  GURL gurl = net::GURLWithNSURL(url);
-
-  if (gurl.is_empty()) {
-    return;
-  }
-
-  exceptional_domains_.insert(gurl.host());
+  return braveContext->https_upgrade_exceptions_service()->CanUpgradeToHTTPS(
+      gurl);
 }
 @end

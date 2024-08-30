@@ -106,9 +106,11 @@ class CacheClearable: Clearable {
 // Clears our browsing history, including favicons and thumbnails.
 class HistoryClearable: Clearable {
   let historyAPI: BraveHistoryAPI
+  let httpsUpgradeService: HttpsUpgradeService?
 
-  init(historyAPI: BraveHistoryAPI) {
+  init(historyAPI: BraveHistoryAPI, httpsUpgradeService: HttpsUpgradeService?) {
     self.historyAPI = historyAPI
+    self.httpsUpgradeService = httpsUpgradeService
   }
 
   var label: String {
@@ -118,6 +120,7 @@ class HistoryClearable: Clearable {
   func clear() async throws {
     return await withCheckedContinuation { continuation in
       self.historyAPI.deleteAll {
+        self.httpsUpgradeService?.clearAllowlist(fromStart: .distantPast, end: .distantFuture)
         NotificationCenter.default.post(name: .privateDataClearedHistory, object: nil)
         continuation.resume()
       }

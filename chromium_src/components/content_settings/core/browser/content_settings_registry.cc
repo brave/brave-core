@@ -300,7 +300,8 @@ void ContentSettingsRegistry::BraveInit() {
       WebsiteSettingsInfo::UNSYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
       WebsiteSettingsInfo::GENERIC_SINGLE_ORIGIN_SCOPE,
       WebsiteSettingsRegistry::DESKTOP |
-          WebsiteSettingsRegistry::PLATFORM_ANDROID,
+          WebsiteSettingsRegistry::PLATFORM_ANDROID |
+          WebsiteSettingsRegistry::PLATFORM_IOS,
       WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
 
   for (auto settings_type = ContentSettingsType::BRAVE_WEBCOMPAT_NONE;
