@@ -2593,8 +2593,33 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
   auto result = EvalJs(
       contents, R"(document.getElementById('iframe').contentWindow.sval)");
+  EXPECT_EQ(true, result);
+}
+
+// Test network blocking initiated from inside about:blank frames
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NetworkBlockAboutBlank) {
+  UpdateAdBlockInstanceWithRules("/ad_banner.png^$1p");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  // Note: window.sval is a promise which will be resolved by `EvalJs`
+  auto result = EvalJs(contents, R"(const i = document.getElementById('iframe');
+                   const s = i.contentDocument.createElement('script');
+                   s.innerText = 'window.sval = fetch("/ad_banner.png").then(() => "fetched").catch(() => "blocked")';
+                   i.contentDocument.documentElement.appendChild(s);)");
   ASSERT_TRUE(result.error.empty());
-  EXPECT_EQ(base::Value(true), result.value);
+
+  content::RenderFrameHost* inner_frame = content::FrameMatchingPredicate(
+      contents->GetPrimaryPage(),
+      base::BindRepeating(content::FrameHasSourceUrl, GURL("about:blank")));
+
+  EXPECT_EQ("blocked", EvalJs(inner_frame, "window.sval"));
+
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
 // Test cosmetic filtering on an element that already has an `!important`
