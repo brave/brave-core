@@ -925,38 +925,6 @@ Config.prototype.update = function (options) {
     this.gClientFile = options.gclient_file
   }
 
-  if (options.zebpay_production_api_url) {
-    this.zebPayProductionApiUrl = options.zebpay_production_api_url
-  }
-
-  if (options.zebpay_production_client_id) {
-    this.zebPayProductionClientId = options.zebpay_production_client_id
-  }
-
-  if (options.zebpay_production_client_secret) {
-    this.zebPayProductionClientSecret = options.zebpay_production_client_secret
-  }
-
-  if (options.zebpay_production_oauth_url) {
-    this.zebPayProductionOauthUrl = options.zebpay_production_oauth_url
-  }
-
-  if (options.zebpay_sandbox_api_url) {
-    this.zebPaySandboxApiUrl = options.zebpay_sandbox_api_url
-  }
-
-  if (options.zebpay_sandbox_client_id) {
-    this.zebPaySandboxClientId = options.zebpay_sandbox_client_id
-  }
-
-  if (options.zebpay_sandbox_client_secret) {
-    this.zebPaySandboxClientSecret = options.zebpay_sandbox_client_secret
-  }
-
-  if (options.zebpay_sandbox_oauth_url) {
-    this.zebPaySandboxOauthUrl = options.zebpay_sandbox_oauth_url
-  }
-
   if (options.safebrowsing_api_endpoint) {
     this.safeBrowsingApiEndpoint = options.safebrowsing_api_endpoint
   }
