@@ -382,6 +382,13 @@ class MockKeyringService: BraveWalletKeyringService {
     nil
   }
 
+  func addBitcoinHardwareAccount(
+    info: BraveWallet.HardwareWalletAccount,
+    completion: @escaping (Bool) -> Void
+  ) {
+    completion(true)
+  }
+
   func setHardwareAccountName(
     _ coin: BraveWallet.CoinType,
     keyringId: String,
