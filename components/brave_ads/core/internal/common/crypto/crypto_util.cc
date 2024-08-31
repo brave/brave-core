@@ -100,9 +100,7 @@ KeyPairInfo GenerateBoxKeyPair() {
 }
 
 std::vector<uint8_t> GenerateRandomNonce() {
-  std::vector<uint8_t> nonce(crypto_box_NONCEBYTES);
-  ::crypto::RandBytes(nonce);
-  return nonce;
+  return ::crypto::RandBytesAsVector(crypto_box_NONCEBYTES);
 }
 
 std::optional<std::string> Sign(const std::string& message,
