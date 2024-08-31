@@ -17,6 +17,7 @@
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
+#include "base/notimplemented.h"
 #include "base/notreached.h"
 #include "base/one_shot_event.h"
 #include "base/ranges/algorithm.h"
@@ -28,8 +29,10 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/brave_domains/service_domains.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/brave_search_responses.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_claude.h"
@@ -43,6 +46,8 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
+#include "net/base/url_util.h"
+#include "net/traffic_annotation/network_traffic_annotation.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -109,6 +114,27 @@ const std::string& GetActionTypeQuestion(mojom::ActionType action_type) {
   auto iter = map.find(action_type);
   CHECK(iter != map.end());
   return iter->second;
+}
+
+net::NetworkTrafficAnnotationTag
+GetSearchQuerySummaryNetworkTrafficAnnotationTag() {
+  return net::DefineNetworkTrafficAnnotation("ai_chat_tab_helper", R"(
+      semantics {
+        sender: "Brave Leo AI Chat"
+        description:
+          "This sender is used to get search query summary from Brave search."
+        trigger:
+          "Triggered by uses of Brave Leo AI Chat on Brave Search SERP."
+        data:
+          "User's search query and the corresponding summary."
+        destination: WEBSITE
+      }
+      policy {
+        cookies_allowed: NO
+        policy_exception_justification:
+          "Not implemented."
+      }
+    )");
 }
 
 }  // namespace
@@ -312,10 +338,174 @@ ConversationDriver::GetVisibleConversationHistory() {
 
 void ConversationDriver::OnConversationActiveChanged(
     bool is_conversation_active) {
+  if (is_conversation_active == is_conversation_active_) {
+    return;
+  }
+
   is_conversation_active_ = is_conversation_active;
   DVLOG(3) << "Conversation active changed: " << is_conversation_active;
+
   MaybeSeedOrClearSuggestions();
   MaybePopPendingRequests();
+  MaybeFetchOrClearSearchQuerySummary();
+}
+
+void ConversationDriver::ClearSearchQuerySummary() {
+  // Only clear it when the conversation only has the staged query and summary.
+  if (chat_history_.size() != 2) {
+    return;
+  }
+
+  const auto& last_turn = chat_history_.back();
+  if (last_turn->from_brave_search_SERP) {
+    chat_history_.clear();  // Clear the staged query and summary.
+    for (auto& obs : observers_) {
+      obs.OnHistoryUpdate();
+    }
+  }
+}
+
+bool ConversationDriver::ShouldFetchSearchQuerySummary() {
+  return HasUserOptedIn() && IsBraveSearchSERP(GetPageURL()) &&
+         should_send_page_contents_;
+}
+
+void ConversationDriver::MaybeFetchOrClearSearchQuerySummary(
+    FetchSearchQuerySummaryCallback callback) {
+  // Only have search query summary if:
+  // 1) user has opted in
+  // 2) current page is a Brave Search SERP
+  // 3) page content is linked
+  // Clear existing search query summary if any of the requirements are not met.
+  if (!ShouldFetchSearchQuerySummary()) {
+    ClearSearchQuerySummary();
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  // Existing search query summary will be used when conversation becomes
+  // active again.
+  if (!is_conversation_active_) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  // Currently only have search query summary at the start of a conversation.
+  if (!chat_history_.empty()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  GetSearchSummarizerKey(
+      base::BindOnce(&ConversationDriver::OnSearchSummarizerKeyFetched,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     current_navigation_id_));
+}
+
+void ConversationDriver::OnSearchSummarizerKeyFetched(
+    FetchSearchQuerySummaryCallback callback,
+    int64_t navigation_id,
+    const std::optional<std::string>& key) {
+  if (!key || key->empty() || navigation_id != current_navigation_id_ ||
+      !chat_history_.empty()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  // Check if all requirements are still met.
+  if (!ShouldFetchSearchQuerySummary()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  if (!api_request_helper_) {
+    api_request_helper_ =
+        std::make_unique<api_request_helper::APIRequestHelper>(
+            GetSearchQuerySummaryNetworkTrafficAnnotationTag(),
+            url_loader_factory_);
+  }
+
+  // https://search.brave.com/api/chatllm/raw_data?key=<key>
+  GURL base_url(
+      base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
+                    brave_domains::GetServicesDomain(kBraveSearchURLPrefix),
+                    "/api/chatllm/raw_data"}));
+  CHECK(base_url.is_valid());
+  GURL url = net::AppendQueryParameter(base_url, "key", *key);
+
+  api_request_helper_->Request(
+      "GET", url, "", "application/json",
+      base::BindOnce(&ConversationDriver::OnSearchQuerySummaryFetched,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     navigation_id),
+      {}, {});
+}
+
+void ConversationDriver::OnSearchQuerySummaryFetched(
+    FetchSearchQuerySummaryCallback callback,
+    int64_t navigation_id,
+    api_request_helper::APIRequestResult result) {
+  if (!result.Is2XXResponseCode() || navigation_id != current_navigation_id_ ||
+      !chat_history_.empty()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  // Check if all requirements are still met.
+  if (!ShouldFetchSearchQuerySummary()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  auto search_query_summary =
+      ParseSearchQuerySummaryResponse(result.value_body());
+  if (!search_query_summary) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  // Add the query & summary to the conversation history and call
+  // OnHistoryUpdate to update UI.
+  chat_history_.push_back(mojom::ConversationTurn::New(
+      CharacterType::HUMAN, mojom::ActionType::QUERY,
+      ConversationTurnVisibility::VISIBLE, search_query_summary->query,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, true));
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New(search_query_summary->summary)));
+  chat_history_.push_back(mojom::ConversationTurn::New(
+      CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      ConversationTurnVisibility::VISIBLE, search_query_summary->summary,
+      std::nullopt, std::move(events), base::Time::Now(), std::nullopt, true));
+
+  for (auto& obs : observers_) {
+    obs.OnHistoryUpdate();
+  }
+
+  std::move(callback).Run(search_query_summary);
+}
+
+void ConversationDriver::GetSearchSummarizerKey(
+    mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback) {
+  NOTIMPLEMENTED();
+  std::move(callback).Run(std::nullopt);
+}
+
+// static
+std::optional<SearchQuerySummary>
+ConversationDriver::ParseSearchQuerySummaryResponse(const base::Value& value) {
+  auto search_query_response =
+      brave_search_responses::QuerySummaryResponse::FromValue(value);
+  if (!search_query_response || search_query_response->conversation.empty()) {
+    return std::nullopt;
+  }
+
+  const auto& query_summary = search_query_response->conversation[0];
+  if (query_summary.answer.empty()) {
+    return std::nullopt;
+  }
+
+  return SearchQuerySummary(query_summary.query, query_summary.answer[0].text);
 }
 
 void ConversationDriver::InitEngine() {
@@ -394,6 +584,7 @@ void ConversationDriver::SetUserOptedIn(bool user_opted_in) {
 
 void ConversationDriver::OnUserOptedIn() {
   MaybePopPendingRequests();
+  MaybeFetchOrClearSearchQuerySummary();
 
   if (ai_chat_metrics_ != nullptr && HasUserOptedIn()) {
     ai_chat_metrics_->RecordEnabled(true, true, {});
@@ -430,7 +621,7 @@ void ConversationDriver::UpdateOrCreateLastAssistantEntry(
         CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
         ConversationTurnVisibility::VISIBLE, "", std::nullopt,
         std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-        std::nullopt);
+        std::nullopt, false);
     chat_history_.push_back(std::move(entry));
   }
 
@@ -708,8 +899,10 @@ void ConversationDriver::CleanUp() {
     text_embedder_->CancelAllTasks();
     text_embedder_.reset();
   }
+  api_request_helper_.reset();
 
   MaybeSeedOrClearSuggestions();
+  MaybeFetchOrClearSearchQuerySummary();
 
   // Trigger an observer update to refresh the UI.
   for (auto& obs : observers_) {
@@ -757,6 +950,7 @@ void ConversationDriver::SetShouldSendPageContents(bool should_send) {
   should_send_page_contents_ = should_send;
 
   MaybeSeedOrClearSuggestions();
+  MaybeFetchOrClearSearchQuerySummary();
 }
 
 bool ConversationDriver::GetShouldSendPageContents() {
@@ -887,7 +1081,8 @@ void ConversationDriver::AddSubmitSelectedTextError(
   const std::string& question = GetActionTypeQuestion(action_type);
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       CharacterType::HUMAN, action_type, ConversationTurnVisibility::VISIBLE,
-      question, selected_text, std::nullopt, base::Time::Now(), std::nullopt);
+      question, selected_text, std::nullopt, base::Time::Now(), std::nullopt,
+      false);
   AddToConversationHistory(std::move(turn));
   SetAPIError(error);
 }
@@ -944,7 +1139,8 @@ void ConversationDriver::SubmitSelectedTextWithQuestion(
     // Use sidebar.
     mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
         CharacterType::HUMAN, action_type, ConversationTurnVisibility::VISIBLE,
-        question, selected_text, std::nullopt, base::Time::Now(), std::nullopt);
+        question, selected_text, std::nullopt, base::Time::Now(), std::nullopt,
+        false);
 
     SubmitHumanConversationEntry(std::move(turn));
   } else {
@@ -1268,7 +1464,7 @@ void ConversationDriver::SubmitSummarizationRequest() {
       CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_PAGE,
       ConversationTurnVisibility::VISIBLE,
       l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE), std::nullopt,
-      std::nullopt, base::Time::Now(), std::nullopt);
+      std::nullopt, base::Time::Now(), std::nullopt, false);
   SubmitHumanConversationEntry(std::move(turn));
 }
 
@@ -1476,7 +1672,8 @@ void ConversationDriver::ModifyConversation(uint32_t turn_index,
     auto edited_turn = mojom::ConversationTurn::New(
         turn->character_type, turn->action_type, turn->visibility,
         trimmed_input, std::nullopt /* selected_text */, std::move(events),
-        base::Time::Now(), std::nullopt /* edits */);
+        base::Time::Now(), std::nullopt /* edits */,
+        turn->from_brave_search_SERP);
     edited_turn->events->at(*completion_event_index)
         ->get_completion_event()
         ->completion = trimmed_input;
@@ -1510,7 +1707,8 @@ void ConversationDriver::ModifyConversation(uint32_t turn_index,
   auto edited_turn = mojom::ConversationTurn::New(
       turn->character_type, turn->action_type, turn->visibility,
       sanitized_input, std::nullopt /* selected_text */,
-      std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */);
+      std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
+      turn->from_brave_search_SERP);
   if (!turn->edits) {
     turn->edits.emplace();
   }

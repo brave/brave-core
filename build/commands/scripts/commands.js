@@ -219,6 +219,7 @@ program
   .option('--brave_ads_staging', 'ads staging')
   .option('--brave_ads_debug', 'ads debug')
   .option('--single_process', 'use a single process')
+  .option('--use_real_keychain', 'don\'t add --use-mock-keychain in macOS')
   .option('--output_path [pathname]', 'use the Brave binary located at [pathname]')
   .arguments('[build_config]')
   .action(start.bind(null, parsedArgs.unknown))

@@ -121,7 +121,7 @@
       ai_chat::mojom::ActionType::UNSPECIFIED,
       ai_chat::mojom::ConversationTurnVisibility::VISIBLE,
       base::SysNSStringToUTF8(text), std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt));
+      base::Time::Now(), std::nullopt, false));
 }
 
 - (void)submitSummarizationRequest {

@@ -22,6 +22,9 @@ namespace combined_feed {
     // The category the feed belongs to.
     DOMString category;
 
+    // The channels the feed belongs to. This supersedes the category.
+    DOMString[]? channels;
+
     // The title of the feed.
     DOMString title;
 

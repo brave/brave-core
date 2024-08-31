@@ -22,6 +22,18 @@ export const supportedUDExtensions = [
   '.polygon',
   '.unstoppable',
   '.pudgy',
+  '.tball',
+  '.stepn',
+  '.secret',
+  '.raiin',
+  '.pog',
+  '.clay',
+  '.metropolis',
+  '.witg',
+  '.ubu',
+  '.kryptic',
+  '.farms',
+  '.dfz',
 ]
 export const allSupportedExtensions = [
   ...supportedENSExtensions,

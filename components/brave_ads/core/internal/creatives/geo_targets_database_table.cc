@@ -11,7 +11,6 @@
 #include "base/check.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 
@@ -21,9 +20,9 @@ namespace {
 
 constexpr char kTableName[] = "geo_targets";
 
-size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
+size_t BindColumns(mojom::DBActionInfo* mojom_db_action,
                    const CreativeAdList& creative_ads) {
-  CHECK(mojom_statement);
+  CHECK(mojom_db_action);
   CHECK(!creative_ads.empty());
 
   size_t row_count = 0;
@@ -31,8 +30,8 @@ size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
   int index = 0;
   for (const auto& creative_ad : creative_ads) {
     for (const auto& geo_target : creative_ad.geo_targets) {
-      BindColumnString(mojom_statement, index++, creative_ad.campaign_id);
-      BindColumnString(mojom_statement, index++, geo_target);
+      BindColumnString(mojom_db_action, index++, creative_ad.campaign_id);
+      BindColumnString(mojom_db_action, index++, geo_target);
 
       ++row_count;
     }
@@ -43,37 +42,37 @@ size_t BindColumns(mojom::DBStatementInfo* mojom_statement,
 
 }  // namespace
 
-void GeoTargets::Insert(mojom::DBTransactionInfo* mojom_transaction,
+void GeoTargets::Insert(mojom::DBTransactionInfo* mojom_db_transaction,
                         const CreativeAdList& creative_ads) {
-  CHECK(mojom_transaction);
+  CHECK(mojom_db_transaction);
 
   if (creative_ads.empty()) {
     return;
   }
 
-  mojom::DBStatementInfoPtr mojom_statement = mojom::DBStatementInfo::New();
-  mojom_statement->operation_type = mojom::DBStatementInfo::OperationType::kRun;
-  mojom_statement->sql = BuildInsertSql(&*mojom_statement, creative_ads);
-  mojom_transaction->statements.push_back(std::move(mojom_statement));
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kRunStatement;
+  mojom_db_action->sql = BuildInsertSql(&*mojom_db_action, creative_ads);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
 void GeoTargets::Delete(ResultCallback callback) const {
-  mojom::DBTransactionInfoPtr mojom_transaction =
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
 
-  DeleteTable(&*mojom_transaction, GetTableName());
+  DeleteTable(&*mojom_db_transaction, GetTableName());
 
-  RunTransaction(std::move(mojom_transaction), std::move(callback));
+  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }
 
 std::string GeoTargets::GetTableName() const {
   return kTableName;
 }
 
-void GeoTargets::Create(mojom::DBTransactionInfo* const mojom_transaction) {
-  CHECK(mojom_transaction);
+void GeoTargets::Create(mojom::DBTransactionInfo* const mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
 
-  Execute(mojom_transaction, R"(
+  Execute(mojom_db_transaction, R"(
       CREATE TABLE geo_targets (
         campaign_id TEXT NOT NULL,
         geo_target TEXT NOT NULL,
@@ -84,13 +83,13 @@ void GeoTargets::Create(mojom::DBTransactionInfo* const mojom_transaction) {
       );)");
 }
 
-void GeoTargets::Migrate(mojom::DBTransactionInfo* mojom_transaction,
+void GeoTargets::Migrate(mojom::DBTransactionInfo* mojom_db_transaction,
                          const int to_version) {
-  CHECK(mojom_transaction);
+  CHECK(mojom_db_transaction);
 
   switch (to_version) {
     case 43: {
-      MigrateToV43(mojom_transaction);
+      MigrateToV43(mojom_db_transaction);
       break;
     }
   }
@@ -99,22 +98,22 @@ void GeoTargets::Migrate(mojom::DBTransactionInfo* mojom_transaction,
 ///////////////////////////////////////////////////////////////////////////////
 
 void GeoTargets::MigrateToV43(
-    mojom::DBTransactionInfo* const mojom_transaction) {
-  CHECK(mojom_transaction);
+    mojom::DBTransactionInfo* const mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
 
   // We can safely recreate the table because it will be repopulated after
   // downloading the catalog.
-  DropTable(mojom_transaction, GetTableName());
-  Create(mojom_transaction);
+  DropTable(mojom_db_transaction, GetTableName());
+  Create(mojom_db_transaction);
 }
 
 std::string GeoTargets::BuildInsertSql(
-    mojom::DBStatementInfo* mojom_statement,
+    mojom::DBActionInfo* mojom_db_action,
     const CreativeAdList& creative_ads) const {
-  CHECK(mojom_statement);
+  CHECK(mojom_db_action);
   CHECK(!creative_ads.empty());
 
-  const size_t row_count = BindColumns(mojom_statement, creative_ads);
+  const size_t row_count = BindColumns(mojom_db_action, creative_ads);
 
   return base::ReplaceStringPlaceholders(
       R"(

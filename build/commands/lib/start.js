@@ -62,6 +62,16 @@ const start = (passthroughArgs, buildConfig = config.defaultBuildConfig, options
   if (options.brave_ads_staging) {
     braveArgs.push('--brave-ads-staging')
   }
+
+  if (process.platform === 'darwin') {
+    // Disable 'accept incoming network connections' and 'keychain access'
+    // dialogs in MacOS. See //docs/mac_build_instructions.md for details.
+    if (!options.use_real_keychain)
+      braveArgs.push('--use-mock-keychain')
+    if (!passthroughArgs.some((s) => s.startsWith('--disable-features')))
+      braveArgs.push('--disable-features=DialMediaRouteProvider')
+  }
+
   braveArgs = braveArgs.concat(passthroughArgs)
 
   let user_data_dir

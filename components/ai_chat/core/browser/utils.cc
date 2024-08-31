@@ -10,11 +10,14 @@
 #include "base/task/bind_post_task.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
+#include "brave/brave_domains/service_domains.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
+#include "url/url_constants.h"
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 #include "brave/components/text_recognition/browser/text_recognition.h"
@@ -78,6 +81,19 @@ void SetUserOptedIn(PrefService* prefs, bool opted_in) {
   } else {
     prefs->ClearPref(prefs::kLastAcceptedDisclaimer);
   }
+}
+
+bool IsBraveSearchSERP(const GURL& url) {
+  if (!url.is_valid()) {
+    return false;
+  }
+
+  // https://search.brave.com/search?q=test
+  return url.SchemeIs(url::kHttpsScheme) &&
+         url.host_piece() ==
+             brave_domains::GetServicesDomain(kBraveSearchURLPrefix) &&
+         url.path_piece() == "/search" &&
+         base::StartsWith(url.query_piece(), "q=");
 }
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)

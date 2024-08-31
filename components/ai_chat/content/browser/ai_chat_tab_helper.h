@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_AI_CHAT_TAB_HELPER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -124,6 +125,10 @@ class AIChatTabHelper : public content::WebContentsObserver,
                       std::string_view invalidation_token) override;
   void PrintPreviewFallback(GetPageContentCallback callback) override;
   std::u16string GetPageTitle() const override;
+
+  void GetSearchSummarizerKey(
+      mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback)
+      override;
 
   void BindPageContentExtractorReceiver(
       mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>

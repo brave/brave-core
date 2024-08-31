@@ -32,7 +32,7 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
       mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       mojom::ConversationTurnVisibility::VISIBLE,
       base::android::ConvertJavaStringToUTF8(query), std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt);
+      base::Time::Now(), std::nullopt, false);
   chat_tab_helper->SubmitHumanConversationEntry(std::move(turn));
 #endif
 }

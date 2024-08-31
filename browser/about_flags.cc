@@ -946,7 +946,7 @@
       {                                                                        \
           "brave-webcompat-exceptions-service",                                \
           "Allow feature exceptions for webcompat",                            \
-          "Disables Brave features for specific websites when they break"      \
+          "Disables Brave features for specific websites when they break "     \
           "website functionality.",                                            \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \

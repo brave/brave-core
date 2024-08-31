@@ -18,6 +18,7 @@ source_set("unit_tests") {
     "//brave/browser",
     "//brave/components/misc_metrics",
     "//chrome/browser",
+    "//chrome/browser/search_engines",
     "//chrome/common",
     "//chrome/test:test_support",
     "//components/bookmarks/browser",

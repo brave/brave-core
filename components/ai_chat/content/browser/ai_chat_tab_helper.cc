@@ -22,6 +22,7 @@
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -45,6 +46,7 @@
 namespace ai_chat {
 
 namespace {
+
 std::optional<uint32_t> g_max_page_content_length_for_testing;
 
 }  // namespace
@@ -343,6 +345,16 @@ void AIChatTabHelper::CheckPDFA11yTree() {
     return;
   }
   OnPDFA11yInfoLoaded();
+}
+
+void AIChatTabHelper::GetSearchSummarizerKey(
+    mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback) {
+  if (!IsBraveSearchSERP(GetPageURL())) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  ::ai_chat::GetSearchSummarizerKey(web_contents(), std::move(callback));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);
