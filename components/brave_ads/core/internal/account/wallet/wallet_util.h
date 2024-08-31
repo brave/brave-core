@@ -9,12 +9,18 @@
 #include <optional>
 #include <string>
 
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+
 namespace brave_ads {
 
 struct WalletInfo;
 
-std::optional<WalletInfo> ToWallet(const std::string& payment_id,
-                                   const std::string& recovery_seed_base64);
+std::optional<WalletInfo> CreateWalletFromRecoverySeed(
+    const std::string& payment_id,
+    const std::string& recovery_seed_base64);
+
+std::optional<WalletInfo> CreateWalletFromRecoverySeed(
+    const mojom::WalletInfo* mojom_wallet);
 
 }  // namespace brave_ads
 

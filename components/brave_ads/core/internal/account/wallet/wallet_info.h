@@ -16,8 +16,8 @@ struct WalletInfo final {
   [[nodiscard]] bool IsValid() const;
 
   std::string payment_id;
-  std::string public_key;
-  std::string secret_key;
+  std::string public_key_base64;
+  std::string secret_key_base64;
 };
 
 }  // namespace brave_ads

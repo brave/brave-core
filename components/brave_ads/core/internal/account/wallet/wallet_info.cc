@@ -8,7 +8,8 @@
 namespace brave_ads {
 
 bool WalletInfo::IsValid() const {
-  return !payment_id.empty() && !public_key.empty() && !secret_key.empty();
+  return !payment_id.empty() && !public_key_base64.empty() &&
+         !secret_key_base64.empty();
 }
 
 }  // namespace brave_ads

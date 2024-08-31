@@ -42,8 +42,9 @@ class AdsClientNotifierForTesting : public AdsClientNotifier {
                                         const std::string& id) override;
   void NotifyDidUnregisterResourceComponent(const std::string& id) override;
 
-  void NotifyRewardsWalletDidUpdate(const std::string& payment_id,
-                                    const std::string& recovery_seed) override;
+  void NotifyRewardsWalletDidUpdate(
+      const std::string& payment_id,
+      const std::string& recovery_seed_base64) override;
 
   void NotifyTabTextContentDidChange(int32_t tab_id,
                                      const std::vector<GURL>& redirect_chain,

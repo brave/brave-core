@@ -111,7 +111,7 @@ class Account final : public AdsClientNotifierObserver,
   void OnNotifyPrefDidChange(const std::string& path) override;
   void OnNotifyRewardsWalletDidUpdate(
       const std::string& payment_id,
-      const std::string& recovery_seed) override;
+      const std::string& recovery_seed_base64) override;
 
   // ConfirmationDelegate:
   void OnDidConfirm(const ConfirmationInfo& confirmation) override;

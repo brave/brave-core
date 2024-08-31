@@ -487,16 +487,17 @@ void AdsServiceImpl::InitializeBatAds(
     return;
   }
 
-  mojom::WalletInfoPtr wallet;
+  mojom::WalletInfoPtr mojom_wallet;
 
   if (rewards_wallet) {
-    wallet = mojom::WalletInfo::New();
-    wallet->payment_id = rewards_wallet->payment_id;
-    wallet->recovery_seed = base::Base64Encode(rewards_wallet->recovery_seed);
+    mojom_wallet = mojom::WalletInfo::New();
+    mojom_wallet->payment_id = rewards_wallet->payment_id;
+    mojom_wallet->recovery_seed_base64 =
+        base::Base64Encode(rewards_wallet->recovery_seed);
   }
 
   bat_ads_associated_remote_->Initialize(
-      std::move(wallet),
+      std::move(mojom_wallet),
       base::BindOnce(&AdsServiceImpl::InitializeBatAdsCallback,
                      weak_ptr_factory_.GetWeakPtr()));
 }

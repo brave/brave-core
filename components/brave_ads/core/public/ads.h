@@ -48,10 +48,10 @@ class ADS_EXPORT Ads {
 
   virtual void SetFlags(mojom::FlagsPtr flags) = 0;
 
-  // Called to initialize ads for the specified `mojom::WalletInfoPtr`. `wallet`
-  // can be nullptr if there is no wallet. The callback takes one argument -
-  // `bool` is set to `true` if successful otherwise `false`.
-  virtual void Initialize(mojom::WalletInfoPtr wallet,
+  // Called to initialize ads for the specified `mojom::WalletInfoPtr`.
+  // `mojom_wallet` can be nullptr if there is no wallet. The callback takes one
+  // argument - `bool` is set to `true` if successful otherwise `false`.
+  virtual void Initialize(mojom::WalletInfoPtr mojom_wallet,
                           InitializeCallback callback) = 0;
 
   // Called to shutdown ads. The callback takes one argument - `bool` is set to
