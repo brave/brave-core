@@ -400,9 +400,8 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
 
   const blink::mojom::WebPagePtr mojom_web_page =
       test::CreativeSearchResultAdMojomWebPageWithProperty(
-          /*property_name=*/"data-placement-id",
-          /*property_value=*/test::
-              kCreativeAdPlacementIdWithUnreservedCharacters);
+          /*name=*/"data-placement-id",
+          /*value=*/test::kCreativeAdPlacementIdWithUnreservedCharacters);
   ASSERT_TRUE(mojom_web_page);
 
   // Act & Assert

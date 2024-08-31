@@ -48,8 +48,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest, ShouldAlwaysInclude) {
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kDismissed,
-      /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);

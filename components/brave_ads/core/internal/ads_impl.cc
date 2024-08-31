@@ -228,7 +228,7 @@ void AdsImpl::GetAdHistory(const base::Time from_time,
                            const base::Time to_time,
                            GetAdHistoryForUICallback callback) {
   if (!is_initialized_) {
-    return std::move(callback).Run(/*ad_history*/ std::nullopt);
+    return std::move(callback).Run(/*ad_history=*/std::nullopt);
   }
 
   AdHistoryManager::GetForUI(from_time, to_time, std::move(callback));

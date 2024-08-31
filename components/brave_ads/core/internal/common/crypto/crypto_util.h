@@ -25,10 +25,10 @@ KeyPairInfo GenerateBoxKeyPair();
 std::vector<uint8_t> GenerateRandomNonce();
 
 std::optional<std::string> Sign(const std::string& message,
-                                const std::string& secret_key);
+                                const std::string& secret_key_base64);
 [[nodiscard]] bool Verify(const std::string& message,
                           const std::string& public_key_base64,
-                          const std::string& signature);
+                          const std::string& signature_base64);
 
 std::vector<uint8_t> Encrypt(const std::vector<uint8_t>& plaintext,
                              const std::vector<uint8_t>& nonce,

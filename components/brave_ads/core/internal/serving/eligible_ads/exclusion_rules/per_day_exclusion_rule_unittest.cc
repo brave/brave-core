@@ -52,8 +52,7 @@ TEST_F(BraveAdsPerDayExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServedImpression,
-      /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const PerDayExclusionRule exclusion_rule(ad_events);
@@ -72,8 +71,7 @@ TEST_F(BraveAdsPerDayExclusionRuleTest,
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServedImpression,
-      /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
@@ -94,8 +92,7 @@ TEST_F(BraveAdsPerDayExclusionRuleTest, ShouldExcludeIfExceedsCapWithin1Day) {
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServedImpression,
-      /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
@@ -116,8 +113,7 @@ TEST_F(BraveAdsPerDayExclusionRuleTest, ShouldExcludeIfExceedsCap) {
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServedImpression,
-      /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 

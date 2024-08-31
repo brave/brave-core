@@ -57,8 +57,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest, ShouldIncludeAfter1Hour) {
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServedImpression,
-      /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const CreativeInstanceExclusionRule exclusion_rule(ad_events);
@@ -79,14 +78,12 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
 
   const AdEventInfo ad_event_1 = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServedImpression,
-      /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event_1);
 
   const AdEventInfo ad_event_2 = test::BuildAdEvent(
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kServedImpression,
-      /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event_2);
 
   const AdEventInfo ad_event_3 = test::BuildAdEvent(
@@ -97,8 +94,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
 
   const AdEventInfo ad_event_4 = test::BuildAdEvent(
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kServedImpression,
-      /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event_4);
 
   const CreativeInstanceExclusionRule exclusion_rule(ad_events);
@@ -118,8 +114,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServedImpression,
-      /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const CreativeInstanceExclusionRule exclusion_rule(ad_events);

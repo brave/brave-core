@@ -28,7 +28,7 @@ std::optional<std::string> Sign(const cbr::UnblindedToken& unblinded_token,
     return std::nullopt;
   }
 
-  return crypto::Sign(*unblinded_token_base64, wallet.secret_key);
+  return crypto::Sign(*unblinded_token_base64, wallet.secret_key_base64);
 }
 
 ConfirmationTokenList BuildConfirmationTokens(

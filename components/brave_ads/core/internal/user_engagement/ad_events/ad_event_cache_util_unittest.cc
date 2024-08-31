@@ -29,9 +29,8 @@ TEST_F(BraveAdsAdEventCacheUtilTest, RebuildAdEventCache) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kServedImpression,
-                   /*created_at=*/test::Now());
+  const AdEventInfo ad_event = BuildAdEvent(
+      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
 
   base::MockCallback<AdEventCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
@@ -54,9 +53,8 @@ TEST_F(BraveAdsAdEventCacheUtilTest, CacheAdEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kServedImpression,
-                   /*created_at=*/test::Now());
+  const AdEventInfo ad_event = BuildAdEvent(
+      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
 
   // Act
   CacheAdEvent(ad_event);
@@ -74,15 +72,13 @@ TEST_F(BraveAdsAdEventCacheUtilTest, GetCachedAdEvents) {
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
 
-  const AdEventInfo ad_event_1 =
-      BuildAdEvent(ad, ConfirmationType::kServedImpression,
-                   /*created_at=*/test::Now());
+  const AdEventInfo ad_event_1 = BuildAdEvent(
+      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
   ASSERT_TRUE(ad_event_1.created_at);
   CacheAdEvent(ad_event_1);
 
-  const AdEventInfo ad_event_2 =
-      BuildAdEvent(ad, ConfirmationType::kViewedImpression,
-                   /*created_at=*/test::Now());
+  const AdEventInfo ad_event_2 = BuildAdEvent(
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
   ASSERT_TRUE(ad_event_2.created_at);
   CacheAdEvent(ad_event_2);
 

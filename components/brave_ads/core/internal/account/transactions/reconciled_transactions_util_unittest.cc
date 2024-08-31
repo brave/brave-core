@@ -125,7 +125,7 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
 
   // Act & Assert
   EXPECT_TRUE(DidReconcileTransactionWithinDateRange(
-      transaction, test::DistantPast(), test::Now()));
+      transaction, /*from_time=*/test::DistantPast(), /*to_time=*/test::Now()));
 }
 
 TEST_F(BraveAdsReconciledTransactionsUtilTest,

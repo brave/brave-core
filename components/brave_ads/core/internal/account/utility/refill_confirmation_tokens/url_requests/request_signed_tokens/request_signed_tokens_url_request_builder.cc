@@ -110,7 +110,7 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildSignatureHeaderValue(
   }
 
   const std::optional<std::string> signature_base64 =
-      crypto::Sign(concatenated_message, wallet_.secret_key);
+      crypto::Sign(concatenated_message, wallet_.secret_key_base64);
   if (!signature_base64) {
     return {};
   }

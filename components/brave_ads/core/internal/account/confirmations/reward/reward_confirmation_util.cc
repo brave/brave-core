@@ -67,7 +67,7 @@ std::optional<RewardInfo> BuildReward(const ConfirmationInfo& confirmation) {
 
   reward.unblinded_token = confirmation_token->unblinded_token;
   reward.public_key = confirmation_token->public_key;
-  reward.signature = confirmation_token->signature;
+  reward.signature = confirmation_token->signature_base64;
 
   // Credential
   ConfirmationInfo mutable_confirmation(confirmation);

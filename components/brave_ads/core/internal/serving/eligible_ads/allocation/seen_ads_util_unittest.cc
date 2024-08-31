@@ -55,20 +55,23 @@ TEST(BraveAdsSeenAdsUtilTest, GetLastSeenAdAt) {
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event_4 =
-      BuildAdEvent(ad_1, ConfirmationType::kConversion, now - base::Hours(3));
+  const AdEventInfo ad_event_4 = BuildAdEvent(
+      ad_1, ConfirmationType::kConversion, /*created_at=*/now - base::Hours(3));
   ad_events.push_back(ad_event_4);
 
-  const AdEventInfo ad_event_3 = BuildAdEvent(
-      ad_1, ConfirmationType::kViewedImpression, now - base::Hours(6));
+  const AdEventInfo ad_event_3 =
+      BuildAdEvent(ad_1, ConfirmationType::kViewedImpression,
+                   /*created_at=*/now - base::Hours(6));
   ad_events.push_back(ad_event_3);
 
-  const AdEventInfo ad_event_2 = BuildAdEvent(
-      ad_2, ConfirmationType::kViewedImpression, now - base::Hours(11));
+  const AdEventInfo ad_event_2 =
+      BuildAdEvent(ad_2, ConfirmationType::kViewedImpression,
+                   /*created_at=*/now - base::Hours(11));
   ad_events.push_back(ad_event_2);
 
-  const AdEventInfo ad_event_1 = BuildAdEvent(
-      ad_1, ConfirmationType::kViewedImpression, now - base::Hours(12));
+  const AdEventInfo ad_event_1 =
+      BuildAdEvent(ad_1, ConfirmationType::kViewedImpression,
+                   /*created_at=*/now - base::Hours(12));
   ad_events.push_back(ad_event_1);
 
   // Act & Assert

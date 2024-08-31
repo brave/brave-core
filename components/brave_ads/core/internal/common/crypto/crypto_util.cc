@@ -106,44 +106,44 @@ std::vector<uint8_t> GenerateRandomNonce() {
 }
 
 std::optional<std::string> Sign(const std::string& message,
-                                const std::string& secret_key) {
-  const std::optional<std::vector<uint8_t>> raw_secret_key =
-      base::Base64Decode(secret_key);
-  if (!raw_secret_key) {
+                                const std::string& secret_key_base64) {
+  const std::optional<std::vector<uint8_t>> secret_key =
+      base::Base64Decode(secret_key_base64);
+  if (!secret_key) {
     return std::nullopt;
   }
 
-  const std::vector<uint8_t> raw_message(message.cbegin(), message.cend());
+  const std::vector<uint8_t> message_bytes(message.cbegin(), message.cend());
 
-  std::vector<uint8_t> raw_signature;
-  raw_signature.resize(ED25519_SIGNATURE_LEN);
-  if (ED25519_sign(raw_signature.data(), raw_message.data(), raw_message.size(),
-                   raw_secret_key->data()) == 0) {
+  std::vector<uint8_t> signature;
+  signature.resize(ED25519_SIGNATURE_LEN);
+  if (ED25519_sign(signature.data(), message_bytes.data(), message_bytes.size(),
+                   secret_key->data()) == 0) {
     return std::nullopt;
   }
 
-  return base::Base64Encode(raw_signature);
+  return base::Base64Encode(signature);
 }
 
 bool Verify(const std::string& message,
             const std::string& public_key_base64,
-            const std::string& signature) {
-  const std::optional<std::vector<uint8_t>> raw_public_key =
+            const std::string& signature_base64) {
+  const std::optional<std::vector<uint8_t>> public_key =
       base::Base64Decode(public_key_base64);
-  if (!raw_public_key) {
+  if (!public_key) {
     return false;
   }
 
-  const std::optional<std::vector<uint8_t>> raw_signature =
-      base::Base64Decode(signature);
-  if (!raw_signature) {
+  const std::optional<std::vector<uint8_t>> signature =
+      base::Base64Decode(signature_base64);
+  if (!signature) {
     return false;
   }
 
-  const std::vector<uint8_t> raw_message(message.cbegin(), message.cend());
+  const std::vector<uint8_t> message_bytes(message.cbegin(), message.cend());
 
-  return ED25519_verify(raw_message.data(), raw_message.size(),
-                        raw_signature->data(), raw_public_key->data()) != 0;
+  return ED25519_verify(message_bytes.data(), message_bytes.size(),
+                        signature->data(), public_key->data()) != 0;
 }
 
 std::vector<uint8_t> Encrypt(const std::vector<uint8_t>& plaintext,

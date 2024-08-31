@@ -64,7 +64,7 @@ TEST_F(BraveAdsEarningsUtilTest, GetUnreconciledEarnings) {
 
 TEST_F(BraveAdsEarningsUtilTest, GetUnreconciledEarningsForNoTransactions) {
   // Act & Assert
-  EXPECT_DOUBLE_EQ(0.0, GetUnreconciledEarnings(/*transactions*/ {}));
+  EXPECT_DOUBLE_EQ(0.0, GetUnreconciledEarnings(/*transactions=*/{}));
 }
 
 TEST_F(BraveAdsEarningsUtilTest, GetReconciledEarningsForThisMonth) {

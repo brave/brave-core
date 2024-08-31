@@ -29,7 +29,8 @@ void RecordAdEvent(const AdEventInfo& ad_event) {
 }  // namespace
 
 void RecordAdEvent(const AdInfo& ad, const ConfirmationType confirmation_type) {
-  const AdEventInfo ad_event = BuildAdEvent(ad, confirmation_type, Now());
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, confirmation_type, /*created_at=*/Now());
   RecordAdEvent(ad_event);
 }
 

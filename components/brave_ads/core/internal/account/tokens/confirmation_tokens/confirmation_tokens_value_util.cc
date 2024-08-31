@@ -41,7 +41,7 @@ base::Value::List ConfirmationTokensToValue(
     list.Append(base::Value::Dict()
                     .Set(kUnblindedTokenKey, *unblinded_token_base64)
                     .Set(kPublicKey, *public_key_base64)
-                    .Set(kSignature, confirmation_token.signature));
+                    .Set(kSignature, confirmation_token.signature_base64));
   }
 
   return list;
@@ -88,8 +88,8 @@ ConfirmationTokenList ConfirmationTokensFromValue(
     }
 
     // Signature
-    if (const auto* const signature = dict->FindString(kSignature)) {
-      confirmation_token.signature = *signature;
+    if (const auto* const signature_base64 = dict->FindString(kSignature)) {
+      confirmation_token.signature_base64 = *signature_base64;
     } else {
       BLOG(0, "Missing confirmation token signature");
       continue;

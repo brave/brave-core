@@ -71,7 +71,7 @@ void Account::SetWallet(const std::string& payment_id,
 void Account::GetStatement(GetStatementOfAccountsCallback callback) {
   if (!UserHasJoinedBraveRewards()) {
     // No-op if the user has not joined Brave Rewards.
-    return std::move(callback).Run(/*statement*/ nullptr);
+    return std::move(callback).Run(/*statement=*/nullptr);
   }
 
   return BuildStatement(std::move(callback));
