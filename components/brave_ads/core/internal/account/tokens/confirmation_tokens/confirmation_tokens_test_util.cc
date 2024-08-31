@@ -30,7 +30,7 @@ ConfirmationTokenInfo BuildConfirmationToken(
   confirmation_token.unblinded_token =
       cbr::UnblindedToken(unblinded_token_base64);
 
-  confirmation_token.public_keßy =
+  confirmation_token.public_key =
       cbr::PublicKey("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
 
   const std::optional<std::string> signature_base64 =

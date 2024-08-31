@@ -24,8 +24,8 @@ VerifiableConversionEnvelopeInfo& VerifiableConversionEnvelopeInfo::operator=(
 VerifiableConversionEnvelopeInfo::~VerifiableConversionEnvelopeInfo() = default;
 
 bool VerifiableConversionEnvelopeInfo::IsValid() const {
-  return !algorithm.empty() && !ciphertext.empty() &&
-         !ephemeral_public_key.empty() && !nonce.empty();
+  return !algorithm.empty() && !ciphertext_base64.empty() &&
+         !ephemeral_key_pair_public_key_base64.empty() && !nonce_base64.empty();
 }
 
 }  // namespace brave_ads

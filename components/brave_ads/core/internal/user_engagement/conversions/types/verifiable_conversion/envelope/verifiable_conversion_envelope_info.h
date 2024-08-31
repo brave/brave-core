@@ -28,9 +28,9 @@ struct VerifiableConversionEnvelopeInfo final {
   [[nodiscard]] bool IsValid() const;
 
   std::string algorithm;
-  std::string ciphertext;
-  std::string ephemeral_public_key;
-  std::string nonce;
+  std::string ciphertext_base64;
+  std::string ephemeral_key_pair_public_key_base64;
+  std::string nonce_base64;
 };
 
 }  // namespace brave_ads
