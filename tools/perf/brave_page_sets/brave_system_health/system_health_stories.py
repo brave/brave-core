@@ -11,13 +11,10 @@
 # pylint: disable=no-name-in-module, too-few-public-methods
 # pytype: disable=import-error
 
-from page_sets.system_health import story_tags
-from page_sets.system_health import system_health_story
 from page_sets.helpers import override_online
-
-from telemetry.util import wpr_modes
-
+from page_sets.system_health import story_tags, system_health_story
 from py_utils import TimeoutException
+from telemetry.util import wpr_modes
 
 
 class _BraveLoadingStory(system_health_story.SystemHealthStory):
@@ -165,8 +162,8 @@ class LoadBraveNewsStory2024(_BraveLoadingStory):
   TAGS = [story_tags.YEAR_2024]
 
 
-class MultiTabLoadExampleStory2023(_BraveMultiTabLoadingStory):
-  NAME = 'multitab_load:site:example.com:2023'
+class MultiTabLoadExampleStory2024(_BraveMultiTabLoadingStory):
+  NAME = 'multitab_load:site:example.com:2024'
   URL = 'https://example.com'
   SCROLL_PAGE = False
   TAGS = [story_tags.YEAR_2024]
