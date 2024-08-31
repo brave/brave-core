@@ -81,18 +81,20 @@ SealVerifiableConversionEnvelope(
       padded_ciphertext.cbegin() + crypto_box_BOXZEROBYTES,
       padded_ciphertext.cend());
 
-  VerifiableConversionEnvelopeInfo envelope;
-  envelope.algorithm = GetVerifiableConversionEnvelopeAlgorithm();
-  envelope.ciphertext = base::Base64Encode(ciphertext);
-  envelope.ephemeral_public_key =
+  VerifiableConversionEnvelopeInfo verifiable_conversion_envelope;
+  verifiable_conversion_envelope.algorithm =
+      GetVerifiableConversionEnvelopeAlgorithm();
+  verifiable_conversion_envelope.ciphertext_base64 =
+      base::Base64Encode(ciphertext);
+  verifiable_conversion_envelope.ephemeral_key_pair_public_key_base64 =
       base::Base64Encode(ephemeral_key_pair.public_key);
-  envelope.nonce = base::Base64Encode(nonce);
+  verifiable_conversion_envelope.nonce_base64 = base::Base64Encode(nonce);
 
-  if (!envelope.IsValid()) {
+  if (!verifiable_conversion_envelope.IsValid()) {
     return std::nullopt;
   }
 
-  return envelope;
+  return verifiable_conversion_envelope;
 }
 
 }  // namespace brave_ads

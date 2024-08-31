@@ -56,11 +56,12 @@ std::optional<base::Value::Dict> MaybeBuildVerifiableConversionUserData(
           .Set(kVerifiableConversionEnvelopeAlgorithmKey,
                GetVerifiableConversionEnvelopeAlgorithm())
           .Set(kVerifiableConversionEnvelopeCipherTextKey,
-               sealed_verifiable_conversion_envelope->ciphertext)
+               sealed_verifiable_conversion_envelope->ciphertext_base64)
           .Set(kVerifiableConversionEnvelopeEphemeralPublicKeyKey,
-               sealed_verifiable_conversion_envelope->ephemeral_public_key)
+               sealed_verifiable_conversion_envelope
+                   ->ephemeral_key_pair_public_key_base64)
           .Set(kVerifiableConversionEnvelopeNonceKey,
-               sealed_verifiable_conversion_envelope->nonce));
+               sealed_verifiable_conversion_envelope->nonce_base64));
 }
 
 }  // namespace brave_ads
