@@ -66,7 +66,7 @@ TEST(BraveAdsAntiTargetingExclusionRuleUtilTest, HasNotVisitedIfNoSiteHistory) {
 
   // Act & Assert
   EXPECT_FALSE(
-      HasVisitedAntiTargetedSites(/*site_history*/ {}, anti_targeting_sites));
+      HasVisitedAntiTargetedSites(/*site_history=*/{}, anti_targeting_sites));
 }
 
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
@@ -75,15 +75,13 @@ TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
   const SiteHistoryList site_history = test::BuildSiteHistory();
 
   // Act & Assert
-  EXPECT_FALSE(HasVisitedAntiTargetedSites(site_history,
-                                           /*anti_targeting_sites*/ {}));
+  EXPECT_FALSE(HasVisitedAntiTargetedSites(site_history, /*sites=*/{}));
 }
 
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
      HasNotVisitedIfNoSiteHistoryAndAntiTargetedSites) {
   // Act & Assert
-  EXPECT_FALSE(HasVisitedAntiTargetedSites(/*site_history*/ {},
-                                           /*anti_targeting_sites*/ {}));
+  EXPECT_FALSE(HasVisitedAntiTargetedSites(/*site_history=*/{}, /*sites=*/{}));
 }
 
 }  // namespace brave_ads

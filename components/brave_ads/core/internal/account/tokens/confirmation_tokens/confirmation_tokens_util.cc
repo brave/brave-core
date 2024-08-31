@@ -74,7 +74,7 @@ size_t ConfirmationTokenCount() {
 bool IsValid(const ConfirmationTokenInfo& confirmation_token) {
   return confirmation_token.unblinded_token.has_value() &&
          confirmation_token.public_key.has_value() &&
-         !confirmation_token.signature.empty();
+         !confirmation_token.signature_base64.empty();
 }
 
 }  // namespace brave_ads

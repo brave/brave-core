@@ -68,7 +68,7 @@ void HandleMalformedClientState(InitializeCallback callback) {
   BLOG(0, "Resetting malformed client state to default values");
 
   GetAdsClient()->Save(
-      kClientJsonFilename, /*default state*/ "{}",
+      kClientJsonFilename, /*default state=§*/ "{}",
       base::BindOnce(
           [](InitializeCallback callback, const bool success) {
             if (!success) {

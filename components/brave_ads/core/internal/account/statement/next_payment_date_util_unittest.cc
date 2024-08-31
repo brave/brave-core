@@ -66,7 +66,7 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
 
   // Act
   const base::Time next_payment_date =
-      CalculateNextPaymentDate(next_token_redemption_at, /*transactions*/ {});
+      CalculateNextPaymentDate(next_token_redemption_at, /*transactions=*/{});
 
   // Assert
   EXPECT_EQ(test::TimeFromUTCString("5 March 2020 23:59:59.999"),
@@ -108,7 +108,7 @@ TEST_F(
 
   // Act
   const base::Time next_payment_date =
-      CalculateNextPaymentDate(next_token_redemption_at, /*transactions*/ {});
+      CalculateNextPaymentDate(next_token_redemption_at, /*transactions=*/{});
 
   // Assert
   EXPECT_EQ(test::TimeFromUTCString("5 February 2020 23:59:59.999"),
@@ -126,7 +126,7 @@ TEST_F(
 
   // Act
   const base::Time next_payment_date =
-      CalculateNextPaymentDate(next_token_redemption_at, /*transactions*/ {});
+      CalculateNextPaymentDate(next_token_redemption_at, /*transactions=*/{});
 
   // Assert
   EXPECT_EQ(test::TimeFromUTCString("5 March 2020 23:59:59.999"),

@@ -26,9 +26,8 @@ TEST_F(BraveAdsAdEventBuilderTest, BuildAdEvent) {
                                   /*should_generate_random_uuids=*/false);
 
   // Act
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kViewedImpression,
-                   /*created_at=*/test::Now());
+  const AdEventInfo ad_event = BuildAdEvent(
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
 
   // Assert
   EXPECT_THAT(ad_event,
