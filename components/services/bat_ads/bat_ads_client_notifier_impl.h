@@ -57,8 +57,9 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
   void NotifyDidUnregisterResourceComponent(const std::string& id) override;
 
   // Invoked when the Brave Reward wallet did change.
-  void NotifyRewardsWalletDidUpdate(const std::string& payment_id,
-                                    const std::string& recovery_seed) override;
+  void NotifyRewardsWalletDidUpdate(
+      const std::string& payment_id,
+      const std::string& recovery_seed_base64) override;
 
   // Invoked when the page for `tab_id` has loaded and the content is available
   // for analysis. `redirect_chain` containing a list of redirect URLs that

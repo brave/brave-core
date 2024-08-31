@@ -29,7 +29,7 @@ struct Flags {
 
 struct WalletInfo {
   string payment_id;
-  string recovery_seed;
+  string recovery_seed_base64;
 };
 
 struct StatementInfo {

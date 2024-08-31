@@ -52,7 +52,7 @@ class AdsImpl final : public Ads {
   void SetBuildChannel(mojom::BuildChannelInfoPtr build_channel) override;
   void SetFlags(mojom::FlagsPtr flags) override;
 
-  void Initialize(mojom::WalletInfoPtr wallet,
+  void Initialize(mojom::WalletInfoPtr mojom_wallet,
                   InitializeCallback callback) override;
   void Shutdown(ShutdownCallback callback) override;
 
@@ -113,30 +113,30 @@ class AdsImpl final : public Ads {
                                    ToggleReactionCallback callback) override;
 
  private:
-  void CreateOrOpenDatabase(mojom::WalletInfoPtr wallet,
+  void CreateOrOpenDatabase(mojom::WalletInfoPtr mojom_wallet,
                             InitializeCallback callback);
-  void CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr wallet,
+  void CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr mojom_wallet,
                                     InitializeCallback callback,
                                     bool success);
-  void SuccessfullyInitialized(mojom::WalletInfoPtr wallet,
+  void SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
                                InitializeCallback callback);
 
-  void PurgeAllOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
+  void PurgeAllOrphanedAdEventsCallback(mojom::WalletInfoPtr mojom_wallet,
                                         InitializeCallback callback,
                                         bool success);
 
   // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
   // from using JSON state to a more efficient data approach.
-  void MigrateClientStateCallback(mojom::WalletInfoPtr wallet,
+  void MigrateClientStateCallback(mojom::WalletInfoPtr mojom_wallet,
                                   InitializeCallback callback,
                                   bool success);
-  void LoadClientStateCallback(mojom::WalletInfoPtr wallet,
+  void LoadClientStateCallback(mojom::WalletInfoPtr mojom_wallet,
                                InitializeCallback callback,
                                bool success);
-  void MigrateConfirmationStateCallback(mojom::WalletInfoPtr wallet,
+  void MigrateConfirmationStateCallback(mojom::WalletInfoPtr mojom_wallet,
                                         InitializeCallback callback,
                                         bool success);
-  void LoadConfirmationStateCallback(mojom::WalletInfoPtr wallet,
+  void LoadConfirmationStateCallback(mojom::WalletInfoPtr mojom_wallet,
                                      InitializeCallback callback,
                                      bool success);
 

@@ -58,8 +58,9 @@ void BatAdsClientNotifierImpl::NotifyDidUnregisterResourceComponent(
 
 void BatAdsClientNotifierImpl::NotifyRewardsWalletDidUpdate(
     const std::string& payment_id,
-    const std::string& recovery_seed) {
-  ads_client_notifier_.NotifyRewardsWalletDidUpdate(payment_id, recovery_seed);
+    const std::string& recovery_seed_base64) {
+  ads_client_notifier_.NotifyRewardsWalletDidUpdate(payment_id,
+                                                    recovery_seed_base64);
 }
 
 void BatAdsClientNotifierImpl::NotifyTabTextContentDidChange(

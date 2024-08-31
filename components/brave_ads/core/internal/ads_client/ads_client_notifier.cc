@@ -51,15 +51,15 @@ void AdsClientNotifier::NotifyDidInitializeAds() {
 
 void AdsClientNotifier::NotifyRewardsWalletDidUpdate(
     const std::string& payment_id,
-    const std::string& recovery_seed) {
+    const std::string& recovery_seed_base64) {
   if (should_queue_) {
-    return queue_->Add(
-        base::BindOnce(&AdsClientNotifier::NotifyRewardsWalletDidUpdate,
-                       weak_factory_.GetWeakPtr(), payment_id, recovery_seed));
+    return queue_->Add(base::BindOnce(
+        &AdsClientNotifier::NotifyRewardsWalletDidUpdate,
+        weak_factory_.GetWeakPtr(), payment_id, recovery_seed_base64));
   }
 
   for (auto& observer : observers_) {
-    observer.OnNotifyRewardsWalletDidUpdate(payment_id, recovery_seed);
+    observer.OnNotifyRewardsWalletDidUpdate(payment_id, recovery_seed_base64);
   }
 }
 

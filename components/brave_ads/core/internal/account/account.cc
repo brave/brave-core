@@ -55,7 +55,7 @@ void Account::RemoveObserver(AccountObserver* const observer) {
 void Account::SetWallet(const std::string& payment_id,
                         const std::string& recovery_seed_base64) {
   const std::optional<WalletInfo> wallet =
-      ToWallet(payment_id, recovery_seed_base64);
+      CreateWalletFromRecoverySeed(payment_id, recovery_seed_base64);
   if (!wallet) {
     BLOG(0, "Failed to initialize wallet");
 
@@ -273,9 +273,10 @@ void Account::OnNotifyPrefDidChange(const std::string& path) {
   }
 }
 
-void Account::OnNotifyRewardsWalletDidUpdate(const std::string& payment_id,
-                                             const std::string& recovery_seed) {
-  SetWallet(payment_id, recovery_seed);
+void Account::OnNotifyRewardsWalletDidUpdate(
+    const std::string& payment_id,
+    const std::string& recovery_seed_base64) {
+  SetWallet(payment_id, recovery_seed_base64);
 
   Initialize();
 }
