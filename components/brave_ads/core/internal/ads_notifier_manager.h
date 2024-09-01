@@ -37,7 +37,7 @@ class AdsNotifierManager final {
 
   void NotifyIneligibleRewardsWalletToServeAds() const;
 
-  void NotifyRemindUser(mojom::ReminderType type) const;
+  void NotifyRemindUser(mojom::ReminderType mojom_reminder_type) const;
 
  private:
   std::vector<std::unique_ptr<AdsObserverInterface>> observers_;

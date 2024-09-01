@@ -51,15 +51,18 @@ class RefillConfirmationTokens final {
 
   bool ShouldRequestSignedTokens() const;
   void RequestSignedTokens();
-  void RequestSignedTokensCallback(const mojom::UrlResponseInfo& url_response);
+  void RequestSignedTokensCallback(
+      const mojom::UrlResponseInfo& mojom_url_response);
   base::expected<void, std::tuple<std::string, /*should_retry*/ bool>>
   HandleRequestSignedTokensUrlResponse(
-      const mojom::UrlResponseInfo& url_response);
+      const mojom::UrlResponseInfo& mojom_url_response);
 
   void GetSignedTokens();
-  void GetSignedTokensCallback(const mojom::UrlResponseInfo& url_response);
+  void GetSignedTokensCallback(
+      const mojom::UrlResponseInfo& mojom_url_response);
   base::expected<void, std::tuple<std::string, /*should_retry*/ bool>>
-  HandleGetSignedTokensUrlResponse(const mojom::UrlResponseInfo& url_response);
+  HandleGetSignedTokensUrlResponse(
+      const mojom::UrlResponseInfo& mojom_url_response);
   void ParseAndRequireCaptcha(const base::Value::Dict& dict) const;
 
   void SuccessfullyRefilled();

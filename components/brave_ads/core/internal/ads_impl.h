@@ -48,9 +48,9 @@ class AdsImpl final : public Ads {
   void AddBatAdsObserver(
       std::unique_ptr<AdsObserverInterface> observer) override;
 
-  void SetSysInfo(mojom::SysInfoPtr sys_info) override;
-  void SetBuildChannel(mojom::BuildChannelInfoPtr build_channel) override;
-  void SetFlags(mojom::FlagsPtr flags) override;
+  void SetSysInfo(mojom::SysInfoPtr mojom_sys_info) override;
+  void SetBuildChannel(mojom::BuildChannelInfoPtr mojom_build_channel) override;
+  void SetFlags(mojom::FlagsPtr mojom_flags) override;
 
   void Initialize(mojom::WalletInfoPtr mojom_wallet,
                   InitializeCallback callback) override;
@@ -63,36 +63,39 @@ class AdsImpl final : public Ads {
   void MaybeServeInlineContentAd(
       const std::string& dimensions,
       MaybeServeInlineContentAdCallback callback) override;
-  void TriggerInlineContentAdEvent(const std::string& placement_id,
-                                   const std::string& creative_instance_id,
-                                   mojom::InlineContentAdEventType event_type,
-                                   TriggerAdEventCallback callback) override;
+  void TriggerInlineContentAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::InlineContentAdEventType mojom_ad_event_type,
+      TriggerAdEventCallback callback) override;
 
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
-  void TriggerNewTabPageAdEvent(const std::string& placement_id,
-                                const std::string& creative_instance_id,
-                                mojom::NewTabPageAdEventType event_type,
-                                TriggerAdEventCallback callback) override;
+  void TriggerNewTabPageAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::NewTabPageAdEventType mojom_ad_event_type,
+      TriggerAdEventCallback callback) override;
 
   std::optional<NotificationAdInfo> MaybeGetNotificationAd(
       const std::string& placement_id) override;
-  void TriggerNotificationAdEvent(const std::string& placement_id,
-                                  mojom::NotificationAdEventType event_type,
-                                  TriggerAdEventCallback callback) override;
+  void TriggerNotificationAdEvent(
+      const std::string& placement_id,
+      mojom::NotificationAdEventType mojom_ad_event_type,
+      TriggerAdEventCallback callback) override;
 
   void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      mojom::PromotedContentAdEventType event_type,
+      mojom::PromotedContentAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) override;
 
   void TriggerSearchResultAdEvent(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-      mojom::SearchResultAdEventType event_type,
+      mojom::SearchResultAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) override;
 
   void PurgeOrphanedAdEventsForType(
-      mojom::AdType ad_type,
+      mojom::AdType mojom_ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) override;
 
   void GetAdHistory(base::Time from_time,

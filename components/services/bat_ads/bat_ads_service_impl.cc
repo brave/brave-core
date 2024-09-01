@@ -19,28 +19,34 @@ struct BatAdsServiceImpl::ScopedAllowSyncCall {
   // scoped allow sync calls object when Brave Ads [Sync] mojom calls are
   // refactored. mojo::ScopedAllowSyncCallForTesting is used to avoid patching
   // of chromium sync_call_restrictions.h file.
-  mojo::ScopedAllowSyncCallForTesting scoped_allow;
+  mojo::ScopedAllowSyncCallForTesting scoped_allow_sync_call;
 };
 
 BatAdsServiceImpl::BatAdsServiceImpl()
-    : scoped_allow_sync_(std::make_unique<ScopedAllowSyncCall>()) {}
+    : scoped_allow_sync_call_(std::make_unique<ScopedAllowSyncCall>()) {}
 
-BatAdsServiceImpl::BatAdsServiceImpl(
-    mojo::PendingReceiver<mojom::BatAdsService> receiver)
-    : receiver_(this, std::move(receiver)) {}
+BatAdsServiceImpl::BatAdsServiceImpl(mojo::PendingReceiver<mojom::BatAdsService>
+                                         bat_ads_service_pending_receiver)
+    : bat_ads_service_receiver_(this,
+                                std::move(bat_ads_service_pending_receiver)) {}
 
 BatAdsServiceImpl::~BatAdsServiceImpl() = default;
 
 void BatAdsServiceImpl::Create(
-    mojo::PendingAssociatedRemote<mojom::BatAdsClient> bat_ads_client,
-    mojo::PendingAssociatedReceiver<mojom::BatAds> bat_ads,
-    mojo::PendingReceiver<mojom::BatAdsClientNotifier> bat_ads_client_notifier,
+    mojo::PendingAssociatedRemote<mojom::BatAdsClient>
+        bat_ads_client_pending_associated_remote,
+    mojo::PendingAssociatedReceiver<mojom::BatAds>
+        bat_ads_pending_associated_receiver,
+    mojo::PendingReceiver<mojom::BatAdsClientNotifier>
+        bat_ads_client_notifier_pending_receiver,
     CreateCallback callback) {
-  DCHECK(bat_ads.is_valid());
-  associated_receivers_.Add(
-      std::make_unique<BatAdsImpl>(std::move(bat_ads_client),
-                                   std::move(bat_ads_client_notifier)),
-      std::move(bat_ads));
+  DCHECK(bat_ads_pending_associated_receiver.is_valid());
+
+  bat_ads_associated_receivers_.Add(
+      std::make_unique<BatAdsImpl>(
+          std::move(bat_ads_client_pending_associated_remote),
+          std::move(bat_ads_client_notifier_pending_receiver)),
+      std::move(bat_ads_pending_associated_receiver));
 
   std::move(callback).Run();
 }

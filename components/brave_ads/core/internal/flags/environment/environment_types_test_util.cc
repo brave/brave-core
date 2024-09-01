@@ -14,8 +14,8 @@ constexpr char kStagingEnvironment[] = "Staging";
 
 }  // namespace
 
-std::string ToString(const mojom::EnvironmentType environment_type) {
-  switch (environment_type) {
+std::string ToString(const mojom::EnvironmentType mojom_environment_type) {
+  switch (mojom_environment_type) {
     case mojom::EnvironmentType::kProduction: {
       return kProductionEnvironment;
     }

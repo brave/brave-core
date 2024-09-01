@@ -43,7 +43,7 @@ class RedeemNonRewardConfirmation final {
   static void CreateConfirmationCallback(
       RedeemNonRewardConfirmation redeem_confirmation,
       const ConfirmationInfo& confirmation,
-      const mojom::UrlResponseInfo& url_response);
+      const mojom::UrlResponseInfo& mojom_url_response);
 
   void SuccessfullyRedeemedConfirmation(const ConfirmationInfo& confirmation);
   void FailedToRedeemConfirmation(const ConfirmationInfo& confirmation,

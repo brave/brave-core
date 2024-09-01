@@ -18,7 +18,7 @@ struct NotificationAdInfo;
 class NotificationAdEventFactory final {
  public:
   static std::unique_ptr<AdEventInterface<NotificationAdInfo>> Build(
-      mojom::NotificationAdEventType event_type);
+      mojom::NotificationAdEventType mojom_ad_event_type);
 };
 
 }  // namespace brave_ads

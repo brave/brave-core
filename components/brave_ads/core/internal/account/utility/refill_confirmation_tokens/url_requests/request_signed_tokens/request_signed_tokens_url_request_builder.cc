@@ -50,15 +50,15 @@ RequestSignedTokensUrlRequestBuilder::~RequestSignedTokensUrlRequestBuilder() =
     default;
 
 mojom::UrlRequestInfoPtr RequestSignedTokensUrlRequestBuilder::Build() {
-  mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
-  url_request->url = BuildUrl();
+  mojom::UrlRequestInfoPtr mojom_url_request = mojom::UrlRequestInfo::New();
+  mojom_url_request->url = BuildUrl();
   const std::string body = BuildBody();
-  url_request->headers = BuildHeaders(body);
-  url_request->content = body;
-  url_request->content_type = "application/json";
-  url_request->method = mojom::UrlRequestMethodType::kPost;
+  mojom_url_request->headers = BuildHeaders(body);
+  mojom_url_request->content = body;
+  mojom_url_request->content_type = "application/json";
+  mojom_url_request->method = mojom::UrlRequestMethodType::kPost;
 
-  return url_request;
+  return mojom_url_request;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

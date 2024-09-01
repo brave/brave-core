@@ -53,23 +53,23 @@ void AdsImpl::AddBatAdsObserver(
   AdsNotifierManager::GetInstance().AddObserver(std::move(observer));
 }
 
-void AdsImpl::SetSysInfo(mojom::SysInfoPtr sys_info) {
-  auto& sys_info_state = GlobalState::GetInstance()->SysInfo();
-  sys_info_state.device_id = sys_info->device_id;
+void AdsImpl::SetSysInfo(mojom::SysInfoPtr mojom_sys_info) {
+  auto& sys_info = GlobalState::GetInstance()->SysInfo();
+  sys_info.device_id = mojom_sys_info->device_id;
 }
 
-void AdsImpl::SetBuildChannel(mojom::BuildChannelInfoPtr build_channel) {
-  auto& build_channel_state = GlobalState::GetInstance()->BuildChannel();
-  build_channel_state.is_release = build_channel->is_release;
-  build_channel_state.name = build_channel->name;
+void AdsImpl::SetBuildChannel(mojom::BuildChannelInfoPtr mojom_build_channel) {
+  auto& build_channel = GlobalState::GetInstance()->BuildChannel();
+  build_channel.is_release = mojom_build_channel->is_release;
+  build_channel.name = mojom_build_channel->name;
 }
 
-void AdsImpl::SetFlags(mojom::FlagsPtr flags) {
-  auto& flags_state = GlobalState::GetInstance()->Flags();
-  flags_state.should_debug = flags->should_debug;
-  flags_state.did_override_from_command_line =
-      flags->did_override_from_command_line;
-  flags_state.environment_type = flags->environment_type;
+void AdsImpl::SetFlags(mojom::FlagsPtr mojom_flags) {
+  auto& flags = GlobalState::GetInstance()->Flags();
+  flags.should_debug = mojom_flags->should_debug;
+  flags.did_override_from_command_line =
+      mojom_flags->did_override_from_command_line;
+  flags.environment_type = mojom_flags->environment_type;
 }
 
 void AdsImpl::Initialize(mojom::WalletInfoPtr mojom_wallet,
@@ -126,14 +126,15 @@ void AdsImpl::MaybeServeInlineContentAd(
 void AdsImpl::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::InlineContentAdEventType event_type,
+    const mojom::InlineContentAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (!is_initialized_) {
     return std::move(callback).Run(/*success=*/false);
   }
 
   GetAdHandler().TriggerInlineContentAdEvent(placement_id, creative_instance_id,
-                                             event_type, std::move(callback));
+                                             mojom_ad_event_type,
+                                             std::move(callback));
 }
 
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
@@ -147,14 +148,15 @@ void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
 void AdsImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::NewTabPageAdEventType event_type,
+    const mojom::NewTabPageAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (!is_initialized_) {
     return std::move(callback).Run(/*success=*/false);
   }
 
   GetAdHandler().TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                          event_type, std::move(callback));
+                                          mojom_ad_event_type,
+                                          std::move(callback));
 }
 
 std::optional<NotificationAdInfo> AdsImpl::MaybeGetNotificationAd(
@@ -165,63 +167,65 @@ std::optional<NotificationAdInfo> AdsImpl::MaybeGetNotificationAd(
 
 void AdsImpl::TriggerNotificationAdEvent(
     const std::string& placement_id,
-    const mojom::NotificationAdEventType event_type,
+    const mojom::NotificationAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (!is_initialized_) {
     return std::move(callback).Run(/*success=*/false);
   }
 
-  GetAdHandler().TriggerNotificationAdEvent(placement_id, event_type,
+  GetAdHandler().TriggerNotificationAdEvent(placement_id, mojom_ad_event_type,
                                             std::move(callback));
 }
 
 void AdsImpl::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::PromotedContentAdEventType event_type,
+    const mojom::PromotedContentAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (!is_initialized_) {
     return std::move(callback).Run(/*success=*/false);
   }
 
   GetAdHandler().TriggerPromotedContentAdEvent(
-      placement_id, creative_instance_id, event_type, std::move(callback));
+      placement_id, creative_instance_id, mojom_ad_event_type,
+      std::move(callback));
 }
 
 void AdsImpl::TriggerSearchResultAdEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-    const mojom::SearchResultAdEventType event_type,
+    const mojom::SearchResultAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (!is_initialized_) {
     return std::move(callback).Run(/*success=*/false);
   }
 
-  GetAdHandler().TriggerSearchResultAdEvent(std::move(mojom_creative_ad),
-                                            event_type, std::move(callback));
+  GetAdHandler().TriggerSearchResultAdEvent(
+      std::move(mojom_creative_ad), mojom_ad_event_type, std::move(callback));
 }
 
 void AdsImpl::PurgeOrphanedAdEventsForType(
-    const mojom::AdType ad_type,
+    const mojom::AdType mojom_ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
   if (!is_initialized_) {
     return std::move(callback).Run(/*success=*/false);
   }
 
   PurgeOrphanedAdEvents(
-      ad_type,
+      mojom_ad_type,
       base::BindOnce(
-          [](const mojom::AdType ad_type,
+          [](const mojom::AdType mojom_ad_type,
              PurgeOrphanedAdEventsForTypeCallback callback,
              const bool success) {
             if (!success) {
-              BLOG(0, "Failed to purge orphaned ad events for " << ad_type);
+              BLOG(0,
+                   "Failed to purge orphaned ad events for " << mojom_ad_type);
             } else {
-              BLOG(1, "Purged orphaned ad events for " << ad_type);
+              BLOG(1, "Purged orphaned ad events for " << mojom_ad_type);
             }
 
             std::move(callback).Run(success);
           },
-          ad_type, std::move(callback)));
+          mojom_ad_type, std::move(callback)));
 }
 
 void AdsImpl::GetAdHistory(const base::Time from_time,

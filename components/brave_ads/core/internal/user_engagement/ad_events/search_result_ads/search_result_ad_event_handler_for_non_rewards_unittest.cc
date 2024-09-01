@@ -69,20 +69,21 @@ class BraveAdsSearchResultAdEventHandlerForNonRewardsTest
 
   void FireEventAndVerifyExpectations(
       const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad,
-      const mojom::SearchResultAdEventType event_type,
+      const mojom::SearchResultAdEventType mojom_ad_event_type,
       const bool should_fire_event) {
     CHECK(mojom_creative_ad);
 
     base::MockCallback<FireSearchResultAdEventHandlerCallback> callback;
-    EXPECT_CALL(callback, Run(/*success=*/should_fire_event,
-                              mojom_creative_ad->placement_id, event_type));
-    event_handler_.FireEvent(mojom_creative_ad.Clone(), event_type,
+    EXPECT_CALL(callback,
+                Run(/*success=*/should_fire_event,
+                    mojom_creative_ad->placement_id, mojom_ad_event_type));
+    event_handler_.FireEvent(mojom_creative_ad.Clone(), mojom_ad_event_type,
                              callback.Get());
 
     size_t expected_count = 0;
 
     if (should_fire_event &&
-        event_type == mojom::SearchResultAdEventType::kClicked) {
+        mojom_ad_event_type == mojom::SearchResultAdEventType::kClicked) {
       const SearchResultAdInfo ad =
           FromMojomBuildSearchResultAd(mojom_creative_ad);
       expected_count =

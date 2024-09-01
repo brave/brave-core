@@ -30,7 +30,7 @@ SearchResultAdEventHandler::~SearchResultAdEventHandler() {
 
 void SearchResultAdEventHandler::FireEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-    const mojom::SearchResultAdEventType event_type,
+    const mojom::SearchResultAdEventType mojom_ad_event_type,
     FireSearchResultAdEventHandlerCallback callback) const {
   CHECK(mojom_creative_ad);
 
@@ -39,15 +39,15 @@ void SearchResultAdEventHandler::FireEvent(
     BLOG(1,
          "Failed to fire search result ad event due to the ad being invalid");
 
-    return FailedToFireEvent(ad, event_type, std::move(callback));
+    return FailedToFireEvent(ad, mojom_ad_event_type, std::move(callback));
   }
 
-  if (!IsAllowedToFireAdEvent(mojom_creative_ad, event_type)) {
+  if (!IsAllowedToFireAdEvent(mojom_creative_ad, mojom_ad_event_type)) {
     BLOG(1, "Search result ad: Not allowed to fire event");
-    return FailedToFireEvent(ad, event_type, std::move(callback));
+    return FailedToFireEvent(ad, mojom_ad_event_type, std::move(callback));
   }
 
-  switch (event_type) {
+  switch (mojom_ad_event_type) {
     case mojom::SearchResultAdEventType::kServedImpression: {
       MaybeFireServedEvent(
           ad,
@@ -86,12 +86,13 @@ void SearchResultAdEventHandler::MaybeFiredEventCallback(
     FireSearchResultAdEventHandlerCallback callback,
     const bool success,
     const std::string& placement_id,
-    const mojom::SearchResultAdEventType event_type) const {
+    const mojom::SearchResultAdEventType mojom_ad_event_type) const {
   if (success) {
-    MaybeBuildAndSaveCreativeSetConversion(mojom_creative_ad, event_type);
+    MaybeBuildAndSaveCreativeSetConversion(mojom_creative_ad,
+                                           mojom_ad_event_type);
   }
 
-  std::move(callback).Run(success, placement_id, event_type);
+  std::move(callback).Run(success, placement_id, mojom_ad_event_type);
 }
 
 void SearchResultAdEventHandler::MaybeFireServedEvent(
@@ -146,86 +147,89 @@ void SearchResultAdEventHandler::MaybeFireClickedEvent(
 
 void SearchResultAdEventHandler::MaybeFireEvent(
     const SearchResultAdInfo& ad,
-    const mojom::SearchResultAdEventType event_type,
+    const mojom::SearchResultAdEventType mojom_ad_event_type,
     FireSearchResultAdEventHandlerCallback callback) const {
   ad_events_database_table_.GetUnexpired(
       mojom::AdType::kSearchResultAd,
       base::BindOnce(&SearchResultAdEventHandler::MaybeFireEventCallback,
-                     weak_factory_.GetWeakPtr(), ad, event_type,
+                     weak_factory_.GetWeakPtr(), ad, mojom_ad_event_type,
                      std::move(callback)));
 }
 
 void SearchResultAdEventHandler::MaybeFireEventCallback(
     const SearchResultAdInfo& ad,
-    const mojom::SearchResultAdEventType event_type,
+    const mojom::SearchResultAdEventType mojom_ad_event_type,
     FireSearchResultAdEventHandlerCallback callback,
     const bool success,
     const AdEventList& ad_events) const {
   if (!success) {
     BLOG(1, "Search result ad: Failed to get ad events");
-    return FailedToFireEvent(ad, event_type, std::move(callback));
+    return FailedToFireEvent(ad, mojom_ad_event_type, std::move(callback));
   }
 
-  if (!ShouldFireAdEvent(ad, ad_events, event_type)) {
-    return FailedToFireEvent(ad, event_type, std::move(callback));
+  if (!ShouldFireAdEvent(ad, ad_events, mojom_ad_event_type)) {
+    return FailedToFireEvent(ad, mojom_ad_event_type, std::move(callback));
   }
 
-  FireEvent(ad, event_type, std::move(callback));
+  FireEvent(ad, mojom_ad_event_type, std::move(callback));
 }
 
 void SearchResultAdEventHandler::FireEvent(
     const SearchResultAdInfo& ad,
-    const mojom::SearchResultAdEventType event_type,
+    const mojom::SearchResultAdEventType mojom_ad_event_type,
     FireSearchResultAdEventHandlerCallback callback) const {
-  const auto ad_event = SearchResultAdEventFactory::Build(event_type);
+  const auto ad_event = SearchResultAdEventFactory::Build(mojom_ad_event_type);
   ad_event->FireEvent(
       ad, base::BindOnce(&SearchResultAdEventHandler::FireEventCallback,
-                         weak_factory_.GetWeakPtr(), ad, event_type,
+                         weak_factory_.GetWeakPtr(), ad, mojom_ad_event_type,
                          std::move(callback)));
 }
 
 void SearchResultAdEventHandler::FireEventCallback(
     const SearchResultAdInfo& ad,
-    const mojom::SearchResultAdEventType event_type,
+    const mojom::SearchResultAdEventType mojom_ad_event_type,
     FireSearchResultAdEventHandlerCallback callback,
     const bool success) const {
   if (!success) {
-    return FailedToFireEvent(ad, event_type, std::move(callback));
+    return FailedToFireEvent(ad, mojom_ad_event_type, std::move(callback));
   }
 
-  SuccessfullyFiredEvent(ad, event_type, std::move(callback));
+  SuccessfullyFiredEvent(ad, mojom_ad_event_type, std::move(callback));
 }
 
 void SearchResultAdEventHandler::SuccessfullyFiredEvent(
     const SearchResultAdInfo& ad,
-    const mojom::SearchResultAdEventType event_type,
+    const mojom::SearchResultAdEventType mojom_ad_event_type,
     FireSearchResultAdEventHandlerCallback callback) const {
-  NotifyDidFireSearchResultAdEvent(ad, event_type);
+  NotifyDidFireSearchResultAdEvent(ad, mojom_ad_event_type);
 
-  std::move(callback).Run(/*success=*/true, ad.placement_id, event_type);
+  std::move(callback).Run(/*success=*/true, ad.placement_id,
+                          mojom_ad_event_type);
 }
 
 void SearchResultAdEventHandler::FailedToFireEvent(
     const SearchResultAdInfo& ad,
-    const mojom::SearchResultAdEventType event_type,
+    const mojom::SearchResultAdEventType mojom_ad_event_type,
     FireSearchResultAdEventHandlerCallback callback) const {
   BLOG(1, "Failed to fire search result ad "
-              << event_type << " event for placement_id " << ad.placement_id
-              << " and creative instance id " << ad.creative_instance_id);
+              << mojom_ad_event_type << " event for placement_id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
 
-  NotifyFailedToFireSearchResultAdEvent(ad, event_type);
+  NotifyFailedToFireSearchResultAdEvent(ad, mojom_ad_event_type);
 
-  std::move(callback).Run(/*success=*/false, ad.placement_id, event_type);
+  std::move(callback).Run(/*success=*/false, ad.placement_id,
+                          mojom_ad_event_type);
 }
 
 void SearchResultAdEventHandler::NotifyDidFireSearchResultAdEvent(
     const SearchResultAdInfo& ad,
-    mojom::SearchResultAdEventType event_type) const {
+    mojom::SearchResultAdEventType mojom_ad_event_type) const {
   if (!delegate_) {
     return;
   }
 
-  switch (event_type) {
+  switch (mojom_ad_event_type) {
     case mojom::SearchResultAdEventType::kServedImpression: {
       delegate_->OnDidFireSearchResultAdServedEvent(ad);
       break;
@@ -245,9 +249,9 @@ void SearchResultAdEventHandler::NotifyDidFireSearchResultAdEvent(
 
 void SearchResultAdEventHandler::NotifyFailedToFireSearchResultAdEvent(
     const SearchResultAdInfo& ad,
-    mojom::SearchResultAdEventType event_type) const {
+    mojom::SearchResultAdEventType mojom_ad_event_type) const {
   if (delegate_) {
-    delegate_->OnFailedToFireSearchResultAdEvent(ad, event_type);
+    delegate_->OnFailedToFireSearchResultAdEvent(ad, mojom_ad_event_type);
   }
 }
 

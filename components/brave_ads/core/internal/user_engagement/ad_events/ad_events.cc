@@ -37,19 +37,19 @@ void RecordAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {
                     std::move(callback)));
 }
 
-void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
+void PurgeOrphanedAdEvents(const mojom::AdType mojom_ad_type,
                            AdEventCallback callback) {
   const database::table::AdEvents database_table;
   database_table.PurgeOrphaned(
-      ad_type, base::BindOnce(
-                   [](AdEventCallback callback, const bool success) {
-                     if (success) {
-                       RebuildAdEventCache();
-                     }
+      mojom_ad_type, base::BindOnce(
+                         [](AdEventCallback callback, const bool success) {
+                           if (success) {
+                             RebuildAdEventCache();
+                           }
 
-                     std::move(callback).Run(success);
-                   },
-                   std::move(callback)));
+                           std::move(callback).Run(success);
+                         },
+                         std::move(callback)));
 }
 
 void PurgeOrphanedAdEvents(const std::vector<std::string>& placement_ids,

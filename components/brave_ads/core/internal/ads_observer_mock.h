@@ -29,7 +29,7 @@ class AdsObserverMock : public AdsObserverInterface {
 
   MOCK_METHOD(void, OnIneligibleRewardsWalletToServeAds, ());
 
-  MOCK_METHOD(void, OnRemindUser, (mojom::ReminderType type));
+  MOCK_METHOD(void, OnRemindUser, (mojom::ReminderType mojom_reminder_type));
 };
 
 }  // namespace brave_ads

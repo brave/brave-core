@@ -165,10 +165,10 @@ void MockUrlResponses(const AdsClientMock& ads_client_mock,
                       const URLResponseMap& url_responses) {
   ON_CALL(ads_client_mock, UrlRequest)
       .WillByDefault(::testing::Invoke(
-          [url_responses](const mojom::UrlRequestInfoPtr& url_request,
+          [url_responses](const mojom::UrlRequestInfoPtr& mojom_url_request,
                           UrlRequestCallback callback) {
             const std::optional<mojom::UrlResponseInfo> url_response =
-                GetNextUrlResponseForRequest(url_request, url_responses);
+                GetNextUrlResponseForRequest(mojom_url_request, url_responses);
             if (!url_response) {
               // URL request should not be mocked.
               return std::move(callback).Run(/*url_response=*/{});

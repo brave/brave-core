@@ -92,13 +92,12 @@ void RedeemRewardConfirmation::CreateConfirmation(
   BLOG(1, "Create reward confirmation");
 
   CreateRewardConfirmationUrlRequestBuilder url_request_builder(confirmation);
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
-
-  BLOG(6, UrlRequestToString(url_request));
-  BLOG(7, UrlRequestHeadersToString(url_request));
+  mojom::UrlRequestInfoPtr mojom_url_request = url_request_builder.Build();
+  BLOG(6, UrlRequestToString(mojom_url_request));
+  BLOG(7, UrlRequestHeadersToString(mojom_url_request));
 
   GetAdsClient()->UrlRequest(
-      std::move(url_request),
+      std::move(mojom_url_request),
       base::BindOnce(&RedeemRewardConfirmation::CreateConfirmationCallback,
                      std::move(redeem_confirmation), confirmation));
 }
@@ -107,9 +106,9 @@ void RedeemRewardConfirmation::CreateConfirmation(
 void RedeemRewardConfirmation::CreateConfirmationCallback(
     RedeemRewardConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation,
-    const mojom::UrlResponseInfo& url_response) {
-  BLOG(6, UrlResponseToString(url_response));
-  BLOG(7, UrlResponseHeadersToString(url_response));
+    const mojom::UrlResponseInfo& mojom_url_response) {
+  BLOG(6, UrlResponseToString(mojom_url_response));
+  BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
   FetchPaymentTokenAfter(kFetchPaymentTokenAfter.Get(),
                          std::move(redeem_confirmation), confirmation);
@@ -136,12 +135,12 @@ void RedeemRewardConfirmation::FetchPaymentToken(
   BLOG(1, "Fetch payment token");
 
   FetchPaymentTokenUrlRequestBuilder url_request_builder(confirmation);
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
-  BLOG(6, UrlRequestToString(url_request));
-  BLOG(7, UrlRequestHeadersToString(url_request));
+  mojom::UrlRequestInfoPtr mojom_url_request = url_request_builder.Build();
+  BLOG(6, UrlRequestToString(mojom_url_request));
+  BLOG(7, UrlRequestHeadersToString(mojom_url_request));
 
   GetAdsClient()->UrlRequest(
-      std::move(url_request),
+      std::move(mojom_url_request),
       base::BindOnce(&RedeemRewardConfirmation::FetchPaymentTokenCallback,
                      std::move(redeem_confirmation), confirmation));
 }
@@ -150,12 +149,12 @@ void RedeemRewardConfirmation::FetchPaymentToken(
 void RedeemRewardConfirmation::FetchPaymentTokenCallback(
     RedeemRewardConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation,
-    const mojom::UrlResponseInfo& url_response) {
-  BLOG(6, UrlResponseToString(url_response));
-  BLOG(7, UrlResponseHeadersToString(url_response));
+    const mojom::UrlResponseInfo& mojom_url_response) {
+  BLOG(6, UrlResponseToString(mojom_url_response));
+  BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
   const auto handle_url_response_result =
-      HandleFetchPaymentTokenUrlResponse(confirmation, url_response);
+      HandleFetchPaymentTokenUrlResponse(confirmation, mojom_url_response);
   if (!handle_url_response_result.has_value()) {
     const auto& [failure, should_retry] = handle_url_response_result.error();
 
@@ -180,32 +179,32 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
 base::expected<PaymentTokenInfo, std::tuple<std::string, bool>>
 RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
     const ConfirmationInfo& confirmation,
-    const mojom::UrlResponseInfo& url_response) {
-  if (url_response.status_code == net::HTTP_NOT_FOUND) {
+    const mojom::UrlResponseInfo& mojom_url_response) {
+  if (mojom_url_response.status_code == net::HTTP_NOT_FOUND) {
     return base::unexpected(
         std::make_tuple("Confirmation not found", /*should_retry=*/true));
   }
 
-  if (url_response.status_code == net::HTTP_BAD_REQUEST) {
+  if (mojom_url_response.status_code == net::HTTP_BAD_REQUEST) {
     return base::unexpected(
         std::make_tuple("Credential is invalid", /*should_retry=*/false));
   }
 
-  if (url_response.status_code == net::HTTP_ACCEPTED) {
+  if (mojom_url_response.status_code == net::HTTP_ACCEPTED) {
     return base::unexpected(
         std::make_tuple("Payment token is not ready", /*should_retry=*/true));
   }
 
-  if (url_response.status_code != net::HTTP_OK) {
+  if (mojom_url_response.status_code != net::HTTP_OK) {
     return base::unexpected(std::make_tuple("Failed to fetch payment token",
                                             /*should_retry=*/true));
   }
 
   const std::optional<base::Value::Dict> dict =
-      base::JSONReader::ReadDict(url_response.body);
+      base::JSONReader::ReadDict(mojom_url_response.body);
   if (!dict) {
     return base::unexpected(std::make_tuple(
-        base::StrCat({"Failed to parse response: ", url_response.body}),
+        base::StrCat({"Failed to parse response: ", mojom_url_response.body}),
         /*should_retry=*/true));
   }
 

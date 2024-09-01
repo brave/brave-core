@@ -58,7 +58,7 @@ class NewTabPageAdEventHandlerDelegateMock
               OnFailedToFireNewTabPageAdEvent,
               (const std::string& placement_id,
                const std::string& creative_instance_id,
-               const mojom::NewTabPageAdEventType event_type));
+               const mojom::NewTabPageAdEventType mojom_ad_event_type));
 };
 
 }  // namespace brave_ads

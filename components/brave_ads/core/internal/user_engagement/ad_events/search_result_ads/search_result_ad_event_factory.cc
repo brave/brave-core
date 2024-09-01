@@ -14,8 +14,8 @@ namespace brave_ads {
 
 std::unique_ptr<AdEventInterface<SearchResultAdInfo>>
 SearchResultAdEventFactory::Build(
-    const mojom::SearchResultAdEventType event_type) {
-  switch (event_type) {
+    const mojom::SearchResultAdEventType mojom_ad_event_type) {
+  switch (mojom_ad_event_type) {
     case mojom::SearchResultAdEventType::kServedImpression: {
       return std::make_unique<SearchResultAdEventServed>();
     }

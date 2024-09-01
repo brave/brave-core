@@ -36,15 +36,16 @@ class PromotedContentAdHandler final
 
   void TriggerEvent(const std::string& placement_id,
                     const std::string& creative_instance_id,
-                    mojom::PromotedContentAdEventType event_type,
+                    mojom::PromotedContentAdEventType mojom_ad_event_type,
                     TriggerAdEventCallback callback);
 
  private:
-  void TriggerServedEventCallback(const std::string& creative_instance_id,
-                                  TriggerAdEventCallback callback,
-                                  bool success,
-                                  const std::string& placement_id,
-                                  mojom::PromotedContentAdEventType event_type);
+  void TriggerServedEventCallback(
+      const std::string& creative_instance_id,
+      TriggerAdEventCallback callback,
+      bool success,
+      const std::string& placement_id,
+      mojom::PromotedContentAdEventType mojom_ad_event_type);
 
   // PromotedContentAdEventHandlerDelegate:
   void OnDidFirePromotedContentAdServedEvent(

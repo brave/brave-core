@@ -10,10 +10,11 @@
 
 namespace brave_ads {
 
-mojom::ReactionType ToggleLikedReactionType(mojom::ReactionType reaction_type);
+mojom::ReactionType ToggleLikedReactionType(
+    mojom::ReactionType mojom_reaction_type);
 
 mojom::ReactionType ToggleDislikedReactionType(
-    mojom::ReactionType reaction_type);
+    mojom::ReactionType mojom_reaction_type);
 
 }  // namespace brave_ads
 

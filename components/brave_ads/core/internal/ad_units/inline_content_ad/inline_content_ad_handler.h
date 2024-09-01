@@ -51,7 +51,7 @@ class InlineContentAdHandler final : public InlineContentAdEventHandlerDelegate,
 
   void TriggerEvent(const std::string& placement_id,
                     const std::string& creative_instance_id,
-                    mojom::InlineContentAdEventType event_type,
+                    mojom::InlineContentAdEventType mojom_ad_event_type,
                     TriggerAdEventCallback callback);
 
  private:

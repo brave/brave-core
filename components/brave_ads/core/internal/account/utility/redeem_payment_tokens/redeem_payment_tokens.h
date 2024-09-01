@@ -44,10 +44,10 @@ class RedeemPaymentTokens final {
   void RedeemAfterDelay();
   void Redeem();
   void RedeemCallback(const PaymentTokenList& payment_tokens,
-                      const mojom::UrlResponseInfo& url_response);
+                      const mojom::UrlResponseInfo& mojom_url_response);
 
   static base::expected<void, std::tuple<std::string, bool>> HandleUrlResponse(
-      const mojom::UrlResponseInfo& url_response);
+      const mojom::UrlResponseInfo& mojom_url_response);
 
   void SuccessfullyRedeemed(const PaymentTokenList& payment_tokens);
   void FailedToRedeem(bool should_retry);

@@ -63,36 +63,36 @@ void IssuersUrlRequest::Fetch() {
   is_fetching_ = true;
 
   IssuersUrlRequestBuilder url_request_builder;
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
-  BLOG(6, UrlRequestToString(url_request));
-  BLOG(7, UrlRequestHeadersToString(url_request));
+  mojom::UrlRequestInfoPtr mojom_url_request = url_request_builder.Build();
+  BLOG(6, UrlRequestToString(mojom_url_request));
+  BLOG(7, UrlRequestHeadersToString(mojom_url_request));
 
-  GetAdsClient()->UrlRequest(std::move(url_request),
+  GetAdsClient()->UrlRequest(std::move(mojom_url_request),
                              base::BindOnce(&IssuersUrlRequest::FetchCallback,
                                             weak_factory_.GetWeakPtr()));
 }
 
 void IssuersUrlRequest::FetchCallback(
-    const mojom::UrlResponseInfo& url_response) {
-  BLOG(6, UrlResponseToString(url_response));
-  BLOG(7, UrlResponseHeadersToString(url_response));
+    const mojom::UrlResponseInfo& mojom_url_response) {
+  BLOG(6, UrlResponseToString(mojom_url_response));
+  BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
   is_fetching_ = false;
 
-  if (url_response.status_code == net::kHttpUpgradeRequired) {
+  if (mojom_url_response.status_code == net::kHttpUpgradeRequired) {
     BLOG(1, "Failed to fetch issuers as a browser upgrade is required");
 
     return AdsNotifierManager::GetInstance()
         .NotifyBrowserUpgradeRequiredToServeAds();
   }
 
-  if (url_response.status_code != net::HTTP_OK) {
+  if (mojom_url_response.status_code != net::HTTP_OK) {
     return FailedToFetchIssuers();
   }
 
   BLOG(1, "Parsing issuers");
   const std::optional<IssuersInfo> issuers =
-      json::reader::ReadIssuers(url_response.body);
+      json::reader::ReadIssuers(mojom_url_response.body);
   if (!issuers) {
     BLOG(0, "Failed to parse issuers");
 

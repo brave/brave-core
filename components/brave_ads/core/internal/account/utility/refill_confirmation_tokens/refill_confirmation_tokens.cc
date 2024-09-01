@@ -105,22 +105,22 @@ void RefillConfirmationTokens::RequestSignedTokens() {
 
   RequestSignedTokensUrlRequestBuilder url_request_builder(wallet_,
                                                            *blinded_tokens_);
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
-  BLOG(6, UrlRequestToString(url_request));
-  BLOG(7, UrlRequestHeadersToString(url_request));
+  mojom::UrlRequestInfoPtr mojom_url_request = url_request_builder.Build();
+  BLOG(6, UrlRequestToString(mojom_url_request));
+  BLOG(7, UrlRequestHeadersToString(mojom_url_request));
 
   GetAdsClient()->UrlRequest(
-      std::move(url_request),
+      std::move(mojom_url_request),
       base::BindOnce(&RefillConfirmationTokens::RequestSignedTokensCallback,
                      weak_factory_.GetWeakPtr()));
 }
 
 void RefillConfirmationTokens::RequestSignedTokensCallback(
-    const mojom::UrlResponseInfo& url_response) {
-  BLOG(6, UrlResponseToString(url_response));
-  BLOG(7, UrlResponseHeadersToString(url_response));
+    const mojom::UrlResponseInfo& mojom_url_response) {
+  BLOG(6, UrlResponseToString(mojom_url_response));
+  BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
-  const auto result = HandleRequestSignedTokensUrlResponse(url_response);
+  const auto result = HandleRequestSignedTokensUrlResponse(mojom_url_response);
   if (!result.has_value()) {
     const auto& [failure, should_retry] = result.error();
 
@@ -134,8 +134,8 @@ void RefillConfirmationTokens::RequestSignedTokensCallback(
 
 base::expected<void, std::tuple<std::string, bool>>
 RefillConfirmationTokens::HandleRequestSignedTokensUrlResponse(
-    const mojom::UrlResponseInfo& url_response) {
-  if (url_response.status_code == net::kHttpUpgradeRequired) {
+    const mojom::UrlResponseInfo& mojom_url_response) {
+  if (mojom_url_response.status_code == net::kHttpUpgradeRequired) {
     AdsNotifierManager::GetInstance().NotifyBrowserUpgradeRequiredToServeAds();
 
     return base::unexpected(std::make_tuple(
@@ -143,16 +143,16 @@ RefillConfirmationTokens::HandleRequestSignedTokensUrlResponse(
         /*should_retry=*/false));
   }
 
-  if (url_response.status_code != net::HTTP_CREATED) {
+  if (mojom_url_response.status_code != net::HTTP_CREATED) {
     return base::unexpected(std::make_tuple("Failed to request signed tokens",
                                             /*should_retry=*/true));
   }
 
   const std::optional<base::Value::Dict> dict =
-      base::JSONReader::ReadDict(url_response.body);
+      base::JSONReader::ReadDict(mojom_url_response.body);
   if (!dict) {
     return base::unexpected(std::make_tuple(
-        base::StrCat({"Failed to parse response: ", url_response.body}),
+        base::StrCat({"Failed to parse response: ", mojom_url_response.body}),
         /*should_retry=*/false));
   }
 
@@ -176,22 +176,22 @@ void RefillConfirmationTokens::GetSignedTokens() {
   BLOG(1, "Get signed tokens");
 
   GetSignedTokensUrlRequestBuilder url_request_builder(wallet_, *nonce_);
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
-  BLOG(6, UrlRequestToString(url_request));
-  BLOG(7, UrlRequestHeadersToString(url_request));
+  mojom::UrlRequestInfoPtr mojom_url_request = url_request_builder.Build();
+  BLOG(6, UrlRequestToString(mojom_url_request));
+  BLOG(7, UrlRequestHeadersToString(mojom_url_request));
 
   GetAdsClient()->UrlRequest(
-      std::move(url_request),
+      std::move(mojom_url_request),
       base::BindOnce(&RefillConfirmationTokens::GetSignedTokensCallback,
                      weak_factory_.GetWeakPtr()));
 }
 
 void RefillConfirmationTokens::GetSignedTokensCallback(
-    const mojom::UrlResponseInfo& url_response) {
-  BLOG(6, UrlResponseToString(url_response));
-  BLOG(7, UrlResponseHeadersToString(url_response));
+    const mojom::UrlResponseInfo& mojom_url_response) {
+  BLOG(6, UrlResponseToString(mojom_url_response));
+  BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
-  const auto result = HandleGetSignedTokensUrlResponse(url_response);
+  const auto result = HandleGetSignedTokensUrlResponse(mojom_url_response);
   if (!result.has_value()) {
     const auto& [failure, should_retry] = result.error();
 
@@ -205,11 +205,11 @@ void RefillConfirmationTokens::GetSignedTokensCallback(
 
 base::expected<void, std::tuple<std::string, bool>>
 RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
-    const mojom::UrlResponseInfo& url_response) {
+    const mojom::UrlResponseInfo& mojom_url_response) {
   CHECK(tokens_);
   CHECK(blinded_tokens_);
 
-  if (url_response.status_code == net::kHttpUpgradeRequired) {
+  if (mojom_url_response.status_code == net::kHttpUpgradeRequired) {
     AdsNotifierManager::GetInstance().NotifyBrowserUpgradeRequiredToServeAds();
 
     return base::unexpected(std::make_tuple(
@@ -217,21 +217,21 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
         /*should_retry=*/false));
   }
 
-  if (url_response.status_code != net::HTTP_OK &&
-      url_response.status_code != net::HTTP_UNAUTHORIZED) {
+  if (mojom_url_response.status_code != net::HTTP_OK &&
+      mojom_url_response.status_code != net::HTTP_UNAUTHORIZED) {
     return base::unexpected(std::make_tuple("Failed to get signed tokens",
                                             /*should_retry=*/true));
   }
 
   const std::optional<base::Value::Dict> dict =
-      base::JSONReader::ReadDict(url_response.body);
+      base::JSONReader::ReadDict(mojom_url_response.body);
   if (!dict) {
     return base::unexpected(std::make_tuple(
-        base::StrCat({"Failed to parse response: ", url_response.body}),
+        base::StrCat({"Failed to parse response: ", mojom_url_response.body}),
         /*should_retry=*/false));
   }
 
-  if (url_response.status_code == net::HTTP_UNAUTHORIZED) {
+  if (mojom_url_response.status_code == net::HTTP_UNAUTHORIZED) {
     ParseAndRequireCaptcha(*dict);
 
     return base::unexpected(std::make_tuple(

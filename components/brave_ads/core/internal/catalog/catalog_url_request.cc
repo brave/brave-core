@@ -65,40 +65,40 @@ void CatalogUrlRequest::Fetch() {
   is_fetching_ = true;
 
   CatalogUrlRequestBuilder url_request_builder;
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
-  BLOG(6, UrlRequestToString(url_request));
-  BLOG(7, UrlRequestHeadersToString(url_request));
+  mojom::UrlRequestInfoPtr mojom_url_request = url_request_builder.Build();
+  BLOG(6, UrlRequestToString(mojom_url_request));
+  BLOG(7, UrlRequestHeadersToString(mojom_url_request));
 
-  GetAdsClient()->UrlRequest(std::move(url_request),
+  GetAdsClient()->UrlRequest(std::move(mojom_url_request),
                              base::BindOnce(&CatalogUrlRequest::FetchCallback,
                                             weak_factory_.GetWeakPtr()));
 }
 
 void CatalogUrlRequest::FetchCallback(
-    const mojom::UrlResponseInfo& url_response) {
-  BLOG(7, UrlResponseToString(url_response));
-  BLOG(7, UrlResponseHeadersToString(url_response));
+    const mojom::UrlResponseInfo& mojom_url_response) {
+  BLOG(7, UrlResponseToString(mojom_url_response));
+  BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
   is_fetching_ = false;
 
-  if (url_response.status_code == net::kHttpUpgradeRequired) {
+  if (mojom_url_response.status_code == net::kHttpUpgradeRequired) {
     BLOG(1, "Failed to request catalog as a browser upgrade is required");
     return AdsNotifierManager::GetInstance()
         .NotifyBrowserUpgradeRequiredToServeAds();
   }
 
-  if (url_response.status_code == net::HTTP_NOT_MODIFIED) {
+  if (mojom_url_response.status_code == net::HTTP_NOT_MODIFIED) {
     BLOG(1, "Catalog is up to date");
     return FetchAfterDelay();
   }
 
-  if (url_response.status_code != net::HTTP_OK) {
+  if (mojom_url_response.status_code != net::HTTP_OK) {
     return FailedToFetchCatalog();
   }
 
   BLOG(1, "Parsing catalog");
   const std::optional<CatalogInfo> catalog =
-      json::reader::ReadCatalog(url_response.body);
+      json::reader::ReadCatalog(mojom_url_response.body);
   if (!catalog) {
     BLOG(0, "Failed to parse catalog");
     return FailedToFetchCatalog();

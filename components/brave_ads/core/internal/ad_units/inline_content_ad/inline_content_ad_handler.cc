@@ -33,7 +33,7 @@ void FireServedEventCallback(
     MaybeServeInlineContentAdCallback callback,
     const bool success,
     const std::string& /*placement_id*/,
-    const mojom::InlineContentAdEventType /*event_type*/) {
+    const mojom::InlineContentAdEventType /*mojom_ad_event_type*/) {
   if (!success) {
     return std::move(callback).Run(dimensions, /*ad=*/std::nullopt);
   }
@@ -41,10 +41,11 @@ void FireServedEventCallback(
   std::move(callback).Run(dimensions, ad);
 }
 
-void FireEventCallback(TriggerAdEventCallback callback,
-                       const bool success,
-                       const std::string& /*placement_id*/,
-                       const mojom::InlineContentAdEventType /*event_type*/) {
+void FireEventCallback(
+    TriggerAdEventCallback callback,
+    const bool success,
+    const std::string& /*placement_id*/,
+    const mojom::InlineContentAdEventType /*mojom_ad_event_type*/) {
   std::move(callback).Run(success);
 }
 
@@ -81,9 +82,10 @@ void InlineContentAdHandler::MaybeServe(
 void InlineContentAdHandler::TriggerEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::InlineContentAdEventType event_type,
+    const mojom::InlineContentAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
-  CHECK_NE(mojom::InlineContentAdEventType::kServedImpression, event_type)
+  CHECK_NE(mojom::InlineContentAdEventType::kServedImpression,
+           mojom_ad_event_type)
       << "Should not be called with kServedImpression as this event is handled "
          "when calling MaybeServe";
 
@@ -98,7 +100,7 @@ void InlineContentAdHandler::TriggerEvent(
   }
 
   event_handler_.FireEvent(
-      placement_id, creative_instance_id, event_type,
+      placement_id, creative_instance_id, mojom_ad_event_type,
       base::BindOnce(&FireEventCallback, std::move(callback)));
 }
 

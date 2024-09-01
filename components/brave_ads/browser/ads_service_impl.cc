@@ -110,10 +110,11 @@ int ResourceBundleId(const std::string& name) {
   NOTREACHED_NORETURN();
 }
 
-std::string URLMethodToRequestType(mojom::UrlRequestMethodType method) {
-  CHECK(mojom::IsKnownEnumValue(method));
+std::string URLMethodToRequestType(
+    const mojom::UrlRequestMethodType mojom_url_request_method) {
+  CHECK(mojom::IsKnownEnumValue(mojom_url_request_method));
 
-  switch (method) {
+  switch (mojom_url_request_method) {
     case mojom::UrlRequestMethodType::kGet: {
       return "GET";
     }
@@ -187,8 +188,8 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 void OnUrlLoaderResponseStartedCallback(
     const GURL& /*final_url*/,
-    const network::mojom::URLResponseHead& response_head) {
-  if (response_head.headers->response_code() == -1) {
+    const network::mojom::URLResponseHead& mojom_url_response_head) {
+  if (mojom_url_response_head.headers->response_code() == -1) {
     VLOG(6) << "Response headers are malformed!!";
   }
 }
@@ -464,7 +465,7 @@ void AdsServiceImpl::InitializeRewardsWallet(
 
 void AdsServiceImpl::InitializeRewardsWalletCallback(
     const size_t current_start_number,
-    brave_rewards::mojom::RewardsWalletPtr wallet) {
+    brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet) {
   if (!ShouldProceedInitialization(current_start_number)) {
     return;
   }
@@ -473,27 +474,27 @@ void AdsServiceImpl::InitializeRewardsWalletCallback(
     return;
   }
 
-  if (!wallet && UserHasJoinedBraveRewards()) {
+  if (!mojom_rewards_wallet && UserHasJoinedBraveRewards()) {
     VLOG(1) << "Failed to initialize Brave Rewards wallet";
     return ShutdownAdsService();
   }
 
-  InitializeBatAds(std::move(wallet));
+  InitializeBatAds(std::move(mojom_rewards_wallet));
 }
 
 void AdsServiceImpl::InitializeBatAds(
-    brave_rewards::mojom::RewardsWalletPtr rewards_wallet) {
+    brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return;
   }
 
   mojom::WalletInfoPtr mojom_wallet;
 
-  if (rewards_wallet) {
+  if (mojom_rewards_wallet) {
     mojom_wallet = mojom::WalletInfo::New();
-    mojom_wallet->payment_id = rewards_wallet->payment_id;
+    mojom_wallet->payment_id = mojom_rewards_wallet->payment_id;
     mojom_wallet->recovery_seed_base64 =
-        base::Base64Encode(rewards_wallet->recovery_seed);
+        base::Base64Encode(mojom_rewards_wallet->recovery_seed);
   }
 
   bat_ads_associated_remote_->Initialize(
@@ -560,11 +561,12 @@ void AdsServiceImpl::SetBuildChannel() {
     return;
   }
 
-  mojom::BuildChannelInfoPtr build_channel = mojom::BuildChannelInfo::New();
-  build_channel->name = brave::GetChannelName();
-  build_channel->is_release = build_channel->name == "release";
+  mojom::BuildChannelInfoPtr mojom_build_channel =
+      mojom::BuildChannelInfo::New();
+  mojom_build_channel->name = brave::GetChannelName();
+  mojom_build_channel->is_release = mojom_build_channel->name == "release";
 
-  bat_ads_associated_remote_->SetBuildChannel(std::move(build_channel));
+  bat_ads_associated_remote_->SetBuildChannel(std::move(mojom_build_channel));
 }
 
 void AdsServiceImpl::SetFlags() {
@@ -572,16 +574,16 @@ void AdsServiceImpl::SetFlags() {
     return;
   }
 
-  mojom::FlagsPtr flags = BuildFlags();
-  CHECK(flags);
+  mojom::FlagsPtr mojom_flags = BuildFlags();
+  CHECK(mojom_flags);
 #if BUILDFLAG(IS_ANDROID)
   if (profile_->GetPrefs()->GetBoolean(
           brave_rewards::prefs::kUseRewardsStagingServer)) {
-    flags->environment_type = mojom::EnvironmentType::kStaging;
+    mojom_flags->environment_type = mojom::EnvironmentType::kStaging;
   }
 #endif  // BUILDFLAG(IS_ANDROID)
 
-  bat_ads_associated_remote_->SetFlags(std::move(flags));
+  bat_ads_associated_remote_->SetFlags(std::move(mojom_flags));
 }
 
 bool AdsServiceImpl::ShouldShowOnboardingNotification() {
@@ -603,12 +605,15 @@ void AdsServiceImpl::MaybeShowOnboardingNotification() {
   }
 }
 
-void AdsServiceImpl::ShowReminder(const mojom::ReminderType type) {
+void AdsServiceImpl::ShowReminder(
+    const mojom::ReminderType mojom_reminder_type) {
+  CHECK(mojom::IsKnownEnumValue(mojom_reminder_type));
+
 #if !BUILDFLAG(IS_ANDROID)
   if (UserHasOptedInToNotificationAds() && CheckIfCanShowNotificationAds()) {
     // TODO(https://github.com/brave/brave-browser/issues/29587): Decouple Brave
     // Ads reminders from notification ads.
-    ShowNotificationAd(BuildReminder(type));
+    ShowNotificationAd(BuildReminder(mojom_reminder_type));
   }
 #endif
 }
@@ -757,10 +762,11 @@ void AdsServiceImpl::GetRewardsWallet() {
 }
 
 void AdsServiceImpl::NotifyRewardsWalletDidUpdate(
-    brave_rewards::mojom::RewardsWalletPtr wallet) {
-  if (wallet && bat_ads_client_notifier_remote_.is_bound()) {
+    brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet) {
+  if (mojom_rewards_wallet && bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_remote_->NotifyRewardsWalletDidUpdate(
-        wallet->payment_id, base::Base64Encode(wallet->recovery_seed));
+        mojom_rewards_wallet->payment_id,
+        base::Base64Encode(mojom_rewards_wallet->recovery_seed));
   }
 }
 
@@ -1052,13 +1058,13 @@ void AdsServiceImpl::URLRequestCallback(
     }
   }
 
-  mojom::UrlResponseInfoPtr url_response = mojom::UrlResponseInfo::New();
-  url_response->url = url_loader->GetFinalURL();
-  url_response->status_code = response_code;
-  url_response->body = response_body ? *response_body : "";
-  url_response->headers = headers;
+  mojom::UrlResponseInfoPtr mojom_url_response = mojom::UrlResponseInfo::New();
+  mojom_url_response->url = url_loader->GetFinalURL();
+  mojom_url_response->status_code = response_code;
+  mojom_url_response->body = response_body ? *response_body : "";
+  mojom_url_response->headers = headers;
 
-  std::move(callback).Run(std::move(url_response));
+  std::move(callback).Run(std::move(mojom_url_response));
 }
 
 void AdsServiceImpl::ShowScheduledCaptchaCallback(
@@ -1122,11 +1128,13 @@ void AdsServiceImpl::Shutdown() {
 }
 
 void AdsServiceImpl::AddBatAdsObserver(
-    mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer) {
-  CHECK(observer.is_valid());
+    mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>
+        bat_ads_observer_pending_remote) {
+  CHECK(bat_ads_observer_pending_remote.is_valid());
 
   if (bat_ads_associated_remote_.is_bound()) {
-    bat_ads_associated_remote_->AddBatAdsObserver(std::move(observer));
+    bat_ads_associated_remote_->AddBatAdsObserver(
+        std::move(bat_ads_observer_pending_remote));
   }
 }
 
@@ -1217,16 +1225,17 @@ void AdsServiceImpl::MaybeServeInlineContentAd(
 void AdsServiceImpl::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::InlineContentAdEventType event_type,
+    const mojom::InlineContentAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
   }
 
   bat_ads_associated_remote_->TriggerInlineContentAdEvent(
-      placement_id, creative_instance_id, event_type, std::move(callback));
+      placement_id, creative_instance_id, mojom_ad_event_type,
+      std::move(callback));
 }
 
 void AdsServiceImpl::PrefetchNewTabPageAd() {
@@ -1270,53 +1279,55 @@ void AdsServiceImpl::OnFailedToPrefetchNewTabPageAd(
 void AdsServiceImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::NewTabPageAdEventType event_type,
+    const mojom::NewTabPageAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
   }
 
   bat_ads_associated_remote_->TriggerNewTabPageAdEvent(
-      placement_id, creative_instance_id, event_type, std::move(callback));
+      placement_id, creative_instance_id, mojom_ad_event_type,
+      std::move(callback));
 }
 
 void AdsServiceImpl::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::PromotedContentAdEventType event_type,
+    const mojom::PromotedContentAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
   }
 
   bat_ads_associated_remote_->TriggerPromotedContentAdEvent(
-      placement_id, creative_instance_id, event_type, std::move(callback));
+      placement_id, creative_instance_id, mojom_ad_event_type,
+      std::move(callback));
 }
 
 void AdsServiceImpl::TriggerSearchResultAdEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-    const mojom::SearchResultAdEventType event_type,
+    const mojom::SearchResultAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(event_type));
+  CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   if (bat_ads_associated_remote_.is_bound()) {
     bat_ads_associated_remote_->TriggerSearchResultAdEvent(
-        std::move(mojom_creative_ad), event_type, std::move(callback));
+        std::move(mojom_creative_ad), mojom_ad_event_type, std::move(callback));
   }
 }
 
 void AdsServiceImpl::PurgeOrphanedAdEventsForType(
-    const mojom::AdType ad_type,
+    const mojom::AdType mojom_ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(ad_type));
+  CHECK(mojom::IsKnownEnumValue(mojom_ad_type));
 
   if (bat_ads_associated_remote_.is_bound()) {
     bat_ads_associated_remote_->PurgeOrphanedAdEventsForType(
-        ad_type, std::move(callback));
+        mojom_ad_type, std::move(callback));
   }
 }
 
@@ -1606,25 +1617,25 @@ void AdsServiceImpl::GetSiteHistory(const int max_count,
       &history_service_task_tracker_);
 }
 
-void AdsServiceImpl::UrlRequest(mojom::UrlRequestInfoPtr url_request,
+void AdsServiceImpl::UrlRequest(mojom::UrlRequestInfoPtr mojom_url_request,
                                 UrlRequestCallback callback) {
-  CHECK(url_request);
-  CHECK(url_request->url.is_valid());
+  CHECK(mojom_url_request);
+  CHECK(mojom_url_request->url.is_valid());
 
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = url_request->url;
-  resource_request->method = URLMethodToRequestType(url_request->method);
+  resource_request->url = mojom_url_request->url;
+  resource_request->method = URLMethodToRequestType(mojom_url_request->method);
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  for (const auto& header : url_request->headers) {
+  for (const auto& header : mojom_url_request->headers) {
     resource_request->headers.AddHeaderFromString(header);
   }
 
   auto url_loader = network::SimpleURLLoader::Create(
       std::move(resource_request), GetNetworkTrafficAnnotationTag());
 
-  if (!url_request->content.empty()) {
-    url_loader->AttachStringForUpload(url_request->content,
-                                      url_request->content_type);
+  if (!mojom_url_request->content.empty()) {
+    url_loader->AttachStringForUpload(mojom_url_request->content,
+                                      mojom_url_request->content_type);
   }
 
   url_loader->SetOnResponseStartedCallback(
@@ -1825,8 +1836,11 @@ void AdsServiceImpl::OnBrowserUpgradeRequiredToServeAds() {
   browser_upgrade_required_to_serve_ads_ = true;
 }
 
-void AdsServiceImpl::OnRemindUser(const brave_ads::mojom::ReminderType type) {
-  ShowReminder(type);
+void AdsServiceImpl::OnRemindUser(
+    const brave_ads::mojom::ReminderType mojom_reminder_type) {
+  CHECK(mojom::IsKnownEnumValue(mojom_reminder_type));
+
+  ShowReminder(mojom_reminder_type);
 }
 
 void AdsServiceImpl::OnBrowserDidEnterForeground() {

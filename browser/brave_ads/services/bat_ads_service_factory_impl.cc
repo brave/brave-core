@@ -27,21 +27,23 @@ namespace {
 
 // Binds the `receiver` to a new provider on a background task runner.
 void BindInProcessBatAdsService(
-    mojo::PendingReceiver<bat_ads::mojom::BatAdsService> receiver) {
+    mojo::PendingReceiver<bat_ads::mojom::BatAdsService>
+        bat_ads_service_pending_receiver) {
   mojo::MakeSelfOwnedReceiver(std::make_unique<bat_ads::BatAdsServiceImpl>(),
-                              std::move(receiver));
+                              std::move(bat_ads_service_pending_receiver));
 }
 
 // Launches an in process Bat Ads Service.
 mojo::Remote<bat_ads::mojom::BatAdsService> LaunchInProcessBatAdsService() {
-  mojo::Remote<bat_ads::mojom::BatAdsService> remote;
+  mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_remote;
   base::ThreadPool::CreateSingleThreadTaskRunner(
       {base::MayBlock(), base::WithBaseSyncPrimitives()},
       base::SingleThreadTaskRunnerThreadMode::DEDICATED)
-      ->PostTask(FROM_HERE,
-                 base::BindOnce(&BindInProcessBatAdsService,
-                                remote.BindNewPipeAndPassReceiver()));
-  return remote;
+      ->PostTask(
+          FROM_HERE,
+          base::BindOnce(&BindInProcessBatAdsService,
+                         bat_ads_service_remote.BindNewPipeAndPassReceiver()));
+  return bat_ads_service_remote;
 }
 
 // Launches a new Bat Ads Service utility process.

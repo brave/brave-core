@@ -21,7 +21,8 @@ namespace bat_ads {
 class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
  public:
   explicit BatAdsClientNotifierImpl(
-      mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier);
+      mojo::PendingReceiver<mojom::BatAdsClientNotifier>
+          bat_ads_client_notifier_pending_receiver);
 
   BatAdsClientNotifierImpl(const BatAdsClientNotifierImpl& other) = delete;
   BatAdsClientNotifierImpl& operator=(const BatAdsClientNotifierImpl& other) =
@@ -140,8 +141,10 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
  private:
   brave_ads::AdsClientNotifier ads_client_notifier_;
 
-  mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier> pending_receiver_;
-  mojo::Receiver<bat_ads::mojom::BatAdsClientNotifier> receiver_{this};
+  mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier>
+      bat_ads_client_notifier_pending_receiver_;
+  mojo::Receiver<bat_ads::mojom::BatAdsClientNotifier>
+      bat_ads_client_notifier_receiver_{this};
 };
 
 }  // namespace bat_ads

@@ -19,10 +19,10 @@
 
 namespace brave_ads {
 
-using FireNewTabPageAdEventHandlerCallback =
-    base::OnceCallback<void(const bool success,
-                            const std::string& placement_id,
-                            const mojom::NewTabPageAdEventType event_type)>;
+using FireNewTabPageAdEventHandlerCallback = base::OnceCallback<void(
+    const bool success,
+    const std::string& placement_id,
+    const mojom::NewTabPageAdEventType mojom_ad_event_type)>;
 
 struct CreativeNewTabPageAdInfo;
 struct NewTabPageAdInfo;
@@ -47,46 +47,46 @@ class NewTabPageAdEventHandler final : public NewTabPageAdEventHandlerDelegate {
 
   void FireEvent(const std::string& placement_id,
                  const std::string& creative_instance_id,
-                 mojom::NewTabPageAdEventType event_type,
+                 mojom::NewTabPageAdEventType mojom_ad_event_type,
                  FireNewTabPageAdEventHandlerCallback callback);
 
  private:
   void GetCreativeAdCallback(const std::string& placement_id,
-                             mojom::NewTabPageAdEventType event_type,
+                             mojom::NewTabPageAdEventType mojom_ad_event_type,
                              FireNewTabPageAdEventHandlerCallback callback,
                              bool success,
                              const std::string& creative_instance_id,
                              const CreativeNewTabPageAdInfo& creative_ad);
   void GetAdEventsCallback(const NewTabPageAdInfo& ad,
-                           mojom::NewTabPageAdEventType event_type,
+                           mojom::NewTabPageAdEventType mojom_ad_event_type,
                            FireNewTabPageAdEventHandlerCallback callback,
                            bool success,
                            const AdEventList& ad_events);
 
   void FireEvent(const NewTabPageAdInfo& ad,
-                 mojom::NewTabPageAdEventType event_type,
+                 mojom::NewTabPageAdEventType mojom_ad_event_type,
                  FireNewTabPageAdEventHandlerCallback callback) const;
   void FireEventCallback(const NewTabPageAdInfo& ad,
-                         mojom::NewTabPageAdEventType event_type,
+                         mojom::NewTabPageAdEventType mojom_ad_event_type,
                          FireNewTabPageAdEventHandlerCallback callback,
                          bool success) const;
 
   void SuccessfullyFiredEvent(
       const NewTabPageAdInfo& ad,
-      mojom::NewTabPageAdEventType event_type,
+      mojom::NewTabPageAdEventType mojom_ad_event_type,
       FireNewTabPageAdEventHandlerCallback callback) const;
   void FailedToFireEvent(const std::string& placement_id,
                          const std::string& creative_instance_id,
-                         mojom::NewTabPageAdEventType event_type,
+                         mojom::NewTabPageAdEventType mojom_ad_event_type,
                          FireNewTabPageAdEventHandlerCallback callback) const;
 
   void NotifyDidFireNewTabPageAdEvent(
       const NewTabPageAdInfo& ad,
-      mojom::NewTabPageAdEventType event_type) const;
+      mojom::NewTabPageAdEventType mojom_ad_event_type) const;
   void NotifyFailedToFireNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      mojom::NewTabPageAdEventType event_type) const;
+      mojom::NewTabPageAdEventType mojom_ad_event_type) const;
 
   raw_ptr<NewTabPageAdEventHandlerDelegate> delegate_ = nullptr;
 

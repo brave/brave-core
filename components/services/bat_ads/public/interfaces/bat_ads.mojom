@@ -163,28 +163,28 @@ interface BatAds {
   TriggerInlineContentAdEvent(
       string placement_id,
       string creative_instance_id,
-      brave_ads.mojom.InlineContentAdEventType event_type) => (bool success);
+      brave_ads.mojom.InlineContentAdEventType mojom_ad_event_type) => (bool success);
 
   MaybeServeNewTabPageAd() => (mojo_base.mojom.DictionaryValue? value);
   TriggerNewTabPageAdEvent(
       string placement_id,
       string creative_instance_id,
-      brave_ads.mojom.NewTabPageAdEventType event_type) => (bool success);
+      brave_ads.mojom.NewTabPageAdEventType mojom_ad_event_type) => (bool success);
 
   MaybeGetNotificationAd(string placement_id) =>
       (mojo_base.mojom.DictionaryValue? value);
   TriggerNotificationAdEvent(
       string placement_id,
-      brave_ads.mojom.NotificationAdEventType event_type) => (bool success);
+      brave_ads.mojom.NotificationAdEventType mojom_ad_event_type) => (bool success);
 
   TriggerPromotedContentAdEvent(
       string placement_id,
       string creative_instance_id,
-      brave_ads.mojom.PromotedContentAdEventType event_type) => (bool success);
+      brave_ads.mojom.PromotedContentAdEventType mojom_ad_event_type) => (bool success);
 
   TriggerSearchResultAdEvent(
       brave_ads.mojom.CreativeSearchResultAdInfo mojom_creative_ad,
-      brave_ads.mojom.SearchResultAdEventType event_type) => (bool success);
+      brave_ads.mojom.SearchResultAdEventType mojom_ad_event_type) => (bool success);
 
   PurgeOrphanedAdEventsForType(brave_ads.mojom.AdType ad_type) =>
       (bool success);
