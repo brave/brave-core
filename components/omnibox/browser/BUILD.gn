@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/commander/common/buildflags/buildflags.gni")
+import("//brave/components/omnibox/buildflags/buildflags.gni")
 
 source_set("unit_tests") {
   testonly = true
@@ -30,6 +31,7 @@ source_set("unit_tests") {
     "//brave/components/brave_search_conversion",
     "//brave/components/constants",
     "//brave/components/l10n/common:test_support",
+    "//brave/components/omnibox/buildflags",
     "//brave/components/search_engines",
     "//components/bookmarks/browser",
     "//components/bookmarks/test",
@@ -50,11 +52,12 @@ source_set("unit_tests") {
       "//chrome/browser/search_engines",
       "//chrome/test:test_support",
       "//content/test:test_support",
+      "//ui/base/clipboard:clipboard_test_support",
     ]
   }
 
-  if (!is_ios || !is_android) {
-    deps += [ "//ui/base/clipboard:clipboard_test_support" ]
+  if (enable_strict_query_check_for_search_suggestions) {
+    deps += [ "//brave/components/omnibox/browser/search_suggestions" ]
   }
 
   if (enable_commander) {
