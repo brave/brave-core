@@ -49,7 +49,7 @@ class RedeemRewardConfirmation final {
   static void CreateConfirmationCallback(
       RedeemRewardConfirmation redeem_confirmation,
       const ConfirmationInfo& confirmation,
-      const mojom::UrlResponseInfo& url_response);
+      const mojom::UrlResponseInfo& mojom_url_response);
 
   static void FetchPaymentTokenAfter(
       base::TimeDelta delay,
@@ -60,11 +60,11 @@ class RedeemRewardConfirmation final {
   static void FetchPaymentTokenCallback(
       RedeemRewardConfirmation redeem_confirmation,
       const ConfirmationInfo& confirmation,
-      const mojom::UrlResponseInfo& url_response);
+      const mojom::UrlResponseInfo& mojom_url_response);
   static base::expected<PaymentTokenInfo, std::tuple<std::string, bool>>
   HandleFetchPaymentTokenUrlResponse(
       const ConfirmationInfo& confirmation,
-      const mojom::UrlResponseInfo& url_response);
+      const mojom::UrlResponseInfo& mojom_url_response);
 
   void SuccessfullyRedeemedConfirmation(const ConfirmationInfo& confirmation);
   void FailedToRedeemConfirmation(const ConfirmationInfo& confirmation,

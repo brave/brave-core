@@ -19,9 +19,9 @@ constexpr char kStagingHost[] =
 }  // namespace
 
 std::string AnonymousSearchUrlHost::Get() const {
-  const mojom::EnvironmentType environment_type =
+  const mojom::EnvironmentType mojom_environment_type =
       GlobalState::GetInstance()->Flags().environment_type;
-  switch (environment_type) {
+  switch (mojom_environment_type) {
     case mojom::EnvironmentType::kProduction: {
       return kProductionHost;
     }

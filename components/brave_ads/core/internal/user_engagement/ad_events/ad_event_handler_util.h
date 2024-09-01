@@ -31,16 +31,16 @@ bool HasFiredAdEventWithinTimeWindow(const AdInfo& ad,
 template <typename T>
 bool WasAdServed(const AdInfo& ad,
                  const AdEventList& ad_events,
-                 const T event_type) {
-  return event_type == T::kServedImpression ||
+                 const T mojom_ad_event_type) {
+  return mojom_ad_event_type == T::kServedImpression ||
          HasFiredAdEvent(ad, ad_events, ConfirmationType::kServedImpression);
 }
 
 template <typename T>
 bool ShouldDeduplicateViewedAdEvent(const AdInfo& ad,
                                     const AdEventList& ad_events,
-                                    const T event_type) {
-  return event_type == T::kViewedImpression &&
+                                    const T mojom_ad_event_type) {
+  return mojom_ad_event_type == T::kViewedImpression &&
          HasFiredAdEventWithinTimeWindow(
              ad, ad_events, ConfirmationType::kViewedImpression,
              /*time_window=*/kDeduplicateViewedAdEventFor.Get());
@@ -49,8 +49,8 @@ bool ShouldDeduplicateViewedAdEvent(const AdInfo& ad,
 template <typename T>
 bool ShouldDeduplicateClickedAdEvent(const AdInfo& ad,
                                      const AdEventList& ad_events,
-                                     const T event_type) {
-  return event_type == T::kClicked &&
+                                     const T mojom_ad_event_type) {
+  return mojom_ad_event_type == T::kClicked &&
          HasFiredAdEventWithinTimeWindow(
              ad, ad_events, ConfirmationType::kClicked,
              /*time_window=*/kDeduplicateClickedAdEventFor.Get());
@@ -59,9 +59,9 @@ bool ShouldDeduplicateClickedAdEvent(const AdInfo& ad,
 template <typename T>
 bool ShouldDeduplicateAdEvent(const AdInfo& ad,
                               const AdEventList& ad_events,
-                              const T event_type) {
-  return ShouldDeduplicateViewedAdEvent(ad, ad_events, event_type) ||
-         ShouldDeduplicateClickedAdEvent(ad, ad_events, event_type);
+                              const T mojom_ad_event_type) {
+  return ShouldDeduplicateViewedAdEvent(ad, ad_events, mojom_ad_event_type) ||
+         ShouldDeduplicateClickedAdEvent(ad, ad_events, mojom_ad_event_type);
 }
 
 }  // namespace brave_ads

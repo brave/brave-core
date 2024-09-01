@@ -248,7 +248,7 @@ void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
       base::BindOnce(&GetCallback, std::move(callback)));
 }
 
-void AdEvents::GetUnexpired(const mojom::AdType ad_type,
+void AdEvents::GetUnexpired(const mojom::AdType mojom_ad_type,
                             GetAdEventsCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
@@ -281,7 +281,7 @@ void AdEvents::GetUnexpired(const mojom::AdType ad_type,
             )
           ORDER BY
             created_at ASC;)",
-      {GetTableName(), ToString(static_cast<AdType>(ad_type)),
+      {GetTableName(), ToString(static_cast<AdType>(mojom_ad_type)),
        TimeToSqlValueAsString(base::Time::Now() - base::Days(90))},
       nullptr);
   BindColumnTypes(&*mojom_db_action);
@@ -314,12 +314,11 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
   RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }
 
-void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
+void AdEvents::PurgeOrphaned(const mojom::AdType mojom_ad_type,
                              ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
-  Execute(
-      &*mojom_db_transaction, R"(
+  Execute(&*mojom_db_transaction, R"(
         DELETE FROM
           $1
         WHERE
@@ -335,7 +334,8 @@ void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
           )
           AND confirmation_type = 'served'
           AND type = '$3';)",
-      {GetTableName(), GetTableName(), ToString(static_cast<AdType>(ad_type))});
+          {GetTableName(), GetTableName(),
+           ToString(static_cast<AdType>(mojom_ad_type))});
 
   RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }

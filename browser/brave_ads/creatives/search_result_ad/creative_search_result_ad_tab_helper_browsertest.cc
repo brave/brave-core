@@ -264,7 +264,7 @@ class SampleBraveAdsCreativeSearchResultAdTabHelperTest
         .WillRepeatedly(
             [this, &run_loop1, &run_loop2](
                 mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-                const mojom::SearchResultAdEventType event_type,
+                const mojom::SearchResultAdEventType mojom_ad_event_type,
                 TriggerAdEventCallback callback) {
               ASSERT_TRUE(mojom_creative_ad);
 
@@ -308,9 +308,10 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
   EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
       .WillOnce([this, &run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-                    const mojom::SearchResultAdEventType event_type,
+                    const mojom::SearchResultAdEventType mojom_ad_event_type,
                     TriggerAdEventCallback callback) {
-        EXPECT_EQ(event_type, mojom::SearchResultAdEventType::kClicked);
+        EXPECT_EQ(mojom_ad_event_type,
+                  mojom::SearchResultAdEventType::kClicked);
         const auto iter =
             kCreativeAdPlacementIdToIndex.find(mojom_creative_ad->placement_id);
         ASSERT_TRUE(iter != kCreativeAdPlacementIdToIndex.cend());
@@ -341,9 +342,10 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
   EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
       .WillOnce([this, &run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-                    const mojom::SearchResultAdEventType event_type,
+                    const mojom::SearchResultAdEventType mojom_ad_event_type,
                     TriggerAdEventCallback callback) {
-        EXPECT_EQ(event_type, mojom::SearchResultAdEventType::kClicked);
+        EXPECT_EQ(mojom_ad_event_type,
+                  mojom::SearchResultAdEventType::kClicked);
         const auto iter =
             kCreativeAdPlacementIdToIndex.find(mojom_creative_ad->placement_id);
         ASSERT_TRUE(iter != kCreativeAdPlacementIdToIndex.cend());

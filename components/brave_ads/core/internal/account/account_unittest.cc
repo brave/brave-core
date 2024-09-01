@@ -166,21 +166,21 @@ TEST_F(BraveAdsAccountTest, GetStatementForRewardsUser) {
   database::SaveTransactions(transactions);
 
   // Act & Assert
-  const mojom::StatementInfoPtr expected_statement =
+  const mojom::StatementInfoPtr expected_mojom_statement =
       mojom::StatementInfo::New();
-  expected_statement->min_earnings_last_month =
+  expected_mojom_statement->min_earnings_last_month =
       0.01 * kMinEstimatedEarningsMultiplier.Get();
-  expected_statement->max_earnings_last_month = 0.01;
-  expected_statement->min_earnings_this_month =
+  expected_mojom_statement->max_earnings_last_month = 0.01;
+  expected_mojom_statement->min_earnings_this_month =
       0.05 * kMinEstimatedEarningsMultiplier.Get();
-  expected_statement->max_earnings_this_month = 0.05;
-  expected_statement->next_payment_date =
+  expected_mojom_statement->max_earnings_this_month = 0.05;
+  expected_mojom_statement->next_payment_date =
       test::TimeFromUTCString("7 January 2021 23:59:59.999");
-  expected_statement->ads_received_this_month = 3;
-  expected_statement->ads_summary_this_month = {{"ad_notification", 3}};
+  expected_mojom_statement->ads_received_this_month = 3;
+  expected_mojom_statement->ads_summary_this_month = {{"ad_notification", 3}};
 
   base::MockCallback<GetStatementOfAccountsCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_mojom_statement))));
   GetAccount().GetStatement(callback.Get());
 }
 

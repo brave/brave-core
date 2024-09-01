@@ -20,7 +20,7 @@ namespace brave_ads {
 
 void MaybeBuildAndSaveCreativeSetConversion(
     const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad,
-    const mojom::SearchResultAdEventType event_type) {
+    const mojom::SearchResultAdEventType mojom_ad_event_type) {
   const bool user_has_joined_rewards = UserHasJoinedBraveRewards();
 
   // Save only if:
@@ -30,11 +30,11 @@ void MaybeBuildAndSaveCreativeSetConversion(
 
   const bool fired_view_event_for_rewards_user =
       user_has_joined_rewards &&
-      event_type == mojom::SearchResultAdEventType::kViewedImpression;
+      mojom_ad_event_type == mojom::SearchResultAdEventType::kViewedImpression;
 
   const bool fired_click_event_for_non_rewards_user =
       !user_has_joined_rewards &&
-      event_type == mojom::SearchResultAdEventType::kClicked;
+      mojom_ad_event_type == mojom::SearchResultAdEventType::kClicked;
 
   const bool should_save = fired_view_event_for_rewards_user ||
                            fired_click_event_for_non_rewards_user;
@@ -51,7 +51,7 @@ void MaybeBuildAndSaveCreativeSetConversion(
 
 bool IsAllowedToFireAdEvent(
     const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad,
-    const mojom::SearchResultAdEventType event_type) {
+    const mojom::SearchResultAdEventType mojom_ad_event_type) {
   CHECK(mojom_creative_ad);
 
   if (UserHasJoinedBraveRewards()) {
@@ -64,7 +64,7 @@ bool IsAllowedToFireAdEvent(
     return false;
   }
 
-  if (event_type != mojom::SearchResultAdEventType::kClicked) {
+  if (mojom_ad_event_type != mojom::SearchResultAdEventType::kClicked) {
     // Not allowed to fire events other than clicked for non-Rewards users.
     return false;
   }
@@ -77,10 +77,12 @@ bool IsAllowedToFireAdEvent(
   return true;
 }
 
-bool ShouldFireAdEvent(const SearchResultAdInfo& ad,
-                       const AdEventList& ad_events,
-                       const mojom::SearchResultAdEventType event_type) {
-  if (UserHasJoinedBraveRewards() && !WasAdServed(ad, ad_events, event_type)) {
+bool ShouldFireAdEvent(
+    const SearchResultAdInfo& ad,
+    const AdEventList& ad_events,
+    const mojom::SearchResultAdEventType mojom_ad_event_type) {
+  if (UserHasJoinedBraveRewards() &&
+      !WasAdServed(ad, ad_events, mojom_ad_event_type)) {
     BLOG(1,
          "Search result ad: Not allowed because an ad was not served for "
          "placement id "
@@ -88,9 +90,10 @@ bool ShouldFireAdEvent(const SearchResultAdInfo& ad,
     return false;
   }
 
-  if (ShouldDeduplicateAdEvent(ad, ad_events, event_type)) {
+  if (ShouldDeduplicateAdEvent(ad, ad_events, mojom_ad_event_type)) {
     BLOG(1, "Search result ad: Not allowed as deduplicated "
-                << event_type << " event for placement id " << ad.placement_id);
+                << mojom_ad_event_type << " event for placement id "
+                << ad.placement_id);
     return false;
   }
 

@@ -14,8 +14,8 @@ namespace brave_ads {
 
 std::unique_ptr<AdEventInterface<InlineContentAdInfo>>
 InlineContentAdEventFactory::Build(
-    const mojom::InlineContentAdEventType event_type) {
-  switch (event_type) {
+    const mojom::InlineContentAdEventType mojom_ad_event_type) {
+  switch (mojom_ad_event_type) {
     case mojom::InlineContentAdEventType::kServedImpression: {
       return std::make_unique<InlineContentAdEventServed>();
     }

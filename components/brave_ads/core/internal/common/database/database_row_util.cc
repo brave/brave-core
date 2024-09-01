@@ -22,6 +22,7 @@ mojom::DBRowInfoPtr CreateRow(
 
   for (const auto& mojom_column_binding_type : mojom_db_bind_column_types) {
     mojom::DBColumnValueUnionPtr mojom_column_value_union;
+
     switch (mojom_column_binding_type) {
       case mojom::DBBindColumnType::kString: {
         mojom_column_value_union = mojom::DBColumnValueUnion::NewStringValue(

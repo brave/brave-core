@@ -12,27 +12,28 @@ namespace bat_ads {
 
 BatAdsObserver::BatAdsObserver() = default;
 
-BatAdsObserver::BatAdsObserver(
-    mojo::PendingRemote<mojom::BatAdsObserver> observer) {
-  observer_.Bind(std::move(observer));
+BatAdsObserver::BatAdsObserver(mojo::PendingRemote<mojom::BatAdsObserver>
+                                   bat_ads_observer_pending_remote) {
+  bat_ads_observer_remote_.Bind(std::move(bat_ads_observer_pending_remote));
 }
 
 BatAdsObserver::~BatAdsObserver() = default;
 
 void BatAdsObserver::OnAdRewardsDidChange() {
-  observer_->OnAdRewardsDidChange();
+  bat_ads_observer_remote_->OnAdRewardsDidChange();
 }
 
 void BatAdsObserver::OnBrowserUpgradeRequiredToServeAds() {
-  observer_->OnBrowserUpgradeRequiredToServeAds();
+  bat_ads_observer_remote_->OnBrowserUpgradeRequiredToServeAds();
 }
 
 void BatAdsObserver::OnIneligibleRewardsWalletToServeAds() {
-  observer_->OnIneligibleRewardsWalletToServeAds();
+  bat_ads_observer_remote_->OnIneligibleRewardsWalletToServeAds();
 }
 
-void BatAdsObserver::OnRemindUser(const brave_ads::mojom::ReminderType type) {
-  observer_->OnRemindUser(type);
+void BatAdsObserver::OnRemindUser(
+    const brave_ads::mojom::ReminderType mojom_reminder_type) {
+  bat_ads_observer_remote_->OnRemindUser(mojom_reminder_type);
 }
 
 }  // namespace bat_ads

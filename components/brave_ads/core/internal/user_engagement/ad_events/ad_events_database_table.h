@@ -27,11 +27,13 @@ class AdEvents final : public TableInterface {
   void GetAll(GetAdEventsCallback callback) const;
   // Get unexpired ad events, sorted in descending order.
   void GetUnexpired(GetAdEventsCallback callback) const;
-  void GetUnexpired(mojom::AdType ad_type, GetAdEventsCallback callback) const;
+  void GetUnexpired(mojom::AdType mojom_ad_type,
+                    GetAdEventsCallback callback) const;
 
   void PurgeExpired(ResultCallback callback) const;
 
-  void PurgeOrphaned(mojom::AdType ad_type, ResultCallback callback) const;
+  void PurgeOrphaned(mojom::AdType mojom_ad_type,
+                     ResultCallback callback) const;
   void PurgeOrphaned(const std::vector<std::string>& placement_ids,
                      ResultCallback callback) const;
   void PurgeAllOrphaned(ResultCallback callback) const;

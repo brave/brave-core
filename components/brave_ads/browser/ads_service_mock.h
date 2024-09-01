@@ -31,7 +31,8 @@ class AdsServiceMock : public AdsService {
 
   MOCK_METHOD(void,
               AddBatAdsObserver,
-              (mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer));
+              (mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>
+                   bat_ads_observer_pending_remote));
 
   MOCK_METHOD(bool, IsBrowserUpgradeRequiredToServeAds, (), (const));
 

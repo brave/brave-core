@@ -128,8 +128,9 @@ class AdsServiceImpl final : public AdsService,
   void InitializeRewardsWallet(size_t current_start_number);
   void InitializeRewardsWalletCallback(
       size_t current_start_number,
-      brave_rewards::mojom::RewardsWalletPtr wallet);
-  void InitializeBatAds(brave_rewards::mojom::RewardsWalletPtr rewards_wallet);
+      brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet);
+  void InitializeBatAds(
+      brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet);
   void InitializeBatAdsCallback(bool success);
 
   void ShutdownAndClearData();
@@ -142,7 +143,7 @@ class AdsServiceImpl final : public AdsService,
   bool ShouldShowOnboardingNotification();
   void MaybeShowOnboardingNotification();
 
-  void ShowReminder(mojom::ReminderType type);
+  void ShowReminder(mojom::ReminderType mojom_reminder_type);
 
   void CloseAdaptiveCaptcha();
 
@@ -160,7 +161,7 @@ class AdsServiceImpl final : public AdsService,
 
   void GetRewardsWallet();
   void NotifyRewardsWalletDidUpdate(
-      brave_rewards::mojom::RewardsWalletPtr wallet);
+      brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet);
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple idle
   // state business logic.
@@ -207,8 +208,8 @@ class AdsServiceImpl final : public AdsService,
   void Shutdown() override;
 
   // AdsService:
-  void AddBatAdsObserver(
-      mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer) override;
+  void AddBatAdsObserver(mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>
+                             bat_ads_observer_pending_remote) override;
 
   bool IsBrowserUpgradeRequiredToServeAds() const override;
 
@@ -228,10 +229,11 @@ class AdsServiceImpl final : public AdsService,
   void MaybeServeInlineContentAd(
       const std::string& dimensions,
       MaybeServeInlineContentAdAsDictCallback callback) override;
-  void TriggerInlineContentAdEvent(const std::string& placement_id,
-                                   const std::string& creative_instance_id,
-                                   mojom::InlineContentAdEventType event_type,
-                                   TriggerAdEventCallback callback) override;
+  void TriggerInlineContentAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::InlineContentAdEventType mojom_ad_event_type,
+      TriggerAdEventCallback callback) override;
 
   std::optional<NewTabPageAdInfo> MaybeGetPrefetchedNewTabPageAdForDisplay()
       override;
@@ -239,24 +241,25 @@ class AdsServiceImpl final : public AdsService,
   void OnFailedToPrefetchNewTabPageAd(
       const std::string& placement_id,
       const std::string& creative_instance_id) override;
-  void TriggerNewTabPageAdEvent(const std::string& placement_id,
-                                const std::string& creative_instance_id,
-                                mojom::NewTabPageAdEventType event_type,
-                                TriggerAdEventCallback callback) override;
+  void TriggerNewTabPageAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::NewTabPageAdEventType mojom_ad_event_type,
+      TriggerAdEventCallback callback) override;
 
   void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      mojom::PromotedContentAdEventType event_type,
+      mojom::PromotedContentAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) override;
 
   void TriggerSearchResultAdEvent(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-      mojom::SearchResultAdEventType event_type,
+      mojom::SearchResultAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) override;
 
   void PurgeOrphanedAdEventsForType(
-      mojom::AdType ad_type,
+      mojom::AdType mojom_ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) override;
 
   void GetAdHistory(base::Time from_time,
@@ -329,7 +332,7 @@ class AdsServiceImpl final : public AdsService,
 
   // TODO(https://github.com/brave/brave-browser/issues/14676) Decouple URL
   // request business logic.
-  void UrlRequest(mojom::UrlRequestInfoPtr url_request,
+  void UrlRequest(mojom::UrlRequestInfoPtr mojom_url_request,
                   UrlRequestCallback callback) override;
 
   // TODO(https://github.com/brave/brave-browser/issues/26194) Decouple
@@ -380,7 +383,7 @@ class AdsServiceImpl final : public AdsService,
   void OnAdRewardsDidChange() override {}
   void OnBrowserUpgradeRequiredToServeAds() override;
   void OnIneligibleRewardsWalletToServeAds() override {}
-  void OnRemindUser(mojom::ReminderType type) override;
+  void OnRemindUser(mojom::ReminderType mojom_reminder_type) override;
 
   // BackgroundHelper::Observer:
   void OnBrowserDidEnterForeground() override;

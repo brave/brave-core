@@ -27,36 +27,37 @@ PromotedContentAdEventHandler::~PromotedContentAdEventHandler() {
 void PromotedContentAdEventHandler::FireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::PromotedContentAdEventType event_type,
+    const mojom::PromotedContentAdEventType mojom_ad_event_type,
     FirePromotedContentAdEventHandlerCallback callback) {
   if (placement_id.empty()) {
     BLOG(1,
          "Failed to fire promoted content ad event due to an invalid placement "
          "id");
-    return FailedToFireEvent(placement_id, creative_instance_id, event_type,
-                             std::move(callback));
+    return FailedToFireEvent(placement_id, creative_instance_id,
+                             mojom_ad_event_type, std::move(callback));
   }
 
   if (creative_instance_id.empty()) {
     BLOG(1,
          "Failed to fire promoted content ad event due to an invalid creative "
          "instance id");
-    return FailedToFireEvent(placement_id, creative_instance_id, event_type,
-                             std::move(callback));
+    return FailedToFireEvent(placement_id, creative_instance_id,
+                             mojom_ad_event_type, std::move(callback));
   }
 
-  if (event_type == mojom::PromotedContentAdEventType::kServedImpression &&
+  if (mojom_ad_event_type ==
+          mojom::PromotedContentAdEventType::kServedImpression &&
       !PromotedContentAdPermissionRules::HasPermission()) {
     BLOG(1, "Promoted content ad: Not allowed due to permission rules");
-    return FailedToFireEvent(placement_id, creative_instance_id, event_type,
-                             std::move(callback));
+    return FailedToFireEvent(placement_id, creative_instance_id,
+                             mojom_ad_event_type, std::move(callback));
   }
 
   creative_ads_database_table_.GetForCreativeInstanceId(
       creative_instance_id,
       base::BindOnce(
           &PromotedContentAdEventHandler::GetForCreativeInstanceIdCallback,
-          weak_factory_.GetWeakPtr(), placement_id, event_type,
+          weak_factory_.GetWeakPtr(), placement_id, mojom_ad_event_type,
           std::move(callback)));
 }
 
@@ -64,7 +65,7 @@ void PromotedContentAdEventHandler::FireEvent(
 
 void PromotedContentAdEventHandler::GetForCreativeInstanceIdCallback(
     const std::string& placement_id,
-    const mojom::PromotedContentAdEventType event_type,
+    const mojom::PromotedContentAdEventType mojom_ad_event_type,
     FirePromotedContentAdEventHandlerCallback callback,
     const bool success,
     const std::string& creative_instance_id,
@@ -74,8 +75,8 @@ void PromotedContentAdEventHandler::GetForCreativeInstanceIdCallback(
          "Failed to fire promoted content ad event due to missing creative "
          "instance id "
              << creative_instance_id);
-    return FailedToFireEvent(placement_id, creative_instance_id, event_type,
-                             std::move(callback));
+    return FailedToFireEvent(placement_id, creative_instance_id,
+                             mojom_ad_event_type, std::move(callback));
   }
 
   const PromotedContentAdInfo ad =
@@ -84,90 +85,94 @@ void PromotedContentAdEventHandler::GetForCreativeInstanceIdCallback(
   ad_events_database_table_.GetUnexpired(
       mojom::AdType::kPromotedContentAd,
       base::BindOnce(&PromotedContentAdEventHandler::GetForTypeCallback,
-                     weak_factory_.GetWeakPtr(), ad, event_type,
+                     weak_factory_.GetWeakPtr(), ad, mojom_ad_event_type,
                      std::move(callback)));
 }
 
 void PromotedContentAdEventHandler::GetForTypeCallback(
     const PromotedContentAdInfo& ad,
-    const mojom::PromotedContentAdEventType event_type,
+    const mojom::PromotedContentAdEventType mojom_ad_event_type,
     FirePromotedContentAdEventHandlerCallback callback,
     const bool success,
     const AdEventList& ad_events) {
   if (!success) {
     BLOG(1, "Promoted content ad: Failed to get ad events");
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
-                             event_type, std::move(callback));
+                             mojom_ad_event_type, std::move(callback));
   }
 
-  if (!WasAdServed(ad, ad_events, event_type)) {
+  if (!WasAdServed(ad, ad_events, mojom_ad_event_type)) {
     BLOG(1,
          "Promoted content ad: Not allowed because an ad was not served for "
          "placement id "
              << ad.placement_id);
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
-                             event_type, std::move(callback));
+                             mojom_ad_event_type, std::move(callback));
   }
 
-  if (ShouldDeduplicateAdEvent(ad, ad_events, event_type)) {
+  if (ShouldDeduplicateAdEvent(ad, ad_events, mojom_ad_event_type)) {
     BLOG(1, "Promoted content ad: Not allowed as deduplicated "
-                << event_type << " event for placement id " << ad.placement_id);
+                << mojom_ad_event_type << " event for placement id "
+                << ad.placement_id);
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
-                             event_type, std::move(callback));
+                             mojom_ad_event_type, std::move(callback));
   }
 
-  const auto ad_event = PromotedContentAdEventFactory::Build(event_type);
+  const auto ad_event =
+      PromotedContentAdEventFactory::Build(mojom_ad_event_type);
   ad_event->FireEvent(
       ad, base::BindOnce(&PromotedContentAdEventHandler::FireEventCallback,
-                         weak_factory_.GetWeakPtr(), ad, event_type,
+                         weak_factory_.GetWeakPtr(), ad, mojom_ad_event_type,
                          std::move(callback)));
 }
 
 void PromotedContentAdEventHandler::FireEventCallback(
     const PromotedContentAdInfo& ad,
-    const mojom::PromotedContentAdEventType event_type,
+    const mojom::PromotedContentAdEventType mojom_ad_event_type,
     FirePromotedContentAdEventHandlerCallback callback,
     const bool success) const {
   if (!success) {
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
-                             event_type, std::move(callback));
+                             mojom_ad_event_type, std::move(callback));
   }
 
-  SuccessfullyFiredEvent(ad, event_type, std::move(callback));
+  SuccessfullyFiredEvent(ad, mojom_ad_event_type, std::move(callback));
 }
 
 void PromotedContentAdEventHandler::SuccessfullyFiredEvent(
     const PromotedContentAdInfo& ad,
-    const mojom::PromotedContentAdEventType event_type,
+    const mojom::PromotedContentAdEventType mojom_ad_event_type,
     FirePromotedContentAdEventHandlerCallback callback) const {
-  NotifyDidFirePromotedContentAdEvent(ad, event_type);
+  NotifyDidFirePromotedContentAdEvent(ad, mojom_ad_event_type);
 
-  std::move(callback).Run(/*success=*/true, ad.placement_id, event_type);
+  std::move(callback).Run(/*success=*/true, ad.placement_id,
+                          mojom_ad_event_type);
 }
 
 void PromotedContentAdEventHandler::FailedToFireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::PromotedContentAdEventType event_type,
+    const mojom::PromotedContentAdEventType mojom_ad_event_type,
     FirePromotedContentAdEventHandlerCallback callback) const {
   BLOG(1, "Failed to fire promoted content ad "
-              << event_type << " event for placement id " << placement_id
-              << " and creative instance id " << creative_instance_id);
+              << mojom_ad_event_type << " event for placement id "
+              << placement_id << " and creative instance id "
+              << creative_instance_id);
 
   NotifyFailedToFirePromotedContentAdEvent(placement_id, creative_instance_id,
-                                           event_type);
+                                           mojom_ad_event_type);
 
-  std::move(callback).Run(/*success=*/false, placement_id, event_type);
+  std::move(callback).Run(/*success=*/false, placement_id, mojom_ad_event_type);
 }
 
 void PromotedContentAdEventHandler::NotifyDidFirePromotedContentAdEvent(
     const PromotedContentAdInfo& ad,
-    mojom::PromotedContentAdEventType event_type) const {
+    mojom::PromotedContentAdEventType mojom_ad_event_type) const {
   if (!delegate_) {
     return;
   }
 
-  switch (event_type) {
+  switch (mojom_ad_event_type) {
     case mojom::PromotedContentAdEventType::kServedImpression: {
       delegate_->OnDidFirePromotedContentAdServedEvent(ad);
       break;
@@ -188,10 +193,10 @@ void PromotedContentAdEventHandler::NotifyDidFirePromotedContentAdEvent(
 void PromotedContentAdEventHandler::NotifyFailedToFirePromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::PromotedContentAdEventType event_type) const {
+    const mojom::PromotedContentAdEventType mojom_ad_event_type) const {
   if (delegate_) {
     delegate_->OnFailedToFirePromotedContentAdEvent(
-        placement_id, creative_instance_id, event_type);
+        placement_id, creative_instance_id, mojom_ad_event_type);
   }
 }
 

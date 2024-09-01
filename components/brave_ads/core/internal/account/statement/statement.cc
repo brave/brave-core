@@ -32,27 +32,29 @@ void BuildStatement(BuildStatementCallback callback) {
               return std::move(callback).Run(/*statement=*/nullptr);
             }
 
-            mojom::StatementInfoPtr statement = mojom::StatementInfo::New();
+            mojom::StatementInfoPtr mojom_statement =
+                mojom::StatementInfo::New();
 
             const auto [min_last_month, max_last_month] =
                 GetEstimatedEarningsForLastMonth(transactions);
-            statement->min_earnings_last_month = min_last_month;
-            statement->max_earnings_last_month = max_last_month;
+            mojom_statement->min_earnings_last_month = min_last_month;
+            mojom_statement->max_earnings_last_month = max_last_month;
 
             const auto [min_this_month, max_this_month] =
                 GetEstimatedEarningsForThisMonth(transactions);
-            statement->min_earnings_this_month = min_this_month;
-            statement->max_earnings_this_month = max_this_month;
+            mojom_statement->min_earnings_this_month = min_this_month;
+            mojom_statement->max_earnings_this_month = max_this_month;
 
-            statement->next_payment_date = GetNextPaymentDate(transactions);
+            mojom_statement->next_payment_date =
+                GetNextPaymentDate(transactions);
 
-            statement->ads_received_this_month =
+            mojom_statement->ads_received_this_month =
                 GetAdsReceivedThisMonth(transactions);
 
-            statement->ads_summary_this_month =
+            mojom_statement->ads_summary_this_month =
                 GetAdsSummaryThisMonth(transactions);
 
-            std::move(callback).Run(std::move(statement));
+            std::move(callback).Run(std::move(mojom_statement));
           },
           std::move(callback)));
 }

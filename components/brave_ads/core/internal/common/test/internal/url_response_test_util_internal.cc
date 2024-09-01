@@ -109,10 +109,10 @@ base::flat_map<std::string, std::string> ToUrlResponseHeaders(
 }  // namespace
 
 std::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
-    const mojom::UrlRequestInfoPtr& url_request,
+    const mojom::UrlRequestInfoPtr& mojom_url_request,
     const URLResponseMap& url_responses) {
   const std::optional<URLResponsePair> url_response =
-      GetNextUrlResponseForUrl(url_request->url, url_responses);
+      GetNextUrlResponseForUrl(mojom_url_request->url, url_responses);
   if (!url_response) {
     return std::nullopt;
   }
@@ -129,9 +129,9 @@ std::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
     ParseAndReplaceTags(response_body);
   }
 
-  return mojom::UrlResponseInfo(url_request->url, response_status_code,
-                                response_body,
-                                ToUrlResponseHeaders(url_request->headers));
+  return mojom::UrlResponseInfo(
+      mojom_url_request->url, response_status_code, response_body,
+      ToUrlResponseHeaders(mojom_url_request->headers));
 }
 
 }  // namespace brave_ads::test

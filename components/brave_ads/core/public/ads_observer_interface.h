@@ -24,7 +24,7 @@ class AdsObserverInterface {
   virtual void OnIneligibleRewardsWalletToServeAds() = 0;
 
   // Invoked to remind the user of what to do and what not to do.
-  virtual void OnRemindUser(mojom::ReminderType type) = 0;
+  virtual void OnRemindUser(mojom::ReminderType mojom_reminder_type) = 0;
 };
 
 }  // namespace brave_ads

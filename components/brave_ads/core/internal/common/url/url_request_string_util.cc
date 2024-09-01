@@ -47,35 +47,36 @@ std::string HeadersToString(const std::vector<std::string>& headers,
 
 }  // namespace
 
-std::string UrlRequestToString(const mojom::UrlRequestInfoPtr& url_request) {
+std::string UrlRequestToString(
+    const mojom::UrlRequestInfoPtr& mojom_url_request) {
   std::string log = "URL Request:\n";
 
-  log += base::ReplaceStringPlaceholders("  URL: $1\n",
-                                         {url_request->url.spec()}, nullptr);
+  log += base::ReplaceStringPlaceholders(
+      "  URL: $1\n", {mojom_url_request->url.spec()}, nullptr);
 
-  if (!url_request->content.empty()) {
-    log += base::ReplaceStringPlaceholders("  Content: $1\n",
-                                           {url_request->content}, nullptr);
+  if (!mojom_url_request->content.empty()) {
+    log += base::ReplaceStringPlaceholders(
+        "  Content: $1\n", {mojom_url_request->content}, nullptr);
   }
 
-  if (!url_request->content_type.empty()) {
+  if (!mojom_url_request->content_type.empty()) {
     log += base::ReplaceStringPlaceholders(
-        "  Content Type: $1\n", {url_request->content_type}, nullptr);
+        "  Content Type: $1\n", {mojom_url_request->content_type}, nullptr);
   }
 
   std::ostringstream ss;
-  ss << url_request->method;
+  ss << mojom_url_request->method;
   log += base::StrCat({"  Method: ", ss.str()});
 
   return log;
 }
 
 std::string UrlRequestHeadersToString(
-    const mojom::UrlRequestInfoPtr& url_request) {
+    const mojom::UrlRequestInfoPtr& mojom_url_request) {
   std::string log = "  Headers:\n";
 
-  if (!url_request->headers.empty()) {
-    log += HeadersToString(url_request->headers);
+  if (!mojom_url_request->headers.empty()) {
+    log += HeadersToString(mojom_url_request->headers);
   }
 
   return log;

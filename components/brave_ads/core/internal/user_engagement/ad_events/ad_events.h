@@ -25,7 +25,8 @@ void RecordAdEvent(const AdInfo& ad,
                    AdEventCallback callback);
 void RecordAdEvent(const AdEventInfo& ad_event, AdEventCallback callback);
 
-void PurgeOrphanedAdEvents(mojom::AdType ad_type, AdEventCallback callback);
+void PurgeOrphanedAdEvents(mojom::AdType mojom_ad_type,
+                           AdEventCallback callback);
 void PurgeOrphanedAdEvents(const std::vector<std::string>& placement_ids,
                            AdEventCallback callback);
 void PurgeAllOrphanedAdEvents(AdEventCallback callback);

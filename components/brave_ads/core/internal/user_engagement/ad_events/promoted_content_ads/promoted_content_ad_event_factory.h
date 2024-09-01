@@ -18,7 +18,7 @@ struct PromotedContentAdInfo;
 class PromotedContentAdEventFactory final {
  public:
   static std::unique_ptr<AdEventInterface<PromotedContentAdInfo>> Build(
-      mojom::PromotedContentAdEventType event_type);
+      mojom::PromotedContentAdEventType mojom_ad_event_type);
 };
 
 }  // namespace brave_ads

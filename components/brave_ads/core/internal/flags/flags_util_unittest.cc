@@ -78,13 +78,13 @@ TEST_P(BraveAdsFlagsUtilTest, BuildFlags) {
   const ParamInfo param = GetParam();
 
   // Act
-  const mojom::FlagsPtr flags = BuildFlags();
+  const mojom::FlagsPtr mojom_flags = BuildFlags();
 
   // Assert
-  EXPECT_EQ(param.expected_should_debug, flags->should_debug);
+  EXPECT_EQ(param.expected_should_debug, mojom_flags->should_debug);
   EXPECT_EQ(param.expected_did_override_command_line_switches,
-            flags->did_override_from_command_line);
-  EXPECT_EQ(param.expected_environment_type, flags->environment_type);
+            mojom_flags->did_override_from_command_line);
+  EXPECT_EQ(param.expected_environment_type, mojom_flags->environment_type);
 }
 
 std::string TestParamToString(

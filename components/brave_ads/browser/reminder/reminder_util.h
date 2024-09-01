@@ -15,7 +15,7 @@ class GURL;
 
 namespace brave_ads {
 
-base::Value::Dict BuildReminder(mojom::ReminderType type);
+base::Value::Dict BuildReminder(mojom::ReminderType mojom_reminder_type);
 
 bool IsReminder(const std::string& placement_id);
 

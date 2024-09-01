@@ -18,10 +18,10 @@ constexpr char kStagingHost[] = "https://geo.ads.bravesoftware.com";
 }  // namespace
 
 std::string GeoUrlHost::Get() const {
-  const mojom::EnvironmentType environment_type =
+  const mojom::EnvironmentType mojom_environment_type =
       GlobalState::GetInstance()->Flags().environment_type;
 
-  switch (environment_type) {
+  switch (mojom_environment_type) {
     case mojom::EnvironmentType::kProduction: {
       return kProductionHost;
     }

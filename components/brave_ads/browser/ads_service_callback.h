@@ -19,7 +19,7 @@ using GetDiagnosticsCallback =
     base::OnceCallback<void(std::optional<base::Value::List> diagnostics)>;
 
 using GetStatementOfAccountsCallback =
-    base::OnceCallback<void(mojom::StatementInfoPtr statement)>;
+    base::OnceCallback<void(mojom::StatementInfoPtr mojom_statement)>;
 
 using MaybeServeInlineContentAdAsDictCallback =
     base::OnceCallback<void(const std::string& dimensions,

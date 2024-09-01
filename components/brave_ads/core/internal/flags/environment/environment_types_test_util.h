@@ -12,7 +12,7 @@
 
 namespace brave_ads::test {
 
-std::string ToString(mojom::EnvironmentType environment_type);
+std::string ToString(mojom::EnvironmentType mojom_environment_type);
 
 }  // namespace brave_ads::test
 

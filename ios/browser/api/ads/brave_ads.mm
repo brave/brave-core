@@ -1352,13 +1352,13 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
                 return;
               }
 
-              brave_ads::mojom::UrlResponseInfo url_response;
-              url_response.url = copiedURL;
-              url_response.status_code = statusCode;
-              url_response.body = response;
-              url_response.headers = headers;
+              brave_ads::mojom::UrlResponseInfo mojom_url_response;
+              mojom_url_response.url = copiedURL;
+              mojom_url_response.status_code = statusCode;
+              mojom_url_response.body = response;
+              mojom_url_response.headers = headers;
               if (cb) {
-                std::move(*cb).Run(url_response);
+                std::move(*cb).Run(mojom_url_response);
               }
             }];
 }
@@ -1509,20 +1509,20 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
   }
 
   ads->GetStatementOfAccounts(
-      base::BindOnce(^(brave_ads::mojom::StatementInfoPtr statement) {
-        if (!statement) {
+      base::BindOnce(^(brave_ads::mojom::StatementInfoPtr mojom_statement) {
+        if (!mojom_statement) {
           completion(0, 0, nil);
           return;
         }
 
         NSDate* nextPaymentDate = nil;
-        if (!statement->next_payment_date.is_null()) {
+        if (!mojom_statement->next_payment_date.is_null()) {
           nextPaymentDate = [NSDate
-              dateWithTimeIntervalSince1970:statement->next_payment_date
+              dateWithTimeIntervalSince1970:mojom_statement->next_payment_date
                                                 .InSecondsFSinceUnixEpoch()];
         }
-        completion(statement->ads_received_this_month,
-                   statement->max_earnings_this_month, nextPaymentDate);
+        completion(mojom_statement->ads_received_this_month,
+                   mojom_statement->max_earnings_this_month, nextPaymentDate);
       }));
 }
 

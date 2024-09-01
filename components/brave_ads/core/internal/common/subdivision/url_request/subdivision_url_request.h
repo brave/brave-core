@@ -38,7 +38,7 @@ class SubdivisionUrlRequest final {
 
  private:
   void Fetch();
-  void FetchCallback(const mojom::UrlResponseInfo& url_response);
+  void FetchCallback(const mojom::UrlResponseInfo& mojom_url_response);
   void FetchAfterDelay();
 
   void SuccessfullyFetchedSubdivision(const std::string& subdivision);

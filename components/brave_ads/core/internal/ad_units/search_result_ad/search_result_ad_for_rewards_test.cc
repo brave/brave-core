@@ -33,12 +33,12 @@ class BraveAdsSearchResultAdForRewardsIntegrationTest : public test::TestBase {
 
   void TriggerSearchResultAdEventAndVerifyExpectations(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-      const mojom::SearchResultAdEventType event_type,
+      const mojom::SearchResultAdEventType mojom_ad_event_type,
       const bool should_fire_event) {
     base::MockCallback<TriggerAdEventCallback> callback;
     EXPECT_CALL(callback, Run(/*success=*/should_fire_event));
     GetAds().TriggerSearchResultAdEvent(std::move(mojom_creative_ad),
-                                        event_type, callback.Get());
+                                        mojom_ad_event_type, callback.Get());
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;

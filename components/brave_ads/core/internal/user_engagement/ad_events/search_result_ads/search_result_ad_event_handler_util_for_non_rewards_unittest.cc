@@ -74,9 +74,11 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   // Act
   for (int i = 0;
        i < static_cast<int>(mojom::SearchResultAdEventType::kMaxValue); ++i) {
-    const auto event_type = static_cast<mojom::SearchResultAdEventType>(i);
-    if (event_type != mojom::SearchResultAdEventType::kClicked) {
-      MaybeBuildAndSaveCreativeSetConversion(mojom_creative_ad, event_type);
+    const auto mojom_ad_event_type =
+        static_cast<mojom::SearchResultAdEventType>(i);
+    if (mojom_ad_event_type != mojom::SearchResultAdEventType::kClicked) {
+      MaybeBuildAndSaveCreativeSetConversion(mojom_creative_ad,
+                                             mojom_ad_event_type);
     }
   }
 
@@ -137,9 +139,11 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   // Act & Assert
   for (int i = 0;
        i < static_cast<int>(mojom::SearchResultAdEventType::kMaxValue); ++i) {
-    const auto event_type = static_cast<mojom::SearchResultAdEventType>(i);
-    if (event_type != mojom::SearchResultAdEventType::kClicked) {
-      EXPECT_FALSE(IsAllowedToFireAdEvent(mojom_creative_ad, event_type));
+    const auto mojom_ad_event_type =
+        static_cast<mojom::SearchResultAdEventType>(i);
+    if (mojom_ad_event_type != mojom::SearchResultAdEventType::kClicked) {
+      EXPECT_FALSE(
+          IsAllowedToFireAdEvent(mojom_creative_ad, mojom_ad_event_type));
     }
   }
 }

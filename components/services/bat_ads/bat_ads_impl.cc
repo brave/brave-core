@@ -27,10 +27,11 @@ namespace bat_ads {
 class BatAdsImpl::AdsInstance final {
  public:
   AdsInstance(
-      mojo::PendingAssociatedRemote<mojom::BatAdsClient> client,
+      mojo::PendingAssociatedRemote<mojom::BatAdsClient>
+          bat_ads_client_pending_associated_remote,
       mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier)
       : bat_ads_client_mojo_proxy_(std::make_unique<BatAdsClientMojoBridge>(
-            std::move(client),
+            std::move(bat_ads_client_pending_associated_remote),
             std::move(client_notifier))),
         ads_(brave_ads::Ads::CreateInstance(bat_ads_client_mojo_proxy_.get())) {
   }
@@ -50,39 +51,42 @@ class BatAdsImpl::AdsInstance final {
   std::unique_ptr<brave_ads::Ads> ads_;
 };
 
-BatAdsImpl::BatAdsImpl(
-    mojo::PendingAssociatedRemote<mojom::BatAdsClient> client,
-    mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier)
+BatAdsImpl::BatAdsImpl(mojo::PendingAssociatedRemote<mojom::BatAdsClient>
+                           bat_ads_client_pending_associated_remote,
+                       mojo::PendingReceiver<mojom::BatAdsClientNotifier>
+                           bat_ads_client_notifier_pending_receiver)
     : ads_instance_(std::unique_ptr<AdsInstance, base::OnTaskRunnerDeleter>(
-          new AdsInstance(std::move(client), std::move(client_notifier)),
+          new AdsInstance(std::move(bat_ads_client_pending_associated_remote),
+                          std::move(bat_ads_client_notifier_pending_receiver)),
           base::OnTaskRunnerDeleter(
               base::SequencedTaskRunner::GetCurrentDefault()))) {}
 
 BatAdsImpl::~BatAdsImpl() = default;
 
-void BatAdsImpl::AddBatAdsObserver(
-    mojo::PendingRemote<mojom::BatAdsObserver> observer) {
+void BatAdsImpl::AddBatAdsObserver(mojo::PendingRemote<mojom::BatAdsObserver>
+                                       bat_ads_observer_pending_remote) {
   std::unique_ptr<brave_ads::AdsObserverInterface> ads_observer =
-      std::make_unique<BatAdsObserver>(std::move(observer));
+      std::make_unique<BatAdsObserver>(
+          std::move(bat_ads_observer_pending_remote));
   GetAds()->AddBatAdsObserver(std::move(ads_observer));
 }
 
-void BatAdsImpl::SetSysInfo(brave_ads::mojom::SysInfoPtr sys_info) {
-  GetAds()->SetSysInfo(std::move(sys_info));
+void BatAdsImpl::SetSysInfo(brave_ads::mojom::SysInfoPtr mojom_sys_info) {
+  GetAds()->SetSysInfo(std::move(mojom_sys_info));
 }
 
 void BatAdsImpl::SetBuildChannel(
-    brave_ads::mojom::BuildChannelInfoPtr build_channel) {
-  GetAds()->SetBuildChannel(std::move(build_channel));
+    brave_ads::mojom::BuildChannelInfoPtr mojom_build_channel) {
+  GetAds()->SetBuildChannel(std::move(mojom_build_channel));
 }
 
-void BatAdsImpl::SetFlags(brave_ads::mojom::FlagsPtr flags) {
-  GetAds()->SetFlags(std::move(flags));
+void BatAdsImpl::SetFlags(brave_ads::mojom::FlagsPtr mojom_flags) {
+  GetAds()->SetFlags(std::move(mojom_flags));
 }
 
-void BatAdsImpl::Initialize(brave_ads::mojom::WalletInfoPtr wallet,
+void BatAdsImpl::Initialize(brave_ads::mojom::WalletInfoPtr mojom_wallet,
                             InitializeCallback callback) {
-  GetAds()->Initialize(std::move(wallet), std::move(callback));
+  GetAds()->Initialize(std::move(mojom_wallet), std::move(callback));
 }
 
 void BatAdsImpl::Shutdown(ShutdownCallback callback) {
@@ -105,11 +109,11 @@ void BatAdsImpl::MaybeGetNotificationAd(
 
 void BatAdsImpl::TriggerNotificationAdEvent(
     const std::string& placement_id,
-    const brave_ads::mojom::NotificationAdEventType event_type,
+    const brave_ads::mojom::NotificationAdEventType mojom_ad_event_type,
     TriggerNotificationAdEventCallback callback) {
-  DCHECK(brave_ads::mojom::IsKnownEnumValue(event_type));
+  DCHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
 
-  GetAds()->TriggerNotificationAdEvent(placement_id, event_type,
+  GetAds()->TriggerNotificationAdEvent(placement_id, mojom_ad_event_type,
                                        std::move(callback));
 }
 
@@ -133,23 +137,24 @@ void BatAdsImpl::MaybeServeNewTabPageAd(
 void BatAdsImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const brave_ads::mojom::NewTabPageAdEventType event_type,
+    const brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type,
     TriggerNewTabPageAdEventCallback callback) {
-  DCHECK(brave_ads::mojom::IsKnownEnumValue(event_type));
+  DCHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   GetAds()->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                     event_type, std::move(callback));
+                                     mojom_ad_event_type, std::move(callback));
 }
 
 void BatAdsImpl::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const brave_ads::mojom::PromotedContentAdEventType event_type,
+    const brave_ads::mojom::PromotedContentAdEventType mojom_ad_event_type,
     TriggerPromotedContentAdEventCallback callback) {
-  DCHECK(brave_ads::mojom::IsKnownEnumValue(event_type));
+  DCHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   GetAds()->TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
-                                          event_type, std::move(callback));
+                                          mojom_ad_event_type,
+                                          std::move(callback));
 }
 
 void BatAdsImpl::MaybeServeInlineContentAd(
@@ -177,30 +182,31 @@ void BatAdsImpl::MaybeServeInlineContentAd(
 void BatAdsImpl::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const brave_ads::mojom::InlineContentAdEventType event_type,
+    const brave_ads::mojom::InlineContentAdEventType mojom_ad_event_type,
     TriggerInlineContentAdEventCallback callback) {
-  DCHECK(brave_ads::mojom::IsKnownEnumValue(event_type));
+  DCHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   GetAds()->TriggerInlineContentAdEvent(placement_id, creative_instance_id,
-                                        event_type, std::move(callback));
+                                        mojom_ad_event_type,
+                                        std::move(callback));
 }
 
 void BatAdsImpl::TriggerSearchResultAdEvent(
     brave_ads::mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-    const brave_ads::mojom::SearchResultAdEventType event_type,
+    const brave_ads::mojom::SearchResultAdEventType mojom_ad_event_type,
     TriggerSearchResultAdEventCallback callback) {
-  DCHECK(brave_ads::mojom::IsKnownEnumValue(event_type));
+  DCHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
 
-  GetAds()->TriggerSearchResultAdEvent(std::move(mojom_creative_ad), event_type,
-                                       std::move(callback));
+  GetAds()->TriggerSearchResultAdEvent(
+      std::move(mojom_creative_ad), mojom_ad_event_type, std::move(callback));
 }
 
 void BatAdsImpl::PurgeOrphanedAdEventsForType(
-    const brave_ads::mojom::AdType ad_type,
+    const brave_ads::mojom::AdType mojom_ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
-  DCHECK(brave_ads::mojom::IsKnownEnumValue(ad_type));
+  DCHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_type));
 
-  GetAds()->PurgeOrphanedAdEventsForType(ad_type, std::move(callback));
+  GetAds()->PurgeOrphanedAdEventsForType(mojom_ad_type, std::move(callback));
 }
 
 void BatAdsImpl::GetAdHistory(const base::Time from_time,

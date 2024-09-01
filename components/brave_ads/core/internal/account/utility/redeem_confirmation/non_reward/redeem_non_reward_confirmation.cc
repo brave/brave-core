@@ -69,12 +69,12 @@ void RedeemNonRewardConfirmation::CreateConfirmation(
 
   CreateNonRewardConfirmationUrlRequestBuilder url_request_builder(
       confirmation);
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
-  BLOG(6, UrlRequestToString(url_request));
-  BLOG(7, UrlRequestHeadersToString(url_request));
+  mojom::UrlRequestInfoPtr mojom_url_request = url_request_builder.Build();
+  BLOG(6, UrlRequestToString(mojom_url_request));
+  BLOG(7, UrlRequestHeadersToString(mojom_url_request));
 
   GetAdsClient()->UrlRequest(
-      std::move(url_request),
+      std::move(mojom_url_request),
       base::BindOnce(&RedeemNonRewardConfirmation::CreateConfirmationCallback,
                      std::move(redeem_confirmation), confirmation));
 }
@@ -83,15 +83,15 @@ void RedeemNonRewardConfirmation::CreateConfirmation(
 void RedeemNonRewardConfirmation::CreateConfirmationCallback(
     RedeemNonRewardConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation,
-    const mojom::UrlResponseInfo& url_response) {
-  BLOG(6, UrlResponseToString(url_response));
-  BLOG(7, UrlResponseHeadersToString(url_response));
+    const mojom::UrlResponseInfo& mojom_url_response) {
+  BLOG(6, UrlResponseToString(mojom_url_response));
+  BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
-  if (url_response.status_code != net::kHttpImATeapot) {
+  if (mojom_url_response.status_code != net::kHttpImATeapot) {
     const bool should_retry =
-        url_response.status_code != net::HTTP_CONFLICT &&
-        url_response.status_code != net::HTTP_BAD_REQUEST &&
-        url_response.status_code != net::HTTP_CREATED;
+        mojom_url_response.status_code != net::HTTP_CONFLICT &&
+        mojom_url_response.status_code != net::HTTP_BAD_REQUEST &&
+        mojom_url_response.status_code != net::HTTP_CREATED;
     return redeem_confirmation.FailedToRedeemConfirmation(confirmation,
                                                           should_retry);
   }

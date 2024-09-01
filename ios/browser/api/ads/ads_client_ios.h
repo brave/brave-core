@@ -42,7 +42,7 @@ class AdsClientIOS : public brave_ads::AdsClient {
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
   void ResetAdEventCacheForInstanceId(const std::string& id) const override;
-  void UrlRequest(brave_ads::mojom::UrlRequestInfoPtr url_request,
+  void UrlRequest(brave_ads::mojom::UrlRequestInfoPtr mojom_url_request,
                   brave_ads::UrlRequestCallback callback) override;
   void Save(const std::string& name,
             const std::string& value,

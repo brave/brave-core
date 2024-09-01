@@ -12,9 +12,10 @@
 
 namespace brave_ads {
 
-std::string UrlResponseToString(const mojom::UrlResponseInfo& url_response);
+std::string UrlResponseToString(
+    const mojom::UrlResponseInfo& mojom_url_response);
 std::string UrlResponseHeadersToString(
-    const mojom::UrlResponseInfo& url_response);
+    const mojom::UrlResponseInfo& mojom_url_response);
 
 }  // namespace brave_ads
 

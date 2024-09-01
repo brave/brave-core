@@ -38,7 +38,7 @@ class CatalogUrlRequest final {
 
  private:
   void Fetch();
-  void FetchCallback(const mojom::UrlResponseInfo& url_response);
+  void FetchCallback(const mojom::UrlResponseInfo& mojom_url_response);
   void FetchAfterDelay();
 
   void SuccessfullyFetchedCatalog(const CatalogInfo& catalog);

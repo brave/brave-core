@@ -135,17 +135,17 @@ AdsCore& GlobalState::GetAdsCore() {
 
 mojom::SysInfo& GlobalState::SysInfo() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return sys_info_;
+  return mojom_sys_info_;
 }
 
 mojom::BuildChannelInfo& GlobalState::BuildChannel() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return build_channel_;
+  return mojom_build_channel_;
 }
 
 mojom::Flags& GlobalState::Flags() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return flags_;
+  return mojom_flags_;
 }
 
 }  // namespace brave_ads

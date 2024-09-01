@@ -34,14 +34,14 @@ CreateNonRewardConfirmationUrlRequestBuilder::
 }
 
 mojom::UrlRequestInfoPtr CreateNonRewardConfirmationUrlRequestBuilder::Build() {
-  mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
-  url_request->url = BuildUrl();
-  url_request->headers = BuildHeaders();
-  url_request->content = BuildBody();
-  url_request->content_type = "application/json";
-  url_request->method = mojom::UrlRequestMethodType::kPost;
+  mojom::UrlRequestInfoPtr mojom_url_request = mojom::UrlRequestInfo::New();
+  mojom_url_request->url = BuildUrl();
+  mojom_url_request->headers = BuildHeaders();
+  mojom_url_request->content = BuildBody();
+  mojom_url_request->content_type = "application/json";
+  mojom_url_request->method = mojom::UrlRequestMethodType::kPost;
 
-  return url_request;
+  return mojom_url_request;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

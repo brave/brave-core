@@ -37,10 +37,10 @@ class NotificationAdEventHandlerDelegate {
       const NotificationAdInfo& ad) {}
 
   // Invoked when the notification ad event fails for `placement_id` and
-  // `event_type`.
+  // `mojom_ad_event_type`.
   virtual void OnFailedToFireNotificationAdEvent(
       const std::string& placement_id,
-      const mojom::NotificationAdEventType event_type) {}
+      const mojom::NotificationAdEventType mojom_ad_event_type) {}
 
  protected:
   virtual ~NotificationAdEventHandlerDelegate() = default;

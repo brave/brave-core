@@ -70,7 +70,7 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD(void,
               UrlRequest,
-              (mojom::UrlRequestInfoPtr url_request,
+              (mojom::UrlRequestInfoPtr mojom_url_request,
                UrlRequestCallback callback));
 
   MOCK_METHOD(void,

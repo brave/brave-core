@@ -20,10 +20,11 @@ namespace brave_ads {
 
 namespace {
 
-void FireEventCallback(TriggerAdEventCallback callback,
-                       const bool success,
-                       const std::string& /*placement_id*/,
-                       const mojom::PromotedContentAdEventType /*event_type*/) {
+void FireEventCallback(
+    TriggerAdEventCallback callback,
+    const bool success,
+    const std::string& /*placement_id*/,
+    const mojom::PromotedContentAdEventType /*mojom_ad_event_type*/) {
   std::move(callback).Run(success);
 }
 
@@ -39,9 +40,10 @@ PromotedContentAdHandler::~PromotedContentAdHandler() = default;
 void PromotedContentAdHandler::TriggerEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::PromotedContentAdEventType event_type,
+    const mojom::PromotedContentAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
-  CHECK_NE(mojom::PromotedContentAdEventType::kServedImpression, event_type)
+  CHECK_NE(mojom::PromotedContentAdEventType::kServedImpression,
+           mojom_ad_event_type)
       << "Should not be called with kServedImpression as this event is handled "
          "when calling TriggerEvent with kViewedImpression";
 
@@ -55,7 +57,8 @@ void PromotedContentAdHandler::TriggerEvent(
     return std::move(callback).Run(/*success=*/false);
   }
 
-  if (event_type == mojom::PromotedContentAdEventType::kViewedImpression) {
+  if (mojom_ad_event_type ==
+      mojom::PromotedContentAdEventType::kViewedImpression) {
     return event_handler_.FireEvent(
         placement_id, creative_instance_id,
         mojom::PromotedContentAdEventType::kServedImpression,
@@ -65,7 +68,7 @@ void PromotedContentAdHandler::TriggerEvent(
   }
 
   event_handler_.FireEvent(
-      placement_id, creative_instance_id, event_type,
+      placement_id, creative_instance_id, mojom_ad_event_type,
       base::BindOnce(&FireEventCallback, std::move(callback)));
 }
 
@@ -76,7 +79,7 @@ void PromotedContentAdHandler::TriggerServedEventCallback(
     TriggerAdEventCallback callback,
     const bool success,
     const std::string& placement_id,
-    const mojom::PromotedContentAdEventType /*event_type*/) {
+    const mojom::PromotedContentAdEventType /*mojom_ad_event_type*/) {
   if (!success) {
     return std::move(callback).Run(/*success=*/false);
   }

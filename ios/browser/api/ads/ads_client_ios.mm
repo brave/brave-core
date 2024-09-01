@@ -83,9 +83,11 @@ void AdsClientIOS::ResetAdEventCacheForInstanceId(const std::string& id) const {
   [bridge_ resetAdEventCacheForInstanceId:id];
 }
 
-void AdsClientIOS::UrlRequest(brave_ads::mojom::UrlRequestInfoPtr url_request,
-                              brave_ads::UrlRequestCallback callback) {
-  [bridge_ UrlRequest:std::move(url_request) callback:std::move(callback)];
+void AdsClientIOS::UrlRequest(
+    brave_ads::mojom::UrlRequestInfoPtr mojom_url_request,
+    brave_ads::UrlRequestCallback callback) {
+  [bridge_ UrlRequest:std::move(mojom_url_request)
+             callback:std::move(callback)];
 }
 
 void AdsClientIOS::Save(const std::string& name,

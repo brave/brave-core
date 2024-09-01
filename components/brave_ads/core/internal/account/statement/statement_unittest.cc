@@ -42,20 +42,20 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsThisMonth) {
   database::SaveTransactions(transactions);
 
   // Act & Assert
-  const mojom::StatementInfoPtr expected_statement =
+  const mojom::StatementInfoPtr expected_mojom_statement =
       mojom::StatementInfo::New();
-  expected_statement->min_earnings_last_month = 0.0;
-  expected_statement->max_earnings_last_month = 0.0;
-  expected_statement->min_earnings_this_month =
+  expected_mojom_statement->min_earnings_last_month = 0.0;
+  expected_mojom_statement->max_earnings_last_month = 0.0;
+  expected_mojom_statement->min_earnings_this_month =
       0.02 * kMinEstimatedEarningsMultiplier.Get();
-  expected_statement->max_earnings_this_month = 0.02;
-  expected_statement->next_payment_date =
+  expected_mojom_statement->max_earnings_this_month = 0.02;
+  expected_mojom_statement->next_payment_date =
       test::TimeFromUTCString("7 December 2020 23:59:59.999");
-  expected_statement->ads_received_this_month = 2;
-  expected_statement->ads_summary_this_month = {{"ad_notification", 2}};
+  expected_mojom_statement->ads_received_this_month = 2;
+  expected_mojom_statement->ads_summary_this_month = {{"ad_notification", 2}};
 
   base::MockCallback<BuildStatementCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_mojom_statement))));
   BuildStatement(callback.Get());
 }
 

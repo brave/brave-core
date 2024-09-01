@@ -18,7 +18,7 @@ struct InlineContentAdInfo;
 class InlineContentAdEventFactory final {
  public:
   static std::unique_ptr<AdEventInterface<InlineContentAdInfo>> Build(
-      mojom::InlineContentAdEventType event_type);
+      mojom::InlineContentAdEventType mojom_ad_event_type);
 };
 
 }  // namespace brave_ads

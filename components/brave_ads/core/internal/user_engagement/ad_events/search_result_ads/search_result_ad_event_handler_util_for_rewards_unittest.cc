@@ -72,9 +72,12 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForRewardsTest,
   // Act
   for (int i = 0;
        i < static_cast<int>(mojom::SearchResultAdEventType::kMaxValue); ++i) {
-    const auto event_type = static_cast<mojom::SearchResultAdEventType>(i);
-    if (event_type != mojom::SearchResultAdEventType::kViewedImpression) {
-      MaybeBuildAndSaveCreativeSetConversion(mojom_creative_ad, event_type);
+    const auto mojom_ad_event_type =
+        static_cast<mojom::SearchResultAdEventType>(i);
+    if (mojom_ad_event_type !=
+        mojom::SearchResultAdEventType::kViewedImpression) {
+      MaybeBuildAndSaveCreativeSetConversion(mojom_creative_ad,
+                                             mojom_ad_event_type);
     }
   }
 
@@ -112,8 +115,9 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForRewardsTest,
   // Act & Assert
   for (int i = 0;
        i < static_cast<int>(mojom::SearchResultAdEventType::kMaxValue); ++i) {
-    const auto event_type = static_cast<mojom::SearchResultAdEventType>(i);
-    EXPECT_TRUE(IsAllowedToFireAdEvent(mojom_creative_ad, event_type));
+    const auto mojom_ad_event_type =
+        static_cast<mojom::SearchResultAdEventType>(i);
+    EXPECT_TRUE(IsAllowedToFireAdEvent(mojom_creative_ad, mojom_ad_event_type));
   }
 }
 
@@ -127,8 +131,9 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForRewardsTest,
   // Act & Assert
   for (int i = 0;
        i < static_cast<int>(mojom::SearchResultAdEventType::kMaxValue); ++i) {
-    const auto event_type = static_cast<mojom::SearchResultAdEventType>(i);
-    EXPECT_TRUE(IsAllowedToFireAdEvent(mojom_creative_ad, event_type));
+    const auto mojom_ad_event_type =
+        static_cast<mojom::SearchResultAdEventType>(i);
+    EXPECT_TRUE(IsAllowedToFireAdEvent(mojom_creative_ad, mojom_ad_event_type));
   }
 }
 

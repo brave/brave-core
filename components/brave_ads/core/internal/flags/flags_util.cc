@@ -24,17 +24,17 @@ mojom::EnvironmentType ChooseEnvironmentType() {
 }  // namespace
 
 mojom::FlagsPtr BuildFlags() {
-  mojom::FlagsPtr flags = mojom::Flags::New();
+  mojom::FlagsPtr mojom_flags = mojom::Flags::New();
 
-  flags->should_debug = ParseDebugCommandLineSwitch();
+  mojom_flags->should_debug = ParseDebugCommandLineSwitch();
 
-  flags->did_override_from_command_line =
+  mojom_flags->did_override_from_command_line =
       DidOverrideFeaturesFromCommandLine() ||
       DidOverrideCommandLineSwitchValues() || DidOverrideCommandLineSwitches();
 
-  flags->environment_type = ChooseEnvironmentType();
+  mojom_flags->environment_type = ChooseEnvironmentType();
 
-  return flags;
+  return mojom_flags;
 }
 
 }  // namespace brave_ads

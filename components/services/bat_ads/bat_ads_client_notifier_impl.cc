@@ -10,8 +10,10 @@
 namespace bat_ads {
 
 BatAdsClientNotifierImpl::BatAdsClientNotifierImpl(
-    mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier)
-    : pending_receiver_(std::move(client_notifier)) {}
+    mojo::PendingReceiver<mojom::BatAdsClientNotifier>
+        bat_ads_client_notifier_pending_receiver)
+    : bat_ads_client_notifier_pending_receiver_(
+          std::move(bat_ads_client_notifier_pending_receiver)) {}
 
 BatAdsClientNotifierImpl::~BatAdsClientNotifierImpl() = default;
 
@@ -28,8 +30,9 @@ void BatAdsClientNotifierImpl::RemoveObserver(
 }
 
 void BatAdsClientNotifierImpl::BindReceiver() {
-  DCHECK(pending_receiver_.is_valid());
-  receiver_.Bind(std::move(pending_receiver_));
+  DCHECK(bat_ads_client_notifier_pending_receiver_.is_valid());
+  bat_ads_client_notifier_receiver_.Bind(
+      std::move(bat_ads_client_notifier_pending_receiver_));
 }
 
 void BatAdsClientNotifierImpl::NotifyDidInitializeAds() {

@@ -50,30 +50,33 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
 
   void MaybeServeInlineContentAd(const std::string& dimensions,
                                  MaybeServeInlineContentAdCallback callback);
-  void TriggerInlineContentAdEvent(const std::string& placement_id,
-                                   const std::string& creative_instance_id,
-                                   mojom::InlineContentAdEventType event_type,
-                                   TriggerAdEventCallback callback);
+  void TriggerInlineContentAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::InlineContentAdEventType mojom_ad_event_type,
+      TriggerAdEventCallback callback);
 
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback);
-  void TriggerNewTabPageAdEvent(const std::string& placement_id,
-                                const std::string& creative_instance_id,
-                                mojom::NewTabPageAdEventType event_type,
-                                TriggerAdEventCallback callback);
+  void TriggerNewTabPageAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::NewTabPageAdEventType mojom_ad_event_type,
+      TriggerAdEventCallback callback);
 
-  void TriggerNotificationAdEvent(const std::string& placement_id,
-                                  mojom::NotificationAdEventType event_type,
-                                  TriggerAdEventCallback callback);
+  void TriggerNotificationAdEvent(
+      const std::string& placement_id,
+      mojom::NotificationAdEventType mojom_ad_event_type,
+      TriggerAdEventCallback callback);
 
   void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      mojom::PromotedContentAdEventType event_type,
+      mojom::PromotedContentAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback);
 
   void TriggerSearchResultAdEvent(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-      mojom::SearchResultAdEventType event_type,
+      mojom::SearchResultAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback);
 
  private:
