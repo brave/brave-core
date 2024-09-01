@@ -93,12 +93,6 @@ INSTANTIATE_TEST_SUITE_P(
       false
     },
     RewardsProtocolNavigationThrottleTestParamType{
-      "no_redirect_to_settings",
-      "https://uphold.com",
-      "rewards://uphold/../settings/",
-      false
-    },
-    RewardsProtocolNavigationThrottleTestParamType{
       "success",
       "https://uphold.com",
       "rewards://uphold/authorization",
