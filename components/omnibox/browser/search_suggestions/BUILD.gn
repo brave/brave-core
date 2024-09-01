@@ -1,0 +1,21 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/omnibox/buildflags/buildflags.gni")
+
+assert(enable_strict_query_check_for_search_suggestions)
+
+source_set("search_suggestions") {
+  sources = [
+    "query_check_constants.h",
+    "query_check_utils.cc",
+    "query_check_utils.h",
+  ]
+  deps = [
+    "//base",
+    "//third_party/re2",
+    "//url",
+  ]
+}
