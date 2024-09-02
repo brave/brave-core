@@ -4,9 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 declare_args() {
-  # We ship a pre-built (and pre-signed) copy of Omaha 4 in official builds. The
-  # main reason for this is that upstream's browser signing code expects it this
-  # way. The following arg, which controls whether Omaha 4 should be built from
-  # source, is therefore disabled by default for official builds:
-  build_omaha4 = !is_official_build
+  # We ship a pre-built (and pre-signed) copy of Omaha 4. The main reason for
+  # this is that upstream's browser signing code expects it this way. But it
+  # also keeps the updater (an extremely critical component) more stable.
+  use_prebuilt_omaha4 = is_official_build
 }
