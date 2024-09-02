@@ -10,6 +10,8 @@ import android.os.Handler;
 
 import androidx.preference.Preference;
 
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.Pref;
@@ -34,11 +36,18 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
     private ChromeSwitchPreference mAutocompleteTopSites;
     private ChromeSwitchPreference mAddOpenSearchEngines;
 
+    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().setTitle(R.string.brave_search_engines);
+        mPageTitle.set(getString(R.string.brave_search_engines));
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_search_engines_preferences);
+    }
+
+    @Override
+    public ObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
     }
 
     @Override

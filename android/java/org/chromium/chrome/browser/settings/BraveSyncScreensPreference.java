@@ -61,6 +61,8 @@ import org.json.JSONObject;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.back_press.BackPressHelper;
@@ -166,6 +168,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             return mType;
         }
     }
+
+    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
     BraveSyncWorker getBraveSyncWorker() {
         return BraveSyncWorker.get();
@@ -380,7 +384,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        getActivity().setTitle(R.string.sync_category_title);
+        mPageTitle.set(getString(R.string.sync_category_title));
 
         mScrollViewSyncInitial = getView().findViewById(R.id.view_sync_initial);
         mScrollViewSyncChainCode = getView().findViewById(R.id.view_sync_chain_code);
@@ -524,6 +528,11 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         setAppropriateView();
 
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public ObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
     }
 
     private void setAppropriateView() {
