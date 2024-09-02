@@ -40,7 +40,7 @@ void BatAdsServiceImpl::Create(
     mojo::PendingReceiver<mojom::BatAdsClientNotifier>
         bat_ads_client_notifier_pending_receiver,
     CreateCallback callback) {
-  DCHECK(bat_ads_pending_associated_receiver.is_valid());
+  CHECK(bat_ads_pending_associated_receiver.is_valid());
 
   bat_ads_associated_receivers_.Add(
       std::make_unique<BatAdsImpl>(
