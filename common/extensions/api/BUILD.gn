@@ -41,6 +41,29 @@ json_features("behavior_features") {
   sources = [ "_behavior_features.json" ]
 }
 
+brave_extensions_api_schema_sources = [
+  "brave_rewards.json",
+  "brave_talk.json",
+  "brave_theme.json",
+  "greaselion.json",
+  "rewards_notifications.json",
+]
+
+if (ethereum_remote_client_enabled) {
+  brave_extensions_api_schema_sources += [ "brave_wallet.json" ]
+}
+
+brave_extensions_api_uncompiled_sources = []
+brave_extensions_api_root_namespace = "extensions::api::%(namespace)s"
+brave_extensions_api_schema_include_rules =
+    "//brave/common/extensions/api:extensions::api::%(namespace)s"
+
+brave_extensions_api_deps = [
+  ":api_features",
+  ":behavior_features",
+  ":manifest_features",
+  ":permission_features",
+  ":resources",
 group("extensions_features") {
   public_deps = [
     ":api_features",

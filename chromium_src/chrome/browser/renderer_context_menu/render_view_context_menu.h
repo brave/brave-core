@@ -60,16 +60,20 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
   bool IsAIChatEnabled() const;
   void ExecuteAIChatCommand(int command);
   void BuildAIChatMenu();
-
-  ui::SimpleMenuModel ai_chat_submenu_model_;
-  ui::SimpleMenuModel ai_chat_change_tone_submenu_model_;
-  ui::SimpleMenuModel ai_chat_change_length_submenu_model_;
-  ui::SimpleMenuModel ai_chat_social_media_post_submenu_model_;
-#endif
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
   void CopyTextFromImage();
 #endif
+
+  ui::SimpleMenuModel adblock_submenu_model_;
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  ui::SimpleMenuModel ai_chat_submenu_model_;
+  ui::SimpleMenuModel ai_chat_change_tone_submenu_model_;
+  ui::SimpleMenuModel ai_chat_change_length_submenu_model_;
+  ui::SimpleMenuModel ai_chat_social_media_post_submenu_model_;
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 };
 
 // Use our own subclass as the real RenderViewContextMenu.

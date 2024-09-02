@@ -22,8 +22,6 @@ source_set("extensions") {
     "api/brave_extensions_api_client.h",
     "api/brave_rewards_api.cc",
     "api/brave_rewards_api.h",
-    "api/brave_shields_api.cc",
-    "api/brave_shields_api.h",
     "api/brave_talk_api.cc",
     "api/brave_talk_api.h",
     "api/brave_theme_api.cc",
