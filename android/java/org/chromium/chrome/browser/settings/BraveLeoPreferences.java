@@ -15,6 +15,8 @@ import org.chromium.ai_chat.mojom.ModelWithSubtitle;
 import org.chromium.ai_chat.mojom.PremiumStatus;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.LinkSubscriptionUtils;
@@ -37,10 +39,17 @@ public class BraveLeoPreferences extends BravePreferenceFragment
     private static final String PREF_SUBSCRIPTION_CATEGORY = "subscription_category";
     private static final String PREF_DEFAULT_MODEL = "default_model";
 
+    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        requireActivity().setTitle(R.string.menu_brave_leo);
+        mPageTitle.set(getString(R.string.menu_brave_leo));
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_leo_preferences);
+    }
+
+    @Override
+    public ObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
     }
 
     @Override

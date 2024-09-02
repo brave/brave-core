@@ -22,6 +22,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.brave_shields.mojom.SubscriptionInfo;
 import org.chromium.chrome.R;
@@ -54,6 +56,7 @@ public class ContentFilteringFragment extends BravePreferenceFragment
     // SettingsLauncher injected from main Settings Activity.
     private SettingsLauncher mSettingsLauncher;
     private ActivityResultLauncher<Intent> mAddCustomFilterResultLauncher;
+    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
     @Override
     public View onCreateView(
@@ -63,11 +66,14 @@ public class ContentFilteringFragment extends BravePreferenceFragment
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        if (getActivity() != null) {
-            getActivity().setTitle(R.string.content_filters_title);
-        }
+        mPageTitle.set(getString(R.string.content_filters_title));
         super.onActivityCreated(savedInstanceState);
         setData();
+    }
+
+    @Override
+    public ObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
     }
 
     @Override
