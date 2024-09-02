@@ -1,26 +1,38 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+const NSSVG = 'http://www.w3.org/2000/svg'
 
-// Notify the background script as soon as the content script has loaded.
-// chrome.tabs.insertCSS may sometimes fail to inject CSS in a newly navigated
-// page when using the chrome.webNavigation API.
-// See: https://bugs.chromium.org/p/chromium/issues/detail?id=331654#c15
-// The RenderView should always be ready when the content script begins, so
-// this message is used to trigger CSS insertion instead.
+let pickerDiv: HTMLDivElement | null
+let shadowRoot: ShadowRoot | null
 
-let pickerFrame: HTMLIFrameElement | null
+const api = {
+  cosmeticFilterCreate: (selector: string) => {
+    chrome.braveShields.addSiteCosmeticFilter(selector)
+
+    const styleId = 'brave-content-picker-style'
+    let style = document.getElementById(styleId)
+    if (!style) {
+      style = document.createElement('style')
+      style.id = styleId
+      document.head.appendChild(style)
+    }
+    style.innerText += `${selector} {display: none !important;}`
+  },
+}
 
 // When the picker is activated, it eats all pointer events and takes up the
 // entire screen. All calls to document.elementFromPoint(..) will return the
 // frame. We disable pointer events for the duration of the query to get
 // around this.
 const elementFromFrameCoords = (x: number, y: number): Element | null => {
-  if (!pickerFrame) { return null }
-  pickerFrame.style.setProperty('pointer-events', 'none', 'important')
+  if (!pickerDiv) {
+    return null
+  }
+  pickerDiv.style.setProperty('pointer-events', 'none', 'important')
   const elem = document.elementFromPoint(x, y)
-  pickerFrame.style.setProperty('pointer-events', 'auto', 'important')
+  pickerDiv.style.setProperty('pointer-events', 'auto', 'important')
   return elem
 }
 
@@ -188,7 +200,7 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
           }
         }
         if (data === undefined || data.length === 0) {
-          let alttext = elem.getAttribute('alt')?.trim()
+          const alttext = elem.getAttribute('alt')?.trim()
           if (alttext !== undefined && alttext.length > 0) {
             attributes.push({
               attr: 'alt',
@@ -216,9 +228,9 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
   const querySelectorNoExcept = (node: Element | null, selector: string): Element[] => {
     if (node !== null) {
       try {
-        let r = node.querySelectorAll(selector)
+        const r = node.querySelectorAll(selector)
         return Array.from(r)
-      } catch (e) { /* Deliberately left empty */ }
+      } catch { /* Deliberately left empty */ }
     }
     return []
   }
@@ -254,8 +266,8 @@ const elementPickerViewportChanged = () => {
 }
 
 const quitElementPicker = () => {
-  if (pickerFrame !== null) {
-    document.documentElement.removeChild(pickerFrame)
+  if (pickerDiv !== null) {
+    document.documentElement.removeChild(pickerDiv)
   }
 
   // Tear down element picker listeners
@@ -264,11 +276,17 @@ const quitElementPicker = () => {
   document.removeEventListener('scroll', elementPickerViewportChanged)
 }
 
-const launchElementPicker = () => {
-  pickerFrame = document.createElement('iframe')
+const attachElementPicker = () => {
   // "src" is a web accessible resource since the URI is chrome-extension://.
   // This ensures a malicious page cannot modify the iframe contents.
-  pickerFrame.src = chrome.runtime.getURL('elementPicker.html')
+  pickerDiv = document.createElement('div')
+  shadowRoot = pickerDiv.attachShadow({ mode: 'closed' })
+
+  // Will be resolved by webpack to the file content.
+  // It's a trusted content so it's safe to use innerHTML.
+  // eslint-disable-next-line no-unsanitized/property
+  shadowRoot.innerHTML = require('./elementPicker.html?raw')
+
   const pickerCSSStyle: string = [
     'background: transparent',
     'border: 0',
@@ -290,21 +308,19 @@ const launchElementPicker = () => {
     'visibility: visible',
     'width: 100%',
     'z-index: 2147483647',
-    ''
+    '',
   ].join(' !important;')
-  // TODO(keur): To harden this we can use chrome.tabs.insertCSS(). Not a
-  // big priority since the page can always remove the iframe if it wants.
-  pickerFrame.style.cssText = pickerCSSStyle
 
-  // We don't append to the body because we are setting the frame's
-  // width and height to be 100%. Prevents the picker from only being
-  // able to hover the iframe.
-  document.documentElement.appendChild(pickerFrame)
+  pickerDiv.setAttribute('style', pickerCSSStyle)
+  document.documentElement.appendChild(pickerDiv)
+
 
   // Setup listeners to assist element picker
   document.addEventListener('keydown', elementPickerOnKeydown, true)
   document.addEventListener('resize', elementPickerViewportChanged)
   document.addEventListener('scroll', elementPickerViewportChanged)
+
+  return shadowRoot
 }
 
 interface TargetRect {
@@ -329,8 +345,8 @@ let targetedElems: Element[] = []
 
 const recalculateAndSendTargets = (elems: Element[]) => {
   targetedElems = elems
-  const coords: TargetRect[] = elems.map((e: Element) => targetRectFromElement(e))
-  chrome.runtime.sendMessage({ type: 'highlightElements', coords: coords })
+  const coords = elems.map((e: Element) => targetRectFromElement(e))
+  highlightElements(coords)
 }
 
 const onTargetSelected = (selected: Element | null, index: number): string => {
@@ -373,50 +389,157 @@ const onTargetSelected = (selected: Element | null, index: number): string => {
   return selector
 }
 
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  const action = typeof msg === 'string' ? msg : msg.type
-  switch (action) {
-    case 'quitElementPicker':
-      quitElementPicker()
-      break
-    case 'elementPickerHoverCoordsChanged': {
-      const { coords } = msg
-      const elem = elementFromFrameCoords(coords.x, coords.y)
-      if (elem !== null && (elem instanceof HTMLElement) && elem !== lastHoveredElem) {
-        recalculateAndSendTargets([elem])
-        lastHoveredElem = elem
-      }
-      break
-    }
-    case 'elementPickerUserSelectedTarget': {
-      const { specificity } = msg
-      if (lastHoveredElem !== null && (lastHoveredElem instanceof HTMLElement)) {
-        const selector = onTargetSelected(lastHoveredElem, specificity)
-        recalculateAndSendTargets(Array.from(document.querySelectorAll(selector)))
-        sendResponse({
-          isValid: selector !== '',
-          selector: selector.trim()
-        })
-      }
-      break
-    }
-    case 'elementPickerUserModifiedRule': {
-      const selector = msg.selector
-      if (selector.length > 0) {
-        recalculateAndSendTargets(Array.from(document.querySelectorAll(selector)))
-      }
-      break
-    }
-    case 'elementPickerUserCreatedRule': {
-      // Append the hostname and forward to the background script
-      chrome.runtime.sendMessage({
-        type: 'cosmeticFilterCreate',
-        selector: msg.selector
-      })
-      quitElementPicker()
-      break
+const elementPickerHoverCoordsChanged = (x: number, y: number) => {
+  const elem = elementFromFrameCoords(x, y)
+  if (elem instanceof HTMLElement && elem !== lastHoveredElem) {
+    recalculateAndSendTargets([elem])
+    lastHoveredElem = elem
+  }
+}
+
+const elementPickerUserSelectedTarget = (specificity: number) => {
+  if (lastHoveredElem instanceof HTMLElement) {
+    const selector = onTargetSelected(lastHoveredElem, specificity)
+    recalculateAndSendTargets(Array.from(document.querySelectorAll(selector)))
+    return {
+      isValid: selector !== '',
+      selector: selector.trim(),
     }
   }
-})
+  return {
+    isValid: false,
+    selector: '',
+  }
+}
 
-launchElementPicker()
+const elementPickerUserModifiedRule = (selector: string) => {
+  if (selector.length > 0) {
+    recalculateAndSendTargets(Array.from(document.querySelectorAll(selector)))
+  }
+}
+
+const launchElementPicker = (root: ShadowRoot) => {
+  let hasSelectedTarget = false
+
+  root.addEventListener(
+    'keydown',
+    (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.stopPropagation()
+        event.preventDefault()
+        quitElementPicker()
+      }
+    },
+    true,
+  )
+
+  const svg = root.getElementById('picker-ui')!
+
+  svg.addEventListener(
+    'mousemove',
+    (event) => {
+      if (!hasSelectedTarget) {
+        elementPickerHoverCoordsChanged(event.clientX, event.clientY)
+      }
+      event.stopPropagation()
+    },
+    true,
+  )
+
+  const rulesTextArea: HTMLInputElement = root.querySelector(
+    '#rules-box > textarea',
+  )!
+  let textInputTimer: any = null
+  rulesTextArea.addEventListener('input', () => {
+    clearTimeout(textInputTimer)
+    textInputTimer = setTimeout(() => {
+      const selector = rulesTextArea.value.trim()
+      if (selector.length > 0) {
+        elementPickerUserModifiedRule(selector)
+      }
+    }, 700)
+  })
+  rulesTextArea.addEventListener('focus', () => {
+    hasSelectedTarget = true
+    togglePopup(true)
+  })
+  const section = root.querySelector('section')!
+  const togglePopup = (show: boolean) => {
+    section.setAttribute('style', `opacity : ${show ? '1' : '0.2'}`)
+  }
+
+  const slider = root.getElementById('sliderSpecificity') as HTMLInputElement
+
+  const dispatchSelect = () => {
+    const { isValid, selector } = elementPickerUserSelectedTarget(
+      parseInt(slider.value),
+    )
+    if (isValid) {
+      hasSelectedTarget = true
+      togglePopup(true)
+      // disable hovering new elements
+      rulesTextArea.value = selector
+    }
+  }
+
+  slider.addEventListener('input', () => {
+    dispatchSelect()
+  })
+
+  svg.addEventListener('click', () => {
+    if (hasSelectedTarget) {
+      // We are already previewing a target. We'll interpet another click
+      // as the user wanting back control of the UI.
+      hasSelectedTarget = false
+      slider.value = '5'
+      togglePopup(false)
+      return
+    }
+    dispatchSelect()
+  })
+
+  const createButton = root.getElementById('btnCreate')!
+  createButton.addEventListener('click', () => {
+    const selector = rulesTextArea.value.trim()
+    if (selector.length > 0) {
+      api.cosmeticFilterCreate(selector)
+      quitElementPicker()
+    }
+  })
+
+  const quitButton = root.getElementById('btnQuit')!
+  quitButton.addEventListener('click', () => {
+    quitElementPicker()
+  })
+}
+
+const highlightElements = (coords: TargetRect[]) => {
+  if (!shadowRoot) return
+  const svg = shadowRoot.getElementById('picker-ui')!
+  const svgMask = shadowRoot.getElementById('highlight-mask')!
+
+  // // Delete old element targeting rectangles and their corresponding masks
+  const oldMask = svg.querySelectorAll('.mask')
+  for (const old of oldMask) {
+    old.remove()
+  }
+
+  for (const rect of coords) {
+    // Add the mask to the SVG definition so the dark background is removed
+    const mask = document.createElementNS(NSSVG, 'rect')
+    mask.classList.add('mask')
+    mask.setAttribute('x', rect.x.toString())
+    mask.setAttribute('y', rect.y.toString())
+    mask.setAttribute('width', rect.width.toString())
+    mask.setAttribute('height', rect.height.toString())
+    svgMask.appendChild(mask)
+
+    // Use the same element, but add the target class which turns the
+    // target rectangle orange
+    const braveTargetingArea = mask.cloneNode() as SVGRectElement
+    braveTargetingArea.classList.add('target')
+    svg.appendChild(braveTargetingArea)
+  }
+}
+
+launchElementPicker(attachElementPicker())

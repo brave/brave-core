@@ -1,130 +1,109 @@
-<head>
-  <meta charset="utf-8">
-  <title>Brave Element Picker</title>
-  <style>
-    :root {
-      color-scheme: light dark;
-    }
+<style>
+  :host {
+    background: transparent;
+    color: black;
+    font: 14px sans-serif;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    overflow: hidden;
+    font-family: "Noto Sans", Arial, sans-serif;
+  }
 
-    body {
-      background: transparent;
-      color: black;
-      font: 14px sans-serif;
-      height: 100%;
-      width: 100%;
-      margin: 0;
-      overflow: hidden;
-      font-family: "Noto Sans", Arial, sans-serif;
-    }
+  :host :focus {
+    outline: none;
+  }
 
-    body :focus {
-      outline: none;
-    }
+  #rules-box {
+    height: 8em;
+    margin-bottom: 5px;
+    background-color: #fff;
+    border-radius: .1em;
+  }
 
-    #rules-box {
-      height: 8em;
-      padding: 5px;
-      margin-bottom: 5px;
-      background-color: #fff;
-      border-radius: .1em;
-      overflow-y: auto;
-      overflow-wrap: break-word;
-    }
+  #rules-box>textarea {
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    resize: none;
+    border: none;
+    padding: 5px;
+    overflow: auto;
+    overflow-wrap: break-word;
+  }
 
-    #rules-box > textarea {
-      height: 100%;
-      width: 100%;
-      resize: none;
-      border: none;
-      overflow: auto;
-    }
+  section {
+    color-scheme: light only;
+    background-color: #eee;
+    border: 1px solid #aaa;
+    border-radius: .1em;
+    bottom: 4px;
+    box-sizing: border-box;
+    min-width: 24em;
+    padding: 4px;
+    position: fixed;
+    right: 4px;
+    width: calc(20% - 4px);
+    opacity: 0.2;
+  }
 
-    section {
-      color-scheme: light only;
-      background-color: #eee;
-      border: 1px solid #aaa;
-      border-radius: .1em;
-      bottom: 4px;
-      box-sizing: border-box;
-      min-width: 24em;
-      padding: 4px;
-      position: fixed;
-      right: 4px;
-      width: calc(20% - 4px);
-      opacity: 0.2;
-    }
+  section input {
+    width: 50%;
+  }
 
-    section input {
-      width: 50%;
-    }
+  button {
+    float: left;
+    background-color: #ccc;
+    cursor: pointer;
+    padding: 4px 6px;
+    margin: 0 0 0 2px;
+  }
 
-    button {
-      float: left;
-      background-color: #ccc;
-      cursor: pointer;
-      padding: 4px 6px;
-      margin: 0 0 0 2px;
-    }
+  button:first-of-type {
+    margin-left: 0;
+  }
 
-    button:first-of-type {
-      margin-left: 0;
-    }
+  button:last-child {
+    float: right;
+  }
 
-    button:last-child {
-      float: right;
-    }
+  svg {
+    cursor: crosshair;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+  }
 
-    svg {
-      cursor: crosshair;
-      box-sizing: border-box;
-      height: 100%;
-      width: 100%;
-      top: 0;
-      left: 0;
-      position: absolute;
-    }
+  #darken {
+    fill: rgba(0, 0, 0, 0.5);
+  }
 
-    #darken {
-      fill: rgba(0,0,0,0.5);
-    }
-
-    .target {
-      stroke: #FF6200;
-      stroke-width: 0.5px;
-      fill: rgba(255,130,63,0.25);
-    }
-  </style>
-</head>
-
-<body>
-  <svg id="picker-ui">
-    <defs>
-      <mask id="highlight-mask">
-        <rect x="0" y="0" width="100%" height="100%" fill="white" />
-        <!--
-        <rect x="200" y="200" width="100" height="100" class="mask" />
-        <rect x="600" y="600" width="100" height="100" class="mask" />
-        -->
-      </mask>
-    </defs>
-    <rect id="darken" x="0" y="0" width="100%" height="100%" mask="url(#highlight-mask)"/>
-    <!--
-    <rect x="200" y="200" width="100" height="100" class="target mask" />
-    <rect x="600" y="600" width="100" height="100" class="target mask" />
-    -->
-  </svg>
-  <section>
-    <div id="rules-box">
-      <textarea></textarea>
-    </div>
+  .target {
+    stroke: #FF6200;
+    stroke-width: 0.5px;
+    fill: rgba(255, 130, 63, 0.25);
+  }
+</style>
+<svg xmlns="http://www.w3.org/2000/svg" id="picker-ui">
+  <defs>
+    <mask id="highlight-mask">
+      <rect x="0" y="0" width="100%" height="100%" fill="white">
+    </mask>
+  </defs>
+  <rect id="darken" x="0" y="0" width="100%" height="100%" mask="url(#highlight-mask)">
+</svg>
+<section>
+  <div id="rules-box">
+    <textarea></textarea>
+  </div>
+  <div>
     <div>
-      <div>
-        <input id="sliderSpecificity" type="range" min="0" max="4" value="4">
-      </div>
-      <button id="btnCreate">Create</button>
-      <!-- <button id="btnPreview">Preview</button> -->
-      <button id="btnQuit" >Quit</button>
+      <input id="sliderSpecificity" type="range" min="0" max="4" value="4">
     </div>
-  </section>
-  <script src="elementPicker.js"></script>
-</body>
+    <button id="btnCreate">Create</button>
+    <button id="btnQuit" >Quit</button>
+  </div>
+</section>
