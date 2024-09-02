@@ -149,7 +149,7 @@ class AdsImpl final : public Ads {
   // state.
   GlobalState global_state_;
 
-  // Handles database maintenance tasks, such as purging and vacuuming.
+  // Handles database maintenance tasks, such as purging.
   std::unique_ptr<database::Maintenance> database_maintenance_;
 
   base::WeakPtrFactory<AdsImpl> weak_factory_{this};

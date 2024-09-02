@@ -20,8 +20,8 @@ class AdsObserverInterface {
   // Invoked when a browser upgrade is required to serve ads.
   virtual void OnBrowserUpgradeRequiredToServeAds() = 0;
 
-  // Invoked when a Rewards wallet is deemed ineligible to serve ads.
-  virtual void OnIneligibleRewardsWalletToServeAds() = 0;
+  // Invoked when a wallet is deemed ineligible to serve ads.
+  virtual void OnIneligibleWalletToServeAds() = 0;
 
   // Invoked to remind the user of what to do and what not to do.
   virtual void OnRemindUser(mojom::ReminderType mojom_reminder_type) = 0;

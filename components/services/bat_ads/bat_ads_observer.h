@@ -31,7 +31,7 @@ class BatAdsObserver : public brave_ads::AdsObserverInterface {
 
   void OnBrowserUpgradeRequiredToServeAds() override;
 
-  void OnIneligibleRewardsWalletToServeAds() override;
+  void OnIneligibleWalletToServeAds() override;
 
   void OnRemindUser(
       brave_ads::mojom::ReminderType mojom_reminder_type) override;

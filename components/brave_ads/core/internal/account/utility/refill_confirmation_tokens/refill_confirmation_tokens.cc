@@ -158,7 +158,7 @@ RefillConfirmationTokens::HandleRequestSignedTokensUrlResponse(
 
   const bool is_eligible = ParseIsEligible(*dict).value_or(true);
   if (!is_eligible) {
-    AdsNotifierManager::GetInstance().NotifyIneligibleRewardsWalletToServeAds();
+    AdsNotifierManager::GetInstance().NotifyIneligibleWalletToServeAds();
   }
 
   nonce_ = ParseNonce(*dict);
