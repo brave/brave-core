@@ -98,7 +98,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kControlledFrame,
       &blink::features::kCssSelectorFragmentAnchor,
       &blink::features::kFencedFrames,
-      &blink::features::kFencedFramesM120FeaturesPart2,
       &blink::features::kFledge,
       &blink::features::kFledgeBiddingAndAuctionServer,
       &blink::features::kFledgeConsiderKAnonymity,
