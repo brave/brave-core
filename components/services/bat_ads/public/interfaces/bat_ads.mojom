@@ -135,7 +135,7 @@ interface BatAdsObserver {
 
   OnBrowserUpgradeRequiredToServeAds();
 
-  OnIneligibleRewardsWalletToServeAds();
+  OnIneligibleWalletToServeAds();
 
   OnRemindUser(brave_ads.mojom.ReminderType type);
 };

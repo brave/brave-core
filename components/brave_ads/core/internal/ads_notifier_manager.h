@@ -35,7 +35,7 @@ class AdsNotifierManager final {
 
   void NotifyBrowserUpgradeRequiredToServeAds() const;
 
-  void NotifyIneligibleRewardsWalletToServeAds() const;
+  void NotifyIneligibleWalletToServeAds() const;
 
   void NotifyRemindUser(mojom::ReminderType mojom_reminder_type) const;
 

@@ -27,8 +27,8 @@ void BatAdsObserver::OnBrowserUpgradeRequiredToServeAds() {
   bat_ads_observer_remote_->OnBrowserUpgradeRequiredToServeAds();
 }
 
-void BatAdsObserver::OnIneligibleRewardsWalletToServeAds() {
-  bat_ads_observer_remote_->OnIneligibleRewardsWalletToServeAds();
+void BatAdsObserver::OnIneligibleWalletToServeAds() {
+  bat_ads_observer_remote_->OnIneligibleWalletToServeAds();
 }
 
 void BatAdsObserver::OnRemindUser(

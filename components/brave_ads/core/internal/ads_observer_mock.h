@@ -27,7 +27,7 @@ class AdsObserverMock : public AdsObserverInterface {
 
   MOCK_METHOD(void, OnBrowserUpgradeRequiredToServeAds, ());
 
-  MOCK_METHOD(void, OnIneligibleRewardsWalletToServeAds, ());
+  MOCK_METHOD(void, OnIneligibleWalletToServeAds, ());
 
   MOCK_METHOD(void, OnRemindUser, (mojom::ReminderType mojom_reminder_type));
 };

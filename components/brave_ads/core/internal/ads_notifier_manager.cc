@@ -38,9 +38,9 @@ void AdsNotifierManager::NotifyBrowserUpgradeRequiredToServeAds() const {
   }
 }
 
-void AdsNotifierManager::NotifyIneligibleRewardsWalletToServeAds() const {
   for (const auto& observer : observers_) {
     observer->OnIneligibleRewardsWalletToServeAds();
+void AdsNotifierManager::NotifyIneligibleWalletToServeAds() const {
   }
 }
 

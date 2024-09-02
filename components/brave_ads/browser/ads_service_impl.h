@@ -382,7 +382,7 @@ class AdsServiceImpl final : public AdsService,
   // bat_ads::mojom::BatAdsObserver:
   void OnAdRewardsDidChange() override {}
   void OnBrowserUpgradeRequiredToServeAds() override;
-  void OnIneligibleRewardsWalletToServeAds() override {}
+  void OnIneligibleWalletToServeAds() override {}
   void OnRemindUser(mojom::ReminderType mojom_reminder_type) override;
 
   // BackgroundHelper::Observer:
