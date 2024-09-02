@@ -6,13 +6,13 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_MODULES_BRAVE_BRAVE_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_MODULES_BRAVE_BRAVE_H_
 
+#include "third_party/blink/renderer/bindings/core/v8/script_promise.h"
 #include "third_party/blink/renderer/core/execution_context/navigator_base.h"
 #include "third_party/blink/renderer/modules/modules_export.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 
 namespace blink {
 
-class ScriptPromiseUntyped;
 class ScriptState;
 
 class MODULES_EXPORT Brave final : public ScriptWrappable,
@@ -29,7 +29,7 @@ class MODULES_EXPORT Brave final : public ScriptWrappable,
 
   void Trace(Visitor*) const override;
 
-  ScriptPromiseUntyped isBrave(ScriptState*);
+  ScriptPromise<IDLBoolean> isBrave(ScriptState*);
 };
 
 }  // namespace blink
