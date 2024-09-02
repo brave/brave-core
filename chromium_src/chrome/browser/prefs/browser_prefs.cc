@@ -19,6 +19,7 @@
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/constants/pref_names.h"
@@ -40,6 +41,10 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -211,6 +216,11 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 #if !BUILDFLAG(IS_ANDROID)
   // Added 10/2022
   local_state->ClearPref(kDefaultBrowserPromptEnabled);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  // Added 09/2024
+  brave_vpn::MigrateLocalStatePrefs(local_state);
 #endif
 
   misc_metrics::UptimeMonitor::MigrateObsoletePrefs(local_state);

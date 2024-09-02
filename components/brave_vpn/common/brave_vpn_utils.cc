@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/fixed_flat_map.h"
 #include "base/feature_list.h"
 #include "base/json/json_writer.h"
 #include "base/json/values_util.h"
@@ -27,9 +28,11 @@
 namespace brave_vpn {
 
 namespace {
+
 void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 #if !BUILDFLAG(IS_ANDROID)
   registry->RegisterListPref(prefs::kBraveVPNRegionList);
+  registry->RegisterIntegerPref(prefs::kBraveVPNRegionListVersion, 1);
   registry->RegisterTimePref(prefs::kBraveVPNRegionListFetchedDate, {});
   registry->RegisterStringPref(prefs::kBraveVPNDeviceRegion, "");
   registry->RegisterStringPref(prefs::kBraveVPNSelectedRegion, "");
@@ -48,6 +51,60 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kBraveVPNOnDemandEnabled, false);
 #endif
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+void MigrateFromV1ToV2(PrefService* local_prefs) {
+  const auto selected_region_v1 =
+      local_prefs->GetString(prefs::kBraveVPNSelectedRegion);
+  if (selected_region_v1.empty()) {
+    local_prefs->SetInteger(prefs::kBraveVPNRegionListVersion, 2);
+    return;
+  }
+
+  // In this migration, selected region name is updated to matched v2 region
+  // name.
+  constexpr auto kV1ToV2Map =
+      base::MakeFixedFlatMap<std::string_view, std::string_view>(
+          {{"au-au", "ocn-aus"},
+           {"eu-at", "eu-at"},
+           {"eu-be", "eu-be"},
+           {"sa-brazil", "sa-brz"},
+           {"ca-east", "na-can"},
+           {"sa-cl", "sa-cl"},
+           {"sa-colombia", "sa-co"},
+           {"eu-cr", "eu-cr"},
+           {"eu-cz", "eu-cz"},
+           {"eu-dk", "eu-dk"},
+           {"eu-fr", "eu-fr"},
+           {"eu-de", "eu-de"},
+           {"eu-gr", "eu-gr"},
+           {"eu-ir", "eu-ie"},
+           {"eu-italy", "eu-it"},
+           {"asia-jp", "asia-jp"},
+           {"sa-mexico", "sa-mx"},
+           {"eu-nl", "eu-nl"},
+           {"eu-pl", "eu-pl"},
+           {"eu-pt", "eu-pt"},
+           {"eu-ro", "eu-ro"},
+           {"asia-sg", "asia-sg"},
+           {"af-za", "af-za"},
+           {"eu-es", "eu-es"},
+           {"eu-sweden", "eu-se"},
+           {"eu-ch", "eu-ch"},
+           // TODO(simonhong): Update proper region name in US.
+           {"us-central", "na-usa"},
+           {"us-east", "na-usa"},
+           {"us-mountain", "na-usa"},
+           {"us-north-west", "na-usa"},
+           {"us-west", "na-usa"},
+           {"eu-ua", "eu-ua"},
+           {"eu-en", "en-en"}});
+
+  local_prefs->SetString(prefs::kBraveVPNSelectedRegion,
+                         kV1ToV2Map.at(selected_region_v1));
+  local_prefs->SetInteger(prefs::kBraveVPNRegionListVersion, 2);
+}
+#endif
 
 }  // namespace
 
@@ -204,6 +261,16 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       registry, prefs::kBraveVPNFirstUseTime, prefs::kBraveVPNLastUseTime,
       prefs::kBraveVPNUsedSecondDay, prefs::kBraveVPNDaysInMonthUsed, nullptr);
   RegisterVPNLocalStatePrefs(registry);
+}
+
+void MigrateLocalStatePrefs(PrefService* local_prefs) {
+#if !BUILDFLAG(IS_ANDROID)
+  const int current_version =
+      local_prefs->GetInteger(prefs::kBraveVPNRegionListVersion);
+  if (current_version == 1) {
+    MigrateFromV1ToV2(local_prefs);
+  }
+#endif
 }
 
 bool HasValidSubscriberCredential(PrefService* local_prefs) {

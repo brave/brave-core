@@ -25,6 +25,8 @@ inline constexpr char kBraveVPNDeviceRegion[] =
     "brave.brave_vpn.device_region_name";
 inline constexpr char kBraveVPNSelectedRegion[] =
     "brave.brave_vpn.selected_region_name";
+inline constexpr char kBraveVPNRegionListVersion[] =
+    "brave.brave_vpn.region_list_version";
 #if BUILDFLAG(IS_WIN)
 inline constexpr char kBraveVpnShowDNSPolicyWarningDialog[] =
     "brave.brave_vpn.show_dns_policy_warning_dialog";
