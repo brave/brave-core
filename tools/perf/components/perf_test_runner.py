@@ -163,6 +163,10 @@ class RunableConfiguration:
       story_filter = '|'.join(benchmark_config.stories)
       args.append(f'--story-filter=({story_filter})')
 
+    if len(benchmark_config.stories_exclude) > 0:
+      story_filter_exclude = '|'.join(benchmark_config.stories_exclude)
+      args.append(f'--story-filter-exclude=({story_filter_exclude})')
+
     # process the binary-specific args:
     args.extend(binary.get_run_benchmark_args())
     browser_args.extend(self.binary.get_browser_args())
