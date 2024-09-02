@@ -10,16 +10,20 @@ import re
 import shutil
 import sys
 import tempfile
+
 from dataclasses import dataclass
+
 from distutils.dir_util import copy_tree
 from enum import Enum
 from typing import List, Optional, Tuple
 
 import components.git_tools as git_tools
 import components.path_util as path_util
+
+from components.cloud_storage import DownloadFile
+from components.version import BraveVersion
 from components.common_options import CommonOptions
-from components.perf_test_utils import (DownloadArchiveAndUnpack, DownloadFile,
-                                        GetProcessOutput, ToBravePlatformName,
+from components.perf_test_utils import (GetProcessOutput, ToBravePlatformName,
                                         ToChromiumPlatformName)
 from components.version import BraveVersion
 
@@ -38,6 +42,13 @@ def _GetChromeForTestingDownloadUrl(version: str, chrome_platform: str) -> str:
   return ('https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/' +
           f'{str(version)}/{chrome_platform}/chrome-{chrome_platform}.zip')
 
+
+def DownloadArchiveAndUnpack(output_directory: str, url: str):
+  _, f = tempfile.mkstemp(dir=output_directory)
+  DownloadFile(url, f)
+  with path_util.SysPath(path_util.GetBraveScriptDir(), 0):
+    from lib.util import extract_zip  # pylint: disable=import-outside-toplevel
+  extract_zip(f, output_directory)
 
 def _DownloadWinInstallerAndExtract(out_dir: str, url: str,
                                     expected_install_path: str,

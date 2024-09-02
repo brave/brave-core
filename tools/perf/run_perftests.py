@@ -23,9 +23,9 @@ import sys
 import os
 import tempfile
 
+import components.cloud_storage as cloud_storage
 import components.perf_config as perf_config
 import components.perf_test_runner as perf_test_runner
-import components.perf_test_utils as perf_test_utils
 import components.path_util as path_util
 import components.profile_tools as profile_tools
 import components.wpr_tools as wpr_tools
@@ -43,7 +43,7 @@ def load_config(config: str, options: CommonOptions) -> dict:
   if config.startswith('https://'):  # URL to download the config
     _, config_path = tempfile.mkstemp(dir=options.working_directory,
                                       prefix='config-')
-    perf_test_utils.DownloadFile(config, config_path)
+    cloud_storage.DownloadFileOnce(config, config_path)
 
   elif os.path.isfile(config):  # Full config path
     config_path = config

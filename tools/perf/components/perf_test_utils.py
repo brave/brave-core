@@ -6,8 +6,6 @@ import logging
 import os
 import re
 import subprocess
-import tempfile
-import time
 import platform
 
 from threading import Timer
@@ -19,7 +17,6 @@ import components.path_util as path_util
 
 def IsSha1Hash(s: str) -> bool:
   return re.match(r'[a-f0-9]{40}', s) is not None
-
 
 def ToChromiumPlatformName(target_os: str) -> str:
   if target_os == 'mac':
@@ -105,30 +102,3 @@ def GetProcessOutput(args: List[str],
     if check:
       raise
     return False, e.output
-
-
-def DownloadFile(url: str, output: str):
-
-  def load_data():
-    for _ in range(3):
-      try:
-        logging.info('Downloading %s to %s', url, output)
-        f = urlopen(url)
-        return f.read()
-      except Exception:
-        logging.error('Download attempt failed')
-        time.sleep(5)
-    raise RuntimeError(f'Can\'t download {url}')
-
-  data = load_data()
-  os.makedirs(os.path.dirname(output), exist_ok=True)
-  with open(output, 'wb') as output_file:
-    output_file.write(data)
-
-
-def DownloadArchiveAndUnpack(output_directory: str, url: str):
-  _, f = tempfile.mkstemp(dir=output_directory)
-  DownloadFile(url, f)
-  with path_util.SysPath(path_util.GetBraveScriptDir(), 0):
-    from lib.util import extract_zip  # pylint: disable=import-outside-toplevel
-  extract_zip(f, output_directory)
