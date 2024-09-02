@@ -13,6 +13,8 @@ import android.os.Bundle;
 
 import androidx.preference.Preference;
 
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
@@ -29,24 +31,35 @@ public class BraveRewardsDebugPreferences extends BravePreferenceFragment {
     private Preference mExportRewardsDb;
     private BraveDbUtil mDbUtil;
 
+    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_rewards_debug_preferences);
+
+        // Hardcoded because it is for internal use only, not translated
+        mPageTitle.set("Rewards Debug");
 
         mDbUtil = BraveDbUtil.getInstance();
         mExportRewardsDb = findPreference(QA_EXPORT_REWARDS_DB);
         setRewardsDbClickListeners();
     }
 
+    @Override
+    public ObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
+    }
+
     private void setRewardsDbClickListeners() {
         if (mExportRewardsDb != null) {
-            mExportRewardsDb.setOnPreferenceClickListener(preference -> {
-                if (isStoragePermissionGranted(true)) {
-                    requestRestart();
-                }
-                return true;
-            });
+            mExportRewardsDb.setOnPreferenceClickListener(
+                    preference -> {
+                        if (isStoragePermissionGranted(true)) {
+                            requestRestart();
+                        }
+                        return true;
+                    });
         }
     }
 
@@ -73,7 +86,8 @@ public class BraveRewardsDebugPreferences extends BravePreferenceFragment {
         AlertDialog.Builder alertDialog =
                 new AlertDialog.Builder(getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog)
                         .setMessage(
-                                "This operation requires restart. Would you like to restart application and start operation?")
+                                "This operation requires restart. Would you like to restart"
+                                        + " application and start operation?")
                         .setPositiveButton(R.string.ok, onClickListener)
                         .setNegativeButton(R.string.cancel, onClickListener);
         Dialog dialog = alertDialog.create();

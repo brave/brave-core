@@ -11,6 +11,8 @@ import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.PreferenceCategory;
 
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.ntp.NtpUtil;
@@ -36,10 +38,12 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
     private ChromeSwitchPreference mShowBraveStatsPref;
     private ChromeSwitchPreference mShowTopSitesPref;
 
+    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().setTitle(R.string.prefs_new_tab_page);
+        mPageTitle.set(getString(R.string.prefs_new_tab_page));
         SettingsUtils.addPreferencesFromResource(this, R.xml.background_images_preferences);
     }
 
@@ -85,6 +89,11 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
             mShowBraveStatsPref.setChecked(NtpUtil.shouldDisplayBraveStats());
             mShowBraveStatsPref.setOnPreferenceChangeListener(this);
         }
+    }
+
+    @Override
+    public ObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
     }
 
     @Override
