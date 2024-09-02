@@ -6,14 +6,15 @@
 package org.chromium.chrome.browser.webcompat_reporter;
 
 import org.jni_zero.JNINamespace;
-import org.jni_zero.NativeMethods;
 import org.jni_zero.JniType;
+import org.jni_zero.NativeMethods;
 
 @JNINamespace("webcompat_reporter")
 public class BraveWebcompatReporterUtils {
     public static String getChannel() {
         return BraveWebcompatReporterUtilsJni.get().getChannel();
     }
+
     public static String getBraveVersion() {
         return BraveWebcompatReporterUtilsJni.get().getBraveVersion();
     }
@@ -22,6 +23,7 @@ public class BraveWebcompatReporterUtils {
     interface Natives {
         @JniType("std::string")
         String getChannel();
+
         @JniType("std::string")
         String getBraveVersion();
     }

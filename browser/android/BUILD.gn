@@ -10,6 +10,7 @@ source_set("android_browser_process") {
   check_includes = false
 
   sources = [
+    "//brave/browser/android/webcompat_reporter/webcompat_reporter_utils.cc",
     "//brave/browser/brave_ads/android/brave_ads_native_helper.cc",
     "brave_feature_util.cc",
     "brave_local_state_android.cc",
@@ -18,7 +19,6 @@ source_set("android_browser_process") {
     "brave_shields_content_settings.h",
     "brave_sync_worker.cc",
     "brave_sync_worker.h",
-    "//brave/browser/android/webcompat_reporter/webcompat_reporter_utils.cc"
   ]
 
   deps = [

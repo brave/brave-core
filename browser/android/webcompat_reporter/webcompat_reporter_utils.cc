@@ -4,24 +4,23 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <string>
+
 #include "base/android/jni_android.h"
-#include "base/logging.h"
 #include "base/android/jni_string.h"
+#include "base/logging.h"
 #include "brave/build/android/jni_headers/BraveWebcompatReporterUtils_jni.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/version_info/version_info.h"
 
-
 namespace webcompat_reporter {
 
-static std::string JNI_BraveWebcompatReporterUtils_GetChannel(
-    JNIEnv* env) {
-   return brave::GetChannelName();
+static std::string JNI_BraveWebcompatReporterUtils_GetChannel(JNIEnv* env) {
+  return brave::GetChannelName();
 }
 
 static std::string JNI_BraveWebcompatReporterUtils_GetBraveVersion(
     JNIEnv* env) {
-   return version_info::GetBraveVersionWithoutChromiumMajorVersion();
+  return version_info::GetBraveVersionWithoutChromiumMajorVersion();
 }
 
-}  // webcompat_reporter
+}  // namespace webcompat_reporter
