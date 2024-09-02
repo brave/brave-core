@@ -3,7 +3,9 @@
     "dashboard-bot-name": "mac-mini-x64-typical",
     "browser-type": "brave",
     "profile": "brave-typical-mac",
-    "extra-browser-args": [],
+    "extra-browser-args": [
+      "--disable-component-update",
+    ],
     "extra-benchmark-args": [],
   }],
   "benchmarks": [

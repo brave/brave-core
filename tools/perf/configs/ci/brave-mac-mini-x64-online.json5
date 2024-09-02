@@ -5,8 +5,13 @@
     "browser-type": "brave",
     "profile": "brave-typical-mac",
 
-    // Disable fetching Finch
-    "extra-browser-args": ["--variations-server-url=https://127.0.0.1/invalid", "--variations-insecure-server-url=http://127.0.0.1/invalid" ],
+    "extra-browser-args": [
+      // Disable fetching Finch
+      "--variations-server-url=https://127.0.0.1/invalid",
+      "--variations-insecure-server-url=http://127.0.0.1/invalid",
+
+      "--disable-component-update",
+    ],
     "extra-benchmark-args": ["--use-live-sites"],
     "profile-rebase": "online",
   }],

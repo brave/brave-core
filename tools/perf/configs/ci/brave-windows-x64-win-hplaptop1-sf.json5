@@ -3,7 +3,10 @@
     "dashboard-bot-name": "win11-hp-laptop-typical",
     "browser-type": "brave",
     "profile": "brave-typical-win",
-    "extra-browser-args": ["--disable-features=CalculateNativeWinOcclusion"],
+    "extra-browser-args": [
+      "--disable-component-update",
+      "--disable-features=CalculateNativeWinOcclusion",
+    ],
     "extra-benchmark-args": [],
   }],
   "benchmarks": [

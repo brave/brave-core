@@ -3,7 +3,9 @@
     "dashboard-bot-name": "mac-mini-m1-typical",
     "browser-type": "chromium",
     "profile": "chrome-typical-mac",
-    "extra-browser-args": [],
+    "extra-browser-args": [
+      "--disable-component-update",
+    ],
     "extra-benchmark-args": [],
   }],
   "benchmarks": [
