@@ -103,7 +103,6 @@ public class BraveShieldsUtils {
             jsonParam.put(
                     WEBCOMPAT_REPORT_BRAVE_VERSION, BraveWebcompatReporterUtils.getBraveVersion());
             jsonParam.put(WEBCOMPAT_REPORT_BRAVE_CHANNEL, BraveWebcompatReporterUtils.getChannel());
-            Log.i(TAG, "jsonParam:" + jsonParam.toString());
 
             OutputStream outputStream = urlConnection.getOutputStream();
             byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8.toString());
