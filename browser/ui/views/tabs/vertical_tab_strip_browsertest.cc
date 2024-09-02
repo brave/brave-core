@@ -139,14 +139,16 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   }
 
   void AppendTab(Browser* browser) {
-    chrome::AddTabAt(browser, GURL(), -1, true); 
+    chrome::AddTabAt(browser, GURL(), -1, true);
   }
 
   tab_groups::TabGroupId AddTabToNewGroup(Browser* browser, int tab_index) {
     return browser->tab_strip_model()->AddToNewGroup({tab_index});
   }
 
-  void AddTabToExistingGroup(Browser* browser, int tab_index, tab_groups::TabGroupId group) {
+  void AddTabToExistingGroup(Browser* browser,
+                             int tab_index,
+                             tab_groups::TabGroupId group) {
     ASSERT_TRUE(browser->tab_strip_model()->SupportsTabGroups());
     browser->tab_strip_model()->AddToExistingGroup({tab_index}, group);
   }
