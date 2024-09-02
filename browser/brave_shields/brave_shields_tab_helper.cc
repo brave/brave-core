@@ -526,7 +526,7 @@ BraveShieldsTabHelper::GetWebcompatSettings() {
 }
 
 void BraveShieldsTabHelper::LaunchContentPicker() {
-  if (*main_rfh = web_contents()->GetPrimaryMainFrame()) {
+  if (auto *main_rfh = web_contents()->GetPrimaryMainFrame()) {
     mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersJsHandler>
         js_handler;
     main_rfh->GetRemoteAssociatedInterfaces()->GetInterface(&js_handler);
