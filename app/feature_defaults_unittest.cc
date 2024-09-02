@@ -221,8 +221,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &ntp_features::kNtpAlphaBackgroundCollections,
       &ntp_features::kNtpBackgroundImageErrorDetection,
       &ntp_features::kNtpChromeCartModule,
-      &ntp_features::kNtpHistoryClustersModule,
-      &ntp_features::kNtpHistoryClustersModuleLoad,
       &omnibox::kDocumentProviderNoSetting,
       &omnibox::kDocumentProviderNoSyncRequirement,
       &omnibox::kExpandedStateHeight,

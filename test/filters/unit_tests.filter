@@ -434,9 +434,6 @@
 # This test fails because we disable kIOSPromoPasswordBubble.
 -IOSPasswordPromoOnDesktopTest.IsDirectVariantIOSPasswordPromoTestFalseFeatureInactive
 
-# This test fails because we disable kNtpHistoryClustersModule.
--NewTabPageModulesTest.MakeModuleIdNames_SingleModuleEnabled
-
 # These fail because we have journeys/history clusters disabled.
 -HistoryClustersHandlerTest.OpenVisitUrlsInTabGroup
 -HistoryClustersPageHandlerCartTest.CheckClusterHasCart
