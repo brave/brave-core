@@ -237,7 +237,9 @@ def _MakeTestingFieldTrials(
     variations_repo_dir = os.path.join(tempfile.gettempdir(),
                                        'brave-variations')
     git_tools.EnsureRepositoryUpdated(git_tools.GH_BRAVE_VARIATIONS_GIT_URL,
-                                      'main', variations_repo_dir)
+                                      'main',
+                                      variations_repo_dir,
+                                      allow_rewrite=True)
 
   combined_version: str = version.combined_version()
   logging.debug('Generating trials for combined_version %s', combined_version)

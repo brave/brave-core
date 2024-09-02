@@ -89,13 +89,31 @@ def Clone(url: str, branch: Optional[str], target_dir: str) -> None:
   GetProcessOutput(args, path_util.GetBraveDir(), check=True)
 
 
-def EnsureRepositoryUpdated(url: str, branch: str, directory: str) -> None:
+def EnsureRepositoryUpdated(url: str,
+                            branch: str,
+                            directory: str,
+                            allow_rewrite=False) -> None:
   if not os.path.exists(directory):
     Clone(url, branch, directory)
     return
 
-  GetProcessOutput(['git', 'fetch', url, branch], directory, check=True)
-  GetProcessOutput(['git', 'checkout', 'FETCH_HEAD'], directory, check=True)
+  update_ok, _ = GetProcessOutput(['git', 'fetch', url, branch], directory)
+  fetch_args = ['git', 'checkout', 'FETCH_HEAD']
+  if allow_rewrite:
+    fetch_args.append('-f')
+
+  if update_ok:
+    checkout_ok, _ = GetProcessOutput(fetch_args, directory)
+    if checkout_ok:
+      return
+
+  if allow_rewrite:
+    # delete the failed git repo and clone again:
+    shutil.rmtree(directory)
+    Clone(url, branch, directory)
+    return
+
+  raise RuntimeError(f'Failed to update git repo {directory}')
 
 
 def EnsureRevision(revision: str, cwd=path_util.GetBraveDir()) -> None:
