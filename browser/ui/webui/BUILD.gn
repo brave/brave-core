@@ -35,7 +35,7 @@ if (enable_sparkle) {
     deps = [
       "//base",
       "//base/test:test_support",
-      "//brave/components/update_client",
+      "//brave/components/update_client:features",
       "//chrome/browser/ui",
       "//testing/gtest",
     ]

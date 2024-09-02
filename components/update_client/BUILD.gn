@@ -24,7 +24,7 @@ buildflag_header("buildflags") {
 }
 
 if (is_mac) {
-  source_set("update_client") {
+  source_set("features") {
     sources = [
       "features.cc",
       "features.h",
