@@ -10,10 +10,8 @@
 #define TAB_STRIP_MODEL_H_ friend class BraveTabStripModel;
 #define IsReadLaterSupportedForAny virtual IsReadLaterSupportedForAny
 #define TabDragController TabDragControllerChromium
-#define ExecuteContextMenuCommand virtual ExecuteContextMenuCommand
 
 #include "src/chrome/browser/ui/tabs/tab_strip_model.h"  // IWYU pragma: export
-#undef ExecuteContextMenuCommand
 #undef IsReadLaterSupportedForAny
 #undef SelectRelativeTab
 #undef TAB_STRIP_MODEL_H_

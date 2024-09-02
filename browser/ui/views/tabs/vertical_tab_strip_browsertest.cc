@@ -138,9 +138,21 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
     browser_non_client_frame_view()->DeprecatedLayoutImmediately();
   }
 
+  void AppendTab(Browser* browser) {
+    chrome::AddTabAt(browser, GURL(), -1, true); 
+  }
+
+  tab_groups::TabGroupId AddTabToNewGroup(Browser* browser, int tab_index) {
+    return browser->tab_strip_model()->AddToNewGroup({tab_index});
+  }
+
+  void AddTabToExistingGroup(Browser* browser, int tab_index, tab_groups::TabGroupId group) {
+    ASSERT_TRUE(browser->tab_strip_model()->SupportsTabGroups());
+    browser->tab_strip_model()->AddToExistingGroup({tab_index}, group);
+  }
+
   TabStrip* GetTabStrip(Browser* browser) {
-    BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
-    return browser_view->tabstrip();
+    return BrowserView::GetBrowserViewForBrowser(browser)->tabstrip();
   }
 
   Tab* GetTabAt(Browser* browser, int index) {
@@ -301,7 +313,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MinHeight) {
   ToggleVerticalTabStrip();
 
   // Add a tab to flush cached min size.
-  chrome::AddTabAt(browser(), {}, -1, true);
+  AppendTab(browser());
 
   const auto browser_view_min_size = browser_view()->GetMinimumSize();
   const auto browser_non_client_frame_view_min_size =
@@ -311,7 +323,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MinHeight) {
   auto tab_strip_min_height =
       browser_view()->tab_strip_region_view()->GetMinimumSize().height();
   for (int i = 0; i < 10; i++) {
-    chrome::AddTabAt(browser(), {}, -1, true);
+    AppendTab(browser());
   }
   ASSERT_LE(tab_strip_min_height,
             browser_view()->tab_strip_region_view()->GetMinimumSize().height());
@@ -463,7 +475,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, LayoutSanity) {
 
   ToggleVerticalTabStrip();
 
-  chrome::AddTabAt(browser(), {}, -1, true);
+  AppendTab(browser());
 
   auto* widget_delegate_view =
       browser_view()->vertical_tab_strip_widget_delegate_view();
@@ -741,13 +753,23 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, PinningGroupedTab) {
   // Regression check for https://github.com/brave/brave-browser/issues/40201
   ToggleVerticalTabStrip();
 
-  // Given that we have a grouped tab
-  browser()->tab_strip_model()->ExecuteContextMenuCommand(
-      0, TabStripModel::CommandToggleGrouped);
+  AppendTab(browser());
+  AppendTab(browser());
+  AppendTab(browser());
 
-  // When pinning the tab shouldn't cause crash.
-  browser()->tab_strip_model()->ExecuteContextMenuCommand(
-      0, TabStripModel::CommandTogglePinned);
+  tab_groups::TabGroupId group = AddTabToNewGroup(browser(), 0);
+  AddTabToExistingGroup(browser(), 1, group);
+  AddTabToExistingGroup(browser(), 2, group);
+  AddTabToExistingGroup(browser(), 3, group);
+
+  browser()->tab_strip_model()->SetTabPinned(0, true);
+  EXPECT_EQ(GetTabStrip(browser())->tab_at(0)->group(), std::nullopt);
+
+  browser()->tab_strip_model()->SetTabPinned(2, true);
+  EXPECT_EQ(GetTabStrip(browser())->tab_at(1)->group(), std::nullopt);
+
+  EXPECT_EQ(GetTabStrip(browser())->tab_at(2)->group().value(), group);
+  EXPECT_EQ(GetTabStrip(browser())->tab_at(3)->group().value(), group);
 }
 
 class VerticalTabStripDragAndDropBrowserTest
@@ -840,7 +862,7 @@ class VerticalTabStripDragAndDropBrowserTest
 IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
                        MAYBE_DragTabToReorder) {
   // Pre-conditions ------------------------------------------------------------
-  chrome::AddTabAt(browser(), {}, -1, true);
+  AppendTab(browser());
 
   auto* widget_delegate_view =
       browser_view()->vertical_tab_strip_widget_delegate_view_.get();
@@ -895,7 +917,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
 IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
                        MAYBE_DragTabToDetach) {
   // Pre-conditions ------------------------------------------------------------
-  chrome::AddTabAt(browser(), {}, -1, true);
+  AppendTab(browser());
 
   // Drag a tab out of tab strip to create browser -----------------------------
   GetTabStrip(browser())->StopAnimating(

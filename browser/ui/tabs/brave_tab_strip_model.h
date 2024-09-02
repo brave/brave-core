@@ -45,8 +45,6 @@ class BraveTabStripModel : public TabStripModel {
   // TabStripModel:
   void SelectRelativeTab(TabRelativeDirection direction,
                          TabStripUserGestureDetails detail) override;
-  void ExecuteContextMenuCommand(int context_index,
-                                 ContextMenuCommand command_id) override;
 
  private:
   // List of tab indexes sorted by most recently used
