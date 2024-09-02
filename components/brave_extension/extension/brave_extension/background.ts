@@ -4,7 +4,6 @@
 
 import './background/greaselion'
 import './background/webDiscoveryProject'
-require('./background/events')
 
 if (chrome.test) {
   chrome.test.sendMessage('brave-extension-enabled')
