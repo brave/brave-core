@@ -10,8 +10,6 @@
 
 namespace bat_ads {
 
-BatAdsObserver::BatAdsObserver() = default;
-
 BatAdsObserver::BatAdsObserver(mojo::PendingRemote<mojom::BatAdsObserver>
                                    bat_ads_observer_pending_remote) {
   bat_ads_observer_remote_.Bind(std::move(bat_ads_observer_pending_remote));

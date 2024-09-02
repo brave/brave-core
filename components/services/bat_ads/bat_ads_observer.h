@@ -15,7 +15,6 @@ namespace bat_ads {
 
 class BatAdsObserver : public brave_ads::AdsObserverInterface {
  public:
-  BatAdsObserver();
   explicit BatAdsObserver(mojo::PendingRemote<mojom::BatAdsObserver>
                               bat_ads_observer_pending_remote);
 
