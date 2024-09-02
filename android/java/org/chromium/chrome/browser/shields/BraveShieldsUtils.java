@@ -83,19 +83,21 @@ public class BraveShieldsUtils {
 
         RecordHistogram.recordEnumeratedHistogram(WEBCOMPAT_UI_SOURCE_HISTOGRAM_NAME, 0, 2);
 
-            Context context = ContextUtils.getApplicationContext();
-            StringBuilder sb = new StringBuilder();
+        Context context = ContextUtils.getApplicationContext();
+        StringBuilder sb = new StringBuilder();
 
-            HttpURLConnection urlConnection = null;
-            try {
-                URL url = new URL(BraveConfig.WEBCOMPAT_REPORT_ENDPOINT);
-                urlConnection = (HttpURLConnection) ChromiumNetworkAdapter.openConnection(
-                        url, NetworkTrafficAnnotationTag.MISSING_TRAFFIC_ANNOTATION);
-                urlConnection.setDoOutput(true);
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setUseCaches(false);
-                urlConnection.setRequestProperty("Content-Type", "application/json");
-                urlConnection.connect();
+        HttpURLConnection urlConnection = null;
+        try {
+            URL url = new URL(BraveConfig.WEBCOMPAT_REPORT_ENDPOINT);
+            urlConnection =
+                    (HttpURLConnection)
+                            ChromiumNetworkAdapter.openConnection(
+                                    url, NetworkTrafficAnnotationTag.MISSING_TRAFFIC_ANNOTATION);
+            urlConnection.setDoOutput(true);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setUseCaches(false);
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.connect();
 
             JSONObject jsonParam = new JSONObject();
             jsonParam.put("domain", domain);
@@ -109,28 +111,31 @@ public class BraveShieldsUtils {
 
             outputStream.write(input, 0, input.length);
             outputStream.flush();
-                outputStream.close();
+            outputStream.close();
 
-                int httpResult = urlConnection.getResponseCode();
-                if (httpResult == HttpURLConnection.HTTP_OK) {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(
-                            urlConnection.getInputStream(), StandardCharsets.UTF_8.toString()));
-                    String line = null;
-                    while ((line = br.readLine()) != null) {
-                        sb.append(line + "\n");
-                    }
-                    br.close();
-                } else {
-                    Log.e(TAG, urlConnection.getResponseMessage());
+            int httpResult = urlConnection.getResponseCode();
+            if (httpResult == HttpURLConnection.HTTP_OK) {
+                BufferedReader br =
+                        new BufferedReader(
+                                new InputStreamReader(
+                                        urlConnection.getInputStream(),
+                                        StandardCharsets.UTF_8.toString()));
+                String line = null;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line + "\n");
                 }
-            } catch (MalformedURLException e) {
-                Log.e(TAG, e.getMessage());
-            } catch (IOException e) {
-                Log.e(TAG, e.getMessage());
-            } catch (JSONException e) {
-                Log.e(TAG, e.getMessage());
-            } finally {
-                if (urlConnection != null) urlConnection.disconnect();
+                br.close();
+            } else {
+                Log.e(TAG, urlConnection.getResponseMessage());
             }
+        } catch (MalformedURLException e) {
+            Log.e(TAG, e.getMessage());
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage());
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            if (urlConnection != null) urlConnection.disconnect();
         }
+    }
 }
