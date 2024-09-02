@@ -21,6 +21,8 @@ def __init__(self,
                *args,
                **kwargs):
   original_method(self, archive_data_file, cloud_storage_bucket, base_dir, args, kwargs)
+  if archive_data_file == '':
+     return
   archive_path = os.path.join(self._base_dir, archive_data_file)
   new_archive_path = get_archive_data_file(archive_path)
   self._archive_data_file = os.path.relpath(new_archive_path, self._base_dir)
