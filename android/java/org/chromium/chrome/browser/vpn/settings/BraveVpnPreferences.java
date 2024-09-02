@@ -28,6 +28,8 @@ import com.wireguard.crypto.KeyPair;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
@@ -87,10 +89,11 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     private ChromeBasePreference mServerHost;
     private ChromeBasePreference mLinkSubscriptionPreference;
     private BraveVpnPrefModel mBraveVpnPrefModel;
+    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        getActivity().setTitle(R.string.brave_firewall_vpn);
+        mPageTitle.set(getString(R.string.brave_firewall_vpn));
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_vpn_preferences);
 
         mVpnSwitch = (ChromeSwitchPreference) findPreference(PREF_VPN_SWITCH);
@@ -227,6 +230,11 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 (PreferenceCategory) findPreference(PREF_BRAVE_VPN_SUBSCRIPTION_SECTION);
         preferenceCategory.addPreference(mLinkSubscriptionPreference);
         preferenceCategory.setVisible(!BraveVpnNativeWorker.getInstance().isPurchasedUser());
+    }
+
+    @Override
+    public ObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
     }
 
     @Override

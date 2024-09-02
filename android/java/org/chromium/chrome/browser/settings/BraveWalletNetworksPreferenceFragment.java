@@ -22,6 +22,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.components.browser_ui.settings.FragmentSettingsLauncher;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
@@ -35,12 +37,13 @@ public class BraveWalletNetworksPreferenceFragment extends BravePreferenceFragme
     // SettingsLauncher injected from main Settings Activity.
     private SettingsLauncher mSettingsLauncher;
     private ActivityResultLauncher<Intent> mAddNetworkActivityResultLauncher;
+    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requireActivity().setTitle(R.string.brave_wallet_networks_title);
+        mPageTitle.set(getString(R.string.brave_wallet_networks_title));
 
         // Pass {@code ActivityResultRegistry} reference explicitly to avoid crash
         // https://github.com/brave/brave-browser/issues/31882
@@ -57,6 +60,11 @@ public class BraveWalletNetworksPreferenceFragment extends BravePreferenceFragme
                                 }
                             }
                         });
+    }
+
+    @Override
+    public ObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
     }
 
     @Override

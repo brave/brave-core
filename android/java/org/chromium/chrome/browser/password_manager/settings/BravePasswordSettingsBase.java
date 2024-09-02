@@ -7,7 +7,7 @@ package org.chromium.chrome.browser.password_manager.settings;
 
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 
-public class BravePasswordSettingsBase extends BravePreferenceFragment {
+public abstract class BravePasswordSettingsBase extends BravePreferenceFragment {
     public void createCheckPasswords() {
         // Do nothing here as we don't have check passwords option in Brave.
     }

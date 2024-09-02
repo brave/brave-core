@@ -27,6 +27,8 @@ import com.airbnb.lottie.model.KeyPath;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_news.mojom.BraveNewsController;
@@ -75,6 +77,8 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
     // SettingsLauncher injected from main Settings Activity.
     private SettingsLauncher mSettingsLauncher;
 
+    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,9 +87,7 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        if (getActivity() != null) {
-            getActivity().setTitle(R.string.brave_news_title);
-        }
+        mPageTitle.set(getString(R.string.brave_news_title));
 
         super.onActivityCreated(savedInstanceState);
 
@@ -117,6 +119,11 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             setData();
             onClickViews();
         }
+    }
+
+    @Override
+    public ObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
     }
 
     private void setData() {

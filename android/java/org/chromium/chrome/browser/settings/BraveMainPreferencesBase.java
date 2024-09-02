@@ -49,8 +49,8 @@ import org.chromium.ui.base.DeviceFormFactor;
 import java.util.HashMap;
 
 // This excludes some settings in main settings screen.
-public class BraveMainPreferencesBase
-        extends BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
+public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
+        implements Preference.OnPreferenceChangeListener {
     // sections
     private static final String PREF_FEATURES_SECTION = "features_section";
     private static final String PREF_DISPLAY_SECTION = "display_section";

@@ -10,21 +10,22 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
+import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.ui.UiUtils;
 
-/**
- * Fragment to manage webrtc policy settings.
- */
+/** Fragment to manage webrtc policy settings. */
 public class BraveWebrtcPolicyPreferencesFragment extends BravePreferenceFragment {
     static final String PREF_WEBRTC_POLICY = "webrtc_policy";
+    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_webrtc_policy_preferences);
-        getActivity().setTitle(R.string.settings_webrtc_policy_label);
+        mPageTitle.set(getString(R.string.settings_webrtc_policy_label));
 
         BraveWebrtcPolicyPreference webrtcPolicyPreference =
                 (BraveWebrtcPolicyPreference) findPreference(PREF_WEBRTC_POLICY);
@@ -34,6 +35,11 @@ public class BraveWebrtcPolicyPreferencesFragment extends BravePreferenceFragmen
             BravePrefServiceBridge.getInstance().setWebrtcPolicy((int) newValue);
             return true;
         });
+    }
+
+    @Override
+    public ObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
     }
 
     @Override
