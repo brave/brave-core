@@ -97,7 +97,7 @@ public class BraveShieldsUtils {
                 urlConnection.setRequestProperty("Content-Type", "application/json");
                 urlConnection.connect();
 
-                JSONObject jsonParam = new JSONObject();
+            JSONObject jsonParam = new JSONObject();
             jsonParam.put("domain", domain);
             jsonParam.put("api_key", apiKey);
             jsonParam.put(
@@ -107,8 +107,8 @@ public class BraveShieldsUtils {
             OutputStream outputStream = urlConnection.getOutputStream();
             byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8.toString());
 
-                outputStream.write(input, 0, input.length);
-                outputStream.flush();
+            outputStream.write(input, 0, input.length);
+            outputStream.flush();
                 outputStream.close();
 
                 int httpResult = urlConnection.getResponseCode();
