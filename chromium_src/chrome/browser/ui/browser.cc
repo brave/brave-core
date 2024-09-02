@@ -26,7 +26,7 @@
 #define BookmarkTabHelper BraveBookmarkTabHelper
 #endif
 #define BrowserTabStripModelDelegate BraveTabStripModelDelegate
-#define BrowserActions BraveBrowserActions
+#define BrowserActions(...) BraveBrowserActions(__VA_ARGS__)
 
 #include "src/chrome/browser/ui/browser.cc"
 
