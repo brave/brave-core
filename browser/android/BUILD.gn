@@ -18,6 +18,7 @@ source_set("android_browser_process") {
     "brave_shields_content_settings.h",
     "brave_sync_worker.cc",
     "brave_sync_worker.h",
+    "//brave/browser/android/webcompat_reporter/webcompat_reporter_utils.cc"
   ]
 
   deps = [

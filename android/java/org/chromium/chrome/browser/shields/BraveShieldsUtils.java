@@ -19,6 +19,7 @@ import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.net.ChromiumNetworkAdapter;
 import org.chromium.net.NetworkTrafficAnnotationTag;
+import org.chromium.chrome.browser.webcompat_reporter.BraveWebcompatReporterUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,6 +35,8 @@ public class BraveShieldsUtils {
     public static final String PREF_SHIELDS_TOOLTIP = "shields_tooltip";
     public static boolean isTooltipShown;
     public static final String WEBCOMPAT_UI_SOURCE_HISTOGRAM_NAME = "Brave.Webcompat.UISource";
+    public static final String WEBCOMPAT_REPORT_BRAVE_VERSION = "version";
+    public static final String WEBCOMPAT_REPORT_BRAVE_CHANNEL = "channel";
 
     public interface BraveShieldsCallback {
         void braveShieldsSubmitted();
@@ -97,6 +100,9 @@ public class BraveShieldsUtils {
                 JSONObject jsonParam = new JSONObject();
                 jsonParam.put("domain", domain);
                 jsonParam.put("api_key", apiKey);
+                jsonParam.put(WEBCOMPAT_REPORT_BRAVE_VERSION, BraveWebcompatReporterUtils.getBraveVersion());
+                jsonParam.put(WEBCOMPAT_REPORT_BRAVE_CHANNEL, BraveWebcompatReporterUtils.getChannel());
+                Log.i(TAG, "jsonParam:" + jsonParam.toString());
 
                 OutputStream outputStream = urlConnection.getOutputStream();
                 byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8.toString());
