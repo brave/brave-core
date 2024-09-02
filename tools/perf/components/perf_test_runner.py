@@ -123,6 +123,7 @@ class RunableConfiguration:
     rebase_benchmark.name = ('brave_utils.online'
                              if online_rebase else 'brave_utils.offline')
     rebase_benchmark.stories = ['UpdateProfile']
+    rebase_benchmark.stories_exclude = []
 
     rebase_benchmark.pageset_repeat = 2 if online_rebase else 1
 
