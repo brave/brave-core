@@ -27,27 +27,27 @@ void AdsNotifierManager::AddObserver(
 }
 
 void AdsNotifierManager::NotifyAdRewardsDidChange() const {
-  for (const auto& observer : observers_) {
-    observer->OnAdRewardsDidChange();
+  for (const auto& ads_observer : observers_) {
+    ads_observer->OnAdRewardsDidChange();
   }
 }
 
 void AdsNotifierManager::NotifyBrowserUpgradeRequiredToServeAds() const {
-  for (const auto& observer : observers_) {
-    observer->OnBrowserUpgradeRequiredToServeAds();
+  for (const auto& ads_observer : observers_) {
+    ads_observer->OnBrowserUpgradeRequiredToServeAds();
   }
 }
 
-  for (const auto& observer : observers_) {
-    observer->OnIneligibleRewardsWalletToServeAds();
 void AdsNotifierManager::NotifyIneligibleWalletToServeAds() const {
+  for (const auto& ads_observer : observers_) {
+    ads_observer->OnIneligibleWalletToServeAds();
   }
 }
 
 void AdsNotifierManager::NotifyRemindUser(
     const mojom::ReminderType mojom_reminder_type) const {
-  for (const auto& observer : observers_) {
-    observer->OnRemindUser(mojom_reminder_type);
+  for (const auto& ads_observer : observers_) {
+    ads_observer->OnRemindUser(mojom_reminder_type);
   }
 }
 

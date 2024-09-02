@@ -39,8 +39,8 @@ class ADS_EXPORT Ads {
 
   static Ads* CreateInstance(AdsClient* ads_client);
 
-  virtual void AddBatAdsObserver(
-      std::unique_ptr<AdsObserverInterface> observer) = 0;
+  virtual void AddObserver(
+      std::unique_ptr<AdsObserverInterface> ads_observer) = 0;
 
   virtual void SetSysInfo(mojom::SysInfoPtr mojom_sys_info) = 0;
 

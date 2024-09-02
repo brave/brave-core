@@ -68,7 +68,7 @@ void BatAdsImpl::AddBatAdsObserver(mojo::PendingRemote<mojom::BatAdsObserver>
   std::unique_ptr<brave_ads::AdsObserverInterface> ads_observer =
       std::make_unique<BatAdsObserver>(
           std::move(bat_ads_observer_pending_remote));
-  GetAds()->AddBatAdsObserver(std::move(ads_observer));
+  GetAds()->AddObserver(std::move(ads_observer));
 }
 
 void BatAdsImpl::SetSysInfo(brave_ads::mojom::SysInfoPtr mojom_sys_info) {

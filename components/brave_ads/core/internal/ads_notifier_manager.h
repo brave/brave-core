@@ -29,7 +29,7 @@ class AdsNotifierManager final {
 
   static AdsNotifierManager& GetInstance();
 
-  void AddObserver(std::unique_ptr<AdsObserverInterface> observer);
+  void AddObserver(std::unique_ptr<AdsObserverInterface> ads_observer);
 
   void NotifyAdRewardsDidChange() const;
 

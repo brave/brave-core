@@ -47,9 +47,8 @@ AdsImpl::AdsImpl(AdsClient* const ads_client,
 
 AdsImpl::~AdsImpl() = default;
 
-void AdsImpl::AddBatAdsObserver(
-    std::unique_ptr<AdsObserverInterface> observer) {
-  // `AdsNotifierManager` takes ownership of `observer`.
+void AdsImpl::AddObserver(std::unique_ptr<AdsObserverInterface> observer) {
+  // `AdsNotifierManager` takes ownership of `ads_observer`.
   AdsNotifierManager::GetInstance().AddObserver(std::move(observer));
 }
 
