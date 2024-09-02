@@ -64,7 +64,7 @@ void AdsNotificationHandler::OpenSettings(Profile* profile,
     return;
   }
 
-  DCHECK(origin.has_query());
+  CHECK(origin.has_query());
   const std::string id = origin.query();
 
   ads_service->OnNotificationAdClicked(id);

@@ -19,18 +19,20 @@ BatAdsClientNotifierImpl::~BatAdsClientNotifierImpl() = default;
 
 void BatAdsClientNotifierImpl::AddObserver(
     brave_ads::AdsClientNotifierObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
+
   ads_client_notifier_.AddObserver(observer);
 }
 
 void BatAdsClientNotifierImpl::RemoveObserver(
     brave_ads::AdsClientNotifierObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
+
   ads_client_notifier_.RemoveObserver(observer);
 }
 
 void BatAdsClientNotifierImpl::BindReceiver() {
-  DCHECK(bat_ads_client_notifier_pending_receiver_.is_valid());
+  CHECK(bat_ads_client_notifier_pending_receiver_.is_valid());
   bat_ads_client_notifier_receiver_.Bind(
       std::move(bat_ads_client_notifier_pending_receiver_));
 }

@@ -111,7 +111,7 @@ void BatAdsImpl::TriggerNotificationAdEvent(
     const std::string& placement_id,
     const brave_ads::mojom::NotificationAdEventType mojom_ad_event_type,
     TriggerNotificationAdEventCallback callback) {
-  DCHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
+  CHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   GetAds()->TriggerNotificationAdEvent(placement_id, mojom_ad_event_type,
                                        std::move(callback));
@@ -139,7 +139,7 @@ void BatAdsImpl::TriggerNewTabPageAdEvent(
     const std::string& creative_instance_id,
     const brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type,
     TriggerNewTabPageAdEventCallback callback) {
-  DCHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
+  CHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   GetAds()->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
                                      mojom_ad_event_type, std::move(callback));
@@ -150,7 +150,7 @@ void BatAdsImpl::TriggerPromotedContentAdEvent(
     const std::string& creative_instance_id,
     const brave_ads::mojom::PromotedContentAdEventType mojom_ad_event_type,
     TriggerPromotedContentAdEventCallback callback) {
-  DCHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
+  CHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   GetAds()->TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
                                           mojom_ad_event_type,
@@ -184,7 +184,7 @@ void BatAdsImpl::TriggerInlineContentAdEvent(
     const std::string& creative_instance_id,
     const brave_ads::mojom::InlineContentAdEventType mojom_ad_event_type,
     TriggerInlineContentAdEventCallback callback) {
-  DCHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
+  CHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   GetAds()->TriggerInlineContentAdEvent(placement_id, creative_instance_id,
                                         mojom_ad_event_type,
@@ -195,7 +195,7 @@ void BatAdsImpl::TriggerSearchResultAdEvent(
     brave_ads::mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     const brave_ads::mojom::SearchResultAdEventType mojom_ad_event_type,
     TriggerSearchResultAdEventCallback callback) {
-  DCHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
+  CHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   GetAds()->TriggerSearchResultAdEvent(
       std::move(mojom_creative_ad), mojom_ad_event_type, std::move(callback));
@@ -204,7 +204,7 @@ void BatAdsImpl::TriggerSearchResultAdEvent(
 void BatAdsImpl::PurgeOrphanedAdEventsForType(
     const brave_ads::mojom::AdType mojom_ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
-  DCHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_type));
+  CHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_type));
 
   GetAds()->PurgeOrphanedAdEventsForType(mojom_ad_type, std::move(callback));
 }
@@ -256,8 +256,9 @@ void BatAdsImpl::ToggleMarkAdAsInappropriate(
 }
 
 brave_ads::Ads* BatAdsImpl::GetAds() {
-  DCHECK(ads_instance_);
-  DCHECK(ads_instance_->GetAds());
+  CHECK(ads_instance_);
+
+  CHECK(ads_instance_->GetAds());
   return ads_instance_->GetAds();
 }
 
