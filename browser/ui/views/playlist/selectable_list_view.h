@@ -46,7 +46,6 @@ class SelectableView : public views::Button {
   base::OnceCallback<void(const gfx::Image&)> GetThumbnailSetter();
 
   // views::Button:
-  int GetHeightForWidth(int width) const override;
   void OnThemeChanged() override;
 
  private:
