@@ -231,7 +231,7 @@ class RunableConfiguration:
 
     success, _ = perf_test_utils.GetProcessOutput(
         args, cwd=path_util.GetChromiumPerfDir(), timeout=timeout)
-    if not local_run:
+    if success and not local_run:
       assert (out_dir is not None)
       assert (bench_out_dir is not None)
 
