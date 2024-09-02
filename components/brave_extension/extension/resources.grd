@@ -19,7 +19,6 @@
       <include name="IDR_BRAVE_EXTENSION_ICON_256" file="brave_extension/assets/img/icon-256.png" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_EN_US_MESSAGES_JSON" file="brave_extension/_locales/en_US/messages.json" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_PICKER_HTML" file="brave_extension/elementPicker.html" type="BINDATA" />
-      <include name="IDR_BRAVE_EXTENSION_PICKER_JS" file="brave_extension/elementPicker.js" type="BINDATA" />
       <include name="IDR_BRAVE_EXTENSION_WEB_DISCOVERY_CONTENT_SCRIPT_BUNDLE"
                resource_path="brave_extension/bundles/web-discovery-content-script.bundle.js"
                file="${root_gen_dir}/brave/web-discovery-project/core/content-script.bundle.js"

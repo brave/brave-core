@@ -203,7 +203,11 @@ module.exports = async function (env, argv) {
           resolve: {
               fullySpecified: false,
           },
-        }
+        },
+        {
+          resourceQuery: /raw/,
+          type: 'asset/source',
+        },
       ]
     }
   }

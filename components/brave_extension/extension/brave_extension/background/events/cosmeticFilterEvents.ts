@@ -3,32 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import { getLocale } from '../api/localeAPI'
-import { addSiteCosmeticFilter, openFilterManagementPage } from '../api/cosmeticFilterAPI'
-
-export let rule = {
-  host: '',
-  selector: ''
-}
-
-export const applyCosmeticFilter = (host: string, selector: string) => {
-  if (selector) {
-    const s: string = selector.trim()
-
-    if (s.length > 0) {
-      chrome.tabs.insertCSS({
-        code: `${s} {display: none !important;}`,
-        cssOrigin: 'user'
-      }, () => {
-        if (chrome.runtime.lastError) {
-          console.error('[applyCosmeticFilter] tabs.insertCSS failed: ' +
-            chrome.runtime.lastError.message)
-        }
-      })
-
-      addSiteCosmeticFilter(host, s)
-    }
-  }
-}
+import { openFilterManagementPage } from '../api/cosmeticFilterAPI'
 
 // parent menu
 chrome.contextMenus.create({
@@ -50,26 +25,10 @@ chrome.contextMenus.create({
   contexts: ['all']
 })
 
-chrome.contextMenus.onClicked.addListener((info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) => {
-  onContextMenuClicked(info, tab)
-})
-
-// content script listener for events from the cosmetic filtering content script
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  const action = typeof msg === 'string' ? msg : msg.type
-  switch (action) {
-    case 'contextMenuOpened': {
-      rule.host = msg.baseURI
-      break
-    }
-    case 'cosmeticFilterCreate': {
-      if (sender.origin) {
-        applyCosmeticFilter(new URL(sender.origin).host, msg.selector)
-      }
-      break
-    }
-  }
-})
+chrome.contextMenus.onClicked.addListener(
+  (info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) => {
+      onContextMenuClicked(info, tab)
+  })
 
 export function onContextMenuClicked (info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) {
   switch (info.menuItemId) {

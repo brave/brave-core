@@ -17,11 +17,6 @@
         "description": "Saves an element to hide on a page by creating a new filter of the form `host##cssSelector` in the custom filters of brave://adblock",
         "parameters": [
           {
-            "name": "host",
-            "type": "string",
-            "description": "The hostname on which to apply the new filter"
-          },
-          {
             "name": "cssSelector",
             "type": "string",
             "description": "The CSS selector that should be hidden"
