@@ -2194,9 +2194,9 @@ std::optional<std::vector<uint8_t>> KeyringService::GetZCashPubKey(
 }
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
-KeyringService::GetOrchardRawBytes(const mojom::AccountIdPtr& account_id,
-                                   const mojom::ZCashKeyIdPtr& key_id) {
+std::optional<OrchardAddrRawPart> KeyringService::GetOrchardRawBytes(
+    const mojom::AccountIdPtr& account_id,
+    const mojom::ZCashKeyIdPtr& key_id) {
   CHECK(account_id);
   CHECK(key_id);
   CHECK(IsZCashAccount(*account_id));

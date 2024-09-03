@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/containers/span.h"
-#include "base/debug/stack_trace.h"
 #include "base/numerics/byte_conversions.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
@@ -309,7 +308,7 @@ std::optional<std::string> ExtractTransparentPart(
   return std::nullopt;
 }
 
-std::optional<std::array<uint8_t, kOrchardRawBytesSize>> GetOrchardRawBytes(
+std::optional<OrchardAddrRawPart> GetOrchardRawBytes(
     const std::string& unified_address,
     bool is_testnet) {
   auto parts = ExtractParsedAddresses(unified_address, is_testnet);
@@ -323,7 +322,7 @@ std::optional<std::array<uint8_t, kOrchardRawBytesSize>> GetOrchardRawBytes(
       if (part.second.size() != kOrchardRawBytesSize) {
         return std::nullopt;
       }
-      std::array<uint8_t, kOrchardRawBytesSize> result;
+      OrchardAddrRawPart result;
       base::ranges::copy(part.second, result.begin());
       return result;
     }
@@ -409,7 +408,7 @@ std::optional<std::string> GetOrchardUnifiedAddress(
 }
 
 std::optional<OrchardMemo> ToOrchardMemo(
-    std::optional<std::vector<uint8_t>> input) {
+    const std::optional<std::vector<uint8_t>>& input) {
   if (!input) {
     return std::nullopt;
   }
@@ -418,14 +417,13 @@ std::optional<OrchardMemo> ToOrchardMemo(
     return std::nullopt;
   }
 
-  std::array<uint8_t, kOrchardMemoSize> output;
-  output.fill(0);
+  std::array<uint8_t, kOrchardMemoSize> output = {};
   base::ranges::copy(*input, output.begin());
   return output;
 }
 
 std::optional<std::vector<uint8_t>> OrchardMemoToVec(
-    std::optional<OrchardMemo> memo) {
+    const std::optional<OrchardMemo>& memo) {
   if (!memo) {
     return std::nullopt;
   }

@@ -27,7 +27,7 @@ ExtendedSpendingKeyImpl::DeriveHardenedChild(uint32_t index) {
   return nullptr;
 }
 
-std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
+std::optional<OrchardAddrRawPart>
 ExtendedSpendingKeyImpl::GetDiversifiedAddress(uint32_t div_index,
                                                OrchardAddressKind kind) {
   return kind == OrchardAddressKind::External

@@ -246,7 +246,7 @@ class KeyringService : public mojom::KeyringService {
       const mojom::AccountIdPtr& account_id,
       const mojom::ZCashKeyIdPtr& key_id);
 #if BUILDFLAG(ENABLE_ORCHARD)
-  std::optional<std::array<uint8_t, kOrchardRawBytesSize>> GetOrchardRawBytes(
+  std::optional<OrchardAddrRawPart> GetOrchardRawBytes(
       const mojom::AccountIdPtr& account_id,
       const mojom::ZCashKeyIdPtr& key_id);
   std::optional<OrchardFullViewKey> GetOrchardFullViewKey(

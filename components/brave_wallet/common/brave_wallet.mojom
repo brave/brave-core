@@ -1846,7 +1846,7 @@ struct ZecTxOutput {
 
 struct ZecTxData {
   string to;
-  // Memo field should exists only for shielded output
+  // Memo field should exist only for shielded output
   array<uint8>? memo;
   uint64 amount;
   uint64 fee;

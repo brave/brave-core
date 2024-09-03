@@ -136,8 +136,8 @@ class ZCashTransaction {
   std::string to() const { return to_; }
   void set_to(const std::string& to) { to_ = to; }
 
-  std::optional<OrchardMemo> memo() const { return memo_; }
-  void set_memo(std::optional<OrchardMemo> memo) { memo_ = memo; }
+  const std::optional<OrchardMemo>& memo() const { return memo_; }
+  void set_memo(const std::optional<OrchardMemo>& memo) { memo_ = memo; }
 
   uint64_t amount() const { return amount_; }
   void set_amount(uint64_t amount) { amount_ = amount; }

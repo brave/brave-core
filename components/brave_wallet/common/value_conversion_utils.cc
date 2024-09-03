@@ -448,7 +448,6 @@ bool ReadUint32StringTo(const base::Value::Dict& dict,
   return base::StringToUint(*str, &to);
 }
 
-
 bool ReadStringTo(const base::Value::Dict& dict,
                   std::string_view key,
                   std::string& to) {
@@ -483,6 +482,5 @@ bool ReadHexByteArrayTo(const base::Value::Dict& dict,
   }
   return base::HexStringToBytes(*str, &to);
 }
-
 
 }  // namespace brave_wallet

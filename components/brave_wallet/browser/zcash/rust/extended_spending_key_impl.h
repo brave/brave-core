@@ -29,8 +29,9 @@ class ExtendedSpendingKeyImpl : ExtendedSpendingKey {
 
   // Returns public or internal address that may be used as a recipient address
   // in transactions
-  std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
-  GetDiversifiedAddress(uint32_t div_index, OrchardAddressKind kind) override;
+  std::optional<OrchardAddrRawPart> GetDiversifiedAddress(
+      uint32_t div_index,
+      OrchardAddressKind kind) override;
 
   OrchardFullViewKey GetFullViewKey() override;
 

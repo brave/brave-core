@@ -79,7 +79,7 @@ struct DecodedZCashAddress {
 
 struct OrchardOutput {
   uint32_t value = 0;
-  std::array<std::uint8_t, ::brave_wallet::kOrchardRawBytesSize> addr;
+  OrchardAddrRawPart addr;
   std::optional<OrchardMemo> memo;
 
   bool operator==(const OrchardOutput& other) const = default;
@@ -134,7 +134,7 @@ std::optional<std::string> GetOrchardUnifiedAddress(
     base::span<const uint8_t> orchard_part,
     bool is_testnet);
 
-std::optional<std::array<uint8_t, kOrchardRawBytesSize>> GetOrchardRawBytes(
+std::optional<OrchardAddrRawPart> GetOrchardRawBytes(
     const std::string& unified_address,
     bool is_testnet);
 
@@ -155,10 +155,10 @@ std::optional<std::string> ExtractOrchardPart(
     bool is_testnet);
 
 std::optional<OrchardMemo> ToOrchardMemo(
-    std::optional<std::vector<uint8_t>> input);
+    const std::optional<std::vector<uint8_t>>& input);
 
 std::optional<std::vector<uint8_t>> OrchardMemoToVec(
-    std::optional<OrchardMemo> memo);
+    const std::optional<OrchardMemo>& memo);
 
 // Converts 000000000049900203ce1cba81a36d29390ea40fc78cf4799e8139b96f3a8114 to
 // 0x14813a6fb939819e79f48cc70fa40e39296da381ba1cce030290490000000000

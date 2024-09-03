@@ -35,9 +35,9 @@ ZCashTransaction& ZCashTransaction::operator=(ZCashTransaction&& other) =
     default;
 bool ZCashTransaction::operator==(const ZCashTransaction& other) const {
   return std::tie(this->transparent_part_, this->orchard_part_, this->locktime_,
-                  this->to_, this->amount_, this->fee_) ==
+                  this->to_, this->amount_, this->fee_, this->memo()) ==
          std::tie(other.transparent_part_, this->orchard_part_, other.locktime_,
-                  other.to_, other.amount_, other.fee_);
+                  other.to_, other.amount_, other.fee_, other.memo_);
 }
 bool ZCashTransaction::operator!=(const ZCashTransaction& other) const {
   return !(*this == other);
@@ -284,6 +284,9 @@ base::Value::Dict ZCashTransaction::ToValue() const {
   dict.Set("to", to_);
   dict.Set("amount", base::NumberToString(amount_));
   dict.Set("fee", base::NumberToString(fee_));
+  if (memo_) {
+    dict.Set("memo", base::HexEncode(memo_.value()));
+  }
 
   return dict;
 }
@@ -355,6 +358,14 @@ std::optional<ZCashTransaction> ZCashTransaction::FromValue(
 
   if (!ReadUint64StringTo(value, "fee", result.fee_)) {
     return std::nullopt;
+  }
+
+  if (value.Find("memo")) {
+    OrchardMemo memo;
+    if (!ReadHexByteArrayTo<kOrchardMemoSize>(value, "memo", memo)) {
+      return std::nullopt;
+    }
+    result.memo_ = memo;
   }
 
   return result;

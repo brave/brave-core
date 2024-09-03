@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/extend.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -89,9 +90,8 @@ void ZCashCreateTransparentTransactionTask::WorkOnTask() {
     return;
   }
   transaction_.set_fee(pick_inputs_result->fee);
-  transaction_.transparent_part().inputs.insert(
-      transaction_.transparent_part().inputs.end(),
-      pick_inputs_result->inputs.begin(), pick_inputs_result->inputs.end());
+  base::Extend(transaction_.transparent_part().inputs,
+               pick_inputs_result->inputs);
 
   if (!PrepareOutputs()) {
     SetError(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
