@@ -275,21 +275,21 @@ void TestBase::MockDefaultAdsServiceState() const {
 
   GlobalState::GetInstance()->GetDatabaseManager().CreateOrOpen(
       base::BindOnce([](const bool success) {
-        CHECK(success) << "Failed to create or open database";
+        ASSERT_TRUE(success) << "Failed to create or open database";
       }));
 
   // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
   // from using JSON state to a more efficient data approach.
   GlobalState::GetInstance()->GetClientStateManager().LoadState(
       base::BindOnce([](const bool success) {
-        CHECK(success) << "Failed to load client state";
+        ASSERT_TRUE(success) << "Failed to load client state";
       }));
 
   // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
   // from using JSON state to a more efficient data approach.
   GlobalState::GetInstance()->GetConfirmationStateManager().LoadState(
       Wallet(), base::BindOnce([](const bool success) {
-        CHECK(success) << "Failed to load confirmation state";
+        ASSERT_TRUE(success) << "Failed to load confirmation state";
       }));
 }
 

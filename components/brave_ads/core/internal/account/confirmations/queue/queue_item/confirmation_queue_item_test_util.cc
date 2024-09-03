@@ -5,11 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_test_util.h"
 
-#include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_ads::test {
 
@@ -33,7 +33,7 @@ void SaveConfirmationQueueItems(
   const database::table::ConfirmationQueue database_table;
   database_table.Save(
       confirmation_queue_items,
-      base::BindOnce([](const bool success) { CHECK(success); }));
+      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 }
 
 void BuildAndSaveConfirmationQueueItems(const ConfirmationInfo& confirmation,
