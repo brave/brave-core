@@ -10,7 +10,8 @@
 
 namespace brave_ads::test {
 
-std::vector<ConfirmationType> BuildConfirmationTypes(
+std::vector<ConfirmationType>
+BuildConfirmationTypeForCountAndIntersperseOtherTypes(
     const ConfirmationType confirmation_type,
     const int count) {
   CHECK_GT(count, 0);
