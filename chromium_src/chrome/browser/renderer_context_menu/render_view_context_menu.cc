@@ -499,6 +499,7 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       OpenLinkInSplitView(source_web_contents_->GetWeakPtr(), params_.link_url);
       break;
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENT: {
+      // TODO: check case ..{} break construction
       auto* shields_tab_helper =
           ::brave_shields::BraveShieldsTabHelper::FromWebContents(
               source_web_contents_);
@@ -776,8 +777,8 @@ void BraveRenderViewContextMenu::InitMenu() {
         IDS_CONTENT_CONTEXT_SPLIT_VIEW);
   }
 
+  // TODO
   index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_GENERATE_QR_CODE);
-
   DCHECK(index);
 
   adblock_submenu_model_.AddItemWithStringId(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENT,

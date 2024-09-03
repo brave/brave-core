@@ -27,6 +27,7 @@ namespace cosmetic_filters {
 // a given render_frame. It also does interactions with CosmeticFiltersResources
 // class that lives in the main process.
 
+// TODO: move to the owner?
 class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersJsHandler {
  public:
   CosmeticFiltersJSHandler(content::RenderFrame* render_frame,

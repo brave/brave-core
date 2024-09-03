@@ -525,6 +525,7 @@ BraveShieldsTabHelper::GetWebcompatSettings() {
   return result;
 }
 
+// TODO: move to another tab helper?
 void BraveShieldsTabHelper::LaunchContentPicker() {
   if (auto* main_rfh = web_contents()->GetPrimaryMainFrame()) {
     mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersJsHandler>
