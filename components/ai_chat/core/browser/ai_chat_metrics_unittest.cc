@@ -205,7 +205,7 @@ TEST_F(AIChatMetricsUnitTest, FeatureUsage) {
 TEST_F(AIChatMetricsUnitTest, AcquisitionSource) {
   histogram_tester_.ExpectTotalCount(kAcquisitionSourceHistogramName, 0);
 
-  ai_chat_metrics_->HandleOpenViaSidebar();
+  ai_chat_metrics_->HandleOpenViaEntryPoint(EntryPoint::kSidebar);
   histogram_tester_.ExpectTotalCount(kAcquisitionSourceHistogramName, 0);
 
   ai_chat_metrics_->RecordEnabled(true, true, GetPremiumCallback());
@@ -283,6 +283,76 @@ TEST_F(AIChatMetricsUnitTest, OmniboxWeekCompare) {
   histogram_tester_.ExpectBucketCount(kOmniboxWeekCompareHistogramName, 1, 1);
   histogram_tester_.ExpectTotalCount(kOmniboxWeekCompareHistogramName, 14);
 }
+
+TEST_F(AIChatMetricsUnitTest, MostUsedContextMenuAction) {
+  ai_chat_metrics_->RecordContextMenuUsage(ContextMenuAction::kSummarize);
+  ai_chat_metrics_->RecordContextMenuUsage(ContextMenuAction::kExplain);
+  ai_chat_metrics_->RecordContextMenuUsage(ContextMenuAction::kExplain);
+  ai_chat_metrics_->RecordContextMenuUsage(ContextMenuAction::kParaphrase);
+
+  histogram_tester_.ExpectTotalCount(kMostUsedContextMenuActionHistogramName,
+                                     0);
+
+  ai_chat_metrics_->RecordEnabled(true, true, GetPremiumCallback());
+
+  histogram_tester_.ExpectUniqueSample(
+      kMostUsedContextMenuActionHistogramName,
+      static_cast<int>(ContextMenuAction::kExplain), 1);
+
+  ai_chat_metrics_->RecordContextMenuUsage(ContextMenuAction::kImprove);
+
+  histogram_tester_.ExpectBucketCount(
+      kMostUsedContextMenuActionHistogramName,
+      static_cast<int>(ContextMenuAction::kImprove), 0);
+  ai_chat_metrics_->RecordContextMenuUsage(ContextMenuAction::kImprove);
+  ai_chat_metrics_->RecordContextMenuUsage(ContextMenuAction::kImprove);
+
+  histogram_tester_.ExpectBucketCount(
+      kMostUsedContextMenuActionHistogramName,
+      static_cast<int>(ContextMenuAction::kImprove), 1);
+
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kMostUsedContextMenuActionHistogramName,
+                                     10);
+
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kMostUsedContextMenuActionHistogramName,
+                                     10);
+}
+
+TEST_F(AIChatMetricsUnitTest, MostUsedEntryPoint) {
+  ai_chat_metrics_->HandleOpenViaEntryPoint(EntryPoint::kOmniboxItem);
+  ai_chat_metrics_->HandleOpenViaEntryPoint(EntryPoint::kSidebar);
+  ai_chat_metrics_->HandleOpenViaEntryPoint(EntryPoint::kSidebar);
+  ai_chat_metrics_->HandleOpenViaEntryPoint(EntryPoint::kContextMenu);
+
+  histogram_tester_.ExpectTotalCount(kMostUsedEntryPointHistogramName, 0);
+
+  ai_chat_metrics_->RecordEnabled(true, true, GetPremiumCallback());
+
+  histogram_tester_.ExpectUniqueSample(kMostUsedEntryPointHistogramName,
+                                       static_cast<int>(EntryPoint::kSidebar),
+                                       1);
+
+  ai_chat_metrics_->HandleOpenViaEntryPoint(EntryPoint::kToolbarButton);
+
+  histogram_tester_.ExpectBucketCount(
+      kMostUsedEntryPointHistogramName,
+      static_cast<int>(EntryPoint::kToolbarButton), 0);
+  ai_chat_metrics_->HandleOpenViaEntryPoint(EntryPoint::kToolbarButton);
+  ai_chat_metrics_->HandleOpenViaEntryPoint(EntryPoint::kToolbarButton);
+
+  histogram_tester_.ExpectBucketCount(
+      kMostUsedEntryPointHistogramName,
+      static_cast<int>(EntryPoint::kToolbarButton), 1);
+
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kMostUsedEntryPointHistogramName, 10);
+
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kMostUsedEntryPointHistogramName, 10);
+}
+
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 TEST_F(AIChatMetricsUnitTest, Reset) {
