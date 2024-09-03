@@ -43,6 +43,10 @@
 #include "brave/browser/ui/views/toolbar/brave_vpn_toggle_button.h"
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#endif
+
 using views::MenuItemView;
 
 namespace {
@@ -212,6 +216,15 @@ void BraveAppMenu::OnMenuClosed(views::MenuItemView* menu) {
 
 void BraveAppMenu::RecordMenuUsage(int command_id) {
   misc_metrics::MenuGroup group;
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (command_id == IDC_TOGGLE_AI_CHAT) {
+    ai_chat::AIChatMetrics* metrics =
+        g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
+    CHECK(metrics);
+    metrics->HandleOpenViaEntryPoint(ai_chat::EntryPoint::kMenuItem);
+  }
+#endif
 
   switch (command_id) {
     case IDC_NEW_WINDOW:

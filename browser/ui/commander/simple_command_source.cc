@@ -13,14 +13,37 @@
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/command_utils.h"
+#include "brave/browser/ui/commander/command_source.h"
+#include "brave/browser/ui/commander/fuzzy_finder.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/accelerator_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "brave/browser/ui/commander/command_source.h"
-#include "brave/browser/ui/commander/fuzzy_finder.h"
 #include "ui/base/accelerators/accelerator.h"
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/app/brave_command_ids.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#endif
+
 namespace commander {
+
+namespace {
+
+void MaybeReportCommandExecution(int command_id) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (command_id == IDC_TOGGLE_AI_CHAT) {
+    ai_chat::AIChatMetrics* metrics =
+        g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();
+    CHECK(metrics);
+    metrics->HandleOpenViaEntryPoint(ai_chat::EntryPoint::kOmniboxCommand);
+  }
+#endif
+}
+
+}  // namespace
 
 SimpleCommandSource::SimpleCommandSource() = default;
 SimpleCommandSource::~SimpleCommandSource() = default;
@@ -60,6 +83,7 @@ CommandSource::CommandResults SimpleCommandSource::GetCommands(
 
     item->command = base::BindOnce(
         [](Browser* browser, int command_id) {
+          MaybeReportCommandExecution(command_id);
           chrome::ExecuteCommand(browser, command_id);
         },
         // Unretained is safe here, as the commands will be reset if the browser
