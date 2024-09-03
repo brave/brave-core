@@ -23,27 +23,21 @@ public struct OnboardingTranslateView: View {
   public var body: some View {
     ScrollView(.vertical) {
       VStack(spacing: 0.0) {
-        Image(braveSystemName: "leo.product.translate")
-          .font(.title)
-          .foregroundStyle(Color(braveSystemName: .textPrimary))
-          .padding(16.0)
-          .background(
-            ContainerRelativeShape()
-              .fill(Color.white)
-          )
-          .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
-          .padding([.top, .bottom], 32.0)
+        Image(
+          uiImage: UIImage(named: "translate-onboarding-icon", in: .module, compatibleWith: nil)!
+        )
+        .padding([.top, .bottom], 24.0)
 
         Text("Page Translations")
           .font(.callout.weight(.semibold))
-          .foregroundColor(Color.white)
+          .foregroundColor(Color(braveSystemName: .textPrimary))
           .padding(.bottom)
 
         Text(
           "Pages can be translated to languages supported by your iOS device. You may be required to configure languages if this is your first time using this feature."
         )
         .font(.callout)
-        .foregroundColor(Color.white)
+        .foregroundColor(Color(braveSystemName: .textSecondary))
         .padding(.bottom, 24.0)
 
         Button(
@@ -59,7 +53,7 @@ public struct OnboardingTranslateView: View {
               .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
               .background(
                 ContainerRelativeShape()
-                  .fill(Color(braveSystemName: .primary40))
+                  .fill(Color(braveSystemName: .buttonBackground))
               )
               .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
           }
@@ -77,23 +71,18 @@ public struct OnboardingTranslateView: View {
               .font(.body.weight(.semibold))
               .padding()
               .frame(maxWidth: .infinity)
-              .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
               .background(
                 ContainerRelativeShape()
-                  .fill(Color(.braveBlurpleTint))
+                  .fill(Color(.clear))
               )
               .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
           }
         )
         .buttonStyle(.plain)
       }
+      .padding(24.0)
     }
-    .padding()
-    .frame(
-      minWidth: 200,
-      maxWidth: BraveUX.baseDimensionValue
-    )
-    .background(Color(.braveBlurpleTint))
     .multilineTextAlignment(.center)
     .osAvailabilityModifiers { content in
       #if compiler(>=5.8)
@@ -118,7 +107,7 @@ public struct OnboardingTranslateView: View {
 
 extension OnboardingTranslateView: PopoverContentComponent {
   public var popoverBackgroundColor: UIColor {
-    .braveBlurpleTint
+    .braveBackground
   }
 }
 
