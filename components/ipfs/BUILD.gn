@@ -25,5 +25,6 @@ static_library("ipfs") {
       "ipfs_component_cleaner.cc",
       "ipfs_component_cleaner.h",
     ]
+    deps += [ "//chrome/common:constants" ]
   }
 }
