@@ -200,9 +200,10 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
         final String accountAddressLower =
                 account != null ? account.address.toLowerCase(Locale.getDefault()) : "";
-        final BlockchainToken token = isSPLTransaction
-                ? findToken(fullTokenList, solTxData != null ? solTxData.splTokenMintAddress : "")
-                : findToken(fullTokenList, to);
+        final BlockchainToken token =
+                isSPLTransaction
+                        ? findToken(fullTokenList, solTxData != null ? solTxData.tokenAddress : "")
+                        : findToken(fullTokenList, to);
         final String tokenSymbolLower =
                 token != null ? token.symbol.toLowerCase(Locale.getDefault()) : "";
         final double accountNativeBalance =

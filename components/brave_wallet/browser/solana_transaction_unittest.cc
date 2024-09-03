@@ -443,7 +443,7 @@ TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
   EXPECT_EQ(solana_tx_data->last_valid_block_height, last_valid_block_height);
   EXPECT_EQ(solana_tx_data->fee_payer, from_account);
   EXPECT_EQ(solana_tx_data->to_wallet_address, to_account);
-  EXPECT_EQ(solana_tx_data->spl_token_mint_address, "");
+  EXPECT_EQ(solana_tx_data->token_address, "");
   EXPECT_EQ(solana_tx_data->lamports, 10000000u);
   EXPECT_EQ(solana_tx_data->amount, 0u);
   EXPECT_EQ(solana_tx_data->tx_type,

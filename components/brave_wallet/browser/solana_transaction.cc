@@ -190,9 +190,9 @@ bool SolanaTransaction::operator==(const SolanaTransaction& tx) const {
   return message_ == tx.message_ && raw_signatures_ == tx.raw_signatures_ &&
          wired_tx_ == tx.wired_tx_ && sign_tx_param_ == tx.sign_tx_param_ &&
          to_wallet_address_ == tx.to_wallet_address_ &&
-         spl_token_mint_address_ == tx.spl_token_mint_address_ &&
-         tx_type_ == tx.tx_type_ && lamports_ == tx.lamports_ &&
-         amount_ == tx.amount_ && send_options_ == tx.send_options_ &&
+         token_address_ == tx.token_address_ && tx_type_ == tx.tx_type_ &&
+         lamports_ == tx.lamports_ && amount_ == tx.amount_ &&
+         send_options_ == tx.send_options_ &&
          tx.fee_estimation_ == fee_estimation_;
 }
 
@@ -372,7 +372,7 @@ std::string SolanaTransaction::GetBase64EncodedMessage() const {
 mojom::SolanaTxDataPtr SolanaTransaction::ToSolanaTxData() const {
   auto solana_tx_data = message_.ToSolanaTxData();
   solana_tx_data->to_wallet_address = to_wallet_address_;
-  solana_tx_data->spl_token_mint_address = spl_token_mint_address_;
+  solana_tx_data->token_address = token_address_;
   solana_tx_data->tx_type = tx_type_;
   solana_tx_data->lamports = lamports_;
   solana_tx_data->amount = amount_;
@@ -393,7 +393,9 @@ base::Value::Dict SolanaTransaction::ToValue() const {
   base::Value::Dict dict;
   dict.Set("message", message_.ToValue());
   dict.Set("to_wallet_address", to_wallet_address_);
-  dict.Set("spl_token_mint_address", spl_token_mint_address_);
+  // We use the old key, spl_token_mint_address, for backwards compatibility
+  // with when it didn't also represent compressed NFT identifiers.
+  dict.Set("spl_token_mint_address", token_address_);
   dict.Set("tx_type", static_cast<int>(tx_type_));
   dict.Set("lamports", base::NumberToString(lamports_));
   dict.Set("amount", base::NumberToString(amount_));
@@ -470,12 +472,13 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromValue(
   }
   tx->set_to_wallet_address(*to_wallet_address);
 
-  const auto* spl_token_mint_address =
-      value.FindString("spl_token_mint_address");
-  if (!spl_token_mint_address) {
+  // We use spl_token_mint_address as for backwards compatibility
+  // with when it didn't also represent compressed NFT identifiers.
+  const auto* token_address = value.FindString("spl_token_mint_address");
+  if (!token_address) {
     return nullptr;
   }
-  tx->set_spl_token_mint_address(*spl_token_mint_address);
+  tx->set_token_address(*token_address);
 
   auto tx_type = value.FindInt("tx_type");
   if (!tx_type) {
@@ -611,7 +614,7 @@ std::unique_ptr<SolanaTransaction> SolanaTransaction::FromSolanaTxData(
       std::move(static_account_keys), std::move(instructions),
       std::move(*addr_table_lookups));
   tx->set_to_wallet_address(solana_tx_data->to_wallet_address);
-  tx->set_spl_token_mint_address(solana_tx_data->spl_token_mint_address);
+  tx->set_token_address(solana_tx_data->token_address);
   tx->set_tx_type(solana_tx_data->tx_type);
   tx->set_lamports(solana_tx_data->lamports);
   tx->set_amount(solana_tx_data->amount);

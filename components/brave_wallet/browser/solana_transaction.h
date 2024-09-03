@@ -105,7 +105,7 @@ class SolanaTransaction {
   bool IsPartialSigned() const;
 
   std::string to_wallet_address() const { return to_wallet_address_; }
-  std::string spl_token_mint_address() const { return spl_token_mint_address_; }
+  std::string token_address() const { return token_address_; }
   mojom::TransactionType tx_type() const { return tx_type_; }
   uint64_t lamports() const { return lamports_; }
   uint64_t amount() const { return amount_; }
@@ -119,8 +119,8 @@ class SolanaTransaction {
   void set_to_wallet_address(const std::string& to_wallet_address) {
     to_wallet_address_ = to_wallet_address;
   }
-  void set_spl_token_mint_address(const std::string& spl_token_mint_address) {
-    spl_token_mint_address_ = spl_token_mint_address;
+  void set_token_address(const std::string& token_address) {
+    token_address_ = token_address;
   }
   void set_tx_type(mojom::TransactionType tx_type);
   void set_lamports(uint64_t lamports) { lamports_ = lamports; }
@@ -165,7 +165,7 @@ class SolanaTransaction {
   // Data fields to be used for UI, they are filled currently when we create
   // SolanaTxData to transfer SOL or SPL tokens for UI.
   std::string to_wallet_address_;
-  std::string spl_token_mint_address_;
+  std::string token_address_;
   mojom::TransactionType tx_type_ = mojom::TransactionType::Other;
   uint64_t lamports_ = 0;  // amount of lamports to transfer
   uint64_t amount_ = 0;    // amount of SPL tokens to transfer
