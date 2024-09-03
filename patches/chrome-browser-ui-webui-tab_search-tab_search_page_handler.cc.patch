@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc b/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
+index 1266c4eb9591c037b2b1409d6012c9554fe5bae0..39ebd2c1278538b5d3b6fd3509bb5ba49ec308fa 100644
+--- a/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
++++ b/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
+@@ -904,11 +904,11 @@ tab_search::mojom::TabPtr TabSearchPageHandler::GetTab(
+   // A visible URL is used when the a new tab is still loading.
+   // If it is cancelled during loading the visible URL becomes empty.
+   // We will display an empty URL as about:blank in Javascript.
+-  tab_data->url =
++  tab_data->url = ReplaceChromeSchemeWithBrave(
+       !last_committed_url.is_valid() || last_committed_url.is_empty()
+           ? tab_renderer_data.visible_url
+-          : last_committed_url;
+-
++          : last_committed_url);
++  
+   if (tab_renderer_data.favicon.IsEmpty()) {
+     tab_data->is_default_favicon = true;
+   } else {
+@@ -966,7 +966,7 @@ TabSearchPageHandler::GetRecentlyClosedTab(sessions::tab_restore::Tab* tab,
+   sessions::SerializedNavigationEntry& entry =
+       tab->navigations[tab->current_navigation_index];
+   recently_closed_tab->tab_id = tab->id.id();
+-  recently_closed_tab->url = entry.virtual_url();
++  recently_closed_tab->url = ReplaceChromeSchemeWithBrave(entry.virtual_url());
+   recently_closed_tab->title = entry.title().empty()
+                                    ? recently_closed_tab->url.spec()
+                                    : base::UTF16ToUTF8(entry.title());
