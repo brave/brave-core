@@ -15,17 +15,17 @@ namespace brave_ads::test {
 
 WalletInfo Wallet() {
   const std::optional<WalletInfo> wallet =
-      ToWallet(kWalletPaymentId, kWalletRecoverySeedBase64);
+      CreateWalletFromRecoverySeed(kWalletPaymentId, kWalletRecoverySeedBase64);
   CHECK(wallet);
 
   return *wallet;
 }
 
-mojom::WalletInfoPtr WalletPtr() {
-  mojom::WalletInfoPtr wallet = mojom::WalletInfo::New();
-  wallet->payment_id = kWalletPaymentId;
-  wallet->recovery_seed = kWalletRecoverySeedBase64;
-  return wallet;
+mojom::WalletInfoPtr WalletAsPtr() {
+  mojom::WalletInfoPtr mojom_wallet = mojom::WalletInfo::New();
+  mojom_wallet->payment_id = kWalletPaymentId;
+  mojom_wallet->recovery_seed_base64 = kWalletRecoverySeedBase64;
+  return mojom_wallet;
 }
 
 }  // namespace brave_ads::test

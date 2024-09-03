@@ -17,8 +17,9 @@ void AdsClientNotifierForTesting::NotifyDidInitializeAds() {
 
 void AdsClientNotifierForTesting::NotifyRewardsWalletDidUpdate(
     const std::string& payment_id,
-    const std::string& recovery_seed) {
-  AdsClientNotifier::NotifyRewardsWalletDidUpdate(payment_id, recovery_seed);
+    const std::string& recovery_seed_base64) {
+  AdsClientNotifier::NotifyRewardsWalletDidUpdate(payment_id,
+                                                  recovery_seed_base64);
 
   RunTaskEnvironmentUntilIdle();
 }

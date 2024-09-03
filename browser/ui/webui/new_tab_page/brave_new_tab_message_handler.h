@@ -74,7 +74,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   // bat_ads::mojom::BatAdsObserver:
   void OnAdRewardsDidChange() override {}
   void OnBrowserUpgradeRequiredToServeAds() override;
-  void OnIneligibleRewardsWalletToServeAds() override {}
+  void OnIneligibleWalletToServeAds() override {}
   void OnRemindUser(brave_ads::mojom::ReminderType type) override {}
 
   PrefChangeRegistrar pref_change_registrar_;

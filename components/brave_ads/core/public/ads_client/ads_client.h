@@ -78,11 +78,11 @@ class ADS_EXPORT AdsClient {
                               int recent_day_range,
                               GetSiteHistoryCallback callback) = 0;
 
-  // Fetch and return data for the `url_request`. Loading should be performed
-  // asynchronously, so that the app remains responsive and should handle
-  // incoming data or errors as they arrive. The callback takes one argument -
-  // `URLResponse` containing the URL response.
-  virtual void UrlRequest(mojom::UrlRequestInfoPtr url_request,
+  // Fetch and return data for the `mojom_url_request`. Loading should be
+  // performed asynchronously, so that the app remains responsive and should
+  // handle incoming data or errors as they arrive. The callback takes one
+  // argument - `URLResponse` containing the URL response.
+  virtual void UrlRequest(mojom::UrlRequestInfoPtr mojom_url_request,
                           UrlRequestCallback callback) = 0;
 
   // Save a value for the specified `name` to persistent storage. The callback

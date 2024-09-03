@@ -18,7 +18,7 @@ struct SearchResultAdInfo;
 class SearchResultAdEventFactory final {
  public:
   static std::unique_ptr<AdEventInterface<SearchResultAdInfo>> Build(
-      mojom::SearchResultAdEventType event_type);
+      mojom::SearchResultAdEventType mojom_ad_event_type);
 };
 
 }  // namespace brave_ads

@@ -12,7 +12,8 @@
 
 namespace brave_ads::test {
 
-std::vector<ConfirmationType> BuildConfirmationTypes(
+std::vector<ConfirmationType>
+BuildConfirmationTypeForCountAndIntersperseOtherTypes(
     ConfirmationType confirmation_type,
     int count);
 

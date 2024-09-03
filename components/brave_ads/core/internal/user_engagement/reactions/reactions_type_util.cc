@@ -8,15 +8,15 @@
 namespace brave_ads {
 
 mojom::ReactionType ToggleLikedReactionType(
-    const mojom::ReactionType reaction_type) {
-  return reaction_type == mojom::ReactionType::kNeutral
+    const mojom::ReactionType mojom_reaction_type) {
+  return mojom_reaction_type == mojom::ReactionType::kNeutral
              ? mojom::ReactionType::kLiked
              : mojom::ReactionType::kNeutral;
 }
 
 mojom::ReactionType ToggleDislikedReactionType(
-    const mojom::ReactionType reaction_type) {
-  return reaction_type == mojom::ReactionType::kNeutral
+    const mojom::ReactionType mojom_reaction_type) {
+  return mojom_reaction_type == mojom::ReactionType::kNeutral
              ? mojom::ReactionType::kDisliked
              : mojom::ReactionType::kNeutral;
 }

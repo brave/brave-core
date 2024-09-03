@@ -44,18 +44,19 @@ class NewTabPageAdHandler final : public NewTabPageAdEventHandlerDelegate,
 
   void TriggerEvent(const std::string& placement_id,
                     const std::string& creative_instance_id,
-                    mojom::NewTabPageAdEventType event_type,
+                    mojom::NewTabPageAdEventType mojom_ad_event_type,
                     TriggerAdEventCallback callback);
 
  private:
   void MaybeServeCallback(MaybeServeNewTabPageAdCallback callback,
                           const std::optional<NewTabPageAdInfo>& ad);
 
-  void TriggerServedEventCallback(const std::string& creative_instance_id,
-                                  TriggerAdEventCallback callback,
-                                  bool success,
-                                  const std::string& placement_id,
-                                  mojom::NewTabPageAdEventType event_type);
+  void TriggerServedEventCallback(
+      const std::string& creative_instance_id,
+      TriggerAdEventCallback callback,
+      bool success,
+      const std::string& placement_id,
+      mojom::NewTabPageAdEventType mojom_ad_event_type);
 
   // NewTabPageAdServingDelegate:
   void OnOpportunityAroseToServeNewTabPageAd() override;

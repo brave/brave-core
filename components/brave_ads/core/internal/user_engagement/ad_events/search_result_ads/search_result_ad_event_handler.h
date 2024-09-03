@@ -23,10 +23,10 @@ namespace brave_ads {
 struct DepositInfo;
 struct SearchResultAdInfo;
 
-using FireSearchResultAdEventHandlerCallback =
-    base::OnceCallback<void(const bool success,
-                            const std::string& placement_id,
-                            const mojom::SearchResultAdEventType event_type)>;
+using FireSearchResultAdEventHandlerCallback = base::OnceCallback<void(
+    const bool success,
+    const std::string& placement_id,
+    const mojom::SearchResultAdEventType mojom_ad_event_type)>;
 
 class SearchResultAdEventHandler final
     : public SearchResultAdEventHandlerDelegate {
@@ -49,7 +49,7 @@ class SearchResultAdEventHandler final
   }
 
   void FireEvent(mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-                 mojom::SearchResultAdEventType event_type,
+                 mojom::SearchResultAdEventType mojom_ad_event_type,
                  FireSearchResultAdEventHandlerCallback callback) const;
 
  private:
@@ -58,7 +58,7 @@ class SearchResultAdEventHandler final
       FireSearchResultAdEventHandlerCallback callback,
       bool success,
       const std::string& placement_id,
-      mojom::SearchResultAdEventType event_type) const;
+      mojom::SearchResultAdEventType mojom_ad_event_type) const;
 
   void MaybeFireServedEvent(
       const SearchResultAdInfo& ad,
@@ -78,36 +78,37 @@ class SearchResultAdEventHandler final
       FireSearchResultAdEventHandlerCallback callback) const;
 
   void MaybeFireEvent(const SearchResultAdInfo& ad,
-                      mojom::SearchResultAdEventType event_type,
+                      mojom::SearchResultAdEventType mojom_ad_event_type,
                       FireSearchResultAdEventHandlerCallback callback) const;
-  void MaybeFireEventCallback(const SearchResultAdInfo& ad,
-                              mojom::SearchResultAdEventType event_type,
-                              FireSearchResultAdEventHandlerCallback callback,
-                              bool success,
-                              const AdEventList& ad_events) const;
+  void MaybeFireEventCallback(
+      const SearchResultAdInfo& ad,
+      mojom::SearchResultAdEventType mojom_ad_event_type,
+      FireSearchResultAdEventHandlerCallback callback,
+      bool success,
+      const AdEventList& ad_events) const;
 
   void FireEvent(const SearchResultAdInfo& ad,
-                 mojom::SearchResultAdEventType event_type,
+                 mojom::SearchResultAdEventType mojom_ad_event_type,
                  FireSearchResultAdEventHandlerCallback callback) const;
   void FireEventCallback(const SearchResultAdInfo& ad,
-                         mojom::SearchResultAdEventType event_type,
+                         mojom::SearchResultAdEventType mojom_ad_event_type,
                          FireSearchResultAdEventHandlerCallback callback,
                          bool success) const;
 
   void SuccessfullyFiredEvent(
       const SearchResultAdInfo& ad,
-      mojom::SearchResultAdEventType event_type,
+      mojom::SearchResultAdEventType mojom_ad_event_type,
       FireSearchResultAdEventHandlerCallback callback) const;
   void FailedToFireEvent(const SearchResultAdInfo& ad,
-                         mojom::SearchResultAdEventType event_type,
+                         mojom::SearchResultAdEventType mojom_ad_event_type,
                          FireSearchResultAdEventHandlerCallback callback) const;
 
   void NotifyDidFireSearchResultAdEvent(
       const SearchResultAdInfo& ad,
-      mojom::SearchResultAdEventType event_type) const;
+      mojom::SearchResultAdEventType mojom_ad_event_type) const;
   void NotifyFailedToFireSearchResultAdEvent(
       const SearchResultAdInfo& ad,
-      mojom::SearchResultAdEventType event_type) const;
+      mojom::SearchResultAdEventType mojom_ad_event_type) const;
 
   raw_ptr<SearchResultAdEventHandlerDelegate> delegate_ = nullptr;
 

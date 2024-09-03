@@ -32,10 +32,11 @@ namespace brave_ads {
 
 namespace {
 
-void FireEventCallback(TriggerAdEventCallback callback,
-                       const bool success,
-                       const std::string& /*placement_id*/,
-                       const mojom::NotificationAdEventType /*event_type*/) {
+void FireEventCallback(
+    TriggerAdEventCallback callback,
+    const bool success,
+    const std::string& /*placement_id*/,
+    const mojom::NotificationAdEventType /*mojom_ad_event_type*/) {
   std::move(callback).Run(success);
 }
 
@@ -78,9 +79,10 @@ void NotificationAdHandler::MaybeServeAtRegularIntervals() {
 
 void NotificationAdHandler::TriggerEvent(
     const std::string& placement_id,
-    const mojom::NotificationAdEventType event_type,
+    const mojom::NotificationAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
-  CHECK_NE(mojom::NotificationAdEventType::kServedImpression, event_type)
+  CHECK_NE(mojom::NotificationAdEventType::kServedImpression,
+           mojom_ad_event_type)
       << "Should not be called with kServedImpression as this event is handled "
          "when calling TriggerEvent with kViewedImpression";
 
@@ -88,7 +90,8 @@ void NotificationAdHandler::TriggerEvent(
     return std::move(callback).Run(/*success=*/false);
   }
 
-  if (event_type == mojom::NotificationAdEventType::kViewedImpression) {
+  if (mojom_ad_event_type ==
+      mojom::NotificationAdEventType::kViewedImpression) {
     return event_handler_.FireEvent(
         placement_id, mojom::NotificationAdEventType::kServedImpression,
         base::BindOnce(&NotificationAdHandler::FireServedEventCallback,
@@ -96,7 +99,7 @@ void NotificationAdHandler::TriggerEvent(
   }
 
   event_handler_.FireEvent(
-      placement_id, event_type,
+      placement_id, mojom_ad_event_type,
       base::BindOnce(&FireEventCallback, std::move(callback)));
 }
 
@@ -106,7 +109,7 @@ void NotificationAdHandler::FireServedEventCallback(
     TriggerAdEventCallback callback,
     const bool success,
     const std::string& placement_id,
-    const mojom::NotificationAdEventType /*event_type*/) {
+    const mojom::NotificationAdEventType /*mojom_ad_event_type*/) {
   if (!success) {
     return std::move(callback).Run(/*success=*/false);
   }

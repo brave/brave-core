@@ -14,10 +14,10 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsWalletUtilTest, ToWallet) {
+TEST(BraveAdsWalletUtilTest, CreateWalletFromRecoverySeed) {
   // Act
-  const std::optional<WalletInfo> wallet =
-      ToWallet(test::kWalletPaymentId, test::kWalletRecoverySeedBase64);
+  const std::optional<WalletInfo> wallet = CreateWalletFromRecoverySeed(
+      test::kWalletPaymentId, test::kWalletRecoverySeedBase64);
   ASSERT_TRUE(wallet);
 
   // Assert
@@ -26,10 +26,10 @@ TEST(BraveAdsWalletUtilTest, ToWallet) {
                                             test::kWalletSecretKey));
 }
 
-TEST(BraveAdsWalletUtilTest, ToInvalidWallet) {
+TEST(BraveAdsWalletUtilTest, DoNotCreateWalletFromInvalidRecoverySeed) {
   // Act & Assert
-  EXPECT_FALSE(
-      ToWallet(test::kWalletPaymentId, test::kInvalidWalletRecoverySeed));
+  EXPECT_FALSE(CreateWalletFromRecoverySeed(test::kWalletPaymentId,
+                                            test::kInvalidWalletRecoverySeed));
 }
 
 }  // namespace brave_ads

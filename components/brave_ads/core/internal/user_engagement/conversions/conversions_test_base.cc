@@ -31,21 +31,11 @@ void BraveAdsConversionsTestBase::TearDown() {
   TestBase::TearDown();
 }
 
-void BraveAdsConversionsTestBase::RecordAdEventsAdvancingTheClockAfterEach(
-    const AdInfo& ad,
-    const std::vector<ConfirmationType>& confirmation_types) {
-  for (const auto& confirmation_type : confirmation_types) {
-    RecordAdEvent(ad, confirmation_type);
-
-    AdvanceClockBy(base::Milliseconds(1));
-  }
-}
-
 void BraveAdsConversionsTestBase::VerifyOnDidConvertAdExpectation(
     const AdInfo& ad,
     const ConversionActionType action_type) {
   EXPECT_CALL(conversions_observer_mock_,
-              OnDidConvertAd(/*conversion*/ ::testing::FieldsAre(
+              OnDidConvertAd(/*conversion=*/::testing::FieldsAre(
                   ad.type, ad.creative_instance_id, ad.creative_set_id,
                   ad.campaign_id, ad.advertiser_id, ad.segment, action_type,
                   /*verifiable*/ std::nullopt)));
@@ -61,7 +51,7 @@ void BraveAdsConversionsTestBase::VerifyOnDidConvertVerifiableAdExpectation(
     const VerifiableConversionInfo& verifiable_conversion) {
   EXPECT_CALL(
       conversions_observer_mock_,
-      OnDidConvertAd(/*conversion*/ ::testing::FieldsAre(
+      OnDidConvertAd(/*conversion=*/::testing::FieldsAre(
           ad.type, ad.creative_instance_id, ad.creative_set_id, ad.campaign_id,
           ad.advertiser_id, ad.segment, action_type, verifiable_conversion)));
 }

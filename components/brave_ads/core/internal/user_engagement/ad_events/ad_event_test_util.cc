@@ -29,20 +29,21 @@ void RecordAdEvent(const AdEventInfo& ad_event) {
 }  // namespace
 
 void RecordAdEvent(const AdInfo& ad, const ConfirmationType confirmation_type) {
-  const AdEventInfo ad_event = BuildAdEvent(ad, confirmation_type, Now());
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, confirmation_type, /*created_at=*/Now());
   RecordAdEvent(ad_event);
 }
 
 void RecordAdEvents(const AdInfo& ad,
                     const std::vector<ConfirmationType>& confirmation_types) {
-  for (const auto confirmation_type : confirmation_types) {
+  for (const auto& confirmation_type : confirmation_types) {
     RecordAdEvent(ad, confirmation_type);
   }
 }
 
 void RecordAdEvents(const AdInfo& ad,
-                    const ConfirmationType confirmation_type,
-                    const int count) {
+                    ConfirmationType confirmation_type,
+                    int count) {
   CHECK_GT(count, 0);
 
   for (int i = 0; i < count; ++i) {

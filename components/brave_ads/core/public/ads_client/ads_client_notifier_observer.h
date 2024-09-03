@@ -54,7 +54,7 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
   // Called when the Brave Rewards wallet did update.
   virtual void OnNotifyRewardsWalletDidUpdate(
       const std::string& payment_id,
-      const std::string& recovery_seed) {}
+      const std::string& recovery_seed_base64) {}
 
   // Invoked when the page for `tab_id` has loaded and the content is available
   // for analysis. `redirect_chain` containing a list of redirect URLs that

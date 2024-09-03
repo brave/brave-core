@@ -19,15 +19,16 @@ TEST_F(BraveAdsIssuersUrlRequestBuilderTest, BuildUrl) {
   IssuersUrlRequestBuilder url_request_builder;
 
   // Act
-  const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+  const mojom::UrlRequestInfoPtr mojom_url_request =
+      url_request_builder.Build();
 
   // Assert
-  const mojom::UrlRequestInfoPtr expected_url_request =
+  const mojom::UrlRequestInfoPtr expected_mojom_url_request =
       mojom::UrlRequestInfo::New();
-  expected_url_request->url =
+  expected_mojom_url_request->url =
       GURL("https://static.ads.bravesoftware.com/v3/issuers");
-  expected_url_request->method = mojom::UrlRequestMethodType::kGet;
-  EXPECT_EQ(expected_url_request, url_request);
+  expected_mojom_url_request->method = mojom::UrlRequestMethodType::kGet;
+  EXPECT_EQ(expected_mojom_url_request, mojom_url_request);
 }
 
 }  // namespace brave_ads

@@ -9,7 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -75,12 +74,6 @@ size_t BindColumns(mojom::DBActionInfo* mojom_db_action,
   int index = 0;
   for (const auto& confirmation_queue_item : confirmation_queue_items) {
     if (!confirmation_queue_item.IsValid()) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-      // potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                "Invalid confirmation queue item");
-      base::debug::DumpWithoutCrashing();
-
       BLOG(0, "Invalid confirmation queue item");
 
       continue;
@@ -236,12 +229,6 @@ void GetCallback(
     const ConfirmationQueueItemInfo confirmation_queue_item =
         FromMojomRow(&*mojom_db_row);
     if (!confirmation_queue_item.IsValid()) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-      // potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                "Invalid confirmation queue item");
-      base::debug::DumpWithoutCrashing();
-
       BLOG(0, "Invalid confirmation queue item");
 
       continue;

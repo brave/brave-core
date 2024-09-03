@@ -25,4 +25,17 @@ void PurgeExpiredAdEvents() {
   }));
 }
 
+void PurgeAllOrphanedAdEvents() {
+  const database::table::AdEvents database_table;
+  database_table.PurgeAllOrphaned(base::BindOnce([](const bool success) {
+    if (!success) {
+      return BLOG(0, "Failed to purge all orphaned ad events");
+    }
+
+    RebuildAdEventCache();
+
+    BLOG(3, "Successfully purged all orphaned ad events");
+  }));
+}
+
 }  // namespace brave_ads::database

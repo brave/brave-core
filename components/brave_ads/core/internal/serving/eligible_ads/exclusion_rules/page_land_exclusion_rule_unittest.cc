@@ -129,7 +129,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
 
   const AdEventInfo ad_event_3 = test::BuildAdEvent(
       creative_ad_2, AdType::kPromotedContentAd, ConfirmationType::kLanded,
-      test::Now(), /*should_generate_random_uuids=*/true);
+      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event_3);
 
   const AdEventInfo ad_event_4 =

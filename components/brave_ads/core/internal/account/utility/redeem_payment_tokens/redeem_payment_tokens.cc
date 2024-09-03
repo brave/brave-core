@@ -76,23 +76,23 @@ void RedeemPaymentTokens::Redeem() {
   RedeemPaymentTokensUrlRequestBuilder url_request_builder(
       wallet_, payment_tokens,
       BuildRedeemPaymentTokensUserData(payment_tokens));
-  mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
-  BLOG(6, UrlRequestToString(url_request));
-  BLOG(7, UrlRequestHeadersToString(url_request));
+  mojom::UrlRequestInfoPtr mojom_url_request = url_request_builder.Build();
+  BLOG(6, UrlRequestToString(mojom_url_request));
+  BLOG(7, UrlRequestHeadersToString(mojom_url_request));
 
   GetAdsClient()->UrlRequest(
-      std::move(url_request),
+      std::move(mojom_url_request),
       base::BindOnce(&RedeemPaymentTokens::RedeemCallback,
                      weak_factory_.GetWeakPtr(), payment_tokens));
 }
 
 void RedeemPaymentTokens::RedeemCallback(
     const PaymentTokenList& payment_tokens,
-    const mojom::UrlResponseInfo& url_response) {
-  BLOG(6, UrlResponseToString(url_response));
-  BLOG(7, UrlResponseHeadersToString(url_response));
+    const mojom::UrlResponseInfo& mojom_url_response) {
+  BLOG(6, UrlResponseToString(mojom_url_response));
+  BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
-  const auto result = HandleUrlResponse(url_response);
+  const auto result = HandleUrlResponse(mojom_url_response);
   if (!result.has_value()) {
     const auto& [failure, should_retry] = result.error();
 
@@ -107,8 +107,8 @@ void RedeemPaymentTokens::RedeemCallback(
 // static
 base::expected<void, std::tuple<std::string, bool>>
 RedeemPaymentTokens::HandleUrlResponse(
-    const mojom::UrlResponseInfo& url_response) {
-  if (url_response.status_code != net::HTTP_OK) {
+    const mojom::UrlResponseInfo& mojom_url_response) {
+  if (mojom_url_response.status_code != net::HTTP_OK) {
     return base::unexpected(std::make_tuple("Failed to redeem payment tokens",
                                             /*should_retry=*/true));
   }

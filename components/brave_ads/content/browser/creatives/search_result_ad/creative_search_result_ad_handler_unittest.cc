@@ -269,7 +269,7 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
           ::testing::_, mojom::SearchResultAdEventType::kViewedImpression,
           ::testing::_))
       .WillOnce([](mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-                   mojom::SearchResultAdEventType /*event_type*/,
+                   mojom::SearchResultAdEventType /*mojom_ad_event_type*/,
                    TriggerAdEventCallback /*callback*/) {
         EXPECT_FALSE(mojom_creative_ad->creative_set_conversion);
       });
@@ -310,7 +310,7 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
           ::testing::_))
       .WillOnce([&mojom_web_page](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-                    mojom::SearchResultAdEventType /*event_type*/,
+                    mojom::SearchResultAdEventType /*mojom_ad_event_type*/,
                     TriggerAdEventCallback /*callback*/) {
         const CreativeSearchResultAdMap creative_search_result_ads =
             ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
@@ -330,7 +330,7 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
       .WillRepeatedly(
           [&mojom_web_page](
               mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-              mojom::SearchResultAdEventType /*event_type*/,
+              mojom::SearchResultAdEventType /*mojom_ad_event_type*/,
               TriggerAdEventCallback /*callback*/) {
             const CreativeSearchResultAdMap creative_search_result_ads =
                 ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
@@ -400,9 +400,8 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
 
   const blink::mojom::WebPagePtr mojom_web_page =
       test::CreativeSearchResultAdMojomWebPageWithProperty(
-          /*property_name=*/"data-placement-id",
-          /*property_value=*/test::
-              kCreativeAdPlacementIdWithUnreservedCharacters);
+          /*name=*/"data-placement-id",
+          /*value=*/test::kCreativeAdPlacementIdWithUnreservedCharacters);
   ASSERT_TRUE(mojom_web_page);
 
   // Act & Assert
@@ -413,7 +412,7 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
           ::testing::_))
       .WillOnce([&mojom_web_page](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-                    mojom::SearchResultAdEventType /*event_type*/,
+                    mojom::SearchResultAdEventType /*mojom_ad_event_type*/,
                     TriggerAdEventCallback /*callback*/) {
         const CreativeSearchResultAdMap creative_search_result_ads =
             ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
@@ -433,7 +432,7 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
           ::testing::_, mojom::SearchResultAdEventType::kClicked, ::testing::_))
       .WillOnce([&mojom_web_page](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-                    mojom::SearchResultAdEventType /*event_type*/,
+                    mojom::SearchResultAdEventType /*mojom_ad_event_type*/,
                     TriggerAdEventCallback /*callback*/) {
         const CreativeSearchResultAdMap creative_search_result_ads =
             ExtractCreativeSearchResultAdsFromMojomWebPageEntities(

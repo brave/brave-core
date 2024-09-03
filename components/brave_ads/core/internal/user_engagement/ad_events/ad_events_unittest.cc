@@ -26,9 +26,8 @@ TEST_F(BraveAdsAdEventsTest, RecordAdEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kServedImpression,
-                   /*created_at=*/test::Now());
+  const AdEventInfo ad_event = BuildAdEvent(
+      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
 
   base::MockCallback<AdEventCallback> record_ad_event_callback;
   EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true));
@@ -56,9 +55,8 @@ TEST_F(BraveAdsAdEventsTest, PurgeOrphanedAdEvents) {
   // does not have an associated viewed impression ad event or matching ad type.
   const AdInfo ad_1 = test::BuildAd(AdType::kNotificationAd,
                                     /*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event_1 =
-      BuildAdEvent(ad_1, ConfirmationType::kServedImpression,
-                   /*created_at=*/test::Now());
+  const AdEventInfo ad_event_1 = BuildAdEvent(
+      ad_1, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
   RecordAdEvent(ad_event_1, record_ad_event_callback.Get());
 
   // Ad event 2: This served impression ad event should not be purged because it

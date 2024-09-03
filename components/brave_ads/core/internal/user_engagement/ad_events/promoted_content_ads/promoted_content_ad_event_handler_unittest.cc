@@ -49,13 +49,13 @@ class BraveAdsPromotedContentAdEventHandlerTest : public test::TestBase {
   void FireEventAndVerifyExpectations(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      const mojom::PromotedContentAdEventType event_type,
+      const mojom::PromotedContentAdEventType mojom_ad_event_type,
       const bool should_fire_event) {
     base::MockCallback<FirePromotedContentAdEventHandlerCallback> callback;
-    EXPECT_CALL(callback,
-                Run(/*success=*/should_fire_event, placement_id, event_type));
-    event_handler_.FireEvent(placement_id, creative_instance_id, event_type,
-                             callback.Get());
+    EXPECT_CALL(callback, Run(/*success=*/should_fire_event, placement_id,
+                              mojom_ad_event_type));
+    event_handler_.FireEvent(placement_id, creative_instance_id,
+                             mojom_ad_event_type, callback.Get());
   }
 
   PromotedContentAdEventHandler event_handler_;
@@ -66,7 +66,6 @@ class BraveAdsPromotedContentAdEventHandlerTest : public test::TestBase {
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvent(ad, ConfirmationType::kServedImpression);
 
   // Act & Assert
@@ -81,7 +80,6 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireViewedEventIfAdPlacementWasAlreadyViewed) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
                             ConfirmationType::kViewedImpression});
 
@@ -115,7 +113,6 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
                             ConfirmationType::kViewedImpression});
 
@@ -130,7 +127,6 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireClickedEventIfAdPlacementWasAlreadyClicked) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(
       ad, {ConfirmationType::kServedImpression,
            ConfirmationType::kViewedImpression, ConfirmationType::kClicked});
@@ -204,7 +200,6 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        kMaximumPromotedContentAdsPerHour.Get() - 1);
 
@@ -222,7 +217,6 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerHourCap) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        kMaximumPromotedContentAdsPerHour.Get());
 
@@ -243,7 +237,6 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        FireEventIfNotExceededAdsPerDayCap) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        kMaximumPromotedContentAdsPerDay.Get() - 1);
 
@@ -261,7 +254,6 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerDayCap) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        kMaximumPromotedContentAdsPerDay.Get());
 

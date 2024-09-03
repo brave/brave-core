@@ -31,7 +31,6 @@ TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildNewTabPageAd(/*should_generate_random_uuids=*/false);
-
   test::RecordAdEvent(ad, ConfirmationType::kServedImpression);
 
   AdvanceClockBy(kNewTabPageAdMinimumWaitTime.Get());
@@ -45,7 +44,6 @@ TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildNewTabPageAd(/*should_generate_random_uuids=*/false);
-
   test::RecordAdEvent(ad, ConfirmationType::kServedImpression);
 
   AdvanceClockBy(kNewTabPageAdMinimumWaitTime.Get() - base::Milliseconds(1));

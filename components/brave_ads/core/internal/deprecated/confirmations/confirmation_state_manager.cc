@@ -59,12 +59,6 @@ void ConfirmationStateManager::LoadCallback(
     SaveState();
   } else {
     if (!FromJson(*json)) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-      // potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                "Failed to parse confirmation state");
-      base::debug::DumpWithoutCrashing();
-
       BLOG(1, "Failed to parse confirmation state: " << *json);
 
       return std::move(callback).Run(/*success=*/false);
@@ -88,14 +82,6 @@ void ConfirmationStateManager::SaveState() {
   GetAdsClient()->Save(kConfirmationsJsonFilename, ToJson(),
                        base::BindOnce([](const bool success) {
                          if (!success) {
-                           // TODO(https://github.com/brave/brave-browser/issues/32066):
-                           // Detect potential defects using
-                           // `DumpWithoutCrashing`.
-                           SCOPED_CRASH_KEY_STRING64(
-                               "Issue32066", "failure_reason",
-                               "Failed to save confirmation state");
-                           base::debug::DumpWithoutCrashing();
-
                            return BLOG(0, "Failed to save confirmation state");
                          }
 
@@ -155,17 +141,18 @@ void ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
       ConfirmationTokensFromValue(*list);
 
   if (wallet_ && !filtered_confirmation_tokens.empty()) {
-    const std::string public_key = wallet_->public_key;
+    const std::string public_key_base64 = wallet_->public_key_base64;
 
     filtered_confirmation_tokens.erase(
         base::ranges::remove_if(
             filtered_confirmation_tokens,
-            [&public_key](const ConfirmationTokenInfo& confirmation_token) {
+            [&public_key_base64](
+                const ConfirmationTokenInfo& confirmation_token) {
               const std::optional<std::string> unblinded_token_base64 =
                   confirmation_token.unblinded_token.EncodeBase64();
               return !unblinded_token_base64 ||
-                     !crypto::Verify(*unblinded_token_base64, public_key,
-                                     confirmation_token.signature);
+                     !crypto::Verify(*unblinded_token_base64, public_key_base64,
+                                     confirmation_token.signature_base64);
             }),
         filtered_confirmation_tokens.cend());
   }

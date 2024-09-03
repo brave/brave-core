@@ -28,26 +28,28 @@ Reactions::~Reactions() {
 }
 
 void Reactions::ToggleLikeAd(const std::string& advertiser_id) {
-  const mojom::ReactionType reaction_type = AdReactionTypeForId(advertiser_id);
-  const mojom::ReactionType toggled_reaction_type =
-      ToggleLikedReactionType(reaction_type);
-  if (toggled_reaction_type == mojom::ReactionType::kNeutral) {
+  const mojom::ReactionType mojom_reaction_type =
+      AdReactionTypeForId(advertiser_id);
+  const mojom::ReactionType toggled_mojom_reaction_type =
+      ToggleLikedReactionType(mojom_reaction_type);
+  if (toggled_mojom_reaction_type == mojom::ReactionType::kNeutral) {
     ad_reactions_.erase(advertiser_id);
   } else {
-    ad_reactions_[advertiser_id] = toggled_reaction_type;
+    ad_reactions_[advertiser_id] = toggled_mojom_reaction_type;
   }
 
   SetProfileDictPref(prefs::kAdReactions, ReactionMapToDict(ad_reactions_));
 }
 
 void Reactions::ToggleDislikeAd(const std::string& advertiser_id) {
-  const mojom::ReactionType reaction_type = AdReactionTypeForId(advertiser_id);
-  const mojom::ReactionType toggled_reaction_type =
-      ToggleDislikedReactionType(reaction_type);
-  if (toggled_reaction_type == mojom::ReactionType::kNeutral) {
+  const mojom::ReactionType mojom_reaction_type =
+      AdReactionTypeForId(advertiser_id);
+  const mojom::ReactionType toggled_mojom_reaction_type =
+      ToggleDislikedReactionType(mojom_reaction_type);
+  if (toggled_mojom_reaction_type == mojom::ReactionType::kNeutral) {
     ad_reactions_.erase(advertiser_id);
   } else {
-    ad_reactions_[advertiser_id] = toggled_reaction_type;
+    ad_reactions_[advertiser_id] = toggled_mojom_reaction_type;
   }
 
   SetProfileDictPref(prefs::kAdReactions, ReactionMapToDict(ad_reactions_));
@@ -64,13 +66,14 @@ mojom::ReactionType Reactions::AdReactionTypeForId(
 }
 
 void Reactions::ToggleLikeSegment(const std::string& segment) {
-  const mojom::ReactionType reaction_type = SegmentReactionTypeForId(segment);
-  const mojom::ReactionType toggled_reaction_type =
-      ToggleLikedReactionType(reaction_type);
-  if (toggled_reaction_type == mojom::ReactionType::kNeutral) {
+  const mojom::ReactionType mojom_reaction_type =
+      SegmentReactionTypeForId(segment);
+  const mojom::ReactionType toggled_mojom_reaction_type =
+      ToggleLikedReactionType(mojom_reaction_type);
+  if (toggled_mojom_reaction_type == mojom::ReactionType::kNeutral) {
     segment_reactions_.erase(segment);
   } else {
-    segment_reactions_[segment] = toggled_reaction_type;
+    segment_reactions_[segment] = toggled_mojom_reaction_type;
   }
 
   SetProfileDictPref(prefs::kSegmentReactions,
@@ -78,13 +81,14 @@ void Reactions::ToggleLikeSegment(const std::string& segment) {
 }
 
 void Reactions::ToggleDislikeSegment(const std::string& segment) {
-  const mojom::ReactionType reaction_type = SegmentReactionTypeForId(segment);
-  const mojom::ReactionType toggled_reaction_type =
-      ToggleDislikedReactionType(reaction_type);
-  if (toggled_reaction_type == mojom::ReactionType::kNeutral) {
+  const mojom::ReactionType mojom_reaction_type =
+      SegmentReactionTypeForId(segment);
+  const mojom::ReactionType toggled_mojom_reaction_type =
+      ToggleDislikedReactionType(mojom_reaction_type);
+  if (toggled_mojom_reaction_type == mojom::ReactionType::kNeutral) {
     segment_reactions_.erase(segment);
   } else {
-    segment_reactions_[segment] = toggled_reaction_type;
+    segment_reactions_[segment] = toggled_mojom_reaction_type;
   }
 
   SetProfileDictPref(prefs::kSegmentReactions,

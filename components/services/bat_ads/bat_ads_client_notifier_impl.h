@@ -21,7 +21,8 @@ namespace bat_ads {
 class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
  public:
   explicit BatAdsClientNotifierImpl(
-      mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier);
+      mojo::PendingReceiver<mojom::BatAdsClientNotifier>
+          bat_ads_client_notifier_pending_receiver);
 
   BatAdsClientNotifierImpl(const BatAdsClientNotifierImpl& other) = delete;
   BatAdsClientNotifierImpl& operator=(const BatAdsClientNotifierImpl& other) =
@@ -57,8 +58,9 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
   void NotifyDidUnregisterResourceComponent(const std::string& id) override;
 
   // Invoked when the Brave Reward wallet did change.
-  void NotifyRewardsWalletDidUpdate(const std::string& payment_id,
-                                    const std::string& recovery_seed) override;
+  void NotifyRewardsWalletDidUpdate(
+      const std::string& payment_id,
+      const std::string& recovery_seed_base64) override;
 
   // Invoked when the page for `tab_id` has loaded and the content is available
   // for analysis. `redirect_chain` containing a list of redirect URLs that
@@ -139,8 +141,10 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
  private:
   brave_ads::AdsClientNotifier ads_client_notifier_;
 
-  mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier> pending_receiver_;
-  mojo::Receiver<bat_ads::mojom::BatAdsClientNotifier> receiver_{this};
+  mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier>
+      bat_ads_client_notifier_pending_receiver_;
+  mojo::Receiver<bat_ads::mojom::BatAdsClientNotifier>
+      bat_ads_client_notifier_receiver_{this};
 };
 
 }  // namespace bat_ads

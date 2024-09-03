@@ -33,8 +33,10 @@ namespace bat_ads {
 class BatAdsClientMojoBridge : public brave_ads::AdsClient {
  public:
   explicit BatAdsClientMojoBridge(
-      mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info,
-      mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier);
+      mojo::PendingAssociatedRemote<mojom::BatAdsClient>
+          bat_ads_client_pending_associated_remote,
+      mojo::PendingReceiver<mojom::BatAdsClientNotifier>
+          bat_ads_client_notifier_pending_receiver);
 
   BatAdsClientMojoBridge(const BatAdsClientMojoBridge&) = delete;
   BatAdsClientMojoBridge& operator=(const BatAdsClientMojoBridge&) = delete;
@@ -73,7 +75,7 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
                       int days_ago,
                       brave_ads::GetSiteHistoryCallback callback) override;
 
-  void UrlRequest(brave_ads::mojom::UrlRequestInfoPtr url_request,
+  void UrlRequest(brave_ads::mojom::UrlRequestInfoPtr mojom_url_request,
                   brave_ads::UrlRequestCallback callback) override;
 
   void Save(const std::string& name,
@@ -122,9 +124,9 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
       cached_profile_prefs_;
   base::flat_map</*path=*/std::string, /*value=*/base::Value>
       cached_local_state_prefs_;
-  mojo::AssociatedRemote<mojom::BatAdsClient>
-      bat_ads_client_associated_receiver_;
-  BatAdsClientNotifierImpl notifier_impl_;
+
+  mojo::AssociatedRemote<mojom::BatAdsClient> bat_ads_client_associated_remote_;
+  BatAdsClientNotifierImpl bat_ads_client_notifier_impl_;
 };
 
 }  // namespace bat_ads

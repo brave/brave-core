@@ -25,11 +25,11 @@ GetSignedTokensUrlRequestBuilder::GetSignedTokensUrlRequestBuilder(
 }
 
 mojom::UrlRequestInfoPtr GetSignedTokensUrlRequestBuilder::Build() {
-  mojom::UrlRequestInfoPtr url_request = mojom::UrlRequestInfo::New();
-  url_request->url = BuildUrl();
-  url_request->method = mojom::UrlRequestMethodType::kGet;
+  mojom::UrlRequestInfoPtr mojom_url_request = mojom::UrlRequestInfo::New();
+  mojom_url_request->url = BuildUrl();
+  mojom_url_request->method = mojom::UrlRequestMethodType::kGet;
 
-  return url_request;
+  return mojom_url_request;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

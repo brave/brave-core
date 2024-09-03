@@ -14,7 +14,7 @@
 namespace brave_ads::test {
 
 std::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
-    const mojom::UrlRequestInfoPtr& url_request,
+    const mojom::UrlRequestInfoPtr& mojom_url_request,
     const URLResponseMap& url_responses);
 
 }  // namespace brave_ads::test

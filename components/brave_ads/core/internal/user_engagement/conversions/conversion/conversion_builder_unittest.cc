@@ -28,9 +28,8 @@ TEST(BraveAdsConversionBuilderTest, BuildConversion) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kViewedImpression,
-                   /*created_at=*/test::Now());
+  const AdEventInfo ad_event = BuildAdEvent(
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
 
   // Act
   const ConversionInfo conversion =
@@ -49,9 +48,8 @@ TEST(BraveAdsConversionBuilderTest, BuildVerifiableConversion) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kViewedImpression,
-                   /*created_at=*/test::Now());
+  const AdEventInfo ad_event = BuildAdEvent(
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
 
   // Act
   const ConversionInfo conversion = BuildConversion(

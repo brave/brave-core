@@ -48,16 +48,17 @@ class NotificationAdHandler final : public AdsClientNotifierObserver,
   ~NotificationAdHandler() override;
 
   void TriggerEvent(const std::string& placement_id,
-                    mojom::NotificationAdEventType event_type,
+                    mojom::NotificationAdEventType mojom_ad_event_type,
                     TriggerAdEventCallback callback);
 
  private:
   void MaybeServeAtRegularIntervals();
 
-  void FireServedEventCallback(TriggerAdEventCallback callback,
-                               bool success,
-                               const std::string& placement_id,
-                               mojom::NotificationAdEventType event_type);
+  void FireServedEventCallback(
+      TriggerAdEventCallback callback,
+      bool success,
+      const std::string& placement_id,
+      mojom::NotificationAdEventType mojom_ad_event_type);
 
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;

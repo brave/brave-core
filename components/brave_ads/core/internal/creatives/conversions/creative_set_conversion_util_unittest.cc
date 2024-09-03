@@ -184,7 +184,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 
   // Act
   FilterCreativeSetConversionBucketsThatExceedTheCap(
-      creative_set_conversion_counts, /*creative_set_conversion_cap*/ 2,
+      creative_set_conversion_counts, /*creative_set_conversion_cap=*/2,
       creative_set_conversion_buckets);
 
   // Assert
@@ -223,7 +223,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 
   // Act
   FilterCreativeSetConversionBucketsThatExceedTheCap(
-      creative_set_conversion_counts, /*creative_set_conversion_cap*/ 0,
+      creative_set_conversion_counts, /*creative_set_conversion_cap=*/0,
       creative_set_conversion_buckets);
 
   // Assert

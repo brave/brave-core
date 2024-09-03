@@ -33,7 +33,7 @@ class AdsClientNotifier {
 
   virtual ~AdsClientNotifier();
 
-  void set_should_queue_notifications_for_testing(bool should_queue) {
+  void set_should_queue_for_testing(bool should_queue) {
     should_queue_ = should_queue;
   }
 
@@ -65,8 +65,9 @@ class AdsClientNotifier {
   virtual void NotifyDidUnregisterResourceComponent(const std::string& id);
 
   // Invoked when the Brave Rewards wallet did update.
-  virtual void NotifyRewardsWalletDidUpdate(const std::string& payment_id,
-                                            const std::string& recovery_seed);
+  virtual void NotifyRewardsWalletDidUpdate(
+      const std::string& payment_id,
+      const std::string& recovery_seed_base64);
 
   // Invoked when the page for `tab_id` has loaded and the content is available
   // for analysis. `redirect_chain` containing a list of redirect URLs that

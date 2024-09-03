@@ -10,26 +10,31 @@
 namespace bat_ads {
 
 BatAdsClientNotifierImpl::BatAdsClientNotifierImpl(
-    mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier)
-    : pending_receiver_(std::move(client_notifier)) {}
+    mojo::PendingReceiver<mojom::BatAdsClientNotifier>
+        bat_ads_client_notifier_pending_receiver)
+    : bat_ads_client_notifier_pending_receiver_(
+          std::move(bat_ads_client_notifier_pending_receiver)) {}
 
 BatAdsClientNotifierImpl::~BatAdsClientNotifierImpl() = default;
 
 void BatAdsClientNotifierImpl::AddObserver(
     brave_ads::AdsClientNotifierObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
+
   ads_client_notifier_.AddObserver(observer);
 }
 
 void BatAdsClientNotifierImpl::RemoveObserver(
     brave_ads::AdsClientNotifierObserver* observer) {
-  DCHECK(observer);
+  CHECK(observer);
+
   ads_client_notifier_.RemoveObserver(observer);
 }
 
 void BatAdsClientNotifierImpl::BindReceiver() {
-  DCHECK(pending_receiver_.is_valid());
-  receiver_.Bind(std::move(pending_receiver_));
+  CHECK(bat_ads_client_notifier_pending_receiver_.is_valid());
+  bat_ads_client_notifier_receiver_.Bind(
+      std::move(bat_ads_client_notifier_pending_receiver_));
 }
 
 void BatAdsClientNotifierImpl::NotifyDidInitializeAds() {
@@ -58,8 +63,9 @@ void BatAdsClientNotifierImpl::NotifyDidUnregisterResourceComponent(
 
 void BatAdsClientNotifierImpl::NotifyRewardsWalletDidUpdate(
     const std::string& payment_id,
-    const std::string& recovery_seed) {
-  ads_client_notifier_.NotifyRewardsWalletDidUpdate(payment_id, recovery_seed);
+    const std::string& recovery_seed_base64) {
+  ads_client_notifier_.NotifyRewardsWalletDidUpdate(payment_id,
+                                                    recovery_seed_base64);
 }
 
 void BatAdsClientNotifierImpl::NotifyTabTextContentDidChange(

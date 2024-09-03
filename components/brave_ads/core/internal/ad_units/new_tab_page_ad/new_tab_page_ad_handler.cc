@@ -31,7 +31,7 @@ void FireServedEventCallback(
     MaybeServeNewTabPageAdCallback callback,
     const bool success,
     const std::string& /*placement_id*/,
-    const mojom::NewTabPageAdEventType /*event_type*/) {
+    const mojom::NewTabPageAdEventType /*mojom_ad_event_type*/) {
   if (!success) {
     return std::move(callback).Run(/*ad=*/std::nullopt);
   }
@@ -39,10 +39,11 @@ void FireServedEventCallback(
   std::move(callback).Run(ad);
 }
 
-void FireEventCallback(TriggerAdEventCallback callback,
-                       const bool success,
-                       const std::string& /*placement_id*/,
-                       const mojom::NewTabPageAdEventType /*event_type*/) {
+void FireEventCallback(
+    TriggerAdEventCallback callback,
+    const bool success,
+    const std::string& /*placement_id*/,
+    const mojom::NewTabPageAdEventType /*mojom_ad_event_type*/) {
   std::move(callback).Run(success);
 }
 
@@ -79,7 +80,7 @@ void NewTabPageAdHandler::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
 void NewTabPageAdHandler::TriggerEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::NewTabPageAdEventType event_type,
+    const mojom::NewTabPageAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (creative_instance_id.empty()) {
     // No-op if `creative_instance_id` is empty. This should only occur for
@@ -98,7 +99,7 @@ void NewTabPageAdHandler::TriggerEvent(
   }
 
   if (!UserHasJoinedBraveRewards() &&
-      event_type == mojom::NewTabPageAdEventType::kViewedImpression) {
+      mojom_ad_event_type == mojom::NewTabPageAdEventType::kViewedImpression) {
     // `MaybeServe` will trigger a `kServedImpression` event if the user has
     // joined Brave Rewards; otherwise, we need to trigger a `kServedImpression`
     // event when triggering a `kViewedImpression` event for non-Rewards users.
@@ -111,7 +112,7 @@ void NewTabPageAdHandler::TriggerEvent(
   }
 
   event_handler_.FireEvent(
-      placement_id, creative_instance_id, event_type,
+      placement_id, creative_instance_id, mojom_ad_event_type,
       base::BindOnce(&FireEventCallback, std::move(callback)));
 }
 
@@ -135,7 +136,7 @@ void NewTabPageAdHandler::TriggerServedEventCallback(
     TriggerAdEventCallback callback,
     const bool success,
     const std::string& placement_id,
-    const mojom::NewTabPageAdEventType /*event_type*/) {
+    const mojom::NewTabPageAdEventType /*mojom_ad_event_type*/) {
   if (!success) {
     return std::move(callback).Run(/*success=*/false);
   }

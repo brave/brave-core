@@ -30,7 +30,6 @@ TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildNewTabPageAd(/*should_generate_random_uuids=*/false);
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        /*count=*/kMaximumNewTabPageAdsPerHour.Get() - 1);
 
@@ -43,7 +42,6 @@ TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildNewTabPageAd(/*should_generate_random_uuids=*/false);
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        /*count=*/kMaximumNewTabPageAdsPerHour.Get());
 
@@ -58,7 +56,6 @@ TEST_F(BraveAdsNewTabPageAdsPerHourPermissionRuleTest,
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildNewTabPageAd(/*should_generate_random_uuids=*/false);
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        /*count=*/kMaximumNewTabPageAdsPerHour.Get());
 

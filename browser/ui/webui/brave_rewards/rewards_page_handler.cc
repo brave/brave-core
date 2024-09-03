@@ -159,7 +159,7 @@ class RewardsPageHandler::UpdateObserver
   // bat_ads::mojom::BatAdsObserver:
   void OnAdRewardsDidChange() override { OnUpdate(UpdateSource::kAds); }
   void OnBrowserUpgradeRequiredToServeAds() override {}
-  void OnIneligibleRewardsWalletToServeAds() override {}
+  void OnIneligibleWalletToServeAds() override {}
   void OnRemindUser(brave_ads::mojom::ReminderType type) override {}
 
  private:

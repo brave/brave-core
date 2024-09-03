@@ -20,8 +20,9 @@ namespace brave_ads {
 void RecordAdEvent(const AdInfo& ad,
                    const ConfirmationType confirmation_type,
                    AdEventCallback callback) {
-  RecordAdEvent(BuildAdEvent(ad, confirmation_type, base::Time::Now()),
-                std::move(callback));
+  RecordAdEvent(
+      BuildAdEvent(ad, confirmation_type, /*created_at=*/base::Time::Now()),
+      std::move(callback));
 }
 
 void RecordAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {
@@ -36,19 +37,19 @@ void RecordAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {
                     std::move(callback)));
 }
 
-void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
+void PurgeOrphanedAdEvents(const mojom::AdType mojom_ad_type,
                            AdEventCallback callback) {
   const database::table::AdEvents database_table;
   database_table.PurgeOrphaned(
-      ad_type, base::BindOnce(
-                   [](AdEventCallback callback, const bool success) {
-                     if (success) {
-                       RebuildAdEventCache();
-                     }
+      mojom_ad_type, base::BindOnce(
+                         [](AdEventCallback callback, const bool success) {
+                           if (success) {
+                             RebuildAdEventCache();
+                           }
 
-                     std::move(callback).Run(success);
-                   },
-                   std::move(callback)));
+                           std::move(callback).Run(success);
+                         },
+                         std::move(callback)));
 }
 
 void PurgeOrphanedAdEvents(const std::vector<std::string>& placement_ids,
@@ -64,19 +65,6 @@ void PurgeOrphanedAdEvents(const std::vector<std::string>& placement_ids,
                            std::move(callback).Run(success);
                          },
                          std::move(callback)));
-}
-
-void PurgeAllOrphanedAdEvents(AdEventCallback callback) {
-  const database::table::AdEvents database_table;
-  database_table.PurgeAllOrphaned(base::BindOnce(
-      [](AdEventCallback callback, const bool success) {
-        if (success) {
-          RebuildAdEventCache();
-        }
-
-        std::move(callback).Run(success);
-      },
-      std::move(callback)));
 }
 
 }  // namespace brave_ads

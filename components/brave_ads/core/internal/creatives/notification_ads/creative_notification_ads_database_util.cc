@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
@@ -16,13 +15,7 @@ void DeleteCreativeNotificationAds() {
   const table::CreativeNotificationAds database_table;
   database_table.Delete(base::BindOnce([](const bool success) {
     if (!success) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066):
-      // Detect potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                "Failed to delete creative notification ads");
-      base::debug::DumpWithoutCrashing();
-
-      return BLOG(0, "Failed to delete creative notification ads");
+      BLOG(0, "Failed to delete creative notification ads");
     }
   }));
 }
@@ -32,14 +25,6 @@ void SaveCreativeNotificationAds(
   table::CreativeNotificationAds database_table;
   database_table.Save(creative_ads, base::BindOnce([](const bool success) {
                         if (!success) {
-                          // TODO(https://github.com/brave/brave-browser/issues/32066):
-                          // Detect potential defects using
-                          // `DumpWithoutCrashing`.
-                          SCOPED_CRASH_KEY_STRING64(
-                              "Issue32066", "failure_reason",
-                              "Failed to save creative notification ads");
-                          base::debug::DumpWithoutCrashing();
-
                           return BLOG(
                               0, "Failed to save creative notification ads");
                         }

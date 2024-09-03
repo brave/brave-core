@@ -242,7 +242,7 @@ class RewardsDOMHandler
   // bat_ads::mojom::BatAdsObserver implementation
   void OnAdRewardsDidChange() override;
   void OnBrowserUpgradeRequiredToServeAds() override;
-  void OnIneligibleRewardsWalletToServeAds() override;
+  void OnIneligibleWalletToServeAds() override;
   void OnRemindUser(brave_ads::mojom::ReminderType type) override {}
 
   void InitPrefChangeRegistrar();
@@ -1409,7 +1409,7 @@ void RewardsDOMHandler::OnBrowserUpgradeRequiredToServeAds() {
   GetAdsData(base::Value::List());
 }
 
-void RewardsDOMHandler::OnIneligibleRewardsWalletToServeAds() {
+void RewardsDOMHandler::OnIneligibleWalletToServeAds() {
   // TODO(https://github.com/brave/brave-browser/issues/32201): Add isEligible
   // UI.
 }

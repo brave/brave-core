@@ -87,9 +87,9 @@ class GlobalState final {
   std::unique_ptr<UserActivityManager> user_activity_manager_;
   std::unique_ptr<AdsCore> ads_core_;
 
-  mojom::SysInfo sys_info_;
-  mojom::BuildChannelInfo build_channel_;
-  mojom::Flags flags_;
+  mojom::SysInfo mojom_sys_info_;
+  mojom::BuildChannelInfo mojom_build_channel_;
+  mojom::Flags mojom_flags_;
 };
 
 }  // namespace brave_ads

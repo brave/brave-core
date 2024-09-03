@@ -47,13 +47,13 @@ class BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest
   void FireEventAndVerifyExpectations(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      const mojom::NewTabPageAdEventType event_type,
+      const mojom::NewTabPageAdEventType mojom_ad_event_type,
       const bool should_fire_event) {
     base::MockCallback<FireNewTabPageAdEventHandlerCallback> callback;
-    EXPECT_CALL(callback,
-                Run(/*success=*/should_fire_event, placement_id, event_type));
-    event_handler_.FireEvent(placement_id, creative_instance_id, event_type,
-                             callback.Get());
+    EXPECT_CALL(callback, Run(/*success=*/should_fire_event, placement_id,
+                              mojom_ad_event_type));
+    event_handler_.FireEvent(placement_id, creative_instance_id,
+                             mojom_ad_event_type, callback.Get());
   }
 
   NewTabPageAdEventHandler event_handler_;
@@ -77,7 +77,6 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
        FireViewedEvent) {
   // Arrange
   const NewTabPageAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvent(ad, ConfirmationType::kServedImpression);
 
   // Act & Assert
@@ -92,7 +91,6 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
        DoNotFireViewedEventIfAdPlacementWasAlreadyViewed) {
   // Arrange
   const NewTabPageAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
                             ConfirmationType::kViewedImpression});
 
@@ -127,7 +125,6 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
        FireClickedEvent) {
   // Arrange
   const NewTabPageAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
                             ConfirmationType::kViewedImpression});
 
@@ -142,7 +139,6 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerIfUserHasNotJoinedBraveRewardsTest,
        DoNotFireClickedEventIfAdPlacementWasAlreadyClicked) {
   // Arrange
   const NewTabPageAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(
       ad, {ConfirmationType::kServedImpression,
            ConfirmationType::kViewedImpression, ConfirmationType::kClicked});

@@ -15,8 +15,8 @@ namespace bat_ads {
 
 class BatAdsObserver : public brave_ads::AdsObserverInterface {
  public:
-  BatAdsObserver();
-  explicit BatAdsObserver(mojo::PendingRemote<mojom::BatAdsObserver> observer);
+  explicit BatAdsObserver(mojo::PendingRemote<mojom::BatAdsObserver>
+                              bat_ads_observer_pending_remote);
 
   BatAdsObserver(const BatAdsObserver&);
   BatAdsObserver& operator=(const BatAdsObserver&);
@@ -30,12 +30,13 @@ class BatAdsObserver : public brave_ads::AdsObserverInterface {
 
   void OnBrowserUpgradeRequiredToServeAds() override;
 
-  void OnIneligibleRewardsWalletToServeAds() override;
+  void OnIneligibleWalletToServeAds() override;
 
-  void OnRemindUser(brave_ads::mojom::ReminderType type) override;
+  void OnRemindUser(
+      brave_ads::mojom::ReminderType mojom_reminder_type) override;
 
  private:
-  mojo::Remote<mojom::BatAdsObserver> observer_;
+  mojo::Remote<mojom::BatAdsObserver> bat_ads_observer_remote_;
 };
 
 }  // namespace bat_ads

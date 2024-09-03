@@ -26,9 +26,10 @@ class BatAdsClientMojoBridge;
 
 class BatAdsImpl : public mojom::BatAds {
  public:
-  BatAdsImpl(
-      mojo::PendingAssociatedRemote<mojom::BatAdsClient> client,
-      mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier);
+  BatAdsImpl(mojo::PendingAssociatedRemote<mojom::BatAdsClient>
+                 bat_ads_client_pending_associated_remote,
+             mojo::PendingReceiver<mojom::BatAdsClientNotifier>
+                 bat_ads_client_notifier_pending_receiver);
 
   BatAdsImpl(const BatAdsImpl&) = delete;
   BatAdsImpl& operator=(const BatAdsImpl&) = delete;
@@ -39,15 +40,15 @@ class BatAdsImpl : public mojom::BatAds {
   ~BatAdsImpl() override;
 
   // mojom::BatAds:
-  void AddBatAdsObserver(
-      mojo::PendingRemote<mojom::BatAdsObserver> observer) override;
+  void AddBatAdsObserver(mojo::PendingRemote<mojom::BatAdsObserver>
+                             bat_ads_observer_pending_remote) override;
 
-  void SetSysInfo(brave_ads::mojom::SysInfoPtr sys_info) override;
+  void SetSysInfo(brave_ads::mojom::SysInfoPtr mojom_sys_info) override;
   void SetBuildChannel(
-      brave_ads::mojom::BuildChannelInfoPtr build_channel) override;
-  void SetFlags(brave_ads::mojom::FlagsPtr flags) override;
+      brave_ads::mojom::BuildChannelInfoPtr mojom_build_channel) override;
+  void SetFlags(brave_ads::mojom::FlagsPtr mojom_flags) override;
 
-  void Initialize(brave_ads::mojom::WalletInfoPtr wallet,
+  void Initialize(brave_ads::mojom::WalletInfoPtr mojom_wallet,
                   InitializeCallback callback) override;
   void Shutdown(ShutdownCallback callback) override;
 
@@ -61,36 +62,36 @@ class BatAdsImpl : public mojom::BatAds {
   void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      brave_ads::mojom::InlineContentAdEventType event_type,
+      brave_ads::mojom::InlineContentAdEventType mojom_ad_event_type,
       TriggerInlineContentAdEventCallback callback) override;
 
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      brave_ads::mojom::NewTabPageAdEventType event_type,
+      brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type,
       TriggerNewTabPageAdEventCallback callback) override;
 
   void MaybeGetNotificationAd(const std::string& placement_id,
                               MaybeGetNotificationAdCallback callback) override;
   void TriggerNotificationAdEvent(
       const std::string& placement_id,
-      brave_ads::mojom::NotificationAdEventType event_type,
+      brave_ads::mojom::NotificationAdEventType mojom_ad_event_type,
       TriggerNotificationAdEventCallback callback) override;
 
   void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      brave_ads::mojom::PromotedContentAdEventType event_type,
+      brave_ads::mojom::PromotedContentAdEventType mojom_ad_event_type,
       TriggerPromotedContentAdEventCallback callback) override;
 
   void TriggerSearchResultAdEvent(
       brave_ads::mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-      brave_ads::mojom::SearchResultAdEventType event_type,
+      brave_ads::mojom::SearchResultAdEventType mojom_ad_event_type,
       TriggerSearchResultAdEventCallback callback) override;
 
   void PurgeOrphanedAdEventsForType(
-      brave_ads::mojom::AdType ad_type,
+      brave_ads::mojom::AdType mojom_ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) override;
 
   void GetAdHistory(base::Time from_time,

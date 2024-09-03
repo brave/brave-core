@@ -51,8 +51,8 @@ base::Value::Dict BuildExternalWalletConnectedReminder() {
 
 }  // namespace
 
-base::Value::Dict BuildReminder(const mojom::ReminderType type) {
-  switch (type) {
+base::Value::Dict BuildReminder(const mojom::ReminderType mojom_reminder_type) {
+  switch (mojom_reminder_type) {
     case mojom::ReminderType::kClickedSameAdMultipleTimes: {
       return BuildClickedSameAdMultipleTimesReminder();
     }
@@ -62,7 +62,8 @@ base::Value::Dict BuildReminder(const mojom::ReminderType type) {
     }
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for mojom::ReminderType: " << type;
+  NOTREACHED_NORETURN() << "Unexpected value for mojom::ReminderType: "
+                        << mojom_reminder_type;
 }
 
 bool IsReminder(const std::string& placement_id) {
