@@ -289,6 +289,7 @@ AdBlockService::AdBlockService(
           std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
               new AdBlockEngine(false /* is_default */),
               base::OnTaskRunnerDeleter(GetTaskRunner()))) {
+  ui_weak_ptr_ = weak_factory_.GetWeakPtr();
   // Initializes adblock-rust's domain resolution implementation
   adblock::set_domain_resolver();
 
@@ -346,14 +347,11 @@ void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
                      base::Unretained(default_engine_.get()), tag, enabled));
 }
 
-void AdBlockService::AddUserCosmeticFilter(std::string filter) {
-  auto* custom_filters_provider = custom_filters_provider_.get();
-  // TODO: fix custom_filters_provider is Unretained here
+void AdBlockService::AddUserCosmeticFilter(const std::string& filter) {
+  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   content::GetUIThreadTaskRunner()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&AdBlockCustomFiltersProvider::AddUserCosmeticFilter,
-                     base::Unretained(custom_filters_provider),
-                     std::move(filter)));
+      FROM_HERE, base::BindOnce(&AdBlockService::AddUserCosmeticFilterImpl,
+                                ui_weak_ptr_, filter));
 }
 
 void AdBlockService::GetDebugInfoAsync(GetDebugInfoCallback callback) {
@@ -444,6 +442,11 @@ void AdBlockService::OnGetDebugInfoFromDefaultEngine(
                      base::Unretained(additional_filters_engine_.get())),
       base::BindOnce(std::move(callback),
                      std::move(default_engine_debug_info)));
+}
+
+void AdBlockService::AddUserCosmeticFilterImpl(const std::string& filter) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  custom_filters_provider_->AddUserCosmeticFilter(filter);
 }
 
 void AdBlockService::TagExistsForTest(const std::string& tag,
