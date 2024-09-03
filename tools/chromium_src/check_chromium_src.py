@@ -31,8 +31,10 @@ BRAVE_SRC = os.path.abspath(
 BRAVE_CHROMIUM_SRC = os.path.join(BRAVE_SRC, 'chromium_src')
 CHROMIUM_SRC = os.path.abspath(os.path.dirname(BRAVE_SRC))
 
-NORMAL_DEFINITIONS_REGEXP = r'^#define[\s\\]+([a-zA-Z0-9_]+[^\s\(]*)(?:[ \t]+\\\s*|[ \t])?([a-zA-Z0-9_]+[^\s\(]*)?$'
-FUNCTION_LIKE_DEFINITIONS_REGEXP = r'^#define[\s\\]+([a-zA-Z0-9_]+)[\s\\]*\(.*?\)(?:[ \t]+\\\s*|[ \t])?([a-zA-Z0-9_]*[\s\\]*\(.*?\))?'
+# Capture group 1: the name of the macro
+# Capture group 2: opening parenthesis if the macro is function-like
+POUND_DEFINE_REGEXP = \
+    r'^[ \t]*#define[ \t]+([a-zA-Z0-9_]+)[ \t]*(\()?(?:(?:.*\\\r?\n)*.*)'
 
 
 def strip_comments(content):
@@ -273,30 +275,21 @@ class ChromiumSrcOverridesChecker:
         Finds `#define TARGET REPLACEMENT` statements in |override_filepath| and
         attempts to find the <TARGET> in the |original_filepath|.
         """
+        matches = []
         with open(override_filepath, mode='r', encoding='utf-8') as \
             override_file:
             content = strip_comments(override_file.read())
-            matches = []
 
-            # Search for all matches for normal definitions
-            # e.g. #define FooBar FooBar_ChromiumImpl
-            normal_matches = re.findall(NORMAL_DEFINITIONS_REGEXP,
-                                        content,
-                                        flags=re.MULTILINE)
-            matches += [{'value': m, 'is_func': False} for m in normal_matches]
-
-            # Search for all matches for function-like definitions
-            # e.g. #define FooBar(P1, P2) FooBar_ChromiumImpl(P1, P2, p3)
-            function_matches = re.findall(FUNCTION_LIKE_DEFINITIONS_REGEXP,
-                                          content,
-                                          flags=re.MULTILINE)
-            matches += [{'value': m, 'is_func': True} for m in function_matches]
-
+            # Search for all matches for #define. The regex covers:
+            # single line, function-like definitions, and multiline defines
+            matches = re.findall(POUND_DEFINE_REGEXP,
+                                 content,
+                                 flags=re.MULTILINE)
             if not matches:
-                return
+                return 0
 
             for match in matches:
-                target = match['value'][0]
+                target = match[0]
 
                 # Skip header guard defines.
                 if (override_filepath.endswith(".h")
@@ -315,9 +308,9 @@ class ChromiumSrcOverridesChecker:
                                                        content, target)
 
                 # Adjust target name for BUILDFLAG_INTERNAL_*() cases for
-                # function-like matches.
-                if (match['is_func']
-                        and target.startswith('BUILDFLAG_INTERNAL_')):
+                # function-like matches. match[1] will be set if the
+                # definition is function-like.
+                if (match[1] and target.startswith('BUILDFLAG_INTERNAL_')):
                     buildflag_match = re.search(r'BUILDFLAG_INTERNAL_(\S*)',
                                                 target)
                     target = buildflag_match.group(1)
@@ -336,17 +329,19 @@ class ChromiumSrcOverridesChecker:
                                 f"  {original_filepath}\n  and is not used " +
                                 "internally in the override.")
                         else:
-                            self.AddInfo(f"  Ignoring symbol {target}:\n" +
-                                         "  Symbol is used internally in " +
-                                         f"{display_override_filepath}\n" +
-                                         "  Symbol is NOT found in " +
-                                         f"{original_filepath}.")
+                            self.AddWarning(f"  Ignoring symbol {target}:\n" +
+                                            "  Symbol is used internally in " +
+                                            f"{display_override_filepath}\n" +
+                                            "  Symbol is NOT found in " +
+                                            f"{original_filepath}.")
+        return len(matches)
 
     def do_check_overrides(self):
         """
         Checks that each path in the passed in list |overrides_list| exists in
         the passed in directory (|search_dir|), also checks includes.
         """
+        count = 0
         for override_filepath in self.overrides:
             original_filepath_found = False
             original_is_in_gen = False
@@ -386,8 +381,10 @@ class ChromiumSrcOverridesChecker:
                     "is required.")
                 continue
 
-            self.do_check_defines(override_filepath, original_filepath)
+            count += self.do_check_defines(override_filepath,
+                                           original_filepath)
             self.do_check_includes(override_filepath, original_is_in_gen)
+        self.AddInfo(f'Located {count} #define statements.')
 
     def validate_exclusion_symbol(self, path, symbol):
         """

@@ -34,6 +34,7 @@
 
 #include "src/services/network/restricted_cookie_manager.cc"
 
+#undef FromStorage
 #undef IsFullCookieAccessAllowed
 #undef AnnotateAndMoveUserBlockedCookies
 #undef IsCookieAccessible
