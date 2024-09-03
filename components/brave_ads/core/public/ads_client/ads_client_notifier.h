@@ -33,7 +33,7 @@ class AdsClientNotifier {
 
   virtual ~AdsClientNotifier();
 
-  void set_should_queue_notifications_for_testing(bool should_queue) {
+  void set_should_queue_for_testing(bool should_queue) {
     should_queue_ = should_queue;
   }
 
