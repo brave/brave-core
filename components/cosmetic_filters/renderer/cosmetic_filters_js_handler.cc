@@ -415,8 +415,7 @@ void CosmeticFiltersJSHandler::LaunchContentPicker() {
   web_frame->ExecuteScriptInIsolatedWorld(
       isolated_world_id_,
       blink::WebScriptSource(blink::WebString::FromUTF8(
-        LoadDataResource(IDR_COSMETIC_FILTERS_ELEMENT_PICKER_BUNDLE_JS
-      )),
+          LoadDataResource(IDR_COSMETIC_FILTERS_ELEMENT_PICKER_BUNDLE_JS))),
       blink::BackForwardCacheAware::kAllow);
 }
 
