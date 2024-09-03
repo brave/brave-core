@@ -53,8 +53,7 @@ void AdsImpl::AddObserver(std::unique_ptr<AdsObserverInterface> observer) {
 }
 
 void AdsImpl::SetSysInfo(mojom::SysInfoPtr mojom_sys_info) {
-  auto& sys_info = GlobalState::GetInstance()->SysInfo();
-  sys_info.device_id = mojom_sys_info->device_id;
+  GlobalState::GetInstance()->SysInfo().device_id = mojom_sys_info->device_id;
 }
 
 void AdsImpl::SetBuildChannel(mojom::BuildChannelInfoPtr mojom_build_channel) {
