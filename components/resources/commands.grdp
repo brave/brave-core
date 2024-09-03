@@ -11,7 +11,7 @@
     ChromeOS) prefer to not add the command.
   -->
   <message name="IDS_IDC_COMMANDER">
-    Quick commands
+    Quick Commands
   </message>
   <message name="IDS_IDC_BACK">
     Back
