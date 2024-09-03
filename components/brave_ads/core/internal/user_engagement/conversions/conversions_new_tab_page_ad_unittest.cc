@@ -32,9 +32,8 @@ TEST_F(BraveAdsConversionsNewTabPageAdTest,
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
                                           test::kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
-  RecordAdEventsAdvancingTheClockAfterEach(
-      ad, {ConfirmationType::kServedImpression,
-           ConfirmationType::kViewedImpression});
+  test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
+                            ConfirmationType::kViewedImpression});
 
   // Act & Assert
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough);
@@ -52,9 +51,8 @@ TEST_F(BraveAdsConversionsNewTabPageAdTest,
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
                                           test::kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
-  RecordAdEventsAdvancingTheClockAfterEach(
-      ad, {ConfirmationType::kServedImpression,
-           ConfirmationType::kViewedImpression});
+  test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
+                            ConfirmationType::kViewedImpression});
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
@@ -74,7 +72,7 @@ TEST_F(BraveAdsConversionsNewTabPageAdTest,
                                           /*observation_window=*/base::Days(3));
 
   // We do not record ad events for non-Rewards users.
-  RecordAdEventsAdvancingTheClockAfterEach(ad, /*confirmation_types=*/{});
+  test::RecordAdEvents(ad, /*confirmation_types=*/{});
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
@@ -90,7 +88,7 @@ TEST_F(BraveAdsConversionsNewTabPageAdTest,
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
                                           test::kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
-  RecordAdEventsAdvancingTheClockAfterEach(
+  test::RecordAdEvents(
       ad, {ConfirmationType::kServedImpression,
            ConfirmationType::kViewedImpression, ConfirmationType::kClicked});
 
@@ -110,7 +108,7 @@ TEST_F(BraveAdsConversionsNewTabPageAdTest,
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
                                           test::kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
-  RecordAdEventsAdvancingTheClockAfterEach(
+  test::RecordAdEvents(
       ad, {ConfirmationType::kServedImpression,
            ConfirmationType::kViewedImpression, ConfirmationType::kClicked});
 
@@ -132,7 +130,7 @@ TEST_F(BraveAdsConversionsNewTabPageAdTest,
                                           /*observation_window=*/base::Days(3));
 
   // We do not record ad events for non-Rewards users.
-  RecordAdEventsAdvancingTheClockAfterEach(ad, {ConfirmationType::kClicked});
+  test::RecordAdEvent(ad, ConfirmationType::kClicked);
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();

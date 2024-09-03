@@ -17,10 +17,14 @@ namespace brave_ads {
 struct AdEventInfo;
 struct AdInfo;
 
+// Builds a new `AdEventInfo` for the given `ad`, `confirmation_type`, and
+// `created_at` time.
 AdEventInfo BuildAdEvent(const AdInfo& ad,
                          ConfirmationType confirmation_type,
                          base::Time created_at);
 
+// Rebuilds an existing `AdEventInfo` with a new `confirmation_type` and
+// `created_at` time.
 AdEventInfo RebuildAdEvent(const AdEventInfo& ad_event,
                            ConfirmationType confirmation_type,
                            base::Time created_at);

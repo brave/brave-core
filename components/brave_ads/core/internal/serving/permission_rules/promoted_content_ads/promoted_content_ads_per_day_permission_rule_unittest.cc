@@ -33,7 +33,6 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
       test::BuildCreativePromotedContentAd(
           /*should_generate_random_uuids=*/false);
   const PromotedContentAdInfo ad = BuildPromotedContentAd(creative_ad);
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        /*count=*/kMaximumPromotedContentAdsPerDay.Get() - 1);
 
@@ -48,7 +47,6 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
       test::BuildCreativePromotedContentAd(
           /*should_generate_random_uuids=*/false);
   const PromotedContentAdInfo ad = BuildPromotedContentAd(creative_ad);
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        /*count=*/kMaximumPromotedContentAdsPerDay.Get());
 
@@ -65,7 +63,6 @@ TEST_F(BraveAdsPromotedContentAdsPerDayPermissionRuleTest,
       test::BuildCreativePromotedContentAd(
           /*should_generate_random_uuids=*/false);
   const PromotedContentAdInfo ad = BuildPromotedContentAd(creative_ad);
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        /*count=*/kMaximumPromotedContentAdsPerDay.Get());
 

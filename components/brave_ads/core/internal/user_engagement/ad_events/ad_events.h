@@ -29,7 +29,6 @@ void PurgeOrphanedAdEvents(mojom::AdType mojom_ad_type,
                            AdEventCallback callback);
 void PurgeOrphanedAdEvents(const std::vector<std::string>& placement_ids,
                            AdEventCallback callback);
-void PurgeAllOrphanedAdEvents(AdEventCallback callback);
 
 }  // namespace brave_ads
 

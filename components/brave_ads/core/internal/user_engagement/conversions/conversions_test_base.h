@@ -41,10 +41,6 @@ class BraveAdsConversionsTestBase : public TestBase {
   void TearDown() override;
 
  protected:
-  void RecordAdEventsAdvancingTheClockAfterEach(
-      const AdInfo& ad,
-      const std::vector<ConfirmationType>& confirmation_types);
-
   void VerifyOnDidConvertAdExpectation(const AdInfo& ad,
                                        ConversionActionType action_type);
 

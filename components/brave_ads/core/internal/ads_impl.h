@@ -123,10 +123,6 @@ class AdsImpl final : public Ads {
   void SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
                                InitializeCallback callback);
 
-  void PurgeAllOrphanedAdEventsCallback(mojom::WalletInfoPtr mojom_wallet,
-                                        InitializeCallback callback,
-                                        bool success);
-
   // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
   // from using JSON state to a more efficient data approach.
   void MigrateClientStateCallback(mojom::WalletInfoPtr mojom_wallet,

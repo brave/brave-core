@@ -227,7 +227,6 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForNonRewardsTest,
       test::BuildCreativeSearchResultAdWithConversion(
           /*should_generate_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
-
   test::RecordAdEvent(ad, ConfirmationType::kClicked);
 
   // Act & Assert
