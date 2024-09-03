@@ -410,7 +410,7 @@ void CosmeticFiltersJSHandler::BindTabHelper(
 
 void CosmeticFiltersJSHandler::LaunchContentPicker() {
   static base::NoDestructor<std::string> s_content_picker(
-      LoadDataResource(IDR_COSMETIC_FILTERS_CONTENT_ELEMENT_PICKER_BUNDLE_JS));
+      LoadDataResource(IDR_COSMETIC_FILTERS_ELEMENT_PICKER_BUNDLE_JS));
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
   if (web_frame->IsProvisional()) {
     // TODO: why we need this?
