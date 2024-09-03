@@ -246,9 +246,8 @@ CosmeticFiltersJSHandler::CosmeticFiltersJSHandler(
   EnsureConnected();
 
   render_frame_->GetAssociatedInterfaceRegistry()
-      ->AddInterface<mojom::CosmeticFiltersJsHandler>(
-          base::BindRepeating(&CosmeticFiltersJSHandler::BindTabHelper,
-                              weak_ptr_factory_.GetWeakPtr()));
+      ->AddInterface<mojom::CosmeticFiltersAgent>(base::BindRepeating(
+          &CosmeticFiltersJSHandler::Bind, weak_ptr_factory_.GetWeakPtr()));
 
   const bool perf_tracker_enabled = base::FeatureList::IsEnabled(
       brave_shields::features::kCosmeticFilteringExtraPerfMetrics);
@@ -402,9 +401,8 @@ void CosmeticFiltersJSHandler::OnRemoteDisconnect() {
   EnsureConnected();
 }
 
-// TODO: rename
-void CosmeticFiltersJSHandler::BindTabHelper(
-    mojo::PendingAssociatedReceiver<mojom::CosmeticFiltersJsHandler> receiver) {
+void CosmeticFiltersJSHandler::Bind(
+    mojo::PendingAssociatedReceiver<mojom::CosmeticFiltersAgent> receiver) {
   receiver_.reset();
   receiver_.Bind(std::move(receiver));
 }
@@ -414,7 +412,6 @@ void CosmeticFiltersJSHandler::LaunchContentPicker() {
       LoadDataResource(IDR_COSMETIC_FILTERS_ELEMENT_PICKER_BUNDLE_JS));
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
   if (web_frame->IsProvisional()) {
-    // TODO: why we need this?
     return;
   }
   web_frame->ExecuteScriptInIsolatedWorld(

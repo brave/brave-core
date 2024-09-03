@@ -2746,7 +2746,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
                                    content::ContextMenuParams());
     menu.Init();
 
-    EXPECT_TRUE(menu.IsItemPresent(IDC_ADBLOCK_CONTEXT_TOOLS));
+    EXPECT_TRUE(menu.IsItemEnabled(IDC_ADBLOCK_CONTEXT_TOOLS));
+    EXPECT_TRUE(menu.IsItemEnabled(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENT));
+
     menu.ExecuteCommand(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENT, 0);
   }
 

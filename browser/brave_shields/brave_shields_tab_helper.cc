@@ -525,13 +525,13 @@ BraveShieldsTabHelper::GetWebcompatSettings() {
   return result;
 }
 
-// TODO: move to another tab helper?
 void BraveShieldsTabHelper::LaunchContentPicker() {
   if (auto* main_rfh = web_contents()->GetPrimaryMainFrame()) {
-    mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersJsHandler>
-        js_handler;
-    main_rfh->GetRemoteAssociatedInterfaces()->GetInterface(&js_handler);
-    js_handler->LaunchContentPicker();
+    mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersAgent>
+        cosmetic_filter_agent;
+    main_rfh->GetRemoteAssociatedInterfaces()->GetInterface(
+        &cosmetic_filter_agent);
+    cosmetic_filter_agent->LaunchContentPicker();
   }
 }
 

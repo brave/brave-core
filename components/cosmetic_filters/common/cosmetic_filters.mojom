@@ -12,7 +12,7 @@ interface CosmeticFiltersResources {
   HiddenClassIdSelectors(string input, array<string> exceptions) => (
       mojo_base.mojom.DictionaryValue result);
 
-  // Add a user filter from content_picker.
+  // Adds a user CSS rule (currently from content picker feature).
   AddUserCosmeticFilter(string filter);
 
   [Sync]
@@ -21,7 +21,10 @@ interface CosmeticFiltersResources {
 };
 
 
-// TODO: rename and add a comment.
-interface CosmeticFiltersJsHandler {
+// An interface to a render frame agent (CosmeticFiltersJSHandler) to control
+// cosmetic filter feature in a particular frame
+interface CosmeticFiltersAgent {
+  // Inject the content picker script to allow a user to select unwanted
+  // DOM elements.
   LaunchContentPicker();
 };
