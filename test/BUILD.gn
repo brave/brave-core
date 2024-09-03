@@ -147,10 +147,6 @@ test("brave_unit_tests") {
     "//components/sync_device_info/device_info_sync_bridge_unittest.cc",
   ]
 
-  if (!is_android) {
-    sources += [ "//brave/browser/ipfs/ipfs_component_cleaner_unittest.cc" ]
-  }
-
   if (brave_enable_updater) {
     sources += [ "//brave/chromium_src/components/update_client/request_sender_unittest.cc" ]
   }

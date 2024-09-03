@@ -3,15 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ipfs/ipfs_component_cleaner.h"
+#ifndef BRAVE_BROWSER_IPFS_IPFS_COMMON_H_
+#define BRAVE_BROWSER_IPFS_IPFS_COMMON_H_
 
-#include "base/files/file_util.h"
-#include "base/path_service.h"
-#include "base/task/thread_pool.h"
+#include "base/files/file_path.h"
 #include "build/build_config.h"
-#include "chrome/common/chrome_paths.h"
 
-namespace {
 #if BUILDFLAG(IS_WIN)
 static const base::FilePath::StringPieceType kIpfsClientComponentId =
     FILE_PATH_LITERAL("lnbclahgobmjphilkalbhebakmblnbij");
@@ -33,18 +30,4 @@ static const base::FilePath::StringPieceType kIpfsClientComponentId =
 #endif
 #endif
 
-base::FilePath GetIpfsClientComponentPath() {
-  base::FilePath user_data_dir =
-      base::PathService::CheckedGet(chrome::DIR_USER_DATA);
-  return user_data_dir.Append(kIpfsClientComponentId);
-}
-}  // namespace
-
-namespace ipfs {
-void CleanupIpfsComponent() {
-  // Remove IPFS component
-  base::ThreadPool::PostTask(
-      FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
-      base::GetDeletePathRecursivelyCallback(GetIpfsClientComponentPath()));
-}
-}  // namespace ipfs
+#endif  // BRAVE_BROWSER_IPFS_IPFS_COMMON_H_

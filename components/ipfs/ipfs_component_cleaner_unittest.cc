@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ipfs/ipfs_component_cleaner.h"
+#include "brave/components/ipfs/ipfs_component_cleaner.h"
 
 #include <fstream>
 #include <string>
@@ -13,34 +13,12 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/browser/ipfs/ipfs_common.h"
 #include "build/build_config.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/common/chrome_paths.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-namespace {
-#if BUILDFLAG(IS_WIN)
-static const base::FilePath::StringPieceType kIpfsClientComponentId =
-    FILE_PATH_LITERAL("lnbclahgobmjphilkalbhebakmblnbij");
-#elif BUILDFLAG(IS_MAC)
-#if defined(ARCH_CPU_ARM64)
-static const base::FilePath::StringPieceType kIpfsClientComponentId =
-    FILE_PATH_LITERAL("lejaflgbgglfaomemffoaappaihfligf");
-#else
-static const base::FilePath::StringPieceType kIpfsClientComponentId =
-    FILE_PATH_LITERAL("nljcddpbnaianmglkpkneakjaapinabi");
-#endif
-#elif BUILDFLAG(IS_LINUX)
-#if defined(ARCH_CPU_ARM64)
-static const base::FilePath::StringPieceType kIpfsClientComponentId =
-    FILE_PATH_LITERAL("fmmldihckdnognaabhligdpckkeancng");
-#else
-static const base::FilePath::StringPieceType kIpfsClientComponentId =
-    FILE_PATH_LITERAL("oecghfpdmkjlhnfpmmjegjacfimiafjp");
-#endif
-#endif
-}  // namespace
 
 class IpfsComponentCleanerUnitTest : public testing::Test {
  public:
@@ -89,7 +67,9 @@ TEST_F(IpfsComponentCleanerUnitTest, CleanIpfsComponent) {
       component_id_folde_subdir.Append(FILE_PATH_LITERAL("The file 01.txt"));
   base::WriteFile(component_id_folde_subdir_file_01, "12345678901234567890");
 
-  ipfs::CleanupIpfsComponent();
+  ipfs::CleanupIpfsComponent(
+      base::PathService::CheckedGet(chrome::DIR_USER_DATA)
+          .Append(kIpfsClientComponentId));
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(base::PathExists(cache_folder));
   EXPECT_FALSE(base::PathExists(component_id_folder));
