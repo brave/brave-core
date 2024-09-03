@@ -401,6 +401,7 @@ void CosmeticFiltersJSHandler::OnRemoteDisconnect() {
   EnsureConnected();
 }
 
+// TODO: rename
 void CosmeticFiltersJSHandler::BindTabHelper(
     mojo::PendingAssociatedReceiver<mojom::CosmeticFiltersJsHandler> receiver) {
   receiver_.reset();
@@ -412,6 +413,7 @@ void CosmeticFiltersJSHandler::LaunchContentPicker() {
       LoadDataResource(IDR_COSMETIC_FILTERS_CONTENT_ELEMENT_PICKER_BUNDLE_JS));
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
   if (web_frame->IsProvisional()) {
+    // TODO: why we need this?
     return;
   }
   web_frame->ExecuteScriptInIsolatedWorld(

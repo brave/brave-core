@@ -21,6 +21,7 @@ interface CosmeticFiltersResources {
 };
 
 
+// TODO: rename and add a comment.
 interface CosmeticFiltersJsHandler {
   LaunchContentPicker();
 };
