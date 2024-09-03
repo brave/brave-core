@@ -15,6 +15,7 @@ import os.log
 protocol BraveTranslateScriptHandlerDelegate: NSObject {
   func updateTranslateURLBar(tab: Tab?, state: TranslateURLBarButton.TranslateState)
   func showTranslateOnboarding(tab: Tab?, completion: @escaping (_ translateEnabled: Bool) -> Void)
+  func presentToast(_ languageInfo: BraveTranslateLanguageInfo)
 }
 
 class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
@@ -275,6 +276,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
       )
 
       self.delegate?.updateTranslateURLBar(tab: self.tab, state: .active)
+      self.delegate?.presentToast(currentLanguageInfo)
     }
   }
 

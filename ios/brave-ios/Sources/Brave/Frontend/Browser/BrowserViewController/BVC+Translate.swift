@@ -4,9 +4,11 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
+import DesignSystem
 import Foundation
 import Onboarding
 import Preferences
+import UIKit
 
 extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
   func updateTranslateURLBar(tab: Tab?, state: TranslateURLBarButton.TranslateState) {
@@ -50,28 +52,35 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
             onContinueButtonPressed: { [weak self, weak tab] in
               guard let tab = tab, let self = self else { return }
 
+              self.topToolbar.locationView.translateButton.setOnboardingState(enabled: false)
+
               if let scriptHandler = tab.getContentScript(
                 name: BraveTranslateScriptHandler.scriptName
               )
                 as? BraveTranslateScriptHandler
               {
-                self.showTranslateOnboarding(tab: tab) { [weak scriptHandler] translateEnabled in
-                  scriptHandler?.presentUI(on: self)
-                }
+                scriptHandler.presentUI(on: self)
               }
             },
             onDisableFeature: { [weak self, weak tab] in
               guard let tab = tab, let self = self else { return }
 
+              self.topToolbar.locationView.translateButton.setOnboardingState(enabled: false)
+
               Preferences.Translate.translateEnabled.value = false
               tab.translationState = .unavailable
               self.topToolbar.updateTranslateButtonState(.unavailable)
             }
-          )
+          ),
+          autoLayoutConfiguration: .init(preferredWidth: self.view.bounds.width - (32.0 * 2.0))
         )
 
+        popover.arrowDistance = 10.0
+
         popover.previewForOrigin = .init(
-          view: self.topToolbar.locationView.translateButton,
+          view: self.topToolbar.locationView.translateButton.then {
+            $0.setOnboardingState(enabled: true)
+          },
           action: { popover in
             popover.previewForOrigin = nil
             popover.dismissPopover()
@@ -79,7 +88,8 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
           }
         )
 
-        popover.popoverDidDismiss = { _ in
+        popover.popoverDidDismiss = { [weak self] _ in
+          self?.topToolbar.locationView.translateButton.setOnboardingState(enabled: false)
           completion(Preferences.Translate.translateEnabled.value)
         }
         popover.present(from: self.topToolbar.locationView.translateButton, on: self)
@@ -89,5 +99,17 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
     } else if Preferences.Translate.translateEnabled.value {
       completion(true)
     }
+  }
+
+  func presentToast(_ languageInfo: BraveTranslateLanguageInfo) {
+    let popover = PopoverController(
+      content: TranslateToast(languageInfo: languageInfo),
+      autoLayoutConfiguration: .phoneWidth
+    )
+
+    popover.popoverDidDismiss = { [weak self] _ in
+
+    }
+    popover.present(from: self.topToolbar.locationView.translateButton, on: self)
   }
 }
