@@ -245,6 +245,11 @@ CosmeticFiltersJSHandler::CosmeticFiltersJSHandler(
       enabled_1st_party_cf_(false) {
   EnsureConnected();
 
+  render_frame_->GetAssociatedInterfaceRegistry()
+      ->AddInterface<mojom::CosmeticFiltersJsHandler>(
+          base::BindRepeating(&CosmeticFiltersJSHandler::BindTabHelper,
+                              weak_ptr_factory_.GetWeakPtr()));
+
   const bool perf_tracker_enabled = base::FeatureList::IsEnabled(
       brave_shields::features::kCosmeticFilteringExtraPerfMetrics);
   if (perf_tracker_enabled) {
@@ -387,10 +392,6 @@ bool CosmeticFiltersJSHandler::EnsureConnected() {
     cosmetic_filters_resources_.set_disconnect_handler(
         base::BindOnce(&CosmeticFiltersJSHandler::OnRemoteDisconnect,
                        weak_ptr_factory_.GetWeakPtr()));
-    render_frame_->GetAssociatedInterfaceRegistry()
-        ->AddInterface<mojom::CosmeticFiltersJsHandler>(
-            base::BindRepeating(&CosmeticFiltersJSHandler::BindTabHelper,
-                                weak_ptr_factory_.GetWeakPtr()));
   }
 
   return cosmetic_filters_resources_.is_bound();

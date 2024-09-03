@@ -22,6 +22,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
@@ -46,6 +47,8 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -103,6 +106,16 @@ using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using brave_shields::features::kBraveAdblockScriptletDebugLogs;
 using brave_shields::features::kCosmeticFilteringJsPerformance;
+
+namespace {
+void WaitForSelectorBlocked(const content::ToRenderFrameHost& target,
+                            const std::string& selector) {
+  const char kTemplate[] = R"(waitCSSSelector($1, 'display', 'none'))";
+
+  ASSERT_TRUE(
+      EvalJs(target, content::JsReplace(kTemplate, selector)).ExtractBool());
+}
+}  // namespace
 
 AdBlockServiceTest::AdBlockServiceTest()
     : https_server_(net::EmbeddedTestServer::Type::TYPE_HTTPS) {}
@@ -2719,6 +2732,44 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ListEnabled) {
   }
 }
 
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
+  const GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+  const char kPickerIsInjected[] =
+      "document.getElementById('brave-element-picker') != null";
+  ASSERT_FALSE(
+      content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
+
+  {
+    TestRenderViewContextMenu menu(*web_contents()->GetPrimaryMainFrame(),
+                                   content::ContextMenuParams());
+    menu.Init();
+
+    EXPECT_TRUE(menu.IsItemPresent(IDC_ADBLOCK_CONTEXT_TOOLS));
+    menu.ExecuteCommand(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENT, 0);
+  }
+
+  ASSERT_TRUE(content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
+
+  const auto banner_is_visible = [&]() {
+    return content::EvalJs(web_contents(),
+                           "checkSelector('#ad-banner', 'display', 'block')")
+        .ExtractBool();
+  };
+  EXPECT_EQ(true, banner_is_visible());
+
+  ASSERT_TRUE(content::ExecJs(web_contents(),
+                              "cf_worker.addSiteCosmeticFilter('#ad-banner')",
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+
+  // Reload the page and check the selector is still blocked by the user
+  // ruleset.
+  NavigateToURL(tab_url);
+  WaitForSelectorBlocked(web_contents(), "#ad-banner");
+}
+
 class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {
  public:
   AdBlockServiceTestJsPerformance() {
@@ -2741,14 +2792,6 @@ class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {
     })";
     ASSERT_TRUE(content::ExecJs(
         target, content::JsReplace(kTemplate, start_number, end_number)));
-  }
-
-  void WaitForSelectorBlocked(const content::ToRenderFrameHost& target,
-                              const std::string& selector) const {
-    const char kTemplate[] = R"(waitCSSSelector($1, 'display', 'none'))";
-
-    ASSERT_TRUE(
-        EvalJs(target, content::JsReplace(kTemplate, selector)).ExtractBool());
   }
 
   void NonBlockingDelay(const base::TimeDelta& delay) {

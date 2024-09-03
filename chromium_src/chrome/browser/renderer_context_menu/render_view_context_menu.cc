@@ -426,8 +426,14 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
       return CanOpenSplitViewForWebContents(source_web_contents_->GetWeakPtr());
     case IDC_ADBLOCK_CONTEXT_TOOLS:
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENT:
-    case IDC_ADBLOCK_CONTEXT_MANAGE_CUSTOM_FILTERS:
-      return true;  // TODO
+    case IDC_ADBLOCK_CONTEXT_MANAGE_CUSTOM_FILTERS: {
+      auto* shields_tab_helper =
+          brave_shields::BraveShieldsTabHelper::FromWebContents(
+              source_web_contents_);
+
+      return shields_tab_helper && shields_tab_helper->GetAdBlockMode() !=
+                                       brave_shields::mojom::AdBlockMode::ALLOW;
+    }
     default:
       return RenderViewContextMenu_Chromium::IsCommandIdEnabled(id);
   }

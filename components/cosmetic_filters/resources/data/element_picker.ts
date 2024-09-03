@@ -281,6 +281,7 @@ const attachElementPicker = () => {
   // "src" is a web accessible resource since the URI is chrome-extension://.
   // This ensures a malicious page cannot modify the iframe contents.
   pickerDiv = document.createElement('div')
+  pickerDiv.id = 'brave-element-picker'
   shadowRoot = pickerDiv.attachShadow({ mode: 'closed' })
 
   // Will be resolved by webpack to the file content.
