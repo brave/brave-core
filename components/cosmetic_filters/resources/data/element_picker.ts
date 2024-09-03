@@ -402,7 +402,9 @@ const elementPickerHoverCoordsChanged = (x: number, y: number) => {
 const elementPickerUserSelectedTarget = (specificity: number) => {
   if (lastHoveredElem instanceof HTMLElement) {
     const selector = onTargetSelected(lastHoveredElem, specificity)
-    recalculateAndSendTargets(Array.from(document.querySelectorAll(selector)))
+    if (selector != '') {
+      recalculateAndSendTargets(Array.from(document.querySelectorAll(selector)))
+    }
     return {
       isValid: selector !== '',
       selector: selector.trim(),
