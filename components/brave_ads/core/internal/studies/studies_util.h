@@ -6,13 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_STUDIES_STUDIES_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_STUDIES_STUDIES_UTIL_H_
 
+#include <optional>
+
 #include "base/metrics/field_trial.h"
 
 namespace brave_ads {
 
-base::FieldTrial::ActiveGroups GetActiveFieldTrialStudyGroups();
+std::optional<base::FieldTrial::ActiveGroup> GetActiveFieldTrialStudyGroup();
 
-void LogActiveStudies();
+void LogActiveFieldTrialStudyGroups();
 
 }  // namespace brave_ads
 
