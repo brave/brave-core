@@ -85,6 +85,7 @@ TEST_F(NTPBackgroundImagesSourceTest, SponsoredImagesTest) {
             source_->GetMimeType(GURL("brave://test/wallpaper-0.png")));
   EXPECT_EQ("image/avif",
             source_->GetMimeType(GURL("brave://test/wallpaper-0.avif")));
+  EXPECT_EQ("", source_->GetMimeType(GURL("brave://test/")));
 }
 
 TEST_F(NTPBackgroundImagesSourceTest, BackgroundImagesFormatTest) {
@@ -96,6 +97,7 @@ TEST_F(NTPBackgroundImagesSourceTest, BackgroundImagesFormatTest) {
             bg_source_->GetMimeType(GURL("brave://test/wallpaper-0.png")));
   EXPECT_EQ("image/avif",
             bg_source_->GetMimeType(GURL("brave://test/wallpaper-0.avif")));
+  EXPECT_EQ("", bg_source_->GetMimeType(GURL("brave://test/")));
 }
 
 TEST_F(NTPBackgroundImagesSourceTest, BackgroundImagesTest) {
