@@ -97,6 +97,10 @@ std::optional<size_t> GetPeekingCard(const SubscriptionsSnapshot& subscriptions,
       score *= kOneHourMultiplier;
     } else if (elapsed <= base::Days(1)) {
       score *= kOneDayMultiplier;
+    } else {
+      // Decay for a week - after a week there probably isn't much difference.
+      // (a half life of 1.1 days does nicely here)
+      score *= std::max(0.1, pow(0.5, elapsed.InDays() / 1.1));
     }
 
     candidates.emplace_back(i, score);
@@ -118,8 +122,17 @@ std::optional<size_t> GetPeekingCard(const SubscriptionsSnapshot& subscriptions,
     }
   }
 
-  base::ranges::sort(candidates, [](const auto& a, const auto& b) {
-    return std::get<1>(a) > std::get<1>(b);
+  base::ranges::sort(candidates, [get_article](const auto& a, const auto& b) {
+    const auto& [a_index, a_score] = a;
+    const auto& [b_index, b_score] = b;
+    if (a_score != b_score) {
+      return a_score > b_score;
+    }
+
+    const auto& a_article = get_article(a_index);
+    const auto& b_article = get_article(b_index);
+
+    return a_article->publish_time > b_article->publish_time;
   });
 
   std::vector<ItemScore> final_candidates;
