@@ -314,8 +314,8 @@ void AdsImpl::CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr mojom_wallet,
     return FailedToInitialize(std::move(callback));
   }
 
-  PurgeAllOrphanedAdEvents(base::BindOnce(
-      &AdsImpl::PurgeAllOrphanedAdEventsCallback, weak_factory_.GetWeakPtr(),
+  MigrateClientState(base::BindOnce(
+      &AdsImpl::MigrateClientStateCallback, weak_factory_.GetWeakPtr(),
       std::move(mojom_wallet), std::move(callback)));
 }
 
@@ -333,21 +333,6 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
   GetAdsClient()->NotifyPendingObservers();
 
   std::move(callback).Run(/*success=*/true);
-}
-
-void AdsImpl::PurgeAllOrphanedAdEventsCallback(
-    mojom::WalletInfoPtr mojom_wallet,
-    InitializeCallback callback,
-    const bool success) {
-  if (!success) {
-    BLOG(0, "Failed to purge all orphaned ad events");
-
-    return FailedToInitialize(std::move(callback));
-  }
-
-  MigrateClientState(base::BindOnce(
-      &AdsImpl::MigrateClientStateCallback, weak_factory_.GetWeakPtr(),
-      std::move(mojom_wallet), std::move(callback)));
 }
 
 void AdsImpl::MigrateClientStateCallback(mojom::WalletInfoPtr mojom_wallet,

@@ -39,7 +39,6 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 
   const NotificationAdInfo ad =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/false);
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        /*count=*/ads_per_hour);
 
@@ -58,7 +57,6 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 
   const NotificationAdInfo ad =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/false);
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        /*count=*/ads_per_hour);
 
@@ -75,7 +73,6 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 
   const NotificationAdInfo ad =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/false);
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        /*count=*/ads_per_hour - 1);
 
@@ -92,7 +89,6 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 
   const NotificationAdInfo ad =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/false);
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        /*count=*/ads_per_hour);
 
@@ -111,7 +107,6 @@ TEST_F(BraveAdsNotificationAdsPerHourPermissionRuleTest,
 
   const NotificationAdInfo ad =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/false);
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        /*count=*/ads_per_hour);
 

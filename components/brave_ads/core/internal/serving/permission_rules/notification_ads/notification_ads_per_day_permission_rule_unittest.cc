@@ -31,7 +31,6 @@ TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
   // Arrange
   const NotificationAdInfo ad =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/false);
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        /*count=*/kMaximumNotificationAdsPerDay.Get() - 1);
 
@@ -44,7 +43,6 @@ TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
   // Arrange
   const NotificationAdInfo ad =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/false);
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        /*count=*/kMaximumNotificationAdsPerDay.Get());
 
@@ -59,7 +57,6 @@ TEST_F(BraveAdsNotificationAdsPerDayPermissionRuleTest,
   // Arrange
   const NotificationAdInfo ad =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/false);
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        /*count=*/kMaximumNotificationAdsPerDay.Get());
 

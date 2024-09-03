@@ -17,8 +17,10 @@ struct AdInfo;
 namespace test {
 
 void RecordAdEvent(const AdInfo& ad, ConfirmationType confirmation_type);
+
 void RecordAdEvents(const AdInfo& ad,
                     const std::vector<ConfirmationType>& confirmation_types);
+
 void RecordAdEvents(const AdInfo& ad,
                     ConfirmationType confirmation_type,
                     int count);

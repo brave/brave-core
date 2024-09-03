@@ -34,9 +34,8 @@ TEST_F(BraveAdsConversionsPromotedContentAdTest,
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
                                           test::kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
-  RecordAdEventsAdvancingTheClockAfterEach(
-      ad, {ConfirmationType::kServedImpression,
-           ConfirmationType::kViewedImpression});
+  test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
+                            ConfirmationType::kViewedImpression});
 
   // Act & Assert
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough);
@@ -54,9 +53,8 @@ TEST_F(BraveAdsConversionsPromotedContentAdTest,
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
                                           test::kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
-  RecordAdEventsAdvancingTheClockAfterEach(
-      ad, {ConfirmationType::kServedImpression,
-           ConfirmationType::kViewedImpression});
+  test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
+                            ConfirmationType::kViewedImpression});
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
@@ -74,9 +72,8 @@ TEST_F(BraveAdsConversionsPromotedContentAdTest,
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
                                           test::kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
-  RecordAdEventsAdvancingTheClockAfterEach(
-      ad, {ConfirmationType::kServedImpression,
-           ConfirmationType::kViewedImpression});
+  test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
+                            ConfirmationType::kViewedImpression});
 
   // Act & Assert
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough);
@@ -92,7 +89,7 @@ TEST_F(BraveAdsConversionsPromotedContentAdTest,
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
                                           test::kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
-  RecordAdEventsAdvancingTheClockAfterEach(
+  test::RecordAdEvents(
       ad, {ConfirmationType::kServedImpression,
            ConfirmationType::kViewedImpression, ConfirmationType::kClicked});
 
@@ -112,7 +109,7 @@ TEST_F(BraveAdsConversionsPromotedContentAdTest,
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
                                           test::kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
-  RecordAdEventsAdvancingTheClockAfterEach(
+  test::RecordAdEvents(
       ad, {ConfirmationType::kServedImpression,
            ConfirmationType::kViewedImpression, ConfirmationType::kClicked});
 
@@ -132,7 +129,7 @@ TEST_F(BraveAdsConversionsPromotedContentAdTest,
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
                                           test::kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
-  RecordAdEventsAdvancingTheClockAfterEach(
+  test::RecordAdEvents(
       ad, {ConfirmationType::kServedImpression,
            ConfirmationType::kViewedImpression, ConfirmationType::kClicked});
 

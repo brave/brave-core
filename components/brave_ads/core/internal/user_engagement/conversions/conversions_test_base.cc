@@ -31,16 +31,6 @@ void BraveAdsConversionsTestBase::TearDown() {
   TestBase::TearDown();
 }
 
-void BraveAdsConversionsTestBase::RecordAdEventsAdvancingTheClockAfterEach(
-    const AdInfo& ad,
-    const std::vector<ConfirmationType>& confirmation_types) {
-  for (const auto& confirmation_type : confirmation_types) {
-    RecordAdEvent(ad, confirmation_type);
-
-    AdvanceClockBy(base::Milliseconds(1));
-  }
-}
-
 void BraveAdsConversionsTestBase::VerifyOnDidConvertAdExpectation(
     const AdInfo& ad,
     const ConversionActionType action_type) {

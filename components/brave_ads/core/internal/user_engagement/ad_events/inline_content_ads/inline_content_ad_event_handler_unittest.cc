@@ -72,7 +72,6 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireServedEvent) {
 TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   const InlineContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvent(ad, ConfirmationType::kServedImpression);
 
   // Act & Assert
@@ -87,7 +86,6 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
        DoNotFireViewedEventIfAdPlacementWasAlreadyViewed) {
   // Arrange
   const InlineContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
                             ConfirmationType::kViewedImpression});
 
@@ -121,7 +119,6 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
 TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   const InlineContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
                             ConfirmationType::kViewedImpression});
 
@@ -136,7 +133,6 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
        DoNotFireClickedEventIfAdPlacementWasAlreadyClicked) {
   // Arrange
   const InlineContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(
       ad, {ConfirmationType::kServedImpression,
            ConfirmationType::kViewedImpression, ConfirmationType::kClicked});

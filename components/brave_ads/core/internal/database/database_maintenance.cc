@@ -23,14 +23,6 @@ namespace {
 constexpr base::TimeDelta kInitialDelay = base::Minutes(1);
 constexpr base::TimeDelta kRecurringInterval = base::Days(1);
 
-void Maintain() {
-  PurgeExpiredAdEvents();
-  PurgeExpiredAdHistory();
-  PurgeExpiredCreativeSetConversions();
-  PurgeExpiredDeposits();
-  PurgeExpiredTransactions();
-}
-
 }  // namespace
 
 Maintenance::Maintenance() {
@@ -43,23 +35,33 @@ Maintenance::~Maintenance() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Maintenance::ScheduleAfter(const base::TimeDelta after) {
-  const base::Time at =
-      timer_.Start(FROM_HERE, after,
-                   base::BindOnce(&Maintenance::ScheduleAfterCallback,
-                                  weak_factory_.GetWeakPtr()));
-
-  BLOG(1, "Database maintenance " << FriendlyDateAndTime(at));
+void Maintenance::ScheduleOnce() {
+  PurgeAllOrphanedAdEvents();
 }
 
-void Maintenance::ScheduleAfterCallback() {
-  Maintain();
+void Maintenance::RepeatedlyScheduleAfter(const base::TimeDelta after) {
+  const base::Time at =
+      timer_.Start(FROM_HERE, after,
+                   base::BindOnce(&Maintenance::RepeatedlyScheduleAfterCallback,
+                                  weak_factory_.GetWeakPtr()));
 
-  ScheduleAfter(kRecurringInterval);
+  BLOG(1, "Scheduled database maintenance " << FriendlyDateAndTime(at));
+}
+
+void Maintenance::RepeatedlyScheduleAfterCallback() {
+  PurgeExpiredAdEvents();
+  PurgeExpiredAdHistory();
+  PurgeExpiredCreativeSetConversions();
+  PurgeExpiredDeposits();
+  PurgeExpiredTransactions();
+
+  RepeatedlyScheduleAfter(kRecurringInterval);
 }
 
 void Maintenance::OnDatabaseIsReady() {
-  ScheduleAfter(kInitialDelay);
+  ScheduleOnce();
+
+  RepeatedlyScheduleAfter(kInitialDelay);
 }
 
 }  // namespace brave_ads::database

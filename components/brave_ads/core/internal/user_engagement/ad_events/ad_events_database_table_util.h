@@ -10,6 +10,8 @@ namespace brave_ads::database {
 
 void PurgeExpiredAdEvents();
 
+void PurgeAllOrphanedAdEvents();
+
 }  // namespace brave_ads::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_AD_EVENTS_AD_EVENTS_DATABASE_TABLE_UTIL_H_

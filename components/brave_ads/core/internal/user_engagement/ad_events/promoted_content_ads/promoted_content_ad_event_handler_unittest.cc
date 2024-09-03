@@ -66,7 +66,6 @@ class BraveAdsPromotedContentAdEventHandlerTest : public test::TestBase {
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvent(ad, ConfirmationType::kServedImpression);
 
   // Act & Assert
@@ -81,7 +80,6 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireViewedEventIfAdPlacementWasAlreadyViewed) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
                             ConfirmationType::kViewedImpression});
 
@@ -115,7 +113,6 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
                             ConfirmationType::kViewedImpression});
 
@@ -130,7 +127,6 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireClickedEventIfAdPlacementWasAlreadyClicked) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(
       ad, {ConfirmationType::kServedImpression,
            ConfirmationType::kViewedImpression, ConfirmationType::kClicked});
@@ -204,7 +200,6 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        kMaximumPromotedContentAdsPerHour.Get() - 1);
 
@@ -222,7 +217,6 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerHourCap) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        kMaximumPromotedContentAdsPerHour.Get());
 
@@ -243,7 +237,6 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        FireEventIfNotExceededAdsPerDayCap) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        kMaximumPromotedContentAdsPerDay.Get() - 1);
 
@@ -261,7 +254,6 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerDayCap) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        kMaximumPromotedContentAdsPerDay.Get());
 

@@ -36,7 +36,6 @@ TEST_F(BraveAdsSearchResultAdsPerDayPermissionRuleTest,
 
   const SearchResultAdInfo ad =
       test::BuildSearchResultAd(/*should_generate_random_uuids=*/true);
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        /*count=*/kMaximumSearchResultAdsPerDay.Get() - 1);
 
@@ -53,7 +52,6 @@ TEST_F(BraveAdsSearchResultAdsPerDayPermissionRuleTest,
 
   const SearchResultAdInfo ad =
       test::BuildSearchResultAd(/*should_generate_random_uuids=*/true);
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        /*count=*/kMaximumSearchResultAdsPerDay.Get());
 
@@ -72,7 +70,6 @@ TEST_F(BraveAdsSearchResultAdsPerDayPermissionRuleTest,
 
   const SearchResultAdInfo ad =
       test::BuildSearchResultAd(/*should_generate_random_uuids=*/true);
-
   test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
                        /*count=*/kMaximumSearchResultAdsPerDay.Get());
 

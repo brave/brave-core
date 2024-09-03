@@ -67,17 +67,4 @@ void PurgeOrphanedAdEvents(const std::vector<std::string>& placement_ids,
                          std::move(callback)));
 }
 
-void PurgeAllOrphanedAdEvents(AdEventCallback callback) {
-  const database::table::AdEvents database_table;
-  database_table.PurgeAllOrphaned(base::BindOnce(
-      [](AdEventCallback callback, const bool success) {
-        if (success) {
-          RebuildAdEventCache();
-        }
-
-        std::move(callback).Run(success);
-      },
-      std::move(callback)));
-}
-
 }  // namespace brave_ads

@@ -35,7 +35,6 @@ TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
       test::BuildCreativeNotificationAd(
           /*should_generate_random_uuids=*/false);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-
   test::RecordAdEvent(ad, ConfirmationType::kServedImpression);
 
   AdvanceClockBy(base::Minutes(12));
@@ -53,7 +52,6 @@ TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
       test::BuildCreativeNotificationAd(
           /*should_generate_random_uuids=*/false);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-
   test::RecordAdEvent(ad, ConfirmationType::kServedImpression);
 
   AdvanceClockBy(base::Minutes(12) - base::Milliseconds(1));

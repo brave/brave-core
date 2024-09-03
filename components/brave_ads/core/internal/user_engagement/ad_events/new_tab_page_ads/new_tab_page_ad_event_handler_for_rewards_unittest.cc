@@ -71,7 +71,6 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest, FireServedEvent) {
 TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest, FireViewedEvent) {
   // Arrange
   const NewTabPageAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvent(ad, ConfirmationType::kServedImpression);
 
   // Act & Assert
@@ -86,7 +85,6 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
        DoNotFireViewedEventIfAdPlacementWasAlreadyViewed) {
   // Arrange
   const NewTabPageAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
                             ConfirmationType::kViewedImpression});
 
@@ -120,7 +118,6 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
 TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest, FireClickedEvent) {
   // Arrange
   const NewTabPageAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
                             ConfirmationType::kViewedImpression});
 
@@ -135,7 +132,6 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerForRewardsTest,
        DoNotFireClickedEventIfAdPlacementWasAlreadyClicked) {
   // Arrange
   const NewTabPageAdInfo ad = BuildAndSaveAd();
-
   test::RecordAdEvents(
       ad, {ConfirmationType::kServedImpression,
            ConfirmationType::kViewedImpression, ConfirmationType::kClicked});
