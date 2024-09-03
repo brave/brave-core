@@ -30,8 +30,9 @@ namespace brave_ads {
 namespace {
 
 void BuildAndSaveAdHistory(const AdType ad_type, const int clicked_count) {
-  std::vector<ConfirmationType> confirmation_types =
-      test::BuildConfirmationTypes(ConfirmationType::kClicked, clicked_count);
+  const std::vector<ConfirmationType> confirmation_types =
+      test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
+          ConfirmationType::kClicked, clicked_count);
 
   const AdHistoryList ad_history =
       test::BuildAdHistory(ad_type, confirmation_types,

@@ -64,7 +64,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
   // Arrange
   const AdHistoryList ad_history = test::BuildAdHistoryForSamePlacement(
       AdType::kNotificationAd,
-      test::BuildConfirmationTypes(
+      test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
           ConfirmationType::kClicked,
           /*count=*/kRemindUserIfClickingTheSameAdAfter.Get()),
       /*should_generate_random_uuids=*/false);
@@ -79,7 +79,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
   // Arrange
   const AdHistoryList ad_history = test::BuildAdHistoryForSamePlacement(
       AdType::kNotificationAd,
-      test::BuildConfirmationTypes(
+      test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
           ConfirmationType::kClicked,
           /*count=*/kRemindUserIfClickingTheSameAdAfter.Get() - 1),
       /*should_generate_random_uuids=*/false);
@@ -94,7 +94,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
   // Arrange
   const AdHistoryList ad_history = test::BuildAdHistoryForSamePlacement(
       AdType::kNotificationAd,
-      test::BuildConfirmationTypes(
+      test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
           ConfirmationType::kClicked,
           /*count=*/kRemindUserIfClickingTheSameAdAfter.Get() * 2),
       /*should_generate_random_uuids=*/false);
@@ -109,7 +109,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
   // Arrange
   const AdHistoryList ad_history = test::BuildAdHistoryForSamePlacement(
       AdType::kNotificationAd,
-      test::BuildConfirmationTypes(
+      test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
           ConfirmationType::kClicked,
           /*count=*/(kRemindUserIfClickingTheSameAdAfter.Get() * 2) - 1),
       /*should_generate_random_uuids=*/false);
@@ -124,7 +124,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
   // Arrange
   const AdHistoryList ad_history = test::BuildAdHistoryForSamePlacement(
       AdType::kNotificationAd,
-      test::BuildConfirmationTypes(
+      test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
           ConfirmationType::kClicked,
           /*count=*/kRemindUserIfClickingTheSameAdAfter.Get()),
       /*should_generate_random_uuids=*/true);
