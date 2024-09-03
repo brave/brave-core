@@ -269,6 +269,7 @@ test("brave_unit_tests") {
     "//brave/mojo/brave_ast_patcher:unit_tests",
     "//brave/net:unit_tests",
     "//brave/third_party/blink/renderer:renderer",
+    "//brave/ui/color:unit_tests",
     "//brave/vendor/brave_base",
     "//chrome:dependencies",
     "//chrome/app:command_ids",

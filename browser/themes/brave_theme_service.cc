@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "brave/browser/extensions/brave_theme_event_router.h"
-#include "chrome/browser/themes/theme_service.h"
 
 BraveThemeService::BraveThemeService(Profile* profile,
                                      const ThemeHelper& theme_helper)

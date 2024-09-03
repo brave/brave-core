@@ -6,12 +6,12 @@
 #ifndef BRAVE_UI_COLOR_BRAVE_SYS_COLOR_MIXER_H_
 #define BRAVE_UI_COLOR_BRAVE_SYS_COLOR_MIXER_H_
 
-#include "ui/color/color_mixer.h"
 #include "ui/color/color_provider_key.h"
 
 namespace ui {
-void AddBraveGrayscaleSysColorOverrides(ColorMixer& mixer,
-                                        const ColorProviderKey& key);
+class ColorProvider;
+
+void AddBraveSysColorMixer(ColorProvider*, const ColorProviderKey& key);
 }  // namespace ui
 
 #endif  // BRAVE_UI_COLOR_BRAVE_SYS_COLOR_MIXER_H_

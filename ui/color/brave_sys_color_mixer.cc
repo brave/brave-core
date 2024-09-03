@@ -6,6 +6,7 @@
 #include "brave/ui/color/brave_sys_color_mixer.h"
 
 #include "ui/color/color_id.h"
+#include "ui/color/color_provider.h"
 #include "ui/color/color_provider_key.h"
 #include "ui/color/color_recipe.h"
 
@@ -13,12 +14,14 @@ namespace ui {
 
 // We lightly tweak the dark theme in Grayscale mode (the default theme in
 // Brave) to be a bit darker, to not upset dark mode users.
-void AddBraveGrayscaleSysColorOverrides(ColorMixer& mixer,
-                                        const ColorProviderKey& key) {
+void AddBraveSysColorMixer(ColorProvider* provider,
+                           const ColorProviderKey& key) {
   if (key.color_mode != ColorProviderKey::ColorMode::kDark ||
       key.user_color_source != ColorProviderKey::UserColorSource::kGrayscale) {
     return;
   }
+
+  auto& mixer = provider->AddMixer();
 
   mixer[kColorSysHeader] = {kColorRefNeutral5};
   mixer[kColorSysHeaderInactive] = {kColorRefNeutral5};

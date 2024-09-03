@@ -7,12 +7,20 @@
 
 #include "brave/ui/color/brave_sys_color_mixer.h"
 
-#define kGrayscale kGrayscale) {                        \
-    AddGrayscaleSysColorOverrides(mixer, key);          \
-    ui::AddBraveGrayscaleSysColorOverrides(mixer, key); \
-  }                                                     \
-  else if (false
+#define AddSysColorMixer AddSysColorMixer_Chromium
+// #define kGrayscale kGrayscale) {                        \
+//     AddGrayscaleSysColorOverrides(mixer, key);          \
+//     ui::AddBraveGrayscaleSysColorOverrides(mixer, key); \
+//   }                                                     \
+//   else if (false
 
 #include "src/ui/color/sys_color_mixer.cc"
 
-#undef kGrayscale
+#undef AddSysColorMixer
+
+namespace ui {
+void AddSysColorMixer(ColorProvider* provider, const ColorProviderKey& key) {
+  AddSysColorMixer_Chromium(provider, key);
+  ui::AddBraveSysColorMixer(provider, key);
+}
+}  // namespace ui

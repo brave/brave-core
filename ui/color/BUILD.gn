@@ -38,3 +38,13 @@ source_set("brave_color_mixers") {
     "//ui/color/dynamic_color",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "brave_sys_color_mixer_unittest.cc" ]
+
+  deps = [
+    "//testing/gtest",
+    "//ui/color",
+  ]
+}
