@@ -70,7 +70,8 @@ module.exports = async function (env, argv) {
   const output = {
     path: process.env.TARGET_GEN_DIR,
     filename: '[name].bundle.js',
-    chunkFilename: '[name].chunk.js'
+    chunkFilename: '[name].chunk.js',
+    publicPath: '/'
   }
   if (env.output_public_path) {
     output.publicPath = env.output_public_path
