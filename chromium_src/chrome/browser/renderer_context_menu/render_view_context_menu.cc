@@ -430,7 +430,6 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
       auto* shields_tab_helper =
           brave_shields::BraveShieldsTabHelper::FromWebContents(
               source_web_contents_);
-
       return shields_tab_helper && shields_tab_helper->GetAdBlockMode() !=
                                        brave_shields::mojom::AdBlockMode::ALLOW;
     }
@@ -505,9 +504,8 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       OpenLinkInSplitView(source_web_contents_->GetWeakPtr(), params_.link_url);
       break;
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENT: {
-      // TODO: check case ..{} break construction
       auto* shields_tab_helper =
-          ::brave_shields::BraveShieldsTabHelper::FromWebContents(
+          brave_shields::BraveShieldsTabHelper::FromWebContents(
               source_web_contents_);
       if (shields_tab_helper) {
         shields_tab_helper->LaunchContentPicker();

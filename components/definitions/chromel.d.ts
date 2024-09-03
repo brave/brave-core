@@ -246,6 +246,10 @@ declare namespace chrome.braveShields {
   const launchContentPicker: () => void
 }
 
+declare namespace cf_worker {
+  const addSiteCosmeticFilter: (selector: string) => void
+}
+
 declare namespace chrome.test {
   const sendMessage: (message: string) => {}
 }

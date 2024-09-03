@@ -27,8 +27,7 @@ namespace cosmetic_filters {
 // a given render_frame. It also does interactions with CosmeticFiltersResources
 // class that lives in the main process.
 
-// TODO: move to the owner?
-class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersJsHandler {
+class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersAgent {
  public:
   CosmeticFiltersJSHandler(content::RenderFrame* render_frame,
                            const int32_t isolated_world_id);
@@ -55,11 +54,11 @@ class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersJsHandler {
                             const base::RepeatingCallback<Sig>& callback);
   bool EnsureConnected();
   void OnRemoteDisconnect();
-  void BindTabHelper(
-      mojo::PendingAssociatedReceiver<mojom::CosmeticFiltersJsHandler>
-          receiver);
 
-  // CosmeticFiltersJsHandler overrides:
+  void Bind(
+      mojo::PendingAssociatedReceiver<mojom::CosmeticFiltersAgent> receiver);
+
+  // CosmeticFiltersAgent overrides:
   void LaunchContentPicker() override;
 
   // Injects content_cosmetic bundle (if needed) and calls the entry point.
@@ -85,7 +84,7 @@ class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersJsHandler {
 
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;
   mojo::Remote<mojom::CosmeticFiltersResources> cosmetic_filters_resources_;
-  mojo::AssociatedReceiver<mojom::CosmeticFiltersJsHandler> receiver_{this};
+  mojo::AssociatedReceiver<mojom::CosmeticFiltersAgent> receiver_{this};
   int32_t isolated_world_id_;
   bool enabled_1st_party_cf_;
   std::vector<std::string> exceptions_;

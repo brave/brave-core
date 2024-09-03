@@ -9,7 +9,6 @@ let shadowRoot: ShadowRoot | null
 
 const api = {
   cosmeticFilterCreate: (selector: string) => {
-    // @ts-expect-error
     cf_worker.addSiteCosmeticFilter(selector)
 
     const styleId = 'brave-content-picker-style'
@@ -101,13 +100,23 @@ class ElementSelectorBuilder {
       if (!(mask & SpecificityFlags.Class) && rule.type === Selector.Class) {
         continue
       }
-      if (!(mask & SpecificityFlags.Attributes) && rule.type === Selector.Attributes) {
+      if (
+        !(mask & SpecificityFlags.Attributes) &&
+        rule.type === Selector.Attributes
+      ) {
         continue
       }
-      if (!(mask & SpecificityFlags.NthOfType) && rule.type === Selector.NthOfType) {
+      if (
+        !(mask & SpecificityFlags.NthOfType) &&
+        rule.type === Selector.NthOfType
+      ) {
         continue
       }
-      if (this.hasId && (mask & SpecificityFlags.Id) && rule.type === Selector.Class) {
+      if (
+        this.hasId &&
+        mask & SpecificityFlags.Id &&
+        rule.type === Selector.Class
+      ) {
         continue
       }
 
@@ -138,14 +147,17 @@ class ElementSelectorBuilder {
           selector += `:nth-of-type(${rule.value})`
           break
         }
-        default: { /* Unreachable */ }
+        default: {
+          /* Unreachable */
+        }
       }
     }
     return selector
   }
 }
 
-// We search for a CSS selector for the target element. We want the most specific identifiers.
+// We search for a CSS selector for the target element. We want the most
+// specific identifiers.
 const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
   const builder = new ElementSelectorBuilder(elem)
 
@@ -226,7 +238,10 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
     }
   }
 
-  const querySelectorNoExcept = (node: Element | null, selector: string): Element[] => {
+  const querySelectorNoExcept = (
+    node: Element | null,
+    selector: string
+  ): Element[] => {
     if (node !== null) {
       try {
         const r = node.querySelectorAll(selector)
@@ -236,9 +251,14 @@ const cssSelectorFromElement = (elem: Element): ElementSelectorBuilder => {
     return []
   }
 
-  if (builder.size() === 0 || querySelectorNoExcept(elem.parentElement, builder.toString()).length > 1) {
+  if (
+    builder.size() === 0 ||
+    querySelectorNoExcept(elem.parentElement, builder.toString()).length > 1
+  ) {
     builder.addTag(tag)
-    if (querySelectorNoExcept(elem.parentElement, builder.toString()).length > 1) {
+    if (
+      querySelectorNoExcept(elem.parentElement, builder.toString()).length > 1
+    ) {
       let index = 1
       let sibling: Element | null = elem.previousElementSibling
       while (sibling !== null) {
