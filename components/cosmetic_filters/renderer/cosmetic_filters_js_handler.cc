@@ -408,15 +408,15 @@ void CosmeticFiltersJSHandler::Bind(
 }
 
 void CosmeticFiltersJSHandler::LaunchContentPicker() {
-  static base::NoDestructor<std::string> s_content_picker(
-      LoadDataResource(IDR_COSMETIC_FILTERS_ELEMENT_PICKER_BUNDLE_JS));
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
   if (web_frame->IsProvisional()) {
     return;
   }
   web_frame->ExecuteScriptInIsolatedWorld(
       isolated_world_id_,
-      blink::WebScriptSource(blink::WebString::FromUTF8(*s_content_picker)),
+      blink::WebScriptSource(blink::WebString::FromUTF8(
+        LoadDataResource(IDR_COSMETIC_FILTERS_ELEMENT_PICKER_BUNDLE_JS
+      )),
       blink::BackForwardCacheAware::kAllow);
 }
 
