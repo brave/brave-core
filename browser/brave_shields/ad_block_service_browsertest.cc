@@ -2742,13 +2742,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
       content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
 
   {
+    content::ContextMenuParams params;
+    params.page_url = tab_url;
     TestRenderViewContextMenu menu(*web_contents()->GetPrimaryMainFrame(),
-                                   content::ContextMenuParams());
+                                   params);
     menu.Init();
-
     EXPECT_TRUE(menu.IsItemEnabled(IDC_ADBLOCK_CONTEXT_TOOLS));
-    EXPECT_TRUE(menu.IsItemEnabled(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENT));
-
     menu.ExecuteCommand(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENT, 0);
   }
 
@@ -2770,6 +2769,26 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
   // ruleset.
   NavigateToURL(tab_url);
   WaitForSelectorBlocked(web_contents(), "#ad-banner");
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ManageCustomFiltersContextMenu) {
+  const GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+  {
+    content::ContextMenuParams params;
+    params.page_url = tab_url;
+    TestRenderViewContextMenu menu(*web_contents()->GetPrimaryMainFrame(),
+                                   params);
+    menu.Init();
+    EXPECT_TRUE(menu.IsItemEnabled(IDC_ADBLOCK_CONTEXT_TOOLS));
+    menu.ExecuteCommand(IDC_ADBLOCK_CONTEXT_MANAGE_CUSTOM_FILTERS, 0);
+  }
+
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+  ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
+  EXPECT_EQ(web_contents()->GetLastCommittedURL(),
+            "chrome://settings/shields/filters");
 }
 
 class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {
