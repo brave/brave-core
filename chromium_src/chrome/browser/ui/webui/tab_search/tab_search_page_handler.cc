@@ -31,9 +31,11 @@
 #include "components/sessions/core/session_id.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/url_constants.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
+#include "url/gurl.h"
 #include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -51,6 +53,17 @@
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/history_embeddings/open_tab_search.h"
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
+namespace {
+GURL ReplaceChromeSchemeWithBrave(const GURL& url) {
+  if (url.scheme() == content::kChromeUIScheme) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(content::kBraveUIScheme);
+    return url.ReplaceComponents(replacements);
+  }
+  return url;
+}
+}  // namespace
 
 #define TabSearchPageHandler TabSearchPageHandler_ChromiumImpl
 #include <chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc>
