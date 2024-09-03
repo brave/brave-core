@@ -2100,7 +2100,8 @@ TEST_F(SolanaTxManagerUnitTest, MakeBubbleGumProgramTransferTxData) {
 
   mojom::SolanaTxDataPtr expected_tx_data = mojom::SolanaTxData::New(
       "", 0, "FBG2vwk2tGKHbEWHSxf7rJGDuZ2eHaaNQ8u6c7xGt9Yv",
-      "4szaz6FsfBzwcCJYjbwZWEw3E8rKB4tz76644C8sAZo9", "", 0, 0,
+      "4szaz6FsfBzwcCJYjbwZWEw3E8rKB4tz76644C8sAZo9",
+      "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR", 0, 0,
       mojom::TransactionType::SolanaCompressedNftTransfer,
       std::move(instructions), mojom::SolanaMessageVersion::kLegacy,
       mojom::SolanaMessageHeader::New(1, 0, 30),

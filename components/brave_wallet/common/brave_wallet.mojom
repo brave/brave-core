@@ -2616,7 +2616,9 @@ struct SolanaTxData {
   uint64 last_valid_block_height;
   string fee_payer;
   string to_wallet_address;
-  string spl_token_mint_address;
+  // token_address can be either a SPL mint address or an
+  // address of a compressed NFT.
+  string token_address;
   uint64 lamports;
   uint64 amount;
   TransactionType tx_type;

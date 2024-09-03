@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/gtest_prod_util.h"
@@ -216,12 +217,14 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       mojom::SolanaProviderError error,
       const std::string& error_message);
   void OnFetchCompressedNftProof(
+      const std::string& token_address,
       const std::string& from_wallet_address,
       const std::string& to_wallet_address,
       MakeBubbleGumProgramTransferTxDataCallback callback,
       std::optional<SolCompressedNftProofData> proof);
 
   void OnGetMerkleTreeAccountInfo(
+      const std::string& token_address,
       const std::string& to_wallet_address,
       const SolCompressedNftProofData& proof,
       MakeBubbleGumProgramTransferTxDataCallback callback,
