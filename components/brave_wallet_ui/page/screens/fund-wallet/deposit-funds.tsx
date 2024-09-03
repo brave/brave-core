@@ -664,16 +664,6 @@ function DepositAccount() {
         <HorizontalSpace space={'45%'} />
       </Row>
 
-      <Row>
-        <QRCodeContainer>
-          {isLoadingQrCode || !receiveAddress || isFetchingAddress ? (
-            <LoadingRing />
-          ) : (
-            <QRCodeImage src={qrCode} />
-          )}
-        </QRCodeContainer>
-      </Row>
-
       <Column gap={'4px'}>
         <AddressTextLabel>
           {getLocale('braveWalletAddress')}
@@ -699,6 +689,16 @@ function DepositAccount() {
             width={'300px'}
           />
         )}
+
+        <Row>
+          <QRCodeContainer>
+            {isLoadingQrCode || !receiveAddress || isFetchingAddress ? (
+              <LoadingRing />
+            ) : (
+              <QRCodeImage src={qrCode} />
+            )}
+          </QRCodeContainer>
+        </Row>
       </Column>
     </Column>
   )
