@@ -56,6 +56,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/p3a/p3a_core_metrics.h"
+#include "brave/browser/search_engines/pref_names.h"
 #include "brave/browser/ui/whats_new/whats_new_util.h"
 #include "chrome/browser/first_run/first_run.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
@@ -127,6 +128,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   BraveWindowTracker::RegisterPrefs(registry);
   dark_mode::RegisterBraveDarkModeLocalStatePrefs(registry);
   whats_new::RegisterLocalStatePrefs(registry);
+
+  registry->RegisterBooleanPref(kEnableSearchSuggestionsByDefault, false);
 #endif
 
 #if defined(TOOLKIT_VIEWS)
