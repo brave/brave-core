@@ -147,9 +147,7 @@ class ElementSelectorBuilder {
           selector += `:nth-of-type(${rule.value})`
           break
         }
-        default: {
-          /* Unreachable */
-        }
+        default: { /* Unreachable */ }
       }
     }
     return selector

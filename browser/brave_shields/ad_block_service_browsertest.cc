@@ -2753,22 +2753,20 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
 
   ASSERT_TRUE(content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
 
-  const auto banner_is_visible = [&]() {
-    return content::EvalJs(web_contents(),
-                           "checkSelector('#ad-banner', 'display', 'block')")
-        .ExtractBool();
-  };
-  EXPECT_EQ(true, banner_is_visible());
+  EXPECT_TRUE(content::EvalJs(web_contents(),
+                              "checkSelector('#ad-banner', 'display', 'block')")
+                  .ExtractBool());
 
   ASSERT_TRUE(content::ExecJs(web_contents(),
                               "cf_worker.addSiteCosmeticFilter('#ad-banner')",
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL));
 
-  // Reload the page and check the selector is still blocked by the user
-  // ruleset.
+  // Reload the page and check the selector is blocked by the user rule.
   NavigateToURL(tab_url);
   WaitForSelectorBlocked(web_contents(), "#ad-banner");
+  EXPECT_FALSE(
+      content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
 }
 
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ManageCustomFiltersContextMenu) {
