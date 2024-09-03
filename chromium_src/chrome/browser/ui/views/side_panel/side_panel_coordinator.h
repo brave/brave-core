@@ -31,13 +31,11 @@
   friend class BraveSidePanelCoordinator; \
   virtual std::unique_ptr<views::View> CreateHeader
 
-#define UpdateToolbarButtonHighlight virtual UpdateToolbarButtonHighlight
 #define PopulateSidePanel virtual PopulateSidePanel
 
 #include "src/chrome/browser/ui/views/side_panel/side_panel_coordinator.h"  // IWYU pragma: export
 
 #undef PopulateSidePanel
-#undef UpdateToolbarButtonHighlight
 #undef CreateHeader
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_COORDINATOR_H_
