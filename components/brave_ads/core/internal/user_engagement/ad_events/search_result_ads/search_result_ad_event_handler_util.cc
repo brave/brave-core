@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_handler_util.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 
 namespace brave_ads {

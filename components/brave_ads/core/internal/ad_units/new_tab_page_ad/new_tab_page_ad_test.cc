@@ -14,8 +14,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
@@ -57,8 +56,9 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, ServeAd) {
   test::ForcePermissionRules();
 
   // Act & Assert
-  EXPECT_CALL(ads_client_mock_, RecordP2AEvents(BuildP2AAdOpportunityEvents(
-                                    AdType::kNewTabPageAd, /*segments=*/{})));
+  EXPECT_CALL(ads_client_mock_,
+              RecordP2AEvents(BuildP2AAdOpportunityEvents(
+                  mojom::AdType::kNewTabPageAd, /*segments=*/{})));
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run(/*statement=*/::testing::Ne(std::nullopt)));

@@ -22,6 +22,8 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads::database::table {
@@ -92,9 +94,9 @@ TransactionInfo FromMojomRow(const mojom::DBRowInfo* const mojom_db_row) {
   transaction.creative_instance_id = ColumnString(mojom_db_row, 2);
   transaction.value = ColumnDouble(mojom_db_row, 3);
   transaction.segment = ColumnString(mojom_db_row, 4);
-  transaction.ad_type = ToAdType(ColumnString(mojom_db_row, 5));
+  transaction.ad_type = ToMojomAdType(ColumnString(mojom_db_row, 5));
   transaction.confirmation_type =
-      ToConfirmationType(ColumnString(mojom_db_row, 6));
+      ToMojomConfirmationType(ColumnString(mojom_db_row, 6));
   const base::Time reconciled_at = ColumnTime(mojom_db_row, 7);
   if (!reconciled_at.is_null()) {
     transaction.reconciled_at = reconciled_at;

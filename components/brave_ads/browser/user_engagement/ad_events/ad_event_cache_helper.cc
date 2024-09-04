@@ -7,6 +7,7 @@
 
 #include "base/no_destructor.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
@@ -21,16 +22,17 @@ AdEventCacheHelper* AdEventCacheHelper::GetInstance() {
 
 void AdEventCacheHelper::CacheAdEventForInstanceId(
     const std::string& id,
-    const std::string& ad_type,
-    const std::string& confirmation_type,
+    const mojom::AdType mojom_ad_type,
+    const mojom::ConfirmationType mojom_confirmation_type,
     const base::Time time) {
-  ad_event_cache_.AddEntryForInstanceId(id, ad_type, confirmation_type, time);
+  ad_event_cache_.AddEntryForInstanceId(id, mojom_ad_type,
+                                        mojom_confirmation_type, time);
 }
 
 std::vector<base::Time> AdEventCacheHelper::GetCachedAdEvents(
-    const std::string& ad_type,
-    const std::string& confirmation_type) const {
-  return ad_event_cache_.Get(ad_type, confirmation_type);
+    const mojom::AdType mojom_ad_type,
+    const mojom::ConfirmationType mojom_confirmation_type) const {
+  return ad_event_cache_.Get(mojom_ad_type, mojom_confirmation_type);
 }
 
 void AdEventCacheHelper::ResetAdEventCacheForInstanceId(const std::string& id) {

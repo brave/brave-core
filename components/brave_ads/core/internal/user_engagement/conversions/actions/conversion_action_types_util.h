@@ -10,11 +10,12 @@
 #include <string_view>
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
 
-ConversionActionType ToConversionActionType(ConfirmationType confirmation_type);
+ConversionActionType ToConversionActionType(
+    mojom::ConfirmationType mojom_confirmation_type);
 
 ConversionActionType ToConversionActionType(std::string_view action_type);
 

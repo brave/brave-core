@@ -10,8 +10,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -25,8 +24,8 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
   AdvanceClockTo(test::TimeFromUTCString("2 June 2022 11:00"));
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/false);
 
   // Act & Assert
@@ -40,8 +39,8 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest, BuildRotatingHash) {
   AdvanceClockTo(test::TimeFromUTCString("2 June 2022 11:00"));
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/false);
 
   // Act & Assert
@@ -55,8 +54,8 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
   test::MockDeviceId();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/false);
 
   AdvanceClockTo(test::TimeFromUTCString("2 June 2022 11:00"));
@@ -77,8 +76,8 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
   test::MockDeviceId();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/false);
 
   AdvanceClockTo(test::TimeFromUTCString("2 June 2022 11:00"));
@@ -99,8 +98,8 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
   test::MockDeviceId();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/false);
 
   const std::optional<std::string> rotating_hash_before =

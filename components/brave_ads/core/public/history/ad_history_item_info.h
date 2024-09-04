@@ -10,8 +10,7 @@
 #include <vector>
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/export.h"
 #include "url/gurl.h"
 
@@ -33,8 +32,9 @@ struct ADS_EXPORT AdHistoryItemInfo final {
   [[nodiscard]] bool IsValid() const;
 
   base::Time created_at;
-  AdType type = AdType::kUndefined;
-  ConfirmationType confirmation_type = ConfirmationType::kUndefined;
+  mojom::AdType type = mojom::AdType::kUndefined;
+  mojom::ConfirmationType confirmation_type =
+      mojom::ConfirmationType::kUndefined;
   std::string placement_id;
   std::string creative_instance_id;
   std::string creative_set_id;

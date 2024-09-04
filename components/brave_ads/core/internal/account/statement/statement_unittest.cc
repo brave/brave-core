@@ -12,8 +12,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -28,14 +27,14 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsThisMonth) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
@@ -52,7 +51,8 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsThisMonth) {
   expected_mojom_statement->next_payment_date =
       test::TimeFromUTCString("7 December 2020 23:59:59.999");
   expected_mojom_statement->ads_received_this_month = 2;
-  expected_mojom_statement->ads_summary_this_month = {{"ad_notification", 2}};
+  expected_mojom_statement->ads_summary_this_month = {
+      {mojom::AdType::kNotificationAd, 2}};
 
   base::MockCallback<BuildStatementCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_mojom_statement))));
@@ -67,53 +67,54 @@ TEST_F(BraveAdsStatementTest,
   AdvanceClockTo(test::TimeFromString("31 October 2020"));
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(test::TimeFromString("18 November 2020"));
 
   const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
   AdvanceClockTo(test::TimeFromString("25 December 2020"));
 
   const TransactionInfo transaction_5 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_5);
 
   const TransactionInfo transaction_6 = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_6);
 
   const TransactionInfo transaction_7 = test::BuildUnreconciledTransaction(
-      /*value=*/0.0, AdType::kNotificationAd, ConfirmationType::kClicked,
+      /*value=*/0.0, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kClicked,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_7);
 
   const TransactionInfo transaction_8 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_8);
 
@@ -131,7 +132,8 @@ TEST_F(BraveAdsStatementTest,
   expected_statement->next_payment_date =
       test::TimeFromUTCString("7 January 2021 23:59:59.999");
   expected_statement->ads_received_this_month = 3;
-  expected_statement->ads_summary_this_month = {{"ad_notification", 3}};
+  expected_statement->ads_summary_this_month = {
+      {mojom::AdType::kNotificationAd, 3}};
 
   base::MockCallback<BuildStatementCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
@@ -145,39 +147,40 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
   AdvanceClockTo(test::TimeFromString("31 December 2020"));
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(test::TimeFromString("1 January 2021"));
 
   const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
   const TransactionInfo transaction_5 = test::BuildUnreconciledTransaction(
-      /*value=*/0.0, AdType::kNotificationAd, ConfirmationType::kClicked,
+      /*value=*/0.0, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kClicked,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_5);
 
   const TransactionInfo transaction_6 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_6);
 
@@ -195,7 +198,8 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
   expected_statement->next_payment_date =
       test::TimeFromUTCString("7 January 2021 23:59:59.999");
   expected_statement->ads_received_this_month = 3;
-  expected_statement->ads_summary_this_month = {{"ad_notification", 3}};
+  expected_statement->ads_summary_this_month = {
+      {mojom::AdType::kNotificationAd, 3}};
 
   base::MockCallback<BuildStatementCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
@@ -229,31 +233,31 @@ TEST_F(BraveAdsStatementTest, GetWithFilteredTransactions) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   TransactionInfo transaction_2 = test::BuildTransaction(
-      /*value=*/0.02, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
+      /*value=*/0.02, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
-  transaction_2.ad_type = AdType::kNewTabPageAd;
+  transaction_2.ad_type = mojom::AdType::kNewTabPageAd;
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(test::TimeFromString("18 November 2020"));
 
   const TransactionInfo transaction_3 = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
   TransactionInfo transaction_4 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
-  transaction_4.ad_type = AdType::kNewTabPageAd;
+  transaction_4.ad_type = mojom::AdType::kNewTabPageAd;
   transactions.push_back(transaction_4);
 
   database::SaveTransactions(transactions);
@@ -270,8 +274,8 @@ TEST_F(BraveAdsStatementTest, GetWithFilteredTransactions) {
   expected_statement->next_payment_date =
       test::TimeFromUTCString("7 December 2020 23:59:59.999");
   expected_statement->ads_received_this_month = 2;
-  expected_statement->ads_summary_this_month = {{"ad_notification", 1},
-                                                {"new_tab_page_ad", 1}};
+  expected_statement->ads_summary_this_month = {
+      {mojom::AdType::kNotificationAd, 1}, {mojom::AdType::kNewTabPageAd, 1}};
 
   base::MockCallback<BuildStatementCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));

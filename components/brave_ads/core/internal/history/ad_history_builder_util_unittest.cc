@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
@@ -27,13 +27,13 @@ TEST_F(BraveAdsAdHistoryBuilderUtilTest, BuildAdHistoryItem) {
 
   // Act
   const AdHistoryItemInfo ad_history_item = BuildAdHistoryItem(
-      ad, ConfirmationType::kViewedImpression, ad.title, ad.body);
+      ad, mojom::ConfirmationType::kViewedImpression, ad.title, ad.body);
 
   // Assert
   EXPECT_THAT(ad_history_item,
               ::testing::FieldsAre(
                   /*created_at*/ test::Now(), ad.type,
-                  ConfirmationType::kViewedImpression, ad.placement_id,
+                  mojom::ConfirmationType::kViewedImpression, ad.placement_id,
                   ad.creative_instance_id, ad.creative_set_id, ad.campaign_id,
                   ad.advertiser_id, ad.segment, ad.title,
                   /*description*/ ad.body, ad.target_url));

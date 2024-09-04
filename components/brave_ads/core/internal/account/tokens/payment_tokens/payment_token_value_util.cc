@@ -11,6 +11,8 @@
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 namespace brave_ads {
 
@@ -102,12 +104,13 @@ PaymentTokenList PaymentTokensFromValue(const base::Value::List& list) {
     // Confirmation type
     if (const auto* const confirmation_type =
             dict->FindString(kConfirmationTypeKey)) {
-      payment_token.confirmation_type = ToConfirmationType(*confirmation_type);
+      payment_token.confirmation_type =
+          ToMojomConfirmationType(*confirmation_type);
     }
 
     // Ad type
     if (const auto* const ad_type = dict->FindString(kAdTypeKey)) {
-      payment_token.ad_type = ToAdType(*ad_type);
+      payment_token.ad_type = ToMojomAdType(*ad_type);
     }
 
     payment_tokens.push_back(payment_token);

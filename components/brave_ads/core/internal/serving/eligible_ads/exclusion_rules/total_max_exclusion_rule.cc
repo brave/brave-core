@@ -23,7 +23,8 @@ bool DoesRespectCap(const AdEventList& ad_events,
 
   int count = 0;
   for (const auto& ad_event : ad_events) {
-    if (ad_event.confirmation_type == ConfirmationType::kServedImpression &&
+    if (ad_event.confirmation_type ==
+            mojom::ConfirmationType::kServedImpression &&
         ad_event.creative_set_id == creative_ad.creative_set_id) {
       ++count;
       if (count >= creative_ad.total_max) {

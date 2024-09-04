@@ -26,7 +26,7 @@ std::string PerDayExclusionRule::GetUuid(
 base::expected<void, std::string> PerDayExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCreativeSetCap(
-          creative_ad, ad_events_, ConfirmationType::kServedImpression,
+          creative_ad, ad_events_, mojom::ConfirmationType::kServedImpression,
           /*time_constraint=*/base::Days(1), creative_ad.per_day)) {
     return base::unexpected(base::ReplaceStringPlaceholders(
         "creativeSetId $1 has exceeded the perDay frequency cap",

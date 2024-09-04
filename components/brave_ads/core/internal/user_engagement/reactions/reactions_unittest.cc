@@ -18,9 +18,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions_test_util.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -51,12 +49,13 @@ TEST_F(BraveAdsReactionsTest, ToggleLikeAd) {
       test::BuildReaction(mojom::AdType::kNotificationAd);
 
   // Act & Assert
-  EXPECT_CALL(account_observer_mock_,
-              OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
-                  /*id*/ ::testing::_, /*created_at*/ test::Now(),
-                  test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
-                  AdType::kNotificationAd, ConfirmationType::kLikedAd,
-                  /*reconciled_at*/ std::nullopt)));
+  EXPECT_CALL(
+      account_observer_mock_,
+      OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
+          /*id*/ ::testing::_, /*created_at*/ test::Now(),
+          test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+          mojom::AdType::kNotificationAd, mojom::ConfirmationType::kLikedAd,
+          /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
 
   base::MockCallback<ToggleReactionCallback> callback;
@@ -74,12 +73,13 @@ TEST_F(BraveAdsReactionsTest, ToggleDislikeAd) {
       test::BuildReaction(mojom::AdType::kNotificationAd);
 
   // Act & Assert
-  EXPECT_CALL(account_observer_mock_,
-              OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
-                  /*id*/ ::testing::_, /*created_at*/ test::Now(),
-                  test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
-                  AdType::kNotificationAd, ConfirmationType::kDislikedAd,
-                  /*reconciled_at*/ std::nullopt)));
+  EXPECT_CALL(
+      account_observer_mock_,
+      OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
+          /*id*/ ::testing::_, /*created_at*/ test::Now(),
+          test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+          mojom::AdType::kNotificationAd, mojom::ConfirmationType::kDislikedAd,
+          /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
 
   base::MockCallback<ToggleReactionCallback> callback;
@@ -231,12 +231,13 @@ TEST_F(BraveAdsReactionsTest, ToggleSaveAd) {
       test::BuildReaction(mojom::AdType::kNotificationAd);
 
   // Act & Assert
-  EXPECT_CALL(account_observer_mock_,
-              OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
-                  /*id*/ ::testing::_, /*created_at*/ test::Now(),
-                  test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
-                  AdType::kNotificationAd, ConfirmationType::kSavedAd,
-                  /*reconciled_at*/ std::nullopt)));
+  EXPECT_CALL(
+      account_observer_mock_,
+      OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
+          /*id*/ ::testing::_, /*created_at*/ test::Now(),
+          test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+          mojom::AdType::kNotificationAd, mojom::ConfirmationType::kSavedAd,
+          /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
 
   base::MockCallback<ToggleReactionCallback> callback;
@@ -258,13 +259,13 @@ TEST_F(BraveAdsReactionsTest, ToggleMarkAdAsInappropriate) {
       test::BuildReaction(mojom::AdType::kNotificationAd);
 
   // Act & Assert
-  EXPECT_CALL(
-      account_observer_mock_,
-      OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
-          /*id*/ ::testing::_, /*created_at*/ test::Now(),
-          test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
-          AdType::kNotificationAd, ConfirmationType::kMarkAdAsInappropriate,
-          /*reconciled_at*/ std::nullopt)));
+  EXPECT_CALL(account_observer_mock_,
+              OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
+                  /*id*/ ::testing::_, /*created_at*/ test::Now(),
+                  test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+                  mojom::AdType::kNotificationAd,
+                  mojom::ConfirmationType::kMarkAdAsInappropriate,
+                  /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
 
   base::MockCallback<ToggleReactionCallback> callback;

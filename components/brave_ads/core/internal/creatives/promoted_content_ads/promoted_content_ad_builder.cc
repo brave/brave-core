@@ -23,7 +23,7 @@ PromotedContentAdInfo BuildPromotedContentAd(
     const std::string& placement_id) {
   PromotedContentAdInfo promoted_content_ad;
 
-  promoted_content_ad.type = AdType::kPromotedContentAd;
+  promoted_content_ad.type = mojom::AdType::kPromotedContentAd;
   promoted_content_ad.placement_id = placement_id;
   promoted_content_ad.creative_instance_id =
       creative_promoted_content_ad.creative_instance_id;

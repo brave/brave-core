@@ -10,18 +10,19 @@
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::test {
 
 AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
-                         const AdType ad_type,
-                         const ConfirmationType confirmation_type,
+                         const mojom::AdType mojom_ad_type,
+                         const mojom::ConfirmationType mojom_confirmation_type,
                          const base::Time created_at,
                          const bool should_generate_random_uuids) {
   AdEventInfo ad_event;
 
-  ad_event.type = ad_type;
-  ad_event.confirmation_type = confirmation_type;
+  ad_event.type = mojom_ad_type;
+  ad_event.confirmation_type = mojom_confirmation_type;
   ad_event.placement_id =
       RandomUuidOr(should_generate_random_uuids, kPlacementId);
   ad_event.campaign_id = creative_ad.campaign_id;

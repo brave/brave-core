@@ -10,8 +10,7 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -23,20 +22,23 @@ TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataForRewardsUser) {
   // Arrange
   PaymentTokenList payment_tokens;
 
-  const PaymentTokenInfo payment_token_1 = test::BuildPaymentToken(
-      ConfirmationType::kViewedImpression, AdType::kNotificationAd);
+  const PaymentTokenInfo payment_token_1 =
+      test::BuildPaymentToken(mojom::ConfirmationType::kViewedImpression,
+                              mojom::AdType::kNotificationAd);
   payment_tokens.push_back(payment_token_1);
 
-  const PaymentTokenInfo payment_token_2 = test::BuildPaymentToken(
-      ConfirmationType::kViewedImpression, AdType::kNotificationAd);
+  const PaymentTokenInfo payment_token_2 =
+      test::BuildPaymentToken(mojom::ConfirmationType::kViewedImpression,
+                              mojom::AdType::kNotificationAd);
   payment_tokens.push_back(payment_token_2);
 
   const PaymentTokenInfo payment_token_3 = test::BuildPaymentToken(
-      ConfirmationType::kClicked, AdType::kNotificationAd);
+      mojom::ConfirmationType::kClicked, mojom::AdType::kNotificationAd);
   payment_tokens.push_back(payment_token_3);
 
-  const PaymentTokenInfo payment_token_4 = test::BuildPaymentToken(
-      ConfirmationType::kViewedImpression, AdType::kInlineContentAd);
+  const PaymentTokenInfo payment_token_4 =
+      test::BuildPaymentToken(mojom::ConfirmationType::kViewedImpression,
+                              mojom::AdType::kInlineContentAd);
   payment_tokens.push_back(payment_token_4);
 
   // Act

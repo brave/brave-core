@@ -8,6 +8,7 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/notreached.h"
 #include "base/types/cxx23_to_underlying.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
@@ -30,66 +31,65 @@ constexpr char kMediaPlayType[] = "media_play";
 constexpr char kMedia25Type[] = "media_25";
 constexpr char kMedia100Type[] = "media_100";
 
-constexpr auto kToConfirmationTypeMap =
-    base::MakeFixedFlatMap<std::string_view, ConfirmationType>(
-        {{kUndefinedType, ConfirmationType::kUndefined},
-         {kClickedType, ConfirmationType::kClicked},
-         {kDismissedType, ConfirmationType::kDismissed},
-         {kViewedImpressionType, ConfirmationType::kViewedImpression},
-         {kServedImpressionType, ConfirmationType::kServedImpression},
-         {kLandedType, ConfirmationType::kLanded},
-         {kSavedAdType, ConfirmationType::kSavedAd},
-         {kMarkAdAsInappropriateType, ConfirmationType::kMarkAdAsInappropriate},
-         {kLikedAdType, ConfirmationType::kLikedAd},
-         {kDislikedAdType, ConfirmationType::kDislikedAd},
-         {kConversionType, ConfirmationType::kConversion},
-         {kMediaPlayType, ConfirmationType::kMediaPlay},
-         {kMedia25Type, ConfirmationType::kMedia25},
-         {kMedia100Type, ConfirmationType::kMedia100}});
+constexpr auto kStringToMojomConfirmationTypeMap =
+    base::MakeFixedFlatMap<std::string_view, mojom::ConfirmationType>(
+        {{kUndefinedType, mojom::ConfirmationType::kUndefined},
+         {kClickedType, mojom::ConfirmationType::kClicked},
+         {kDismissedType, mojom::ConfirmationType::kDismissed},
+         {kViewedImpressionType, mojom::ConfirmationType::kViewedImpression},
+         {kServedImpressionType, mojom::ConfirmationType::kServedImpression},
+         {kLandedType, mojom::ConfirmationType::kLanded},
+         {kSavedAdType, mojom::ConfirmationType::kSavedAd},
+         {kMarkAdAsInappropriateType,
+          mojom::ConfirmationType::kMarkAdAsInappropriate},
+         {kLikedAdType, mojom::ConfirmationType::kLikedAd},
+         {kDislikedAdType, mojom::ConfirmationType::kDislikedAd},
+         {kConversionType, mojom::ConfirmationType::kConversion},
+         {kMediaPlayType, mojom::ConfirmationType::kMediaPlay},
+         {kMedia25Type, mojom::ConfirmationType::kMedia25},
+         {kMedia100Type, mojom::ConfirmationType::kMedia100}});
 
-constexpr auto kConfirmationTypeToStringMap =
-    base::MakeFixedFlatMap<ConfirmationType, std::string_view>(
-        {{ConfirmationType::kUndefined, kUndefinedType},
-         {ConfirmationType::kClicked, kClickedType},
-         {ConfirmationType::kDismissed, kDismissedType},
-         {ConfirmationType::kViewedImpression, kViewedImpressionType},
-         {ConfirmationType::kServedImpression, kServedImpressionType},
-         {ConfirmationType::kLanded, kLandedType},
-         {ConfirmationType::kSavedAd, kSavedAdType},
-         {ConfirmationType::kMarkAdAsInappropriate, kMarkAdAsInappropriateType},
-         {ConfirmationType::kLikedAd, kLikedAdType},
-         {ConfirmationType::kDislikedAd, kDislikedAdType},
-         {ConfirmationType::kConversion, kConversionType},
-         {ConfirmationType::kMediaPlay, kMediaPlayType},
-         {ConfirmationType::kMedia25, kMedia25Type},
-         {ConfirmationType::kMedia100, kMedia100Type}});
+constexpr auto kMojomConfirmationTypeToStringMap =
+    base::MakeFixedFlatMap<mojom::ConfirmationType, std::string_view>(
+        {{mojom::ConfirmationType::kUndefined, kUndefinedType},
+         {mojom::ConfirmationType::kClicked, kClickedType},
+         {mojom::ConfirmationType::kDismissed, kDismissedType},
+         {mojom::ConfirmationType::kViewedImpression, kViewedImpressionType},
+         {mojom::ConfirmationType::kServedImpression, kServedImpressionType},
+         {mojom::ConfirmationType::kLanded, kLandedType},
+         {mojom::ConfirmationType::kSavedAd, kSavedAdType},
+         {mojom::ConfirmationType::kMarkAdAsInappropriate,
+          kMarkAdAsInappropriateType},
+         {mojom::ConfirmationType::kLikedAd, kLikedAdType},
+         {mojom::ConfirmationType::kDislikedAd, kDislikedAdType},
+         {mojom::ConfirmationType::kConversion, kConversionType},
+         {mojom::ConfirmationType::kMediaPlay, kMediaPlayType},
+         {mojom::ConfirmationType::kMedia25, kMedia25Type},
+         {mojom::ConfirmationType::kMedia100, kMedia100Type}});
 
 }  // namespace
 
-ConfirmationType ToConfirmationType(const std::string_view value) {
-  const auto iter = kToConfirmationTypeMap.find(value);
-  if (iter != kToConfirmationTypeMap.cend()) {
-    const auto [_, confirmation_type] = *iter;
-    return confirmation_type;
+mojom::ConfirmationType ToMojomConfirmationType(const std::string_view value) {
+  const auto iter = kStringToMojomConfirmationTypeMap.find(value);
+  if (iter != kStringToMojomConfirmationTypeMap.cend()) {
+    const auto [_, mojom_confirmation_type] = *iter;
+    return mojom_confirmation_type;
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for ConfirmationType: " << value;
+  NOTREACHED_NORETURN() << "Unexpected value for mojom::ConfirmationType: "
+                        << value;
 }
 
-const char* ToString(const ConfirmationType type) {
-  const auto iter = kConfirmationTypeToStringMap.find(type);
-  if (iter != kConfirmationTypeToStringMap.cend()) {
+const char* ToString(const mojom::ConfirmationType mojom_confirmation_type) {
+  const auto iter =
+      kMojomConfirmationTypeToStringMap.find(mojom_confirmation_type);
+  if (iter != kMojomConfirmationTypeToStringMap.cend()) {
     const auto [_, confirmation_type] = *iter;
     return confirmation_type.data();
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for ConfirmationType: "
-                        << base::to_underlying(type);
-}
-
-std::ostream& operator<<(std::ostream& os, ConfirmationType type) {
-  os << ToString(type);
-  return os;
+  NOTREACHED_NORETURN() << "Unexpected value for mojom::ConfirmationType: "
+                        << base::to_underlying(mojom_confirmation_type);
 }
 
 }  // namespace brave_ads

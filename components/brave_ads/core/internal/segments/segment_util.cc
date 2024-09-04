@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 

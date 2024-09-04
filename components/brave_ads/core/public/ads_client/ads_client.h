@@ -57,17 +57,19 @@ class ADS_EXPORT AdsClient {
   // Close the notification ad for the specified `placement_id`.
   virtual void CloseNotificationAd(const std::string& placement_id) = 0;
 
-  // Cache an ad event for the specified instance `id`, `ad_type`,
-  // `confirmation_type` and `time`.
-  virtual void CacheAdEventForInstanceId(const std::string& id,
-                                         const std::string& ad_type,
-                                         const std::string& confirmation_type,
-                                         base::Time time) const = 0;
+  // Cache an ad event for the specified instance `id`, `mojom_ad_type`,
+  // `mojom_confirmation_type` and `time`.
+  virtual void CacheAdEventForInstanceId(
+      const std::string& id,
+      mojom::AdType mojom_ad_type,
+      mojom::ConfirmationType mojom_confirmation_type,
+      base::Time time) const = 0;
 
-  // Get cached ad events for the specified `ad_type` and `confirmation_type`.
+  // Get cached ad events for the specified `mojom_ad_type` and
+  // `mojom_confirmation_type`.
   virtual std::vector<base::Time> GetCachedAdEvents(
-      const std::string& ad_type,
-      const std::string& confirmation_type) const = 0;
+      mojom::AdType mojom_ad_type,
+      mojom::ConfirmationType mojom_confirmation_type) const = 0;
 
   // Reset ad event cache for the specified instance `id`.
   virtual void ResetAdEventCacheForInstanceId(const std::string& id) const = 0;

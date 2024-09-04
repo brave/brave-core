@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 
 namespace brave_ads {
@@ -162,7 +162,7 @@ void InlineContentAdHandler::PurgeOrphanedCachedAdPlacements(
 void InlineContentAdHandler::OnOpportunityAroseToServeInlineContentAd() {
   BLOG(1, "Opportunity arose to serve an inline content ad");
 
-  RecordP2AAdOpportunity(AdType::kInlineContentAd, /*segments=*/{});
+  RecordP2AAdOpportunity(mojom::AdType::kInlineContentAd, /*segments=*/{});
 }
 
 void InlineContentAdHandler::OnDidServeInlineContentAd(
@@ -198,10 +198,11 @@ void InlineContentAdHandler::OnDidFireInlineContentAdViewedEvent(
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  AdHistoryManager::GetInstance().Add(
+      ad, mojom::ConfirmationType::kViewedImpression);
 
   GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                       ConfirmationType::kViewedImpression);
+                       mojom::ConfirmationType::kViewedImpression);
 }
 
 void InlineContentAdHandler::OnDidFireInlineContentAdClickedEvent(
@@ -212,10 +213,10 @@ void InlineContentAdHandler::OnDidFireInlineContentAdClickedEvent(
 
   site_visit_->SetLastClickedAd(ad);
 
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
+  AdHistoryManager::GetInstance().Add(ad, mojom::ConfirmationType::kClicked);
 
   GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                       ConfirmationType::kClicked);
+                       mojom::ConfirmationType::kClicked);
 }
 
 void InlineContentAdHandler::OnTabDidChange(const TabInfo& tab) {

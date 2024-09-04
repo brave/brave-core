@@ -1573,18 +1573,19 @@ void AdsServiceImpl::CloseNotificationAd(const std::string& placement_id) {
 
 void AdsServiceImpl::CacheAdEventForInstanceId(
     const std::string& id,
-    const std::string& ad_type,
-    const std::string& confirmation_type,
+    const mojom::AdType mojom_ad_type,
+    const mojom::ConfirmationType mojom_confirmation_type,
     const base::Time time) {
   AdEventCacheHelper::GetInstance()->CacheAdEventForInstanceId(
-      id, ad_type, confirmation_type, time);
+      id, mojom_ad_type, mojom_confirmation_type, time);
 }
 
-void AdsServiceImpl::GetCachedAdEvents(const std::string& ad_type,
-                                       const std::string& confirmation_type,
-                                       GetCachedAdEventsCallback callback) {
+void AdsServiceImpl::GetCachedAdEvents(
+    const mojom::AdType mojom_ad_type,
+    const mojom::ConfirmationType mojom_confirmation_type,
+    GetCachedAdEventsCallback callback) {
   std::move(callback).Run(AdEventCacheHelper::GetInstance()->GetCachedAdEvents(
-      ad_type, confirmation_type));
+      mojom_ad_type, mojom_confirmation_type));
 }
 
 void AdsServiceImpl::ResetAdEventCacheForInstanceId(const std::string& id) {

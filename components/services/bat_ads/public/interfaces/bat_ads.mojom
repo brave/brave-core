@@ -12,8 +12,10 @@ import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/url.mojom";
 
 interface BatAdsService {
-  Create(pending_associated_remote<BatAdsClient> bat_ads_client,
-         pending_associated_receiver<BatAds> bat_ads,
+  Create(pending_associated_remote<BatAdsClient>
+             bat_ads_client_pending_associated_remote,
+         pending_associated_receiver<BatAds>
+             bat_ads_pending_associated_receiver,
          pending_receiver<BatAdsClientNotifier>
              bat_ads_client_notifier) => ();
 };
@@ -80,20 +82,22 @@ interface BatAdsClient {
   ShowNotificationAd(mojo_base.mojom.DictionaryValue value);
   CloseNotificationAd(string placement_id);
 
-  CacheAdEventForInstanceId(string id,
-                     string ad_type,
-                     string confirmation_type,
-                     mojo_base.mojom.Time time);
+  CacheAdEventForInstanceId(
+      string id,
+      brave_ads.mojom.AdType mojom_ad_type,
+      brave_ads.mojom.ConfirmationType mojom_confirmation_type,
+      mojo_base.mojom.Time time);
   [Sync]
-  GetCachedAdEvents(string ad_type, string confirmation_type) =>
+  GetCachedAdEvents(brave_ads.mojom.AdType mojom_ad_type,
+                    brave_ads.mojom.ConfirmationType mojom_confirmation_type) =>
       (array<mojo_base.mojom.Time> ad_events);
   ResetAdEventCacheForInstanceId(string id);
 
   GetSiteHistory(int32 max_count, int32 days_ago) =>
       (array<url.mojom.Url> site_history);
 
-  UrlRequest(brave_ads.mojom.UrlRequestInfo request) =>
-      (brave_ads.mojom.UrlResponseInfo response);
+  UrlRequest(brave_ads.mojom.UrlRequestInfo mojom_url_request) =>
+      (brave_ads.mojom.UrlResponseInfo mojom_url_response);
 
   Save(string name, string value) => (bool success);
   Load(string name) => (string? value);
@@ -106,8 +110,8 @@ interface BatAdsClient {
 
   ShowScheduledCaptcha(string payment_id, string captcha_id);
 
-  RunDBTransaction(brave_ads.mojom.DBTransactionInfo db_transaction) =>
-      (brave_ads.mojom.DBTransactionResultInfo db_transaction_result);
+  RunDBTransaction(brave_ads.mojom.DBTransactionInfo mojom_db_transaction) =>
+      (brave_ads.mojom.DBTransactionResultInfo mojom_db_transaction_result);
 
   RecordP2AEvents(array<string> events);
 
@@ -137,67 +141,72 @@ interface BatAdsObserver {
 
   OnIneligibleWalletToServeAds();
 
-  OnRemindUser(brave_ads.mojom.ReminderType type);
+  OnRemindUser(brave_ads.mojom.ReminderType mojom_reminder_type);
 };
 
 interface BatAds {
   // See Ads for documentation.
 
-  AddBatAdsObserver(pending_remote<BatAdsObserver> observer);
+  AddBatAdsObserver(pending_remote<BatAdsObserver> bat_ads_observer);
 
-  SetSysInfo(brave_ads.mojom.SysInfo sys_info);
+  SetSysInfo(brave_ads.mojom.SysInfo mojom_sys_info);
+  SetBuildChannel(brave_ads.mojom.BuildChannelInfo mojom_build_channel);
+  SetFlags(brave_ads.mojom.Flags mojom_flags);
 
-  SetBuildChannel(brave_ads.mojom.BuildChannelInfo build_channel);
-
-  SetFlags(brave_ads.mojom.Flags flags);
-
-  Initialize(brave_ads.mojom.WalletInfo? wallet) => (bool success);
+  Initialize(brave_ads.mojom.WalletInfo? mojom_wallet) => (bool success);
   Shutdown() => (bool success);
 
   GetDiagnostics() => (mojo_base.mojom.ListValue? value);
 
-  GetStatementOfAccounts() => (brave_ads.mojom.StatementInfo? statement);
+  GetStatementOfAccounts() => (brave_ads.mojom.StatementInfo? mojom_statement);
 
   MaybeServeInlineContentAd(string dimensions) =>
       (string dimensions, mojo_base.mojom.DictionaryValue? value);
   TriggerInlineContentAdEvent(
       string placement_id,
       string creative_instance_id,
-      brave_ads.mojom.InlineContentAdEventType mojom_ad_event_type) => (bool success);
+      brave_ads.mojom.InlineContentAdEventType mojom_ad_event_type) =>
+          (bool success);
 
   MaybeServeNewTabPageAd() => (mojo_base.mojom.DictionaryValue? value);
   TriggerNewTabPageAdEvent(
       string placement_id,
       string creative_instance_id,
-      brave_ads.mojom.NewTabPageAdEventType mojom_ad_event_type) => (bool success);
+      brave_ads.mojom.NewTabPageAdEventType mojom_ad_event_type) =>
+          (bool success);
 
   MaybeGetNotificationAd(string placement_id) =>
       (mojo_base.mojom.DictionaryValue? value);
   TriggerNotificationAdEvent(
       string placement_id,
-      brave_ads.mojom.NotificationAdEventType mojom_ad_event_type) => (bool success);
+      brave_ads.mojom.NotificationAdEventType mojom_ad_event_type) =>
+          (bool success);
 
   TriggerPromotedContentAdEvent(
       string placement_id,
       string creative_instance_id,
-      brave_ads.mojom.PromotedContentAdEventType mojom_ad_event_type) => (bool success);
+      brave_ads.mojom.PromotedContentAdEventType mojom_ad_event_type) =>
+          (bool success);
 
   TriggerSearchResultAdEvent(
       brave_ads.mojom.CreativeSearchResultAdInfo mojom_creative_ad,
-      brave_ads.mojom.SearchResultAdEventType mojom_ad_event_type) => (bool success);
+      brave_ads.mojom.SearchResultAdEventType mojom_ad_event_type) =>
+          (bool success);
 
-  PurgeOrphanedAdEventsForType(brave_ads.mojom.AdType ad_type) =>
+  PurgeOrphanedAdEventsForType(brave_ads.mojom.AdType mojom_ad_type) =>
       (bool success);
 
   GetAdHistory(mojo_base.mojom.Time from_time, mojo_base.mojom.Time to_time) =>
       (mojo_base.mojom.ListValue? value);
 
-  ToggleLikeAd(brave_ads.mojom.ReactionInfo reaction) => (bool success);
-  ToggleDislikeAd(brave_ads.mojom.ReactionInfo reaction) => (bool success);
-  ToggleLikeSegment(brave_ads.mojom.ReactionInfo reaction) => (bool success);
-  ToggleDislikeSegment(brave_ads.mojom.ReactionInfo reaction) =>
+  ToggleLikeAd(brave_ads.mojom.ReactionInfo mojom_reaction) => (bool success);
+  ToggleDislikeAd(brave_ads.mojom.ReactionInfo mojom_reaction) =>
       (bool success);
-  ToggleSaveAd(brave_ads.mojom.ReactionInfo reaction) => (bool success);
-  ToggleMarkAdAsInappropriate(brave_ads.mojom.ReactionInfo reaction) =>
+  ToggleLikeSegment(brave_ads.mojom.ReactionInfo mojom_reaction) =>
+      (bool success);
+  ToggleDislikeSegment(brave_ads.mojom.ReactionInfo mojom_reaction) =>
+      (bool success);
+  ToggleSaveAd(brave_ads.mojom.ReactionInfo mojom_reaction) => (bool success);
+  ToggleMarkAdAsInappropriate(brave_ads.mojom.ReactionInfo mojom_reaction) =>
       (bool success);
 };

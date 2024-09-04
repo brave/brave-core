@@ -8,6 +8,8 @@
 #include "base/json/values_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 namespace brave_ads::json::reader {
 
@@ -111,14 +113,14 @@ std::optional<ConfirmationInfo> ParseConfirmation(
 
   // Type
   if (const auto* const value = dict.FindString(kConfirmationTypeKey)) {
-    confirmation.type = ToConfirmationType(*value);
+    confirmation.type = ToMojomConfirmationType(*value);
   } else {
     return std::nullopt;
   }
 
   // Ad type
   if (const auto* const value = dict.FindString(kConfirmationAdTypeKey)) {
-    confirmation.ad_type = ToAdType(*value);
+    confirmation.ad_type = ToMojomAdType(*value);
   } else {
     return std::nullopt;
   }

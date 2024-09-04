@@ -14,8 +14,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/inline_content_ads/inline_content_ad_event_handler_delegate_mock.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -72,7 +71,7 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireServedEvent) {
 TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   const InlineContentAdInfo ad = BuildAndSaveAd();
-  test::RecordAdEvent(ad, ConfirmationType::kServedImpression);
+  test::RecordAdEvent(ad, mojom::ConfirmationType::kServedImpression);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFireInlineContentAdViewedEvent(ad));
@@ -86,8 +85,8 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
        DoNotFireViewedEventIfAdPlacementWasAlreadyViewed) {
   // Arrange
   const InlineContentAdInfo ad = BuildAndSaveAd();
-  test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
-                            ConfirmationType::kViewedImpression});
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_,
@@ -119,8 +118,8 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
 TEST_F(BraveAdsInlineContentAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   const InlineContentAdInfo ad = BuildAndSaveAd();
-  test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
-                            ConfirmationType::kViewedImpression});
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFireInlineContentAdClickedEvent(ad));
@@ -133,9 +132,9 @@ TEST_F(BraveAdsInlineContentAdEventHandlerTest,
        DoNotFireClickedEventIfAdPlacementWasAlreadyClicked) {
   // Arrange
   const InlineContentAdInfo ad = BuildAndSaveAd();
-  test::RecordAdEvents(
-      ad, {ConfirmationType::kServedImpression,
-           ConfirmationType::kViewedImpression, ConfirmationType::kClicked});
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression,
+                            mojom::ConfirmationType::kClicked});
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToFireInlineContentAdEvent(

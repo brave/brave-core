@@ -7,6 +7,7 @@
 
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 #include "url/gurl.h"
 
@@ -19,10 +20,11 @@ std::string RandomUuidOr(const bool should_generate_random_uuid,
              : or_uuid;
 }
 
-AdInfo BuildAd(const AdType ad_type, const bool should_generate_random_uuids) {
+AdInfo BuildAd(const mojom::AdType mojom_ad_type,
+               const bool should_generate_random_uuids) {
   AdInfo ad;
 
-  ad.type = ad_type;
+  ad.type = mojom_ad_type;
   ad.placement_id = RandomUuidOr(should_generate_random_uuids, kPlacementId);
   ad.creative_instance_id =
       RandomUuidOr(should_generate_random_uuids, kCreativeInstanceId);

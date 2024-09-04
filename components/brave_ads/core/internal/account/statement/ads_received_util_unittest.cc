@@ -10,8 +10,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -26,21 +25,22 @@ TEST_F(BraveAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   AdvanceClockTo(test::TimeFromString("25 December 2020"));
 
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
-      /*value=*/0.0, AdType::kNotificationAd, ConfirmationType::kClicked,
+      /*value=*/0.0, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kClicked,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
   const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
-      /*value=*/0.03, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.03, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
@@ -49,23 +49,23 @@ TEST_F(BraveAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
   AdvanceClockTo(test::TimeFromString("1 January 2021"));
 
   const TransactionInfo transaction_4 = test::BuildUnreconciledTransaction(
-      /*value=*/0.02, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.02, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
   TransactionInfo transaction_5 = test::BuildUnreconciledTransaction(
-      /*value=*/0.02, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.02, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
-  transaction_5.ad_type = AdType::kNewTabPageAd;
+  transaction_5.ad_type = mojom::AdType::kNewTabPageAd;
   transactions.push_back(transaction_5);
 
   TransactionInfo transaction_6 = test::BuildUnreconciledTransaction(
-      /*value=*/0.02, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.02, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
-  transaction_6.ad_type = AdType::kInlineContentAd;
+  transaction_6.ad_type = mojom::AdType::kInlineContentAd;
   transactions.push_back(transaction_6);
 
   // Act
@@ -83,13 +83,14 @@ TEST_F(BraveAdsAdsReceivedUtilTest, DoNotGetAdsSummaryForDateRange) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
-      /*value=*/0.0, AdType::kNotificationAd, ConfirmationType::kClicked,
+      /*value=*/0.0, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kClicked,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
 

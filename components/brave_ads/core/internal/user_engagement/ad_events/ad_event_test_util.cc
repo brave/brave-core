@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -28,26 +28,28 @@ void RecordAdEvent(const AdEventInfo& ad_event) {
 
 }  // namespace
 
-void RecordAdEvent(const AdInfo& ad, const ConfirmationType confirmation_type) {
+void RecordAdEvent(const AdInfo& ad,
+                   const mojom::ConfirmationType mojom_confirmation_type) {
   const AdEventInfo ad_event =
-      BuildAdEvent(ad, confirmation_type, /*created_at=*/Now());
+      BuildAdEvent(ad, mojom_confirmation_type, /*created_at=*/Now());
   RecordAdEvent(ad_event);
 }
 
-void RecordAdEvents(const AdInfo& ad,
-                    const std::vector<ConfirmationType>& confirmation_types) {
-  for (const auto& confirmation_type : confirmation_types) {
-    RecordAdEvent(ad, confirmation_type);
+void RecordAdEvents(
+    const AdInfo& ad,
+    const std::vector<mojom::ConfirmationType>& mojom_confirmation_types) {
+  for (const auto& mojom_confirmation_type : mojom_confirmation_types) {
+    RecordAdEvent(ad, mojom_confirmation_type);
   }
 }
 
 void RecordAdEvents(const AdInfo& ad,
-                    ConfirmationType confirmation_type,
+                    mojom::ConfirmationType mojom_confirmation_type,
                     int count) {
   CHECK_GT(count, 0);
 
   for (int i = 0; i < count; ++i) {
-    RecordAdEvent(ad, confirmation_type);
+    RecordAdEvent(ad, mojom_confirmation_type);
   }
 }
 

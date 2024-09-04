@@ -16,7 +16,7 @@ std::optional<base::Time> GetLastSeenAdAt(
   const auto iter = base::ranges::find_if(
       ad_events, [&creative_instance_id](const AdEventInfo& ad_event) {
         return ad_event.confirmation_type ==
-                   ConfirmationType::kViewedImpression &&
+                   mojom::ConfirmationType::kViewedImpression &&
                ad_event.creative_instance_id == creative_instance_id;
       });
 

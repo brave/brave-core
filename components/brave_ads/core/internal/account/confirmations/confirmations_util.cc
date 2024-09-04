@@ -20,8 +20,7 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/verification_signature.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
@@ -71,8 +70,9 @@ bool Verify(const ConfirmationInfo& confirmation) {
 bool IsValid(const ConfirmationInfo& confirmation) {
   if (confirmation.transaction_id.empty() ||
       confirmation.creative_instance_id.empty() ||
-      confirmation.type == ConfirmationType::kUndefined ||
-      confirmation.ad_type == AdType::kUndefined || !confirmation.created_at) {
+      confirmation.type == mojom::ConfirmationType::kUndefined ||
+      confirmation.ad_type == mojom::AdType::kUndefined ||
+      !confirmation.created_at) {
     return false;
   }
 

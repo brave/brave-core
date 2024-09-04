@@ -9,7 +9,7 @@
 #include <cstddef>
 #include <vector>
 
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace base {
 class Time;
@@ -26,7 +26,7 @@ bool DoesHistoryRespectRollingTimeConstraint(
     base::TimeDelta time_constraint,
     size_t cap);
 
-bool DoesHistoryRespectRollingTimeConstraint(AdType type,
+bool DoesHistoryRespectRollingTimeConstraint(mojom::AdType mojom_ad_type,
                                              base::TimeDelta time_constraint,
                                              size_t cap);
 

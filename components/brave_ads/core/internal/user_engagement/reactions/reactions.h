@@ -14,7 +14,6 @@
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 namespace brave_ads {
 
@@ -76,7 +75,7 @@ class Reactions final {
   void Load();
 
   static void Deposit(const mojom::ReactionInfo* mojom_reaction,
-                      ConfirmationType confirmation_type);
+                      mojom::ConfirmationType mojom_confirmation_type);
 
   void NotifyDidLikeAd(const std::string& advertiser_id) const;
   void NotifyDidDislikeAd(const std::string& advertiser_id) const;

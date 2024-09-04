@@ -85,7 +85,7 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
   void GetAdsSettings(GetAdsSettingsCallback callback) override;
   void GetAdsStatement(GetAdsStatementCallback callback) override;
   void GetAdsHistory(GetAdsHistoryCallback callback) override;
-  void SetAdTypeEnabled(brave_ads::mojom::AdType ad_type,
+  void SetAdTypeEnabled(brave_ads::mojom::AdType mojom_ad_type,
                         bool enabled,
                         SetAdTypeEnabledCallback callback) override;
   void SetNotificationAdsPerHour(

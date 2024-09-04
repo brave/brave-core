@@ -25,7 +25,6 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom-forward.h"
@@ -317,12 +316,13 @@ class AdsServiceImpl final : public AdsService,
   void ShowNotificationAd(base::Value::Dict dict) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
-  void CacheAdEventForInstanceId(const std::string& id,
-                                 const std::string& type,
-                                 const std::string& confirmation_type,
-                                 base::Time time) override;
-  void GetCachedAdEvents(const std::string& ad_type,
-                         const std::string& confirmation_type,
+  void CacheAdEventForInstanceId(
+      const std::string& id,
+      mojom::AdType mojom_ad_type,
+      mojom::ConfirmationType mojom_confirmation_type,
+      base::Time time) override;
+  void GetCachedAdEvents(mojom::AdType mojom_ad_type,
+                         mojom::ConfirmationType mojom_confirmation_type,
                          GetCachedAdEventsCallback callback) override;
   void ResetAdEventCacheForInstanceId(const std::string& id) override;
 

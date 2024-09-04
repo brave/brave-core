@@ -39,7 +39,7 @@ CreativeSetConversionCountMap GetCreativeSetConversionCounts(
   CreativeSetConversionCountMap creative_set_conversion_counts;
 
   for (const auto& ad_event : ad_events) {
-    if (ad_event.confirmation_type == ConfirmationType::kConversion) {
+    if (ad_event.confirmation_type == mojom::ConfirmationType::kConversion) {
       ++creative_set_conversion_counts[ad_event.creative_set_id];
     }
   }

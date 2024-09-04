@@ -6,22 +6,24 @@
 #include "brave/components/brave_ads/core/internal/history/ad_history_builder_util.h"
 
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 namespace brave_ads {
 
-AdHistoryItemInfo BuildAdHistoryItem(const AdInfo& ad,
-                                     const ConfirmationType confirmation_type,
-                                     const std::string& title,
-                                     const std::string& description) {
+AdHistoryItemInfo BuildAdHistoryItem(
+    const AdInfo& ad,
+    const mojom::ConfirmationType mojom_confirmation_type,
+    const std::string& title,
+    const std::string& description) {
   CHECK(ad.IsValid());
 
   AdHistoryItemInfo ad_history_item;
 
   ad_history_item.created_at = base::Time::Now();
   ad_history_item.type = ad.type;
-  ad_history_item.confirmation_type = confirmation_type;
+  ad_history_item.confirmation_type = mojom_confirmation_type;
   ad_history_item.placement_id = ad.placement_id;
   ad_history_item.creative_instance_id = ad.creative_instance_id;
   ad_history_item.creative_set_id = ad.creative_set_id;

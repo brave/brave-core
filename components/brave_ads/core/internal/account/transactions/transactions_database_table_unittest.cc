@@ -13,8 +13,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -42,8 +41,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*reconciled_at=*/test::DistantFuture(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
@@ -51,7 +50,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
   AdvanceClockBy(base::Days(5));
 
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
-      /*value=*/0.03, AdType::kNotificationAd, ConfirmationType::kClicked,
+      /*value=*/0.03, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kClicked,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
@@ -73,8 +73,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   TransactionList transactions;
 
   const TransactionInfo transaction = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction);
 
@@ -97,8 +97,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*reconciled_at=*/test::DistantFuture(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
@@ -106,7 +106,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   AdvanceClockBy(base::Days(5));
 
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
-      /*value=*/0.03, AdType::kNotificationAd, ConfirmationType::kClicked,
+      /*value=*/0.03, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kClicked,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
@@ -127,14 +128,15 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, ReconcileTransactions) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*reconciled_at=*/test::DistantFuture(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
-      /*value=*/0.03, AdType::kNotificationAd, ConfirmationType::kClicked,
+      /*value=*/0.03, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kClicked,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
@@ -173,8 +175,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, PurgeExpired) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*reconciled_at=*/test::DistantFuture(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
@@ -182,13 +184,14 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, PurgeExpired) {
   AdvanceClockBy(base::Days(90));
 
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
-      /*value=*/0.03, AdType::kNotificationAd, ConfirmationType::kClicked,
+      /*value=*/0.03, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kClicked,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
   const TransactionInfo transaction_3 = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*reconciled_at=*/test::DistantFuture(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_3);
@@ -220,8 +223,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest,
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*reconciled_at=*/test::DistantFuture(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
@@ -229,7 +232,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest,
   AdvanceClockBy(base::Days(90) - base::Milliseconds(1));
 
   const TransactionInfo transaction_2 = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd, ConfirmationType::kClicked,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kClicked,
       /*reconciled_at=*/test::DistantFuture(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
