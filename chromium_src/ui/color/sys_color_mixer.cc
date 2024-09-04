@@ -8,11 +8,6 @@
 #include "brave/ui/color/brave_sys_color_mixer.h"
 
 #define AddSysColorMixer AddSysColorMixer_Chromium
-// #define kGrayscale kGrayscale) {                        \
-//     AddGrayscaleSysColorOverrides(mixer, key);          \
-//     ui::AddBraveGrayscaleSysColorOverrides(mixer, key); \
-//   }                                                     \
-//   else if (false
 
 #include "src/ui/color/sys_color_mixer.cc"
 

@@ -6,10 +6,9 @@
 #ifndef BRAVE_UI_COLOR_BRAVE_SYS_COLOR_MIXER_H_
 #define BRAVE_UI_COLOR_BRAVE_SYS_COLOR_MIXER_H_
 
-#include "ui/color/color_provider_key.h"
-
 namespace ui {
 class ColorProvider;
+struct ColorProviderKey;
 
 void AddBraveSysColorMixer(ColorProvider*, const ColorProviderKey& key);
 }  // namespace ui
