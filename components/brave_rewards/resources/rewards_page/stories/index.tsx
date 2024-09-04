@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import { LocaleContext } from '../../shared/lib/locale_context'
-import { css, scopedCSS } from '../lib/scoped_css'
+import { scoped } from '../lib/scoped_css'
 import { AppModelContext } from '../lib/app_model_context'
 import { createModel } from './storybook_model'
 import { App } from '../components/app'
@@ -15,12 +15,12 @@ export default {
   title: 'Rewards/Page'
 }
 
-const style = scopedCSS('storybook-wrapper', css`
+const style = scoped.css`
   & {
     position: absolute;
     inset: 0;
   }
-`)
+`
 
 export function RewardsPage() {
   const model = React.useMemo(() => createModel(), [])

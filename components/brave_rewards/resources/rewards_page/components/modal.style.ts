@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { color, font } from '@brave/leo/tokens/css/variables'
-import { css, scopedCSS } from '../lib/scoped_css'
+import { scoped } from '../lib/scoped_css'
 
-export const modalStyle = scopedCSS('app-modal', css`
+export const modalStyle = scoped.css`
   & {
     --self-animation-duration: 250ms;
     --modal-header-padding-bottom: 32px;
@@ -14,7 +14,7 @@ export const modalStyle = scopedCSS('app-modal', css`
     border: none;
     border-radius: 16px;
     padding: 32px;
-    background: ${color.container.background};
+    background: var(--modal-background, ${color.container.background});
     color: ${color.text.primary};
     outline: none;
 
@@ -68,9 +68,9 @@ export const modalStyle = scopedCSS('app-modal', css`
       backdrop-filter: blur(8px);
     }
   }
-`)
+`
 
-export const headerStyle = scopedCSS('app-modal-header', css`
+export const headerStyle = scoped.css`
   & {
     padding-bottom: var(--modal-header-padding-bottom);
     padding-right: 42px;
@@ -128,9 +128,9 @@ export const headerStyle = scopedCSS('app-modal-header', css`
       cursor: default;
     }
   }
-`)
+`
 
-export const actionsStyle = scopedCSS('app-modal-actions', css`
+export const actionsStyle = scoped.css`
   & {
     display: flex;
     gap: 16px;
@@ -159,4 +159,4 @@ export const actionsStyle = scopedCSS('app-modal-actions', css`
       order: 0;
     }
   }
-`)
+`

@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { color, font } from '@brave/leo/tokens/css/variables'
-import { css, scopedCSS } from '../../lib/scoped_css'
+import { scoped } from '../../lib/scoped_css'
 
-export const style = scopedCSS('earning-card', css`
+export const style = scoped.css`
   section {
     padding: 8px 12px;
   }
@@ -106,4 +106,4 @@ export const style = scopedCSS('earning-card', css`
       padding: 4px 0;
     }
   }
-`)
+`

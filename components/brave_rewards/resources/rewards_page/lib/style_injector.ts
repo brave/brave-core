@@ -5,6 +5,8 @@
 
 const stylesheetMap = new Map<string, CSSStyleSheet>()
 
+export const css = String.raw
+
 // Adds CSS to the document. If a stylesheet with the specified `id` has already
 // been added to the document, then it will be replaced with the provided CSS.
 export async function addStyles(id: string, cssText: unknown) {
