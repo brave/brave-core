@@ -41,7 +41,7 @@ import { Column } from '../../../shared/style'
 // components
 import getWalletPageApiProxy from '../../../../page/wallet_page_api_proxy'
 import { WalletBanner } from '../../wallet-banner/index'
-import { ExploreWeb3Header } from '../explore_web3/explore_web3_header'
+import { ExploreWeb3Header } from '../../card-headers/explorer_web3_header'
 import {
   EditVisibleAssetsModal //
 } from '../../popup-modals/edit-visible-assets-modal/index'
