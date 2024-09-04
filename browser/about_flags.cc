@@ -24,7 +24,6 @@
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
-#include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
@@ -801,14 +800,6 @@
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               brave_ads::kAllowedToFallbackToCustomNotificationAdFeature),     \
-      },                                                                       \
-      {                                                                        \
-          "brave-sync-v2",                                                     \
-          "Enable Brave Sync v2",                                              \
-          "Brave Sync v2 integrates with chromium sync engine with Brave "     \
-          "specific authentication flow and enforce client side encryption",   \
-          kOsDesktop,                                                          \
-          FEATURE_VALUE_TYPE(brave_sync::features::kBraveSync),                \
       },                                                                       \
       {                                                                        \
           "file-system-access-api",                                            \
