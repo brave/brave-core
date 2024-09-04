@@ -65,7 +65,7 @@ void AIRewriterButtonPositioner::UpdateButton(blink::WebDocument document,
   auto* frame = document.GetFrame();
 
   // Hide button if nothing is selected.
-  if (!frame->HasSelection()) {
+  if (!frame->HasSelection() || !frame->HasTransientUserActivation()) {
     button_->Hide();
     return;
   }
