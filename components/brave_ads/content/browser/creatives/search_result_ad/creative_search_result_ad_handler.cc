@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_handler.h"
 
+#include <string>
 #include <utility>
 
 #include "base/functional/bind.h"
