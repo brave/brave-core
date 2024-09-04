@@ -29,14 +29,6 @@
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchDisabled
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchEnabled
 
-# These tests fail because our default search provider is not Google, which
-# makes the page classification return the result the tests don't expect. Also,
-# kZeroSuggestPrefetchingOnWeb feature is currently disabled by default which
-# causes prefetch not to start.
--ZeroSuggestPrefetchTabHelperBrowserTestOnNTP.StartPrefetch
--ZeroSuggestPrefetchTabHelperBrowserTestOnSRP.StartPrefetch
--ZeroSuggestPrefetchTabHelperBrowserTestOnWeb.StartPrefetch
-
 # This test fails because we modify the Profile Picker UI to skip the initial
 # screen and the tests ends up creating 2 profiles instead of the intended one.
 -ProfilePickerLocalProfileCreationDialogBrowserTest.CancelLocalProfileCreation

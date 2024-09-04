@@ -18,6 +18,14 @@
 -PersistentBackground/AutomationApiTestWithContextType.ImageLabels/0
 -ServiceWorker/AutomationApiTestWithContextType.ImageLabels/0
 
+# These tests fail because our default search provider is not Google, which
+# makes the page classification return the result the tests don't expect. Also,
+# kZeroSuggestPrefetchingOnWeb feature is currently disabled by default which
+# causes prefetch not to start.
+-ZeroSuggestPrefetchTabHelperBrowserTest.*
+-ZeroSuggestPrefetchTabHelperBrowserTestOnNTP.StartPrefetch
+-ZeroSuggestPrefetchTabHelperBrowserTestOnSRP.StartPrefetch
+-ZeroSuggestPrefetchTabHelperBrowserTestOnWeb.StartPrefetch
 
 # Client side phishing detection is disabled in Brave
 -PhishingClassifierDelegateTest.HasFlatBufferModel
@@ -2416,4 +2424,3 @@
 -WebViewTests/WebViewTest.TestContextMenu/SiteIsolationForGuestsEnabled
 -WebViewWithDefaultSiteInstanceTest.IsolatedOrigin
 -WithAndWithoutReset/SessionRestoreTabGroupsTest.*
--ZeroSuggestPrefetchTabHelperBrowserTest.*
