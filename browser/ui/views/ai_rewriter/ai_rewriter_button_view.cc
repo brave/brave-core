@@ -23,6 +23,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "content/public/browser/page.h"
@@ -37,6 +38,7 @@
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
+#include "ui/gfx/geometry/vector2d.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
@@ -98,15 +100,17 @@ base::WeakPtr<AIRewriterButton> AIRewriterButtonView::MaybeCreateButton(
     return nullptr;
   }
 
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  CHECK(browser_view);
+
   auto* button = new AIRewriterButtonView(browser, contents);
 
-  auto* parent_widget = views::Widget::GetWidgetForNativeWindow(
-      browser->window()->GetNativeWindow());
-  CHECK(parent_widget);
+  auto* parent = browser_view->GetWidget()->GetNativeWindow();
+  CHECK(parent);
 
   views::Widget::InitParams params(
       views::Widget::InitParams::Type::TYPE_CONTROL);
-  params.parent = parent_widget->GetNativeView();
+  params.parent = parent;
   params.activatable = views::Widget::InitParams::Activatable::kNo;
   params.delegate = button;
   params.shadow_type = views::Widget::InitParams::ShadowType::kDrop;
@@ -133,13 +137,11 @@ void AIRewriterButtonView::Show(const gfx::Rect& rect) {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   CHECK(browser_view);
 
-  auto offset = browser_view->contents_container()->bounds().OffsetFromOrigin();
-
-  constexpr int kPaddingY = -8;
+  constexpr int kPaddingY = -4;
   auto size = GetPreferredSize();
-  auto pos = rect.origin() + offset;
-  pos.Offset(GetPreferredSize().width() / 2,
-             -GetPreferredSize().height() / 2 + kPaddingY);
+  auto pos = rect.origin();
+  views::View::ConvertPointToWidget(browser_view->contents_container(), &pos);
+  pos.Offset(0, -size.height() + kPaddingY);
   GetWidget()->SetBounds(gfx::Rect(pos, size));
 }
 
