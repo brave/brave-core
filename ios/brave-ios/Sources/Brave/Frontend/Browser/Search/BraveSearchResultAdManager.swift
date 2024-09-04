@@ -36,14 +36,18 @@ class BraveSearchResultAdManager: NSObject {
     )
   }
 
-  static func maybeTriggerSearchResultAdClickedEvent(_ url: URL, rewards: BraveRewards) {
+  static func maybeTriggerSearchResultAdClickedEvent(
+    _ url: URL,
+    rewards: BraveRewards,
+    completion: @escaping ((Bool) -> Void)
+  ) {
     guard let placementId = getPlacementID(url) else {
       return
     }
 
     rewards.ads.triggerSearchResultAdClickedEvent(
       placementId,
-      completion: { _ in }
+      completion: completion
     )
   }
 

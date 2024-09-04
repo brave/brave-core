@@ -62,6 +62,9 @@ void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
                                0.0);
   registry->RegisterBooleanPref(prefs::kNotificationAdDidFallbackToCustom,
                                 false);
+
+  registry->RegisterBooleanPref(prefs::kShouldShowSearchResultAdClickedInfoBar,
+                                true);
 }
 
 }  // namespace brave_ads

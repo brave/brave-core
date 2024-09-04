@@ -5,25 +5,37 @@
 
 source_set("search_result_ad") {
   sources = [
+    "creative_search_result_ad_clicked_infobar_delegate.cc",
+    "creative_search_result_ad_clicked_infobar_delegate.h",
     "creative_search_result_ad_tab_helper.cc",
     "creative_search_result_ad_tab_helper.h",
   ]
 
   public_deps = [
     "//base",
+    "//brave/components/brave_ads/core/mojom",
+    "//components/infobars/core",
     "//content/public/browser",
   ]
 
   deps = [
+    "//brave/app:brave_generated_resources_grit_grit",
     "//brave/browser/brave_ads",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/content/browser",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_search/common",
+    "//brave/components/vector_icons",
+    "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/profiles:profile",
     "//chrome/common",
+    "//components/infobars/content",
+    "//components/infobars/core",
     "//components/prefs",
+    "//components/strings:components_strings_grit",
+    "//components/vector_icons",
+    "//ui/base",
     "//url",
   ]
 }

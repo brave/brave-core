@@ -337,3 +337,20 @@ extension Strings {
     comment: "Question shown to user when tapping a link that opens the App Store app"
   )
 }
+
+// Search result ad clicked InfoBar title and learn more / opt out choices link.
+extension Strings {
+  public static let searchResultAdClickedInfoBarTitle = NSLocalizedString(
+    "SearchResultAdClickedInfoBarTitle",
+    bundle: .module,
+    value: "Thanks for supporting Brave Search by clicking a private ad. Unlike Big Tech, we measure ad performance anonymously to preserve your privacy.",
+    comment: "The text label of creative search result ad infobar message."
+  )
+
+  public static let searchResultAdClickedLearnMoreOptOutChoicesLabel = NSLocalizedString(
+    "SearchResultAdClickedLearnMoreOptOutChoicesLabel",
+    bundle: .module,
+    value: "Learn more / opt out choices",
+    comment: "The text label of creative search result ad learn more / opt out choices link."
+  )
+}

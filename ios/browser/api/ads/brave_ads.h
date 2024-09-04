@@ -70,6 +70,11 @@ OBJC_EXPORT
 /// Returns `true` if the user opted-in to search result ads.
 - (BOOL)isOptedInToSearchResultAds;
 
+/// Returns `true` if the privacy notice infobar should be displayed when a user
+/// clicks on a search result ad. This should be called before calling
+/// `triggerSearchResultAdEvent` for the click.
+- (BOOL)shouldShowSearchResultAdClickedInfoBar;
+
 /// Used to notify the ads service that the user has opted-in/opted-out to
 /// Brave News.
 - (void)notifyBraveNewsIsEnabledPreferenceDidChange:(BOOL)isEnabled;

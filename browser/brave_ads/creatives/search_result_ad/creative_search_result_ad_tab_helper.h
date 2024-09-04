@@ -11,10 +11,12 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
 class GURL;
+class PrefService;
 
 namespace brave_ads {
 
@@ -39,10 +41,17 @@ class CreativeSearchResultAdTabHelper
 
   bool ShouldHandleCreativeAdEvents() const;
 
+  void MaybeTriggerCreativeAdClickedEvent(const GURL& url,
+                                          TriggerAdEventCallback callback);
+
  private:
   friend class content::WebContentsUserData<CreativeSearchResultAdTabHelper>;
 
   AdsService* GetAdsService() const;
+
+  PrefService* GetPrefs() const;
+
+  void MaybeTriggerCreativeAdClickedEventCallback(bool success);
 
   void MaybeCreateCreativeSearchResultAdHandler(
       content::NavigationHandle* navigation_handle);
