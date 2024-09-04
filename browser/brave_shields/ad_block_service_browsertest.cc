@@ -1726,10 +1726,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RemoveparamSubresource) {
 #define MAYBE_RemoveparamTopLevelNavigation \
   DISABLED_RemoveparamTopLevelNavigation
 #define MAYBE_DefaultRemoveparamFromCustom DISABLED_DefaultRemoveparamFromCustom
-#else
+#else  // BUILDFLAG(IS_ANDROID)
 #define MAYBE_RemoveparamTopLevelNavigation RemoveparamTopLevelNavigation
 #define MAYBE_DefaultRemoveparamFromCustom DefaultRemoveparamFromCustom
-#endif
+#endif  // BUILDFLAG(IS_ANDROID)
 
 // `$removeparam` should be respected for top-level navigations
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
@@ -2732,6 +2732,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ListEnabled) {
   }
 }
 
+// Content Picker and the context menu is disabled for Android.
+#if !BUILDFLAG(IS_ANDROID)
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
   const GURL tab_url =
       embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
@@ -2769,7 +2771,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
       content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
 }
 
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ManageCustomFiltersContextMenu) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ManageCustomFiltersMenu) {
   const GURL tab_url =
       embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
   NavigateToURL(tab_url);
@@ -2788,6 +2790,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ManageCustomFiltersContextMenu) {
   EXPECT_EQ(web_contents()->GetLastCommittedURL(),
             "chrome://settings/shields/filters");
 }
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {
  public:
