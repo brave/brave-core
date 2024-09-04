@@ -17,6 +17,7 @@
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_test_util.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_test_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -132,7 +133,7 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
 }
 
 TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
-       DoNotTriggerViewedOrClickedAdEventsForInvalidWebPage) {
+       DoNotTriggerViewedAdEventForInvalidWebPage) {
   // Arrange
   const auto creative_search_result_ad_handler =
       CreativeSearchResultAdHandler::MaybeCreate(
@@ -146,12 +147,6 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
       TriggerSearchResultAdEvent(
           ::testing::_, mojom::SearchResultAdEventType::kViewedImpression,
           ::testing::_))
-      .Times(0);
-
-  EXPECT_CALL(
-      ads_service_mock_,
-      TriggerSearchResultAdEvent(
-          ::testing::_, mojom::SearchResultAdEventType::kClicked, ::testing::_))
       .Times(0);
 
   SimulateMaybeExtractCreativeAdPlacementIdsFromWebPageCallback(
@@ -159,7 +154,7 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
 }
 
 TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
-       DoNotTriggerViewedOrClickedAdEventsForEmptyWebPage) {
+       DoNotTriggerViewedAdEventForEmptyWebPage) {
   // Arrange
   const auto creative_search_result_ad_handler =
       CreativeSearchResultAdHandler::MaybeCreate(
@@ -173,12 +168,6 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
       TriggerSearchResultAdEvent(
           ::testing::_, mojom::SearchResultAdEventType::kViewedImpression,
           ::testing::_))
-      .Times(0);
-
-  EXPECT_CALL(
-      ads_service_mock_,
-      TriggerSearchResultAdEvent(
-          ::testing::_, mojom::SearchResultAdEventType::kClicked, ::testing::_))
       .Times(0);
 
   SimulateMaybeExtractCreativeAdPlacementIdsFromWebPageCallback(
@@ -186,7 +175,7 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
 }
 
 TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
-       DoNotTriggerViewedOrClickedAdEventsForInvalidCreativeAd) {
+       DoNotTriggerViewedAdEventForInvalidCreativeAd) {
   // Arrange
   const auto creative_search_result_ad_handler =
       CreativeSearchResultAdHandler::MaybeCreate(
@@ -200,12 +189,6 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
       TriggerSearchResultAdEvent(
           ::testing::_, mojom::SearchResultAdEventType::kViewedImpression,
           ::testing::_))
-      .Times(0);
-
-  EXPECT_CALL(
-      ads_service_mock_,
-      TriggerSearchResultAdEvent(
-          ::testing::_, mojom::SearchResultAdEventType::kClicked, ::testing::_))
       .Times(0);
 
   SimulateMaybeExtractCreativeAdPlacementIdsFromWebPageCallback(
@@ -215,7 +198,7 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
 }
 
 TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
-       DoNotTriggerViewedOrClickedAdEventsForInvalidCreativeSetConversion) {
+       DoNotTriggerViewedAdEventForInvalidCreativeSetConversion) {
   // Arrange
   const auto creative_search_result_ad_handler =
       CreativeSearchResultAdHandler::MaybeCreate(
@@ -242,8 +225,7 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
               kCreativeSetConversionUrlPatternPropertyName}));
 }
 
-TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
-       TriggerViewedAndClickedAdEvents) {
+TEST_F(BraveAdsCreativeSearchResultAdHandlerTest, TriggerAdViewedEvent) {
   // Arrange
   const auto creative_search_result_ad_handler =
       CreativeSearchResultAdHandler::MaybeCreate(
@@ -281,7 +263,7 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
 }
 
 TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
-       TriggerViewedAndClickedAdEventsWithUnreservedCharactersInPlacementId) {
+       TriggerViewedAdEventWithUnreservedCharactersInPlacementId) {
   // Arrange
   const auto creative_search_result_ad_handler =
       CreativeSearchResultAdHandler::MaybeCreate(

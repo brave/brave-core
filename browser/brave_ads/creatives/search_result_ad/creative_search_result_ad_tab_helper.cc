@@ -14,6 +14,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_clicked_infobar_delegate.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_handler.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_url_placement_id_extractor.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
@@ -98,9 +99,7 @@ bool CreativeSearchResultAdTabHelper::ShouldHandleCreativeAdEvents() const {
 
   // If the feature is enabled, we should only trigger creative ad events when
   // the user has joined Brave Rewards.
-  const Profile* const profile =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
-  return profile->GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled);
+  return GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -115,6 +114,22 @@ AdsService* CreativeSearchResultAdTabHelper::GetAdsService() const {
   Profile* const profile =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
   return AdsServiceFactory::GetForProfile(profile);
+}
+
+PrefService* CreativeSearchResultAdTabHelper::GetPrefs() const {
+  Profile* const profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  return profile->GetPrefs();
+}
+
+void CreativeSearchResultAdTabHelper::
+    MaybeTriggerCreativeAdClickedEventCallback(const bool success) {
+  if (!success) {
+    return;
+  }
+
+  CreativeSearchResultAdClickedInfoBarDelegate::Create(web_contents(),
+                                                       GetPrefs());
 }
 
 void CreativeSearchResultAdTabHelper::MaybeCreateCreativeSearchResultAdHandler(
@@ -234,7 +249,10 @@ void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdClickedEventCallback(
 
   ads_service->TriggerSearchResultAdEvent(
       std::move(creative_search_result_ad),
-      mojom::SearchResultAdEventType::kClicked, base::DoNothing());
+      mojom::SearchResultAdEventType::kClicked,
+      base::BindOnce(&CreativeSearchResultAdTabHelper::
+                         MaybeTriggerCreativeAdClickedEventCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void CreativeSearchResultAdTabHelper::DidStartNavigation(

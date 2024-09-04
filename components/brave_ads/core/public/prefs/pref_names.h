@@ -66,6 +66,9 @@ inline constexpr char kNotificationAdDidFallbackToCustom[] =
 inline constexpr char kShouldShowOnboardingNotification[] =
     "brave.brave_ads.should_show_my_first_ad_notification";
 
+inline constexpr char kShouldShowSearchResultAdClickedInfoBar[] =
+    "brave.brave_ads.should_show_search_result_ad_clicked_infobar";
+
 // Brave stats prefs.
 inline constexpr char kEnabledForLastProfile[] =
     "brave.brave_ads.enabled_last_profile";
