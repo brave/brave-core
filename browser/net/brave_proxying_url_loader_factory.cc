@@ -681,7 +681,8 @@ void BraveProxyingURLLoaderFactory::MaybeProxyRequest(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   ResourceContextData::StartProxying(
       browser_context, render_process_id,
-      render_frame_host ? render_frame_host->GetFrameTreeNodeId() : 0,
+      render_frame_host ? render_frame_host->GetFrameTreeNodeId()
+                        : content::FrameTreeNodeId(),
       factory_builder, navigation_response_task_runner);
 }
 
