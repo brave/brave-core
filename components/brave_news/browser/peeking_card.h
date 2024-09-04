@@ -12,7 +12,7 @@
 
 namespace brave_news {
 
-std::optional<size_t> GetPeekingCard(const SubscriptionsSnapshot& subscriptions,
+std::optional<size_t> GetPeekingCard(SubscriptionsSnapshot subscriptions,
                                      const ArticleInfos& articles);
 
 }

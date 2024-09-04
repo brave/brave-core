@@ -125,7 +125,8 @@ class FeedV2Builder {
 
   static mojom::FeedV2Ptr GenerateBasicFeed(FeedGenerationInfo info,
                                             PickArticles pick_hero,
-                                            PickArticles pick_article);
+                                            PickArticles pick_article,
+                                            PickArticles pick_peeking);
   static mojom::FeedV2Ptr GenerateAllFeed(FeedGenerationInfo info);
 
   void UpdateData(const SubscriptionsSnapshot& subscriptions,

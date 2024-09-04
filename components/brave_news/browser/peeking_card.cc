@@ -39,7 +39,7 @@ constexpr double kEveningEntertainmentBoost = 3;
 constexpr char kEntertainmentChannel[] = "Entertainment";
 }  // namespace
 
-std::optional<size_t> GetPeekingCard(const SubscriptionsSnapshot& subscriptions,
+std::optional<size_t> GetPeekingCard(SubscriptionsSnapshot subscriptions,
                                      const ArticleInfos& articles) {
   // Store now, so its consistent for everything.
   auto now = base::Time::Now();

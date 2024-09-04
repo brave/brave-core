@@ -18,6 +18,7 @@
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -155,33 +156,20 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(FeedGenerationInfo& info,
   return result;
 }
 
-// For the first card in the feed we have a special algorithm for generating the
-// peeking card.
-std::vector<mojom::FeedItemV2Ptr> GenerateInitialBlock(
-    FeedGenerationInfo& info) {
-  std::vector<mojom::FeedItemV2Ptr> result;
-
-  auto hero_picker = base::BindRepeating(&GetPeekingCard, info.subscriptions());
-  auto peek = info.PickAndConsume(hero_picker);
-  if (peek) {
-    result.push_back(mojom::FeedItemV2::NewArticle(
-        mojom::Article::New(std::move(peek), /*is_discover=*/false)));
-  }
-  return result;
-}
-
 // Generates a block from sampled content groups:
 // 1. Hero Article
 // 2. 1 - 5 Inline Articles (a percentage of which might be discover cards).
 std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
     FeedGenerationInfo& info,
-    // Ratio of inline articles to discovery articles.
-    // discover ratio % of the time, we should do a discover card here instead
-    // of a roulette card.
-    // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
-    double inline_discovery_ratio =
-        features::kBraveNewsInlineDiscoveryRatio.Get()) {
+    PickArticles pick_hero = base::NullCallback()) {
   DVLOG(1) << __FUNCTION__;
+  // Ratio of inline articles to discovery articles.
+  // discover ratio % of the time, we should do a discover card here instead
+  // of a roulette card.
+  // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.4rkb0vecgekl
+  const double inline_discovery_ratio =
+      features::kBraveNewsInlineDiscoveryRatio.Get();
+
   auto eligible_content_groups = info.GetEligibleContentGroups();
   std::vector<mojom::FeedItemV2Ptr> result;
   if (info.GetArticleInfos().empty() || eligible_content_groups.empty()) {
@@ -242,11 +230,13 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
       info.locale(), std::move(eligible_content_groups),
       std::move(publisher_id_to_channels));
 
-  PickArticles pick_hero = base::BindRepeating(
-      [](GetWeighting weighting, const ArticleInfos& articles) {
-        return PickRouletteWithWeighting(articles, std::move(weighting));
-      },
-      get_weighting.Run(true));
+  if (pick_hero.is_null()) {
+    pick_hero = base::BindRepeating(
+        [](GetWeighting weighting, const ArticleInfos& articles) {
+          return PickRouletteWithWeighting(articles, std::move(weighting));
+        },
+        get_weighting.Run(true));
+  }
 
   PickArticles pick_article = base::BindRepeating(
       [](base::RepeatingCallback<GetWeighting(bool)> gen_weighting,
@@ -482,17 +472,17 @@ void FeedV2Builder::UpdateRequest::AlsoUpdate(
 // static
 mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(FeedGenerationInfo info,
                                                   PickArticles pick_hero,
-                                                  PickArticles pick_article) {
+                                                  PickArticles pick_article,
+                                                  PickArticles pick_peeking) {
   DVLOG(1) << __FUNCTION__;
   auto feed = mojom::FeedV2::New();
 
   constexpr size_t kIterationsPerAd = 2;
   size_t blocks = 0;
   while (!info.GetArticleInfos().empty()) {
-    auto items = feed->items.empty()
-                     ? GenerateInitialBlock(info)
-                     : GenerateBlock(info, pick_hero, pick_article,
-                                     /*inline_discovery_ratio=*/0);
+    auto items = GenerateBlock(
+        info, feed->items.empty() ? pick_peeking : pick_hero, pick_article,
+        /*inline_discovery_ratio=*/0);
     if (items.empty()) {
       break;
     }
@@ -533,15 +523,13 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
     return feed;
   }
 
-  auto peek = GenerateInitialBlock(info);
-  DVLOG(1) << "Inserting peeking block generated from GenerateInitialBlock ("
-           << peek.size() << " items)";
-  add_items(peek);
-
-  // Step 1: Generate a block
+  // Step 1: Generate the initial block. We have a special algorithm for the
+  // first hero card
+  // (https://docs.google.com/document/d/1HH7pohTPp-8uqdccwK4phOrwqK0-NRo-kkBxTDuWUsM)
   // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.rkq699fwps0
   std::vector<mojom::FeedItemV2Ptr> initial_block =
-      GenerateBlockFromContentGroups(info);
+      GenerateBlockFromContentGroups(
+          info, base::BindRepeating(&GetPeekingCard, info.subscriptions()));
   DVLOG(1) << "Step 1: Standard Block (" << initial_block.size()
            << " articles)";
   add_items(initial_block);
@@ -653,9 +641,11 @@ void FeedV2Builder::BuildFollowingFeed(
       subscriptions, {.signals = true},
       mojom::FeedV2Type::NewFollowing(mojom::FeedV2FollowingType::New()),
       base::BindOnce([](FeedGenerationInfo info) {
-        return GenerateBasicFeed(std::move(info),
-                                 base::BindRepeating(&PickRoulette),
-                                 base::BindRepeating(&PickRoulette));
+        auto subscriptions = info.subscriptions();
+        return GenerateBasicFeed(
+            std::move(info), base::BindRepeating(&PickRoulette),
+            base::BindRepeating(&PickRoulette),
+            base::BindRepeating(&GetPeekingCard, std::move(subscriptions)));
       }),
       std::move(callback));
 }
@@ -702,10 +692,11 @@ void FeedV2Builder::BuildChannelFeed(const SubscriptionsSnapshot& subscriptions,
             }
 
             info.raw_feed_items() = std::move(feed_items);
-
-            return GenerateBasicFeed(std::move(info),
-                                     base::BindRepeating(&PickRoulette),
-                                     base::BindRepeating(&PickRoulette));
+            auto subscriptions = info.subscriptions();
+            return GenerateBasicFeed(
+                std::move(info), base::BindRepeating(&PickRoulette),
+                base::BindRepeating(&PickRoulette),
+                base::BindRepeating(&GetPeekingCard, std::move(subscriptions)));
           },
           channel),
       std::move(callback));
@@ -744,6 +735,7 @@ void FeedV2Builder::BuildPublisherFeed(
             info.raw_feed_items() = std::move(items);
 
             return GenerateBasicFeed(std::move(info),
+                                     base::BindRepeating(&PickFirstIndex),
                                      base::BindRepeating(&PickFirstIndex),
                                      base::BindRepeating(&PickFirstIndex));
           },
