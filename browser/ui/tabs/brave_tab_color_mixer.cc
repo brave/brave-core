@@ -5,11 +5,8 @@
 
 #include "brave/browser/ui/tabs/brave_tab_color_mixer.h"
 
-#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_map.h"
-#include "base/no_destructor.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/color/color_palette.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/color/color_mixer.h"
@@ -23,6 +20,13 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
                                 const ui::ColorProviderKey& key) {
   auto& mixer = provider->AddMixer();
 
+  // This is the default dark theme. We need this because we customize some of
+  // the default dark colors.
+  auto is_grayscale_dark =
+      key.color_mode == ui::ColorProviderKey::ColorMode::kDark &&
+      key.user_color_source ==
+          ui::ColorProviderKey::UserColorSource::kGrayscale;
+
   mixer[kColorBraveVerticalTabActiveBackground] = {
       kColorTabBackgroundInactiveFrameActive};
   mixer[kColorBraveVerticalTabInactiveBackground] = {kColorToolbar};
@@ -33,8 +37,12 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
       kColorTabForegroundInactiveFrameActive};
   mixer[kColorBraveVerticalTabNTBShortcutTextColor] = {
       kColorTabForegroundActiveFrameActive};
-  mixer[kColorBraveSplitViewTileBackground] = {
-      nala::kColorDesktopbrowserTabbarSplitViewVertical};
+
+  // Unfortunately, we need to specify a different blend amount in the default
+  // dark theme, as we override the Upstream colors.
+  mixer[kColorBraveSplitViewTileBackground] =
+      ui::BlendTowardMaxContrast(kColorTabBackgroundInactiveFrameActive,
+                                 (is_grayscale_dark ? 0.15 : 0.075) * 0xFF);
   mixer[kColorBraveSplitViewMenuItemIcon] = {nala::kColorIconDefault};
   mixer[kColorBraveSplitViewUrl] = {nala::kColorTextTertiary};
   mixer[kColorBraveSplitViewMenuButtonBorder] = {nala::kColorDividerSubtle};
@@ -43,6 +51,7 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorBraveSplitViewMenuButtonBackground] = {
       nala::kColorContainerBackground};
   mixer[kColorBraveSplitViewMenuButtonIcon] = {nala::kColorIconInteractive};
+
   mixer[kColorBraveSharedPinnedTabDummyViewThumbnailBorder] = {
       nala::kColorDividerSubtle};
   mixer[kColorBraveSharedPinnedTabDummyViewDescription] = {
