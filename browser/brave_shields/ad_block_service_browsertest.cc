@@ -1726,10 +1726,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RemoveparamSubresource) {
 #define MAYBE_RemoveparamTopLevelNavigation \
   DISABLED_RemoveparamTopLevelNavigation
 #define MAYBE_DefaultRemoveparamFromCustom DISABLED_DefaultRemoveparamFromCustom
-#else
+#else  // BUILDFLAG(IS_ANDROID)
 #define MAYBE_RemoveparamTopLevelNavigation RemoveparamTopLevelNavigation
 #define MAYBE_DefaultRemoveparamFromCustom DefaultRemoveparamFromCustom
-#endif
+#endif  // BUILDFLAG(IS_ANDROID)
 
 // `$removeparam` should be respected for top-level navigations
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
@@ -2732,7 +2732,16 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ListEnabled) {
   }
 }
 
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
+#if BUILDFLAG(IS_ANDROID)
+// Content Picker and the context menu is disable for Android.
+#define MAYBE_ContentPicker DISABLED_ContentPicker
+#define MAYBE_DISABLED_ManageCustomFiltersMenu DISABLED_ManageCustomFiltersMenu
+#else
+#define MAYBE_ContentPicker ContentPicker
+#define MAYBE_DISABLED_ManageCustomFiltersMenu ManageCustomFiltersMenu
+#endif
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_ContentPicker) {
   const GURL tab_url =
       embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
   NavigateToURL(tab_url);
@@ -2769,7 +2778,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
       content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
 }
 
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ManageCustomFiltersContextMenu) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       MAYBE_DISABLED_ManageCustomFiltersMenu) {
   const GURL tab_url =
       embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
   NavigateToURL(tab_url);
@@ -2783,7 +2793,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ManageCustomFiltersContextMenu) {
     menu.ExecuteCommand(IDC_ADBLOCK_CONTEXT_MANAGE_CUSTOM_FILTERS, 0);
   }
 
+#if !BUILDFLAG(IS_ANDROID)
   ASSERT_EQ(2, browser()->tab_strip_model()->count());
+#endif  // !BUILDFLAG(IS_ANDROID)
   ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
   EXPECT_EQ(web_contents()->GetLastCommittedURL(),
             "chrome://settings/shields/filters");
