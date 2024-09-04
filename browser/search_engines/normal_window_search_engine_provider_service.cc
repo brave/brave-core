@@ -7,6 +7,7 @@
 
 #include "base/functional/bind.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "components/search_engines/search_engines_pref_names.h"
@@ -15,6 +16,8 @@
 NormalWindowSearchEngineProviderService::
     NormalWindowSearchEngineProviderService(Profile* profile)
     : profile_(profile) {
+  brave::UpdateDefaultSearchSuggestionsPrefs(g_browser_process->local_state(),
+                                             profile_->GetPrefs());
   private_search_provider_guid_.Init(
       prefs::kSyncedDefaultPrivateSearchProviderGUID, profile_->GetPrefs(),
       base::BindRepeating(

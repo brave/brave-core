@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <tuple>
+#include <vector>
+
 #include "base/path_service.h"
 #include "brave/browser/profile_resetter/brave_profile_resetter.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
@@ -12,6 +15,7 @@
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -24,11 +28,14 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/common/chrome_paths.h"
+#include "chrome/common/chrome_switches.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/country_codes/country_codes.h"
+#include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engine_choice/search_engine_choice_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/search_engines_test_util.h"
@@ -259,6 +266,65 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
             default_provider_id);
 #endif
 }
+
+class SearchSuggestionsEnabledTest : public InProcessBrowserTest,
+                                     public ::testing::WithParamInterface<
+                                         std::tuple<std::string, bool, bool>> {
+ public:
+  SearchSuggestionsEnabledTest() : default_locale(GetLocale()) {}
+  ~SearchSuggestionsEnabledTest() override = default;
+
+  void SetUpCommandLine(base::CommandLine* command_line) final {
+    if (IsNewUser()) {
+      command_line->AppendSwitch(switches::kForceFirstRun);
+    }
+  }
+
+  const std::string& GetLocale() const { return std::get<0>(GetParam()); }
+  bool IsNewUser() const { return std::get<1>(GetParam()); }
+  bool IsSearchSuggestionsEnabled() const { return std::get<2>(GetParam()); }
+
+  const brave_l10n::test::ScopedDefaultLocale default_locale;
+};
+
+IN_PROC_BROWSER_TEST_P(SearchSuggestionsEnabledTest,
+                       DefaultSearchSuggestEnabledTest) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  auto* service =
+      TemplateURLServiceFactory::GetForProfile(browser()->profile());
+  auto brave_search_data = TemplateURLDataFromPrepopulatedEngine(
+      TemplateURLPrepopulateData::brave_search);
+  TemplateURL brave_template_url(*brave_search_data);
+
+  auto bing_search_data = TemplateURLDataFromPrepopulatedEngine(
+      TemplateURLPrepopulateData::brave_bing);
+  TemplateURL bing_template_url(*bing_search_data);
+
+  EXPECT_EQ(IsSearchSuggestionsEnabled(),
+            prefs->GetBoolean(prefs::kSearchSuggestEnabled));
+
+  service->SetUserSelectedDefaultSearchProvider(&bing_template_url);
+  EXPECT_EQ(IsSearchSuggestionsEnabled(),
+            prefs->GetBoolean(prefs::kSearchSuggestEnabled));
+
+  service->SetUserSelectedDefaultSearchProvider(&brave_template_url);
+  EXPECT_EQ(IsSearchSuggestionsEnabled(),
+            prefs->GetBoolean(prefs::kSearchSuggestEnabled));
+}
+
+// Check suggestions is enabled with supported(US) or non-supported(KR) country
+// per new user(or not). Only new user from supported country enables search
+// suggestions.
+INSTANTIATE_TEST_SUITE_P(
+    /*no prefix*/,
+    SearchSuggestionsEnabledTest,
+    testing::ValuesIn(std::vector<std::tuple<std::string /* locale */,
+                                             bool /* new user */,
+                                             bool /* suggestions enabled */>>{
+        {"en_US", true, true},
+        {"en_US", false, false},
+        {"ko_KR", true, false},
+        {"ko_KR", false, false}}));
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 

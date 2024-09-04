@@ -78,7 +78,9 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #else
+#include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
+#include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #endif
@@ -171,6 +173,9 @@ void BraveBrowserProcessImpl::Init() {
     // suppressed it from previous os.
     local_state()->ClearPref(prefs::kSuppressUnsupportedOSWarning);
   }
+
+  brave::PrepareSearchSuggestionsConfig(local_state(),
+                                        first_run::IsChromeFirstRun());
 #endif
 }
 
