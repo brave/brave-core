@@ -5,15 +5,25 @@
 
 import * as React from 'react'
 
-// utils
-import { ExploreNavOptions } from '../../../../options/nav-options'
+// Options
+import { ExploreNavOptions } from '../../../options/nav-options'
+
+// Components
 import {
   SegmentedControl //
-} from '../../../shared/segmented_control/segmented_control'
+} from '../../shared/segmented_control/segmented_control'
 
-// components
+// Styled Components
+import { HeaderWrapper } from './explorer_web3_header.style'
 
 export const ExploreWeb3Header = () => {
   // render
-  return <SegmentedControl navOptions={ExploreNavOptions} />
+  return (
+    <HeaderWrapper>
+      <SegmentedControl
+        maxWidth='384px'
+        navOptions={ExploreNavOptions}
+      />
+    </HeaderWrapper>
+  )
 }
