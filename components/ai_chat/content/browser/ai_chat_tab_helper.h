@@ -21,6 +21,7 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
@@ -107,10 +108,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void InnerWebContentsAttached(content::WebContents* inner_web_contents,
                                 content::RenderFrameHost* render_frame_host,
                                 bool is_full_page) override;
-  void OnWebContentsFocused(
-      content::RenderWidgetHost* render_widget_host) override;
-  void OnWebContentsLostFocus(
-      content::RenderWidgetHost* render_widget_host) override;
 
   // favicon::FaviconDriverObserver
   void OnFaviconUpdated(favicon::FaviconDriver* favicon_driver,
@@ -145,6 +142,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   uint8_t check_pdf_a11y_tree_attempts_ = 0;
   GetPageContentCallback pending_get_page_content_callback_;
 
+  raw_ptr<content::WebContents> inner_web_contents_ = nullptr;
   std::unique_ptr<PDFA11yInfoLoadObserver> pdf_load_observer_;
   base::OnceClosure on_pdf_a11y_info_loaded_cb_;
 

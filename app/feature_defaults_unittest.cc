@@ -161,9 +161,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kKAnonymityServiceOHTTPRequests,
       &features::kNewTabPageTriggerForPrerender2,
       &features::kNotificationTriggers,
-#if !BUILDFLAG(IS_ANDROID)
-      &features::kPdfOcr,
-#endif
 #if BUILDFLAG(IS_ANDROID)
       &features::kPrivacyGuidePreloadAndroid,
 #endif
@@ -182,7 +179,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kImmersiveFullscreen,
 #endif
 #if !BUILDFLAG(IS_ANDROID)
-      &features::kUseMoveNotCopyInMergeTreeUpdate,
       &features::kWebAppUniversalInstall,
 #endif
       &features::kWebIdentityDigitalCredentials,
