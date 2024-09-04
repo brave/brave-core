@@ -209,10 +209,10 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     _webMain = std::make_unique<web::WebMain>(std::move(params));
 
     // Initialize and set the main browser state.
-    ChromeBrowserStateManager* browserStateManager =
-        GetApplicationContext()->GetChromeBrowserStateManager();
     ChromeBrowserState* chromeBrowserState =
-        browserStateManager->GetLastUsedBrowserStateDeprecatedDoNotUse();
+        GetApplicationContext()
+            ->GetProfileManager()
+            ->GetLastUsedProfileDeprecatedDoNotUse();
     _mainBrowserState = chromeBrowserState;
 
     // Disable Safe-Browsing via Prefs
