@@ -545,10 +545,10 @@
 
 - (bool)editingEnabled {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  ChromeBrowserStateManager* browserStateManager =
-      GetApplicationContext()->GetChromeBrowserStateManager();
   ChromeBrowserState* browserState =
-      browserStateManager->GetLastUsedBrowserStateDeprecatedDoNotUse();
+      GetApplicationContext()
+          ->GetProfileManager()
+          ->GetLastUsedProfileDeprecatedDoNotUse();
 
   PrefService* prefs = user_prefs::UserPrefs::Get(browserState);
   return prefs->GetBoolean(bookmarks::prefs::kEditBookmarksEnabled);

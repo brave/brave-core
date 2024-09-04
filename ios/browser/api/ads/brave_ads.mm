@@ -396,12 +396,10 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
 #pragma mark - Profile prefs
 
 - (void)initProfilePrefService {
-  ChromeBrowserStateManager* browserStateManager =
-      GetApplicationContext()->GetChromeBrowserStateManager();
-  CHECK(browserStateManager);
-
   ChromeBrowserState* chromeBrowserState =
-      browserStateManager->GetLastUsedBrowserStateDeprecatedDoNotUse();
+      GetApplicationContext()
+          ->GetProfileManager()
+          ->GetLastUsedProfileDeprecatedDoNotUse();
   CHECK(chromeBrowserState);
 
   _profilePrefService = chromeBrowserState->GetPrefs();
