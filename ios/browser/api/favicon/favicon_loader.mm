@@ -56,12 +56,10 @@ FaviconLoaderSize const FaviconLoaderSizeDesiredLargest =
 }
 
 + (instancetype)getForPrivateMode:(bool)privateMode {
-  ChromeBrowserStateManager* browser_state_manager =
-      GetApplicationContext()->GetChromeBrowserStateManager();
-  CHECK(browser_state_manager);
-
   ChromeBrowserState* browser_state =
-      browser_state_manager->GetLastUsedBrowserStateDeprecatedDoNotUse();
+      GetApplicationContext()
+          ->GetProfileManager()
+          ->GetLastUsedProfileDeprecatedDoNotUse();
   CHECK(browser_state);
 
   if (privateMode) {

@@ -109,12 +109,10 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 
         listener(BraveBookmarksExporterStateStarted);
 
-        ChromeBrowserStateManager* browserStateManager =
-            GetApplicationContext()->GetChromeBrowserStateManager();
-        DCHECK(browserStateManager);
-
         ChromeBrowserState* chromeBrowserState =
-            browserStateManager->GetLastUsedBrowserStateDeprecatedDoNotUse();
+            GetApplicationContext()
+                ->GetProfileManager()
+                ->GetLastUsedProfileDeprecatedDoNotUse();
         DCHECK(chromeBrowserState);
 
         bookmark_html_writer::WriteBookmarks(

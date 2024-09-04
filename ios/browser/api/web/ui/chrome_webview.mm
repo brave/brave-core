@@ -178,12 +178,10 @@ void WebViewJavaScriptDialogPresenter::SetUIDelegate(
 @implementation ChromeWebViewController
 - (instancetype)initWithPrivateBrowsing:(bool)isPrivateBrowsing {
   if ((self = [super init])) {
-    ChromeBrowserStateManager* browser_state_manager =
-        GetApplicationContext()->GetChromeBrowserStateManager();
-
-    browser_state_ =
-        browser_state_manager->GetLastUsedBrowserStateDeprecatedDoNotUse()
-            ->GetOriginalChromeBrowserState();
+    browser_state_ = GetApplicationContext()
+                         ->GetProfileManager()
+                         ->GetLastUsedProfileDeprecatedDoNotUse()
+                         ->GetOriginalChromeBrowserState();
 
     if (isPrivateBrowsing) {
       browser_state_ = browser_state_->GetOffTheRecordChromeBrowserState();

@@ -98,8 +98,8 @@ BraveIOSAutocompleteMatchType BraveTypeFromMatchType(
   AutocompleteClassifier* classifier =
       ios::AutocompleteClassifierFactory::GetForBrowserState(
           GetApplicationContext()
-              ->GetChromeBrowserStateManager()
-              ->GetLastUsedBrowserStateDeprecatedDoNotUse());
+              ->GetProfileManager()
+              ->GetLastUsedProfileDeprecatedDoNotUse());
   if (classifier) {
     AutocompleteMatch match;
     classifier->Classify(base::SysNSStringToUTF16(text), false, false,
