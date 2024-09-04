@@ -296,3 +296,83 @@ extension DownloadQueue: DownloadDelegate {
     }
   }
 }
+
+class WebKitDownload: Download {
+  let fileURL: URL
+  let response: URLResponse
+  let suggestedFileName: String
+  weak var download: WKDownload?
+
+  private weak var webView: WKWebView?
+  private var downloadResumeData: Data?
+  private weak var downloadQueue: DownloadQueue?
+  private var completedUnitCountObserver: NSKeyValueObservation?
+
+  init(
+    fileURL: URL,
+    response: URLResponse,
+    suggestedFileName: String,
+    download: WKDownload,
+    downloadQueue: DownloadQueue
+  ) {
+    self.fileURL = fileURL
+    self.response = response
+    self.suggestedFileName = suggestedFileName
+    self.download = download
+    self.webView = download.webView
+    self.downloadQueue = downloadQueue
+    super.init()
+
+    self.filename = suggestedFileName
+    self.bytesDownloaded = download.progress.completedUnitCount
+    self.totalBytesExpected = download.progress.totalUnitCount
+
+    completedUnitCountObserver = download.progress.observe(
+      \.completedUnitCount,
+      changeHandler: { [weak self] progress, value in
+        guard let self = self else { return }
+
+        self.bytesDownloaded = progress.completedUnitCount
+        self.totalBytesExpected = progress.totalUnitCount
+
+        guard let downloadQueue = self.downloadQueue else { return }
+
+        downloadQueue.delegate?.downloadQueue(
+          downloadQueue,
+          didDownloadCombinedBytes: self.bytesDownloaded,
+          combinedTotalBytesExpected: self.totalBytesExpected
+        )
+      }
+    )
+  }
+
+  override func cancel() {
+    download?.cancel({ [weak self] data in
+      guard let self = self else { return }
+      if let data = data {
+        self.downloadResumeData = data
+      }
+
+      self.delegate?.download(self, didCompleteWithError: nil)
+    })
+  }
+
+  override func pause() {
+
+  }
+
+  override func resume() {
+    if let downloadResumeData = downloadResumeData {
+      webView?.resumeDownload(
+        fromResumeData: downloadResumeData,
+        completionHandler: { [weak self] download in
+          guard let self = self else { return }
+          self.download = download
+          self.bytesDownloaded = download.progress.completedUnitCount
+          self.totalBytesExpected = download.progress.totalUnitCount
+          self.downloadQueue?.enqueue(self)
+        }
+      )
+    }
+  }
+}
