@@ -82,7 +82,6 @@ public class BraveVpnApiResponseUtils {
                     region = BraveVpnUtils.selectedServerRegion.getRegionName();
                     braveVpnServerRegion = BraveVpnUtils.selectedServerRegion;
                 }
-                // BraveVpnUtils.selectedServerRegion = null;
             } else {
                 String serverRegion = BraveVpnPrefUtils.getRegionName();
                 region =

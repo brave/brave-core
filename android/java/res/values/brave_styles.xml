@@ -14,6 +14,10 @@
     <style name="BraveDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="windowNoTitle">true</item>
     </style>
+    <style name="BraveRadioButton" parent="Theme.AppCompat.Light">
+       <item name="colorControlNormal">@color/schemes_on_surface_variant</item>
+       <item name="colorControlActivated">@color/schemes_primary</item>
+     </style>
     <style name="BraveRewardsSwitchTheme">
         <item name="colorControlActivated">@color/rewards_panel_action_color</item>
         <item name="colorSwitchThumbNormal">@color/modern_grey_600</item>
