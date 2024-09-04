@@ -60,10 +60,13 @@
   if (type == ContentSettingsType::AUTOPLAY)                           \
     return "autoplay";
 
-#define kInstalledWebappProvider         \
-  kRemoteListProvider:                   \
-  return SiteSettingSource::kRemoteList; \
-  case content_settings::ProviderType::kInstalledWebappProvider
+#define BRAVE_PROVIDER_TYPE_TO_SITE_SETTINGS_SOURCE \
+  case ProviderType::kRemoteListProvider:           \
+    return SiteSettingSource::kRemoteList;
+
+#define BRAVE_PROVIDER_TO_DEFAULT_SETTINGS_STRING \
+  case ProviderType::kRemoteListProvider:         \
+    return "remote_list";
 
 #define kNumSources     \
   kRemoteList:          \
@@ -73,7 +76,8 @@
 #include "src/chrome/browser/ui/webui/settings/site_settings_helper.cc"
 
 #undef kNumSources
-#undef kInstalledWebappProvider
+#undef BRAVE_PROVIDER_TYPE_TO_SITE_SETTINGS_SOURCE
+#undef BRAVE_PROVIDER_TO_DEFAULT_SETTINGS_STRING
 #undef BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
 #undef BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME
 #undef BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_TO_GROUP_NAME
