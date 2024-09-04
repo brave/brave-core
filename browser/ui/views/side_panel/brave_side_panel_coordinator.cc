@@ -135,6 +135,7 @@ void BraveSidePanelCoordinator::UpdateToolbarButtonHighlight(
 
 void BraveSidePanelCoordinator::PopulateSidePanel(
     bool supress_animations,
+    const UniqueKey& unique_key,
     SidePanelEntry* entry,
     std::optional<std::unique_ptr<views::View>> content_view) {
   CHECK(entry);
@@ -147,6 +148,6 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
     return;
   }
 
-  SidePanelCoordinator::PopulateSidePanel(supress_animations, entry,
+  SidePanelCoordinator::PopulateSidePanel(supress_animations, unique_key, entry,
                                           std::move(content_view));
 }
