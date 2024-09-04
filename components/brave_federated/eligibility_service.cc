@@ -10,14 +10,14 @@ namespace brave_federated {
 
 EligibilityService::EligibilityService()
     : is_on_battery_power_(
-          base::PowerMonitor::AddPowerStateObserverAndReturnOnBatteryState(
-              this)) {
+          base::PowerMonitor::GetInstance()
+              ->AddPowerStateObserverAndReturnOnBatteryState(this)) {
   connection_type_ = net::NetworkChangeNotifier::GetConnectionType();
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 }
 
 EligibilityService::~EligibilityService() {
-  base::PowerMonitor::RemovePowerStateObserver(this);
+  base::PowerMonitor::GetInstance()->RemovePowerStateObserver(this);
   net::NetworkChangeNotifier::RemoveNetworkChangeObserver(this);
 }
 
