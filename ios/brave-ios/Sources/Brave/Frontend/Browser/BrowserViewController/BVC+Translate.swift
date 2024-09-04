@@ -9,6 +9,7 @@ import Foundation
 import Onboarding
 import Preferences
 import UIKit
+import SwiftUI
 
 extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
   func updateTranslateURLBar(tab: Tab?, state: TranslateURLBarButton.TranslateState) {
@@ -103,7 +104,15 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
 
   func presentToast(_ languageInfo: BraveTranslateLanguageInfo) {
     let popover = PopoverController(
-      content: TranslateToast(languageInfo: languageInfo),
+      content: TranslateToast(languageInfo: languageInfo, presentSettings: { [weak self] in
+        guard let self = self else { return }
+        
+        let popup = PopupViewController(rootView: TranslateSettingsView(), isDismissable: true)
+        self.present(popup, animated: true)
+      }, revertTranslation: { [weak self] in
+        guard let self = self else { return }
+        print("Dismissing")
+      }),
       autoLayoutConfiguration: .phoneWidth
     )
 

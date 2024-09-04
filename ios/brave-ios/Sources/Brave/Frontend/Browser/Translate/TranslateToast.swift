@@ -7,8 +7,12 @@ import BraveUI
 import SwiftUI
 
 struct TranslateToast: View {
+  @Environment(\.dismiss)
+  private var dismiss
 
   var languageInfo: BraveTranslateLanguageInfo
+  var presentSettings: (() -> Void)?
+  var revertTranslation: (() -> Void)?
 
   var currentLanguageName: String {
     if let languageCode = languageInfo.currentLanguage.languageCode?.identifier,
@@ -61,7 +65,8 @@ struct TranslateToast: View {
       Spacer()
 
       Button {
-
+        dismiss()
+        presentSettings?()
       } label: {
         Image(braveSystemName: "leo.settings")
           .foregroundStyle(Color(braveSystemName: .iconDefault))
@@ -73,7 +78,8 @@ struct TranslateToast: View {
         .padding([.leading, .trailing])
 
       Button {
-
+        dismiss()
+        revertTranslation?()
       } label: {
         Text("Undo")
           .foregroundStyle(Color(braveSystemName: .textInteractive))
