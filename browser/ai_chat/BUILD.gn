@@ -54,10 +54,12 @@ source_set("browser_tests") {
       "//brave/components/sidebar/browser",
       "//brave/components/text_recognition/common/buildflags",
       "//chrome/browser",
+      "//chrome/browser/screen_ai:screen_ai_install_state",
       "//chrome/browser/ui/browser_window",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
       "//printing/buildflags",
+      "//services/screen_ai/public/cpp:utilities",
     ]
 
     if (enable_print_preview) {

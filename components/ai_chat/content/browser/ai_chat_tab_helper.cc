@@ -61,9 +61,15 @@ void AIChatTabHelper::PDFA11yInfoLoadObserver::AccessibilityEventReceived(
 #if BUILDFLAG(ENABLE_PDF)
   for (const auto& update : details.updates) {
     for (const auto& node : update.nodes) {
-      if (node.GetStringAttribute(ax::mojom::StringAttribute::kName) ==
-          l10n_util::GetStringUTF8(IDS_PDF_LOADED_TO_A11Y_TREE)) {
-        helper_->OnPDFA11yInfoLoaded();
+      const auto& node_name =
+          node.GetStringAttribute(ax::mojom::StringAttribute::kName);
+      if (node_name == l10n_util::GetStringUTF8(IDS_PDF_LOADED_TO_A11Y_TREE) ||
+          node_name == l10n_util::GetStringUTF8(IDS_PDF_OCR_COMPLETED) ||
+          node_name == l10n_util::GetStringUTF8(IDS_PDF_OCR_NO_RESULT)) {
+        // features::kUseMoveNotCopyInMergeTreeUpdate updates a11y tree after
+        // `AccessibilityEventReceived` so we cannot assume changes are
+        // reflected upon receiving updates.
+        helper_->CheckPDFA11yTree();
         break;
       }
     }
@@ -159,6 +165,7 @@ void AIChatTabHelper::OnPreviewTextReady(std::string ocr_text) {
 void AIChatTabHelper::WebContentsDestroyed() {
   favicon::ContentFaviconDriver::FromWebContents(web_contents())
       ->RemoveObserver(this);
+  inner_web_contents_ = nullptr;
 }
 
 void AIChatTabHelper::DidFinishNavigation(
@@ -224,22 +231,11 @@ void AIChatTabHelper::InnerWebContentsAttached(
               ->CreateScopedModeForWebContents(inner_web_contents,
                                                current_mode);
     }
+    inner_web_contents_ = inner_web_contents;
     pdf_load_observer_ =
         std::make_unique<PDFA11yInfoLoadObserver>(inner_web_contents, this);
     is_pdf_a11y_info_loaded_ = false;
   }
-}
-
-void AIChatTabHelper::OnWebContentsFocused(
-    content::RenderWidgetHost* render_widget_host) {
-  if (IsPdf(web_contents())) {
-    CheckPDFA11yTree();
-  }
-}
-
-void AIChatTabHelper::OnWebContentsLostFocus(
-    content::RenderWidgetHost* render_widget_host) {
-  check_pdf_a11y_tree_attempts_ = 0;
 }
 
 // favicon::FaviconDriverObserver
@@ -283,6 +279,27 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
     }
     // invalidation_token doesn't matter for PDF extraction.
     pending_get_page_content_callback_ = std::move(callback);
+    // PdfAccessibilityTree::AccessibilityModeChanged handles kPDFOcr changes
+    // with |always_load_or_reload_accessibility| is true
+    if (inner_web_contents_) {
+      auto current_mode = inner_web_contents_->GetAccessibilityMode();
+      if (!current_mode.has_mode(ui::AXMode::kPDFOcr)) {
+        current_mode |= ui::AXMode::kPDFOcr;
+        scoped_accessibility_mode_ =
+            content::BrowserAccessibilityState::GetInstance()
+                ->CreateScopedModeForWebContents(inner_web_contents_,
+                                                 current_mode);
+      }
+      pdf_load_observer_ =
+          std::make_unique<PDFA11yInfoLoadObserver>(inner_web_contents_, this);
+    }
+    // Manually check when pdf extraction requested so we don't always rely on
+    // a11y events to prevent stale callback. It can happens during background
+    // pdf tab loading or bug in upstream kPdfOCR that an empty page in pdf will
+    // cause PdfOcrHelper::AreAllPagesOcred() return false becasue it won't get
+    // Ocred but `remaining_page_count_` was set to total pdf page count. Hence
+    // status IDS_PDF_OCR_COMPLETED or IDS_PDF_OCR_NO_RESULT won't be set.
+    CheckPDFA11yTree();
   } else {
     if (base::Contains(kPrintPreviewRetrievalHosts,
                        GetPageURL().host_piece())) {
@@ -333,7 +350,7 @@ void AIChatTabHelper::CheckPDFA11yTree() {
     DVLOG(4) << "Waiting for PDF a11y tree ready, scheduled next check.";
     if (++check_pdf_a11y_tree_attempts_ >= 5) {
       DVLOG(4) << "PDF a11y tree not ready after 5 attempts.";
-      // Reset the counter for next OnWebContentsFocused
+      // Reset the counter for next check
       check_pdf_a11y_tree_attempts_ = 0;
       return;
     }
