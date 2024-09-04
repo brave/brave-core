@@ -41,6 +41,7 @@ brave_chrome_java_deps = [
   "//brave/components/safe_browsing/android:brave_safe_browsing_java",
   "//brave/components/url_sanitizer/common/mojom:mojom_java",
   "//brave/components/variations/android:java",
+  "//brave/components/version_info/android:java",
   "//brave/third_party/android_deps:com_airbnb_android_java",
   "//brave/third_party/android_deps:com_android_installreferrer_java",
   "//brave/third_party/android_deps:com_github_bumptech_glide_java",
@@ -59,7 +60,6 @@ brave_chrome_java_deps = [
   "//third_party/androidx:androidx_lifecycle_lifecycle_viewmodel_java",
   "//ui/android:java_enums_srcjar",
   "//url/mojom:url_mojom_origin_java",
-  "//brave/components/version_info/android:java",
 ]
 
 brave_chrome_java_deps += brave_app_billing_deps

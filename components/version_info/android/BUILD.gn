@@ -3,17 +3,15 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//build/config/android/rules.gni")
 import("//brave/build/config.gni")
+import("//build/config/android/rules.gni")
 import("//build/util/process_version.gni")
 
 _brave_version_constants_java_file = "$target_gen_dir/java/org/chromium/base/version_info/BraveVersionConstants.java"
 
 android_library("java") {
   sources = [ _brave_version_constants_java_file ]
-  deps = [
-    ":generate_brave_version_constants",
-  ]
+  deps = [ ":generate_brave_version_constants" ]
 }
 
 process_version("generate_brave_version_constants") {
