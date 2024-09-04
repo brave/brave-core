@@ -370,37 +370,55 @@ export const accountEndpoints = ({
       ]
     }),
 
-    importHardwareAccounts: mutation<true, BraveWallet.HardwareWalletAccount[]>(
+    importHardwareAccounts: mutation<
+      true,
       {
-        queryFn: async (
-          hardwareAccounts,
-          { endpoint },
-          extraOptions,
-          baseQuery
-        ) => {
-          try {
-            const { cache, data: api } = baseQuery(undefined)
-            api.keyringService.addHardwareAccounts(hardwareAccounts)
-            cache.clearAccountsRegistry()
-            return {
-              data: true
-            }
-          } catch (error) {
-            return handleEndpointError(
-              endpoint,
-              'Failed to import hardware accounts',
-              error
-            )
-          }
-        },
-        invalidatesTags: [
-          'AccountInfos',
-          'TokenBalances',
-          'TokenBalancesForChainId',
-          'AccountTokenCurrentBalance'
-        ]
+        coin: BraveWallet.CoinType
+        accounts: BraveWallet.HardwareWalletAccount[]
       }
-    ),
+    >({
+      queryFn: async (
+        { coin, accounts },
+        { endpoint },
+        extraOptions,
+        baseQuery
+      ) => {
+        try {
+          const { cache, data: api } = baseQuery(undefined)
+
+          if (coin === BraveWallet.CoinType.BTC) {
+            for await (const hardwareAccount of accounts) {
+              const { success } =
+                await api.keyringService.addBitcoinHardwareAccount(
+                  hardwareAccount
+                )
+              if (!success) {
+                throw new Error('Import failed')
+              }
+            }
+          } else {
+            api.keyringService.addHardwareAccounts(accounts)
+          }
+
+          cache.clearAccountsRegistry()
+          return {
+            data: true
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to import hardware accounts',
+            error
+          )
+        }
+      },
+      invalidatesTags: [
+        'AccountInfos',
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
+      ]
+    }),
 
     removeAccount: mutation<
       true,

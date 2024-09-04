@@ -35,6 +35,7 @@ class AccountResolverDelegateImplUnitTest : public testing::Test {
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {
     feature_list_.InitWithFeatures({features::kBraveWalletBitcoinFeature,
+                                    features::kBraveWalletBitcoinLedgerFeature,
                                     features::kBraveWalletZCashFeature},
                                    {});
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
@@ -80,8 +81,11 @@ TEST_F(AccountResolverDelegateImplUnitTest, ResolveAccountId) {
     accounts.push_back(std::move(account));
   }
 
-  auto hw_acc = GetAccountUtils().CreateEthHWAccount();
-  accounts.push_back(hw_acc.Clone());
+  auto hw_eth_acc = GetAccountUtils().CreateEthHWAccount();
+  accounts.push_back(hw_eth_acc.Clone());
+
+  auto hw_btc_acc = GetAccountUtils().CreateBtcHWAccount();
+  accounts.push_back(hw_btc_acc.Clone());
 
   auto some_acc = GetAccountUtils().EnsureEthAccount(1);
   accounts.push_back(some_acc.Clone());
@@ -105,25 +109,37 @@ TEST_F(AccountResolverDelegateImplUnitTest, ResolveAccountId) {
     }
   }
   EXPECT_TRUE(AllCoinsTested());
+  EXPECT_TRUE(AllKeyringsTested());
 
   // HW account is not resolvable after removal.
-  keyring_service()->RemoveAccount(hw_acc->account_id.Clone(),
+  keyring_service()->RemoveAccount(hw_eth_acc->account_id.Clone(),
                                    kTestWalletPassword, base::DoNothing());
-  EXPECT_FALSE(
-      resolver()->ResolveAccountId(&hw_acc->account_id->unique_key, nullptr));
-  EXPECT_FALSE(resolver()->ResolveAccountId(&hw_acc->account_id->unique_key,
-                                            &hw_acc->address));
-  EXPECT_FALSE(resolver()->ResolveAccountId(nullptr, &hw_acc->address));
+  EXPECT_FALSE(resolver()->ResolveAccountId(&hw_eth_acc->account_id->unique_key,
+                                            nullptr));
+  EXPECT_FALSE(resolver()->ResolveAccountId(&hw_eth_acc->account_id->unique_key,
+                                            &hw_eth_acc->address));
+  EXPECT_FALSE(resolver()->ResolveAccountId(nullptr, &hw_eth_acc->address));
+
+  keyring_service()->RemoveAccount(hw_btc_acc->account_id.Clone(),
+                                   kTestWalletPassword, base::DoNothing());
+  EXPECT_FALSE(resolver()->ResolveAccountId(&hw_btc_acc->account_id->unique_key,
+                                            nullptr));
 
   // Btc-like accs have no address and should not be resolvable by an empty
   // address.
   for (const auto& keyring_id :
        {mojom::KeyringId::kBitcoin84, mojom::KeyringId::kBitcoin84Testnet,
+        mojom::KeyringId::kBitcoinImport,
+        mojom::KeyringId::kBitcoinImportTestnet,
+        mojom::KeyringId::kBitcoinHardware,
+        mojom::KeyringId::kBitcoinHardwareTestnet,
         mojom::KeyringId::kZCashMainnet, mojom::KeyringId::kBitcoin84Testnet}) {
     auto btc_like_account = GetAccountUtils().EnsureAccount(keyring_id, 0);
     EXPECT_EQ("", btc_like_account->address);
     EXPECT_EQ("", btc_like_account->account_id->address);
   }
+  EXPECT_TRUE(AllCoinsTested());
+  EXPECT_TRUE(AllKeyringsTested());
 
   const std::string empty_address = "";
   EXPECT_FALSE(resolver()->ResolveAccountId(nullptr, &empty_address));
@@ -145,22 +161,28 @@ TEST_F(AccountResolverDelegateImplUnitTest, ValidateAccountId) {
     accounts.push_back(std::move(account));
   }
 
-  auto hw_acc = GetAccountUtils().CreateEthHWAccount();
-  accounts.push_back(hw_acc.Clone());
+  auto hw_eth_acc = GetAccountUtils().CreateEthHWAccount();
+  accounts.push_back(hw_eth_acc.Clone());
+  auto hw_btc_acc = GetAccountUtils().CreateBtcHWAccount();
+  accounts.push_back(hw_btc_acc.Clone());
 
   for (const auto& acc : accounts) {
     ASSERT_TRUE(acc);
     EXPECT_TRUE(resolver()->ValidateAccountId(acc->account_id));
   }
   EXPECT_TRUE(AllCoinsTested());
+  EXPECT_TRUE(AllKeyringsTested());
 
   EXPECT_FALSE(
       resolver()->ValidateAccountId(GetAccountUtils().EthUnkownAccountId()));
 
-  // HW account is invalid after removal.
-  keyring_service()->RemoveAccount(hw_acc->account_id.Clone(),
+  // HW accounts are invalid after removal.
+  keyring_service()->RemoveAccount(hw_eth_acc->account_id.Clone(),
                                    kTestWalletPassword, base::DoNothing());
-  EXPECT_FALSE(resolver()->ValidateAccountId(hw_acc->account_id));
+  EXPECT_FALSE(resolver()->ValidateAccountId(hw_eth_acc->account_id));
+  keyring_service()->RemoveAccount(hw_btc_acc->account_id.Clone(),
+                                   kTestWalletPassword, base::DoNothing());
+  EXPECT_FALSE(resolver()->ValidateAccountId(hw_btc_acc->account_id));
 }
 
 }  // namespace brave_wallet

@@ -309,10 +309,12 @@ TEST_F(NetworkManagerUnitTest, GetAllChainsTest) {
   EXPECT_EQ(btc_chains[1]->chain_id, mojom::kBitcoinTestnet);
   EXPECT_THAT(btc_chains[0]->supported_keyrings,
               ElementsAreArray({mojom::KeyringId::kBitcoin84,
-                                mojom::KeyringId::kBitcoinImport}));
+                                mojom::KeyringId::kBitcoinImport,
+                                mojom::KeyringId::kBitcoinHardware}));
   EXPECT_THAT(btc_chains[1]->supported_keyrings,
               ElementsAreArray({mojom::KeyringId::kBitcoin84Testnet,
-                                mojom::KeyringId::kBitcoinImportTestnet}));
+                                mojom::KeyringId::kBitcoinImportTestnet,
+                                mojom::KeyringId::kBitcoinHardwareTestnet}));
 
   // ZCash
   auto zec_main_custom =
@@ -331,6 +333,7 @@ TEST_F(NetworkManagerUnitTest, GetAllChainsTest) {
               ElementsAreArray({mojom::KeyringId::kZCashTestnet}));
 
   EXPECT_TRUE(AllCoinsTested());
+  EXPECT_TRUE(AllKeyringsTested());
 }
 
 TEST_F(NetworkManagerUnitTest, GetNetworkURLTest) {
@@ -554,7 +557,8 @@ TEST_F(NetworkManagerUnitTest, GetChain) {
       {"https://www.blockchain.com/explorer"}, {}, 0,
       {GURL("https://bitcoin-mainnet.wallet.brave.com/")}, "BTC", "Bitcoin", 8,
       mojom::CoinType::BTC,
-      {mojom::KeyringId::kBitcoin84, mojom::KeyringId::kBitcoinImport});
+      {mojom::KeyringId::kBitcoin84, mojom::KeyringId::kBitcoinImport,
+       mojom::KeyringId::kBitcoinHardware});
   EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::BTC));
   EXPECT_EQ(
       network_manager()->GetChain("bitcoin_mainnet", mojom::CoinType::BTC),

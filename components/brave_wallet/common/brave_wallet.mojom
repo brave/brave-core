@@ -788,6 +788,8 @@ enum KeyringId {
   kZCashTestnet = 7,
   kBitcoinImport = 8,
   kBitcoinImportTestnet = 9,
+  kBitcoinHardware = 10,
+  kBitcoinHardwareTestnet = 11,
 };
 
 const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
@@ -805,12 +807,11 @@ enum HardwareVendor {
 };
 
 struct HardwareWalletAccount {
-  string address;
+  string address; // Account's address or account's xpub for BTC.
   string derivation_path;
   string name;
   HardwareVendor hardware_vendor;
   string device_id;
-  CoinType coin;
   KeyringId keyring_id;
 };
 
@@ -1063,6 +1064,9 @@ interface KeyringService {
 
   // Adds hardware accounts
   AddHardwareAccounts(array<HardwareWalletAccount> info) => (array<AccountInfo>? account_infos);
+
+  // Adds BTC hardware account
+  AddBitcoinHardwareAccount(HardwareWalletAccount info) => (bool success);
 
   // Removes imported or hardware account
   RemoveAccount(AccountId account_id, string password) => (bool success);

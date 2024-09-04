@@ -30,7 +30,9 @@ inline constexpr mojom::KeyringId kAllKeyrings[] = {
     mojom::KeyringId::kZCashMainnet,
     mojom::KeyringId::kZCashTestnet,
     mojom::KeyringId::kBitcoinImport,
-    mojom::KeyringId::kBitcoinImportTestnet};
+    mojom::KeyringId::kBitcoinImportTestnet,
+    mojom::KeyringId::kBitcoinHardware,
+    mojom::KeyringId::kBitcoinHardwareTestnet};
 
 bool IsZCashKeyring(mojom::KeyringId keyring_id);
 
@@ -52,6 +54,7 @@ bool IsBitcoinMainnetKeyring(mojom::KeyringId keyring_id);
 bool IsBitcoinTestnetKeyring(mojom::KeyringId keyring_id);
 bool IsBitcoinHDKeyring(mojom::KeyringId keyring_id);
 bool IsBitcoinImportKeyring(mojom::KeyringId keyring_id);
+bool IsBitcoinHardwareKeyring(mojom::KeyringId keyring_id);
 bool IsBitcoinNetwork(const std::string& network_id);
 bool IsBitcoinAccount(const mojom::AccountId& account_id);
 

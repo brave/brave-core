@@ -14,6 +14,7 @@
 namespace brave_wallet {
 
 bool AllCoinsTested();
+bool AllKeyringsTested();
 
 inline constexpr char kHttpURL[] = "http://bad.com/";
 inline constexpr char kHttpLocalhostURL[] = "http://localhost:8080/";
@@ -44,6 +45,7 @@ void PrintTo(const BitcoinAddressPtr& address, ::std::ostream* os);
 void PrintTo(const BlockchainTokenPtr& token, ::std::ostream* os);
 void PrintTo(const BitcoinBalancePtr& balance, ::std::ostream* os);
 void PrintTo(const BitcoinKeyId& key_id, ::std::ostream* os);
+void PrintTo(const BitcoinAccountInfoPtr& account_info, ::std::ostream* os);
 
 }  // namespace mojom
 

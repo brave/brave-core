@@ -137,7 +137,7 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
       GetExtendedKeyAccountBalanceCallback callback,
       base::expected<DiscoveredBitcoinAccount, std::string> result);
 
-  void OnImportedAccountDiscoveryDone(
+  void OnAddedAccountDiscoveryDone(
       DiscoverWalletAccountTask* task,
       mojom::AccountIdPtr account_id,
       base::expected<DiscoveredBitcoinAccount, std::string> result);

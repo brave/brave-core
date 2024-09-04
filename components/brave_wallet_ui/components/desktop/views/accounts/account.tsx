@@ -21,7 +21,8 @@ import {
   WalletRoutes,
   AccountModalTypes,
   AccountPageTabs,
-  SupportedTestNetworks
+  SupportedTestNetworks,
+  BitcoinTestnetKeyringIds
 } from '../../../../constants/types'
 
 // utils
@@ -116,8 +117,7 @@ import { AccountsTabActions } from '../../../../page/reducers/accounts-tab-reduc
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 
 const INDIVIDUAL_TESTNET_ACCOUNT_KEYRING_IDS = [
-  BraveWallet.KeyringId.kBitcoin84Testnet,
-  BraveWallet.KeyringId.kBitcoinImportTestnet,
+  ...BitcoinTestnetKeyringIds,
   BraveWallet.KeyringId.kFilecoinTestnet,
   BraveWallet.KeyringId.kZCashTestnet
 ]

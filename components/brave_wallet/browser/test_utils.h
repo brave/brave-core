@@ -76,7 +76,11 @@ class AccountUtils {
                                              const std::string& name);
   mojom::AccountInfoPtr GetImportedAccount(mojom::KeyringId keyring_id,
                                            uint32_t index);
+  mojom::AccountInfoPtr GetHardwareAccount(mojom::KeyringId keyring_id,
+                                           uint32_t index);
   mojom::AccountInfoPtr CreateImportedAccount(mojom::KeyringId keyring_id,
+                                              const std::string& name);
+  mojom::AccountInfoPtr CreateHardwareAccount(mojom::KeyringId keyring_id,
                                               const std::string& name);
   mojom::AccountInfoPtr EnsureAccount(mojom::KeyringId keyring_id,
                                       uint32_t index);
@@ -105,6 +109,7 @@ class AccountUtils {
   mojom::AccountInfoPtr CreateZecTestAccount(const std::string& name);
 
   mojom::AccountInfoPtr CreateEthHWAccount();
+  mojom::AccountInfoPtr CreateBtcHWAccount();
 
   mojom::AccountIdPtr FindAccountIdByAddress(const std::string& address);
 

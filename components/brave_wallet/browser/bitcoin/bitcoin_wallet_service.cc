@@ -776,13 +776,14 @@ void BitcoinWalletService::RunDiscovery(mojom::AccountIdPtr account_id,
 void BitcoinWalletService::AccountsAdded(
     std::vector<mojom::AccountInfoPtr> accounts) {
   for (auto& account : accounts) {
-    if (IsBitcoinImportKeyring(account->account_id->keyring_id)) {
+    // For new bitcoin account search for transacted and/or funded addresses.
+    if (IsBitcoinKeyring(account->account_id->keyring_id)) {
       auto task = std::make_unique<DiscoverWalletAccountTask>(
           this, account->account_id->keyring_id,
           account->account_id->account_index);
 
       task->set_callback(
-          base::BindOnce(&BitcoinWalletService::OnImportedAccountDiscoveryDone,
+          base::BindOnce(&BitcoinWalletService::OnAddedAccountDiscoveryDone,
                          weak_ptr_factory_.GetWeakPtr(), task.get(),
                          account->account_id.Clone()));
 
@@ -792,7 +793,7 @@ void BitcoinWalletService::AccountsAdded(
   }
 }
 
-void BitcoinWalletService::OnImportedAccountDiscoveryDone(
+void BitcoinWalletService::OnAddedAccountDiscoveryDone(
     DiscoverWalletAccountTask* task,
     mojom::AccountIdPtr account_id,
     base::expected<DiscoveredBitcoinAccount, std::string> result) {

@@ -194,7 +194,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
     std::vector<mojom::HardwareWalletAccountPtr> hw_accounts;
     hw_accounts.push_back(mojom::HardwareWalletAccount::New(
         address, "m/44'/501'/0'/0", "name 1", mojom::HardwareVendor::kLedger,
-        "device1", mojom::CoinType::SOL, mojom::kSolanaKeyringId));
+        "device1", mojom::kSolanaKeyringId));
 
     auto added_accounts =
         keyring_service_->AddHardwareAccountsSync(std::move(hw_accounts));

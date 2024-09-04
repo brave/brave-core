@@ -97,17 +97,21 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
     bitcoin_wallet_service_->SetArrangeTransactionsForTesting(true);
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
-
-    btc_account_ =
-        GetAccountUtils().EnsureAccount(mojom::KeyringId::kBitcoin84, 0);
-    ASSERT_TRUE(btc_account_);
-    bitcoin_test_rpc_server_->SetUpBitcoinRpc(kMnemonicDivideCruise, 0);
-    keyring_service_->UpdateNextUnusedAddressForBitcoinAccount(
-        btc_account_->account_id, 5, 5);
   }
 
   AccountUtils GetAccountUtils() {
     return AccountUtils(keyring_service_.get());
+  }
+
+  void SetupBtcAccount(uint32_t next_receive_index = 0,
+                       uint32_t next_change_index = 0) {
+    bitcoin_test_rpc_server_->SetUpBitcoinRpc(kMnemonicDivideCruise, 0);
+    btc_account_ =
+        GetAccountUtils().EnsureAccount(mojom::KeyringId::kBitcoin84, 0);
+    ASSERT_TRUE(btc_account_);
+    task_environment_.RunUntilIdle();
+    keyring_service_->UpdateNextUnusedAddressForBitcoinAccount(
+        btc_account_->account_id, next_receive_index, next_change_index);
   }
 
   mojom::AccountIdPtr account_id() const {
@@ -115,8 +119,10 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
   }
 
  protected:
-  base::test::ScopedFeatureList feature_list_{
+  base::test::ScopedFeatureList scoped_btc_feature_{
       features::kBraveWalletBitcoinFeature};
+  base::test::ScopedFeatureList scoped_btc_ledger_feature_{
+      features::kBraveWalletBitcoinLedgerFeature};
 
   mojom::AccountInfoPtr btc_account_;
 
@@ -132,6 +138,8 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
 };
 
 TEST_F(BitcoinWalletServiceUnitTest, GetBalance) {
+  SetupBtcAccount();
+
   base::MockCallback<BitcoinWalletService::GetBalanceCallback> callback;
 
   // GetBalance works.
@@ -176,6 +184,8 @@ TEST_F(BitcoinWalletServiceUnitTest, GetBalance) {
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, GetBitcoinAccountInfo) {
+  SetupBtcAccount(5, 5);
+
   base::MockCallback<BitcoinWalletService::GetBitcoinAccountInfoCallback>
       callback;
 
@@ -186,26 +196,19 @@ TEST_F(BitcoinWalletServiceUnitTest, GetBitcoinAccountInfo) {
   expected_bitcoin_account_info->next_change_address =
       mojom::BitcoinAddress::New("bc1q9khch2y932xktwxxzplvaxw6r7h0pw2yeelvj7",
                                  mojom::BitcoinKeyId::New(1, 5));
-  auto& stats_map = bitcoin_test_rpc_server_->address_stats_map();
-  for (auto i = 0; i < 7; ++i) {
-    auto addr = keyring_service_->GetBitcoinAddress(
-        account_id(), mojom::BitcoinKeyId::New(0, 5 + i));
-    if (i == 6) {
-      stats_map[addr->address_string] =
-          BitcoinTestRpcServer::EmptyAddressStats(addr->address_string);
-    } else {
-      stats_map[addr->address_string] =
-          BitcoinTestRpcServer::TransactedAddressStats(addr->address_string);
-    }
-  }
 
-  EXPECT_CALL(callback, Run(EqualsMojo(expected_bitcoin_account_info)));
+  EXPECT_CALL(callback, Run(Truly([&](const mojom::BitcoinAccountInfoPtr& arg) {
+                EXPECT_EQ(expected_bitcoin_account_info, arg);
+                return true;
+              })));
   bitcoin_wallet_service_->GetBitcoinAccountInfo(account_id(), callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, RunDiscovery) {
+  SetupBtcAccount(5, 5);
+
   base::MockCallback<BitcoinWalletService::RunDiscoveryCallback> callback;
   auto bitcoin_account_info =
       bitcoin_wallet_service_->GetBitcoinAccountInfoSync(account_id());
@@ -272,6 +275,8 @@ TEST_F(BitcoinWalletServiceUnitTest, RunDiscovery) {
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, GetUtxos) {
+  SetupBtcAccount(5, 5);
+
   using GetUtxosResult =
       base::expected<BitcoinWalletService::UtxoMap, std::string>;
   base::MockCallback<BitcoinWalletService::GetUtxosCallback> callback;
@@ -310,6 +315,8 @@ TEST_F(BitcoinWalletServiceUnitTest, GetUtxos) {
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction_UpdatesChangeAddress) {
+  SetupBtcAccount(5, 5);
+
   using CreateTransactionResult =
       base::expected<BitcoinTransaction, std::string>;
   base::MockCallback<BitcoinWalletService::CreateTransactionCallback> callback;
@@ -341,6 +348,8 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction_UpdatesChangeAddress) {
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction) {
+  SetupBtcAccount(5, 5);
+
   using CreateTransactionResult =
       base::expected<BitcoinTransaction, std::string>;
   base::MockCallback<BitcoinWalletService::CreateTransactionCallback> callback;
@@ -403,6 +412,8 @@ TEST_F(BitcoinWalletServiceUnitTest, CreateTransaction) {
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, SignAndPostTransaction) {
+  SetupBtcAccount(5, 5);
+
   using CreateTransactionResult =
       base::expected<BitcoinTransaction, std::string>;
   base::MockCallback<BitcoinWalletService::CreateTransactionCallback> callback;
@@ -603,6 +614,69 @@ TEST_F(BitcoinWalletServiceUnitTest, DiscoverWalletAccount) {
                                                  1, callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
+TEST_F(BitcoinWalletServiceUnitTest, BitcoinAddHDAccountRunsDiscovery) {
+  bitcoin_test_rpc_server_->SetUpBitcoinRpc(kMnemonicAbandonAbandon, 0);
+
+  auto account = keyring_service_->AddAccountSync(
+      mojom::CoinType::BTC, mojom::KeyringId::kBitcoin84, "acc");
+
+  auto acc_info =
+      bitcoin_wallet_service_->GetBitcoinAccountInfoSync(account->account_id);
+  EXPECT_EQ(0u, acc_info->next_receive_address->key_id->index);
+  EXPECT_EQ(0u, acc_info->next_change_address->key_id->index);
+
+  bitcoin_test_rpc_server_->AddTransactedAddress(
+      keyring_service_->GetBitcoinAddress(
+          account->account_id,
+          mojom::BitcoinKeyId::New(kBitcoinReceiveIndex, 4)));
+  bitcoin_test_rpc_server_->AddTransactedAddress(
+      keyring_service_->GetBitcoinAddress(
+          account->account_id,
+          mojom::BitcoinKeyId::New(kBitcoinChangeIndex, 7)));
+
+  AccountsChangedWaiter(*keyring_service_).Wait();
+
+  // Discovery finishes and account's address indexes get updated.
+  acc_info =
+      bitcoin_wallet_service_->GetBitcoinAccountInfoSync(account->account_id);
+  EXPECT_EQ(5u, acc_info->next_receive_address->key_id->index);
+  EXPECT_EQ(8u, acc_info->next_change_address->key_id->index);
+}
+
+TEST_F(BitcoinWalletServiceUnitTest, BitcoinAddHardwareAccountRunsDiscovery) {
+  bitcoin_test_rpc_server_->SetUpBitcoinRpc(kMnemonicAbandonAbandon, 0);
+  mojom::HardwareWalletAccountPtr hw_account =
+      mojom::HardwareWalletAccount::New(
+          kBtcMainnetHardwareAccount0, "m/84'/0'/0'", "HW Account",
+          mojom::HardwareVendor::kLedger, "device1",
+          mojom::KeyringId::kBitcoinHardware);
+  auto account =
+      keyring_service_->AddBitcoinHardwareAccountSync(std::move(hw_account));
+  ASSERT_TRUE(account);
+
+  auto acc_info =
+      bitcoin_wallet_service_->GetBitcoinAccountInfoSync(account->account_id);
+  EXPECT_EQ(0u, acc_info->next_receive_address->key_id->index);
+  EXPECT_EQ(0u, acc_info->next_change_address->key_id->index);
+
+  bitcoin_test_rpc_server_->AddTransactedAddress(
+      keyring_service_->GetBitcoinAddress(
+          account->account_id,
+          mojom::BitcoinKeyId::New(kBitcoinReceiveIndex, 4)));
+  bitcoin_test_rpc_server_->AddTransactedAddress(
+      keyring_service_->GetBitcoinAddress(
+          account->account_id,
+          mojom::BitcoinKeyId::New(kBitcoinChangeIndex, 7)));
+
+  AccountsChangedWaiter(*keyring_service_).Wait();
+
+  // Discovery finishes and account's address indexes get updated.
+  acc_info =
+      bitcoin_wallet_service_->GetBitcoinAccountInfoSync(account->account_id);
+  EXPECT_EQ(5u, acc_info->next_receive_address->key_id->index);
+  EXPECT_EQ(8u, acc_info->next_change_address->key_id->index);
 }
 
 TEST_F(BitcoinWalletServiceUnitTest, BitcoinImportRunsDiscovery) {
