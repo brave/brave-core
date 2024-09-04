@@ -12,6 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "chrome/browser/extensions/component_loader.h"
+#include "components/prefs/pref_change_registrar.h"
 
 class PrefService;
 class Profile;
@@ -50,11 +51,16 @@ class BraveComponentLoader : public ComponentLoader {
 
  private:
   void ReinstallAsNonComponent(std::string extension_id);
+  void UpdateBraveExtension();
+
+  bool UseBraveExtensionBackgroundPage();
 
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<PrefService> profile_prefs_ = nullptr;
   std::string ethereum_remote_client_manifest_;
   base::FilePath ethereum_remote_client_install_dir_;
+
+  PrefChangeRegistrar pref_change_registrar_;
 };
 
 }  // namespace extensions
