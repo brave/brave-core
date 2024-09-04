@@ -64,7 +64,8 @@ class WalletUserAssetBalanceTests: CoreDataTestCase {
     symbolName: "SOL",
     decimals: 9,
     coin: .sol,
-    supportedKeyrings: []
+    supportedKeyrings: [],
+    props: BraveWallet.NetworkProps()
   )
 
   let fetchRequest = NSFetchRequest<WalletUserAssetBalance>(

@@ -32,7 +32,6 @@ import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CryptoModel {
@@ -264,11 +263,6 @@ public class CryptoModel {
         @Override
         public List<CryptoAccountTypeInfo> getSupportedCryptoAccountTypes() {
             return CryptoModel.this.getSupportedCryptoAccountTypes();
-        }
-
-        @Override
-        public List<Integer> getSupportedCryptoCoins() {
-            return Arrays.asList(CoinType.ETH, CoinType.SOL, CoinType.FIL, CoinType.BTC);
         }
 
         @Override

@@ -21,7 +21,7 @@
 namespace {
 
 // Common parts of base::Value parsing shared between Eip3085 payload spec and
-// brave settings pserstence.
+// brave settings persistence.
 // IMPORTANT: When adding something here please make sure it is valid for
 // https://eips.ethereum.org/EIPS/eip-3085.
 bool ValueToNetworkInfoCommon(const base::Value& value,
@@ -144,6 +144,8 @@ mojom::NetworkInfoPtr ValueToNetworkInfo(const base::Value& value) {
         GetFirstValidChainURLIndex(chain.rpc_endpoints);
   }
 
+  chain.props = mojom::NetworkProps::New();
+
   return chain.Clone();
 }
 
@@ -235,6 +237,16 @@ base::Value::Dict NetworkInfoToValue(const mojom::NetworkInfo& chain) {
   currency.Set("symbol", chain.symbol);
   currency.Set("decimals", chain.decimals);
   dict.Set("nativeCurrency", std::move(currency));
+  return dict;
+}
+
+base::Value::Dict NetworkInfoToValueForSettings(
+    const mojom::NetworkInfo& info) {
+  auto dict = NetworkInfoToValue(info);
+  dict.Set("isKnown", info.props->is_known);
+  dict.Set("isCustom", info.props->is_custom);
+  dict.Set("isHidden", info.props->is_hidden);
+  dict.Set("isDappDefault", info.props->is_dapp_default);
   return dict;
 }
 

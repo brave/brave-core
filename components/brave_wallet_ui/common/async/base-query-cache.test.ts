@@ -79,40 +79,25 @@ describe('BaseQueryCache', () => {
   })
 
   it('should cache networks after fetching', async () => {
-    const getWalletInfoSpy = jest.spyOn(
-      getAPIProxy().walletHandler,
-      'getWalletInfo'
-    )
     const getAllNetworksSpy = jest.spyOn(
       getAPIProxy().jsonRpcService,
       'getAllNetworks'
     )
-    const getHiddenNetworksSpy = jest.spyOn(
-      getAPIProxy().jsonRpcService,
-      'getHiddenNetworks'
-    )
-    expect(getWalletInfoSpy).toHaveBeenCalledTimes(0)
+
     expect(getAllNetworksSpy).toHaveBeenCalledTimes(0)
-    expect(getHiddenNetworksSpy).toHaveBeenCalledTimes(0)
 
     const cache = new BaseQueryCache()
 
     // access the uncached registry
     const registry = await cache.getNetworksRegistry()
     expect(registry.entities).toBeDefined()
-    // once per coin type (ETH, FIL, SOL, BTC, ZEC)
-    const numberOfCoins = 5
-    expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)
     expect(getAllNetworksSpy).toHaveBeenCalledTimes(1)
-    expect(getHiddenNetworksSpy).toHaveBeenCalledTimes(numberOfCoins)
 
     // re-access the registry, this time from cache
     const cachedRegistry = await cache.getNetworksRegistry()
     expect(cachedRegistry.entities[cachedRegistry.ids[0]]).toBeDefined()
     // no additional calls made
-    expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)
     expect(getAllNetworksSpy).toHaveBeenCalledTimes(1)
-    expect(getHiddenNetworksSpy).toHaveBeenCalledTimes(numberOfCoins)
 
     // clear the cache manually
     cache.clearNetworksRegistry()
@@ -121,17 +106,10 @@ describe('BaseQueryCache', () => {
     const reCachedRegistry = await cache.getNetworksRegistry()
     expect(reCachedRegistry).toBeDefined()
     expect(getAllNetworksSpy).toHaveBeenCalledTimes(2)
-    expect(getHiddenNetworksSpy).toHaveBeenCalledTimes(numberOfCoins * 2)
-    // no need to update wallet-info
-    expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)
 
     // reset spies
-    getWalletInfoSpy.mockReset()
-    getWalletInfoSpy.mockRestore()
     getAllNetworksSpy.mockReset()
     getAllNetworksSpy.mockRestore()
-    getHiddenNetworksSpy.mockReset()
-    getHiddenNetworksSpy.mockRestore()
   })
 
   it('should include collection names in the NFT metadata cache', async () => {

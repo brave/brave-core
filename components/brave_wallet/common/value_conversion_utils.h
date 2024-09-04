@@ -19,6 +19,7 @@ namespace brave_wallet {
 std::optional<std::string> ExtractChainIdFromValue(
     const base::Value::Dict* dict);
 base::Value::Dict NetworkInfoToValue(const mojom::NetworkInfo& info);
+base::Value::Dict NetworkInfoToValueForSettings(const mojom::NetworkInfo& info);
 mojom::NetworkInfoPtr ValueToNetworkInfo(const base::Value& value);
 mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value);
 base::Value::List PermissionRequestResponseToValue(

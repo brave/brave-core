@@ -104,13 +104,13 @@ class EthNonceTrackerUnitTest : public testing::Test {
            Uint256ValueToHex(transaction_count_) + "\"}";
   }
 
-  uint256_t transaction_count_ = 0;
   base::test::TaskEnvironment task_environment_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
+  uint256_t transaction_count_ = 0;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
-  sync_preferences::TestingPrefServiceSyncable prefs_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 

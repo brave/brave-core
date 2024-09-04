@@ -234,7 +234,8 @@ class EthAllowanceManagerUnitTest : public testing::Test {
         GetLocalState());
     json_rpc_service_ = wallet_service_->json_rpc_service();
     keyring_service_ = wallet_service_->keyring_service();
-    bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
+    bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>(
+        wallet_service_->network_manager());
     wallet_service_->GetBitcoinWalletService()->SetUrlLoaderFactoryForTesting(
         bitcoin_test_rpc_server_->GetURLLoaderFactory());
     eth_allowance_manager_ = std::make_unique<EthAllowanceManager>(

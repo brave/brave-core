@@ -52,7 +52,7 @@ export interface BraveWalletBrowserProxy {
   isNativeWalletEnabled(): Promise<boolean>
   isBitcoinEnabled(): Promise<boolean>
   getAutoLockMinutes(): Promise<number>
-  getNetworksList(coin: number): Promise<NetworksList>
+  getNetworksList(): Promise<NetworksList>
   getPrepopulatedNetworksList(): Promise<NetworkInfo[]>
   removeChain(chainId: string, coin: number): Promise<boolean>
   resetChain(chainId: string, coin: number): Promise<boolean>
@@ -79,8 +79,8 @@ export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
     chrome.send('setBraveWalletEnabled', [value])
   }
 
-  getNetworksList (coin: number) {
-    return sendWithPromise('getNetworksList', coin)
+  getNetworksList () {
+    return sendWithPromise('getNetworksList')
   }
 
   getPrepopulatedNetworksList () {

@@ -97,7 +97,13 @@ export const getNormalizedExternalRewardsNetwork = (
     iconUrls: [],
     rpcEndpoints: [],
     symbol: externalRewardsProvider,
-    symbolName: externalRewardsProvider
+    symbolName: externalRewardsProvider,
+    props: {
+      isKnown: true,
+      isCustom: true,
+      isHidden: false,
+      isDappDefault: false
+    }
   }
 }
 

@@ -77,7 +77,13 @@ extension NetworkStore {
         symbolName: "MOCK",
         decimals: 18,
         coin: .eth,
-        supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:))
+        supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:)),
+        props: BraveWallet.NetworkProps(
+          isKnown: false,
+          isCustom: true,
+          isHidden: false,
+          isDappDefault: false
+        )
       )
     ) { _, _, _ in }
 

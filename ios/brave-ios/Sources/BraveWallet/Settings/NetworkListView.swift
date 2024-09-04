@@ -29,10 +29,6 @@ struct NetworkListView: View {
     }
   }
 
-  private var customNetworks: [BraveWallet.NetworkInfo] {
-    networkStore.customChains
-  }
-
   private var allNetworks: [BraveWallet.NetworkInfo] {
     networkStore.allChains.filter {
       if $0.chainId == BraveWallet.BitcoinTestnet {
@@ -52,7 +48,7 @@ struct NetworkListView: View {
         VStack(alignment: .leading, spacing: 4) {
           Text(network.chainName)
             .foregroundColor(Color(.braveLabel))
-            .font(.callout.weight(isDefaultNetwork(network) ? .bold : .regular))
+            .font(.callout.weight(network.props.isDappDefault ? .bold : .regular))
           Group {
             Text(network.chainId)
             if let rpcEndpoint = network.rpcEndpoints[
@@ -67,33 +63,27 @@ struct NetworkListView: View {
         Spacer()
         HStack {
           Button {
-            if networkStore.isHiddenChain(network) {
-              Task { @MainActor in
-                await networkStore.removeHiddenNetwork(
-                  coin: network.coin,
-                  for: network.chainId
-                )
-              }
-            } else {
-              Task { @MainActor in
-                await networkStore.addHiddenNetwork(
-                  coin: network.coin,
-                  for: network.chainId
-                )
-              }
+
+            Task { @MainActor in
+              await networkStore.setNetworkHidden(
+                coin: network.coin,
+                chainId: network.chainId,
+                hidden: !network.props.isHidden
+              )
+
             }
           } label: {
             Image(
-              braveSystemName: networkStore.isHiddenChain(network)
+              braveSystemName: network.props.isHidden
                 ? "leo.eye.off" : "leo.eye.on"
             )
             .font(.callout.weight(.semibold))
             .foregroundColor(
-              isDefaultNetwork(network)
+              network.props.isDappDefault
                 ? Color(.braveDisabled) : Color(.braveLabel)
             )
           }
-          .disabled(isDefaultNetwork(network))
+          .disabled(network.props.isDappDefault)
           Rectangle()
             .fill(
               Color(uiColor: WalletV2Design.dividerSubtle)
@@ -109,8 +99,8 @@ struct NetworkListView: View {
               } label: {
                 Text(Strings.Wallet.editButtonTitle)
               }
-              if networkStore.isCustomChain(network)
-                && !isDefaultNetwork(network)
+              if network.props.isCustom
+                && !network.props.isDappDefault
               {
                 Button {
                   removeNetwork(network)
@@ -118,13 +108,15 @@ struct NetworkListView: View {
                   Text(Strings.Wallet.delete)
                 }
               }
-              if !isDefaultNetwork(network) {
-                Button {
-                  Task { @MainActor in
-                    await networkStore.updateDefaultNetwork(network)
+              if WalletConstants.supportedCoinTypes(.dapps).contains(network.coin) {
+                if !network.props.isDappDefault {
+                  Button {
+                    Task { @MainActor in
+                      await networkStore.updateDefaultNetwork(network)
+                    }
+                  } label: {
+                    Text(Strings.Wallet.setDefaultNetwork)
                   }
-                } label: {
-                  Text(Strings.Wallet.setDefaultNetwork)
                 }
               }
             }
@@ -184,16 +176,6 @@ struct NetworkListView: View {
     .task {
       await networkStore.updateChainList()
     }
-  }
-
-  private func isDefaultNetwork(
-    _ network: BraveWallet.NetworkInfo
-  ) -> Bool {
-    guard let defaultNetwork = networkStore.defaultNetworks[network.coin]
-    else {
-      return false
-    }
-    return defaultNetwork.chainId == network.chainId
   }
 }
 

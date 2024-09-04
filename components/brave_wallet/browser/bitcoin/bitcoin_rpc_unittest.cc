@@ -62,13 +62,11 @@ class BitcoinRpcUnitTest : public testing::Test {
         network_manager_.get(), shared_url_loader_factory_);
 
     mainnet_rpc_url_ =
-        network_manager_
-            ->GetKnownChain(mojom::kBitcoinMainnet, mojom::CoinType::BTC)
+        network_manager_->GetChain(mojom::kBitcoinMainnet, mojom::CoinType::BTC)
             ->rpc_endpoints.front()
             .spec();
     testnet_rpc_url_ =
-        network_manager_
-            ->GetKnownChain(mojom::kBitcoinTestnet, mojom::CoinType::BTC)
+        network_manager_->GetChain(mojom::kBitcoinTestnet, mojom::CoinType::BTC)
             ->rpc_endpoints.front()
             .spec();
   }

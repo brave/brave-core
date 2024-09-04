@@ -724,37 +724,12 @@ void BraveWalletService::ResetWebSitePermission(
   delegate_->ResetWebSitePermission(coin, formed_website, std::move(callback));
 }
 
-// static
-void BraveWalletService::MigrateHiddenNetworks(PrefService* prefs) {
-  auto previous_version_code =
-      prefs->GetInteger(kBraveWalletDefaultHiddenNetworksVersion);
-  if (previous_version_code >= 1) {
-    return;
-  }
-  {
-    // Default hidden networks
-    ScopedDictPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
-    auto& hidden_networks_pref = update.Get();
-    base::Value::List* hidden_eth_networks =
-        hidden_networks_pref.EnsureList(kEthereumPrefKey);
-
-    auto value = base::Value(mojom::kFilecoinEthereumTestnetChainId);
-    if (std::find_if(hidden_eth_networks->begin(), hidden_eth_networks->end(),
-                     [&value](auto& v) { return value == v; }) ==
-        hidden_eth_networks->end()) {
-      hidden_eth_networks->Append(std::move(value));
-    }
-  }
-
-  prefs->SetInteger(kBraveWalletDefaultHiddenNetworksVersion, 1);
-}
-
 bool ShouldMigrateRemovedPreloadedNetwork(PrefService* prefs,
                                           mojom::CoinType coin,
                                           const std::string& chain_id) {
   NetworkManager network_manager(prefs);
-
-  if (network_manager.CustomChainExists(chain_id, coin)) {
+  auto existing_chain = network_manager.GetChain(chain_id, coin);
+  if (!existing_chain || !existing_chain->props->is_custom) {
     return false;
   }
 
@@ -785,30 +760,6 @@ bool ShouldMigrateRemovedPreloadedNetwork(PrefService* prefs,
 
   return selected_chain_id &&
          base::ToLowerASCII(*selected_chain_id) == chain_id;
-}
-
-void BraveWalletService::MigrateFantomMainnetAsCustomNetwork(
-    PrefService* prefs) {
-  if (prefs->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated)) {
-    return;
-  }
-
-  if (ShouldMigrateRemovedPreloadedNetwork(prefs, mojom::CoinType::ETH,
-                                           mojom::kFantomMainnetChainId)) {
-    NetworkManager network_manager(prefs);
-    mojom::NetworkInfo network(
-        mojom::kFantomMainnetChainId, "Fantom Opera", {"https://ftmscan.com"},
-        {}, 0, {GURL("https://rpc.ftm.tools")}, "FTM", "Fantom", 18,
-        mojom::CoinType::ETH,
-        GetSupportedKeyringsForNetwork(mojom::CoinType::ETH,
-                                       mojom::kFantomMainnetChainId));
-    network_manager.AddCustomNetwork(network);
-    network_manager.SetEip1559ForCustomChain(mojom::kFantomMainnetChainId,
-                                             true);
-    EnsureNativeTokenForNetwork(prefs, network);
-  }
-
-  prefs->SetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated, true);
 }
 
 void BraveWalletService::MigrateGoerliNetwork(PrefService* prefs) {

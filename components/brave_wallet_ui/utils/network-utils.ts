@@ -19,7 +19,13 @@ export const emptyNetwork: BraveWallet.NetworkInfo = {
   symbolName: '',
   decimals: 0,
   coin: BraveWallet.CoinType.ETH,
-  supportedKeyrings: []
+  supportedKeyrings: [],
+  props: {
+    isKnown: true,
+    isCustom: true,
+    isHidden: false,
+    isDappDefault: false
+  }
 }
 
 export const getNetworkInfo = (

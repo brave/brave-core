@@ -12,6 +12,7 @@
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "components/prefs/pref_change_registrar.h"
 
 class PrefService;
 class GURL;
@@ -20,6 +21,8 @@ namespace brave_wallet {
 
 class NetworkManager {
  public:
+  using NetworkId = std::pair<mojom::CoinType, std::string>;
+
   explicit NetworkManager(PrefService* prefs);
   ~NetworkManager();
   NetworkManager(NetworkManager&) = delete;
@@ -28,23 +31,11 @@ class NetworkManager {
   static GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id);
   static GURL GetEnsRpcUrl();
   static GURL GetSnsRpcUrl();
-  static std::vector<mojom::NetworkInfoPtr> GetAllKnownChains(
-      mojom::CoinType coin);
-  static mojom::NetworkInfoPtr GetKnownChain(const std::string& chain_id,
-                                             mojom::CoinType coin);
-  std::vector<mojom::NetworkInfoPtr> GetAllCustomChains(mojom::CoinType coin);
+  static std::vector<const mojom::NetworkInfo*> GetAllKnownChains();
+
   std::vector<mojom::NetworkInfoPtr> GetAllChains();
-  mojom::NetworkInfoPtr GetCustomChain(const std::string& chain_id,
-                                       mojom::CoinType coin);
   mojom::NetworkInfoPtr GetChain(const std::string& chain_id,
                                  mojom::CoinType coin);
-  bool KnownChainExists(const std::string& chain_id, mojom::CoinType coin);
-  bool CustomChainExists(const std::string& custom_chain_id,
-                         mojom::CoinType coin);
-  std::vector<std::string> CustomChainsExist(
-
-      const std::vector<std::string>& custom_chain_ids,
-      mojom::CoinType coin);
 
   GURL GetNetworkURL(const std::string& chain_id, mojom::CoinType coin);
   GURL GetNetworkURL(mojom::CoinType coin,
@@ -55,12 +46,11 @@ class NetworkManager {
                                 std::optional<bool> is_eip1559);
 
   void AddCustomNetwork(const mojom::NetworkInfo& chain);
-
   void RemoveCustomNetwork(const std::string& chain_id, mojom::CoinType coin);
 
-  std::vector<std::string> GetHiddenNetworks(mojom::CoinType coin);
-  void AddHiddenNetwork(mojom::CoinType coin, const std::string& chain_id);
-  void RemoveHiddenNetwork(mojom::CoinType coin, const std::string& chain_id);
+  void SetNetworkHidden(mojom::CoinType coin,
+                        const std::string& chain_id,
+                        bool hidden);
 
   // Get/Set the current chain ID for coin from kBraveWalletSelectedNetworks
   // pref when origin is not presented. If origin is presented,
@@ -83,6 +73,19 @@ class NetworkManager {
       const std::string& network_id);
 
  private:
+  std::vector<mojom::NetworkInfoPtr> GetAllCustomChains();
+
+  void InvalidateCache();
+  void BuildCache();
+  std::vector<mojom::NetworkInfoPtr>& GetAllNetworksInternal();
+  std::map<NetworkId, mojom::NetworkInfoPtr>& GetAllNetworksMapInternal();
+  mojom::NetworkInfoPtr* FindNetworkInternal(mojom::CoinType coin,
+                                             const std::string& chain_id);
+
+  bool cache_valid_ = false;
+  std::vector<mojom::NetworkInfoPtr> cached_networks_;
+  std::map<NetworkId, mojom::NetworkInfoPtr> cached_networks_map_;
+  PrefChangeRegistrar pref_change_registrar_;
   raw_ptr<PrefService> prefs_ = nullptr;
 };
 

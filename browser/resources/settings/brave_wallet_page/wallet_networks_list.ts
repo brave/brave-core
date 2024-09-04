@@ -46,18 +46,6 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
           return [];
         },
       },
-      knownNetworks: {
-        type: Array,
-        value() {
-          return [];
-        },
-      },
-      customNetworks: {
-        type: Array,
-        value() {
-          return [];
-        },
-      },
       showAddWalletNetworkDialog_: {
         type: Boolean,
         value: false,
@@ -65,10 +53,6 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
       selectedNetwork: {
         type: Object,
         value: {}
-      },
-      defaultNetwork: {
-        type: String,
-        value: ''
       },
       isDefaultNetwork: {
         type: Boolean,
@@ -120,14 +104,14 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
   }
 
   getNetworkItemClass(item) {
-    if (this.checkIsDefaultNetwork(item.chainId)) {
+    if (item.isDappDefault) {
       return "flex cr-padded-text default-network"
     }
     return "flex cr-padded-text"
   }
 
-  getHideButtonClass(hiddenNetworks, item) {
-    if (!this.checkIsDefaultNetwork(item.chainId) && hiddenNetworks.indexOf(item.chainId) > -1) {
+  getHideButtonClass(item) {
+    if (!item.isDappDefault && item.isHidden) {
       return "hide-network-button icon-visibility-off"
     }
     return "hide-network-button icon-visibility"
@@ -137,22 +121,18 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
     return 'chain-' + item.chainId
   }
 
-  checkIsDefaultNetwork(chainId) {
-    return chainId === this.defaultNetwork
-  }
-
   canRemoveNetwork_(item) {
-    if (this.checkIsDefaultNetwork(item.chainId)) return false
+    if (item.isDappDefault) return false
 
-    return this.knownNetworks.indexOf(item.chainId) == -1
+    return !item.isKnown
   }
 
   canHideNetwork_(item) {
-    return !this.checkIsDefaultNetwork(item.chainId);
+    return !item.isDappDefault;
   }
 
   eyeButtonTitle_(item) {
-    if (this.checkIsDefaultNetwork(item.chainId)) {
+    if (item.isDappDefault) {
       return this.i18n('walletDefaultNetworkIsAlwaysVisible')
     }
 
@@ -160,17 +140,14 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
   }
 
   canResetNetwork_(item) {
-    return (
-      this.knownNetworks.indexOf(item.chainId) > -1 &&
-      this.customNetworks.indexOf(item.chainId) > -1
-    )
+    return item.isKnown && item.isCustom
   }
 
   hideNativeCurrencyInfo(item) {
     return !item.nativeCurrency || item.nativeCurrency.name.trim() === ''
   }
 
-  getItemDescritionText(item) {
+  getItemDescriptionText(item) {
     const url = (item.rpcUrls && item.rpcUrls[item.activeRpcEndpointIndex])
       ? item.rpcUrls[item.activeRpcEndpointIndex]
       : ''
@@ -190,7 +167,7 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
     const chainName = this.selectedNetwork.chainName
     this.selectedNetwork = {}
     this.$$('cr-action-menu').close();
-    if (this.checkIsDefaultNetwork(chainId)) {
+    if (this.selectedNetwork.isDappDefault) {
       this.updateNetworks()
       return
     }
@@ -229,14 +206,10 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
   }
 
   updateNetworks() {
-    this.browserProxy_.getNetworksList(this.coin).then(payload => {
+    this.browserProxy_.getNetworksList().then(payload => {
       if (!payload)
         return
-      this.defaultNetwork = payload.defaultNetwork
-      this.networks = payload.networks
-      this.knownNetworks = payload.knownNetworks
-      this.customNetworks = payload.customNetworks
-      this.hiddenNetworks = payload.hiddenNetworks
+      this.networks = payload.networks.filter(n => n.coin == this.coin)
       this.notifyKeylist()
     })
   }
@@ -248,13 +221,13 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
   }
 
   onHideButtonClicked_(event) {
-    const chainId = event.model.item.chainId
-    if (this.hiddenNetworks.indexOf(event.model.item.chainId) > -1) {
-      this.browserProxy_.removeHiddenNetwork(chainId, this.coin).then((success) => {
+    const item = event.model.item
+    if (item.isHidden) {
+      this.browserProxy_.removeHiddenNetwork(item.chainId, this.coin).then((success) => {
         this.updateNetworks()
       })
     } else {
-      this.browserProxy_.addHiddenNetwork(chainId, this.coin).then((success) => {
+      this.browserProxy_.addHiddenNetwork(item.chainId, this.coin).then((success) => {
         this.updateNetworks()
       })
     }
@@ -262,7 +235,7 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
 
   onNetworkMenuTapped_(event) {
     this.selectedNetwork = event.model.item
-    this.isDefaultNetwork = this.checkIsDefaultNetwork(this.selectedNetwork.chainId)
+    this.isDefaultNetwork = this.selectedNetwork.isDappDefault
     this.canRemoveNetwork = this.canRemoveNetwork_(this.selectedNetwork)
     this.canResetNetwork = this.canResetNetwork_(this.selectedNetwork)
     const actionMenu =

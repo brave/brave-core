@@ -43,7 +43,8 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
-    bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
+    bitcoin_test_rpc_server_ =
+        std::make_unique<BitcoinTestRpcServer>(network_manager_.get());
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
         keyring_service_.get(), &prefs_, network_manager_.get(),
         bitcoin_test_rpc_server_->GetURLLoaderFactory());

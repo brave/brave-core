@@ -198,6 +198,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToNetworkInfoTest) {
 
 TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
   mojom::NetworkInfo chain = GetTestNetworkInfo1();
+  chain.props = mojom::NetworkProps::New();
   base::Value::Dict value = NetworkInfoToValue(chain);
   EXPECT_EQ(*value.FindString("chainId"), chain.chain_id);
   EXPECT_EQ(*value.FindString("chainName"), chain.chain_name);

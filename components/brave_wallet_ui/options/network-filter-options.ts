@@ -18,7 +18,13 @@ export const AllNetworksOption: BraveWallet.NetworkInfo = {
   rpcEndpoints: [],
   symbol: 'all',
   symbolName: 'all',
-  supportedKeyrings: []
+  supportedKeyrings: [],
+  props: {
+    isKnown: false,
+    isCustom: false,
+    isHidden: false,
+    isDappDefault: false
+  }
 }
 
 export const AllNetworksOptionNetworkId = getNetworkId(AllNetworksOption)

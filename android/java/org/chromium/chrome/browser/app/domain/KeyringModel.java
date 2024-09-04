@@ -16,7 +16,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import org.chromium.base.Callbacks;
-import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AllAccountsInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
@@ -37,7 +36,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 public class KeyringModel implements KeyringServiceObserver {
@@ -279,104 +277,21 @@ public class KeyringModel implements KeyringServiceObserver {
 
         for (NetworkInfo networkInfo : availableNetworks) {
             if (selectedNetworks.contains(networkInfo)) {
-                removeHiddenNetworks.add(networkInfo);
+                jsonRpcService.setNetworkHidden(networkInfo.coin, networkInfo.chainId, false);
             } else {
-                addHiddenNetworks.add(networkInfo);
+                jsonRpcService.setNetworkHidden(networkInfo.coin, networkInfo.chainId, true);
             }
         }
 
-        // Subscribe observer only if are present hidden networks to remove.
-        if (!removeHiddenNetworks.isEmpty()) {
-            removeHiddenNetworksLiveData.observeForever(
-                    new Observer<>() {
-                        int countRemovedHiddenNetworks;
-
-                        @Override
-                        public void onChanged(Boolean success) {
-                            countRemovedHiddenNetworks++;
-                            if (countRemovedHiddenNetworks == removeHiddenNetworks.size()) {
-                                removeHiddenNetworksLiveData.removeObserver(this);
-
-                                if (!addHiddenNetworksLiveData.hasActiveObservers()) {
-                                    if (recoveryPhrase != null && restoreCallback != null) {
-                                        finalizeWalletRestoration(
-                                                password,
-                                                recoveryPhrase,
-                                                legacyRestoreEnabled,
-                                                selectedNetworks,
-                                                restoreCallback);
-                                    } else if (createCallback != null) {
-                                        finalizeWalletCreation(
-                                                password, selectedNetworks, createCallback);
-                                    }
-                                }
-                            }
-                        }
-                    });
-        }
-
-        // Subscribe observer only if are present hidden networks to add.
-        if (!addHiddenNetworks.isEmpty()) {
-            addHiddenNetworksLiveData.observeForever(
-                    new Observer<>() {
-                        int countAddedHiddenNetworks;
-
-                        @Override
-                        public void onChanged(Boolean success) {
-                            countAddedHiddenNetworks++;
-                            if (countAddedHiddenNetworks == addHiddenNetworks.size()) {
-                                addHiddenNetworksLiveData.removeObserver(this);
-
-                                if (!removeHiddenNetworksLiveData.hasActiveObservers()) {
-                                    if (recoveryPhrase != null && restoreCallback != null) {
-                                        finalizeWalletRestoration(
-                                                password,
-                                                recoveryPhrase,
-                                                legacyRestoreEnabled,
-                                                selectedNetworks,
-                                                restoreCallback);
-                                    } else if (createCallback != null) {
-                                        finalizeWalletCreation(
-                                                password, selectedNetworks, createCallback);
-                                    }
-                                }
-                            }
-                        }
-                    });
-        }
-
-        for (NetworkInfo networkInfo : removeHiddenNetworks) {
-            jsonRpcService.removeHiddenNetwork(
-                    networkInfo.coin,
-                    networkInfo.chainId,
-                    success -> {
-                        if (!success) {
-                            Log.w(
-                                    TAG,
-                                    String.format(
-                                            Locale.ENGLISH,
-                                            "Unable to remove network %s from hidden networks.",
-                                            networkInfo.chainName));
-                        }
-                        removeHiddenNetworksLiveData.setValue(success);
-                    });
-        }
-
-        for (NetworkInfo networkInfo : addHiddenNetworks) {
-            jsonRpcService.addHiddenNetwork(
-                    networkInfo.coin,
-                    networkInfo.chainId,
-                    success -> {
-                        if (!success) {
-                            Log.w(
-                                    TAG,
-                                    String.format(
-                                            Locale.ENGLISH,
-                                            "Unable to add network %s to hidden networks.",
-                                            networkInfo.chainName));
-                        }
-                        addHiddenNetworksLiveData.setValue(success);
-                    });
+        if (recoveryPhrase != null && restoreCallback != null) {
+            finalizeWalletRestoration(
+                    password,
+                    recoveryPhrase,
+                    legacyRestoreEnabled,
+                    selectedNetworks,
+                    restoreCallback);
+        } else if (createCallback != null) {
+            finalizeWalletCreation(password, selectedNetworks, createCallback);
         }
     }
 

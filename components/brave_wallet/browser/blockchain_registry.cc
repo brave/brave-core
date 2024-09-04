@@ -9,6 +9,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "base/no_destructor.h"
@@ -477,11 +478,17 @@ void BlockchainRegistry::GetOnRampCurrencies(
 
 std::vector<mojom::NetworkInfoPtr>
 BlockchainRegistry::GetPrepopulatedNetworks() {
+  std::map<std::string, const mojom::NetworkInfo*> known_eth_chains;
+  for (auto* known_chain : NetworkManager::GetAllKnownChains()) {
+    if (known_chain->coin == mojom::CoinType::ETH) {
+      known_eth_chains[known_chain->chain_id] = known_chain;
+    }
+  }
+
   std::vector<mojom::NetworkInfoPtr> result;
   for (auto& chain : chain_list_) {
-    if (auto known_chain = NetworkManager::GetKnownChain(
-            chain->chain_id, mojom::CoinType::ETH)) {
-      result.push_back(known_chain.Clone());
+    if (base::Contains(known_eth_chains, chain->chain_id)) {
+      result.push_back(known_eth_chains[chain->chain_id]->Clone());
     } else {
       result.push_back(chain.Clone());
     }
