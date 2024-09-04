@@ -583,10 +583,7 @@ extension BrowserViewController: WKNavigationDelegate {
         self.tabManager.selectedTab?.blockAllAlerts = false
       }
 
-      if navigationAction.shouldPerformDownload {
-        self.shouldDownloadNavigationResponse = true
-      }
-
+      self.shouldDownloadNavigationResponse = navigationAction.shouldPerformDownload
       ContentBlockerManager.signpost.endInterval("decidePolicyFor", state)
       return (.allow, preferences)
     }
@@ -747,6 +744,21 @@ extension BrowserViewController: WKNavigationDelegate {
       return .cancel
     }
 
+    // If the response has the attachment content-disposition, download it
+    let mimeType = response.mimeType ?? MIMEType.octetStream
+    let isAttachment =
+      (response as? HTTPURLResponse)?.value(
+        forHTTPHeaderField: "Content-Disposition"
+      )?.starts(with: "attachment") ?? (mimeType == MIMEType.octetStream)
+
+    if isAttachment {
+      return .download
+    }
+
+    if canShowInWebView {
+      return .allow
+    }
+
     // Check if this response should be handed off to Passbook.
     if shouldDownloadNavigationResponse {
       shouldDownloadNavigationResponse = false
@@ -754,20 +766,6 @@ extension BrowserViewController: WKNavigationDelegate {
       if response.mimeType == MIMEType.passbook {
         return .download
       }
-    }
-
-    if let passbookHelper = OpenPassBookHelper(
-      request: request,
-      response: response,
-      canShowInWebView: canShowInWebView,
-      forceDownload: forceDownload,
-      browserViewController: self
-    ) {
-      // Open our helper and cancel this response from the webview.
-      Task {
-        await passbookHelper.open()
-      }
-      return .cancel
     }
 
     // Check if this response should be downloaded.
@@ -813,13 +811,9 @@ extension BrowserViewController: WKNavigationDelegate {
       tab.mimeType = response.mimeType
     }
 
-    if canShowInWebView {
-      return .allow
-    }
-
     // If none of our helpers are responsible for handling this response,
     // just let the webview handle it as normal.
-    return .allow
+    return .download
   }
 
   public func webView(
