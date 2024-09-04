@@ -131,6 +131,7 @@ mod ffi {
         has_exception: bool,
         redirect: OptionalString,
         rewritten_url: OptionalString,
+        filter: OptionalString,
     }
 
     struct RegexDebugEntry {

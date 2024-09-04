@@ -38,7 +38,7 @@ pub fn new_engine() -> Box<Engine> {
 
 pub fn engine_with_rules(rules: &CxxVector<u8>) -> BoxEngineResult {
     || -> Result<Box<Engine>, InternalError> {
-        let mut filter_set = InnerFilterSet::new(false);
+        let mut filter_set = InnerFilterSet::new(true);
         filter_set.add_filter_list(std::str::from_utf8(rules.as_slice())?, Default::default());
         let engine = InnerEngine::from_filter_set(filter_set, true);
         Ok(Box::new(Engine { engine }))
