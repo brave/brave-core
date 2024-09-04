@@ -11,27 +11,29 @@
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_builder_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 namespace brave_ads::test {
 
-AdHistoryItemInfo BuildAdHistoryItem(const AdType ad_type,
-                                     const ConfirmationType confirmation_type,
-                                     const bool should_generate_random_uuids) {
-  const AdInfo ad = BuildAd(ad_type, should_generate_random_uuids);
-  return BuildAdHistoryItem(ad, confirmation_type, kTitle, kDescription);
+AdHistoryItemInfo BuildAdHistoryItem(
+    const mojom::AdType mojom_ad_type,
+    const mojom::ConfirmationType mojom_confirmation_type,
+    const bool should_generate_random_uuids) {
+  const AdInfo ad = BuildAd(mojom_ad_type, should_generate_random_uuids);
+  return BuildAdHistoryItem(ad, mojom_confirmation_type, kTitle, kDescription);
 }
 
 AdHistoryList BuildAdHistory(
-    const AdType ad_type,
-    const std::vector<ConfirmationType>& confirmation_types,
+    const mojom::AdType mojom_ad_type,
+    const std::vector<mojom::ConfirmationType>& mojom_confirmation_types,
     const bool should_generate_random_uuids) {
   AdHistoryList ad_history;
 
-  for (const auto& confirmation_type : confirmation_types) {
+  for (const auto& mojom_confirmation_type : mojom_confirmation_types) {
     const AdHistoryItemInfo ad_history_item = BuildAdHistoryItem(
-        ad_type, confirmation_type, should_generate_random_uuids);
+        mojom_ad_type, mojom_confirmation_type, should_generate_random_uuids);
     ad_history.push_back(ad_history_item);
   }
 
@@ -39,11 +41,11 @@ AdHistoryList BuildAdHistory(
 }
 
 AdHistoryList BuildAdHistoryForSamePlacement(
-    const AdType ad_type,
-    const std::vector<ConfirmationType>& confirmation_types,
+    const mojom::AdType mojom_ad_type,
+    const std::vector<mojom::ConfirmationType>& mojom_confirmation_types,
     const bool should_generate_random_uuids) {
-  AdHistoryList ad_history =
-      BuildAdHistory(ad_type, confirmation_types, should_generate_random_uuids);
+  AdHistoryList ad_history = BuildAdHistory(
+      mojom_ad_type, mojom_confirmation_types, should_generate_random_uuids);
 
   // Assign the same placement id to all ad history items.
   const std::string placement_id =

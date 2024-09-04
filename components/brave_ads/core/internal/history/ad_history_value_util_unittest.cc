@@ -9,8 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_test_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -97,10 +96,11 @@ class BraveAdsAdHistoryValueUtilTest : public test::TestBase {
 
 TEST_F(BraveAdsAdHistoryValueUtilTest, AdHistoryToValue) {
   // Arrange
-  const AdHistoryList ad_history = test::BuildAdHistory(
-      AdType::kNotificationAd,
-      {ConfirmationType::kViewedImpression, ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/false);
+  const AdHistoryList ad_history =
+      test::BuildAdHistory(mojom::AdType::kNotificationAd,
+                           {mojom::ConfirmationType::kViewedImpression,
+                            mojom::ConfirmationType::kClicked},
+                           /*should_generate_random_uuids=*/false);
 
   // Act
   const base::Value::List list = AdHistoryToValue(ad_history);

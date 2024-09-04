@@ -15,9 +15,8 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -27,10 +26,11 @@ class BraveAdsAdEventCacheUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsAdEventCacheUtilTest, RebuildAdEventCache) {
   // Arrange
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, mojom::ConfirmationType::kServedImpression,
+                   /*created_at=*/test::Now());
 
   base::MockCallback<AdEventCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
@@ -45,16 +45,17 @@ TEST_F(BraveAdsAdEventCacheUtilTest, RebuildAdEventCache) {
   const std::vector<base::Time> expected_cached_ad_events = {test::Now()};
   EXPECT_EQ(expected_cached_ad_events,
             GetAdsClient()->GetCachedAdEvents(
-                ToString(AdType::kNotificationAd),
-                ToString(ConfirmationType::kServedImpression)));
+                mojom::AdType::kNotificationAd,
+                mojom::ConfirmationType::kServedImpression));
 }
 
 TEST_F(BraveAdsAdEventCacheUtilTest, CacheAdEvent) {
   // Arrange
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, mojom::ConfirmationType::kServedImpression,
+                   /*created_at=*/test::Now());
 
   // Act
   CacheAdEvent(ad_event);
@@ -63,27 +64,29 @@ TEST_F(BraveAdsAdEventCacheUtilTest, CacheAdEvent) {
   const std::vector<base::Time> expected_cached_ad_events = {test::Now()};
   EXPECT_EQ(expected_cached_ad_events,
             GetAdsClient()->GetCachedAdEvents(
-                ToString(AdType::kNotificationAd),
-                ToString(ConfirmationType::kServedImpression)));
+                mojom::AdType::kNotificationAd,
+                mojom::ConfirmationType::kServedImpression));
 }
 
 TEST_F(BraveAdsAdEventCacheUtilTest, GetCachedAdEvents) {
   // Arrange
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
 
-  const AdEventInfo ad_event_1 = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_1 =
+      BuildAdEvent(ad, mojom::ConfirmationType::kServedImpression,
+                   /*created_at=*/test::Now());
   ASSERT_TRUE(ad_event_1.created_at);
   CacheAdEvent(ad_event_1);
 
-  const AdEventInfo ad_event_2 = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_2 =
+      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
   ASSERT_TRUE(ad_event_2.created_at);
   CacheAdEvent(ad_event_2);
 
   const AdEventInfo ad_event_3 =
-      BuildAdEvent(ad, ConfirmationType::kServedImpression,
+      BuildAdEvent(ad, mojom::ConfirmationType::kServedImpression,
                    /*created_at=*/test::Now() + base::Hours(1));
   ASSERT_TRUE(ad_event_3.created_at);
   CacheAdEvent(ad_event_3);
@@ -91,8 +94,8 @@ TEST_F(BraveAdsAdEventCacheUtilTest, GetCachedAdEvents) {
   // Act
   const std::vector<base::Time> cached_ad_events =
       GetAdsClient()->GetCachedAdEvents(
-          ToString(AdType::kNotificationAd),
-          ToString(ConfirmationType::kServedImpression));
+          mojom::AdType::kNotificationAd,
+          mojom::ConfirmationType::kServedImpression);
 
   // Assert
   const std::vector<base::Time> expected_cached_ad_events = {

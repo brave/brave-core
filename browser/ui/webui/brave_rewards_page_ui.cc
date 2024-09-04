@@ -22,6 +22,7 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
@@ -1438,8 +1439,8 @@ void RewardsDOMHandler::OnGetStatementOfAccounts(
   dict.Set("adsMaxEarningsLastMonth", statement->max_earnings_last_month);
 
   base::Value::Dict ads_summary;
-  for (const auto& [ad_type, count] : statement->ads_summary_this_month) {
-    ads_summary.Set(ad_type, base::Value(count));
+  for (const auto& [mojom_ad_type, count] : statement->ads_summary_this_month) {
+    ads_summary.Set(brave_ads::ToString(mojom_ad_type), base::Value(count));
   }
   dict.Set("adTypesReceivedThisMonth", std::move(ads_summary));
 

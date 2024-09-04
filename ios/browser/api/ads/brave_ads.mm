@@ -25,7 +25,6 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
@@ -1291,22 +1290,25 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
 }
 
 - (void)cacheAdEventForInstanceId:(const std::string&)id
-                           adType:(const std::string&)ad_type
-                 confirmationType:(const std::string&)confirmation_type
+                           adType:(const brave_ads::mojom::AdType)mojom_ad_type
+                 confirmationType:(const brave_ads::mojom::ConfirmationType)
+                                      mojom_confirmation_type
                              time:(const base::Time)time {
   if (adEventCache) {
-    adEventCache->AddEntryForInstanceId(id, ad_type, confirmation_type, time);
+    adEventCache->AddEntryForInstanceId(id, mojom_ad_type,
+                                        mojom_confirmation_type, time);
   }
 }
 
-- (std::vector<base::Time>)getCachedAdEvents:(const std::string&)ad_type
-                            confirmationType:
-                                (const std::string&)confirmation_type {
+- (std::vector<base::Time>)
+    getCachedAdEvents:(const brave_ads::mojom::AdType)mojom_ad_type
+     confirmationType:
+         (const brave_ads::mojom::ConfirmationType)mojom_confirmation_type {
   if (!adEventCache) {
     return {};
   }
 
-  return adEventCache->Get(ad_type, confirmation_type);
+  return adEventCache->Get(mojom_ad_type, mojom_confirmation_type);
 }
 
 - (void)resetAdEventCacheForInstanceId:(const std::string&)id {

@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions_type_util.h"
 
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

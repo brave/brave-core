@@ -62,13 +62,15 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
   void ShowNotificationAd(const brave_ads::NotificationAdInfo& ad) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
-  void CacheAdEventForInstanceId(const std::string& id,
-                                 const std::string& ad_type,
-                                 const std::string& confirmation_type,
-                                 base::Time time) const override;
+  void CacheAdEventForInstanceId(
+      const std::string& id,
+      brave_ads::mojom::AdType mojom_ad_type,
+      brave_ads::mojom::ConfirmationType mojom_confirmation_type,
+      base::Time time) const override;
   std::vector<base::Time> GetCachedAdEvents(
-      const std::string& ad_type,
-      const std::string& confirmation_type) const override;
+      brave_ads::mojom::AdType mojom_ad_type,
+      brave_ads::mojom::ConfirmationType mojom_confirmation_type)
+      const override;
   void ResetAdEventCacheForInstanceId(const std::string& id) const override;
 
   void GetSiteHistory(int max_count,

@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_constants.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 
@@ -46,7 +47,7 @@ NewTabPageAdInfo NewTabPageAdFromValue(const base::Value::Dict& dict) {
   NewTabPageAdInfo ad;
 
   if (const auto* const value = dict.FindString(kNewTabPageAdTypeKey)) {
-    ad.type = ToAdType(*value);
+    ad.type = ToMojomAdType(*value);
   }
 
   if (const auto* const value = dict.FindString(kNewTabPageAdPlacementIdKey)) {

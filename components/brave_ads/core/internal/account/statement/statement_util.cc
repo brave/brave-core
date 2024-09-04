@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
@@ -27,7 +28,8 @@ TransactionList FilterTransactionsForEstimatedEarnings(
   TransactionList filtered_transactions;
   base::ranges::copy_if(transactions, std::back_inserter(filtered_transactions),
                         [](const TransactionInfo& transaction) {
-                          return transaction.ad_type != AdType::kNewTabPageAd;
+                          return transaction.ad_type !=
+                                 mojom::AdType::kNewTabPageAd;
                         });
   return filtered_transactions;
 }
@@ -76,7 +78,7 @@ int32_t GetAdsReceivedThisMonth(const TransactionList& transactions) {
       GetAdsReceivedForDateRange(transactions, from_time, to_time));
 }
 
-base::flat_map<std::string, int32_t> GetAdsSummaryThisMonth(
+base::flat_map<mojom::AdType, int32_t> GetAdsSummaryThisMonth(
     const TransactionList& transactions) {
   const base::Time from_time = GetLocalTimeAtBeginningOfThisMonth();
   const base::Time to_time = GetLocalTimeAtEndOfThisMonth();

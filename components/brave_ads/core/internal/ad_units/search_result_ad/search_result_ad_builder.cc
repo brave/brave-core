@@ -7,7 +7,7 @@
 
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
@@ -21,7 +21,7 @@ SearchResultAdInfo FromMojomBuildSearchResultAd(
 
   SearchResultAdInfo ad;
 
-  ad.type = AdType::kSearchResultAd;
+  ad.type = mojom::AdType::kSearchResultAd;
   ad.placement_id = mojom_creative_ad->placement_id;
   ad.creative_instance_id = mojom_creative_ad->creative_instance_id;
   ad.creative_set_id = mojom_creative_ad->creative_set_id;

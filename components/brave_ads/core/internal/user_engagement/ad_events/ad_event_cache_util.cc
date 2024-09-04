@@ -9,7 +9,6 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/instance_id.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -46,9 +45,9 @@ void RebuildAdEventCache() {
 void CacheAdEvent(const AdEventInfo& ad_event) {
   CHECK(ad_event.IsValid());
 
-  GetAdsClient()->CacheAdEventForInstanceId(
-      GetInstanceId(), ToString(ad_event.type),
-      ToString(ad_event.confirmation_type), *ad_event.created_at);
+  GetAdsClient()->CacheAdEventForInstanceId(GetInstanceId(), ad_event.type,
+                                            ad_event.confirmation_type,
+                                            *ad_event.created_at);
 }
 
 void ResetAdEventCache() {

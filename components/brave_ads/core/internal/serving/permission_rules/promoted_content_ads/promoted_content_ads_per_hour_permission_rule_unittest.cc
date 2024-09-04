@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/promoted_content_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -33,7 +33,7 @@ TEST_F(BraveAdsPromotedContentAdsPerHourPermissionRuleTest,
       test::BuildCreativePromotedContentAd(
           /*should_generate_random_uuids=*/false);
   const PromotedContentAdInfo ad = BuildPromotedContentAd(creative_ad);
-  test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
+  test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        /*count=*/kMaximumPromotedContentAdsPerHour.Get() - 1);
 
   // Act & Assert
@@ -47,7 +47,7 @@ TEST_F(BraveAdsPromotedContentAdsPerHourPermissionRuleTest,
       test::BuildCreativePromotedContentAd(
           /*should_generate_random_uuids=*/false);
   const PromotedContentAdInfo ad = BuildPromotedContentAd(creative_ad);
-  test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
+  test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        /*count=*/kMaximumPromotedContentAdsPerHour.Get());
 
   AdvanceClockBy(base::Hours(1));
@@ -63,7 +63,7 @@ TEST_F(BraveAdsPromotedContentAdsPerHourPermissionRuleTest,
       test::BuildCreativePromotedContentAd(
           /*should_generate_random_uuids=*/false);
   const PromotedContentAdInfo ad = BuildPromotedContentAd(creative_ad);
-  test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
+  test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        /*count=*/kMaximumPromotedContentAdsPerHour.Get());
 
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));

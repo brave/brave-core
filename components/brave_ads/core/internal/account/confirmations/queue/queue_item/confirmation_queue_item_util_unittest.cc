@@ -18,8 +18,7 @@
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -124,11 +123,12 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
   UserDataInfo expected_user_data = confirmation->user_data;
   expected_user_data.dynamic.clear();
 
-  EXPECT_THAT(rebuilt_confirmation,
-              ::testing::FieldsAre(
-                  test::kTransactionId, test::kCreativeInstanceId,
-                  ConfirmationType::kViewedImpression, AdType::kNotificationAd,
-                  created_at, expected_reward, expected_user_data));
+  EXPECT_THAT(
+      rebuilt_confirmation,
+      ::testing::FieldsAre(test::kTransactionId, test::kCreativeInstanceId,
+                           mojom::ConfirmationType::kViewedImpression,
+                           mojom::AdType::kNotificationAd, created_at,
+                           expected_reward, expected_user_data));
 }
 
 TEST_F(BraveAdsConfirmationQueueItemDelayTest,
@@ -164,11 +164,12 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
             "systemTimestamp": "1996-07-08T10:00:00.000Z"
           })");
 
-  EXPECT_THAT(rebuilt_confirmation,
-              ::testing::FieldsAre(
-                  test::kTransactionId, test::kCreativeInstanceId,
-                  ConfirmationType::kViewedImpression, AdType::kNotificationAd,
-                  created_at, expected_reward, expected_user_data));
+  EXPECT_THAT(
+      rebuilt_confirmation,
+      ::testing::FieldsAre(test::kTransactionId, test::kCreativeInstanceId,
+                           mojom::ConfirmationType::kViewedImpression,
+                           mojom::AdType::kNotificationAd, created_at,
+                           expected_reward, expected_user_data));
 }
 
 }  // namespace brave_ads

@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
 
@@ -111,9 +112,9 @@ AdHistoryItemInfo FromMojomRow(const mojom::DBRowInfo* const mojom_db_row) {
   AdHistoryItemInfo ad_history_item;
 
   ad_history_item.created_at = ColumnTime(mojom_db_row, 0);
-  ad_history_item.type = ToAdType(ColumnString(mojom_db_row, 1));
+  ad_history_item.type = ToMojomAdType(ColumnString(mojom_db_row, 1));
   ad_history_item.confirmation_type =
-      ToConfirmationType(ColumnString(mojom_db_row, 2));
+      ToMojomConfirmationType(ColumnString(mojom_db_row, 2));
   ad_history_item.placement_id = ColumnString(mojom_db_row, 3);
   ad_history_item.creative_instance_id = ColumnString(mojom_db_row, 4);
   ad_history_item.creative_set_id = ColumnString(mojom_db_row, 5);

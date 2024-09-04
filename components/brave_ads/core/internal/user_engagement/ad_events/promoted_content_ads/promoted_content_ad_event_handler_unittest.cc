@@ -18,7 +18,6 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/promoted_content_ads/promoted_content_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/promoted_content_ads/promoted_content_ad_event_handler_delegate_mock.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -66,7 +65,7 @@ class BraveAdsPromotedContentAdEventHandlerTest : public test::TestBase {
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-  test::RecordAdEvent(ad, ConfirmationType::kServedImpression);
+  test::RecordAdEvent(ad, mojom::ConfirmationType::kServedImpression);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFirePromotedContentAdViewedEvent(ad));
@@ -80,8 +79,8 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireViewedEventIfAdPlacementWasAlreadyViewed) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-  test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
-                            ConfirmationType::kViewedImpression});
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_,
@@ -113,8 +112,8 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-  test::RecordAdEvents(ad, {ConfirmationType::kServedImpression,
-                            ConfirmationType::kViewedImpression});
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFirePromotedContentAdClickedEvent(ad));
@@ -127,9 +126,9 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireClickedEventIfAdPlacementWasAlreadyClicked) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-  test::RecordAdEvents(
-      ad, {ConfirmationType::kServedImpression,
-           ConfirmationType::kViewedImpression, ConfirmationType::kClicked});
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression,
+                            mojom::ConfirmationType::kClicked});
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToFirePromotedContentAdEvent(
@@ -200,7 +199,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-  test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
+  test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        kMaximumPromotedContentAdsPerHour.Get() - 1);
 
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
@@ -217,7 +216,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerHourCap) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-  test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
+  test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        kMaximumPromotedContentAdsPerHour.Get());
 
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
@@ -237,7 +236,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        FireEventIfNotExceededAdsPerDayCap) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-  test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
+  test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        kMaximumPromotedContentAdsPerDay.Get() - 1);
 
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
@@ -254,7 +253,7 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerDayCap) {
   // Arrange
   const PromotedContentAdInfo ad = BuildAndSaveAd();
-  test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
+  test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        kMaximumPromotedContentAdsPerDay.Get());
 
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));

@@ -11,7 +11,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_util.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "net/http/http_status_code.h"
@@ -46,8 +45,9 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
   test::ForcePermissionRules();
 
   // Act & Assert
-  EXPECT_CALL(ads_client_mock_, RecordP2AEvents(BuildP2AAdOpportunityEvents(
-                                    AdType::kNotificationAd, /*segments=*/{})));
+  EXPECT_CALL(ads_client_mock_,
+              RecordP2AEvents(BuildP2AAdOpportunityEvents(
+                  mojom::AdType::kNotificationAd, /*segments=*/{})));
 
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([](const NotificationAdInfo& ad) {

@@ -11,7 +11,7 @@
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager_observer.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
@@ -52,19 +52,19 @@ class AdHistoryManager final {
                        GetAdHistoryForUICallback callback);
 
   void Add(const InlineContentAdInfo& ad,
-           ConfirmationType confirmation_type) const;
+           mojom::ConfirmationType mojom_confirmation_type) const;
   void Add(const NewTabPageAdInfo& ad,
-           ConfirmationType confirmation_type) const;
+           mojom::ConfirmationType mojom_confirmation_type) const;
   void Add(const NotificationAdInfo& ad,
-           ConfirmationType confirmation_type) const;
+           mojom::ConfirmationType mojom_confirmation_type) const;
   void Add(const PromotedContentAdInfo& ad,
-           ConfirmationType confirmation_type) const;
+           mojom::ConfirmationType mojom_confirmation_type) const;
   void Add(const SearchResultAdInfo& ad,
-           ConfirmationType confirmation_type) const;
+           mojom::ConfirmationType mojom_confirmation_type) const;
 
  private:
   void MaybeAdd(const AdInfo& ad,
-                ConfirmationType confirmation_type,
+                mojom::ConfirmationType mojom_confirmation_type,
                 const std::string& title,
                 const std::string& description) const;
 

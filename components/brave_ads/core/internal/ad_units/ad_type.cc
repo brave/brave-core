@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
-#include "base/check.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/notreached.h"
 #include "base/types/cxx23_to_underlying.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
@@ -23,49 +23,45 @@ constexpr char kPromotedContentAdType[] = "promoted_content_ad";
 constexpr char kInlineContentAdType[] = "inline_content_ad";
 constexpr char kSearchResultAdType[] = "search_result_ad";
 
-constexpr auto kToAdTypeMap = base::MakeFixedFlatMap<std::string_view, AdType>(
-    {{kUndefinedType, AdType::kUndefined},
-     {kNotificationAdType, AdType::kNotificationAd},
-     {kNewTabPageAdType, AdType::kNewTabPageAd},
-     {kPromotedContentAdType, AdType::kPromotedContentAd},
-     {kInlineContentAdType, AdType::kInlineContentAd},
-     {kSearchResultAdType, AdType::kSearchResultAd}});
+constexpr auto kStringToMojomAdTypeMap =
+    base::MakeFixedFlatMap<std::string_view, mojom::AdType>(
+        {{kUndefinedType, mojom::AdType::kUndefined},
+         {kNotificationAdType, mojom::AdType::kNotificationAd},
+         {kNewTabPageAdType, mojom::AdType::kNewTabPageAd},
+         {kPromotedContentAdType, mojom::AdType::kPromotedContentAd},
+         {kInlineContentAdType, mojom::AdType::kInlineContentAd},
+         {kSearchResultAdType, mojom::AdType::kSearchResultAd}});
 
-constexpr auto kAdTypeToStringMap =
-    base::MakeFixedFlatMap<AdType, std::string_view>(
-        {{AdType::kUndefined, kUndefinedType},
-         {AdType::kNotificationAd, kNotificationAdType},
-         {AdType::kNewTabPageAd, kNewTabPageAdType},
-         {AdType::kPromotedContentAd, kPromotedContentAdType},
-         {AdType::kInlineContentAd, kInlineContentAdType},
-         {AdType::kSearchResultAd, kSearchResultAdType}});
+constexpr auto kMojomAdTypeToStringMap =
+    base::MakeFixedFlatMap<mojom::AdType, std::string_view>(
+        {{mojom::AdType::kUndefined, kUndefinedType},
+         {mojom::AdType::kNotificationAd, kNotificationAdType},
+         {mojom::AdType::kNewTabPageAd, kNewTabPageAdType},
+         {mojom::AdType::kPromotedContentAd, kPromotedContentAdType},
+         {mojom::AdType::kInlineContentAd, kInlineContentAdType},
+         {mojom::AdType::kSearchResultAd, kSearchResultAdType}});
 
 }  // namespace
 
-AdType ToAdType(std::string_view value) {
-  const auto iter = kToAdTypeMap.find(value);
-  if (iter != kToAdTypeMap.cend()) {
-    const auto [_, ad_type] = *iter;
-    return ad_type;
+mojom::AdType ToMojomAdType(std::string_view value) {
+  const auto iter = kStringToMojomAdTypeMap.find(value);
+  if (iter != kStringToMojomAdTypeMap.cend()) {
+    const auto [_, mojom_ad_type] = *iter;
+    return mojom_ad_type;
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for AdType: " << value;
+  NOTREACHED_NORETURN() << "Unexpected value for mojom::AdType: " << value;
 }
 
-const char* ToString(AdType type) {
-  const auto iter = kAdTypeToStringMap.find(type);
-  if (iter != kAdTypeToStringMap.cend()) {
+const char* ToString(mojom::AdType mojom_ad_type) {
+  const auto iter = kMojomAdTypeToStringMap.find(mojom_ad_type);
+  if (iter != kMojomAdTypeToStringMap.cend()) {
     const auto [_, ad_type] = *iter;
     return ad_type.data();
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for AdType: "
-                        << base::to_underlying(type);
-}
-
-std::ostream& operator<<(std::ostream& os, AdType type) {
-  os << ToString(type);
-  return os;
+  NOTREACHED_NORETURN() << "Unexpected value for mojom::AdType: "
+                        << base::to_underlying(mojom_ad_type);
 }
 
 }  // namespace brave_ads

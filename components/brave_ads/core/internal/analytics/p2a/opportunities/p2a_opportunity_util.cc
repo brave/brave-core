@@ -11,6 +11,8 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 namespace brave_ads {
 
@@ -33,9 +35,9 @@ std::optional<std::string> NormalizeSegment(const std::string& segment) {
 }
 
 std::optional<std::string> BuildAdOpportunitiesPerSegmentEvent(
-    const AdType ad_type,
+    const mojom::AdType mojom_ad_type,
     const std::string& segment) {
-  CHECK_NE(AdType::kUndefined, ad_type);
+  CHECK_NE(mojom::AdType::kUndefined, mojom_ad_type);
   CHECK(!segment.empty());
 
   const std::string parent_segment = GetParentSegment(segment);
@@ -46,35 +48,35 @@ std::optional<std::string> BuildAdOpportunitiesPerSegmentEvent(
   }
 
   return base::ReplaceStringPlaceholders(
-      kAdOpportunitiesPerSegmentEvent, {ToString(ad_type), *normalized_segment},
-      nullptr);
+      kAdOpportunitiesPerSegmentEvent,
+      {ToString(mojom_ad_type), *normalized_segment}, nullptr);
 }
 
-std::string BuildAdOpportunitiesEvent(const AdType ad_type) {
-  CHECK_NE(AdType::kUndefined, ad_type);
+std::string BuildAdOpportunitiesEvent(const mojom::AdType mojom_ad_type) {
+  CHECK_NE(mojom::AdType::kUndefined, mojom_ad_type);
 
   return base::ReplaceStringPlaceholders(kAdOpportunitiesEvent,
-                                         {ToString(ad_type)}, nullptr);
+                                         {ToString(mojom_ad_type)}, nullptr);
 }
 
 }  // namespace
 
 std::vector<std::string> BuildP2AAdOpportunityEvents(
-    const AdType ad_type,
+    const mojom::AdType mojom_ad_type,
     const SegmentList& segments) {
-  CHECK_NE(AdType::kUndefined, ad_type);
+  CHECK_NE(mojom::AdType::kUndefined, mojom_ad_type);
 
   std::vector<std::string> events;
   events.reserve(segments.size() + 1);
 
   for (const auto& segment : segments) {
     if (const std::optional<std::string> ad_opportunities_per_segment_event =
-            BuildAdOpportunitiesPerSegmentEvent(ad_type, segment)) {
+            BuildAdOpportunitiesPerSegmentEvent(mojom_ad_type, segment)) {
       events.push_back(*ad_opportunities_per_segment_event);
     }
   }
 
-  events.push_back(BuildAdOpportunitiesEvent(ad_type));
+  events.push_back(BuildAdOpportunitiesEvent(mojom_ad_type));
 
   return events;
 }

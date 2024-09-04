@@ -18,6 +18,7 @@
 #include "brave/components/brave_ads/core/internal/history/ad_history_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_value_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
@@ -66,44 +67,50 @@ void AdHistoryManager::GetForUI(const base::Time from_time,
       base::BindOnce(&GetForUICallback, std::move(callback)));
 }
 
-void AdHistoryManager::Add(const InlineContentAdInfo& ad,
-                           const ConfirmationType confirmation_type) const {
-  MaybeAdd(ad, confirmation_type, ad.title, ad.description);
+void AdHistoryManager::Add(
+    const InlineContentAdInfo& ad,
+    const mojom::ConfirmationType mojom_confirmation_type) const {
+  MaybeAdd(ad, mojom_confirmation_type, ad.title, ad.description);
 }
 
-void AdHistoryManager::Add(const NewTabPageAdInfo& ad,
-                           const ConfirmationType confirmation_type) const {
-  MaybeAdd(ad, confirmation_type, ad.company_name, ad.alt);
+void AdHistoryManager::Add(
+    const NewTabPageAdInfo& ad,
+    const mojom::ConfirmationType mojom_confirmation_type) const {
+  MaybeAdd(ad, mojom_confirmation_type, ad.company_name, ad.alt);
 }
 
-void AdHistoryManager::Add(const NotificationAdInfo& ad,
-                           const ConfirmationType confirmation_type) const {
-  MaybeAdd(ad, confirmation_type, ad.title, ad.body);
+void AdHistoryManager::Add(
+    const NotificationAdInfo& ad,
+    const mojom::ConfirmationType mojom_confirmation_type) const {
+  MaybeAdd(ad, mojom_confirmation_type, ad.title, ad.body);
 }
 
-void AdHistoryManager::Add(const PromotedContentAdInfo& ad,
-                           const ConfirmationType confirmation_type) const {
-  MaybeAdd(ad, confirmation_type, ad.title, ad.description);
+void AdHistoryManager::Add(
+    const PromotedContentAdInfo& ad,
+    const mojom::ConfirmationType mojom_confirmation_type) const {
+  MaybeAdd(ad, mojom_confirmation_type, ad.title, ad.description);
 }
 
-void AdHistoryManager::Add(const SearchResultAdInfo& ad,
-                           const ConfirmationType confirmation_type) const {
-  MaybeAdd(ad, confirmation_type, ad.headline_text, ad.description);
+void AdHistoryManager::Add(
+    const SearchResultAdInfo& ad,
+    const mojom::ConfirmationType mojom_confirmation_type) const {
+  MaybeAdd(ad, mojom_confirmation_type, ad.headline_text, ad.description);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AdHistoryManager::MaybeAdd(const AdInfo& ad,
-                                const ConfirmationType confirmation_type,
-                                const std::string& title,
-                                const std::string& description) const {
+void AdHistoryManager::MaybeAdd(
+    const AdInfo& ad,
+    const mojom::ConfirmationType mojom_confirmation_type,
+    const std::string& title,
+    const std::string& description) const {
   if (!UserHasJoinedBraveRewards()) {
     // User has not joined Brave Rewards, so we don't need to add history.
     return;
   }
 
   const AdHistoryItemInfo ad_history_item =
-      BuildAdHistoryItem(ad, confirmation_type, title, description);
+      BuildAdHistoryItem(ad, mojom_confirmation_type, title, description);
   database::SaveAdHistory({ad_history_item});
 
   NotifyDidAddAdHistoryItem(ad_history_item);

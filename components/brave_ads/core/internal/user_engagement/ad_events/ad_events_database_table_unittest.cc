@@ -13,8 +13,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
@@ -34,8 +33,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, RecordEvent) {
   // Arrange
   const NotificationAdInfo ad =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
 
   base::MockCallback<ResultCallback> record_ad_event_callback;
   EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true));
@@ -60,8 +60,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpired) {
   // included because it will occur outside the expiry window.
   const NotificationAdInfo ad_1 =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event_1 = BuildAdEvent(
-      ad_1, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_1 =
+      BuildAdEvent(ad_1, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_1, record_ad_event_callback.Get());
 
   // Move the clock forward to when the ad events expire.
@@ -71,8 +72,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpired) {
   // because it occurred within the expiry window.
   const NotificationAdInfo ad_2 =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event_2 = BuildAdEvent(ad_2, ConfirmationType::kClicked,
-                                              /*created_at=*/test::Now());
+  const AdEventInfo ad_event_2 =
+      BuildAdEvent(ad_2, mojom::ConfirmationType::kClicked,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_2, record_ad_event_callback.Get());
 
   // Act & Assert
@@ -90,8 +92,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
   // because it has an associated creative set conversion.
   const NotificationAdInfo ad =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
 
   base::MockCallback<ResultCallback> record_ad_event_callback;
   EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true));
@@ -123,8 +126,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredOnTheCuspOfExpiry) {
   // because it will occur on the cusp of the expiry window.
   const NotificationAdInfo ad =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
 
   base::MockCallback<ResultCallback> record_ad_event_callback;
   EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true));
@@ -150,8 +154,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredForAdType) {
   // included because it will occur outside the expiry window.
   const NewTabPageAdInfo ad_1 =
       test::BuildNewTabPageAd(/*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event_1 = BuildAdEvent(
-      ad_1, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_1 =
+      BuildAdEvent(ad_1, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_1, record_ad_event_callback.Get());
 
   // Move the clock forward to when the ad events expire.
@@ -161,16 +166,18 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredForAdType) {
   // included because it has a mismatching ad type.
   const NotificationAdInfo ad_2 =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event_2 = BuildAdEvent(
-      ad_2, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_2 =
+      BuildAdEvent(ad_2, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_2, record_ad_event_callback.Get());
 
   // Ad event 3: Recorded on 17th June 2024. This ad event should be included
   // because it occurred within the expiry window.
   const NewTabPageAdInfo ad_3 =
       test::BuildNewTabPageAd(/*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event_3 = BuildAdEvent(
-      ad_3, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_3 =
+      BuildAdEvent(ad_3, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_3, record_ad_event_callback.Get());
 
   // Act & Assert
@@ -191,16 +198,18 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
   // because it has an associated creative set conversion.
   const NotificationAdInfo ad_1 =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event_1 = BuildAdEvent(
-      ad_1, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_1 =
+      BuildAdEvent(ad_1, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_1, record_ad_event_callback.Get());
 
   // Ad event 2: Recorded on 19th March 2024. This ad event should not be
   // included because it has a mismatching ad type.
   const NewTabPageAdInfo ad_2 =
       test::BuildNewTabPageAd(/*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event_2 = BuildAdEvent(
-      ad_2, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_2 =
+      BuildAdEvent(ad_2, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_2, record_ad_event_callback.Get());
 
   // Associate a creative set conversion to both ad events.
@@ -233,8 +242,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeExpired) {
   // because it will occur outside the expiry window.
   const NotificationAdInfo ad_1 =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event_1 = BuildAdEvent(
-      ad_1, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_1 =
+      BuildAdEvent(ad_1, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_1, result_callback.Get());
 
   // Move the clock forward to when the ad events expire.
@@ -244,8 +254,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeExpired) {
   // because it occurred within the expiry window.
   const NotificationAdInfo ad_2 =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event_2 = BuildAdEvent(
-      ad_2, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_2 =
+      BuildAdEvent(ad_2, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_2, result_callback.Get());
 
   // Act
@@ -270,8 +281,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeExpiredForNonRewardsUser) {
   // because it will occur outside the expiry window.
   const NotificationAdInfo ad_1 =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event_1 = BuildAdEvent(
-      ad_1, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_1 =
+      BuildAdEvent(ad_1, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_1, result_callback.Get());
 
   // Move the clock forward to when the ad events expire.
@@ -281,8 +293,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeExpiredForNonRewardsUser) {
   // because it occurred within the expiry window.
   const NotificationAdInfo ad_2 =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event_2 = BuildAdEvent(ad_2, ConfirmationType::kClicked,
-                                              /*created_at=*/test::Now());
+  const AdEventInfo ad_event_2 =
+      BuildAdEvent(ad_2, mojom::ConfirmationType::kClicked,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_2, result_callback.Get());
 
   // Act
@@ -306,8 +319,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
   // because it will occur outside the expiry window.
   const NotificationAdInfo ad =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
-  const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
 
   database_table_.RecordEvent(ad_event, result_callback.Get());
 
@@ -345,12 +359,14 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeOrphanedForType) {
   const NotificationAdInfo ad_1 =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
 
-  const AdEventInfo ad_event_1_served = BuildAdEvent(
-      ad_1, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_1_served =
+      BuildAdEvent(ad_1, mojom::ConfirmationType::kServedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_1_served, result_callback.Get());
 
-  const AdEventInfo ad_event_1_viewed = BuildAdEvent(
-      ad_1, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_1_viewed =
+      BuildAdEvent(ad_1, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_1_viewed, result_callback.Get());
 
   // Ad event 2: This served impression ad event should not be purged because it
@@ -358,8 +374,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeOrphanedForType) {
   const NewTabPageAdInfo ad_2 =
       test::BuildNewTabPageAd(/*should_generate_random_uuids=*/true);
 
-  const AdEventInfo ad_event_2_served = BuildAdEvent(
-      ad_2, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_2_served =
+      BuildAdEvent(ad_2, mojom::ConfirmationType::kServedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_2_served, result_callback.Get());
 
   // Ad event 3: This served impression ad should be purged because it has a
@@ -367,8 +384,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeOrphanedForType) {
   const NotificationAdInfo ad_3 =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
 
-  const AdEventInfo ad_event_3_served = BuildAdEvent(
-      ad_3, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_3_served =
+      BuildAdEvent(ad_3, mojom::ConfirmationType::kServedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_3_served, result_callback.Get());
 
   // Act
@@ -395,12 +413,14 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeOrphaned) {
   const NotificationAdInfo ad_1 =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
 
-  const AdEventInfo ad_event_1_served = BuildAdEvent(
-      ad_1, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_1_served =
+      BuildAdEvent(ad_1, mojom::ConfirmationType::kServedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_1_served, result_callback.Get());
 
-  const AdEventInfo ad_event_1_viewed = BuildAdEvent(
-      ad_1, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_1_viewed =
+      BuildAdEvent(ad_1, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_1_viewed, result_callback.Get());
 
   // Ad event 2: This served impression ad event should be purged because it has
@@ -408,8 +428,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeOrphaned) {
   const NewTabPageAdInfo ad_2 =
       test::BuildNewTabPageAd(/*should_generate_random_uuids=*/true);
 
-  const AdEventInfo ad_event_2_served = BuildAdEvent(
-      ad_2, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_2_served =
+      BuildAdEvent(ad_2, mojom::ConfirmationType::kServedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_2_served, result_callback.Get());
 
   // Ad event 3: This served impression ad event should not be purged because it
@@ -417,8 +438,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeOrphaned) {
   const NotificationAdInfo ad_3 =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
 
-  const AdEventInfo ad_event_3_served = BuildAdEvent(
-      ad_3, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_3_served =
+      BuildAdEvent(ad_3, mojom::ConfirmationType::kServedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_3_served, result_callback.Get());
 
   // Act
@@ -446,12 +468,14 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeAllOrphaned) {
   const NotificationAdInfo ad_1 =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
 
-  const AdEventInfo ad_event_1_served = BuildAdEvent(
-      ad_1, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_1_served =
+      BuildAdEvent(ad_1, mojom::ConfirmationType::kServedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_1_served, result_callback.Get());
 
-  const AdEventInfo ad_event_1_viewed = BuildAdEvent(
-      ad_1, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_1_viewed =
+      BuildAdEvent(ad_1, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_1_viewed, result_callback.Get());
 
   // Ad event 2: This served impression ad event should be purged because it
@@ -459,8 +483,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeAllOrphaned) {
   const NewTabPageAdInfo ad_2 =
       test::BuildNewTabPageAd(/*should_generate_random_uuids=*/true);
 
-  const AdEventInfo ad_event_2_served = BuildAdEvent(
-      ad_2, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_2_served =
+      BuildAdEvent(ad_2, mojom::ConfirmationType::kServedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_2_served, result_callback.Get());
 
   // Ad event 3: This served impression ad event should be purged because it
@@ -468,8 +493,9 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeAllOrphaned) {
   const NotificationAdInfo ad_3 =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
 
-  const AdEventInfo ad_event_3_served = BuildAdEvent(
-      ad_3, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_3_served =
+      BuildAdEvent(ad_3, mojom::ConfirmationType::kServedImpression,
+                   /*created_at=*/test::Now());
   database_table_.RecordEvent(ad_event_3_served, result_callback.Get());
 
   // Act

@@ -10,13 +10,13 @@
 #include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
 bool HasNewTabPageAdsPerDayPermission() {
   if (!DoesHistoryRespectRollingTimeConstraint(
-          AdType::kNewTabPageAd, /*time_constraint=*/base::Days(1),
+          mojom::AdType::kNewTabPageAd, /*time_constraint=*/base::Days(1),
           /*cap=*/kMaximumNewTabPageAdsPerDay.Get())) {
     BLOG(2, "You have exceeded the allowed new tab page ads per day");
     return false;

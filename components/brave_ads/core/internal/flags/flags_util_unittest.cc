@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_types_test_util.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_constants.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "components/variations/variations_switches.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

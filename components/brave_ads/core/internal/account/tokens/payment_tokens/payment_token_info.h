@@ -11,8 +11,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
@@ -32,8 +31,9 @@ struct PaymentTokenInfo final {
   std::string transaction_id;
   cbr::UnblindedToken unblinded_token;
   cbr::PublicKey public_key;
-  ConfirmationType confirmation_type = ConfirmationType::kUndefined;
-  AdType ad_type = AdType::kUndefined;
+  mojom::ConfirmationType confirmation_type =
+      mojom::ConfirmationType::kUndefined;
+  mojom::AdType ad_type = mojom::AdType::kUndefined;
 };
 
 using PaymentTokenList = std::vector<PaymentTokenInfo>;

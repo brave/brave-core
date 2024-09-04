@@ -14,7 +14,7 @@ mojom::ReactionInfoPtr CreateReaction(
     const AdHistoryItemInfo& ad_history_item) {
   mojom::ReactionInfoPtr mojom_reaction = mojom::ReactionInfo::New();
 
-  mojom_reaction->ad_type = static_cast<mojom::AdType>(ad_history_item.type);
+  mojom_reaction->mojom_ad_type = ad_history_item.type;
   mojom_reaction->creative_instance_id = ad_history_item.creative_instance_id;
   mojom_reaction->creative_set_id = ad_history_item.creative_set_id;
   mojom_reaction->advertiser_id = ad_history_item.advertiser_id;

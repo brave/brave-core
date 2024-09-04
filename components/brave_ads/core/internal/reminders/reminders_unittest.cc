@@ -18,9 +18,7 @@
 #include "brave/components/brave_ads/core/internal/history/ad_history_test_util.h"
 #include "brave/components/brave_ads/core/internal/reminders/reminders_constants.h"
 #include "brave/components/brave_ads/core/internal/reminders/reminders_feature.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -29,13 +27,14 @@ namespace brave_ads {
 
 namespace {
 
-void BuildAndSaveAdHistory(const AdType ad_type, const int clicked_count) {
-  const std::vector<ConfirmationType> confirmation_types =
+void BuildAndSaveAdHistory(const mojom::AdType mojom_ad_type,
+                           const int clicked_count) {
+  const std::vector<mojom::ConfirmationType> mojom_confirmation_types =
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
-          ConfirmationType::kClicked, clicked_count);
+          mojom::ConfirmationType::kClicked, clicked_count);
 
   const AdHistoryList ad_history =
-      test::BuildAdHistory(ad_type, confirmation_types,
+      test::BuildAdHistory(mojom_ad_type, mojom_confirmation_types,
                            /*should_generate_random_uuids=*/false);
 
   database::SaveAdHistory(ad_history);
@@ -60,7 +59,7 @@ TEST_F(BraveAdsRemindersTest,
   test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
   BuildAndSaveAdHistory(
-      AdType::kNotificationAd,
+      mojom::AdType::kNotificationAd,
       /*clicked_count=*/kRemindUserIfClickingTheSameAdAfter.Get() - 1);
 
   const NotificationAdInfo ad =
@@ -69,7 +68,7 @@ TEST_F(BraveAdsRemindersTest,
 
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_, OnRemindUser).Times(0);
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
+  AdHistoryManager::GetInstance().Add(ad, mojom::ConfirmationType::kClicked);
   FastForwardClockBy(kMaybeShowReminderAfter);
 }
 
@@ -79,7 +78,7 @@ TEST_F(BraveAdsRemindersTest,
   test::MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
 
   BuildAndSaveAdHistory(
-      AdType::kNotificationAd,
+      mojom::AdType::kNotificationAd,
       /*clicked_count=*/kRemindUserIfClickingTheSameAdAfter.Get() - 1);
 
   const NotificationAdInfo ad =
@@ -88,7 +87,7 @@ TEST_F(BraveAdsRemindersTest,
 
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_, OnRemindUser).Times(0);
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
+  AdHistoryManager::GetInstance().Add(ad, mojom::ConfirmationType::kClicked);
   FastForwardClockBy(kMaybeShowReminderAfter);
 }
 
@@ -98,7 +97,7 @@ TEST_F(BraveAdsRemindersTest,
   test::MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   BuildAndSaveAdHistory(
-      AdType::kNotificationAd,
+      mojom::AdType::kNotificationAd,
       /*clicked_count=*/kRemindUserIfClickingTheSameAdAfter.Get() - 1);
 
   const NotificationAdInfo ad =
@@ -108,7 +107,7 @@ TEST_F(BraveAdsRemindersTest,
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_,
               OnRemindUser(mojom::ReminderType::kClickedSameAdMultipleTimes));
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
+  AdHistoryManager::GetInstance().Add(ad, mojom::ConfirmationType::kClicked);
   FastForwardClockBy(kMaybeShowReminderAfter);
 }
 
@@ -118,7 +117,7 @@ TEST_F(BraveAdsRemindersTest,
   test::MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
 
   BuildAndSaveAdHistory(
-      AdType::kNotificationAd,
+      mojom::AdType::kNotificationAd,
       /*clicked_count=*/kRemindUserIfClickingTheSameAdAfter.Get() - 1);
 
   const NotificationAdInfo ad =
@@ -128,7 +127,7 @@ TEST_F(BraveAdsRemindersTest,
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_,
               OnRemindUser(mojom::ReminderType::kClickedSameAdMultipleTimes));
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
+  AdHistoryManager::GetInstance().Add(ad, mojom::ConfirmationType::kClicked);
   FastForwardClockBy(kMaybeShowReminderAfter);
 }
 
@@ -138,7 +137,7 @@ TEST_F(BraveAdsRemindersTest,
   test::MockPlatformHelper(platform_helper_mock_, PlatformType::kLinux);
 
   BuildAndSaveAdHistory(
-      AdType::kNotificationAd,
+      mojom::AdType::kNotificationAd,
       /*clicked_count=*/kRemindUserIfClickingTheSameAdAfter.Get() - 1);
 
   const NotificationAdInfo ad =
@@ -148,7 +147,7 @@ TEST_F(BraveAdsRemindersTest,
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_,
               OnRemindUser(mojom::ReminderType::kClickedSameAdMultipleTimes));
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
+  AdHistoryManager::GetInstance().Add(ad, mojom::ConfirmationType::kClicked);
   FastForwardClockBy(kMaybeShowReminderAfter);
 }
 
@@ -156,7 +155,7 @@ TEST_F(BraveAdsRemindersTest,
        DoNotShowReminderIfUserDoesNotClickTheSameAdMultipleTimes) {
   // Arrange
   BuildAndSaveAdHistory(
-      AdType::kNotificationAd,
+      mojom::AdType::kNotificationAd,
       /*clicked_count=*/kRemindUserIfClickingTheSameAdAfter.Get() - 2);
 
   const NotificationAdInfo ad =
@@ -165,7 +164,7 @@ TEST_F(BraveAdsRemindersTest,
 
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_, OnRemindUser).Times(0);
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
+  AdHistoryManager::GetInstance().Add(ad, mojom::ConfirmationType::kClicked);
   FastForwardClockBy(kMaybeShowReminderAfter);
 }
 
@@ -177,7 +176,7 @@ TEST_F(
   scoped_feature_list.InitAndDisableFeature(kRemindersFeature);
 
   BuildAndSaveAdHistory(
-      AdType::kNotificationAd,
+      mojom::AdType::kNotificationAd,
       /*clicked_count=*/kRemindUserIfClickingTheSameAdAfter.Get() - 1);
 
   const NotificationAdInfo ad =
@@ -186,7 +185,7 @@ TEST_F(
 
   // Act & Assert
   EXPECT_CALL(*ads_observer_mock_, OnRemindUser).Times(0);
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
+  AdHistoryManager::GetInstance().Add(ad, mojom::ConfirmationType::kClicked);
   FastForwardClockBy(kMaybeShowReminderAfter);
 }
 

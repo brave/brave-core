@@ -23,7 +23,7 @@ NewTabPageAdInfo BuildNewTabPageAd(
     const CreativeNewTabPageAdInfo& creative_ad) {
   NewTabPageAdInfo ad;
 
-  ad.type = AdType::kNewTabPageAd;
+  ad.type = mojom::AdType::kNewTabPageAd;
   ad.placement_id = placement_id;
   ad.creative_instance_id = creative_ad.creative_instance_id;
   ad.creative_set_id = creative_ad.creative_set_id;

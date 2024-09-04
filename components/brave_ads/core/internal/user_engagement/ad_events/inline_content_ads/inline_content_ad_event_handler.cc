@@ -13,8 +13,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_handler_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/inline_content_ads/inline_content_ad_event_factory.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 
 namespace brave_ads {
@@ -112,7 +111,8 @@ void InlineContentAdEventHandler::GetForTypeCallback(
   }
 
   if (mojom_ad_event_type == mojom::InlineContentAdEventType::kClicked &&
-      !HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewedImpression)) {
+      !HasFiredAdEvent(ad, ad_events,
+                       mojom::ConfirmationType::kViewedImpression)) {
     // If an ad event doesn't have a corresponding viewed impression event when
     // a click event is fired, trigger the viewed impression event first. This
     // can happen if the ad is outside of the viewport and the viewed impression

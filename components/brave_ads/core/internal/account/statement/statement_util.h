@@ -7,11 +7,11 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_STATEMENT_STATEMENT_UTIL_H_
 
 #include <cstdint>
-#include <string>
 #include <utility>
 
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace base {
 class Time;
@@ -29,8 +29,8 @@ GetEstimatedEarningsForLastMonth(const TransactionList& transactions);
 
 int32_t GetAdsReceivedThisMonth(const TransactionList& transactions);
 
-base::flat_map</*ad_type*/ std::string, /*count*/ int32_t>
-GetAdsSummaryThisMonth(const TransactionList& transactions);
+base::flat_map<mojom::AdType, /*count*/ int32_t> GetAdsSummaryThisMonth(
+    const TransactionList& transactions);
 
 }  // namespace brave_ads
 

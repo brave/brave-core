@@ -10,8 +10,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder_test_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -51,7 +50,8 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kServedImpression,
+      creative_ad, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kServedImpression,
       /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
@@ -70,7 +70,8 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest,
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kServedImpression,
+      creative_ad, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kServedImpression,
       /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
@@ -92,7 +93,8 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest,
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kServedImpression,
+      creative_ad, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kServedImpression,
       /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
@@ -113,7 +115,8 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldExcludeIfExceedsCap) {
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kServedImpression,
+      creative_ad, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kServedImpression,
       /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);

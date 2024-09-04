@@ -13,16 +13,17 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_cache_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 
 namespace brave_ads {
 
 void RecordAdEvent(const AdInfo& ad,
-                   const ConfirmationType confirmation_type,
+                   const mojom::ConfirmationType mojom_confirmation_type,
                    AdEventCallback callback) {
-  RecordAdEvent(
-      BuildAdEvent(ad, confirmation_type, /*created_at=*/base::Time::Now()),
-      std::move(callback));
+  RecordAdEvent(BuildAdEvent(ad, mojom_confirmation_type,
+                             /*created_at=*/base::Time::Now()),
+                std::move(callback));
 }
 
 void RecordAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {

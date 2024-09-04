@@ -23,7 +23,7 @@ NotificationAdInfo BuildNotificationAd(
     const std::string& placement_id) {
   NotificationAdInfo ad;
 
-  ad.type = AdType::kNotificationAd;
+  ad.type = mojom::AdType::kNotificationAd;
   ad.placement_id = placement_id;
   ad.creative_instance_id = creative_ad.creative_instance_id;
   ad.creative_set_id = creative_ad.creative_set_id;

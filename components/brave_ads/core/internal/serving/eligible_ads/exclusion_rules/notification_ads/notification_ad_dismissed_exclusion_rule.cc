@@ -23,9 +23,10 @@ bool DoesRespectCap(const AdEventList& ad_events) {
   int count = 0;
 
   for (const auto& ad_event : ad_events) {
-    if (ad_event.confirmation_type == ConfirmationType::kClicked) {
+    if (ad_event.confirmation_type == mojom::ConfirmationType::kClicked) {
       count = 0;
-    } else if (ad_event.confirmation_type == ConfirmationType::kDismissed) {
+    } else if (ad_event.confirmation_type ==
+               mojom::ConfirmationType::kDismissed) {
       ++count;
       if (count >= 2) {
         // An ad was dismissed two or more times in a row without being clicked,
@@ -55,9 +56,11 @@ AdEventList FilterAdEvents(const AdEventList& ad_events,
       [now, time_constraint, &creative_ad](const AdEventInfo& ad_event) {
         CHECK(ad_event.created_at);
 
-        return (ad_event.confirmation_type == ConfirmationType::kClicked ||
-                ad_event.confirmation_type == ConfirmationType::kDismissed) &&
-               ad_event.type == AdType::kNotificationAd &&
+        return (ad_event.confirmation_type ==
+                    mojom::ConfirmationType::kClicked ||
+                ad_event.confirmation_type ==
+                    mojom::ConfirmationType::kDismissed) &&
+               ad_event.type == mojom::AdType::kNotificationAd &&
                ad_event.campaign_id == creative_ad.campaign_id &&
                now - *ad_event.created_at < time_constraint;
       });

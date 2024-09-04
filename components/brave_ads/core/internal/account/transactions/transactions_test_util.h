@@ -6,8 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_TEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_TEST_UTIL_H_
 
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace base {
 class Time;
@@ -19,15 +18,17 @@ struct TransactionInfo;
 
 namespace test {
 
-TransactionInfo BuildTransaction(double value,
-                                 AdType ad_type,
-                                 ConfirmationType confirmation_type,
-                                 base::Time reconciled_at,
-                                 bool should_generate_random_uuids);
-TransactionInfo BuildUnreconciledTransaction(double value,
-                                             AdType ad_type,
-                                             ConfirmationType confirmation_type,
-                                             bool should_generate_random_uuids);
+TransactionInfo BuildTransaction(
+    double value,
+    mojom::AdType mojom_ad_type,
+    mojom::ConfirmationType mojom_confirmation_type,
+    base::Time reconciled_at,
+    bool should_generate_random_uuids);
+TransactionInfo BuildUnreconciledTransaction(
+    double value,
+    mojom::AdType mojom_ad_type,
+    mojom::ConfirmationType mojom_confirmation_type,
+    bool should_generate_random_uuids);
 
 }  // namespace test
 

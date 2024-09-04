@@ -14,8 +14,7 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/latent_interest/latent_interest_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder_test_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -38,7 +37,8 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, PredictCreativeAd) {
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+      creative_ad, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
@@ -73,7 +73,8 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, DoNotPredictCreativeAd) {
 
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+      creative_ad, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 

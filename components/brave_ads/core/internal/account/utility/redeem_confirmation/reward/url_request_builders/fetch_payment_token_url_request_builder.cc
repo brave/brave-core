@@ -35,9 +35,10 @@ mojom::UrlRequestInfoPtr FetchPaymentTokenUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 GURL FetchPaymentTokenUrlRequestBuilder::BuildUrl() const {
-  const std::string url_host = confirmation_.ad_type == AdType::kSearchResultAd
-                                   ? GetAnonymousSearchUrlHost()
-                                   : GetAnonymousUrlHost();
+  const std::string url_host =
+      confirmation_.ad_type == mojom::AdType::kSearchResultAd
+          ? GetAnonymousSearchUrlHost()
+          : GetAnonymousUrlHost();
 
   const std::string spec = base::StrCat(
       {url_host, BuildFetchPaymentTokenUrlPath(confirmation_.transaction_id)});

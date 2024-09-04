@@ -23,7 +23,7 @@ InlineContentAdInfo BuildInlineContentAd(
     const std::string& placement_id) {
   InlineContentAdInfo ad;
 
-  ad.type = AdType::kInlineContentAd;
+  ad.type = mojom::AdType::kInlineContentAd;
   ad.placement_id = placement_id;
   ad.creative_instance_id = creative_ad.creative_instance_id;
   ad.creative_set_id = creative_ad.creative_set_id;

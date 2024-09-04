@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/user_engagement/ad_events/ad_event_cache.h"
 
 namespace base {
@@ -29,14 +30,15 @@ class AdEventCacheHelper {
 
   static AdEventCacheHelper* GetInstance();
 
-  void CacheAdEventForInstanceId(const std::string& id,
-                                 const std::string& ad_type,
-                                 const std::string& confirmation_type,
-                                 base::Time time);
+  void CacheAdEventForInstanceId(
+      const std::string& id,
+      mojom::AdType mojom_ad_type,
+      mojom::ConfirmationType mojom_confirmation_type,
+      base::Time time);
 
   std::vector<base::Time> GetCachedAdEvents(
-      const std::string& ad_type,
-      const std::string& confirmation_type) const;
+      mojom::AdType mojom_ad_type,
+      mojom::ConfirmationType mojom_confirmation_type) const;
 
   void ResetAdEventCacheForInstanceId(const std::string& id);
 

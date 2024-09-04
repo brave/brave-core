@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
 bool HasInlineContentAdsPerHourPermission() {
   if (!DoesHistoryRespectRollingTimeConstraint(
-          AdType::kInlineContentAd, /*time_constraint=*/base::Hours(1),
+          mojom::AdType::kInlineContentAd, /*time_constraint=*/base::Hours(1),
           /*cap=*/kMaximumInlineContentAdsPerHour.Get())) {
     BLOG(2, "You have exceeded the allowed inline content ads per hour");
     return false;

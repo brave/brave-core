@@ -10,8 +10,7 @@
 
 #include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace base {
 class Time;
@@ -25,17 +24,18 @@ using AddTransactionCallback =
 using GetTransactionsCallback =
     base::OnceCallback<void(bool success, const TransactionList& transactions)>;
 
-TransactionInfo BuildTransaction(const std::string& creative_instance_id,
-                                 const std::string& segment,
-                                 double value,
-                                 AdType ad_type,
-                                 ConfirmationType confirmation_type);
+TransactionInfo BuildTransaction(
+    const std::string& creative_instance_id,
+    const std::string& segment,
+    double value,
+    mojom::AdType mojom_ad_type,
+    mojom::ConfirmationType mojom_confirmation_type);
 
 TransactionInfo AddTransaction(const std::string& creative_instance_id,
                                const std::string& segment,
                                double value,
-                               AdType ad_type,
-                               ConfirmationType confirmation_type,
+                               mojom::AdType mojom_ad_type,
+                               mojom::ConfirmationType mojom_confirmation_type,
                                AddTransactionCallback callback);
 
 void GetTransactionsForDateRange(base::Time from_time,

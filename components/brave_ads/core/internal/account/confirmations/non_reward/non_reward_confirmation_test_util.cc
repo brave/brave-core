@@ -11,6 +11,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::test {
 
@@ -19,8 +20,8 @@ std::optional<ConfirmationInfo> BuildNonRewardConfirmation(
   CHECK(!UserHasJoinedBraveRewards());
 
   const TransactionInfo transaction = BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, should_generate_random_uuids);
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, should_generate_random_uuids);
   return BuildNonRewardConfirmation(transaction, /*user_data=*/{});
 }
 

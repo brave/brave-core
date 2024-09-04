@@ -20,6 +20,8 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads::database::table {
@@ -83,9 +85,9 @@ AdEventInfo FromMojomRow(const mojom::DBRowInfo* const mojom_db_row) {
   AdEventInfo ad_event;
 
   ad_event.placement_id = ColumnString(mojom_db_row, 0);
-  ad_event.type = ToAdType(ColumnString(mojom_db_row, 1));
+  ad_event.type = ToMojomAdType(ColumnString(mojom_db_row, 1));
   ad_event.confirmation_type =
-      ToConfirmationType(ColumnString(mojom_db_row, 2));
+      ToMojomConfirmationType(ColumnString(mojom_db_row, 2));
   ad_event.campaign_id = ColumnString(mojom_db_row, 3);
   ad_event.creative_set_id = ColumnString(mojom_db_row, 4);
   ad_event.creative_instance_id = ColumnString(mojom_db_row, 5);
@@ -281,7 +283,7 @@ void AdEvents::GetUnexpired(const mojom::AdType mojom_ad_type,
             )
           ORDER BY
             created_at ASC;)",
-      {GetTableName(), ToString(static_cast<AdType>(mojom_ad_type)),
+      {GetTableName(), ToString(mojom_ad_type),
        TimeToSqlValueAsString(base::Time::Now() - base::Days(90))},
       nullptr);
   BindColumnTypes(&*mojom_db_action);
@@ -334,8 +336,7 @@ void AdEvents::PurgeOrphaned(const mojom::AdType mojom_ad_type,
           )
           AND confirmation_type = 'served'
           AND type = '$3';)",
-          {GetTableName(), GetTableName(),
-           ToString(static_cast<AdType>(mojom_ad_type))});
+          {GetTableName(), GetTableName(), ToString(mojom_ad_type)});
 
   RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }

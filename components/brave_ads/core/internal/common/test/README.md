@@ -158,6 +158,6 @@ Use the `GetAds` convenience function to access `Ads`. i.e.
 
     GetAds().TriggerNotificationAdEvent(
         /*placement_id=*/"7ee858e8-6306-4317-88c3-9e7d58afad26",
-        ConfirmationType::kClicked);
+        mojom::ConfirmationType::kClicked);
 
 Please add to it!

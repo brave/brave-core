@@ -10,8 +10,7 @@
 #include <vector>
 
 #include "base/functional/callback.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
 
@@ -21,7 +20,7 @@ struct AdEventInfo;
 struct AdInfo;
 
 void RecordAdEvent(const AdInfo& ad,
-                   ConfirmationType confirmation_type,
+                   mojom::ConfirmationType mojom_confirmation_type,
                    AdEventCallback callback);
 void RecordAdEvent(const AdEventInfo& ad_event, AdEventCallback callback);
 

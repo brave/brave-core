@@ -10,14 +10,16 @@
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::test {
 
-TransactionInfo BuildTransaction(const double value,
-                                 const AdType ad_type,
-                                 const ConfirmationType confirmation_type,
-                                 const base::Time reconciled_at,
-                                 const bool should_generate_random_uuids) {
+TransactionInfo BuildTransaction(
+    const double value,
+    const mojom::AdType mojom_ad_type,
+    const mojom::ConfirmationType mojom_confirmation_type,
+    const base::Time reconciled_at,
+    const bool should_generate_random_uuids) {
   TransactionInfo transaction;
 
   transaction.id = RandomUuidOr(should_generate_random_uuids, kTransactionId);
@@ -26,8 +28,8 @@ TransactionInfo BuildTransaction(const double value,
       RandomUuidOr(should_generate_random_uuids, kCreativeInstanceId);
   transaction.segment = kSegment;
   transaction.value = value;
-  transaction.ad_type = ad_type;
-  transaction.confirmation_type = confirmation_type;
+  transaction.ad_type = mojom_ad_type;
+  transaction.confirmation_type = mojom_confirmation_type;
   if (!reconciled_at.is_null()) {
     transaction.reconciled_at = reconciled_at;
   }
@@ -37,10 +39,10 @@ TransactionInfo BuildTransaction(const double value,
 
 TransactionInfo BuildUnreconciledTransaction(
     const double value,
-    const AdType ad_type,
-    const ConfirmationType confirmation_type,
+    const mojom::AdType mojom_ad_type,
+    const mojom::ConfirmationType mojom_confirmation_type,
     const bool should_generate_random_uuids) {
-  return BuildTransaction(value, ad_type, confirmation_type,
+  return BuildTransaction(value, mojom_ad_type, mojom_confirmation_type,
                           /*reconciled_at=*/{}, should_generate_random_uuids);
 }
 

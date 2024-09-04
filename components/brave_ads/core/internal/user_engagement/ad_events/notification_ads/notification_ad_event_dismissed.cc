@@ -8,14 +8,14 @@
 #include <utility>
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 
 namespace brave_ads {
 
 void NotificationAdEventDismissed::FireEvent(const NotificationAdInfo& ad,
                                              ResultCallback callback) {
-  RecordAdEvent(ad, ConfirmationType::kDismissed, std::move(callback));
+  RecordAdEvent(ad, mojom::ConfirmationType::kDismissed, std::move(callback));
 }
 
 }  // namespace brave_ads

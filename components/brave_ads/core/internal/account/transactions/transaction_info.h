@@ -11,8 +11,7 @@
 #include <vector>
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
@@ -37,8 +36,9 @@ struct TransactionInfo final {
   std::string creative_instance_id;
   std::string segment;
   double value = 0.0;
-  AdType ad_type = AdType::kUndefined;
-  ConfirmationType confirmation_type = ConfirmationType::kUndefined;
+  mojom::AdType ad_type = mojom::AdType::kUndefined;
+  mojom::ConfirmationType confirmation_type =
+      mojom::ConfirmationType::kUndefined;
   std::optional<base::Time> reconciled_at;
 };
 

@@ -31,8 +31,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds
@@ -118,48 +117,48 @@ TEST_F(BraveAdsAccountTest, GetStatementForRewardsUser) {
   AdvanceClockTo(test::TimeFromString("31 October 2020"));
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(test::TimeFromString("18 November 2020"));
 
   const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
   AdvanceClockTo(test::TimeFromString("25 December 2020"));
 
   const TransactionInfo transaction_5 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_5);
 
   const TransactionInfo transaction_6 = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_6);
 
   const TransactionInfo transaction_7 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_7);
 
@@ -177,7 +176,8 @@ TEST_F(BraveAdsAccountTest, GetStatementForRewardsUser) {
   expected_mojom_statement->next_payment_date =
       test::TimeFromUTCString("7 January 2021 23:59:59.999");
   expected_mojom_statement->ads_received_this_month = 3;
-  expected_mojom_statement->ads_summary_this_month = {{"ad_notification", 3}};
+  expected_mojom_statement->ads_summary_this_month = {
+      {mojom::AdType::kNotificationAd, 3}};
 
   base::MockCallback<GetStatementOfAccountsCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_mojom_statement))));
@@ -218,13 +218,14 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
               OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
                   /*id*/ ::testing::_, /*created_at*/ test::Now(),
                   test::kCreativeInstanceId, test::kSegment, /*value*/ 1.0,
-                  AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+                  mojom::AdType::kNotificationAd,
+                  mojom::ConfirmationType::kViewedImpression,
                   /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
   GetAccount().Deposit(test::kCreativeInstanceId, test::kSegment,
-                       AdType::kNotificationAd,
-                       ConfirmationType::kViewedImpression);
+                       mojom::AdType::kNotificationAd,
+                       mojom::ConfirmationType::kViewedImpression);
 }
 
 TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
@@ -251,13 +252,14 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
               OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
                   /*id*/ ::testing::_, /*created_at*/ test::Now(),
                   test::kCreativeInstanceId, test::kSegment, /*value*/ 1.0,
-                  AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+                  mojom::AdType::kNotificationAd,
+                  mojom::ConfirmationType::kViewedImpression,
                   /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
   GetAccount().DepositWithUserData(test::kCreativeInstanceId, test::kSegment,
-                                   AdType::kNotificationAd,
-                                   ConfirmationType::kViewedImpression,
+                                   mojom::AdType::kNotificationAd,
+                                   mojom::ConfirmationType::kViewedImpression,
                                    /*user_data=*/{});
 }
 
@@ -266,16 +268,18 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   test::MockTokenGenerator(/*count=*/1);
 
   // Act & Assert
-  EXPECT_CALL(account_observer_mock_,
-              OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
-                  /*id*/ ::testing::_, /*created_at*/ test::Now(),
-                  test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
-                  AdType::kNotificationAd, ConfirmationType::kClicked,
-                  /*reconciled_at*/ std::nullopt)));
+  EXPECT_CALL(
+      account_observer_mock_,
+      OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
+          /*id*/ ::testing::_, /*created_at*/ test::Now(),
+          test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+          mojom::AdType::kNotificationAd, mojom::ConfirmationType::kClicked,
+          /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
   GetAccount().Deposit(test::kCreativeInstanceId, test::kSegment,
-                       AdType::kNotificationAd, ConfirmationType::kClicked);
+                       mojom::AdType::kNotificationAd,
+                       mojom::ConfirmationType::kClicked);
 }
 
 TEST_F(BraveAdsAccountTest, DepositForNonCashWithUserData) {
@@ -283,17 +287,18 @@ TEST_F(BraveAdsAccountTest, DepositForNonCashWithUserData) {
   test::MockTokenGenerator(/*count=*/1);
 
   // Act & Assert
-  EXPECT_CALL(account_observer_mock_,
-              OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
-                  /*id*/ ::testing::_, /*created_at*/ test::Now(),
-                  test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
-                  AdType::kNotificationAd, ConfirmationType::kClicked,
-                  /*reconciled_at*/ std::nullopt)));
+  EXPECT_CALL(
+      account_observer_mock_,
+      OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
+          /*id*/ ::testing::_, /*created_at*/ test::Now(),
+          test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+          mojom::AdType::kNotificationAd, mojom::ConfirmationType::kClicked,
+          /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
   GetAccount().DepositWithUserData(
-      test::kCreativeInstanceId, test::kSegment, AdType::kNotificationAd,
-      ConfirmationType::kClicked, /*user_data=*/{});
+      test::kCreativeInstanceId, test::kSegment, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kClicked, /*user_data=*/{});
 }
 
 TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
@@ -309,8 +314,8 @@ TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange).Times(0);
   GetAccount().Deposit(test::kMissingCreativeInstanceId, test::kSegment,
-                       AdType::kNotificationAd,
-                       ConfirmationType::kViewedImpression);
+                       mojom::AdType::kNotificationAd,
+                       mojom::ConfirmationType::kViewedImpression);
 }
 
 TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingCashForRewardsUser) {
@@ -326,14 +331,15 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingCashForRewardsUser) {
               OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
                   /*id*/ ::testing::_, /*created_at*/ test::Now(),
                   test::kCreativeInstanceId, test::kSegment, /*value*/ 1.0,
-                  AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+                  mojom::AdType::kNotificationAd,
+                  mojom::ConfirmationType::kViewedImpression,
                   /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
 
   GetAccount().Deposit(test::kCreativeInstanceId, test::kSegment,
-                       AdType::kNotificationAd,
-                       ConfirmationType::kViewedImpression);
+                       mojom::AdType::kNotificationAd,
+                       mojom::ConfirmationType::kViewedImpression);
 
   // Assert
   base::MockCallback<database::table::GetTransactionsCallback> callback;
@@ -354,17 +360,19 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingNonCashForRewardsUser) {
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
-  EXPECT_CALL(account_observer_mock_,
-              OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
-                  /*id*/ ::testing::_, /*created_at*/ test::Now(),
-                  test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
-                  AdType::kNotificationAd, ConfirmationType::kClicked,
-                  /*reconciled_at*/ std::nullopt)));
+  EXPECT_CALL(
+      account_observer_mock_,
+      OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
+          /*id*/ ::testing::_, /*created_at*/ test::Now(),
+          test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
+          mojom::AdType::kNotificationAd, mojom::ConfirmationType::kClicked,
+          /*reconciled_at*/ std::nullopt)));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
 
   GetAccount().Deposit(test::kCreativeInstanceId, test::kSegment,
-                       AdType::kNotificationAd, ConfirmationType::kClicked);
+                       mojom::AdType::kNotificationAd,
+                       mojom::ConfirmationType::kClicked);
 
   // Assert
   base::MockCallback<database::table::GetTransactionsCallback> callback;
@@ -390,8 +398,8 @@ TEST_F(BraveAdsAccountTest,
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange).Times(0);
   GetAccount().Deposit(test::kCreativeInstanceId, test::kSegment,
-                       AdType::kSearchResultAd,
-                       ConfirmationType::kViewedImpression);
+                       mojom::AdType::kSearchResultAd,
+                       mojom::ConfirmationType::kViewedImpression);
 
   // Assert
   base::MockCallback<database::table::GetTransactionsCallback> callback;
@@ -417,7 +425,8 @@ TEST_F(BraveAdsAccountTest,
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange).Times(0);
   GetAccount().Deposit(test::kCreativeInstanceId, test::kSegment,
-                       AdType::kNewTabPageAd, ConfirmationType::kClicked);
+                       mojom::AdType::kNewTabPageAd,
+                       mojom::ConfirmationType::kClicked);
 
   // Assert
   base::MockCallback<database::table::GetTransactionsCallback> callback;

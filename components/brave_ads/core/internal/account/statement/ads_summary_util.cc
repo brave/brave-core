@@ -6,20 +6,22 @@
 #include "brave/components/brave_ads/core/internal/account/statement/ads_summary_util.h"
 
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
-base::flat_map<std::string, int32_t> GetAdsSummaryForDateRange(
+base::flat_map<mojom::AdType, int32_t> GetAdsSummaryForDateRange(
     const TransactionList& transactions,
     const base::Time from_time,
     const base::Time to_time) {
-  base::flat_map<std::string, int32_t> ads_summary;
+  base::flat_map<mojom::AdType, int32_t> ads_summary;
 
   for (const auto& transaction : transactions) {
-    if (transaction.confirmation_type == ConfirmationType::kViewedImpression &&
+    if (transaction.confirmation_type ==
+            mojom::ConfirmationType::kViewedImpression &&
         transaction.created_at >= from_time &&
         transaction.created_at <= to_time) {
-      ++ads_summary[ToString(transaction.ad_type)];
+      ++ads_summary[transaction.ad_type];
     }
   }
 

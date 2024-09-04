@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_types_test_util.h"
 
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+
 namespace brave_ads::test {
 
 namespace {

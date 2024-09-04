@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #import "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 @protocol AdsClientBridge
@@ -46,12 +47,14 @@
 - (void)showNotificationAd:(const brave_ads::NotificationAdInfo&)info;
 - (void)closeNotificationAd:(const std::string&)placement_id;
 - (void)cacheAdEventForInstanceId:(const std::string&)id
-                           adType:(const std::string&)ad_type
-                 confirmationType:(const std::string&)confirmation_type
+                           adType:(const brave_ads::mojom::AdType)mojom_ad_type
+                 confirmationType:(const brave_ads::mojom::ConfirmationType)
+                                      mojom_confirmation_type
                              time:(const base::Time)time;
-- (std::vector<base::Time>)getCachedAdEvents:(const std::string&)ad_type
-                            confirmationType:
-                                (const std::string&)confirmation_type;
+- (std::vector<base::Time>)
+    getCachedAdEvents:(const brave_ads::mojom::AdType)mojom_ad_type
+     confirmationType:
+         (const brave_ads::mojom::ConfirmationType)mojom_confirmation_type;
 - (void)resetAdEventCacheForInstanceId:(const std::string&)id;
 - (void)UrlRequest:(brave_ads::mojom::UrlRequestInfoPtr)url_request
           callback:(brave_ads::UrlRequestCallback)callback;

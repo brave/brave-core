@@ -14,7 +14,6 @@
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer_mock.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
 #include "url/gurl.h"
 
@@ -64,7 +63,7 @@ TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheLastClickedAdIsInvalid) {
 TEST_F(BraveAdsSiteVisitTest,
        DoNotLandOnPageIfTheRedirectChainDoesNotMatchTheLastClickedAd) {
   // Arrange
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad);
 
@@ -81,7 +80,7 @@ TEST_F(BraveAdsSiteVisitTest,
 
 TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheSameTabIsAlreadyLanding) {
   // Arrange
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad);
 
@@ -119,7 +118,7 @@ TEST_F(
       brave_ads::kSiteVisitFeature, {{"page_land_after", "10s"}});
 
   // Tab 1 (Visible/Start page landing)
-  const AdInfo ad_1 = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad_1 = test::BuildAd(mojom::AdType::kNotificationAd,
                                     /*should_generate_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad_1);
 
@@ -150,7 +149,7 @@ TEST_F(
   ASSERT_FALSE(HasPendingTasks());
 
   // Tab 2 (Visible/Start page landing)
-  const AdInfo ad_2 = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad_2 = test::BuildAd(mojom::AdType::kNotificationAd,
                                     /*should_generate_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad_2);
 
@@ -236,7 +235,7 @@ TEST_F(
     BraveAdsSiteVisitTest,
     SuspendPageLandWhenBrowserEntersBackgroundThenResumePageLandWhenBrowserEntersForeground) {
   // Tab 1 (Start page landing)
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad);
 
@@ -293,7 +292,7 @@ TEST_F(
     BraveAdsSiteVisitTest,
     SuspendPageLandWhenBrowserResignsActiveThenResumePageLandWhenBrowserBecomesActive) {
   // Tab 1 (Start page landing)
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad);
 
@@ -353,7 +352,7 @@ TEST_F(BraveAdsSiteVisitTest, DoNotSuspendOrResumePageLand) {
       {{"should_suspend_and_resume_page_land", "false"}});
 
   // Tab 1 (Start page landing)
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad);
 
@@ -398,7 +397,7 @@ TEST_F(
   // Arrange
   test::DisableBraveRewards();
 
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad);
 
@@ -414,7 +413,7 @@ TEST_F(
 TEST_F(BraveAdsSiteVisitTest,
        LandOnPagesForMultipleSiteVisitsOccurringAtTheSameTime) {
   // Tab 1 (Visible/Start page landing)
-  const AdInfo ad_1 = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad_1 = test::BuildAd(mojom::AdType::kNotificationAd,
                                     /*should_generate_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad_1);
 
@@ -442,7 +441,7 @@ TEST_F(BraveAdsSiteVisitTest,
   ASSERT_FALSE(HasPendingTasks());
 
   // Tab 2 (Visible/Start page landing)
-  const AdInfo ad_2 = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad_2 = test::BuildAd(mojom::AdType::kNotificationAd,
                                     /*should_generate_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad_2);
 
@@ -526,7 +525,7 @@ TEST_F(BraveAdsSiteVisitTest,
 TEST_F(BraveAdsSiteVisitTest,
        LandOnPageIfTheTabIsVisibleAndTheRedirectChainMatchesTheLastClickedAd) {
   // Arrange
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad);
 
@@ -554,7 +553,7 @@ TEST_F(
     BraveAdsSiteVisitTest,
     LandOnPageIfTheTabIsVisibleAndTheRedirectChainMatchesTheLastClickedAdForHttpResponseStatusErrorPage) {
   // Arrange
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad);
 
@@ -580,7 +579,7 @@ TEST_F(
 
 TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheTabIsOccluded) {
   // Arrange
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad);
 
@@ -603,7 +602,7 @@ TEST_F(
     BraveAdsSiteVisitTest,
     DoNotLandOnPageIfTheVisibleTabRedirectChainDoesNotMatchTheLastClickedAd) {
   // Arrange
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad);
 
@@ -621,7 +620,7 @@ TEST_F(
 TEST_F(BraveAdsSiteVisitTest,
        CancelPageLandIfTheRedirectChainNoLongerMatchesTheAdTargetUrl) {
   // Arrange
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad);
 
@@ -641,7 +640,7 @@ TEST_F(BraveAdsSiteVisitTest,
 
 TEST_F(BraveAdsSiteVisitTest, CancelPageLandIfTheTabIsClosed) {
   // Arrange
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad);
 

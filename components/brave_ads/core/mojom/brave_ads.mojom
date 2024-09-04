@@ -39,7 +39,7 @@ struct StatementInfo {
   double max_earnings_this_month;
   mojo_base.mojom.Time next_payment_date;
   int32 ads_received_this_month;
-  map<string, int32> ads_summary_this_month;
+  map<AdType, int32> ads_summary_this_month;
 };
 
 enum ReminderType {
@@ -55,14 +55,13 @@ enum ReactionType {
 };
 
 struct ReactionInfo {
-  AdType ad_type;
+  AdType mojom_ad_type;
   string creative_instance_id;
   string creative_set_id;
   string advertiser_id;
   string segment;
 };
 
-// These values must match `public/ad_units/ad_type.h`.
 enum AdType {
   kUndefined = 0,
   kNotificationAd,
@@ -70,6 +69,49 @@ enum AdType {
   kPromotedContentAd,
   kInlineContentAd,
   kSearchResultAd
+};
+
+enum ConfirmationType {
+  kUndefined = 0,
+
+  // Clicked is when the user clicks on an ad.
+  kClicked,
+
+  // Dismissed is when the user dismisses an ad.
+  kDismissed,
+
+  // Viewed impression is when the ad is shown to the user.
+  kViewedImpression,
+
+  // Served impression is when the ad is served.
+  kServedImpression,
+
+  // Landed is when the user lands on the ad's landing page.
+  kLanded,
+
+  // When the user marks an ad as inappropriate.
+  kMarkAdAsInappropriate,
+
+  // When the user saves an ad.
+  kSavedAd,
+
+  // When the user likes an ad.
+  kLikedAd,
+
+  // When the user dislikes an ad.
+  kDislikedAd,
+
+  // When the user converts on an ad.
+  kConversion,
+
+  // When a new tab page video ad starts playing.
+  kMediaPlay,
+
+  // When played 25% of a new tab page video ad.
+  kMedia25,
+
+  // When played 100% of a new tab page video ad.
+  kMedia100
 };
 
 struct CreativeSetConversionInfo {

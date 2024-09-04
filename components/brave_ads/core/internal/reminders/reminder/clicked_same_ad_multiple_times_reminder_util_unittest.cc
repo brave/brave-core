@@ -13,8 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_test_util.h"
 #include "brave/components/brave_ads/core/internal/reminders/reminders_feature.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -63,9 +62,9 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        UserClickedTheSameAdMultipleTimes) {
   // Arrange
   const AdHistoryList ad_history = test::BuildAdHistoryForSamePlacement(
-      AdType::kNotificationAd,
+      mojom::AdType::kNotificationAd,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
-          ConfirmationType::kClicked,
+          mojom::ConfirmationType::kClicked,
           /*count=*/kRemindUserIfClickingTheSameAdAfter.Get()),
       /*should_generate_random_uuids=*/false);
 
@@ -78,9 +77,9 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        UserDidNotClickTheSameAdMultipleTimes) {
   // Arrange
   const AdHistoryList ad_history = test::BuildAdHistoryForSamePlacement(
-      AdType::kNotificationAd,
+      mojom::AdType::kNotificationAd,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
-          ConfirmationType::kClicked,
+          mojom::ConfirmationType::kClicked,
           /*count=*/kRemindUserIfClickingTheSameAdAfter.Get() - 1),
       /*should_generate_random_uuids=*/false);
 
@@ -93,9 +92,9 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        UserClickedTheSameAdMultipleTimesConsecutively) {
   // Arrange
   const AdHistoryList ad_history = test::BuildAdHistoryForSamePlacement(
-      AdType::kNotificationAd,
+      mojom::AdType::kNotificationAd,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
-          ConfirmationType::kClicked,
+          mojom::ConfirmationType::kClicked,
           /*count=*/kRemindUserIfClickingTheSameAdAfter.Get() * 2),
       /*should_generate_random_uuids=*/false);
 
@@ -108,9 +107,9 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        UserDidNotClickTheSameAdMultipleTimesConsecutively) {
   // Arrange
   const AdHistoryList ad_history = test::BuildAdHistoryForSamePlacement(
-      AdType::kNotificationAd,
+      mojom::AdType::kNotificationAd,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
-          ConfirmationType::kClicked,
+          mojom::ConfirmationType::kClicked,
           /*count=*/(kRemindUserIfClickingTheSameAdAfter.Get() * 2) - 1),
       /*should_generate_random_uuids=*/false);
 
@@ -123,9 +122,9 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        UserClickedDifferentAdsMultipleTimes) {
   // Arrange
   const AdHistoryList ad_history = test::BuildAdHistoryForSamePlacement(
-      AdType::kNotificationAd,
+      mojom::AdType::kNotificationAd,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
-          ConfirmationType::kClicked,
+          mojom::ConfirmationType::kClicked,
           /*count=*/kRemindUserIfClickingTheSameAdAfter.Get()),
       /*should_generate_random_uuids=*/true);
 

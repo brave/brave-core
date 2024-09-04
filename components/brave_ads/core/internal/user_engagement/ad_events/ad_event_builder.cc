@@ -7,17 +7,18 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 
 namespace brave_ads {
 
 AdEventInfo BuildAdEvent(const AdInfo& ad,
-                         const ConfirmationType confirmation_type,
+                         const mojom::ConfirmationType mojom_confirmation_type,
                          const base::Time created_at) {
   AdEventInfo ad_event;
 
   ad_event.type = ad.type;
-  ad_event.confirmation_type = confirmation_type;
+  ad_event.confirmation_type = mojom_confirmation_type;
   ad_event.placement_id = ad.placement_id;
   ad_event.campaign_id = ad.campaign_id;
   ad_event.creative_set_id = ad.creative_set_id;
@@ -29,12 +30,13 @@ AdEventInfo BuildAdEvent(const AdInfo& ad,
   return ad_event;
 }
 
-AdEventInfo RebuildAdEvent(const AdEventInfo& ad_event,
-                           const ConfirmationType confirmation_type,
-                           const base::Time created_at) {
+AdEventInfo RebuildAdEvent(
+    const AdEventInfo& ad_event,
+    const mojom::ConfirmationType mojom_confirmation_type,
+    const base::Time created_at) {
   AdEventInfo mutable_ad_event(ad_event);
 
-  mutable_ad_event.confirmation_type = confirmation_type;
+  mutable_ad_event.confirmation_type = mojom_confirmation_type;
   mutable_ad_event.created_at = created_at;
 
   return mutable_ad_event;

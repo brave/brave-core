@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/export.h"
 
 namespace base {
@@ -31,12 +32,13 @@ class ADS_EXPORT AdEventCache final {
   ~AdEventCache();
 
   void AddEntryForInstanceId(const std::string& id,
-                             const std::string& ad_type,
-                             const std::string& confirmation_type,
+                             mojom::AdType mojom_ad_type,
+                             mojom::ConfirmationType mojom_confirmation_type,
                              base::Time time);
 
-  std::vector<base::Time> Get(const std::string& ad_type,
-                              const std::string& confirmation_type) const;
+  std::vector<base::Time> Get(
+      mojom::AdType mojom_ad_type,
+      mojom::ConfirmationType mojom_confirmation_type) const;
 
   void ResetForInstanceId(const std::string& id);
 

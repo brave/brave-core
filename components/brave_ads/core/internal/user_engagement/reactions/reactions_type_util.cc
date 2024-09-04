@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions_type_util.h"
 
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+
 namespace brave_ads {
 
 mojom::ReactionType ToggleLikedReactionType(

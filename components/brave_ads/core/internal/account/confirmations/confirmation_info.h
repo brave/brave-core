@@ -13,8 +13,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_info.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/user_data_info.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
@@ -33,8 +32,8 @@ struct ConfirmationInfo final {
 
   std::string transaction_id;
   std::string creative_instance_id;
-  ConfirmationType type = ConfirmationType::kUndefined;
-  AdType ad_type = AdType::kUndefined;
+  mojom::ConfirmationType type = mojom::ConfirmationType::kUndefined;
+  mojom::AdType ad_type = mojom::AdType::kUndefined;
   std::optional<base::Time> created_at;
   std::optional<RewardInfo> reward;
   UserDataInfo user_data;

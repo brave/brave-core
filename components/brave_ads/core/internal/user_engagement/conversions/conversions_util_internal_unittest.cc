@@ -11,9 +11,8 @@
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -27,27 +26,28 @@ TEST_F(BraveAdsConversionsUtilInternalTest,
   test::DisableBraveRewards();
 
   // Act & Assert
-  for (int i = 0; i < static_cast<int>(AdType::kMaxValue); ++i) {
-    const auto ad_type = static_cast<AdType>(i);
+  for (int i = 0; i < static_cast<int>(mojom::AdType::kMaxValue); ++i) {
+    const auto mojom_ad_type = static_cast<mojom::AdType>(i);
 
-    const AdInfo ad = test::BuildAd(ad_type,
+    const AdInfo ad = test::BuildAd(mojom_ad_type,
                                     /*should_generate_random_uuids=*/false);
 
-    for (int j = 0; j < static_cast<int>(ConfirmationType::kMaxValue); ++j) {
-      const auto confirmation_type = static_cast<ConfirmationType>(j);
+    for (int j = 0; j < static_cast<int>(mojom::ConfirmationType::kMaxValue);
+         ++j) {
+      const auto confirmation_type = static_cast<mojom::ConfirmationType>(j);
 
       bool expected_can_convert_ad_event;
-      if (ad_type == AdType::kInlineContentAd ||
-          ad_type == AdType::kPromotedContentAd) {
+      if (mojom_ad_type == mojom::AdType::kInlineContentAd ||
+          mojom_ad_type == mojom::AdType::kPromotedContentAd) {
         // For non-Rewards users who have opted into Brave News, allow
         // view-through and click-through conversions.
         expected_can_convert_ad_event =
-            confirmation_type == ConfirmationType::kViewedImpression ||
-            confirmation_type == ConfirmationType::kClicked;
+            confirmation_type == mojom::ConfirmationType::kViewedImpression ||
+            confirmation_type == mojom::ConfirmationType::kClicked;
       } else {
         // Otherwise, only allow click-through conversions.
         expected_can_convert_ad_event =
-            confirmation_type == ConfirmationType::kClicked;
+            confirmation_type == mojom::ConfirmationType::kClicked;
       }
 
       const AdEventInfo ad_event =
@@ -59,19 +59,20 @@ TEST_F(BraveAdsConversionsUtilInternalTest,
 
 TEST_F(BraveAdsConversionsUtilInternalTest, CanConvertAdEventForRewardsUser) {
   // Act & Assert
-  for (int i = 0; i < static_cast<int>(AdType::kMaxValue); ++i) {
-    const auto ad_type = static_cast<AdType>(i);
+  for (int i = 0; i < static_cast<int>(mojom::AdType::kMaxValue); ++i) {
+    const auto mojom_ad_type = static_cast<mojom::AdType>(i);
 
-    const AdInfo ad = test::BuildAd(ad_type,
+    const AdInfo ad = test::BuildAd(mojom_ad_type,
                                     /*should_generate_random_uuids=*/false);
 
-    for (int j = 0; j < static_cast<int>(ConfirmationType::kMaxValue); ++j) {
-      const auto confirmation_type = static_cast<ConfirmationType>(j);
+    for (int j = 0; j < static_cast<int>(mojom::ConfirmationType::kMaxValue);
+         ++j) {
+      const auto confirmation_type = static_cast<mojom::ConfirmationType>(j);
 
       // Only viewed and clicked ad events are allowed to be converted.
       const bool expected_can_convert_ad_event =
-          confirmation_type == ConfirmationType::kViewedImpression ||
-          confirmation_type == ConfirmationType::kClicked;
+          confirmation_type == mojom::ConfirmationType::kViewedImpression ||
+          confirmation_type == mojom::ConfirmationType::kClicked;
 
       const AdEventInfo ad_event =
           BuildAdEvent(ad, confirmation_type, /*created_at=*/test::Now());

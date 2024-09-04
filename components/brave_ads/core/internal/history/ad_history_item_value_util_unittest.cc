@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_builder_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_test_util.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -97,8 +97,8 @@ TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromValue) {
 
   // Assert
   EXPECT_EQ(ad_history_item,
-            test::BuildAdHistoryItem(AdType::kNotificationAd,
-                                     ConfirmationType::kViewedImpression,
+            test::BuildAdHistoryItem(mojom::AdType::kNotificationAd,
+                                     mojom::ConfirmationType::kViewedImpression,
                                      /*should_generate_random_uuids=*/false));
 }
 
@@ -112,16 +112,17 @@ TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromLegacyValue) {
 
   // Assert
   EXPECT_EQ(ad_history_item,
-            test::BuildAdHistoryItem(AdType::kNotificationAd,
-                                     ConfirmationType::kViewedImpression,
+            test::BuildAdHistoryItem(mojom::AdType::kNotificationAd,
+                                     mojom::ConfirmationType::kViewedImpression,
                                      /*should_generate_random_uuids=*/false));
 }
 
 TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemToValue) {
   // Arrange
-  const AdHistoryItemInfo ad_history_item = test::BuildAdHistoryItem(
-      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/false);
+  const AdHistoryItemInfo ad_history_item =
+      test::BuildAdHistoryItem(mojom::AdType::kNotificationAd,
+                               mojom::ConfirmationType::kViewedImpression,
+                               /*should_generate_random_uuids=*/false);
 
   // Act
   const base::Value::Dict dict = AdHistoryItemToValue(ad_history_item);

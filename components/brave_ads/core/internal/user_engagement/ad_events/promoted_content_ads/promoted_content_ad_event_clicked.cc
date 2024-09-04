@@ -9,13 +9,13 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
 void PromotedContentAdEventClicked::FireEvent(const PromotedContentAdInfo& ad,
                                               ResultCallback callback) {
-  RecordAdEvent(ad, ConfirmationType::kClicked, std::move(callback));
+  RecordAdEvent(ad, mojom::ConfirmationType::kClicked, std::move(callback));
 }
 
 }  // namespace brave_ads

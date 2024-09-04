@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/search_result_ad/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/search_result_ad/search_result_ad_test_util.h"
 
@@ -36,7 +36,7 @@ TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
 
   const SearchResultAdInfo ad =
       test::BuildSearchResultAd(/*should_generate_random_uuids=*/true);
-  test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
+  test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        /*count=*/kMaximumSearchResultAdsPerHour.Get() - 1);
 
   // Act & Assert
@@ -52,7 +52,7 @@ TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
 
   const SearchResultAdInfo ad =
       test::BuildSearchResultAd(/*should_generate_random_uuids=*/true);
-  test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
+  test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        /*count=*/kMaximumSearchResultAdsPerHour.Get());
 
   AdvanceClockBy(base::Hours(1));
@@ -70,7 +70,7 @@ TEST_F(BraveAdsSearchResultAdsPerHourPermissionRuleTest,
 
   const SearchResultAdInfo ad =
       test::BuildSearchResultAd(/*should_generate_random_uuids=*/true);
-  test::RecordAdEvents(ad, ConfirmationType::kServedImpression,
+  test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        /*count=*/kMaximumSearchResultAdsPerHour.Get());
 
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
