@@ -19,10 +19,9 @@
 
 + (nullable id)getForPrivateMode:(bool)isPrivateBrowsing {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  auto* browserStateManager =
-      GetApplicationContext()->GetChromeBrowserStateManager();
-  auto* browserState =
-      browserStateManager->GetLastUsedBrowserStateDeprecatedDoNotUse();
+  auto* browserState = GetApplicationContext()
+                           ->GetProfileManager()
+                           ->GetLastUsedProfileDeprecatedDoNotUse();
   if (isPrivateBrowsing) {
     browserState = browserState->GetOffTheRecordChromeBrowserState();
   }
