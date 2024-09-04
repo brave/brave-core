@@ -17,9 +17,9 @@ import org.chromium.base.ThreadUtils;
 import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.browser.BraveConfig;
-import org.chromium.chrome.browser.webcompat_reporter.BraveWebcompatReporterUtils;
 import org.chromium.net.ChromiumNetworkAdapter;
 import org.chromium.net.NetworkTrafficAnnotationTag;
+import org.chromium.base.version_info.BraveVersionConstants;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -103,8 +103,8 @@ public class BraveShieldsUtils {
             jsonParam.put("domain", domain);
             jsonParam.put("api_key", apiKey);
             jsonParam.put(
-                    WEBCOMPAT_REPORT_BRAVE_VERSION, BraveWebcompatReporterUtils.getBraveVersion());
-            jsonParam.put(WEBCOMPAT_REPORT_BRAVE_CHANNEL, BraveWebcompatReporterUtils.getChannel());
+                    WEBCOMPAT_REPORT_BRAVE_VERSION, BraveVersionConstants.VERSION);
+            jsonParam.put(WEBCOMPAT_REPORT_BRAVE_CHANNEL, BraveVersionConstants.CHANNEL);
 
             OutputStream outputStream = urlConnection.getOutputStream();
             byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8.toString());
