@@ -39,6 +39,7 @@
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/vector2d.h"
+#include "ui/gfx/native_widget_types.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
@@ -103,10 +104,11 @@ base::WeakPtr<AIRewriterButton> AIRewriterButtonView::MaybeCreateButton(
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   CHECK(browser_view);
 
-  auto* button = new AIRewriterButtonView(browser, contents);
-
-  auto* parent = browser_view->GetWidget()->GetNativeWindow();
+  gfx::NativeWindow parent = browser_view->GetWidget()->GetNativeWindow();
   CHECK(parent);
+
+  auto* button = new AIRewriterButtonView(browser, contents);
+  button->view_observation_.Observe(browser_view->GetContentsView());
 
   views::Widget::InitParams params(
       views::Widget::InitParams::Type::TYPE_CONTROL);
@@ -131,16 +133,17 @@ void AIRewriterButtonView::Show(const gfx::Rect& rect) {
     return;
   }
 
+  if (!view_observation_.IsObserving()) {
+    return;
+  }
+
   CHECK(GetWidget());
   GetWidget()->Show();
-
-  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
-  CHECK(browser_view);
 
   constexpr int kPaddingY = -4;
   auto size = GetPreferredSize();
   auto pos = rect.origin();
-  views::View::ConvertPointToWidget(browser_view->contents_container(), &pos);
+  views::View::ConvertPointToWidget(view_observation_.GetSource(), &pos);
   pos.Offset(0, -size.height() + kPaddingY);
   GetWidget()->SetBounds(gfx::Rect(pos, size));
 }
@@ -183,6 +186,15 @@ void AIRewriterButtonView::OnVisibilityChanged(content::Visibility visibility) {
   if (visibility == content::Visibility::HIDDEN) {
     Hide();
   }
+}
+
+void AIRewriterButtonView::OnViewBoundsChanged(views::View* observed_view) {
+  Hide();
+}
+
+void AIRewriterButtonView::OnViewIsDeleting(views::View* observed_view) {
+  view_observation_.Reset();
+  Close();
 }
 
 void AIRewriterButtonView::OnTabStripModelChanged(

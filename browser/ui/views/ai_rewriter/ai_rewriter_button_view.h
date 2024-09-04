@@ -16,6 +16,8 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/rect.h"
+#include "ui/views/view.h"
+#include "ui/views/view_observer.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
 
@@ -35,7 +37,8 @@ namespace ai_rewriter {
 class AIRewriterButtonView : public AIRewriterButton,
                              public views::WidgetDelegateView,
                              public content::WebContentsObserver,
-                             public TabStripModelObserver {
+                             public TabStripModelObserver,
+                             public views::ViewObserver {
   METADATA_HEADER(AIRewriterButtonView, views::WidgetDelegateView)
 
  public:
@@ -59,6 +62,10 @@ class AIRewriterButtonView : public AIRewriterButton,
   void PrimaryPageChanged(content::Page& page) override;
   void OnVisibilityChanged(content::Visibility visibility) override;
 
+  // views::ViewObserver:
+  void OnViewBoundsChanged(views::View* observed_view) override;
+  void OnViewIsDeleting(views::View* observed_view) override;
+
   // TabStripModelObserver:
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
@@ -69,7 +76,8 @@ class AIRewriterButtonView : public AIRewriterButton,
   void Close();
 
   AIRewriterButtonView(Browser* browser, content::WebContents* contents);
-
+  base::ScopedObservation<views::View, views::ViewObserver> view_observation_{
+      this};
   base::ScopedObservation<TabStripModel, AIRewriterButtonView>
       tab_strip_observation_{this};
   base::WeakPtrFactory<AIRewriterButton> weak_ptr_factory_{this};
