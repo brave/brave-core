@@ -126,18 +126,17 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
             if (BraveVpnPrefUtils.isSubscriptionPurchase()
                     && !TextUtils.isEmpty(BraveVpnPrefUtils.getRegionIsoCode())) {
-                String serverLocation =
-                        " "
-                                + BraveVpnUtils.countryCodeToEmoji(
-                                        BraveVpnPrefUtils.getRegionIsoCode())
-                                + "   "
-                                + BraveVpnPrefUtils.getRegionNamePretty();
-
+                String serverLocation = " %s  %s";
                 SubMenu vpnLocationSubMenu =
                         menu.findItem(R.id.request_vpn_location_row_menu_id).getSubMenu();
                 MenuItem vpnLocationSubMenuItem =
                         vpnLocationSubMenu.findItem(R.id.request_vpn_location_id);
-                vpnLocationSubMenuItem.setTitle(serverLocation);
+                vpnLocationSubMenuItem.setTitle(
+                        String.format(
+                                serverLocation,
+                                BraveVpnUtils.countryCodeToEmoji(
+                                        BraveVpnPrefUtils.getRegionIsoCode()),
+                                BraveVpnPrefUtils.getRegionNamePretty()));
                 MenuItem vpnLocationIconSubMenuItem =
                         vpnLocationSubMenu.findItem(R.id.request_vpn_location_icon_id);
                 Drawable drawable = vpnLocationIconSubMenuItem.getIcon();
