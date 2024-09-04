@@ -12,7 +12,7 @@
     "128": "assets/img/icon-128.png",
     "256": "assets/img/icon-256.png"
   },
-  "background": {
+  "MAYBE_background":{
     "scripts": [
       "out/brave_extension_background.bundle.js"
     ],
