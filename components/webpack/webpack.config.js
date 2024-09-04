@@ -206,7 +206,7 @@ module.exports = async function (env, argv) {
           },
         },
         {
-          resourceQuery: /raw/,
+          test: /\.html/,
           type: 'asset/source',
         },
       ]
