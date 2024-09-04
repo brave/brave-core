@@ -5,9 +5,9 @@
 
 import { color, effect, font } from '@brave/leo/tokens/css/variables'
 
-import { css, scopedCSS } from '../../lib/scoped_css'
+import { scoped } from '../../lib/scoped_css'
 
-export const style = scopedCSS('payout-account-card', css`
+export const style = scoped.css`
   h4 {
     --leo-icon-size: 24px;
     --leo-icon-color: ${color.systemfeedback.successIcon};
@@ -171,4 +171,4 @@ export const style = scopedCSS('payout-account-card', css`
       }
     }
   }
-`)
+`

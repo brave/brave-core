@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { color, font } from '@brave/leo/tokens/css/variables'
-import { css, scopedCSS } from '../../lib/scoped_css'
+import { scoped } from '../../lib/scoped_css'
 
-export const style = scopedCSS('ads-settings-modal', css`
+export const style = scoped.css`
   & {
     overflow: auto;
     max-width: 600px;
@@ -99,4 +99,4 @@ export const style = scopedCSS('ads-settings-modal', css`
     align-items: center;
     gap: 8px;
   }
-`)
+`

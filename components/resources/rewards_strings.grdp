@@ -878,8 +878,84 @@
   <message name="IDS_REWARDS_SHOW_ALL_BUTTON_LABEL" desc="">
     Show all
   </message>
+
+  <message name="IDS_REWARDS_CONTRIBUTE_ABOUT_METHODS_LINK" desc="">
+    Learn more about contribution methods
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_AMOUNT_TITLE" desc="">
+    Contribution amount
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_AVAILABLE_METHODS_TEXT" desc="">
+    This creator currently only accepts contributions via the following methods:
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_BALANCE_TITLE" desc="">
+    Rewards Balance
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_BALANCE_UNAVAILABLE_TEXT" desc="">
+    Not available
+  </message>
   <message name="IDS_REWARDS_CONTRIBUTE_BUTTON_LABEL" desc="">
     Contribute
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_CHOOSE_METHOD_TEXT" desc="">
+    Choose the method you want to use to contribute to Brave Software:
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_CUSTODIAL_SUBTEXT" desc="">
+    Custodial wallet
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_ERROR_TEXT" desc="">
+    You can try again later.
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_ERROR_TITLE" desc="">
+    There was a problem sending your contribution
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_INSUFFICIENT_FUNDS_BUTTON_LABEL" desc="">
+    Insufficient Funds
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_LOGIN_BUTTON_LABEL" desc="">
+    Log in to <ph name="PROVIDER">$1<ex>Uphold</ex></ph>
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_LOGGED_OUT_TEXT" desc="">
+    It looks like you’re logged out of <ph name="PROVIDER">$1<ex>Uphold</ex></ph> for Brave Rewards. Log in again to continue.
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_LOGGED_OUT_TITLE" desc="">
+    Logged out of <ph name="PROVIDER">$1<ex>Uphold</ex></ph>
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_LOGGED_OUT_WEB3BUTTON_LABEL" desc="">
+    Use Web3 Wallet
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_LOGGED_OUT_WEB3TEXT" desc="">
+    You can also send crypto contributions to this creator by using your Web3 wallet.
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_MONTHLY_LABEL" desc="">
+    Monthly
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_OTHER_LABEL" desc="">
+    Other
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_RECURRING_LABEL" desc="">
+    Recurring contribution
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_SEND_AMOUNT_BUTTON_LABEL" desc="">
+    Send <ph name="AMOUNT">$1<ex>1.23</ex></ph> BAT
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_SEND_BUTTON_LABEL" desc="">
+    Send
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_SENDING_TEXT" desc="">
+    Sending contribution
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_SUCCESS_TEXT" desc="">
+    Thanks for supporting your favorite creators
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_SUCCESS_TITLE" desc="">
+    Contribution sent!
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_WEB3LABEL" desc="">
+    Web3 Wallet
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_WEB3SUBTEXT" desc="">
+    Use your Web3 wallet
   </message>
 
 </grit-part>

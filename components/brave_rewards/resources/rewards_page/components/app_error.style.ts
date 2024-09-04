@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { color, font } from '@brave/leo/tokens/css/variables'
-import { css, scopedCSS } from '../lib/scoped_css'
+import { scoped } from '../lib/scoped_css'
 
-export const style = scopedCSS('app-error', css`
+export const style = scoped.css`
   & {
     margin: 80px auto 0;
     display: flex;
@@ -35,4 +35,4 @@ export const style = scopedCSS('app-error', css`
     padding: 0 20px 20px;
     overflow-x: auto;
   }
-`)
+`

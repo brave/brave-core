@@ -54,6 +54,20 @@ function convertMojoTime(time: any) {
   return (Number(time?.internalValue) / 1000 - Date.UTC(1601, 0, 1)) || 0
 }
 
+function walletProvidersFromPublisherStatus(
+  value: number
+) : ExternalWalletProvider[] {
+  switch (value) {
+    case mojom.PublisherStatus.BITFLYER_VERIFIED:
+      return ['bitflyer']
+    case mojom.PublisherStatus.GEMINI_VERIFIED:
+      return ['gemini']
+    case mojom.PublisherStatus.UPHOLD_VERIFIED:
+      return ['uphold']
+  }
+  return []
+}
+
 export function createModel(): AppModel {
   const browserProxy = RewardsPageProxy.getInstance()
   const pageHandler = browserProxy.handler
@@ -214,8 +228,11 @@ export function createModel(): AppModel {
         banner: {
           title: publisherBanner?.title || '',
           description: publisherBanner?.description || '',
-          background: publisherBanner?.background || ''
-        }
+          background: publisherBanner?.background || '',
+          web3URL: publisherBanner?.web3Url || ''
+        },
+        supportedWalletProviders:
+          walletProvidersFromPublisherStatus(publisherInfo.status)
       }
     })
   }
@@ -436,6 +453,12 @@ export function createModel(): AppModel {
     async removeRecurringContribution(id) {
       await pageHandler.removeRecurringContribution(id)
       updateRecurringContributions()
+    },
+
+    async sendContribution(creatorID, amount, recurring) {
+      const { contributionSent } =
+        await pageHandler.sendContribution(creatorID, amount, recurring)
+      return contributionSent
     }
   }
 }

@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { color, font } from '@brave/leo/tokens/css/variables'
-import { css, scopedCSS } from '../../lib/scoped_css'
+import { scoped } from '../../lib/scoped_css'
 
-export const style = scopedCSS('contribute-card', css`
+export const style = scoped.css`
   section {
     padding: 12px;
     display: flex;
@@ -50,7 +50,10 @@ export const style = scopedCSS('contribute-card', css`
 
   .origin {
     --leo-icon-size: 16px;
+
     font: ${font.small.regular};
     color: ${color.text.tertiary};
+    display: flex;
+    gap: 4px;
   }
-`)
+`

@@ -137,6 +137,11 @@ interface RewardsPageHandler {
   ConnectExternalWallet(string provider, map<string, string> args)
       => (ConnectExternalWalletResult result);
 
+  // Sends a contribution to a Brave Creator with the user's custodial wallet
+  // provider.
+  SendContribution(string creator_id, double amount, bool recurring)
+      => (bool contribution_sent);
+
   // Clears all Rewards-related user state.
   ResetRewards() => (bool success);
 };

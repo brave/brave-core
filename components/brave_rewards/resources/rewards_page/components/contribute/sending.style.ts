@@ -7,20 +7,16 @@ import { scoped } from '../../lib/scoped_css'
 
 export const style = scoped.css`
   & {
+    --leo-progressring-size: 62px;
+
+    padding: 48px 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-  }
+    align-items: center;
+    gap: 32px;
 
-  .columns {
-    display: flex;
-    gap: 24px;
-
-    > * {
-      flex: 1 1 50%;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    @container style(--is-narrow-view) {
+      padding-bottom: 84px;
     }
   }
 `

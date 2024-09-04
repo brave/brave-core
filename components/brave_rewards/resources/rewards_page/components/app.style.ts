@@ -5,8 +5,8 @@
 
 import { color, font } from '@brave/leo/tokens/css/variables'
 
-import { scopedCSS, css } from '../lib/scoped_css'
-import { addStyles } from '../lib/style_injector'
+import { scoped } from '../lib/scoped_css'
+import { addStyles, css } from '../lib/style_injector'
 
 import backgroundAnimated from '../assets/background_animated.svg'
 import backgroundStatic from '../assets/background_static.svg'
@@ -19,7 +19,7 @@ import rewardsLogoImageDark from '../assets/rewards_logo_dark.svg'
 import selectCaret from '../assets/select_caret.svg'
 import selectCaretDark from '../assets/select_caret_dark.svg'
 
-export const style = scopedCSS('app', css`
+export const style = scoped.css`
   & {
     --onboarding-max-width: 392px;
     container: app/normal;
@@ -88,7 +88,7 @@ export const style = scopedCSS('app', css`
     from { opacity: 0; }
     to { opacity: 1; }
   }
-`)
+`
 
 addStyles('app-global-styles', css`
   @scope (${style.selector}) {

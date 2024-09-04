@@ -5,9 +5,9 @@
 
 import { color, font } from '@brave/leo/tokens/css/variables'
 
-import { scopedCSS, css } from '../lib/scoped_css'
+import { scoped } from '../lib/scoped_css'
 
-export const style = scopedCSS('app-frame', css`
+export const style = scoped.css`
   & {
     --leo-icon-color: ${color.icon.default};
   }
@@ -203,4 +203,4 @@ export const style = scopedCSS('app-frame', css`
       }
     }
   }
-`)
+`

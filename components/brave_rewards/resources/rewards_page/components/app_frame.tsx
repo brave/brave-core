@@ -110,10 +110,13 @@ function MoreMenu(props: { children: React.ReactNode }) {
         <Icon name='help-outline' />
         <span>{getString('helpButtonLabel')}</span>
       </leo-menu-item>
-      <leo-menu-item class='reset' onClick={onReset}>
-        <Icon name='history' />
-        <span>{getString('resetButtonLabel')}</span>
-      </leo-menu-item>
+      {
+        !isBubble &&
+          <leo-menu-item class='reset' onClick={onReset}>
+            <Icon name='history' />
+            <span>{getString('resetButtonLabel')}</span>
+          </leo-menu-item>
+      }
     </ButtonMenu>
   )
 }

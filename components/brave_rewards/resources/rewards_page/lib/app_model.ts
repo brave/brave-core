@@ -58,6 +58,7 @@ export interface AdsHistoryItem {
 
 export interface RewardsParameters {
   autoContributeChoices: number[]
+  tipChoices: number[]
   rate: number
   walletProviderRegions: Record<string, { allow: string[], block: string[] }>
 }
@@ -98,11 +99,13 @@ export interface CreatorBanner {
   title: string
   description: string
   background: string
+  web3URL: string
 }
 
 export interface CreatorInfo {
   site: CreatorSite
   banner: CreatorBanner
+  supportedWalletProviders: ExternalWalletProvider[]
 }
 
 export interface AutoContributeEntry {
@@ -166,6 +169,8 @@ export interface AppModel {
   setAutoContributeAmount: (amount: number) => Promise<void>
   removeAutoContributeSite: (id: string) => Promise<void>
   removeRecurringContribution: (id: string) => Promise<void>
+  sendContribution:
+    (creatorID: string, amount: number, recurring: boolean) => Promise<boolean>
 }
 
 export function defaultState(): AppState {
@@ -239,6 +244,10 @@ export function defaultModel(): AppModel {
 
     async removeAutoContributeSite(id) {},
 
-    async removeRecurringContribution(id) {}
+    async removeRecurringContribution(id) {},
+
+    async sendContribution(creatorID, amount, recurring) {
+      return false
+    }
   }
 }
