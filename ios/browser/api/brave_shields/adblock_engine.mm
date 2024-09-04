@@ -19,6 +19,7 @@
 @property(nonatomic, readwrite) bool didMatchImportant;
 @property(nonatomic, readwrite, copy) NSString* redirect;
 @property(nonatomic, readwrite, copy) NSString* rewrittenURL;
+@property(nonatomic, readwrite, copy) NSString* filter;
 @end
 
 @interface ContentBlockingRulesResult ()
@@ -31,6 +32,7 @@
   if ((self = [super init])) {
     self.redirect = @"";
     self.rewrittenURL = @"";
+    self.filter = @"";
   }
   return self;
 }
@@ -156,9 +158,12 @@ class AdblockEngineBox final {
         static_cast<std::string>(engine_result.redirect.value));
   }
   if (engine_result.rewritten_url.has_value) {
-    ;
     result.rewrittenURL = base::SysUTF8ToNSString(
         static_cast<std::string>(engine_result.rewritten_url.value));
+  }
+  if (engine_result.filter.has_value) {
+    result.filter = base::SysUTF8ToNSString(
+        static_cast<std::string>(engine_result.filter.value));
   }
   return result;
 }

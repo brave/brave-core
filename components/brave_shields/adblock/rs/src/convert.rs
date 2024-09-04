@@ -63,6 +63,7 @@ impl From<InnerBlockerResult> for BlockerResult {
             has_exception: result.exception.is_some(),
             redirect: result.redirect.into(),
             rewritten_url: result.rewritten_url.into(),
+            filter: result.filter.into(),
         }
     }
 }

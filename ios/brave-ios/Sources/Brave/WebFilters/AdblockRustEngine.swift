@@ -49,13 +49,18 @@ extension AdblockEngine {
       }
     }
 
-    return matches(
+    let matchesResult = matches(
       url: requestURL.absoluteString,
       host: requestHost,
       tabHost: sourceHost,
       isThirdParty: isThirdParty,
       resourceType: resourceType.rawValue
-    ).didMatchRule
+    )
+
+    if matchesResult.didMatchRule, let filter = matchesResult.filter {
+      print("Blocking `\(requestURL.absoluteString)` due to rule `\(filter)`")
+    }
+    return matchesResult.didMatchRule
   }
 
   @available(*, deprecated, renamed: "deserialize(data:)")
