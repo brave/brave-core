@@ -737,12 +737,14 @@ export const DAppSupportedPrimaryChains = [
 
 export const BitcoinMainnetKeyringIds = [
   BraveWallet.KeyringId.kBitcoin84,
-  BraveWallet.KeyringId.kBitcoinImport
+  BraveWallet.KeyringId.kBitcoinImport,
+  BraveWallet.KeyringId.kBitcoinHardware
 ]
 
 export const BitcoinTestnetKeyringIds = [
   BraveWallet.KeyringId.kBitcoin84Testnet,
-  BraveWallet.KeyringId.kBitcoinImportTestnet
+  BraveWallet.KeyringId.kBitcoinImportTestnet,
+  BraveWallet.KeyringId.kBitcoinHardwareTestnet
 ]
 
 /**

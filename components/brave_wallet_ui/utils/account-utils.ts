@@ -168,10 +168,6 @@ export const keyringIdForNewAccount = (
   assertNotReached(`Unknown coin ${coin} and chainId ${chainId}`)
 }
 
-const bitcoinTestnetKeyrings = [
-  BraveWallet.KeyringId.kBitcoin84Testnet,
-  BraveWallet.KeyringId.kBitcoinImportTestnet
-]
 const zcashTestnetKeyrings = [BraveWallet.KeyringId.kZCashTestnet]
 
 export const getAccountTypeDescription = (accountId: BraveWallet.AccountId) => {
@@ -183,7 +179,7 @@ export const getAccountTypeDescription = (accountId: BraveWallet.AccountId) => {
     case BraveWallet.CoinType.FIL:
       return getLocale('braveWalletFILAccountDescription')
     case BraveWallet.CoinType.BTC:
-      if (bitcoinTestnetKeyrings.includes(accountId.keyringId)) {
+      if (BitcoinTestnetKeyringIds.includes(accountId.keyringId)) {
         return getLocale('braveWalletBTCTestnetAccountDescription')
       }
       return getLocale('braveWalletBTCMainnetAccountDescription')

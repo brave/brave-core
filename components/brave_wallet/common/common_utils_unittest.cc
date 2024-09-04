@@ -43,7 +43,9 @@ TEST(CommonUtils, IsBitcoinKeyring) {
     if (keyring_id == mojom::KeyringId::kBitcoin84 ||
         keyring_id == mojom::KeyringId::kBitcoin84Testnet ||
         keyring_id == mojom::KeyringId::kBitcoinImport ||
-        keyring_id == mojom::KeyringId::kBitcoinImportTestnet) {
+        keyring_id == mojom::KeyringId::kBitcoinImportTestnet ||
+        keyring_id == mojom::KeyringId::kBitcoinHardware ||
+        keyring_id == mojom::KeyringId::kBitcoinHardwareTestnet) {
       EXPECT_TRUE(IsBitcoinKeyring(keyring_id));
     } else {
       EXPECT_FALSE(IsBitcoinKeyring(keyring_id));
@@ -73,10 +75,22 @@ TEST(CommonUtils, IsBitcoinImportKeyring) {
   }
 }
 
+TEST(CommonUtils, IsBitcoinHardwareKeyring) {
+  for (const auto& keyring_id : kAllKeyrings) {
+    if (keyring_id == mojom::KeyringId::kBitcoinHardware ||
+        keyring_id == mojom::KeyringId::kBitcoinHardwareTestnet) {
+      EXPECT_TRUE(IsBitcoinHardwareKeyring(keyring_id));
+    } else {
+      EXPECT_FALSE(IsBitcoinHardwareKeyring(keyring_id));
+    }
+  }
+}
+
 TEST(CommonUtils, IsBitcoinMainnetKeyring) {
   for (const auto& keyring_id : kAllKeyrings) {
     if (keyring_id == mojom::KeyringId::kBitcoin84 ||
-        keyring_id == mojom::KeyringId::kBitcoinImport) {
+        keyring_id == mojom::KeyringId::kBitcoinImport ||
+        keyring_id == mojom::KeyringId::kBitcoinHardware) {
       EXPECT_TRUE(IsBitcoinMainnetKeyring(keyring_id));
     } else {
       EXPECT_FALSE(IsBitcoinMainnetKeyring(keyring_id));
@@ -87,7 +101,8 @@ TEST(CommonUtils, IsBitcoinMainnetKeyring) {
 TEST(CommonUtils, IsBitcoinTestnetKeyring) {
   for (const auto& keyring_id : kAllKeyrings) {
     if (keyring_id == mojom::KeyringId::kBitcoin84Testnet ||
-        keyring_id == mojom::KeyringId::kBitcoinImportTestnet) {
+        keyring_id == mojom::KeyringId::kBitcoinImportTestnet ||
+        keyring_id == mojom::KeyringId::kBitcoinHardwareTestnet) {
       EXPECT_TRUE(IsBitcoinTestnetKeyring(keyring_id));
     } else {
       EXPECT_FALSE(IsBitcoinTestnetKeyring(keyring_id));
@@ -184,7 +199,8 @@ TEST(CommonUtils, GetSupportedKeyrings) {
   base::test::ScopedFeatureList disabled_feature_list;
   const std::vector<base::test::FeatureRef> coin_features = {
       features::kBraveWalletBitcoinFeature, features::kBraveWalletZCashFeature,
-      features::kBraveWalletBitcoinImportFeature};
+      features::kBraveWalletBitcoinImportFeature,
+      features::kBraveWalletBitcoinLedgerFeature};
   disabled_feature_list.InitWithFeatures({}, coin_features);
 
   uint32_t test_cases_count = (1 << coin_features.size());
@@ -216,6 +232,11 @@ TEST(CommonUtils, GetSupportedKeyrings) {
         EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kBitcoinImport);
         EXPECT_EQ(keyrings[last_pos++],
                   mojom::KeyringId::kBitcoinImportTestnet);
+      }
+      if (IsBitcoinLedgerEnabled()) {
+        EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kBitcoinHardware);
+        EXPECT_EQ(keyrings[last_pos++],
+                  mojom::KeyringId::kBitcoinHardwareTestnet);
       }
     }
 
@@ -262,15 +283,18 @@ TEST(CommonUtils, GetSupportedKeyringsForNetwork) {
   EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::BTC,
                                              mojom::kBitcoinMainnet),
               ElementsAreArray({mojom::KeyringId::kBitcoin84,
-                                mojom::KeyringId::kBitcoinImport}));
+                                mojom::KeyringId::kBitcoinImport,
+                                mojom::KeyringId::kBitcoinHardware}));
   EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::BTC,
                                              mojom::kBitcoinTestnet),
               ElementsAreArray({mojom::KeyringId::kBitcoin84Testnet,
-                                mojom::KeyringId::kBitcoinImportTestnet}));
+                                mojom::KeyringId::kBitcoinImportTestnet,
+                                mojom::KeyringId::kBitcoinHardwareTestnet}));
   EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::BTC,
                                              "any non mainnet chain"),
               ElementsAreArray({mojom::KeyringId::kBitcoin84Testnet,
-                                mojom::KeyringId::kBitcoinImportTestnet}));
+                                mojom::KeyringId::kBitcoinImportTestnet,
+                                mojom::KeyringId::kBitcoinHardwareTestnet}));
 
   EXPECT_THAT(GetSupportedKeyringsForNetwork(mojom::CoinType::ZEC,
                                              mojom::kZCashMainnet),
@@ -283,6 +307,7 @@ TEST(CommonUtils, GetSupportedKeyringsForNetwork) {
               ElementsAreArray({mojom::KeyringId::kZCashTestnet}));
 
   EXPECT_TRUE(AllCoinsTested());
+  EXPECT_TRUE(AllKeyringsTested());
 }
 
 TEST(CommonUtils, MakeAccountId) {
@@ -353,6 +378,7 @@ TEST(CommonUtils, MakeAccountId) {
                                     mojom::KeyringId::kDefault,
                                     mojom::AccountKind::kDerived, "0xabc"));
   EXPECT_TRUE(AllCoinsTested());
+  EXPECT_TRUE(AllKeyringsTested());
 }
 
 TEST(CommonUtils, MakeIndexBasedAccountId_BTC) {
@@ -406,9 +432,20 @@ TEST(CommonUtils, MakeIndexBasedAccountId_BTC) {
 
   // kImported is a valid kind.
   EXPECT_TRUE(MakeIndexBasedAccountId(mojom::CoinType::BTC,
-                                      mojom::KeyringId::kBitcoin84,
+                                      mojom::KeyringId::kBitcoinImport,
                                       mojom::AccountKind::kImported, 123));
+  EXPECT_TRUE(MakeIndexBasedAccountId(mojom::CoinType::BTC,
+                                      mojom::KeyringId::kBitcoinImportTestnet,
+                                      mojom::AccountKind::kImported, 123));
+  // kHardware is a valid kind.
+  EXPECT_TRUE(MakeIndexBasedAccountId(mojom::CoinType::BTC,
+                                      mojom::KeyringId::kBitcoinHardware,
+                                      mojom::AccountKind::kHardware, 123));
+  EXPECT_TRUE(MakeIndexBasedAccountId(mojom::CoinType::BTC,
+                                      mojom::KeyringId::kBitcoinHardwareTestnet,
+                                      mojom::AccountKind::kHardware, 123));
   EXPECT_TRUE(AllCoinsTested());
+  EXPECT_TRUE(AllKeyringsTested());
 }
 
 TEST(CommonUtils, MakeIndexBasedAccountId_ZEC) {
@@ -456,6 +493,7 @@ TEST(CommonUtils, MakeIndexBasedAccountId_ZEC) {
       mojom::AccountKind::kImported, 123));
 
   EXPECT_TRUE(AllCoinsTested());
+  EXPECT_TRUE(AllKeyringsTested());
 }
 
 TEST(CommonUtils, CoinSupportsDapps) {

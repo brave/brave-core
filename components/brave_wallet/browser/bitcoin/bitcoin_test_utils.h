@@ -43,7 +43,19 @@ inline constexpr char kBtcTestnetImportAccount0[] =
     "FwG2fqrwYLRgJmDDwFjGiamGsbRMJ5Y6siJ8H";  // m/84'/1'/0'
 inline constexpr char kBtcTestnetImportAccount1[] =
     "vprv9K7GLAaERuM5CAKPEd5qaDFXn67e95YPxcSUXpD7A1dvei4bQLCuH8DDz2RjtR5bS6nHyo"
-    "SXbaMZ2K2DzVUrZ9SAYjwuZV39iTyRsiQG7N9";  // m/84'/1'/0'
+    "SXbaMZ2K2DzVUrZ9SAYjwuZV39iTyRsiQG7N9";  // m/84'/1'/1'
+inline constexpr char kBtcMainnetHardwareAccount0[] =
+    "xpub6CatWdiZiodmUeTDp8LT5or8nmbKNcuyvz7WyksVFkKB4RHwCD3XyuvPEbvqAQY3rAPshW"
+    "cMLoP2fMFMKHPJ4ZeZXYVUhLv1VMrjPC7PW6V";  // m/84'/0'/0'
+inline constexpr char kBtcMainnetHardwareAccount1[] =
+    "xpub6CatWdiZiodmYVtWLtEQsAg1H9ooS1bmsJUBwQ83FE1Fyk386FWcyicJgEZv3quZSJKA5d"
+    "h5Lo2PbubMGxCfZtRthV6ST2qquL9w3HSzcUn";  // m/84'/0'/1'
+inline constexpr char kBtcTestnetHardwareAccount0[] =
+    "tpubDC8msFGeGuwnKG9Upg7DM2b4DaRqg3CUZa5g8v2SRQ6K4NSkxUgd7HsL2XVWbVm39yBA4L"
+    "AxysQAm397zwQSQoQgewGiYZqrA9DsP4zbQ1M";  // m/84'/1'/0'
+inline constexpr char kBtcTestnetHardwareAccount1[] =
+    "tpubDC8msFGeGuwnP2xwTZBBZSie1BLgRAkJhgzpFYTdpGgZNzguXQhNDVWp7mJbHJUjQQvV2m"
+    "yLU9dkx67a7VAUnzY7yT7nvhHj7FgS4oNivvq";  // m/84'/1'/1'
 
 class BitcoinTestRpcServer {
  public:
