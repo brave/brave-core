@@ -28,6 +28,7 @@
 @class AIChat;
 @class DefaultHostContentSettings;
 @class BrowserPrefs;
+@class CWVWebViewConfiguration;
 @protocol AIChatDelegate;
 @protocol IpfsAPI;
 
@@ -113,6 +114,10 @@ OBJC_EXPORT
 ///
 /// Should only be called in unit tests
 + (bool)initializeICUForTesting;
+
+@property(readonly) CWVWebViewConfiguration* defaultWebViewConfiguration;
+@property(readonly) CWVWebViewConfiguration* nonPersistentWebViewConfiguration;
+- (void)notifyLastPrivateTabClosed;
 
 @end
 

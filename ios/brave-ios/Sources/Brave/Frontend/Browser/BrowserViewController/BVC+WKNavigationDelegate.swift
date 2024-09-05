@@ -135,7 +135,8 @@ extension BrowserViewController: CWVNavigationDelegate {
     toolbarVisibilityViewModel.toolbarState = .expanded
 
     if let tab = tabManager[webView] {
-      tab.sampledTopPageColorNotifier = SampledTopPageColorNotifier(webView: webView) { [weak self] color in
+      tab.sampledTopPageColorNotifier = SampledTopPageColorNotifier(webView: webView) {
+        [weak self] color in
         self?.updateStatusBarOverlayColor()
       }
     }
@@ -763,7 +764,7 @@ extension BrowserViewController: CWVNavigationDelegate {
         await BraveSkusAccountLink.injectLocalStorage(webView: webView)
       }
     }
-    
+
     tab.sampledTopPageColorNotifier = nil
 
     // Second attempt to inject results to the BraveSearch.

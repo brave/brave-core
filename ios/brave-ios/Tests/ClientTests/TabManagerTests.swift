@@ -116,7 +116,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
   let didAdd = MethodSpy(functionName: "tabManager(_:didAddTab:)")
 
   var manager: TabManager!
-  private let privateBrowsingManager = PrivateBrowsingManager()
+  private let privateBrowsingManager = PrivateBrowsingManager(braveCore: nil)
   private let testWindowId = UUID()
 
   override func setUp() {
@@ -128,9 +128,7 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       windowId: testWindowId,
       prefs: profile.prefs,
       rewards: nil,
-      tabGeneratorAPI: nil,
-      historyAPI: nil,
-      browserPrefs: nil,
+      braveCore: nil,
       privateBrowsingManager: privateBrowsingManager
     )
     privateBrowsingManager.isPrivateBrowsing = false

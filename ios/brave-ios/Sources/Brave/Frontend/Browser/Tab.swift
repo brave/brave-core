@@ -422,6 +422,7 @@ class Tab: NSObject {
     self.favicon = Favicon.default
     self.id = id
     self.browserPrefs = browserPrefs
+
     rewardsId = UInt32.random(in: 1...UInt32.max)
     nightMode = Preferences.General.nightModeEnabled.value
     _syncTab = tabGeneratorAPI?.createBraveSyncTab(isOffTheRecord: type == .private)
@@ -534,7 +535,7 @@ class Tab: NSObject {
         // https://source.chromium.org/chromium/chromium/src/+/main:ios/web/web_state/ui/crw_web_request_controller.mm;l=518;drc=df887034106ef438611326745a7cd276eedd4953
         frame: .init(width: 1.0, height: 1.0),
         wkConfiguration: parent == nil ? wkConfiguration! : nil,
-        configuration: configuration ?? (isPrivate ? .incognito() : .default()),
+        configuration: configuration!,
         isPrivate: isPrivate
       )
 

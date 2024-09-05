@@ -61,6 +61,8 @@
 #include "ios/chrome/app/startup/provider_registration.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_model_factory.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_undo_service_factory.h"
+#include "ios/chrome/browser/browsing_data/model/browsing_data_remover.h"
+#include "ios/chrome/browser/browsing_data/model/browsing_data_remover_factory.h"
 #include "ios/chrome/browser/content_settings/model/host_content_settings_map_factory.h"
 #include "ios/chrome/browser/credential_provider/model/credential_provider_buildflags.h"
 #include "ios/chrome/browser/history/model/history_service_factory.h"
@@ -82,6 +84,10 @@
 #include "ios/public/provider/chrome/browser/overrides/overrides_api.h"
 #include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
 #include "ios/web/public/init/web_main.h"
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
+#include "ios/web_view/internal/cwv_web_view_configuration_internal.h"
+#include "ios/web_view/internal/web_view_browser_state.h"
 #include "ios/web_view/internal/web_view_download_manager.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -134,6 +140,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) DeAmpPrefs* deAmpPrefs;
 @property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
 @property(nonatomic) DefaultHostContentSettings* defaultHostContentSettings;
+@property(nonatomic) CWVWebViewConfiguration* defaultWebViewConfiguration;
+@property(nonatomic) CWVWebViewConfiguration* nonPersistentWebViewConfiguration;
 @end
 
 @implementation BraveCoreMain
@@ -556,6 +564,76 @@ static bool CustomLogHandler(int severity,
         [[DefaultHostContentSettings alloc] initWithSettingsMap:map];
   }
   return _defaultHostContentSettings;
+}
+
+- (CWVWebViewConfiguration*)defaultWebViewConfiguration {
+  if (!_defaultWebViewConfiguration) {
+    _defaultWebViewConfiguration = [[CWVWebViewConfiguration alloc]
+        initWithBrowserState:ios_web_view::WebViewBrowserState::
+                                 FromBrowserState(_mainBrowserState)];
+  }
+  return _defaultWebViewConfiguration;
+}
+
+- (CWVWebViewConfiguration*)nonPersistentWebViewConfiguration {
+  if (!_nonPersistentWebViewConfiguration) {
+    _nonPersistentWebViewConfiguration = [[CWVWebViewConfiguration alloc]
+        initWithBrowserState:
+            ios_web_view::WebViewBrowserState::FromBrowserState(
+                _mainBrowserState->GetOffTheRecordChromeBrowserState())];
+  }
+  return _nonPersistentWebViewConfiguration;
+}
+
+#pragma mark - Handling of destroying the incognito BrowserState
+
+// The incognito BrowserState should be closed when the last incognito tab is
+// closed (i.e. if there are other incognito tabs open in another Scene, the
+// BrowserState must not be destroyed).
+- (BOOL)shouldDestroyAndRebuildIncognitoBrowserState {
+  return _mainBrowserState->HasOffTheRecordChromeBrowserState();
+}
+
+// Matches lastIncognitoTabClosed from Chrome's SceneController
+- (void)notifyLastPrivateTabClosed {
+  // If no other window has incognito tab, then destroy and rebuild the
+  // BrowserState. Otherwise, just do the state transition animation.
+  if ([self shouldDestroyAndRebuildIncognitoBrowserState]) {
+    // Incognito browser state cannot be deleted before all the requests are
+    // deleted. Queue empty task on IO thread and destroy the BrowserState
+    // when the task has executed, again verifying that no incognito tabs are
+    // present. When an incognito tab is moved between browsers, there is
+    // a point where the tab isn't attached to any web state list. However, when
+    // this queued cleanup step executes, the moved tab will be attached, so
+    // the cleanup shouldn't proceed.
+
+    auto cleanup = ^{
+      if ([self shouldDestroyAndRebuildIncognitoBrowserState]) {
+        [self destroyAndRebuildIncognitoBrowserState];
+      }
+    };
+
+    web::GetIOThreadTaskRunner({})->PostTaskAndReply(
+        FROM_HERE, base::DoNothing(), base::BindRepeating(cleanup));
+  }
+}
+
+- (void)destroyAndRebuildIncognitoBrowserState {
+  DCHECK(_mainBrowserState->HasOffTheRecordChromeBrowserState());
+  _nonPersistentWebViewConfiguration = nil;
+
+  ChromeBrowserState* otrBrowserState =
+      _mainBrowserState->GetOffTheRecordChromeBrowserState();
+
+  BrowsingDataRemover* browsingDataRemover =
+      BrowsingDataRemoverFactory::GetForBrowserState(otrBrowserState);
+  browsingDataRemover->Remove(browsing_data::TimePeriod::ALL_TIME,
+                              BrowsingDataRemoveMask::REMOVE_ALL,
+                              base::DoNothing());
+
+  // Destroy and recreate the off-the-record BrowserState.
+  _mainBrowserState->DestroyOffTheRecordChromeBrowserState();
+  _mainBrowserState->GetOffTheRecordChromeBrowserState();
 }
 
 @end
