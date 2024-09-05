@@ -22,10 +22,10 @@ import {
 
 interface Props {
   navOptions: NavOption[]
-  width?: string
+  maxWidth?: string
 }
 
-export const SegmentedControl = ({ navOptions, width }: Props) => {
+export const SegmentedControl = ({ navOptions, maxWidth }: Props) => {
   // Routing
   const history = useHistory()
   const { pathname: walletLocation, hash } = useLocation()
@@ -40,7 +40,7 @@ export const SegmentedControl = ({ navOptions, width }: Props) => {
 
   // Render
   return (
-    <StyledWrapper width={width}>
+    <StyledWrapper maxWidth={maxWidth}>
       <StyledSegmentedControl
         value={selectedRoute}
         onChange={({ value }) => {

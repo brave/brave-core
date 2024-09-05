@@ -590,7 +590,7 @@ export const PortfolioOverview = () => {
             {!hidePortfolioNFTsTab && (
               <SegmentedControl
                 navOptions={PortfolioNavOptions}
-                width={'384px'}
+                maxWidth='384px'
               />
             )}
           </ControlsRow>
