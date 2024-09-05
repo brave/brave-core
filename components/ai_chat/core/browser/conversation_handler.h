@@ -89,6 +89,9 @@ class ConversationHandler : public mojom::ConversationHandler,
     // use it to fetch search query and summary from Brave search chatllm
     // endpoint.
     virtual void GetStagedEntriesFromContent(GetStagedEntriesCallback callback);
+    // Signifies whether the content has permission to open a conversation's UI
+    // within the browser.
+    virtual bool HasOpenAIChatPermission() const;
 
     void GetTopSimilarityWithPromptTilContextLimit(
         const std::string& prompt,
@@ -223,6 +226,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnFaviconImageDataChanged();
   void OnUserOptedIn();
 
+  // Some associated content may provide some conversation that the user wants
+  // to continue, e.g. Brave Search.
+  void MaybeFetchOrClearContentStagedConversation();
+
   base::WeakPtr<ConversationHandler> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
   }
@@ -244,6 +251,10 @@ class ConversationHandler : public mojom::ConversationHandler,
     return associated_content_delegate_.get();
   }
 
+  void SetRequestInProgressForTesting(bool in_progress) {
+    is_request_in_progress_ = in_progress;
+  }
+
  protected:
   // ModelService::Observer
   void OnModelListUpdated() override;
@@ -261,6 +272,10 @@ class ConversationHandler : public mojom::ConversationHandler,
                            UpdateOrCreateLastAssistantEntry_NotDelta);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            UpdateOrCreateLastAssistantEntry_NotDeltaWithSearch);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
+                           OnGetStagedEntriesFromContent);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
+                           OnGetStagedEntriesFromContent_FailedChecks);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest, SelectedLanguage);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, LocalModelsUpdater);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedder);
@@ -285,9 +300,6 @@ class ConversationHandler : public mojom::ConversationHandler,
                                  bool is_video,
                                  std::string invalidation_token);
 
-  // Some associated content may provide some conversation that the user wants
-  // to continue, e.g. Brave Search.
-  void MaybeFetchOrClearContentStagedConversation();
   void OnGetStagedEntriesFromContent(
       const std::optional<std::vector<SearchQuerySummary>>& entries);
 

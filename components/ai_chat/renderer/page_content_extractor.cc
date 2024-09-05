@@ -21,10 +21,13 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/memory/ptr_util.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
+#include "brave/components/ai_chat/core/common/utils.h"
 #include "brave/components/ai_chat/renderer/page_text_distilling.h"
 #include "brave/components/ai_chat/renderer/yt_util.h"
 #include "content/public/renderer/render_frame.h"
@@ -316,6 +319,25 @@ void PageContentExtractor::GetSearchSummarizerKey(
     return;
   }
   std::move(callback).Run(element.GetAttribute("content").Utf8());
+}
+
+void PageContentExtractor::GetOpenAIChatButtonNonce(
+    mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback) {
+  auto element = render_frame()->GetWebFrame()->GetDocument().GetElementById(
+      "continue-with-leo");
+  if (element.IsNull() || !element.HasHTMLTagName("a")) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  GURL url(element.GetAttribute("href").Utf8());
+  std::string nonce = element.GetAttribute("data-nonce").Utf8();
+  if (!IsOpenAIChatButtonFromBraveSearchURL(url) || nonce.empty() ||
+      url.ref_piece() != nonce) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  std::move(callback).Run(nonce);
 }
 
 }  // namespace ai_chat

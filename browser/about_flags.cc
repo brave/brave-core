@@ -361,44 +361,47 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#define BRAVE_AI_CHAT                                          \
-  EXPAND_FEATURE_ENTRIES({                                     \
-      "brave-ai-chat",                                         \
-      "Brave AI Chat",                                         \
-      "Summarize articles and engage in conversation with AI", \
-      kOsWin | kOsMac | kOsLinux | kOsAndroid,                 \
-      FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),          \
-  })
-#define BRAVE_AI_CHAT_HISTORY                                \
-  EXPAND_FEATURE_ENTRIES({                                   \
-      "brave-ai-chat-history",                               \
-      "Brave AI Chat History",                               \
-      "Enables AI Chat History persistence and management",  \
-      kOsWin | kOsMac | kOsLinux,                            \
-      FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory), \
-  })
-#define BRAVE_AI_CHAT_CONTEXT_MENU_REWRITE_IN_PLACE                      \
-  EXPAND_FEATURE_ENTRIES({                                               \
-      "brave-ai-chat-context-menu-rewrite-in-place",                     \
-      "Brave AI Chat Rewrite In Place From Context Menu",                \
-      "Enables AI Chat rewrite in place feature from the context menu",  \
-      kOsDesktop,                                                        \
-      FEATURE_VALUE_TYPE(ai_chat::features::kContextMenuRewriteInPlace), \
-  })
-#define BRAVE_AI_CHAT_PAGE_CONTENT_REFINE                                   \
-  EXPAND_FEATURE_ENTRIES({                                                  \
-      "brave-ai-chat-page-content-refine",                                  \
-      "Brave AI Chat Page Content Refine",                                  \
-      "Enable local text embedding for long page content in order to find " \
-      "most relevant parts to the prompt within context limit.",            \
-      kOsDesktop | kOsAndroid,                                              \
-      FEATURE_VALUE_TYPE(ai_chat::features::kPageContentRefine),            \
-  })
+#define BRAVE_AI_CHAT_FEATURE_ENTRIES                                        \
+  EXPAND_FEATURE_ENTRIES(                                                    \
+      {                                                                      \
+          "brave-ai-chat",                                                   \
+          "Brave AI Chat",                                                   \
+          "Summarize articles and engage in conversation with AI",           \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                           \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),                    \
+      },                                                                     \
+      {                                                                      \
+          "brave-ai-chat-history",                                           \
+          "Brave AI Chat History",                                           \
+          "Enables AI Chat History persistence and management",              \
+          kOsWin | kOsMac | kOsLinux,                                        \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),             \
+      },                                                                     \
+      {                                                                      \
+          "brave-ai-chat-context-menu-rewrite-in-place",                     \
+          "Brave AI Chat Rewrite In Place From Context Menu",                \
+          "Enables AI Chat rewrite in place feature from the context menu",  \
+          kOsDesktop,                                                        \
+          FEATURE_VALUE_TYPE(ai_chat::features::kContextMenuRewriteInPlace), \
+      },                                                                     \
+      {                                                                      \
+          "brave-ai-chat-page-content-refine",                               \
+          "Brave AI Chat Page Content Refine",                               \
+          "Enable local text embedding for long page content in order to "   \
+          "find "                                                            \
+          "most relevant parts to the prompt within context limit.",         \
+          kOsDesktop | kOsAndroid,                                           \
+          FEATURE_VALUE_TYPE(ai_chat::features::kPageContentRefine),         \
+      },                                                                     \
+      {                                                                      \
+          "brave-ai-chat-open-leo-from-brave-search",                        \
+          "Open Leo AI Chat from Brave Search",                              \
+          "Enables opening Leo AI Chat from Brave Search",                   \
+          kOsDesktop | kOsAndroid,                                           \
+          FEATURE_VALUE_TYPE(ai_chat::features::kOpenAIChatFromBraveSearch), \
+      })
 #else
-#define BRAVE_AI_CHAT
-#define BRAVE_AI_CHAT_HISTORY
-#define BRAVE_AI_CHAT_CONTEXT_MENU_REWRITE_IN_PLACE
-#define BRAVE_AI_CHAT_PAGE_CONTENT_REFINE
+#define BRAVE_AI_CHAT_FEATURE_ENTRIES
 #endif
 #if BUILDFLAG(ENABLE_AI_REWRITER)
 #define BRAVE_AI_REWRITER                                     \
@@ -980,10 +983,7 @@
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
-  BRAVE_AI_CHAT                                                                \
-  BRAVE_AI_CHAT_HISTORY                                                        \
-  BRAVE_AI_CHAT_CONTEXT_MENU_REWRITE_IN_PLACE                                  \
-  BRAVE_AI_CHAT_PAGE_CONTENT_REFINE                                            \
+  BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_AI_REWRITER                                                            \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \

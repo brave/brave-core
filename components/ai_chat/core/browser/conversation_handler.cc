@@ -63,6 +63,10 @@ void AssociatedContentDelegate::GetStagedEntriesFromContent(
   std::move(callback).Run(std::nullopt);
 }
 
+bool AssociatedContentDelegate::HasOpenAIChatPermission() const {
+  return false;
+}
+
 void AssociatedContentDelegate::GetTopSimilarityWithPromptTilContextLimit(
     const std::string& prompt,
     const std::string& text,
@@ -1048,20 +1052,13 @@ void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
   if (!can_check_for_staged_conversation) {
     // Clear any staged conversation entries since user might have unassociated
     // content with this conversation
-    if (chat_history_.empty()) {
-      return;
-    }
-
-    const auto& last_turn = chat_history_.back();
-    if (last_turn->from_brave_search_SERP) {
-      chat_history_.clear();  // Clear the staged entries.
+    size_t num_entries = chat_history_.size();
+    std::erase_if(chat_history_, [](const mojom::ConversationTurnPtr& turn) {
+      return turn->from_brave_search_SERP;
+    });
+    if (num_entries != chat_history_.size()) {
       OnHistoryUpdate();
     }
-    return;
-  }
-
-  // Can only have staged entries at the start of a conversation.
-  if (!chat_history_.empty()) {
     return;
   }
 
@@ -1073,10 +1070,15 @@ void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
 void ConversationHandler::OnGetStagedEntriesFromContent(
     const std::optional<std::vector<SearchQuerySummary>>& entries) {
   // Check if all requirements are still met.
-  if (!entries || !chat_history_.empty() || !IsContentAssociationPossible() ||
+  if (is_request_in_progress_ || !entries || !IsContentAssociationPossible() ||
       !should_send_page_contents_ || !ai_chat_service_->HasUserOptedIn()) {
     return;
   }
+
+  // Clear previous staged entries.
+  std::erase_if(chat_history_, [](const mojom::ConversationTurnPtr& turn) {
+    return turn->from_brave_search_SERP;
+  });
 
   // Add the query & summary pairs to the conversation history and call
   // OnHistoryUpdate to update UI.

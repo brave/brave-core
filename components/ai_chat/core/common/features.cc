@@ -60,4 +60,16 @@ bool IsPageContentRefineEnabled() {
   return base::FeatureList::IsEnabled(features::kPageContentRefine);
 }
 
+BASE_FEATURE(kOpenAIChatFromBraveSearch,
+             "OpenAIChatFromBraveSearch",
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+             base::FEATURE_ENABLED_BY_DEFAULT);
+#else
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif
+
+bool IsOpenAIChatFromBraveSearchEnabled() {
+  return base::FeatureList::IsEnabled(features::kOpenAIChatFromBraveSearch);
+}
+
 }  // namespace ai_chat::features

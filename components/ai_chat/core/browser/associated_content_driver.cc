@@ -9,6 +9,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
@@ -19,9 +20,9 @@
 #include "base/strings/string_util.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/ai_chat/core/browser/brave_search_responses.h"
-#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "net/base/url_util.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
