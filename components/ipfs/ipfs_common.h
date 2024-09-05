@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_IPFS_IPFS_COMMON_H_
-#define BRAVE_BROWSER_IPFS_IPFS_COMMON_H_
+#ifndef BRAVE_COMPONENTS_IPFS_IPFS_COMMON_H_
+#define BRAVE_COMPONENTS_IPFS_IPFS_COMMON_H_
 
 #include "base/files/file_path.h"
 #include "build/build_config.h"
@@ -30,4 +30,4 @@ static const base::FilePath::StringPieceType kIpfsClientComponentId =
 #endif
 #endif
 
-#endif  // BRAVE_BROWSER_IPFS_IPFS_COMMON_H_
+#endif  // BRAVE_COMPONENTS_IPFS_IPFS_COMMON_H_

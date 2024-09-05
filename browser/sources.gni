@@ -25,7 +25,6 @@ import("//brave/browser/gcm_driver/sources.gni")
 import("//brave/browser/greaselion/sources.gni")
 import("//brave/browser/importer/sources.gni")
 import("//brave/browser/infobars/sources.gni")
-import("//brave/browser/ipfs/sources.gni")
 import("//brave/browser/misc_metrics/sources.gni")
 import("//brave/browser/net/sources.gni")
 import("//brave/browser/new_tab/sources.gni")
@@ -501,7 +500,6 @@ brave_chrome_browser_sources += brave_browser_themes_sources
 brave_chrome_browser_sources += brave_browser_tor_sources
 brave_chrome_browser_sources += brave_browser_url_sanitizer_sources
 brave_chrome_browser_sources += brave_browser_web_discovery_sources
-brave_chrome_browser_sources += brave_browser_ipfs_sources
 
 brave_chrome_browser_deps += brave_browser_autocomplete_deps
 brave_chrome_browser_deps += brave_browser_brave_adaptive_captcha_deps
@@ -541,6 +539,5 @@ brave_chrome_browser_deps += brave_browser_url_sanitizer_deps
 brave_chrome_browser_deps += brave_browser_web_discovery_deps
 brave_chrome_browser_deps += brave_chromium_src_chrome_browser_deps
 brave_chrome_browser_deps += brave_chromium_src_chrome_browser_prefs_deps
-brave_chrome_browser_deps += brave_browser_ipfs_deps
 
 brave_chrome_browser_allow_circular_includes_from = [ "//brave/browser/ui" ]

@@ -69,7 +69,6 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "base/path_service.h"
-#include "brave/browser/ipfs/ipfs_common.h"
 #include "brave/components/ipfs/ipfs_component_cleaner.h"
 #include "chrome/common/chrome_paths.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
@@ -169,8 +168,7 @@ void BraveBrowserMainParts::PostBrowserStart() {
 
 #if !BUILDFLAG(IS_ANDROID)
   ipfs::CleanupIpfsComponent(
-      base::PathService::CheckedGet(chrome::DIR_USER_DATA)
-          .Append(kIpfsClientComponentId));
+      base::PathService::CheckedGet(chrome::DIR_USER_DATA));
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 

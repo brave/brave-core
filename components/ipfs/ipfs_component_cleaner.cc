@@ -8,13 +8,15 @@
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/ipfs/ipfs_common.h"
 #include "build/build_config.h"
 
 namespace ipfs {
-void CleanupIpfsComponent(const base::FilePath& component_path) {
+void CleanupIpfsComponent(const base::FilePath& user_data_dir) {
   // Remove IPFS component
   base::ThreadPool::PostTask(
       FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
-      base::GetDeletePathRecursivelyCallback(component_path));
+      base::GetDeletePathRecursivelyCallback(
+          user_data_dir.Append(kIpfsClientComponentId)));
 }
 }  // namespace ipfs

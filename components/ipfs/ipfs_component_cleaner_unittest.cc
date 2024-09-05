@@ -13,7 +13,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/browser/ipfs/ipfs_common.h"
+#include "brave/components/ipfs/ipfs_common.h"
 #include "build/build_config.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/common/chrome_paths.h"
@@ -68,8 +68,7 @@ TEST_F(IpfsComponentCleanerUnitTest, CleanIpfsComponent) {
   base::WriteFile(component_id_folde_subdir_file_01, "12345678901234567890");
 
   ipfs::CleanupIpfsComponent(
-      base::PathService::CheckedGet(chrome::DIR_USER_DATA)
-          .Append(kIpfsClientComponentId));
+      base::PathService::CheckedGet(chrome::DIR_USER_DATA));
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(base::PathExists(cache_folder));
   EXPECT_FALSE(base::PathExists(component_id_folder));
