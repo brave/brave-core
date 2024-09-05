@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
@@ -146,6 +147,21 @@ mojom::BuildChannelInfo& GlobalState::BuildChannel() {
 mojom::Flags& GlobalState::Flags() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return mojom_flags_;
+}
+
+void GlobalState::PostDelayedTask(base::OnceClosure task,
+                                  base::TimeDelta delay) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&GlobalState::PostDelayedTaskCallback,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(task)),
+      delay);
+}
+
+void GlobalState::PostDelayedTaskCallback(base::OnceClosure task) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  std::move(task).Run();
 }
 
 }  // namespace brave_ads
