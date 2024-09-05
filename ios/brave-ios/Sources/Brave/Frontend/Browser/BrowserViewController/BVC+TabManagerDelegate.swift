@@ -156,12 +156,11 @@ extension BrowserViewController: TabManagerDelegate {
       topToolbar.updateReaderModeState(.unavailable)
     }
 
-    if let translateScriptHandler = selected?.getContentScript(
+    if ((selected?.getContentScript(
       name: BraveTranslateScriptHandler.scriptName
-    )
-      as? BraveTranslateScriptHandler
+    ) as? BraveTranslateScriptHandler) != nil)
     {
-      topToolbar.updateTranslateButtonState(selected?.translationState ?? .unavailable)
+      updateTranslateURLBar(tab: selected, state: selected?.translationState ?? .unavailable)
       updatePlaylistURLBar(
         tab: selected,
         state: selected?.playlistItemState ?? .none,

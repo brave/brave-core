@@ -270,10 +270,7 @@ extension BrowserViewController: TopToolbarDelegate {
       if tab.translationState == .active {
         scriptHandler.revertTranslation()
       } else if tab.translationState != .active {
-        showTranslateOnboarding(tab: tab) {
-          [weak scriptHandler] translateEnabled in
-          scriptHandler?.startTranslation()
-        }
+        scriptHandler.startTranslation()
       }
     }
   }
