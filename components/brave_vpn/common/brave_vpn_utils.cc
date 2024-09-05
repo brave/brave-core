@@ -56,52 +56,41 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 void MigrateFromV1ToV2(PrefService* local_prefs) {
   const auto selected_region_v1 =
       local_prefs->GetString(prefs::kBraveVPNSelectedRegion);
+  // Don't need to migrate if user doesn't select region explicitely.
+  // We'll pick proper region instead if not yet selected.
   if (selected_region_v1.empty()) {
     local_prefs->SetInteger(prefs::kBraveVPNRegionListVersion, 2);
     return;
   }
 
-  // In this migration, selected region name is updated to matched v2 region
+  // In this migration, selected region name is updated to matched v2's country
   // name.
   constexpr auto kV1ToV2Map =
       base::MakeFixedFlatMap<std::string_view, std::string_view>(
-          {{"au-au", "ocn-aus"},
-           {"eu-at", "eu-at"},
-           {"eu-be", "eu-be"},
-           {"sa-brazil", "sa-brz"},
-           {"ca-east", "na-can"},
-           {"sa-cl", "sa-cl"},
-           {"sa-colombia", "sa-co"},
-           {"eu-cr", "eu-cr"},
-           {"eu-cz", "eu-cz"},
-           {"eu-dk", "eu-dk"},
-           {"eu-fr", "eu-fr"},
-           {"eu-de", "eu-de"},
-           {"eu-gr", "eu-gr"},
-           {"eu-ir", "eu-ie"},
-           {"eu-italy", "eu-it"},
-           {"asia-jp", "asia-jp"},
-           {"sa-mexico", "sa-mx"},
-           {"eu-nl", "eu-nl"},
-           {"eu-pl", "eu-pl"},
-           {"eu-pt", "eu-pt"},
-           {"eu-ro", "eu-ro"},
-           {"asia-sg", "asia-sg"},
-           {"af-za", "af-za"},
-           {"eu-es", "eu-es"},
-           {"eu-sweden", "eu-se"},
-           {"eu-ch", "eu-ch"},
-           // TODO(simonhong): Update proper region name in US.
-           {"us-central", "na-usa"},
-           {"us-east", "na-usa"},
-           {"us-mountain", "na-usa"},
-           {"us-north-west", "na-usa"},
-           {"us-west", "na-usa"},
-           {"eu-ua", "eu-ua"},
+          {{"au-au", "ocn-aus"},      {"eu-at", "eu-at"},
+           {"eu-be", "eu-be"},        {"sa-brazil", "sa-brz"},
+           {"ca-east", "na-can"},     {"sa-cl", "sa-cl"},
+           {"sa-colombia", "sa-co"},  {"eu-cr", "eu-cr"},
+           {"eu-cz", "eu-cz"},        {"eu-dk", "eu-dk"},
+           {"eu-fr", "eu-fr"},        {"eu-de", "eu-de"},
+           {"eu-gr", "eu-gr"},        {"eu-ir", "eu-ie"},
+           {"eu-italy", "eu-it"},     {"asia-jp", "asia-jp"},
+           {"sa-mexico", "sa-mx"},    {"eu-nl", "eu-nl"},
+           {"eu-pl", "eu-pl"},        {"eu-pt", "eu-pt"},
+           {"eu-ro", "eu-ro"},        {"asia-sg", "asia-sg"},
+           {"af-za", "af-za"},        {"eu-es", "eu-es"},
+           {"eu-sweden", "eu-se"},    {"eu-ch", "eu-ch"},
+           {"us-central", "na-usa"},  {"us-east", "na-usa"},
+           {"us-mountain", "na-usa"}, {"us-north-west", "na-usa"},
+           {"us-west", "na-usa"},     {"eu-ua", "eu-ua"},
            {"eu-en", "en-en"}});
-
-  local_prefs->SetString(prefs::kBraveVPNSelectedRegion,
-                         kV1ToV2Map.at(selected_region_v1));
+  if (kV1ToV2Map.contains(selected_region_v1)) {
+    local_prefs->SetString(prefs::kBraveVPNSelectedRegion,
+                           kV1ToV2Map.at(selected_region_v1));
+  } else {
+    // This will not be happened but added for safe during the startup.
+    local_prefs->ClearPref(prefs::kBraveVPNSelectedRegion);
+  }
   local_prefs->SetInteger(prefs::kBraveVPNRegionListVersion, 2);
 }
 #endif
