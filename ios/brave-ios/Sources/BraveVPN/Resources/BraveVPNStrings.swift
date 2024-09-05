@@ -191,6 +191,14 @@ extension Strings {
         comment: "Header title for vpn settings server section."
       )
 
+    public static let settingsSupportSection =
+      NSLocalizedString(
+        "vpn.settingsSupportSection",
+        bundle: .module,
+        value: "Support",
+        comment: "Header title for vpn support server section."
+      )
+
     public static let settingsSubscriptionStatus =
       NSLocalizedString(
         "vpn.settingsSubscriptionStatus",
@@ -272,6 +280,46 @@ extension Strings {
         comment:
           "Table cell title for vpn's transport protocol and which open opens protocol select"
       )
+
+    public static let settingsKillSwitchTitle =
+      NSLocalizedString(
+        "vpn.settingsKillSwitch",
+        bundle: .module,
+        value: "Kill Switch",
+        comment: "Title for the row when clicked it enables 'Kill Switch' on VPN connection"
+      )
+
+    public static let settingsKillSwitchDescription =
+      NSLocalizedString(
+        "vpn.settingsKillSwitchDescription",
+        bundle: .module,
+        value:
+          "Ensures your data stays protected if the VPN disconnects unexpectedly. When enabled, it blocks all internet traffic if the VPN connection drops, preventing accidental data leaks. Note: Enabling or disabling this feature will briefly reconnect your VPN.",
+        comment: "Description for the row when clicked it enables 'Kill Switch' on VPN connection"
+      )
+
+    public static let settingsKillSwitchToggleErrorTitle =
+      NSLocalizedString(
+        "vpn.settingsKillSwitchToggleErrorTitle",
+        bundle: .module,
+        value: "Could not Toggle Kill Switch",
+        comment: "Title for the error while toggling vpn kill switch"
+      )
+
+    public static let settingsKillSwitchToggleErrorDescription =
+      NSLocalizedString(
+        "vpn.settingsKillSwitchToggleErrorDescription",
+        bundle: .module,
+        value: "An error happened while enabling the VPN Connection",
+        comment: "Description for the error while toggling vpn kill switch"
+      )
+
+    public static let settingsRetryActionTitle = NSLocalizedString(
+      "aichat.settingsRetryActionTitle",
+      bundle: .module,
+      value: "Retry",
+      comment: "The title for button for re-try"
+    )
 
     public static let settingsContactSupport =
       NSLocalizedString(
@@ -699,23 +747,6 @@ extension Strings {
         comment: "Disclaimer for user purchasing the VPN plan."
       )
 
-    public static let regionPickerTitle =
-      NSLocalizedString(
-        "vpn.regionPickerTitle",
-        bundle: .module,
-        value: "Server Region",
-        comment: "Title for vpn region selector screen"
-      )
-
-    public static let regionPickerAutomaticDescription =
-      NSLocalizedString(
-        "vpn.regionPickerAutomaticDescription",
-        bundle: .module,
-        value:
-          "A server region most proximate to you will be automatically selected, based on your system timezone. This is recommended in order to ensure fast internet speeds.",
-        comment: "Description of what automatic server selection does."
-      )
-
     public static let regionPickerErrorTitle =
       NSLocalizedString(
         "vpn.regionPickerErrorTitle",
@@ -730,6 +761,14 @@ extension Strings {
         bundle: .module,
         value: "Failed to switch servers, please try again later.",
         comment: "Message for error when we fail to switch vpn server for the user"
+      )
+
+    public static let vpnRegionChangedTitle =
+      NSLocalizedString(
+        "vpn.protocolPickerDescription",
+        bundle: .module,
+        value: "VPN Region Changed",
+        comment: "The alert title showing vpn region is changed"
       )
 
     public static let protocolPickerTitle =
@@ -747,14 +786,6 @@ extension Strings {
         value:
           "Please select your preferred transport protocol. Once switched your existing VPN credentials will be cleared and you will be reconnected if a VPN connection is currently established.",
         comment: "Description of vpn tunnel protocol"
-      )
-
-    public static let regionSwitchSuccessPopupText =
-      NSLocalizedString(
-        "vpn.regionSwitchSuccessPopupText",
-        bundle: .module,
-        value: "VPN region changed.",
-        comment: "Message that we show after successfully changing vpn region."
       )
 
     public static let protocolPickerErrorTitle =
@@ -899,12 +930,5 @@ extension Strings {
         comment: "Title showing which country serves list showing. Ex: 'Brazil Server"
       )
 
-    public static let vpnRegionChangedTitle =
-      NSLocalizedString(
-        "vpn.protocolPickerDescription",
-        bundle: .module,
-        value: "VPN Region Changed",
-        comment: "The alert title showing vpn region is changed"
-      )
   }
 }
