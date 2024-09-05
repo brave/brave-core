@@ -5,7 +5,6 @@
 
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_handler.h"
 
-#include <algorithm>
 #include <optional>
 #include <utility>
 
@@ -119,22 +118,6 @@ const char kHideSelectorsInjectScript[] =
               [window.content_cosmetic.cosmeticStyleSheet,
                 ...document.adoptedStyleSheets];
           };
-        })();)";
-
-const char kProceduralActionsScript[] =
-    R"((function() {
-          const CC = window.content_cosmetic;
-          let stylesheet = '';
-          const takeStyleFilter = filter => {
-            if (filter.selector.length === 1 && filter.selector[0].type === 'css-selector' && filter.action && filter.action.type === 'style') {
-              stylesheet += filter.selector[0].arg + '{' + filter.action.arg + '}\n';
-              return false;
-            }
-            return true;
-          };
-          CC.proceduralActionFilters = JSON.parse(String.raw`$1`).filter(f => takeStyleFilter(f));
-          CC.hasProceduralActions = CC.proceduralActionFilters.length > 0;
-          return stylesheet;
         })();)";
 
 std::string LoadDataResource(const int id) {
@@ -563,32 +546,9 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
 
   CSSRulesRoutine(*resources_dict_);
 
-  bool has_procedural_actions = false;
-  std::string procedural_actions_json;
-  const auto* procedural_actions_list =
-      resources_dict_->FindList("procedural_actions");
-  if (procedural_actions_list && !procedural_actions_list->empty()) {
-    // Each element of procedural_actions_list is already formatted as JSON.
-    // Combine them into a single JSON list using string concatenation to avoid
-    // double-escaping.
-    auto procedural_actions_strings = std::vector<std::string>();
-    std::transform(procedural_actions_list->cbegin(),
-                   procedural_actions_list->cend(),
-                   std::back_inserter(procedural_actions_strings),
-                   [](const base::Value& action) -> std::string {
-                     return action.GetString();
-                   });
-    procedural_actions_json = base::StrCat(
-        {"[", base::JoinString(procedural_actions_strings, ","), "]"});
-    has_procedural_actions = true;
-  } else {
-    procedural_actions_json = "null";
-  }
-
-  if (has_procedural_actions) {
-    std::string procedural_actions_script = base::ReplaceStringPlaceholders(
-        kProceduralActionsScript, {procedural_actions_json.c_str()}, nullptr);
-
+  const std::string* procedural_actions_script =
+      resources_dict_->FindString("procedural_actions_script");
+  if (procedural_actions_script) {
     v8::Isolate* isolate = web_frame->GetAgentGroupScheduler()->Isolate();
     v8::HandleScope handle_scope(isolate);
 
@@ -596,7 +556,7 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
         web_frame->ExecuteScriptInIsolatedWorldAndReturnValue(
             isolated_world_id_,
             blink::WebScriptSource(
-                blink::WebString::FromUTF8(procedural_actions_script)),
+                blink::WebString::FromUTF8(*procedural_actions_script)),
             blink::BackForwardCacheAware::kAllow);
 
     DCHECK(v8_stylesheet->IsString());
