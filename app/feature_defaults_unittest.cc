@@ -165,6 +165,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kPrivacyGuidePreloadAndroid,
 #endif
       &features::kPrivacySandboxAdsAPIsOverride,
+#if !BUILDFLAG(IS_ANDROID)
+      &features::kReportPakFileIntegrity,
+#endif
       &features::kResourceTimingForCancelledNavigationInFrame,
       &features::kSCTAuditing,
       &features::kServiceWorkerAutoPreload,
@@ -202,6 +205,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(ENABLE_MIRROR)
       &kVerifyRequestInitiatorForMirrorHeaders,
 #endif
+      &lens::features::kLensOverlay,
       &lens::features::kLensStandalone,
       &manta::features::kMantaService,
       &media::kLiveCaption,
