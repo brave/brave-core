@@ -1,11 +1,11 @@
 diff --git a/build/config/android/config.gni b/build/config/android/config.gni
-index d80f9e3769d0c77350291490e25eb7be7935a422..a879f6d3ef977c5d8be83c0cb5761db3480f8c02 100644
+index c78a201b1c7c25bbd497789eea62413558bf33cd..f888184705b2ace5805c7ea6a75a4d67b749b276 100644
 --- a/build/config/android/config.gni
 +++ b/build/config/android/config.gni
-@@ -32,6 +32,7 @@ robolectric_toolchain = "//build/toolchain/android:robolectric_$host_cpu"
- # toolchain, this GNI file may be read and processed from within Chrome OS
- # toolchains. Checking |is_android| here would therefore be too restrictive.
- if (is_android || is_chromeos) {
+@@ -29,6 +29,7 @@ assert(!(incremental_install && !is_java_debug),
+ robolectric_toolchain = "//build/toolchain/android:robolectric_$host_cpu"
+ 
+ if (is_android) {
 +  import("//brave/build/android/config.gni")
    import("//build/config/android/channel.gni")
    import("//build/config/clang/clang.gni")

@@ -1,8 +1,8 @@
 diff --git a/components/search_engines/prepopulated_engines.json b/components/search_engines/prepopulated_engines.json
-index 2dc4ac1f5dfdf7015f300b6e316964f0662b3960..cb68ca31f998e3903a72c5826f052d81b7d7ce2a 100644
+index 40a13e733cbcb351898eefb64242a3a8187d198f..a897824b6fc01a0a937d603e9a9e86664a4f37ec 100644
 --- a/components/search_engines/prepopulated_engines.json
 +++ b/components/search_engines/prepopulated_engines.json
-@@ -104,17 +104,6 @@
+@@ -116,23 +116,6 @@
        "id": 68
      },
  
@@ -14,13 +14,19 @@ index 2dc4ac1f5dfdf7015f300b6e316964f0662b3960..cb68ca31f998e3903a72c5826f052d81
 -      "suggest_url": "https://duckduckgo.com/ac/?q={searchTerms}&type=list",
 -      "new_tab_url": "https://duckduckgo.com/chrome_newtab",
 -      "type": "SEARCH_ENGINE_DUCKDUCKGO",
--      "id": 92
+-      "id": 92,
+-      "regulatory_extensions": [
+-        {
+-          "variant": "RegulatoryExtensionType::kAndroidEEA",
+-          "search_params": "t=euandroid"
+-        }
+-      ]
 -    },
 -
      "ecosia": {
        "name": "Ecosia",
        "keyword": "ecosia.org",
-@@ -266,16 +255,6 @@
+@@ -290,28 +273,6 @@
        "id": 108
      },
  
@@ -28,10 +34,22 @@ index 2dc4ac1f5dfdf7015f300b6e316964f0662b3960..cb68ca31f998e3903a72c5826f052d81
 -      "name": "Qwant",
 -      "keyword": "qwant.com",
 -      "favicon_url": "https://www.qwant.com/favicon.ico",
--      "search_url": "https://www.qwant.com/?q={searchTerms}&client=opensearch",
--      "suggest_url": "https://api.qwant.com/api/suggest/?q={searchTerms}&client=opensearch",
+-      "search_url": "https://www.qwant.com/?q={searchTerms}",
+-      "suggest_url": "https://api.qwant.com/api/suggest/?q={searchTerms}",
 -      "type": "SEARCH_ENGINE_QWANT",
--      "id": 94
+-      "id": 94,
+-      "regulatory_extensions": [
+-        {
+-          "variant": "RegulatoryExtensionType::kDefault",
+-          "search_params": "client=cs-chrome",
+-          "suggest_params": "client=opensearch"
+-        },
+-        {
+-          "variant": "RegulatoryExtensionType::kAndroidEEA",
+-          "search_params": "client=acs",
+-          "suggest_params": "client=opensearch"
+-        }
+-      ]
 -    },
 -
      "seznam_cz": {
