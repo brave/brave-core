@@ -5,6 +5,8 @@
 
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 
+#include <optional>
+
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/path_service.h"
@@ -131,6 +133,20 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
           run_loop.Quit();
         }));
     run_loop.Run();
+  }
+
+  std::optional<std::string> GetOpenAIChatButtonNonce() {
+    std::optional<std::string> ret_nonce;
+    base::RunLoop run_loop;
+    page_content_fetcher_ =
+        std::make_unique<ai_chat::PageContentFetcher>(GetActiveWebContents());
+    page_content_fetcher_->GetOpenAIChatButtonNonce(base::BindLambdaForTesting(
+        [&run_loop, &ret_nonce](const std::optional<std::string>& nonce) {
+          ret_nonce = nonce;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return ret_nonce;
   }
 
   // Handles returning a .patch file if the user is on a github.com pull request
@@ -267,5 +283,37 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, GetSearchSummarizerKey) {
                     .ExtractBool());
 
     GetSearchSummarizerKey(FROM_HERE, expected_result);
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest,
+                       GetOpenAIChatButtonNonce) {
+  // Test no open Leo button with continue-with-leo ID present.
+  GURL url = https_server_.GetURL("a.com", "/open_ai_chat_button.html");
+  NavigateURL(url);
+  EXPECT_FALSE(GetOpenAIChatButtonNonce());
+
+  // Test valid case.
+  NavigateURL(url);
+  ASSERT_TRUE(content::ExecJs(GetActiveWebContents()->GetPrimaryMainFrame(),
+                              "document.getElementById('valid').setAttribute('"
+                              "id', 'continue-with-leo')"));
+  EXPECT_EQ(GetOpenAIChatButtonNonce(), "5566");
+
+  // Test invalid cases.
+  const auto invalid_cases = std::to_array<std::string_view>(
+      {"invalid", "not-a-tag", "no-href", "no-nonce", "empty-nonce",
+       "empty-nonce2", "empty-nonce3", "empty-nonce4", "empty-nonce5",
+       "empty-nonce6", "not-https-url", "not-search-url", "not-open-leo-url"});
+
+  for (const auto& invalid_case : invalid_cases) {
+    SCOPED_TRACE(testing::Message() << "Invalid case: " << invalid_case);
+    NavigateURL(url);
+    ASSERT_TRUE(content::ExecJs(
+        GetActiveWebContents()->GetPrimaryMainFrame(),
+        content::JsReplace("document.getElementById($1)."
+                           "setAttribute('id', 'continue-with-leo')",
+                           invalid_case)));
+    EXPECT_FALSE(GetOpenAIChatButtonNonce());
   }
 }

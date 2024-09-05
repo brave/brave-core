@@ -3,6 +3,24 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+assert(enable_ai_chat)
+
+if (!is_android) {
+  source_set("ai_chat") {
+    sources = [
+      "utils.cc",
+      "utils.h",
+    ]
+
+    deps = [
+      "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/tabs",
+      "//chrome/browser/ui/views/side_panel",
+    ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [ "ai_chat_tab_helper_unittest.cc" ]

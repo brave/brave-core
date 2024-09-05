@@ -27,6 +27,9 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_details.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/permission_controller.h"
+#include "content/public/browser/permission_request_description.h"
+#include "content/public/browser/permission_result.h"
 #include "content/public/browser/scoped_accessibility_mode.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
@@ -412,6 +415,21 @@ void AIChatTabHelper::GetSearchSummarizerKey(
   }
 
   page_content_fetcher_delegate_->GetSearchSummarizerKey(std::move(callback));
+}
+
+void AIChatTabHelper::GetOpenAIChatButtonNonce(
+    mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback) {
+  page_content_fetcher_delegate_->GetOpenAIChatButtonNonce(std::move(callback));
+}
+
+bool AIChatTabHelper::HasOpenAIChatPermission() const {
+  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
+  content::PermissionController* permission_controller =
+      web_contents()->GetBrowserContext()->GetPermissionController();
+  content::PermissionResult permission_status =
+      permission_controller->GetPermissionResultForCurrentDocument(
+          blink::PermissionType::BRAVE_OPEN_AI_CHAT, rfh);
+  return permission_status.status == content::PermissionStatus::GRANTED;
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);

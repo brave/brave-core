@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/settings/site_settings/settings_category_default_radio_group.ts b/chrome/browser/resources/settings/site_settings/settings_category_default_radio_group.ts
-index f41407671c3aa79854cbf4c4adf5359278ea5f60..fa73ea59476b32d9feefe73c728f69c80669e848 100644
+index f41407671c3aa79854cbf4c4adf5359278ea5f60..fe1fe5d9527400c5a59143fafb3f17cc23a76ae8 100644
 --- a/chrome/browser/resources/settings/site_settings/settings_category_default_radio_group.ts
 +++ b/chrome/browser/resources/settings/site_settings/settings_category_default_radio_group.ts
 @@ -171,6 +171,7 @@ export class SettingsCategoryDefaultRadioGroupElement extends
        case ContentSettingsTypes.WEB_PRINTING:
          // "Ask" vs "Blocked".
          return ContentSetting.ASK;
-+      case ContentSettingsTypes.ETHEREUM: case ContentSettingsTypes.SOLANA: case ContentSettingsTypes.GOOGLE_SIGN_IN: case ContentSettingsTypes.LOCALHOST_ACCESS: return ContentSetting.ASK; case ContentSettingsTypes.AUTOPLAY: return ContentSetting.ALLOW;
++      case ContentSettingsTypes.ETHEREUM: case ContentSettingsTypes.SOLANA: case ContentSettingsTypes.GOOGLE_SIGN_IN: case ContentSettingsTypes.LOCALHOST_ACCESS: case ContentSettingsTypes.BRAVE_OPEN_AI_CHAT: return ContentSetting.ASK; case ContentSettingsTypes.AUTOPLAY: return ContentSetting.ALLOW;
        default:
          assertNotReached('Invalid category: ' + this.category);
      }

@@ -31,6 +31,7 @@
   {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr},                \
   {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, nullptr},          \
   {ContentSettingsType::BRAVE_LOCALHOST_ACCESS, "localhostAccess"},   \
+  {ContentSettingsType::BRAVE_OPEN_AI_CHAT, "braveOpenAIChat"},       \
   {ContentSettingsType::BRAVE_WEBCOMPAT_NONE, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS, nullptr}, \
@@ -87,19 +88,24 @@
 namespace site_settings {
 
 bool HasRegisteredGroupName(ContentSettingsType type) {
-  if (type == ContentSettingsType::AUTOPLAY)
+  if (type == ContentSettingsType::AUTOPLAY) {
     return true;
-  if (type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN)
+  }
+  if (type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN) {
     return true;
+  }
   if (type == ContentSettingsType::BRAVE_LOCALHOST_ACCESS) {
     return true;
   }
-  if (type == ContentSettingsType::BRAVE_ETHEREUM)
+  if (type == ContentSettingsType::BRAVE_ETHEREUM) {
     return true;
-  if (type == ContentSettingsType::BRAVE_SOLANA)
+  }
+  if (type == ContentSettingsType::BRAVE_SOLANA) {
     return true;
-  if (type == ContentSettingsType::BRAVE_SHIELDS)
+  }
+  if (type == ContentSettingsType::BRAVE_SHIELDS) {
     return true;
+  }
   return HasRegisteredGroupName_ChromiumImpl(type);
 }
 
@@ -112,6 +118,7 @@ std::vector<ContentSettingsType> GetVisiblePermissionCategories(
       ContentSettingsType::BRAVE_SOLANA,
       ContentSettingsType::BRAVE_GOOGLE_SIGN_IN,
       ContentSettingsType::BRAVE_LOCALHOST_ACCESS,
+      ContentSettingsType::BRAVE_OPEN_AI_CHAT,
   };
 
   auto types = GetVisiblePermissionCategories_ChromiumImpl(origin, profile);

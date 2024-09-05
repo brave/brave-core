@@ -87,6 +87,11 @@ class AIChatService : public KeyedService,
       base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
           associated_content);
 
+  void OpenConversationWithStagedEntries(
+      base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
+          associated_content,
+      base::OnceClosure open_ai_chat);
+
   // mojom::Service
   void MarkAgreementAccepted() override;
   void GetVisibleConversations(

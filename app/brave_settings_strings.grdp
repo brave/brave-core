@@ -712,6 +712,17 @@
     Allowed to access localhost resources
   </message>
 
+  <!-- AI chat setting -->
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BRAVE_OPEN_AI_CHAT" desc="Label for opening Leo AI chat site settings.">
+    Leo AI chat
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BRAVE_OPEN_AI_CHAT_ASK" desc="Label for the enabled option of opening Leo AI chat site settings.">
+    Sites can ask to open Leo AI chat
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_BRAVE_OPEN_AI_CHAT_BLOCK" desc="Label for the disabled option of opening Leo AI chat site settings.">
+    Don't allow site to open Leo AI chat
+  </message>
+
   <!-- Settings / Privacy and security / Safety Check -->
   <message name="IDS_SETTINGS_BRAVE_SAFETY_CHECK_SAFE_BROWSING_ENABLED_STANDARD_AVAILABLE_ENHANCED" desc="This text points out that Safe Browsing is enabled as standard protection.">
     Standard protection is on.

@@ -414,4 +414,21 @@ void AIChatService::OnConversationListChanged() {
   }
 }
 
+void AIChatService::OpenConversationWithStagedEntries(
+    base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
+        associated_content,
+    base::OnceClosure open_ai_chat) {
+  if (!associated_content || !associated_content->HasOpenAIChatPermission()) {
+    return;
+  }
+
+  ConversationHandler* conversation = GetOrCreateConversationHandlerForContent(
+      associated_content->GetContentId(), associated_content);
+  CHECK(conversation);
+
+  // Open AI Chat and trigger a fetch of staged conversations from Brave Search.
+  std::move(open_ai_chat).Run();
+  conversation->MaybeFetchOrClearContentStagedConversation();
+}
+
 }  // namespace ai_chat

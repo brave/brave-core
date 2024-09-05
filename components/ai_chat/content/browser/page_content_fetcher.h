@@ -39,6 +39,10 @@ class PageContentFetcher : public AIChatTabHelper::PageContentFetcherDelegate {
       mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback)
       override;
 
+  void GetOpenAIChatButtonNonce(
+      mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback)
+      override;
+
   void SetURLLoaderFactoryForTesting(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
     url_loader_factory_ = url_loader_factory;

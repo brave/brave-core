@@ -7,8 +7,8 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_AI_CHAT_TAB_HELPER_H_
 
 #include <memory>
-#include <optional>
 #include <string>
+#include <utility>
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
@@ -74,6 +74,12 @@ class AIChatTabHelper : public content::WebContentsObserver,
     // Attempts to find a search summarizer key for the page.
     virtual void GetSearchSummarizerKey(
         GetSearchSummarizerKeyCallback callback) = 0;
+
+    // Fetches the nonce for the OpenLeo button from the page HTML and validate
+    // if it matches the href URL and the passed in nonce.
+    virtual void GetOpenAIChatButtonNonce(
+        mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback
+            callback) = 0;
   };
 
   AIChatTabHelper(const AIChatTabHelper&) = delete;
@@ -96,6 +102,9 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   // mojom::PageContentExtractorHost
   void OnInterceptedPageContentChanged() override;
+
+  void GetOpenAIChatButtonNonce(
+      mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback);
 
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
@@ -156,6 +165,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void MaybeSameDocumentIsNewPage();
 
   void GetSearchSummarizerKey(GetSearchSummarizerKeyCallback callback) override;
+
+  bool HasOpenAIChatPermission() const override;
 
   void OnFetchPageContentComplete(GetPageContentCallback callback,
                                   std::string content,

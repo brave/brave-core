@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "components/permissions/permission_util.h"
+
 #include "components/permissions/permission_uma_util.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
 
@@ -35,7 +36,9 @@
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:                     \
     return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;            \
   case PermissionType::BRAVE_LOCALHOST_ACCESS:                   \
-    return ContentSettingsType::BRAVE_LOCALHOST_ACCESS;
+    return ContentSettingsType::BRAVE_LOCALHOST_ACCESS;          \
+  case PermissionType::BRAVE_OPEN_AI_CHAT:                       \
+    return ContentSettingsType::BRAVE_OPEN_AI_CHAT;
 
 #include "src/components/permissions/permission_util.cc"
 #undef PermissionUtil
@@ -55,6 +58,8 @@ std::string PermissionUtil::GetPermissionString(
       return "BraveGoogleSignInPermission";
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
       return "BraveLocalhostAccessPermission";
+    case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
+      return "BraveOpenAIChatPermission";
     default:
       return PermissionUtil_ChromiumImpl::GetPermissionString(content_type);
   }
@@ -76,6 +81,10 @@ bool PermissionUtil::GetPermissionType(ContentSettingsType type,
     *out = PermissionType::BRAVE_LOCALHOST_ACCESS;
     return true;
   }
+  if (type == ContentSettingsType::BRAVE_OPEN_AI_CHAT) {
+    *out = PermissionType::BRAVE_OPEN_AI_CHAT;
+    return true;
+  }
 
   return PermissionUtil_ChromiumImpl::GetPermissionType(type, out);
 }
@@ -87,6 +96,7 @@ bool PermissionUtil::IsPermission(ContentSettingsType type) {
     case ContentSettingsType::BRAVE_SOLANA:
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
+    case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
       return true;
     default:
       return PermissionUtil_ChromiumImpl::IsPermission(type);
@@ -122,6 +132,8 @@ PermissionType PermissionUtil::ContentSettingTypeToPermissionType(
       return PermissionType::BRAVE_GOOGLE_SIGN_IN;
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
       return PermissionType::BRAVE_LOCALHOST_ACCESS;
+    case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
+      return PermissionType::BRAVE_OPEN_AI_CHAT;
     default:
       return PermissionUtil_ChromiumImpl::ContentSettingTypeToPermissionType(
           permission);
@@ -133,8 +145,9 @@ GURL PermissionUtil::GetCanonicalOrigin(ContentSettingsType permission,
                                         const GURL& embedding_origin) {
   // Use requesting_origin which will have ethereum or solana address info.
   if (permission == ContentSettingsType::BRAVE_ETHEREUM ||
-      permission == ContentSettingsType::BRAVE_SOLANA)
+      permission == ContentSettingsType::BRAVE_SOLANA) {
     return requesting_origin;
+  }
 
   return PermissionUtil_ChromiumImpl::GetCanonicalOrigin(
       permission, requesting_origin, embedding_origin);

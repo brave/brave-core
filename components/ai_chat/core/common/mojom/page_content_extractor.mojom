@@ -32,6 +32,11 @@ interface PageContentExtractor {
   // Get summarizer-key meta tag from Brave Search SERP if it exists.
   // This should only be called when the last commited URL is Brave Search SERP.
   GetSearchSummarizerKey() => (string? key);
+
+  // Get the nonce in the href URL and the nonce attribute value in the
+  // continue-with-leo HTML anchor element (open Leo button). These two
+  // nonces value must be the same, otherwise nullopt will be returned.
+  GetOpenAIChatButtonNonce() => (string? nonce);
 };
 
 // Allows the renderer to notify the browser process of meaningful changes to

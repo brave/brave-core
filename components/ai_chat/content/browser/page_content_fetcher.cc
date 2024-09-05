@@ -135,9 +135,20 @@ class PageContentFetcherInternal {
     content_extractor_->GetSearchSummarizerKey(std::move(callback));
   }
 
-  void StartGithub(
-      GURL patch_url,
-      FetchPageContentCallback callback) {
+  void GetOpenAIChatButtonNonce(
+      mojo::Remote<mojom::PageContentExtractor> content_extractor,
+      mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback) {
+    content_extractor_ = std::move(content_extractor);
+    if (!content_extractor_) {
+      DeleteSelf();
+      return;
+    }
+    content_extractor_.set_disconnect_handler(base::BindOnce(
+        &PageContentFetcherInternal::DeleteSelf, base::Unretained(this)));
+    content_extractor_->GetOpenAIChatButtonNonce(std::move(callback));
+  }
+
+  void StartGithub(GURL patch_url, FetchPageContentCallback callback) {
     auto request = std::make_unique<network::ResourceRequest>();
     request->url = patch_url;
     request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
@@ -458,6 +469,18 @@ void PageContentFetcher::GetSearchSummarizerKey(
   primary_rfh->GetRemoteInterfaces()->GetInterface(
       extractor.BindNewPipeAndPassReceiver());
   fetcher->GetSearchSummarizerKey(std::move(extractor), std::move(callback));
+}
+
+void PageContentFetcher::GetOpenAIChatButtonNonce(
+    mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback) {
+  auto* primary_rfh = web_contents_->GetPrimaryMainFrame();
+  DCHECK(primary_rfh->IsRenderFrameLive());
+
+  auto* fetcher = new PageContentFetcherInternal(nullptr);
+  mojo::Remote<mojom::PageContentExtractor> extractor;
+  primary_rfh->GetRemoteInterfaces()->GetInterface(
+      extractor.BindNewPipeAndPassReceiver());
+  fetcher->GetOpenAIChatButtonNonce(std::move(extractor), std::move(callback));
 }
 
 }  // namespace ai_chat

@@ -20,6 +20,7 @@
   case PermissionType::BRAVE_SOLANA:                    \
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:            \
   case PermissionType::BRAVE_LOCALHOST_ACCESS:          \
+  case PermissionType::BRAVE_OPEN_AI_CHAT:              \
   case PermissionType::NUM
 
 #include "src/android_webview/browser/aw_permission_manager.cc"

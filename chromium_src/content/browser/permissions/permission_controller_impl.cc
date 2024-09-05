@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "content/browser/permissions/permission_controller_impl.h"
+
 #include "content/browser/permissions/permission_util.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
 
@@ -21,6 +22,7 @@
   case PermissionType::BRAVE_SOLANA:                    \
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:            \
   case PermissionType::BRAVE_LOCALHOST_ACCESS:          \
+  case PermissionType::BRAVE_OPEN_AI_CHAT:              \
   case PermissionType::NUM
 
 #include "src/content/browser/permissions/permission_controller_impl.cc"

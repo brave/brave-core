@@ -201,6 +201,7 @@ class MockAssociatedContent
               GetStagedEntriesFromContent,
               (ConversationHandler::GetStagedEntriesCallback),
               (override));
+  MOCK_METHOD(bool, HasOpenAIChatPermission, (), (const, override));
 
   base::WeakPtr<ConversationHandler::AssociatedContentDelegate> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
@@ -493,6 +494,63 @@ TEST_P(AIChatServiceUnitTest,
             run_loop.Quit();
           }));
   run_loop.Run();
+}
+
+TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries_NoPermission) {
+  NiceMock<MockAssociatedContent> associated_content{};
+  ConversationHandler* conversation =
+      ai_chat_service_->CreateConversationHandlerForContent(
+          associated_content.GetContentId(), associated_content.GetWeakPtr());
+  auto conversation_client = CreateConversationClient(conversation);
+
+  ON_CALL(associated_content, HasOpenAIChatPermission)
+      .WillByDefault(testing::Return(false));
+  EXPECT_CALL(associated_content, GetStagedEntriesFromContent).Times(0);
+
+  bool opened = false;
+  ai_chat_service_->OpenConversationWithStagedEntries(
+      associated_content.GetWeakPtr(),
+      base::BindLambdaForTesting([&]() { opened = true; }));
+  EXPECT_FALSE(opened);
+  testing::Mock::VerifyAndClearExpectations(&associated_content);
+}
+
+TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries) {
+  NiceMock<MockAssociatedContent> associated_content{};
+  ConversationHandler* conversation =
+      ai_chat_service_->CreateConversationHandlerForContent(
+          associated_content.GetContentId(), associated_content.GetWeakPtr());
+  auto conversation_client = CreateConversationClient(conversation);
+
+  ON_CALL(associated_content, GetStagedEntriesFromContent)
+      .WillByDefault(
+          [](ConversationHandler::GetStagedEntriesCallback callback) {
+            std::move(callback).Run(std::vector<SearchQuerySummary>{
+                SearchQuerySummary("query", "summary")});
+          });
+  ON_CALL(associated_content, HasOpenAIChatPermission)
+      .WillByDefault(testing::Return(true));
+
+  // Allowed scheme to be associated with a conversation
+  ON_CALL(associated_content, GetURL())
+      .WillByDefault(testing::Return(GURL("https://example.com")));
+
+  // One from setting up a connected client, one from
+  // OpenConversationWithStagedEntries.
+  EXPECT_CALL(associated_content, GetStagedEntriesFromContent).Times(2);
+
+  bool opened = false;
+  ai_chat_service_->OpenConversationWithStagedEntries(
+      associated_content.GetWeakPtr(),
+      base::BindLambdaForTesting([&]() { opened = true; }));
+
+  base::RunLoop().RunUntilIdle();
+  auto& history = conversation->GetConversationHistory();
+  ASSERT_EQ(history.size(), 2u);
+  EXPECT_EQ(history[0]->text, "query");
+  EXPECT_EQ(history[1]->text, "summary");
+  EXPECT_TRUE(opened);
+  testing::Mock::VerifyAndClearExpectations(&associated_content);
 }
 
 }  // namespace ai_chat

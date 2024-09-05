@@ -5,6 +5,10 @@
 
 #include "brave/components/ai_chat/core/browser/utils.h"
 
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
@@ -14,6 +18,7 @@
 #include "base/time/time.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"

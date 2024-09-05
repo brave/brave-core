@@ -113,35 +113,33 @@
       })
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#define BRAVE_AI_CHAT                                          \
-  EXPAND_FEATURE_ENTRIES({                                     \
-      "brave-ai-chat",                                         \
-      "Brave AI Chat",                                         \
-      "Summarize articles and engage in conversation with AI", \
-      flags_ui::kOsIos,                                        \
-      FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),          \
-  })
-#define BRAVE_AI_CHAT_HISTORY                                \
-  EXPAND_FEATURE_ENTRIES({                                   \
-      "brave-ai-chat-history",                               \
-      "Brave AI Chat History",                               \
-      "Enables AI Chat History persistence and management",  \
-      flags_ui::kOsIos,                                      \
-      FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory), \
-  })
-#define BRAVE_AI_CHAT_PAGE_CONTENT_REFINE                                   \
-  EXPAND_FEATURE_ENTRIES({                                                  \
-      "brave-ai-chat-page-content-refine",                                  \
-      "Brave AI Chat Page Content Refine",                                  \
-      "Enable local text embedding for long page content in order to find " \
-      "most relevant parts to the prompt within context limit.",            \
-      flags_ui::kOsIos,                                                     \
-      FEATURE_VALUE_TYPE(ai_chat::features::kPageContentRefine),            \
-  })
+#define BRAVE_AI_CHAT_FEATURE_ENTRIES                                      \
+  EXPAND_FEATURE_ENTRIES(                                                  \
+      {                                                                    \
+          "brave-ai-chat",                                                 \
+          "Brave AI Chat",                                                 \
+          "Summarize articles and engage in conversation with AI",         \
+          flags_ui::kOsIos,                                                \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),                  \
+      },                                                                   \
+      {                                                                    \
+          "brave-ai-chat-history",                                         \
+          "Brave AI Chat History",                                         \
+          "Enables AI Chat History persistence and management",            \
+          flags_ui::kOsIos,                                                \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),           \
+      },                                                                   \
+      {                                                                    \
+          "brave-ai-chat-page-content-refine",                             \
+          "Brave AI Chat Page Content Refine",                             \
+          "Enable local text embedding for long page content in order to " \
+          "find "                                                          \
+          "most relevant parts to the prompt within context limit.",       \
+          flags_ui::kOsIos,                                                \
+          FEATURE_VALUE_TYPE(ai_chat::features::kPageContentRefine),       \
+      })
 #else
-#define BRAVE_AI_CHAT
-#define BRAVE_AI_CHAT_HISTORY
-#define BRAVE_AI_CHAT_PAGE_CONTENT_REFINE
+#define BRAVE_AI_CHAT_FEATURE_ENTRIES
 #endif
 
 #define BRAVE_PLAYLIST_FEATURE_ENTRIES                        \
@@ -242,8 +240,6 @@
   BRAVE_SHIELDS_FEATURE_ENTRIES                                                \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_SKU_SDK_FEATURE_ENTRIES                                                \
-  BRAVE_AI_CHAT                                                                \
-  BRAVE_AI_CHAT_HISTORY                                                        \
-  BRAVE_AI_CHAT_PAGE_CONTENT_REFINE                                            \
+  BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_PLAYLIST_FEATURE_ENTRIES                                               \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
