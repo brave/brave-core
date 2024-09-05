@@ -181,7 +181,7 @@
 
 <service
     android:name="org.chromium.chrome.browser.vpn.wireguard.WireguardService"
-    android:foregroundServiceType="systemExempted"
+    android:foregroundServiceType="dataSync"
     android:exported="false">
 </service>
 
