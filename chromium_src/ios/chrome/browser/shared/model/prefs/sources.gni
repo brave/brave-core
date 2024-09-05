@@ -1,0 +1,22 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_browser_prefs_deps = [
+  "//brave/components/brave_ads/core",
+  "//brave/components/brave_news/common",
+  "//brave/components/brave_rewards/common",
+  "//brave/components/brave_shields/core/common",
+  "//brave/components/brave_sync:prefs",
+  "//brave/components/brave_wallet/browser",
+  "//brave/components/de_amp/common",
+  "//brave/components/debounce/core/browser",
+  "//brave/components/decentralized_dns/core",
+  "//brave/components/l10n/common",
+  "//brave/components/ntp_background_images/browser",
+  "//brave/components/p3a",
+  "//brave/components/p3a:buildflags",
+  "//brave/components/skus/browser",
+  "//brave/ios/browser/brave_stats",
+]
