@@ -35,6 +35,7 @@ source_set("ui") {
   deps = [
     "//brave/components/brave_shields/core/browser",
     "//brave/components/webcompat/core/common",
+    "//chrome/browser/ui:browser_navigator_params_headers",
   ]
 
   public_deps = []

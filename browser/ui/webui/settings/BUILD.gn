@@ -18,6 +18,7 @@ source_set("unittests") {
       "//brave/components/resources:strings_grit",
       "//chrome/browser",
       "//chrome/browser/ui",
+      "//chrome/browser/ui:browser_navigator_params_headers",
       "//chrome/test:test_support",
       "//components/browsing_data/content:test_support",
       "//components/sync_preferences:test_support",
