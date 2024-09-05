@@ -25,7 +25,6 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.brave_vpn.mojom.Region;
-import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
@@ -52,6 +51,8 @@ public class BraveVpnUtils {
     public static final String IAP_ANDROID_PARAM_TEXT = "iap-android";
     public static final String VERIFY_CREDENTIALS_FAILED = "verify_credentials_failed";
     public static final String DESKTOP_CREDENTIAL = "desktop_credential";
+
+    public static final String OPTIMAL_SERVER = "Optimal";
 
     public static boolean mUpdateProfileAfterSplitTunnel;
     public static BraveVpnServerRegion selectedServerRegion;
@@ -161,10 +162,8 @@ public class BraveVpnUtils {
                                         region.getString("country-iso-code"),
                                         region.getString("name"),
                                         region.getString("name-pretty"),
-                                        ContextUtils.getApplicationContext()
-                                                .getString(R.string.optimal_text),
-                                        ContextUtils.getApplicationContext()
-                                                .getString(R.string.optimal_desc),
+                                        OPTIMAL_SERVER,
+                                        "",
                                         BraveVpnConstants.REGION_PRECISION_COUNTRY);
                         return braveVpnServerRegion;
                     }
