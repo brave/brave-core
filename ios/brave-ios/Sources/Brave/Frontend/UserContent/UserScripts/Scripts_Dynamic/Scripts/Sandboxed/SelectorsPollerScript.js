@@ -70,6 +70,15 @@ window.__firefox__.execute(function($) {
   // The query to perform when extracting classes and ids
   const classIdWithoutHtmlOrBody = '[id]:not(html):not(body),[class]:not(html):not(body)'
 
+  // Generate a random string between [a000000000, zzzzzzzzzz] (base 36)
+  const generateRandomAttr = () => {
+    const min = Number.parseInt('a000000000', 36)
+    const max = Number.parseInt('zzzzzzzzzz', 36)
+    return Math.floor(Math.random() * (max - min) + min).toString(36)
+  }
+  const globalStyleAttr = generateRandomAttr()
+  const styleAttrMap = new Map()
+
   const CC = {
     allSelectors: new Set(),
     pendingSelectors: { ids: new Set(), classes: new Set() },
@@ -1107,20 +1116,28 @@ window.__firefox__.execute(function($) {
       return
     }
 
-    /**
-    * Adds given style to allStyleRules
-    * @param {Object} entry The entry to add
-    */
-    const addStyleRule = (selector, rule) => {
-      const css = selector + '{' + rule + ';}'
-      CC.allStyleRules.push(css)
+    // Returns attribute from the `styleAttrMap`, or
+    // creates new attribute and adds to `styleAttrMap`
+    const getStyleAttr = (style) => {
+      let styleAttr = styleAttrMap.get(style)
+      if (styleAttr === undefined) {
+        styleAttr = generateRandomAttr()
+        styleAttrMap.set(style, styleAttr);
+        const css = `[${globalStyleAttr}][${styleAttr}]{${style}}`
+        CC.allStyleRules.push(css)
+      }
+      return styleAttr
     }
 
-    const performAction = (selector, element, action) => {
+    const performAction = (element, action) => {
       if (action === undefined) {
-        addStyleRule(selector, 'display: none !important')
+        const attr = getStyleAttr('display: none !important')
+        element.setAttribute(globalStyleAttr, '')
+        element.setAttribute(attr, '')
       } else if (action.type === 'style') {
-        addStyleRule(selector, action.arg)
+        const attr = getStyleAttr(action.arg)
+        element.setAttribute(globalStyleAttr, '')
+        element.setAttribute(attr, '')
       } else if (action.type === 'remove') {
         element.remove()
       } else if (action.type === 'remove-attr') {
@@ -1153,13 +1170,13 @@ window.__firefox__.execute(function($) {
       if (startOperator === selector.length) {
         // First `css-selector` was already handled, and no more elements remain
         matchingElements.forEach(elem => {
-          performAction(selector[0].arg, elem, action);
+          performAction(elem, action);
         });
       } else {
         try {
           const filter = compileProceduralSelector(selector.slice(startOperator));
           applyCompiledSelector(filter, matchingElements).forEach(elem => {
-            performAction(selector[0].arg, elem, action);
+            performAction(elem, action);
           });
         } catch (e) {
           console.error('Failed to apply filter ' + JSON.stringify(selector) + ' ' + JSON.stringify(action) + ': ');
