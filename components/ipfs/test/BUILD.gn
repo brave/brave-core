@@ -9,12 +9,10 @@ import("//testing/test.gni")
 source_set("brave_ipfs_unit_tests") {
   testonly = true
 
-  sources = [
-    "//brave/components/ipfs/ipfs_utils_unittest.cc",
-  ]
+  sources = [ "//brave/components/ipfs/ipfs_utils_unittest.cc" ]
 
   if (!is_android && !is_ios) {
-    sources += [ 
+    sources += [
       "//brave/components/ipfs/ipfs_component_cleaner.cc",
       "//brave/components/ipfs/ipfs_component_cleaner_unittest.cc",
     ]
