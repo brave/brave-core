@@ -216,6 +216,7 @@ class ConversationHandler : public mojom::ConversationHandler,
                                   mojom::APIError error);
   void OnFaviconImageDataChanged();
   void OnUserOptedIn();
+  void MaybeFetchOrClearContentStagedConversation();
 
   base::WeakPtr<ConversationHandler> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
@@ -280,7 +281,6 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   // Some associated content may provide some conversation that the user wants
   // to continue, e.g. Brave Search.
-  void MaybeFetchOrClearContentStagedConversation();
   void OnGetStagedEntriesFromContent(
       const std::optional<std::vector<SearchQuerySummary>>& entries);
 

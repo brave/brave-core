@@ -135,6 +135,20 @@ class PageContentFetcherInternal {
     content_extractor_->GetSearchSummarizerKey(std::move(callback));
   }
 
+  void ValidateOpenLeoButtonNonce(
+      mojo::Remote<mojom::PageContentExtractor> content_extractor,
+      mojom::PageContentExtractor::ValidateOpenLeoButtonNonceCallback
+          callback) {
+    content_extractor_ = std::move(content_extractor);
+    if (!content_extractor_) {
+      DeleteSelf();
+      return;
+    }
+    content_extractor_.set_disconnect_handler(base::BindOnce(
+        &PageContentFetcherInternal::DeleteSelf, base::Unretained(this)));
+    content_extractor_->ValidateOpenLeoButtonNonce(std::move(callback));
+  }
+
   void StartGithub(
       GURL patch_url,
       FetchPageContentCallback callback) {
@@ -458,6 +472,19 @@ void PageContentFetcher::GetSearchSummarizerKey(
   primary_rfh->GetRemoteInterfaces()->GetInterface(
       extractor.BindNewPipeAndPassReceiver());
   fetcher->GetSearchSummarizerKey(std::move(extractor), std::move(callback));
+}
+
+void PageContentFetcher::ValidateOpenLeoButtonNonce(
+    mojom::PageContentExtractor::ValidateOpenLeoButtonNonceCallback callback) {
+  auto* primary_rfh = web_contents_->GetPrimaryMainFrame();
+  DCHECK(primary_rfh->IsRenderFrameLive());
+
+  auto* fetcher = new PageContentFetcherInternal(nullptr);
+  mojo::Remote<mojom::PageContentExtractor> extractor;
+  primary_rfh->GetRemoteInterfaces()->GetInterface(
+      extractor.BindNewPipeAndPassReceiver());
+  fetcher->ValidateOpenLeoButtonNonce(std::move(extractor),
+                                      std::move(callback));
 }
 
 }  // namespace ai_chat

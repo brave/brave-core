@@ -59,6 +59,9 @@ class PageContentExtractor
   void GetSearchSummarizerKey(
       mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback)
       override;
+  void ValidateOpenLeoButtonNonce(
+      mojom::PageContentExtractor::ValidateOpenLeoButtonNonceCallback callback)
+      override;
 
   // AIChatResourceSnifferThrottleDelegate
   void OnInterceptedPageContentChanged(
