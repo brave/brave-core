@@ -752,6 +752,7 @@ Config.prototype.buildArgs = function () {
     delete args.zebpay_sandbox_oauth_url
     delete args.use_blink_v8_binding_new_idl_interface
     delete args.v8_enable_verify_heap
+    delete args.service_key_stt
   }
 
   args = Object.assign(args, this.extraGnArgs)
