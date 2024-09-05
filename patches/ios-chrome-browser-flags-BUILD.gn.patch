@@ -1,12 +1,12 @@
 diff --git a/ios/chrome/browser/flags/BUILD.gn b/ios/chrome/browser/flags/BUILD.gn
-index c21300755d99b35904352abb7fde533048bd29fe..3091c2a2615e661e004060e81718e34769d0428d 100644
+index c21300755d99b35904352abb7fde533048bd29fe..1d088ce4fdca9495dc0e68c7c9a98252f5a88f1e 100644
 --- a/ios/chrome/browser/flags/BUILD.gn
 +++ b/ios/chrome/browser/flags/BUILD.gn
 @@ -105,6 +105,7 @@ source_set("flags") {
    if (ios_enable_screen_time) {
      deps += [ "//ios/chrome/browser/screen_time/model:feature_flags" ]
    }
-+  deps += [ "//brave/components/brave_rewards/common/buildflags" ]
++  import("//brave/ios/browser/flags/sources.gni") deps += brave_flags_deps
  }
  
  source_set("system_flags") {
