@@ -1,4 +1,0 @@
-include_rules = [
-  "+chrome/common",
-  "+content/prefs",
-]
