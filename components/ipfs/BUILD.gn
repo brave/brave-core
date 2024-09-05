@@ -20,7 +20,7 @@ static_library("ipfs") {
     "//url",
   ]
 
-  if (!is_android) {
+  if (!is_android && !is_ios) {
     sources += [
       "ipfs_common.h",
       "ipfs_component_cleaner.cc",
