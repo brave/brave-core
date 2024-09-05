@@ -11,8 +11,6 @@ struct TranslateToast: View {
   private var dismiss
 
   var languageInfo: BraveTranslateLanguageInfo
-  var presentSettings: (() -> Void)?
-  var revertTranslation: (() -> Void)?
 
   var currentLanguageName: String {
     if let languageCode = languageInfo.currentLanguage.languageCode?.identifier,
@@ -59,30 +57,6 @@ struct TranslateToast: View {
         )
         .font(.callout)
         .foregroundColor(Color(braveSystemName: .textSecondary))
-      }
-      .padding(.trailing)
-
-      Spacer()
-
-      Button {
-        dismiss()
-        presentSettings?()
-      } label: {
-        Image(braveSystemName: "leo.settings")
-          .foregroundStyle(Color(braveSystemName: .iconDefault))
-      }
-
-      Color(braveSystemName: .dividerSubtle)
-        .frame(width: 1.0)
-        .padding([.top, .bottom], 8.0)
-        .padding([.leading, .trailing])
-
-      Button {
-        dismiss()
-        revertTranslation?()
-      } label: {
-        Text("Undo")
-          .foregroundStyle(Color(braveSystemName: .textInteractive))
       }
     }
     .padding()
