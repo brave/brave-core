@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -15,12 +16,8 @@
 
 namespace brave_ads {
 
-std::optional<base::Value> GetProfilePref(const std::string& path) {
-  return GetAdsClient()->GetProfilePref(path);
-}
-
 bool GetProfileBooleanPref(const std::string& path) {
-  const std::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetAdsClient()->GetProfilePref(path);
   if (!value) {
     return false;
   }
@@ -31,7 +28,7 @@ bool GetProfileBooleanPref(const std::string& path) {
 }
 
 int GetProfileIntegerPref(const std::string& path) {
-  const std::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetAdsClient()->GetProfilePref(path);
   if (!value) {
     return 0;
   }
@@ -42,7 +39,7 @@ int GetProfileIntegerPref(const std::string& path) {
 }
 
 double GetProfileDoublePref(const std::string& path) {
-  const std::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetAdsClient()->GetProfilePref(path);
   if (!value) {
     return 0.0;
   }
@@ -53,7 +50,7 @@ double GetProfileDoublePref(const std::string& path) {
 }
 
 std::string GetProfileStringPref(const std::string& path) {
-  const std::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetAdsClient()->GetProfilePref(path);
   if (!value) {
     return "";
   }
@@ -64,7 +61,7 @@ std::string GetProfileStringPref(const std::string& path) {
 }
 
 base::Value::Dict GetProfileDictPref(const std::string& path) {
-  const std::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetAdsClient()->GetProfilePref(path);
   if (!value) {
     return {};
   }
@@ -75,7 +72,7 @@ base::Value::Dict GetProfileDictPref(const std::string& path) {
 }
 
 base::Value::List GetProfileListPref(const std::string& path) {
-  const std::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetAdsClient()->GetProfilePref(path);
   if (!value) {
     return {};
   }
@@ -86,7 +83,7 @@ base::Value::List GetProfileListPref(const std::string& path) {
 }
 
 int64_t GetProfileInt64Pref(const std::string& path) {
-  const std::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetAdsClient()->GetProfilePref(path);
   if (!value) {
     return 0;
   }
@@ -98,7 +95,7 @@ int64_t GetProfileInt64Pref(const std::string& path) {
 }
 
 uint64_t GetProfileUint64Pref(const std::string& path) {
-  const std::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetAdsClient()->GetProfilePref(path);
   if (!value) {
     return 0;
   }
@@ -110,7 +107,7 @@ uint64_t GetProfileUint64Pref(const std::string& path) {
 }
 
 base::Time GetProfileTimePref(const std::string& path) {
-  const std::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetAdsClient()->GetProfilePref(path);
   if (!value) {
     return {};
   }
@@ -122,7 +119,7 @@ base::Time GetProfileTimePref(const std::string& path) {
 }
 
 base::TimeDelta GetProfileTimeDeltaPref(const std::string& path) {
-  const std::optional<base::Value> value = GetProfilePref(path);
+  const std::optional<base::Value> value = GetAdsClient()->GetProfilePref(path);
   if (!value) {
     return {};
   }
@@ -135,49 +132,46 @@ base::TimeDelta GetProfileTimeDeltaPref(const std::string& path) {
   return time_delta.value_or(base::TimeDelta());
 }
 
-void SetProfilePref(const std::string& path, base::Value value) {
-  GetAdsClient()->SetProfilePref(path, std::move(value));
-}
-
 void SetProfileBooleanPref(const std::string& path, const bool value) {
-  SetProfilePref(path, base::Value(value));
+  GetAdsClient()->SetProfilePref(path, base::Value(value));
 }
 
 void SetProfileIntegerPref(const std::string& path, const int value) {
-  SetProfilePref(path, base::Value(value));
+  GetAdsClient()->SetProfilePref(path, base::Value(value));
 }
 
 void SetProfileDoublePref(const std::string& path, const double value) {
-  SetProfilePref(path, base::Value(value));
+  GetAdsClient()->SetProfilePref(path, base::Value(value));
 }
 
 void SetProfileStringPref(const std::string& path, const std::string& value) {
-  SetProfilePref(path, base::Value(value));
+  GetAdsClient()->SetProfilePref(path, base::Value(value));
 }
 
 void SetProfileDictPref(const std::string& path, base::Value::Dict value) {
-  SetProfilePref(path, base::Value(std::move(value)));
+  GetAdsClient()->SetProfilePref(path, base::Value(std::move(value)));
 }
 
 void SetProfileListPref(const std::string& path, base::Value::List value) {
-  SetProfilePref(path, base::Value(std::move(value)));
+  GetAdsClient()->SetProfilePref(path, base::Value(std::move(value)));
 }
 
 void SetProfileInt64Pref(const std::string& path, const int64_t value) {
-  SetProfilePref(path, base::Int64ToValue(value));
+  GetAdsClient()->SetProfilePref(path, base::Int64ToValue(value));
 }
 
 void SetProfileUint64Pref(const std::string& path, const uint64_t value) {
-  SetProfilePref(path, base::Value(base::NumberToString(value)));
+  GetAdsClient()->SetProfilePref(path,
+                                 base::Value(base::NumberToString(value)));
 }
 
 void SetProfileTimePref(const std::string& path, const base::Time value) {
-  SetProfilePref(path, base::TimeToValue(value));
+  GetAdsClient()->SetProfilePref(path, base::TimeToValue(value));
 }
 
 void SetProfileTimeDeltaPref(const std::string& path,
                              const base::TimeDelta value) {
-  SetProfilePref(path, base::TimeDeltaToValue(value));
+  GetAdsClient()->SetProfilePref(path, base::TimeDeltaToValue(value));
 }
 
 void ClearProfilePref(const std::string& path) {
@@ -188,12 +182,9 @@ bool HasProfilePrefPath(const std::string& path) {
   return GetAdsClient()->HasProfilePrefPath(path);
 }
 
-std::optional<base::Value> GetLocalStatePref(const std::string& path) {
-  return GetAdsClient()->GetLocalStatePref(path);
-}
-
 bool GetLocalStateBooleanPref(const std::string& path) {
-  const std::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value =
+      GetAdsClient()->GetLocalStatePref(path);
   if (!value) {
     return false;
   }
@@ -205,7 +196,8 @@ bool GetLocalStateBooleanPref(const std::string& path) {
 }
 
 int GetLocalStateIntegerPref(const std::string& path) {
-  const std::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value =
+      GetAdsClient()->GetLocalStatePref(path);
   if (!value) {
     return 0;
   }
@@ -216,7 +208,8 @@ int GetLocalStateIntegerPref(const std::string& path) {
 }
 
 double GetLocalStateDoublePref(const std::string& path) {
-  const std::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value =
+      GetAdsClient()->GetLocalStatePref(path);
   if (!value) {
     return 0.0;
   }
@@ -228,7 +221,8 @@ double GetLocalStateDoublePref(const std::string& path) {
 }
 
 std::string GetLocalStateStringPref(const std::string& path) {
-  const std::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value =
+      GetAdsClient()->GetLocalStatePref(path);
   if (!value) {
     return "";
   }
@@ -240,7 +234,8 @@ std::string GetLocalStateStringPref(const std::string& path) {
 }
 
 base::Value::Dict GetLocalStateDictPref(const std::string& path) {
-  const std::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value =
+      GetAdsClient()->GetLocalStatePref(path);
   if (!value) {
     return {};
   }
@@ -251,7 +246,8 @@ base::Value::Dict GetLocalStateDictPref(const std::string& path) {
 }
 
 base::Value::List GetLocalStateListPref(const std::string& path) {
-  const std::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value =
+      GetAdsClient()->GetLocalStatePref(path);
   if (!value) {
     return {};
   }
@@ -262,7 +258,8 @@ base::Value::List GetLocalStateListPref(const std::string& path) {
 }
 
 int64_t GetLocalStateInt64Pref(const std::string& path) {
-  const std::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value =
+      GetAdsClient()->GetLocalStatePref(path);
   if (!value) {
     return 0;
   }
@@ -275,7 +272,8 @@ int64_t GetLocalStateInt64Pref(const std::string& path) {
 }
 
 uint64_t GetLocalStateUint64Pref(const std::string& path) {
-  const std::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value =
+      GetAdsClient()->GetLocalStatePref(path);
   if (!value) {
     return 0;
   }
@@ -288,7 +286,8 @@ uint64_t GetLocalStateUint64Pref(const std::string& path) {
 }
 
 base::Time GetLocalStateTimePref(const std::string& path) {
-  const std::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value =
+      GetAdsClient()->GetLocalStatePref(path);
   if (!value) {
     return {};
   }
@@ -300,7 +299,8 @@ base::Time GetLocalStateTimePref(const std::string& path) {
 }
 
 base::TimeDelta GetLocalStateTimeDeltaPref(const std::string& path) {
-  const std::optional<base::Value> value = GetLocalStatePref(path);
+  const std::optional<base::Value> value =
+      GetAdsClient()->GetLocalStatePref(path);
   if (!value) {
     return {};
   }
@@ -313,50 +313,47 @@ base::TimeDelta GetLocalStateTimeDeltaPref(const std::string& path) {
   return time_delta.value_or(base::TimeDelta());
 }
 
-void SetLocalStatePref(const std::string& path, base::Value value) {
-  GetAdsClient()->SetLocalStatePref(path, std::move(value));
-}
-
 void SetLocalStateBooleanPref(const std::string& path, const bool value) {
-  SetLocalStatePref(path, base::Value(value));
+  GetAdsClient()->SetLocalStatePref(path, base::Value(value));
 }
 
 void SetLocalStateIntegerPref(const std::string& path, const int value) {
-  SetLocalStatePref(path, base::Value(value));
+  GetAdsClient()->SetLocalStatePref(path, base::Value(value));
 }
 
 void SetLocalStateDoublePref(const std::string& path, const double value) {
-  SetLocalStatePref(path, base::Value(value));
+  GetAdsClient()->SetLocalStatePref(path, base::Value(value));
 }
 
 void SetLocalStateStringPref(const std::string& path,
                              const std::string& value) {
-  SetLocalStatePref(path, base::Value(value));
+  GetAdsClient()->SetLocalStatePref(path, base::Value(value));
 }
 
 void SetLocalStateDictPref(const std::string& path, base::Value::Dict value) {
-  SetLocalStatePref(path, base::Value(std::move(value)));
+  GetAdsClient()->SetLocalStatePref(path, base::Value(std::move(value)));
 }
 
 void SetLocalStateListPref(const std::string& path, base::Value::List value) {
-  SetLocalStatePref(path, base::Value(std::move(value)));
+  GetAdsClient()->SetLocalStatePref(path, base::Value(std::move(value)));
 }
 
 void SetLocalStateInt64Pref(const std::string& path, const int64_t value) {
-  SetLocalStatePref(path, base::Int64ToValue(value));
+  GetAdsClient()->SetLocalStatePref(path, base::Int64ToValue(value));
 }
 
 void SetLocalStateUint64Pref(const std::string& path, const uint64_t value) {
-  SetLocalStatePref(path, base::Value(base::NumberToString(value)));
+  GetAdsClient()->SetLocalStatePref(path,
+                                    base::Value(base::NumberToString(value)));
 }
 
 void SetLocalStateTimePref(const std::string& path, const base::Time value) {
-  SetLocalStatePref(path, base::TimeToValue(value));
+  GetAdsClient()->SetLocalStatePref(path, base::TimeToValue(value));
 }
 
 void SetLocalStateTimeDeltaPref(const std::string& path,
                                 const base::TimeDelta value) {
-  SetLocalStatePref(path, base::TimeDeltaToValue(value));
+  GetAdsClient()->SetLocalStatePref(path, base::TimeDeltaToValue(value));
 }
 
 void ClearLocalStatePref(const std::string& path) {
