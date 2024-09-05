@@ -30,7 +30,7 @@ namespace {
 
 constexpr char kTableName[] = "creative_set_conversions";
 
-void BindColumnTypes(mojom::DBActionInfo* const mojom_db_action) {
+void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
   CHECK(mojom_db_action);
 
   mojom_db_action->bind_column_types = {
@@ -42,7 +42,7 @@ void BindColumnTypes(mojom::DBActionInfo* const mojom_db_action) {
   };
 }
 
-size_t BindColumns(mojom::DBActionInfo* mojom_db_action,
+size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
                    const CreativeSetConversionList& creative_set_conversions) {
   CHECK(mojom_db_action);
   CHECK(!creative_set_conversions.empty());
@@ -92,7 +92,7 @@ size_t BindColumns(mojom::DBActionInfo* mojom_db_action,
 }
 
 CreativeSetConversionInfo FromMojomRow(
-    const mojom::DBRowInfo* const mojom_db_row) {
+    const mojom::DBRowInfoPtr& mojom_db_row) {
   CHECK(mojom_db_row);
 
   CreativeSetConversionInfo creative_set_conversion;
@@ -118,7 +118,7 @@ CreativeSetConversionInfo FromMojomRow(
 void GetCallback(
     GetCreativeSetConversionsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (IsError(&*mojom_db_transaction_result)) {
+  if (IsError(mojom_db_transaction_result)) {
     BLOG(0, "Failed to get creative set conversions");
 
     return std::move(callback).Run(/*success=*/false,
@@ -132,7 +132,7 @@ void GetCallback(
   for (const auto& mojom_db_row :
        mojom_db_transaction_result->rows_union->get_rows()) {
     const CreativeSetConversionInfo creative_set_conversion =
-        FromMojomRow(&*mojom_db_row);
+        FromMojomRow(mojom_db_row);
     if (!creative_set_conversion.IsValid()) {
       // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
       // potential defects using `DumpWithoutCrashing`.
@@ -162,7 +162,7 @@ void GetCallback(
   std::move(callback).Run(/*success=*/true, creative_set_conversions);
 }
 
-void MigrateToV35(mojom::DBTransactionInfo* const mojom_db_transaction) {
+void MigrateToV35(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   // Optimize database query for `GetUnexpired`.
@@ -171,7 +171,7 @@ void MigrateToV35(mojom::DBTransactionInfo* const mojom_db_transaction) {
                    /*columns=*/{"expire_at"});
 }
 
-void MigrateToV43(mojom::DBTransactionInfo* const mojom_db_transaction) {
+void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   // Optimize database query for `database::table::AdEvents`.
@@ -192,7 +192,7 @@ void CreativeSetConversions::Save(
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
 
-  Insert(&*mojom_db_transaction, creative_set_conversions);
+  Insert(mojom_db_transaction, creative_set_conversions);
 
   RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }
@@ -216,7 +216,7 @@ void CreativeSetConversions::GetUnexpired(
           WHERE
             $2 < expire_at;)",
       {GetTableName(), TimeToSqlValueAsString(base::Time::Now())}, nullptr);
-  BindColumnTypes(&*mojom_db_action);
+  BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
   GetAdsClient()->RunDBTransaction(
@@ -227,7 +227,7 @@ void CreativeSetConversions::GetUnexpired(
 void CreativeSetConversions::PurgeExpired(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
-  Execute(&*mojom_db_transaction, R"(
+  Execute(mojom_db_transaction, R"(
             DELETE FROM
               $1
             WHERE
@@ -242,7 +242,7 @@ std::string CreativeSetConversions::GetTableName() const {
 }
 
 void CreativeSetConversions::Create(
-    mojom::DBTransactionInfo* const mojom_db_transaction) {
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   Execute(mojom_db_transaction, R"(
@@ -264,7 +264,7 @@ void CreativeSetConversions::Create(
 }
 
 void CreativeSetConversions::Migrate(
-    mojom::DBTransactionInfo* mojom_db_transaction,
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
     const int to_version) {
   CHECK(mojom_db_transaction);
 
@@ -284,7 +284,7 @@ void CreativeSetConversions::Migrate(
 ///////////////////////////////////////////////////////////////////////////////
 
 void CreativeSetConversions::Insert(
-    mojom::DBTransactionInfo* mojom_db_transaction,
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
     const CreativeSetConversionList& creative_set_conversions) {
   CHECK(mojom_db_transaction);
 
@@ -295,12 +295,12 @@ void CreativeSetConversions::Insert(
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
   mojom_db_action->type = mojom::DBActionInfo::Type::kRunStatement;
   mojom_db_action->sql =
-      BuildInsertSql(&*mojom_db_action, creative_set_conversions);
+      BuildInsertSql(mojom_db_action, creative_set_conversions);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
 std::string CreativeSetConversions::BuildInsertSql(
-    mojom::DBActionInfo* mojom_db_action,
+    const mojom::DBActionInfoPtr& mojom_db_action,
     const CreativeSetConversionList& creative_set_conversions) const {
   CHECK(mojom_db_action);
   CHECK(!creative_set_conversions.empty());

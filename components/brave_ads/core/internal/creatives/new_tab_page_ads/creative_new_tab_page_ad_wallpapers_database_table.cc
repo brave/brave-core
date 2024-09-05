@@ -23,7 +23,7 @@ namespace {
 
 constexpr char kTableName[] = "creative_new_tab_page_ad_wallpapers";
 
-size_t BindColumns(mojom::DBActionInfo* mojom_db_action,
+size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
                    const CreativeNewTabPageAdList& creative_ads) {
   CHECK(mojom_db_action);
   CHECK(!creative_ads.empty());
@@ -49,7 +49,7 @@ size_t BindColumns(mojom::DBActionInfo* mojom_db_action,
 }  // namespace
 
 void CreativeNewTabPageAdWallpapers::Insert(
-    mojom::DBTransactionInfo* mojom_db_transaction,
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
     const CreativeNewTabPageAdList& creative_ads) {
   CHECK(mojom_db_transaction);
 
@@ -65,8 +65,7 @@ void CreativeNewTabPageAdWallpapers::Insert(
 
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
   mojom_db_action->type = mojom::DBActionInfo::Type::kRunStatement;
-  mojom_db_action->sql =
-      BuildInsertSql(&*mojom_db_action, filtered_creative_ads);
+  mojom_db_action->sql = BuildInsertSql(mojom_db_action, filtered_creative_ads);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
@@ -74,7 +73,7 @@ void CreativeNewTabPageAdWallpapers::Delete(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
 
-  DeleteTable(&*mojom_db_transaction, GetTableName());
+  DeleteTable(mojom_db_transaction, GetTableName());
 
   RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }
@@ -84,7 +83,7 @@ std::string CreativeNewTabPageAdWallpapers::GetTableName() const {
 }
 
 void CreativeNewTabPageAdWallpapers::Create(
-    mojom::DBTransactionInfo* const mojom_db_transaction) {
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   Execute(mojom_db_transaction, R"(
@@ -103,7 +102,7 @@ void CreativeNewTabPageAdWallpapers::Create(
 }
 
 void CreativeNewTabPageAdWallpapers::Migrate(
-    mojom::DBTransactionInfo* mojom_db_transaction,
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
     const int to_version) {
   CHECK(mojom_db_transaction);
 
@@ -118,7 +117,7 @@ void CreativeNewTabPageAdWallpapers::Migrate(
 ///////////////////////////////////////////////////////////////////////////////
 
 void CreativeNewTabPageAdWallpapers::MigrateToV43(
-    mojom::DBTransactionInfo* const mojom_db_transaction) {
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   // We can safely recreate the table because it will be repopulated after
@@ -128,7 +127,7 @@ void CreativeNewTabPageAdWallpapers::MigrateToV43(
 }
 
 std::string CreativeNewTabPageAdWallpapers::BuildInsertSql(
-    mojom::DBActionInfo* mojom_db_action,
+    const mojom::DBActionInfoPtr& mojom_db_action,
     const CreativeNewTabPageAdList& creative_ads) const {
   CHECK(mojom_db_action);
   CHECK(!creative_ads.empty());

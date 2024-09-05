@@ -21,47 +21,47 @@ std::string BuildBindColumnPlaceholders(size_t column_count, size_t row_count);
 void BindColumn(sql::Statement* statement,
                 const mojom::DBBindColumnInfo& mojom_db_bind_column);
 
-void BindColumnInt(mojom::DBActionInfo* mojom_db_action,
+void BindColumnInt(const mojom::DBActionInfoPtr& mojom_db_action,
                    int32_t index,
                    int32_t value);
-[[nodiscard]] int ColumnInt(const mojom::DBRowInfo* mojom_db_row,
+[[nodiscard]] int ColumnInt(const mojom::DBRowInfoPtr& mojom_db_row,
                             size_t column);
 
-void BindColumnInt64(mojom::DBActionInfo* mojom_db_action,
+void BindColumnInt64(const mojom::DBActionInfoPtr& mojom_db_action,
                      int32_t index,
                      int64_t value);
-[[nodiscard]] int64_t ColumnInt64(const mojom::DBRowInfo* mojom_db_row,
+[[nodiscard]] int64_t ColumnInt64(const mojom::DBRowInfoPtr& mojom_db_row,
                                   size_t column);
 
-void BindColumnDouble(mojom::DBActionInfo* mojom_db_action,
+void BindColumnDouble(const mojom::DBActionInfoPtr& mojom_db_action,
                       int32_t index,
                       double value);
-[[nodiscard]] double ColumnDouble(const mojom::DBRowInfo* mojom_db_row,
+[[nodiscard]] double ColumnDouble(const mojom::DBRowInfoPtr& mojom_db_row,
                                   size_t column);
 
-void BindColumnBool(mojom::DBActionInfo* mojom_db_action,
+void BindColumnBool(const mojom::DBActionInfoPtr& mojom_db_action,
                     int32_t index,
                     bool value);
-[[nodiscard]] bool ColumnBool(const mojom::DBRowInfo* mojom_db_row,
+[[nodiscard]] bool ColumnBool(const mojom::DBRowInfoPtr& mojom_db_row,
                               size_t column);
 
-void BindColumnString(mojom::DBActionInfo* mojom_db_action,
+void BindColumnString(const mojom::DBActionInfoPtr& mojom_db_action,
                       int32_t index,
                       const std::string& value);
-[[nodiscard]] std::string ColumnString(const mojom::DBRowInfo* mojom_db_row,
+[[nodiscard]] std::string ColumnString(const mojom::DBRowInfoPtr& mojom_db_row,
                                        size_t column);
 
-void BindColumnTime(mojom::DBActionInfo* mojom_db_action,
+void BindColumnTime(const mojom::DBActionInfoPtr& mojom_db_action,
                     int32_t index,
                     base::Time value);
-[[nodiscard]] base::Time ColumnTime(const mojom::DBRowInfo* mojom_db_row,
+[[nodiscard]] base::Time ColumnTime(const mojom::DBRowInfoPtr& mojom_db_row,
                                     size_t column);
 
-void BindColumnTimeDelta(mojom::DBActionInfo* mojom_db_action,
+void BindColumnTimeDelta(const mojom::DBActionInfoPtr& mojom_db_action,
                          int32_t index,
                          base::TimeDelta value);
 [[nodiscard]] base::TimeDelta ColumnTimeDelta(
-    const mojom::DBRowInfo* mojom_db_row,
+    const mojom::DBRowInfoPtr& mojom_db_row,
     size_t column);
 
 }  // namespace brave_ads::database

@@ -7,11 +7,13 @@
 
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database {
 
-void TableInterface::Migrate(mojom::DBTransactionInfo* mojom_db_transaction,
-                             const int to_version) {
+void TableInterface::Migrate(
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+    const int to_version) {
   CHECK(mojom_db_transaction);
 
   if (to_version == kVersionNumber) {

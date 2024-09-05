@@ -92,7 +92,7 @@ void BindColumn(sql::Statement* const statement,
   }
 }
 
-void BindColumnInt(mojom::DBActionInfo* const mojom_db_action,
+void BindColumnInt(const mojom::DBActionInfoPtr& mojom_db_action,
                    const int32_t index,
                    const int32_t value) {
   CHECK(mojom_db_action);
@@ -106,7 +106,7 @@ void BindColumnInt(mojom::DBActionInfo* const mojom_db_action,
   mojom_db_action->bind_columns.push_back(std::move(mojom_db_bind_column));
 }
 
-int ColumnInt(const mojom::DBRowInfo* const mojom_db_row, const size_t column) {
+int ColumnInt(const mojom::DBRowInfoPtr& mojom_db_row, const size_t column) {
   CHECK(mojom_db_row);
   CHECK_LT(column, mojom_db_row->column_values_union.size());
   CHECK_EQ(mojom::DBColumnValueUnion::Tag::kIntValue,
@@ -115,7 +115,7 @@ int ColumnInt(const mojom::DBRowInfo* const mojom_db_row, const size_t column) {
   return mojom_db_row->column_values_union.at(column)->get_int_value();
 }
 
-void BindColumnInt64(mojom::DBActionInfo* const mojom_db_action,
+void BindColumnInt64(const mojom::DBActionInfoPtr& mojom_db_action,
                      const int32_t index,
                      const int64_t value) {
   CHECK(mojom_db_action);
@@ -129,7 +129,7 @@ void BindColumnInt64(mojom::DBActionInfo* const mojom_db_action,
   mojom_db_action->bind_columns.push_back(std::move(mojom_db_bind_column));
 }
 
-int64_t ColumnInt64(const mojom::DBRowInfo* const mojom_db_row,
+int64_t ColumnInt64(const mojom::DBRowInfoPtr& mojom_db_row,
                     const size_t column) {
   CHECK(mojom_db_row);
   CHECK_LT(column, mojom_db_row->column_values_union.size());
@@ -139,7 +139,7 @@ int64_t ColumnInt64(const mojom::DBRowInfo* const mojom_db_row,
   return mojom_db_row->column_values_union.at(column)->get_int64_value();
 }
 
-void BindColumnDouble(mojom::DBActionInfo* const mojom_db_action,
+void BindColumnDouble(const mojom::DBActionInfoPtr& mojom_db_action,
                       const int32_t index,
                       const double value) {
   CHECK(mojom_db_action);
@@ -153,7 +153,7 @@ void BindColumnDouble(mojom::DBActionInfo* const mojom_db_action,
   mojom_db_action->bind_columns.push_back(std::move(mojom_db_bind_column));
 }
 
-double ColumnDouble(const mojom::DBRowInfo* const mojom_db_row,
+double ColumnDouble(const mojom::DBRowInfoPtr& mojom_db_row,
                     const size_t column) {
   CHECK(mojom_db_row);
   CHECK_LT(column, mojom_db_row->column_values_union.size());
@@ -163,7 +163,7 @@ double ColumnDouble(const mojom::DBRowInfo* const mojom_db_row,
   return mojom_db_row->column_values_union.at(column)->get_double_value();
 }
 
-void BindColumnBool(mojom::DBActionInfo* const mojom_db_action,
+void BindColumnBool(const mojom::DBActionInfoPtr& mojom_db_action,
                     const int32_t index,
                     const bool value) {
   CHECK(mojom_db_action);
@@ -177,8 +177,7 @@ void BindColumnBool(mojom::DBActionInfo* const mojom_db_action,
   mojom_db_action->bind_columns.push_back(std::move(mojom_db_bind_column));
 }
 
-bool ColumnBool(const mojom::DBRowInfo* const mojom_db_row,
-                const size_t column) {
+bool ColumnBool(const mojom::DBRowInfoPtr& mojom_db_row, const size_t column) {
   CHECK(mojom_db_row);
   CHECK_LT(column, mojom_db_row->column_values_union.size());
   CHECK_EQ(mojom::DBColumnValueUnion::Tag::kBoolValue,
@@ -187,7 +186,7 @@ bool ColumnBool(const mojom::DBRowInfo* const mojom_db_row,
   return mojom_db_row->column_values_union.at(column)->get_bool_value();
 }
 
-void BindColumnString(mojom::DBActionInfo* const mojom_db_action,
+void BindColumnString(const mojom::DBActionInfoPtr& mojom_db_action,
                       const int32_t index,
                       const std::string& value) {
   CHECK(mojom_db_action);
@@ -201,7 +200,7 @@ void BindColumnString(mojom::DBActionInfo* const mojom_db_action,
   mojom_db_action->bind_columns.push_back(std::move(mojom_db_bind_column));
 }
 
-std::string ColumnString(const mojom::DBRowInfo* const mojom_db_row,
+std::string ColumnString(const mojom::DBRowInfoPtr& mojom_db_row,
                          const size_t column) {
   CHECK(mojom_db_row);
   CHECK_LT(column, mojom_db_row->column_values_union.size());
@@ -211,7 +210,7 @@ std::string ColumnString(const mojom::DBRowInfo* const mojom_db_row,
   return mojom_db_row->column_values_union.at(column)->get_string_value();
 }
 
-void BindColumnTime(mojom::DBActionInfo* const mojom_db_action,
+void BindColumnTime(const mojom::DBActionInfoPtr& mojom_db_action,
                     const int32_t index,
                     const base::Time value) {
   CHECK(mojom_db_action);
@@ -225,7 +224,7 @@ void BindColumnTime(mojom::DBActionInfo* const mojom_db_action,
   mojom_db_action->bind_columns.push_back(std::move(mojom_db_bind_column));
 }
 
-base::Time ColumnTime(const mojom::DBRowInfo* const mojom_db_row,
+base::Time ColumnTime(const mojom::DBRowInfoPtr& mojom_db_row,
                       const size_t column) {
   CHECK(mojom_db_row);
   CHECK_LT(column, mojom_db_row->column_values_union.size());
@@ -235,7 +234,7 @@ base::Time ColumnTime(const mojom::DBRowInfo* const mojom_db_row,
   return mojom_db_row->column_values_union.at(column)->get_time_value();
 }
 
-void BindColumnTimeDelta(mojom::DBActionInfo* const mojom_db_action,
+void BindColumnTimeDelta(const mojom::DBActionInfoPtr& mojom_db_action,
                          const int32_t index,
                          const base::TimeDelta value) {
   CHECK(mojom_db_action);
@@ -249,7 +248,7 @@ void BindColumnTimeDelta(mojom::DBActionInfo* const mojom_db_action,
   mojom_db_action->bind_columns.push_back(std::move(mojom_db_bind_column));
 }
 
-base::TimeDelta ColumnTimeDelta(const mojom::DBRowInfo* const mojom_db_row,
+base::TimeDelta ColumnTimeDelta(const mojom::DBRowInfoPtr& mojom_db_row,
                                 const size_t column) {
   CHECK(mojom_db_row);
   CHECK_LT(column, mojom_db_row->column_values_union.size());

@@ -55,8 +55,8 @@ mojom::DBTransactionResultInfoPtr Database::RunDBTransaction(
   // Maybe raze the database. This must be done before any other database
   // actions are run. All tables must be recreated after the raze action has
   // completed.
-  mojom_db_transaction_result->status_code = MaybeRaze(&*mojom_db_transaction);
-  if (database::IsError(&*mojom_db_transaction_result)) {
+  mojom_db_transaction_result->status_code = MaybeRaze(mojom_db_transaction);
+  if (database::IsError(mojom_db_transaction_result)) {
     VLOG(0) << "Failed to raze database";
     return mojom_db_transaction_result;
   }
@@ -64,8 +64,8 @@ mojom::DBTransactionResultInfoPtr Database::RunDBTransaction(
   // Run any actions within the transaction, such as creating or opening the
   // database, executing a statement, or migrating the database.
   mojom_db_transaction_result->status_code =
-      RunDBActions(mojom_db_transaction, &*mojom_db_transaction_result);
-  if (database::IsError(&*mojom_db_transaction_result)) {
+      RunDBActions(mojom_db_transaction, mojom_db_transaction_result);
+  if (database::IsError(mojom_db_transaction_result)) {
     VLOG(0) << "Failed run database actions";
     return mojom_db_transaction_result;
   }
@@ -73,9 +73,8 @@ mojom::DBTransactionResultInfoPtr Database::RunDBTransaction(
   // Maybe vacuum the database. This must be done after any other actions are
   // run. The database is configured to auto-vacuum with some limitations, but
   // it is good practice to run this action manually.
-  mojom_db_transaction_result->status_code =
-      MaybeVacuum(&*mojom_db_transaction);
-  if (database::IsError(&*mojom_db_transaction_result)) {
+  mojom_db_transaction_result->status_code = MaybeVacuum(mojom_db_transaction);
+  if (database::IsError(mojom_db_transaction_result)) {
     VLOG(0) << "Failed to vacuum database";
     return mojom_db_transaction_result;
   }
@@ -87,7 +86,7 @@ mojom::DBTransactionResultInfoPtr Database::RunDBTransaction(
 
 mojom::DBTransactionResultInfo::StatusCode Database::RunDBActions(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-    mojom::DBTransactionResultInfo* const mojom_db_transaction_result) {
+    const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result) {
   CHECK(mojom_db_transaction);
   CHECK(mojom_db_transaction_result);
 
@@ -109,18 +108,18 @@ mojom::DBTransactionResultInfo::StatusCode Database::RunDBActions(
       }
 
       case mojom::DBActionInfo::Type::kExecute: {
-        result_code = Execute(&*mojom_db_action);
+        result_code = Execute(mojom_db_action);
         break;
       }
 
       case mojom::DBActionInfo::Type::kRunStatement: {
-        result_code = RunStatement(&*mojom_db_action);
+        result_code = RunStatement(mojom_db_action);
         break;
       }
 
       case mojom::DBActionInfo::Type::kStepStatement: {
         result_code =
-            StepStatement(&*mojom_db_action, mojom_db_transaction_result);
+            StepStatement(mojom_db_action, mojom_db_transaction_result);
         break;
       }
 
@@ -146,7 +145,7 @@ mojom::DBTransactionResultInfo::StatusCode Database::RunDBActions(
 }
 
 mojom::DBTransactionResultInfo::StatusCode Database::MaybeRaze(
-    const mojom::DBTransactionInfo* const mojom_db_transaction) {
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   if (mojom_db_transaction->should_raze && !db_.Raze()) {
@@ -187,7 +186,7 @@ bool Database::ShouldCreateTables() {
 }
 
 mojom::DBTransactionResultInfo::StatusCode Database::Initialize(
-    mojom::DBTransactionResultInfo* const mojom_db_transaction_result) {
+    const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result) {
   CHECK(mojom_db_transaction_result);
 
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -220,7 +219,7 @@ mojom::DBTransactionResultInfo::StatusCode Database::Initialize(
 }
 
 mojom::DBTransactionResultInfo::StatusCode Database::Execute(
-    const mojom::DBActionInfo* const mojom_db_action) {
+    const mojom::DBActionInfoPtr& mojom_db_action) {
   CHECK(mojom_db_action);
   CHECK(mojom_db_action->sql);
 
@@ -238,7 +237,7 @@ mojom::DBTransactionResultInfo::StatusCode Database::Execute(
 }
 
 mojom::DBTransactionResultInfo::StatusCode Database::RunStatement(
-    const mojom::DBActionInfo* const mojom_db_action) {
+    const mojom::DBActionInfoPtr& mojom_db_action) {
   CHECK(mojom_db_action);
   CHECK(mojom_db_action->sql);
 
@@ -267,8 +266,8 @@ mojom::DBTransactionResultInfo::StatusCode Database::RunStatement(
 }
 
 mojom::DBTransactionResultInfo::StatusCode Database::StepStatement(
-    const mojom::DBActionInfo* const mojom_db_action,
-    mojom::DBTransactionResultInfo* const mojom_db_transaction_result) {
+    const mojom::DBActionInfoPtr& mojom_db_action,
+    const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result) {
   CHECK(mojom_db_action);
   CHECK(mojom_db_action->sql);
   CHECK(mojom_db_transaction_result);
@@ -319,7 +318,7 @@ mojom::DBTransactionResultInfo::StatusCode Database::Migrate() {
 }
 
 mojom::DBTransactionResultInfo::StatusCode Database::MaybeVacuum(
-    const mojom::DBTransactionInfo* const mojom_db_transaction) {
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   if (mojom_db_transaction->should_vacuum && !db_.Execute("VACUUM;")) {

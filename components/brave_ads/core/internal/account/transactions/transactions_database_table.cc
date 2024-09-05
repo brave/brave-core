@@ -32,7 +32,7 @@ namespace {
 
 constexpr char kTableName[] = "transactions";
 
-void BindColumnTypes(mojom::DBActionInfo* const mojom_db_action) {
+void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
   CHECK(mojom_db_action);
 
   mojom_db_action->bind_column_types = {
@@ -47,7 +47,7 @@ void BindColumnTypes(mojom::DBActionInfo* const mojom_db_action) {
   };
 }
 
-size_t BindColumns(mojom::DBActionInfo* mojom_db_action,
+size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
                    const TransactionList& transactions) {
   CHECK(mojom_db_action);
   CHECK(!transactions.empty());
@@ -81,7 +81,7 @@ size_t BindColumns(mojom::DBActionInfo* mojom_db_action,
   return row_count;
 }
 
-TransactionInfo FromMojomRow(const mojom::DBRowInfo* const mojom_db_row) {
+TransactionInfo FromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
   CHECK(mojom_db_row);
 
   TransactionInfo transaction;
@@ -108,7 +108,7 @@ TransactionInfo FromMojomRow(const mojom::DBRowInfo* const mojom_db_row) {
 void GetCallback(
     GetTransactionsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (IsError(&*mojom_db_transaction_result)) {
+  if (IsError(mojom_db_transaction_result)) {
     BLOG(0, "Failed to get transactions");
 
     return std::move(callback).Run(/*success=*/false, /*transactions=*/{});
@@ -120,7 +120,7 @@ void GetCallback(
 
   for (const auto& mojom_db_row :
        mojom_db_transaction_result->rows_union->get_rows()) {
-    const TransactionInfo transaction = FromMojomRow(&*mojom_db_row);
+    const TransactionInfo transaction = FromMojomRow(mojom_db_row);
     if (!transaction.IsValid()) {
       base::debug::DumpWithoutCrashing();
       BLOG(0, "Invalid transaction");
@@ -133,7 +133,7 @@ void GetCallback(
   std::move(callback).Run(/*success=*/true, transactions);
 }
 
-void MigrateToV35(mojom::DBTransactionInfo* const mojom_db_transaction) {
+void MigrateToV35(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   // Optimize database query for `GetForDateRange`.
@@ -141,7 +141,7 @@ void MigrateToV35(mojom::DBTransactionInfo* const mojom_db_transaction) {
                    /*columns=*/{"created_at"});
 }
 
-void MigrateToV40(mojom::DBTransactionInfo* const mojom_db_transaction) {
+void MigrateToV40(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   // Delete legacy transactions with an undefined `creative_instance_id`,
@@ -186,7 +186,7 @@ void MigrateToV40(mojom::DBTransactionInfo* const mojom_db_transaction) {
                    /*columns=*/{"created_at"});
 }
 
-void MigrateToV43(mojom::DBTransactionInfo* const mojom_db_transaction) {
+void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   // Optimize database query for `Reconcile`.
@@ -209,7 +209,7 @@ void Transactions::Save(const TransactionList& transactions,
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
 
-  Insert(&*mojom_db_transaction, transactions);
+  Insert(mojom_db_transaction, transactions);
 
   RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }
@@ -239,7 +239,7 @@ void Transactions::GetForDateRange(const base::Time from_time,
       {GetTableName(), TimeToSqlValueAsString(from_time),
        TimeToSqlValueAsString(to_time)},
       nullptr);
-  BindColumnTypes(&*mojom_db_action);
+  BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
   GetAdsClient()->RunDBTransaction(
@@ -278,7 +278,7 @@ void Transactions::Reconcile(const PaymentTokenList& payment_tokens,
 
   int index = 0;
   for (const auto& transaction_id : transaction_ids) {
-    BindColumnString(&*mojom_db_action, index, transaction_id);
+    BindColumnString(mojom_db_action, index, transaction_id);
     ++index;
   }
 
@@ -290,7 +290,7 @@ void Transactions::Reconcile(const PaymentTokenList& payment_tokens,
 void Transactions::PurgeExpired(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
-  Execute(&*mojom_db_transaction, R"(
+  Execute(mojom_db_transaction, R"(
             DELETE FROM
               $1
             WHERE
@@ -307,7 +307,7 @@ std::string Transactions::GetTableName() const {
 }
 
 void Transactions::Create(
-    mojom::DBTransactionInfo* const mojom_db_transaction) {
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   Execute(mojom_db_transaction, R"(
@@ -334,8 +334,9 @@ void Transactions::Create(
                    /*columns=*/{"creative_instance_id"});
 }
 
-void Transactions::Migrate(mojom::DBTransactionInfo* mojom_db_transaction,
-                           const int to_version) {
+void Transactions::Migrate(
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+    const int to_version) {
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
@@ -358,8 +359,9 @@ void Transactions::Migrate(mojom::DBTransactionInfo* mojom_db_transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Transactions::Insert(mojom::DBTransactionInfo* mojom_db_transaction,
-                          const TransactionList& transactions) {
+void Transactions::Insert(
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+    const TransactionList& transactions) {
   CHECK(mojom_db_transaction);
 
   if (transactions.empty()) {
@@ -368,12 +370,12 @@ void Transactions::Insert(mojom::DBTransactionInfo* mojom_db_transaction,
 
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
   mojom_db_action->type = mojom::DBActionInfo::Type::kRunStatement;
-  mojom_db_action->sql = BuildInsertSql(&*mojom_db_action, transactions);
+  mojom_db_action->sql = BuildInsertSql(mojom_db_action, transactions);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
 std::string Transactions::BuildInsertSql(
-    mojom::DBActionInfo* mojom_db_action,
+    const mojom::DBActionInfoPtr& mojom_db_action,
     const TransactionList& transactions) const {
   CHECK(mojom_db_action);
   CHECK(!transactions.empty());

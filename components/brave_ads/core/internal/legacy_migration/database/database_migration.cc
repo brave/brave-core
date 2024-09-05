@@ -32,7 +32,7 @@ namespace brave_ads::database {
 
 namespace {
 
-void MigrateToV44(mojom::DBTransactionInfo* const mojom_db_transaction) {
+void MigrateToV44(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   // Normally, whether or not the database supports `auto_vacuum` must be
@@ -45,7 +45,7 @@ void MigrateToV44(mojom::DBTransactionInfo* const mojom_db_transaction) {
   Vacuum(mojom_db_transaction);
 }
 
-void Migrate(mojom::DBTransactionInfo* mojom_db_transaction,
+void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
              const int to_version) {
   CHECK(mojom_db_transaction);
 
@@ -57,7 +57,7 @@ void Migrate(mojom::DBTransactionInfo* mojom_db_transaction,
   }
 }
 
-void MigrateToVersion(mojom::DBTransactionInfo* mojom_db_transaction,
+void MigrateToVersion(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                       const int to_version) {
   CHECK(mojom_db_transaction);
 
@@ -129,7 +129,7 @@ void MigrateFromVersion(const int from_version, ResultCallback callback) {
       mojom::DBTransactionInfo::New();
 
   for (int i = from_version + 1; i <= kVersionNumber; ++i) {
-    MigrateToVersion(&*mojom_db_transaction, i);
+    MigrateToVersion(mojom_db_transaction, i);
   }
 
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
