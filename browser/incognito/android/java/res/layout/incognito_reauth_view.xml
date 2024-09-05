@@ -55,7 +55,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
 
         <org.chromium.ui.widget.ButtonCompat
             android:id="@+id/incognito_reauth_unlock_incognito_button"
-            style="@style/FilledButton.Flat"
+            style="@style/FilledButton"
             android:backgroundTint="@color/brave_private_reauth_unlock_button_bg_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
