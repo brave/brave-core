@@ -3,8 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#include "brave/ui/color/nala/nala_color_id.h"
+
 #define AddUiColorMixer AddUiColorMixer_Chromium
+
 #include "src/ui/color/ui_color_mixer.cc"
+
 #undef AddUiColorMixer
 
 namespace ui {
@@ -37,8 +41,7 @@ void AddBraveUiColorMixer(ColorProvider* provider,
   // TODO(simonhong): Add this color to palette.
   mixer[kColorButtonBorder] = {SkColorSetRGB(0xc3, 0xc4, 0xcf)};
   // For deprecated kColorId_ButtonEnabledColor
-  mixer[kColorButtonForeground] = {dark_mode ? SK_ColorWHITE
-                                             : gfx::kBraveGrey800};
+  mixer[kColorButtonForeground] = {nala::kColorTextPrimary};
   mixer[kColorRadioButtonForegroundChecked] = {kColorButtonForeground};
   // For deprecated kColorId_TextOnProminentButtonColor
   mixer[kColorButtonForegroundProminent] = {SK_ColorWHITE};

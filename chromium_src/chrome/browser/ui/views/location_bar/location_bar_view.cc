@@ -41,9 +41,11 @@
 #define PageActionIconContainerView BravePageActionIconContainerView
 #define STYLE_BODY_4_EMPHASIS STYLE_PRIMARY
 
-// We don't use different hover color when omnibox doesn't have focus but still
+// We don't use different colors when the omnibox doesn't have focus but still
 // contains in-progress user input.
-#define kColorOmniboxResultsBackgroundHovered kColorLocationBarBackground
+#define kColorOmniboxResultsBackgroundHovered kColorLocationBarBackgroundHovered); \
+  normal = color_provider->GetColor(kColorLocationBarBackground
+
 #include "src/chrome/browser/ui/views/location_bar/location_bar_view.cc"
 #undef STYLE_BODY_4_EMPHASIS
 #undef kColorOmniboxResultsBackgroundHovered

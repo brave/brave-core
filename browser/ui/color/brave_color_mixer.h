@@ -13,10 +13,6 @@ namespace ui {
 class ColorProvider;
 }  // namespace ui
 
-// Exposed for testing.
-SkColor GetLocationBarBackground(bool dark, bool priv);
-SkColor GetOmniboxResultBackground(int id, bool dark, bool priv);
-
 // Handling normal profile's dark or light theme.
 void AddBraveThemeColorMixer(ui::ColorProvider* provider,
                              const ui::ColorProviderKey& key);

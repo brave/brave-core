@@ -3,15 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/ui/views/location_bar/location_bar_view.h"
+
 #include <optional>
 
 #include "base/strings/string_util.h"
 #include "chrome/browser/ssl/security_state_tab_helper.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/location_bar/location_bar_view.h"
+#include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/omnibox/browser/location_bar_model_impl.h"
+#include "components/omnibox/browser/omnibox_edit_model.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/url_loader_interceptor.h"
 #include "mojo/public/cpp/system/data_pipe.h"
@@ -62,8 +65,9 @@ class SecurityIndicatorTest
 
   bool InterceptURLLoad(net::CertStatus cert_status,
                         content::URLLoaderInterceptor::RequestParams* params) {
-    if (params->url_request.url.host() != kMockSecureHostname)
+    if (params->url_request.url.host() != kMockSecureHostname) {
       return false;
+    }
     net::SSLInfo ssl_info;
     ssl_info.cert = cert_;
     ssl_info.cert_status = cert_status;
@@ -129,3 +133,39 @@ INSTANTIATE_TEST_SUITE_P(
                                     kEmptyString},
         SecurityIndicatorTestParams{false, 0, security_state::NONE, false,
                                     kEmptyString}));
+
+class BraveLocationBarViewColorOverridesTest : public InProcessBrowserTest {
+ public:
+  BraveLocationBarViewColorOverridesTest() = default;
+  BraveLocationBarViewColorOverridesTest(
+      const BraveLocationBarViewColorOverridesTest&) = delete;
+  BraveLocationBarViewColorOverridesTest& operator=(
+      const BraveLocationBarViewColorOverridesTest&) = delete;
+  ~BraveLocationBarViewColorOverridesTest() override = default;
+
+  OmniboxViewViews* GetOmniboxView() {
+    return BrowserView::GetBrowserViewForBrowser(browser())
+        ->GetLocationBarView()
+        ->omnibox_view();
+  }
+};
+
+// We override the behavior of the LocationBar when the user is editing text.
+// This test makes sure the override is being applied.
+IN_PROC_BROWSER_TEST_F(BraveLocationBarViewColorOverridesTest,
+                       UnfocusedEditingColorIsSameAsUnfocused) {
+  // NTP is special, so we navigate somewhere else - this also unfocused the
+  // LocationBar.
+  ui_test_utils::NavigateToURLBlockUntilNavigationsComplete(
+      browser(), GURL("https://example.com"), 1);
+  EXPECT_FALSE(GetOmniboxView()->model()->is_caret_visible());
+  EXPECT_FALSE(GetOmniboxView()->model()->user_input_in_progress());
+  auto default_color = GetOmniboxView()->GetBackgroundColor();
+
+  // Set the user text
+  GetOmniboxView()->SetUserText(u"hello world");
+
+  EXPECT_FALSE(GetOmniboxView()->model()->is_caret_visible());
+  EXPECT_TRUE(GetOmniboxView()->model()->user_input_in_progress());
+  EXPECT_EQ(default_color, GetOmniboxView()->GetBackgroundColor());
+}

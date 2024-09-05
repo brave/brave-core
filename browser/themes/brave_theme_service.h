@@ -22,6 +22,9 @@ class BraveThemeService : public ThemeService {
   explicit BraveThemeService(Profile* profile, const ThemeHelper& theme_helper);
   ~BraveThemeService() override;
 
+  // ThemeService:
+  bool GetIsGrayscale() const override;
+
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveThemeEventRouterBrowserTest, ThemeChangeTest);
 
