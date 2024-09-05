@@ -20,6 +20,7 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.base.test.BaseJUnit4ClassRunner;
 import org.chromium.base.test.util.Batch;
+import org.chromium.base.test.util.DisabledTest;
 import org.chromium.cc.input.BrowserControlsState;
 import org.chromium.chrome.browser.magic_stack.ModuleRegistry;
 import org.chromium.chrome.browser.share.ShareDelegate;
@@ -84,6 +85,7 @@ public class BraveSwipeRefreshHandlerTest {
 
     @Test
     @SmallTest
+    @DisabledTest(message = "https://github.com/brave/brave-browser/issues/40851")
     public void denyRefreshForLeo() throws Exception {
         boolean refreshed =
                 loadUrlAttemptRefresh("chrome-untrusted://chat/", PageTransition.FROM_API);
