@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc b/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc
-index 7bb9017febd5ea1959b3869f267105488641b018..0526c21d7d4c6e692df0b35d5c362921524928da 100644
+index 59263f44edd41ba2f20ec1bf8505b393e80d874d..3921566a6eeada482b3e471ce0d8700579d5ee27 100644
 --- a/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc
 +++ b/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc
-@@ -154,6 +154,7 @@ void PermissionPromptBubbleBaseView::CreatePermissionButtons(
-     SetButtonStyle(ui::DIALOG_BUTTON_OK, ui::ButtonStyle::kTonal);
-     SetButtonStyle(ui::DIALOG_BUTTON_CANCEL, ui::ButtonStyle::kTonal);
+@@ -155,6 +155,7 @@ void PermissionPromptBubbleBaseView::CreatePermissionButtons(
+     SetButtonStyle(ui::mojom::DialogButton::kOk, ui::ButtonStyle::kTonal);
+     SetButtonStyle(ui::mojom::DialogButton::kCancel, ui::ButtonStyle::kTonal);
    }
 +  BRAVE_PERMISSION_PROMPT_BUBBLE_BASE_VIEW
  }

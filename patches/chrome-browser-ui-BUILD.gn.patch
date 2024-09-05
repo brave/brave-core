@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 94bcf99cf9e89d149b606d0faa38056b8aea8d53..6bcd673127ee0cd861ab89e6bed99ed5e75b7b00 100644
+index d6b214cc5388ac847160aa8d6a355b0ed458964e..05e7efc58b06e43a998b62e1c8c7d72fb8bf5afd 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -766,6 +766,7 @@ static_library("ui") {
-     # TODO(crbug.com/353284909): Remove this circular dependency.
-     "//chrome/browser/media/webrtc",
+@@ -770,6 +770,7 @@ static_library("ui") {
+     "//chrome/browser/ui/bluetooth:impl",
+     "//chrome/browser/picture_in_picture:impl",
    ]
 +  public_deps += [ "//brave/browser/ui" ] allow_circular_includes_from += [ "//brave/browser/ui" ]
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -3867,7 +3868,10 @@ static_library("ui") {
+@@ -3852,7 +3853,10 @@ static_library("ui") {
        ]
        deps += [ "//chrome/updater/app/server/win:updater_legacy_idl" ]
      } else {
