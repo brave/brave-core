@@ -192,6 +192,38 @@ TEST(BraveVPNUtilsUnitTest, AlreadyMigrated) {
       brave_vpn::prefs::kBraveVPNLocalStateMigrated));
 }
 
+#if !BUILDFLAG(IS_ANDROID)
+TEST(BraveVPNUtilsUnitTest, SelectedRegionNameMigration) {
+  TestingPrefServiceSimple local_state_pref_service;
+  brave_vpn::RegisterLocalStatePrefs(local_state_pref_service.registry());
+  EXPECT_EQ(1, local_state_pref_service.GetInteger(
+                   brave_vpn::prefs::kBraveVPNRegionListVersion));
+
+  local_state_pref_service.SetString(brave_vpn::prefs::kBraveVPNSelectedRegion,
+                                     "au-au");
+  brave_vpn::MigrateLocalStatePrefs(&local_state_pref_service);
+  EXPECT_EQ("ocn-aus", local_state_pref_service.GetString(
+                           brave_vpn::prefs::kBraveVPNSelectedRegion));
+  EXPECT_EQ(2, local_state_pref_service.GetInteger(
+                   brave_vpn::prefs::kBraveVPNRegionListVersion));
+}
+
+TEST(BraveVPNUtilsUnitTest, InvalidSelectedRegionNameMigration) {
+  TestingPrefServiceSimple local_state_pref_service;
+  brave_vpn::RegisterLocalStatePrefs(local_state_pref_service.registry());
+  EXPECT_EQ(1, local_state_pref_service.GetInteger(
+                   brave_vpn::prefs::kBraveVPNRegionListVersion));
+
+  local_state_pref_service.SetString(brave_vpn::prefs::kBraveVPNSelectedRegion,
+                                     "invalid");
+  brave_vpn::MigrateLocalStatePrefs(&local_state_pref_service);
+  EXPECT_EQ("", local_state_pref_service.GetString(
+                    brave_vpn::prefs::kBraveVPNSelectedRegion));
+  EXPECT_EQ(2, local_state_pref_service.GetInteger(
+                   brave_vpn::prefs::kBraveVPNRegionListVersion));
+}
+#endif
+
 TEST(BraveVPNUtilsUnitTest, VPNPaymentsEnv) {
   EXPECT_EQ("production",
             brave_vpn::GetBraveVPNPaymentsEnv(skus::kEnvProduction));
