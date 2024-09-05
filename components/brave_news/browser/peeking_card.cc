@@ -7,7 +7,10 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <iterator>
+#include <map>
 #include <optional>
+#include <set>
 #include <tuple>
 #include <vector>
 
@@ -16,8 +19,9 @@
 #include "base/time/time.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_sampling.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "url/gurl.h"
 
 namespace brave_news {
 
@@ -30,6 +34,8 @@ constexpr double kDirectBoost = 15;
 constexpr double kPublisherBoost = 10;
 constexpr double kChannelBoost = 5;
 
+constexpr double kTopStoryMultiplier = 1.2;
+
 constexpr double kOneHourMultiplier = 1.3;
 constexpr double kOneDayMultiplier = 1.1;
 
@@ -39,7 +45,18 @@ constexpr double kEveningEntertainmentBoost = 3;
 constexpr char kEntertainmentChannel[] = "Entertainment";
 }  // namespace
 
-std::optional<size_t> GetPeekingCard(SubscriptionsSnapshot subscriptions,
+base::flat_set<std::string> GetTopStoryUrls(
+    const base::span<TopicAndArticles>& topics) {
+  std::vector<std::string> urls;
+  for (auto& [topic, articles] : topics) {
+    base::ranges::transform(articles, std::back_inserter(urls),
+                            [](const auto& article) { return article.url; });
+  }
+  return base::flat_set<std::string>(urls);
+}
+
+std::optional<size_t> PickPeekingCard(SubscriptionsSnapshot subscriptions,
+                                     base::flat_set<std::string> top_story_urls,
                                      const ArticleInfos& articles) {
   // Store now, so its consistent for everything.
   auto now = base::Time::Now();
@@ -84,6 +101,10 @@ std::optional<size_t> GetPeekingCard(SubscriptionsSnapshot subscriptions,
                  return base::Contains(subscribed_channels, channel);
                })) {
       score += kChannelBoost;
+    }
+
+    if (base::Contains(top_story_urls, article->url.spec())) {
+      score *= kTopStoryMultiplier;
     }
 
     // Article has no score, so we can't do anything with it.

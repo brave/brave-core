@@ -529,7 +529,8 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
   // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.rkq699fwps0
   std::vector<mojom::FeedItemV2Ptr> initial_block =
       GenerateBlockFromContentGroups(
-          info, base::BindRepeating(&GetPeekingCard, info.subscriptions()));
+          info, base::BindRepeating(&PickPeekingCard, info.subscriptions(),
+                                    GetTopStoryUrls(info.topics())));
   DVLOG(1) << "Step 1: Standard Block (" << initial_block.size()
            << " articles)";
   add_items(initial_block);
@@ -642,10 +643,12 @@ void FeedV2Builder::BuildFollowingFeed(
       mojom::FeedV2Type::NewFollowing(mojom::FeedV2FollowingType::New()),
       base::BindOnce([](FeedGenerationInfo info) {
         auto subscriptions = info.subscriptions();
+        auto top_stories = GetTopStoryUrls(info.topics());
         return GenerateBasicFeed(
             std::move(info), base::BindRepeating(&PickRoulette),
             base::BindRepeating(&PickRoulette),
-            base::BindRepeating(&GetPeekingCard, std::move(subscriptions)));
+            base::BindRepeating(&PickPeekingCard, std::move(subscriptions),
+                                std::move(top_stories)));
       }),
       std::move(callback));
 }
@@ -693,10 +696,12 @@ void FeedV2Builder::BuildChannelFeed(const SubscriptionsSnapshot& subscriptions,
 
             info.raw_feed_items() = std::move(feed_items);
             auto subscriptions = info.subscriptions();
+            auto top_stories = GetTopStoryUrls(info.topics());
             return GenerateBasicFeed(
                 std::move(info), base::BindRepeating(&PickRoulette),
                 base::BindRepeating(&PickRoulette),
-                base::BindRepeating(&GetPeekingCard, std::move(subscriptions)));
+                base::BindRepeating(&PickPeekingCard, std::move(subscriptions),
+                                    std::move(top_stories)));
           },
           channel),
       std::move(callback));
