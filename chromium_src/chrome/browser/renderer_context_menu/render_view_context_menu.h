@@ -25,7 +25,9 @@ class BraveRenderViewContextMenu;
       base::OnceCallback<void(BraveRenderViewContextMenu*)> cb); \
   static void RegisterMenuShownCallbackForTesting_unused
 #define AppendReadingModeItem virtual AppendReadingModeItem
+#define AppendAllExtensionItems virtual AppendAllExtensionItems
 #include "src/chrome/browser/renderer_context_menu/render_view_context_menu.h"  // IWYU pragma: export
+#undef AppendAllExtensionItems
 #undef AppendReadingModeItem
 #undef RegisterMenuShownCallbackForTesting
 #undef RenderViewContextMenu
@@ -49,6 +51,7 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
   void AddAccessibilityLabelsServiceItem(bool is_checked) override;
   // Do nothing as we have our own speed reader
   void AppendReadingModeItem() override {}
+  void AppendAllExtensionItems() override;
 
  private:
   friend class BraveRenderViewContextMenuTest;

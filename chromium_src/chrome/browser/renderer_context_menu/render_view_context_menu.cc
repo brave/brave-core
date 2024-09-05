@@ -707,6 +707,25 @@ void BraveRenderViewContextMenu::AddAccessibilityLabelsServiceItem(
   // Suppress adding "Get image descriptions from Brave"
 }
 
+void BraveRenderViewContextMenu::AppendAllExtensionItems() {
+  if (!params_.selection_text.empty() ||
+      (!params_.link_url.is_empty() && !params_.has_image_contents)) {
+    return;
+  }
+
+  adblock_submenu_model_.AddItemWithStringId(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENT,
+                                             IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENT);
+  adblock_submenu_model_.AddItemWithStringId(
+      IDC_ADBLOCK_CONTEXT_MANAGE_CUSTOM_FILTERS,
+      IDS_ADBLOCK_CONTEXT_MANAGE_CUSTOM_FILTERS);
+
+  menu_model_.AddSubMenuWithStringId(IDC_ADBLOCK_CONTEXT_TOOLS,
+                                     IDS_ADBLOCK_CONTEXT_TOOLS,
+                                     &adblock_submenu_model_);
+
+  RenderViewContextMenu_Chromium::AppendAllExtensionItems();
+}
+
 void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
 
@@ -779,20 +798,6 @@ void BraveRenderViewContextMenu::InitMenu() {
     menu_model_.InsertItemWithStringIdAt(
         index.value() + 1, IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW,
         IDS_CONTENT_CONTEXT_SPLIT_VIEW);
-  }
-
-  std::optional<size_t> print_index =
-      menu_model_.GetIndexOfCommandId(IDC_PRINT);
-  if (print_index.has_value()) {
-    adblock_submenu_model_.AddItemWithStringId(
-        IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENT, IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENT);
-    adblock_submenu_model_.AddItemWithStringId(
-        IDC_ADBLOCK_CONTEXT_MANAGE_CUSTOM_FILTERS,
-        IDS_ADBLOCK_CONTEXT_MANAGE_CUSTOM_FILTERS);
-
-    menu_model_.InsertSubMenuWithStringIdAt(
-        *print_index + 1, IDC_ADBLOCK_CONTEXT_TOOLS, IDS_ADBLOCK_CONTEXT_TOOLS,
-        &adblock_submenu_model_);
   }
 }
 
