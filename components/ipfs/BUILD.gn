@@ -22,9 +22,9 @@ static_library("ipfs") {
 
   if (!is_android && !is_ios) {
     sources += [
+      "ipfs_common.h",
       "ipfs_component_cleaner.cc",
       "ipfs_component_cleaner.h",
     ]
-    deps += [ "//chrome/common:constants" ]
   }
 }

@@ -9,12 +9,7 @@
 #include "base/files/file_path.h"
 
 namespace ipfs {
-
-base::FilePath::StringPieceType GetIpfsClientComponentId();
-
-base::FilePath GetIpfsClientComponentPath();
-
-void DeleteIpfsComponent(const base::FilePath& component_path);
+void CleanupIpfsComponent(const base::FilePath& user_data_dir);
 }  // namespace ipfs
 
 #endif  // BRAVE_COMPONENTS_IPFS_IPFS_COMPONENT_CLEANER_H_

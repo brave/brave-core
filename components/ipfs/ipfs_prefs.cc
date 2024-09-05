@@ -6,12 +6,7 @@
 #include "brave/components/ipfs/ipfs_prefs.h"
 
 #include "base/files/file_path.h"
-#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
-
-#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
-#include "brave/components/ipfs/ipfs_component_cleaner.h"
-#endif
 
 namespace {
 // Used to determine which method should be used to resolve ipfs:// and ipns:///
@@ -128,10 +123,6 @@ void ClearDeprecatedIpfsPrefs(PrefService* registry) {
   registry->ClearPref(kIPFSAutoRedirectGateway);
   registry->ClearPref(kIPFSAutoRedirectDNSLink);
   registry->ClearPref(kIPFSCompanionEnabled);
-
-#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
-  ipfs::DeleteIpfsComponent(ipfs::GetIpfsClientComponentPath());
-#endif
 }
 
 }  // namespace ipfs
