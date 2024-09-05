@@ -56,7 +56,7 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 void MigrateFromV1ToV2(PrefService* local_prefs) {
   const auto selected_region_v1 =
       local_prefs->GetString(prefs::kBraveVPNSelectedRegion);
-  // Don't need to migrate if user doesn't select region explicitely.
+  // Don't need to migrate if user doesn't select region explicitly.
   // We'll pick proper region instead if not yet selected.
   if (selected_region_v1.empty()) {
     local_prefs->SetInteger(prefs::kBraveVPNRegionListVersion, 2);

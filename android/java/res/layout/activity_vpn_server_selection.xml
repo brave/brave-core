@@ -9,10 +9,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <LinearLayout
             android:id="@+id/server_selection_list_layout"
             android:layout_width="match_parent"
@@ -71,6 +67,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginHorizontal="16dp"
+                android:visibility="gone"
                 style="@style/DefaultSemibold"
                 android:textColor="@color/schemes_primary"
                 android:text="@string/servers"/>
@@ -80,17 +77,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-        </LinearLayout>
-
-        <ProgressBar
+            <ProgressBar
                 android:id="@+id/server_selection_progress"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:visibility="gone"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:indeterminate="true"/>
+                android:indeterminate="true"
+                android:indeterminateTint="@color/schemes_primary"/>
 
-    </FrameLayout>
+        </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

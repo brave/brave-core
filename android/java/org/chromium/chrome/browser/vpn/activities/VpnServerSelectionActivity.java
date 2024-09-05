@@ -101,8 +101,8 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
                                             "",
                                             BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC,
                                             "",
-                                            getString(R.string.optimal_text),
-                                            getString(R.string.optimal_desc),
+                                            BraveVpnUtils.OPTIMAL_SERVER,
+                                            "",
                                             BraveVpnConstants.REGION_PRECISION_COUNTRY);
                             changeServerRegion();
                         }
@@ -135,7 +135,6 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
                 });
         mServerRegionList.setLayoutManager(linearLayoutManager);
         boolean isAutomatic = BraveVpnPrefUtils.isAutomaticServerSelection();
-        updateAutomaticSelection(isAutomatic);
         mAutomaticSwitch.setChecked(isAutomatic);
     }
 
@@ -149,32 +148,38 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
         super.finishNativeInitialization();
         initVpnService();
         showProgress();
-        mServiceHandler.getAllRegions(
-                BraveVpnConstants.REGION_PRECISION_CITY_BY_COUNTRY,
-                regions -> {
-                    if (regions.length > 0) {
-                        mBraveVpnServerSelectionAdapter =
-                                new BraveVpnServerSelectionAdapter(VpnServerSelectionActivity.this);
-                        mBraveVpnServerSelectionAdapter.setVpnServerRegions(Arrays.asList(regions));
-                        mBraveVpnServerSelectionAdapter.setOnServerRegionSelection(
-                                new OnServerRegionSelection() {
-                                    @Override
-                                    public void onServerRegionClick(Region region) {
-                                        BraveVpnUtils.selectedRegion = region;
-                                        BraveVpnUtils.openVpnServerActivity(
-                                                VpnServerSelectionActivity.this, region);
-                                    }
-                                });
-                        mServerRegionList.setAdapter(mBraveVpnServerSelectionAdapter);
-                        hideProgress();
-                    } else {
-                        Toast.makeText(
-                                        VpnServerSelectionActivity.this,
-                                        R.string.fail_to_get_server_locations,
-                                        Toast.LENGTH_LONG)
-                                .show();
-                    }
-                });
+        if (mServiceHandler != null) {
+            mServiceHandler.getAllRegions(
+                    BraveVpnConstants.REGION_PRECISION_CITY_BY_COUNTRY,
+                    regions -> {
+                        if (regions.length > 0) {
+                            mBraveVpnServerSelectionAdapter =
+                                    new BraveVpnServerSelectionAdapter(
+                                            VpnServerSelectionActivity.this);
+                            mBraveVpnServerSelectionAdapter.setVpnServerRegions(
+                                    Arrays.asList(regions));
+                            mBraveVpnServerSelectionAdapter.setOnServerRegionSelection(
+                                    new OnServerRegionSelection() {
+                                        @Override
+                                        public void onServerRegionClick(Region region) {
+                                            BraveVpnUtils.selectedRegion = region;
+                                            BraveVpnUtils.openVpnServerActivity(
+                                                    VpnServerSelectionActivity.this, region);
+                                        }
+                                    });
+                            mServerRegionList.setAdapter(mBraveVpnServerSelectionAdapter);
+                            boolean isAutomatic = BraveVpnPrefUtils.isAutomaticServerSelection();
+                            updateAutomaticSelection(isAutomatic);
+                            hideProgress();
+                        } else {
+                            Toast.makeText(
+                                            VpnServerSelectionActivity.this,
+                                            R.string.fail_to_get_server_locations,
+                                            Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    });
+        }
     }
 
     @Override

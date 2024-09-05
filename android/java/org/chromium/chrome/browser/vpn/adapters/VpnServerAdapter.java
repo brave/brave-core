@@ -21,6 +21,7 @@ import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.activities.VpnServerActivity.OnCitySelection;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +56,11 @@ public class VpnServerAdapter extends RecyclerView.Adapter<VpnServerAdapter.View
             holder.cityServerText.setText((position == 0) ? city.name : cityServerText);
             boolean isEnabled =
                     BraveVpnPrefUtils.getRegionName().equals(mRegion.name)
-                            && BraveVpnPrefUtils.getRegionCityName().equals(city.name);
+                            && BraveVpnPrefUtils.getRegionCityName()
+                                    .equals(
+                                            position == 0
+                                                    ? BraveVpnUtils.OPTIMAL_SERVER
+                                                    : city.name);
             holder.serverRadioButton.setChecked(isEnabled);
             holder.serverSelectionItemLayout.setOnClickListener(
                     new View.OnClickListener() {
