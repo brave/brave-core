@@ -20,6 +20,9 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     // https://groups.google.com/a/chromium.org/g/embedder-dev/c/XsNTwEiN1lI/m/TMXh-ZvOAAAJ
     {kKeyPinningComponentUpdater, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNewTabPageTriggerForPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
+#if !BUILDFLAG(IS_ANDROID)
+    {kReportPakFileIntegrity, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif  // BUILDFLAG(IS_ANDROID)
     {kSupportSearchSuggestionForPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
