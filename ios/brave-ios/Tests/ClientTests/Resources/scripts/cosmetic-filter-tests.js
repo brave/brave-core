@@ -19,7 +19,9 @@
       'removedClass': results.removedClass,
       'removedAttribute': results.removedAttribute,
       'removedElement': results.removedElement,
-      'styledElement': results.styledElement
+      'styledElement': results.styledElement,
+      'upwardInt': results.upwardInt,
+      'upwardSelector': results.upwardSelector
     })
   }
 
@@ -35,7 +37,9 @@
       removedElement: true,
       removedClass: false,
       removedAttribute: false,
-      styledElement: false
+      styledElement: false,
+      upwardInt: false,
+      upwardSelector: false
     }
 
     elements.forEach((node) => {
@@ -63,6 +67,14 @@
 
       if (node.id === 'test-style-element') {
         results.styledElement = window.getComputedStyle(node).backgroundColor === "rgb(255, 0, 0)"
+      }
+
+      if (node.id === 'test-upward-int') {
+        results.upwardInt = window.getComputedStyle(node).display === 'none'
+      }
+
+      if (node.id === 'test-upward-selector') {
+        results.upwardSelector = window.getComputedStyle(node).display === 'none'
       }
     })
 
