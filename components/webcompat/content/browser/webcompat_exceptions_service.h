@@ -26,6 +26,8 @@ using content_settings::mojom::ContentSettingsType;
 
 using PatternsByWebcompatTypeMap = base::flat_map<ContentSettingsType, std::vector<ContentSettingsPattern>>;
 
+using PatternsByWebcompatTypeMa2 = base::flat_map<ContentSettingsType, std::vector<ContentSettingsPattern>>;
+
 // The WebcompatExceptionsService loads a list of site-specific webcompat
 // exceptions from the Brave Local Data component and provides these exceptions
 // as needed. GetPatterns can be called by any thread, because
