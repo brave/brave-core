@@ -935,6 +935,7 @@ test("brave_browser_tests") {
     "//chrome/browser/search_engines",
     "//chrome/browser/sync:sync",
     "//chrome/browser/ui",
+    "//chrome/browser/ui:browser_navigator_params_headers",
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/omnibox",

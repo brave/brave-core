@@ -31,6 +31,7 @@ source_set("brave_app_menu_unit_test") {
     "//build:chromeos_buildflags",
     "//chrome/app:command_ids",
     "//chrome/browser/sync",
+    "//chrome/browser/ui:browser_navigator_params_headers",
     "//chrome/browser/ui:ui",
     "//chrome/test:test_support",
     "//components/constrained_window:constrained_window",
