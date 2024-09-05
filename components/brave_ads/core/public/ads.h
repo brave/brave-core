@@ -168,38 +168,39 @@ class ADS_EXPORT Ads {
   // Called to like an ad. This is a toggle, so calling it again returns the
   // setting to the neutral state. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
-  virtual void ToggleLikeAd(const base::Value::Dict& value,
+  virtual void ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
                             ToggleReactionCallback callback) = 0;
 
   // Called to dislike an ad. This is a toggle, so calling it again returns the
   // setting to the neutral state. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
-  virtual void ToggleDislikeAd(const base::Value::Dict& value,
+  virtual void ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
                                ToggleReactionCallback callback) = 0;
 
   // Called to like a category. This is a toggle, so calling it again returns
   // the setting to the neutral state. The callback takes one argument - `bool`
   // is set to `true` if successful otherwise `false`.
-  virtual void ToggleLikeSegment(const base::Value::Dict& value,
+  virtual void ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
                                  ToggleReactionCallback callback) = 0;
 
   // Called to dislike a category. This is a toggle, so calling it again
   // returns the setting to the neutral state. The callback takes one argument -
   // `bool` is set to `true` if successful otherwise `false`.
-  virtual void ToggleDislikeSegment(const base::Value::Dict& value,
+  virtual void ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
                                     ToggleReactionCallback callback) = 0;
 
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. The callback takes one argument -
   // `bool` is set to `true` if successful otherwise `false`.
-  virtual void ToggleSaveAd(const base::Value::Dict& value,
+  virtual void ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
                             ToggleReactionCallback callback) = 0;
 
   // Called to mark an ad as inappropriate. This is a toggle, so calling it
   // again unmarks the ad. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
-  virtual void ToggleMarkAdAsInappropriate(const base::Value::Dict& value,
-                                           ToggleReactionCallback callback) = 0;
+  virtual void ToggleMarkAdAsInappropriate(
+      mojom::ReactionInfoPtr mojom_reaction,
+      ToggleReactionCallback callback) = 0;
 };
 
 }  // namespace brave_ads

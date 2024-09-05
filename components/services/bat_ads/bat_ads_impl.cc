@@ -224,35 +224,37 @@ void BatAdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   GetAds()->GetDiagnostics(std::move(callback));
 }
 
-void BatAdsImpl::ToggleLikeAd(base::Value::Dict value,
+void BatAdsImpl::ToggleLikeAd(brave_ads::mojom::ReactionInfoPtr reaction,
                               ToggleLikeAdCallback callback) {
-  GetAds()->ToggleLikeAd(value, std::move(callback));
+  GetAds()->ToggleLikeAd(std::move(reaction), std::move(callback));
 }
 
-void BatAdsImpl::ToggleDislikeAd(base::Value::Dict value,
+void BatAdsImpl::ToggleDislikeAd(brave_ads::mojom::ReactionInfoPtr reaction,
                                  ToggleDislikeAdCallback callback) {
-  GetAds()->ToggleDislikeAd(value, std::move(callback));
+  GetAds()->ToggleDislikeAd(std::move(reaction), std::move(callback));
 }
 
-void BatAdsImpl::ToggleLikeSegment(base::Value::Dict value,
+void BatAdsImpl::ToggleLikeSegment(brave_ads::mojom::ReactionInfoPtr reaction,
                                    ToggleLikeSegmentCallback callback) {
-  GetAds()->ToggleLikeSegment(value, std::move(callback));
+  GetAds()->ToggleLikeSegment(std::move(reaction), std::move(callback));
 }
 
-void BatAdsImpl::ToggleDislikeSegment(base::Value::Dict value,
-                                      ToggleDislikeSegmentCallback callback) {
-  GetAds()->ToggleDislikeSegment(value, std::move(callback));
+void BatAdsImpl::ToggleDislikeSegment(
+    brave_ads::mojom::ReactionInfoPtr reaction,
+    ToggleDislikeSegmentCallback callback) {
+  GetAds()->ToggleDislikeSegment(std::move(reaction), std::move(callback));
 }
 
-void BatAdsImpl::ToggleSaveAd(base::Value::Dict value,
+void BatAdsImpl::ToggleSaveAd(brave_ads::mojom::ReactionInfoPtr reaction,
                               ToggleSaveAdCallback callback) {
-  GetAds()->ToggleSaveAd(value, std::move(callback));
+  GetAds()->ToggleSaveAd(std::move(reaction), std::move(callback));
 }
 
 void BatAdsImpl::ToggleMarkAdAsInappropriate(
-    base::Value::Dict value,
+    brave_ads::mojom::ReactionInfoPtr reaction,
     ToggleMarkAdAsInappropriateCallback callback) {
-  GetAds()->ToggleMarkAdAsInappropriate(value, std::move(callback));
+  GetAds()->ToggleMarkAdAsInappropriate(std::move(reaction),
+                                        std::move(callback));
 }
 
 brave_ads::Ads* BatAdsImpl::GetAds() {

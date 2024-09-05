@@ -19,8 +19,10 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_item_value_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/targeting/geographical/subdivision/supported_subdivisions.h"
+#include "brave/components/brave_ads/core/public/user_engagement/reactions/reactions_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
@@ -468,6 +470,8 @@ void RewardsPageHandler::GetAdsHistory(GetAdsHistoryCallback callback) {
     std::move(callback).Run(std::move(json));
   };
 
+  // TODO(https://github.com/brave/brave-browser/issues/24595): Transition
+  // GetAdHistory from base::Value to a mojom data structure.
   ads_service_->GetAdHistory(from_time.LocalMidnight(), now,
                              base::BindOnce(on_history, std::move(callback)));
 }
@@ -522,7 +526,14 @@ void RewardsPageHandler::ToggleAdLike(const std::string& history_item,
     return;
   }
 
-  ads_service_->ToggleLikeAd(std::move(*dict),
+  // TODO(https://github.com/brave/brave-browser/issues/40852): Refactor UI
+  // reactions to use `mojom::ReactionInfo` instead of `AdHistoryItemInfo`.
+  const brave_ads::AdHistoryItemInfo ad_history_item =
+      brave_ads::AdHistoryItemFromValue(*dict);
+  brave_ads::mojom::ReactionInfoPtr mojom_reaction =
+      brave_ads::CreateReaction(ad_history_item);
+
+  ads_service_->ToggleLikeAd(std::move(mojom_reaction),
                              base::IgnoreArgs<bool>(std::move(callback)));
 }
 
@@ -534,7 +545,14 @@ void RewardsPageHandler::ToggleAdDislike(const std::string& history_item,
     return;
   }
 
-  ads_service_->ToggleDislikeAd(std::move(*dict),
+  // TODO(https://github.com/brave/brave-browser/issues/40852): Refactor UI
+  // reactions to use `mojom::ReactionInfo` instead of `AdHistoryItemInfo`.
+  const brave_ads::AdHistoryItemInfo ad_history_item =
+      brave_ads::AdHistoryItemFromValue(*dict);
+  brave_ads::mojom::ReactionInfoPtr mojom_reaction =
+      brave_ads::CreateReaction(ad_history_item);
+
+  ads_service_->ToggleDislikeAd(std::move(mojom_reaction),
                                 base::IgnoreArgs<bool>(std::move(callback)));
 }
 
@@ -547,8 +565,15 @@ void RewardsPageHandler::ToggleAdInappropriate(
     return;
   }
 
+  // TODO(https://github.com/brave/brave-browser/issues/40852): Refactor UI
+  // reactions to use `mojom::ReactionInfo` instead of `AdHistoryItemInfo`.
+  const brave_ads::AdHistoryItemInfo ad_history_item =
+      brave_ads::AdHistoryItemFromValue(*dict);
+  brave_ads::mojom::ReactionInfoPtr mojom_reaction =
+      brave_ads::CreateReaction(ad_history_item);
+
   ads_service_->ToggleMarkAdAsInappropriate(
-      std::move(*dict), base::IgnoreArgs<bool>(std::move(callback)));
+      std::move(mojom_reaction), base::IgnoreArgs<bool>(std::move(callback)));
 }
 
 void RewardsPageHandler::EnableRewards(const std::string& country_code,
