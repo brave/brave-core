@@ -5,14 +5,34 @@
 
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 
+#include <algorithm>
 #include <optional>
 #include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+
+namespace {
+
+const char kProceduralActionsScript[] =
+    R"((function() {
+          const CC = window.content_cosmetic;
+          let stylesheet = '';
+          const takeStyleFilter = filter => {
+            if (filter.selector.length === 1 && filter.selector[0].type === 'css-selector' && filter.action && filter.action.type === 'style') {
+              stylesheet += filter.selector[0].arg + '{' + filter.action.arg + '}\n';
+              return false;
+            }
+            return true;
+          };
+          CC.proceduralActionFilters = JSON.parse(String.raw`$1`).filter(f => takeStyleFilter(f));
+          CC.hasProceduralActions = CC.proceduralActionFilters.length > 0;
+          return stylesheet;
+        })();)";
+
+}  // namespace
 
 namespace cosmetic_filters {
 
@@ -73,6 +93,28 @@ void CosmeticFiltersResources::UrlCosmeticResources(
   DCHECK(ad_block_service_->GetTaskRunner()->RunsTasksInCurrentSequence());
   auto resources =
       ad_block_service_->UrlCosmeticResources(url, aggressive_blocking);
+
+  const auto* procedural_actions_list =
+      resources.FindList("procedural_actions");
+  if (procedural_actions_list && !procedural_actions_list->empty()) {
+    // Each element of procedural_actions_list is already formatted as JSON.
+    // Combine them into a single JSON list using string concatenation to avoid
+    // double-escaping.
+    auto procedural_actions_strings = std::vector<std::string>();
+    std::transform(procedural_actions_list->cbegin(),
+                   procedural_actions_list->cend(),
+                   std::back_inserter(procedural_actions_strings),
+                   [](const base::Value& action) -> std::string {
+                     return action.GetString();
+                   });
+    std::string procedural_actions_json = base::StrCat(
+        {"[", base::JoinString(procedural_actions_strings, ","), "]"});
+    std::string procedural_actions_script = base::ReplaceStringPlaceholders(
+        kProceduralActionsScript, {procedural_actions_json.c_str()}, nullptr);
+    resources.Set("procedural_actions_script", procedural_actions_script);
+  }
+  resources.Remove("procedural_actions");
+
   std::move(callback).Run(base::Value(std::move(resources)));
 }
 
