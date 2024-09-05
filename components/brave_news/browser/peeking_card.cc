@@ -6,12 +6,12 @@
 #include "brave/components/brave_news/browser/peeking_card.h"
 
 #include <algorithm>
-#include <cstddef>
 #include <iterator>
 #include <map>
 #include <optional>
 #include <set>
 #include <tuple>
+#include <utility>
 #include <vector>
 
 #include "base/containers/contains.h"
@@ -28,7 +28,7 @@ namespace brave_news {
 namespace {
 using ItemScore = std::tuple</*index*/ size_t, /*score*/ double>;
 
-constexpr size_t kMaxCandidates = 10;
+constexpr size_t kMaxPeekingCardCandidates = 10;
 
 constexpr double kDirectBoost = 15;
 constexpr double kPublisherBoost = 10;
@@ -55,9 +55,11 @@ base::flat_set<std::string> GetTopStoryUrls(
   return base::flat_set<std::string>(urls);
 }
 
-std::optional<size_t> PickPeekingCard(SubscriptionsSnapshot subscriptions,
-                                     base::flat_set<std::string> top_story_urls,
-                                     const ArticleInfos& articles) {
+std::optional<size_t> PickPeekingCardWithMax(
+    SubscriptionsSnapshot subscriptions,
+    base::flat_set<std::string> top_story_urls,
+    const ArticleInfos& articles,
+    size_t max_candidates) {
   // Store now, so its consistent for everything.
   auto now = base::Time::Now();
 
@@ -68,10 +70,17 @@ std::optional<size_t> PickPeekingCard(SubscriptionsSnapshot subscriptions,
 
   // Create sets for looking up whether articles are subscribed.
   base::flat_set<std::string> subscribed_channels(
-      subscriptions.GetChannelLocales());
+      subscriptions.GetChannelsFromAllLocales());
   std::set<std::string> direct_feed_publishers;
   for (const auto& direct : subscriptions.direct_feeds()) {
     direct_feed_publishers.insert(direct.id);
+  }
+
+  size_t following_count = subscriptions.enabled_publishers().size() +
+                           subscribed_channels.size() +
+                           subscriptions.direct_feeds().size();
+  if (following_count == 0) {
+    return std::nullopt;
   }
 
   std::vector<ItemScore> candidates;
@@ -158,15 +167,14 @@ std::optional<size_t> PickPeekingCard(SubscriptionsSnapshot subscriptions,
 
   std::vector<ItemScore> final_candidates;
   std::map<std::string, size_t> seen_channels;
-  size_t following_count = subscriptions.enabled_publishers().size() +
-                           subscribed_channels.size() +
-                           subscriptions.direct_feeds().size();
+
   // Make sure we can pick enough options to have at least |maxCandidates|
   // options in out finalCandidates.
-  const auto channel_limit =
-      following_count < kMaxCandidates ? (kMaxCandidates / following_count) : 1;
+  const auto channel_limit = following_count < kMaxPeekingCardCandidates
+                                 ? (max_candidates / following_count)
+                                 : 1;
   for (auto& [index, score] : candidates) {
-    if (final_candidates.size() > kMaxCandidates) {
+    if (final_candidates.size() > max_candidates) {
       break;
     }
 
@@ -192,6 +200,15 @@ std::optional<size_t> PickPeekingCard(SubscriptionsSnapshot subscriptions,
 
   auto [index, score] = PickRandom(final_candidates);
   return index;
+}
+
+std::optional<size_t> PickPeekingCard(
+    SubscriptionsSnapshot subscriptions,
+    base::flat_set<std::string> top_story_urls,
+    const ArticleInfos& articles) {
+  return PickPeekingCardWithMax(std::move(subscriptions),
+                                std::move(top_story_urls), articles,
+                                kMaxPeekingCardCandidates);
 }
 
 }  // namespace brave_news

@@ -19,9 +19,16 @@ namespace brave_news {
 base::flat_set<std::string> GetTopStoryUrls(
     const base::span<TopicAndArticles>& topics);
 
-std::optional<size_t> PickPeekingCard(SubscriptionsSnapshot subscriptions,
-                                     base::flat_set<std::string> top_story_urls,
-                                     const ArticleInfos& articles);
+std::optional<size_t> PickPeekingCardWithMax(
+    SubscriptionsSnapshot subscriptions,
+    base::flat_set<std::string> top_story_urls,
+    const ArticleInfos& articles,
+    size_t max_candidates);
+
+std::optional<size_t> PickPeekingCard(
+    SubscriptionsSnapshot subscriptions,
+    base::flat_set<std::string> top_story_urls,
+    const ArticleInfos& articles);
 
 }  // namespace brave_news
 
