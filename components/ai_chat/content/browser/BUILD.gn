@@ -10,6 +10,8 @@ assert(enable_ai_chat)
 
 static_library("browser") {
   sources = [
+    "ai_chat_brave_search_throttle.cc",
+    "ai_chat_brave_search_throttle.h",
     "ai_chat_tab_helper.cc",
     "ai_chat_tab_helper.h",
     "ai_chat_throttle.cc",

@@ -1092,11 +1092,11 @@ TEST_F(ConversationHandlerUnitTest,
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
 
-  // Verify that no re-fetch happens when new client connects
+  // Verify that fetch happens when another client connects.
   client.Disconnect();
   task_environment_.RunUntilIdle();
   EXPECT_FALSE(conversation_handler_->IsAnyClientConnected());
-  EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(0);
+  EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(1);
   NiceMock<MockConversationHandlerClient> client2(conversation_handler_.get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
