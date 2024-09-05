@@ -9,9 +9,9 @@ import GuardianConnect
 import Preferences
 import Shared
 import Static
+import SwiftUI
 import UIKit
 import os.log
-import SwiftUI
 
 public class BraveVPNSettingsViewController: TableViewController {
 
@@ -209,7 +209,7 @@ public class BraveVPNSettingsViewController: TableViewController {
     )
 
     let serverSection = Section(
-      header: .title(Strings.support.capitalized),
+      header: .title(Strings.VPN.settingsServerSection),
       rows: [
         Row(
           text: locationCountry,
@@ -217,7 +217,8 @@ public class BraveVPNSettingsViewController: TableViewController {
           selection: { [unowned self] in
             self.selectServerTapped()
           },
-          image: BraveVPN.serverLocation.isoCode?.regionFlagImage ?? UIImage(braveSystemNamed: "leo.globe"),
+          image: BraveVPN.serverLocation.isoCode?.regionFlagImage
+            ?? UIImage(braveSystemNamed: "leo.globe"),
           accessory: .disclosureIndicator,
           cellClass: MultilineSubtitleCell.self,
           uuid: locationCellId
@@ -244,7 +245,7 @@ public class BraveVPNSettingsViewController: TableViewController {
     )
 
     let techSupportSection = Section(
-      header: .title(Strings.VPN.settingsServerSection),
+      header: .title(Strings.support.capitalized),
       rows: [
         Row(
           text: Strings.VPN.settingsContactSupport,
@@ -259,14 +260,15 @@ public class BraveVPNSettingsViewController: TableViewController {
             self.openURL?(.brave.braveVPNFaq)
           },
           cellClass: ButtonCell.self
-        )
-      ])
+        ),
+      ]
+    )
 
     dataSource.sections = [
       vpnStatusSection,
       subscriptionSection,
       serverSection,
-      techSupportSection
+      techSupportSection,
     ]
   }
 
