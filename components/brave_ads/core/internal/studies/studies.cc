@@ -22,7 +22,7 @@ Studies::~Studies() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void Studies::OnNotifyDidInitializeAds() {
-  LogActiveStudies();
+  LogActiveFieldTrialStudyGroups();
 }
 
 }  // namespace brave_ads

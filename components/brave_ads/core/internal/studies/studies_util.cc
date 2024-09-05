@@ -13,8 +13,8 @@
 namespace brave_ads {
 
 namespace {
-constexpr char kStudyPrefixTag[] = "BraveAds.";
-}  // namespace
+
+constexpr char kActiveFieldTrialStudyPrefix[] = "BraveAds.";
 
 base::FieldTrial::ActiveGroups GetActiveFieldTrialStudyGroups() {
   base::FieldTrial::ActiveGroups active_field_trial_groups;
@@ -25,23 +25,46 @@ base::FieldTrial::ActiveGroups GetActiveFieldTrialStudyGroups() {
   base::ranges::copy_if(
       active_field_trial_groups,
       std::back_inserter(filtered_active_field_trial_groups),
-      [](const base::FieldTrial::ActiveGroup& active_group) {
-        return active_group.trial_name.starts_with(kStudyPrefixTag);
+      [](const base::FieldTrial::ActiveGroup& active_field_trial_group) {
+        return active_field_trial_group.trial_name.starts_with(
+            kActiveFieldTrialStudyPrefix);
       });
 
   return filtered_active_field_trial_groups;
 }
 
-void LogActiveStudies() {
+}  // namespace
+
+std::optional<base::FieldTrial::ActiveGroup> GetActiveFieldTrialStudyGroup() {
+  const base::FieldTrial::ActiveGroups active_field_trial_groups =
+      GetActiveFieldTrialStudyGroups();
+
+  if (active_field_trial_groups.size() == 1) {
+    // Only one `BraveAds.` study is allowed to be active at any given time.
+    return active_field_trial_groups.front();
+  }
+
+  return std::nullopt;
+}
+
+void LogActiveFieldTrialStudyGroups() {
   const base::FieldTrial::ActiveGroups active_field_trial_groups =
       GetActiveFieldTrialStudyGroups();
   if (active_field_trial_groups.empty()) {
     return BLOG(1, "No active studies");
   }
 
-  for (const auto& active_field_trial_group : active_field_trial_groups) {
+  if (active_field_trial_groups.size() == 1) {
+    // Only one `BraveAds.` study is allowed to be active at any given time.
+    const base::FieldTrial::ActiveGroup& active_field_trial_group =
+        active_field_trial_groups.front();
     BLOG(1, "Study " << active_field_trial_group.trial_name << " is active ("
                      << active_field_trial_group.group_name << ")");
+  } else {
+    for (const auto& active_field_trial_group : active_field_trial_groups) {
+      BLOG(1, "Skipping study " << active_field_trial_group.trial_name << " ("
+                                << active_field_trial_group.group_name << ")");
+    }
   }
 }
 
