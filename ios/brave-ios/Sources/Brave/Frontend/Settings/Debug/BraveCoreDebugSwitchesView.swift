@@ -65,9 +65,9 @@ extension BraveCoreSwitchKey {
 }
 
 private enum BraveServicesEnvironment: String, CaseIterable {
-  case development
+  case development = "dev"
   case staging
-  case production
+  case production = "prod"
 }
 
 private struct BasicStringInputView: View {
