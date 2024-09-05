@@ -58,9 +58,10 @@ import WaultSwapIcon from '../assets/lp-icons/waultswap.png'
 import WOOFiIcon from '../assets/lp-icons/woofi.svg'
 
 const SwapProviderMetadata = {
+  [BraveWallet.SwapProvider.kAuto]: BraveIcon,
   [BraveWallet.SwapProvider.kZeroEx]: ZeroXIcon,
   [BraveWallet.SwapProvider.kJupiter]: JupiterIcon,
-  [BraveWallet.SwapProvider.kLiFi]: LiFiIcon,
+  [BraveWallet.SwapProvider.kLiFi]: LiFiIcon
 }
 
 type LPMetadataType = {
