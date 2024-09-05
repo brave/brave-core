@@ -6,13 +6,10 @@
 import * as React from 'react'
 
 // Constants
-import { LPMetadata } from '../../swap/constants/metadata'
+import { SwapProviderMetadata } from '../../swap/constants/metadata'
 
 // Types
-import {
-  BraveWallet,
-  SwapProviderNameMapping
-} from '../../../../constants/types'
+import { BraveWallet } from '../../../../constants/types'
 
 // Hooks
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
@@ -66,9 +63,7 @@ export const ComposerControls = (props: Props) => {
       )}
       {onOpenProviders && (
         <ProvidersButton onClick={onOpenProviders}>
-          <ProviderIcon
-            src={LPMetadata[SwapProviderNameMapping[selectedProvider]]}
-          />
+          <ProviderIcon src={SwapProviderMetadata[selectedProvider]} />
         </ProvidersButton>
       )}
     </Row>
