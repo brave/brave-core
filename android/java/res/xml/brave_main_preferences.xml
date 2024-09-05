@@ -101,7 +101,7 @@
     <PreferenceCategory
         android:key="online_checkout_section"
         android:order="21"
-        android:title="@string/prefs_section_autofill"/>
+        android:title="@string/prefs_section_autofill_brave"/>
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="autofill_private_window"
         android:order="21"
