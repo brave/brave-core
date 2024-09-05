@@ -1,5 +1,5 @@
 diff --git a/build/android/gyp/dex.py b/build/android/gyp/dex.py
-index 3b8df26a84d242f75529ed00390b7c67ce9a19d0..46a373014880473cca502c5be3eab15095bc3f57 100755
+index 836a19357dac5bc5ca28d5a9864fd6d09f005402..265545df755553e7f1ec8c6350712de871728b22 100755
 --- a/build/android/gyp/dex.py
 +++ b/build/android/gyp/dex.py
 @@ -30,6 +30,7 @@ DEFAULT_IGNORE_WARNINGS = (
@@ -8,5 +8,5 @@ index 3b8df26a84d242f75529ed00390b7c67ce9a19d0..46a373014880473cca502c5be3eab150
      r'Running R8 version main', )
 +DEFAULT_IGNORE_WARNINGS += ( r'.Brave', )
  
- INTERFACE_DESUGARING_WARNINGS = (r'default or static interface methods', )
- 
+ _IGNORE_SERVICE_ENTRIES = (
+     # ServiceLoader call is used only for ProtoBuf full (non-lite).

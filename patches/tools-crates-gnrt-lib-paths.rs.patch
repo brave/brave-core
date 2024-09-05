@@ -1,5 +1,5 @@
 diff --git a/tools/crates/gnrt/lib/paths.rs b/tools/crates/gnrt/lib/paths.rs
-index 3c1ea93728fc624701d6c7755dbeb9fcc6765ef3..80d09707ad6667892d38fd39f3959892cefe95ab 100644
+index 49be118aaba41ecb39001dd7f639c49cfd2290c5..0ee7ffdce536ed25767fe04112abb935e244d54d 100644
 --- a/tools/crates/gnrt/lib/paths.rs
 +++ b/tools/crates/gnrt/lib/paths.rs
 @@ -110,7 +110,7 @@ pub fn normalize_unix_path_separator(path: &Path) -> String {
@@ -9,7 +9,7 @@ index 3c1ea93728fc624701d6c7755dbeb9fcc6765ef3..80d09707ad6667892d38fd39f3959892
 -static RUST_THIRD_PARTY_DIR: &str = "third_party/rust";
 +static RUST_THIRD_PARTY_DIR: &str = "brave/third_party/rust";
  static RUST_SRC_LIBRARY_SUBDIR: &str = "library";
- static RUST_SRC_VENDOR_SUBDIR: &str = "vendor";
+ static RUST_SRC_VENDOR_SUBDIR: &str = "library/vendor";
  static RUST_SRC_INSTALLED_DIR: &str = "third_party/rust-toolchain/lib/rustlib/src/rust";
 @@ -121,8 +121,8 @@ static STD_FAKE_ROOT: &str = "build/rust/std/fake_root";
  static STD_FAKE_ROOT_CONFIG_TEMPLATE: &str = "build/rust/std/fake_root/.cargo/config.toml.template";

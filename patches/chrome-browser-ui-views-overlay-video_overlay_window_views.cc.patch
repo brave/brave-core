@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/ui/views/overlay/video_overlay_window_views.cc b/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
-index cab32e89d40c86fa99e9e2375b968d99c7859003..733ab05df64e4cdb31ac61592968bacbc9086706 100644
+index 75302c9d601d6192f9a6ea5f7cfc0d5707c7f69f..580f03a9ce94896551560a90977919d29350f8a0 100644
 --- a/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
 +++ b/chrome/browser/ui/views/overlay/video_overlay_window_views.cc
-@@ -288,7 +288,7 @@ std::unique_ptr<VideoOverlayWindowViews> VideoOverlayWindowViews::Create(
+@@ -289,7 +289,7 @@ std::unique_ptr<VideoOverlayWindowViews> VideoOverlayWindowViews::Create(
    // constructor. It's important that the constructor be private, because it
    // doesn't initialize the object fully.
    auto overlay_window =
 -      base::WrapUnique(new VideoOverlayWindowViews(controller));
 +      base::WrapUnique(new BraveVideoOverlayWindowViews(controller));
  
-   overlay_window->CalculateAndUpdateWindowBounds();
-   overlay_window->SetUpViews();
-@@ -745,6 +745,7 @@ void VideoOverlayWindowViews::UpdateMaxSize(const gfx::Rect& work_area) {
+   // The 2024 updated controls use dark mode colors.
+   if (base::FeatureList::IsEnabled(
+@@ -753,6 +753,7 @@ void VideoOverlayWindowViews::UpdateMaxSize(const gfx::Rect& work_area) {
  
    max_size_ = new_max_size;
  

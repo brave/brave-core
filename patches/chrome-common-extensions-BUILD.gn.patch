@@ -1,12 +1,12 @@
 diff --git a/chrome/common/extensions/BUILD.gn b/chrome/common/extensions/BUILD.gn
-index 04b8cfdfb49fdede479b0eb86c8846e6daae64a4..459cc4b6dfa0e327e5c9cacc6d69a759c0bc36f6 100644
+index dd8f39527875036840fa5f46d907760bb98c6363..8a97b3311493d417a569dc31b57e6b477fa23dd5 100644
 --- a/chrome/common/extensions/BUILD.gn
 +++ b/chrome/common/extensions/BUILD.gn
-@@ -111,6 +111,7 @@ source_set("extensions") {
+@@ -121,6 +121,7 @@ source_set("extensions") {
  
      sources += [ "api/file_system_provider_capabilities/file_system_provider_capabilities_handler.cc" ]
    }
 +  import("//brave/common/extensions/sources.gni") public += brave_chrome_common_extensions_public sources += brave_chrome_common_extensions_sources deps += brave_chrome_common_extensions_deps public_deps += brave_chrome_common_extensions_public_deps
  }
  
- json_features("extension_features_unittest") {
+ # TODO(zturner): Enable this on Windows. See

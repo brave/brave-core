@@ -1,19 +1,19 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 8c714ca7988acaaccd61dc01f6ad66845b3f793a..c825681f12132761c37991fa39d5bcdc923b705a 100644
+index 1c82bdb46949cfd140dd9ec0b9243f4645ac2973..6cf3a34e3a3423c8bc725498726f94ec8fe03ff8 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -679,6 +679,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-   // Stack.
-   registry->RegisterIntegerPref(
-       prefs::kHomeCustomizationMagicStackSafetyCheckIssuesCount, 0);
+@@ -710,6 +710,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+   // List pref that stores the positions of the Safety Check module (with
+   // notifications opt-in) within the Magic Stack.
+   registry->RegisterListPref(prefs::kMagicStackSafetyCheckNotificationsShown);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1011,6 +1012,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   // Prefs migrated to localState prefs.
-   registry->RegisterBooleanPref(prefs::kBottomOmnibox, false);
-   registry->RegisterBooleanPref(prefs::kBottomOmniboxByDefault, false);
+@@ -1050,6 +1051,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   registry->RegisterInt64Pref(kNtpShownBookmarksFolder, 3);
+ 
+   registry->RegisterDictionaryPref(prefs::kIosPreRestoreAccountInfo);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  

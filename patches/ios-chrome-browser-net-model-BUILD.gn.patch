@@ -1,10 +1,10 @@
 diff --git a/ios/chrome/browser/net/model/BUILD.gn b/ios/chrome/browser/net/model/BUILD.gn
-index 271b89b44d5b73e54101e0e631618e9062623056..3e3a9e704007357dcde529e1719773bc7c2a0db2 100644
+index f326b32d4247f6ab00de06c8394d44d1e84f9ae6..f58ea18e84d6209aae2544f5e27ab3764a1f4036 100644
 --- a/ios/chrome/browser/net/model/BUILD.gn
 +++ b/ios/chrome/browser/net/model/BUILD.gn
-@@ -43,6 +43,7 @@ source_set("model") {
-     ":crurl",
-     ":net_types",
+@@ -61,6 +61,7 @@ source_set("network_delegate") {
+     "//ios/web/public/thread",
+     "//net",
    ]
 +  import("//brave/chromium_src/ios/chrome/browser/net/sources.gni") deps += brave_chromium_src_ios_chrome_browser_net_deps
  }
