@@ -285,7 +285,7 @@ const attachElementPicker = () => {
   // Will be resolved by webpack to the file content.
   // It's a trusted content so it's safe to use innerHTML.
   // eslint-disable-next-line no-unsanitized/property
-  shadowRoot.innerHTML = require('./elementPicker.html?raw')
+  shadowRoot.innerHTML = require('./elementPicker.html')
 
   const pickerCSSStyle: string = [
     'background: transparent',
