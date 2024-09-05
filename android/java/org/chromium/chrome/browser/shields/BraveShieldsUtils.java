@@ -16,8 +16,8 @@ import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.base.task.AsyncTask;
-import org.chromium.base.version_info.BraveVersionConstants;
 import org.chromium.chrome.browser.BraveConfig;
+import org.chromium.components.version_info.BraveVersionConstants;
 import org.chromium.net.ChromiumNetworkAdapter;
 import org.chromium.net.NetworkTrafficAnnotationTag;
 

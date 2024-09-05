@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.base.version_info;
+package org.chromium.components.version_info;
 
 public class BraveVersionConstants {
     public static final String VERSION = "@BRAVE_BROWSER_VERSION@";

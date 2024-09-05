@@ -7,7 +7,7 @@ import("//brave/build/config.gni")
 import("//build/config/android/rules.gni")
 import("//build/util/process_version.gni")
 
-_brave_version_constants_java_file = "$target_gen_dir/java/org/chromium/base/version_info/BraveVersionConstants.java"
+_brave_version_constants_java_file = "$target_gen_dir/java/org/chromium/components/version_info/BraveVersionConstants.java"
 
 android_library("java") {
   sources = [ _brave_version_constants_java_file ]
@@ -16,8 +16,7 @@ android_library("java") {
 
 process_version("generate_brave_version_constants") {
   process_only = true
-  template_file =
-      "java/org/chromium/base/version_info/BraveVersionConstants.java.version"
+  template_file = "java/org/chromium/components/version_info/BraveVersionConstants.java.version"
   output = _brave_version_constants_java_file
   extra_args = [
     "-e",
