@@ -10,20 +10,18 @@ import re
 import shutil
 import sys
 import tempfile
-
-import components.git_tools as git_tools
-import components.path_util as path_util
-
+from dataclasses import dataclass
 from distutils.dir_util import copy_tree
 from enum import Enum
 from typing import List, Optional, Tuple
-from dataclasses import dataclass
 
-from components.version import BraveVersion
+import components.git_tools as git_tools
+import components.path_util as path_util
 from components.common_options import CommonOptions
 from components.perf_test_utils import (DownloadArchiveAndUnpack, DownloadFile,
                                         GetProcessOutput, ToBravePlatformName,
                                         ToChromiumPlatformName)
+from components.version import BraveVersion
 
 
 def _GetBraveDownloadUrl(tag: str, filename: str) -> str:

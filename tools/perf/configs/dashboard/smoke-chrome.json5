@@ -37,6 +37,7 @@
         "load:site:twitter:2023",
         "load:site:imdb:2024",
         "load:ntp:brave_news:2024",
+        "multitab_load:site:example.com:2024",
       ]
     },
     {

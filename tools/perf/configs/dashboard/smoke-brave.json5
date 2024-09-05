@@ -35,6 +35,7 @@
       "stories": [
         "load:chrome:blank",
         "load:media:youtube:2018",
+        "multitab_load:site:example.com:2024",
       ]
     },
     {
