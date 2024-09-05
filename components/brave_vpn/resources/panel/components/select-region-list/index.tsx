@@ -129,7 +129,7 @@ function RegionContent(props: RegionContentProps) {
           <RegionCity
             cityLabel={getLocale('braveVpnServerSelectionOptimalLabel')}
             serverInfo={getLocale('braveVpnServerSelectionOptimalDesc')}
-            selected={currentRegion.name === props.region.name}
+            selected={props.selected && currentRegion.name === props.region.name}
             connectionButton={ConnectButton({
               right: '16px',
               connect: () => handleConnect(props.region)
@@ -143,7 +143,7 @@ function RegionContent(props: RegionContentProps) {
                 '$1',
                 `${city.serverCount}`
               )}
-              selected={currentRegion.name === city.name}
+              selected={props.selected && currentRegion.name === city.name}
               connectionButton={ConnectButton({
                 right: '16px',
                 connect: () => handleConnect(city)
