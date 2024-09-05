@@ -14,6 +14,7 @@ source_set("browser_tests") {
   deps = [
     "//chrome/browser",
     "//chrome/browser/ui",
+    "//chrome/browser/ui/page_action:icon_type",
     "//chrome/test:test_support_ui",
     "//content/test:test_support",
   ]

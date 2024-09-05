@@ -15,6 +15,7 @@ source_set("browser_tests") {
     "//chrome/browser",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
+    "//chrome/browser/ui:browser_navigator_params_headers",
     "//components/prefs",
     "//content/test:test_support",
   ]
