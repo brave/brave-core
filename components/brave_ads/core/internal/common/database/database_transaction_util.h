@@ -16,10 +16,11 @@ namespace brave_ads::database {
 
 // Returns true if the transaction result is a success.
 bool IsSuccess(
-    const mojom::DBTransactionResultInfo* mojom_db_transaction_result);
+    const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result);
 
 // Returns true if the transaction result is an error.
-bool IsError(const mojom::DBTransactionResultInfo* mojom_db_transaction_result);
+bool IsError(
+    const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result);
 
 // Run a database transaction.
 void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
@@ -27,19 +28,19 @@ void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
 
 // Raze the database. This must be done before any other actions are run. All
 // tables must be recreated after the raze operation is completed.
-void Raze(mojom::DBTransactionInfo* mojom_db_transaction);
+void Raze(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
 
 // Execute a SQL statement.
-void Execute(mojom::DBTransactionInfo* mojom_db_transaction,
+void Execute(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
              const std::string& sql);
 
 // Execute a SQL statement with placeholders.
-void Execute(mojom::DBTransactionInfo* mojom_db_transaction,
+void Execute(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
              const std::string& sql,
              const std::vector<std::string>& subst);
 
 // Vacuum the database. This must be done after any other actions are run.
-void Vacuum(mojom::DBTransactionInfo* mojom_db_transaction);
+void Vacuum(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
 
 }  // namespace brave_ads::database
 

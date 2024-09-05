@@ -12,7 +12,7 @@
 
 namespace brave_ads::database {
 
-void CreateTableIndex(mojom::DBTransactionInfo* const mojom_db_transaction,
+void CreateTableIndex(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                       const std::string& table_name,
                       const std::vector<std::string>& columns) {
   CHECK(mojom_db_transaction);
@@ -26,7 +26,7 @@ void CreateTableIndex(mojom::DBTransactionInfo* const mojom_db_transaction,
            base::JoinString(columns, ", ")});
 }
 
-void DropTableIndex(mojom::DBTransactionInfo* const mojom_db_transaction,
+void DropTableIndex(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                     const std::string& index_name) {
   CHECK(mojom_db_transaction);
   CHECK(!index_name.empty());
@@ -36,7 +36,7 @@ void DropTableIndex(mojom::DBTransactionInfo* const mojom_db_transaction,
         ad_events_created_at_index;)");
 }
 
-void DropTable(mojom::DBTransactionInfo* const mojom_db_transaction,
+void DropTable(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                const std::string& table_name) {
   CHECK(mojom_db_transaction);
   CHECK(!table_name.empty());
@@ -47,7 +47,7 @@ void DropTable(mojom::DBTransactionInfo* const mojom_db_transaction,
           {table_name});
 }
 
-void DeleteTable(mojom::DBTransactionInfo* const mojom_db_transaction,
+void DeleteTable(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                  const std::string& table_name) {
   CHECK(mojom_db_transaction);
   CHECK(!table_name.empty());
@@ -58,7 +58,7 @@ void DeleteTable(mojom::DBTransactionInfo* const mojom_db_transaction,
           {table_name});
 }
 
-void CopyTableColumns(mojom::DBTransactionInfo* const mojom_db_transaction,
+void CopyTableColumns(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                       const std::string& from,
                       const std::string& to,
                       const std::vector<std::string>& from_columns,
@@ -88,7 +88,7 @@ void CopyTableColumns(mojom::DBTransactionInfo* const mojom_db_transaction,
   }
 }
 
-void CopyTableColumns(mojom::DBTransactionInfo* const mojom_db_transaction,
+void CopyTableColumns(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                       const std::string& from,
                       const std::string& to,
                       const std::vector<std::string>& columns,
@@ -97,7 +97,7 @@ void CopyTableColumns(mojom::DBTransactionInfo* const mojom_db_transaction,
                           should_drop);
 }
 
-void RenameTable(mojom::DBTransactionInfo* const mojom_db_transaction,
+void RenameTable(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                  const std::string& from,
                  const std::string& to) {
   CHECK(mojom_db_transaction);

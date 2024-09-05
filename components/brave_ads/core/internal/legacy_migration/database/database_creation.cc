@@ -31,7 +31,7 @@ namespace brave_ads::database {
 
 namespace {
 
-void Create(mojom::DBTransactionInfo* const mojom_db_transaction) {
+void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   Execute(mojom_db_transaction, "PRAGMA auto_vacuum = FULL;");
@@ -93,7 +93,7 @@ void Create(mojom::DBTransactionInfo* const mojom_db_transaction) {
 void Create(ResultCallback callback) {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
-  Create(&*mojom_db_transaction);
+  Create(mojom_db_transaction);
 
   RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }

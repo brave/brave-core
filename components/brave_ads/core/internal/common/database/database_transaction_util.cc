@@ -20,7 +20,7 @@ namespace {
 void RunDBTransactionCallback(
     ResultCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (IsError(&*mojom_db_transaction_result)) {
+  if (IsError(mojom_db_transaction_result)) {
     return std::move(callback).Run(/*success=*/false);
   }
 
@@ -30,15 +30,15 @@ void RunDBTransactionCallback(
 }  // namespace
 
 bool IsSuccess(
-    const mojom::DBTransactionResultInfo* const mojom_db_transaction_result) {
-  return mojom_db_transaction_result != nullptr &&
+    const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result) {
+  return mojom_db_transaction_result &&
          mojom_db_transaction_result->status_code ==
              mojom::DBTransactionResultInfo::StatusCode::kSuccess;
 }
 
 bool IsError(
-    const mojom::DBTransactionResultInfo* const mojom_db_transaction_result) {
-  return mojom_db_transaction_result == nullptr ||
+    const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result) {
+  return !mojom_db_transaction_result ||
          mojom_db_transaction_result->status_code !=
              mojom::DBTransactionResultInfo::StatusCode::kSuccess;
 }
@@ -50,13 +50,13 @@ void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
       base::BindOnce(&RunDBTransactionCallback, std::move(callback)));
 }
 
-void Raze(mojom::DBTransactionInfo* const mojom_db_transaction) {
+void Raze(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   mojom_db_transaction->should_raze = true;
 }
 
-void Execute(mojom::DBTransactionInfo* const mojom_db_transaction,
+void Execute(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
              const std::string& sql) {
   CHECK(mojom_db_transaction);
 
@@ -66,7 +66,7 @@ void Execute(mojom::DBTransactionInfo* const mojom_db_transaction,
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
-void Execute(mojom::DBTransactionInfo* const mojom_db_transaction,
+void Execute(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
              const std::string& sql,
              const std::vector<std::string>& subst) {
   CHECK(mojom_db_transaction);
@@ -77,7 +77,7 @@ void Execute(mojom::DBTransactionInfo* const mojom_db_transaction,
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
-void Vacuum(mojom::DBTransactionInfo* const mojom_db_transaction) {
+void Vacuum(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   mojom_db_transaction->should_vacuum = true;

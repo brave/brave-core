@@ -21,7 +21,7 @@ namespace {
 
 constexpr char kTableName[] = "dayparts";
 
-size_t BindColumns(mojom::DBActionInfo* mojom_db_action,
+size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
                    const CreativeAdList& creative_ads) {
   CHECK(mojom_db_action);
   CHECK(!creative_ads.empty());
@@ -45,7 +45,7 @@ size_t BindColumns(mojom::DBActionInfo* mojom_db_action,
 
 }  // namespace
 
-void Dayparts::Insert(mojom::DBTransactionInfo* mojom_db_transaction,
+void Dayparts::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                       const CreativeAdList& creative_ads) {
   CHECK(mojom_db_transaction);
 
@@ -55,7 +55,7 @@ void Dayparts::Insert(mojom::DBTransactionInfo* mojom_db_transaction,
 
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
   mojom_db_action->type = mojom::DBActionInfo::Type::kRunStatement;
-  mojom_db_action->sql = BuildInsertSql(&*mojom_db_action, creative_ads);
+  mojom_db_action->sql = BuildInsertSql(mojom_db_action, creative_ads);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
@@ -63,7 +63,7 @@ void Dayparts::Delete(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
 
-  DeleteTable(&*mojom_db_transaction, GetTableName());
+  DeleteTable(mojom_db_transaction, GetTableName());
 
   RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }
@@ -72,7 +72,7 @@ std::string Dayparts::GetTableName() const {
   return kTableName;
 }
 
-void Dayparts::Create(mojom::DBTransactionInfo* const mojom_db_transaction) {
+void Dayparts::Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   Execute(mojom_db_transaction, R"(
@@ -90,7 +90,7 @@ void Dayparts::Create(mojom::DBTransactionInfo* const mojom_db_transaction) {
       );)");
 }
 
-void Dayparts::Migrate(mojom::DBTransactionInfo* mojom_db_transaction,
+void Dayparts::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                        const int to_version) {
   CHECK(mojom_db_transaction);
 
@@ -105,7 +105,7 @@ void Dayparts::Migrate(mojom::DBTransactionInfo* mojom_db_transaction,
 ///////////////////////////////////////////////////////////////////////////////
 
 void Dayparts::MigrateToV43(
-    mojom::DBTransactionInfo* const mojom_db_transaction) {
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   // We can safely recreate the table because it will be repopulated after
@@ -114,8 +114,9 @@ void Dayparts::MigrateToV43(
   Create(mojom_db_transaction);
 }
 
-std::string Dayparts::BuildInsertSql(mojom::DBActionInfo* mojom_db_action,
-                                     const CreativeAdList& creative_ads) const {
+std::string Dayparts::BuildInsertSql(
+    const mojom::DBActionInfoPtr& mojom_db_action,
+    const CreativeAdList& creative_ads) const {
   CHECK(mojom_db_action);
   CHECK(!creative_ads.empty());
 
