@@ -335,14 +335,11 @@ void BraveTabContainer::PaintBoundingBoxForTile(
 
   constexpr auto kRadius = 12.f;  // same value with --leo-radius-l
 
-  cc::PaintFlags flags;
   auto* cp = GetColorProvider();
   DCHECK(cp);
-  if (is_vertical_tab && GetNativeTheme()->ShouldUseDarkColors()) {
-    flags.setColor(cp->GetColor(ui::kColorFrameActive));
-  } else {
-    flags.setColor(cp->GetColor(kColorBraveSplitViewTileBackground));
-  }
+
+  cc::PaintFlags flags;
+  flags.setColor(cp->GetColor(kColorBraveSplitViewTileBackground));
 
   canvas.DrawRoundRect(bounding_rects, kRadius, flags);
 }

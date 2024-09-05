@@ -24,6 +24,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
@@ -327,7 +328,7 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
     separator_bounds.set_height(1);
     cc::PaintFlags flags;
     flags.setStyle(cc::PaintFlags::kFill_Style);
-    flags.setColor(cp->GetColor(kColorBraveVerticalTabSeparator));
+    flags.setColor(cp->GetColor(kColorToolbar));
     canvas->DrawRect(gfx::RectF(separator_bounds), flags);
   }
 

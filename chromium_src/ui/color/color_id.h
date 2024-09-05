@@ -8,7 +8,7 @@
 
 // These are Material colors which Chromium doesn't add to its color mixer but
 // which we need for Nala. We have a mixer in
-// brave/ui/color/missing_color_ref_mixer.h for adding these missing Material
+// brave/ui/color/brave_ref_color_mixer.h for adding these missing Material
 // colors.
 // This isn't undefined because other files use the |COLOR_ID| macro which
 // depends on this being defined.

@@ -590,14 +590,6 @@
 # This test times out because TaskEnvironment::FastForwardBy never returns.
 -NotificationsEngagementServiceTest.EraseStaleEntries
 
-# These tests are disabled because we explicitly patch the
-# ThemeColorPickerHandler "extended_list" code path to always be active and we
-# override the handling of the seed color to restore it to pre-ChromeRefresh2023
-# behavior
--ThemeColorPickerHandlerTest.GetChromeColors
--ThemeColorPickerHandlerTest.GetChromeColorsExtended
--ThemeColorPickerHandlerTest.SetSeedColor
-
 # These tests are disabled because we hide the password card in
 # brave://settings/safetyCheck which also involves always returning a "safe"
 # password card state
