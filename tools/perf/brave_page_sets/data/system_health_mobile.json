@@ -23,6 +23,9 @@
         },
         "load:site:youtube:2023": {
             "DEFAULT": "system_health_mobile_31be13a52f.wprgo"
+        },
+        "multitab_load:site:example.com:2024": {
+            "DEFAULT": "system_health_mobile_31be13a52f.wprgo"
         }
     },
     "description": "Describes the Web Page Replay archives for a story set. Don't edit by hand! Use record_wpr for updating.",
