@@ -8321,21 +8321,21 @@ extension Strings {
       "rewards.enabledBody",
       tableName: "BraveShared",
       bundle: .module,
-      value: "You are helping support content creators",
+      value: "You are helping support Brave and the BAT community.",
       comment: "Displayed when Brave Rewards is enabled"
     )
     public static let disabledBody = NSLocalizedString(
       "rewards.disabledBody",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Turn on to help support content creators",
+      value: "Turn on to help support Brave and the BAT community.",
       comment: "Displayed when Brave Rewards is disabled"
     )
     public static let supportingPublisher = NSLocalizedString(
       "rewards.supportingPublisher",
       tableName: "BraveShared",
       bundle: .module,
-      value: "You are helping support content creators like this one.",
+      value: "This content creator is verified with Brave Creators",
       comment: "Displayed under verified publishers"
     )
     public static let unverifiedPublisher = NSLocalizedString(
@@ -8349,7 +8349,7 @@ extension Strings {
       "rewards.enabledStatusBody",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Thank you for helping support content creators as you browse!",
+      value: "Thank you for helping support Brave and the BAT Community!",
       comment:
         "Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count)"
     )
@@ -8357,7 +8357,7 @@ extension Strings {
       "rewards.disabledStatusBody",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Using Brave Rewards helps support content creators as you browse.",
+      value: "Using Brave Rewards helps support Brave and the BAT community.",
       comment: "Displayed in the status container when rewards is disabled"
     )
     public static let totalSupportedCount = NSLocalizedString(
@@ -8379,7 +8379,7 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value:
-        "Support content creators and publishers automatically by enabling Brave Private Ads. Brave Private Ads are privacy-respecting ads that give back to content creators.",
+        "Help support Brave and the BAT community by enabling Brave Rewards and seeing Brave Ads.",
       comment: ""
     )
     public static let onProviderText = NSLocalizedString(
