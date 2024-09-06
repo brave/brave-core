@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//build/config/locales.gni")
+import("//brave/resources/brave_grit.gni")
 import("//tools/grit/repack.gni")
 
 group("resources") {
@@ -14,11 +16,53 @@ repack("repack_unscaled_resources") {
   output = "$target_gen_dir/brave_resources.pak"
   sources = [ 
     "$root_gen_dir/components/brave_components_resources.pak", 
-    "$root_gen_dir/brave/ios/browser/components/brave_ios_components_resources.pak", 
+    "$root_gen_dir/brave/ios/app/resources/brave_ios_resources.pak", 
   ]
   deps = [ 
-    "//brave/components/resources", 
-    "//brave/ios/browser/components/resources", 
+    "//brave/components/resources",
+    ":ios_resources",
   ]
   copy_data_to_bundle = true
+}
+
+
+## Packs our own separate resources and strings ##
+
+repack("ios_resources") {
+
+  deps = [
+    ":static_resources",
+  ]
+  sources = [
+    "$root_gen_dir/brave/ios/app/resources/brave_ios_resources_static.pak",
+  ]
+
+  output = "$root_gen_dir/brave/ios/app/resources/brave_ios_resources.pak"
+}
+
+brave_grit("static_resources") {
+
+  source = "brave_ios_resources.grd"
+  output_name = "brave_ios_resources_new"
+
+  outputs = [
+    "grit/brave_ios_resources.h",
+    "brave_ios_resources_static.pak",
+  ]
+
+  deps = [ ":strings" ]
+
+  output_dir = "$root_gen_dir/brave/ios/app/resources"
+}
+
+brave_grit("strings") {
+
+  source = "brave_ios_strings.grd"
+  outputs = [ "grit/brave_ios_strings.h" ]
+
+  foreach(locale, all_chrome_locales) {
+    outputs += [ "brave_ios_strings_$locale.pak" ]
+  }
+
+  output_dir = "$root_gen_dir/brave/ios/app/resources"
 }

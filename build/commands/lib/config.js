@@ -693,9 +693,11 @@ Config.prototype.buildArgs = function () {
 
     args.ios_locales_pack_extra_source_patterns = [
       "%root_gen_dir%/components/brave_components_strings_",
+      "%root_gen_dir%/brave/ios/app/resources/brave_ios_strings_",
     ]
     args.ios_locales_pack_extra_deps = [
       "//brave/components/resources:strings",
+      "//brave/ios/app/resources:strings",
     ]
 
     delete args.safebrowsing_api_endpoint
