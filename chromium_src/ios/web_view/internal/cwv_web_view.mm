@@ -3,10 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/notimplemented.h"
 #include "ios/chrome/browser/tabs/model/tab_helper_util.h"
 
-// Comment here to stop formatter form moving it up
+#define BRAVE_NOP_SERVICE \
+  NOTIMPLEMENTED();       \
+  return nil;
+#define BRAVE_ATTACH_TAB_HELPERS AttachTabHelpers(_webState.get());
 #include "src/ios/web_view/internal/cwv_web_view.mm"
+#undef BRAVE_ATTACH_TAB_HELPERS
+#undef BRAVE_NOP_SERVICE
 
 @implementation CWVWebView (Internal)
 

@@ -34,7 +34,6 @@
 
 @implementation CWVWebViewConfiguration
 
-@synthesize autofillDataManager = _autofillDataManager;
 @synthesize preferences = _preferences;
 
 + (void)shutDown {
@@ -69,29 +68,16 @@
   return self;
 }
 
-#pragma mark - Autofill
-
-- (CWVAutofillDataManager*)autofillDataManager {
-  if (!_autofillDataManager && self.persistent) {
-    autofill::PersonalDataManager* personalDataManager =
-        ios_web_view::WebViewPersonalDataManagerFactory::GetForBrowserState(
-            self.browserState);
-    scoped_refptr<password_manager::PasswordStoreInterface> passwordStore =
-        ios_web_view::WebViewAccountPasswordStoreFactory::GetForBrowserState(
-            self.browserState, ServiceAccessType::EXPLICIT_ACCESS);
-    _autofillDataManager = [[CWVAutofillDataManager alloc]
-        initWithPersonalDataManager:personalDataManager
-                      passwordStore:passwordStore.get()];
-  }
-  return _autofillDataManager;
-}
-
 #pragma mark - Unused Services
 
 - (CWVUserContentController*)userContentController {
   // This property is not nullable, so will crash anyways on the Swift side if
   // accessed.
   NOTIMPLEMENTED();
+  return nil;
+}
+
+- (CWVAutofillDataManager*)autofillDataManager {
   return nil;
 }
 
@@ -124,7 +110,6 @@
 }
 
 - (void)shutDown {
-  [_autofillDataManager shutDown];
   for (CWVWebView* webView in _webViews) {
     [webView shutDown];
   }

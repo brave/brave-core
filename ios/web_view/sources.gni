@@ -4,42 +4,14 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 # Source exclusions for //ios/web_view
-# - Excludes factory implementations, as we typedef them to the //ios/chrome
-#   factories
 # - Excludes custom WebUI implementations as we use //ios/chrome's
 # - Excludes the custom WebClient & WebMainParts as we don't use the
 #   //ios/web_view global state setup
 brave_ios_web_view_excluded_sources = [
-  "internal/affiliations/web_view_affiliation_service_factory.mm",
-  "internal/autofill/web_view_autocomplete_history_manager_factory.mm",
-  "internal/autofill/web_view_autofill_log_router_factory.mm",
-  "internal/autofill/web_view_personal_data_manager_factory.mm",
-  "internal/autofill/web_view_strike_database_factory.mm",
-  "internal/language/web_view_accept_languages_service_factory.mm",
-  "internal/language/web_view_language_model_manager_factory.mm",
-  "internal/language/web_view_url_language_histogram_factory.mm",
-  "internal/passwords/web_view_account_password_store_factory.mm",
-  "internal/passwords/web_view_bulk_leak_check_service_factory.mm",
-  "internal/passwords/web_view_password_manager_log_router_factory.mm",
-  "internal/passwords/web_view_password_requirements_service_factory.mm",
-  "internal/passwords/web_view_password_reuse_manager_factory.mm",
-  "internal/passwords/web_view_profile_password_store_factory.mm",
-  "internal/safe_browsing/web_view_safe_browsing_client_factory.mm",
-  "internal/signin/web_view_identity_manager_factory.mm",
-  "internal/signin/web_view_signin_client_factory.mm",
-  "internal/sync/web_view_device_info_sync_service_factory.mm",
-  "internal/sync/web_view_gcm_profile_service_factory.mm",
-  "internal/sync/web_view_instance_id_profile_service_factory.mm",
-  "internal/sync/web_view_model_type_store_service_factory.mm",
-  "internal/sync/web_view_profile_invalidation_provider_factory.mm",
-  "internal/sync/web_view_sync_invalidations_service_factory.mm",
-  "internal/sync/web_view_sync_service_factory.mm",
-  "internal/translate/web_view_translate_ranker_factory.mm",
   "internal/web_view_web_client.h",
   "internal/web_view_web_client.mm",
   "internal/web_view_web_main_parts.h",
   "internal/web_view_web_main_parts.mm",
-  "internal/webdata_services/web_view_web_data_service_wrapper_factory.mm",
   "internal/webui/web_view_web_ui_ios_controller_factory.h",
   "internal/webui/web_view_web_ui_ios_controller_factory.mm",
   "internal/webui/web_view_web_ui_provider.mm",

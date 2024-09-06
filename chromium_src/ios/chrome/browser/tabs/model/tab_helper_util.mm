@@ -18,13 +18,6 @@
 #import "ios/components/security_interstitials/https_only_mode/feature.h"
 #import "ios/components/security_interstitials/https_only_mode/https_only_mode_container.h"
 #import "ios/components/security_interstitials/ios_blocking_page_tab_helper.h"
-#import "ios/components/security_interstitials/lookalikes/lookalike_url_container.h"
-#import "ios/components/security_interstitials/lookalikes/lookalike_url_tab_allow_list.h"
-#import "ios/components/security_interstitials/lookalikes/lookalike_url_tab_helper.h"
-#import "ios/components/security_interstitials/safe_browsing/safe_browsing_client.h"
-#import "ios/components/security_interstitials/safe_browsing/safe_browsing_query_manager.h"
-#import "ios/components/security_interstitials/safe_browsing/safe_browsing_tab_helper.h"
-#import "ios/components/security_interstitials/safe_browsing/safe_browsing_unsafe_resource_container.h"
 
 void AttachTabHelpers(web::WebState* web_state, TabHelperFilter filter_flags) {
   ChromeBrowserState* const browser_state =
