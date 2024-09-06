@@ -23,9 +23,11 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_helper.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/features.h"
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/skus_context_impl.h"
@@ -297,17 +299,6 @@ class BraveVPNServiceTest : public testing::Test {
 #if !BUILDFLAG(IS_ANDROID)
   bool& wait_region_data_ready() { return service_->wait_region_data_ready_; }
 
-  mojom::Region device_region() const {
-    if (auto region_ptr =
-            GetRegionPtrWithNameFromRegionList(GetBraveVPNConnectionManager()
-                                                   ->GetRegionDataManager()
-                                                   .GetDeviceRegion(),
-                                               regions())) {
-      return *region_ptr;
-    }
-    return mojom::Region();
-  }
-
   skus::mojom::SkusResultPtr MakeSkusResult(const std::string& result) {
     return skus::mojom::SkusResult::New(skus::mojom::SkusResultCode::Ok,
                                         result);
@@ -318,13 +309,27 @@ class BraveVPNServiceTest : public testing::Test {
     service_->OnCredentialSummary(domain, MakeSkusResult(summary));
   }
 
-  const std::vector<mojom::Region>& regions() const {
+  const std::vector<mojom::RegionPtr>& regions() const {
     return GetBraveVPNConnectionManager()->GetRegionDataManager().GetRegions();
   }
 
   void SetSelectedRegion(const std::string& region) {
     GetBraveVPNConnectionManager()->SetSelectedRegion(region);
   }
+
+  std::string GetSelectedRegion() {
+    return GetBraveVPNConnectionManager()
+        ->GetRegionDataManager()
+        .GetSelectedRegion();
+  }
+
+  std::string GetDeviceRegion() {
+    return GetBraveVPNConnectionManager()
+        ->GetRegionDataManager()
+        .GetDeviceRegion();
+  }
+
+  void ClearSelectedRegion() { service_->ClearSelectedRegion(); }
 
   void OnFetchRegionList(const std::string& region_list, bool success) {
     GetBraveVPNConnectionManager()->GetRegionDataManager().OnFetchRegionList(
@@ -532,6 +537,12 @@ class BraveVPNServiceTest : public testing::Test {
     EXPECT_TRUE(observer->GetPurchasedState().has_value());
     EXPECT_EQ(observer->GetPurchasedState().value(), state);
   }
+
+  void GetAllRegions(BraveVpnService::ResponseCallback callback) {
+    service_->api_request_->GetServerRegions(
+        std::move(callback), brave_vpn::mojom::kRegionPrecisionCityByCountry);
+  }
+
 #if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<BraveVPNConnectionManager> connection_manager_;
 #endif
@@ -553,7 +564,7 @@ TEST_F(BraveVPNServiceTest, ResponseSanitizingTest) {
   // string) result is returned.
   SetInterceptorResponse("{'invalid json':");
   base::RunLoop loop;
-  service_->GetAllServerRegions(base::BindOnce(
+  GetAllRegions(base::BindOnce(
       [](base::OnceClosure callback, const std::string& region_list,
          bool success) {
         EXPECT_TRUE(region_list.empty());
@@ -783,6 +794,36 @@ TEST_F(BraveVPNServiceTest, SelectedRegionChangedUpdateTest) {
   base::RunLoop loop;
   observer.WaitSelectedRegionStateChange(loop.QuitClosure());
   loop.Run();
+}
+
+TEST_F(BraveVPNServiceTest, ClearSelectedRegionTest) {
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+
+  OnFetchRegionList(GetRegionsData(), true);
+  SetTestTimezone("Asia/Seoul");
+  OnFetchTimezones(GetTimeZonesData(), true);
+  {
+    base::RunLoop loop;
+    observer.WaitSelectedRegionStateChange(loop.QuitClosure());
+    loop.Run();
+  }
+
+  SetSelectedRegion("sa-br");
+  {
+    base::RunLoop loop;
+    observer.WaitSelectedRegionStateChange(loop.QuitClosure());
+    loop.Run();
+  }
+  EXPECT_NE(GetSelectedRegion(), GetDeviceRegion());
+
+  ClearSelectedRegion();
+  {
+    base::RunLoop loop;
+    observer.WaitSelectedRegionStateChange(loop.QuitClosure());
+    loop.Run();
+  }
+  EXPECT_EQ(GetSelectedRegion(), GetDeviceRegion());
 }
 
 // Check SetSelectedRegion is called when default device region is set.

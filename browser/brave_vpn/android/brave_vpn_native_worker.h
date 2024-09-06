@@ -25,11 +25,6 @@ class BraveVpnNativeWorker {
   void Destroy(JNIEnv* env,
                const base::android::JavaParamRef<jobject>& jcaller);
 
-  void GetAllServerRegions(JNIEnv* env);
-
-  void OnGetAllServerRegions(const std::string& server_regions_json,
-                             bool success);
-
   void GetTimezonesForRegions(JNIEnv* env);
 
   void OnGetTimezonesForRegions(const std::string& timezones_json,
@@ -37,7 +32,8 @@ class BraveVpnNativeWorker {
 
   void GetHostnamesForRegion(
       JNIEnv* env,
-      const base::android::JavaParamRef<jstring>& region);
+      const base::android::JavaParamRef<jstring>& region,
+      const base::android::JavaParamRef<jstring>& region_precision);
 
   void OnGetHostnamesForRegion(const std::string& hostname_json, bool success);
 

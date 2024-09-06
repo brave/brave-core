@@ -53,7 +53,11 @@ if (enable_brave_vpn) {
     brave_browser_brave_vpn_sources += [
       "//brave/browser/brave_vpn/android/brave_vpn_native_worker.cc",
       "//brave/browser/brave_vpn/android/brave_vpn_native_worker.h",
+      "//brave/browser/brave_vpn/android/brave_vpn_service_factory_android.cc",
     ]
-    brave_browser_brave_vpn_deps += [ "//brave/build/android:jni_headers" ]
+    brave_browser_brave_vpn_deps += [
+      "//brave/build/android:jni_headers",
+      "//mojo/public/cpp/bindings",
+    ]
   }
 }
