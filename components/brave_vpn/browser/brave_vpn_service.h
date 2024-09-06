@@ -79,6 +79,10 @@ class BraveVpnService :
   BraveVpnService(const BraveVpnService&) = delete;
   BraveVpnService& operator=(const BraveVpnService&) = delete;
 
+#if BUILDFLAG(IS_ANDROID)
+  mojo::PendingRemote<brave_vpn::mojom::ServiceHandler> MakeRemote();
+#endif  // BUILDFLAG(IS_ANDROID)
+
   std::string GetCurrentEnvironment() const;
   bool is_purchased_user() const {
     return GetPurchasedInfoSync().state == mojom::PurchasedState::PURCHASED;
@@ -95,9 +99,9 @@ class BraveVpnService :
   void GetConnectionState(GetConnectionStateCallback callback) override;
   void Connect() override;
   void Disconnect() override;
-  void GetAllRegions(GetAllRegionsCallback callback) override;
   void GetSelectedRegion(GetSelectedRegionCallback callback) override;
   void SetSelectedRegion(mojom::RegionPtr region) override;
+  void ClearSelectedRegion() override;
   void GetProductUrls(GetProductUrlsCallback callback) override;
   void CreateSupportTicket(const std::string& email,
                            const std::string& subject,
@@ -110,6 +114,9 @@ class BraveVpnService :
 #else
   // mojom::vpn::ServiceHandler
   void GetPurchaseToken(GetPurchaseTokenCallback callback) override;
+  void OnFetchRegionList(GetAllRegionsCallback callback,
+                         const std::string& region_list,
+                         bool success);
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   using ResponseCallback =
@@ -121,10 +128,12 @@ class BraveVpnService :
   void GetPurchasedState(GetPurchasedStateCallback callback) override;
   void LoadPurchasedState(const std::string& domain) override;
 
-  void GetAllServerRegions(ResponseCallback callback);
+  void GetAllRegions(GetAllRegionsCallback callback) override;
+
   void GetTimezonesForRegions(ResponseCallback callback);
   void GetHostnamesForRegion(ResponseCallback callback,
-                             const std::string& region);
+                             const std::string& region,
+                             const std::string& region_precision);
   void GetProfileCredentials(ResponseCallback callback,
                              const std::string& subscriber_credential,
                              const std::string& hostname);
@@ -188,6 +197,8 @@ class BraveVpnService :
   void OnPreferenceChanged(const std::string& pref_name);
 
   void UpdatePurchasedStateForSessionExpired(const std::string& env);
+  bool IsCurrentRegionSelectedAutomatically(
+      const brave_vpn::mojom::RegionPtr& region);
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   // KeyedService overrides:
@@ -218,7 +229,6 @@ class BraveVpnService :
 
   // Check initial purchased/connected state.
   void CheckInitialState();
-
 #if !BUILDFLAG(IS_ANDROID)
   base::ScopedObservation<BraveVPNConnectionManager,
                           BraveVPNConnectionManager::Observer>

@@ -51,14 +51,16 @@ interface ServiceHandler {
   Disconnect();
 
   // Gets all region from internal cache which is fetched from Guardian API
-  [EnableIfNot=is_android]
   GetAllRegions() => (array<Region> regions);
 
   [EnableIfNot=is_android]
   GetSelectedRegion() => (Region current_region);
 
   [EnableIfNot=is_android]
-  SetSelectedRegion(Region region);
+  SetSelectedRegion(Region? region);
+
+  [EnableIfNot=is_android]
+  ClearSelectedRegion();
 
   [EnableIfNot=is_android]
   GetProductUrls() => (ProductUrls urls);
@@ -123,8 +125,19 @@ struct PurchasedInfo {
 // struct. Ex, IsValidRegion() or IsValidRegionValue(). It should also check
 // new member.
 struct Region {
-  string continent;
   string name;
   string name_pretty;
+  string continent;
   string country_iso_code;
+  string region_precision;
+  array<Region> cities;
+  double latitude;
+  double longitude;
+  int32 server_count;
+  bool is_automatic;
 };
+
+const string kRegionPrecisionDefault = "default";
+const string kRegionPrecisionCity = "city";
+const string kRegionPrecisionCountry = "country";
+const string kRegionPrecisionCityByCountry = "city-by-country";

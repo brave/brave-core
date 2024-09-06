@@ -4,8 +4,10 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import styled from 'styled-components'
 
 import * as S from './style'
+import { color, font } from '@brave/leo/tokens/css/variables'
 import { getLocale } from '$web-common/locale'
 import { formatMessage } from '../../../../../brave_rewards/resources/shared/lib/locale_context'
 import SelectRegionList from '../select-region-list'
@@ -17,9 +19,28 @@ import ContactSupport from '../contact-support'
 import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
 import getPanelBrowserAPI, {
-  ConnectionState
+  ConnectionState,
+  REGION_PRECISION_COUNTRY
 } from '../../api/panel_browser_api'
 import Flag from '../flag'
+
+const RegionInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  flex: 1 0 0;
+`
+
+const RegionLabel = styled.span`
+  color: ${color.text.primary};
+  font: ${font.heading.h4};
+`
+
+const RegionServerLabel = styled.span`
+  color: ${color.text.secondary};
+  font: ${font.small.regular};
+`
 
 function SessionExpiredContent() {
   const productUrls = useSelector((state) => state.productUrls)
@@ -85,6 +106,7 @@ function MainPanel() {
   const isSelectingRegion = useSelector((state) => state.isSelectingRegion)
   const connectionStatus = useSelector((state) => state.connectionStatus)
   const expired = useSelector((state) => state.expired)
+  const regions = useSelector((state) => state.regions)
 
   const onSelectRegionButtonClick = () => {
     dispatch(Actions.toggleRegionSelector(true))
@@ -95,6 +117,20 @@ function MainPanel() {
 
   const showContactSupport = () => setContactSupportVisible(true)
   const closeContactSupport = () => setContactSupportVisible(false)
+
+  const getCountryNameForCurrentRegion = () => {
+    if (currentRegion.regionPrecision === REGION_PRECISION_COUNTRY) {
+      return currentRegion.namePretty
+    }
+
+    for (const region of regions) {
+      if (region.cities.find((city) => city.name === currentRegion.name)) {
+        return region.namePretty
+      }
+    }
+
+    return currentRegion.namePretty
+  }
 
   if (isContactSupportVisible) {
     return <ContactSupport onCloseContactSupport={closeContactSupport} />
@@ -117,6 +153,10 @@ function MainPanel() {
     return <ErrorPanel showContactSupport={showContactSupport} />
   }
 
+  const regionServerLabel =
+    currentRegion.regionPrecision === REGION_PRECISION_COUNTRY
+      ? getLocale('braveVpnServerSelectionOptimalLabel')
+      : currentRegion.namePretty
   return (
     <PanelBox>
       <S.PanelContent>
@@ -149,7 +189,10 @@ function MainPanel() {
           onClick={onSelectRegionButtonClick}
         >
           <Flag countryCode={currentRegion.countryIsoCode} />
-          <S.RegionLabel>{currentRegion?.namePretty}</S.RegionLabel>
+          <RegionInfo>
+            <RegionLabel>{getCountryNameForCurrentRegion()}</RegionLabel>
+            <RegionServerLabel>{regionServerLabel}</RegionServerLabel>
+          </RegionInfo>
           <S.StyledIcon name='carat-right' />
         </S.RegionSelectorButton>
       </S.PanelContent>

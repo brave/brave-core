@@ -30,6 +30,7 @@ std::string GetBraveVPNPaymentsEnv(const std::string& env);
 std::string GetManageUrl(const std::string& env);
 void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs);
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+void MigrateLocalStatePrefs(PrefService* local_prefs);
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 void RegisterAndroidProfilePrefs(PrefRegistrySimple* registry);
 bool HasValidSubscriberCredential(PrefService* local_prefs);

@@ -28,6 +28,7 @@ import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.util.LiveDataUtil;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
@@ -52,23 +53,38 @@ public abstract class BraveVpnParentActivity
 
     // Pass @{code ActivityResultRegistry} reference explicitly to avoid crash
     // https://github.com/brave/brave-browser/issues/31882
-    ActivityResultLauncher<Intent> mIntentActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), getActivityResultRegistry(),
-            result -> {
-                BraveVpnUtils.dismissProgressDialog();
-                if (result.getResultCode() == RESULT_OK) {
-                    BraveVpnProfileUtils.getInstance().startVpn(BraveVpnParentActivity.this);
-                    BraveVpnUtils.showVpnConfirmDialog(this);
-                } else if (result.getResultCode() == RESULT_CANCELED) {
-                    if (BraveVpnProfileUtils.getInstance().isVPNRunning(this)) {
-                        BraveVpnUtils.showVpnAlwaysOnErrorDialog(this);
-                    } else {
-                        updateProfileView();
-                    }
-                    BraveVpnUtils.showToast(
-                            getResources().getString(R.string.permission_was_cancelled));
-                }
-            });
+    ActivityResultLauncher<Intent> mIntentActivityResultLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    getActivityResultRegistry(),
+                    result -> {
+                        BraveVpnUtils.dismissProgressDialog();
+                        if (result.getResultCode() == RESULT_OK) {
+                            BraveVpnProfileUtils.getInstance()
+                                    .startVpn(BraveVpnParentActivity.this);
+                            BraveVpnUtils.showVpnConfirmDialog(this);
+                        } else if (result.getResultCode() == RESULT_CANCELED) {
+                            if (BraveVpnProfileUtils.getInstance().isVPNRunning(this)) {
+                                BraveVpnUtils.showVpnAlwaysOnErrorDialog(this);
+                            } else {
+                                updateProfileView();
+                            }
+                            BraveVpnUtils.showToast(
+                                    getResources().getString(R.string.permission_was_cancelled));
+                        }
+                    });
+
+    @Override
+    public void onResumeWithNative() {
+        super.onResumeWithNative();
+        BraveVpnNativeWorker.getInstance().addObserver(this);
+    }
+
+    @Override
+    public void onPauseWithNative() {
+        BraveVpnNativeWorker.getInstance().removeObserver(this);
+        super.onPauseWithNative();
+    }
 
     @Override
     public void finishNativeInitialization() {
@@ -125,10 +141,13 @@ public abstract class BraveVpnParentActivity
                 BraveVpnPrefUtils.setSubscriptionPurchase(true);
                 BraveVpnPrefUtils.setPaymentState(paymentState);
                 if (!mIsVerification || BraveVpnPrefUtils.isResetConfiguration()) {
-                    BraveVpnNativeWorker.getInstance().getSubscriberCredential(
-                            BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT,
-                            mBraveVpnPrefModel.getProductId(), BraveVpnUtils.IAP_ANDROID_PARAM_TEXT,
-                            mBraveVpnPrefModel.getPurchaseToken(), getPackageName());
+                    BraveVpnNativeWorker.getInstance()
+                            .getSubscriberCredential(
+                                    BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT,
+                                    mBraveVpnPrefModel.getProductId(),
+                                    BraveVpnUtils.IAP_ANDROID_PARAM_TEXT,
+                                    mBraveVpnPrefModel.getPurchaseToken(),
+                                    getPackageName());
                 } else {
                     mIsVerification = false;
                     showRestoreMenu(true);
@@ -210,6 +229,18 @@ public abstract class BraveVpnParentActivity
         }
     }
 
+    public void changeServerRegion() {
+        mIsServerLocationChanged = true;
+        BraveVpnUtils.showProgressDialog(
+                BraveVpnParentActivity.this, getResources().getString(R.string.vpn_connect_text));
+        if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+            mBraveVpnPrefModel = new BraveVpnPrefModel();
+            BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
+        } else {
+            verifySubscription();
+        }
+    }
+
     private void checkForVpn(
             BraveVpnWireguardProfileCredentials braveVpnWireguardProfileCredentials) {
         new Thread() {
@@ -243,7 +274,7 @@ public abstract class BraveVpnParentActivity
                         return;
                     }
                     BraveVpnProfileUtils.getInstance().startVpn(BraveVpnParentActivity.this);
-                    finish();
+                    TabUtils.bringChromeTabbedActivityToTheTop(BraveVpnParentActivity.this);
                 } catch (Exception e) {
                     BraveVpnUtils.dismissProgressDialog();
                     Log.e(TAG, e.getMessage());

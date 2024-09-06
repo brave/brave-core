@@ -11,7 +11,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 import android.util.Pair;
 
 import androidx.fragment.app.FragmentActivity;
@@ -24,12 +23,15 @@ import org.json.JSONObject;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.brave_vpn.mojom.BraveVpnConstants;
+import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity;
 import org.chromium.chrome.browser.vpn.activities.VpnAlwaysOnActivity;
 import org.chromium.chrome.browser.vpn.activities.VpnPaywallActivity;
+import org.chromium.chrome.browser.vpn.activities.VpnServerActivity;
 import org.chromium.chrome.browser.vpn.activities.VpnServerSelectionActivity;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnAlwaysOnErrorDialogFragment;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnConfirmDialogFragment;
@@ -41,7 +43,6 @@ import org.chromium.gms.ChromiumPlayServicesAvailability;
 import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class BraveVpnUtils {
@@ -51,11 +52,16 @@ public class BraveVpnUtils {
     public static final String VERIFY_CREDENTIALS_FAILED = "verify_credentials_failed";
     public static final String DESKTOP_CREDENTIAL = "desktop_credential";
 
+    public static final String OPTIMAL_SERVER = "Optimal";
+
     public static boolean mUpdateProfileAfterSplitTunnel;
     public static BraveVpnServerRegion selectedServerRegion;
+    public static Region selectedRegion;
+    public static Region selectedCity;
     private static ProgressDialog sProgressDialog;
 
     public static String IS_KILL_SWITCH = "is_kill_switch";
+    public static String REGION = "region";
 
     public static void openBraveVpnPlansActivity(Activity activity) {
         if (activity == null) {
@@ -121,6 +127,14 @@ public class BraveVpnUtils {
         activity.startActivity(vpnServerSelectionIntent);
     }
 
+    public static void openVpnServerActivity(Activity activity, Region region) {
+        if (activity == null) {
+            return;
+        }
+        Intent vpnServerIntent = new Intent(activity, VpnServerActivity.class);
+        activity.startActivity(vpnServerIntent);
+    }
+
     public static void showProgressDialog(Activity activity, String message) {
         sProgressDialog = ProgressDialog.show(activity, "", message, true);
     }
@@ -145,9 +159,12 @@ public class BraveVpnUtils {
                     if (timezones.getString(j).equals(currentTimezone)) {
                         BraveVpnServerRegion braveVpnServerRegion =
                                 new BraveVpnServerRegion(
-                                        region.getString("continent"),
-                                                region.getString("country-iso-code"),
-                                        region.getString("name"), region.getString("name-pretty"));
+                                        region.getString("country-iso-code"),
+                                        region.getString("name"),
+                                        region.getString("name-pretty"),
+                                        OPTIMAL_SERVER,
+                                        "",
+                                        BraveVpnConstants.REGION_PRECISION_COUNTRY);
                         return braveVpnServerRegion;
                     }
                 }
@@ -228,29 +245,6 @@ public class BraveVpnUtils {
             Log.e(TAG, "BraveVpnUtils -> getPaymentState JSONException error " + e);
         }
         return 0;
-    }
-
-    public static List<BraveVpnServerRegion> getServerLocations(String jsonServerLocations) {
-        List<BraveVpnServerRegion> vpnServerRegions = new ArrayList<>();
-        if (TextUtils.isEmpty(jsonServerLocations)) {
-            return vpnServerRegions;
-        }
-        jsonServerLocations = "{\"servers\":" + jsonServerLocations + "}";
-        try {
-            JSONObject result = new JSONObject(jsonServerLocations);
-            JSONArray servers = result.getJSONArray("servers");
-            for (int i = 0; i < servers.length(); i++) {
-                JSONObject server = servers.getJSONObject(i);
-                BraveVpnServerRegion vpnServerRegion =
-                        new BraveVpnServerRegion(
-                                server.getString("continent"), server.getString("country-iso-code"),
-                                server.getString("name"), server.getString("name-pretty"));
-                vpnServerRegions.add(vpnServerRegion);
-            }
-        } catch (JSONException e) {
-            Log.e(TAG, "BraveVpnUtils -> getServerLocations JSONException error " + e);
-        }
-        return vpnServerRegions;
     }
 
     public static void resetProfileConfiguration(Activity activity) {

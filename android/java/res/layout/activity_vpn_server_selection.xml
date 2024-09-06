@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<androidx.core.widget.NestedScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/server_selection_list_layout"
@@ -19,34 +21,72 @@
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"/>
 
-            <include
-                android:id="@+id/automatic_server_text"
-                layout="@layout/brave_vpn_server_selection_item_layout"/>
-
-            <TextView
+            <LinearLayout
+                android:id="@+id/automatic_server_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/LargeRegular"
+                        android:text="@string/automatic"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/SmallRegular"
+                        android:text="@string/automatic_server_selection_text"/>
+
+                </LinearLayout>
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                   android:id="@+id/automatic_server_switch"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   app:trackTint="@color/vpn_server_selection_switch_stroke_color"
+                   app:showText="false"
+                   android:clickable="false"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/servers_section_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
-                android:padding="16dp"
-                android:alpha="0.6"
-                android:text="@string/automatic_server_selection_text"/>
+                android:layout_marginHorizontal="16dp"
+                android:visibility="gone"
+                style="@style/DefaultSemibold"
+                android:textColor="@color/schemes_primary"
+                android:text="@string/servers"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/server_selection_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-        </LinearLayout>
-
-        <ProgressBar
+            <ProgressBar
                 android:id="@+id/server_selection_progress"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:visibility="gone"
                 android:layout_gravity="center"
-                android:indeterminate="true"/>
+                android:gravity="center"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/schemes_primary"/>
 
-    </FrameLayout>
+        </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

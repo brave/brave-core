@@ -73,13 +73,6 @@ public class BraveVpnNativeWorker {
     }
 
     @CalledByNative
-    public void onGetAllServerRegions(String jsonServerRegions, boolean isSuccess) {
-        for (BraveVpnObserver observer : mObservers) {
-            observer.onGetAllServerRegions(jsonServerRegions, isSuccess);
-        }
-    }
-
-    @CalledByNative
     public void onGetTimezonesForRegions(String jsonTimezones, boolean isSuccess) {
         for (BraveVpnObserver observer : mObservers) {
             observer.onGetTimezonesForRegions(jsonTimezones, isSuccess);
@@ -130,16 +123,13 @@ public class BraveVpnNativeWorker {
         }
     }
 
-    public void getAllServerRegions() {
-        BraveVpnNativeWorkerJni.get().getAllServerRegions(mNativeBraveVpnNativeWorker);
-    }
-
     public void getTimezonesForRegions() {
         BraveVpnNativeWorkerJni.get().getTimezonesForRegions(mNativeBraveVpnNativeWorker);
     }
 
-    public void getHostnamesForRegion(String region) {
-        BraveVpnNativeWorkerJni.get().getHostnamesForRegion(mNativeBraveVpnNativeWorker, region);
+    public void getHostnamesForRegion(String region, String regionPrecision) {
+        BraveVpnNativeWorkerJni.get()
+                .getHostnamesForRegion(mNativeBraveVpnNativeWorker, region, regionPrecision);
     }
 
     public void getWireguardProfileCredentials(
@@ -197,26 +187,58 @@ public class BraveVpnNativeWorker {
     @NativeMethods
     interface Natives {
         void init(BraveVpnNativeWorker caller);
+
         void destroy(long nativeBraveVpnNativeWorker, BraveVpnNativeWorker caller);
-        void getAllServerRegions(long nativeBraveVpnNativeWorker);
+
         void getTimezonesForRegions(long nativeBraveVpnNativeWorker);
-        void getHostnamesForRegion(long nativeBraveVpnNativeWorker, String region);
-        void getWireguardProfileCredentials(long nativeBraveVpnNativeWorker,
-                String subscriberCredential, String publicKey, String hostname);
-        void verifyCredentials(long nativeBraveVpnNativeWorker, String hostname, String clientId,
-                String subscriberCredential, String apiAuthToken);
-        void invalidateCredentials(long nativeBraveVpnNativeWorker, String hostname,
-                String clientId, String subscriberCredential, String apiAuthToken);
-        void getSubscriberCredential(long nativeBraveVpnNativeWorker, String productType,
-                String productId, String validationMethod, String purchaseToken,
+
+        void getHostnamesForRegion(
+                long nativeBraveVpnNativeWorker, String region, String regionPrecision);
+
+        void getWireguardProfileCredentials(
+                long nativeBraveVpnNativeWorker,
+                String subscriberCredential,
+                String publicKey,
+                String hostname);
+
+        void verifyCredentials(
+                long nativeBraveVpnNativeWorker,
+                String hostname,
+                String clientId,
+                String subscriberCredential,
+                String apiAuthToken);
+
+        void invalidateCredentials(
+                long nativeBraveVpnNativeWorker,
+                String hostname,
+                String clientId,
+                String subscriberCredential,
+                String apiAuthToken);
+
+        void getSubscriberCredential(
+                long nativeBraveVpnNativeWorker,
+                String productType,
+                String productId,
+                String validationMethod,
+                String purchaseToken,
                 String packageName);
-        void verifyPurchaseToken(long nativeBraveVpnNativeWorker, String purchaseToken,
-                String productId, String productType, String packageName);
+
+        void verifyPurchaseToken(
+                long nativeBraveVpnNativeWorker,
+                String purchaseToken,
+                String productId,
+                String productType,
+                String packageName);
+
         void reloadPurchasedState(long nativeBraveVpnNativeWorker);
+
         boolean isPurchasedUser(long nativeBraveVpnNativeWorker);
+
         void getSubscriberCredentialV12(long nativeBraveVpnNativeWorker);
+
         void reportBackgroundP3A(
                 long nativeBraveVpnNativeWorker, long sessionStartTimeMs, long sessionEndTimeMs);
+
         void reportForegroundP3A(long nativeBraveVpnNativeWorker);
     }
 }

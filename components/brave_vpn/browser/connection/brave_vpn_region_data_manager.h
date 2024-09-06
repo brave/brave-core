@@ -31,10 +31,11 @@ class BraveVPNRegionDataManager {
   BraveVPNRegionDataManager& operator=(const BraveVPNRegionDataManager&) =
       delete;
 
-  const std::vector<mojom::Region>& GetRegions() const;
+  const std::vector<mojom::RegionPtr>& GetRegions() const;
   bool IsRegionDataReady() const;
   std::string GetSelectedRegion() const;
   void FetchRegionDataIfNeeded();
+  void FetchRegions();
 
   void set_selected_region_changed_callback(
       base::RepeatingCallback<void(const std::string&)> callback) {
@@ -47,6 +48,7 @@ class BraveVPNRegionDataManager {
   }
   void SetSelectedRegion(const std::string& name);
   std::string GetDeviceRegion() const;
+  std::string GetRegionPrecisionForName(const std::string& name) const;
 
  private:
   friend class BraveVPNServiceTest;
@@ -72,7 +74,7 @@ class BraveVPNRegionDataManager {
   // For testing only.
   std::string test_timezone_;
 
-  std::vector<mojom::Region> regions_;
+  std::vector<mojom::RegionPtr> regions_;
 
   // Only not null when region_data fetching is in-progress.
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

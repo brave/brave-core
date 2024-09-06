@@ -136,6 +136,26 @@
     Select your server
   </message>
 
+  <message name="IDS_BRAVE_VPN_SERVER_SELECTION_COUNTRY_INFO" desc="Text for the city and server count for the country">
+    <ph name="CITY_COUNT">$1<ex>5</ex></ph> cities - <ph name="SERVER_COUNT">$2<ex>5</ex></ph> servers
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SERVER_SELECTION_CITY_INFO" desc="Text for the server count for the city">
+    <ph name="SERVER_COUNT">$1<ex>5</ex></ph> servers
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SERVER_SELECTION_AUTOMATIC_LABEL" desc="Text for the automatic server selection entry label">
+    Automatic
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SERVER_SELECTION_OPTIMAL_LABEL" desc="Text for the optimal server selection entry label">
+    Optimal
+  </message>
+
+  <message name="IDS_BRAVE_VPN_SERVER_SELECTION_OPTIMAL_DESC" desc="Text for the optimal server selection entry description">
+    Use the best server available
+  </message>
+
   <message name="IDS_BRAVE_VPN_LOADING" desc="Label to show below loader icon">
     One moment while loading…
   </message>

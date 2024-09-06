@@ -34,6 +34,7 @@ brave_chrome_java_deps = [
   "//brave/components/brave_news/common:mojom_java",
   "//brave/components/brave_rewards/common/mojom:mojom_java",
   "//brave/components/brave_shields/core/common:mojom_java",
+  "//brave/components/brave_vpn/common/mojom:mojom_java",
   "//brave/components/brave_wallet/common:mojom_java",
   "//brave/components/browser_ui/site_settings/android:java",
   "//brave/components/misc_metrics/common:mojom_java",
@@ -129,6 +130,7 @@ brave_jni_headers_sources = [
   "//brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
   "//brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java",
   "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnNativeWorker.java",
+  "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnServiceFactoryAndroid.java",
   "//brave/browser/brave_ads/android/java/org/chromium/chrome/browser/BraveAdsNativeHelper.java",
   "//brave/components/safetynet/java/org/chromium/chrome/browser/util/SafetyNetCheck.java",
 ]

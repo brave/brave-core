@@ -72,12 +72,6 @@ export const RegionSelectorButton = styled.button`
   }
 `
 
-export const RegionLabel = styled.span`
-  color: ${color.text.primary};
-  font: ${font.heading.h4};
-  text-align: start;
-  flex-grow: 1;
-`
 
 export const StyledAlert = styled(Alert)`
   --leo-alert-padding: ${spacing.xl};

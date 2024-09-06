@@ -195,7 +195,6 @@ import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.fragments.LinkVpnSubscriptionDialogFragment;
-import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.timer.TimerDialogFragment;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnApiResponseUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
@@ -1160,11 +1159,6 @@ public abstract class BraveActivity extends ChromeActivity
 
         checkFingerPrintingOnUpgrade(isFirstInstall);
         checkForVpnCallout(isFirstInstall);
-        if (!isFirstInstall
-                && !BraveVpnPrefUtils.isIsoCodeUpgradeDone()
-                && BraveVpnPrefUtils.isSubscriptionPurchase()) {
-            BraveVpnNativeWorker.getInstance().getAllServerRegions();
-        }
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)
                 && BraveVpnPrefUtils.isSubscriptionPurchase()
@@ -1342,22 +1336,6 @@ public abstract class BraveActivity extends ChromeActivity
             setInAppUpdateTiming();
         } catch (IntentSender.SendIntentException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void onGetAllServerRegions(String jsonResponse, boolean isSuccess) {
-        if (isSuccess) {
-            List<BraveVpnServerRegion> braveVpnServerRegions =
-                    BraveVpnUtils.getServerLocations(jsonResponse);
-            for (BraveVpnServerRegion braveVpnServerRegion : braveVpnServerRegions) {
-                if (braveVpnServerRegion.getName().equals(BraveVpnPrefUtils.getServerRegion())) {
-                    BraveVpnPrefUtils.setServerIsoCode(braveVpnServerRegion.getCountryIsoCode());
-                    BraveVpnPrefUtils.setServerNamePretty(braveVpnServerRegion.getNamePretty());
-                    BraveVpnPrefUtils.setIsoCodeUpgrade(true);
-                    break;
-                }
-            }
         }
     }
 
