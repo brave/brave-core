@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_PERMISSION_CONTROLLER_DELEGATE_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_PERMISSION_CONTROLLER_DELEGATE_H_
 
+#include "content/public/browser/permission_controller.h"
+
 #define UnsubscribeFromPermissionStatusChange                               \
   PermissionControllerDelegateNotUsed() {}                                  \
   virtual void RequestPermissionsForOrigin(                                 \
