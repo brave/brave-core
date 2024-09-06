@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <include name="IDR_COMPONENTS_COMPONENTS_HTML" file="./components.html" type="BINDATA" />
+  <include name="IDR_COMPONENTS_COMPONENTS_CSS" file="./components.css" type="BINDATA" />
+  <include name="IDR_COMPONENTS_COMPONENTS_JS" file="./components.js" type="BINDATA" />
+</grit-part>

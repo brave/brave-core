@@ -1,0 +1,27 @@
+import("//build/config/locales.gni")
+import("//brave/resources/brave_grit.gni")
+import("//tools/grit/repack.gni")
+
+repack("resources") {
+  deps = [
+    ":static_resources",
+  ]
+  sources = [
+    "$root_gen_dir/brave/ios/browser/components/brave_ios_components_static.pak",
+  ]
+
+  output = "$root_gen_dir/brave/ios/browser/components/brave_ios_components_resources.pak"
+}
+
+brave_grit("static_resources") {
+  source = "components_resources.grd"
+
+  output_name = "brave_ios_components_resources_new"
+
+  outputs = [
+    "grit/brave_ios_components_resources.h",
+    "brave_ios_components_static.pak",
+  ]
+
+  output_dir = "$root_gen_dir/brave/ios/browser/components"
+}
