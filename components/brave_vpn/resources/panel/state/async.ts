@@ -7,8 +7,7 @@ import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../../common/AsyncActionHandler'
 import getPanelBrowserAPI, {
   ConnectionState,
-  PurchasedState,
-  REGION_PRECISION_CITY_BY_COUNTRY
+  PurchasedState
 } from '../api/panel_browser_api'
 import * as Actions from './actions'
 import { RootState } from './store'
@@ -60,9 +59,7 @@ handler.on(Actions.purchaseConfirmed.getType(), async (store) => {
   const [{ state }, { currentRegion }, { regions }] = await Promise.all([
     getPanelBrowserAPI().serviceHandler.getConnectionState(),
     getPanelBrowserAPI().serviceHandler.getSelectedRegion(),
-    getPanelBrowserAPI().serviceHandler.getAllRegions(
-      REGION_PRECISION_CITY_BY_COUNTRY
-    )
+    getPanelBrowserAPI().serviceHandler.getAllRegions()
   ])
 
   store.dispatch(
@@ -81,9 +78,7 @@ handler.on(Actions.purchaseConfirmed.getType(), async (store) => {
 handler.on(Actions.purchaseExpired.getType(), async (store) => {
   const [{ currentRegion }, { regions }] = await Promise.all([
     getPanelBrowserAPI().serviceHandler.getSelectedRegion(),
-    getPanelBrowserAPI().serviceHandler.getAllRegions(
-      REGION_PRECISION_CITY_BY_COUNTRY
-    )
+    getPanelBrowserAPI().serviceHandler.getAllRegions()
   ])
 
   store.dispatch(
