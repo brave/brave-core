@@ -11,9 +11,11 @@
 # So we define our values in a scope here, then use forward_variables_from(...)
 # in upstream's .gni file to apply the changes from this scope.
 
+import("//build/util/branding.gni")
+
 brave_updater_branding = {
   browser_name = "Brave"
-  browser_product_name = "Brave Browser"
+  browser_product_name = chrome_product_full_name
   crash_product_name = "BraveUpdater"
   keystone_app_name = "BraveSoftwareUpdate"
   keystone_bundle_identifier = "com.brave.Keystone"
