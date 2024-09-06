@@ -149,6 +149,24 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private AlertDialog mFinalWarningDialog;
     private TabLayout mTabLayout;
 
+    // Below enum is matching the values of GetDeviceTypeString() in brave_device_info.cc
+    public enum DeviceType {
+        UNKNOWN("unknown"),
+        DESKTOP("desktop_or_laptop"),
+        PHONE("phone"),
+        TABLET("tablet");
+
+        final String mType;
+
+        DeviceType(final String type) {
+            mType = type;
+        }
+
+        public String getValue() {
+            return mType;
+        }
+    }
+
     BraveSyncWorker getBraveSyncWorker() {
         return BraveSyncWorker.get();
     }
@@ -282,6 +300,20 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                         if (null != listItemView
                                                 && null != separator
                                                 && null != insertPoint) {
+                                            ImageView imageView =
+                                                    (ImageView)
+                                                            listItemView.findViewById(
+                                                                    R.id.brave_sync_device_image);
+                                            int deviceTypeRes = R.drawable.ic_monitor;
+                                            if (DeviceType.PHONE.getValue().equals(device.mType)) {
+                                                deviceTypeRes = R.drawable.ic_smartphone;
+                                            } else if (DeviceType.TABLET
+                                                    .getValue()
+                                                    .equals(device.mType)) {
+                                                deviceTypeRes = R.drawable.ic_tablet;
+                                            }
+                                            imageView.setImageResource(deviceTypeRes);
+
                                             TextView textView =
                                                     (TextView)
                                                             listItemView.findViewById(
