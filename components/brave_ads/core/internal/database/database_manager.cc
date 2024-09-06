@@ -64,7 +64,7 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
 void DatabaseManager::CreateOrOpenCallback(
     ResultCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (database::IsError(&*mojom_db_transaction_result)) {
+  if (database::IsError(mojom_db_transaction_result)) {
     BLOG(0, "Failed to create or open database");
 
     NotifyFailedToCreateOrOpenDatabase();

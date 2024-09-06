@@ -17,22 +17,22 @@ namespace brave_ads::database::table {
 
 class CreativeNewTabPageAdWallpapers final : public TableInterface {
  public:
-  void Insert(mojom::DBTransactionInfo* mojom_db_transaction,
+  void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
               const CreativeNewTabPageAdList& creative_ads);
 
   void Delete(ResultCallback callback) const;
 
   std::string GetTableName() const override;
 
-  void Create(mojom::DBTransactionInfo* mojom_db_transaction) override;
-  void Migrate(mojom::DBTransactionInfo* mojom_db_transaction,
+  void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
+  void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                int to_version) override;
 
  private:
-  void MigrateToV43(mojom::DBTransactionInfo* mojom_db_transaction);
+  void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
 
   std::string BuildInsertSql(
-      mojom::DBActionInfo* mojom_db_action,
+      const mojom::DBActionInfoPtr& mojom_db_action,
       const CreativeNewTabPageAdList& creative_ads) const;
 };
 
