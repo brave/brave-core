@@ -76,6 +76,15 @@ public enum BraveStoreProduct: String, AppStoreProduct, CaseIterable {
   /// Leo Yearly AppStore SKU
   case leoYearly
 
+  public init?(rawValue: String) {
+    if let value = Self.allCases.first(where: { $0.rawValue == rawValue }) {
+      self = value
+      return
+    }
+
+    return nil
+  }
+
   /// The Title of the SKU Group
   public var subscriptionGroup: String {
     switch self {
