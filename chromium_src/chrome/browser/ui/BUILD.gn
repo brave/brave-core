@@ -8,7 +8,10 @@ import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
 group("ui") {
-  deps = [ "//brave/components/brave_vpn/common/buildflags" ]
+  deps = [
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/update_client:features",
+  ]
 
   if (toolkit_views) {
     deps += [

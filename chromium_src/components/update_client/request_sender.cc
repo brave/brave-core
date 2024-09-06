@@ -3,16 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "build/build_config.h"
-
-#if BUILDFLAG(IS_MAC)
-
 // The code below replaces Ecdsa::Create(kKeyVersion, kKeyPubBytesBase64) by
 // Ecdsa::Create(kBraveKeyVersion, kBraveKeyPubBytesBase64) in upstream's
-// request_sender.cc when ShouldUseOmaha4() returns true.
+// request_sender.cc.
 
 #include "base/base64.h"
-#include "brave/components/update_client/features.h"
 #include "components/client_update_protocol/ecdsa.h"
 #include "components/update_client/request_sender.h"
 
@@ -33,12 +28,8 @@ class BraveEcdsa : public Ecdsa {
  public:
   static std::unique_ptr<Ecdsa> Create(int key_version,
                                        const std::string_view& public_key) {
-    if (brave::ShouldUseOmaha4()) {
-      const std::string base64_decoded = GetKey(kBraveKeyPubBytesBase64);
-      return Ecdsa::Create(kBraveKeyVersion, base64_decoded);
-    } else {
-      return Ecdsa::Create(key_version, public_key);
-    }
+    const std::string base64_decoded = GetKey(kBraveKeyPubBytesBase64);
+    return Ecdsa::Create(kBraveKeyVersion, base64_decoded);
   }
 
  private:
@@ -56,10 +47,6 @@ class BraveEcdsa : public Ecdsa {
 
 #define Ecdsa BraveEcdsa
 
-#endif  // BUILDFLAG(IS_MAC)
-
 #include "src/components/update_client/request_sender.cc"
 
-#if BUILDFLAG(IS_MAC)
 #undef Ecdsa
-#endif
