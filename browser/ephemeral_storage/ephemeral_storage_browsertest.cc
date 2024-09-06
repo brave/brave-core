@@ -36,6 +36,7 @@
 #include "content/public/common/content_paths.h"
 #include "content/public/common/content_switches.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/base/features.h"
 #include "net/dns/mock_host_resolver.h"
@@ -78,8 +79,9 @@ std::unique_ptr<HttpResponse> HandleFileRequestWithCustomHeaders(
   std::unique_ptr<HttpResponse> http_response;
   for (const auto& server_root : server_roots) {
     http_response = net::test_server::HandleFileRequest(server_root, request);
-    if (http_response)
+    if (http_response) {
       break;
+    }
   }
   if (http_response) {
     GURL request_url = request.GetURL();
@@ -135,8 +137,9 @@ bool HttpRequestMonitor::HasHttpRequestWithCookie(
     const std::string& cookie_value) const {
   base::AutoLock lock(lock_);
   for (const auto& http_request : http_requests_) {
-    if (GetHttpRequestURL(http_request) != url)
+    if (GetHttpRequestURL(http_request) != url) {
       continue;
+    }
     for (const auto& header : http_request.headers) {
       if (header.first == net::HttpRequestHeaders::kCookie &&
           header.second == cookie_value) {
@@ -471,6 +474,25 @@ std::vector<net::CanonicalCookie> EphemeralStorageBrowserTest::GetAllCookies() {
       }));
   run_loop.Run();
   return cookies_out;
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, TestFrames) {
+  WebContents* site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+
+  RenderFrameHost* main_frame = site_a_tab->GetPrimaryMainFrame();
+  LOG(ERROR) << content::EvalJs(main_frame, "navigator.plugins[0].name").value;
+  LOG(ERROR) << content::EvalJs(content::ChildFrameAt(main_frame, 0),
+                                "navigator.plugins[0].name")
+                    .value;
+  LOG(ERROR) << content::EvalJs(content::ChildFrameAt(main_frame, 1),
+                                "navigator.plugins[0].name")
+                    .value;
+  LOG(ERROR) << content::EvalJs(content::ChildFrameAt(main_frame, 2),
+                                "navigator.plugins[0].name")
+                    .value;
+  LOG(ERROR) << content::EvalJs(content::ChildFrameAt(main_frame, 3),
+                                "navigator.plugins[0].name")
+                    .value;
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, StorageIsPartitioned) {

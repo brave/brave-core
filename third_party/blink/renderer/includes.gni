@@ -30,6 +30,8 @@ brave_blink_renderer_core_public_deps = [
 brave_blink_renderer_core_sources = [
   "//brave/third_party/blink/renderer/core/farbling/brave_session_cache.cc",
   "//brave/third_party/blink/renderer/core/farbling/brave_session_cache.h",
+  "//brave/third_party/blink/renderer/core/farbling/farbling_state.cc",
+  "//brave/third_party/blink/renderer/core/farbling/farbling_state.h",
   "//brave/third_party/blink/renderer/core/resource_pool_limiter/resource_pool_limiter.cc",
   "//brave/third_party/blink/renderer/core/resource_pool_limiter/resource_pool_limiter.h",
 ]

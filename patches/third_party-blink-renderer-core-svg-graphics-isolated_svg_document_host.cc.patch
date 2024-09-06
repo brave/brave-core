@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/core/svg/graphics/isolated_svg_document_host.cc b/third_party/blink/renderer/core/svg/graphics/isolated_svg_document_host.cc
-index c5237e1d969bba1457250faf7a003964749d6f68..09b74e426adcda24a47a9476fe775db0c298cf26 100644
+index c5237e1d969bba1457250faf7a003964749d6f68..a80346efc8a823df6fb9e581d04c12096629b767 100644
 --- a/third_party/blink/renderer/core/svg/graphics/isolated_svg_document_host.cc
 +++ b/third_party/blink/renderer/core/svg/graphics/isolated_svg_document_host.cc
 @@ -209,6 +209,7 @@ void IsolatedSVGDocumentHost::CopySettingsFrom(
    settings.SetPreferredColorScheme(
        inherited_settings.GetPreferredColorScheme());
    settings.SetInForcedColors(inherited_settings.GetInForcedColors());
-+  settings.SetFarblingToken(inherited_settings.GetFarblingToken());
++  settings.SetFarblingState(inherited_settings.GetFarblingState());
  }
  
  LocalFrame* IsolatedSVGDocumentHost::GetFrame() {

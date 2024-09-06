@@ -10,6 +10,7 @@
 #include <string>
 
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "brave/third_party/blink/renderer/core/farbling/farbling_state.h"
 #include "brave/third_party/blink/renderer/platform/brave_audio_farbling_helper.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "third_party/abseil-cpp/absl/random/random.h"
@@ -45,8 +46,7 @@ enum FarbleKey : uint64_t {
 typedef absl::randen_engine<uint64_t> FarblingPRNG;
 
 CORE_EXPORT blink::WebContentSettingsClient* GetContentSettingsClientFor(
-    ExecutionContext* context,
-    bool require_filled_content_settings_rules = false);
+    ExecutionContext* context);
 CORE_EXPORT BraveFarblingLevel
 GetBraveFarblingLevelFor(ExecutionContext* context,
                          ContentSettingsType webcompat_settings_type,
@@ -90,20 +90,18 @@ class CORE_EXPORT BraveSessionCache final
                      int spoof_value,
                      int min_random_offset,
                      int max_random_offset);
-  bool AllowFontFamily(blink::WebContentSettingsClient* settings,
-                       const AtomicString& family_name);
+  bool AllowFontFamily(const AtomicString& family_name);
   FarblingPRNG MakePseudoRandomGenerator(FarbleKey key = FarbleKey::kNone);
   std::optional<blink::BraveAudioFarblingHelper> GetAudioFarblingHelper() {
     return audio_farbling_helper_;
   }
 
  private:
-  base::Token farbling_token_;
+  FarblingState farbling_state_;
   WTF::HashMap<FarbleKey, int> farbled_integers_;
-  BraveFarblingLevel farbling_level_;
   std::optional<blink::BraveAudioFarblingHelper> audio_farbling_helper_;
-  WTF::HashMap<ContentSettingsType, BraveFarblingLevel> farbling_levels_;
   blink::WebContentSettingsClient* settings_client_ = nullptr;
+  WTF::HashMap<ContentSettingsType, BraveFarblingLevel> farbling_levels_;
 
   void PerturbPixelsInternal(const unsigned char* data, size_t size);
 };

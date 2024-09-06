@@ -1,17 +1,31 @@
 diff --git a/third_party/blink/renderer/core/frame/settings.h b/third_party/blink/renderer/core/frame/settings.h
-index e08f157d94139ba27e514a5d0bc47e658dcb423e..001de83713eccd344e3d3f98bfc366b09a1076c4 100644
+index e08f157d94139ba27e514a5d0bc47e658dcb423e..a98b111e317b729d8f2e9a9a7183c9f5e2ed1f5e 100644
 --- a/third_party/blink/renderer/core/frame/settings.h
 +++ b/third_party/blink/renderer/core/frame/settings.h
-@@ -57,8 +57,12 @@ class CORE_EXPORT Settings : public SettingsBase {
+@@ -28,6 +28,9 @@
+ #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_SETTINGS_H_
+ #define THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_SETTINGS_H_
+ 
++#include <optional>
++
++#include "brave/third_party/blink/renderer/core/farbling/farbling_state.h"
+ #include "third_party/blink/renderer/core/core_export.h"
+ #include "third_party/blink/renderer/core/settings_base.h"
+ #include "third_party/blink/renderer/platform/fonts/generic_font_family_settings.h"
+@@ -57,8 +60,16 @@ class CORE_EXPORT Settings : public SettingsBase {
  
    void SetPreferCompositingToLCDTextForTesting(bool enabled);
  
-+  void SetFarblingToken(base::Token token) { farbling_token_ = token; }
-+  base::Token GetFarblingToken() const { return farbling_token_; }
++  void SetFarblingState(std::optional<brave::FarblingState> farbling_state) {
++    farbling_state_ = std::move(farbling_state);
++  }
++  const std::optional<brave::FarblingState>& GetFarblingState() const {
++    return farbling_state_;
++  }
 +
   private:
    GenericFontFamilySettings generic_font_family_settings_;
-+  base::Token farbling_token_;
++  std::optional<brave::FarblingState> farbling_state_;
  };
  
  }  // namespace blink
