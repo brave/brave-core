@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/bookmarks/bookmark_utils.h"
+
 #include "base/strings/string_util.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/components/constants/pref_names.h"
