@@ -3,12 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/sync/engine/brave_data_type_worker.h"
+
 #include <utility>
 
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
-#include "brave/components/sync/engine/brave_data_type_worker.h"
 #include "components/sync/engine/data_type_processor.h"
 
 namespace syncer {
