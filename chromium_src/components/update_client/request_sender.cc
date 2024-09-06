@@ -7,9 +7,10 @@
 // Ecdsa::Create(kBraveKeyVersion, kBraveKeyPubBytesBase64) in upstream's
 // request_sender.cc.
 
+#include "components/update_client/request_sender.h"
+
 #include "base/base64.h"
 #include "components/client_update_protocol/ecdsa.h"
-#include "components/update_client/request_sender.h"
 
 namespace {
 
