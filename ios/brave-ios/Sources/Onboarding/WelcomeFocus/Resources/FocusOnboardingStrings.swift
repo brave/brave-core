@@ -120,6 +120,14 @@ extension Strings {
       comment: "The title of the button that finishes the onboarding without setting default"
     )
 
+    public static let notNowActionButtonTitle = NSLocalizedString(
+      "focusOnboarding.notNowActionButtonTitle",
+      tableName: "FocusOnboarding",
+      bundle: .module,
+      value: "Not Now",
+      comment: "The title of the button that closes the default browser full screen callout"
+    )
+
     public static let urlBarIndicatorTitle = NSLocalizedString(
       "focusOnboarding.urlBarIndicatorTitle",
       tableName: "FocusOnboarding",
