@@ -72,23 +72,6 @@ export const RegionSelectorButton = styled.button`
   }
 `
 
-export const RegionInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  flex: 1 0 0;
-`
-
-export const RegionLabel = styled.span`
-  color: ${color.text.primary};
-  font: ${font.heading.h4};
-`
-
-export const RegionServerLabel = styled.span`
-  color: ${color.text.secondary};
-  font: ${font.small.regular};
-`
 
 export const StyledAlert = styled(Alert)`
   --leo-alert-padding: ${spacing.xl};

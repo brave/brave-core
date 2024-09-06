@@ -4,8 +4,10 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import styled from 'styled-components'
 
 import * as S from './style'
+import { color, font } from '@brave/leo/tokens/css/variables'
 import { getLocale } from '$web-common/locale'
 import { formatMessage } from '../../../../../brave_rewards/resources/shared/lib/locale_context'
 import SelectRegionList from '../select-region-list'
@@ -21,6 +23,24 @@ import getPanelBrowserAPI, {
   REGION_PRECISION_COUNTRY
 } from '../../api/panel_browser_api'
 import Flag from '../flag'
+
+const RegionInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  flex: 1 0 0;
+`
+
+const RegionLabel = styled.span`
+  color: ${color.text.primary};
+  font: ${font.heading.h4};
+`
+
+const RegionServerLabel = styled.span`
+  color: ${color.text.secondary};
+  font: ${font.small.regular};
+`
 
 function SessionExpiredContent() {
   const productUrls = useSelector((state) => state.productUrls)
@@ -103,9 +123,9 @@ function MainPanel() {
       return currentRegion.namePretty
     }
 
-    for (let i = 0; i < regions.length; ++i) {
-      if (regions[i].cities.find((city) => city.name === currentRegion.name)) {
-        return regions[i].namePretty
+    for (const region of regions) {
+      if (region.cities.find((city) => city.name === currentRegion.name)) {
+        return region.namePretty
       }
     }
 
@@ -169,10 +189,10 @@ function MainPanel() {
           onClick={onSelectRegionButtonClick}
         >
           <Flag countryCode={currentRegion.countryIsoCode} />
-          <S.RegionInfo>
-            <S.RegionLabel>{getCountryNameForCurrentRegion()}</S.RegionLabel>
-            <S.RegionServerLabel>{regionServerLabel}</S.RegionServerLabel>
-          </S.RegionInfo>
+          <RegionInfo>
+            <RegionLabel>{getCountryNameForCurrentRegion()}</RegionLabel>
+            <RegionServerLabel>{regionServerLabel}</RegionServerLabel>
+          </RegionInfo>
           <S.StyledIcon name='carat-right' />
         </S.RegionSelectorButton>
       </S.PanelContent>

@@ -107,12 +107,6 @@ export const RegionContainer = styled.div.attrs({ tabIndex: 0 })<{
   }
 `
 
-export const RegionConnect = styled(Button)<{ right: string }>`
-  opacity: 0;
-  position: absolute;
-  right: ${(p) => p.right};
-`
-
 export const RegionCountry = styled.div`
   position: relative;
   display: flex;
@@ -120,13 +114,6 @@ export const RegionCountry = styled.div`
   align-items: center;
   gap: ${spacing.m};
   align-self: stretch;
-
-  &:hover {
-    leo-button {
-      opacity: 1;
-      transition: opacity 0.3s;
-    }
-  }
 `
 
 export const RegionCountryLabel = styled.span<{ selected: boolean }>`
@@ -169,12 +156,17 @@ export const RegionCity = styled.div<{ selected: boolean }>`
             background: ${color.container.highlight};
           }
         `}
+  }
+`
 
-  &:hover {
-    leo-button {
-      opacity: 1;
-      transition: opacity 0.3s;
-    }
+export const RegionConnect = styled(Button)<{ right: string }>`
+  opacity: 0;
+  position: absolute;
+  right: ${(p) => p.right};
+  transition: opacity 0.3s ease-in-out;
+
+  ${RegionCountry}:hover &, ${RegionCity}:hover & {
+    opacity: 1;
   }
 `
 

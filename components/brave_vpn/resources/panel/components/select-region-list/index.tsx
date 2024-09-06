@@ -10,7 +10,7 @@ import Flag from '../flag'
 import { Region } from '../../api/panel_browser_api'
 import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
-import { getLocale } from '$web-common/locale'
+import { getLocale, getLocaleWithReplacements } from '$web-common/locale'
 
 import 'emptykit.css'
 
@@ -66,7 +66,7 @@ interface RegionContentProps {
   region: Region
   selected: boolean
   open: boolean
-  clickHandler: (countryName: string) => void
+  onClick: (countryName: string) => void
 }
 
 function RegionContent(props: RegionContentProps) {
@@ -96,7 +96,7 @@ function RegionContent(props: RegionContentProps) {
       <S.RegionCountry
         onClick={() => {
           // Pass '' to toggle currently opened country.
-          props.clickHandler(props.open ? '' : props.region.name)
+          props.onClick(props.open ? '' : props.region.name)
         }}
       >
         <Flag countryCode={props.region.countryIsoCode} />
@@ -105,9 +105,9 @@ function RegionContent(props: RegionContentProps) {
             {props.region.namePretty}
           </S.RegionCountryLabel>
           <S.CountryServerInfo selected={!props.open && props.selected}>
-            {getLocale('braveVpnServerSelectionCountryInfo').replace(
-              /\$\d+/g,
-              (match) => countryInfo[match]
+            {getLocaleWithReplacements(
+              'braveVpnServerSelectionCountryInfo',
+              countryInfo
             )}
           </S.CountryServerInfo>
         </S.CountryInfo>
@@ -129,11 +129,15 @@ function RegionContent(props: RegionContentProps) {
           <RegionCity
             cityLabel={getLocale('braveVpnServerSelectionOptimalLabel')}
             serverInfo={getLocale('braveVpnServerSelectionOptimalDesc')}
-            selected={props.selected && currentRegion.name === props.region.name}
-            connectionButton={ConnectButton({
-              right: '16px',
-              connect: () => handleConnect(props.region)
-            })}
+            selected={
+              props.selected && currentRegion.name === props.region.name
+            }
+            connectionButton={
+              <ConnectButton
+                right='16px'
+                connect={() => handleConnect(props.region)}
+              />
+            }
           />
           {props.region.cities.map((city: Region) => (
             <RegionCity
@@ -144,10 +148,12 @@ function RegionContent(props: RegionContentProps) {
                 `${city.serverCount}`
               )}
               selected={props.selected && currentRegion.name === city.name}
-              connectionButton={ConnectButton({
-                right: '16px',
-                connect: () => handleConnect(city)
-              })}
+              connectionButton={
+                <ConnectButton
+                  right='16px'
+                  connect={() => handleConnect(city)}
+                />
+              }
             />
           ))}
         </>
@@ -169,7 +175,7 @@ function RegionAutomatic() {
       fillBackground={true}
     >
       <S.RegionCountry>
-        <Flag countryCode={'WORLDWIDE'} />
+        <Flag countryCode='WORLDWIDE' />
         <S.CountryInfo>
           <S.RegionCountryLabel selected={currentRegion.isAutomatic}>
             {getLocale('braveVpnServerSelectionAutomaticLabel')}
@@ -178,10 +184,9 @@ function RegionAutomatic() {
             {getLocale('braveVpnServerSelectionOptimalDesc')}
           </S.CountryServerInfo>
         </S.CountryInfo>
-        {currentRegion.isAutomatic && (
+        {currentRegion.isAutomatic ? (
           <S.StyledCheckBox name='check-circle-filled'></S.StyledCheckBox>
-        )}
-        {!currentRegion.isAutomatic && (
+        ) : (
           <ConnectButton
             right='16px'
             connect={handleConnect}
@@ -251,7 +256,7 @@ function SelectRegion() {
               region={region}
               selected={!currentRegion.isAutomatic && hasCurrentRegion(region)}
               open={region.name === openedCountry}
-              clickHandler={(countryName) => setOpenedCountry(countryName)}
+              onClick={(countryName) => setOpenedCountry(countryName)}
             />
           ))}
         </S.RegionList>
