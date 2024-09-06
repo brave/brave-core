@@ -130,7 +130,7 @@ class RewardsInternalsShareController: UITableViewController {
         self.progressIndiciator.progress = 0
       }
     }
-    Task {
+    Task { [dropDirectory, zipPath] in
       do {
         if await AsyncFileManager.default.fileExists(atPath: dropDirectory.path) {
           try await AsyncFileManager.default.removeItem(at: dropDirectory)
