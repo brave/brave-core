@@ -351,14 +351,13 @@ void ConversationDriver::OnConversationActiveChanged(
 }
 
 void ConversationDriver::ClearSearchQuerySummary() {
-  // Only clear it when the conversation only has the staged query and summary.
-  if (chat_history_.size() != 2) {
+  if (chat_history_.empty()) {
     return;
   }
 
   const auto& last_turn = chat_history_.back();
   if (last_turn->from_brave_search_SERP) {
-    chat_history_.clear();  // Clear the staged query and summary.
+    chat_history_.clear();  // Clear staged queries and answers.
     for (auto& obs : observers_) {
       obs.OnHistoryUpdate();
     }
@@ -457,32 +456,33 @@ void ConversationDriver::OnSearchQuerySummaryFetched(
     return;
   }
 
-  auto search_query_summary =
-      ParseSearchQuerySummaryResponse(result.value_body());
-  if (!search_query_summary) {
+  auto entries = ParseSearchQuerySummaryResponse(result.value_body());
+  if (!entries) {
     std::move(callback).Run(std::nullopt);
     return;
   }
 
-  // Add the query & summary to the conversation history and call
+  // Add the query & summary pairs to the conversation history and call
   // OnHistoryUpdate to update UI.
-  chat_history_.push_back(mojom::ConversationTurn::New(
-      CharacterType::HUMAN, mojom::ActionType::QUERY,
-      ConversationTurnVisibility::VISIBLE, search_query_summary->query,
-      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, true));
-  std::vector<mojom::ConversationEntryEventPtr> events;
-  events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New(search_query_summary->summary)));
-  chat_history_.push_back(mojom::ConversationTurn::New(
-      CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      ConversationTurnVisibility::VISIBLE, search_query_summary->summary,
-      std::nullopt, std::move(events), base::Time::Now(), std::nullopt, true));
+  for (const auto& entry : *entries) {
+    chat_history_.push_back(mojom::ConversationTurn::New(
+        CharacterType::HUMAN, mojom::ActionType::QUERY,
+        ConversationTurnVisibility::VISIBLE, entry.query, std::nullopt,
+        std::nullopt, base::Time::Now(), std::nullopt, true));
+    std::vector<mojom::ConversationEntryEventPtr> events;
+    events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New(entry.summary)));
+    chat_history_.push_back(mojom::ConversationTurn::New(
+        CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+        ConversationTurnVisibility::VISIBLE, entry.summary, std::nullopt,
+        std::move(events), base::Time::Now(), std::nullopt, true));
+  }
 
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
   }
 
-  std::move(callback).Run(search_query_summary);
+  std::move(callback).Run(entries);
 }
 
 void ConversationDriver::GetSearchSummarizerKey(
@@ -492,7 +492,7 @@ void ConversationDriver::GetSearchSummarizerKey(
 }
 
 // static
-std::optional<SearchQuerySummary>
+std::optional<std::vector<SearchQuerySummary>>
 ConversationDriver::ParseSearchQuerySummaryResponse(const base::Value& value) {
   auto search_query_response =
       brave_search_responses::QuerySummaryResponse::FromValue(value);
@@ -500,12 +500,17 @@ ConversationDriver::ParseSearchQuerySummaryResponse(const base::Value& value) {
     return std::nullopt;
   }
 
-  const auto& query_summary = search_query_response->conversation[0];
-  if (query_summary.answer.empty()) {
-    return std::nullopt;
+  std::vector<SearchQuerySummary> entries;
+  for (const auto& entry : search_query_response->conversation) {
+    if (entry.answer.empty()) {
+      continue;
+    }
+
+    // Only support one answer for each query for now.
+    entries.push_back(SearchQuerySummary(entry.query, entry.answer[0].text));
   }
 
-  return SearchQuerySummary(query_summary.query, query_summary.answer[0].text);
+  return entries;
 }
 
 void ConversationDriver::InitEngine() {

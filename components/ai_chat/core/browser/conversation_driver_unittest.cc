@@ -235,7 +235,7 @@ class ConversationDriverUnitTest : public testing::Test {
 
   void TearDown() override {}
 
-  void StageSearchQuerySummary() {
+  void StageSearchQuerySummary(bool multi = false) {
     std::vector<mojom::ConversationTurnPtr> history;
     history.push_back(mojom::ConversationTurn::New(
         mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
@@ -248,15 +248,41 @@ class ConversationDriverUnitTest : public testing::Test {
         mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
         mojom::ConversationTurnVisibility::VISIBLE, "summary", std::nullopt,
         std::move(events), base::Time::Now(), std::nullopt, true));
+
+    // multi is used to test multiple search query summary pairs.
+    if (multi) {
+      history.push_back(mojom::ConversationTurn::New(
+          mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+          mojom::ConversationTurnVisibility::VISIBLE, "query2", std::nullopt,
+          std::nullopt, base::Time::Now(), std::nullopt, true));
+      std::vector<mojom::ConversationEntryEventPtr> events2;
+      events2.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+          mojom::CompletionEvent::New("summary2")));
+      history.push_back(mojom::ConversationTurn::New(
+          mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+          mojom::ConversationTurnVisibility::VISIBLE, "summary2", std::nullopt,
+          std::move(events2), base::Time::Now(), std::nullopt, true));
+    }
+
     conversation_driver_->SetChatHistoryForTesting(std::move(history));
   }
 
-  void SetSearchQuerySummaryInterceptor(bool empty = false) {
+  void SetSearchQuerySummaryInterceptor(bool empty = false,
+                                        bool multi = false) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, empty](const network::ResourceRequest& request) {
-          std::string rsp =
-              empty ? R"({"conversation": []})" : R"({"conversation": [
-                    {"query": "query", "answer": [{"text": "summary"}]}]})";
+        [&, empty, multi](const network::ResourceRequest& request) {
+          std::string rsp;
+          if (empty) {
+            rsp = R"({"conversation": []})";
+          } else if (multi) {
+            rsp = R"({"conversation": [
+                {"query": "query", "answer": [{"text": "summary"}]},
+                {"query": "query2", "answer": [{"text": "summary2"}]}]})";
+          } else {
+            rsp = R"({"conversation": [
+                {"query": "query", "answer": [{"text": "summary"}]}]})";
+          }
+
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(), rsp);
         }));
@@ -1088,7 +1114,7 @@ TEST_F(ConversationDriverUnitTest,
           testing::Return(GURL("https://search.brave.com/search?q=test")));
   EXPECT_CALL(*conversation_driver_, GetSearchSummarizerKey)
       .WillOnce(base::test::RunOnceCallback<0>("key"));
-  SetSearchQuerySummaryInterceptor(true);
+  SetSearchQuerySummaryInterceptor(/*empty=*/true);
   MockConversationDriverObserver observer(conversation_driver_.get());
   EXPECT_CALL(observer, OnHistoryUpdate()).Times(0);
 
@@ -1103,7 +1129,7 @@ TEST_F(ConversationDriverUnitTest,
        MaybeFetchOrClearSearchQuerySummary_NotOptedIn) {
   EmulateUserOptedIn();
   ASSERT_TRUE(conversation_driver_->should_send_page_contents_);
-  StageSearchQuerySummary();
+  StageSearchQuerySummary(/*multi=*/true);
 
   // Fetch should not be called when user is not opted in, staged query
   // and summary will be cleared.
@@ -1240,17 +1266,78 @@ TEST_F(ConversationDriverUnitTest,
   EXPECT_EQ(conversation_driver_->GetConversationHistory().size(), 2u);
 }
 
+TEST_F(ConversationDriverUnitTest,
+       MaybeFetchOrClearSearchQuerySummary_MultiQuery) {
+  ON_CALL(*conversation_driver_, GetPageURL)
+      .WillByDefault(
+          testing::Return(GURL("https://search.brave.com/search?q=test")));
+  EXPECT_CALL(*conversation_driver_, GetSearchSummarizerKey)
+      .WillOnce(base::test::RunOnceCallback<0>("key"));
+  SetSearchQuerySummaryInterceptor(/*empty=*/false, /*multi=*/true);
+  MockConversationDriverObserver observer(conversation_driver_.get());
+  EXPECT_CALL(observer, OnHistoryUpdate()).Times(1);  // From fetch.
+
+  // User opting in would trigger MaybeFetchOrClearSearchQuerySummary being
+  // called.
+  EmulateUserOptedIn();
+  EXPECT_TRUE(conversation_driver_->is_conversation_active_);
+  EXPECT_TRUE(conversation_driver_->should_send_page_contents_);
+
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(conversation_driver_.get());
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  auto& history = conversation_driver_->GetConversationHistory();
+  std::vector<mojom::ConversationTurnPtr> expected_history;
+  expected_history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      mojom::ConversationTurnVisibility::VISIBLE, "query", std::nullopt,
+      std::nullopt, base::Time::Now(), std::nullopt, true));
+  std::vector<mojom::ConversationEntryEventPtr> events;
+  events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("summary")));
+  expected_history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "summary", std::nullopt,
+      std::move(events), base::Time::Now(), std::nullopt, true));
+
+  expected_history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      mojom::ConversationTurnVisibility::VISIBLE, "query2", std::nullopt,
+      std::nullopt, base::Time::Now(), std::nullopt, true));
+  std::vector<mojom::ConversationEntryEventPtr> events2;
+  events2.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("summary2")));
+  expected_history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "summary2", std::nullopt,
+      std::move(events2), base::Time::Now(), std::nullopt, true));
+
+  ASSERT_EQ(history.size(), expected_history.size());
+  for (size_t i = 0; i < history.size(); i++) {
+    expected_history[i]->created_time = history[i]->created_time;
+    EXPECT_EQ(history[i], expected_history[i]);
+  }
+}
+
 TEST_F(ConversationDriverUnitTest, ParseSearchQuerySummaryResponse) {
   struct {
     std::string response;
-    std::optional<SearchQuerySummary> expected_query_summary;
+    std::optional<std::vector<SearchQuerySummary>> expected_query_summary;
   } test_cases[] = {
       {"{}", std::nullopt},
       {R"({"conversation": []})", std::nullopt},  // empty conversation
       {R"({"conversation": [{"query": "q","answer": []}]})",
-       std::nullopt},  // empty answer
+       std::vector<SearchQuerySummary>()},  // empty answer
       {R"({"conversation": [{"query": "q", "answer": [{"text": "t"}]}]})",
-       SearchQuerySummary("q", "t")},
+       std::vector<SearchQuerySummary>({SearchQuerySummary("q", "t")})},
+      {R"({"conversation": [
+          {"query": "q1", "answer": [{"text": "t1"}, {"text": "t2"}]},
+          {"query": "q2", "answer": []},
+          {"query": "q3", "answer": [{"text": "t3"}]}
+        ]})",
+       std::vector<SearchQuerySummary>(
+           {SearchQuerySummary("q1", "t1"), SearchQuerySummary("q3", "t3")})},
   };
 
   for (const auto& test_case : test_cases) {

@@ -209,7 +209,7 @@ class ConversationDriver : public ModelService::Observer {
       mojom::PageContentExtractor::GetSearchSummarizerKeyCallback callback);
 
   using FetchSearchQuerySummaryCallback = base::OnceCallback<void(
-      const std::optional<SearchQuerySummary>& search_query_summary)>;
+      const std::optional<std::vector<SearchQuerySummary>>& entries)>;
 
   // Fetch search query and summary from Brave Search SERP and add them to the
   // conversation history or clear the existing staged search query and summary
@@ -273,6 +273,8 @@ class ConversationDriver : public ModelService::Observer {
       ConversationDriverUnitTest,
       MaybeFetchOrClearSearchQuerySummary_OnConversationActiveChanged);
   FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
+                           MaybeFetchOrClearSearchQuerySummary_MultiQuery);
+  FRIEND_TEST_ALL_PREFIXES(ConversationDriverUnitTest,
                            ParseSearchQuerySummaryResponse);
 
   void InitEngine();
@@ -289,8 +291,8 @@ class ConversationDriver : public ModelService::Observer {
 
   void ClearSearchQuerySummary();
   bool ShouldFetchSearchQuerySummary();
-  static std::optional<SearchQuerySummary> ParseSearchQuerySummaryResponse(
-      const base::Value& value);
+  static std::optional<std::vector<SearchQuerySummary>>
+  ParseSearchQuerySummaryResponse(const base::Value& value);
 
   void PerformAssistantGeneration(const std::string& input,
                                   int64_t current_navigation_id,
