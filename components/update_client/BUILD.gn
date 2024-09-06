@@ -22,13 +22,3 @@ buildflag_header("buildflags") {
     "UPDATER_PROD_ENDPOINT=\"$updater_prod_endpoint\"",
   ]
 }
-
-if (is_mac) {
-  source_set("features") {
-    sources = [
-      "features.cc",
-      "features.h",
-    ]
-    deps = [ "//base" ]
-  }
-}

@@ -9,8 +9,8 @@ import("//build/config/ui.gni")
 
 group("ui") {
   deps = [
+    "//brave/browser:features",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/update_client:features",
   ]
 
   if (toolkit_views) {
