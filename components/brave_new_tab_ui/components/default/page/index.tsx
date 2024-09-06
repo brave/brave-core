@@ -165,15 +165,15 @@ export const Page: React.FunctionComponent<React.PropsWithChildren<PageProps>> =
 
 export const GridItemStats = styled('section')`
   grid-column: 1 / span 2;
-  @media screen and (max-height: ${breakpointShortHeight}) {
-    display: none;
-  }
 `
 
 export const GridItemClock = styled('section')`
   grid-column: 3;
   justify-self: center;
   @media screen and (max-width: ${breakpointEveryBlock}) {
+    display: none;
+  }
+  @media screen and (max-height: ${breakpointShortHeight}) {
     display: none;
   }
 `
@@ -185,9 +185,6 @@ export const GridItemWidgetStack = styled('section')`
     max-width: 284px;
   }
   @media screen and (max-width: ${breakpointEveryBlock}) {
-    display: none;
-  }
-  @media screen and (max-height: ${breakpointShortHeight}) {
     display: none;
   }
 `
