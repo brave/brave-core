@@ -3467,7 +3467,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Turn on to help support content creators
     </message>
     <message name="IDS_REWARDS_PANEL_UNVERIFIED_SWITCH_ON_SUB_TEXT" desc="A sub title for brave rewards panel unverified state when rewards is on">
-      You are helping support content creators
+      You are helping support Brave and BAT community
     </message>
     <message name="IDS_REWARDS_PANEL_UNVERIFIED_OFF_SECTION_TEXT" desc="Rewards panel unverified state section text when rewards is disabled">
       Using Brave Rewards helps support content creators, and lets you earn BAT.
