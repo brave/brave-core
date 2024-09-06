@@ -10,11 +10,11 @@ import os.log
 
 enum NTPWallpaper {
   case image(NTPBackgroundImage)
-  case sponsoredImage(NTPSponsoredImageBackground)
+  case sponsoredMedia(NTPSponsoredImageBackground)
   case superReferral(NTPSponsoredImageBackground, code: String)
 
   var backgroundVideoPath: URL? {
-    if case .sponsoredImage(let background) = self {
+    if case .sponsoredMedia(let background) = self {
       return background.isVideoFile ? background.imagePath : nil
     }
     return nil
@@ -25,7 +25,7 @@ enum NTPWallpaper {
     switch self {
     case .image(let background):
       imagePath = background.imagePath
-    case .sponsoredImage(let background):
+    case .sponsoredMedia(let background):
       if background.isVideoFile {
         return nil
       }
@@ -41,7 +41,7 @@ enum NTPWallpaper {
     switch self {
     case .image:
       imagePath = nil
-    case .sponsoredImage(let background):
+    case .sponsoredMedia(let background):
       imagePath = background.logo.imagePath
     case .superReferral(let background, _):
       imagePath = background.logo.imagePath
@@ -53,7 +53,7 @@ enum NTPWallpaper {
     switch self {
     case .image:
       return nil  // Will eventually return a real value
-    case .sponsoredImage(let background):
+    case .sponsoredMedia(let background):
       return background.focalPoint
     case .superReferral(let background, _):
       return background.focalPoint
@@ -134,17 +134,33 @@ public class NTPDataSource {
 
       if let sponsor = service.sponsoredImageData {
         let attemptSponsored =
-          Preferences.NewTabPage.backgroundSponsoredImages.value
+          Preferences.NewTabPage.backgroundMediaType.isSponsored
           && Preferences.NewTabPage.backgroundRotationCounter.value
             == service.initialCountToBrandedWallpaper
           && !privateBrowsingManager.isPrivateBrowsing
 
         if attemptSponsored {
-          // Pick the campaign randomly
-          let campaignIndex: Int = Int.random(in: 0..<sponsor.campaigns.count)
+          let isSponsoredVideoAllowed =
+            Preferences.NewTabPage.backgroundMediaType == .sponsoredImagesAndVideos
 
-          if let campaign = sponsor.campaigns[safe: campaignIndex] {
-            return (campaign.backgrounds.map(NTPWallpaper.sponsoredImage), .sponsoredRotation)
+          // Exclude campaigns with only sponsored video backgrounds if the user
+          // has selected the `Sponsored Images` option in settings.
+          let campaigns = sponsor.campaigns.filter {
+            $0.backgrounds.contains { !$0.isVideoFile || isSponsoredVideoAllowed }
+          }
+
+          // Pick the campaign randomly
+          if let campaign = campaigns.randomElement() {
+            // Exclude sponsored video backgrounds if the user has selected
+            // the `Sponsored Images` option in settings.
+            let filteredBackgrounds = campaign.backgrounds.filter {
+              !$0.isVideoFile || isSponsoredVideoAllowed
+            }
+            if !filteredBackgrounds.isEmpty {
+              return (
+                filteredBackgrounds.map(NTPWallpaper.sponsoredMedia), .sponsoredRotation
+              )
+            }
           }
         }
       }
