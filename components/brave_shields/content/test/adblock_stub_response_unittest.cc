@@ -13,12 +13,7 @@ TEST(AdBlockStubResponse, ScriptDataURL) {
       "data:application/script,<script>alert('hi');</script>";
   std::string data;
   auto resource_response = network::mojom::URLResponseHead::New();
-#if BUILDFLAG(IS_ANDROID)
-  const base::Location& location = FROM_HERE;
-  network::ResourceRequest request(location);
-#else
   network::ResourceRequest request;
-#endif
   brave_shields::MakeStubResponse(data_url, request, &resource_response, &data);
   ASSERT_EQ(data, "<script>alert('hi');</script>");
   ASSERT_EQ(resource_response->mime_type, "application/script");
@@ -28,12 +23,7 @@ TEST(AdBlockStubResponse, HTMLDataURL) {
   std::string data_url = "data:text/html,<strong>π</strong>";
   std::string data;
   auto resource_response = network::mojom::URLResponseHead::New();
-#if BUILDFLAG(IS_ANDROID)
-  const base::Location& location = FROM_HERE;
-  network::ResourceRequest request(location);
-#else
   network::ResourceRequest request;
-#endif
   brave_shields::MakeStubResponse(data_url, request, &resource_response, &data);
   ASSERT_EQ(data, "<strong>π</strong>");
   ASSERT_EQ(resource_response->mime_type, "text/html");
