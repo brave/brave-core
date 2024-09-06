@@ -69,7 +69,7 @@ void FilterCreativeSetConversionBucketsThatExceedTheCap(
 
   for (const auto& [creative_set_id, creative_set_conversion_count] :
        creative_set_conversion_counts) {
-    if (creative_set_conversion_count >= creative_set_conversion_cap) {
+    if (creative_set_conversion_count > creative_set_conversion_cap) {
       creative_set_conversion_buckets.erase(creative_set_id);
     }
   }

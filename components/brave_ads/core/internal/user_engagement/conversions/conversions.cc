@@ -152,6 +152,13 @@ void Conversions::CheckForConversions(
     }
     const auto& [creative_set_id, creative_set_conversion_bucket] = *iter;
 
+    // Have we exceeded the limit for creative set conversions?
+    if (creative_set_conversion_cap > 0 &&
+        creative_set_conversion_counts[creative_set_id] ==
+            creative_set_conversion_cap) {
+      continue;
+    }
+
     // Yes, so are we allowed to convert this ad event?
     if (!IsAllowedToConvertAdEvent(ad_event)) {
       // No, so skip this ad event.
@@ -178,13 +185,8 @@ void Conversions::CheckForConversions(
       did_convert = true;
 
       // Have we exceeded the limit for creative set conversions?
-      if (creative_set_conversion_cap == 0) {
-        // There is no limit, so continue converting.
-        continue;
-      }
-
       ++creative_set_conversion_counts[creative_set_id];
-      if (creative_set_conversion_counts[creative_set_id] >=
+      if (creative_set_conversion_counts[creative_set_id] ==
           creative_set_conversion_cap) {
         // Yes, so stop converting.
         break;
