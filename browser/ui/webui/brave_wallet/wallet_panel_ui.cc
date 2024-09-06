@@ -63,6 +63,8 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   plural_string_handler->AddLocalizedString(
       "braveWalletExchangeNamePlusSteps",
       IDS_BRAVE_WALLET_EXCHANGE_NAME_PLUS_STEPS);
+  plural_string_handler->AddLocalizedString(
+      "braveWalletPendingTransactions", IDS_BRAVE_WALLET_PENDING_TRANSACTIONS);
   web_ui->AddMessageHandler(std::move(plural_string_handler));
   webui::SetupWebUIDataSource(source,
                               base::make_span(kBraveWalletPanelGenerated,

@@ -665,10 +665,27 @@
   <message name="IDS_BRAVE_WALLET_SHOW_SPAM_NFTS_DESCRIPTION" desc="Show spam NFTs filter description">Show spam NFTs</message>
   <message name="IDS_BRAVE_WALLET_PORTFOLIO_SETTINGS" desc="Portfolio settings label">Portfolio settings</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_FILTER_ALL_ACCOUNTS" desc="Account Filter Selector All Accounts">All accounts</message>
+  <message name="IDS_BRAVE_WALLET_GET_HELP" desc="Get help button">Get help</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_TAKING_LONG_TIME" desc="A transaction is taking a long time label">Taking longer than expected?</message>
+  <message name="IDS_BRAVE_WALLET_VIEW_IN_ACTIVITY" desc="View in activity tab button">View in activity</message>
+  <message name="IDS_BRAVE_WALLET_SAFELY_DISMISS_WINDOW" desc="You can safely dismiss this window message">You can safely dismiss this window.</message>
+  <message name="IDS_BRAVE_WALLET_SENDING_AMOUNT_TO_ACCOUNT" desc="Transaction intent sending amount to account label">Sending <ph name="AMOUNT_BEFORE">$1</ph><ph name="AMOUNT"><ex>20 ETH</ex>$5</ph><ph name="AMOUNT_AFTER">$2</ph> to <ph name="ACCOUNT_BEFORE">$3</ph><ph name="ACCOUNT"><ex>Ethereum Account 2</ex>$6</ph><ph name="ACCOUNT_AFTER">$4</ph></message>
+  <message name="IDS_BRAVE_WALLET_AMOUNT_SENT_TO_ACCOUNT" desc="Transaction intent amount sent to account label"><ph name="AMOUNT_BEFORE">$1</ph><ph name="AMOUNT"><ex>20 ETH</ex>$5</ph><ph name="AMOUNT_AFTER">$2</ph> has been sent to account <ph name="ACCOUNT_BEFORE">$3</ph><ph name="ACCOUNT"><ex>Ethereum Account 2</ex>$6</ph><ph name="ACCOUNT_AFTER">$4</ph></message>
+  <message name="IDS_BRAVE_WALLET_SWAPPING_AMOUNT_TO_ACCOUNT_ON_NETWORK" desc="Transaction intent swapping amount to account on network label">Swapping <ph name="AMOUNT_BEFORE">$1</ph><ph name="AMOUNT"><ex>20 ETH</ex>$5</ph><ph name="AMOUNT_AFTER">$2</ph> to <ph name="ACCOUNT_BEFORE">$3</ph><ph name="ACCOUNT"><ex>Ethereum Account 2</ex>$6</ph><ph name="ACCOUNT_AFTER">$4</ph> on <ph name="NETWORK"><ex>Ethereum Mainnet</ex>$7</ph></message>
+  <message name="IDS_BRAVE_WALLET_AMOUNT_ADDED_TO_ACCOUNT" desc="Transaction intent amount added to account label">The amount of <ph name="AMOUNT_BEFORE">$1</ph><ph name="AMOUNT"><ex>20 ETH</ex>$5</ph><ph name="AMOUNT_AFTER">$2</ph> has been added to your account <ph name="ACCOUNT_BEFORE">$3</ph><ph name="ACCOUNT"><ex>Ethereum Account 2</ex>$6</ph><ph name="ACCOUNT_AFTER">$4</ph></message>
+  <message name="IDS_BRAVE_WALLET_BRIDGING_AMOUNT_TO_NETWORK" desc="Transaction intent bridging amount to network label">Bridging <ph name="AMOUNT_BEFORE">$1</ph><ph name="AMOUNT"><ex>20 ETH</ex>$5</ph><ph name="AMOUNT_AFTER">$2</ph> to <ph name="NETWORK_BEFORE">$3</ph><ph name="NETWORK"><ex>Polygon Mainnet</ex>$6</ph><ph name="NETWORK_AFTER">$4</ph></message>
+  <message name="IDS_BRAVE_WALLET_UNABLE_TO_SEND_SWAP_OR_BRIDGE" desc="Transaction intent bridging amount to network label">Unable to <ph name="SEND_SWAP_OR_BRIDGE"><ex>Bridge</ex>$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_ERROR_ATTEMPTING_TO_TRANSACT" desc="Transaction intent bridging amount to network label">There was an error attempting to <ph name="SEND_SWAP_OR_BRIDGE"><ex>Bridge</ex>$7</ph> <ph name="AMOUNT_BEFORE">$1</ph><ph name="AMOUNT"><ex>20 ETH</ex>$5</ph><ph name="AMOUNT_AFTER">$2</ph> to <ph name="VALUE_BEFORE">$3</ph><ph name="VALUE"><ex>Polygon Mainnet</ex>$6</ph><ph name="VALUE_AFTER">$4</ph></message>
+  <message name="IDS_BRAVE_WALLET_APPROVING_AMOUNT_ON_EXCHANGE" desc="Transaction intent bridging amount to network label">Approving <ph name="AMOUNT_BEFORE">$1</ph><ph name="AMOUNT"><ex>20 ETH</ex>$5</ph><ph name="AMOUNT_AFTER">$2</ph> to <ph name="EXCHANGE_BEFORE">$3</ph><ph name="EXCHANGE"><ex>Li.Fi Excahnge</ex>$6</ph><ph name="EXCHANGE_AFTER">$4</ph></message>
+  <message name="IDS_BRAVE_WALLET_CANCEL_TRANSACTION_DESCRIPTION" desc="Cancel transaction panel description">A new transaction will be created to cancel your existing transaction.</message>
+  <message name="IDS_BRAVE_WALLET_PENDING_TRANSACTIONS" desc="Transaction complete panel, amount of transactions still pending.">
+    {PENDING_TRANSACTIONS, plural,
+      =1 {{PENDING_TRANSACTIONS} more transaction pending.}
+      other {{PENDING_TRANSACTIONS} more transactions pending.}
+    }
+  </message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_TITLE" desc="Transaction submitted title">Transaction submitted</message>
-  <message name="IDS_BRAVE_WALLET_TRANSACTION_SUBMITTED_DESCRIPTION" desc="Transaction submitted description">Transaction has been successfully sent to the network and awaits confirmation.</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SIGNED_TITLE" desc="Transaction signed title">Transaction signed</message>
-  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIGNED_DESCRIPTION" desc="Transaction signed description">The transaction has been signed and will be sent to network by the DApp</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_HEADER_TITLE" desc="Transaction failed header title"><ph name="VALUE">$1<ex>1 ETH</ex></ph> was returned to your wallet</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_TITLE" desc="Transaction failed title">Transaction failed</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_FAILED_DESCRIPTION" desc="Transaction failed description">Transaction was failed due to a large price movement. Increase slippage tolerance to succeed at a larger price movement.</message>

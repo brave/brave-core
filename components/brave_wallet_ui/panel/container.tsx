@@ -288,10 +288,13 @@ function Container() {
 
   if (selectedPanel === 'transactionStatus' && selectedTransactionId) {
     return (
-      <PanelWrapper isLonger={false}>
-        <StyledExtensionWrapper>
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
+        <LongWrapper padding='0px'>
           <TransactionStatus transactionLookup={selectedTransactionId} />
-        </StyledExtensionWrapper>
+        </LongWrapper>
       </PanelWrapper>
     )
   }

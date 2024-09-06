@@ -1186,12 +1186,26 @@ provideStrings({
   braveWalletAccountFilterAllAccounts: 'All accounts',
 
   // Transaction post-confirmation
-
+  braveWalletGetHelp: 'Get help',
+  braveWalletTransactionTakingLongTime: 'Taking longer than expected?',
+  braveWalletViewInActivity: 'View in activity',
+  braveWalletSafelyDismissWindow: 'You can safely dismiss this window.',
+  braveWalletSendingAmountToAccount: 'Sending $1$5$2 to $3$6$4',
+  braveWalletAmountSentToAccount: '$1$5$2 has been sent to account $3$6$4',
+  braveWalletSwappingAmountToAmountOnNetwork: 'Swapping $1$5$2 to $3$6$4 on $7',
+  braveWalletAmountAddedToAccount:
+    'The amount of $1$5$2 has been added to your account $3$6$4',
+  braveWalletBridgingAmountToNetwork: 'Bridging $1$5$2 to $3$6$4',
+  braveWalletUnableToSendSwapOrBridge: 'Unable to $1',
+  braveWalletErrorAttemptingToTransact:
+    'There was an error attempting to $7 $1$5$2 to $3$6$4',
+  braveWalletApprovingAmountOnExchange: 'Approving $1$5$2 to $3$6$4',
+  braveWalletCancelTransactionDescription:
+    'A new transaction will be created to cancel your existing transaction.',
+  braveWalletPendingTransactions: '$1 more transactions pending.',
   // Submitted
   braveWalletTransactionSubmittedTitle: 'Transaction submitted',
-  braveWalletTransactionSubmittedDescription:
-    'Transaction has been successfully sent ' +
-    'to the network and awaits confirmation.',
+  braveWalletTransactionSignedTitle: 'Transaction signed',
 
   // Failed
   braveWalletTransactionFailedHeaderTitle: '$1 was returned to your wallet',

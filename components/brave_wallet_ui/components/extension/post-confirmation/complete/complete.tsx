@@ -3,75 +3,106 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
+import LeoButton from '@brave/leo/react/button'
+import {
+  PluralStringProxyImpl //
+} from 'chrome://resources/js/plural_string_proxy.js'
+import usePromise from '$web-common/usePromise'
 
 // Utils
 import { getLocale } from '$web-common/locale'
 
 // Hooks
-import { usePendingTransactions } from '../../../../common/hooks/use-pending-transaction'
+import {
+  usePendingTransactions //
+} from '../../../../common/hooks/use-pending-transaction'
 
 // Components
-import { NavButton } from '../../buttons/nav-button/index'
-import { Panel } from '../../panel/index'
-import { SuccessIcon, Title } from './complete.style'
 import {
-  ButtonRow,
-  PendingTransactionsRow,
-  TransactionStatusDescription
+  PostConfirmationHeader //
+} from '../common/post_confirmation_header'
+
+// Styled Components
+import {
+  // TransactionStatusDescription,
+  Title,
+  Wrapper,
+  ErrorOrSuccessIconWrapper,
+  ErrorOrSuccessIcon
 } from '../common/common.style'
+import { Column, Row, Text } from '../../../shared/style'
+import { SerializableTransactionInfo } from '../../../../constants/types'
+import { TransactionIntent } from '../common/transaction_intent'
 
 interface Props {
-  headerTitle: string
-  description: string
-  isPrimaryCTADisabled: boolean
-  primaryCTAText: string
+  transaction: SerializableTransactionInfo
   onClose: () => void
-  onClickSecondaryCTA: () => void
-  onClickPrimaryCTA: () => void
+  onClickViewInActivity: () => void
 }
 
 export const TransactionComplete = (props: Props) => {
-  const {
-    headerTitle,
-    description,
-    isPrimaryCTADisabled,
-    primaryCTAText,
-    onClose,
-    onClickPrimaryCTA,
-    onClickSecondaryCTA
-  } = props
+  const { transaction, onClose, onClickViewInActivity } = props
 
+  // Hooks
   const { transactionsQueueLength } = usePendingTransactions()
 
+  // Computed
+  const { result: pendingTransactionsLocale } = usePromise(
+    async () =>
+      PluralStringProxyImpl.getInstance().getPluralString(
+        'braveWalletPendingTransactions',
+        transactionsQueueLength
+      ),
+    [transactionsQueueLength]
+  )
+  const hasMoreTransactions = transactionsQueueLength >= 1
+
   return (
-    <Panel
-      navAction={onClose}
-      title={headerTitle}
-      headerStyle='slim'
+    <Wrapper
+      fullWidth={true}
+      fullHeight={true}
+      alignItems='center'
+      justifyContent='space-between'
     >
-      <SuccessIcon />
-      <Title>{getLocale('braveWalletTransactionCompleteTitle')}</Title>
-      <TransactionStatusDescription>{description}</TransactionStatusDescription>
-
-      {transactionsQueueLength >= 1 && (
-        <PendingTransactionsRow>
-          {transactionsQueueLength} more transactions pending.
-        </PendingTransactionsRow>
-      )}
-
-      <ButtonRow>
-        <NavButton
-          buttonType='secondary'
-          text={getLocale('braveWalletTransactionCompleteReceiptCTA')}
-          onSubmit={onClickSecondaryCTA}
-        />
-        <NavButton
-          buttonType='primary'
-          text={primaryCTAText}
-          onSubmit={onClickPrimaryCTA}
-          disabled={isPrimaryCTADisabled}
-        />
-      </ButtonRow>
-    </Panel>
+      <PostConfirmationHeader onClose={onClose} />
+      <Column>
+        <ErrorOrSuccessIconWrapper kind='success'>
+          <ErrorOrSuccessIcon
+            kind='success'
+            name='check-normal'
+          />
+        </ErrorOrSuccessIconWrapper>
+        <Title>{getLocale('braveWalletTransactionCompleteTitle')}</Title>
+        <TransactionIntent transaction={transaction} />
+      </Column>
+      <Column
+        fullWidth={true}
+        padding='16px'
+        gap='16px'
+      >
+        {hasMoreTransactions && (
+          <Text
+            textSize='12px'
+            textColor='tertiary'
+            isBold={false}
+          >
+            {pendingTransactionsLocale}
+          </Text>
+        )}
+        <Row gap='8px'>
+          <LeoButton
+            kind={hasMoreTransactions ? 'outline' : 'filled'}
+            onClick={onClickViewInActivity}
+          >
+            {getLocale('braveWalletViewInActivity')}
+          </LeoButton>
+          {hasMoreTransactions && (
+            <LeoButton onClick={onClose}>
+              {getLocale('braveWalletButtonNext')}
+            </LeoButton>
+          )}
+        </Row>
+      </Column>
+    </Wrapper>
   )
 }
