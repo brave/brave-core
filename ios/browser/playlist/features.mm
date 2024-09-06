@@ -8,9 +8,6 @@
 namespace playlist {
 namespace features {
 
-BASE_FEATURE(kNewPlaylistUI,
-             "NewPlaylistUI",
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
+BASE_FEATURE(kNewPlaylistUI, "NewPlaylistUI", base::FEATURE_ENABLED_BY_DEFAULT);
 }
 }  // namespace playlist
