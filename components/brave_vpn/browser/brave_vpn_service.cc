@@ -401,14 +401,13 @@ bool BraveVpnService::IsCurrentRegionSelectedAutomatically(
 
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-void BraveVpnService::GetAllRegions(const std::string& region_precision,
-                                    GetAllRegionsCallback callback) {
+void BraveVpnService::GetAllRegions(GetAllRegionsCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 #if BUILDFLAG(IS_ANDROID)
   api_request_->GetServerRegions(
       base::BindOnce(&BraveVpnService::OnFetchRegionList,
                      base::Unretained(this), std::move(callback)),
-      region_precision);
+      brave_vpn::mojom::kRegionPrecisionCityByCountry);
 #else
   std::vector<mojom::RegionPtr> regions;
   for (const auto& region :

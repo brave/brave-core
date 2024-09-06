@@ -150,7 +150,6 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
         showProgress();
         if (mServiceHandler != null) {
             mServiceHandler.getAllRegions(
-                    BraveVpnConstants.REGION_PRECISION_CITY_BY_COUNTRY,
                     regions -> {
                         if (regions.length > 0) {
                             mBraveVpnServerSelectionAdapter =
