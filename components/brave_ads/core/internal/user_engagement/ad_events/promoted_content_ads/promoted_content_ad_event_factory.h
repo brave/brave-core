@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_interface.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
 

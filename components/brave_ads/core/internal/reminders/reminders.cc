@@ -35,8 +35,8 @@ void Reminders::MaybeShowReminders(const AdHistoryItemInfo& ad_history_item) {
 bool Reminders::CanShowUserClickTheSameAdMultipleTimesReminder(
     const AdHistoryItemInfo& ad_history_item) {
   return !PlatformHelper::GetInstance().IsMobile() &&
-         ad_history_item.type == AdType::kNotificationAd &&
-         ad_history_item.confirmation_type == ConfirmationType::kClicked;
+         ad_history_item.type == mojom::AdType::kNotificationAd &&
+         ad_history_item.confirmation_type == mojom::ConfirmationType::kClicked;
 }
 
 void Reminders::MaybeShowUserClickTheSameAdMultipleTimesReminderAfterDelay(

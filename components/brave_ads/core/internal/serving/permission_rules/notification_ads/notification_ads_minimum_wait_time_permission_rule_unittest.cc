@@ -10,7 +10,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -35,7 +34,7 @@ TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
       test::BuildCreativeNotificationAd(
           /*should_generate_random_uuids=*/false);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-  test::RecordAdEvent(ad, ConfirmationType::kServedImpression);
+  test::RecordAdEvent(ad, mojom::ConfirmationType::kServedImpression);
 
   AdvanceClockBy(base::Minutes(12));
 
@@ -52,7 +51,7 @@ TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
       test::BuildCreativeNotificationAd(
           /*should_generate_random_uuids=*/false);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-  test::RecordAdEvent(ad, ConfirmationType::kServedImpression);
+  test::RecordAdEvent(ad, mojom::ConfirmationType::kServedImpression);
 
   AdvanceClockBy(base::Minutes(12) - base::Milliseconds(1));
 

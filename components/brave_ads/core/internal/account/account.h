@@ -18,8 +18,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards.h"
 #include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
@@ -54,19 +53,19 @@ class Account final : public AdsClientNotifierObserver,
 
   void Deposit(const std::string& creative_instance_id,
                const std::string& segment,
-               AdType ad_type,
-               ConfirmationType confirmation_type) const;
+               mojom::AdType mojom_ad_type,
+               mojom::ConfirmationType mojom_confirmation_type) const;
   void DepositWithUserData(const std::string& creative_instance_id,
                            const std::string& segment,
-                           AdType ad_type,
-                           ConfirmationType confirmation_type,
+                           mojom::AdType mojom_ad_type,
+                           mojom::ConfirmationType mojom_confirmation_type,
                            base::Value::Dict user_data) const;
 
  private:
   void DepositCallback(const std::string& creative_instance_id,
                        const std::string& segment,
-                       AdType ad_type,
-                       ConfirmationType confirmation_type,
+                       mojom::AdType mojom_ad_type,
+                       mojom::ConfirmationType mojom_confirmation_type,
                        base::Value::Dict user_data,
                        bool success,
                        double value) const;
@@ -74,21 +73,22 @@ class Account final : public AdsClientNotifierObserver,
   void ProcessDeposit(const std::string& creative_instance_id,
                       const std::string& segment,
                       double value,
-                      AdType ad_type,
-                      ConfirmationType confirmation_type,
+                      mojom::AdType mojom_ad_type,
+                      mojom::ConfirmationType mojom_confirmation_type,
                       base::Value::Dict user_data) const;
   void ProcessDepositCallback(const std::string& creative_instance_id,
-                              AdType ad_type,
-                              ConfirmationType confirmation_type,
+                              mojom::AdType mojom_ad_type,
+                              mojom::ConfirmationType mojom_confirmation_type,
                               base::Value::Dict user_data,
                               bool success,
                               const TransactionInfo& transaction) const;
 
   void SuccessfullyProcessedDeposit(const TransactionInfo& transaction,
                                     base::Value::Dict user_data) const;
-  void FailedToProcessDeposit(const std::string& creative_instance_id,
-                              AdType ad_type,
-                              ConfirmationType confirmation_type) const;
+  void FailedToProcessDeposit(
+      const std::string& creative_instance_id,
+      mojom::AdType mojom_ad_type,
+      mojom::ConfirmationType mojom_confirmation_type) const;
 
   void Initialize();
 
@@ -102,9 +102,10 @@ class Account final : public AdsClientNotifierObserver,
   void NotifyFailedToInitializeWallet() const;
 
   void NotifyDidProcessDeposit(const TransactionInfo& transaction) const;
-  void NotifyFailedToProcessDeposit(const std::string& creative_instance_id,
-                                    AdType ad_type,
-                                    ConfirmationType confirmation_type) const;
+  void NotifyFailedToProcessDeposit(
+      const std::string& creative_instance_id,
+      mojom::AdType mojom_ad_type,
+      mojom::ConfirmationType mojom_confirmation_type) const;
 
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;

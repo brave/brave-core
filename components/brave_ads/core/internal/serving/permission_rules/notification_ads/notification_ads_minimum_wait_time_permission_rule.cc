@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
@@ -24,7 +24,7 @@ bool HasNotificationAdMinimumWaitTimePermission() {
   }
 
   if (!DoesHistoryRespectRollingTimeConstraint(
-          AdType::kNotificationAd,
+          mojom::AdType::kNotificationAd,
           /*time_constraint=*/base::Hours(1) /
               GetMaximumNotificationAdsPerHour(),
           /*cap=*/1)) {

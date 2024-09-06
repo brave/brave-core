@@ -10,14 +10,18 @@
 #include "base/containers/flat_map.h"
 #include "base/strings/strcat.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 namespace brave_ads {
 
 namespace {
 
-std::string BuildTypeId(const std::string& ad_type,
-                        const std::string& confirmation_type) {
-  return base::StrCat({ad_type, confirmation_type});
+std::string BuildTypeId(const mojom::AdType mojom_ad_type,
+                        const mojom::ConfirmationType mojom_confirmation_type) {
+  return base::StrCat(
+      {ToString(mojom_ad_type), ToString(mojom_confirmation_type)});
 }
 
 void PurgeCacheOlderThan(std::vector<base::Time>& cache,
@@ -33,15 +37,17 @@ AdEventCache::AdEventCache() = default;
 
 AdEventCache::~AdEventCache() = default;
 
-void AdEventCache::AddEntryForInstanceId(const std::string& id,
-                                         const std::string& ad_type,
-                                         const std::string& confirmation_type,
-                                         const base::Time time) {
+void AdEventCache::AddEntryForInstanceId(
+    const std::string& id,
+    const mojom::AdType mojom_ad_type,
+    const mojom::ConfirmationType mojom_confirmation_type,
+    const base::Time time) {
   CHECK(!id.empty());
-  CHECK(!ad_type.empty());
-  CHECK(!confirmation_type.empty());
+  CHECK_NE(mojom::AdType::kUndefined, mojom_ad_type);
+  CHECK_NE(mojom::ConfirmationType::kUndefined, mojom_confirmation_type);
 
-  const std::string type_id = BuildTypeId(ad_type, confirmation_type);
+  const std::string type_id =
+      BuildTypeId(mojom_ad_type, mojom_confirmation_type);
 
   ad_event_cache_[id][type_id].push_back(time);
 
@@ -51,12 +57,13 @@ void AdEventCache::AddEntryForInstanceId(const std::string& id,
 }
 
 std::vector<base::Time> AdEventCache::Get(
-    const std::string& ad_type,
-    const std::string& confirmation_type) const {
-  CHECK(!ad_type.empty());
-  CHECK(!confirmation_type.empty());
+    const mojom::AdType mojom_ad_type,
+    const mojom::ConfirmationType mojom_confirmation_type) const {
+  CHECK_NE(mojom::AdType::kUndefined, mojom_ad_type);
+  CHECK_NE(mojom::ConfirmationType::kUndefined, mojom_confirmation_type);
 
-  const std::string type_id = BuildTypeId(ad_type, confirmation_type);
+  const std::string type_id =
+      BuildTypeId(mojom_ad_type, mojom_confirmation_type);
 
   std::vector<base::Time> timestamps;
 

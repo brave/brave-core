@@ -9,8 +9,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -26,8 +25,8 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
 
   TransactionList transactions;
   const TransactionInfo transaction = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction);
 
@@ -42,8 +41,8 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
 
   TransactionList transactions;
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction);
 
@@ -60,8 +59,8 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
 
   TransactionList transactions;
   const TransactionInfo transaction = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction);
 
@@ -78,8 +77,8 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
 
   TransactionList transactions;
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction);
 
@@ -92,8 +91,8 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest, DidReconcileTransaction) {
   AdvanceClockTo(test::TimeFromString("5 November 2020"));
 
   const TransactionInfo transaction = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
 
   // Act & Assert
@@ -105,8 +104,8 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest, WasTransactionNotReconciled) {
   AdvanceClockTo(test::TimeFromString("5 November 2020"));
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
 
   // Act & Assert
@@ -119,8 +118,8 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
   AdvanceClockTo(test::TimeFromString("5 November 2020"));
 
   const TransactionInfo transaction = test::BuildTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
 
   // Act & Assert
@@ -135,8 +134,8 @@ TEST_F(BraveAdsReconciledTransactionsUtilTest,
       test::TimeFromString("Sat, 20 Aug 2016 02:52"));  // Hello Elica!!!
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression,
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
 
   // Act & Assert

@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
@@ -22,7 +22,7 @@ bool HasNotificationAdsPerHourPermission() {
   }
 
   if (!DoesHistoryRespectRollingTimeConstraint(
-          AdType::kNotificationAd, /*time_constraint=*/base::Hours(1),
+          mojom::AdType::kNotificationAd, /*time_constraint=*/base::Hours(1),
           /*cap=*/GetMaximumNotificationAdsPerHour())) {
     BLOG(2, "You have exceeded the allowed notification ads per hour");
     return false;

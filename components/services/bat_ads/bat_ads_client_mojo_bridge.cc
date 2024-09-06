@@ -114,25 +114,25 @@ void BatAdsClientMojoBridge::CloseNotificationAd(
 
 void BatAdsClientMojoBridge::CacheAdEventForInstanceId(
     const std::string& id,
-    const std::string& ad_type,
-    const std::string& confirmation_type,
+    const brave_ads::mojom::AdType mojom_ad_type,
+    const brave_ads::mojom::ConfirmationType mojom_confirmation_type,
     const base::Time time) const {
   if (bat_ads_client_associated_remote_.is_bound()) {
     bat_ads_client_associated_remote_->CacheAdEventForInstanceId(
-        id, ad_type, confirmation_type, time);
+        id, mojom_ad_type, mojom_confirmation_type, time);
   }
 }
 
 std::vector<base::Time> BatAdsClientMojoBridge::GetCachedAdEvents(
-    const std::string& ad_type,
-    const std::string& confirmation_type) const {
+    const brave_ads::mojom::AdType mojom_ad_type,
+    const brave_ads::mojom::ConfirmationType mojom_confirmation_type) const {
   if (!bat_ads_client_associated_remote_.is_bound()) {
     return {};
   }
 
   std::vector<base::Time> ad_event_cache;
   bat_ads_client_associated_remote_->GetCachedAdEvents(
-      ad_type, confirmation_type, &ad_event_cache);
+      mojom_ad_type, mojom_confirmation_type, &ad_event_cache);
   return ad_event_cache;
 }
 

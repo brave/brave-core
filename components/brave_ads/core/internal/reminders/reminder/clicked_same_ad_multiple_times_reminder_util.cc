@@ -11,7 +11,7 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/reminders/reminders_feature.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
@@ -26,7 +26,8 @@ bool DidUserClickTheSameAdMultipleTimes(const std::string& creative_instance_id,
       ad_history,
       [&creative_instance_id](const AdHistoryItemInfo& ad_history_item) {
         return ad_history_item.creative_instance_id == creative_instance_id &&
-               ad_history_item.confirmation_type == ConfirmationType::kClicked;
+               ad_history_item.confirmation_type ==
+                   mojom::ConfirmationType::kClicked;
       });
 
   if (count == 0) {

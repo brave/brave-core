@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ACCOUNT_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ACCOUNT_UTIL_H_
 
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
 
-bool IsAllowedToDeposit(AdType ad_type, ConfirmationType confirmation_type);
+bool IsAllowedToDeposit(mojom::AdType mojom_ad_type,
+                        mojom::ConfirmationType mojom_confirmation_type);
 
 }  // namespace brave_ads
 

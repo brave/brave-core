@@ -20,8 +20,7 @@
 #include "brave/components/brave_ads/core/internal/history/ad_history_builder_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
@@ -59,10 +58,11 @@ TEST_F(BraveAdsAdHistoryManagerTest, AddNotificationAdHistory) {
 
   // Act & Assert
   const AdHistoryItemInfo expected_ad_history_item = BuildAdHistoryItem(
-      ad, ConfirmationType::kViewedImpression, ad.title, ad.body);
+      ad, mojom::ConfirmationType::kViewedImpression, ad.title, ad.body);
   EXPECT_CALL(history_manager_observer_mock_,
               OnDidAddAdHistoryItem(expected_ad_history_item));
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  AdHistoryManager::GetInstance().Add(
+      ad, mojom::ConfirmationType::kViewedImpression);
 }
 
 TEST_F(BraveAdsAdHistoryManagerTest,
@@ -76,7 +76,8 @@ TEST_F(BraveAdsAdHistoryManagerTest,
 
   // Act & Assert
   EXPECT_CALL(history_manager_observer_mock_, OnDidAddAdHistoryItem).Times(0);
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  AdHistoryManager::GetInstance().Add(
+      ad, mojom::ConfirmationType::kViewedImpression);
 }
 
 TEST_F(BraveAdsAdHistoryManagerTest, AddNewTabPageAdHistory) {
@@ -87,10 +88,11 @@ TEST_F(BraveAdsAdHistoryManagerTest, AddNewTabPageAdHistory) {
 
   // Act & Assert
   const AdHistoryItemInfo expected_ad_history_item = BuildAdHistoryItem(
-      ad, ConfirmationType::kViewedImpression, ad.company_name, ad.alt);
+      ad, mojom::ConfirmationType::kViewedImpression, ad.company_name, ad.alt);
   EXPECT_CALL(history_manager_observer_mock_,
               OnDidAddAdHistoryItem(expected_ad_history_item));
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  AdHistoryManager::GetInstance().Add(
+      ad, mojom::ConfirmationType::kViewedImpression);
 }
 
 TEST_F(BraveAdsAdHistoryManagerTest,
@@ -104,7 +106,8 @@ TEST_F(BraveAdsAdHistoryManagerTest,
 
   // Act & Assert
   EXPECT_CALL(history_manager_observer_mock_, OnDidAddAdHistoryItem).Times(0);
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  AdHistoryManager::GetInstance().Add(
+      ad, mojom::ConfirmationType::kViewedImpression);
 }
 
 TEST_F(BraveAdsAdHistoryManagerTest, AddPromotedContentAdHistory) {
@@ -116,10 +119,11 @@ TEST_F(BraveAdsAdHistoryManagerTest, AddPromotedContentAdHistory) {
 
   // Act & Assert
   const AdHistoryItemInfo expected_ad_history_item = BuildAdHistoryItem(
-      ad, ConfirmationType::kViewedImpression, ad.title, ad.description);
+      ad, mojom::ConfirmationType::kViewedImpression, ad.title, ad.description);
   EXPECT_CALL(history_manager_observer_mock_,
               OnDidAddAdHistoryItem(expected_ad_history_item));
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  AdHistoryManager::GetInstance().Add(
+      ad, mojom::ConfirmationType::kViewedImpression);
 }
 
 TEST_F(BraveAdsAdHistoryManagerTest,
@@ -135,7 +139,8 @@ TEST_F(BraveAdsAdHistoryManagerTest,
 
   // Act & Assert
   EXPECT_CALL(history_manager_observer_mock_, OnDidAddAdHistoryItem).Times(0);
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  AdHistoryManager::GetInstance().Add(
+      ad, mojom::ConfirmationType::kViewedImpression);
 }
 
 TEST_F(BraveAdsAdHistoryManagerTest, AddInlineContentAdHistory) {
@@ -146,10 +151,11 @@ TEST_F(BraveAdsAdHistoryManagerTest, AddInlineContentAdHistory) {
 
   // Act & Assert
   const AdHistoryItemInfo expected_ad_history_item = BuildAdHistoryItem(
-      ad, ConfirmationType::kViewedImpression, ad.title, ad.description);
+      ad, mojom::ConfirmationType::kViewedImpression, ad.title, ad.description);
   EXPECT_CALL(history_manager_observer_mock_,
               OnDidAddAdHistoryItem(expected_ad_history_item));
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  AdHistoryManager::GetInstance().Add(
+      ad, mojom::ConfirmationType::kViewedImpression);
 }
 
 TEST_F(BraveAdsAdHistoryManagerTest,
@@ -163,7 +169,8 @@ TEST_F(BraveAdsAdHistoryManagerTest,
 
   // Act & Assert
   EXPECT_CALL(history_manager_observer_mock_, OnDidAddAdHistoryItem).Times(0);
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  AdHistoryManager::GetInstance().Add(
+      ad, mojom::ConfirmationType::kViewedImpression);
 }
 
 TEST_F(BraveAdsAdHistoryManagerTest, AddSearchResultAdHistory) {
@@ -173,11 +180,12 @@ TEST_F(BraveAdsAdHistoryManagerTest, AddSearchResultAdHistory) {
 
   // Act & Assert
   const AdHistoryItemInfo expected_ad_history_item =
-      BuildAdHistoryItem(ad, ConfirmationType::kViewedImpression,
+      BuildAdHistoryItem(ad, mojom::ConfirmationType::kViewedImpression,
                          ad.headline_text, ad.description);
   EXPECT_CALL(history_manager_observer_mock_,
               OnDidAddAdHistoryItem(expected_ad_history_item));
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  AdHistoryManager::GetInstance().Add(
+      ad, mojom::ConfirmationType::kViewedImpression);
 }
 
 TEST_F(BraveAdsAdHistoryManagerTest,
@@ -190,7 +198,8 @@ TEST_F(BraveAdsAdHistoryManagerTest,
 
   // Act & Assert
   EXPECT_CALL(history_manager_observer_mock_, OnDidAddAdHistoryItem).Times(0);
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  AdHistoryManager::GetInstance().Add(
+      ad, mojom::ConfirmationType::kViewedImpression);
 }
 
 }  // namespace brave_ads

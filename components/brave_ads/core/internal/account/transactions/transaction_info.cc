@@ -42,8 +42,8 @@ bool TransactionInfo::operator!=(const TransactionInfo& other) const {
 
 bool TransactionInfo::IsValid() const {
   return !id.empty() && created_at && !creative_instance_id.empty() &&
-         !segment.empty() && ad_type != AdType::kUndefined &&
-         confirmation_type != ConfirmationType::kUndefined;
+         !segment.empty() && ad_type != mojom::AdType::kUndefined &&
+         confirmation_type != mojom::ConfirmationType::kUndefined;
 }
 
 }  // namespace brave_ads

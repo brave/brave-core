@@ -30,9 +30,9 @@ PaymentTokenInfo BuildPaymentToken(const std::string& payment_token_base64) {
       cbr::PublicKey("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
   CHECK(payment_token.public_key.has_value());
 
-  payment_token.confirmation_type = ConfirmationType::kViewedImpression;
+  payment_token.confirmation_type = mojom::ConfirmationType::kViewedImpression;
 
-  payment_token.ad_type = AdType::kNotificationAd;
+  payment_token.ad_type = mojom::AdType::kNotificationAd;
 
   return payment_token;
 }
@@ -51,14 +51,15 @@ PaymentTokenList SetPaymentTokens(const int count) {
   return payment_tokens;
 }
 
-PaymentTokenInfo BuildPaymentToken(const ConfirmationType confirmation_type,
-                                   const AdType ad_type) {
+PaymentTokenInfo BuildPaymentToken(
+    const mojom::ConfirmationType mojom_confirmation_type,
+    const mojom::AdType mojom_ad_type) {
   const std::string payment_token_base64 =
       R"(PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY)";
   PaymentTokenInfo payment_token = BuildPaymentToken(payment_token_base64);
 
-  payment_token.confirmation_type = confirmation_type;
-  payment_token.ad_type = ad_type;
+  payment_token.confirmation_type = mojom_confirmation_type;
+  payment_token.ad_type = mojom_ad_type;
 
   return payment_token;
 }

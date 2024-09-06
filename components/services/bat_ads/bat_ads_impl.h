@@ -10,7 +10,6 @@
 #include <string>
 
 #include "base/task/sequenced_task_runner.h"
-#include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 

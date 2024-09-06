@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
@@ -48,14 +48,14 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD(void,
               CacheAdEventForInstanceId,
               (const std::string& id,
-               const std::string& ad_type,
-               const std::string& confirmation_type,
+               const mojom::AdType mojom_ad_type,
+               const mojom::ConfirmationType mojom_confirmation_type,
                const base::Time time),
               (const));
   MOCK_METHOD(std::vector<base::Time>,
               GetCachedAdEvents,
-              (const std::string& ad_type,
-               const std::string& confirmation_type),
+              (const mojom::AdType mojom_ad_type,
+               const mojom::ConfirmationType mojom_onfirmation_type),
               (const));
   MOCK_METHOD(void,
               ResetAdEventCacheForInstanceId,

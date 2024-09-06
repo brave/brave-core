@@ -9,14 +9,14 @@
 #include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 
 namespace brave_ads {
 
 bool HasNotificationAdsPerDayPermission() {
   if (!DoesHistoryRespectRollingTimeConstraint(
-          AdType::kNotificationAd, /*time_constraint=*/base::Days(1),
+          mojom::AdType::kNotificationAd, /*time_constraint=*/base::Days(1),
           /*cap=*/kMaximumNotificationAdsPerDay.Get())) {
     BLOG(2, "You have exceeded the allowed notification ads per day");
     return false;

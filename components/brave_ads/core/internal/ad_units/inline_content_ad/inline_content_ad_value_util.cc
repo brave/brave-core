@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_value_util.h"
 
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_constants.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 
@@ -31,7 +32,7 @@ InlineContentAdInfo InlineContentAdFromValue(const base::Value::Dict& dict) {
   InlineContentAdInfo ad;
 
   if (const auto* const value = dict.FindString(kInlineContentAdTypeKey)) {
-    ad.type = ToAdType(*value);
+    ad.type = ToMojomAdType(*value);
   }
 
   if (const auto* const value =

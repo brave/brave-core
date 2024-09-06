@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
 bool HasNewTabPageAdMinimumWaitTimePermission() {
   if (!DoesHistoryRespectRollingTimeConstraint(
-          AdType::kNewTabPageAd,
+          mojom::AdType::kNewTabPageAd,
           /*time_constraint=*/kNewTabPageAdMinimumWaitTime.Get(),
           /*cap=*/1)) {
     BLOG(2,

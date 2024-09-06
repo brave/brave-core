@@ -7,8 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_test_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -29,20 +28,23 @@ TEST(BraveAdsSummaryUserDataUtilTest, BuildBuckets) {
   // Arrange
   PaymentTokenList payment_tokens;
 
-  const PaymentTokenInfo payment_token_1 = test::BuildPaymentToken(
-      ConfirmationType::kViewedImpression, AdType::kNotificationAd);
+  const PaymentTokenInfo payment_token_1 =
+      test::BuildPaymentToken(mojom::ConfirmationType::kViewedImpression,
+                              mojom::AdType::kNotificationAd);
   payment_tokens.push_back(payment_token_1);
 
-  const PaymentTokenInfo payment_token_2 = test::BuildPaymentToken(
-      ConfirmationType::kViewedImpression, AdType::kNotificationAd);
+  const PaymentTokenInfo payment_token_2 =
+      test::BuildPaymentToken(mojom::ConfirmationType::kViewedImpression,
+                              mojom::AdType::kNotificationAd);
   payment_tokens.push_back(payment_token_2);
 
   const PaymentTokenInfo payment_token_3 = test::BuildPaymentToken(
-      ConfirmationType::kClicked, AdType::kNotificationAd);
+      mojom::ConfirmationType::kClicked, mojom::AdType::kNotificationAd);
   payment_tokens.push_back(payment_token_3);
 
-  const PaymentTokenInfo payment_token_4 = test::BuildPaymentToken(
-      ConfirmationType::kViewedImpression, AdType::kInlineContentAd);
+  const PaymentTokenInfo payment_token_4 =
+      test::BuildPaymentToken(mojom::ConfirmationType::kViewedImpression,
+                              mojom::AdType::kInlineContentAd);
   payment_tokens.push_back(payment_token_4);
 
   // Act
@@ -50,10 +52,11 @@ TEST(BraveAdsSummaryUserDataUtilTest, BuildBuckets) {
 
   // Assert
   const AdTypeBucketMap expected_ad_type_buckets = {
-      {AdType::kNotificationAd,
-       {{ConfirmationType::kClicked, 1},
-        {ConfirmationType::kViewedImpression, 2}}},
-      {AdType::kInlineContentAd, {{ConfirmationType::kViewedImpression, 1}}}};
+      {mojom::AdType::kNotificationAd,
+       {{mojom::ConfirmationType::kClicked, 1},
+        {mojom::ConfirmationType::kViewedImpression, 2}}},
+      {mojom::AdType::kInlineContentAd,
+       {{mojom::ConfirmationType::kViewedImpression, 1}}}};
   EXPECT_EQ(expected_ad_type_buckets, ad_type_buckets);
 }
 

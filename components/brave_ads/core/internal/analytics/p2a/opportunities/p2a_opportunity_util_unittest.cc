@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
 
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -16,7 +16,7 @@ TEST(BraveAdsP2AOpportunityUtilTest, BuildP2AAdOpportunityEvents) {
   // Act
   const std::vector<std::string> p2a_ad_opportunity_events =
       BuildP2AAdOpportunityEvents(
-          AdType::kNotificationAd,
+          mojom::AdType::kNotificationAd,
           /*segments=*/{"technology & computing", "personal finance-crypto",
                         "travel"});
 
@@ -35,7 +35,8 @@ TEST(BraveAdsP2AOpportunityUtilTest,
      BuildP2AAdOpportunityEventsForEmptySegments) {
   // Act
   const std::vector<std::string> p2a_ad_opportunity_events =
-      BuildP2AAdOpportunityEvents(AdType::kNotificationAd, /*segments=*/{});
+      BuildP2AAdOpportunityEvents(mojom::AdType::kNotificationAd,
+                                  /*segments=*/{});
 
   // Assert
   const std::vector<std::string> expected_p2a_ad_opportunity_events = {

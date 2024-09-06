@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_util.h"
 
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -15,14 +15,14 @@ namespace brave_ads {
 TEST(BraveAdsConversionActionTypesUtilTest, ToViewThroughConversionActionType) {
   // Act & Assert
   EXPECT_EQ(ConversionActionType::kViewThrough,
-            ToConversionActionType(ConfirmationType::kViewedImpression));
+            ToConversionActionType(mojom::ConfirmationType::kViewedImpression));
 }
 
 TEST(BraveAdsConversionActionTypesUtilTest,
      ToClickThroughConversionActionType) {
   // Act & Assert
   EXPECT_EQ(ConversionActionType::kClickThrough,
-            ToConversionActionType(ConfirmationType::kClicked));
+            ToConversionActionType(mojom::ConfirmationType::kClicked));
 }
 
 TEST(BraveAdsConversionActionTypesUtilTest,

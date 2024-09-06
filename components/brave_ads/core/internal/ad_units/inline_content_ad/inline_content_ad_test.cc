@@ -13,8 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -66,7 +65,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, ServeAd) {
   // Act & Assert
   EXPECT_CALL(ads_client_mock_,
               RecordP2AEvents(BuildP2AAdOpportunityEvents(
-                  AdType::kInlineContentAd, /*segments=*/{})));
+                  mojom::AdType::kInlineContentAd, /*segments=*/{})));
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run(kDimensions, /*ad=*/::testing::Ne(std::nullopt)));

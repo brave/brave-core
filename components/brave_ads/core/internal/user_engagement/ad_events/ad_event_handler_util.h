@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_feature.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace base {
 class TimeDelta;
@@ -20,20 +20,22 @@ struct AdInfo;
 
 bool HasFiredAdEvent(const AdInfo& ad,
                      const AdEventList& ad_events,
-                     ConfirmationType confirmation_type);
+                     mojom::ConfirmationType mojom_confirmation_type);
 
 // Set `time_window` to 0 to ignore the time window.
-bool HasFiredAdEventWithinTimeWindow(const AdInfo& ad,
-                                     const AdEventList& ad_events,
-                                     ConfirmationType confirmation_type,
-                                     base::TimeDelta time_window);
+bool HasFiredAdEventWithinTimeWindow(
+    const AdInfo& ad,
+    const AdEventList& ad_events,
+    mojom::ConfirmationType mojom_confirmation_type,
+    base::TimeDelta time_window);
 
 template <typename T>
 bool WasAdServed(const AdInfo& ad,
                  const AdEventList& ad_events,
                  const T mojom_ad_event_type) {
   return mojom_ad_event_type == T::kServedImpression ||
-         HasFiredAdEvent(ad, ad_events, ConfirmationType::kServedImpression);
+         HasFiredAdEvent(ad, ad_events,
+                         mojom::ConfirmationType::kServedImpression);
 }
 
 template <typename T>
@@ -42,7 +44,7 @@ bool ShouldDeduplicateViewedAdEvent(const AdInfo& ad,
                                     const T mojom_ad_event_type) {
   return mojom_ad_event_type == T::kViewedImpression &&
          HasFiredAdEventWithinTimeWindow(
-             ad, ad_events, ConfirmationType::kViewedImpression,
+             ad, ad_events, mojom::ConfirmationType::kViewedImpression,
              /*time_window=*/kDeduplicateViewedAdEventFor.Get());
 }
 
@@ -52,7 +54,7 @@ bool ShouldDeduplicateClickedAdEvent(const AdInfo& ad,
                                      const T mojom_ad_event_type) {
   return mojom_ad_event_type == T::kClicked &&
          HasFiredAdEventWithinTimeWindow(
-             ad, ad_events, ConfirmationType::kClicked,
+             ad, ad_events, mojom::ConfirmationType::kClicked,
              /*time_window=*/kDeduplicateClickedAdEventFor.Get());
 }
 

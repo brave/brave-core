@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 
+#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_constants.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "url/gurl.h"
@@ -41,7 +42,7 @@ NotificationAdInfo NotificationAdFromValue(const base::Value::Dict& dict) {
   NotificationAdInfo ad;
 
   if (const auto* const value = dict.FindString(kNotificationAdTypeKey)) {
-    ad.type = ToAdType(*value);
+    ad.type = ToMojomAdType(*value);
   }
 
   if (const auto* const value =

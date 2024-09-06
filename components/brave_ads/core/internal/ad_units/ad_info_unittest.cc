@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -17,7 +17,7 @@ class BraveAdsAdInfoTest : public test::TestBase {};
 
 TEST_F(BraveAdsAdInfoTest, IsValid) {
   // Arrange
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
 
   // Act & Assert

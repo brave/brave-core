@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 
@@ -16,7 +16,8 @@ namespace brave_ads {
 
 void NewTabPageAdEventViewed::FireEvent(const NewTabPageAdInfo& ad,
                                         ResultCallback callback) {
-  RecordAdEvent(ad, ConfirmationType::kViewedImpression, std::move(callback));
+  RecordAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
+                std::move(callback));
 }
 
 }  // namespace brave_ads

@@ -9,8 +9,7 @@
 #include <string>
 
 #include "base/observer_list_types.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
 
@@ -29,10 +28,11 @@ class AccountObserver : public base::CheckedObserver {
   virtual void OnDidProcessDeposit(const TransactionInfo& transaction) {}
 
   // Invoked after failing to process a deposit for `creative_instance_id`,
-  // `ad_type` and `confirmation_type`.
-  virtual void OnFailedToProcessDeposit(const std::string& creative_instance_id,
-                                        AdType ad_type,
-                                        ConfirmationType confirmation_type) {}
+  // `mojom_ad_type` and `mojom_confirmation_type`.
+  virtual void OnFailedToProcessDeposit(
+      const std::string& creative_instance_id,
+      mojom::AdType mojom_ad_type,
+      mojom::ConfirmationType mojom_confirmation_type) {}
 };
 
 }  // namespace brave_ads

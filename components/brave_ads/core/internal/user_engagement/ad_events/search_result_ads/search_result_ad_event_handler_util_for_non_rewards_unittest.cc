@@ -16,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_handler_util.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -183,8 +182,9 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, mojom::ConfirmationType::kServedImpression,
+                   /*created_at=*/test::Now());
   ad_events.push_back(ad_event);
 
   // Act & Assert
@@ -201,11 +201,12 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   AdEventList ad_events;
-  const AdEventInfo ad_event_1 = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_1 =
+      BuildAdEvent(ad, mojom::ConfirmationType::kServedImpression,
+                   /*created_at=*/test::Now());
   ad_events.push_back(ad_event_1);
-  const AdEventInfo ad_event_2 =
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/test::Now());
+  const AdEventInfo ad_event_2 = BuildAdEvent(
+      ad, mojom::ConfirmationType::kClicked, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_2);
 
   // Act & Assert

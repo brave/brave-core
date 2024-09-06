@@ -16,8 +16,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 
 namespace brave_ads {
@@ -131,9 +130,10 @@ void AdHandler::OnDidConvertAd(const ConversionInfo& conversion) {
                        << ", campaign id " << conversion.campaign_id
                        << " and advertiser id " << conversion.advertiser_id);
 
-  GetAccount().DepositWithUserData(
-      conversion.creative_instance_id, conversion.segment, conversion.ad_type,
-      ConfirmationType::kConversion, BuildConversionUserData(conversion));
+  GetAccount().DepositWithUserData(conversion.creative_instance_id,
+                                   conversion.segment, conversion.ad_type,
+                                   mojom::ConfirmationType::kConversion,
+                                   BuildConversionUserData(conversion));
 }
 
 void AdHandler::OnMaybeLandOnPage(const AdInfo& ad,
@@ -161,7 +161,7 @@ void AdHandler::OnDidLandOnPage(const TabInfo& tab, const AdInfo& ad) {
   BLOG(1, "Landed on page for " << ad.target_url << " on tab id " << tab.id);
 
   GetAccount().DepositWithUserData(ad.creative_instance_id, ad.segment, ad.type,
-                                   ConfirmationType::kLanded,
+                                   mojom::ConfirmationType::kLanded,
                                    BuildPageLandUserData(tab));
 }
 

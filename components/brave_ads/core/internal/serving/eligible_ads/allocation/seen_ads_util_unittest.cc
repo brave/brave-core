@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -32,7 +32,7 @@ TEST(BraveAdsSeenAdsUtilTest, DoNotGetLastSeenAdAtForUnseenAd) {
 
   AdEventList ad_events;
   const AdEventInfo ad_event =
-      BuildAdEvent(ad_1, ConfirmationType::kViewedImpression,
+      BuildAdEvent(ad_1, mojom::ConfirmationType::kViewedImpression,
                    /*created_at=*/test::Now() - base::Hours(12));
   ad_events.push_back(ad_event);
 
@@ -55,22 +55,23 @@ TEST(BraveAdsSeenAdsUtilTest, GetLastSeenAdAt) {
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event_4 = BuildAdEvent(
-      ad_1, ConfirmationType::kConversion, /*created_at=*/now - base::Hours(3));
+  const AdEventInfo ad_event_4 =
+      BuildAdEvent(ad_1, mojom::ConfirmationType::kConversion,
+                   /*created_at=*/now - base::Hours(3));
   ad_events.push_back(ad_event_4);
 
   const AdEventInfo ad_event_3 =
-      BuildAdEvent(ad_1, ConfirmationType::kViewedImpression,
+      BuildAdEvent(ad_1, mojom::ConfirmationType::kViewedImpression,
                    /*created_at=*/now - base::Hours(6));
   ad_events.push_back(ad_event_3);
 
   const AdEventInfo ad_event_2 =
-      BuildAdEvent(ad_2, ConfirmationType::kViewedImpression,
+      BuildAdEvent(ad_2, mojom::ConfirmationType::kViewedImpression,
                    /*created_at=*/now - base::Hours(11));
   ad_events.push_back(ad_event_2);
 
   const AdEventInfo ad_event_1 =
-      BuildAdEvent(ad_1, ConfirmationType::kViewedImpression,
+      BuildAdEvent(ad_1, mojom::ConfirmationType::kViewedImpression,
                    /*created_at=*/now - base::Hours(12));
   ad_events.push_back(ad_event_1);
 

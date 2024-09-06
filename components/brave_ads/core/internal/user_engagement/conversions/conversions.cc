@@ -24,7 +24,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -207,7 +207,7 @@ void Conversions::Convert(
     const AdEventInfo& ad_event,
     const std::optional<VerifiableConversionInfo>& verifiable_conversion) {
   RecordAdEvent(
-      RebuildAdEvent(ad_event, ConfirmationType::kConversion,
+      RebuildAdEvent(ad_event, mojom::ConfirmationType::kConversion,
                      /*created_at=*/base::Time::Now()),
       base::BindOnce(&Conversions::ConvertCallback, weak_factory_.GetWeakPtr(),
                      ad_event, verifiable_conversion));

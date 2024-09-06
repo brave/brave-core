@@ -27,7 +27,7 @@ std::string ConversionExclusionRule::GetUuid(
 base::expected<void, std::string> ConversionExclusionRule::ShouldInclude(
     const CreativeAdInfo& creative_ad) const {
   if (!DoesRespectCreativeSetCap(
-          creative_ad, ad_events_, ConfirmationType::kConversion,
+          creative_ad, ad_events_, mojom::ConfirmationType::kConversion,
           kShouldExcludeAdIfCreativeSetExceedsConversionCap.Get())) {
     return base::unexpected(base::ReplaceStringPlaceholders(
         "creativeSetId $1 has exceeded the conversions frequency cap",

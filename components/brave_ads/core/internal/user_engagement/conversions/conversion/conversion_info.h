@@ -12,7 +12,7 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
@@ -31,7 +31,7 @@ struct ConversionInfo final {
 
   [[nodiscard]] bool IsValid() const;
 
-  AdType ad_type = AdType::kUndefined;
+  mojom::AdType ad_type = mojom::AdType::kUndefined;
   std::string creative_instance_id;
   std::string creative_set_id;
   std::string campaign_id;

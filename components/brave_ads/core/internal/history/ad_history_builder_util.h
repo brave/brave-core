@@ -8,17 +8,18 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
 
 struct AdInfo;
 struct AdHistoryItemInfo;
 
-AdHistoryItemInfo BuildAdHistoryItem(const AdInfo& ad,
-                                     ConfirmationType confirmation_type,
-                                     const std::string& title,
-                                     const std::string& description);
+AdHistoryItemInfo BuildAdHistoryItem(
+    const AdInfo& ad,
+    mojom::ConfirmationType mojom_confirmation_type,
+    const std::string& title,
+    const std::string& description);
 
 }  // namespace brave_ads
 

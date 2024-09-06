@@ -23,8 +23,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
@@ -161,7 +159,7 @@ void NotificationAdHandler::OnOpportunityAroseToServeNotificationAd(
     const SegmentList& segments) {
   BLOG(1, "Opportunity arose to serve a notification ad");
 
-  RecordP2AAdOpportunity(AdType::kNotificationAd, segments);
+  RecordP2AAdOpportunity(mojom::AdType::kNotificationAd, segments);
 }
 
 void NotificationAdHandler::OnDidServeNotificationAd(
@@ -195,10 +193,11 @@ void NotificationAdHandler::OnDidFireNotificationAdViewedEvent(
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  AdHistoryManager::GetInstance().Add(
+      ad, mojom::ConfirmationType::kViewedImpression);
 
   GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                       ConfirmationType::kViewedImpression);
+                       mojom::ConfirmationType::kViewedImpression);
 }
 
 void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
@@ -212,10 +211,10 @@ void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
 
   site_visit_->SetLastClickedAd(ad);
 
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
+  AdHistoryManager::GetInstance().Add(ad, mojom::ConfirmationType::kClicked);
 
   GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                       ConfirmationType::kClicked);
+                       mojom::ConfirmationType::kClicked);
 }
 
 void NotificationAdHandler::OnDidFireNotificationAdDismissedEvent(
@@ -227,10 +226,10 @@ void NotificationAdHandler::OnDidFireNotificationAdDismissedEvent(
   NotificationAdManager::GetInstance().Remove(ad.placement_id,
                                               /*should_close=*/false);
 
-  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kDismissed);
+  AdHistoryManager::GetInstance().Add(ad, mojom::ConfirmationType::kDismissed);
 
   GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                       ConfirmationType::kDismissed);
+                       mojom::ConfirmationType::kDismissed);
 }
 
 void NotificationAdHandler::OnDidFireNotificationAdTimedOutEvent(

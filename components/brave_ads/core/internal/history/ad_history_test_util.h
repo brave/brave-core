@@ -8,23 +8,24 @@
 
 #include <vector>
 
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 namespace brave_ads::test {
 
-AdHistoryItemInfo BuildAdHistoryItem(AdType ad_type,
-                                     ConfirmationType confirmation_type,
-                                     bool should_generate_random_uuids);
+AdHistoryItemInfo BuildAdHistoryItem(
+    mojom::AdType mojom_ad_type,
+    mojom::ConfirmationType mojom_confirmation_type,
+    bool should_generate_random_uuids);
 
 AdHistoryList BuildAdHistory(
-    AdType ad_type,
-    const std::vector<ConfirmationType>& confirmation_types,
+    mojom::AdType mojom_ad_type,
+    const std::vector<mojom::ConfirmationType>& mojom_confirmation_types,
     bool should_generate_random_uuids);
 
 AdHistoryList BuildAdHistoryForSamePlacement(
-    AdType ad_type,
-    const std::vector<ConfirmationType>& confirmation_types,
+    mojom::AdType mojom_ad_type,
+    const std::vector<mojom::ConfirmationType>& mojom_confirmation_types,
     bool should_generate_random_uuids);
 
 }  // namespace brave_ads::test

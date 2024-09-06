@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_AD_EVENTS_AD_EVENT_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_AD_EVENTS_AD_EVENT_BUILDER_H_
 
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace base {
 class Time;
@@ -17,16 +17,16 @@ namespace brave_ads {
 struct AdEventInfo;
 struct AdInfo;
 
-// Builds a new `AdEventInfo` for the given `ad`, `confirmation_type`, and
+// Builds a new `AdEventInfo` for the given `ad`, `mojom_confirmation_type`, and
 // `created_at` time.
 AdEventInfo BuildAdEvent(const AdInfo& ad,
-                         ConfirmationType confirmation_type,
+                         mojom::ConfirmationType mojom_confirmation_type,
                          base::Time created_at);
 
-// Rebuilds an existing `AdEventInfo` with a new `confirmation_type` and
+// Rebuilds an existing `AdEventInfo` with a new `mojom_confirmation_type` and
 // `created_at` time.
 AdEventInfo RebuildAdEvent(const AdEventInfo& ad_event,
-                           ConfirmationType confirmation_type,
+                           mojom::ConfirmationType mojom_confirmation_type,
                            base::Time created_at);
 
 }  // namespace brave_ads

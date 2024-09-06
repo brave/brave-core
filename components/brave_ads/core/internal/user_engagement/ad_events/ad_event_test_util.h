@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
 
@@ -16,13 +16,15 @@ struct AdInfo;
 
 namespace test {
 
-void RecordAdEvent(const AdInfo& ad, ConfirmationType confirmation_type);
+void RecordAdEvent(const AdInfo& ad,
+                   mojom::ConfirmationType mojom_confirmation_type);
+
+void RecordAdEvents(
+    const AdInfo& ad,
+    const std::vector<mojom::ConfirmationType>& mojom_confirmation_types);
 
 void RecordAdEvents(const AdInfo& ad,
-                    const std::vector<ConfirmationType>& confirmation_types);
-
-void RecordAdEvents(const AdInfo& ad,
-                    ConfirmationType confirmation_type,
+                    mojom::ConfirmationType mojom_confirmation_type,
                     int count);
 
 }  // namespace test

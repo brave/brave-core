@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
 
@@ -19,7 +19,7 @@ namespace test {
 std::string RandomUuidOr(bool should_generate_random_uuid,
                          const std::string& or_uuid);
 
-AdInfo BuildAd(AdType ad_type, bool should_generate_random_uuids);
+AdInfo BuildAd(mojom::AdType mojom_ad_type, bool should_generate_random_uuids);
 
 }  // namespace test
 

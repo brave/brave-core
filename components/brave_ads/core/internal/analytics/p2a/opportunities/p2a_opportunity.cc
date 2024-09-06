@@ -18,12 +18,13 @@ namespace {
 constexpr size_t kTopSegmentsMaxCount = 1;
 }  // namespace
 
-void RecordP2AAdOpportunity(const AdType ad_type, const SegmentList& segments) {
+void RecordP2AAdOpportunity(const mojom::AdType mojom_ad_type,
+                            const SegmentList& segments) {
   const SegmentList top_segments =
       GetTopSegments(segments, kTopSegmentsMaxCount, /*parent_only=*/false);
 
   GetAdsClient()->RecordP2AEvents(
-      BuildP2AAdOpportunityEvents(ad_type, top_segments));
+      BuildP2AAdOpportunityEvents(mojom_ad_type, top_segments));
 }
 
 }  // namespace brave_ads
