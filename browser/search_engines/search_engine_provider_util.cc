@@ -9,11 +9,15 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/contains.h"
+#include "base/values.h"
 #include "brave/browser/search_engines/pref_names.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engine_choice/search_engine_choice_service_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/common/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
@@ -172,6 +176,38 @@ void ResetDefaultPrivateSearchProvider(Profile* profile) {
   prefs->ClearPref(prefs::kSyncedDefaultPrivateSearchProviderData);
 
   PrepareDefaultPrivateSearchProviderDataIfNeeded(profile);
+}
+
+void PrepareSearchSuggestionsConfig(PrefService* local_state, bool first_run) {
+  if (!first_run) {
+    return;
+  }
+
+  const std::string default_country_code =
+      brave_l10n::GetDefaultISOCountryCodeString();
+  constexpr int kNumberOfTargetCountries = 12;
+  constexpr const char* kTargetCountriesForEnableSearchSuggestionsByDefault[] =
+      {"AR", "AT", "BR", "CA", "DE", "ES", "FR", "GB", "IN", "IT", "MX", "US"};
+  static_assert(
+      std::size(kTargetCountriesForEnableSearchSuggestionsByDefault) ==
+      kNumberOfTargetCountries);
+
+  const bool enable_search_suggestions_default_value =
+      base::Contains(kTargetCountriesForEnableSearchSuggestionsByDefault,
+                     default_country_code);
+
+  local_state->SetBoolean(kEnableSearchSuggestionsByDefault,
+                          enable_search_suggestions_default_value);
+}
+
+void UpdateDefaultSearchSuggestionsPrefs(PrefService* local_state,
+                                         PrefService* profile_prefs) {
+  if (!local_state->GetBoolean(kEnableSearchSuggestionsByDefault)) {
+    return;
+  }
+
+  profile_prefs->SetDefaultPrefValue(prefs::kSearchSuggestEnabled,
+                                     base::Value(true));
 }
 
 }  // namespace brave

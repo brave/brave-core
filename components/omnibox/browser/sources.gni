@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
+import("//brave/components/omnibox/buildflags/buildflags.gni")
 
 brave_components_omnibox_browser_sources = [
   "//brave/components/omnibox/browser/brave_bookmark_provider.cc",
@@ -38,6 +39,7 @@ brave_components_omnibox_browser_deps = [
   "//brave/components/brave_search_conversion",
   "//brave/components/commander/common/buildflags",
   "//brave/components/constants",
+  "//brave/components/omnibox/buildflags",
   "//brave/components/resources:strings",
   "//brave/components/vector_icons",
   "//components/prefs",
@@ -69,4 +71,9 @@ if (enable_commander) {
 
   brave_components_omnibox_browser_deps +=
       [ "//brave/components/commander/browser" ]
+}
+
+if (enable_strict_query_check_for_search_suggestions) {
+  brave_components_omnibox_browser_deps +=
+      [ "//brave/components/omnibox/browser/search_suggestions" ]
 }
