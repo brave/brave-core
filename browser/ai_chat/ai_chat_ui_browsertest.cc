@@ -66,6 +66,16 @@ std::unique_ptr<net::test_server::HttpResponse> HandleSearchQuerySummaryRequest(
         R"({"conversation": [{"query": "test query",
                                 "answer": [{"text": "test summary"}]}]})");
     return response;
+  } else if (query == "key=multi") {
+    auto response = std::make_unique<net::test_server::BasicHttpResponse>();
+    response->set_code(net::HTTP_OK);
+    response->set_content_type("application/json");
+    response->set_content(
+        R"({"conversation": [{"query": "test query",
+                                "answer": [{"text": "test summary"}]},
+                              {"query": "test query 2",
+                                "answer": [{"text": "test summary 2"}]}]})");
+    return response;
   }
 
   return nullptr;
@@ -167,15 +177,16 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
-  void FetchSearchQuerySummary(const base::Location& location,
-                               const std::optional<ai_chat::SearchQuerySummary>&
-                                   expected_search_query_summary) {
+  void FetchSearchQuerySummary(
+      const base::Location& location,
+      const std::optional<std::vector<ai_chat::SearchQuerySummary>>&
+          expected_search_query_summary) {
     SCOPED_TRACE(testing::Message() << location.ToString());
 
     base::RunLoop run_loop;
     chat_tab_helper_->MaybeFetchOrClearSearchQuerySummary(
         base::BindLambdaForTesting(
-            [&](const std::optional<ai_chat::SearchQuerySummary>&
+            [&](const std::optional<std::vector<ai_chat::SearchQuerySummary>>&
                     search_query_summary) {
               EXPECT_EQ(search_query_summary, expected_search_query_summary);
               run_loop.Quit();
@@ -339,7 +350,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
-                       FetchSearchQuerySummary_DynamicMetaTag) {
+                       FetchSearchQuerySummary_DynamicMetaTag_SingleQuery) {
   // Test when summarizer-key meta tag is dynamically inserted, should return
   // the search query summary from the mock response.
   NavigateURL(https_server_.GetURL("search.brave.com", "/search?q=query"));
@@ -348,6 +359,26 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
                               "meta.name = 'summarizer-key';"
                               "meta.content = '{test_key}';"
                               "document.head.appendChild(meta);");
-  FetchSearchQuerySummary(
-      FROM_HERE, ai_chat::SearchQuerySummary("test query", "test summary"));
+  FetchSearchQuerySummary(FROM_HERE, std::vector<ai_chat::SearchQuerySummary>(
+                                         {{"test query", "test summary"}}));
+
+  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
+                              "document.querySelector('meta[name=summarizer-"
+                              "key').content = 'multi';");
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
+                       FetchSearchQuerySummary_DynamicMetaTag_MultiQuery) {
+  // Test when summarizer-key meta tag is dynamically inserted, should return
+  // the search query summary from the mock response.
+  NavigateURL(https_server_.GetURL("search.brave.com", "/search?q=query"));
+  content::ExecuteScriptAsync(GetActiveWebContents()->GetPrimaryMainFrame(),
+                              "var meta = document.createElement('meta');"
+                              "meta.name = 'summarizer-key';"
+                              "meta.content = 'multi';"
+                              "document.head.appendChild(meta);");
+
+  FetchSearchQuerySummary(FROM_HERE, std::vector<ai_chat::SearchQuerySummary>(
+                                         {{"test query", "test summary"},
+                                          {"test query 2", "test summary 2"}}));
 }
