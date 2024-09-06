@@ -6,7 +6,6 @@
 #include "chrome/browser/ui/webui/settings/browser_lifetime_handler.h"
 
 #include "brave/browser/sparkle_buildflags.h"
-#include "brave/components/update_client/features.h"
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #include "brave/browser/ui/webui/settings/brave_relaunch_handler_mac.h"
@@ -22,7 +21,7 @@ BrowserLifetimeHandler::~BrowserLifetimeHandler() {}
 
 void BrowserLifetimeHandler::HandleRelaunch(const base::Value::List& args) {
 #if BUILDFLAG(ENABLE_SPARKLE)
-  if (!brave::ShouldUseOmaha4() && brave_relaunch_handler::RelaunchOnMac()) {
+  if (brave_relaunch_handler::RelaunchOnMac()) {
     return;
   }
 #endif
