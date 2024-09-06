@@ -170,6 +170,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
           /*url_pattern=*/"https://foo.com/*",
           /*observation_window=*/base::Days(3));  // Bucket #1
   creative_set_conversions.push_back(creative_set_conversion_1);
+  creative_set_conversions.push_back(creative_set_conversion_1);
 
   const CreativeSetConversionInfo creative_set_conversion_2 =
       test::BuildCreativeSetConversion(
@@ -178,9 +179,10 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
           /*observation_window=*/base::Days(30));  // Bucket #1
   creative_set_conversions.push_back(creative_set_conversion_2);
   creative_set_conversions.push_back(creative_set_conversion_2);
+  creative_set_conversions.push_back(creative_set_conversion_2);
 
   const CreativeSetConversionCountMap creative_set_conversion_counts = {
-      {creative_set_conversion_1.id, 1}, {creative_set_conversion_2.id, 2}};
+      {creative_set_conversion_1.id, 2}, {creative_set_conversion_2.id, 3}};
 
   CreativeSetConversionBucketMap creative_set_conversion_buckets =
       SortCreativeSetConversionsIntoBuckets(creative_set_conversions);
@@ -193,7 +195,8 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   // Assert
   const CreativeSetConversionBucketMap
       expected_creative_set_conversion_buckets = {
-          {creative_set_conversion_1.id, {creative_set_conversion_1}}};
+          {creative_set_conversion_1.id,
+           {creative_set_conversion_1, creative_set_conversion_1}}};
   EXPECT_EQ(expected_creative_set_conversion_buckets,
             creative_set_conversion_buckets);
 }
@@ -209,17 +212,19 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
           /*url_pattern=*/"https://foo.com/*",
           /*observation_window=*/base::Days(3));  // Bucket #1
   creative_set_conversions.push_back(creative_set_conversion_1);
+  creative_set_conversions.push_back(creative_set_conversion_1);
 
   const CreativeSetConversionInfo creative_set_conversion_2 =
       test::BuildCreativeSetConversion(
           /*creative_set_id=*/"4e83a23c-1194-40f8-8fdc-2f38d7ed75c8",
           /*url_pattern=*/"https://baz.com/",
-          /*observation_window=*/base::Days(30));  // Bucket #1
+          /*observation_window=*/base::Days(30));  // Bucket #2
+  creative_set_conversions.push_back(creative_set_conversion_2);
   creative_set_conversions.push_back(creative_set_conversion_2);
   creative_set_conversions.push_back(creative_set_conversion_2);
 
   const CreativeSetConversionCountMap creative_set_conversion_counts = {
-      {creative_set_conversion_1.id, 1}, {creative_set_conversion_2.id, 2}};
+      {creative_set_conversion_1.id, 2}, {creative_set_conversion_2.id, 3}};
 
   CreativeSetConversionBucketMap creative_set_conversion_buckets =
       SortCreativeSetConversionsIntoBuckets(creative_set_conversions);
@@ -232,9 +237,11 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   // Assert
   const CreativeSetConversionBucketMap
       expected_creative_set_conversion_buckets = {
-          {creative_set_conversion_1.id, {creative_set_conversion_1}},
+          {creative_set_conversion_1.id,
+           {creative_set_conversion_1, creative_set_conversion_1}},
           {creative_set_conversion_2.id,
-           {creative_set_conversion_2, creative_set_conversion_2}}};
+           {creative_set_conversion_2, creative_set_conversion_2,
+            creative_set_conversion_2}}};
   EXPECT_EQ(expected_creative_set_conversion_buckets,
             creative_set_conversion_buckets);
 }
