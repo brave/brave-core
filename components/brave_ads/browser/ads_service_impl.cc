@@ -63,6 +63,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
@@ -1207,7 +1208,9 @@ void AdsServiceImpl::GetStatementOfAccounts(
     return std::move(callback).Run(/*statement*/ nullptr);
   }
 
-  bat_ads_associated_remote_->GetStatementOfAccounts(std::move(callback));
+  bat_ads_associated_remote_->GetStatementOfAccounts(
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*statement*/ nullptr));
 }
 
 void AdsServiceImpl::MaybeServeInlineContentAd(
@@ -1218,8 +1221,10 @@ void AdsServiceImpl::MaybeServeInlineContentAd(
                                    /*inline_content_ad*/ std::nullopt);
   }
 
-  bat_ads_associated_remote_->MaybeServeInlineContentAd(dimensions,
-                                                        std::move(callback));
+  bat_ads_associated_remote_->MaybeServeInlineContentAd(
+      dimensions,
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          std::move(callback), dimensions, /*inline_content_ad*/ std::nullopt));
 }
 
 void AdsServiceImpl::TriggerInlineContentAdEvent(
@@ -1235,7 +1240,8 @@ void AdsServiceImpl::TriggerInlineContentAdEvent(
 
   bat_ads_associated_remote_->TriggerInlineContentAdEvent(
       placement_id, creative_instance_id, mojom_ad_event_type,
-      std::move(callback));
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*success*/ false));
 }
 
 void AdsServiceImpl::PrefetchNewTabPageAd() {
@@ -1314,10 +1320,12 @@ void AdsServiceImpl::TriggerSearchResultAdEvent(
     TriggerAdEventCallback callback) {
   CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
 
-  if (bat_ads_associated_remote_.is_bound()) {
-    bat_ads_associated_remote_->TriggerSearchResultAdEvent(
-        std::move(mojom_creative_ad), mojom_ad_event_type, std::move(callback));
+  if (!bat_ads_associated_remote_.is_bound()) {
+    return std::move(callback).Run(/*success*/ false);
   }
+
+  bat_ads_associated_remote_->TriggerSearchResultAdEvent(
+      std::move(mojom_creative_ad), mojom_ad_event_type, std::move(callback));
 }
 
 void AdsServiceImpl::PurgeOrphanedAdEventsForType(
@@ -1325,68 +1333,98 @@ void AdsServiceImpl::PurgeOrphanedAdEventsForType(
     PurgeOrphanedAdEventsForTypeCallback callback) {
   CHECK(mojom::IsKnownEnumValue(mojom_ad_type));
 
-  if (bat_ads_associated_remote_.is_bound()) {
-    bat_ads_associated_remote_->PurgeOrphanedAdEventsForType(
-        mojom_ad_type, std::move(callback));
+  if (!bat_ads_associated_remote_.is_bound()) {
+    return std::move(callback).Run(/*success*/ false);
   }
+
+  bat_ads_associated_remote_->PurgeOrphanedAdEventsForType(mojom_ad_type,
+                                                           std::move(callback));
 }
 
 void AdsServiceImpl::GetAdHistory(const base::Time from_time,
                                   const base::Time to_time,
                                   GetAdHistoryForUICallback callback) {
-  if (bat_ads_associated_remote_.is_bound()) {
-    bat_ads_associated_remote_->GetAdHistory(from_time, to_time,
-                                             std::move(callback));
+  if (!bat_ads_associated_remote_.is_bound()) {
+    return std::move(callback).Run(/*ad_history*/ std::nullopt);
   }
+
+  bat_ads_associated_remote_->GetAdHistory(
+      from_time, to_time,
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*ad_history*/ std::nullopt));
 }
 
 void AdsServiceImpl::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
                                   ToggleReactionCallback callback) {
-  if (bat_ads_associated_remote_.is_bound()) {
-    bat_ads_associated_remote_->ToggleLikeAd(std::move(mojom_reaction),
-                                             std::move(callback));
+  if (!bat_ads_associated_remote_.is_bound()) {
+    return std::move(callback).Run(/*success*/ false);
   }
+
+  bat_ads_associated_remote_->ToggleLikeAd(
+      std::move(mojom_reaction),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*success*/ false));
 }
 
 void AdsServiceImpl::ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
                                      ToggleReactionCallback callback) {
-  if (bat_ads_associated_remote_.is_bound()) {
-    bat_ads_associated_remote_->ToggleDislikeAd(std::move(mojom_reaction),
-                                                std::move(callback));
+  if (!bat_ads_associated_remote_.is_bound()) {
+    return std::move(callback).Run(/*success*/ false);
   }
+
+  bat_ads_associated_remote_->ToggleDislikeAd(
+      std::move(mojom_reaction),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*success*/ false));
 }
 
 void AdsServiceImpl::ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
                                        ToggleReactionCallback callback) {
-  if (bat_ads_associated_remote_.is_bound()) {
-    bat_ads_associated_remote_->ToggleLikeSegment(std::move(mojom_reaction),
-                                                  std::move(callback));
+  if (!bat_ads_associated_remote_.is_bound()) {
+    return std::move(callback).Run(/*success*/ false);
   }
+
+  bat_ads_associated_remote_->ToggleLikeSegment(
+      std::move(mojom_reaction),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*success*/ false));
 }
 
 void AdsServiceImpl::ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
                                           ToggleReactionCallback callback) {
-  if (bat_ads_associated_remote_.is_bound()) {
-    bat_ads_associated_remote_->ToggleDislikeSegment(std::move(mojom_reaction),
-                                                     std::move(callback));
+  if (!bat_ads_associated_remote_.is_bound()) {
+    return std::move(callback).Run(/*success*/ false);
   }
+
+  bat_ads_associated_remote_->ToggleDislikeSegment(
+      std::move(mojom_reaction),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*success*/ false));
 }
 
 void AdsServiceImpl::ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
                                   ToggleReactionCallback callback) {
-  if (bat_ads_associated_remote_.is_bound()) {
-    bat_ads_associated_remote_->ToggleSaveAd(std::move(mojom_reaction),
-                                             std::move(callback));
+  if (!bat_ads_associated_remote_.is_bound()) {
+    return std::move(callback).Run(/*success*/ false);
   }
+
+  bat_ads_associated_remote_->ToggleSaveAd(
+      std::move(mojom_reaction),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*success*/ false));
 }
 
 void AdsServiceImpl::ToggleMarkAdAsInappropriate(
     mojom::ReactionInfoPtr mojom_reaction,
     ToggleReactionCallback callback) {
-  if (bat_ads_associated_remote_.is_bound()) {
-    bat_ads_associated_remote_->ToggleMarkAdAsInappropriate(
-        std::move(mojom_reaction), std::move(callback));
+  if (!bat_ads_associated_remote_.is_bound()) {
+    return std::move(callback).Run(/*success*/ false);
   }
+
+  bat_ads_associated_remote_->ToggleMarkAdAsInappropriate(
+      std::move(mojom_reaction),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*success*/ false));
 }
 
 void AdsServiceImpl::NotifyTabTextContentDidChange(
