@@ -28,7 +28,7 @@ public enum FullScreenCalloutType: CaseIterable {
     case .vpnUpdateBilling: return 0
     case .bottomBar: return 0
     case .vpnPromotion: return 4
-    case .defaultBrowser: return 10
+    case .defaultBrowser: return Locale.current.isNewOnboardingRegion ? 7 : 10
     case .rewards: return 8
     case .vpnLinkReceipt: return 0
     }
