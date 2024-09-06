@@ -346,6 +346,7 @@ leo_icons = [
   "search-zoom-in.svg",
   "search.svg",
   "send.svg",
+  "send-filled.svg",
   "settings.svg",
   "share-macos.svg",
   "shield-done.svg",
@@ -424,6 +425,7 @@ leo_icons = [
   "sol-color.svg",
   "filecoin-color.svg",
   "slash.svg",
+  "xmark-color.svg",
   "yahoo-color.svg",
   "yandex-color.svg",
 ]

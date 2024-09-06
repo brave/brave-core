@@ -1080,3 +1080,14 @@ export const SupportedSwapProviders = [
   BraveWallet.SwapProvider.kZeroEx,
   BraveWallet.SwapProvider.kLiFi
 ]
+
+export type StorybookTransactionTypes = 'Send' | 'Swap' | 'Bridge' | 'Approve'
+export const StorybookTransactionOptions: StorybookTransactionTypes[] = [
+  'Send',
+  'Swap',
+  'Bridge',
+  'Approve'
+]
+export type StorybookTransactionArgs = {
+  transactionType: StorybookTransactionTypes
+}

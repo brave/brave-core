@@ -4,7 +4,11 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Types
-import { BraveWallet, SerializableTransactionInfo } from '../../constants/types'
+import {
+  BraveWallet,
+  SerializableTransactionInfo,
+  StorybookTransactionTypes
+} from '../../constants/types'
 import { deserializeTransaction } from '../../utils/model-serialization-utils'
 import { FileCoinTransactionInfo } from '../../utils/tx-utils'
 
@@ -19,11 +23,13 @@ import {
 } from '../../common/constants/mocks'
 import { mockOriginInfo } from './mock-origin-info'
 import { mockEthAccount } from './mock-wallet-accounts'
+import { mockBasicAttentionToken, mockUSDCoin } from './mock-asset-options'
+import { LiFiExchangeProxy } from '../../common/constants/registry'
 
 export const mockTransactionInfo: SerializableTransactionInfo = {
   fromAccountId: mockAccount.accountId,
   fromAddress: mockAccount.address,
-  chainId: BraveWallet.SEPOLIA_CHAIN_ID,
+  chainId: BraveWallet.MAINNET_CHAIN_ID,
   id: '465a4d6646-kjlwf665',
   txArgs: ['0x0d8775f648430679a709e98d2b0cb6250d2887ef', '0x15ddf09c97b0000'],
   txDataUnion: {
@@ -468,4 +474,64 @@ export const createMockTransactionInfo = (arg: {
     txArgs,
     swapInfo
   }
+}
+
+const getMockTransactionType = (
+  isSwapOrBridge: boolean,
+  transactionType: StorybookTransactionTypes
+) => {
+  if (isSwapOrBridge) {
+    return BraveWallet.TransactionType.ETHSwap
+  }
+  if (transactionType === 'Approve') {
+    return BraveWallet.TransactionType.ERC20Approve
+  }
+  return BraveWallet.TransactionType.ETHSend
+}
+
+export const getPostConfirmationStatusMockTransaction = (
+  transactionType: StorybookTransactionTypes,
+  transactionStatus: BraveWallet.TransactionStatus
+) => {
+  const isSwapOrBridge =
+    transactionType === 'Swap' || transactionType === 'Bridge'
+
+  return {
+    ...mockTransactionInfo,
+    txArgs: [
+      BraveWallet.TransactionType.ERC20Approve
+        ? LiFiExchangeProxy
+        : '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+      '0x15ddf09c97b0000'
+    ],
+    txDataUnion: {
+      ...mockTransactionInfo.txDataUnion,
+      ethTxData1559: {
+        ...mockTransactionInfo.txDataUnion.ethTxData1559,
+        baseData: {
+          ...mockTransactionInfo.txDataUnion.ethTxData1559?.baseData,
+          to: mockBasicAttentionToken.contractAddress
+        }
+      }
+    },
+    txStatus: transactionStatus,
+    txType: getMockTransactionType(isSwapOrBridge, transactionType),
+    swapInfo: isSwapOrBridge
+      ? ({
+          fromCoin: BraveWallet.CoinType.ETH,
+          fromChainId: BraveWallet.MAINNET_CHAIN_ID,
+          fromAsset: mockBasicAttentionToken.contractAddress,
+          fromAmount: '9996544123665456564888',
+          toCoin: BraveWallet.CoinType.ETH,
+          toChainId:
+            transactionType === 'Bridge'
+              ? BraveWallet.SEPOLIA_CHAIN_ID
+              : BraveWallet.MAINNET_CHAIN_ID,
+          toAsset: mockUSDCoin.contractAddress,
+          toAmount: '111111111111111',
+          receiver: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+          provider: 'lifi'
+        } as BraveWallet.SwapInfo)
+      : undefined
+  } as SerializableTransactionInfo
 }
