@@ -1,4 +1,14 @@
 <style include="settings-shared iron-flex">
+      cr-input {
+        width: 100%;
+        --cr-input-width: 50%;
+        margin-top: 10px;
+        margin-left: 20px;
+      }
+
+      cr-input::part(row-container) {
+        justify-content: normal;
+      }
 </style>
 <settings-animated-pages id="pages" section="braveSync">
   <div route-path="default">
@@ -17,6 +27,15 @@
           sync-status="[[syncStatus_]]">
       </settings-brave-sync-subpage>
     </settings-subpage>
-
   </template>
 </settings-animated-pages>
+
+
+<settings-toggle-button id="customSyncUrlEnabled"
+  class="hr"
+  pref="{{prefs.brave.custom_sync_url_enabled}}"
+  label="$i18n{braveCustomSyncUrlEnableLabel}">
+</settings-toggle-button>
+<template is="dom-if" if="[[prefs.brave.custom_sync_url_enabled.value]]">
+  <cr-input id="customSyncUrl" value="{{customSyncUrl_}}" placeholder="$i18n{enterCustomSyncUrl}" spellcheck="false"></cr-input>
+</template>
