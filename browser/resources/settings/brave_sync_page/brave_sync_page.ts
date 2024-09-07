@@ -4,23 +4,27 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
+import '/shared/settings/prefs/prefs.js';
 import 'chrome://resources/cr_elements/icons.html.js';
 import '../settings_page/settings_animated_pages.js';
 import '../settings_page/settings_subpage.js';
 import '../settings_shared.css.js';
 import '../settings_vars.css.js';
 import './brave_sync_subpage.js';
+import 'chrome://resources/cr_elements/cr_input/cr_input.js';
 
-import {SyncBrowserProxy, SyncBrowserProxyImpl, SyncPrefs} from '/shared/settings/people_page/sync_browser_proxy.js';
-import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
-import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
-import {BaseMixin} from '../base_mixin.js'
-import {Route, Router} from '../router.js';
+import { I18nMixin, I18nMixinInterface } from 'chrome://resources/cr_elements/i18n_mixin.js';
+import { WebUiListenerMixin, WebUiListenerMixinInterface } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
+import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import { SyncBrowserProxy, SyncBrowserProxyImpl, SyncPrefs } from '/shared/settings/people_page/sync_browser_proxy.js';
+import { PrefsMixin, PrefsMixinInterface } from '/shared/settings/prefs/prefs_mixin.js';
 
-import {BraveSyncBrowserProxy, BraveSyncStatus} from './brave_sync_browser_proxy.js';
-import {getTemplate} from './brave_sync_page.html.js'
+import { BaseMixin } from '../base_mixin.js';
+import { Route, Router } from '../router.js';
+
+import { BraveSyncBrowserProxy, BraveSyncStatus } from './brave_sync_browser_proxy.js';
+import { getTemplate } from './brave_sync_page.html.js';
 
 /**
  * @fileoverview
@@ -29,8 +33,8 @@ import {getTemplate} from './brave_sync_page.html.js'
  */
 
 const SettingsBraveSyncPageElementBase =
-  I18nMixin(WebUiListenerMixin(BaseMixin(PolymerElement))) as {
-    new(): PolymerElement & WebUiListenerMixinInterface & I18nMixinInterface
+  I18nMixin(WebUiListenerMixin(PrefsMixin(BaseMixin(PolymerElement)))) as {
+    new(): PolymerElement & PrefsMixinInterface & WebUiListenerMixinInterface & I18nMixinInterface
   }
 
 export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBase {
@@ -57,6 +61,7 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
         type: String,
         computed: 'computeSyncLabel_(syncStatus_)'
       },
+      customSyncUrl_: String,
     };
   }
 
