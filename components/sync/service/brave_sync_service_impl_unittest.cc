@@ -33,6 +33,7 @@
 #include "components/sync/test/fake_sync_manager.h"
 #include "components/sync/test/sync_service_impl_bundle.h"
 #include "components/sync/test/test_data_type_store_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -126,7 +127,7 @@ class BraveSyncServiceImplTest : public testing::Test {
 
   SyncPrefs* sync_prefs() { return &sync_prefs_; }
 
-  PrefService* pref_service() {
+  sync_preferences::TestingPrefServiceSyncable* pref_service() {
     return sync_service_impl_bundle_.pref_service();
   }
 
@@ -154,6 +155,48 @@ class BraveSyncServiceImplTest : public testing::Test {
   SyncPrefs sync_prefs_;
   std::unique_ptr<BraveSyncServiceImpl> sync_service_impl_;
 };
+
+TEST_F(BraveSyncServiceImplTest, GroupPolicyOverride) {
+  pref_service()->SetManagedPref(brave_sync::kCustomSyncServiceUrl,
+                                 base::Value("https://sync.example.com/v2"));
+
+  OSCryptMocker::SetUp();
+
+  CreateSyncService();
+
+  EXPECT_FALSE(engine());
+
+  GURL expected_service_url = GURL("https://sync.example.com/v2");
+  GURL actual_service_url =
+      brave_sync_service_impl()->GetSyncServiceUrlForDebugging();
+  EXPECT_EQ(expected_service_url, actual_service_url);
+
+  OSCryptMocker::TearDown();
+
+  pref_service()->SetManagedPref(brave_sync::kCustomSyncServiceUrl,
+                                 base::Value(""));
+}
+
+TEST_F(BraveSyncServiceImplTest, GroupPolicyNonHttpsOverride) {
+  pref_service()->SetManagedPref(brave_sync::kCustomSyncServiceUrl,
+                                 base::Value("http://sync.example.com/v2"));
+
+  OSCryptMocker::SetUp();
+
+  CreateSyncService();
+
+  EXPECT_FALSE(engine());
+
+  GURL expected_service_url = GURL("http://sync.example.com/v2");
+  GURL actual_service_url =
+      brave_sync_service_impl()->GetSyncServiceUrlForDebugging();
+  EXPECT_NE(expected_service_url, actual_service_url);
+
+  OSCryptMocker::TearDown();
+
+  pref_service()->SetManagedPref(brave_sync::kCustomSyncServiceUrl,
+                                 base::Value(""));
+}
 
 TEST_F(BraveSyncServiceImplTest, ValidPassphrase) {
   OSCryptMocker::SetUp();

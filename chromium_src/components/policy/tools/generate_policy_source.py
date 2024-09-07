@@ -166,6 +166,26 @@ def AddBravePolicies(template_file_contents):
             'desc': ('''This policy allows an admin to specify that Brave '''
                      '''AI Chat feature will be enabled.'''),
         },
+        {
+            'name': 'BraveSyncUrl',
+            'type': 'main',
+            'schema': {
+                'type': 'string'
+            },
+            'supported_on': ['chrome.*:129-'],
+            'features': {
+                'dynamic_refresh': False,
+                'per_profile': True,
+                'can_be_recommended': False,
+                'can_be_mandatory': True
+            },
+            'example_value': ['https://sync-v2.brave.com/v2'],
+            'id': 8,
+            'caption': '''Custom sync server URL.''',
+            'tags': [],
+            'desc': ('''This policy allows an admin to specify a custom '''
+                     '''sync server URL for Brave.'''),
+        },
     ]
 
     # Our new polices are added with highest id

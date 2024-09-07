@@ -23,6 +23,8 @@ class Time;
 
 namespace brave_sync {
 
+inline constexpr char kCustomSyncServiceUrl[] = "brave_sync.sync_service_url";
+
 class Prefs {
  public:
   explicit Prefs(PrefService* pref_service);
