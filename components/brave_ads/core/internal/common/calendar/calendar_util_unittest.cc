@@ -13,17 +13,6 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsCalendarUtilTest, GetDayOfWeekForYearMonthAndDay) {
-  // Act & Assert
-  EXPECT_EQ(/*friday*/ 6, DayOfWeek(/*year=*/2020, /*month=*/2, /*day=*/29));
-}
-
-TEST(BraveAdsCalendarUtilTest, DayOfWeek) {
-  // Act & Assert
-  EXPECT_EQ(/*wednesday*/ 3, DayOfWeek(test::TimeFromString("November 18 1970"),
-                                       /*is_local=*/true));
-}
-
 TEST(BraveAdsCalendarUtilTest, IsLeapYear) {
   // Act & Assert
   for (int year = 2000; year < 2050; ++year) {
@@ -31,26 +20,37 @@ TEST(BraveAdsCalendarUtilTest, IsLeapYear) {
   }
 }
 
-TEST(BraveAdsCalendarUtilTest, DaysPerMonth) {
+TEST(BraveAdsCalendarUtilTest, LocalDayOfWeek) {
+  // Act & Assert
+  EXPECT_EQ(/*wednesday*/ 3, DayOfWeek(test::TimeFromString("18 November 1970"),
+                                       /*is_local*/ true));
+}
+
+TEST(BraveAdsCalendarUtilTest, UTCDayOfWeek) {
+  // Act & Assert
+  EXPECT_EQ(/*monday*/ 1, DayOfWeek(test::TimeFromUTCString("18 November 1991"),
+                                    /*is_local*/ false));
+}
+
+TEST(BraveAdsCalendarUtilTest, DaysInMonth) {
   // Arrange
-  constexpr int kLastDayForMonth[12] = {31, 28, 31, 30, 31, 30,
-                                        31, 31, 30, 31, 30, 31};
+  constexpr int kLastDayInMonth[12] = {31, 28, 31, 30, 31, 30,
+                                       31, 31, 30, 31, 30, 31};
 
   // Act & Assert
   for (int i = 0; i < 12; ++i) {
-    EXPECT_EQ(kLastDayForMonth[i],
-              DaysPerMonth(/*year=*/2021, /*month=*/i + 1));
+    EXPECT_EQ(kLastDayInMonth[i], DaysInMonth(/*year=*/2021, /*month=*/i + 1));
   }
 }
 
-TEST(BraveAdsCalendarUtilTest, DaysPerMonthForLeapYear) {
+TEST(BraveAdsCalendarUtilTest, DaysInMonthForLeapYear) {
   // Arrange
-  constexpr int kDaysPerMonth[12] = {31, 29, 31, 30, 31, 30,
-                                     31, 31, 30, 31, 30, 31};
+  constexpr int kDaysInMonth[12] = {31, 29, 31, 30, 31, 30,
+                                    31, 31, 30, 31, 30, 31};
 
   // Act & Assert
   for (int i = 0; i < 12; ++i) {
-    EXPECT_EQ(kDaysPerMonth[i], DaysPerMonth(/*year=*/2020, /*month=*/i + 1));
+    EXPECT_EQ(kDaysInMonth[i], DaysInMonth(/*year=*/2020, /*month=*/i + 1));
   }
 }
 

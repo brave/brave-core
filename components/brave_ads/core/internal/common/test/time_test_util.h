@@ -27,15 +27,19 @@ std::string NowAsIso8601();
 base::Time DistantFuture();
 std::string DistantFutureAsIso8601();
 
-// Converts a string representation of time to a `base::Time` object.
-base::Time TimeFromString(const std::string& time_string);
+// Converts a string representation of time to a `base::Time` object, optionally
+// offset to standard time, if the time is in daylight saving time.
+base::Time TimeFromString(const std::string& time_string,
+                          bool should_adjust_for_dst = false);
 
 // Converts a string representation of UTC time to a `base::Time` object.
 base::Time TimeFromUTCString(const std::string& time_string);
 
 // Converts a string representation of time duration since now to a
-// `base::TimeDelta` object.
-base::TimeDelta TimeDeltaFromString(const std::string& time_string);
+// `base::TimeDelta` object, optionally offset to standard time, if the time is
+// in daylight saving time.
+base::TimeDelta TimeDeltaFromString(const std::string& time_string,
+                                    bool should_adjust_for_dst = false);
 
 // Converts a string representation of time duration since UTC now to a
 // `base::TimeDelta` object.

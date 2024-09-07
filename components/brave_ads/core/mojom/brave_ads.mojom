@@ -33,8 +33,8 @@ struct WalletInfo {
 };
 
 struct StatementInfo {
-  double min_earnings_last_month;
-  double max_earnings_last_month;
+  double min_earnings_previous_month;
+  double max_earnings_previous_month;
   double min_earnings_this_month;
   double max_earnings_this_month;
   mojo_base.mojom.Time next_payment_date;
