@@ -27,7 +27,6 @@ class TabsBarViewController: UIViewController {
   private lazy var plusButton: UIButton = {
     let button = UIButton()
     button.setImage(UIImage(braveSystemNamed: "leo.plus.add"), for: .normal)
-    button.imageEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 10)
     button.tintColor = .braveLabel
     button.contentMode = .scaleAspectFit
     button.addTarget(self, action: #selector(addTabPressed), for: .touchUpInside)
