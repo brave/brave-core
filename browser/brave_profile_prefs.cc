@@ -237,6 +237,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kTabMuteIndicatorNotClickable, false);
 
   brave_sync::Prefs::RegisterProfilePrefs(registry);
+  registry->RegisterBooleanPref(kBraveCustomSyncUrlEnabled, false);
 
   brave_shields::RegisterShieldsP3AProfilePrefs(registry);
 
