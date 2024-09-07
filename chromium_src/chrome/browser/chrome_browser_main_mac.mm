@@ -4,16 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/mac/keystone_glue.h"
-#include "ui/base/resource/resource_bundle.h"
 
-namespace {
-void DoNothing() {}
-}  // namespace
-
-#define HasSharedInstance() HasSharedInstance());            \
-  [[KeystoneGlue defaultKeystoneGlue] registerWithKeystone]; \
-  DoNothing(
+#define BRAVE_CHROME_BROWSER_MAIN_PARTS_MAC_PRE_CREATE_MAIN_MESSAGE_LOOP \
+  [[KeystoneGlue defaultKeystoneGlue] registerWithKeystone];
 
 #include "src/chrome/browser/chrome_browser_main_mac.mm"
-
-#undef HasSharedInstance
+#undef BRAVE_CHROME_BROWSER_MAIN_PARTS_MAC_PRE_CREATE_MAIN_MESSAGE_LOOP
