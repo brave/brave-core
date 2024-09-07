@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/chrome_browser_main_mac.mm b/chrome/browser/chrome_browser_main_mac.mm
+index e26e3625c99c839a49620f29196ea9811c9d82bd..1bb80c9b7eb47bf9d5e99fc7d78fced9d31703f9 100644
+--- a/chrome/browser/chrome_browser_main_mac.mm
++++ b/chrome/browser/chrome_browser_main_mac.mm
+@@ -101,6 +101,7 @@ void ChromeBrowserMainPartsMac::PreCreateMainMessageLoop() {
+   // ChromeBrowserMainParts should have loaded the resource bundle by this
+   // point (needed to load the nib).
+   CHECK(ui::ResourceBundle::HasSharedInstance());
++  BRAVE_CHROME_BROWSER_MAIN_PARTS_MAC_PRE_CREATE_MAIN_MESSAGE_LOOP
+ 
+ #if !BUILDFLAG(CHROME_FOR_TESTING)
+   // Disk image installation is sort of a first-run task, so it shares the
