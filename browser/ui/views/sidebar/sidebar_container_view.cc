@@ -826,6 +826,23 @@ void SidebarContainerView::OnTabStripModelChanged(
     // with the contents and is now associated with the tab instead we don't
     // need to do the swap here. However, we may need to take some action here
     // to fix https://github.com/brave/brave-browser/issues/40681.
+
+    // For AI Chat, if the contents got replaced then the AI Chat UI associated
+    // with that contetnts will no longer work, so just close it.
+    auto* replace = change.GetReplace();
+    // old_contents is already removed from the tab, so use the new_contents to
+    // get the registry.
+    auto* registry = SidePanelRegistry::GetDeprecated(replace->new_contents);
+    if (registry) {
+      if (auto* entry = registry->GetEntryForKey(
+              SidePanelEntry::Key(SidePanelEntryId::kChatUI))) {
+        if (side_panel_coordinator_->IsSidePanelEntryShowing(entry)) {
+          side_panel_coordinator_->Close();
+        } else {
+          entry->ClearCachedView();
+        }
+      }
+    }
     return;
   }
 
