@@ -10,17 +10,22 @@
 #include "base/test/gtest_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/test/browser_window_interface_test_tab_strip_delegate.h"
 #include "brave/chromium_src/chrome/test/base/testing_browser_process.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
-#include "chrome/browser/ui/tabs/test_tab_strip_model_delegate.h"
+#include "chrome/browser/universal_web_contents_observers.h"
 #include "chrome/test/base/testing_profile.h"
+#include "content/public/browser/content_browser_client.h"
+#include "content/public/common/content_client.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-class SplitViewBrowserDataUnitTest : public ::testing::Test {
+class SplitViewBrowserDataUnitTest : public ::testing::Test,
+                                     public content::ContentBrowserClient {
  public:
   SplitViewBrowserDataUnitTest()
       : feature_list_(tabs::features::kBraveSplitView) {}
@@ -37,7 +42,10 @@ class SplitViewBrowserDataUnitTest : public ::testing::Test {
 
   // ::testing::Test:
   void SetUp() override {
-    delegate_ = std::make_unique<TestTabStripModelDelegate>();
+    client_ = content::SetBrowserClientForTesting(this);
+    delegate_ =
+        std::make_unique<BrowserWindowInterfaceTestTabStripModelDelegate>(
+            &profile_);
     tab_strip_model_ =
         std::make_unique<TabStripModel>(delegate_.get(), &profile_);
     data_.reset(new SplitViewBrowserData(nullptr));
@@ -48,6 +56,12 @@ class SplitViewBrowserDataUnitTest : public ::testing::Test {
     data_.reset();
     tab_strip_model_.reset();
     delegate_.reset();
+    content::SetBrowserClientForTesting(client_);
+  }
+
+  void OnWebContentsCreated(content::WebContents* web_contents) override {
+    content::ContentBrowserClient::OnWebContentsCreated(web_contents);
+    AttachUniversalWebContentsObservers(web_contents);
   }
 
  private:
@@ -57,7 +71,9 @@ class SplitViewBrowserDataUnitTest : public ::testing::Test {
   content::RenderViewHostTestEnabler render_view_host_test_enabler_;
   TestingProfile profile_;
 
-  std::unique_ptr<TestTabStripModelDelegate> delegate_;
+  raw_ptr<content::ContentBrowserClient> client_;
+
+  std::unique_ptr<BrowserWindowInterfaceTestTabStripModelDelegate> delegate_;
   std::unique_ptr<TabStripModel> tab_strip_model_;
 
   std::unique_ptr<SplitViewBrowserData> data_;
