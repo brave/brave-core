@@ -1,41 +1,55 @@
 <style include="settings-shared iron-flex">
-      cr-input {
-        width: 100%;
-        --cr-input-width: 50%;
-        margin-top: 10px;
-        margin-left: 20px;
-      }
+  cr-input {
+    width: 100%;
+    --cr-input-width: 50%;
+    margin-top: 10px;
+    margin-left: 20px;
+  }
 
-      cr-input::part(row-container) {
-        justify-content: normal;
-      }
+  cr-input::part(row-container) {
+    justify-content: normal;
+  }
 </style>
 <settings-animated-pages id="pages" section="braveSync">
   <div route-path="default">
-    <cr-link-row id="brave-sync-setup"
+    <cr-link-row
+      id="brave-sync-setup"
       label$="[[syncLabel_]]"
       on-click="onSyncTap_"
-      role-description="$i18n{subpageArrowRoleDescription}">
+      role-description="$i18n{subpageArrowRoleDescription}"
+    >
     </cr-link-row>
   </div>
 
   <template is="dom-if" route-path="/braveSync/setup">
     <settings-subpage
       associated-control="[[$$('#brave-sync-setup')]]"
-      page-title="[[syncLabel_]]">
-      <settings-brave-sync-subpage
-          sync-status="[[syncStatus_]]">
+      page-title="[[syncLabel_]]"
+    >
+      <settings-brave-sync-subpage sync-status="[[syncStatus_]]">
       </settings-brave-sync-subpage>
     </settings-subpage>
   </template>
 </settings-animated-pages>
 
-
-<settings-toggle-button id="customSyncUrlEnabled"
+<settings-toggle-button
+  id="customSyncUrlEnabled"
   class="hr"
   pref="{{prefs.brave.custom_sync_url_enabled}}"
-  label="$i18n{braveCustomSyncUrlEnableLabel}">
+  label="$i18n{braveCustomSyncUrlEnableLabel}"
+>
+  <template
+    is="dom-if"
+    if="[[shouldShowRestart_(prefs.brave.custom_sync_url_enabled.value, prefs.brave.custom_sync_url.value)]]"
+  >
+    <cr-button on-click="onRestartClick_" slot="more-actions">
+      $i18n{restart}
+    </cr-button>
+  </template>
 </settings-toggle-button>
 <template is="dom-if" if="[[prefs.brave.custom_sync_url_enabled.value]]">
-  <cr-input id="customSyncUrl" value="{{customSyncUrl_}}" placeholder="$i18n{enterCustomSyncUrl}" spellcheck="false"></cr-input>
+  <sync-url-input
+    id="customSyncUrl"
+    pref="{{prefs.brave.custom_sync_url}}"
+  ></sync-url-input>
 </template>
