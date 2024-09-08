@@ -10,8 +10,8 @@
 #include "base/run_loop.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/browser/ui/tabs/test/browser_window_interface_test_tab_strip_delegate.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
-#include "chrome/browser/ui/tabs/test_tab_strip_model_delegate.h"
 #include "chrome/browser/universal_web_contents_observers.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -47,7 +47,9 @@ class SplitViewTabStripModelAdapterUnitTest
   void SetUp() override {
     client_ = content::SetBrowserClientForTesting(this);
 
-    delegate_ = std::make_unique<TestTabStripModelDelegate>();
+    delegate_ =
+        std::make_unique<BrowserWindowInterfaceTestTabStripModelDelegate>(
+            &profile_);
     model_ = std::make_unique<TabStripModel>(delegate_.get(), &profile_);
 
     split_view_browser_data_.reset(new SplitViewBrowserData(nullptr));
@@ -82,7 +84,7 @@ class SplitViewTabStripModelAdapterUnitTest
 
   raw_ptr<content::ContentBrowserClient> client_;
 
-  std::unique_ptr<TestTabStripModelDelegate> delegate_;
+  std::unique_ptr<BrowserWindowInterfaceTestTabStripModelDelegate> delegate_;
   std::unique_ptr<TabStripModel> model_;
   std::unique_ptr<SplitViewBrowserData> split_view_browser_data_;
   raw_ptr<SplitViewTabStripModelAdapter> adapter_;
