@@ -3,8 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {SyncStatus} from '/shared/settings/people_page/sync_browser_proxy.js';
-import {sendWithPromise} from 'chrome://resources/js/cr.js';
+import { sendWithPromise } from 'chrome://resources/js/cr.js';
+import { loadTimeData } from '../i18n_setup.js';
+import { SyncStatus } from '/shared/settings/people_page/sync_browser_proxy.js';
 
 export type BraveDeviceInfo = {
   name: string
@@ -50,15 +51,28 @@ export class BraveSyncBrowserProxy {
   getSyncStatus(): Promise<BraveSyncStatus> {
     return sendWithPromise('SyncSetupGetSyncStatus');
   }
-  permanentlyDeleteSyncAccount(): Promise<boolean>  {
+  permanentlyDeleteSyncAccount(): Promise<boolean> {
     return sendWithPromise('SyncPermanentlyDeleteAccount');
   }
   getWordsCount(syncCode: string): Promise<number> {
     return sendWithPromise('SyncGetWordsCount', syncCode);
   }
+
+  wasCustomSyncUrlEnabledAtStartup(): boolean {
+    return loadTimeData.getBoolean('customSyncUrlEnabledAtStartup');
+  }
+
+  getCustomSyncUrlAtStartup(): string {
+    return loadTimeData.getString('customSyncUrlAtStartup');
+  }
+
+  validateCustomSyncUrl(url: string) {
+    return sendWithPromise('validateCustomSyncUrl', url);
+  }
+
   static getInstance() {
     return instance || (instance = new BraveSyncBrowserProxy())
   }
 }
 
-let instance: BraveSyncBrowserProxy|null = null
+let instance: BraveSyncBrowserProxy | null = null

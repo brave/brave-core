@@ -42,12 +42,14 @@
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 #include "components/sync/base/command_line_switches.h"
@@ -210,6 +212,13 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isSharedPinnedTabsEnabled",
       base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs));
+
+  html_source->AddBoolean(
+      "customSyncUrlEnabledAtStartup",
+      g_browser_process->local_state()->GetBoolean(kBraveCustomSyncUrlEnabled));
+  html_source->AddString(
+      "customSyncUrlAtStartup",
+      g_browser_process->local_state()->GetString(kBraveCustomSyncUrl));
 }
 
 // static
