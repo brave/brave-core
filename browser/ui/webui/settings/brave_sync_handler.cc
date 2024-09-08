@@ -24,6 +24,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
 #include "chrome/browser/sync/sync_service_factory.h"
+#include "chrome/browser/ui/webui/settings/settings_utils.h"
 #include "components/qr_code_generator/bitmap_generator.h"
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/service/sync_user_settings.h"
@@ -100,6 +101,10 @@ void BraveSyncHandler::RegisterMessages() {
       "SyncGetWordsCount",
       base::BindRepeating(&BraveSyncHandler::HandleSyncGetWordsCount,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "validateCustomSyncUrl",
+      base::BindRepeating(&BraveSyncHandler::HandleValidateCustomSyncUrl,
+                          base::Unretained(this)));
 }
 
 void BraveSyncHandler::OnJavascriptAllowed() {
@@ -116,8 +121,9 @@ void BraveSyncHandler::OnJavascriptDisallowed() {
 }
 
 void BraveSyncHandler::OnDeviceInfoChange() {
-  if (IsJavascriptAllowed())
+  if (IsJavascriptAllowed()) {
     FireWebUIListener("device-info-changed", GetSyncDeviceList());
+  }
 }
 
 void BraveSyncHandler::HandleGetDeviceList(const base::Value::List& args) {
@@ -132,8 +138,9 @@ void BraveSyncHandler::HandleGetSyncCode(const base::Value::List& args) {
 
   auto* sync_service = GetSyncService();
   std::string sync_code;
-  if (sync_service)
+  if (sync_service) {
     sync_code = sync_service->GetOrCreateSyncCode();
+  }
 
   auto time_limited_sync_code = TimeLimitedWords::GenerateForNow(sync_code);
   if (time_limited_sync_code.has_value()) {
@@ -153,8 +160,9 @@ void BraveSyncHandler::HandleGetPureSyncCode(const base::Value::List& args) {
 
   auto* sync_service = GetSyncService();
   std::string sync_code;
-  if (sync_service)
+  if (sync_service) {
     sync_code = sync_service->GetOrCreateSyncCode();
+  }
 
   ResolveJavascriptCallback(args[0], base::Value(sync_code));
 }
@@ -406,4 +414,15 @@ void BraveSyncHandler::HandleSyncGetWordsCount(const base::Value::List& args) {
   ResolveJavascriptCallback(
       args[0].Clone(),
       base::Value(TimeLimitedWords::GetWordsCount(time_limited_sync_code)));
+}
+
+void BraveSyncHandler::HandleValidateCustomSyncUrl(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 2U);
+  const base::Value& callback_id = args[0];
+  const std::string& url_string = args[1].GetString();
+  AllowJavascript();
+
+  bool valid = settings_utils::FixupAndValidateStartupPage(url_string, nullptr);
+  ResolveJavascriptCallback(callback_id, base::Value(valid));
 }
