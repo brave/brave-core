@@ -171,6 +171,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   misc_metrics::GeneralBrowserUsage::RegisterPrefs(registry);
 
   playlist::PlaylistServiceFactory::RegisterLocalStatePrefs(registry);
+
+  registry->RegisterBooleanPref(kBraveCustomSyncUrlEnabled, false);
+  registry->RegisterStringPref(kBraveCustomSyncUrl, std::string());
 }
 
 }  // namespace brave

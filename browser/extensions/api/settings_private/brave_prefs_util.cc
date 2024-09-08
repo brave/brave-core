@@ -215,6 +215,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   // Sync prefs
   (*s_brave_allowlist)[kBraveCustomSyncUrlEnabled] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kBraveCustomSyncUrl] = settings_api::PrefType::kUrl;
 
   // WebTorrent pref
   (*s_brave_allowlist)[kWebTorrentEnabled] = settings_api::PrefType::kBoolean;
