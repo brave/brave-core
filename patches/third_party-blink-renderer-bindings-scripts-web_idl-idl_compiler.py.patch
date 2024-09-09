@@ -1,0 +1,9 @@
+diff --git a/third_party/blink/renderer/bindings/scripts/web_idl/idl_compiler.py b/third_party/blink/renderer/bindings/scripts/web_idl/idl_compiler.py
+index 16694489cb652bc31587ed084c99d26f2f87d58a..b8a7ee4559cfd01abd0afd2b8f5f488bf37b2a63 100644
+--- a/third_party/blink/renderer/bindings/scripts/web_idl/idl_compiler.py
++++ b/third_party/blink/renderer/bindings/scripts/web_idl/idl_compiler.py
+@@ -1256,3 +1256,4 @@ class IdlCompiler(object):
+             # the root.
+             if old_ir.inherited is None:
+                 next_tag = assign_tags_for_tree(old_ir, next_tag)
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
