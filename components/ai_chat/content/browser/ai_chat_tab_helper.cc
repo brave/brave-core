@@ -147,6 +147,9 @@ void AIChatTabHelper::OnPDFA11yInfoLoaded() {
     FetchPageContent(web_contents(), "",
                      std::move(pending_get_page_content_callback_));
   }
+  if (pending_print_preview_requests_.contains(pending_navigation_id_)) {
+    NotifyPrintPreviewRequested(true);
+  }
   pdf_load_observer_.reset();
   if (on_pdf_a11y_info_loaded_cb_) {
     std::move(on_pdf_a11y_info_loaded_cb_).Run();
@@ -154,9 +157,10 @@ void AIChatTabHelper::OnPDFA11yInfoLoaded() {
 }
 
 void AIChatTabHelper::OnPreviewTextReady(std::string ocr_text) {
-  if (pending_get_page_content_callback_) {
-    std::move(pending_get_page_content_callback_)
+  if (pending_print_preview_requests_.contains(pending_navigation_id_)) {
+    std::move(pending_print_preview_requests_[pending_navigation_id_])
         .Run(std::move(ocr_text), false, "");
+    pending_print_preview_requests_.erase(pending_navigation_id_);
   }
 }
 
@@ -176,6 +180,13 @@ void AIChatTabHelper::DidFinishNavigation(
   DVLOG(2) << __func__ << navigation_handle->GetNavigationId()
            << " url: " << navigation_handle->GetURL().spec()
            << " same document? " << navigation_handle->IsSameDocument();
+
+  is_page_loaded_ = false;
+  if (pending_print_preview_requests_.contains(pending_navigation_id_)) {
+    std::move(pending_print_preview_requests_[pending_navigation_id_])
+        .Run("", false, "");
+    pending_print_preview_requests_.erase(pending_navigation_id_);
+  }
 
   // Allow same-document navigation, as content often changes as a result
   // of framgment / pushState / replaceState navigations.
@@ -235,6 +246,16 @@ void AIChatTabHelper::InnerWebContentsAttached(
     pdf_load_observer_ =
         std::make_unique<PDFA11yInfoLoadObserver>(inner_web_contents, this);
     is_pdf_a11y_info_loaded_ = false;
+  }
+}
+
+void AIChatTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
+                                    const GURL& validated_url) {
+  if (validated_url == GetPageURL()) {
+    is_page_loaded_ = true;
+    if (pending_print_preview_requests_.contains(pending_navigation_id_)) {
+      NotifyPrintPreviewRequested(IsPdf(web_contents()));
+    }
   }
 }
 
@@ -303,8 +324,11 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
   } else {
     if (base::Contains(kPrintPreviewRetrievalHosts,
                        GetPageURL().host_piece())) {
-      pending_get_page_content_callback_ = std::move(callback);
-      NotifyPrintPreviewRequested(false);
+      pending_print_preview_requests_[pending_navigation_id_] =
+          std::move(callback);
+      if (is_page_loaded_) {
+        NotifyPrintPreviewRequested(false);
+      }
     } else {
       FetchPageContent(web_contents(), invalidation_token, std::move(callback));
     }
@@ -312,8 +336,13 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
 }
 
 void AIChatTabHelper::PrintPreviewFallback(GetPageContentCallback callback) {
-  pending_get_page_content_callback_ = std::move(callback);
-  NotifyPrintPreviewRequested(IsPdf(web_contents()));
+  pending_print_preview_requests_[pending_navigation_id_] = std::move(callback);
+  if (IsPdf(web_contents())) {
+    // Print preview will be requested in OnPDFA11yInfoLoaded.
+    CheckPDFA11yTree();
+  } else if (is_page_loaded_) {
+    NotifyPrintPreviewRequested(false);
+  }
 }
 
 std::u16string AIChatTabHelper::GetPageTitle() const {

@@ -145,9 +145,11 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  void NavigateURL(const GURL& url) {
+  void NavigateURL(const GURL& url, bool wait_for_loaded = true) {
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    ASSERT_TRUE(WaitForLoadStop(GetActiveWebContents()));
+    if (wait_for_loaded) {
+      ASSERT_TRUE(WaitForLoadStop(GetActiveWebContents()));
+    }
   }
 
   void OpenAIChatSidePanel() {
@@ -165,19 +167,25 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
   }
 
   void FetchPageContent(const base::Location& location,
-                        std::string_view expected_text) {
+                        std::string_view expected_text,
+                        bool wait_for_callback = true) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
     chat_tab_helper_->GetPageContent(
         base::BindLambdaForTesting(
-            [&run_loop, expected_text](std::string text, bool is_video,
-                                       std::string invalidation_token) {
+            [&run_loop, expected_text, wait_for_callback](
+                std::string text, bool is_video,
+                std::string invalidation_token) {
               EXPECT_FALSE(is_video);
               EXPECT_EQ(text, expected_text);
-              run_loop.Quit();
+              if (wait_for_callback) {
+                run_loop.Quit();
+              }
             }),
         "");
-    run_loop.Run();
+    if (wait_for_callback) {
+      run_loop.Run();
+    }
   }
 
   void FetchSearchQuerySummary(const base::Location& location,
@@ -196,6 +204,12 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
 
+  const base::flat_map<int64_t,
+                       ai_chat::ConversationDriver::GetPageContentCallback>&
+  GetPendingPrintPreviewRequests() {
+    return chat_tab_helper_->pending_print_preview_requests_;
+  }
+
  protected:
   net::test_server::EmbeddedTestServer https_server_;
   raw_ptr<ai_chat::AIChatTabHelper> chat_tab_helper_ = nullptr;
@@ -205,35 +219,61 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreview) {
-  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"));
+  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"),
+              false);
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
   FetchPageContent(
       FROM_HERE, "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.");
   // Panel is still active so we don't need to set it up again
 
   // Page recognition host with a canvas element
-  NavigateURL(https_server_.GetURL("docs.google.com", "/canvas.html"));
+  NavigateURL(https_server_.GetURL("docs.google.com", "/canvas.html"), false);
   FetchPageContent(FROM_HERE, "this is the way");
 #if BUILDFLAG(IS_WIN)
   // Unsupported locale should return no content for Windows only
   // Other platforms do not use locale for extraction
   const brave_l10n::test::ScopedDefaultLocale locale("xx_XX");
-  NavigateURL(https_server_.GetURL("docs.google.com", "/canvas.html"));
+  NavigateURL(https_server_.GetURL("docs.google.com", "/canvas.html"), false);
   FetchPageContent(FROM_HERE, "");
 #endif  // #if BUILDFLAG(IS_WIN)
 #else
   FetchPageContent(FROM_HERE, "");
 #endif
+  // Each request is cleared after extraction.
+  EXPECT_EQ(0u, GetPendingPrintPreviewRequests().size());
 
   // Not supported on other hosts
   NavigateURL(https_server_.GetURL("a.com", "/long_canvas.html"));
   FetchPageContent(FROM_HERE, "");
 }
 
+IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewRequests) {
+  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"),
+              false);
+  FetchPageContent(FROM_HERE, "", false);
+  EXPECT_EQ(1u, GetPendingPrintPreviewRequests().size());
+
+  GetActiveWebContents()->GetController().Reload(content::ReloadType::NORMAL,
+                                                 false);
+  content::WaitForLoadStop(GetActiveWebContents());
+  // The request should be cleared after reload.
+  EXPECT_EQ(0u, GetPendingPrintPreviewRequests().size());
+
+  // Try page loaded scenario
+  NavigateURL(https_server_.GetURL("docs.google.com", "/canvas.html"));
+  FetchPageContent(FROM_HERE, "", false);
+  EXPECT_EQ(1u, GetPendingPrintPreviewRequests().size());
+
+  NavigateURL(https_server_.GetURL("a.com", "/canvas.html"), false);
+  // The request should be cleared after navigation.
+  EXPECT_EQ(0u, GetPendingPrintPreviewRequests().size());
+}
+
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewPagesLimit) {
   NavigateURL(
-      https_server_.GetURL("docs.google.com", "/extra_long_canvas.html"));
+      https_server_.GetURL("docs.google.com", "/extra_long_canvas.html"),
+      false);
   std::string expected_string(ai_chat::kMaxPreviewPages - 1, '\n');
   base::StrAppend(&expected_string, {"This is the way."});
   FetchPageContent(FROM_HERE, expected_string);
@@ -241,11 +281,13 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewPagesLimit) {
 
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewContextLimit) {
   ai_chat::AIChatTabHelper::SetMaxContentLengthForTesting(10);
-  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"));
+  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"),
+              false);
   FetchPageContent(FROM_HERE, "This is the way.");
 
   ai_chat::AIChatTabHelper::SetMaxContentLengthForTesting(20);
-  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"));
+  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"),
+              false);
   FetchPageContent(FROM_HERE, "This is the way.\n\nI have spoken.");
 
   ai_chat::AIChatTabHelper::SetMaxContentLengthForTesting(std::nullopt);
@@ -254,7 +296,8 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewContextLimit) {
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
 // Test print preview extraction while print dialog open
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintDiaglogExtraction) {
-  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"));
+  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"),
+              false);
 
   printing::TestPrintPreviewObserver print_preview_observer(
       /*wait_for_loaded=*/true);
@@ -267,7 +310,8 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintDiaglogExtraction) {
 
 // Test print dialog can still be open after print preview extraction
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, ExtractionPrintDialog) {
-  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"));
+  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"),
+              false);
   FetchPageContent(
       FROM_HERE, "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.");
 
@@ -287,7 +331,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, ExtractionPrintDialog) {
 #endif  // BUILDFLAG(IS_WIN) && defined(ADDRESS_SANITIZER) &&
         // defined(ARCH_CPU_64_BITS)
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, MAYBE_PrintPreviewFallback) {
-  NavigateURL(https_server_.GetURL("a.com", "/text_in_image.pdf"));
+  NavigateURL(https_server_.GetURL("a.com", "/text_in_image.pdf"), false);
 
   auto run_loop = std::make_unique<base::RunLoop>();
   chat_tab_helper_->GeneratePageContent(
@@ -302,7 +346,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, MAYBE_PrintPreviewFallback) {
   run_loop->Run();
   run_loop = std::make_unique<base::RunLoop>();
 
-  NavigateURL(https_server_.GetURL("a.com", "/canvas.html"));
+  NavigateURL(https_server_.GetURL("a.com", "/canvas.html"), false);
   chat_tab_helper_->GeneratePageContent(
       base::BindLambdaForTesting([&run_loop](std::string text, bool is_video,
                                              std::string invalidation_token) {
@@ -318,7 +362,8 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, MAYBE_PrintPreviewFallback) {
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewDisabled) {
   prefs()->SetBoolean(prefs::kPrintPreviewDisabled, true);
 
-  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"));
+  NavigateURL(https_server_.GetURL("docs.google.com", "/long_canvas.html"),
+              false);
   FetchPageContent(FROM_HERE, "");
 }
 
