@@ -11,6 +11,7 @@
 #import "components/keyed_service/core/service_access_type.h"
 #import "components/keyed_service/ios/browser_state_dependency_manager.h"
 #import "components/password_manager/core/browser/password_store/password_store_interface.h"
+#import "ios/web/public/browser_state.h"
 #import "ios/web_view/internal/app/application_context.h"
 #import "ios/web_view/internal/autofill/cwv_autofill_data_manager_internal.h"
 #import "ios/web_view/internal/autofill/web_view_personal_data_manager_factory.h"
@@ -20,12 +21,11 @@
 #import "ios/web_view/internal/cwv_web_view_configuration_internal.h"
 #import "ios/web_view/internal/cwv_web_view_internal.h"
 #import "ios/web_view/internal/passwords/web_view_account_password_store_factory.h"
-#import "ios/web_view/internal/web_view_browser_state.h"
 #import "ios/web_view/internal/web_view_global_state_util.h"
 
 @interface CWVWebViewConfiguration () {
   // The BrowserState for this configuration.
-  raw_ptr<ios_web_view::WebViewBrowserState> _browserState;
+  raw_ptr<web::BrowserState> _browserState;
 
   // Holds all CWVWebViews created with this class. Weak references.
   NSHashTable* _webViews;
@@ -33,8 +33,6 @@
 @end
 
 @implementation CWVWebViewConfiguration
-
-@synthesize preferences = _preferences;
 
 + (void)shutDown {
 }
@@ -54,21 +52,23 @@
   return nil;
 }
 
-- (instancetype)initWithBrowserState:
-    (ios_web_view::WebViewBrowserState*)browserState {
+- (instancetype)initWithBrowserState:(web::BrowserState*)browserState {
   self = [super init];
   if (self) {
     _browserState = browserState;
-
-    _preferences =
-        [[CWVPreferences alloc] initWithPrefService:_browserState->GetPrefs()];
-
     _webViews = [NSHashTable weakObjectsHashTable];
   }
   return self;
 }
 
 #pragma mark - Unused Services
+
+- (CWVPreferences*)preferences {
+  // This property is not nullable, so will crash anyways on the Swift side if
+  // accessed.
+  NOTIMPLEMENTED();
+  return nil;
+}
 
 - (CWVUserContentController*)userContentController {
   // This property is not nullable, so will crash anyways on the Swift side if
@@ -101,7 +101,7 @@
 
 #pragma mark - Private Methods
 
-- (ios_web_view::WebViewBrowserState*)browserState {
+- (web::BrowserState*)browserState {
   return _browserState;
 }
 

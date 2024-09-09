@@ -3,12 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "src/ios/web_view/internal/web_view_browser_state.mm"
+#include "ios/web_view/internal/autofill/web_view_autofill_client_ios.h"
 
-namespace ios_web_view {
+namespace autofill {
 
-PrefService* WebViewBrowserState::GetPrefs_Unused() {
+// static
+std::unique_ptr<WebViewAutofillClientIOS> WebViewAutofillClientIOS::Create(
+    web::WebState* web_state,
+    web::BrowserState* browser_state) {
   return nullptr;
 }
 
-}  // namespace ios_web_view
+}  // namespace autofill

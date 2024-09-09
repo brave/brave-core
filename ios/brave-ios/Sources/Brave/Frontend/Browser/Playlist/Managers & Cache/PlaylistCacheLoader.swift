@@ -18,16 +18,23 @@ import WebKit
 import os.log
 
 class LivePlaylistWebLoaderFactory: PlaylistWebLoaderFactory {
+  let braveCore: BraveCoreMain?
+
+  init(braveCore: BraveCoreMain?) {
+    self.braveCore = braveCore
+  }
+
   func makeWebLoader() -> PlaylistWebLoader {
-    LivePlaylistWebLoader()
+    LivePlaylistWebLoader(braveCore: braveCore)
   }
 }
 
 class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
   fileprivate static var pageLoadTimeout = 300.0
   private var pendingRequests = [String: URLRequest]()
+  private let braveCore: BraveCoreMain?
 
-  private let tab = Tab(
+  private lazy var tab = Tab(
     wkConfiguration: WKWebViewConfiguration().then {
       $0.processPool = WKProcessPool()
       $0.preferences = WKPreferences()
@@ -35,7 +42,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
       $0.allowsInlineMediaPlayback = true
       $0.ignoresViewportScaleLimits = true
     },
-    configuration: .incognito(),
+    configuration: braveCore?.nonPersistentWebViewConfiguration ?? .nonPersistent(),
     type: .private
   ).then {
     $0.createWebview()
@@ -46,7 +53,8 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
   private weak var certStore: CertStore?
   private var handler: ((PlaylistInfo?) -> Void)?
 
-  init() {
+  init(braveCore: BraveCoreMain?) {
+    self.braveCore = braveCore
     super.init(frame: .zero)
 
     guard let webView = tab.webView else {

@@ -17,12 +17,14 @@ class ReadabilityOperation: Operation {
   private var semaphore: DispatchSemaphore
   private var tab: Tab!
   private var readerModeCache: ReaderModeCache
+  private var braveCore: BraveCoreMain
   var result: ReadabilityOperationResult?
 
-  init(url: URL, readerModeCache: ReaderModeCache) {
+  init(url: URL, readerModeCache: ReaderModeCache, braveCore: BraveCoreMain) {
     self.url = url
     self.semaphore = DispatchSemaphore(value: 0)
     self.readerModeCache = readerModeCache
+    self.braveCore = braveCore
   }
 
   override func main() {
@@ -35,7 +37,10 @@ class ReadabilityOperation: Operation {
 
     DispatchQueue.main.async {
       let configuration = WKWebViewConfiguration()
-      self.tab = Tab(wkConfiguration: configuration, configuration: .default())
+      self.tab = Tab(
+        wkConfiguration: configuration,
+        configuration: self.braveCore.defaultWebViewConfiguration
+      )
       self.tab.createWebview()
       self.tab.navigationDelegate = self
 
@@ -131,7 +136,7 @@ class ReadabilityService {
     queue.maxConcurrentOperationCount = readabilityServiceDefaultConcurrency
   }
 
-  func process(_ url: URL, cache: ReaderModeCache) {
-    queue.addOperation(ReadabilityOperation(url: url, readerModeCache: cache))
+  func process(_ url: URL, cache: ReaderModeCache, braveCore: BraveCoreMain) {
+    queue.addOperation(ReadabilityOperation(url: url, readerModeCache: cache, braveCore: braveCore))
   }
 }

@@ -10,24 +10,24 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-namespace ios_web_view {
-class WebViewBrowserState;
-}  // namespace ios_web_view
+namespace web {
+class BrowserState;
+}  // namespace web
 
 @class CWVWebView;
 
 @interface CWVWebViewConfiguration ()
 
 // The browser state associated with this configuration.
-@property(nonatomic, readonly) ios_web_view::WebViewBrowserState* browserState;
+@property(nonatomic, readonly) web::BrowserState* browserState;
 
 // Calls |shutDown| on the singletons returned by |defaultConfiguration| and
 // |incognitoConfiguration|.
 + (void)shutDown;
 
 // Initializes with |browserState| that this instance is to be associated with.
-- (instancetype)initWithBrowserState:
-    (ios_web_view::WebViewBrowserState*)browserState NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBrowserState:(web::BrowserState*)browserState
+    NS_DESIGNATED_INITIALIZER;
 
 // Registers a |webView| so that this class can call |shutDown| on it later on.
 // Only weak references are held, so no need for de-register method.

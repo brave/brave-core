@@ -414,7 +414,9 @@ if (!window.__firefox__) {
 
     let webkit = window.webkit;
     delete window.webkit.messageHandlers[messageHandlerName].postMessage;
-    delete window.webkit.messageHandlers[messageHandlerName];
+    if (window.webkit.messageHandlers[messageHandlerName]) {
+      delete window.webkit.messageHandlers[messageHandlerName];
+    }
     delete window.webkit.messageHandlers;
     delete window.webkit;
     let result = $MessageHandlers[messageHandlerName].postMessage(message);
