@@ -46,9 +46,7 @@ export default function BeginGeneration() {
             shouldDisableUserInput: context.isGenerating,
             isMobile: false,
             hasAcceptedAgreement: true
-          }}
-          onFocusInputMobile={() => undefined}
-          onBlurInputMobile={() => undefined} />
+          }} />
       </ToolsButtonMenu>
     </FiltersContainer>
     <NoContent />
