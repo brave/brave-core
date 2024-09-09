@@ -1,0 +1,20 @@
+diff --git a/front_end/panels/network/NetworkItemView.ts b/front_end/panels/network/NetworkItemView.ts
+index 645aae8d1fb76a898cea88baf3f39ef5675449cb..e538a132cf7bb37ad34c93527617a698422a5e4b 100644
+--- a/front_end/panels/network/NetworkItemView.ts
++++ b/front_end/panels/network/NetworkItemView.ts
+@@ -49,6 +49,7 @@ import {RequestPreviewView} from './RequestPreviewView.js';
+ import {RequestResponseView} from './RequestResponseView.js';
+ import {RequestTimingView} from './RequestTimingView.js';
+ import {ResourceWebSocketFrameView} from './ResourceWebSocketFrameView.js';
++import {RequestAdblockView} from './RequestAdblockView.js'
+ 
+ const UIStrings = {
+   /**
+@@ -241,6 +242,7 @@ export class NetworkItemView extends UI.TabbedPane.TabbedPane {
+     }
+ 
+     this.cookiesView = null;
++    this.appendTab('adblock', 'Adblock', LegacyWrapper.LegacyWrapper.legacyWrapper(UI.Widget.VBox, new RequestAdblockView(request)), 'Adblock');
+ 
+     this.initialTab = initialTab || this.resourceViewTabSetting.get();
+     // Selecting tabs should not be handled by the super class.

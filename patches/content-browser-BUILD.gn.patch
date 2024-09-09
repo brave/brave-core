@@ -6,7 +6,7 @@ index a0f17bb4ff8eede75f46bb365aca5cd59a90ebad..a0c21b9f58c26e4e94b4595b7826294b
        "profiling_utils.cc",
      ]
    }
-+  import("//brave/content/browser/sources.gni") deps += brave_content_browser_deps
++  import("//brave/content/browser/sources.gni") sources += brave_content_browser_sources deps += brave_content_browser_deps
  }
  
  if (is_android) {

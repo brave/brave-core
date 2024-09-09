@@ -1,0 +1,23 @@
+diff --git a/front_end/panels/network/NetworkDataGridNode.ts b/front_end/panels/network/NetworkDataGridNode.ts
+index 1cbe2f14d1f2beefc32b01fb6a945565aaa8840d..9821810bffded95aadc445c8935c825ffe737cc8 100644
+--- a/front_end/panels/network/NetworkDataGridNode.ts
++++ b/front_end/panels/network/NetworkDataGridNode.ts
+@@ -1097,6 +1097,18 @@ export class NetworkRequestNode extends NetworkNode {
+     return false;
+   }
+ 
++  override updateBackgroundColor(): void {
++    const networkManager = SDK.NetworkManager.NetworkManager.forRequest(this.requestInternal);
++    if (networkManager && networkManager.dispatcher) {
++      const info = networkManager.dispatcher.adblockInfoForId(this.requestInternal.requestId());
++      const element = this.existingElement();
++      if (info && element) {
++        element.classList.add('network-error-row');
++      }
++    }
++    super.updateBackgroundColor();
++  }
++
+   private renderPrimaryCell(cell: HTMLElement, columnId: string, text?: string): void {
+     const columnIndex = (this.dataGrid as DataGrid.DataGrid.DataGridImpl<unknown>)?.indexOfVisibleColumn(columnId) | 0;
+     const isFirstCell = (columnIndex === 0);

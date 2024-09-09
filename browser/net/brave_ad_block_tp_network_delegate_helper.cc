@@ -24,6 +24,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/url_constants.h"
+#include "brave/content/public/browser/devtools/adblock_devtools_instumentation.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "components/prefs/pref_service.h"
@@ -98,8 +99,9 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     // Explicitly specify source when DNS over HTTPS is enabled to avoid
     // using `HostResolverProc` which will be handled by system resolver
     // See https://crbug.com/872665
-    if (secure_dns_config.mode() == net::SecureDnsMode::kSecure)
+    if (secure_dns_config.mode() == net::SecureDnsMode::kSecure) {
       optional_parameters->source = net::HostResolverSource::DNS;
+    }
 
     start_time_ = base::TimeTicks::Now();
 
@@ -198,11 +200,13 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
           previous_result.did_match_rule, previous_result.did_match_exception,
           previous_result.did_match_important);
 
+  bool has_valid_rewritten_url = false;
   if (adblock_result.rewritten_url.has_value &&
       GURL(std::string(adblock_result.rewritten_url.value)).is_valid() &&
       (ctx->method == "GET" || ctx->method == "HEAD" ||
        ctx->method == "OPTIONS")) {
     ctx->new_url_spec = std::string(adblock_result.rewritten_url.value);
+    has_valid_rewritten_url = true;
   }
 
   ctx->mock_data_url = std::string(adblock_result.redirect.value);
@@ -215,6 +219,26 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
       (previous_result.did_match_rule &&
        !previous_result.did_match_exception)) {
     ctx->blocked_by = kAdBlocked;
+  }
+
+  if (ctx->blocked_by == kAdBlocked && ctx->devtools_request_id) {
+    content::devtools_instrumentation::AdblockInfo info;
+    info.request_url = ctx->request_url;
+    info.checked_url = url_to_check;
+    info.source_host = source_host;
+    info.resource_type = ctx->resource_type;
+    info.aggressive = ctx->aggressive_blocking || force_aggressive;
+    info.blocked = ctx->blocked_by == kAdBlocked;
+    info.did_match_important_rule = previous_result.did_match_important;
+    info.did_match_rule = previous_result.did_match_rule;
+    info.did_match_exception = previous_result.did_match_exception;
+    info.has_mock_data = !ctx->mock_data_url.empty();
+    if (has_valid_rewritten_url) {
+      info.rewritten_url = ctx->new_url_spec;
+    }
+
+    content::devtools_instrumentation::SendAdblockInfo(
+        ctx->frame_tree_node_id, ctx->devtools_request_id.value(), info);
   }
 
   return previous_result;
