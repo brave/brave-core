@@ -35,8 +35,6 @@
                 android:id="@+id/unverified_toggle_sub_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
                 android:fontFamily="sans-serif"
                 android:textColor="@color/rewards_panel_secondary_text_color"
                 android:text="@string/rewards_panel_unverified_switch_off_sub_text"
