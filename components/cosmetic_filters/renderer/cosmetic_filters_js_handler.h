@@ -75,6 +75,7 @@ class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersAgent {
   void OnHiddenClassIdSelectors(base::Value::Dict result);
   bool OnIsFirstParty(const std::string& url_string);
   void OnAddSiteCosmeticFilter(const std::string& selector);
+  void OnManageCustomFilters();
   int OnEventBegin(const std::string& event_name);
   void OnEventEnd(const std::string& event_name, int);
 

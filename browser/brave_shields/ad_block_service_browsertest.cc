@@ -2732,7 +2732,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ListEnabled) {
   }
 }
 
-// Content Picker and the context menu is disabled for Android.
+// Content Picker and the context menu are disabled for Android.
 #if !BUILDFLAG(IS_ANDROID)
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
   const GURL tab_url =
@@ -2743,15 +2743,17 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
   ASSERT_FALSE(
       content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
 
-  {
+  const auto click_menu = [&]() {
     content::ContextMenuParams params;
     params.page_url = tab_url;
     TestRenderViewContextMenu menu(*web_contents()->GetPrimaryMainFrame(),
                                    params);
     menu.Init();
-    EXPECT_TRUE(menu.IsItemEnabled(IDC_ADBLOCK_CONTEXT_TOOLS));
-    menu.ExecuteCommand(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENT, 0);
-  }
+    EXPECT_TRUE(menu.IsItemEnabled(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS));
+    menu.ExecuteCommand(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS, 0);
+  };
+
+  click_menu();
 
   ASSERT_TRUE(content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
 
@@ -2759,31 +2761,23 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
                               "checkSelector('#ad-banner', 'display', 'block')")
                   .ExtractBool());
 
+  // Emulate selecting some element and clicking `Create` button.
   ASSERT_TRUE(content::ExecJs(web_contents(),
                               "cf_worker.addSiteCosmeticFilter('#ad-banner')",
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL));
 
-  // Reload the page and check the selector is blocked by the user rule.
+  // Reload the page and check the selector is blocked by the new rule.
   NavigateToURL(tab_url);
   WaitForSelectorBlocked(web_contents(), "#ad-banner");
   EXPECT_FALSE(
       content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
-}
 
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ManageCustomFiltersMenu) {
-  const GURL tab_url =
-      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
-  NavigateToURL(tab_url);
-  {
-    content::ContextMenuParams params;
-    params.page_url = tab_url;
-    TestRenderViewContextMenu menu(*web_contents()->GetPrimaryMainFrame(),
-                                   params);
-    menu.Init();
-    EXPECT_TRUE(menu.IsItemEnabled(IDC_ADBLOCK_CONTEXT_TOOLS));
-    menu.ExecuteCommand(IDC_ADBLOCK_CONTEXT_MANAGE_CUSTOM_FILTERS, 0);
-  }
+  click_menu();
+  // Emulate clicking `Manage filters`.
+  ASSERT_TRUE(content::ExecJs(web_contents(), "cf_worker.manageCustomFilters()",
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL));
 
   ASSERT_EQ(2, browser()->tab_strip_model()->count());
   ASSERT_TRUE(content::WaitForLoadStop(web_contents()));

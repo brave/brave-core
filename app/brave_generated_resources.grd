@@ -347,14 +347,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
 
       <!-- Adblock contenxt menu -->
-      <message name="IDS_ADBLOCK_CONTEXT_TOOLS" desc="The text label of adblock submenu in the context menu">
-        Content blocking
-      </message>
-      <message name="IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENT" desc="Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page">
+      <message name="IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS" desc="Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page">
         Block elements
-      </message>
-      <message name="IDS_ADBLOCK_CONTEXT_MANAGE_CUSTOM_FILTERS" desc="Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters">
-        Manage custom filters
       </message>
 
       <message name="IDS_LOCATION_BAR_ONION_AVAILABLE" desc="Button in location bar to indicate onion available site to open a new tab in tor window.">

@@ -20,6 +20,9 @@ const api = {
     }
     style.innerText += `${selector} {display: none !important;}`
   },
+  cosmeticFilterManage: () => {
+    cf_worker.manageCustomFilters()
+  },
 }
 
 // When the picker is activated, it eats all pointer events and takes up the
@@ -532,6 +535,11 @@ const launchElementPicker = (root: ShadowRoot) => {
   const quitButton = root.getElementById('btnQuit')!
   quitButton.addEventListener('click', () => {
     quitElementPicker()
+  })
+
+  const manageButton = root.getElementById('btnManage')!
+  manageButton.addEventListener('click', () => {
+    api.cosmeticFilterManage();
   })
 }
 

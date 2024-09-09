@@ -12,14 +12,19 @@ interface CosmeticFiltersResources {
   HiddenClassIdSelectors(string input, array<string> exceptions) => (
       mojo_base.mojom.DictionaryValue result);
 
-  // Adds a user cosmetic rule (currently from the content picker feature).
-  AddUserCosmeticFilter(string filter);
-
   [Sync]
   UrlCosmeticResources(string url, bool aggressive_blocking) => (
       mojo_base.mojom.Value result);
 };
 
+interface CosmeticFiltersHandler {
+    // Adds a user cosmetic rule for the current site.
+    // (currently from the content picker feature).
+  AddSiteCosmeticFilter(string filter);
+
+  // Opens the custom filter section in Shields settings .
+  ManageCustomFilters();
+};
 
 // An interface to render frame agent `CosmeticFiltersJSHandler` to control
 // cosmetic filter features.

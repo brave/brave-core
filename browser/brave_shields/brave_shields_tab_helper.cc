@@ -13,7 +13,6 @@
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
-#include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -26,7 +25,6 @@
 #include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
 #include "net/base/url_util.h"
-#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
 using net::AppendQueryParameter;
 
@@ -523,16 +521,6 @@ BraveShieldsTabHelper::GetWebcompatSettings() {
     result[webcompat_settings_type] = enabled;
   }
   return result;
-}
-
-void BraveShieldsTabHelper::LaunchContentPicker() {
-  if (auto* main_rfh = web_contents()->GetPrimaryMainFrame()) {
-    mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersAgent>
-        cosmetic_filter_agent;
-    main_rfh->GetRemoteAssociatedInterfaces()->GetInterface(
-        &cosmetic_filter_agent);
-    cosmetic_filter_agent->LaunchContentPicker();
-  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveShieldsTabHelper);

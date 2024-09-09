@@ -242,6 +242,7 @@ declare namespace chrome.windows {
 
 declare namespace cf_worker {
   const addSiteCosmeticFilter: (selector: string) => void
+  const manageCustomFilters: () => void
 }
 
 declare namespace chrome.test {

@@ -30,7 +30,6 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/browser_thread.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/origin.h"
 
@@ -289,7 +288,6 @@ AdBlockService::AdBlockService(
           std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
               new AdBlockEngine(false /* is_default */),
               base::OnTaskRunnerDeleter(GetTaskRunner()))) {
-  ui_weak_ptr_ = weak_factory_.GetWeakPtr();
   // Initializes adblock-rust's domain resolution implementation
   adblock::set_domain_resolver();
 
@@ -348,10 +346,8 @@ void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
 }
 
 void AdBlockService::AddUserCosmeticFilter(const std::string& filter) {
-  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
-  content::GetUIThreadTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&AdBlockService::AddUserCosmeticFilterImpl,
-                                ui_weak_ptr_, filter));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  custom_filters_provider_->AddUserCosmeticFilter(filter);
 }
 
 void AdBlockService::GetDebugInfoAsync(GetDebugInfoCallback callback) {
@@ -442,11 +438,6 @@ void AdBlockService::OnGetDebugInfoFromDefaultEngine(
                      base::Unretained(additional_filters_engine_.get())),
       base::BindOnce(std::move(callback),
                      std::move(default_engine_debug_info)));
-}
-
-void AdBlockService::AddUserCosmeticFilterImpl(const std::string& filter) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  custom_filters_provider_->AddUserCosmeticFilter(filter);
 }
 
 void AdBlockService::TagExistsForTest(const std::string& tag,

@@ -66,11 +66,6 @@ void CosmeticFiltersResources::HiddenClassIdSelectors(
   std::move(callback).Run(std::move(selectors));
 }
 
-void CosmeticFiltersResources::AddUserCosmeticFilter(
-    const std::string& filter) {
-  ad_block_service_->AddUserCosmeticFilter(filter);
-}
-
 void CosmeticFiltersResources::UrlCosmeticResources(
     const std::string& url,
     bool aggressive_blocking,

@@ -87,8 +87,6 @@ class BraveShieldsTabHelper
                            bool enabled);
   base::flat_map<ContentSettingsType, bool> GetWebcompatSettings();
 
-  void LaunchContentPicker();
-
   void AddObserver(Observer* obs);
   void RemoveObserver(Observer* obs);
   bool HasObserver(Observer* observer);

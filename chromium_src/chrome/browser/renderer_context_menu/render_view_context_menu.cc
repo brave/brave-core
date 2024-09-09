@@ -13,6 +13,7 @@
 #include "base/strings/string_util.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
+#include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
 #include "brave/browser/ui/brave_pages.h"
@@ -357,8 +358,7 @@ void OpenLinkInSplitView(base::WeakPtr<content::WebContents> web_contents,
 BraveRenderViewContextMenu::BraveRenderViewContextMenu(
     content::RenderFrameHost& render_frame_host,
     const content::ContextMenuParams& params)
-    : RenderViewContextMenu_Chromium(render_frame_host, params),
-      adblock_submenu_model_(this)
+    : RenderViewContextMenu_Chromium(render_frame_host, params)
 #if BUILDFLAG(ENABLE_AI_CHAT)
       ,
       ai_chat_submenu_model_(this),
@@ -424,15 +424,8 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
 #endif
     case IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW:
       return CanOpenSplitViewForWebContents(source_web_contents_->GetWeakPtr());
-    case IDC_ADBLOCK_CONTEXT_TOOLS:
-    case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENT:
-    case IDC_ADBLOCK_CONTEXT_MANAGE_CUSTOM_FILTERS: {
-      auto* shields_tab_helper =
-          brave_shields::BraveShieldsTabHelper::FromWebContents(
-              source_web_contents_);
-      return shields_tab_helper && shields_tab_helper->GetAdBlockMode() !=
-                                       brave_shields::mojom::AdBlockMode::ALLOW;
-    }
+    case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
+      return true;
     default:
       return RenderViewContextMenu_Chromium::IsCommandIdEnabled(id);
   }
@@ -503,19 +496,10 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
     case IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW:
       OpenLinkInSplitView(source_web_contents_->GetWeakPtr(), params_.link_url);
       break;
-    case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENT: {
-      auto* shields_tab_helper =
-          brave_shields::BraveShieldsTabHelper::FromWebContents(
-              source_web_contents_);
-      if (shields_tab_helper) {
-        shields_tab_helper->LaunchContentPicker();
-      }
-    } break;
-    case IDC_ADBLOCK_CONTEXT_MANAGE_CUSTOM_FILTERS: {
-      if (auto* browser = GetBrowser()) {
-        brave::ShowBraveAdblock(browser);
-      }
-    } break;
+    case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
+      cosmetic_filters::CosmeticFiltersTabHelper::LaunchContentPicker(
+          source_web_contents_);
+      break;
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
   }
@@ -707,24 +691,28 @@ void BraveRenderViewContextMenu::AddAccessibilityLabelsServiceItem(
   // Suppress adding "Get image descriptions from Brave"
 }
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
 void BraveRenderViewContextMenu::AppendAllExtensionItems() {
-  if (!params_.selection_text.empty() ||
-      (!params_.link_url.is_empty() && !params_.has_image_contents)) {
-    return;
+  auto* shields_tab_helper =
+      brave_shields::BraveShieldsTabHelper::FromWebContents(
+          source_web_contents_);
+  bool add_block_elements =
+      shields_tab_helper && shields_tab_helper->GetAdBlockMode() !=
+                                brave_shields::mojom::AdBlockMode::ALLOW;
+  add_block_elements &= params_.selection_text.empty();
+  add_block_elements &=
+      params_.link_url.is_empty() || params_.has_image_contents;
+
+  const auto page_url = source_web_contents_->GetLastCommittedURL();
+  add_block_elements &= page_url.SchemeIsHTTPOrHTTPS();
+  if (add_block_elements) {
+    menu_model_.AddItemWithStringId(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS,
+                                    IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS);
   }
-
-  adblock_submenu_model_.AddItemWithStringId(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENT,
-                                             IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENT);
-  adblock_submenu_model_.AddItemWithStringId(
-      IDC_ADBLOCK_CONTEXT_MANAGE_CUSTOM_FILTERS,
-      IDS_ADBLOCK_CONTEXT_MANAGE_CUSTOM_FILTERS);
-
-  menu_model_.AddSubMenuWithStringId(IDC_ADBLOCK_CONTEXT_TOOLS,
-                                     IDS_ADBLOCK_CONTEXT_TOOLS,
-                                     &adblock_submenu_model_);
 
   RenderViewContextMenu_Chromium::AppendAllExtensionItems();
 }
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();

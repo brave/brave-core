@@ -1,0 +1,71 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
+
+#include <utility>
+
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/ui/brave_pages.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "content/public/browser/web_contents.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+
+namespace cosmetic_filters {
+
+// static
+void CosmeticFiltersTabHelper::LaunchContentPicker(
+    content::WebContents* web_contents) {
+  CosmeticFiltersTabHelper::CreateForWebContents(web_contents);
+  if (auto* main_rfh = web_contents->GetPrimaryMainFrame()) {
+    mojo::AssociatedRemote<mojom::CosmeticFiltersAgent> cosmetic_filter_agent;
+    main_rfh->GetRemoteAssociatedInterfaces()->GetInterface(
+        &cosmetic_filter_agent);
+    cosmetic_filter_agent->LaunchContentPicker();
+  }
+}
+
+// static
+void CosmeticFiltersTabHelper::BindCosmeticFiltersHandler(
+    content::RenderFrameHost* rfh,
+    mojo::PendingAssociatedReceiver<mojom::CosmeticFiltersHandler> receiver) {
+  auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
+  if (!web_contents) {
+    return;
+  }
+  CosmeticFiltersTabHelper::CreateForWebContents(web_contents);
+  if (auto* tab_helper =
+          CosmeticFiltersTabHelper::FromWebContents(web_contents)) {
+    tab_helper->receivers_.Bind(rfh, std::move(receiver));
+  }
+}
+
+void CosmeticFiltersTabHelper::AddSiteCosmeticFilter(
+    const std::string& filter) {
+  // `filter` doesn't have a host, because we don't trust a renderer process.
+  // Instead, we calculate and add the host explicitly here.
+  const auto* sender_rfh = receivers_.GetCurrentTargetFrame();
+  const auto host = sender_rfh->GetLastCommittedOrigin().host();
+  g_brave_browser_process->ad_block_service()->AddUserCosmeticFilter(
+      host + "##" + filter);
+}
+
+void CosmeticFiltersTabHelper::ManageCustomFilters() {
+  Browser* browser = chrome::FindLastActive();
+  if (browser) {
+    brave::ShowBraveAdblock(browser);
+  }
+}
+
+CosmeticFiltersTabHelper::CosmeticFiltersTabHelper(
+    content::WebContents* web_contents)
+    : content::WebContentsUserData<CosmeticFiltersTabHelper>(*web_contents),
+      receivers_(web_contents, this) {}
+
+CosmeticFiltersTabHelper::~CosmeticFiltersTabHelper() = default;
+
+WEB_CONTENTS_USER_DATA_KEY_IMPL(CosmeticFiltersTabHelper);
+}  // namespace cosmetic_filters

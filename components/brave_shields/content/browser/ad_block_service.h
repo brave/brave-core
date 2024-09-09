@@ -155,8 +155,6 @@ class AdBlockService {
       GetDebugInfoCallback callback,
       base::Value::Dict default_engine_debug_info);
 
-  void AddUserCosmeticFilterImpl(const std::string& filter);
-
   void TagExistsForTest(const std::string& tag,
                         base::OnceCallback<void(bool)> cb);
 
@@ -198,8 +196,6 @@ class AdBlockService {
       GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<SourceProviderObserver> additional_filters_service_observer_
       GUARDED_BY_CONTEXT(sequence_checker_);
-
-  base::WeakPtr<AdBlockService> ui_weak_ptr_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 

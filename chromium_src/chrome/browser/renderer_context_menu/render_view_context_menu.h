@@ -51,7 +51,10 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
   void AddAccessibilityLabelsServiceItem(bool is_checked) override;
   // Do nothing as we have our own speed reader
   void AppendReadingModeItem() override {}
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   void AppendAllExtensionItems() override;
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
  private:
   friend class BraveRenderViewContextMenuTest;
@@ -68,8 +71,6 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
   void CopyTextFromImage();
 #endif
-
-  ui::SimpleMenuModel adblock_submenu_model_;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ui::SimpleMenuModel ai_chat_submenu_model_;

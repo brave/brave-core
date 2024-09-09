@@ -23,6 +23,7 @@
 #include "gin/arguments.h"
 #include "gin/function_template.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
@@ -199,6 +200,16 @@ blink::WebContentSettingsClient* GetWebContentSettingsClient(
   return nullptr;
 }
 
+mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersHandler>
+MakeCosmeticFiltersHandler(content::RenderFrame* render_frame) {
+  mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersHandler>
+      handler;
+  render_frame->GetRemoteAssociatedInterfaces()->GetInterface(&handler);
+  CHECK(handler);
+  handler.reset_on_disconnect();
+  return handler;
+}
+
 }  // namespace
 
 namespace cosmetic_filters {
@@ -281,7 +292,13 @@ bool CosmeticFiltersJSHandler::OnIsFirstParty(const std::string& url_string) {
 void CosmeticFiltersJSHandler::OnAddSiteCosmeticFilter(
     const std::string& selector) {
   const auto host = url_.host();
-  cosmetic_filters_resources_->AddUserCosmeticFilter(host + "##" + selector);
+  auto handler = MakeCosmeticFiltersHandler(render_frame_);
+  handler->AddSiteCosmeticFilter(selector);
+}
+
+void CosmeticFiltersJSHandler::OnManageCustomFilters() {
+  auto handler = MakeCosmeticFiltersHandler(render_frame_);
+  handler->ManageCustomFilters();
 }
 
 void CosmeticFiltersJSHandler::AddJavaScriptObjectToFrame(
@@ -346,6 +363,11 @@ void CosmeticFiltersJSHandler::BindFunctionsToObject(
   BindFunctionToObject(
       isolate, javascript_object, "addSiteCosmeticFilter",
       base::BindRepeating(&CosmeticFiltersJSHandler::OnAddSiteCosmeticFilter,
+                          base::Unretained(this)));
+
+  BindFunctionToObject(
+      isolate, javascript_object, "manageCustomFilters",
+      base::BindRepeating(&CosmeticFiltersJSHandler::OnManageCustomFilters,
                           base::Unretained(this)));
 
   if (perf_tracker_) {
