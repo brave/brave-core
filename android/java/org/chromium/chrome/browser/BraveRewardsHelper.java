@@ -33,6 +33,7 @@ import androidx.annotation.Nullable;
 import org.jni_zero.CalledByNative;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Callback;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
@@ -584,6 +585,22 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
                 termsOfServiceClickableSpan); // terms of service
         setSpan(context, text, textSpannableString, R.string.privacy_policy,
                 privacyPolicyClickableSpan); // privacy policy
+        return textSpannableString;
+    }
+
+    public static SpannableString toSpannableString(String text, int colorRes, int clickableSubstringResId,
+            Callback<Context> onSubstringClicked) {
+        Context context = ContextUtils.getApplicationContext();
+        Spanned textSpanned = spannedFromHtmlString(text);
+        SpannableString textSpannableString = new SpannableString(textSpanned.toString());
+
+        NoUnderlineClickableSpan substringClickableSpan = new NoUnderlineClickableSpan(context, colorRes,
+                (textView) -> {
+                    onSubstringClicked.onResult(context);
+                });
+
+        setSpan(context, text, textSpannableString, clickableSubstringResId,
+                substringClickableSpan);
         return textSpannableString;
     }
 
