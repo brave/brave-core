@@ -17,8 +17,8 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
-import android.text.method.LinkMovementMethod;
 import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.text.style.StyleSpan;
 import android.view.ContextThemeWrapper;
@@ -745,10 +745,12 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         mReportSiteUrlText.setText(siteUrl);
         mReportSiteUrlText.setMovementMethod(new ScrollingMovementMethod());
 
-        mReportBrokenSiteDisclaimerView = mReportBrokenSiteLayout.findViewById(R.id.report_broken_site_disclaimer_text);
-        String reportBrokenSiteDisclaimerText = String.format(
-                mContext.getResources().getString(R.string.report_broken_site_text_2),
-                mContext.getResources().getString(R.string.report_broken_site_text_link));
+        mReportBrokenSiteDisclaimerView =
+                mReportBrokenSiteLayout.findViewById(R.id.report_broken_site_disclaimer_text);
+        String reportBrokenSiteDisclaimerText =
+                String.format(
+                        mContext.getResources().getString(R.string.report_broken_site_text_2),
+                        mContext.getResources().getString(R.string.report_broken_site_text_link));
 
         mReportBrokenSiteDisclaimerView.setText(
                 BraveRewardsHelper.toSpannableString(
@@ -756,17 +758,19 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                         R.color.brave_link,
                         R.string.report_broken_site_text_link,
                         (context) -> {
-                            CustomTabActivity.showInfoPage(context, BraveActivity.BRAVE_WEBCOMPAT_INFO_WIKI_URL);
+                            CustomTabActivity.showInfoPage(
+                                    context, BraveActivity.BRAVE_WEBCOMPAT_INFO_WIKI_URL);
                         }));
         mReportBrokenSiteDisclaimerView.setMovementMethod(LinkMovementMethod.getInstance());
 
         Button mCancelButton = mReportBrokenSiteLayout.findViewById(R.id.btn_cancel);
-        mCancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideBraveShieldsMenu();
-            }
-        });
+        mCancelButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        hideBraveShieldsMenu();
+                    }
+                });
 
         Button mSubmitButton = mReportBrokenSiteLayout.findViewById(R.id.btn_submit);
         mSubmitButton.setOnClickListener(
