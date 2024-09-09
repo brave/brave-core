@@ -789,7 +789,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     @Override
                     public void onClick(View view) {
                         Tab currentActiveTab = mIconFetcher.getTab();
-                        if(!currentActiveTab) {
+                        if(currentActiveTab == null) {
                             return;
                         }
                         
