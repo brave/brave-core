@@ -46,7 +46,8 @@ class RedeemPaymentTokens final {
   void RedeemCallback(const PaymentTokenList& payment_tokens,
                       const mojom::UrlResponseInfo& mojom_url_response);
 
-  static base::expected<void, std::tuple<std::string, bool>> HandleUrlResponse(
+  static base::expected<void, std::tuple<std::string, bool>>
+  HandleRedeemPaymentTokensUrlResponse(
       const mojom::UrlResponseInfo& mojom_url_response);
 
   void SuccessfullyRedeemed(const PaymentTokenList& payment_tokens);

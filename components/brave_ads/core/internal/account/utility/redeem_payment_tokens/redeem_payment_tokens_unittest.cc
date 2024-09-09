@@ -46,7 +46,8 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokens) {
        {{net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  test::SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, test::Now());
+  test::SetProfileTimePrefValue(prefs::kNextPaymentTokenRedemptionAt,
+                                test::Now());
 
   test::SetPaymentTokens(/*count=*/1);
 
@@ -76,7 +77,8 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokensMultipleTimes) {
         {net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  test::SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, test::Now());
+  test::SetProfileTimePrefValue(prefs::kNextPaymentTokenRedemptionAt,
+                                test::Now());
 
   const PaymentTokenList payment_tokens = test::SetPaymentTokens(/*count=*/1);
 
@@ -106,7 +108,8 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, ScheduleNextTokenRedemption) {
        {{net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  test::SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, test::Now());
+  test::SetProfileTimePrefValue(prefs::kNextPaymentTokenRedemptionAt,
+                                test::Now());
 
   test::SetPaymentTokens(/*count=*/1);
 
@@ -125,7 +128,8 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, ScheduleNextTokenRedemption) {
 
 TEST_F(BraveAdsRedeemPaymentTokensTest, NoPaymentTokens) {
   // Arrange
-  test::SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, test::Now());
+  test::SetProfileTimePrefValue(prefs::kNextPaymentTokenRedemptionAt,
+                                test::Now());
 
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
@@ -150,7 +154,8 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, Retry) {
         {net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  test::SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, test::Now());
+  test::SetProfileTimePrefValue(prefs::kNextPaymentTokenRedemptionAt,
+                                test::Now());
 
   test::SetPaymentTokens(/*count=*/1);
 

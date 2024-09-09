@@ -37,11 +37,11 @@ TransactionList FilterTransactionsForEstimatedEarnings(
 }  // namespace
 
 base::Time GetNextPaymentDate(const TransactionList& transactions) {
-  const base::Time next_token_redemption_at =
-      GetProfileTimePref(prefs::kNextTokenRedemptionAt);
+  const base::Time next_payment_token_redemption_at =
+      GetProfileTimePref(prefs::kNextPaymentTokenRedemptionAt);
 
   const base::Time next_payment_date =
-      CalculateNextPaymentDate(next_token_redemption_at, transactions);
+      CalculateNextPaymentDate(next_payment_token_redemption_at, transactions);
 
   return next_payment_date;
 }

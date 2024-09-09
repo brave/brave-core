@@ -24,10 +24,10 @@ TEST_F(BraveAdsStatementUtilTest, GetNextPaymentDate) {
   // Arrange
   AdvanceClockTo(test::TimeFromUTCString("31 January 2020"));
 
-  const base::Time next_token_redemption_at =
+  const base::Time next_payment_token_redemption_at =
       test::TimeFromUTCString("5 February 2020");
-  test::SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt,
-                                next_token_redemption_at);
+  test::SetProfileTimePrefValue(prefs::kNextPaymentTokenRedemptionAt,
+                                next_payment_token_redemption_at);
 
   // Act
   const base::Time next_payment_date = GetNextPaymentDate(/*transactions=*/{});

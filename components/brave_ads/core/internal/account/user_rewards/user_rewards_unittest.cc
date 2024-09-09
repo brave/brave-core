@@ -205,7 +205,8 @@ TEST_F(BraveAdsUserRewardsTest, RedeemPaymentTokens) {
        {{net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  test::SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, test::Now());
+  test::SetProfileTimePrefValue(prefs::kNextPaymentTokenRedemptionAt,
+                                test::Now());
 
   test::SetPaymentTokens(/*count=*/1);
 

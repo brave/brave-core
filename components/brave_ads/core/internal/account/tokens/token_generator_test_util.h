@@ -17,8 +17,9 @@ class Token;
 
 namespace test {
 
-// Use this function to mock the token generator for testing purposes, when code
-// paths involve building reward confirmations.
+// Call this function to mock the token generator for testing purposes if code
+// paths call `RefillConfirmationTokens::MaybeRefill`, `Confirmations::Confirm`,
+// `BuildRewardConfirmation`, or `BuildReward`.
 void MockTokenGenerator(size_t count);
 
 std::vector<cbr::Token> BuildTokens(size_t count);

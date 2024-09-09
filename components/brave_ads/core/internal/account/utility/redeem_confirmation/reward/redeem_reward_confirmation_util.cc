@@ -41,12 +41,12 @@ base::expected<void, std::string> MaybeAddPaymentToken(
 }
 
 void LogPaymentTokenStatus() {
-  const base::Time next_token_redemption_at =
-      GetProfileTimePref(prefs::kNextTokenRedemptionAt);
+  const base::Time next_payment_token_redemption_at =
+      GetProfileTimePref(prefs::kNextPaymentTokenRedemptionAt);
 
   BLOG(1, "You have " << PaymentTokenCount()
                       << " payment tokens which will be redeemed "
-                      << FriendlyDateAndTime(next_token_redemption_at));
+                      << FriendlyDateAndTime(next_payment_token_redemption_at));
 }
 
 }  // namespace brave_ads

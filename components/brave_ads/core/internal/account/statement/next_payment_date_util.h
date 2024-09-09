@@ -14,7 +14,7 @@ class Time;
 
 namespace brave_ads {
 
-base::Time CalculateNextPaymentDate(base::Time next_token_redemption_at,
+base::Time CalculateNextPaymentDate(base::Time next_payment_token_redemption_at,
                                     const TransactionList& transactions);
 
 }  // namespace brave_ads

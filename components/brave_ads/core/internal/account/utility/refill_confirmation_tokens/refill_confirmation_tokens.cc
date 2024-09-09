@@ -252,17 +252,16 @@ RefillConfirmationTokens::HandleGetSignedTokensUrlResponse(
                         /*should_retry=*/true));
   }
 
-  const auto result = ParseVerifyAndUnblindTokens(
-      *dict, *tokens_, *blinded_tokens_, *public_key);
-  if (!result.has_value()) {
-    BLOG(0, result.error());
+  const std::optional<std::vector<cbr::UnblindedToken>> unblinded_tokens =
+      ParseVerifyAndUnblindTokens(*dict, *tokens_, *blinded_tokens_,
+                                  *public_key);
+  if (!unblinded_tokens) {
     return base::unexpected(
         std::make_tuple("Failed to parse, verify and unblind signed tokens",
                         /*should_retry=*/false));
   }
-  const auto& unblinded_tokens = result.value();
 
-  BuildAndAddConfirmationTokens(unblinded_tokens, *public_key, wallet_);
+  BuildAndAddConfirmationTokens(*unblinded_tokens, *public_key, wallet_);
 
   return base::ok();
 }

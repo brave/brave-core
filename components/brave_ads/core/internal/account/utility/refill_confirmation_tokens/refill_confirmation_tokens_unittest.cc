@@ -546,8 +546,10 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, RefillIfBelowTheMinimumThreshold) {
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::MockTokenGenerator(/*count=*/31);
+  test::MockTokenGenerator(/*count=*/19);
   test::RefillConfirmationTokens(/*count=*/19);
+
+  test::MockTokenGenerator(/*count=*/31);
 
   const test::URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(test::kWalletPaymentId),

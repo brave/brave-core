@@ -145,7 +145,6 @@ void MockTokenGenerator(const size_t count) {
 
   const auto* const token_generator_mock =
       static_cast<const TokenGeneratorMock*>(GetTokenGenerator());
-
   ON_CALL(*token_generator_mock, Generate(count))
       .WillByDefault(::testing::Return(BuildTokens(count)));
 }

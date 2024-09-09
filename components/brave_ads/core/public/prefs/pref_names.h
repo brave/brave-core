@@ -37,7 +37,7 @@ inline constexpr char kIssuers[] = "brave.brave_ads.issuers";
 inline constexpr char kNotificationAds[] = "brave.brave_ads.notification_ads";
 inline constexpr char kServeAdAt[] = "brave.brave_ads.serve_ad_at";
 
-inline constexpr char kNextTokenRedemptionAt[] =
+inline constexpr char kNextPaymentTokenRedemptionAt[] =
     "brave.brave_ads.rewards.next_time_redemption_at";
 
 inline constexpr char kAdReactions[] = "brave.brave_ads.reactions.ads";

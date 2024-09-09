@@ -21,8 +21,9 @@ base::Time LocalTimeAtEndOfPreviousMonth();
 base::Time LocalTimeAtBeginningOfThisMonth();
 base::Time LocalTimeAtEndOfThisMonth();
 
-// Formats a time compliant to ISO 8601 in UTC, e.g. "2020-12-31T23:00:00.000Z",
-// with fixed values for minutes, seconds, milliseconds, and time zone.
+// Formats a time compliant with ISO 8601 in UTC, e.g.,
+// "2020-12-31T23:00:00.000Z", with fixed values for minutes, seconds,
+// milliseconds, and time zone.
 std::string TimeToPrivacyPreservingIso8601(base::Time time);
 
 }  // namespace brave_ads

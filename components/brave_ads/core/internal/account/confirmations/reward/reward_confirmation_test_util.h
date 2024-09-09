@@ -17,6 +17,8 @@ namespace test {
 
 std::optional<ConfirmationInfo> BuildRewardConfirmation(
     bool should_generate_random_uuids);
+std::optional<ConfirmationInfo> BuildRewardConfirmationWithoutDynamicUserData(
+    bool should_generate_random_uuids);
 
 RewardInfo BuildReward(const ConfirmationInfo& confirmation);
 

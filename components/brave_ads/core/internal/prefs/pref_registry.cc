@@ -40,7 +40,8 @@ void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
   registry->RegisterListPref(prefs::kNotificationAds);
   registry->RegisterTimePref(prefs::kServeAdAt, base::Time());
 
-  registry->RegisterTimePref(prefs::kNextTokenRedemptionAt, base::Time::Now());
+  registry->RegisterTimePref(prefs::kNextPaymentTokenRedemptionAt,
+                             base::Time::Now());
 
   registry->RegisterDictionaryPref(prefs::kAdReactions);
   registry->RegisterDictionaryPref(prefs::kSegmentReactions);

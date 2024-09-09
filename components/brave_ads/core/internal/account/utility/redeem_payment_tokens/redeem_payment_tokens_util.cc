@@ -20,7 +20,7 @@ constexpr base::TimeDelta kDebugRedeemPaymentTokensAfter = base::Minutes(2);
 constexpr base::TimeDelta kMinimumDelayBeforeRedeemingTokens = base::Minutes(1);
 
 base::Time NextTokenRedemptionAt() {
-  return GetProfileTimePref(prefs::kNextTokenRedemptionAt);
+  return GetProfileTimePref(prefs::kNextPaymentTokenRedemptionAt);
 }
 
 bool HasPreviouslyRedeemedTokens() {
@@ -33,8 +33,10 @@ bool ShouldHaveRedeemedTokensInThePast() {
 
 }  // namespace
 
-void SetNextTokenRedemptionAt(const base::Time next_token_redemption_at) {
-  SetProfileTimePref(prefs::kNextTokenRedemptionAt, next_token_redemption_at);
+void SetNextTokenRedemptionAt(
+    const base::Time next_payment_token_redemption_at) {
+  SetProfileTimePref(prefs::kNextPaymentTokenRedemptionAt,
+                     next_payment_token_redemption_at);
 }
 
 base::Time ScheduleNextTokenRedemptionAt() {

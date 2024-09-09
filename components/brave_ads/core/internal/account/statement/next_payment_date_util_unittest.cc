@@ -43,12 +43,12 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
 
   AdvanceClockTo(test::TimeFromUTCString("1 February 2020"));
 
-  const base::Time next_token_redemption_at =
+  const base::Time next_payment_token_redemption_at =
       test::TimeFromUTCString("5 February 2020");
 
   // Act
   const base::Time next_payment_date =
-      CalculateNextPaymentDate(next_token_redemption_at, transactions);
+      CalculateNextPaymentDate(next_payment_token_redemption_at, transactions);
 
   // Assert
   EXPECT_EQ(test::TimeFromUTCString("5 February 2020 23:59:59.999"),
@@ -60,12 +60,12 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
   // Arrange
   AdvanceClockTo(test::TimeFromUTCString("1 February 2020"));
 
-  const base::Time next_token_redemption_at =
+  const base::Time next_payment_token_redemption_at =
       test::TimeFromUTCString("5 February 2020");
 
   // Act
-  const base::Time next_payment_date =
-      CalculateNextPaymentDate(next_token_redemption_at, /*transactions=*/{});
+  const base::Time next_payment_date = CalculateNextPaymentDate(
+      next_payment_token_redemption_at, /*transactions=*/{});
 
   // Assert
   EXPECT_EQ(test::TimeFromUTCString("5 March 2020 23:59:59.999"),
@@ -84,12 +84,12 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction);
 
-  const base::Time next_token_redemption_at =
+  const base::Time next_payment_token_redemption_at =
       test::TimeFromUTCString("5 February 2020");
 
   // Act
   const base::Time next_payment_date =
-      CalculateNextPaymentDate(next_token_redemption_at, transactions);
+      CalculateNextPaymentDate(next_payment_token_redemption_at, transactions);
 
   // Act & Assert
   EXPECT_EQ(test::TimeFromUTCString("5 February 2020 23:59:59.999"),
@@ -98,16 +98,16 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
 
 TEST_F(
     BraveAdsNextPaymentDateUtilTest,
-    TimeNowIsAfterNextPaymentDayWhenNextTokenRedemptionDateIsThisMonthAndNoReconciledTransactionsThisMonth) {  // NOLINT
+    TimeNowIsAfterNextPaymentDayWhenNextTokenRedemptionDateIsThisMonthAndNoReconciledTransactionsThisMonth) {
   // Arrange
   AdvanceClockTo(test::TimeFromUTCString("11 January 2020"));
 
-  const base::Time next_token_redemption_at =
+  const base::Time next_payment_token_redemption_at =
       test::TimeFromUTCString("31 January 2020");
 
   // Act
-  const base::Time next_payment_date =
-      CalculateNextPaymentDate(next_token_redemption_at, /*transactions=*/{});
+  const base::Time next_payment_date = CalculateNextPaymentDate(
+      next_payment_token_redemption_at, /*transactions=*/{});
 
   // Assert
   EXPECT_EQ(test::TimeFromUTCString("5 February 2020 23:59:59.999"),
@@ -116,16 +116,16 @@ TEST_F(
 
 TEST_F(
     BraveAdsNextPaymentDateUtilTest,
-    TimeNowIsAfterNextPaymentDayWhenNextTokenRedemptionDateIsNextMonthAndNoReconciledTransactionsThisMonth) {  // NOLINT
+    TimeNowIsAfterNextPaymentDayWhenNextTokenRedemptionDateIsNextMonthAndNoReconciledTransactionsThisMonth) {
   // Arrange
   AdvanceClockTo(test::TimeFromUTCString("31 January 2020"));
 
-  const base::Time next_token_redemption_at =
+  const base::Time next_payment_token_redemption_at =
       test::TimeFromUTCString("5 February 2020");
 
   // Act
-  const base::Time next_payment_date =
-      CalculateNextPaymentDate(next_token_redemption_at, /*transactions=*/{});
+  const base::Time next_payment_date = CalculateNextPaymentDate(
+      next_payment_token_redemption_at, /*transactions=*/{});
 
   // Assert
   EXPECT_EQ(test::TimeFromUTCString("5 March 2020 23:59:59.999"),
