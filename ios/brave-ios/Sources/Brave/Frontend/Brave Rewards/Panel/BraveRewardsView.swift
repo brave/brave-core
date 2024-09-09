@@ -29,6 +29,7 @@ extension BraveRewardsViewController {
       $0.text = Strings.Rewards.disabledBody
       $0.textColor = .secondaryBraveLabel
       $0.font = .systemFont(ofSize: 12)
+      $0.numberOfLines = 0
     }
 
     let publisherView = BraveRewardsPublisherView().then {
