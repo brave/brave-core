@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
@@ -28,6 +29,15 @@ std::optional<ConfirmationInfo> BuildRewardConfirmation(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression, should_generate_random_uuids);
   return BuildRewardConfirmation(transaction, /*user_data=*/{});
+}
+
+std::optional<ConfirmationInfo> BuildRewardConfirmationWithoutDynamicUserData(
+    const bool should_generate_random_uuids) {
+  const std::optional<ConfirmationInfo> confirmation =
+      test::BuildRewardConfirmation(should_generate_random_uuids);
+  CHECK(confirmation);
+
+  return RebuildConfirmationWithoutDynamicUserData(*confirmation);
 }
 
 RewardInfo BuildReward(const ConfirmationInfo& confirmation) {

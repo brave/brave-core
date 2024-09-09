@@ -242,20 +242,19 @@ RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
                         /*should_retry=*/true));
   }
 
-  const auto result = ParseVerifyAndUnblindTokens(
-      *payment_token_dict, {confirmation.reward->token},
-      {confirmation.reward->blinded_token}, *public_key);
-  if (!result.has_value()) {
-    BLOG(0, result.error());
+  const std::optional<std::vector<cbr::UnblindedToken>> unblinded_tokens =
+      ParseVerifyAndUnblindTokens(
+          *payment_token_dict, {confirmation.reward->token},
+          {confirmation.reward->blinded_token}, *public_key);
+  if (!unblinded_tokens) {
     return base::unexpected(
         std::make_tuple("Failed to parse, verify and unblind payment tokens",
                         /*should_retry=*/false));
   }
-  const auto& unblinded_tokens = result.value();
 
   PaymentTokenInfo payment_token;
   payment_token.transaction_id = confirmation.transaction_id;
-  payment_token.unblinded_token = unblinded_tokens.front();
+  payment_token.unblinded_token = unblinded_tokens->front();
   payment_token.public_key = *public_key;
   payment_token.confirmation_type = confirmation.type;
   payment_token.ad_type = confirmation.ad_type;

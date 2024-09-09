@@ -23,74 +23,79 @@ constexpr char kMessage[] = "The quick brown fox jumps over the lazy dog";
 }  // namespace
 
 TEST(ChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
-  // Client prepares a random token.
+  // The client creates a random token.
   Token token = Token::Random();
 
-  // Client prepares a blinding scalar.
+  // The client blinds this token using a blinding scalar. Blinding ensures that
+  // the token is not recognizable or linkable to the original value until it's
+  // unblinded.
   const BlindedToken blinded_token = token.Blind();
 
-  // Server prepares a random signing key.
+  // The server generates a random signing key.
   SigningKey signing_key = SigningKey::Random();
 
-  // Server signs the blinded token.
+  // The server signs the blinded token using its signing key. This signature
+  // proves the server’s endorsement of the token.
   const base::expected<SignedToken, std::string> signed_token =
       signing_key.Sign(blinded_token);
   EXPECT_TRUE(signed_token.has_value());
 
-  // Server returns the associated public key for the signing key.
+  // The client verifies the batch DLEQ proof using the public key provided by
+  // the server. This step confirms that the signatures are valid and correspond
+  // to the public key.
   const PublicKey public_key = signing_key.GetPublicKey();
 
-  // Server signs and returns a batch DLEQ (Discrete Log Equivalence) proof.
   const std::vector<BlindedToken> blinded_tokens = {blinded_token};
   const std::vector<SignedToken> signed_tokens = {*signed_token};
   base::expected<BatchDLEQProof, std::string> batch_dleq_proof =
       BatchDLEQProof::Create(blinded_tokens, signed_tokens, signing_key);
   EXPECT_TRUE(batch_dleq_proof.has_value());
-
-  // Client verifies the batch DLEQ proof received from the server using the
-  // received public key.
-  const base::expected<bool, std::string> client_verification_result =
+  const base::expected<bool, std::string> batch_dleq_proof_verification_result =
       batch_dleq_proof->Verify(blinded_tokens, signed_tokens, public_key);
-  EXPECT_TRUE(client_verification_result.has_value());
-  EXPECT_TRUE(*client_verification_result);
+  EXPECT_TRUE(batch_dleq_proof_verification_result.has_value());
+  EXPECT_TRUE(*batch_dleq_proof_verification_result);
 
-  // Client verifies the batch DLEQ proof received from the server and uses the
-  // blinding scalar to unblind the returned signed tokens.
+  // The client unblinds the signed tokens using the blinding scalar.
   const std::vector<Token> tokens = {token};
   const base::expected<std::vector<UnblindedToken>, std::string>
       unblinded_tokens = batch_dleq_proof->VerifyAndUnblind(
           tokens, blinded_tokens, signed_tokens, public_key);
   EXPECT_TRUE(unblinded_tokens.has_value());
 
-  // Redeem unblinded tokens.
+  // Unblinded tokens are redeemed with the server periodically.
   for (const auto& unblinded_token : *unblinded_tokens) {
-    // Client derives a shared verification key from the unblinded token.
-    VerificationKey verification_key = unblinded_token.DeriveVerificationKey();
+    // The client derives a shared verification key from the unblinded token.
+    VerificationKey shared_verification_key =
+        unblinded_token.DeriveVerificationKey();
 
-    // Client signs the message using the shared verification key and sends it
-    // to the server as a `signature` in the credential.
+    // The client signs the message using the shared verification key and sends
+    // it to the server as a `signature` in the credential.
     const base::expected<VerificationSignature, std::string>
-        verification_signature = verification_key.Sign(kMessage);
+        verification_signature = shared_verification_key.Sign(kMessage);
     EXPECT_TRUE(verification_signature.has_value());
 
-    // Client decodes the token preimage from the unblinded token and sends it
-    // to the server as `t` in the credential.
+    // The client decodes the token preimage from the unblinded token and sends
+    // it to the server as `t` in the credential.
     const TokenPreimage token_preimage = unblinded_token.Preimage();
 
-    // Server rederives the unblinded token using the server signing key and the
-    // token preimage.
+    // The server rederives the unblinded token using the server signing key and
+    // the token preimage.
     const UnblindedToken rederived_unblinded_token =
         signing_key.RederiveUnblindedToken(token_preimage);
 
-    // Server derives the shared verification key from the unblinded token.
-    VerificationKey shared_verification_key =
+    // The server derives the shared verification key from the unblinded token.
+    VerificationKey rederived_shared_verification_key =
         rederived_unblinded_token.DeriveVerificationKey();
 
-    // Server proves and verifies the message using the verification signature.
-    const base::expected<bool, std::string> server_verification_result =
-        shared_verification_key.Verify(*verification_signature, kMessage);
-    EXPECT_TRUE(server_verification_result.has_value());
-    EXPECT_TRUE(*server_verification_result);
+    // The server proves and verifies the message using the verification key and
+    // signature.
+    const base::expected<bool, std::string>
+        rederived_shared_verification_key_verification_result =
+            rederived_shared_verification_key.Verify(*verification_signature,
+                                                     kMessage);
+    EXPECT_TRUE(
+        rederived_shared_verification_key_verification_result.has_value());
+    EXPECT_TRUE(*rederived_shared_verification_key_verification_result);
   }
 }
 
