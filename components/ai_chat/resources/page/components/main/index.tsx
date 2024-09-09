@@ -113,14 +113,12 @@ function Main() {
     }
   }
 
-  const inputFocused = React.useRef(false)
   const viewPortWithoutKeyboard = React.useRef(0)
   const keyboardSize = React.useRef(0)
 
     React.useEffect(() => {
       const handler = () => {
-        if (!context.isMobile || !inputFocused.current ||
-            !window.visualViewport) {
+        if (!context.isMobile || !window.visualViewport) {
           return
         }
         const viewPortWithKeyboard = window.visualViewport.height
@@ -155,17 +153,8 @@ function Main() {
     }, [])
 
   const handleOnFocusInputMobile = () => {
-    inputFocused.current = true
     if (window.visualViewport != null) {
       viewPortWithoutKeyboard.current = window.visualViewport.height
-    }
-  }
-
-  const handleOnBlurInputMobile = () => {
-    const mountPoint = document.getElementById('mountPoint')
-    if (mountPoint && mountPoint?.style.height !== '100%') {
-      inputFocused.current = false
-      mountPoint.style.height = '100%'
     }
   }
 
@@ -284,7 +273,6 @@ function Main() {
           <InputBox
             context={context}
             onFocusInputMobile={handleOnFocusInputMobile}
-            onBlurInputMobile={handleOnBlurInputMobile}
           />
         </ToolsButtonMenu>
       </div>
