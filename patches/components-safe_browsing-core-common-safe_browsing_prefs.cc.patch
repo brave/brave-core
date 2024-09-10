@@ -1,8 +1,8 @@
 diff --git a/components/safe_browsing/core/common/safe_browsing_prefs.cc b/components/safe_browsing/core/common/safe_browsing_prefs.cc
-index 91d53d21e39cb85acdfc8bdd52106f5ba15de6b8..d1ce9f31d3a4e47c586c8a6d1ffc74e7e223d1ac 100644
+index 93efc660b3fef3d19ad0d0c1133fdaf475a5ca5c..9a4b029f9fb5e0ac728f13619053b41bd54618b0 100644
 --- a/components/safe_browsing/core/common/safe_browsing_prefs.cc
 +++ b/components/safe_browsing/core/common/safe_browsing_prefs.cc
-@@ -101,6 +101,7 @@ bool IsSafeBrowsingEnabled(const PrefService& prefs) {
+@@ -103,6 +103,7 @@ bool IsSafeBrowsingEnabled(const PrefService& prefs) {
  }
  
  bool IsEnhancedProtectionEnabled(const PrefService& prefs) {

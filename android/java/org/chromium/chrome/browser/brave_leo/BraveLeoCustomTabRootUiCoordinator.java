@@ -21,7 +21,6 @@ import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
-import org.chromium.chrome.browser.compositor.bottombar.ephemeraltab.EphemeralTabCoordinator;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.customtabs.BaseCustomTabRootUiCoordinator;
 import org.chromium.chrome.browser.customtabs.CustomTabFeatureOverridesManager;
@@ -85,7 +84,6 @@ public class BraveLeoCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoord
             @NonNull Supplier<CustomTabToolbarCoordinator> customTabToolbarCoordinator,
             @NonNull Supplier<CustomTabActivityNavigationController> customTabNavigationController,
             @NonNull Supplier<BrowserServicesIntentDataProvider> intentDataProvider,
-            @NonNull Supplier<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
             @NonNull BackPressManager backPressManager,
             @NonNull Supplier<CustomTabActivityTabController> tabController,
             @NonNull Supplier<CustomTabMinimizeDelegate> minimizeDelegateSupplier,
@@ -124,7 +122,6 @@ public class BraveLeoCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoord
                 customTabToolbarCoordinator,
                 customTabNavigationController,
                 intentDataProvider,
-                ephemeralTabCoordinatorSupplier,
                 backPressManager,
                 tabController,
                 minimizeDelegateSupplier,

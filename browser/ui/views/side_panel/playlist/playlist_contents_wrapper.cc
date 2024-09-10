@@ -19,13 +19,13 @@
 
 PlaylistContentsWrapper::PlaylistContentsWrapper(
     const GURL& webui_url,
-    content::BrowserContext* browser_context,
+    Profile* profile,
     int task_manager_string_id,
     bool esc_closes_ui,
     BrowserView* browser_view,
     PlaylistSidePanelCoordinator* coordinator)
     : WebUIContentsWrapperT(webui_url,
-                            browser_context,
+                            profile,
                             task_manager_string_id,
                             esc_closes_ui),
       browser_view_(browser_view),

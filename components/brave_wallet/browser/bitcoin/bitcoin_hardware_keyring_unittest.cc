@@ -169,10 +169,10 @@ TEST(BitcoinHardwareKeyringUnitTest, SignMessage) {
   EXPECT_TRUE(keyring.AddAccount(0, kBtcMainnetHardwareAccount0));
   std::vector<uint8_t> message(32, 0);
   // Can't sign with HW keyring.
-  EXPECT_FALSE(
-      keyring.SignMessage(0, BitcoinKeyId(0, 0), base::make_span<32>(message)));
-  EXPECT_FALSE(
-      keyring.SignMessage(1, BitcoinKeyId(0, 0), base::make_span<32>(message)));
+  EXPECT_FALSE(keyring.SignMessage(0, BitcoinKeyId(0, 0),
+                                   *base::span(message).to_fixed_extent<32>()));
+  EXPECT_FALSE(keyring.SignMessage(1, BitcoinKeyId(0, 0),
+                                   *base::span(message).to_fixed_extent<32>()));
 }
 
 }  // namespace brave_wallet

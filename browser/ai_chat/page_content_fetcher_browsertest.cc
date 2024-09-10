@@ -7,13 +7,10 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
-#include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
-#include "base/threading/platform_thread.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/browser.h"
@@ -100,14 +97,11 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
   void FetchPageContent(const base::Location& location,
                         const std::string& expected_text,
                         bool expected_is_video,
-                        bool trim_whitespace = true,
-                        content::WebContents* web_contents = nullptr) {
+                        bool trim_whitespace = true) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
     ai_chat::FetchPageContent(
-        web_contents ? web_contents
-                     : browser()->tab_strip_model()->GetActiveWebContents(),
-        "",
+        browser()->tab_strip_model()->GetActiveWebContents(), "",
         base::BindLambdaForTesting([&run_loop, &expected_text,
                                     &expected_is_video, &trim_whitespace](
                                        std::string text, bool is_video,
@@ -222,13 +216,9 @@ IN_PROC_BROWSER_TEST_F(PageContentFetcherBrowserTest, FetchPageContentPDF) {
       browser()->tab_strip_model()->GetWebContentsAt(1));
   chat_tab_helper->SetOnPDFA11yInfoLoadedCallbackForTesting(
       base::BindLambdaForTesting([this, &run_loop, &kExpectedText]() {
-        FetchPageContent(FROM_HERE, kExpectedText, false, false,
-                         browser()->tab_strip_model()->GetWebContentsAt(1));
+        FetchPageContent(FROM_HERE, kExpectedText, false, false);
         run_loop->Quit();
       }));
-  // Tab load stop doesn't mean pdf a11y info is loaded and we have to activate
-  // the tab after the info is loaded to test the pulling scenario.
-  base::PlatformThread::Sleep(base::Seconds(5));
   browser()->tab_strip_model()->ActivateTabAt(1);
   EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
   run_loop->Run();

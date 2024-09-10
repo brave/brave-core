@@ -19,9 +19,9 @@
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_show_options_event_detect_widget.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
-#include "chrome/browser/ui/side_panel/side_panel_entry_observer.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry_observer.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_registry_observer.h"
 #include "components/prefs/pref_member.h"
 #include "ui/events/event_observer.h"
@@ -126,6 +126,7 @@ class SidebarContainerView
                          SidePanelEntry* entry) override;
   void OnEntryWillDeregister(SidePanelRegistry* registry,
                              SidePanelEntry* entry) override;
+  void OnRegistryDestroying(SidePanelRegistry* registry) override;
 
   // TabStripModelObserver:
   void OnTabStripModelChanged(
@@ -184,6 +185,7 @@ class SidebarContainerView
   void StartObservingContextualSidePanelRegistry(
       content::WebContents* contents);
   void StopObservingContextualSidePanelRegistry(content::WebContents* contents);
+  void StopObservingContextualSidePanelRegistry(SidePanelRegistry* registry);
 
   raw_ptr<BraveBrowser> browser_ = nullptr;
   raw_ptr<SidePanelCoordinator> side_panel_coordinator_ = nullptr;

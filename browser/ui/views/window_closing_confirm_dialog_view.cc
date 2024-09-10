@@ -177,8 +177,8 @@ WindowClosingConfirmDialogView::WindowClosingConfirmDialogView(
 
 WindowClosingConfirmDialogView::~WindowClosingConfirmDialogView() = default;
 
-ui::ModalType WindowClosingConfirmDialogView::GetModalType() const {
-  return ui::MODAL_TYPE_WINDOW;
+ui::mojom::ModalType WindowClosingConfirmDialogView::GetModalType() const {
+  return ui::mojom::ModalType::kWindow;
 }
 
 bool WindowClosingConfirmDialogView::ShouldShowCloseButton() const {

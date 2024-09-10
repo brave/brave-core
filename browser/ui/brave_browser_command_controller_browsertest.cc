@@ -25,6 +25,7 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/policy/core/browser/browser_policy_connector.h"
@@ -33,7 +34,6 @@
 #include "components/policy/policy_constants.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync/base/command_line_switches.h"
-#include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 
@@ -451,8 +451,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsToggleAIChat) {
   SidePanelEntryKey ai_chat_key =
       SidePanelEntry::Key(SidePanelEntryId::kChatUI);
-  SidePanelCoordinator* side_panel_coordinator =
-      SidePanelUtil::GetSidePanelCoordinatorForBrowser(browser());
+  auto* side_panel_coordinator =
+      browser()->GetFeatures().side_panel_coordinator();
   auto side_panel_waiter = SidePanelWaiter(side_panel_coordinator);
 
   // initially no panel is showing

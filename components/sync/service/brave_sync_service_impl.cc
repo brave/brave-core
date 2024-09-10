@@ -55,10 +55,11 @@ BraveSyncServiceImpl::~BraveSyncServiceImpl() {
   brave_sync_prefs_change_registrar_.RemoveAll();
 }
 
-void BraveSyncServiceImpl::Initialize() {
+void BraveSyncServiceImpl::Initialize(
+    DataTypeController::TypeVector controllers) {
   base::AutoReset<bool> is_initializing_resetter(&is_initializing_, true);
 
-  SyncServiceImpl::Initialize();
+  SyncServiceImpl::Initialize(std::move(controllers));
 
   // P3A ping for those who have sync disabled
   if (!user_settings_->IsInitialSyncFeatureSetupComplete()) {
@@ -135,9 +136,9 @@ void BraveSyncServiceImpl::OnSelfDeviceInfoDeleted(base::OnceClosure cb) {
   // ---
   // BraveSyncServiceImplDelegate::OnDeviceInfoChange()
   // ...
-  // ClientTagBasedModelTypeProcessor::ClearAllMetadataAndResetStateImpl()
+  // ClientTagBasedDataTypeProcessor::ClearAllMetadataAndResetStateImpl()
   // ...
-  // ClientTagBasedModelTypeProcessor::OnSyncStarting()
+  // ClientTagBasedDataTypeProcessor::OnSyncStarting()
   // ---
   // Note that `ClearAllTrackedMetadataAndResetState` will only be called during
   // init when sync seed decryption key mismatched.
@@ -363,20 +364,17 @@ void BraveSyncServiceImpl::UpdateP3AObjectsNumber() {
 
   for (UserSelectableType user_selected_type :
        GetUserSettings()->GetSelectedTypes()) {
-    ModelType model_type =
-        UserSelectableTypeToCanonicalModelType(user_selected_type);
+    DataType data_type =
+        UserSelectableTypeToCanonicalDataType(user_selected_type);
 
-    ModelTypeController::TypeMap::const_iterator it =
-        model_type_controllers_.find(model_type);
-    DCHECK(it != model_type_controllers_.end())
-        << "Missing controller for type " << ModelTypeToDebugString(model_type);
-    if (it != model_type_controllers_.end()) {
-      ModelTypeController* controller = it->second.get();
+    auto dtc_it = data_type_manager_->GetControllerMap().find(data_type);
+    CHECK(dtc_it != data_type_manager_->GetControllerMap().end())
+        << "Missing controller for type " << DataTypeToDebugString(data_type);
 
-      controller->GetTypeEntitiesCount(
-          base::BindOnce(&BraveSyncServiceImpl::OnGetTypeEntitiesCount,
-                         weak_ptr_factory_.GetWeakPtr()));
-    }
+    DataTypeController* controller = dtc_it->second.get();
+    controller->GetTypeEntitiesCount(
+        base::BindOnce(&BraveSyncServiceImpl::OnGetTypeEntitiesCount,
+                       weak_ptr_factory_.GetWeakPtr()));
   }
 }
 

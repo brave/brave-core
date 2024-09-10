@@ -26,6 +26,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
+#include "chrome/common/chrome_paths.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -39,12 +40,24 @@
 #include "net/test/embedded_test_server/http_response.h"
 #include "printing/buildflags/buildflags.h"
 #include "services/network/public/cpp/network_switches.h"
+#include "services/screen_ai/buildflags/buildflags.h"
 #include "ui/compositor/compositor_switches.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
 #include "chrome/browser/printing/test_print_preview_observer.h"
 #endif
+
+#if BUILDFLAG(ENABLE_SCREEN_AI_BROWSERTESTS) && !BUILDFLAG(USE_FAKE_SCREEN_AI)
+#define PDF_OCR_INTEGRATION_TEST_ENABLED
+#endif
+
+#if defined(PDF_OCR_INTEGRATION_TEST_ENABLED)
+#include "chrome/browser/screen_ai/screen_ai_install_state.h"
+#include "services/screen_ai/public/cpp/utilities.h"
+#include "ui/accessibility/accessibility_features.h"
+#include "ui/accessibility/ax_features.mojom-features.h"
+#endif  // defined(PDF_OCR_INTEGRATION_TEST_ENABLED)
 
 namespace {
 
@@ -351,3 +364,59 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
   FetchSearchQuerySummary(
       FROM_HERE, ai_chat::SearchQuerySummary("test query", "test summary"));
 }
+
+#if defined(PDF_OCR_INTEGRATION_TEST_ENABLED)
+// Test ai chat integration with upstream kPdfOcr
+class UpstreamPDFIntegratoinTest : public AIChatUIBrowserTest {
+ public:
+  UpstreamPDFIntegratoinTest()
+      : embedded_test_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    feature_list_.InitWithFeatures(
+        {::features::kPdfOcr, ::features::kScreenAITestMode,
+         ax::mojom::features::kScreenAIOCREnabled},
+        {});
+  }
+
+  void SetUpOnMainThread() override {
+    AIChatUIBrowserTest::SetUpOnMainThread();
+
+    content::SetupCrossSiteRedirector(&embedded_test_server_);
+
+    base::FilePath test_data_dir;
+    test_data_dir = base::PathService::CheckedGet(chrome::DIR_TEST_DATA);
+    test_data_dir =
+        test_data_dir.AppendASCII("pdf").AppendASCII("accessibility");
+    embedded_test_server_.ServeFilesFromDirectory(test_data_dir);
+    ASSERT_TRUE(embedded_test_server_.Start());
+
+    screen_ai::ScreenAIInstallState::GetInstance()->SetComponentFolder(
+        screen_ai::GetComponentBinaryPathForTests().DirName());
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    AIChatUIBrowserTest::SetUpCommandLine(command_line);
+    command_line->RemoveSwitch(network::switches::kHostResolverRules);
+  }
+
+ protected:
+  net::test_server::EmbeddedTestServer embedded_test_server_;
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(UpstreamPDFIntegratoinTest, PDFOcr) {
+  // Single paragraph
+  NavigateURL(
+      embedded_test_server_.GetURL("a.com", "/hello-world-in-image.pdf"));
+  FetchPageContent(FROM_HERE, "Hello, world!");
+
+  // Multiple paragraphs
+  NavigateURL(embedded_test_server_.GetURL(
+      "a.com", "/inaccessible-text-in-three-page.pdf"));
+  FetchPageContent(FROM_HERE,
+                   "Hello, world!\n"
+                   "Paragraph 1 on Page 2\n"
+                   "Paragraph 2 on Page 2\n"
+                   "Paragraph 1 on Page 3\n"
+                   "Paragraph 2 on Page 3");
+}
+#endif

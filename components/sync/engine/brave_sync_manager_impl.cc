@@ -22,7 +22,7 @@ BraveSyncManagerImpl::~BraveSyncManagerImpl() = default;
 void BraveSyncManagerImpl::StartSyncingNormally(base::Time last_poll_time) {
   SyncManagerImpl::StartSyncingNormally(last_poll_time);
   // Remove this hack when we have FCM invalidation integrated.
-  RefreshTypes(ModelTypeSet::All());
+  RefreshTypes(DataTypeSet::All());
 }
 
 void BraveSyncManagerImpl::PermanentlyDeleteAccount(

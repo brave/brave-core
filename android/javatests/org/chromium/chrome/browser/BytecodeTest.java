@@ -10,11 +10,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.ActionMode;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.Window;
@@ -37,6 +39,7 @@ import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.base.test.BaseJUnit4ClassRunner;
 import org.chromium.base.test.util.Batch;
@@ -57,6 +60,7 @@ import org.chromium.chrome.browser.compositor.layouts.LayoutRenderHost;
 import org.chromium.chrome.browser.compositor.layouts.LayoutUpdateHost;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.BravePartialCustomTabBottomSheetStrategy;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabHandleStrategyFactory;
+import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.feed.FeedActionDelegate;
 import org.chromium.chrome.browser.feed.FeedSurfaceCoordinator;
 import org.chromium.chrome.browser.feed.SnapScrollHelper;
@@ -74,6 +78,9 @@ import org.chromium.chrome.browser.logo.LogoCoordinator;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.new_tab_url.DseNewTabUrlManager;
+import org.chromium.chrome.browser.notifications.BraveNotificationPlatformBridge;
+import org.chromium.chrome.browser.notifications.NotificationBuilderBase;
+import org.chromium.chrome.browser.notifications.NotificationPlatformBridge.NotificationIdentifyingAttributes;
 import org.chromium.chrome.browser.ntp.NewTabPageUma;
 import org.chromium.chrome.browser.omnibox.BackKeyBehaviorDelegate;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarMediator;
@@ -111,6 +118,7 @@ import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
+import org.chromium.chrome.browser.toolbar.top.ToggleTabStackButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
@@ -151,7 +159,6 @@ import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.InsetObserver;
 import org.chromium.ui.ViewProvider;
 import org.chromium.ui.base.ActivityWindowAndroid;
-import org.chromium.ui.base.EventOffsetHandler;
 import org.chromium.ui.base.IntentRequestTracker;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.base.WindowDelegate;
@@ -335,6 +342,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragmentAdvanced")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/notifications/NotificationPlatformBridge"));
     }
 
     @Test
@@ -804,6 +814,33 @@ public class BytecodeTest {
                         true,
                         int.class,
                         Context.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/notifications/NotificationPlatformBridge",
+                        "dispatchNotificationEvent",
+                        MethodModifier.STATIC,
+                        true,
+                        boolean.class,
+                        Intent.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/notifications/NotificationPlatformBridge",
+                        "prepareNotificationBuilder",
+                        MethodModifier.STATIC,
+                        true,
+                        NotificationBuilderBase.class,
+                        NotificationIdentifyingAttributes.class,
+                        boolean.class,
+                        String.class,
+                        String.class,
+                        Bitmap.class,
+                        Bitmap.class,
+                        Bitmap.class,
+                        int[].class,
+                        long.class,
+                        boolean.class,
+                        boolean.class,
+                        BraveNotificationPlatformBridge.getActionInfoArrayClass()));
     }
 
     @Test
@@ -974,8 +1011,6 @@ public class BytecodeTest {
                         true,
                         boolean.class,
                         int.class,
-                        float.class,
-                        float.class,
                         int.class));
         Assert.assertTrue(
                 methodExists(
@@ -1074,6 +1109,7 @@ public class BytecodeTest {
                         AppMenuDelegate.class,
                         ActivityLifecycleDispatcher.class,
                         BottomSheetController.class,
+                        DataSharingTabManager.class,
                         TabContentManager.class,
                         TabCreatorManager.class,
                         SnackbarManager.class,
@@ -1128,6 +1164,7 @@ public class BytecodeTest {
                         ScrimCoordinator.class,
                         ObservableSupplier.class,
                         BottomSheetController.class,
+                        DataSharingTabManager.class,
                         TabModelSelector.class,
                         TabContentManager.class,
                         ViewGroup.class,
@@ -1202,6 +1239,7 @@ public class BytecodeTest {
                         ThemeColorProvider.class,
                         MenuButtonCoordinator.class,
                         ObservableSupplier.class,
+                        ToggleTabStackButtonCoordinator.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
                         Supplier.class,
@@ -1478,7 +1516,7 @@ public class BytecodeTest {
                         Supplier.class,
                         AppMenuDelegate.class,
                         StatusBarColorProvider.class,
-                        ObservableSupplierImpl.class,
+                        OneshotSupplierImpl.class,
                         IntentRequestTracker.class,
                         InsetObserver.class,
                         Function.class,
@@ -1638,7 +1676,6 @@ public class BytecodeTest {
                         "org/chromium/components/embedder_support/view/ContentView",
                         "org/chromium/components/embedder_support/view/BraveContentView",
                         Context.class,
-                        EventOffsetHandler.class,
                         WebContents.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1686,11 +1723,13 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/tasks/tab_management/IncognitoTabSwitcherPane",
                         "org/chromium/chrome/browser/tasks/tab_management/BraveIncognitoTabSwitcherPane", // presubmit: ignore-long-line
                         Context.class,
+                        OneshotSupplier.class,
                         TabSwitcherPaneCoordinatorFactory.class,
                         Supplier.class,
-                        View.OnClickListener.class,
+                        OnClickListener.class,
                         OneshotSupplier.class,
-                        DoubleConsumer.class));
+                        DoubleConsumer.class,
+                        UserEducationHelper.class));
     }
 
     @Test

@@ -114,9 +114,8 @@ namespace {
 std::optional<bool> g_download_confirm_return_allow_for_testing;
 
 bool IsUnsupportedCommand(int command_id, Browser* browser) {
-  return chrome::IsRunningInForcedAppMode() &&
-         !chrome::IsCommandAllowedInAppMode(command_id,
-                                            browser->is_type_popup());
+  return IsRunningInForcedAppMode() &&
+         !IsCommandAllowedInAppMode(command_id, browser->is_type_popup());
 }
 
 // A control separator that is displayed when the sidebar is displayed adjacent
@@ -284,8 +283,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     auto original_side_panel = RemoveChildViewT(unified_side_panel_.get());
     sidebar_container_view_ =
         AddChildView(std::make_unique<SidebarContainerView>(
-            GetBraveBrowser(),
-            SidePanelUtil::GetSidePanelCoordinatorForBrowser(browser_.get()),
+            GetBraveBrowser(), browser_->GetFeatures().side_panel_coordinator(),
             std::move(original_side_panel)));
     unified_side_panel_ = sidebar_container_view_->side_panel();
 

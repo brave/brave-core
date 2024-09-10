@@ -18,7 +18,6 @@ import("//brave/components/embedder_support/android/java_sources.gni")
 import("//brave/components/permissions/android/java_sources.gni")
 import("//brave/components/safetynet/java_sources.gni")
 import("//brave/components/signin/public/android/java_sources.gni")
-import("//components/feed/features.gni")
 
 brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveAdFreeCalloutDialogFragment.java",

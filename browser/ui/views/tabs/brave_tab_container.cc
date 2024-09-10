@@ -412,11 +412,10 @@ void BraveTabContainer::SetTabSlotVisibility() {
 }
 
 std::optional<BrowserRootView::DropIndex> BraveTabContainer::GetDropIndex(
-    const ui::DropTargetEvent& event,
-    bool allow_replacement) {
+    const ui::DropTargetEvent& event) {
   if (!tabs::utils::ShouldShowVerticalTabs(
           tab_slot_controller_->GetBrowser())) {
-    return TabContainerImpl::GetDropIndex(event, allow_replacement);
+    return TabContainerImpl::GetDropIndex(event);
   }
 
   // Force animations to stop, otherwise it makes the index calculation tricky.
@@ -444,7 +443,6 @@ std::optional<BrowserRootView::DropIndex> BraveTabContainer::GetDropIndex(
         continue;
       }
 
-      const int model_index = GetModelIndexOf(tab).value();
 
       const bool is_tab_pinned = tab->data().pinned;
 
@@ -454,12 +452,13 @@ std::optional<BrowserRootView::DropIndex> BraveTabContainer::GetDropIndex(
         continue;
       }
 
+      const int model_index = GetModelIndexOf(tab).value();
       const bool first_in_group =
           tab->group().has_value() &&
           model_index == controller_->GetFirstTabInGroup(tab->group().value());
 
-      const int hot_height = tab->height() / (allow_replacement ? 4 : 2);
-      const int hot_width = tab->width() / (allow_replacement ? 4 : 2);
+      const int hot_height = tab->height() / 4;
+      const int hot_width = tab->width() / 4;
 
       if (is_tab_pinned ? x >= (max_x - hot_width)
                         : y >= (max_y - hot_height)) {
@@ -478,8 +477,6 @@ std::optional<BrowserRootView::DropIndex> BraveTabContainer::GetDropIndex(
                 first_in_group ? kIncludeInGroup : kDontIncludeInGroup};
       }
 
-      CHECK(allow_replacement)
-          << "This should be reached only when |allow_replacement| is true";
       return BrowserRootView::DropIndex{.index = model_index,
                                         .relative_to_index = kReplaceIndex,
                                         .group_inclusion = kIncludeInGroup};

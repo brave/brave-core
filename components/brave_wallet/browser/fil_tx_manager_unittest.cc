@@ -109,11 +109,11 @@ class FilTxManagerUnitTest : public testing::Test {
         [&, expected_url, expected_method,
          content](const network::ResourceRequest& request) {
           EXPECT_EQ(request.url, expected_url);
-          std::string header_value;
-          EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
-          EXPECT_TRUE(responses_.count(header_value));
+          auto header_value = request.headers.GetHeader("X-Eth-Method");
+          EXPECT_TRUE(header_value);
+          EXPECT_TRUE(responses_.count(*header_value));
           url_loader_factory_.ClearResponses();
-          auto response = responses_[header_value];
+          auto response = responses_[*header_value];
           url_loader_factory_.AddResponse(request.url.spec(), response);
         }));
   }

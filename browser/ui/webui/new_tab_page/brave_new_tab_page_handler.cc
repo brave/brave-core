@@ -33,6 +33,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/browser/themes/theme_syncable_service.h"
 #include "chrome/browser/ui/chrome_select_file_policy.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
@@ -313,8 +314,8 @@ void BraveNewTabPageHandler::SearchWhatYouTyped(const std::string& host,
 }
 
 bool BraveNewTabPageHandler::IsCustomBackgroundImageEnabled() const {
-  if (profile_->GetPrefs()->IsManagedPreference(
-          prefs::kNtpCustomBackgroundDict)) {
+  if (profile_->GetPrefs()->IsManagedPreference(GetThemePrefNameInMigration(
+          ThemePrefInMigration::kNtpCustomBackgroundDict))) {
     return false;
   }
 

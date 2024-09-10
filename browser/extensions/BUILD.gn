@@ -100,6 +100,8 @@ source_set("extensions") {
     "//url",
   ]
 
+  public_deps = [ "//brave/browser/ethereum_remote_client/buildflags" ]
+
   if (enable_speedreader) {
     deps += [ "//brave/components/speedreader" ]
   }

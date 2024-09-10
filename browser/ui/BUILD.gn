@@ -320,10 +320,13 @@ source_set("ui") {
       "//brave/components/sidebar/common",
       "//chrome/app:generated_resources",
       "//chrome/browser/profiles",
+      "//chrome/browser/search",
       "//chrome/browser/sync",
       "//chrome/browser/themes",
       "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/omnibox",
       "//chrome/browser/ui/views/side_panel",
+      "//chrome/browser/ui/webui/searchbox",
       "//chrome/browser/ui/webui/side_panel/reading_list:mojo_bindings",
       "//chrome/common:channel_info",
       "//components/bookmarks/common",
@@ -440,8 +443,6 @@ source_set("ui") {
 
   if (toolkit_views) {
     sources += [
-      "side_panel/brave_contextual_side_panel_tab_helper.cc",
-      "side_panel/brave_contextual_side_panel_tab_helper.h",
       "side_panel/brave_side_panel_utils.h",
       "views/bookmarks/bookmark_bar_instructions_view.cc",
       "views/bookmarks/bookmark_bar_instructions_view.h",
@@ -589,6 +590,7 @@ source_set("ui") {
       "//chrome/browser/devtools",
       "//chrome/browser/ui/exclusive_access",
       "//chrome/browser/ui/views/bubble",
+      "//chrome/browser/ui/views/toolbar",
       "//components/bookmarks/browser",
     ]
 
@@ -807,7 +809,6 @@ source_set("ui") {
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/webui",
-    "//chrome/browser/ui/webui/top_chrome",
     "//chrome/common",
     "//components/bookmarks/common",
     "//components/content_settings/browser",
@@ -1037,6 +1038,7 @@ source_set("ui") {
       "//brave/components/version_info",
       "//chrome/app:branded_strings",
       "//chrome/browser/ui/tabs:tab_enums",
+      "//chrome/browser/ui/webui/top_chrome",
       "//components/input",
       "//components/sync_device_info",
       "//mojo/public/cpp/bindings",
@@ -1180,7 +1182,10 @@ source_set("ui") {
 
   if (is_win && is_official_build) {
     sources += [ "//chrome/browser/ui/webui/help/version_updater_win.cc" ]
-    deps += [ "//google_update" ]
+    deps += [
+      "//chrome/updater/app/server/win:updater_legacy_idl",
+      "//google_update",
+    ]
   }
 
   if (enable_tor) {

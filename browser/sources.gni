@@ -252,6 +252,32 @@ brave_chrome_browser_deps = [
   "//url",
 ]
 
+if (!is_android) {
+  # Already included on android by upstream
+
+  # Including v2 back into brave build as we make use of `feed::FetchRssLinks` in `brave_news_tab_helper.cc`.
+  brave_chrome_browser_sources += [
+    "feed/feed_service_factory.cc",
+    "feed/feed_service_factory.h",
+    "feed/rss_links_fetcher.cc",
+    "feed/rss_links_fetcher.h",
+    "feed/web_feed_page_information_fetcher.cc",
+    "feed/web_feed_page_information_fetcher.h",
+    "feed/web_feed_tab_helper.cc",
+    "feed/web_feed_tab_helper.h",
+    "feed/web_feed_ui_util.cc",
+    "feed/web_feed_ui_util.h",
+    "feed/web_feed_util.cc",
+    "feed/web_feed_util.h",
+  ]
+
+  brave_chrome_browser_deps += [
+    "//components/feed:feature_list",
+    "//components/feed/core/v2:feed_core_v2",
+    "//components/feed/mojom:mojo_bindings",
+  ]
+}
+
 if (enable_commander) {
   brave_chrome_browser_deps += [
     "//brave/components/commander/browser",

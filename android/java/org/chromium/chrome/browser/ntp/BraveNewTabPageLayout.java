@@ -96,7 +96,7 @@ import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
-import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
+import org.chromium.chrome.browser.settings.SettingsLauncherFactory;
 import org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutBase;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
@@ -344,12 +344,18 @@ public class BraveNewTabPageLayout
         mNewContentLayout = findViewById(R.id.news_load_new_content);
         mNewContentText = findViewById(R.id.new_content_button_text);
         mNewContentProgressBar = findViewById(R.id.new_content_loading_spinner);
-        mNewContentLayout.setOnClickListener(view -> { loadNewContent(); });
+        mNewContentLayout.setOnClickListener(
+                view -> {
+                    loadNewContent();
+                });
         ImageView ivNewsSettings = findViewById(R.id.news_settings_button);
-        ivNewsSettings.setOnClickListener(view -> {
-            SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
-            settingsLauncher.launchSettingsActivity(getContext(), BraveNewsPreferencesV2.class);
-        });
+        ivNewsSettings.setOnClickListener(
+                view -> {
+                    SettingsLauncher settingsLauncher =
+                            SettingsLauncherFactory.createSettingsLauncher();
+                    settingsLauncher.launchSettingsActivity(
+                            getContext(), BraveNewsPreferencesV2.class);
+                });
 
         mRecyclerView = findViewById(R.id.recyclerview);
         LinearLayoutManagerWrapper linearLayoutManager =
