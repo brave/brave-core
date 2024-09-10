@@ -756,10 +756,6 @@ extension BrowserViewController: WKNavigationDelegate {
       return .download
     }
 
-    if canShowInWebView {
-      return .allow
-    }
-
     // Check if this response should be handed off to Passbook.
     if shouldDownloadNavigationResponse {
       shouldDownloadNavigationResponse = false
@@ -767,6 +763,26 @@ extension BrowserViewController: WKNavigationDelegate {
       if response.mimeType == MIMEType.passbook {
         return .download
       }
+    }
+
+    // If the content type is not HTML, create a temporary document so it can be downloaded and
+    // shared to external applications later. Otherwise, clear the old temporary document.
+    if let tab = tab, navigationResponse.isForMainFrame {
+      if response.mimeType?.isKindOfHTML == false, let request = request {
+        tab.temporaryDocument = TemporaryDocument(
+          preflightResponse: response,
+          request: request,
+          tab: tab
+        )
+      } else {
+        tab.temporaryDocument = nil
+      }
+
+      tab.mimeType = response.mimeType
+    }
+
+    if canShowInWebView {
+      return .allow
     }
 
     // Check if this response should be downloaded.
@@ -794,22 +810,6 @@ extension BrowserViewController: WKNavigationDelegate {
       }
 
       return .cancel
-    }
-
-    // If the content type is not HTML, create a temporary document so it can be downloaded and
-    // shared to external applications later. Otherwise, clear the old temporary document.
-    if let tab = tab, navigationResponse.isForMainFrame {
-      if response.mimeType?.isKindOfHTML == false, let request = request {
-        tab.temporaryDocument = TemporaryDocument(
-          preflightResponse: response,
-          request: request,
-          tab: tab
-        )
-      } else {
-        tab.temporaryDocument = nil
-      }
-
-      tab.mimeType = response.mimeType
     }
 
     // If none of our helpers are responsible for handling this response,
