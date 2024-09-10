@@ -115,7 +115,7 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   PlusAddressServiceFactory::GetInstance();
   PlusAddressSettingServiceFactory::GetInstance();
   PowerBookmarkServiceFactory::GetInstance();
-  PushNotificationBrowserStateServiceFactory::GetInstance();
+  PushNotificationProfileServiceFactory::GetInstance();
   SupervisedUserServiceFactory::GetInstance();
   SyncServiceFactory::GetInstance();
   UnifiedConsentServiceFactory::GetInstance();
