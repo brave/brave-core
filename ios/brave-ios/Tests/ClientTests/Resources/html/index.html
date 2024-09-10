@@ -27,7 +27,12 @@
       
       <div id="test-ad-3rd-party">
         <img src="http://3rd_party.localhost/image.gif">
-        This element should be always hidden (standard or aggressive mode) because it's a 3rd party ad.
+      </div>
+
+      <div id="test-ad-3rd-party-sig-text">
+        <img src="http://3rd_party.localhost/image.gif">
+        This element should be not be hidden in standard mode because it contains significant amount of text.
+        It should still be hidden in aggressive mode.
       </div>
       
       <div id="test-ad-simple">
