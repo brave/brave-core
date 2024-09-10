@@ -57,7 +57,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   bool HandleExternalProtocol(
       const GURL& url,
       content::WebContents::Getter web_contents_getter,
-      int frame_tree_node_id,
+      content::FrameTreeNodeId frame_tree_node_id,
       content::NavigationUIData* navigation_data,
       bool is_primary_main_frame,
       bool is_in_fenced_frame_tree,
@@ -99,7 +99,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       content::BrowserContext* browser_context,
       const base::RepeatingCallback<content::WebContents*()>& wc_getter,
       content::NavigationUIData* navigation_ui_data,
-      int frame_tree_node_id,
+      content::FrameTreeNodeId frame_tree_node_id,
       std::optional<int64_t> navigation_id) override;
 
   void WillCreateURLLoaderFactory(
