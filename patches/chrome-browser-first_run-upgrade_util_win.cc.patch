@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/first_run/upgrade_util_win.cc b/chrome/browser/first_run/upgrade_util_win.cc
-index 0be66656020a11f62f5086be9194d952884c08ea..017ba625ee060aef07bdd4df40cfe283e5d51f7a 100644
+index 8254195fd4e30c2ded098c69829092f1a519d7f4..57c3f95a56ff4df105821ee9916dfb93ae261957 100644
 --- a/chrome/browser/first_run/upgrade_util_win.cc
 +++ b/chrome/browser/first_run/upgrade_util_win.cc
 @@ -54,7 +54,7 @@
