@@ -42,7 +42,7 @@ base::Value GetFeedJson() {
   // First item has a higher score, so it should appear later.
   return base::test::ParseJson(R"([
         {
-          "category": "Technology",
+          "channels": ["Technology"],
           "publish_time": "2021-09-01 07:01:28",
           "url": "https://www.example.com/an-article/",
           "title": "Expecting Third Logitech built Bolt to make wireless mice and keyboards work better",
@@ -56,7 +56,7 @@ base::Value GetFeedJson() {
           "score": 13.93160989810695
         },
         {
-          "category": "",
+          "channels": [],
           "publish_time": "2020-09-01 07:01:28",
           "url": "https://fourth.example.com/an-article/",
           "title": "Expecting Fourth Logitech built Bolt to make wireless mice and keyboards work better",
@@ -70,7 +70,7 @@ base::Value GetFeedJson() {
           "score": 22.93160989810695
         },
         {
-          "category": "Technology",
+          "channels": ["Technology"],
           "publish_time": "2021-09-01 07:04:32",
           "url": "https://www.espn.com/soccer/blog-transfer-talk/story/4465789/live-transfer-deadline-day-will-real-madrid-land-psg-star-mbappe",
           "title": "Expecting First Transfer Talk: How a busy Deadline Day unfolded",
@@ -84,7 +84,7 @@ base::Value GetFeedJson() {
           "score": 14.525910905005045
         },
         {
-          "category": "Top News",
+          "channels": ["Top News"],
           "publish_time": "2021-09-01 07:00:58",
           "url": "https://foreignpolicy.com/2021/09/01/africa-youth-protests-senegal-sudan-ghana-eswatini/",
           "title": "Expecting Featured Africa\u2019s Disappointed Demographic",
@@ -98,7 +98,7 @@ base::Value GetFeedJson() {
           "score": 13.96799592432192
         },
         {
-          "category": "Top News",
+          "channels": ["Top News"],
           "publish_time": "2021-09-01 07:01:28",
           "url": "https://www.digitaltrends.com/computing/logi-bolt-secure-wireless-connectivity/",
           "title": "Expecting Second Logitech built Bolt to make wireless mice and keyboards work better",

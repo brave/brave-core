@@ -19,9 +19,6 @@ namespace combined_feed {
     // The id code for the publisher.
     DOMString publisher_id;
 
-    // The category the feed belongs to.
-    DOMString category;
-
     // The channels the feed belongs to. This supersedes the category.
     DOMString[]? channels;
 

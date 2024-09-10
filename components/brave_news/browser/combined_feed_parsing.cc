@@ -77,11 +77,18 @@ base::expected<mojom::FeedItemPtr, std::string> ParseFeedItem(
   }
 
   auto metadata = mojom::FeedItemMetadata::New();
-  metadata->category_name = GetMigratedChannel(feed_item.category);
   if (feed_item.channels) {
     std::ranges::transform(*feed_item.channels,
                            std::back_inserter(metadata->channels),
                            &GetMigratedChannel);
+  }
+
+  // |category_name| is deprecated in favor of |channels| but we still rely on
+  // it.
+  // |channels| is a list of channels in order of increasing specificity, so we
+  // take the last, most specific channel as the |category_name|.
+  if (!metadata->channels.empty()) {
+    metadata->category_name = metadata->channels.back();
   }
 
   metadata->title = feed_item.title;
