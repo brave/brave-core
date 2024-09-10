@@ -564,6 +564,10 @@ window.__firefox__.execute(function($) {
       return false
     } else if (queryResults.foundFirstPartyResource) {
       return true
+    } else if (showsSignificantText(element)) {
+      // If the subtree HAS a significant amount of text (e.g., it doesn't just says "Advertisement")
+      // it should be unhidden.
+      return true
     } else if (queryResults.foundThirdPartyResource || queryResults.pendingSrcAttributes.size > 0) {
       if (pendingSrcAttributes !== undefined) {
         queryResults.pendingSrcAttributes.forEach((src) => {
@@ -572,12 +576,8 @@ window.__firefox__.execute(function($) {
       }
 
       return false
-    } else {
-      // If the subtree doesn't have a significant amount of text (e.g., it
-      // just says "Advertisement"), then no need to change anything; it should
-      // stay hidden.
-      return showsSignificantText(element)
     }
+    return false
   }
 
   const shouldUnhideElementAsync = async (element) => {
