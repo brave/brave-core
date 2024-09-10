@@ -145,6 +145,21 @@ void BraveDownloadItemView::OnDownloadUpdated() {
   }
 }
 
+std::u16string BraveDownloadItemView::CalculateAccessibleName() const {
+  auto accessible_name = DownloadItemView::CalculateAccessibleName();
+  if (!origin_url_text_.empty()) {
+    std::u16string extra;
+    if (!is_origin_url_secure_) {
+      extra += char16_t(' ') + brave_l10n::GetLocalizedResourceUTF16String(
+                                   IDS_NOT_SECURE_VERBOSE_STATE);
+    }
+    extra += char16_t(' ') + origin_url_text_;
+    accessible_name += extra;
+  }
+
+  return accessible_name;
+}
+
 // Positioning routines.
 
 int BraveDownloadItemView::GetYForFilenameText() const {
@@ -214,22 +229,6 @@ void BraveDownloadItemView::DrawLockIcon(gfx::Canvas* canvas) {
 gfx::ImageSkia BraveDownloadItemView::GetLockIcon(int height) {
   return gfx::CreateVectorIcon(kDownloadUnlockIcon, height,
     kDownloadUnlockIconColor);
-}
-
-// Update accessible name with origin URL.
-void BraveDownloadItemView::SetMode(download::DownloadItemMode mode) {
-  DownloadItemView::SetMode(mode);
-  if (IsShowingWarningDialog())
-    return;
-
-  if (!origin_url_text_.empty()) {
-    std::u16string extra;
-    if (!is_origin_url_secure_)
-      extra += char16_t(' ') + brave_l10n::GetLocalizedResourceUTF16String(
-                                   IDS_NOT_SECURE_VERBOSE_STATE);
-    extra += char16_t(' ') + origin_url_text_;
-    accessible_name_ += extra;
-  }
 }
 
 void BraveDownloadItemView::UpdateLabels() {

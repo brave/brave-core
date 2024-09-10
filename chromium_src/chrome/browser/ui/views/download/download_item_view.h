@@ -41,9 +41,9 @@
   bool IsShowingWarningDialog() const;
 
 #define UpdateLabels virtual UpdateLabels
-#define SetMode virtual SetMode
+#define CalculateAccessibleName virtual CalculateAccessibleName
 #include "src/chrome/browser/ui/views/download/download_item_view.h"  // IWYU pragma: export
-#undef SetMode
+#undef CalculateAccessibleName
 #undef UpdateLabels
 #undef BRAVE_DOWNLOAD_DOWNLOAD_ITEM_VIEW_H_
 
