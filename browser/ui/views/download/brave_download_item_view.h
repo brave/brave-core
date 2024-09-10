@@ -30,6 +30,9 @@ class BraveDownloadItemView : public DownloadItemView {
   // download::DownloadItem::Observer:
   void OnDownloadUpdated() override;
 
+  // overrides from DownloadItemView:
+  std::u16string CalculateAccessibleName() const override;
+
  protected:
   // views::View:
   void OnPaint(gfx::Canvas* canvas) override;
@@ -54,7 +57,6 @@ class BraveDownloadItemView : public DownloadItemView {
   gfx::ImageSkia GetLockIcon(int height);
 
   // Overrides the accessible name construction to reflect the origin URL.
-  void SetMode(download::DownloadItemMode mode) override;
   void UpdateLabels() override;
   void OnMouseEntered(const ui::MouseEvent& event) override;
   void OnMouseExited(const ui::MouseEvent& event) override;
