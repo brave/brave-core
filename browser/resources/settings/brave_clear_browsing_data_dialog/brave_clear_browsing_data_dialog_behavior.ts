@@ -49,7 +49,7 @@ export class BraveSettingsClearBrowsingDataDialogElement extends BaseElement {
     super.connectedCallback();
 
     this.onSelectedPageChangedCallback_ = this.onSelectedPageChanged_.bind(this);
-    this.$.pages.addEventListener('selected-item-changed',
+    this.$.pages.addEventListener('iron-select',
       this.onSelectedPageChangedCallback_);
 
     this.updateSaveButtonStateCallback_ = this.updateSaveButtonState_.bind(this);
