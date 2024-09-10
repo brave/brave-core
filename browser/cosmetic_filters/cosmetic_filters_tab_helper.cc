@@ -9,11 +9,14 @@
 
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/ui/brave_pages.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/brave_pages.h"
+#include "chrome/browser/ui/browser_finder.h"
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace cosmetic_filters {
 
@@ -76,10 +79,14 @@ void CosmeticFiltersTabHelper::AddSiteCosmeticFilter(
 }
 
 void CosmeticFiltersTabHelper::ManageCustomFilters() {
+#if !BUILDFLAG(IS_ANDROID)
   Browser* browser = chrome::FindLastActive();
   if (browser) {
     brave::ShowBraveAdblock(browser);
   }
+#else   // !BUILDFLAG(IS_ANDROID)
+  NOTIMPLEMENTED();
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 CosmeticFiltersTabHelper::CosmeticFiltersTabHelper(
