@@ -104,7 +104,7 @@ base::WeakPtr<AIRewriterButton> AIRewriterButtonView::MaybeCreateButton(
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   CHECK(browser_view);
 
-  gfx::NativeWindow parent = browser_view->GetWidget()->GetNativeWindow();
+  gfx::NativeView parent = browser_view->GetWidget()->GetNativeView();
   CHECK(parent);
 
   auto* button = new AIRewriterButtonView(browser, contents);
