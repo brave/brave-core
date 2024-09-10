@@ -296,6 +296,12 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   _tabGeneratorAPI = nil;
   _webImageDownloader = nil;
 
+  [_nonPersistentWebViewConfiguration shutDown];
+  [_defaultWebViewConfiguration shutDown];
+
+  _nonPersistentWebViewConfiguration = nil;
+  _defaultWebViewConfiguration = nil;
+
   _downloadManager.reset();
   _otrDownloadManager.reset();
 
