@@ -11,6 +11,7 @@ source_set("web") {
     "brave_web_main_parts.mm",
     "javascript_block_util.mm",
     "universal_link_block_util.mm",
+    "web_view_tab_helper_util.mm",
   ]
   deps = [
     "//base",
@@ -27,6 +28,7 @@ source_set("web") {
     "//ios/chrome/browser/shared/model/paths",
     "//ios/chrome/browser/shared/model/url",
     "//ios/chrome/browser/shared/model/url:constants",
+    "//ios/chrome/browser/tabs/model",
     "//ios/chrome/browser/web/model:web_internal",
     "//ios/components/security_interstitials",
     "//ios/components/security_interstitials/lookalikes",

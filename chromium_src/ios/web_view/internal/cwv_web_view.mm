@@ -4,12 +4,17 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/notimplemented.h"
-#include "ios/chrome/browser/tabs/model/tab_helper_util.h"
+#include "ios/web/public/web_state.h"
+
+namespace ios_web_view {
+void AttachTabHelpers(web::WebState* web_state);
+}
 
 #define BRAVE_NOP_SERVICE \
   NOTIMPLEMENTED();       \
   return nil;
-#define BRAVE_ATTACH_TAB_HELPERS AttachTabHelpers(_webState.get());
+#define BRAVE_ATTACH_TAB_HELPERS \
+  ios_web_view::AttachTabHelpers(_webState.get());
 #include "src/ios/web_view/internal/cwv_web_view.mm"
 #undef BRAVE_ATTACH_TAB_HELPERS
 #undef BRAVE_NOP_SERVICE
