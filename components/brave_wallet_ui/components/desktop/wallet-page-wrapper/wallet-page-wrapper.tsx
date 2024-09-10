@@ -31,7 +31,6 @@ import {
   StaticBackground,
   BackgroundGradientWrapper,
   BackgroundGradientTopLayer,
-  BackgroundGradientMiddleLayer,
   BackgroundGradientBottomLayer,
   BlockForHeight,
   FeatureRequestButtonWrapper,
@@ -156,7 +155,6 @@ export const WalletPageWrapper = (props: Props) => {
       {!isPanel && (
         <BackgroundGradientWrapper>
           <BackgroundGradientTopLayer />
-          <BackgroundGradientMiddleLayer />
           <BackgroundGradientBottomLayer />
         </BackgroundGradientWrapper>
       )}
