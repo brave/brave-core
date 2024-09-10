@@ -36,7 +36,9 @@ constexpr double kChannelBoost = 5;
 
 constexpr double kTopStoryMultiplier = 1.2;
 
-constexpr double kOneHourMultiplier = 1.3;
+constexpr double kOneHourMultiplier = 1.5;
+constexpr double kThreeHoursMultiplier = 1.3;
+constexpr double kSixHoursMultiplier = 1.2;
 constexpr double kOneDayMultiplier = 1.1;
 
 constexpr double kMorningNewsBoost = 3;
@@ -112,19 +114,23 @@ std::optional<size_t> PickPeekingCardWithMax(
       score += kChannelBoost;
     }
 
-    if (base::Contains(top_story_urls, article->url.spec())) {
-      score *= kTopStoryMultiplier;
-    }
-
     // Article has no score, so we can't do anything with it.
     if (score == 0) {
       continue;
+    }
+
+    if (base::Contains(top_story_urls, article->url.spec())) {
+      score *= kTopStoryMultiplier;
     }
 
     // Apply a boost to recent articles.
     auto elapsed = now - article->publish_time;
     if (elapsed <= base::Hours(1)) {
       score *= kOneHourMultiplier;
+    } else if (elapsed <= base::Hours(3)) {
+      score *= kThreeHoursMultiplier;
+    } else if (elapsed <= base::Hours(6)) {
+      score *= kSixHoursMultiplier;
     } else if (elapsed <= base::Days(1)) {
       score *= kOneDayMultiplier;
     } else {
@@ -174,24 +180,25 @@ std::optional<size_t> PickPeekingCardWithMax(
                                  ? (max_candidates / following_count)
                                  : 1;
   for (auto& [index, score] : candidates) {
-    if (final_candidates.size() > max_candidates) {
+    if (final_candidates.size() >= max_candidates) {
       break;
     }
 
     const auto& article = get_article(index);
 
     // We don't want any channel to dominate our final candidates list.
-    if (std::ranges::any_of(article->channels, [&seen_channels, channel_limit](
-                                                   const auto& channel) {
-          return seen_channels[channel] >= channel_limit;
-        })) {
-      continue;
+    if (!article->channels.empty()) {
+      // The channels are ordered from least to most specific - we only look at
+      // the most specific channel so we get a bit more variety.
+      auto most_specific_channel = article->channels.back();
+      if (seen_channels[most_specific_channel] >= channel_limit) {
+        continue;
+      }
+
+      seen_channels[most_specific_channel]++;
     }
 
     final_candidates.emplace_back(index, score);
-    for (const auto& channel : article->channels) {
-      seen_channels[channel] += 1;
-    }
   }
 
   if (final_candidates.size() == 0) {
