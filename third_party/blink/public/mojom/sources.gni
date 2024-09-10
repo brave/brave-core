@@ -3,8 +3,5 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-brave_content_browser_deps = [
-  "//brave/components/brave_service_keys",
-  "//brave/components/brave_shields/core/common:mojom",
-  "//brave/components/speech_to_text",
-]
+brave_third_party_blink_public_mojom_platform_public_deps =
+    [ "//brave/components/brave_shields/core/common:mojom" ]

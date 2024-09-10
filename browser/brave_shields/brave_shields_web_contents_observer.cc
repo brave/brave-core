@@ -16,7 +16,9 @@
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "brave/components/constants/pref_names.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/renderer_configuration.mojom.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -35,6 +37,7 @@
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #endif
 
+using content::NavigationHandle;
 using content::RenderFrameHost;
 using content::WebContents;
 
@@ -58,18 +61,49 @@ BraveShieldsWebContentsObserver::BraveShieldsWebContentsObserver(
       receivers_(web_contents, this) {}
 
 void BraveShieldsWebContentsObserver::RenderFrameCreated(RenderFrameHost* rfh) {
-  if (rfh && allowed_scripts_.size()) {
-    GetBraveShieldsRemote(rfh)->SetAllowScriptsFromOriginsOnce(
-        allowed_scripts_);
-  }
-  if (rfh) {
-    if (content::BrowserContext* context = rfh->GetBrowserContext()) {
-      if (PrefService* pref_service = user_prefs::UserPrefs::Get(context)) {
-        GetBraveShieldsRemote(rfh)->SetReduceLanguageEnabled(
-            brave_shields::IsReduceLanguageEnabledForProfile(pref_service));
-      }
+  SendShieldsSettingsToFrame(rfh, nullptr);
+}
+
+void BraveShieldsWebContentsObserver::SendShieldsSettingsToFrame(
+    RenderFrameHost* rfh,
+    NavigationHandle* navigation_handle) {
+  DCHECK(rfh);
+  DCHECK(!navigation_handle || rfh == navigation_handle->GetRenderFrameHost());
+
+  const GURL& primary_url =
+      navigation_handle
+          ? (navigation_handle->GetParentFrameOrOuterDocument()
+                 ? navigation_handle->GetParentFrameOrOuterDocument()
+                       ->GetOutermostMainFrame()
+                       ->GetLastCommittedURL()
+                 : navigation_handle->GetURL())
+          : rfh->GetLastCommittedURL();
+
+  brave_shields::mojom::FarblingLevel farbling_level =
+      brave_shields::mojom::FarblingLevel::BALANCED;
+  HostContentSettingsMap* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(rfh->GetBrowserContext());
+  const bool shields_up = brave_shields::GetBraveShieldsEnabled(
+      host_content_settings_map, primary_url);
+  if (shields_up) {
+    auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
+        host_content_settings_map, primary_url);
+    if (fingerprinting_type == ControlType::BLOCK) {
+      farbling_level = brave_shields::mojom::FarblingLevel::MAXIMUM;
     }
+    if (fingerprinting_type == ControlType::ALLOW) {
+      farbling_level = brave_shields::mojom::FarblingLevel::OFF;
+    }
+  } else {
+    farbling_level = brave_shields::mojom::FarblingLevel::OFF;
   }
+  PrefService* pref_service =
+      user_prefs::UserPrefs::Get(rfh->GetBrowserContext());
+
+  GetBraveShieldsRemote(rfh)->SetShieldsSettings(
+      brave_shields::mojom::ShieldsSettings::New(
+          farbling_level, allowed_scripts_,
+          brave_shields::IsReduceLanguageEnabledForProfile(pref_service)));
 }
 
 void BraveShieldsWebContentsObserver::RenderFrameDeleted(RenderFrameHost* rfh) {
@@ -261,7 +295,7 @@ void BraveShieldsWebContentsObserver::RegisterProfilePrefs(
 }
 
 void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
-    content::NavigationHandle* navigation_handle) {
+    NavigationHandle* navigation_handle) {
   // when the main frame navigate away
   content::ReloadType reload_type = navigation_handle->GetReloadType();
   if (navigation_handle->IsInMainFrame() &&
@@ -278,17 +312,8 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
     }
   }
 
-  navigation_handle->GetWebContents()->ForEachRenderFrameHost(
-      [this](content::RenderFrameHost* rfh) {
-        GetBraveShieldsRemote(rfh)->SetAllowScriptsFromOriginsOnce(
-            allowed_scripts_);
-        if (content::BrowserContext* context = rfh->GetBrowserContext()) {
-          if (PrefService* pref_service = user_prefs::UserPrefs::Get(context)) {
-            GetBraveShieldsRemote(rfh)->SetReduceLanguageEnabled(
-                brave_shields::IsReduceLanguageEnabledForProfile(pref_service));
-          }
-        }
-      });
+  RenderFrameHost* rfh = navigation_handle->GetRenderFrameHost();
+  SendShieldsSettingsToFrame(rfh, navigation_handle);
 }
 
 void BraveShieldsWebContentsObserver::BlockAllowedScripts(

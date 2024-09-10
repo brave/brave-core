@@ -3,15 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "chrome/renderer/worker_content_settings_client.h"
+
 #include <optional>
 
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
-#include "chrome/renderer/worker_content_settings_client.h"
 #include "components/content_settings/renderer/content_settings_agent_impl.h"
 #include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
-BraveFarblingLevel WorkerContentSettingsClient::GetBraveFarblingLevel(
+brave_shields::mojom::ShieldsSettingsPtr
+WorkerContentSettingsClient::GetBraveShieldsSettings(
     ContentSettingsType webcompat_settings_type) {
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
   if (content_setting_rules_) {
@@ -40,13 +42,18 @@ BraveFarblingLevel WorkerContentSettingsClient::GetBraveFarblingLevel(
       }
     }
   }
+
+  brave_shields::mojom::FarblingLevel farbling_level =
+      brave_shields::mojom::FarblingLevel::BALANCED;
   if (setting == CONTENT_SETTING_BLOCK) {
-    return BraveFarblingLevel::MAXIMUM;
+    farbling_level = brave_shields::mojom::FarblingLevel::MAXIMUM;
   } else if (setting == CONTENT_SETTING_ALLOW) {
-    return BraveFarblingLevel::OFF;
+    farbling_level = brave_shields::mojom::FarblingLevel::OFF;
   } else {
-    return BraveFarblingLevel::BALANCED;
+    farbling_level = brave_shields::mojom::FarblingLevel::BALANCED;
   }
+  return brave_shields::mojom::ShieldsSettings::New(
+      farbling_level, std::vector<std::string>(), false);
 }
 
 blink::WebSecurityOrigin

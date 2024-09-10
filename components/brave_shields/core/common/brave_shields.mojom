@@ -5,6 +5,7 @@
 
 module brave_shields.mojom;
 
+import "brave/components/brave_shields/core/common/shields_settings.mojom";
 import "components/content_settings/core/common/content_settings_types.mojom";
 import "mojo/public/mojom/base/string16.mojom";
 
@@ -21,11 +22,5 @@ interface BraveShieldsHost {
 };
 
 interface BraveShields {
-  // Tell the associated RenderFrame(s) to temporary allow scripts from a list
-  // of origins once.
-  SetAllowScriptsFromOriginsOnce(array<string> origins);
-
-  // Tell the associated RenderFrame(s) whether "reduce language
-  // identifiability" is enabled.
-  SetReduceLanguageEnabled(bool enabled);
+  SetShieldsSettings(ShieldsSettings shields_settings);
 };

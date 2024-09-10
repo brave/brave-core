@@ -92,9 +92,12 @@ class BraveShieldsWebContentsObserver
   // other than this own class, for testing purposes only.
   static void SetReceiverImplForTesting(BraveShieldsWebContentsObserver* impl);
 
-  // Only used from the BindBraveShieldsHost() static method, useful to bind the
-  // mojo receiver of brave_shields::mojom::BraveShieldsHost to a different
-  // implementor when needed, for testing purposes.
+  void SendShieldsSettingsToFrame(content::RenderFrameHost* rfh,
+                                  content::NavigationHandle* navigation_handle);
+
+  // Only used from the BindBraveShieldsHost() static method, useful to bind
+  // the mojo receiver of brave_shields::mojom::BraveShieldsHost to a
+  // different implementor when needed, for testing purposes.
   void BindReceiver(mojo::PendingAssociatedReceiver<
                         brave_shields::mojom::BraveShieldsHost> receiver,
                     content::RenderFrameHost* rfh);

@@ -6,11 +6,15 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_BROWSER_WORKER_HOST_SHARED_WORKER_HOST_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_BROWSER_WORKER_HOST_SHARED_WORKER_HOST_H_
 
-#define CreateNetworkFactoryParamsForSubresources                         \
-  UnusedFunction();                                                       \
-  void GetBraveFarblingLevel(const GURL& url,                             \
-                             base::OnceCallback<void(uint8_t)> callback); \
-  network::mojom::URLLoaderFactoryParamsPtr                               \
+#include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
+
+#define CreateNetworkFactoryParamsForSubresources                        \
+  UnusedFunction();                                                      \
+  void GetBraveShieldsSettings(                                          \
+      const GURL& url,                                                   \
+      base::OnceCallback<void(brave_shields::mojom::ShieldsSettingsPtr)> \
+          callback);                                                     \
+  network::mojom::URLLoaderFactoryParamsPtr                              \
       CreateNetworkFactoryParamsForSubresources
 
 #include "src/content/browser/worker_host/shared_worker_host.h"  // IWYU pragma: export

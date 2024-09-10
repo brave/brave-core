@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_RENDERER_WORKER_CONTENT_SETTINGS_CLIENT_H_
 
 #define BRAVE_WORKER_CONTENT_SETTINGS_CLIENT_H                       \
-  BraveFarblingLevel GetBraveFarblingLevel(                          \
+  brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettings(  \
       ContentSettingsType webcompat_settings_type) override;         \
   blink::WebSecurityOrigin GetEphemeralStorageOriginSync() override; \
   bool HasContentSettingsRules() const override;

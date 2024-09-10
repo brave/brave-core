@@ -5,17 +5,24 @@
 
 #include "src/third_party/blink/renderer/core/workers/shared_worker_content_settings_proxy.cc"
 
+#include "brave/components/brave_shields/core/common/shields_settings.mojom-blink.h"
+#include "mojo/public/cpp/bindings/string_traits_wtf.h"
+
 namespace blink {
 
-BraveFarblingLevel SharedWorkerContentSettingsProxy::GetBraveFarblingLevel(
+brave_shields::mojom::ShieldsSettingsPtr
+SharedWorkerContentSettingsProxy::GetBraveShieldsSettings(
     ContentSettingsType webcompat_settings_type) {
-  uint8_t result = BraveFarblingLevel::OFF;
-  GetService()->GetBraveFarblingLevel(&result);
-  if (result == 0)
-    return BraveFarblingLevel::BALANCED;
-  else if (result == 1)
-    return BraveFarblingLevel::OFF;
-  return BraveFarblingLevel::MAXIMUM;
+  brave_shields::mojom::blink::ShieldsSettingsPtr blink_result;
+  GetService()->GetBraveShieldsSettings(&blink_result);
+
+  // Convert the blink mojo struct into a non-blink mojo struct.
+  brave_shields::mojom::ShieldsSettingsPtr result;
+  CHECK(brave_shields::mojom::ShieldsSettings::DeserializeFromMessage(
+      brave_shields::mojom::blink::ShieldsSettings::SerializeAsMessage(
+          &blink_result),
+      &result));
+  return result;
 }
 
 }  // namespace blink
