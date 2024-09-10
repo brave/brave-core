@@ -82,11 +82,11 @@ static_library("secp256k1") {
 
   # Do NOT add any files here without security review
   sources = [
+    "//brave/chromium_src/brave/third_party/bitcoin-core/src/src/secp256k1/src/secp256k1.c",
     "src/src/secp256k1/include/secp256k1.h",
     "src/src/secp256k1/include/secp256k1_preallocated.h",
     "src/src/secp256k1/include/secp256k1_recovery.h",
     "src/src/secp256k1/src/modules/recovery/main_impl.h",
-    "src/src/secp256k1/src/secp256k1.c",
   ]
 
   sources += [
