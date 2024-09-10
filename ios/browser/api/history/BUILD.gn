@@ -26,6 +26,7 @@ source_set("history") {
     "//ios/chrome/browser/history/model",
     "//ios/chrome/browser/history/model:utils",
     "//ios/chrome/browser/shared/model/browser_state",
+    "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/browser/sync/model",
     "//ios/web/public/thread",
     "//net",

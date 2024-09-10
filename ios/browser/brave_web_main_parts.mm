@@ -27,7 +27,6 @@
 #include "ios/chrome/browser/application_context/model/application_context_impl.h"
 #include "ios/chrome/browser/browser_state/model/browser_state_keyed_service_factories.h"
 #include "ios/chrome/browser/flags/about_flags.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/paths/paths.h"
 #include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "ios/web/public/thread/web_task_traits.h"

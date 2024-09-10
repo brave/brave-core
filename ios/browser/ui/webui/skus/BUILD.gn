@@ -26,6 +26,7 @@ source_set("skus") {
     "//components/resources",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/browser_state",
+    "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/browser/shared/ui/util:util",
     "//ios/web",
     "//ios/web:resources",
