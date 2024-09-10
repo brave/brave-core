@@ -7,7 +7,7 @@
 
 #include "ios/chrome/browser/sessions/model/ios_chrome_session_tab_helper.h"
 #include "ios/chrome/browser/shared/model/browser/browser.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/web_state_list/web_state_list.h"
 #include "ios/chrome/browser/shared/model/web_state_list/web_state_opener.h"
 #include "ios/chrome/browser/tabs/model/synced_window_delegate_browser_agent.h"

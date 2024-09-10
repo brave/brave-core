@@ -18,8 +18,6 @@
 #include "components/prefs/pref_service.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #include "url/gurl.h"
-
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
 
 using web::WebUIIOS;
