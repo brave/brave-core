@@ -252,7 +252,6 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabStrokeFrameInactive] = {kColorToolbar};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
-  mixer[kColorToolbarContentAreaSeparator] = {kColorToolbar};
   mixer[kColorToolbarTopSeparatorFrameActive] = {kColorToolbar};
   mixer[kColorToolbarTopSeparatorFrameInactive] = {kColorToolbar};
   mixer[ui::kColorToggleButtonThumbOff] = {SK_ColorWHITE};
@@ -345,6 +344,7 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
   }
 
   mixer[kColorToolbar] = {ui::kColorSysBase};
+  mixer[kColorToolbarContentAreaSeparator] = {nala::kColorDividerSubtle};
 
   key.color_mode == ui::ColorProviderKey::ColorMode::kDark
       ? AddChromeDarkThemeColorMixer(provider, key)
