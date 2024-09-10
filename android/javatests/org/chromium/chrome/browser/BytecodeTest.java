@@ -13,6 +13,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.ActionMode;
 import android.view.View;
@@ -27,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.filters.SmallTest;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -190,6 +192,11 @@ public class BytecodeTest {
     enum MethodModifier {
         REGULAR,
         STATIC
+    }
+
+    @BeforeClass
+    public static void beforeClass() {
+        Looper.prepare();
     }
 
     @Test
