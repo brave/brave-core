@@ -70,7 +70,7 @@ static_library("secp256k1") {
   include_dirs = [ "src/src/secp256k1" ]
   defines = [
     "USE_NUM_NONE",
-    "USE_FORCE_WIDEMUL_INT64",
+    "USE_FORCE_WIDEMUL_INT128_STRUCT",
     "USE_FIELD_INV_BUILTIN",
     "USE_SCALAR_INV_BUILTIN",
     "ECMULT_WINDOW_SIZE=15",
