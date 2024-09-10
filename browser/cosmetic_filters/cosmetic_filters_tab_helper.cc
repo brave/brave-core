@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
@@ -15,6 +16,23 @@
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
 namespace cosmetic_filters {
+
+namespace {
+std::string SanitizeSelector(const std::string selector) {
+  if (!base::IsStringUTF8(selector)) {
+    return {};
+  }
+
+  // The rules are parsed by adblock-rust via lines() method.
+  // The method checks a newline byte (the 0xA byte) or CRLF (0xD, 0xA bytes).
+  // https://doc.rust-lang.org/stable/std/io/trait.BufRead.html#method.lines
+  if (base::Contains(selector, '\n')) {
+    return {};
+  }
+
+  return selector;
+}
+}  // namespace
 
 // static
 void CosmeticFiltersTabHelper::LaunchContentPicker(
@@ -48,9 +66,13 @@ void CosmeticFiltersTabHelper::AddSiteCosmeticFilter(
   // `filter` doesn't have a host, because we don't trust a renderer process.
   // Instead, we calculate and add the host explicitly here.
   const auto* sender_rfh = receivers_.GetCurrentTargetFrame();
-  const auto host = sender_rfh->GetLastCommittedOrigin().host();
-  g_brave_browser_process->ad_block_service()->AddUserCosmeticFilter(
-      host + "##" + filter);
+  CHECK(sender_rfh);
+  const std::string sanitized_filter = SanitizeSelector(filter);
+  if (!sanitized_filter.empty()) {
+    const auto host = sender_rfh->GetLastCommittedOrigin().host();
+    g_brave_browser_process->ad_block_service()->AddUserCosmeticFilter(
+        host + "##" + sanitized_filter);
+  }
 }
 
 void CosmeticFiltersTabHelper::ManageCustomFilters() {
