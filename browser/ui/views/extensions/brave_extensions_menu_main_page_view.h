@@ -21,7 +21,7 @@ class BraveExtensionsMenuMainPageView : public ExtensionsMenuMainPageView {
   void OnThemeChanged() override;
 
  private:
-  void UpdateButtons(Browser* browser);
+  void UpdateButtons();
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_EXTENSIONS_BRAVE_EXTENSIONS_MENU_MAIN_PAGE_VIEW_H_

@@ -34,6 +34,7 @@
 #include "ios/chrome/browser/passwords/model/ios_chrome_password_reuse_manager_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_password_sender_service_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_profile_password_store_factory.h"
+#include "ios/chrome/browser/passwords/model/ios_password_manager_settings_service_factory.h"
 #include "ios/chrome/browser/plus_addresses/model/plus_address_service_factory.h"
 #include "ios/chrome/browser/plus_addresses/model/plus_address_setting_service_factory.h"
 #include "ios/chrome/browser/power_bookmarks/model/power_bookmark_service_factory.h"
@@ -52,9 +53,9 @@
 #include "ios/chrome/browser/supervised_user/model/list_family_members_service_factory.h"
 #include "ios/chrome/browser/supervised_user/model/supervised_user_service_factory.h"
 #include "ios/chrome/browser/supervised_user/model/supervised_user_settings_service_factory.h"
+#include "ios/chrome/browser/sync/model/data_type_store_service_factory.h"
 #include "ios/chrome/browser/sync/model/device_info_sync_service_factory.h"
 #include "ios/chrome/browser/sync/model/ios_user_event_service_factory.h"
-#include "ios/chrome/browser/sync/model/model_type_store_service_factory.h"
 #include "ios/chrome/browser/sync/model/send_tab_to_self_sync_service_factory.h"
 #include "ios/chrome/browser/sync/model/session_sync_service_factory.h"
 #include "ios/chrome/browser/sync/model/sync_service_factory.h"
@@ -106,10 +107,11 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   IOSChromeProfilePasswordStoreFactory::GetInstance();
   IOSChromeProfileInvalidationProviderFactory::GetInstance();
   IOSPasskeyModelFactory::GetInstance();
+  IOSPasswordManagerSettingsServiceFactory::GetInstance();
   IOSUserEventServiceFactory::GetInstance();
   ListFamilyMembersServiceFactory::GetInstance();
   OptimizationGuideServiceFactory::GetInstance();
-  ModelTypeStoreServiceFactory::GetInstance();
+  DataTypeStoreServiceFactory::GetInstance();
   PlusAddressServiceFactory::GetInstance();
   PlusAddressSettingServiceFactory::GetInstance();
   PowerBookmarkServiceFactory::GetInstance();

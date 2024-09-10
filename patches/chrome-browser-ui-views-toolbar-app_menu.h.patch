@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/app_menu.h b/chrome/browser/ui/views/toolbar/app_menu.h
-index 6e0a4f3a2aed82b7caebf4a6a065e0e75881c32c..e765042e15086dadbc195dc8925cb2dfda7d77c1 100644
+index a1492f99d0e440387cc7da51314addec9af81ba0..663bd4068ae94bef593380b0ce069c04db53ddac 100644
 --- a/chrome/browser/ui/views/toolbar/app_menu.h
 +++ b/chrome/browser/ui/views/toolbar/app_menu.h
 @@ -31,7 +31,7 @@ class MenuRunner;

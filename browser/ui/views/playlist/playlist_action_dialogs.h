@@ -43,7 +43,7 @@ class PlaylistActionDialog : public views::DialogDelegateView {
 
     auto dialog = std::make_unique<Dialog>(typename Dialog::PassKey(),
                                            std::forward<Args>(args)...);
-    dialog->SetModalType(ui::ModalType::MODAL_TYPE_WINDOW);
+    dialog->SetModalType(ui::mojom::ModalType::kWindow);
     constrained_window::CreateBrowserModalDialogViews(
         std::move(dialog), browser_widget->GetNativeWindow())
         ->Show();

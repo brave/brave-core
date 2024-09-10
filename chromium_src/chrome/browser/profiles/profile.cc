@@ -20,6 +20,7 @@
 #undef WipeSearchEngineChoicePrefs
 #undef IsIncognitoProfile
 #undef IsPrimaryOTRProfile
+#undef BRAVE_ALLOWS_BROWSER_WINDOWS
 
 // static
 const Profile::OTRProfileID Profile::OTRProfileID::TorID() {

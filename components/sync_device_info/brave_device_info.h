@@ -40,7 +40,7 @@ class BraveDeviceInfo : public DeviceInfo {
       const std::optional<DeviceInfo::SharingInfo>& sharing_info,
       const std::optional<PhoneAsASecurityKeyInfo>& paask_info,
       const std::string& fcm_registration_token,
-      const ModelTypeSet& interested_data_types,
+      const DataTypeSet& interested_data_types,
       std::optional<base::Time> floating_workspace_last_signin_timestamp,
       bool is_self_delete_supported);
   BraveDeviceInfo(const BraveDeviceInfo&) = delete;

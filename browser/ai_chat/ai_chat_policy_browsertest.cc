@@ -21,6 +21,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
+#include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
@@ -165,7 +166,10 @@ IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, ContextMenu) {
 }
 
 IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, SidePanelRegistry) {
-  auto* registry = SidePanelRegistry::Get(web_contents());
+  auto* registry = browser()
+                       ->GetActiveTabInterface()
+                       ->GetTabFeatures()
+                       ->side_panel_registry();
   auto* entry = registry->GetEntryForKey(
       SidePanelEntry::Key(SidePanelEntry::Id::kChatUI));
   if (IsAIChatEnabledTest()) {

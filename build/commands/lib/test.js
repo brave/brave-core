@@ -1,3 +1,8 @@
+ // Copyright (c) 2018 The Brave Authors. All rights reserved.
+ // This Source Code Form is subject to the terms of the Mozilla Public
+ // License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ // You can obtain one at https://mozilla.org/MPL/2.0/.
+
 const fs = require('fs-extra')
 const path = require('path')
 
@@ -70,6 +75,10 @@ const buildTests = async (suite, buildConfig = config.defaultBuildConfig, option
   ]
   if (testSuites.includes(suite)) {
     config.buildTargets = ['brave/test:' + suite]
+    if (suite === 'brave_unit_tests' && config.targetOS === 'android') {
+      // We need to build the APK for the java tests as well.
+      config.buildTargets.push('brave/test:brave_public_test_apk')
+    }
   } else {
     config.buildTargets = [suite]
   }

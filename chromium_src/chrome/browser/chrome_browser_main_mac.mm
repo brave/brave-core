@@ -4,13 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/mac/keystone_glue.h"
-#include "chrome/browser/updater/browser_updater_client_util.h"
 
-#define EnsureUpdater                                        \
-  [[KeystoneGlue defaultKeystoneGlue] registerWithKeystone]; \
-  if (false)                                                 \
-  EnsureUpdater
+#define BRAVE_CHROME_BROWSER_MAIN_PARTS_MAC_PRE_CREATE_MAIN_MESSAGE_LOOP \
+  [[KeystoneGlue defaultKeystoneGlue] registerWithKeystone];
 
 #include "src/chrome/browser/chrome_browser_main_mac.mm"
-
-#undef EnsureUpdater
+#undef BRAVE_CHROME_BROWSER_MAIN_PARTS_MAC_PRE_CREATE_MAIN_MESSAGE_LOOP

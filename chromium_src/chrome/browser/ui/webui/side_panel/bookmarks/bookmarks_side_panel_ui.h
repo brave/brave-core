@@ -23,9 +23,11 @@ class BookmarksSidePanelUI : public BookmarksSidePanelUI_ChromiumImpl {
 class BookmarksSidePanelUIConfig
     : public DefaultTopChromeWebUIConfig<BookmarksSidePanelUI> {
  public:
-  BookmarksSidePanelUIConfig()
-      : DefaultTopChromeWebUIConfig(content::kChromeUIScheme,
-                                    chrome::kChromeUIBookmarksSidePanelHost) {}
+  BookmarksSidePanelUIConfig();
+
+  // DefaultTopChromeWebUIConfig:
+  bool IsPreloadable() override;
+  std::optional<int> GetCommandIdForTesting() override;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SIDE_PANEL_BOOKMARKS_BOOKMARKS_SIDE_PANEL_UI_H_

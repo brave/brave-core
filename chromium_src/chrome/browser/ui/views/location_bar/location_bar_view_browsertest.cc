@@ -3,15 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/ui/views/location_bar/location_bar_view.h"
+
 #include <optional>
 
 #include "base/strings/string_util.h"
-#include "chrome/browser/ssl/security_state_tab_helper.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/omnibox/browser/location_bar_model_impl.h"
+#include "components/security_state/content/security_state_tab_helper.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/url_loader_interceptor.h"
 #include "mojo/public/cpp/system/data_pipe.h"

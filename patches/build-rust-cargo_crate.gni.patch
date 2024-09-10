@@ -1,5 +1,5 @@
 diff --git a/build/rust/cargo_crate.gni b/build/rust/cargo_crate.gni
-index 06ee6a9d2e9cc89cf3910a9ae38da280938d315f..452f8e342023117f946ece8e2424ae3585c52ce2 100644
+index e5d1b2f831e6d2cfcc4b76b1afcdfce0f150cddd..018bb35898fbea42dfe495ae561a9b4c8b4c253a 100644
 --- a/build/rust/cargo_crate.gni
 +++ b/build/rust/cargo_crate.gni
 @@ -158,6 +158,7 @@ template("cargo_crate") {

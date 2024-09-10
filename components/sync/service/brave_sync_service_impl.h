@@ -57,7 +57,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void SuspendDeviceObserverForOwnReset();
   void ResumeDeviceObserver();
 
-  void Initialize() override;
+  void Initialize(DataTypeController::TypeVector controllers) override;
 
   const brave_sync::Prefs& prefs() const { return brave_sync_prefs_; }
   brave_sync::Prefs& prefs() { return brave_sync_prefs_; }

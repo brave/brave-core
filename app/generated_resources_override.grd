@@ -541,9 +541,6 @@ are declared in tools/grit/grit_rule.gni.
         </if>
         <if expr="not use_titlecase">
         </if>
-      <message name="IDS_EXTENSIONS_MENU_MAIN_PAGE_OPEN_CHROME_WEBSTORE_TOOLTIP" desc="Tooltip text for the button that opens the chrome webstore.">
-        Web Store
-      </message>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -667,6 +664,15 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not is_android">
         </if>
+
+      <if expr="_google_chrome">
+        <if expr="not is_android">
+          <if expr="use_titlecase">
+            </if>
+          <if expr="not use_titlecase">
+            </if>
+          </if>
+      </if>
 
       <if expr="_google_chrome">
         <if expr="not is_android">
@@ -1096,15 +1102,9 @@ are declared in tools/grit/grit_rule.gni.
         </if> <if expr="is_posix and not is_macosx">
         </if>
 
-      <if expr="is_chromeos">
+      <if expr="is_macosx or is_chromeos or is_win">
         </if>
       <if expr="is_macosx">
-        </if>
-      <if expr="is_win">
-        </if>
-        <if expr="is_macosx">
-        </if>
-      <if expr="is_win or is_chromeos">
         </if>
       <if expr="is_macosx or is_chromeos or is_win">
         </if>

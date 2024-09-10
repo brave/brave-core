@@ -109,7 +109,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 
         listener(BraveBookmarksExporterStateStarted);
 
-        ios::ChromeBrowserStateManager* browserStateManager =
+        ChromeBrowserStateManager* browserStateManager =
             GetApplicationContext()->GetChromeBrowserStateManager();
         DCHECK(browserStateManager);
 

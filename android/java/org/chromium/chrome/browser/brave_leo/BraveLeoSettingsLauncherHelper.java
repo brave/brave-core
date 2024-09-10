@@ -12,7 +12,7 @@ import org.jni_zero.CalledByNative;
 
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveLeoPreferences;
-import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
+import org.chromium.chrome.browser.settings.SettingsLauncherFactory;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 import org.chromium.content_public.browser.WebContents;
@@ -73,6 +73,6 @@ public class BraveLeoSettingsLauncherHelper {
     }
 
     private static SettingsLauncher getLauncher() {
-        return sLauncher != null ? sLauncher : new SettingsLauncherImpl();
+        return sLauncher != null ? sLauncher : SettingsLauncherFactory.createSettingsLauncher();
     }
 }

@@ -37,7 +37,6 @@ import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
-import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.desktop_windowing.DesktopWindowStateProvider;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.ui.resources.ResourceManager;
@@ -71,6 +70,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ThemeColorProvider normalThemeColorProvider,
             MenuButtonCoordinator browsingModeMenuButtonCoordinator,
             ObservableSupplier<AppMenuButtonHelper> appMenuButtonHelperSupplier,
+            ToggleTabStackButtonCoordinator tabSwitcerButtonCoordinator,
             ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             ObservableSupplier<Boolean> homepageEnabledSupplier,
             Supplier<ResourceManager> resourceManagerSupplier,
@@ -97,6 +97,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 normalThemeColorProvider,
                 browsingModeMenuButtonCoordinator,
                 appMenuButtonHelperSupplier,
+                tabSwitcerButtonCoordinator,
                 tabModelSelectorSupplier,
                 homepageEnabledSupplier,
                 resourceManagerSupplier,
@@ -190,10 +191,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     public void initializeWithNative(
             Profile profile,
             Runnable layoutUpdater,
-            OnClickListener tabSwitcherClickHandler,
             OnClickListener bookmarkClickHandler,
             OnClickListener customTabsBackClickHandler,
-            AppMenuDelegate appMenuDelegate,
             LayoutManager layoutManager,
             ObservableSupplier<Tab> tabSupplier,
             BrowserControlsVisibilityManager browserControlsVisibilityManager,
@@ -201,10 +200,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
         super.initializeWithNative(
                 profile,
                 layoutUpdater,
-                tabSwitcherClickHandler,
                 bookmarkClickHandler,
                 customTabsBackClickHandler,
-                appMenuDelegate,
                 layoutManager,
                 tabSupplier,
                 browserControlsVisibilityManager,

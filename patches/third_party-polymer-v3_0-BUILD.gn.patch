@@ -1,8 +1,8 @@
 diff --git a/third_party/polymer/v3_0/BUILD.gn b/third_party/polymer/v3_0/BUILD.gn
-index 165636e632578de207529f755787b509a1a29079..1930663a6da880ea6de66d68a28c99437b0ef3a2 100644
+index 8d04b1d0a6013ac30f6aa9f9f33ee9a697db0495..7d29215b57a5bdb9e957a83675caee3d0033357f 100644
 --- a/third_party/polymer/v3_0/BUILD.gn
 +++ b/third_party/polymer/v3_0/BUILD.gn
-@@ -39,10 +39,12 @@ js_files = [
+@@ -37,10 +37,12 @@ js_files = [
  # Also needed on LaCros for Print Preview. Remove once CrOS Print Preview
  # launches.
  if (is_chromeos) {
@@ -29,7 +29,7 @@ index 165636e632578de207529f755787b509a1a29079..1930663a6da880ea6de66d68a28c9943
      definitions += [
        "components-chromium/iron-a11y-announcer/iron-a11y-announcer.d.ts",
        "components-chromium/iron-collapse/iron-collapse.d.ts",
-@@ -298,4 +302,5 @@ ts_library("library") {
+@@ -300,4 +304,5 @@ ts_library("library") {
        "components-chromium/paper-tooltip/paper-tooltip.d.ts",
      ]
    }

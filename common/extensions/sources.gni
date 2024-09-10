@@ -1,0 +1,31 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//extensions/buildflags/buildflags.gni")
+
+assert(enable_extensions)
+
+brave_chrome_common_extensions_public = [
+  "//brave/common/extensions/brave_extensions_api_provider.h",
+  "//brave/common/extensions/brave_extensions_client.h",
+]
+
+brave_chrome_common_extensions_sources = [
+  "//brave/common/extensions/brave_extensions_api_provider.cc",
+  "//brave/common/extensions/brave_extensions_client.cc",
+]
+
+brave_chrome_common_extensions_deps = [
+  "//brave/components/brave_component_updater/browser",
+  "//brave/components/https_upgrade_exceptions/browser",
+  "//components/component_updater",
+  "//extensions/common:common_constants",
+]
+
+brave_chrome_common_extensions_public_deps = [
+  "api",
+  "//brave/common/extensions/api",
+  "//brave/common/extensions/api:extensions_features",
+]

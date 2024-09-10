@@ -21,7 +21,8 @@ action("sign_app_convert_aab_to_apk") {
   target_aab_path = "$root_out_dir/apks/MonochromePublic64.aab"
   output_apk_path = "$root_out_dir/apks/Bravearm64Universal.apk"
   output_path = "$root_out_dir/apks/"
-  bundletool = "//third_party/android_build_tools/bundletool/bundletool.jar"
+  bundletool =
+      "//third_party/android_build_tools/bundletool/cipd/bundletool.jar"
 
   outputs = [ output_apk_path ]
 
@@ -228,7 +229,6 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/day_zero/DayZeroHelper.java",
     "//brave/android/java/org/chromium/chrome/browser/informers/BraveSyncAccountDeletedInformer.java",
     "//brave/android/java/org/chromium/chrome/browser/misc_metrics/MiscAndroidMetricsFactory.java",
-    "//brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationPlatformBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/notifications/channels/BraveSiteChannelsManagerBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/ntp_background_images/NTPBackgroundImagesBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceFactoryAndroid.java",

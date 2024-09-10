@@ -59,7 +59,6 @@ android_aar_prebuilt(
   info_path = "libs/com_google_android_datatransport_transport_runtime/com_google_android_datatransport_transport_runtime.info"
   deps = [
     ":com_google_firebase_firebase_encoders_proto_java",
-    "//third_party/android_deps:com_google_auto_value_auto_value_annotations_java",
     "//third_party/android_deps:google_firebase_firebase_messaging_java",
     "//third_party/android_deps:javax_inject_javax_inject_java",
     "//third_party/androidx:androidx_annotation_annotation_java",

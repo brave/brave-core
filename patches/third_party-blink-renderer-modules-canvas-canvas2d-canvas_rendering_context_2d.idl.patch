@@ -1,9 +1,9 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
-index 5edfbb82c8bee629fe09202f57f40ea961c0bc2c..56aa4111518438c6ac69446d5da950733b489e7d 100644
+index 375f3a4b69b917446d4699381e60ab95c3f26855..00403e3f4cc4cd8dfda9c701e6a35b0ef87b3652 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
-@@ -118,10 +118,10 @@ interface CanvasRenderingContext2D {
-     [RuntimeEnabled=Canvas2dScrollPathIntoView] void scrollPathIntoView(optional Path2D path);
+@@ -117,10 +117,10 @@ interface CanvasRenderingContext2D {
+ 
      void clip(optional CanvasFillRule winding);
      void clip(Path2D path, optional CanvasFillRule winding);
 -    [HighEntropy] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);

@@ -94,8 +94,8 @@ BraveVpnFallbackDialogView::BraveVpnFallbackDialogView(Browser* browser)
 
 BraveVpnFallbackDialogView::~BraveVpnFallbackDialogView() = default;
 
-ui::ModalType BraveVpnFallbackDialogView::GetModalType() const {
-  return ui::MODAL_TYPE_WINDOW;
+ui::mojom::ModalType BraveVpnFallbackDialogView::GetModalType() const {
+  return ui::mojom::ModalType::kWindow;
 }
 
 bool BraveVpnFallbackDialogView::ShouldShowCloseButton() const {

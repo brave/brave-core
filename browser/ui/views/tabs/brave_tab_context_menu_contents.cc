@@ -220,9 +220,8 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
 
       auto all_muted = model_->all_muted();
       for (auto* contents : contentses) {
-        chrome::SetTabAudioMuted(contents, !all_muted,
-                                 TabMutedReason::AUDIO_INDICATOR,
-                                 /*extension_id=*/std::string());
+        SetTabAudioMuted(contents, !all_muted, TabMutedReason::AUDIO_INDICATOR,
+                         /*extension_id=*/std::string());
       }
       return;
     }

@@ -10,8 +10,8 @@
 
 #include "src/third_party/blink/renderer/core/timing/time_clamper.cc"
 
-#undef FineResolutionMicroseconds
-#undef CoarseResolutionMicroseconds
+#undef kFineResolutionMicroseconds
+#undef kCoarseResolutionMicroseconds
 
 #include "base/feature_list.h"
 #include "base/time/time.h"

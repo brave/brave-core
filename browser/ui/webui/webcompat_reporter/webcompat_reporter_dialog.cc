@@ -47,7 +47,7 @@ class WebcompatReporterDialogDelegate : public ui::WebDialogDelegate {
       const WebcompatReporterDialogDelegate&) = delete;
   ~WebcompatReporterDialogDelegate() override;
 
-  ui::ModalType GetDialogModalType() const override;
+  ui::mojom::ModalType GetDialogModalType() const override;
   std::u16string GetDialogTitle() const override;
   GURL GetDialogContentURL() const override;
   void GetWebUIMessageHandlers(
@@ -68,10 +68,11 @@ WebcompatReporterDialogDelegate::WebcompatReporterDialogDelegate(
 
 WebcompatReporterDialogDelegate::~WebcompatReporterDialogDelegate() = default;
 
-ui::ModalType WebcompatReporterDialogDelegate::GetDialogModalType() const {
+ui::mojom::ModalType WebcompatReporterDialogDelegate::GetDialogModalType()
+    const {
   // Not used, returning dummy value.
   NOTREACHED_IN_MIGRATION();
-  return ui::MODAL_TYPE_WINDOW;
+  return ui::mojom::ModalType::kWindow;
 }
 
 std::u16string WebcompatReporterDialogDelegate::GetDialogTitle() const {
