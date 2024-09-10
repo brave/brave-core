@@ -1,8 +1,8 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index 13f354e79c5a0912da37fc953dcab39457680967..81598056046e55b85a34eb3f1b84b128cbe1b86f 100644
+index dc407211effeb0150211904c3d4d8ea024d3cb1b..28015e5490612825e7a3ed979344fbc9e8f6fbaa 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
-@@ -597,7 +597,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
+@@ -599,7 +599,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
        ChromeExtensionsRendererClient::GetInstance()->extension_dispatcher());
  #endif
    content_settings::ContentSettingsAgentImpl* content_settings =
@@ -11,7 +11,7 @@ index 13f354e79c5a0912da37fc953dcab39457680967..81598056046e55b85a34eb3f1b84b128
            render_frame, should_allow_for_content_settings,
            std::move(content_settings_delegate));
    if (chrome_observer_.get()) {
-@@ -762,7 +762,9 @@ void ChromeContentRendererClient::RenderFrameCreated(
+@@ -764,7 +764,9 @@ void ChromeContentRendererClient::RenderFrameCreated(
  #endif  // BUILDFLAG(HAS_SPELLCHECK_PANEL)
  #endif
  #if BUILDFLAG(ENABLE_FEED_V2)
@@ -21,7 +21,7 @@ index 13f354e79c5a0912da37fc953dcab39457680967..81598056046e55b85a34eb3f1b84b128
    if (command_line->HasSwitch(feed::switches::kEnableRssLinkReader) &&
        render_frame->IsMainFrame()) {
      new feed::RssLinkReader(render_frame, registry);
-@@ -778,6 +780,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
+@@ -780,6 +782,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
    }
  #endif
  
