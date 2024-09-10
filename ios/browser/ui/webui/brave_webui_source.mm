@@ -14,7 +14,7 @@
 #include "brave/components/webui/webui_resources.h"
 #include "build/build_config.h"
 #include "components/grit/components_resources.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/webui/web_ui_ios_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/resource_path.h"
