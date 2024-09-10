@@ -224,7 +224,9 @@ final class ScriptExecutionTests: XCTestCase {
     let initialStandardSelectors = Set([".test-ads-primary-standard div"])
     let initialAggressiveSelectors = Set([".test-ads-primary-aggressive div"])
     let polledAggressiveIds = ["test-ad-aggressive"]
-    let polledStandardIds = ["test-ad-1st-party", "test-ad-3rd-party", "test-ad-simple"]
+    let polledStandardIds = [
+      "test-ad-1st-party", "test-ad-3rd-party", "test-ad-3rd-party-sig-text", "test-ad-simple",
+    ]
     let nestedIds = [
       "test-ad-primary-standard-1st-party", "test-ad-primary-standard-3rd-party",
       "test-ad-primary-aggressive-1st-party", "test-ad-primary-aggressive-3rd-party",
@@ -378,7 +380,10 @@ final class ScriptExecutionTests: XCTestCase {
     )
     XCTAssertEqual(resultsAfterPump?.unhiddenIds.contains("test-ad-1st-party"), true)
     XCTAssertEqual(resultsAfterPump?.hiddenIds.contains("test-ad-aggressive"), true)
+    // hidden because of 3rd party src
     XCTAssertEqual(resultsAfterPump?.hiddenIds.contains("test-ad-3rd-party"), true)
+    // unhidden because it contains significant amount of text
+    XCTAssertEqual(resultsAfterPump?.unhiddenIds.contains("test-ad-3rd-party-sig-text"), true)
     XCTAssertEqual(resultsAfterPump?.hiddenIds.contains("test-ad-simple"), true)
     XCTAssertEqual(
       resultsAfterPump?.hiddenIds.contains("test-ad-primary-aggressive-1st-party"),
