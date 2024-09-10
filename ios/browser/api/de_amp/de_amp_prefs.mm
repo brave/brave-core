@@ -8,7 +8,6 @@
 #include "brave/ios/browser/api/de_amp/de_amp_prefs+private.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 
 @implementation DeAmpPrefs {
   raw_ptr<PrefService> _profileState;
