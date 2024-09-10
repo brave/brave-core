@@ -1,7 +1,7 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #import "brave/ios/browser/web/brave_web_client.h"
 
@@ -25,10 +25,6 @@
 #import "ios/web_view/public/cwv_navigation_delegate.h"
 #import "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
-
-#if !defined(__has_feature) || !__has_feature(objc_arc)
-#error "This file requires ARC support."
-#endif
 
 BraveWebClient::BraveWebClient() {}
 

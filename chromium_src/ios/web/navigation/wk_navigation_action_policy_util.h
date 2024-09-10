@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <WebKit/WebKit.h>
 
-#include "src/ios/web/navigation/wk_navigation_action_policy_util.h"
+#include "src/ios/web/navigation/wk_navigation_action_policy_util.h"  // IWYU pragma: export
 
 namespace web {
 class WebState;

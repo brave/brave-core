@@ -11,7 +11,7 @@ class PrefService;
 #define GetRequestContext() \
   GetRequestContext() = 0;  \
   virtual PrefService* GetPrefs()
-#include "src/ios/web/public/browser_state.h"
+#include "src/ios/web/public/browser_state.h"  // IWYU pragma: export
 #undef GetRequestContext
 
 #endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_PUBLIC_BROWSER_STATE_H_

@@ -66,6 +66,7 @@ source_set("app") {
     "//brave/ios/browser/web",
     "//components/browser_sync",
     "//components/component_updater",
+    "//components/content_settings/core/browser",
     "//components/history/core/browser",
     "//components/keyed_service/core",
     "//components/password_manager/core/browser",

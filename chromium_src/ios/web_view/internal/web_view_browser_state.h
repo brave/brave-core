@@ -11,7 +11,7 @@
 #define GetPrefs()   \
   GetPrefs_Unused(); \
   PrefService* GetPrefs() override
-#include "src/ios/web_view/internal/web_view_browser_state.h"
+#include "src/ios/web_view/internal/web_view_browser_state.h"  // IWYU pragma: export
 #undef GetPrefs
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_WEB_VIEW_BROWSER_STATE_H_

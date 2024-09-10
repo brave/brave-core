@@ -1,7 +1,7 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/ios/browser/web/brave_web_main_parts.h"
 
@@ -19,10 +19,6 @@
 #include "ios/chrome/browser/shared/model/paths/paths.h"
 #include "ui/base/l10n/l10n_util_mac.h"
 #include "ui/base/resource/resource_bundle.h"
-
-#if !defined(__has_feature) || !__has_feature(objc_arc)
-#error "This file requires ARC support."
-#endif
 
 namespace {
 void RegisterComponentsForUpdate(
@@ -45,8 +41,7 @@ void BraveWebMainParts::PreCreateMainMessageLoop() {
   IOSChromeMainParts::PreCreateMainMessageLoop();
 
   // Add Brave Resource Pack
-  base::FilePath brave_pack_path;
-  base::PathService::Get(base::DIR_ASSETS, &brave_pack_path);
+  auto brave_pack_path = base::PathService::CheckedGet(base::DIR_ASSETS);
   brave_pack_path = brave_pack_path.AppendASCII("brave_resources.pak");
   ui::ResourceBundle::GetSharedInstance().AddDataPackFromPath(
       brave_pack_path, ui::kScaleFactorNone);

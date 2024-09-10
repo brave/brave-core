@@ -331,7 +331,8 @@ extension BrowserViewController: CWVNavigationDelegate {
     }
 
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
-    tab?.rewardsReportingState.isNewNavigation = navigationAction.navigationType.isNewNavigation  // FIXME: Test
+    // FIXME: Test
+    tab?.rewardsReportingState.isNewNavigation = navigationAction.navigationType.isNewNavigation
     tab?.currentRequestURL = requestURL
 
     // Website redirection logic
@@ -590,15 +591,14 @@ extension BrowserViewController: CWVNavigationDelegate {
       let documentTargetURL: URL? =
         // FIXME: Test
         navigationAction.request.mainDocumentURL
-        ?? /*navigationAction.targetFrame?.request
-        .mainDocumentURL ??*/ requestURL  // Should be the same as the sourceFrame URL
+        ?? requestURL  // Should be the same as the sourceFrame URL
       // Cookie Blocking code below
       if let tab = tab {
         tab.setScript(script: .cookieBlocking, enabled: Preferences.Privacy.blockAllCookies.value)
       }
 
       // Reset the block alert bool on new host.
-      if let newHost: String = requestURL.host, let oldHost: String = webView.visibleURL?.host,  // webView.url?.host,
+      if let newHost: String = requestURL.host, let oldHost: String = webView.visibleURL?.host,
         newHost != oldHost
       {
         self.tabManager.selectedTab?.alertShownCount = 0

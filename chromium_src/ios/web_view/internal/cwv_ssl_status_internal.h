@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_CWV_SSL_STATUS_INTERNAL_H_
 #define BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_CWV_SSL_STATUS_INTERNAL_H_
 
-#include "src/ios/web_view/internal/cwv_ssl_status_internal.h"
+#include "src/ios/web_view/internal/cwv_ssl_status_internal.h"  // IWYU pragma: export
 
 @interface CWVSSLStatus (Internal)
 @property(readonly) web::SSLStatus internalStatus;

@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/https_upgrade_exceptions/browser",
+  "+brave/ios/browser/application_context",
+]

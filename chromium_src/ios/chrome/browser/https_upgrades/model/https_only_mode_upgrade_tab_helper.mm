@@ -13,6 +13,7 @@
 
 namespace {
 bool CanUpgradeToHTTPS(const GURL& url) {
+  // FIXME: Move this impl out of the chromium_src override
   BraveApplicationContextImpl* braveContext =
       static_cast<BraveApplicationContextImpl*>(GetApplicationContext());
   return braveContext->https_upgrade_exceptions_service()->CanUpgradeToHTTPS(

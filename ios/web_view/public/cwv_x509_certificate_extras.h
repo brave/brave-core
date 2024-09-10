@@ -6,7 +6,7 @@
 #ifndef BRAVE_IOS_WEB_VIEW_PUBLIC_CWV_X509_CERTIFICATE_EXTRAS_H_
 #define BRAVE_IOS_WEB_VIEW_PUBLIC_CWV_X509_CERTIFICATE_EXTRAS_H_
 
-#include "cwv_x509_certificate.h"
+#include "cwv_x509_certificate.h"  // NOLINT
 
 @interface CWVX509Certificate (Extras)
 @property(readonly, nullable) SecCertificateRef certificateRef;

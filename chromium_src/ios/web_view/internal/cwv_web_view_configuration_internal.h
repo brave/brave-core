@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_CWV_WEB_VIEW_CONFIGURATION_H_
-#define BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_CWV_WEB_VIEW_CONFIGURATION_H_
+#ifndef BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_CWV_WEB_VIEW_CONFIGURATION_INTERNAL_H_
+#define BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_CWV_WEB_VIEW_CONFIGURATION_INTERNAL_H_
 
 #import "ios/web_view/public/cwv_web_view_configuration.h"
 
@@ -42,4 +42,4 @@ class BrowserState;
 
 NS_ASSUME_NONNULL_END
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_CWV_WEB_VIEW_CONFIGURATION_INTERNAL_H_

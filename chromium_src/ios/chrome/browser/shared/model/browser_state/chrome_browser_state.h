@@ -11,7 +11,7 @@
 #define GetPrefs()   \
   GetPrefs_Unused(); \
   PrefService* GetPrefs() override
-#include "src/ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "src/ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"  // IWYU pragma: export
 #undef GetPrefs
 
 #endif  // BRAVE_CHROMIUM_SRC_IOS_CHROME_BROWSER_SHARED_MODEL_BROWSER_STATE_CHROME_BROWSER_STATE_H_

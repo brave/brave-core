@@ -8,7 +8,7 @@
 
 #define decideLoadPolicyForTrust decideLoadPolicyForTrust_ChromiumImpl
 #define querySSLStatusForTrust querySSLStatusForTrust_ChromiumImpl
-#include "src/ios/web/security/crw_cert_verification_controller.h"
+#include "src/ios/web/security/crw_cert_verification_controller.h"  // IWYU pragma: export
 #undef querySSLStatusForTrust
 #undef decideLoadPolicyForTrust
 

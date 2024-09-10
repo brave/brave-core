@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_CWV_WEB_VIEW_INTERNAL_H_
 #define BRAVE_CHROMIUM_SRC_IOS_WEB_VIEW_INTERNAL_CWV_WEB_VIEW_INTERNAL_H_
 
-#include "src/ios/web_view/internal/cwv_web_view_internal.h"
+#include "src/ios/web_view/internal/cwv_web_view_internal.h"  // IWYU pragma: export
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -6,11 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_IOS_CHROME_BROWSER_SHARED_MODEL_PREFS_PREF_NAMES_H_
 #define BRAVE_CHROMIUM_SRC_IOS_CHROME_BROWSER_SHARED_MODEL_PREFS_PREF_NAMES_H_
 
-#include "src/ios/chrome/browser/shared/model/prefs/pref_names.h"
+#include "src/ios/chrome/browser/shared/model/prefs/pref_names.h"  // IWYU pragma: export
 
 namespace prefs {
 // A boolean specifying whether HTTPS Upgrades are enabled.
 inline constexpr char kHttpsUpgradesEnabled[] = "ios.https_upgrades_enabled";
 }  // namespace prefs
 
-#endif
+#endif  // BRAVE_CHROMIUM_SRC_IOS_CHROME_BROWSER_SHARED_MODEL_PREFS_PREF_NAMES_H_
