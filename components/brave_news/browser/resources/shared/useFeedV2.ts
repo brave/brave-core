@@ -185,6 +185,22 @@ export const useFeedV2 = (enabled: boolean) => {
     fetchFeed(feedView).then(setFeedV2)
   }, [feedView])
 
+  // When we switch back to this tab, if the feed is stale refresh it.
+  useEffect(() => {
+    const handler = () => {
+      if (document.visibilityState !== 'visible') return
+
+      if (feedV2 && isTooOld(feedV2)) {
+        refresh()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handler)
+    return () => {
+      document.removeEventListener('visibilitychange', handler)
+    }
+  }, [refresh, feedV2])
+
   // Updates are available if we've been told the latest hash, we have a feed
   // and the hashes don't match.
   const updatesAvailable = !!(hash && feedV2 && hash !== feedV2.sourceHash)
