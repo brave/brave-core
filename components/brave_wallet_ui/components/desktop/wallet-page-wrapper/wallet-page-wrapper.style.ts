@@ -5,6 +5,14 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
+
+// Assets
+import TopLayerLight from './assets/top_layer_light.svg'
+import BottomLayerLight from './assets/bottom_layer_light.svg'
+import TopLayerDark from './assets/top_layer_dark.svg'
+import BottomLayerDark from './assets/bottom_layer_dark.svg'
+
+// Shared Styles
 import { Row } from '../../shared/style'
 
 const minCardHeight = 497
@@ -235,76 +243,35 @@ export const BackgroundGradientWrapper = styled.div`
   bottom: 0px;
   left: 0px;
   right: 0px;
-  opacity: 0.5;
-  background-color: ${leo.color.page.background};
+  opacity: 0.3;
+  background-color: ${leo.color.primary[10]};
 `
 
 export const BackgroundGradientTopLayer = styled.div`
+  width: 100%;
+  height: 100%;
+  background-image: url(${TopLayerLight});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   position: absolute;
-  left: -42%;
-  right: 35%;
-  top: 15%;
-  bottom: 25%;
-  background: #dfdefc;
-  border-radius: 100%;
-  filter: blur(36.2567px);
-  transform: matrix(1, -0.06, -0.32, -0.95, 0, 0);
-  z-index: 5;
-  @media (prefers-color-scheme: dark) {
-    /* #013F4B does not exist in design system */
-    background: #013f4b;
-    filter: blur(47px);
-    left: 35%;
-    right: -100%;
-    top: 2%;
-    bottom: 25%;
-    transform: matrix(-0.98, 0.19, -0.73, -0.68, 0, 0);
-  }
-`
-
-export const BackgroundGradientMiddleLayer = styled.div`
-  position: absolute;
-  left: 25%;
-  right: 10%;
-  top: 10%;
-  bottom: 25%;
-  background: #d6e7ff;
-  border-radius: 100%;
-  filter: blur(47.5869px);
-  transform: matrix(-1, 0.06, -0.32, -0.95, 0, 0);
   z-index: 4;
   @media (prefers-color-scheme: dark) {
-    /* #030A49 does not exist in design system */
-    background: #030a49;
-    filter: blur(70px);
-    left: -40%;
-    right: 17%;
-    top: 50%;
-    bottom: -80%;
-    transform: matrix(-0.98, 0.19, -0.73, -0.68, 0, 0);
+    background-image: url(${TopLayerDark});
   }
 `
 
 export const BackgroundGradientBottomLayer = styled.div`
+  width: 100%;
+  height: 100%;
+  background-image: url(${BottomLayerLight});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   position: absolute;
-  left: -30%;
-  right: 20%;
-  top: 45%;
-  bottom: -25%;
-  background: #c8edfd;
-  border-radius: 100%;
-  filter: blur(47.5869px);
-  transform: matrix(-1, 0.06, -0.32, -0.95, 0, 0);
-  z-index: 3;
+  z-index: 5;
   @media (prefers-color-scheme: dark) {
-    /* #014B3A does not exist in design system */
-    background: #014b3a;
-    filter: blur(70px);
-    left: 25%;
-    right: -80%;
-    top: 15%;
-    bottom: -40%;
-    transform: matrix(-0.79, 0.61, -0.98, -0.22, 0, 0);
+    background-image: url(${BottomLayerDark});
   }
 `
 
