@@ -1622,7 +1622,7 @@ Are you sure you want to do this?
         Note: This site address will be submitted with your Brave version number and your IP address(which will not be stored).
       </message>
       <message name="IDS_REPORT_ERROR_PAGE_EXPLANATION" desc="Notifies the user that the error page cannot be reported">
-        This page is an error page and is not eligible for reporting.
+        This is an error page. It cannot be reported as a broken site.
       </message>
       <message name="IDS_THANK_YOU" desc="Title for thank you UI for shields.">
         Thank you!
