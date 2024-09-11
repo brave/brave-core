@@ -33,11 +33,13 @@ inline constexpr char kOrchardDatabaseName[] = "orchard.db";
 
 namespace {
 
+#if BUILDFLAG(ENABLE_ORCHARD)
 // Creates address key id for receiving funds on internal orchard address
 mojom::ZCashKeyIdPtr CreateOrchardInternalKeyId(
     const mojom::AccountIdPtr& accoint_id) {
   return mojom::ZCashKeyId::New(accoint_id->account_index, 1 /* internal */, 0);
 }
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 }  // namespace
 
@@ -702,11 +704,13 @@ void ZCashWalletService::CreateTransactionTaskDone(
       [task](auto& item) { return item.get() == task; }));
 }
 
+#if BUILDFLAG(ENABLE_ORCHARD)
 void ZCashWalletService::CreateTransactionTaskDone(
     ZCashCreateShieldTransactionTask* task) {
   CHECK(create_shield_transaction_tasks_.remove_if(
       [task](auto& item) { return item.get() == task; }));
 }
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 ZCashRpc* ZCashWalletService::zcash_rpc() {
   return zcash_rpc_.get();

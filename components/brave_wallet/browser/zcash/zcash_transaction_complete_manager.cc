@@ -19,12 +19,14 @@ namespace brave_wallet {
 
 namespace {
 
+#if BUILDFLAG(ENABLE_ORCHARD)
 std::unique_ptr<OrchardBundleManager> ApplyOrchardSignatures(
     std::unique_ptr<OrchardBundleManager> orchard_bundle_manager,
     std::array<uint8_t, kZCashDigestSize> sighash) {
   // Heavy CPU operation, should be executed on background thread
   return orchard_bundle_manager->ApplySignature(sighash);
 }
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 }  // namespace
 
@@ -72,6 +74,7 @@ void ZCashTransactionCompleteManager::OnGetLatestBlockHeight(
   params.transaction.set_expiry_height(result.value()->height +
                                        kDefaultZCashBlockHeightDelta);
 
+#if BUILDFLAG(ENABLE_ORCHARD)
   if (params.transaction.orchard_part().outputs.empty()) {
     SignTransparentPart(std::move(params));
     return;
@@ -81,7 +84,12 @@ void ZCashTransactionCompleteManager::OnGetLatestBlockHeight(
       chain_id,
       base::BindOnce(&ZCashTransactionCompleteManager::OnGetTreeState,
                      weak_ptr_factory_.GetWeakPtr(), std::move(params)));
+#else
+  SignTransparentPart(std::move(params));
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
 }
+
+#if BUILDFLAG(ENABLE_ORCHARD)
 
 void ZCashTransactionCompleteManager::OnGetTreeState(
     ParamsBundle params,
@@ -130,20 +138,6 @@ void ZCashTransactionCompleteManager::OnGetTreeState(
           weak_ptr_factory_.GetWeakPtr(), std::move(params)));
 }
 
-void ZCashTransactionCompleteManager::SignTransparentPart(ParamsBundle params) {
-  // Sign transparent part
-  if (!ZCashSerializer::SignTransparentPart(
-          zcash_wallet_service_->keyring_service(), params.account_id,
-          params.transaction)) {
-    std::move(params.callback)
-        .Run(base::unexpected(
-            l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
-    return;
-  }
-
-  std::move(params.callback).Run(std::move(params.transaction));
-}
-
 void ZCashTransactionCompleteManager::OnSignOrchardPartComplete(
     ParamsBundle params,
     std::unique_ptr<OrchardBundleManager> orchard_bundle_manager) {
@@ -157,6 +151,22 @@ void ZCashTransactionCompleteManager::OnSignOrchardPartComplete(
       orchard_bundle_manager->GetRawTxBytes();
 
   SignTransparentPart(std::move(params));
+}
+
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
+
+void ZCashTransactionCompleteManager::SignTransparentPart(ParamsBundle params) {
+  // Sign transparent part
+  if (!ZCashSerializer::SignTransparentPart(
+          zcash_wallet_service_->keyring_service(), params.account_id,
+          params.transaction)) {
+    std::move(params.callback)
+        .Run(base::unexpected(
+            l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
+    return;
+  }
+
+  std::move(params.callback).Run(std::move(params.transaction));
 }
 
 }  // namespace brave_wallet

@@ -2505,12 +2505,14 @@ mojom::ZCashAccountInfoPtr KeyringService::GetZCashAccountInfo(
           derived_account_info.zcash_account_birthday->second);
     }
 
+#if BUILDFLAG(ENABLE_ORCHARD)
     auto unified_address = zcash_keyring->GetUnifiedAddress(
         *receive_key_id,
         *mojom::ZCashKeyId::New(account_id->account_index, 0, 0));
     if (unified_address) {
       result->unified_address = *unified_address;
     }
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
     return result;
   }

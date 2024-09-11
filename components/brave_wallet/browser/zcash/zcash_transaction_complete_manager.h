@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
+#include "brave/components/brave_wallet/common/buildflags.h"
 
 namespace brave_wallet {
 
@@ -52,12 +53,14 @@ class ZCashTransactionCompleteManager {
   void OnGetLatestBlockHeight(
       ParamsBundle params,
       base::expected<zcash::mojom::BlockIDPtr, std::string> result);
+#if BUILDFLAG(ENABLE_ORCHARD)
   void OnGetTreeState(
       ParamsBundle params,
       base::expected<zcash::mojom::TreeStatePtr, std::string> result);
   void OnSignOrchardPartComplete(
       ParamsBundle params,
       std::unique_ptr<OrchardBundleManager> orchard_bundle_manager);
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
   raw_ptr<ZCashWalletService> zcash_wallet_service_;  // Owns `this`.
   base::WeakPtrFactory<ZCashTransactionCompleteManager> weak_ptr_factory_{this};
