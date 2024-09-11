@@ -22,8 +22,7 @@ export const layoutSmallWidth = 1100
 export const layoutPanelWidth = 660
 export const layoutTopPosition = 68
 // navSpace and navWidth need to be defined here to prevent circular imports.
-export const navSpace = 24
-export const navWidth = 240
+export const navWidth = 250
 
 export const Wrapper = styled.div<{
   noPadding?: boolean
@@ -65,11 +64,11 @@ export const LayoutCardWrapper = styled.div<{
   */
   --left-padding-without-nav: calc((100vw / 2) - (${maxCardWidth}px / 2));
   /*
-    + (${navWidth}px / 2) + (${navSpace}px / 2) is to then adjust the card body
+    + (${navWidth}px / 2) is to then adjust the card body
     to the right to be centered with the nav.
   */
   --left-padding-with-nav: calc(
-    var(--left-padding-without-nav) + (${navWidth}px / 2) + (${navSpace}px / 2)
+    var(--left-padding-without-nav) + (${navWidth}px / 2)
   );
   display: flex;
   flex-direction: column;

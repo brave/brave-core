@@ -8,8 +8,8 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
 // Assets
-import BraveLogoLight from '../../send/assets/brave-logo-light.svg'
-import BraveLogoDark from '../../send/assets/brave-logo-dark.svg'
+import BraveLogoLight from '../../../../assets/svg-icons/wallet_logo_light.svg'
+import BraveLogoDark from '../../../../assets/svg-icons/wallet_logo_dark.svg'
 
 // Shared Styles
 import { StyledDiv, StyledButton } from '../../send/shared.styles'
