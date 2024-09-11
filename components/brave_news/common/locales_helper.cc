@@ -42,6 +42,7 @@ constexpr auto kEnabledLocales =
                                                  "es_ES",
                                                  "es_MX",
                                                  "fr_FR",
+                                                 "it_IT",
                                                  "pt_BR",
                                              });
 
