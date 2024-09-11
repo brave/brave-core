@@ -25,6 +25,9 @@
 /* A title for a popup that tells the user we recommend turning shields off for this site. */
 "AntiAdBlockWarningTitle" = "Ajusta la configuración del bloqueador de anuncios en este sitio";
 
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Trituración automática";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agresivo";
 
@@ -145,8 +148,38 @@
 /* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
 "FilterListURLTextFieldPlaceholder" = "Introduce la URL de la lista de filtros aquí";
 
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Borra las cookies y otros datos del sitio al cerrar un sitio";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Olvidarme al cerrar este sitio";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Estricto";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Triturar datos";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Nunca";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Al cerrar la aplicación";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Al cerrar las pestañas del sitio";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Triturar datos del sitio";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Si lleva cabo la trituración, se cerrarán todas las pestañas abiertas de este sitio y se eliminarán todos los datos relacionados con el mismo. Esta acción es irreversible.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "¿Triturar los datos de este sitio?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Triturar los datos de este sitio";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "El sitio no es seguro";

@@ -158,7 +158,7 @@
 "BraveRewardsTitle" = "Odmeny Brave";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Vyhľadávanie Brave nesleduje vás, vaše dopyty ani kliknutia.";
+"braveSearchPromotion.bannerDescription" = "Vyhľadávanie Brave vás neprofiluje.";
 
 /* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Možno neskôr";
@@ -272,7 +272,7 @@
 "callout.p3aCalloutTitle" = "Pomôžte zlepšiť prehliadač Brave.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Zdieľajte úplne súkromné ​​a anonymné informácie o produktoch.";
+"callout.p3aCalloutToggleTitle" = "Zdieľajte súkromné a anonymné informácie o produkte.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Získajte súkromie Brave na svojom počítači alebo tablete a synchronizujte záložky a rozšírenia medzi zariadeniami.";
@@ -1428,6 +1428,9 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageUnknownStatusWarning" = "Vaše pripojenie k tejto stránke sa nepodarilo úplne overiť. Môžete pokračovať alebo skúste znova načítať stránku, aby ste vytvorili bezpečné pripojenie.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "Prihláste sa na webovú stránku";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Zobraziť certifikát";
@@ -3526,9 +3529,6 @@
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave neukladá ani nezdieľa vaše hlasové vyhľadávania.";
 
-/* The button text that starts the subscription action */
-"vpn.activateSubscriptionAction" = "Aktivovať";
-
 /* Pop up extra description for billing issue of subcription VPN about to expire */
 "vpn.autoReneSoonExpirePopOverSubDescription" = "Chcete zostať chránení? Obnovte si predplatné pred skončením odberu. Ako poďakovanie za obnovenie vám dokonca dáme zľavu 20 % na ďalšie 3 mesiace.";
 
@@ -3547,146 +3547,14 @@
 /* Pop up title for VPN subscription is about expire */
 "vpn.autoRenewSoonExpireTitle" = "Ale nie! Vaše predplatné Brave VPN čoskoro vyprší.";
 
-/* Button text to buy Brave VPN */
-"vpn.buyButton" = "Koupit";
-
 /* Title for screen to buy the VPN. */
 "vpn.buyVPNTitle" = "Brave Firewall + VPN";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxDevicesProtect" = "1 predplatným ochráňte 5 zariadení ";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxGeoLocation" = "Zvoľte svoju geografickú polohu/krajinu";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave vašu aktivitu nikdy nezaznamenáva";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "Chráňte aplikácie a celé zariadenie";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSaferWifi" = "Bezpečnejšie pre vašu domácu alebo verejnú Wi-Fi";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxSpeedFast" = "Blesková rýchlosť až 100 Mb/s";
-
-/* App Store Receipt field for customer support contact form. */
-"vpn.contactFormAppStoreReceipt" = "Potvrdenie z obchodu App Store";
-
-/* App Version field for customer support contact form. */
-"vpn.contactFormAppVersion" = "Verzia aplikácie";
-
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "Poskytovateľ mobilného pripojenia";
-
-/* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Brave vás nesleduje ani nevie, ako používate našu aplikáciu, takže nevieme, ako ste si nastavili VPN. Podeľte sa o informácie o probléme, ktorý máte, a my sa pokúsime ho čo najskôr vyriešiť.";
-
-/* Button name to send contact form. */
-"vpn.contactFormEmailNotConfiguredBody" = "Nie je možné odoslať e-mail. Skontrolujte konfiguráciu e-mailu.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooter" = "Vyberte informácie, ktoré s nami chcete zdieľať.\n\nČím viac informácií nám na začiatku poskytnete, tým ľahšie bude pre náš tím podpory vyriešiť váš problém.";
-
-/* Footer for customer support contact form. */
-"vpn.contactFormFooterSharedWithGuardian" = "Podpora poskytovaná s pomocou tímu Guardian.";
-
-/* VPN Hostname field for customer support contact form. */
-"vpn.contactFormHostname" = "Meno hostiteľa VPN";
-
-/* Specific issue field for customer support contact form. */
-"vpn.contactFormIssue" = "Problém";
-
-/* Connection problems for contact form issue field. */
-"vpn.contactFormIssueConnectionReliability" = "Problém so spoľahlivosťou pripojenia";
-
-/* Description used for specific issue field for customer support contact form. */
-"vpn.contactFormIssueDescription" = "Vyberte kategóriu, ktorá opisuje problém.";
-
-/* No internet problem for contact form issue field. */
-"vpn.contactFormIssueNoInternet" = "Pri pripojení nebol žiadny internet";
-
-/* Other problem for contact form issue field. */
-"vpn.contactFormIssueOther" = "Ostatné";
-
-/* Other connection problem for contact form issue field. */
-"vpn.contactFormIssueOtherConnectionError" = "Nedá sa pripojiť k VPN (iná chyba)";
-
-/* Slow connection problem for contact form issue field. */
-"vpn.contactFormIssueSlowConnection" = "Pomalé pripojenie";
-
-/* Website problem for contact form issue field. */
-"vpn.contactFormIssueWebsiteProblems" = "Webová stránka nefunguje";
-
-/* VPN logs field for customer support contact form. */
-"vpn.contactFormLogs" = "Protokoly chýb";
-
-/* Network Type field for customer support contact form. */
-"vpn.contactFormNetworkType" = "Typ siete";
-
-/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
-"vpn.contactFormPlatform" = "Platforma";
-
-/* Button name to send contact form. */
-"vpn.contactFormSendButton" = "Pokračovať na e-mail";
-
-/* Subscription Type field for customer support contact form. */
-"vpn.contactFormSubscriptionType" = "Typ predplatného";
-
-/* iOS Timezone field for customer support contact form. */
-"vpn.contactFormTimezone" = "Časové pásmo iOS";
-
-/* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave Firewall + problém VPN";
-
-/* Button text to enable Brave VPN */
-"vpn.enableButton" = "Aktivovať";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Nepodarilo sa pripojiť k App Store, skúste to znova o niekoľko minút.";
 
 /* Title for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesTitle" = "Chyba obchodu App Store";
-
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Všetky plány obsahujú %@!";
-
-/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
-"vpn.freeTrialPeriod" = "bezplatná 7-dňová skúšobná verzia";
-
-/* The button text that starts the trial action */
-"vpn.freeTrialPeriodAction" = "vyskúšajte na 7 dní zadarmo";
-
-/* Disclaimer about in app subscription */
-"vpn.iapDisclaimer" = "Všetky predplatné sa automaticky obnovujú, ale pred obnovením ich možno zrušiť.";
-
-/* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "Tento profil umožňuje, aby sa VPN neustále automaticky pripájala a zabezpečovala prevádzku na vašom zariadení. Toto pripojenie VPN bude šifrované a smerované cez inteligentný firewall spoločnosti Brave, aby sa zablokovali potenciálne škodlivé a invazívne pripojenia.";
-
-/* Text for 'install vpn profile' button */
-"vpn.installProfileButtonText" = "Nainštalovať profil VPN";
-
-/* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Brave teraz nainštaluje profil VPN.";
-
-/* Popup that shows after user installs the vpn for the first time. */
-"vpn.installSuccessPopup" = "VPN je zapnutá";
-
-/* Title for screen to install the VPN. */
-"vpn.installTitle" = "Inštalovať VPN";
-
-/* Button text to try free Brave VPN */
-"vpn.learnMore" = "Vyskúšajte ZADARMO";
-
-/* Used in context: 'Monthly subscription, (it) renews monthly' */
-"vpn.monthlySubDetail" = "Obnovuje sa mesačne";
-
-/* No comment provided by engineer. */
-"vpn.monthlySubTitle" = "Mesačné predplatné";
-
-/* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Platnosť vypršala";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.popupCheckboxBlockAds" = "Blokuje nechcené sieťové pripojenia";
@@ -3709,56 +3577,8 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "Používa technológiu";
 
-/* Description of vpn tunnel protocol */
-"vpn.protocolPickerDescription" = "Vyberte si preferovaný transportný protokol. Po prepnutí budú vaše existujúce prihlasovacie údaje VPN vymazané a ak je aktuálne vytvorené pripojenie VPN, znova sa pripojíte.";
-
-/* Message for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorMessage" = "Nepodarilo sa prepnúť tunel protokolu, skúste to znova neskôr.";
-
-/* Title for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorTitle" = "Chyba servera";
-
-/* Title for vpn tunnel protocol screen */
-"vpn.protocolPickerTitle" = "Transportný protokol";
-
-/* Message that we show after successfully changing tunnel protocol. */
-"vpn.protocolSwitchSuccessPopupText" = "Tunel VPN protokolu sa zmenil.";
-
-/* Description of what automatic server selection does. */
-"vpn.regionPickerAutomaticDescription" = "Automaticky sa vyberie oblasť servera, ktorý je vám najbližší, na základe časového pásma vášho systému. Toto sa odporúča na zabezpečenie vysokej rýchlosti internetu.";
-
 /* Name of automatic vpn region selector */
 "vpn.regionPickerAutomaticModeCellText" = "Automatické";
-
-/* Message for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorMessage" = "Prepnutie serverov zlyhalo, skúste to znova neskôr.";
-
-/* Title for error when we fail to switch vpn server for the user */
-"vpn.regionPickerErrorTitle" = "Chyba servera";
-
-/* Title for vpn region selector screen */
-"vpn.regionPickerTitle" = "Oblasť servera";
-
-/* Message that we show after successfully changing vpn region. */
-"vpn.regionSwitchSuccessPopupText" = "Oblasť VPN sa zmenila.";
-
-/* Message to show when vpn configuration reset fails. */
-"vpn.resetVPNErrorBody" = "Nedá sa resetovať konfigurácia VPN. Skúste to znova. Ak problém pretrváva, požiadajte o pomoc podporu.";
-
-/* Title of button to try again when vpn configuration reset fails. */
-"vpn.resetVPNErrorButtonActionTitle" = "Skúsiť znova";
-
-/* Title for error message when vpn configuration reset fails. */
-"vpn.resetVPNErrorTitle" = "Obnovenie sa nepodarilo";
-
-/* Message to show when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessBody" = "Konfigurácia VPN bola úspešne obnovená.";
-
-/* Title for success message when vpn configuration reset succeeds. */
-"vpn.resetVPNSuccessTitle" = "Obnovenie bolo úspešné";
-
-/* No comment provided by engineer. */
-"vpn.restorePurchases" = "Obnoviť";
 
 /* Alert description to show when the VPN session has expired */
 "vpn.sessionExpiredDescription" = "Ak chcete obnoviť svoju reláciu VPN, prihláste sa do svojho účtu Brave.";
@@ -3771,54 +3591,6 @@
 
 /* Alert title to show when the VPN session has expired */
 "vpn.sessionExpiredTitle" = "Relácia vypršala";
-
-/* VPN Banner Description */
-"vpn.settingHeaderBody" = "Prejdite na VPN a ochráňte tak svoje pripojenie a blokujte invazívne sledovacie programy odvšadiaľ.";
-
-/* Button to contact tech support */
-"vpn.settingsContactSupport" = "Kontaktovať technickú podporu";
-
-/* Error message shown if we failed to retrieve vpn server list. */
-"vpn.settingsFailedToFetchServerList" = "Nepodarilo sa načítať zoznam serverov, skúste to znova neskôr.";
-
-/* Button for FAQ */
-"vpn.settingsFAQ" = "Podpora VPN";
-
-/* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Prepojenie nákupu s účtom Brave";
-
-/* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Prepojte svoj nákup v App Store so svojím účtom Brave, aby ste mohli používať Brave VPN na iných zariadeniach.";
-
-/* Button to manage your VPN subscription */
-"vpn.settingsManageSubscription" = "Spravovať predplatné";
-
-/* Button to redeem offer code subscription */
-"vpn.settingsRedeemOfferCode" = "Uplatniť kód ponuky";
-
-/* Button to reset VPN configuration */
-"vpn.settingsResetConfiguration" = "Obnoviť konfiguráciu";
-
-/* Table cell title for vpn's server host */
-"vpn.settingsServerHost" = "Hostiteľ";
-
-/* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Poloha";
-
-/* Header title for vpn settings server section. */
-"vpn.settingsServerSection" = "Server";
-
-/* Table cell title for cell that shows when the VPN subscription expires. */
-"vpn.settingsSubscriptionExpiration" = "Koniec platnosti";
-
-/* Header title for vpn settings subscription section. */
-"vpn.settingsSubscriptionSection" = "Predplatné";
-
-/* Table cell title for status of current VPN subscription. */
-"vpn.settingsSubscriptionStatus" = "Stav";
-
-/* Table cell title for vpn's transport protocol and which open opens protocol select */
-"vpn.settingsTransportProtocol" = "Transportný protokol";
 
 /* Whether the VPN is enabled or not */
 "vpn.settingsVPNDisabled" = "Deaktivované";
@@ -3868,41 +3640,8 @@
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Aktualizovať platbu";
 
-/* Text for necesseray required action of VPN subscription needs a method of payment update */
-"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Aktualizovať spôsob platby";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Brave vás bude naďalej chrániť aj na pozadí.";
-
-/* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN sú ZAPNUTÉ";
-
-/* Message for an alert when the VPN can't be configured. */
-"vpn.vpnConfigGenericErrorBody" = "Pri inicializácii siete VPN sa vyskytol problém. Skúste to znova alebo skúste resetovať konfiguráciu na stránke nastavení VPN.";
-
-/* Title for an alert when the VPN can't be configured */
-"vpn.vpnConfigGenericErrorTitle" = "Chyba";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Aby Brave Firewall + VPN fungovalI, vyžaduje sa na vašom zariadení nainštalovaný profil VPN.";
-
-/* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorTitle" = "Prístup zamietnutý";
-
-/* Message for error when VPN offer code could not be redeemed. */
-"vpn.vpnErrorOfferCodeFailedBody" = "Kód ponuky nie je možné uplatniť. Skúste to znova alebo skontrolujte podrobnosti kódu ponuky a skúste to znova.";
-
-/* Message for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedBody" = "Nákup nie je možné dokončiť. Skúste to znova alebo skontrolujte svoje platobné informácie Apple a skúste to znova.";
-
-/* Title for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedTitle" = "Chyba";
-
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Predplatné sa bude účtovať prostredníctvom vášho účtu iTunes.\n\nAkákoľvek nevyužitá časť bezplatnej skúšobnej verzie, ak je v ponuke, prepadne pri zakúpení predplatného.\n\nVaše predplatné sa automaticky obnoví, ak nebude zrušené aspoň 24 hodín pred koncom aktuálneho obdobia.\n\nSvoje odbery môžete spravovať v Nastaveniach.\n\nPoužívaním Brave súhlasíte s Podmienkami používania a Zásadami ochrany osobných údajov.";
-
-/* Title for a button for enabling the Redeem Code flow */
-"vpn.vpnRedeemCodeButtonActionTitle" = "Použiť kód";
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "Oblasť servera";
 
 /* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
 "vpn.vpnRegionSelectorButtonSubTitle" = "Aktuálne nastavenie: %@";
@@ -3910,32 +3649,8 @@
 /* Button title for VPN region selection in menu */
 "vpn.vpnRegionSelectorButtonTitle" = "Oblasť VPN";
 
-/* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Tým sa resetuje konfigurácia Brave Firewall + VPN a opravia sa všetky chyby. Tento proces môže chvíľu trvať.";
-
-/* Title for alert to reset vpn configuration */
-"vpn.vpnResetAlertTitle" = "Obnoviť konfiguráciu";
-
-/* Button name to reset vpn configuration */
-"vpn.vpnResetButton" = "Resetovať";
-
-/* Name of monthly subscription in VPN Settings */
-"vpn.vpnSettingsMonthlySubName" = "Mesačné predplatné";
-
-/* Name of annual subscription in VPN Settings */
-"vpn.vpnSettingsYearlySubName" = "Ročné predplatné";
-
 /* Text description of VPN subscription needs a method of payment update */
 "vpn.vpnUpdatePaymentMethodDescriptionText" = "Aktualizujte svoj spôsob platby";
-
-/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
-"vpn.yearlySubDetail" = "Obnovujte ročne, ušetrite %@";
-
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Najlepšia hodnota";
-
-/* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "Jeden rok";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Dátum vytvorenia peňaženky";
