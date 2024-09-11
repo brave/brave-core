@@ -11,7 +11,6 @@ namespace autofill {
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kAutofillDisableShadowHeuristics, base::FEATURE_ENABLED_BY_DEFAULT},
     {test::kAutofillServerCommunication, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
