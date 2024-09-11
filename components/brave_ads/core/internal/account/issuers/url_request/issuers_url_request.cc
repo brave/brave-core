@@ -16,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/net/http/http_status_code.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
@@ -79,7 +78,7 @@ void IssuersUrlRequest::FetchCallback(
 
   is_fetching_ = false;
 
-  if (mojom_url_response.status_code == net::kHttpUpgradeRequired) {
+  if (mojom_url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
     BLOG(1, "Failed to fetch issuers as a browser upgrade is required");
 
     return AdsNotifierManager::GetInstance()
