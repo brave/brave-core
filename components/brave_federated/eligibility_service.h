@@ -40,7 +40,8 @@ class EligibilityService
   bool IsConnectedToWifiOrEthernet() const;
 
   // base::PowerStateObserver
-  void OnPowerStateChange(bool on_battery_power) override;
+  void OnBatteryPowerStatusChange(base::PowerStateObserver::BatteryPowerStatus
+                                      battery_power_status) override;
 
   // net::NetworkChangeNotifier::NetworkChangeObserver overrides.
   void OnNetworkChanged(
